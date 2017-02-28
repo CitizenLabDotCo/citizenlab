@@ -189,7 +189,8 @@
       "!app/*/RbGenerated*/*.{js,jsx}",
       "!app/app.js",
       "!app/routes.js",
-      "!app/components/Foundation/**/*.{js,jsx}"
+      "!app/components/Foundation/**/*.{js,jsx}",
+      "!app/components/FoundationDemoPage/**/*.{js,jsx}"
     ],
     "coverageThreshold": {
       "global": {

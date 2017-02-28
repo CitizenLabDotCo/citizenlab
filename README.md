@@ -1,5 +1,15 @@
 # CL2 Front
 
+## Notes
+
+**How to customize Foundation components**
+
+1. edit components in `./app/components/Foudation/src`
+2. visit `http://localhost:3000/dev/foundation` to see changes
+3. run `npm run test:foundation` to make sure tests are passing
+
+## Tips
+
 **Useful Cli commands**
 
 * `npm generate component`
