@@ -39,6 +39,7 @@ import configureStore from './store';
 import { translationMessages } from './i18n';
 
 // Import CSS reset and Global Styles
+import '!!style-loader!css-loader!../node_modules/foundation-sites/dist/css/foundation.min.css';
 import './global-styles';
 
 // Import root routes
