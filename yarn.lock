@@ -3149,6 +3149,13 @@ forwarded@~0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.0.tgz#19ef9874c4ae1c297bcf078fde63a09b66a84363"
 
+foundation-sites@^6.3.0:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/foundation-sites/-/foundation-sites-6.3.0.tgz#19b2d6e5edced8418a4a7b4a1d65287ee1c8d512"
+  dependencies:
+    jquery "^2.2.0"
+    what-input "^4.0.3"
+
 fresh@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.3.0.tgz#651f838e22424e7566de161d8358caa199f83d4f"
@@ -4458,6 +4465,10 @@ jpegtran-bin@^3.0.0:
     bin-build "^2.0.0"
     bin-wrapper "^3.0.0"
     logalot "^2.0.0"
+
+jquery@^2.2.0:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
 
 js-base64@^2.1.9:
   version "2.1.9"
@@ -7805,6 +7816,10 @@ webpack@2.2.0-rc.3:
     watchpack "^1.0.0"
     webpack-sources "^0.1.0"
     yargs "^6.0.0"
+
+what-input@^4.0.3:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/what-input/-/what-input-4.1.1.tgz#475ef53c4503bd13ac145e38ed7105a67eb69d79"
 
 whatwg-encoding@^1.0.1:
   version "1.0.1"
