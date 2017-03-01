@@ -40,7 +40,7 @@ import { translationMessages } from './i18n';
 
 // Import CSS reset and Global Styles
 /* eslint-disable import/first */
-import '!!style-loader!css-loader!../node_modules/foundation-sites/dist/css/foundation.min.css';
+import '../vendor/foundation/main.scss';
 import './global-styles';
 /* eslint-enable import/first */
 
