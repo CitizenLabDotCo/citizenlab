@@ -10,6 +10,8 @@
 
 ## Tips
 
+**A First rule: ALWAYS run `npm t` before `git push`**
+
 **Useful Cli commands**
 
 * `npm generate component`
@@ -17,10 +19,6 @@
 
 **How to import CSS libraries**
 
-[reference](https://github.com/react-boilerplate/react-boilerplate/issues/238)
+Install library using npm/yarn and add a import statement to app.js like below. That's it!
 
-1. install package using npm/yarn.
-`yarn install foundation-sites`
-
-2. add a import statement to app.js like below.
-`import '!!style-loader!css-loader!../node_modules/foundation-sites/dist/css/foundation.min.css';`
+`import '../node_modules/foundation-sites/dist/css/foundation.min.css';`
