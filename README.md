@@ -1,5 +1,7 @@
 # CL2 Front
 
+![Build Status](https://codeship.com/projects/8d4a8a10-dfdf-0134-b77a-46a6c2bb70db/status?branch=master)
+
 ## Notes
 
 **How to customize Foundation components**
