@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Users API</title>
+    <title>Tenants API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,24 +106,22 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Users API</h1>
+      <h1>Tenants API</h1>
 
       <div class="article">
-        <h2>Listing users</h2>
-        <h3>GET api/v1/users</h3>
+        <h2>Get the current tenant</h2>
+        <h3>GET api/v1/tenants/current</h3>
 
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0ODg4MzM3OTcsInN1YiI6Ijk3OGNkZjVhLTcwMTgtNGI0ZS1iNTIwLWQ0MmRkMDIwNDA3OSJ9.VdGYi41JRI-G39Mj0MU7023ENItvkBPo6sylRHGsZfo
-Host: example.org
+            <pre class="request headers">Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/users</pre>
+          <pre class="request route highlight">GET api/v1/tenants/current</pre>
 
 
 
@@ -134,68 +132,27 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;ff67fe25f4974a40a9ef934c8b14ef88&quot;
+ETag: W/&quot;3118f5e2f6540bb350f230da099ab7b0&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 974b22b2-a9c6-4d58-9bc6-e60c13a7c9cc
-X-Runtime: 0.028006
-Content-Length: 148</pre>
+X-Request-Id: 67076375-e723-4288-ac81-06effb93c1eb
+X-Runtime: 0.040598
+Content-Length: 156</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;data&quot;: [
-    {
-      &quot;id&quot;: &quot;978cdf5a-7018-4b4e-b520-d42dd0204079&quot;,
-      &quot;type&quot;: &quot;users&quot;,
-      &quot;attributes&quot;: {
-        &quot;name&quot;: &quot;Mrs. Tamia Nader&quot;,
-        &quot;slug&quot;: &quot;mrs-tamia-nader&quot;
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;b1e7d16e-af13-4926-b37f-9b6404feeec0&quot;,
+    &quot;type&quot;: &quot;tenants&quot;,
+    &quot;attributes&quot;: {
+      &quot;name&quot;: &quot;test-tenant&quot;,
+      &quot;host&quot;: &quot;example_org&quot;,
+      &quot;features&quot;: [
+
+      ],
+      &quot;settings&quot;: {
       }
     }
-  ],
-  &quot;links&quot;: {
-  }
-}</pre>
-          <h3>Request</h3>
-
-            <h4>Headers</h4>
-            <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0ODg4MzM3OTcsInN1YiI6Ijk3OGNkZjVhLTcwMTgtNGI0ZS1iNTIwLWQ0MmRkMDIwNDA3OSJ9.VdGYi41JRI-G39Mj0MU7023ENItvkBPo6sylRHGsZfo
-Host: example.org
-Cookie: </pre>
-
-          <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/users</pre>
-
-
-
-
-            <h3>Response</h3>
-              <h4>Headers</h4>
-              <pre class="response headers">X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;ff67fe25f4974a40a9ef934c8b14ef88&quot;
-Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 3cb7c7f3-eab4-4492-9544-fef5bb4eaa64
-X-Runtime: 0.009694
-Content-Length: 148</pre>
-            <h4>Status</h4>
-            <pre class="response status">200 OK</pre>
-              <h4>Body</h4>
-              <pre class="response body">{
-  &quot;data&quot;: [
-    {
-      &quot;id&quot;: &quot;978cdf5a-7018-4b4e-b520-d42dd0204079&quot;,
-      &quot;type&quot;: &quot;users&quot;,
-      &quot;attributes&quot;: {
-        &quot;name&quot;: &quot;Mrs. Tamia Nader&quot;,
-        &quot;slug&quot;: &quot;mrs-tamia-nader&quot;
-      }
-    }
-  ],
-  &quot;links&quot;: {
   }
 }</pre>
       </div>
