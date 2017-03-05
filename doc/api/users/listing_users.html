@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Users API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Users API</h1>
+
+      <div class="article">
+        <h2>Listing users</h2>
+        <h3>GET api/v1/users</h3>
+
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0ODg4MjQ1ODksInN1YiI6ImU0NDI2MTAwLTViMzItNGYyOS04YmE2LTJmMjMxZmM3NTIwZCJ9.Ls_lFUPym_Z_FU0eat59EF92m-czHgkL5CtbzXaOdkI
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/users</pre>
+
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;f7595c5b0800fbe78fe98e53f7e18100&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 70afbffe-9edc-4bf6-98bd-77c2dc841eee
+X-Runtime: 0.039294
+Content-Length: 145</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;e4426100-5b32-4f29-8ba6-2f231fc7520d&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;name&quot;: &quot;Kenna Reichert&quot;,
+        &quot;slug&quot;: &quot;kenna-reichert&quot;
+      }
+    }
+  ],
+  &quot;links&quot;: {
+  }
+}</pre>
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0ODg4MjQ1ODksInN1YiI6ImU0NDI2MTAwLTViMzItNGYyOS04YmE2LTJmMjMxZmM3NTIwZCJ9.Ls_lFUPym_Z_FU0eat59EF92m-czHgkL5CtbzXaOdkI
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/users</pre>
+
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;f7595c5b0800fbe78fe98e53f7e18100&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 21242cfb-c935-4ce1-b570-3d760e45c484
+X-Runtime: 0.007859
+Content-Length: 145</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;e4426100-5b32-4f29-8ba6-2f231fc7520d&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;name&quot;: &quot;Kenna Reichert&quot;,
+        &quot;slug&quot;: &quot;kenna-reichert&quot;
+      }
+    }
+  ],
+  &quot;links&quot;: {
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>
