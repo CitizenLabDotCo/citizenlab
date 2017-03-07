@@ -4,6 +4,11 @@
 
 ## Notes
 
+**We are using react-boilerplate v3.4.0**
+
+ * [react-bolierplate v3.4.0 docs](https://github.com/react-boilerplate/react-boilerplate/tree/v3.4.0/docs)
+
+
 **How to customize Foundation components**
 
 1. edit components in `./app/components/Foudation/src`
