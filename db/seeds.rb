@@ -5,9 +5,19 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-Tenant.create({name: 'local', host: 'localhost'})
+Tenant.create({
+  name: 'local',
+  host: 'localhost',
+  settings: {
+    core: {
+      allowed: true,
+      enabled: true
+    }
+  }
+})
+
 User.create({
   name: 'Koen Gremmelprez',
   email: 'koen@citizenlab.co',
   password: 'testtest'
-});
+})

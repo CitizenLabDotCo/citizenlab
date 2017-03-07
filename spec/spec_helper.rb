@@ -108,7 +108,8 @@ RSpec.configure do |config|
     # Truncating doesn't drop schemas, ensure we're clean here, app *may not* exist
     Apartment::Tenant.drop('example_org') rescue nil
     # Create the default tenant for our tests
-    Tenant.create!(name: 'test-tenant', host: 'example_org')
+    # Tenant.create!(name: 'test-tenant', host: 'example_org')
+    FactoryGirl::create(:test_tenant)
   end
 
   config.before(:each) do

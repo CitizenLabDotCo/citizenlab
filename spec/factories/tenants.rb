@@ -6,6 +6,33 @@ FactoryGirl.define do
     # host Faker::Internet.domain_name
     host "localhost"
     features []
-    settings {}
+    settings {
+      {
+        core: {
+          enabled: true,
+          allowed: true,
+          default_locale: "en"
+        }
+      }
+    }
+  end
+
+  factory :test_tenant, class: Tenant do
+    name "test-tenant"
+    host "example_org"
+    settings {
+      {
+        core: {
+          allowed: true,
+          enabled: true,
+          default_locale: "en",
+          organization: {
+            en: "Liege",
+            nl: "Luik",
+            fr: "Liege"
+          },
+        },
+      }
+    }
   end
 end

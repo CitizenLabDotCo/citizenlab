@@ -1,0 +1,379 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Schema for validating the settings on a tenant",
+  "type": "object",
+  "required": ["core"],
+  "properties":
+    {
+      "core": {
+        "allOf": [
+          {"$ref": "#/definitions/feature"},
+          {
+            "description":	"The core of the system. Container for general settings. Always enabled",
+            "required": [],
+            "properties": {
+              "organization_type": {
+                "type": "string",
+                "enum": ["city", "generic"]
+              },
+              "organization": { "$ref": "#/definitions/multiloc_string" },
+              "default_locale": {
+                "type": "string",
+                "enum": ["en", "nl", "fr"]
+              },
+              "timezone": {
+                "type": "string",
+                "default": "Europe/Brussels",
+                "enum": [<%= TZInfo::Timezone.all_identifiers.map{|tz| ['"',tz,'"'].join}.join(",") %>]
+              }
+            }
+          }
+        ]
+      },
+
+      "topics": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"Topics can be shown",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "map": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"Displaying a map where all ideas are plotted on",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "regions": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"Allow regions(neighbourhoods, cities ...) to be defined",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "pages": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"Allow custom pages to be made, and potentially be added to the navigation",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "facebook_login": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "google_login": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "twitter_login": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "comments": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "comments_votes": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "comments_mentions": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"@user (twitter style) mentions generate notifications",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "notifications": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "ideas_votes": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"Votes can be placed on an idea",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "ideas_images": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"ideas can contain image(s)",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "ideas_location": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"Allows location",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "ideas_attachments": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"Allow attachments",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "spaces": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "spaces_phases": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "spaces_pages": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "spaces_events": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "spaces_info": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "spaces_map": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "spaces_perimeter": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "multi_locales": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "email_digest_user": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "email_digest_admin": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      },
+
+      "excel_export": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":	"",
+            "properties": {
+
+            }
+          }
+        ]
+      }
+
+    },
+  "dependencies": {
+    "comments_votes": ["ideas_comments"],
+    "comments_mentions": ["notifications"],
+    "spaces_map": ["spaces"],
+    "spaces_info": ["spaces"],
+    "spaces_perimeter": ["spaces"],
+    "spaces_pages": ["spaces"],
+    "spaces_events": ["spaces"],
+    "spaces_phases": ["spaces"]
+  },
+  "definitions": {
+    "multiloc_string": {
+      "type": "object",
+      "properties": {
+        "en": { "type": "string"},
+        "nl": { "type": "string"},
+        "fr": { "type": "string"}
+      }
+    },
+    "feature": {
+      "type": "Object",
+      "required": ["allowed","enabled"],
+      "properties": {
+        "allowed": {
+          "type": "boolean"
+        },
+        "enabled": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
