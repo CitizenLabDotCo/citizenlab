@@ -34,14 +34,6 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/login',
-      name: 'loginPage',
-      getComponent(location, cb) {
-        import('components/LoginPage')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    }, {
       path: '/ideas',
       name: 'ideasPage',
       getComponent(location, cb) {
