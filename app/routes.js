@@ -34,14 +34,6 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/dev/foundation',
-      name: 'foundationDemoPage',
-      getComponent(location, cb) {
-        import('components/FoundationDemoPage')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    }, {
       path: '/login',
       name: 'loginPage',
       getComponent(location, cb) {
