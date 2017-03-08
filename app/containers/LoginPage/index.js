@@ -1,16 +1,18 @@
-/**
-*
-* LoginPage
-*
-*/
+/*
+ *
+ * LoginPage
+ *
+ */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 import styled from 'styled-components';
-
+import { connect } from 'react-redux';
+import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
+import { createStructuredSelector } from 'reselect';
+import makeSelectLoginPage from './selectors';
 import messages from './messages';
-
-import { Button } from '../Foundation';
+import { Button } from '../../components/Foundation';
 import socialAuth from './../../socialAuth';
 
 const LoginsDiv = styled.div`
@@ -18,10 +20,17 @@ const LoginsDiv = styled.div`
   border: 1px solid #888;
 `;
 
-class LoginPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class LoginPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
+        <Helmet
+          title="LoginPage"
+          meta={[
+            { name: 'description', content: 'Description of LoginPage' },
+          ]}
+        />
+
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
@@ -61,17 +70,27 @@ export const LogoutButton = (props) => (
     null
 );
 
-LoginPage.propTypes = {
-
-};
-
 LoginButton.propTypes = {
   label: React.PropTypes.string,
-  after: React.PropTypes.function,
+  after: React.PropTypes.any,
 };
 
 LogoutButton.propTypes = {
-  after: React.PropTypes.function,
+  after: React.PropTypes.any,
 };
 
-export default LoginPage;
+LoginPage.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = createStructuredSelector({
+  LoginPage: makeSelectLoginPage(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

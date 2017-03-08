@@ -37,25 +37,49 @@ export default function createRoutes(store) {
       path: '/dev/foundation',
       name: 'foundationDemoPage',
       getComponent(location, cb) {
-        import('components/FoundationDemoPage')
+        import('containers/FoundationDemoPage')
           .then(loadModule(cb))
           .catch(errorLoading);
       },
     }, {
       path: '/login',
       name: 'loginPage',
-      getComponent(location, cb) {
-        import('components/LoginPage')
-          .then(loadModule(cb))
-          .catch(errorLoading);
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/LoginPage/reducer'),
+          import('containers/LoginPage/sagas'),
+          import('containers/LoginPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('loginPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
       },
     }, {
       path: '/ideas',
       name: 'ideasPage',
-      getComponent(location, cb) {
-        import('components/IdeasPage')
-          .then(loadModule(cb))
-          .catch(errorLoading);
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/IdeasPage/reducer'),
+          import('containers/IdeasPage/sagas'),
+          import('containers/IdeasPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('ideasPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
       },
     }, {
       path: '*',

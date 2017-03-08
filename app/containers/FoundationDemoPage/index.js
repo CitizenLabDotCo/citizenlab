@@ -1,17 +1,18 @@
-/**
-*
-* FoundationDemoPage
-*
-*/
+/*
+ *
+ * FoundationDemoPage
+ *
+ */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
+
 import styled from 'styled-components';
 import {
-  Link,
-  Button,
   Colors,
   Sizes,
-} from '../Foundation';
+  Link,
+  Button,
+} from 'components/Foundation';
 
 const ExampleDiv = styled.div`
   margin-bottom: 20px;
@@ -56,5 +57,10 @@ class FoundationDemoPage extends React.PureComponent { // eslint-disable-line re
     );
   }
 }
+
+FoundationDemoPage.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
 
 export default FoundationDemoPage;

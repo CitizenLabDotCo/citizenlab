@@ -1,25 +1,28 @@
-/**
-*
-* IdeasPage
-*
-*/
+/*
+ *
+ * IdeasPage
+ *
+ */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import Helmet from 'react-helmet';
 import styled from 'styled-components';
-
 import { FormattedMessage } from 'react-intl';
+import { createStructuredSelector } from 'reselect';
 import { LocalForm, Control } from 'react-redux-form';
+import makeSelectIdeasPage from './selectors';
 import messages from './messages';
 import {
   Button,
   Label,
-} from '../Foundation';
+} from '../../components/Foundation';
 
 const IdeaListDiv = styled.div`
   margin-bottom: 40px;
 `;
 
-class IdeasPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class IdeasPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
     this.handleUpdate = this.handleUpdate.bind(this);
@@ -49,6 +52,13 @@ class IdeasPage extends React.PureComponent { // eslint-disable-line react/prefe
   render() {
     return (
       <div>
+        <Helmet
+          title="IdeasPage"
+          meta={[
+            { name: 'description', content: 'Description of IdeasPage' },
+          ]}
+        />
+
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
@@ -82,7 +92,17 @@ class IdeasPage extends React.PureComponent { // eslint-disable-line react/prefe
 }
 
 IdeasPage.propTypes = {
-
+  dispatch: PropTypes.func.isRequired,
 };
 
-export default IdeasPage;
+const mapStateToProps = createStructuredSelector({
+  IdeasPage: makeSelectIdeasPage(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(IdeasPage);
