@@ -16,7 +16,7 @@ const initialState = fromJS({
   error: false,
   processing: false,
   stored: false,
-  userData: {},
+  userData: { },
 });
 
 export default function profilePageReducer(state = initialState, action) {
@@ -27,6 +27,7 @@ export default function profilePageReducer(state = initialState, action) {
         .set('error', false);
     case PROFILE_LOAD_SUCCESS:
       return state
+        .set('userData', action.profile)
         .set('loading', false)
         .set('loaded', false);
     case PROFILE_LOAD_ERROR:

@@ -15,9 +15,10 @@ export function loadProfile() {
   };
 }
 
-export function profileLoaded() {
+export function profileLoaded(profile) {
   return {
     type: PROFILE_LOAD_SUCCESS,
+    ...{ profile },
   };
 }
 
@@ -28,7 +29,6 @@ export function profileLoadError() {
 }
 
 export function storeProfile(values) {
-  // console.log(values);
   return {
     type: STORE_PROFILE,
     userData: values,
