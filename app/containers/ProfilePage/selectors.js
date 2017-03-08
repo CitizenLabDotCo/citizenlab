@@ -1,25 +1,28 @@
 import { createSelector } from 'reselect';
 
 /**
- * Direct selector to the profilePage state domain
- */
-const selectProfilePageDomain = () => (state) => state.get('profilePage');
-
-/**
  * Other specific selectors
  */
 
+const selectProfile = (state) => state.get('profile');
 
-/**
- * Default selector used by ProfilePage
- */
-
-const makeSelectProfilePage = () => createSelector(
-  selectProfilePageDomain(),
-  (substate) => substate.toJS()
+const makeSelectLoading = () => createSelector(
+  selectProfile,
+  (globalState) => globalState.get('loading')
 );
 
-export default makeSelectProfilePage;
+const makeSelectError = () => createSelector(
+  selectProfile,
+  (globalState) => globalState.get('error')
+);
+
+const makeSelectUserData = () => createSelector(
+  selectProfile,
+  (globalState) => globalState.get('userData')
+);
+
 export {
-  selectProfilePageDomain,
+  makeSelectLoading,
+  makeSelectError,
+  makeSelectUserData,
 };
