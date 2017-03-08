@@ -25,6 +25,32 @@ RSpec.describe Tenant, type: :model do
       create(:tenant)
       expect(build(:tenant)).to be_invalid
     end
+
+    it "is valid when feature dependencies are met" do
+      t = build(:tenant)
+      t.settings['spaces'] = {
+        "allowed" => true,
+        "enabled" => true
+      }
+      t.settings['spaces_info'] = {
+        "allowed" => true,
+        "enabled" => true
+      }
+      expect(t).to be_valid
+    end
+
+    it "is invalid when feature dependencies are not met" do
+      t = build(:tenant)
+      t.settings['spaces'] = {
+        "allowed" => false,
+        "enabled" => false
+      }
+      t.settings['spaces_info'] = {
+        "allowed" => true,
+        "enabled" => true
+      }
+      expect{ t.valid? }.to change{ t.errors[:settings] }
+    end
   end
 
 end
