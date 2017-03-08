@@ -5,11 +5,12 @@
  */
 
 import {
-  DEFAULT_ACTION,
+  ADD_IDEA,
 } from './constants';
 
-export function defaultAction() {
+export function addIdea(payload) {
   return {
-    type: DEFAULT_ACTION,
+    type: ADD_IDEA,
+    payload,
   };
 }

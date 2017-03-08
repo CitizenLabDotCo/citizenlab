@@ -4,4 +4,4 @@
  *
  */
 
-export const DEFAULT_ACTION = 'app/IdeasPage/DEFAULT_ACTION';
+export const ADD_IDEA = 'app/IdeasPage/ADD_IDEA';

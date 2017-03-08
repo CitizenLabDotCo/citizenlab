@@ -11,8 +11,9 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { LocalForm, Control } from 'react-redux-form';
-import makeSelectIdeasPage from './selectors';
+import { makeSelectIdeas } from './selectors';
 import messages from './messages';
+import { addIdea } from './actions';
 import {
   Button,
   Label,
@@ -23,32 +24,6 @@ const IdeaListDiv = styled.div`
 `;
 
 export class IdeasPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  constructor() {
-    super();
-    this.handleUpdate = this.handleUpdate.bind(this);
-    this.state = {
-      ideas: [
-        { heading: 'Eureka', description: 'I like to...' },
-      ],
-    };
-  }
-
-  handleUpdate(form) {
-    console.log("[LOG]", 'handleUpdate'); // eslint-disable-line
-    console.log("[DEBUG] form =", form); // eslint-disable-line
-  }
-
-  handleChange(values) {
-    console.log("[LOG]", 'handleChange'); // eslint-disable-line
-    console.log("[DEBUG] values =", values); // eslint-disable-line
-  }
-
-  handleSubmit(values) {
-    console.log("[LOG]", 'handleSubmit'); // eslint-disable-line
-    console.log("[DEBUG] values =", values); // eslint-disable-line
-    this.setState({ ideas: this.state.ideas.concat([values]) });
-  }
-
   render() {
     return (
       <div>
@@ -63,20 +38,15 @@ export class IdeasPage extends React.PureComponent { // eslint-disable-line reac
           <FormattedMessage {...messages.header} />
         </h1>
 
-        <p>Total { this.state.ideas.length } ideas</p>
+        <p>Total { this.props.ideas.length } ideas</p>
 
         <IdeaListDiv>
-          {this.state.ideas.map((idea, index) => (
+          {this.props.ideas.map((idea, index) => (
             <Label className="success" key={index}>{ idea.heading }</Label>
           ))}
         </IdeaListDiv>
 
-        <LocalForm
-          model="idea"
-          onUpdate={(form) => this.handleUpdate(form)}
-          onChange={(values) => this.handleChange(values)}
-          onSubmit={(values) => this.handleSubmit(values)}
-        >
+        <LocalForm model="idea" onSubmit={this.props.onFormSubmit}>
           <label htmlFor=".clIdeaFormHeading">Heading
               <Control.text model=".heading" className="clIdeaFormHeading" required />
           </label>
@@ -92,16 +62,17 @@ export class IdeasPage extends React.PureComponent { // eslint-disable-line reac
 }
 
 IdeasPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  ideas: PropTypes.array.isRequired,
+  onFormSubmit: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  IdeasPage: makeSelectIdeasPage(),
+  ideas: makeSelectIdeas(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    onFormSubmit: (values) => { dispatch(addIdea(values)); },
   };
 }
 

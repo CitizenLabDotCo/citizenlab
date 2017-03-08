@@ -6,15 +6,19 @@
 
 import { fromJS } from 'immutable';
 import {
-  DEFAULT_ACTION,
+  ADD_IDEA,
 } from './constants';
 
-const initialState = fromJS({});
+const initialState = fromJS({
+  ideas: [
+    { heading: 'Eureka', description: 'I like to...' },
+  ],
+});
 
 function ideasPageReducer(state = initialState, action) {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state;
+    case ADD_IDEA:
+      return state.update('ideas', (arr) => arr.push(action.payload));
     default:
       return state;
   }

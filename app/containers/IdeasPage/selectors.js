@@ -19,7 +19,13 @@ const makeSelectIdeasPage = () => createSelector(
   (substate) => substate.toJS()
 );
 
+const makeSelectIdeas = () => createSelector(
+  selectIdeasPageDomain(),
+  (substate) => substate.get('ideas').toJS()
+);
+
 export default makeSelectIdeasPage;
 export {
+  makeSelectIdeas,
   selectIdeasPageDomain,
 };

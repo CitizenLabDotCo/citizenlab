@@ -1,18 +1,19 @@
 
 import {
-  defaultAction,
+  addIdea,
 } from '../actions';
 import {
-  DEFAULT_ACTION,
+  ADD_IDEA,
 } from '../constants';
 
 describe('IdeasPage actions', () => {
-  describe('Default Action', () => {
-    it('has a type of DEFAULT_ACTION', () => {
+  describe('addIdea Action', () => {
+    it('has a type of ADD_IDEA', () => {
       const expected = {
-        type: DEFAULT_ACTION,
+        type: ADD_IDEA,
+        payload: 'some_obj',
       };
-      expect(defaultAction()).toEqual(expected);
+      expect(addIdea('some_obj')).toEqual(expected);
     });
   });
 });
