@@ -8,10 +8,11 @@ import { LOAD_PROFILE } from './constants';
 // Individual exports for testing
 export function* getProfile() {
   const requestURL = 'http://localhost:3030/profile';
+
   try {
     const profile = yield call(request, requestURL);
-    // console.log(profile);
-    yield put(profileLoaded(profile), ...{ profile });
+
+    yield put(profileLoaded(profile));
   } catch (err) {
     // console.log(err);
     yield put(profileLoadError(err));
