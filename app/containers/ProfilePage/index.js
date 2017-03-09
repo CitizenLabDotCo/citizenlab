@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { makeSelectLoading, makeSelectError, makeSelectUserData } from './selectors';
 import messages from './messages';
 import { loadProfile, storeProfile } from './actions';
-import ProfileForm from './profile-form';
+import ProfileFormReduxState from './profile-form';
 
 const ProfileDiv = styled.div`
   padding: 20px;
@@ -32,9 +32,9 @@ export class ProfilePage extends React.PureComponent { // eslint-disable-line re
         <FormattedMessage
           {...messages.header}
         />
-        <ProfileForm
+        <ProfileFormReduxState
           onSubmitForm={this.props.onSubmitForm}
-          initialValues={this.props.userData.user}
+          initialValues={this.props.userData}
         />
       </ProfileDiv>
     );
@@ -46,7 +46,7 @@ ProfilePage.propTypes = {
   initData: PropTypes.func.isRequired,
   userData: PropTypes.object.isRequired,
 };
-
+console.log(makeSelectUserData());
 const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
   error: makeSelectError(),
