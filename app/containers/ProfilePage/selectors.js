@@ -8,17 +8,17 @@ const selectProfile = (state) => state.get('profile');
 
 const makeSelectLoading = () => createSelector(
   selectProfile,
-  (globalState) => globalState.get('loading')
+  (profileState) => profileState.get('loading')
 );
 
 const makeSelectError = () => createSelector(
   selectProfile,
-  (globalState) => globalState.get('error')
+  (profileState) => profileState.get('error')
 );
 
 const makeSelectUserData = () => createSelector(
   selectProfile,
-  (globalState) => globalState.get('userData')
+  (profileState) => profileState.get('userData')
 );
 
 export {
