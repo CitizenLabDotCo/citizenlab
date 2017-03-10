@@ -18,7 +18,11 @@ const makeSelectError = () => createSelector(
 
 const makeSelectUserData = () => createSelector(
   selectProfile,
-  (profileState) => profileState.get('userData')
+  (profileState) => (
+    profileState
+      ? profileState.getIn(['userData', 'user'])
+      : null
+  )
 );
 
 export {

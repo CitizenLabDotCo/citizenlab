@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form/immutable';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-
-import { profileLoaded } from './actions';
 import { makeSelectUserData } from './selectors';
 
 const ProfileForm = (props) => (
@@ -23,23 +21,20 @@ const ProfileForm = (props) => (
   </form>
 );
 
+ProfileForm.propTypes = {
+  onSubmitForm: PropTypes.func.isRequired,
+};
+
 const ProfileFormRedux = reduxForm({
   // Per Step# 2: http://redux-form.com/6.2.0/docs/GettingStarted.md/
   // A unique identifier for this form
   form: 'profileForm',
 })(ProfileForm);
 
-// connect reducers for model updating based on state
-// const ProfileFormReduxState = connect(
-//   () => ({
-//     initialValues: makeSelectUserData(), // pull initial values
-//   }),
-//   { PROFILE_LOAD_SUCCESS: profileLoaded } // bind action creators
-// )(ProfileFormRedux);
 
 const mapStateToProps = createStructuredSelector({
   initialValues: makeSelectUserData(),
 });
 
-
+// connect reducers for model updating based on state
 export default connect(mapStateToProps)(ProfileFormRedux);
