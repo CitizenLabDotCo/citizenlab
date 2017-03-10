@@ -8,6 +8,7 @@ import { fromJS } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
+import { LOADED_CURRENT_TENANT } from 'containers/App/constants';
 
 /*
  * routeReducer
@@ -37,6 +38,20 @@ function routeReducer(state = routeInitialState, action) {
   }
 }
 
+const persistedDataInitialState = fromJS({
+  currentTenant: null,
+});
+
+function persistedDataReducer(state = persistedDataInitialState, action) {
+  switch (action.type) {
+    case LOADED_CURRENT_TENANT:
+      console.log("[DEBUG] action =", action); // eslint-disable-line
+      return state.set('currentTenant', action.payload);
+    default:
+      return state;
+  }
+}
+
 /**
  * Creates the main reducer with the asynchronously loaded ones
  */
@@ -44,6 +59,7 @@ export default function createReducer(asyncReducers) {
   return combineReducers({
     route: routeReducer,
     language: languageProviderReducer,
+    persistedData: persistedDataReducer,
     ...asyncReducers,
   });
 }
