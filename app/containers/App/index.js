@@ -12,12 +12,23 @@
  */
 
 import React from 'react';
+import { connect } from 'react-redux';
+import { loadCurrentTenant } from './actions';
 
-export default class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-
+export class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
     children: React.PropTypes.node,
+    dispatch: React.PropTypes.func,
   };
+
+  componentDidMount() {
+    // TODO: remove hardcoded address
+    fetch('http://localhost:4000/api/v1/tenants/current')
+      .then((res) => res.json())
+      .then((json) => {
+        this.props.dispatch(loadCurrentTenant(json.data.attributes));
+      });
+  }
 
   render() {
     return (
@@ -27,3 +38,5 @@ export default class App extends React.PureComponent { // eslint-disable-line re
     );
   }
 }
+
+export default connect()(App);

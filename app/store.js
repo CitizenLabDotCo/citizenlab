@@ -6,7 +6,9 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
+import _ from 'lodash';
 import createReducer from './reducers';
+import { saveState } from './persistance';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -53,6 +55,14 @@ export default function configureStore(initialState = {}, history) {
         store.replaceReducer(nextReducers);
       });
     });
+  }
+
+  if (process.env.NODE_ENV !== 'test') {
+    store.subscribe(_.throttle(() => {
+      saveState({
+        persistedData: store.getState().persistedData,
+      });
+    }, 1000));
   }
 
   return store;

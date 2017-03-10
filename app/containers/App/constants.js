@@ -10,3 +10,4 @@
  */
 
 export const DEFAULT_LOCALE = 'en';
+export const LOADED_CURRENT_TENANT = 'app/App/LOADED_CURRENT_TENANT';

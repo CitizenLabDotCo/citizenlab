@@ -10,17 +10,31 @@
  */
 
 import React from 'react';
+import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  static propTypes = {
+    currentTenant: React.PropTypes.any,
+  };
+
   render() {
+    const currentTenant = this.props.currentTenant;
     return (
       <div className="cl-home-page">
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
+
+        <p>CurrentTenant: { currentTenant ? currentTenant.name : 'null' }</p>
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  currentTenant: state.toJS().persistedData.currentTenant,
+});
+
+export default connect(mapStateToProps)(HomePage);
