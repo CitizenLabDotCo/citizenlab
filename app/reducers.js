@@ -45,7 +45,6 @@ const persistedDataInitialState = fromJS({
 function persistedDataReducer(state = persistedDataInitialState, action) {
   switch (action.type) {
     case LOADED_CURRENT_TENANT:
-      console.log("[DEBUG] action =", action); // eslint-disable-line
       return state.set('currentTenant', action.payload);
     default:
       return state;

@@ -57,11 +57,13 @@ export default function configureStore(initialState = {}, history) {
     });
   }
 
-  store.subscribe(_.throttle(() => {
-    saveState({
-      persistedData: store.getState().persistedData,
-    });
-  }, 1000));
+  if (process.env.NODE_ENV !== 'test') {
+    store.subscribe(_.throttle(() => {
+      saveState({
+        persistedData: store.getState().persistedData,
+      });
+    }, 1000));
+  }
 
   return store;
 }
