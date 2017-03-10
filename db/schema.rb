@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(version: 20170302155043) do
   create_table "tenants", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "name"
     t.string   "host"
-    t.jsonb    "features",   default: []
     t.jsonb    "settings",   default: {}
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false

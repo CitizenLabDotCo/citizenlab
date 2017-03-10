@@ -5,7 +5,6 @@ FactoryGirl.define do
     name Faker::Address.city
     # host Faker::Internet.domain_name
     host "localhost"
-    features []
     settings {
       {
         core: {
