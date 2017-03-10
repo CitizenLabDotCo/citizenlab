@@ -26,6 +26,7 @@ export default function profilePageReducer(state = initialState, action) {
         .set('loading', true)
         .set('error', false);
     case PROFILE_LOAD_SUCCESS:
+      // debugger
       return state
         .set('userData', action.profile)
         .set('loading', false)

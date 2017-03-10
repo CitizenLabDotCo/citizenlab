@@ -10,16 +10,15 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 
-import { makeSelectLoading, makeSelectError, makeSelectUserData } from './selectors';
+import { makeSelectLoading, makeSelectError } from './selectors';
 import messages from './messages';
-import { loadProfile, storeProfile, profileLoaded } from './actions';
+import { storeProfile, loadProfile } from './actions';
 import ProfileFormReduxState from './profile-form';
 
 const ProfileDiv = styled.div`
   padding: 20px;
   border: 1px solid #888;
 `;
-
 
 export class ProfilePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
@@ -34,7 +33,7 @@ export class ProfilePage extends React.PureComponent { // eslint-disable-line re
         />
         <ProfileFormReduxState
           onSubmitForm={this.props.onSubmitForm}
-          enableReinitialize={true}
+          enableReinitialize
         />
       </ProfileDiv>
     );
@@ -51,13 +50,13 @@ const mapStateToProps = createStructuredSelector({
   error: makeSelectError(),
 });
 
-function mapDispatchToProps(dispatch) {
+export function mapDispatchToProps(dispatch) {
   return {
     onSubmitForm: (values) => {
       dispatch(storeProfile(values));
     },
     initData() {
-      dispatch(profileLoaded({firstName: "Joske", lastName: "Vermeulen"}));
+      dispatch(loadProfile());
     },
   };
 }
