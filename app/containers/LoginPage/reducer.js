@@ -6,14 +6,15 @@
 
 import { fromJS } from 'immutable';
 import {
-  DEFAULT_ACTION,
+  USER_LOGIN,
 } from './constants';
 
 const initialState = fromJS({});
 
 function loginPageReducer(state = initialState, action) {
   switch (action.type) {
-    case DEFAULT_ACTION:
+    case USER_LOGIN:
+      console.log("[DEBUG] action =", action); // eslint-disable-line
       return state;
     default:
       return state;

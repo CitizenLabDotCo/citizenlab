@@ -14,9 +14,10 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import makeSelectLoginPage from './selectors';
 import messages from './messages';
-import { Button } from '../../components/Foundation';
 import SocialLoginBox from './SocialLoginBox';
 import LoggedInAsBox from './LoggedInAsBox';
+import LoginFormBox from './LoginFormBox';
+import { userLogin } from './actions';
 
 export class LoginPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -35,6 +36,8 @@ export class LoginPage extends React.PureComponent { // eslint-disable-line reac
 
         <LoggedInAsBox />
 
+        <LoginFormBox onSubmit={this.props.onLoginFormSubmit} />
+
         <SocialLoginBox onChange={() => this.forceUpdate()} />
       </div>
     );
@@ -50,7 +53,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    onLoginFormSubmit: (values) => dispatch(userLogin(values)),
   };
 }
 
