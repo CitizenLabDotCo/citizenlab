@@ -34,6 +34,9 @@ group :development, :test do
   gem 'rspec_api_documentation'
   gem 'rspec-rails'
   gem 'database_cleaner'
+  gem 'ci_reporter_rspec'
+  gem 'simplecov'
+  gem 'simplecov-rcov'
 end
 
 group :development do
