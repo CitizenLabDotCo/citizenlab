@@ -24,7 +24,7 @@ pipeline {
                 [metric: "CODE_COVERAGE", healthy: 75, unhealthy: 50, unstable: 30]
             ]
         ])
-        sh 'cp -r doc/api /var/www/apidocs'
+        sh 'mv doc/api/* /var/www/apidocs/.'
       }
     }
   }
