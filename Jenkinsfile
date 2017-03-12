@@ -8,15 +8,15 @@ pipeline {
         sh 'docker-compose up -d postgres redis'
         sleep 10
         echo 'Setting up database'
-        sh 'docker-compose run --rm web bundle exec rake db:create'
-        sh 'docker-compose run --rm web bundle exec rake db:migrate'
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm web bundle exec rake db:create'
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm web bundle exec rake db:migrate'
       }
     }
     stage('Test') {
       steps {
         echo 'testing rspec'
-        sh 'docker-compose run --rm web bundle exec rake spec'
-        sh 'docker-compose run --rm web bundle exec rake docs:generate'
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm web bundle exec rake spec'
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm web bundle exec rake docs:generate'
         step([
             $class: 'RcovPublisher',
             reportDir: "coverage/rcov",
@@ -24,7 +24,7 @@ pipeline {
                 [metric: "CODE_COVERAGE", healthy: 75, unhealthy: 50, unstable: 30]
             ]
         ])
-        sh 'mv doc/api/* /var/www/apidocs/.'
+        sh 'cp -r doc/api /var/www/apidocs'
       }
     }
   }
