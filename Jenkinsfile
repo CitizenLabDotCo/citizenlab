@@ -16,7 +16,7 @@ pipeline {
       steps {
         echo 'testing rspec'
         sh 'docker-compose run --rm web bundle exec rake spec'
-        sh 'docker-compose run --rm web bundle rake docs:generate'
+        sh 'docker-compose run --rm web bundle exec rake docs:generate'
         step([
             $class: 'RcovPublisher',
             reportDir: "coverage/rcov",
