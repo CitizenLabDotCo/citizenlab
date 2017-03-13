@@ -22,11 +22,21 @@ class Api::V1::UsersController < ::ApplicationController
     end
   end
 
+  def update
+    if @user.update(user_params)
+      send_success(@user)
+    else
+      send_error(@user.errors, :unprocessable_entity)
+    end
+  end
+
   private
 
   def set_user
     @user = User.find params[:id]
     authorize @user
+  rescue ActiveRecord::RecordNotFound
+    send_error(nil, 404)
   end
 
   def user_params
