@@ -1,1 +1,8 @@
-[]
+{
+  "app.components.HomePage.header": "HomePage",
+  "app.components.IdeasPage.header": "IdeasPage",
+  "app.components.Input.label": "Label",
+  "app.components.Label.header": "This is the Label component !",
+  "app.components.LoginPage.header": "LoginPage",
+  "app.components.NotFoundPage.header": "This is NotFoundPage component!"
+}

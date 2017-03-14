@@ -233,7 +233,7 @@
     "react-helmet": "3.2.2",
     "react-intl": "2.1.5",
     "react-redux": "4.4.6",
-    "react-redux-form": "^1.8.0",
+    "react-redux-form": "^npm run extract-intl1.8.0",
     "react-router": "3.0.0",
     "react-router-redux": "4.0.6",
     "react-router-scroll": "0.4.1",

@@ -11,22 +11,36 @@ const makeSelectLoading = () => createSelector(
   (profileState) => profileState.get('loading')
 );
 
-const makeSelectError = () => createSelector(
+const makeSelectLoadError = () => createSelector(
   selectProfile,
-  (profileState) => profileState.get('error')
+  (profileState) => profileState.get('loadError')
+);
+
+const makeSelectStoreError = () => createSelector(
+  selectProfile,
+  (profileState) => profileState.get('storeError')
 );
 
 const makeSelectUserData = () => createSelector(
   selectProfile,
-  (profileState) => (
-    profileState
-      ? profileState.getIn(['userData', 'user'])
-      : null
-  )
+  (profileState) => profileState.getIn(['userData', 'user'])
+);
+
+const makeSelectProcessing = () => createSelector(
+  selectProfile,
+  (profileState) => profileState.get('processing')
+);
+
+const makeSelectStored = () => createSelector(
+  selectProfile,
+  (profileState) => profileState.get('stored')
 );
 
 export {
   makeSelectLoading,
-  makeSelectError,
+  makeSelectLoadError,
+  makeSelectStoreError,
   makeSelectUserData,
+  makeSelectProcessing,
+  makeSelectStored,
 };

@@ -1,40 +1,88 @@
 import React, { PropTypes } from 'react';
-import { Field, reduxForm } from 'redux-form/immutable';
+import { LocalForm } from 'react-redux-form';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import styled from 'styled-components';
 
 import { makeSelectUserData } from './selectors';
+import { storeProfile } from './actions';
+import Label from '../../components/Label/index';
+import Input from '../../components/Input/index';
+import messages from './messages';
 
-const ProfileForm = (props) => (
-  <form onSubmit={(form) => props.onSubmitForm(form)}>
-    <div>
-      <label htmlFor="firstName">First Name</label>
-      <Field name="firstName" component="input" type="text" />
-    </div>
+class ProfileForm extends React.PureComponent {
+  constructor() {
+    super();
 
-    <div>
-      <label htmlFor="lastName">Last Name</label>
-      <Field name="lastName" component="input" type="text" />
-    </div>
+    this.state = {
+      profile: {},
+    };
+  }
 
-    <button type="submit">Submit</button>
-  </form>
-);
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      profile: nextProps.user,
+    });
+  }
 
-ProfileForm.propTypes = {
-  onSubmitForm: PropTypes.func.isRequired,
+  render() { // SPLIT IN 2 l & define a component which uses both (themselves are styled)
+    const ProfileLabel = styled(Label)`
+          // TODO: styles here
+    `;
+
+    const ProfileInput = styled(Input)`
+          // TODO: styles here
+    `;
+
+    const LabelInputPair = (props) => (
+      <div>
+        <ProfileLabel
+          id={props.id}
+          label={this.context.intl.formatMessage(messages[props.id])}
+        />
+        <ProfileInput id={props.id} />
+      </div>
+    );
+
+    return (
+      <LocalForm
+        model="profile"
+        initialState={this.props.user}
+        onSubmit={(values) => this.props.onFormSubmit(values)}
+      >
+        <LabelInputPair id="firstName" />
+        <LabelInputPair id="lastName" />
+        <LabelInputPair id="email" />
+        <LabelInputPair id="gender" />
+        <LabelInputPair id="age" />
+
+        <button type="submit">Submit</button>
+      </LocalForm>
+    );
+  }
+}
+
+ProfileForm.contextTypes = {
+  intl: PropTypes.object.isRequired,
 };
 
-const ProfileFormRedux = reduxForm({
-  // Per Step# 2: http://redux-form.com/6.2.0/docs/GettingStarted.md/
-  // A unique identifier for this form
-  form: 'profileForm',
-})(ProfileForm);
-
+ProfileForm.propTypes = {
+  user: PropTypes.object,
+  onFormSubmit: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = createStructuredSelector({
-  initialValues: makeSelectUserData(),
+  userData: makeSelectUserData(),
 });
 
+export function mapDispatchToProps(dispatch) {
+  return {
+    onFormSubmit: (values) => {
+      dispatch(storeProfile(values));
+    },
+
+  };
+}
+
 // connect reducers for model updating based on state
-export default connect(mapStateToProps)(ProfileFormRedux);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);
