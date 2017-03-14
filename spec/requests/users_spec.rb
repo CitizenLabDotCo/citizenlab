@@ -5,6 +5,44 @@ RSpec.describe "Users API", type: :request do
     host! "example.org"
   end
 
+  def endpoint_url
+    "/api/v1/users"
+  end
+
+  def endpoint_url_with_id(id)
+    "/api/v1/users/#{id}"
+  end
+
+  context "post" do
+    it "returns 200 response if successful"  do
+      user_params = {
+        name: 'Test Guy',
+        email: 'testguy@gmail.com',
+        password: 'pass1234',
+      }
+      post endpoint_url, params: { user: user_params }
+
+      assert_status(201)
+      result = json_parse(response.body)
+      expect(result[:data][:id]).to_not be_blank
+    end
+
+    it "returns 200 response if successful with avatar image"  do
+      user_params = {
+        name: 'Test Guy',
+        email: 'testguy@gmail.com',
+        password: 'pass1234',
+        avatar: get_avatar_image,
+      }
+      post endpoint_url, params: { user: user_params }
+
+      assert_status(201)
+      result = json_parse(response.body)
+      expect(result[:data][:id]).to_not be_blank
+      expect(result[:data][:attributes][:avatar]).to_not be_blank
+    end
+  end
+
   context "patch" do
     it "returns 200 response if successful"  do
       user = create(:user, name: "Test Guy")
@@ -32,11 +70,8 @@ RSpec.describe "Users API", type: :request do
     end
   end
 
-  def endpoint_url
-    "/api/v1/users"
-  end
-
-  def endpoint_url_with_id(id)
-    "/api/v1/users/#{id}"
+  def get_avatar_image
+    filename = Rails.root.join('spec', 'fixtures', 'robot.jpg')
+    Rack::Test::UploadedFile.new(filename, "image/jpg", true)
   end
 end
