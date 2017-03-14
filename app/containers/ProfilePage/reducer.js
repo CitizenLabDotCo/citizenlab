@@ -10,36 +10,34 @@ import {
   STORE_PROFILE, PROFILE_STORE_SUCCESS, PROFILE_STORE_ERROR,
 } from './constants';
 
-const initialState = fromJS({
+const profilePageInitialState = fromJS({
   loading: false,
-  loaded: false,
-  error: false,
+  loadError: false,
+  storeError: false,
   processing: false,
   stored: false,
   userData: { },
 });
 
-export default function profilePageReducer(state = initialState, action) {
+export default function profilePageReducer(state = profilePageInitialState, action) {
   switch (action.type) {
     case LOAD_PROFILE:
       return state
         .set('loading', true)
-        .set('error', false);
+        .set('loadError', false);
     case PROFILE_LOAD_SUCCESS:
-      // debugger
       return state
-        .set('userData', action.profile)
-        .set('loading', false)
-        .set('loaded', false);
+        .setIn(['userData', 'user'], action.profile)
+        .set('loading', false);
     case PROFILE_LOAD_ERROR:
       return state
-        .set('error', action.error)
+        .set('loadError', true)
         .set('loading', false);
     case STORE_PROFILE:
       return state
         .set('stored', false)
         .set('processing', true)
-        .set('error', false);
+        .set('storeError', false);
     case PROFILE_STORE_SUCCESS:
       return state
         .set('processing', false)
@@ -47,7 +45,7 @@ export default function profilePageReducer(state = initialState, action) {
     case PROFILE_STORE_ERROR:
       return state
         .set('processing', false)
-        .set('error', action.error);
+        .set('storeError', true);
     default:
       return state;
   }
