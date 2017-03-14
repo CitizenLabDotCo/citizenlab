@@ -1,6 +1,10 @@
 module ApiHelper
   def json_parse(body)
-    JSON.parse(body, symbolize_name: true)
+    JSON.parse(body, symbolize_names: true)
+  end
+
+  def json_response
+    json_parse(response_body)
   end
 
   def assert_status(code)
