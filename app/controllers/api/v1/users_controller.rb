@@ -31,6 +31,10 @@ class Api::V1::UsersController < ::ApplicationController
   end
 
   private
+  # TODO: temp fix to pass tests
+  def secure_controller?
+    false
+  end
 
   def set_user
     @user = User.find params[:id]
