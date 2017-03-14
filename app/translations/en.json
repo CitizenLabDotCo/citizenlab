@@ -1,1 +1,6 @@
-[]
+{
+  "app.components.HomePage.header": "HomePage",
+  "app.components.NotFoundPage.header": "Ow, it seems you got lost?",
+  "app.containers.IdeasPage.header": "IdeasPage",
+  "app.containers.LoginPage.header": "LoginPage"
+}

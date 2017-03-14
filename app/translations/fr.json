@@ -1,0 +1,6 @@
+{
+  "app.components.HomePage.header": "",
+  "app.components.NotFoundPage.header": "",
+  "app.containers.IdeasPage.header": "",
+  "app.containers.LoginPage.header": ""
+}
