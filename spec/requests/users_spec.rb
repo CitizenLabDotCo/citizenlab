@@ -68,6 +68,22 @@ RSpec.describe "Users API", type: :request do
       patch endpoint_url_with_id(123), params: { user: {} }
       assert_status(404)
     end
+
+    context "when changing password" do
+      it "returns 200 response if successful"  do
+        old_password = "pass1234"
+        user = create(:user, password: old_password)
+
+        new_password = "newpass1234"
+        user_params = { password: new_password }
+        patch endpoint_url_with_id(user.id), params: { user: user_params }
+
+        assert_status(200)
+        user.reload
+        expect(user.authenticate(old_password)).to eq false
+        expect(user.authenticate(new_password)).to_not eq false
+      end
+    end
   end
 
   def get_avatar_image
