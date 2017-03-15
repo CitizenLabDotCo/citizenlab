@@ -102,6 +102,26 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/submitIdea',
+      name: 'submitIdeaPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/SubmitIdeaPage/reducer'),
+          import('containers/SubmitIdeaPage/sagas'),
+          import('containers/SubmitIdeaPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('submitIdeaPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

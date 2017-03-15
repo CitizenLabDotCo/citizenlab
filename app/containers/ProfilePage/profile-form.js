@@ -3,11 +3,12 @@ import { LocalForm } from 'react-redux-form';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
+import { Label } from 'components/Foundation';
+import Input from 'components/Input';
+import { FormattedMessage } from 'react-intl';
 
 import { makeSelectUserData } from './selectors';
 import { storeProfile } from './actions';
-import Label from '../../components/Label/index';
-import Input from '../../components/Input/index';
 import messages from './messages';
 
 class ProfileForm extends React.PureComponent {
@@ -26,20 +27,15 @@ class ProfileForm extends React.PureComponent {
   }
 
   render() { // SPLIT IN 2 l & define a component which uses both (themselves are styled)
-    const ProfileLabel = styled(Label)`
-          // TODO: styles here
-    `;
-
     const ProfileInput = styled(Input)`
           // TODO: styles here
     `;
 
     const LabelInputPair = (props) => (
       <div>
-        <ProfileLabel
-          id={props.id}
-          label={this.context.intl.formatMessage(messages[props.id])}
-        />
+        <Label htmlFor={props.id}>
+          <FormattedMessage {...messages[props.id]} />
+        </Label>
         <ProfileInput id={props.id} />
       </div>
     );
@@ -61,10 +57,6 @@ class ProfileForm extends React.PureComponent {
     );
   }
 }
-
-ProfileForm.contextTypes = {
-  intl: PropTypes.object.isRequired,
-};
 
 ProfileForm.propTypes = {
   user: PropTypes.object,
