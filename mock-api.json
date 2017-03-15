@@ -1,0 +1,10 @@
+{
+  "profile-get": {
+    "user": {
+      "firstName": "Manuel",
+      "lastName": "Gajo",
+      "email": "fake@email.me",
+      "gender": "Male"
+    }
+  }
+}
