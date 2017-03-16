@@ -6,6 +6,7 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
@@ -38,6 +39,13 @@ export class ProfilePage extends React.PureComponent { // eslint-disable-line re
 
     return (
       <ProfileDiv>
+        <Helmet
+          title="ProfilePage"
+          meta={[
+            { name: 'description', content: 'ProfilePage' },
+          ]}
+        />
+
         <h1><FormattedMessage {...messages.header} /></h1>
 
         {loading && <FormattedMessage {...messages.loading} />}
