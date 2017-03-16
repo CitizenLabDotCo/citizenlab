@@ -38,5 +38,7 @@ module Cl2Back
     end
 
     config.active_job.queue_adapter = :sidekiq
+
+    config.autoload_paths << "#{Rails.root}/lib"
   end
 end
