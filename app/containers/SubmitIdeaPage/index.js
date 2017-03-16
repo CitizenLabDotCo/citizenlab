@@ -13,9 +13,27 @@ import { Row, Column, Button, Label } from 'components/Foundation';
 import styled from 'styled-components';
 import Breadcrumbs from 'components/Breadcrumbs';
 
-import makeSelectSubmitIdeaPage from './selectors';
+import {
+  makeSelectStored,
+  makeSelectContent,
+  makeSelectLoadError,
+  makeSelectLoading,
+  makeSelectStoreError,
+} from './selectors';
+import { storeDraft, loadDraft, saveDraft } from './actions';
+import * as Immutable from '../../../node_modules/immutable/dist/immutable';
 
 export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  constructor() {
+    super();
+
+    this.saveDraft = this.saveDraft.bind(this);
+  }
+
+  saveDraft() {
+    this.props.saveDraftClick(this.props.content);
+  }
+
   render() {
     const StyledLabel = styled(Label)`
       height: 16px;
@@ -49,7 +67,9 @@ export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line
         <Row>
           <Column large={7} offsetOnLarge={1}>
             <Row>
-              <SubmitIdeaForm />
+              <SubmitIdeaForm
+                {...this.props}
+              />
             </Row>
             <Row>
               <StyledLabel>Add image(s)</StyledLabel>
@@ -60,7 +80,7 @@ export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line
             <Row>
               {/* TODO: style buttons */}
               <Column large={5} offsetOnLarge={1}>
-                <Button>Save as draft</Button>
+                <Button onClick={this.saveDraft}>Save as draft</Button>
               </Column>
               <Column large={5} offsetOnLarge={1}>
                 <Button>Publish</Button>
@@ -82,13 +102,33 @@ export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line
 
 SubmitIdeaPage.propTypes = {
   className: PropTypes.string,
+  saveDraftClick: PropTypes.func.isRequired,
+  content: PropTypes.instanceOf(Immutable.Map),
 };
 
 const mapStateToProps = createStructuredSelector({
-  SubmitIdeaPage: makeSelectSubmitIdeaPage(),
+  loading: makeSelectLoading(),
+  loadError: makeSelectLoadError(),
+  storeError: makeSelectStoreError(),
+  content: makeSelectContent(),
+  stored: makeSelectStored(),
 });
 
-export default styled(connect(mapStateToProps)(SubmitIdeaPage))`
+export function mapDispatchToProps(dispatch) {
+  return {
+    storeDraftCopy(content) {
+      dispatch(saveDraft(content));
+    },
+    saveDraftClick(content) {
+      dispatch(storeDraft(content));
+    },
+    loadExistingDraft() {
+      dispatch(loadDraft());
+    },
+  };
+}
+
+export default styled(connect(mapStateToProps, mapDispatchToProps)(SubmitIdeaPage))`
   backgroundColor: '#eeeeee';
   minHeight: '850px';
   width: '100%';

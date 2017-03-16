@@ -6,5 +6,8 @@
       "email": "fake@email.me",
       "gender": "Male"
     }
+  },
+  "draft-get": {
+    "content": "test"
   }
 }

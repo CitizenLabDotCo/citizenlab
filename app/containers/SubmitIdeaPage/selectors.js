@@ -1,25 +1,36 @@
 import { createSelector } from 'reselect';
 
-/**
- * Direct selector to the submitIdeaPage state domain
- */
-const selectSubmitIdeaPageDomain = () => (state) => state.get('submitIdeaPage');
+const selectSubmitIdea = (state) => state.get('submitIdeaPage');
 
-/**
- * Other specific selectors
- */
-
-
-/**
- * Default selector used by SubmitIdeaPage
- */
-
-const makeSelectSubmitIdeaPage = () => createSelector(
-  selectSubmitIdeaPageDomain(),
-  (substate) => substate.toJS()
+const makeSelectLoading = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'loading'])
 );
 
-export default makeSelectSubmitIdeaPage;
+const makeSelectLoadError = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'loadError'])
+);
+
+const makeSelectStoreError = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'storeError'])
+);
+
+const makeSelectContent = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'content'])
+);
+
+const makeSelectStored = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'stored'])
+);
+
 export {
-  selectSubmitIdeaPageDomain,
+  makeSelectLoading,
+  makeSelectLoadError,
+  makeSelectStoreError,
+  makeSelectContent,
+  makeSelectStored,
 };
