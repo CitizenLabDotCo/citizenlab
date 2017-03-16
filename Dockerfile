@@ -90,7 +90,7 @@ COPY . .
 # app instances, you may want to remove this step and deal with asset
 # compilation at a different stage of your deployment.
 
-VOLUME ["$INSTALL_PATH/public"]
+# VOLUME ["$INSTALL_PATH/public"]
 # In production you will very likely reverse proxy Rails with nginx.
 # This sets up a volume so that nginx can read in the assets from
 # the Rails Docker image without having to copy them to the Docker host.
