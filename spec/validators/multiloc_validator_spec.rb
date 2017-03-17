@@ -1,0 +1,46 @@
+require "rails_helper"
+
+class Validatable
+  include ActiveModel::Validations
+  validates :multiloc_field, multiloc: {presence: true}
+  attr_accessor  :multiloc_field
+end
+
+class Validatable2
+  include ActiveModel::Validations
+  validates :multiloc_field, multiloc: true
+  attr_accessor  :multiloc_field
+end
+
+describe MultilocValidator do
+  let(:presence_subject) { Validatable.new }
+  let(:nonpresence_subject) { Validatable2.new }
+
+  context 'with one locale value' do
+    it 'is valid' do
+      presence_subject.multiloc_field = {"en" => 'somevalue'}
+      expect(presence_subject).to be_valid
+    end
+  end
+
+  context 'without a locale value' do
+    it 'is invalid when presence: true option is set' do
+      presence_subject.multiloc_field = {}
+      expect(presence_subject).to be_invalid
+    end
+
+    it 'is valid when presence: true option is set' do
+      nonpresence_subject.multiloc_field = {}
+      expect(nonpresence_subject).to be_valid
+    end
+  end
+
+  context 'with unsupprted languages' do
+    it 'is invalid' do
+      presence_subject.multiloc_field = {"smalltalk" => "Hey how are you?"}
+      expect(presence_subject).to be_invalid
+    end
+  end
+
+
+end

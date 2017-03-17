@@ -53,4 +53,27 @@ RSpec.describe Tenant, type: :model do
     end
   end
 
+  describe "Getting the current tenant" do
+    it "succeeds with the correct tenant" do
+      tenant = Tenant.find_by(host: 'example_org')
+      expect(Tenant.current).to match(tenant)
+    end
+  end
+
+  describe "Getting the settings of the current tenant" do
+    it "succeeds when the setting is available" do
+      expect(Tenant.settings 'core', 'default_locale').to eq('en')
+    end
+
+    it "raise an error when there is no current tenant" do
+      Apartment::Tenant.switch('public') do
+        expect{Tenant.settings 'core', 'default_locale'}.to raise_error(RuntimeError)
+      end
+    end
+
+    it "returns nil when the setting does not exist" do
+      expect(Tenant.settings 'core', 'gibberish').to be_nil
+    end
+  end
+
 end

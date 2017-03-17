@@ -7,10 +7,10 @@ FactoryGirl.define do
     host "localhost"
     settings {
       {
-        core: {
-          enabled: true,
-          allowed: true,
-          default_locale: "en"
+        "core" => {
+          "enabled" => true,
+          "allowed" => true,
+          "default_locale" => "en"
         }
       }
     }
@@ -21,15 +21,16 @@ FactoryGirl.define do
     host "example_org"
     settings {
       {
-        core: {
-          allowed: true,
-          enabled: true,
-          default_locale: "en",
-          organization: {
-            en: "Liege",
-            nl: "Luik",
-            fr: "Liege"
+        "core" => {
+          "allowed" => true,
+          "enabled" => true,
+          "default_locale" => "en",
+          "organization" => {
+            "en" => "Liege",
+            "nl" => "Luik",
+            "fr" => "Liege"
           },
+          "locales" => ["en","fr","nl"]
         },
       }
     }

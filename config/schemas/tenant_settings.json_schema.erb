@@ -6,7 +6,7 @@
   "properties":
     {
       "core": {
-        "allOf": [
+      "allOf": [
           {"$ref": "#/definitions/feature"},
           {
             "description":	"The core of the system. Container for general settings. Always enabled",
@@ -25,6 +25,13 @@
                 "type": "string",
                 "default": "Europe/Brussels",
                 "enum": [<%= TZInfo::Timezone.all_identifiers.map{|tz| ['"',tz,'"'].join}.join(",") %>]
+              },
+              "locales": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
               }
             }
           }
@@ -358,9 +365,7 @@
     "multiloc_string": {
       "type": "object",
       "properties": {
-        "en": { "type": "string"},
-        "nl": { "type": "string"},
-        "fr": { "type": "string"}
+        <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\"}"}.join(",") %>
       }
     },
     "feature": {

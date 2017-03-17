@@ -15,6 +15,19 @@ class Tenant < ApplicationRecord
 
   private
 
+  def self.current
+    find_by(host: Apartment::Tenant.current)
+  end
+
+  def self.settings *path
+    tenant = self.current
+    if tenant
+      tenant.settings.dig(*path)
+    else
+      raise "No tenant is set in the current context"
+    end
+  end
+
   def create_apartment_tenant
     Apartment::Tenant.create(self.host)
   end
