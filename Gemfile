@@ -61,4 +61,4 @@ gem "kaminari", "~> 1.0.1"
 gem "activerecord_json_validator", "~> 1.2.0"
 
 gem "rest-client"
-gem "translateable", "~> 0.1.4"
+gem "fog-aws"
