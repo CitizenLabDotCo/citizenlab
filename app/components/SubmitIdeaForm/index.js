@@ -9,7 +9,7 @@ import styled from 'styled-components';
 // import { FormattedMessage } from 'react-intl';
 
 // import messages from './messages';
-import SubmitIdeaEditor from './editor';
+import SubmitIdeaEditor from 'components/SubmitIdeaEditor';
 
 class SubmitIdeaForm extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {

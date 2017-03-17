@@ -21,7 +21,6 @@ import {
   makeSelectStoreError,
 } from './selectors';
 import { storeDraft, loadDraft, saveDraft } from './actions';
-import * as Immutable from '../../../node_modules/immutable/dist/immutable';
 
 export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -103,7 +102,7 @@ export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line
 SubmitIdeaPage.propTypes = {
   className: PropTypes.string,
   saveDraftClick: PropTypes.func.isRequired,
-  content: PropTypes.instanceOf(Immutable.Map),
+  content: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
