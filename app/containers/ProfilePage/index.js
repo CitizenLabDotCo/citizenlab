@@ -21,7 +21,7 @@ import {
 } from './selectors';
 
 import messages from './messages';
-import { loadProfile } from './actions';
+import { loadProfile, storeProfile } from './actions';
 import ProfileForm from './ProfileForm';
 
 const ProfileDiv = styled.div`
@@ -54,7 +54,7 @@ export class ProfilePage extends React.PureComponent { // eslint-disable-line re
         {processing && <FormattedMessage {...messages.processing} />}
         {stored && <FormattedMessage {...messages.stored} />}
 
-        <ProfileForm {...userData} />
+        <ProfileForm user={userData} onFormSubmit={this.props.onProfileFormSubmit} />
       </ProfileDiv>
     );
   }
@@ -68,6 +68,7 @@ ProfilePage.propTypes = {
   userData: PropTypes.object,
   processing: PropTypes.bool.isRequired,
   stored: PropTypes.bool.isRequired,
+  onProfileFormSubmit: React.PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -83,6 +84,9 @@ export function mapDispatchToProps(dispatch) {
   return {
     initData() {
       dispatch(loadProfile());
+    },
+    onProfileFormSubmit: (values) => {
+      dispatch(storeProfile(values));
     },
   };
 }
