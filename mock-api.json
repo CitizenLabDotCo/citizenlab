@@ -8,6 +8,6 @@
     }
   },
   "draft-get": {
-    "content": {"entityMap":{},"blocks":[{"key":"f0anr","text":"fhhhllkkkk","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":10,"style":"BOLD"}],"entityRanges":[],"data":{}}]}
+    "content": {"entityMap":{},"blocks":[{"key":"f0anr","text":"test","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":10,"style":"BOLD"}],"entityRanges":[],"data":{}}]}
   }
 }
