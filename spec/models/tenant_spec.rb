@@ -67,7 +67,7 @@ RSpec.describe Tenant, type: :model do
 
     it "raise an error when there is no current tenant" do
       Apartment::Tenant.switch('public') do
-        expect{Tenant.settings 'core', 'default_locale'}.to raise_error(RuntimeError)
+        expect{Tenant.settings 'core', 'default_locale'}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
