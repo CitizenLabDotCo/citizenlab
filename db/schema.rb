@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170317151309) do
+ActiveRecord::Schema.define(version: 20170318144700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,29 @@ ActiveRecord::Schema.define(version: 20170317151309) do
     t.jsonb    "description_multiloc", default: {}
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+  end
+
+  create_table "areas_labs", id: false, force: :cascade do |t|
+    t.integer "lab_id",  null: false
+    t.integer "area_id", null: false
+    t.index ["area_id"], name: "index_areas_labs_on_area_id", using: :btree
+    t.index ["lab_id"], name: "index_areas_labs_on_lab_id", using: :btree
+  end
+
+  create_table "labs", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.jsonb    "title_multiloc"
+    t.jsonb    "description_multiloc"
+    t.jsonb    "images"
+    t.jsonb    "files"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "labs_topics", id: false, force: :cascade do |t|
+    t.integer "lab_id",   null: false
+    t.integer "topic_id", null: false
+    t.index ["lab_id"], name: "index_labs_topics_on_lab_id", using: :btree
+    t.index ["topic_id"], name: "index_labs_topics_on_topic_id", using: :btree
   end
 
   create_table "tenants", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

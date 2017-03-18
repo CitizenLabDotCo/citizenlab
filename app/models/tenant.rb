@@ -9,6 +9,7 @@ class Tenant < ApplicationRecord
 
   after_create :create_apartment_tenant
   after_destroy :delete_apartment_tenant
+  after_update :update_tenant_schema, if: :host_changed?
 
   before_validation :validate_missing_feature_dependencies
 
@@ -16,16 +17,11 @@ class Tenant < ApplicationRecord
   private
 
   def self.current
-    find_by(host: Apartment::Tenant.current)
+    find_by!(host: Apartment::Tenant.current)
   end
 
   def self.settings *path
-    tenant = self.current
-    if tenant
-      tenant.settings.dig(*path)
-    else
-      raise "No tenant is set in the current context"
-    end
+   self.current.settings.dig(*path)
   end
 
   def create_apartment_tenant
@@ -34,6 +30,12 @@ class Tenant < ApplicationRecord
 
   def delete_apartment_tenant
     Apartment::Tenant.drop(self.host)
+  end
+
+  def update_tenant_schema
+    old_schema = self.host_was
+    new_schema = self.host.gsub(/\./, "_")
+    ActiveRecord::Base.connection.execute("ALTER SCHEMA #{old_schema} RENAME TO #{new_schema}")
   end
 
   def validate_missing_feature_dependencies

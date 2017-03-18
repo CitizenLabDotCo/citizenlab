@@ -36,6 +36,8 @@ RSpec.describe "Users API", type: :request do
       }
       post endpoint_url, params: { user: user_params }
 
+      Fog.mock!
+      
       assert_status(201)
       result = json_parse(response.body)
       expect(result[:data][:id]).to_not be_blank
