@@ -22,7 +22,7 @@ import {
 
 import messages from './messages';
 import { loadProfile } from './actions';
-import ProfileForm from './profile-form';
+import ProfileForm from './ProfileForm';
 
 const ProfileDiv = styled.div`
   padding: 20px;
