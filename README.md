@@ -2,6 +2,22 @@
 
 ![Build Status](https://codeship.com/projects/8d4a8a10-dfdf-0134-b77a-46a6c2bb70db/status?branch=master)
 
+
+## Running
+
+Install the latest version of the Docker toolbox. Docker Compose should be included. No other dependencies on your system are required.
+
+To run the application, simply run the following command
+```
+docker-compose up --build
+```
+
+To have access to the command line within the docker container, run
+```
+docker-compose run --user "$(id -u):$(id -g)" --rm web /bin/bash
+```
+On mac, you can skip the `--user "$(id -u):$(id -g)"` part.
+
 ## Notes
 
 **We are using react-boilerplate v3.4.0**
@@ -29,3 +45,8 @@
 Install library using npm/yarn and add a import statement to app.js like below. That's it!
 
 `import '../node_modules/foundation-sites/dist/css/foundation.min.css';`
+
+## IDE setup
+
+### Atom
+Works quite well with Atom out of the box. It is highly recommended to install `linter` and `linter-eslint` plugins. They will automatically pick up the linter settings from the `package.json` file and give you inline warnings to adhere to the coding standards.

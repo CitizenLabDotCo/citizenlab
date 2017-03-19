@@ -192,14 +192,6 @@
       "!app/components/Foundation/**/*.{js,jsx}",
       "!app/components/FoundationDemoPage/**/*.{js,jsx}"
     ],
-    "coverageThreshold": {
-      "global": {
-        "statements": 98,
-        "branches": 91,
-        "functions": 98,
-        "lines": 98
-      }
-    },
     "moduleDirectories": [
       "node_modules",
       "app"
@@ -209,7 +201,8 @@
       ".*\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/internals/mocks/image.js"
     },
     "setupTestFrameworkScriptFile": "<rootDir>/internals/testing/test-bundler.js",
-    "testRegex": "tests/.*\\.test\\.js$"
+    "testRegex": "tests/.*\\.test\\.js$",
+    "testResultsProcessor": "./node_modules/jest-junit"
   },
   "dependencies": {
     "babel-polyfill": "6.20.0",
@@ -234,7 +227,7 @@
     "react-helmet": "3.2.2",
     "react-intl": "2.1.5",
     "react-redux": "4.4.6",
-    "react-redux-form": "^npm run extract-intl1.8.0",
+    "react-redux-form": "^1.8.0",
     "react-router": "3.0.0",
     "react-router-redux": "4.0.6",
     "react-router-scroll": "0.4.1",
@@ -287,6 +280,7 @@
     "image-webpack-loader": "2.0.0",
     "imports-loader": "0.6.5",
     "jest-cli": "18.0.0",
+    "jest-junit": "1.4.0",
     "jsdom": "^9.11.0",
     "lint-staged": "3.2.1",
     "mocha": "^3.2.0",
