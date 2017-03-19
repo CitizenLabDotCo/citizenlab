@@ -10,6 +10,7 @@ export default class SubmitIdeaEditor extends React.Component {
 
     this.state = {
       editorState: EditorState.createEmpty(),
+      initialStateSet: false,
     };
   }
 
@@ -24,12 +25,13 @@ export default class SubmitIdeaEditor extends React.Component {
       });
 
       // store temp draft
-      nextProps.onEditorChange(convertToRaw(editorState.getCurrentContent()));
+      this.props.onEditorChange(convertToRaw(editorState.getCurrentContent()));
     };
 
     // load eventually existing draft
-    if (nextProps.content && this.state.editorState && !(this.state.editorState.getCurrentContent().equals(nextProps.content))) {
+    if (nextProps.content && this.state.editorState && !this.state.initialStateSet) {
       this.setState({
+        initialStateSet: true,
         editorState: EditorState.createWithContent(convertFromRaw(nextProps.content)),
       });
     }
@@ -57,4 +59,5 @@ export default class SubmitIdeaEditor extends React.Component {
 
 SubmitIdeaEditor.propTypes = {
   loadDraft: PropTypes.func.isRequired,
+  onEditorChange: PropTypes.func.isRequired,
 };
