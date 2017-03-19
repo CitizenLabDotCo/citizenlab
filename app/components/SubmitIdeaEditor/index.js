@@ -43,6 +43,8 @@ export default class SubmitIdeaEditor extends React.Component {
     return (
       <div className="demo-root">
         <div className="demo-editorSection">
+          {/* TODO #later: customize toolbar and set up desired functions (image etc.)
+              based on https://github.com/jpuri/react-draft-wysiwyg/blob/master/docs/src/components/Demo/index.js */}
           <Editor
             hashtag={{}}
             editorState={editorState}
