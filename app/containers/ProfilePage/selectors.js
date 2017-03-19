@@ -23,7 +23,7 @@ const makeSelectStoreError = () => createSelector(
 
 const makeSelectUserData = () => createSelector(
   selectProfile,
-  (profileState) => profileState.getIn(['userData', 'user'])
+  (profileState) => profileState.get('userData')
 );
 
 const makeSelectProcessing = () => createSelector(

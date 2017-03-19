@@ -27,7 +27,7 @@ export default function profilePageReducer(state = profilePageInitialState, acti
         .set('loadError', false);
     case PROFILE_LOAD_SUCCESS:
       return state
-        .setIn(['userData', 'user'], action.profile)
+        .set('userData', action.profile)
         .set('loading', false);
     case PROFILE_LOAD_ERROR:
       return state
