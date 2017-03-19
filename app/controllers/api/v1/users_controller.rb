@@ -7,6 +7,16 @@ class Api::V1::UsersController < ::ApplicationController
     render json: @users
   end
 
+  def me
+    skip_authorization
+    @user = current_user
+    if @user
+      render json: @user
+    else
+      head :forbidden
+    end
+  end
+
   def show
     render json: @user
   end

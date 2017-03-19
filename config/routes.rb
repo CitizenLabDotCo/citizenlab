@@ -6,7 +6,9 @@ Rails.application.routes.draw do
       post 'user_token' => 'user_token#create'
       post 'social_login' => 'login#create'
 
-      resources :users
+      resources :users do
+        get :me, on: :collection
+      end
 
       get 'tenants/current'
     end
