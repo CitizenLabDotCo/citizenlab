@@ -4,14 +4,19 @@ require 'rspec_api_documentation/dsl'
 resource "Users" do
   header "Content-Type", "application/json"
 
-  # context "when not authenticated" do
+  context "when not authenticated" do
   #   get "api/v1/users" do
   #     it "returns 401" do
   #       do_request
   #       expect(status).to eq 401
   #     end
   #   end
-  # end
+    get "api/v1/users/me" do
+      example_request "returns the authenticated user" do
+        expect(status).to eq(403)
+      end
+    end
+  end
 
   context "when authenticated" do
     before do
@@ -34,6 +39,12 @@ resource "Users" do
       it "returns a user by id" do
         do_request
         expect(status).to eq 200
+      end
+    end
+
+    get "api/v1/users/me" do
+      example_request "returns the authenticated user" do
+        expect(json_response.dig(:data, :id)).to eq(@user.id)
       end
     end
 
