@@ -16,6 +16,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def me?
+    true
+  end
+
   def update?
     true
   end

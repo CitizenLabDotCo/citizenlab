@@ -5,4 +5,8 @@ class Api::V1::TenantsController < ApplicationController
     @tenant = Tenant.find_by host: Apartment::Tenant.current
     render json: @tenant
   end
+
+  def secure_controller?
+    false
+  end
 end
