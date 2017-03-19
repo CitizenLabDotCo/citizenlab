@@ -11,7 +11,7 @@ pipeline {
     stage('Test') {
       steps {
         echo 'testing'
-        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm web npm test'
+        sh 'docker-compose run --user "$(id -u):$(id -g)" -e BABEL_DISABLE_CACHE=1 --rm web npm test'
       }
     }
   }
