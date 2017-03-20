@@ -1,10 +1,12 @@
 {
   "profile-get": {
-    "user": {
-      "firstName": "Manuel",
-      "lastName": "Gajo",
-      "email": "fake@email.me",
-      "gender": "Male"
-    }
+    "firstName": "Manuel",
+    "lastName": "Gajo",
+    "email": "manuel@citizenlab.co",
+    "gender": "Male",
+    "age": 27
+  },
+  "draft-get": {
+    "content": {"entityMap":{},"blocks":[{"key":"f0anr","text":"test","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":10,"style":"BOLD"}],"entityRanges":[],"data":{}}]}
   }
 }
