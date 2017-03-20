@@ -47,6 +47,12 @@ export default class SubmitIdeaEditor extends React.Component {
               based on https://github.com/jpuri/react-draft-wysiwyg/blob/master/docs/src/components/Demo/index.js */}
           <Editor
             hashtag={{}}
+            toolbar={{
+              options: ['fontSize', 'fontFamily', 'list', 'textAlign', 'blockType', 'link', 'inline'],
+              inline: {
+                options: ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript'],
+              },
+            }}
             editorState={editorState}
             toolbarClassName="demo-toolbar"
             wrapperClassName="demo-wrapper"
