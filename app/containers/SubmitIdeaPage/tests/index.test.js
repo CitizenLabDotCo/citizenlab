@@ -3,9 +3,4 @@
 
 // import { SubmitIdeaPage } from '../index';
 
-describe('<SubmitIdeaPage />', () => {
-  /*
-   # TODO: TEST TO MAKE
-   - ...
-   */
-});
+
