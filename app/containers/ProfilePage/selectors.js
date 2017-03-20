@@ -1,9 +1,5 @@
 import { createSelector } from 'reselect';
 
-/**
- * Other specific selectors
- */
-
 const selectProfile = (state) => state.get('profile');
 
 const makeSelectLoading = () => createSelector(

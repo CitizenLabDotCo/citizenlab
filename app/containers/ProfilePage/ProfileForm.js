@@ -19,6 +19,14 @@ LabelInputPair.propTypes = {
 };
 
 export default class ProfileForm extends React.PureComponent {
+  constructor() {
+    super();
+
+    this.state = {
+      initialDataLoaded: false,
+    };
+  }
+
   componentWillReceiveProps(nextProps) {
     const user = nextProps.user;
     if (user) {
@@ -39,7 +47,7 @@ export default class ProfileForm extends React.PureComponent {
         <LabelInputPair id="lastName" />
         <LabelInputPair id="email" />
         <LabelInputPair id="gender" />
-        <LabelInputPair id="age" />
+        <LabelInputPair id="age" type="number" />
 
         <button type="submit">Submit</button>
       </LocalForm>

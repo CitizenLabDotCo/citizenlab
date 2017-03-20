@@ -12,7 +12,7 @@ function Input(props) {
   const model = '.'.concat(props.id);
 
   return (
-    <div>
+    <div className={props.className}>
       <Control.text name={props.id} model={model} />
     </div>
   );
@@ -20,6 +20,7 @@ function Input(props) {
 
 Input.propTypes = {
   id: PropTypes.string.isRequired,
+  className: PropTypes.string,
 };
 
 export default Input;

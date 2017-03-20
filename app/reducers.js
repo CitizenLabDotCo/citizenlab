@@ -9,6 +9,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import { LOADED_CURRENT_TENANT } from 'containers/App/constants';
 import profilePageReducer from 'containers/ProfilePage/reducer';
+import submitIdeaPageReducer from 'containers/SubmitIdeaPage/reducer';
 
 /*
  * routeReducer
@@ -60,6 +61,7 @@ export default function createReducer(asyncReducers) {
     language: languageProviderReducer,
     persistedData: persistedDataReducer,
     profile: profilePageReducer,
+    submitIdea: submitIdeaPageReducer,
     ...asyncReducers,
   });
 }
