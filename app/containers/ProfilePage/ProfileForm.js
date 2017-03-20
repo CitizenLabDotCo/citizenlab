@@ -30,6 +30,7 @@ export default class ProfileForm extends React.PureComponent {
   componentWillReceiveProps(nextProps) {
     const user = nextProps.user;
     if (user) {
+      // load initial value (unless form being re-rendered)
       this.localFormDispatch(actions.load('profile', user));
     }
   }
@@ -47,7 +48,7 @@ export default class ProfileForm extends React.PureComponent {
         <LabelInputPair id="lastName" />
         <LabelInputPair id="email" />
         <LabelInputPair id="gender" />
-        <LabelInputPair id="age" type="number" />
+        <LabelInputPair id="age" />
 
         <button type="submit">Submit</button>
       </LocalForm>

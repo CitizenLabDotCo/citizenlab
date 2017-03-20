@@ -35,14 +35,16 @@ export function storeProfile(values) {
   };
 }
 
-export function profileStored(response) {
+export function profileStored(response, profile) {
   return {
     type: (response.success ? PROFILE_STORE_SUCCESS : PROFILE_STORE_ERROR),
+    ...{ profile },
   };
 }
 
-export function storeProfileError() {
+export function storeProfileError(err, profile) {
   return {
     type: PROFILE_STORE_ERROR,
+    ...{ profile },
   };
 }

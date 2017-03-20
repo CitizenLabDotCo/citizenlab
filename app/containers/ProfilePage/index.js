@@ -54,7 +54,11 @@ export class ProfilePage extends React.PureComponent { // eslint-disable-line re
         {processing && <FormattedMessage {...messages.processing} />}
         {stored && <FormattedMessage {...messages.stored} />}
 
-        <ProfileForm user={userData} onFormSubmit={this.props.onProfileFormSubmit} />
+        <ProfileForm
+          user={userData}
+          onFormSubmit={this.props.onProfileFormSubmit}
+          stored={this.props.stored || this.props.storeError}
+        />
       </ProfileDiv>
     );
   }

@@ -4,7 +4,8 @@
 // import { SubmitIdeaPage } from '../index';
 
 describe('<SubmitIdeaPage />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(true);
-  });
+  /*
+   # TODO: TEST TO MAKE
+   - ...
+   */
 });
