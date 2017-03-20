@@ -3,16 +3,12 @@ module ApiHelper
     JSON.parse(body, symbolize_names: true)
   end
 
-  def json_response
-    json_parse(response_body)
-  end
-
   def assert_status(code)
     expect(response.status).to eq(code)
   end
 
-  def assert_count(json_result, expected)
-    expect(json_result[:data].count).to eq(expected)
+  def assert_count(json_response, expected)
+    expect(json_response[:data].count).to eq(expected)
   end
 end
 

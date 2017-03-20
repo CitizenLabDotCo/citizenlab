@@ -29,6 +29,7 @@ resource "Users" do
       it "returns list of users" do
         do_request
         expect(status).to eq 200
+        json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
       end
     end
@@ -44,6 +45,7 @@ resource "Users" do
 
     get "api/v1/users/me" do
       example_request "returns the authenticated user" do
+        json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq(@user.id)
       end
     end

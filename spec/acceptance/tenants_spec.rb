@@ -12,6 +12,7 @@ resource "Tenants" do
     it "returns current tenant info" do
       do_request
       expect(response_status).to eq 200
+      json_response = json_parse(response_body)
       expect(json_response.with_indifferent_access.dig(:data, :attributes, :host)).to eq 'example_org'
     end
   end
