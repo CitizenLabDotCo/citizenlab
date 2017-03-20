@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { actions, LocalForm } from 'react-redux-form';
-// import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 
 import Input from '../../components/Input/index';
@@ -49,5 +48,5 @@ export default class ProfileForm extends React.PureComponent {
 }
 
 ProfileForm.propTypes = {
-  onFormSubmit: React.PropTypes.func.isRequired,
+  onFormSubmit: PropTypes.func.isRequired,
 };

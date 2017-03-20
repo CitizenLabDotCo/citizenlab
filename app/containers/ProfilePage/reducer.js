@@ -10,7 +10,7 @@ import {
   STORE_PROFILE, PROFILE_STORE_SUCCESS, PROFILE_STORE_ERROR,
 } from './constants';
 
-const profilePageInitialState = fromJS({
+export const profilePageInitialState = fromJS({
   loading: false,
   loadError: false,
   storeError: false,

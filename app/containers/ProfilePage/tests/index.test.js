@@ -1,10 +1,13 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
-
-// import ProfilePage from '../index';
+import { mapDispatchToProps } from '../index';
 
 describe('<ProfilePage />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(true);
+  describe('mapDispatchToProps', () => {
+    describe('initData', () => {
+      it('should be injected', () => {
+        const dispatch = jest.fn();
+        const result = mapDispatchToProps(dispatch);
+        expect(result.initData).toBeDefined();
+      });
+    });
   });
 });

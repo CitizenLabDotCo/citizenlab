@@ -61,13 +61,13 @@ export class ProfilePage extends React.PureComponent { // eslint-disable-line re
 }
 
 ProfilePage.propTypes = {
-  initData: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   loadError: PropTypes.bool.isRequired,
   storeError: PropTypes.bool.isRequired,
   userData: PropTypes.object,
   processing: PropTypes.bool.isRequired,
   stored: PropTypes.bool.isRequired,
+  initData: PropTypes.func.isRequired,
   onProfileFormSubmit: React.PropTypes.func,
 };
 
