@@ -1,8 +1,7 @@
 {
   "app.components.HomePage.header":"HomePage",
-  "app.components.NotFoundPage.header":"This is NotFoundPage component!",
+  "app.components.NotFoundPage.header":"Ow, it seems you got lost?",
   "app.containers.IdeasPage.header":"IdeasPage",
-  "app.components.IdeasPage.header":"IdeasPage",
   "app.components.Input.label":"Label",
   "app.components.Label.header":"This is the Label component !",
   "app.components.LoginPage.header":"LoginPage"
