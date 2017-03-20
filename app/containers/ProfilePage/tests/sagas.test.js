@@ -9,7 +9,13 @@
 // const generator = defaultSaga();
 
 describe('defaultSaga Saga', () => {
-  it('Expect to have unit tests specified', () => {
+  it('should dispatch either PROFILE_LOAD_SUCCESS or PROFILE_LOAD_ERROR when LOAD_PROFILE action is received', () => {
+    // TODO
+    expect(true).toEqual(true);
+  });
+
+  it('should dispatch either PROFILE_STORE_SUCCESS or PROFILE_STORE_ERROR when STORE_PROFILE action is received', () => {
+    // TODO
     expect(true).toEqual(true);
   });
 });

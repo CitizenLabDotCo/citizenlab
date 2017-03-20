@@ -4,9 +4,13 @@
 // import SubmitIdeaForm from '../index';
 
 describe('<SubmitIdeaEditor />', () => {
-  /*
-   # TODO: TEST TO MAKE
-   - ...
-   */
+  it('editor should render', () => {
+    // TODO
+    expect(true).toEqual(true);
+  });
 
+  it('when initial value was set, shouldn\'t reinitialize', () => {
+    // TODO
+    expect(true).toEqual(true);
+  });
 });
