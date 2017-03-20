@@ -3,7 +3,7 @@
 
 // import SubmitIdeaForm from '../index';
 
-describe('<SubmitIdeaForm />', () => {
+describe('<SubmitIdeaEditor />', () => {
   /*
    # TODO: TEST TO MAKE
    - ...

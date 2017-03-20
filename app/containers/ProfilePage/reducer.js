@@ -40,10 +40,12 @@ export default function profilePageReducer(state = profilePageInitialState, acti
         .set('storeError', false);
     case PROFILE_STORE_SUCCESS:
       return state
+        .set('userData', action.profile)
         .set('processing', false)
         .set('stored', true);
     case PROFILE_STORE_ERROR:
       return state
+        .set('userData', action.profile)
         .set('processing', false)
         .set('storeError', true);
     default:
