@@ -43,8 +43,8 @@ export default class SubmitIdeaEditor extends React.Component {
   render() {
     const { editorState } = this.state;
     return (
-      <div className="demo-root">
-        <div className="demo-editorSection">
+      <div>
+        <div>
           {/* TODO #later: customize toolbar and set up desired functions (image etc.)
               based on https://github.com/jpuri/react-draft-wysiwyg/blob/master/docs/src/components/Demo/index.js */}
           <Editor
@@ -56,9 +56,6 @@ export default class SubmitIdeaEditor extends React.Component {
               },
             }}
             editorState={editorState}
-            toolbarClassName="demo-toolbar"
-            wrapperClassName="demo-wrapper"
-            editorClassName="demo-editor"
             onEditorStateChange={this.onEditorStateChange}
           />
         </div>
