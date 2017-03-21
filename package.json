@@ -225,7 +225,6 @@
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-draft-wysiwyg": "^1.7.8",
-    "react-foundation": "^0.7.0",
     "react-helmet": "3.2.2",
     "react-intl": "2.2.3",
     "react-redux": "4.4.6",
