@@ -1,0 +1,8 @@
+exports[`<ProfileForm /> <LabelInputPair /> input's label should render correctly 1`] = `
+<label
+  htmlFor="firstName">
+  <span>
+    First Name
+  </span>
+</label>
+`;
