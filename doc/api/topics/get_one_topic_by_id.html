@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Users API</title>
+    <title>Topics API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,63 +106,24 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Users API</h1>
+      <h1>Topics API</h1>
 
       <div class="article">
-        <h2>Creating a valid user</h2>
-        <h3>POST api/v1/users</h3>
+        <h2>Get one topic by id</h2>
+        <h3>GET api/v1/topics/:id</h3>
 
-          <h3>Parameters</h3>
-          <table class="parameters table table-striped table-bordered table-condensed">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="required">
-                    <span class="name">user[name]</span>
-                </td>
-                <td>
-                  <span class="description">User full name</span>
-                </td>
-              </tr>
-              <tr>
-                <td class="required">
-                    <span class="name">user[email]</span>
-                </td>
-                <td>
-                  <span class="description">E-mail address</span>
-                </td>
-              </tr>
-              <tr>
-                <td class="required">
-                    <span class="name">user[password]</span>
-                </td>
-                <td>
-                  <span class="description">Password</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0ODg4MzM3OTcsInN1YiI6IjJjNTVlYjFmLTNlNWQtNDZmNS05YjA1LWIyYzQxMzJhMTg1ZiJ9.c1hCDTecT0xtaw7wj-uyehIi0ITTJoRHtvvMOUP3R-4
-Host: example.org
+            <pre class="request headers">Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/users</pre>
+          <pre class="request route highlight">GET api/v1/topics/5a96d2b7-fad1-40af-a894-af77d26d0b91</pre>
 
 
-            <h4>Body</h4>
-            <pre class="request body">{"user":{"name":"Miss Charlie Kris","email":"noah.simonis@daviswhite.io","password":"0i0n6i3cKn2rJcC"}}</pre>
 
 
             <h3>Response</h3>
@@ -171,21 +132,29 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;0b15bb9b0868cdb1d5e59368e316783e&quot;
+ETag: W/&quot;7f9b49e5a7e6eb037502a35313562b16&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: bd0566eb-e36e-4b7c-8961-fa4295ac7753
-X-Runtime: 0.097513
-Content-Length: 138</pre>
+X-Request-Id: a836281b-d956-4a31-9150-435126217195
+X-Runtime: 0.009357
+Vary: Origin
+Content-Length: 412</pre>
             <h4>Status</h4>
-            <pre class="response status">201 Created</pre>
+            <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;1e99cc6d-794c-4e64-9b08-a8129016c5db&quot;,
-    &quot;type&quot;: &quot;users&quot;,
+    &quot;id&quot;: &quot;5a96d2b7-fad1-40af-a894-af77d26d0b91&quot;,
+    &quot;type&quot;: &quot;topics&quot;,
     &quot;attributes&quot;: {
-      &quot;name&quot;: &quot;Miss Charlie Kris&quot;,
-      &quot;slug&quot;: &quot;miss-charlie-kris&quot;
+      &quot;title-multiloc&quot;: {
+        &quot;en&quot;: &quot;Health&quot;,
+        &quot;nl&quot;: &quot;Gezondheid&quot;
+      },
+      &quot;description-multiloc&quot;: {
+        &quot;en&quot;: &quot;&lt;p&gt;How are the people feeling?&lt;/p&gt;&lt;p&gt;What is the expected agespan?&lt;/p&gt;&quot;,
+        &quot;nl&quot;: &quot;&lt;p&gt;Hoe voelen de mensen zich?&lt;/p&gt;&lt;p&gt;Wat is de levensverwachting?&lt;/p&gt;&quot;
+      },
+      &quot;icon&quot;: &quot;medical&quot;
     }
   }
 }</pre>
