@@ -11,6 +11,9 @@ Rails.application.routes.draw do
         get :me, on: :collection
       end
 
+      resources :topics, only: [:index, :show]
+      resources :areas, only: [:index, :show]
+
       get 'tenants/current'
     end
   end
