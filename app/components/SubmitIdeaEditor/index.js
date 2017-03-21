@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
-import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
+import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 // eslint-disable-next-line no-unused-vars
 import styles from 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { getEditorState } from './editorState';
 
 export default class SubmitIdeaEditor extends React.Component {
   constructor() {
@@ -29,10 +30,11 @@ export default class SubmitIdeaEditor extends React.Component {
     };
 
     // load eventually existing draft
-    if (nextProps.content && this.state.editorState && !this.state.initialStateSet) {
+    const nextState = getEditorState(nextProps.content, this.state.editorState, this.state.initialStateSet);
+    if (nextState) {
       this.setState({
         initialStateSet: true,
-        editorState: EditorState.createWithContent(convertFromRaw(nextProps.content)),
+        editorState: nextState,
       });
     }
   }
