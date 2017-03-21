@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import { makeSelectUserData, makeSelectError, makeSelectLoading } from '../selectors';
+import { makeSelectUserData, makeSelectLoadError, makeSelectLoading, makeSelectStoreError } from '../selectors';
 
 describe('makeSelectProfilePageDomain', () => {
   describe('makeSelectLoading', () => {
@@ -15,15 +15,26 @@ describe('makeSelectProfilePageDomain', () => {
     });
   });
 
-  const errorSelector = makeSelectError();
-  it('should select the error', () => {
-    const error = 404;
+  const loadErrorSelector = makeSelectLoadError();
+  it('should select the loading error', () => {
+    const loadError = true;
     const mockedState = fromJS({
       profile: {
-        error,
+        loadError,
       },
     });
-    expect(errorSelector(mockedState)).toEqual(error);
+    expect(loadErrorSelector(mockedState)).toEqual(loadError);
+  });
+
+  const storeErrorSelector = makeSelectStoreError();
+  it('should select the store error', () => {
+    const storeError = true;
+    const mockedState = fromJS({
+      profile: {
+        storeError,
+      },
+    });
+    expect(storeErrorSelector(mockedState)).toEqual(storeError);
   });
 
   const userDataSelector = makeSelectUserData();
@@ -37,12 +48,10 @@ describe('makeSelectProfilePageDomain', () => {
     const mockedState = fromJS({
       profile: {
         userData: {
-          user: {
-            firstName: 'X',
-            lastName: 'Y',
-            gender: 'Male',
-            email: 'a@b.cd',
-          },
+          firstName: 'X',
+          lastName: 'Y',
+          gender: 'Male',
+          email: 'a@b.cd',
         },
       },
     });
