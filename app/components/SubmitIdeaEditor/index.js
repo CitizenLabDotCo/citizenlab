@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
-import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
+import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 // eslint-disable-next-line no-unused-vars
 import styles from 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { getEditorState } from './editorState';
 
 export default class SubmitIdeaEditor extends React.Component {
   constructor() {
@@ -29,10 +30,11 @@ export default class SubmitIdeaEditor extends React.Component {
     };
 
     // load eventually existing draft
-    if (nextProps.content && this.state.editorState && !this.state.initialStateSet) {
+    const nextState = getEditorState(nextProps.content, this.state.editorState, this.state.initialStateSet);
+    if (nextState) {
       this.setState({
         initialStateSet: true,
-        editorState: EditorState.createWithContent(convertFromRaw(nextProps.content)),
+        editorState: nextState,
       });
     }
   }
@@ -41,8 +43,8 @@ export default class SubmitIdeaEditor extends React.Component {
   render() {
     const { editorState } = this.state;
     return (
-      <div className="demo-root">
-        <div className="demo-editorSection">
+      <div>
+        <div>
           {/* TODO #later: customize toolbar and set up desired functions (image etc.)
               based on https://github.com/jpuri/react-draft-wysiwyg/blob/master/docs/src/components/Demo/index.js */}
           <Editor
@@ -54,9 +56,6 @@ export default class SubmitIdeaEditor extends React.Component {
               },
             }}
             editorState={editorState}
-            toolbarClassName="demo-toolbar"
-            wrapperClassName="demo-wrapper"
-            editorClassName="demo-editor"
             onEditorStateChange={this.onEditorStateChange}
           />
         </div>

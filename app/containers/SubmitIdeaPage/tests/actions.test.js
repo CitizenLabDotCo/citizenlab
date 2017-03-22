@@ -1,18 +1,6 @@
-
-import {
-  defaultAction,
-} from '../actions';
-import {
-  DEFAULT_ACTION,
-} from '../constants';
-
-describe('SubmitIdeaPage actions', () => {
-  describe('Default Action', () => {
-    it('has a type of DEFAULT_ACTION', () => {
-      const expected = {
-        type: DEFAULT_ACTION,
-      };
-      expect(defaultAction()).toEqual(expected);
-    });
+describe('no tests for now', () => {
+  it('should have tests in the future', () => {
+    expect(true).toEqual(true);
   });
 });
+

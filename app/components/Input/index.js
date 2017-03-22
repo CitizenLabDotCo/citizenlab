@@ -13,7 +13,10 @@ function Input(props) {
 
   return (
     <div className={props.className}>
-      <Control.text name={props.id} model={model} />
+      <Control.text
+        name={props.id}
+        model={model}
+      />
     </div>
   );
 }

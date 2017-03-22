@@ -10,7 +10,7 @@ import {
   SAVE_DRAFT,
 } from './constants';
 
-const submitIdeaPageInitialState = fromJS({
+export const submitIdeaPageInitialState = fromJS({
   draft: {
     loading: false,
     loadError: false,

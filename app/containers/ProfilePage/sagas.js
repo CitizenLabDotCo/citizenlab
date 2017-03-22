@@ -27,9 +27,9 @@ export function* postProfile(action) {
       body: JSON.stringify(action.userData),
     });
 
-    yield put(profileStored(response));
+    yield put(profileStored(response, action.userData));
   } catch (err) {
-    yield put(storeProfileError(err));
+    yield put(storeProfileError(err, action.userData));
   }
 }
 
