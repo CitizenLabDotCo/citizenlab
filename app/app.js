@@ -51,7 +51,7 @@ import createRoutes from './routes';
 // this uses the singleton browserHistory provided by react-router
 // Optionally, this could be changed to leverage a created history
 // e.g. `const browserHistory = useRouterHistory(createBrowserHistory)();`
-import { loadState } from './persistance';
+import { loadState } from './persistedData';
 const initialState = loadState();
 const store = configureStore(initialState, browserHistory);
 

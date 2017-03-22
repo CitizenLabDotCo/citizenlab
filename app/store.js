@@ -8,7 +8,7 @@ import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import _ from 'lodash';
 import createReducer from './reducers';
-import { saveState } from './persistance';
+import { saveState } from './persistedData';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -59,9 +59,7 @@ export default function configureStore(initialState = {}, history) {
 
   if (process.env.NODE_ENV !== 'test') {
     store.subscribe(_.throttle(() => {
-      saveState({
-        persistedData: store.getState().persistedData,
-      });
+      saveState(store.getState().get('persistedData').toJS());
     }, 1000));
   }
 

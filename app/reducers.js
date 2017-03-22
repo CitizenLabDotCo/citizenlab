@@ -7,9 +7,9 @@ import { combineReducers } from 'redux-immutable';
 import { fromJS } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
-import { LOADED_CURRENT_TENANT } from 'containers/App/constants';
 import profilePageReducer from 'containers/ProfilePage/reducer';
 import submitIdeaPageReducer from 'containers/SubmitIdeaPage/reducer';
+import { persistedDataReducer } from './persistedData';
 
 /*
  * routeReducer
@@ -34,19 +34,6 @@ function routeReducer(state = routeInitialState, action) {
       return state.merge({
         locationBeforeTransitions: action.payload,
       });
-    default:
-      return state;
-  }
-}
-
-const persistedDataInitialState = fromJS({
-  currentTenant: null,
-});
-
-function persistedDataReducer(state = persistedDataInitialState, action) {
-  switch (action.type) {
-    case LOADED_CURRENT_TENANT:
-      return state.set('currentTenant', action.payload);
     default:
       return state;
   }
