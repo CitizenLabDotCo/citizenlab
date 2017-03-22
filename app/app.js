@@ -16,6 +16,7 @@ import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
+import { fromJS } from 'immutable';
 
 // Import root app
 import App from 'containers/App';
@@ -51,8 +52,11 @@ import createRoutes from './routes';
 // this uses the singleton browserHistory provided by react-router
 // Optionally, this could be changed to leverage a created history
 // e.g. `const browserHistory = useRouterHistory(createBrowserHistory)();`
+
 import { loadState } from './persistedData';
-const initialState = loadState();
+const initialState = fromJS({
+  persistedData: loadState(),
+});
 const store = configureStore(initialState, browserHistory);
 
 // Sync history and store, as the react-router-redux reducer
