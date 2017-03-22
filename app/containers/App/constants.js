@@ -11,3 +11,4 @@
 
 export const DEFAULT_LOCALE = 'en';
 export const LOADED_CURRENT_TENANT = 'app/App/LOADED_CURRENT_TENANT';
+export const LOAD_CURRENT_USER = 'app/App/LOAD_CURRENT_USER';
