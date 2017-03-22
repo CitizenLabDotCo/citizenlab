@@ -13,16 +13,17 @@ import { loadCurrentUser } from './../App/actions';
 import messages from './messages';
 import Form from './Form';
 
-const fakeRegisterWithServer = (values) => {
-  const id = Date.now().toString();
-  const response = {
-    data: {
-      id,
-      attributes: Object.assign({}, values, { id, password: undefined }),
+const createUser = (values) => (
+  // TODO: remove hardcoded address
+  fetch('http://localhost:4000/api/v1/users', {
+    headers: {
+      'Content-Type': 'application/json',
     },
-  };
-  return new Promise((resolve) => setTimeout(() => resolve(response), 1000));
-};
+    method: 'POST',
+    body: JSON.stringify({ user: values }),
+  })
+  .then((res) => res.json())
+);
 
 export class UsersNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -31,7 +32,7 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
   }
 
   handleSubmit(values) {
-    fakeRegisterWithServer(values).then((response) => {
+    createUser(values).then((response) => {
       // reset form
       this.localFormDispatch(rrfActions.reset('registration'));
       this.props.dispatch(loadCurrentUser(response.data));
