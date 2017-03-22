@@ -1,14 +1,17 @@
 import { fromJS } from 'immutable';
-import { LOADED_CURRENT_TENANT } from 'containers/App/constants';
+import { LOADED_CURRENT_TENANT, LOAD_CURRENT_USER } from 'containers/App/constants';
 
 const initialState = fromJS({
   currentTenant: null,
+  currentUser: null,
 });
 
 export const persistedDataReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOADED_CURRENT_TENANT:
       return state.set('currentTenant', action.payload);
+    case LOAD_CURRENT_USER:
+      return state.set('currentUser', action.payload);
     default:
       return state;
   }
