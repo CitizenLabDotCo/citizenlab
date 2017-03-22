@@ -1,6 +1,6 @@
 /**
 *
-* SubmitIdeaForm
+* IdeaEditorWrapper
 *
 */
 
@@ -9,13 +9,13 @@ import styled from 'styled-components';
 // import { FormattedMessage } from 'react-intl';
 
 // import messages from './messages';
-import SubmitIdeaEditor from 'components/SubmitIdeaEditor';
+import IdeaEditor from './IdeaEditor';
 
-class SubmitIdeaForm extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div className={this.props.className}>
-        <SubmitIdeaEditor
+        <IdeaEditor
           onEditorChange={this.props.storeDraftCopy}
           loadDraft={this.props.loadExistingDraft}
           {...this.props}
@@ -25,13 +25,13 @@ class SubmitIdeaForm extends React.PureComponent { // eslint-disable-line react/
   }
 }
 
-SubmitIdeaForm.propTypes = {
+IdeaEditorWrapper.propTypes = {
   className: PropTypes.string,
   storeDraftCopy: PropTypes.func.isRequired,
   loadExistingDraft: PropTypes.func.isRequired,
 };
 
-export default styled(SubmitIdeaForm)`
+export default styled(IdeaEditorWrapper)`
   height: 550px;
   border-radius: 3px;
   background-color: #ffffff;

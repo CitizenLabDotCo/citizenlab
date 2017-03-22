@@ -8,10 +8,10 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
-import SubmitIdeaForm from 'components/SubmitIdeaForm';
 import { Row, Column, Button, Label } from 'components/Foundation';
 import styled from 'styled-components';
 import Breadcrumbs from 'components/Breadcrumbs';
+import draftToHtml from 'draftjs-to-html';
 
 import {
   makeSelectStored,
@@ -20,7 +20,8 @@ import {
   makeSelectLoading,
   makeSelectStoreError,
 } from './selectors';
-import { storeDraft, loadDraft, saveDraft } from './actions';
+import { storeDraft, loadDraft, saveDraft, storeIdea } from './actions';
+import IdeaEditorWrapper from './IdeaEditorWrapper';
 
 export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -66,7 +67,7 @@ export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line
         <Row>
           <Column large={7} offsetOnLarge={1}>
             <Row>
-              <SubmitIdeaForm
+              <IdeaEditorWrapper
                 {...this.props}
               />
             </Row>
@@ -102,7 +103,7 @@ export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line
 SubmitIdeaPage.propTypes = {
   className: PropTypes.string,
   saveDraftClick: PropTypes.func.isRequired,
-  content: PropTypes.object,
+  content: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -116,13 +117,23 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     storeDraftCopy(content) {
-      dispatch(saveDraft(content));
+      // convert to HTML
+      const htmlContent = draftToHtml(content);
+
+      dispatch(saveDraft(htmlContent));
     },
     saveDraftClick(content) {
+      // content is already in HTML format
       dispatch(storeDraft(content));
     },
     loadExistingDraft() {
       dispatch(loadDraft());
+    },
+    storeIdea(content) {
+      // convert to HTML
+      const htmlContent = draftToHtml(content);
+
+      dispatch(storeIdea(htmlContent));
     },
   };
 }

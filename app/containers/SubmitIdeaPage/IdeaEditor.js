@@ -5,7 +5,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import styles from 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { getEditorState } from './editorState';
 
-export default class SubmitIdeaEditor extends React.Component {
+export default class IdeaEditor extends React.PureComponent {
   constructor() {
     super();
 
@@ -64,7 +64,7 @@ export default class SubmitIdeaEditor extends React.Component {
   }
 }
 
-SubmitIdeaEditor.propTypes = {
+IdeaEditor.propTypes = {
   loadDraft: PropTypes.func.isRequired,
   onEditorChange: PropTypes.func.isRequired,
 };

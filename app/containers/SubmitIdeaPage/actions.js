@@ -3,15 +3,16 @@
  * SubmitIdeaPage actions
  *
  */
-import { STORE_DRAFT_SUCCESS, STORE_DRAFT, STORE_DRAFT_ERROR, LOAD_DRAFT, LOAD_DRAFT_SUCCESS, LOAD_DRAFT_ERROR,
-  SAVE_DRAFT,
+import {
+  STORE_DRAFT_SUCCESS, STORE_DRAFT, STORE_DRAFT_ERROR, LOAD_DRAFT, LOAD_DRAFT_SUCCESS, LOAD_DRAFT_ERROR,
+  SAVE_DRAFT, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS, STORE_IDEA,
 } from './constants';
 
 // none yet
 
 /*
  *
- * SubmitIdeaEditor actions
+ * IdeaEditor actions
  *
  */
 
@@ -59,5 +60,24 @@ export function saveDraft(content) {
   return {
     type: SAVE_DRAFT,
     draft: content,
+  };
+}
+
+export function storeIdea(content) {
+  return {
+    type: STORE_IDEA,
+    idea: content,
+  };
+}
+
+export function ideaStored() {
+  return {
+    type: STORE_IDEA_SUCCESS,
+  };
+}
+
+export function storeIdeaError() {
+  return {
+    type: STORE_IDEA_ERROR,
   };
 }

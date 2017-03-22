@@ -1,8 +1,8 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import SubmitIdeaEditor from '../index';
+import IdeaEditor from '../IdeaEditor';
 
-describe('<SubmitIdeaEditor />', () => {
+describe('<deaEditor />', () => {
   it('editor should render', () => {
     const jestFn = jest.fn();
     const props = {
@@ -10,7 +10,7 @@ describe('<SubmitIdeaEditor />', () => {
       onEditorChange: jestFn,
     };
 
-    const tree = shallow(<SubmitIdeaEditor {...props} />);
+    const tree = shallow(<IdeaEditor {...props} />);
     expect(tree.find('e')).toHaveLength(1);
   });
 });

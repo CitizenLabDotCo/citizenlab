@@ -11,7 +11,7 @@ describe('editorState', () => {
       initialStateSet: true,
     };
     // eslint-disable-next-line
-    const fetchedContent = {"entityMap":{},"blocks":[{"key":"f0anr","text":"test","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":10,"style":"BOLD"}],"entityRanges":[],"data":{}}]};
+    const fetchedContent = '<p><strong><ins>some text</ins></strong></p>';
 
     expect(getEditorState(fetchedContent, state.editorState, state.initialStateSet)).toBeNull();
   });
