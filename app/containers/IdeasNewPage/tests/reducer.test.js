@@ -1,10 +1,10 @@
 
 import { fromJS } from 'immutable';
-import submitIdeaPageReducer, { submitIdeaPageInitialState } from '../reducer';
+import ideasNewPageReducer, { ideasNewPageInitialState } from '../reducer';
 
-describe('submitIdeaPageReducer', () => {
+describe('ideasNewPageReducer', () => {
   it('returns the initial state', () => {
-    expect(submitIdeaPageReducer(submitIdeaPageInitialState, {})).toEqual(fromJS(submitIdeaPageInitialState));
+    expect(ideasNewPageReducer(ideasNewPageInitialState, {})).toEqual(fromJS(ideasNewPageInitialState));
   });
 
   it('should return draft.loading set to true, on LOAD_DRAFT action', () => {

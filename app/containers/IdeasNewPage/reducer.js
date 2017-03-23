@@ -1,6 +1,6 @@
 /*
  *
- * SubmitIdeaPage reducer
+ * IdeasNewPage reducer
  *
  */
 
@@ -10,7 +10,7 @@ import {
   SAVE_DRAFT, STORE_IDEA, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS,
 } from './constants';
 
-export const submitIdeaPageInitialState = fromJS({
+export const ideasNewPageInitialState = fromJS({
   draft: {
     loading: false,
     loadError: false,
@@ -24,7 +24,7 @@ export const submitIdeaPageInitialState = fromJS({
   },
 });
 
-function ideasNewPageReducer(state = submitIdeaPageInitialState, action) {
+function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
   switch (action.type) {
     case LOAD_DRAFT:
       return state

@@ -1,6 +1,6 @@
 /*
  *
- * SubmitIdeaPage
+ * IdeasNewPage
  *
  */
 
@@ -24,7 +24,7 @@ import { storeDraft, loadDraft, saveDraft, storeIdea } from './actions';
 import IdeaEditorWrapper from './IdeaEditorWrapper';
 import messages from './messages';
 
-export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
 
@@ -65,9 +65,9 @@ export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line
     return (
       <div className={this.props.className}>
         <Helmet
-          title="SubmitIdeaPage"
+          title="IdeasNewPage"
           meta={[
-            { name: 'description', content: 'Description of SubmitIdeaPage' },
+            { name: 'description', content: 'Description of IdeasNewPage' },
           ]}
         />
         <Breadcrumbs />
@@ -111,7 +111,7 @@ export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line
   }
 }
 
-SubmitIdeaPage.propTypes = {
+IdeasNewPage.propTypes = {
   className: PropTypes.string,
   saveDraftClick: PropTypes.func.isRequired,
   publishIdeaClick: PropTypes.func.isRequired,
@@ -157,7 +157,7 @@ export function mapDispatchToProps(dispatch) {
   };
 }
 
-export default styled(connect(mapStateToProps, mapDispatchToProps)(SubmitIdeaPage))`
+export default styled(connect(mapStateToProps, mapDispatchToProps)(IdeasNewPage))`
   backgroundColor: '#eeeeee';
   minHeight: '850px';
   width: '100%';

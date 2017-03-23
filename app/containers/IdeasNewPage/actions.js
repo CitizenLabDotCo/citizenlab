@@ -1,6 +1,6 @@
 /*
  *
- * SubmitIdeaPage actions
+ * IdeasNewPage actions
  *
  */
 import {
@@ -8,11 +8,9 @@ import {
   SAVE_DRAFT, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS, STORE_IDEA,
 } from './constants';
 
-// none yet
-
 /*
  *
- * IdeaEditor actions
+ * IdeasNewPage actions
  *
  */
 

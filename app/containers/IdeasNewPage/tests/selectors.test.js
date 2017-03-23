@@ -1,7 +1,7 @@
 // import { fromJS } from 'immutable';
-// import { makeSelectSubmitIdeaPageDomain } from '../selectors';
+// import { makeSelectIdeasNewPageDomain } from '../selectors';
 
-// const selector = makeSelectSubmitIdeaPageDomain();
+// const selector = makeSelectIdeasNewPageDomain();
 
 describe('selectors', () => {
   it('should have tests in the future', () => {
