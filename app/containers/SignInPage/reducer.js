@@ -1,6 +1,6 @@
 /*
  *
- * LoginPage reducer
+ * SignInPage reducer
  *
  */
 
@@ -11,7 +11,7 @@ import {
 
 const initialState = fromJS({});
 
-function loginPageReducer(state = initialState, action) {
+function signInPageReducer(state = initialState, action) {
   switch (action.type) {
     case USER_LOGIN:
       console.log("[DEBUG] action =", action); // eslint-disable-line
@@ -21,4 +21,4 @@ function loginPageReducer(state = initialState, action) {
   }
 }
 
-export default loginPageReducer;
+export default signInPageReducer;
