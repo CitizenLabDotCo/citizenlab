@@ -42,4 +42,16 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.submitted',
     defaultMessage: 'Successfully published!',
   },
+  shortTitleError: {
+    id: 'app.containers.IdeasNewPage.shortTitleError',
+    defaultMessage: 'Too short (min 5 chars)',
+  },
+  longTitleError: {
+    id: 'app.containers.IdeasNewPage.longTitleError',
+    defaultMessage: 'Too long (max 120 chars)',
+  },
+  charactersLeft: {
+    id: 'app.containers.IdeasNewPage.charactersLeft',
+    defaultMessage: '{charsLeft} characters left',
+  },
 });

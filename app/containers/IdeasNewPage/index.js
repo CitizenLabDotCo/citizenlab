@@ -19,8 +19,9 @@ import {
   makeSelectLoadError,
   makeSelectLoading,
   makeSelectStoreError, makeSelectSubmitError, makeSelectSubmitted, makeSelectSubmitting,
+  makeSelectShortTitleError, makeSelectLongTitleError, makeSelectTitleLength,
 } from './selectors';
-import { storeDraft, loadDraft, saveDraft, storeIdea } from './actions';
+import { storeDraft, loadDraft, saveDraft, storeIdea, setTitle } from './actions';
 import IdeaEditorWrapper from './IdeaEditorWrapper';
 import messages from './messages';
 
@@ -38,7 +39,9 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
   }
 
   storeIdea() {
-    this.props.publishIdeaClick(this.props.content);
+    const { content, shortTitleError, longTitleError } = this.props;
+
+    this.props.publishIdeaClick(content, shortTitleError || longTitleError);
   }
 
   render() {
@@ -115,6 +118,8 @@ IdeasNewPage.propTypes = {
   className: PropTypes.string,
   saveDraftClick: PropTypes.func.isRequired,
   publishIdeaClick: PropTypes.func.isRequired,
+  shortTitleError: PropTypes.bool.isRequired,
+  longTitleError: PropTypes.bool.isRequired,
   content: PropTypes.string,
 };
 
@@ -127,6 +132,9 @@ const mapStateToProps = createStructuredSelector({
   submitted: makeSelectSubmitted(),
   submitting: makeSelectSubmitting(),
   stored: makeSelectStored(),
+  shortTitleError: makeSelectShortTitleError(),
+  longTitleError: makeSelectLongTitleError(),
+  titleLength: makeSelectTitleLength(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -150,9 +158,14 @@ export function mapDispatchToProps(dispatch) {
 
       dispatch(storeIdea(htmlContent));
     },
-    publishIdeaClick(content) {
-      // content is already in HTML format
-      dispatch(storeIdea(content));
+    publishIdeaClick(content, titleError) {
+      if (content.trim() !== '<p></p>' && !titleError) {
+        // content is already in HTML format
+        dispatch(storeIdea(content));
+      }
+    },
+    setTitle(e) {
+      dispatch(setTitle(e.target.value));
     },
   };
 }

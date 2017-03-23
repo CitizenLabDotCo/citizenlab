@@ -7,7 +7,7 @@
 import { fromJS } from 'immutable';
 import {
   LOAD_DRAFT, LOAD_DRAFT_ERROR, LOAD_DRAFT_SUCCESS, STORE_DRAFT, STORE_DRAFT_SUCCESS, STORE_DRAFT_ERROR,
-  SAVE_DRAFT, STORE_IDEA, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS,
+  SAVE_DRAFT, STORE_IDEA, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS, SET_TITLE,
 } from './constants';
 
 export const ideasNewPageInitialState = fromJS({
@@ -21,6 +21,10 @@ export const ideasNewPageInitialState = fromJS({
     submitError: false,
     submitting: false,
     content: null,
+    title: '',
+    shortTitleError: true,
+    longTitleError: false,
+    titleLength: 0,
   },
 });
 
@@ -66,6 +70,12 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
       return state
         .setIn(['draft', 'submitting'], false)
         .setIn(['draft', 'submitted'], true);
+    case SET_TITLE:
+      return state
+        .setIn(['draft', 'title'], action.title)
+        .setIn(['draft', 'shortTitleError'], action.title.length < 5)
+        .setIn(['draft', 'longTitleError'], action.title.length > 120)
+        .setIn(['draft', 'titleLength'], action.title.length);
     default:
       return state;
   }

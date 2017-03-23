@@ -33,13 +33,28 @@ const makeSelectSubmitting = () => createSelector(
 );
 
 const makeSelectSubmitError = () => createSelector(
-    selectSubmitIdea,
-    (submitIdeaState) => submitIdeaState.getIn(['draft', 'submitError'])
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'submitError'])
 );
 
 const makeSelectSubmitted = () => createSelector(
-    selectSubmitIdea,
-    (submitIdeaState) => submitIdeaState.getIn(['draft', 'submitted'])
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'submitted'])
+);
+
+const makeSelectLongTitleError = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'longTitleError'])
+);
+
+const makeSelectShortTitleError = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'shortTitleError'])
+);
+
+const makeSelectTitleLength = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'titleLength'])
 );
 
 export {
@@ -51,4 +66,7 @@ export {
   makeSelectSubmitting,
   makeSelectSubmitError,
   makeSelectSubmitted,
+  makeSelectLongTitleError,
+  makeSelectShortTitleError,
+  makeSelectTitleLength,
 };

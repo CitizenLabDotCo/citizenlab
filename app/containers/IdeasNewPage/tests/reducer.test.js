@@ -21,4 +21,14 @@ describe('ideasNewPageReducer', () => {
     // TODO
     expect(true).toEqual(true);
   });
+
+  it('should set shortTitleError to true if title < 5 chars', () => {
+    // TODO
+    expect(true).toEqual(true);
+  });
+
+  it('should set longTitleError to true if title > 120 chars', () => {
+    // TODO
+    expect(true).toEqual(true);
+  });
 });

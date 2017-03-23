@@ -5,7 +5,7 @@
  */
 import {
   STORE_DRAFT_SUCCESS, STORE_DRAFT, STORE_DRAFT_ERROR, LOAD_DRAFT, LOAD_DRAFT_SUCCESS, LOAD_DRAFT_ERROR,
-  SAVE_DRAFT, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS, STORE_IDEA,
+  SAVE_DRAFT, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS, STORE_IDEA, SET_TITLE,
 } from './constants';
 
 /*
@@ -77,5 +77,12 @@ export function ideaStored() {
 export function storeIdeaError() {
   return {
     type: STORE_IDEA_ERROR,
+  };
+}
+
+export function setTitle(title) {
+  return {
+    type: SET_TITLE,
+    title,
   };
 }

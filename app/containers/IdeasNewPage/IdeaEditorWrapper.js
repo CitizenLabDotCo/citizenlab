@@ -11,10 +11,12 @@ import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 import IdeaEditor from './IdeaEditor';
 import messages from './messages';
+import IdeaTitle from './IdeaTitle';
 
 export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { loading, loadError, stored, storeError, submitting, submitError, submitted } = this.props;
+    const { loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
+    const { shortTitleError, longTitleError, titleLength } = this.props;
 
     return (
       <div>
@@ -25,6 +27,13 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
         {submitting && <FormattedMessage {...messages.submitting} />}
         {submitError && <FormattedMessage {...messages.submitError} />}
         {submitted && <FormattedMessage {...messages.submitted} />}
+
+        <IdeaTitle
+          setTitle={setTitle}
+          short={shortTitleError}
+          long={longTitleError}
+          length={titleLength}
+        />
 
         <div className={this.props.className}>
           <IdeaEditor
@@ -49,6 +58,10 @@ IdeaEditorWrapper.propTypes = {
   submitting: PropTypes.bool.isRequired,
   submitError: PropTypes.bool.isRequired,
   submitted: PropTypes.bool.isRequired,
+  shortTitleError: PropTypes.bool.isRequired,
+  longTitleError: PropTypes.bool.isRequired,
+  titleLength: PropTypes.number.isRequired,
+  setTitle: PropTypes.func.isRequired,
 };
 
 export default styled(IdeaEditorWrapper)`
