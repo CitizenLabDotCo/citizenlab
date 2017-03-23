@@ -12,6 +12,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import TopicSelect from 'components/TopicSelect';
 import messages from './messages';
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -28,6 +29,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         </h1>
 
         <p>CurrentTenant: { currentTenant ? currentTenant.name : 'null' }</p>
+
+        <h3>Topic Select Demo</h3>
+        <TopicSelect />
       </div>
     );
   }
