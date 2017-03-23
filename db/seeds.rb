@@ -44,6 +44,33 @@ Apartment::Tenant.switch('localhost') do
       "en": "<p>The place to be these days</p>",
       "nl": "<p>Moet je geweest zijn</p>"
     }
-  });
+  })
+
+  Lab.create({
+    title_multiloc: {
+      "en": "Renewing Westbrook parc",
+      "nl": "Westbroek park vernieuwen"
+    },
+    description_multiloc: {
+      "en" => "<p>Let's renew the parc at the city border and make it an enjoyable place for young and old.</p>",
+      "nl" => "<p>Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>"
+    }
+  })
+
+  Idea.create({
+    "title_multiloc": {
+      "en": "Dance sessions in the park",
+      "nl": "Dansen in het park"
+    },
+    body_multiloc: {
+      "en" => "<p>Let's dance.</p>",
+      "nl" => "<p>Dansen yihaa!</p>"
+    },
+    topics: [Topic.first],
+    areas: [Area.first],
+    author: User.first,
+    lab: Lab.first,
+    publication_status: 'published'
+  })
 
 end

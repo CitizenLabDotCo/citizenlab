@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Areas API</title>
+    <title>Users API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,22 +106,24 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Areas API</h1>
+      <h1>Users API</h1>
 
       <div class="article">
-        <h2>Get one area by id</h2>
-        <h3>GET api/v1/areas/:id</h3>
+        <h2>Get the authenticated user</h2>
+        <h3>GET api/v1/users/me</h3>
 
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Host: example.org
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTAzNzgzMjIsInN1YiI6IjUwYTY3YmY2LWFhNWUtNDVlNS1iMzZjLTM5ZTE4YTQ2YWJmZSJ9.AfG8GUVvwkBkoQuFnGTY69QqvFZl69AxCo2AV-vrIrE
+Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/areas/b03f1c9d-08a9-4bdc-900c-0dec564b6dee</pre>
+          <pre class="request route highlight">GET api/v1/users/me</pre>
 
 
 
@@ -132,28 +134,23 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;89560a1f37a4655e7c3c45c48f9cd4cd&quot;
+ETag: W/&quot;ec8748ae5e1b66c5617dadca52580ddd&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: eb2b08db-ca23-418f-a8e1-b66d4cdc5467
-X-Runtime: 0.010467
+X-Request-Id: 9548672e-d56e-424b-8178-0c7b1a795cd0
+X-Runtime: 0.006383
 Vary: Origin
-Content-Length: 409</pre>
+Content-Length: 147</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;b03f1c9d-08a9-4bdc-900c-0dec564b6dee&quot;,
-    &quot;type&quot;: &quot;areas&quot;,
+    &quot;id&quot;: &quot;50a67bf6-aa5e-45e5-b36c-39e18a46abfe&quot;,
+    &quot;type&quot;: &quot;users&quot;,
     &quot;attributes&quot;: {
-      &quot;title_multiloc&quot;: {
-        &quot;en&quot;: &quot;Westside&quot;,
-        &quot;nl&quot;: &quot;Westerbuurt&quot;
-      },
-      &quot;description_multiloc&quot;: {
-        &quot;en&quot;: &quot;&lt;p&gt;A &lt;i&gt;calm&lt;/i&gt; space to relax, where the city meets the woods.&lt;/p&gt;&quot;,
-        &quot;nl&quot;: &quot;&lt;p&gt;Een &lt;i&gt;kalme&lt;/i&gt; buurt om te relaxen, waar de stad en het bos samensmelten.&lt;/p&gt;&quot;
-      }
+      &quot;name&quot;: &quot;Fausto Bins Sr.&quot;,
+      &quot;slug&quot;: &quot;fausto-bins-sr&quot;,
+      &quot;avatar&quot;: null
     }
   }
 }</pre>

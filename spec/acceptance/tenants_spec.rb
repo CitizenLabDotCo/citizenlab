@@ -9,8 +9,7 @@ resource "Tenants" do
   end
 
   get "api/v1/tenants/current" do
-    it "returns current tenant info" do
-      do_request
+    example_request "Get the current tenant" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.with_indifferent_access.dig(:data, :attributes, :host)).to eq 'example_org'

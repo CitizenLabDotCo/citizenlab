@@ -5,14 +5,9 @@ resource "Users" do
   header "Content-Type", "application/json"
 
   context "when not authenticated" do
-  #   get "api/v1/users" do
-  #     it "returns 401" do
-  #       do_request
-  #       expect(status).to eq 401
-  #     end
-  #   end
+
     get "api/v1/users/me" do
-      example_request "returns the authenticated user" do
+      example_request "Get the authenticated user" do
         expect(status).to eq(403)
       end
     end
@@ -26,8 +21,7 @@ resource "Users" do
     end
 
     get "api/v1/users" do
-      it "returns list of users" do
-        do_request
+      example_request "Get all users" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
@@ -37,14 +31,14 @@ resource "Users" do
     get "api/v1/users/:id" do
       let(:id) {@user.id}
 
-      it "returns a user by id" do
+      example_request "Get a user by id" do
         do_request
         expect(status).to eq 200
       end
     end
 
     get "api/v1/users/me" do
-      example_request "returns the authenticated user" do
+      example_request "Get the authenticated user" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq(@user.id)
       end
@@ -61,8 +55,7 @@ resource "Users" do
       let(:email) {Faker::Internet.email}
       let(:password) {Faker::Internet.password}
 
-      it "creates new user" do
-        do_request
+      example_request "Create a new user" do
         expect(response_status).to eq 201
       end
     end

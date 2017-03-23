@@ -8,7 +8,7 @@ end
 
 class Validatable2
   include ActiveModel::Validations
-  validates :multiloc_field, multiloc: true
+  validates :multiloc_field, multiloc: {presence: false}
   attr_accessor  :multiloc_field
 end
 
@@ -23,19 +23,28 @@ describe MultilocValidator do
     end
   end
 
-  context 'without a locale value' do
+  context 'with an empty locale value' do
     it 'is invalid when presence: true option is set' do
       presence_subject.multiloc_field = {}
       expect(presence_subject).to be_invalid
     end
 
-    it 'is valid when presence: true option is set' do
+    it 'is valid when presence: false option is set' do
       nonpresence_subject.multiloc_field = {}
       expect(nonpresence_subject).to be_valid
     end
   end
 
-  context 'with unsupprted languages' do
+  context 'with a nil locale value' do
+    it 'is invalid when presence: true option is set' do
+      expect(presence_subject).to be_invalid
+    end
+    it 'is valid when presence: false option is set' do
+      expect(nonpresence_subject).to be_valid
+    end
+  end
+
+  context 'with unsupported languages' do
     it 'is invalid' do
       presence_subject.multiloc_field = {"smalltalk" => "Hey how are you?"}
       expect(presence_subject).to be_invalid

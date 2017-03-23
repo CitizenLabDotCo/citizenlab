@@ -109,60 +109,23 @@ table th, table td {
       <h1>Users API</h1>
 
       <div class="article">
-        <h2>creates new user</h2>
-        <h3>POST api/v1/users</h3>
+        <h2>Get all users</h2>
+        <h3>GET api/v1/users</h3>
 
-          <h3>Parameters</h3>
-          <table class="parameters table table-striped table-bordered table-condensed">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="required">
-                    <span class="name">user[name]</span>
-                </td>
-                <td>
-                  <span class="description">User full name</span>
-                </td>
-              </tr>
-              <tr>
-                <td class="required">
-                    <span class="name">user[email]</span>
-                </td>
-                <td>
-                  <span class="description">E-mail address</span>
-                </td>
-              </tr>
-              <tr>
-                <td class="required">
-                    <span class="name">user[password]</span>
-                </td>
-                <td>
-                  <span class="description">Password</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTAxOTU0NDMsInN1YiI6ImVlMTM0MDM5LTM3MTUtNDZhNi1hZTY3LTMxZDg4Yjk2M2MxNyJ9.vnlLM680CsYkPKM3hj6DD75XFaG1pezgnqEz4b40GGc
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTAzNzgzMjIsInN1YiI6IjBlNjgyNTA4LTIzNGQtNGI0OS1hYzQwLTE5MTQ1MTE4MTk0ZSJ9.p7oWcGA7bVEh4Ihmemza7tyqwcbKz5lnobrEECxUufs
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/users</pre>
+          <pre class="request route highlight">GET api/v1/users</pre>
 
 
-            <h4>Body</h4>
-            <pre class="request body">{"user":{"name":"Napoleon Roberts","email":"kendall@ko.io","password":"OmV9H59b163aJ4Y8"}}</pre>
 
 
             <h3>Response</h3>
@@ -171,24 +134,28 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;e2555713ec98f447af714785d65eba50&quot;
+ETag: W/&quot;93530002ba893d1c0caa6e528e7b11c3&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: dccd02bf-26f1-4f6f-9628-5f7942d830f3
-X-Runtime: 0.014477
+X-Request-Id: dddc2922-3007-4b07-b9a0-8d6766abde9f
+X-Runtime: 0.011362
 Vary: Origin
-Content-Length: 150</pre>
+Content-Length: 147</pre>
             <h4>Status</h4>
-            <pre class="response status">201 Created</pre>
+            <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;data&quot;: {
-    &quot;id&quot;: &quot;fc8d6151-725e-4749-9d47-3403cdcc18ec&quot;,
-    &quot;type&quot;: &quot;users&quot;,
-    &quot;attributes&quot;: {
-      &quot;name&quot;: &quot;Napoleon Roberts&quot;,
-      &quot;slug&quot;: &quot;napoleon-roberts&quot;,
-      &quot;avatar&quot;: null
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;0e682508-234d-4b49-ac40-19145118194e&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;name&quot;: &quot;Kole Fay&quot;,
+        &quot;slug&quot;: &quot;kole-fay&quot;,
+        &quot;avatar&quot;: null
+      }
     }
+  ],
+  &quot;links&quot;: {
   }
 }</pre>
       </div>

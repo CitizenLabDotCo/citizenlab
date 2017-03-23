@@ -14,6 +14,8 @@ describe "seedfile" do
       expect(User.count).to be(1)
       expect(Topic.count).to be > 0
       expect(Area.count).to be > 0
+      expect(Lab.count).to be > 0
+      expect(Idea.count).to be > 0
     end
   end
 

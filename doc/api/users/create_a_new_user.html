@@ -109,23 +109,60 @@ table th, table td {
       <h1>Users API</h1>
 
       <div class="article">
-        <h2>returns list of users</h2>
-        <h3>GET api/v1/users</h3>
+        <h2>Create a new user</h2>
+        <h3>POST api/v1/users</h3>
 
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="required">
+                    <span class="name">user[name]</span>
+                </td>
+                <td>
+                  <span class="description">User full name</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="required">
+                    <span class="name">user[email]</span>
+                </td>
+                <td>
+                  <span class="description">E-mail address</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="required">
+                    <span class="name">user[password]</span>
+                </td>
+                <td>
+                  <span class="description">Password</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTAxOTU0NDMsInN1YiI6Ijg1YjY3M2I4LWUxNjItNGZjZS1iZmQ5LTk0MzBhYzcxMTEwMCJ9.nNtm12Cg5Na7PwsQUUzOoLt7l8b3c38VNg2NliVykOw
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTAzNzgzMjIsInN1YiI6IjRlNzA1NDFiLTljOTYtNGMwZS1hYzkyLTRhZDM2ZmJhZjc1MCJ9.lxmF2zR5LdcB1y-DpEfHPzY9WY4449-cb__npZo9als
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/users</pre>
+          <pre class="request route highlight">POST api/v1/users</pre>
 
 
+            <h4>Body</h4>
+            <pre class="request body">{"user":{"name":"Davin Zieme","email":"ansley@bayerrosenbaum.io","password":"JbNn7p0xIpX"}}</pre>
 
 
             <h3>Response</h3>
@@ -134,28 +171,24 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;f7e3a3a46c315766b52f20cb8bef04cd&quot;
+ETag: W/&quot;6429014c1e3b26a578813f13e4c68368&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: c9a0ec5e-dc01-4510-ae94-67744743af34
-X-Runtime: 0.012798
+X-Request-Id: 2e2f55e5-4fe9-4d39-9c7b-cb8ac5189746
+X-Runtime: 0.017678
 Vary: Origin
-Content-Length: 163</pre>
+Content-Length: 140</pre>
             <h4>Status</h4>
-            <pre class="response status">200 OK</pre>
+            <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;data&quot;: [
-    {
-      &quot;id&quot;: &quot;85b673b8-e162-4fce-bfd9-9430ac711100&quot;,
-      &quot;type&quot;: &quot;users&quot;,
-      &quot;attributes&quot;: {
-        &quot;name&quot;: &quot;Edythe Bashirian&quot;,
-        &quot;slug&quot;: &quot;edythe-bashirian&quot;,
-        &quot;avatar&quot;: null
-      }
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;28ed6dd9-5ae2-4f41-818c-d4040d2b74a0&quot;,
+    &quot;type&quot;: &quot;users&quot;,
+    &quot;attributes&quot;: {
+      &quot;name&quot;: &quot;Davin Zieme&quot;,
+      &quot;slug&quot;: &quot;davin-zieme&quot;,
+      &quot;avatar&quot;: null
     }
-  ],
-  &quot;links&quot;: {
   }
 }</pre>
       </div>

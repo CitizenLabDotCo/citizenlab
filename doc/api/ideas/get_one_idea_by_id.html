@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Users API</title>
+    <title>Ideas API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Users API</h1>
+      <h1>Ideas API</h1>
 
       <div class="article">
-        <h2>returns a user by id</h2>
-        <h3>GET api/v1/users/:id</h3>
+        <h2>Get one idea by id</h2>
+        <h3>GET api/v1/ideas/:id</h3>
 
 
 
@@ -118,12 +118,11 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTAxOTU0NDMsInN1YiI6IjdhODAxYmEyLWY5ZGUtNDBiNS04OWM5LTM4NzQ0OWFmZGVmYyJ9.CgIcf9pqsYCK2KvFpRdWYmNc6TVIOiSG-r6LrXcXQGs
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/users/7a801ba2-f9de-40b5-89c9-387449afdefc</pre>
+          <pre class="request route highlight">GET api/v1/ideas/dd768108-8816-420f-a857-e8987efb4eaf</pre>
 
 
 
@@ -134,25 +133,66 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;3668464a62da78b1f798e9c9a44477aa&quot;
+ETag: W/&quot;7ecb74ff8c8a3bfef8133cb97ba87127&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: da88457f-769e-47f1-8eb8-17e2bb8667c3
-X-Runtime: 0.007608
+X-Request-Id: ce139fba-08cf-4b4c-8084-fee46aa17a9c
+X-Runtime: 0.020023
 Vary: Origin
-Content-Length: 150</pre>
+Content-Length: 716</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;7a801ba2-f9de-40b5-89c9-387449afdefc&quot;,
-    &quot;type&quot;: &quot;users&quot;,
+    &quot;id&quot;: &quot;dd768108-8816-420f-a857-e8987efb4eaf&quot;,
+    &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
-      &quot;name&quot;: &quot;Edythe Bashirian&quot;,
-      &quot;slug&quot;: &quot;edythe-bashirian&quot;,
-      &quot;avatar&quot;: null
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Plant more trees&quot;,
+        &quot;nl&quot;: &quot;Plant meer bomen&quot;
+      },
+      &quot;body_multiloc&quot;: {
+        &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
+        &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
+      },
+      &quot;publication_status&quot;: &quot;published&quot;
+    },
+    &quot;relationships&quot;: {
+      &quot;topics&quot;: {
+        &quot;data&quot;: [
+
+        ]
+      },
+      &quot;areas&quot;: {
+        &quot;data&quot;: [
+
+        ]
+      },
+      &quot;author&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;39ded131-e35e-4de2-b99b-066b849aff49&quot;,
+          &quot;type&quot;: &quot;users&quot;
+        }
+      },
+      &quot;lab&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;dcc13eb8-d43a-4505-906f-e012f94cd4b1&quot;,
+          &quot;type&quot;: &quot;labs&quot;
+        }
+      }
     }
-  }
+  },
+  &quot;included&quot;: [
+    {
+      &quot;id&quot;: &quot;39ded131-e35e-4de2-b99b-066b849aff49&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;name&quot;: &quot;Dedrick Boehm&quot;,
+        &quot;slug&quot;: &quot;dedrick-boehm&quot;,
+        &quot;avatar&quot;: null
+      }
+    }
+  ]
 }</pre>
       </div>
     </div>

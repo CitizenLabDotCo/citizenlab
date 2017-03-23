@@ -1,6 +1,6 @@
 class Idea < ApplicationRecord
-  mount_uploader :images, IdeaImageUploader
-  mount_uploader :files, IdeaFileUploader
+  mount_uploaders :images, IdeaImageUploader
+  mount_uploaders :files, IdeaFileUploader
 
   belongs_to :lab
   belongs_to :author, class_name: 'User'
@@ -11,7 +11,7 @@ class Idea < ApplicationRecord
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
   validates :title_multiloc, presence: true, multiloc: {presence: true}
-  validates :body_multiloc, presence: true, multiloc: {presence: false}, unless: :draft?
+  validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
   validates :lab, presence: true
   validates :author, presence: true, unless: :draft?

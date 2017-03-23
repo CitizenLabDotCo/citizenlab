@@ -1,49 +1,42 @@
 class Api::V1::IdeasController < ApplicationController
   # TODO: fix
-  before_action :skip_authorization
-  before_action :skip_policy_scope
+  # before_action :skip_authorization
+  # before_action :skip_policy_scope
+  before_action :set_idea, only: [:show, :update, :destroy]
 
-  # list
   def index
-    send_success(find_all)
+    @ideas = policy_scope(Idea).includes(:author).page(params[:page])
+    render json: @ideas, include: ['author']
   end
 
-  # get
   def show
-    send_success(find)
-  rescue ActiveRecord::RecordNotFound
-    send_not_found
+    render json: @idea, include: ['author','topics','areas']
   end
 
   # insert
   def create
-    idea = Idea.new(idea_params)
-    idea.save!
-    send_success(idea, 201)
-  rescue ActiveRecord::RecordInvalid
-    send_error(idea.errors)
-  rescue ActiveRecord::RecordNotFound => e
-    send_error(e.message)
+    @idea = Idea.new(idea_params)
+    authorize @idea
+    if @idea.save
+      render json: @idea, status: :created, include: ['author','topics','areas']
+    else
+      render json: { errors: @idea.errors }, status: :unprocessable_entity
+    end
   end
 
   # patch
   def update
-    idea = find
-    idea.update!(idea_params)
-    send_success(idea)
-  rescue ActiveRecord::RecordNotFound
-    send_not_found
-  rescue ActiveRecord::RecordInvalid
-    send_error(idea.errors)
+    if @idea.update(idea_params)
+      render json: @idea, status: :ok, include: ['author','topics','areas']
+    else
+      render json: @idea.errors, status: :unprocessable_entity
+    end
   end
 
   # delete
   def destroy
-    idea = find
     idea.destroy
-    send_no_content
-  rescue ActiveRecord::RecordNotFound
-    send_not_found
+    head :ok
   end
 
   private
@@ -52,24 +45,22 @@ class Api::V1::IdeasController < ApplicationController
     false
   end
 
+  def set_idea
+    @idea = Idea.find params[:id]
+    authorize @idea
+  end
+
   def idea_params
     params.require(:idea).permit(
 			:publication_status,
 			:lab_id,
 			:author_id,
-			:author_name,
-			:images,
-			:files,
 			title_multiloc: [:en, :nl, :fr],
       body_multiloc: [:en, :nl, :fr],
+      images: [],
+      files: []
     )
   end
 
-  def find_all
-    Idea.all
-  end
 
-  def find
-    Idea.find(params[:id])
-  end
 end
