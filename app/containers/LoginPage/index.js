@@ -10,9 +10,11 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
+import {
+  Button,
+} from 'components/Foundation';
 import makeSelectLoginPage from './selectors';
 import messages from './messages';
-import SocialLoginBox from './SocialLoginBox';
 import Form from './Form';
 import { userLogin } from './actions';
 import socialAuth from '../../socialAuth';
@@ -28,6 +30,27 @@ export const LoggedInAsBox = () => (
     { socialAuth('facebook').isLoggedIn() ? 'logged in? yes' : 'logged in? no' }
   </Box>
 );
+
+export const SocialLoginBox = (props) => {
+  const handleLoginClick = () => {
+    socialAuth('facebook').login().then(props.onChange);
+  };
+
+  const handleLogoutClick = () => {
+    socialAuth('facebook').logout();
+    props.onChange();
+  };
+
+  return (
+    <Box>
+      <h4>Social Login</h4>
+
+      {socialAuth('facebook').isLoggedIn() ?
+        <Button onClick={() => handleLogoutClick()}>Logout</Button> :
+        <Button className="clLoginBtn" onClick={() => handleLoginClick()}>Facebook</Button>}
+    </Box>
+  );
+};
 
 export class LoginPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -46,11 +69,11 @@ export class LoginPage extends React.PureComponent { // eslint-disable-line reac
 
         <LoggedInAsBox />
 
+        <SocialLoginBox onChange={() => this.forceUpdate()} />
+
         <Box>
           <Form onSubmit={this.props.onSubmit} />
         </Box>
-
-        <SocialLoginBox onChange={() => this.forceUpdate()} />
       </div>
     );
   }
