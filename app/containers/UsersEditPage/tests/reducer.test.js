@@ -1,10 +1,10 @@
 
 import { fromJS } from 'immutable';
-import profilePageReducer from '../reducer';
+import usersEditPageReducer from '../reducer';
 
-describe('profilePageReducer', () => {
+describe('usersEditPageReducer', () => {
   it('returns the initial state', () => {
-    expect(profilePageReducer(undefined, {})).toEqual(fromJS({
+    expect(usersEditPageReducer(undefined, {})).toEqual(fromJS({
       loading: false,
       loadError: false,
       storeError: false,

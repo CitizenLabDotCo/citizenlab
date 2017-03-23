@@ -1,8 +1,23 @@
 {
+  "app.components.Breadcrumbs.header": "This is the Breadcrumbs component !",
   "app.components.HomePage.header": "HomePage",
-  "app.components.NotFoundPage.header": "Ow, it seems you got lost?",
-  "app.containers.IdeasPage.header": "IdeasPage",
+  "app.components.IdeaTag.header": "This is the IdeaTag component !",
   "app.components.Input.label": "Label",
-  "app.components.Label.header": "This is the Label component !",
-  "app.components.SignInPage.header": "SignInPage"
+  "app.components.NotFoundPage.header": "Ow, it seems you got lost?",
+  "app.components.SubmitIdeaForm.header": "This is the SubmitIdeaForm component !",
+  "app.containers.IdeasPage.header": "IdeasPage",
+  "app.containers.SignInPage.header": "SignInPage",
+  "app.containers.LoginPage.header": "LoginPage",
+  "app.containers.UsersEditPage.age": "Age",
+  "app.containers.UsersEditPage.email": "E-mail",
+  "app.containers.UsersEditPage.firstName": "First Name",
+  "app.containers.UsersEditPage.gender": "Gender",
+  "app.containers.UsersEditPage.header": "Profile",
+  "app.containers.UsersEditPage.lastName": "Last Name",
+  "app.containers.UsersEditPage.loadError": "Can't load existing profile",
+  "app.containers.UsersEditPage.loading": "Loading...",
+  "app.containers.UsersEditPage.processing": "Sending...",
+  "app.containers.UsersEditPage.store": "Profile stored",
+  "app.containers.UsersEditPage.storeError": "Can't store updated profile",
+  "app.containers.UsersNewPage.header": "UsersNewPage"
 }

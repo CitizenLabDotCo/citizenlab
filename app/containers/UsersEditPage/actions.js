@@ -1,6 +1,6 @@
 /*
  *
- * ProfilePage actions
+ * UsersEditPage actions
  *
  */
 

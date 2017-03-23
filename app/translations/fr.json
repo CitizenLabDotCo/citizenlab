@@ -1,6 +1,23 @@
 {
+  "app.components.Breadcrumbs.header": "",
   "app.components.HomePage.header": "",
+  "app.components.IdeaTag.header": "",
+  "app.components.Input.label": "",
   "app.components.NotFoundPage.header": "",
+  "app.components.SubmitIdeaForm.header": "",
   "app.containers.IdeasPage.header": "",
-  "app.containers.SignInPage.header": ""
+  "app.containers.SignInPage.header": "",
+  "app.containers.LoginPage.header": "",
+  "app.containers.UsersEditPage.age": "",
+  "app.containers.UsersEditPage.email": "",
+  "app.containers.UsersEditPage.firstName": "",
+  "app.containers.UsersEditPage.gender": "",
+  "app.containers.UsersEditPage.header": "",
+  "app.containers.UsersEditPage.lastName": "",
+  "app.containers.UsersEditPage.loadError": "",
+  "app.containers.UsersEditPage.loading": "",
+  "app.containers.UsersEditPage.processing": "",
+  "app.containers.UsersEditPage.store": "",
+  "app.containers.UsersEditPage.storeError": "",
+  "app.containers.UsersNewPage.header": ""
 }

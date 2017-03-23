@@ -1,6 +1,6 @@
 /*
  *
- * ProfilePage
+ * UsersEditPage
  *
  */
 
@@ -29,7 +29,7 @@ const ProfileDiv = styled.div`
   border: 1px solid #888;
 `;
 
-export class ProfilePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class UsersEditPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
     this.props.initData();
   }
@@ -40,9 +40,9 @@ export class ProfilePage extends React.PureComponent { // eslint-disable-line re
     return (
       <ProfileDiv>
         <Helmet
-          title="ProfilePage"
+          title="UsersEditPage"
           meta={[
-            { name: 'description', content: 'ProfilePage' },
+            { name: 'description', content: 'UsersEditPage' },
           ]}
         />
 
@@ -64,7 +64,7 @@ export class ProfilePage extends React.PureComponent { // eslint-disable-line re
   }
 }
 
-ProfilePage.propTypes = {
+UsersEditPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   loadError: PropTypes.bool.isRequired,
   storeError: PropTypes.bool.isRequired,
@@ -95,4 +95,4 @@ export function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);
+export default connect(mapStateToProps, mapDispatchToProps)(UsersEditPage);

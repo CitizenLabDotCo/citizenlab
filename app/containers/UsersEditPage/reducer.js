@@ -1,6 +1,6 @@
 /*
  *
- * ProfilePage reducer
+ * UsersEditPage reducer
  *
  */
 
@@ -10,7 +10,7 @@ import {
   STORE_PROFILE, PROFILE_STORE_SUCCESS, PROFILE_STORE_ERROR,
 } from './constants';
 
-export const profilePageInitialState = fromJS({
+export const usersEditPageInitialState = fromJS({
   loading: false,
   loadError: false,
   storeError: false,
@@ -19,7 +19,7 @@ export const profilePageInitialState = fromJS({
   userData: { },
 });
 
-export default function profilePageReducer(state = profilePageInitialState, action) {
+export default function usersEditPageReducer(state = usersEditPageInitialState, action) {
   switch (action.type) {
     case LOAD_PROFILE:
       return state
