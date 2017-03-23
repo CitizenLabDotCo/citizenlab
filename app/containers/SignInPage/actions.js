@@ -1,6 +1,6 @@
 /*
  *
- * LoginPage actions
+ * SignInPage actions
  *
  */
 

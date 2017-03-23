@@ -6,7 +6,7 @@
 //   DEFAULT_ACTION,
 // } from '../constants';
 //
-describe('LoginPage actions', () => {
+describe('SignInPage actions', () => {
   describe('Default Action', () => {
     it('has a type of DEFAULT_ACTION', () => {
       // const expected = {

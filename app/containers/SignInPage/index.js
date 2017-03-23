@@ -1,6 +1,6 @@
 /*
  *
- * LoginPage
+ * SignInPage
  *
  */
 
@@ -13,7 +13,7 @@ import { createStructuredSelector } from 'reselect';
 import {
   Button,
 } from 'components/Foundation';
-import makeSelectLoginPage from './selectors';
+import makeSelectSignInPage from './selectors';
 import messages from './messages';
 import Form from './Form';
 import { userLogin } from './actions';
@@ -52,14 +52,14 @@ export const SocialLoginBox = (props) => {
   );
 };
 
-export class LoginPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class SignInPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
         <Helmet
-          title="LoginPage"
+          title="SignInPage"
           meta={[
-            { name: 'description', content: 'Description of LoginPage' },
+            { name: 'description', content: 'Description of SignInPage' },
           ]}
         />
 
@@ -79,12 +79,12 @@ export class LoginPage extends React.PureComponent { // eslint-disable-line reac
   }
 }
 
-LoginPage.propTypes = {
+SignInPage.propTypes = {
   onSubmit: React.PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  LoginPage: makeSelectLoginPage(),
+  SignInPage: makeSelectSignInPage(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -93,4 +93,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);
