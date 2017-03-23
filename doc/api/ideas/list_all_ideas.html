@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ideas API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Ideas API</h1>
+
+      <div class="article">
+        <h2>List all ideas</h2>
+        <h3>GET api/v1/ideas</h3>
+
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/ideas</pre>
+
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;f7b6b0e0782b291aad179c11cc4a8134&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 4708013d-b4de-4442-9563-5d3793b91821
+X-Runtime: 0.117287
+Vary: Origin
+Content-Length: 3534</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;3c077013-2a6f-408d-841f-d7c5ba1290bc&quot;,
+      &quot;type&quot;: &quot;ideas&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        },
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
+        },
+        &quot;publication_status&quot;: &quot;published&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;topics&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;author&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;b8f89f73-714a-488c-8d4b-558467f60db0&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;lab&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;b6e9667a-d0d3-4275-a8e6-6a78c0c1ec3a&quot;,
+            &quot;type&quot;: &quot;labs&quot;
+          }
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;61f74050-556c-4da3-be0a-ac3e1a561f48&quot;,
+      &quot;type&quot;: &quot;ideas&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        },
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
+        },
+        &quot;publication_status&quot;: &quot;published&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;topics&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;author&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;574fc80a-8ae7-496e-b295-1c4372ab20e6&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;lab&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;3accd205-9401-4a57-8c9c-7af4c62077ef&quot;,
+            &quot;type&quot;: &quot;labs&quot;
+          }
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;ebc78ea2-43bd-47e6-b862-41df688d609e&quot;,
+      &quot;type&quot;: &quot;ideas&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        },
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
+        },
+        &quot;publication_status&quot;: &quot;published&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;topics&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;author&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;28038c57-55c2-4c75-b8e2-5c50b43ed933&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;lab&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;ed0f8271-0f98-4f36-9a34-d511de4c8c78&quot;,
+            &quot;type&quot;: &quot;labs&quot;
+          }
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;1d009ee2-59b9-4cab-8d6b-d0ae06dd55d1&quot;,
+      &quot;type&quot;: &quot;ideas&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        },
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
+        },
+        &quot;publication_status&quot;: &quot;published&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;topics&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;author&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;eebcb762-0e40-4fdb-bdae-2db5b140c8b2&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;lab&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;729e8055-da3f-47ce-860d-1c0bb34e05f4&quot;,
+            &quot;type&quot;: &quot;labs&quot;
+          }
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;9dac1dc5-9210-4de2-8d5a-c4e8e7a33ea9&quot;,
+      &quot;type&quot;: &quot;ideas&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        },
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
+        },
+        &quot;publication_status&quot;: &quot;published&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;topics&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;author&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;9c07cafb-d764-4e7d-8121-59895f2e47a4&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;lab&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;8a821381-60e3-4c74-b560-f4df38337494&quot;,
+            &quot;type&quot;: &quot;labs&quot;
+          }
+        }
+      }
+    }
+  ],
+  &quot;included&quot;: [
+    {
+      &quot;id&quot;: &quot;b8f89f73-714a-488c-8d4b-558467f60db0&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;name&quot;: &quot;Brady Windler&quot;,
+        &quot;slug&quot;: &quot;brady-windler&quot;,
+        &quot;avatar&quot;: null
+      }
+    },
+    {
+      &quot;id&quot;: &quot;574fc80a-8ae7-496e-b295-1c4372ab20e6&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;name&quot;: &quot;Gregg Schumm&quot;,
+        &quot;slug&quot;: &quot;gregg-schumm&quot;,
+        &quot;avatar&quot;: null
+      }
+    },
+    {
+      &quot;id&quot;: &quot;28038c57-55c2-4c75-b8e2-5c50b43ed933&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;name&quot;: &quot;Ms. Laurianne Paucek&quot;,
+        &quot;slug&quot;: &quot;ms-laurianne-paucek&quot;,
+        &quot;avatar&quot;: null
+      }
+    },
+    {
+      &quot;id&quot;: &quot;eebcb762-0e40-4fdb-bdae-2db5b140c8b2&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;name&quot;: &quot;Amina Smitham MD&quot;,
+        &quot;slug&quot;: &quot;amina-smitham-md&quot;,
+        &quot;avatar&quot;: null
+      }
+    },
+    {
+      &quot;id&quot;: &quot;9c07cafb-d764-4e7d-8121-59895f2e47a4&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;name&quot;: &quot;Candido Davis PhD&quot;,
+        &quot;slug&quot;: &quot;candido-davis-phd&quot;,
+        &quot;avatar&quot;: null
+      }
+    }
+  ],
+  &quot;links&quot;: {
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Users API</title>
+    <title>Tenants API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,24 +106,23 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Users API</h1>
+      <h1>Tenants API</h1>
 
       <div class="article">
-        <h2>returns the authenticated user</h2>
-        <h3>GET api/v1/users/me</h3>
+        <h2>Get the current tenant</h2>
+        <h3>GET api/v1/tenants/current</h3>
 
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTAxOTU0NDMsInN1YiI6IjUwMWU2Mzc2LTczMDAtNDgzZS1hN2MwLTdhYmQ1ZTRmZjEzMCJ9.U8TDkxmPZWa4tZ7nbhTiDVukoySE_tNda9Pz2wT_UJU
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTAzNzgzMjIsInN1YiI6IjQ5YTEzNDc2LTBhNjItNGY5Zi1hZjc4LWNiZTM5MDlhNjRkYyJ9.uO_W0Sew3cCLtM_JOBORGCkNkr0uYCJgHTqLWLrZY1s
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/users/me</pre>
+          <pre class="request route highlight">GET api/v1/tenants/current</pre>
 
 
 
@@ -134,23 +133,39 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;2ef1a9e0bbc60415122c0d26f8ab1b0e&quot;
+ETag: W/&quot;7f59da564ee40ef7d9c98e6bc531ac2f&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 186710cc-e6af-4962-a4db-e51da8468cb3
-X-Runtime: 0.006361
+X-Request-Id: 36e892cd-d90a-4c22-a882-3485ec191ae1
+X-Runtime: 0.010268
 Vary: Origin
-Content-Length: 150</pre>
+Content-Length: 284</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;501e6376-7300-483e-a7c0-7abd5e4ff130&quot;,
-    &quot;type&quot;: &quot;users&quot;,
+    &quot;id&quot;: &quot;46df3391-7b6a-4d71-bab0-b729ea4cec35&quot;,
+    &quot;type&quot;: &quot;tenants&quot;,
     &quot;attributes&quot;: {
-      &quot;name&quot;: &quot;Edythe Bashirian&quot;,
-      &quot;slug&quot;: &quot;edythe-bashirian&quot;,
-      &quot;avatar&quot;: null
+      &quot;name&quot;: &quot;test-tenant&quot;,
+      &quot;host&quot;: &quot;example_org&quot;,
+      &quot;settings&quot;: {
+        &quot;core&quot;: {
+          &quot;allowed&quot;: true,
+          &quot;enabled&quot;: true,
+          &quot;locales&quot;: [
+            &quot;en&quot;,
+            &quot;fr&quot;,
+            &quot;nl&quot;
+          ],
+          &quot;organization&quot;: {
+            &quot;en&quot;: &quot;Liege&quot;,
+            &quot;fr&quot;: &quot;Liege&quot;,
+            &quot;nl&quot;: &quot;Luik&quot;
+          },
+          &quot;default_locale&quot;: &quot;en&quot;
+        }
+      }
     }
   }
 }</pre>

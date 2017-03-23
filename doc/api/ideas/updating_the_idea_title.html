@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ideas API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Ideas API</h1>
+
+      <div class="article">
+        <h2>Updating the idea title</h2>
+        <h3>PATCH api/v1/ideas/:id</h3>
+
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="required">
+                    <span class="name">idea[lab_id]</span>
+                </td>
+                <td>
+                  <span class="description">The idea of the lab that hosts the idea</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">idea[author_id]</span>
+                </td>
+                <td>
+                  <span class="description">The user id of the user owning the idea</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="required">
+                    <span class="name">idea[publication_status]</span>
+                </td>
+                <td>
+                  <span class="description">Either [&quot;draft&quot;, &quot;published&quot;, &quot;closed&quot;, &quot;spam&quot;].join(&#39;, &#39;)}</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="required">
+                    <span class="name">idea[title_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Multi-locale field with the idea title</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">idea[body_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Multi-locale field with the idea body</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">idea[images]</span>
+                </td>
+                <td>
+                  <span class="description">Multipart form encoded images</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">idea[files]</span>
+                </td>
+                <td>
+                  <span class="description">Multipart form encoded files</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTAzNzgzMjEsInN1YiI6IjQyZWJjZWRmLWQzMjgtNDdmZS1iN2FlLWNhOGU3MmFiZjA1MCJ9.MqKv_bXkbi54ExCEziqAW-mJm0evod9Fr9HMYs40QYM
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">PATCH api/v1/ideas/954e8c4e-522d-4e62-81d8-b293d0fb5d9f</pre>
+
+
+            <h4>Body</h4>
+            <pre class="request body">{"idea":{"title_multiloc":{"en":"Changed title"}}}</pre>
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;51f545485333d151b9c313049f7f193e&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 5729c5cc-a035-4402-ac84-06b0a3394e13
+X-Runtime: 0.031403
+Vary: Origin
+Content-Length: 689</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;954e8c4e-522d-4e62-81d8-b293d0fb5d9f&quot;,
+    &quot;type&quot;: &quot;ideas&quot;,
+    &quot;attributes&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Changed title&quot;
+      },
+      &quot;body_multiloc&quot;: {
+        &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
+        &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
+      },
+      &quot;publication_status&quot;: &quot;published&quot;
+    },
+    &quot;relationships&quot;: {
+      &quot;topics&quot;: {
+        &quot;data&quot;: [
+
+        ]
+      },
+      &quot;areas&quot;: {
+        &quot;data&quot;: [
+
+        ]
+      },
+      &quot;author&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;42ebcedf-d328-47fe-b7ae-ca8e72abf050&quot;,
+          &quot;type&quot;: &quot;users&quot;
+        }
+      },
+      &quot;lab&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;bd860b6f-e348-495c-b803-f5e3077d6e55&quot;,
+          &quot;type&quot;: &quot;labs&quot;
+        }
+      }
+    }
+  },
+  &quot;included&quot;: [
+    {
+      &quot;id&quot;: &quot;42ebcedf-d328-47fe-b7ae-ca8e72abf050&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;name&quot;: &quot;Gonzalo Ortiz&quot;,
+        &quot;slug&quot;: &quot;gonzalo-ortiz&quot;,
+        &quot;avatar&quot;: null
+      }
+    }
+  ]
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

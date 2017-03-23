@@ -1,4 +1,4 @@
-class UserPolicy < ApplicationPolicy
+class IdeaPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -12,19 +12,21 @@ class UserPolicy < ApplicationPolicy
     end
   end
 
-  def index?
-    user
+  def create?
+    record.draft? || user
   end
 
   def show?
     true
   end
 
-  def me?
-    true
+  def update?
+    record.draft? || (user && record.author_id == user.id)
   end
 
-  def update?
-    true
+  def destroy?
+    record.draft? || (user && record.author_id == user.id)
   end
+
+
 end
