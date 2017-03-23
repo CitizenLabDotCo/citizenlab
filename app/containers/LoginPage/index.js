@@ -13,7 +13,7 @@ import { createStructuredSelector } from 'reselect';
 import makeSelectLoginPage from './selectors';
 import messages from './messages';
 import SocialLoginBox from './SocialLoginBox';
-import LoginFormBox from './LoginFormBox';
+import Form from './Form';
 import { userLogin } from './actions';
 import socialAuth from '../../socialAuth';
 
@@ -46,7 +46,9 @@ export class LoginPage extends React.PureComponent { // eslint-disable-line reac
 
         <LoggedInAsBox />
 
-        <LoginFormBox onSubmit={this.props.onLoginFormSubmit} />
+        <Box>
+          <Form onSubmit={this.props.onSubmit} />
+        </Box>
 
         <SocialLoginBox onChange={() => this.forceUpdate()} />
       </div>
@@ -55,7 +57,7 @@ export class LoginPage extends React.PureComponent { // eslint-disable-line reac
 }
 
 LoginPage.propTypes = {
-  onLoginFormSubmit: React.PropTypes.func,
+  onSubmit: React.PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -64,7 +66,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onLoginFormSubmit: (values) => dispatch(userLogin(values)),
+    onSubmit: (values) => dispatch(userLogin(values)),
   };
 }
 
