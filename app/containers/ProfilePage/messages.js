@@ -40,13 +40,13 @@ export default defineMessages({
   },
   loadError: {
     id: 'app.containers.ProfilePage.loadError',
-    defaultMessage: 'Can\'t load existing profile',
+    defaultMessage: 'Canb\'t load existing profile',
   },
   storeError: {
-    id: 'app.containers.ProfilePage.loading',
+    id: 'app.containers.ProfilePage.storeError',
     defaultMessage: 'Can\'t store updated profile',
   },
-  store: {
+  stored: {
     id: 'app.containers.ProfilePage.store',
     defaultMessage: 'Profile stored',
   },

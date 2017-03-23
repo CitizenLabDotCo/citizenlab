@@ -8,7 +8,7 @@
 
 // const generator = defaultSaga();
 
-describe('defaultSaga Saga', () => {
+describe('sagas', () => {
   it('should dispatch either LOAD_DRAFT_SUCCESS or LOAD_DRAFT_ERROR when LOAD_DRAFT action is received', () => {
     // TODO
     expect(true).toEqual(true);

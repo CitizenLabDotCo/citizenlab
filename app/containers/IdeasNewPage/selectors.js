@@ -27,10 +27,28 @@ const makeSelectStored = () => createSelector(
   (submitIdeaState) => submitIdeaState.getIn(['draft', 'stored'])
 );
 
+const makeSelectSubmitting = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'submitting'])
+);
+
+const makeSelectSubmitError = () => createSelector(
+    selectSubmitIdea,
+    (submitIdeaState) => submitIdeaState.getIn(['draft', 'submitError'])
+);
+
+const makeSelectSubmitted = () => createSelector(
+    selectSubmitIdea,
+    (submitIdeaState) => submitIdeaState.getIn(['draft', 'submitted'])
+);
+
 export {
   makeSelectLoading,
   makeSelectLoadError,
   makeSelectStoreError,
   makeSelectContent,
   makeSelectStored,
+  makeSelectSubmitting,
+  makeSelectSubmitError,
+  makeSelectSubmitted,
 };

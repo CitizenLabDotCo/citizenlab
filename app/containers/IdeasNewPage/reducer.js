@@ -24,7 +24,7 @@ export const submitIdeaPageInitialState = fromJS({
   },
 });
 
-function submitIdeaPageReducer(state = submitIdeaPageInitialState, action) {
+function ideasNewPageReducer(state = submitIdeaPageInitialState, action) {
   switch (action.type) {
     case LOAD_DRAFT:
       return state
@@ -71,4 +71,4 @@ function submitIdeaPageReducer(state = submitIdeaPageInitialState, action) {
   }
 }
 
-export default submitIdeaPageReducer;
+export default ideasNewPageReducer;

@@ -12,26 +12,33 @@ import { Row, Column, Button, Label } from 'components/Foundation';
 import styled from 'styled-components';
 import Breadcrumbs from 'components/Breadcrumbs';
 import draftToHtml from 'draftjs-to-html';
-
+import { FormattedMessage } from 'react-intl';
 import {
   makeSelectStored,
   makeSelectContent,
   makeSelectLoadError,
   makeSelectLoading,
-  makeSelectStoreError,
+  makeSelectStoreError, makeSelectSubmitError, makeSelectSubmitted, makeSelectSubmitting,
 } from './selectors';
 import { storeDraft, loadDraft, saveDraft, storeIdea } from './actions';
 import IdeaEditorWrapper from './IdeaEditorWrapper';
+import messages from './messages';
 
 export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
 
+    // bind event handlers
     this.saveDraft = this.saveDraft.bind(this);
+    this.storeIdea = this.storeIdea.bind(this);
   }
 
   saveDraft() {
     this.props.saveDraftClick(this.props.content);
+  }
+
+  storeIdea() {
+    this.props.publishIdeaClick(this.props.content);
   }
 
   render() {
@@ -80,10 +87,14 @@ export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line
             <Row>
               {/* TODO: style buttons */}
               <Column large={5} offsetOnLarge={1}>
-                <Button onClick={this.saveDraft}>Save as draft</Button>
+                <Button onClick={this.saveDraft}>
+                  <FormattedMessage {...messages.saveAsDraft} />
+                </Button>
               </Column>
               <Column large={5} offsetOnLarge={1}>
-                <Button>Publish</Button>
+                <Button onClick={this.storeIdea}>
+                  <FormattedMessage {...messages.publish} />
+                </Button>
               </Column>
             </Row>
             <Row isExpanded>
@@ -103,6 +114,7 @@ export class SubmitIdeaPage extends React.PureComponent { // eslint-disable-line
 SubmitIdeaPage.propTypes = {
   className: PropTypes.string,
   saveDraftClick: PropTypes.func.isRequired,
+  publishIdeaClick: PropTypes.func.isRequired,
   content: PropTypes.string,
 };
 
@@ -111,6 +123,9 @@ const mapStateToProps = createStructuredSelector({
   loadError: makeSelectLoadError(),
   storeError: makeSelectStoreError(),
   content: makeSelectContent(),
+  submitError: makeSelectSubmitError(),
+  submitted: makeSelectSubmitted(),
+  submitting: makeSelectSubmitting(),
   stored: makeSelectStored(),
 });
 
@@ -134,6 +149,10 @@ export function mapDispatchToProps(dispatch) {
       const htmlContent = draftToHtml(content);
 
       dispatch(storeIdea(htmlContent));
+    },
+    publishIdeaClick(content) {
+      // content is already in HTML format
+      dispatch(storeIdea(content));
     },
   };
 }

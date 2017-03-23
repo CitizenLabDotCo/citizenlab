@@ -3,8 +3,8 @@
 
 // const selector = makeSelectSubmitIdeaPageDomain();
 
-describe('makeSelectSubmitIdeaPageDomain', () => {
-  it('Expect to have unit tests specified', () => {
+describe('selectors', () => {
+  it('should have tests in the future', () => {
     expect(true).toEqual(true);
   });
 });

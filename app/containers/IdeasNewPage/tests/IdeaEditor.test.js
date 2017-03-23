@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import IdeaEditor from '../IdeaEditor';
 
-describe('<deaEditor />', () => {
+describe('<IdeaEditor />', () => {
   it('editor should render', () => {
     const jestFn = jest.fn();
     const props = {
