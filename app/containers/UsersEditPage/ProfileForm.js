@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react';
 import { actions, LocalForm } from 'react-redux-form';
 import { FormattedMessage } from 'react-intl';
+import { Row, Column } from 'components/Foundation';
 
 import Input from '../../components/Input/index';
 import messages from './messages';
+import AvatarUpload from './AvatarUpload';
 
 const LabelInputPair = (props) => (
   <div>
@@ -19,14 +21,6 @@ LabelInputPair.propTypes = {
 };
 
 export default class ProfileForm extends React.PureComponent {
-  constructor() {
-    super();
-
-    this.state = {
-      initialDataLoaded: false,
-    };
-  }
-
   componentWillReceiveProps(nextProps) {
     const user = nextProps.user;
     if (user) {
@@ -44,9 +38,16 @@ export default class ProfileForm extends React.PureComponent {
         }}
         onSubmit={this.props.onFormSubmit}
       >
-        <LabelInputPair id="firstName" />
-        <LabelInputPair id="lastName" />
-        <LabelInputPair id="email" />
+        <Row>
+          <Column large={6}>
+            <LabelInputPair id="firstName" />
+            <LabelInputPair id="lastName" />
+            <LabelInputPair id="email" />
+          </Column>
+          <Column large={6}>
+            <AvatarUpload />
+          </Column>
+        </Row>
         <LabelInputPair id="gender" />
         <LabelInputPair id="age" />
 

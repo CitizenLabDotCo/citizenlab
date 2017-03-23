@@ -35,7 +35,7 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
   }
 
   render() {
-    const { loading, loadError, storeError, processing, stored, userData } = this.props;
+    const { loading, loadError, storeError, processing, stored, userData, onDrop } = this.props;
 
     return (
       <ProfileDiv>
@@ -46,8 +46,6 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
           ]}
         />
 
-        <h1><FormattedMessage {...messages.header} /></h1>
-
         {loading && <FormattedMessage {...messages.loading} />}
         {loadError && <FormattedMessage {...messages.loadError} />}
         {storeError && <FormattedMessage {...messages.storeError} />}
@@ -57,7 +55,7 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
         <ProfileForm
           user={userData}
           onFormSubmit={this.props.onProfileFormSubmit}
-          stored={this.props.stored || this.props.storeError}
+          onAvatarDrop={onDrop}
         />
       </ProfileDiv>
     );
@@ -73,6 +71,7 @@ UsersEditPage.propTypes = {
   stored: PropTypes.bool.isRequired,
   initData: PropTypes.func.isRequired,
   onProfileFormSubmit: React.PropTypes.func,
+  onDrop: React.PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -91,6 +90,9 @@ export function mapDispatchToProps(dispatch) {
     },
     onProfileFormSubmit: (values) => {
       dispatch(storeProfile(values));
+    },
+    uploadAvatar() {
+      // TODO (put file here from AvatarUpload component)
     },
   };
 }
