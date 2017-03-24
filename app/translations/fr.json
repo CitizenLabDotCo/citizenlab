@@ -9,6 +9,10 @@
   "app.containers.SignInPage.header": "",
   "app.containers.LoginPage.header": "",
   "app.containers.UsersEditPage.age": "",
+  "app.containers.UsersEditPage.avatarLoadError": "",
+  "app.containers.UsersEditPage.avatarStoreError": "",
+  "app.containers.UsersEditPage.clickToUpload": "",
+  "app.containers.UsersEditPage.dragToUpload": "",
   "app.containers.UsersEditPage.email": "",
   "app.containers.UsersEditPage.firstName": "",
   "app.containers.UsersEditPage.gender": "",
@@ -17,7 +21,7 @@
   "app.containers.UsersEditPage.loadError": "",
   "app.containers.UsersEditPage.loading": "",
   "app.containers.UsersEditPage.processing": "",
-  "app.containers.UsersEditPage.store": "",
   "app.containers.UsersEditPage.storeError": "",
+  "app.containers.UsersEditPage.stored": "",
   "app.containers.UsersNewPage.header": ""
 }

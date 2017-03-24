@@ -9,6 +9,10 @@
   "app.containers.SignInPage.header": "SignInPage",
   "app.containers.LoginPage.header": "LoginPage",
   "app.containers.UsersEditPage.age": "Age",
+  "app.containers.UsersEditPage.avatarLoadError": "Existing avatar coudln't be loaded",
+  "app.containers.UsersEditPage.avatarStoreError": "Can't change avatar right now",
+  "app.containers.UsersEditPage.clickToUpload": "Click",
+  "app.containers.UsersEditPage.dragToUpload": "Drop to upload new avatar",
   "app.containers.UsersEditPage.email": "E-mail",
   "app.containers.UsersEditPage.firstName": "First Name",
   "app.containers.UsersEditPage.gender": "Gender",
@@ -17,7 +21,7 @@
   "app.containers.UsersEditPage.loadError": "Can't load existing profile",
   "app.containers.UsersEditPage.loading": "Loading...",
   "app.containers.UsersEditPage.processing": "Sending...",
-  "app.containers.UsersEditPage.store": "Profile stored",
   "app.containers.UsersEditPage.storeError": "Can't store updated profile",
+  "app.containers.UsersEditPage.stored": "Profile stored",
   "app.containers.UsersNewPage.header": "UsersNewPage"
 }
