@@ -58,4 +58,12 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.avatarStoreError',
     defaultMessage: 'Can\'t change avatar right now',
   },
+  dragToUpload: {
+    id: 'app.containers.UsersEditPage.dragToUpload',
+    defaultMessage: 'Drop to upload new avatar',
+  },
+  clickToUpload: {
+    id: 'app.containers.UsersEditPage.clickToUpload',
+    defaultMessage: 'Click',
+  },
 });

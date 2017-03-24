@@ -6,7 +6,7 @@ import {
   profileLoadError, profileLoaded, profileStored, storeProfileError, avatarStored,
   storeAvatarError, avatarLoaded, loadAvatarError,
 } from './actions';
-import { LOAD_PROFILE, STORE_AVATAR, STORE_PROFILE } from './constants';
+import { LOAD_AVATAR, LOAD_PROFILE, STORE_AVATAR, STORE_PROFILE } from './constants';
 
 // Individual exports for testing
 export function* getProfile() {
@@ -76,7 +76,7 @@ export function* storeAvatar() {
 }
 
 export function* loadAvatar() {
-  yield takeLatest(STORE_AVATAR, getAvatar);
+  yield takeLatest(LOAD_AVATAR, getAvatar);
 }
 
 // All sagas to be loaded

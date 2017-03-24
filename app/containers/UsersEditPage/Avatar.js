@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
-import { Label } from 'components/Foundation';
+import { Label, Button } from 'components/Foundation';
 import { FormattedMessage } from 'react-intl';
+import styled from 'styled-components';
 import messages from './messages';
 
 class Avatar extends React.PureComponent {
@@ -12,7 +13,10 @@ class Avatar extends React.PureComponent {
     this.onDrop = this.onDrop.bind(this);
   }
 
-  onDrop(files) {
+  onDrop(result) {
+    // drag and normal input
+    const files = (result.target && result.target.files ? result.target.files : result);
+
     if (files.length < 1) {
       this.props.onAvatarUpload(null);
       return;
@@ -52,6 +56,34 @@ class Avatar extends React.PureComponent {
   render() {
     const { avatarBase64, avatarLoadError, avatarStoreError } = this.props;
 
+    const FileInput = (props) => (
+      <input
+        type="file"
+        onChange={this.onDrop}
+        accept="image/*"
+        className={props.className}
+      />
+    );
+    const StyledFileInput = styled(FileInput)`
+      opacity: 0;
+      z-index: 1;
+      width: 100px;
+      margin-left: 10px;
+      display: inline-block;
+      position: absolute;
+      height: 40px;
+    `;
+    const FileButton = (props) => (
+      <Button className={props.className}>
+        <FormattedMessage {...messages.clickToUpload} />
+      </Button>
+    );
+    const StyledFileButton = styled(FileButton)`
+      width: 100px;
+      margin-left: 10px;
+      z-index: 2;
+    `;
+
     return (
       <div>
         <Dropzone
@@ -61,7 +93,13 @@ class Avatar extends React.PureComponent {
         >
           { this.dropzoneImageStyle(avatarBase64) }
         </Dropzone>
-        <div>Drop to upload new avatar</div>
+        <div>
+          <FormattedMessage {...messages.dragToUpload} /> or
+          <span>
+            <StyledFileInput />
+            <StyledFileButton />
+          </span>
+        </div>
 
         {avatarLoadError && <Label>
           <FormattedMessage {...messages.avatarLoadError} />
