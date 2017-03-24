@@ -57,6 +57,21 @@ const makeSelectTitleLength = () => createSelector(
   (submitIdeaState) => submitIdeaState.getIn(['draft', 'titleLength'])
 );
 
+const makeSelectAttachments = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'attachments'])
+);
+
+const makeSelectLoadAttachmentsError = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'loadAttachmentsError'])
+);
+
+const makeSelectStoreAttachmentError = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'storeAttachmentError'])
+);
+
 export {
   makeSelectLoading,
   makeSelectLoadError,
@@ -69,4 +84,7 @@ export {
   makeSelectLongTitleError,
   makeSelectShortTitleError,
   makeSelectTitleLength,
+  makeSelectAttachments,
+  makeSelectLoadAttachmentsError,
+  makeSelectStoreAttachmentError,
 };

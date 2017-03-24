@@ -54,4 +54,12 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.charactersLeft',
     defaultMessage: '{charsLeft} characters left',
   },
+  loadAttachmentsError: {
+    id: 'app.containers.IdeasNewPage.loadAttachmentsError',
+    defaultMessage: 'Coudln\'t laod existing attachments',
+  },
+  storeAttachmentError: {
+    id: 'app.containers.IdeasNewPage.charactersLeft',
+    defaultMessage: 'Coudln\'t upload attachment',
+  },
 });

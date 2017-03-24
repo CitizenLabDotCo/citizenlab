@@ -25,6 +25,9 @@ export const ideasNewPageInitialState = fromJS({
     shortTitleError: true,
     longTitleError: false,
     titleLength: 0,
+    attachments: [],
+    loadAttachmentsError: false,
+    storeAttachmentError: false,
   },
 });
 
