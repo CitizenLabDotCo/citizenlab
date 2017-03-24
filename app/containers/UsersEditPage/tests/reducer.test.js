@@ -11,6 +11,10 @@ describe('usersEditPageReducer', () => {
       processing: false,
       stored: false,
       userData: { },
+      avatarBase64: null,
+      avatarStored: false,
+      avatarLoadError: false,
+      avatarStoreError: false,
     }));
   });
 

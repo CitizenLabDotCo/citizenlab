@@ -46,8 +46,16 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.storeError',
     defaultMessage: 'Can\'t store updated profile',
   },
-  store: {
-    id: 'app.containers.UsersEditPage.store',
+  stored: {
+    id: 'app.containers.UsersEditPage.stored',
     defaultMessage: 'Profile stored',
+  },
+  avatarLoadError: {
+    id: 'app.containers.UsersEditPage.avatarLoadError',
+    defaultMessage: 'Existing avatar coudln\'t be loaded',
+  },
+  avatarStoreError: {
+    id: 'app.containers.UsersEditPage.avatarStoreError',
+    defaultMessage: 'Can\'t change avatar right now',
   },
 });

@@ -2,12 +2,15 @@ import request from 'utils/request';
 import { call, put } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
 
-import { profileLoadError, profileLoaded, profileStored, storeProfileError } from './actions';
-import { LOAD_PROFILE, STORE_PROFILE } from './constants';
+import {
+  profileLoadError, profileLoaded, profileStored, storeProfileError, avatarStored,
+  storeAvatarError, avatarLoaded, loadAvatarError,
+} from './actions';
+import { LOAD_PROFILE, STORE_AVATAR, STORE_PROFILE } from './constants';
 
 // Individual exports for testing
 export function* getProfile() {
-  const requestURL = 'http://localhost:3030/profile-get';
+  const requestURL = 'http://demo9193680.mockable.io/profile-get';
 
   try {
     const profile = yield call(request, requestURL);
@@ -19,7 +22,7 @@ export function* getProfile() {
 }
 
 export function* postProfile(action) {
-  const requestURL = 'http://localhost:3030/profile-post';
+  const requestURL = 'http://demo9193680.mockable.io/profile-post';
 
   try {
     const response = yield call(request, requestURL, {
@@ -29,7 +32,34 @@ export function* postProfile(action) {
 
     yield put(profileStored(response, action.userData));
   } catch (err) {
-    yield put(storeProfileError(err, action.userData));
+    yield put(storeProfileError(action.userData));
+  }
+}
+
+export function* getAvatar() {
+  const requestURL = 'http://demo9193680.mockable.io/avatar-get';
+
+  try {
+    const response = yield call(request, requestURL);
+
+    yield put(avatarLoaded(response.avatar));
+  } catch (err) {
+    yield put(loadAvatarError(err));
+  }
+}
+
+export function* postAvatar(action) {
+  const requestURL = 'http://demo9193680.mockable.io/avatar-post';
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify(action.avatar),
+    });
+
+    yield put(avatarStored(response.avatar));
+  } catch (err) {
+    yield put(storeAvatarError(err));
   }
 }
 
@@ -41,8 +71,18 @@ export function* loadProfile() {
   yield takeLatest(LOAD_PROFILE, getProfile);
 }
 
+export function* storeAvatar() {
+  yield takeLatest(STORE_AVATAR, postAvatar);
+}
+
+export function* loadAvatar() {
+  yield takeLatest(STORE_AVATAR, getAvatar);
+}
+
 // All sagas to be loaded
 export default [
   loadProfile,
   storeProfile,
+  storeAvatar,
+  loadAvatar,
 ];
