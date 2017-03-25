@@ -20,15 +20,17 @@ import {
   makeSelectLoading,
   makeSelectStoreError, makeSelectSubmitError, makeSelectSubmitted, makeSelectSubmitting,
   makeSelectShortTitleError, makeSelectLongTitleError, makeSelectTitleLength, makeSelectAttachments,
-  makeSelectLoadAttachmentsError, makeSelectStoreAttachmentError,
+  makeSelectLoadAttachmentsError, makeSelectStoreAttachmentError, makeSelectImages, makeSelectLoadImagesError,
+  makeSelectStoreImageError,
 } from './selectors';
 import {
   storeDraft, loadDraft, saveDraft, storeIdea, setTitle, loadAttachments,
-  storeAttachmentError, storeAttachment,
+  storeAttachmentError, storeAttachment, storeImage, storeImageError, loadImages,
 } from './actions';
 import IdeaEditorWrapper from './IdeaEditorWrapper';
 import messages from './messages';
 import AttachmentList from './AttachmentList';
+import ImageList from './ImageList';
 
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -88,7 +90,13 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
             </Row>
             <Row>
               <StyledLabel>Add image(s)</StyledLabel>
-              {/* TODO: add images image here*/}
+              <ImageList
+                loadImages={this.props.loadImages}
+                storeImage={this.props.storeImage}
+                images={this.props.images}
+                storeImageError={this.props.storeImageError}
+                loadImagesError={this.props.loadImagesError}
+              />
             </Row>
           </Column>
           <Column large={4}>
@@ -137,6 +145,11 @@ IdeasNewPage.propTypes = {
   attachments: PropTypes.any.isRequired,
   loadAttachmentsError: PropTypes.bool.isRequired,
   storeAttachmentError: PropTypes.bool.isRequired,
+  loadImages: PropTypes.func.isRequired,
+  storeImage: PropTypes.func.isRequired,
+  images: PropTypes.any.isRequired,
+  loadImagesError: PropTypes.bool.isRequired,
+  storeImageError: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -154,6 +167,9 @@ const mapStateToProps = createStructuredSelector({
   attachments: makeSelectAttachments(),
   loadAttachmentsError: makeSelectLoadAttachmentsError(),
   storeAttachmentError: makeSelectStoreAttachmentError(),
+  images: makeSelectImages(),
+  loadImagesError: makeSelectLoadImagesError(),
+  storeImageError: makeSelectStoreImageError(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -194,6 +210,16 @@ export function mapDispatchToProps(dispatch) {
         dispatch(storeAttachment(file));
       } else {
         dispatch(storeAttachmentError());
+      }
+    },
+    loadImages() {
+      dispatch(loadImages());
+    },
+    storeImage(file) {
+      if (file) {
+        dispatch(storeImage(file));
+      } else {
+        dispatch(storeImageError());
       }
     },
   };

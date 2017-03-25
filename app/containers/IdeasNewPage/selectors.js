@@ -72,6 +72,21 @@ const makeSelectStoreAttachmentError = () => createSelector(
   (submitIdeaState) => submitIdeaState.getIn(['draft', 'storeAttachmentError'])
 );
 
+const makeSelectImages = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'images'])
+);
+
+const makeSelectLoadImagesError = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'loadImagesError'])
+);
+
+const makeSelectStoreImageError = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'storeImageError'])
+);
+
 export {
   makeSelectLoading,
   makeSelectLoadError,
@@ -87,4 +102,7 @@ export {
   makeSelectAttachments,
   makeSelectLoadAttachmentsError,
   makeSelectStoreAttachmentError,
+  makeSelectImages,
+  makeSelectLoadImagesError,
+  makeSelectStoreImageError,
 };

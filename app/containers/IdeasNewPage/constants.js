@@ -26,3 +26,11 @@ export const LOAD_ATTACHMENTS_ERROR = 'app/IdeasNewPage/LOAD_ATTACHMENTS_ERROR';
 export const STORE_ATTACHMENT = 'app/IdeasNewPage/STORE_ATTACHMENT';
 export const STORE_ATTACHMENT_SUCCESS = 'app/IdeasNewPage/STORE_ATTACHMENT_SUCCESS';
 export const STORE_ATTACHMENT_ERROR = 'app/IdeasNewPage/STORE_ATTACHMENT_ERROR';
+
+export const LOAD_IMAGES = 'app/IdeasNewPage/LOAD_IMAGES';
+export const LOAD_IMAGES_SUCCESS = 'app/IdeasNewPage/LOAD_IMAGES_SUCCESS';
+export const LOAD_IMAGES_ERROR = 'app/IdeasNewPage/LOAD_IMAGES_ERROR';
+
+export const STORE_IMAGE = 'app/IdeasNewPage/STORE_IMAGE';
+export const STORE_IMAGE_SUCCESS = 'app/IdeasNewPage/STORE_IMAGE_SUCCESS';
+export const STORE_IMAGE_ERROR = 'app/IdeasNewPage/STORE_IMAGE_ERROR';

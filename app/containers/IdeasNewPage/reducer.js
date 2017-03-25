@@ -8,7 +8,8 @@ import { fromJS } from 'immutable';
 import {
   LOAD_DRAFT, LOAD_DRAFT_ERROR, LOAD_DRAFT_SUCCESS, STORE_DRAFT, STORE_DRAFT_SUCCESS, STORE_DRAFT_ERROR,
   SAVE_DRAFT, STORE_IDEA, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS, SET_TITLE, STORE_ATTACHMENT, STORE_ATTACHMENT_SUCCESS,
-  STORE_ATTACHMENT_ERROR, LOAD_ATTACHMENTS, LOAD_ATTACHMENTS_SUCCESS, LOAD_ATTACHMENTS_ERROR,
+  STORE_ATTACHMENT_ERROR, LOAD_ATTACHMENTS, LOAD_ATTACHMENTS_SUCCESS, LOAD_ATTACHMENTS_ERROR, STORE_IMAGE,
+  STORE_IMAGE_SUCCESS, STORE_IMAGE_ERROR, LOAD_IMAGES, LOAD_IMAGES_SUCCESS, LOAD_IMAGES_ERROR,
 } from './constants';
 
 export const ideasNewPageInitialState = fromJS({
@@ -29,6 +30,9 @@ export const ideasNewPageInitialState = fromJS({
     attachments: [],
     loadAttachmentsError: false,
     storeAttachmentError: false,
+    images: [],
+    loadImagesError: false,
+    storeImageError: false,
   },
 });
 
@@ -101,6 +105,27 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
     case LOAD_ATTACHMENTS_ERROR:
       return state
         .setIn(['draft', 'loadAttachmentsError'], true);
+    case STORE_IMAGE:
+      return state
+        .setIn(['draft', 'loadImagesError'], false)
+        .setIn(['draft', 'storeImageError'], false);
+    case STORE_IMAGE_SUCCESS:
+      return state
+        .setIn(['draft', 'images'], fromJS(state.getIn(['draft', 'images'])).concat(action.source))
+        .setIn(['draft', 'storeImageError'], false);
+    case STORE_IMAGE_ERROR:
+      return state
+        .setIn(['draft', 'storeImageError'], true);
+    case LOAD_IMAGES:
+      return state
+        .setIn(['draft', 'loadImagesError'], false);
+    case LOAD_IMAGES_SUCCESS:
+      return state
+        .setIn(['draft', 'images'], action.sources)
+        .setIn(['draft', 'loadImagesError'], false);
+    case LOAD_IMAGES_ERROR:
+      return state
+        .setIn(['draft', 'loadImagesError'], true);
     default:
       return state;
   }

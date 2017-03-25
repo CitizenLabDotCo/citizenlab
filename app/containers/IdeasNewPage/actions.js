@@ -6,7 +6,8 @@
 import {
   STORE_DRAFT_SUCCESS, STORE_DRAFT, STORE_DRAFT_ERROR, LOAD_DRAFT, LOAD_DRAFT_SUCCESS, LOAD_DRAFT_ERROR,
   SAVE_DRAFT, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS, STORE_IDEA, SET_TITLE, LOAD_ATTACHMENTS, LOAD_ATTACHMENTS_SUCCESS,
-  LOAD_ATTACHMENTS_ERROR, STORE_ATTACHMENT, STORE_ATTACHMENT_SUCCESS, STORE_ATTACHMENT_ERROR,
+  LOAD_ATTACHMENTS_ERROR, STORE_ATTACHMENT, STORE_ATTACHMENT_SUCCESS, STORE_ATTACHMENT_ERROR, LOAD_IMAGES,
+  LOAD_IMAGES_SUCCESS, LOAD_IMAGES_ERROR, STORE_IMAGE_SUCCESS, STORE_IMAGE_ERROR, STORE_IMAGE,
 } from './constants';
 
 /*
@@ -124,5 +125,44 @@ export function attachmentStored(response) {
 export function storeAttachmentError() {
   return {
     type: STORE_ATTACHMENT_ERROR,
+  };
+}
+
+export function loadImages() {
+  return {
+    type: LOAD_IMAGES,
+  };
+}
+
+export function imagesLoaded(response) {
+  return {
+    type: (response.sources ? LOAD_IMAGES_SUCCESS : LOAD_IMAGES_ERROR),
+    sources: response.sources,
+  };
+}
+
+export function loadImagesError() {
+  return {
+    type: LOAD_IMAGES_ERROR,
+  };
+}
+
+export function storeImage(file) {
+  return {
+    type: STORE_IMAGE,
+    source: file,
+  };
+}
+
+export function imageStored(response) {
+  return {
+    type: (response.source ? STORE_IMAGE_SUCCESS : STORE_IMAGE_ERROR),
+    source: response.source,
+  };
+}
+
+export function storeImageError() {
+  return {
+    type: STORE_IMAGE_ERROR,
   };
 }

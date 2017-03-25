@@ -59,11 +59,19 @@ export default defineMessages({
     defaultMessage: 'Coudln\'t laod existing attachments',
   },
   storeAttachmentError: {
-    id: 'app.containers.IdeasNewPage.charactersLeft',
+    id: 'app.containers.IdeasNewPage.storeAttachmentError',
     defaultMessage: 'Coudln\'t upload attachment',
   },
   clickToUpload: {
     id: 'app.containers.IdeasNewPage.clickToUpload',
     defaultMessage: 'Click to upload',
+  },
+  loadImagesError: {
+    id: 'app.containers.IdeasNewPage.loadImagesError',
+    defaultMessage: 'Coudln\'t load existing images',
+  },
+  storeImageError: {
+    id: 'app.containers.IdeasNewPage.storeImageError',
+    defaultMessage: 'Coudln\'t upload image',
   },
 });
