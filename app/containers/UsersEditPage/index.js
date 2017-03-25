@@ -1,6 +1,6 @@
 /*
  *
- * ProfilePage
+ * UsersEditPage
  *
  */
 
@@ -17,11 +17,12 @@ import {
   makeSelectLoadError,
   makeSelectStoreError,
   makeSelectProcessing,
-  makeSelectStored,
+  makeSelectStored, makeSelectAvatarStoreError, makeSelectAvatarLoadError,
+  makeSelectAvatarBase64,
 } from './selectors';
 
 import messages from './messages';
-import { loadProfile, storeProfile } from './actions';
+import { loadAvatar, loadProfile, storeAvatar, storeAvatarError, storeProfile } from './actions';
 import ProfileForm from './ProfileForm';
 
 const ProfileDiv = styled.div`
@@ -29,24 +30,24 @@ const ProfileDiv = styled.div`
   border: 1px solid #888;
 `;
 
-export class ProfilePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class UsersEditPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
+    // fetch existing profile / avatar
     this.props.initData();
+    this.props.avatarFetch();
   }
 
   render() {
-    const { loading, loadError, storeError, processing, stored, userData } = this.props;
+    const { loading, loadError, storeError, processing, stored, userData, onAvatarUpload, onProfileFormSubmit, avatarBase64, avatarStoreError, avatarLoadError } = this.props;
 
     return (
       <ProfileDiv>
         <Helmet
-          title="ProfilePage"
+          title="UsersEditPage"
           meta={[
-            { name: 'description', content: 'ProfilePage' },
+            { name: 'description', content: 'UsersEditPage' },
           ]}
         />
-
-        <h1><FormattedMessage {...messages.header} /></h1>
 
         {loading && <FormattedMessage {...messages.loading} />}
         {loadError && <FormattedMessage {...messages.loadError} />}
@@ -56,15 +57,18 @@ export class ProfilePage extends React.PureComponent { // eslint-disable-line re
 
         <ProfileForm
           user={userData}
-          onFormSubmit={this.props.onProfileFormSubmit}
-          stored={this.props.stored || this.props.storeError}
+          avatarUpload={onAvatarUpload}
+          onFormSubmit={onProfileFormSubmit}
+          avatarStoreError={avatarStoreError}
+          avatarLoadError={avatarLoadError}
+          avatarBase64={avatarBase64}
         />
       </ProfileDiv>
     );
   }
 }
 
-ProfilePage.propTypes = {
+UsersEditPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   loadError: PropTypes.bool.isRequired,
   storeError: PropTypes.bool.isRequired,
@@ -72,7 +76,12 @@ ProfilePage.propTypes = {
   processing: PropTypes.bool.isRequired,
   stored: PropTypes.bool.isRequired,
   initData: PropTypes.func.isRequired,
-  onProfileFormSubmit: React.PropTypes.func,
+  onProfileFormSubmit: PropTypes.func.isRequired,
+  onAvatarUpload: PropTypes.func.isRequired,
+  avatarFetch: PropTypes.func.isRequired,
+  avatarBase64: PropTypes.string,
+  avatarStoreError: PropTypes.bool.isRequired,
+  avatarLoadError: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -82,17 +91,30 @@ const mapStateToProps = createStructuredSelector({
   userData: makeSelectUserData(),
   processing: makeSelectProcessing(),
   stored: makeSelectStored(),
+  avatarStoreError: makeSelectAvatarStoreError(),
+  avatarLoadError: makeSelectAvatarLoadError(),
+  avatarBase64: makeSelectAvatarBase64(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
-    initData() {
+    initData: () => {
       dispatch(loadProfile());
     },
     onProfileFormSubmit: (values) => {
       dispatch(storeProfile(values));
     },
+    onAvatarUpload: (filesBase64) => {
+      if (filesBase64) {
+        dispatch(storeAvatar(filesBase64));
+      } else {
+        dispatch(storeAvatarError());
+      }
+    },
+    avatarFetch: () => {
+      dispatch(loadAvatar());
+    },
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);
+export default connect(mapStateToProps, mapDispatchToProps)(UsersEditPage);

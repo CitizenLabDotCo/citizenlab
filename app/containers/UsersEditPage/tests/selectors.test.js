@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable';
 import { makeSelectUserData, makeSelectLoadError, makeSelectLoading, makeSelectStoreError } from '../selectors';
 
-describe('makeSelectProfilePageDomain', () => {
+describe('makeSelectUsersEditPageDomain', () => {
   describe('makeSelectLoading', () => {
     const loadingSelector = makeSelectLoading();
     it('should select the loading', () => {

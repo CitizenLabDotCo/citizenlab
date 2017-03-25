@@ -8,7 +8,7 @@ import React, { PropTypes } from 'react';
 import { Control } from 'react-redux-form';
 // import styled from 'styled-components';
 
-function Input(props) {
+function FormInput(props) {
   const model = '.'.concat(props.id);
 
   return (
@@ -21,9 +21,9 @@ function Input(props) {
   );
 }
 
-Input.propTypes = {
+FormInput.propTypes = {
   id: PropTypes.string.isRequired,
   className: PropTypes.string,
 };
 
-export default Input;
+export default FormInput;
