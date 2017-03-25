@@ -8,7 +8,7 @@ import { fromJS } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import usersEditPageReducer from 'containers/UsersEditPage/reducer';
-import submitIdeaPageReducer from 'containers/SubmitIdeaPage/reducer';
+import ideasNewPageReducer from 'containers/IdeasNewPage/reducer';
 import { persistedDataReducer } from './persistedData';
 
 /*
@@ -48,7 +48,7 @@ export default function createReducer(asyncReducers) {
     language: languageProviderReducer,
     persistedData: persistedDataReducer,
     profile: usersEditPageReducer,
-    submitIdea: submitIdeaPageReducer,
+    submitIdea: ideasNewPageReducer,
     ...asyncReducers,
   });
 }

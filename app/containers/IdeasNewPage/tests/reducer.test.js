@@ -1,10 +1,10 @@
 
 import { fromJS } from 'immutable';
-import submitIdeaPageReducer, { submitIdeaPageInitialState } from '../reducer';
+import ideasNewPageReducer, { ideasNewPageInitialState } from '../reducer';
 
-describe('submitIdeaPageReducer', () => {
+describe('ideasNewPageReducer', () => {
   it('returns the initial state', () => {
-    expect(submitIdeaPageReducer(submitIdeaPageInitialState, {})).toEqual(fromJS(submitIdeaPageInitialState));
+    expect(ideasNewPageReducer(ideasNewPageInitialState, {})).toEqual(fromJS(ideasNewPageInitialState));
   });
 
   it('should return draft.loading set to true, on LOAD_DRAFT action', () => {
@@ -18,6 +18,16 @@ describe('submitIdeaPageReducer', () => {
   });
 
   it('should return draft.stored set to true, on STORE_DRAFT_SUCCESS', () => {
+    // TODO
+    expect(true).toEqual(true);
+  });
+
+  it('should set shortTitleError to true if title < 5 chars', () => {
+    // TODO
+    expect(true).toEqual(true);
+  });
+
+  it('should set longTitleError to true if title > 120 chars', () => {
     // TODO
     expect(true).toEqual(true);
   });
