@@ -5,7 +5,7 @@
 */
 
 import React, { PropTypes } from 'react';
-import { Label, Row, Column } from 'components/Foundation';
+import { Label, Button, Row, Column } from 'components/Foundation';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import Attachment from './Attachment';
@@ -60,7 +60,18 @@ class AttachmentList extends React.PureComponent { // eslint-disable-line react/
       display: inline-block;
       position: absolute;
       height: 120px;
-    `;// TODO (background) + correctly use overlapped image as in submit idea page
+    `;
+
+    const FileButton = (props) => (
+      <Button className={props.className}>
+        <FormattedMessage {...messages.clickToUpload} />
+      </Button>
+    );
+    const StyledFileButton = styled(FileButton)`
+      width: 100px;
+      margin: 10px;
+      z-index: 2;
+    `;
 
     const { attachments, loadAttachmentsError, storeAttachmentError } = this.props;
 
@@ -73,8 +84,8 @@ class AttachmentList extends React.PureComponent { // eslint-disable-line react/
           <FormattedMessage {...messages.storeAttachmentError} />
         </Label>}
         <Row>
-          {attachments.map((attachment) =>
-            (<Column large={3}>
+          {attachments.map((attachment, index) =>
+            (<Column large={3} key={index}>
               <Attachment
                 source={attachment}
               />
@@ -82,6 +93,7 @@ class AttachmentList extends React.PureComponent { // eslint-disable-line react/
           )}
           <Column large={3}>
             <StyledFileInput />
+            <StyledFileButton />
           </Column>
         </Row>
       </div>
@@ -92,7 +104,7 @@ class AttachmentList extends React.PureComponent { // eslint-disable-line react/
 AttachmentList.propTypes = {
   loadAttachments: PropTypes.func.isRequired,
   storeAttachment: PropTypes.func.isRequired,
-  attachments: PropTypes.object.isRequired,
+  attachments: PropTypes.any.isRequired,
   loadAttachmentsError: PropTypes.bool.isRequired,
   storeAttachmentError: PropTypes.bool.isRequired,
 };

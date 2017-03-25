@@ -96,8 +96,8 @@ export function loadAttachments() {
 
 export function attachmentsLoaded(response) {
   return {
-    type: (response.content ? LOAD_ATTACHMENTS_SUCCESS : LOAD_ATTACHMENTS_ERROR),
-    attachments: response.attachments,
+    type: (response.sources ? LOAD_ATTACHMENTS_SUCCESS : LOAD_ATTACHMENTS_ERROR),
+    sources: response.sources,
   };
 }
 
@@ -107,15 +107,16 @@ export function loadAttachmentsError() {
   };
 }
 
-export function storeAttachment() {
+export function storeAttachment(file) {
   return {
     type: STORE_ATTACHMENT,
+    source: file,
   };
 }
 
 export function attachmentStored(response) {
   return {
-    type: (response.content ? STORE_ATTACHMENT_SUCCESS : STORE_ATTACHMENT_ERROR),
+    type: (response.source ? STORE_ATTACHMENT_SUCCESS : STORE_ATTACHMENT_ERROR),
     source: response.source,
   };
 }

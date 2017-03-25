@@ -17,14 +17,5 @@
   "app.containers.ProfilePage.processing": "",
   "app.containers.ProfilePage.store": "",
   "app.containers.ProfilePage.storeError": "",
-  "app.containers.IdeasNewPage.loadError": "",
-  "app.containers.IdeasNewPage.loading": "",
-  "app.containers.IdeasNewPage.publish": "",
-  "app.containers.IdeasNewPage.saveAsDraft": "",
-  "app.containers.IdeasNewPage.storeError": "",
-  "app.containers.IdeasNewPage.stored": "",
-  "app.containers.IdeasNewPage.submitError": "",
-  "app.containers.IdeasNewPage.submitted": "",
-  "app.containers.IdeasNewPage.submitting": "",
   "app.containers.UsersNewPage.header": ""
 }

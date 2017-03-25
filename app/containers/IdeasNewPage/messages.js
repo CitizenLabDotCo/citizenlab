@@ -62,4 +62,8 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.charactersLeft',
     defaultMessage: 'Coudln\'t upload attachment',
   },
+  clickToUpload: {
+    id: 'app.containers.IdeasNewPage.clickToUpload',
+    defaultMessage: 'Click to upload',
+  },
 });

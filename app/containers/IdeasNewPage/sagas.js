@@ -3,7 +3,7 @@ import { call, put } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
 import {
   draftStored, storeDraftError, draftLoaded, loadDraftError, ideaStored, storeIdeaError,
-  attachmentsLoaded, attachmentStored, storeAttachmentError,
+  attachmentsLoaded, attachmentStored, storeAttachmentError, loadAttachmentsError,
 } from './actions';
 import { STORE_DRAFT, LOAD_DRAFT, STORE_IDEA, STORE_ATTACHMENT, LOAD_ATTACHMENTS } from './constants';
 
@@ -36,29 +36,32 @@ export function* getDraft() {
 }
 
 export function* getAttachments() {
-  const requestURL = 'http://demo9193680.mockable.io/attachment-get-html';
+  const requestURL = 'http://demo9193680.mockable.io/attachments-get';
 
   try {
     const response = yield call(request, requestURL);
 
     yield put(attachmentsLoaded(response));
   } catch (err) {
-    yield put(loadAttachments());
+    yield put(loadAttachmentsError());
   }
 }
 
 export function* postAttachment(action) {
-  const requestURL = 'http://localhost:3030/draft-post';
+  const requestURL = 'http://demo9193680.mockable.io/attachment-post';
+
+  const payload = new FormData();
+  payload.append('file', action.source);
 
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify(action.attachment),
+      body: payload,
     });
 
     yield put(attachmentStored(response));
   } catch (err) {
-    yield put(storeAttachmentError(err));
+    yield put(storeAttachmentError());
   }
 }
 

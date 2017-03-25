@@ -134,7 +134,7 @@ IdeasNewPage.propTypes = {
   content: PropTypes.string,
   loadAttachments: PropTypes.func.isRequired,
   storeAttachment: PropTypes.func.isRequired,
-  attachments: PropTypes.object.isRequired,
+  attachments: PropTypes.any.isRequired,
   loadAttachmentsError: PropTypes.bool.isRequired,
   storeAttachmentError: PropTypes.bool.isRequired,
 };
