@@ -5,6 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+r = Random.new
+
 Tenant.create({
   name: 'local',
   host: 'localhost',
@@ -24,16 +27,32 @@ Apartment::Tenant.switch('localhost') do
     password: 'testtest'
     })
 
-  Topic.create({
-    title_multiloc: {
-      "en": "Health",
-      "nl": "Gezondheid"
-    },
-    description_multiloc: {
-      "en": "<p>Age expectations and so on...</p>",
-      "nl": "<p>Levensverwachting enzovoort</p>"
-    }
-  });
+
+  12.times do 
+    Topic.create({
+      title_multiloc: {
+        "en": Faker::Lorem.word,
+        "nl": Faker::Lorem.word
+      },
+      description_multiloc: {
+        "en": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+        "nl": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+      }
+    });
+  end
+
+  12.times do 
+    Area.create({
+      title_multiloc: {
+        "en": Faker::Address.city,
+        "nl": Faker::Address.city
+      },
+      description_multiloc: {
+        "en": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+        "nl": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+      }
+    });
+  end
 
   Area.create({
     title_multiloc: {
@@ -57,20 +76,22 @@ Apartment::Tenant.switch('localhost') do
     }
   })
 
-  Idea.create({
-    "title_multiloc": {
-      "en": "Dance sessions in the park",
-      "nl": "Dansen in het park"
-    },
-    body_multiloc: {
-      "en" => "<p>Let's dance.</p>",
-      "nl" => "<p>Dansen yihaa!</p>"
-    },
-    topics: [Topic.first],
-    areas: [Area.first],
-    author: User.first,
-    lab: Lab.first,
-    publication_status: 'published'
-  })
+  50.times do 
+    Idea.create({
+      "title_multiloc": {
+        "en": Faker::Lorem.sentence,
+        "nl": Faker::Lorem.sentence
+      },
+      body_multiloc: {
+        "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+        "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+      },
+      topics: rand(2).times.map{ Topic.offset(rand(Topic.count)).first },
+      areas: rand(2).times.map{ Area.offset(rand(Area.count)).first },
+      author: User.offset(rand(User.count)).first,
+      lab: Lab.first,
+      publication_status: 'published'
+    })
+  end
 
 end
