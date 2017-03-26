@@ -12,4 +12,5 @@ ADD . .
 
 RUN yarn run build:dll
 
+
 CMD ["npm", "start"]

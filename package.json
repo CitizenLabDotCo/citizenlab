@@ -221,6 +221,7 @@
     "intl": "1.2.5",
     "invariant": "2.2.2",
     "ip": "1.1.4",
+    "json-api-normalizer": "^0.4.0",
     "lodash": "4.17.2",
     "minimist": "1.2.0",
     "motion-ui": "^1.2.2",

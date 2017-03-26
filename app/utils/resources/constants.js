@@ -1,0 +1,1 @@
+export const MERGE_JSONAPI_RESOURCES = 'utils/resources/MERGE_JSONAPI_RESOURCES';
