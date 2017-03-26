@@ -8,7 +8,7 @@
 
 // const generator = defaultSaga();
 
-describe('defaultSaga Saga', () => {
+describe('sagas', () => {
   it('should dispatch either PROFILE_LOAD_SUCCESS or PROFILE_LOAD_ERROR when LOAD_PROFILE action is received', () => {
     // TODO
     expect(true).toEqual(true);

@@ -31,4 +31,14 @@ describe('ideasNewPageReducer', () => {
     // TODO
     expect(true).toEqual(true);
   });
+
+  it('should returns existing attachments + stored one on store success', () => {
+    // TODO
+    expect(true).toEqual(true);
+  });
+
+  it('should returns existing images + stored one on store success', () => {
+    // TODO
+    expect(true).toEqual(true);
+  });
 });

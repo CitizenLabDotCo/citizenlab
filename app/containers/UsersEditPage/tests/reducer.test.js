@@ -27,4 +27,14 @@ describe('usersEditPageReducer', () => {
     // TODO
     expect(true).toEqual(true);
   });
+
+  it('should return avatar when load success', () => {
+    // TODO
+    expect(true).toEqual(true);
+  });
+
+  it('should return avatar when store success', () => {
+    // TODO
+    expect(true).toEqual(true);
+  });
 });

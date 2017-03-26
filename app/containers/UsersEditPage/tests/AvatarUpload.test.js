@@ -1,6 +1,6 @@
 describe('<AvatarUpload />', () => {
-  it('should have tests in the future', () => {
-    // TODO (write at least one test on file upload)
+  it('should render to avatar', () => {
+    // TODO
     expect(true).toEqual(true);
   });
 });

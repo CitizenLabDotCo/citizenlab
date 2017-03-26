@@ -1,9 +1,9 @@
 // import React from 'react';
 // import { shallow } from 'enzyme';
 
-// import AttachmentList from '../index';
+// import Attachment from '../index';
 
-describe('<AttachmentList />', () => {
+describe('<Attachment />', () => {
   it('Expect to have tests defined in the future', () => {
     expect(true).toEqual(true);
   });
