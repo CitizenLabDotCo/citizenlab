@@ -35,8 +35,6 @@ RSpec.describe "Users API", type: :request do
         avatar: get_avatar_image,
       }
       post endpoint_url, params: { user: user_params }
-
-      Fog.mock!
       
       assert_status(201)
       result = json_parse(response.body)
