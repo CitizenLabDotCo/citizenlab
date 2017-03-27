@@ -57,17 +57,22 @@ resource "Ideas" do
           expect(response_status).to eq 201
         end
       end
-      # describe do
-      #   header "Content-Type", "multipart/form-data"
-      #   let(:images) { [Rack::Test::UploadedFile.new("spec/fixtures/robot.jpg", "image/jpg")] }
-      #
-      #   example_request "Creating a published idea with image" do
-      #     json_response = json_parse(response_body)
-      #     expect(response_status).to eq 201
-      #     expect(json_response.dig(:data,:images).size).to eq 1
-      #   end
-      # end
 
+      describe do
+        let(:idea) { build(:idea) }
+        let(:lab_id) { create(:lab).id }
+        let(:author_id) { create(:user).id }
+        let(:publication_status) { 'published' }
+        let(:title_multiloc) { idea.title_multiloc }
+        let(:body_multiloc) { idea.body_multiloc }
+        let(:images) { [base64_encoded_image_1, base64_encoded_image_2_as_data_uri] }
+
+        example_request "Creating a published idea with image" do
+          json_response = json_parse(response_body)
+          expect(response_status).to eq 201
+          expect(json_response.dig(:data,:attributes,:images).size).to eq 2
+        end
+      end
     end
 
 
@@ -82,7 +87,7 @@ resource "Ideas" do
         parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES}.join(', ')}", required: true
         parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
         parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
-        parameter :images, "Multipart form encoded images"
+        parameter :images, "Base64 encoded images"
         parameter :files, "Multipart form encoded files"
       end
 
@@ -104,6 +109,7 @@ resource "Ideas" do
 
       let(:id) { @idea.id }
       let(:publication_status) { 'published' }
+
       example_request "Updating a draft to a published post" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
@@ -112,4 +118,16 @@ resource "Ideas" do
     end
   end
 
+  private
+  def base64_encoded_image_1
+    encode_image_as_base64("robot.jpg")
+  end
+
+  def base64_encoded_image_2_as_data_uri
+    "data:image/jpg;base64,#{encode_image_as_base64("lorem-ipsum.jpg")}"
+  end
+
+  def encode_image_as_base64(filename)
+    Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))
+  end
 end
