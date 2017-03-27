@@ -11,43 +11,52 @@ import React from 'react';
 import Select from 'react-select';
 // import messages from './messages';
 
-const topics = [
-  { value: 'one', label: 'one' },
-  { value: 'two', label: 'two' },
-  { value: 'three', label: 'three' },
-  { value: 'four', label: 'four' },
-];
-
-const getOptions = () => (
-  new Promise((resolve) => setTimeout(() => resolve({ options: topics, complete: true }), 1000))
-);
-
-
 class TopicSelect extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
     this.state = {
       selected: [],
+      error: false,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.timer = null;
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if ((nextState.error === true) && (this.timer === null)) {
+      this.timer = setTimeout(() => { this.setState({ error: false }); this.timer = null; }, 3000);
+    }
+  }
+
+  componentWillUnmount() {
+    this.timer = null;
   }
 
   handleChange(selected) {
-    this.setState({ selected });
+    if (selected.length <= 3) {
+      this.setState({ selected, error: false });
+    } else {
+      this.setState({ error: true });
+    }
   }
 
   /* eslint-disable */
   render() {
+    const { options } = this.props;
+    const { selected, error } = this.state;
+    const errorDisplay = (error === true) ? 'block' : 'none';
+
     return (
       <div className="cl-topic-select">
-        <Select.Async
+        <Select
           name="cl-topic-select"
-          value={this.state.selected}
+          value={selected}
           multi={true}
-          loadOptions={getOptions}
+          options={options}
           onChange={this.handleChange}
           placeholder="Select topics"
         />
+        <span style={{ display: errorDisplay, color: 'red' }}>Only 3 topics are allowed</span>
       </div>
     );
   }
@@ -55,7 +64,7 @@ class TopicSelect extends React.PureComponent { // eslint-disable-line react/pre
 }
 
 TopicSelect.propTypes = {
-
+  options: React.PropTypes.array,
 };
 
 export default TopicSelect;
