@@ -16,6 +16,7 @@ import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
+import 'react-select/dist/react-select.css';
 import { fromJS } from 'immutable';
 
 // Import root app

@@ -12,7 +12,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import TopicSelect from 'components/TopicSelect';
 import messages from './messages';
+
+const topics = [
+  { value: 'one', label: 'one' },
+  { value: 'two', label: 'two' },
+  { value: 'three', label: 'three' },
+  { value: 'four', label: 'four' },
+];
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
@@ -28,6 +36,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         </h1>
 
         <p>CurrentTenant: { currentTenant ? currentTenant.name : 'null' }</p>
+
+        <h3>Topic Select Demo</h3>
+        <TopicSelect options={topics} />
       </div>
     );
   }
