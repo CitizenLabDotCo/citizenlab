@@ -36,9 +36,9 @@ export function storeProfile(values) {
   };
 }
 
-export function profileStored(response, profile) {
+export function profileStored(profile) {
   return {
-    type: (response.success ? PROFILE_STORE_SUCCESS : PROFILE_STORE_ERROR),
+    type: (profile ? PROFILE_STORE_SUCCESS : PROFILE_STORE_ERROR),
     ...{ profile },
   };
 }

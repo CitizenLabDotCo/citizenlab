@@ -25,12 +25,12 @@ export function* postProfile(action) {
   const requestURL = 'http://demo9193680.mockable.io/profile-post';
 
   try {
-    const response = yield call(request, requestURL, {
+    yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(action.userData),
     });
 
-    yield put(profileStored(response, action.userData));
+    yield put(profileStored(action.userData));
   } catch (err) {
     yield put(storeProfileError(action.userData));
   }
