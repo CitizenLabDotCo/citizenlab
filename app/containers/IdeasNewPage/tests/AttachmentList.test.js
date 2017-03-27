@@ -1,16 +1,23 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import AttachmentList from '../AttachmentList';
+import { mountWithIntl } from '../../../utils/intlTest';
 
 // import Attachment from '../index';
 
 describe('<AttachmentList />', () => {
-  it('should render the exact number of attachments + input', () => {
-    // TODO
-    expect(true).toEqual(true);
-  });
+  const attachments = ["1", "2"];
+  const jestFn = jest.fn();
+  const wrapper = mountWithIntl(
+    <AttachmentList
+      loadAttachments={jestFn}
+      storeAttachment={jestFn}
+      attachments={attachments}
+      storeAttachmentError={false}
+      loadAttachmentsError={false}
+    />
+  );
 
-  it('input button should opacity 0', () => {
-    // TODO
-    expect(true).toEqual(true);
+  it('should receive attachments prop', () => {
+    expect(wrapper.prop('attachments')).toEqual(attachments);
   });
 });
