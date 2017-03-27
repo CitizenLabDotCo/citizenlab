@@ -3,7 +3,28 @@ import Dropzone from 'react-dropzone';
 import { Label, Button } from 'components/Foundation';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
+
 import messages from './messages';
+
+export function dropzoneImage(avatarBase64) {
+  const style = {
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    backgroundImage: `url('${avatarBase64}')`,
+    backgroundSize: '100%',
+    width: '100px',
+    height: '100px',
+  };
+
+  return (
+    avatarBase64
+      ? (<img
+        role="presentation"
+        style={style}
+      />)
+      : <span />
+  );
+}
 
 class Avatar extends React.PureComponent {
   constructor() {
@@ -33,24 +54,6 @@ class Avatar extends React.PureComponent {
     reader.onerror = () => {
       this.props.onAvatarUpload(null);
     };
-  }
-
-  dropzoneImageStyle(avatarBase64) {
-    const style = {
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-      backgroundImage: `url('${avatarBase64}')`,
-      backgroundSize: '100%',
-      width: '100px',
-      height: '100px',
-    };
-
-    return (
-      <img
-        role="presentation"
-        style={style}
-      />
-    );
   }
 
   render() {
@@ -91,7 +94,7 @@ class Avatar extends React.PureComponent {
           accept="image/*"
           multiple={false}
         >
-          { this.dropzoneImageStyle(avatarBase64) }
+          { dropzoneImage(avatarBase64) }
         </Dropzone>
         <div>
           <FormattedMessage {...messages.dragToUpload} /> or
