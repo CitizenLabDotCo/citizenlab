@@ -2,7 +2,9 @@ module BaseUploader
   extend ActiveSupport::Concern
 
   included do
-    storage :fog
+    unless Rails.env.test?
+      storage :fog
+    end
   end
 
   class_methods do
