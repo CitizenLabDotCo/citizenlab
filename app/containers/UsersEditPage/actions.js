@@ -18,7 +18,7 @@ export function loadProfile() {
 
 export function profileLoaded(profile) {
   return {
-    type: PROFILE_LOAD_SUCCESS,
+    type: (profile ? PROFILE_LOAD_SUCCESS : PROFILE_LOAD_ERROR),
     ...{ profile },
   };
 }
@@ -59,7 +59,7 @@ export function storeAvatar(avatar) {
 
 export function avatarStored(avatar) {
   return {
-    type: (avatar ? AVATAR_STORE_SUCCESS : AVATAR_STORE_SUCCESS),
+    type: (avatar ? AVATAR_STORE_SUCCESS : AVATAR_STORE_ERROR),
     avatar,
   };
 }
@@ -78,7 +78,7 @@ export function loadAvatar() {
 
 export function avatarLoaded(avatar) {
   return {
-    type: (avatar ? AVATAR_LOAD_SUCCESS : AVATAR_LOAD_SUCCESS),
+    type: (avatar ? AVATAR_LOAD_SUCCESS : AVATAR_LOAD_ERROR),
     avatar,
   };
 }

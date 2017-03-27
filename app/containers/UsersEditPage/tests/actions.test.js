@@ -1,21 +1,21 @@
+import {
+  avatarLoaded, avatarStored, loadAvatarError, profileLoaded, profileLoadError,
+  profileStored, storeAvatarError, storeProfileError,
+} from '../actions';
 describe('actions', () => {
-  it('should return error action if load success but no data available', () => {
-    // TODO
-    expect(true).toEqual(true);
+  it('should return profileLoadError().type if profile is null', () => {
+    expect(profileLoaded(undefined)).toEqual(profileLoadError());
   });
 
-  it('should return error action if store success but no data available', () => {
-    // TODO
-    expect(true).toEqual(true);
+  it('should return profileStoreError().type if profile is null', () => {
+    expect(profileStored(undefined)).toEqual(storeProfileError());
   });
 
-  it('should return error action if avatar load success but no avatar available', () => {
-    // TODO
-    expect(true).toEqual(true);
+  it('should return loadAvatarError().type if avatar is null', () => {
+    expect(avatarLoaded(undefined)).toEqual(loadAvatarError());
   });
 
-  it('should return error action if avatar store success but no avatar available', () => {
-    // TODO
-    expect(true).toEqual(true);
+  it('should return avatarStoreError().type if avatar is null', () => {
+    expect(avatarStored(undefined)).toEqual(storeAvatarError());
   });
 });
