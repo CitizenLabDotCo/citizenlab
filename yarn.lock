@@ -258,6 +258,10 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
+attr-accept@^1.0.3:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-1.1.0.tgz#b5cd35227f163935a8f1de10ed3eba16941f6be6"
+
 autoprefixer@^6.3.1:
   version "6.5.4"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-6.5.4.tgz#1386eb6708ccff36aefff70adc694ecfd60af1b0"
@@ -2377,6 +2381,10 @@ draft-js@^0.10.0:
     immutable "~3.7.4"
     object-assign "^4.1.0"
 
+draftjs-to-html@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/draftjs-to-html/-/draftjs-to-html-0.7.0.tgz#22aaf9d40a1397b57c73fb0b0bde2b1fd6755456"
+
 draftjs-utils@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/draftjs-utils/-/draftjs-utils-0.7.0.tgz#71a9706d11e84888d7cf07b5665612e59973f1b7"
@@ -3666,6 +3674,10 @@ html-minifier@^3.0.1, html-minifier@^3.1.0:
     param-case "2.1.x"
     relateurl "0.2.x"
     uglify-js "2.7.x"
+
+html-to-draftjs@0.1.0-beta7:
+  version "0.1.0-beta7"
+  resolved "https://registry.yarnpkg.com/html-to-draftjs/-/html-to-draftjs-0.1.0-beta7.tgz#bc307356cca36298fe4b5a93dfb0869cdf477a9b"
 
 html-webpack-plugin@2.24.1:
   version "2.24.1"
@@ -6493,6 +6505,12 @@ react-draft-wysiwyg@^1.7.8:
     draftjs-utils "^0.7.0"
     immutable "^4.0.0-rc.1"
     react-intl "^2.2.3"
+
+react-dropzone@^3.12.2:
+  version "3.12.2"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-3.12.2.tgz#7e66a37322a80cf26a205d749ecf8cad0d90aa6f"
+  dependencies:
+    attr-accept "^1.0.3"
 
 react-element-to-jsx-string@^2.1.0:
   version "2.6.1"
