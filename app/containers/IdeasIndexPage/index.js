@@ -32,7 +32,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
           ]}
         />
         <FormattedMessage {...messages.header} />
-        <Row>
+        <Row data-equalizer>
           {ideas && ideas.map((idea) => (
             <Column key={idea.id} small={12} medium={4} large={3}>
               <IdeaCard idea={idea}></IdeaCard>
