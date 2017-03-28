@@ -11,6 +11,18 @@ resource "Users" do
         expect(status).to eq(403)
       end
     end
+
+    get "api/v1/users/:id" do
+      before do
+        @user = create(:user)
+      end
+      let(:id) {@user.id}
+      example "Get a non-authenticated user does not expose the email", document: false do
+        do_request
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :email)).to be_nil
+      end
+    end
   end
 
   context "when authenticated" do
@@ -34,6 +46,14 @@ resource "Users" do
       example_request "Get a user by id" do
         do_request
         expect(status).to eq 200
+      end
+    end
+
+    get "api/v1/users/:id" do
+      let(:id) {@user.id}
+      example_request "Get the authenticated user exposes the email field" do
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :email)).to eq @user.email
       end
     end
 
