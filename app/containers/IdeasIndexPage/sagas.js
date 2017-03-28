@@ -1,14 +1,12 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { mergeJsonApiResources } from 'utils/resources/actions';
-import { getIdeasRequest } from 'utils/request';
+import Api from 'api';
 import { LOAD_IDEAS } from './constants';
 import { ideasLoaded, ideasLoadingError } from './actions';
 
-// Individual exports for testing
-
-export function* getIdeas() {
+export function* fetchIdeas() {
   try {
-    const ideaResponse = yield call(getIdeasRequest);
+    const ideaResponse = yield call(Api.fetchIdeas); // eslint-disable-line
     yield put(mergeJsonApiResources(ideaResponse));
     yield put(ideasLoaded(ideaResponse));
   } catch (err) {
@@ -17,7 +15,7 @@ export function* getIdeas() {
 }
 
 export function* defaultSaga() {
-  yield takeLatest(LOAD_IDEAS, getIdeas);
+  yield takeLatest(LOAD_IDEAS, fetchIdeas);
 }
 
 // All sagas to be loaded

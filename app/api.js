@@ -1,27 +1,17 @@
-const Api = {};
+import request from 'utils/request';
+import { API_PATH } from 'containers/App/constants';
 
-Api.createUser = (values) => (
-  // TODO: remove hardcoded address
-  fetch('http://localhost:4000/api/v1/users', {
-    headers: {
-      'Content-Type': 'application/json',
-    },
+export function createUser(values) {
+  return request(`${API_PATH}/users`, { user: values }, {
     method: 'POST',
-    body: JSON.stringify({ user: values }),
-  })
-  .then((response) => Promise.all([response, response.json()]))
-  .then((result) => {
-    const response = result[0];
-    const json = result[1];
+  });
+}
 
-    if (response.ok) {
-      return json;
-    }
+export function fetchIdeas() {
+  return request(`${API_PATH}/ideas`);
+}
 
-    const error = new Error(response.statusText);
-    error.json = json;
-    throw error;
-  })
-);
-
-export default Api;
+export default {
+  createUser,
+  fetchIdeas,
+};

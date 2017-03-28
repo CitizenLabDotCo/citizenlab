@@ -1,7 +1,5 @@
 import 'whatwg-fetch';
 
-const API_PATH = 'http://localhost:4000/api/v1';
-
 /**
  * Parses the JSON returned by a network request
  *
@@ -9,9 +7,9 @@ const API_PATH = 'http://localhost:4000/api/v1';
  *
  * @return {object}          The parsed JSON from the request
  */
-function parseJSON(response) {
-  return response.json();
-}
+// function parseJSON(response) {
+//   return response.json();
+// }
 
 /**
  * Checks if a network request came back fine, and throws an error if not
@@ -20,15 +18,15 @@ function parseJSON(response) {
  *
  * @return {object|undefined} Returns either the response, or throws an error
  */
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  }
-
-  const error = new Error(response.statusText);
-  error.response = response;
-  throw error;
-}
+// function checkStatus(response) {
+//   if (response.status >= 200 && response.status < 300) {
+//     return response;
+//   }
+//
+//   const error = new Error(response.statusText);
+//   error.response = response;
+//   throw error;
+// }
 
 /**
  * Requests a URL, returning a promise
@@ -38,14 +36,29 @@ function checkStatus(response) {
  *
  * @return {object}           The response data
  */
-export default function request(url, options) {
-  return fetch(url, options)
-    .then(checkStatus)
-    .then(parseJSON);
-}
+export default function request(url, data, options) {
+  const defaultOptions = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
 
-export function getIdeasRequest(options) {
-  return fetch(`${API_PATH}/ideas`, options)
-    .then(checkStatus)
-    .then(parseJSON);
+  if (data) {
+    defaultOptions.body = JSON.stringify(data);
+  }
+
+  return fetch(url, Object.assign(defaultOptions, options))
+    .then((response) => Promise.all([response, response.json()]))
+    .then((result) => {
+      const response = result[0];
+      const json = result[1];
+
+      if (response.ok) {
+        return json;
+      }
+
+      const error = new Error(response.statusText);
+      error.json = json;
+      throw error;
+    });
 }
