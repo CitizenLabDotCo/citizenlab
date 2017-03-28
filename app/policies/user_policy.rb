@@ -27,4 +27,8 @@ class UserPolicy < ApplicationPolicy
   def update?
     true
   end
+
+  def view_private_attributes?
+    user && record.id == user.id
+  end
 end
