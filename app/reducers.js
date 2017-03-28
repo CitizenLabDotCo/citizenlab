@@ -9,6 +9,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import usersEditPageReducer from 'containers/UsersEditPage/reducer';
 import ideasNewPageReducer from 'containers/IdeasNewPage/reducer';
+import usersNewPageReducer from 'containers/UsersNewPage/reducer';
 import resourcesReducer from 'utils/resources/reducer';
 import { persistedDataReducer } from './persistedData';
 
@@ -50,6 +51,7 @@ export default function createReducer(asyncReducers) {
     persistedData: persistedDataReducer,
     resources: resourcesReducer,
     profile: usersEditPageReducer,
+    usersNewPage: usersNewPageReducer,
     submitIdea: ideasNewPageReducer,
     ...asyncReducers,
   });
