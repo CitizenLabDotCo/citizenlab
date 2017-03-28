@@ -11,6 +11,16 @@ import { FormattedMessage } from 'react-intl';
 import Attachment from './Attachment';
 import messages from './messages';
 
+export const Attachments = (props) => (<span>
+  {props.attachments.map((attachment, index) =>
+    (<Column large={3} key={index}>
+      <Attachment
+        source={attachment}
+      />
+    </Column>)
+  )}</span>
+);
+
 class AttachmentList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
@@ -73,6 +83,10 @@ class AttachmentList extends React.PureComponent { // eslint-disable-line react/
       z-index: 2;
     `;
 
+    const AttachmentsStyled = styled(Attachments)`
+      // no style for now
+    `;
+
     const { attachments, loadAttachmentsError, storeAttachmentError } = this.props;
 
     return (
@@ -84,13 +98,7 @@ class AttachmentList extends React.PureComponent { // eslint-disable-line react/
           <FormattedMessage {...messages.storeAttachmentError} />
         </Label>}
         <Row>
-          {attachments.map((attachment, index) =>
-            (<Column large={3} key={index}>
-              <Attachment
-                source={attachment}
-              />
-            </Column>)
-          )}
+          <AttachmentsStyled attachments={attachments} />
           <Column large={3}>
             <StyledFileInput />
             <StyledFileButton />
@@ -107,6 +115,10 @@ AttachmentList.propTypes = {
   attachments: PropTypes.any.isRequired,
   loadAttachmentsError: PropTypes.bool.isRequired,
   storeAttachmentError: PropTypes.bool.isRequired,
+};
+
+Attachments.propTypes = {
+  attachments: PropTypes.any.isRequired,
 };
 
 export default AttachmentList;

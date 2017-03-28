@@ -22,10 +22,10 @@ export function loadDraft() {
   };
 }
 
-export function draftLoaded(response) {
+export function draftLoaded(content) {
   return {
-    type: (response.content ? LOAD_DRAFT_SUCCESS : LOAD_DRAFT_ERROR),
-    content: response.content,
+    type: (content ? LOAD_DRAFT_SUCCESS : LOAD_DRAFT_ERROR),
+    content,
   };
 }
 
@@ -43,9 +43,9 @@ export function storeDraft(content) {
   };
 }
 
-export function draftStored(response) {
+export function draftStored() {
   return {
-    type: (response.success ? STORE_DRAFT_SUCCESS : STORE_DRAFT_ERROR),
+    type: STORE_DRAFT_SUCCESS,
   };
 }
 
@@ -95,10 +95,10 @@ export function loadAttachments() {
   };
 }
 
-export function attachmentsLoaded(response) {
+export function attachmentsLoaded(sources) {
   return {
-    type: (response.sources ? LOAD_ATTACHMENTS_SUCCESS : LOAD_ATTACHMENTS_ERROR),
-    sources: response.sources,
+    type: (sources ? LOAD_ATTACHMENTS_SUCCESS : LOAD_ATTACHMENTS_ERROR),
+    sources,
   };
 }
 
@@ -115,10 +115,10 @@ export function storeAttachment(file) {
   };
 }
 
-export function attachmentStored(response) {
+export function attachmentStored(source) {
   return {
-    type: (response.source ? STORE_ATTACHMENT_SUCCESS : STORE_ATTACHMENT_ERROR),
-    source: response.source,
+    type: (source ? STORE_ATTACHMENT_SUCCESS : STORE_ATTACHMENT_ERROR),
+    source,
   };
 }
 
@@ -134,10 +134,10 @@ export function loadImages() {
   };
 }
 
-export function imagesLoaded(response) {
+export function imagesLoaded(sources) {
   return {
-    type: (response.sources ? LOAD_IMAGES_SUCCESS : LOAD_IMAGES_ERROR),
-    sources: response.sources,
+    type: (sources ? LOAD_IMAGES_SUCCESS : LOAD_IMAGES_ERROR),
+    sources,
   };
 }
 
@@ -154,10 +154,10 @@ export function storeImage(file) {
   };
 }
 
-export function imageStored(response) {
+export function imageStored(source) {
   return {
-    type: (response.source ? STORE_IMAGE_SUCCESS : STORE_IMAGE_ERROR),
-    source: response.source,
+    type: (source ? STORE_IMAGE_SUCCESS : STORE_IMAGE_ERROR),
+    source,
   };
 }
 

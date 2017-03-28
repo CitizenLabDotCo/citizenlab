@@ -13,15 +13,15 @@ import {
 
 // Individual exports for testing
 export function* postDraft(action) {
-  const requestURL = 'http://localhost:3030/draft-post';
+  const requestURL = 'http://demo9193680.mockable.io/draft-post';
 
   try {
-    const response = yield call(request, requestURL, {
+    yield call(request, requestURL, {
       method: 'POST',
       body: JSON.stringify(action.draft),
     });
 
-    yield put(draftStored(response));
+    yield put(draftStored());
   } catch (err) {
     yield put(storeDraftError(err));
   }
@@ -33,7 +33,7 @@ export function* getDraft() {
   try {
     const response = yield call(request, requestURL);
 
-    yield put(draftLoaded(response));
+    yield put(draftLoaded(response.content));
   } catch (err) {
     yield put(loadDraftError(err));
   }
@@ -45,14 +45,14 @@ export function* getAttachments() {
   try {
     const response = yield call(request, requestURL);
 
-    yield put(attachmentsLoaded(response));
+    yield put(attachmentsLoaded(response.sources));
   } catch (err) {
     yield put(loadAttachmentsError());
   }
 }
 
 export function* postAttachment(action) {
-  const requestURL = 'http://demo9193680.mockable.io/attachment-post';
+  const requestURL = 'http://cl2-mock.getsandbox.com/post-attachment';
 
   const payload = new FormData();
   payload.append('file', action.source);
@@ -63,7 +63,7 @@ export function* postAttachment(action) {
       body: payload,
     });
 
-    yield put(attachmentStored(response));
+    yield put(attachmentStored(response.source));
   } catch (err) {
     yield put(storeAttachmentError());
   }
@@ -75,7 +75,7 @@ export function* getImages() {
   try {
     const response = yield call(request, requestURL);
 
-    yield put(imagesLoaded(response));
+    yield put(imagesLoaded(response.sources));
   } catch (err) {
     yield put(loadImagesError());
   }
@@ -93,7 +93,7 @@ export function* postImage(action) {
       body: payload,
     });
 
-    yield put(imageStored(response));
+    yield put(imageStored(response.source));
   } catch (err) {
     yield put(storeImageError());
   }

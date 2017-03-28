@@ -1,32 +1,29 @@
+import {
+  attachmentsLoaded, attachmentStored, draftLoaded, imagesLoaded, imageStored, loadAttachmentsError, loadDraftError,
+  loadImagesError,
+  storeAttachmentError,
+  storeImageError,
+} from '../actions';
+
 describe('actions', () => {
-  it('should return error action if idea store success but no data available', () => {
-    // TODO
-    expect(true).toEqual(true);
+  it('draftLoaded should return loadDraftError().type if content is undefined', () => {
+    expect(draftLoaded(undefined)).toEqual(loadDraftError());
   });
 
-  it('should return error action if draft load success but no draft available', () => {
-    // TODO
-    expect(true).toEqual(true);
+  it('attachmentsLoaded should return loadAttachmentsError().type if sources is undefined', () => {
+    expect(attachmentsLoaded(undefined)).toEqual(loadAttachmentsError());
   });
 
-  it('should return error action if attachment load success but no attachments available', () => {
-    // TODO
-    expect(true).toEqual(true);
+  it('attachmentStored should return storeAttachmentError().type if file is undefined', () => {
+    expect(attachmentStored(undefined)).toEqual(storeAttachmentError());
   });
 
-  it('should return error action if attachment store success but no attachment available', () => {
-    // TODO
-    expect(true).toEqual(true);
+  it('imagesLoaded should return loadImagesError().type if sources is undefined', () => {
+    expect(imagesLoaded(undefined)).toEqual(loadImagesError());
   });
 
-  it('should return error action if image load success but no images available', () => {
-    // TODO
-    expect(true).toEqual(true);
-  });
-
-  it('should return error action if image store success but no image available', () => {
-    // TODO
-    expect(true).toEqual(true);
+  it('imageStored should return storeImageError().type if file is undefined', () => {
+    expect(imageStored(undefined)).toEqual(storeImageError());
   });
 });
 
