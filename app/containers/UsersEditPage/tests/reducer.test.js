@@ -2,6 +2,7 @@
 import { fromJS } from 'immutable';
 import usersEditPageReducer from '../reducer';
 import { avatarLoaded, avatarStored, loadProfile, profileLoaded, profileStored, storeProfileError } from '../actions';
+import { expectPropertyNotNull } from '../../../utils/testUtils';
 
 describe('usersEditPageReducer', () => {
   const initialState = {
@@ -19,10 +20,6 @@ describe('usersEditPageReducer', () => {
 
   const userData = {};
   const avatarBase64 = '';
-
-  const expectPropertyNotNull = (nextState, property) => {
-    expect(nextState[property]).toBeDefined();
-  };
 
   it('returns the initial state', () => {
     expect(usersEditPageReducer(undefined, {})).toEqual(fromJS(initialState));
