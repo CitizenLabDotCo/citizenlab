@@ -3675,6 +3675,10 @@ html-minifier@^3.0.1, html-minifier@^3.1.0:
     relateurl "0.2.x"
     uglify-js "2.7.x"
 
+html-to-draftjs@0.1.0-beta7:
+  version "0.1.0-beta7"
+  resolved "https://registry.yarnpkg.com/html-to-draftjs/-/html-to-draftjs-0.1.0-beta7.tgz#bc307356cca36298fe4b5a93dfb0869cdf477a9b"
+
 html-webpack-plugin@2.24.1:
   version "2.24.1"
   resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-2.24.1.tgz#7f45fc678f66eac2d433f22336b4399da023b57e"
@@ -5098,7 +5102,7 @@ lodash.topath@~4.5.2:
   version "4.5.2"
   resolved "https://registry.yarnpkg.com/lodash.topath/-/lodash.topath-4.5.2.tgz#3616351f3bba61994a0931989660bd03254fd009"
 
-lodash@4.17.2, lodash@^4.0.0, lodash@^4.15.0, lodash@^4.16.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.6.1:
+lodash@4.17.2, lodash@^4.0.0, lodash@^4.15.0, lodash@^4.16.4, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.6.1:
   version "4.17.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
 
@@ -5106,7 +5110,7 @@ lodash@^3.10.1:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.3.0:
+lodash@^4.14.0, lodash@^4.17.4, lodash@^4.3.0:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
