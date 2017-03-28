@@ -62,3 +62,4 @@ gem "activerecord_json_validator", "~> 1.2.0"
 
 gem "rest-client"
 gem "fog-aws"
+gem "mini_magick"

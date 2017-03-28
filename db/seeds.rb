@@ -6,7 +6,6 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-r = Random.new
 
 Tenant.create({
   name: 'local',
@@ -76,7 +75,7 @@ Apartment::Tenant.switch('localhost') do
     }
   })
 
-  50.times do 
+  40.times do 
     Idea.create({
       "title_multiloc": {
         "en": Faker::Lorem.sentence,
@@ -86,11 +85,12 @@ Apartment::Tenant.switch('localhost') do
         "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
         "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
       },
-      topics: rand(2).times.map{ Topic.offset(rand(Topic.count)).first },
-      areas: rand(2).times.map{ Area.offset(rand(Area.count)).first },
+      topics: rand(3).times.map{ Topic.offset(rand(Topic.count)).first },
+      areas: rand(3).times.map{ Area.offset(rand(Area.count)).first },
       author: User.offset(rand(User.count)).first,
       lab: Lab.first,
-      publication_status: 'published'
+      publication_status: 'published',
+      images: [0,0,1,1,2][rand(5)].times.map{ Rails.root.join("spec/fixtures/image#{rand(20)}.png").open }
     })
   end
 

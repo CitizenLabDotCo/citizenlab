@@ -8,10 +8,8 @@ class Api::V1::IdeaSerializer < ActiveModel::Serializer
   belongs_to :lab
 
   def images
-    urls = []
-    object.images.each do |image|
-      urls << image.url
+    object.images.map do |img|
+      img.versions.map{|k, v| [k.to_s, v.url]}.to_h
     end
-    urls
   end
 end

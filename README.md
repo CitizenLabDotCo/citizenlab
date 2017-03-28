@@ -12,9 +12,7 @@ Some containers will fail, because the database is not setup yet.
 On the first run, use this command to create the database and populate it with some dummy data:
 
 ```
-docker-compose run --user "$(id -u):$(id -g)" web bundle exec rake db:create
-docker-compose run --user "$(id -u):$(id -g)" web bundle exec rake db:migrate
-docker-compose run --user "$(id -u):$(id -g)" web bundle exec rake db:seed
+docker-compose run --user "$(id -u):$(id -g)" web bundle exec rake db:reset
 ```
 
 Omit the `--user "$(id -u):$(id -g)"` part on mac or windows.
