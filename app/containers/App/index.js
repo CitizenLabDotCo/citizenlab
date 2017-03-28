@@ -13,13 +13,13 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { makeSelectCurrentUser, makeSelectCurrentTenant } from 'persistedData';
+import { Row, Column } from 'components/Foundation/src/components/grid';
+import Navbar from './Navbar';
 import { loadCurrentTenant } from './actions';
 
-export class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  static propTypes = {
-    children: React.PropTypes.node,
-    dispatch: React.PropTypes.func,
-  };
+class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   componentDidMount() {
     // TODO: remove hardcoded address
@@ -33,10 +33,31 @@ export class App extends React.PureComponent { // eslint-disable-line react/pref
   render() {
     return (
       <div>
-        {React.Children.toArray(this.props.children)}
+        <Navbar
+          currentUser={this.props.currentUser}
+          currentTenant={this.props.currentTenant}
+        >
+        </Navbar>
+        <Row>
+          <Column large={12}>
+            {React.Children.toArray(this.props.children)}
+          </Column>
+        </Row>
       </div>
     );
   }
 }
 
-export default connect()(App);
+App.propTypes = {
+  children: React.PropTypes.node,
+  dispatch: React.PropTypes.func,
+  currentUser: React.PropTypes.object,
+  currentTenant: React.PropTypes.object,
+};
+
+const mapStateToProps = createStructuredSelector({
+  currentUser: makeSelectCurrentUser(),
+  currentTenant: makeSelectCurrentTenant(),
+});
+
+export default connect(mapStateToProps)(App);

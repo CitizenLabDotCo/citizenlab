@@ -11,6 +11,6 @@ describe('<App />', () => {
         {children}
       </App>
     );
-    expect(renderedComponent.contains(children)).toBe(true);
+    expect(renderedComponent.find(children)).toHaveLength(1);
   });
 });
