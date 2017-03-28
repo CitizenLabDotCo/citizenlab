@@ -118,7 +118,7 @@ AttachmentList.propTypes = {
 };
 
 Attachments.propTypes = {
-  attachments: PropTypes.array.isRequired,
+  attachments: PropTypes.any.isRequired,
 };
 
 export default AttachmentList;

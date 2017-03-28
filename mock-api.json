@@ -11,5 +11,6 @@
   },
   "draft-get-html": {
     "content": "<p><strong><ins>some text</ins></strong></p>"
-  }
+  },
+  "attachment-post": {}
 }

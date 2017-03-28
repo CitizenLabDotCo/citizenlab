@@ -13,7 +13,7 @@ import {
 
 // Individual exports for testing
 export function* postDraft(action) {
-  const requestURL = 'http://localhost:3030/draft-post';
+  const requestURL = 'http://demo9193680.mockable.io/draft-post';
 
   try {
     yield call(request, requestURL, {
@@ -52,7 +52,7 @@ export function* getAttachments() {
 }
 
 export function* postAttachment(action) {
-  const requestURL = 'http://demo9193680.mockable.io/attachment-post';
+  const requestURL = 'http://cl2-mock.getsandbox.com/post-attachment';
 
   const payload = new FormData();
   payload.append('file', action.source);
