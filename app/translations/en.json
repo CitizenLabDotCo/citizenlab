@@ -1,9 +1,12 @@
 {
   "app.components.Breadcrumbs.header": "This is the Breadcrumbs component !",
   "app.components.HomePage.header": "HomePage",
+  "app.components.IdeaCard.header": "This is the IdeaCard component !",
   "app.components.IdeaTag.header": "This is the IdeaTag component !",
   "app.components.Input.label": "Label",
   "app.components.NotFoundPage.header": "Ow, it seems you got lost?",
+  "app.components.TopicSelect.header": "This is the TopicSelect component !",
+  "app.containers.IdeasIndexPage.header": "This is IdeasIndexPage container !",
   "app.containers.IdeasNewPage.charactersLeft": "{charsLeft} characters left",
   "app.containers.IdeasNewPage.clickToUpload": "Click to upload",
   "app.containers.IdeasNewPage.loadAttachmentsError": "Coudln't laod existing attachments",
@@ -37,5 +40,12 @@
   "app.containers.UsersEditPage.processing": "Sending...",
   "app.containers.UsersEditPage.storeError": "Can't store updated profile",
   "app.containers.UsersEditPage.stored": "Profile stored",
-  "app.containers.UsersNewPage.header": "UsersNewPage"
+  "app.containers.UsersNewPage.header": "UsersNewPage",
+  "app.containers.app.navbar.addIdea": "Add idea",
+  "app.containers.app.navbar.editProfile": "Edit profile",
+  "app.containers.app.navbar.ideas": "Ideas",
+  "app.containers.app.navbar.login": "Login",
+  "app.containers.app.navbar.logout": "Sign out",
+  "app.containers.app.navbar.register": "Register",
+  "app.containers.app.navbar.search": "Search"
 }

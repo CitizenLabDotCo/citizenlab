@@ -1,9 +1,12 @@
 {
   "app.components.Breadcrumbs.header": "",
   "app.components.HomePage.header": "",
+  "app.components.IdeaCard.header": "",
   "app.components.IdeaTag.header": "",
   "app.components.Input.label": "",
   "app.components.NotFoundPage.header": "",
+  "app.components.TopicSelect.header": "",
+  "app.containers.IdeasIndexPage.header": "",
   "app.containers.IdeasNewPage.charactersLeft": "",
   "app.containers.IdeasNewPage.clickToUpload": "",
   "app.containers.IdeasNewPage.loadAttachmentsError": "",
@@ -37,5 +40,12 @@
   "app.containers.UsersEditPage.processing": "",
   "app.containers.UsersEditPage.storeError": "",
   "app.containers.UsersEditPage.stored": "",
-  "app.containers.UsersNewPage.header": ""
+  "app.containers.UsersNewPage.header": "",
+  "app.containers.app.navbar.addIdea": "",
+  "app.containers.app.navbar.editProfile": "",
+  "app.containers.app.navbar.ideas": "",
+  "app.containers.app.navbar.login": "",
+  "app.containers.app.navbar.logout": "",
+  "app.containers.app.navbar.register": "",
+  "app.containers.app.navbar.search": ""
 }

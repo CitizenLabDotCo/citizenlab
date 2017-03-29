@@ -2,9 +2,34 @@ import React, { PropTypes } from 'react';
 import { TopBar, TopBarTitle, TopBarLeft, TopBarRight } from 'components/Foundation/src/components/top-bar';
 import { Menu, MenuItem } from 'components/Foundation/src/components/menu';
 import { Link } from 'react-router';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import messages from './messages';
 
-export default class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+
+  loginLink() {
+    return [
+      <MenuItem key="login"><Link to="/sign-in">Login</Link></MenuItem>,
+      <MenuItem key="register"><Link to="/register">Register</Link></MenuItem>,
+    ];
+  }
+
+  userMenu(currentUser) {
+    return (
+      <MenuItem>
+        <Menu isDropDown>
+          <MenuItem>{currentUser.name}</MenuItem>
+          <Menu isVertical>
+            <MenuItem><Link to="/profile/edit"><FormattedMessage {...messages.editProfile} /></Link></MenuItem>
+            <MenuItem><Link>Sign out</Link></MenuItem>
+          </Menu>
+        </Menu>
+      </MenuItem>
+    );
+  }
+
   render() {
+    const { formatMessage } = this.props.intl;
     const { currentUser, currentTenant } = this.props;
     return (
       <TopBar>
@@ -12,13 +37,14 @@ export default class Navbar extends React.PureComponent { // eslint-disable-line
         <div>
           <TopBarLeft>
             <Menu>
-              <MenuItem><Link to="/ideas">Ideas</Link></MenuItem>
+              <MenuItem><Link to="/ideas"><FormattedMessage {...messages.ideas} /></Link></MenuItem>
+              <MenuItem><input type="search" placeholder={formatMessage({ ...messages.search })} /></MenuItem>
             </Menu>
           </TopBarLeft>
           <TopBarRight>
             <Menu>
-              <MenuItem><Link to="/ideas/new">+ Idea</Link></MenuItem>
-              <MenuItem><a>{currentUser ? currentUser.name : 'Login'}</a></MenuItem>
+              <MenuItem><Link to="/ideas/new"><FormattedMessage {...messages.addIdea} /></Link></MenuItem>
+              {currentUser ? this.userMenu(currentUser) : this.loginLink()}
             </Menu>
           </TopBarRight>
         </div>
@@ -30,4 +56,7 @@ export default class Navbar extends React.PureComponent { // eslint-disable-line
 Navbar.propTypes = {
   currentUser: PropTypes.object,
   currentTenant: PropTypes.object,
+  intl: PropTypes.object,
 };
+
+export default injectIntl(Navbar);
