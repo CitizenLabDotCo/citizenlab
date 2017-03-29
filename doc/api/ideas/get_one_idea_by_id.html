@@ -122,7 +122,7 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas/dd768108-8816-420f-a857-e8987efb4eaf</pre>
+          <pre class="request route highlight">GET api/v1/ideas/26e5388b-00fe-4be2-afe1-fbc21edf6cff</pre>
 
 
 
@@ -133,18 +133,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;7ecb74ff8c8a3bfef8133cb97ba87127&quot;
+ETag: W/&quot;64480f7fd033b503774590d4a87d60d1&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: ce139fba-08cf-4b4c-8084-fee46aa17a9c
-X-Runtime: 0.020023
+X-Request-Id: bf1ed45e-da40-4c73-9cc5-ba5a43989569
+X-Runtime: 0.020199
 Vary: Origin
-Content-Length: 716</pre>
+Content-Length: 737</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;dd768108-8816-420f-a857-e8987efb4eaf&quot;,
+    &quot;id&quot;: &quot;26e5388b-00fe-4be2-afe1-fbc21edf6cff&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -155,7 +155,10 @@ Content-Length: 716</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;publication_status&quot;: &quot;published&quot;
+      &quot;publication_status&quot;: &quot;published&quot;,
+      &quot;images&quot;: [
+
+      ]
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -170,13 +173,13 @@ Content-Length: 716</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;39ded131-e35e-4de2-b99b-066b849aff49&quot;,
+          &quot;id&quot;: &quot;dbfa3b19-0421-459b-bcfb-78cb4c295a8b&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
       &quot;lab&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;dcc13eb8-d43a-4505-906f-e012f94cd4b1&quot;,
+          &quot;id&quot;: &quot;96e46855-943f-485b-afcb-08d491b88e90&quot;,
           &quot;type&quot;: &quot;labs&quot;
         }
       }
@@ -184,11 +187,11 @@ Content-Length: 716</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;39ded131-e35e-4de2-b99b-066b849aff49&quot;,
+      &quot;id&quot;: &quot;dbfa3b19-0421-459b-bcfb-78cb4c295a8b&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;name&quot;: &quot;Dedrick Boehm&quot;,
-        &quot;slug&quot;: &quot;dedrick-boehm&quot;,
+        &quot;name&quot;: &quot;Dr. Gilberto Kiehn&quot;,
+        &quot;slug&quot;: &quot;dr-gilberto-kiehn&quot;,
         &quot;avatar&quot;: null
       }
     }

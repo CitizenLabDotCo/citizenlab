@@ -7,6 +7,11 @@ class Api::V1::IdeasController < ApplicationController
 
   def index
     @ideas = policy_scope(Idea).includes(:author).page(params[:page])
+
+    @ideas = @ideas.with_all_topics(params[:topics]) if params[:topics].present?
+    @ideas = @ideas.with_all_areas(params[:areas]) if params[:areas].present?
+    @ideas = @ideas.where(lab: params[:lab]) if params[:lab].present?
+
     render json: @ideas, include: ['author']
   end
 

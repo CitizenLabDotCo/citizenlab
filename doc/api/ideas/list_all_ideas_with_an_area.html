@@ -109,8 +109,8 @@ table th, table td {
       <h1>Ideas API</h1>
 
       <div class="article">
-        <h2>Updating a draft to a published post</h2>
-        <h3>PATCH api/v1/ideas/:id</h3>
+        <h2>List all ideas with an area</h2>
+        <h3>GET api/v1/ideas</h3>
 
           <h3>Parameters</h3>
           <table class="parameters table table-striped table-bordered table-condensed">
@@ -122,11 +122,27 @@ table th, table td {
             </thead>
             <tbody>
               <tr>
-                <td class="required">
-                    <span class="name">idea[publication_status]</span>
+                <td>
+                    <span class="name">topics</span>
                 </td>
                 <td>
-                  <span class="description">Either [&quot;draft&quot;, &quot;published&quot;, &quot;closed&quot;, &quot;spam&quot;].join(&#39;, &#39;)}</span>
+                  <span class="description">Filter by topics (AND)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">areas</span>
+                </td>
+                <td>
+                  <span class="description">Filter by areas (AND)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">lab</span>
+                </td>
+                <td>
+                  <span class="description">Filter by lab</span>
                 </td>
               </tr>
             </tbody>
@@ -137,16 +153,15 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTA4OTQ1NjIsInN1YiI6ImM5MGQzYjlkLTg4MmItNDA0Yy1hN2JkLTVkZDg2YmM3MGQ5OSJ9.eXR1DRvH2hIgE-hEiRg811nE2wtQJeTA0UBqosqg1z4
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/ideas/d349648f-90ae-4e23-9998-eb14135b6f3c</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=18977958-1c6a-4888-99ec-5110f2457406</pre>
 
+            <h4>Query Parameters</h4>
+            <pre class="request query_parameters highlight">areas: [&quot;18977958-1c6a-4888-99ec-5110f2457406&quot;]</pre>
 
-            <h4>Body</h4>
-            <pre class="request body">{"idea":{"publication_status":"published"}}</pre>
 
 
             <h3>Response</h3>
@@ -155,70 +170,76 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;b3f2059586ac2f6a6442b93b518b0776&quot;
+ETag: W/&quot;27b2bb890492f33d6692ef017a2dfff7&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 7d7afde1-e3f9-48d3-9c59-b958a96b0baa
-X-Runtime: 0.026706
+X-Request-Id: 91920817-1779-4cd4-a08e-7fe79140feb3
+X-Runtime: 0.018120
 Vary: Origin
-Content-Length: 769</pre>
+Content-Length: 799</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;data&quot;: {
-    &quot;id&quot;: &quot;d349648f-90ae-4e23-9998-eb14135b6f3c&quot;,
-    &quot;type&quot;: &quot;ideas&quot;,
-    &quot;attributes&quot;: {
-      &quot;title_multiloc&quot;: {
-        &quot;en&quot;: &quot;Plant more trees&quot;,
-        &quot;nl&quot;: &quot;Plant meer bomen&quot;
-      },
-      &quot;body_multiloc&quot;: {
-        &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
-        &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
-      },
-      &quot;publication_status&quot;: &quot;published&quot;,
-      &quot;images&quot;: [
-
-      ]
-    },
-    &quot;relationships&quot;: {
-      &quot;topics&quot;: {
-        &quot;data&quot;: [
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;fc042ca1-9019-452e-810d-733caa4a4fe3&quot;,
+      &quot;type&quot;: &quot;ideas&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        },
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
+        },
+        &quot;publication_status&quot;: &quot;published&quot;,
+        &quot;images&quot;: [
 
         ]
       },
-      &quot;areas&quot;: {
-        &quot;data&quot;: [
+      &quot;relationships&quot;: {
+        &quot;topics&quot;: {
+          &quot;data&quot;: [
 
-        ]
-      },
-      &quot;author&quot;: {
-        &quot;data&quot;: {
-          &quot;id&quot;: &quot;c90d3b9d-882b-404c-a7bd-5dd86bc70d99&quot;,
-          &quot;type&quot;: &quot;users&quot;
-        }
-      },
-      &quot;lab&quot;: {
-        &quot;data&quot;: {
-          &quot;id&quot;: &quot;6554ff1a-8cf0-4d10-8f35-7e8dd5d8e7cb&quot;,
-          &quot;type&quot;: &quot;labs&quot;
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+            {
+              &quot;id&quot;: &quot;18977958-1c6a-4888-99ec-5110f2457406&quot;,
+              &quot;type&quot;: &quot;areas&quot;
+            }
+          ]
+        },
+        &quot;author&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;0344d02b-1069-41ec-b56e-c64265bef941&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;lab&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;34ee72cb-ce6c-4a5a-b7dc-2adfb925d250&quot;,
+            &quot;type&quot;: &quot;labs&quot;
+          }
         }
       }
     }
-  },
+  ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;c90d3b9d-882b-404c-a7bd-5dd86bc70d99&quot;,
+      &quot;id&quot;: &quot;0344d02b-1069-41ec-b56e-c64265bef941&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;name&quot;: &quot;Jannie Spinka&quot;,
-        &quot;slug&quot;: &quot;jannie-spinka&quot;,
-        &quot;avatar&quot;: null,
-        &quot;email&quot;: &quot;garrison_kutch@johnsheller.net&quot;
+        &quot;name&quot;: &quot;Tomasa Wolff&quot;,
+        &quot;slug&quot;: &quot;tomasa-wolff&quot;,
+        &quot;avatar&quot;: null
       }
     }
-  ]
+  ],
+  &quot;links&quot;: {
+  }
 }</pre>
       </div>
     </div>

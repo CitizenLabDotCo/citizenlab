@@ -19,6 +19,20 @@ class Idea < ApplicationRecord
 
   before_validation :set_author_name, on: :create
 
+  scope :with_all_topics, (Proc.new do |topic_ids|
+    uniq_topic_ids = topic_ids.uniq
+    joins(:ideas_topics)
+    .where(ideas_topics: {topic_id: uniq_topic_ids})
+    .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
+  end)
+
+  scope :with_all_areas, (Proc.new do |area_ids|
+    uniq_area_ids = area_ids.uniq
+    joins(:areas_ideas)
+    .where(areas_ideas: {area_id: uniq_area_ids})
+    .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
+  end)
+
   def draft?
     self.publication_status == 'draft'
   end
