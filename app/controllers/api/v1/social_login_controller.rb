@@ -1,28 +1,27 @@
-class Api::V1::LoginController < ::ApplicationController
+class Api::V1::SocialLoginController < ::ApplicationController
   MissingEmail = Class.new(StandardError)
 
   def create
     skip_authorization
-    # TODO add support for other networks
-    user = find_user(get_facebook_profile["email"])
-
-    send_success({
-      data: { jwt: create_jwt(user.id) }
-    })
-  # TODO: send proper json api error objects
+    user = verify_social_login
+    send_success({ jwt: create_jwt(user.id) })
   rescue RestClient::BadRequest
     send_error({ message: 'invalid token' })
-  rescue ActiveRecord::RecordNotFound
-  rescue MissingEmail
-    # TODO: do user registration and send a jwt
-    send_error({ message: 'user not registered' })
+  rescue ActiveRecord::RecordNotFound, MissingEmail
+    send_not_found
   end
 
-  def get_facebook_profile
+  def verify_social_login
+    # TODO add support for other networks
+    find_user(get_facebook_profile_email)
+  end
+
+  def get_facebook_profile_email
     response = RestClient.get('https://graph.facebook.com/me', params: { access_token: login_params[:access_token], fields: 'name,email' })
     result = JSON.parse(response.body)
-    raise MissingEmail if result["email"].blank?
-    result
+    email = result["email"]
+    raise MissingEmail if email.blank?
+    email
   end
 
   def find_user(email)

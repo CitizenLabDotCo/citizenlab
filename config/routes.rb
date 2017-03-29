@@ -5,7 +5,7 @@ Rails.application.routes.draw do
       resources :ideas
       # auth
       post 'user_token' => 'user_token#create'
-      post 'social_login' => 'login#create'
+      post 'social_login' => 'social_login#create'
 
       resources :users do
         get :me, on: :collection
