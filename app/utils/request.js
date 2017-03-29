@@ -28,6 +28,15 @@ import 'whatwg-fetch';
 //   throw error;
 // }
 
+function getJwt() {
+  try {
+    return window.localStorage.getItem('jwt');
+  } catch (err) {
+    console.log("[DEBUG] err =", err); // eslint-disable-line
+    return null;
+  }
+}
+
 /**
  * Requests a URL, returning a promise
  *
@@ -37,11 +46,16 @@ import 'whatwg-fetch';
  * @return {object}           The response data
  */
 export default function request(url, data, options) {
+  const jwt = getJwt();
   const defaultOptions = {
     headers: {
       'Content-Type': 'application/json',
     },
   };
+
+  if (jwt) {
+    defaultOptions.headers['Authorization'] = `Bearer ${jwt}`; // eslint-disable-line
+  }
 
   if (data) {
     defaultOptions.body = JSON.stringify(data);
