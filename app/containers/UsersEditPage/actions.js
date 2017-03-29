@@ -5,27 +5,23 @@
  */
 
 import {
-  LOAD_PROFILE, PROFILE_LOAD_SUCCESS, PROFILE_LOAD_ERROR,
+  CURRENT_USER_LOAD_SUCCESS, CURRENT_USER_LOAD_ERROR,
   STORE_PROFILE, PROFILE_STORE_SUCCESS, PROFILE_STORE_ERROR, STORE_AVATAR, AVATAR_STORE_SUCCESS, AVATAR_LOAD_SUCCESS,
   AVATAR_LOAD_ERROR, AVATAR_STORE_ERROR, LOAD_AVATAR,
 } from './constants';
 
-export function loadProfile() {
+export function currentUserLoaded(currentUser) {
   return {
-    type: LOAD_PROFILE,
+    type: (currentUser && currentUser.data
+      ? CURRENT_USER_LOAD_SUCCESS
+      : CURRENT_USER_LOAD_ERROR),
+    payload: currentUser,
   };
 }
 
-export function profileLoaded(profile) {
+export function currentUserLoadError() {
   return {
-    type: (profile ? PROFILE_LOAD_SUCCESS : PROFILE_LOAD_ERROR),
-    ...{ profile },
-  };
-}
-
-export function profileLoadError() {
-  return {
-    type: PROFILE_LOAD_ERROR,
+    type: CURRENT_USER_LOAD_ERROR,
   };
 }
 
@@ -43,10 +39,9 @@ export function profileStored(profile) {
   };
 }
 
-export function storeProfileError(profile) {
+export function storeProfileError() {
   return {
     type: PROFILE_STORE_ERROR,
-    ...{ profile },
   };
 }
 

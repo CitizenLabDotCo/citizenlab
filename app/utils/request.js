@@ -44,6 +44,14 @@ export default function request(url, options) {
     .then(parseJSON);
 }
 
+export function getCurrentUserRequest(options) {
+  // TODO: replace userId with /me when available
+  const userId = 'e672299d-e77e-464a-a5cc-41874c49e2f7';
+  return fetch(`${API_PATH}/users/${userId}`, options)
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
 export function getIdeasRequest(options) {
   return fetch(`${API_PATH}/ideas`, options)
     .then(checkStatus)

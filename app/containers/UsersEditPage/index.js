@@ -22,8 +22,9 @@ import {
 } from './selectors';
 
 import messages from './messages';
-import { loadAvatar, loadProfile, storeAvatar, storeAvatarError, storeProfile } from './actions';
+import { loadAvatar, storeAvatar, storeAvatarError, storeProfile } from './actions';
 import ProfileForm from './ProfileForm';
+import { loadCurrentUser } from '../App/actions';
 
 const ProfileDiv = styled.div`
   padding: 20px;
@@ -99,7 +100,7 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     initData: () => {
-      dispatch(loadProfile());
+      dispatch(loadCurrentUser());
     },
     onProfileFormSubmit: (values) => {
       dispatch(storeProfile(values));

@@ -6,10 +6,10 @@
 
 import { fromJS } from 'immutable';
 import {
-  LOAD_PROFILE, PROFILE_LOAD_SUCCESS, PROFILE_LOAD_ERROR,
   STORE_PROFILE, PROFILE_STORE_SUCCESS, PROFILE_STORE_ERROR, STORE_AVATAR, AVATAR_STORE_ERROR, AVATAR_STORE_SUCCESS,
-  LOAD_AVATAR, AVATAR_LOAD_ERROR, AVATAR_LOAD_SUCCESS,
+  LOAD_AVATAR, AVATAR_LOAD_ERROR, AVATAR_LOAD_SUCCESS, CURRENT_USER_LOAD_SUCCESS, CURRENT_USER_LOAD_ERROR,
 } from './constants';
+import { LOAD_CURRENT_USER } from '../App/constants';
 
 export const usersEditPageInitialState = fromJS({
   loading: false,
@@ -17,7 +17,7 @@ export const usersEditPageInitialState = fromJS({
   storeError: false,
   processing: false,
   stored: false,
-  userData: { },
+  currentUser: { },
   avatarBase64: null,
   avatarStored: false,
   avatarLoadError: false,
@@ -26,15 +26,15 @@ export const usersEditPageInitialState = fromJS({
 
 export default function usersEditPageReducer(state = usersEditPageInitialState, action) {
   switch (action.type) {
-    case LOAD_PROFILE:
+    case LOAD_CURRENT_USER:
       return state
         .set('loading', true)
         .set('loadError', false);
-    case PROFILE_LOAD_SUCCESS:
+    case CURRENT_USER_LOAD_SUCCESS:
       return state
-        .set('userData', action.profile)
+        .set('currentUser', action.payload.data.attributes)
         .set('loading', false);
-    case PROFILE_LOAD_ERROR:
+    case CURRENT_USER_LOAD_ERROR:
       return state
         .set('loadError', true)
         .set('loading', false);
@@ -45,12 +45,13 @@ export default function usersEditPageReducer(state = usersEditPageInitialState, 
         .set('storeError', false);
     case PROFILE_STORE_SUCCESS:
       return state
-        .set('userData', action.profile)
+        .set('currentUser', action.payload.data.attributes)
         .set('processing', false)
         .set('stored', true);
     case PROFILE_STORE_ERROR:
       return state
-        .set('userData', action.profile)
+        // restore existing currentUserData to keep form state consistency
+        .set('currentUser', state.get('currentUser').toJS())
         .set('processing', false)
         .set('storeError', true);
     case STORE_AVATAR:

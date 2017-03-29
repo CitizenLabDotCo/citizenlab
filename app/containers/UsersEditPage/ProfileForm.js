@@ -25,7 +25,7 @@ export default class ProfileForm extends React.PureComponent {
     const user = nextProps.user;
     if (user) {
       // load initial value (unless form being re-rendered)
-      this.localFormDispatch(actions.load('profile', user));
+      this.localFormDispatch(actions.load('user', user));
     }
   }
 
@@ -34,7 +34,7 @@ export default class ProfileForm extends React.PureComponent {
 
     return (
       <LocalForm
-        model="profile"
+        model="user"
         getDispatch={(dispatch) => {
           this.localFormDispatch = dispatch;
         }}
@@ -42,8 +42,7 @@ export default class ProfileForm extends React.PureComponent {
       >
         <Row>
           <Column large={6}>
-            <LabelInputPair id="firstName" />
-            <LabelInputPair id="lastName" />
+            <LabelInputPair id="name" />
             <LabelInputPair id="email" />
           </Column>
           <Column large={6}>
@@ -55,9 +54,6 @@ export default class ProfileForm extends React.PureComponent {
             />
           </Column>
         </Row>
-        <LabelInputPair id="gender" />
-        <LabelInputPair id="age" />
-
         <button type="submit">Submit</button>
       </LocalForm>
     );

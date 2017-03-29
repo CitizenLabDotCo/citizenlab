@@ -5,9 +5,8 @@
  */
 
 // load
-export const LOAD_PROFILE = 'app/UsersEditPage/LOAD_PROFILE';
-export const PROFILE_LOAD_SUCCESS = 'app/UsersEditPage/PROFILE_LOAD_SUCCESS';
-export const PROFILE_LOAD_ERROR = 'app/UsersEditPage/PROFILE_LOAD_ERROR';
+export const CURRENT_USER_LOAD_SUCCESS = 'app/UsersEditPage/CURRENT_USER_LOAD_SUCCESS';
+export const CURRENT_USER_LOAD_ERROR = 'app/UsersEditPage/CURRENT_USER_LOAD_ERROR';
 
 // store
 export const STORE_PROFILE = 'app/UsersEditPage/STORE_PROFILE';

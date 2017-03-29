@@ -1,23 +1,25 @@
-import request from 'utils/request';
+import request from 'utils/request'; // eslint-disable-line import/no-duplicates
 import { call, put } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
 
 import {
-  profileLoadError, profileLoaded, profileStored, storeProfileError, avatarStored,
+  currentUserLoadError, currentUserLoaded, profileStored, storeProfileError, avatarStored,
   storeAvatarError, avatarLoaded, loadAvatarError,
 } from './actions';
-import { LOAD_AVATAR, LOAD_PROFILE, STORE_AVATAR, STORE_PROFILE } from './constants';
+import { LOAD_AVATAR, STORE_AVATAR, STORE_PROFILE } from './constants';
+import { getCurrentUserRequest } from '../../utils/request'; // eslint-disable-line import/no-duplicates
+import { mergeJsonApiResources } from '../../utils/resources/actions';
+import { LOAD_CURRENT_USER } from '../App/constants';
 
 // Individual exports for testing
 export function* getProfile() {
-  const requestURL = 'http://demo9193680.mockable.io/profile-get';
-
   try {
-    const profile = yield call(request, requestURL);
+    const currentUserResponse = yield call(getCurrentUserRequest);
 
-    yield put(profileLoaded(profile));
+    yield put(mergeJsonApiResources(currentUserResponse));
+    yield put(currentUserLoaded(currentUserResponse));
   } catch (err) {
-    yield put(profileLoadError(err));
+    yield put(currentUserLoadError(err));
   }
 }
 
@@ -30,9 +32,9 @@ export function* postProfile(action) {
       body: JSON.stringify(action.userData),
     });
 
-    yield put(profileStored(action.userData));
+    yield put(profileStored(action.data.attributes));
   } catch (err) {
-    yield put(storeProfileError(action.userData));
+    yield put(storeProfileError());
   }
 }
 
@@ -67,8 +69,8 @@ export function* storeProfile() {
   yield takeLatest(STORE_PROFILE, postProfile);
 }
 
-export function* loadProfile() {
-  yield takeLatest(LOAD_PROFILE, getProfile);
+export function* loadCurrentUser() {
+  yield takeLatest(LOAD_CURRENT_USER, getProfile);
 }
 
 export function* storeAvatar() {
@@ -81,7 +83,7 @@ export function* loadAvatar() {
 
 // All sagas to be loaded
 export default [
-  loadProfile,
+  loadCurrentUser,
   storeProfile,
   storeAvatar,
   loadAvatar,

@@ -10,25 +10,13 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.header',
     defaultMessage: 'Profile',
   },
-  firstName: {
-    id: 'app.containers.UsersEditPage.firstName',
+  name: {
+    id: 'app.containers.UsersEditPage.name',
     defaultMessage: 'First Name',
-  },
-  lastName: {
-    id: 'app.containers.UsersEditPage.lastName',
-    defaultMessage: 'Last Name',
   },
   email: {
     id: 'app.containers.UsersEditPage.email',
     defaultMessage: 'E-mail',
-  },
-  gender: {
-    id: 'app.containers.UsersEditPage.gender',
-    defaultMessage: 'Gender',
-  },
-  age: {
-    id: 'app.containers.UsersEditPage.age',
-    defaultMessage: 'Age',
   },
   loading: {
     id: 'app.containers.UsersEditPage.loading',
