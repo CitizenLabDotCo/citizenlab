@@ -38,21 +38,17 @@ describe('makeSelectUsersEditPageDomain', () => {
   });
 
   const userDataSelector = makeSelectUserData();
-  const user = {
-    firstName: 'X',
-    lastName: 'Y',
-    gender: 'Male',
-    email: 'a@b.cd',
-  };
   it('should select the current user', () => {
+    const user = {
+      firstName: 'X',
+      lastName: 'Y',
+      gender: 'Male',
+      email: 'a@b.cd',
+    };
+
     const mockedState = fromJS({
       profile: {
-        userData: {
-          firstName: 'X',
-          lastName: 'Y',
-          gender: 'Male',
-          email: 'a@b.cd',
-        },
+        currentUser: user,
       },
     });
     expect(userDataSelector(mockedState).toJS()).toEqual(user);

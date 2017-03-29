@@ -45,7 +45,7 @@ export default function usersEditPageReducer(state = usersEditPageInitialState, 
         .set('storeError', false);
     case PROFILE_STORE_SUCCESS:
       return state
-        .set('currentUser', action.payload.data.attributes)
+        .set('currentUser', action.profile)
         .set('processing', false)
         .set('stored', true);
     case PROFILE_STORE_ERROR:

@@ -1,10 +1,10 @@
 import {
-  avatarLoaded, avatarStored, loadAvatarError, profileLoaded, profileLoadError,
+  avatarLoaded, avatarStored, currentUserLoaded, currentUserLoadError, loadAvatarError,
   profileStored, storeAvatarError, storeProfileError,
 } from '../actions';
 describe('actions', () => {
   it('should return profileLoadError().type if profile is null', () => {
-    expect(profileLoaded(undefined)).toEqual(profileLoadError());
+    expect(currentUserLoaded(undefined)).toEqual(currentUserLoadError());
   });
 
   it('should return profileStoreError().type if profile is null', () => {

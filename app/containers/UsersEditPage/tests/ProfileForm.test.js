@@ -25,7 +25,7 @@ describe('<ProfileForm />', () => {
 
   describe('<LabelInputPair />', () => {
     it('input\'s label should render correctly', () => {
-      const id = 'firstName';
+      const id = 'name';
       const tree = createComponentWithIntl(
         <label htmlFor={id}>
           <FormattedMessage {...messages[id]} />
