@@ -13,6 +13,7 @@ import { createStructuredSelector } from 'reselect';
 import {
   Button,
 } from 'components/Foundation';
+import Api from 'api';
 import makeSelectSignInPage from './selectors';
 import messages from './messages';
 import Form from './Form';
@@ -52,7 +53,25 @@ export const SocialLoginBox = (props) => {
   );
 };
 
+// TODO enable eslint
+/* eslint-disable */
 export class SignInPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+
+  // Quick fix until we add a Saga
+  handleSubmit(values) {
+    console.log("[DEBUG] values =", values);
+    Api.login(values.email, values.password)
+      .then((json) => {
+        console.log("[DEBUG] json =", json);
+        try {
+          window.localStorage.setItem('jwt', json.jwt)
+          this.props.router.push('/');
+        } catch (err) {
+          console.log(err); // eslint-disable-line
+        }
+      });
+  }
+
   render() {
     return (
       <div>
@@ -72,7 +91,7 @@ export class SignInPage extends React.PureComponent { // eslint-disable-line rea
         <SocialLoginBox onChange={() => this.forceUpdate()} />
 
         <Box>
-          <Form onSubmit={this.props.onSubmit} />
+          <Form onSubmit={this.handleSubmit.bind(this)} />
         </Box>
       </div>
     );

@@ -1,6 +1,19 @@
 import request from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 
+export function login(email, password) {
+  const data = {
+    auth: {
+      email,
+      password,
+    },
+  };
+
+  return request(`${API_PATH}/user_token`, data, {
+    method: 'POST',
+  });
+}
+
 export function socialLogin(network, accessToken) {
   const data = {
     auth: {
@@ -25,7 +38,8 @@ export function fetchIdeas() {
 }
 
 export default {
+  login,
+  socialLogin,
   createUser,
   fetchIdeas,
-  socialLogin,
 };
