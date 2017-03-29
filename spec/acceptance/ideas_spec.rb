@@ -9,12 +9,106 @@ resource "Ideas" do
   end
 
   get "api/v1/ideas" do
+    parameter :topics, 'Filter by topics (AND)', required: false
+    parameter :areas, 'Filter by areas (AND)', required: false
+    parameter :lab, 'Filter by lab', required: false
+
     example_request "List all ideas" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
+      p json_response
       expect(json_response[:data].size).to eq 5
     end
+
+    example "List all ideas with a topic" do
+      t1 = create(:topic)
+
+      i1 = @ideas.first
+      i1.topics << t1
+      i1.save
+
+      do_request(topics: [t1.id])
+      json_response = json_parse(response_body)
+      expect(json_response[:data][0][:id]).to eq i1.id
+    end
+
+    example "List all ideas with all given topics" do
+      t1 = create(:topic)
+      t2 = create(:topic)
+
+      i1 = @ideas.first
+      i1.topics = [t1, t2]
+      i1.save
+
+      do_request(topics: [t1.id, t2.id])
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq i1.id
+    end
+
+    example "List no ideas when not all given topics are there", document: false do
+      t1 = create(:topic)
+      t2 = create(:topic)
+
+      i1 = @ideas.first
+      i1.topics << t1
+      i1.save
+
+      do_request(topics: [t1.id, t2.id])
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 0
+    end
+
+    example "List all ideas with an area" do
+      a1 = create(:area)
+
+      i1 = @ideas.first
+      i1.areas << a1
+      i1.save
+
+      do_request(areas: [a1.id])
+      json_response = json_parse(response_body)
+      expect(json_response[:data][0][:id]).to eq i1.id
+    end
+
+    example "List all ideas with all given areas" do
+      a1 = create(:area)
+      a2 = create(:area)
+
+      i1 = @ideas.first
+      i1.areas = [a1, a2]
+      i1.save
+
+      do_request(areas: [a1.id, a2.id])
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq i1.id
+    end
+
+    example "List no ideas when not all given areas are there", document: false do
+      a1 = create(:area)
+      a2 = create(:area)
+
+      i1 = @ideas.first
+      i1.areas << a1
+      i1.save
+
+      do_request(areas: [a1.id, a2.id])
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 0
+    end
+
+    example "List all ideas in a lab" do
+      l = create(:lab)
+      i = create(:idea, lab: l)
+
+      do_request(lab: l.id)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq i.id
+    end
   end
+
 
   get "api/v1/ideas/:id" do
     let(:id) {@ideas.first.id}

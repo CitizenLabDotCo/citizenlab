@@ -185,7 +185,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTAzNzgzMjEsInN1YiI6ImJhY2NkNThjLTk2MDctNDczOC1iZTA2LTY1NDhhNTlhM2E3OSJ9.yMvAzRO5rkN5uLVqz6Awu_3IS1Loqk5J4UNU33L0QBU
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTA4OTQ1NjEsInN1YiI6ImU0MmRmYTNjLWFhNWQtNDg2Zi04MWIyLWMyY2M1NjJlNjJhMyJ9.HNnmTsNfAPhp2uppl3DOQVGvywyg3kwlCGZSCxFnZc4
 Host: example.org
 Cookie: </pre>
 
@@ -194,7 +194,7 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"idea":{"lab_id":"0207dfb5-0722-4808-a078-c201e2176f45","author_id":"a3e16bde-7a4b-4067-bf9a-975f63b1e320","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"}}}</pre>
+            <pre class="request body">{"idea":{"lab_id":"715262d0-cb26-42f0-bb88-852d01bb01d3","author_id":"41fbe96d-db79-4785-89d2-29703a1ba3ef","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"}}}</pre>
 
 
             <h3>Response</h3>
@@ -203,18 +203,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;96e63e8f3fc6c58ead77d2743fb7c562&quot;
+ETag: W/&quot;d350f6a97f09524998c839cd1f1c792f&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 4769d685-61a7-42db-9e28-198b359b7517
-X-Runtime: 0.028274
+X-Request-Id: 8045d33c-cd72-42d6-8c72-42fd67606978
+X-Runtime: 0.022199
 Vary: Origin
-Content-Length: 722</pre>
+Content-Length: 728</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;e4e76231-108f-449d-83c3-939e74c4a375&quot;,
+    &quot;id&quot;: &quot;7e6141c9-60d5-4cf9-b9dd-096db75a6ba7&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -225,7 +225,10 @@ Content-Length: 722</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;publication_status&quot;: &quot;published&quot;
+      &quot;publication_status&quot;: &quot;published&quot;,
+      &quot;images&quot;: [
+
+      ]
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -240,13 +243,13 @@ Content-Length: 722</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;a3e16bde-7a4b-4067-bf9a-975f63b1e320&quot;,
+          &quot;id&quot;: &quot;41fbe96d-db79-4785-89d2-29703a1ba3ef&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
       &quot;lab&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;0207dfb5-0722-4808-a078-c201e2176f45&quot;,
+          &quot;id&quot;: &quot;715262d0-cb26-42f0-bb88-852d01bb01d3&quot;,
           &quot;type&quot;: &quot;labs&quot;
         }
       }
@@ -254,11 +257,11 @@ Content-Length: 722</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;a3e16bde-7a4b-4067-bf9a-975f63b1e320&quot;,
+      &quot;id&quot;: &quot;41fbe96d-db79-4785-89d2-29703a1ba3ef&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;name&quot;: &quot;Jessika Gorczany&quot;,
-        &quot;slug&quot;: &quot;jessika-gorczany&quot;,
+        &quot;name&quot;: &quot;Domenica Kihn&quot;,
+        &quot;slug&quot;: &quot;domenica-kihn&quot;,
         &quot;avatar&quot;: null
       }
     }

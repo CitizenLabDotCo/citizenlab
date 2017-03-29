@@ -112,6 +112,41 @@ table th, table td {
         <h2>List all ideas</h2>
         <h3>GET api/v1/ideas</h3>
 
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">topics</span>
+                </td>
+                <td>
+                  <span class="description">Filter by topics (AND)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">areas</span>
+                </td>
+                <td>
+                  <span class="description">Filter by areas (AND)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">lab</span>
+                </td>
+                <td>
+                  <span class="description">Filter by lab</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
 
           <h3>Request</h3>
@@ -133,19 +168,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;f7b6b0e0782b291aad179c11cc4a8134&quot;
+ETag: W/&quot;8f6ba3280f461a73b97fcdb285174725&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 4708013d-b4de-4442-9563-5d3793b91821
-X-Runtime: 0.117287
+X-Request-Id: 6db179e6-2eac-4f90-b335-5ae56fab7fdc
+X-Runtime: 0.100296
 Vary: Origin
-Content-Length: 3534</pre>
+Content-Length: 3582</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;3c077013-2a6f-408d-841f-d7c5ba1290bc&quot;,
+      &quot;id&quot;: &quot;b8e5450d-3a98-42ff-98a3-f2c6a263158b&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -156,7 +191,10 @@ Content-Length: 3534</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;publication_status&quot;: &quot;published&quot;
+        &quot;publication_status&quot;: &quot;published&quot;,
+        &quot;images&quot;: [
+
+        ]
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -171,20 +209,20 @@ Content-Length: 3534</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;b8f89f73-714a-488c-8d4b-558467f60db0&quot;,
+            &quot;id&quot;: &quot;92ff96aa-51a0-4cb7-b46a-7aa69bd8003a&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;b6e9667a-d0d3-4275-a8e6-6a78c0c1ec3a&quot;,
+            &quot;id&quot;: &quot;953d7d9b-bd4c-4fed-967c-2ad6061c7130&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
       }
     },
     {
-      &quot;id&quot;: &quot;61f74050-556c-4da3-be0a-ac3e1a561f48&quot;,
+      &quot;id&quot;: &quot;6dedbb59-cbc5-4148-84a6-c764bfc38d4b&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -195,7 +233,10 @@ Content-Length: 3534</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;publication_status&quot;: &quot;published&quot;
+        &quot;publication_status&quot;: &quot;published&quot;,
+        &quot;images&quot;: [
+
+        ]
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -210,20 +251,20 @@ Content-Length: 3534</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;574fc80a-8ae7-496e-b295-1c4372ab20e6&quot;,
+            &quot;id&quot;: &quot;9607e64e-5915-45a1-be36-8e05e01209c4&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;3accd205-9401-4a57-8c9c-7af4c62077ef&quot;,
+            &quot;id&quot;: &quot;8e1c0550-4a96-48c7-8072-2129f47b31b9&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
       }
     },
     {
-      &quot;id&quot;: &quot;ebc78ea2-43bd-47e6-b862-41df688d609e&quot;,
+      &quot;id&quot;: &quot;bc864669-38c9-436c-b490-7dd1182e8910&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -234,7 +275,10 @@ Content-Length: 3534</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;publication_status&quot;: &quot;published&quot;
+        &quot;publication_status&quot;: &quot;published&quot;,
+        &quot;images&quot;: [
+
+        ]
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -249,20 +293,20 @@ Content-Length: 3534</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;28038c57-55c2-4c75-b8e2-5c50b43ed933&quot;,
+            &quot;id&quot;: &quot;e6c8a54b-f952-4735-9bc4-79429d8906b6&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;ed0f8271-0f98-4f36-9a34-d511de4c8c78&quot;,
+            &quot;id&quot;: &quot;33fa109e-f96d-451a-9e5a-ce1c53402054&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
       }
     },
     {
-      &quot;id&quot;: &quot;1d009ee2-59b9-4cab-8d6b-d0ae06dd55d1&quot;,
+      &quot;id&quot;: &quot;88030a65-72ec-42f3-9dbf-5d93991b59a7&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -273,7 +317,10 @@ Content-Length: 3534</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;publication_status&quot;: &quot;published&quot;
+        &quot;publication_status&quot;: &quot;published&quot;,
+        &quot;images&quot;: [
+
+        ]
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -288,20 +335,20 @@ Content-Length: 3534</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;eebcb762-0e40-4fdb-bdae-2db5b140c8b2&quot;,
+            &quot;id&quot;: &quot;9967180e-fd98-4b8a-a9c7-250016f6c3fc&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;729e8055-da3f-47ce-860d-1c0bb34e05f4&quot;,
+            &quot;id&quot;: &quot;76750f09-4010-455c-88a6-8f4f5f910a3e&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
       }
     },
     {
-      &quot;id&quot;: &quot;9dac1dc5-9210-4de2-8d5a-c4e8e7a33ea9&quot;,
+      &quot;id&quot;: &quot;d7dc9190-6c59-439c-8155-498678f67919&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -312,7 +359,10 @@ Content-Length: 3534</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;publication_status&quot;: &quot;published&quot;
+        &quot;publication_status&quot;: &quot;published&quot;,
+        &quot;images&quot;: [
+
+        ]
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -327,13 +377,13 @@ Content-Length: 3534</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;9c07cafb-d764-4e7d-8121-59895f2e47a4&quot;,
+            &quot;id&quot;: &quot;407ac996-5596-4d81-9277-51aea3a41839&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;8a821381-60e3-4c74-b560-f4df38337494&quot;,
+            &quot;id&quot;: &quot;7f5eba4c-74b1-49b0-ac21-75963bfffba7&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
@@ -342,47 +392,47 @@ Content-Length: 3534</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;b8f89f73-714a-488c-8d4b-558467f60db0&quot;,
+      &quot;id&quot;: &quot;92ff96aa-51a0-4cb7-b46a-7aa69bd8003a&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;name&quot;: &quot;Brady Windler&quot;,
-        &quot;slug&quot;: &quot;brady-windler&quot;,
+        &quot;name&quot;: &quot;Mayra Abshire DVM&quot;,
+        &quot;slug&quot;: &quot;mayra-abshire-dvm&quot;,
         &quot;avatar&quot;: null
       }
     },
     {
-      &quot;id&quot;: &quot;574fc80a-8ae7-496e-b295-1c4372ab20e6&quot;,
+      &quot;id&quot;: &quot;9607e64e-5915-45a1-be36-8e05e01209c4&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;name&quot;: &quot;Gregg Schumm&quot;,
-        &quot;slug&quot;: &quot;gregg-schumm&quot;,
+        &quot;name&quot;: &quot;Cyril Maggio&quot;,
+        &quot;slug&quot;: &quot;cyril-maggio&quot;,
         &quot;avatar&quot;: null
       }
     },
     {
-      &quot;id&quot;: &quot;28038c57-55c2-4c75-b8e2-5c50b43ed933&quot;,
+      &quot;id&quot;: &quot;e6c8a54b-f952-4735-9bc4-79429d8906b6&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;name&quot;: &quot;Ms. Laurianne Paucek&quot;,
-        &quot;slug&quot;: &quot;ms-laurianne-paucek&quot;,
+        &quot;name&quot;: &quot;Dr. Hermina Schowalter&quot;,
+        &quot;slug&quot;: &quot;dr-hermina-schowalter&quot;,
         &quot;avatar&quot;: null
       }
     },
     {
-      &quot;id&quot;: &quot;eebcb762-0e40-4fdb-bdae-2db5b140c8b2&quot;,
+      &quot;id&quot;: &quot;9967180e-fd98-4b8a-a9c7-250016f6c3fc&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;name&quot;: &quot;Amina Smitham MD&quot;,
-        &quot;slug&quot;: &quot;amina-smitham-md&quot;,
+        &quot;name&quot;: &quot;Lynn Jones&quot;,
+        &quot;slug&quot;: &quot;lynn-jones&quot;,
         &quot;avatar&quot;: null
       }
     },
     {
-      &quot;id&quot;: &quot;9c07cafb-d764-4e7d-8121-59895f2e47a4&quot;,
+      &quot;id&quot;: &quot;407ac996-5596-4d81-9277-51aea3a41839&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;name&quot;: &quot;Candido Davis PhD&quot;,
-        &quot;slug&quot;: &quot;candido-davis-phd&quot;,
+        &quot;name&quot;: &quot;Mya Goodwin&quot;,
+        &quot;slug&quot;: &quot;mya-goodwin&quot;,
         &quot;avatar&quot;: null
       }
     }

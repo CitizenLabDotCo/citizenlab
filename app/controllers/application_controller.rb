@@ -8,6 +8,11 @@ class ApplicationController < ActionController::API
 
   rescue_from ActiveRecord::RecordNotFound, with: :send_not_found
 
+  rescue_from ActionController::UnpermittedParameters do |pme|
+    render json: { error:  { unknown_parameters: pme.params } }, 
+      status: :bad_request
+  end
+
   # all controllers are secured by default
   def secure_controller?
     true

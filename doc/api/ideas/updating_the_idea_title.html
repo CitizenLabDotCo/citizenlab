@@ -166,7 +166,7 @@ table th, table td {
                     <span class="name">idea[images]</span>
                 </td>
                 <td>
-                  <span class="description">Multipart form encoded images</span>
+                  <span class="description">Base64 encoded images</span>
                 </td>
               </tr>
               <tr>
@@ -185,12 +185,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTAzNzgzMjEsInN1YiI6IjQyZWJjZWRmLWQzMjgtNDdmZS1iN2FlLWNhOGU3MmFiZjA1MCJ9.MqKv_bXkbi54ExCEziqAW-mJm0evod9Fr9HMYs40QYM
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTA4OTQ1NjIsInN1YiI6ImMzNzZhODUwLTQ2ODUtNDdkZS1hNmIzLTExZjhlNjBlMjU4MSJ9.26ErI18AMqsKNnaPLMflUJ9eDPOML9fQWBZbzcb_eQo
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/ideas/954e8c4e-522d-4e62-81d8-b293d0fb5d9f</pre>
+          <pre class="request route highlight">PATCH api/v1/ideas/ae51bb5d-cfc7-46de-bbe8-b649be6fa3f9</pre>
 
 
             <h4>Body</h4>
@@ -203,18 +203,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;51f545485333d151b9c313049f7f193e&quot;
+ETag: W/&quot;13b9b626fece1a8580e2034d648a08ff&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 5729c5cc-a035-4402-ac84-06b0a3394e13
-X-Runtime: 0.031403
+X-Request-Id: f70cc07c-4f22-45e3-91ab-f7a91e80d86b
+X-Runtime: 0.021947
 Vary: Origin
-Content-Length: 689</pre>
+Content-Length: 729</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;954e8c4e-522d-4e62-81d8-b293d0fb5d9f&quot;,
+    &quot;id&quot;: &quot;ae51bb5d-cfc7-46de-bbe8-b649be6fa3f9&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -224,7 +224,10 @@ Content-Length: 689</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;publication_status&quot;: &quot;published&quot;
+      &quot;publication_status&quot;: &quot;published&quot;,
+      &quot;images&quot;: [
+
+      ]
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -239,13 +242,13 @@ Content-Length: 689</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;42ebcedf-d328-47fe-b7ae-ca8e72abf050&quot;,
+          &quot;id&quot;: &quot;c376a850-4685-47de-a6b3-11f8e60e2581&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
       &quot;lab&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;bd860b6f-e348-495c-b803-f5e3077d6e55&quot;,
+          &quot;id&quot;: &quot;a3910f28-00bf-409f-b8f6-7b8513f4319f&quot;,
           &quot;type&quot;: &quot;labs&quot;
         }
       }
@@ -253,12 +256,13 @@ Content-Length: 689</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;42ebcedf-d328-47fe-b7ae-ca8e72abf050&quot;,
+      &quot;id&quot;: &quot;c376a850-4685-47de-a6b3-11f8e60e2581&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;name&quot;: &quot;Gonzalo Ortiz&quot;,
-        &quot;slug&quot;: &quot;gonzalo-ortiz&quot;,
-        &quot;avatar&quot;: null
+        &quot;name&quot;: &quot;Nasir Gislason&quot;,
+        &quot;slug&quot;: &quot;nasir-gislason&quot;,
+        &quot;avatar&quot;: null,
+        &quot;email&quot;: &quot;maxime@hoppe.io&quot;
       }
     }
   ]

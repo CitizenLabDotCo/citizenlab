@@ -109,8 +109,8 @@ table th, table td {
       <h1>Users API</h1>
 
       <div class="article">
-        <h2>Get the authenticated user</h2>
-        <h3>GET api/v1/users/me</h3>
+        <h2>Get the authenticated user exposes the email field</h2>
+        <h3>GET api/v1/users/:id</h3>
 
 
 
@@ -118,12 +118,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTA4OTQ1ODUsInN1YiI6ImVmN2JmYzIxLWI5M2ItNDBhZS1iZTdhLWNjZDcyOTBiNjdlNyJ9.UJyPGEhDSzu-tpuEBdMeSOL2moOSDTM2gOWlED0jTms
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTA4OTQ1ODUsInN1YiI6IjE0ZmRlMzA5LWJlYjEtNDFiOS04ZTg2LWQ3YWNiOTkwOGM0NCJ9.iB0dzTwOoHmHZ5sOgBJwwheqU-0JLMa4lQtBxWMq-mo
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/users/me</pre>
+          <pre class="request route highlight">GET api/v1/users/14fde309-beb1-41b9-8e86-d7acb9908c44</pre>
 
 
 
@@ -134,24 +134,24 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;4fa546ff5a68c34c5f87800c97b1e206&quot;
+ETag: W/&quot;8c9007ce22d2c56c8813dbefad7342ff&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 8c9da684-ab43-43f7-83b0-0fca06a10cfd
-X-Runtime: 0.010188
+X-Request-Id: 9b37b65c-8467-4db8-97c1-fdd2faca93e6
+X-Runtime: 0.007080
 Vary: Origin
-Content-Length: 175</pre>
+Content-Length: 179</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;ef7bfc21-b93b-40ae-be7a-ccd7290b67e7&quot;,
+    &quot;id&quot;: &quot;14fde309-beb1-41b9-8e86-d7acb9908c44&quot;,
     &quot;type&quot;: &quot;users&quot;,
     &quot;attributes&quot;: {
-      &quot;name&quot;: &quot;Eleazar Keeling&quot;,
-      &quot;slug&quot;: &quot;eleazar-keeling&quot;,
+      &quot;name&quot;: &quot;Eddie Muller IV&quot;,
+      &quot;slug&quot;: &quot;eddie-muller-iv&quot;,
       &quot;avatar&quot;: null,
-      &quot;email&quot;: &quot;santa@erdman.net&quot;
+      &quot;email&quot;: &quot;broderick@rempel.com&quot;
     }
   }
 }</pre>

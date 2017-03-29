@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ideas API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Ideas API</h1>
+
+      <div class="article">
+        <h2>List all ideas with all given topics</h2>
+        <h3>GET api/v1/ideas</h3>
+
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">topics</span>
+                </td>
+                <td>
+                  <span class="description">Filter by topics (AND)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">areas</span>
+                </td>
+                <td>
+                  <span class="description">Filter by areas (AND)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">lab</span>
+                </td>
+                <td>
+                  <span class="description">Filter by lab</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=2e825013-416a-4234-8bfc-b19ad99e546e&amp;topics[]=73806969-5065-45dd-922c-d11b2a814382</pre>
+
+            <h4>Query Parameters</h4>
+            <pre class="request query_parameters highlight">topics: [&quot;2e825013-416a-4234-8bfc-b19ad99e546e&quot;, &quot;73806969-5065-45dd-922c-d11b2a814382&quot;]</pre>
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;bff50c65d67604902ba0211929cb642c&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 30c7199d-be55-424b-9ce7-9659e9d12e64
+X-Runtime: 0.016008
+Vary: Origin
+Content-Length: 864</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;714e31af-195b-4bb4-973e-7d81dd726e7c&quot;,
+      &quot;type&quot;: &quot;ideas&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        },
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
+        },
+        &quot;publication_status&quot;: &quot;published&quot;,
+        &quot;images&quot;: [
+
+        ]
+      },
+      &quot;relationships&quot;: {
+        &quot;topics&quot;: {
+          &quot;data&quot;: [
+            {
+              &quot;id&quot;: &quot;2e825013-416a-4234-8bfc-b19ad99e546e&quot;,
+              &quot;type&quot;: &quot;topics&quot;
+            },
+            {
+              &quot;id&quot;: &quot;73806969-5065-45dd-922c-d11b2a814382&quot;,
+              &quot;type&quot;: &quot;topics&quot;
+            }
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;author&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;4b64b63d-8e41-45ec-a14b-d00ec7fbec17&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;lab&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;3424110b-9e8c-432f-89fc-75938ca3a898&quot;,
+            &quot;type&quot;: &quot;labs&quot;
+          }
+        }
+      }
+    }
+  ],
+  &quot;included&quot;: [
+    {
+      &quot;id&quot;: &quot;4b64b63d-8e41-45ec-a14b-d00ec7fbec17&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;name&quot;: &quot;Margret Wolff&quot;,
+        &quot;slug&quot;: &quot;margret-wolff&quot;,
+        &quot;avatar&quot;: null
+      }
+    }
+  ],
+  &quot;links&quot;: {
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>
