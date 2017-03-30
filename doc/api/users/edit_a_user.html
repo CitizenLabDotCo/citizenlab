@@ -109,23 +109,68 @@ table th, table td {
       <h1>Users API</h1>
 
       <div class="article">
-        <h2>Get the authenticated user</h2>
-        <h3>GET api/v1/users/me</h3>
+        <h2>Edit a user</h2>
+        <h3>PUT api/v1/users/:id</h3>
 
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">user[first_name]</span>
+                </td>
+                <td>
+                  <span class="description">User full name</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">user[last_name]</span>
+                </td>
+                <td>
+                  <span class="description">User full name</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">user[email]</span>
+                </td>
+                <td>
+                  <span class="description">E-mail address</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">user[password]</span>
+                </td>
+                <td>
+                  <span class="description">Password</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTA5NjY5NTIsInN1YiI6ImRiZTUwNDIzLTE4NzctNDVlNi1iOTIwLTg0ZWU4MmNhNjQ0NSJ9.DOIZzoS7HfI2WCZ5mvwcpFfXc_7zKOmxFrWOyijzg6s
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTA5NjY5NTIsInN1YiI6ImQ3ZWUzYjg3LTlkNjctNDMxYi04NzQ4LTFmMDZhNjMxNWUyOSJ9.jfDGE3mz8e_LQdYl1OFvhDwj2ZDLoGoSMlwDH9DrMvQ
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/users/me</pre>
+          <pre class="request route highlight">PUT api/v1/users/d7ee3b87-9d67-431b-8748-1f06a6315e29</pre>
 
 
+            <h4>Body</h4>
+            <pre class="request body">{"user":{"first_name":"Edmond"}}</pre>
 
 
             <h3>Response</h3>
@@ -134,10 +179,10 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;c6decf9a3cffe773ec2378e3110fd63a&quot;
+ETag: W/&quot;a7bd34afb31f52acb81d4fc200c05e34&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 7822ff99-8603-4e0c-a67c-b6affc9137da
-X-Runtime: 0.005933
+X-Request-Id: bbb5c7a1-3081-4803-b2f7-e2fcf9adb91f
+X-Runtime: 0.014799
 Vary: Origin
 Content-Length: 198</pre>
             <h4>Status</h4>
@@ -145,14 +190,14 @@ Content-Length: 198</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;dbe50423-1877-45e6-b920-84ee82ca6445&quot;,
+    &quot;id&quot;: &quot;d7ee3b87-9d67-431b-8748-1f06a6315e29&quot;,
     &quot;type&quot;: &quot;users&quot;,
     &quot;attributes&quot;: {
-      &quot;first_name&quot;: &quot;Elody&quot;,
-      &quot;last_name&quot;: &quot;Walter&quot;,
-      &quot;slug&quot;: &quot;elody-walter&quot;,
+      &quot;first_name&quot;: &quot;Edmond&quot;,
+      &quot;last_name&quot;: &quot;Nienow&quot;,
+      &quot;slug&quot;: &quot;marcus-nienow&quot;,
       &quot;avatar&quot;: null,
-      &quot;email&quot;: &quot;mabelle_walker@torphy.net&quot;
+      &quot;email&quot;: &quot;verla.jenkins@lynch.com&quot;
     }
   }
 }</pre>

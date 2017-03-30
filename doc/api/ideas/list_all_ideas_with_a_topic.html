@@ -157,10 +157,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=22a0f8d2-5ab5-4b7f-8bbc-9aaa3bc3bdc7</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=db3481d0-cfae-4069-943e-406dfe5d70bf</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;22a0f8d2-5ab5-4b7f-8bbc-9aaa3bc3bdc7&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;db3481d0-cfae-4069-943e-406dfe5d70bf&quot;]</pre>
 
 
 
@@ -170,19 +170,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;75362a9919e85943bc9f27e09d122382&quot;
+ETag: W/&quot;e266604aa36de1f0ee97a2a40590f7f7&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: baf1b308-bff9-4c0a-a058-294686e2e49f
-X-Runtime: 0.023900
+X-Request-Id: 7db530cc-b515-4c40-a7bd-5adbd612fece
+X-Runtime: 0.027767
 Vary: Origin
-Content-Length: 816</pre>
+Content-Length: 830</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;9fbad80d-54d2-43f5-96bc-f049c70db210&quot;,
+      &quot;id&quot;: &quot;ceabad56-5555-4208-a05a-c25047783a98&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -202,7 +202,7 @@ Content-Length: 816</pre>
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;22a0f8d2-5ab5-4b7f-8bbc-9aaa3bc3bdc7&quot;,
+              &quot;id&quot;: &quot;db3481d0-cfae-4069-943e-406dfe5d70bf&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -214,13 +214,13 @@ Content-Length: 816</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;fe937df8-814a-4858-b6f5-8318baa92bc4&quot;,
+            &quot;id&quot;: &quot;f556947a-1bfb-4424-89cc-2282775b40af&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;0efdf77e-7ada-4d7b-b4b6-95ae30ca995b&quot;,
+            &quot;id&quot;: &quot;2a845e15-34c8-453c-8253-51f42ecd669f&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
@@ -229,11 +229,12 @@ Content-Length: 816</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;fe937df8-814a-4858-b6f5-8318baa92bc4&quot;,
+      &quot;id&quot;: &quot;f556947a-1bfb-4424-89cc-2282775b40af&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;name&quot;: &quot;Marcelina Eichmann V&quot;,
-        &quot;slug&quot;: &quot;marcelina-eichmann-v&quot;,
+        &quot;first_name&quot;: &quot;Oral&quot;,
+        &quot;last_name&quot;: &quot;Pfannerstill&quot;,
+        &quot;slug&quot;: &quot;oral-pfannerstill&quot;,
         &quot;avatar&quot;: null
       }
     }

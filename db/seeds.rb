@@ -21,7 +21,8 @@ Tenant.create({
 
 Apartment::Tenant.switch('localhost') do
   User.create({
-    name: 'Koen Gremmelprez',
+    first_name: 'Koen',
+    last_name: 'Gremmelprez',
     email: 'koen@citizenlab.co',
     password: 'testtest'
     })

@@ -123,7 +123,15 @@ table th, table td {
             <tbody>
               <tr>
                 <td class="required">
-                    <span class="name">user[name]</span>
+                    <span class="name">user[first_name]</span>
+                </td>
+                <td>
+                  <span class="description">User full name</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="required">
+                    <span class="name">user[last_name]</span>
                 </td>
                 <td>
                   <span class="description">User full name</span>
@@ -153,7 +161,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTA4OTQ1ODUsInN1YiI6ImI1OGNlMTk5LTJlZTktNDBkYS05YjcxLTVlOTVjN2NhMTYwOSJ9.GbCSCUEF95bLSZ2vPoxQ_Un9o6bLVyrowlz9T7Y_EFg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTA5NjY5NTIsInN1YiI6IjdlOWQwZDRjLTdmNGUtNDQ2OS1hM2YzLWZkZmE5OGViNGE1NCJ9.SK0kuMWbtOStAcklrE-fwHoEcPXE6Rmtsm749snyeIY
 Host: example.org
 Cookie: </pre>
 
@@ -162,7 +170,7 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"user":{"name":"Hans Legros","email":"kelley.prohaska@boyle.name","password":"4iGyG1DbSbYd"}}</pre>
+            <pre class="request body">{"user":{"first_name":"Fidel","last_name":"Frami","email":"jamil.goldner@brownfunk.info","password":"G1YmK7DwV1O3Qm"}}</pre>
 
 
             <h3>Response</h3>
@@ -171,22 +179,23 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;b6866aa09183a5d49cd7c9b3d0f4db40&quot;
+ETag: W/&quot;6356125bc3a0ef3467331198c228eaaf&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 9b10d466-004e-4091-bc2e-50fd68eb4941
-X-Runtime: 0.021244
+X-Request-Id: 58a8d7f4-5ec1-4d68-b25a-7e5c0d0b2b50
+X-Runtime: 0.014224
 Vary: Origin
-Content-Length: 140</pre>
+Content-Length: 160</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;6d280171-1d6c-440c-8a1b-a722e2f4f564&quot;,
+    &quot;id&quot;: &quot;3ebc2757-da96-450d-a49c-35e57f9f40ff&quot;,
     &quot;type&quot;: &quot;users&quot;,
     &quot;attributes&quot;: {
-      &quot;name&quot;: &quot;Hans Legros&quot;,
-      &quot;slug&quot;: &quot;hans-legros&quot;,
+      &quot;first_name&quot;: &quot;Fidel&quot;,
+      &quot;last_name&quot;: &quot;Frami&quot;,
+      &quot;slug&quot;: &quot;fidel-frami&quot;,
       &quot;avatar&quot;: null
     }
   }

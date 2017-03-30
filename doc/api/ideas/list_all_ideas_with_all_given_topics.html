@@ -157,10 +157,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=2e825013-416a-4234-8bfc-b19ad99e546e&amp;topics[]=73806969-5065-45dd-922c-d11b2a814382</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=50ecd967-30de-429d-a0f0-b287b491697e&amp;topics[]=2f0aae5f-e817-4043-96fa-b3b760d9d96b</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;2e825013-416a-4234-8bfc-b19ad99e546e&quot;, &quot;73806969-5065-45dd-922c-d11b2a814382&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;50ecd967-30de-429d-a0f0-b287b491697e&quot;, &quot;2f0aae5f-e817-4043-96fa-b3b760d9d96b&quot;]</pre>
 
 
 
@@ -170,19 +170,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;bff50c65d67604902ba0211929cb642c&quot;
+ETag: W/&quot;08747a87a74448f2e670f91b50157495&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 30c7199d-be55-424b-9ce7-9659e9d12e64
-X-Runtime: 0.016008
+X-Request-Id: 57630386-1e87-45ee-a6a2-e547f1fcc9ed
+X-Runtime: 0.025288
 Vary: Origin
-Content-Length: 864</pre>
+Content-Length: 884</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;714e31af-195b-4bb4-973e-7d81dd726e7c&quot;,
+      &quot;id&quot;: &quot;683dd638-11ed-48bc-8558-c1dc1f8d0a4d&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -202,11 +202,11 @@ Content-Length: 864</pre>
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;2e825013-416a-4234-8bfc-b19ad99e546e&quot;,
+              &quot;id&quot;: &quot;50ecd967-30de-429d-a0f0-b287b491697e&quot;,
               &quot;type&quot;: &quot;topics&quot;
             },
             {
-              &quot;id&quot;: &quot;73806969-5065-45dd-922c-d11b2a814382&quot;,
+              &quot;id&quot;: &quot;2f0aae5f-e817-4043-96fa-b3b760d9d96b&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -218,13 +218,13 @@ Content-Length: 864</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;4b64b63d-8e41-45ec-a14b-d00ec7fbec17&quot;,
+            &quot;id&quot;: &quot;1e294f18-f7d9-40f4-8a44-c9c3716ef996&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;3424110b-9e8c-432f-89fc-75938ca3a898&quot;,
+            &quot;id&quot;: &quot;7c68e1b4-3edb-4a30-bedf-08adcda1ab9e&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
@@ -233,11 +233,12 @@ Content-Length: 864</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;4b64b63d-8e41-45ec-a14b-d00ec7fbec17&quot;,
+      &quot;id&quot;: &quot;1e294f18-f7d9-40f4-8a44-c9c3716ef996&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;name&quot;: &quot;Margret Wolff&quot;,
-        &quot;slug&quot;: &quot;margret-wolff&quot;,
+        &quot;first_name&quot;: &quot;Jimmie&quot;,
+        &quot;last_name&quot;: &quot;Mayert&quot;,
+        &quot;slug&quot;: &quot;jimmie-mayert&quot;,
         &quot;avatar&quot;: null
       }
     }

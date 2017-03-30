@@ -16,7 +16,8 @@ RSpec.describe "Users API", type: :request do
   context "post" do
     it "returns 200 response if successful"  do
       user_params = {
-        name: 'Test Guy',
+        first_name: 'Test',
+        last_name:  'Guy',
         email: 'testguy@gmail.com',
         password: 'pass1234',
       }
@@ -29,7 +30,8 @@ RSpec.describe "Users API", type: :request do
 
     it "returns 200 response if successful with avatar image"  do
       user_params = {
-        name: 'Test Guy',
+        first_name: 'Test',
+        last_name:  'Guy',
         email: 'testguy@gmail.com',
         password: 'pass1234',
         avatar: get_avatar_image,
@@ -45,20 +47,20 @@ RSpec.describe "Users API", type: :request do
 
   context "patch" do
     it "returns 200 response if successful"  do
-      user = create(:user, name: "Test Guy")
+      user = create(:user, first_name: "Test")
       # set params for the update request
-      user_params = {name: 'Test Guy updated'}
+      user_params = {first_name: 'Test updated'}
       patch endpoint_url_with_id(user.id), params: { user: user_params }
 
       assert_status(200)
       # assert updated data
-      expect(user.reload.name).to eq('Test Guy updated')
+      expect(user.reload.first_name).to eq('Test updated')
     end
 
     it "returns 422 response if failed to update" do
-      user = create(:user, name: "Test Guy")
+      user = create(:user, first_name: "Test Guy")
       # set some invalid data for the request
-      user_params = {name: ''}
+      user_params = {first_name: ''}
       patch endpoint_url_with_id(user.id), params: { user: user_params }
 
       assert_status(422)

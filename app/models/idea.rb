@@ -38,6 +38,6 @@ class Idea < ApplicationRecord
   end
 
   def set_author_name
-    self.author_name = self.author.name if self.author
+    self.author_name = self.author.display_name if self.author
   end
 end
