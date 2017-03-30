@@ -11,6 +11,7 @@ import usersEditPageReducer from 'containers/UsersEditPage/reducer';
 import ideasNewPageReducer from 'containers/IdeasNewPage/reducer';
 import usersNewPageReducer from 'containers/UsersNewPage/reducer';
 import resourcesReducer from 'utils/resources/reducer';
+import authReducer from 'utils/auth/reducer';
 import { persistedDataReducer } from './persistedData';
 
 /*
@@ -47,6 +48,7 @@ function routeReducer(state = routeInitialState, action) {
 export default function createReducer(asyncReducers) {
   return combineReducers({
     route: routeReducer,
+    auth: authReducer,
     language: languageProviderReducer,
     persistedData: persistedDataReducer,
     resources: resourcesReducer,

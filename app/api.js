@@ -37,9 +37,14 @@ export function fetchIdeas() {
   return request(`${API_PATH}/ideas`);
 }
 
+export function fetchCurrentUser() {
+  return request(`${API_PATH}/users/me`);
+}
+
 export default {
   login,
   socialLogin,
   createUser,
   fetchIdeas,
+  fetchCurrentUser,
 };

@@ -58,6 +58,7 @@ import { loadState } from './persistedData';
 const initialState = fromJS({
   persistedData: loadState(),
 });
+
 const store = configureStore(initialState, browserHistory);
 
 // Sync history and store, as the react-router-redux reducer

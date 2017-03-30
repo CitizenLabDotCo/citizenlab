@@ -13,11 +13,10 @@ import { createStructuredSelector } from 'reselect';
 import {
   Button,
 } from 'components/Foundation';
-import Api from 'api';
 import makeSelectSignInPage from './selectors';
 import messages from './messages';
 import Form from './Form';
-import { userLogin } from './actions';
+import { authenticateRequest } from './actions';
 import socialAuth from '../../socialAuth';
 
 const Box = styled.div`
@@ -58,19 +57,21 @@ export const SocialLoginBox = (props) => {
 export class SignInPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   // Quick fix until we add a Saga
-  handleSubmit(values) {
-    console.log("[DEBUG] values =", values);
-    Api.login(values.email, values.password)
-      .then((json) => {
-        console.log("[DEBUG] json =", json);
-        try {
-          window.localStorage.setItem('jwt', json.jwt)
-          this.props.router.push('/');
-        } catch (err) {
-          console.log(err); // eslint-disable-line
-        }
-      });
-  }
+  // handleSubmit(values) {
+  //   this.props.onSubmit()
+  //
+  //   console.log("[DEBUG] values =", values);
+  //   Api.login(values.email, values.password)
+  //     .then((json) => {
+  //       console.log("[DEBUG] json =", json);
+  //       try {
+  //         window.localStorage.setItem('jwt', json.jwt)
+  //         this.props.router.push('/');
+  //       } catch (err) {
+  //         console.log(err); // eslint-disable-line
+  //       }
+  //     });
+  // }
 
   render() {
     return (
@@ -91,7 +92,7 @@ export class SignInPage extends React.PureComponent { // eslint-disable-line rea
         <SocialLoginBox onChange={() => this.forceUpdate()} />
 
         <Box>
-          <Form onSubmit={this.handleSubmit.bind(this)} />
+          <Form onSubmit={this.props.onSubmit} />
         </Box>
       </div>
     );
@@ -108,7 +109,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSubmit: (values) => dispatch(userLogin(values)),
+    onSubmit: (values) => dispatch(authenticateRequest(values)),
   };
 }
 
