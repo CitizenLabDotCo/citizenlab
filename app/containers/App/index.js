@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectCurrentTenant } from 'persistedData';
 import { makeSelectCurrentUser } from 'utils/auth/selectors';
+import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { Row, Column } from 'components/Foundation/src/components/grid';
 import Navbar from './Navbar';
 import { loadCurrentTenant } from './actions';
@@ -23,6 +24,7 @@ import { loadCurrentTenant } from './actions';
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   componentDidMount() {
+    this.props.dispatch(loadCurrentUserRequest());
     // TODO: remove hardcoded address
     fetch('http://localhost:4000/api/v1/tenants/current')
       .then((res) => res.json())

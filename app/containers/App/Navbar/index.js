@@ -17,8 +17,8 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
   userMenu(currentUser) {
     return (
       <MenuItem>
-        <Menu isDropDown>
-          <MenuItem>{currentUser.attributes.name}</MenuItem>
+        <Menu isDropdown>
+          <MenuItem>{currentUser.attributes.first_name}</MenuItem>
           <Menu isVertical>
             <MenuItem><Link to="/profile/edit"><FormattedMessage {...messages.editProfile} /></Link></MenuItem>
             <MenuItem><Link>Sign out</Link></MenuItem>
