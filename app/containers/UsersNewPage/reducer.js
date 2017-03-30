@@ -24,10 +24,12 @@ function usersNewPageReducer(state = initialState, action) {
     case CREATE_USER_FULFILLED:
       return state
         .set('pending', false)
+        .set('error', null)
         .set('newUser', action.payload);
     case CREATE_USER_REJECTED:
       return state
         .set('pending', false)
+        .set('newUser', null)
         .set('error', action.payload);
     default:
       return state;

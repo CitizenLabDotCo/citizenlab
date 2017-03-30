@@ -41,7 +41,7 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
   }
 
   render() {
-    const { newUser, error, pending } = this.props.data;
+    const { newUser, error, pending } = this.props.storeData;
     return (
       <div>
         <Helmet
@@ -65,7 +65,7 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
           </ErrorBox>
           ) }
 
-        <p style={{ marginBottom: '20px' }}>NewUser: { newUser && newUser.attributes ? newUser.attributes.name : 'null' }</p>
+        <p style={{ marginBottom: '20px' }}>NewUser: { _.has(newUser, 'data.attributes') ? newUser.data.attributes.name : 'null' }</p>
 
         <Form
           onSubmit={this.handleSubmit}
@@ -79,11 +79,11 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
 UsersNewPage.propTypes = {
   newUser: PropTypes.any,
   dispatch: PropTypes.func,
-  data: PropTypes.object,
+  storeData: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-  data: makeSelectUsersNewPage(),
+  storeData: makeSelectUsersNewPage(),
 });
 
 function mapDispatchToProps(dispatch) {
