@@ -16,6 +16,16 @@ namespace :db do
     # Enable UUID-OSSP
     ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA shared_extensions;'
   end
+
+  desc "Erase all tables"
+  task :clear => :environment do
+    conn = ActiveRecord::Base.connection
+    tables = conn.tables
+    tables.each do |table|
+      puts "Deleting #{table}"
+      conn.drop_table(table)
+    end
+  end
 end
 
 Rake::Task["db:create"].enhance do

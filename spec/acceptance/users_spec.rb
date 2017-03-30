@@ -66,17 +66,37 @@ resource "Users" do
 
     post "api/v1/users" do
       with_options scope: 'user' do
-        parameter :name, "User full name", required: true
+        parameter :first_name, "User full name", required: true
+        parameter :last_name, "User full name", required: true
         parameter :email, "E-mail address", required: true
         parameter :password, "Password", required: true
       end
 
-      let(:name) {Faker::Name.name}
+      let(:first_name) {Faker::Name.first_name}
+      let(:last_name) {Faker::Name.last_name}
       let(:email) {Faker::Internet.email}
       let(:password) {Faker::Internet.password}
 
       example_request "Create a new user" do
         expect(response_status).to eq 201
+      end
+    end
+
+    put "api/v1/users/:id" do
+      with_options scope: 'user' do
+        parameter :first_name, "User full name"
+        parameter :last_name, "User full name"
+        parameter :email, "E-mail address"
+        parameter :password, "Password"
+      end
+
+      let(:id) { @user.id }
+      let(:first_name) { "Edmond" }
+
+      example_request "Edit a user" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :first_name)).to eq "Edmond"
       end
     end
   end

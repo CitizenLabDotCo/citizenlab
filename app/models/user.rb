@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   validates :email, :slug, uniqueness: true
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
-  validates :name, :slug, :email, presence: true
+  validates :first_name, :last_name, :slug, :email, presence: true
 
   before_validation :generate_slug
 
@@ -14,9 +14,14 @@ class User < ApplicationRecord
     avatar.file.nil?
   end
 
+  def display_name
+    [first_name, last_name].join(" ")
+  end
+  
   private
 
   def generate_slug
-    self.slug ||= self.name.parameterize
+    self.slug ||= [self.first_name.parameterize, self.last_name.parameterize].join('-')
   end
+
 end
