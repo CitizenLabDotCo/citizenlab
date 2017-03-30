@@ -76,7 +76,7 @@ Apartment::Tenant.switch('localhost') do
     }
   })
 
-  40.times do 
+  30.times do 
     Idea.create({
       "title_multiloc": {
         "en": Faker::Lorem.sentence,

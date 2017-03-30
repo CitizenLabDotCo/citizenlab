@@ -27,3 +27,15 @@ Sometimes it's easier to just start a terminal in the rails container and work f
 docker-compose run --user "$(id -u):$(id -g)" --rm web /bin/bash
 ```
 Omit the `--user "$(id -u):$(id -g)"` part on mac or windows.
+
+
+## Handling update
+
+After a git pull, when there are changes in the application, some changes might affect the database model or update the seed data.
+
+
+```
+docker-compose run --user "$(id -u):$(id -g)" web bash -c "sleep 5 && bundle exec rake db:reset RAILS_ENV=development"
+```
+
+Afterwards you can run the normal `docker-compose up --build`
