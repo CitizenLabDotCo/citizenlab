@@ -3,10 +3,13 @@ import { selectResourcesDomain } from 'utils/resources/selectors';
 
 const selectAuthDomain = () => (state) => state.get('auth');
 
-const makeSelectCurrentUser = createSelector(
+const makeSelectCurrentUser = () => createSelector(
   selectAuthDomain(),
   selectResourcesDomain(),
-  (auth, resources) => resources.getIn(['users', auth.get('id')])
+  (auth, resources) => {
+    const immutableUser = resources.getIn(['users', auth.get('id')]);
+    return immutableUser && immutableUser.toJS();
+  }
 );
 
 export {

@@ -15,7 +15,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectCurrentTenant } from 'persistedData';
-// import { makeSelectCurrentUser } from 'utils/auth/selectors';
+import { makeSelectCurrentUser } from 'utils/auth/selectors';
 import { Row, Column } from 'components/Foundation/src/components/grid';
 import Navbar from './Navbar';
 import { loadCurrentTenant } from './actions';
@@ -57,8 +57,8 @@ App.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  // currentUser: makeSelectCurrentUser(),
   currentTenant: makeSelectCurrentTenant(),
+  currentUser: makeSelectCurrentUser(),
 });
 
 export default connect(mapStateToProps)(App);
