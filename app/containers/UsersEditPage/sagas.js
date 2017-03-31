@@ -21,8 +21,8 @@ export function* getProfile() {
 }
 
 export function* postProfile(action) {
-  try {console.log(updateCurrentUser(action.payload));
-    const currentUserResponse = yield call(updateCurrentUser(action.payload));
+  try {
+    const currentUserResponse = yield call(updateCurrentUser, action.payload);
 
     yield put(mergeJsonApiResources(currentUserResponse));
     yield put(currentUserUpdated(currentUserResponse));

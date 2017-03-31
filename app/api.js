@@ -42,12 +42,12 @@ export function fetchCurrentUser() {
 }
 
 export function updateCurrentUser(values) {
-    // TODO: after merge with master use selector `makeSelectCurrentUser` at utils/auth/selectors to fetch userId
-    // debugger;
-    const userId = '193e5828-50d0-47b5-963f-4995dfe23876';
-    return request(`${API_PATH}/users/${userId}`, { user: values },  {
-        method: 'PUT',
-    });
+  // TODO: after merge with master use selector `makeSelectCurrentUser` at utils/auth/selectors to fetch userId
+  // debugger;
+  const userId = '193e5828-50d0-47b5-963f-4995dfe23876';
+  return request(`${API_PATH}/users/${userId}`, { user: values }, {
+    method: 'PUT',
+  });
 }
 
 export default {
