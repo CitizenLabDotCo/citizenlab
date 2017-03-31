@@ -10,6 +10,8 @@ import {
 } from './constants';
 
 export function currentUserLoaded(currentUser) {
+  currentUser.data.attributes.avatar = '';
+
   return {
     type: (currentUser && currentUser.data
       ? CURRENT_USER_LOAD_SUCCESS
@@ -24,12 +26,7 @@ export function currentUserLoadError() {
   };
 }
 
-export function updateCurrentUser(currentUser) {console.log(currentUser);
-  // rename avatar
-  const user = currentUser;
-  user.avatar = user.avatarBase64;
-  delete user.avatarBase64;
-
+export function updateCurrentUser(currentUser) {
   return {
     type: STORE_CURRENT_USER,
     payload: currentUser,
@@ -37,11 +34,13 @@ export function updateCurrentUser(currentUser) {console.log(currentUser);
 }
 
 export function currentUserUpdated(currentUser) {
+    const validResponse = currentUser && currentUser.data;
+
     return {
-      type: (currentUser && currentUser.data
+      type: (validResponse
           ? CURRENT_USER_LOAD_SUCCESS
           : CURRENT_USER_LOAD_ERROR),
-      payload: currentUser && currentUser.data && currentUser.data.attributes,
+      payload: validResponse && currentUser.data.attributes,
   };
 }
 
@@ -51,10 +50,10 @@ export function storeCurrentUserError() {
   };
 }
 
-export function storeAvatar(avatar) {
+export function storeAvatar(avatarBase64) {
   return {
     type: STORE_AVATAR,
-    avatar,
+    avatarBase64,
   };
 }
 

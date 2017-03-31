@@ -12,7 +12,9 @@ import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 
 import {
-  makeSelectAvatarUploadError, makeSelectAvatarURL, makeSelectLoadError, makeSelectLoading, makeSelectProcessing, makeSelectStored, makeSelectStoreError, makeSelectUserData,
+  makeSelectAvatarBase64,
+  makeSelectAvatarUploadError, makeSelectAvatarURL, makeSelectLoadError, makeSelectLoading, makeSelectProcessing,
+  makeSelectStored, makeSelectStoreError, makeSelectUserData,
 } from './selectors';
 
 import messages from './messages';
@@ -32,7 +34,7 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
   }
 
   render() {
-    const { loading, loadError, storeError, processing, stored, userData, onAvatarUpload, avatarURL, avatarUploadError } = this.props;
+    const { loading, loadError, storeError, processing, stored, userData, onAvatarUpload, avatarUploadError } = this.props;
 
     return (
       <ProfileDiv>
@@ -54,7 +56,6 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
           avatarUpload={onAvatarUpload}
           onFormSubmit={this.props.onProfileFormSubmit}
           avatarUploadError={avatarUploadError}
-          avatarURL={avatarURL}
         />
       </ProfileDiv>
     );
@@ -71,7 +72,6 @@ UsersEditPage.propTypes = {
   initData: PropTypes.func.isRequired,
   onProfileFormSubmit: PropTypes.func.isRequired,
   onAvatarUpload: PropTypes.func.isRequired,
-  avatarURL: PropTypes.string,
   avatarUploadError: PropTypes.bool.isRequired,
 };
 
@@ -82,7 +82,6 @@ const mapStateToProps = createStructuredSelector({
   userData: makeSelectUserData(),
   processing: makeSelectProcessing(),
   stored: makeSelectStored(),
-  avatarURL: makeSelectAvatarURL(),
   avatarUploadError: makeSelectAvatarUploadError(),
 });
 

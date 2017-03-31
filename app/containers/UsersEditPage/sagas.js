@@ -10,10 +10,9 @@ import { fetchCurrentUser, updateCurrentUser } from '../../api';
 import { LOAD_CURRENT_USER } from '../App/constants';
 
 // Individual exports for testing
-export function* getProfile() {console.log('called');
+export function* getProfile() {
   try {
     const currentUserResponse = yield call(fetchCurrentUser);
-
     yield put(mergeJsonApiResources(currentUserResponse));
     yield put(currentUserLoaded(currentUserResponse));
   } catch (err) {
@@ -22,8 +21,8 @@ export function* getProfile() {console.log('called');
 }
 
 export function* postProfile(action) {
-  try {
-    const currentUserResponse = yield call(updateCurrentUser(action.userData));
+  try {console.log(updateCurrentUser(action.payload));
+    const currentUserResponse = yield call(updateCurrentUser(action.payload));
 
     yield put(mergeJsonApiResources(currentUserResponse));
     yield put(currentUserUpdated(currentUserResponse));

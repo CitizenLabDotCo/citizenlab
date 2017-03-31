@@ -37,11 +37,6 @@ const makeSelectAvatarUploadError = () => createSelector(
   (profileState) => profileState.get('avatarUploadError')
 );
 
-const makeSelectAvatarURL = () => createSelector(
-  selectProfile,
-  (profileState) => profileState.get('avatarURL')
-);
-
 export {
   makeSelectLoading,
   makeSelectLoadError,
@@ -49,6 +44,5 @@ export {
   makeSelectUserData,
   makeSelectProcessing,
   makeSelectStored,
-  makeSelectAvatarURL,
   makeSelectAvatarUploadError,
 };

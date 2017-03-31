@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { actions, LocalForm } from 'react-redux-form';
 import { FormattedMessage } from 'react-intl';
-import { Column, Row } from 'components/Foundation';
+import { Column, Row, Label } from 'components/Foundation';
 
 import FormInput from '../../components/FormInput/index';
 import messages from './messages';
@@ -9,15 +9,16 @@ import Avatar from './Avatar';
 
 const LabelInputPair = (props) => (
   <div>
-    <label htmlFor={props.id}>
-      <FormattedMessage {...messages[props.id]} />
-    </label>
-    <FormInput id={props.id} />
+    {!props.hidden && <label htmlFor={props.id}>
+       <FormattedMessage {...messages[props.id]} />
+    </label>}
+    <FormInput id={props.id} hidden={props.hidden} />
   </div>
 );
 
 LabelInputPair.propTypes = {
-  id: React.PropTypes.any,
+  id: PropTypes.string.isRequired,
+  hidden: PropTypes.bool,
 };
 
 export default class ProfileForm extends React.PureComponent {
@@ -29,8 +30,8 @@ export default class ProfileForm extends React.PureComponent {
     }
   }
 
-  render() {
-    const { avatarURL, avatarUploadError, avatarUpload } = this.props;
+  render() {console.log(this.props);
+    const { avatarUploadError, avatarUpload, userData } = this.props;
 
     return (
       <LocalForm
@@ -45,12 +46,13 @@ export default class ProfileForm extends React.PureComponent {
             <LabelInputPair id="first_name" />
             <LabelInputPair id="last_name" />
             <LabelInputPair id="email" />
+            <LabelInputPair id="avatar" hidden={true} />
           </Column>
           <Column large={6}>
             <Avatar
               onAvatarUpload={avatarUpload}
               avatarUploadError={avatarUploadError}
-              avatarURL={avatarURL}
+              avatarURL={userData.avatar}
             />
           </Column>
         </Row>

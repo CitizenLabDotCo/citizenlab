@@ -18,9 +18,9 @@ export const usersEditPageInitialState = fromJS({
   processing: false,
   stored: false,
   currentUser: { },
-  avatarBase64: null,
   avatarStored: false,
   avatarUploadError: false,
+  avatarURL: '',
 });
 
 export default function usersEditPageReducer(state = usersEditPageInitialState, action) {
@@ -54,9 +54,10 @@ export default function usersEditPageReducer(state = usersEditPageInitialState, 
         .set('processing', false)
         .set('storeError', true);
     case STORE_AVATAR:
+      const currentUserWithAvatar = fromJS(state.get('currentUser')).set('avatar', action.avatarBase64);
       return state
         .set('avatarUploadError', false)
-        .set('avatarBase64', action.avatar);
+        .set('currentUser', currentUserWithAvatar.toJS());
     case AVATAR_STORE_ERROR:
       return state
         .set('avatarUploadError', true);
