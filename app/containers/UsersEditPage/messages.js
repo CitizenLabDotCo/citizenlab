@@ -10,9 +10,13 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.header',
     defaultMessage: 'Profile',
   },
-  name: {
-    id: 'app.containers.UsersEditPage.name',
+  first_name: {
+    id: 'app.containers.UsersEditPage.first_name',
     defaultMessage: 'First Name',
+  },
+  last_name: {
+      id: 'app.containers.UsersEditPage.last_name',
+      defaultMessage: 'Last Name',
   },
   email: {
     id: 'app.containers.UsersEditPage.email',
@@ -38,13 +42,9 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.stored',
     defaultMessage: 'Profile stored',
   },
-  avatarLoadError: {
-    id: 'app.containers.UsersEditPage.avatarLoadError',
-    defaultMessage: 'Existing avatar coudln\'t be loaded',
-  },
-  avatarStoreError: {
-    id: 'app.containers.UsersEditPage.avatarStoreError',
-    defaultMessage: 'Can\'t change avatar right now',
+  avatarUploadError: {
+    id: 'app.containers.UsersEditPage.avatarUploadError',
+    defaultMessage: 'Can\'t upload avatar right now',
   },
   dragToUpload: {
     id: 'app.containers.UsersEditPage.dragToUpload',

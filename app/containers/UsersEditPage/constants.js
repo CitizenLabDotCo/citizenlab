@@ -9,16 +9,10 @@ export const CURRENT_USER_LOAD_SUCCESS = 'app/UsersEditPage/CURRENT_USER_LOAD_SU
 export const CURRENT_USER_LOAD_ERROR = 'app/UsersEditPage/CURRENT_USER_LOAD_ERROR';
 
 // store
-export const STORE_PROFILE = 'app/UsersEditPage/STORE_PROFILE';
-export const PROFILE_STORE_SUCCESS = 'app/UsersEditPage/PROFILE_STORE_SUCCESS';
-export const PROFILE_STORE_ERROR = 'app/UsersEditPage/PROFILE_STORE_ERROR';
+export const STORE_CURRENT_USER = 'app/UsersEditPage/STORE_CURRENT_USER';
+export const CURRENT_USER_STORE_SUCCESS = 'app/UsersEditPage/CURRENT_USER_STORE_SUCCESS';
+export const CURRENT_USER_STORE_ERROR = 'app/UsersEditPage/CURRENT_USER_STORE_ERROR';
 
-// avatar store
+// avatar upload
 export const STORE_AVATAR = 'app/UsersEditPage/STORE_AVATAR';
-export const AVATAR_STORE_SUCCESS = 'app/UsersEditPage/STORE_AVATAR_SUCCESS';
 export const AVATAR_STORE_ERROR = 'app/UsersEditPage/STORE_AVATAR_ERROR';
-
-// avatar load
-export const LOAD_AVATAR = 'app/UsersEditPage/LOAD_AVATAR';
-export const AVATAR_LOAD_SUCCESS = 'app/UsersEditPage/LOAD_AVATAR_SUCCESS';
-export const AVATAR_LOAD_ERROR = 'app/UsersEditPage/LOAD_AVATAR_ERROR';

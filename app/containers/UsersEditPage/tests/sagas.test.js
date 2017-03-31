@@ -5,18 +5,19 @@
 /* eslint-disable redux-saga/yield-effects */
 import { put, call } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
-
-import request, { getCurrentUserRequest } from '../../../utils/request';
 import { currentUserLoaded } from '../actions';
 import { getProfile, postProfile } from '../sagas';
 import { mergeJsonApiResources } from '../../../utils/resources/actions';
+import { fetchCurrentUser, updateCurrentUser } from '../../../api';
 
 describe('UserEditPage sagas', () => {
+  const action = { userData: {} };
+
   describe('getProfile', () => {
     const it = sagaHelper(getProfile());
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(getCurrentUserRequest));
+      expect(result).toEqual(call(fetchCurrentUser));
     });
 
     it('then, should dispatch mergeJsonApiResources action', (result) => {
@@ -29,20 +30,22 @@ describe('UserEditPage sagas', () => {
   });
 
   describe('postProfile', () => {
-    const action = { userData: {} };
     const it = sagaHelper(postProfile(action));
 
     it('should have called the correct API', (result) => {
-      const requestURL = 'http://demo9193680.mockable.io/profile-post';
-      expect(result).toEqual(call(request, requestURL, {
+      expect(result).toEqual(call(updateCurrentUser(action.userData), {
         method: 'POST',
         body: JSON.stringify(action.userData),
       }));
     });
 
+    it('then, should dispatch mergeJsonApiResources action', (result) => {
+        expect(result).toEqual(put(mergeJsonApiResources()));
+    });
+
     // TODO: fix following test
-    // it('then, should dispatch profileStored action', (result) => {
-    //   expect(result).toEqual(put(profileStored(action.userData)));
+    // it('then, should dispatch currentUserUpdated action', (result) => {
+    //   expect(result).toEqual(put(currentUserUpdated(action.userData)));
     // });
   });
 });

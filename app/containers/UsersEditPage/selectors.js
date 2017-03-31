@@ -32,19 +32,14 @@ const makeSelectStored = () => createSelector(
   (profileState) => profileState.get('stored')
 );
 
-const makeSelectAvatarLoadError = () => createSelector(
+const makeSelectAvatarUploadError = () => createSelector(
   selectProfile,
-  (profileState) => profileState.get('avatarLoadError')
+  (profileState) => profileState.get('avatarUploadError')
 );
 
-const makeSelectAvatarStoreError = () => createSelector(
+const makeSelectAvatarURL = () => createSelector(
   selectProfile,
-  (profileState) => profileState.get('avatarStoreError')
-);
-
-const makeSelectAvatarBase64 = () => createSelector(
-  selectProfile,
-  (profileState) => profileState.get('avatarBase64')
+  (profileState) => profileState.get('avatarURL')
 );
 
 export {
@@ -54,7 +49,6 @@ export {
   makeSelectUserData,
   makeSelectProcessing,
   makeSelectStored,
-  makeSelectAvatarLoadError,
-  makeSelectAvatarStoreError,
-  makeSelectAvatarBase64,
+  makeSelectAvatarURL,
+  makeSelectAvatarUploadError,
 };

@@ -5,9 +5,8 @@
  */
 
 import {
-  CURRENT_USER_LOAD_SUCCESS, CURRENT_USER_LOAD_ERROR,
-  STORE_PROFILE, PROFILE_STORE_SUCCESS, PROFILE_STORE_ERROR, STORE_AVATAR, AVATAR_STORE_SUCCESS, AVATAR_LOAD_SUCCESS,
-  AVATAR_LOAD_ERROR, AVATAR_STORE_ERROR, LOAD_AVATAR,
+  CURRENT_USER_LOAD_SUCCESS, CURRENT_USER_LOAD_ERROR, STORE_AVATAR, CURRENT_USER_STORE_SUCCESS,
+  CURRENT_USER_STORE_ERROR, STORE_CURRENT_USER, AVATAR_STORE_ERROR,
 } from './constants';
 
 export function currentUserLoaded(currentUser) {
@@ -15,7 +14,7 @@ export function currentUserLoaded(currentUser) {
     type: (currentUser && currentUser.data
       ? CURRENT_USER_LOAD_SUCCESS
       : CURRENT_USER_LOAD_ERROR),
-    payload: currentUser,
+    payload: currentUser && currentUser.data && currentUser.data.attributes,
   };
 }
 
@@ -25,23 +24,30 @@ export function currentUserLoadError() {
   };
 }
 
-export function storeProfile(values) {
+export function updateCurrentUser(currentUser) {console.log(currentUser);
+  // rename avatar
+  const user = currentUser;
+  user.avatar = user.avatarBase64;
+  delete user.avatarBase64;
+
   return {
-    type: STORE_PROFILE,
-    userData: values,
+    type: STORE_CURRENT_USER,
+    payload: currentUser,
   };
 }
 
-export function profileStored(profile) {
-  return {
-    type: (profile ? PROFILE_STORE_SUCCESS : PROFILE_STORE_ERROR),
-    ...{ profile },
+export function currentUserUpdated(currentUser) {
+    return {
+      type: (currentUser && currentUser.data
+          ? CURRENT_USER_LOAD_SUCCESS
+          : CURRENT_USER_LOAD_ERROR),
+      payload: currentUser && currentUser.data && currentUser.data.attributes,
   };
 }
 
-export function storeProfileError() {
+export function storeCurrentUserError() {
   return {
-    type: PROFILE_STORE_ERROR,
+    type: CURRENT_USER_STORE_ERROR,
   };
 }
 
@@ -52,34 +58,8 @@ export function storeAvatar(avatar) {
   };
 }
 
-export function avatarStored(avatar) {
-  return {
-    type: (avatar ? AVATAR_STORE_SUCCESS : AVATAR_STORE_ERROR),
-    avatar,
-  };
-}
-
-export function storeAvatarError() {
+export function avatarStoreError() {
   return {
     type: AVATAR_STORE_ERROR,
-  };
-}
-
-export function loadAvatar() {
-  return {
-    type: LOAD_AVATAR,
-  };
-}
-
-export function avatarLoaded(avatar) {
-  return {
-    type: (avatar ? AVATAR_LOAD_SUCCESS : AVATAR_LOAD_ERROR),
-    avatar,
-  };
-}
-
-export function loadAvatarError() {
-  return {
-    type: AVATAR_LOAD_ERROR,
   };
 }

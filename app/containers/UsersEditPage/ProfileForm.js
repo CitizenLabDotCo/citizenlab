@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { actions, LocalForm } from 'react-redux-form';
 import { FormattedMessage } from 'react-intl';
-import { Row, Column } from 'components/Foundation';
+import { Column, Row } from 'components/Foundation';
 
 import FormInput from '../../components/FormInput/index';
 import messages from './messages';
@@ -22,7 +22,7 @@ LabelInputPair.propTypes = {
 
 export default class ProfileForm extends React.PureComponent {
   componentWillReceiveProps(nextProps) {
-    const user = nextProps.user;
+    const user = nextProps.userData;
     if (user) {
       // load initial value (unless form being re-rendered)
       this.localFormDispatch(actions.load('user', user));
@@ -30,7 +30,7 @@ export default class ProfileForm extends React.PureComponent {
   }
 
   render() {
-    const { avatarBase64, avatarStoreError, avatarLoadError } = this.props;
+    const { avatarURL, avatarUploadError, avatarUpload } = this.props;
 
     return (
       <LocalForm
@@ -42,15 +42,15 @@ export default class ProfileForm extends React.PureComponent {
       >
         <Row>
           <Column large={6}>
-            <LabelInputPair id="name" />
+            <LabelInputPair id="first_name" />
+            <LabelInputPair id="last_name" />
             <LabelInputPair id="email" />
           </Column>
           <Column large={6}>
             <Avatar
-              onAvatarUpload={this.props.avatarUpload}
-              avatarStoreError={avatarStoreError}
-              avatarLoadError={avatarLoadError}
-              avatarBase64={avatarBase64}
+              onAvatarUpload={avatarUpload}
+              avatarUploadError={avatarUploadError}
+              avatarURL={avatarURL}
             />
           </Column>
         </Row>
@@ -63,7 +63,6 @@ export default class ProfileForm extends React.PureComponent {
 ProfileForm.propTypes = {
   onFormSubmit: PropTypes.func.isRequired,
   avatarUpload: PropTypes.func.isRequired,
-  avatarBase64: PropTypes.string,
-  avatarStoreError: PropTypes.bool.isRequired,
-  avatarLoadError: PropTypes.bool.isRequired,
+  avatarURL: PropTypes.string,
+  avatarUploadError: PropTypes.bool.isRequired,
 };

@@ -1,7 +1,5 @@
 import 'whatwg-fetch';
 
-const API_PATH = 'http://localhost:4000/api/v1';
-
 /**
  * Parses the JSON returned by a network request
  *
@@ -9,9 +7,9 @@ const API_PATH = 'http://localhost:4000/api/v1';
  *
  * @return {object}          The parsed JSON from the request
  */
-function parseJSON(response) {
-  return response.json();
-}
+// function parseJSON(response) {
+//   return response.json();
+// }
 
 /**
  * Checks if a network request came back fine, and throws an error if not
@@ -20,14 +18,29 @@ function parseJSON(response) {
  *
  * @return {object|undefined} Returns either the response, or throws an error
  */
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  }
+// function checkStatus(response) {
+//   if (response.status >= 200 && response.status < 300) {
+//     return response;
+//   }
+//
+//   const error = new Error(response.statusText);
+//   error.response = response;
+//   throw error;
+// }
 
-  const error = new Error(response.statusText);
-  error.response = response;
-  throw error;
+export function getJwt() {
+  try {
+      return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTA5Nzk1NjQsInN1YiI6IjE5M2U1ODI4LTUwZDAtNDdiNS05NjNmLTQ5OTVkZmUyMzg3NiJ9.OWIM9qMJnrDPwHT4IRLWmT26Y8QJYmZMbuMM5P0n2DA';
+    // TODO: after merge with master remove the previous line and uncomment the following one
+    // return window.localStorage.getItem('jwt');
+  } catch (err) {
+    console.log("[DEBUG] err =", err); // eslint-disable-line
+    return null;
+  }
+}
+
+export function setJwt(jwt) {
+  window.localStorage.setItem('jwt', jwt);
 }
 
 /**
@@ -38,22 +51,36 @@ function checkStatus(response) {
  *
  * @return {object}           The response data
  */
-export default function request(url, options) {
-  return fetch(url, options)
-    .then(checkStatus)
-    .then(parseJSON);
-}
+export default function request(url, data, options) {
+  const jwt = getJwt();
+  const defaultOptions = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
 
-export function getCurrentUserRequest(options) {
-  // TODO: replace userId with /me when available
-  const userId = 'e672299d-e77e-464a-a5cc-41874c49e2f7';
-  return fetch(`${API_PATH}/users/${userId}`, options)
-    .then(checkStatus)
-    .then(parseJSON);
-}
+  if (jwt) {
+    defaultOptions.headers['Authorization'] = `Bearer ${jwt}`; // eslint-disable-line
+  }
 
-export function getIdeasRequest(options) {
-  return fetch(`${API_PATH}/ideas`, options)
-    .then(checkStatus)
-    .then(parseJSON);
+  if (data) {
+    defaultOptions.body = JSON.stringify(data);
+  }
+  return fetch(url, Object.assign(defaultOptions, options))
+    .then((response) => {
+      console.log(response);
+      Promise.all([response, response.json()])
+    })
+    .then((result) => {
+      const response = result[0];
+      const json = result[1];
+
+      if (response.ok) {
+        return json;
+      }
+
+      const error = new Error(response.statusText);
+      error.json = json;
+      throw error;
+    });
 }

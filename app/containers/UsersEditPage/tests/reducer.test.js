@@ -1,22 +1,21 @@
 
 import { fromJS } from 'immutable';
 import usersEditPageReducer from '../reducer';
-import { avatarLoaded, avatarStored, currentUserLoaded, profileStored, storeProfileError } from '../actions';
+import { currentUserLoaded, currentUserUpdated, storeCurrentUserError } from '../actions';
 import { expectPropertyNotNull } from '../../../utils/testUtils';
 import { loadCurrentUser } from '../../App/actions';
 
 describe('usersEditPageReducer', () => {
   const initialState = {
-    loading: false,
-    loadError: false,
-    storeError: false,
-    processing: false,
-    stored: false,
-    currentUser: { },
-    avatarBase64: null,
-    avatarStored: false,
-    avatarLoadError: false,
-    avatarStoreError: false,
+      loading: false,
+      loadError: false,
+      storeError: false,
+      processing: false,
+      stored: false,
+      currentUser: { },
+      avatarBase64: null,
+      avatarStored: false,
+      avatarUploadError: false,
   };
 
   const userData = {};
@@ -35,7 +34,7 @@ describe('usersEditPageReducer', () => {
     )).toEqual(fromJS(nextState));
   });
 
-  it('should return loading set to false and currentUser not null, on currentUserLoaded, profileStored and storeProfileError actions', () => {
+  it('should return loading set to false and currentUser not null, on currentUserLoaded, currentUserStored and storeCurrentUserError actions', () => {
     let nextState;
 
     // currentUserLoaded
@@ -55,20 +54,20 @@ describe('usersEditPageReducer', () => {
 
     // profileStored
     nextState = usersEditPageReducer(
-      fromJS(initialState), profileStored(userData)
+      fromJS(initialState), currentUserUpdated(userData)
     ).toJS();
     expectPropertyNotNull(nextState, 'loading');
     expectPropertyNotNull(nextState, 'currentUser');
 
-    // storeProfileError
+    // storeCurrentUserError
     nextState = usersEditPageReducer(
-      fromJS(initialState), storeProfileError(userData)
+      fromJS(initialState), storeCurrentUserError(userData)
     ).toJS();
     expectPropertyNotNull(nextState, 'loading');
     expectPropertyNotNull(nextState, 'currentUser');
   });
 
-  it('should return avatarBase64 not null on avatarLoaded and avatarStored actions', () => {
+  it('should return avatarBase64 not null on avatarStored actions', () => {
     let nextState;
 
     // avatarLoaded
