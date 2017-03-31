@@ -24,13 +24,14 @@ LabelInputPair.propTypes = {
 export default class ProfileForm extends React.PureComponent {
   componentWillReceiveProps(nextProps) {
     const user = nextProps.userData;
+
     if (user) {
       // load initial value (unless form being re-rendered)
       this.localFormDispatch(actions.load('user', user));
     }
   }
 
-  render() {console.log(this.props);
+  render() {
     const { avatarUploadError, avatarUpload, userData } = this.props;
 
     return (
@@ -46,7 +47,6 @@ export default class ProfileForm extends React.PureComponent {
             <LabelInputPair id="first_name" />
             <LabelInputPair id="last_name" />
             <LabelInputPair id="email" />
-            <LabelInputPair id="avatar" hidden={true} />
           </Column>
           <Column large={6}>
             <Avatar
@@ -57,6 +57,8 @@ export default class ProfileForm extends React.PureComponent {
           </Column>
         </Row>
         <button type="submit">Submit</button>
+        <LabelInputPair id="avatar" hidden={true} />
+        <LabelInputPair id="userId" hidden={true} />
       </LocalForm>
     );
   }

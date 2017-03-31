@@ -1,5 +1,6 @@
 import request from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
+import { makeSelectCurrentUser } from './utils/auth/selectors';
 
 export function login(email, password) {
   const data = {
@@ -41,11 +42,8 @@ export function fetchCurrentUser() {
   return request(`${API_PATH}/users/me`);
 }
 
-export function updateCurrentUser(values) {
-  // TODO: after merge with master use selector `makeSelectCurrentUser` at utils/auth/selectors to fetch userId
-  // debugger;
-  const userId = '193e5828-50d0-47b5-963f-4995dfe23876';
-  return request(`${API_PATH}/users/${userId}`, { user: values }, {
+export function updateCurrentUser(values) {console.log(values, values.userId);
+  return request(`${API_PATH}/users/${values.userId}`, { user: values }, {
     method: 'PUT',
   });
 }

@@ -6,7 +6,7 @@
 
 import {
   CURRENT_USER_LOAD_SUCCESS, CURRENT_USER_LOAD_ERROR, STORE_AVATAR, CURRENT_USER_STORE_SUCCESS,
-  CURRENT_USER_STORE_ERROR, STORE_CURRENT_USER, AVATAR_STORE_ERROR,
+  CURRENT_USER_STORE_ERROR, STORE_CURRENT_USER, AVATAR_STORE_ERROR, STORE_USER_ID,
 } from './constants';
 
 export function currentUserLoaded(currentUser) {
@@ -22,6 +22,7 @@ export function currentUserLoaded(currentUser) {
       ? CURRENT_USER_LOAD_SUCCESS
       : CURRENT_USER_LOAD_ERROR),
     payload: validResponse && currentUser.data.attributes,
+    userId: currentUser.data.id,
   };
 }
 
@@ -51,6 +52,7 @@ export function currentUserUpdated(currentUser) {
         ? CURRENT_USER_STORE_SUCCESS
         : CURRENT_USER_STORE_ERROR),
     payload: validResponse && currentUser.data.attributes,
+    userId: currentUser.data.id,
 };
 }
 

@@ -12,8 +12,7 @@ import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 
 import {
-  makeSelectAvatarBase64,
-  makeSelectAvatarUploadError, makeSelectAvatarURL, makeSelectLoadError, makeSelectLoading, makeSelectProcessing,
+  makeSelectAvatarUploadError, makeSelectLoadError, makeSelectLoading, makeSelectProcessing,
   makeSelectStored, makeSelectStoreError, makeSelectUserData,
 } from './selectors';
 
@@ -21,6 +20,7 @@ import messages from './messages';
 import { avatarStoreError, storeAvatar, updateCurrentUser } from './actions';
 import ProfileForm from './ProfileForm';
 import { loadCurrentUser } from '../App/actions';
+import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 
 const ProfileDiv = styled.div`
   padding: 20px;
@@ -34,7 +34,7 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
   }
 
   render() {
-    const { loading, loadError, storeError, processing, stored, userData, onAvatarUpload, avatarUploadError } = this.props;
+    const { loading, loadError, storeError, processing, stored, userData, onAvatarUpload, avatarUploadError, onProfileFormSubmit } = this.props;
 
     return (
       <ProfileDiv>
@@ -54,7 +54,7 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
         <ProfileForm
           userData={userData}
           avatarUpload={onAvatarUpload}
-          onFormSubmit={this.props.onProfileFormSubmit}
+          onFormSubmit={onProfileFormSubmit}
           avatarUploadError={avatarUploadError}
         />
       </ProfileDiv>
