@@ -6,7 +6,7 @@
 
 import {
   CURRENT_USER_LOAD_SUCCESS, CURRENT_USER_LOAD_ERROR, STORE_AVATAR, CURRENT_USER_STORE_SUCCESS,
-  CURRENT_USER_STORE_ERROR, STORE_CURRENT_USER, AVATAR_STORE_ERROR, STORE_USER_ID,
+  CURRENT_USER_STORE_ERROR, STORE_CURRENT_USER, AVATAR_STORE_ERROR,
 } from './constants';
 
 export function currentUserLoaded(currentUser) {
@@ -33,6 +33,7 @@ export function currentUserLoadError() {
 }
 
 export function updateCurrentUser(currentUser) {
+  console.log(currentUser);
   return {
     type: STORE_CURRENT_USER,
     payload: currentUser,

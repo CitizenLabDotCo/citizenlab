@@ -1,11 +1,18 @@
-import { currentUserLoaded, currentUserLoadError, storeCurrentUserError, } from '../actions';
+import { currentUserLoaded, currentUserLoadError, currentUserUpdated, storeCurrentUserError } from '../actions';
 
 describe('actions', () => {
-  it('should return currentUserLoadError().type if profile is null', () => {
-    expect(currentUserLoaded(undefined)).toEqual(currentUserLoadError());
+  const apiResponse = {
+    data: {
+      attributes: {},
+      id: 'anything',
+    },
+  };
+
+  it('should not return currentUserLoadError().type', () => {
+    expect(currentUserLoaded(apiResponse)).not.toEqual(currentUserLoadError());
   });
 
-  it('should return storeCurrentUserError().type if profile is null', () => {
-    expect(profileStored(undefined)).toEqual(storeCurrentUserError());
+  it('should not return storeCurrentUserError().type', () => {
+    expect(currentUserUpdated(apiResponse)).not.toEqual(storeCurrentUserError());
   });
 });

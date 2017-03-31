@@ -2,7 +2,7 @@
 
 exports[`<ProfileForm /> <LabelInputPair /> input's label should render correctly 1`] = `
 <label
-  htmlFor="name"
+  htmlFor="first_name"
 >
   <span>
     First Name

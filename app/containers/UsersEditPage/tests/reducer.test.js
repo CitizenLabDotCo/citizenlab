@@ -2,7 +2,7 @@
 import { fromJS } from 'immutable';
 import usersEditPageReducer from '../reducer';
 import { currentUserLoaded, currentUserUpdated, storeCurrentUserError } from '../actions';
-import { expectPropertyNotNull } from '../../../utils/testUtils';
+import { expectNestedPropertyNotNull, expectPropertyNotNull } from '../../../utils/testUtils';
 import { loadCurrentUser } from '../../App/actions';
 
 describe('usersEditPageReducer', () => {
@@ -19,7 +19,6 @@ describe('usersEditPageReducer', () => {
   };
 
   const userData = {};
-  const avatarBase64 = '';
 
   it('returns the initial state', () => {
     expect(usersEditPageReducer(undefined, {})).toEqual(fromJS(initialState));
@@ -34,52 +33,32 @@ describe('usersEditPageReducer', () => {
     )).toEqual(fromJS(nextState));
   });
 
-  it('should return loading set to false and currentUser not null, on currentUserLoaded, currentUserStored and storeCurrentUserError actions', () => {
+  it('should return loading set to false, currentUser not null, currentUser.avatar and currentUser.useId not null on currentUserLoaded and currentUserUpdated  actions', () => {
     let nextState;
 
-    // currentUserLoaded
     const apiResponse = {
-      payload: {
-        data: {
-          attributes: userData,
-        },
+      data: {
+        attributes: userData,
+        id: 'anything',
       },
     };
 
+    // currentUserLoaded
     nextState = usersEditPageReducer(
       fromJS(initialState), currentUserLoaded(apiResponse)
     ).toJS();
     expectPropertyNotNull(nextState, 'loading');
     expectPropertyNotNull(nextState, 'currentUser');
+    expectNestedPropertyNotNull(nextState, 'currentUser', 'userId');
+    expectNestedPropertyNotNull(nextState, 'currentUser', 'avatar');
 
-    // profileStored
+    // currentUserUpdated
     nextState = usersEditPageReducer(
-      fromJS(initialState), currentUserUpdated(userData)
+      fromJS(initialState), currentUserUpdated(apiResponse)
     ).toJS();
     expectPropertyNotNull(nextState, 'loading');
     expectPropertyNotNull(nextState, 'currentUser');
-
-    // storeCurrentUserError
-    nextState = usersEditPageReducer(
-      fromJS(initialState), storeCurrentUserError(userData)
-    ).toJS();
-    expectPropertyNotNull(nextState, 'loading');
-    expectPropertyNotNull(nextState, 'currentUser');
-  });
-
-  it('should return avatarBase64 not null on avatarStored actions', () => {
-    let nextState;
-
-    // avatarLoaded
-    nextState = usersEditPageReducer(
-      fromJS(initialState), avatarLoaded(avatarBase64)
-    ).toJS();
-    expectPropertyNotNull(nextState, 'avatarBase64');
-
-    // avatarStored
-    nextState = usersEditPageReducer(
-      fromJS(initialState), avatarStored(avatarBase64)
-    ).toJS();
-    expectPropertyNotNull(nextState, 'avatarBase64');
+    expectNestedPropertyNotNull(nextState, 'currentUser', 'userId');
+    expectNestedPropertyNotNull(nextState, 'currentUser', 'avatar');
   });
 });

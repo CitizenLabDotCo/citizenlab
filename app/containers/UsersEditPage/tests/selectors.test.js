@@ -53,4 +53,8 @@ describe('makeSelectUsersEditPageDomain', () => {
     });
     expect(userDataSelector(mockedState).toJS()).toEqual(user);
   });
+
+  it('should have test for each meaningful selector in future', () => {
+    expect(true).toEqual(true);
+  });
 });

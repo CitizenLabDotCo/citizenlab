@@ -20,7 +20,6 @@ import messages from './messages';
 import { avatarStoreError, storeAvatar, updateCurrentUser } from './actions';
 import ProfileForm from './ProfileForm';
 import { loadCurrentUser } from '../App/actions';
-import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 
 const ProfileDiv = styled.div`
   padding: 20px;

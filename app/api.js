@@ -42,7 +42,7 @@ export function fetchCurrentUser() {
   return request(`${API_PATH}/users/me`);
 }
 
-export function updateCurrentUser(values) {console.log(values, values.userId);
+export function updateCurrentUser(values) {
   return request(`${API_PATH}/users/${values.userId}`, { user: values }, {
     method: 'PUT',
   });

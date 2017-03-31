@@ -4,28 +4,37 @@ import { createComponentWithIntl, mountWithIntl } from '../../../utils/intlTest'
 import messages from '../messages';
 import ProfileForm from '../ProfileForm';
 import { mapDispatchToProps } from '../index';
-import { storeProfile } from '../actions';
+import { updateCurrentUser } from '../actions';
+import { localStorageMock } from '../../../utils/testUtils';
 
 describe('<ProfileForm />', () => {
+  // mock localStorage
+  Object.defineProperty(window, 'localStorage', { value: localStorageMock() });
+
   it('calls onSubmit handler', () => {
     const handleSubmitMock = jest.fn();
-    const wrapper = mountWithIntl(<ProfileForm onFormSubmit={handleSubmitMock} />);
+    const user = {};
+
+    const wrapper = mountWithIntl(<ProfileForm
+      onFormSubmit={handleSubmitMock}
+      userData={user}
+    />);
     wrapper.find('[type="submit"]').get(0).click();
     expect(handleSubmitMock.mock.calls.length).toEqual(1);
   });
 
   describe('onFormSubmit', () => {
-    it('STORE_PROFILE action should be dispatched', () => {
+    it('updateCurrentUser action should be dispatched', () => {
       const dispatch = jest.fn();
       const result = mapDispatchToProps(dispatch);
       result.onProfileFormSubmit();
-      expect(dispatch).toHaveBeenCalledWith(storeProfile());
+      expect(dispatch).toHaveBeenCalledWith(updateCurrentUser());
     });
   });
 
   describe('<LabelInputPair />', () => {
     it('input\'s label should render correctly', () => {
-      const id = 'name';
+      const id = 'first_name';
       const tree = createComponentWithIntl(
         <label htmlFor={id}>
           <FormattedMessage {...messages[id]} />
