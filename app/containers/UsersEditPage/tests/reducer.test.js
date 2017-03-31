@@ -7,15 +7,15 @@ import { loadCurrentUser } from '../../App/actions';
 
 describe('usersEditPageReducer', () => {
   const initialState = {
-      loading: false,
-      loadError: false,
-      storeError: false,
-      processing: false,
-      stored: false,
-      currentUser: { },
-      avatarBase64: null,
-      avatarStored: false,
-      avatarUploadError: false,
+    loading: false,
+    loadError: false,
+    storeError: false,
+    processing: false,
+    stored: false,
+    currentUser: { },
+    avatarStored: false,
+    avatarUploadError: false,
+    avatarURL: '',
   };
 
   const userData = {};
