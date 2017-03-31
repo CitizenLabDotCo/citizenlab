@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
+import _ from 'lodash';
 import IdeaCard from 'components/IdeaCard';
 import { Row, Column } from 'components/Foundation/src/components/grid';
 import { makeSelectIdeas } from './selectors';
@@ -22,7 +23,9 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   }
 
   showPageHtml() {
-    return this.props.children;
+    const { ideas, params } = this.props;
+    const idea = _.find(ideas, { id: params.slug });
+    return React.cloneElement(React.Children.only(this.props.children), { idea });
   }
 
   indexPageHtml() {
@@ -61,6 +64,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
 IdeasIndexPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
   ideas: React.PropTypes.array,
+  params: React.PropTypes.object,
   children: React.PropTypes.array,
 };
 
