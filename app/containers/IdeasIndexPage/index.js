@@ -21,8 +21,13 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
     this.props.dispatch(loadIdeas());
   }
 
-  render() {
+  showPageHtml() {
+    return this.props.children;
+  }
+
+  indexPageHtml() {
     const { ideas } = this.props;
+
     return (
       <div>
         <Helmet
@@ -43,11 +48,20 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
       </div>
     );
   }
+
+  render() {
+    if (this.props.children) {
+      return this.showPageHtml();
+    }
+
+    return this.indexPageHtml();
+  }
 }
 
 IdeasIndexPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
   ideas: React.PropTypes.array,
+  children: React.PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
