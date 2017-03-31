@@ -1,9 +1,16 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { fromJS } from 'immutable';
+import { Provider } from 'react-redux';
+import { render } from 'enzyme';
+import configureMockStore from 'redux-mock-store';
+import T from '../index';
 
-import { T } from '../index';
-
-// TODO: test connected component
+const fakeStore = configureMockStore([])(fromJS({
+  persistedData: {
+    userLocale: 'fr',
+    tenantLocales: ['en', 'nl', 'fr'],
+  },
+}));
 
 describe('<T />', () => {
   const exampleMultiloc = {
@@ -12,18 +19,11 @@ describe('<T />', () => {
     fr: 'Bonjour',
   };
 
-  const fakeStore = {
-    userLocale: 'fr',
-    tenantLocales: ['en', 'nl', 'fr'],
-  };
-
   it('renders correctly', () => {
-    const component = shallow(
-      <T
-        value={exampleMultiloc}
-        userLocale={fakeStore.userLocale}
-        tenantLocales={fakeStore.tenantLocales}
-      />
+    const component = render(
+      <Provider store={fakeStore}>
+        <T value={exampleMultiloc} />
+      </Provider>
     );
 
     expect(component.text()).toEqual('Bonjour');
