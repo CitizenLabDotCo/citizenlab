@@ -16,7 +16,7 @@ import {
 import makeSelectSignInPage from './selectors';
 import messages from './messages';
 import Form from './Form';
-import { userLogin } from './actions';
+import { authenticateRequest } from './actions';
 import socialAuth from '../../socialAuth';
 
 const Box = styled.div`
@@ -52,7 +52,27 @@ export const SocialLoginBox = (props) => {
   );
 };
 
+// TODO enable eslint
+/* eslint-disable */
 export class SignInPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+
+  // Quick fix until we add a Saga
+  // handleSubmit(values) {
+  //   this.props.onSubmit()
+  //
+  //   console.log("[DEBUG] values =", values);
+  //   Api.login(values.email, values.password)
+  //     .then((json) => {
+  //       console.log("[DEBUG] json =", json);
+  //       try {
+  //         window.localStorage.setItem('jwt', json.jwt)
+  //         this.props.router.push('/');
+  //       } catch (err) {
+  //         console.log(err); // eslint-disable-line
+  //       }
+  //     });
+  // }
+
   render() {
     return (
       <div>
@@ -89,7 +109,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSubmit: (values) => dispatch(userLogin(values)),
+    onSubmit: (values) => dispatch(authenticateRequest(values)),
   };
 }
 

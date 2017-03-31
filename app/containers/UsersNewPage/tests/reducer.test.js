@@ -1,9 +1,12 @@
-
 import { fromJS } from 'immutable';
-import usersNewPageReducer from '../reducer';
+import { initialState } from '../reducer';
 
 describe('usersNewPageReducer', () => {
   it('returns the initial state', () => {
-    expect(usersNewPageReducer(undefined, {})).toEqual(fromJS({}));
+    expect(initialState).toEqual(fromJS({
+      pending: false,
+      error: null,
+      newUser: null,
+    }));
   });
 });

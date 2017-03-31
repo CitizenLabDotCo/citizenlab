@@ -30,9 +30,7 @@ import 'whatwg-fetch';
 
 export function getJwt() {
   try {
-      return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTA5Nzk1NjQsInN1YiI6IjE5M2U1ODI4LTUwZDAtNDdiNS05NjNmLTQ5OTVkZmUyMzg3NiJ9.OWIM9qMJnrDPwHT4IRLWmT26Y8QJYmZMbuMM5P0n2DA';
-    // TODO: after merge with master remove the previous line and uncomment the following one
-    // return window.localStorage.getItem('jwt');
+    return window.localStorage.getItem('jwt');
   } catch (err) {
     console.log("[DEBUG] err =", err); // eslint-disable-line
     return null;
@@ -66,11 +64,9 @@ export default function request(url, data, options) {
   if (data) {
     defaultOptions.body = JSON.stringify(data);
   }
+
   return fetch(url, Object.assign(defaultOptions, options))
-    .then((response) => {
-      console.log(response);
-      Promise.all([response, response.json()])
-    })
+    .then((response) => Promise.all([response, response.json()]))
     .then((result) => {
       const response = result[0];
       const json = result[1];

@@ -6,14 +6,14 @@
 
 import { fromJS } from 'immutable';
 import {
-  USER_LOGIN,
+  AUTHENTICATE_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({});
 
 function signInPageReducer(state = initialState, action) {
   switch (action.type) {
-    case USER_LOGIN:
+    case AUTHENTICATE_SUCCESS:
       console.log("[DEBUG] action =", action); // eslint-disable-line
       return state;
     default:

@@ -8,22 +8,25 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
-import { actions as rrfActions } from 'react-redux-form';
-import { loadCurrentUser } from './../App/actions';
+// import { actions as rrfActions } from 'react-redux-form';
+import { createStructuredSelector } from 'reselect';
+import styled from 'styled-components';
+import _ from 'lodash';
+import { createUser } from './actions';
 import messages from './messages';
 import Form from './Form';
+import makeSelectUsersNewPage from './selectors';
 
-const createUser = (values) => (
-  // TODO: remove hardcoded address
-  fetch('http://localhost:4000/api/v1/users', {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
-    body: JSON.stringify({ user: values }),
-  })
-  .then((res) => res.json())
-);
+const SpinnerBox = styled.div`
+  border: 1px solid yellow;
+  margin-bottom: 20px;
+`;
+
+const ErrorBox = styled.div`
+  border: 1px solid yellow;
+  margin-bottom: 20px;
+  color: red;
+`;
 
 export class UsersNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -32,15 +35,13 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
   }
 
   handleSubmit(values) {
-    createUser(values).then((response) => {
-      // reset form
-      this.localFormDispatch(rrfActions.reset('registration'));
-      this.props.dispatch(loadCurrentUser(response.data));
-    });
+    this.props.dispatch(createUser(values));
+    // TODO: reset form after saga
+    // this.localFormDispatch(rrfActions.reset('registration'));
   }
 
   render() {
-    const currentUser = this.props.currentUser;
+    const { newUser, error, pending } = this.props.storeData;
     return (
       <div>
         <Helmet
@@ -54,7 +55,17 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
           <FormattedMessage {...messages.header} />
         </h1>
 
-        <p style={{ marginBottom: '20px' }}>CurrentUser: { currentUser ? currentUser.attributes.name : 'null' }</p>
+        { pending === true && (<SpinnerBox>Please wait...</SpinnerBox>) }
+        { error !== null && (
+          <ErrorBox>
+            <strong>An Error Occurred!</strong>
+            { _.map(error.json, (msg, key) => (
+              <p key={key}>{key}: {msg.join(', ')}</p>
+            )) }
+          </ErrorBox>
+          ) }
+
+        <p style={{ marginBottom: '20px' }}>NewUser: { _.has(newUser, 'data.attributes') ? newUser.data.attributes.name : 'null' }</p>
 
         <Form
           onSubmit={this.handleSubmit}
@@ -66,12 +77,13 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
 }
 
 UsersNewPage.propTypes = {
-  currentUser: PropTypes.any,
+  newUser: PropTypes.any,
   dispatch: PropTypes.func,
+  storeData: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  currentUser: state.get('persistedData').toJS().currentUser,
+const mapStateToProps = createStructuredSelector({
+  storeData: makeSelectUsersNewPage(),
 });
 
 function mapDispatchToProps(dispatch) {

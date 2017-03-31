@@ -5,11 +5,12 @@
  */
 
 import {
-  DEFAULT_ACTION,
+  CREATE_USER_PENDING,
 } from './constants';
 
-export function defaultAction() {
+export function createUser(payload) {
   return {
-    type: DEFAULT_ACTION,
+    type: CREATE_USER_PENDING,
+    payload,
   };
 }

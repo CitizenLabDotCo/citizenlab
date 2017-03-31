@@ -4,13 +4,29 @@
  *
  */
 
-import {
-  USER_LOGIN,
-} from './constants';
+ import {
+   AUTHENTICATE_REQUEST,
+   AUTHENTICATE_SUCCESS,
+   AUTHENTICATE_ERROR,
+ } from './constants';
 
-export function userLogin(values) {
-  return {
-    type: USER_LOGIN,
-    payload: values,
-  };
-}
+ export function authenticateRequest(credentials) {
+   return {
+     type: AUTHENTICATE_REQUEST,
+     payload: credentials,
+   };
+ }
+
+ export function authenticateSuccess(response) {
+   return {
+     type: AUTHENTICATE_SUCCESS,
+     payload: response,
+   };
+ }
+
+ export function authenticateError(error) {
+   return {
+     type: AUTHENTICATE_ERROR,
+     payload: error,
+   };
+ }
