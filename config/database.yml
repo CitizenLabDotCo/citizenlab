@@ -23,7 +23,7 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: <%= ENV.fetch("POSTGRES_USER") %>
   password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
-  host: postgres
+  host: <%= ENV.fetch("POSTGRES_HOST") %>
 
 development:
   <<: *default
@@ -83,8 +83,12 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
+
+staging:
+  <<: *default
+  database: cl2_back_staging
+
 production:
   <<: *default
   database: cl2_back_production
-  username: cl2_back
-  password: <%= ENV['CL2_BACK_DATABASE_PASSWORD'] %>
+
