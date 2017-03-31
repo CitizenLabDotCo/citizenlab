@@ -6,7 +6,7 @@
   "app.components.Input.label": "Label",
   "app.components.NotFoundPage.header": "Ow, it seems you got lost?",
   "app.components.TopicSelect.header": "This is the TopicSelect component !",
-  "app.containers.IdeasIndexPage.header": "This is IdeasIndexPage container !",
+  "app.containers.IdeasIndexPage.header": "IdeasIndexPage",
   "app.containers.IdeasNewPage.charactersLeft": "{charsLeft} characters left",
   "app.containers.IdeasNewPage.clickToUpload": "Click to upload",
   "app.containers.IdeasNewPage.loadAttachmentsError": "Coudln't laod existing attachments",

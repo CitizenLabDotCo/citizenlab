@@ -39,11 +39,15 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
             { name: 'description', content: 'Description of IdeasIndexPage' },
           ]}
         />
-        <FormattedMessage {...messages.header} />
+
+        <h1>
+          <FormattedMessage {...messages.header} />
+        </h1>
+
         <Row data-equalizer>
           {ideas && ideas.map((idea) => (
             <Column key={idea.id} small={12} medium={4} large={3}>
-              <IdeaCard idea={idea}></IdeaCard>
+              <IdeaCard idea={idea} onClick={() => this.props.router.push(`/ideas/${idea.id}`)}></IdeaCard>
             </Column>
           ))}
         </Row>
@@ -65,7 +69,8 @@ IdeasIndexPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
   ideas: React.PropTypes.array,
   params: React.PropTypes.object,
-  children: React.PropTypes.array,
+  children: React.PropTypes.any,
+  router: React.PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({

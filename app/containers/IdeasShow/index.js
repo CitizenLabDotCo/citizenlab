@@ -24,6 +24,7 @@ export default class IdeasShow extends React.PureComponent { // eslint-disable-l
     return (
       <div>
         <h2>{ idea.attributes.title_multiloc.en }</h2>
+        <p><strong>Some Author</strong></p>
         <p>{ idea.attributes.body_multiloc.en }</p>
       </div>
     );
