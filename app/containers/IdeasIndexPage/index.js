@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
+import _ from 'lodash';
 import IdeaCard from 'components/IdeaCard';
 import { Row, Column } from 'components/Foundation/src/components/grid';
 import { makeSelectIdeas } from './selectors';
@@ -21,8 +22,15 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
     this.props.dispatch(loadIdeas());
   }
 
-  render() {
+  showPageHtml() {
+    const { ideas, params } = this.props;
+    const idea = _.find(ideas, { id: params.slug });
+    return React.cloneElement(React.Children.only(this.props.children), { idea });
+  }
+
+  indexPageHtml() {
     const { ideas } = this.props;
+
     return (
       <div>
         <Helmet
@@ -31,11 +39,15 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
             { name: 'description', content: 'Description of IdeasIndexPage' },
           ]}
         />
-        <FormattedMessage {...messages.header} />
+
+        <h1>
+          <FormattedMessage {...messages.header} />
+        </h1>
+
         <Row data-equalizer>
           {ideas && ideas.map((idea) => (
             <Column key={idea.id} small={12} medium={4} large={3}>
-              <IdeaCard idea={idea}></IdeaCard>
+              <IdeaCard idea={idea} onClick={() => this.props.router.push(`/ideas/${idea.id}`)}></IdeaCard>
             </Column>
           ))}
         </Row>
@@ -43,11 +55,22 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
       </div>
     );
   }
+
+  render() {
+    if (this.props.children) {
+      return this.showPageHtml();
+    }
+
+    return this.indexPageHtml();
+  }
 }
 
 IdeasIndexPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
   ideas: React.PropTypes.array,
+  params: React.PropTypes.object,
+  children: React.PropTypes.any,
+  router: React.PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({

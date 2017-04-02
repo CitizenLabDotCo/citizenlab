@@ -16,8 +16,11 @@ import T from 'containers/T';
 class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { idea } = this.props;
+    // TODO enable eslint
+    /* eslint-disable */
+    // fix: Visible, non-interactive elements should not have mouse or keyboard event listeners
     return (
-      <div className="card">
+      <div className="card" onClick={this.props.onClick}>
         <div className="card-section">
           {!_.isEmpty(idea.attributes.images) && <img src={idea.attributes.images[0].medium} role="presentation"></img>}
           <h4>
@@ -36,6 +39,7 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
 
 IdeaCard.propTypes = {
   idea: PropTypes.object,
+  onClick: PropTypes.func,
 };
 
 export default IdeaCard;
