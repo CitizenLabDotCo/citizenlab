@@ -3,16 +3,28 @@ import { selectResourcesDomain } from 'utils/resources/selectors';
 
 const selectTenantDomain = () => (state) => state.get('tenant');
 
-const makeSelectCurrentTenant = () => createSelector(
+const makeSelectCurrentTenantImm = () => createSelector(
   selectTenantDomain(),
   selectResourcesDomain(),
-  (tenant, resources) => {
-    const immutableTenant = resources.getIn(['tenants', tenant.get('id')]);
-    return immutableTenant && immutableTenant.toJS();
+  (tenant, resources) => resources.getIn(['tenants', tenant.get('id')])
+);
+
+const makeSelectCurrentTenant = () => createSelector(
+  makeSelectCurrentTenantImm(),
+  (immutableTenant) => immutableTenant && immutableTenant.toJS()
+);
+
+const makeSelectSetting = (settingPath) => createSelector(
+  makeSelectCurrentTenantImm(),
+  (immutableTenant) => {
+    const settingImm = immutableTenant.getIn(['attributes', 'settings', ...settingPath]);
+    return settingImm && settingImm.toJS();
   }
 );
 
 export {
   selectTenantDomain,
+  makeSelectCurrentTenantImm,
   makeSelectCurrentTenant,
+  makeSelectSetting,
 };

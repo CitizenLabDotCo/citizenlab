@@ -6,7 +6,9 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-// import _ from 'lodash';
+import { createStructuredSelector } from 'reselect';
+import { makeSelectSetting } from 'utils/tenant/selectors';
+import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { findTranslatedText } from './utils';
 
 export class T extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -37,10 +39,9 @@ T.propTypes = {
   tenantLocales: PropTypes.array,
 };
 
-// TODO: use selectors
-const mapStateToProps = (state) => ({
-  userLocale: state.get('persistedData').toJS().userLocale,
-  tenantLocales: state.get('persistedData').toJS().tenantLocales,
+const mapStateToProps = createStructuredSelector({
+  userLocale: makeSelectLocale(),
+  tenantLocales: makeSelectSetting(['core', 'locales']),
 });
 
 export default connect(mapStateToProps)(T);
