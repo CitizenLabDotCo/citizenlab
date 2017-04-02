@@ -9,8 +9,8 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
 
   loginLink() {
     return [
-      <MenuItem key="login"><Link to="/sign-in">Login</Link></MenuItem>,
-      <MenuItem key="register"><Link to="/register">Register</Link></MenuItem>,
+      <MenuItem key="login"><Link to="/sign-in"><FormattedMessage {...messages.login} /></Link></MenuItem>,
+      <MenuItem key="register"><Link to="/register"><FormattedMessage {...messages.register} />r</Link></MenuItem>,
     ];
   }
 
@@ -33,7 +33,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
     const { currentUser, currentTenant } = this.props;
     return (
       <TopBar>
-        <TopBarTitle>{currentTenant && currentTenant.name}</TopBarTitle>
+        <TopBarTitle>{currentTenant && currentTenant.attributes.name}</TopBarTitle>
         <div>
           <TopBarLeft>
             <Menu>

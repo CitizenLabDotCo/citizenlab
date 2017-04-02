@@ -41,10 +41,15 @@ export function fetchCurrentUser() {
   return request(`${API_PATH}/users/me`);
 }
 
+export function fetchCurrentTenant() {
+  return request(`${API_PATH}/tenants/current`);
+}
+
 export default {
   login,
   socialLogin,
   createUser,
   fetchIdeas,
   fetchCurrentUser,
+  fetchCurrentTenant,
 };

@@ -1,5 +1,4 @@
 import { fromJS } from 'immutable';
-import { createSelector } from 'reselect';
 import { LOADED_CURRENT_TENANT, LOAD_CURRENT_USER } from 'containers/App/constants';
 
 const initialState = fromJS({
@@ -41,24 +40,6 @@ export const saveState = (state) => {
 
 const selectPersistedDataDomain = () => (state) => state.get('persistedData');
 
-const makeSelectCurrentUser = () => createSelector(
-  selectPersistedDataDomain(),
-  (subState) => {
-    const currentUser = subState.get('currentUser');
-    return currentUser && currentUser.toJS();
-  }
-);
-
-const makeSelectCurrentTenant = () => createSelector(
-  selectPersistedDataDomain(),
-  (subState) => {
-    const currentTenant = subState.get('currentTenant');
-    return currentTenant && currentTenant.toJS();
-  }
-);
-
 export {
   selectPersistedDataDomain,
-  makeSelectCurrentUser,
-  makeSelectCurrentTenant,
 };
