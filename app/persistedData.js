@@ -4,6 +4,9 @@ import { LOADED_CURRENT_TENANT, LOAD_CURRENT_USER } from 'containers/App/constan
 const initialState = fromJS({
   currentTenant: null,
   currentUser: null,
+  // TODO: remove hardcoded below
+  userLocale: 'fr',
+  tenantLocales: ['en', 'nl', 'fr'],
 });
 
 export const persistedDataReducer = (state = initialState, action) => {
