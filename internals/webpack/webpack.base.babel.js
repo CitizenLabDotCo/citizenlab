@@ -87,10 +87,12 @@ module.exports = (options) => ({
       '.jsx',
       '.react.js',
     ],
+    // Applied this hack https://github.com/react-boilerplate/react-boilerplate/issues/1657
+    // It allows us to build using libraries that don't transpile to ES5, as they should.
     mainFields: [
       'browser',
-      'jsnext:main',
       'main',
+      'jsnext:main',
     ],
   },
   devtool: options.devtool,
