@@ -7,9 +7,8 @@
 import { fromJS } from 'immutable';
 import {
   LOAD_DRAFT, LOAD_DRAFT_ERROR, LOAD_DRAFT_SUCCESS, STORE_DRAFT, STORE_DRAFT_SUCCESS, STORE_DRAFT_ERROR,
-  SAVE_DRAFT, STORE_IDEA, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS, SET_TITLE, STORE_ATTACHMENT, STORE_ATTACHMENT_SUCCESS,
-  STORE_ATTACHMENT_ERROR, LOAD_ATTACHMENTS, LOAD_ATTACHMENTS_SUCCESS, LOAD_ATTACHMENTS_ERROR, STORE_IMAGE,
-  STORE_IMAGE_SUCCESS, STORE_IMAGE_ERROR, LOAD_IMAGES, LOAD_IMAGES_SUCCESS, LOAD_IMAGES_ERROR,
+  SAVE_DRAFT, STORE_IDEA, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS, SET_TITLE, STORE_ATTACHMENT, STORE_IMAGE,
+  STORE_IMAGE_ERROR, STORE_ATTACHMENT_ERROR,
 } from './constants';
 
 export const ideasNewPageInitialState = fromJS({
@@ -28,10 +27,8 @@ export const ideasNewPageInitialState = fromJS({
     longTitleError: false,
     titleLength: 0,
     attachments: [],
-    loadAttachmentsError: false,
     storeAttachmentError: false,
     images: [],
-    loadImagesError: false,
     storeImageError: false,
   },
 });
@@ -52,6 +49,7 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
         .setIn(['draft', 'loading'], false);
     case STORE_DRAFT:
       return state
+        .setIn(['draft', 'loadError'], false)
         .setIn(['draft', 'stored'], false)
         .setIn(['draft', 'storeError'], false);
     case STORE_DRAFT_SUCCESS:
@@ -64,9 +62,13 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
         .setIn(['draft', 'storeError'], true);
     case SAVE_DRAFT:
       return state
+        .setIn(['draft', 'loadError'], false)
+        .setIn(['draft', 'storeError'], false)
         .setIn(['draft', 'content'], action.draft);
     case STORE_IDEA:
       return state
+        .setIn(['draft', 'loadError'], false)
+        .setIn(['draft', 'storeError'], false)
         .setIn(['draft', 'submitting'], true)
         .setIn(['draft', 'submitted'], false)
         .setIn(['draft', 'submitError'], false);
@@ -86,46 +88,18 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
         .setIn(['draft', 'titleLength'], action.title.length);
     case STORE_ATTACHMENT:
       return state
-        .setIn(['draft', 'loadAttachmentsError'], false)
-        .setIn(['draft', 'storeAttachmentError'], false);
-    case STORE_ATTACHMENT_SUCCESS:
-      return state
-        .setIn(['draft', 'attachments'], fromJS(state.getIn(['draft', 'attachments'])).concat(action.source))
-        .setIn(['draft', 'storeAttachmentError'], false);
+        .setIn(['draft', 'storeAttachmentError'], false)
+        .setIn(['draft', 'attachments'], fromJS(state.getIn(['draft', 'attachments'])).concat(action.source));
     case STORE_ATTACHMENT_ERROR:
       return state
         .setIn(['draft', 'storeAttachmentError'], true);
-    case LOAD_ATTACHMENTS:
-      return state
-        .setIn(['draft', 'loadAttachmentsError'], false);
-    case LOAD_ATTACHMENTS_SUCCESS:
-      return state
-        .setIn(['draft', 'attachments'], action.sources)
-        .setIn(['draft', 'loadAttachmentsError'], false);
-    case LOAD_ATTACHMENTS_ERROR:
-      return state
-        .setIn(['draft', 'loadAttachmentsError'], true);
     case STORE_IMAGE:
       return state
-        .setIn(['draft', 'loadImagesError'], false)
-        .setIn(['draft', 'storeImageError'], false);
-    case STORE_IMAGE_SUCCESS:
-      return state
-        .setIn(['draft', 'images'], fromJS(state.getIn(['draft', 'images'])).concat(action.source))
-        .setIn(['draft', 'storeImageError'], false);
+        .setIn(['draft', 'storeImageError'], false)
+        .setIn(['draft', 'images'], fromJS(state.getIn(['draft', 'images'])).concat(action.source));
     case STORE_IMAGE_ERROR:
       return state
         .setIn(['draft', 'storeImageError'], true);
-    case LOAD_IMAGES:
-      return state
-        .setIn(['draft', 'loadImagesError'], false);
-    case LOAD_IMAGES_SUCCESS:
-      return state
-        .setIn(['draft', 'images'], action.sources)
-        .setIn(['draft', 'loadImagesError'], false);
-    case LOAD_IMAGES_ERROR:
-      return state
-        .setIn(['draft', 'loadImagesError'], true);
     default:
       return state;
   }

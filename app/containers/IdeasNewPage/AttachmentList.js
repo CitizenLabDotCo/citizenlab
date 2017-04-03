@@ -5,7 +5,7 @@
 */
 
 import React, { PropTypes } from 'react';
-import { Label, Button, Row, Column } from 'components/Foundation';
+import { Button, Row, Column, Label } from 'components/Foundation';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import Attachment from './Attachment';
@@ -21,6 +21,24 @@ export const Attachments = (props) => (<span>
   )}</span>
 );
 
+const FileInput = (props) => (
+  <input
+    type="file"
+    onChange={props.onFileUpload}
+    className={props.className}
+  />
+);
+
+export const StyledFileInput = styled(FileInput)`
+  opacity: 0;
+  z-index: 1;
+  width: 100px;
+  margin-left: 10px;
+  display: inline-block;
+  position: absolute;
+  height: 120px;
+`;
+
 class AttachmentList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
@@ -31,10 +49,6 @@ class AttachmentList extends React.PureComponent { // eslint-disable-line react/
 
     // set necessary bindings
     this.onFileUpload = this.onFileUpload.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.loadAttachments();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -54,29 +68,14 @@ class AttachmentList extends React.PureComponent { // eslint-disable-line react/
   }
 
   render() {
-    const FileInput = (props) => (
-      <input
-        type="file"
-        onChange={this.onFileUpload}
-        className={props.className}
-      />
-    );
-
-    const StyledFileInput = styled(FileInput)`
-      opacity: 0;
-      z-index: 1;
-      width: 100px;
-      margin-left: 10px;
-      display: inline-block;
-      position: absolute;
-      height: 120px;
-    `;
-
     const FileButton = (props) => (
       <Button className={props.className}>
         <FormattedMessage {...messages.clickToUpload} />
       </Button>
     );
+
+    const { attachments, storeAttachmentError } = this.props;
+
     const StyledFileButton = styled(FileButton)`
       width: 100px;
       margin: 10px;
@@ -87,20 +86,15 @@ class AttachmentList extends React.PureComponent { // eslint-disable-line react/
       // no style for now
     `;
 
-    const { attachments, loadAttachmentsError, storeAttachmentError } = this.props;
-
     return (
       <div>
-        {loadAttachmentsError && <Label>
-          <FormattedMessage {...messages.loadAttachmentsError} />
-        </Label>}
         {storeAttachmentError && <Label>
           <FormattedMessage {...messages.storeAttachmentError} />
         </Label>}
         <Row>
           <AttachmentsStyled attachments={attachments} />
           <Column large={3}>
-            <StyledFileInput />
+            <StyledFileInput onFileUpload={this.onFileUpload} />
             <StyledFileButton />
           </Column>
         </Row>
@@ -110,15 +104,18 @@ class AttachmentList extends React.PureComponent { // eslint-disable-line react/
 }
 
 AttachmentList.propTypes = {
-  loadAttachments: PropTypes.func.isRequired,
-  storeAttachment: PropTypes.func.isRequired,
   attachments: PropTypes.any.isRequired,
-  loadAttachmentsError: PropTypes.bool.isRequired,
+  storeAttachment: PropTypes.func.isRequired,
   storeAttachmentError: PropTypes.bool.isRequired,
 };
 
 Attachments.propTypes = {
   attachments: PropTypes.any.isRequired,
+};
+
+FileInput.propTypes = {
+  onFileUpload: PropTypes.func.isRequired,
+  className: PropTypes.string,
 };
 
 export default AttachmentList;

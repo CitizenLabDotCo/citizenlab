@@ -15,8 +15,9 @@ import IdeaTitle from './IdeaTitle';
 
 export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
+    const { className, loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
     const { shortTitleError, longTitleError, titleLength } = this.props;
+    const { storeDraftCopy, loadExistingDraft, content, attachments, images } = this.props;
 
     return (
       <div>
@@ -35,11 +36,11 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
           length={titleLength}
         />
 
-        <div className={this.props.className}>
+        <div className={className}>
           <IdeaEditor
-            onEditorChange={this.props.storeDraftCopy}
-            loadDraft={this.props.loadExistingDraft}
-            {...this.props}
+            onEditorChange={storeDraftCopy}
+            loadDraft={loadExistingDraft}
+            content={content}
           />
         </div>
       </div>
@@ -62,6 +63,7 @@ IdeaEditorWrapper.propTypes = {
   longTitleError: PropTypes.bool.isRequired,
   titleLength: PropTypes.number.isRequired,
   setTitle: PropTypes.func.isRequired,
+  content: PropTypes.string,
 };
 
 export default styled(IdeaEditorWrapper)`
