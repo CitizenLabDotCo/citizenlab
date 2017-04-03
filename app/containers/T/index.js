@@ -1,6 +1,7 @@
 /*
  *
  * T
+ * https://github.com/CitizenLabDotCo/cl2-front/wiki/docs_T
  *
  */
 
