@@ -15,8 +15,8 @@ export default defineMessages({
     defaultMessage: 'First Name',
   },
   last_name: {
-      id: 'app.containers.UsersEditPage.last_name',
-      defaultMessage: 'Last Name',
+    id: 'app.containers.UsersEditPage.last_name',
+    defaultMessage: 'Last Name',
   },
   email: {
     id: 'app.containers.UsersEditPage.email',

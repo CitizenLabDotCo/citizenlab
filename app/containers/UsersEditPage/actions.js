@@ -33,7 +33,6 @@ export function currentUserLoadError() {
 }
 
 export function updateCurrentUser(currentUser) {
-  console.log(currentUser);
   return {
     type: STORE_CURRENT_USER,
     payload: currentUser,
@@ -54,7 +53,7 @@ export function currentUserUpdated(currentUser) {
         : CURRENT_USER_STORE_ERROR),
     payload: validResponse && currentUser.data.attributes,
     userId: currentUser.data.id,
-};
+  };
 }
 
 export function storeCurrentUserError() {

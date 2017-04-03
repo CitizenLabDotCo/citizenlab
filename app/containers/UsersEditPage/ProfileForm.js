@@ -9,9 +9,9 @@ import Avatar from './Avatar';
 
 const LabelInputPair = (props) => (
   <div>
-    {!props.hidden && <label htmlFor={props.id}>
-       <FormattedMessage {...messages[props.id]} />
-    </label>}
+    {!props.hidden && <Label htmlFor={props.id}>
+      <FormattedMessage {...messages[props.id]} />
+    </Label>}
     <FormInput id={props.id} hidden={props.hidden} />
   </div>
 );
@@ -57,8 +57,8 @@ export default class ProfileForm extends React.PureComponent {
           </Column>
         </Row>
         <button type="submit">Submit</button>
-        <LabelInputPair id="avatar" hidden={true} />
-        <LabelInputPair id="userId" hidden={true} />
+        <LabelInputPair id="avatar" hidden />
+        <LabelInputPair id="userId" hidden />
       </LocalForm>
     );
   }
@@ -67,6 +67,6 @@ export default class ProfileForm extends React.PureComponent {
 ProfileForm.propTypes = {
   onFormSubmit: PropTypes.func.isRequired,
   avatarUpload: PropTypes.func.isRequired,
-  avatarURL: PropTypes.string,
+  userData: PropTypes.object.isRequired,
   avatarUploadError: PropTypes.bool.isRequired,
 };

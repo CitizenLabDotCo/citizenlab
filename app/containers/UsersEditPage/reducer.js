@@ -7,7 +7,7 @@
 import { fromJS } from 'immutable';
 import {
   STORE_AVATAR, CURRENT_USER_LOAD_SUCCESS, CURRENT_USER_LOAD_ERROR, STORE_CURRENT_USER, CURRENT_USER_STORE_SUCCESS,
-  CURRENT_USER_STORE_ERROR, AVATAR_STORE_ERROR, STORE_USER_ID,
+  CURRENT_USER_STORE_ERROR, AVATAR_STORE_ERROR,
 } from './constants';
 import { LOAD_CURRENT_USER } from '../App/constants';
 
@@ -61,10 +61,9 @@ export default function usersEditPageReducer(state = usersEditPageInitialState, 
         .set('processing', false)
         .set('storeError', true);
     case STORE_AVATAR:
-      const currentUserWithAvatar = fromJS(state.get('currentUser')).set('avatar', action.avatarBase64);
       return state
         .set('avatarUploadError', false)
-        .set('currentUser', currentUserWithAvatar.toJS());
+        .set('currentUser', fromJS(state.get('currentUser')).set('avatar', action.avatarBase64).toJS());
     case AVATAR_STORE_ERROR:
       return state
         .set('avatarUploadError', true);
