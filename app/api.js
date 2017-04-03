@@ -33,6 +33,12 @@ export function createUser(values) {
   });
 }
 
+export function createIdea(values) {
+  return request(`${API_PATH}/ideas`, { idea: values }, {
+    method: 'POST',
+  });
+}
+
 export function fetchIdeas() {
   return request(`${API_PATH}/ideas`);
 }

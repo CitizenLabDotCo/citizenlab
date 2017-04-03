@@ -77,6 +77,11 @@ const makeSelectStoreImageError = () => createSelector(
   (submitIdeaState) => submitIdeaState.getIn(['draft', 'storeImageError'])
 );
 
+const makeSelectTitle = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'title'])
+);
+
 export {
   makeSelectLoading,
   makeSelectLoadError,
@@ -93,4 +98,5 @@ export {
   makeSelectStoreAttachmentError,
   makeSelectImages,
   makeSelectStoreImageError,
+  makeSelectTitle,
 };

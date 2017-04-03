@@ -13,22 +13,26 @@ export default class IdeaEditor extends React.PureComponent {
       editorState: EditorState.createEmpty(),
       initialStateSet: false,
     };
+
+    // set bindings
+    this.onEditorStateChange.bind(this);
   }
 
   componentDidMount() {
     this.props.loadDraft();
   }
 
+  // eslint-disable-next-line react/sort-comp
+  onEditorStateChange = (editorState) => {
+    this.setState({
+      editorState,
+    });
+
+    // store temp draft
+    this.props.onEditorChange(convertToRaw(editorState.getCurrentContent()));
+  };
+
   componentWillReceiveProps(nextProps) {
-    this.onEditorStateChange = (editorState) => {
-      this.setState({
-        editorState,
-      });
-
-      // store temp draft
-      this.props.onEditorChange(convertToRaw(editorState.getCurrentContent()));
-    };
-
     // load eventually existing draft
     const nextState = getEditorState(nextProps.content, this.state.editorState, this.state.initialStateSet);
     if (nextState) {

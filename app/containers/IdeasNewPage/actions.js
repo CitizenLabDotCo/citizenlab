@@ -5,8 +5,7 @@
  */
 import {
   STORE_DRAFT_SUCCESS, STORE_DRAFT, STORE_DRAFT_ERROR, LOAD_DRAFT, LOAD_DRAFT_SUCCESS, LOAD_DRAFT_ERROR,
-  SAVE_DRAFT, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS, STORE_IDEA, SET_TITLE, STORE_ATTACHMENT, STORE_IMAGE,
-  STORE_ATTACHMENT_SUCCESS, STORE_ATTACHMENT_ERROR, STORE_IMAGE_SUCCESS, STORE_IMAGE_ERROR,
+  SAVE_DRAFT, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS, STORE_IDEA, SET_TITLE, STORE_ATTACHMENT, STORE_IMAGE, STORE_ATTACHMENT_ERROR, STORE_IMAGE_ERROR,
 } from './constants';
 
 /*
@@ -62,23 +61,24 @@ export function saveDraft(content) {
   };
 }
 
-export function storeIdea(contentMultiloc, titleMultiloc, images, attachments) {
+export function publishIdea(contents, titles, images, attachments, userId) {
   return {
     type: STORE_IDEA,
-    idea: contentMultiloc,
-    title: titleMultiloc,
+    contents,
+    titles,
     images,
     attachments,
+    userId,
   };
 }
 
-export function ideaStored() {
+export function ideaPublished() {
   return {
     type: STORE_IDEA_SUCCESS,
   };
 }
 
-export function storeIdeaError() {
+export function publishIdeaError() {
   return {
     type: STORE_IDEA_ERROR,
   };

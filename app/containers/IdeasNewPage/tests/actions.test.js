@@ -1,5 +1,5 @@
 import {
-  attachmentsLoaded, attachmentStored, draftLoaded, storeImage, loadAttachmentsError, loadDraftError,
+  draftLoaded, loadDraftError, storeAttachment, storeAttachmentError, storeImage, storeImageError,
 } from '../actions';
 
 describe('actions', () => {
@@ -8,11 +8,11 @@ describe('actions', () => {
   });
 
   it('storeAttachment should return storeAttachmentError().type if file is undefined', () => {
-    expect(attachmentStored(undefined)).toEqual(storeAttachmentError());
+    expect(storeAttachment(undefined)).toEqual(storeAttachmentError());
   });
 
   it('storeImage should return storeImageError().type if file is undefined', () => {
-    expect(imageStored(undefined)).toEqual(storeImageError());
+    expect(storeImage(undefined)).toEqual(storeImageError());
   });
 });
 

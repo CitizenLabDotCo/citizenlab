@@ -227,7 +227,7 @@
     "motion-ui": "^1.2.2",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
-    "react-draft-wysiwyg": "^1.7.8",
+    "react-draft-wysiwyg": "^1.9.0",
     "react-dropzone": "^3.12.2",
     "react-helmet": "3.2.2",
     "react-intl": "2.2.3",

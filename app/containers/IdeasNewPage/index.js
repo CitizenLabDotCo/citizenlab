@@ -14,10 +14,13 @@ import Breadcrumbs from 'components/Breadcrumbs';
 import draftToHtml from 'draftjs-to-html';
 import { FormattedMessage } from 'react-intl';
 import {
-  makeSelectStored, makeSelectContent, makeSelectLoadError, makeSelectLoading, makeSelectStoreError, makeSelectSubmitError, makeSelectSubmitted, makeSelectSubmitting, makeSelectShortTitleError, makeSelectLongTitleError, makeSelectTitleLength, makeSelectAttachments, makeSelectStoreAttachmentError, makeSelectImages, makeSelectStoreImageError,
+  makeSelectStored, makeSelectContent, makeSelectLoadError, makeSelectLoading, makeSelectStoreError,
+  makeSelectSubmitError, makeSelectSubmitted, makeSelectSubmitting, makeSelectShortTitleError, makeSelectLongTitleError,
+  makeSelectTitleLength, makeSelectAttachments, makeSelectStoreAttachmentError, makeSelectImages,
+  makeSelectStoreImageError, makeSelectTitle,
 } from './selectors';
 import {
-  saveDraft, storeIdea, setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
+  saveDraft, publishIdea, setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
 } from './actions';
 import IdeaEditorWrapper from './IdeaEditorWrapper';
 import messages from './messages';
@@ -26,6 +29,7 @@ import ImageList from './ImageList';
 import canPublish from './canPublish';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectSetting } from '../../utils/tenant/selectors';
+import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -41,9 +45,9 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
   }
 
   storeIdea() {
-    const { content, shortTitleError, longTitleError, title, images, attachments } = this.props;
+    const { content, shortTitleError, longTitleError, title, images, attachments, user, locale, locales } = this.props;
 
-    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments);
+    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments, user && user.id, locale, locales);
   }
 
   render() {
@@ -140,6 +144,10 @@ IdeasNewPage.propTypes = {
   storeImage: PropTypes.func.isRequired,
   images: PropTypes.any.isRequired,
   storeImageError: PropTypes.bool.isRequired,
+  user: PropTypes.object,
+  title: PropTypes.string.isRequired,
+  locale: PropTypes.string.isRequired,
+  locales: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -158,8 +166,10 @@ const mapStateToProps = createStructuredSelector({
   storeAttachmentError: makeSelectStoreAttachmentError(),
   images: makeSelectImages(),
   storeImageError: makeSelectStoreImageError(),
-  userLocale: makeSelectLocale(),
-  tenantLocales: makeSelectSetting(['core', 'locales']),
+  locale: makeSelectLocale(),
+  locales: makeSelectSetting(['core', 'locales']),
+  user: makeSelectCurrentUser(),
+  title: makeSelectTitle(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -171,22 +181,27 @@ export function mapDispatchToProps(dispatch) {
       dispatch(saveDraft(htmlContent));
     },
     saveDraftClick() {
-      alert('not available yet!');
+      // TODO
     },
     loadExistingDraft() {
       // TODO #later: uncomment to allow editing existing draft
       // dispatch(loadDraft());
     },
-    storeIdea(content, title, images, attachments) {
-      // convert to HTML
-      const htmlContent = draftToHtml(content);
+    publishIdeaClick(content, titleError, title, images, attachments, userId, locale, locales) {
+      const contentNotNull = content || '<p></p>';
 
-      dispatch(storeIdea(htmlContent, title, images, attachments));
-    },
-    publishIdeaClick(content, titleError, title, images, attachments) {
-      if (canPublish(content, titleError)) {
-        // content is already in HTML format
-        dispatch(storeIdea(content, title, images, attachments));
+      if (canPublish(contentNotNull, titleError)) {
+        // inject strings for current locale as a mutiloc object
+        const htmlContents = {};
+        const titles = {};
+        for (let i = 0; i < locales.length; i += 1) {
+          if (locales[i] === locale) {
+            htmlContents[locales[i]] = contentNotNull;
+            titles[locales[i]] = title;
+          }
+        }
+
+        dispatch(publishIdea(htmlContents, titles, images, attachments, userId));
       }
     },
     setTitle(e) {

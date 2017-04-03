@@ -17,7 +17,7 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
   render() {
     const { className, loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
     const { shortTitleError, longTitleError, titleLength } = this.props;
-    const { storeDraftCopy, loadExistingDraft, content, attachments, images } = this.props;
+    const { storeDraftCopy, loadExistingDraft, content } = this.props;
 
     return (
       <div>
