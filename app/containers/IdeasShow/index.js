@@ -7,11 +7,12 @@
 import React, { PropTypes } from 'react';
 // import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
+import T from 'containers/T';
 // import { createStructuredSelector } from 'reselect';
 // import _ from 'lodash';
 // import makeSelectIdeasShow from './selectors';
-import messages from './messages';
+// import messages from './messages';
 
 // NOTE: Let's use unconnected component for now
 export default class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -23,9 +24,9 @@ export default class IdeasShow extends React.PureComponent { // eslint-disable-l
     const { idea } = this.props;
     return (
       <div>
-        <h2>{ idea.attributes.title_multiloc.en }</h2>
+        <h2><T value={idea.attributes.title_multiloc} /></h2>
         <p><strong>Some Author</strong></p>
-        <p>{ idea.attributes.body_multiloc.en }</p>
+        <div dangerouslySetInnerHTML={{ __html: idea.attributes.body_multiloc.en }}></div>
       </div>
     );
   }
@@ -40,10 +41,6 @@ export default class IdeasShow extends React.PureComponent { // eslint-disable-l
             { name: 'description', content: 'Description of IdeasShow' },
           ]}
         />
-        <h1>
-          <FormattedMessage {...messages.header} />
-        </h1>
-
         { idea ? this.ideaHtml() : this.notFounHtml() }
       </div>
     );
