@@ -131,9 +131,9 @@ resource "Ideas" do
 
     post "api/v1/ideas" do
       with_options scope: :idea do
-        parameter :lab_id, "The idea of the lab that hosts the idea", required: true, extra: ""
+        parameter :lab_id, "The idea of the lab that hosts the idea", extra: ""
         parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
-        parameter :publication_status, "Password", required: true, extra: "One of #{Idea::PUBLICATION_STATUSES}"
+        parameter :publication_status, "Password", required: true, extra: "One of #{Idea::PUBLICATION_STATUSES.join(",")}"
         parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
         parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
         parameter :images, "Multipart form encoded images"
@@ -176,10 +176,10 @@ resource "Ideas" do
       end
 
       with_options scope: :idea do
-        parameter :lab_id, "The idea of the lab that hosts the idea", required: true, extra: ""
+        parameter :lab_id, "The idea of the lab that hosts the idea", extra: ""
         parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
-        parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES}.join(', ')}", required: true
-        parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
+        parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES}.join(', ')}"
+        parameter :title_multiloc, "Multi-locale field with the idea title", extra: "Maximum 100 characters"
         parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
         parameter :images, "Base64 encoded images"
         parameter :files, "Multipart form encoded files"

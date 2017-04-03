@@ -122,7 +122,7 @@ table th, table td {
             </thead>
             <tbody>
               <tr>
-                <td class="required">
+                <td>
                     <span class="name">idea[lab_id]</span>
                 </td>
                 <td>
@@ -185,7 +185,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTA5NjY5MjQsInN1YiI6IjYwOGJjZGI4LTJlNzQtNDk3Mi1iMDQ2LTdmZmY0MWE5OTQxYSJ9.F6wuC2955C9m3jjvAd2hjIZtAqRAFz9D7w98mK2KJBk
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTEzMTExODIsInN1YiI6ImJkYzIwMTJkLWM3MjItNDNhNi05ZDVlLTY4ODQ4MmVhZWI3OSJ9.EeIUP-CDcfkDU7BNRlKQLCyKoh2FbrzWWfrpe6sCX6E
 Host: example.org
 Cookie: </pre>
 
@@ -194,7 +194,7 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"idea":{"lab_id":"c5fdbe17-5678-4796-8160-14542a846e29","author_id":"afc02644-07e0-4414-b785-d80f9640884e","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"}}}</pre>
+            <pre class="request body">{"idea":{"lab_id":"a9cb5015-02ab-4eff-ab57-90ef2fa75e6f","author_id":"a8c55a86-c4d1-47be-9cda-cc048ac1cb5b","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"}}}</pre>
 
 
             <h3>Response</h3>
@@ -203,18 +203,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;fefc2778ff48005940c09112a685eafd&quot;
+ETag: W/&quot;5b309584ffa1cbd85b9ca60f0baf6f23&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 3d15988e-c588-4364-9adf-d42f704d63fd
-X-Runtime: 0.027430
+X-Request-Id: f1e82d7a-c6d3-42b5-9611-94adc34c49c2
+X-Runtime: 0.029865
 Vary: Origin
-Content-Length: 746</pre>
+Content-Length: 762</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;1bd991c5-8522-4819-86d6-b6459ea4f769&quot;,
+    &quot;id&quot;: &quot;26b1146a-dc7a-4367-a768-dd3cfb4d13d0&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -243,13 +243,13 @@ Content-Length: 746</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;afc02644-07e0-4414-b785-d80f9640884e&quot;,
+          &quot;id&quot;: &quot;a8c55a86-c4d1-47be-9cda-cc048ac1cb5b&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
       &quot;lab&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;c5fdbe17-5678-4796-8160-14542a846e29&quot;,
+          &quot;id&quot;: &quot;a9cb5015-02ab-4eff-ab57-90ef2fa75e6f&quot;,
           &quot;type&quot;: &quot;labs&quot;
         }
       }
@@ -257,12 +257,12 @@ Content-Length: 746</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;afc02644-07e0-4414-b785-d80f9640884e&quot;,
+      &quot;id&quot;: &quot;a8c55a86-c4d1-47be-9cda-cc048ac1cb5b&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Kaylah&quot;,
-        &quot;last_name&quot;: &quot;Weber&quot;,
-        &quot;slug&quot;: &quot;kaylah-weber&quot;,
+        &quot;first_name&quot;: &quot;Mortimer&quot;,
+        &quot;last_name&quot;: &quot;Stoltenberg&quot;,
+        &quot;slug&quot;: &quot;mortimer-stoltenberg&quot;,
         &quot;avatar&quot;: null
       }
     }

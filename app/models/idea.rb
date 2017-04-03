@@ -13,7 +13,7 @@ class Idea < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
-  validates :lab, presence: true
+  # validates :lab, presence: true
   validates :author, presence: true, unless: :draft?
   validates :author_name, presence: true, unless: :draft?
 
