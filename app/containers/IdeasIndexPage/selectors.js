@@ -30,9 +30,9 @@ const makeSelectIdeas = () => createSelector(
   }
 );
 
-const makeSelectNextPageLink = () => createSelector(
+const makeSelectNextPageNumber = () => createSelector(
   selectIdeasIndexPageDomain(),
-  (pageState) => pageState.get('nextPageLink')
+  (pageState) => pageState.get('nextPageNumber')
 );
 
 const makeSelectLoading = () => createSelector(
@@ -44,6 +44,6 @@ const makeSelectLoading = () => createSelector(
 export {
   selectIdeasIndexPageDomain,
   makeSelectIdeas,
-  makeSelectNextPageLink,
+  makeSelectNextPageNumber,
   makeSelectLoading,
 };

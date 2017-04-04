@@ -13,7 +13,7 @@ import _ from 'lodash';
 import IdeaCard from 'components/IdeaCard';
 import { Row, Column, Button, Label } from 'components/Foundation';
 import styled from 'styled-components';
-import { makeSelectIdeas, makeSelectLoading, makeSelectNextPageLink } from './selectors';
+import { makeSelectIdeas, makeSelectLoading, makeSelectNextPageNumber } from './selectors';
 import { loadIdeas } from './actions';
 import messages from './messages';
 
@@ -30,7 +30,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   }
 
   goToNextPage() {
-    this.props.loadNextPage(this.props.nextPageLink);
+    this.props.loadNextPage(this.props.nextPageNumber);
   }
 
   showPageHtml() {
@@ -40,7 +40,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   }
 
   indexPageHtml() {
-    const { ideas, nextPageLink, loading } = this.props;
+    const { ideas, nextPageNumber, loading } = this.props;
 
     const WrapperDiv = (props) => (
       <div
@@ -77,7 +77,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
         </Row>
         {/* eslint-disable-next-line jsx-ally/no-static-element-interactions */}
         <CenteredDiv onClick={this.goToNextPage}>
-          {(nextPageLink && !loading) && <Button>
+          {(nextPageNumber && !loading) && <Button>
             <FormattedMessage
               {...messages.loadMore}
             />
@@ -107,13 +107,13 @@ IdeasIndexPage.propTypes = {
   router: PropTypes.object,
   initData: PropTypes.func.isRequired,
   loadNextPage: PropTypes.func.isRequired,
-  nextPageLink: PropTypes.string,
+  nextPageNumber: PropTypes.number,
   loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   ideas: makeSelectIdeas(),
-  nextPageLink: makeSelectNextPageLink(),
+  nextPageNumber: makeSelectNextPageNumber(),
   loading: makeSelectLoading(),
 });
 
@@ -122,8 +122,8 @@ function mapDispatchToProps(dispatch) {
     initData: () => {
       dispatch(loadIdeas());
     },
-    loadNextPage: (nextPageLink) => {
-      dispatch(loadIdeas(nextPageLink));
+    loadNextPage: (nextPageNumber) => {
+      dispatch(loadIdeas(nextPageNumber));
     },
   };
 }

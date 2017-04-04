@@ -24,9 +24,9 @@ export function ideasLoadingError(errorMessage) {
   };
 }
 
-export function loadIdeas(url) {
+export function loadIdeas(nextPageNumber) {
   return {
     type: LOAD_IDEAS_REQUEST,
-    url,
+    nextPageNumber,
   };
 }

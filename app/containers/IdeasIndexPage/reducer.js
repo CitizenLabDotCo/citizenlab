@@ -10,7 +10,7 @@ import {
 } from './constants';
 
 const initialState = fromJS({
-  nextPageLink: null,
+  nextPageNumber: null,
   ideas: [],
   loading: false,
 });
@@ -22,9 +22,15 @@ function ideasIndexPageReducer(state = initialState, action) {
         .set('loading', true);
     case IDEAS_LOADED: {
       const ids = action.payload.data.map((idea) => idea.id);
+      const nextPageLink = decodeURI(action.payload.links.next);
+      console.log(nextPageLink.substr(nextPageLink.indexOf('page[number]=') + 13, 1));
+
       return state
         .set('ideas', fromJS(state.get('ideas')).concat(ids))
-        .set('nextPageLink', action.payload.links.next)
+        .set('nextPageNumber', nextPageLink
+          ? parseInt(nextPageLink.substr(nextPageLink.indexOf('page[number]=') + 13, 1))
+          : null
+        )
         .set('loading', false);
     }
     default:
