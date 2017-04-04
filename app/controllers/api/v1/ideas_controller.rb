@@ -6,7 +6,9 @@ class Api::V1::IdeasController < ApplicationController
   before_action :set_idea, only: [:show, :update, :destroy]
 
   def index
-    @ideas = policy_scope(Idea).includes(:author).page(params[:page])
+    @ideas = policy_scope(Idea).includes(:author)
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
 
     @ideas = @ideas.with_all_topics(params[:topics]) if params[:topics].present?
     @ideas = @ideas.with_all_areas(params[:areas]) if params[:areas].present?

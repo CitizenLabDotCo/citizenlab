@@ -3,6 +3,8 @@ class Api::V1::TopicsController < ApplicationController
 
    def index
      @topics = policy_scope(Topic).page(params[:page])
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
      render json: @topics
    end
 
