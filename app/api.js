@@ -33,8 +33,8 @@ export function createUser(values) {
   });
 }
 
-export function fetchIdeas() {
-  return request(`${API_PATH}/ideas`);
+export function fetchIdeas(url) {
+  return request(url || `${API_PATH}/ideas`);
 }
 
 export function fetchCurrentUser() {

@@ -5,7 +5,7 @@
  */
 
 import {
-  LOAD_IDEAS,
+  LOAD_IDEAS_REQUEST,
   IDEAS_LOADED,
   IDEAS_LOADING_ERROR,
 } from './constants';
@@ -24,8 +24,9 @@ export function ideasLoadingError(errorMessage) {
   };
 }
 
-export function loadIdeas() {
+export function loadIdeas(url) {
   return {
-    type: LOAD_IDEAS,
+    type: LOAD_IDEAS_REQUEST,
+    url,
   };
 }

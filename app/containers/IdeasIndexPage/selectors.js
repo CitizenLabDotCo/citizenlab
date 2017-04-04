@@ -30,8 +30,20 @@ const makeSelectIdeas = () => createSelector(
   }
 );
 
+const makeSelectNextPageLink = () => createSelector(
+  selectIdeasIndexPageDomain(),
+  (pageState) => pageState.get('nextPageLink')
+);
+
+const makeSelectLoading = () => createSelector(
+  selectIdeasIndexPageDomain(),
+  (submitIdeaState) => submitIdeaState.get('loading')
+);
+
 // export default makeSelectIdeasIndexPage;
 export {
   selectIdeasIndexPageDomain,
   makeSelectIdeas,
+  makeSelectNextPageLink,
+  makeSelectLoading,
 };
