@@ -2,8 +2,8 @@ class Idea < ApplicationRecord
   mount_uploaders :images, IdeaImageUploader
   mount_uploaders :files, IdeaFileUploader
 
-  belongs_to :lab
-  belongs_to :author, class_name: 'User'
+  belongs_to :lab, optional: true
+  belongs_to :author, class_name: 'User', optional: true
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, through: :ideas_topics
   has_many :areas_ideas, dependent: :destroy
@@ -13,7 +13,6 @@ class Idea < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
-  # validates :lab, presence: true
   validates :author, presence: true, unless: :draft?
   validates :author_name, presence: true, unless: :draft?
 
