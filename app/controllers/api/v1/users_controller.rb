@@ -5,6 +5,8 @@ class Api::V1::UsersController < ::ApplicationController
   def index
     authorize User, :index?
     @users = policy_scope(User).page(params[:page])
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
     render json: @users
   end
 

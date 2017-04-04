@@ -3,6 +3,8 @@ class Api::V1::AreasController < ApplicationController
 
   def index
     @areas = policy_scope(Area).page(params[:page])
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
     render json: @areas
   end
 
