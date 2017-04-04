@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
-import { TopBar, TopBarTitle, TopBarLeft, TopBarRight } from 'components/Foundation/src/components/top-bar';
-import { Menu, MenuItem } from 'components/Foundation/src/components/menu';
+import { TopBar, TopBarTitle, TopBarLeft, TopBarRight, Menu, MenuItem } from 'components/Foundation';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import messages from './messages';
