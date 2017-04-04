@@ -14,19 +14,23 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
     ];
   }
 
+/* eslint-disable */
   userMenu(currentUser) {
     return (
       <MenuItem>
-        <Menu isDropdown>
-          <MenuItem>{currentUser.attributes.first_name}</MenuItem>
-          <Menu isVertical>
-            <MenuItem><Link to="/profile/edit"><FormattedMessage {...messages.editProfile} /></Link></MenuItem>
-            <MenuItem><Link>Sign out</Link></MenuItem>
-          </Menu>
+        <Menu isDropdown={true}>
+          <MenuItem>
+            <a href="#">{currentUser.attributes.name}</a>
+            <Menu>
+              <MenuItem><Link to="/profile/edit"><FormattedMessage {...messages.editProfile} /></Link></MenuItem>
+              <MenuItem><Link>Sign out</Link></MenuItem>
+            </Menu>
+          </MenuItem>
         </Menu>
       </MenuItem>
     );
   }
+/* eslint-enable */
 
   render() {
     const { formatMessage } = this.props.intl;
