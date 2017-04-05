@@ -1,23 +1,23 @@
 import React, { PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
-import { Label, Button } from 'components/Foundation';
+import { Button, Label } from 'components/Foundation';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
 import messages from './messages';
 
-export function dropzoneImage(avatarBase64) {
+export function dropzoneImage(avatarURL) {
   const style = {
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-    backgroundImage: `url('${avatarBase64}')`,
+    backgroundImage: `url('${avatarURL}')`,
     backgroundSize: '100%',
     width: '100px',
     height: '100px',
   };
 
   return (
-    avatarBase64
+    avatarURL
       ? (<img
         role="presentation"
         style={style}
@@ -57,7 +57,7 @@ class Avatar extends React.PureComponent {
   }
 
   render() {
-    const { avatarBase64, avatarLoadError, avatarStoreError } = this.props;
+    const { avatarURL, avatarUploadError } = this.props;
 
     const FileInput = (props) => (
       <input
@@ -94,7 +94,7 @@ class Avatar extends React.PureComponent {
           accept="image/*"
           multiple={false}
         >
-          { dropzoneImage(avatarBase64) }
+          { dropzoneImage(avatarURL) }
         </Dropzone>
         <div>
           <FormattedMessage {...messages.dragToUpload} /> or
@@ -104,11 +104,8 @@ class Avatar extends React.PureComponent {
           </span>
         </div>
 
-        {avatarLoadError && <Label>
-          <FormattedMessage {...messages.avatarLoadError} />
-        </Label>}
-        {avatarStoreError && <Label>
-          <FormattedMessage {...messages.avatarStoreError} />
+        {avatarUploadError && <Label>
+          <FormattedMessage {...messages.avatarUploadError} />
         </Label>}
       </div>
     );
@@ -117,9 +114,8 @@ class Avatar extends React.PureComponent {
 
 Avatar.propTypes = {
   onAvatarUpload: PropTypes.func.isRequired,
-  avatarBase64: PropTypes.string,
-  avatarLoadError: PropTypes.bool.isRequired,
-  avatarStoreError: PropTypes.bool.isRequired,
+  avatarURL: PropTypes.string,
+  avatarUploadError: PropTypes.bool.isRequired,
 };
 
 export default Avatar;

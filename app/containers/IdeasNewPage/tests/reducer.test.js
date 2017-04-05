@@ -108,7 +108,7 @@ describe('ideasNewPageReducer', () => {
     expect(nextState.draft.attachments).toEqual(expectedState.draft.attachments);
   });
 
-  it('should returns existing images on imageStored success', () => {
+  it('should returns existing images on imageStored action', () => {
     const images = ['1'];
     const expectedState = initialState;
     expectedState.draft.images = images;

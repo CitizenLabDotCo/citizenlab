@@ -5,86 +5,72 @@
  */
 
 import {
-  LOAD_PROFILE, PROFILE_LOAD_SUCCESS, PROFILE_LOAD_ERROR,
-  STORE_PROFILE, PROFILE_STORE_SUCCESS, PROFILE_STORE_ERROR, STORE_AVATAR, AVATAR_STORE_SUCCESS, AVATAR_LOAD_SUCCESS,
-  AVATAR_LOAD_ERROR, AVATAR_STORE_ERROR, LOAD_AVATAR,
+  CURRENT_USER_LOAD_SUCCESS, CURRENT_USER_LOAD_ERROR, STORE_AVATAR, CURRENT_USER_STORE_SUCCESS,
+  CURRENT_USER_STORE_ERROR, STORE_CURRENT_USER, AVATAR_STORE_ERROR,
 } from './constants';
 
-export function loadProfile() {
+export function currentUserLoaded(currentUser) {
+  const validResponse = currentUser && currentUser.data;
+  const currentUserWithAvatar = currentUser;
+
+  if (validResponse && !currentUserWithAvatar.data.attributes.avatar) {
+    currentUserWithAvatar.data.attributes.avatar = '';
+  }
+
   return {
-    type: LOAD_PROFILE,
+    type: (currentUser && currentUser.data
+      ? CURRENT_USER_LOAD_SUCCESS
+      : CURRENT_USER_LOAD_ERROR),
+    payload: validResponse && currentUser.data.attributes,
+    userId: currentUser.data.id,
   };
 }
 
-export function profileLoaded(profile) {
+export function currentUserLoadError() {
   return {
-    type: (profile ? PROFILE_LOAD_SUCCESS : PROFILE_LOAD_ERROR),
-    ...{ profile },
+    type: CURRENT_USER_LOAD_ERROR,
   };
 }
 
-export function profileLoadError() {
+export function updateCurrentUser(currentUser) {
   return {
-    type: PROFILE_LOAD_ERROR,
+    type: STORE_CURRENT_USER,
+    payload: currentUser,
   };
 }
 
-export function storeProfile(values) {
+export function currentUserUpdated(currentUser) {
+  const validResponse = currentUser && currentUser.data;
+  const currentUserWithAvatar = currentUser;
+
+  if (validResponse && !currentUserWithAvatar.data.attributes.avatar) {
+    currentUserWithAvatar.data.attributes.avatar = '';
+  }
+
   return {
-    type: STORE_PROFILE,
-    userData: values,
+    type: (validResponse
+        ? CURRENT_USER_STORE_SUCCESS
+        : CURRENT_USER_STORE_ERROR),
+    payload: validResponse && currentUser.data.attributes,
+    userId: currentUser.data.id,
   };
 }
 
-export function profileStored(profile) {
+export function storeCurrentUserError() {
   return {
-    type: (profile ? PROFILE_STORE_SUCCESS : PROFILE_STORE_ERROR),
-    ...{ profile },
+    type: CURRENT_USER_STORE_ERROR,
   };
 }
 
-export function storeProfileError(profile) {
-  return {
-    type: PROFILE_STORE_ERROR,
-    ...{ profile },
-  };
-}
-
-export function storeAvatar(avatar) {
+export function storeAvatar(avatarBase64) {
   return {
     type: STORE_AVATAR,
-    avatar,
+    avatarBase64,
   };
 }
 
-export function avatarStored(avatar) {
-  return {
-    type: (avatar ? AVATAR_STORE_SUCCESS : AVATAR_STORE_ERROR),
-    avatar,
-  };
-}
-
-export function storeAvatarError() {
+export function avatarStoreError() {
   return {
     type: AVATAR_STORE_ERROR,
-  };
-}
-
-export function loadAvatar() {
-  return {
-    type: LOAD_AVATAR,
-  };
-}
-
-export function avatarLoaded(avatar) {
-  return {
-    type: (avatar ? AVATAR_LOAD_SUCCESS : AVATAR_LOAD_ERROR),
-    avatar,
-  };
-}
-
-export function loadAvatarError() {
-  return {
-    type: AVATAR_LOAD_ERROR,
   };
 }

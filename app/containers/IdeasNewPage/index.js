@@ -14,23 +14,22 @@ import Breadcrumbs from 'components/Breadcrumbs';
 import draftToHtml from 'draftjs-to-html';
 import { FormattedMessage } from 'react-intl';
 import {
-  makeSelectStored,
-  makeSelectContent,
-  makeSelectLoadError,
-  makeSelectLoading,
-  makeSelectStoreError, makeSelectSubmitError, makeSelectSubmitted, makeSelectSubmitting,
-  makeSelectShortTitleError, makeSelectLongTitleError, makeSelectTitleLength, makeSelectAttachments,
-  makeSelectLoadAttachmentsError, makeSelectStoreAttachmentError, makeSelectImages, makeSelectLoadImagesError,
-  makeSelectStoreImageError,
+  makeSelectStored, makeSelectContent, makeSelectLoadError, makeSelectLoading, makeSelectStoreError,
+  makeSelectSubmitError, makeSelectSubmitted, makeSelectSubmitting, makeSelectShortTitleError, makeSelectLongTitleError,
+  makeSelectTitleLength, makeSelectAttachments, makeSelectStoreAttachmentError, makeSelectImages,
+  makeSelectStoreImageError, makeSelectTitle,
 } from './selectors';
 import {
-  storeDraft, loadDraft, saveDraft, storeIdea, setTitle, loadAttachments,
-  storeAttachmentError, storeAttachment, storeImage, storeImageError, loadImages,
+  saveDraft, publishIdea, setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
 } from './actions';
 import IdeaEditorWrapper from './IdeaEditorWrapper';
 import messages from './messages';
 import AttachmentList from './AttachmentList';
 import ImageList from './ImageList';
+import canPublish from './canPublish';
+import { makeSelectLocale } from '../LanguageProvider/selectors';
+import { makeSelectSetting } from '../../utils/tenant/selectors';
+import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -46,9 +45,9 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
   }
 
   storeIdea() {
-    const { content, shortTitleError, longTitleError } = this.props;
+    const { content, shortTitleError, longTitleError, title, images, attachments, user, locale, locales } = this.props;
 
-    this.props.publishIdeaClick(content, shortTitleError || longTitleError);
+    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments, user && user.id, locale, locales);
   }
 
   render() {
@@ -72,8 +71,11 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
         margin-left: 10px;
     `;
 
+    // eslint-disable-next-line no-shadow
+    const { className, attachments, storeAttachment, storeAttachmentError, images, storeImage, storeImageError } = this.props;
+
     return (
-      <div className={this.props.className}>
+      <div className={className}>
         <Helmet
           title="IdeasNewPage"
           meta={[
@@ -91,11 +93,9 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
             <Row>
               <StyledLabel>Add image(s)</StyledLabel>
               <ImageList
-                loadImages={this.props.loadImages}
-                storeImage={this.props.storeImage}
-                images={this.props.images}
-                storeImageError={this.props.storeImageError}
-                loadImagesError={this.props.loadImagesError}
+                storeImage={storeImage}
+                images={images}
+                storeImageError={storeImageError}
               />
             </Row>
           </Column>
@@ -119,11 +119,9 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
               <StyledHr />
               <StyledLabel>Attachments</StyledLabel>
               <AttachmentList
-                loadAttachments={this.props.loadAttachments}
-                storeAttachment={this.props.storeAttachment}
-                attachments={this.props.attachments}
-                storeAttachmentError={this.props.storeAttachmentError}
-                loadAttachmentsError={this.props.loadAttachmentsError}
+                storeAttachment={storeAttachment}
+                attachments={attachments}
+                storeAttachmentError={storeAttachmentError}
               />
             </Row>
           </Column>
@@ -140,16 +138,16 @@ IdeasNewPage.propTypes = {
   shortTitleError: PropTypes.bool.isRequired,
   longTitleError: PropTypes.bool.isRequired,
   content: PropTypes.string,
-  loadAttachments: PropTypes.func.isRequired,
   storeAttachment: PropTypes.func.isRequired,
   attachments: PropTypes.any.isRequired,
-  loadAttachmentsError: PropTypes.bool.isRequired,
   storeAttachmentError: PropTypes.bool.isRequired,
-  loadImages: PropTypes.func.isRequired,
   storeImage: PropTypes.func.isRequired,
   images: PropTypes.any.isRequired,
-  loadImagesError: PropTypes.bool.isRequired,
   storeImageError: PropTypes.bool.isRequired,
+  user: PropTypes.object,
+  title: PropTypes.string.isRequired,
+  locale: PropTypes.string.isRequired,
+  locales: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -165,11 +163,13 @@ const mapStateToProps = createStructuredSelector({
   longTitleError: makeSelectLongTitleError(),
   titleLength: makeSelectTitleLength(),
   attachments: makeSelectAttachments(),
-  loadAttachmentsError: makeSelectLoadAttachmentsError(),
   storeAttachmentError: makeSelectStoreAttachmentError(),
   images: makeSelectImages(),
-  loadImagesError: makeSelectLoadImagesError(),
   storeImageError: makeSelectStoreImageError(),
+  locale: makeSelectLocale(),
+  locales: makeSelectSetting(['core', 'locales']),
+  user: makeSelectCurrentUser(),
+  title: makeSelectTitle(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -180,30 +180,32 @@ export function mapDispatchToProps(dispatch) {
 
       dispatch(saveDraft(htmlContent));
     },
-    saveDraftClick(content) {
-      // content is already in HTML format
-      dispatch(storeDraft(content));
+    saveDraftClick() {
+      // TODO
     },
     loadExistingDraft() {
-      dispatch(loadDraft());
+      // TODO #later: uncomment to allow editing existing draft
+      // dispatch(loadDraft());
     },
-    storeIdea(content) {
-      // convert to HTML
-      const htmlContent = draftToHtml(content);
+    publishIdeaClick(content, titleError, title, images, attachments, userId, locale, locales) {
+      const contentNotNull = content || '<p></p>';
 
-      dispatch(storeIdea(htmlContent));
-    },
-    publishIdeaClick(content, titleError) {
-      if (content.trim() !== '<p></p>' && !titleError) {
-        // content is already in HTML format
-        dispatch(storeIdea(content));
+      if (canPublish(contentNotNull, titleError)) {
+        // inject strings for current locale as a mutiloc object
+        const htmlContents = {};
+        const titles = {};
+        for (let i = 0; i < locales.length; i += 1) {
+          if (locales[i] === locale) {
+            htmlContents[locales[i]] = contentNotNull;
+            titles[locales[i]] = title;
+          }
+        }
+
+        dispatch(publishIdea(htmlContents, titles, images, attachments, userId));
       }
     },
     setTitle(e) {
       dispatch(setTitle(e.target.value));
-    },
-    loadAttachments() {
-      dispatch(loadAttachments());
     },
     storeAttachment(file) {
       if (file) {
@@ -211,9 +213,6 @@ export function mapDispatchToProps(dispatch) {
       } else {
         dispatch(storeAttachmentError());
       }
-    },
-    loadImages() {
-      dispatch(loadImages());
     },
     storeImage(file) {
       if (file) {

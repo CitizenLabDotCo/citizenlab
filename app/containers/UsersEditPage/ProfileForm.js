@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { actions, LocalForm } from 'react-redux-form';
 import { FormattedMessage } from 'react-intl';
-import { Row, Column } from 'components/Foundation';
+import { Column, Row, Label } from 'components/Foundation';
 
 import FormInput from '../../components/FormInput/index';
 import messages from './messages';
@@ -9,32 +9,34 @@ import Avatar from './Avatar';
 
 const LabelInputPair = (props) => (
   <div>
-    <label htmlFor={props.id}>
+    {!props.hidden && <Label htmlFor={props.id}>
       <FormattedMessage {...messages[props.id]} />
-    </label>
-    <FormInput id={props.id} />
+    </Label>}
+    <FormInput id={props.id} hidden={props.hidden} />
   </div>
 );
 
 LabelInputPair.propTypes = {
-  id: React.PropTypes.any,
+  id: PropTypes.string.isRequired,
+  hidden: PropTypes.bool,
 };
 
 export default class ProfileForm extends React.PureComponent {
   componentWillReceiveProps(nextProps) {
-    const user = nextProps.user;
+    const user = nextProps.userData;
+
     if (user) {
       // load initial value (unless form being re-rendered)
-      this.localFormDispatch(actions.load('profile', user));
+      this.localFormDispatch(actions.load('user', user));
     }
   }
 
   render() {
-    const { avatarBase64, avatarStoreError, avatarLoadError } = this.props;
+    const { avatarUploadError, avatarUpload, userData } = this.props;
 
     return (
       <LocalForm
-        model="profile"
+        model="user"
         getDispatch={(dispatch) => {
           this.localFormDispatch = dispatch;
         }}
@@ -42,23 +44,21 @@ export default class ProfileForm extends React.PureComponent {
       >
         <Row>
           <Column large={6}>
-            <LabelInputPair id="firstName" />
-            <LabelInputPair id="lastName" />
+            <LabelInputPair id="first_name" />
+            <LabelInputPair id="last_name" />
             <LabelInputPair id="email" />
           </Column>
           <Column large={6}>
             <Avatar
-              onAvatarUpload={this.props.avatarUpload}
-              avatarStoreError={avatarStoreError}
-              avatarLoadError={avatarLoadError}
-              avatarBase64={avatarBase64}
+              onAvatarUpload={avatarUpload}
+              avatarUploadError={avatarUploadError}
+              avatarURL={userData.avatar}
             />
           </Column>
         </Row>
-        <LabelInputPair id="gender" />
-        <LabelInputPair id="age" />
-
         <button type="submit">Submit</button>
+        <LabelInputPair id="avatar" hidden />
+        <LabelInputPair id="userId" hidden />
       </LocalForm>
     );
   }
@@ -67,7 +67,6 @@ export default class ProfileForm extends React.PureComponent {
 ProfileForm.propTypes = {
   onFormSubmit: PropTypes.func.isRequired,
   avatarUpload: PropTypes.func.isRequired,
-  avatarBase64: PropTypes.string,
-  avatarStoreError: PropTypes.bool.isRequired,
-  avatarLoadError: PropTypes.bool.isRequired,
+  userData: PropTypes.object.isRequired,
+  avatarUploadError: PropTypes.bool.isRequired,
 };

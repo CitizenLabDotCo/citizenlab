@@ -3,6 +3,14 @@ import styled from 'styled-components';
 import { Row, Column } from 'components/Foundation';
 import TitleStatus from './TitleStatus';
 
+export const TitleStatusWrapper = (props) => (
+  <TitleStatus
+    short={props.short}
+    long={props.long}
+    length={props.length}
+  />
+);
+
 function IdeaTitle(props) {
   const { className, setTitle, short, long, length } = props;
 
@@ -17,7 +25,7 @@ function IdeaTitle(props) {
           />
         </Column>
         <Column large={3}>
-          <TitleStatus
+          <TitleStatusWrapper
             short={short}
             long={long}
             length={length}
@@ -31,6 +39,12 @@ function IdeaTitle(props) {
 IdeaTitle.propTypes = {
   setTitle: PropTypes.func.isRequired,
   className: PropTypes.string,
+  long: PropTypes.bool.isRequired,
+  short: PropTypes.bool.isRequired,
+  length: PropTypes.number.isRequired,
+};
+
+TitleStatusWrapper.propTypes = {
   long: PropTypes.bool.isRequired,
   short: PropTypes.bool.isRequired,
   length: PropTypes.number.isRequired,

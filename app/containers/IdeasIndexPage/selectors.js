@@ -35,6 +35,11 @@ const makeSelectNextPageNumber = () => createSelector(
   (pageState) => pageState.get('nextPageNumber')
 );
 
+const makeSelectNextPageItemCount = () => createSelector(
+  selectIdeasIndexPageDomain(),
+  (pageState) => pageState.get('nextPageItemCount')
+);
+
 const makeSelectLoading = () => createSelector(
   selectIdeasIndexPageDomain(),
   (submitIdeaState) => submitIdeaState.get('loading')
@@ -46,4 +51,5 @@ export {
   makeSelectIdeas,
   makeSelectNextPageNumber,
   makeSelectLoading,
+  makeSelectNextPageItemCount,
 };

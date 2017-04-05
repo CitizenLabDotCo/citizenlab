@@ -6,7 +6,7 @@
 
 import React, { PropTypes } from 'react';
 import { Control } from 'react-redux-form';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 
 function FormInput(props) {
   const model = '.'.concat(props.id);
@@ -26,4 +26,6 @@ FormInput.propTypes = {
   className: PropTypes.string,
 };
 
-export default FormInput;
+export default styled(FormInput)`
+  visibility: ${(props) => props.hidden ? 'hidden' : 'visible'};
+`;
