@@ -16,16 +16,20 @@ import T from 'containers/T';
 
 // NOTE: Let's use unconnected component for now
 export default class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  componentWillUnmount() {
+    window.clickedFromIndexPage = false;
+  }
+
   notFounHtml() {
     return (<h2>Idea Not Found :/</h2>);
   }
 
-  ideaHtml() {
-    const { idea } = this.props;
+  ideaHtml(idea) {
     return (
       <div>
         <h2><T value={idea.attributes.title_multiloc} /></h2>
         <p><strong>Some Author</strong></p>
+
         <div dangerouslySetInnerHTML={{ __html: idea.attributes.body_multiloc.en }}></div>
       </div>
     );
@@ -41,7 +45,7 @@ export default class IdeasShow extends React.PureComponent { // eslint-disable-l
             { name: 'description', content: 'Description of IdeasShow' },
           ]}
         />
-        { idea ? this.ideaHtml() : this.notFounHtml() }
+        { idea ? this.ideaHtml(idea) : this.notFounHtml() }
       </div>
     );
   }
