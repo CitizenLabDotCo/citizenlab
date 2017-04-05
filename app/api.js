@@ -39,8 +39,12 @@ export function createIdea(values) {
   });
 }
 
-export function fetchIdeas(nextPageNumber) {
-  return request(`${API_PATH}/ideas${nextPageNumber}`);
+export function fetchIdeas(nextPageNumber, nextPageItemCount) {
+  const queryParameters = {
+    'page[number]': nextPageNumber,
+    'page[size]': nextPageItemCount,
+  };
+  return request(`${API_PATH}/ideas`, null, null, queryParameters);
 }
 
 export function fetchCurrentUser() {

@@ -13,7 +13,7 @@ import _ from 'lodash';
 import IdeaCard from 'components/IdeaCard';
 import { Row, Column, Button, Label } from 'components/Foundation';
 import styled from 'styled-components';
-import { makeSelectIdeas, makeSelectLoading, makeSelectNextPageNumber } from './selectors';
+import { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber } from './selectors';
 import { loadIdeas } from './actions';
 import messages from './messages';
 
@@ -30,7 +30,8 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   }
 
   goToNextPage() {
-    this.props.loadNextPage(this.props.nextPageNumber);
+    const { loadNextPage, nextPageNumber, nextPageItemCount } = this.props;
+    loadNextPage(nextPageNumber, nextPageItemCount);
   }
 
   showPageHtml() {
@@ -108,12 +109,14 @@ IdeasIndexPage.propTypes = {
   initData: PropTypes.func.isRequired,
   loadNextPage: PropTypes.func.isRequired,
   nextPageNumber: PropTypes.number,
+  nextPageItemCount: PropTypes.number,
   loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   ideas: makeSelectIdeas(),
   nextPageNumber: makeSelectNextPageNumber(),
+  nextPageItemCount: makeSelectNextPageItemCount(),
   loading: makeSelectLoading(),
 });
 
@@ -122,8 +125,8 @@ function mapDispatchToProps(dispatch) {
     initData: () => {
       dispatch(loadIdeas());
     },
-    loadNextPage: (nextPageNumber) => {
-      dispatch(loadIdeas(nextPageNumber));
+    loadNextPage: (nextPageNumber, nextPageItemCount) => {
+      dispatch(loadIdeas(nextPageNumber, nextPageItemCount));
     },
   };
 }

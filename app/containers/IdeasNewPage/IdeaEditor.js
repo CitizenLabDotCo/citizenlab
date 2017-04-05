@@ -22,16 +22,6 @@ export default class IdeaEditor extends React.PureComponent {
     this.props.loadDraft();
   }
 
-  // eslint-disable-next-line react/sort-comp
-  onEditorStateChange = (editorState) => {
-    this.setState({
-      editorState,
-    });
-
-    // store temp draft
-    this.props.onEditorChange(convertToRaw(editorState.getCurrentContent()));
-  };
-
   componentWillReceiveProps(nextProps) {
     // load eventually existing draft
     const nextState = getEditorState(nextProps.content, this.state.editorState, this.state.initialStateSet);
@@ -43,6 +33,14 @@ export default class IdeaEditor extends React.PureComponent {
     }
   }
 
+  onEditorStateChange = (editorState) => {
+    this.setState({
+      editorState,
+    });
+
+    // store temp draft
+    this.props.onEditorChange(convertToRaw(editorState.getCurrentContent()));
+  };
 
   render() {
     const { editorState } = this.state;

@@ -5,14 +5,8 @@ import { ideasLoaded, ideasLoadingError } from './actions';
 import { fetchIdeas } from '../../api';
 
 export function* getIdeas(action) {
-  let urlParameters = '';
-
-  if (action.nextPageNumber) {
-    urlParameters = `?page%5Bnumber%5D=${action.nextPageNumber}&page%5Bsize%5D=25`;
-  }
-
   try {
-    const ideaResponse = yield call(fetchIdeas, urlParameters); // eslint-disable-line
+    const ideaResponse = yield call(fetchIdeas, action.nextPageNumber, action.nextPageItemCount); // eslint-disable-line
     yield put(mergeJsonApiResources(ideaResponse));
     yield put(ideasLoaded(ideaResponse));
   } catch (err) {

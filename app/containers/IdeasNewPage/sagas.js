@@ -57,7 +57,7 @@ export function* postIdea(action) {
 
   // merge relevant fields to match API request body format
   const requestBody = getIdeaRequestContent(contents, titles, images, attachments, userId, true);
-console.log(requestBody);
+
   try {
     const response = yield call(createIdea, requestBody);
 
