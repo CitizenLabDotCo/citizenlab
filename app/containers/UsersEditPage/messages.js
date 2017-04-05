@@ -10,25 +10,17 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.header',
     defaultMessage: 'Profile',
   },
-  firstName: {
-    id: 'app.containers.UsersEditPage.firstName',
+  first_name: {
+    id: 'app.containers.UsersEditPage.first_name',
     defaultMessage: 'First Name',
   },
-  lastName: {
-    id: 'app.containers.UsersEditPage.lastName',
+  last_name: {
+    id: 'app.containers.UsersEditPage.last_name',
     defaultMessage: 'Last Name',
   },
   email: {
     id: 'app.containers.UsersEditPage.email',
     defaultMessage: 'E-mail',
-  },
-  gender: {
-    id: 'app.containers.UsersEditPage.gender',
-    defaultMessage: 'Gender',
-  },
-  age: {
-    id: 'app.containers.UsersEditPage.age',
-    defaultMessage: 'Age',
   },
   loading: {
     id: 'app.containers.UsersEditPage.loading',
@@ -50,13 +42,9 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.stored',
     defaultMessage: 'Profile stored',
   },
-  avatarLoadError: {
-    id: 'app.containers.UsersEditPage.avatarLoadError',
-    defaultMessage: 'Existing avatar coudln\'t be loaded',
-  },
-  avatarStoreError: {
-    id: 'app.containers.UsersEditPage.avatarStoreError',
-    defaultMessage: 'Can\'t change avatar right now',
+  avatarUploadError: {
+    id: 'app.containers.UsersEditPage.avatarUploadError',
+    defaultMessage: 'Can\'t upload avatar right now',
   },
   dragToUpload: {
     id: 'app.containers.UsersEditPage.dragToUpload',

@@ -6,10 +6,10 @@
 
 import { fromJS } from 'immutable';
 import {
-  LOAD_PROFILE, PROFILE_LOAD_SUCCESS, PROFILE_LOAD_ERROR,
-  STORE_PROFILE, PROFILE_STORE_SUCCESS, PROFILE_STORE_ERROR, STORE_AVATAR, AVATAR_STORE_ERROR, AVATAR_STORE_SUCCESS,
-  LOAD_AVATAR, AVATAR_LOAD_ERROR, AVATAR_LOAD_SUCCESS,
+  STORE_AVATAR, CURRENT_USER_LOAD_SUCCESS, CURRENT_USER_LOAD_ERROR, STORE_CURRENT_USER, CURRENT_USER_STORE_SUCCESS,
+  CURRENT_USER_STORE_ERROR, AVATAR_STORE_ERROR,
 } from './constants';
+import { LOAD_CURRENT_USER } from '../App/constants';
 
 export const usersEditPageInitialState = fromJS({
   loading: false,
@@ -17,61 +17,56 @@ export const usersEditPageInitialState = fromJS({
   storeError: false,
   processing: false,
   stored: false,
-  userData: { },
-  avatarBase64: null,
+  currentUser: { },
   avatarStored: false,
-  avatarLoadError: false,
-  avatarStoreError: false,
+  avatarUploadError: false,
+  avatarURL: '',
 });
 
 export default function usersEditPageReducer(state = usersEditPageInitialState, action) {
+  let currentUserWithId;
+
+  const userId = action.userId;
+  if (userId && action.payload) {
+    currentUserWithId = fromJS(action.payload).set('userId', userId).toJS();
+  }
+
   switch (action.type) {
-    case LOAD_PROFILE:
+    case LOAD_CURRENT_USER:
       return state
         .set('loading', true)
         .set('loadError', false);
-    case PROFILE_LOAD_SUCCESS:
+    case CURRENT_USER_LOAD_SUCCESS:
       return state
-        .set('userData', action.profile)
+        .set('currentUser', currentUserWithId)
         .set('loading', false);
-    case PROFILE_LOAD_ERROR:
+    case CURRENT_USER_LOAD_ERROR:
       return state
         .set('loadError', true)
         .set('loading', false);
-    case STORE_PROFILE:
+    case STORE_CURRENT_USER:
       return state
         .set('stored', false)
         .set('processing', true)
         .set('storeError', false);
-    case PROFILE_STORE_SUCCESS:
+    case CURRENT_USER_STORE_SUCCESS:
       return state
-        .set('userData', action.profile)
+        .set('currentUser', currentUserWithId)
         .set('processing', false)
         .set('stored', true);
-    case PROFILE_STORE_ERROR:
+    case CURRENT_USER_STORE_ERROR:
       return state
-        .set('userData', action.profile)
+        // restore existing currentUserData to keep form state consistency
+        .set('currentUser', state.get('currentUser'))
         .set('processing', false)
         .set('storeError', true);
     case STORE_AVATAR:
       return state
-        .set('avatarLoadError', false)
-        .set('avatarStoreError', false);
+        .set('avatarUploadError', false)
+        .set('currentUser', fromJS(state.get('currentUser')).set('avatar', action.avatarBase64).toJS());
     case AVATAR_STORE_ERROR:
       return state
-        .set('avatarStoreError', true);
-    case AVATAR_STORE_SUCCESS:
-      return state
-        .set('avatarBase64', action.avatar);
-    case LOAD_AVATAR:
-      return state
-        .set('avatarLoadError', false);
-    case AVATAR_LOAD_ERROR:
-      return state
-        .set('avatarLoadError', true);
-    case AVATAR_LOAD_SUCCESS:
-      return state
-        .set('avatarBase64', action.avatar);
+        .set('avatarUploadError', true);
     default:
       return state;
   }

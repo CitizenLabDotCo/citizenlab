@@ -1,6 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`<ProfileForm /> <LabelInputPair /> input's label should render correctly 1`] = `
 <label
-  htmlFor="firstName">
+  htmlFor="first_name"
+>
   <span>
     First Name
   </span>

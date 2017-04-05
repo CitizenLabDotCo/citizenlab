@@ -1,88 +1,46 @@
-import request from 'utils/request';
 import { call, put } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
 
 import {
-  profileLoadError, profileLoaded, profileStored, storeProfileError, avatarStored,
-  storeAvatarError, avatarLoaded, loadAvatarError,
+  currentUserLoadError, currentUserLoaded, currentUserUpdated, storeCurrentUserError,
 } from './actions';
-import { LOAD_AVATAR, LOAD_PROFILE, STORE_AVATAR, STORE_PROFILE } from './constants';
+import { STORE_CURRENT_USER } from './constants';
+import { mergeJsonApiResources } from '../../utils/resources/actions';
+import { fetchCurrentUser, updateCurrentUser } from '../../api';
+import { LOAD_CURRENT_USER } from '../App/constants';
 
 // Individual exports for testing
 export function* getProfile() {
-  const requestURL = 'http://demo9193680.mockable.io/profile-get';
-
   try {
-    const profile = yield call(request, requestURL);
-
-    yield put(profileLoaded(profile));
+    const currentUserResponse = yield call(fetchCurrentUser);
+    yield put(mergeJsonApiResources(currentUserResponse));
+    yield put(currentUserLoaded(currentUserResponse));
   } catch (err) {
-    yield put(profileLoadError(err));
+    yield put(currentUserLoadError(err));
   }
 }
 
 export function* postProfile(action) {
-  const requestURL = 'http://demo9193680.mockable.io/profile-post';
-
   try {
-    yield call(request, requestURL, {
-      method: 'POST',
-      body: JSON.stringify(action.userData),
-    });
+    const currentUserResponse = yield call(updateCurrentUser, action.payload);
 
-    yield put(profileStored(action.userData));
+    yield put(mergeJsonApiResources(currentUserResponse));
+    yield put(currentUserUpdated(currentUserResponse));
   } catch (err) {
-    yield put(storeProfileError(action.userData));
+    yield put(storeCurrentUserError());
   }
 }
 
-export function* getAvatar() {
-  const requestURL = 'http://demo9193680.mockable.io/avatar-get';
-
-  try {
-    const response = yield call(request, requestURL);
-
-    yield put(avatarLoaded(response.avatar));
-  } catch (err) {
-    yield put(loadAvatarError(err));
-  }
+export function* storeCurrentUser() {
+  yield takeLatest(STORE_CURRENT_USER, postProfile);
 }
 
-export function* postAvatar(action) {
-  const requestURL = 'http://demo9193680.mockable.io/avatar-post';
-
-  try {
-    const response = yield call(request, requestURL, {
-      method: 'POST',
-      body: JSON.stringify(action.avatar),
-    });
-
-    yield put(avatarStored(response.avatar));
-  } catch (err) {
-    yield put(storeAvatarError(err));
-  }
-}
-
-export function* storeProfile() {
-  yield takeLatest(STORE_PROFILE, postProfile);
-}
-
-export function* loadProfile() {
-  yield takeLatest(LOAD_PROFILE, getProfile);
-}
-
-export function* storeAvatar() {
-  yield takeLatest(STORE_AVATAR, postAvatar);
-}
-
-export function* loadAvatar() {
-  yield takeLatest(LOAD_AVATAR, getAvatar);
+export function* loadCurrentUser() {
+  yield takeLatest(LOAD_CURRENT_USER, getProfile);
 }
 
 // All sagas to be loaded
 export default [
-  loadProfile,
-  storeProfile,
-  storeAvatar,
-  loadAvatar,
+  loadCurrentUser,
+  storeCurrentUser,
 ];
