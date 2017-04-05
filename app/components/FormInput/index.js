@@ -24,9 +24,8 @@ function FormInput(props) {
 FormInput.propTypes = {
   id: PropTypes.string.isRequired,
   className: PropTypes.string,
-  hidden: PropTypes.bool,
 };
 
 export default styled(FormInput)`
-  visibility: ${props => props.hidden ? 'hidden' : 'visible'};
+  visibility: ${(props) => props.hidden ? 'hidden' : 'visible'};
 `;
