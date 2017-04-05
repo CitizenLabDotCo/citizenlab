@@ -10,14 +10,14 @@ import $ from 'jquery';
  * @param {Object} props
  * @returns {Object}
  */
-class Menu extends React.PureComponent {
+export class Menu extends React.PureComponent {
   componentDidMount() {
     this.$elm = $(this.elm);
-    this.ddMenu = new Foundation.DropdownMenu(this.$elm);
+    this.instance = new Foundation.DropdownMenu(this.$elm);
   }
 
   componentWillUnmount() {
-    this.$elm.foundation('destroy');
+    this.instance.destroy();
   }
 
   render() {
@@ -56,8 +56,6 @@ Menu.propTypes = {
   isNested: PropTypes.bool,
   horizontalOnMedium: PropTypes.bool
 };
-
-export { Menu };
 
 /**
  * Menu item component.

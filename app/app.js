@@ -47,7 +47,6 @@ import './global-styles';
 
 // foundation js
 import 'foundation-sites/dist/js/foundation.min';
-import 'foundation-sites/dist/js/plugins/foundation.dropdownMenu.min';
 /* eslint-enable import/first */
 
 // Import root routes
