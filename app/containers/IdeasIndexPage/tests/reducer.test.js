@@ -7,6 +7,7 @@ describe('ideasIndexPageReducer', () => {
   it('returns the initial state', () => {
     const expectedInitialState = {
       nextPageNumber: null,
+      nextPageItemCount: null,
       ideas: [],
       loading: false,
     };

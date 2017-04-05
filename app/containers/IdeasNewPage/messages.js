@@ -54,9 +54,9 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.charactersLeft',
     defaultMessage: '{charsLeft} characters left',
   },
-  loadAttachmentsError: {
-    id: 'app.containers.IdeasNewPage.loadAttachmentsError',
-    defaultMessage: 'Coudln\'t laod existing attachments',
+  storeImageError: {
+    id: 'app.containers.IdeasNewPage.storeImageError',
+    defaultMessage: 'Coudln\'t upload image',
   },
   storeAttachmentError: {
     id: 'app.containers.IdeasNewPage.storeAttachmentError',
@@ -65,13 +65,5 @@ export default defineMessages({
   clickToUpload: {
     id: 'app.containers.IdeasNewPage.clickToUpload',
     defaultMessage: 'Click to upload',
-  },
-  loadImagesError: {
-    id: 'app.containers.IdeasNewPage.loadImagesError',
-    defaultMessage: 'Coudln\'t load existing images',
-  },
-  storeImageError: {
-    id: 'app.containers.IdeasNewPage.storeImageError',
-    defaultMessage: 'Coudln\'t upload image',
   },
 });

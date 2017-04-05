@@ -1,18 +1,12 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { mergeJsonApiResources } from 'utils/resources/actions';
-import Api from 'api';
 import { LOAD_IDEAS_REQUEST } from './constants';
 import { ideasLoaded, ideasLoadingError } from './actions';
+import { fetchIdeas } from '../../api';
 
-export function* fetchIdeas(action) {
-  let urlParameters = '';
-
-  if (action.nextPageNumber) {
-    urlParameters = `?page%5Bnumber%5D=${action.nextPageNumber}&page%5Bsize%5D=25`;
-  }
-
+export function* getIdeas(action) {
   try {
-    const ideaResponse = yield call(Api.fetchIdeas, urlParameters); // eslint-disable-line
+    const ideaResponse = yield call(fetchIdeas, action.nextPageNumber, action.nextPageItemCount); // eslint-disable-line
     yield put(mergeJsonApiResources(ideaResponse));
     yield put(ideasLoaded(ideaResponse));
   } catch (err) {
@@ -21,7 +15,7 @@ export function* fetchIdeas(action) {
 }
 
 export function* defaultSaga() {
-  yield takeLatest(LOAD_IDEAS_REQUEST, fetchIdeas);
+  yield takeLatest(LOAD_IDEAS_REQUEST, getIdeas);
 }
 
 // All sagas to be loaded

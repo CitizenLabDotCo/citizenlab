@@ -24,9 +24,10 @@ export function ideasLoadingError(errorMessage) {
   };
 }
 
-export function loadIdeas(nextPageNumber) {
+export function loadIdeas(nextPageNumber, nextPageItemCount) {
   return {
     type: LOAD_IDEAS_REQUEST,
     nextPageNumber,
+    nextPageItemCount,
   };
 }

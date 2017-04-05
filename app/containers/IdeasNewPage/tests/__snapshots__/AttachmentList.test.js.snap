@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AttachmentList /> input button should render with the correct styles 1`] = `
+ShallowWrapper {
+  "complexSelector": ComplexSelector {
+    "buildPredicate": [Function],
+    "childrenOfNode": [Function],
+    "findWhereUnwrapped": [Function],
+  },
+  "length": 1,
+  "node": <FileInput
+    className="jkJdwS"
+    onFileUpload={[Function]}
+/>,
+  "nodes": Array [
+    <FileInput
+      className="jkJdwS"
+      onFileUpload={[Function]}
+/>,
+  ],
+  "options": Object {},
+  "renderer": ReactShallowRenderer {
+    "_instance":  {
+      "_calledComponentWillUnmount": false,
+      "_compositeType": 0,
+      "_context": Object {},
+      "_currentElement": <Styled(undefined)
+        onFileUpload={[Function]}
+/>,
+      "_debugID": 51,
+      "_hostContainerInfo": null,
+      "_hostParent": null,
+      "_instance": StyledComponent {
+        "_reactInternalInstance": [Circular],
+        "context": Object {
+          "__styled-components__": undefined,
+        },
+        "props": Object {
+          "onFileUpload": [Function],
+        },
+        "refs": Object {},
+        "state": Object {
+          "generatedClassName": "jkJdwS",
+          "theme": Object {},
+        },
+        "updater": Object {
+          "enqueueCallback": [Function],
+          "enqueueCallbackInternal": [Function],
+          "enqueueElementInternal": [Function],
+          "enqueueForceUpdate": [Function],
+          "enqueueReplaceState": [Function],
+          "enqueueSetState": [Function],
+          "isMounted": [Function],
+          "validateCallback": [Function],
+        },
+      },
+      "_mountOrder": 29,
+      "_pendingCallbacks": null,
+      "_pendingElement": null,
+      "_pendingForceUpdate": false,
+      "_pendingReplaceState": false,
+      "_pendingStateQueue": null,
+      "_renderedComponent": NoopInternalComponent {
+        "_currentElement": <FileInput
+          className="jkJdwS"
+          onFileUpload={[Function]}
+/>,
+        "_debugID": 52,
+        "_renderedOutput": <FileInput
+          className="jkJdwS"
+          onFileUpload={[Function]}
+/>,
+      },
+      "_renderedNodeType": 1,
+      "_rootNodeID": 0,
+      "_topLevelWrapper": null,
+      "_updateBatchNumber": null,
+      "_warnedAboutRefsInRender": false,
+    },
+    "getRenderOutput": [Function],
+    "render": [Function],
+  },
+  "root": [Circular],
+  "unrendered": <Styled(undefined)
+    onFileUpload={[Function]}
+/>,
+}
+`;

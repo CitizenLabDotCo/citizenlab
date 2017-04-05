@@ -11,6 +11,34 @@ import { FormattedMessage } from 'react-intl';
 import Image from './Image';
 import messages from './messages';
 
+export const Images = (props) => (<span>
+  {props.images.map((image, index) =>
+    (<Column large={3} key={index}>
+      <Image
+        source={image}
+      />
+    </Column>)
+  )}</span>
+);
+
+const FileInput = (props) => (
+  <input
+    type="file"
+    onChange={props.onFileUpload}
+    className={props.className}
+  />
+);
+
+export const StyledFileInput = styled(FileInput)`
+  opacity: 0;
+  z-index: 1;
+  width: 100px;
+  margin-left: 10px;
+  display: inline-block;
+  position: absolute;
+  height: 120px;
+`;
+
 class ImageList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
@@ -21,10 +49,6 @@ class ImageList extends React.PureComponent { // eslint-disable-line react/prefe
 
     // set necessary bindings
     this.onFileUpload = this.onFileUpload.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.loadImages();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -44,22 +68,8 @@ class ImageList extends React.PureComponent { // eslint-disable-line react/prefe
   }
 
   render() {
-    const FileInput = (props) => (
-      <input
-        type="file"
-        onChange={this.onFileUpload}
-        className={props.className}
-      />
-    );
-
-    const StyledFileInput = styled(FileInput)`
-      opacity: 0;
-      z-index: 1;
-      width: 100px;
-      margin-left: 10px;
-      display: inline-block;
-      position: absolute;
-      height: 120px;
+    const ImagesStyled = styled(Images)`
+      // no style for now
     `;
 
     const StyledImageButton = styled.div`
@@ -71,26 +81,17 @@ class ImageList extends React.PureComponent { // eslint-disable-line react/prefe
       z-index: 2;
     `;
 
-    const { images, loadImagesError, storeImageError } = this.props;
+    const { images, storeImageError } = this.props;
 
     return (
       <div>
-        {loadImagesError && <Label>
-          <FormattedMessage {...messages.loadImagesError} />
-        </Label>}
         {storeImageError && <Label>
           <FormattedMessage {...messages.storeImageError} />
         </Label>}
         <Row>
-          {images.map((image, index) =>
-            (<Column large={3} key={index}>
-              <Image
-                source={image}
-              />
-            </Column>)
-          )}
+          <ImagesStyled images={images} />
           <Column large={3}>
-            <StyledFileInput />
+            <StyledFileInput onFileUpload={this.onFileUpload} />
             <StyledImageButton />
           </Column>
         </Row>
@@ -100,11 +101,18 @@ class ImageList extends React.PureComponent { // eslint-disable-line react/prefe
 }
 
 ImageList.propTypes = {
-  loadImages: PropTypes.func.isRequired,
   storeImage: PropTypes.func.isRequired,
-  images: PropTypes.any.isRequired,
-  loadImagesError: PropTypes.bool.isRequired,
   storeImageError: PropTypes.bool.isRequired,
+  images: PropTypes.any.isRequired,
+};
+
+Images.propTypes = {
+  images: PropTypes.any.isRequired,
+};
+
+FileInput.propTypes = {
+  onFileUpload: PropTypes.func.isRequired,
+  className: PropTypes.string,
 };
 
 export default ImageList;

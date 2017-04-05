@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+import * as withQuery from 'with-query';
 
 /**
  * Parses the JSON returned by a network request
@@ -49,7 +50,7 @@ export function setJwt(jwt) {
  *
  * @return {object}           The response data
  */
-export default function request(url, data, options) {
+export default function request(url, data, options, queryParameters) {
   const jwt = getJwt();
   const defaultOptions = {
     headers: {
@@ -65,7 +66,11 @@ export default function request(url, data, options) {
     defaultOptions.body = JSON.stringify(data);
   }
 
-  return fetch(url, Object.assign(defaultOptions, options))
+  const urlWithParams = (queryParameters
+    ? withQuery(url, queryParameters)
+    : url);
+
+  return fetch(urlWithParams, Object.assign(defaultOptions, options))
     .then((response) => Promise.all([response, response.json()]))
     .then((result) => {
       const response = result[0];

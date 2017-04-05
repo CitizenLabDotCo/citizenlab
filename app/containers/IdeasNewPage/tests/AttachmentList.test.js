@@ -1,9 +1,12 @@
 import React from 'react';
-import { mount } from 'enzyme';
-import AttachmentList, { Attachments } from '../AttachmentList';
+import { mount, shallow } from 'enzyme';
+import { matcher, serializer } from 'jest-styled-components';
+
+import AttachmentList, { Attachments, StyledFileInput } from '../AttachmentList';
 import { mountWithIntl } from '../../../utils/intlTest';
 
-// import Attachment from '../index';
+expect.extend(matcher);
+expect.addSnapshotSerializer(serializer);
 
 describe('<AttachmentList />', () => {
   const attachments = ['1', '2'];
@@ -27,5 +30,12 @@ describe('<AttachmentList />', () => {
       <Attachments attachments={attachments} />
     );
     expect(wrapper.find('Attachment')).toHaveLength(2);
+  });
+
+  it('input button should render with the correct styles', () => {
+    const wrapper = shallow(
+      <StyledFileInput onFileUpload={jestFn} />
+    );
+    expect(wrapper).toMatchStyledComponentsSnapshot();
   });
 });

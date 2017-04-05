@@ -13,6 +13,9 @@ export default class IdeaEditor extends React.PureComponent {
       editorState: EditorState.createEmpty(),
       initialStateSet: false,
     };
+
+    // set bindings
+    this.onEditorStateChange.bind(this);
   }
 
   componentDidMount() {
@@ -20,15 +23,6 @@ export default class IdeaEditor extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.onEditorStateChange = (editorState) => {
-      this.setState({
-        editorState,
-      });
-
-      // store temp draft
-      this.props.onEditorChange(convertToRaw(editorState.getCurrentContent()));
-    };
-
     // load eventually existing draft
     const nextState = getEditorState(nextProps.content, this.state.editorState, this.state.initialStateSet);
     if (nextState) {
@@ -39,6 +33,14 @@ export default class IdeaEditor extends React.PureComponent {
     }
   }
 
+  onEditorStateChange = (editorState) => {
+    this.setState({
+      editorState,
+    });
+
+    // store temp draft
+    this.props.onEditorChange(convertToRaw(editorState.getCurrentContent()));
+  };
 
   render() {
     const { editorState } = this.state;
