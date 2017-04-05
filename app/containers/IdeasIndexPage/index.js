@@ -46,7 +46,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
       <div
         {...props}
       >
-        {props.children}
+        {!!props.children[0] && props.children}
       </div>
     );
 
