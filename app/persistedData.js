@@ -1,10 +1,12 @@
 import { fromJS } from 'immutable';
-import { createSelector } from 'reselect';
 import { LOADED_CURRENT_TENANT, LOAD_CURRENT_USER } from 'containers/App/constants';
 
 const initialState = fromJS({
   currentTenant: null,
   currentUser: null,
+  // TODO: remove hardcoded below
+  userLocale: 'fr',
+  tenantLocales: ['en', 'nl', 'fr'],
 });
 
 export const persistedDataReducer = (state = initialState, action) => {
@@ -41,24 +43,6 @@ export const saveState = (state) => {
 
 const selectPersistedDataDomain = () => (state) => state.get('persistedData');
 
-const makeSelectCurrentUser = () => createSelector(
-  selectPersistedDataDomain(),
-  (subState) => {
-    const currentUser = subState.get('currentUser');
-    return currentUser && currentUser.toJS();
-  }
-);
-
-const makeSelectCurrentTenant = () => createSelector(
-  selectPersistedDataDomain(),
-  (subState) => {
-    const currentTenant = subState.get('currentTenant');
-    return currentTenant && currentTenant.toJS();
-  }
-);
-
 export {
   selectPersistedDataDomain,
-  makeSelectCurrentUser,
-  makeSelectCurrentTenant,
 };

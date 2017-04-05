@@ -8,6 +8,14 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   header: {
     id: 'app.containers.IdeasIndexPage.header',
-    defaultMessage: 'This is IdeasIndexPage container !',
+    defaultMessage: 'IdeasIndexPage',
+  },
+  loadMore: {
+    id: 'app.containers.IdeasIndexPage.loadMore',
+    defaultMessage: 'Load more...',
+  },
+  loading: {
+    id: 'app.containers.IdeasIndexPage.loading',
+    defaultMessage: 'Loading...',
   },
 });

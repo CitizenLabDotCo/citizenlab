@@ -5,12 +5,12 @@ RUN apt-get update && apt-get install libpng12-0
 WORKDIR /cl2-front
 
 ADD package.json package.json
-ADD yarn.lock yarn.lock
+# ADD yarn.lock yarn.lock
 ADD internals internals
-RUN yarn install
+RUN npm install
 ADD . .
 
-RUN yarn run build:dll
+RUN npm run build:dll
 
 
-CMD ["npm", "start"]
+CMD ["npm", "start:production"]

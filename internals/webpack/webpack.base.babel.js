@@ -68,6 +68,7 @@ module.exports = (options) => ({
     new webpack.ProvidePlugin({
       // make fetch available
       fetch: 'exports-loader?self.fetch!whatwg-fetch',
+      jQuery: 'jquery',
     }),
 
     // Always expose NODE_ENV to webpack, in order to use `process.env.NODE_ENV`
@@ -87,10 +88,12 @@ module.exports = (options) => ({
       '.jsx',
       '.react.js',
     ],
+    // Applied this hack https://github.com/react-boilerplate/react-boilerplate/issues/1657
+    // It allows us to build using libraries that don't transpile to ES5, as they should.
     mainFields: [
       'browser',
-      'jsnext:main',
       'main',
+      'jsnext:main',
     ],
   },
   devtool: options.devtool,

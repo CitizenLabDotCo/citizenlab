@@ -12,6 +12,7 @@ import ideasNewPageReducer from 'containers/IdeasNewPage/reducer';
 import usersNewPageReducer from 'containers/UsersNewPage/reducer';
 import resourcesReducer from 'utils/resources/reducer';
 import authReducer from 'utils/auth/reducer';
+import tenantReducer from 'utils/tenant/reducer';
 import { persistedDataReducer } from './persistedData';
 
 /*
@@ -49,6 +50,7 @@ export default function createReducer(asyncReducers) {
   return combineReducers({
     route: routeReducer,
     auth: authReducer,
+    tenant: tenantReducer,
     language: languageProviderReducer,
     persistedData: persistedDataReducer,
     resources: resourcesReducer,

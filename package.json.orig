@@ -288,7 +288,11 @@
     "html-webpack-plugin": "2.24.1",
     "image-webpack-loader": "2.0.0",
     "imports-loader": "0.6.5",
+<<<<<<< HEAD
+    "jest-cli": "^18.0.0",
+=======
     "jest-cli": "19.0.0",
+>>>>>>> master
     "jest-junit": "1.4.0",
     "jsdom": "^9.11.0",
     "lint-staged": "3.2.1",

@@ -14,40 +14,41 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { makeSelectCurrentTenant } from 'persistedData';
 import { makeSelectCurrentUser } from 'utils/auth/selectors';
+import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
 import { loadCurrentUserRequest } from 'utils/auth/actions';
-import { Row, Column } from 'components/Foundation/src/components/grid';
+import { loadCurrentTenantRequest } from 'utils/tenant/actions';
+import { Row, Column } from 'components/Foundation';
 import Navbar from './Navbar';
-import { loadCurrentTenant } from './actions';
 
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   componentDidMount() {
+    this.props.dispatch(loadCurrentTenantRequest());
     this.props.dispatch(loadCurrentUserRequest());
-    // TODO: remove hardcoded address
-    fetch('http://localhost:4000/api/v1/tenants/current')
-      .then((res) => res.json())
-      .then((json) => {
-        this.props.dispatch(loadCurrentTenant(json.data.attributes));
-      });
   }
 
   render() {
-    return (
-      <div>
-        <Navbar
-          currentUser={this.props.currentUser}
-          currentTenant={this.props.currentTenant}
-        >
-        </Navbar>
-        <Row>
-          <Column large={12}>
-            {React.Children.toArray(this.props.children)}
-          </Column>
-        </Row>
-      </div>
-    );
+    const { currentTenant, currentUser } = this.props;
+
+    if (currentTenant) {
+      return (
+        <div>
+          <Navbar
+            currentUser={currentUser}
+            currentTenant={currentTenant}
+          >
+          </Navbar>
+          <Row>
+            <Column large={12}>
+              {React.Children.toArray(this.props.children)}
+            </Column>
+          </Row>
+        </div>
+      );
+    } else { // eslint-disable-line no-else-return
+      return <div></div>;
+    }
   }
 }
 

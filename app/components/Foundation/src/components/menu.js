@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { MenuAlignments } from '../enums';
 import { GeneralPropTypes, createClassName, generalClassNames, removeProps, objectKeys, objectValues } from '../utils';
+import $ from 'jquery';
 
 /**
  * Menu component.
@@ -9,27 +10,39 @@ import { GeneralPropTypes, createClassName, generalClassNames, removeProps, obje
  * @param {Object} props
  * @returns {Object}
  */
-export const Menu = (props) => {
-  const className = createClassName(
-    props.noDefaultClassName ? null : 'menu',
-    props.className,
-    {
-      'align-right': props.alignment === MenuAlignments.RIGHT,
-      'align-center': props.alignment === MenuAlignments.CENTER,
-      'icon-top': props.iconsOnTop,
-      'expanded': props.isExpanded,
-      'vertical': props.isVertical,
-      'simple': props.isSimple,
-      'nested': props.isNested,
-      'dropdown': props.isDropdown,
-      'medium-horizontal': props.horizontalOnMedium
-    },
-    generalClassNames(props)
-  );
+export class Menu extends React.PureComponent {
+  componentDidMount() {
+    this.$elm = $(this.elm);
+    this.instance = new Foundation.DropdownMenu(this.$elm);
+  }
 
-  const passProps = removeProps(props, objectKeys(Menu.propTypes));
+  componentWillUnmount() {
+    this.instance.destroy();
+  }
 
-  return <ul {...passProps} className={className}/>;
+  render() {
+    const props = this.props;
+    const className = createClassName(
+      props.noDefaultClassName ? null : 'menu',
+      props.className,
+      {
+        'align-right': props.alignment === MenuAlignments.RIGHT,
+        'align-center': props.alignment === MenuAlignments.CENTER,
+        'icon-top': props.iconsOnTop,
+        'expanded': props.isExpanded,
+        'vertical': props.isVertical,
+        'simple': props.isSimple,
+        'nested': props.isNested,
+        'dropdown': props.isDropdown,
+        'medium-horizontal': props.horizontalOnMedium
+      },
+      generalClassNames(props)
+    );
+
+    const passProps = removeProps(props, objectKeys(Menu.propTypes));
+
+    return <ul {...passProps} className={className} ref={ref => this.elm = ref} />;
+  };
 };
 
 Menu.propTypes = {

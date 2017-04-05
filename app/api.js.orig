@@ -1,5 +1,6 @@
 import request from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
+import { makeSelectCurrentUser } from './utils/auth/selectors';
 
 export function login(email, password) {
   const data = {
@@ -41,14 +42,15 @@ export function fetchCurrentUser() {
   return request(`${API_PATH}/users/me`);
 }
 
+<<<<<<< HEAD
 export function updateCurrentUser(values) {
   return request(`${API_PATH}/users/${values.userId}`, { user: values }, {
     method: 'PUT',
   });
-}
-
+=======
 export function fetchCurrentTenant() {
   return request(`${API_PATH}/tenants/current`);
+>>>>>>> master
 }
 
 export default {
