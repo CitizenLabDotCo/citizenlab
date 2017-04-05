@@ -71,7 +71,7 @@ export function generalClassNames(props) {
  * @returns {Array}
  */
 export function objectKeys(object) {
-  return Object.keys(object);
+  return Object.keys(object || {});
 }
 
 /**

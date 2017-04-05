@@ -47,7 +47,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
         </div>
       );
     } else { // eslint-disable-line no-else-return
-      return <div></div>;
+      return <div>Loading...</div>;
     }
   }
 }
