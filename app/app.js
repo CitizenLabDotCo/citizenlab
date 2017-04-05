@@ -40,10 +40,13 @@ import configureStore from './store';
 // Import i18n messages
 import { translationMessages } from './i18n';
 
-// Import CSS reset and Global Styles
 /* eslint-disable import/first */
+// Import CSS reset and Global Styles
 import '../vendor/foundation/main.scss';
 import './global-styles';
+
+// foundation js
+import 'foundation-sites/dist/js/foundation.min';
 /* eslint-enable import/first */
 
 // Import root routes

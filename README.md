@@ -50,3 +50,32 @@ Install library using npm/yarn and add a import statement to app.js like below. 
 
 ### Atom
 Works quite well with Atom out of the box. It is highly recommended to install `linter` and `linter-eslint` plugins. They will automatically pick up the linter settings from the `package.json` file and give you inline warnings to adhere to the coding standards.
+
+### Webstorm (build 2017.1)
+#### eslint
+
+File -> Settings -> Language & Frameworks -> Javascript -> Code Quality Tools -> ESLINT -> `"Enable"` (if necessary set the path to eslint from node_mdules). The configuration is taken directly from `package.json`
+
+Webstorm also offers options for automatic code formatting so the lint is basically corrected by itself:
+
+
+File -> Settings -> Edit -> Code Style -> `Javascript` (various options in different tabs)
+
+#### Debugging
+
+> Set up
+
+##### React debugging
+
+Install JETBRAINS DEBUGGER TOOLS for Chrome.
+Top right corner of the window -> Click on dropdown next to `play` icon -> `Edit configurations` -> `New (+ button)` Javascript debugger. 
+
+##### Jest debugging
+
+Install [JETBRAINS DEBUGGER TOOLS](https://chrome.google.com/webstore/detail/jetbrains-ide-support/hmhgeddbohgjknpmjagkdomcpobmllji?hl=en) for Chrome.
+Top right corner of the window -> Click on dropdown next to `play` icon -> `Edit configurations` -> `New (+ button)` Jest debugger. If necessary set Jest package location (from node_modules) and set working directory.
+
+> Use a debugging configuration
+
+To run the the debugger (either React or just, choose from dropdown next to icon): just set a breakpoint (left click next to line number) and press the `bug` icon next to `play` icon mentioned above.
+Webstorm will open a new browser window. The rest works as we we were working in ChromeDevTools (`continue`, `next line`, automatic variable watch...)
