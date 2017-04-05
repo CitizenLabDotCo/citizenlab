@@ -23,10 +23,11 @@ function ideasIndexPageReducer(state = initialState, action) {
     case IDEAS_LOADED: {
       const ids = action.payload.data.map((idea) => idea.id);
       const nextPageLink = decodeURI(action.payload.links.next);
+      const nextPageStringIndex = nextPageLink.indexOf('page[number]=') + 13;
       return state
         .set('ideas', fromJS(state.get('ideas')).concat(ids))
         .set('nextPageNumber', nextPageLink
-          ? parseInt(nextPageLink.substr(nextPageLink.indexOf('page[number]=') + 13, 1), 10)
+          ? parseInt(nextPageLink.substr(nextPageLink.indexOf('page[number]=') + 13, nextPageLink.indexOf('&page') - nextPageStringIndex), 10)
           : null
         )
         .set('loading', false);
