@@ -9,6 +9,7 @@ import * as qs from 'qs';
 
 import {
   IDEAS_LOADED, IDEAS_RESET, LOAD_IDEAS_REQUEST,
+  SET_SHOW_IDEA_WITH_INDEX_PAGE,
 } from './constants';
 
 const initialState = fromJS({
@@ -16,6 +17,7 @@ const initialState = fromJS({
   nextPageItemCount: null,
   ideas: [],
   loading: false,
+  showIdeaWithIndexPage: false,
 });
 
 export function getPageNumberFromUrl(url) {
@@ -35,6 +37,8 @@ function ideasIndexPageReducer(state = initialState, action) {
     case LOAD_IDEAS_REQUEST:
       return state
         .set('loading', true);
+    case SET_SHOW_IDEA_WITH_INDEX_PAGE:
+      return state.set('showIdeaWithIndexPage', action.payload);
     case IDEAS_LOADED: {
       const ids = action.payload.data.map((idea) => idea.id);
 

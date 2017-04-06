@@ -11,10 +11,10 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import _ from 'lodash';
 import IdeaCard from 'components/IdeaCard';
-import { Row, Column, Button, Label } from 'components/Foundation';
+import { Row, Column, Button, Label, Reveal } from 'components/Foundation';
 import styled from 'styled-components';
-import { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber } from './selectors';
-import { loadIdeas, resetIdeas } from './actions';
+import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber } from './selectors';
+import { loadIdeas, resetIdeas, setShowIdeaWithIndexPage } from './actions';
 import messages from './messages';
 
 export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -33,10 +33,32 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
     this.props.resetData();
   }
 
-  showPageHtml() {
+  ideaShowPageHtml() {
+    const idea = this.findIdeaById();
+    return React.cloneElement(this.props.children, { idea });
+  }
+
+  ideaShowDialogHtml() {
+    const idea = this.findIdeaById();
+    return (
+      <div>
+        <Reveal
+          className="clIdeaShowDialog"
+          data-overlay="false"
+          data-close-on-click="false"
+          data-animation-in="slide-in-right"
+          data-animation-out="slide-out-right"
+          ref={(ref) => ref && ref.instance.open()}
+        >
+          { React.cloneElement(this.props.children, { idea }) }
+        </Reveal>
+      </div>
+    );
+  }
+
+  findIdeaById() {
     const { ideas, params } = this.props;
-    const idea = _.find(ideas, { id: params.slug });
-    return React.cloneElement(React.Children.only(this.props.children), { idea });
+    return _.find(ideas, { id: params.slug });
   }
 
   goToNextPage() {
@@ -76,7 +98,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
         <Row data-equalizer>
           {ideas && ideas.map((idea) => (
             <Column key={idea.id} small={12} medium={4} large={3}>
-              <IdeaCard idea={idea} onClick={() => this.props.router.push(`/ideas/${idea.id}`)}></IdeaCard>
+              <IdeaCard idea={idea} onClick={() => { this.props.dispatch(setShowIdeaWithIndexPage(true)); this.props.router.push(`/ideas/${idea.id}`); }}></IdeaCard>
             </Column>
           ))}
         </Row>
@@ -97,11 +119,15 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   }
 
   render() {
-    if (this.props.children) {
-      return this.showPageHtml();
-    }
+    const { showIdeaWithIndexPage } = this.props.pageData;
 
-    return this.indexPageHtml();
+    return (
+      <div className="ideas-page">
+        { (!this.props.children || showIdeaWithIndexPage === true) ? this.indexPageHtml() : null }
+        { (this.props.children && showIdeaWithIndexPage === true) ? this.ideaShowDialogHtml() : null }
+        { (this.props.children && showIdeaWithIndexPage === false) ? this.ideaShowPageHtml() : null }
+      </div>
+    );
   }
 }
 
@@ -116,6 +142,8 @@ IdeasIndexPage.propTypes = {
   nextPageNumber: PropTypes.number,
   nextPageItemCount: PropTypes.number,
   loading: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  pageData: React.PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -123,10 +151,12 @@ const mapStateToProps = createStructuredSelector({
   nextPageNumber: makeSelectNextPageNumber(),
   nextPageItemCount: makeSelectNextPageItemCount(),
   loading: makeSelectLoading(),
+  pageData: makeSelectIdeasIndexPage(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatch,
     initData: () => {
       dispatch(loadIdeas());
     },

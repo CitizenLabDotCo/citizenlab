@@ -17,7 +17,7 @@ import ImageCarousel from '../../components/ImageCarousel/index';
 
 // NOTE: Let's use unconnected component for now
 export default class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  notFoundHtml() {
+  notFounHtml() {
     return (<h2>Idea Not Found :/</h2>);
   }
 
@@ -50,18 +50,14 @@ export default class IdeasShow extends React.PureComponent { // eslint-disable-l
 }
 
 IdeasShow.propTypes = {
-  // dispatch: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
   idea: PropTypes.object,
 };
 
-// const mapStateToProps = createStructuredSelector({
-//   IdeasShow: makeSelectIdeasShow(),
-// });
-//
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     dispatch,
-//   };
-// }
-//
-// export default connect(mapStateToProps, mapDispatchToProps)(IdeasShow);
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+export default connect(null, mapDispatchToProps)(IdeasShow);
