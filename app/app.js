@@ -44,6 +44,7 @@ import { translationMessages } from './i18n';
 // Import CSS reset and Global Styles
 import '../vendor/foundation/main.scss';
 import './global-styles';
+import '../vendor/carousel-custom.scss';
 
 // foundation js
 import 'foundation-sites/dist/js/foundation.min';

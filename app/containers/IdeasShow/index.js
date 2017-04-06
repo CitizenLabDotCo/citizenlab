@@ -5,30 +5,29 @@
  */
 
 import React, { PropTypes } from 'react';
-// import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-// import { FormattedMessage } from 'react-intl';
 import T from 'containers/T';
-import ImageCarousel from '../../components/ImageCarousel/index';
-// import { createStructuredSelector } from 'reselect';
-// import _ from 'lodash';
-// import makeSelectIdeasShow from './selectors';
-// import messages from './messages';
+import { connect } from 'react-redux';
+import ImageCarousel from 'components/ImageCarousel';
 
 // NOTE: Let's use unconnected component for now
-export default class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  notFounHtml() {
+class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  notFoundHtml() {
     return (<h2>Idea Not Found :/</h2>);
   }
 
   ideaHtml() {
     const { idea } = this.props;
+    const attributes = idea.attributes;
+
     return (
       <div>
-        <ImageCarousel />
-        <h2><T value={idea.attributes.title_multiloc} /></h2>
+        <ImageCarousel
+          ideaImages={attributes.images}
+        />
+        <h2><T value={attributes.title_multiloc} /></h2>
         <p><strong>Some Author</strong></p>
-        <div dangerouslySetInnerHTML={{ __html: idea.attributes.body_multiloc.en }}></div>
+        <div dangerouslySetInnerHTML={{ __html: attributes.body_multiloc.en }}></div>
       </div>
     );
   }
@@ -50,7 +49,6 @@ export default class IdeasShow extends React.PureComponent { // eslint-disable-l
 }
 
 IdeasShow.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   idea: PropTypes.object,
 };
 
