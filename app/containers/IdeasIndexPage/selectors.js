@@ -15,10 +15,10 @@ const selectIdeasIndexPageDomain = () => (state) => state.get('ideasIndexPage');
  * Default selector used by IdeasIndexPage
  */
 
-// const makeSelectIdeasIndexPage = () => createSelector(
-//   selectIdeasIndexPageDomain(),
-//   (substate) => substate.toJS()
-// );
+const makeSelectIdeasIndexPage = () => createSelector(
+  selectIdeasIndexPageDomain(),
+  (substate) => substate.toJS()
+);
 
 const makeSelectIdeas = () => createSelector(
   selectIdeasIndexPageDomain(),
@@ -45,7 +45,8 @@ const makeSelectLoading = () => createSelector(
   (submitIdeaState) => submitIdeaState.get('loading')
 );
 
-// export default makeSelectIdeasIndexPage;
+export default makeSelectIdeasIndexPage;
+
 export {
   selectIdeasIndexPageDomain,
   makeSelectIdeas,

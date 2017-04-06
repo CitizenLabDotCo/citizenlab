@@ -13,12 +13,9 @@ import _ from 'lodash';
 import IdeaCard from 'components/IdeaCard';
 import { Row, Column, Button, Label, Reveal } from 'components/Foundation';
 import styled from 'styled-components';
-import { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber } from './selectors';
-import { loadIdeas, resetIdeas } from './actions';
+import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber } from './selectors';
+import { loadIdeas, resetIdeas, setShowIdeaWithIndexPage } from './actions';
 import messages from './messages';
-
-// TODO: this should be in redux store
-window.clickedFromIndexPage = false;
 
 export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -101,7 +98,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
         <Row data-equalizer>
           {ideas && ideas.map((idea) => (
             <Column key={idea.id} small={12} medium={4} large={3}>
-              <IdeaCard idea={idea} onClick={() => { window.clickedFromIndexPage = true; this.props.router.push(`/ideas/${idea.id}`); }}></IdeaCard>
+              <IdeaCard idea={idea} onClick={() => { this.props.dispatch(setShowIdeaWithIndexPage(true)); this.props.router.push(`/ideas/${idea.id}`); }}></IdeaCard>
             </Column>
           ))}
         </Row>
@@ -122,11 +119,13 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   }
 
   render() {
+    const { showIdeaWithIndexPage } = this.props.pageData;
+
     return (
       <div className="ideas-page">
-        { (!this.props.children || window.clickedFromIndexPage === true) ? this.indexPageHtml() : null }
-        { (this.props.children && window.clickedFromIndexPage === true) ? this.ideaShowDialogHtml() : null }
-        { (this.props.children && window.clickedFromIndexPage === false) ? this.ideaShowPageHtml() : null }
+        { (!this.props.children || showIdeaWithIndexPage === true) ? this.indexPageHtml() : null }
+        { (this.props.children && showIdeaWithIndexPage === true) ? this.ideaShowDialogHtml() : null }
+        { (this.props.children && showIdeaWithIndexPage === false) ? this.ideaShowPageHtml() : null }
       </div>
     );
   }
@@ -143,6 +142,8 @@ IdeasIndexPage.propTypes = {
   nextPageNumber: PropTypes.number,
   nextPageItemCount: PropTypes.number,
   loading: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  pageData: React.PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -150,10 +151,12 @@ const mapStateToProps = createStructuredSelector({
   nextPageNumber: makeSelectNextPageNumber(),
   nextPageItemCount: makeSelectNextPageItemCount(),
   loading: makeSelectLoading(),
+  pageData: makeSelectIdeasIndexPage(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatch,
     initData: () => {
       dispatch(loadIdeas());
     },
