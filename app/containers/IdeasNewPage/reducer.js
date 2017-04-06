@@ -89,14 +89,14 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
     case STORE_ATTACHMENT:
       return state
         .setIn(['draft', 'storeAttachmentError'], false)
-        .setIn(['draft', 'attachments'], fromJS(state.getIn(['draft', 'attachments'])).concat(action.source));
+        .updateIn(['draft', 'attachments'], (attachments) => attachments.concat(action.source));
     case STORE_ATTACHMENT_ERROR:
       return state
         .setIn(['draft', 'storeAttachmentError'], true);
     case STORE_IMAGE:
       return state
         .setIn(['draft', 'storeImageError'], false)
-        .setIn(['draft', 'images'], fromJS(state.getIn(['draft', 'images'])).concat(action.source));
+        .updateIn(['draft', 'images'], (images) => images.concat(action.source));
     case STORE_IMAGE_ERROR:
       return state
         .setIn(['draft', 'storeImageError'], true);

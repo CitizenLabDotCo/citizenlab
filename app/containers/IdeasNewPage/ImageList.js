@@ -24,6 +24,7 @@ export const Images = (props) => (<span>
 const FileInput = (props) => (
   <input
     type="file"
+    id="upload-image"
     onChange={props.onFileUpload}
     className={props.className}
   />
@@ -70,6 +71,9 @@ class ImageList extends React.PureComponent { // eslint-disable-line react/prefe
 
       reader.addEventListener('load', () => {
         this.props.storeImage(reader.result);
+
+        // reset file input
+        document.getElementById('upload-image').value = null;
       });
     }
   }
@@ -98,7 +102,9 @@ class ImageList extends React.PureComponent { // eslint-disable-line react/prefe
         <Row>
           <ImagesStyled images={images} />
           <Column large={3}>
-            <StyledFileInput onFileUpload={this.onFileUpload} />
+            <StyledFileInput
+              onFileUpload={this.onFileUpload}
+            />
             <StyledImageButton />
           </Column>
         </Row>
