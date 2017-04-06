@@ -5,9 +5,7 @@
  */
 
 import {
-  LOAD_IDEAS_REQUEST,
-  IDEAS_LOADED,
-  IDEAS_LOADING_ERROR,
+  LOAD_IDEAS_REQUEST, IDEAS_LOADED, IDEAS_LOADING_ERROR, IDEAS_RESET,
 } from './constants';
 
 export function ideasLoaded(ideas) {
@@ -29,5 +27,11 @@ export function loadIdeas(nextPageNumber, nextPageItemCount) {
     type: LOAD_IDEAS_REQUEST,
     nextPageNumber,
     nextPageItemCount,
+  };
+}
+
+export function resetIdeas() {
+  return {
+    type: IDEAS_RESET,
   };
 }

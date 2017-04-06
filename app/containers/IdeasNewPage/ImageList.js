@@ -63,7 +63,14 @@ class ImageList extends React.PureComponent { // eslint-disable-line react/prefe
     if (files.length < 1) {
       this.props.storeImage(null);
     } else {
-      this.props.storeImage(files[0]);
+      // convert image to data url
+
+      const reader = new FileReader();
+      reader.readAsDataURL(files[0]);
+
+      reader.addEventListener('load', () => {
+        this.props.storeImage(reader.result);
+      });
     }
   }
 

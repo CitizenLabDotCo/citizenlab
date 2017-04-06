@@ -18,7 +18,7 @@ export const getIdeaRequestContent = (ideaMultiloc, titleMultiloc, images, attac
   result.publication_status = (isPublish ? 'published' : 'draft');
   result.title_multiloc = titleMultiloc;
   result.body_multiloc = ideaMultiloc;
-  result.images = images.toJS();
+  result.images = images;
   result.files = attachments.toJS();
 
   return result;

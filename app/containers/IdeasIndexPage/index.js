@@ -14,7 +14,7 @@ import IdeaCard from 'components/IdeaCard';
 import { Row, Column, Button, Label } from 'components/Foundation';
 import styled from 'styled-components';
 import { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber } from './selectors';
-import { loadIdeas } from './actions';
+import { loadIdeas, resetIdeas } from './actions';
 import messages from './messages';
 
 export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -29,15 +29,19 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
     this.props.initData();
   }
 
-  goToNextPage() {
-    const { loadNextPage, nextPageNumber, nextPageItemCount } = this.props;
-    loadNextPage(nextPageNumber, nextPageItemCount);
+  componentWillUnmount() {
+    this.props.resetData();
   }
 
   showPageHtml() {
     const { ideas, params } = this.props;
     const idea = _.find(ideas, { id: params.slug });
     return React.cloneElement(React.Children.only(this.props.children), { idea });
+  }
+
+  goToNextPage() {
+    const { loadNextPage, nextPageNumber, nextPageItemCount } = this.props;
+    loadNextPage(nextPageNumber, nextPageItemCount);
   }
 
   indexPageHtml() {
@@ -108,6 +112,7 @@ IdeasIndexPage.propTypes = {
   router: PropTypes.object,
   initData: PropTypes.func.isRequired,
   loadNextPage: PropTypes.func.isRequired,
+  resetData: PropTypes.func.isRequired,
   nextPageNumber: PropTypes.number,
   nextPageItemCount: PropTypes.number,
   loading: PropTypes.bool.isRequired,
@@ -127,6 +132,9 @@ function mapDispatchToProps(dispatch) {
     },
     loadNextPage: (nextPageNumber, nextPageItemCount) => {
       dispatch(loadIdeas(nextPageNumber, nextPageItemCount));
+    },
+    resetData: () => {
+      dispatch(resetIdeas());
     },
   };
 }
