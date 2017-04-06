@@ -9,11 +9,14 @@
  * the linting exception.
  */
 
+// TODO enable eslint
+/* eslint-disable */
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
 import TopicSelect from 'components/TopicSelect';
+import { Reveal } from 'components/Foundation';
 import T from 'containers/T';
 import messages from './messages';
 
@@ -36,6 +39,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   };
 
   render() {
+    let modalInstance = null;
     const currentTenant = this.props.currentTenant;
     return (
       <div className="cl-home-page">
@@ -51,6 +55,23 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         <br /><br />
         <h3>Multiloc Demo</h3>
         <T value={titleMultiloc} />
+
+
+        <br /><br />
+        <h3>Modal demo</h3>
+        <a onClick={() => modalInstance.instance.open()}>Open modal</a>
+
+        <Reveal
+          id="helloModal"
+          data-overlay="false"
+          data-animation-in="slide-in-right"
+          data-animation-out="slide-out-right"
+          ref={ref => modalInstance = ref }
+        >
+          <div>
+            My name is Reveal. I am a Foundation modal.
+          </div>
+        </Reveal>
       </div>
     );
   }

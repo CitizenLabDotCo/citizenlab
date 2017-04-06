@@ -31,4 +31,13 @@ injectGlobal`
   .button, .badge, .label {
     margin-right: 5px;
   }
+
+  .clIdeaShowDialog {
+    top: 70px !important;
+    right: 0 !important;
+    left: unset !important;
+    min-height: 100%;
+    width: 80% !important;
+  }
+
 `;

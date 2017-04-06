@@ -5,27 +5,31 @@
  */
 
 import React, { PropTypes } from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 // import { FormattedMessage } from 'react-intl';
 import T from 'containers/T';
+import { setShowIdeaWithIndexPage } from 'containers/IdeasIndexPage/actions';
 // import { createStructuredSelector } from 'reselect';
 // import _ from 'lodash';
 // import makeSelectIdeasShow from './selectors';
 // import messages from './messages';
 
-// NOTE: Let's use unconnected component for now
-export default class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  componentWillUnmount() {
+    this.props.dispatch(setShowIdeaWithIndexPage(false));
+  }
+
   notFounHtml() {
     return (<h2>Idea Not Found :/</h2>);
   }
 
-  ideaHtml() {
-    const { idea } = this.props;
+  ideaHtml(idea) {
     return (
       <div>
         <h2><T value={idea.attributes.title_multiloc} /></h2>
         <p><strong>Some Author</strong></p>
+
         <div dangerouslySetInnerHTML={{ __html: idea.attributes.body_multiloc.en }}></div>
       </div>
     );
@@ -41,25 +45,21 @@ export default class IdeasShow extends React.PureComponent { // eslint-disable-l
             { name: 'description', content: 'Description of IdeasShow' },
           ]}
         />
-        { idea ? this.ideaHtml() : this.notFounHtml() }
+        { idea ? this.ideaHtml(idea) : this.notFounHtml() }
       </div>
     );
   }
 }
 
 IdeasShow.propTypes = {
-  // dispatch: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
   idea: PropTypes.object,
 };
 
-// const mapStateToProps = createStructuredSelector({
-//   IdeasShow: makeSelectIdeasShow(),
-// });
-//
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     dispatch,
-//   };
-// }
-//
-// export default connect(mapStateToProps, mapDispatchToProps)(IdeasShow);
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+export default connect(null, mapDispatchToProps)(IdeasShow);

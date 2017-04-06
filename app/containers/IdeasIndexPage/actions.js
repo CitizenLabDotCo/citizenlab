@@ -6,6 +6,7 @@
 
 import {
   LOAD_IDEAS_REQUEST, IDEAS_LOADED, IDEAS_LOADING_ERROR, IDEAS_RESET,
+  SET_SHOW_IDEA_WITH_INDEX_PAGE,
 } from './constants';
 
 export function ideasLoaded(ideas) {
@@ -33,5 +34,12 @@ export function loadIdeas(nextPageNumber, nextPageItemCount) {
 export function resetIdeas() {
   return {
     type: IDEAS_RESET,
+  };
+}
+
+export function setShowIdeaWithIndexPage(payload) {
+  return {
+    type: SET_SHOW_IDEA_WITH_INDEX_PAGE,
+    payload,
   };
 }
