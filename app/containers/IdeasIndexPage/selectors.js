@@ -26,7 +26,7 @@ const makeSelectIdeas = () => createSelector(
   (pageState, resources) => {
     const ids = pageState.get('ideas', []);
     const ideasMap = resources.get('ideas', {});
-    return ids.map((id) => ideasMap.get(id).toJS());
+    return ids.map((id) => ideasMap.get(id)).toJS();
   }
 );
 
