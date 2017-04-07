@@ -10,7 +10,7 @@ import {
 
 export function* fetchIdea(action) {
   try {
-    const json = yield call(Api.fetchIdea, action.payload); // eslint-disable-line
+    const json = yield call(Api.fetchIdea, action.payload);
     yield put(loadIdeaSuccess(json.data));
   } catch (e) {
     yield put(loadIdeaError(e));
