@@ -59,6 +59,7 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
         { error !== null && (
           <ErrorBox>
             <strong>An Error Occurred!</strong>
+            {/* TODO: fix */}
             { _.map(error.json, (msg, key) => (
               <p key={key}>{key}: {msg.join(', ')}</p>
             )) }
