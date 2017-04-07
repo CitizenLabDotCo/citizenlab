@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { mergeJsonApiResources } from 'utils/resources/actions';
-import Api from 'api';
+import * as Api from 'api';
 import { loadCurrentUserError, loadCurrentUserSuccess } from './actions';
 import { LOAD_CURRENT_USER_REQUEST } from './constants';
 

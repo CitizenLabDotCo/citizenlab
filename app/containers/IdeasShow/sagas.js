@@ -1,11 +1,26 @@
-// import { take, call, put, select } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
+import * as Api from 'api';
+import {
+  LOAD_IDEA_REQUEST,
+} from './constants';
+import {
+  loadIdeaSuccess,
+  loadIdeaError,
+} from './actions';
 
-// Individual exports for testing
-export function* defaultSaga() {
-  // See example in containers/HomePage/sagas.js
+export function* fetchIdea(action) {
+  try {
+    const json = yield call(Api.fetchIdea, action.payload);
+    yield put(loadIdeaSuccess(json.data));
+  } catch (e) {
+    yield put(loadIdeaError(e));
+  }
 }
 
-// All sagas to be loaded
+function* watchFetchIdea() {
+  yield takeLatest(LOAD_IDEA_REQUEST, fetchIdea);
+}
+
 export default [
-  defaultSaga,
+  watchFetchIdea,
 ];
