@@ -26,7 +26,15 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   }
 
   componentWillMount() {
-    this.props.initData();
+    if (!this.props.children) {
+      this.props.initData();
+    }
+  }
+
+  componentDidUpdate(previousProps) {
+    if (!this.props.children && (this.props.children !== previousProps.children)) {
+      this.props.initData();
+    }
   }
 
   componentWillUnmount() {
@@ -34,12 +42,18 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   }
 
   ideaShowPageHtml() {
-    const idea = this.findIdeaById();
-    return React.cloneElement(this.props.children, { idea });
+    const childProps = {
+      idea: null,
+      showIdeaWithIndexPage: false,
+    };
+    return React.cloneElement(this.props.children, childProps);
   }
 
   ideaShowDialogHtml() {
-    const idea = this.findIdeaById();
+    const childProps = {
+      idea: this.findIdeaById(),
+      showIdeaWithIndexPage: true,
+    };
     return (
       <div>
         <Reveal
@@ -50,7 +64,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
           data-animation-out="slide-out-right"
           ref={(ref) => ref && ref.instance.open()}
         >
-          { React.cloneElement(this.props.children, { idea }) }
+          { React.cloneElement(this.props.children, childProps) }
         </Reveal>
       </div>
     );

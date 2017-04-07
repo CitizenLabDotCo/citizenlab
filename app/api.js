@@ -47,6 +47,10 @@ export function fetchIdeas(nextPageNumber, nextPageItemCount) {
   return request(`${API_PATH}/ideas`, null, null, queryParameters);
 }
 
+export function fetchIdea(id) {
+  return request(`${API_PATH}/ideas/${id}`);
+}
+
 export function fetchCurrentUser() {
   return request(`${API_PATH}/users/me`);
 }
@@ -60,12 +64,3 @@ export function updateCurrentUser(values) {
 export function fetchCurrentTenant() {
   return request(`${API_PATH}/tenants/current`);
 }
-
-export default {
-  login,
-  socialLogin,
-  createUser,
-  fetchIdeas,
-  fetchCurrentUser,
-  fetchCurrentTenant,
-};
