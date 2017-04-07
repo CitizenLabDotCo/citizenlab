@@ -38,7 +38,8 @@ function ideasIndexPageReducer(state = initialState, action) {
       return state
         .set('loading', true);
     case SET_SHOW_IDEA_WITH_INDEX_PAGE:
-      return state.set('showIdeaWithIndexPage', action.payload);
+      return state
+        .set('showIdeaWithIndexPage', action.payload);
     case IDEAS_LOADED: {
       const ids = action.payload.data.map((idea) => idea.id);
 
@@ -46,16 +47,16 @@ function ideasIndexPageReducer(state = initialState, action) {
       const nextPageItemCount = getPageItemCountFromUrl(action.payload.links.next);
 
       return state
-        .update('ideas', (ideas) => ideas.concat(ids))
+        .update('ideas', (ideas) => (action.resetIdeas ? fromJS(ids) : ideas.concat(ids)))
         .set('nextPageNumber', nextPageNumber)
         .set('nextPageItemCount', nextPageItemCount)
         .set('loading', false);
     }
     case IDEAS_RESET:
       return state
+        .set('ideas', fromJS([]))
         .set('nextPageNumber', null)
-        .set('nextPageItemCount', null)
-        .set('ideas', []);
+        .set('nextPageItemCount', null);
     default:
       return state;
   }

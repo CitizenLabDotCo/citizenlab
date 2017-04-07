@@ -158,10 +158,10 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     initData: () => {
-      dispatch(loadIdeas());
+      dispatch(loadIdeas(true));
     },
     loadNextPage: (nextPageNumber, nextPageItemCount) => {
-      dispatch(loadIdeas(nextPageNumber, nextPageItemCount));
+      dispatch(loadIdeas(false, nextPageNumber, nextPageItemCount));
     },
     resetData: () => {
       dispatch(resetIdeas());
