@@ -5,28 +5,28 @@
  */
 
 import {
-  LOAD_IDEA_PENDING,
-  LOAD_IDEA_FULFILLED,
-  LOAD_IDEA_REJECTED,
+  LOAD_IDEA_REQUEST,
+  LOAD_IDEA_SUCCESS,
+  LOAD_IDEA_ERROR,
 } from './constants';
 
 export function loadIdea(payload) {
   return {
-    type: LOAD_IDEA_PENDING,
+    type: LOAD_IDEA_REQUEST,
     payload,
   };
 }
 
-export function loadIdeaFullfilled(payload) {
+export function loadIdeaSuccess(payload) {
   return {
-    type: LOAD_IDEA_FULFILLED,
+    type: LOAD_IDEA_SUCCESS,
     payload,
   };
 }
 
-export function loadIdeaRejected(payload) {
+export function loadIdeaError(payload) {
   return {
-    type: LOAD_IDEA_REJECTED,
+    type: LOAD_IDEA_ERROR,
     payload,
     error: true,
   };

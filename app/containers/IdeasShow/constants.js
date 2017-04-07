@@ -4,6 +4,6 @@
  *
  */
 
-export const LOAD_IDEA_PENDING = 'app/IdeasIndexPage/LOAD_IDEA_PENDING';
-export const LOAD_IDEA_FULFILLED = 'app/IdeasIndexPage/LOAD_IDEA_FULFILLED';
-export const LOAD_IDEA_REJECTED = 'app/IdeasIndexPage/LOAD_IDEA_REJECTED';
+export const LOAD_IDEA_REQUEST = 'app/IdeasIndexPage/LOAD_IDEA_REQUEST';
+export const LOAD_IDEA_SUCCESS = 'app/IdeasIndexPage/LOAD_IDEA_SUCCESS';
+export const LOAD_IDEA_ERROR = 'app/IdeasIndexPage/LOAD_IDEA_ERROR';

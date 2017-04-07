@@ -13,7 +13,7 @@ import { setShowIdeaWithIndexPage } from 'containers/IdeasIndexPage/actions';
 import { createStructuredSelector } from 'reselect';
 import {
   loadIdea,
-  loadIdeaFullfilled,
+  loadIdeaSuccess,
 } from './actions';
 import makeSelectIdeasShow from './selectors';
 
@@ -28,7 +28,7 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
     this.props.dispatch(setShowIdeaWithIndexPage(false));
 
     if (this.props.showIdeaWithIndexPage === false) {
-      this.props.dispatch(loadIdeaFullfilled(null));
+      this.props.dispatch(loadIdeaSuccess(null));
     }
   }
 

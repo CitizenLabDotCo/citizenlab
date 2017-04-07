@@ -6,7 +6,7 @@
 
 import { fromJS } from 'immutable';
 import {
-  LOAD_IDEA_FULFILLED,
+  LOAD_IDEA_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
@@ -15,7 +15,7 @@ const initialState = fromJS({
 
 function ideasShowReducer(state = initialState, action) {
   switch (action.type) {
-    case LOAD_IDEA_FULFILLED:
+    case LOAD_IDEA_SUCCESS:
       return state.set('idea', action.payload);
     default:
       return state;
