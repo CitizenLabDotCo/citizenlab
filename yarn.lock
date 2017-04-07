@@ -5773,13 +5773,13 @@ object-assign@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-3.0.0.tgz#9bedd5ca0897949bca47e7ff408062d549f587f2"
 
-object-assign@^4.0.0, object-assign@^4.0.1, object-assign@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.0.tgz#7a3b3d0e98063d43f4c03f2e8ae6cd51a86883a0"
-
-object-assign@^4.1.1:
+object-assign@^4.0.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
+
+object-assign@^4.0.1, object-assign@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.0.tgz#7a3b3d0e98063d43f4c03f2e8ae6cd51a86883a0"
 
 object-is@^1.0.1:
   version "1.0.1"
@@ -6574,6 +6574,10 @@ react-dropzone@^3.12.2:
   dependencies:
     attr-accept "^1.0.3"
 
+react-easy-swipe@0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/react-easy-swipe/-/react-easy-swipe-0.0.8.tgz#6d265d54993df46169634f752a85b9f2e176ac6b"
+
 react-element-to-jsx-string@^2.1.0:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/react-element-to-jsx-string/-/react-element-to-jsx-string-2.6.1.tgz#11dae96b6aae135d1c6b12c9fb98693a88ac110a"
@@ -6656,6 +6660,13 @@ react-redux@4.4.6:
     invariant "^2.0.0"
     lodash "^4.2.0"
     loose-envify "^1.1.0"
+
+react-responsive-carousel@^3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/react-responsive-carousel/-/react-responsive-carousel-3.1.5.tgz#93f8f80c04101268b9c8c8fb89f58d79f1f4f2d9"
+  dependencies:
+    classnames "^2.2.5"
+    react-easy-swipe "0.0.8"
 
 react-router-redux@4.0.6:
   version "4.0.6"
