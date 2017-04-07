@@ -11,7 +11,8 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import _ from 'lodash';
 import IdeaCard from 'components/IdeaCard';
-import { Row, Column, Button, Label, Reveal } from 'components/Foundation';
+import { Button, Label, Reveal } from 'components/Foundation';
+import { Card } from 'semantic-ui-react';
 import styled from 'styled-components';
 import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber } from './selectors';
 import { loadIdeas, resetIdeas, setShowIdeaWithIndexPage } from './actions';
@@ -95,13 +96,12 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
           <FormattedMessage {...messages.header} />
         </h1>
 
-        <Row data-equalizer>
+        <Card.Group itemsPerRow={4} doubling stackable>
           {ideas && ideas.map((idea) => (
-            <Column key={idea.id} small={12} medium={4} large={3}>
-              <IdeaCard idea={idea} onClick={() => { this.props.dispatch(setShowIdeaWithIndexPage(true)); this.props.router.push(`/ideas/${idea.id}`); }}></IdeaCard>
-            </Column>
+            <IdeaCard key={idea.id} idea={idea} onClick={() => { this.props.dispatch(setShowIdeaWithIndexPage(true)); this.props.router.push(`/ideas/${idea.id}`); }}></IdeaCard>
           ))}
-        </Row>
+        </Card.Group>
+
         {/* eslint-disable-next-line jsx-ally/no-static-element-interactions */}
         <CenteredDiv onClick={this.goToNextPage}>
           {(nextPageNumber && !loading) && <Button>

@@ -18,7 +18,8 @@ import { makeSelectCurrentUser } from 'utils/auth/selectors';
 import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
 import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
-import { Row, Column } from 'components/Foundation';
+import { Container } from 'semantic-ui-react';
+import 'semantic-ui-css/semantic.css';
 import Navbar from './Navbar';
 
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -39,11 +40,9 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
             currentTenant={currentTenant}
           >
           </Navbar>
-          <Row>
-            <Column large={12}>
-              {React.Children.toArray(this.props.children)}
-            </Column>
-          </Row>
+          <Container>
+            {React.Children.toArray(this.props.children)}
+          </Container>
         </div>
       );
     } else { // eslint-disable-line no-else-return

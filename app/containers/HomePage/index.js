@@ -72,6 +72,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             My name is Reveal. I am a Foundation modal.
           </div>
         </Reveal>
+
       </div>
     );
   }
