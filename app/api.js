@@ -60,12 +60,3 @@ export function updateCurrentUser(values) {
 export function fetchCurrentTenant() {
   return request(`${API_PATH}/tenants/current`);
 }
-
-export default {
-  login,
-  socialLogin,
-  createUser,
-  fetchIdeas,
-  fetchCurrentUser,
-  fetchCurrentTenant,
-};

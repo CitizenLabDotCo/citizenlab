@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import Api from 'api';
+import * as Api from 'api';
 import {
   CREATE_USER_PENDING,
   CREATE_USER_FULFILLED,
