@@ -10,6 +10,7 @@ describe('ideasIndexPageReducer', () => {
       nextPageItemCount: null,
       ideas: [],
       loading: false,
+      showIdeaWithIndexPage: false,
     };
 
     expect(ideasIndexPageReducer(undefined, {})).toEqual(fromJS(expectedInitialState));

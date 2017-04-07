@@ -5,11 +5,29 @@
  */
 
 import {
-  DEFAULT_ACTION,
+  LOAD_IDEA_REQUEST,
+  LOAD_IDEA_SUCCESS,
+  LOAD_IDEA_ERROR,
 } from './constants';
 
-export function defaultAction() {
+export function loadIdea(payload) {
   return {
-    type: DEFAULT_ACTION,
+    type: LOAD_IDEA_REQUEST,
+    payload,
+  };
+}
+
+export function loadIdeaSuccess(payload) {
+  return {
+    type: LOAD_IDEA_SUCCESS,
+    payload,
+  };
+}
+
+export function loadIdeaError(payload) {
+  return {
+    type: LOAD_IDEA_ERROR,
+    payload,
+    error: true,
   };
 }
