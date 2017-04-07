@@ -27,8 +27,10 @@ export const ideasNewPageInitialState = fromJS({
     longTitleError: false,
     titleLength: 0,
     attachments: [],
+    loadAttachmentsError: false,
     storeAttachmentError: false,
     images: [],
+    loadImagesError: false,
     storeImageError: false,
   },
 });
