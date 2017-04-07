@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { selectResourcesDomain } from 'utils/resources/selectors';
+import { fromJS } from 'immutable';
 
 /**
  * Direct selector to the ideasIndexPage state domain
@@ -24,8 +25,8 @@ const makeSelectIdeas = () => createSelector(
   selectIdeasIndexPageDomain(),
   selectResourcesDomain(),
   (pageState, resources) => {
-    const ids = pageState.get('ideas', []);
-    const ideasMap = resources.get('ideas', {});
+    const ids = pageState.get('ideas', fromJS([]));
+    const ideasMap = resources.get('ideas', fromJS({}));
     return ids.map((id) => ideasMap.get(id)).toJS();
   }
 );

@@ -55,7 +55,7 @@ function ideasIndexPageReducer(state = initialState, action) {
       return state
         .set('nextPageNumber', null)
         .set('nextPageItemCount', null)
-        .set('ideas', []);
+        .set('ideas', fromJS([]));
     default:
       return state;
   }
