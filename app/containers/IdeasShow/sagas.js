@@ -1,11 +1,26 @@
-// import { take, call, put, select } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
+import * as Api from 'api';
+import {
+  LOAD_IDEA_PENDING,
+} from './constants';
+import {
+  loadIdeaFullfilled,
+  loadIdeaRejected,
+} from './actions';
 
-// Individual exports for testing
-export function* defaultSaga() {
-  // See example in containers/HomePage/sagas.js
+export function* fetchIdea(action) {
+  try {
+    const json = yield call(Api.fetchIdea, action.payload); // eslint-disable-line
+    yield put(loadIdeaFullfilled(json.data));
+  } catch (e) {
+    yield put(loadIdeaRejected(e));
+  }
 }
 
-// All sagas to be loaded
+function* watchFetchIdea() {
+  yield takeLatest(LOAD_IDEA_PENDING, fetchIdea);
+}
+
 export default [
-  defaultSaga,
+  watchFetchIdea,
 ];

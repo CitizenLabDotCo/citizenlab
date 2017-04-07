@@ -9,16 +9,35 @@ import Helmet from 'react-helmet';
 import T from 'containers/T';
 import { connect } from 'react-redux';
 import ImageCarousel from 'components/ImageCarousel';
+import { setShowIdeaWithIndexPage } from 'containers/IdeasIndexPage/actions';
+import { createStructuredSelector } from 'reselect';
+import {
+  loadIdea,
+  loadIdeaFullfilled,
+} from './actions';
+import makeSelectIdeasShow from './selectors';
 
-// NOTE: Let's use unconnected component for now
-class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  componentDidMount() {
+    if (this.props.showIdeaWithIndexPage === false) {
+      this.props.dispatch(loadIdea(this.props.params.slug));
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(setShowIdeaWithIndexPage(false));
+
+    if (this.props.showIdeaWithIndexPage === false) {
+      this.props.dispatch(loadIdeaFullfilled(null));
+    }
+  }
+
   notFoundHtml() {
     return (<h2>Idea Not Found :/</h2>);
   }
 
-  ideaHtml() {
-    const { idea } = this.props;
-    const attributes = idea.attributes;
+  ideaHtml(idea) {
+    const { attributes } = idea;
 
     return (
       <div>
@@ -33,7 +52,7 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
   }
 
   render() {
-    const { idea } = this.props;
+    const idea = this.props.idea || this.props.pageData.idea;
     return (
       <div>
         <Helmet
@@ -42,15 +61,23 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
             { name: 'description', content: 'Description of IdeasShow' },
           ]}
         />
-        { idea ? this.ideaHtml() : this.notFoundHtml() }
+        { idea ? this.ideaHtml(idea) : this.notFoundHtml() }
       </div>
     );
   }
 }
 
 IdeasShow.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   idea: PropTypes.object,
+  pageData: PropTypes.object,
+  showIdeaWithIndexPage: PropTypes.bool,
+  params: PropTypes.object,
 };
+
+const mapStateToProps = createStructuredSelector({
+  pageData: makeSelectIdeasShow(),
+});
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -58,4 +85,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(IdeasShow);
+export default connect(mapStateToProps, mapDispatchToProps)(IdeasShow);
