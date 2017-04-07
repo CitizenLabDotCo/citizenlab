@@ -12,6 +12,15 @@ import Select from 'react-select';
 import { appLocales } from '../../i18n';
 import messages from './messages';
 
+export const LocaleSelector = (props) => (
+  <Select
+    name="form-field-name"
+    value={props.currentLocale}
+    options={props.options}
+    onChange={props.onLocaleChangeClick}
+  />
+);
+
 export default class LocaleChanger extends React.PureComponent {
   constructor() {
     super();
@@ -45,11 +54,10 @@ export default class LocaleChanger extends React.PureComponent {
       <div>
         <FormattedMessage {...messages.header} />
         <FormattedMessage {...messages.appReload} />
-        <Select
-          name="form-field-name"
-          value={currentLocale}
+        <LocaleSelector
+          onLocaleChangeClick={this.localeChangeClick}
+          currentLocale={currentLocale}
           options={options}
-          onChange={this.localeChangeClick}
         />
       </div>
     );
@@ -59,4 +67,10 @@ export default class LocaleChanger extends React.PureComponent {
 LocaleChanger.propTypes = {
   onLocaleChangeClick: PropTypes.func.isRequired,
   currentLocale: PropTypes.string.isRequired,
+};
+
+LocaleSelector.propTypes = {
+  onLocaleChangeClick: PropTypes.func.isRequired,
+  currentLocale: PropTypes.string.isRequired,
+  options: PropTypes.array.isRequired,
 };
