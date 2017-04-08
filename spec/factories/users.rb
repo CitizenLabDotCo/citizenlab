@@ -9,5 +9,6 @@ FactoryGirl.define do
     services {}
     demographics {}
     roles []
+    locale "en"
   end
 end

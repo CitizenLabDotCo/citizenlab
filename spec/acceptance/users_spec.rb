@@ -70,12 +70,14 @@ resource "Users" do
         parameter :last_name, "User full name", required: true
         parameter :email, "E-mail address", required: true
         parameter :password, "Password", required: true
+        parameter :locale, "Locale. Should be one of the tenants locales", required: true
       end
 
       let(:first_name) {Faker::Name.first_name}
       let(:last_name) {Faker::Name.last_name}
       let(:email) {Faker::Internet.email}
       let(:password) {Faker::Internet.password}
+      let(:locale) { "en" }
 
       example_request "Create a new user" do
         expect(response_status).to eq 201
@@ -88,6 +90,7 @@ resource "Users" do
         parameter :last_name, "User full name"
         parameter :email, "E-mail address"
         parameter :password, "Password"
+        parameter :locale, "Locale. Should be one of the tenants locales"
       end
 
       let(:id) { @user.id }
