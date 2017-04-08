@@ -1,7 +1,7 @@
 class Api::V1::UserSerializer < ActiveModel::Serializer
   include Knock::Authenticable
 
-  attributes :id, :first_name, :last_name, :slug, :avatar
+  attributes :id, :first_name, :last_name, :slug, :avatar, :locale
   attribute :email, if: :view_private_attributes?
 
   def view_private_attributes?

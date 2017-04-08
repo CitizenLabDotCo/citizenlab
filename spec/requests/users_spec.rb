@@ -20,6 +20,7 @@ RSpec.describe "Users API", type: :request do
         last_name:  'Guy',
         email: 'testguy@gmail.com',
         password: 'pass1234',
+        locale: 'en'
       }
       post endpoint_url, params: { user: user_params }
 
@@ -35,6 +36,7 @@ RSpec.describe "Users API", type: :request do
         email: 'testguy@gmail.com',
         password: 'pass1234',
         avatar: get_avatar_image,
+        locale: 'en'
       }
       post endpoint_url, params: { user: user_params }
       

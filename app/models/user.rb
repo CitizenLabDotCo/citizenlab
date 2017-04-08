@@ -7,6 +7,7 @@ class User < ApplicationRecord
   validates :email, :slug, uniqueness: true
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
   validates :first_name, :last_name, :slug, :email, presence: true
+  validates :locale, presence: true, inclusion: { in: proc {Tenant.settings('core','locales')} }
 
   before_validation :generate_slug
 
