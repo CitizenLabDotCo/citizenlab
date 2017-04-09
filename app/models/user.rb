@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
-  mount_uploader :avatar, AvatarUploader
+  mount_base64_uploader :avatar, AvatarUploader
 
   has_many :ideas, foreign_key: :author_id
 
@@ -10,6 +10,8 @@ class User < ApplicationRecord
   validates :locale, presence: true, inclusion: { in: proc {Tenant.settings('core','locales')} }
 
   before_validation :generate_slug
+  # For prepend: true, see https://github.com/carrierwaveuploader/carrierwave/wiki/Known-Issues#activerecord-callback-ordering
+  before_save :generate_avatar, on: :create, prepend: true
 
   def avatar_blank?
     avatar.file.nil?
@@ -23,6 +25,13 @@ class User < ApplicationRecord
 
   def generate_slug
     self.slug ||= [self.first_name.parameterize, self.last_name.parameterize].join('-')
+  end
+
+  def generate_avatar
+    unless self.avatar?
+      hash = Digest::MD5.hexdigest(self.email)
+      self.remote_avatar_url = "https://www.gravatar.com/avatar/#{hash}?d=retro&size=640"
+    end
   end
 
 end

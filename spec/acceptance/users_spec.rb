@@ -71,6 +71,8 @@ resource "Users" do
         parameter :email, "E-mail address", required: true
         parameter :password, "Password", required: true
         parameter :locale, "Locale. Should be one of the tenants locales", required: true
+        parameter :avatar, "Base64 encoded avatar image"
+
       end
 
       let(:first_name) {Faker::Name.first_name}
@@ -78,6 +80,7 @@ resource "Users" do
       let(:email) {Faker::Internet.email}
       let(:password) {Faker::Internet.password}
       let(:locale) { "en" }
+      let(:avatar) { base64_encoded_image }
 
       example_request "Create a new user" do
         expect(response_status).to eq 201
@@ -91,6 +94,7 @@ resource "Users" do
         parameter :email, "E-mail address"
         parameter :password, "Password"
         parameter :locale, "Locale. Should be one of the tenants locales"
+        parameter :avatar, "Base64 encoded avatar image"
       end
 
       let(:id) { @user.id }
@@ -102,5 +106,16 @@ resource "Users" do
         expect(json_response.dig(:data, :attributes, :first_name)).to eq "Edmond"
       end
     end
+  end
+
+  private
+
+
+  def base64_encoded_image
+    "data:image/jpeg;base64,#{encode_image_as_base64("lorem-ipsum.jpg")}"
+  end
+
+  def encode_image_as_base64(filename)
+    Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))
   end
 end
