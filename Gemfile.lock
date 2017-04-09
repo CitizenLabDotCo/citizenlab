@@ -62,6 +62,9 @@ GEM
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
       mime-types (>= 1.16)
+    carrierwave-base64 (2.5.0)
+      carrierwave (>= 0.8.0)
+      mime-types (~> 3.0)
     case_transform (0.2)
       activesupport
     ci_reporter (2.0.0)
@@ -277,6 +280,7 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   byebug
   carrierwave (~> 1.0)
+  carrierwave-base64 (~> 2.5)
   ci_reporter_rspec
   database_cleaner
   factory_girl_rails
