@@ -7,6 +7,22 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
+def create_idea_tree(idea, parent, depth=0)
+  amount = rand(5/(depth+1))
+  amount.times do |i|
+    c = Comment.create({
+      body_multiloc: {
+        "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+        "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+      },
+      author: User.offset(rand(User.count)).first,
+      idea: idea,
+      parent: parent
+    })
+    create_idea_tree(idea, c, depth+1)
+  end
+end
+
 Tenant.create({
   name: 'local',
   host: 'localhost',
@@ -20,6 +36,7 @@ Tenant.create({
 })
 
 Apartment::Tenant.switch('localhost') do
+
   User.create({
     first_name: 'Koen',
     last_name: 'Gremmelprez',
@@ -27,6 +44,16 @@ Apartment::Tenant.switch('localhost') do
     password: 'testtest',
     locale: 'en'
   })
+
+  7.times do 
+    User.create({
+      first_name: Faker::Name.first_name,
+      last_name: Faker::Name.last_name,
+      email: Faker::Internet.email,
+      password: 'testtest',
+      locale: ['en','nl'][rand(1)]
+    })
+  end
 
 
   12.times do 
@@ -78,7 +105,7 @@ Apartment::Tenant.switch('localhost') do
   })
 
   30.times do 
-    Idea.create({
+    idea = Idea.create({
       "title_multiloc": {
         "en": Faker::Lorem.sentence,
         "nl": Faker::Lorem.sentence
@@ -94,6 +121,8 @@ Apartment::Tenant.switch('localhost') do
       publication_status: 'published',
       images: [0,0,1,1,2][rand(5)].times.map{ Rails.root.join("spec/fixtures/image#{rand(20)}.png").open }
     })
+
+    create_idea_tree(idea, nil)
   end
 
 end

@@ -2,7 +2,9 @@ Rails.application.routes.draw do
 
   namespace :api, :defaults => {:format => :json} do
     namespace :v1 do
-      resources :ideas
+      resources :ideas do
+        resources :comments, shallow: true
+      end
       # auth
       post 'user_token' => 'user_token#create'
       post 'social_login' => 'social_login#create'

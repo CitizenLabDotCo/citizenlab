@@ -17,7 +17,6 @@ resource "Ideas" do
     example_request "List all ideas" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
-      p json_response
       expect(json_response[:data].size).to eq 5
     end
 
