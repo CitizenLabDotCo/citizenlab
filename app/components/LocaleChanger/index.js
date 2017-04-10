@@ -15,7 +15,7 @@ import messages from './messages';
 export const LocaleSelector = (props) => (
   <Select
     name="form-field-name"
-    value={props.currentLocale}
+    value={props.userLocale}
     options={props.options}
     onChange={props.onLocaleChangeClick}
   />
@@ -25,21 +25,12 @@ export default class LocaleChanger extends React.PureComponent {
   constructor() {
     super();
 
-    this.state = {
-      currentLocale: 'en',
-    };
-
     // bind events
     this.localeChangeClick.bind(this);
   }
 
   localeChangeClick = (result) => {
-    const newLocale = result.value;
-
-    this.props.onLocaleChangeClick(newLocale);
-    this.setState({
-      currentLocale: newLocale,
-    });
+    this.props.onLocaleChangeClick(result.value);
   };
 
   render() {
@@ -48,17 +39,14 @@ export default class LocaleChanger extends React.PureComponent {
       label: appLocale.name,
     }));
 
-    const { currentLocale } = this.props;
-
     return (
       <div>
         <FormattedMessage {...messages.header} />
-        <FormattedMessage {...messages.appReload} />
-        <LocaleSelector
+        {this.props.userLocale && <LocaleSelector
           onLocaleChangeClick={this.localeChangeClick}
-          currentLocale={currentLocale}
           options={options}
-        />
+          userLocale={this.props.userLocale}
+        />}
       </div>
     );
   }
@@ -66,11 +54,11 @@ export default class LocaleChanger extends React.PureComponent {
 
 LocaleChanger.propTypes = {
   onLocaleChangeClick: PropTypes.func.isRequired,
-  currentLocale: PropTypes.string.isRequired,
+  userLocale: PropTypes.string, // received async
 };
 
 LocaleSelector.propTypes = {
   onLocaleChangeClick: PropTypes.func.isRequired,
-  currentLocale: PropTypes.string.isRequired,
+  userLocale: PropTypes.string, // received async
   options: PropTypes.array.isRequired,
 };

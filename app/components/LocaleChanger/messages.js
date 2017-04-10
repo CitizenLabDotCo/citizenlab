@@ -10,8 +10,4 @@ export default defineMessages({
     id: 'app.components.LocaleChanger.header',
     defaultMessage: 'Language:',
   },
-  appReload: {
-    id: 'app.components.LocaleChanger.appReload',
-    defaultMessage: '(Not stored in profile and will reset the data!)',
-  },
 });

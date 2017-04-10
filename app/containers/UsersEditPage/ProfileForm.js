@@ -33,7 +33,10 @@ export default class ProfileForm extends React.PureComponent {
   }
 
   render() {
-    const { avatarUploadError, avatarUpload, userData, onLocaleChangeClick, currentLocale } = this.props;
+    const { avatarUploadError, avatarUpload, userData, onLocaleChangeClick } = this.props;
+    const userLocale = (userData
+      ? userData.locale
+      : 'en');
 
     return (
       <LocalForm
@@ -56,13 +59,14 @@ export default class ProfileForm extends React.PureComponent {
               avatarURL={userData.avatar}
             />
             <LocaleChanger
-              currentLocale={currentLocale}
               onLocaleChangeClick={onLocaleChangeClick}
+              userLocale={userLocale}
             />
           </Column>
         </Row>
         <button type="submit">Submit</button>
         <LabelInputPair id="avatar" hidden />
+        <LabelInputPair id="locale" hidden />
         <LabelInputPair id="userId" hidden />
       </LocalForm>
     );
@@ -75,5 +79,4 @@ ProfileForm.propTypes = {
   onLocaleChangeClick: PropTypes.func.isRequired,
   userData: PropTypes.object.isRequired,
   avatarUploadError: PropTypes.bool.isRequired,
-  currentLocale: PropTypes.string.isRequired,
 };

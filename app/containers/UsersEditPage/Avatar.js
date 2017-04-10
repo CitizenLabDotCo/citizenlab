@@ -12,16 +12,14 @@ export function dropzoneImage(avatarURL) {
     backgroundPosition: 'center',
     backgroundImage: `url('${avatarURL}')`,
     backgroundSize: '100%',
-    width: '100px',
-    height: '100px',
+    margin: '5% auto',
+    width: '90%',
+    height: '90%',
   };
 
   return (
     avatarURL
-      ? (<img
-        role="presentation"
-        style={style}
-      />)
+      ? (<div style={style}></div>)
       : <span />
   );
 }
@@ -114,7 +112,7 @@ class Avatar extends React.PureComponent {
 
 Avatar.propTypes = {
   onAvatarUpload: PropTypes.func.isRequired,
-  avatarURL: PropTypes.string,
+  avatarURL: PropTypes.any,
   avatarUploadError: PropTypes.bool.isRequired,
 };
 

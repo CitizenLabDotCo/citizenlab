@@ -22,6 +22,11 @@ const makeSelectUserData = () => createSelector(
   (profileState) => profileState.get('currentUser')
 );
 
+const makeSelectFormLocale = () => createSelector(
+  selectProfile,
+  (profileState) => profileState.get('formLocale')
+);
+
 const makeSelectProcessing = () => createSelector(
   selectProfile,
   (profileState) => profileState.get('processing')
@@ -45,4 +50,5 @@ export {
   makeSelectProcessing,
   makeSelectStored,
   makeSelectAvatarUploadError,
+  makeSelectFormLocale,
 };

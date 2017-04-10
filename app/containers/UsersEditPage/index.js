@@ -17,11 +17,9 @@ import {
 } from './selectors';
 
 import messages from './messages';
-import { avatarStoreError, storeAvatar, updateCurrentUser } from './actions';
+import { avatarStoreError, storeAvatar, updateCurrentUser, updateLocale } from './actions';
 import ProfileForm from './ProfileForm';
 import { loadCurrentUser } from '../App/actions';
-import { changeLocale } from '../LanguageProvider/actions';
-import { makeSelectLocale } from '../LanguageProvider/selectors';
 
 const ProfileDiv = styled.div`
   padding: 20px;
@@ -35,7 +33,7 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
   }
 
   render() {
-    const { loading, loadError, storeError, processing, stored, userData, onAvatarUpload, avatarUploadError, onProfileFormSubmit, onLocaleChangeClick, currentLocale } = this.props;
+    const { loading, loadError, storeError, processing, stored, userData, onAvatarUpload, avatarUploadError, onProfileFormSubmit, onLocaleChangeClick } = this.props;
 
     return (
       <ProfileDiv>
@@ -53,7 +51,6 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
         {stored && <FormattedMessage {...messages.stored} />}
 
         <ProfileForm
-          currentLocale={currentLocale}
           onLocaleChangeClick={onLocaleChangeClick}
           userData={userData}
           avatarUpload={onAvatarUpload}
@@ -77,7 +74,6 @@ UsersEditPage.propTypes = {
   onAvatarUpload: PropTypes.func.isRequired,
   avatarUploadError: PropTypes.bool.isRequired,
   onLocaleChangeClick: PropTypes.func.isRequired,
-  currentLocale: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -88,7 +84,6 @@ const mapStateToProps = createStructuredSelector({
   processing: makeSelectProcessing(),
   stored: makeSelectStored(),
   avatarUploadError: makeSelectAvatarUploadError(),
-  currentLocale: makeSelectLocale(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -107,7 +102,7 @@ export function mapDispatchToProps(dispatch) {
       }
     },
     onLocaleChangeClick: (locale) => {
-      dispatch(changeLocale(locale));
+      dispatch(updateLocale(locale));
     },
   };
 }
