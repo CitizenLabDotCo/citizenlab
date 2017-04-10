@@ -12,6 +12,7 @@ resource "Ideas" do
     parameter :topics, 'Filter by topics (AND)', required: false
     parameter :areas, 'Filter by areas (AND)', required: false
     parameter :lab, 'Filter by lab', required: false
+    parameter :author, 'Filter by author (user id)', required: false
 
     example_request "List all ideas" do
       expect(status).to eq(200)
@@ -103,6 +104,16 @@ resource "Ideas" do
       i = create(:idea, lab: l)
 
       do_request(lab: l.id)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq i.id
+    end
+
+    example "List all ideas for a user" do
+      u = create(:user)
+      i = create(:idea, author: u)
+
+      do_request(author: u.id)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id
