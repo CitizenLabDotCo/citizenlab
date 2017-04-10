@@ -11,11 +11,12 @@ describe "seedfile" do
     expect(Tenant.count).to be(2)
     # 2 and not 1, because the test tenant generated for all tests is also there
     Apartment::Tenant.switch('localhost') do
-      expect(User.count).to be(1)
+      expect(User.count).to be 8
       expect(Topic.count).to be > 0
       expect(Area.count).to be > 0
       expect(Lab.count).to be > 0
       expect(Idea.count).to be > 0
+      expect(Comment.count).to be > 0
     end
   end
 

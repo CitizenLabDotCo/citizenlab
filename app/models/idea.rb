@@ -8,6 +8,7 @@ class Idea < ApplicationRecord
   has_many :topics, through: :ideas_topics
   has_many :areas_ideas, dependent: :destroy
   has_many :areas, through: :areas_ideas
+  has_many :comments, dependent: :destroy
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
   validates :title_multiloc, presence: true, multiloc: {presence: true}

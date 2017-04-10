@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170407113052) do
+ActiveRecord::Schema.define(version: 20170410152320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,23 @@ ActiveRecord::Schema.define(version: 20170407113052) do
     t.uuid "lab_id"
     t.index ["area_id"], name: "index_areas_labs_on_area_id", using: :btree
     t.index ["lab_id"], name: "index_areas_labs_on_lab_id", using: :btree
+  end
+
+  create_table "comments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "author_id"
+    t.uuid     "idea_id"
+    t.uuid     "parent_id"
+    t.integer  "lft",                        null: false
+    t.integer  "rgt",                        null: false
+    t.jsonb    "body_multiloc", default: {}
+    t.string   "author_name"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["author_id"], name: "index_comments_on_author_id", using: :btree
+    t.index ["idea_id"], name: "index_comments_on_idea_id", using: :btree
+    t.index ["lft"], name: "index_comments_on_lft", using: :btree
+    t.index ["parent_id"], name: "index_comments_on_parent_id", using: :btree
+    t.index ["rgt"], name: "index_comments_on_rgt", using: :btree
   end
 
   create_table "ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -113,6 +130,8 @@ ActiveRecord::Schema.define(version: 20170407113052) do
   add_foreign_key "areas_ideas", "ideas"
   add_foreign_key "areas_labs", "areas"
   add_foreign_key "areas_labs", "labs"
+  add_foreign_key "comments", "ideas"
+  add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "ideas", "labs"
   add_foreign_key "ideas", "users", column: "author_id"
   add_foreign_key "ideas_topics", "ideas"
