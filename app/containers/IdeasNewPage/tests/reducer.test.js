@@ -1,7 +1,9 @@
 
 import { fromJS } from 'immutable';
 import ideasNewPageReducer, { ideasNewPageInitialState } from '../reducer';
-import { attachmentStored, draftLoaded, draftStored, imageStored, loadDraft, setTitle } from '../actions';
+import {
+  draftLoaded, draftStored, loadDraft, setTitle, storeAttachment, storeImage,
+} from '../actions';
 import { randomString } from '../../../utils/testUtils';
 
 describe('ideasNewPageReducer', () => {
@@ -96,25 +98,25 @@ describe('ideasNewPageReducer', () => {
     expect(nextState).toEqual(expectedState.draft.longTitleError);
   });
 
-  it('should returns existing attachments on attachmentStored action', () => {
+  it('should returns existing attachments on storeAttachment action', () => {
     const attachments = ['1'];
     const expectedState = initialState;
     expectedState.draft.attachments = attachments;
 
     const nextState = ideasNewPageReducer(
-      fromJS(ideasNewPageInitialState), attachmentStored(attachments[0])
+      fromJS(ideasNewPageInitialState), storeAttachment(attachments[0])
     ).toJS();
 
     expect(nextState.draft.attachments).toEqual(expectedState.draft.attachments);
   });
 
-  it('should returns existing images on imageStored action', () => {
+  it('should returns existing images on storeImage action', () => {
     const images = ['1'];
     const expectedState = initialState;
     expectedState.draft.images = images;
 
     const nextState = ideasNewPageReducer(
-      fromJS(ideasNewPageInitialState), imageStored(images[0])
+      fromJS(ideasNewPageInitialState), storeImage(images[0])
     ).toJS();
 
     expect(nextState.draft.images).toEqual(expectedState.draft.images);

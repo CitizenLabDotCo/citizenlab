@@ -1,7 +1,7 @@
 // TODO enable eslint
 /* eslint-disable */
 import hello from 'hellojs';
-import Api from 'api';
+import * as Api from 'api';
 
 hello.init({
   facebook: 1759232984393029,

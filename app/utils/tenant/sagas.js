@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { mergeJsonApiResources } from 'utils/resources/actions';
-import Api from 'api';
+import * as Api from 'api';
 import { loadCurrentTenantError, loadCurrentTenantSuccess } from './actions';
 import { LOAD_CURRENT_TENANT_REQUEST } from './constants';
 

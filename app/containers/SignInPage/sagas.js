@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { storeJwt, loadCurrentUserRequest } from 'utils/auth/actions';
-import Api from 'api';
+import * as Api from 'api';
 import { setJwt } from 'utils/request';
 import { AUTHENTICATE_REQUEST } from './constants';
 import { authenticateError } from './actions';
