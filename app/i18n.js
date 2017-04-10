@@ -21,11 +21,11 @@ export const appLocales = [
   },
   {
     id: 'fr',
-    name: 'French',
+    name: 'Français',
   },
   {
     id: 'nl',
-    name: 'Dutch',
+    name: 'Nederlands',
   },
 ];
 
