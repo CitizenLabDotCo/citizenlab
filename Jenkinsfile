@@ -4,21 +4,30 @@ pipeline {
     nodejs 'Node 7.x'
   }
   stages {
-    stage('Build') {
+    stage('Install dependencies') {
       steps {
-        echo 'Building containers'
+        echo 'Installing'
         sh 'yarn install'
       }
     }
     stage('Test') {
       steps {
-        echo 'testing'
+        echo 'Testing'
         sh 'yarn run test'
       }
     }
-    stage("Deploy to staging") {
+    stage('Build') {
       steps {
+        echo 'Building'
         sh 'yarn run build'
+      }
+    }
+    stage("Deploy to staging") {
+      when {
+        // Only deploy master branch
+        expression { env.BRANCH_NAME == 'master' }
+      }
+      steps {
         step([$class: 'S3BucketPublisher',
           consoleLogLevel: 'INFO',
           pluginFailureResultConstraint: 'FAILURE',
@@ -27,7 +36,7 @@ pipeline {
             bucket: 'cl2-front-staging',
             selectedRegion: 'eu-central-1',
             noUploadOnFailure: true,
-            managedArtifacts: true,
+            managedArtifacts: false,
             flatten: true,
             showDirectlyInBrowser: true,
             keepForever: true
