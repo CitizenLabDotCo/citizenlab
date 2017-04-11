@@ -17,23 +17,25 @@ pipeline {
       }
     }
     stage("Deploy to staging") {
-      sh 'yarn run build'
-      step([$class: 'S3BucketPublisher',
-        consoleLogLevel: 'INFO',
-        pluginFailureResultConstraint: 'FAILURE',
-        entries: [[
-          sourceFile: 'build/*',
-          bucket: 'cl2-front-staging',
-          selectedRegion: 'eu-central-1',
-          noUploadOnFailure: true,
-          managedArtifacts: true,
-          flatten: true,
-          showDirectlyInBrowser: true,
-          keepForever: true
-        ]],
-        profileName: 'jenkins',
-        dontWaitForConcurrentBuildCompletion: false,
-      ])
+      steps {
+        sh 'yarn run build'
+        step([$class: 'S3BucketPublisher',
+          consoleLogLevel: 'INFO',
+          pluginFailureResultConstraint: 'FAILURE',
+          entries: [[
+            sourceFile: 'build/*',
+            bucket: 'cl2-front-staging',
+            selectedRegion: 'eu-central-1',
+            noUploadOnFailure: true,
+            managedArtifacts: true,
+            flatten: true,
+            showDirectlyInBrowser: true,
+            keepForever: true
+          ]],
+          profileName: 'jenkins',
+          dontWaitForConcurrentBuildCompletion: false,
+        ])
+      }
     }
   }
   post {
