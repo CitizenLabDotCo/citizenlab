@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-
+import { makeSelectCurrentUser } from 'utils/auth/selectors';
 /**
  * Direct selector to the languageToggle state domain
  */
@@ -11,7 +11,13 @@ const selectLanguage = (state) => state.get('language');
 
 const makeSelectLocale = () => createSelector(
   selectLanguage,
-  (languageState) => languageState.get('locale')
+  makeSelectCurrentUser(),
+  (languageState, currentUser) => {
+    if (currentUser) {
+      return currentUser.attributes.locale;
+    }
+    return languageState.get('locale');
+  }
 );
 
 export {

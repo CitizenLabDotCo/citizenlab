@@ -4,8 +4,8 @@
 
 /* eslint-disable */
 import { take, call, put, select } from 'redux-saga/effects';
-import { createUser } from '../sagas';
-import Api from '../../../api';
+import { createUser as createUserSaga } from '../sagas';
+import { createUser } from 'api';
 import {
   CREATE_USER_PENDING,
   CREATE_USER_FULFILLED,
@@ -14,11 +14,11 @@ import {
 
 const newUser = { name: 'tesla' };
 const fakeError = {};
-const generator = createUser({ payload: newUser });
+const generator = createUserSaga({ payload: newUser });
 
 describe('createUser Saga', () => {
   it('calls correct api', () => {
-    expect(generator.next().value).toEqual(call(Api.createUser, newUser));
+    expect(generator.next().value).toEqual(call(createUser, newUser));
   });
 
   // TODO: try not to use undefined

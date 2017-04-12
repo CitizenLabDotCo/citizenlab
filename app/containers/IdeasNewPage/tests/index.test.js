@@ -1,4 +1,6 @@
 import canPublish from '../canPublish';
+import { mapDispatchToProps } from '../index';
+import { storeAttachmentError, storeImageError } from '../actions';
 
 describe('index', () => {
   it('should not allow publishing an idea if title is invalid', () => {
@@ -16,5 +18,23 @@ describe('index', () => {
     const titleError = false;
 
     expect(canPublish(content, titleError)).toEqual(false);
+  });
+
+  describe('mapDispatchToProps', () => {
+    const dispatch = jest.fn();
+    const result = mapDispatchToProps(dispatch);
+
+    describe('storeAttachment', () => {
+      it('should dispatch storeAttachmentError if no attachment is provided', () => {
+        result.storeAttachment(null);
+        expect(dispatch).toHaveBeenCalledWith(storeAttachmentError());
+      });
+    });
+    describe('storeImage', () => {
+      it('should dispatch storeImageError if no image is provided', () => {
+        result.storeImage(null);
+        expect(dispatch).toHaveBeenCalledWith(storeImageError());
+      });
+    });
   });
 });

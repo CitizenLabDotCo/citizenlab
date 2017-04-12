@@ -4,7 +4,8 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
@@ -17,7 +18,7 @@ import {
 } from './selectors';
 
 import messages from './messages';
-import { avatarStoreError, storeAvatar, updateCurrentUser } from './actions';
+import { avatarStoreError, storeAvatar, updateCurrentUser, updateLocale } from './actions';
 import ProfileForm from './ProfileForm';
 import { loadCurrentUser } from '../App/actions';
 
@@ -33,7 +34,7 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
   }
 
   render() {
-    const { loading, loadError, storeError, processing, stored, userData, onAvatarUpload, avatarUploadError, onProfileFormSubmit } = this.props;
+    const { loading, loadError, storeError, processing, stored, userData, onAvatarUpload, avatarUploadError, onProfileFormSubmit, onLocaleChangeClick } = this.props;
 
     return (
       <ProfileDiv>
@@ -51,6 +52,7 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
         {stored && <FormattedMessage {...messages.stored} />}
 
         <ProfileForm
+          onLocaleChangeClick={onLocaleChangeClick}
           userData={userData}
           avatarUpload={onAvatarUpload}
           onFormSubmit={onProfileFormSubmit}
@@ -72,6 +74,7 @@ UsersEditPage.propTypes = {
   onProfileFormSubmit: PropTypes.func.isRequired,
   onAvatarUpload: PropTypes.func.isRequired,
   avatarUploadError: PropTypes.bool.isRequired,
+  onLocaleChangeClick: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -92,12 +95,15 @@ export function mapDispatchToProps(dispatch) {
     onProfileFormSubmit: (values) => {
       dispatch(updateCurrentUser(values));
     },
-    onAvatarUpload: (imageBase64) => {
-      if (imageBase64) {
-        dispatch(storeAvatar(imageBase64));
+    onAvatarUpload: (imageBase64, userId) => {
+      if (imageBase64 && userId) {
+        dispatch(storeAvatar(imageBase64, userId));
       } else {
         dispatch(avatarStoreError());
       }
+    },
+    onLocaleChangeClick: (locale) => {
+      dispatch(updateLocale(locale));
     },
   };
 }

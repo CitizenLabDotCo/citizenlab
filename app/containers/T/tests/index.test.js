@@ -6,10 +6,16 @@ import configureMockStore from 'redux-mock-store';
 import T from '../index';
 
 const fakeStore = configureMockStore([])(fromJS({
-  persistedData: {
-    userLocale: 'fr',
-    tenantLocales: ['en', 'nl', 'fr'],
+  language: {
+    locale: 'fr',
   },
+  auth: {},
+  resources: {
+    tenants: {
+      abc: {},
+    },
+  },
+  tenant: { id: 'abc' },
 }));
 
 describe('<T />', () => {
@@ -29,4 +35,3 @@ describe('<T />', () => {
     expect(component.text()).toEqual('Bonjour');
   });
 });
-

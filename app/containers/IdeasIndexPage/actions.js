@@ -23,11 +23,12 @@ export function ideasLoadingError(errorMessage) {
   };
 }
 
-export function loadIdeas(nextPageNumber, nextPageItemCount) {
+export function loadIdeas(reset, nextPageNumber, nextPageItemCount) {
   return {
     type: LOAD_IDEAS_REQUEST,
     nextPageNumber,
     nextPageItemCount,
+    ...{ resetIdeas: reset },
   };
 }
 
