@@ -18,7 +18,10 @@ import { makeSelectCurrentUser } from 'utils/auth/selectors';
 import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
 import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
+import authSaga from 'utils/auth/sagas';
+import tenantSaga from 'utils/tenant/sagas';
 import { Row, Column } from 'components/Foundation';
+import { Saga } from 'react-redux-saga';
 import Navbar from './Navbar';
 
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -28,7 +31,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     this.props.dispatch(loadCurrentUserRequest());
   }
 
-  render() {
+  content() {
     const { currentTenant, currentUser } = this.props;
 
     if (currentTenant) {
@@ -49,6 +52,16 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     } else { // eslint-disable-line no-else-return
       return <div>Loading...</div>;
     }
+  }
+
+  render() {
+    return (
+      <div>
+        <Saga saga={authSaga} />
+        <Saga saga={tenantSaga} />
+        {this.content()}
+      </div>
+    );
   }
 }
 
