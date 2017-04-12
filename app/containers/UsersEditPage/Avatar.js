@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import { Button, Label } from 'components/Foundation';
 import { FormattedMessage } from 'react-intl';
@@ -12,16 +13,14 @@ export function dropzoneImage(avatarURL) {
     backgroundPosition: 'center',
     backgroundImage: `url('${avatarURL}')`,
     backgroundSize: '100%',
-    width: '100px',
-    height: '100px',
+    margin: '5% auto',
+    width: '90%',
+    height: '90%',
   };
 
   return (
     avatarURL
-      ? (<img
-        role="presentation"
-        style={style}
-      />)
+      ? (<div style={style}></div>)
       : <span />
   );
 }
@@ -48,7 +47,7 @@ class Avatar extends React.PureComponent {
     reader.readAsDataURL(files[0]);
 
     reader.onload = () => {
-      this.props.onAvatarUpload(reader.result);
+      this.props.onAvatarUpload(reader.result, this.props.userId);
     };
 
     reader.onerror = () => {
@@ -114,8 +113,9 @@ class Avatar extends React.PureComponent {
 
 Avatar.propTypes = {
   onAvatarUpload: PropTypes.func.isRequired,
-  avatarURL: PropTypes.string,
+  avatarURL: PropTypes.any,
   avatarUploadError: PropTypes.bool.isRequired,
+  userId: PropTypes.string,
 };
 
 export default Avatar;

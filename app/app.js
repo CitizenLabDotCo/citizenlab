@@ -45,6 +45,7 @@ import { translationMessages } from './i18n';
 // import '../vendor/foundation/main.scss';
 import './global-styles';
 import '../vendor/carousel-custom.scss';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 // foundation js
 import 'foundation-sites/dist/js/foundation.min';

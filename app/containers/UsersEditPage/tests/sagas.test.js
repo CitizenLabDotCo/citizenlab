@@ -35,7 +35,7 @@ describe('UserEditPage sagas', () => {
     const it = sagaHelper(postProfile({}));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(updateCurrentUser, undefined));
+      expect(result).toEqual(call(updateCurrentUser, {}, undefined));
     });
 
     it('then, should dispatch mergeJsonApiResources action', (result) => {

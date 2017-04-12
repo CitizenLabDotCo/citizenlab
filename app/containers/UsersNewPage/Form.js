@@ -11,7 +11,8 @@ const Box = styled.div`
 `;
 
 const initialState = {
-  name: '',
+  first_name: '',
+  last_name: '',
   email: '',
   password: '',
 };
@@ -25,8 +26,12 @@ const Form = (props) => (
       getDispatch={props.getDispatch}
       onSubmit={props.onSubmit}
     >
-      <label htmlFor=".clRegistrationFormName">Name
-        <Control.text model=".name" className="clRegistrationFormName" required />
+      <label htmlFor=".clRegistrationFormFirstName">First name
+        <Control.text model=".first_name" className="clRegistrationFormFirstName" required />
+      </label>
+
+      <label htmlFor=".clRegistrationFormLastName">Last name
+        <Control.text model=".last_name" className="clRegistrationFormLastName" required />
       </label>
 
       <label htmlFor=".clRegistrationFormEmail">Email
