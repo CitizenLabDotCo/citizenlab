@@ -19,7 +19,7 @@ describe('<LocaleChanger />', () => {
     });
 
     const wrapper = mount(<LocaleSelector
-      currentLocale={locale}
+      userLocale={locale}
       options={locales}
       onLocaleChangeClick={jestFn}
     />);
