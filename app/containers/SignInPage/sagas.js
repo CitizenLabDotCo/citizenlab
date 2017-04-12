@@ -2,6 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { storeJwt, loadCurrentUserRequest } from 'utils/auth/actions';
 import * as Api from 'api';
 import { setJwt } from 'utils/request';
+import { push } from 'react-router-redux';
 import { AUTHENTICATE_REQUEST } from './constants';
 import { authenticateError } from './actions';
 
@@ -11,6 +12,7 @@ export function* fetchJwt(action) {
     yield put(storeJwt(jwtResponse.jwt));
     setJwt(jwtResponse.jwt);
     yield put(loadCurrentUserRequest());
+    yield put(push('/ideas'));
   } catch (err) {
     yield put(authenticateError(err));
   }

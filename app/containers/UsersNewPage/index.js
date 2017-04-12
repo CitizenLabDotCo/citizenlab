@@ -12,6 +12,7 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 import _ from 'lodash';
+import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { createUser } from './actions';
 import messages from './messages';
 import Form from './Form';
@@ -35,7 +36,8 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
   }
 
   handleSubmit(values) {
-    this.props.dispatch(createUser(values));
+    const valuesWithLocale = { ...values, locale: this.props.userLocale };
+    this.props.dispatch(createUser(valuesWithLocale));
     // TODO: reset form after saga
     // this.localFormDispatch(rrfActions.reset('registration'));
   }
@@ -59,6 +61,7 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
         { error !== null && (
           <ErrorBox>
             <strong>An Error Occurred!</strong>
+            {/* TODO: fix */}
             { _.map(error.json, (msg, key) => (
               <p key={key}>{key}: {msg.join(', ')}</p>
             )) }
@@ -80,10 +83,12 @@ UsersNewPage.propTypes = {
   newUser: PropTypes.any,
   dispatch: PropTypes.func,
   storeData: PropTypes.object,
+  userLocale: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   storeData: makeSelectUsersNewPage(),
+  userLocale: makeSelectLocale(),
 });
 
 function mapDispatchToProps(dispatch) {
