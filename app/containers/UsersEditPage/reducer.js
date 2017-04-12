@@ -7,7 +7,7 @@
 import { fromJS } from 'immutable';
 import {
   STORE_AVATAR, CURRENT_USER_LOAD_SUCCESS, CURRENT_USER_LOAD_ERROR, STORE_CURRENT_USER, CURRENT_USER_STORE_SUCCESS,
-  CURRENT_USER_STORE_ERROR, AVATAR_STORE_ERROR,
+  CURRENT_USER_STORE_ERROR, AVATAR_STORE_ERROR, UPDATE_USER_LOCALE,
 } from './constants';
 import { LOAD_CURRENT_USER } from '../App/constants';
 
@@ -26,9 +26,11 @@ export const usersEditPageInitialState = fromJS({
 export default function usersEditPageReducer(state = usersEditPageInitialState, action) {
   let currentUserWithId;
 
-  const userId = action.userId;
-  if (userId && action.payload) {
-    currentUserWithId = fromJS(action.payload).set('userId', userId).toJS();
+  if (action.payload) {
+    const userId = action.userId;
+    if (userId) {
+      currentUserWithId = fromJS(action.payload).set('userId', userId).toJS();
+    }
   }
 
   switch (action.type) {
@@ -46,17 +48,17 @@ export default function usersEditPageReducer(state = usersEditPageInitialState, 
         .set('loading', false);
     case STORE_CURRENT_USER:
       return state
+        .set('currentUser', currentUserWithId)
         .set('stored', false)
         .set('processing', true)
         .set('storeError', false);
     case CURRENT_USER_STORE_SUCCESS:
       return state
-        .set('currentUser', currentUserWithId)
         .set('processing', false)
         .set('stored', true);
     case CURRENT_USER_STORE_ERROR:
       return state
-        // restore existing currentUserData to keep form state consistency
+        // restore existing currentUser data to keep form state consistency
         .set('currentUser', state.get('currentUser'))
         .set('processing', false)
         .set('storeError', true);
@@ -67,6 +69,9 @@ export default function usersEditPageReducer(state = usersEditPageInitialState, 
     case AVATAR_STORE_ERROR:
       return state
         .set('avatarUploadError', true);
+    case UPDATE_USER_LOCALE:
+      return state
+        .set('currentUser', fromJS(state.get('currentUser')).set('locale', action.userLocale).toJS());
     default:
       return state;
   }

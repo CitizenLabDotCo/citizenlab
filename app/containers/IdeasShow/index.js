@@ -41,9 +41,9 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
 
     return (
       <div>
-        <ImageCarousel
+        {attributes.images && attributes.images.length > 0 && <ImageCarousel
           ideaImages={attributes.images}
-        />
+        />}
         <h2><T value={attributes.title_multiloc} /></h2>
         <p><strong>Some Author</strong></p>
         <div dangerouslySetInnerHTML={{ __html: attributes.body_multiloc.en }}></div>

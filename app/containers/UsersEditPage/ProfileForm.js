@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { actions, LocalForm } from 'react-redux-form';
 import { FormattedMessage } from 'react-intl';
 import { Column, Row, Label } from 'components/Foundation';
+import LocaleChanger from 'components/LocaleChanger';
 
 import FormInput from '../../components/FormInput/index';
 import messages from './messages';
@@ -32,7 +33,10 @@ export default class ProfileForm extends React.PureComponent {
   }
 
   render() {
-    const { avatarUploadError, avatarUpload, userData } = this.props;
+    const { avatarUploadError, avatarUpload, userData, onLocaleChangeClick } = this.props;
+    const userLocale = (userData
+      ? userData.locale
+      : 'en');
 
     return (
       <LocalForm
@@ -54,10 +58,15 @@ export default class ProfileForm extends React.PureComponent {
               avatarUploadError={avatarUploadError}
               avatarURL={userData.avatar}
             />
+            <LocaleChanger
+              onLocaleChangeClick={onLocaleChangeClick}
+              userLocale={userLocale}
+            />
           </Column>
         </Row>
         <button type="submit">Submit</button>
         <LabelInputPair id="avatar" hidden />
+        <LabelInputPair id="locale" hidden />
         <LabelInputPair id="userId" hidden />
       </LocalForm>
     );
@@ -67,6 +76,7 @@ export default class ProfileForm extends React.PureComponent {
 ProfileForm.propTypes = {
   onFormSubmit: PropTypes.func.isRequired,
   avatarUpload: PropTypes.func.isRequired,
+  onLocaleChangeClick: PropTypes.func.isRequired,
   userData: PropTypes.object.isRequired,
   avatarUploadError: PropTypes.bool.isRequired,
 };

@@ -1,8 +1,6 @@
 import React, { PropTypes } from 'react';
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-// eslint-disable-next-line no-unused-vars
-import styles from 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { getEditorState } from './editorState';
 
 export default class IdeaEditor extends React.PureComponent {

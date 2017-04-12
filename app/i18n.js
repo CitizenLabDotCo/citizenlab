@@ -15,9 +15,18 @@ import frTranslationMessages from './translations/fr.json';
 import nlTranslationMessages from './translations/nl.json';
 
 export const appLocales = [
-  'en',
-  'fr',
-  'nl',
+  {
+    id: 'en',
+    name: 'English',
+  },
+  {
+    id: 'fr',
+    name: 'Français',
+  },
+  {
+    id: 'nl',
+    name: 'Nederlands',
+  },
 ];
 
 addLocaleData(enLocaleData);
