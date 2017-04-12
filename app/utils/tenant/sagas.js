@@ -14,11 +14,6 @@ export function* fetchCurrentTenant() {
   }
 }
 
-export function* defaultSaga() {
+export default function* tenantSaga() {
   yield takeLatest(LOAD_CURRENT_TENANT_REQUEST, fetchCurrentTenant);
 }
-
-// All sagas to be loaded
-export default [
-  defaultSaga,
-];

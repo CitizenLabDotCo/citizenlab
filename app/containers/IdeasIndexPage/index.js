@@ -14,9 +14,11 @@ import IdeaCard from 'components/IdeaCard';
 import { Button, Label, Reveal } from 'components/Foundation';
 import { Card } from 'semantic-ui-react';
 import styled from 'styled-components';
+import { Saga } from 'react-redux-saga';
 import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber } from './selectors';
 import { loadIdeas, resetIdeas, setShowIdeaWithIndexPage } from './actions';
 import messages from './messages';
+import saga from './sagas';
 
 export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -26,7 +28,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
     this.goToNextPage = this.goToNextPage.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (!this.props.children) {
       this.props.initData();
     }
@@ -105,6 +107,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
             { name: 'description', content: 'Description of IdeasIndexPage' },
           ]}
         />
+        <Saga saga={saga} />
 
         <h1>
           <FormattedMessage {...messages.header} />

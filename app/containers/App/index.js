@@ -14,10 +14,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { Saga } from 'react-redux-saga';
 import { makeSelectCurrentUser } from 'utils/auth/selectors';
 import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
 import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
+import authSaga from 'utils/auth/sagas';
+import tenantSaga from 'utils/tenant/sagas';
 import { Container } from 'semantic-ui-react';
 import 'semantic-ui-css/components/card.css';
 import 'semantic-ui-css/components/image.css';
@@ -39,7 +42,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     this.props.dispatch(loadCurrentUserRequest());
   }
 
-  render() {
+  content() {
     const { currentTenant, currentUser } = this.props;
 
     if (currentTenant) {
@@ -58,6 +61,16 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     } else { // eslint-disable-line no-else-return
       return <div>Loading...</div>;
     }
+  }
+
+  render() {
+    return (
+      <div>
+        <Saga saga={authSaga} />
+        <Saga saga={tenantSaga} />
+        {this.content()}
+      </div>
+    );
   }
 }
 

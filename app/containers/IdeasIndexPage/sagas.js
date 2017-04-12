@@ -17,12 +17,6 @@ export function* getIdeas(action) {
   }
 }
 
-export function* ideas() {
+export default function* ideas() {
   yield takeLatest(LOAD_IDEAS_REQUEST, getIdeas);
 }
-
-// All sagas to be loaded
-export default [
-  ideas,
-];
-
