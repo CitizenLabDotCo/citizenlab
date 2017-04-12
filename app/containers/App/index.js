@@ -19,7 +19,17 @@ import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
 import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
 import { Container } from 'semantic-ui-react';
-import 'semantic-ui-css/semantic.css';
+import 'semantic-ui-css/components/card.css';
+import 'semantic-ui-css/components/image.css';
+import 'semantic-ui-css/components/button.css';
+import 'semantic-ui-css/components/icon.css';
+import 'semantic-ui-css/components/label.css';
+import 'semantic-ui-css/components/menu.css';
+import 'semantic-ui-css/components/input.css';
+import 'semantic-ui-css/components/dropdown.css';
+import 'semantic-ui-css/components/grid.css';
+import 'semantic-ui-css/components/container.css';
+import 'semantic-ui-css/components/reset.css';
 import Navbar from './Navbar';
 
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function

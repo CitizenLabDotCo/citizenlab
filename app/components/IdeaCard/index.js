@@ -15,11 +15,11 @@ import styled from 'styled-components';
 class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { idea } = this.props;
-
     return (
       <Card>
+
         <Image
-          scr={idea.attributes.images[0] && idea.attributes.images[0].medium}
+          src={idea.attributes.images[0] && idea.attributes.images[0].medium}
           label={parseInt(idea.id.match(/\d+/), 10) % 5 === 0 ? { as: 'a', corner: 'right', icon: 'university' } : false}
         />
         <Card.Content>
