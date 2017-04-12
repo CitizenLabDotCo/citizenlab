@@ -8,8 +8,8 @@
 
 // const generator = defaultSaga();
 
-describe('defaultSaga Saga', () => {
-  it('Expect to have unit tests specified', () => {
+describe('UsersShowPage Sagas', () => {
+  it('should have tests in the future', () => {
     expect(true).toEqual(true);
   });
 });

@@ -3,8 +3,8 @@
 
 // const selector = makeSelectUsersShowPageDomain();
 
-describe('makeSelectUsersShowPageDomain', () => {
-  it('Expect to have unit tests specified', () => {
+describe('UsersShowPage selectors', () => {
+  it('should have tests in the future', () => {
     expect(true).toEqual(true);
   });
 });

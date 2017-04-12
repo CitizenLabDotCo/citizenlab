@@ -4,7 +4,7 @@
 // import { UsersShowPage } from '../index';
 
 describe('<UsersShowPage />', () => {
-  it('Expect to have unit tests specified', () => {
+  it('should have tests in the future', () => {
     expect(true).toEqual(true);
   });
 });
