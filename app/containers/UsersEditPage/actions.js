@@ -6,7 +6,7 @@
 
 import {
   CURRENT_USER_LOAD_SUCCESS, CURRENT_USER_LOAD_ERROR, STORE_AVATAR, CURRENT_USER_STORE_SUCCESS,
-  CURRENT_USER_STORE_ERROR, STORE_CURRENT_USER, AVATAR_STORE_ERROR, UPDATE_USER_LOCALE,
+  CURRENT_USER_STORE_ERROR, STORE_CURRENT_USER, AVATAR_STORE_ERROR, UPDATE_USER_LOCALE, AVATAR_STORE_SUCCESS,
 } from './constants';
 
 export function currentUserLoaded(currentUser) {
@@ -75,10 +75,17 @@ export function storeCurrentUserError() {
   };
 }
 
-export function storeAvatar(avatarBase64) {
+export function storeAvatar(avatarBase64, userId) {
   return {
     type: STORE_AVATAR,
     avatarBase64,
+    userId,
+  };
+}
+
+export function avatarStored() {
+  return {
+    type: AVATAR_STORE_SUCCESS,
   };
 }
 

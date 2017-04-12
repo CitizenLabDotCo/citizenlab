@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import { Button, Label } from 'components/Foundation';
 import { FormattedMessage } from 'react-intl';
@@ -46,7 +47,7 @@ class Avatar extends React.PureComponent {
     reader.readAsDataURL(files[0]);
 
     reader.onload = () => {
-      this.props.onAvatarUpload(reader.result);
+      this.props.onAvatarUpload(reader.result, this.props.userId);
     };
 
     reader.onerror = () => {
@@ -114,6 +115,7 @@ Avatar.propTypes = {
   onAvatarUpload: PropTypes.func.isRequired,
   avatarURL: PropTypes.any,
   avatarUploadError: PropTypes.bool.isRequired,
+  userId: PropTypes.string,
 };
 
 export default Avatar;
