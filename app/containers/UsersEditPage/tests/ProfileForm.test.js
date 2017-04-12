@@ -27,8 +27,14 @@ describe('<ProfileForm />', () => {
     it('updateCurrentUser action should be dispatched', () => {
       const dispatch = jest.fn();
       const result = mapDispatchToProps(dispatch);
-      result.onProfileFormSubmit();
-      expect(dispatch).toHaveBeenCalledWith(updateCurrentUser());
+
+      const payload = {
+        userId: 'anything',
+      };
+
+      result.onProfileFormSubmit(payload);
+
+      expect(dispatch).toHaveBeenCalledWith(updateCurrentUser(payload));
     });
   });
 

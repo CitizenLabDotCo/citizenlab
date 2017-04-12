@@ -33,7 +33,7 @@ describe('usersEditPageReducer', () => {
     )).toEqual(fromJS(nextState));
   });
 
-  it('should return loading set to false, currentUser not null, currentUser.avatar and currentUser.useId not null on currentUserLoaded and currentUserUpdated  actions', () => {
+  it('should return loading set to false, currentUser not null, and currentUser.useId not null on currentUserLoaded and currentUserUpdated  actions', () => {
     let nextState;
 
     const apiResponse = {
@@ -58,7 +58,5 @@ describe('usersEditPageReducer', () => {
     ).toJS();
     expectPropertyNotNull(nextState, 'loading');
     expectPropertyNotNull(nextState, 'currentUser');
-    expectNestedPropertyNotNull(nextState, 'currentUser', 'userId');
-    expectNestedPropertyNotNull(nextState, 'currentUser', 'avatar');
   });
 });

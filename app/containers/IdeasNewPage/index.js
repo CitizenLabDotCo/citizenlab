@@ -28,7 +28,6 @@ import AttachmentList from './AttachmentList';
 import ImageList from './ImageList';
 import canPublish from './canPublish';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
-import { makeSelectSetting } from '../../utils/tenant/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -45,9 +44,9 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
   }
 
   storeIdea() {
-    const { content, shortTitleError, longTitleError, title, images, attachments, user, locale, locales } = this.props;
+    const { content, shortTitleError, longTitleError, title, images, attachments, user, locale } = this.props;
 
-    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments, user && user.id, locale, locales);
+    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments, user && user.id, locale);
   }
 
   render() {
@@ -147,7 +146,6 @@ IdeasNewPage.propTypes = {
   user: PropTypes.object,
   title: PropTypes.string.isRequired,
   locale: PropTypes.string.isRequired,
-  locales: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -167,7 +165,6 @@ const mapStateToProps = createStructuredSelector({
   images: makeSelectImages(),
   storeImageError: makeSelectStoreImageError(),
   locale: makeSelectLocale(),
-  locales: makeSelectSetting(['core', 'locales']),
   user: makeSelectCurrentUser(),
   title: makeSelectTitle(),
 });
@@ -187,19 +184,15 @@ export function mapDispatchToProps(dispatch) {
       // TODO #later: uncomment to allow editing existing draft
       // dispatch(loadDraft());
     },
-    publishIdeaClick(content, titleError, title, images, attachments, userId, locale, locales) {
+    publishIdeaClick(content, titleError, title, images, attachments, userId, locale) {
       const contentNotNull = content || '<p></p>';
 
       if (canPublish(contentNotNull, titleError)) {
         // inject strings for current locale as a mutiloc object
         const htmlContents = {};
         const titles = {};
-        for (let i = 0; i < locales.length; i += 1) {
-          if (locales[i] === locale) {
-            htmlContents[locales[i]] = contentNotNull;
-            titles[locales[i]] = title;
-          }
-        }
+        htmlContents[locale] = contentNotNull;
+        titles[locale] = title;
 
         dispatch(publishIdea(htmlContents, titles, images, attachments, userId));
       }

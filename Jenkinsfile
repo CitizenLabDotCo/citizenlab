@@ -1,24 +1,55 @@
 pipeline {
   agent any
+  tools {
+    nodejs 'Node 7.x'
+  }
   stages {
-    stage('Build') {
+    stage('Install dependencies') {
       steps {
-        echo 'Building containers'
-        sh 'docker-compose build'
-        sh 'docker-compose up -d'
+        echo 'Installing'
+        sh 'yarn install'
       }
     }
     stage('Test') {
       steps {
-        echo 'testing'
-        sh 'docker-compose run --user "$(id -u):$(id -g)" -e BABEL_DISABLE_CACHE=1 --rm web npm test'
+        echo 'Testing'
+        sh 'yarn run test'
+      }
+    }
+    stage('Build') {
+      steps {
+        echo 'Building'
+        sh 'yarn run build'
+      }
+    }
+    stage("Deploy to staging") {
+      when {
+        // Only deploy master branch
+        expression { env.BRANCH_NAME == 'master' }
+      }
+      steps {
+        step([$class: 'S3BucketPublisher',
+          consoleLogLevel: 'INFO',
+          pluginFailureResultConstraint: 'FAILURE',
+          entries: [[
+            sourceFile: 'build/*',
+            bucket: 'cl2-front-staging',
+            selectedRegion: 'eu-central-1',
+            noUploadOnFailure: true,
+            managedArtifacts: false,
+            flatten: true,
+            showDirectlyInBrowser: true,
+            keepForever: true
+          ]],
+          profileName: 'jenkins',
+          dontWaitForConcurrentBuildCompletion: false,
+        ])
       }
     }
   }
   post {
     always {
       junit 'junit.xml'
-      sh 'docker-compose down --volumes'
     }
     success {
       slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} passed all tests!\nMore info at ${env.BUILD_URL}"
