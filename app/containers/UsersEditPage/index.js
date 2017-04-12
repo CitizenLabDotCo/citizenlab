@@ -4,7 +4,8 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
@@ -94,9 +95,9 @@ export function mapDispatchToProps(dispatch) {
     onProfileFormSubmit: (values) => {
       dispatch(updateCurrentUser(values));
     },
-    onAvatarUpload: (imageBase64) => {
-      if (imageBase64) {
-        dispatch(storeAvatar(imageBase64));
+    onAvatarUpload: (imageBase64, userId) => {
+      if (imageBase64 && userId) {
+        dispatch(storeAvatar(imageBase64, userId));
       } else {
         dispatch(avatarStoreError());
       }

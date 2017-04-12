@@ -1,14 +1,14 @@
 import { mapDispatchToProps } from '../index';
-import { changeLocale } from '../../LanguageProvider/actions';
+import { updateLocale } from '../actions';
 
 describe('mapDispatchToProps', () => {
   describe('onLocaleChangeClick', () => {
-    it('should dispatch changeLocale', () => {
+    it('should dispatch updateLocale', () => {
       const dispatch = jest.fn();
       const result = mapDispatchToProps(dispatch);
       const locale = 'en';
       result.onLocaleChangeClick(locale);
-      expect(dispatch).toHaveBeenCalledWith(changeLocale(locale));
+      expect(dispatch).toHaveBeenCalledWith(updateLocale(locale));
     });
   });
 });

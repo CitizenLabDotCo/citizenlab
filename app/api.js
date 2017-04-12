@@ -55,8 +55,9 @@ export function fetchCurrentUser() {
   return request(`${API_PATH}/users/me`);
 }
 
-export function updateCurrentUser(values) {
-  return request(`${API_PATH}/users/${values.userId}`, { user: values }, {
+export function updateCurrentUser(values, userId) {
+  // if post profile (no avatar), remove avatar
+  return request(`${API_PATH}/users/${userId}`, { user: values }, {
     method: 'PUT',
   });
 }

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { actions, LocalForm } from 'react-redux-form';
 import { FormattedMessage } from 'react-intl';
 import { Column, Row, Label } from 'components/Foundation';
@@ -53,11 +54,12 @@ export default class ProfileForm extends React.PureComponent {
             <LabelInputPair id="email" />
           </Column>
           <Column large={6}>
-            <Avatar
+            {userData.userId && <Avatar
               onAvatarUpload={avatarUpload}
               avatarUploadError={avatarUploadError}
               avatarURL={userData.avatar}
-            />
+              userId={userData.userId}
+            />}
             <LocaleChanger
               onLocaleChangeClick={onLocaleChangeClick}
               userLocale={userLocale}

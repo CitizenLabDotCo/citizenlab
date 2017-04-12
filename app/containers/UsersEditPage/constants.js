@@ -15,6 +15,7 @@ export const CURRENT_USER_STORE_ERROR = 'app/UsersEditPage/CURRENT_USER_STORE_ER
 
 // avatar upload
 export const STORE_AVATAR = 'app/UsersEditPage/STORE_AVATAR';
+export const AVATAR_STORE_SUCCESS = 'app/UsersEditPage/AVATAR_STORE_SUCCESS';
 export const AVATAR_STORE_ERROR = 'app/UsersEditPage/STORE_AVATAR_ERROR';
 
 // locale
