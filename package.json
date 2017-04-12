@@ -261,7 +261,7 @@
     "babel-plugin-react-intl": "2.2.0",
     "babel-plugin-react-transform": "2.0.2",
     "babel-plugin-transform-es2015-modules-commonjs": "6.18.0",
-    "babel-plugin-transform-react-constant-elements": "6.9.1",console.log(action);
+    "babel-plugin-transform-react-constant-elements": "6.9.1",
     "babel-plugin-transform-react-inline-elements": "6.8.0",
     "babel-plugin-transform-react-remove-prop-types": "0.2.11",
     "babel-preset-latest": "6.16.0",
