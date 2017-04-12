@@ -14,11 +14,6 @@ export function* fetchCurrentUser() {
   }
 }
 
-export function* defaultSaga() {
+export default function* authSaga() {
   yield takeLatest(LOAD_CURRENT_USER_REQUEST, fetchCurrentUser);
 }
-
-// All sagas to be loaded
-export default [
-  defaultSaga,
-];

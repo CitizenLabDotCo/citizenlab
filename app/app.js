@@ -18,6 +18,7 @@ import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 import 'react-select/dist/react-select.css';
 import { fromJS } from 'immutable';
+import { Sagas } from 'react-redux-saga';
 
 // Import root app
 import App from 'containers/App';
@@ -35,7 +36,7 @@ import '!file-loader?name=[name].[ext]!./manifest.json';
 import 'file-loader?name=[name].[ext]!./.htaccess';
 /* eslint-enable import/no-unresolved, import/extensions */
 
-import configureStore from './store';
+import configureStore, { getSagaMiddleware } from './store';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
@@ -82,17 +83,19 @@ const rootRoute = {
 const render = (messages) => {
   ReactDOM.render(
     <Provider store={store}>
-      <LanguageProvider messages={messages}>
-        <Router
-          history={history}
-          routes={rootRoute}
-          render={
-            // Scroll to top when going to a new page, imitating default browser
-            // behaviour
-            applyRouterMiddleware(useScroll())
-          }
-        />
-      </LanguageProvider>
+      <Sagas middleware={getSagaMiddleware()}>
+        <LanguageProvider messages={messages}>
+          <Router
+            history={history}
+            routes={rootRoute}
+            render={
+              // Scroll to top when going to a new page, imitating default browser
+              // behaviour
+              applyRouterMiddleware(useScroll())
+            }
+          />
+        </LanguageProvider>
+      </Sagas>
     </Provider>,
     document.getElementById('app')
   );
