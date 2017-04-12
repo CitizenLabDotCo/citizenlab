@@ -29,7 +29,7 @@ class Avatar extends React.PureComponent {
   constructor() {
     super();
 
-    // bind props to use them within other drops (onDrop)
+    // bind props to use them within other props (onDrop)
     this.onDrop = this.onDrop.bind(this);
   }
 
@@ -113,8 +113,8 @@ class Avatar extends React.PureComponent {
 
 Avatar.propTypes = {
   onAvatarUpload: PropTypes.func.isRequired,
-  avatarURL: PropTypes.any,
   avatarUploadError: PropTypes.bool.isRequired,
+  avatarURL: PropTypes.any,
   userId: PropTypes.string,
 };
 

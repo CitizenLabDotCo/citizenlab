@@ -1,25 +1,24 @@
 import { createSelector } from 'reselect';
 
-/**
- * Direct selector to the usersShowPage state domain
- */
-const selectUsersShowPageDomain = () => (state) => state.get('usersShowPage');
+const selectProfile = (state) => state.get('usersShowPage');
 
-/**
- * Other specific selectors
- */
-
-
-/**
- * Default selector used by UsersShowPage
- */
-
-const makeSelectUsersShowPage = () => createSelector(
-  selectUsersShowPageDomain(),
-  (substate) => substate.toJS()
+const makeSelectLoading = () => createSelector(
+  selectProfile,
+  (profileState) => profileState.get('loading')
 );
 
-export default makeSelectUsersShowPage;
+const makeSelectLoadError = () => createSelector(
+  selectProfile,
+  (profileState) => profileState.get('loadError')
+);
+
+const makeSelectUserData = () => createSelector(
+  selectProfile,
+  (profileState) => profileState.get('userData')
+);
+
 export {
-  selectUsersShowPageDomain,
+  makeSelectLoading,
+  makeSelectLoadError,
+  makeSelectUserData,
 };

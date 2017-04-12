@@ -55,6 +55,10 @@ export function fetchCurrentUser() {
   return request(`${API_PATH}/users/me`);
 }
 
+export function fetchUser(userId) {
+  return request(`${API_PATH}/users/${userId}`);
+}
+
 export function updateCurrentUser(values, userId) {
   // if post profile (no avatar), remove avatar
   return request(`${API_PATH}/users/${userId}`, { user: values }, {

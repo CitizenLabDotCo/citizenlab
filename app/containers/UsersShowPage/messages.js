@@ -6,8 +6,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  header: {
-    id: 'app.containers.UsersShowPage.header',
-    defaultMessage: 'This is UsersShowPage container !',
+  loading: {
+    id: 'app.containers.UsersShowPage.loading',
+    defaultMessage: 'Loading...',
   },
 });
