@@ -1,24 +1,50 @@
 import { createSelector } from 'reselect';
+import { fromJS } from 'immutable';
 
-const selectProfile = (state) => state.get('usersShowPage');
+import { selectResourcesDomain } from '../../utils/resources/selectors';
 
-const makeSelectLoading = () => createSelector(
-  selectProfile,
-  (profileState) => profileState.get('loading')
+const selectUserShowPage = (state) => state.get('usersShowPage');
+
+const makeSelectLoadingUser = () => createSelector(
+  selectUserShowPage,
+  (userShowPageState) => userShowPageState.get('loadingUser')
 );
 
-const makeSelectLoadError = () => createSelector(
-  selectProfile,
-  (profileState) => profileState.get('loadError')
+const makeSelectLoadUserError = () => createSelector(
+  selectUserShowPage,
+  (userShowPageState) => userShowPageState.get('loadUserError')
 );
 
 const makeSelectUserData = () => createSelector(
-  selectProfile,
-  (profileState) => profileState.get('userData')
+  selectUserShowPage,
+  (userShowPageState) => userShowPageState.get('userData')
+);
+
+const makeSelectLoadingUserIdeas = () => createSelector(
+  selectUserShowPage,
+  (userShowPageState) => userShowPageState.get('loadingUserIdeas')
+);
+
+const makeSelectLoadUserIdeasError = () => createSelector(
+  selectUserShowPage,
+  (userShowPageState) => userShowPageState.get('loadUserIdeasError')
+);
+
+const makeSelectIdeas = () => createSelector(
+  selectUserShowPage,
+  selectResourcesDomain(),
+  (pageState, resources) => {
+    const ids = pageState.get('ideas', fromJS([]));
+    const ideasMap = resources.get('ideas', fromJS({}));
+    return ids.map((id) => ideasMap.get(id)).toJS();
+  }
 );
 
 export {
-  makeSelectLoading,
-  makeSelectLoadError,
+  makeSelectLoadingUser,
+  makeSelectLoadUserError,
   makeSelectUserData,
+  makeSelectLoadingUserIdeas,
+  makeSelectLoadUserIdeasError,
+  makeSelectIdeas,
 };

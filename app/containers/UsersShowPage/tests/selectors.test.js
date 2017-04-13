@@ -4,7 +4,8 @@
 // const selector = makeSelectUsersShowPageDomain();
 
 describe('UsersShowPage selectors', () => {
-  it('should have tests in the future', () => {
+  it('should have tests in the future (for id to resources mapping)', () => {
+    // TODO
     expect(true).toEqual(true);
   });
 });

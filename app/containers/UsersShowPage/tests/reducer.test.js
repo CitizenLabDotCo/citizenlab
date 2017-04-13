@@ -5,8 +5,11 @@ import usersShowPageReducer from '../reducer';
 describe('usersShowPageReducer', () => {
   const expectedInitialState = {
     userData: {},
-    loading: false,
-    loadError: null,
+    ideas: [],
+    loadingUser: false,
+    loadingUserIdeas: false,
+    loadUserError: null,
+    loadUserIdeasError: null,
   };
 
   it('returns the initial state', () => {

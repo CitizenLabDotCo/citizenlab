@@ -1,10 +1,24 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import { mapDispatchToProps } from '../index';
+import { loadUser, loadUserIdeas } from '../actions';
 
-// import { UsersShowPage } from '../index';
+describe('mapDispatchToProps', () => {
+  describe('loadUser', () => {
+    it('should dispatch loadUser', () => {
+      const dispatch = jest.fn();
+      const result = mapDispatchToProps(dispatch);
+      const userId = 'anything';
+      result.loadUser(userId);
+      expect(dispatch).toHaveBeenCalledWith(loadUser(userId));
+    });
+  });
 
-describe('<UsersShowPage />', () => {
-  it('should have tests in the future', () => {
-    expect(true).toEqual(true);
+  describe('loadUserIdeas', () => {
+    it('should dispatch loadUserIdeas', () => {
+      const dispatch = jest.fn();
+      const result = mapDispatchToProps(dispatch);
+      const userId = 'anything';
+      result.loadUserIdeas(userId);
+      expect(dispatch).toHaveBeenCalledWith(loadUserIdeas(userId));
+    });
   });
 });

@@ -7,10 +7,7 @@ import { fetchIdeas } from '../../api';
 export function* getIdeas(action) {
   try {
     const ideaResponse = yield call(fetchIdeas, action.nextPageNumber, action.nextPageItemCount); // eslint-disable-line
-    yield put(mergeJsonApiResources(
-      ideaResponse,
-      !action.nextPageNumber,
-    ));
+    yield put(mergeJsonApiResources(ideaResponse));
     yield put(ideasLoaded(ideaResponse));
   } catch (err) {
     yield put(ideasLoadingError(err));

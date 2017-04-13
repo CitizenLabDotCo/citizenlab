@@ -6,8 +6,12 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  loading: {
-    id: 'app.containers.UsersShowPage.loading',
+  loadingUser: {
+    id: 'app.containers.UsersShowPage.loadingUser',
+    defaultMessage: 'Loading...',
+  },
+  loadingIdeas: {
+    id: 'app.containers.UsersShowPage.loadingIdeas',
     defaultMessage: 'Loading...',
   },
 });
