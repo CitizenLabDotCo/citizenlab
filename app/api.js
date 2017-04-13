@@ -55,6 +55,22 @@ export function fetchCurrentUser() {
   return request(`${API_PATH}/users/me`);
 }
 
+export function fetchIdeaComments(id) {
+  return request(`${API_PATH}/ideas/${id}/comments`);
+}
+
+export function createIdeaComment(ideaId, userId, htmlContents, parentId) {
+  const body = {
+    author_id: userId,
+    body_multiloc: htmlContents,
+    parent_id: parentId,
+  };
+
+  return request(`${API_PATH}/ideas/${ideaId}/comments`, { comment: body }, {
+    method: 'POST',
+  });
+}
+
 export function updateCurrentUser(values, userId) {
   // if post profile (no avatar), remove avatar
   return request(`${API_PATH}/users/${userId}`, { user: values }, {

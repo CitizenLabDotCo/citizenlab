@@ -19,7 +19,43 @@ const makeSelectIdeasShow = () => createSelector(
   (substate) => substate.toJS()
 );
 
+const makeSelectLoadingComments = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('loadingComments')
+);
+
+const makeSelectLoadCommentsError = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('storeCommentError')
+);
+
+const makeSelectComments = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('comments')
+);
+
+const makeSelectStoreCommentError = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('storeCommentError')
+);
+
+const makeSelectSubmittingComment = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('submittingComment')
+);
+
+const makeSelectCommentContent = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('commentContent')
+);
+
 export default makeSelectIdeasShow;
 export {
   selectIdeasShowDomain,
+  makeSelectLoadingComments,
+  makeSelectLoadCommentsError,
+  makeSelectComments,
+  makeSelectStoreCommentError,
+  makeSelectSubmittingComment,
+  makeSelectCommentContent,
 };
