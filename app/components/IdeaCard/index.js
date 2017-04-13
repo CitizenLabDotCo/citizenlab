@@ -17,7 +17,6 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
     const { idea } = this.props;
     return (
       <Card>
-
         <Image
           src={idea.attributes.images[0] && idea.attributes.images[0].medium}
           label={parseInt(idea.id.match(/\d+/), 10) % 5 === 0 ? { as: 'a', corner: 'right', icon: 'university' } : false}

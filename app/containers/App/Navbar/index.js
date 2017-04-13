@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 // import { TopBar, TopBarTitle, TopBarLeft, TopBarRight, Menu, MenuItem } from 'components/Foundation';
-import { Menu, Input, Button, Dropdown, Icon } from 'semantic-ui-react';
+import { Menu, Input, Button, Dropdown, Icon, Image } from 'semantic-ui-react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import messages from './messages';
@@ -18,9 +18,18 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
     ];
   }
 
+  trigger(currentUser) {
+    return (
+      <span>
+        <Image avatar src={currentUser.attributes.avatar.small} />
+        {currentUser.attributes.first_name}
+      </span>
+    );
+  }
+
   userMenu(currentUser) {
     return (
-      <Dropdown item text={currentUser.attributes.first_name}>
+      <Dropdown item trigger={this.trigger(currentUser)}>
         <Dropdown.Menu>
           <Dropdown.Item>
             <Link to="/profile/edit"><FormattedMessage {...messages.editProfile} /></Link>
