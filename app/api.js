@@ -39,20 +39,11 @@ export function createIdea(values) {
   });
 }
 
-export function fetchIdeas(nextPageNumber, nextPageItemCount, authorId) {
-  const queryParameters = {
-    'page[number]': nextPageNumber,
-    'page[size]': nextPageItemCount,
-    author: authorId,
-  };
+export function fetchIdeas(queryParameters) {
   return request(`${API_PATH}/ideas`, null, null, queryParameters);
 }
 
-export function fetchTopics(nextPageNumber, nextPageItemCount) {
-  const queryParameters = {
-    'page[number]': nextPageNumber,
-    'page[size]': nextPageItemCount,
-  };
+export function fetchTopics(queryParameters) {
   return request(`${API_PATH}/topics`, null, null, queryParameters);
 }
 

@@ -6,6 +6,7 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
@@ -15,6 +16,7 @@ import { Row, Column, Button, Label, Reveal } from 'components/Foundation';
 import T from 'containers/T';
 import styled from 'styled-components';
 import { Saga } from 'react-redux-saga';
+import isEqual from 'lodash/isEqual';
 import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber, makeSelectTopics } from './selectors';
 import { loadIdeas, setShowIdeaWithIndexPage, loadTopicsRequest } from './actions';
 import messages from './messages';
@@ -31,6 +33,14 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   componentDidMount() {
     if (!this.props.children) {
       this.props.initData();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(nextProps.location.query, this.props.location.query)) {
+      this.props.reloadIdeas({
+        'topics[]': nextProps.location.query.topics,
+      });
     }
   }
 
@@ -110,7 +120,13 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
           <FormattedMessage {...messages.header} />
         </h1>
 
-        {topics.map((topic) => <div key={topic.id}><T value={topic.attributes.title_multiloc}></T></div>)}
+        {topics.map((topic) =>
+          <div key={topic.id}>
+            <Link to={{ pathname: this.props.location.pathname, query: { topics: [topic.id] } }}>
+              <T value={topic.attributes.title_multiloc}></T>
+            </Link>
+          </div>)
+        }
 
         <Row data-equalizer>
           {ideas && ideas.map((idea) => (
@@ -161,6 +177,8 @@ IdeasIndexPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
   pageData: React.PropTypes.object,
+  location: React.PropTypes.object,
+  reloadIdeas: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -179,8 +197,11 @@ function mapDispatchToProps(dispatch) {
       dispatch(loadIdeas());
       dispatch(loadTopicsRequest());
     },
-    loadNextPage: (nextPageNumber, nextPageItemCount) => {
-      dispatch(loadIdeas(nextPageNumber, nextPageItemCount));
+    reloadIdeas: (filters) => {
+      dispatch(loadIdeas({ filters }));
+    },
+    loadNextPage: (nextPageNumber, nextPageItemCount, filters = {}) => {
+      dispatch(loadIdeas({ nextPageNumber, nextPageItemCount, filters }));
     },
   };
 }

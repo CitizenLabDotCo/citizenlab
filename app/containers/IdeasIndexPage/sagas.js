@@ -6,7 +6,11 @@ import { fetchIdeas, fetchTopics } from '../../api';
 
 export function* getIdeas(action) {
   try {
-    const ideaResponse = yield call(fetchIdeas, action.nextPageNumber, action.nextPageItemCount); // eslint-disable-line
+    const ideaResponse = yield call(fetchIdeas, {
+      'page[number]': action.nextPageNumber,
+      'page[size]': action.nextPageItemCount,
+      ...action.filters,
+    });
     yield put(mergeJsonApiResources(ideaResponse));
     yield put(ideasLoaded(ideaResponse));
   } catch (err) {
@@ -16,7 +20,10 @@ export function* getIdeas(action) {
 
 export function* getTopics(action) {
   try {
-    const topicsResponse = yield call(fetchTopics, action.nextPageNumber, action.nextPageItemCount);
+    const topicsResponse = yield call(fetchTopics, {
+      'page[number]': action.nextPageNumber,
+      'page[size]': action.nextPageItemCount,
+    });
     yield put(mergeJsonApiResources(topicsResponse));
     yield put(loadTopicsSuccess(topicsResponse));
   } catch (err) {
