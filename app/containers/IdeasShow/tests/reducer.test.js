@@ -10,6 +10,7 @@ describe('ideasShowReducer', () => {
       commentContent: null,
       loadIdeaError: null,
       storeCommentError: null,
+      storeCommentErrorId: null,
       loadCommentsError: null,
       loadingComments: false,
       submittingComment: false,
@@ -17,6 +18,7 @@ describe('ideasShowReducer', () => {
       resetEditorContent: false,
       nextCommentPageNumber: null,
       nextCommentPageItemCount: null,
+      activeParentId: null,
     };
 
     expect(ideasShowReducer(undefined, {})).toEqual(fromJS(expectedInitialState));

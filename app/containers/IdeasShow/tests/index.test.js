@@ -4,7 +4,7 @@
 // import { IdeasShow } from '../index';
 
 describe('<IdeasShow />', () => {
-  it('Expect to have unit tests specified', () => {
+  it('should have tests in the future', () => {
     expect(true).toEqual(true);
   });
 });
