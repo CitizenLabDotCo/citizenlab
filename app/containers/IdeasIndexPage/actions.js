@@ -5,7 +5,7 @@
  */
 
 import {
-  LOAD_IDEAS_REQUEST, IDEAS_LOADED, IDEAS_LOADING_ERROR, IDEAS_RESET,
+  LOAD_IDEAS_REQUEST, IDEAS_LOADED, IDEAS_LOADING_ERROR,
   SET_SHOW_IDEA_WITH_INDEX_PAGE,
 } from './constants';
 
@@ -23,18 +23,11 @@ export function ideasLoadingError(errorMessage) {
   };
 }
 
-export function loadIdeas(reset, nextPageNumber, nextPageItemCount) {
+export function loadIdeas(nextPageNumber, nextPageItemCount) {
   return {
     type: LOAD_IDEAS_REQUEST,
     nextPageNumber,
     nextPageItemCount,
-    ...{ resetIdeas: reset },
-  };
-}
-
-export function resetIdeas() {
-  return {
-    type: IDEAS_RESET,
   };
 }
 

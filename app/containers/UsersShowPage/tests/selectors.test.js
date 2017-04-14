@@ -1,9 +1,9 @@
 // import { fromJS } from 'immutable';
-// import { makeSelectIdeasIndexPageDomain } from '../selectors';
+// import { makeSelectUsersShowPageDomain } from '../selectors';
 
-// const selector = makeSelectIdeasIndexPageDomain();
+// const selector = makeSelectUsersShowPageDomain();
 
-describe('IdeasIndexPage selectors', () => {
+describe('UsersShowPage selectors', () => {
   it('should have tests in the future (for id to resources mapping)', () => {
     // TODO
     expect(true).toEqual(true);
