@@ -30,8 +30,10 @@ export default class CommentEditor extends React.PureComponent {
       editorState,
     });
 
+    const { onEditorChange, parentId } = this.props;
+
     // store temp draft
-    this.props.onEditorChange(convertToRaw(editorState.getCurrentContent()));
+    onEditorChange(convertToRaw(editorState.getCurrentContent()), parentId);
   };
 
   render() {
@@ -42,6 +44,7 @@ export default class CommentEditor extends React.PureComponent {
           {/* TODO #later: customize toolbar and set up desired functions (image etc.)
               based on https://github.com/jpuri/react-draft-wysiwyg/blob/master/docs/src/components/Demo/index.js */}
           <Editor
+            toolbarHidden
             toolbar={{
               options: ['inline'],
               inline: {
@@ -59,4 +62,5 @@ export default class CommentEditor extends React.PureComponent {
 
 CommentEditor.propTypes = {
   onEditorChange: PropTypes.func.isRequired,
+  parentId: PropTypes.string,
 };

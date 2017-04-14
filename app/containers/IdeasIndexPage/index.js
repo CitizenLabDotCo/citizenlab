@@ -4,7 +4,8 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
@@ -17,7 +18,7 @@ import { Saga } from 'react-redux-saga';
 import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber } from './selectors';
 import { loadIdeas, resetIdeas, setShowIdeaWithIndexPage } from './actions';
 import messages from './messages';
-import saga from './sagas';
+import { watchFetchIdeas } from './sagas';
 
 export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -40,7 +41,8 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   }
 
   componentWillUnmount() {
-    this.props.resetData();
+    // reset page state
+    this.props.resetIdeas();
   }
 
   ideaShowPageHtml() {
@@ -106,7 +108,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
             { name: 'description', content: 'Description of IdeasIndexPage' },
           ]}
         />
-        <Saga saga={saga} />
+        <Saga saga={watchFetchIdeas} />
 
         <h1>
           <FormattedMessage {...messages.header} />
@@ -155,12 +157,12 @@ IdeasIndexPage.propTypes = {
   router: PropTypes.object,
   initData: PropTypes.func.isRequired,
   loadNextPage: PropTypes.func.isRequired,
-  resetData: PropTypes.func.isRequired,
   nextPageNumber: PropTypes.number,
   nextPageItemCount: PropTypes.number,
   loading: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
-  pageData: React.PropTypes.object,
+  pageData: PropTypes.object,
+  resetIdeas: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -175,12 +177,12 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     initData: () => {
-      dispatch(loadIdeas(true));
+      dispatch(loadIdeas());
     },
     loadNextPage: (nextPageNumber, nextPageItemCount) => {
-      dispatch(loadIdeas(false, nextPageNumber, nextPageItemCount));
+      dispatch(loadIdeas(nextPageNumber, nextPageItemCount));
     },
-    resetData: () => {
+    resetIdeas: () => {
       dispatch(resetIdeas());
     },
   };

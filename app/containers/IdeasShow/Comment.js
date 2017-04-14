@@ -9,12 +9,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 function Comment(props) {
+  const { className, commentContent, createdAt, modifiedAt } = props;
+
   return (
-    <div className={props.className}>
-      <span dangerouslySetInnerHTML={{ __html: props.commentContent.en }} />
-      ... parentId: {props.parentId}
-      ... created at: {props.createdAt}
-      ... modified at: {props.modifiedAt}
+    <div className={className}>
+      <span dangerouslySetInnerHTML={{ __html: commentContent.en }} />
+      ... created at: {createdAt}
+      ... modified at: {modifiedAt}
       <hr />
     </div>
   );
@@ -23,11 +24,10 @@ function Comment(props) {
 Comment.propTypes = {
   className: PropTypes.string,
   commentContent: PropTypes.object.isRequired,
-  parentId: PropTypes.string,
   createdAt: PropTypes.any,
   modifiedAt: PropTypes.any,
 };
 
 export default styled(Comment)`
-    // no style yet
+    margin-left: ${(props) => props.parentId ? '15px' : '0'};
 `;

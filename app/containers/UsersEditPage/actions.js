@@ -53,7 +53,7 @@ export function updateLocale(userLocale) {
 }
 
 export function currentUserUpdated(currentUser) {
-  const validResponse = currentUser && currentUser.data;
+  const validResponse = !!(currentUser && currentUser.data);
   const currentUserWithAvatar = currentUser;
 
   if (validResponse && !currentUserWithAvatar.data.attributes.avatar) {

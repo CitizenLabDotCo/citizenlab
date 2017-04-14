@@ -5,12 +5,11 @@
  */
 
 import { fromJS } from 'immutable';
-import * as qs from 'qs';
 
 import {
-  IDEAS_LOADED, IDEAS_RESET, LOAD_IDEAS_REQUEST,
-  SET_SHOW_IDEA_WITH_INDEX_PAGE,
+  IDEAS_LOADED, LOAD_IDEAS_REQUEST, RESET_IDEAS, SET_SHOW_IDEA_WITH_INDEX_PAGE,
 } from './constants';
+import { getPageItemCountFromUrl, getPageNumberFromUrl } from '../../utils/paginationUtils';
 
 const initialState = fromJS({
   nextPageNumber: null,
@@ -19,20 +18,6 @@ const initialState = fromJS({
   loading: false,
   showIdeaWithIndexPage: false,
 });
-
-export function getPageNumberFromUrl(url) {
-  if (!url) return null;
-  const queryString = url.split('?')[1];
-  const result = qs.parse(queryString).page.number;
-  return (result < 0 ? null : parseInt(result, 10));
-}
-
-export function getPageItemCountFromUrl(url) {
-  if (!url) return null;
-  const queryString = url.split('?')[1];
-  const result = qs.parse(queryString).page.size;
-  return (result < 0 ? null : parseInt(result, 10));
-}
 
 function ideasIndexPageReducer(state = initialState, action) {
   switch (action.type) {
@@ -49,15 +34,14 @@ function ideasIndexPageReducer(state = initialState, action) {
       const nextPageItemCount = getPageItemCountFromUrl(action.payload.links.next);
 
       return state
-        // concatenate if not first loading
-        .update('ideas', (ideas) => (action.resetIdeas ? fromJS(ids) : ideas.concat(ids)))
+        .update('ideas', (ideas) => (action.initialLoad ? fromJS(ids) : ideas.concat(ids)))
         .set('nextPageNumber', nextPageNumber)
         .set('nextPageItemCount', nextPageItemCount)
         .set('loading', false);
     }
-    case IDEAS_RESET:
+    case RESET_IDEAS:
       return state
-        .set('ideas', fromJS([]))
+        .update('ideas', () => fromJS([]))
         .set('nextPageNumber', null)
         .set('nextPageItemCount', null);
     default:

@@ -5,8 +5,7 @@
  */
 
 import {
-  LOAD_IDEAS_REQUEST, IDEAS_LOADED, IDEAS_LOADING_ERROR, IDEAS_RESET,
-  SET_SHOW_IDEA_WITH_INDEX_PAGE,
+  LOAD_IDEAS_REQUEST, IDEAS_LOADED, IDEAS_LOADING_ERROR, SET_SHOW_IDEA_WITH_INDEX_PAGE, RESET_IDEAS,
 } from './constants';
 
 export function ideasLoaded(ideas) {
@@ -23,18 +22,12 @@ export function ideasLoadingError(errorMessage) {
   };
 }
 
-export function loadIdeas(reset, nextPageNumber, nextPageItemCount) {
+export function loadIdeas(nextPageNumber, nextPageItemCount, initialLoad) {
   return {
     type: LOAD_IDEAS_REQUEST,
     nextPageNumber,
     nextPageItemCount,
-    ...{ resetIdeas: reset },
-  };
-}
-
-export function resetIdeas() {
-  return {
-    type: IDEAS_RESET,
+    initialLoad,
   };
 }
 
@@ -42,5 +35,11 @@ export function setShowIdeaWithIndexPage(payload) {
   return {
     type: SET_SHOW_IDEA_WITH_INDEX_PAGE,
     payload,
+  };
+}
+
+export function resetIdeas() {
+  return {
+    type: RESET_IDEAS,
   };
 }

@@ -14,6 +14,6 @@ export function* getIdeas(action) {
   }
 }
 
-export default function* ideas() {
+export function* watchFetchIdeas() {
   yield takeLatest(LOAD_IDEAS_REQUEST, getIdeas);
 }

@@ -20,3 +20,5 @@ export const SAVE_COMMENT_DRAFT = 'app/IdeasIndexPage/SAVE_COMMENT_DRAFT';
 export const STORE_COMMENT_REQUEST = 'app/IdeasIndexPage/STORE_COMMENT';
 export const STORE_COMMENT_SUCCESS = 'app/IdeasIndexPage/STORE_COMMENT_SUCCESS';
 export const STORE_COMMENT_ERROR = 'app/IdeasIndexPage/STORE_COMMENT_ERROR';
+
+export const RESET_IDEA_AND_COMMENTS = 'app/IdeasIndexPage/RESET_IDEA_AND_COMMENTS';

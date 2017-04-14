@@ -46,6 +46,8 @@
   "app.containers.UsersEditPage.storeError": "Can't store updated profile",
   "app.containers.UsersEditPage.stored": "Profile stored",
   "app.containers.UsersNewPage.header": "UsersNewPage",
+  "app.containers.UsersShowPage.loadingIdeas": "Loading...",
+  "app.containers.UsersShowPage.loadingUser": "Loading...",
   "app.containers.app.navbar.addIdea": "Add idea",
   "app.containers.app.navbar.editProfile": "Edit profile",
   "app.containers.app.navbar.ideas": "Ideas",

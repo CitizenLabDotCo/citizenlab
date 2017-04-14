@@ -22,6 +22,16 @@ const makeSelectIdeasShow = () => createSelector(
   (substate) => substate.toJS()
 );
 
+const makeSelectLoadingIdea = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('loadingIdea')
+);
+
+const makeSelectLoadIdeaError = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('loadIdeaError')
+);
+
 const makeSelectLoadingComments = () => createSelector(
   selectIdeasShowDomain(),
   (pageState) => pageState.get('loadingComments')
@@ -36,7 +46,7 @@ const makeSelectComments = () => createSelector(
   selectIdeasShowDomain(),
   selectResourcesDomain(),
   (pageState, resources) => {
-    const ids = pageState.get('ideas', fromJS([]));
+    const ids = pageState.get('comments', fromJS([]));
     const commentsMap = resources.get('comments', fromJS({}));
     return ids.map((id) => commentsMap.get(id)).toJS();
   }
@@ -62,6 +72,21 @@ const makeSelectResetEditorContent = () => createSelector(
   (pageState) => pageState.get('resetEditorContent')
 );
 
+const makeSelectNextCommentPageNumber = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('nextCommentPageNumber')
+);
+
+const makeSelectNextCommentPageItemCount = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('nextCommentPageItemCount')
+);
+
+const makeSelectActiveParentId = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('makeSelectActiveParentId')
+);
+
 export default makeSelectIdeasShow;
 export {
   selectIdeasShowDomain,
@@ -72,4 +97,9 @@ export {
   makeSelectSubmittingComment,
   makeSelectCommentContent,
   makeSelectResetEditorContent,
+  makeSelectNextCommentPageNumber,
+  makeSelectNextCommentPageItemCount,
+  makeSelectLoadingIdea,
+  makeSelectLoadIdeaError,
+  makeSelectActiveParentId,
 };

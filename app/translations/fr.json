@@ -46,6 +46,8 @@
   "app.containers.UsersEditPage.storeError": "",
   "app.containers.UsersEditPage.stored": "",
   "app.containers.UsersNewPage.header": "",
+  "app.containers.UsersShowPage.loadingIdeas": "",
+  "app.containers.UsersShowPage.loadingUser": "",
   "app.containers.app.navbar.addIdea": "",
   "app.containers.app.navbar.editProfile": "",
   "app.containers.app.navbar.ideas": "",

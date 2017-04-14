@@ -14,15 +14,20 @@ import { createStructuredSelector } from 'reselect';
 import draftToHtml from 'draftjs-to-html';
 import { Saga } from 'react-redux-saga';
 import { FormattedMessage } from 'react-intl';
+import { Label, Button } from 'components/Foundation';
+import styled from 'styled-components';
 
 import {
   loadComments,
   loadIdea,
-  loadIdeaSuccess, publishComment, publishCommentError, saveCommentDraft,
+  loadIdeaSuccess, publishComment, publishCommentError, resetIdeaAndComments, saveCommentDraft,
 } from './actions';
 import makeSelectIdeasShow, {
-  makeSelectCommentContent, makeSelectComments, makeSelectLoadCommentsError,
-  makeSelectLoadingComments, makeSelectResetEditorContent, makeSelectStoreCommentError, makeSelectSubmittingComment,
+  makeSelectActiveParentId,
+  makeSelectCommentContent, makeSelectComments, makeSelectLoadCommentsError, makeSelectLoadIdeaError,
+  makeSelectLoadingComments, makeSelectLoadingIdea, makeSelectNextCommentPageItemCount, makeSelectNextCommentPageNumber,
+  makeSelectResetEditorContent, makeSelectStoreCommentError,
+  makeSelectSubmittingComment,
 } from './selectors';
 import CommentEditorWrapper from './CommentEditorWrapper';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
@@ -35,8 +40,8 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
   constructor() {
     super();
 
-    // bind event handlers
-    this.publishComment = this.publishComment.bind(this);
+    // bind event handlers to provide 'this' context
+    this.goToNextPage = this.goToNextPage.bind(this);
   }
 
   componentDidMount() {
@@ -53,6 +58,16 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
     if (this.props.showIdeaWithIndexPage === false) {
       this.props.dispatch(loadIdeaSuccess(null));
     }
+
+    // reset component state
+    this.props.resetData();
+  }
+
+  goToNextPage() {
+    const idea = this.props.idea || this.props.pageData.idea;
+
+    const { loadNextCommentsPage, nextCommentPageNumber, nextCommentPageItemCount } = this.props;
+    loadNextCommentsPage(idea.id, nextCommentPageNumber, nextCommentPageItemCount);
   }
 
   notFoundHtml() {
@@ -74,19 +89,22 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
     );
   }
 
-  publishComment() {
-    const { commentContent, user, locale } = this.props;
-    const idea = this.props.idea || this.props.pageData.idea;
-
-    // TODO: replace this with actual id by passing from right component
-    const parentId = null;
-
-    this.props.publishCommentClick(idea.id, commentContent, user && user.id, locale, parentId);
-  }
-
   render() {
     const idea = this.props.idea || this.props.pageData.idea;
-    const { storeCommentDraftCopy, storeCommentError, submittingComment, comments, resetEditorContent } = this.props;
+    const { storeCommentDraftCopy, storeCommentError, submittingComment, comments, resetEditorContent, loadingComments, nextCommentPageNumber, loadingIdea, loadIdeaError, commentContent, userId, locale, activeParentId, publishCommentClick } = this.props;
+
+    const WrapperDiv = (props) => (
+      <div
+        {...props}
+      >
+        {!!props.children[0] && props.children}
+      </div>
+    );
+
+    const CenteredDiv = styled(WrapperDiv)`
+      margin: auto;
+      width: 20%;
+    `;
 
     return (
       <div>
@@ -100,20 +118,48 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
         <Saga saga={watchFetchComments} />
         <Saga saga={watchStoreComment} />
 
-        { idea ? this.ideaHtml(idea) : this.notFoundHtml() }
+        {loadIdeaError && <div>
+          {loadIdeaError}
+        </div>}
+        {loadingIdea && <FormattedMessage {...messages.loadingIdea} />}
+
+        { loadIdeaError || !idea ? this.notFoundHtml() : this.ideaHtml(idea) }
         <hr />
         <CommentEditorWrapper
           storeCommentCopy={storeCommentDraftCopy}
+          submittingComment={submittingComment}
+          resetEditorContent={resetEditorContent}
+          idea={idea}
+          commentContent={commentContent}
+          userId={userId}
+          locale={locale}
+          parentId={activeParentId}
+          publishCommentClick={publishCommentClick}
+        />
+        <CommentList
+          comments={comments}
+          storeCommentDraftCopy={storeCommentDraftCopy}
           storeCommentError={storeCommentError}
           submittingComment={submittingComment}
           resetEditorContent={resetEditorContent}
+          idea={idea}
+          commentContent={commentContent}
+          userId={userId}
+          locale={locale}
+          parentId={activeParentId}
+          publishCommentClick={publishCommentClick}
         />
-        <button onClick={this.publishComment}>
-          <FormattedMessage {...messages.publishComment} />
-        </button>
-        <CommentList
-          comments={comments}
-        />
+        <CenteredDiv onClick={this.goToNextPage}>
+          {(nextCommentPageNumber && !(loadingIdea || loadingComments)) && <Button>
+            <FormattedMessage
+              {...messages.loadMoreComments}
+            />
+          </Button>}
+          {loadingComments && <Label>
+            <FormattedMessage
+              {...messages.loadingComments}
+            /></Label>}
+        </CenteredDiv>
       </div>
     );
   }
@@ -128,20 +174,30 @@ IdeasShow.propTypes = {
   storeCommentDraftCopy: PropTypes.func.isRequired,
   storeCommentError: PropTypes.string,
   submittingComment: PropTypes.bool.isRequired,
+  resetEditorContent: PropTypes.bool.isRequired,
   commentContent: PropTypes.string,
-  user: PropTypes.object,
   comments: PropTypes.any.isRequired,
   locale: PropTypes.string.isRequired,
   loadIdea: PropTypes.func.isRequired,
   loadComments: PropTypes.func.isRequired,
+  loadNextCommentsPage: PropTypes.func.isRequired,
+  nextCommentPageNumber: PropTypes.number,
+  nextCommentPageItemCount: PropTypes.number,
+  loadingComments: PropTypes.bool.isRequired,
+  loadingIdea: PropTypes.bool.isRequired,
+  loadIdeaError: PropTypes.string,
+  activeParentId: PropTypes.string,
   publishCommentClick: PropTypes.func.isRequired,
-  resetEditorContent: PropTypes.bool.isRequired,
+  userId: PropTypes.string,
+  resetData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   pageData: makeSelectIdeasShow(),
+  loadingIdea: makeSelectLoadingIdea(),
   loadingComments: makeSelectLoadingComments(),
   loadCommentsError: makeSelectLoadCommentsError(),
+  loadIdeaError: makeSelectLoadIdeaError(),
   comments: makeSelectComments(),
   storeCommentError: makeSelectStoreCommentError(),
   submittingComment: makeSelectSubmittingComment(),
@@ -149,6 +205,9 @@ const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
   user: makeSelectCurrentUser(),
   resetEditorContent: makeSelectResetEditorContent(),
+  nextCommentPageNumber: makeSelectNextCommentPageNumber(),
+  nextCommentPageItemCount: makeSelectNextCommentPageItemCount(),
+  activeParentId: makeSelectActiveParentId(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -158,23 +217,29 @@ function mapDispatchToProps(dispatch) {
       dispatch(loadIdea(ideaId));
     },
     loadComments(ideaId) {
-      dispatch(loadComments(ideaId));
+      dispatch(loadComments(ideaId, null, null, true));
     },
-    storeCommentDraftCopy(content) {
+    loadNextCommentsPage(ideaId, nextCommentPageNumber, nextCommentPageItemCount) {
+      dispatch(loadComments(ideaId, nextCommentPageNumber, nextCommentPageItemCount, false));
+    },
+    storeCommentDraftCopy(content, activeParentId) {
       // convert to HTML
       const htmlContent = draftToHtml(content);
 
-      dispatch(saveCommentDraft(htmlContent));
+      dispatch(saveCommentDraft(htmlContent, activeParentId));
     },
-    publishCommentClick(ideaId, content, userId, locale, parentId) {
-      if (content && content.trim() !== '<p></p>') {
+    publishCommentClick(ideaId, htmlContent, userId, locale, parentId, commentId) {
+      if (htmlContent && htmlContent.trim() !== '<p></p>') {
         const htmlContents = {};
-        htmlContents[locale] = content;
+        htmlContents[locale] = htmlContent;
         dispatch(publishComment(ideaId, userId, htmlContents, parentId));
       } else {
         // empty comment error
-        dispatch(publishCommentError(''));
+        dispatch(publishCommentError('', commentId));
       }
+    },
+    resetData() {
+      dispatch(resetIdeaAndComments());
     },
   };
 }

@@ -9,6 +9,7 @@ import { getProfile, postProfile } from '../sagas';
 import { mergeJsonApiResources } from '../../../utils/resources/actions';
 import { fetchCurrentUser, updateCurrentUser } from '../../../api';
 import { localStorageMock } from '../../../utils/testUtils';
+import { currentUserLoaded } from '../actions';
 
 describe('UserEditPage sagas', () => {
   // mock localStorage
@@ -25,10 +26,9 @@ describe('UserEditPage sagas', () => {
       expect(result).toEqual(put(mergeJsonApiResources()));
     });
 
-    // TODO: fix this test
-    // it('then, should dispatch currentUserLoaded action', (result) => {
-    //   expect(result).toEqual(put(currentUserLoaded(response)));
-    // });
+    it('then, should dispatch currentUserLoaded action', (result) => {
+      expect(result).toEqual(put(currentUserLoaded()));
+    });
   });
 
   describe('postProfile', () => {
@@ -44,7 +44,18 @@ describe('UserEditPage sagas', () => {
 
     // TODO: fix following test
     // it('then, should dispatch currentUserUpdated action', (result) => {
-    //   expect(result).toEqual(put(currentUserUpdated(response)));
+    //   const userId = 'anything';
+    //   const avatar = {
+    //     medium: 'anything',
+    //   };
+    //   const currentUserFromApi = {
+    //     data: {
+    //       id: userId,
+    //       attributes: { avatar },
+    //     },
+    //   };
+    //
+    //   expect(result).toEqual(put(currentUserUpdated(currentUserFromApi)));
     // });
   });
 });
