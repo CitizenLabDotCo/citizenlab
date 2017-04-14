@@ -15,7 +15,7 @@ import { Row, Column, Button, Label, Reveal } from 'components/Foundation';
 import styled from 'styled-components';
 import { Saga } from 'react-redux-saga';
 import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber } from './selectors';
-import { loadIdeas, resetIdeas, setShowIdeaWithIndexPage } from './actions';
+import { loadIdeas, setShowIdeaWithIndexPage } from './actions';
 import messages from './messages';
 import saga from './sagas';
 
@@ -37,10 +37,6 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
     if (!this.props.children && (this.props.children !== previousProps.children)) {
       this.props.initData();
     }
-  }
-
-  componentWillUnmount() {
-    this.props.resetData();
   }
 
   ideaShowPageHtml() {
@@ -155,7 +151,6 @@ IdeasIndexPage.propTypes = {
   router: PropTypes.object,
   initData: PropTypes.func.isRequired,
   loadNextPage: PropTypes.func.isRequired,
-  resetData: PropTypes.func.isRequired,
   nextPageNumber: PropTypes.number,
   nextPageItemCount: PropTypes.number,
   loading: PropTypes.bool.isRequired,
@@ -175,13 +170,10 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     initData: () => {
-      dispatch(loadIdeas(true));
+      dispatch(loadIdeas());
     },
     loadNextPage: (nextPageNumber, nextPageItemCount) => {
-      dispatch(loadIdeas(false, nextPageNumber, nextPageItemCount));
-    },
-    resetData: () => {
-      dispatch(resetIdeas());
+      dispatch(loadIdeas(nextPageNumber, nextPageItemCount));
     },
   };
 }

@@ -8,8 +8,7 @@ import { fromJS } from 'immutable';
 import * as qs from 'qs';
 
 import {
-  IDEAS_LOADED, IDEAS_RESET, LOAD_IDEAS_REQUEST,
-  SET_SHOW_IDEA_WITH_INDEX_PAGE,
+  IDEAS_LOADED, LOAD_IDEAS_REQUEST, SET_SHOW_IDEA_WITH_INDEX_PAGE,
 } from './constants';
 
 const initialState = fromJS({
@@ -49,16 +48,11 @@ function ideasIndexPageReducer(state = initialState, action) {
       const nextPageItemCount = getPageItemCountFromUrl(action.payload.links.next);
 
       return state
-        .update('ideas', (ideas) => (action.resetIdeas ? fromJS(ids) : ideas.concat(ids)))
+        .set('ideas', fromJS(ids))
         .set('nextPageNumber', nextPageNumber)
         .set('nextPageItemCount', nextPageItemCount)
         .set('loading', false);
     }
-    case IDEAS_RESET:
-      return state
-        .set('ideas', fromJS([]))
-        .set('nextPageNumber', null)
-        .set('nextPageItemCount', null);
     default:
       return state;
   }
