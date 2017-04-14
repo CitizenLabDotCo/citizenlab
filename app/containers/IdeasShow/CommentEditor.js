@@ -14,6 +14,17 @@ export default class CommentEditor extends React.PureComponent {
     this.onEditorStateChange.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.resetContent) {
+      this.setState({
+        editorState: null,
+      });
+      this.setState({
+        editorState: EditorState.createEmpty(),
+      });
+    }
+  }
+
   onEditorStateChange = (editorState) => {
     this.setState({
       editorState,

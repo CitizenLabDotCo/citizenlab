@@ -5,6 +5,7 @@
  */
 
 import { fromJS } from 'immutable';
+
 import {
   LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_ERROR, LOAD_COMMENTS_SUCCESS,
   LOAD_IDEA_SUCCESS, STORE_COMMENT_REQUEST, STORE_COMMENT_ERROR, STORE_COMMENT_SUCCESS, SAVE_COMMENT_DRAFT,
@@ -18,6 +19,7 @@ const initialState = fromJS({
   loadingComments: false,
   submittingComment: false,
   comments: [],
+  resetEditorContent: false,
 });
 
 function ideasShowReducer(state = initialState, action) {
@@ -27,6 +29,7 @@ function ideasShowReducer(state = initialState, action) {
         .set('idea', action.payload);
     case LOAD_COMMENTS_REQUEST:
       return state
+        .set('editorInitialContent', null)
         .set('loadCommentsError', null)
         .set('loadingComments', true);
     case LOAD_COMMENTS_SUCCESS:
@@ -39,7 +42,8 @@ function ideasShowReducer(state = initialState, action) {
         .set('loadingComments', false);
     case SAVE_COMMENT_DRAFT:
       return state
-        .set('commentContent', action.commentContent);
+        .set('commentContent', action.commentContent)
+        .set('resetEditorContent', false);
     case STORE_COMMENT_REQUEST:
       return state
         .set('storeCommentError', null)
@@ -48,6 +52,7 @@ function ideasShowReducer(state = initialState, action) {
       // TODO: refactor to use only ids and make the map from the store (like IdeasIndexPage)
       return state
         .update('comments', (comments) => comments.concat(action.comment))
+        .set('resetEditorContent', true)
         .set('submittingComment', false);
     case STORE_COMMENT_ERROR:
       return state

@@ -49,6 +49,11 @@ const makeSelectCommentContent = () => createSelector(
   (pageState) => pageState.get('commentContent')
 );
 
+const makeSelectResetEditorContent = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('resetEditorContent')
+);
+
 export default makeSelectIdeasShow;
 export {
   selectIdeasShowDomain,
@@ -58,4 +63,5 @@ export {
   makeSelectStoreCommentError,
   makeSelectSubmittingComment,
   makeSelectCommentContent,
+  makeSelectResetEditorContent,
 };

@@ -13,7 +13,7 @@ import messages from './messages';
 import CommentEditor from './CommentEditor';
 
 export function CommentEditorWrapper(props) {
-  const { className, storeCommentError, submittingComment, storeCommentCopy } = props;
+  const { className, storeCommentError, submittingComment, storeCommentCopy, resetEditorContent } = props;
 
   return (
     <div>
@@ -27,6 +27,7 @@ export function CommentEditorWrapper(props) {
       <div className={className}>
         <CommentEditor
           onEditorChange={storeCommentCopy}
+          resetContent={resetEditorContent}
         />
       </div>
     </div>
@@ -38,6 +39,7 @@ CommentEditorWrapper.propTypes = {
   storeCommentCopy: PropTypes.func.isRequired,
   storeCommentError: PropTypes.string,
   submittingComment: PropTypes.bool.isRequired,
+  resetEditorContent: PropTypes.bool.isRequired,
 };
 
 export default styled(CommentEditorWrapper)`

@@ -21,7 +21,8 @@ import {
   loadIdeaSuccess, publishComment, publishCommentError, saveCommentDraft,
 } from './actions';
 import makeSelectIdeasShow, {
-  makeSelectCommentContent, makeSelectComments, makeSelectLoadCommentsError, makeSelectLoadingComments, makeSelectStoreCommentError, makeSelectSubmittingComment,
+  makeSelectCommentContent, makeSelectComments, makeSelectLoadCommentsError,
+  makeSelectLoadingComments, makeSelectResetEditorContent, makeSelectStoreCommentError, makeSelectSubmittingComment,
 } from './selectors';
 import CommentEditorWrapper from './CommentEditorWrapper';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
@@ -85,7 +86,7 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
 
   render() {
     const idea = this.props.idea || this.props.pageData.idea;
-    const { storeCommentDraftCopy, storeCommentError, submittingComment, comments } = this.props;
+    const { storeCommentDraftCopy, storeCommentError, submittingComment, comments, resetEditorContent } = this.props;
 
     return (
       <div>
@@ -105,6 +106,7 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
           storeCommentCopy={storeCommentDraftCopy}
           storeCommentError={storeCommentError}
           submittingComment={submittingComment}
+          resetEditorContent={resetEditorContent}
         />
         <button onClick={this.publishComment}>
           <FormattedMessage {...messages.publishComment} />
@@ -133,6 +135,7 @@ IdeasShow.propTypes = {
   loadIdea: PropTypes.func.isRequired,
   loadComments: PropTypes.func.isRequired,
   publishCommentClick: PropTypes.func.isRequired,
+  resetEditorContent: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -145,6 +148,7 @@ const mapStateToProps = createStructuredSelector({
   commentContent: makeSelectCommentContent(),
   locale: makeSelectLocale(),
   user: makeSelectCurrentUser(),
+  resetEditorContent: makeSelectResetEditorContent(),
 });
 
 function mapDispatchToProps(dispatch) {
