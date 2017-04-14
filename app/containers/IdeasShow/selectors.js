@@ -1,8 +1,11 @@
-import { createSelector } from 'reselect';
-
 /**
  * Direct selector to the ideasShow state domain
  */
+import { createSelector } from 'reselect';
+import { fromJS } from 'immutable';
+
+import { selectResourcesDomain } from '../../utils/resources/selectors';
+
 const selectIdeasShowDomain = () => (state) => state.get('ideasShow');
 
 /**
@@ -31,7 +34,12 @@ const makeSelectLoadCommentsError = () => createSelector(
 
 const makeSelectComments = () => createSelector(
   selectIdeasShowDomain(),
-  (pageState) => pageState.get('comments')
+  selectResourcesDomain(),
+  (pageState, resources) => {
+    const ids = pageState.get('ideas', fromJS([]));
+    const commentsMap = resources.get('comments', fromJS({}));
+    return ids.map((id) => commentsMap.get(id)).toJS();
+  }
 );
 
 const makeSelectStoreCommentError = () => createSelector(

@@ -49,6 +49,7 @@ function ideasIndexPageReducer(state = initialState, action) {
       const nextPageItemCount = getPageItemCountFromUrl(action.payload.links.next);
 
       return state
+        // concatenate if not first loading
         .update('ideas', (ideas) => (action.resetIdeas ? fromJS(ids) : ideas.concat(ids)))
         .set('nextPageNumber', nextPageNumber)
         .set('nextPageItemCount', nextPageItemCount)
