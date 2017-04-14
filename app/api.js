@@ -48,6 +48,14 @@ export function fetchIdeas(nextPageNumber, nextPageItemCount, authorId) {
   return request(`${API_PATH}/ideas`, null, null, queryParameters);
 }
 
+export function fetchTopics(nextPageNumber, nextPageItemCount) {
+  const queryParameters = {
+    'page[number]': nextPageNumber,
+    'page[size]': nextPageItemCount,
+  };
+  return request(`${API_PATH}/topics`, null, null, queryParameters);
+}
+
 export function fetchIdea(id) {
   return request(`${API_PATH}/ideas/${id}`);
 }

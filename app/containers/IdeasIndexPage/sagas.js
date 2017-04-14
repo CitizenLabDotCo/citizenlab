@@ -1,8 +1,8 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { mergeJsonApiResources } from 'utils/resources/actions';
-import { LOAD_IDEAS_REQUEST } from './constants';
-import { ideasLoaded, ideasLoadingError } from './actions';
-import { fetchIdeas } from '../../api';
+import { LOAD_IDEAS_REQUEST, LOAD_TOPICS_REQUEST } from './constants';
+import { ideasLoaded, ideasLoadingError, loadTopicsSuccess, loadTopicsError } from './actions';
+import { fetchIdeas, fetchTopics } from '../../api';
 
 export function* getIdeas(action) {
   try {
@@ -14,6 +14,20 @@ export function* getIdeas(action) {
   }
 }
 
-export default function* ideas() {
+export function* getTopics(action) {
+  try {
+    const topicsResponse = yield call(fetchTopics, action.nextPageNumber, action.nextPageItemCount);
+    yield put(mergeJsonApiResources(topicsResponse));
+    yield put(loadTopicsSuccess(topicsResponse));
+  } catch (err) {
+    yield put(loadTopicsError(err));
+  }
+}
+
+export function* ideasSaga() {
   yield takeLatest(LOAD_IDEAS_REQUEST, getIdeas);
+}
+
+export function* topicsSaga() {
+  yield takeLatest(LOAD_TOPICS_REQUEST, getTopics);
 }

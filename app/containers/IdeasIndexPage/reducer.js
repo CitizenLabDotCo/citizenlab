@@ -9,6 +9,7 @@ import * as qs from 'qs';
 
 import {
   IDEAS_LOADED, LOAD_IDEAS_REQUEST, SET_SHOW_IDEA_WITH_INDEX_PAGE,
+  LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
@@ -17,6 +18,11 @@ const initialState = fromJS({
   ideas: [],
   loading: false,
   showIdeaWithIndexPage: false,
+  topics: {
+    ids: [],
+    nextPageNumber: null,
+    loading: false,
+  },
 });
 
 export function getPageNumberFromUrl(url) {
@@ -52,6 +58,16 @@ function ideasIndexPageReducer(state = initialState, action) {
         .set('nextPageNumber', nextPageNumber)
         .set('nextPageItemCount', nextPageItemCount)
         .set('loading', false);
+    }
+    case LOAD_TOPICS_REQUEST:
+      return state.setIn(['topics', 'loading'], true);
+    case LOAD_TOPICS_SUCCESS: {
+      const ids = action.payload.data.map((topic) => topic.id);
+      const nextPageNumber = getPageItemCountFromUrl(action.payload.links.next);
+      return state
+        .setIn(['topics', 'ids'], fromJS(ids))
+        .setIn(['topics', 'nextPageNumber'], nextPageNumber)
+        .setIn(['topics', 'loading'], false);
     }
     default:
       return state;

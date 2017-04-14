@@ -12,12 +12,13 @@ import { createStructuredSelector } from 'reselect';
 import _ from 'lodash';
 import IdeaCard from 'components/IdeaCard';
 import { Row, Column, Button, Label, Reveal } from 'components/Foundation';
+import T from 'containers/T';
 import styled from 'styled-components';
 import { Saga } from 'react-redux-saga';
-import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber } from './selectors';
-import { loadIdeas, setShowIdeaWithIndexPage } from './actions';
+import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber, makeSelectTopics } from './selectors';
+import { loadIdeas, setShowIdeaWithIndexPage, loadTopicsRequest } from './actions';
 import messages from './messages';
-import saga from './sagas';
+import { ideasSaga, topicsSaga } from './sagas';
 
 export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -79,7 +80,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   }
 
   indexPageHtml() {
-    const { ideas, nextPageNumber, loading } = this.props;
+    const { ideas, topics, nextPageNumber, loading } = this.props;
 
     const WrapperDiv = (props) => (
       <div
@@ -102,11 +103,14 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
             { name: 'description', content: 'Description of IdeasIndexPage' },
           ]}
         />
-        <Saga saga={saga} />
+        <Saga saga={ideasSaga} />
+        <Saga saga={topicsSaga} />
 
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
+
+        {topics.map((topic) => <div key={topic.id}><T value={topic.attributes.title_multiloc}></T></div>)}
 
         <Row data-equalizer>
           {ideas && ideas.map((idea) => (
@@ -146,6 +150,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
 
 IdeasIndexPage.propTypes = {
   ideas: PropTypes.any.isRequired,
+  topics: PropTypes.any.isRequired,
   params: PropTypes.object,
   children: PropTypes.any,
   router: PropTypes.object,
@@ -160,6 +165,7 @@ IdeasIndexPage.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   ideas: makeSelectIdeas(),
+  topics: makeSelectTopics(),
   nextPageNumber: makeSelectNextPageNumber(),
   nextPageItemCount: makeSelectNextPageItemCount(),
   loading: makeSelectLoading(),
@@ -171,6 +177,7 @@ function mapDispatchToProps(dispatch) {
     dispatch,
     initData: () => {
       dispatch(loadIdeas());
+      dispatch(loadTopicsRequest());
     },
     loadNextPage: (nextPageNumber, nextPageItemCount) => {
       dispatch(loadIdeas(nextPageNumber, nextPageItemCount));

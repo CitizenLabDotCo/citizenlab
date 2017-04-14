@@ -46,6 +46,21 @@ const makeSelectLoading = () => createSelector(
   (submitIdeaState) => submitIdeaState.get('loading')
 );
 
+const makeSelectTopicsDomain = () => createSelector(
+  selectIdeasIndexPageDomain(),
+  (substate) => substate.get('topics'),
+);
+
+const makeSelectTopics = () => createSelector(
+  makeSelectTopicsDomain(),
+  selectResourcesDomain(),
+  (topicsState, resources) => {
+    const ids = topicsState.get('ids');
+    const topicsMap = resources.get('topics');
+    return ids.map((id) => topicsMap.get(id).toJS());
+  }
+);
+
 export default makeSelectIdeasIndexPage;
 
 export {
@@ -54,4 +69,6 @@ export {
   makeSelectNextPageNumber,
   makeSelectLoading,
   makeSelectNextPageItemCount,
+  makeSelectTopicsDomain,
+  makeSelectTopics,
 };
