@@ -8,7 +8,7 @@ import { fromJS } from 'immutable';
 
 import {
   LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_ERROR, LOAD_COMMENTS_SUCCESS,
-  LOAD_IDEA_SUCCESS, STORE_COMMENT_REQUEST, STORE_COMMENT_ERROR, STORE_COMMENT_SUCCESS, SAVE_COMMENT_DRAFT,
+  LOAD_IDEA_SUCCESS, STORE_COMMENT_REQUEST, STORE_COMMENT_ERROR, SAVE_COMMENT_DRAFT,
   LOAD_IDEA_REQUEST, LOAD_IDEA_ERROR, RESET_IDEA_AND_COMMENTS,
 } from './constants';
 import { getPageItemCountFromUrl, getPageNumberFromUrl } from '../../utils/paginationUtils';
@@ -19,7 +19,6 @@ const initialState = fromJS({
   commentContent: null,
   loadIdeaError: null,
   storeCommentError: null,
-  storeCommentErrorId: null,
   loadCommentsError: null,
   loadingComments: false,
   submittingComment: false,
@@ -75,15 +74,9 @@ function ideasShowReducer(state = initialState, action) {
       return state
         .set('storeCommentError', null)
         .set('submittingComment', true);
-    case STORE_COMMENT_SUCCESS:
-      return state
-        .update('comments', (comments) => comments.concat(action.comment.id))
-        .set('resetEditorContent', true)
-        .set('submittingComment', false);
     case STORE_COMMENT_ERROR:
       return state
         .set('storeCommentError', action.storeCommentError)
-        .set('storeCommentErrorId', action.storeCommentErrorId)
         .set('submittingComment', false);
     case RESET_IDEA_AND_COMMENTS:
       return state

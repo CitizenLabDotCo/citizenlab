@@ -10,7 +10,6 @@ describe('ideasShowReducer', () => {
       commentContent: null,
       loadIdeaError: null,
       storeCommentError: null,
-      storeCommentErrorId: null,
       loadCommentsError: null,
       loadingComments: false,
       submittingComment: false,
@@ -22,5 +21,49 @@ describe('ideasShowReducer', () => {
     };
 
     expect(ideasShowReducer(undefined, {})).toEqual(fromJS(expectedInitialState));
+  });
+
+  describe('LOAD_IDEA_ERROR', () => {
+    it('returns loadIdeaError not null if error is provided', () => {
+      // TODO
+      expect(true).toEqual(true);
+    });
+  });
+
+  describe('LOAD_COMMENTS_REQUEST', () => {
+    it('returns empty comment array if initialLoad is true', () => {
+      // TODO
+      expect(true).toEqual(true);
+    });
+
+    it('returns provided comments if initialLoad is false', () => {
+      // TODO
+      expect(true).toEqual(true);
+    });
+  });
+
+  describe('LOAD_COMMENTS_SUCCESS', () => {
+    it('returns existing comments with new comments', () => {
+      expect(true).toEqual(true);
+    });
+
+    it('returns nextCommentPageNumber and nextCommentPageItemCount not null if they\'re provided', () => {
+      // TODO (expectPropertyNotNull ...)
+      expect(true).toEqual(true);
+    });
+  });
+
+  describe('STORE_COMMENT_ERROR', () => {
+    it('RETURN storeCommentError not null if error is provided', () => {
+      // TODO
+      expect(true).toEqual(true);
+    });
+  });
+
+  describe('RESET_IDEA_AND_COMMENTS', () => {
+    it('returns comments as an empty array, idea not null and resetEditorContent false', () => {
+      // TODO
+      expect(true).toEqual(true);
+    });
   });
 });

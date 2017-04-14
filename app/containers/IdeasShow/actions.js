@@ -26,7 +26,6 @@ export function ideaLoadError(loadIdeaError) {
   return {
     type: LOAD_IDEA_ERROR,
     loadIdeaError,
-    error: true,
   };
 }
 
@@ -72,11 +71,10 @@ export function publishComment(ideaId, userId, htmlContents, parentId) {
   };
 }
 
-export function publishCommentError(storeCommentError, storeCommentErrorId) {
+export function publishCommentError(storeCommentError) {
   return {
     type: STORE_COMMENT_ERROR,
     storeCommentError,
-    storeCommentErrorId,
   };
 }
 

@@ -210,7 +210,7 @@ const mapStateToProps = createStructuredSelector({
   activeParentId: makeSelectActiveParentId(),
 });
 
-function mapDispatchToProps(dispatch) {
+export function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     loadIdea(ideaId) {

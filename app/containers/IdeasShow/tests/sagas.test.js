@@ -2,14 +2,29 @@
  * Test  sagas
  */
 
+
 /* eslint-disable redux-saga/yield-effects */
-// import { take, call, put, select } from 'redux-saga/effects';
-// import { defaultSaga } from '../sagas';
+import { call } from 'redux-saga/effects';
+import sagaHelper from 'redux-saga-testing';
+import { fetchIdea } from '../../../api';
+import { loadIdea } from '../sagas';
 
-// const generator = defaultSaga();
+describe('sagas', () => {
+  describe('loadIdea', () => {
+    const mockedAction = {}; // TODO
 
-describe('defaultSaga Saga', () => {
-  it('should have tests in the future', () => {
-    expect(true).toEqual(true);
+    const it = sagaHelper(loadIdea(mockedAction));
+
+    it('should have called the correct API', (result) => {
+      expect(result).toEqual(call(fetchIdea, undefined));
+    });
+
+    it('then, should dispatch loadIdeaSuccess action', () => {
+      // TODO (fix)
+      // expect(result).toEqual(put(loadIdeaSuccess(undefined)));
+      expect(true).toEqual(true);
+    });
   });
+
+  // TODO (same for loadIdeaComments and publishComment)
 });
