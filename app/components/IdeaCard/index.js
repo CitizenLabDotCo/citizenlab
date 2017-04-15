@@ -26,7 +26,8 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
             <T value={idea.attributes.title_multiloc}></T>
           </h4>
           <p>
-
+            {idea.relationships.author.attributes.first_name}
+            {idea.relationships.topics.data.map((topic) => <T key={topic.id} value={topic.attributes.title_multiloc}></T>)}
           </p>
         </div>
       </div>

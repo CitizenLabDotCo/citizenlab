@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { selectResourcesDomain } from 'utils/resources/selectors';
+import denormalize from 'utils/denormalize';
 import { fromJS } from 'immutable';
 
 /**
@@ -21,13 +22,14 @@ const makeSelectIdeasIndexPage = () => createSelector(
   (substate) => substate.toJS()
 );
 
+
 const makeSelectIdeas = () => createSelector(
   selectIdeasIndexPageDomain(),
   selectResourcesDomain(),
   (pageState, resources) => {
     const ids = pageState.get('ideas', fromJS([]));
-    const ideasMap = resources.get('ideas', fromJS({}));
-    return ids.map((id) => ideasMap.get(id)).toJS();
+
+    return ids.map((id) => denormalize(resources, 'ideas', id)).toJS();
   }
 );
 
