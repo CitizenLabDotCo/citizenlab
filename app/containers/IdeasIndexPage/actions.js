@@ -8,6 +8,7 @@ import {
   LOAD_IDEAS_REQUEST, IDEAS_LOADED, IDEAS_LOADING_ERROR,
   SET_SHOW_IDEA_WITH_INDEX_PAGE,
   LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_TOPICS_ERROR,
+  LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR,
 } from './constants';
 
 export function ideasLoaded(ideas) {
@@ -58,6 +59,28 @@ export function loadTopicsSuccess(topics) {
 export function loadTopicsError(errorMessage) {
   return {
     type: LOAD_TOPICS_ERROR,
+    payload: errorMessage,
+  };
+}
+
+export function loadAreasRequest(nextPageNumber, nextPageItemCount) {
+  return {
+    type: LOAD_AREAS_REQUEST,
+    nextPageNumber,
+    nextPageItemCount,
+  };
+}
+
+export function loadAreasSuccess(areas) {
+  return {
+    type: LOAD_AREAS_SUCCESS,
+    payload: areas,
+  };
+}
+
+export function loadAreasError(errorMessage) {
+  return {
+    type: LOAD_AREAS_ERROR,
     payload: errorMessage,
   };
 }

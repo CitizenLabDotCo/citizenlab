@@ -17,10 +17,10 @@ import T from 'containers/T';
 import styled from 'styled-components';
 import { Saga } from 'react-redux-saga';
 import isEqual from 'lodash/isEqual';
-import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber, makeSelectTopics } from './selectors';
-import { loadIdeas, setShowIdeaWithIndexPage, loadTopicsRequest } from './actions';
+import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber, makeSelectTopics, makeSelectAreas } from './selectors';
+import { loadIdeas, setShowIdeaWithIndexPage, loadTopicsRequest, loadAreasRequest } from './actions';
 import messages from './messages';
-import { ideasSaga, topicsSaga } from './sagas';
+import { ideasSaga, topicsSaga, areasSaga } from './sagas';
 
 export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -40,6 +40,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
     if (!isEqual(nextProps.location.query, this.props.location.query)) {
       this.props.reloadIdeas({
         'topics[]': nextProps.location.query.topics,
+        'areas[]': nextProps.location.query.areas,
       });
     }
   }
@@ -90,7 +91,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   }
 
   indexPageHtml() {
-    const { ideas, topics, nextPageNumber, loading } = this.props;
+    const { ideas, topics, areas, nextPageNumber, loading } = this.props;
 
     const WrapperDiv = (props) => (
       <div
@@ -115,6 +116,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
         />
         <Saga saga={ideasSaga} />
         <Saga saga={topicsSaga} />
+        <Saga saga={areasSaga} />
 
         <h1>
           <FormattedMessage {...messages.header} />
@@ -122,8 +124,16 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
 
         {topics.map((topic) =>
           <div key={topic.id}>
-            <Link to={{ pathname: this.props.location.pathname, query: { topics: [topic.id] } }}>
+            <Link to={{ pathname: this.props.location.pathname, query: { ...this.props.location.query, topics: [topic.id] } }}>
               <T value={topic.attributes.title_multiloc}></T>
+            </Link>
+          </div>)
+        }
+
+        {areas.map((area) =>
+          <div key={area.id}>
+            <Link to={{ pathname: this.props.location.pathname, query: { ...this.props.location.query, areas: [area.id] } }}>
+              <T value={area.attributes.title_multiloc}></T>
             </Link>
           </div>)
         }
@@ -167,6 +177,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
 IdeasIndexPage.propTypes = {
   ideas: PropTypes.any.isRequired,
   topics: PropTypes.any.isRequired,
+  areas: PropTypes.any.isRequired,
   params: PropTypes.object,
   children: PropTypes.any,
   router: PropTypes.object,
@@ -184,6 +195,7 @@ IdeasIndexPage.propTypes = {
 const mapStateToProps = createStructuredSelector({
   ideas: makeSelectIdeas(),
   topics: makeSelectTopics(),
+  areas: makeSelectAreas(),
   nextPageNumber: makeSelectNextPageNumber(),
   nextPageItemCount: makeSelectNextPageItemCount(),
   loading: makeSelectLoading(),
@@ -196,6 +208,7 @@ function mapDispatchToProps(dispatch) {
     initData: () => {
       dispatch(loadIdeas());
       dispatch(loadTopicsRequest());
+      dispatch(loadAreasRequest());
     },
     reloadIdeas: (filters) => {
       dispatch(loadIdeas({ filters }));

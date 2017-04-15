@@ -47,6 +47,10 @@ export function fetchTopics(queryParameters) {
   return request(`${API_PATH}/topics`, null, null, queryParameters);
 }
 
+export function fetchAreas(queryParameters) {
+  return request(`${API_PATH}/areas`, null, null, queryParameters);
+}
+
 export function fetchIdea(id) {
   return request(`${API_PATH}/ideas/${id}`);
 }

@@ -53,6 +53,11 @@ const makeSelectTopicsDomain = () => createSelector(
   (substate) => substate.get('topics'),
 );
 
+const makeSelectAreasDomain = () => createSelector(
+  selectIdeasIndexPageDomain(),
+  (substate) => substate.get('areas'),
+);
+
 const makeSelectTopics = () => createSelector(
   makeSelectTopicsDomain(),
   selectResourcesDomain(),
@@ -60,6 +65,16 @@ const makeSelectTopics = () => createSelector(
     const ids = topicsState.get('ids');
     const topicsMap = resources.get('topics');
     return ids.map((id) => topicsMap.get(id).toJS());
+  }
+);
+
+const makeSelectAreas = () => createSelector(
+  makeSelectAreasDomain(),
+  selectResourcesDomain(),
+  (areasState, resources) => {
+    const ids = areasState.get('ids');
+    const areasMap = resources.get('areas');
+    return ids.map((id) => areasMap.get(id).toJS());
   }
 );
 
@@ -73,4 +88,5 @@ export {
   makeSelectNextPageItemCount,
   makeSelectTopicsDomain,
   makeSelectTopics,
+  makeSelectAreas,
 };

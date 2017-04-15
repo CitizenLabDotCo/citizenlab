@@ -1,8 +1,8 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { mergeJsonApiResources } from 'utils/resources/actions';
-import { LOAD_IDEAS_REQUEST, LOAD_TOPICS_REQUEST } from './constants';
-import { ideasLoaded, ideasLoadingError, loadTopicsSuccess, loadTopicsError } from './actions';
-import { fetchIdeas, fetchTopics } from '../../api';
+import { LOAD_IDEAS_REQUEST, LOAD_TOPICS_REQUEST, LOAD_AREAS_REQUEST } from './constants';
+import { ideasLoaded, ideasLoadingError, loadTopicsSuccess, loadTopicsError, loadAreasSuccess, loadAreasError } from './actions';
+import { fetchIdeas, fetchTopics, fetchAreas } from '../../api';
 
 export function* getIdeas(action) {
   try {
@@ -31,10 +31,27 @@ export function* getTopics(action) {
   }
 }
 
+export function* getAreas(action) {
+  try {
+    const areasResponse = yield call(fetchAreas, {
+      'page[number]': action.nextPageNumber,
+      'page[size]': action.nextPageItemCount,
+    });
+    yield put(mergeJsonApiResources(areasResponse));
+    yield put(loadAreasSuccess(areasResponse));
+  } catch (err) {
+    yield put(loadAreasError(err));
+  }
+}
+
 export function* ideasSaga() {
   yield takeLatest(LOAD_IDEAS_REQUEST, getIdeas);
 }
 
 export function* topicsSaga() {
   yield takeLatest(LOAD_TOPICS_REQUEST, getTopics);
+}
+
+export function* areasSaga() {
+  yield takeLatest(LOAD_AREAS_REQUEST, getAreas);
 }
