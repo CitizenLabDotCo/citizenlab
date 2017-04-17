@@ -28,7 +28,6 @@ const makeSelectIdeas = () => createSelector(
   selectResourcesDomain(),
   (pageState, resources) => {
     const ids = pageState.get('ideas', fromJS([]));
-
     return ids.map((id) => denormalize(resources, 'ideas', id)).toJS();
   }
 );

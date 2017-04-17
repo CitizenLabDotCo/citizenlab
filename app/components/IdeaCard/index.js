@@ -15,6 +15,7 @@ import styled from 'styled-components';
 class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { idea } = this.props;
+    const { author, topics, areas } = idea.relationships;
     // TODO enable eslint
     /* eslint-disable */
     // fix: Visible, non-interactive elements should not have mouse or keyboard event listeners
@@ -26,9 +27,13 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
             <T value={idea.attributes.title_multiloc}></T>
           </h4>
           <p>
-            {idea.relationships.author.attributes.first_name}
-            {idea.relationships.topics.data.map((topic) => <T key={topic.id} value={topic.attributes.title_multiloc}></T>)}
-            {idea.relationships.areas.data.map((area) => <T key={area.id} value={area.attributes.title_multiloc}></T>)}
+            {author.attributes.first_name}
+            {topics.data.map((topic) =>
+              {topic && topic.attributes && <T key={topic.id} value={topic.attributes.title_multiloc}></T>}
+            )}
+            {areas.data.map((area) =>
+              {area && area.attributes && <T key={area.id} value={area.attributes.title_multiloc}></T>}
+            )}
           </p>
         </div>
       </div>

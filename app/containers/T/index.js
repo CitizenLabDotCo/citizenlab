@@ -26,9 +26,9 @@ export class T extends React.PureComponent { // eslint-disable-line react/prefer
     }
 
     return (
-      <div className="cl-translated-text">
+      <span className="cl-translated-text">
         { findTranslatedText(value, userLocale || this.fallbackUserLocale, tenantLocales || this.fallbackTenantLocales) }
-      </div>
+      </span>
     );
   }
 }
