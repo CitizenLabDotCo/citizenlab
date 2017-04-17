@@ -6,8 +6,8 @@
 
 import React, { PropTypes } from 'react';
 import T from 'containers/T';
-import { Card, Image, Button, Icon, Label } from 'semantic-ui-react';
 import styled from 'styled-components';
+import { Card, Label, Button, Image, Icon } from 'semantic-ui-react';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
@@ -15,6 +15,10 @@ import styled from 'styled-components';
 class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { idea } = this.props;
+    const { author, topics, areas } = idea.relationships;
+    // TODO enable eslint
+    /* eslint-disable */
+    // fix: Visible, non-interactive elements should not have mouse or keyboard event listeners
     return (
       <Card>
         <Image
@@ -30,6 +34,15 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
               <Icon name="music"></Icon>
               Culture
             </Label>
+
+            {author.attributes.first_name}
+            {topics.data.map((topic) =>
+              {topic && topic.attributes && <T key={topic.id} value={topic.attributes.title_multiloc}></T>}
+            )}
+            {areas.data.map((area) =>
+              {area && area.attributes && <T key={area.id} value={area.attributes.title_multiloc}></T>}
+            )}
+
           </Card.Description>
         </Card.Content>
         <Button.Group basic attached="bottom" size="small">
@@ -43,22 +56,6 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
         </Button.Group>
       </Card>
     );
-    // TODO enable eslint
-    /* eslint-disable */
-    // fix: Visible, non-interactive elements should not have mouse or keyboard event listeners
-    // return (
-    //   <div className={'card ' + this.props.className} onClick={this.props.onClick}>
-    //     <div className="card-section">
-    //       {!_.isEmpty(idea.attributes.images) && <img src={idea.attributes.images[0].medium} role="presentation"></img>}
-    //       <h4>
-    //         <T value={idea.attributes.title_multiloc}></T>
-    //       </h4>
-    //       <p>
-    //
-    //       </p>
-    //     </div>
-    //   </div>
-    // );
   }
 }
 

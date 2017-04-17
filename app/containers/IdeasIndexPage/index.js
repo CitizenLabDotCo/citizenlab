@@ -6,19 +6,22 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import _ from 'lodash';
 import IdeaCard from 'components/IdeaCard';
-import { Button, Label, Reveal } from 'components/Foundation';
 import { Card } from 'semantic-ui-react';
+import { Reveal, Button, Label } from 'components/Foundation';
+import T from 'containers/T';
 import styled from 'styled-components';
 import { Saga } from 'react-redux-saga';
-import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber } from './selectors';
-import { loadIdeas, setShowIdeaWithIndexPage } from './actions';
+import isEqual from 'lodash/isEqual';
+import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber, makeSelectTopics, makeSelectAreas } from './selectors';
+import { loadIdeas, setShowIdeaWithIndexPage, loadTopicsRequest, loadAreasRequest } from './actions';
 import messages from './messages';
-import saga from './sagas';
+import { ideasSaga, topicsSaga, areasSaga } from './sagas';
 
 export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -31,6 +34,15 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   componentDidMount() {
     if (!this.props.children) {
       this.props.initData();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(nextProps.location.query, this.props.location.query)) {
+      this.props.reloadIdeas({
+        'topics[]': nextProps.location.query.topics,
+        'areas[]': nextProps.location.query.areas,
+      });
     }
   }
 
@@ -80,7 +92,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   }
 
   indexPageHtml() {
-    const { ideas, nextPageNumber, loading } = this.props;
+    const { ideas, topics, areas, nextPageNumber, loading } = this.props;
 
     const WrapperDiv = (props) => (
       <div
@@ -103,18 +115,35 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
             { name: 'description', content: 'Description of IdeasIndexPage' },
           ]}
         />
-        <Saga saga={saga} />
+        <Saga saga={ideasSaga} />
+        <Saga saga={topicsSaga} />
+        <Saga saga={areasSaga} />
 
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
+
+        {topics.map((topic) =>
+          <div key={topic.id}>
+            <Link to={{ pathname: this.props.location.pathname, query: { ...this.props.location.query, topics: [topic.id] } }}>
+              <T value={topic.attributes.title_multiloc}></T>
+            </Link>
+          </div>)
+        }
+
+        {areas.map((area) =>
+          <div key={area.id}>
+            <Link to={{ pathname: this.props.location.pathname, query: { ...this.props.location.query, areas: [area.id] } }}>
+              <T value={area.attributes.title_multiloc}></T>
+            </Link>
+          </div>)
+        }
 
         <Card.Group itemsPerRow={4} doubling stackable>
           {ideas && ideas.map((idea) => (
             <IdeaCard key={idea.id} idea={idea} onClick={() => { this.props.dispatch(setShowIdeaWithIndexPage(true)); this.props.router.push(`/ideas/${idea.id}`); }}></IdeaCard>
           ))}
         </Card.Group>
-
         {/* eslint-disable-next-line jsx-ally/no-static-element-interactions */}
         <CenteredDiv onClick={this.goToNextPage}>
           {(nextPageNumber && !loading) && <Button>
@@ -146,6 +175,8 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
 
 IdeasIndexPage.propTypes = {
   ideas: PropTypes.any.isRequired,
+  topics: PropTypes.any.isRequired,
+  areas: PropTypes.any.isRequired,
   params: PropTypes.object,
   children: PropTypes.any,
   router: PropTypes.object,
@@ -156,10 +187,14 @@ IdeasIndexPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
   pageData: React.PropTypes.object,
+  location: React.PropTypes.object,
+  reloadIdeas: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   ideas: makeSelectIdeas(),
+  topics: makeSelectTopics(),
+  areas: makeSelectAreas(),
   nextPageNumber: makeSelectNextPageNumber(),
   nextPageItemCount: makeSelectNextPageItemCount(),
   loading: makeSelectLoading(),
@@ -171,9 +206,14 @@ function mapDispatchToProps(dispatch) {
     dispatch,
     initData: () => {
       dispatch(loadIdeas());
+      dispatch(loadTopicsRequest());
+      dispatch(loadAreasRequest());
     },
-    loadNextPage: (nextPageNumber, nextPageItemCount) => {
-      dispatch(loadIdeas(nextPageNumber, nextPageItemCount));
+    reloadIdeas: (filters) => {
+      dispatch(loadIdeas({ filters }));
+    },
+    loadNextPage: (nextPageNumber, nextPageItemCount, filters = {}) => {
+      dispatch(loadIdeas({ nextPageNumber, nextPageItemCount, filters }));
     },
   };
 }

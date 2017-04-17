@@ -11,6 +11,16 @@ describe('ideasIndexPageReducer', () => {
       ideas: [],
       loading: false,
       showIdeaWithIndexPage: false,
+      topics: {
+        ids: [],
+        nextPageNumber: null,
+        loading: false,
+      },
+      areas: {
+        ids: [],
+        nextPageNumber: null,
+        loading: false,
+      },
     };
 
     expect(ideasIndexPageReducer(undefined, {})).toEqual(fromJS(expectedInitialState));
