@@ -32,7 +32,6 @@ export function* publishComment(action) {
     const ideaId = action.ideaId;
     const response = yield call(createIdeaComment, ideaId, action.userId, action.htmlContents, action.parentId);
     yield put(mergeJsonApiResources(response));
-
     // reload comments
     yield put(loadComments(ideaId, null, null, true));
   } catch (e) {

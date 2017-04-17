@@ -55,7 +55,6 @@ describe('commentsSelector', () => {
     resourcesState.global.resources.comments[commentIds[0]] = generateResourcesCommentValue(commentIds[0]);
     resourcesState.global.resources.comments[commentIds[1]] = generateResourcesCommentValue(commentIds[1]);
     // TODO: fix this test (resources results undefined in selector when run from within the test)
-    // expect(commentsSelector(fromJS(ideasShowState), fromJS(resourcesState))).toEqual(resourcesState);
-    expect(true).toEqual(true);
+    expect(commentsSelector(fromJS(ideasShowState), fromJS(resourcesState))).toEqual(resourcesState);
   });
 });
