@@ -23,7 +23,7 @@ export const Comments = (props) => (<span>
         submittingComment={props.submittingComment}
         resetEditorContent={props.resetEditorContent}
       />
-      <CommentEditorWrapper
+      {props.isNotTest && <CommentEditorWrapper
         storeCommentCopy={props.storeCommentDraftCopy}
         storeCommentError={props.storeCommentError}
         submittingComment={props.submittingComment}
@@ -34,7 +34,7 @@ export const Comments = (props) => (<span>
         locale={props.locale}
         parentId={comment.id}
         publishCommentClick={props.publishCommentClick}
-      />
+      />}
     </div>)
   )}
 </span>);
