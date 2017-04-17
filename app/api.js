@@ -43,7 +43,7 @@ export function fetchIdeas(nextPageNumber, nextPageItemCount, authorId) {
   const queryParameters = {
     'page[number]': nextPageNumber,
     'page[size]': nextPageItemCount,
-    author: authorId,
+    author_id: authorId,
   };
   return request(`${API_PATH}/ideas`, null, null, queryParameters);
 }

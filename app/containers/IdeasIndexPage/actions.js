@@ -22,7 +22,7 @@ export function ideasLoadingError(errorMessage) {
   };
 }
 
-export function loadIdeas(nextPageNumber, nextPageItemCount, initialLoad) {
+export function loadIdeas(initialLoad, nextPageNumber, nextPageItemCount) {
   return {
     type: LOAD_IDEAS_REQUEST,
     nextPageNumber,
@@ -31,15 +31,15 @@ export function loadIdeas(nextPageNumber, nextPageItemCount, initialLoad) {
   };
 }
 
+export function resetIdeas() {
+  return {
+    type: RESET_IDEAS,
+  };
+}
+
 export function setShowIdeaWithIndexPage(payload) {
   return {
     type: SET_SHOW_IDEA_WITH_INDEX_PAGE,
     payload,
-  };
-}
-
-export function resetIdeas() {
-  return {
-    type: RESET_IDEAS,
   };
 }

@@ -3,8 +3,9 @@
 
 // const selector = makeSelectIdeasIndexPageDomain();
 
-describe('makeSelectIdeasIndexPageDomain', () => {
-  it('Expect to have unit tests specified', () => {
+describe('IdeasIndexPage selectors', () => {
+  it('should have tests in the future (for id to resources mapping)', () => {
+    // TODO
     expect(true).toEqual(true);
   });
 });
