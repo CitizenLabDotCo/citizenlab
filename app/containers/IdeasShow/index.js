@@ -35,6 +35,7 @@ import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 import { watchFetchComments, watchFetchIdea, watchStoreComment } from './sagas';
 import CommentList from './CommentList';
 import messages from './messages';
+import IdeaContent from './IdeaContent';
 
 export class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -75,7 +76,7 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
   }
 
   ideaHtml(idea) {
-    const { attributes } = idea;
+    const { attributes, relationships } = idea;
 
     return (
       <div>
@@ -83,8 +84,8 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
           ideaImages={attributes.images}
         />}
         <h2><T value={attributes.title_multiloc} /></h2>
-        <p><strong>Some Author</strong></p>
-        <div dangerouslySetInnerHTML={{ __html: attributes.body_multiloc.en }}></div>
+        <p><strong>By: {relationships.author ? relationships.author.data.id : ''}</strong></p>
+        <IdeaContent>{attributes.body_multiloc.en}</IdeaContent>
       </div>
     );
   }

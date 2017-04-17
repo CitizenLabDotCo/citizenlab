@@ -3,8 +3,8 @@
 
 // const selector = makeSelectIdeasShowDomain();
 
-describe('makeSelectIdeasShowDomain', () => {
-  it('should have tests in the future', () => {
+describe('makeSelemakeSelectCommentsctIdeasShowDomain', () => {
+  it('should return comments based on id-comments map', () => {
     expect(true).toEqual(true);
   });
 });

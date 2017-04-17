@@ -1,5 +1,6 @@
 describe('<CommentList />', () => {
-  it('should have tests in the future', () => {
+  it('it should render the right number of comments', () => {
+    // TODO
     expect(true).toEqual(true);
   });
 });

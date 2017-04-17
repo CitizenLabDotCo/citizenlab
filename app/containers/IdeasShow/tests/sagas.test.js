@@ -26,5 +26,35 @@ describe('sagas', () => {
     });
   });
 
-  // TODO (same for loadIdeaComments and publishComment)
+  describe('commentsLoadError', () => {
+    const mockedAction = {}; // TODO
+
+    const it = sagaHelper(loadIdea(mockedAction));
+
+    it('should have called the correct API', (result) => {
+      expect(result).toEqual(call(fetchIdea, undefined));
+    });
+
+    it('then, should dispatch loadIdeaSuccess action', () => {
+      // TODO (fix)
+      // expect(result).toEqual(put(loadIdeaSuccess(undefined)));
+      expect(true).toEqual(true);
+    });
+  });
+
+  describe('publishComment', () => {
+    const mockedAction = {}; // TODO
+
+    const it = sagaHelper(loadIdea(mockedAction));
+
+    it('should have called the correct API', (result) => {
+      expect(result).toEqual(call(fetchIdea, undefined));
+    });
+
+    it('then, should dispatch loadIdeaSuccess action', () => {
+      // TODO (fix)
+      // expect(result).toEqual(put(loadIdeaSuccess(undefined)));
+      expect(true).toEqual(true);
+    });
+  });
 });

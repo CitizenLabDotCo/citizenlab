@@ -1,5 +1,6 @@
 describe('<Comment />', () => {
-  it('should have tests in the future', () => {
+  it('it should render nested comments indented', () => {
+    // TODO
     expect(true).toEqual(true);
   });
 });
