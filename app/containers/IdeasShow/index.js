@@ -4,24 +4,34 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import T from 'containers/T';
 import { connect } from 'react-redux';
 import ImageCarousel from 'components/ImageCarousel';
 import { setShowIdeaWithIndexPage } from 'containers/IdeasIndexPage/actions';
 import { createStructuredSelector } from 'reselect';
+import { Saga } from 'react-redux-saga';
+import { FormattedMessage } from 'react-intl';
+import messages from './messages';
+
 import {
-  loadIdea,
-  loadIdeaSuccess,
+  loadIdea, loadIdeaSuccess, loadVotes, voteIdea,
 } from './actions';
-import makeSelectIdeasShow from './selectors';
+import makeSelectIdeasShow, { makeSelectDownVotes, makeSelectIdeaVotesLoadError, makeSelectUpVotes } from './selectors';
+import VoteIdea from '../../components/VoteIdea/index';
+import { watchFetchIdea, watchLoadIdeaVotes, watchVoteIdea } from './sagas';
+import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 
 export class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
+    const slug = this.props.params.slug;
+
     if (this.props.showIdeaWithIndexPage === false) {
-      this.props.dispatch(loadIdea(this.props.params.slug));
+      this.props.dispatch(loadIdea(slug));
     }
+    this.props.loadIdeaVotes(slug);
   }
 
   componentWillUnmount() {
@@ -53,6 +63,7 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
 
   render() {
     const idea = this.props.idea || this.props.pageData.idea;
+    const { submitIdeaVote, upVotes, downVotes, ideaVotesLoadError, user } = this.props;
     return (
       <div>
         <Helmet
@@ -61,7 +72,19 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
             { name: 'description', content: 'Description of IdeasShow' },
           ]}
         />
+        <Saga saga={watchFetchIdea} />
+        <Saga saga={watchLoadIdeaVotes} />
+        <Saga saga={watchVoteIdea} />
+
         { idea ? this.ideaHtml(idea) : this.notFoundHtml() }
+        {ideaVotesLoadError && <FormattedMessage {...messages.loadVotesError} />}
+        {idea && !ideaVotesLoadError && <VoteIdea
+          ideaId={idea.id}
+          userId={user && user.id}
+          upVotes={upVotes}
+          downVotes={downVotes}
+          onVoteIdeaClick={submitIdeaVote}
+        />}
       </div>
     );
   }
@@ -73,15 +96,31 @@ IdeasShow.propTypes = {
   pageData: PropTypes.object,
   showIdeaWithIndexPage: PropTypes.bool,
   params: PropTypes.object,
+  submitIdeaVote: PropTypes.func.isRequired,
+  loadIdeaVotes: PropTypes.func.isRequired,
+  upVotes: PropTypes.any.isRequired,
+  downVotes: PropTypes.any.isRequired,
+  ideaVotesLoadError: PropTypes.string,
+  user: PropTypes.any,
 };
 
 const mapStateToProps = createStructuredSelector({
   pageData: makeSelectIdeasShow(),
+  upVotes: makeSelectUpVotes(),
+  downVotes: makeSelectDownVotes(),
+  ideaVotesLoadError: makeSelectIdeaVotesLoadError(),
+  user: makeSelectCurrentUser(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
+    loadIdeaVotes(ideaId) {
+      dispatch(loadVotes(ideaId));
+    },
+    submitIdeaVote(ideaId, userId, op) {
+      dispatch(voteIdea(ideaId, userId, op));
+    },
   };
 }
 

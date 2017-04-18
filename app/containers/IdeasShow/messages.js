@@ -6,8 +6,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  // header: {
-  //   id: 'app.containers.IdeasShow.header',
-  //   defaultMessage: 'IdeasShow',
-  // },
+  loadVotesError: {
+    id: 'app.containers.IdeasShow.loadVotesError',
+    defaultMessage: 'Voting is not currently available',
+  },
 });

@@ -11,12 +11,16 @@ import {
 
 const initialState = fromJS({
   idea: null,
+  upVotes: [],
+  downVotes: [],
+  ideaVotesLoadError: null,
 });
 
 function ideasShowReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_IDEA_SUCCESS:
       return state.set('idea', action.payload);
+    // TODO: complete with votes
     default:
       return state;
   }

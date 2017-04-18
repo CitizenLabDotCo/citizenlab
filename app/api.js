@@ -73,3 +73,19 @@ export function updateCurrentUser(values, userId) {
 export function fetchCurrentTenant() {
   return request(`${API_PATH}/tenants/current`);
 }
+
+export function fetchIdeaVotes(ideaId) {
+  return request(`${API_PATH}/ideas/${ideaId}/vote`);
+}
+
+export function submitIdeaVote(ideaId, userId, which) {
+  const body = {
+    ideaId,
+    userId,
+    which,
+  };
+
+  return request(`${API_PATH}/ideas/${ideaId}/vote`, body, {
+    method: 'POST',
+  });
+}
