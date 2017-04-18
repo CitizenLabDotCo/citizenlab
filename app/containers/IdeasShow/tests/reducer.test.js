@@ -2,7 +2,7 @@ import { fromJS } from 'immutable';
 import ideasShowReducer from '../reducer';
 import { expectPropertyNotNull } from '../../../utils/testUtils';
 import { commentsLoaded, ideaLoadError, loadComments, resetIdeaAndComments } from '../actions';
-import { generateResourcesCommentValue } from './__shared.test';
+import { generateResourcesCommentValue } from './__shared';
 
 describe('ideasShowReducer', () => {
   const initialState = {

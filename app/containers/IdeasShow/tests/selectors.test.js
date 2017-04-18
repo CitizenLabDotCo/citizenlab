@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 import { makeSelectComments } from '../selectors';
-import { generateResourcesCommentValue } from './__shared.test';
+import { generateResourcesCommentValue } from './__shared';
 
 describe('commentsSelector', () => {
   it('should select comments based on id-comments map', () => {
