@@ -8,6 +8,8 @@ describe('ideasShowReducer', () => {
     upVotes: [],
     downVotes: [],
     ideaVotesLoadError: null,
+    loadingVotes: false,
+    submittingVote: false,
   };
 
   it('returns the initial state', () => {

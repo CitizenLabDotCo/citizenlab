@@ -31,24 +31,25 @@ class VoteIdea extends React.PureComponent { // eslint-disable-line react/prefer
   }
 
   render() {
-    const { upVotes, downVotes, userId } = this.props;
+    const { upVotes, downVotes, userId, submittingVote, ideaVoteSubmitError } = this.props;
 
     return (
       <div>
         <hr />
         <strong><FormattedMessage {...messages.header} /></strong>
         <div>
-          {userId && <Button onClick={this.upVoteIdea}>
+          {userId && !submittingVote && <Button onClick={this.upVoteIdea}>
             +
           </Button>}
           {upVotes.length}
         </div>
         <div>
-          {userId && <Button onClick={this.downVoteIdea}>
+          {userId && !submittingVote && <Button onClick={this.downVoteIdea}>
             -
           </Button>}
+          {downVotes.length}
         </div>
-        {downVotes.length}
+        {ideaVoteSubmitError && <FormattedMessage {...messages.ideaVoteSubmitError} />}
       </div>
     );
   }
@@ -60,6 +61,8 @@ VoteIdea.propTypes = {
   upVotes: PropTypes.any.isRequired,
   downVotes: PropTypes.any.isRequired,
   onVoteIdeaClick: PropTypes.func.isRequired,
+  submittingVote: PropTypes.bool.isRequired,
+  ideaVoteSubmitError: PropTypes.string,
 };
 
 export default styled(VoteIdea) `

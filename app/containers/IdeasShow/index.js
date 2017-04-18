@@ -19,7 +19,10 @@ import messages from './messages';
 import {
   loadIdea, loadIdeaSuccess, loadVotes, voteIdea,
 } from './actions';
-import makeSelectIdeasShow, { makeSelectDownVotes, makeSelectIdeaVotesLoadError, makeSelectUpVotes } from './selectors';
+import makeSelectIdeasShow, {
+  makeSelectDownVotes, makeSelectIdeaVotesLoadError, makeSelectIdeaVoteSubmitError, makeSelectLoadingVotes,
+  makeSelectSubmittingVote, makeSelectUpVotes,
+} from './selectors';
 import VoteIdea from '../../components/VoteIdea/index';
 import { watchFetchIdea, watchLoadIdeaVotes, watchVoteIdea } from './sagas';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
@@ -63,7 +66,7 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
 
   render() {
     const idea = this.props.idea || this.props.pageData.idea;
-    const { submitIdeaVote, upVotes, downVotes, ideaVotesLoadError, user } = this.props;
+    const { submitIdeaVote, upVotes, downVotes, ideaVotesLoadError, user, submittingVote, loadingVotes, ideaVoteSubmitError } = this.props;
     return (
       <div>
         <Helmet
@@ -78,12 +81,14 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
 
         { idea ? this.ideaHtml(idea) : this.notFoundHtml() }
         {ideaVotesLoadError && <FormattedMessage {...messages.loadVotesError} />}
-        {idea && !ideaVotesLoadError && <VoteIdea
+        {idea && !(ideaVotesLoadError || loadingVotes) && <VoteIdea
           ideaId={idea.id}
           userId={user && user.id}
           upVotes={upVotes}
           downVotes={downVotes}
           onVoteIdeaClick={submitIdeaVote}
+          submittingVote={submittingVote}
+          ideaVoteSubmitError={ideaVoteSubmitError}
         />}
       </div>
     );
@@ -102,6 +107,9 @@ IdeasShow.propTypes = {
   downVotes: PropTypes.any.isRequired,
   ideaVotesLoadError: PropTypes.string,
   user: PropTypes.any,
+  loadingVotes: PropTypes.bool.isRequired,
+  submittingVote: PropTypes.bool.isRequired,
+  ideaVoteSubmitError: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -110,6 +118,9 @@ const mapStateToProps = createStructuredSelector({
   downVotes: makeSelectDownVotes(),
   ideaVotesLoadError: makeSelectIdeaVotesLoadError(),
   user: makeSelectCurrentUser(),
+  loadingVotes: makeSelectLoadingVotes(),
+  submittingVote: makeSelectSubmittingVote(),
+  ideaVoteSubmitError: makeSelectIdeaVoteSubmitError(),
 });
 
 function mapDispatchToProps(dispatch) {

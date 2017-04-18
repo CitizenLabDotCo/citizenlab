@@ -10,4 +10,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.loadVotesError',
     defaultMessage: 'Voting is not currently available',
   },
+  ideaVoteSubmitError: {
+    id: 'app.containers.IdeasShow.ideaVoteSubmitError',
+    defaultMessage: 'Voting failed',
+  },
 });

@@ -23,6 +23,16 @@ const makeSelectIdeasShow = () => createSelector(
   (substate) => substate.toJS()
 );
 
+const makeSelectLoadingVotes = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('loadingVotes')
+);
+
+const makeSelectSubmittingVote = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('submittingVote')
+);
+
 const makeSelectUpVotes = () => createSelector(
   selectIdeasShowDomain(),
   selectResourcesDomain(),
@@ -46,10 +56,18 @@ const makeSelectIdeaVotesLoadError = () => createSelector(
   (pageState) => pageState.get('ideaVotesLoadError')
 );
 
+const makeSelectIdeaVoteSubmitError = () => createSelector(
+  selectIdeasShowDomain(),
+  (pageState) => pageState.get('ideaVoteSubmitError')
+);
+
 export default makeSelectIdeasShow;
 export {
   selectIdeasShowDomain,
   makeSelectUpVotes,
   makeSelectDownVotes,
   makeSelectIdeaVotesLoadError,
+  makeSelectLoadingVotes,
+  makeSelectSubmittingVote,
+  makeSelectIdeaVoteSubmitError,
 };
