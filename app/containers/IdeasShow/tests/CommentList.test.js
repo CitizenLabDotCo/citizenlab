@@ -41,6 +41,8 @@ describe('<CommentList />', () => {
       publishCommentClick={jestFn}
       isNotTest={false}
     />);
+
+    // TODO: fix this test (after refactoring comments as a tree)
     expect(wrapper.find('Comment').length).toEqual(i);
   });
 });

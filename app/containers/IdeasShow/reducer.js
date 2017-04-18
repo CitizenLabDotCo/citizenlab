@@ -46,6 +46,7 @@ function ideasShowReducer(state = initialState, action) {
     case LOAD_COMMENTS_REQUEST:
       return state
         .update('comments', (comments) => (action.initialLoad ? fromJS([]) : comments))
+        .set('resetEditorContent', false)
         .set('commentContent', null)
         .set('loadCommentsError', null)
         .set('loadingComments', true);
@@ -73,9 +74,11 @@ function ideasShowReducer(state = initialState, action) {
     case STORE_COMMENT_REQUEST:
       return state
         .set('storeCommentError', null)
+        .set('resetEditorContent', true)
         .set('submittingComment', true);
     case STORE_COMMENT_ERROR:
       return state
+        .set('resetEditorContent', false)
         .set('storeCommentError', action.storeCommentError)
         .set('submittingComment', false);
     case RESET_IDEA_AND_COMMENTS:

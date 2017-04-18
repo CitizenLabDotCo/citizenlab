@@ -7,6 +7,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import renderHTML from 'react-render-html';
+
 import IdeaContent from './IdeaContent';
 
 function Comment(props) {
@@ -14,7 +16,7 @@ function Comment(props) {
 
   return (
     <div className={className}>
-      <IdeaContent>{commentContent.en}</IdeaContent>
+      <IdeaContent>{renderHTML(commentContent.en)}</IdeaContent>
       ... created at: {createdAt}
       ... modified at: {modifiedAt}
       <hr />

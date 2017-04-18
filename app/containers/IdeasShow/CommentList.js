@@ -62,7 +62,6 @@ class CommentList extends React.PureComponent { // eslint-disable-line react/pre
         {storeCommentError && storeCommentError !== '' && <div>
           {storeCommentError}
         </div>}
-
         <Comments
           comments={comments}
           storeCommentDraftCopy={storeCommentDraftCopy}
@@ -75,6 +74,7 @@ class CommentList extends React.PureComponent { // eslint-disable-line react/pre
           locale={locale}
           parentId={parentId}
           publishCommentClick={publishCommentClick}
+          isNotTest
         />
       </div>
     );
