@@ -16,9 +16,14 @@ const makeSelectLoadUserError = () => createSelector(
   (userShowPageState) => userShowPageState.get('loadUserError')
 );
 
-const makeSelectUserData = () => createSelector(
+const makeSelectUser = () => createSelector(
   selectUserShowPage,
-  (userShowPageState) => userShowPageState.get('userData')
+  selectResourcesDomain(),
+  (pageState, resources) => {
+    const id = pageState.get('user', fromJS(null));
+    const users = resources.get('users', fromJS({})).toJS();
+    return users[id] ? users[id].attributes : null;
+  }
 );
 
 const makeSelectLoadingUserIdeas = () => createSelector(
@@ -43,7 +48,7 @@ const makeSelectIdeas = () => createSelector(
 export {
   makeSelectLoadingUser,
   makeSelectLoadUserError,
-  makeSelectUserData,
+  makeSelectUser,
   makeSelectLoadingUserIdeas,
   makeSelectLoadUserIdeasError,
   makeSelectIdeas,

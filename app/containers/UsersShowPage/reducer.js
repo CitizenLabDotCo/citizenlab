@@ -11,7 +11,7 @@ import {
 } from './constants';
 
 const initialState = fromJS({
-  userData: {},
+  user: null,
   ideas: [],
   loadingUser: false,
   loadingUserIdeas: false,
@@ -28,7 +28,7 @@ function usersShowPageReducer(state = initialState, action) {
     case LOAD_USER_SUCCESS:
       return state
         .set('loadingUser', false)
-        .set('userData', action.payload.data.attributes);
+        .set('user', action.payload.data.id);
     case LOAD_USER_ERROR:
       return state
         .set('loadingUser', false)
