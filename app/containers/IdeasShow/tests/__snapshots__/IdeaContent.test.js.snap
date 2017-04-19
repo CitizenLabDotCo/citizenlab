@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IdeaContent /> should render idea's multiloc content 1`] = `
+<div
+  className="foqgVb"
+>
+  <span>
+    some content
+     
+  </span>
+  <hr />
+</div>
+`;

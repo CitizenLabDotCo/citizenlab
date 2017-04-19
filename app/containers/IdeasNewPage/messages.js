@@ -66,4 +66,12 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.clickToUpload',
     defaultMessage: 'Click to upload',
   },
+  storeCommentError: {
+    id: 'app.containers.IdeasNewPage.storeCommentError',
+    defaultMessage: 'Can\'t publish comment',
+  },
+  submittingComment: {
+    id: 'app.containers.IdeasNewPage.submittingComment',
+    defaultMessage: 'Publishing...',
+  },
 });

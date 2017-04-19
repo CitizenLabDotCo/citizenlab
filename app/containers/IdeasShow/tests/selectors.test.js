@@ -1,10 +1,12 @@
 // import { fromJS } from 'immutable';
-// import { makeSelectIdeasShowDomain } from '../selectors';
+// import { makeSelectDownVotes, makeSelectUpVotes } from '../selectors';
+// import { generateResourcesCommentValue } from './__shared';
 
-// const selector = makeSelectIdeasShowDomain();
-
-describe('makeSelectIdeasShowDomain', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(true);
+describe('IdeasShow selectors', () => {
+  describe('makeSelectIdea', () => {
+    it('should select the loaded idea', () => {
+       // TODO (after refactor to use resources)
+      expect(true).toEqual(true);
+    });
   });
 });

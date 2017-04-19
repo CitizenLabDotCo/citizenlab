@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AttachmentList /> input button should render with the correct styles 1`] = `
+exports[`<Comment /> it should render nested comments indented 1`] = `
 ShallowWrapper {
   "complexSelector": ComplexSelector {
     "buildPredicate": [Function],
@@ -8,14 +8,26 @@ ShallowWrapper {
     "findWhereUnwrapped": [Function],
   },
   "length": 1,
-  "node": <FileInput
-    className="jkJdwS"
-    onFileUpload={[Function]}
+  "node": <Comment
+    className="hsLhYK"
+    commentContent={
+        Object {
+            "en": "anything",
+          }
+    }
+    createAt={null}
+    modifiedAt={null}
 />,
   "nodes": Array [
-    <FileInput
-      className="jkJdwS"
-      onFileUpload={[Function]}
+    <Comment
+      className="hsLhYK"
+      commentContent={
+            Object {
+                  "en": "anything",
+                }
+      }
+      createAt={null}
+      modifiedAt={null}
 />,
   ],
   "options": Object {},
@@ -25,9 +37,15 @@ ShallowWrapper {
       "_compositeType": 0,
       "_context": Object {},
       "_currentElement": <Styled(undefined)
-        onFileUpload={[Function]}
+        commentContent={
+                Object {
+                        "en": "anything",
+                      }
+        }
+        createAt={null}
+        modifiedAt={null}
 />,
-      "_debugID": 51,
+      "_debugID": 1,
       "_hostContainerInfo": null,
       "_hostParent": null,
       "_instance": StyledComponent {
@@ -36,11 +54,15 @@ ShallowWrapper {
           "__styled-components__": undefined,
         },
         "props": Object {
-          "onFileUpload": [Function],
+          "commentContent": Object {
+            "en": "anything",
+          },
+          "createAt": null,
+          "modifiedAt": null,
         },
         "refs": Object {},
         "state": Object {
-          "generatedClassName": "jkJdwS",
+          "generatedClassName": "hsLhYK",
           "theme": Object {},
         },
         "updater": Object {
@@ -54,21 +76,33 @@ ShallowWrapper {
           "validateCallback": [Function],
         },
       },
-      "_mountOrder": 29,
+      "_mountOrder": 1,
       "_pendingCallbacks": null,
       "_pendingElement": null,
       "_pendingForceUpdate": false,
       "_pendingReplaceState": false,
       "_pendingStateQueue": null,
       "_renderedComponent": NoopInternalComponent {
-        "_currentElement": <FileInput
-          className="jkJdwS"
-          onFileUpload={[Function]}
+        "_currentElement": <Comment
+          className="hsLhYK"
+          commentContent={
+                    Object {
+                              "en": "anything",
+                            }
+          }
+          createAt={null}
+          modifiedAt={null}
 />,
-        "_debugID": 52,
-        "_renderedOutput": <FileInput
-          className="jkJdwS"
-          onFileUpload={[Function]}
+        "_debugID": 2,
+        "_renderedOutput": <Comment
+          className="hsLhYK"
+          commentContent={
+                    Object {
+                              "en": "anything",
+                            }
+          }
+          createAt={null}
+          modifiedAt={null}
 />,
       },
       "_renderedNodeType": 1,
@@ -82,7 +116,13 @@ ShallowWrapper {
   },
   "root": [Circular],
   "unrendered": <Styled(undefined)
-    onFileUpload={[Function]}
+    commentContent={
+        Object {
+            "en": "anything",
+          }
+    }
+    createAt={null}
+    modifiedAt={null}
 />,
 }
 `;

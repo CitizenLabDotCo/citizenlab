@@ -5,13 +5,11 @@
  */
 
 import { fromJS } from 'immutable';
-import * as qs from 'qs';
 
 import {
-  IDEAS_LOADED, LOAD_IDEAS_REQUEST, SET_SHOW_IDEA_WITH_INDEX_PAGE,
-  LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS,
-  LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS,
+  IDEAS_LOADED, LOAD_IDEAS_REQUEST, RESET_IDEAS, SET_SHOW_IDEA_WITH_INDEX_PAGE, LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS,
 } from './constants';
+import { getPageItemCountFromUrl, getPageNumberFromUrl } from '../../utils/paginationUtils';
 
 const initialState = fromJS({
   nextPageNumber: null,
@@ -31,20 +29,6 @@ const initialState = fromJS({
   },
 });
 
-export function getPageNumberFromUrl(url) {
-  if (!url) return null;
-  const queryString = url.split('?')[1];
-  const result = qs.parse(queryString).page.number;
-  return (result < 0 ? null : parseInt(result, 10));
-}
-
-export function getPageItemCountFromUrl(url) {
-  if (!url) return null;
-  const queryString = url.split('?')[1];
-  const result = qs.parse(queryString).page.size;
-  return (result < 0 ? null : parseInt(result, 10));
-}
-
 function ideasIndexPageReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_IDEAS_REQUEST:
@@ -60,10 +44,23 @@ function ideasIndexPageReducer(state = initialState, action) {
       const nextPageItemCount = getPageItemCountFromUrl(action.payload.links.next);
 
       return state
-        .set('ideas', fromJS(ids))
+        .update('ideas', (ideas) => (action.initialLoad ? fromJS(ids) : ideas.concat(ids)))
         .set('nextPageNumber', nextPageNumber)
         .set('nextPageItemCount', nextPageItemCount)
         .set('loading', false);
+    }
+    case RESET_IDEAS: {
+      const taEmpty = {
+        ids: [],
+        nextPageNumber: null,
+        loading: false, 
+      };
+      return state
+        .update('ideas', () => fromJS([]))
+        .update('topics', () => taEmpty)
+        .update('areas', () => taEmpty)
+        .set('nextPageNumber', null)
+        .set('nextPageItemCount', null);
     }
     case LOAD_TOPICS_REQUEST:
       return state.setIn(['topics', 'loading'], true);

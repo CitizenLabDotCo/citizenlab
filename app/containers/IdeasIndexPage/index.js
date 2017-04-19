@@ -4,7 +4,8 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
@@ -16,10 +17,10 @@ import { Row, Column, Button, Label, Reveal } from 'components/Foundation';
 import T from 'containers/T';
 import styled from 'styled-components';
 import { Saga } from 'react-redux-saga';
+import messages from './messages';
 import isEqual from 'lodash/isEqual';
 import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber, makeSelectTopics, makeSelectAreas } from './selectors';
-import { loadIdeas, setShowIdeaWithIndexPage, loadTopicsRequest, loadAreasRequest } from './actions';
-import messages from './messages';
+import { loadIdeas, resetIdeas, setShowIdeaWithIndexPage, loadTopicsRequest, loadAreasRequest } from './actions';
 import { ideasSaga, topicsSaga, areasSaga } from './sagas';
 
 export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -49,6 +50,11 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
     if (!this.props.children && (this.props.children !== previousProps.children)) {
       this.props.initData();
     }
+  }
+
+  componentWillUnmount() {
+    // reset page state
+    this.props.resetData();
   }
 
   ideaShowPageHtml() {
@@ -187,7 +193,8 @@ IdeasIndexPage.propTypes = {
   nextPageItemCount: PropTypes.number,
   loading: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
-  pageData: React.PropTypes.object,
+  pageData: PropTypes.object,
+  resetData: PropTypes.func.isRequired,
   location: React.PropTypes.object,
   reloadIdeas: PropTypes.func,
 };
@@ -206,15 +213,19 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     initData: () => {
-      dispatch(loadIdeas());
-      dispatch(loadTopicsRequest());
-      dispatch(loadAreasRequest());
+      dispatch(loadIdeas(true));
+    },
+    loadNextPage: (nextPageNumber, nextPageItemCount, filters = {}) => {
+      dispatch(loadIdeas(false, nextPageNumber, nextPageItemCount, filters));
+    },
+    resetData: () => {
+      dispatch(resetIdeas());
     },
     reloadIdeas: (filters) => {
       dispatch(loadIdeas({ filters }));
     },
     loadNextPage: (nextPageNumber, nextPageItemCount, filters = {}) => {
-      dispatch(loadIdeas({ nextPageNumber, nextPageItemCount, filters }));
+      dispatch(loadIdeas(false, nextPageNumber, nextPageItemCount, filters));
     },
   };
 }
