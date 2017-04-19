@@ -10,8 +10,8 @@ import { createIdeaComment, fetchIdea, fetchIdeaComments } from '../../api';
 
 export function* loadIdea(action) {
   try {
-    const json = yield call(fetchIdea, action.payload);
-    yield put(loadIdeaSuccess(json.data));
+    const response = yield call(fetchIdea, action.payload);
+    yield put(loadIdeaSuccess(response));
   } catch (e) {
     yield put(ideaLoadError(JSON.stringify(e.errors)));
   }

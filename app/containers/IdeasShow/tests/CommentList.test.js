@@ -1,5 +1,5 @@
 import React from 'react';
-import Comments from '../CommentList';
+import { Comments } from '../CommentList';
 import { mountWithIntl } from '../../../utils/intlTest';
 
 describe('<CommentList />', () => {

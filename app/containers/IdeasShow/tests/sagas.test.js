@@ -14,7 +14,7 @@ import { commentsLoaded, loadComments, loadIdeaSuccess } from '../actions';
 describe('sagas', () => {
   describe('loadIdea', () => {
     const mockedAction = {
-      payload: 'anything',
+      payload: {},
     };
     const it = sagaHelper(loadIdea(mockedAction));
 
@@ -23,7 +23,6 @@ describe('sagas', () => {
     });
 
     it('then, should dispatch loadIdeaSuccess action', (result) => {
-      // TODO: fix this
       expect(result).toEqual(put(loadIdeaSuccess()));
     });
   });

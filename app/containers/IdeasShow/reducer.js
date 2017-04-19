@@ -37,7 +37,7 @@ function ideasShowReducer(state = initialState, action) {
         .set('loadingIdea', true);
     case LOAD_IDEA_SUCCESS:
       return state
-        .set('idea', action.payload)
+        .set('idea', action.payload.data)
         .set('loadingIdea', false);
     case LOAD_IDEA_ERROR:
       return state
