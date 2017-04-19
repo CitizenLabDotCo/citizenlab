@@ -232,6 +232,8 @@ GEM
     ruby_dep (1.5.0)
     rufus-scheduler (3.3.4)
       tzinfo
+    shoulda-matchers (3.1.1)
+      activesupport (>= 4.0.0)
     sidekiq (4.2.9)
       concurrent-ruby (~> 1.0)
       connection_pool (~> 2.2, >= 2.2.0)
@@ -301,6 +303,7 @@ DEPENDENCIES
   rest-client
   rspec-rails
   rspec_api_documentation
+  shoulda-matchers (~> 3.1)
   sidekiq (~> 4.2.9)
   sidekiq-cron (~> 0.4.5)
   simplecov
