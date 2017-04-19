@@ -6,6 +6,7 @@ import {
   loadIdeaSuccess, loadIdeaError, loadVotesError, votesLoaded, voteIdeaError, ideaVoted,
 } from './actions';
 import { fetchIdea, fetchIdeaVotes, submitIdeaVote } from '../../api';
+import { mergeJsonApiResources } from '../../utils/resources/actions';
 
 export function* postIdea(action) {
   try {
@@ -21,6 +22,7 @@ export function* getIdeaVotes(action) {
 
   try {
     const response = yield call(fetchIdeaVotes, ideaId);
+    yield put(mergeJsonApiResources(response));
     yield put(votesLoaded(response));
   } catch (e) {
     yield put(loadVotesError(JSON.stringify(e)));
@@ -28,10 +30,11 @@ export function* getIdeaVotes(action) {
 }
 
 export function* postIdeaVote(action) {
-  const { ideaId, userId, which } = action;
+  const { ideaId, mode } = action;
 
   try {
-    const response = yield call(submitIdeaVote, ideaId, userId, which);
+    const response = yield call(submitIdeaVote, ideaId, mode);
+    yield put(mergeJsonApiResources(response));
     yield put(ideaVoted(response));
   } catch (e) {
     yield put(voteIdeaError(JSON.stringify(e)));

@@ -6,14 +6,14 @@
 
 import { fromJS } from 'immutable';
 import {
-  LOAD_IDEA_SUCCESS, LOAD_IDEA_VOTES_ERROR, LOAD_IDEA_VOTES_REQUEST, LOAD_IDEA_VOTES_SUCCESS, VOTE_IDEA_ERROR,
+  LOAD_IDEA_SUCCESS, LOAD_IDEA_VOTES_ERROR, LOAD_IDEA_VOTES_REQUEST, LOAD_IDEA_VOTES_SUCCESS, RESET_VOTES,
+  VOTE_IDEA_ERROR,
   VOTE_IDEA_REQUEST, VOTE_IDEA_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
   idea: null,
-  upVotes: [],
-  downVotes: [],
+  votes: [],
   ideaVotesLoadError: null,
   loadingVotes: false,
   submittingVote: false,
@@ -30,12 +30,10 @@ function ideasShowReducer(state = initialState, action) {
         .set('ideaVotesLoadError', null)
         .set('loadingVotes', true);
     case LOAD_IDEA_VOTES_SUCCESS: {
-      const upVoteId = action.payload.data.map((vote) => vote.up.id);
-      const downVoteId = action.payload.data.map((vote) => vote.down.id);
-      const targetVoteProperty = (upVoteId ? 'upVoteId' : 'downVoteId');
+      const votesIds = action.payload.data.map((vote) => vote.id);
 
       return state
-        .update(targetVoteProperty, (upVotes) => upVotes.concat(upVoteId || downVoteId))
+        .update('votes', (votes) => votes.concat(votesIds))
         .set('loadingVotes', false);
     }
     case LOAD_IDEA_VOTES_ERROR:
@@ -46,13 +44,18 @@ function ideasShowReducer(state = initialState, action) {
       return state
         .set('ideaVoteSubmitError', null)
         .set('submittingVote', true);
-    case VOTE_IDEA_SUCCESS:
+    case VOTE_IDEA_SUCCESS: {
       return state
+        .update('votes', (votes) => votes.concat(action.payload.data.id))
         .set('submittingVote', false);
+    }
     case VOTE_IDEA_ERROR:
       return state
         .set('ideaVoteSubmitError', action.error)
         .set('submittingVote', false);
+    case RESET_VOTES:
+      return state
+        .set('votes', fromJS([]));
     default:
       return state;
   }

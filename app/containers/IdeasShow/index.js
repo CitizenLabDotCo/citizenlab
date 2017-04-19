@@ -17,7 +17,7 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 import {
-  loadIdea, loadIdeaSuccess, loadVotes, voteIdea,
+  loadIdea, loadIdeaSuccess, loadVotes, resetVotes, voteIdea,
 } from './actions';
 import makeSelectIdeasShow, {
   makeSelectDownVotes, makeSelectIdeaVotesLoadError, makeSelectIdeaVoteSubmitError, makeSelectLoadingVotes,
@@ -43,6 +43,7 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
     if (this.props.showIdeaWithIndexPage === false) {
       this.props.dispatch(loadIdeaSuccess(null));
     }
+    this.props.resetVotes();
   }
 
   notFoundHtml() {
@@ -110,6 +111,7 @@ IdeasShow.propTypes = {
   loadingVotes: PropTypes.bool.isRequired,
   submittingVote: PropTypes.bool.isRequired,
   ideaVoteSubmitError: PropTypes.string,
+  resetVotes: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -123,14 +125,17 @@ const mapStateToProps = createStructuredSelector({
   ideaVoteSubmitError: makeSelectIdeaVoteSubmitError(),
 });
 
-function mapDispatchToProps(dispatch) {
+export function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     loadIdeaVotes(ideaId) {
       dispatch(loadVotes(ideaId));
     },
-    submitIdeaVote(ideaId, userId, op) {
-      dispatch(voteIdea(ideaId, userId, op));
+    submitIdeaVote(ideaId, mode) {
+      dispatch(voteIdea(ideaId, mode));
+    },
+    resetVotes() {
+      dispatch(resetVotes());
     },
   };
 }

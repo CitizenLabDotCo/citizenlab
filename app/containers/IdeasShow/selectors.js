@@ -37,8 +37,9 @@ const makeSelectUpVotes = () => createSelector(
   selectIdeasShowDomain(),
   selectResourcesDomain(),
   (pageState, resources) => {
-    const ids = pageState.get('upVotes', fromJS([]));
-    return ids.map((id) => denormalize(resources, 'upVotes', id)).toJS();
+    const ids = pageState.get('votes', fromJS([]));
+    const results = ids.map((id) => denormalize(resources, 'votes', id)).toJS();
+    return results.filter((result) => result.attributes.mode === 'up');
   }
 );
 
@@ -46,8 +47,9 @@ const makeSelectDownVotes = () => createSelector(
   selectIdeasShowDomain(),
   selectResourcesDomain(),
   (pageState, resources) => {
-    const ids = pageState.get('downVotes', fromJS([]));
-    return ids.map((id) => denormalize(resources, 'downVotes', id)).toJS();
+    const ids = pageState.get('votes', fromJS([]));
+    const results = ids.map((id) => denormalize(resources, 'votes', id)).toJS();
+    return results.filter((result) => result.attributes.mode === 'down');
   }
 );
 

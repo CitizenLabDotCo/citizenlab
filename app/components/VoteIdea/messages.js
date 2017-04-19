@@ -10,4 +10,8 @@ export default defineMessages({
     id: 'app.components.VoteIdea.header',
     defaultMessage: 'Vote for this idea',
   },
+  ideaVoteSubmitError: {
+    id: 'app.components.VoteIdea.ideaVoteSubmitError',
+    defaultMessage: 'Vote submission error!',
+  },
 });

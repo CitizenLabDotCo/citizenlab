@@ -8,7 +8,7 @@ import {
   LOAD_IDEA_REQUEST,
   LOAD_IDEA_SUCCESS,
   LOAD_IDEA_ERROR, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_ERROR, LOAD_IDEA_VOTES_SUCCESS,
-  LOAD_IDEA_VOTES_ERROR, VOTE_IDEA_SUCCESS, VOTE_IDEA_REQUEST,
+  LOAD_IDEA_VOTES_ERROR, VOTE_IDEA_SUCCESS, VOTE_IDEA_REQUEST, RESET_VOTES,
 } from './constants';
 
 export function loadIdea(payload) {
@@ -54,12 +54,11 @@ export function loadVotesError(error) {
   };
 }
 
-export function voteIdea(ideaId, userId, which) {
+export function voteIdea(ideaId, mode) {
   return {
     type: VOTE_IDEA_REQUEST,
     ideaId,
-    userId,
-    which,
+    mode,
   };
 }
 
@@ -74,5 +73,11 @@ export function voteIdeaError(error) {
   return {
     type: VOTE_IDEA_ERROR,
     error,
+  };
+}
+
+export function resetVotes() {
+  return {
+    type: RESET_VOTES,
   };
 }

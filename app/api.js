@@ -75,17 +75,15 @@ export function fetchCurrentTenant() {
 }
 
 export function fetchIdeaVotes(ideaId) {
-  return request(`${API_PATH}/ideas/${ideaId}/vote`);
+  return request(`${API_PATH}/ideas/${ideaId}/votes`);
 }
 
-export function submitIdeaVote(ideaId, userId, which) {
+export function submitIdeaVote(ideaId, mode) {
   const body = {
-    ideaId,
-    userId,
-    which,
+    vote: { mode },
   };
 
-  return request(`${API_PATH}/ideas/${ideaId}/vote`, body, {
+  return request(`${API_PATH}/ideas/${ideaId}/votes`, body, {
     method: 'POST',
   });
 }

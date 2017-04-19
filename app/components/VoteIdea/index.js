@@ -21,18 +21,17 @@ class VoteIdea extends React.PureComponent { // eslint-disable-line react/prefer
   }
 
   upVoteIdea() {
-    const { ideaId, userId, onVoteIdeaClick } = this.props;
-    onVoteIdeaClick(ideaId, userId, 'up');
+    const { ideaId, onVoteIdeaClick } = this.props;
+    onVoteIdeaClick(ideaId, 'up');
   }
 
   downVoteIdea() {
-    const { ideaId, userId, onVoteIdeaClick } = this.props;
-    onVoteIdeaClick(ideaId, userId, 'down');
+    const { ideaId, onVoteIdeaClick } = this.props;
+    onVoteIdeaClick(ideaId, 'down');
   }
 
   render() {
     const { upVotes, downVotes, userId, submittingVote, ideaVoteSubmitError } = this.props;
-
     return (
       <div>
         <hr />
