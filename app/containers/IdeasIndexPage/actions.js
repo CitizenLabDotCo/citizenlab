@@ -5,10 +5,7 @@
  */
 
 import {
-  LOAD_IDEAS_REQUEST, IDEAS_LOADED, IDEAS_LOADING_ERROR,
-  SET_SHOW_IDEA_WITH_INDEX_PAGE,
-  LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_TOPICS_ERROR,
-  LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR,
+  LOAD_IDEAS_REQUEST, IDEAS_LOADED, IDEAS_LOADING_ERROR, SET_SHOW_IDEA_WITH_INDEX_PAGE, RESET_IDEAS, LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_TOPICS_ERROR, LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR,
 } from './constants';
 
 export function ideasLoaded(ideas) {
@@ -25,12 +22,19 @@ export function ideasLoadingError(errorMessage) {
   };
 }
 
-export function loadIdeas({ nextPageNumber, nextPageItemCount, filters } = {}) {
+export function loadIdeas(initialLoad, nextPageNumber, nextPageItemCount, filters) {
   return {
     type: LOAD_IDEAS_REQUEST,
     nextPageNumber,
     nextPageItemCount,
     filters,
+    initialLoad,
+  };
+}
+
+export function resetIdeas() {
+  return {
+    type: RESET_IDEAS,
   };
 }
 

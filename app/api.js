@@ -39,8 +39,13 @@ export function createIdea(values) {
   });
 }
 
-export function fetchIdeas(queryParameters) {
-  return request(`${API_PATH}/ideas`, null, null, queryParameters);
+export function fetchIdeas(nextPageNumber, nextPageItemCount, authorId) {
+  const queryParameters = {
+    'page[number]': nextPageNumber,
+    'page[size]': nextPageItemCount,
+    author_id: authorId,
+  };
+  return request(`${API_PATH}/topics`, null, null, queryParameters);
 }
 
 export function fetchTopics(queryParameters) {
@@ -61,6 +66,27 @@ export function fetchCurrentUser() {
 
 export function fetchUser(userId) {
   return request(`${API_PATH}/users/${userId}`);
+}
+
+export function fetchIdeaComments(nextCommentPageNumber, nextCommentPageItemCount, ideaId) {
+  const queryParameters = {
+    'page[number]': nextCommentPageNumber,
+    'page[size]': nextCommentPageItemCount,
+  };
+
+  return request(`${API_PATH}/ideas/${ideaId}/comments`, null, null, queryParameters);
+}
+
+export function createIdeaComment(ideaId, userId, htmlContents, parentId) {
+  const body = {
+    author_id: userId,
+    body_multiloc: htmlContents,
+    parent_id: parentId,
+  };
+
+  return request(`${API_PATH}/ideas/${ideaId}/comments`, { comment: body }, {
+    method: 'POST',
+  });
 }
 
 export function updateCurrentUser(values, userId) {

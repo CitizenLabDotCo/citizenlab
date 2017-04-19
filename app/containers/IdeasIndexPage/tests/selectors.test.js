@@ -4,8 +4,10 @@
 // const selector = makeSelectIdeasIndexPageDomain();
 
 describe('IdeasIndexPage selectors', () => {
-  it('should have tests in the future (for id to resources mapping)', () => {
-    // TODO
-    expect(true).toEqual(true);
+  describe('makeSelectIdea', () => {
+    it('should select the currently loaded idea', () => {
+      // TODO (after merge with master)
+      expect(true).toEqual(true);
+    });
   });
 });

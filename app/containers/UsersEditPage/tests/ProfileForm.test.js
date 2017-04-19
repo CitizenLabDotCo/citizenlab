@@ -6,6 +6,7 @@ import ProfileForm from '../ProfileForm';
 import { mapDispatchToProps } from '../index';
 import { updateCurrentUser } from '../actions';
 import { localStorageMock } from '../../../utils/testUtils';
+import { jestFn } from '../../../utils/testConstants';
 
 describe('<ProfileForm />', () => {
   // mock localStorage
@@ -17,6 +18,9 @@ describe('<ProfileForm />', () => {
 
     const wrapper = mountWithIntl(<ProfileForm
       onFormSubmit={handleSubmitMock}
+      avatarUpload={jestFn}
+      avatarUploadError={jestFn}
+      onLocaleChangeClick={jestFn}
       userData={user}
     />);
     wrapper.find('[type="submit"]').get(0).click();
