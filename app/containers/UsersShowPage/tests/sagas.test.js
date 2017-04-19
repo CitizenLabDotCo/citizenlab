@@ -9,9 +9,10 @@ import { getUser, getUserIdeas } from '../sagas';
 import { mergeJsonApiResources } from '../../../utils/resources/actions';
 import { fetchIdeas, fetchUser } from '../../../api';
 import { userIdeasLoaded, userLoaded } from '../actions';
+import { stringMock } from '../../../utils/testConstants';
 
 describe('UserShowPage sagas', () => {
-  const userId = 'anything';
+  const userId = stringMock;
   const mockedAction = { userId };
 
   describe('getUser', () => {
@@ -34,9 +35,7 @@ describe('UserShowPage sagas', () => {
     const it = sagaHelper(getUserIdeas(mockedAction));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(fetchIdeas, {
-        author: userId,
-      }));
+      expect(result).toEqual(call(fetchIdeas, null, null, stringMock));
     });
 
     it('then, should dispatch mergeJsonApiResources action', (result) => {

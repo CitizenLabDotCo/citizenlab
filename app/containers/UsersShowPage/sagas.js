@@ -18,9 +18,7 @@ export function* getUser(action) {
 
 export function* getUserIdeas(action) {
   try {
-    const userIdeasResponse = yield call(fetchIdeas, {
-      author: action.userId,
-    });
+    const userIdeasResponse = yield call(fetchIdeas, null, null, action.userId);
     yield put(mergeJsonApiResources(userIdeasResponse));
     yield put(userIdeasLoaded(userIdeasResponse));
   } catch (err) {

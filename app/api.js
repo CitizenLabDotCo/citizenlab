@@ -45,7 +45,7 @@ export function fetchIdeas(nextPageNumber, nextPageItemCount, authorId) {
     'page[size]': nextPageItemCount,
     author_id: authorId,
   };
-  return request(`${API_PATH}/topics`, null, null, queryParameters);
+  return request(`${API_PATH}/ideas`, null, null, queryParameters);
 }
 
 export function fetchTopics(queryParameters) {
