@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { fromJS } from 'immutable';
+import denormalize from 'utils/denormalize';
 
 import { selectResourcesDomain } from '../../utils/resources/selectors';
 
@@ -15,9 +16,14 @@ const makeSelectLoadUserError = () => createSelector(
   (userShowPageState) => userShowPageState.get('loadUserError')
 );
 
-const makeSelectUserData = () => createSelector(
+const makeSelectUser = () => createSelector(
   selectUserShowPage,
-  (userShowPageState) => userShowPageState.get('userData')
+  selectResourcesDomain(),
+  (pageState, resources) => {
+    const id = pageState.get('user', fromJS(null));
+    const users = resources.get('users', fromJS({})).toJS();
+    return users[id] ? users[id].attributes : null;
+  }
 );
 
 const makeSelectLoadingUserIdeas = () => createSelector(
@@ -35,15 +41,14 @@ const makeSelectIdeas = () => createSelector(
   selectResourcesDomain(),
   (pageState, resources) => {
     const ids = pageState.get('ideas', fromJS([]));
-    const ideasMap = resources.get('ideas', fromJS({}));
-    return ids.map((id) => ideasMap.get(id)).toJS();
+    return ids.map((id) => denormalize(resources, 'ideas', id)).toJS();
   }
 );
 
 export {
   makeSelectLoadingUser,
   makeSelectLoadUserError,
-  makeSelectUserData,
+  makeSelectUser,
   makeSelectLoadingUserIdeas,
   makeSelectLoadUserIdeasError,
   makeSelectIdeas,

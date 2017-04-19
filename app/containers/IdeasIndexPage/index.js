@@ -7,18 +7,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import _ from 'lodash';
 import IdeaCard from 'components/IdeaCard';
 import { Row, Column, Button, Label, Reveal } from 'components/Foundation';
+import T from 'containers/T';
 import styled from 'styled-components';
 import { Saga } from 'react-redux-saga';
-import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber } from './selectors';
-import { loadIdeas, resetIdeas, setShowIdeaWithIndexPage } from './actions';
 import messages from './messages';
-import { watchFetchIdeas } from './sagas';
+import isEqual from 'lodash/isEqual';
+import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber, makeSelectTopics, makeSelectAreas } from './selectors';
+import { loadIdeas, resetIdeas, setShowIdeaWithIndexPage, loadTopicsRequest, loadAreasRequest } from './actions';
+import { ideasSaga, topicsSaga, areasSaga } from './sagas';
 
 export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -34,6 +37,15 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(nextProps.location.query, this.props.location.query)) {
+      this.props.reloadIdeas({
+        'topics[]': nextProps.location.query.topics,
+        'areas[]': nextProps.location.query.areas,
+      });
+    }
+  }
+
   componentDidUpdate(previousProps) {
     if (!this.props.children && (this.props.children !== previousProps.children)) {
       this.props.initData();
@@ -42,7 +54,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
 
   componentWillUnmount() {
     // reset page state
-    this.props.resetIdeas();
+    this.props.resetData();
   }
 
   ideaShowPageHtml() {
@@ -85,7 +97,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   }
 
   indexPageHtml() {
-    const { ideas, nextPageNumber, loading } = this.props;
+    const { ideas, topics, areas, nextPageNumber, loading } = this.props;
 
     const WrapperDiv = (props) => (
       <div
@@ -108,11 +120,29 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
             { name: 'description', content: 'Description of IdeasIndexPage' },
           ]}
         />
-        <Saga saga={watchFetchIdeas} />
+        <Saga saga={ideasSaga} />
+        <Saga saga={topicsSaga} />
+        <Saga saga={areasSaga} />
 
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
+
+        {topics.map((topic) =>
+          <div key={topic.id}>
+            <Link to={{ pathname: this.props.location.pathname, query: { ...this.props.location.query, topics: [topic.id] } }}>
+              <T value={topic.attributes.title_multiloc}></T>
+            </Link>
+          </div>)
+        }
+
+        {areas.map((area) =>
+          <div key={area.id}>
+            <Link to={{ pathname: this.props.location.pathname, query: { ...this.props.location.query, areas: [area.id] } }}>
+              <T value={area.attributes.title_multiloc}></T>
+            </Link>
+          </div>)
+        }
 
         <Row data-equalizer>
           {ideas && ideas.map((idea) => (
@@ -152,6 +182,8 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
 
 IdeasIndexPage.propTypes = {
   ideas: PropTypes.any.isRequired,
+  topics: PropTypes.any.isRequired,
+  areas: PropTypes.any.isRequired,
   params: PropTypes.object,
   children: PropTypes.any,
   router: PropTypes.object,
@@ -162,11 +194,15 @@ IdeasIndexPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
   pageData: PropTypes.object,
-  resetIdeas: PropTypes.func.isRequired,
+  resetData: PropTypes.func.isRequired,
+  location: React.PropTypes.object,
+  reloadIdeas: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   ideas: makeSelectIdeas(),
+  topics: makeSelectTopics(),
+  areas: makeSelectAreas(),
   nextPageNumber: makeSelectNextPageNumber(),
   nextPageItemCount: makeSelectNextPageItemCount(),
   loading: makeSelectLoading(),
@@ -179,11 +215,17 @@ function mapDispatchToProps(dispatch) {
     initData: () => {
       dispatch(loadIdeas(true));
     },
-    loadNextPage: (nextPageNumber, nextPageItemCount) => {
-      dispatch(loadIdeas(false, nextPageNumber, nextPageItemCount));
+    loadNextPage: (nextPageNumber, nextPageItemCount, filters = {}) => {
+      dispatch(loadIdeas(false, nextPageNumber, nextPageItemCount, filters));
     },
-    resetIdeas: () => {
+    resetData: () => {
       dispatch(resetIdeas());
+    },
+    reloadIdeas: (filters) => {
+      dispatch(loadIdeas({ filters }));
+    },
+    loadNextPage: (nextPageNumber, nextPageItemCount, filters = {}) => {
+      dispatch(loadIdeas(false, nextPageNumber, nextPageItemCount, filters));
     },
   };
 }

@@ -16,7 +16,7 @@ import { push } from 'react-router-redux';
 import {
   makeSelectIdeas,
   makeSelectLoadingUser, makeSelectLoadingUserIdeas, makeSelectLoadUserError, makeSelectLoadUserIdeasError,
-  makeSelectUserData,
+  makeSelectUser,
 } from './selectors';
 import { loadUser, loadUserIdeas } from './actions';
 import messages from './messages';
@@ -80,7 +80,7 @@ UsersShowPage.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loadingUser: makeSelectLoadingUser(),
   loadUserError: makeSelectLoadUserError(),
-  userData: makeSelectUserData(),
+  userData: makeSelectUser(),
   loadingUserIdeas: makeSelectLoadingUserIdeas(),
   loadUserIdeasError: makeSelectLoadUserIdeasError(),
   ideas: makeSelectIdeas(),
