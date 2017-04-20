@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170415160722) do
+ActiveRecord::Schema.define(version: 20170418104454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,6 +126,17 @@ ActiveRecord::Schema.define(version: 20170415160722) do
     t.string   "locale"
     t.index ["email"], name: "index_users_on_email", using: :btree
     t.index ["slug"], name: "index_users_on_slug", using: :btree
+  end
+
+  create_table "votes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "votable_id"
+    t.string   "votable_type"
+    t.uuid     "user_id"
+    t.integer  "mode",         null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["user_id"], name: "index_votes_on_user_id", using: :btree
+    t.index ["votable_type", "votable_id"], name: "index_votes_on_votable_type_and_votable_id", using: :btree
   end
 
   add_foreign_key "areas_ideas", "areas"
