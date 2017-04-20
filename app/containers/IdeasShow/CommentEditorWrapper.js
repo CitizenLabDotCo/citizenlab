@@ -57,7 +57,7 @@ CommentEditorWrapper.propTypes = {
   parentId: PropTypes.string,
   idea: PropTypes.any,
   commentContent: PropTypes.string,
-  userId: PropTypes.object,
+  userId: PropTypes.string,
   locale: PropTypes.string,
   publishCommentClick: PropTypes.func.isRequired,
 };

@@ -5,6 +5,9 @@
  * code.
  */
 
+// debug utils
+import { cl } from 'utils/debugUtils'; // eslint-disable-line
+
 // Needed for redux-saga es6 generator support
 import 'babel-polyfill';
 

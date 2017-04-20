@@ -18,6 +18,7 @@ import VoteIdea from 'components/VoteIdea';
 import draftToHtml from 'draftjs-to-html';
 import styled from 'styled-components';
 import { Label, Button } from 'components/Foundation';
+import renderHTML from 'react-render-html';
 
 import { watchFetchIdea, watchLoadIdeaVotes, watchVoteIdea, watchFetchComments, watchStoreComment } from './sagas';
 import CommentEditorWrapper from './CommentEditorWrapper';
@@ -66,7 +67,7 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
     const idea = this.props.idea || this.props.pageData.idea;
 
     const { loadNextCommentsPage, nextCommentPageNumber, nextCommentPageItemCount } = this.props;
-    loadNextCommentsPage(idea.id, nextCommentPageNumber, nextCommentPageItemCount);
+    loadNextCommentsPage(idea.data.id, nextCommentPageNumber, nextCommentPageItemCount);
   }
 
   notFoundHtml() {
@@ -75,6 +76,7 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
 
   ideaHtml(idea) {
     const { attributes, relationships } = idea;
+    const authorId = relationships.author && relationships.author.id;
 
     return (
       <div>
@@ -82,8 +84,8 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
           ideaImages={attributes.images}
         />}
         <h2><T value={attributes.title_multiloc} /></h2>
-        <p><strong>By: {relationships.author ? relationships.author.data.id : ''}</strong></p>
-        <IdeaContent>{attributes.body_multiloc.en}</IdeaContent>
+        <p><strong>By: {authorId} </strong></p>
+        <IdeaContent>{renderHTML(attributes.body_multiloc.en)}</IdeaContent>
       </div>
     );
   }
@@ -113,13 +115,21 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
             { name: 'description', content: 'Description of IdeasShow' },
           ]}
         />
+        {/* Sagas */}
         <Saga saga={watchFetchIdea} />
         <Saga saga={watchLoadIdeaVotes} />
         <Saga saga={watchVoteIdea} />
         <Saga saga={watchFetchComments} />
         <Saga saga={watchStoreComment} />
 
+        {/* Idea */}
+        {loadIdeaError && <div>
+          {loadIdeaError}
+        </div>}
+        {loadingIdea && <FormattedMessage {...messages.loadingIdea} />}
         { idea ? this.ideaHtml(idea) : this.notFoundHtml() }
+
+        {/* Voting */}
         {ideaVotesLoadError && <FormattedMessage {...messages.loadVotesError} />}
         {idea && !(ideaVotesLoadError || loadingVotes) && <VoteIdea
           ideaId={idea.id}
@@ -131,13 +141,8 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
           ideaVoteSubmitError={ideaVoteSubmitError}
         />}
 
-        {loadIdeaError && <div>
-          {loadIdeaError}
-        </div>}
-        {loadingIdea && <FormattedMessage {...messages.loadingIdea} />}
-
-        { loadIdeaError || !idea ? this.notFoundHtml() : this.ideaHtml(idea) }
         <hr />
+        { /* comments */ }
         <CommentEditorWrapper
           storeCommentCopy={storeCommentDraftCopy}
           submittingComment={submittingComment}

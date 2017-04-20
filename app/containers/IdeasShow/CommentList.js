@@ -91,7 +91,7 @@ CommentList.propTypes = {
   parentId: PropTypes.string,
   idea: PropTypes.any,
   commentContent: PropTypes.string,
-  userId: PropTypes.object,
+  userId: PropTypes.string,
   locale: PropTypes.string.isRequired,
   publishCommentClick: PropTypes.func.isRequired,
 };
