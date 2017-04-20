@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170410152320) do
+ActiveRecord::Schema.define(version: 20170415160722) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20170410152320) do
     t.uuid "area_id"
     t.uuid "idea_id"
     t.index ["area_id"], name: "index_areas_ideas_on_area_id", using: :btree
+    t.index ["idea_id", "area_id"], name: "index_areas_ideas_on_idea_id_and_area_id", unique: true, using: :btree
     t.index ["idea_id"], name: "index_areas_ideas_on_idea_id", using: :btree
   end
 
@@ -72,6 +73,7 @@ ActiveRecord::Schema.define(version: 20170410152320) do
   create_table "ideas_topics", id: false, force: :cascade do |t|
     t.uuid "idea_id"
     t.uuid "topic_id"
+    t.index ["idea_id", "topic_id"], name: "index_ideas_topics_on_idea_id_and_topic_id", unique: true, using: :btree
     t.index ["idea_id"], name: "index_ideas_topics_on_idea_id", using: :btree
     t.index ["topic_id"], name: "index_ideas_topics_on_topic_id", using: :btree
   end

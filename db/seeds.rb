@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-def create_idea_tree(idea, parent, depth=0)
+def create_comment_tree(idea, parent, depth=0)
   amount = rand(5/(depth+1))
   amount.times do |i|
     c = Comment.create({
@@ -19,7 +19,7 @@ def create_idea_tree(idea, parent, depth=0)
       idea: idea,
       parent: parent
     })
-    create_idea_tree(idea, c, depth+1)
+    create_comment_tree(idea, c, depth+1)
   end
 end
 
@@ -114,15 +114,15 @@ Apartment::Tenant.switch('localhost') do
         "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
         "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
       },
-      topics: rand(3).times.map{ Topic.offset(rand(Topic.count)).first },
-      areas: rand(3).times.map{ Area.offset(rand(Area.count)).first },
+      topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
+      areas: rand(3).times.map{rand(Area.count)}.uniq.map{ Area.offset(rand(Area.count)).first },
       author: User.offset(rand(User.count)).first,
       lab: Lab.first,
       publication_status: 'published',
       images: [0,0,1,1,2][rand(5)].times.map{ Rails.root.join("spec/fixtures/image#{rand(20)}.png").open }
     })
 
-    create_idea_tree(idea, nil)
+    create_comment_tree(idea, nil)
   end
 
 end
