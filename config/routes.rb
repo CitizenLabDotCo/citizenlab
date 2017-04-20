@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :ideas do
         resources :comments, shallow: true
+        resources :votes, except: [:update], shallow: true, defaults: { votable: 'Idea' }
       end
+
       # auth
       post 'user_token' => 'user_token#create'
       post 'social_login' => 'social_login#create'
