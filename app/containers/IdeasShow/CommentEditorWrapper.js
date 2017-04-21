@@ -8,26 +8,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { Button } from 'components/Foundation';
 
 import messages from './messages';
 import CommentEditor from './CommentEditor';
 
+// eslint-disable-next-line  react/prefer-stateless-function
 export class CommentEditorWrapper extends React.PureComponent {
-  constructor() {
-    super();
-
-    // bind event handlers
-    this.publishComment = this.publishComment.bind(this);
-  }
-
-  publishComment() {
-    const { idea, commentContent, userId, locale, parentId, publishCommentClick } = this.props;
-    publishCommentClick(idea.id, commentContent, userId, locale, parentId);
-  }
-
   render() {
-    const { className, submittingComment, storeCommentCopy, resetEditorContent, parentId } = this.props;
+    const {
+      className, submittingComment, resetEditorContent, parentId, idea, userId,
+      publishCommentClick, locale,
+    } = this.props;
 
     return (
       <div>
@@ -36,14 +27,14 @@ export class CommentEditorWrapper extends React.PureComponent {
 
         <div className={className}>
           <CommentEditor
-            onEditorChange={storeCommentCopy}
             resetContent={resetEditorContent}
             parentId={parentId}
+            ideaId={idea.id}
+            userId={userId}
+            publishCommentClick={publishCommentClick}
+            locale={locale}
           />
         </div>
-        <Button onClick={this.publishComment}>
-          <FormattedMessage {...messages.publishComment} />
-        </Button>
       </div>
     );
   }
@@ -51,12 +42,10 @@ export class CommentEditorWrapper extends React.PureComponent {
 
 CommentEditorWrapper.propTypes = {
   className: PropTypes.string,
-  storeCommentCopy: PropTypes.func.isRequired,
   submittingComment: PropTypes.bool.isRequired,
   resetEditorContent: PropTypes.bool.isRequired,
   parentId: PropTypes.string,
   idea: PropTypes.any,
-  commentContent: PropTypes.string,
   userId: PropTypes.string,
   locale: PropTypes.string,
   publishCommentClick: PropTypes.func.isRequired,

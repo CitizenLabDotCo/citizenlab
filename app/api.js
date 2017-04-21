@@ -39,12 +39,7 @@ export function createIdea(values) {
   });
 }
 
-export function fetchIdeas(nextPageNumber, nextPageItemCount, authorId) {
-  const queryParameters = {
-    'page[number]': nextPageNumber,
-    'page[size]': nextPageItemCount,
-    author_id: authorId,
-  };
+export function fetchIdeas(queryParameters) {
   return request(`${API_PATH}/ideas`, null, null, queryParameters);
 }
 

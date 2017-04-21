@@ -61,6 +61,7 @@ const makeSelectTopics = () => createSelector(
   makeSelectTopicsDomain(),
   selectResourcesDomain(),
   (topicsState, resources) => {
+    if (!topicsState) return [];
     const ids = topicsState.get('ids');
     const topicsMap = resources.get('topics');
     return ids.map((id) => topicsMap.get(id).toJS());
@@ -71,6 +72,7 @@ const makeSelectAreas = () => createSelector(
   makeSelectAreasDomain(),
   selectResourcesDomain(),
   (areasState, resources) => {
+    if (!areasState) return [];
     const ids = areasState.get('ids');
     const areasMap = resources.get('areas');
     return ids.map((id) => areasMap.get(id).toJS());
