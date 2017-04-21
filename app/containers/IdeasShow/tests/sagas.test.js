@@ -42,6 +42,10 @@ describe('sagas', () => {
       expect(result).toEqual(call(fetchIdea, mockedAction.payload));
     });
 
+    it('then, should dispatch mergeJsonApiResources action', (result) => {
+      expect(result).toEqual(put(mergeJsonApiResources()));
+    });
+
     it('then, should dispatch loadIdeaSuccess action', (result) => {
       expect(result).toEqual(put(loadIdeaSuccess()));
     });

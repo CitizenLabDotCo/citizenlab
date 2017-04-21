@@ -43,7 +43,7 @@ export default function ideasShowReducer(state = initialState, action) {
     case LOAD_IDEA_SUCCESS:
       return state
         .set('loadingIdea', false)
-        .set('idea', action.payload ? action.payload.data : null);
+        .set('idea', action.payload ? action.payload.data.id : null);
     case LOAD_IDEA_VOTES_REQUEST:
       return state
         .set('ideaVotesLoadError', null)

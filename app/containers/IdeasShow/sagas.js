@@ -11,6 +11,7 @@ import { fetchIdea, fetchIdeaVotes, submitIdeaVote, createIdeaComment, fetchIdea
 export function* loadIdea(action) {
   try {
     const response = yield call(fetchIdea, action.payload);
+    yield put(mergeJsonApiResources(response));
     yield put(loadIdeaSuccess(response));
   } catch (e) {
     yield put(ideaLoadError(JSON.stringify(e.errors)));

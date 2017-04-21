@@ -31,7 +31,11 @@ import {
   loadComments, resetPageData, loadIdea, loadIdeaSuccess, loadVotes, voteIdea, publishComment, publishCommentError, saveCommentDraft,
 } from './actions';
 import makeSelectIdeasShow, {
-  makeSelectActiveParentId, makeSelectCommentContent, makeSelectComments, makeSelectLoadCommentsError, makeSelectLoadIdeaError, makeSelectLoadingComments, makeSelectLoadingIdea, makeSelectNextCommentPageItemCount, makeSelectNextCommentPageNumber, makeSelectResetEditorContent, makeSelectStoreCommentError, makeSelectDownVotes, makeSelectIdeaVotesLoadError, makeSelectIdeaVoteSubmitError, makeSelectLoadingVotes, makeSelectSubmittingVote, makeSelectUpVotes, makeSelectSubmittingComment,
+  makeSelectActiveParentId, makeSelectCommentContent, makeSelectComments, makeSelectLoadCommentsError,
+  makeSelectLoadIdeaError, makeSelectLoadingComments, makeSelectLoadingIdea, makeSelectNextCommentPageItemCount,
+  makeSelectNextCommentPageNumber, makeSelectResetEditorContent, makeSelectStoreCommentError, makeSelectDownVotes,
+  makeSelectIdeaVotesLoadError, makeSelectIdeaVoteSubmitError, makeSelectLoadingVotes, makeSelectSubmittingVote,
+  makeSelectUpVotes, makeSelectSubmittingComment, makeSelectIdea,
 } from './selectors';
 
 export class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -91,8 +95,8 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
   }
 
   render() {
-    const { storeCommentDraftCopy, storeCommentError, submittingComment, comments, resetEditorContent, loadingComments, nextCommentPageNumber, loadingIdea, loadIdeaError, commentContent, locale, activeParentId, publishCommentClick, submitIdeaVote, upVotes, downVotes, ideaVotesLoadError, user, submittingVote, loadingVotes, ideaVoteSubmitError } = this.props;
-    const idea = this.props.idea || this.props.pageData.idea;
+    const { storeCommentDraftCopy, storeCommentError, submittingComment, comments, resetEditorContent, loadingComments, nextCommentPageNumber, loadingIdea, loadIdeaError, commentContent, locale, activeParentId, publishCommentClick, submitIdeaVote, upVotes, downVotes, ideaVotesLoadError, user, submittingVote, loadingVotes, ideaVoteSubmitError, ideaFull } = this.props;
+    const idea = this.props.idea || ideaFull;
 
     const WrapperDiv = (props) => (
       <div
@@ -216,6 +220,7 @@ IdeasShow.propTypes = {
   activeParentId: PropTypes.string,
   publishCommentClick: PropTypes.func.isRequired,
   resetData: PropTypes.func.isRequired,
+  ideaFull: PropTypes.any,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -240,6 +245,7 @@ const mapStateToProps = createStructuredSelector({
   nextCommentPageNumber: makeSelectNextCommentPageNumber(),
   nextCommentPageItemCount: makeSelectNextCommentPageItemCount(),
   activeParentId: makeSelectActiveParentId(),
+  ideaFull: makeSelectIdea(),
 });
 
 export function mapDispatchToProps(dispatch) {

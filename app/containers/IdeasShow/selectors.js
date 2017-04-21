@@ -21,6 +21,17 @@ const makeSelectIdeasShow = () => createSelector(
   (substate) => substate.toJS()
 );
 
+const makeSelectIdea = () => createSelector(
+  selectIdeasShowDomain(),
+  selectResourcesDomain(),
+  (pageState, resources) => {
+    const id = pageState.get('idea', null);
+    return (id
+      ? denormalize(resources, 'ideas', id).toJS()
+      : null);
+  }
+);
+
 
 /**
  * Other selectors
@@ -132,6 +143,7 @@ const makeSelectActiveParentId = () => createSelector(
 
 export default makeSelectIdeasShow;
 export {
+  makeSelectIdea,
   makeSelectUpVotes,
   makeSelectDownVotes,
   makeSelectIdeaVotesLoadError,
