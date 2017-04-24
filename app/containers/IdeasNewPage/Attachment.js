@@ -17,7 +17,7 @@ function Attachment(props) {
 }
 
 Attachment.propTypes = {
-  source: PropTypes.string.isRequired, // attachment id
+  source: PropTypes.any.isRequired, // attachment id
 };
 
 export default styled(Attachment)`

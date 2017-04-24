@@ -20,3 +20,6 @@ export const AVATAR_STORE_ERROR = 'app/UsersEditPage/STORE_AVATAR_ERROR';
 
 // locale
 export const UPDATE_USER_LOCALE = 'app/UsersEditPage/UPDATE_USER_LOCALE';
+
+// voting
+

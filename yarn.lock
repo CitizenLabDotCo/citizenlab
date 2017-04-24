@@ -1055,16 +1055,16 @@ babel-register@^6.18.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.2"
 
-babel-runtime@^6.0.0, babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.2.0, babel-runtime@^6.22.0, babel-runtime@^6.9.0, babel-runtime@^6.9.1:
-  version "6.23.0"
-  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
+babel-runtime@^6.0.0, babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.2.0, babel-runtime@^6.20.0, babel-runtime@^6.9.0, babel-runtime@^6.9.1:
+  version "6.20.0"
+  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.20.0.tgz#87300bdcf4cd770f09bf0048c64204e17806d16f"
   dependencies:
     core-js "^2.4.0"
     regenerator-runtime "^0.10.0"
 
-babel-runtime@^6.20.0:
-  version "6.20.0"
-  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.20.0.tgz#87300bdcf4cd770f09bf0048c64204e17806d16f"
+babel-runtime@^6.22.0:
+  version "6.23.0"
+  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
   dependencies:
     core-js "^2.4.0"
     regenerator-runtime "^0.10.0"
@@ -1406,7 +1406,7 @@ camelcase-keys@^2.0.0:
     camelcase "^2.0.0"
     map-obj "^1.0.0"
 
-camelcase@^1.0.2:
+camelcase@^1.0.2, camelcase@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-1.2.1.tgz#9bb5304d2e0b56698b2c758b08a3eaa9daa58a39"
 
@@ -6020,6 +6020,10 @@ parse5@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/parse5/-/parse5-1.5.1.tgz#9b7f3b0de32be78dc2401b17573ccaf0f6f59d94"
 
+parse5@^2.0.2:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/parse5/-/parse5-2.2.3.tgz#0c4fc41c1000c5e6b93d48b03f8083837834e9f6"
+
 parseurl@~1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/parseurl/-/parseurl-1.3.1.tgz#c8ab8c9223ba34888aa64a297b28853bec18da56"
@@ -6449,9 +6453,9 @@ promise@^7.0.3, promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.6, prop-types@^15.5.7:
-  version "15.5.8"
-  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.8.tgz#6b7b2e141083be38c8595aa51fc55775c7199394"
+prop-types@^15.5.6:
+  version "15.5.7"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.7.tgz#231c4f29cdd82e355011d4889386ca9059544dd1"
   dependencies:
     fbjs "^0.8.9"
 
@@ -6561,6 +6565,10 @@ rc@^1.1.2, rc@~1.1.6:
 react-addons-test-utils@15.4.1, "react-addons-test-utils@^0.14.8 || ^15.0.1":
   version "15.4.1"
   resolved "https://registry.yarnpkg.com/react-addons-test-utils/-/react-addons-test-utils-15.4.1.tgz#1e4caab151bf27cce26df5f9cb714f4fd8359ae1"
+
+react-attr-converter@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-attr-converter/-/react-attr-converter-0.1.1.tgz#0591f5a1146e3ab9c8e4d303d6cf966f5e6d7608"
 
 react-deep-force-update@^1.0.0:
   version "1.0.1"
@@ -6679,6 +6687,15 @@ react-redux@4.4.6:
     invariant "^2.0.0"
     lodash "^4.2.0"
     loose-envify "^1.1.0"
+
+react-render-html@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/react-render-html/-/react-render-html-0.1.6.tgz#57d63acc8e4a4cd0716bc5105af5c64c392f83b1"
+  dependencies:
+    camelcase "^3.0.0"
+    parse5 "^2.0.2"
+    react-attr-converter "0.1.1"
+    uppercamelcase "^1.1.0"
 
 react-responsive-carousel@^3.1.5:
   version "3.1.5"
@@ -6895,9 +6912,9 @@ redux-immutable@3.0.8:
   dependencies:
     immutable "^3.7.6"
 
-redux-mock-store@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/redux-mock-store/-/redux-mock-store-1.2.2.tgz#38007dc38f12ca8d965c7521afee5ccacc234d03"
+redux-mock-store@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/redux-mock-store/-/redux-mock-store-1.2.3.tgz#1b3ad299da91cb41ba30d68e3b6f024475fb9e1b"
 
 redux-saga-testing@^1.0.2:
   version "1.0.2"
@@ -8019,6 +8036,12 @@ upper-case-first@^1.1.0:
 upper-case@^1.0.3, upper-case@^1.1.0, upper-case@^1.1.1:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/upper-case/-/upper-case-1.1.3.tgz#f6b4501c2ec4cdd26ba78be7222961de77621598"
+
+uppercamelcase@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/uppercamelcase/-/uppercamelcase-1.1.0.tgz#324d98a6b3afc7e8a8953e10641509b0e4e23f97"
+  dependencies:
+    camelcase "^1.2.1"
 
 urix@^0.1.0, urix@~0.1.0:
   version "0.1.0"

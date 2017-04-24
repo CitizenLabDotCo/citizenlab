@@ -18,6 +18,7 @@ import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
 import TopicSelect from 'components/TopicSelect';
 import { Reveal } from 'components/Foundation';
 import T from 'containers/T';
+import WithFeature, { Without } from 'containers/WithFeature';
 import messages from './messages';
 
 const topics = [
@@ -73,6 +74,12 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           </div>
         </Reveal>
 
+        <WithFeature feature="core">
+          <div>Commenting is allowed!</div>
+          <Without>
+            <div>Can't comment here :(!</div>
+          </Without>
+        </WithFeature>
       </div>
     );
   }

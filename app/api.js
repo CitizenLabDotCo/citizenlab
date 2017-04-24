@@ -39,7 +39,12 @@ export function createIdea(values) {
   });
 }
 
-export function fetchIdeas(queryParameters) {
+export function fetchIdeas(nextPageNumber, nextPageItemCount, authorId) {
+  const queryParameters = {
+    'page[number]': nextPageNumber,
+    'page[size]': nextPageItemCount,
+    author_id: authorId,
+  };
   return request(`${API_PATH}/ideas`, null, null, queryParameters);
 }
 
@@ -63,6 +68,27 @@ export function fetchUser(userId) {
   return request(`${API_PATH}/users/${userId}`);
 }
 
+export function fetchIdeaComments(nextCommentPageNumber, nextCommentPageItemCount, ideaId) {
+  const queryParameters = {
+    'page[number]': nextCommentPageNumber,
+    'page[size]': nextCommentPageItemCount,
+  };
+
+  return request(`${API_PATH}/ideas/${ideaId}/comments`, null, null, queryParameters);
+}
+
+export function createIdeaComment(ideaId, userId, htmlContents, parentId) {
+  const body = {
+    author_id: userId,
+    body_multiloc: htmlContents,
+    parent_id: parentId,
+  };
+
+  return request(`${API_PATH}/ideas/${ideaId}/comments`, { comment: body }, {
+    method: 'POST',
+  });
+}
+
 export function updateCurrentUser(values, userId) {
   // if post profile (no avatar), remove avatar
   return request(`${API_PATH}/users/${userId}`, { user: values }, {
@@ -72,4 +98,18 @@ export function updateCurrentUser(values, userId) {
 
 export function fetchCurrentTenant() {
   return request(`${API_PATH}/tenants/current`);
+}
+
+export function fetchIdeaVotes(ideaId) {
+  return request(`${API_PATH}/ideas/${ideaId}/votes`);
+}
+
+export function submitIdeaVote(ideaId, mode) {
+  const body = {
+    vote: { mode },
+  };
+
+  return request(`${API_PATH}/ideas/${ideaId}/votes`, body, {
+    method: 'POST',
+  });
 }

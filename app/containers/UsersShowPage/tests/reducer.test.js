@@ -4,7 +4,7 @@ import usersShowPageReducer from '../reducer';
 
 describe('usersShowPageReducer', () => {
   const expectedInitialState = {
-    userData: {},
+    user: null,
     ideas: [],
     loadingUser: false,
     loadingUserIdeas: false,

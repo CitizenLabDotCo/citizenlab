@@ -9,6 +9,7 @@ yarn-error.log
 npm-debug.log
 .idea
 junit.xml
+esw
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
