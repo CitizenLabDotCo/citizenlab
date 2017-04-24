@@ -30,7 +30,7 @@ import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 import {
   loadComments, resetPageData, loadIdea, loadVotes, voteIdea, publishComment, publishCommentError,
 } from './actions';
-import makeSelectIdeasShow, {
+import {
   makeSelectActiveParentId, makeSelectCommentContent, makeSelectComments, makeSelectLoadCommentsError,
   makeSelectLoadIdeaError, makeSelectLoadingComments, makeSelectLoadingIdea, makeSelectNextCommentPageItemCount,
   makeSelectNextCommentPageNumber, makeSelectResetEditorContent, makeSelectStoreCommentError, makeSelectDownVotes,
@@ -64,9 +64,9 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
   }
 
   goToNextPage() {
-    const idea = this.props.idea || this.props.pageData.idea;
+    const { loadNextCommentsPage, nextCommentPageNumber, nextCommentPageItemCount, ideaFull } = this.props;
 
-    const { loadNextCommentsPage, nextCommentPageNumber, nextCommentPageItemCount } = this.props;
+    const idea = this.props.idea || ideaFull;
     loadNextCommentsPage(idea.data.id, nextCommentPageNumber, nextCommentPageItemCount);
   }
 
@@ -186,7 +186,6 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
 
 IdeasShow.propTypes = {
   idea: PropTypes.object,
-  pageData: PropTypes.object,
   showIdeaWithIndexPage: PropTypes.bool,
   params: PropTypes.object,
   submitIdeaVote: PropTypes.func.isRequired,
@@ -219,7 +218,6 @@ IdeasShow.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  pageData: makeSelectIdeasShow(),
   upVotes: makeSelectUpVotes(),
   downVotes: makeSelectDownVotes(),
   ideaVotesLoadError: makeSelectIdeaVotesLoadError(),
