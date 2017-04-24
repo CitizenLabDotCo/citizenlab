@@ -79,3 +79,14 @@ Top right corner of the window -> Click on dropdown next to `play` icon -> `Edit
 
 To run the the debugger (either React or just, choose from dropdown next to icon): just set a breakpoint (left click next to line number) and press the `bug` icon next to `play` icon mentioned above.
 Webstorm will open a new browser window. The rest works as we we were working in ChromeDevTools (`continue`, `next line`, automatic variable watch...)
+
+### Sublime
+
+Install [ESLint](https://packagecontrol.io/packages/ESLint) plugins and add
+
+{
+  "node_path": "PATH_TO_NODE",
+  "node_modules_path": "PATH_TO_LOCAL_NODE_MODULES"
+}
+
+to the Eslint's configuration. You might have to start eslint manually.

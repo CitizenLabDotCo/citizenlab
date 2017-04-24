@@ -13,7 +13,8 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import _ from 'lodash';
 import IdeaCard from 'components/IdeaCard';
-import { Row, Column, Button, Label, Reveal } from 'components/Foundation';
+import { Card, Sidebar, Segment, Menu } from 'semantic-ui-react';
+import { Reveal, Button, Label } from 'components/Foundation';
 import T from 'containers/T';
 import styled from 'styled-components';
 import { Saga } from 'react-redux-saga';
@@ -129,41 +130,49 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
           <FormattedMessage {...messages.header} />
         </h1>
 
-        {topics.map((topic) =>
-          <div key={topic.id}>
-            <Link to={{ pathname: this.props.location.pathname, query: { ...this.props.location.query, topics: [topic.id] } }}>
-              <T value={topic.attributes.title_multiloc}></T>
-            </Link>
-          </div>)
-        }
+        <Button onClick={this.toggleVisibility}>Toggle Visibility</Button>
+        <Sidebar.Pushable as={Segment}>
+          <Sidebar as={Menu} animation="overlay" width="thin" visible icon="labeled" vertical inverted>
+            {topics.map((topic) =>
+              <Menu.Item key={topic.id}>
+                <Link to={{ pathname: this.props.location.pathname, query: { ...this.props.location.query, topics: [topic.id] } }}>
+                  <T value={topic.attributes.title_multiloc}></T>
+                </Link>
+              </Menu.Item>)
+            }
 
-        {areas.map((area) =>
-          <div key={area.id}>
-            <Link to={{ pathname: this.props.location.pathname, query: { ...this.props.location.query, areas: [area.id] } }}>
-              <T value={area.attributes.title_multiloc}></T>
-            </Link>
-          </div>)
-        }
+            {areas.map((area) =>
+              <Menu.Item key={area.id}>
+                <Link to={{ pathname: this.props.location.pathname, query: { ...this.props.location.query, areas: [area.id] } }}>
+                  <T value={area.attributes.title_multiloc}></T>
+                </Link>
+              </Menu.Item>)
+            }
+          </Sidebar>
+          <Sidebar.Pusher>
+            <Segment basic>
+              <Card.Group itemsPerRow={4} doubling stackable>
+                {ideas && ideas.map((idea) => (
+                  <IdeaCard key={idea.id} idea={idea} onClick={() => { this.props.dispatch(setShowIdeaWithIndexPage(true)); this.props.router.push(`/ideas/${idea.id}`); }}></IdeaCard>
+                ))}
+              </Card.Group>
+              {/* eslint-disable-next-line jsx-ally/no-static-element-interactions */}
+              <CenteredDiv onClick={this.goToNextPage}>
+                {(nextPageNumber && !loading) && <Button>
+                  <FormattedMessage
+                    {...messages.loadMore}
+                  />
+                </Button>}
+                {loading && <Label>
+                  <FormattedMessage
+                    {...messages.loading}
+                  /></Label>}
+              </CenteredDiv>
+            </Segment>
+          </Sidebar.Pusher>
+        </Sidebar.Pushable>
 
-        <Row data-equalizer>
-          {ideas && ideas.map((idea) => (
-            <Column key={idea.id} small={12} medium={4} large={3}>
-              <IdeaCard idea={idea} onClick={() => { this.props.dispatch(setShowIdeaWithIndexPage(true)); this.props.router.push(`/ideas/${idea.id}`); }}></IdeaCard>
-            </Column>
-          ))}
-        </Row>
-        {/* eslint-disable-next-line jsx-ally/no-static-element-interactions */}
-        <CenteredDiv onClick={this.goToNextPage}>
-          {(nextPageNumber && !loading) && <Button>
-            <FormattedMessage
-              {...messages.loadMore}
-            />
-          </Button>}
-          {loading && <Label>
-            <FormattedMessage
-              {...messages.loading}
-            /></Label>}
-        </CenteredDiv>
+
       </div>
     );
   }

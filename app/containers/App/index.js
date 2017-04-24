@@ -14,14 +14,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { Saga } from 'react-redux-saga';
 import { makeSelectCurrentUser } from 'utils/auth/selectors';
 import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
 import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
 import authSaga from 'utils/auth/sagas';
 import tenantSaga from 'utils/tenant/sagas';
-import { Row, Column } from 'components/Foundation';
-import { Saga } from 'react-redux-saga';
+import { Container } from 'semantic-ui-react';
+// import 'semantic-ui-css/components/reset.css';
+// import 'semantic-ui-css/components/card.css';
+// import 'semantic-ui-css/components/image.css';
+// import 'semantic-ui-css/components/button.css';
+// import 'semantic-ui-css/components/icon.css';
+// import 'semantic-ui-css/components/label.css';
+// import 'semantic-ui-css/components/menu.css';
+// import 'semantic-ui-css/components/input.css';
+// import 'semantic-ui-css/components/dropdown.css';
+// import 'semantic-ui-css/components/grid.css';
+// import 'semantic-ui-css/components/container.css';
+// import 'semantic-ui-css/components/item.css';
+// import 'semantic-ui-css/components/list.css';
+// import 'semantic-ui-css/components/transition.css';
+import 'semantic-ui-css/semantic.css';
 import Navbar from './Navbar';
 
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -42,11 +57,9 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
             currentTenant={currentTenant}
           >
           </Navbar>
-          <Row>
-            <Column large={12}>
-              {React.Children.toArray(this.props.children)}
-            </Column>
-          </Row>
+          <Container>
+            {React.Children.toArray(this.props.children)}
+          </Container>
         </div>
       );
     } else { // eslint-disable-line no-else-return
