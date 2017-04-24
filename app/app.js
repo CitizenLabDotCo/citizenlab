@@ -46,7 +46,7 @@ import { translationMessages } from './i18n';
 
 /* eslint-disable import/first */
 // Import CSS reset and Global Styles
-import '../vendor/foundation/main.scss';
+// import '../vendor/foundation/main.scss';
 import './global-styles';
 import '../vendor/carousel-custom.scss';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
