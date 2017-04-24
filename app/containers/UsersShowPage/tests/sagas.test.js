@@ -8,7 +8,7 @@ import sagaHelper from 'redux-saga-testing';
 import { getUser, getUserIdeas } from '../sagas';
 import { mergeJsonApiResources } from '../../../utils/resources/actions';
 import { fetchIdeas, fetchUser } from '../../../api';
-import { userIdeasLoaded, userLoaded } from '../actions';
+import { loadUserIdeasSuccess, loadUserSuccess } from '../actions';
 import { stringMock } from '../../../utils/testConstants';
 
 describe('UserShowPage sagas', () => {
@@ -27,7 +27,7 @@ describe('UserShowPage sagas', () => {
     });
 
     it('then, should dispatch userLoaded action', (result) => {
-      expect(result).toEqual(put(userLoaded(undefined)));
+      expect(result).toEqual(put(loadUserSuccess(undefined)));
     });
   });
 
@@ -45,7 +45,7 @@ describe('UserShowPage sagas', () => {
     });
 
     it('then, should dispatch userIdeasLoaded action', (result) => {
-      expect(result).toEqual(put(userIdeasLoaded(undefined)));
+      expect(result).toEqual(put(loadUserIdeasSuccess(undefined)));
     });
   });
 });

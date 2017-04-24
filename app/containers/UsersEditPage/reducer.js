@@ -6,8 +6,8 @@
 
 import { fromJS } from 'immutable';
 import {
-  STORE_AVATAR, CURRENT_USER_LOAD_SUCCESS, CURRENT_USER_LOAD_ERROR, STORE_CURRENT_USER, CURRENT_USER_STORE_SUCCESS,
-  CURRENT_USER_STORE_ERROR, AVATAR_STORE_ERROR, UPDATE_USER_LOCALE, AVATAR_STORE_SUCCESS,
+  STORE_AVATAR, LOAD_CURRENT_USER_SUCCESS, LOAD_CURRENT_USER_ERROR, UPDATE_CURRENT_USER, UPDATE_CURRENT_USER_SUCCESS, UPDATE_CURRENT_USER_ERROR, STORE_AVATAR_ERROR, UPDATE_USER_LOCALE,
+  STORE_AVATAR_SUCCESS,
 } from './constants';
 import { LOAD_CURRENT_USER } from '../App/constants';
 
@@ -38,25 +38,25 @@ export default function usersEditPageReducer(state = usersEditPageInitialState, 
       return state
         .set('loading', true)
         .set('loadError', false);
-    case CURRENT_USER_LOAD_SUCCESS:
+    case LOAD_CURRENT_USER_SUCCESS:
       return state
         .set('currentUser', currentUserWithId)
         .set('loading', false);
-    case CURRENT_USER_LOAD_ERROR:
+    case LOAD_CURRENT_USER_ERROR:
       return state
         .set('loadError', true)
         .set('loading', false);
-    case STORE_CURRENT_USER:
+    case UPDATE_CURRENT_USER:
       return state
         .set('currentUser', currentUserWithId)
         .set('stored', false)
         .set('processing', true)
         .set('storeError', false);
-    case CURRENT_USER_STORE_SUCCESS:
+    case UPDATE_CURRENT_USER_SUCCESS:
       return state
         .set('processing', false)
         .set('stored', true);
-    case CURRENT_USER_STORE_ERROR:
+    case UPDATE_CURRENT_USER_ERROR:
       return state
         // restore existing currentUser data to keep form state consistency
         .set('currentUser', state.get('currentUser'))
@@ -66,10 +66,10 @@ export default function usersEditPageReducer(state = usersEditPageInitialState, 
       return state
         .set('avatarUploadError', false)
         .set('currentUser', fromJS(state.get('currentUser')).set('avatar', action.avatarBase64).toJS());
-    case AVATAR_STORE_SUCCESS:
+    case STORE_AVATAR_SUCCESS:
       return state
         .set('avatarUploadError', false);
-    case AVATAR_STORE_ERROR:
+    case STORE_AVATAR_ERROR:
       return state
         .set('avatarUploadError', true);
     case UPDATE_USER_LOCALE:

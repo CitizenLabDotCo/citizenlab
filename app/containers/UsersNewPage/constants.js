@@ -4,6 +4,6 @@
  *
  */
 
-export const CREATE_USER_PENDING = 'app/UsersNewPage/CREATE_USER_PENDING';
-export const CREATE_USER_FULFILLED = 'app/UsersNewPage/CREATE_USER_FULFILLED';
-export const CREATE_USER_REJECTED = 'app/UsersNewPage/CREATE_USER_REJECTED';
+export const CREATE_USER_REQUEST = 'app/UsersNewPage/CREATE_USER_REQUEST';
+export const CREATE_USER_SUCCESS = 'app/UsersNewPage/CREATE_USER_SUCCESS';
+export const CREATE_USER_ERROR = 'app/UsersNewPage/CREATE_USER_ERROR';

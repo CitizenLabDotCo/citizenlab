@@ -67,15 +67,13 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/UsersEditPage/reducer'),
-          import('containers/UsersEditPage/sagas'),
           import('containers/UsersEditPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
+        importModules.then(([reducer, component]) => {
           injectReducer('usersEditPage', reducer.default);
-          injectSagas(sagas.default);
           renderRoute(component);
         });
 
@@ -144,15 +142,13 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/UsersNewPage/reducer'),
-          import('containers/UsersNewPage/sagas'),
           import('containers/UsersNewPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
+        importModules.then(([reducer, component]) => {
           injectReducer('usersNewPage', reducer.default);
-          injectSagas(sagas.default);
           renderRoute(component);
         });
 

@@ -3,14 +3,13 @@
  */
 
 /* eslint-disable */
-import { take, call, put, select } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import { createUser as createUserSaga } from '../sagas';
-import { createUser } from 'api';
 import {
-  CREATE_USER_PENDING,
-  CREATE_USER_FULFILLED,
-  CREATE_USER_REJECTED,
+  CREATE_USER_SUCCESS,
+  CREATE_USER_ERROR,
 } from './../constants';
+import { createUser } from '../../../api';
 
 const newUser = { name: 'tesla' };
 const fakeError = {};
@@ -21,12 +20,11 @@ describe('createUser Saga', () => {
     expect(generator.next().value).toEqual(call(createUser, newUser));
   });
 
-  // TODO: try not to use undefined
-  it('dispatches correct action after success', () => {
-    expect(generator.next().value).toEqual(put({ type: CREATE_USER_FULFILLED, payload: undefined }));
+  it('should dispatch correct action after success', () => {
+    expect(generator.next().value).toEqual(put({ type: CREATE_USER_SUCCESS, payload: undefined }));
   });
 
-  it('dispatches correct action after failure', () => {
-    expect(generator.throw(fakeError).value).toEqual(put({ type: CREATE_USER_REJECTED, payload: fakeError, error: true }));
+  it('should dispatch correct action after failure', () => {
+    expect(generator.throw(fakeError).value).toEqual(put({ type: CREATE_USER_ERROR, payload: fakeError, error: true }));
   });
 });

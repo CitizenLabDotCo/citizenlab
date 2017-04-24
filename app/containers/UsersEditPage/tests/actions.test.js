@@ -1,4 +1,6 @@
-import { currentUserLoaded, currentUserLoadError, currentUserUpdated, storeCurrentUserError } from '../actions';
+import {
+  loadCurrentUserError, loadCurrentUserSuccess, updateCurrentUserError, updateCurrentUserSuccess,
+} from '../actions';
 
 describe('actions', () => {
   const apiResponse = {
@@ -8,11 +10,11 @@ describe('actions', () => {
     },
   };
 
-  it('should not return currentUserLoadError().type', () => {
-    expect(currentUserLoaded(apiResponse)).not.toEqual(currentUserLoadError());
+  it('should not return loadCurrentUserError().type', () => {
+    expect(loadCurrentUserSuccess(apiResponse)).not.toEqual(loadCurrentUserError());
   });
 
   it('should not return storeCurrentUserError().type', () => {
-    expect(currentUserUpdated(apiResponse)).not.toEqual(storeCurrentUserError());
+    expect(updateCurrentUserSuccess(apiResponse)).not.toEqual(updateCurrentUserError());
   });
 });

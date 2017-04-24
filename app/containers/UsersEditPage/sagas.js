@@ -3,22 +3,22 @@ import { takeLatest } from 'redux-saga';
 import _ from 'lodash';
 
 import {
-  currentUserLoadError, currentUserLoaded, currentUserUpdated, storeCurrentUserError,
-  avatarStoreError, avatarStored,
+  loadCurrentUserError, storeAvatarError, storeAvatarSuccess, storeCurrentUserError, updateCurrentUserSuccess,
 } from './actions';
-import { STORE_AVATAR, STORE_CURRENT_USER } from './constants';
+import { STORE_AVATAR, UPDATE_CURRENT_USER } from './constants';
 import { mergeJsonApiResources } from '../../utils/resources/actions';
 import { fetchCurrentUser, updateCurrentUser } from '../../api';
 import { LOAD_CURRENT_USER } from '../App/constants';
+import { loadCurrentUserSuccess } from '../../utils/auth/actions';
 
 // Individual exports for testing
 export function* getProfile() {
   try {
     const currentUserResponse = yield call(fetchCurrentUser);
     yield put(mergeJsonApiResources(currentUserResponse));
-    yield put(currentUserLoaded(currentUserResponse));
+    yield put(loadCurrentUserSuccess(currentUserResponse));
   } catch (err) {
-    yield put(currentUserLoadError(err));
+    yield put(loadCurrentUserError(err));
   }
 }
 
@@ -32,7 +32,7 @@ export function* postProfile(action) {
     const currentUserResponse = yield call(updateCurrentUser, payload, userId);
 
     yield put(mergeJsonApiResources(currentUserResponse));
-    yield put(currentUserUpdated(currentUserResponse));
+    yield put(updateCurrentUserSuccess(currentUserResponse));
   } catch (err) {
     yield put(storeCurrentUserError());
   }
@@ -49,27 +49,20 @@ export function* postAvatar(action) {
 
     yield call(updateCurrentUser, payload, userId);
 
-    yield put(avatarStored());
+    yield put(storeAvatarSuccess());
   } catch (err) {
-    yield put(avatarStoreError());
+    yield put(storeAvatarError());
   }
 }
 
-export function* storeCurrentUser() {
-  yield takeLatest(STORE_CURRENT_USER, postProfile);
-}
-
-export function* storeAvatar() {
-  yield takeLatest(STORE_AVATAR, postAvatar);
-}
-
-export function* loadCurrentUser() {
+export function* watchLoadCurrentUser() {
   yield takeLatest(LOAD_CURRENT_USER, getProfile);
 }
 
-// All sagas to be loaded
-export default [
-  loadCurrentUser,
-  storeCurrentUser,
-  storeAvatar,
-];
+export function* watchStoreAvatar() {
+  yield takeLatest(STORE_AVATAR, postAvatar);
+}
+
+export function* watchStoreCurrentUser() {
+  yield takeLatest(UPDATE_CURRENT_USER, postProfile);
+}

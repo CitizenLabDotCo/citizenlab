@@ -54,7 +54,7 @@ export default class ProfileForm extends React.PureComponent {
             <LabelInputPair id="email" />
           </Column>
           <Column large={6}>
-            {userData.userId && <Avatar
+            {userData && userData.userId && <Avatar
               onAvatarUpload={avatarUpload}
               avatarUploadError={avatarUploadError}
               avatarURL={userData.avatar}
@@ -79,6 +79,6 @@ ProfileForm.propTypes = {
   onFormSubmit: PropTypes.func.isRequired,
   avatarUpload: PropTypes.func.isRequired,
   onLocaleChangeClick: PropTypes.func.isRequired,
-  userData: PropTypes.object.isRequired,
+  userData: PropTypes.object,
   avatarUploadError: PropTypes.bool.isRequired,
 };

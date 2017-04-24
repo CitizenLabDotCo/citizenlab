@@ -97,6 +97,8 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
       downVotes, ideaVotesLoadError, user, submittingVote, loadingVotes, ideaVoteSubmitError,
       ideaFull,
     } = this.props;
+
+    // ideaFull when loaded as parent url, idea passed in from IdeasIndexPage when modal
     const idea = this.props.idea || ideaFull;
 
     const WrapperDiv = (props) => (

@@ -11,6 +11,7 @@ import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
+import { Saga } from 'react-redux-saga';
 
 import {
   makeSelectAvatarUploadError, makeSelectLoadError, makeSelectLoading, makeSelectProcessing,
@@ -18,9 +19,11 @@ import {
 } from './selectors';
 
 import messages from './messages';
-import { avatarStoreError, storeAvatar, updateCurrentUser, updateLocale } from './actions';
+import { storeAvatar, storeAvatarError, updateCurrentUser, updateLocale } from './actions';
 import ProfileForm from './ProfileForm';
 import { loadCurrentUser } from '../App/actions';
+import { watchLoadCurrentUser, watchStoreAvatar, watchStoreCurrentUser } from './sagas';
+
 
 const ProfileDiv = styled.div`
   padding: 20px;
@@ -44,6 +47,9 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
             { name: 'description', content: 'UsersEditPage' },
           ]}
         />
+        <Saga saga={watchLoadCurrentUser} />
+        <Saga saga={watchStoreAvatar} />
+        <Saga saga={watchStoreCurrentUser} />
 
         {loading && <FormattedMessage {...messages.loading} />}
         {loadError && <FormattedMessage {...messages.loadError} />}
@@ -99,7 +105,7 @@ export function mapDispatchToProps(dispatch) {
       if (imageBase64 && userId) {
         dispatch(storeAvatar(imageBase64, userId));
       } else {
-        dispatch(avatarStoreError());
+        dispatch(storeAvatarError());
       }
     },
     onLocaleChangeClick: (locale) => {

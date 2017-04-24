@@ -1,4 +1,7 @@
-import { userIdeasLoaded, userIdeasLoadError, userLoaded, userLoadError } from '../actions';
+import {
+  loadUserError, loadUserSuccess, loadUserIdeasSuccess, loadUserIdeasError,
+} from '../actions';
+
 describe('UsersShowPage actions', () => {
   const apiResponse = {
     data: {
@@ -7,15 +10,15 @@ describe('UsersShowPage actions', () => {
     },
   };
 
-  describe('userLoaded', () => {
-    it('should not return userLoadError().type', () => {
-      expect(userLoaded(apiResponse)).not.toEqual(userLoadError());
+  describe('loadUserSuccess', () => {
+    it('should not return loadUserError().type', () => {
+      expect(loadUserSuccess(apiResponse)).not.toEqual(loadUserError());
     });
   });
 
-  describe('userIdeasLoaded', () => {
-    it('should not return userIdeasLoadError().type', () => {
-      expect(userIdeasLoaded(apiResponse)).not.toEqual(userIdeasLoadError());
+  describe('loadUserIdeasSuccess', () => {
+    it('should not return loadUserIdeasError().type', () => {
+      expect(loadUserIdeasSuccess(apiResponse)).not.toEqual(loadUserIdeasError());
     });
   });
 });

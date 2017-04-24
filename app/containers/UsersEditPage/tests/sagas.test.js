@@ -5,11 +5,11 @@
 /* eslint-disable redux-saga/yield-effects */
 import { put, call } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
-import { getProfile, postProfile } from '../sagas';
+import { getProfile } from '../sagas';
 import { mergeJsonApiResources } from '../../../utils/resources/actions';
-import { fetchCurrentUser, updateCurrentUser } from '../../../api';
+import { fetchCurrentUser } from '../../../api';
 import { localStorageMock } from '../../../utils/testUtils';
-import { currentUserLoaded } from '../actions';
+import { loadCurrentUserSuccess } from '../../../utils/auth/actions';
 
 describe('UserEditPage sagas', () => {
   // mock localStorage
@@ -26,36 +26,8 @@ describe('UserEditPage sagas', () => {
       expect(result).toEqual(put(mergeJsonApiResources()));
     });
 
-    it('then, should dispatch currentUserLoaded action', (result) => {
-      expect(result).toEqual(put(currentUserLoaded()));
+    it('then, should dispatch loadCurrentUserSuccess action', (result) => {
+      expect(result).toEqual(put(loadCurrentUserSuccess()));
     });
-  });
-
-  describe('postProfile', () => {
-    const it = sagaHelper(postProfile({}));
-
-    it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(updateCurrentUser, {}, undefined));
-    });
-
-    it('then, should dispatch mergeJsonApiResources action', (result) => {
-      expect(result).toEqual(put(mergeJsonApiResources()));
-    });
-
-    // TODO: fix following test
-    // it('then, should dispatch currentUserUpdated action', (result) => {
-    //   const userId = 'anything';
-    //   const avatar = {
-    //     medium: 'anything',
-    //   };
-    //   const currentUserFromApi = {
-    //     data: {
-    //       id: userId,
-    //       attributes: { avatar },
-    //     },
-    //   };
-    //
-    //   expect(result).toEqual(put(currentUserUpdated(currentUserFromApi)));
-    // });
   });
 });

@@ -18,11 +18,11 @@ import {
   makeSelectLoadingUser, makeSelectLoadingUserIdeas, makeSelectLoadUserError, makeSelectLoadUserIdeasError,
   makeSelectUser,
 } from './selectors';
-import { loadUser, loadUserIdeas } from './actions';
 import messages from './messages';
 import Avatar from './Avatar';
 import UserIdeas from './UserIdeas';
 import { watchLoadUser, watchLoadUserIdeas } from './sagas';
+import { loadUserIdeasRequest, loadUserRequest } from './actions';
 
 export class UsersShowPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
@@ -89,10 +89,10 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     loadUser(userId) {
-      dispatch(loadUser(userId));
+      dispatch(loadUserRequest(userId));
     },
     loadUserIdeas(userId) {
-      dispatch(loadUserIdeas(userId));
+      dispatch(loadUserIdeasRequest(userId));
     },
     goToIdea(ideaId) {
       dispatch(push(`/ideas/${ideaId}`));
