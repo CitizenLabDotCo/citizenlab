@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 /*
  *
  * T
@@ -26,9 +27,10 @@ export class T extends React.PureComponent { // eslint-disable-line react/prefer
     }
 
     return (
-      <span className="cl-translated-text">
-        { findTranslatedText(value, userLocale || this.fallbackUserLocale, tenantLocales || this.fallbackTenantLocales) }
-      </span>
+      <span
+        className="cl-translated-text"
+        dangerouslySetInnerHTML={{ __html: findTranslatedText(value, userLocale || this.fallbackUserLocale, tenantLocales || this.fallbackTenantLocales) }}
+      />
     );
   }
 }

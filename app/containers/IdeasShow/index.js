@@ -18,7 +18,7 @@ import VoteIdea from 'components/VoteIdea';
 import draftToHtml from 'draftjs-to-html';
 import styled from 'styled-components';
 import { Label, Button } from 'components/Foundation';
-import renderHTML from 'react-render-html';
+import { convertToRaw } from 'draft-js';
 
 import { watchFetchIdea, watchLoadIdeaVotes, watchVoteIdea, watchFetchComments, watchStoreComment } from './sagas';
 import CommentEditorWrapper from './CommentEditorWrapper';
@@ -28,7 +28,7 @@ import IdeaContent from './IdeaContent';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 import {
-  loadComments, resetPageData, loadIdea, loadIdeaSuccess, loadVotes, voteIdea, publishComment, publishCommentError, saveCommentDraft,
+  loadComments, resetPageData, loadIdea, loadVotes, voteIdea, publishComment, publishCommentError,
 } from './actions';
 import makeSelectIdeasShow, {
   makeSelectActiveParentId, makeSelectCommentContent, makeSelectComments, makeSelectLoadCommentsError,
@@ -57,11 +57,7 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
   }
 
   componentWillUnmount() {
-    this.props.dispatch(setShowIdeaWithIndexPage(false));
-
-    if (this.props.showIdeaWithIndexPage === false) {
-      this.props.dispatch(loadIdeaSuccess(null));
-    }
+    this.props.setShowIdeaWithIndexPage(false);
 
     // reset component state
     this.props.resetData();
@@ -89,13 +85,18 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
         />}
         <h2><T value={attributes.title_multiloc} /></h2>
         <p><strong>By: {authorId} </strong></p>
-        <IdeaContent>{renderHTML(attributes.body_multiloc.en)}</IdeaContent>
+        <IdeaContent><T value={attributes.body_multiloc} /></IdeaContent>
       </div>
     );
   }
 
   render() {
-    const { storeCommentDraftCopy, storeCommentError, submittingComment, comments, resetEditorContent, loadingComments, nextCommentPageNumber, loadingIdea, loadIdeaError, commentContent, locale, activeParentId, publishCommentClick, submitIdeaVote, upVotes, downVotes, ideaVotesLoadError, user, submittingVote, loadingVotes, ideaVoteSubmitError, ideaFull } = this.props;
+    const {
+      storeCommentError, submittingComment, comments,
+      resetEditorContent, loadingComments, nextCommentPageNumber, loadingIdea, loadIdeaError, locale, activeParentId, publishCommentClick, submitIdeaVote, upVotes,
+      downVotes, ideaVotesLoadError, user, submittingVote, loadingVotes, ideaVoteSubmitError,
+      ideaFull,
+    } = this.props;
     const idea = this.props.idea || ideaFull;
 
     const WrapperDiv = (props) => (
@@ -147,27 +148,23 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
 
         <hr />
         { /* comments */ }
-        <CommentEditorWrapper
-          storeCommentCopy={storeCommentDraftCopy}
+        {idea && user && <CommentEditorWrapper
           submittingComment={submittingComment}
           resetEditorContent={resetEditorContent}
           idea={idea}
-          commentContent={commentContent}
           userId={user && user.id}
           locale={locale}
           parentId={activeParentId}
           publishCommentClick={publishCommentClick}
-        />
+        />}
         <CommentList
           comments={comments}
-          storeCommentDraftCopy={storeCommentDraftCopy}
           storeCommentError={storeCommentError}
           submittingComment={submittingComment}
           resetEditorContent={resetEditorContent}
           idea={idea}
-          commentContent={commentContent}
-          userId={user && user.id}
           locale={locale}
+          userId={user && user.id}
           parentId={activeParentId}
           publishCommentClick={publishCommentClick}
         />
@@ -188,7 +185,6 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
 }
 
 IdeasShow.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   idea: PropTypes.object,
   pageData: PropTypes.object,
   showIdeaWithIndexPage: PropTypes.bool,
@@ -202,11 +198,9 @@ IdeasShow.propTypes = {
   loadingVotes: PropTypes.bool.isRequired,
   submittingVote: PropTypes.bool.isRequired,
   ideaVoteSubmitError: PropTypes.string,
-  storeCommentDraftCopy: PropTypes.func.isRequired,
   storeCommentError: PropTypes.string,
   submittingComment: PropTypes.bool.isRequired,
   resetEditorContent: PropTypes.bool.isRequired,
-  commentContent: PropTypes.string,
   comments: PropTypes.any.isRequired,
   locale: PropTypes.string.isRequired,
   loadIdea: PropTypes.func.isRequired,
@@ -221,6 +215,7 @@ IdeasShow.propTypes = {
   publishCommentClick: PropTypes.func.isRequired,
   resetData: PropTypes.func.isRequired,
   ideaFull: PropTypes.any,
+  setShowIdeaWithIndexPage: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -250,7 +245,9 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    setShowIdeaWithIndexPage(show) {
+      dispatch(setShowIdeaWithIndexPage(show));
+    },
     loadIdeaVotes(ideaId) {
       dispatch(loadVotes(ideaId));
     },
@@ -266,20 +263,21 @@ export function mapDispatchToProps(dispatch) {
     loadNextCommentsPage(ideaId, nextCommentPageNumber, nextCommentPageItemCount) {
       dispatch(loadComments(ideaId, nextCommentPageNumber, nextCommentPageItemCount, false));
     },
-    storeCommentDraftCopy(content, activeParentId) {
-      // convert to HTML
-      const htmlContent = draftToHtml(content);
+    publishCommentClick(ideaId, editorState, userId, locale, parentId) {
+      if (!editorState) {
+        dispatch(publishCommentError(''));
+      }
 
-      dispatch(saveCommentDraft(htmlContent, activeParentId));
-    },
-    publishCommentClick(ideaId, htmlContent, userId, locale, parentId, commentId) {
+      const editorContent = convertToRaw(editorState.getCurrentContent());
+      const htmlContent = draftToHtml(editorContent);
+
       if (htmlContent && htmlContent.trim() !== '<p></p>') {
         const htmlContents = {};
         htmlContents[locale] = htmlContent;
         dispatch(publishComment(ideaId, userId, htmlContents, parentId));
       } else {
         // empty comment error
-        dispatch(publishCommentError('', commentId));
+        dispatch(publishCommentError(''));
       }
     },
     resetData() {

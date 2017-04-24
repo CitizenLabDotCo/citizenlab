@@ -35,7 +35,9 @@ describe('UserShowPage sagas', () => {
     const it = sagaHelper(getUserIdeas(mockedAction));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(fetchIdeas, null, null, stringMock));
+      expect(result).toEqual(call(fetchIdeas, {
+        author_id: stringMock,
+      }));
     });
 
     it('then, should dispatch mergeJsonApiResources action', (result) => {

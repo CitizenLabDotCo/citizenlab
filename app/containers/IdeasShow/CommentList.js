@@ -23,13 +23,11 @@ export const Comments = (props) => (<span>
         submittingComment={props.submittingComment}
         resetEditorContent={props.resetEditorContent}
       />
-      {props.isNotTest && <CommentEditorWrapper
-        storeCommentCopy={props.storeCommentDraftCopy}
+      {props.idea && props.userId && <CommentEditorWrapper
         storeCommentError={props.storeCommentError}
         submittingComment={props.submittingComment}
         resetEditorContent={props.resetEditorContent}
         idea={props.idea}
-        commentContent={props.commentContent}
         userId={props.userId}
         locale={props.locale}
         parentId={comment.id}
@@ -40,22 +38,8 @@ export const Comments = (props) => (<span>
 </span>);
 
 class CommentList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  constructor() {
-    super();
-
-    this.state = {
-      comments: [],
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      comments: nextProps.comments,
-    });
-  }
-
   render() {
-    const { comments, className, storeCommentDraftCopy, storeCommentError, submittingComment, resetEditorContent, idea, commentContent, userId, locale, parentId, publishCommentClick } = this.props;
+    const { comments, className, storeCommentError, submittingComment, resetEditorContent, idea, userId, locale, parentId, publishCommentClick } = this.props;
 
     return (
       <div className={className}>
@@ -64,17 +48,14 @@ class CommentList extends React.PureComponent { // eslint-disable-line react/pre
         </div>}
         <Comments
           comments={comments}
-          storeCommentDraftCopy={storeCommentDraftCopy}
           storeCommentError={storeCommentError}
           submittingComment={submittingComment}
           resetEditorContent={resetEditorContent}
           idea={idea}
-          commentContent={commentContent}
           userId={userId}
           locale={locale}
           parentId={parentId}
           publishCommentClick={publishCommentClick}
-          isNotTest
         />
       </div>
     );
@@ -84,13 +65,11 @@ class CommentList extends React.PureComponent { // eslint-disable-line react/pre
 CommentList.propTypes = {
   comments: PropTypes.any.isRequired,
   className: PropTypes.string,
-  storeCommentDraftCopy: PropTypes.func.isRequired,
   storeCommentError: PropTypes.string,
   submittingComment: PropTypes.bool.isRequired,
   resetEditorContent: PropTypes.bool.isRequired,
   parentId: PropTypes.string,
   idea: PropTypes.any,
-  commentContent: PropTypes.string,
   userId: PropTypes.string,
   locale: PropTypes.string.isRequired,
   publishCommentClick: PropTypes.func.isRequired,

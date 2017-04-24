@@ -1,3 +1,5 @@
+import { EditorState } from 'draft-js';
+
 import { jestFn, stringMock } from '../../../utils/testConstants';
 import { mapDispatchToProps } from '../index';
 import { voteIdea, publishCommentError } from '../actions';
@@ -17,14 +19,8 @@ describe('<IdeasShow />', () => {
       const dispatch = jest.fn();
       const result = mapDispatchToProps(dispatch);
 
-      it('should dispatch publishCommentError if content null', () => {
-        const content = null;
-        result.publishCommentClick(null, content, null, null, null);
-        expect(dispatch).toHaveBeenCalledWith(publishCommentError('', null));
-      });
-
       it('should dispatch publishCommentError if content empty', () => {
-        const content = '<p></p>';
+        const content = EditorState.createEmpty();
         result.publishCommentClick(null, content, null, null, null);
         expect(dispatch).toHaveBeenCalledWith(publishCommentError('', null));
       });
