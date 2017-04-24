@@ -234,7 +234,7 @@ const mapStateToProps = createStructuredSelector({
   loadIdeasError: makeSelectLoadIdeasError(),
 });
 
-function mapDispatchToProps(dispatch) {
+export function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     initData: () => {
