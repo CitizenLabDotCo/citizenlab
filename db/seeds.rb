@@ -115,7 +115,7 @@ Apartment::Tenant.switch('localhost') do
         "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
       },
       topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
-      areas: rand(3).times.map{rand(Area.count)}.uniq.map{ Area.offset(rand(Area.count)).first },
+      areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
       author: User.offset(rand(User.count)).first,
       lab: Lab.first,
       publication_status: 'published',
