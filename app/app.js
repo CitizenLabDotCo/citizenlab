@@ -50,6 +50,7 @@ import { translationMessages } from './i18n';
 import './global-styles';
 import '../vendor/carousel-custom.scss';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import 'semantic-ui-css/semantic.css';
 
 // foundation js
 import 'foundation-sites/dist/js/foundation.min';

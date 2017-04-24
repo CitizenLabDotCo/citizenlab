@@ -36,7 +36,6 @@ import { Container } from 'semantic-ui-react';
 // import 'semantic-ui-css/components/item.css';
 // import 'semantic-ui-css/components/list.css';
 // import 'semantic-ui-css/components/transition.css';
-import 'semantic-ui-css/semantic.css';
 import Navbar from './Navbar';
 
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
