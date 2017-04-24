@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Users API</title>
+    <title>Votes API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Users API</h1>
+      <h1>Votes API</h1>
 
       <div class="article">
-        <h2>Get all users</h2>
-        <h3>GET api/v1/users</h3>
+        <h2>Delete a vote</h2>
+        <h3>DELETE api/v1/votes/:id</h3>
 
 
 
@@ -118,12 +118,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMxMzczNzIsInN1YiI6IjljOGI5ZWUxLTk2NzEtNGFmYS1hNDFlLTI4NDVjM2ZjNWU3ZCJ9.-v1NcAuObYz1dqLMU7gkecin_HU7SY6TGC-VnIsfr3U
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMxMzczODEsInN1YiI6ImZkYzgzY2U0LTZlODQtNGQ5Zi04YjRkLTg2MDhhMDM4MmU0YyJ9.meZ2PMXbiCWck2haziGqEmbdoJOaQcdQNgWutmAvzEM
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/users</pre>
+          <pre class="request route highlight">DELETE api/v1/votes/2e01fa92-20dc-44f4-87e7-98cc328360da</pre>
 
 
 
@@ -133,40 +133,14 @@ Cookie: </pre>
               <pre class="response headers">X-Frame-Options: SAMEORIGIN
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;c337a00af2639926d2a8ceaa799e363e&quot;
-Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 02d45985-d5ad-4e24-9531-ba5408b2ee88
-X-Runtime: 0.015192
+Content-Type: application/json
+Cache-Control: no-cache
+X-Request-Id: 0c0e80e2-d1bd-4d08-a168-7387634bf1ec
+X-Runtime: 0.019852
 Vary: Origin
-Content-Length: 747</pre>
+Content-Length: 0</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
-              <h4>Body</h4>
-              <pre class="response body">{
-  &quot;data&quot;: [
-    {
-      &quot;id&quot;: &quot;9c8b9ee1-9671-4afa-a41e-2845c3fc5e7d&quot;,
-      &quot;type&quot;: &quot;users&quot;,
-      &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Cassandra&quot;,
-        &quot;last_name&quot;: &quot;Schmidt&quot;,
-        &quot;slug&quot;: &quot;cassandra-schmidt&quot;,
-        &quot;locale&quot;: &quot;en&quot;,
-        &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/9c8b9ee1-9671-4afa-a41e-2845c3fc5e7d/small_4d4ff434a066a8f14597e6f92fe1701d.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/9c8b9ee1-9671-4afa-a41e-2845c3fc5e7d/medium_4d4ff434a066a8f14597e6f92fe1701d.png&quot;,
-          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/9c8b9ee1-9671-4afa-a41e-2845c3fc5e7d/large_4d4ff434a066a8f14597e6f92fe1701d.png&quot;
-        },
-        &quot;created_at&quot;: &quot;2017-04-24T16:22:52.077Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:22:52.077Z&quot;,
-        &quot;email&quot;: &quot;ava@jacobi.org&quot;
-      }
-    }
-  ],
-  &quot;links&quot;: {
-  }
-}</pre>
       </div>
     </div>
   </body>

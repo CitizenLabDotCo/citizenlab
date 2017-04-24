@@ -145,6 +145,22 @@ table th, table td {
                   <span class="description">Filter by lab</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">author</span>
+                </td>
+                <td>
+                  <span class="description">Filter by author (user id)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">search</span>
+                </td>
+                <td>
+                  <span class="description">Filter by searching in title, body and author name</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -157,10 +173,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=741f2749-1ab8-49a2-9b3d-5c31bf4e7bdf</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=91406342-ca24-4cda-8cdc-d1fd104cd2f0</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;741f2749-1ab8-49a2-9b3d-5c31bf4e7bdf&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;91406342-ca24-4cda-8cdc-d1fd104cd2f0&quot;]</pre>
 
 
 
@@ -170,19 +186,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;f72f12d387912d158ccd14dd53ebbeeb&quot;
+ETag: W/&quot;bdd1203bea6605e517c26f87db33e266&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 7301a2b1-632a-4f6c-8d52-aa12809215bc
-X-Runtime: 0.030438
+X-Request-Id: 9af9a317-796a-4610-8ffb-ceb3b41d1d63
+X-Runtime: 0.043381
 Vary: Origin
-Content-Length: 822</pre>
+Content-Length: 1475</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;7404009e-c523-42b1-a3c1-12dc036a3257&quot;,
+      &quot;id&quot;: &quot;98924d4f-a114-4a05-ab95-3d4df6dbdea1&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -193,16 +209,19 @@ Content-Length: 822</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
+        &quot;author_name&quot;: &quot;Deshawn Strosin&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
-        ]
+        ],
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:31.938Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:31.938Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;741f2749-1ab8-49a2-9b3d-5c31bf4e7bdf&quot;,
+              &quot;id&quot;: &quot;91406342-ca24-4cda-8cdc-d1fd104cd2f0&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -214,13 +233,13 @@ Content-Length: 822</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;9ef9b362-7a09-4097-b1d6-9da1c3c7c057&quot;,
+            &quot;id&quot;: &quot;a6299282-0a02-4187-83a2-293bfd32db72&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;e2e14243-0bc9-4e2e-b26d-197b70037494&quot;,
+            &quot;id&quot;: &quot;06cd3f5a-35b6-4ac5-b141-b6953f0600d8&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
@@ -229,13 +248,20 @@ Content-Length: 822</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;9ef9b362-7a09-4097-b1d6-9da1c3c7c057&quot;,
+      &quot;id&quot;: &quot;a6299282-0a02-4187-83a2-293bfd32db72&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Abdul&quot;,
-        &quot;last_name&quot;: &quot;Carroll&quot;,
-        &quot;slug&quot;: &quot;abdul-carroll&quot;,
-        &quot;avatar&quot;: null
+        &quot;first_name&quot;: &quot;Deshawn&quot;,
+        &quot;last_name&quot;: &quot;Strosin&quot;,
+        &quot;slug&quot;: &quot;deshawn-strosin&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/a6299282-0a02-4187-83a2-293bfd32db72/small_0bf8dbb7b08ddf324fd13c6effcde193.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/a6299282-0a02-4187-83a2-293bfd32db72/medium_0bf8dbb7b08ddf324fd13c6effcde193.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/a6299282-0a02-4187-83a2-293bfd32db72/large_0bf8dbb7b08ddf324fd13c6effcde193.png&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:31.926Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:31.926Z&quot;
       }
     }
   ],

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Users API</title>
+    <title>Votes API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Users API</h1>
+      <h1>Votes API</h1>
 
       <div class="article">
-        <h2>Get all users</h2>
-        <h3>GET api/v1/users</h3>
+        <h2>Get one vote by id</h2>
+        <h3>GET api/v1/votes/:id</h3>
 
 
 
@@ -118,12 +118,11 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMxMzczNzIsInN1YiI6IjljOGI5ZWUxLTk2NzEtNGFmYS1hNDFlLTI4NDVjM2ZjNWU3ZCJ9.-v1NcAuObYz1dqLMU7gkecin_HU7SY6TGC-VnIsfr3U
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/users</pre>
+          <pre class="request route highlight">GET api/v1/votes/be2e7fe9-e833-448c-be76-79f3c50898ba</pre>
 
 
 
@@ -134,38 +133,56 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;c337a00af2639926d2a8ceaa799e363e&quot;
+ETag: W/&quot;891356e250f2f34339a0b6097d7d3669&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 02d45985-d5ad-4e24-9531-ba5408b2ee88
-X-Runtime: 0.015192
+X-Request-Id: 4e1b7963-eca8-42e8-b3c8-36a728ab7fb6
+X-Runtime: 0.018713
 Vary: Origin
-Content-Length: 747</pre>
+Content-Length: 981</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;data&quot;: [
-    {
-      &quot;id&quot;: &quot;9c8b9ee1-9671-4afa-a41e-2845c3fc5e7d&quot;,
-      &quot;type&quot;: &quot;users&quot;,
-      &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Cassandra&quot;,
-        &quot;last_name&quot;: &quot;Schmidt&quot;,
-        &quot;slug&quot;: &quot;cassandra-schmidt&quot;,
-        &quot;locale&quot;: &quot;en&quot;,
-        &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/9c8b9ee1-9671-4afa-a41e-2845c3fc5e7d/small_4d4ff434a066a8f14597e6f92fe1701d.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/9c8b9ee1-9671-4afa-a41e-2845c3fc5e7d/medium_4d4ff434a066a8f14597e6f92fe1701d.png&quot;,
-          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/9c8b9ee1-9671-4afa-a41e-2845c3fc5e7d/large_4d4ff434a066a8f14597e6f92fe1701d.png&quot;
-        },
-        &quot;created_at&quot;: &quot;2017-04-24T16:22:52.077Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:22:52.077Z&quot;,
-        &quot;email&quot;: &quot;ava@jacobi.org&quot;
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;be2e7fe9-e833-448c-be76-79f3c50898ba&quot;,
+    &quot;type&quot;: &quot;votes&quot;,
+    &quot;attributes&quot;: {
+      &quot;mode&quot;: &quot;up&quot;
+    },
+    &quot;relationships&quot;: {
+      &quot;votable&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;776e107f-d5d3-4483-a9af-9646539cd35c&quot;,
+          &quot;type&quot;: &quot;ideas&quot;
+        }
+      },
+      &quot;user&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;ee60852a-8a21-443d-82d9-b8bf69f7bb87&quot;,
+          &quot;type&quot;: &quot;users&quot;
+        }
       }
     }
-  ],
-  &quot;links&quot;: {
-  }
+  },
+  &quot;included&quot;: [
+    {
+      &quot;id&quot;: &quot;ee60852a-8a21-443d-82d9-b8bf69f7bb87&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Brook&quot;,
+        &quot;last_name&quot;: &quot;Hermiston&quot;,
+        &quot;slug&quot;: &quot;brook-hermiston&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/ee60852a-8a21-443d-82d9-b8bf69f7bb87/small_e68bea62a6069e6a66ce19b2745e1fad.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/ee60852a-8a21-443d-82d9-b8bf69f7bb87/medium_e68bea62a6069e6a66ce19b2745e1fad.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/ee60852a-8a21-443d-82d9-b8bf69f7bb87/large_e68bea62a6069e6a66ce19b2745e1fad.png&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:22:57.168Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:22:57.168Z&quot;
+      }
+    }
+  ]
 }</pre>
       </div>
     </div>

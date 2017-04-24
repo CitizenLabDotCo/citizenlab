@@ -39,22 +39,22 @@ resource "Votes" do
     end
 
     # TODO: got an error that doesn't make sense for below test
-    # post "api/v1/ideas/:idea_id/votes" do
-    #   with_options scope: :vote do
-    #     parameter :user_id, "The user id of the user owning the vote. Signed in user by default", required: false
-    #     parameter :mode, "one of [up, down]", required: true
-    #   end
-    #
-    #   let(:idea_id) { @idea.id }
-    #   let(:vote) { build(:vote, mode: "up") }
-    #
-    #   example_request "Create a vote to an idea" do
-    #     expect(response_status).to eq 201
-    #     json_response = json_parse(response_body)
-    #     expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
-    #     expect(json_response.dig(:data,:attributes,:mode)).to eq "up"
-    #   end
-    # end
+    post "api/v1/ideas/:idea_id/votes" do
+      with_options scope: :vote do
+        parameter :user_id, "The user id of the user owning the vote. Signed in user by default", required: false
+        parameter :mode, "one of [up, down]", required: true
+      end
+    
+      let(:idea_id) { @idea.id }
+      let(:mode) { "up" }
+    
+      example_request "Create a vote to an idea" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
+        expect(json_response.dig(:data,:attributes,:mode)).to eq "up"
+      end
+    end
 
     delete "api/v1/votes/:id" do
       let(:vote) { create(:vote, user: @user, votable: @idea) }

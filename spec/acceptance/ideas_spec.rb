@@ -13,6 +13,7 @@ resource "Ideas" do
     parameter :areas, 'Filter by areas (AND)', required: false
     parameter :lab, 'Filter by lab', required: false
     parameter :author, 'Filter by author (user id)', required: false
+    parameter :search, 'Filter by searching in title, body and author name', required: false
 
     example_request "List all ideas" do
       expect(status).to eq(200)
@@ -116,6 +117,17 @@ resource "Ideas" do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id
+    end
+
+    example "List all ideas with search string" do
+      u = create(:user)
+      i1 = create(:idea, title_multiloc: {en: "This idea is uniqque"})
+      i2 = create(:idea, title_multiloc: {en: "This one origiinal"})
+
+      do_request(search: "uniqque")
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq i1.id
     end
   end
 

@@ -145,6 +145,22 @@ table th, table td {
                   <span class="description">Filter by lab</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">author</span>
+                </td>
+                <td>
+                  <span class="description">Filter by author (user id)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">search</span>
+                </td>
+                <td>
+                  <span class="description">Filter by searching in title, body and author name</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -157,10 +173,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=101e4613-0936-4ea0-a31b-55cec027b716&amp;topics[]=2c961ab6-c728-4434-ad64-1b07570549d5</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=772dd9f7-680b-4126-a38e-94225c1b211d&amp;topics[]=0104dd9d-13bd-4926-8cdf-ecf9b4f321d7</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;101e4613-0936-4ea0-a31b-55cec027b716&quot;, &quot;2c961ab6-c728-4434-ad64-1b07570549d5&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;772dd9f7-680b-4126-a38e-94225c1b211d&quot;, &quot;0104dd9d-13bd-4926-8cdf-ecf9b4f321d7&quot;]</pre>
 
 
 
@@ -170,19 +186,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;f6911eefa561118fb63066ce4180bed0&quot;
+ETag: W/&quot;70a4637c480e215319dac41ff14d487c&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 4243e1c8-dd82-4813-9515-858937e78cd3
-X-Runtime: 0.032403
+X-Request-Id: 0b732045-2429-459c-b6c7-f0b63c0cba47
+X-Runtime: 0.040852
 Vary: Origin
-Content-Length: 882</pre>
+Content-Length: 1537</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;f2fafbf7-3859-49fb-bd08-feca224ee4e5&quot;,
+      &quot;id&quot;: &quot;58a7756b-da92-414c-ac96-e594a1d75df7&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -193,20 +209,23 @@ Content-Length: 882</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
+        &quot;author_name&quot;: &quot;Rex Schamberger&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
-        ]
+        ],
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:34.592Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:34.592Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;101e4613-0936-4ea0-a31b-55cec027b716&quot;,
+              &quot;id&quot;: &quot;772dd9f7-680b-4126-a38e-94225c1b211d&quot;,
               &quot;type&quot;: &quot;topics&quot;
             },
             {
-              &quot;id&quot;: &quot;2c961ab6-c728-4434-ad64-1b07570549d5&quot;,
+              &quot;id&quot;: &quot;0104dd9d-13bd-4926-8cdf-ecf9b4f321d7&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -218,13 +237,13 @@ Content-Length: 882</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;b05c55e4-eb39-4620-9035-de09d8df1bf4&quot;,
+            &quot;id&quot;: &quot;71b22436-1eaf-433d-b1b6-e6f106bae3bc&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;1b8d0b9f-124f-4fa0-81f5-b5123dc9e584&quot;,
+            &quot;id&quot;: &quot;a350eeee-bfbd-42f9-8f0a-b8a419c8a91a&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
@@ -233,13 +252,20 @@ Content-Length: 882</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;b05c55e4-eb39-4620-9035-de09d8df1bf4&quot;,
+      &quot;id&quot;: &quot;71b22436-1eaf-433d-b1b6-e6f106bae3bc&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Zakary&quot;,
-        &quot;last_name&quot;: &quot;Ferry&quot;,
-        &quot;slug&quot;: &quot;zakary-ferry&quot;,
-        &quot;avatar&quot;: null
+        &quot;first_name&quot;: &quot;Rex&quot;,
+        &quot;last_name&quot;: &quot;Schamberger&quot;,
+        &quot;slug&quot;: &quot;rex-schamberger&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/71b22436-1eaf-433d-b1b6-e6f106bae3bc/small_ce1e1f7e8fc1d07a833ac1d557b80c01.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/71b22436-1eaf-433d-b1b6-e6f106bae3bc/medium_ce1e1f7e8fc1d07a833ac1d557b80c01.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/71b22436-1eaf-433d-b1b6-e6f106bae3bc/large_ce1e1f7e8fc1d07a833ac1d557b80c01.png&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:34.581Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:34.581Z&quot;
       }
     }
   ],

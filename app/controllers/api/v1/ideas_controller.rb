@@ -14,6 +14,7 @@ class Api::V1::IdeasController < ApplicationController
     @ideas = @ideas.with_all_areas(params[:areas]) if params[:areas].present?
     @ideas = @ideas.where(lab_id: params[:lab]) if params[:lab].present?
     @ideas = @ideas.where(author_id: params[:author]) if params[:author].present?
+    @ideas = @ideas.search_by_all(params[:search]) if params[:search].present?
 
     render json: @ideas, include: ['author']
   end

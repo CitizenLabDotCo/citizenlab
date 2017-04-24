@@ -109,7 +109,7 @@ table th, table td {
       <h1>Ideas API</h1>
 
       <div class="article">
-        <h2>List all ideas in a lab</h2>
+        <h2>List all ideas with search string</h2>
         <h3>GET api/v1/ideas</h3>
 
           <h3>Parameters</h3>
@@ -173,10 +173,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?lab=d4bd22e2-fc93-4d08-aeca-4752117b69c7</pre>
+          <pre class="request route highlight">GET api/v1/ideas?search=uniqque</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">lab: d4bd22e2-fc93-4d08-aeca-4752117b69c7</pre>
+            <pre class="request query_parameters highlight">search: uniqque</pre>
 
 
 
@@ -186,36 +186,35 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;eae0b1d95c8915b95a7dc4e859dfbb45&quot;
+ETag: W/&quot;18bf88dbeaf2a5e7f9ec965c212f4299&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 62c8e29f-e855-4e91-8854-fffd294b08b0
-X-Runtime: 0.034032
+X-Request-Id: 7618c2b5-3513-48b4-9b0b-ece36faf489c
+X-Runtime: 0.034664
 Vary: Origin
-Content-Length: 1414</pre>
+Content-Length: 1397</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;87636192-043d-46e6-ae62-2e8aabadb54a&quot;,
+      &quot;id&quot;: &quot;4adc574a-c601-42c2-8338-2bc415691272&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
-          &quot;en&quot;: &quot;Plant more trees&quot;,
-          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+          &quot;en&quot;: &quot;This idea is uniqque&quot;
         },
         &quot;body_multiloc&quot;: {
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Delmer Shanahan&quot;,
+        &quot;author_name&quot;: &quot;Velda Konopelski&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-04-24T16:21:53.564Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:21:53.564Z&quot;
+        &quot;created_at&quot;: &quot;2017-04-24T16:22:00.530Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:22:00.530Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -230,13 +229,13 @@ Content-Length: 1414</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;e423354b-c75a-49ec-9431-7796d22d18d7&quot;,
+            &quot;id&quot;: &quot;8361567e-478e-45fc-ba88-83a520204e57&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;d4bd22e2-fc93-4d08-aeca-4752117b69c7&quot;,
+            &quot;id&quot;: &quot;36fddff6-7c8e-4084-913e-e3d7564b520d&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
@@ -245,20 +244,20 @@ Content-Length: 1414</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;e423354b-c75a-49ec-9431-7796d22d18d7&quot;,
+      &quot;id&quot;: &quot;8361567e-478e-45fc-ba88-83a520204e57&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Delmer&quot;,
-        &quot;last_name&quot;: &quot;Shanahan&quot;,
-        &quot;slug&quot;: &quot;delmer-shanahan&quot;,
+        &quot;first_name&quot;: &quot;Velda&quot;,
+        &quot;last_name&quot;: &quot;Konopelski&quot;,
+        &quot;slug&quot;: &quot;velda-konopelski&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/e423354b-c75a-49ec-9431-7796d22d18d7/small_71d7b0baf5a480e2348165e15dad2ffd.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/e423354b-c75a-49ec-9431-7796d22d18d7/medium_71d7b0baf5a480e2348165e15dad2ffd.png&quot;,
-          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/e423354b-c75a-49ec-9431-7796d22d18d7/large_71d7b0baf5a480e2348165e15dad2ffd.png&quot;
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/8361567e-478e-45fc-ba88-83a520204e57/small_a79e1caae4eebfa644ac04c070643769.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/8361567e-478e-45fc-ba88-83a520204e57/medium_a79e1caae4eebfa644ac04c070643769.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/8361567e-478e-45fc-ba88-83a520204e57/large_a79e1caae4eebfa644ac04c070643769.png&quot;
         },
-        &quot;created_at&quot;: &quot;2017-04-24T16:21:53.552Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:21:53.552Z&quot;
+        &quot;created_at&quot;: &quot;2017-04-24T16:22:00.520Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:22:00.520Z&quot;
       }
     }
   ],
