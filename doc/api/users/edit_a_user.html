@@ -153,6 +153,22 @@ table th, table td {
                   <span class="description">Password</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">user[locale]</span>
+                </td>
+                <td>
+                  <span class="description">Locale. Should be one of the tenants locales</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">user[avatar]</span>
+                </td>
+                <td>
+                  <span class="description">Base64 encoded avatar image</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -161,12 +177,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTEzMTEyMDYsInN1YiI6IjA4ZGExMzk2LWI2NGQtNDE0ZS1iNGEwLTg5MmE1Mjg2YzE3NSJ9.sFN9fdD6T74XSNMlgq-J-B4x0TwJBRZeUyvk5PaHi-w
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMxMzczNzQsInN1YiI6IjlmMmIwZTI0LTE4Y2QtNGUxNi1hZjdiLTAzOTVkNDU4OGNhMiJ9.ZPgOu8sCRe1c-89nXK6OuL1X4UAe0mjDRANkXh7b0a4
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PUT api/v1/users/08da1396-b64d-414e-b4a0-892a5286c175</pre>
+          <pre class="request route highlight">PUT api/v1/users/9f2b0e24-18cd-4e16-af7b-0395d4588ca2</pre>
 
 
             <h4>Body</h4>
@@ -179,25 +195,32 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;a58213b47dd80dd89507e91e31942933&quot;
+ETag: W/&quot;f26ce60f9eae72f9217d804552efd1a4&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 7fc1d361-84cc-4eaa-9c97-23ec592d15c9
-X-Runtime: 0.020702
+X-Request-Id: 51ea49b0-a8d1-4322-badd-123abeb689f7
+X-Runtime: 0.022110
 Vary: Origin
-Content-Length: 205</pre>
+Content-Length: 740</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;08da1396-b64d-414e-b4a0-892a5286c175&quot;,
+    &quot;id&quot;: &quot;9f2b0e24-18cd-4e16-af7b-0395d4588ca2&quot;,
     &quot;type&quot;: &quot;users&quot;,
     &quot;attributes&quot;: {
       &quot;first_name&quot;: &quot;Edmond&quot;,
-      &quot;last_name&quot;: &quot;Reichert&quot;,
-      &quot;slug&quot;: &quot;delia-reichert&quot;,
-      &quot;avatar&quot;: null,
-      &quot;email&quot;: &quot;ellis_schroeder@rolfson.biz&quot;
+      &quot;last_name&quot;: &quot;Smith&quot;,
+      &quot;slug&quot;: &quot;alva-smith&quot;,
+      &quot;locale&quot;: &quot;en&quot;,
+      &quot;avatar&quot;: {
+        &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/9f2b0e24-18cd-4e16-af7b-0395d4588ca2/small_340376850af5963552db3e365938c8bd.png&quot;,
+        &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/9f2b0e24-18cd-4e16-af7b-0395d4588ca2/medium_340376850af5963552db3e365938c8bd.png&quot;,
+        &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/9f2b0e24-18cd-4e16-af7b-0395d4588ca2/large_340376850af5963552db3e365938c8bd.png&quot;
+      },
+      &quot;created_at&quot;: &quot;2017-04-24T16:22:54.822Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-04-24T16:22:54.844Z&quot;,
+      &quot;email&quot;: &quot;jeramie.kaulke@hudsonpacocha.com&quot;
     }
   }
 }</pre>

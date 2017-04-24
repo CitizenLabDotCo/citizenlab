@@ -145,6 +145,22 @@ table th, table td {
                   <span class="description">Filter by lab</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">author</span>
+                </td>
+                <td>
+                  <span class="description">Filter by author (user id)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">search</span>
+                </td>
+                <td>
+                  <span class="description">Filter by searching in title, body and author name</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -157,10 +173,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?areas[]=8f23e239-1921-4df9-9f6a-e0e33ada60c8</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=d750e3fc-36d0-49e6-a42e-65df3d990e55</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">areas: [&quot;8f23e239-1921-4df9-9f6a-e0e33ada60c8&quot;]</pre>
+            <pre class="request query_parameters highlight">areas: [&quot;d750e3fc-36d0-49e6-a42e-65df3d990e55&quot;]</pre>
 
 
 
@@ -170,19 +186,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;979f2d19223a9edf8a6a4467febb4246&quot;
+ETag: W/&quot;bcabd9e9ee114b5df64d2b1cd2cc9297&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: baa90cd0-1ce7-4568-8461-39b551cdfc63
-X-Runtime: 0.036847
+X-Request-Id: fdd55407-5364-44b8-bbf4-1dada82e81eb
+X-Runtime: 0.059313
 Vary: Origin
-Content-Length: 819</pre>
+Content-Length: 1471</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;efefa10d-ea1e-4ff5-b74c-7bcac09a6004&quot;,
+      &quot;id&quot;: &quot;bd536a43-4f53-4792-afb3-4665588d0b3a&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -193,10 +209,13 @@ Content-Length: 819</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
+        &quot;author_name&quot;: &quot;Steve MacGyver&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
-        ]
+        ],
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:40.588Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:40.588Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -207,20 +226,20 @@ Content-Length: 819</pre>
         &quot;areas&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;8f23e239-1921-4df9-9f6a-e0e33ada60c8&quot;,
+              &quot;id&quot;: &quot;d750e3fc-36d0-49e6-a42e-65df3d990e55&quot;,
               &quot;type&quot;: &quot;areas&quot;
             }
           ]
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;4e0a9fff-365e-4240-83ab-85279c678dd3&quot;,
+            &quot;id&quot;: &quot;06599337-c15d-408d-9603-eafdbc5476a6&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;11985aa6-c1b5-4d90-b945-442f617389fb&quot;,
+            &quot;id&quot;: &quot;856430c3-42fe-4826-aee4-514f4e743cbd&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
@@ -229,13 +248,20 @@ Content-Length: 819</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;4e0a9fff-365e-4240-83ab-85279c678dd3&quot;,
+      &quot;id&quot;: &quot;06599337-c15d-408d-9603-eafdbc5476a6&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Gayle&quot;,
-        &quot;last_name&quot;: &quot;Deckow&quot;,
-        &quot;slug&quot;: &quot;gayle-deckow&quot;,
-        &quot;avatar&quot;: null
+        &quot;first_name&quot;: &quot;Steve&quot;,
+        &quot;last_name&quot;: &quot;MacGyver&quot;,
+        &quot;slug&quot;: &quot;steve-macgyver&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/06599337-c15d-408d-9603-eafdbc5476a6/small_e44db439be7ad6a7c154399fd68d04a8.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/06599337-c15d-408d-9603-eafdbc5476a6/medium_e44db439be7ad6a7c154399fd68d04a8.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/06599337-c15d-408d-9603-eafdbc5476a6/large_e44db439be7ad6a7c154399fd68d04a8.png&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:40.576Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:40.576Z&quot;
       }
     }
   ],

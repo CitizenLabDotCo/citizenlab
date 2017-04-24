@@ -145,6 +145,22 @@ table th, table td {
                   <span class="description">Filter by lab</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">author</span>
+                </td>
+                <td>
+                  <span class="description">Filter by author (user id)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">search</span>
+                </td>
+                <td>
+                  <span class="description">Filter by searching in title, body and author name</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -168,19 +184,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;93f077cc1106e326b1d06f8cd277402d&quot;
+ETag: W/&quot;60d6f633b27ff7892b827898711b0031&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: e73f8b90-3736-458f-ab7e-c6d59874a7fc
-X-Runtime: 0.138774
+X-Request-Id: fe4d0a31-3919-4b08-9e5f-f758ca79bee9
+X-Runtime: 0.179872
 Vary: Origin
-Content-Length: 3663</pre>
+Content-Length: 6922</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;69b21f04-8d32-4705-8b1a-3dd70beb7ad0&quot;,
+      &quot;id&quot;: &quot;1f7f1a76-1b38-492e-a614-235670a52b88&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -191,10 +207,13 @@ Content-Length: 3663</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
+        &quot;author_name&quot;: &quot;Sigrid Smith&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
-        ]
+        ],
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:29.262Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:29.262Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -209,20 +228,20 @@ Content-Length: 3663</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;c36a9fcc-1bfb-478d-b453-76071baf7c92&quot;,
+            &quot;id&quot;: &quot;a556c0dc-54be-42de-b5a6-c183919795d4&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;aa40b4b3-6a4d-4bc7-a052-938e985c3861&quot;,
+            &quot;id&quot;: &quot;6babbbe1-e411-4850-bba8-3ea98fdc0a23&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
       }
     },
     {
-      &quot;id&quot;: &quot;3f803a35-392b-43eb-a5c9-3701a487aa16&quot;,
+      &quot;id&quot;: &quot;43cd91b8-3152-4a96-bbe6-a6d86803e8cf&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -233,10 +252,13 @@ Content-Length: 3663</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
+        &quot;author_name&quot;: &quot;Harmony Bailey&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
-        ]
+        ],
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:29.669Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:29.669Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -251,20 +273,20 @@ Content-Length: 3663</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;1779058a-f636-48ea-b7a0-f7a156723f87&quot;,
+            &quot;id&quot;: &quot;04bf4b74-1b1e-4fe6-9619-729e79627902&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;9c31b9f5-8701-4c0b-b7f0-8adb299858d2&quot;,
+            &quot;id&quot;: &quot;dccbaaa5-43b6-4ae2-ba71-1ceadd6544ad&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
       }
     },
     {
-      &quot;id&quot;: &quot;6ac4127c-36f6-4f27-b086-c92e48c5f83d&quot;,
+      &quot;id&quot;: &quot;289f64e4-f360-4615-8620-c5ee67c78d4a&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -275,10 +297,13 @@ Content-Length: 3663</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
+        &quot;author_name&quot;: &quot;Brando Boehm&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
-        ]
+        ],
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:30.164Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:30.164Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -293,20 +318,20 @@ Content-Length: 3663</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;648d535f-1fa5-473a-8971-52bfad9a7da4&quot;,
+            &quot;id&quot;: &quot;788f4844-ad0e-4628-bf36-cc5d09c6bb67&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;83d35bb6-5a12-4463-820d-2be5440671ca&quot;,
+            &quot;id&quot;: &quot;2cd1421a-a26c-4b48-a8b1-bc5de63660b7&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
       }
     },
     {
-      &quot;id&quot;: &quot;50abefe8-c236-487f-928f-11ec7a710140&quot;,
+      &quot;id&quot;: &quot;ddef5ee9-6500-4462-a4b3-f2e85e795790&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -317,10 +342,13 @@ Content-Length: 3663</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
+        &quot;author_name&quot;: &quot;Theodora Schowalter&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
-        ]
+        ],
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:30.686Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:30.686Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -335,20 +363,20 @@ Content-Length: 3663</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;8a4a3a43-0002-4b69-9d8f-22e9c69a15f9&quot;,
+            &quot;id&quot;: &quot;13659797-1013-42c3-a5f6-2628251e92e8&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;d5db94e1-567f-4237-b7bd-efaa8e7d1e0c&quot;,
+            &quot;id&quot;: &quot;1daf0159-2c63-44b0-804e-bf939f6c2785&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
       }
     },
     {
-      &quot;id&quot;: &quot;c226d30d-6d16-46eb-a2f3-6512e47ff656&quot;,
+      &quot;id&quot;: &quot;534488b3-ba71-46ff-92ee-80e5d765a978&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -359,10 +387,13 @@ Content-Length: 3663</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
+        &quot;author_name&quot;: &quot;Polly Schaefer&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
-        ]
+        ],
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:31.196Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:31.196Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -377,13 +408,13 @@ Content-Length: 3663</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;ac750eb0-e699-4159-ab51-021ad807a68e&quot;,
+            &quot;id&quot;: &quot;8954fac4-ae4b-4d9d-8cd1-a3ecb1a7d2b4&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;9abfa7b9-9c60-49c5-b9a5-c7f3c3fdc851&quot;,
+            &quot;id&quot;: &quot;684b72ce-99f6-488d-a6d1-fa2953cf39bb&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
@@ -392,53 +423,88 @@ Content-Length: 3663</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;c36a9fcc-1bfb-478d-b453-76071baf7c92&quot;,
+      &quot;id&quot;: &quot;a556c0dc-54be-42de-b5a6-c183919795d4&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Chyna&quot;,
-        &quot;last_name&quot;: &quot;DuBuque&quot;,
-        &quot;slug&quot;: &quot;chyna-dubuque&quot;,
-        &quot;avatar&quot;: null
+        &quot;first_name&quot;: &quot;Sigrid&quot;,
+        &quot;last_name&quot;: &quot;Smith&quot;,
+        &quot;slug&quot;: &quot;sigrid-smith&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/a556c0dc-54be-42de-b5a6-c183919795d4/small_8490c256294b676d48ad90dc4fe5b8b0.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/a556c0dc-54be-42de-b5a6-c183919795d4/medium_8490c256294b676d48ad90dc4fe5b8b0.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/a556c0dc-54be-42de-b5a6-c183919795d4/large_8490c256294b676d48ad90dc4fe5b8b0.png&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:29.245Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:29.245Z&quot;
       }
     },
     {
-      &quot;id&quot;: &quot;1779058a-f636-48ea-b7a0-f7a156723f87&quot;,
+      &quot;id&quot;: &quot;04bf4b74-1b1e-4fe6-9619-729e79627902&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Odessa&quot;,
-        &quot;last_name&quot;: &quot;Ullrich&quot;,
-        &quot;slug&quot;: &quot;odessa-ullrich&quot;,
-        &quot;avatar&quot;: null
+        &quot;first_name&quot;: &quot;Harmony&quot;,
+        &quot;last_name&quot;: &quot;Bailey&quot;,
+        &quot;slug&quot;: &quot;harmony-bailey&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/04bf4b74-1b1e-4fe6-9619-729e79627902/small_ad2d46ff3c6f4a53380ee812c6d2211b.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/04bf4b74-1b1e-4fe6-9619-729e79627902/medium_ad2d46ff3c6f4a53380ee812c6d2211b.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/04bf4b74-1b1e-4fe6-9619-729e79627902/large_ad2d46ff3c6f4a53380ee812c6d2211b.png&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:29.656Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:29.656Z&quot;
       }
     },
     {
-      &quot;id&quot;: &quot;648d535f-1fa5-473a-8971-52bfad9a7da4&quot;,
+      &quot;id&quot;: &quot;788f4844-ad0e-4628-bf36-cc5d09c6bb67&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Sylvia&quot;,
-        &quot;last_name&quot;: &quot;Feil&quot;,
-        &quot;slug&quot;: &quot;sylvia-feil&quot;,
-        &quot;avatar&quot;: null
+        &quot;first_name&quot;: &quot;Brando&quot;,
+        &quot;last_name&quot;: &quot;Boehm&quot;,
+        &quot;slug&quot;: &quot;brando-boehm&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/788f4844-ad0e-4628-bf36-cc5d09c6bb67/small_8055a2653a9ce50009cd7486c90c3914.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/788f4844-ad0e-4628-bf36-cc5d09c6bb67/medium_8055a2653a9ce50009cd7486c90c3914.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/788f4844-ad0e-4628-bf36-cc5d09c6bb67/large_8055a2653a9ce50009cd7486c90c3914.png&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:30.152Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:30.152Z&quot;
       }
     },
     {
-      &quot;id&quot;: &quot;8a4a3a43-0002-4b69-9d8f-22e9c69a15f9&quot;,
+      &quot;id&quot;: &quot;13659797-1013-42c3-a5f6-2628251e92e8&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Crystal&quot;,
-        &quot;last_name&quot;: &quot;Rice&quot;,
-        &quot;slug&quot;: &quot;crystal-rice&quot;,
-        &quot;avatar&quot;: null
+        &quot;first_name&quot;: &quot;Theodora&quot;,
+        &quot;last_name&quot;: &quot;Schowalter&quot;,
+        &quot;slug&quot;: &quot;theodora-schowalter&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/13659797-1013-42c3-a5f6-2628251e92e8/small_edf26c4348da95d518d911c909a78267.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/13659797-1013-42c3-a5f6-2628251e92e8/medium_edf26c4348da95d518d911c909a78267.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/13659797-1013-42c3-a5f6-2628251e92e8/large_edf26c4348da95d518d911c909a78267.png&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:30.672Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:30.672Z&quot;
       }
     },
     {
-      &quot;id&quot;: &quot;ac750eb0-e699-4159-ab51-021ad807a68e&quot;,
+      &quot;id&quot;: &quot;8954fac4-ae4b-4d9d-8cd1-a3ecb1a7d2b4&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Nikolas&quot;,
-        &quot;last_name&quot;: &quot;Ward&quot;,
-        &quot;slug&quot;: &quot;nikolas-ward&quot;,
-        &quot;avatar&quot;: null
+        &quot;first_name&quot;: &quot;Polly&quot;,
+        &quot;last_name&quot;: &quot;Schaefer&quot;,
+        &quot;slug&quot;: &quot;polly-schaefer&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/8954fac4-ae4b-4d9d-8cd1-a3ecb1a7d2b4/small_989141282f128818a81ca1ce3f109f44.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/8954fac4-ae4b-4d9d-8cd1-a3ecb1a7d2b4/medium_989141282f128818a81ca1ce3f109f44.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/8954fac4-ae4b-4d9d-8cd1-a3ecb1a7d2b4/large_989141282f128818a81ca1ce3f109f44.png&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:31.184Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:31.184Z&quot;
       }
     }
   ],

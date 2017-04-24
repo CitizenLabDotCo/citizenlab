@@ -185,7 +185,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTEzMTExODIsInN1YiI6ImJkYzIwMTJkLWM3MjItNDNhNi05ZDVlLTY4ODQ4MmVhZWI3OSJ9.EeIUP-CDcfkDU7BNRlKQLCyKoh2FbrzWWfrpe6sCX6E
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMxMzczMjcsInN1YiI6ImMxMTQxMDQ2LTIyNDktNDY1ZC1hOTE4LWExYjA5Mjc2NTljYiJ9.mfcjLLqNEFlDPFXnIaA5Xhak24h7KucZIgNNVs55O8k
 Host: example.org
 Cookie: </pre>
 
@@ -194,7 +194,7 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"idea":{"lab_id":"a9cb5015-02ab-4eff-ab57-90ef2fa75e6f","author_id":"a8c55a86-c4d1-47be-9cda-cc048ac1cb5b","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"}}}</pre>
+            <pre class="request body">{"idea":{"lab_id":"e61c5881-10b0-43a0-b68f-e1550cbb1e01","author_id":"35289fd9-9818-4c43-bbf8-0e523fa27644","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"}}}</pre>
 
 
             <h3>Response</h3>
@@ -203,18 +203,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;5b309584ffa1cbd85b9ca60f0baf6f23&quot;
+ETag: W/&quot;f3444de03641e937bc449dc160cb75cd&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: f1e82d7a-c6d3-42b5-9611-94adc34c49c2
-X-Runtime: 0.029865
+X-Request-Id: eabd1904-1ef2-42e6-ba9a-0811fc284e29
+X-Runtime: 0.037700
 Vary: Origin
-Content-Length: 762</pre>
+Content-Length: 1398</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;26b1146a-dc7a-4367-a768-dd3cfb4d13d0&quot;,
+    &quot;id&quot;: &quot;0e5033e3-70d2-403f-a72a-128753defe60&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -225,10 +225,13 @@ Content-Length: 762</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
+      &quot;author_name&quot;: &quot;Shirley Mayert&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;images&quot;: [
 
-      ]
+      ],
+      &quot;created_at&quot;: &quot;2017-04-24T16:22:08.219Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-04-24T16:22:08.219Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -243,13 +246,13 @@ Content-Length: 762</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;a8c55a86-c4d1-47be-9cda-cc048ac1cb5b&quot;,
+          &quot;id&quot;: &quot;35289fd9-9818-4c43-bbf8-0e523fa27644&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
       &quot;lab&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;a9cb5015-02ab-4eff-ab57-90ef2fa75e6f&quot;,
+          &quot;id&quot;: &quot;e61c5881-10b0-43a0-b68f-e1550cbb1e01&quot;,
           &quot;type&quot;: &quot;labs&quot;
         }
       }
@@ -257,13 +260,20 @@ Content-Length: 762</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;a8c55a86-c4d1-47be-9cda-cc048ac1cb5b&quot;,
+      &quot;id&quot;: &quot;35289fd9-9818-4c43-bbf8-0e523fa27644&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Mortimer&quot;,
-        &quot;last_name&quot;: &quot;Stoltenberg&quot;,
-        &quot;slug&quot;: &quot;mortimer-stoltenberg&quot;,
-        &quot;avatar&quot;: null
+        &quot;first_name&quot;: &quot;Shirley&quot;,
+        &quot;last_name&quot;: &quot;Mayert&quot;,
+        &quot;slug&quot;: &quot;shirley-mayert&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/35289fd9-9818-4c43-bbf8-0e523fa27644/small_b044af097111855e145374aba00b15c3.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/35289fd9-9818-4c43-bbf8-0e523fa27644/medium_b044af097111855e145374aba00b15c3.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/35289fd9-9818-4c43-bbf8-0e523fa27644/large_b044af097111855e145374aba00b15c3.png&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:22:07.684Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:22:07.684Z&quot;
       }
     }
   ]

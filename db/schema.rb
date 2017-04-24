@@ -151,4 +151,5 @@ ActiveRecord::Schema.define(version: 20170418104454) do
   add_foreign_key "ideas_topics", "topics"
   add_foreign_key "labs_topics", "labs"
   add_foreign_key "labs_topics", "topics"
+  add_foreign_key "votes", "users"
 end

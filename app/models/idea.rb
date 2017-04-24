@@ -1,6 +1,9 @@
 class Idea < ApplicationRecord
+  include PgSearch
   mount_uploaders :images, IdeaImageUploader
   mount_uploaders :files, IdeaFileUploader
+
+  pg_search_scope :search_by_all, :against => [:title_multiloc, :body_multiloc, :author_name]
 
   belongs_to :lab, optional: true
   belongs_to :author, class_name: 'User', optional: true

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Comments API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Comments API</h1>
+
+      <div class="article">
+        <h2>List comments of an idea</h2>
+        <h3>GET api/v1/ideas/:idea_id/comments</h3>
+
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of comments per page</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/ideas/baeb2e0a-bd89-4e59-bf46-aab6f3275f53/comments</pre>
+
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;93d0bb1819062d16e3454c00b9747623&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 456de1e5-7425-451e-95be-92376206440d
+X-Runtime: 0.087395
+Vary: Origin
+Content-Length: 2396</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;4a5218ab-bf08-4364-892a-38c67bf982aa&quot;,
+      &quot;type&quot;: &quot;comments&quot;,
+      &quot;attributes&quot;: {
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:14.162Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:14.162Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;idea&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;baeb2e0a-bd89-4e59-bf46-aab6f3275f53&quot;,
+            &quot;type&quot;: &quot;ideas&quot;
+          }
+        },
+        &quot;author&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;a843e57e-e3dd-4045-9e86-9ca8b636e0cf&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;parent&quot;: {
+          &quot;data&quot;: null
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;0ca0fa3f-8c31-4a62-9712-1c87d80c2a0f&quot;,
+      &quot;type&quot;: &quot;comments&quot;,
+      &quot;attributes&quot;: {
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:14.963Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:14.963Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;idea&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;baeb2e0a-bd89-4e59-bf46-aab6f3275f53&quot;,
+            &quot;type&quot;: &quot;ideas&quot;
+          }
+        },
+        &quot;author&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;2d25e3a9-4590-4218-993d-7639f4c4dd07&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;parent&quot;: {
+          &quot;data&quot;: null
+        }
+      }
+    }
+  ],
+  &quot;included&quot;: [
+    {
+      &quot;id&quot;: &quot;a843e57e-e3dd-4045-9e86-9ca8b636e0cf&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Bria&quot;,
+        &quot;last_name&quot;: &quot;Turcotte&quot;,
+        &quot;slug&quot;: &quot;bria-turcotte&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/a843e57e-e3dd-4045-9e86-9ca8b636e0cf/small_5610fe72c69348bf6aa98cb15c5a34e5.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/a843e57e-e3dd-4045-9e86-9ca8b636e0cf/medium_5610fe72c69348bf6aa98cb15c5a34e5.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/a843e57e-e3dd-4045-9e86-9ca8b636e0cf/large_5610fe72c69348bf6aa98cb15c5a34e5.png&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:14.146Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:14.146Z&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;2d25e3a9-4590-4218-993d-7639f4c4dd07&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Veda&quot;,
+        &quot;last_name&quot;: &quot;Johns&quot;,
+        &quot;slug&quot;: &quot;veda-johns&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/2d25e3a9-4590-4218-993d-7639f4c4dd07/small_7f117e092658539db95d9a94cc8c79f0.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/2d25e3a9-4590-4218-993d-7639f4c4dd07/medium_7f117e092658539db95d9a94cc8c79f0.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/2d25e3a9-4590-4218-993d-7639f4c4dd07/large_7f117e092658539db95d9a94cc8c79f0.png&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:14.952Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:14.952Z&quot;
+      }
+    }
+  ],
+  &quot;links&quot;: {
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

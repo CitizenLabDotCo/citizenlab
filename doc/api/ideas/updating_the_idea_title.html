@@ -185,12 +185,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTEzMTExODMsInN1YiI6IjU1OGU5NWI2LTUxMDItNGI1MS04N2IzLTA0NjYxZDYyODVlOSJ9.3KdTFywIa6HCDVOL5YZn3MaL45E8sisKoIJEFC26z5w
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMxMzczMzUsInN1YiI6IjEzYTAxOWQ1LTk0MmQtNGExZi1iYTA0LTQzNjBlZWVhNGQxMSJ9.QlxsCp9lA1bHk9XVnmVz5TcdsFHRm18-z2l5jOIgLQw
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/ideas/5e9c008e-6db5-4478-bacd-4805fd22b9e2</pre>
+          <pre class="request route highlight">PATCH api/v1/ideas/d06a73c8-2ad1-4729-ae25-8b108588d43a</pre>
 
 
             <h4>Body</h4>
@@ -203,18 +203,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;a3a869923171c5d4243318cadb15ef87&quot;
+ETag: W/&quot;3a6d098daea5e9c36f8d077297011860&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: faa19274-db17-4405-adc1-050b38472880
-X-Runtime: 0.026777
+X-Request-Id: a1ca163d-e48c-43f4-819f-4e625a80f8e4
+X-Runtime: 0.040513
 Vary: Origin
-Content-Length: 761</pre>
+Content-Length: 1414</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;5e9c008e-6db5-4478-bacd-4805fd22b9e2&quot;,
+    &quot;id&quot;: &quot;d06a73c8-2ad1-4729-ae25-8b108588d43a&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -224,10 +224,13 @@ Content-Length: 761</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
+      &quot;author_name&quot;: &quot;Pamela Bahringer&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;images&quot;: [
 
-      ]
+      ],
+      &quot;created_at&quot;: &quot;2017-04-24T16:22:15.875Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-04-24T16:22:15.892Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -242,13 +245,13 @@ Content-Length: 761</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;558e95b6-5102-4b51-87b3-04661d6285e9&quot;,
+          &quot;id&quot;: &quot;13a019d5-942d-4a1f-ba04-4360eeea4d11&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
       &quot;lab&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;ad3ac1de-0cbe-4f59-8e06-c49db5334e8a&quot;,
+          &quot;id&quot;: &quot;d9bfdf84-fb8f-467f-bc36-3625e71bb095&quot;,
           &quot;type&quot;: &quot;labs&quot;
         }
       }
@@ -256,14 +259,21 @@ Content-Length: 761</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;558e95b6-5102-4b51-87b3-04661d6285e9&quot;,
+      &quot;id&quot;: &quot;13a019d5-942d-4a1f-ba04-4360eeea4d11&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Frederique&quot;,
-        &quot;last_name&quot;: &quot;O&#39;Reilly&quot;,
-        &quot;slug&quot;: &quot;frederique-o-reilly&quot;,
-        &quot;avatar&quot;: null,
-        &quot;email&quot;: &quot;jaclyn@larson.com&quot;
+        &quot;first_name&quot;: &quot;Pamela&quot;,
+        &quot;last_name&quot;: &quot;Bahringer&quot;,
+        &quot;slug&quot;: &quot;pamela-bahringer&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/13a019d5-942d-4a1f-ba04-4360eeea4d11/small_f078a2de0a7a87c2decf7ef727bec12a.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/13a019d5-942d-4a1f-ba04-4360eeea4d11/medium_f078a2de0a7a87c2decf7ef727bec12a.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/13a019d5-942d-4a1f-ba04-4360eeea4d11/large_f078a2de0a7a87c2decf7ef727bec12a.png&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:22:15.854Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:22:15.854Z&quot;,
+        &quot;email&quot;: &quot;desmond@wunschjacobson.biz&quot;
       }
     }
   ]

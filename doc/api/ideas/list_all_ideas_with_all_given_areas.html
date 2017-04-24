@@ -145,6 +145,22 @@ table th, table td {
                   <span class="description">Filter by lab</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">author</span>
+                </td>
+                <td>
+                  <span class="description">Filter by author (user id)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">search</span>
+                </td>
+                <td>
+                  <span class="description">Filter by searching in title, body and author name</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -157,10 +173,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?areas[]=fd919ca2-3b83-4a3e-a242-1f5b2b583222&amp;areas[]=8dcb4f29-75ca-4cd0-a915-4b52647289da</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=06d0e2a6-5dd7-4b74-9de0-b03f588bf399&amp;areas[]=50522389-db30-4ca3-a755-8b74be4a3514</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">areas: [&quot;fd919ca2-3b83-4a3e-a242-1f5b2b583222&quot;, &quot;8dcb4f29-75ca-4cd0-a915-4b52647289da&quot;]</pre>
+            <pre class="request query_parameters highlight">areas: [&quot;06d0e2a6-5dd7-4b74-9de0-b03f588bf399&quot;, &quot;50522389-db30-4ca3-a755-8b74be4a3514&quot;]</pre>
 
 
 
@@ -170,19 +186,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;e299cb2e5fb49dfc8037bb823afb7402&quot;
+ETag: W/&quot;1f822ad7d04166d6031a2b3ee7e2cb2e&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: e76563e9-5d77-4ada-a39d-b01c0fdc6f27
-X-Runtime: 0.024013
+X-Request-Id: 4b17dfed-8c76-4264-be4c-411c736e77fc
+X-Runtime: 0.033056
 Vary: Origin
-Content-Length: 888</pre>
+Content-Length: 1532</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;46a2ee57-f436-4537-9448-f950fb6eb410&quot;,
+      &quot;id&quot;: &quot;84229fbc-16b8-4718-879f-e299ed10edfe&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -193,10 +209,13 @@ Content-Length: 888</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
+        &quot;author_name&quot;: &quot;Lurline Feeney&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
-        ]
+        ],
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:43.471Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:43.471Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -207,24 +226,24 @@ Content-Length: 888</pre>
         &quot;areas&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;fd919ca2-3b83-4a3e-a242-1f5b2b583222&quot;,
+              &quot;id&quot;: &quot;06d0e2a6-5dd7-4b74-9de0-b03f588bf399&quot;,
               &quot;type&quot;: &quot;areas&quot;
             },
             {
-              &quot;id&quot;: &quot;8dcb4f29-75ca-4cd0-a915-4b52647289da&quot;,
+              &quot;id&quot;: &quot;50522389-db30-4ca3-a755-8b74be4a3514&quot;,
               &quot;type&quot;: &quot;areas&quot;
             }
           ]
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;d6982047-74ee-4738-aa2d-9fda3b411e1e&quot;,
+            &quot;id&quot;: &quot;33937c3a-0ed8-42a5-b2d2-6b1addb2cb39&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;b595166b-9d28-4daf-a2ca-71622248afae&quot;,
+            &quot;id&quot;: &quot;633c3380-bfaa-4518-8c8d-e095cc111b4a&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
@@ -233,13 +252,20 @@ Content-Length: 888</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;d6982047-74ee-4738-aa2d-9fda3b411e1e&quot;,
+      &quot;id&quot;: &quot;33937c3a-0ed8-42a5-b2d2-6b1addb2cb39&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Shaylee&quot;,
-        &quot;last_name&quot;: &quot;Baumbach&quot;,
-        &quot;slug&quot;: &quot;shaylee-baumbach&quot;,
-        &quot;avatar&quot;: null
+        &quot;first_name&quot;: &quot;Lurline&quot;,
+        &quot;last_name&quot;: &quot;Feeney&quot;,
+        &quot;slug&quot;: &quot;lurline-feeney&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/33937c3a-0ed8-42a5-b2d2-6b1addb2cb39/small_0ff2fdf94d28b02e674d9232de7358e2.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/33937c3a-0ed8-42a5-b2d2-6b1addb2cb39/medium_0ff2fdf94d28b02e674d9232de7358e2.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/33937c3a-0ed8-42a5-b2d2-6b1addb2cb39/large_0ff2fdf94d28b02e674d9232de7358e2.png&quot;
+        },
+        &quot;created_at&quot;: &quot;2017-04-24T16:21:43.457Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:21:43.457Z&quot;
       }
     }
   ],

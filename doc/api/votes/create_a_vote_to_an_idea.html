@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ideas API</title>
+    <title>Votes API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Ideas API</h1>
+      <h1>Votes API</h1>
 
       <div class="article">
-        <h2>Updating a draft to a published post</h2>
-        <h3>PATCH api/v1/ideas/:id</h3>
+        <h2>Create a vote to an idea</h2>
+        <h3>POST api/v1/ideas/:idea_id/votes</h3>
 
           <h3>Parameters</h3>
           <table class="parameters table table-striped table-bordered table-condensed">
@@ -122,11 +122,19 @@ table th, table td {
             </thead>
             <tbody>
               <tr>
-                <td class="required">
-                    <span class="name">idea[publication_status]</span>
+                <td>
+                    <span class="name">vote[user_id]</span>
                 </td>
                 <td>
-                  <span class="description">Either [&quot;draft&quot;, &quot;published&quot;, &quot;closed&quot;, &quot;spam&quot;].join(&#39;, &#39;)}</span>
+                  <span class="description">The user id of the user owning the vote. Signed in user by default</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="required">
+                    <span class="name">vote[mode]</span>
+                </td>
+                <td>
+                  <span class="description">one of [up, down]</span>
                 </td>
               </tr>
             </tbody>
@@ -137,16 +145,16 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMxMzczMzksInN1YiI6IjFjYmYzN2VlLWRlMzgtNDY0NC05MzU4LTM2Zjk5MWExM2JmMyJ9.YZBvmDQk1fGBGpqBv8M7IpJMQiCX4d0koAurlX2J0MY
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMxMzczNzksInN1YiI6IjA0NTZhMWEzLTE3NzMtNGFlNS04ODJhLWQ1MGY5ZTU1OGRhNCJ9.2RtXK9k74vSLqVGRu_yPPs1Ej_SoP8fny7fKy2a9V04
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/ideas/c63c9588-e59b-4d2a-a870-c615fb6eddbb</pre>
+          <pre class="request route highlight">POST api/v1/ideas/6480dfad-160b-4ece-903e-28a645ab72a7/votes</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"idea":{"publication_status":"published"}}</pre>
+            <pre class="request body">{"vote":{"mode":"up"}}</pre>
 
 
             <h3>Response</h3>
@@ -155,78 +163,54 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;199a4c0b3b8853047e1f767b37ffcfb1&quot;
+ETag: W/&quot;87323b108c674013e76dce6162c605a9&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: a59669a4-57ae-42ce-87c8-e5c92bcea531
-X-Runtime: 0.051050
+X-Request-Id: 26eecc1b-2d78-4e68-8b58-95f4f506b9d8
+X-Runtime: 0.019800
 Vary: Origin
-Content-Length: 1433</pre>
+Content-Length: 1001</pre>
             <h4>Status</h4>
-            <pre class="response status">200 OK</pre>
+            <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;c63c9588-e59b-4d2a-a870-c615fb6eddbb&quot;,
-    &quot;type&quot;: &quot;ideas&quot;,
+    &quot;id&quot;: &quot;72389726-37cf-424a-b750-3583bd25579b&quot;,
+    &quot;type&quot;: &quot;votes&quot;,
     &quot;attributes&quot;: {
-      &quot;title_multiloc&quot;: {
-        &quot;en&quot;: &quot;Plant more trees&quot;,
-        &quot;nl&quot;: &quot;Plant meer bomen&quot;
-      },
-      &quot;body_multiloc&quot;: {
-        &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
-        &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
-      },
-      &quot;author_name&quot;: &quot;Joyce Weissnat&quot;,
-      &quot;publication_status&quot;: &quot;published&quot;,
-      &quot;images&quot;: [
-
-      ],
-      &quot;created_at&quot;: &quot;2017-04-24T16:22:19.286Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-04-24T16:22:19.309Z&quot;
+      &quot;mode&quot;: &quot;up&quot;
     },
     &quot;relationships&quot;: {
-      &quot;topics&quot;: {
-        &quot;data&quot;: [
-
-        ]
-      },
-      &quot;areas&quot;: {
-        &quot;data&quot;: [
-
-        ]
-      },
-      &quot;author&quot;: {
+      &quot;votable&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;1cbf37ee-de38-4644-9358-36f991a13bf3&quot;,
-          &quot;type&quot;: &quot;users&quot;
+          &quot;id&quot;: &quot;6480dfad-160b-4ece-903e-28a645ab72a7&quot;,
+          &quot;type&quot;: &quot;ideas&quot;
         }
       },
-      &quot;lab&quot;: {
+      &quot;user&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;7df7911d-ffdc-4cf0-a5a5-cfbc02dca774&quot;,
-          &quot;type&quot;: &quot;labs&quot;
+          &quot;id&quot;: &quot;0456a1a3-1773-4ae5-882a-d50f9e558da4&quot;,
+          &quot;type&quot;: &quot;users&quot;
         }
       }
     }
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;1cbf37ee-de38-4644-9358-36f991a13bf3&quot;,
+      &quot;id&quot;: &quot;0456a1a3-1773-4ae5-882a-d50f9e558da4&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Joyce&quot;,
-        &quot;last_name&quot;: &quot;Weissnat&quot;,
-        &quot;slug&quot;: &quot;joyce-weissnat&quot;,
+        &quot;first_name&quot;: &quot;Kamryn&quot;,
+        &quot;last_name&quot;: &quot;Hintz&quot;,
+        &quot;slug&quot;: &quot;kamryn-hintz&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/1cbf37ee-de38-4644-9358-36f991a13bf3/small_ddabdeb0db80c1589208e24d86bb7720.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/1cbf37ee-de38-4644-9358-36f991a13bf3/medium_ddabdeb0db80c1589208e24d86bb7720.png&quot;,
-          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/1cbf37ee-de38-4644-9358-36f991a13bf3/large_ddabdeb0db80c1589208e24d86bb7720.png&quot;
+          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/0456a1a3-1773-4ae5-882a-d50f9e558da4/small_2a1b0ac27a110e206234b725166dcb9f.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/0456a1a3-1773-4ae5-882a-d50f9e558da4/medium_2a1b0ac27a110e206234b725166dcb9f.png&quot;,
+          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/0456a1a3-1773-4ae5-882a-d50f9e558da4/large_2a1b0ac27a110e206234b725166dcb9f.png&quot;
         },
-        &quot;created_at&quot;: &quot;2017-04-24T16:22:19.262Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:22:19.262Z&quot;,
-        &quot;email&quot;: &quot;nikko.stroman@cormier.io&quot;
+        &quot;created_at&quot;: &quot;2017-04-24T16:22:59.664Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-24T16:22:59.664Z&quot;,
+        &quot;email&quot;: &quot;kevin@tromp.net&quot;
       }
     }
   ]
