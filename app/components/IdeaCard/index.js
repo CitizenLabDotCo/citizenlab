@@ -22,10 +22,16 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
     return (
       <Card>
         <Image
+          onClick={this.props.onClick}
           src={idea.attributes.images[0] && idea.attributes.images[0].medium}
+          style={ {cursor: "pointer"} }
           label={parseInt(idea.id.match(/\d+/), 10) % 5 === 0 ? { as: 'a', corner: 'right', icon: 'university' } : false}
         />
-        <Card.Content>
+        <Card.Content
+          onClick={this.props.onClick}
+          src={idea.attributes.images[0] && idea.attributes.images[0].medium}
+          style = {{cursor: "pointer"}}
+        >
           <Card.Header>
             <T value={idea.attributes.title_multiloc} />
           </Card.Header>
@@ -49,7 +55,7 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
           <Button>
             <Icon color="green" name="thumbs outline up" />
           </Button>
-          <Button.Or text="125"></Button.Or>
+          <Button.Or text="125"/>
           <Button>
             <Icon color="red" name="thumbs outline down" />
           </Button>
@@ -61,7 +67,7 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
 
 IdeaCard.propTypes = {
   idea: PropTypes.object,
-  onClick: PropTypes.func,
+  onClick: PropTypes.func.required,
   className: PropTypes.string,
 };
 
