@@ -6,9 +6,8 @@
 
 import { fromJS } from 'immutable';
 import {
-  LOAD_DRAFT, LOAD_DRAFT_ERROR, LOAD_DRAFT_SUCCESS, STORE_DRAFT, STORE_DRAFT_SUCCESS, STORE_DRAFT_ERROR,
-  SAVE_DRAFT, STORE_IDEA, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS, SET_TITLE, STORE_ATTACHMENT, STORE_IMAGE,
-  STORE_IMAGE_ERROR, STORE_ATTACHMENT_ERROR,
+  SAVE_DRAFT, STORE_IDEA, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS, SET_TITLE, STORE_ATTACHMENT,
+  STORE_IMAGE, STORE_IMAGE_ERROR, STORE_ATTACHMENT_ERROR,
 } from './constants';
 
 export const ideasNewPageInitialState = fromJS({
@@ -37,31 +36,6 @@ export const ideasNewPageInitialState = fromJS({
 
 function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
   switch (action.type) {
-    case LOAD_DRAFT:
-      return state
-        .setIn(['draft', 'loading'], true)
-        .setIn(['draft', 'loadError'], false);
-    case LOAD_DRAFT_SUCCESS:
-      return state
-        .setIn(['draft', 'content'], action.content)
-        .setIn(['draft', 'loading'], false);
-    case LOAD_DRAFT_ERROR:
-      return state
-        .setIn(['draft', 'loadError'], true)
-        .setIn(['draft', 'loading'], false);
-    case STORE_DRAFT:
-      return state
-        .setIn(['draft', 'loadError'], false)
-        .setIn(['draft', 'stored'], false)
-        .setIn(['draft', 'storeError'], false);
-    case STORE_DRAFT_SUCCESS:
-      return state
-        .setIn(['draft', 'stored'], true)
-        .setIn(['draft', 'storeError'], false);
-    case STORE_DRAFT_ERROR:
-      return state
-        .setIn(['draft', 'stored'], false)
-        .setIn(['draft', 'storeError'], true);
     case SAVE_DRAFT:
       return state
         .setIn(['draft', 'loadError'], false)

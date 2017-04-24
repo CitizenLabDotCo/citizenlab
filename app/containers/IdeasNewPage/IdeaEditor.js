@@ -17,10 +17,6 @@ export default class IdeaEditor extends React.PureComponent {
     this.onEditorStateChange.bind(this);
   }
 
-  componentDidMount() {
-    this.props.loadDraft();
-  }
-
   componentWillReceiveProps(nextProps) {
     // load eventually existing draft
     const nextState = getEditorState(nextProps.content, this.state.editorState, this.state.initialStateSet);
@@ -66,6 +62,5 @@ export default class IdeaEditor extends React.PureComponent {
 }
 
 IdeaEditor.propTypes = {
-  loadDraft: PropTypes.func.isRequired,
   onEditorChange: PropTypes.func.isRequired,
 };

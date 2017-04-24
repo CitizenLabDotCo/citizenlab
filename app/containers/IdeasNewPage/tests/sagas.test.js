@@ -15,31 +15,33 @@ import { arrayMock, stringMock } from '../../../utils/testConstants'; // eslint-
 
 describe('IdeasNewPage sagas', () => {
   describe('postIdea', () => {
-    const action = {
-      userId: stringMock,
-      titles: {
-        en: stringMock,
-      },
-      contents: {
-        en: stringMock,
-      },
-      images: arrayMock,
-      attachments: fromJS(arrayMock),
-    };
-    const it = sagaHelper(postIdea(action));
+    describe('publish', () => {
+      const action = {
+        userId: stringMock,
+        titles: {
+          en: stringMock,
+        },
+        contents: {
+          en: stringMock,
+        },
+        images: arrayMock,
+        attachments: fromJS(arrayMock),
+      };
+      const it = sagaHelper(postIdea(action));
 
-    it('should have called the correct API', (result) => {
-      const { contents, titles, images, attachments, userId } = action;
-      const requestBody = getIdeaRequestContent(contents, titles, images, attachments, userId, true);
-      expect(result).toEqual(call(createIdea, requestBody));
-    });
+      it('should have called the correct API', (result) => {
+        const { contents, titles, images, attachments, userId } = action;
+        const requestBody = getIdeaRequestContent(contents, titles, images, attachments, userId, false);
+        expect(result).toEqual(call(createIdea, requestBody));
+      });
 
-    it('then should dispatch mergeJsonApiResources', (result) => {
-      expect(result).toEqual(put(mergeJsonApiResources()));
-    });
+      it('then should dispatch mergeJsonApiResources', (result) => {
+        expect(result).toEqual(put(mergeJsonApiResources()));
+      });
 
-    it('then, should dispatch ideaPublished action', (result) => {
-      expect(result).toEqual(put(ideaPublished()));
+      it('then, should dispatch ideaPublished action', (result) => {
+        expect(result).toEqual(put(ideaPublished()));
+      });
     });
   });
 });

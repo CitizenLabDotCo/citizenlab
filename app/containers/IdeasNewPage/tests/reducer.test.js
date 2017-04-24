@@ -2,7 +2,7 @@
 import { fromJS } from 'immutable';
 import ideasNewPageReducer, { ideasNewPageInitialState } from '../reducer';
 import {
-  draftLoaded, draftStored, loadDraft, setTitle, storeAttachment, storeImage,
+  setTitle, storeAttachment, storeImage,
 } from '../actions';
 import { randomString } from '../../../utils/testUtils';
 
@@ -32,44 +32,8 @@ describe('ideasNewPageReducer', () => {
   };
 
   it('returns the initial state', () => {
-    const nextState = ideasNewPageReducer(ideasNewPageInitialState, {});
-    expect(nextState).toEqual(fromJS(ideasNewPageInitialState));
-  });
-
-  it('should return draft.loading set to true, on loadDraft action', () => {
-    const expectedState = initialState;
-    expectedState.draft.loading = true;
-
-    const nextState = ideasNewPageReducer(
-      fromJS(ideasNewPageInitialState), loadDraft()
-    );
-
-    expect(nextState).toEqual(fromJS(expectedState));
-  });
-
-  it('should return draft.loading set to false and draft.content not null, on draftLoaded action', () => {
-    const expectedState = initialState;
-    expectedState.draft.loading = false;
-    expectedState.draft.content = '<p></p>';
-
-    const nextState = ideasNewPageReducer(
-      fromJS(ideasNewPageInitialState), draftLoaded(expectedState.draft.content)
-    );
-
-    // draftLoaded
-    expect(nextState).toEqual(fromJS(expectedState));
-  });
-
-  it('should return draft.stored set to true, on draftStored', () => {
-    const expectedState = initialState;
-    expectedState.draft.stored = true;
-
-    const nextState = ideasNewPageReducer(
-      fromJS(ideasNewPageInitialState), draftStored(expectedState.draft.content)
-    ).toJS().draft.stored;
-
-    // draftLoaded
-    expect(nextState).toEqual(expectedState.draft.stored);
+    const nextState = ideasNewPageReducer(initialState, {});
+    expect(nextState).toEqual(initialState);
   });
 
   it('should set shortTitleError to true if title < 5 chars', () => {

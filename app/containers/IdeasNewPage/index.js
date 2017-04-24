@@ -4,7 +4,8 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
@@ -13,6 +14,8 @@ import styled from 'styled-components';
 import Breadcrumbs from 'components/Breadcrumbs';
 import draftToHtml from 'draftjs-to-html';
 import { FormattedMessage } from 'react-intl';
+import { Saga } from 'react-redux-saga';
+
 import {
   makeSelectStored, makeSelectContent, makeSelectLoadError, makeSelectLoading, makeSelectStoreError,
   makeSelectSubmitError, makeSelectSubmitted, makeSelectSubmitting, makeSelectShortTitleError, makeSelectLongTitleError,
@@ -29,24 +32,28 @@ import ImageList from './ImageList';
 import canPublish from './canPublish';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
+import { watchStoreIdea } from './sagas';
 
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
 
-    // bind event handlers
-    this.saveDraft = this.saveDraft.bind(this);
+    // provide 'this' context to callbacks
     this.storeIdea = this.storeIdea.bind(this);
   }
 
+  sendIdea(isDraft) {
+    const { content, shortTitleError, longTitleError, title, images, attachments, user, locale } = this.props;
+
+    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments, user && user.id, locale, isDraft);
+  }
+
   saveDraft() {
-    this.props.saveDraftClick(this.props.content);
+    this.sendIdea(true);
   }
 
   storeIdea() {
-    const { content, shortTitleError, longTitleError, title, images, attachments, user, locale } = this.props;
-
-    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments, user && user.id, locale);
+    this.sendIdea(false);
   }
 
   render() {
@@ -81,6 +88,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
             { name: 'description', content: 'Description of IdeasNewPage' },
           ]}
         />
+        <Saga saga={watchStoreIdea} />
         <Breadcrumbs />
         <Row>
           <Column large={7} offsetOnLarge={1}>
@@ -132,7 +140,6 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
 
 IdeasNewPage.propTypes = {
   className: PropTypes.string,
-  saveDraftClick: PropTypes.func.isRequired,
   publishIdeaClick: PropTypes.func.isRequired,
   shortTitleError: PropTypes.bool.isRequired,
   longTitleError: PropTypes.bool.isRequired,
@@ -177,14 +184,7 @@ export function mapDispatchToProps(dispatch) {
 
       dispatch(saveDraft(htmlContent));
     },
-    saveDraftClick() {
-      // TODO
-    },
-    loadExistingDraft() {
-      // TODO #later: uncomment to allow editing existing draft
-      // dispatch(loadDraft());
-    },
-    publishIdeaClick(content, titleError, title, images, attachments, userId, locale) {
+    publishIdeaClick(content, titleError, title, images, attachments, userId, locale, isDraft) {
       const contentNotNull = content || '<p></p>';
 
       if (canPublish(contentNotNull, titleError)) {
@@ -194,7 +194,7 @@ export function mapDispatchToProps(dispatch) {
         htmlContents[locale] = contentNotNull;
         titles[locale] = title;
 
-        dispatch(publishIdea(htmlContents, titles, images, attachments, userId));
+        dispatch(publishIdea(htmlContents, titles, images, attachments, userId, isDraft));
       }
     },
     setTitle(e) {
