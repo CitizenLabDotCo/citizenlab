@@ -13,16 +13,22 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import _ from 'lodash';
 import IdeaCard from 'components/IdeaCard';
-import { Card, Sidebar, Segment, Menu } from 'semantic-ui-react';
-import { Reveal, Button, Label } from 'components/Foundation';
+import { Label, Card, Sidebar, Segment, Menu } from 'semantic-ui-react';
+import { Reveal, Button } from 'components/Foundation';
 import T from 'containers/T';
 import styled from 'styled-components';
 import { Saga } from 'react-redux-saga';
 import isEqual from 'lodash/isEqual';
 
 import messages from './messages';
-import makeSelectIdeasIndexPage, { makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount, makeSelectNextPageNumber, makeSelectTopics, makeSelectAreas } from './selectors';
-import { loadIdeas, resetIdeas, setShowIdeaWithIndexPage, loadTopicsRequest, loadAreasRequest } from './actions';
+import makeSelectIdeasIndexPage, {
+  makeSelectIdeas, makeSelectLoading, makeSelectNextPageItemCount,
+  makeSelectNextPageNumber, makeSelectTopics, makeSelectAreas, makeSelectLoadIdeasError,
+} from './selectors';
+import {
+  resetIdeas, setShowIdeaWithIndexPage, loadTopicsRequest, loadAreasRequest,
+  loadIdeasRequest,
+} from './actions';
 import { ideasSaga, topicsSaga, areasSaga } from './sagas';
 
 export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -99,7 +105,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   }
 
   indexPageHtml() {
-    const { ideas, topics, areas, nextPageNumber, loading } = this.props;
+    const { ideas, topics, areas, nextPageNumber, loading, loadIdeasError } = this.props;
 
     const WrapperDiv = (props) => (
       <div
@@ -153,9 +159,16 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
             <Segment basic>
               <Card.Group itemsPerRow={4} doubling stackable>
                 {ideas && ideas.map((idea) => (
-                  <IdeaCard key={idea.id} idea={idea} onClick={() => { this.props.dispatch(setShowIdeaWithIndexPage(true)); this.props.router.push(`/ideas/${idea.id}`); }}></IdeaCard>
+                  <IdeaCard
+                    key={idea.id}
+                    idea={idea}
+                    onClick={() => { this.props.dispatch(setShowIdeaWithIndexPage(true)); this.props.router.push(`/ideas/${idea.id}`); }}
+                  ></IdeaCard>
                 ))}
               </Card.Group>
+              {loadIdeasError && <Label>
+                {loadIdeasError}
+              </Label>}
               {/* eslint-disable-next-line jsx-ally/no-static-element-interactions */}
               <CenteredDiv onClick={this.goToNextPage}>
                 {(nextPageNumber && !loading) && <Button>
@@ -192,6 +205,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
 
 IdeasIndexPage.propTypes = {
   ideas: PropTypes.any.isRequired,
+  loadIdeasError: PropTypes.string,
   topics: PropTypes.any.isRequired,
   areas: PropTypes.any.isRequired,
   params: PropTypes.object,
@@ -217,24 +231,25 @@ const mapStateToProps = createStructuredSelector({
   nextPageItemCount: makeSelectNextPageItemCount(),
   loading: makeSelectLoading(),
   pageData: makeSelectIdeasIndexPage(),
+  loadIdeasError: makeSelectLoadIdeasError(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     initData: () => {
-      dispatch(loadIdeas(true));
+      dispatch(loadIdeasRequest(true));
       dispatch(loadTopicsRequest());
       dispatch(loadAreasRequest());
     },
     loadNextPage: (nextPageNumber, nextPageItemCount, filters = {}) => {
-      dispatch(loadIdeas(false, nextPageNumber, nextPageItemCount, filters));
+      dispatch(loadIdeasRequest(false, nextPageNumber, nextPageItemCount, filters));
     },
     resetData: () => {
       dispatch(resetIdeas());
     },
     reloadIdeas: (filters) => {
-      dispatch(loadIdeas({ filters }));
+      dispatch(loadIdeasRequest({ filters }));
     },
   };
 }

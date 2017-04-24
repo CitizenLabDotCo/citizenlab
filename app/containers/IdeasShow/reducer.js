@@ -74,7 +74,7 @@ export default function ideasShowReducer(state = initialState, action) {
         .set('submittingVote', false);
     case LOAD_IDEA_ERROR:
       return state
-        .set('loadIdeaError', action.loadIdeaError)
+        .set('loadIdeaError', action.error)
         .set('loadingIdea', false);
     case LOAD_COMMENTS_REQUEST:
       return state
@@ -98,7 +98,7 @@ export default function ideasShowReducer(state = initialState, action) {
     }
     case LOAD_COMMENTS_ERROR:
       return state
-        .set('loadCommentsError', action.loadCommentsError)
+        .set('loadCommentsError', action.payload)
         .set('loadingComments', false);
     case SAVE_COMMENT_DRAFT:
       return state

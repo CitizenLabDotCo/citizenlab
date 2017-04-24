@@ -6,7 +6,7 @@
 
 import { fromJS } from 'immutable';
 import {
-  SAVE_DRAFT, STORE_IDEA, STORE_IDEA_ERROR, STORE_IDEA_SUCCESS, SET_TITLE, STORE_ATTACHMENT,
+  SAVE_DRAFT, PUBLISH_IDEA, PUBLISH_IDEA_ERROR, PUBLISH_IDEA_SUCCESS, SET_TITLE, STORE_ATTACHMENT,
   STORE_IMAGE, STORE_IMAGE_ERROR, STORE_ATTACHMENT_ERROR,
 } from './constants';
 
@@ -41,38 +41,38 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
         .setIn(['draft', 'loadError'], false)
         .setIn(['draft', 'storeError'], false)
         .setIn(['draft', 'content'], action.draft);
-    case STORE_IDEA:
+    case PUBLISH_IDEA:
       return state
         .setIn(['draft', 'loadError'], false)
         .setIn(['draft', 'storeError'], false)
         .setIn(['draft', 'submitting'], true)
         .setIn(['draft', 'submitted'], false)
         .setIn(['draft', 'submitError'], false);
-    case STORE_IDEA_ERROR:
+    case PUBLISH_IDEA_ERROR:
       return state
         .setIn(['draft', 'submitting'], false)
         .setIn(['draft', 'submitError'], true);
-    case STORE_IDEA_SUCCESS:
+    case PUBLISH_IDEA_SUCCESS:
       return state
         .setIn(['draft', 'submitting'], false)
         .setIn(['draft', 'submitted'], true);
     case SET_TITLE:
       return state
-        .setIn(['draft', 'title'], action.title)
-        .setIn(['draft', 'shortTitleError'], action.title.length < 5)
-        .setIn(['draft', 'longTitleError'], action.title.length > 120)
-        .setIn(['draft', 'titleLength'], action.title.length);
+        .setIn(['draft', 'title'], action.payload)
+        .setIn(['draft', 'shortTitleError'], action.payload.length < 5)
+        .setIn(['draft', 'longTitleError'], action.payload.length > 120)
+        .setIn(['draft', 'titleLength'], action.payload.length);
     case STORE_ATTACHMENT:
       return state
         .setIn(['draft', 'storeAttachmentError'], false)
-        .updateIn(['draft', 'attachments'], (attachments) => attachments.concat(action.source));
+        .updateIn(['draft', 'attachments'], (attachments) => attachments.concat(action.payload));
     case STORE_ATTACHMENT_ERROR:
       return state
         .setIn(['draft', 'storeAttachmentError'], true);
     case STORE_IMAGE:
       return state
         .setIn(['draft', 'storeImageError'], false)
-        .updateIn(['draft', 'images'], (images) => images.concat(action.source));
+        .updateIn(['draft', 'images'], (images) => images.concat(action.payload));
     case STORE_IMAGE_ERROR:
       return state
         .setIn(['draft', 'storeImageError'], true);

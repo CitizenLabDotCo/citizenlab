@@ -8,6 +8,7 @@ describe('ideasIndexPageReducer', () => {
       nextPageNumber: null,
       nextPageItemCount: null,
       ideas: [],
+      loadIdeasError: null,
       loading: false,
       showIdeaWithIndexPage: false,
       topics: {
