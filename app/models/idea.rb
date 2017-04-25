@@ -13,6 +13,8 @@ class Idea < ApplicationRecord
   has_many :areas, through: :areas_ideas
   has_many :comments, dependent: :destroy
   has_many :votes, as: :votable, dependent: :destroy
+  has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
+  has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
   validates :title_multiloc, presence: true, multiloc: {presence: true}

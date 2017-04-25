@@ -121,6 +121,14 @@ Apartment::Tenant.switch('localhost') do
       publication_status: 'published',
       images: [0,0,1,1,2][rand(5)].times.map{ Rails.root.join("spec/fixtures/image#{rand(20)}.png").open }
     })
+    User.all.each do |u|
+      r = rand(5)
+      if r == 0
+        Vote.create(votable: idea, user: u, mode: "down")
+      elsif 0 < r && r < 3
+        Vote.create(votable: idea, user: u, mode: "up")
+      end
+    end
 
     create_comment_tree(idea, nil)
   end
