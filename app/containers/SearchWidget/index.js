@@ -1,22 +1,31 @@
 /*
  *
- * Search
+ * SearchWidget
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Saga } from 'react-redux-saga';
 import { createStructuredSelector } from 'reselect';
+import { Search } from 'semantic-ui-react';
 
 // import { makeSelectIsLoadingFilteredIdeas } from './selectors';
 import { watchSearchIdeasRequest } from './sagas';
 import { searchIdeasRequest } from './actions';
 import { makeSelectIsLoadingFilteredIdeas } from './selectors';
 
-export class Search extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class SearchWidget extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  constructor() {
+    super();
+
+    // provide 'this' context to callbacks
+    this.searchIdeas = this.searchIdeas.bind(this);
+  }
 
   searchIdeas(event, value) {
+    // console.log(this.props);
     this.props.searchIdeas(value);
   }
 
@@ -35,7 +44,7 @@ export class Search extends React.PureComponent { // eslint-disable-line react/p
   }
 }
 
-Search.propTypes = {
+SearchWidget.propTypes = {
   isLoadingFilteredIdeas: PropTypes.bool.isRequired,
   searchIdeas: PropTypes.func.isRequired,
 };
@@ -52,4 +61,4 @@ export function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchWidget);

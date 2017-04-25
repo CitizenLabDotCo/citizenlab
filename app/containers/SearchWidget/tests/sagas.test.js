@@ -8,7 +8,7 @@
 
 // const generator = defaultSaga();
 
-describe('defaultSaga Saga', () => {
+describe('SearchWidget sagas', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(true);
   });

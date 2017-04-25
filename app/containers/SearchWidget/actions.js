@@ -1,6 +1,6 @@
 /*
  *
- * Search actions
+ * SearchWidget actions
  *
  */
 

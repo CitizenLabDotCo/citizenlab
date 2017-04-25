@@ -1,6 +1,6 @@
 /*
  *
- * Search reducer
+ * SearchWidget reducer
  *
  */
 
@@ -14,7 +14,7 @@ const initialState = fromJS({
   isLoadingFilteredIdeas: false,
 });
 
-function searchReducer(state = initialState, action) {
+function searchWidgetReducer(state = initialState, action) {
   switch (action.type) {
     case SEARCH_IDEAS_REQUEST:
       return state
@@ -30,4 +30,4 @@ function searchReducer(state = initialState, action) {
   }
 }
 
-export default searchReducer;
+export default searchWidgetReducer;

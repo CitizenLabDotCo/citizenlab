@@ -1,5 +1,5 @@
 /*
- * Search Messages
+ * SearchWidget Messages
  *
  * This contains all the text for the Search component.
  */

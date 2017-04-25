@@ -3,8 +3,8 @@
 
 // const selector = makeSelectSearchDomain();
 
-describe('makeSelectSearchDomain', () => {
-  it('Expect to have unit tests specified', () => {
+describe('SearchWidget selectors', () => {
+  it('it should have tests in the future', () => {
     expect(true).toEqual(true);
   });
 });

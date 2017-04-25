@@ -4,7 +4,7 @@ import { Menu, Button, Dropdown, Icon, Image } from 'semantic-ui-react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import messages from './messages';
-import { Search } from '../../Search';
+import { SearchWidget } from '../../SearchWidget';
 
 class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -50,7 +50,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
         <Menu.Item>{currentTenant.attributes.name}</Menu.Item>
         <Menu.Item><Link to="/ideas"><FormattedMessage {...messages.ideas} /></Link></Menu.Item>
         <Menu.Item>
-          <Search />
+          <SearchWidget />
         </Menu.Item>
         <Menu.Menu position="right">
           <Menu.Item>

@@ -1,9 +1,9 @@
 // import React from 'react';
 // import { shallow } from 'enzyme';
 
-// import { Search } from '../index';
+// import { SearchWidget } from '../index';
 
-describe('<Search />', () => {
+describe('<SearchWidget />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(true);
   });
