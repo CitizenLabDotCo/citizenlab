@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :vote do
-    votable nil
+    votable :idea
     mode :up
     user
   end

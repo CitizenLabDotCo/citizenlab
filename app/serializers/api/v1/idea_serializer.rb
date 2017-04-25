@@ -1,5 +1,5 @@
 class Api::V1::IdeaSerializer < ActiveModel::Serializer
-  attributes :id, :title_multiloc, :body_multiloc, :author_name, :publication_status, :images, :created_at, :updated_at
+  attributes :id, :title_multiloc, :body_multiloc, :author_name, :publication_status, :images, :upvotes_count, :downvotes_count, :created_at, :updated_at
 
   has_many :topics
   has_many :areas
