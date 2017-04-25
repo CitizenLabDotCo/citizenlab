@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
 // import { TopBar, TopBarTitle, TopBarLeft, TopBarRight, Menu, MenuItem } from 'components/Foundation';
-import { Menu, Input, Button, Dropdown, Icon, Image } from 'semantic-ui-react';
+import { Menu, Button, Dropdown, Icon, Image } from 'semantic-ui-react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import messages from './messages';
+import { Search } from '../../Search';
 
 class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -43,14 +44,13 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
   }
 
   render() {
-    const { formatMessage } = this.props.intl;
     const { currentUser, currentTenant } = this.props;
     return (
       <Menu fixed="top">
         <Menu.Item>{currentTenant.attributes.name}</Menu.Item>
         <Menu.Item><Link to="/ideas"><FormattedMessage {...messages.ideas} /></Link></Menu.Item>
         <Menu.Item>
-          <Input className="icon" icon="search" placeholder={formatMessage({ ...messages.search })} />
+          <Search />
         </Menu.Item>
         <Menu.Menu position="right">
           <Menu.Item>
@@ -69,7 +69,6 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
 Navbar.propTypes = {
   currentUser: PropTypes.object,
   currentTenant: PropTypes.object.isRequired,
-  intl: PropTypes.object,
 };
 
 export default injectIntl(Navbar);
