@@ -5,10 +5,11 @@
 /* eslint-disable redux-saga/yield-effects */
 import { put, call } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
-import { numberMock, objectMock } from '../../../utils/testing/constants';
-import { fetchAreas, fetchIdeas, fetchTopics } from '../../../api';
+import { numberMock, objectMock } from 'utils/testing/constants';
+import { fetchAreas, fetchIdeas, fetchTopics } from 'api';
+import { mergeJsonApiResources } from 'utils/resources/actions';
+
 import { getAreas, getIdeas, getTopics } from '../sagas';
-import { mergeJsonApiResources } from '../../../utils/resources/actions';
 import { loadAreasSuccess, loadIdeasSuccess, loadTopicsSuccess } from '../actions';
 
 describe('IdeasIndexPage Saga', () => {

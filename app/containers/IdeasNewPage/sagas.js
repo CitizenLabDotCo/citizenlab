@@ -1,11 +1,11 @@
 import { takeLatest } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
+import { createIdea } from 'api';
+import { mergeJsonApiResources } from 'utils/resources/actions';
 import {
   publishIdeaError, publishIdeaSuccess,
 } from './actions';
-import { PUBLISH_IDEA } from './constants';
-import { createIdea } from '../../api';
-import { mergeJsonApiResources } from '../../utils/resources/actions';
+import { PUBLISH_IDEA_REQUEST } from './constants';
 
 export const getIdeaRequestContent = (ideaMultiloc, titleMultiloc, images, attachments, userId, isDraft) => {
   const result = {};
@@ -38,5 +38,5 @@ export function* postIdea(action) {
 }
 
 export function* watchStoreIdea() {
-  yield takeLatest(PUBLISH_IDEA, postIdea);
+  yield takeLatest(PUBLISH_IDEA_REQUEST, postIdea);
 }

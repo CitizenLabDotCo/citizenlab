@@ -6,7 +6,7 @@
 
 import { fromJS } from 'immutable';
 import {
-  SAVE_DRAFT, PUBLISH_IDEA, PUBLISH_IDEA_ERROR, PUBLISH_IDEA_SUCCESS, SET_TITLE, STORE_ATTACHMENT,
+  SAVE_DRAFT, PUBLISH_IDEA_REQUEST, PUBLISH_IDEA_ERROR, PUBLISH_IDEA_SUCCESS, SET_TITLE, STORE_ATTACHMENT,
   STORE_IMAGE, STORE_IMAGE_ERROR, STORE_ATTACHMENT_ERROR,
 } from './constants';
 
@@ -41,7 +41,7 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
         .setIn(['draft', 'loadError'], false)
         .setIn(['draft', 'storeError'], false)
         .setIn(['draft', 'content'], action.draft);
-    case PUBLISH_IDEA:
+    case PUBLISH_IDEA_REQUEST:
       return state
         .setIn(['draft', 'loadError'], false)
         .setIn(['draft', 'storeError'], false)

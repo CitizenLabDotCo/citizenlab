@@ -1,13 +1,13 @@
 import { call, put } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
 import _ from 'lodash';
+import { mergeJsonApiResources } from 'utils/resources/actions';
+import { fetchCurrentUser, updateCurrentUser } from 'api';
 
 import {
   loadCurrentUserError, storeAvatarError, storeAvatarSuccess, updateCurrentUserError, updateCurrentUserSuccess,
 } from './actions';
 import { STORE_AVATAR, UPDATE_CURRENT_USER } from './constants';
-import { mergeJsonApiResources } from '../../utils/resources/actions';
-import { fetchCurrentUser, updateCurrentUser } from '../../api';
 import { LOAD_CURRENT_USER } from '../App/constants';
 import { loadCurrentUserSuccess } from '../../utils/auth/actions';
 

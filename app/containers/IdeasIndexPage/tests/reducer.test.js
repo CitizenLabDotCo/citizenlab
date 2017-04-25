@@ -1,9 +1,10 @@
 
 import { fromJS } from 'immutable';
-import ideasIndexPageReducer from '../reducer';
 import {
   generateResourcesAreaValue, generateResourcesIdeaValue, generateResourcesTopicValue,
-} from '../../../utils/testing/mocks';
+} from 'utils/testing/mocks';
+
+import ideasIndexPageReducer from '../reducer';
 import { loadAreasSuccess, loadIdeasSuccess, loadTopicsSuccess, resetIdeas } from '../actions';
 
 describe('ideasIndexPageReducer', () => {

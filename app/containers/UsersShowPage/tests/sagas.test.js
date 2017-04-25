@@ -5,11 +5,12 @@
 /* eslint-disable redux-saga/yield-effects */
 import { put, call } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
+import { mergeJsonApiResources } from 'utils/resources/actions';
+import { fetchIdeas, fetchUser } from 'api';
+import { stringMock } from 'utils/testing/constants';
+
 import { getUser, getUserIdeas } from '../sagas';
-import { mergeJsonApiResources } from '../../../utils/resources/actions';
-import { fetchIdeas, fetchUser } from '../../../api';
 import { loadUserIdeasSuccess, loadUserSuccess } from '../actions';
-import { stringMock } from '../../../utils/testing/constants';
 
 describe('UserShowPage sagas', () => {
   const userId = stringMock;

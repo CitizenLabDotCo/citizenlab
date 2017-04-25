@@ -1,12 +1,13 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { mergeJsonApiResources } from 'utils/resources/actions';
+import { fetchIdea, fetchIdeaVotes, submitIdeaVote, createIdeaComment, fetchIdeaComments } from 'api';
+
 import {
   LOAD_IDEA_REQUEST, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_REQUEST, STORE_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST,
 } from './constants';
 import {
   loadIdeaSuccess, loadIdeaError, loadVotesError, votesLoaded, voteIdeaError, ideaVoted, loadCommentsRequest, loadCommentsError, publishCommentError, loadCommentsSuccess,
 } from './actions';
-import { mergeJsonApiResources } from '../../utils/resources/actions';
-import { fetchIdea, fetchIdeaVotes, submitIdeaVote, createIdeaComment, fetchIdeaComments } from '../../api';
 
 export function* loadIdea(action) {
   try {

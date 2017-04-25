@@ -5,12 +5,12 @@
  */
 
 import { fromJS } from 'immutable';
+import { getPageItemCountFromUrl, getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import {
   LOAD_IDEAS_REQUEST, LOAD_IDEAS_SUCCESS, RESET_IDEAS, SET_SHOW_IDEA_WITH_INDEX_PAGE, LOAD_TOPICS_REQUEST,
   LOAD_TOPICS_SUCCESS, LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_IDEAS_ERROR,
 } from './constants';
-import { getPageItemCountFromUrl, getPageNumberFromUrl } from '../../utils/paginationUtils';
 
 const initialState = fromJS({
   nextPageNumber: null,

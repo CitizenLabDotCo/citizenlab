@@ -6,12 +6,12 @@
 import { put, call } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
 import { fromJS } from 'immutable';
+import { createIdea } from 'api';
+import { mergeJsonApiResources } from 'utils/resources/actions';
+import { arrayMock, stringMock } from 'utils/testing/constants'; // eslint-disable-line no-unused-vars
 
 import { getIdeaRequestContent, postIdea } from '../sagas';
 import { publishIdeaSuccess } from '../actions';
-import { createIdea } from '../../../api';
-import { mergeJsonApiResources } from '../../../utils/resources/actions';
-import { arrayMock, stringMock } from '../../../utils/testing/constants'; // eslint-disable-line no-unused-vars
 
 describe('IdeasNewPage sagas', () => {
   describe('postIdea', () => {

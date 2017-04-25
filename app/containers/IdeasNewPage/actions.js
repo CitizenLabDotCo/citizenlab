@@ -4,7 +4,7 @@
  *
  */
 import {
-  SAVE_DRAFT, PUBLISH_IDEA_ERROR, PUBLISH_IDEA_SUCCESS, PUBLISH_IDEA, SET_TITLE, STORE_ATTACHMENT, STORE_IMAGE, STORE_ATTACHMENT_ERROR, STORE_IMAGE_ERROR,
+  SAVE_DRAFT, PUBLISH_IDEA_ERROR, PUBLISH_IDEA_SUCCESS, PUBLISH_IDEA_REQUEST, SET_TITLE, STORE_ATTACHMENT, STORE_IMAGE, STORE_ATTACHMENT_ERROR, STORE_IMAGE_ERROR,
 } from './constants';
 
 /*
@@ -24,7 +24,7 @@ export function saveDraft(content) {
 
 export function publishIdeaRequest(contents, titles, images, attachments, userId, isDraft) {
   return {
-    type: PUBLISH_IDEA,
+    type: PUBLISH_IDEA_REQUEST,
     payload: contents,
     titles,
     images,

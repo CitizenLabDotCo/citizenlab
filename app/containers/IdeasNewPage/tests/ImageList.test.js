@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { matcher, serializer } from 'jest-styled-components';
 
-import { mountWithIntl } from '../../../utils/testing/intl';
+import { mountWithIntl } from 'utils/testing/intl';
 import ImageList, { Images, StyledFileInput } from '../ImageList';
 
 expect.extend(matcher);

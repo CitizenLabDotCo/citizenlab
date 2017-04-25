@@ -5,10 +5,11 @@
 /* eslint-disable redux-saga/yield-effects */
 import { put, call } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
+import { mergeJsonApiResources } from 'utils/resources/actions';
+import { fetchCurrentUser } from 'api';
+import { localStorageMock } from 'utils/testing/methods';
+
 import { getProfile } from '../sagas';
-import { mergeJsonApiResources } from '../../../utils/resources/actions';
-import { fetchCurrentUser } from '../../../api';
-import { localStorageMock } from '../../../utils/testing/methods';
 import { loadCurrentUserSuccess } from '../../../utils/auth/actions';
 
 describe('UserEditPage sagas', () => {

@@ -1,11 +1,12 @@
 import { call, put } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
+import { fetchIdeas, fetchUser } from 'api';
+import { mergeJsonApiResources } from 'utils/resources/actions';
+
 import {
   loadUserError, loadUserIdeasError, loadUserIdeasSuccess, loadUserSuccess,
 } from './actions';
 import { LOAD_USER_IDEAS_REQUEST, LOAD_USER_REQUEST } from './constants';
-import { fetchIdeas, fetchUser } from '../../api';
-import { mergeJsonApiResources } from '../../utils/resources/actions';
 
 // Individual exports for testing
 export function* getUser(action) {

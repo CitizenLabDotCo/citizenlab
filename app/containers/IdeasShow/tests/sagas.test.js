@@ -6,10 +6,11 @@
 /* eslint-disable redux-saga/yield-effects */
 import { call, put } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
-import { mergeJsonApiResources } from '../../../utils/resources/actions';
-import { stringMock } from '../../../utils/testing/constants';
+import { mergeJsonApiResources } from 'utils/resources/actions';
+import { stringMock } from 'utils/testing/constants';
+import { createIdeaComment, fetchIdea, fetchIdeaComments, fetchIdeaVotes, submitIdeaVote } from 'api';
+
 import { getIdeaVotes, loadIdea, loadIdeaComments, postIdeaVote, publishComment } from '../sagas';
-import { createIdeaComment, fetchIdea, fetchIdeaComments, fetchIdeaVotes, submitIdeaVote } from '../../../api';
 import { loadCommentsSuccess, ideaVoted, loadCommentsRequest, loadIdeaSuccess, votesLoaded } from '../actions';
 
 describe('sagas', () => {
