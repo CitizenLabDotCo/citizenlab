@@ -1,4 +1,28 @@
-// utility functions shared by different test files within the same container
+// utility functions shared by different test files
+
+export const generateResourcesIdeaValue = (id) => ({
+  data: {
+    id,
+    attributes: {},
+    relationships: {},
+  },
+});
+
+export const generateResourcesTopicValue = (id) => ({
+  data: {
+    id,
+    attributes: {},
+    relationships: {},
+  },
+});
+
+export const generateResourcesAreaValue = (id) => ({
+  data: {
+    id,
+    attributes: {},
+    relationships: {},
+  },
+});
 
 export const generateResourcesVoteValue = (id, allUp, allDown) => {
   let mode;

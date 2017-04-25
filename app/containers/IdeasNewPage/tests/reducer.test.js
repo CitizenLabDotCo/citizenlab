@@ -1,10 +1,11 @@
 
 import { fromJS } from 'immutable';
+import { randomString } from 'utils/testing/methods';
+
 import ideasNewPageReducer, { ideasNewPageInitialState } from '../reducer';
 import {
   setTitle, storeAttachment, storeImage,
 } from '../actions';
-import { randomString } from '../../../utils/testUtils';
 
 describe('ideasNewPageReducer', () => {
   const initialState = {

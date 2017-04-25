@@ -5,16 +5,18 @@
  */
 
 import { fromJS } from 'immutable';
+import { getPageItemCountFromUrl, getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import {
-  IDEAS_LOADED, LOAD_IDEAS_REQUEST, RESET_IDEAS, SET_SHOW_IDEA_WITH_INDEX_PAGE, LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS,
+  LOAD_IDEAS_REQUEST, LOAD_IDEAS_SUCCESS, RESET_IDEAS, SET_SHOW_IDEA_WITH_INDEX_PAGE, LOAD_TOPICS_REQUEST,
+  LOAD_TOPICS_SUCCESS, LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_IDEAS_ERROR,
 } from './constants';
-import { getPageItemCountFromUrl, getPageNumberFromUrl } from '../../utils/paginationUtils';
 
 const initialState = fromJS({
   nextPageNumber: null,
   nextPageItemCount: null,
   ideas: [],
+  loadIdeasError: null,
   loading: false,
   showIdeaWithIndexPage: false,
   topics: {
@@ -33,11 +35,12 @@ function ideasIndexPageReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_IDEAS_REQUEST:
       return state
+        .set('loadIdeasError', null)
         .set('loading', true);
     case SET_SHOW_IDEA_WITH_INDEX_PAGE:
       return state
         .set('showIdeaWithIndexPage', action.payload);
-    case IDEAS_LOADED: {
+    case LOAD_IDEAS_SUCCESS: {
       const ids = action.payload.data.map((idea) => idea.id);
 
       const nextPageNumber = getPageNumberFromUrl(action.payload.links.next);
@@ -49,6 +52,9 @@ function ideasIndexPageReducer(state = initialState, action) {
         .set('nextPageItemCount', nextPageItemCount)
         .set('loading', false);
     }
+    case LOAD_IDEAS_ERROR:
+      return state
+        .set('loadIdeasError', action.payload);
     case RESET_IDEAS: {
       const taEmpty = {
         ids: [],

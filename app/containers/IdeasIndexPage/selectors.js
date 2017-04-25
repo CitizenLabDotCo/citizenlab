@@ -32,6 +32,11 @@ const makeSelectIdeas = () => createSelector(
   }
 );
 
+const makeSelectLoadIdeasError = () => createSelector(
+  selectIdeasIndexPageDomain(),
+  (pageState) => pageState.get('loadIdeasError')
+);
+
 const makeSelectNextPageNumber = () => createSelector(
   selectIdeasIndexPageDomain(),
   (pageState) => pageState.get('nextPageNumber')
@@ -90,4 +95,5 @@ export {
   makeSelectTopicsDomain,
   makeSelectTopics,
   makeSelectAreas,
+  makeSelectLoadIdeasError,
 };

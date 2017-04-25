@@ -1,11 +1,11 @@
 import { takeLatest } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
+import { createIdea } from 'api';
+import { mergeJsonApiResources } from 'utils/resources/actions';
 import {
-  publishIdeaError, ideaPublished,
+  publishIdeaError, publishIdeaSuccess,
 } from './actions';
-import { STORE_IDEA } from './constants';
-import { createIdea } from '../../api';
-import { mergeJsonApiResources } from '../../utils/resources/actions';
+import { PUBLISH_IDEA_REQUEST } from './constants';
 
 export const getIdeaRequestContent = (ideaMultiloc, titleMultiloc, images, attachments, userId, isDraft) => {
   const result = {};
@@ -22,21 +22,21 @@ export const getIdeaRequestContent = (ideaMultiloc, titleMultiloc, images, attac
 
 // Individual exports for testing
 export function* postIdea(action) {
-  const { contents, titles, images, attachments, userId, isDraft } = action;
+  const { payload, titles, images, attachments, userId, isDraft } = action;
 
   // merge relevant fields to match API request body format
-  const requestBody = getIdeaRequestContent(contents, titles, images, attachments, userId, isDraft);
+  const requestBody = getIdeaRequestContent(payload, titles, images, attachments, userId, isDraft);
 
   try {
     const response = yield call(createIdea, requestBody);
 
     yield put(mergeJsonApiResources(response));
-    yield put(ideaPublished());
+    yield put(publishIdeaSuccess());
   } catch (err) {
     yield put(publishIdeaError());
   }
 }
 
 export function* watchStoreIdea() {
-  yield takeLatest(STORE_IDEA, postIdea);
+  yield takeLatest(PUBLISH_IDEA_REQUEST, postIdea);
 }

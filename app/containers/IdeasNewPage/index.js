@@ -23,7 +23,8 @@ import {
   makeSelectStoreImageError, makeSelectTitle,
 } from './selectors';
 import {
-  saveDraft, publishIdea, setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
+  saveDraft, setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
+  publishIdeaRequest,
 } from './actions';
 import IdeaEditorWrapper from './IdeaEditorWrapper';
 import messages from './messages';
@@ -39,6 +40,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
     super();
 
     // provide 'this' context to callbacks
+    this.saveDraft = this.saveDraft.bind(this);
     this.storeIdea = this.storeIdea.bind(this);
   }
 
@@ -194,7 +196,7 @@ export function mapDispatchToProps(dispatch) {
         htmlContents[locale] = contentNotNull;
         titles[locale] = title;
 
-        dispatch(publishIdea(htmlContents, titles, images, attachments, userId, isDraft));
+        dispatch(publishIdeaRequest(htmlContents, titles, images, attachments, userId, isDraft));
       }
     },
     setTitle(e) {

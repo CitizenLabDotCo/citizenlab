@@ -1,9 +1,12 @@
 import { fromJS } from 'immutable';
+import { expectPropertyNotNull } from 'utils/testing/methods';
+import { stringMock } from 'utils/testing/constants';
+import { generateResourcesCommentValue, generateResourcesVoteValue } from 'utils/testing/mocks';
+
 import ideasShowReducer from '../reducer';
-import { generateResourcesVoteValue, generateResourcesCommentValue } from './__shared';
-import { commentsLoaded, ideaLoadError, loadComments, resetPageData, votesLoaded } from '../actions';
-import { expectPropertyNotNull } from '../../../utils/testUtils';
-import { stringMock } from '../../../utils/testConstants';
+import {
+  loadIdeaError, loadCommentsRequest, resetPageData, votesLoaded, loadCommentsSuccess,
+} from '../actions';
 
 describe('ideasShowReducer', () => {
   const initialState = {
@@ -34,7 +37,7 @@ describe('ideasShowReducer', () => {
   describe('LOAD_IDEA_ERROR', () => {
     it('returns loadIdeaError not null if error is provided', () => {
       const nextState = ideasShowReducer(
-        fromJS(initialState), ideaLoadError(stringMock)
+        fromJS(initialState), loadIdeaError(stringMock)
       ).toJS();
       expectPropertyNotNull(nextState, 'loadIdeaError');
     });
@@ -43,7 +46,7 @@ describe('ideasShowReducer', () => {
   describe('LOAD_COMMENTS_REQUEST', () => {
     it('returns empty comment array if initialLoad is true', () => {
       const nextState = ideasShowReducer(
-        fromJS(initialState), loadComments(null, null, null, true)
+        fromJS(initialState), loadCommentsRequest(null, null, null, true)
       ).toJS();
       expect(nextState.comments.length).toEqual(0);
     });
@@ -57,7 +60,7 @@ describe('ideasShowReducer', () => {
       }
 
       const nextState = ideasShowReducer(
-        fromJS(initialStateWithComments), loadComments(null, null, null, false)
+        fromJS(initialStateWithComments), loadCommentsRequest(null, null, null, false)
       ).toJS();
       expect(nextState.comments.length).toEqual(i);
     });
@@ -86,7 +89,7 @@ describe('ideasShowReducer', () => {
       }
 
       const nextState = ideasShowReducer(
-        fromJS(initialStateWithComments), commentsLoaded(payload)
+        fromJS(initialStateWithComments), loadCommentsSuccess(payload)
       ).toJS();
       expect(nextState.comments.length).toEqual(i + 10);
     });

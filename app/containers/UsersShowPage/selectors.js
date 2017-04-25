@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { fromJS } from 'immutable';
 import denormalize from 'utils/denormalize';
 
-import { selectResourcesDomain } from '../../utils/resources/selectors';
+import { selectResourcesDomain } from 'utils/resources/selectors';
 
 const selectUserShowPage = (state) => state.get('usersShowPage');
 

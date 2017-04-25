@@ -5,11 +5,7 @@
  */
 
 import { fromJS } from 'immutable';
-import {
-  CREATE_USER_PENDING,
-  CREATE_USER_FULFILLED,
-  CREATE_USER_REJECTED,
-} from './constants';
+import { CREATE_USER_ERROR, CREATE_USER_REQUEST, CREATE_USER_SUCCESS } from './constants';
 
 export const initialState = fromJS({
   pending: false,
@@ -19,14 +15,14 @@ export const initialState = fromJS({
 
 function usersNewPageReducer(state = initialState, action) {
   switch (action.type) {
-    case CREATE_USER_PENDING:
+    case CREATE_USER_REQUEST:
       return state.set('pending', true);
-    case CREATE_USER_FULFILLED:
+    case CREATE_USER_SUCCESS:
       return state
         .set('pending', false)
         .set('error', null)
         .set('newUser', action.payload);
-    case CREATE_USER_REJECTED:
+    case CREATE_USER_ERROR:
       return state
         .set('pending', false)
         .set('newUser', null)

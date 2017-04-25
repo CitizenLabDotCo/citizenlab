@@ -4,7 +4,7 @@
 import { createSelector } from 'reselect';
 import { fromJS } from 'immutable';
 
-import { selectResourcesDomain } from '../../utils/resources/selectors';
+import { selectResourcesDomain } from 'utils/resources/selectors';
 import denormalize from '../../utils/denormalize';
 
 const selectIdeasShowDomain = () => (state) => state.get('ideasShow');

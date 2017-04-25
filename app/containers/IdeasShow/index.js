@@ -28,7 +28,7 @@ import IdeaContent from './IdeaContent';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 import {
-  loadComments, resetPageData, loadIdea, loadVotes, voteIdea, publishComment, publishCommentError,
+  loadCommentsRequest, resetPageData, loadIdeaRequest, loadVotes, voteIdea, publishComment, publishCommentError,
 } from './actions';
 import {
   makeSelectActiveParentId, makeSelectCommentContent, makeSelectComments, makeSelectLoadCommentsError,
@@ -97,6 +97,8 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
       downVotes, ideaVotesLoadError, user, submittingVote, loadingVotes, ideaVoteSubmitError,
       ideaFull,
     } = this.props;
+
+    // ideaFull when loaded as parent url, idea passed in from IdeasIndexPage when modal
     const idea = this.props.idea || ideaFull;
 
     const WrapperDiv = (props) => (
@@ -253,13 +255,13 @@ export function mapDispatchToProps(dispatch) {
       dispatch(voteIdea(ideaId, mode));
     },
     loadIdea(ideaId) {
-      dispatch(loadIdea(ideaId));
+      dispatch(loadIdeaRequest(ideaId));
     },
     loadComments(ideaId) {
-      dispatch(loadComments(ideaId, null, null, true));
+      dispatch(loadCommentsRequest(ideaId, null, null, true));
     },
     loadNextCommentsPage(ideaId, nextCommentPageNumber, nextCommentPageItemCount) {
-      dispatch(loadComments(ideaId, nextCommentPageNumber, nextCommentPageItemCount, false));
+      dispatch(loadCommentsRequest(ideaId, nextCommentPageNumber, nextCommentPageItemCount, false));
     },
     publishCommentClick(ideaId, editorState, userId, locale, parentId) {
       if (!editorState) {

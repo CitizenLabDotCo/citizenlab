@@ -5,17 +5,17 @@
  */
 
 import {
-  CURRENT_USER_LOAD_SUCCESS, CURRENT_USER_LOAD_ERROR, STORE_AVATAR, CURRENT_USER_STORE_SUCCESS,
-  CURRENT_USER_STORE_ERROR, STORE_CURRENT_USER, AVATAR_STORE_ERROR, UPDATE_USER_LOCALE, AVATAR_STORE_SUCCESS,
+  LOAD_CURRENT_USER_SUCCESS, LOAD_CURRENT_USER_ERROR, STORE_AVATAR, UPDATE_CURRENT_USER_SUCCESS,
+  UPDATE_CURRENT_USER_ERROR, UPDATE_CURRENT_USER, STORE_AVATAR_ERROR, UPDATE_USER_LOCALE, STORE_AVATAR_SUCCESS,
 } from './constants';
 
-export function currentUserLoaded(currentUser) {
+export function loadCurrentUserSuccess(currentUser) {
   const validResponse = currentUser && currentUser.data;
   const currentUserWithAvatar = currentUser;
 
   if (!validResponse) {
     return {
-      type: 'CURRENT_USER_LOAD_ERROR',
+      type: 'LOAD_CURRENT_USER_ERROR',
     };
   }
 
@@ -25,21 +25,21 @@ export function currentUserLoaded(currentUser) {
       : '');
 
   return {
-    type: CURRENT_USER_LOAD_SUCCESS,
+    type: LOAD_CURRENT_USER_SUCCESS,
     payload: currentUser.data.attributes,
     userId: currentUser.data.id,
   };
 }
 
-export function currentUserLoadError() {
+export function loadCurrentUserError() {
   return {
-    type: CURRENT_USER_LOAD_ERROR,
+    type: LOAD_CURRENT_USER_ERROR,
   };
 }
 
 export function updateCurrentUser(currentUser) {
   return {
-    type: STORE_CURRENT_USER,
+    type: UPDATE_CURRENT_USER,
     payload: currentUser,
     userId: currentUser.userId,
   };
@@ -52,7 +52,7 @@ export function updateLocale(userLocale) {
   };
 }
 
-export function currentUserUpdated(currentUser) {
+export function updateCurrentUserSuccess(currentUser) {
   const validResponse = !!(currentUser && currentUser.data);
   const currentUserWithAvatar = currentUser;
 
@@ -62,16 +62,16 @@ export function currentUserUpdated(currentUser) {
 
   return {
     type: (validResponse
-        ? CURRENT_USER_STORE_SUCCESS
-        : CURRENT_USER_STORE_ERROR),
+        ? UPDATE_CURRENT_USER_SUCCESS
+        : UPDATE_CURRENT_USER_ERROR),
     payload: validResponse && currentUser.data.attributes,
     userId: currentUser.data.id,
   };
 }
 
-export function storeCurrentUserError() {
+export function updateCurrentUserError() {
   return {
-    type: CURRENT_USER_STORE_ERROR,
+    type: UPDATE_CURRENT_USER_ERROR,
   };
 }
 
@@ -83,14 +83,14 @@ export function storeAvatar(avatarBase64, userId) {
   };
 }
 
-export function avatarStored() {
+export function storeAvatarSuccess() {
   return {
-    type: AVATAR_STORE_SUCCESS,
+    type: STORE_AVATAR_SUCCESS,
   };
 }
 
-export function avatarStoreError() {
+export function storeAvatarError() {
   return {
-    type: AVATAR_STORE_ERROR,
+    type: STORE_AVATAR_ERROR,
   };
 }

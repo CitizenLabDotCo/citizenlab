@@ -4,7 +4,8 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
@@ -13,10 +14,13 @@ import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
+import { Saga } from 'react-redux-saga';
+
 import { createUser } from './actions';
 import messages from './messages';
 import Form from './Form';
 import makeSelectUsersNewPage from './selectors';
+import { watchCreateUser, watchUserSignIn } from './sagas';
 
 const SpinnerBox = styled.div`
   border: 1px solid yellow;
@@ -52,7 +56,8 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
             { name: 'description', content: 'Description of UsersNewPage' },
           ]}
         />
-
+        <Saga saga={watchCreateUser} />
+        <Saga saga={watchUserSignIn} />
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>

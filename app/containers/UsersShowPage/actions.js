@@ -9,42 +9,42 @@ import {
   LOAD_USER_IDEAS_ERROR,
 } from './constants';
 
-export function loadUser(userId) {
+export function loadUserRequest(userId) {
   return {
     type: LOAD_USER_REQUEST,
     userId,
   };
 }
 
-export function userLoaded(response) {
+export function loadUserSuccess(response) {
   return {
     type: LOAD_USER_SUCCESS,
     payload: response,
   };
 }
 
-export function userLoadError(error) {
+export function loadUserError(error) {
   return {
     type: LOAD_USER_ERROR,
     payload: error,
   };
 }
 
-export function loadUserIdeas(userId) {
+export function loadUserIdeasRequest(userId) {
   return {
     type: LOAD_USER_IDEAS_REQUEST,
     userId,
   };
 }
 
-export function userIdeasLoaded(response) {
+export function loadUserIdeasSuccess(response) {
   return {
     type: LOAD_USER_IDEAS_SUCCESS,
     payload: response,
   };
 }
 
-export function userIdeasLoadError(error) {
+export function loadUserIdeasError(error) {
   return {
     type: LOAD_USER_IDEAS_ERROR,
     payload: error,

@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { matcher, serializer } from 'jest-styled-components';
+import { mountWithIntl } from 'utils/testing/intl';
 
 import AttachmentList, { Attachments, StyledFileInput } from '../AttachmentList';
-import { mountWithIntl } from '../../../utils/intlTest';
 
 expect.extend(matcher);
 expect.addSnapshotSerializer(serializer);

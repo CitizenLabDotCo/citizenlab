@@ -1,12 +1,13 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { mergeJsonApiResources } from 'utils/resources/actions';
+import { fetchIdea, fetchIdeaVotes, submitIdeaVote, createIdeaComment, fetchIdeaComments } from 'api';
+
 import {
   LOAD_IDEA_REQUEST, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_REQUEST, STORE_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST,
 } from './constants';
 import {
-  loadIdeaSuccess, ideaLoadError, loadVotesError, votesLoaded, voteIdeaError, ideaVoted, loadComments, commentsLoaded, commentsLoadError, publishCommentError,
+  loadIdeaSuccess, loadIdeaError, loadVotesError, votesLoaded, voteIdeaError, ideaVoted, loadCommentsRequest, loadCommentsError, publishCommentError, loadCommentsSuccess,
 } from './actions';
-import { mergeJsonApiResources } from '../../utils/resources/actions';
-import { fetchIdea, fetchIdeaVotes, submitIdeaVote, createIdeaComment, fetchIdeaComments } from '../../api';
 
 export function* loadIdea(action) {
   try {
@@ -14,7 +15,7 @@ export function* loadIdea(action) {
     yield put(mergeJsonApiResources(response));
     yield put(loadIdeaSuccess(response));
   } catch (e) {
-    yield put(ideaLoadError(JSON.stringify(e.errors)));
+    yield put(loadIdeaError(JSON.stringify(e.errors)));
   }
 }
 
@@ -46,9 +47,9 @@ export function* loadIdeaComments(action) {
   try {
     const response = yield call(fetchIdeaComments, action.nextCommentPageNumber, action.nextCommentPageItemCount, action.ideaId);
     yield put(mergeJsonApiResources(response));
-    yield put(commentsLoaded(response));
+    yield put(loadCommentsSuccess(response));
   } catch (e) {
-    yield put(commentsLoadError(JSON.stringify(e.errors)));
+    yield put(loadCommentsError(JSON.stringify(e.errors)));
   }
 }
 
@@ -58,7 +59,7 @@ export function* publishComment(action) {
     const response = yield call(createIdeaComment, ideaId, action.userId, action.htmlContents, action.parentId);
     yield put(mergeJsonApiResources(response));
     // reload comments
-    yield put(loadComments(ideaId, null, null, true));
+    yield put(loadCommentsRequest(ideaId, null, null, true));
   } catch (e) {
     yield put(publishCommentError(JSON.stringify(e.errors)));
   }

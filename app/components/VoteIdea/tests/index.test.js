@@ -1,7 +1,8 @@
 import React from 'react';
-import { mountWithIntl } from '../../../utils/intlTest';
+import { mountWithIntl } from 'utils/testing/intl';
+import { arrayMock, jestFn, stringMock } from 'utils/testing/constants';
+
 import VoteIdea from '../index';
-import { arrayMock, jestFn, stringMock } from '../../../utils/testConstants';
 
 describe('<VoteIdea />', () => {
   it('should display vote buttons if userId is provided', () => {

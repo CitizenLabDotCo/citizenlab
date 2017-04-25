@@ -5,11 +5,12 @@
 /* eslint-disable redux-saga/yield-effects */
 import { put, call } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
+import { mergeJsonApiResources } from 'utils/resources/actions';
+import { fetchIdeas, fetchUser } from 'api';
+import { stringMock } from 'utils/testing/constants';
+
 import { getUser, getUserIdeas } from '../sagas';
-import { mergeJsonApiResources } from '../../../utils/resources/actions';
-import { fetchIdeas, fetchUser } from '../../../api';
-import { userIdeasLoaded, userLoaded } from '../actions';
-import { stringMock } from '../../../utils/testConstants';
+import { loadUserIdeasSuccess, loadUserSuccess } from '../actions';
 
 describe('UserShowPage sagas', () => {
   const userId = stringMock;
@@ -27,7 +28,7 @@ describe('UserShowPage sagas', () => {
     });
 
     it('then, should dispatch userLoaded action', (result) => {
-      expect(result).toEqual(put(userLoaded(undefined)));
+      expect(result).toEqual(put(loadUserSuccess(undefined)));
     });
   });
 
@@ -45,7 +46,7 @@ describe('UserShowPage sagas', () => {
     });
 
     it('then, should dispatch userIdeasLoaded action', (result) => {
-      expect(result).toEqual(put(userIdeasLoaded(undefined)));
+      expect(result).toEqual(put(loadUserIdeasSuccess(undefined)));
     });
   });
 });

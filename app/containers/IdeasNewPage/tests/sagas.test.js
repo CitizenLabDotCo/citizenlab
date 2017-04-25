@@ -6,12 +6,12 @@
 import { put, call } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
 import { fromJS } from 'immutable';
+import { createIdea } from 'api';
+import { mergeJsonApiResources } from 'utils/resources/actions';
+import { arrayMock, stringMock } from 'utils/testing/constants'; // eslint-disable-line no-unused-vars
 
 import { getIdeaRequestContent, postIdea } from '../sagas';
-import { ideaPublished } from '../actions';
-import { createIdea } from '../../../api';
-import { mergeJsonApiResources } from '../../../utils/resources/actions';
-import { arrayMock, stringMock } from '../../../utils/testConstants'; // eslint-disable-line no-unused-vars
+import { publishIdeaSuccess } from '../actions';
 
 describe('IdeasNewPage sagas', () => {
   describe('postIdea', () => {
@@ -21,7 +21,7 @@ describe('IdeasNewPage sagas', () => {
         titles: {
           en: stringMock,
         },
-        contents: {
+        payload: {
           en: stringMock,
         },
         images: arrayMock,
@@ -30,8 +30,8 @@ describe('IdeasNewPage sagas', () => {
       const it = sagaHelper(postIdea(action));
 
       it('should have called the correct API', (result) => {
-        const { contents, titles, images, attachments, userId } = action;
-        const requestBody = getIdeaRequestContent(contents, titles, images, attachments, userId, false);
+        const { payload, titles, images, attachments, userId } = action;
+        const requestBody = getIdeaRequestContent(payload, titles, images, attachments, userId, false);
         expect(result).toEqual(call(createIdea, requestBody));
       });
 
@@ -40,7 +40,7 @@ describe('IdeasNewPage sagas', () => {
       });
 
       it('then, should dispatch ideaPublished action', (result) => {
-        expect(result).toEqual(put(ideaPublished()));
+        expect(result).toEqual(put(publishIdeaSuccess()));
       });
     });
   });

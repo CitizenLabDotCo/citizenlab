@@ -6,11 +6,12 @@
 /* eslint-disable redux-saga/yield-effects */
 import { call, put } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
-import { mergeJsonApiResources } from '../../../utils/resources/actions';
-import { stringMock } from '../../../utils/testConstants';
+import { mergeJsonApiResources } from 'utils/resources/actions';
+import { stringMock } from 'utils/testing/constants';
+import { createIdeaComment, fetchIdea, fetchIdeaComments, fetchIdeaVotes, submitIdeaVote } from 'api';
+
 import { getIdeaVotes, loadIdea, loadIdeaComments, postIdeaVote, publishComment } from '../sagas';
-import { createIdeaComment, fetchIdea, fetchIdeaComments, fetchIdeaVotes, submitIdeaVote } from '../../../api';
-import { commentsLoaded, ideaVoted, loadComments, loadIdeaSuccess, votesLoaded } from '../actions';
+import { loadCommentsSuccess, ideaVoted, loadCommentsRequest, loadIdeaSuccess, votesLoaded } from '../actions';
 
 describe('sagas', () => {
   describe('getIdeaVotes', () => {
@@ -68,8 +69,8 @@ describe('sagas', () => {
       expect(result).toEqual(put(mergeJsonApiResources()));
     });
 
-    it('then, should dispatch commentsLoaded action', (result) => {
-      expect(result).toEqual(put(commentsLoaded()));
+    it('then, should dispatch loadCommentsSuccess action', (result) => {
+      expect(result).toEqual(put(loadCommentsSuccess()));
     });
   });
 
@@ -127,7 +128,7 @@ describe('sagas', () => {
     });
 
     it('then, should dispatch loadComments action', (result) => {
-      expect(result).toEqual(put(loadComments(ideaId, null, null, true)));
+      expect(result).toEqual(put(loadCommentsRequest(ideaId, null, null, true)));
     });
   });
 });

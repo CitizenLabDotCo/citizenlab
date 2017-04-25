@@ -1,8 +1,12 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { mergeJsonApiResources } from 'utils/resources/actions';
+import { fetchIdeas, fetchTopics, fetchAreas } from 'api';
+
 import { LOAD_IDEAS_REQUEST, LOAD_TOPICS_REQUEST, LOAD_AREAS_REQUEST } from './constants';
-import { ideasLoaded, ideasLoadingError, loadTopicsSuccess, loadTopicsError, loadAreasSuccess, loadAreasError } from './actions';
-import { fetchIdeas, fetchTopics, fetchAreas } from '../../api';
+import {
+  loadTopicsSuccess, loadTopicsError, loadAreasSuccess, loadAreasError,
+  loadIdeasSuccess, loadIdeasError,
+} from './actions';
 
 export function* getIdeas(action) {
   try {
@@ -12,9 +16,9 @@ export function* getIdeas(action) {
       ...action.filters,
     });
     yield put(mergeJsonApiResources(ideaResponse));
-    yield put(ideasLoaded(ideaResponse));
+    yield put(loadIdeasSuccess(ideaResponse));
   } catch (err) {
-    yield put(ideasLoadingError(err));
+    yield put(loadIdeasError(JSON.stringify(err)));
   }
 }
 

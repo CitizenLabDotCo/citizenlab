@@ -5,12 +5,12 @@
  */
 
 import {
-  CREATE_USER_PENDING,
+  CREATE_USER_REQUEST,
 } from './constants';
 
 export function createUser(payload) {
   return {
-    type: CREATE_USER_PENDING,
+    type: CREATE_USER_REQUEST,
     payload,
   };
 }

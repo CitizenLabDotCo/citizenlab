@@ -1,12 +1,13 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { createComponentWithIntl, mountWithIntl } from '../../../utils/intlTest';
+import { createComponentWithIntl, mountWithIntl } from 'utils/testing/intl';
+import { localStorageMock } from 'utils/testing/methods';
+import { jestFn } from 'utils/testing/constants';
+
 import messages from '../messages';
 import ProfileForm from '../ProfileForm';
 import { mapDispatchToProps } from '../index';
 import { updateCurrentUser } from '../actions';
-import { localStorageMock } from '../../../utils/testUtils';
-import { jestFn } from '../../../utils/testConstants';
 
 describe('<ProfileForm />', () => {
   // mock localStorage

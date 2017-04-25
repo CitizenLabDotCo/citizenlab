@@ -7,9 +7,9 @@
 // draft and idea
 export const SAVE_DRAFT = 'app/IdeasNewPage/SAVE_DRAFT';
 
-export const STORE_IDEA = 'app/IdeasNewPage/STORE_IDEA';
-export const STORE_IDEA_SUCCESS = 'app/IdeasNewPage/STORE_IDEA_SUCCESS';
-export const STORE_IDEA_ERROR = 'app/IdeasNewPage/STORE_IDEA_ERROR';
+export const PUBLISH_IDEA_REQUEST = 'app/IdeasNewPage/PUBLISH_IDEA_REQUEST';
+export const PUBLISH_IDEA_SUCCESS = 'app/IdeasNewPage/PUBLISH_IDEA_SUCCESS';
+export const PUBLISH_IDEA_ERROR = 'app/IdeasNewPage/PUBLISH_IDEA_ERROR';
 
 export const SET_TITLE = 'app/IdeasNewPage/SET_TITLE';
 
