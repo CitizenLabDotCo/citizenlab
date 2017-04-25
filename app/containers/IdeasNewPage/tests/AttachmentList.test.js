@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 import { matcher, serializer } from 'jest-styled-components';
 
 import AttachmentList, { Attachments, StyledFileInput } from '../AttachmentList';
-import { mountWithIntl } from '../../../utils/intlTest';
+import { mountWithIntl } from '../../../utils/testing/intl';
 
 expect.extend(matcher);
 expect.addSnapshotSerializer(serializer);

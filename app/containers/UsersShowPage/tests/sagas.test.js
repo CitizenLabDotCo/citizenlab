@@ -9,7 +9,7 @@ import { getUser, getUserIdeas } from '../sagas';
 import { mergeJsonApiResources } from '../../../utils/resources/actions';
 import { fetchIdeas, fetchUser } from '../../../api';
 import { loadUserIdeasSuccess, loadUserSuccess } from '../actions';
-import { stringMock } from '../../../utils/testConstants';
+import { stringMock } from '../../../utils/testing/constants';
 
 describe('UserShowPage sagas', () => {
   const userId = stringMock;

@@ -3,7 +3,7 @@ import { takeLatest } from 'redux-saga';
 import _ from 'lodash';
 
 import {
-  loadCurrentUserError, storeAvatarError, storeAvatarSuccess, storeCurrentUserError, updateCurrentUserSuccess,
+  loadCurrentUserError, storeAvatarError, storeAvatarSuccess, updateCurrentUserError, updateCurrentUserSuccess,
 } from './actions';
 import { STORE_AVATAR, UPDATE_CURRENT_USER } from './constants';
 import { mergeJsonApiResources } from '../../utils/resources/actions';
@@ -34,7 +34,7 @@ export function* postProfile(action) {
     yield put(mergeJsonApiResources(currentUserResponse));
     yield put(updateCurrentUserSuccess(currentUserResponse));
   } catch (err) {
-    yield put(storeCurrentUserError());
+    yield put(updateCurrentUserError());
   }
 }
 

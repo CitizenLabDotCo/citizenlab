@@ -1,6 +1,6 @@
 import React from 'react';
 import { TitleStatusWrapper } from '../IdeaTitle';
-import { mountWithIntl } from '../../../utils/intlTest';
+import { mountWithIntl } from '../../../utils/testing/intl';
 
 describe('<IdeaTitle />', () => {
   it('TitleStatusWrapper should display title length if title length >= 5 chars and <= 120 chars', () => {

@@ -1,11 +1,11 @@
 import { fromJS } from 'immutable';
 import ideasShowReducer from '../reducer';
-import { generateResourcesVoteValue, generateResourcesCommentValue } from './__shared';
 import {
   loadIdeaError, loadCommentsRequest, resetPageData, votesLoaded, loadCommentsSuccess,
 } from '../actions';
-import { expectPropertyNotNull } from '../../../utils/testUtils';
-import { stringMock } from '../../../utils/testConstants';
+import { expectPropertyNotNull } from '../../../utils/testing/methods';
+import { stringMock } from '../../../utils/testing/constants';
+import { generateResourcesCommentValue, generateResourcesVoteValue } from '../../../utils/testing/mocks';
 
 describe('ideasShowReducer', () => {
   const initialState = {

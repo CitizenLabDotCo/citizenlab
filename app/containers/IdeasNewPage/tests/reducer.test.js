@@ -4,7 +4,7 @@ import ideasNewPageReducer, { ideasNewPageInitialState } from '../reducer';
 import {
   setTitle, storeAttachment, storeImage,
 } from '../actions';
-import { randomString } from '../../../utils/testUtils';
+import { randomString } from '../../../utils/testing/methods';
 
 describe('ideasNewPageReducer', () => {
   const initialState = {

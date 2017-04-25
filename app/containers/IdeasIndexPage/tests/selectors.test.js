@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 import { makeSelectIdeas } from '../selectors';
-import { generateResourcesIdeaValue } from '../../IdeasIndexPage/tests/__shared';
+import { generateResourcesIdeaValue } from '../../../utils/testing/mocks';
 
 describe('IdeasIndexPage selectors', () => {
   describe('makeSelectIdea', () => {

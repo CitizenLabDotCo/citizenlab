@@ -3,7 +3,7 @@ import { IntlProvider, intlShape } from 'react-intl';
 import { mount, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 
-const messages = require('./../translations/en'); // en.json
+const messages = require('../../translations/en'); // en.json
 const intlProvider = new IntlProvider({ locale: 'en', messages }, {});
 const { intl } = intlProvider.getChildContext();
 

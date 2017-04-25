@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable';
 import usersEditPageReducer from '../reducer';
 import { loadCurrentUserSuccess, updateCurrentUserSuccess } from '../actions';
-import { expectNestedPropertyNotNull, expectPropertyNotNull } from '../../../utils/testUtils';
+import { expectNestedPropertyNotNull, expectPropertyNotNull } from '../../../utils/testing/methods';
 import { loadCurrentUser } from '../../App/actions';
 
 describe('usersEditPageReducer', () => {

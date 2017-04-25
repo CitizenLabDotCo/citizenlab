@@ -11,7 +11,7 @@ import { getIdeaRequestContent, postIdea } from '../sagas';
 import { publishIdeaSuccess } from '../actions';
 import { createIdea } from '../../../api';
 import { mergeJsonApiResources } from '../../../utils/resources/actions';
-import { arrayMock, stringMock } from '../../../utils/testConstants'; // eslint-disable-line no-unused-vars
+import { arrayMock, stringMock } from '../../../utils/testing/constants'; // eslint-disable-line no-unused-vars
 
 describe('IdeasNewPage sagas', () => {
   describe('postIdea', () => {

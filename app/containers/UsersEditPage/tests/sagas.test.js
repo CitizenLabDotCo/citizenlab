@@ -8,7 +8,7 @@ import sagaHelper from 'redux-saga-testing';
 import { getProfile } from '../sagas';
 import { mergeJsonApiResources } from '../../../utils/resources/actions';
 import { fetchCurrentUser } from '../../../api';
-import { localStorageMock } from '../../../utils/testUtils';
+import { localStorageMock } from '../../../utils/testing/methods';
 import { loadCurrentUserSuccess } from '../../../utils/auth/actions';
 
 describe('UserEditPage sagas', () => {

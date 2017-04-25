@@ -1,7 +1,7 @@
 // import React from 'react';
 import { mapDispatchToProps } from '../index';
 import { loadAreasRequest, loadIdeasRequest, loadTopicsRequest, resetIdeas } from '../actions';
-import { numberMock, objectMock } from '../../../utils/testConstants';
+import { numberMock, objectMock } from '../../../utils/testing/constants';
 // import { shallow } from 'enzyme';
 
 // import { IdeasIndexPage } from '../index';

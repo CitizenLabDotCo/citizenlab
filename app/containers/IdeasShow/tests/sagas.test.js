@@ -7,7 +7,7 @@
 import { call, put } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
 import { mergeJsonApiResources } from '../../../utils/resources/actions';
-import { stringMock } from '../../../utils/testConstants';
+import { stringMock } from '../../../utils/testing/constants';
 import { getIdeaVotes, loadIdea, loadIdeaComments, postIdeaVote, publishComment } from '../sagas';
 import { createIdeaComment, fetchIdea, fetchIdeaComments, fetchIdeaVotes, submitIdeaVote } from '../../../api';
 import { loadCommentsSuccess, ideaVoted, loadCommentsRequest, loadIdeaSuccess, votesLoaded } from '../actions';
