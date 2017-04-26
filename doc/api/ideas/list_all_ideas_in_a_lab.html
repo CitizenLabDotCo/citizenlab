@@ -173,10 +173,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?lab=d4bd22e2-fc93-4d08-aeca-4752117b69c7</pre>
+          <pre class="request route highlight">GET api/v1/ideas?lab=e8d7b794-e2b9-47f8-b01f-31848340b663</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">lab: d4bd22e2-fc93-4d08-aeca-4752117b69c7</pre>
+            <pre class="request query_parameters highlight">lab: e8d7b794-e2b9-47f8-b01f-31848340b663</pre>
 
 
 
@@ -186,19 +186,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;eae0b1d95c8915b95a7dc4e859dfbb45&quot;
+ETag: W/&quot;9646c30251b74d42f12ffd8e74237986&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 62c8e29f-e855-4e91-8854-fffd294b08b0
-X-Runtime: 0.034032
+X-Request-Id: d2780a16-77f6-45b3-bac0-41393ed9c132
+X-Runtime: 0.026808
 Vary: Origin
-Content-Length: 1414</pre>
+Content-Length: 1454</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;87636192-043d-46e6-ae62-2e8aabadb54a&quot;,
+      &quot;id&quot;: &quot;c7f14979-3e93-4057-89d8-777828006a56&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -209,13 +209,15 @@ Content-Length: 1414</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Delmer Shanahan&quot;,
+        &quot;author_name&quot;: &quot;Isaiah Berge&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-04-24T16:21:53.564Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:21:53.564Z&quot;
+        &quot;upvotes_count&quot;: 0,
+        &quot;downvotes_count&quot;: 0,
+        &quot;created_at&quot;: &quot;2017-04-26T19:30:10.961Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-26T19:30:10.961Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -230,13 +232,13 @@ Content-Length: 1414</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;e423354b-c75a-49ec-9431-7796d22d18d7&quot;,
+            &quot;id&quot;: &quot;30821ce3-f370-40fd-93e3-1bea6ae7e58d&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;d4bd22e2-fc93-4d08-aeca-4752117b69c7&quot;,
+            &quot;id&quot;: &quot;e8d7b794-e2b9-47f8-b01f-31848340b663&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
@@ -245,20 +247,23 @@ Content-Length: 1414</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;e423354b-c75a-49ec-9431-7796d22d18d7&quot;,
+      &quot;id&quot;: &quot;30821ce3-f370-40fd-93e3-1bea6ae7e58d&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Delmer&quot;,
-        &quot;last_name&quot;: &quot;Shanahan&quot;,
-        &quot;slug&quot;: &quot;delmer-shanahan&quot;,
+        &quot;first_name&quot;: &quot;Isaiah&quot;,
+        &quot;last_name&quot;: &quot;Berge&quot;,
+        &quot;slug&quot;: &quot;isaiah-berge&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/e423354b-c75a-49ec-9431-7796d22d18d7/small_71d7b0baf5a480e2348165e15dad2ffd.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/e423354b-c75a-49ec-9431-7796d22d18d7/medium_71d7b0baf5a480e2348165e15dad2ffd.png&quot;,
-          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/e423354b-c75a-49ec-9431-7796d22d18d7/large_71d7b0baf5a480e2348165e15dad2ffd.png&quot;
+          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/30821ce3-f370-40fd-93e3-1bea6ae7e58d/small_74becab2daafc36572e49d9658ad112b.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/30821ce3-f370-40fd-93e3-1bea6ae7e58d/medium_74becab2daafc36572e49d9658ad112b.png&quot;,
+          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/30821ce3-f370-40fd-93e3-1bea6ae7e58d/large_74becab2daafc36572e49d9658ad112b.png&quot;
         },
-        &quot;created_at&quot;: &quot;2017-04-24T16:21:53.552Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:21:53.552Z&quot;
+        &quot;roles&quot;: [
+
+        ],
+        &quot;created_at&quot;: &quot;2017-04-26T19:30:10.951Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-26T19:30:10.951Z&quot;
       }
     }
   ],

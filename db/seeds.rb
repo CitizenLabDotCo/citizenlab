@@ -42,7 +42,10 @@ Apartment::Tenant.switch('localhost') do
     last_name: 'Gremmelprez',
     email: 'koen@citizenlab.co',
     password: 'testtest',
-    locale: 'en'
+    locale: 'en',
+    roles: [
+      {type: "admin"},
+    ]
   })
 
   7.times do 

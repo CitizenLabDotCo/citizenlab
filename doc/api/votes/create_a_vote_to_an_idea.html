@@ -145,12 +145,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMxMzczNzksInN1YiI6IjA0NTZhMWEzLTE3NzMtNGFlNS04ODJhLWQ1MGY5ZTU1OGRhNCJ9.2RtXK9k74vSLqVGRu_yPPs1Ej_SoP8fny7fKy2a9V04
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMzMjE0NzcsInN1YiI6ImE3NGViMWRmLTc3NGMtNDNiZi1hMGQ5LWMzOTljYmIyMzQ5ZSJ9.EhMJU2MI-zOOT7Kn2RUhx_4ED1q6kyTlXICfuY7EHSg
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/ideas/6480dfad-160b-4ece-903e-28a645ab72a7/votes</pre>
+          <pre class="request route highlight">POST api/v1/ideas/1d7f5d28-6582-4f81-b052-d0bca25d71b2/votes</pre>
 
 
             <h4>Body</h4>
@@ -163,18 +163,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;87323b108c674013e76dce6162c605a9&quot;
+ETag: W/&quot;29230ac29910e49df76c4fe578def5bf&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 26eecc1b-2d78-4e68-8b58-95f4f506b9d8
-X-Runtime: 0.019800
+X-Request-Id: b00c35c4-292a-4d78-9608-ce259c45b553
+X-Runtime: 0.020124
 Vary: Origin
-Content-Length: 1001</pre>
+Content-Length: 1033</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;72389726-37cf-424a-b750-3583bd25579b&quot;,
+    &quot;id&quot;: &quot;490dc826-9966-4087-85c6-88f931372c06&quot;,
     &quot;type&quot;: &quot;votes&quot;,
     &quot;attributes&quot;: {
       &quot;mode&quot;: &quot;up&quot;
@@ -182,13 +182,13 @@ Content-Length: 1001</pre>
     &quot;relationships&quot;: {
       &quot;votable&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;6480dfad-160b-4ece-903e-28a645ab72a7&quot;,
+          &quot;id&quot;: &quot;1d7f5d28-6582-4f81-b052-d0bca25d71b2&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;user&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;0456a1a3-1773-4ae5-882a-d50f9e558da4&quot;,
+          &quot;id&quot;: &quot;a74eb1df-774c-43bf-a0d9-c399cbb2349e&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       }
@@ -196,21 +196,24 @@ Content-Length: 1001</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;0456a1a3-1773-4ae5-882a-d50f9e558da4&quot;,
+      &quot;id&quot;: &quot;a74eb1df-774c-43bf-a0d9-c399cbb2349e&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Kamryn&quot;,
-        &quot;last_name&quot;: &quot;Hintz&quot;,
-        &quot;slug&quot;: &quot;kamryn-hintz&quot;,
+        &quot;first_name&quot;: &quot;Marielle&quot;,
+        &quot;last_name&quot;: &quot;Jenkins&quot;,
+        &quot;slug&quot;: &quot;marielle-jenkins&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/0456a1a3-1773-4ae5-882a-d50f9e558da4/small_2a1b0ac27a110e206234b725166dcb9f.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/0456a1a3-1773-4ae5-882a-d50f9e558da4/medium_2a1b0ac27a110e206234b725166dcb9f.png&quot;,
-          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/0456a1a3-1773-4ae5-882a-d50f9e558da4/large_2a1b0ac27a110e206234b725166dcb9f.png&quot;
+          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/a74eb1df-774c-43bf-a0d9-c399cbb2349e/small_3324249fc6b15cb48d60902d4a86e2ba.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/a74eb1df-774c-43bf-a0d9-c399cbb2349e/medium_3324249fc6b15cb48d60902d4a86e2ba.png&quot;,
+          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/a74eb1df-774c-43bf-a0d9-c399cbb2349e/large_3324249fc6b15cb48d60902d4a86e2ba.png&quot;
         },
-        &quot;created_at&quot;: &quot;2017-04-24T16:22:59.664Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:22:59.664Z&quot;,
-        &quot;email&quot;: &quot;kevin@tromp.net&quot;
+        &quot;roles&quot;: [
+
+        ],
+        &quot;created_at&quot;: &quot;2017-04-26T19:31:17.153Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-26T19:31:17.153Z&quot;,
+        &quot;email&quot;: &quot;valentine_stracke@smith.name&quot;
       }
     }
   ]

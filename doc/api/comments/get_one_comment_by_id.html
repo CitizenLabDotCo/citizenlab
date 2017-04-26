@@ -122,7 +122,7 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/comments/7ddd3057-b77c-4ae3-892d-35988cba1c61</pre>
+          <pre class="request route highlight">GET api/v1/comments/9f45ba1d-87c4-4b47-a835-682d3b06ef6f</pre>
 
 
 
@@ -133,37 +133,37 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;ef2ebc1beca5b73e05fccd9fbae66479&quot;
+ETag: W/&quot;f23cdeca580339719a531f84100b5fc0&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: fc189864-b3ad-438d-856b-a18c3e278b21
-X-Runtime: 0.020905
+X-Request-Id: 5de5eb0f-f179-4112-a0b3-1559d691fdd9
+X-Runtime: 0.016638
 Vary: Origin
-Content-Length: 1215</pre>
+Content-Length: 1224</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;7ddd3057-b77c-4ae3-892d-35988cba1c61&quot;,
+    &quot;id&quot;: &quot;9f45ba1d-87c4-4b47-a835-682d3b06ef6f&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
         &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
       },
-      &quot;created_at&quot;: &quot;2017-04-24T16:21:16.187Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-04-24T16:21:16.187Z&quot;
+      &quot;created_at&quot;: &quot;2017-04-26T19:29:21.882Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-04-26T19:29:21.882Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;b051c8da-ed10-45b4-8f39-e9981d00f92b&quot;,
+          &quot;id&quot;: &quot;d1dc4960-cca8-4039-8cc4-566c97d84f1d&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;778bab65-67df-47bd-afba-92af86b7b594&quot;,
+          &quot;id&quot;: &quot;ba4bc551-9f5a-4dd8-a66f-cca4d3f99303&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
@@ -174,20 +174,23 @@ Content-Length: 1215</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;778bab65-67df-47bd-afba-92af86b7b594&quot;,
+      &quot;id&quot;: &quot;ba4bc551-9f5a-4dd8-a66f-cca4d3f99303&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Jarrett&quot;,
-        &quot;last_name&quot;: &quot;Hodkiewicz&quot;,
-        &quot;slug&quot;: &quot;jarrett-hodkiewicz&quot;,
+        &quot;first_name&quot;: &quot;Brannon&quot;,
+        &quot;last_name&quot;: &quot;Bahringer&quot;,
+        &quot;slug&quot;: &quot;brannon-bahringer&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/778bab65-67df-47bd-afba-92af86b7b594/small_fa9d79ee6dea6fb3fe6ff23a5edd83cf.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/778bab65-67df-47bd-afba-92af86b7b594/medium_fa9d79ee6dea6fb3fe6ff23a5edd83cf.png&quot;,
-          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/778bab65-67df-47bd-afba-92af86b7b594/large_fa9d79ee6dea6fb3fe6ff23a5edd83cf.png&quot;
+          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/ba4bc551-9f5a-4dd8-a66f-cca4d3f99303/small_2ea31a982b4fe3577d8382491bf55885.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/ba4bc551-9f5a-4dd8-a66f-cca4d3f99303/medium_2ea31a982b4fe3577d8382491bf55885.png&quot;,
+          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/ba4bc551-9f5a-4dd8-a66f-cca4d3f99303/large_2ea31a982b4fe3577d8382491bf55885.png&quot;
         },
-        &quot;created_at&quot;: &quot;2017-04-24T16:21:16.178Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:21:16.178Z&quot;
+        &quot;roles&quot;: [
+
+        ],
+        &quot;created_at&quot;: &quot;2017-04-26T19:29:21.868Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-26T19:29:21.868Z&quot;
       }
     }
   ]

@@ -173,10 +173,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?areas[]=d750e3fc-36d0-49e6-a42e-65df3d990e55</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=b3629e8a-87e4-4fd6-8ebb-b2fa5958db02</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">areas: [&quot;d750e3fc-36d0-49e6-a42e-65df3d990e55&quot;]</pre>
+            <pre class="request query_parameters highlight">areas: [&quot;b3629e8a-87e4-4fd6-8ebb-b2fa5958db02&quot;]</pre>
 
 
 
@@ -186,19 +186,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;bcabd9e9ee114b5df64d2b1cd2cc9297&quot;
+ETag: W/&quot;a0238aea8b86e0df4770ed2201df2003&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: fdd55407-5364-44b8-bbf4-1dada82e81eb
-X-Runtime: 0.059313
+X-Request-Id: 1b7d5588-fc73-4ae3-acd8-6492f39edec0
+X-Runtime: 0.025188
 Vary: Origin
-Content-Length: 1471</pre>
+Content-Length: 1526</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;bd536a43-4f53-4792-afb3-4665588d0b3a&quot;,
+      &quot;id&quot;: &quot;ef53871d-f8bc-445b-97f6-d15575181164&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -209,13 +209,15 @@ Content-Length: 1471</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Steve MacGyver&quot;,
+        &quot;author_name&quot;: &quot;Bessie Heathcote&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-04-24T16:21:40.588Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:21:40.588Z&quot;
+        &quot;upvotes_count&quot;: 0,
+        &quot;downvotes_count&quot;: 0,
+        &quot;created_at&quot;: &quot;2017-04-26T19:29:54.912Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-26T19:29:54.912Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -226,20 +228,20 @@ Content-Length: 1471</pre>
         &quot;areas&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;d750e3fc-36d0-49e6-a42e-65df3d990e55&quot;,
+              &quot;id&quot;: &quot;b3629e8a-87e4-4fd6-8ebb-b2fa5958db02&quot;,
               &quot;type&quot;: &quot;areas&quot;
             }
           ]
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;06599337-c15d-408d-9603-eafdbc5476a6&quot;,
+            &quot;id&quot;: &quot;20454fbe-43bf-455a-9537-0d6296d292a9&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;856430c3-42fe-4826-aee4-514f4e743cbd&quot;,
+            &quot;id&quot;: &quot;2babec6e-558a-4424-982c-566e1e601b03&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
@@ -248,20 +250,23 @@ Content-Length: 1471</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;06599337-c15d-408d-9603-eafdbc5476a6&quot;,
+      &quot;id&quot;: &quot;20454fbe-43bf-455a-9537-0d6296d292a9&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Steve&quot;,
-        &quot;last_name&quot;: &quot;MacGyver&quot;,
-        &quot;slug&quot;: &quot;steve-macgyver&quot;,
+        &quot;first_name&quot;: &quot;Bessie&quot;,
+        &quot;last_name&quot;: &quot;Heathcote&quot;,
+        &quot;slug&quot;: &quot;bessie-heathcote&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/06599337-c15d-408d-9603-eafdbc5476a6/small_e44db439be7ad6a7c154399fd68d04a8.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/06599337-c15d-408d-9603-eafdbc5476a6/medium_e44db439be7ad6a7c154399fd68d04a8.png&quot;,
-          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/06599337-c15d-408d-9603-eafdbc5476a6/large_e44db439be7ad6a7c154399fd68d04a8.png&quot;
+          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/20454fbe-43bf-455a-9537-0d6296d292a9/small_cdfcb1f85d280fcbb089492dd4cabb71.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/20454fbe-43bf-455a-9537-0d6296d292a9/medium_cdfcb1f85d280fcbb089492dd4cabb71.png&quot;,
+          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/20454fbe-43bf-455a-9537-0d6296d292a9/large_cdfcb1f85d280fcbb089492dd4cabb71.png&quot;
         },
-        &quot;created_at&quot;: &quot;2017-04-24T16:21:40.576Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:21:40.576Z&quot;
+        &quot;roles&quot;: [
+
+        ],
+        &quot;created_at&quot;: &quot;2017-04-26T19:29:54.902Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-26T19:29:54.902Z&quot;
       }
     }
   ],

@@ -28,11 +28,6 @@ class Api::V1::UsersController < ::ApplicationController
     skip_authorization
     @user = User.new(user_params)
 
-    # unless user_params[:avatar]
-    #   hash = Digest::MD5.hexdigest(@user.email)
-    #   @user.remote_avatar_url = "https://www.gravatar.com/avatar/#{hash}?d=retro&size=640"
-    # end
-
     if @user.save
       render json: @user, status: :created
     else
@@ -62,6 +57,6 @@ class Api::V1::UsersController < ::ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :avatar, :locale)
+    params.require(:user).permit(:first_name, :last_name, :email, :password, :avatar, :locale, roles: [:type, :lab_id])
   end
 end

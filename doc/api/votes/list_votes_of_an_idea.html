@@ -122,7 +122,7 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas/0653c84e-b59f-4c89-8d1c-4b2f8b919e6a/votes</pre>
+          <pre class="request route highlight">GET api/v1/ideas/79b9569b-9cb9-417f-8bbd-58dd720ba1a6/votes</pre>
 
 
 
@@ -133,19 +133,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;268799ba67148ed88fde4487b7f88374&quot;
+ETag: W/&quot;ccfaa77a970750a4482d96062c47480d&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 7acc9eb4-b408-4aa6-812e-b008379ef356
-X-Runtime: 0.038741
+X-Request-Id: 647f9071-20cd-49e5-b3fb-4177f458424e
+X-Runtime: 0.034499
 Vary: Origin
-Content-Length: 1943</pre>
+Content-Length: 1953</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;d09b93ef-b293-4314-9eca-8ad57700be79&quot;,
+      &quot;id&quot;: &quot;cc8c8cda-14f0-450f-b8aa-11b83bd0206f&quot;,
       &quot;type&quot;: &quot;votes&quot;,
       &quot;attributes&quot;: {
         &quot;mode&quot;: &quot;up&quot;
@@ -153,20 +153,20 @@ Content-Length: 1943</pre>
       &quot;relationships&quot;: {
         &quot;votable&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;0653c84e-b59f-4c89-8d1c-4b2f8b919e6a&quot;,
+            &quot;id&quot;: &quot;79b9569b-9cb9-417f-8bbd-58dd720ba1a6&quot;,
             &quot;type&quot;: &quot;ideas&quot;
           }
         },
         &quot;user&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;6fc692a1-377f-4153-8d4b-42c35f50a736&quot;,
+            &quot;id&quot;: &quot;f49c9000-e9f8-4b35-bdfb-c79a0782e487&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         }
       }
     },
     {
-      &quot;id&quot;: &quot;65eba0d2-ab24-43d3-a9c9-dee5ffdd1b23&quot;,
+      &quot;id&quot;: &quot;809e0a42-9309-490f-af23-4bf6afd1fbe5&quot;,
       &quot;type&quot;: &quot;votes&quot;,
       &quot;attributes&quot;: {
         &quot;mode&quot;: &quot;up&quot;
@@ -174,13 +174,13 @@ Content-Length: 1943</pre>
       &quot;relationships&quot;: {
         &quot;votable&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;0653c84e-b59f-4c89-8d1c-4b2f8b919e6a&quot;,
+            &quot;id&quot;: &quot;79b9569b-9cb9-417f-8bbd-58dd720ba1a6&quot;,
             &quot;type&quot;: &quot;ideas&quot;
           }
         },
         &quot;user&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;830e640b-2132-4786-88b0-23f9fd3965e4&quot;,
+            &quot;id&quot;: &quot;723ab23a-794a-461b-a7c9-bfd2a0b9325f&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         }
@@ -189,37 +189,43 @@ Content-Length: 1943</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;6fc692a1-377f-4153-8d4b-42c35f50a736&quot;,
+      &quot;id&quot;: &quot;f49c9000-e9f8-4b35-bdfb-c79a0782e487&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Elisa&quot;,
-        &quot;last_name&quot;: &quot;Abshire&quot;,
-        &quot;slug&quot;: &quot;elisa-abshire&quot;,
+        &quot;first_name&quot;: &quot;Lesley&quot;,
+        &quot;last_name&quot;: &quot;Cronin&quot;,
+        &quot;slug&quot;: &quot;lesley-cronin&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/6fc692a1-377f-4153-8d4b-42c35f50a736/small_d2065284ca2ee63fc5b3b1b5aa8dd706.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/6fc692a1-377f-4153-8d4b-42c35f50a736/medium_d2065284ca2ee63fc5b3b1b5aa8dd706.png&quot;,
-          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/6fc692a1-377f-4153-8d4b-42c35f50a736/large_d2065284ca2ee63fc5b3b1b5aa8dd706.png&quot;
+          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/f49c9000-e9f8-4b35-bdfb-c79a0782e487/small_99708b3a4229026a3af5685a90bbf85b.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/f49c9000-e9f8-4b35-bdfb-c79a0782e487/medium_99708b3a4229026a3af5685a90bbf85b.png&quot;,
+          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/f49c9000-e9f8-4b35-bdfb-c79a0782e487/large_99708b3a4229026a3af5685a90bbf85b.png&quot;
         },
-        &quot;created_at&quot;: &quot;2017-04-24T16:22:56.149Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:22:56.149Z&quot;
+        &quot;roles&quot;: [
+
+        ],
+        &quot;created_at&quot;: &quot;2017-04-26T19:31:12.849Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-26T19:31:12.849Z&quot;
       }
     },
     {
-      &quot;id&quot;: &quot;830e640b-2132-4786-88b0-23f9fd3965e4&quot;,
+      &quot;id&quot;: &quot;723ab23a-794a-461b-a7c9-bfd2a0b9325f&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Hudson&quot;,
-        &quot;last_name&quot;: &quot;McCullough&quot;,
-        &quot;slug&quot;: &quot;hudson-mccullough&quot;,
+        &quot;first_name&quot;: &quot;Shanel&quot;,
+        &quot;last_name&quot;: &quot;Rath&quot;,
+        &quot;slug&quot;: &quot;shanel-rath&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/830e640b-2132-4786-88b0-23f9fd3965e4/small_fdbd5196f3b4da46de5c100770ac5095.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/830e640b-2132-4786-88b0-23f9fd3965e4/medium_fdbd5196f3b4da46de5c100770ac5095.png&quot;,
-          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/830e640b-2132-4786-88b0-23f9fd3965e4/large_fdbd5196f3b4da46de5c100770ac5095.png&quot;
+          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/723ab23a-794a-461b-a7c9-bfd2a0b9325f/small_19b082180c4bea22b9130b9b7b700d62.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/723ab23a-794a-461b-a7c9-bfd2a0b9325f/medium_19b082180c4bea22b9130b9b7b700d62.png&quot;,
+          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/723ab23a-794a-461b-a7c9-bfd2a0b9325f/large_19b082180c4bea22b9130b9b7b700d62.png&quot;
         },
-        &quot;created_at&quot;: &quot;2017-04-24T16:22:55.745Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:22:55.745Z&quot;
+        &quot;roles&quot;: [
+
+        ],
+        &quot;created_at&quot;: &quot;2017-04-26T19:31:12.326Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-26T19:31:12.326Z&quot;
       }
     }
   ]
