@@ -9,6 +9,9 @@ class User < ApplicationRecord
   validates :first_name, :last_name, :slug, :email, presence: true
   validates :locale, presence: true, inclusion: { in: proc {Tenant.settings('core','locales')} }
 
+  ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
+  validates :roles, json: { schema: ROLES_JSON_SCHEMA, message: ->(errors) { errors } }
+
   before_validation :generate_slug
   # For prepend: true, see https://github.com/carrierwaveuploader/carrierwave/wiki/Known-Issues#activerecord-callback-ordering
   before_save :generate_avatar, on: :create, prepend: true
@@ -19,6 +22,14 @@ class User < ApplicationRecord
 
   def display_name
     [first_name, last_name].join(" ")
+  end
+
+  def admin?
+    !!self.roles.find{|r| r["type"] == "admin"}
+  end
+
+  def lab_moderator? lab_id
+    !!self.roles.find{|r| r["type"] == "lab_moderator" && r["lab_id"] == lab_id}
   end
   
   private

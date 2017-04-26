@@ -1,7 +1,7 @@
 class Api::V1::UserSerializer < ActiveModel::Serializer
   include Knock::Authenticable
 
-  attributes :id, :first_name, :last_name, :slug, :locale, :avatar, :created_at, :updated_at
+  attributes :id, :first_name, :last_name, :slug, :locale, :avatar, :roles, :created_at, :updated_at
   attribute :email, if: :view_private_attributes?
 
   def view_private_attributes?
@@ -10,7 +10,6 @@ class Api::V1::UserSerializer < ActiveModel::Serializer
 
   def avatar
     object.avatar && object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
-    # object.avatar_url
   end
 
 end

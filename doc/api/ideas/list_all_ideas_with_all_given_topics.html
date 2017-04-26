@@ -173,10 +173,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=772dd9f7-680b-4126-a38e-94225c1b211d&amp;topics[]=0104dd9d-13bd-4926-8cdf-ecf9b4f321d7</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=32529cd3-ffe3-4ec4-b9f3-0964dfe4edfe&amp;topics[]=e432bc84-c90f-4670-a1ba-0f30f160c0e1</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;772dd9f7-680b-4126-a38e-94225c1b211d&quot;, &quot;0104dd9d-13bd-4926-8cdf-ecf9b4f321d7&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;32529cd3-ffe3-4ec4-b9f3-0964dfe4edfe&quot;, &quot;e432bc84-c90f-4670-a1ba-0f30f160c0e1&quot;]</pre>
 
 
 
@@ -186,19 +186,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;70a4637c480e215319dac41ff14d487c&quot;
+ETag: W/&quot;0a71979d624790014f45b843ebeeda06&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 0b732045-2429-459c-b6c7-f0b63c0cba47
-X-Runtime: 0.040852
+X-Request-Id: 5549e7f1-8529-45d8-817a-e9bf40647afc
+X-Runtime: 0.031424
 Vary: Origin
-Content-Length: 1537</pre>
+Content-Length: 1586</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;58a7756b-da92-414c-ac96-e594a1d75df7&quot;,
+      &quot;id&quot;: &quot;98c49ffb-6dbd-4887-bada-bffb81ff2f8a&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -209,23 +209,25 @@ Content-Length: 1537</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Rex Schamberger&quot;,
+        &quot;author_name&quot;: &quot;Howell Turcotte&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-04-24T16:21:34.592Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:21:34.592Z&quot;
+        &quot;upvotes_count&quot;: 0,
+        &quot;downvotes_count&quot;: 0,
+        &quot;created_at&quot;: &quot;2017-04-26T19:29:49.301Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-26T19:29:49.301Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;772dd9f7-680b-4126-a38e-94225c1b211d&quot;,
+              &quot;id&quot;: &quot;32529cd3-ffe3-4ec4-b9f3-0964dfe4edfe&quot;,
               &quot;type&quot;: &quot;topics&quot;
             },
             {
-              &quot;id&quot;: &quot;0104dd9d-13bd-4926-8cdf-ecf9b4f321d7&quot;,
+              &quot;id&quot;: &quot;e432bc84-c90f-4670-a1ba-0f30f160c0e1&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -237,13 +239,13 @@ Content-Length: 1537</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;71b22436-1eaf-433d-b1b6-e6f106bae3bc&quot;,
+            &quot;id&quot;: &quot;76232ba9-6a50-4936-85ad-30518db49dbb&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;lab&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;a350eeee-bfbd-42f9-8f0a-b8a419c8a91a&quot;,
+            &quot;id&quot;: &quot;39fc7511-f82b-4763-9ffe-f5d2a0a23d86&quot;,
             &quot;type&quot;: &quot;labs&quot;
           }
         }
@@ -252,20 +254,23 @@ Content-Length: 1537</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;71b22436-1eaf-433d-b1b6-e6f106bae3bc&quot;,
+      &quot;id&quot;: &quot;76232ba9-6a50-4936-85ad-30518db49dbb&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Rex&quot;,
-        &quot;last_name&quot;: &quot;Schamberger&quot;,
-        &quot;slug&quot;: &quot;rex-schamberger&quot;,
+        &quot;first_name&quot;: &quot;Howell&quot;,
+        &quot;last_name&quot;: &quot;Turcotte&quot;,
+        &quot;slug&quot;: &quot;howell-turcotte&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/71b22436-1eaf-433d-b1b6-e6f106bae3bc/small_ce1e1f7e8fc1d07a833ac1d557b80c01.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/71b22436-1eaf-433d-b1b6-e6f106bae3bc/medium_ce1e1f7e8fc1d07a833ac1d557b80c01.png&quot;,
-          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/71b22436-1eaf-433d-b1b6-e6f106bae3bc/large_ce1e1f7e8fc1d07a833ac1d557b80c01.png&quot;
+          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/76232ba9-6a50-4936-85ad-30518db49dbb/small_a6b268cbb77756864ae8734778d79d34.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/76232ba9-6a50-4936-85ad-30518db49dbb/medium_a6b268cbb77756864ae8734778d79d34.png&quot;,
+          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/76232ba9-6a50-4936-85ad-30518db49dbb/large_a6b268cbb77756864ae8734778d79d34.png&quot;
         },
-        &quot;created_at&quot;: &quot;2017-04-24T16:21:34.581Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:21:34.581Z&quot;
+        &quot;roles&quot;: [
+
+        ],
+        &quot;created_at&quot;: &quot;2017-04-26T19:29:49.291Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-26T19:29:49.291Z&quot;
       }
     }
   ],

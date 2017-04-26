@@ -72,7 +72,7 @@ resource "Users" do
         parameter :password, "Password", required: true
         parameter :locale, "Locale. Should be one of the tenants locales", required: true
         parameter :avatar, "Base64 encoded avatar image"
-
+        parameter :roles, "Roles array", required: false
       end
 
       let(:first_name) {Faker::Name.first_name}

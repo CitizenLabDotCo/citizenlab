@@ -185,7 +185,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMxMzczMjcsInN1YiI6ImMxMTQxMDQ2LTIyNDktNDY1ZC1hOTE4LWExYjA5Mjc2NTljYiJ9.mfcjLLqNEFlDPFXnIaA5Xhak24h7KucZIgNNVs55O8k
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMzMjE0MjcsInN1YiI6IjEzMGM1MzQxLTU5ZjQtNDJhNi1hMDc2LTMxMTc2YjI1ODFlYSJ9.ndoLb9z9UlJFBN8SYhKkotYuHtlsEMhhE9-YuAH99-o
 Host: example.org
 Cookie: </pre>
 
@@ -194,7 +194,7 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"idea":{"lab_id":"e61c5881-10b0-43a0-b68f-e1550cbb1e01","author_id":"35289fd9-9818-4c43-bbf8-0e523fa27644","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"}}}</pre>
+            <pre class="request body">{"idea":{"lab_id":"c25d710f-0038-4719-adeb-cbe135ad4ebd","author_id":"ceab47c1-41b6-4046-a7c4-0eba84281cc0","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"}}}</pre>
 
 
             <h3>Response</h3>
@@ -203,18 +203,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;f3444de03641e937bc449dc160cb75cd&quot;
+ETag: W/&quot;b9c48e0da61ef2c2f35913ea9d7ccdac&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: eabd1904-1ef2-42e6-ba9a-0811fc284e29
-X-Runtime: 0.037700
+X-Request-Id: 323a3901-b02c-4a0d-b12a-d658729fa4e4
+X-Runtime: 0.033685
 Vary: Origin
-Content-Length: 1398</pre>
+Content-Length: 1453</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;0e5033e3-70d2-403f-a72a-128753defe60&quot;,
+    &quot;id&quot;: &quot;c2270ad6-ba03-4fed-9626-77fc78932031&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -225,13 +225,15 @@ Content-Length: 1398</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Shirley Mayert&quot;,
+      &quot;author_name&quot;: &quot;Giovanna Reinger&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;images&quot;: [
 
       ],
-      &quot;created_at&quot;: &quot;2017-04-24T16:22:08.219Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-04-24T16:22:08.219Z&quot;
+      &quot;upvotes_count&quot;: 0,
+      &quot;downvotes_count&quot;: 0,
+      &quot;created_at&quot;: &quot;2017-04-26T19:30:28.541Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-04-26T19:30:28.541Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -246,13 +248,13 @@ Content-Length: 1398</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;35289fd9-9818-4c43-bbf8-0e523fa27644&quot;,
+          &quot;id&quot;: &quot;ceab47c1-41b6-4046-a7c4-0eba84281cc0&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
       &quot;lab&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;e61c5881-10b0-43a0-b68f-e1550cbb1e01&quot;,
+          &quot;id&quot;: &quot;c25d710f-0038-4719-adeb-cbe135ad4ebd&quot;,
           &quot;type&quot;: &quot;labs&quot;
         }
       }
@@ -260,20 +262,23 @@ Content-Length: 1398</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;35289fd9-9818-4c43-bbf8-0e523fa27644&quot;,
+      &quot;id&quot;: &quot;ceab47c1-41b6-4046-a7c4-0eba84281cc0&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Shirley&quot;,
-        &quot;last_name&quot;: &quot;Mayert&quot;,
-        &quot;slug&quot;: &quot;shirley-mayert&quot;,
+        &quot;first_name&quot;: &quot;Giovanna&quot;,
+        &quot;last_name&quot;: &quot;Reinger&quot;,
+        &quot;slug&quot;: &quot;giovanna-reinger&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/35289fd9-9818-4c43-bbf8-0e523fa27644/small_b044af097111855e145374aba00b15c3.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/35289fd9-9818-4c43-bbf8-0e523fa27644/medium_b044af097111855e145374aba00b15c3.png&quot;,
-          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/35289fd9-9818-4c43-bbf8-0e523fa27644/large_b044af097111855e145374aba00b15c3.png&quot;
+          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/ceab47c1-41b6-4046-a7c4-0eba84281cc0/small_0a4619ea5f450e4c9c5ca549777526d2.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/ceab47c1-41b6-4046-a7c4-0eba84281cc0/medium_0a4619ea5f450e4c9c5ca549777526d2.png&quot;,
+          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/ceab47c1-41b6-4046-a7c4-0eba84281cc0/large_0a4619ea5f450e4c9c5ca549777526d2.png&quot;
         },
-        &quot;created_at&quot;: &quot;2017-04-24T16:22:07.684Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:22:07.684Z&quot;
+        &quot;roles&quot;: [
+
+        ],
+        &quot;created_at&quot;: &quot;2017-04-26T19:30:27.956Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-26T19:30:27.956Z&quot;
       }
     }
   ]

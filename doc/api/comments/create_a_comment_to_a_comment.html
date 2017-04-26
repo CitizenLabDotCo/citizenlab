@@ -153,16 +153,16 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMxMzcyODIsInN1YiI6IjllNTg2ZGY1LTJkZmQtNGYwNi1iZWI5LTYzMzBmYTdiNTM1NyJ9.RpexDHzBdOz0S4bIS1TfuMzRPPaRgKYK0wGsMRH6RRo
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMzMjEzNjksInN1YiI6ImU2YTQ1MzQxLTJjZTQtNDdmMy1hMDcxLTQ0OWVmMGQ0OWZkYiJ9.uRn7aQLVzbFyYknUOz1kje-mVDOi5oFF2RCiVHZ3zm4
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/ideas/8ccce8e8-6478-4924-bc4b-cc4a62b38cb0/comments</pre>
+          <pre class="request route highlight">POST api/v1/ideas/91811b59-6b44-4c9b-b988-89e7b9b5bdba/comments</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"comment":{"body_multiloc":{"en":"\u003cp\u003eI think this is a very good idea!\u003c/p\u003e","nl":"\u003cp\u003eGeweldig idee!\u003c/p\u003e"},"parent_id":"94cce366-af14-4ab8-a628-13c91d8e545c"}}</pre>
+            <pre class="request body">{"comment":{"body_multiloc":{"en":"\u003cp\u003eI think this is a very good idea!\u003c/p\u003e","nl":"\u003cp\u003eGeweldig idee!\u003c/p\u003e"},"parent_id":"bfcb22fc-f9c6-46a4-a586-aa1ab2d6709f"}}</pre>
 
 
             <h3>Response</h3>
@@ -171,43 +171,43 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;1ff9c18ab5c58469560a8fef0162aab6&quot;
+ETag: W/&quot;a398d98c1c5e92b5ba89885405888128&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 24bed033-95c4-4c11-9c79-d837705b9a16
-X-Runtime: 0.051999
+X-Request-Id: fd8645d3-985d-4e90-b169-373e5db85757
+X-Runtime: 0.040684
 Vary: Origin
-Content-Length: 1297</pre>
+Content-Length: 1308</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;9dad24d0-23f9-428e-9eae-f002204d4529&quot;,
+    &quot;id&quot;: &quot;3bd9d570-a4bd-4406-a152-5f8d65a6ba40&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
         &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
       },
-      &quot;created_at&quot;: &quot;2017-04-24T16:21:23.504Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-04-24T16:21:23.517Z&quot;
+      &quot;created_at&quot;: &quot;2017-04-26T19:29:30.062Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-04-26T19:29:30.070Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;8ccce8e8-6478-4924-bc4b-cc4a62b38cb0&quot;,
+          &quot;id&quot;: &quot;91811b59-6b44-4c9b-b988-89e7b9b5bdba&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;9e586df5-2dfd-4f06-beb9-6330fa7b5357&quot;,
+          &quot;id&quot;: &quot;e6a45341-2ce4-47f3-a071-449ef0d49fdb&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
       &quot;parent&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;94cce366-af14-4ab8-a628-13c91d8e545c&quot;,
+          &quot;id&quot;: &quot;bfcb22fc-f9c6-46a4-a586-aa1ab2d6709f&quot;,
           &quot;type&quot;: &quot;comments&quot;
         }
       }
@@ -215,21 +215,24 @@ Content-Length: 1297</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;9e586df5-2dfd-4f06-beb9-6330fa7b5357&quot;,
+      &quot;id&quot;: &quot;e6a45341-2ce4-47f3-a071-449ef0d49fdb&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Henriette&quot;,
-        &quot;last_name&quot;: &quot;Marks&quot;,
-        &quot;slug&quot;: &quot;henriette-marks&quot;,
+        &quot;first_name&quot;: &quot;Maxime&quot;,
+        &quot;last_name&quot;: &quot;Price&quot;,
+        &quot;slug&quot;: &quot;maxime-price&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/9e586df5-2dfd-4f06-beb9-6330fa7b5357/small_b38b252bba10cebc732f9e32e8f1aaf8.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/9e586df5-2dfd-4f06-beb9-6330fa7b5357/medium_b38b252bba10cebc732f9e32e8f1aaf8.png&quot;,
-          &quot;large&quot;: &quot;/uploads/e6f3ea7f-8dd9-4aaa-a568-0a767c6c384d/user/avatar/9e586df5-2dfd-4f06-beb9-6330fa7b5357/large_b38b252bba10cebc732f9e32e8f1aaf8.png&quot;
+          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/e6a45341-2ce4-47f3-a071-449ef0d49fdb/small_f9b6c4fc7b0376f03433b6835d216f2f.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/e6a45341-2ce4-47f3-a071-449ef0d49fdb/medium_f9b6c4fc7b0376f03433b6835d216f2f.png&quot;,
+          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/e6a45341-2ce4-47f3-a071-449ef0d49fdb/large_f9b6c4fc7b0376f03433b6835d216f2f.png&quot;
         },
-        &quot;created_at&quot;: &quot;2017-04-24T16:21:22.346Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-24T16:21:22.346Z&quot;,
-        &quot;email&quot;: &quot;millie@grimes.name&quot;
+        &quot;roles&quot;: [
+
+        ],
+        &quot;created_at&quot;: &quot;2017-04-26T19:29:29.022Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-04-26T19:29:29.022Z&quot;,
+        &quot;email&quot;: &quot;natalia.harvey@maggio.io&quot;
       }
     }
   ]
