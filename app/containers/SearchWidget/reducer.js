@@ -12,6 +12,7 @@ import {
 
 const initialState = fromJS({
   isLoadingFilteredIdeas: false,
+  searchResults: [],
 });
 
 function searchWidgetReducer(state = initialState, action) {
@@ -22,9 +23,14 @@ function searchWidgetReducer(state = initialState, action) {
     case SEARCH_IDEAS_ERROR:
       return state
         .set('isLoadingFilteredIdeas', false);
-    case SEARCH_IDEAS_SUCCESS:
+    case SEARCH_IDEAS_SUCCESS: {
+      console.log(action);
+      const ids = action.payload.data.map((idea) => idea.id);
+
       return state
+        .set('searchResults', ids)
         .set('isLoadingFilteredIdeas', false);
+    }
     default:
       return state;
   }

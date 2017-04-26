@@ -10,11 +10,13 @@ import { connect } from 'react-redux';
 import { Saga } from 'react-redux-saga';
 import { createStructuredSelector } from 'reselect';
 import { Search } from 'semantic-ui-react';
+import { push } from 'react-router-redux';
+import { injectIntl, intlShape } from 'react-intl';
 
-// import { makeSelectIsLoadingFilteredIdeas } from './selectors';
 import { watchSearchIdeasRequest } from './sagas';
 import { searchIdeasRequest } from './actions';
-import { makeSelectIsLoadingFilteredIdeas } from './selectors';
+import { makeSelectIsLoadingFilteredIdeas, makeSelectSearchResults } from './selectors';
+import messages from './messages';
 
 export class SearchWidget extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -22,20 +24,31 @@ export class SearchWidget extends React.PureComponent { // eslint-disable-line r
 
     // provide 'this' context to callbacks
     this.searchIdeas = this.searchIdeas.bind(this);
+    this.handleResultSelect = this.handleResultSelect.bind(this);
   }
 
   searchIdeas(event, value) {
     this.props.searchIdeas(value);
   }
 
+  handleResultSelect(event, value) {
+    this.props.goToIdea(value.id);
+  }
+
   render() {
-    const { isLoadingFilteredIdeas } = this.props;
+    console.log(this.props);
+    const { isLoadingFilteredIdeas, searchResults } = this.props;
+    const { formatMessage } = this.props.intl;
+
     return (
       <div>
         <Saga saga={watchSearchIdeasRequest} />
         <Search
           loading={isLoadingFilteredIdeas}
+          results={searchResults}
+          onResultSelect={this.handleResultSelect}
           onSearchChange={this.searchIdeas}
+          noResultsMessage={formatMessage(messages.noResultsMessage)}
         />
       </div>
     );
@@ -45,10 +58,14 @@ export class SearchWidget extends React.PureComponent { // eslint-disable-line r
 SearchWidget.propTypes = {
   isLoadingFilteredIdeas: PropTypes.bool.isRequired,
   searchIdeas: PropTypes.func.isRequired,
+  searchResults: PropTypes.array.isRequired,
+  intl: intlShape.isRequired,
+  goToIdea: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   isLoadingFilteredIdeas: makeSelectIsLoadingFilteredIdeas(),
+  searchResults: makeSelectSearchResults(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -56,7 +73,9 @@ export function mapDispatchToProps(dispatch) {
     searchIdeas: (filterString) => {
       dispatch(searchIdeasRequest(filterString));
     },
+    goToIdea: (ideaId) => {
+      dispatch(push(`/ideas/${ideaId}`));
+    },
   };
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchWidget);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(SearchWidget));

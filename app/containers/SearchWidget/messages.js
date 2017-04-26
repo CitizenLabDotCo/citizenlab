@@ -6,8 +6,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  header: {
-    id: 'app.containers.Search.header',
-    defaultMessage: 'This is Search container !',
+  noResultsMessage: {
+    id: 'app.containers.SearchWidget.noResultsMessage',
+    defaultMessage: 'No results',
   },
 });
