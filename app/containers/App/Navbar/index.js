@@ -4,7 +4,7 @@ import { Menu, Button, Dropdown, Icon, Image } from 'semantic-ui-react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import messages from './messages';
-import { SearchWidget } from '../../SearchWidget';
+import SearchWidget from '../../SearchWidget';
 
 class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 

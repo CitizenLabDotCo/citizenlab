@@ -23,12 +23,15 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/HomePage'),
+          // TODO: this should be available on all routes, not just /
+          import('containers/SearchWidget/reducer'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([component]) => {
+        importModules.then(([component, searchWidgetReducer]) => {
           renderRoute(component);
+          injectReducer('searchWidget', searchWidgetReducer.default);
         });
 
         importModules.catch(errorLoading);

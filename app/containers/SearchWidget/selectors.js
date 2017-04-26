@@ -11,7 +11,7 @@ const selectSearchDomain = () => (state) => state.get('searchWidget');
 
 const makeSelectIsLoadingFilteredIdeas = () => createSelector(
   selectSearchDomain(),
-  (appState) => appState.get('isLoadingFilteredIdeas')
+  (searchWidgetState) => searchWidgetState.get('isLoadingFilteredIdeas')
 );
 
 export {

@@ -25,13 +25,11 @@ export class SearchWidget extends React.PureComponent { // eslint-disable-line r
   }
 
   searchIdeas(event, value) {
-    // console.log(this.props);
     this.props.searchIdeas(value);
   }
 
   render() {
     const { isLoadingFilteredIdeas } = this.props;
-
     return (
       <div>
         <Saga saga={watchSearchIdeasRequest} />
