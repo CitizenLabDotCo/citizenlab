@@ -12,11 +12,19 @@ class AreaPolicy < ApplicationPolicy
     end
   end
 
+  def create?
+    user && user.admin?
+  end
+
   def show?
     true
   end
 
   def update?
-    false
+    user && user.admin?
+  end
+
+  def destroy?
+    update?
   end
 end

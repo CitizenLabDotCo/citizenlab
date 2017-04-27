@@ -8,27 +8,37 @@ class UserPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.all
+      if user && user.admin?
+        scope
+      elsif user
+        scope.where(id: user.id)
+      else
+        scope.none
+      end
     end
   end
 
-  def index?
-    user
+  def create?
+    true
   end
 
   def show?
     true
   end
 
-  def me?
-    true
-  end
-
   def update?
-    true
+    user && (record.id == user.id || user.admin?)
   end
 
   def view_private_attributes?
-    user && record.id == user.id
+    user && (record.id == user.id || user.admin?)
+  end
+
+  def permitted_attributes
+    if user && user.admin?
+      [:first_name, :last_name, :email, :password, :avatar, :locale, roles: [:type, :lab_id]]
+    else
+      [:first_name, :last_name, :email, :password, :avatar, :locale]
+    end
   end
 end

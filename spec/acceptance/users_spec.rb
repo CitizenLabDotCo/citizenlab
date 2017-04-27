@@ -28,12 +28,27 @@ resource "Users" do
   context "when authenticated" do
     before do
       @user = create(:user)
+      create_list(:user, 5)
       token = Knock::AuthToken.new(payload: { sub: @user.id }).token
       header 'Authorization', "Bearer #{token}"
     end
 
+    context "when admin" do
+      before do
+        @user.update(roles: [{type: 'admin'}])
+      end
+
+      get "api/v1/users" do
+        example_request "Get all users as admin" do
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 6
+        end
+      end
+    end
+
     get "api/v1/users" do
-      example_request "Get all users" do
+      example_request "Get all users as non-admin" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
@@ -72,7 +87,7 @@ resource "Users" do
         parameter :password, "Password", required: true
         parameter :locale, "Locale. Should be one of the tenants locales", required: true
         parameter :avatar, "Base64 encoded avatar image"
-        parameter :roles, "Roles array", required: false
+        parameter :roles, "Roles array, only allowed when admin", required: false
       end
 
       let(:first_name) {Faker::Name.first_name}
@@ -84,6 +99,16 @@ resource "Users" do
 
       example_request "Create a new user" do
         expect(response_status).to eq 201
+      end
+
+      describe "Creating an admin user" do
+        let(:roles) { [{type: 'admin'}] }
+        example "creates a user, but not an admin", document: false do
+          do_request
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :roles)).to be_empty
+        end
       end
     end
 
