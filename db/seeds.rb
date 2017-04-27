@@ -54,7 +54,8 @@ Apartment::Tenant.switch('localhost') do
       last_name: Faker::Name.last_name,
       email: Faker::Internet.email,
       password: 'testtest',
-      locale: ['en','nl'][rand(1)]
+      locale: ['en','nl'][rand(1)],
+      roles: rand(10) == 0 ? [{type: 'admin'}] : []
     })
   end
 

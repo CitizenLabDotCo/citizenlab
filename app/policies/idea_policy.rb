@@ -21,11 +21,11 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def update?
-    record.draft? || (user && record.author_id == user.id)
+    record.draft? || (user && (record.author_id == user.id || user.admin?))
   end
 
   def destroy?
-    record.draft? || (user && record.author_id == user.id)
+    update?
   end
 
 
