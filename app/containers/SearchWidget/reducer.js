@@ -24,7 +24,6 @@ function searchWidgetReducer(state = initialState, action) {
       return state
         .set('isLoadingFilteredIdeas', false);
     case SEARCH_IDEAS_SUCCESS: {
-      console.log(action);
       const ids = action.payload.data.map((idea) => idea.id);
 
       return state

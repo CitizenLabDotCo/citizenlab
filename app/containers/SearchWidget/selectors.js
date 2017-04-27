@@ -3,14 +3,13 @@
  */
 import { createSelector } from 'reselect';
 import { fromJS } from 'immutable';
+import { selectResourcesDomain } from 'utils/resources/selectors';
+import createFragment from 'react-addons-create-fragment';
 
-import { selectResourcesDomain } from '../../utils/resources/selectors';
-import { makeSelectSetting } from '../../utils/tenant/selectors';
-import { makeSelectLocale } from '../LanguageProvider/selectors';
-import { findTranslatedText } from '../T/utils';
+import IdeasSearchResultWrapper from './IdeasSearchResultWrapper';
+import IdeasSearchResult from './IdeasSearchResult';
 
 const selectSearchDomain = () => (state) => state.get('searchWidget');
-
 /**
  * Other specific selectors
  */
@@ -23,19 +22,17 @@ const makeSelectIsLoadingFilteredIdeas = () => createSelector(
 const makeSelectSearchResults = () => createSelector(
   selectSearchDomain(),
   selectResourcesDomain(),
-  makeSelectLocale(),
-  makeSelectSetting(['core', 'locales']),
-  (pageState, resources, userLocale, tenantLocales) => {
+  (pageState, resources) => {
     const ids = pageState.get('searchResults', fromJS([]));
     const resourceIdeas = resources.get('ideas');
     return (resourceIdeas
-      ? ids.map((id) => ({
-        title: findTranslatedText(
-          resourceIdeas.toJS()[id].attributes.title_multiloc,
-          userLocale,
-          tenantLocales
-        ),
-        id,
+      ? ids.map((id, index) => ({
+        title: resourceIdeas.toJS()[id].attributes.title_multiloc,
+        id: index,
+        price: id,
+        testProp: 'anyvalue',
+        // each result will be rendered by Search wrapped in IdeasSearchResultWrapper
+        as: IdeasSearchResultWrapper,
       }))
       : []);
   }

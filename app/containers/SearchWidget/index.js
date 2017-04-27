@@ -17,6 +17,8 @@ import { watchSearchIdeasRequest } from './sagas';
 import { searchIdeasRequest } from './actions';
 import { makeSelectIsLoadingFilteredIdeas, makeSelectSearchResults } from './selectors';
 import messages from './messages';
+import IdeasSearchResult from './IdeasSearchResult';
+import IdeasSearchResultWrapper from './IdeasSearchResultWrapper';
 
 export class SearchWidget extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -31,12 +33,12 @@ export class SearchWidget extends React.PureComponent { // eslint-disable-line r
     this.props.searchIdeas(value);
   }
 
-  handleResultSelect(event, value) {
-    this.props.goToIdea(value.id);
+  handleResultSelect(event, values) {
+    console.log('...', values);
+    this.props.goToIdea(values.price);
   }
 
   render() {
-    console.log(this.props);
     const { isLoadingFilteredIdeas, searchResults } = this.props;
     const { formatMessage } = this.props.intl;
 
@@ -46,6 +48,7 @@ export class SearchWidget extends React.PureComponent { // eslint-disable-line r
         <Search
           loading={isLoadingFilteredIdeas}
           results={searchResults}
+          resultRenderer={IdeasSearchResult}
           onResultSelect={this.handleResultSelect}
           onSearchChange={this.searchIdeas}
           noResultsMessage={formatMessage(messages.noResultsMessage)}
@@ -58,7 +61,7 @@ export class SearchWidget extends React.PureComponent { // eslint-disable-line r
 SearchWidget.propTypes = {
   isLoadingFilteredIdeas: PropTypes.bool.isRequired,
   searchIdeas: PropTypes.func.isRequired,
-  searchResults: PropTypes.array.isRequired,
+  searchResults: PropTypes.any.isRequired,
   intl: intlShape.isRequired,
   goToIdea: PropTypes.func.isRequired,
 };
