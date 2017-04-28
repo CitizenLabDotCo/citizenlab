@@ -3,7 +3,7 @@ class Api::V1::UsersController < ::ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
 
   def index
-    @users = policy_scope(User).page(params[:page])
+    @users = policy_scope(User)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
     render json: @users
