@@ -2,12 +2,9 @@
  * Direct selector to the search state domain
  */
 import { createSelector } from 'reselect';
-import { fromJS } from 'immutable';
 import { selectResourcesDomain } from 'utils/resources/selectors';
-import createFragment from 'react-addons-create-fragment';
 
 import IdeasSearchResultWrapper from './IdeasSearchResultWrapper';
-import IdeasSearchResult from './IdeasSearchResult';
 
 const selectSearchDomain = () => (state) => state.get('searchWidget');
 /**
@@ -23,14 +20,26 @@ const makeSelectSearchResults = () => createSelector(
   selectSearchDomain(),
   selectResourcesDomain(),
   (pageState, resources) => {
-    const ids = pageState.get('searchResults', fromJS([]));
+    // console.log(pageState.toJS(), resources.toJS())
+    const ids = pageState.get('searchResults');
     const resourceIdeas = resources.get('ideas');
-    return (resourceIdeas
+    // console.log('-------------------------------------');
+    // console.log(`resourceIdeas: `, resourceIdeas);
+    // console.log(`ids (selector): `, ids);
+    // console.log('return value (selector): ', (ids && resourceIdeas
+    //   ? ids.map((id, index) => ({
+    //     titleMultiloc: resourceIdeas.toJS()[id].attributes.title_multiloc,
+    //     ideaId: id,
+    //     key: index,
+    //     // each result will be rendered by Search wrapped in IdeasSearchResultWrapper
+    //     as: IdeasSearchResultWrapper,
+    //   }))
+    //   : []));
+    return (ids && resourceIdeas
       ? ids.map((id, index) => ({
-        title: resourceIdeas.toJS()[id].attributes.title_multiloc,
-        id: index,
-        price: id,
-        testProp: 'anyvalue',
+        titleMultiloc: resourceIdeas.toJS()[id].attributes.title_multiloc,
+        ideaId: id,
+        key: index,
         // each result will be rendered by Search wrapped in IdeasSearchResultWrapper
         as: IdeasSearchResultWrapper,
       }))

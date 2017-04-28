@@ -18,7 +18,6 @@ import { searchIdeasRequest } from './actions';
 import { makeSelectIsLoadingFilteredIdeas, makeSelectSearchResults } from './selectors';
 import messages from './messages';
 import IdeasSearchResult from './IdeasSearchResult';
-import IdeasSearchResultWrapper from './IdeasSearchResultWrapper';
 
 export class SearchWidget extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -34,19 +33,18 @@ export class SearchWidget extends React.PureComponent { // eslint-disable-line r
   }
 
   handleResultSelect(event, values) {
-    console.log('...', values);
-    this.props.goToIdea(values.price);
+    this.props.goToIdea(values.ideaId);
   }
 
   render() {
     const { isLoadingFilteredIdeas, searchResults } = this.props;
     const { formatMessage } = this.props.intl;
-
     return (
       <div>
         <Saga saga={watchSearchIdeasRequest} />
         <Search
           loading={isLoadingFilteredIdeas}
+          // searchResults it's an immutable when returned from a selector but then it becomes an object
           results={searchResults}
           resultRenderer={IdeasSearchResult}
           onResultSelect={this.handleResultSelect}
