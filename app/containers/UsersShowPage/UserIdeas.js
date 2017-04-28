@@ -3,19 +3,20 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import IdeaCard from 'components/IdeaCard';
-import { Label, Grid } from 'semantic-ui-react';
+import { Label, Card, Segment } from 'semantic-ui-react';
 
 import messages from './messages';
 
 // eslint-disable-next-line react/prop-types
-const UserIdeasWrapper = ({ userIdeas, goToIdea }) => (<Grid.Row>{userIdeas.map((userIdea, index) => (
-  <Grid.Column key={index}>
+const UserIdeasWrapper = ({ userIdeas, goToIdea }) => (<Segment basic>
+  <Card.Group itemsPerRow={4} doubling stackable>{userIdeas.map((userIdea) => (
     <IdeaCard
       idea={userIdea}
       onClick={() => goToIdea(userIdea.id)}
     />
-  </Grid.Column>
-))}</Grid.Row>);
+  ))}
+  </Card.Group>
+</Segment>);
 
 function UserIdeas(props) {
   const { loadingUserIdeas, loadUserIdeasError, userIdeas, goToIdea } = props;
@@ -28,12 +29,10 @@ function UserIdeas(props) {
       {loadUserIdeasError && <Label>
         {loadUserIdeasError}
         </Label>}
-      <Grid columns={2} centered>
-        <UserIdeasWrapper
-          userIdeas={userIdeas}
-          goToIdea={goToIdea}
-        />
-      </Grid>
+      <UserIdeasWrapper
+        userIdeas={userIdeas}
+        goToIdea={goToIdea}
+      />
     </div>
   );
 }
