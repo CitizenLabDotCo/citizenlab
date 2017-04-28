@@ -39,16 +39,26 @@ resource "Users" do
       end
 
       get "api/v1/users" do
-        example_request "Get all users as admin" do
+        example_request "Get all users" do
           expect(status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 6
         end
       end
+
+      get "api/v1/users" do
+        example "Get all users on the second page with fixed page size" do
+          do_request({"page[number]" => 2, "page[size]" => 2})
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 2
+        end
+      end
     end
 
     get "api/v1/users" do
-      example_request "Get all users as non-admin" do
+      example "Get all users as non-admin", document: false do
+        do_request
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
