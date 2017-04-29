@@ -5,51 +5,19 @@
  */
 
 import React from 'react';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import {
-  Button,
-} from 'components/Foundation';
+import T from 'containers/T';
+
+import socialAuth from 
+
 import makeSelectSignInPage from './selectors';
 import messages from './messages';
 import Form from './Form';
 import { authenticateRequest } from './actions';
-import socialAuth from '../../socialAuth';
-import T from 'containers/T';
 
-const Box = styled.div`
-  padding: 20px;
-  border: 1px solid #888;
-  margin-bottom: 20px;
-`;
-
-// export const LoggedInAsBox = () => (
-//   <Box>
-//     { socialAuth('facebook').isLoggedIn() ? 'logged in? yes' : 'logged in? no' }
-//   </Box>
-// );
-
-// export const SocialLoginBox = (props) => {
-//     socialAuth('facebook').login().then(props.onChange);
-//   };
-
-//   const handleLogoutClick = () => {
-//     socialAuth('facebook').logout();
-//     props.onChange();
-//   };
-
-//   return (
-//     <div>
-//           <button className="ui facebook button" onClick={() => handleLoginClick()}>
-//             <i className="facebook icon"></i>
-//             Sign In With Facebook
-//           </button>
-//     </div>
-//   );
-// };
 
 // TODO enable eslint
 /* eslint-disable */
@@ -73,7 +41,7 @@ export class SignInPage extends React.PureComponent { // eslint-disable-line rea
   // }
 
   handleSocialLogin = () =>{
-    ocialAuth('facebook').login().then(this.forceUpdate());
+    socialAuth('facebook').login().then(this.forceUpdate());
   }
 
   render() {

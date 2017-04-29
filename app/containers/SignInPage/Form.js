@@ -1,8 +1,8 @@
 import React from 'react';
-import { Grid, Button, Header, Label, Form, Message, Loader, Segment } from 'semantic-ui-react';
-import messages from './messages';
-import T from 'containers/T';
+import { Grid, Button, Header, Label, Form, Message, Loader } from 'semantic-ui-react';
 import { injectTFunc } from 'containers/T/utils';
+
+import messages from './messages';
 
 //  <LocalForm model="'auth'" onSubmit={props.onSubmit}>
 
@@ -17,13 +17,17 @@ const initialState = {
 const RenderError = (props) => {
   const { messages } = props;
   if (!messages) return null;
-  return(
-    <Label basic color='red' pointing>{messages.join(", ")}</Label>
+  return (
+    <Label basic color='red' pointing>{messages.join(', ')}</Label>
   );
 };
 
+RenderError.PropTypes = {
+  messages: React.propTypes.array,
+};
+
 class RegistrationForm extends React.Component {
-  constructor(){
+  constructor() {
     super();
     this.state = initialState;
   }
@@ -81,8 +85,8 @@ class RegistrationForm extends React.Component {
               <Button fluid size={'small'} style={{ position: 'relative' }}>
                 { pending ?
                   <div style={{ position: 'relative' }}>
-                    <span style={{ color: "rgba(0, 0, 0, 0)" }}> o </span>
-                    <Loader size='mini' active />
+                    <span style={{ color: 'rgba(0, 0, 0, 0)' }}> o </span>
+                    <Loader size={'mini'} active />
                   </div> :
                   tFunc(messages.buttonSignIn)
                 }
@@ -90,7 +94,7 @@ class RegistrationForm extends React.Component {
             </Form>
             {this.props.children}
             <Message>
-              {/*"ERROR THE LINK IS NOT PROPERLY HANDLED"*/ }
+              {/* ERROR THE LINK IS NOT PROPERLY HANDLED*/ }
               {tFunc(messages.signUpAction1)} <a href={'/'}>{tFunc(messages.signUpAction2)}</a>
             </Message>
 
@@ -99,7 +103,7 @@ class RegistrationForm extends React.Component {
       </div>
     );
   }
-};
+}
 
 RegistrationForm.propTypes = {
   onSubmit: React.PropTypes.func.isRequired,
