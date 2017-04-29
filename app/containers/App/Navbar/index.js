@@ -46,7 +46,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
     const { formatMessage } = this.props.intl;
     const { currentUser, currentTenant } = this.props;
     return (
-      <Menu fixed="top">
+      <Menu>
         <Menu.Item>{currentTenant.attributes.name}</Menu.Item>
         <Menu.Item><Link to="/ideas"><FormattedMessage {...messages.ideas} /></Link></Menu.Item>
         <Menu.Item>
