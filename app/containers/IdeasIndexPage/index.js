@@ -17,7 +17,7 @@ import messages from './messages';
 import { initIdeasData, loadNextPage } from './actions';
 import { ideasSaga, topicsSaga, areasSaga } from './sagas';
 
-import SidebarMenuContainer from './components/SidebarMenu';
+import SidebarMenuContainer from './components/sidebarMenu';
 import Pannel from './components/pannel';
 
 
@@ -42,8 +42,8 @@ class PannelContainer extends React.Component {
             overflow: 'visible',
             lineHeight: 0,
             fontSize: '0',
-            marginTop: "5px",
-            backgroundColor: '#1b1c1d'
+            marginTop: '5px',
+            backgroundColor: '#1b1c1d',
           }}
         >
           <div style={{ textAlign: 'center' }}>
@@ -55,7 +55,7 @@ class PannelContainer extends React.Component {
                 fontSize: '26px',
                 lineHeight: '46px',
                 color: 'white',
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
             />
           </div>
@@ -100,7 +100,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
     return (
       <div>
         <Helmet
-          title="IdeasIndexPage"
+          title={'IdeasIndexPage'}
           meta={[
             { name: 'description', content: 'Description of IdeasIndexPage' },
           ]}
@@ -110,7 +110,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
           <FormattedMessage {...messages.header} />
         </h1>
         <PannelContainer />
-        {this.props.children || ""}
+        {this.props.children || ''}
       </div>
     );
   }

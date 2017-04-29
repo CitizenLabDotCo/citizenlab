@@ -148,6 +148,8 @@
         2,
         "multiline"
       ],
+      "react/prefer-stateless-function": 0,
+      "react/no-multi-comp": 0,
       "react/jsx-filename-extension": 0,
       "react/jsx-no-target-blank": 0,
       "react/require-extension": 0,

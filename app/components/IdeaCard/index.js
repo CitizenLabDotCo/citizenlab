@@ -6,14 +6,13 @@
 
 import React, { PropTypes } from 'react';
 import T from 'containers/T';
-import styled from 'styled-components';
 import { Card, Label, Button, Image, Icon, Feed } from 'semantic-ui-react';
 
 const AuthorDetail = (props) => {
   const { author } = props;
   const last = author && author.get('last_name');
   const first = author && author.get('last_name');
-  const nameString = [last, first].filter((name) => name).join(", ");
+  const nameString = [last, first].filter((name) => name).join(', ');
   return (
     <Card.Content>
       <Card.Description>
@@ -23,17 +22,21 @@ const AuthorDetail = (props) => {
   );
 };
 
+AuthorDetail.propTypes = {
+  author: React.PropTypes.any,
+};
+
 const ResourceDetail = (props) => {
-  let { resource, type } = props;
+  const { resource, type } = props;
 
   return (
     <Card.Content>
       <Card.Description>
         <b>{type} </b>: <span></span>
         {resource.map((item, i) => {
-          const title = item.getIn(['data','title_multiloc']);
+          const title = item.getIn(['data', 'title_multiloc']);
           if (!title) return <span key={i} />;
-          return(
+          return (
             <span key={item.get('id')}>
               <T value={title.toJS()} />
             </span>
@@ -44,11 +47,16 @@ const ResourceDetail = (props) => {
   );
 };
 
+ResourceDetail.propTypes = {
+  resource: React.PropTypes.any,
+  type: React.PropTypes.any,
+};
+
 class CardDetails extends React.PureComponent {
   render() {
     const { author, topics, areas } = this.props;
     return (
-      <Card style = {{ margin: 0, borderRadius: 0, boxShadow: 'none' }}>
+      <Card style={{ margin: 0, borderRadius: 0, boxShadow: 'none' }}>
         <Card.Content>
           <Card.Description>
             <AuthorDetail author={author} />
@@ -73,7 +81,7 @@ class CardDetails extends React.PureComponent {
   }
 }
 
-CardDetails.PropTypes = {
+CardDetails.propTypes = {
   author: PropTypes.any,
   topics: PropTypes.any,
   areas: PropTypes.any,
@@ -86,7 +94,7 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
     const label = parseInt(id.match(/\d+/), 10) % 5 === 0 ? { as: 'a', corner: 'right', icon: 'university' } : false;
     const header = idea.get('title_multiloc').toJS();
     return (
-      <Card style = {{ height: '100%' }}>
+      <Card style={{ height: '100%' }}>
         <Image
           onClick={onClick}
           src={images}
@@ -98,20 +106,20 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
             <T value={header} />
           </Card.Header>
           <Card.Description>
-            <Label as="a">
-              <Icon name="music"/>
+            <Label as={'a'}>
+              <Icon name={'music'} />
               Culture
             </Label>
           </Card.Description>
         </Card.Content>
         {this.props.children}
-        <Button.Group basic attached="bottom" size="small">
+        <Button.Group basic attached={'bottom'} size={'small'}>
           <Button>
-            <Icon color="green" name="thumbs outline up" />
+            <Icon color={'green'} name={'thumbs outline up'} />
           </Button>
-          <Button.Or text="125"/>
+          <Button.Or text={'125'} />
           <Button>
-            <Icon color="red" name="thumbs outline down" />
+            <Icon color={'red'} name={'thumbs outline down'} />
           </Button>
         </Button.Group>
       </Card>
@@ -123,6 +131,7 @@ IdeaCard.propTypes = {
   idea: PropTypes.any,
   id: PropTypes.string,
   children: PropTypes.element,
+  onClick: PropTypes.func,
 };
 
 export default IdeaCard;

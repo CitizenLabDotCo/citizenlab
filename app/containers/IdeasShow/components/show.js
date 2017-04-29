@@ -7,9 +7,9 @@ import T from 'containers/T';
 import ImageCarousel from 'components/ImageCarousel';
 
 import IdeaContent from '../IdeaContent';
-import { makeSelectIdea, makeSelectComments } from '../selectors';
-import Comments from './comments'
-//import CommentEditorWrapper from '../CommentEditorWrapper';
+import { makeSelectIdea } from '../selectors';
+import Comments from './comments';
+// import CommentEditorWrapper from '../CommentEditorWrapper';
 
 
 class Show extends React.Component {
@@ -19,7 +19,7 @@ class Show extends React.Component {
     const { attributes, relationships } = idea;
     const authorId = relationships.author && relationships.author.id;
 
-    if (!idea) return <h2>Idea Not Found :/</h2>
+    if (!idea) return <h2>Idea Not Found :/</h2>;
     return (
       <div>
         { attributes.images && attributes.images.length > 0 && <ImageCarousel
@@ -34,7 +34,7 @@ class Show extends React.Component {
         </IdeaContent>
         <Comments idea={idea} />
       </div>
-    )
+    );
   }
 }
 

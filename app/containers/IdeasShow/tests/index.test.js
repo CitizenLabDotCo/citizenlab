@@ -1,6 +1,6 @@
 import { EditorState } from 'draft-js';
 
-import { jestFn, stringMock } from '../../../utils/testConstants';
+import { jestFn, stringMock } from 'utils/testing/constants';
 import { mapDispatchToProps } from '../index';
 import { voteIdea, publishCommentError } from '../actions';
 

@@ -21,10 +21,10 @@ class SideMenuFilter extends React.Component {
         </Menu.Header>
         <Menu.Menu>
           {resource.map((element) => {
-            const title = element.getIn(['attributes', 'title_multiloc']).toJS();
+            const description = element.getIn(['attributes', 'title_multiloc']).toJS();
             return (
               <Menu.Item key={element.get('id')} onClick={onCLick} >
-                <T key={element.id} value={title} />
+                <T key={element.id} value={description} />
               </Menu.Item>
             );
           })}
@@ -49,7 +49,7 @@ class SidebarMenuContainer extends React.Component {
         <SideMenuFilter onCLick={() => console.log('clicked')} resource={topics} title={'topics'} />
         <SideMenuFilter onCLick={() => console.log('clicked')} resource={areas} title={'Areas'} />
       </Sidebar>
-    )
+    );
   }
 }
 

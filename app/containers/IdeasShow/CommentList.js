@@ -13,8 +13,6 @@
 // import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
 
-
-
 // export const Comments = (props) => (<span>
 //   {props.comments.map((comment) =>
 //     (<div key={comment.id}>
@@ -84,8 +82,6 @@
 //   comments: PropTypes.any.isRequired,
 //   publishCommentClick: PropTypes.func.isRequired,
 // };
-
-
 
 // const mapStateToProps = createStructuredSelector({
 //   upVotes: makeSelectUpVotes(),

@@ -6,7 +6,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import T from 'containers/T';
 
 import IdeaContent from './IdeaContent';
@@ -31,3 +30,5 @@ Comment.propTypes = {
   createdAt: PropTypes.any,
   modifiedAt: PropTypes.any,
 };
+
+export default Comment;

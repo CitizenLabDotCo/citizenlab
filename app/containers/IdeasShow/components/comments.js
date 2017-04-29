@@ -15,9 +15,9 @@ import { Comment } from 'semantic-ui-react';
 import makeSelectIdeasShow, { makeSelectComments } from 'containers/IdeasShow/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 
-//import Comment from './comments/show';
+// import Comment from './comments/show';
 
-//import CommentEditorWrapper from './CommentEditorWrapper';
+// import CommentEditorWrapper from './CommentEditorWrapper';
 import T from 'containers/T';
 
 
@@ -62,47 +62,52 @@ import T from 'containers/T';
 class CommentShow extends React.Component {
   render() {
     const { comment } = this.props;
-    //const id = comment.get('id');
+    // const id = comment.get('id');
     const attributes = comment.get('attributes');
     const content = attributes.get('body_multiloc').toJS();
-    const children = comment.getIn(['relationships','children','data']);
+    const children = comment.getIn(['relationships', 'children', 'data']);
     return (
       <Comment>
         <Comment.Content>
-          <Comment.Author as='a'>WE NEED TO GET HE AUTHOR'S NAME</Comment.Author>
+          <Comment.Author as={'a'}>WE NEED TO GET HE AUTHORS NAME</Comment.Author>
           <Comment.Metadata>
             <span>Just now</span>
           </Comment.Metadata>
           <Comment.Text>
-              <T value={content} />
+            <T value={content} />
           </Comment.Text>
           <Comment.Actions>
             <a> NEED TO ADD REPPLY </a>
           </Comment.Actions>
         </Comment.Content>
-          <CommentsShow comments={children} />
+        <CommentsShow comments={children} />
       </Comment>
     );
   }
 }
 
 CommentShow.propTypes = {
-  comments: PropTypes.any,
-  publishCommentClick: PropTypes.func,
+  comment: React.PropTypes.any,
+//  publishCommentClick: React.PropTypes.func,
 };
 
 class CommentsShow extends React.Component {
   render() {
-    const { comments } = this.props
-    if (!comments) return null
-    const commentsArray = comments.toArray()
-    return(
+    const { comments } = this.props;
+    if (!comments) return null;
+    const commentsArray = comments.toArray();
+    return (
       <Comment.Group>
-          {commentsArray.map((comment => <CommentShow key={comment.get('id')} comment={comment} />))}
+        {commentsArray.map(((comment) => <CommentShow key={comment.get('id')} comment={comment} />))}
       </Comment.Group>
-    )
+    );
   }
 }
+
+CommentsShow.propTypes = {
+  comments: React.PropTypes.any,
+//  publishCommentClick: React.PropTypes.func,
+};
 
 
 /*  <span>
@@ -134,12 +139,10 @@ class CommentsShow extends React.Component {
           publishCommentClick={props.publishCommentClick}
         />*/
 
-
-
 class CommentContainer extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { comments, className, storeCommentError, submittingComment, resetEditorContent, idea, userId, locale, parentId, publishCommentClick } = this.props;
-    if (!comments) return null
+    if (!comments) return null;
     return (
       <div className={className}>
         {storeCommentError && storeCommentError !== '' && <div>

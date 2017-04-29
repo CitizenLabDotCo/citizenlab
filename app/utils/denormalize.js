@@ -1,7 +1,7 @@
 // denormalize takes a resource out of the store and adds the data of all its relationships to it, if that data is available in the store
 // Only use this function in your selectors if you're planning on actually using most of the relationships. If not, it's probably more efficient to get the relationship data at the moment you need it.
 
-const { OrderedMap } = require('immutable')
+const { OrderedMap } = require('immutable');
 
 
 export default function denormalize(resources, type, id) {
@@ -30,7 +30,7 @@ export default function denormalize(resources, type, id) {
 
 export function activeList(ids, ideas) {
   let newMap = OrderedMap();
-  ids.forEach((id, i) => {
+  ids.forEach((id) => {
     const newIdea = ideas.get(id);
     newMap = newMap.set(id, newIdea);
   });

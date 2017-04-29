@@ -2,7 +2,7 @@
  * Direct selector to the ideasShow state domain
  */
 import { createSelector } from 'reselect';
-import { OrderedMap, fromJS, List } from 'immutable';
+import { OrderedMap } from 'immutable';
 
 import { selectResourcesDomain } from 'utils/resources/selectors';
 
@@ -12,13 +12,12 @@ const makeSelectIdeasShow = (...types) => (state) => {
   return data;
 };
 
-
 const makeSelectIdea = () => createSelector(
   makeSelectIdeasShow(),
   selectResourcesDomain(),
   (pageState, resources) => {
     const id = pageState.get('idea', null);
-    return id && resources.getIn(['ideas',id]).toJS();
+    return id && resources.getIn(['ideas', id]).toJS();
   }
 );
 
@@ -31,15 +30,13 @@ const makeSelectComments = () => createSelector(
   }
 );
 
-
 const activeTree = (ids, comments) => {
   const parentIdLoc = ['relationships', 'parent', 'data', 'id'];
   const childAddLoc = ['relationships', 'children', 'data'];
   let childComments;
   let tempParentId;
 
-  let tree = OrderedMap()
-  console.log('-----------------------------------')
+  let tree = OrderedMap();
 
   ids.reduceRight((tot, id) => {
     let output;
@@ -50,7 +47,7 @@ const activeTree = (ids, comments) => {
       tempParentId = parentId;
       return tot.set(id, currentComment);
     }
-    if(parentId){
+    if (parentId) {
       tempParentId = parentId;
     }
 
@@ -77,9 +74,8 @@ const activeTree = (ids, comments) => {
     }
     return output || tot;
   }, OrderedMap());
-  return tree
+  return tree;
 };
-
 
 // const tree = [];
 
@@ -106,25 +102,28 @@ const activeTree = (ids, comments) => {
 //   (pageState) => pageState.get('submittingVote')
 // );
 
-const makeSelectUpVotes = () => createSelector(
-  makeSelectIdeasShow(),
-  selectResourcesDomain(),
-  (pageState, resources) => {
-    const ids = pageState.get('votes', fromJS([]));
-    const results = ids.map((id) => denormalize(resources, 'votes', id)).toJS();
-    return results.filter((result) => result.attributes.mode === 'up');
-  }
-);
 
-const makeSelectDownVotes = () => createSelector(
-  makeSelectIdeasShow(),
-  selectResourcesDomain(),
-  (pageState, resources) => {
-    const ids = pageState.get('votes', fromJS([]));
-    const results = ids.map((id) => denormalize(resources, 'votes', id)).toJS();
-    return results.filter((result) => result.attributes.mode === 'down');
-  }
-);
+// TOBE IMPLEMENTED!!!
+
+// const makeSelectUpVotes = () => createSelector(
+//   makeSelectIdeasShow(),
+//   selectResourcesDomain(),
+//   (pageState, resources) => {
+//     const ids = pageState.get('votes', fromJS([]));
+//     const results = ids.map((id) => denormalize(resources, 'votes', id)).toJS();
+//     return results.filter((result) => result.attributes.mode === 'up');
+//   }
+// );
+
+// const makeSelectDownVotes = () => createSelector(
+//   makeSelectIdeasShow(),
+//   selectResourcesDomain(),
+//   (pageState, resources) => {
+//     const ids = pageState.get('votes', fromJS([]));
+//     const results = ids.map((id) => denormalize(resources, 'votes', id)).toJS();
+//     return results.filter((result) => result.attributes.mode === 'down');
+//   }
+// );
 
 // const makeSelectIdeaVotesLoadError = () => createSelector(
 //   makeSelectIdeasShow(),
@@ -155,8 +154,6 @@ const makeSelectDownVotes = () => createSelector(
 //   makeSelectIdeasShow(),
 //   (pageState) => pageState.get('storeCommentError')
 // );
-
-
 
 // const makeSelectStoreCommentError = () => createSelector(
 //   makeSelectIdeasShow(),
@@ -196,7 +193,7 @@ const makeSelectDownVotes = () => createSelector(
 export default makeSelectIdeasShow;
 export {
   makeSelectIdea,
-  makeSelectUpVotes,
-  makeSelectDownVotes,
+  // makeSelectUpVotes,
+  // makeSelectDownVotes,
   makeSelectComments,
 };

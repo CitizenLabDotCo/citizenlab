@@ -1,7 +1,7 @@
 import { createSelector, createSelectorCreator } from 'reselect';
 import { selectResourcesDomain } from 'utils/resources/selectors';
 import { activeList, activeResource } from 'utils/denormalize';
-import { List, OrderedMap } from 'immutable';
+import { OrderedMap } from 'immutable';
 
 /**
  * Direct selector to the ideasIndexPage state domain
@@ -77,6 +77,7 @@ function presentMemoize(func) {
         newResourcesLength += 1;
         return resource;
       }
+      return null;
     });
 
     const ready = presentResources.length > 1 && newResourcesLength;
@@ -87,7 +88,7 @@ function presentMemoize(func) {
   };
 }
 
-//const presentCreateSelector = createSelectorCreator(presentMemoize);
+// const presentCreateSelector = createSelectorCreator(presentMemoize);
 
 const makeSelectIdeas = () => createSelectorCreator(presentMemoize)(
   makeSelectResources('ideas'),
@@ -108,7 +109,7 @@ const makeSelectIdeas = () => createSelectorCreator(presentMemoize)(
 
   // we reference arguments instead of spreading them for performance reasons
   return function (...args) {
-    resources = [] 
+    resources = [];
     const [pageState, ideas, topics, users, areas] = args;
     const currentState = Map({pageState, ideas, topics, users, areas});
     console.log(currentState, pageState, ideas, topics, users, areas);

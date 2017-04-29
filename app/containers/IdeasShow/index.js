@@ -8,12 +8,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux'
+import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 
-import { Button, Header, Icon, Image, Modal } from 'semantic-ui-react';
+import { Button, Header, Icon, Modal } from 'semantic-ui-react';
 
 import { watchFetchIdea, watchLoadIdeaVotes, watchVoteIdea, watchFetchComments, watchStoreComment } from './sagas';
 import messages from './messages';
@@ -27,7 +27,7 @@ import Show from './components/show';
 class xLoadIdeaError extends React.Component {
   render() {
     const { loadIdeaError } = this.props;
-    if (!loadIdeaError) return null ;
+    if (!loadIdeaError) return null;
     return <div>{loadIdeaError}</div>;
   }
 }
@@ -45,7 +45,7 @@ const LoadIdeaError = connect(LoadIdeaErrorMDP)(xLoadIdeaError);
 class xLoadingIdeaMessage extends React.Component {
   render() {
     const { loadingIdea } = this.props;
-    if (!loadingIdea) return null ;
+    if (!loadingIdea) return null;
     return <FormattedMessage {...messages.loadingIdea} />;
   }
 }
@@ -59,8 +59,6 @@ const LoadingIdeaMessageMDP = createStructuredSelector({
 });
 
 const LoadingIdeaMessage = connect(LoadingIdeaMessageMDP)(xLoadingIdeaMessage);
-
-
 
 export class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -98,7 +96,7 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
           ]}
         />
 
-        <Modal open={true} onClose={this.handleClose}>
+        <Modal open onClose={this.handleClose}>
           <Modal.Header>Profile Picture</Modal.Header>
           <Modal.Content>
             <Modal.Description>
@@ -120,12 +118,15 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
 }
 
 IdeasShow.contextTypes = {
-  sagas: PropTypes.func.isRequired,
+  sagas: React.PropTypes.func.isRequired,
 };
 
 IdeasShow.propTypes = {
-  loadComments: PropTypes.func.isRequired,
-  loadVotes: PropTypes.func.isRequired,
+  loadComments: React.PropTypes.func.isRequired,
+  loadVotes: React.PropTypes.func.isRequired,
+  params: React.PropTypes.func.object,
+  loadIdea: React.PropTypes.func,
+  push: React.PropTypes.func,
 };
 
 const ideasShowActions = { loadIdea, loadComments, push, loadVotes };
