@@ -121,9 +121,6 @@ export default function createRoutes(store) {
           path: ':slug',
           name: 'ideasShow',
           getComponent(nextState, cb) {
-            const bubu = browserHistory
-            console.log(browserHistory)
-            debugger
             const importModules = Promise.all([
               import('containers/IdeasShow/reducer'),
               import('containers/IdeasShow'),
