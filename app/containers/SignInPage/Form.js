@@ -23,7 +23,7 @@ const RenderError = (props) => {
 };
 
 RenderError.propTypes = {
-  errorMessage: React.propTypes.array,
+  errorMessage: React.PropTypes.array,
 };
 
 class RegistrationForm extends React.Component {
