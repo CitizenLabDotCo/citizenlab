@@ -5,30 +5,31 @@
  */
 
 import {
-  LOAD_IDEAS_REQUEST, LOAD_IDEAS_SUCCESS, LOAD_IDEAS_ERROR, SET_SHOW_IDEA_WITH_INDEX_PAGE, RESET_IDEAS, LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_TOPICS_ERROR, LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR,
+  LOAD_IDEAS_REQUEST, IDEAS_LOADED, IDEAS_LOADING_ERROR, SET_SHOW_IDEA_WITH_INDEX_PAGE, RESET_IDEAS, LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_TOPICS_ERROR, LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR,
 } from './constants';
 
-export function loadIdeasRequest(initialLoad, nextPageNumber, nextPageItemCount, filters) {
+
+export function ideasLoaded(ideas) {
+  return {
+    type: IDEAS_LOADED,
+    payload: ideas,
+  };
+}
+
+export function ideasLoadingError(errorMessage) {
+  return {
+    type: IDEAS_LOADING_ERROR,
+    payload: errorMessage,
+  };
+}
+
+export function loadIdeas(initialLoad, nextPageNumber, nextPageItemCount, filters) {
   return {
     type: LOAD_IDEAS_REQUEST,
     nextPageNumber,
     nextPageItemCount,
     filters,
     initialLoad,
-  };
-}
-
-export function loadIdeasSuccess(ideas) {
-  return {
-    type: LOAD_IDEAS_SUCCESS,
-    payload: ideas,
-  };
-}
-
-export function loadIdeasError(errorMessage) {
-  return {
-    type: LOAD_IDEAS_ERROR,
-    payload: errorMessage,
   };
 }
 
@@ -88,3 +89,23 @@ export function loadAreasError(errorMessage) {
     payload: errorMessage,
   };
 }
+
+export function initIdeasData() {
+  return (dispatch) => {
+    dispatch(loadIdeas(true));
+    dispatch(loadTopicsRequest());
+    dispatch(loadAreasRequest());
+  };
+}
+
+export function loadNextPage(nextPageNumber, nextPageItemCount, filters = {}) {
+  return (dispatch) => {
+    dispatch(loadIdeas(false, nextPageNumber, nextPageItemCount, filters));
+  };
+}
+
+
+// to implement ?
+// reloadIdeas: (filters) => {
+//   dispatch(loadIdeas({ filters }));
+// }

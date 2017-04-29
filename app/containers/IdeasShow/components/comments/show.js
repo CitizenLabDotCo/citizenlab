@@ -9,18 +9,19 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import T from 'containers/T';
 
-import IdeaContent from './IdeaContent';
+import { Grid, Segment } from 'semantic-ui-react';
+
+//import IdeaContent from './IdeaContent';
 
 function Comment(props) {
   const { className, commentContent, createdAt, modifiedAt } = props;
 
   return (
     <div className={className}>
-      <IdeaContent>
         <T value={commentContent} />
-      </IdeaContent>
       ... created at: {createdAt}
       ... modified at: {modifiedAt}
+      {this.props.children}
     </div>
   );
 }

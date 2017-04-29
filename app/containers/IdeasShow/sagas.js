@@ -1,12 +1,13 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { mergeJsonApiResources } from 'utils/resources/actions';
 import { fetchIdea, fetchIdeaVotes, submitIdeaVote, createIdeaComment, fetchIdeaComments } from 'api';
+import { mergeJsonApiResources } from 'utils/resources/actions';
 
 import {
   LOAD_IDEA_REQUEST, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_REQUEST, STORE_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST,
 } from './constants';
+
 import {
-  loadIdeaSuccess, loadIdeaError, loadVotesError, votesLoaded, voteIdeaError, ideaVoted, loadCommentsRequest, loadCommentsError, publishCommentError, loadCommentsSuccess,
+  loadIdeaSuccess, ideaLoadError, loadVotesError, votesLoaded, voteIdeaError, ideaVoted, loadComments, commentsLoaded, commentsLoadError, publishCommentError,
 } from './actions';
 
 export function* loadIdea(action) {
@@ -15,7 +16,7 @@ export function* loadIdea(action) {
     yield put(mergeJsonApiResources(response));
     yield put(loadIdeaSuccess(response));
   } catch (e) {
-    yield put(loadIdeaError(JSON.stringify(e.errors)));
+    yield put(ideaLoadError(JSON.stringify(e.errors)));
   }
 }
 
@@ -47,9 +48,9 @@ export function* loadIdeaComments(action) {
   try {
     const response = yield call(fetchIdeaComments, action.nextCommentPageNumber, action.nextCommentPageItemCount, action.ideaId);
     yield put(mergeJsonApiResources(response));
-    yield put(loadCommentsSuccess(response));
+    yield put(commentsLoaded(response));
   } catch (e) {
-    yield put(loadCommentsError(JSON.stringify(e.errors)));
+    yield put(commentsLoadError(JSON.stringify(e.errors)));
   }
 }
 
@@ -59,7 +60,7 @@ export function* publishComment(action) {
     const response = yield call(createIdeaComment, ideaId, action.userId, action.htmlContents, action.parentId);
     yield put(mergeJsonApiResources(response));
     // reload comments
-    yield put(loadCommentsRequest(ideaId, null, null, true));
+    yield put(loadComments(ideaId, null, null, true));
   } catch (e) {
     yield put(publishCommentError(JSON.stringify(e.errors)));
   }
