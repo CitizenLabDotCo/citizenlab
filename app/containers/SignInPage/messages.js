@@ -41,5 +41,5 @@ export default defineMessages({
   facebookSignIn: {
     id: 'app.containers.UsersShowPage.facebookSignIn',
     defaultMessage: 'Sign In With Facebook',
-  }
+  },
 });

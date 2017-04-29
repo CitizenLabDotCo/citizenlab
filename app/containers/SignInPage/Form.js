@@ -15,15 +15,15 @@ const initialState = {
 };
 
 const RenderError = (props) => {
-  const { messages } = props;
-  if (!messages) return null;
+  const { errorMessage } = props;
+  if (!errorMessage) return null;
   return (
-    <Label basic color='red' pointing>{messages.join(', ')}</Label>
+    <Label basic color={'red'} pointing>{errorMessage.join(', ')}</Label>
   );
 };
 
-RenderError.PropTypes = {
-  messages: React.propTypes.array,
+RenderError.propTypes = {
+  errorMessage: React.propTypes.array,
 };
 
 class RegistrationForm extends React.Component {

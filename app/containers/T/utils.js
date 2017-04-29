@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 export function findTranslatedText(value, userLocale, tenantLocales) {
   let text = '';
-  let transFound;
+  let transFound = true;
   if (value[userLocale]) {
     text = value[userLocale];
   } else {
@@ -16,7 +16,7 @@ export function findTranslatedText(value, userLocale, tenantLocales) {
       return false;
     });
   }
-  if (!transFound) text = value['defaultMessage']
+  if (!transFound) text = value.defaultMessage;
   return text;
 }
 

@@ -9,30 +9,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Helmet from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 // import { actions as rrfActions } from 'react-redux-form';
 import { createStructuredSelector } from 'reselect';
-import styled from 'styled-components';
-import _ from 'lodash';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { Saga } from 'react-redux-saga';
 
 import { createUser } from './actions';
-import messages from './messages';
 import Form from './Form';
 import makeSelectUsersNewPage from './selectors';
 import { watchCreateUser, watchUserSignIn } from './sagas';
 
-const SpinnerBox = styled.div`
-  border: 1px solid yellow;
-  margin-bottom: 20px;
-`;
-
-const ErrorBox = styled.div`
-  border: 1px solid yellow;
-  margin-bottom: 20px;
-  color: red;
-`;
 
 export class UsersNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -46,18 +33,14 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
   }
 
   createUser = (locale) => {
-    const self = this
-    return (data) => {
-      locale = this.props.userLocale
-      return self.props.createUser(Object.assign({}, data, {locale}))
-    };
+    const self = this;
+    return (data) => self.props.createUser(Object.assign({}, data, { locale }));
   }
 
   render() {
-    const { newUser, error, pending } = this.props.storeData;
+    const { error, pending } = this.props.storeData;
     const { locale } = this.props.userLocale;
     const ErroMessages = (error && error.json) || {};
-    console.log(newUser);
     return (
       <div>
         <Helmet
@@ -72,7 +55,7 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
         <Form
           createUser={this.createUser(locale)}
           getDispatch={(localFormDispatch) => (this.localFormDispatch = localFormDispatch)}
-          errors={(error && error.json) || {}}
+          errors={ErroMessages}
           pending={pending}
         />
       </div>
@@ -83,6 +66,7 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
 UsersNewPage.propTypes = {
   storeData: PropTypes.object,
   userLocale: PropTypes.string,
+  createUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

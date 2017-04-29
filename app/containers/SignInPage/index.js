@@ -11,7 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import T from 'containers/T';
 
-import socialAuth from 
+import socialAuth from 'socialAuth';
 
 import makeSelectSignInPage from './selectors';
 import messages from './messages';

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Grid, Button, Header, Label, Form, Message, Loader, Segment } from 'semantic-ui-react';
-import messages from './messages';
-import T from 'containers/T';
+import { Grid, Button, Header, Label, Form, Message, Loader } from 'semantic-ui-react';
 import { injectTFunc } from 'containers/T/utils';
+
+import messages from './messages';
 
 
 const initialState = {
@@ -12,16 +12,21 @@ const initialState = {
   password: '',
 };
 
+
 const RenderError = (props) => {
-  const { messages } = props;
-  if (!messages) return null;
-  return(
-    <Label basic color='red' pointing>{messages.join(", ")}</Label>
+  const { errorMessage } = props;
+  if (!errorMessage) return null;
+  return (
+    <Label basic color={'red'} pointing>{errorMessage.join(', ')}</Label>
   );
 };
 
+RenderError.propTypes = {
+  errorMessage: React.propTypes.array,
+};
+
 class RegistrationForm extends React.Component {
-  constructor(){
+  constructor() {
     super();
     this.state = initialState;
   }
@@ -47,75 +52,75 @@ class RegistrationForm extends React.Component {
             <Header as={'h2'}>
               {tFunc(messages.header)}
             </Header>
-              <Form onSubmit={this.handleSubmit} error={hasError}>
-                <Form.Field>
-                  <Form.Input
-                    fluid icon={'user'}
-                    name={'last_name'}
-                    iconPosition={'left'}
-                    onChange={this.handleChange}
-                    value={this.state.first_name}
-                    placeholder={tFunc(messages.placeholderFirstName)}
-                    error={!!errors.first_name}
-                    label={tFunc(messages.labelFirstName)}
-                  />
-                  <RenderError messages={errors.first_name} />
-                </Form.Field>
+            <Form onSubmit={this.handleSubmit} error={hasError}>
+              <Form.Field>
+                <Form.Input
+                  fluid icon={'user'}
+                  name={'last_name'}
+                  iconPosition={'left'}
+                  onChange={this.handleChange}
+                  value={this.state.first_name}
+                  placeholder={tFunc(messages.placeholderFirstName)}
+                  error={!!errors.first_name}
+                  label={tFunc(messages.labelFirstName)}
+                />
+                <RenderError messages={errors.first_name} />
+              </Form.Field>
 
-                <Form.Field>
-                  <Form.Input
-                    fluid icon={'user'}
-                    name={'last_name'}
-                    iconPosition={'left'}
-                    onChange={this.handleChange}
-                    value={this.state.last_name}
-                    placeholder={tFunc(messages.placeholderLastName)}
-                    error={!!errors.last_name}
-                    label={tFunc(messages.labelLastName)}
-                  />
-                  <RenderError messages={errors.last_name} />
-                </Form.Field>
+              <Form.Field>
+                <Form.Input
+                  fluid icon={'user'}
+                  name={'last_name'}
+                  iconPosition={'left'}
+                  onChange={this.handleChange}
+                  value={this.state.last_name}
+                  placeholder={tFunc(messages.placeholderLastName)}
+                  error={!!errors.last_name}
+                  label={tFunc(messages.labelLastName)}
+                />
+                <RenderError messages={errors.last_name} />
+              </Form.Field>
 
-                <Form.Field>
-                  <Form.Input
-                    fluid icon={'mail'}
-                    name={'email'}
-                    iconPosition={'left'}
-                    onChange={this.handleChange}
-                    value={this.state.email}
-                    placeholder={tFunc(messages.placeholderEmail)}
-                    error={!!errors.email}
-                    label={tFunc(messages.labelEmail)}
-                  />
-                  <RenderError messages={errors.email} />
-                </Form.Field>
+              <Form.Field>
+                <Form.Input
+                  fluid icon={'mail'}
+                  name={'email'}
+                  iconPosition={'left'}
+                  onChange={this.handleChange}
+                  value={this.state.email}
+                  placeholder={tFunc(messages.placeholderEmail)}
+                  error={!!errors.email}
+                  label={tFunc(messages.labelEmail)}
+                />
+                <RenderError messages={errors.email} />
+              </Form.Field>
 
-                <Form.Field>
-                  <Form.Input
-                    fluid icon={'lock'}
-                    name={'password'}
-                    iconPosition={'left'}
-                    onChange={this.handleChange}
-                    value={this.state.password}
-                    placeholder={tFunc(messages.placeholderPassword)}
-                    type={'password'}
-                    error={!!errors.password}
-                    label={tFunc(messages.labelPassword)}
-                  />
-                  <RenderError messages={errors.password} />
-                </Form.Field>
-                <Button fluid size={'small'} style={{ position: 'relative' }}>
-                  { pending ?
-                    <div style={{ position: 'relative' }}>
-                      <span style={{ color: "rgba(0, 0, 0, 0)" }}> o </span>
-                      <Loader size='mini' active />
-                    </div> :
-                    tFunc(messages.buttonSignIn)
-                  }
-                </Button>
-              </Form>
+              <Form.Field>
+                <Form.Input
+                  fluid icon={'lock'}
+                  name={'password'}
+                  iconPosition={'left'}
+                  onChange={this.handleChange}
+                  value={this.state.password}
+                  placeholder={tFunc(messages.placeholderPassword)}
+                  type={'password'}
+                  error={!!errors.password}
+                  label={tFunc(messages.labelPassword)}
+                />
+                <RenderError messages={errors.password} />
+              </Form.Field>
+              <Button fluid size={'small'} style={{ position: 'relative' }}>
+                { pending ?
+                  <div style={{ position: 'relative' }}>
+                    <span style={{ color: 'rgba(0, 0, 0, 0)' }}> o </span>
+                    <Loader size={'mini'} active />
+                  </div> :
+                  tFunc(messages.buttonSignIn)
+                }
+              </Button>
+            </Form>
             <Message>
-              {/*"ERROR THE LINK IS NOT PROPERLY HANDLED"*/ }
+              {/* 'ERROR THE LINK IS NOT PROPERLY HANDLED'*/ }
               {tFunc(messages.signUpAction1)} <a href={'/'}>{tFunc(messages.signUpAction2)}</a>
             </Message>
 
@@ -124,7 +129,7 @@ class RegistrationForm extends React.Component {
       </div>
     );
   }
-};
+}
 
 RegistrationForm.propTypes = {
   createUser: React.PropTypes.func.isRequired,
