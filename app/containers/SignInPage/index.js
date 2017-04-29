@@ -18,6 +18,7 @@ import messages from './messages';
 import Form from './Form';
 import { authenticateRequest } from './actions';
 import socialAuth from '../../socialAuth';
+import T from 'containers/T';
 
 const Box = styled.div`
   padding: 20px;
@@ -25,32 +26,30 @@ const Box = styled.div`
   margin-bottom: 20px;
 `;
 
-export const LoggedInAsBox = () => (
-  <Box>
-    { socialAuth('facebook').isLoggedIn() ? 'logged in? yes' : 'logged in? no' }
-  </Box>
-);
+// export const LoggedInAsBox = () => (
+//   <Box>
+//     { socialAuth('facebook').isLoggedIn() ? 'logged in? yes' : 'logged in? no' }
+//   </Box>
+// );
 
-export const SocialLoginBox = (props) => {
-  const handleLoginClick = () => {
-    socialAuth('facebook').login().then(props.onChange);
-  };
+// export const SocialLoginBox = (props) => {
+//     socialAuth('facebook').login().then(props.onChange);
+//   };
 
-  const handleLogoutClick = () => {
-    socialAuth('facebook').logout();
-    props.onChange();
-  };
+//   const handleLogoutClick = () => {
+//     socialAuth('facebook').logout();
+//     props.onChange();
+//   };
 
-  return (
-    <Box>
-      <h4>Social Login</h4>
-
-      {socialAuth('facebook').isLoggedIn() ?
-        <Button onClick={() => handleLogoutClick()}>Logout</Button> :
-        <Button className="clLoginBtn" onClick={() => handleLoginClick()}>Facebook</Button>}
-    </Box>
-  );
-};
+//   return (
+//     <div>
+//           <button className="ui facebook button" onClick={() => handleLoginClick()}>
+//             <i className="facebook icon"></i>
+//             Sign In With Facebook
+//           </button>
+//     </div>
+//   );
+// };
 
 // TODO enable eslint
 /* eslint-disable */
@@ -73,6 +72,10 @@ export class SignInPage extends React.PureComponent { // eslint-disable-line rea
   //     });
   // }
 
+  handleSocialLogin = () =>{
+    ocialAuth('facebook').login().then(this.forceUpdate());
+  }
+
   render() {
     return (
       <div>
@@ -87,13 +90,14 @@ export class SignInPage extends React.PureComponent { // eslint-disable-line rea
           <FormattedMessage {...messages.header} />
         </h1>
 
-        <LoggedInAsBox />
-
-        <SocialLoginBox onChange={() => this.forceUpdate()} />
-
-        <Box>
-          <Form onSubmit={this.props.onSubmit} />
-        </Box>
+        <Form onSubmit={this.props.onSubmit} errors={{}} >
+          <div style={{ marginTop: "1em", width: "100%", display: "block" }}>
+            <button className="ui facebook button" onClick={this.handleLoginClick} style= {{ width: "100%" }}>
+              <i className="facebook icon"></i>
+              <T value={messages.facebookSignIn}/>
+            </button>
+          </div>
+        </Form>
       </div>
     );
   }
