@@ -13,17 +13,9 @@ import { makeSelectIdeas } from '../selectors';
 const { Column, Row } = Grid;
 
 class Wrapper extends React.PureComponent {
-  constructor(props) {
-    super();
-    this.state = { author: Map(), topics: [], areas: [] };
-  }
-
   render() {
     return (
       <span>
-        <AuthorDetail author={this.state.author} key={'author'} />
-        <ResourceDetail resource={this.state.topics} key={'topics'} />
-        <ResourceDetail resource={this.state.areas} key={'areas'} />
       </span>
     );
   }
@@ -59,9 +51,9 @@ class IdeasCards extends React.PureComponent {
           return (
             <Column key={id} style={{ paddingTop: '0', paddingBottom: '10px' }}>
               <IdeaCard idea={idea.get('attributes')} id={id} onClick={goToIdeaPage} >
-                <Wrapper
-                  ref={(wrapper) => this.manageWrapper(wrapper, i, { author, topics, areas })}
-                />
+                <AuthorDetail author={author} key={'author'} />
+                <ResourceDetail resource={topics} key={'topics'} />
+                <ResourceDetail resource={areas} key={'areas'} />
               </IdeaCard>
             </Column>
           );
@@ -80,7 +72,7 @@ IdeasCards.propTypes = {
 class Panel extends React.Component {
 
   goToIdeaPage = () => {
-      this.props.push(`/ideas/${id}`);
+    this.props.push(`/ideas/${id}`);
   }
 
   render() {

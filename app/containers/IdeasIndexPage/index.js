@@ -18,10 +18,10 @@ import { initIdeasData, loadNextPage } from './actions';
 import { ideasSaga, topicsSaga, areasSaga } from './sagas';
 
 import SidebarMenuContainer from './components/sidebarMenu';
-import Pannel from './components/panel';
+import Panel from './components/panel';
 
 
-class PannelContainer extends React.Component {
+class PanelContainer extends React.Component {
   constructor() {
     super();
     this.state = { visible: false };
@@ -109,7 +109,7 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
-        <PannelContainer />
+        <PanelContainer />
         {this.props.children || ''}
       </div>
     );
