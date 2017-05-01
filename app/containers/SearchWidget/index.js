@@ -12,10 +12,11 @@ import { Saga } from 'react-redux-saga';
 import { push } from 'react-router-redux';
 import { createStructuredSelector } from 'reselect';
 import { Search } from 'semantic-ui-react';
+import _ from 'lodash';
+
 import { searchIdeasRequest } from './actions';
 import IdeasSearchResult from './IdeasSearchResult';
 import messages from './messages';
-
 import { watchSearchIdeasRequest } from './sagas';
 import { makeSelectIsLoadingFilteredIdeas, makeSelectSearchResults } from './selectors';
 
@@ -25,12 +26,21 @@ export class SearchWidget extends React.PureComponent { // eslint-disable-line r
 
     // provide 'this' context to callbacks
     this.searchIdeas = this.searchIdeas.bind(this);
-    this.handleResultSelect = this.handleResultSelect.bind(this);
+    this.searchIdeas = this.searchIdeas.bind(this);
 
     this.state = {
       // need to prevent errors on route changes
       searchValue: '',
     };
+
+    this.debounceSearch = _.debounce(this.dispatchSearchIdeas, 500, {
+      traling: true,
+      leading: false,
+    });
+  }
+
+  dispatchSearchIdeas(value) {
+    this.props.searchIdeas(value);
   }
 
   searchIdeas(event, value) {
@@ -38,7 +48,7 @@ export class SearchWidget extends React.PureComponent { // eslint-disable-line r
       searchValue: value,
     });
 
-    this.props.searchIdeas(value);
+    this.debounceSearch(value);
   }
 
   handleResultSelect(event, values) {

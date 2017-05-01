@@ -5,7 +5,7 @@ import searchWidgetReducer from '../reducer';
 describe('searchWidgetReducer', () => {
   const initialState = {
     isLoadingFilteredIdeas: false,
-    searchResults: [],
+    searchResults: null,
   };
 
   it('returns the initial state', () => {
