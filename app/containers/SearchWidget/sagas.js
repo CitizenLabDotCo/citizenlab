@@ -1,6 +1,6 @@
+import { fetchIdeas } from 'api';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { mergeJsonApiResources } from 'utils/resources/actions';
-import { fetchIdeas } from 'api';
 
 import { searchIdeasError, searchIdeasSuccess } from './actions';
 import { SEARCH_IDEAS_REQUEST } from './constants';
@@ -11,6 +11,7 @@ export function* getIdeasFiltered(action) {
       search: action.payload,
     });
     yield put(mergeJsonApiResources(response));
+    // yield takeLatest(MERGE_JSONAPI_RESOURCES_SUCCESS);
     yield put(searchIdeasSuccess(response));
   } catch (err) {
     yield put(searchIdeasError(JSON.stringify(err)));
@@ -20,4 +21,3 @@ export function* getIdeasFiltered(action) {
 export function* watchSearchIdeasRequest() {
   yield takeLatest(SEARCH_IDEAS_REQUEST, getIdeasFiltered);
 }
-
