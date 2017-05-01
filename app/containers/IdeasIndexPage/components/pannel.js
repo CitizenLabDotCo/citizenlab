@@ -3,30 +3,65 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import { Map } from 'Immutable';
 
 import { Grid, Segment } from 'semantic-ui-react';
-import IdeaCard, { CardDetails } from 'components/IdeaCard';
-import { createStructuredSelector } from 'reselect';
+import IdeaCard, { ResourceDetail, AuthorDetail } from 'components/IdeaCard';
 
 import { makeSelectIdeas } from '../selectors';
 const { Column, Row } = Grid;
 
+class Wrapper extends React.PureComponent {
+  constructor(props) {
+    super();
+    this.state = { author: Map(), topics: [], areas: [] };
+  }
+
+  render() {
+    return (
+      <span>
+        <AuthorDetail author={this.state.author} key={'author'} />
+        <ResourceDetail resource={this.state.topics} key={'topics'} />
+        <ResourceDetail resource={this.state.areas} key={'areas'} />
+      </span>
+    );
+  }
+}
+
 
 class IdeasCards extends React.PureComponent {
+  constructor() {
+    super();
+    this.wrappers = [];
+  }
+
+  manageWrapper = (wrapper, i, newProps) => {
+    if (this.wrappers[i]) {
+      this.wrappers[i].setState(newProps);
+      return this.wrappers[i];
+    }
+    this.wrappers[i] = wrapper;
+    return this.wrappers[i];
+  }
+
+
   render() {
     const { ideas, goToIdeaPage } = this.props;
     return (
       <Row>
-        {ideas.toArray().map((idea) => {
+        {ideas.toArray().map((idea, i) => {
           const relationships = idea.get('relationships');
           const author = relationships.getIn(['author', 'data', 'data']);
           const topics = relationships.getIn(['topics', 'data']).toArray();
           const areas = relationships.getIn(['areas', 'data']).toArray();
           const id = idea.get('id');
           return (
-            <Column key={idea.get('id')} style={{ paddingTop: '0', paddingBottom: '10px' }}>
-              <IdeaCard idea={idea.get('attributes')} id={id} onClick={goToIdeaPage(id)}>
-                <CardDetails author={author} topics={topics} areas={areas} />
+            <Column key={id} style={{ paddingTop: '0', paddingBottom: '10px' }}>
+              <IdeaCard idea={idea.get('attributes')} id={id} onClick={goToIdeaPage} >
+                <Wrapper
+                  ref={(wrapper) => this.manageWrapper(wrapper, i, { author, topics, areas })}
+                />
               </IdeaCard>
             </Column>
           );
@@ -44,11 +79,8 @@ IdeasCards.propTypes = {
 
 class Pannel extends React.Component {
 
-  goToIdeaPage = (id) => {
-    const self = this;
-    return () => {
-      self.props.push(`/ideas/${id}`);
-    };
+  goToIdeaPage = () => {
+      this.props.push(`/ideas/${id}`);
   }
 
   render() {

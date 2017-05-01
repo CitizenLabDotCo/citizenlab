@@ -10,4 +10,8 @@ export default defineMessages({
     id: 'app.components.IdeaCard.header',
     defaultMessage: 'This is the IdeaCard component !',
   },
+  author: {
+    id: 'app.components.IdeaCard.header',
+    defaultMessage: 'Author',
+  },
 });
