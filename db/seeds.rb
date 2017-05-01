@@ -30,7 +30,14 @@ Tenant.create({
     core: {
       allowed: true,
       enabled: true,
-      locales: ['en','nl']
+      locales: ['en','nl'],
+      organization_type: 'city',
+      organization_name: {
+        "en" => Faker::Address.city,
+        "nl" => Faker::Address.city,
+        "fr" => Faker::Address.city
+      },
+      timezone: "Europe/Brussels"
     }
   }
 })

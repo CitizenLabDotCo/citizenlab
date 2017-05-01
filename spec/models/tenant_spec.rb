@@ -28,11 +28,11 @@ RSpec.describe Tenant, type: :model do
 
     it "is valid when feature dependencies are met" do
       t = build(:tenant)
-      t.settings['spaces'] = {
+      t.settings['projects'] = {
         "allowed" => true,
         "enabled" => true
       }
-      t.settings['spaces_info'] = {
+      t.settings['projects_info'] = {
         "allowed" => true,
         "enabled" => true
       }
@@ -41,11 +41,11 @@ RSpec.describe Tenant, type: :model do
 
     it "is invalid when feature dependencies are not met" do
       t = build(:tenant)
-      t.settings['spaces'] = {
+      t.settings['projects'] = {
         "allowed" => false,
         "enabled" => false
       }
-      t.settings['spaces_info'] = {
+      t.settings['projects_info'] = {
         "allowed" => true,
         "enabled" => true
       }
@@ -62,12 +62,12 @@ RSpec.describe Tenant, type: :model do
 
   describe "Getting the settings of the current tenant" do
     it "succeeds when the setting is available" do
-      expect(Tenant.settings 'core', 'default_locale').to eq('en')
+      expect(Tenant.settings 'core', 'timezone').to eq('Europe/Brussels')
     end
 
     it "raise an error when there is no current tenant" do
       Apartment::Tenant.switch('public') do
-        expect{Tenant.settings 'core', 'default_locale'}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{Tenant.settings 'core', 'timezone'}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 

@@ -1,3 +1,5 @@
+require_dependency "tenant_schema/extended_schema"
+
 class Tenant < ApplicationRecord
 
   validates :name, :host, presence: true
@@ -12,6 +14,7 @@ class Tenant < ApplicationRecord
   after_update :update_tenant_schema, if: :host_changed?
 
   before_validation :validate_missing_feature_dependencies
+  # before_validation :validate_required_settings
 
 
   private
@@ -46,5 +49,12 @@ class Tenant < ApplicationRecord
     end
   end
 
+  # def validate_required_settings
+  #   ss = SettingsService.new
+  #   missing_required_settings = ss.missing_required_settings(settings, SETTINGS_JSON_SCHEMA)
+  #   unless missing_required_settings.empty?
+  #     errors.add(:settings, "has missing required settings: #{missing_required_settings}")
+  #   end
+  # end
 
 end
