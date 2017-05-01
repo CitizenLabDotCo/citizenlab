@@ -5,11 +5,11 @@
  */
 
 import {
-  LOAD_IDEA_REQUEST, LOAD_IDEA_SUCCESS, LOAD_IDEA_ERROR, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_ERROR, STORE_COMMENT_ERROR, STORE_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_SUCCESS, LOAD_COMMENTS_ERROR, RESET_PAGE_DATA, LOAD_IDEA_VOTES_SUCCESS,
+  LOAD_IDEA_REQUEST, LOAD_IDEA_SUCCESS, LOAD_IDEA_ERROR, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_ERROR, STORE_COMMENT_ERROR, STORE_COMMENT_REQUEST, SAVE_COMMENT_DRAFT, LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_SUCCESS, LOAD_COMMENTS_ERROR, RESET_PAGE_DATA, LOAD_IDEA_VOTES_SUCCESS,
 LOAD_IDEA_VOTES_ERROR, VOTE_IDEA_SUCCESS, VOTE_IDEA_REQUEST,
 } from './constants';
 
-export function loadIdeaRequest(payload) {
+export function loadIdea(payload) {
   return {
     type: LOAD_IDEA_REQUEST,
     payload,
@@ -23,14 +23,22 @@ export function loadIdeaSuccess(payload) {
   };
 }
 
-export function loadIdeaError(error) {
+export function ideaLoadError(loadIdeaError) {
   return {
     type: LOAD_IDEA_ERROR,
-    error,
+    loadIdeaError,
   };
 }
 
-export function loadCommentsRequest(ideaId, nextCommentPageNumber, nextCommentPageItemCount, initialLoad) {
+export function saveCommentDraft(commentContent, activeParentId) {
+  return {
+    type: SAVE_COMMENT_DRAFT,
+    commentContent,
+    activeParentId,
+  };
+}
+
+export function loadComments(ideaId, nextCommentPageNumber, nextCommentPageItemCount, initialLoad = true) {
   return {
     type: LOAD_COMMENTS_REQUEST,
     ideaId,
@@ -40,17 +48,17 @@ export function loadCommentsRequest(ideaId, nextCommentPageNumber, nextCommentPa
   };
 }
 
-export function loadCommentsSuccess(payload) {
+export function commentsLoaded(payload) {
   return {
     type: LOAD_COMMENTS_SUCCESS,
     payload,
   };
 }
 
-export function loadCommentsError(error) {
+export function commentsLoadError(loadCommentsError) {
   return {
     type: LOAD_COMMENTS_ERROR,
-    payload: error,
+    loadCommentsError,
   };
 }
 

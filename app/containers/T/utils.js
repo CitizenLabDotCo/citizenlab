@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 
 export function findTranslatedText(value, userLocale, tenantLocales) {
   let text = '';
+  let transFound = true;
   if (value[userLocale]) {
     text = value[userLocale];
   } else {
-    tenantLocales.some((tenantLocale) => {
+    transFound = tenantLocales.some((tenantLocale) => {
       if (value[tenantLocale]) {
         text = value[tenantLocale];
         return true;
@@ -15,7 +16,7 @@ export function findTranslatedText(value, userLocale, tenantLocales) {
       return false;
     });
   }
-
+  if (!transFound) text = value.defaultMessage;
   return text;
 }
 

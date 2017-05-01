@@ -148,6 +148,8 @@
         2,
         "multiline"
       ],
+      "react/prefer-stateless-function": 0,
+      "react/no-multi-comp": 0,
       "react/jsx-filename-extension": 0,
       "react/jsx-no-target-blank": 0,
       "react/require-extension": 0,
@@ -246,6 +248,7 @@
     "redux": "3.6.0",
     "redux-immutable": "3.0.8",
     "redux-saga": "0.14.0",
+    "redux-thunk": "^2.2.0",
     "reselect": "2.5.4",
     "sanitize.css": "4.1.0",
     "semantic-ui-css": "^2.2.10",

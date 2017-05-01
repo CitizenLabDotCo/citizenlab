@@ -5,52 +5,19 @@
  */
 
 import React from 'react';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import {
-  Button,
-} from 'components/Foundation';
+import T from 'containers/T';
+
+import socialAuth from 'socialAuth';
+
 import makeSelectSignInPage from './selectors';
 import messages from './messages';
 import Form from './Form';
 import { authenticateRequest } from './actions';
-import socialAuth from '../../socialAuth';
 
-const Box = styled.div`
-  padding: 20px;
-  border: 1px solid #888;
-  margin-bottom: 20px;
-`;
-
-export const LoggedInAsBox = () => (
-  <Box>
-    { socialAuth('facebook').isLoggedIn() ? 'logged in? yes' : 'logged in? no' }
-  </Box>
-);
-
-export const SocialLoginBox = (props) => {
-  const handleLoginClick = () => {
-    socialAuth('facebook').login().then(props.onChange);
-  };
-
-  const handleLogoutClick = () => {
-    socialAuth('facebook').logout();
-    props.onChange();
-  };
-
-  return (
-    <Box>
-      <h4>Social Login</h4>
-
-      {socialAuth('facebook').isLoggedIn() ?
-        <Button onClick={() => handleLogoutClick()}>Logout</Button> :
-        <Button className="clLoginBtn" onClick={() => handleLoginClick()}>Facebook</Button>}
-    </Box>
-  );
-};
 
 // TODO enable eslint
 /* eslint-disable */
@@ -73,6 +40,10 @@ export class SignInPage extends React.PureComponent { // eslint-disable-line rea
   //     });
   // }
 
+  handleSocialLogin = () =>{
+    socialAuth('facebook').login().then(this.forceUpdate());
+  }
+
   render() {
     return (
       <div>
@@ -87,13 +58,14 @@ export class SignInPage extends React.PureComponent { // eslint-disable-line rea
           <FormattedMessage {...messages.header} />
         </h1>
 
-        <LoggedInAsBox />
-
-        <SocialLoginBox onChange={() => this.forceUpdate()} />
-
-        <Box>
-          <Form onSubmit={this.props.onSubmit} />
-        </Box>
+        <Form onSubmit={this.props.onSubmit} errors={{}} >
+          <div style={{ marginTop: "1em", width: "100%", display: "block" }}>
+            <button className="ui facebook button" onClick={this.handleLoginClick} style= {{ width: "100%" }}>
+              <i className="facebook icon"></i>
+              <T value={messages.facebookSignIn}/>
+            </button>
+          </div>
+        </Form>
       </div>
     );
   }

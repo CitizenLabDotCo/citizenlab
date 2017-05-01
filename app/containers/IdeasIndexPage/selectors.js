@@ -1,41 +1,135 @@
-import { createSelector } from 'reselect';
+import { createSelector, createSelectorCreator } from 'reselect';
 import { selectResourcesDomain } from 'utils/resources/selectors';
-import denormalize from 'utils/denormalize';
-import { fromJS } from 'immutable';
+import { activeList, activeResource } from 'utils/denormalize';
+import { OrderedMap } from 'immutable';
 
 /**
  * Direct selector to the ideasIndexPage state domain
  */
-const selectIdeasIndexPageDomain = () => (state) => state.get('ideasIndexPage');
-
-/**
- * Other specific selectors
- */
-
-
-/**
- * Default selector used by IdeasIndexPage
- */
+const selectIdeasIndexPageDomain = (...types) => (state) => {
+  let data = state.get('ideasIndexPage');
+  types.map((type) => (data = data.get(type)));
+  return data;
+};
 
 const makeSelectIdeasIndexPage = () => createSelector(
   selectIdeasIndexPageDomain(),
   (substate) => substate.toJS()
 );
 
+function readyMemoize(func) {
+  let prevPageState = null;
+  let prevResources = null;
+  let prevReady = false;
+  let previousResult = OrderedMap();
 
-const makeSelectIdeas = () => createSelector(
-  selectIdeasIndexPageDomain(),
-  selectResourcesDomain(),
-  (pageState, resources) => {
-    const ids = pageState.get('ideas', fromJS([]));
-    return ids.map((id) => denormalize(resources, 'ideas', id)).toJS();
-  }
+  // we reference arguments instead of spreading them for performance reasons
+  return function (...args) {
+    const [pageState, resources] = args;
+    let lastResult;
+    const ready = pageState && resources && !pageState.isEmpty() && !resources.isEmpty();
+
+    if (ready) {
+      const newState = prevPageState !== pageState && prevResources !== resources;
+      if (newState || !prevReady) {
+        lastResult = func(...args);
+      }
+    }
+
+    previousResult = lastResult || previousResult;
+    prevReady = ready;
+    prevPageState = pageState;
+    prevResources = resources;
+    return previousResult;
+  };
+}
+
+const readyCreateSelector = createSelectorCreator(readyMemoize);
+
+const makeSelectResources = (...args) => readyCreateSelector(
+  selectIdeasIndexPageDomain(...args),
+  selectResourcesDomain(args[0]),
+  (resourceState, resources) => activeList(resourceState, resources)
 );
 
-const makeSelectLoadIdeasError = () => createSelector(
-  selectIdeasIndexPageDomain(),
-  (pageState) => pageState.get('loadIdeasError')
+
+function presentMemoize(func) {
+  let prevResources = [];
+  let cleanState;
+  let state;
+
+  // we reference arguments instead of spreading them for performance reasons
+  return function (newState, ...resources) {
+    if (cleanState !== newState) state = cleanState = newState;
+    if (newState.isEmpty()) return state;
+
+    state = state || newState;
+    const [topics, areas, users] = resources;
+    const namedResources = [['topics', topics], ['areas', areas], ['users', users]];
+
+    const presentResources = [state, ...resources].filter((resource) => (
+      resource && !resource.isEmpty()
+    ));
+
+    let newResourcesLength = 0;
+    const newResources = namedResources.map((resource, i) => {
+      if (prevResources[i] !== resource[1] && !resource[1].isEmpty()) {
+        newResourcesLength += 1;
+        return resource;
+      }
+      return null;
+    });
+
+    const ready = presentResources.length > 1 && newResourcesLength;
+    if (ready) state = func(state, ...newResources);
+
+    prevResources = resources;
+    return state;
+  };
+}
+
+// const presentCreateSelector = createSelectorCreator(presentMemoize);
+
+const makeSelectIdeas = () => createSelectorCreator(presentMemoize)(
+  makeSelectResources('ideas'),
+  makeSelectResources('topics', 'ids'),
+  makeSelectResources('areas', 'ids'),
+  selectResourcesDomain('users'),
+  (state, topics, areas, author) => (
+    activeResource(state, { topics, areas, author })
+  )
 );
+
+
+/*
+  let prevMustState = Map({ ids, Ideas });
+  let prevOptionalState = Map({ topics, areas, users });
+  let prevReady = false;
+  let previousResult = List();
+
+  // we reference arguments instead of spreading them for performance reasons
+  return function (...args) {
+    resources = [];
+    const [pageState, ideas, topics, users, areas] = args;
+    const currentState = Map({pageState, ideas, topics, users, areas});
+    console.log(currentState, pageState, ideas, topics, users, areas);
+
+    let lastResult;
+    const readyPresent = prevMustState.reduce((res, state) => state && res, true);
+    const readyFull = [pageState, ideas].reduce((res, state) => state && !res.isEmpty(), true);
+
+    const ready = readyPresent && readyFull;
+
+    if (ready) {
+
+      const ideasNewState = prevPageState !== pageState && prevIdeas !== ideas;
+      const resourcesNewState = prevAreaState !== pageAreState && prevIdeas !== ideas;
+      if (newState || !prevReady) {
+        lastResult = func(...args);
+      }
+    }
+
+*/
 
 const makeSelectNextPageNumber = () => createSelector(
   selectIdeasIndexPageDomain(),
@@ -52,48 +146,14 @@ const makeSelectLoading = () => createSelector(
   (submitIdeaState) => submitIdeaState.get('loading')
 );
 
-const makeSelectTopicsDomain = () => createSelector(
-  selectIdeasIndexPageDomain(),
-  (substate) => substate.get('topics'),
-);
-
-const makeSelectAreasDomain = () => createSelector(
-  selectIdeasIndexPageDomain(),
-  (substate) => substate.get('areas'),
-);
-
-const makeSelectTopics = () => createSelector(
-  makeSelectTopicsDomain(),
-  selectResourcesDomain(),
-  (topicsState, resources) => {
-    if (!topicsState) return [];
-    const ids = topicsState.get('ids');
-    const topicsMap = resources.get('topics');
-    return ids.map((id) => topicsMap.get(id).toJS());
-  }
-);
-
-const makeSelectAreas = () => createSelector(
-  makeSelectAreasDomain(),
-  selectResourcesDomain(),
-  (areasState, resources) => {
-    if (!areasState) return [];
-    const ids = areasState.get('ids');
-    const areasMap = resources.get('areas');
-    return ids.map((id) => areasMap.get(id).toJS());
-  }
-);
 
 export default makeSelectIdeasIndexPage;
 
 export {
+  makeSelectResources,
   selectIdeasIndexPageDomain,
-  makeSelectIdeas,
   makeSelectNextPageNumber,
   makeSelectLoading,
   makeSelectNextPageItemCount,
-  makeSelectTopicsDomain,
-  makeSelectTopics,
-  makeSelectAreas,
-  makeSelectLoadIdeasError,
+  makeSelectIdeas,
 };

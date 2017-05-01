@@ -8,35 +8,45 @@ ShallowWrapper {
     "findWhereUnwrapped": [Function],
   },
   "length": 1,
-  "node": <Comment
-    className="hsLhYK"
-    commentContent={
-        Object {
-            "en": "anything",
-          }
-    }
-    createAt={null}
-    modifiedAt={null}
-/>,
+  "node": <div
+    className={undefined}
+>
+    <Styled(undefined)>
+        <Connect(T)
+            value={
+                Object {
+                    "en": "anything",
+                  }
+            }
+        />
+    </Styled(undefined)>
+    ... created at: 
+    ... modified at: 
+</div>,
   "nodes": Array [
-    <Comment
-      className="hsLhYK"
-      commentContent={
-            Object {
-                  "en": "anything",
-                }
-      }
-      createAt={null}
-      modifiedAt={null}
-/>,
+    <div
+      className={undefined}
+>
+      <Styled(undefined)>
+            <Connect(T)
+                  value={
+                        Object {
+                              "en": "anything",
+                            }
+                  }
+            />
+      </Styled(undefined)>
+      ... created at: 
+      ... modified at: 
+</div>,
   ],
   "options": Object {},
   "renderer": ReactShallowRenderer {
     "_instance":  {
       "_calledComponentWillUnmount": false,
-      "_compositeType": 0,
+      "_compositeType": 2,
       "_context": Object {},
-      "_currentElement": <Styled(undefined)
+      "_currentElement": <Comment
         commentContent={
                 Object {
                         "en": "anything",
@@ -48,11 +58,9 @@ ShallowWrapper {
       "_debugID": 1,
       "_hostContainerInfo": null,
       "_hostParent": null,
-      "_instance": StyledComponent {
+      "_instance": StatelessComponent {
         "_reactInternalInstance": [Circular],
-        "context": Object {
-          "__styled-components__": undefined,
-        },
+        "context": Object {},
         "props": Object {
           "commentContent": Object {
             "en": "anything",
@@ -61,10 +69,7 @@ ShallowWrapper {
           "modifiedAt": null,
         },
         "refs": Object {},
-        "state": Object {
-          "generatedClassName": "hsLhYK",
-          "theme": Object {},
-        },
+        "state": null,
         "updater": Object {
           "enqueueCallback": [Function],
           "enqueueCallbackInternal": [Function],
@@ -83,29 +88,39 @@ ShallowWrapper {
       "_pendingReplaceState": false,
       "_pendingStateQueue": null,
       "_renderedComponent": NoopInternalComponent {
-        "_currentElement": <Comment
-          className="hsLhYK"
-          commentContent={
-                    Object {
-                              "en": "anything",
-                            }
-          }
-          createAt={null}
-          modifiedAt={null}
-/>,
+        "_currentElement": <div
+          className={undefined}
+>
+          <Styled(undefined)>
+                    <Connect(T)
+                              value={
+                                        Object {
+                                                  "en": "anything",
+                                                }
+                              }
+                    />
+          </Styled(undefined)>
+          ... created at: 
+          ... modified at: 
+</div>,
         "_debugID": 2,
-        "_renderedOutput": <Comment
-          className="hsLhYK"
-          commentContent={
-                    Object {
-                              "en": "anything",
-                            }
-          }
-          createAt={null}
-          modifiedAt={null}
-/>,
+        "_renderedOutput": <div
+          className={undefined}
+>
+          <Styled(undefined)>
+                    <Connect(T)
+                              value={
+                                        Object {
+                                                  "en": "anything",
+                                                }
+                              }
+                    />
+          </Styled(undefined)>
+          ... created at: 
+          ... modified at: 
+</div>,
       },
-      "_renderedNodeType": 1,
+      "_renderedNodeType": 0,
       "_rootNodeID": 0,
       "_topLevelWrapper": null,
       "_updateBatchNumber": null,
@@ -115,7 +130,7 @@ ShallowWrapper {
     "render": [Function],
   },
   "root": [Circular],
-  "unrendered": <Styled(undefined)
+  "unrendered": <Comment
     commentContent={
         Object {
             "en": "anything",
