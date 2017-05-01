@@ -3,7 +3,7 @@
 
 // import { SearchResultRendered } from '../SearchResultRendered';
 
-describe('<SearchResultRendered />', () => {
+describe('<IdeasSearchResult />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(true);
   });
