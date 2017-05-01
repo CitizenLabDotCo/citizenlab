@@ -18,7 +18,7 @@ import { initIdeasData, loadNextPage } from './actions';
 import { ideasSaga, topicsSaga, areasSaga } from './sagas';
 
 import SidebarMenuContainer from './components/sidebarMenu';
-import Pannel from './components/pannel';
+import Pannel from './components/panel';
 
 
 class PannelContainer extends React.Component {
@@ -65,7 +65,7 @@ class PannelContainer extends React.Component {
         <Sidebar.Pushable as={Segment} style={{ margin: '0', padding: '0', border: 'none', borderRadius: 0 }}>
           <SidebarMenuContainer visible={visible} toggleVisibility={this.toggleVisibility} />
           <Sidebar.Pusher>
-            <Pannel />
+            <Panel />
           </Sidebar.Pusher>
         </Sidebar.Pushable>
 

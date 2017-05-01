@@ -101,36 +101,6 @@ const makeSelectIdeas = () => createSelectorCreator(presentMemoize)(
 );
 
 
-/*
-  let prevMustState = Map({ ids, Ideas });
-  let prevOptionalState = Map({ topics, areas, users });
-  let prevReady = false;
-  let previousResult = List();
-
-  // we reference arguments instead of spreading them for performance reasons
-  return function (...args) {
-    resources = [];
-    const [pageState, ideas, topics, users, areas] = args;
-    const currentState = Map({pageState, ideas, topics, users, areas});
-    console.log(currentState, pageState, ideas, topics, users, areas);
-
-    let lastResult;
-    const readyPresent = prevMustState.reduce((res, state) => state && res, true);
-    const readyFull = [pageState, ideas].reduce((res, state) => state && !res.isEmpty(), true);
-
-    const ready = readyPresent && readyFull;
-
-    if (ready) {
-
-      const ideasNewState = prevPageState !== pageState && prevIdeas !== ideas;
-      const resourcesNewState = prevAreaState !== pageAreState && prevIdeas !== ideas;
-      if (newState || !prevReady) {
-        lastResult = func(...args);
-      }
-    }
-
-*/
-
 const makeSelectNextPageNumber = () => createSelector(
   selectIdeasIndexPageDomain(),
   (pageState) => pageState.get('nextPageNumber')

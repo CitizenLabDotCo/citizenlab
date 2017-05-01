@@ -77,7 +77,7 @@ IdeasCards.propTypes = {
 };
 
 
-class Pannel extends React.Component {
+class Panel extends React.Component {
 
   goToIdeaPage = () => {
       this.props.push(`/ideas/${id}`);
@@ -97,7 +97,7 @@ class Pannel extends React.Component {
   }
 }
 
-Pannel.propTypes = {
+Panel.propTypes = {
   ideas: PropTypes.any.isRequired,
 };
 
@@ -107,4 +107,4 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ push }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Pannel);
+export default connect(mapStateToProps, mapDispatchToProps)(Panel);
