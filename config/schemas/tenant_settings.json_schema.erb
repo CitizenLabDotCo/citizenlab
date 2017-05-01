@@ -1,25 +1,20 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://citizenlab.co/tenant_settings_spec.json",
   "description": "Schema for validating the settings on a tenant",
   "type": "object",
   "required": ["core"],
   "properties":
     {
       "core": {
-      "allOf": [
+        "allOf": [
           {"$ref": "#/definitions/feature"},
           {
-            "description":	"The core of the system. Container for general settings. Always enabled",
-            "required": [],
+            "description": "The core of the system. Container for general settings. Always enabled",
+            "required-settings": ["organization_type", "timezone","locales"],
             "properties": {
               "organization_type": {
                 "type": "string",
                 "enum": ["city", "generic"]
-              },
-              "organization": { "$ref": "#/definitions/multiloc_string" },
-              "default_locale": {
-                "type": "string",
-                "enum": ["en", "nl", "fr"]
               },
               "timezone": {
                 "type": "string",
@@ -32,6 +27,9 @@
                   "type": "string"
                 },
                 "uniqueItems": true
+              },
+              "organization_name": { 
+                "$ref": "#/definitions/multiloc_string" 
               }
             }
           }
@@ -62,11 +60,11 @@
         ]
       },
 
-      "regions": {
+      "areas": {
         "allOf": [
           {"$ref": "#definitions/feature"},
           {
-            "description":	"Allow regions(neighbourhoods, cities ...) to be defined",
+            "description":	"Allow geographical areas(neighbourhoods, cities ...) to be defined",
             "properties": {
 
             }
@@ -90,7 +88,7 @@
         "allOf": [
           {"$ref": "#definitions/feature"},
           {
-            "description":	"",
+            "description":	"Allow signing in and registering through a facebook account",
             "properties": {
 
             }
@@ -102,7 +100,7 @@
         "allOf": [
           {"$ref": "#definitions/feature"},
           {
-            "description":	"",
+            "description":	"Allow signing in and registering through a google account",
             "properties": {
 
             }
@@ -114,7 +112,7 @@
         "allOf": [
           {"$ref": "#definitions/feature"},
           {
-            "description":	"",
+            "description":	"Allow signing in and registering through twitter",
             "properties": {
 
             }
@@ -126,7 +124,7 @@
         "allOf": [
           {"$ref": "#definitions/feature"},
           {
-            "description":	"",
+            "description":	"Allow comments to be posted on ideas",
             "properties": {
 
             }
@@ -138,7 +136,7 @@
         "allOf": [
           {"$ref": "#definitions/feature"},
           {
-            "description":	"",
+            "description":	"Allow users to vote on comments",
             "properties": {
 
             }
@@ -218,7 +216,7 @@
         ]
       },
 
-      "spaces": {
+      "projects": {
         "allOf": [
           {"$ref": "#definitions/feature"},
           {
@@ -230,7 +228,7 @@
         ]
       },
 
-      "spaces_phases": {
+      "projects_phases": {
         "allOf": [
           {"$ref": "#definitions/feature"},
           {
@@ -242,7 +240,7 @@
         ]
       },
 
-      "spaces_pages": {
+      "projects_pages": {
         "allOf": [
           {"$ref": "#definitions/feature"},
           {
@@ -254,7 +252,7 @@
         ]
       },
 
-      "spaces_events": {
+      "projects_events": {
         "allOf": [
           {"$ref": "#definitions/feature"},
           {
@@ -266,7 +264,7 @@
         ]
       },
 
-      "spaces_info": {
+      "projects_info": {
         "allOf": [
           {"$ref": "#definitions/feature"},
           {
@@ -278,7 +276,7 @@
         ]
       },
 
-      "spaces_map": {
+      "projects_map": {
         "allOf": [
           {"$ref": "#definitions/feature"},
           {
@@ -290,7 +288,7 @@
         ]
       },
 
-      "spaces_perimeter": {
+      "projects_perimeter": {
         "allOf": [
           {"$ref": "#definitions/feature"},
           {
@@ -348,18 +346,48 @@
             }
           }
         ]
+      },
+
+      "mixpanel_tracking": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description":  "Allows the app interactions of the users to be tracked by mixpanel",
+            "required-settings": ["project_token"],
+            "properties": {
+              "project_token": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+
+      "ga_tracking": {
+        "allOf": [
+          {"$ref": "#definitions/feature"},
+          {
+            "description": "Allows the app interactions of the users to be tracked by Google Analytics",
+            "required-settings": ["tracking_id"],
+            "properties": {
+              "tracking_id": {
+                "type": "string"
+              }
+            }
+          }
+        ]
       }
 
     },
   "dependencies": {
     "comments_votes": ["ideas_comments"],
     "comments_mentions": ["notifications"],
-    "spaces_map": ["spaces"],
-    "spaces_info": ["spaces"],
-    "spaces_perimeter": ["spaces"],
-    "spaces_pages": ["spaces"],
-    "spaces_events": ["spaces"],
-    "spaces_phases": ["spaces"]
+    "projects_map": ["projects"],
+    "projects_info": ["projects"],
+    "projects_perimeter": ["projects"],
+    "projects_pages": ["projects"],
+    "projects_events": ["projects"],
+    "projects_phases": ["projects"]
   },
   "definitions": {
     "multiloc_string": {

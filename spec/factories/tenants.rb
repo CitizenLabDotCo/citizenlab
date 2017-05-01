@@ -10,7 +10,14 @@ FactoryGirl.define do
         "core" => {
           "enabled" => true,
           "allowed" => true,
-          "default_locale" => "en"
+          "organization_type" => "city",
+          "organization_name" => {
+            "en" => Faker::Address.city,
+            "nl" => Faker::Address.city,
+            "fr" => Faker::Address.city
+          },
+          "timezone" => "Europe/Brussels",
+          "locales" => ["en","nl","fr"]
         }
       }
     }
@@ -24,14 +31,15 @@ FactoryGirl.define do
         "core" => {
           "allowed" => true,
           "enabled" => true,
-          "default_locale" => "en",
-          "organization" => {
+          "organization_type" => "city",
+          "organization_name" => {
             "en" => "Liege",
             "nl" => "Luik",
             "fr" => "Liege"
           },
-          "locales" => ["en","fr","nl"]
-        },
+          "locales" => ["en","fr","nl"],
+          "timezone": "Europe/Brussels"
+        }
       }
     }
   end

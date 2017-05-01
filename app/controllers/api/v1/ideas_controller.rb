@@ -6,7 +6,7 @@ class Api::V1::IdeasController < ApplicationController
   before_action :set_idea, only: [:show, :update, :destroy]
 
   def index
-    @ideas = policy_scope(Idea).includes(:author)
+    @ideas = policy_scope(Idea).includes(:author, :topics, :areas, :lab)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
