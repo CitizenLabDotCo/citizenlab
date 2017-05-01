@@ -26,11 +26,12 @@ export class SearchWidget extends React.PureComponent { // eslint-disable-line r
 
     // provide 'this' context to callbacks
     this.searchIdeas = this.searchIdeas.bind(this);
-    this.searchIdeas = this.searchIdeas.bind(this);
+    this.handleResultSelect = this.handleResultSelect.bind(this);
 
     this.state = {
       // need to prevent errors on route changes
       searchValue: '',
+      debouncing: false,
     };
 
     this.debounceSearch = _.debounce(this.dispatchSearchIdeas, 500, {
@@ -40,12 +41,16 @@ export class SearchWidget extends React.PureComponent { // eslint-disable-line r
   }
 
   dispatchSearchIdeas(value) {
+    this.setState({
+      debouncing: false,
+    });
     this.props.searchIdeas(value);
   }
 
   searchIdeas(event, value) {
     this.setState({
       searchValue: value,
+      debouncing: true,
     });
 
     this.debounceSearch(value);
@@ -57,7 +62,7 @@ export class SearchWidget extends React.PureComponent { // eslint-disable-line r
 
   render() {
     const { isLoadingFilteredIdeas, searchResults } = this.props;
-    const { searchValue } = this.state;
+    const { searchValue, debouncing } = this.state;
     const { formatMessage } = this.props.intl;
     return (
       <div>
@@ -69,7 +74,10 @@ export class SearchWidget extends React.PureComponent { // eslint-disable-line r
           resultRenderer={IdeasSearchResult}
           onResultSelect={this.handleResultSelect}
           onSearchChange={this.searchIdeas}
-          noResultsMessage={formatMessage(messages.noResultsMessage)}
+          noResultsMessage={debouncing
+            ? formatMessage(messages.waitingForInput)
+            : formatMessage(messages.noResultsMessage)
+          }
           value={searchValue}
         />
       </div>

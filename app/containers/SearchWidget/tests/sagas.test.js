@@ -2,14 +2,34 @@
  * Test  sagas
  */
 
-/* eslint-disable redux-saga/yield-effects */
-// import { take, call, put, select } from 'redux-saga/effects';
-// import defaultSaga from '../sagas';
+import { call, put } from 'redux-saga/effects';
+import sagaHelper from 'redux-saga-testing';
+import { fetchIdeas } from 'api';
+import { mergeJsonApiResources } from 'utils/resources/actions';
 
-// const generator = defaultSaga();
+import { getIdeasFiltered } from '../sagas';
+import { searchIdeasSuccess } from '../actions';
 
 describe('SearchWidget sagas', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(true);
+  describe('getIdeasFiltered', () => {
+    const action = {
+      payload: {},
+    };
+
+    const it = sagaHelper(getIdeasFiltered(action));
+
+    it('should have called the correct API', (result) => {
+      expect(result).toEqual(call(fetchIdeas, {
+        search: action.payload,
+      }));
+    });
+
+    it('then should dispatch mergeJsonApiResources', (result) => {
+      expect(result).toEqual(put(mergeJsonApiResources()));
+    });
+
+    it('then, should dispatch searchIdeasSuccess action', (result) => {
+      expect(result).toEqual(put(searchIdeasSuccess()));
+    });
   });
 });

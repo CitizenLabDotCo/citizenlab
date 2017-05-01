@@ -18,6 +18,7 @@ const IdeasSearchResultWrapper = (props) => {
 IdeasSearchResultWrapper.PropTypes = {
   className: PropTypes.string,
   children: PropTypes.any.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default IdeasSearchResultWrapper;

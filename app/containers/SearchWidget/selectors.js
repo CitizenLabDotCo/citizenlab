@@ -21,6 +21,14 @@ const makeSelectSearchValue = () => createSelector(
   (searchWidgetState) => searchWidgetState.get('searchValue')
 );
 
+export const generateSearchResult = (resourceIdeas, index, id) => ({
+  titleMultiloc: resourceIdeas.toJS()[id].attributes.title_multiloc,
+  ideaId: id,
+  key: index,
+  // each result will be rendered by Search wrapped in IdeasSearchResultWrapper
+  as: IdeasSearchResultWrapper,
+});
+
 const makeSelectSearchResults = () => createSelector(
   selectSearchDomain(),
   selectResourcesDomain(),
@@ -28,13 +36,7 @@ const makeSelectSearchResults = () => createSelector(
     const ids = pageState.get('searchResults');
     const resourceIdeas = resources.get('ideas');
     return (ids && resourceIdeas
-      ? ids.map((id, index) => ({
-        titleMultiloc: resourceIdeas.toJS()[id].attributes.title_multiloc,
-        ideaId: id,
-        key: index,
-        // each result will be rendered by Search wrapped in IdeasSearchResultWrapper
-        as: IdeasSearchResultWrapper,
-      }))
+      ? ids.map((id, index) => generateSearchResult(resourceIdeas, index, id))
       : []);
   }
 );

@@ -11,7 +11,6 @@ export function* getIdeasFiltered(action) {
       search: action.payload,
     });
     yield put(mergeJsonApiResources(response));
-    // yield takeLatest(MERGE_JSONAPI_RESOURCES_SUCCESS);
     yield put(searchIdeasSuccess(response));
   } catch (err) {
     yield put(searchIdeasError(JSON.stringify(err)));
