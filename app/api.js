@@ -59,6 +59,10 @@ export function fetchCurrentUser() {
   return request(`${API_PATH}/users/me`);
 }
 
+export function fetchUsers(queryParameters) {
+  return request(`${API_PATH}/users`, null, null, queryParameters);
+}
+
 export function fetchUser(userId) {
   return request(`${API_PATH}/users/${userId}`);
 }
