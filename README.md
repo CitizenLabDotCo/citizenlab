@@ -35,7 +35,21 @@ After a git pull, when there are changes in the application, some changes might 
 
 
 ```
-docker-compose run --user "$(id -u):$(id -g)" web bash -c "sleep 5 && bundle exec rake db:reset RAILS_ENV=development"
+docker-compose run --rm --user "$(id -u):$(id -g)" web bash -c "sleep 5 && bundle exec rake db:reset RAILS_ENV=development"
 ```
 
 Afterwards you can run the normal `docker-compose up --build`
+
+## Testing
+
+Resetting the database, with the previous command, upsets the testing database as well. Before running the tests, it's sometimes necessary to put it back in it's default shape. We can do this with the following command:
+
+```
+docker-compose run --rm --user "$(id -u):$(id -g)" -e RAILS_ENV=test web rake db:environment:set db:drop db:create db:migrate
+```
+
+To actually run the tests:
+```
+docker-compose run --rm --user "$(id -u):$(id -g)" web rspec
+
+```

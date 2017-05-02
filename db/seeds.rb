@@ -37,7 +37,11 @@ Tenant.create({
         "nl" => Faker::Address.city,
         "fr" => Faker::Address.city
       },
-      timezone: "Europe/Brussels"
+      timezone: "Europe/Brussels",
+      style_main_bg: Faker::Color.hex_color,
+      style_main_fg: Faker::Color.hex_color,
+      style_accent_bg: Faker::Color.hex_color,
+      style_accent_fg: Faker::Color.hex_color
     }
   }
 })

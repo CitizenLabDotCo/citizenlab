@@ -18,7 +18,10 @@ Rails.application.routes.draw do
       resources :topics, only: [:index, :show]
       resources :areas, only: [:index, :show]
 
-      get 'tenants/current'
+      resources :tenants, only: [:update] do
+        get :current, on: :collection
+      end
+      # get 'tenants/current'
     end
   end
 end

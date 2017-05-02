@@ -3,6 +3,7 @@
   "description": "Schema for validating the settings on a tenant",
   "type": "object",
   "required": ["core"],
+  "additionalProperties": false,
   "properties":
     {
       "core": {
@@ -11,7 +12,10 @@
           {
             "description": "The core of the system. Container for general settings. Always enabled",
             "required-settings": ["organization_type", "timezone","locales"],
+            "additionalProperties": false,
             "properties": {
+              "allowed": {},
+              "enabled": {},
               "organization_type": {
                 "type": "string",
                 "enum": ["city", "generic"]
@@ -24,12 +28,29 @@
               "locales": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [<%= I18n.available_locales.map{|l| "\"#{l}\""}.join(",") %>]
                 },
                 "uniqueItems": true
               },
               "organization_name": { 
                 "$ref": "#/definitions/multiloc_string" 
+              },
+              "style_main_bg": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              },
+              "style_main_fg": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              },
+              "style_accent_bg": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              },
+              "style_accent_fg": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
               }
             }
           }
@@ -41,8 +62,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"Topics can be shown",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -53,8 +76,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"Displaying a map where all ideas are plotted on",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -65,8 +90,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"Allow geographical areas(neighbourhoods, cities ...) to be defined",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -77,8 +104,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"Allow custom pages to be made, and potentially be added to the navigation",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -89,8 +118,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"Allow signing in and registering through a facebook account",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -101,8 +132,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"Allow signing in and registering through a google account",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -113,8 +146,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"Allow signing in and registering through twitter",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -125,8 +160,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"Allow comments to be posted on ideas",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -137,8 +174,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"Allow users to vote on comments",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -149,8 +188,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"@user (twitter style) mentions generate notifications",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -161,8 +202,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -173,8 +216,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"Votes can be placed on an idea",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -185,8 +230,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"ideas can contain image(s)",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -197,8 +244,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"Allows location",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -209,8 +258,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"Allow attachments",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -221,8 +272,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -233,8 +286,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -245,8 +300,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -257,8 +314,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -269,8 +328,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -281,8 +342,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -293,8 +356,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -305,8 +370,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -317,8 +384,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -329,8 +398,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -341,8 +412,10 @@
           {"$ref": "#definitions/feature"},
           {
             "description":	"",
+            "additionalProperties": false,
             "properties": {
-
+              "allowed": {},
+              "enabled": {}
             }
           }
         ]
@@ -353,8 +426,11 @@
           {"$ref": "#definitions/feature"},
           {
             "description":  "Allows the app interactions of the users to be tracked by mixpanel",
+            "additionalProperties": false,
             "required-settings": ["project_token"],
             "properties": {
+              "allowed": {},
+              "enabled": {},
               "project_token": {
                 "type": "string"
               }
@@ -368,8 +444,11 @@
           {"$ref": "#definitions/feature"},
           {
             "description": "Allows the app interactions of the users to be tracked by Google Analytics",
+            "additionalProperties": false,
             "required-settings": ["tracking_id"],
             "properties": {
+              "allowed": {},
+              "enabled": {},
               "tracking_id": {
                 "type": "string"
               }
@@ -392,6 +471,7 @@
   "definitions": {
     "multiloc_string": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\"}"}.join(",") %>
       }
