@@ -38,6 +38,7 @@ function createComponentWithIntl(children, props = { locale: 'en' }) {
 function mountWithIntl(node) {
   return mount(nodeWithIntlProp(node), {
     context: {
+      intl,
       sagas: {
         run: jestFn,
       },
