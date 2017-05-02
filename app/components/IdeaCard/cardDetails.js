@@ -68,7 +68,7 @@ ResourceDetail.propTypes = {
 
 class CardDetails extends React.PureComponent {
   render() {
-    const { areas } = this.props;
+    const { data, type } = this.props;
     return (
       <Card style={{ margin: 0, borderRadius: 0, boxShadow: 'none' }}>
         <Card.Content>

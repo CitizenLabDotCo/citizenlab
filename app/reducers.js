@@ -12,6 +12,7 @@ import ideasNewPageReducer from 'containers/IdeasNewPage/reducer';
 import usersNewPageReducer from 'containers/UsersNewPage/reducer';
 import ideasShowReducer from 'containers/IdeasShow/reducer';
 import resourcesReducer from 'utils/resources/reducer';
+import actionsReducer from 'utils/store/reducer';
 import authReducer from 'utils/auth/reducer';
 import tenantReducer from 'utils/tenant/reducer';
 import { persistedDataReducer } from './persistedData';
@@ -44,11 +45,14 @@ function routeReducer(state = routeInitialState, action) {
   }
 }
 
+
 /**
  * Creates the main reducer with the asynchronously loaded ones
  */
+
 export default function createReducer(asyncReducers) {
   return combineReducers({
+    actions: actionsReducer,
     route: routeReducer,
     auth: authReducer,
     tenant: tenantReducer,

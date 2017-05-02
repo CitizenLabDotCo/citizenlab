@@ -1,11 +1,15 @@
 import { createSelector, createSelectorCreator } from 'reselect';
 import { selectResourcesDomain } from 'utils/resources/selectors';
+import { selectActions } from 'utils/store/selectors';
+
 import { activeList, activeResource } from 'utils/denormalize';
-import { OrderedMap } from 'immutable';
+import { OrderedMap, List } from 'immutable';
+import _ from 'lodash'
 
 /**
- * Direct selector to the ideasIndexPage state domain
- */
+* Direct selector to the ideasIndexPage state domain
+*/
+
 const selectIdeasIndexPageDomain = (...types) => (state) => {
   let data = state.get('ideasIndexPage');
   types.map((type) => (data = data.get(type)));
@@ -17,57 +21,90 @@ const makeSelectIdeasIndexPage = () => createSelector(
   (substate) => substate.toJS()
 );
 
-
 // this momoizer is to be used only when both the list of ids from the pageState and the resource need to be avalialbe in orther to trigger the render.
 function readyMemoize(func) {
-  let prevPageState = null;
+  let prevState = null;
+  let prevGoState = List();
   let prevResources = null;
   let prevReady = false;
-  let previousResult = OrderedMap();
 
   return function (...args) {
-    const [pageState, resources] = args;
+    const [state, resources, storeAction] = args;
     let lastResult;
-    const ready = pageState && resources && !pageState.isEmpty() && !resources.isEmpty();
-    if (ready) {
-      const newState = prevPageState !== pageState || prevResources !== resources;
-      if (newState || !prevReady) {
-        lastResult = func(...args);
-      }
-    }
+    let ready;
 
-    previousResult = lastResult || previousResult;
+    if (!storeAction.toJS().slice(-1).includes('MERGE_JSONAPI_RESOURCES')){
+      ready = state && !state.isEmpty()
+      if (ready) {
+        const isStateReady = prevState !== state;
+        if (isStateReady || !prevReady) {
+          const newIds = _.difference(state.toJS(), prevGoState.toJS());
+          // console.group()
+          // console.log(newIds)
+          // console.log(state.toJS())
+          // console.log(prevGoState.toJS())
+          // console.groupEnd()
+          prevGoState = state;
+          cache.action = 'add';
+          lastResult = func(newIds, resources, cache);
+          delete cache.action;
+        }
+      }
+    };
+
+    cache.store = lastResult || cache.store;
     prevReady = ready;
-    prevPageState = pageState;
+    prevState = state;
     prevResources = resources;
-    return previousResult;
+    return cache.store;
   };
 }
 
 const readyCreateSelector = createSelectorCreator(readyMemoize);
 
+// const ideaSelectorCache = () => {
+//   const cache = { store: OrderedMap() };
+//   return () => {
+//     return cache
+//   }
+// }
+
 const makeSelectResources = (...args) => readyCreateSelector(
   selectIdeasIndexPageDomain(...args),
   selectResourcesDomain(args[0]),
-  (resourceState, resources) => activeList(resourceState, resources)
+  selectActions(),
+  (ids, resources, cache) => {
+    cache.store = denormalizeIdeas(ids, resources, cache);
+    return cache.store;
+  }
 );
+
+const denormalizeIdeas = (ids, ideas, cache) => {
+  let newMap = OrderedMap();
+  if (cache.action === 'add') newMap = cache.store;
+  ids.forEach((id) => {
+    const newIdea = ideas.get(id);
+    newMap = newMap.set(id, newIdea);
+  });
+  return newMap;
+};
 
 // this momoizer will render something only if either one of the basic resources (topics, areas and/or users are avaliable) It will still return the list of ideas as it depends on the previous momoizer.
 function presentMemoize(func) {
   let prevResources = [];
   let cleanState;
-  let state;
+  let ideas;
 
   // we reference arguments instead of spreading them for performance reasons
   return function (newState, ...resources) {
-    if (cleanState !== newState) state = cleanState = newState;
-    if (newState.isEmpty()) return state;
+    if (cleanState !== newState) ideas = cleanState = newState;
+    if (newState.isEmpty()) return ideas;
 
-    state = state || newState;
+    ideas = ideas || newState;
     const [topics, areas, users] = resources;
     const namedResources = [['topics', topics], ['areas', areas], ['users', users]];
 
-    const presentResources = [state, ...resources].filter((resource) => (
+    const presentResources = [ideas, ...resources].filter((resource) => (
       resource && !resource.isEmpty()
     ));
 
@@ -79,12 +116,12 @@ function presentMemoize(func) {
       }
       return null;
     });
-
+    //console.log(ready)
     const ready = presentResources.length > 1 && newResourcesLength;
-    if (ready) state = func(state, ...newResources);
+    if (ready) ideas = func(ideas, ...newResources);
 
     prevResources = resources;
-    return state;
+    return ideas;
   };
 }
 
@@ -95,9 +132,12 @@ const makeSelectIdeas = () => createSelectorCreator(presentMemoize)(
   makeSelectResources('topics', 'ids'),
   makeSelectResources('areas', 'ids'),
   selectResourcesDomain('users'),
-  (state, topics, areas, author) => (
-    activeResource(state, { topics, areas, author })
-  )
+  (cache, topics, areas, author) => {
+    const ideas = cache.store;
+    cache.store = activeResource(ideas, { topics, areas, author });
+    console.log(cache.store.toJS());
+    return cache.store;
+  }
 );
 
 

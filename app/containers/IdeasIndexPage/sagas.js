@@ -8,7 +8,7 @@ export function* getIdeas(action) {
   try {
     const ideaResponse = yield call(fetchIdeas, {
       'page[number]': action.nextPageNumber,
-      'page[size]': action.nextPageItemCount,
+      'page[size]': 2, //action.nextPageItemCount,
       ...action.filters,
     });
     yield put(mergeJsonApiResources(ideaResponse));
@@ -42,22 +42,6 @@ export function* getAreas(action) {
   } catch (err) {
     yield put(loadAreasError(err));
   }
-}
-
-export function* filterTopics(action) {
-
-}
-
-export function* filterAreas(action) {
-
-}
-
-export function* topicsFilterSaga(){
-
-}
-
-export function* areasFilterSaga(){
-  
 }
 
 export function* ideasSaga() {

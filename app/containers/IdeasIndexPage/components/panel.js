@@ -33,8 +33,7 @@ class UnconnectedIdeasCards extends React.PureComponent {
             <Column key={id} style={{ paddingTop: '0', paddingBottom: '10px' }}>
               <IdeaCard idea={idea.get('attributes')} id={id} onClick={this.goToIdeaPage} >
                 <AuthorDetail author={author} key={'author'} />
-                <ResourceDetail resource={topics} key={'topics'} />
-                <ResourceDetail resource={areas} key={'areas'} />
+                
               </IdeaCard>
             </Column>
           );
@@ -43,6 +42,9 @@ class UnconnectedIdeasCards extends React.PureComponent {
     );
   }
 }
+
+<ResourceDetail resource={topics} key={'topics'} />
+                <ResourceDetail resource={areas} key={'areas'} />
 
 UnconnectedIdeasCards.propTypes = {
   ideas: React.PropTypes.any.isRequired,
