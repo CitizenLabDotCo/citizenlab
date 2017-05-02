@@ -44,6 +44,22 @@ export function* getAreas(action) {
   }
 }
 
+export function* filterTopics(action) {
+
+}
+
+export function* filterAreas(action) {
+
+}
+
+export function* topicsFilterSaga(){
+
+}
+
+export function* areasFilterSaga(){
+  
+}
+
 export function* ideasSaga() {
   yield takeLatest(LOAD_IDEAS_REQUEST, getIdeas);
 }

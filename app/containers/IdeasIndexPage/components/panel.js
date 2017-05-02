@@ -4,45 +4,26 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { Map } from 'Immutable';
 
-import { Grid, Segment } from 'semantic-ui-react';
+import { Grid, Segment, Button } from 'semantic-ui-react';
 import IdeaCard, { ResourceDetail, AuthorDetail } from 'components/IdeaCard';
-
-import { makeSelectIdeas } from '../selectors';
+import { injectTFunc } from 'containers/T/utils'
+import { loadNextPage } from '../actions'
+import { makeSelectIdeas, selectIdeasIndexPageDomain } from '../selectors';
+import messages from '../messages'
 const { Column, Row } = Grid;
 
-class Wrapper extends React.PureComponent {
-  render() {
-    return (
-      <span>
-      </span>
-    );
+class UnconnectedIdeasCards extends React.PureComponent {
+
+  goToIdeaPage = (id) => {
+    this.props.push(`/ideas/${id}`);
   }
-}
-
-
-class IdeasCards extends React.PureComponent {
-  constructor() {
-    super();
-    this.wrappers = [];
-  }
-
-  manageWrapper = (wrapper, i, newProps) => {
-    if (this.wrappers[i]) {
-      this.wrappers[i].setState(newProps);
-      return this.wrappers[i];
-    }
-    this.wrappers[i] = wrapper;
-    return this.wrappers[i];
-  }
-
 
   render() {
-    const { ideas, goToIdeaPage } = this.props;
+    const { ideas } = this.props;
     return (
       <Row>
-        {ideas.toArray().map((idea, i) => {
+        {ideas.toArray().map((idea) => {
           const relationships = idea.get('relationships');
           const author = relationships.getIn(['author', 'data', 'data']);
           const topics = relationships.getIn(['topics', 'data']).toArray();
@@ -50,7 +31,7 @@ class IdeasCards extends React.PureComponent {
           const id = idea.get('id');
           return (
             <Column key={id} style={{ paddingTop: '0', paddingBottom: '10px' }}>
-              <IdeaCard idea={idea.get('attributes')} id={id} onClick={goToIdeaPage} >
+              <IdeaCard idea={idea.get('attributes')} id={id} onClick={this.goToIdeaPage} >
                 <AuthorDetail author={author} key={'author'} />
                 <ResourceDetail resource={topics} key={'topics'} />
                 <ResourceDetail resource={areas} key={'areas'} />
@@ -63,40 +44,68 @@ class IdeasCards extends React.PureComponent {
   }
 }
 
-IdeasCards.propTypes = {
-  ideas: PropTypes.any.isRequired,
-  goToIdeaPage: PropTypes.func.isRequired,
+UnconnectedIdeasCards.propTypes = {
+  ideas: React.PropTypes.any.isRequired,
 };
+
+const mapIdeasCardsStateToProps = createStructuredSelector({
+  ideas: makeSelectIdeas(),
+});
+
+const mapIdeasCardsDispatchToProps = (dispatch) => bindActionCreators({ push }, dispatch);
+
+
+const IdeasCards = connect(mapIdeasCardsStateToProps, mapIdeasCardsDispatchToProps)(UnconnectedIdeasCards);
 
 
 class Panel extends React.Component {
+  constructor() {
+    super();
+    this.goToNextPage = this.goToNextPage.bind(this)
+  }
 
-  goToIdeaPage = () => {
-    this.props.push(`/ideas/${id}`);
+  shouldComponentUpdate() {
+    return false;
+  }
+
+  goToNextPage() {
+    const { nextPageNumber, nextPageItemCount } = this.props;
+    this.props.loadNextPage(nextPageNumber, nextPageItemCount);
   }
 
   render() {
-    const { ideas } = this.props;
+    const { tFunc } = this.props;
+    const loadMoreMessage = tFunc(messages.loadMore)
     return (
       <Segment basic>
         <div style={{ display: 'inline-block', width: 'calc(100% - 50px) ' }}>
           <Grid columns={3}>
-            <IdeasCards ideas={ideas} goToIdeaPage={this.goToIdeaPage} />
+            <IdeasCards />
           </Grid>
         </div>
+        <Button
+          content={loadMoreMessage}
+          fluid icon={'right arrow'}
+          labelPosition={'right'}
+          onClick={this.goToNextPage}
+        />
       </Segment>
     );
   }
 }
 
 Panel.propTypes = {
-  ideas: PropTypes.any.isRequired,
+  loadNextPage: React.PropTypes.func.isRequired,
+  nextPageNumber: React.PropTypes.any,
+  nextPageItemCount: React.PropTypes.any,
 };
 
 const mapStateToProps = createStructuredSelector({
-  ideas: makeSelectIdeas(),
+  nextPageNumber: selectIdeasIndexPageDomain('nextPageNumber'),
+  nextPageItemCount: selectIdeasIndexPageDomain('nextPageItemCount'),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ push }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Panel);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ loadNextPage }, dispatch);
+
+export default injectTFunc(connect(mapStateToProps, mapDispatchToProps)(Panel));

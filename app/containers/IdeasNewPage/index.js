@@ -22,10 +22,12 @@ import {
   makeSelectTitleLength, makeSelectAttachments, makeSelectStoreAttachmentError, makeSelectImages,
   makeSelectStoreImageError, makeSelectTitle,
 } from './selectors';
+
 import {
   saveDraft, setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
   publishIdeaRequest,
 } from './actions';
+
 import IdeaEditorWrapper from './IdeaEditorWrapper';
 import messages from './messages';
 import AttachmentList from './AttachmentList';

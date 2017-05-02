@@ -17,20 +17,20 @@ const makeSelectIdeasIndexPage = () => createSelector(
   (substate) => substate.toJS()
 );
 
+
+// this momoizer is to be used only when both the list of ids from the pageState and the resource need to be avalialbe in orther to trigger the render.
 function readyMemoize(func) {
   let prevPageState = null;
   let prevResources = null;
   let prevReady = false;
   let previousResult = OrderedMap();
 
-  // we reference arguments instead of spreading them for performance reasons
   return function (...args) {
     const [pageState, resources] = args;
     let lastResult;
     const ready = pageState && resources && !pageState.isEmpty() && !resources.isEmpty();
-
     if (ready) {
-      const newState = prevPageState !== pageState && prevResources !== resources;
+      const newState = prevPageState !== pageState || prevResources !== resources;
       if (newState || !prevReady) {
         lastResult = func(...args);
       }
@@ -52,7 +52,7 @@ const makeSelectResources = (...args) => readyCreateSelector(
   (resourceState, resources) => activeList(resourceState, resources)
 );
 
-
+// this momoizer will render something only if either one of the basic resources (topics, areas and/or users are avaliable) It will still return the list of ideas as it depends on the previous momoizer.
 function presentMemoize(func) {
   let prevResources = [];
   let cleanState;

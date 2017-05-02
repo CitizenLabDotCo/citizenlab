@@ -8,12 +8,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-
-import { Button, Header, Icon, Modal } from 'semantic-ui-react';
 
 import { watchFetchIdea, watchLoadIdeaVotes, watchVoteIdea, watchFetchComments, watchStoreComment } from './sagas';
 import messages from './messages';
@@ -60,7 +57,8 @@ const LoadingIdeaMessageMDP = createStructuredSelector({
 
 const LoadingIdeaMessage = connect(LoadingIdeaMessageMDP)(xLoadingIdeaMessage);
 
-export class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+// Ideas show does not use helmet at this view is controlled by RouterIndexShow
+class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super();
     this.runningSagas = [];
@@ -84,34 +82,12 @@ export class IdeasShow extends React.PureComponent { // eslint-disable-line reac
     delete this.runningSagas;
   }
 
-  handleClose = () => this.props.push('/ideas')
-
   render() {
     return (
       <div>
-        <Helmet
-          title="IdeasIndexPage"
-          meta={[
-            { name: 'description', content: 'Description of IdeasShow' },
-          ]}
-        />
-
-        <Modal open onClose={this.handleClose}>
-          <Modal.Header>Profile Picture</Modal.Header>
-          <Modal.Content>
-            <Modal.Description>
-              <Header>Modal Header</Header>
-              <LoadIdeaError />
-              <LoadingIdeaMessage />
-              <Show />
-            </Modal.Description>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button primary>
-              Proceed <Icon name={'right chevron'} />
-            </Button>
-          </Modal.Actions>
-        </Modal>
+        <LoadIdeaError />
+        <LoadingIdeaMessage />
+        <Show />
       </div>
     );
   }
@@ -126,10 +102,9 @@ IdeasShow.propTypes = {
   loadVotes: React.PropTypes.func.isRequired,
   params: React.PropTypes.func.object,
   loadIdea: React.PropTypes.func,
-  push: React.PropTypes.func,
 };
 
-const ideasShowActions = { loadIdea, loadComments, push, loadVotes };
+const ideasShowActions = { loadIdea, loadComments, loadVotes };
 const mapDispatchToProps = (dispatch) => bindActionCreators(ideasShowActions, dispatch);
 
 

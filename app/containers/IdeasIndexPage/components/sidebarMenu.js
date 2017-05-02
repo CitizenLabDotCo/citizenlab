@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { Sidebar, Menu } from 'semantic-ui-react';
 import T from 'containers/T';
 import { createStructuredSelector } from 'reselect';
-
+import { loadNextPage } from '../actions';
 import { makeSelectResources } from '../selectors';
 
 
@@ -65,4 +66,6 @@ const mapStateToProps = createStructuredSelector({
   areas: makeSelectResources('areas', 'ids'),
 });
 
-export default connect(mapStateToProps)(SidebarMenuContainer);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ loadNextPage }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(SidebarMenuContainer);

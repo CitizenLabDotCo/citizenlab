@@ -7,8 +7,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
-import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { bindActionCreators } from 'redux';
 import { Icon, Sidebar, Segment } from 'semantic-ui-react';
@@ -21,7 +19,7 @@ import SidebarMenuContainer from './components/sidebarMenu';
 import Panel from './components/panel';
 
 
-class PanelContainer extends React.Component {
+class PagePresentation extends React.Component {
   constructor() {
     super();
     this.state = { visible: false };
@@ -65,7 +63,7 @@ class PanelContainer extends React.Component {
         <Sidebar.Pushable as={Segment} style={{ margin: '0', padding: '0', border: 'none', borderRadius: 0 }}>
           <SidebarMenuContainer visible={visible} toggleVisibility={this.toggleVisibility} />
           <Sidebar.Pusher>
-            <Panel />
+            {this.props.children}
           </Sidebar.Pusher>
         </Sidebar.Pushable>
 
@@ -75,7 +73,8 @@ class PanelContainer extends React.Component {
   }
 }
 
-export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+// Ideas show does not use helmet at this view is controlled by RouterIndexShow
+export class Index extends React.Component {
   constructor() {
     super();
     this.runningSagas = [];
@@ -99,28 +98,22 @@ export class IdeasIndexPage extends React.PureComponent { // eslint-disable-line
   render() {
     return (
       <div>
-        <Helmet
-          title={'IdeasIndexPage'}
-          meta={[
-            { name: 'description', content: 'Description of IdeasIndexPage' },
-          ]}
-        />
-
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
-        <PanelContainer />
-        {this.props.children || ''}
+        <PagePresentation>
+          <Panel />
+        </PagePresentation>
       </div>
     );
   }
 }
 
-IdeasIndexPage.contextTypes = {
+Index.contextTypes = {
   sagas: PropTypes.func.isRequired,
 };
 
-IdeasIndexPage.propTypes = {
+Index.propTypes = {
   initIdeasData: PropTypes.func.isRequired,
   children: PropTypes.element,
 };
@@ -129,4 +122,4 @@ IdeasIndexPage.propTypes = {
 const mapDispatchToProps = (dispatch) => bindActionCreators({ initIdeasData, loadNextPage }, dispatch);
 
 
-export default connect(null, mapDispatchToProps)(IdeasIndexPage);
+export default connect(null, mapDispatchToProps)(Index);

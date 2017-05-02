@@ -103,7 +103,7 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/IdeasIndexPage/reducer'),
-          import('containers/IdeasIndexPage'),
+          import('containers/IdeasIndexPage/routerIndexShow'),
         ]);
 
         const renderRoute = loadModule(cb);
@@ -123,6 +123,7 @@ export default function createRoutes(store) {
             const importModules = Promise.all([
               import('containers/IdeasShow/reducer'),
               import('containers/IdeasShow'),
+
             ]);
 
             const renderRoute = loadModule(cb);

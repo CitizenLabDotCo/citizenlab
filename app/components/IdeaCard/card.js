@@ -13,8 +13,7 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
   // }
 
   render() {
-    console.log('render')
-    const { idea, id, onClick } = this.props;
+    const { idea, id } = this.props;
     const images = idea.getIn(['images', '0', 'medium']);
     const label = parseInt(id.match(/\d+/), 10) % 5 === 0 ? { as: 'a', corner: 'right', icon: 'university' } : false;
     const header = idea.get('title_multiloc').toJS();
@@ -28,7 +27,7 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
         />
 
         <Card.Content style={{ cursor: 'pointer' }}>
-          <Card.Header onClick={onClick} >
+          <Card.Header onClick={this.handleClick} >
             <T value={header} />
           </Card.Header>
           {this.props.children}

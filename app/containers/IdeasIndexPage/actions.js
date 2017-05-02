@@ -33,6 +33,10 @@ export function loadIdeas(initialLoad, nextPageNumber, nextPageItemCount, filter
   };
 }
 
+export function loadNextPage(nextPageNumber, nextPageItemCount, filters = {}) {
+  return loadIdeas(false, nextPageNumber, nextPageItemCount, filters);
+}
+
 export function resetIdeas() {
   return {
     type: RESET_IDEAS,
@@ -98,11 +102,6 @@ export function initIdeasData() {
   };
 }
 
-export function loadNextPage(nextPageNumber, nextPageItemCount, filters = {}) {
-  return (dispatch) => {
-    dispatch(loadIdeas(false, nextPageNumber, nextPageItemCount, filters));
-  };
-}
 
 
 // to implement ?
