@@ -14,12 +14,13 @@ import styled from 'styled-components';
 import Breadcrumbs from 'components/Breadcrumbs';
 import draftToHtml from 'draftjs-to-html';
 import { Saga } from 'react-redux-saga';
+import { injectIntl } from 'react-intl';
 
 import {
   makeSelectStored, makeSelectContent, makeSelectLoadError, makeSelectLoading, makeSelectStoreError,
   makeSelectSubmitError, makeSelectSubmitted, makeSelectSubmitting, makeSelectShortTitleError, makeSelectLongTitleError,
   makeSelectTitleLength, makeSelectAttachments, makeSelectStoreAttachmentError, makeSelectImages,
-  makeSelectStoreImageError, makeSelectTitle,
+  makeSelectStoreImageError, makeSelectTitle, makeSelectTopics, makeSelectAreas,
 } from './selectors';
 import {
   saveDraft, setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
@@ -32,6 +33,7 @@ import canPublish from './canPublish';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 import { watchStoreIdea } from './sagas';
+import messages from './messages';
 
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -40,6 +42,8 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
     // provide 'this' context to callbacks
     this.saveDraft = this.saveDraft.bind(this);
     this.storeIdea = this.storeIdea.bind(this);
+    this.storeTopics = this.storeTopics.bind(this);
+    this.storeAreas = this.storeAreas.bind(this);
   }
 
   sendIdea(isDraft) {
@@ -54,6 +58,14 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
 
   storeIdea() {
     this.sendIdea(false);
+  }
+
+  storeTopics(topics) {
+    this.props.handleTopicsSelect(topics);
+  }
+
+  storeAreas(areas) {
+    this.props.handleAreasSelect(areas);
   }
 
   render() {
@@ -74,6 +86,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
 
     // eslint-disable-next-line no-shadow
     const { className, attachments, storeAttachment, storeAttachmentError, images, storeImage, storeImageError } = this.props;
+    const { formatMessage } = this.props.intl;
 
     return (
       <Container className={className}>
@@ -88,6 +101,12 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
         <IdeaEditorWrapper
           saveDraft={this.saveDraft}
           storeIdea={this.storeIdea}
+          topicsLabel={formatMessage({ ...messages.topicsLabel })}
+          topicsPlaceholder={formatMessage({ ...messages.topicsPlaceholder })}
+          areasLabel={formatMessage({ ...messages.areasLabel })}
+          areasPlaceholder={formatMessage({ ...messages.areasPlaceholder })}
+          storeTopics={this.storeTopics}
+          storeAreas={this.storeAreas}
           {...this.props}
         />
         <StyledLabel>Add image(s)</StyledLabel>
@@ -125,6 +144,11 @@ IdeasNewPage.propTypes = {
   user: PropTypes.object,
   title: PropTypes.string.isRequired,
   locale: PropTypes.string.isRequired,
+  topics: PropTypes.any.isRequired,
+  areas: PropTypes.any.isRequired,
+  intl: PropTypes.object,
+  handleTopicsSelect: PropTypes.func.isRequired,
+  handleAreasSelect: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -146,6 +170,8 @@ const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
   user: makeSelectCurrentUser(),
   title: makeSelectTitle(),
+  topics: makeSelectTopics(),
+  areas: makeSelectAreas(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -158,6 +184,8 @@ export function mapDispatchToProps(dispatch) {
     },
     publishIdeaClick(content, titleError, title, images, attachments, userId, locale, isDraft) {
       const contentNotNull = content || '<p></p>';
+
+      // TODO: handle ideas and areas incl. validation
 
       if (canPublish(contentNotNull, titleError)) {
         // inject strings for current locale as a mutiloc object
@@ -186,10 +214,18 @@ export function mapDispatchToProps(dispatch) {
         dispatch(storeImageError());
       }
     },
+    handleTopicsSelect(topics) {
+      console.log(topics);
+      // TODO (logic similar to attachment, images and title) to have TOPICS available when publishing
+    },
+    handleAreasSelect(areas) {
+      console.log(areas);
+      // TODO (logic similar to attachment, images and title) to have AREAS available when publishing
+    },
   };
 }
 
-export default styled(connect(mapStateToProps, mapDispatchToProps)(IdeasNewPage))`
+export default styled(injectIntl(connect(mapStateToProps, mapDispatchToProps)(IdeasNewPage)))`
   backgroundColor: '#eeeeee';
   minHeight: '850px';
   width: '100%';

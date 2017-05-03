@@ -62,6 +62,16 @@ const makeSelectAttachments = () => createSelector(
   (submitIdeaState) => submitIdeaState.getIn(['draft', 'attachments'])
 );
 
+const makeSelectTopics = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'topics'])
+);
+
+const makeSelectAreas = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['draft', 'areas'])
+);
+
 const makeSelectStoreAttachmentError = () => createSelector(
   selectSubmitIdea,
   (submitIdeaState) => submitIdeaState.getIn(['draft', 'storeAttachmentError'])
@@ -99,4 +109,6 @@ export {
   makeSelectImages,
   makeSelectStoreImageError,
   makeSelectTitle,
+  makeSelectTopics,
+  makeSelectAreas,
 };

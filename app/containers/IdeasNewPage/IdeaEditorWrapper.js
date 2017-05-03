@@ -8,6 +8,7 @@ import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import { Container, Segment, Grid, Button } from 'semantic-ui-react';
+import MultiSelect from 'components/MultiSelect';
 
 // import messages from './messages';
 import IdeaEditor from './IdeaEditor';
@@ -15,10 +16,42 @@ import messages from './messages';
 import IdeaTitle, { TitleStatusWrapper } from './IdeaTitle';
 
 export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+
+  constructor() {
+    super();
+
+    // provide 'this' context
+    this.storeTopics = this.storeTopics.bind(this);
+    this.storeAreas = this.storeAreas.bind(this);
+  }
+
+  storeTopics(topics) {
+    this.props.storeTopics(topics);
+  }
+
+  storeAreas(areas) {
+    this.props.storeAreas(areas);
+  }
+
   render() {
     const { className, loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
     const { shortTitleError, longTitleError, titleLength } = this.props;
     const { storeDraftCopy, content, saveDraft, storeIdea } = this.props;
+    const { topicsLabel, areasLabel, topicsPlaceholder, areasPlaceholder } = this.props;
+    // TODO: load this via [already defined] selector (after refactoring IdeasNewPage structure --> CL2-167)
+    const topics = [
+      { value: 'topic1', label: 'Topic 1' },
+      { value: 'topic2', label: 'Topic 2' },
+      { value: 'topic3', label: 'Topic 3' },
+      { value: 'topic4', label: 'Topic 4' },
+    ];
+
+    const areas = [
+      { value: 'area1', label: 'Area 1' },
+      { value: 'area2', label: 'Area 2' },
+      { value: 'area3', label: 'Area 3' },
+      { value: 'area4', label: 'Area 4' },
+    ];
 
     const FormattedMessageSegment = (props) => (
       <Segment>
@@ -60,6 +93,28 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
               </Grid.Column>
             </Grid.Row>
           </Grid>
+          <Grid columns={2}>
+            <Grid.Row>
+              <Grid.Column width={8} textAlign="center">
+                {topics && <MultiSelect
+                  options={topics}
+                  maxSelectionLength={3}
+                  placeholder={topicsPlaceholder}
+                  optionLabel={topicsLabel}
+                  handleOptionsAdded={this.storeTopics}
+                />}
+              </Grid.Column>
+              <Grid.Column width={8} textAlign="center">
+                {areas && <MultiSelect
+                  options={areas}
+                  maxSelectionLength={3}
+                  placeholder={areasPlaceholder}
+                  optionLabel={areasLabel}
+                  handleOptionsAdded={this.storeAreas}
+                />}
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
         </Container>
         <div className={className}>
           <IdeaEditor
@@ -89,6 +144,14 @@ IdeaEditorWrapper.propTypes = {
   content: PropTypes.string,
   saveDraft: PropTypes.func.isRequired,
   storeIdea: PropTypes.func.isRequired,
+  topics: PropTypes.any.isRequired,
+  areas: PropTypes.any.isRequired,
+  topicsLabel: PropTypes.string.isRequired,
+  areasLabel: PropTypes.string.isRequired,
+  storeTopics: PropTypes.func.isRequired,
+  storeAreas: PropTypes.func.isRequired,
+  topicsPlaceholder: PropTypes.string.isRequired,
+  areasPlaceholder: PropTypes.string.isRequired,
 };
 
 export default styled(IdeaEditorWrapper)`

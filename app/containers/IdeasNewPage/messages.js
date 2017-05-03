@@ -52,7 +52,7 @@ export default defineMessages({
   },
   charactersLeft: {
     id: 'app.containers.IdeasNewPage.charactersLeft',
-    defaultMessage: '{charsLeft} characters left',
+    defaultMessage: '{charsLeft} characters left {optionLabel}',
   },
   storeImageError: {
     id: 'app.containers.IdeasNewPage.storeImageError',
@@ -77,5 +77,21 @@ export default defineMessages({
   genericFile: {
     id: 'app.containers.IdeasNewPage.genericFile',
     defaultMessage: 'File',
+  },
+  topicsLabel: {
+    id: 'app.containers.IdeasNewPage.topicsLabel',
+    defaultMessage: 'topics',
+  },
+  topicsPlaceholder: {
+    id: 'app.containers.IdeasNewPage.topicsPlaceholder',
+    defaultMessage: 'Select topics',
+  },
+  areasLabel: {
+    id: 'app.containers.IdeasNewPage.areasLabel',
+    defaultMessage: 'areas',
+  },
+  areasPlaceholder: {
+    id: 'app.containers.IdeasNewPage.areasPlaceholder',
+    defaultMessage: 'Select areas',
   },
 });
