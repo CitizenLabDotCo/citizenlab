@@ -54,10 +54,12 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
         </Menu.Item>
         <Menu.Menu position="right">
           <Menu.Item>
-            <Button as="a" primary>
-              <Icon name="plus" />
-              <FormattedMessage {...messages.addIdea} />
-            </Button>
+            <Link to="/ideas/new">
+              <Button primary>
+                <Icon name="plus" />
+                <FormattedMessage {...messages.addIdea} />
+              </Button>
+            </Link>
           </Menu.Item>
           {currentUser ? this.userMenu(currentUser) : this.loginLink()}
         </Menu.Menu>
