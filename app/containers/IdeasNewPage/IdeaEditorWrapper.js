@@ -7,35 +7,60 @@
 import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
+import { Container, Segment, Grid, Button } from 'semantic-ui-react';
 
 // import messages from './messages';
 import IdeaEditor from './IdeaEditor';
 import messages from './messages';
-import IdeaTitle from './IdeaTitle';
+import IdeaTitle, { TitleStatusWrapper } from './IdeaTitle';
 
 export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { className, loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
     const { shortTitleError, longTitleError, titleLength } = this.props;
-    const { storeDraftCopy, content } = this.props;
+    const { storeDraftCopy, content, saveDraft, storeIdea } = this.props;
+
+    const FormattedMessageSegment = (props) => (
+      <Segment>
+        <FormattedMessage {...props.message} />
+      </Segment>
+    );
 
     return (
       <div>
-        {loading && <FormattedMessage {...messages.loading} />}
-        {loadError && <FormattedMessage {...messages.loadError} />}
-        {stored && <FormattedMessage {...messages.stored} />}
-        {storeError && <FormattedMessage {...messages.storeError} />}
-        {submitting && <FormattedMessage {...messages.submitting} />}
-        {submitError && <FormattedMessage {...messages.submitError} />}
-        {submitted && <FormattedMessage {...messages.submitted} />}
-
-        <IdeaTitle
-          setTitle={setTitle}
-          short={shortTitleError}
-          long={longTitleError}
-          length={titleLength}
-        />
-
+        {loading && <FormattedMessageSegment message={messages.loading} />}
+        {loadError && <FormattedMessageSegment message={messages.loadError} />}
+        {stored && <FormattedMessageSegment message={messages.stored} />}
+        {storeError && <FormattedMessageSegment message={messages.storeError} />}
+        {submitting && <FormattedMessageSegment message={messages.submitting} />}
+        {submitError && <FormattedMessageSegment message={messages.submitError} />}
+        {submitted && <FormattedMessageSegment message={messages.submitted} />}
+        <Container>
+          <Grid container>
+            <Grid.Row columns={3}>
+              <Grid.Column width={10}>
+                <IdeaTitle
+                  setTitle={setTitle}
+                />
+                <TitleStatusWrapper
+                  short={shortTitleError}
+                  long={longTitleError}
+                  length={titleLength}
+                />
+              </Grid.Column>
+              <Grid.Column width={4} textAlign="center">
+                <Button onClick={saveDraft}>
+                  <FormattedMessage {...messages.saveAsDraft} />
+                </Button>
+              </Grid.Column>
+              <Grid.Column width={2} textAlign="center">
+                <Button onClick={storeIdea}>
+                  <FormattedMessage {...messages.publish} />
+                </Button>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Container>
         <div className={className}>
           <IdeaEditor
             onEditorChange={storeDraftCopy}
@@ -62,6 +87,8 @@ IdeaEditorWrapper.propTypes = {
   titleLength: PropTypes.number.isRequired,
   setTitle: PropTypes.func.isRequired,
   content: PropTypes.string,
+  saveDraft: PropTypes.func.isRequired,
+  storeIdea: PropTypes.func.isRequired,
 };
 
 export default styled(IdeaEditorWrapper)`

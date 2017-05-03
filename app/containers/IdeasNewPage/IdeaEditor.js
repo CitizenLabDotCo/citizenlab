@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
+
 import { getEditorState } from './editorState';
 
 export default class IdeaEditor extends React.PureComponent {
@@ -41,21 +42,19 @@ export default class IdeaEditor extends React.PureComponent {
     const { editorState } = this.state;
     return (
       <div>
-        <div>
-          {/* TODO #later: customize toolbar and set up desired functions (image etc.)
-              based on https://github.com/jpuri/react-draft-wysiwyg/blob/master/docs/src/components/Demo/index.js */}
-          <Editor
-            hashtag={{}}
-            toolbar={{
-              options: ['fontSize', 'fontFamily', 'list', 'textAlign', 'blockType', 'link', 'inline'],
-              inline: {
-                options: ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript'],
-              },
-            }}
-            editorState={editorState}
-            onEditorStateChange={this.onEditorStateChange}
-          />
-        </div>
+        {/* TODO #later: customize toolbar and set up desired functions (image etc.)
+            based on https://github.com/jpuri/react-draft-wysiwyg/blob/master/docs/src/components/Demo/index.js */}
+        <Editor
+          hashtag={{}}
+          toolbar={{
+            options: ['fontSize', 'fontFamily', 'list', 'textAlign', 'blockType', 'link', 'inline'],
+            inline: {
+              options: ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript'],
+            },
+          }}
+          editorState={editorState}
+          onEditorStateChange={this.onEditorStateChange}
+        />
       </div>
     );
   }

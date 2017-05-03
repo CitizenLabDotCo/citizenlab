@@ -4,25 +4,25 @@
 *
 */
 
-import React, { PropTypes } from 'react';
-import { Button, Row, Column, Label } from 'components/Foundation';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Segment, Button, List, Input, Label } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import Attachment from './Attachment';
 import messages from './messages';
 
-export const Attachments = (props) => (<span>
-  {props.attachments.map((attachment, index) =>
-    (<Column large={3} key={index}>
-      <Attachment
-        source={attachment}
-      />
-    </Column>)
-  )}</span>
+export const Attachments = (props) => (<List>
+  {props.attachments.map((attachment, index) => (
+    <Attachment
+      key={index}
+      file={attachment}
+    />
+  ))}</List>
 );
 
 const FileInput = (props) => (
-  <input
+  <Input
     type="file"
     onChange={props.onFileUpload}
     className={props.className}
@@ -35,8 +35,8 @@ export const StyledFileInput = styled(FileInput)`
   width: 100px;
   margin-left: 10px;
   display: inline-block;
-  position: absolute;
-  height: 120px;
+  position: absolute !important; // override SUI's position
+  height: 4rem;
 `;
 
 class AttachmentList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -78,7 +78,7 @@ class AttachmentList extends React.PureComponent { // eslint-disable-line react/
 
     const StyledFileButton = styled(FileButton)`
       width: 100px;
-      margin: 10px;
+      height: 4rem;
       z-index: 2;
     `;
 
@@ -91,13 +91,13 @@ class AttachmentList extends React.PureComponent { // eslint-disable-line react/
         {storeAttachmentError && <Label>
           <FormattedMessage {...messages.storeAttachmentError} />
         </Label>}
-        <Row>
+        <Segment>
           <AttachmentsStyled attachments={attachments} />
-          <Column large={3}>
+          <div>
             <StyledFileInput onFileUpload={this.onFileUpload} />
             <StyledFileButton />
-          </Column>
-        </Row>
+          </div>
+        </Segment>
       </div>
     );
   }

@@ -74,4 +74,8 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.submittingComment',
     defaultMessage: 'Publishing...',
   },
+  genericFile: {
+    id: 'app.containers.IdeasNewPage.genericFile',
+    defaultMessage: 'File',
+  },
 });

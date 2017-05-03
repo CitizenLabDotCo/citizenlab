@@ -65,6 +65,7 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
     case STORE_ATTACHMENT:
       return state
         .setIn(['draft', 'storeAttachmentError'], false)
+         // file names
         .updateIn(['draft', 'attachments'], (attachments) => attachments.concat(action.payload));
     case STORE_ATTACHMENT_ERROR:
       return state
@@ -72,6 +73,7 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
     case STORE_IMAGE:
       return state
         .setIn(['draft', 'storeImageError'], false)
+         // image URLs
         .updateIn(['draft', 'images'], (images) => images.concat(action.payload));
     case STORE_IMAGE_ERROR:
       return state

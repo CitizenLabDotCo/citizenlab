@@ -4,25 +4,27 @@
 *
 */
 
-import React, { PropTypes } from 'react';
-import { Label, Row, Column } from 'components/Foundation';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Grid, Segment, Input, Label } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import Image from './Image';
 import messages from './messages';
 
-export const Images = (props) => (<span>
-  {props.images.map((image, index) =>
-    (<Column large={3} key={index}>
-      <Image
+export const Images = (props) => (<Grid columns={4}>
+  <Grid.Row>
+    {props.images.map((image, index) => (
+      <Grid.Column width={4} textAlign="center"><Image
+        key={index}
         source={image}
-      />
-    </Column>)
-  )}</span>
-);
+      /></Grid.Column>
+    ))}
+  </Grid.Row>
+</Grid>);
 
 const FileInput = (props) => (
-  <input
+  <Input
     type="file"
     id="upload-image"
     onChange={props.onFileUpload}
@@ -34,10 +36,11 @@ export const StyledFileInput = styled(FileInput)`
   opacity: 0;
   z-index: 1;
   width: 100px;
+  height: 100px;
   margin-left: 10px;
   display: inline-block;
-  position: absolute;
-  height: 120px;
+  position: absolute !important; // override SUI's position
+  height: 4rem;
 `;
 
 class ImageList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -99,15 +102,13 @@ class ImageList extends React.PureComponent { // eslint-disable-line react/prefe
         {storeImageError && <Label>
           <FormattedMessage {...messages.storeImageError} />
         </Label>}
-        <Row>
+        <Segment>
           <ImagesStyled images={images} />
-          <Column large={3}>
-            <StyledFileInput
-              onFileUpload={this.onFileUpload}
-            />
+          <div>
+            <StyledFileInput onFileUpload={this.onFileUpload} />
             <StyledImageButton />
-          </Column>
-        </Row>
+          </div>
+        </Segment>
       </div>
     );
   }

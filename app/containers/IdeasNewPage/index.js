@@ -9,11 +9,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
-import { Row, Column, Button, Label } from 'components/Foundation';
+import { Container, Label, Divider } from 'semantic-ui-react';
 import styled from 'styled-components';
 import Breadcrumbs from 'components/Breadcrumbs';
 import draftToHtml from 'draftjs-to-html';
-import { FormattedMessage } from 'react-intl';
 import { Saga } from 'react-redux-saga';
 
 import {
@@ -27,7 +26,6 @@ import {
   publishIdeaRequest,
 } from './actions';
 import IdeaEditorWrapper from './IdeaEditorWrapper';
-import messages from './messages';
 import AttachmentList from './AttachmentList';
 import ImageList from './ImageList';
 import canPublish from './canPublish';
@@ -74,16 +72,11 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
       margin: 20px 0 10px;
     `;
 
-    const StyledHr = styled.hr`
-      width: 80%;
-        margin-left: 10px;
-    `;
-
     // eslint-disable-next-line no-shadow
     const { className, attachments, storeAttachment, storeAttachmentError, images, storeImage, storeImageError } = this.props;
 
     return (
-      <div className={className}>
+      <Container className={className}>
         <Helmet
           title="IdeasNewPage"
           meta={[
@@ -92,50 +85,27 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
         />
         <Saga saga={watchStoreIdea} />
         <Breadcrumbs />
-        <Row>
-          <Column large={7} offsetOnLarge={1}>
-            <Row>
-              <IdeaEditorWrapper
-                {...this.props}
-              />
-            </Row>
-            <Row>
-              <StyledLabel>Add image(s)</StyledLabel>
-              <ImageList
-                storeImage={storeImage}
-                images={images}
-                storeImageError={storeImageError}
-              />
-            </Row>
-          </Column>
-          <Column large={4}>
-            <Row>
-              {/* TODO: style buttons */}
-              <Column large={5} offsetOnLarge={1}>
-                <Button onClick={this.saveDraft}>
-                  <FormattedMessage {...messages.saveAsDraft} />
-                </Button>
-              </Column>
-              <Column large={5} offsetOnLarge={1}>
-                <Button onClick={this.storeIdea}>
-                  <FormattedMessage {...messages.publish} />
-                </Button>
-              </Column>
-            </Row>
-            <Row isExpanded>
-              <StyledLabel>Location</StyledLabel>
-              {/* TODO: location image here*/}
-              <StyledHr />
-              <StyledLabel>Attachments</StyledLabel>
-              <AttachmentList
-                storeAttachment={storeAttachment}
-                attachments={attachments}
-                storeAttachmentError={storeAttachmentError}
-              />
-            </Row>
-          </Column>
-        </Row>
-      </div>
+        <IdeaEditorWrapper
+          saveDraft={this.saveDraft}
+          storeIdea={this.storeIdea}
+          {...this.props}
+        />
+        <StyledLabel>Add image(s)</StyledLabel>
+        <ImageList
+          storeImage={storeImage}
+          images={images}
+          storeImageError={storeImageError}
+        />
+        <StyledLabel>Location</StyledLabel>
+        {/* TODO: location image here*/}
+        <Divider />
+        <StyledLabel>Attachments</StyledLabel>
+        <AttachmentList
+          storeAttachment={storeAttachment}
+          attachments={attachments}
+          storeAttachmentError={storeAttachmentError}
+        />
+      </Container>
     );
   }
 }

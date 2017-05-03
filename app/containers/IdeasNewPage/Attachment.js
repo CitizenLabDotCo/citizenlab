@@ -4,20 +4,23 @@
 *
 */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
+import { Label } from 'semantic-ui-react';
+import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 
 function Attachment(props) {
   return (
-    <div>
-      source: {props.source}
-    </div>
+    <Label>
+      {(props.file && props.file.name) || <FormattedMessage {...messages.genericFile} />}
+    </Label>
   );
 }
 
 Attachment.propTypes = {
-  source: PropTypes.any.isRequired, // attachment id
+  file: PropTypes.any.isRequired, // file name
 };
 
 export default styled(Attachment)`
