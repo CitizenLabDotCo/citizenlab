@@ -12,6 +12,7 @@ import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import { Saga } from 'react-redux-saga';
 import { push } from 'react-router-redux';
+import { Container, Label } from 'semantic-ui-react';
 
 import {
   makeSelectIdeas,
@@ -46,19 +47,30 @@ export class UsersShowPage extends React.PureComponent { // eslint-disable-line 
         />
         <Saga saga={watchLoadUser} />
         <Saga saga={watchLoadUserIdeas} />
-
-        <Avatar avatarURL={avatarURL} />
-        {userData && <div>
-          {userData.first_name} {userData.last_name}
-        </div>}
-        {loadingUser && <FormattedMessage {...messages.loadingUser} />}
-        {loadUserError && <div>{loadUserError}</div>}
-        <UserIdeas
-          loadingUserIdeas={loadingUserIdeas}
-          loadUserIdeasError={loadUserIdeasError}
-          userIdeas={ideas}
-          goToIdea={goToIdea}
-        />
+        <Container
+          fluid
+          textAlign="center"
+        >
+          <Avatar avatarURL={avatarURL} />
+          {userData && <Label
+            centered
+            attached=""
+          >
+            {userData.first_name} {userData.last_name}
+          </Label>}
+          {loadingUser && <Label centered>
+            <FormattedMessage {...messages.loadingUser} />
+          </Label>}
+          {loadUserError && <Label centered>
+            {loadUserError}
+            </Label>}
+          <UserIdeas
+            loadingUserIdeas={loadingUserIdeas}
+            loadUserIdeasError={loadUserIdeasError}
+            userIdeas={ideas}
+            goToIdea={goToIdea}
+          />
+        </Container>
       </div>
     );
   }
