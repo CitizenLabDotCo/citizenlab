@@ -8,7 +8,7 @@ export function* getIdeas(action) {
   try {
     const ideaResponse = yield call(fetchIdeas, {
       'page[number]': action.nextPageNumber,
-      'page[size]': 2, //action.nextPageItemCount,
+      'page[size]': action.nextPageItemCount,
       ...action.filters,
     });
     yield put(mergeJsonApiResources(ideaResponse));

@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux';
 import { Icon, Sidebar as LayoutSidebar, Segment } from 'semantic-ui-react';
 
 import messages from './messages';
-import { initIdeasData, loadNextPage } from './actions';
+import { initIdeasData } from './actions';
 import { ideasSaga, topicsSaga, areasSaga } from './sagas';
 
 import Sidebar from './components/sidebar';
@@ -31,7 +31,7 @@ class PagePresentation extends React.Component {
     // this component will controll the proper rerender of the view when the Topics and Areas list is toggled.
     const { visible } = this.state;
     return (
-      <div style={{ display: 'table', lineHeight: 0, fontSize: '0' }}>
+      <div style={{ display: 'table', lineHeight: 0, fontSize: '0', width: '100%' }}>
         <div
           style={{
             display: 'table-cell',
@@ -63,7 +63,7 @@ class PagePresentation extends React.Component {
         <LayoutSidebar.Pushable as={Segment} style={{ margin: '0', padding: '0', border: 'none', borderRadius: 0 }}>
           <Sidebar visible={visible} toggleVisibility={this.toggleVisibility} />
           <LayoutSidebar.Pusher>
-            {this.props.children}
+            <Panel />
           </LayoutSidebar.Pusher>
         </LayoutSidebar.Pushable>
 
@@ -101,9 +101,7 @@ export class Index extends React.Component {
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
-        <PagePresentation>
-          <Panel />
-        </PagePresentation>
+        <PagePresentation />
       </div>
     );
   }
@@ -119,6 +117,6 @@ Index.propTypes = {
 };
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ initIdeasData, loadNextPage }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ initIdeasData }, dispatch);
 
 export default connect(null, mapDispatchToProps)(Index);

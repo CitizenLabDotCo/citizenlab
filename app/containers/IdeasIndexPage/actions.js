@@ -102,9 +102,3 @@ export function initIdeasData() {
   };
 }
 
-
-
-// to implement ?
-// reloadIdeas: (filters) => {
-//   dispatch(loadIdeas({ filters }));
-// }
