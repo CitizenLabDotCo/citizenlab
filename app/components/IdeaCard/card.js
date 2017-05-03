@@ -1,24 +1,39 @@
 import React from 'react';
+import { Card as LayoutCard, Button, Icon, Image } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect'
+
 import T from 'containers/T';
-import { Card, Button, Icon, Image } from 'semantic-ui-react';
+import { selectResourcesDomain } from 'utils/resources/selectors';
 
-
-class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+import Author from './card/author'
+import Tags from './card/tags'
+class Card extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   handleClick = () => {
     const { onClick, id } = this.props;
     onClick(id);
   }
-  // shouldComponentUpdate() {
-  //   return false
-  // }
+  shouldComponentUpdate() {
+    return false;
+  }
 
   render() {
-    const { idea, id } = this.props;
-    const images = idea.getIn(['images', '0', 'medium']);
+    console.log('render')
+    const { id, ideas } = this.props;
+    if (!ideas) return null;
+    const idea = ideas.get(id);
+    const attributes = idea.get('attributes');
+    const images = attributes.getIn(['images', '0', 'medium']);
     const label = parseInt(id.match(/\d+/), 10) % 5 === 0 ? { as: 'a', corner: 'right', icon: 'university' } : false;
-    const header = idea.get('title_multiloc').toJS();
+    const header = attributes.get('title_multiloc').toJS();
+
+    const relationships = idea.get('relationships');
+    const authorId = relationships.getIn(['author', 'data', 'id']);
+    const topicsData = relationships.getIn(['topics', 'data']);
+    const areasData = relationships.getIn(['areas', 'data']);
+
     return (
-      <Card style={{ height: '100%' }}>
+      <LayoutCard style={{ height: '100%' }}>
         <Image
           onClick={this.handleClick}
           src={images}
@@ -26,12 +41,15 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
           label={label}
         />
 
-        <Card.Content style={{ cursor: 'pointer' }}>
-          <Card.Header onClick={this.handleClick} >
+        <LayoutCard.Content style={{ cursor: 'pointer' }}>
+          <LayoutCard.Header onClick={this.handleClick} >
             <T value={header} />
-          </Card.Header>
-          {this.props.children}
-        </Card.Content>
+          </LayoutCard.Header>
+          <Author authorId={authorId} />
+        </LayoutCard.Content>
+
+          <Tags tagsData={areasData} />
+          <Tags tagsData={topicsData} />
         <Button.Group basic attached={'bottom'} size={'small'}>
           <Button>
             <Icon color={'green'} name={'thumbs outline up'} />
@@ -41,16 +59,18 @@ class IdeaCard extends React.PureComponent { // eslint-disable-line react/prefer
             <Icon color={'red'} name={'thumbs outline down'} />
           </Button>
         </Button.Group>
-      </Card>
+      </LayoutCard>
     );
   }
 }
 
-IdeaCard.propTypes = {
-  idea: React.PropTypes.any,
+Card.propTypes = {
+  ideas: React.PropTypes.any,
   id: React.PropTypes.string,
   children: React.PropTypes.any,
   onClick: React.PropTypes.func,
 };
 
-export default IdeaCard
+const mapStateToProps = createStructuredSelector({ ideas: selectResourcesDomain('ideas') });
+
+export default connect(mapStateToProps)(Card);

@@ -9,13 +9,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { bindActionCreators } from 'redux';
-import { Icon, Sidebar, Segment } from 'semantic-ui-react';
+import { Icon, Sidebar as LayoutSidebar, Segment } from 'semantic-ui-react';
 
 import messages from './messages';
 import { initIdeasData, loadNextPage } from './actions';
 import { ideasSaga, topicsSaga, areasSaga } from './sagas';
 
-import SidebarMenuContainer from './components/sidebarMenu';
+import Sidebar from './components/sidebar';
 import Panel from './components/panel';
 
 
@@ -60,12 +60,12 @@ class PagePresentation extends React.Component {
         </div>
 
 
-        <Sidebar.Pushable as={Segment} style={{ margin: '0', padding: '0', border: 'none', borderRadius: 0 }}>
-          <SidebarMenuContainer visible={visible} toggleVisibility={this.toggleVisibility} />
-          <Sidebar.Pusher>
+        <LayoutSidebar.Pushable as={Segment} style={{ margin: '0', padding: '0', border: 'none', borderRadius: 0 }}>
+          <Sidebar visible={visible} toggleVisibility={this.toggleVisibility} />
+          <LayoutSidebar.Pusher>
             {this.props.children}
-          </Sidebar.Pusher>
-        </Sidebar.Pushable>
+          </LayoutSidebar.Pusher>
+        </LayoutSidebar.Pushable>
 
 
       </div>
@@ -120,6 +120,5 @@ Index.propTypes = {
 
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ initIdeasData, loadNextPage }, dispatch);
-
 
 export default connect(null, mapDispatchToProps)(Index);

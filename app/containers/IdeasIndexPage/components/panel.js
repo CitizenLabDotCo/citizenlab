@@ -6,35 +6,28 @@ import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 import { Grid, Segment, Button } from 'semantic-ui-react';
-import IdeaCard, { ResourceDetail, AuthorDetail } from 'components/IdeaCard';
+import IdeaCard from 'components/IdeaCard';
 import { injectTFunc } from 'containers/T/utils'
 import { loadNextPage } from '../actions'
-import { makeSelectIdeas, selectIdeasIndexPageDomain } from '../selectors';
+import selectIdeasIndexPageDomain from '../selectors';
+
 import messages from '../messages'
 const { Column, Row } = Grid;
 
-class UnconnectedIdeasCards extends React.PureComponent {
+class UnconnectedIdeasCards extends React.Component {
 
   goToIdeaPage = (id) => {
     this.props.push(`/ideas/${id}`);
   }
 
   render() {
-    const { ideas } = this.props;
+    const ideas = this.props.ideas.toArray();
     return (
       <Row>
-        {ideas.toArray().map((idea) => {
-          const relationships = idea.get('relationships');
-          const author = relationships.getIn(['author', 'data', 'data']);
-          const topics = relationships.getIn(['topics', 'data']).toArray();
-          const areas = relationships.getIn(['areas', 'data']).toArray();
-          const id = idea.get('id');
+        {ideas.map((ideaId) => {
           return (
-            <Column key={id} style={{ paddingTop: '0', paddingBottom: '10px' }}>
-              <IdeaCard idea={idea.get('attributes')} id={id} onClick={this.goToIdeaPage} >
-                <AuthorDetail author={author} key={'author'} />
-                
-              </IdeaCard>
+            <Column key={ideaId} style={{ paddingTop: '0', paddingBottom: '10px' }}>
+              <IdeaCard id={ideaId} onClick={this.goToIdeaPage} />
             </Column>
           );
         })}
@@ -43,22 +36,22 @@ class UnconnectedIdeasCards extends React.PureComponent {
   }
 }
 
-<ResourceDetail resource={topics} key={'topics'} />
-                <ResourceDetail resource={areas} key={'areas'} />
+//                <AuthorDetail author={author} key={'author'} />
+//                <ResourceDetail resource={topics} key={'topics'} />
+//              <ResourceDetail resource={areas} key={'areas'} />
 
 UnconnectedIdeasCards.propTypes = {
   ideas: React.PropTypes.any.isRequired,
 };
 
 const mapIdeasCardsStateToProps = createStructuredSelector({
-  ideas: makeSelectIdeas(),
+  ideas: selectIdeasIndexPageDomain('ideas'),
 });
 
 const mapIdeasCardsDispatchToProps = (dispatch) => bindActionCreators({ push }, dispatch);
 
 
 const IdeasCards = connect(mapIdeasCardsStateToProps, mapIdeasCardsDispatchToProps)(UnconnectedIdeasCards);
-
 
 class Panel extends React.Component {
   constructor() {
