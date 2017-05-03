@@ -12,3 +12,8 @@ CarrierWave.configure do |config|
   config.fog_directory    = 'cl2-tenants-development'
 end
 
+if Rails.env.test? or Rails.env.cucumber?
+  CarrierWave.configure do |config|
+    config.enable_processing = false
+  end
+end

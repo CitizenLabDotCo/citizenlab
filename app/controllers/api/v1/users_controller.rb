@@ -27,6 +27,7 @@ class Api::V1::UsersController < ::ApplicationController
     @user = User.new(permitted_attributes(User))
     authorize @user
     if @user.save
+      UserMailer.welcome(@user).deliver_later
       render json: @user, status: :created
     else
       render json: @user.errors, status: :unprocessable_entity

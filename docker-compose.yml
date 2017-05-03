@@ -23,6 +23,7 @@ services:
     depends_on:
       - 'postgres'
       - 'redis'
+      - 'mailcatcher'
     build: .
     ports:
       - '4000:4000'
@@ -53,6 +54,11 @@ services:
   #     - '.:/cl2_back'
   #   env_file:
   #     - '.env'
+
+  mailcatcher:
+    image: 'schickling/mailcatcher'
+    ports:
+      - '1080:1080'
 
 volumes:
   redis:
