@@ -233,6 +233,7 @@
     "react-draft-wysiwyg": "^1.9.0",
     "react-dropzone": "^3.12.2",
     "react-helmet": "3.2.2",
+    "react-immutable-proptypes": "^2.1.0",
     "react-intl": "2.2.3",
     "react-redux": "4.4.6",
     "react-redux-form": "^1.9.0",

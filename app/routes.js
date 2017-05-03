@@ -210,6 +210,28 @@ export default function createRoutes(store) {
             importModules.catch(errorLoading);
           },
         },
+        {
+          path: '/admin/dashboard',
+          name: 'dashboardPage',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              // import('containers/AdminPage/DashboardPage/reducer'),
+              // import('containers/AdminPage/DashboardPage/sagas'),
+              import('containers/AdminPage/DashboardPage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            // importModules.then(([reducer, sagas, component]) => {
+            importModules.then(([component]) => {
+              // injectReducer('usersPage', reducer.default);
+              // injectSagas(sagas.default);
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
       ],
     },
     {

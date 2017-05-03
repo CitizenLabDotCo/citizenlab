@@ -5,76 +5,68 @@
  */
 
 import { createSelector } from 'reselect';
-import { fromJS } from 'immutable';
-import { selectResourcesDomain } from 'utils/resources/selectors';
 
-const selectUsersPage = (state) => state.get('usersPage');
+const selectUsers = (state) => state.getIn(['resources', 'users']);
+const selectUsersIds = (state) => state.getIn(['usersPage', 'users']);
+const selectPrevPageNumber = (state) => state.getIn(['usersPage', 'prevPageNumber']);
+const selectPrevPageItemCount = (state) => state.getIn(['usersPage', 'prevPageItemCount']);
+const selectCurrentPageNumber = (state) => state.getIn(['usersPage', 'currentPageNumber']);
+const selectCurrentPageItemCount = (state) => state.getIn(['usersPage', 'currentPageItemCount']);
+const selectNextPageNumber = (state) => state.getIn(['usersPage', 'nextPageNumber']);
+const selectNextPageItemCount = (state) => state.getIn(['usersPage', 'nextPageItemCount']);
+const selectPageCount = (state) => state.getIn(['usersPage', 'pageCount']);
+const selectLoadingUsers = (state) => state.getIn(['usersPage', 'loading']);
+const selectLoadUsersError = (state) => state.getIn(['usersPage', 'loadingError']);
 
 const makeSelectUsers = () => createSelector(
-  selectUsersPage,
-  selectResourcesDomain(),
-  (pageState, resources) => {
-    const ids = pageState.get('users', fromJS([]));
-    const usersMap = resources.get('users', fromJS({}));
-    return (ids && ids.size > 0 ? ids.map((id) => usersMap.get(id)).toJS() : null);
-  }
+  selectUsersIds,
+  selectUsers,
+  (usersIds, users) => usersIds.map((id) => users.get(id))
 );
 
 const makeSelectPrevPageNumber = () => createSelector(
-  selectUsersPage,
-  (pageState) => pageState.get('prevPageNumber')
+  selectPrevPageNumber,
+  (prevPageNumber) => prevPageNumber
 );
 
 const makeSelectPrevPageItemCount = () => createSelector(
-  selectUsersPage,
-  (pageState) => pageState.get('prevPageItemCount')
+  selectPrevPageItemCount,
+  (prevPageItemCount) => prevPageItemCount
 );
 
 const makeSelectCurrentPageNumber = () => createSelector(
-  selectUsersPage,
-  (pageState) => pageState.get('currentPageNumber')
+  selectCurrentPageNumber,
+  (currentPageNumber) => currentPageNumber
 );
 
 const makeSelectCurrentPageItemCount = () => createSelector(
-  selectUsersPage,
-  (pageState) => pageState.get('currentPageItemCount')
+  selectCurrentPageItemCount,
+  (currentPageItemCount) => currentPageItemCount
 );
 
 const makeSelectNextPageNumber = () => createSelector(
-  selectUsersPage,
-  (pageState) => pageState.get('nextPageNumber')
+  selectNextPageNumber,
+  (nextPageNumber) => nextPageNumber
 );
 
 const makeSelectNextPageItemCount = () => createSelector(
-  selectUsersPage,
-  (pageState) => pageState.get('nextPageItemCount')
+  selectNextPageItemCount,
+  (nextPageItemCount) => nextPageItemCount
 );
-
-/*
-const makeSelectLastPageNumber = () => createSelector(
-  selectUsersPage,
-  (pageState) => pageState.get('nextPageNumber')
-);
-
-const makeSelectLastPageItemCount = () => createSelector(
-  selectUsersPage,
-  (pageState) => pageState.get('nextPageItemCount')
-);
-*/
 
 const makeSelectPageCount = () => createSelector(
-  selectUsersPage,
-  (pageState) => pageState.get('pageCount')
+  selectPageCount,
+  (pageCount) => pageCount
 );
 
 const makeSelectLoadingUsers = () => createSelector(
-  selectUsersPage,
-  (pageState) => pageState.get('loading')
+  selectLoadingUsers,
+  (loading) => loading
 );
 
 const makeSelectLoadUsersError = () => createSelector(
-  selectUsersPage,
-  (pageState) => pageState.get('loadingError')
+  selectLoadUsersError,
+  (loadingError) => loadingError
 );
 
 export {
@@ -85,8 +77,6 @@ export {
   makeSelectCurrentPageItemCount,
   makeSelectNextPageNumber,
   makeSelectNextPageItemCount,
-  // makeSelectLastPageNumber,
-  // makeSelectLastPageItemCount,
   makeSelectPageCount,
   makeSelectLoadingUsers,
   makeSelectLoadUsersError,

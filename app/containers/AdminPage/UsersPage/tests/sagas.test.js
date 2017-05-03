@@ -11,7 +11,7 @@ import { fetchUsers } from '../../../../api';
 import { localStorageMock } from '../../../../utils/testUtils';
 import { usersLoaded } from '../actions';
 
-describe('AdminPage sagas', () => {
+describe('UsersPage sagas', () => {
   // mock localStorage
   Object.defineProperty(window, 'localStorage', { value: localStorageMock() });
 

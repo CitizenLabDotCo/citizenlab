@@ -28,7 +28,6 @@ function UsersPageReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_USERS_REQUEST:
       return state
-        // .set('loading', true)
         .set('loading', action.initialLoad)
         .set('loadingError', false);
     case LOAD_USERS_SUCCESS: {
@@ -40,7 +39,6 @@ function UsersPageReducer(state = initialState, action) {
       const nextPageNumber = getPageNumberFromUrl(action.payload.users.links.next);
       const nextPageItemCount = getPageItemCountFromUrl(action.payload.users.links.next);
       const lastPageNumber = getPageNumberFromUrl(action.payload.users.links.last);
-      // const lastPageItemCount = getPageItemCountFromUrl(action.payload.users.links.last);
 
       let pageCount = 1;
       if (_.isNumber(lastPageNumber)) {
@@ -50,15 +48,13 @@ function UsersPageReducer(state = initialState, action) {
       }
 
       return state
-        .update('users', () => fromJS(ids))
+        .set('users', fromJS(ids))
         .set('prevPageNumber', prevPageNumber)
         .set('prevPageItemCount', prevPageItemCount)
         .set('currentPageNumber', currentPageNumber)
         .set('currentPageItemCount', currentPageItemCount)
         .set('nextPageNumber', nextPageNumber)
         .set('nextPageItemCount', nextPageItemCount)
-        // .set('lastPageNumber', lastPageNumber)
-        // .set('lastPageItemCount', lastPageItemCount)
         .set('pageCount', pageCount)
         .set('loading', false)
         .set('loadingError', false);

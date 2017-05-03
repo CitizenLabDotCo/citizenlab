@@ -1,11 +1,6 @@
-/*
- *
- * UsersPage
- *
- */
-
 import React from 'react';
 import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Icon, Menu, Table } from 'semantic-ui-react';
@@ -24,32 +19,25 @@ import {
 import { loadUsers } from './actions';
 
 class UsersPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  constructor() {
-    super();
-    this.goToPreviousUsersPage = this.goToPreviousUsersPage.bind(this);
-    this.goToNextUsersPage = this.goToNextUsersPage.bind(this);
-    this.goToUsersPage = this.goToUsersPage.bind(this);
-  }
-
   componentDidMount() {
     const { loadUsersPage } = this.props;
     loadUsersPage(1, 5, null, true);
   }
 
 
-  goToPreviousUsersPage() {
+  goToPreviousUsersPage = () => {
     const { loadUsersPage, prevPageNumber, prevPageItemCount, pageCount } = this.props;
     loadUsersPage(prevPageNumber, prevPageItemCount, pageCount);
   }
 
 
-  goToNextUsersPage() {
+  goToNextUsersPage = () => {
     const { loadUsersPage, nextPageNumber, nextPageItemCount, pageCount } = this.props;
     loadUsersPage(nextPageNumber, nextPageItemCount, pageCount);
   }
 
 
-  goToUsersPage(pageNumber) {
+  goToUsersPage = (pageNumber) => () => {
     const { loadUsersPage, currentPageItemCount, pageCount } = this.props;
     loadUsersPage(pageNumber, currentPageItemCount, pageCount);
   }
@@ -68,7 +56,7 @@ class UsersPage extends React.Component { // eslint-disable-line react/prefer-st
       table = <div>Loading...</div>;
     } else if (loadUsersError) {
       table = <div>An error occured</div>;
-    } else if (users && users.length > 0) {
+    } else if (users && users.size > 0) {
       table = (<Table celled>
         <Table.Header>
           <Table.Row>
@@ -81,11 +69,11 @@ class UsersPage extends React.Component { // eslint-disable-line react/prefer-st
 
         <Table.Body>
           {users.map((user) =>
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.attributes.first_name}</Table.Cell>
-              <Table.Cell>{user.attributes.last_name}</Table.Cell>
-              <Table.Cell>{user.attributes.email}</Table.Cell>
-              <Table.Cell>{user.attributes.created_at}</Table.Cell>
+            <Table.Row key={user.get('id')}>
+              <Table.Cell>{user.getIn(['attributes', 'first_name'])}</Table.Cell>
+              <Table.Cell>{user.getIn(['attributes', 'last_name'])}</Table.Cell>
+              <Table.Cell>{user.getIn(['attributes', 'email'])}</Table.Cell>
+              <Table.Cell>{user.getIn(['attributes', 'created_at'])}</Table.Cell>
             </Table.Row>)
           }
         </Table.Body>
@@ -104,7 +92,7 @@ class UsersPage extends React.Component { // eslint-disable-line react/prefer-st
                     <Menu.Item
                       key={pageNumber}
                       active={pageNumber === currentPageNumber}
-                      onClick={() => this.goToUsersPage(pageNumber)}
+                      onClick={this.goToUsersPage(pageNumber)}
                       as="a"
                     >{pageNumber}</Menu.Item>)
                   }
@@ -124,7 +112,6 @@ class UsersPage extends React.Component { // eslint-disable-line react/prefer-st
 
     return (
       <div>
-        <h1>Admin</h1>
         {table}
       </div>
     );
@@ -132,15 +119,13 @@ class UsersPage extends React.Component { // eslint-disable-line react/prefer-st
 }
 
 UsersPage.propTypes = {
-  users: PropTypes.any,
+  users: ImmutablePropTypes.list.isRequired,
   prevPageNumber: PropTypes.number,
   prevPageItemCount: PropTypes.number,
   currentPageNumber: PropTypes.number,
   currentPageItemCount: PropTypes.number,
   nextPageNumber: PropTypes.number,
   nextPageItemCount: PropTypes.number,
-  // lastPageNumber: PropTypes.number,
-  // lastPageItemCount: PropTypes.number,
   pageCount: PropTypes.number,
   loadingUsers: PropTypes.bool.isRequired,
   loadUsersError: PropTypes.bool.isRequired,
@@ -155,8 +140,6 @@ const mapStateToProps = createStructuredSelector({
   currentPageItemCount: makeSelectCurrentPageItemCount(),
   nextPageNumber: makeSelectNextPageNumber(),
   nextPageItemCount: makeSelectNextPageItemCount(),
-  // lastPageNumber: makeSelectNextPageNumber(),
-  // lastPageItemCount: makeSelectNextPageItemCount(),
   pageCount: makeSelectPageCount(),
   loadingUsers: makeSelectLoadingUsers(),
   loadUsersError: makeSelectLoadUsersError(),
