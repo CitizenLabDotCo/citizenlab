@@ -39,6 +39,7 @@
   "app.containers.IdeasShow.loadingIdea": "Loading idea...",
   "app.containers.IdeasShow.publishComment": "Publish",
   "app.containers.IdeasShow.submittingComment": "Publishing...",
+  "app.containers.SearchWidget.noResultsMessage": "No results",
   "app.containers.SignInPage.header": "SignInPage",
   "app.containers.UsersEditPage.avatarUploadError": "Can't upload avatar right now",
   "app.containers.UsersEditPage.clickToUpload": "Click",
