@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import T from 'containers/T';
 import { Saga } from 'react-redux-saga';
 import makeSelectSignInPage from './selectors';
 import messages from './messages';
@@ -42,11 +41,13 @@ export class SignInPage extends React.PureComponent { // eslint-disable-line rea
           <div style={{ marginTop: '1em', width: '100%', display: 'block' }}>
             <button className="ui facebook button" onClick={this.props.onFacebookSubmit} style={{ width: '100%' }}>
               <i className="facebook icon"></i>
-              <T value={messages.facebookSignIn} />
+              <FormattedMessage {...messages.facebookSignIn} />
             </button>
           </div>
         </Form>
+
       </div>
+
     );
   }
 }
