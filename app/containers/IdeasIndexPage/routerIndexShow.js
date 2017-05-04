@@ -16,7 +16,7 @@ class XIdeaModal extends React.Component {
   render() {
     return (
       <Modal open onClose={this.handleClose}>
-      <Button circular icon='remove' style={{ float: 'right', margin: '5px' }} onClick={this.handleClose} />
+        <Button circular icon={'remove'} style={{ float: 'right', margin: '5px' }} onClick={this.handleClose} />
         <Modal.Content>
           <Modal.Description>
             { this.props.children }
@@ -25,11 +25,12 @@ class XIdeaModal extends React.Component {
       </Modal>
     );
   }
-};
+}
 
 
 XIdeaModal.propTypes = {
   push: PropTypes.func,
+  children: PropTypes.element,
 };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ push }, dispatch);
@@ -86,6 +87,8 @@ class RouterIndexShow extends React.PureComponent { // eslint-disable-line react
 
 RouterIndexShow.propTypes = {
   children: PropTypes.element,
+  params: PropTypes.object,
+  'params.slug': PropTypes.string,
 };
 
 export default RouterIndexShow;

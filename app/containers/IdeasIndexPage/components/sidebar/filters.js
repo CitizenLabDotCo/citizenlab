@@ -18,11 +18,11 @@ const Filters = ({ resource, type }) => {
         <div>{ type }</div>
       </Menu.Header>
       <Menu.Menu>
-        {resource.reactMap((element, id) => <FilterElement key={id} id={id} element={element} />)}
+        {resource.reactMap((element, id) => <FilterElement key={id} id={id} element={element} type={type} />)}
       </Menu.Menu>
     </Menu.Item>
   );
-}
+};
 
 Filters.propTypes = {
   resource: PropTypes.any,

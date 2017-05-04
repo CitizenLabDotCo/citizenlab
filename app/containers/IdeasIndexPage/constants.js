@@ -17,3 +17,5 @@ export const LOAD_TOPICS_ERROR = 'app/IdeasIndexPage/LOAD_TOPICS_ERROR';
 export const LOAD_AREAS_REQUEST = 'app/IdeasIndexPage/LOAD_AREAS_REQUEST';
 export const LOAD_AREAS_SUCCESS = 'app/IdeasIndexPage/LOAD_AREAS_SUCCESS';
 export const LOAD_AREAS_ERROR = 'app/IdeasIndexPage/LOAD_AREAS_ERROR';
+
+export const FILTER_IDEAS_REQUEST = 'app/IdeasIndexPage/FILTER_IDEAS_REQUEST';

@@ -11,8 +11,10 @@ import { FormattedMessage } from 'react-intl';
 import { bindActionCreators } from 'redux';
 import { Icon, Sidebar as LayoutSidebar, Segment } from 'semantic-ui-react';
 
+import { withRouter } from 'react-router';
+
 import messages from './messages';
-import { initIdeasData } from './actions';
+import { loadIdeas, loadTopicsRequest, loadAreasRequest, filterIdeas } from './actions';
 import { ideasSaga, topicsSaga, areasSaga } from './sagas';
 
 import Sidebar from './components/sidebar';
@@ -82,17 +84,39 @@ export class Index extends React.Component {
 
   componentWillMount() {
     if (this.context.sagas) {
-      [ideasSaga, topicsSaga, areasSaga].map((saga) => {
+      const sagas = [ideasSaga, topicsSaga, areasSaga];
+      sagas.map((saga) => {
         const runSaga = this.context.sagas.run(saga, this.props);
         return this.runningSagas.push(runSaga);
       });
-      this.props.initIdeasData();
+      this.props.loadTopicsRequest();
+      this.props.loadAreasRequest();
+      this.getideas();
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.getideas(nextProps);
+  }
+
+  shouldComponentUpdate() {
+    return false;
   }
 
   componentWillUnmount() {
     this.runningSagas.map((saga) => saga.cancel());
     delete this.runningSagas;
+  }
+
+  getideas = (props) => {
+    const data = props || this.props;
+    const search = data.location.search;
+
+    if (search) {
+      this.props.filterIdeas(search);
+    } else {
+      this.props.loadIdeas(true);
+    }
   }
 
   render() {
@@ -112,11 +136,16 @@ Index.contextTypes = {
 };
 
 Index.propTypes = {
-  initIdeasData: PropTypes.func.isRequired,
-  children: PropTypes.element,
+  loadTopicsRequest: PropTypes.func.isRequired,
+  loadAreasRequest: PropTypes.func.isRequired,
+  loadIdeas: PropTypes.func.isRequired,
+  filterIdeas: PropTypes.func.isRequired,
+  // location: PropTypes.object.isRequired,
+  // 'location.search': PropTypes.string,
 };
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ initIdeasData }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ loadIdeas, loadTopicsRequest, loadAreasRequest, filterIdeas }, dispatch);
 
-export default connect(null, mapDispatchToProps)(Index);
+
+export default connect(null, mapDispatchToProps)(withRouter(Index));

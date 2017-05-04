@@ -230,6 +230,7 @@
     "motion-ui": "^1.2.2",
     "prop-types": "^15.5.6",
     "qs": "^6.4.0",
+    "query-string": "^4.3.4",
     "react": "^15.4.1",
     "react-addons-create-fragment": "^15.5.3",
     "react-dom": "^15.4.1",

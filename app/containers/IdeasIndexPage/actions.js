@@ -5,7 +5,7 @@
  */
 
 import {
-  LOAD_IDEAS_REQUEST, IDEAS_LOADED, IDEAS_LOADING_ERROR, SET_SHOW_IDEA_WITH_INDEX_PAGE, RESET_IDEAS, LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_TOPICS_ERROR, LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR,
+  LOAD_IDEAS_REQUEST, IDEAS_LOADED, IDEAS_LOADING_ERROR, SET_SHOW_IDEA_WITH_INDEX_PAGE, RESET_IDEAS, LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_TOPICS_ERROR, LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR, FILTER_IDEAS_REQUEST
 } from './constants';
 
 
@@ -23,19 +23,25 @@ export function ideasLoadingError(errorMessage) {
   };
 }
 
-export function loadIdeas(initialLoad, nextPageNumber, nextPageItemCount, filters) {
+export function loadIdeas(initialLoad, nextPageNumber, nextPageItemCount, search, filters) {
   return {
     type: LOAD_IDEAS_REQUEST,
+    initialLoad,
     nextPageNumber,
     nextPageItemCount,
+    search,
     filters,
-    initialLoad,
   };
 }
 
-export function loadNextPage(nextPageNumber, nextPageItemCount, filters = {}) {
-  return loadIdeas(false, nextPageNumber, nextPageItemCount, filters);
+export function loadNextPage(nextPageNumber, nextPageItemCount, search, filters = {}) {
+  return loadIdeas(false, nextPageNumber, nextPageItemCount, search, filters);
 }
+
+export function filterIdeas(search) {
+  return loadIdeas(true, null, null, search);
+}
+
 
 export function resetIdeas() {
   return {
@@ -93,12 +99,3 @@ export function loadAreasError(errorMessage) {
     payload: errorMessage,
   };
 }
-
-export function initIdeasData() {
-  return (dispatch) => {
-    dispatch(loadIdeas(true));
-    dispatch(loadTopicsRequest());
-    dispatch(loadAreasRequest());
-  };
-}
-

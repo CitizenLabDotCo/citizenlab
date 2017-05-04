@@ -39,7 +39,6 @@ function ideasIndexPageReducer(state = initialState, action) {
         .set('showIdeaWithIndexPage', action.payload);
     case IDEAS_LOADED: {
       const ids = action.payload.data.map((idea) => idea.id);
-
       const nextPageNumber = getPageNumberFromUrl(action.payload.links.next);
       const nextPageItemCount = getPageItemCountFromUrl(action.payload.links.next);
 

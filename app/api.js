@@ -39,9 +39,14 @@ export function createIdea(values) {
   });
 }
 
-export function fetchIdeas(queryParameters) {
-  return request(`${API_PATH}/ideas`, null, null, queryParameters);
+export function fetchIdeas(query, queryParameters) {
+  const railsfriendlyQuery = (query || '').replace(/[[0-9]+]/g, '[]');
+  return request(`${API_PATH}/ideas${railsfriendlyQuery}`, null, null, queryParameters);
 }
+
+// export function filterIdeas(query) {
+//   return request(`${API_PATH}/ideas${railsfriendlyQuery}`);
+// }
 
 export function fetchTopics(queryParameters) {
   return request(`${API_PATH}/topics`, null, null, queryParameters);
