@@ -5,8 +5,8 @@ import {
   CREATE_USER_SUCCESS,
   CREATE_USER_ERROR,
 } from './constants';
-import { authenticateRequest } from '../SignInPage/actions';
-import { AUTHENTICATE_REQUEST } from '../SignInPage/constants';
+import { authenticateEmailRequest } from '../SignInPage/actions';
+import { AUTHENTICATE_EMAIL_REQUEST } from '../SignInPage/constants';
 import { fetchJwt } from '../SignInPage/sagas';
 
 
@@ -21,7 +21,7 @@ export function* createUser(action) {
       password: action.payload.password,
     };
 
-    yield put(authenticateRequest(credentials));
+    yield put(authenticateEmailRequest(credentials));
   } catch (e) {
     yield put({ type: CREATE_USER_ERROR, payload: e, error: true });
   }
@@ -32,5 +32,5 @@ export function* watchCreateUser() {
 }
 
 export function* watchUserSignIn() {
-  yield takeLatest(AUTHENTICATE_REQUEST, fetchJwt);
+  yield takeLatest(AUTHENTICATE_EMAIL_REQUEST, fetchJwt);
 }
