@@ -1,10 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { Card as LayoutCard, Button, Icon, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { bindActionCreators } from 'redux';
-import { push } from 'react-router-redux'
+import { push } from 'react-router-redux';
 import T from 'containers/T';
 
 import { selectResourcesDomain } from 'utils/resources/selectors';
@@ -58,9 +58,7 @@ Card.propTypes = {
 };
 
 const mapStateToProps = () => createStructuredSelector({
-  idea: (state, { id }) => {
-    return selectResourcesDomain('ideas', id)(state)
-  }
+  idea: (state, { id }) => selectResourcesDomain('ideas', id)(state),
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ push }, dispatch);
@@ -80,8 +78,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const authorId = relationships.getIn(['author', 'data', 'id']);
   const topicsData = relationships.getIn(['topics', 'data']);
   const areasData = relationships.getIn(['areas', 'data']);
-  const { push } = dispatchProps;
-  const viewIdea = () => push('/ideas/' + id);
+  const changePage = dispatchProps.push;
+  const viewIdea = () => changePage(`/ideas/${id}`);
   return {
     header,
     images,

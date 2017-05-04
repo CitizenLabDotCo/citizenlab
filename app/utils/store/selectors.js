@@ -1,7 +1,5 @@
 
-const selectActions = () => (state) => {
-  return state.get('actions');
-};
+const selectActions = () => (state) => state.get('actions');
 
 export {
   selectActions,

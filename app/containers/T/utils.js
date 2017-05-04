@@ -1,18 +1,17 @@
 import { makeSelectSetting } from 'utils/tenant/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
+import { Iterable } from 'immutable';
 import { connect } from 'react-redux';
 
-import { Iterable } from 'Immutable';
 const isImmutable = Iterable.isIterable;
 
 const findTranslatedTextMutable = (value, userLocale, tenantLocales) => {
   let text = '';
-  let transFound = true;
 
   if (value[userLocale]) {
     text = value[userLocale];
   } else {
-    transFound = tenantLocales.some((tenantLocale) => {
+    tenantLocales.some((tenantLocale) => {
       if (value[tenantLocale]) {
         text = value[tenantLocale];
         return true;
@@ -20,18 +19,17 @@ const findTranslatedTextMutable = (value, userLocale, tenantLocales) => {
       return false;
     });
   }
-  if (!transFound) text = value.defaultMessage;
+  if (!text) text = value.defaultMessage;
   return text;
 };
 
 
 function findTranslatedTextImmutable(value, userLocale, tenantLocales) {
   let text = '';
-  let transFound = true;
   if (value.get(userLocale)) {
     text = value.get(userLocale);
   } else {
-    transFound = tenantLocales.some((tenantLocale) => {
+    tenantLocales.some((tenantLocale) => {
       if (value.get(tenantLocale)) {
         text = value.get(tenantLocale);
         return true;
@@ -44,9 +42,9 @@ function findTranslatedTextImmutable(value, userLocale, tenantLocales) {
 
 export const findTranslatedText = (value, userLocale, tenantLocales) => {
   if (!isImmutable(value)) {
-    //console.log(new Error('Attention, Data Provided to the T component should be immutable!'));
+    // console.log(new Error('Attention, Data Provided to the T component should be immutable!'));
     return findTranslatedTextMutable(value, userLocale, tenantLocales);
-  };
+  }
   return findTranslatedTextImmutable(value, userLocale, tenantLocales);
 };
 

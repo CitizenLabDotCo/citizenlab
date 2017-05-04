@@ -9,17 +9,15 @@ import selectIdeasIndexPageDomain from '../../selectors';
 
 const { Column, Row } = Grid;
 
-const IdeasCards = ({ ideas }) => {
-  return (
-    <Row>
-      {ideas.map((id) => (
-        <Column key={id} style={{ paddingTop: '0', paddingBottom: '10px' }}>
-          <IdeaCard id={id} />
-        </Column>
-      ))}
-    </Row>
-  );
-};
+const IdeasCards = ({ ideas }) => (
+  <Row>
+    {ideas.map((id) => (
+      <Column key={id} style={{ paddingTop: '0', paddingBottom: '10px' }}>
+        <IdeaCard id={id} />
+      </Column>
+    ))}
+  </Row>
+);
 
 IdeasCards.propTypes = {
   ideas: PropTypes.any.isRequired,

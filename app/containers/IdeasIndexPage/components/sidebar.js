@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Sidebar as LayoutSidebar, Menu } from 'semantic-ui-react';
-import Filters from  './sidebar/filters';
+import Filters from './sidebar/filters';
 
 class Sidebar extends React.Component {
   render() {

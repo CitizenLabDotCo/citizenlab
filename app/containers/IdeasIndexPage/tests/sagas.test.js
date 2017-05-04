@@ -2,6 +2,9 @@
  * Test  sagas
  */
 
+/* eslint-disable redux-saga/yield-effects */
+
+
 import { put, call } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
 import { numberMock, objectMock } from 'utils/testing/constants';

@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { mergeJsonApiResources } from 'utils/resources/actions';
-import { fetchIdeas, fetchTopics, fetchAreas, filterIdeas as filterIdeasQuery } from 'api';
-import { LOAD_IDEAS_REQUEST, LOAD_TOPICS_REQUEST, LOAD_AREAS_REQUEST, FILTER_IDEAS_REQUEST } from './constants';
+import { fetchIdeas, fetchTopics, fetchAreas } from 'api';
+import { LOAD_IDEAS_REQUEST, LOAD_TOPICS_REQUEST, LOAD_AREAS_REQUEST } from './constants';
 import {
   ideasLoaded,
   ideasLoadingError,
@@ -68,8 +68,4 @@ export function* topicsSaga() {
 
 export function* areasSaga() {
   yield takeLatest(LOAD_AREAS_REQUEST, getAreas);
-}
-
-export function* filterSaga() {
-  yield takeLatest(FILTER_IDEAS_REQUEST, filterIdeas);
 }

@@ -88,7 +88,7 @@ class RouterIndexShow extends React.PureComponent { // eslint-disable-line react
 RouterIndexShow.propTypes = {
   children: PropTypes.element,
   params: PropTypes.object,
-  'params.slug': PropTypes.string,
+  //'params.slug': PropTypes.string,
 };
 
 export default RouterIndexShow;
