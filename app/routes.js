@@ -174,6 +174,68 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/admin',
+      name: 'adminPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/AdminPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+      childRoutes: [
+        {
+          path: '/admin/users',
+          name: 'usersPage',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/AdminPage/UsersPage/reducer'),
+              import('containers/AdminPage/UsersPage/sagas'),
+              import('containers/AdminPage/UsersPage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([reducer, sagas, component]) => {
+              injectReducer('usersPage', reducer.default);
+              injectSagas(sagas.default);
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
+          path: '/admin/dashboard',
+          name: 'dashboardPage',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              // import('containers/AdminPage/DashboardPage/reducer'),
+              // import('containers/AdminPage/DashboardPage/sagas'),
+              import('containers/AdminPage/DashboardPage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            // importModules.then(([reducer, sagas, component]) => {
+            importModules.then(([component]) => {
+              // injectReducer('usersPage', reducer.default);
+              // injectSagas(sagas.default);
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+      ],
+    },
+    {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

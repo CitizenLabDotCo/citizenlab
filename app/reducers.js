@@ -10,6 +10,7 @@ import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import usersEditPageReducer from 'containers/UsersEditPage/reducer';
 import ideasNewPageReducer from 'containers/IdeasNewPage/reducer';
 import usersNewPageReducer from 'containers/UsersNewPage/reducer';
+import searchWidgetReducer from 'containers/SearchWidget/reducer';
 import ideasShowReducer from 'containers/IdeasShow/reducer';
 import resourcesReducer from 'utils/resources/reducer';
 import actionsReducer from 'utils/store/reducer';
@@ -63,6 +64,7 @@ export default function createReducer(asyncReducers) {
     profile: usersEditPageReducer,
     usersNewPage: usersNewPageReducer,
     submitIdea: ideasNewPageReducer,
+    searchWidget: searchWidgetReducer,
     ...asyncReducers,
   });
 }
