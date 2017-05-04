@@ -17,7 +17,7 @@ class Api::V1::SocialLoginController < ::ApplicationController
   end
 
   def get_facebook_profile_email
-    response = RestClient.get('https://graph.facebook.com/me', params: { access_token: login_params[:access_token], fields: 'name,email' })
+    response = RestClient.get('https://graph.facebook.com/me', params: { access_token: login_params[:access_token], fields: 'name,first_name,last_name,email' })
     result = JSON.parse(response.body)
     email = result["email"]
     raise MissingEmail if email.blank?

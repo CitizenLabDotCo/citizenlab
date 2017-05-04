@@ -42,9 +42,16 @@ Tenant.create({
       style_main_fg: Faker::Color.hex_color,
       style_accent_bg: Faker::Color.hex_color,
       style_accent_fg: Faker::Color.hex_color
+    },
+    facebook_login: {
+      allowed: true,
+      enabled: true,
+      app_id: '307796929633098',
+      app_secret: '28082a4c201d7cee136dbe35236e44cb'
     }
   }
 })
+
 
 Apartment::Tenant.switch('localhost') do
 
