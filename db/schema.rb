@@ -55,6 +55,17 @@ ActiveRecord::Schema.define(version: 20170503161621) do
     t.index ["rgt"], name: "index_comments_on_rgt", using: :btree
   end
 
+  create_table "email_definitions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "name"
+    t.jsonb    "subject_multiloc"
+    t.jsonb    "body_multiloc"
+    t.boolean  "modified"
+    t.string   "trigger_name"
+    t.jsonb    "trigger_params"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
   create_table "email_snippets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "email"
     t.string   "snippet"
@@ -62,7 +73,6 @@ ActiveRecord::Schema.define(version: 20170503161621) do
     t.text     "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email", "snippet", "locale"], name: "index_email_snippets_on_email_and_snippet_and_locale", using: :btree
   end
 
   create_table "ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

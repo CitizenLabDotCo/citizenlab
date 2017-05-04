@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       # auth
       post 'user_token' => 'user_token#create'
       post 'social_login' => 'social_login#create'
+      post 'social_registration' => 'social_registration#create'
 
       resources :users do
         get :me, on: :collection

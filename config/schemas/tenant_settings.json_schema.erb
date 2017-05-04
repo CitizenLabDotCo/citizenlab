@@ -119,9 +119,17 @@
           {
             "description":	"Allow signing in and registering through a facebook account",
             "additionalProperties": false,
+            "required-settings": ["app_id"],
             "properties": {
               "allowed": {},
-              "enabled": {}
+              "enabled": {},
+              "app_id": {
+                "type": "string"
+              },
+              "app_secret": {
+                "type": "string",
+                "private": true
+              }
             }
           }
         ]

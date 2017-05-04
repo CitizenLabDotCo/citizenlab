@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_secure_password
+  has_secure_password validations: false
   mount_base64_uploader :avatar, AvatarUploader
 
   has_many :ideas, foreign_key: :author_id
@@ -35,7 +35,16 @@ class User < ApplicationRecord
   private
 
   def generate_slug
-    self.slug ||= [self.first_name.parameterize, self.last_name.parameterize].join('-')
+    unless self.slug
+      slug = [self.first_name.parameterize, self.last_name.parameterize].join('-')
+      indexedSlug = nil
+      i=0
+      while User.find_by(slug: indexedSlug || slug)
+        i +=1
+        indexedSlug = [slug, '-', i].join
+      end
+      self.slug = indexedSlug || slug
+    end
   end
 
   def generate_avatar
