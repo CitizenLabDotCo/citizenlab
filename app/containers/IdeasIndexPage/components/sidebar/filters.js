@@ -18,9 +18,7 @@ const Filters = ({ resource, type }) => {
         <div>{ type }</div>
       </Menu.Header>
       <Menu.Menu>
-        {resource.reduce((out, element, id) => (
-          out.concat(<FilterElement key={id} id={id} element={element} />)
-        ), [])}
+        {resource.reactMap((element, id) => <FilterElement key={id} id={id} element={element} />)}
       </Menu.Menu>
     </Menu.Item>
   );

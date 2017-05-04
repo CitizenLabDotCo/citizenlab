@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Immutable from 'immutable'
-
-
 import { Sidebar as LayoutSidebar, Menu } from 'semantic-ui-react';
 import Filters from  './sidebar/filters';
 

@@ -23,8 +23,8 @@ const Loadbutton = ({ loadMoreIdeas, loadMoreMessage }) => {
 };
 
 Loadbutton.propTypes = {
-  loadMoreIdeas: PropTypes.func.isRequire,
-  loadMoreMessage: PropTypes.func.isRequire,
+  loadMoreIdeas: PropTypes.func.isRequired,
+  loadMoreMessage: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -40,7 +40,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     const { nextPageNumber, nextPageItemCount } = stateProps;
     return dispatchloadNextPage(nextPageNumber, nextPageItemCount);
   },
-  loadMoreMessage: ownProps.tFunc(messages.loadMore)
+  loadMoreMessage: ownProps.tFunc(messages.loadMore),
 });
 
 export default injectTFunc(connect(mapStateToProps, mapDispatchToProps, mergeProps)(Loadbutton));
