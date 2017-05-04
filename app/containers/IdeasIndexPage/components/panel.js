@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Grid, Segment } from 'semantic-ui-react';
 import IdeaCards from './panel/ideaCards';
 import LoadButton from './panel/loadButton';

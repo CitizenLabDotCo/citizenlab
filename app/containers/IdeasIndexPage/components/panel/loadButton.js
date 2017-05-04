@@ -14,7 +14,7 @@ import messages from '../../messages';
 const Loadbutton = ({ loadMoreIdeas, loadMoreMessage }) => {
   return (
       <Button
-        style={{ marginLeft: 0, marginRight: 0}}
+        style={{ marginLeft: 0, marginRight: 0 }}
         content={loadMoreMessage}
         fluid
         onClick={loadMoreIdeas}
@@ -23,9 +23,8 @@ const Loadbutton = ({ loadMoreIdeas, loadMoreMessage }) => {
 };
 
 Loadbutton.propTypes = {
-  loadNextPage: PropTypes.func,
-  nextPageNumber: PropTypes.number,
-  nextPageItemCount: PropTypes.number,
+  loadMoreIdeas: PropTypes.func.isRequire,
+  loadMoreMessage: PropTypes.func.isRequire,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -41,7 +40,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     const { nextPageNumber, nextPageItemCount } = stateProps;
     return dispatchloadNextPage(nextPageNumber, nextPageItemCount);
   },
-  ...ownProps,
   loadMoreMessage: ownProps.tFunc(messages.loadMore)
 });
 

@@ -1,9 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Immutable from 'immutable'
+
+const imm = Immutable;
+
+debugger
+
+
 import { Sidebar as LayoutSidebar, Menu } from 'semantic-ui-react';
-import T from 'containers/T';
-import { TopicsFilters, AreasFilters } from  './sidebar/filters';
+import Filters from  './sidebar/filters';
 
 class Sidebar extends React.Component {
   render() {
@@ -19,8 +25,8 @@ class Sidebar extends React.Component {
         vertical
         inverted
       >
-        <TopicsFilters type={'topics'} title={'topics'} />
-        <AreasFilters type={'areas'} title={'areas'} />
+        <Filters type={'topics'} />
+        <Filters type={'areas'} />
       </LayoutSidebar>
     );
   }

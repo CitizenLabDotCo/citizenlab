@@ -30,7 +30,7 @@ Author.propTypes = {
 };
 
 const mapStateToProps = () => createStructuredSelector({
-  user: (state, { authorId }) => selectResourcesDomain('users', authorId)(state)
+  user: (state, { authorId }) => selectResourcesDomain('users', authorId)(state),
 });
 
 const mergeProps = ({ user }, dispatchProps, ownProps) => {
