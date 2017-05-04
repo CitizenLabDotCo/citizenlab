@@ -18,4 +18,12 @@ export default defineMessages({
     id: 'app.containers.IdeasIndexPage.loading',
     defaultMessage: 'Loading...',
   },
+  topics: {
+    id: 'app.containers.IdeasIndexPage.topics',
+    defaultMessage: 'Topics',
+  },
+  areas: {
+    id: 'app.containers.IdeasIndexPage.areas',
+    defaultMessage: 'Areas',
+  },
 });

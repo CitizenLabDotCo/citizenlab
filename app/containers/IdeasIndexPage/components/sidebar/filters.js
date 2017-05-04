@@ -4,8 +4,11 @@ import { connect } from 'react-redux';
 import { Menu } from 'semantic-ui-react';
 import { createStructuredSelector } from 'reselect';
 import { bindActionCreators } from 'redux';
+import { FormattedMessage } from 'react-intl';
 
 import { selectResourcesDomain } from 'utils/resources/selectors';
+
+import messages from '../../messages';
 import { loadNextPage } from '../../actions';
 
 import FilterElement from './filterElement';
@@ -14,8 +17,10 @@ const Filters = ({ resource, type }) => {
   if (!resource) return null;
   return (
     <Menu.Item>
-      <Menu.Header name={'topics'}>
-        <div>{ type }</div>
+      <Menu.Header>
+        <div>
+          <FormattedMessage {...messages[type]} />
+        </div>
       </Menu.Header>
       <Menu.Menu>
         {resource.reactMap((element, id) => <FilterElement key={id} id={id} element={element} type={type} />)}

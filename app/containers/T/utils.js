@@ -19,7 +19,6 @@ const findTranslatedTextMutable = (value, userLocale, tenantLocales) => {
       return false;
     });
   }
-  if (!text) text = value.defaultMessage;
   return text;
 };
 

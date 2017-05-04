@@ -1,8 +1,8 @@
 
 import React from 'react';
-import T from 'containers/T';
 import { Card } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -10,13 +10,14 @@ import { selectResourcesDomain } from 'utils/resources/selectors';
 
 import messages from '../messages';
 
+
 const Author = ({ fullName }) => {
   if (!fullName) return null;
   return (
     <Card.Meta style={{ lineHeight: '2em' }}>
       <div>
         <b style={{ color: 'rgba(0, 0, 0, 0.68)' }}>
-          <T value={messages.author} />:
+          <FormattedMessage {...messages.author} />
         </b>
         <span />
         {fullName}

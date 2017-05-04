@@ -11,7 +11,7 @@ export default defineMessages({
     defaultMessage: 'This is the IdeaCard component !',
   },
   author: {
-    id: 'app.components.IdeaCard.header',
+    id: 'app.components.IdeaCard.author',
     defaultMessage: 'Author',
   },
 });
