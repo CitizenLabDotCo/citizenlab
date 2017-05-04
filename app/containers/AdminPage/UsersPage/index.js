@@ -5,16 +5,16 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Icon, Menu, Table } from 'semantic-ui-react';
 import {
+  selectPrevPageNumber,
+  selectPrevPageItemCount,
+  selectCurrentPageNumber,
+  selectCurrentPageItemCount,
+  selectNextPageNumber,
+  selectNextPageItemCount,
+  selectPageCount,
+  selectLoadingUsers,
+  selectLoadUsersError,
   makeSelectUsers,
-  makeSelectPrevPageNumber,
-  makeSelectPrevPageItemCount,
-  makeSelectCurrentPageNumber,
-  makeSelectCurrentPageItemCount,
-  makeSelectNextPageNumber,
-  makeSelectNextPageItemCount,
-  makeSelectPageCount,
-  makeSelectLoadingUsers,
-  makeSelectLoadUsersError,
 } from './selectors';
 import { loadUsers } from './actions';
 
@@ -134,15 +134,15 @@ UsersPage.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   users: makeSelectUsers(),
-  prevPageNumber: makeSelectPrevPageNumber(),
-  prevPageItemCount: makeSelectPrevPageItemCount(),
-  currentPageNumber: makeSelectCurrentPageNumber(),
-  currentPageItemCount: makeSelectCurrentPageItemCount(),
-  nextPageNumber: makeSelectNextPageNumber(),
-  nextPageItemCount: makeSelectNextPageItemCount(),
-  pageCount: makeSelectPageCount(),
-  loadingUsers: makeSelectLoadingUsers(),
-  loadUsersError: makeSelectLoadUsersError(),
+  prevPageNumber: selectPrevPageNumber,
+  prevPageItemCount: selectPrevPageItemCount,
+  currentPageNumber: selectCurrentPageNumber,
+  currentPageItemCount: selectCurrentPageItemCount,
+  nextPageNumber: selectNextPageNumber,
+  nextPageItemCount: selectNextPageItemCount,
+  pageCount: selectPageCount,
+  loadingUsers: selectLoadingUsers,
+  loadUsersError: selectLoadUsersError,
 });
 
 export function mapDispatchToProps(dispatch) {

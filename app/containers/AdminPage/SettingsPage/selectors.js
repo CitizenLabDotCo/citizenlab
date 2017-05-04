@@ -1,11 +1,6 @@
+// import { createSelector } from 'reselect';
+
 /*
- *
- * UsersPage selectors
- *
- */
-
-import { createSelector } from 'reselect';
-
 const selectUsers = (state) => state.getIn(['resources', 'users']);
 const selectUsersIds = (state) => state.getIn(['usersPage', 'users']);
 const selectPrevPageNumber = (state) => state.getIn(['usersPage', 'prevPageNumber']);
@@ -36,3 +31,4 @@ export {
   selectLoadUsersError,
   makeSelectUsers,
 };
+*/
