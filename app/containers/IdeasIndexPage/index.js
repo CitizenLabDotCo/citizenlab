@@ -30,12 +30,12 @@ class PagePresentation extends React.Component {
     this.state = { visible: false };
   }
 
-  toggleVisibility = () => this.setState({ visible: !this.state.visible })
-
   shouldComponentUpdate(props, { visible }) {
     const current = this.state.visible;
     return current !== visible;
   }
+
+  toggleVisibility = () => this.setState({ visible: !this.state.visible })
 
   render() {
     console.log('rerendering')
@@ -83,7 +83,7 @@ class PagePresentation extends React.Component {
 }
 
 // Ideas show does not use helmet at this view is controlled by RouterIndexShow
-export class IdeasIndex extends React.Component {
+class IdeasIndex extends React.Component {
   constructor(props) {
     super();
     this.runningSagas = [];
