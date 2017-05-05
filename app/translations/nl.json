@@ -39,6 +39,7 @@
   "app.containers.IdeasShow.loadingIdea":"",
   "app.containers.IdeasShow.publishComment":"",
   "app.containers.IdeasShow.submittingComment":"",
+  "app.containers.SearchWidget.noResultsMessage":"",
   "app.containers.SignInPage.header":"",
   "app.containers.UsersEditPage.avatarUploadError":"",
   "app.containers.UsersEditPage.clickToUpload":"",
