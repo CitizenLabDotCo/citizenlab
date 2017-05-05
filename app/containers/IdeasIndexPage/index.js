@@ -9,12 +9,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { bindActionCreators } from 'redux';
-import { Saga } from 'react-redux-saga'
+import { Saga } from 'react-redux-saga';
 import { Icon, Sidebar as LayoutSidebar, Segment } from 'semantic-ui-react';
 
 import { push } from 'react-router-redux';
 
-import OverlayChildren from 'containers/OverlayChildren'; 
+import OverlayChildren from 'containers/OverlayChildren';
 
 import messages from './messages';
 import { loadIdeas, loadTopicsRequest, loadAreasRequest, filterIdeas } from './actions';
@@ -38,7 +38,6 @@ class PagePresentation extends React.Component {
   toggleVisibility = () => this.setState({ visible: !this.state.visible })
 
   render() {
-    console.log('rerendering')
     // this component will controll the proper rerender of the view when the Topics and Areas list is toggled.
     const { visible } = this.state;
     return (
@@ -159,7 +158,7 @@ IdeasIndex.propTypes = {
   // 'location.search': PropTypes.string,
 };
 
-const actions = { loadIdeas, loadTopicsRequest, loadAreasRequest, filterIdeas, push }
+const actions = { loadIdeas, loadTopicsRequest, loadAreasRequest, filterIdeas, push };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 
