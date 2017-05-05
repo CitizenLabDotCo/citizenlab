@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router';
-
+import { FormattedMessage } from 'react-intl';
 import { Button } from 'semantic-ui-react';
 import { injectTFunc } from 'containers/T/utils';
 import { loadNextPage } from '../../actions';
@@ -16,15 +16,16 @@ const Loadbutton = ({ loadMoreIdeas, loadMoreMessage, disabled }) => (
   <Button
     disabled={disabled}
     style={{ marginLeft: 0, marginRight: 0 }}
-    content={loadMoreMessage}
     fluid
     onClick={loadMoreIdeas}
-  />
+  >
+    <FormattedMessage {...loadMoreMessage} />
+  </Button>
 );
 
 Loadbutton.propTypes = {
   loadMoreIdeas: PropTypes.func.isRequired,
-  loadMoreMessage: PropTypes.string.isRequired,
+  loadMoreMessage: PropTypes.object.isRequired,
   disabled: PropTypes.bool.isRequired,
 };
 
@@ -42,7 +43,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     const search = ownProps.location.search;
     return getNextPage(nextPageNumber, nextPageItemCount, search);
   },
-  loadMoreMessage: ownProps.tFunc(messages.loadMore),
+  loadMoreMessage: messages.loadMore,
   disabled: !(stateProps.nextPageNumber && stateProps.nextPageItemCount),
 });
 

@@ -9,7 +9,7 @@ import { push } from 'react-router-redux';
 
 import Index from './index';
 
-class XIdeaModal extends React.Component {
+class ideaModal extends React.Component {
 
   handleClose = () => this.props.push('/ideas');
 
@@ -28,31 +28,19 @@ class XIdeaModal extends React.Component {
 }
 
 
-XIdeaModal.propTypes = {
+ideaModal.propTypes = {
   push: PropTypes.func,
   children: PropTypes.element,
 };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ push }, dispatch);
-const IdeaModal = connect(null, mapDispatchToProps)(XIdeaModal);
+const IdeaModal = connect(null, mapDispatchToProps)(ideaModal);
 
 class RouterIndexShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   constructor(props) {
     super();
     this.pageView = props.params.slug ? this.showView : this.indexView;
-  }
-
-  componentDidMount() {
-    this.previousSlut = this.currentSlug;
-  }
-
-  componentWillReceiveProps(next) {
-    this.currentSlug = next.params.slug;
-  }
-
-  componentDidUpdate() {
-    this.previousSlut = this.currentSlug;
   }
 
   indexView(slug) {
@@ -79,7 +67,7 @@ class RouterIndexShow extends React.PureComponent { // eslint-disable-line react
             { name: 'description', content: 'Description of IdeasIndexPage' },
           ]}
         />
-        { this.pageView(params.slug) }
+        {this.indexView()}
       </div>
     );
   }
@@ -88,7 +76,7 @@ class RouterIndexShow extends React.PureComponent { // eslint-disable-line react
 RouterIndexShow.propTypes = {
   children: PropTypes.element,
   params: PropTypes.object,
-  //'params.slug': PropTypes.string,
+  'params.slug': PropTypes.string,
 };
 
 export default RouterIndexShow;

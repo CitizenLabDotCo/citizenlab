@@ -9,9 +9,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { bindActionCreators } from 'redux';
+import { Saga } from 'react-redux-saga'
 import { Icon, Sidebar as LayoutSidebar, Segment } from 'semantic-ui-react';
 
-import { withRouter } from 'react-router';
+import { push } from 'react-router-redux';
+
+import OverlayChildren from 'containers/OverlayChildren'; 
 
 import messages from './messages';
 import { loadIdeas, loadTopicsRequest, loadAreasRequest, filterIdeas } from './actions';
@@ -29,7 +32,13 @@ class PagePresentation extends React.Component {
 
   toggleVisibility = () => this.setState({ visible: !this.state.visible })
 
+  shouldComponentUpdate(props, { visible }) {
+    const current = this.state.visible;
+    return current !== visible;
+  }
+
   render() {
+    console.log('rerendering')
     // this component will controll the proper rerender of the view when the Topics and Areas list is toggled.
     const { visible } = this.state;
     return (
@@ -68,44 +77,32 @@ class PagePresentation extends React.Component {
             <Panel />
           </LayoutSidebar.Pusher>
         </LayoutSidebar.Pushable>
-
-
       </div>
     );
   }
 }
 
 // Ideas show does not use helmet at this view is controlled by RouterIndexShow
-export class Index extends React.Component {
-  constructor() {
+export class IdeasIndex extends React.Component {
+  constructor(props) {
     super();
     this.runningSagas = [];
+    const { location } = props;
+    this.search = location.search;
   }
 
-  componentWillMount() {
-    if (this.context.sagas) {
-      const sagas = [ideasSaga, topicsSaga, areasSaga];
-      sagas.map((saga) => {
-        const runSaga = this.context.sagas.run(saga, this.props);
-        return this.runningSagas.push(runSaga);
-      });
-      this.props.loadTopicsRequest();
-      this.props.loadAreasRequest();
-      this.getideas();
-    }
+  componentDidMount() {
+    this.props.loadTopicsRequest();
+    this.props.loadAreasRequest();
+    this.getideas();
   }
 
+  /* Component should update if new query params are provided */
   componentWillReceiveProps(nextProps) {
-    this.getideas(nextProps);
-  }
-
-  shouldComponentUpdate() {
-    return false;
-  }
-
-  componentWillUnmount() {
-    this.runningSagas.map((saga) => saga.cancel());
-    delete this.runningSagas;
+    const newSearch = nextProps.location.search;
+    const isNewSearch = newSearch !== this.search;
+    this.search = newSearch;
+    if (isNewSearch) this.getideas(nextProps);
   }
 
   getideas = (props) => {
@@ -119,33 +116,52 @@ export class Index extends React.Component {
     }
   }
 
+  isMainView = ({ params }) => !params.slug;
+
+  backToMainView = () => this.props.push('/ideas');
+
   render() {
+    const { children } = this.props;
     return (
       <div>
+        <Saga saga={ideasSaga} />
+        <Saga saga={topicsSaga} />
+        <Saga saga={areasSaga} />
+
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
-        <PagePresentation />
+        <OverlayChildren
+          component={PagePresentation}
+          isMainView={this.isMainView}
+          handleClose={this.backToMainView}
+          {...this.props}
+        >
+          {children}
+        </OverlayChildren>
       </div>
     );
   }
 }
 
-Index.contextTypes = {
+IdeasIndex.contextTypes = {
   sagas: PropTypes.func.isRequired,
 };
 
-Index.propTypes = {
+IdeasIndex.propTypes = {
   loadTopicsRequest: PropTypes.func.isRequired,
   loadAreasRequest: PropTypes.func.isRequired,
   loadIdeas: PropTypes.func.isRequired,
   filterIdeas: PropTypes.func.isRequired,
-  // location: PropTypes.object.isRequired,
+  children: PropTypes.element,
+  location: PropTypes.object.isRequired,
+  push: PropTypes.func.isRequired,
   // 'location.search': PropTypes.string,
 };
 
+const actions = { loadIdeas, loadTopicsRequest, loadAreasRequest, filterIdeas, push }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ loadIdeas, loadTopicsRequest, loadAreasRequest, filterIdeas }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 
 
-export default connect(null, mapDispatchToProps)(withRouter(Index));
+export default connect(null, mapDispatchToProps)(IdeasIndex);

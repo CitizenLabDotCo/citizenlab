@@ -15,27 +15,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Saga } from 'react-redux-saga';
+import { Container } from 'semantic-ui-react';
+
 import { makeSelectCurrentUser } from 'utils/auth/selectors';
 import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
 import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
+
 import authSaga from 'utils/auth/sagas';
 import tenantSaga from 'utils/tenant/sagas';
-import { Container } from 'semantic-ui-react';
-// import 'semantic-ui-css/components/reset.css';
-// import 'semantic-ui-css/components/card.css';
-// import 'semantic-ui-css/components/image.css';
-// import 'semantic-ui-css/components/button.css';
-// import 'semantic-ui-css/components/icon.css';
-// import 'semantic-ui-css/components/label.css';
-// import 'semantic-ui-css/components/menu.css';
-// import 'semantic-ui-css/components/input.css';
-// import 'semantic-ui-css/components/dropdown.css';
-// import 'semantic-ui-css/components/grid.css';
-// import 'semantic-ui-css/components/container.css';
-// import 'semantic-ui-css/components/item.css';
-// import 'semantic-ui-css/components/list.css';
-// import 'semantic-ui-css/components/transition.css';
+
 import Navbar from './Navbar';
 
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -45,7 +34,21 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     this.props.dispatch(loadCurrentUserRequest());
   }
 
+  componentWillReceiveProps(){
+    debugger
+  }
+
+  shouldComponentUpdate(){
+    debugger
+    return false
+  }
+
+componentWillUnmount(){
+  debugger
+}
+
   content() {
+    debugger
     const { currentTenant, currentUser } = this.props;
 
     if (currentTenant) {

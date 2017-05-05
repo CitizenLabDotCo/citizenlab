@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-
+import { Saga } from 'react-redux-saga';
 import { watchFetchIdea, watchLoadIdeaVotes, watchVoteIdea, watchFetchComments, watchStoreComment } from './sagas';
 import messages from './messages';
 
@@ -60,30 +60,23 @@ const LoadingIdeaMessage = connect(LoadingIdeaMessageMDP)(xLoadingIdeaMessage);
 class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super();
-    this.runningSagas = [];
     this.id = props.params.slug;
   }
 
-  componentWillMount() {
-    if (this.context.sagas) {
-      [watchFetchIdea, watchLoadIdeaVotes, watchVoteIdea, watchFetchComments, watchStoreComment].map((saga) => {
-        const runSaga = this.context.sagas.run(saga, this.props);
-        return this.runningSagas.push(runSaga);
-      });
-      this.props.loadIdea(this.id);
-      this.props.loadComments(this.id);
-      this.props.loadVotes(this.id);
-    }
-  }
-
-  componentWillUnmount() {
-    this.runningSagas.map((saga) => saga.cancel());
-    delete this.runningSagas;
+  componentDidMount() {
+    this.props.loadIdea(this.id);
+    this.props.loadComments(this.id);
+    this.props.loadVotes(this.id);
   }
 
   render() {
     return (
       <div>
+        <Saga saga={watchFetchIdea} />
+        <Saga saga={watchLoadIdeaVotes} />
+        <Saga saga={watchVoteIdea} />
+        <Saga saga={watchFetchComments} />
+        <Saga saga={watchStoreComment} />
         <LoadIdeaError />
         <LoadingIdeaMessage />
         <Show />
@@ -91,10 +84,6 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
     );
   }
 }
-
-IdeasShow.contextTypes = {
-  sagas: React.PropTypes.func.isRequired,
-};
 
 IdeasShow.propTypes = {
   loadComments: React.PropTypes.func.isRequired,
