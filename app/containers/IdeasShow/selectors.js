@@ -4,6 +4,9 @@
 import { createSelector } from 'reselect';
 import { OrderedMap } from 'immutable';
 
+const selectIdeasShowPageDomain = (...types) => (state) => state.getIn(['ideasShow', ...types]);
+
+
 import { selectResourcesDomain } from 'utils/resources/selectors';
 
 const makeSelectIdeasShow = (...types) => (state) => {

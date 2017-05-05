@@ -9,16 +9,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { bindActionCreators } from 'redux';
-import { Saga } from 'react-redux-saga';
 import { Icon, Sidebar as LayoutSidebar, Segment } from 'semantic-ui-react';
 
 import { push } from 'react-router-redux';
 
 import OverlayChildren from 'containers/OverlayChildren';
+import WatchSagas from 'containers/WatchSagas';
 
 import messages from './messages';
 import { loadIdeas, loadTopicsRequest, loadAreasRequest, filterIdeas } from './actions';
-import { ideasSaga, topicsSaga, areasSaga } from './sagas';
+import * as sagas from './sagas';
+
 
 import Sidebar from './components/sidebar';
 import Panel from './components/panel';
@@ -120,13 +121,11 @@ class IdeasIndex extends React.Component {
   backToMainView = () => this.props.push('/ideas');
 
   render() {
+    //asdf
     const { children } = this.props;
     return (
       <div>
-        <Saga saga={ideasSaga} />
-        <Saga saga={topicsSaga} />
-        <Saga saga={areasSaga} />
-
+        <WatchSagas sagas={sagas} />
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>

@@ -11,7 +11,7 @@ import { bindActionCreators } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { Saga } from 'react-redux-saga';
-import { watchFetchIdea, watchLoadIdeaVotes, watchVoteIdea, watchFetchComments, watchStoreComment } from './sagas';
+import { watchLoadIdea, watchLoadIdeaVotes, watchVoteIdea, watchLoadComments, watchStoreComment } from './sagas';
 import messages from './messages';
 
 import { loadComments, loadVotes, loadIdea } from './actions';
@@ -72,10 +72,10 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
   render() {
     return (
       <div>
-        <Saga saga={watchFetchIdea} />
+        <Saga saga={watchLoadIdea} />
         <Saga saga={watchLoadIdeaVotes} />
+        <Saga saga={watchLoadComments} />
         <Saga saga={watchVoteIdea} />
-        <Saga saga={watchFetchComments} />
         <Saga saga={watchStoreComment} />
         <LoadIdeaError />
         <LoadingIdeaMessage />

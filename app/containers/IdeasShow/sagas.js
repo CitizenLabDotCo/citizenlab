@@ -10,7 +10,7 @@ import {
   loadIdeaSuccess, ideaLoadError, loadVotesError, votesLoaded, voteIdeaError, ideaVoted, loadComments, commentsLoaded, commentsLoadError, publishCommentError,
 } from './actions';
 
-export function* loadIdea(action) {
+function* loadIdea(action) {
   try {
     const response = yield call(fetchIdea, action.payload);
     yield put(mergeJsonApiResources(response));
@@ -20,7 +20,7 @@ export function* loadIdea(action) {
   }
 }
 
-export function* getIdeaVotes(action) {
+function* getIdeaVotes(action) {
   const { ideaId } = action;
 
   try {
@@ -32,7 +32,7 @@ export function* getIdeaVotes(action) {
   }
 }
 
-export function* postIdeaVote(action) {
+function* postIdeaVote(action) {
   const { ideaId, mode } = action;
 
   try {
@@ -44,7 +44,7 @@ export function* postIdeaVote(action) {
   }
 }
 
-export function* loadIdeaComments(action) {
+function* loadIdeaComments(action) {
   try {
     const response = yield call(fetchIdeaComments, action.nextCommentPageNumber, action.nextCommentPageItemCount, action.ideaId);
     yield put(mergeJsonApiResources(response));
@@ -54,7 +54,7 @@ export function* loadIdeaComments(action) {
   }
 }
 
-export function* publishComment(action) {
+function* publishComment(action) {
   try {
     const ideaId = action.ideaId;
     const response = yield call(createIdeaComment, ideaId, action.userId, action.htmlContents, action.parentId);
@@ -66,7 +66,7 @@ export function* publishComment(action) {
   }
 }
 
-export function* watchFetchIdea() {
+export function* watchLoadIdea() {
   yield takeLatest(LOAD_IDEA_REQUEST, loadIdea);
 }
 
@@ -78,7 +78,7 @@ export function* watchVoteIdea() {
   yield takeLatest(VOTE_IDEA_REQUEST, postIdeaVote);
 }
 
-export function* watchFetchComments() {
+export function* watchLoadComments() {
   yield takeLatest(LOAD_COMMENTS_REQUEST, loadIdeaComments);
 }
 
