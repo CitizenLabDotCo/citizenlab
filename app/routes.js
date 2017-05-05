@@ -117,7 +117,7 @@ export default function createRoutes(store) {
         const renderRoute = loadModule(cb);
 
         importModules.then(([reducer, component]) => {
-          injectReducer('ideasIndexPageReducer', reducer.default);
+          injectReducer('ideasIndexPage', reducer.default);
           renderRoute(component);
         });
 

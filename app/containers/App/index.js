@@ -34,21 +34,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     this.props.dispatch(loadCurrentUserRequest());
   }
 
-  componentWillReceiveProps(){
-    debugger
-  }
-
-  shouldComponentUpdate(){
-    debugger
-    return false
-  }
-
-componentWillUnmount(){
-  debugger
-}
-
   content() {
-    debugger
     const { currentTenant, currentUser } = this.props;
 
     if (currentTenant) {
