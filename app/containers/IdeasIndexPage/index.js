@@ -42,41 +42,48 @@ class PagePresentation extends React.Component {
     // this component will controll the proper rerender of the view when the Topics and Areas list is toggled.
     const { visible } = this.state;
     return (
-      <div style={{ display: 'table', lineHeight: 0, fontSize: '0', width: '100%' }}>
-        <div
-          style={{
-            display: 'table-cell',
-            width: '50px',
-            height: '100%',
-            overflow: 'visible',
-            lineHeight: 0,
-            fontSize: '0',
-            marginTop: '5px',
-            backgroundColor: '#1b1c1d',
-          }}
-        >
-          <div style={{ textAlign: 'center' }}>
-            <Icon
-              onClick={this.toggleVisibility}
-              name={'bars'}
-              style={{
-                verticalAlign: 'top',
-                fontSize: '26px',
-                lineHeight: '46px',
-                color: 'white',
-                cursor: 'pointer',
-              }}
-            />
+      <div>
+        <WatchSagas sagas={sagas} />
+        <h1>
+          <FormattedMessage {...messages.header} />
+        </h1>
+
+        <div style={{ display: 'table', lineHeight: 0, fontSize: '0', width: '100%' }}>
+          <div
+            style={{
+              display: 'table-cell',
+              width: '50px',
+              height: '100%',
+              overflow: 'visible',
+              lineHeight: 0,
+              fontSize: '0',
+              marginTop: '5px',
+              backgroundColor: '#1b1c1d',
+            }}
+          >
+            <div style={{ textAlign: 'center' }}>
+              <Icon
+                onClick={this.toggleVisibility}
+                name={'bars'}
+                style={{
+                  verticalAlign: 'top',
+                  fontSize: '26px',
+                  lineHeight: '46px',
+                  color: 'white',
+                  cursor: 'pointer',
+                }}
+              />
+            </div>
           </div>
+
+
+          <LayoutSidebar.Pushable as={Segment} style={{ margin: '0', padding: '0', border: 'none', borderRadius: 0 }}>
+            <Sidebar visible={visible} toggleVisibility={this.toggleVisibility} />
+            <LayoutSidebar.Pusher>
+              <Panel />
+            </LayoutSidebar.Pusher>
+          </LayoutSidebar.Pushable>
         </div>
-
-
-        <LayoutSidebar.Pushable as={Segment} style={{ margin: '0', padding: '0', border: 'none', borderRadius: 0 }}>
-          <Sidebar visible={visible} toggleVisibility={this.toggleVisibility} />
-          <LayoutSidebar.Pusher>
-            <Panel />
-          </LayoutSidebar.Pusher>
-        </LayoutSidebar.Pushable>
       </div>
     );
   }
@@ -125,10 +132,6 @@ class IdeasIndex extends React.Component {
     const { children } = this.props;
     return (
       <div>
-        <WatchSagas sagas={sagas} />
-        <h1>
-          <FormattedMessage {...messages.header} />
-        </h1>
         <OverlayChildren
           component={PagePresentation}
           isMainView={this.isMainView}

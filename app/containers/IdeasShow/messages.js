@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.loadingIdea',
     defaultMessage: 'Loading idea...',
   },
+  ideaNotFound: {
+    id: 'app.containers.IdeasShow.ideaNotFound',
+    defaultMessage: 'Idea not found',
+  },
   emptyCommentError: {
     id: 'app.containers.IdeasShow.emptyCommentError',
     defaultMessage: 'The comment can\'t be empty',

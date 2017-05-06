@@ -8,11 +8,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { FormattedMessage } from 'react-intl';
-import { createStructuredSelector } from 'reselect';
 import { Saga } from 'react-redux-saga';
-import { watchLoadIdea, watchLoadIdeaVotes, watchVoteIdea, watchLoadComments, watchStoreComment } from './sagas';
-import messages from './messages';
+
+import WatchSagas from 'containers/WatchSagas'
+
+import * as sagas from './sagas';
 
 import { loadComments, loadVotes, loadIdea } from './actions';
 
@@ -20,76 +20,35 @@ import makeSelectIdeasShow from './selectors';
 
 import Show from './components/show';
 
-class xLoadIdeaError extends React.Component {
-  render() {
-    const { loadIdeaError } = this.props;
-    if (!loadIdeaError) return null;
-    return <div>{loadIdeaError}</div>;
-  }
-}
-
-xLoadIdeaError.propTypes = {
-  loadIdeaError: PropTypes.string,
-};
-
-const LoadIdeaErrorMDP = createStructuredSelector({
-  loadIdeaError: makeSelectIdeasShow('loadIdeaError'),
-});
-
-const LoadIdeaError = connect(LoadIdeaErrorMDP)(xLoadIdeaError);
-
-class xLoadingIdeaMessage extends React.Component {
-  render() {
-    const { loadingIdea } = this.props;
-    if (!loadingIdea) return null;
-    return <FormattedMessage {...messages.loadingIdea} />;
-  }
-}
-
-xLoadingIdeaMessage.propTypes = {
-  loadingIdea: PropTypes.bool.isRequired,
-};
-
-const LoadingIdeaMessageMDP = createStructuredSelector({
-  loadingIdea: makeSelectIdeasShow('loadingIdea'),
-});
-
-const LoadingIdeaMessage = connect(LoadingIdeaMessageMDP)(xLoadingIdeaMessage);
 
 // Ideas show does not use helmet at this view is controlled by RouterIndexShow
 class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super();
-    this.id = props.params.slug;
+    const { params } = props;
+    this.id = params.slug
   }
 
   componentDidMount() {
-    this.props.loadIdea(this.id);
-    this.props.loadComments(this.id);
-    this.props.loadVotes(this.id);
+    // this.props.loadIdea(this.id);
+    // this.props.loadComments(this.id);
+    // this.props.loadVotes(this.id);
   }
 
   render() {
     return (
       <div>
-        <Saga saga={watchLoadIdea} />
-        <Saga saga={watchLoadIdeaVotes} />
-        <Saga saga={watchLoadComments} />
-        <Saga saga={watchVoteIdea} />
-        <Saga saga={watchStoreComment} />
-        <LoadIdeaError />
-        <LoadingIdeaMessage />
-        <Show />
+       
       </div>
     );
   }
 }
 
 IdeasShow.propTypes = {
-  loadComments: React.PropTypes.func.isRequired,
-  loadVotes: React.PropTypes.func.isRequired,
-  params: React.PropTypes.func.object,
-  loadIdea: React.PropTypes.func,
+  loadComments: PropTypes.func.isRequired,
+  loadVotes: PropTypes.func.isRequired,
+  params: PropTypes.object,
+  loadIdea: PropTypes.func,
 };
 
 const ideasShowActions = { loadIdea, loadComments, loadVotes };

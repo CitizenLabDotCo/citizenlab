@@ -7,6 +7,7 @@ import Filters from './sidebar/filters';
 class Sidebar extends React.Component {
   render() {
     const { toggleVisibility, visible } = this.props;
+    if (!visible) return null;
     return (
       <LayoutSidebar
         as={Menu}
