@@ -8,8 +8,12 @@ class User < ApplicationRecord
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
   validates :first_name, :last_name, :slug, :email, presence: true
   validates :locale, presence: true, inclusion: { in: proc {Tenant.settings('core','locales')} }
-  validates :password, presence: true, on: :create, unless: :has_services?
+  # validates :password, presence: true, on: :create, unless: :has_services?
   validates :password, length: { in: 5..20 }, allow_nil: true
+  validate do |record|
+    record.errors.add(:password, :blank) unless record.password_digest.present? or record.has_services?
+  end
+  # validates_length_of :password, maximum: ActiveModel::SecurePassword::MAX_PASSWORD_LENGTH_ALLOWED
 
   ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
   validates :roles, json: { schema: ROLES_JSON_SCHEMA, message: ->(errors) { errors } }
