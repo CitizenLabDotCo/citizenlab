@@ -1,36 +1,57 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
-import * as Api from 'api';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
+import { createUser, socialRegister, socialLogin } from 'api';
+import { makeSelectSetting } from 'utils/tenant/selectors';
+import { setJwt } from 'utils/request';
+import { storeJwt, loadCurrentUserRequest } from 'utils/auth/actions';
+
+
+import hello from 'hellojs';
 import {
-  CREATE_USER_REQUEST,
-  CREATE_USER_SUCCESS,
-  CREATE_USER_ERROR,
+  CREATE_EMAIL_USER_REQUEST,
+  CREATE_SOCIAL_USER_REQUEST,
 } from './constants';
-import { authenticateRequest } from '../SignInPage/actions';
-import { AUTHENTICATE_REQUEST } from '../SignInPage/constants';
-import { fetchJwt } from '../SignInPage/sagas';
+import {
+  createEmailUserSuccess,
+  createEmailUserError,
+  createSocialUserSuccess,
+  createSocialUserError,
+} from './actions';
 
 
-export function* createUser(action) {
+function* createEmailUser(action) {
   try {
-    const json = yield call(Api.createUser, action.payload); // eslint-disable-line
-    yield put({ type: CREATE_USER_SUCCESS, payload: json });
-
-    // automatically sign in by passing in username and password
-    const credentials = {
-      email: action.payload.email,
-      password: action.payload.password,
-    };
-
-    yield put(authenticateRequest(credentials));
+    const json = yield call(createUser, action.payload);
+    yield put(createEmailUserSuccess(json));
   } catch (e) {
-    yield put({ type: CREATE_USER_ERROR, payload: e, error: true });
+    yield put(createEmailUserError(e));
   }
 }
 
-export function* watchCreateUser() {
-  yield takeLatest(CREATE_USER_REQUEST, createUser);
+function* createSocialUser(action) {
+  const { network, locale } = action.payload;
+  try {
+    const appId = yield select(makeSelectSetting([`${network}_login`, 'app_id']));
+    hello.init({ [network]: appId });
+    const h = hello(network);
+    const data = yield call([h, h.login], [{ scope: 'email' }]);
+    yield call(socialRegister, network, data.authResponse.access_token, locale);
+
+    // Yay! Registered! Now let's sign in :)
+    const jwtResponse = yield call(socialLogin, network, data.authResponse.access_token);
+    yield put(storeJwt(jwtResponse.jwt));
+    setJwt(jwtResponse.jwt);
+    yield put(loadCurrentUserRequest());
+    yield put(createSocialUserSuccess(network));
+  } catch (err) {
+    yield put(createSocialUserError(network, err));
+  }
 }
 
-export function* watchUserSignIn() {
-  yield takeLatest(AUTHENTICATE_REQUEST, fetchJwt);
+
+export function* watchEmail() {
+  yield takeLatest(CREATE_EMAIL_USER_REQUEST, createEmailUser);
+}
+
+export function* watchSocial() {
+  yield takeLatest(CREATE_SOCIAL_USER_REQUEST, createSocialUser);
 }

@@ -16,10 +16,9 @@ const makeSelectCurrentTenant = () => createSelector(
 
 const makeSelectSetting = (settingPath) => createSelector(
   makeSelectCurrentTenantImm(),
-  (immutableTenant) => {
-    const settingImm = immutableTenant.getIn(['attributes', 'settings', ...settingPath]);
-    return settingImm && settingImm.toJS();
-  }
+  (immutableTenant) => (
+    immutableTenant.getIn(['attributes', 'settings', ...settingPath])
+  )
 );
 
 export {

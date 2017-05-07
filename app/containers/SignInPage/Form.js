@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Button, Header, Label, Form, Message, Loader } from 'semantic-ui-react';
-import { injectTFunc } from 'containers/T/utils';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { PropTypes } from 'prop-types';
 
 import messages from './messages';
 
@@ -42,7 +43,8 @@ class RegistrationForm extends React.Component {
   }
 
   render() {
-    const { errors, tFunc, pending } = this.props;
+    const { errors, pending } = this.props;
+    const { formatMessage } = this.props.intl;
     const errorTypes = Object.keys(errors);
     const hasError = errorTypes.reduce((err, state) => (!!errors[err] || state), false);
 
@@ -51,7 +53,7 @@ class RegistrationForm extends React.Component {
         <Grid centered verticalAlign={'middle'}>
           <Grid.Column>
             <Header as={'h2'}>
-              {tFunc(messages.header)}
+              <FormattedMessage {...messages.header} />
             </Header>
             <Form onSubmit={this.handleSubmit} error={hasError}>
               <Form.Field>
@@ -61,9 +63,9 @@ class RegistrationForm extends React.Component {
                   iconPosition={'left'}
                   onChange={this.handleChange}
                   value={this.state.email}
-                  placeholder={tFunc(messages.placeholderEmail)}
+                  placeholder={formatMessage(messages.placeholderEmail)}
                   error={!!errors.email}
-                  label={tFunc(messages.labelEmail)}
+                  label={formatMessage(messages.labelEmail)}
                 />
                 <RenderError messages={errors.email} />
               </Form.Field>
@@ -75,10 +77,10 @@ class RegistrationForm extends React.Component {
                   iconPosition={'left'}
                   onChange={this.handleChange}
                   value={this.state.password}
-                  placeholder={tFunc(messages.placeholderPassword)}
+                  placeholder={formatMessage(messages.placeholderPassword)}
                   type={'password'}
                   error={!!errors.password}
-                  label={tFunc(messages.labelPassword)}
+                  label={formatMessage(messages.labelPassword)}
                 />
                 <RenderError messages={errors.password} />
               </Form.Field>
@@ -88,14 +90,16 @@ class RegistrationForm extends React.Component {
                     <span style={{ color: 'rgba(0, 0, 0, 0)' }}> o </span>
                     <Loader size={'mini'} active />
                   </div> :
-                  tFunc(messages.buttonSignIn)
+                  formatMessage(messages.buttonSignIn)
                 }
               </Button>
             </Form>
             {this.props.children}
             <Message>
-              {/* ERROR THE LINK IS NOT PROPERLY HANDLED*/ }
-              {tFunc(messages.signUpAction1)} <a href={'/'}>{tFunc(messages.signUpAction2)}</a>
+              {/* 'ERROR THE LINK IS NOT PROPERLY HANDLED'*/ }
+              <FormattedMessage {...messages.noAccountYet} />
+              {' '}
+              <a href={'/'}><FormattedMessage {...messages.signUpNow} /></a>
             </Message>
 
           </Grid.Column>
@@ -106,11 +110,11 @@ class RegistrationForm extends React.Component {
 }
 
 RegistrationForm.propTypes = {
-  onSubmit: React.PropTypes.func.isRequired,
-  errors: React.PropTypes.object.isRequired,
-  pending: React.PropTypes.bool,
-  tFunc: React.PropTypes.func,
-  children: React.PropTypes.element,
+  onSubmit: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
+  pending: PropTypes.bool,
+  children: PropTypes.element,
+  intl: intlShape.isRequired,
 };
 
-export default injectTFunc(RegistrationForm);
+export default injectIntl(RegistrationForm);

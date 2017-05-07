@@ -47,15 +47,13 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/SignInPage/reducer'),
-          import('containers/SignInPage/sagas'),
           import('containers/SignInPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
+        importModules.then(([reducer, component]) => {
           injectReducer('signInPage', reducer.default);
-          injectSagas(sagas.default);
           renderRoute(component);
         });
 
