@@ -20,11 +20,11 @@ export default defineMessages({
   },
   placeholderPassword: {
     id: 'app.containers.UsersShowPage.placeholderPassword',
-    defaultMessage: 'Your Email...',
+    defaultMessage: 'Your Password...',
   },
   placeholderEmail: {
     id: 'app.containers.UsersShowPage.placeholderEmail',
-    defaultMessage: 'Your Password...',
+    defaultMessage: 'Your Email...',
   },
   buttonSignIn: {
     id: 'app.containers.UsersShowPage.buttonSignIn',
