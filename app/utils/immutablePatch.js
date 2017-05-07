@@ -1,7 +1,6 @@
-import { Map } from 'immutable'
+/* eslint-disable */
+import { Map } from 'immutable';
 
 Map.prototype.reactMap = function(func) {
-  this.reduce((out, ...reduceArgs) => (
-    out.concat(func(reduceArgs))
-  ), []);
+  return this.reduce((out, ...reduceArgs) => out.concat(func(...reduceArgs)), []);
 };
