@@ -1,31 +1,20 @@
 class Api::V1::SocialLoginController < ::ApplicationController
-  MissingEmail = Class.new(StandardError)
+
+  @@service = SocialAuthService.new
 
   def create
     skip_authorization
-    user = verify_social_login
-    send_success({ jwt: create_jwt(user.id) })
-  rescue RestClient::BadRequest
-    send_error({ message: 'invalid token' })
-  rescue ActiveRecord::RecordNotFound, MissingEmail
-    send_not_found
-  end
-
-  def verify_social_login
-    # TODO add support for other networks
-    find_user(get_facebook_profile_email)
-  end
-
-  def get_facebook_profile_email
-    response = RestClient.get('https://graph.facebook.com/me', params: { access_token: login_params[:access_token], fields: 'name,first_name,last_name,email' })
-    result = JSON.parse(response.body)
-    email = result["email"]
-    raise MissingEmail if email.blank?
-    email
-  end
-
-  def find_user(email)
-    User.find_by!(email: email)
+    network = login_params[:network]
+    profile = @@service.get_social_profile_info network, login_params[:access_token]
+    user = @@service.verify_user(network, profile)
+    if (user)
+      services = @@service.updated_user_services(user, network, profile)
+      user.update(services: services)
+      p user.errors
+      render json: { jwt: create_jwt(user.id) }
+    else
+      head 404
+    end
   end
 
   def create_jwt(user_id)

@@ -17,16 +17,16 @@ class SocialAuthService
 
   def facebook_profile_to_user_attrs profile
     user_attrs = {
-      first_name: profile['first_name'],
-      last_name: profile['last_name'],
-      email: profile['email'],
-      demographics: {
-        gender: profile['gender'],
+      "first_name" => profile['first_name'],
+      "last_name" => profile['last_name'],
+      "email" => profile['email'],
+      "demographics" => {
+        "gender" => profile['gender'],
       },
-      services: {
-        facebook: {
-          updated_at: Time.now,
-          profile: profile
+      "services" => {
+        "facebook" => {
+          "updated_at" => Time.now,
+          "profile" => profile
         }
       }
     }
@@ -39,5 +39,29 @@ class SocialAuthService
 
     user_attrs
   end
+
+
+
+
+  def updated_user_services user, network, profile
+    services = user.services
+    services[network] = {
+      "updated_at" => Time.now,
+      "profile" => profile
+    }
+    services
+  end
+
+
+
+
+  def verify_user network, profile
+    self.send("verify_#{network}_user", profile)
+  end
+
+  def verify_facebook_user profile
+    User.find_by(email: profile["email"])
+  end
+
 
 end

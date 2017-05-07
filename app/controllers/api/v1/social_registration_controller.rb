@@ -6,7 +6,6 @@ class Api::V1::SocialRegistrationController < ::ApplicationController
     social_profile = @@service.get_social_profile_info(register_params[:network], register_params[:access_token])
     user_attrs = @@service.social_profile_to_user_attrs register_params[:network], social_profile
     @user = User.new(user_attrs.merge(locale: register_params[:locale]))
-    p @user
     authorize @user
     if @user.save
       UserMailer.welcome(@user).deliver_later

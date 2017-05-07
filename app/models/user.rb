@@ -8,6 +8,8 @@ class User < ApplicationRecord
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
   validates :first_name, :last_name, :slug, :email, presence: true
   validates :locale, presence: true, inclusion: { in: proc {Tenant.settings('core','locales')} }
+  validates :password, presence: true, on: :create, unless: :has_services?
+  validates :password, length: { in: 5..20 }, allow_nil: true
 
   ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
   validates :roles, json: { schema: ROLES_JSON_SCHEMA, message: ->(errors) { errors } }
@@ -52,6 +54,10 @@ class User < ApplicationRecord
       hash = Digest::MD5.hexdigest(self.email)
       self.remote_avatar_url = "https://www.gravatar.com/avatar/#{hash}?d=retro&size=640"
     end
+  end
+
+  def has_services?
+    self.services.present?
   end
 
 end
