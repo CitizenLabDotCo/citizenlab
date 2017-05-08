@@ -9,6 +9,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+
 import { makeSelectSetting } from 'utils/tenant/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { findTranslatedText } from './utils';
@@ -38,7 +40,7 @@ export class T extends React.PureComponent { // eslint-disable-line react/prefer
 T.propTypes = {
   value: PropTypes.object,
   userLocale: PropTypes.string,
-  tenantLocales: PropTypes.array,
+  tenantLocales: ImmutablePropTypes.list,
 };
 
 const mapStateToProps = createStructuredSelector({
