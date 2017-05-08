@@ -42,9 +42,13 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.placeholderEmail',
     defaultMessage: 'Your Password...',
   },
-  buttonSignIn: {
-    id: 'app.containers.UsersShowPage.ButtonSignIn',
-    defaultMessage: 'Sign In',
+  buttonRegister: {
+    id: 'app.containers.UsersShowPage.ButtonRegister',
+    defaultMessage: 'Register',
+  },
+  buttonRegisterFacebook: {
+    id: 'app.containers.UsersShowPage.ButtonRegisterFacebook',
+    defaultMessage: 'Register with Facebook',
   },
   signUpAction1: {
     id: 'app.containers.UsersShowPage.ButtonSignIn',

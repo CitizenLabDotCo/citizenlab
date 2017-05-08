@@ -20,22 +20,22 @@ export default defineMessages({
   },
   placeholderPassword: {
     id: 'app.containers.UsersShowPage.placeholderPassword',
-    defaultMessage: 'Your Email...',
+    defaultMessage: 'Your Password...',
   },
   placeholderEmail: {
     id: 'app.containers.UsersShowPage.placeholderEmail',
-    defaultMessage: 'Your Password...',
+    defaultMessage: 'Your Email...',
   },
   buttonSignIn: {
     id: 'app.containers.UsersShowPage.buttonSignIn',
     defaultMessage: 'Sign In',
   },
-  signUpAction1: {
-    id: 'app.containers.UsersShowPage.signUpAction1',
-    defaultMessage: 'New to us?',
+  noAccountYet: {
+    id: 'app.containers.UsersShowPage.noAccountYet',
+    defaultMessage: 'New here?',
   },
-  signUpAction2: {
-    id: 'app.containers.UsersShowPage.signUpAction2',
+  signUpNow: {
+    id: 'app.containers.UsersShowPage.signUpNow',
     defaultMessage: 'Sign Up Now!',
   },
   facebookSignIn: {

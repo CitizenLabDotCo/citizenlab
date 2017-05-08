@@ -21,6 +21,10 @@ import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 import 'react-select/dist/react-select.css';
 import { fromJS } from 'immutable';
+
+// add reactMap to immutible
+import 'utils/immutablePatch';
+
 import { Sagas } from 'react-redux-saga';
 
 // Import root app

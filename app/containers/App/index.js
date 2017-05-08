@@ -57,7 +57,9 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
           >
           </Navbar>
           <Container>
-            {React.Children.toArray(this.props.children)}
+            <div>
+              {React.Children.toArray(this.props.children)}
+            </div>
           </Container>
         </div>
       );

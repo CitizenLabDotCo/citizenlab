@@ -1,7 +1,7 @@
 import React from 'react';
-import { Grid, Button, Header, Label, Form, Message, Loader } from 'semantic-ui-react';
-import { injectTFunc } from 'containers/T/utils';
-
+import PropTypes from 'prop-types';
+import { Grid, Button, Header, Label, Form, Loader } from 'semantic-ui-react';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 
 
@@ -41,28 +41,29 @@ class RegistrationForm extends React.Component {
   }
 
   render() {
-    const { errors, pending, tFunc } = this.props;
+    const { errors, pending } = this.props;
+    const { formatMessage } = this.props.intl;
     const errorTypes = Object.keys(errors);
     const hasError = errorTypes.reduce((err, state) => (!!errors[err] || state), false);
 
     return (
-      <div >
+      <div>
         <Grid centered verticalAlign={'middle'}>
           <Grid.Column>
             <Header as={'h2'}>
-              {tFunc(messages.header)}
+              <FormattedMessage {...messages.header} />
             </Header>
-            <Form onSubmit={this.handleSubmit} error={hasError}>
+            <Form onSubmit={this.handleSubmit} error={!!hasError}>
               <Form.Field>
                 <Form.Input
                   fluid icon={'user'}
-                  name={'last_name'}
+                  name={'first_name'}
                   iconPosition={'left'}
                   onChange={this.handleChange}
                   value={this.state.first_name}
-                  placeholder={tFunc(messages.placeholderFirstName)}
+                  placeholder={formatMessage(messages.placeholderFirstName)}
                   error={!!errors.first_name}
-                  label={tFunc(messages.labelFirstName)}
+                  label={formatMessage(messages.labelFirstName)}
                 />
                 <RenderError messages={errors.first_name} />
               </Form.Field>
@@ -74,9 +75,9 @@ class RegistrationForm extends React.Component {
                   iconPosition={'left'}
                   onChange={this.handleChange}
                   value={this.state.last_name}
-                  placeholder={tFunc(messages.placeholderLastName)}
+                  placeholder={formatMessage(messages.placeholderLastName)}
                   error={!!errors.last_name}
-                  label={tFunc(messages.labelLastName)}
+                  label={formatMessage(messages.labelLastName)}
                 />
                 <RenderError messages={errors.last_name} />
               </Form.Field>
@@ -88,9 +89,9 @@ class RegistrationForm extends React.Component {
                   iconPosition={'left'}
                   onChange={this.handleChange}
                   value={this.state.email}
-                  placeholder={tFunc(messages.placeholderEmail)}
+                  placeholder={formatMessage(messages.placeholderEmail)}
                   error={!!errors.email}
-                  label={tFunc(messages.labelEmail)}
+                  label={formatMessage(messages.labelEmail)}
                 />
                 <RenderError messages={errors.email} />
               </Form.Field>
@@ -102,28 +103,24 @@ class RegistrationForm extends React.Component {
                   iconPosition={'left'}
                   onChange={this.handleChange}
                   value={this.state.password}
-                  placeholder={tFunc(messages.placeholderPassword)}
+                  placeholder={formatMessage(messages.placeholderPassword)}
                   type={'password'}
                   error={!!errors.password}
-                  label={tFunc(messages.labelPassword)}
+                  label={formatMessage(messages.labelPassword)}
                 />
                 <RenderError messages={errors.password} />
               </Form.Field>
+              {this.props.children}
               <Button fluid size={'small'} style={{ position: 'relative' }}>
                 { pending ?
                   <div style={{ position: 'relative' }}>
                     <span style={{ color: 'rgba(0, 0, 0, 0)' }}> o </span>
                     <Loader size={'mini'} active />
                   </div> :
-                  tFunc(messages.buttonSignIn)
+                  <FormattedMessage {...messages.buttonRegister} />
                 }
               </Button>
             </Form>
-            <Message>
-              {/* 'ERROR THE LINK IS NOT PROPERLY HANDLED'*/ }
-              {tFunc(messages.signUpAction1)} <a href={'/'}>{tFunc(messages.signUpAction2)}</a>
-            </Message>
-
           </Grid.Column>
         </Grid>
       </div>
@@ -132,10 +129,11 @@ class RegistrationForm extends React.Component {
 }
 
 RegistrationForm.propTypes = {
-  createUser: React.PropTypes.func.isRequired,
-  errors: React.PropTypes.object.isRequired,
-  pending: React.PropTypes.bool,
-  tFunc: React.PropTypes.func,
+  createUser: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
+  pending: PropTypes.bool,
+  children: PropTypes.element,
+  intl: intlShape.isRequired,
 };
 
-export default injectTFunc(RegistrationForm);
+export default injectIntl(RegistrationForm);
