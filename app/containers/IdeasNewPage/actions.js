@@ -6,7 +6,7 @@
 import {
   SAVE_DRAFT, PUBLISH_IDEA_ERROR, PUBLISH_IDEA_SUCCESS, PUBLISH_IDEA_REQUEST, SET_TITLE, STORE_ATTACHMENT, STORE_IMAGE,
   STORE_ATTACHMENT_ERROR, STORE_IMAGE_ERROR, LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_TOPICS_ERROR,
-  LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR,
+  LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR, STORE_SELECTED_TOPICS, STORE_SELECTED_AREAS,
 } from './constants';
 
 /*
@@ -118,5 +118,19 @@ export function loadAreasError(error) {
   return {
     type: LOAD_AREAS_ERROR,
     error,
+  };
+}
+
+export function storeSelectedTopics(topics) {
+  return {
+    type: STORE_SELECTED_TOPICS,
+    payload: topics,
+  };
+}
+
+export function storeSelectedAreas(areas) {
+  return {
+    type: STORE_SELECTED_AREAS,
+    payload: areas,
   };
 }

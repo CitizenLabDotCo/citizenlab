@@ -8,7 +8,7 @@ import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import { Container, Segment, Grid, Button } from 'semantic-ui-react';
-import MultiSelect from 'components/MultiSelect';
+import MultiSelectT from 'components/MultiSelectT';
 
 // import messages from './messages';
 import IdeaEditor from './IdeaEditor';
@@ -38,20 +38,6 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
     const { shortTitleError, longTitleError, titleLength } = this.props;
     const { storeDraftCopy, content, saveDraft, storeIdea } = this.props;
     const { topics, areas, topicsLabel, areasLabel, topicsPlaceholder, areasPlaceholder, loadTopicsError, loadAreasError, loadingTopics, loadingAreas } = this.props;
-    // TODO: load this via [already defined] selector (after refactoring IdeasNewPage structure --> CL2-167)
-    // const topics = [
-    //   { value: 'topic1', label: 'Topic 1' },
-    //   { value: 'topic2', label: 'Topic 2' },
-    //   { value: 'topic3', label: 'Topic 3' },
-    //   { value: 'topic4', label: 'Topic 4' },
-    // ];
-    //
-    // const areas = [
-    //   { value: 'area1', label: 'Area 1' },
-    //   { value: 'area2', label: 'Area 2' },
-    //   { value: 'area3', label: 'Area 3' },
-    //   { value: 'area4', label: 'Area 4' },
-    // ];
 
     const FormattedMessageSegment = (props) => (
       <Segment>
@@ -60,10 +46,20 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
     );
 
     // refactor topics and areas to match format expected by Multiselect
-    console.log('topics', topics);
-    console.log('areas', areas);
-    const topicsSelect = [];
-    const areasSelect = [];
+    const topicsSelect = (topics
+      ? topics.toJS().map((topic) => ({
+        value: topic.id,
+        label: JSON.stringify(topic.attributes.title_multiloc),
+      }))
+      : []
+    );
+    const areasSelect = (areas
+        ? areas.toJS().map((area) => ({
+          value: area.id,
+          label: JSON.stringify(area.attributes.title_multiloc),
+        }))
+        : []
+    );
 
     return (
       <div>
@@ -102,24 +98,32 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
           <Grid columns={2}>
             <Grid.Row>
               <Grid.Column width={8} textAlign="center">
-                {/* TODO: show error [non-intl] & loading [intl] here */}
-                {topics && <MultiSelect
+                {!(loadingTopics || loadTopicsError) && <MultiSelectT
                   options={topicsSelect}
                   maxSelectionLength={3}
                   placeholder={topicsPlaceholder}
                   optionLabel={topicsLabel}
                   handleOptionsAdded={this.storeTopics}
                 />}
+                {loadTopicsError && <div>
+                  <FormattedMessage {...messages.loadTopicsError} /> - {loadTopicsError}
+                  {/* TODO: retry button with dispatch here? */}
+                </div>}
+                {loadingTopics && <FormattedMessage {...messages.loadingTopics} />}
               </Grid.Column>
               <Grid.Column width={8} textAlign="center">
-                {/* TODO: show error [non-intl] & loading [intl] here */}
-                {areas && <MultiSelect
+                {!(loadingAreas || loadAreasError) && <MultiSelectT
                   options={areasSelect}
                   maxSelectionLength={3}
                   placeholder={areasPlaceholder}
                   optionLabel={areasLabel}
                   handleOptionsAdded={this.storeAreas}
                 />}
+                {loadAreasError && <div>
+                  <FormattedMessage {...messages.loadAreasError} /> - {loadAreasError}
+                  {/* TODO: retry button with dispatch here? */}
+                </div>}
+                {loadingAreas && <FormattedMessage {...messages.loadingAreas} />}
               </Grid.Column>
             </Grid.Row>
           </Grid>

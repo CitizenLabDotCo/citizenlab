@@ -9,12 +9,12 @@ ShallowWrapper {
   },
   "length": 1,
   "node": <FileInput
-    className="jkJdwS"
+    className="fzkyMl"
     onFileUpload={[Function]}
 />,
   "nodes": Array [
     <FileInput
-      className="jkJdwS"
+      className="fzkyMl"
       onFileUpload={[Function]}
 />,
   ],
@@ -27,7 +27,7 @@ ShallowWrapper {
       "_currentElement": <Styled(undefined)
         onFileUpload={[Function]}
 />,
-      "_debugID": 51,
+      "_debugID": 44,
       "_hostContainerInfo": null,
       "_hostParent": null,
       "_instance": StyledComponent {
@@ -40,7 +40,7 @@ ShallowWrapper {
         },
         "refs": Object {},
         "state": Object {
-          "generatedClassName": "jkJdwS",
+          "generatedClassName": "fzkyMl",
           "theme": Object {},
         },
         "updater": Object {
@@ -54,7 +54,7 @@ ShallowWrapper {
           "validateCallback": [Function],
         },
       },
-      "_mountOrder": 29,
+      "_mountOrder": 31,
       "_pendingCallbacks": null,
       "_pendingElement": null,
       "_pendingForceUpdate": false,
@@ -62,12 +62,12 @@ ShallowWrapper {
       "_pendingStateQueue": null,
       "_renderedComponent": NoopInternalComponent {
         "_currentElement": <FileInput
-          className="jkJdwS"
+          className="fzkyMl"
           onFileUpload={[Function]}
 />,
-        "_debugID": 52,
+        "_debugID": 45,
         "_renderedOutput": <FileInput
-          className="jkJdwS"
+          className="fzkyMl"
           onFileUpload={[Function]}
 />,
       },

@@ -23,7 +23,9 @@ export const STORE_IMAGE_ERROR = 'app/IdeasNewPage/STORE_IMAGE_ERROR';
 export const LOAD_TOPICS_REQUEST = 'app/IdeasNewPage/LOAD_TOPICS_REQUEST';
 export const LOAD_TOPICS_SUCCESS = 'app/IdeasNewPage/LOAD_TOPICS_SUCCESS';
 export const LOAD_TOPICS_ERROR = 'app/IdeasNewPage/LOAD_TOPICS_ERROR';
+export const STORE_SELECTED_TOPICS = 'app/IdeasNewPage/STORE_SELECTED_TOPICS';
 
 export const LOAD_AREAS_REQUEST = 'app/IdeasNewPage/LOAD_AREAS_REQUEST';
 export const LOAD_AREAS_SUCCESS = 'app/IdeasNewPage/LOAD_AREAS_SUCCESS';
 export const LOAD_AREAS_ERROR = 'app/IdeasNewPage/LOAD_AREAS_ERROR';
+export const STORE_SELECTED_AREAS = 'app/IdeasNewPage/STORE_SELECTED_AREAS';

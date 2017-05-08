@@ -6,7 +6,8 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -15,11 +16,14 @@ import { makeSelectSetting } from 'utils/tenant/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { findTranslatedText } from './utils';
 
+export const fallbackUserLocale = 'nl';
+export const fallbackTenantLocales = ['en', 'nl', 'fr'];
+
 export class T extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
-    this.fallbackUserLocale = 'nl';
-    this.fallbackTenantLocales = ['en', 'nl', 'fr'];
+    this.fallbackUserLocale = fallbackUserLocale;
+    this.fallbackTenantLocales = fallbackTenantLocales;
   }
 
   render() {

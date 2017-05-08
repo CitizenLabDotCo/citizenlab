@@ -6,14 +6,21 @@
 */
 
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
+import T, { fallbackTenantLocales, fallbackUserLocale } from 'containers/T';
+import { makeSelectSetting } from 'utils/tenant/selectors';
+import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
+import { findTranslatedText } from 'containers/T//utils';
+import { createStructuredSelector } from 'reselect';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import messages from './messages';
 
-class MultiSelect extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+class MultiSelectT extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
     this.state = {
@@ -21,6 +28,7 @@ class MultiSelect extends React.PureComponent { // eslint-disable-line react/pre
       error: false,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.valueRenderer = this.valueRenderer.bind(this);
     this.timer = null;
   }
 
@@ -43,6 +51,21 @@ class MultiSelect extends React.PureComponent { // eslint-disable-line react/pre
     }
   }
 
+  optionRendered(option) {
+    return (
+      <T value={JSON.parse(option.label)} />
+    );
+  }
+
+  valueRenderer(option) {
+    // we must do manual parsing to extract the original text from <T>
+    const { userLocale, tenantLocales } = this.props;
+
+    return (<span
+      dangerouslySetInnerHTML={{ __html: findTranslatedText(JSON.parse(option.label), userLocale || fallbackUserLocale, tenantLocales || fallbackTenantLocales) }}
+    />);
+  }
+
   /* eslint-disable */
   render() {
     const { options, maxSelectionLength, optionLabel, placeholder } = this.props;
@@ -55,6 +78,8 @@ class MultiSelect extends React.PureComponent { // eslint-disable-line react/pre
           value={selected}
           multi={true}
           options={options}
+          optionRenderer={this.optionRendered}
+          valueRenderer={this.valueRenderer}
           onChange={this.handleChange}
           placeholder={placeholder}
         />
@@ -71,12 +96,19 @@ class MultiSelect extends React.PureComponent { // eslint-disable-line react/pre
   /* eslint-enable */
 }
 
-MultiSelect.propTypes = {
+MultiSelectT.propTypes = {
   options: PropTypes.array.isRequired,
   maxSelectionLength: PropTypes.number.isRequired,
   optionLabel: PropTypes.string.isRequired,
   handleOptionsAdded: PropTypes.func.isRequired,
   placeholder: PropTypes.string.isRequired,
+  userLocale: PropTypes.string,
+  tenantLocales: ImmutablePropTypes.list,
 };
 
-export default MultiSelect;
+const mapStateToProps = createStructuredSelector({
+  userLocale: makeSelectLocale(),
+  tenantLocales: makeSelectSetting(['core', 'locales']),
+});
+
+export default connect(mapStateToProps)(MultiSelectT);

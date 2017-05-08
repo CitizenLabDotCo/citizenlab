@@ -1,3 +1,3 @@
-export default function (content, titleError) {
-  return content.trim() !== '<p></p>' && !titleError;
+export default function (content, titleError, topics, areas) {
+  return content.trim() !== '<p></p>' && !titleError && topics.length > 0 && areas.length > 0;
 }

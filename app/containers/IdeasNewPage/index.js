@@ -21,11 +21,11 @@ import {
   makeSelectSubmitError, makeSelectSubmitted, makeSelectSubmitting, makeSelectShortTitleError, makeSelectLongTitleError,
   makeSelectTitleLength, makeSelectAttachments, makeSelectStoreAttachmentError, makeSelectImages,
   makeSelectStoreImageError, makeSelectTitle, makeSelectTopics, makeSelectAreas, makeSelectLoadingTopics,
-  makeSelectLoadingAreas, makeSelectLoadTopicsError,
+  makeSelectLoadingAreas, makeSelectLoadTopicsError, makeSelectSelectedAreas, makeSelectSelectedTopics,
 } from './selectors';
 import {
   saveDraft, setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
-  publishIdeaRequest, loadTopicsRequest, loadAreasRequest,
+  publishIdeaRequest, loadTopicsRequest, loadAreasRequest, storeSelectedTopics, storeSelectedAreas,
 } from './actions';
 import IdeaEditorWrapper from './IdeaEditorWrapper';
 import AttachmentList from './AttachmentList';
@@ -56,11 +56,11 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
   }
 
   sendIdea(isDraft) {
-    const { content, shortTitleError, longTitleError, title, images, attachments, user, locale } = this.props;
-
-    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments, user && user.id, locale, isDraft);
+    const { content, shortTitleError, longTitleError, title, images, attachments, user, locale, selectedTopics, selectedAreas } = this.props;
+    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments, user && user.id, locale, isDraft, selectedTopics.toJS(), selectedAreas.toJS());
   }
 
+  // TODO: MOVE to mergeprops
   saveDraft() {
     this.sendIdea(true);
   }
@@ -174,6 +174,8 @@ IdeasNewPage.propTypes = {
   loadAreasError: PropTypes.string,
   handleTopicsSelect: PropTypes.func.isRequired,
   handleAreasSelect: PropTypes.func.isRequired,
+  selectedTopics: PropTypes.any.isRequired,
+  selectedAreas: PropTypes.any.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -198,9 +200,11 @@ const mapStateToProps = createStructuredSelector({
   topics: makeSelectTopics(),
   loadingTopics: makeSelectLoadingTopics(),
   loadTopicsError: makeSelectLoadTopicsError(),
+  selectedTopics: makeSelectSelectedTopics(),
   areas: makeSelectAreas(),
   loadingAreas: makeSelectLoadingAreas(),
   loadAreasError: makeSelectLoadTopicsError(),
+  selectedAreas: makeSelectSelectedAreas(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -211,12 +215,10 @@ export function mapDispatchToProps(dispatch) {
 
       dispatch(saveDraft(htmlContent));
     },
-    publishIdeaClick(content, titleError, title, images, attachments, userId, locale, isDraft) {
+    publishIdeaClick(content, titleError, title, images, attachments, userId, locale, isDraft, topics, areas) {
       const contentNotNull = content || '<p></p>';
 
-      // TODO: handle ideas and areas incl. validation
-
-      if (canPublish(contentNotNull, titleError)) {
+      if (canPublish(contentNotNull, titleError, topics, areas)) {
         // inject strings for current locale as a mutiloc object
         const htmlContents = {};
         const titles = {};
@@ -250,12 +252,12 @@ export function mapDispatchToProps(dispatch) {
       dispatch(loadAreasRequest());
     },
     handleTopicsSelect(topics) {
-      console.log(topics);
-      // TODO (logic similar to attachment, images and title) to have TOPICS available when publishing
+      const topicsIds = topics.map((topic) => topic.value);
+      dispatch(storeSelectedTopics(topicsIds));
     },
     handleAreasSelect(areas) {
-      console.log(areas);
-      // TODO (logic similar to attachment, images and title) to have AREAS available when publishing
+      const areasIds = areas.map((area) => area.value);
+      dispatch(storeSelectedAreas(areasIds));
     },
   };
 }

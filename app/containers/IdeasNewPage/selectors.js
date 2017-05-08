@@ -69,14 +69,14 @@ const makeSelectTopics = () => createSelector(
   (submitIdeaState, resources) => {
     const ids = submitIdeaState.getIn(['topics', 'ids']);
     const topics = resources.get('topics');
-    if (topics) console.log(topics.toJS());
-    console.log(`
-      select topics for ${ids}
-    `, topics);
-    return (ids
-      ? ids.map((id) => topics[id])
-      : []);
+    return ids.map((id) => topics.get(id));
   }
+);
+
+const makeSelectSelectedTopics = () => createSelector(
+  selectSubmitIdea,
+  // we need only the ids
+  (submitIdeaState) => submitIdeaState.getIn(['topics', 'selected'])
 );
 
 const makeSelectAreas = () => createSelector(
@@ -85,14 +85,19 @@ const makeSelectAreas = () => createSelector(
   (submitIdeaState, resources) => {
     const ids = submitIdeaState.getIn(['areas', 'ids']);
     const areas = resources.get('areas');
-    console.log('areas', areas);
-    return ids.map((id) => areas[id]);
+    return ids.map((id) => areas.get(id));
   }
+);
+
+const makeSelectSelectedAreas = () => createSelector(
+  selectSubmitIdea,
+  // we need only the ids
+  (submitIdeaState) => submitIdeaState.getIn(['areas', 'selected'])
 );
 
 const makeSelectLoadTopicsError = () => createSelector(
   selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['topics', 'error'])
+  (submitIdeaState) => submitIdeaState.getIn(['topics', 'loadError'])
 );
 
 const makeSelectLoadingTopics = () => createSelector(
@@ -107,7 +112,7 @@ const makeSelectLoadingAreas = () => createSelector(
 
 const makeSelectLoadAreasError = () => createSelector(
   selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['topics', 'error'])
+  (submitIdeaState) => submitIdeaState.getIn(['topics', 'loadError'])
 );
 
 const makeSelectStoreAttachmentError = () => createSelector(
@@ -153,4 +158,6 @@ export {
   makeSelectLoadAreasError,
   makeSelectLoadingTopics,
   makeSelectLoadingAreas,
+  makeSelectSelectedTopics,
+  makeSelectSelectedAreas,
 };

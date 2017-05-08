@@ -94,4 +94,20 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.areasPlaceholder',
     defaultMessage: 'Select areas',
   },
+  loadingTopics: {
+    id: 'app.containers.IdeasNewPage.loadingTopics',
+    defaultMessage: 'Loading topics...',
+  },
+  loadTopicsError: {
+    id: 'app.containers.IdeasNewPage.loadTopicsError',
+    defaultMessage: 'Cannot load topic list',
+  },
+  loadingAreas: {
+    id: 'app.containers.IdeasNewPage.loadingAreas',
+    defaultMessage: 'Loading areas...',
+  },
+  loadAreasError: {
+    id: 'app.containers.IdeasNewPage.loadAreasError',
+    defaultMessage: 'Cannot load area list',
+  },
 });
