@@ -1,9 +1,10 @@
 /**
  * Direct selector to the ideasShow state domain
  */
-import { selectResourcesDomain } from 'utils/resources/selectors';
 import { createSelector } from 'reselect';
 
+import { selectResourcesDomain } from 'utils/resources/selectors';
+import { selectAuthDomain } from 'utils/auth/selectors';
 
 const selectIdeasShow = (...types) => (state) => state.getIn(['ideasShow', ...types]);
 export default selectIdeasShow;
@@ -36,6 +37,26 @@ const activeTree = (ids, comments) => {
 
   return roots;
 };
+
+
+export const makeSelectOwnVotesTot = (ideaId) => createSelector(
+  selectAuthDomain('id'),
+  selectResourcesDomain('votes'),
+  (currentUserId, votes) => {
+    //console.log(currentUserId, votes).toJS()
+    if (!votes) return 0;
+    const ownVotes = votes.filter((vote) => {
+      const ownVote = vote.getIn(['relationships', 'user', 'data', 'id']) === currentUserId;
+      const thisIdeaVote = vote.getIn(['relationships', 'votable', 'data', 'id']) === ideaId;
+      return ownVote && thisIdeaVote;
+    });
+    const totVotes = ownVotes.reduce((tot, vote) => {
+      const mode = vote.getIn(['attributes', 'mode']) === 'up' ? 1 : -1;
+      return tot + mode;
+    }, 0);
+    return totVotes;
+  },
+);
 
 
 export { makeSelectComments };

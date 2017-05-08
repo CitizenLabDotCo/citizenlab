@@ -29,7 +29,7 @@ class Show extends React.PureComponent {
 
   render() {
     const {
-      idea, images, authorId, title_multiloc,
+      id, idea, images, authorId, title_multiloc,
       body_multiloc, created_at, votes } = this.props;
     if (!title_multiloc) return null;
     return(
@@ -38,7 +38,7 @@ class Show extends React.PureComponent {
         <h2>
           <T value={title_multiloc} />
         </h2>
-        <Votes votes={votes} />
+        <Votes ideaId={id} />
         <Comment.Group style={{ maxWidth: 'none' }}>
           <Comment>
             <Comment.Content>
@@ -74,6 +74,7 @@ const mapStateToProps = createStructuredSelector({
 const mergeProps = ({ idea }, dispatchProps) => {
   if (!idea) return {};
   const attributes = idea.get('attributes').toObject();
+  const id = idea.get('id')
   const {
     images,
     body_multiloc,
@@ -89,6 +90,7 @@ const mergeProps = ({ idea }, dispatchProps) => {
   const areas = relationships.getIn(['areas','data']).map(getIds)
   const topics = relationships.getIn(['topics','data']).map(getIds)
   return {
+    id,
     images: images.toJS(),
     body_multiloc,
     created_at,

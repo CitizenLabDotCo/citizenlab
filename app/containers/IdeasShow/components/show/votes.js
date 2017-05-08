@@ -1,26 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
-import { Button, Icon } from 'semantic-ui-react'
-
+import { Button, Icon } from 'semantic-ui-react';
 import { preprocess } from 'utils';
 
 // import IdeaContent from '../IdeaContent';
-import { selectResourcesDomain } from 'utils/resources/selectors';
+import { selectAuthDomain } from 'utils/auth/selectors';
 
+import { makeSelectOwnVotesTot } from '../../selectors';
+import { voteIdea } from '../../actions';
 
 /* eslint-disable */
-const Votes = ({ votes, upVote, downVote }) => (
+const Votes =  ({ votes, voteUp, voteDown, disableUp, disableDown }) => (
   <Button.Group>
-    <Button basic color='red' onClick={downVote}>
+    <Button basic color='red' onClick={voteDown} disabled={disableDown}>
       <Icon name='thumbs outline down' />
     </Button>
     <Button.Or text={votes}/>
-    <Button basic color='green' onClick={upVote}>
+    <Button basic color='green' onClick={voteUp} disabled={disableUp}>
       <Icon name='thumbs outline up' />
     </Button>
   </Button.Group>
-);
+)
 
 Votes.propTypes = {
   count: PropTypes.number,
@@ -31,11 +32,29 @@ Votes.propTypes = {
 
 
 const mapStateToProps = createStructuredSelector({
-  currentTenant: makeSelectCurrentTenant(),
-  currentUser: makeSelectCurrentUser(),
+  auth: selectAuthDomain('id'),
+  totOwnVotes: (state, { ideaId }) => makeSelectOwnVotesTot(ideaId)(state),
 });
 
-  currentUser: PropTypes.object,
+
+const mergeProps = (stateP, dispatchP, ownP) => {
+  const {auth, totOwnVotes} = stateP;
+  const { ideaId } = ownP;
+  const { voteIdea } = dispatchP;
+  const voteUp = () => voteIdea(ideaId, 'up')
+  const voteDown = () => voteIdea(ideaId, 'down')
+  const disableUp = !auth || totOwnVotes
+  const disableDown = !auth || totOwnVotes
+  console.log(totOwnVotes)
+  return {
+    voteUp,
+    voteDown,
+    disableUp,
+    disableDown,
+    votes: totOwnVotes
+  }
+
+}
 
 
-export default Votes;
+export default preprocess(mapStateToProps, { voteIdea }, mergeProps)(Votes);
