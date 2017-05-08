@@ -16,7 +16,7 @@ function* loadIdea(action) {
     yield put(mergeJsonApiResources(response));
     yield put(loadIdeaSuccess(response));
   } catch (e) {
-    yield put(ideaLoadError(JSON.stringify(e.errors)));
+    yield put(ideaLoadError(JSON.stringify(e)));
   }
 }
 
@@ -50,7 +50,7 @@ function* loadIdeaComments(action) {
     yield put(mergeJsonApiResources(response));
     yield put(commentsLoaded(response));
   } catch (e) {
-    yield put(commentsLoadError(JSON.stringify(e.errors)));
+    yield put(commentsLoadError(JSON.stringify(e.errors || e.json)));
   }
 }
 

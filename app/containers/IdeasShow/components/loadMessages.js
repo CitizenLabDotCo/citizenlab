@@ -4,14 +4,22 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import messages from '../messages';
+import { Message, Icon } from 'semantic-ui-react'
 
+import messages from '../messages';
 import selectIdeasShowPageDomain from '../selectors';
 
 
 const loadErrorMessage = ({ loadIdeaError }) => {
   if (!loadIdeaError) return null;
-  return <FormattedMessage {...messages.loadIdeaError} />;
+  return (
+    <Message icon negative>
+      <Icon name={'pointing right'} />
+      <Message.Header>
+        <FormattedMessage {...messages.ideaNotFound} />
+      </Message.Header>
+    </Message>
+  );
 };
 
 loadErrorMessage.propTypes = {
@@ -27,7 +35,18 @@ export const LoadErrorMessage = connect(loadErrorMessageMDP)(loadErrorMessage);
 
 const loadingIdeaMessage = ({ loadingIdea }) => {
   if (!loadingIdea) return null;
-  return <FormattedMessage {...messages.loadingIdea} />;
+  return (
+    <Message icon>
+      <Icon name='circle notched' loading />
+      <Message.Content>
+        <Message.Header>Just one second
+          <div>
+            <FormattedMessage {...messages.loadingIdea} />
+          </div>
+        </Message.Header>
+      </Message.Content>
+    </Message>
+  )
 };
 
 loadingIdeaMessage.propTypes = {

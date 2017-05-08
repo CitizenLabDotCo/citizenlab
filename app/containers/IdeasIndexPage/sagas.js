@@ -68,4 +68,4 @@ export function* watchLoadTopics() {
 
 export function* watchLoadAreas() {
   yield takeLatest(LOAD_AREAS_REQUEST, getAreas);
-}
+};

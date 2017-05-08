@@ -24,7 +24,7 @@ export default defineMessages({
   },
   ideaNotFound: {
     id: 'app.containers.IdeasShow.ideaNotFound',
-    defaultMessage: 'Idea not found',
+    defaultMessage: 'Ups... it seems that this idea has be removed or forgotten!',
   },
   emptyCommentError: {
     id: 'app.containers.IdeasShow.emptyCommentError',

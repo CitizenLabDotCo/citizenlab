@@ -1,202 +1,66 @@
 /**
  * Direct selector to the ideasShow state domain
  */
-import { createSelector } from 'reselect';
-import { OrderedMap } from 'immutable';
-
-const selectIdeasShowPageDomain = (...types) => (state) => state.getIn(['ideasShow', ...types]);
-
-
 import { selectResourcesDomain } from 'utils/resources/selectors';
+import { createSelector } from 'reselect';
 
-const makeSelectIdeasShow = (...types) => (state) => {
-  let data = state.get('ideasShow');
-  types.map((type) => (data = data.get(type)));
-  return data;
-};
 
-const makeSelectIdea = () => createSelector(
-  makeSelectIdeasShow(),
-  selectResourcesDomain(),
-  (pageState, resources) => {
-    const id = pageState.get('idea', null);
-    return id && resources.getIn(['ideas', id]).toJS();
-  }
+const selectIdeasShow = (...types) => (state) => state.getIn(['ideasShow', ...types]);
+export default selectIdeasShow;
+
+export const selectIdea = createSelector(
+  selectIdeasShow('idea'),
+  selectResourcesDomain('ideas'),
+  (id, ideas) => id && ideas.get(id),
 );
 
-const makeSelectComments = () => createSelector(
-  makeSelectIdeasShow('comments'),
+const makeSelectComments = createSelector(
+  selectIdeasShow('comments'),
   selectResourcesDomain('comments'),
-  (ids, comments) => {
-    if (!comments || comments.isEmpty() || !ids || ids.isEmpty()) return null;
-    return activeTree(ids, comments);
-  }
+  (ids, comments) => (ids && activeTree(ids, comments)) || [],
 );
 
 const activeTree = (ids, comments) => {
-  const parentIdLoc = ['relationships', 'parent', 'data', 'id'];
-  const childAddLoc = ['relationships', 'children', 'data'];
-  let childComments;
-  let tempParentId;
+  const map = {};
+  const roots = [];
 
-  let tree = OrderedMap();
+  ids.forEach((id) => {
+    //if (!comments.get(id)) debugger
+    const parentId = comments.get(id).getIn(['relationships', 'parent', 'data', 'id']);
+    const node = { id, children: [] };
+    map[id] = node;
 
-  ids.reduceRight((tot, id) => {
-    let output;
-    let currentComment = comments.get(id);
-    const parentId = currentComment.getIn(parentIdLoc);
+    if (!parentId) return roots.push(node);
+    return map[parentId].children.push(node);
+  });
 
-    if (parentId && !tempParentId) {
-      tempParentId = parentId;
-      return tot.set(id, currentComment);
-    }
-    if (parentId) {
-      tempParentId = parentId;
-    }
-
-    if (parentId && !tempParentId) {
-      return tot.set(id, currentComment);
-    }
-
-    if (parentId && tempParentId === parentId) {
-      return tot.set(id, currentComment);
-    }
-
-    if (parentId && tempParentId !== parentId && id === tempParentId) {
-      const newTot = OrderedMap();
-
-      currentComment = currentComment.setIn(childAddLoc, childComments);
-      return newTot.set(id, currentComment);
-    }
-
-    if (!parentId) {
-      tempParentId = null;
-      currentComment = currentComment.setIn(childAddLoc, tot);
-      tree = tree.set(id, currentComment);
-      return OrderedMap();
-    }
-    return output || tot;
-  }, OrderedMap());
-  return tree;
+  return roots;
 };
 
-// const tree = [];
 
-// data.reduceRight((newTree, comment, i) => {
-//   console.log(comment.relationships.parent.data)
-//   if (comment.relationships.parent.data) {
-//     comment.relationships.parent = data.parent;
-//     data.children = data[i - 1];
-//     return tree;
-//   }
-//   return tree.push(comment);
-// }, tree);
+export { makeSelectComments };
 
-/**
- * Other selectors
- */
-// const makeSelectLoadingVotes = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('loadingVotes')
-// );
+    // if (parentId && !tempParentId) {
+    //   return tot.unshift(id);
+    // }
 
-// const makeSelectSubmittingVote = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('submittingVote')
-// );
+    // if (parentId && tempParentId === parentId) {
+    //   return tot.unshift(id);
+    // }
 
+    // if (parentId && tempParentId !== parentId && id === tempParentId) {
+    //   const newTot = List();
+    //   return newTot.unshift([id, tot]);
+    // }
 
-// TOBE IMPLEMENTED!!!
+    // if (parentId) {
+    //   tempParentId = parentId;
+    // }
 
-// const makeSelectUpVotes = () => createSelector(
-//   makeSelectIdeasShow(),
-//   selectResourcesDomain(),
-//   (pageState, resources) => {
-//     const ids = pageState.get('votes', fromJS([]));
-//     const results = ids.map((id) => denormalize(resources, 'votes', id)).toJS();
-//     return results.filter((result) => result.attributes.mode === 'up');
-//   }
-// );
+    // if (!parentId) {
+    //   tempParentId = null;
+    //   finalList.unshift([id, tot]);
+    //   return List();
+    // }
 
-// const makeSelectDownVotes = () => createSelector(
-//   makeSelectIdeasShow(),
-//   selectResourcesDomain(),
-//   (pageState, resources) => {
-//     const ids = pageState.get('votes', fromJS([]));
-//     const results = ids.map((id) => denormalize(resources, 'votes', id)).toJS();
-//     return results.filter((result) => result.attributes.mode === 'down');
-//   }
-// );
-
-// const makeSelectIdeaVotesLoadError = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('ideaVotesLoadError')
-// );
-
-// const makeSelectIdeaVoteSubmitError = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('ideaVoteSubmitError')
-// );
-
-// const makeSelectLoadingIdea = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('loadingIdea')
-// );
-
-// const makeSelectLoadIdeaError = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('loadIdeaError')
-// );
-
-// const makeSelectLoadingComments = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('loadingComments')
-// );
-
-// const makeSelectLoadCommentsError = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('storeCommentError')
-// );
-
-// const makeSelectStoreCommentError = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('storeCommentError')
-// );
-
-// const makeSelectSubmittingComment = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('submittingComment')
-// );
-
-// const makeSelectCommentContent = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('commentContent')
-// );
-
-// const makeSelectResetEditorContent = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('resetEditorContent')
-// );
-
-// const makeSelectNextCommentPageNumber = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('nextCommentPageNumber')
-// );
-
-// const makeSelectNextCommentPageItemCount = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('nextCommentPageItemCount')
-// );
-
-// const makeSelectActiveParentId = () => createSelector(
-//   makeSelectIdeasShow(),
-//   (pageState) => pageState.get('activeParentId')
-// );
-
-export default makeSelectIdeasShow;
-export {
-  makeSelectIdea,
-  // makeSelectUpVotes,
-  // makeSelectDownVotes,
-  makeSelectComments,
-};
+    // return output || tot;

@@ -25,18 +25,18 @@ class OverlayChildren extends React.Component { // eslint-disable-line react/pre
 
   constructor(props) {
     super();
-    const { isMainView } = props;
-    this.pageView = isMainView(props) ? this.mainView : this.childView;
+    this.isMainView = props.isMainView;
+    this.component = props.component;
+    this.pageView = this.isMainView(props) ? this.mainView : this.childView;
   }
 
   mainView = () => {
-    const { handleClose, isMainView, component } = this.props;
-    const inMainView = isMainView(this.props);
-    const Component = component;
+    const inMainView = this.isMainView(this.props);
+    const { handleClose } = this.props;
 
     return (
       <div>
-        <Component {...this.props} />
+        {React.createElement(this.component, this.props)}
         <WrapChild handleClose={handleClose} open={!inMainView}>
           {this.props.children}
         </WrapChild>
@@ -44,7 +44,15 @@ class OverlayChildren extends React.Component { // eslint-disable-line react/pre
     );
   }
 
-  childView = () => this.props.children;
+  childView = () => {
+    const inMainView = this.isMainView(this.props);
+
+    if (inMainView) {
+      this.pageView = this.mainView;
+      return this.pageView();
+    }
+    return this.props.children;
+  };
 
   render() {
     return (
