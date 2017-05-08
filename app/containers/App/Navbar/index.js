@@ -28,6 +28,10 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
     );
   }
 
+  signOutClick = () => {
+    // todo
+  }
+
   userMenu(currentUser) {
     return (
       <Dropdown item trigger={this.trigger(currentUser)}>
@@ -36,7 +40,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
             <Link to="/profile/edit"><FormattedMessage {...messages.editProfile} /></Link>
           </Dropdown.Item>
           <Dropdown.Item>
-            <Link>Sign out</Link>
+            <Link onClick={this.signOutClick}>Sign out</Link>
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -70,5 +74,6 @@ Navbar.propTypes = {
   currentUser: PropTypes.object,
   currentTenant: PropTypes.object.isRequired,
 };
+
 
 export default injectIntl(Navbar);

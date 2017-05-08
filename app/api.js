@@ -27,6 +27,20 @@ export function socialLogin(network, accessToken) {
   });
 }
 
+export function socialRegister(network, accessToken, locale) {
+  const data = {
+    auth: {
+      network,
+      access_token: accessToken,
+      locale,
+    },
+  };
+
+  return request(`${API_PATH}/social_registration`, data, {
+    method: 'POST',
+  });
+}
+
 export function createUser(values) {
   return request(`${API_PATH}/users`, { user: values }, {
     method: 'POST',

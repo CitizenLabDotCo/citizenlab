@@ -9,37 +9,32 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Helmet from 'react-helmet';
-// import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 // import { actions as rrfActions } from 'react-redux-form';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { Saga } from 'react-redux-saga';
 
-import { createUser } from './actions';
+import { createEmailUserRequest, createSocialUserRequest } from './actions';
 import Form from './Form';
 import makeSelectUsersNewPage from './selectors';
-import { watchCreateUser, watchUserSignIn } from './sagas';
+import { NETWORK_FACEBOOK } from './constants';
+import { watchEmail, watchSocial } from './sagas';
+import messages from './messages';
 
 
 export class UsersNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  constructor() {
-    super();
-    this.handleSubmit = this.handleSubmit.bind(this);
+
+  onFacebookSubmit = () => {
+    this.props.createSocialUserRequest(NETWORK_FACEBOOK, this.props.userLocale);
   }
 
-  handleSubmit(values) {
-    const valuesWithLocale = { ...values, locale: this.props.userLocale };
-    this.props.createUser(valuesWithLocale);
-  }
-
-  createUser = (locale) => {
-    const self = this;
-    return (data) => self.props.createUser(Object.assign({}, data, { locale }));
+  createUser = (data) => {
+    this.props.createEmailUserRequest(Object.assign({}, data, { locale: this.props.userLocale }));
   }
 
   render() {
     const { error, pending } = this.props.storeData;
-    const { locale } = this.props.userLocale;
     const ErroMessages = (error && error.json) || {};
     return (
       <div>
@@ -49,15 +44,22 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
             { name: 'description', content: 'Description of UsersNewPage' },
           ]}
         />
-        <Saga saga={watchCreateUser} />
-        <Saga saga={watchUserSignIn} />
+        <Saga saga={watchEmail} />
+        <Saga saga={watchSocial} />
 
         <Form
-          createUser={this.createUser(locale)}
+          createUser={this.createUser}
           getDispatch={(localFormDispatch) => (this.localFormDispatch = localFormDispatch)}
           errors={ErroMessages}
           pending={pending}
-        />
+        >
+        </Form>
+        <div style={{ marginTop: '1em', width: '100%', display: 'block' }}>
+          <button className="ui facebook button" onClick={this.onFacebookSubmit} style={{ width: '100%' }}>
+            <i className="facebook icon"></i>
+            <FormattedMessage {...messages.buttonRegisterFacebook} />
+          </button>
+        </div>
       </div>
     );
   }
@@ -65,8 +67,9 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
 
 UsersNewPage.propTypes = {
   storeData: PropTypes.object,
-  userLocale: PropTypes.string,
-  createUser: PropTypes.func.isRequired,
+  userLocale: PropTypes.string.isRequired,
+  createEmailUserRequest: PropTypes.func.isRequired,
+  createSocialUserRequest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -74,6 +77,7 @@ const mapStateToProps = createStructuredSelector({
   userLocale: makeSelectLocale(),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ createUser }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ createEmailUserRequest, createSocialUserRequest }, dispatch);
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersNewPage);
