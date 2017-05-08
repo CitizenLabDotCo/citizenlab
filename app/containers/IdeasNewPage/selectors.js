@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { selectResourcesDomain } from 'utils/resources/selectors';
 
 const selectSubmitIdea = (state) => state.get('submitIdea');
 
@@ -64,12 +65,49 @@ const makeSelectAttachments = () => createSelector(
 
 const makeSelectTopics = () => createSelector(
   selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'topics'])
+  selectResourcesDomain(),
+  (submitIdeaState, resources) => {
+    const ids = submitIdeaState.getIn(['topics', 'ids']);
+    const topics = resources.get('topics');
+    if (topics) console.log(topics.toJS());
+    console.log(`
+      select topics for ${ids}
+    `, topics);
+    return (ids
+      ? ids.map((id) => topics[id])
+      : []);
+  }
 );
 
 const makeSelectAreas = () => createSelector(
   selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'areas'])
+  selectResourcesDomain(),
+  (submitIdeaState, resources) => {
+    const ids = submitIdeaState.getIn(['areas', 'ids']);
+    const areas = resources.get('areas');
+    console.log('areas', areas);
+    return ids.map((id) => areas[id]);
+  }
+);
+
+const makeSelectLoadTopicsError = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['topics', 'error'])
+);
+
+const makeSelectLoadingTopics = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['topics', 'loading'])
+);
+
+const makeSelectLoadingAreas = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['areas', 'loading'])
+);
+
+const makeSelectLoadAreasError = () => createSelector(
+  selectSubmitIdea,
+  (submitIdeaState) => submitIdeaState.getIn(['topics', 'error'])
 );
 
 const makeSelectStoreAttachmentError = () => createSelector(
@@ -110,5 +148,9 @@ export {
   makeSelectStoreImageError,
   makeSelectTitle,
   makeSelectTopics,
+  makeSelectLoadTopicsError,
   makeSelectAreas,
+  makeSelectLoadAreasError,
+  makeSelectLoadingTopics,
+  makeSelectLoadingAreas,
 };

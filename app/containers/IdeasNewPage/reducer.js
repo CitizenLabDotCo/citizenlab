@@ -7,7 +7,8 @@
 import { fromJS } from 'immutable';
 import {
   SAVE_DRAFT, PUBLISH_IDEA_REQUEST, PUBLISH_IDEA_ERROR, PUBLISH_IDEA_SUCCESS, SET_TITLE, STORE_ATTACHMENT,
-  STORE_IMAGE, STORE_IMAGE_ERROR, STORE_ATTACHMENT_ERROR,
+  STORE_IMAGE, STORE_IMAGE_ERROR, STORE_ATTACHMENT_ERROR, LOAD_TOPICS_REQUEST, LOAD_AREAS_REQUEST, LOAD_TOPICS_SUCCESS,
+  LOAD_TOPICS_ERROR, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR,
 } from './constants';
 
 export const ideasNewPageInitialState = fromJS({
@@ -31,6 +32,16 @@ export const ideasNewPageInitialState = fromJS({
     images: [],
     loadImagesError: false,
     storeImageError: false,
+  },
+  topics: {
+    ids: [],
+    loadError: null,
+    loading: false,
+  },
+  areas: {
+    ids: [],
+    loadError: null,
+    loading: false,
   },
 });
 
@@ -78,6 +89,38 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
     case STORE_IMAGE_ERROR:
       return state
         .setIn(['draft', 'storeImageError'], true);
+    case LOAD_TOPICS_REQUEST:
+      return state
+        .setIn(['topics', 'error'], null)
+        .setIn(['topics', 'loading'], true);
+    case LOAD_TOPICS_SUCCESS: {
+      const ids = action.payload.data.map((topic) => topic.id);
+
+      return state
+        .setIn(['topics', 'ids'], ids)
+        .setIn(['topics', 'error'], null)
+        .setIn(['topics', 'loading'], false);
+    }
+    case LOAD_TOPICS_ERROR:
+      return state
+        .setIn(['topics', 'error'], action.error)
+        .setIn(['topics', 'loading'], false);
+    case LOAD_AREAS_REQUEST:
+      return state
+        .setIn(['areas', 'error'], null)
+        .setIn(['areas', 'loading'], true);
+    case LOAD_AREAS_SUCCESS: {
+      const ids = action.payload.data.map((area) => area.id);
+
+      return state
+        .setIn(['areas', 'ids'], ids)
+        .setIn(['areas', 'error'], null)
+        .setIn(['areas', 'loading'], false);
+    }
+    case LOAD_AREAS_ERROR:
+      return state
+        .setIn(['areas', 'error'], action.error)
+        .setIn(['areas', 'loading'], false);
     default:
       return state;
   }

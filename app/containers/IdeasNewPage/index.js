@@ -20,11 +20,12 @@ import {
   makeSelectStored, makeSelectContent, makeSelectLoadError, makeSelectLoading, makeSelectStoreError,
   makeSelectSubmitError, makeSelectSubmitted, makeSelectSubmitting, makeSelectShortTitleError, makeSelectLongTitleError,
   makeSelectTitleLength, makeSelectAttachments, makeSelectStoreAttachmentError, makeSelectImages,
-  makeSelectStoreImageError, makeSelectTitle, makeSelectTopics, makeSelectAreas,
+  makeSelectStoreImageError, makeSelectTitle, makeSelectTopics, makeSelectAreas, makeSelectLoadingTopics,
+  makeSelectLoadingAreas, makeSelectLoadTopicsError,
 } from './selectors';
 import {
   saveDraft, setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
-  publishIdeaRequest,
+  publishIdeaRequest, loadTopicsRequest, loadAreasRequest,
 } from './actions';
 import IdeaEditorWrapper from './IdeaEditorWrapper';
 import AttachmentList from './AttachmentList';
@@ -32,7 +33,7 @@ import ImageList from './ImageList';
 import canPublish from './canPublish';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
-import { watchStoreIdea } from './sagas';
+import { watchGetAreas, watchGetTopics, watchStoreIdea } from './sagas';
 import messages from './messages';
 
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -44,6 +45,14 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
     this.storeIdea = this.storeIdea.bind(this);
     this.storeTopics = this.storeTopics.bind(this);
     this.storeAreas = this.storeAreas.bind(this);
+  }
+
+  componentDidMount() {
+    const { loadTopics, loadAreas } = this.props;
+
+    // load topics and areas
+    loadTopics();
+    loadAreas();
   }
 
   sendIdea(isDraft) {
@@ -86,6 +95,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
 
     // eslint-disable-next-line no-shadow
     const { className, attachments, storeAttachment, storeAttachmentError, images, storeImage, storeImageError } = this.props;
+    const { topics, areas, loadingTopics, loadingAreas, loadTopicsError, loadAreasError } = this.props;
     const { formatMessage } = this.props.intl;
 
     return (
@@ -97,6 +107,9 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
           ]}
         />
         <Saga saga={watchStoreIdea} />
+        <Saga saga={watchGetTopics} />
+        <Saga saga={watchGetAreas} />
+
         <Breadcrumbs />
         <IdeaEditorWrapper
           saveDraft={this.saveDraft}
@@ -107,6 +120,12 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
           areasPlaceholder={formatMessage({ ...messages.areasPlaceholder })}
           storeTopics={this.storeTopics}
           storeAreas={this.storeAreas}
+          topics={topics}
+          loadTopicsError={loadTopicsError}
+          loadingTopics={loadingTopics}
+          areas={areas}
+          loadAreasError={loadAreasError}
+          loadingAreas={loadingAreas}
           {...this.props}
         />
         <StyledLabel>Add image(s)</StyledLabel>
@@ -147,6 +166,12 @@ IdeasNewPage.propTypes = {
   topics: PropTypes.any.isRequired,
   areas: PropTypes.any.isRequired,
   intl: PropTypes.object,
+  loadTopics: PropTypes.func.isRequired,
+  loadingTopics: PropTypes.bool.isRequired,
+  loadTopicsError: PropTypes.string,
+  loadAreas: PropTypes.func.isRequired,
+  loadingAreas: PropTypes.bool.isRequired,
+  loadAreasError: PropTypes.string,
   handleTopicsSelect: PropTypes.func.isRequired,
   handleAreasSelect: PropTypes.func.isRequired,
 };
@@ -171,7 +196,11 @@ const mapStateToProps = createStructuredSelector({
   user: makeSelectCurrentUser(),
   title: makeSelectTitle(),
   topics: makeSelectTopics(),
+  loadingTopics: makeSelectLoadingTopics(),
+  loadTopicsError: makeSelectLoadTopicsError(),
   areas: makeSelectAreas(),
+  loadingAreas: makeSelectLoadingAreas(),
+  loadAreasError: makeSelectLoadTopicsError(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -213,6 +242,12 @@ export function mapDispatchToProps(dispatch) {
       } else {
         dispatch(storeImageError());
       }
+    },
+    loadTopics() {
+      dispatch(loadTopicsRequest());
+    },
+    loadAreas() {
+      dispatch(loadAreasRequest());
     },
     handleTopicsSelect(topics) {
       console.log(topics);

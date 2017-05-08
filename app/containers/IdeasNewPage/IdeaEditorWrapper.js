@@ -37,27 +37,33 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
     const { className, loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
     const { shortTitleError, longTitleError, titleLength } = this.props;
     const { storeDraftCopy, content, saveDraft, storeIdea } = this.props;
-    const { topicsLabel, areasLabel, topicsPlaceholder, areasPlaceholder } = this.props;
+    const { topics, areas, topicsLabel, areasLabel, topicsPlaceholder, areasPlaceholder, loadTopicsError, loadAreasError, loadingTopics, loadingAreas } = this.props;
     // TODO: load this via [already defined] selector (after refactoring IdeasNewPage structure --> CL2-167)
-    const topics = [
-      { value: 'topic1', label: 'Topic 1' },
-      { value: 'topic2', label: 'Topic 2' },
-      { value: 'topic3', label: 'Topic 3' },
-      { value: 'topic4', label: 'Topic 4' },
-    ];
-
-    const areas = [
-      { value: 'area1', label: 'Area 1' },
-      { value: 'area2', label: 'Area 2' },
-      { value: 'area3', label: 'Area 3' },
-      { value: 'area4', label: 'Area 4' },
-    ];
+    // const topics = [
+    //   { value: 'topic1', label: 'Topic 1' },
+    //   { value: 'topic2', label: 'Topic 2' },
+    //   { value: 'topic3', label: 'Topic 3' },
+    //   { value: 'topic4', label: 'Topic 4' },
+    // ];
+    //
+    // const areas = [
+    //   { value: 'area1', label: 'Area 1' },
+    //   { value: 'area2', label: 'Area 2' },
+    //   { value: 'area3', label: 'Area 3' },
+    //   { value: 'area4', label: 'Area 4' },
+    // ];
 
     const FormattedMessageSegment = (props) => (
       <Segment>
         <FormattedMessage {...props.message} />
       </Segment>
     );
+
+    // refactor topics and areas to match format expected by Multiselect
+    console.log('topics', topics);
+    console.log('areas', areas);
+    const topicsSelect = [];
+    const areasSelect = [];
 
     return (
       <div>
@@ -96,8 +102,9 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
           <Grid columns={2}>
             <Grid.Row>
               <Grid.Column width={8} textAlign="center">
+                {/* TODO: show error [non-intl] & loading [intl] here */}
                 {topics && <MultiSelect
-                  options={topics}
+                  options={topicsSelect}
                   maxSelectionLength={3}
                   placeholder={topicsPlaceholder}
                   optionLabel={topicsLabel}
@@ -105,8 +112,9 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
                 />}
               </Grid.Column>
               <Grid.Column width={8} textAlign="center">
+                {/* TODO: show error [non-intl] & loading [intl] here */}
                 {areas && <MultiSelect
-                  options={areas}
+                  options={areasSelect}
                   maxSelectionLength={3}
                   placeholder={areasPlaceholder}
                   optionLabel={areasLabel}
@@ -145,7 +153,11 @@ IdeaEditorWrapper.propTypes = {
   saveDraft: PropTypes.func.isRequired,
   storeIdea: PropTypes.func.isRequired,
   topics: PropTypes.any.isRequired,
+  loadingTopics: PropTypes.bool.isRequired,
+  loadTopicsError: PropTypes.string,
   areas: PropTypes.any.isRequired,
+  loadingAreas: PropTypes.bool.isRequired,
+  loadAreasError: PropTypes.string,
   topicsLabel: PropTypes.string.isRequired,
   areasLabel: PropTypes.string.isRequired,
   storeTopics: PropTypes.func.isRequired,
