@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Button, Header, Label, Form, Message, Loader } from 'semantic-ui-react';
+import { FormattedMessage } from 'react-intl';
 import { injectTFunc } from 'containers/T/utils';
 
 import messages from './messages';
@@ -37,7 +38,7 @@ class RegistrationForm extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.createUser(this.state);
+    this.props.registerUser(this.state);
   }
 
   render() {
@@ -50,19 +51,19 @@ class RegistrationForm extends React.Component {
         <Grid centered verticalAlign={'middle'}>
           <Grid.Column>
             <Header as={'h2'}>
-              {tFunc(messages.header)}
+              {<FormattedMessage {...messages.header} />}
             </Header>
             <Form onSubmit={this.handleSubmit} error={hasError}>
               <Form.Field>
                 <Form.Input
                   fluid icon={'user'}
-                  name={'last_name'}
+                  name={'first_name'}
                   iconPosition={'left'}
                   onChange={this.handleChange}
                   value={this.state.first_name}
-                  placeholder={tFunc(messages.placeholderFirstName)}
+                  // placeholder={<FormattedMessage {...messages.placeholderFirstName} />}
                   error={!!errors.first_name}
-                  label={tFunc(messages.labelFirstName)}
+                  label={<FormattedMessage {...messages.labelFirstName} />}
                 />
                 <RenderError messages={errors.first_name} />
               </Form.Field>
@@ -74,9 +75,9 @@ class RegistrationForm extends React.Component {
                   iconPosition={'left'}
                   onChange={this.handleChange}
                   value={this.state.last_name}
-                  placeholder={tFunc(messages.placeholderLastName)}
+                  // placeholder={<FormattedMessage {...messages.placeholderLastName} />}
                   error={!!errors.last_name}
-                  label={tFunc(messages.labelLastName)}
+                  label={<FormattedMessage {...messages.labelLastName} />}
                 />
                 <RenderError messages={errors.last_name} />
               </Form.Field>
@@ -88,9 +89,9 @@ class RegistrationForm extends React.Component {
                   iconPosition={'left'}
                   onChange={this.handleChange}
                   value={this.state.email}
-                  placeholder={tFunc(messages.placeholderEmail)}
+                  // placeholder={<FormattedMessage {...messages.placeholderEmail} />}
                   error={!!errors.email}
-                  label={tFunc(messages.labelEmail)}
+                  label={<FormattedMessage {...messages.labelEmail} />}
                 />
                 <RenderError messages={errors.email} />
               </Form.Field>
@@ -102,10 +103,10 @@ class RegistrationForm extends React.Component {
                   iconPosition={'left'}
                   onChange={this.handleChange}
                   value={this.state.password}
-                  placeholder={tFunc(messages.placeholderPassword)}
+                  // placeholder={<FormattedMessage {...messages.placeholderPassword} />}
                   type={'password'}
                   error={!!errors.password}
-                  label={tFunc(messages.labelPassword)}
+                  label={<FormattedMessage {...messages.labelPassword} />}
                 />
                 <RenderError messages={errors.password} />
               </Form.Field>
@@ -115,13 +116,13 @@ class RegistrationForm extends React.Component {
                     <span style={{ color: 'rgba(0, 0, 0, 0)' }}> o </span>
                     <Loader size={'mini'} active />
                   </div> :
-                  tFunc(messages.buttonSignIn)
+                  <FormattedMessage {...messages.buttonSignIn} />
                 }
               </Button>
             </Form>
             <Message>
               {/* 'ERROR THE LINK IS NOT PROPERLY HANDLED'*/ }
-              {tFunc(messages.signUpAction1)} <a href={'/'}>{tFunc(messages.signUpAction2)}</a>
+              {<FormattedMessage {...messages.signUpAction1} />} <a href={'/'}>{<FormattedMessage {...messages.signUpAction2} />}</a>
             </Message>
 
           </Grid.Column>
@@ -132,7 +133,7 @@ class RegistrationForm extends React.Component {
 }
 
 RegistrationForm.propTypes = {
-  createUser: React.PropTypes.func.isRequired,
+  registerUser: React.PropTypes.func.isRequired,
   errors: React.PropTypes.object.isRequired,
   pending: React.PropTypes.bool,
   tFunc: React.PropTypes.func,

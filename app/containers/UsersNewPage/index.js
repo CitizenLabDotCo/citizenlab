@@ -22,24 +22,16 @@ import { watchCreateUser, watchUserSignIn } from './sagas';
 
 
 export class UsersNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  constructor() {
-    super();
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
 
-  handleSubmit(values) {
-    const valuesWithLocale = { ...values, locale: this.props.userLocale };
-    this.props.createUser(valuesWithLocale);
-  }
-
-  createUser = (locale) => {
+  registerUser = (locale) => {
     const self = this;
     return (data) => self.props.createUser(Object.assign({}, data, { locale }));
   }
 
   render() {
     const { error, pending } = this.props.storeData;
-    const { locale } = this.props.userLocale;
+    const { userLocale } = this.props;
+
     const ErroMessages = (error && error.json) || {};
     return (
       <div>
@@ -53,7 +45,7 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
         <Saga saga={watchUserSignIn} />
 
         <Form
-          createUser={this.createUser(locale)}
+          registerUser={this.registerUser(userLocale)}
           getDispatch={(localFormDispatch) => (this.localFormDispatch = localFormDispatch)}
           errors={ErroMessages}
           pending={pending}
@@ -66,7 +58,7 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
 UsersNewPage.propTypes = {
   storeData: PropTypes.object,
   userLocale: PropTypes.string,
-  createUser: PropTypes.func.isRequired,
+  // createUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
