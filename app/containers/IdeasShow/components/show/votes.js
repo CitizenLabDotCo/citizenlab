@@ -29,31 +29,13 @@ Votes.propTypes = {
   children: PropTypes.any,
 };
 
-// const mapStateToProps = () => createStructuredSelector({
-//   user: (state, { authorId }) => selectResourcesDomain('users', authorId)(state),
-// });
 
-// const mapStateToProps = () => createStructuredSelector({
-//   user: (state, { authorId }) => selectResourcesDomain('users', authorId)(state),
-// });
+const mapStateToProps = createStructuredSelector({
+  currentTenant: makeSelectCurrentTenant(),
+  currentUser: makeSelectCurrentUser(),
+});
 
-// const mergeProps = ({ user }, dispatchProps, ownProps) => {
-//   const { children } = ownProps;
-//   if (!user) return {}
-//   const attributes = user.get('attributes');
-//   const firstName = attributes.get('first_name');
-//   const lastName = attributes.get('last_name');
-//   const avatar = attributes.getIn(['avatar', 'small'])
+  currentUser: PropTypes.object,
 
-//   return {
-//     avatar,
-//     firstName,
-//     lastName,
-//     lastName,
-//     children,
-//   };
 
-// };
-
-// preprocess(mapStateToProps, null, mergeProps)(
 export default Votes;
