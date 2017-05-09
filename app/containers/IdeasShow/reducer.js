@@ -114,10 +114,6 @@ export default function ideasShowReducer(state = initialState, action) {
         .set('resetEditorContent', false)
         .set('storeCommentError', action.storeCommentError)
         .set('submittingComment', false);
-    case DELETE_COMMENT_SUCCESS: {
-      const commentLoc = state.get('comments').indexOf(action.commentId);
-      return state.delete(['comments', commentLoc]);
-    }
     case RESET_PAGE_DATA:
       return state
         .set('idea', null)
