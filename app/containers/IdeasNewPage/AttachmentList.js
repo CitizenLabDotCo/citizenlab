@@ -7,8 +7,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Segment, Button, List, Input, Label } from 'semantic-ui-react';
-import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { getFromState } from 'utils/immutables';
+
+import { selectSubmitIdea } from './selectors';
 import Attachment from './Attachment';
 import messages from './messages';
 
@@ -118,4 +123,15 @@ FileInput.propTypes = {
   className: PropTypes.string,
 };
 
-export default AttachmentList;
+const mapStateToProps = createStructuredSelector({
+  ideasNewPageState: selectSubmitIdea,
+});
+
+const mergeProps = ({ ideasNewPageState: pageState }) => ({
+  attachments: getFromState(pageState, 'draft', 'attachments'),
+  storeAttachmentError: getFromState(pageState, 'draft', 'storeAttachmentError'),
+});
+
+export default styled(connect(mapStateToProps, null, mergeProps)(AttachmentList))`
+  // none yet
+`;

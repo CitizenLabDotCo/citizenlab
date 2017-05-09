@@ -30,6 +30,18 @@ describe('ideasNewPageReducer', () => {
       loadImagesError: false,
       storeImageError: false,
     },
+    topics: {
+      ids: [],
+      selected: [],
+      loadError: null,
+      loading: false,
+    },
+    areas: {
+      ids: [],
+      selected: [],
+      loadError: null,
+      loading: false,
+    },
   };
 
   it('returns the initial state', () => {

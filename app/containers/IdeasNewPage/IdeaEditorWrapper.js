@@ -4,18 +4,24 @@
 *
 */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Container, Segment, Grid, Button } from 'semantic-ui-react';
 import MultiSelectT from 'components/MultiSelectT';
+import { connect } from 'react-redux';
+import { getFromState } from 'utils/immutables';
+import { createStructuredSelector } from 'reselect';
 
 // import messages from './messages';
 import IdeaEditor from './IdeaEditor';
 import messages from './messages';
 import IdeaTitle, { TitleStatusWrapper } from './IdeaTitle';
+import { makeSelectAreas, makeSelectTopics, selectSubmitIdea } from './selectors';
+import multiselectMap from './multiselectMap';
 
-export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   constructor() {
     super();
@@ -36,8 +42,9 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
   render() {
     const { className, loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
     const { shortTitleError, longTitleError, titleLength } = this.props;
-    const { storeDraftCopy, content, saveDraft, storeIdea } = this.props;
-    const { topics, areas, topicsLabel, areasLabel, topicsPlaceholder, areasPlaceholder, loadTopicsError, loadAreasError, loadingTopics, loadingAreas } = this.props;
+    const { storeDraftCopy, saveDraft, storeIdea } = this.props;
+    const { topics, areas, loadTopicsError, loadAreasError, loadingTopics, loadingAreas } = this.props;
+    const { formatMessage } = this.props.intl;
 
     const FormattedMessageSegment = (props) => (
       <Segment>
@@ -46,20 +53,8 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
     );
 
     // refactor topics and areas to match format expected by Multiselect
-    const topicsSelect = (topics
-      ? topics.toJS().map((topic) => ({
-        value: topic.id,
-        label: JSON.stringify(topic.attributes.title_multiloc),
-      }))
-      : []
-    );
-    const areasSelect = (areas
-        ? areas.toJS().map((area) => ({
-          value: area.id,
-          label: JSON.stringify(area.attributes.title_multiloc),
-        }))
-        : []
-    );
+    const topicsSelect = multiselectMap(topics);
+    const areasSelect = multiselectMap(areas);
 
     return (
       <div>
@@ -101,8 +96,8 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
                 {!(loadingTopics || loadTopicsError) && <MultiSelectT
                   options={topicsSelect}
                   maxSelectionLength={3}
-                  placeholder={topicsPlaceholder}
-                  optionLabel={topicsLabel}
+                  placeholder={formatMessage({ ...messages.topicsPlaceholder })}
+                  optionLabel={formatMessage({ ...messages.topicsLabel })}
                   handleOptionsAdded={this.storeTopics}
                 />}
                 {loadTopicsError && <div>
@@ -115,8 +110,8 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
                 {!(loadingAreas || loadAreasError) && <MultiSelectT
                   options={areasSelect}
                   maxSelectionLength={3}
-                  placeholder={areasPlaceholder}
-                  optionLabel={areasLabel}
+                  placeholder={formatMessage({ ...messages.areasPlaceholder })}
+                  optionLabel={formatMessage({ ...messages.areasLabel })}
                   handleOptionsAdded={this.storeAreas}
                 />}
                 {loadAreasError && <div>
@@ -131,7 +126,6 @@ export class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-l
         <div className={className}>
           <IdeaEditor
             onEditorChange={storeDraftCopy}
-            content={content}
           />
         </div>
       </div>
@@ -153,7 +147,6 @@ IdeaEditorWrapper.propTypes = {
   longTitleError: PropTypes.bool.isRequired,
   titleLength: PropTypes.number.isRequired,
   setTitle: PropTypes.func.isRequired,
-  content: PropTypes.string,
   saveDraft: PropTypes.func.isRequired,
   storeIdea: PropTypes.func.isRequired,
   topics: PropTypes.any.isRequired,
@@ -162,15 +155,69 @@ IdeaEditorWrapper.propTypes = {
   areas: PropTypes.any.isRequired,
   loadingAreas: PropTypes.bool.isRequired,
   loadAreasError: PropTypes.string,
-  topicsLabel: PropTypes.string.isRequired,
-  areasLabel: PropTypes.string.isRequired,
   storeTopics: PropTypes.func.isRequired,
   storeAreas: PropTypes.func.isRequired,
-  topicsPlaceholder: PropTypes.string.isRequired,
-  areasPlaceholder: PropTypes.string.isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default styled(IdeaEditorWrapper)`
+const mapStateToProps = createStructuredSelector({
+  ideasNewPageState: selectSubmitIdea,
+  topics: makeSelectTopics(),
+  areas: makeSelectAreas(),
+});
+
+const mergeProps = (stateProps, dispatchProps, { intl }) => {
+  const { ideasNewPageState: pageState } = stateProps;
+
+  /* eslint-disable */
+  const loading = getFromState(pageState, 'draft', 'loading');
+  const loadError = getFromState(pageState, 'draft', 'loadError');
+  const stored = getFromState(pageState, 'draft', 'stored');
+  const storeError = getFromState(pageState, 'draft', 'storeError');
+  const submitting = getFromState(pageState, 'draft', 'submitting');
+  const submitError = getFromState(pageState, 'draft', 'submitError');
+  const submitted = getFromState(pageState, 'draft', 'submitted');
+  const title = getFromState(pageState, 'draft', 'title');
+  const longTitleError = getFromState(pageState, 'draft', 'longTitleError');
+  const shortTitleError = getFromState(pageState, 'draft', 'shortTitleError');
+  const titleLength = getFromState(pageState, 'draft', 'titleLength');
+
+  const loadTopicsError = getFromState(pageState, 'topics', 'loadError');
+  const loadingTopics = getFromState(pageState, 'topics', 'loading');
+
+  const loadAreasError = getFromState(pageState, 'areas', 'loadError');
+  const loadingAreas = getFromState(pageState, 'areas', 'loading');
+
+  return {
+    /*
+     * specific selectors
+     */
+    ...stateProps,
+    // -----------------
+    /*
+     * Props from store
+     */
+    loading, loadError,
+    storeError, stored,
+    submitting, submitError, submitted,
+    title, longTitleError, shortTitleError, titleLength,
+    loadTopicsError, loadingTopics,
+    loadAreasError, loadingAreas,
+    // -----------------
+    /*
+     * dispatch methods
+     */
+    ...dispatchProps,
+    // -----------------
+    /*
+     * own props
+     */
+    intl,
+  };
+  /* eslint-enable */
+};
+
+export default styled(injectIntl(connect(mapStateToProps, null, mergeProps)(IdeaEditorWrapper)))`
   height: 550px;
   border-radius: 3px;
   background-color: #ffffff;

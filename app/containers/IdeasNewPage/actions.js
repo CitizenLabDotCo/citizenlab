@@ -25,15 +25,20 @@ export function saveDraft(content) {
 }
 
 export function publishIdeaRequest(contents, titles, images, attachments, userId, isDraft) {
-  return {
-    type: PUBLISH_IDEA_REQUEST,
-    payload: contents,
-    titles,
-    images,
-    attachments,
-    userId,
-    isDraft,
-  };
+  return (contents
+    ? {
+      type: PUBLISH_IDEA_REQUEST,
+      payload: contents,
+      titles,
+      images,
+      attachments,
+      userId,
+      isDraft,
+    }
+    : {
+      type: PUBLISH_IDEA_ERROR,
+    }
+  );
 }
 
 export function publishIdeaSuccess() {

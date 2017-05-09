@@ -2,10 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { getFromState } from 'utils/immutables';
 
 import { getEditorState } from './editorState';
+import { selectSubmitIdea } from './selectors';
 
-export default class IdeaEditor extends React.PureComponent {
+class IdeaEditor extends React.PureComponent {
   constructor() {
     super();
 
@@ -63,3 +68,15 @@ export default class IdeaEditor extends React.PureComponent {
 IdeaEditor.propTypes = {
   onEditorChange: PropTypes.func.isRequired,
 };
+
+const mapStateToProps = createStructuredSelector({
+  ideasNewPageState: selectSubmitIdea,
+});
+
+const mergeProps = ({ ideasNewPageState: pageState }) => ({
+  content: getFromState(pageState, 'draft', 'content'),
+});
+
+export default styled(connect(mapStateToProps, null, mergeProps)(IdeaEditor))`
+  // none yet
+`;

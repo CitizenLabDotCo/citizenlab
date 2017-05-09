@@ -7,10 +7,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Segment, Input, Label } from 'semantic-ui-react';
-import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { getFromState } from 'utils/immutables';
+
 import Image from './Image';
 import messages from './messages';
+import { selectSubmitIdea } from './selectors';
 
 export const Images = (props) => (<Grid columns={4}>
   <Grid.Row>
@@ -129,4 +134,15 @@ FileInput.propTypes = {
   className: PropTypes.string,
 };
 
-export default ImageList;
+const mapStateToProps = createStructuredSelector({
+  ideasNewPageState: selectSubmitIdea,
+});
+
+const mergeProps = ({ ideasNewPageState: pageState }) => ({
+  images: getFromState(pageState, 'draft', 'images'),
+  storeImageError: getFromState(pageState, 'draft', 'storeImageError'),
+});
+
+export default styled(connect(mapStateToProps, null, mergeProps)(ImageList))`
+  // none yet
+`;
