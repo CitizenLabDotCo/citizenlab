@@ -33,10 +33,21 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     this.props.dispatch(loadCurrentTenantRequest());
     this.props.dispatch(loadCurrentUserRequest());
   }
+  componentWillReceiveProps(nextProps) {
+      const keys = Object.keys(nextProps)
+      console.log(keys.map((key) =>  {
+        const cond = nextProps[key] === this.props[key];
+        if (!cond) return [key, nextProps[key]];
+        return '';
+      } ));
+  }
+
+    shouldComponentUpdate(nextProps) {
+      return this.props.currentUser === nextProps.currentUser;
+    }
 
   content() {
     const { currentTenant, currentUser } = this.props;
-
     if (currentTenant) {
       return (
         <div>

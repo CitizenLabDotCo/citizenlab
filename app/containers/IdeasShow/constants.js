@@ -29,4 +29,9 @@ export const SAVE_COMMENT_DRAFT = 'app/IdeasShow/SAVE_COMMENT_DRAFT';
 export const STORE_COMMENT_REQUEST = 'app/IdeasShow/STORE_COMMENT';
 export const STORE_COMMENT_ERROR = 'app/IdeasShow/STORE_COMMENT_ERROR';
 
+// delete
+export const DELETE_COMMENT_REQUEST = 'app/IdeasShow/DELETE_COMMENT_REQUEST';
+export const DELETE_COMMENT_SUCCESS = 'app/IdeasShow/DELETE_COMMENT_SUCCESS';
+export const DELETE_COMMENT_ERROR = 'app/IdeasShow/DELETE_COMMENT_ERROR';
+
 export const RESET_PAGE_DATA = 'app/IdeasShow/RESET_PAGE_DATA';

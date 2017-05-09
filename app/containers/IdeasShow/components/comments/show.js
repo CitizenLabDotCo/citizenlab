@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Comment } from 'semantic-ui-react';
-import T from 'containers/T';
-
-import MapChildren from './mapChildren';
-
+import { Comment, Accordion, Button } from 'semantic-ui-react';
 import { createStructuredSelector } from 'reselect';
+
 import { preprocess } from 'utils';
 import { selectResourcesDomain } from 'utils/resources/selectors';
+import T from 'containers/T';
+import MapChildren from './mapChildren';
 
+import Editor from '../common/editor';
 import Author from '../common/author';
 
-const Show = ({ content, children, createdAt, id, authorId }) => (
+const Show = ({ content, children, createdAt, ideaId, commentId, authorId }) => (
   <Comment>
     <Comment.Content>
       <Author authorId={authorId}>
@@ -20,9 +20,7 @@ const Show = ({ content, children, createdAt, id, authorId }) => (
       <Comment.Text>
         <T value={content} />
       </Comment.Text>
-      <Comment.Actions>
-        <Comment.Action>Reply</Comment.Action>
-      </Comment.Actions>
+      {<Editor parentId={commentId} ideaId={ideaId} />}
     </Comment.Content>
     <MapChildren nodes={children} />
   </Comment>
@@ -31,14 +29,16 @@ const Show = ({ content, children, createdAt, id, authorId }) => (
 Show.propTypes = {
   content: PropTypes.any,
   children: PropTypes.any,
+  createdAt: PropTypes.string,
+  authorId: PropTypes.string,
+  ideaId: PropTypes.string,
+  commentId: PropTypes.string,
 };
 
 
-const mapStateToProps = () => {
-  return createStructuredSelector({
-    comment: (state, { node }) => selectResourcesDomain('comments', node.id)(state),
-  });
-};
+const mapStateToProps = () => createStructuredSelector({
+  comment: (state, { node }) => selectResourcesDomain('comments', node.id)(state),
+});
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { comment } = stateProps;
@@ -48,12 +48,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const content = attributes.get('body_multiloc');
   const createdAt = attributes.get('created_at');
   const authorId = comment.getIn(['relationships', 'author', 'data', 'id']);
+  const ideaId = comment.getIn(['relationships', 'idea', 'data', 'id']);
   return {
     content,
     createdAt,
     children,
     authorId,
-    id,
+    commentId: id,
+    ideaId,
   };
 };
 

@@ -10,6 +10,8 @@ import ImageCarousel from 'components/ImageCarousel';
 import { selectIdea } from '../selectors';
 
 import Author from './common/author';
+import Editor from './common/editor';
+
 import Votes from './show/votes';
 
 import Comments from './comments';
@@ -45,10 +47,10 @@ class Show extends React.PureComponent {
             <Author authorId={authorId}>
               {created_at}
             </Author>
-
             <Comment.Text>
               <T value={body_multiloc} />
             </Comment.Text>
+            <Editor ideaId={id} />
             </Comment.Content>
           </Comment>
         </Comment.Group>

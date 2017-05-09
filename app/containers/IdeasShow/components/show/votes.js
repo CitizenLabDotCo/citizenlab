@@ -43,8 +43,8 @@ const mergeProps = (stateP, dispatchP, ownP) => {
   const { voteIdea } = dispatchP;
   const voteUp = () => voteIdea(ideaId, 'up')
   const voteDown = () => voteIdea(ideaId, 'down')
-  const disableUp = !auth || totOwnVotes
-  const disableDown = !auth || totOwnVotes
+  const disableUp = !auth || totOwnVotes > 0
+  const disableDown = !auth || totOwnVotes < 0
   console.log(totOwnVotes)
   return {
     voteUp,

@@ -6,7 +6,7 @@
 
 import {
   LOAD_IDEA_REQUEST, LOAD_IDEA_SUCCESS, LOAD_IDEA_ERROR, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_ERROR, STORE_COMMENT_ERROR, STORE_COMMENT_REQUEST, SAVE_COMMENT_DRAFT, LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_SUCCESS, LOAD_COMMENTS_ERROR, RESET_PAGE_DATA, LOAD_IDEA_VOTES_SUCCESS,
-LOAD_IDEA_VOTES_ERROR, VOTE_IDEA_SUCCESS, VOTE_IDEA_REQUEST,
+LOAD_IDEA_VOTES_ERROR, VOTE_IDEA_SUCCESS, VOTE_IDEA_REQUEST, DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_ERROR,
 } from './constants';
 
 export function loadIdea(payload) {
@@ -76,6 +76,27 @@ export function publishCommentError(storeCommentError) {
   return {
     type: STORE_COMMENT_ERROR,
     storeCommentError,
+  };
+}
+
+export function deleteComment(commentId) {
+  return {
+    type: DELETE_COMMENT_REQUEST,
+    commentId,
+  };
+}
+
+export function deleteCommentSuccess(commentID) {
+  return {
+    type: DELETE_COMMENT_SUCCESS,
+    commentID,
+  };
+}
+
+export function deleteCommentError(commentID) {
+  return {
+    type: DELETE_COMMENT_ERROR,
+    commentID,
   };
 }
 

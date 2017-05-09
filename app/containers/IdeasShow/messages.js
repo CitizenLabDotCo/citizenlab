@@ -46,4 +46,12 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.loadingComments',
     defaultMessage: 'Loading comments...',
   },
+  placeholderComment: {
+    id: 'app.containers.IdeasShow.placeholderComment',
+    defaultMessage: 'Tell us your thoughts!',
+  },
+  deleteComment: {
+    id: 'app.containers.IdeasShow.deleteComment',
+    defaultMessage: 'Delete',
+  }
 });

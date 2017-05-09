@@ -107,6 +107,13 @@ export function createIdeaComment(ideaId, userId, htmlContents, parentId) {
   });
 }
 
+
+export function deleteIdeaComment(commentId) {
+  return request(`${API_PATH}/comments/${commentId}`, null, {
+    method: 'DELETE',
+  });
+}
+
 export function updateCurrentUser(values, userId) {
   // if post profile (no avatar), remove avatar
   return request(`${API_PATH}/users/${userId}`, { user: values }, {

@@ -1,13 +1,13 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { fetchIdea, fetchIdeaVotes, submitIdeaVote, createIdeaComment, fetchIdeaComments } from 'api';
+import { fetchIdea, fetchIdeaVotes, submitIdeaVote, createIdeaComment, fetchIdeaComments, deleteIdeaComment } from 'api';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 
 import {
-  LOAD_IDEA_REQUEST, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_REQUEST, STORE_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST,
+  LOAD_IDEA_REQUEST, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_REQUEST, STORE_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST, DELETE_COMMENT_REQUEST,
 } from './constants';
 
 import {
-  loadIdeaSuccess, ideaLoadError, loadVotesError, votesLoaded, voteIdeaError, ideaVoted, loadComments, commentsLoaded, commentsLoadError, publishCommentError,
+  loadIdeaSuccess, ideaLoadError, loadVotesError, votesLoaded, voteIdeaError, ideaVoted, loadComments, commentsLoaded, commentsLoadError, publishCommentError, deleteCommentSuccess, deleteCommentError,
 } from './actions';
 
 function* loadIdea(action) {
@@ -58,10 +58,21 @@ function* publishComment(action) {
   try {
     const ideaId = action.ideaId;
     const response = yield call(createIdeaComment, ideaId, action.userId, action.htmlContents, action.parentId);
-    yield put(mergeJsonApiResources(response));
-    // reload comments
     yield put(loadComments(ideaId, null, null, true));
   } catch (e) {
+    yield put(publishCommentError(JSON.stringify(e.errors)));
+  }
+}
+
+function* deleteComment(action) {
+  try {
+    const { commentId, ideaId } = action;
+    const response = yield call(deleteIdeaComment, commentId);
+    yield put(mergeJsonApiResources(response));
+    yield put(loadComments(ideaId, null, null, true));
+  } catch (e) {
+    const asdf = e;
+    debugger
     yield put(publishCommentError(JSON.stringify(e.errors)));
   }
 }
@@ -84,4 +95,8 @@ export function* watchLoadComments() {
 
 export function* watchStoreComment() {
   yield takeLatest(STORE_COMMENT_REQUEST, publishComment);
+}
+
+export function* watchDeleteComment() {
+  yield takeLatest(DELETE_COMMENT_REQUEST, deleteComment);
 }
