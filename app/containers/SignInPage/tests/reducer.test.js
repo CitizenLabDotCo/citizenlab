@@ -4,6 +4,7 @@ import signInPageReducer from '../reducer';
 
 describe('signInPageReducer', () => {
   it('returns the initial state', () => {
-    expect(signInPageReducer(undefined, {})).toEqual(fromJS({}));
+    const expectedForm = fromJS({ authRequestPending: false });
+    expect(signInPageReducer(undefined, {})).toEqual(expectedForm);
   });
 });

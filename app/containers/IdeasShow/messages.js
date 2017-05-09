@@ -53,5 +53,5 @@ export default defineMessages({
   deleteComment: {
     id: 'app.containers.IdeasShow.deleteComment',
     defaultMessage: 'Delete',
-  }
+  },
 });

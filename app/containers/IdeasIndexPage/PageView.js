@@ -14,7 +14,7 @@ import { Icon, Sidebar as LayoutSidebar, Segment } from 'semantic-ui-react';
 import WatchSagas from 'containers/WatchSagas';
 
 import messages from './messages';
-import * as sagas from './sagas';
+import sagasWatchers from './sagas';
 import { filterIdeas, loadIdeas, loadTopicsRequest, loadAreasRequest } from './actions';
 
 
@@ -67,7 +67,7 @@ class View extends React.Component {
     const { visible } = this.state;
     return (
       <div>
-        <WatchSagas sagas={sagas} />
+        <WatchSagas sagas={sagasWatchers} />
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>

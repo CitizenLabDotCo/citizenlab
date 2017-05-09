@@ -13,7 +13,7 @@ import { push } from 'react-router-redux';
 
 import OverlayChildren from 'containers/OverlayChildren';
 
-import PageView from './PageView';
+import PageView from './pageView';
 
 // Ideas show does not use helmet at this view is controlled by RouterIndexShow
 class IdeasIndex extends React.Component {

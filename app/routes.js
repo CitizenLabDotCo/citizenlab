@@ -3,7 +3,6 @@
 // See http://blog.mxstbr.com/2016/01/react-apps-with-pages for more information
 // about the code splitting business
 import { getAsyncInjectors } from 'utils/asyncInjectors';
-import React from 'react';
 
 const errorLoading = (err) => {
   console.error('Dynamic page loading failed', err); // eslint-disable-line no-console
@@ -11,13 +10,6 @@ const errorLoading = (err) => {
 
 const loadModule = (cb) => (componentModule) => {
   cb(null, componentModule.default);
-};
-
-const loadModules = (cb) => (componentModules) => {
-  console.log(componentModules)
-  const rerouter = componentModules[0].default;
-  const parent = componentModules[1].default;
-  cb(null, { rerouter, parent });
 };
 
 export default function createRoutes(store) {

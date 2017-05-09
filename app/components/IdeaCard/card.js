@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card as LayoutCard, Button, Icon, Image } from 'semantic-ui-react';
+import { Card as LayoutCard, Button, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { bindActionCreators } from 'redux';
@@ -12,7 +12,7 @@ import { selectResourcesDomain } from 'utils/resources/selectors';
 import Author from './card/author';
 import Tags from './card/tags';
 
-const Card = ({ header, images, label, labelObj, authorId, topicsData, areasData, viewIdea }) => {
+const Card = ({ header, images, label, labelObj, authorId, topicsData, areasData, viewIdea, votes }) => {
   if (!header) return null;
   return (
     <LayoutCard style={{ height: '100%' }}>
@@ -33,17 +33,14 @@ const Card = ({ header, images, label, labelObj, authorId, topicsData, areasData
       <Tags tags={topicsData} type={'topics'} />
       <Button.Group basic attached={'bottom'} size={'small'}>
         <Button>
-          <Icon color={'green'} name={'thumbs outline up'} />
         </Button>
-        <Button.Or text={'125'} />
+        <Button.Or text={votes} />
         <Button>
-          <Icon color={'red'} name={'thumbs outline down'} />
         </Button>
       </Button.Group>
     </LayoutCard>
   );
 };
-
 
 Card.propTypes = {
   images: PropTypes.string,
@@ -54,7 +51,7 @@ Card.propTypes = {
   topicsData: PropTypes.any,
   areasData: PropTypes.any,
   viewIdea: PropTypes.any,
-
+  votes: PropTypes.number,
 };
 
 const mapStateToProps = () => createStructuredSelector({
@@ -71,7 +68,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const images = attributes.getIn(['images', '0', 'medium']);
   const label = parseInt(id.match(/\d+/), 10) % 5 === 0;
   const labelObj = { as: 'a', corner: 'right', icon: 'university' };
-
+  const votes = attributes.get('downvotes_count') + attributes.get('upvotes_count');
   const header = attributes.get('title_multiloc');
 
   const relationships = idea.get('relationships');
@@ -89,7 +86,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     topicsData,
     areasData,
     viewIdea,
-    ...ownProps,
+    votes,
   };
 };
 

@@ -26,7 +26,6 @@ const activeTree = (ids, comments) => {
   const roots = [];
 
   ids.forEach((id) => {
-    //if (!comments.get(id)) debugger
     const parentId = comments.get(id).getIn(['relationships', 'parent', 'data', 'id']);
     const node = { id, children: [] };
     map[id] = node;
@@ -43,7 +42,6 @@ export const makeSelectOwnVotesTot = (ideaId) => createSelector(
   selectAuthDomain('id'),
   selectResourcesDomain('votes'),
   (currentUserId, votes) => {
-    //console.log(currentUserId, votes).toJS()
     if (!votes) return 0;
     const ownVotes = votes.filter((vote) => {
       const ownVote = vote.getIn(['relationships', 'user', 'data', 'id']) === currentUserId;
@@ -60,28 +58,3 @@ export const makeSelectOwnVotesTot = (ideaId) => createSelector(
 
 
 export { makeSelectComments };
-
-    // if (parentId && !tempParentId) {
-    //   return tot.unshift(id);
-    // }
-
-    // if (parentId && tempParentId === parentId) {
-    //   return tot.unshift(id);
-    // }
-
-    // if (parentId && tempParentId !== parentId && id === tempParentId) {
-    //   const newTot = List();
-    //   return newTot.unshift([id, tot]);
-    // }
-
-    // if (parentId) {
-    //   tempParentId = parentId;
-    // }
-
-    // if (!parentId) {
-    //   tempParentId = null;
-    //   finalList.unshift([id, tot]);
-    //   return List();
-    // }
-
-    // return output || tot;

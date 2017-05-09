@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import { preprocess } from 'utils';
-import { deleteComment } from '../../actions';
 import { FormattedMessage } from 'react-intl';
 
+import { deleteComment } from '../../actions';
 import messages from '../../messages';
 
 const DeleteButton = ({ removeComment }) => (

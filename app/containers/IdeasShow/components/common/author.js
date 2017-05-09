@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
-import { Comment } from 'semantic-ui-react'
+import { Comment } from 'semantic-ui-react';
 import moment from 'moment';
 
 import { preprocess } from 'utils';
@@ -55,4 +55,4 @@ const mergeProps = ({ user }, dispatchProps, ownProps) => {
 };
 
 
-export default preprocess(mapStateToProps, null, mergeProps)(Author);
+export default preprocess(mapStateToProps, null, mergeProps)(Author)

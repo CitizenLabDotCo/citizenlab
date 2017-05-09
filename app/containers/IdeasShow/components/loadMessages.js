@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import { Message, Icon } from 'semantic-ui-react'
+import { Message, Icon } from 'semantic-ui-react';
 
 import messages from '../messages';
 import selectIdeasShowPageDomain from '../selectors';
@@ -37,7 +37,7 @@ const loadingIdeaMessage = ({ loadingIdea }) => {
   if (!loadingIdea) return null;
   return (
     <Message icon>
-      <Icon name='circle notched' loading />
+      <Icon name={'circle notched'} loading />
       <Message.Content>
         <Message.Header>Just one second
           <div>
@@ -46,7 +46,7 @@ const loadingIdeaMessage = ({ loadingIdea }) => {
         </Message.Header>
       </Message.Content>
     </Message>
-  )
+  );
 };
 
 loadingIdeaMessage.propTypes = {

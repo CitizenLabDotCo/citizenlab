@@ -11,9 +11,9 @@ import { bindActionCreators } from 'redux';
 
 import WatchSagas from 'containers/WatchSagas';
 
-import * as sagas from './sagas';
+import sagasWatchers from './sagas';
 import { loadComments, loadVotes, loadIdea } from './actions';
-import { LoadErrorMessage, LoadingIdeaMessage } from './components/loadMessages'
+import { LoadErrorMessage, LoadingIdeaMessage } from './components/loadMessages';
 import Show from './components/show';
 
 
@@ -34,7 +34,7 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
   render() {
     return (
       <div>
-        <WatchSagas sagas={sagas} />
+        <WatchSagas sagas={sagasWatchers} />
         <LoadErrorMessage />
         <LoadingIdeaMessage />
         <Show />

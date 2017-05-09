@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Comment, Accordion, Button } from 'semantic-ui-react';
+import { Comment } from 'semantic-ui-react';
 import { createStructuredSelector } from 'reselect';
 
 import { preprocess } from 'utils';

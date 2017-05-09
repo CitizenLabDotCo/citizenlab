@@ -7,7 +7,7 @@
 
 import { put, call } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
-import { numberMock, objectMock } from 'utils/testing/constants';
+import { numberMock, objectMock, ideaFilterSearchMock } from 'utils/testing/constants';
 import { fetchAreas, fetchIdeas, fetchTopics } from 'api';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 
@@ -17,6 +17,7 @@ import { loadAreasSuccess, loadIdeasSuccess, loadTopicsSuccess } from '../action
 describe('IdeasIndexPage Saga', () => {
   describe('getIdeas', () => {
     const action = {
+      search: ideaFilterSearchMock,
       nextPageNumber: numberMock,
       nextPageItemCount: numberMock,
       filters: objectMock,
@@ -25,7 +26,7 @@ describe('IdeasIndexPage Saga', () => {
     const it = sagaHelper(getIdeas(action));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(fetchIdeas, {
+      expect(result).toEqual(call(fetchIdeas, action.search, {
         'page[number]': action.nextPageNumber,
         'page[size]': action.nextPageItemCount,
         ...action.filters,

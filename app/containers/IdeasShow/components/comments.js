@@ -6,18 +6,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-
 import { Comment } from 'semantic-ui-react';
-
 import makeSelectIdeasShow, { makeSelectComments } from 'containers/IdeasShow/selectors';
 
 import MapChildren from './comments/mapChildren';
-
-// import CommentEditorWrapper from './CommentEditorWrapper';
-import T from 'containers/T';
 
 
 class CommentContainer extends React.Component { // eslint-disable-line react/prefer-stateless-function

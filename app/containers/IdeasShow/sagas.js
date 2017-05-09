@@ -7,10 +7,10 @@ import {
 } from './constants';
 
 import {
-  loadIdeaSuccess, ideaLoadError, loadVotesError, votesLoaded, voteIdeaError, ideaVoted, loadComments, commentsLoaded, commentsLoadError, publishCommentError, deleteCommentSuccess, deleteCommentError,
+  loadIdeaSuccess, ideaLoadError, loadVotesError, votesLoaded, voteIdeaError, ideaVoted, loadComments, commentsLoaded, commentsLoadError, publishCommentError,
 } from './actions';
 
-function* loadIdea(action) {
+export function* loadIdea(action) {
   try {
     const response = yield call(fetchIdea, action.payload);
     yield put(mergeJsonApiResources(response));
@@ -20,7 +20,7 @@ function* loadIdea(action) {
   }
 }
 
-function* getIdeaVotes(action) {
+export function* getIdeaVotes(action) {
   const { ideaId } = action;
 
   try {
@@ -32,7 +32,7 @@ function* getIdeaVotes(action) {
   }
 }
 
-function* postIdeaVote(action) {
+export function* postIdeaVote(action) {
   const { ideaId, mode } = action;
 
   try {
@@ -44,7 +44,7 @@ function* postIdeaVote(action) {
   }
 }
 
-function* loadIdeaComments(action) {
+export function* loadIdeaComments(action) {
   try {
     const response = yield call(fetchIdeaComments, action.nextCommentPageNumber, action.nextCommentPageItemCount, action.ideaId);
     yield put(mergeJsonApiResources(response));
@@ -54,49 +54,57 @@ function* loadIdeaComments(action) {
   }
 }
 
-function* publishComment(action) {
+export function* publishComment(action) {
   try {
     const ideaId = action.ideaId;
     const response = yield call(createIdeaComment, ideaId, action.userId, action.htmlContents, action.parentId);
+    yield put(mergeJsonApiResources(response));
     yield put(loadComments(ideaId, null, null, true));
   } catch (e) {
     yield put(publishCommentError(JSON.stringify(e.errors)));
   }
 }
 
-function* deleteComment(action) {
+export function* deleteComment(action) {
   try {
     const { commentId, ideaId } = action;
     const response = yield call(deleteIdeaComment, commentId);
     yield put(mergeJsonApiResources(response));
     yield put(loadComments(ideaId, null, null, true));
   } catch (e) {
-    const asdf = e;
-    debugger
     yield put(publishCommentError(JSON.stringify(e.errors)));
   }
 }
 
-export function* watchLoadIdea() {
+function* watchLoadIdea() {
   yield takeLatest(LOAD_IDEA_REQUEST, loadIdea);
 }
 
-export function* watchLoadIdeaVotes() {
+function* watchLoadIdeaVotes() {
   yield takeLatest(LOAD_IDEA_VOTES_REQUEST, getIdeaVotes);
 }
 
-export function* watchVoteIdea() {
+function* watchVoteIdea() {
   yield takeLatest(VOTE_IDEA_REQUEST, postIdeaVote);
 }
 
-export function* watchLoadComments() {
+function* watchLoadComments() {
   yield takeLatest(LOAD_COMMENTS_REQUEST, loadIdeaComments);
 }
 
-export function* watchStoreComment() {
+function* watchStoreComment() {
   yield takeLatest(STORE_COMMENT_REQUEST, publishComment);
 }
 
-export function* watchDeleteComment() {
+function* watchDeleteComment() {
   yield takeLatest(DELETE_COMMENT_REQUEST, deleteComment);
 }
+
+export default {
+  watchLoadIdea,
+  watchLoadIdeaVotes,
+  watchVoteIdea,
+  watchLoadComments,
+  watchStoreComment,
+  watchDeleteComment,
+};

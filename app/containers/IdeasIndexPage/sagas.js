@@ -12,7 +12,7 @@ import {
   resetIdeas,
 } from './actions';
 
-function* getIdeas(action) {
+export function* getIdeas(action) {
   try {
     const ideaResponse = yield call(fetchIdeas,
       action.search,
@@ -32,7 +32,7 @@ function* getIdeas(action) {
   }
 }
 
-function* getTopics(action) {
+export function* getTopics(action) {
   try {
     const topicsResponse = yield call(fetchTopics, {
       'page[number]': action.nextPageNumber,
@@ -45,7 +45,7 @@ function* getTopics(action) {
   }
 }
 
-function* getAreas(action) {
+export function* getAreas(action) {
   try {
     const areasResponse = yield call(fetchAreas, {
       'page[number]': action.nextPageNumber,
@@ -58,14 +58,16 @@ function* getAreas(action) {
   }
 }
 
-export function* watchLoadIdeas() {
+function* watchLoadIdeas() {
   yield takeLatest(LOAD_IDEAS_REQUEST, getIdeas);
 }
 
-export function* watchLoadTopics() {
+function* watchLoadTopics() {
   yield takeLatest(LOAD_TOPICS_REQUEST, getTopics);
 }
 
-export function* watchLoadAreas() {
+function* watchLoadAreas() {
   yield takeLatest(LOAD_AREAS_REQUEST, getAreas);
-};
+}
+
+export default { watchLoadIdeas, watchLoadTopics, watchLoadAreas };
