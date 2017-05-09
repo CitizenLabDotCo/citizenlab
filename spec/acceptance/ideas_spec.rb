@@ -232,6 +232,19 @@ resource "Ideas" do
         expect(json_response.dig(:data,:attributes,:publication_status)).to eq "published"
       end
     end
+
+    delete "api/v1/ideas/:id" do
+      before do
+        @idea = create(:idea, author: @user, publication_status: 'published')
+      end
+      let(:id) { @idea.id }
+      example_request "Delete an idea" do
+        expect(response_status).to eq 200
+        expect{Idea.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+
   end
 
   private
