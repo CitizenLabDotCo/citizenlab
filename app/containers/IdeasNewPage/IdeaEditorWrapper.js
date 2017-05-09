@@ -29,6 +29,7 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
     // provide 'this' context
     this.storeTopics = this.storeTopics.bind(this);
     this.storeAreas = this.storeAreas.bind(this);
+    this.saveDraft = this.saveDraft.bind(this);
   }
 
   storeTopics(topics) {
@@ -39,10 +40,14 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
     this.props.storeAreas(areas);
   }
 
+  saveDraft() {
+    this.props.saveDraft();
+  }
+
   render() {
     const { className, loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
     const { shortTitleError, longTitleError, titleLength } = this.props;
-    const { storeDraftCopy, saveDraft, storeIdea } = this.props;
+    const { saveDraft, storeIdea } = this.props;
     const { topics, areas, loadTopicsError, loadAreasError, loadingTopics, loadingAreas } = this.props;
     const { formatMessage } = this.props.intl;
 
@@ -125,7 +130,7 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
         </Container>
         <div className={className}>
           <IdeaEditor
-            onEditorChange={storeDraftCopy}
+            saveDraft={this.saveDraft}
           />
         </div>
       </div>
@@ -135,7 +140,6 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
 
 IdeaEditorWrapper.propTypes = {
   className: PropTypes.string,
-  storeDraftCopy: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   loadError: PropTypes.bool.isRequired,
   stored: PropTypes.bool.isRequired,
@@ -166,8 +170,9 @@ const mapStateToProps = createStructuredSelector({
   areas: makeSelectAreas(),
 });
 
-const mergeProps = (stateProps, dispatchProps, { intl }) => {
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { ideasNewPageState: pageState } = stateProps;
+  const { intl, setTitle, saveDraft, storeIdea, storeTopics, storeAreas } = ownProps;
 
   /* eslint-disable */
   const loading = getFromState(pageState, 'draft', 'loading');
@@ -205,21 +210,19 @@ const mergeProps = (stateProps, dispatchProps, { intl }) => {
     loadAreasError, loadingAreas,
     // -----------------
     /*
-     * dispatch methods
-     */
-    ...dispatchProps,
-    // -----------------
-    /*
      * own props
      */
     intl,
+    setTitle,
+    saveDraft,
+    storeIdea,
+    storeTopics,
+    storeAreas,
+
   };
   /* eslint-enable */
 };
 
 export default styled(injectIntl(connect(mapStateToProps, null, mergeProps)(IdeaEditorWrapper)))`
-  height: 550px;
-  border-radius: 3px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px 0 rgba(81, 96, 115, 0.18);
+  // none yet
 `;

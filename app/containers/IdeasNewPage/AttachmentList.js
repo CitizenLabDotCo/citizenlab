@@ -127,9 +127,10 @@ const mapStateToProps = createStructuredSelector({
   ideasNewPageState: selectSubmitIdea,
 });
 
-const mergeProps = ({ ideasNewPageState: pageState }) => ({
+const mergeProps = ({ ideasNewPageState: pageState }, dispatchProps, { storeAttachment }) => ({
   attachments: getFromState(pageState, 'draft', 'attachments'),
   storeAttachmentError: getFromState(pageState, 'draft', 'storeAttachmentError'),
+  storeAttachment,
 });
 
 export default styled(connect(mapStateToProps, null, mergeProps)(AttachmentList))`

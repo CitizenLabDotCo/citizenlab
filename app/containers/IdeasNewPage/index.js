@@ -12,14 +12,13 @@ import { getFromState } from 'utils/immutables';
 import { Container, Label, Divider } from 'semantic-ui-react';
 import styled from 'styled-components';
 import Breadcrumbs from 'components/Breadcrumbs';
-import draftToHtml from 'draftjs-to-html';
 import { injectIntl } from 'react-intl';
 import { preprocess } from 'utils/reactRedux';
 import { bindActionCreators } from 'redux';
 import WatchSagas from 'containers/WatchSagas';
 
 import {
-  saveDraft, setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
+  setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
   publishIdeaRequest, loadTopicsRequest, loadAreasRequest, storeSelectedTopics, storeSelectedAreas,
 } from './actions';
 import IdeaEditorWrapper from './IdeaEditorWrapper';
@@ -29,7 +28,7 @@ import canPublish from './canPublish';
 import { selectSubmitIdea } from './selectors';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
-import * as sagas from './sagas';
+import sagas from './sagas';
 
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -87,8 +86,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
       margin: 20px 0 10px;
     `;
 
-    const { className, storeAttachment: storeAtt, storeImage: storeImg } = this.props;
-
+    const { className, storeAttachment: storeAtt, storeImage: storeImg, setTitle: setT } = this.props;
     return (
       <Container className={className}>
         <Helmet
@@ -105,6 +103,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
           storeIdea={this.storeIdea}
           storeTopics={this.storeTopics}
           storeAreas={this.storeAreas}
+          setTitle={setT}
         />
         <StyledLabel>Add image(s)</StyledLabel>
         <ImageList
@@ -143,6 +142,7 @@ IdeasNewPage.propTypes = {
   attachments: PropTypes.any.isRequired,
   selectedTopics: PropTypes.any.isRequired,
   selectedAreas: PropTypes.any.isRequired,
+  setTitle: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -161,12 +161,6 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
    * manual bindings
    * (return actions to dispatch - with custom logic)
    */
-  storeDraftCopy(content) {
-    // convert to HTML
-    const htmlContent = draftToHtml(content);
-
-    return saveDraft(htmlContent);
-  },
   publishIdeaClick(content, titleError, title, images, attachments, userId, locale, isDraft, topics, areas) {
     const contentNotNull = content || '<p></p>';
 

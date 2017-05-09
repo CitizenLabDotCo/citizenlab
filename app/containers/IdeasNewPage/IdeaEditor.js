@@ -6,9 +6,11 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { getFromState } from 'utils/immutables';
+import draftToHtml from 'draftjs-to-html';
 
 import { getEditorState } from './editorState';
 import { selectSubmitIdea } from './selectors';
+import { saveDraft } from './actions';
 
 class IdeaEditor extends React.PureComponent {
   constructor() {
@@ -40,13 +42,14 @@ class IdeaEditor extends React.PureComponent {
     });
 
     // store temp draft
-    this.props.onEditorChange(convertToRaw(editorState.getCurrentContent()));
+    const htmlContent = convertToRaw(editorState.getCurrentContent());
+    this.props.storeDraftCopy(htmlContent);
   };
 
   render() {
     const { editorState } = this.state;
     return (
-      <div>
+      <div className={this.props.className}>
         {/* TODO #later: customize toolbar and set up desired functions (image etc.)
             based on https://github.com/jpuri/react-draft-wysiwyg/blob/master/docs/src/components/Demo/index.js */}
         <Editor
@@ -66,17 +69,31 @@ class IdeaEditor extends React.PureComponent {
 }
 
 IdeaEditor.propTypes = {
-  onEditorChange: PropTypes.func.isRequired,
+  storeDraftCopy: PropTypes.func.isRequired,
+  className: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   ideasNewPageState: selectSubmitIdea,
 });
 
-const mergeProps = ({ ideasNewPageState: pageState }) => ({
-  content: getFromState(pageState, 'draft', 'content'),
+const mapDispatchToProps = (dispatch) => ({
+  storeDraftCopy(content) {
+    // convert to HTML
+    const htmlContent = draftToHtml(content);
+
+    dispatch(saveDraft(htmlContent));
+  },
 });
 
-export default styled(connect(mapStateToProps, null, mergeProps)(IdeaEditor))`
-  // none yet
-`;
+const mergeProps = ({ ideasNewPageState: pageState }, { storeDraftCopy }) => ({
+  content: getFromState(pageState, 'draft', 'content'),
+  storeDraftCopy,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(styled(IdeaEditor)`
+  height: 550px;
+  border-radius: 3px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px 0 rgba(81, 96, 115, 0.18);
+`);

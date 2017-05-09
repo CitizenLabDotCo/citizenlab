@@ -20,8 +20,11 @@ import { selectSubmitIdea } from './selectors';
 export const Images = (props) => (<Grid columns={4}>
   <Grid.Row>
     {props.images.map((image, index) => (
-      <Grid.Column width={4} textAlign="center"><Image
+      <Grid.Column
         key={index}
+        width={4}
+        textAlign="center"
+      ><Image
         source={image}
       /></Grid.Column>
     ))}
@@ -138,9 +141,10 @@ const mapStateToProps = createStructuredSelector({
   ideasNewPageState: selectSubmitIdea,
 });
 
-const mergeProps = ({ ideasNewPageState: pageState }) => ({
+const mergeProps = ({ ideasNewPageState: pageState }, dispatchProps, { storeImage }) => ({
   images: getFromState(pageState, 'draft', 'images'),
   storeImageError: getFromState(pageState, 'draft', 'storeImageError'),
+  storeImage,
 });
 
 export default styled(connect(mapStateToProps, null, mergeProps)(ImageList))`

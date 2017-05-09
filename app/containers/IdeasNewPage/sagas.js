@@ -65,14 +65,20 @@ export function* getAreas() {
   }
 }
 
-export function* watchStoreIdea() {
+function* watchStoreIdea() {
   yield takeLatest(PUBLISH_IDEA_REQUEST, postIdea);
 }
 
-export function* watchGetTopics() {
+function* watchGetTopics() {
   yield takeLatest(LOAD_TOPICS_REQUEST, getTopics);
 }
 
-export function* watchGetAreas() {
+function* watchGetAreas() {
   yield takeLatest(LOAD_AREAS_REQUEST, getAreas);
 }
+
+export default {
+  watchStoreIdea,
+  watchGetTopics,
+  watchGetAreas,
+};
