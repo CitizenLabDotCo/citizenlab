@@ -27,7 +27,7 @@ ShallowWrapper {
       "_currentElement": <Styled(undefined)
         onFileUpload={[Function]}
 />,
-      "_debugID": 44,
+      "_debugID": 19,
       "_hostContainerInfo": null,
       "_hostParent": null,
       "_instance": StyledComponent {
@@ -54,7 +54,7 @@ ShallowWrapper {
           "validateCallback": [Function],
         },
       },
-      "_mountOrder": 31,
+      "_mountOrder": 14,
       "_pendingCallbacks": null,
       "_pendingElement": null,
       "_pendingForceUpdate": false,
@@ -65,7 +65,7 @@ ShallowWrapper {
           className="fzkyMl"
           onFileUpload={[Function]}
 />,
-        "_debugID": 45,
+        "_debugID": 20,
         "_renderedOutput": <FileInput
           className="fzkyMl"
           onFileUpload={[Function]}

@@ -1,3 +1,5 @@
+import { stringMock } from 'utils/testing/constants';
+
 import canPublish from '../editor/canPublish';
 import { mapDispatchToProps } from '../index';
 import { storeAttachmentError, storeImageError } from '../actions';
@@ -7,8 +9,10 @@ describe('index', () => {
     // we assume content is valid
     const content = '<p>some content</p>';
     const titleError = true;
+    const topics = [stringMock];
+    const areas = [stringMock];
 
-    expect(canPublish(content, titleError)).toEqual(false);
+    expect(canPublish(content, titleError, topics, areas)).toEqual(false);
   });
 
   it('should not allow publishing an idea if content is invalid', () => {
@@ -16,11 +20,35 @@ describe('index', () => {
     const content = '<p></p>';
     // we assume title is valid
     const titleError = false;
+    const topics = [stringMock];
+    const areas = [stringMock];
 
-    expect(canPublish(content, titleError)).toEqual(false);
+    expect(canPublish(content, titleError, topics, areas)).toEqual(false);
   });
 
-  describe('mapDispatchToProps', () => {
+  it('should not allow publishing an idea if no topic specified', () => {
+    // empty content
+    const content = `<p>${stringMock}</p>`;
+    // we assume title is valid
+    const titleError = false;
+    const topics = [];
+    const areas = [stringMock];
+
+    expect(canPublish(content, titleError, topics, areas)).toEqual(false);
+  });
+
+  it('should not allow publishing an idea if content is invalid', () => {
+    // empty content
+    const content = '<p></p>';
+    // we assume title is valid
+    const titleError = false;
+    const topics = [stringMock];
+    const areas = [];
+
+    expect(canPublish(content, titleError, topics, areas)).toEqual(false);
+  });
+
+  describe('customActionCreators', () => {
     const dispatch = jest.fn();
     const result = mapDispatchToProps(dispatch);
 

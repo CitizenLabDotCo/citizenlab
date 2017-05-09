@@ -151,16 +151,7 @@ const mapStateToProps = createStructuredSelector({
   user: makeSelectCurrentUser(),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  /*
-   * auto-binding
-   */
-  loadTopicsRequest,
-  loadAreasRequest,
-  /*
-   * manual bindings
-   * (return actions to dispatch - with custom logic)
-   */
+const customActionCreators = {
   publishIdeaClick(content, titleError, title, images, attachments, userId, locale, isDraft, topics, areas) {
     const contentNotNull = content || '<p></p>';
 
@@ -198,6 +189,19 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
     const areasIds = areas.map((area) => area.value);
     return storeSelectedAreas(areasIds);
   },
+};
+
+export const mapDispatchToProps = (dispatch) => bindActionCreators({
+  /*
+   * auto-binding
+   */
+  loadTopicsRequest,
+  loadAreasRequest,
+  /*
+   * manual bindings
+   * (return actions to dispatch - with custom logic)
+   */
+  ...customActionCreators,
 }, dispatch);
 
 const mergeProps = ({ ideasNewPageState: pageState }, dispatchProps) => ({
