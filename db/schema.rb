@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170503161621) do
+ActiveRecord::Schema.define(version: 20170509093623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,6 +104,15 @@ ActiveRecord::Schema.define(version: 20170503161621) do
     t.uuid "topic_id"
     t.index ["lab_id"], name: "index_labs_topics_on_lab_id", using: :btree
     t.index ["topic_id"], name: "index_labs_topics_on_topic_id", using: :btree
+  end
+
+  create_table "pages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.jsonb    "title_multiloc", default: {}
+    t.jsonb    "body_multiloc",  default: {}
+    t.string   "slug"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.index ["slug"], name: "index_pages_on_slug", using: :btree
   end
 
   create_table "tenants", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

@@ -22,6 +22,10 @@ Rails.application.routes.draw do
       resources :tenants, only: [:update] do
         get :current, on: :collection
       end
+      resources :pages do
+        get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
+      end
+
       # get 'tenants/current'
     end
   end

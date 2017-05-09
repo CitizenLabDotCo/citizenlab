@@ -17,6 +17,7 @@ describe "seedfile" do
       expect(Lab.count).to be > 0
       expect(Idea.count).to be > 0
       expect(Comment.count).to be > 0
+      expect(Page.count).to be 5
     end
   end
 

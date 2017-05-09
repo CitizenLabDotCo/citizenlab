@@ -47,7 +47,7 @@ class Api::V1::IdeasController < ApplicationController
 
   # delete
   def destroy
-    idea.destroy
+    @idea.destroy
     head :ok
   end
 
