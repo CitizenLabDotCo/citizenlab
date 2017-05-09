@@ -13,9 +13,9 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { getFromState } from 'utils/immutables';
 
-import { selectSubmitIdea } from './selectors';
+import { selectSubmitIdea } from '../selectors';
 import Attachment from './Attachment';
-import messages from './messages';
+import messages from '../messages';
 
 export const Attachments = (props) => (<List>
   {props.attachments.map((attachment, index) => (

@@ -14,8 +14,8 @@ import { createStructuredSelector } from 'reselect';
 import { getFromState } from 'utils/immutables';
 
 import Image from './Image';
-import messages from './messages';
-import { selectSubmitIdea } from './selectors';
+import messages from '../messages';
+import { selectSubmitIdea } from '../selectors';
 
 export const Images = (props) => (<Grid columns={4}>
   <Grid.Row>

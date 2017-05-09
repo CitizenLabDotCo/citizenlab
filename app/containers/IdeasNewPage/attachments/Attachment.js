@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Label } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 function Attachment(props) {
   return (

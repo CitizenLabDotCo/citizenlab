@@ -1,6 +1,6 @@
 // import React from 'react';
 import { EditorState } from 'draft-js';
-import { getEditorState } from '../editorState';
+import { getEditorState } from '../editor/editorState';
 
 // import SubmitIdeaForm from '../index';
 

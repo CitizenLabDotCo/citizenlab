@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 
-import messages from './messages';
+import messages from '../messages';
 
 const Error = ({ message, className }) => (<div className={className}>
   <FormattedMessage {...message} />

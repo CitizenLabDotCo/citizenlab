@@ -1,4 +1,4 @@
-import canPublish from '../canPublish';
+import canPublish from '../editor/canPublish';
 import { mapDispatchToProps } from '../index';
 import { storeAttachmentError, storeImageError } from '../actions';
 

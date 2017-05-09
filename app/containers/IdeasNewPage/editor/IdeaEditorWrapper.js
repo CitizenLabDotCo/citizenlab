@@ -16,10 +16,10 @@ import { createStructuredSelector } from 'reselect';
 
 // import messages from './messages';
 import IdeaEditor from './IdeaEditor';
-import messages from './messages';
+import messages from '../messages';
 import IdeaTitle, { TitleStatusWrapper } from './IdeaTitle';
-import { makeSelectAreas, makeSelectTopics, selectSubmitIdea } from './selectors';
-import multiselectMap from './multiselectMap';
+import { makeSelectAreas, makeSelectTopics, selectSubmitIdea } from '../selectors';
+import multiselectMap from '../multiselectMap';
 
 class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 

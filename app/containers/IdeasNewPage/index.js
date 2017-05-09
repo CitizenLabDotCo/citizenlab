@@ -21,10 +21,10 @@ import {
   setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
   publishIdeaRequest, loadTopicsRequest, loadAreasRequest, storeSelectedTopics, storeSelectedAreas,
 } from './actions';
-import IdeaEditorWrapper from './IdeaEditorWrapper';
-import AttachmentList from './AttachmentList';
-import ImageList from './ImageList';
-import canPublish from './canPublish';
+import IdeaEditorWrapper from './editor/IdeaEditorWrapper';
+import AttachmentList from './attachments/AttachmentList';
+import ImageList from './images/ImageList';
+import canPublish from './editor/canPublish';
 import { selectSubmitIdea } from './selectors';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';

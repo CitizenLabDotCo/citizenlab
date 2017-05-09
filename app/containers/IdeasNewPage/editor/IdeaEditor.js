@@ -9,8 +9,8 @@ import { getFromState } from 'utils/immutables';
 import draftToHtml from 'draftjs-to-html';
 
 import { getEditorState } from './editorState';
-import { selectSubmitIdea } from './selectors';
-import { saveDraft } from './actions';
+import { selectSubmitIdea } from '../selectors';
+import { saveDraft } from '../actions';
 
 class IdeaEditor extends React.PureComponent {
   constructor() {
