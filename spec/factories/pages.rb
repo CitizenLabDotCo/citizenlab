@@ -8,6 +8,6 @@ FactoryGirl.define do
       "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
       "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
     }}
-    slug { Faker::Internet.slug }
+    slug { Faker::Internet.slug.parameterize }
   end
 end

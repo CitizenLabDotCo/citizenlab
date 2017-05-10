@@ -3,7 +3,7 @@ class Page < ApplicationRecord
   @@sanitizer = Rails::Html::WhiteListSanitizer.new
 
   validates :title_multiloc, :body_multiloc, presence: true, multiloc: {presence: true}
-  validates :slug, presence: true, uniqueness: true
+  validates :slug, presence: true, uniqueness: true, format: {with: /\A[A-Za-z0-9_]+(?:-[A-Za-z0-9_]+)*\z/ }
 
   before_validation :generate_slug
   before_validation :sanitize_body_multiloc
@@ -11,7 +11,7 @@ class Page < ApplicationRecord
 
   def generate_slug
     unless self.slug
-      slug = title_multiloc.values.first
+      slug = title_multiloc.values.first.parameterize
       indexedSlug = nil
       i=0
       while Page.find_by(slug: indexedSlug || slug)
