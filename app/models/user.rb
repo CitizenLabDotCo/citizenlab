@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :ideas, foreign_key: :author_id
 
   validates :email, :slug, uniqueness: true
+  validates :slug, uniqueness: true, format: {with: /\A[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*\z/ }
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
   validates :first_name, :last_name, :slug, :email, presence: true
   validates :locale, presence: true, inclusion: { in: proc {Tenant.settings('core','locales')} }
@@ -38,11 +39,15 @@ class User < ApplicationRecord
     !!self.roles.find{|r| r["type"] == "lab_moderator" && r["lab_id"] == lab_id}
   end
   
+  def has_services?
+    self.services.present?
+  end
+  
   private
 
   def generate_slug
-    unless self.slug
-      slug = [self.first_name.parameterize, self.last_name.parameterize].join('-')
+    if !self.slug && self.first_name.present?
+      slug = [self.first_name.parameterize, self.last_name&.parameterize].compact.join('-')
       indexedSlug = nil
       i=0
       while User.find_by(slug: indexedSlug || slug)
@@ -60,8 +65,5 @@ class User < ApplicationRecord
     end
   end
 
-  def has_services?
-    self.services.present?
-  end
 
 end

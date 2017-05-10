@@ -7,9 +7,11 @@ class MultilocValidator < ActiveModel::EachValidator
     elsif !value.nil?
       locales = Tenant.settings 'core', 'locales'
       if !(value.keys - locales).empty?
-        record.errors[attribute] << (options[:message] || "contains unsupported locales #{(value.keys - locales)}")
+        record.errors.add(attribute, :unsupported_locales, 
+          message: (options[:message] || "contains unsupported locales #{(value.keys - locales)}"))
       elsif options[:presence] && value.values.all?(&:blank?)
-        record.errors[attribute] << (options[:message] || "should be set for at least one locale")
+        record.errors.add(attribute, :blank, 
+          message: (options[:message] || "should be set for at least one locale"))
       end
     end
   end

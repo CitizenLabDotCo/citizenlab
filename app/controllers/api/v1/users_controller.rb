@@ -30,7 +30,7 @@ class Api::V1::UsersController < ::ApplicationController
       UserMailer.welcome(@user).deliver_later
       render json: @user, status: :created
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: @user.errors.details, status: :unprocessable_entity
     end
   end
 
