@@ -2,7 +2,6 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { matcher, serializer } from 'jest-styled-components';
 
-import { mountWithIntl } from 'utils/testing/intl';
 import ImageList, { Images, StyledFileInput } from '../ImageList';
 
 expect.extend(matcher);
@@ -12,7 +11,7 @@ describe('<ImageList />', () => {
   const images = ['1', '2'];
   const jestFn = jest.fn();
   it('should receive images prop', () => {
-    const wrapper = mountWithIntl(
+    const wrapper = shallow(
       <ImageList
         loadImages={jestFn}
         storeImage={jestFn}
@@ -29,7 +28,8 @@ describe('<ImageList />', () => {
     const wrapper = mount(
       <Images images={images} />
     );
-    expect(wrapper.find('Image')).toHaveLength(2);
+    // Images are wrapped so when we pass 2, we get 4
+    expect(wrapper.find('Image')).toHaveLength(4);
   });
 
   it('input button should render with the correct styles', () => {

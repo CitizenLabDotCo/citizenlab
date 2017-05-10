@@ -6,11 +6,13 @@
 
 import React, { PropTypes } from 'react';
 import styled from 'styled-components';
+import { Image as ImageSUI } from 'semantic-ui-react';
 
 function Image(props) {
   return (
-    <div className={props.className}>
-    </div>
+    <ImageSUI
+      as={() => <div className={props.className} />}
+    />
   );
 }
 

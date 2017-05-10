@@ -1,13 +1,17 @@
 import { takeLatest } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
-import { createIdea } from 'api';
+import { createIdea, fetchTopics, fetchAreas } from 'api';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import {
+  loadAreasError,
+  loadAreasSuccess,
+  loadTopicsError,
+  loadTopicsSuccess,
   publishIdeaError, publishIdeaSuccess,
 } from './actions';
-import { PUBLISH_IDEA_REQUEST } from './constants';
+import { LOAD_AREAS_REQUEST, LOAD_TOPICS_REQUEST, PUBLISH_IDEA_REQUEST } from './constants';
 
-export const getIdeaRequestContent = (ideaMultiloc, titleMultiloc, images, attachments, userId, isDraft) => {
+export const getIdeaRequestContent = (ideaMultiloc, titleMultiloc, images, attachments, userId, isDraft, topics, areas) => {
   const result = {};
 
   result.author_id = userId;
@@ -16,16 +20,18 @@ export const getIdeaRequestContent = (ideaMultiloc, titleMultiloc, images, attac
   result.body_multiloc = ideaMultiloc;
   result.images = images;
   result.files = attachments.toJS();
+  result.topics = topics;
+  result.areas = areas;
 
   return result;
 };
 
 // Individual exports for testing
 export function* postIdea(action) {
-  const { payload, titles, images, attachments, userId, isDraft } = action;
+  const { payload, titles, images, attachments, topics, areas, userId, isDraft } = action;
 
   // merge relevant fields to match API request body format
-  const requestBody = getIdeaRequestContent(payload, titles, images, attachments, userId, isDraft);
+  const requestBody = getIdeaRequestContent(payload, titles, images, attachments, userId, isDraft, topics, areas);
 
   try {
     const response = yield call(createIdea, requestBody);
@@ -37,6 +43,42 @@ export function* postIdea(action) {
   }
 }
 
-export function* watchStoreIdea() {
+export function* getTopics() {
+  try {
+    const response = yield call(fetchTopics);
+
+    yield put(mergeJsonApiResources(response));
+    yield put(loadTopicsSuccess(response));
+  } catch (err) {
+    yield put(loadTopicsError(JSON.stringify(err)));
+  }
+}
+
+export function* getAreas() {
+  try {
+    const response = yield call(fetchAreas);
+
+    yield put(mergeJsonApiResources(response));
+    yield put(loadAreasSuccess(response));
+  } catch (err) {
+    yield put(loadAreasError(JSON.stringify(err)));
+  }
+}
+
+function* watchStoreIdea() {
   yield takeLatest(PUBLISH_IDEA_REQUEST, postIdea);
 }
+
+function* watchGetTopics() {
+  yield takeLatest(LOAD_TOPICS_REQUEST, getTopics);
+}
+
+function* watchGetAreas() {
+  yield takeLatest(LOAD_AREAS_REQUEST, getAreas);
+}
+
+export default {
+  watchStoreIdea,
+  watchGetTopics,
+  watchGetAreas,
+};

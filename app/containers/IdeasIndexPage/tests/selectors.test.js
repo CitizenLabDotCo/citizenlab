@@ -4,10 +4,7 @@
 // const selector = makeSelectIdeasIndexPageDomain();
 
 describe('IdeasIndexPage selectors', () => {
-  describe('makeSelectIdea', () => {
-    it('should select the currently loaded idea', () => {
-      // TODO (after merge with master)
-      expect(true).toEqual(true);
-    });
+  it('should have tests in the future', () => {
+    expect(true).toEqual(true);
   });
 });

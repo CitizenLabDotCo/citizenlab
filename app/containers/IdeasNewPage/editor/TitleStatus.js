@@ -1,15 +1,24 @@
 import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+
+import messages from '../messages';
+
+const Error = ({ message, className }) => (<div className={className}>
+  <FormattedMessage {...message} />
+</div>);
+
+const ErrorStyled = styled(Error)`
+  color: #f00;
+`;
 
 function TitleStatus(props) {
   const { className, short, long, length } = props;
 
   return (
     <div className={className}>
-      {short && <FormattedMessage {...messages.shortTitleError} />}
-      {long && <FormattedMessage {...messages.longTitleError} />}
+      {short && <ErrorStyled message={messages.shortTitleError} />}
+      {long && <ErrorStyled message={messages.longTitleError} />}
       {!(short || long) &&
         <FormattedMessage
           {...messages.charactersLeft}
@@ -27,16 +36,18 @@ TitleStatus.propTypes = {
   length: PropTypes.number.isRequired,
 };
 
+Error.propTypes = {
+  message: PropTypes.object.isRequired,
+  className: PropTypes.string,
+};
+
 export default styled(TitleStatus)`
-  width: 75px;
-  height: 16px;
   font-stretch: normal;
   font-family: OpenSans;
   text-align: left;
   letter-spacing: normal;
   font-style: normal;
   line-height: 1.6;
-  color: #e74c3c;
   font-size: 10px;
   font-weight: normal;
 `;
