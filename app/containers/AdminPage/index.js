@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Grid } from 'semantic-ui-react';
-import Sidebar from './Sidebar/';
+import Sidebar from './SideBar/';
 
 const Wrapper = styled.div`
   padding-top: 100px;
