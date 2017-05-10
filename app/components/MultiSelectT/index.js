@@ -20,6 +20,11 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import messages from './messages';
 
+export const optionRendered = (option) => (
+  <T value={JSON.parse(option.label)} />
+);
+
+
 class MultiSelectT extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
@@ -42,6 +47,15 @@ class MultiSelectT extends React.PureComponent { // eslint-disable-line react/pr
     this.timer = null;
   }
 
+  valueRenderer = (option) => {
+    // we must do manual parsing to extract the original text from <T>
+    const { userLocale, tenantLocales } = this.props;
+
+    return (<span
+      dangerouslySetInnerHTML={{ __html: findTranslatedText(JSON.parse(option.label), userLocale || fallbackUserLocale, tenantLocales || fallbackTenantLocales) }}
+    />);
+  };
+
   handleChange(selected) {
     if (selected.length <= 3) {
       this.setState({ selected, error: false });
@@ -49,21 +63,6 @@ class MultiSelectT extends React.PureComponent { // eslint-disable-line react/pr
     } else {
       this.setState({ error: true });
     }
-  }
-
-  optionRendered(option) {
-    return (
-      <T value={JSON.parse(option.label)} />
-    );
-  }
-
-  valueRenderer(option) {
-    // we must do manual parsing to extract the original text from <T>
-    const { userLocale, tenantLocales } = this.props;
-
-    return (<span
-      dangerouslySetInnerHTML={{ __html: findTranslatedText(JSON.parse(option.label), userLocale || fallbackUserLocale, tenantLocales || fallbackTenantLocales) }}
-    />);
   }
 
   /* eslint-disable */
@@ -78,7 +77,7 @@ class MultiSelectT extends React.PureComponent { // eslint-disable-line react/pr
           value={selected}
           multi={true}
           options={options}
-          optionRenderer={this.optionRendered}
+          optionRenderer={optionRendered}
           valueRenderer={this.valueRenderer}
           onChange={this.handleChange}
           placeholder={placeholder}
