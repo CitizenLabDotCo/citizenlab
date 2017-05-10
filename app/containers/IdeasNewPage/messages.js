@@ -52,7 +52,7 @@ export default defineMessages({
   },
   charactersLeft: {
     id: 'app.containers.IdeasNewPage.charactersLeft',
-    defaultMessage: '{charsLeft} characters left',
+    defaultMessage: '{charsLeft} characters left {optionLabel}',
   },
   storeImageError: {
     id: 'app.containers.IdeasNewPage.storeImageError',
@@ -73,5 +73,41 @@ export default defineMessages({
   submittingComment: {
     id: 'app.containers.IdeasNewPage.submittingComment',
     defaultMessage: 'Publishing...',
+  },
+  genericFile: {
+    id: 'app.containers.IdeasNewPage.genericFile',
+    defaultMessage: 'File',
+  },
+  topicsLabel: {
+    id: 'app.containers.IdeasNewPage.topicsLabel',
+    defaultMessage: 'topics',
+  },
+  topicsPlaceholder: {
+    id: 'app.containers.IdeasNewPage.topicsPlaceholder',
+    defaultMessage: 'Select topics',
+  },
+  areasLabel: {
+    id: 'app.containers.IdeasNewPage.areasLabel',
+    defaultMessage: 'areas',
+  },
+  areasPlaceholder: {
+    id: 'app.containers.IdeasNewPage.areasPlaceholder',
+    defaultMessage: 'Select areas',
+  },
+  loadingTopics: {
+    id: 'app.containers.IdeasNewPage.loadingTopics',
+    defaultMessage: 'Loading topics...',
+  },
+  loadTopicsError: {
+    id: 'app.containers.IdeasNewPage.loadTopicsError',
+    defaultMessage: 'Cannot load topic list',
+  },
+  loadingAreas: {
+    id: 'app.containers.IdeasNewPage.loadingAreas',
+    defaultMessage: 'Loading areas...',
+  },
+  loadAreasError: {
+    id: 'app.containers.IdeasNewPage.loadAreasError',
+    defaultMessage: 'Cannot load area list',
   },
 });

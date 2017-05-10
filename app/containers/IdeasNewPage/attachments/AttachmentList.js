@@ -4,25 +4,30 @@
 *
 */
 
-import React, { PropTypes } from 'react';
-import { Button, Row, Column, Label } from 'components/Foundation';
-import styled from 'styled-components';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Segment, Button, List, Input, Label } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
-import Attachment from './Attachment';
-import messages from './messages';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { getFromState } from 'utils/immutables';
 
-export const Attachments = (props) => (<span>
-  {props.attachments.map((attachment, index) =>
-    (<Column large={3} key={index}>
-      <Attachment
-        source={attachment}
-      />
-    </Column>)
-  )}</span>
+import { selectSubmitIdea } from '../selectors';
+import Attachment from './Attachment';
+import messages from '../messages';
+
+export const Attachments = (props) => (<List>
+  {props.attachments.map((attachment, index) => (
+    <Attachment
+      key={index}
+      file={attachment}
+    />
+  ))}</List>
 );
 
 const FileInput = (props) => (
-  <input
+  <Input
     type="file"
     onChange={props.onFileUpload}
     className={props.className}
@@ -35,8 +40,8 @@ export const StyledFileInput = styled(FileInput)`
   width: 100px;
   margin-left: 10px;
   display: inline-block;
-  position: absolute;
-  height: 120px;
+  position: absolute !important; // override SUI's position
+  height: 4rem;
 `;
 
 class AttachmentList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -78,7 +83,7 @@ class AttachmentList extends React.PureComponent { // eslint-disable-line react/
 
     const StyledFileButton = styled(FileButton)`
       width: 100px;
-      margin: 10px;
+      height: 4rem;
       z-index: 2;
     `;
 
@@ -91,13 +96,13 @@ class AttachmentList extends React.PureComponent { // eslint-disable-line react/
         {storeAttachmentError && <Label>
           <FormattedMessage {...messages.storeAttachmentError} />
         </Label>}
-        <Row>
+        <Segment>
           <AttachmentsStyled attachments={attachments} />
-          <Column large={3}>
+          <div>
             <StyledFileInput onFileUpload={this.onFileUpload} />
             <StyledFileButton />
-          </Column>
-        </Row>
+          </div>
+        </Segment>
       </div>
     );
   }
@@ -118,4 +123,16 @@ FileInput.propTypes = {
   className: PropTypes.string,
 };
 
-export default AttachmentList;
+const mapStateToProps = createStructuredSelector({
+  ideasNewPageState: selectSubmitIdea,
+});
+
+const mergeProps = ({ ideasNewPageState: pageState }, dispatchProps, { storeAttachment }) => ({
+  attachments: getFromState(pageState, 'draft', 'attachments'),
+  storeAttachmentError: getFromState(pageState, 'draft', 'storeAttachmentError'),
+  storeAttachment,
+});
+
+export default styled(connect(mapStateToProps, null, mergeProps)(AttachmentList))`
+  // none yet
+`;

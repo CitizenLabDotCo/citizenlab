@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { IntlProvider, intlShape } from 'react-intl';
 import { mount, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
+
 import { jestFn } from './constants';
 
 const messages = require('../../translations/en'); // en.json

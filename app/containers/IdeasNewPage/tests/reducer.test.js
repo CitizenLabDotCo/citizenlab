@@ -1,10 +1,11 @@
-
 import { fromJS } from 'immutable';
 import { randomString } from 'utils/testing/methods';
+import { generateResourcesAreaValue } from 'utils/testing/mocks';
 
 import ideasNewPageReducer, { ideasNewPageInitialState } from '../reducer';
 import {
-  setTitle, storeAttachment, storeImage,
+  loadAreasSuccess, loadTopicsSuccess,
+  setTitle, storeAttachment, storeImage, storeSelectedAreas, storeSelectedTopics,
 } from '../actions';
 
 describe('ideasNewPageReducer', () => {
@@ -29,6 +30,18 @@ describe('ideasNewPageReducer', () => {
       images: [],
       loadImagesError: false,
       storeImageError: false,
+    },
+    topics: {
+      ids: [],
+      selected: [],
+      loadError: null,
+      loading: false,
+    },
+    areas: {
+      ids: [],
+      selected: [],
+      loadError: null,
+      loading: false,
     },
   };
 
@@ -85,5 +98,72 @@ describe('ideasNewPageReducer', () => {
     ).toJS();
 
     expect(nextState.draft.images).toEqual(expectedState.draft.images);
+  });
+
+  describe('topics and areas', () => {
+    const apiResponse = {
+      data: [],
+    };
+    const expectedIds = [];
+    for (let i = 0; i < 3; i += 1) {
+      apiResponse.data[i] = generateResourcesAreaValue(i.toString()).data;
+      expectedIds.push(i.toString());
+    }
+
+    describe('[AREAS|TOPICS]_LOAD_SUCCESS', () => {
+      describe('LOAD_AREAS_SUCCESS', () => {
+        it('should returns areas\' ids', () => {
+          const expectedState = initialState;
+          expectedState.areas.ids = expectedIds;
+
+          const nextState = ideasNewPageReducer(
+            fromJS(ideasNewPageInitialState), loadAreasSuccess(apiResponse)
+          ).toJS();
+
+          expect(nextState.areas.ids).toEqual(expectedState.areas.ids);
+        });
+      });
+
+      describe('LOAD_TOPICS_SUCCESS', () => {
+        it('should returns topics\' ids', () => {
+          const expectedState = initialState;
+          expectedState.topics.ids = expectedIds;
+
+          const nextState = ideasNewPageReducer(
+            fromJS(ideasNewPageInitialState), loadTopicsSuccess(apiResponse)
+          ).toJS();
+
+          expect(nextState.topics.ids).toEqual(expectedState.topics.ids);
+        });
+      });
+    });
+
+    describe('STORE_SELECTED_[AREAS|TOPICS]', () => {
+      describe('STORE_SELECTED_AREAS', () => {
+        it('should returns selected areas\' ids', () => {
+          const expectedState = initialState;
+          expectedState.areas.selected = expectedIds;
+
+          const nextState = ideasNewPageReducer(
+            fromJS(ideasNewPageInitialState), storeSelectedAreas(expectedIds)
+          ).toJS();
+
+          expect(nextState.areas.selected).toEqual(expectedState.areas.selected);
+        });
+      });
+
+      describe('STORE_SELECTED_TOPICS', () => {
+        it('should returns selected topics\' ids', () => {
+          const expectedState = initialState;
+          expectedState.topics.selected = expectedIds;
+
+          const nextState = ideasNewPageReducer(
+            fromJS(ideasNewPageInitialState), storeSelectedTopics(expectedIds)
+          ).toJS();
+
+          expect(nextState.topics.selected).toEqual(expectedState.topics.selected);
+        });
+      });
+    });
   });
 });
