@@ -1,51 +1,71 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { createStructuredSelector } from 'reselect';
-import { Icon, Menu, Table } from 'semantic-ui-react';
+import { Grid, Icon, Menu, Table } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import { bindActionCreators } from 'redux';
 import T from 'containers/T';
 import { preprocess } from 'utils/reactRedux';
 import { getFromState } from 'utils/immutables';
-import { selectResourcesDomain } from 'utils/resources/selectors';
 import WatchSagas from 'containers/WatchSagas';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import styled from 'styled-components';
+import { push } from 'react-router-redux';
 
+import Sidebar from './../SideBar/';
 import sagas from './sagas';
 import {
+  makeSelectPages,
   selectAdminPages,
 } from './selectors';
 import { loadPagesRequest } from './actions';
 import messages from './messages';
 
+const Wrapper = styled.div`
+  padding-top: 100px;
+`;
 
 class AdminPages extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
     const { loadPagesRequest: lpr } = this.props;
-    lpr(1, 5, null, true);
+    lpr(1, 5, null);
   }
 
-  getPageTitle = (page) => () => page.getIn(['attributes', 'title_multiloc']);
+  getPageTitle = (page) => page.attributes.title_multiloc;
 
   goToNextPage = () => {
-    const { loadPagesRequest: lpr, nextPageNumber, nextPageItemCount, pageCount } = this.props;
-    lpr(nextPageNumber, nextPageItemCount, pageCount, false);
+    const { nextPageNumber, nextPageItemCount, pageCount, currentPageNumber: pageNumber } = this.props;
+
+    if (!this.isLastPage(pageNumber, pageCount)) {
+      this.props.loadPagesRequest(nextPageNumber, nextPageItemCount, pageCount);
+    }
   };
 
   goToPreviousPage = () => {
-    const { loadPagesRequest: lpr, prevPageNumber, prevPageItemCount, pageCount } = this.props;
-    lpr(prevPageNumber, prevPageItemCount, pageCount, false);
+    const { prevPageNumber, prevPageItemCount, pageCount, currentPageNumber: pageNumber } = this.props;
+
+    if (!this.isFirstPage(pageNumber)) {
+      this.props.loadPagesRequest(prevPageNumber, prevPageItemCount, pageCount);
+    }
   };
 
   goToPage = (pageNumber) => () => {
-    const { loadPagesRequest: lpr, currentPageItemCount, pageCount } = this.props;
-    lpr(pageNumber, currentPageItemCount, pageCount, false);
+    const { currentPageItemCount, pageCount } = this.props;
+    this.props.loadPagesRequest(pageNumber, currentPageItemCount, pageCount);
   };
+
+  routeToPage = (page) => {
+    this.props.routeToPage(page.id);
+  };
+
+  isFirstPage = (pageNumber) => (pageNumber === 1);
+
+  isLastPage = (pageNumber, pageCount) => (pageNumber === pageCount);
 
   render() {
     let table = null;
     const pageNumbers = [];
-    const { pages, pageCount, loading, loadError, currentPageNumber } = this.props;
+    const { pages, pageCount, loading, loadError, currentPageNumber, location } = this.props;
 
     for (let i = 1; i <= pageCount; i += 1) {
       pageNumbers.push(i);
@@ -56,6 +76,7 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
     } else if (loadError) {
       table = <FormattedMessage {...messages.loadError} />;
     } else if (pages && pages.size > 0) {
+      const pagesJS = pages.toJS();
       table = (<Table celled>
         <Table.Header>
           <Table.Row>
@@ -66,13 +87,18 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
         </Table.Header>
 
         <Table.Body>
-          {pages.map((page, index) =>
-            <Table.Row key={index}>
-              <Table.Cell>
-                <T value={this.getPageTitle(page)} />
-              </Table.Cell>
-            </Table.Row>)
-          }
+          {Object.keys(pagesJS).map((page, index) => (<Table.Row key={index}>
+            <Table.Cell>
+              <T value={this.getPageTitle(pagesJS[page])} />
+            </Table.Cell>
+            <Table.Cell>
+              <Icon
+                style={{ cursor: 'pointer' }}
+                name="arrow right"
+                onClick={() => this.routeToPage(pagesJS[page])}
+              />
+            </Table.Cell>
+          </Table.Row>))}
         </Table.Body>
 
         { (pageNumbers && pageNumbers.length > 1) ? (
@@ -110,7 +136,18 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
     return (
       <div>
         <WatchSagas sagas={sagas} />
-        {table}
+        <Wrapper>
+          <Grid stackable>
+            <Grid.Row>
+              <Grid.Column width={3}>
+                <Sidebar location={location} />
+              </Grid.Column>
+              <Grid.Column width={10}>
+                {table}
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Wrapper>
       </div>
     );
   }
@@ -128,17 +165,27 @@ AdminPages.propTypes = {
   loading: PropTypes.bool.isRequired,
   loadError: PropTypes.bool.isRequired,
   loadPagesRequest: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
+  routeToPage: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   pageState: selectAdminPages,
-  resourcesState: selectResourcesDomain(),
+  pages: makeSelectPages(),
 });
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({ loadPagesRequest }, dispatch);
+const customActionCreators = {
+  routeToPage(pageId) {
+    return push(`/pages/${pageId}`);
+  },
+};
 
-const mergeProps = ({ pageState, resourcesState }, dispatchProps) => ({
-  pages: getFromState(resourcesState, 'pages'),
+export const mapDispatchToProps = (dispatch) => bindActionCreators({
+  loadPagesRequest,
+  ...customActionCreators,
+}, dispatch);
+
+const mergeProps = ({ pageState, pages }, dispatchProps, { location }) => ({
   pagesIds: getFromState(pageState, 'pageIds'),
   prevPageNumber: getFromState(pageState, 'prevPageNumber'),
   prevPageItemCount: getFromState(pageState, 'prevPageItemCount'),
@@ -149,6 +196,8 @@ const mergeProps = ({ pageState, resourcesState }, dispatchProps) => ({
   pageCount: getFromState(pageState, 'pageCount'),
   loading: getFromState(pageState, 'loading'),
   loadError: getFromState(pageState, 'loadError'),
+  pages,
+  location,
   ...dispatchProps,
 });
 

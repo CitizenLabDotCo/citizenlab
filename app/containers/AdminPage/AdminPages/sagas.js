@@ -14,13 +14,13 @@ import { mergeJsonApiResources } from '../../../utils/resources/actions';
 export function* getPages(action) {
   try {
     const pageCount = action.pageCount;
-    const usersResponse = yield call(fetchPages, {
+    const response = yield call(fetchPages, {
       'page[number]': action.nextPageNumber,
       'page[size]': action.nextPageItemCount,
     });
 
-    yield put(mergeJsonApiResources(usersResponse));
-    yield put(loadPagesSuccess(usersResponse, pageCount));
+    yield put(mergeJsonApiResources(response));
+    yield put(loadPagesSuccess(response, pageCount));
   } catch (err) {
     yield put(loadPagesError(JSON.stringify(err)));
   }
@@ -30,6 +30,6 @@ function* watchLoadPages() {
   yield takeLatest(LOAD_PAGES_REQUEST, getPages);
 }
 
-export default [
+export default {
   watchLoadPages,
-];
+};

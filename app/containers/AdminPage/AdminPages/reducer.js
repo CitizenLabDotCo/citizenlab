@@ -29,17 +29,17 @@ function adminPagesReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_PAGES_REQUEST:
       return state
-        .set('loading', action.initialLoad)
+        .set('loading', true)
         .set('loadError', false);
     case LOAD_PAGES_SUCCESS: {
       const ids = action.payload.pages.data.map((user) => user.id);
-      const prevPageNumber = getPageNumberFromUrl(action.payload.users.links.prev);
-      const prevPageItemCount = getPageItemCountFromUrl(action.payload.users.links.prev);
-      const currentPageNumber = getPageNumberFromUrl(action.payload.users.links.self);
-      const currentPageItemCount = getPageItemCountFromUrl(action.payload.users.links.self);
-      const nextPageNumber = getPageNumberFromUrl(action.payload.users.links.next);
-      const nextPageItemCount = getPageItemCountFromUrl(action.payload.users.links.next);
-      const lastPageNumber = getPageNumberFromUrl(action.payload.users.links.last);
+      const prevPageNumber = getPageNumberFromUrl(action.payload.pages.links.prev);
+      const prevPageItemCount = getPageItemCountFromUrl(action.payload.pages.links.prev);
+      const currentPageNumber = getPageNumberFromUrl(action.payload.pages.links.self);
+      const currentPageItemCount = getPageItemCountFromUrl(action.payload.pages.links.self);
+      const nextPageNumber = getPageNumberFromUrl(action.payload.pages.links.next);
+      const nextPageItemCount = getPageItemCountFromUrl(action.payload.pages.links.next);
+      const lastPageNumber = getPageNumberFromUrl(action.payload.pages.links.last);
 
       let pageCount = 1;
       if (_.isNumber(lastPageNumber)) {
