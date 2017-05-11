@@ -1,14 +1,8 @@
-/*
- *
- * UsersPage actions
- *
- */
-
 import {
   LOAD_USERS_REQUEST, LOAD_USERS_SUCCESS, LOAD_USERS_ERROR,
 } from './constants';
 
-export function loadUsers(nextPageNumber, nextPageItemCount, pageCount, initialLoad) {
+export function loadUsers(nextPageNumber, nextPageItemCount, pageCount, initialLoad = false) {
   return {
     type: LOAD_USERS_REQUEST,
     nextPageNumber,

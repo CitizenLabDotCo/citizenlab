@@ -234,6 +234,7 @@
     "query-string": "^4.3.4",
     "react": "^15.4.1",
     "react-addons-create-fragment": "^15.5.3",
+    "react-color": "^2.11.7",
     "react-dom": "^15.4.1",
     "react-draft-wysiwyg": "^1.9.0",
     "react-dropzone": "^3.12.2",

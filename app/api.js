@@ -121,6 +121,23 @@ export function updateCurrentUser(values, userId) {
   });
 }
 
+export function updateSettings(tenantId, locale, organizationName, accentColorHex) {
+  return request(`${API_PATH}/tenants/${tenantId}`, {
+    tenant: {
+      settings: {
+        core: {
+          organization_name: {
+            [locale]: organizationName,
+          },
+          style_accent_bg: accentColorHex,
+        },
+      },
+    },
+  }, {
+    method: 'PATCH',
+  });
+}
+
 export function fetchCurrentTenant() {
   return request(`${API_PATH}/tenants/current`);
 }

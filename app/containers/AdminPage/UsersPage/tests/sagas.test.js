@@ -8,7 +8,7 @@ import sagaHelper from 'redux-saga-testing';
 import { getUsers } from '../sagas';
 import { mergeJsonApiResources } from '../../../../utils/resources/actions';
 import { fetchUsers } from '../../../../api';
-import { localStorageMock } from '../../../../utils/testUtils';
+import { localStorageMock } from '../../../../utils/testing/methods';
 import { usersLoaded } from '../actions';
 
 describe('UsersPage sagas', () => {

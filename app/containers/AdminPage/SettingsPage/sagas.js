@@ -1,33 +1,21 @@
-/*
 import { call, put } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
-import { usersLoaded, usersLoadError } from './actions';
-import { LOAD_USERS_REQUEST } from './constants';
-import { fetchUsers } from '../../../api';
+import { saveSettingsSuccess, saveSettingsError } from './actions';
+import { SAVE_SETTINGS_REQUEST } from './constants';
+import { updateSettings } from '../../../api';
 import { mergeJsonApiResources } from '../../../utils/resources/actions';
-*/
 
-/*
-function* getUsers(action) {
+function* postSettings(action) {
   try {
-    const pageCount = action.pageCount;
-    const usersResponse = yield call(fetchUsers, {
-      'page[number]': action.nextPageNumber,
-      'page[size]': action.nextPageItemCount,
-    });
-
-    yield put(mergeJsonApiResources(usersResponse));
-    yield put(usersLoaded(usersResponse, pageCount));
+    const { tenantId, locale, organizationName, accentColorHex } = action;
+    const response = yield call(updateSettings, tenantId, locale, organizationName, accentColorHex);
+    yield put(mergeJsonApiResources(response));
+    yield put(saveSettingsSuccess(response));
   } catch (err) {
-    yield put(usersLoadError(err));
+    yield put(saveSettingsError(err));
   }
 }
 
-function* watchLoadUsers() {
-  yield takeLatest(LOAD_USERS_REQUEST, getUsers);
+export function* watchSaveSettings() {
+  yield takeLatest(SAVE_SETTINGS_REQUEST, postSettings);
 }
-
-export default [
-  watchLoadUsers,
-];
-*/
