@@ -7,7 +7,7 @@ import { preprocess } from 'utils';
 import { selectResourcesDomain } from 'utils/resources/selectors';
 import T from 'containers/T';
 
-import Autorizer from 'utils/containers/authorizer';
+import Autorize from 'utils/containers/authorize';
 
 import MapChildren from './mapChildren';
 
@@ -23,9 +23,9 @@ const Show = ({ comment, content, children, createdAt, ideaId, commentId, author
       <Comment.Text>
         <T value={content} />
       </Comment.Text>
-      <Autorizer action={['comments', 'create']}>
+      <Autorize action={['comments', 'create']}>
         <Editor parentId={commentId} ideaId={ideaId} />
-      </Autorizer>
+      </Autorize>
 
     </Comment.Content>
     <MapChildren nodes={children} />

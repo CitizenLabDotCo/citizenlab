@@ -6,7 +6,7 @@ import { Comment } from 'semantic-ui-react';
 
 import T from 'containers/T';
 import ImageCarousel from 'components/ImageCarousel';
-import Autorizer from 'utils/containers/authorizer';
+import Autorize from 'utils/containers/authorize';
 
 import { selectIdea } from '../selectors';
 
@@ -50,9 +50,9 @@ class Show extends React.PureComponent {
             <Comment.Text>
               <T value={body_multiloc} />
             </Comment.Text>
-            <Autorizer action={['comments', 'create']}>
+            <Autorize action={['comments', 'create']}>
               <Editor ideaId={id} />
-            </Autorizer>
+            </Autorize>
             </Comment.Content>
           </Comment>
         </Comment.Group>
