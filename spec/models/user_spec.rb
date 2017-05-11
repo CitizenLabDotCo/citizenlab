@@ -99,4 +99,13 @@ RSpec.describe User, type: :model do
 
   end
 
+  describe "avatar" do
+
+    it "is automatically generated when it's not specified" do
+      user = build(:user, avatar: nil)
+      user.save
+      expect(user.avatar).to be_present
+    end
+  end
+
 end
