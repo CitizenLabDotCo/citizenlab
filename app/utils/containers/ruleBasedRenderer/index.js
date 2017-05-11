@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+
+// this function returns one of the two children of the components according if the check returns true or false
 const createRuledComponent = ({ check = () => true }) => ({ base, resource, children }) => {
   const isAutorized = check(base, resource);
   const elements = React.Children.toArray(children);
@@ -10,6 +12,7 @@ const createRuledComponent = ({ check = () => true }) => ({ base, resource, chil
   return null;
 };
 
+// here we mostly select the specific authorization check we want to use
 class RuleBasedRenderer extends React.Component {
   constructor(props) {
     super();

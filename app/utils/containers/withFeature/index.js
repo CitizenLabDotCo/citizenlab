@@ -7,9 +7,13 @@ import RuleBasedRenderer from 'utils/containers/ruleBasedRenderer';
 import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
 import authorizations from './authorizations';
 
+// we mostly pass down the props to the RuleBasedRendere and the base resource (the logged User)
 const mapStateToProps = () => createStructuredSelector({
   base: (state, { feature }) => makeSelectCurrentTenantImm('attributes', 'settings', feature)(state),
 });
+
+// the WithFeatures only has to actions: the withoutFeature action; which allways returns true and the feature action.
+// if a specific feature is requested the feature action is set.
 
 const mergeProps = (stateP, dispatchP, ownP) => {
   const { feature, children } = ownP;
