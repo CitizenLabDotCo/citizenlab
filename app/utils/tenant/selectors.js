@@ -1,17 +1,12 @@
 import { createSelector } from 'reselect';
 import { selectResourcesDomain } from 'utils/resources/selectors';
 
-const selectTenantDomain = () => (state) => state.get('tenant');
+const selectTenantDomain = (...type) => (state) => state.getIn(['tenant', ...type]);
 
-const makeSelectCurrentTenantImm = () => createSelector(
-  selectTenantDomain(),
+const makeSelectCurrentTenantImm = (...type) => createSelector(
+  selectAuthDomain('id'),
   selectResourcesDomain(),
-  (tenant, resources) => resources.getIn(['tenants', tenant.get('id')])
-);
-
-const makeSelectCurrentTenant = () => createSelector(
-  makeSelectCurrentTenantImm(),
-  (immutableTenant) => immutableTenant && immutableTenant.toJS()
+  (id, resources) => resources.getIn(['users', id, ...type]),
 );
 
 const makeSelectSetting = (settingPath) => createSelector(

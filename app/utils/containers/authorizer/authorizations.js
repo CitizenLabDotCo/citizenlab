@@ -15,4 +15,5 @@ const authorizations = {
     },
   },
 };
+
 export authorizations;

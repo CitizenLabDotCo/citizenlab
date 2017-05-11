@@ -42,7 +42,6 @@ class Editor extends React.PureComponent {
   render() {
     const { editorState } = this.state;
     const { parentId, ideaId } = this.props;
-    if (!this.props.currentUserId) return <div> banana </div>;
     return (
       <Accordion >
         <Accordion.Title style={{ fontSize: '0px', height: '0' }}>

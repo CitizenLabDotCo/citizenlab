@@ -15,7 +15,6 @@ import Editor from './common/editor';
 import Votes from './show/votes';
 
 import Comments from './comments';
-// import CommentEditorWrapper from '../CommentEditorWrapper';
 
 const Carousel = ({ images }) => {
   if (!images[0]) return null;

@@ -11,7 +11,10 @@ import MapChildren from './mapChildren';
 import Editor from '../common/editor';
 import Author from '../common/author';
 
-const Show = ({ content, children, createdAt, ideaId, commentId, authorId }) => (
+
+import Autorizator, { Else } from '../../authorizations';
+
+const Show = ({ comment, content, children, createdAt, ideaId, commentId, authorId }) => (
   <Comment>
     <Comment.Content>
       <Author authorId={authorId}>
@@ -20,7 +23,12 @@ const Show = ({ content, children, createdAt, ideaId, commentId, authorId }) => 
       <Comment.Text>
         <T value={content} />
       </Comment.Text>
-      {<Editor parentId={commentId} ideaId={ideaId} />}
+      <Autorizator action={['comments', 'create']} resource={comment}>
+        <Editor parentId={commentId} ideaId={ideaId} />
+        <Else>
+          <div>asdfadsf</div>
+        </Else>
+      </Autorizator>
     </Comment.Content>
     <MapChildren nodes={children} />
   </Comment>
@@ -50,6 +58,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const authorId = comment.getIn(['relationships', 'author', 'data', 'id']);
   const ideaId = comment.getIn(['relationships', 'idea', 'data', 'id']);
   return {
+    comment,
     content,
     createdAt,
     children,

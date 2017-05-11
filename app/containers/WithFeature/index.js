@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import { makeSelectFeature } from './selectors';
 
 export class WithFeature extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-
   render() {
     const { featureObject } = this.props;
     if (featureObject && featureObject.get('allowed') && featureObject.get('enabled')) {
