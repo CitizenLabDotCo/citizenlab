@@ -11,7 +11,7 @@ class Api::V1::TenantsController < ApplicationController
     if @tenant.update(settings: updated_settings)
       render json: @tenant, status: :ok
     else
-      render json: {errors: @tenant.errors}, status: :unprocessable_entity
+      render json: {errors: @tenant.errors.details}, status: :unprocessable_entity
     end
   end
 

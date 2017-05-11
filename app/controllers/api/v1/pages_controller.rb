@@ -26,7 +26,7 @@ class Api::V1::PagesController < ::ApplicationController
     if @page.save
       render json: @page, status: :created
     else
-      render json: @page.errors, status: :unprocessable_entity
+      render json: @page.errors.details, status: :unprocessable_entity
     end
   end
 
@@ -34,7 +34,7 @@ class Api::V1::PagesController < ::ApplicationController
     if @page.update(page_params)
       render json: @page, status: :ok
     else
-      render json: @page.errors, status: :unprocessable_entity
+      render json: @page.errors.details, status: :unprocessable_entity
     end
   end
 

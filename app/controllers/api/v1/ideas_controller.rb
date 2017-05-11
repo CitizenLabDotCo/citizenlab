@@ -30,7 +30,7 @@ class Api::V1::IdeasController < ApplicationController
     if @idea.save
       render json: @idea, status: :created, include: ['author','topics','areas']
     else
-      render json: { errors: @idea.errors }, status: :unprocessable_entity
+      render json: { errors: @idea.errors.details }, status: :unprocessable_entity
     end
   ensure
     clean_tempfile
@@ -41,7 +41,7 @@ class Api::V1::IdeasController < ApplicationController
     if @idea.update(idea_params)
       render json: @idea, status: :ok, include: ['author','topics','areas']
     else
-      render json: @idea.errors, status: :unprocessable_entity
+      render json: { errors: @idea.errors.details }, status: :unprocessable_entity
     end
   end
 
