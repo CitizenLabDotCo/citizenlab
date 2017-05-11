@@ -11,7 +11,7 @@ class Api::V1::SocialRegistrationController < ::ApplicationController
       UserMailer.welcome(@user).deliver_later
       render json: @user, status: :created
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: {errors: @user.errors.details }, status: :unprocessable_entity
     end
   end
 

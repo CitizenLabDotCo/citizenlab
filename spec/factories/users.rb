@@ -10,5 +10,10 @@ FactoryGirl.define do
     demographics {}
     roles []
     locale "en"
+
+    factory :admin do
+      roles [{type: 'admin'}]
+    end
   end
+
 end

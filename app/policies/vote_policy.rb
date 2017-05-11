@@ -8,20 +8,25 @@ class VotePolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.all
+      if user && user.admin?
+        scope
+      elsif user
+        scope.where(user: user)
+      else
+        scope.none
+      end
     end
   end
 
   def create?
-    user && record.user_id == user.id
-    true
+    user
   end
 
   def show?
-    true
+    (user && (record.user_id == user.id || user.admin?))
   end
 
   def destroy?
-    user && record.user_id == user.id
+    show?
   end
 end

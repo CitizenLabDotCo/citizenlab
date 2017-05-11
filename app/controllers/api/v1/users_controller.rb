@@ -30,15 +30,15 @@ class Api::V1::UsersController < ::ApplicationController
       UserMailer.welcome(@user).deliver_later
       render json: @user, status: :created
     else
-      render json: @user.errors.details, status: :unprocessable_entity
+      render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
   end
 
   def update
     if @user.update(permitted_attributes(@user))
-      send_success(@user)
+      render json: @user, status: :ok
     else
-      send_error(@user.errors, :unprocessable_entity)
+      render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
   end
 

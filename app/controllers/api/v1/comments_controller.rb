@@ -25,7 +25,7 @@ class Api::V1::CommentsController < ApplicationController
     if @comment.save
       render json: @comment, status: :created, include: ['author']
     else
-      render json: { errors: @comment.errors }, status: :unprocessable_entity
+      render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end
   end
 
@@ -33,7 +33,7 @@ class Api::V1::CommentsController < ApplicationController
     if @comment.update(comment_params)
       render json: @comment, status: :ok, include: ['author']
     else
-      render json: { errors: @comment.errors }, status: :unprocessable_entity
+      render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end
   end
 
