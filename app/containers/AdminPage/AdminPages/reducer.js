@@ -32,7 +32,7 @@ function adminPagesReducer(state = initialState, action) {
         .set('loading', true)
         .set('loadError', false);
     case LOAD_PAGES_SUCCESS: {
-      const ids = action.payload.pages.data.map((user) => user.id);
+      const ids = action.payload.pages.data.map((page) => page.id);
       const prevPageNumber = getPageNumberFromUrl(action.payload.pages.links.prev);
       const prevPageItemCount = getPageItemCountFromUrl(action.payload.pages.links.prev);
       const currentPageNumber = getPageNumberFromUrl(action.payload.pages.links.self);

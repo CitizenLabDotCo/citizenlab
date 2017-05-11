@@ -17,11 +17,11 @@ describe('AdminPages sagas', () => {
   Object.defineProperty(window, 'localStorage', { value: localStorageMock() });
 
   describe('getPages', () => {
-    const it = sagaHelper(getPages());
+    const it = sagaHelper(getPages({}));
 
     it('should have called the correct API', (result) => {
       // TODO: fir this
-      expect(result).toEqual(call(fetchPages));
+      expect(result).toEqual(call(fetchPages, {}));
     });
 
     it('then, should dispatch mergeJsonApiResources action', (result) => {

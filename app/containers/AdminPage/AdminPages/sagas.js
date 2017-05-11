@@ -3,13 +3,13 @@
  * AdminPages sagas
  *
  */
-
 import { call, put } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
+import { fetchPages } from 'api';
+import { mergeJsonApiResources } from 'utils/resources/actions';
+
 import { loadPagesError, loadPagesSuccess } from './actions';
 import { LOAD_PAGES_REQUEST } from './constants';
-import { fetchPages } from '../../../api';
-import { mergeJsonApiResources } from '../../../utils/resources/actions';
 
 export function* getPages(action) {
   try {

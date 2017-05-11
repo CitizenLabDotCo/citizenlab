@@ -1,5 +1,19 @@
-describe('<AdminPages />', () => {
-  it('should have tests in the future', () => {
-    expect(true).toEqual(true);
+import { stringMock } from 'utils/testing/constants';
+import { push } from 'react-router-redux';
+
+import { mapDispatchToProps } from '../index';
+
+describe('<IdeasNewPage />', () => {
+  describe('mapDispatchToProps', () => {
+    const dispatch = jest.fn();
+    const result = mapDispatchToProps(dispatch);
+
+    describe('routeToPage', () => {
+      it('should dispatch push action with provided page id', () => {
+        const pageId = stringMock;
+        result.routeToPage(pageId);
+        expect(dispatch).toHaveBeenCalledWith(push(`/pages/${pageId}`));
+      });
+    });
   });
 });
