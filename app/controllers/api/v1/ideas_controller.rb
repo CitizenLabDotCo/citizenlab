@@ -70,7 +70,9 @@ class Api::V1::IdeasController < ApplicationController
 			title_multiloc: [:en, :nl, :fr],
       body_multiloc: [:en, :nl, :fr],
       images: [],
-      files: []
+      files: [],
+      topic_ids: [],
+      area_ids: []
     )
 
     images = p.delete(:images)

@@ -158,8 +158,10 @@ resource "Ideas" do
         parameter :publication_status, "Password", required: true, extra: "One of #{Idea::PUBLICATION_STATUSES.join(",")}"
         parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
         parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
-        parameter :images, "Multipart form encoded images"
-        parameter :files, "Multipart form encoded files"
+        parameter :images, "Array with base64 encoded images"
+        parameter :files, "Array with base64 encoded files"
+        parameter :topic_ids, "Array of ids of the associated topics"
+        parameter :area_ids, "Array of ids of the associated areas"
       end
 
       describe do
@@ -169,8 +171,14 @@ resource "Ideas" do
         let(:publication_status) { 'published' }
         let(:title_multiloc) { idea.title_multiloc }
         let(:body_multiloc) { idea.body_multiloc }
+        let(:topic_ids) { create_list(:topic, 2).map(&:id) }
+        let(:area_ids) { create_list(:area, 2).map(&:id) }
+
         example_request "Creating a published idea" do
           expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match topic_ids
+          expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
         end
       end
 
@@ -203,15 +211,40 @@ resource "Ideas" do
         parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES}.join(', ')}"
         parameter :title_multiloc, "Multi-locale field with the idea title", extra: "Maximum 100 characters"
         parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
-        parameter :images, "Base64 encoded images"
-        parameter :files, "Multipart form encoded files"
+        parameter :images, "Array with base64 encoded images"
+        parameter :files, "Array with base64 encoded files"
+        parameter :topic_ids, "Array of ids of the associated topics"
+        parameter :area_ids, "Array of ids of the associated areas"
       end
 
       let(:id) { @idea.id }
-      let(:title_multiloc) { {"en" => "Changed title" } }
-      example_request "Updating the idea title" do
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
+      let(:topic_ids) { create_list(:topic, 2).map(&:id) }
+      let(:area_ids) { create_list(:area, 2).map(&:id) }
+
+      describe do
+        let(:title_multiloc) { {"en" => "Changed title" } }
+        example_request "Updating an idea" do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
+          expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match topic_ids
+          expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+        end
+      end
+
+      describe do
+        let(:topic_ids) { [] }
+        let(:area_ids) { [] }
+
+        example "Remove the topics/areas" do
+          @idea.topics = create_list(:topic, 2)
+          @idea.areas = create_list(:area, 2)
+          do_request
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match topic_ids
+          expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+        end
       end
     end
 
