@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import { render } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 
-
 import WithFeature, { Without } from '../index';
 
 describe('<WithFeature />', () => {
@@ -36,6 +35,7 @@ describe('<WithFeature />', () => {
     );
     expect(component.text()).toEqual('works');
   });
+  
   it('renders its Without when feature is disabled', () => {
     const store = fakeStore.setIn(['resources', 'tenants', 'abc', 'attributes', 'settings', 'comments', 'enabled'], false);
     const component = render(

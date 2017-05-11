@@ -1,36 +1,28 @@
-/*
- *
- * WithFeature
- *
- */
 
-import React from 'react';
-import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { Authorize } from 'utils/containers/authorizer';
+import { preprocess } from 'utils';
+
+import RuleBasedRenderer from 'utils/containers/ruleBasedRenderer';
+
 import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
-
-const authorizations = {
-  feature: (featureObj) => featureObj && featureObj.get('allowed') && featureObj.get('enabled'),
-};
-
-class WithFeature extends React.Component {
-  render() {
-    const { featureObj } = this.props;
-    return <Authorize action={['feature']} authorizations={authorizations} resource={featureObj} />;
-  }
-}
-
-WithFeature.propTypes = {
-  featureObj: PropTypes.object,
-};
+import authorizations from './authorizations';
 
 const mapStateToProps = () => createStructuredSelector({
-  featureObj: (state, { feature }) => makeSelectCurrentTenantImm(feature)(state),
+  base: (state, { feature }) => makeSelectCurrentTenantImm('attributes', 'settings', feature)(state),
 });
 
-const exportedComponent = connect(mapStateToProps)(WithFeature);
+const mergeProps = (stateP, dispatchP, ownP) => {
+  const { feature, children } = ownP;
+  const { base } = stateP;
+  //console.log(base)
+  let action = ['withoutFeature'];
+  if (feature) action = ['feature'];
+  // console.log(action)
+  return { action, authorizations, base, children };
+};
 
-export default exportedComponent;
-export { exportedComponent as Without };
+
+const WithFeature = preprocess(mapStateToProps, null, mergeProps)(RuleBasedRenderer);
+
+export default WithFeature;
+export { WithFeature as Without };

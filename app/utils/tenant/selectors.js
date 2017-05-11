@@ -4,9 +4,20 @@ import { selectResourcesDomain } from 'utils/resources/selectors';
 const selectTenantDomain = (...type) => (state) => state.getIn(['tenant', ...type]);
 
 const makeSelectCurrentTenantImm = (...type) => createSelector(
-  selectAuthDomain('id'),
+  selectTenantDomain('id'),
   selectResourcesDomain(),
-  (id, resources) => resources.getIn(['users', id, ...type]),
+  (id, resources) => {
+    return resources.getIn(['tenants', id, ...type]);
+  },
+);
+
+const makeSelectCurrentTenant = (...type) => createSelector(
+  selectTenantDomain('id'),
+  selectResourcesDomain(),
+  (id, resources) => {
+    const tenant = resources.getIn(['tenants', id, ...type]);
+    return tenant && tenant.toJS();
+  },
 );
 
 const makeSelectSetting = (settingPath) => createSelector(

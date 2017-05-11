@@ -1,9 +1,9 @@
 const authorizations = {
   comments: {
     create: {
-      check: (resource, user) => !!user,
+      check: (user, resource) => !!user,
     },
-    delete: (resource, user) => {
+    delete: (user, resource) => {
       if (!user) return false;
 
       const isUserAdmin = user && user.getIn(['attributes', 'roles']).some((role) => role === 'admin');
@@ -16,4 +16,4 @@ const authorizations = {
   },
 };
 
-export authorizations;
+export default authorizations;

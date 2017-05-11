@@ -6,13 +6,13 @@ import { createStructuredSelector } from 'reselect';
 import { preprocess } from 'utils';
 import { selectResourcesDomain } from 'utils/resources/selectors';
 import T from 'containers/T';
+
+import Autorizer from 'utils/containers/authorizer';
+
 import MapChildren from './mapChildren';
 
 import Editor from '../common/editor';
 import Author from '../common/author';
-
-
-import Autorizator, { Else } from '../../authorizations';
 
 const Show = ({ comment, content, children, createdAt, ideaId, commentId, authorId }) => (
   <Comment>
@@ -23,12 +23,10 @@ const Show = ({ comment, content, children, createdAt, ideaId, commentId, author
       <Comment.Text>
         <T value={content} />
       </Comment.Text>
-      <Autorizator action={['comments', 'create']} resource={comment}>
+      <Autorizer action={['comments', 'create']}>
         <Editor parentId={commentId} ideaId={ideaId} />
-        <Else>
-          <div>asdfadsf</div>
-        </Else>
-      </Autorizator>
+      </Autorizer>
+
     </Comment.Content>
     <MapChildren nodes={children} />
   </Comment>

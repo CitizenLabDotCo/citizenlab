@@ -35,7 +35,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
   }
 
   content() {
-    const { currentTenant, currentUser } = this.props;
+    const { currentUser, currentTenant } = this.props;
     if (currentTenant) {
       return (
         <div>
