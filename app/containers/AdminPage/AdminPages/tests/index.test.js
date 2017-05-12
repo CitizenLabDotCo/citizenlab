@@ -3,7 +3,7 @@ import { push } from 'react-router-redux';
 
 import { mapDispatchToProps } from '../index';
 
-describe('<IdeasNewPage />', () => {
+describe('<AdminPages />', () => {
   describe('mapDispatchToProps', () => {
     const dispatch = jest.fn();
     const result = mapDispatchToProps(dispatch);
