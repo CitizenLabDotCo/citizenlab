@@ -3,7 +3,7 @@ import { mergeJsonApiResources } from 'utils/resources/actions';
 import { fetchIdeas, fetchTopics, fetchAreas } from 'api';
 import { LOAD_IDEAS_REQUEST, LOAD_TOPICS_REQUEST, LOAD_AREAS_REQUEST } from './constants';
 import {
-  ideasLoaded,
+  loadIdeasSuccess,
   ideasLoadingError,
   loadTopicsSuccess,
   loadTopicsError,
@@ -26,7 +26,7 @@ export function* getIdeas(action) {
     if (action.initialLoad) {
       yield put(resetIdeas());
     }
-    yield put(ideasLoaded(ideaResponse));
+    yield put(loadIdeasSuccess(ideaResponse));
   } catch (err) {
     yield put(ideasLoadingError(err));
   }

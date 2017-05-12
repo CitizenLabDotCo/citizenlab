@@ -1,7 +1,7 @@
 const authorizations = {
   comments: {
     create: {
-      check: (user, resource) => !!user,
+      check: (user) => !!user,
     },
     delete: (user, resource) => {
       if (!user) return false;

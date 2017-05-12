@@ -29,7 +29,7 @@ class RuleBasedRenderer extends React.Component {
 
 RuleBasedRenderer.propTypes = {
   action: PropTypes.array,
-  authorizations: PropTypes.any,
+  authorizations: PropTypes.any.isRequired,
 };
 
 export default RuleBasedRenderer;

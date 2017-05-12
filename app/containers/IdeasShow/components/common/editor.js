@@ -87,7 +87,7 @@ class Editor extends React.PureComponent {
 
 Editor.propTypes = {
   submitComment: PropTypes.func,
-  currentUserId: PropTypes.string,
+  // currentUserId: PropTypes.string,
   parentId: PropTypes.string,
   ideaId: PropTypes.string,
 };

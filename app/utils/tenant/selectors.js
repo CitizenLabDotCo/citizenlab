@@ -6,9 +6,7 @@ const selectTenantDomain = (...type) => (state) => state.getIn(['tenant', ...typ
 const makeSelectCurrentTenantImm = (...type) => createSelector(
   selectTenantDomain('id'),
   selectResourcesDomain(),
-  (id, resources) => {
-    return resources.getIn(['tenants', id, ...type]);
-  },
+  (id, resources) => resources.getIn(['tenants', id, ...type]),
 );
 
 const makeSelectCurrentTenant = (...type) => createSelector(

@@ -35,7 +35,7 @@ describe('<WithFeature />', () => {
     );
     expect(component.text()).toEqual('works');
   });
-  
+
   it('renders its Without when feature is disabled', () => {
     const store = fakeStore.setIn(['resources', 'tenants', 'abc', 'attributes', 'settings', 'comments', 'enabled'], false);
     const component = render(
@@ -50,6 +50,7 @@ describe('<WithFeature />', () => {
     );
     expect(component.text()).toEqual('does not');
   });
+
   it('renders its Without when feature is not allowed', () => {
     const store = fakeStore.setIn(['resources', 'tenants', 'abc', 'attributes', 'settings', 'comments', 'enabled'], false);
     const component = render(

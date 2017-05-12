@@ -14,7 +14,7 @@ import MapChildren from './mapChildren';
 import Editor from '../common/editor';
 import Author from '../common/author';
 
-const Show = ({ comment, content, children, createdAt, ideaId, commentId, authorId }) => (
+const Show = ({ content, children, createdAt, ideaId, commentId, authorId }) => (
   <Comment>
     <Comment.Content>
       <Author authorId={authorId}>

@@ -41,7 +41,7 @@ describe('<Authorize />', () => {
     };
     const component = render(
       <Provider store={configureMockStore([])(fakeStore)}>
-        <Authorize action={['comments', 'delete']} resource={storeResource}>
+        <Authorize action={['comments', 'delete']} authorizations={authorizations} resource={storeResource}>
           <div>works</div>
           <Else>
             <div>does not</div>

@@ -14,17 +14,13 @@ const mapStateToProps = () => createStructuredSelector({
 
 // the WithFeatures only has to actions: the withoutFeature action; which allways returns true and the feature action.
 // if a specific feature is requested the feature action is set.
-
 const mergeProps = (stateP, dispatchP, ownP) => {
   const { feature, children } = ownP;
   const { base } = stateP;
-  //console.log(base)
   let action = ['withoutFeature'];
   if (feature) action = ['feature'];
-  // console.log(action)
-  return { action, base, children };
+  return { action, base, authorizations, children };
 };
-
 
 const WithFeature = preprocess(mapStateToProps, null, mergeProps)(RuleBasedRenderer);
 
