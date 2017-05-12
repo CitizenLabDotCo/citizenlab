@@ -2,8 +2,6 @@ import { fromJS } from 'immutable';
 import _ from 'lodash';
 import {
   LOAD_IDEAS_REQUEST, LOAD_IDEAS_SUCCESS, LOAD_IDEAS_ERROR,
-  LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_TOPICS_ERROR,
-  LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR,
 } from './constants';
 import { getPageItemCountFromUrl, getPageNumberFromUrl } from '../../../utils/paginationUtils';
 
@@ -11,16 +9,7 @@ const initialState = fromJS({
   ideas: {
     ids: [],
     loading: false,
-    error: false,
-  },
-  topics: {
-    ids: [],
-    loading: false,
-    error: false,
-  },
-  areas: {
-    ids: [],
-    loading: false,
+    loaded: false,
     error: false,
   },
   firstPageNumber: null,
@@ -41,6 +30,7 @@ function IdeasPageReducer(state = initialState, action) {
     case LOAD_IDEAS_REQUEST:
       return state
         .setIn(['ideas', 'loading'], true)
+        .setIn(['ideas', 'loaded'], false)
         .setIn(['ideas', 'error'], false);
     case LOAD_IDEAS_SUCCESS: {
       const ids = action.payload.ideas.data.map((idea) => idea.id);
@@ -64,6 +54,7 @@ function IdeasPageReducer(state = initialState, action) {
 
       return state
         .setIn(['ideas', 'ids'], fromJS(ids))
+        .setIn(['ideas', 'loaded'], true)
         .setIn(['ideas', 'loading'], false)
         .setIn(['ideas', 'error'], false)
         .set('firstPageNumber', firstPageNumber)
@@ -81,37 +72,8 @@ function IdeasPageReducer(state = initialState, action) {
     case LOAD_IDEAS_ERROR:
       return state
         .setIn(['ideas', 'loading'], false)
-        .setIn(['ideas', 'error'], true);
-    case LOAD_TOPICS_REQUEST:
-      return state
-        .setIn(['topics', 'loading'], true)
-        .setIn(['topics', 'error'], false);
-    case LOAD_TOPICS_SUCCESS: {
-      const ids = action.payload.data.map((topic) => topic.id);
-      return state
-        .setIn(['topics', 'ids'], fromJS(ids))
-        .setIn(['topics', 'loading'], false)
-        .setIn(['topics', 'error'], false);
-    }
-    case LOAD_TOPICS_ERROR:
-      return state
-        .setIn(['topics', 'loading'], false)
-        .setIn(['topics', 'error'], true);
-    case LOAD_AREAS_REQUEST:
-      return state
-        .setIn(['areas', 'loading'], true)
-        .setIn(['areas', 'error'], false);
-    case LOAD_AREAS_SUCCESS: {
-      const ids = action.payload.data.map((area) => area.id);
-      return state
-        .setIn(['areas', 'ids'], fromJS(ids))
-        .setIn(['areas', 'loading'], false)
-        .setIn(['areas', 'error'], false);
-    }
-    case LOAD_AREAS_ERROR:
-      return state
-        .setIn(['areas', 'loading'], false)
-        .setIn(['areas', 'error'], true);
+        .setIn(['ideas', 'error'], true)
+        .setIn(['ideas', 'loaded'], false);
     default:
       return state;
   }

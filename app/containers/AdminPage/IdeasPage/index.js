@@ -7,10 +7,14 @@ import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { Icon, Menu, Table } from 'semantic-ui-react';
 import _ from 'lodash';
-import moment from 'moment';
-import { injectTFunc } from 'containers/T/utils';
-import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
+// import moment from 'moment';
+// import { injectTFunc } from 'containers/T/utils';
+// import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import {
+  selectIdeasIds,
+  selectIdeasLoading,
+  selectIdeasLoadError,
+  selectIdeasLoaded,
   selectFirstPageNumber,
   selectFirstPageItemCount,
   selectPrevPageNumber,
@@ -19,22 +23,18 @@ import {
   selectCurrentPageItemCount,
   selectNextPageNumber,
   selectNextPageItemCount,
-  selectPageCount,
   selectLastPageNumber,
   selectLastPageItemCount,
-  makeSelectLoading,
-  makeSelectLoadError,
-  makeselectPaginatedIdeas,
+  selectPageCount,
 } from './selectors';
-import { loadIdeas, loadTopics, loadAreas } from './actions';
-import { watchLoadIdeas, watchLoadTopics, watchLoadAreas } from './sagas';
+import { loadIdeas } from './actions';
+import { watchLoadIdeas } from './sagas';
+import IdeaTableRow from './components/ideaTableRow';
 
 
 class IdeasPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
     this.props.loadIdeas(1, 5, null, true);
-    this.props.loadTopics();
-    this.props.loadAreas();
   }
 
 
@@ -69,17 +69,19 @@ class IdeasPage extends React.Component { // eslint-disable-line react/prefer-st
   render() {
     let table = null;
     const pageNumbersArray = [];
-    const { locale, tFunc, ideas, pageCount, loading, loadError, currentPageNumber } = this.props;
+    const { ideas, pageCount, loading, loadError, loaded, currentPageNumber } = this.props;
 
     for (let i = 1; i <= pageCount; i += 1) {
       pageNumbersArray.push(i);
     }
 
+    console.log(ideas.toJS());
+
     if (loading) {
       table = <div>Loading...</div>;
     } else if (loadError) {
       table = <div>An error occured</div>;
-    } else if (ideas && ideas.size > 0) {
+    } else if (loaded && ideas && ideas.size > 0) {
       table = (<Table celled>
         <Table.Header>
           <Table.Row>
@@ -97,7 +99,9 @@ class IdeasPage extends React.Component { // eslint-disable-line react/prefer-st
         </Table.Header>
 
         <Table.Body>
-          {ideas.map((idea) =>
+          {ideas.map((idea) => <IdeaTableRow key={idea} id={idea} />)}
+          {
+            /*
             <Table.Row key={idea.get('id')}>
               <Table.Cell>{tFunc(idea.getIn(['attributes', 'title_multiloc']).toJS())}</Table.Cell>
               <Table.Cell>{moment(idea.getIn(['attributes', 'created_at'])).locale(locale).format('MMM Do YYYY')}</Table.Cell>
@@ -109,7 +113,8 @@ class IdeasPage extends React.Component { // eslint-disable-line react/prefer-st
               <Table.Cell></Table.Cell>
               <Table.Cell></Table.Cell>
               <Table.Cell></Table.Cell>
-            </Table.Row>)
+            </Table.Row>
+            */
           }
         </Table.Body>
 
@@ -149,8 +154,6 @@ class IdeasPage extends React.Component { // eslint-disable-line react/prefer-st
       <div>
         <h1>Ideas</h1>
         <Saga saga={watchLoadIdeas} />
-        <Saga saga={watchLoadTopics} />
-        <Saga saga={watchLoadAreas} />
         {table}
       </div>
     );
@@ -158,9 +161,10 @@ class IdeasPage extends React.Component { // eslint-disable-line react/prefer-st
 }
 
 IdeasPage.propTypes = {
-  locale: PropTypes.any,
-  tFunc: PropTypes.func,
   ideas: ImmutablePropTypes.list.isRequired,
+  loading: PropTypes.bool.isRequired,
+  loadError: PropTypes.bool.isRequired,
+  loaded: PropTypes.bool.isRequired,
   firstPageNumber: PropTypes.number,
   firstPageItemCount: PropTypes.number,
   prevPageNumber: PropTypes.number,
@@ -172,15 +176,15 @@ IdeasPage.propTypes = {
   lastPageNumber: PropTypes.number,
   lastPageItemCount: PropTypes.number,
   pageCount: PropTypes.number,
-  loading: PropTypes.bool.isRequired,
-  loadError: PropTypes.bool.isRequired,
   loadIdeas: PropTypes.func.isRequired,
-  loadTopics: PropTypes.func.isRequired,
-  loadAreas: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  locale: makeSelectLocale(),
+  // locale: makeSelectLocale(),
+  ideas: selectIdeasIds,
+  loading: selectIdeasLoading,
+  loadError: selectIdeasLoadError,
+  loaded: selectIdeasLoaded,
   firstPageNumber: selectFirstPageNumber,
   firstPageItemCount: selectFirstPageItemCount,
   prevPageNumber: selectPrevPageNumber,
@@ -192,11 +196,8 @@ const mapStateToProps = createStructuredSelector({
   lastPageNumber: selectLastPageNumber,
   lastPageItemCount: selectLastPageItemCount,
   pageCount: selectPageCount,
-  loading: makeSelectLoading(),
-  loadError: makeSelectLoadError(),
-  ideas: makeselectPaginatedIdeas(),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ loadIdeas, loadTopics, loadAreas }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ loadIdeas }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectTFunc(IdeasPage));
+export default connect(mapStateToProps, mapDispatchToProps)(IdeasPage);
