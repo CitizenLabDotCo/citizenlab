@@ -33,7 +33,6 @@ resource "Votes" do
     end
   end
 
-  # TODO: got an error that doesn't make sense for below test
   post "api/v1/ideas/:idea_id/votes" do
     with_options scope: :vote do
       parameter :user_id, "The user id of the user owning the vote. Signed in user by default", required: false
@@ -48,7 +47,66 @@ resource "Votes" do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
       expect(json_response.dig(:data,:attributes,:mode)).to eq "up"
+      expect(@idea.reload.upvotes_count).to eq 3
     end
+  end
+
+  post "api/v1/ideas/:idea_id/votes/up" do
+    let(:idea_id) { @idea.id }
+
+    example_request "Upvote an idea that doesn't have your vote yet" do
+      expect(status).to eq 201
+      expect(@idea.reload.upvotes_count).to eq 3
+      expect(@idea.reload.downvotes_count).to eq 0
+    end
+
+    example "Upvote an idea that you downvoted before" do
+      @idea.votes.create(user: @user, mode: 'down')
+      do_request
+      expect(status).to eq 201
+      expect(@idea.reload.upvotes_count).to eq 3
+      expect(@idea.reload.downvotes_count).to eq 0
+    end
+
+    example "Upvote an idea that you upvoted before" do
+      @idea.votes.create(user: @user, mode: 'up')
+      do_request
+      expect(status).to eq 422
+      json_response = json_parse(response_body)
+      expect(json_response[:errors][:base][0][:error]).to eq "already_upvoted"
+      expect(@idea.reload.upvotes_count).to eq 3
+      expect(@idea.reload.downvotes_count).to eq 0
+    end
+
+  end
+
+  post "api/v1/ideas/:idea_id/votes/down" do
+    let(:idea_id) { @idea.id }
+
+    example_request "downvote an idea that doesn't have your vote yet" do
+      expect(status).to eq 201
+      expect(@idea.reload.upvotes_count).to eq 2
+      expect(@idea.reload.downvotes_count).to eq 1
+    end
+
+    example "downvote an idea that you upvoted before" do
+      @idea.votes.create(user: @user, mode: 'up')
+      do_request
+      expect(status).to eq 201
+      expect(@idea.reload.upvotes_count).to eq 2
+      expect(@idea.reload.downvotes_count).to eq 1
+    end
+
+    example "Downvote an idea that you downvoted before" do
+      @idea.votes.create(user: @user, mode: 'down')
+      do_request
+      expect(status).to eq 422
+      json_response = json_parse(response_body)
+      expect(json_response[:errors][:base][0][:error]).to eq "already_downvoted"
+      expect(@idea.reload.upvotes_count).to eq 2
+      expect(@idea.reload.downvotes_count).to eq 1
+    end
+
   end
 
   delete "api/v1/votes/:id" do

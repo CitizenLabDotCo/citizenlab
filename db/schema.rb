@@ -153,10 +153,11 @@ ActiveRecord::Schema.define(version: 20170509093623) do
     t.uuid     "votable_id"
     t.string   "votable_type"
     t.uuid     "user_id"
-    t.integer  "mode",         null: false
+    t.string   "mode",         null: false
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.index ["user_id"], name: "index_votes_on_user_id", using: :btree
+    t.index ["votable_type", "votable_id", "user_id"], name: "index_votes_on_votable_type_and_votable_id_and_user_id", unique: true, using: :btree
     t.index ["votable_type", "votable_id"], name: "index_votes_on_votable_type_and_votable_id", using: :btree
   end
 
