@@ -4,7 +4,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :ideas do
         resources :comments, shallow: true
-        resources :votes, except: [:update], shallow: true, defaults: { votable: 'Idea' }
+        resources :votes, except: [:update], shallow: true, defaults: { votable: 'Idea' } do
+          post :up, on: :collection
+          post :down, on: :collection
+        end
       end
 
       # auth

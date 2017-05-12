@@ -26,6 +26,14 @@ class VotePolicy < ApplicationPolicy
     (user && (record.user_id == user.id || user.admin?))
   end
 
+  def up?
+    user
+  end
+
+  def down?
+    user
+  end
+
   def destroy?
     show?
   end
