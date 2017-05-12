@@ -22,7 +22,7 @@ const mergeProps = (stateP, dispatchP, ownP) => {
   let action = ['withoutFeature'];
   if (feature) action = ['feature'];
   // console.log(action)
-  return { action, authorizations, base, children };
+  return { action, base, children };
 };
 
 
