@@ -9,7 +9,7 @@ import {
 } from './constants';
 
 export function publishPageRequest(contents, titles) {
-  return (contents
+  return (contents && titles
       ? {
         type: PUBLISH_PAGE_REQUEST,
         payload: contents,

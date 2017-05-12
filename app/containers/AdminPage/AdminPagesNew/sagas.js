@@ -12,7 +12,7 @@ import { mergeJsonApiResources } from 'utils/resources/actions';
 import { publishPageSuccess, publishPageError } from './actions';
 import { PUBLISH_PAGE_REQUEST } from './constants';
 
-export const routeToPage = (pageId) => {
+const routeToPage = (pageId) => {
   push(`/pages/${pageId}`);
 };
 
