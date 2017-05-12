@@ -1,4 +1,4 @@
-class LabImageUploader < CarrierWave::Uploader::Base
+class ProjectImageUploader < CarrierWave::Uploader::Base
   include BaseUploader
 
   # Include RMagick or MiniMagick support:

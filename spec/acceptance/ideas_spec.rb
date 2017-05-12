@@ -11,7 +11,7 @@ resource "Ideas" do
   get "api/v1/ideas" do
     parameter :topics, 'Filter by topics (AND)', required: false
     parameter :areas, 'Filter by areas (AND)', required: false
-    parameter :lab, 'Filter by lab', required: false
+    parameter :project, 'Filter by project', required: false
     parameter :author, 'Filter by author (user id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
 
@@ -99,11 +99,11 @@ resource "Ideas" do
       expect(json_response[:data].size).to eq 0
     end
 
-    example "List all ideas in a lab" do
-      l = create(:lab)
-      i = create(:idea, lab: l)
+    example "List all ideas in a project" do
+      l = create(:project)
+      i = create(:idea, project: l)
 
-      do_request(lab: l.id)
+      do_request(project: l.id)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id
@@ -153,7 +153,7 @@ resource "Ideas" do
 
     post "api/v1/ideas" do
       with_options scope: :idea do
-        parameter :lab_id, "The idea of the lab that hosts the idea", extra: ""
+        parameter :project_id, "The idea of the project that hosts the idea", extra: ""
         parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
         parameter :publication_status, "Password", required: true, extra: "One of #{Idea::PUBLICATION_STATUSES.join(",")}"
         parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
@@ -166,7 +166,7 @@ resource "Ideas" do
 
       describe do
         let(:idea) { build(:idea) }
-        let(:lab_id) { create(:lab).id }
+        let(:project_id) { create(:project).id }
         let(:author_id) { create(:user).id }
         let(:publication_status) { 'published' }
         let(:title_multiloc) { idea.title_multiloc }
@@ -184,7 +184,7 @@ resource "Ideas" do
 
       describe do
         let(:idea) { build(:idea) }
-        let(:lab_id) { create(:lab).id }
+        let(:project_id) { create(:project).id }
         let(:author_id) { create(:user).id }
         let(:publication_status) { 'published' }
         let(:title_multiloc) { idea.title_multiloc }
@@ -206,7 +206,7 @@ resource "Ideas" do
       end
 
       with_options scope: :idea do
-        parameter :lab_id, "The idea of the lab that hosts the idea", extra: ""
+        parameter :project_id, "The idea of the project that hosts the idea", extra: ""
         parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
         parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES}.join(', ')}"
         parameter :title_multiloc, "Multi-locale field with the idea title", extra: "Maximum 100 characters"

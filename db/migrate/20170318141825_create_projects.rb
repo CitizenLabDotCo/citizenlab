@@ -1,6 +1,6 @@
-class CreateLabs < ActiveRecord::Migration[5.0]
+class CreateProjects < ActiveRecord::Migration[5.0]
   def change
-    create_table :labs, id: :uuid do |t|
+    create_table :projects, id: :uuid do |t|
       t.jsonb :title_multiloc, {}
       t.jsonb :description_multiloc, {}
       t.jsonb :images

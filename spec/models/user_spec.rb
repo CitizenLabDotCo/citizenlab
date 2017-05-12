@@ -30,9 +30,9 @@ RSpec.describe User, type: :model do
       expect(u).to be_valid
     end
 
-    it "is valid when the user is a lab moderator" do
-      lab = create(:lab)
-      u = build(:user, roles: [{type: "lab_moderator", lab_id: lab.id}])
+    it "is valid when the user is a project moderator" do
+      project = create(:project)
+      u = build(:user, roles: [{type: "project_moderator", project_id: project.id}])
       expect(u).to be_valid
     end
 
@@ -41,8 +41,8 @@ RSpec.describe User, type: :model do
       expect{ u.valid? }.to change{ u.errors[:roles] }
     end
 
-    it "is invalid when a lab_moderator is missing a lab_id" do
-      u = build(:user, roles: [{type: "lab_moderator"}])
+    it "is invalid when a project_moderator is missing a project_id" do
+      u = build(:user, roles: [{type: "project_moderator"}])
       expect{ u.valid? }.to change{ u.errors[:roles] }
     end
 
@@ -62,25 +62,25 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe "lab_moderator?" do
+  describe "project_moderator?" do
 
-    it "responds true when the user has the lab_moderator role" do
-      l = create(:lab)
-      u = build(:user, roles: [{type: "lab_moderator", lab_id: l.id}])
-      expect(u.lab_moderator? l.id).to eq true
+    it "responds true when the user has the project_moderator role" do
+      l = create(:project)
+      u = build(:user, roles: [{type: "project_moderator", project_id: l.id}])
+      expect(u.project_moderator? l.id).to eq true
     end
 
-    it "responds false when the user does not have a lab_moderator role" do
-      l = create(:lab)
+    it "responds false when the user does not have a project_moderator role" do
+      l = create(:project)
       u = build(:user, roles: [])
-      expect(u.lab_moderator? l.id).to eq false
+      expect(u.project_moderator? l.id).to eq false
     end
 
-    it "responds false when the user does not have a lab_moderator role for the given lab" do
-      l1 = create(:lab)
-      l2 = create(:lab)
-      u = build(:user, roles: [{type: "lab_moderator", lab_id: l1.id}])
-      expect(u.lab_moderator? l2.id).to eq false
+    it "responds false when the user does not have a project_moderator role for the given project" do
+      l1 = create(:project)
+      l2 = create(:project)
+      u = build(:user, roles: [{type: "project_moderator", project_id: l1.id}])
+      expect(u.project_moderator? l2.id).to eq false
     end
 
   end

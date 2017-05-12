@@ -35,8 +35,8 @@ class User < ApplicationRecord
     !!self.roles.find{|r| r["type"] == "admin"}
   end
 
-  def lab_moderator? lab_id
-    !!self.roles.find{|r| r["type"] == "lab_moderator" && r["lab_id"] == lab_id}
+  def project_moderator? project_id
+    !!self.roles.find{|r| r["type"] == "project_moderator" && r["project_id"] == project_id}
   end
   
   def has_services?

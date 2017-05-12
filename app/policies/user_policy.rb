@@ -36,7 +36,7 @@ class UserPolicy < ApplicationPolicy
 
   def permitted_attributes
     if user && user.admin?
-      [:first_name, :last_name, :email, :password, :avatar, :locale, roles: [:type, :lab_id]]
+      [:first_name, :last_name, :email, :password, :avatar, :locale, roles: [:type, :project_id]]
     else
       [:first_name, :last_name, :email, :password, :avatar, :locale]
     end
