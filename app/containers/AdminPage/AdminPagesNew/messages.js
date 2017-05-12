@@ -6,6 +6,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  header: {
+    id: 'app.containers.AdminPages.AdminPagesNew.header',
+    defaultMessage: 'Create new page',
+  },
   publish: {
     id: 'app.containers.AdminPages.AdminPagesNew.publish',
     defaultMessage: 'Publish page',

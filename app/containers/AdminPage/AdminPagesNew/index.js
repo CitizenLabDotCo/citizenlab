@@ -85,6 +85,9 @@ class AdminPagesNew extends React.Component { // eslint-disable-line react/prefe
               <Sidebar location={location} />
             </Grid.Column>
             <Grid.Column width={12}>
+              <h1>
+                <FormattedMessage {...messages.header} />
+              </h1>
               <Grid>
                 <Grid.Row columns={2}>
                   <Grid.Column width={12}>
