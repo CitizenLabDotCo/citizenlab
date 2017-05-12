@@ -29,3 +29,5 @@ export const LOAD_AREAS_REQUEST = 'app/IdeasNewPage/LOAD_AREAS_REQUEST';
 export const LOAD_AREAS_SUCCESS = 'app/IdeasNewPage/LOAD_AREAS_SUCCESS';
 export const LOAD_AREAS_ERROR = 'app/IdeasNewPage/LOAD_AREAS_ERROR';
 export const STORE_SELECTED_AREAS = 'app/IdeasNewPage/STORE_SELECTED_AREAS';
+
+export const INVALID_FORM = 'app/IdeasNewPage/INVALID_FORM';

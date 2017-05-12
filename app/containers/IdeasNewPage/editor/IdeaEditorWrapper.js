@@ -48,7 +48,7 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
     const { className, loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
     const { shortTitleError, longTitleError, titleLength } = this.props;
     const { saveDraft, storeIdea } = this.props;
-    const { topics, areas, loadTopicsError, loadAreasError, loadingTopics, loadingAreas } = this.props;
+    const { topics, areas, loadTopicsError, loadAreasError, loadingTopics, loadingAreas, invalidForm } = this.props;
     const { formatMessage } = this.props.intl;
 
     const FormattedMessageSegment = (props) => (
@@ -69,6 +69,7 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
         {storeError && <FormattedMessageSegment message={messages.storeError} />}
         {submitting && <FormattedMessageSegment message={messages.submitting} />}
         {submitError && <FormattedMessageSegment message={messages.submitError} />}
+        {invalidForm && <FormattedMessageSegment message={messages.invalidForm} />}
         {submitted && <FormattedMessageSegment message={messages.submitted} />}
         <Container>
           <Grid container>
@@ -162,6 +163,7 @@ IdeaEditorWrapper.propTypes = {
   storeTopics: PropTypes.func.isRequired,
   storeAreas: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
+  invalidForm: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -193,6 +195,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const loadAreasError = getFromState(pageState, 'areas', 'loadError');
   const loadingAreas = getFromState(pageState, 'areas', 'loading');
 
+  const invalidForm = getFromState(pageState, 'draft', 'invalidForm');
+
   return {
     /*
      * specific selectors
@@ -208,6 +212,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     title, longTitleError, shortTitleError, titleLength,
     loadTopicsError, loadingTopics,
     loadAreasError, loadingAreas,
+    invalidForm,
     // -----------------
     /*
      * own props
