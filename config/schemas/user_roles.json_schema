@@ -17,13 +17,13 @@
       },
       {
         "type": "object",
-        "required": ["type", "lab_id"],
+        "required": ["type", "project_id"],
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["lab_moderator"]              
+            "enum": ["project_moderator"]              
           },
-          "lab_id": {
+          "project_id": {
             "type": "string"
           }
         }

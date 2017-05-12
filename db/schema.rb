@@ -31,11 +31,11 @@ ActiveRecord::Schema.define(version: 20170509093623) do
     t.index ["idea_id"], name: "index_areas_ideas_on_idea_id", using: :btree
   end
 
-  create_table "areas_labs", id: false, force: :cascade do |t|
+  create_table "areas_projects", id: false, force: :cascade do |t|
     t.uuid "area_id"
-    t.uuid "lab_id"
-    t.index ["area_id"], name: "index_areas_labs_on_area_id", using: :btree
-    t.index ["lab_id"], name: "index_areas_labs_on_lab_id", using: :btree
+    t.uuid "project_id"
+    t.index ["area_id"], name: "index_areas_projects_on_area_id", using: :btree
+    t.index ["project_id"], name: "index_areas_projects_on_project_id", using: :btree
   end
 
   create_table "comments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 20170509093623) do
     t.jsonb    "title_multiloc",     default: {}
     t.jsonb    "body_multiloc",      default: {}
     t.string   "publication_status"
-    t.uuid     "lab_id"
+    t.uuid     "project_id"
     t.uuid     "author_id"
     t.string   "author_name"
     t.jsonb    "images"
@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 20170509093623) do
     t.integer  "upvotes_count",      default: 0,  null: false
     t.integer  "downvotes_count",    default: 0,  null: false
     t.index ["author_id"], name: "index_ideas_on_author_id", using: :btree
-    t.index ["lab_id"], name: "index_ideas_on_lab_id", using: :btree
+    t.index ["project_id"], name: "index_ideas_on_project_id", using: :btree
   end
 
   create_table "ideas_topics", id: false, force: :cascade do |t|
@@ -90,7 +90,16 @@ ActiveRecord::Schema.define(version: 20170509093623) do
     t.index ["topic_id"], name: "index_ideas_topics_on_topic_id", using: :btree
   end
 
-  create_table "labs", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "pages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.jsonb    "title_multiloc", default: {}
+    t.jsonb    "body_multiloc",  default: {}
+    t.string   "slug"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.index ["slug"], name: "index_pages_on_slug", using: :btree
+  end
+
+  create_table "projects", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.jsonb    "title_multiloc"
     t.jsonb    "description_multiloc"
     t.jsonb    "images"
@@ -99,20 +108,11 @@ ActiveRecord::Schema.define(version: 20170509093623) do
     t.datetime "updated_at",           null: false
   end
 
-  create_table "labs_topics", id: false, force: :cascade do |t|
-    t.uuid "lab_id"
+  create_table "projects_topics", id: false, force: :cascade do |t|
+    t.uuid "project_id"
     t.uuid "topic_id"
-    t.index ["lab_id"], name: "index_labs_topics_on_lab_id", using: :btree
-    t.index ["topic_id"], name: "index_labs_topics_on_topic_id", using: :btree
-  end
-
-  create_table "pages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.jsonb    "title_multiloc", default: {}
-    t.jsonb    "body_multiloc",  default: {}
-    t.string   "slug"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.index ["slug"], name: "index_pages_on_slug", using: :btree
+    t.index ["project_id"], name: "index_projects_topics_on_project_id", using: :btree
+    t.index ["topic_id"], name: "index_projects_topics_on_topic_id", using: :btree
   end
 
   create_table "tenants", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -163,15 +163,15 @@ ActiveRecord::Schema.define(version: 20170509093623) do
 
   add_foreign_key "areas_ideas", "areas"
   add_foreign_key "areas_ideas", "ideas"
-  add_foreign_key "areas_labs", "areas"
-  add_foreign_key "areas_labs", "labs"
+  add_foreign_key "areas_projects", "areas"
+  add_foreign_key "areas_projects", "projects"
   add_foreign_key "comments", "ideas"
   add_foreign_key "comments", "users", column: "author_id"
-  add_foreign_key "ideas", "labs"
+  add_foreign_key "ideas", "projects"
   add_foreign_key "ideas", "users", column: "author_id"
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
-  add_foreign_key "labs_topics", "labs"
-  add_foreign_key "labs_topics", "topics"
+  add_foreign_key "projects_topics", "projects"
+  add_foreign_key "projects_topics", "topics"
   add_foreign_key "votes", "users"
 end

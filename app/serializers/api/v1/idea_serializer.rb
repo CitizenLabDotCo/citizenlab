@@ -5,7 +5,7 @@ class Api::V1::IdeaSerializer < ActiveModel::Serializer
   has_many :areas
 
   belongs_to :author
-  belongs_to :lab
+  belongs_to :project
 
   def images
     object.images.map do |img|

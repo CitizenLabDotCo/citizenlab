@@ -9,7 +9,7 @@ FactoryGirl.define do
       "nl" => "<p>De luchtkwaliteit zou er gevoelig op vooruitgaan!</p>"
     }}
     publication_status "published"
-    lab
+    project
     author
     # author nil
     # author_name "MyString"
