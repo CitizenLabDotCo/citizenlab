@@ -102,10 +102,10 @@ ActiveRecord::Schema.define(version: 20170509093623) do
   create_table "projects", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.jsonb    "title_multiloc"
     t.jsonb    "description_multiloc"
-    t.jsonb    "images"
-    t.jsonb    "files"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.jsonb    "images",               default: []
+    t.string   "slug"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   create_table "projects_topics", id: false, force: :cascade do |t|

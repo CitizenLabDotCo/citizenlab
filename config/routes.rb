@@ -29,7 +29,8 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
       end
 
-      # get 'tenants/current'
+      resources :projects
+
     end
   end
 end
