@@ -97,6 +97,11 @@ RSpec.describe User, type: :model do
       expect{ user.valid? }.to change{ user.errors[:slug] }
     end
 
+    it "is generated on create when not given" do
+      user = create(:user, slug: nil)
+      expect(user.slug).to be_present
+    end
+
   end
 
   describe "avatar" do

@@ -3,9 +3,9 @@ class Page < ApplicationRecord
   @@sanitizer = Rails::Html::WhiteListSanitizer.new
 
   validates :title_multiloc, :body_multiloc, presence: true, multiloc: {presence: true}
-  validates :slug, presence: true, uniqueness: true, format: {with: /\A[A-Za-z0-9_]+(?:-[A-Za-z0-9_]+)*\z/ }
+  validates :slug, presence: true, uniqueness: true, format: {with: SlugService.new.regex }
 
-  before_validation :generate_slug
+  before_validation :generate_slug, on: :create
   before_validation :sanitize_body_multiloc
 
 

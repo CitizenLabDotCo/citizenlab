@@ -3,8 +3,8 @@ class CreateProjects < ActiveRecord::Migration[5.0]
     create_table :projects, id: :uuid do |t|
       t.jsonb :title_multiloc, {}
       t.jsonb :description_multiloc, {}
-      t.jsonb :images
-      t.jsonb :files
+      t.jsonb :images, default: []
+      t.string :slug
 
       t.timestamps
     end
