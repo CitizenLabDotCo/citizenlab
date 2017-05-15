@@ -1,28 +1,19 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
-// import { matcher, serializer } from 'jest-styled-components';
-// import Comment from '../Comment';
+import React from 'react';
+import { fromJS } from 'immutable';
+import { Provider } from 'react-redux';
+import renderer from 'react-test-renderer';
+import configureMockStore from 'redux-mock-store';
 
-// expect.extend(matcher);
-// expect.addSnapshotSerializer(serializer);
+import state from './state.sample'
+import Comments from '../components/comments';
 
-// describe('<Comment />', () => {
-//   it('it should render nested comments indented', () => {
-//     const commentContent = {
-//       en: 'anything',
-//     };
-
-//     const wrapper = shallow(<Comment
-//       commentContent={commentContent}
-//       createAt={null}
-//       modifiedAt={null}
-//     />);
-//     expect(wrapper).toMatchStyledComponentsSnapshot();
-//   });
-// });
-
-describe('IdeasShow actions', () => {
-  it('should have tests in the future', () => {
-    expect(true).toEqual(true);
-  });
+describe('<Comment />', () => {
+  it('should render a list of nested comments', () => {
+    const comments = renderer.create(
+      <Provider store={configureMockStore([])(fromJS(state))}>
+        <Comments />
+      </Provider>
+    ).toJSON();
+    expect(comments).toMatchSnapshot();
+  })
 });
