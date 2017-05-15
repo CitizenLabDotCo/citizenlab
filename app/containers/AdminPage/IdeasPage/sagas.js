@@ -10,16 +10,11 @@ function* getIdeas(action) {
     const pageCount = action.pageCount;
 
     if (action.initialLoad) {
-      console.log(all);
       const [ideasResponse, topicsResponse, areasResponse] = yield all([
         call(fetchIdeas, null, { 'page[number]': action.nextPageNumber, 'page[size]': action.nextPageItemCount }),
         call(fetchTopics),
         call(fetchAreas),
       ]);
-
-      console.log(ideasResponse);
-      console.log(topicsResponse);
-      console.log(areasResponse);
 
       yield put(mergeJsonApiResources(ideasResponse));
       yield put(mergeJsonApiResources(topicsResponse));
@@ -32,8 +27,6 @@ function* getIdeas(action) {
       yield put(loadIdeasSuccess(ideasResponse, pageCount));
     }
   } catch (err) {
-    console.log('error:');
-    console.log(err);
     yield put(loadIdeasError(err));
   }
 }

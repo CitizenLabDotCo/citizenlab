@@ -75,8 +75,6 @@ class IdeasPage extends React.Component { // eslint-disable-line react/prefer-st
       pageNumbersArray.push(i);
     }
 
-    console.log(ideas.toJS());
-
     if (loading) {
       table = <div>Loading...</div>;
     } else if (loadError) {
@@ -87,35 +85,11 @@ class IdeasPage extends React.Component { // eslint-disable-line react/prefer-st
           <Table.Row>
             <Table.HeaderCell>Title</Table.HeaderCell>
             <Table.HeaderCell>Posted at</Table.HeaderCell>
-            <Table.HeaderCell>Author</Table.HeaderCell>
-            <Table.HeaderCell>Categories</Table.HeaderCell>
-            <Table.HeaderCell>Neighbourhoods</Table.HeaderCell>
-            <Table.HeaderCell>Views</Table.HeaderCell>
-            <Table.HeaderCell>Engagement</Table.HeaderCell>
-            <Table.HeaderCell>Pro</Table.HeaderCell>
-            <Table.HeaderCell>Contra</Table.HeaderCell>
-            <Table.HeaderCell>Comments</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
         <Table.Body>
           {ideas.map((idea) => <IdeaTableRow key={idea} id={idea} />)}
-          {
-            /*
-            <Table.Row key={idea.get('id')}>
-              <Table.Cell>{tFunc(idea.getIn(['attributes', 'title_multiloc']).toJS())}</Table.Cell>
-              <Table.Cell>{moment(idea.getIn(['attributes', 'created_at'])).locale(locale).format('MMM Do YYYY')}</Table.Cell>
-              <Table.Cell>{idea.getIn(['attributes', 'author_name'])}</Table.Cell>
-              <Table.Cell></Table.Cell>
-              <Table.Cell></Table.Cell>
-              <Table.Cell></Table.Cell>
-              <Table.Cell></Table.Cell>
-              <Table.Cell></Table.Cell>
-              <Table.Cell></Table.Cell>
-              <Table.Cell></Table.Cell>
-            </Table.Row>
-            */
-          }
         </Table.Body>
 
         { (pageNumbersArray && pageNumbersArray.length > 1) ? (
