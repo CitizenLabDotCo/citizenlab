@@ -15,13 +15,13 @@ export const selectIdea = createSelector(
   (id, ideas) => id && ideas.get(id),
 );
 
-const makeSelectComments = createSelector(
+export const makeSelectComments = createSelector(
   selectIdeasShow('comments'),
   selectResourcesDomain('comments'),
   (ids, comments) => (ids && activeTree(ids, comments)) || [],
 );
 
-const activeTree = (ids, comments) => {
+export const activeTree = (ids, comments) => {
   const map = {};
   const roots = [];
 
@@ -31,7 +31,8 @@ const activeTree = (ids, comments) => {
     map[id] = node;
 
     if (!parentId) return roots.push(node);
-    return map[parentId].children.push(node);
+    if (map[parentId]) map[parentId].children.push(node);
+    return '';
   });
 
   return roots;
@@ -55,6 +56,3 @@ export const makeSelectOwnVotesTot = (ideaId) => createSelector(
     return totVotes;
   },
 );
-
-
-export { makeSelectComments };
