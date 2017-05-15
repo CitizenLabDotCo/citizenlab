@@ -18,10 +18,10 @@ export const selectIdea = createSelector(
 export const makeSelectComments = createSelector(
   selectIdeasShow('comments'),
   selectResourcesDomain('comments'),
-  (ids, comments) => (ids && activeTree(ids, comments)) || [],
+  (ids, comments) => (ids && arrayToTree(ids, comments)) || [],
 );
 
-export const activeTree = (ids, comments) => {
+export const arrayToTree = (ids, comments) => {
   const map = {};
   const roots = [];
 
