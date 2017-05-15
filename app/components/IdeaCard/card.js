@@ -16,12 +16,6 @@ import Tags from './card/tags';
 const Card = ({ header, images, label, labelObj, authorId, topicsData, areasData, viewIdea, votes }) => {
   if (!header) return null;
 
-  const Zolg = styled(Button)`
-    &&& {
-      font-size: 100px;
-    }
-  `;
-
   return (
     <LayoutCard>
       <Image
@@ -45,7 +39,7 @@ const Card = ({ header, images, label, labelObj, authorId, topicsData, areasData
 
       <LayoutCard.Content extra>
         <div className="ui two buttons">
-          <Zolg basic color="green">{votes}</Zolg>
+          <Button basic color="green">{votes}</Button>
           <Button basic color="red">{votes}</Button>
         </div>
       </LayoutCard.Content>
