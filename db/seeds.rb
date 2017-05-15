@@ -58,13 +58,18 @@ Apartment::Tenant.switch('localhost') do
   User.create({
     first_name: 'Koen',
     last_name: 'Gremmelprez',
-    email: 'koen@citizenproject.co',
+    email: 'koen@citizenlab.co',
     password: 'testtest',
     locale: 'en',
     roles: [
       {type: "admin"},
-    ]
+    ],
+    gender: "male",
+    domicile: 'outside',
+    birthyear: 1987,
+    education: 7
   })
+
 
   7.times do 
     User.create({
