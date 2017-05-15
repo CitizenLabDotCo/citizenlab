@@ -97,7 +97,11 @@ resource "Users" do
         parameter :password, "Password", required: true
         parameter :locale, "Locale. Should be one of the tenants locales", required: true
         parameter :avatar, "Base64 encoded avatar image"
-        parameter :roles, "Roles array, only allowed when admin", required: false
+        parameter :roles, "Roles array, only allowed when admin"
+        parameter :gender, "Either 'male', 'female' or 'unspecified'"
+        parameter :birthyear, "The year, as an integer, the user was born"
+        parameter :domicile, "Either an exisiting Area id or 'outside', to specify the user does not live in the city"
+        parameter :education, "An integer from 0 to 8 (inclusive), corresponding to the ISCED 2011 standard"
       end
 
       let(:first_name) {Faker::Name.first_name}
@@ -106,6 +110,7 @@ resource "Users" do
       let(:password) {Faker::Internet.password}
       let(:locale) { "en" }
       let(:avatar) { base64_encoded_image }
+      let(:gender) { "female" }
 
       example_request "Create a new user" do
         expect(response_status).to eq 201
@@ -130,6 +135,11 @@ resource "Users" do
         parameter :password, "Password"
         parameter :locale, "Locale. Should be one of the tenants locales"
         parameter :avatar, "Base64 encoded avatar image"
+        parameter :roles, "Roles array, only allowed when admin"
+        parameter :gender, "Either 'male', 'female' or 'unspecified'"
+        parameter :birthyear, "The year, as an integer, the user was born"
+        parameter :domicile, "Either an exisiting Area id or 'outside', to specify the user does not live in the city"
+        parameter :education, "An integer from 0 to 8 (inclusive), corresponding to the ISCED 2011 standard"
       end
 
       let(:id) { @user.id }

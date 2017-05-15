@@ -3,12 +3,19 @@ class User < ApplicationRecord
   mount_base64_uploader :avatar, AvatarUploader
 
   has_many :ideas, foreign_key: :author_id
+  store_accessor :demographics, :gender, :birthyear, :domicile, :education
 
   validates :email, :slug, uniqueness: true
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
   validates :first_name, :last_name, :slug, :email, presence: true
   validates :locale, presence: true, inclusion: { in: proc {Tenant.settings('core','locales')} }
+
+  validates :gender, inclusion: {in: %w(male female unspecified)}, allow_nil: true
+  validates :birthyear, numericality: {only_integer: true, greater_than: Time.now.year - 120, less_than: Time.now.year}, allow_nil: true
+  validates :domicile, inclusion: {in: proc {['outside'] + Area.select(:id).map(&:id)}}, allow_nil: true
+  # Follows ISCED2011 scale
+  validates :education, numericality: {only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8}, allow_nil: true
 
   validates :password, length: { in: 5..20 }, allow_nil: true
   validate do |record|

@@ -113,4 +113,68 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "demographic fields" do
+
+    it "(gender) is valid when male, female or unspecified" do
+      expect(build(:user, gender: 'male')).to be_valid
+      expect(build(:user, gender: 'female')).to be_valid
+      expect(build(:user, gender: 'unspecified')).to be_valid
+    end
+
+    it "(gender) is invalid when not male, female or unspecified" do
+      user = build(:user, gender: 'somethingelse')
+      expect{ user.valid? }.to change{ user.errors[:gender] }
+    end
+
+    it "(birthyear) is valid when in realistic range" do
+      expect(build(:user, birthyear: Time.now.year - 119)).to be_valid
+      expect(build(:user, birthyear: Time.now.year - 5)).to be_valid
+    end
+
+    it "(birthyear) is invalid when unrealistic" do
+      user = build(:user, birthyear: Time.now.year + 1)
+      expect{ user.valid? }.to change{ user.errors[:birthyear] }
+      user = build(:user, birthyear: 1850)
+      expect{ user.valid? }.to change{ user.errors[:birthyear] }
+      user = build(:user, birthyear: "eighteen hundred")
+      expect{ user.valid? }.to change{ user.errors[:birthyear] }
+    end
+
+    it "(birthyear) is invalid when not an integer" do
+      user = build(:user, birthyear: "eighteen hundred")
+      expect{ user.valid? }.to change{ user.errors[:birthyear] }
+      user = build(:user, birthyear: 1930.4)
+      expect{ user.valid? }.to change{ user.errors[:birthyear] }
+    end
+
+    it "(domicile) is valid when an area id or 'outside'" do
+      create_list(:area, 5)
+      expect(build(:user, domicile: Area.offset(rand(5)).first.id)).to be_valid
+      expect(build(:user, domicile: 'outside')).to be_valid
+    end
+
+    it "(domicile) is invalid when not an area id or 'outside'" do
+      user = build(:user, domicile: 'somethingelse')
+      expect{ user.valid? }.to change{ user.errors[:domicile] }
+      user = build(:user, domicile: 5)
+      expect{ user.valid? }.to change{ user.errors[:domicile] }
+    end
+
+    it "(education) is valid when an ISCED2011 level" do
+      expect(build(:user, education: 0)).to be_valid
+      expect(build(:user, education: 4)).to be_valid
+      expect(build(:user, education: 8)).to be_valid
+    end
+
+    it "(education) is invalid when not an isced 2011 level" do
+      user = build(:user, education: 'somethingelse')
+      expect{ user.valid? }.to change{ user.errors[:education] }
+      user = build(:user, education: 9)
+      expect{ user.valid? }.to change{ user.errors[:education] }
+      user = build(:user, education: 2.4)
+      expect{ user.valid? }.to change{ user.errors[:education] }
+    end
+
+  end
+
 end
