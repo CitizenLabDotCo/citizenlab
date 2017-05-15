@@ -6,10 +6,8 @@ import { createStructuredSelector } from 'reselect';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import T from 'containers/T';
-import styled from 'styled-components';
 
 import { selectResourcesDomain } from 'utils/resources/selectors';
-
 import Author from './card/author';
 import Tags from './card/tags';
 
