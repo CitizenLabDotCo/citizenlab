@@ -10,4 +10,8 @@ export default defineMessages({
     id: 'app.components.MultiSelect.selectionTooLong',
     defaultMessage: 'Too many {optionLabel} (max: {maxSelectionLength})',
   },
+  noResultsMessage: {
+    id: 'app.components.MultiSelect.noResultsMessage',
+    defaultMessage: 'No results',
+  },
 });
