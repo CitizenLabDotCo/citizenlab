@@ -82,6 +82,16 @@ export function fetchUsers(queryParameters) {
   return request(`${API_PATH}/users`, null, null, queryParameters);
 }
 
+export function fetchPages(queryParameters) {
+  return request(`${API_PATH}/pages`, null, null, queryParameters);
+}
+
+export function createPage(body) {
+  return request(`${API_PATH}/pages`, { page: body }, {
+    method: 'POST',
+  });
+}
+
 export function fetchUser(userId) {
   return request(`${API_PATH}/users/${userId}`);
 }

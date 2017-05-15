@@ -264,6 +264,44 @@ export default function createRoutes(store) {
       ],
     },
     {
+      path: '/admin/pages',
+      name: 'adminPages',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/AdminPage/AdminPages'),
+          import('containers/AdminPage/AdminPages/reducer'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component, reducer]) => {
+          injectReducer('adminPages', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
+      path: '/admin/pages/new',
+      name: 'adminPagesNew',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/AdminPage/AdminPagesNew'),
+          import('containers/AdminPage/AdminPagesNew/reducer'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component, reducer]) => {
+          injectReducer('adminPagesNew', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

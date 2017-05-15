@@ -8,11 +8,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import { Container, Segment, Grid, Button } from 'semantic-ui-react';
+import { Container, Grid, Button } from 'semantic-ui-react';
 import MultiSelectT from 'components/MultiSelectT';
 import { connect } from 'react-redux';
 import { getFromState } from 'utils/immutables';
 import { createStructuredSelector } from 'reselect';
+import FormattedMessageSegment from 'components/FormattedMessageSegment';
 
 // import messages from './messages';
 import IdeaEditor from './IdeaEditor';
@@ -50,12 +51,6 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
     const { saveDraft, storeIdea } = this.props;
     const { topics, areas, loadTopicsError, loadAreasError, loadingTopics, loadingAreas } = this.props;
     const { formatMessage } = this.props.intl;
-
-    const FormattedMessageSegment = (props) => (
-      <Segment>
-        <FormattedMessage {...props.message} />
-      </Segment>
-    );
 
     // refactor topics and areas to match format expected by Multiselect
     const topicsSelect = multiselectMap(topics);

@@ -4,7 +4,7 @@ import canPublish from '../editor/canPublish';
 import { mapDispatchToProps } from '../index';
 import { storeAttachmentError, storeImageError, storeSelectedAreas, storeSelectedTopics } from '../actions';
 
-describe('index', () => {
+describe('<IdeasNewPage />', () => {
   describe('canPublish', () => {
     it('should not allow publishing an idea if title is invalid', () => {
       // we assume content is valid

@@ -20,9 +20,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import messages from './messages';
 
-export const optionRendered = (option) => (
+export const optionRendered = (option) => (<span>
   <T value={JSON.parse(option.label)} />
-);
+</span>);
 
 
 class MultiSelectT extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
