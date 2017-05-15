@@ -42,8 +42,8 @@ class IdeaEditor extends React.PureComponent {
     });
 
     // store temp draft
-    const htmlContent = convertToRaw(editorState.getCurrentContent());
-    this.props.storeDraftCopy(htmlContent);
+    const rawContent = convertToRaw(editorState.getCurrentContent());
+    this.props.storeDraftCopy(rawContent);
   };
 
   render() {

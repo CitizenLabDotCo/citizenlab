@@ -1,35 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { Menu } from 'semantic-ui-react';
-import { createStructuredSelector } from 'reselect';
-import { makeSelectCurrentTenant } from './selectors';
+import { injectIntl, intlShape } from 'react-intl';
 
-class Sidebar extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  render() {
-    const menu = {
-      background: this.props.tenant.getIn(['attributes', 'settings', 'core', 'style_accent_bg']),
-    };
+import messages from './messages';
 
-    return (
-      <Menu style={menu} secondary vertical fluid>
-        <Menu.Item name="Dashboard" as={Link} to="/admin/dashboard" active={this.props.location.pathname === '/admin/dashboard'} />
-        <Menu.Item name="Users" as={Link} to="/admin/users" active={this.props.location.pathname === '/admin/users'} />
-        <Menu.Item name="Ideas" as={Link} to="/admin/ideas" active={this.props.location.pathname === '/admin/ideas'} />
-        <Menu.Item name="Settings" as={Link} to="/admin/settings" active={this.props.location.pathname === '/admin/settings'} />
-      </Menu>
-    );
-  }
+function Sidebar(props) {
+  const { formatMessage } = props.intl;
+
+  return (
+    <Menu secondary vertical fluid>
+      <Menu.Item name={formatMessage({ ...messages.dashboard })} as={Link} to="/admin/dashboard" active={props.location.pathname === '/admin/dashboard'} />
+      <Menu.Item name={formatMessage({ ...messages.users })} as={Link} to="/admin/users" active={props.location.pathname === '/admin/users'} />
+      <Menu.Item name={formatMessage({ ...messages.pages })} as={Link} to="/admin/pages" active={props.location.pathname === '/admin/pages'} />
+      <Menu.Item name={formatMessage({ ...messages.newPage })} as={Link} to="/admin/pages/new" active={props.location.pathname === '/admin/pages/new'} />
+    </Menu>
+  );
 }
 
 Sidebar.propTypes = {
-  location: PropTypes.object.isRequired,
-  tenant: PropTypes.object.isRequired,
+  location: PropTypes.object,
+  intl: intlShape.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  tenant: makeSelectCurrentTenant(),
-});
-
-export default connect(mapStateToProps, null)(Sidebar);
+export default injectIntl(Sidebar);

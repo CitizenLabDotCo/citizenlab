@@ -26,6 +26,15 @@ export const generateResourcesAreaValue = (id) => ({
   },
 });
 
+
+export const generateResourcesPageValue = (id) => ({
+  data: {
+    id,
+    attributes: {},
+    relationships: {},
+  },
+});
+
 export const generateResourcesVoteValue = (id, allUp, allDown) => {
   let mode;
   if (allUp) {
