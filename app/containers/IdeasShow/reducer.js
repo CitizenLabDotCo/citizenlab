@@ -9,7 +9,7 @@ import { fromJS } from 'immutable';
 import {
   LOAD_IDEA_VOTES_ERROR, LOAD_IDEA_VOTES_REQUEST, LOAD_IDEA_VOTES_SUCCESS, RESET_PAGE_DATA, LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_ERROR, LOAD_COMMENTS_SUCCESS,
   LOAD_IDEA_SUCCESS, STORE_COMMENT_REQUEST, STORE_COMMENT_ERROR, SAVE_COMMENT_DRAFT,
-  LOAD_IDEA_REQUEST, LOAD_IDEA_ERROR, VOTE_IDEA_ERROR, VOTE_IDEA_REQUEST, VOTE_IDEA_SUCCESS, PUBLISH_COMMENT_SUCCESS, DELETE_COMMENT_SUCCESS
+  LOAD_IDEA_REQUEST, LOAD_IDEA_ERROR, VOTE_IDEA_ERROR, VOTE_IDEA_REQUEST, VOTE_IDEA_SUCCESS, PUBLISH_COMMENT_SUCCESS, DELETE_COMMENT_SUCCESS,
 } from './constants';
 import { getPageItemCountFromUrl, getPageNumberFromUrl } from '../../utils/paginationUtils';
 
@@ -123,7 +123,6 @@ export default function ideasShowReducer(state = initialState, action) {
         .set('submittingComment', false);
     case DELETE_COMMENT_SUCCESS: {
       const commentIndex = state.get('comments').findIndex((id) => action.commentId === id);
-      debugger
       return state.deleteIn(['comments', commentIndex]);
     }
     case RESET_PAGE_DATA:

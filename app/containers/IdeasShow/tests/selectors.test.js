@@ -1,62 +1,5 @@
 import { fromJS } from 'immutable';
-// import { makeSelectDownVotes, makeSelectUpVotes } from '../selectors';
-// import { generateResourcesVoteValue } from './__shared';
-
-// describe('IdeasShow selectors', () => {
-//   describe('makeSelectUpVotes', () => {
-//     const testVotesSelector = (mode) => {
-//       const votesSelector = (mode === 'up'
-//         ? makeSelectUpVotes()
-//         : makeSelectDownVotes()
-//       );
-
-//       const state = {
-//         // page name nested for proper conversion by fromJS
-//         ideasShow: {
-//           votes: [],
-//         },
-//         resources: {
-//           votes: [],
-//         },
-//       };
-
-//       let i = 0;
-//       while (i < 1) {
-//         if (i % 2 === 0) {
-//           state.ideasShow.votes.push(i);
-//         }
-//         state.resources.votes[i] = generateResourcesVoteValue(i, mode === 'up', mode === 'down').data;
-
-//         i += 1;
-//       }
-
-//       expect(votesSelector(fromJS(state))).toEqual(state.resources.votes);
-//     };
-
-//     it('should select up votes', () => {
-//       testVotesSelector('up');
-//     });
-//   });
-// });
-
 import { arrayToTree } from '../selectors';
-
-// export const arrayToTree = (ids, comments) => {
-//   const map = {};
-//   const roots = [];
-
-//   ids.forEach((id) => {
-//     const parentId = comments.get(id).getIn(['relationships', 'parent', 'data', 'id']);
-//     const node = { id, children: [] };
-//     map[id] = node;
-
-//     if (!parentId) return roots.push(node);
-//     if (map[parentId]) map[parentId].children.push(node);
-//     return '';
-//   });
-
-//   return roots;
-// };
 
 describe('IdeasShow selector helper arrayToTree', () => {
   it('should trasform an array of elements; that only have none or one childre, and with only one root element into the proper tree shape', () => {
@@ -138,10 +81,9 @@ describe('IdeasShow selector helper arrayToTree', () => {
     const commnets = fromJS({
       1: { id: 1 },
       2: { id: 2, relationships: { parent: { data: { id: 1 } } } },
-
       20: { id: 20, relationships: { parent: { data: { id: 1 } } } },
-        200: { id: 200, relationships: { parent: { data: { id: 20 } } } },
-        201: { id: 201, relationships: { parent: { data: { id: 20 } } } },
+      200: { id: 200, relationships: { parent: { data: { id: 20 } } } },
+      201: { id: 201, relationships: { parent: { data: { id: 20 } } } },
       21: { id: 21, relationships: { parent: { data: { id: 1 } } } },
 
       3: { id: 3, relationships: { parent: { data: { id: 2 } } } },
@@ -191,8 +133,8 @@ describe('IdeasShow selector helper arrayToTree', () => {
       2: { id: 2, relationships: { parent: { data: { id: 1 } } } },
 
       20: { id: 20, relationships: { parent: { data: { id: 1 } } } },
-        200: { id: 200, relationships: { parent: { data: { id: 20 } } } },
-        201: { id: 201, relationships: { parent: { data: { id: 20 } } } },
+      200: { id: 200, relationships: { parent: { data: { id: 20 } } } },
+      201: { id: 201, relationships: { parent: { data: { id: 20 } } } },
       21: { id: 21, relationships: { parent: { data: { id: 1 } } } },
 
       3: { id: 3, relationships: { parent: { data: { id: 2 } } } },
@@ -206,21 +148,6 @@ describe('IdeasShow selector helper arrayToTree', () => {
       f: { id: 'f', relationships: { parent: { data: { id: 'b' } } } },
 
     });
-
-    const r0c2 = { id: '21', children: [] };
-
-    const r0c1c1 = { id: '201', children: [] };
-    const r0c1c0 = { id: '200', children: [] };
-
-    const r0c1 = { id: '20', children: [r0c1c0, r0c1c1] };
-
-
-    const r0c0c1 = { id: '4', children: [] };
-    const r0c0c0 = { id: '3', children: [] };
-    const r0c0 = { id: '2', children: [r0c0c0, r0c0c1] };
-
-
-    const r0 = { id: '1', children: [r0c0, r0c1, r0c2] };
 
     const r1c0c0 = { id: 'c', children: [] };
     const r1c0c1 = { id: 'd', children: [] };
