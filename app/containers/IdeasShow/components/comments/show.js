@@ -6,6 +6,9 @@ import { createStructuredSelector } from 'reselect';
 import { preprocess } from 'utils';
 import { selectResourcesDomain } from 'utils/resources/selectors';
 import T from 'containers/T';
+
+import Authorize from 'utils/containers/authorize';
+
 import MapChildren from './mapChildren';
 
 import Editor from '../common/editor';
@@ -20,7 +23,10 @@ const Show = ({ content, children, createdAt, ideaId, commentId, authorId }) => 
       <Comment.Text>
         <T value={content} />
       </Comment.Text>
-      {<Editor parentId={commentId} ideaId={ideaId} />}
+      <Authorize action={['comments', 'create']}>
+        <Editor parentId={commentId} ideaId={ideaId} />
+      </Authorize>
+
     </Comment.Content>
     <MapChildren nodes={children} />
   </Comment>
@@ -50,6 +56,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const authorId = comment.getIn(['relationships', 'author', 'data', 'id']);
   const ideaId = comment.getIn(['relationships', 'idea', 'data', 'id']);
   return {
+    comment,
     content,
     createdAt,
     children,

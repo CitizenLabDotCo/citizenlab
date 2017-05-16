@@ -6,6 +6,7 @@ import { Comment } from 'semantic-ui-react';
 
 import T from 'containers/T';
 import ImageCarousel from 'components/ImageCarousel';
+import Autorize from 'utils/containers/authorize';
 
 import { selectIdea } from '../selectors';
 
@@ -15,7 +16,6 @@ import Editor from './common/editor';
 import Votes from './show/votes';
 
 import Comments from './comments';
-// import CommentEditorWrapper from '../CommentEditorWrapper';
 
 const Carousel = ({ images }) => {
   if (!images[0]) return null;
@@ -50,7 +50,9 @@ class Show extends React.PureComponent {
             <Comment.Text>
               <T value={body_multiloc} />
             </Comment.Text>
-            <Editor ideaId={id} />
+            <Autorize action={['comments', 'create']}>
+              <Editor ideaId={id} />
+            </Autorize>
             </Comment.Content>
           </Comment>
         </Comment.Group>

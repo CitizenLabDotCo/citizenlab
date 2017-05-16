@@ -8,15 +8,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
-import { FormattedMessage } from 'react-intl';
-import Select from 'react-select';
-import T, { fallbackTenantLocales, fallbackUserLocale } from 'containers/T';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import T from 'containers/T';
 import { makeSelectSetting } from 'utils/tenant/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-import { findTranslatedText } from 'containers/T//utils';
 import { createStructuredSelector } from 'reselect';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+import { Dropdown } from 'semantic-ui-react';
+import { injectTFunc } from 'containers/T/utils';
 
 import messages from './messages';
 
@@ -29,66 +27,57 @@ class MultiSelectT extends React.PureComponent { // eslint-disable-line react/pr
   constructor() {
     super();
     this.state = {
-      selected: [],
       error: false,
     };
+
+    // provide 'this' context to bindings
     this.handleChange = this.handleChange.bind(this);
     this.valueRenderer = this.valueRenderer.bind(this);
-    this.timer = null;
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if ((nextState.error === true) && (this.timer === null)) {
-      this.timer = setTimeout(() => { this.setState({ error: false }); this.timer = null; }, 3000);
-    }
+    this.setState({ error: nextState.error });
   }
 
-  componentWillUnmount() {
-    this.timer = null;
-  }
-
-  valueRenderer = (option) => {
-    // we must do manual parsing to extract the original text from <T>
-    const { userLocale, tenantLocales } = this.props;
-
-    return (<span
-      dangerouslySetInnerHTML={{ __html: findTranslatedText(JSON.parse(option.label), userLocale || fallbackUserLocale, tenantLocales || fallbackTenantLocales) }}
-    />);
+  valueRenderer = ({ text }) => {
+    const { tFunc } = this.props;
+    return tFunc(JSON.parse(text));
   };
 
-  handleChange(selected) {
-    if (selected.length <= 3) {
-      this.setState({ selected, error: false });
-      this.props.handleOptionsAdded(selected);
-    } else {
-      this.setState({ error: true });
-    }
+  handleChange(e, data) {
+    const options = data.value;
+    this.props.handleOptionsAdded(options);
+    this.setState({ error: options.length > 3 });
   }
 
   /* eslint-disable */
   render() {
     const { options, maxSelectionLength, optionLabel, placeholder } = this.props;
-    const { selected, error } = this.state;
+    const { error } = this.state;
+    const { formatMessage } = this.props.intl;
 
     return (
       <div className="cl-topic-select">
-        <Select
-          name="cl-topic-select"
-          value={selected}
-          multi={true}
-          options={options}
-          optionRenderer={optionRendered}
-          valueRenderer={this.valueRenderer}
-          onChange={this.handleChange}
+        <Dropdown
+          closeOnChange
+          multiple
+          scrolling
+          search
+          selection
+          fluid
           placeholder={placeholder}
+          renderLabel={this.valueRenderer}
+          onChange={this.handleChange}
+          options={options}
+          noResultsMessage={formatMessage(messages.noResultsMessage)}
         />
-        {error && <FormattedMessage
+        {error && <div><FormattedMessage
           {...messages.selectionTooLong}
           values={{
             maxSelectionLength,
             optionLabel,
           }}
-        />}
+        /></div>}
       </div>
     );
   }
@@ -101,8 +90,8 @@ MultiSelectT.propTypes = {
   optionLabel: PropTypes.string.isRequired,
   handleOptionsAdded: PropTypes.func.isRequired,
   placeholder: PropTypes.string.isRequired,
-  userLocale: PropTypes.string,
-  tenantLocales: ImmutablePropTypes.list,
+  intl: intlShape.isRequired,
+  tFunc: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -110,4 +99,4 @@ const mapStateToProps = createStructuredSelector({
   tenantLocales: makeSelectSetting(['core', 'locales']),
 });
 
-export default connect(mapStateToProps)(MultiSelectT);
+export default injectTFunc(injectIntl(connect(mapStateToProps)(MultiSelectT)));
