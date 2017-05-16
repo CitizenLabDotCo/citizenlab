@@ -20,7 +20,7 @@ export default defineMessages({
   },
   login: {
     id: 'app.containers.app.navbar.login',
-    defaultMessage: 'Login',
+    defaultMessage: 'Log in',
   },
   register: {
     id: 'app.containers.app.navbar.register',

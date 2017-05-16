@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 
-import { push } from 'react-router-redux'
+import { push } from 'react-router-redux';
 
 import { preprocess } from 'utils';
 
@@ -18,13 +18,17 @@ import messages from './messages';
 class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   loginLink() {
-    const { gotToregister, gotTologIn } = this.props;
+    const { goTo } = this.props;
     return [
       <Menu.Item key="login">
-        <Button onClick={gotTologIn}>Login</Button>
+        <Button onClick={() => goTo('/sign-in')}>
+          <FormattedMessage {...messages.login} />
+        </Button>
       </Menu.Item>,
       <Menu.Item key="register">
-        <Button onClick={gotToregister}>Register</Button>
+        <Button onClick={() => goTo('/register')}>
+          <FormattedMessage {...messages.register} />
+        </Button>
       </Menu.Item>,
     ];
   }
@@ -45,8 +49,8 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
     return (
       <Dropdown item trigger={this.trigger(currentUser)}>
         <Dropdown.Menu>
-          <Dropdown.Item>
-            <Link to="/profile/edit"><FormattedMessage {...messages.editProfile} /></Link>
+          <Dropdown.Item onClick={() => goTo('/profile/edit')}>
+            <FormattedMessage {...messages.editProfile} />
           </Dropdown.Item>
           <Dropdown.Item>
             <Link onClick={signOut}>Sign out</Link>
@@ -57,7 +61,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
   }
 
   render() {
-    const { currentUser, currentTenant } = this.props;
+    const { currentUser, currentTenant, goTo } = this.props;
     return (
       <Menu>
         <Menu.Item>{currentTenant.attributes.name}</Menu.Item>
@@ -66,13 +70,11 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
           <SearchWidget />
         </Menu.Item>
         <Menu.Menu position="right">
-          <Menu.Item>
-            <Link to="/ideas/new">
-              <Button primary>
-                <Icon name="plus" />
-                <FormattedMessage {...messages.addIdea} />
-              </Button>
-            </Link>
+          <Menu.Item >
+            <Button primary onClick={() => goTo('/ideas/new')}>
+              <Icon name="plus" />
+              <FormattedMessage {...messages.addIdea} />
+            </Button>
           </Menu.Item>
           {currentUser ? this.userMenu(currentUser) : this.loginLink()}
         </Menu.Menu>
@@ -85,8 +87,7 @@ Navbar.propTypes = {
   currentUser: PropTypes.object,
   currentTenant: PropTypes.object.isRequired,
   signOut: PropTypes.func.isRequired,
-  gotToregister: PropTypes.func.isRequired,
-  gotTologIn: PropTypes.func.isRequired,
+  goTo: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -95,10 +96,9 @@ const mapStateToProps = createStructuredSelector({
 
 const mergeProps = (stateP, dispatchP, ownP) => {
   const signOut = dispatchP.signOutCurrentUser;
-  const gotTologIn = dispatchP.push.bind(null, '/sign-in');
-  const gotToregister = dispatchP.push.bind(null, '/register');
+  const goTo = dispatchP.push;
 
-  return Object.assign({}, stateP, { signOut, gotTologIn, gotToregister }, ownP);
+  return Object.assign({}, stateP, { signOut, goTo }, ownP);
 };
 
 
