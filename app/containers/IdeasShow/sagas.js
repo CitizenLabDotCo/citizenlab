@@ -3,7 +3,7 @@ import { fetchIdea, fetchIdeaVotes, submitIdeaVote, createIdeaComment, fetchIdea
 import { mergeJsonApiResources } from 'utils/resources/actions';
 
 import {
-  LOAD_IDEA_REQUEST, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_REQUEST, STORE_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST, DELETE_COMMENT_REQUEST, PUBLISH_COMMENT_REQUEST,
+  LOAD_IDEA_REQUEST, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_REQUEST, LOAD_COMMENTS_REQUEST, DELETE_COMMENT_REQUEST, PUBLISH_COMMENT_REQUEST,
 } from './constants';
 
 import {
