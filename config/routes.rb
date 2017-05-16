@@ -31,6 +31,19 @@ Rails.application.routes.draw do
 
       resources :projects
 
+      scope 'stats', controller: 'stats' do
+        get 'users_by_time'
+        get 'users_by_gender'
+        get 'users_by_birthyear'
+        get 'users_by_domicile'
+        get 'users_by_education'
+        get 'ideas_by_time'
+        get 'ideas_by_topic'
+        get 'ideas_by_area'
+        get 'comments_by_time'
+        get 'votes_by_time'
+      end
+
     end
   end
 end

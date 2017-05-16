@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20170509093623) do
     t.jsonb    "title_multiloc",     default: {}
     t.jsonb    "body_multiloc",      default: {}
     t.string   "publication_status"
+    t.datetime "published_at"
     t.uuid     "project_id"
     t.uuid     "author_id"
     t.string   "author_name"

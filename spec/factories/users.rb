@@ -18,6 +18,12 @@ FactoryGirl.define do
       roles [{type: 'admin'}]
     end
 
+    factory :user_with_demographics do
+      gender { ['male','female','unspecified',nil][rand(4)] }
+      birthyear { rand(1)==0 ? Time.now.year - 1 - rand(100) : nil }
+      education { rand(1)==0 ? rand(8)+1 : nil }
+    end
+
   end
 
 end
