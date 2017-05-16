@@ -78,7 +78,8 @@ Apartment::Tenant.switch('localhost') do
       email: Faker::Internet.email,
       password: 'testtest',
       locale: ['en','nl'][rand(1)],
-      roles: rand(10) == 0 ? [{type: 'admin'}] : []
+      roles: rand(10) == 0 ? [{type: 'admin'}] : [],
+      gender: %w(male female unspecified)[rand(3)]
     })
   end
 

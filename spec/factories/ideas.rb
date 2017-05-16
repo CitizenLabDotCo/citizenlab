@@ -15,5 +15,26 @@ FactoryGirl.define do
     # author_name "MyString"
     # images ""
     # files ""
+    factory :idea_with_topics do
+      transient do
+        topics_count 2
+      end
+      after(:create) do |idea, evaluator|
+        evaluator.topics_count.times do |i|
+          idea.topics << create(:topic)
+        end
+      end
+    end
+
+    factory :idea_with_areas do
+      transient do
+        areas_count 2
+      end
+      after(:create) do |idea, evaluator|
+        evaluator.areas_count.times do |i|
+          idea.areas << create(:area)
+        end
+      end
+    end
   end
 end

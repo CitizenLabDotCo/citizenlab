@@ -24,6 +24,7 @@ class Idea < ApplicationRecord
   validates :author_name, presence: true, unless: :draft?
 
   before_validation :set_author_name, on: :create
+  after_validation :set_published_at, if: ->(idea){ idea.published? && idea.publication_status_changed? }
 
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
@@ -39,11 +40,21 @@ class Idea < ApplicationRecord
     .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
   end)
 
+  scope :published, -> {where publication_status: 'published'}
+
   def draft?
     self.publication_status == 'draft'
   end
 
+  def published?
+    self.publication_status == 'published'
+  end
+
   def set_author_name
     self.author_name = self.author.display_name if self.author
+  end
+
+  def set_published_at
+    self.published_at ||= Time.now
   end
 end

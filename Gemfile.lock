@@ -122,6 +122,8 @@ GEM
     formatador (0.2.5)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
+    groupdate (3.2.0)
+      activesupport (>= 3)
     htmlentities (4.3.4)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
@@ -319,6 +321,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   fog-aws
+  groupdate (~> 3.2.0)
   kaminari (~> 1.0.1)
   knock (~> 2.1.1)
   koala (~> 3.0)
