@@ -82,6 +82,16 @@ export function fetchUsers(queryParameters) {
   return request(`${API_PATH}/users`, null, null, queryParameters);
 }
 
+export function fetchPages(queryParameters) {
+  return request(`${API_PATH}/pages`, null, null, queryParameters);
+}
+
+export function createPage(body) {
+  return request(`${API_PATH}/pages`, { page: body }, {
+    method: 'POST',
+  });
+}
+
 export function fetchUser(userId) {
   return request(`${API_PATH}/users/${userId}`);
 }
@@ -118,6 +128,23 @@ export function updateCurrentUser(values, userId) {
   // if post profile (no avatar), remove avatar
   return request(`${API_PATH}/users/${userId}`, { user: values }, {
     method: 'PUT',
+  });
+}
+
+export function updateSettings(tenantId, locale, organizationName, accentColorHex) {
+  return request(`${API_PATH}/tenants/${tenantId}`, {
+    tenant: {
+      settings: {
+        core: {
+          organization_name: {
+            [locale]: organizationName,
+          },
+          style_accent_bg: accentColorHex,
+        },
+      },
+    },
+  }, {
+    method: 'PATCH',
   });
 }
 

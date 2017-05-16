@@ -68,6 +68,9 @@ class View extends React.Component {
     return (
       <div>
         <WatchSagas sagas={sagasWatchers} />
+        <Panel />
+
+        {/*
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
@@ -108,6 +111,7 @@ class View extends React.Component {
             </LayoutSidebar.Pusher>
           </LayoutSidebar.Pushable>
         </div>
+        */}
       </div>
     );
   }

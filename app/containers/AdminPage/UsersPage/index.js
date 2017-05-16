@@ -2,9 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
+import { Saga } from 'react-redux-saga';
+import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { Icon, Menu, Table } from 'semantic-ui-react';
+import _ from 'lodash';
 import {
+  selectFirstPageNumber,
+  selectFirstPageItemCount,
   selectPrevPageNumber,
   selectPrevPageItemCount,
   selectCurrentPageNumber,
@@ -12,44 +17,56 @@ import {
   selectNextPageNumber,
   selectNextPageItemCount,
   selectPageCount,
+  selectLastPageNumber,
+  selectLastPageItemCount,
   selectLoadingUsers,
   selectLoadUsersError,
   makeSelectUsers,
 } from './selectors';
 import { loadUsers } from './actions';
+import { watchLoadUsers } from './sagas';
 
 class UsersPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
-    const { loadUsersPage } = this.props;
-    loadUsersPage(1, 5, null, true);
+    this.props.loadUsers(1, 5, null, true);
   }
 
 
   goToPreviousUsersPage = () => {
-    const { loadUsersPage, prevPageNumber, prevPageItemCount, pageCount } = this.props;
-    loadUsersPage(prevPageNumber, prevPageItemCount, pageCount);
+    const { prevPageNumber, prevPageItemCount, lastPageNumber, lastPageItemCount, pageCount } = this.props;
+
+    if (_.isNumber(prevPageNumber) && prevPageNumber >= 1) {
+      this.props.loadUsers(prevPageNumber, prevPageItemCount, pageCount);
+    } else {
+      this.props.loadUsers(lastPageNumber, lastPageItemCount, pageCount);
+    }
   }
 
 
   goToNextUsersPage = () => {
-    const { loadUsersPage, nextPageNumber, nextPageItemCount, pageCount } = this.props;
-    loadUsersPage(nextPageNumber, nextPageItemCount, pageCount);
+    const { firstPageNumber, firstPageItemCount, nextPageNumber, nextPageItemCount, pageCount } = this.props;
+
+    if (_.isNumber(nextPageNumber) && nextPageNumber <= pageCount) {
+      this.props.loadUsers(nextPageNumber, nextPageItemCount, pageCount);
+    } else {
+      this.props.loadUsers(firstPageNumber, firstPageItemCount, pageCount);
+    }
   }
 
 
   goToUsersPage = (pageNumber) => () => {
-    const { loadUsersPage, currentPageItemCount, pageCount } = this.props;
-    loadUsersPage(pageNumber, currentPageItemCount, pageCount);
+    const { currentPageItemCount, pageCount } = this.props;
+    this.props.loadUsers(pageNumber, currentPageItemCount, pageCount);
   }
 
 
   render() {
     let table = null;
-    const pageNumbers = [];
+    const pageNumbersArray = [];
     const { users, pageCount, loadingUsers, loadUsersError, currentPageNumber } = this.props;
 
     for (let i = 1; i <= pageCount; i += 1) {
-      pageNumbers.push(i);
+      pageNumbersArray.push(i);
     }
 
     if (loadingUsers) {
@@ -78,7 +95,7 @@ class UsersPage extends React.Component { // eslint-disable-line react/prefer-st
           }
         </Table.Body>
 
-        { (pageNumbers && pageNumbers.length > 1) ? (
+        { (pageNumbersArray && pageNumbersArray.length > 1) ? (
           <Table.Footer>
             <Table.Row>
               <Table.HeaderCell colSpan="4">
@@ -88,7 +105,7 @@ class UsersPage extends React.Component { // eslint-disable-line react/prefer-st
                     <Icon name="left chevron" />
                   </Menu.Item>
 
-                  {pageNumbers.map((pageNumber) =>
+                  {pageNumbersArray.map((pageNumber) =>
                     <Menu.Item
                       key={pageNumber}
                       active={pageNumber === currentPageNumber}
@@ -112,6 +129,8 @@ class UsersPage extends React.Component { // eslint-disable-line react/prefer-st
 
     return (
       <div>
+        <h1>Users</h1>
+        <Saga saga={watchLoadUsers} />
         {table}
       </div>
     );
@@ -120,37 +139,39 @@ class UsersPage extends React.Component { // eslint-disable-line react/prefer-st
 
 UsersPage.propTypes = {
   users: ImmutablePropTypes.list.isRequired,
+  firstPageNumber: PropTypes.number,
+  firstPageItemCount: PropTypes.number,
   prevPageNumber: PropTypes.number,
   prevPageItemCount: PropTypes.number,
   currentPageNumber: PropTypes.number,
   currentPageItemCount: PropTypes.number,
   nextPageNumber: PropTypes.number,
   nextPageItemCount: PropTypes.number,
+  lastPageNumber: PropTypes.number,
+  lastPageItemCount: PropTypes.number,
   pageCount: PropTypes.number,
   loadingUsers: PropTypes.bool.isRequired,
   loadUsersError: PropTypes.bool.isRequired,
-  loadUsersPage: PropTypes.func.isRequired,
+  loadUsers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   users: makeSelectUsers(),
+  firstPageNumber: selectFirstPageNumber,
+  firstPageItemCount: selectFirstPageItemCount,
   prevPageNumber: selectPrevPageNumber,
   prevPageItemCount: selectPrevPageItemCount,
   currentPageNumber: selectCurrentPageNumber,
   currentPageItemCount: selectCurrentPageItemCount,
   nextPageNumber: selectNextPageNumber,
   nextPageItemCount: selectNextPageItemCount,
+  lastPageNumber: selectLastPageNumber,
+  lastPageItemCount: selectLastPageItemCount,
   pageCount: selectPageCount,
   loadingUsers: selectLoadingUsers,
   loadUsersError: selectLoadUsersError,
 });
 
-export function mapDispatchToProps(dispatch) {
-  return {
-    loadUsersPage(pageNumber, itemCount, pageCount, initialLoad = false) {
-      dispatch(loadUsers(pageNumber, itemCount, pageCount, initialLoad));
-    },
-  };
-}
+const mapDispatchToProps = (dispatch) => bindActionCreators({ loadUsers }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersPage);

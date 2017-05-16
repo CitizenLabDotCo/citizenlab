@@ -4,13 +4,9 @@ import IdeaCards from './panel/ideaCards';
 import LoadButton from './panel/loadButton';
 
 const Panel = () => (
-  <Segment basic>
-    <div style={{ display: 'inline-block', width: '100%' }}>
-      <Grid columns={3}>
-        <IdeaCards />
-        <LoadButton />
-      </Grid>
-    </div>
+  <Segment style={{ width: 1000, marginLeft: 'auto', marginRight: 'auto' }} basic>
+    <IdeaCards />
+    <LoadButton />
   </Segment>
 );
 
