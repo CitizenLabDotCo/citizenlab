@@ -5,9 +5,11 @@ import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 
+import { push } from 'react-router-redux'
+
 import { preprocess } from 'utils';
 
-import { signOutCurrentUser as signOutAction } from 'utils/auth/actions';
+import { signOutCurrentUser } from 'utils/auth/actions';
 import { makeSelectCurrentUserImmutable } from 'utils/auth/selectors';
 
 import SearchWidget from 'containers/SearchWidget';
@@ -16,29 +18,30 @@ import messages from './messages';
 class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   loginLink() {
+    const { gotToregister, gotTologIn } = this.props;
     return [
       <Menu.Item key="login">
-        <Button><Link to="/sign-in">Login</Link></Button>
+        <Button onClick={gotTologIn}>Login</Button>
       </Menu.Item>,
       <Menu.Item key="register">
-        <Button><Link to="/register">Register</Link></Button>
+        <Button onClick={gotToregister}>Register</Button>
       </Menu.Item>,
     ];
   }
 
   trigger(currentUser) {
     const avatar = currentUser.getIn(['attributes', 'avatar', 'small']);
-    const first_name = currentUser.getIn(['attributes', 'first_name']);
+    const firstName = currentUser.getIn(['attributes', 'first_name']);
     return (
       <span>
         <Image avatar src={avatar} />
-        {first_name}
+        {firstName}
       </span>
     );
   }
 
   userMenu(currentUser) {
-    const { signOutCurrentUser } = this.props;
+    const { signOut } = this.props;
     return (
       <Dropdown item trigger={this.trigger(currentUser)}>
         <Dropdown.Menu>
@@ -46,7 +49,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
             <Link to="/profile/edit"><FormattedMessage {...messages.editProfile} /></Link>
           </Dropdown.Item>
           <Dropdown.Item>
-            <Link onClick={signOutCurrentUser}>Sign out</Link>
+            <Link onClick={signOut}>Sign out</Link>
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -81,11 +84,22 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
 Navbar.propTypes = {
   currentUser: PropTypes.object,
   currentTenant: PropTypes.object.isRequired,
-  signOutCurrentUser: PropTypes.func.isRequired,
+  signOut: PropTypes.func.isRequired,
+  gotToregister: PropTypes.func.isRequired,
+  gotTologIn: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   currentUser: makeSelectCurrentUserImmutable(),
 });
 
-export default injectIntl(preprocess(mapStateToProps, { signOutCurrentUser: signOutAction })(Navbar));
+const mergeProps = (stateP, dispatchP, ownP) => {
+  const signOut = dispatchP.signOutCurrentUser;
+  const gotTologIn = dispatchP.push.bind(null, '/sign-in');
+  const gotToregister = dispatchP.push.bind(null, '/register');
+
+  return Object.assign({}, stateP, { signOut, gotTologIn, gotToregister }, ownP);
+};
+
+
+export default injectIntl(preprocess(mapStateToProps, { signOutCurrentUser, push }, mergeProps)(Navbar));
