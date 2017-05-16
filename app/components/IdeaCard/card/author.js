@@ -14,14 +14,8 @@ import messages from '../messages';
 const Author = ({ fullName }) => {
   if (!fullName) return null;
   return (
-    <Card.Meta style={{ lineHeight: '2em' }}>
-      <div>
-        <b style={{ color: 'rgba(0, 0, 0, 0.68)' }}>
-          <FormattedMessage {...messages.author} />
-        </b>
-        <span />
-        {fullName}
-      </div>
+    <Card.Meta>
+      {fullName}
     </Card.Meta>
   );
 };

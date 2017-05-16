@@ -19,7 +19,7 @@ import WatchSagas from 'containers/WatchSagas';
 
 import {
   setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
-  publishIdeaRequest, loadTopicsRequest, loadAreasRequest, storeSelectedTopics, storeSelectedAreas,
+  publishIdeaRequest, loadTopicsRequest, loadAreasRequest, storeSelectedTopics, storeSelectedAreas, invalidForm,
 } from './actions';
 import IdeaEditorWrapper from './editor/IdeaEditorWrapper';
 import AttachmentList from './attachments/AttachmentList';
@@ -63,11 +63,11 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
   }
 
   storeTopics(topics) {
-    this.props.handleTopicsSelect(topics);
+    this.props.storeSelectedTopics(topics);
   }
 
   storeAreas(areas) {
-    this.props.handleAreasSelect(areas);
+    this.props.storeSelectedAreas(areas);
   }
 
   render() {
@@ -128,8 +128,8 @@ IdeasNewPage.propTypes = {
   storeAttachment: PropTypes.func.isRequired,
   storeImage: PropTypes.func.isRequired,
   user: PropTypes.object,
-  handleTopicsSelect: PropTypes.func.isRequired,
-  handleAreasSelect: PropTypes.func.isRequired,
+  storeSelectedTopics: PropTypes.func.isRequired,
+  storeSelectedAreas: PropTypes.func.isRequired,
   locale: PropTypes.string,
   loadTopicsRequest: PropTypes.func.isRequired,
   loadAreasRequest: PropTypes.func.isRequired,
@@ -164,7 +164,7 @@ const customActionCreators = {
 
       return publishIdeaRequest(htmlContents, titles, images, attachments, userId, isDraft);
     }
-    return publishIdeaRequest(null);
+    return invalidForm();
   },
   setTitle(e) {
     return setTitle(e.target.value);
@@ -181,14 +181,6 @@ const customActionCreators = {
     }
     return storeImageError();
   },
-  handleTopicsSelect(topics) {
-    const topicsIds = topics.map((topic) => topic.value);
-    return storeSelectedTopics(topicsIds);
-  },
-  handleAreasSelect(areas) {
-    const areasIds = areas.map((area) => area.value);
-    return storeSelectedAreas(areasIds);
-  },
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
@@ -197,6 +189,8 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
    */
   loadTopicsRequest,
   loadAreasRequest,
+  storeSelectedTopics,
+  storeSelectedAreas,
   /*
    * manual bindings
    * (return actions to dispatch - with custom logic)

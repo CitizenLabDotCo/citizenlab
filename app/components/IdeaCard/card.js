@@ -8,14 +8,14 @@ import { push } from 'react-router-redux';
 import T from 'containers/T';
 
 import { selectResourcesDomain } from 'utils/resources/selectors';
-
 import Author from './card/author';
 import Tags from './card/tags';
 
 const Card = ({ header, images, label, labelObj, authorId, topicsData, areasData, viewIdea, votes }) => {
   if (!header) return null;
+
   return (
-    <LayoutCard style={{ height: '100%' }}>
+    <LayoutCard>
       <Image
         onClick={viewIdea}
         src={images}
@@ -29,8 +29,20 @@ const Card = ({ header, images, label, labelObj, authorId, topicsData, areasData
         </LayoutCard.Header>
         <Author authorId={authorId} />
       </LayoutCard.Content>
+
+      {/*
       <Tags tags={areasData} type={'areas'} />
       <Tags tags={topicsData} type={'topics'} />
+      */}
+
+      <LayoutCard.Content extra>
+        <div className="ui two buttons">
+          <Button basic color="green">{votes}</Button>
+          <Button basic color="red">{votes}</Button>
+        </div>
+      </LayoutCard.Content>
+
+      {/*
       <Button.Group basic attached={'bottom'} size={'small'}>
         <Button>
         </Button>
@@ -38,6 +50,7 @@ const Card = ({ header, images, label, labelObj, authorId, topicsData, areasData
         <Button>
         </Button>
       </Button.Group>
+      */}
     </LayoutCard>
   );
 };

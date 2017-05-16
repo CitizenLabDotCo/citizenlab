@@ -1,9 +1,3 @@
-/*
- *
- * UsersPage sagas
- *
- */
-
 import { call, put } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
 import { usersLoaded, usersLoadError } from './actions';
@@ -26,10 +20,6 @@ function* getUsers(action) {
   }
 }
 
-function* watchLoadUsers() {
+export function* watchLoadUsers() {
   yield takeLatest(LOAD_USERS_REQUEST, getUsers);
 }
-
-export default [
-  watchLoadUsers,
-];

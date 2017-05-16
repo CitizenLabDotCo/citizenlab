@@ -7,7 +7,14 @@ import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { Icon, Menu, Table } from 'semantic-ui-react';
 import _ from 'lodash';
+// import moment from 'moment';
+// import { injectTFunc } from 'containers/T/utils';
+// import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import {
+  selectIdeasIds,
+  selectIdeasLoading,
+  selectIdeasLoadError,
+  selectIdeasLoaded,
   selectFirstPageNumber,
   selectFirstPageItemCount,
   selectPrevPageNumber,
@@ -16,83 +23,73 @@ import {
   selectCurrentPageItemCount,
   selectNextPageNumber,
   selectNextPageItemCount,
-  selectPageCount,
   selectLastPageNumber,
   selectLastPageItemCount,
-  selectLoadingUsers,
-  selectLoadUsersError,
-  makeSelectUsers,
+  selectPageCount,
 } from './selectors';
-import { loadUsers } from './actions';
-import { watchLoadUsers } from './sagas';
+import { loadIdeas } from './actions';
+import { watchLoadIdeas } from './sagas';
+import IdeaTableRow from './components/ideaTableRow';
 
-class UsersPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+
+class IdeasPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
-    this.props.loadUsers(1, 5, null, true);
+    this.props.loadIdeas(1, 5, null, true);
   }
 
 
-  goToPreviousUsersPage = () => {
+  goToPreviousIdeas = () => {
     const { prevPageNumber, prevPageItemCount, lastPageNumber, lastPageItemCount, pageCount } = this.props;
 
     if (_.isNumber(prevPageNumber) && prevPageNumber >= 1) {
-      this.props.loadUsers(prevPageNumber, prevPageItemCount, pageCount);
+      this.props.loadIdeas(prevPageNumber, prevPageItemCount, pageCount);
     } else {
-      this.props.loadUsers(lastPageNumber, lastPageItemCount, pageCount);
+      this.props.loadIdeas(lastPageNumber, lastPageItemCount, pageCount);
     }
   }
 
 
-  goToNextUsersPage = () => {
+  goToNextIdeas = () => {
     const { firstPageNumber, firstPageItemCount, nextPageNumber, nextPageItemCount, pageCount } = this.props;
 
     if (_.isNumber(nextPageNumber) && nextPageNumber <= pageCount) {
-      this.props.loadUsers(nextPageNumber, nextPageItemCount, pageCount);
+      this.props.loadIdeas(nextPageNumber, nextPageItemCount, pageCount);
     } else {
-      this.props.loadUsers(firstPageNumber, firstPageItemCount, pageCount);
+      this.props.loadIdeas(firstPageNumber, firstPageItemCount, pageCount);
     }
   }
 
 
-  goToUsersPage = (pageNumber) => () => {
+  goToIdeas = (pageNumber) => () => {
     const { currentPageItemCount, pageCount } = this.props;
-    this.props.loadUsers(pageNumber, currentPageItemCount, pageCount);
+    this.props.loadIdeas(pageNumber, currentPageItemCount, pageCount);
   }
 
 
   render() {
     let table = null;
     const pageNumbersArray = [];
-    const { users, pageCount, loadingUsers, loadUsersError, currentPageNumber } = this.props;
+    const { ideas, pageCount, loading, loadError, loaded, currentPageNumber } = this.props;
 
     for (let i = 1; i <= pageCount; i += 1) {
       pageNumbersArray.push(i);
     }
 
-    if (loadingUsers) {
+    if (loading) {
       table = <div>Loading...</div>;
-    } else if (loadUsersError) {
+    } else if (loadError) {
       table = <div>An error occured</div>;
-    } else if (users && users.size > 0) {
+    } else if (loaded && ideas && ideas.size > 0) {
       table = (<Table celled>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>First name</Table.HeaderCell>
-            <Table.HeaderCell>Last name</Table.HeaderCell>
-            <Table.HeaderCell>Email</Table.HeaderCell>
-            <Table.HeaderCell>Member since</Table.HeaderCell>
+            <Table.HeaderCell>Title</Table.HeaderCell>
+            <Table.HeaderCell>Posted at</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
         <Table.Body>
-          {users.map((user) =>
-            <Table.Row key={user.get('id')}>
-              <Table.Cell>{user.getIn(['attributes', 'first_name'])}</Table.Cell>
-              <Table.Cell>{user.getIn(['attributes', 'last_name'])}</Table.Cell>
-              <Table.Cell>{user.getIn(['attributes', 'email'])}</Table.Cell>
-              <Table.Cell>{user.getIn(['attributes', 'created_at'])}</Table.Cell>
-            </Table.Row>)
-          }
+          {ideas.map((idea) => <IdeaTableRow key={idea} id={idea} />)}
         </Table.Body>
 
         { (pageNumbersArray && pageNumbersArray.length > 1) ? (
@@ -101,7 +98,7 @@ class UsersPage extends React.Component { // eslint-disable-line react/prefer-st
               <Table.HeaderCell colSpan="4">
                 <Menu floated="right" pagination>
 
-                  <Menu.Item as="a" icon onClick={this.goToPreviousUsersPage}>
+                  <Menu.Item as="a" icon onClick={this.goToPreviousIdeas}>
                     <Icon name="left chevron" />
                   </Menu.Item>
 
@@ -109,12 +106,12 @@ class UsersPage extends React.Component { // eslint-disable-line react/prefer-st
                     <Menu.Item
                       key={pageNumber}
                       active={pageNumber === currentPageNumber}
-                      onClick={this.goToUsersPage(pageNumber)}
+                      onClick={this.goToIdeas(pageNumber)}
                       as="a"
                     >{pageNumber}</Menu.Item>)
                   }
 
-                  <Menu.Item as="a" icon onClick={this.goToNextUsersPage}>
+                  <Menu.Item as="a" icon onClick={this.goToNextIdeas}>
                     <Icon name="right chevron" />
                   </Menu.Item>
 
@@ -124,21 +121,24 @@ class UsersPage extends React.Component { // eslint-disable-line react/prefer-st
           </Table.Footer>) : null }
       </Table>);
     } else {
-      table = <div>No users</div>;
+      table = <div>No ideas</div>;
     }
 
     return (
       <div>
-        <h1>Users</h1>
-        <Saga saga={watchLoadUsers} />
+        <h1>Ideas</h1>
+        <Saga saga={watchLoadIdeas} />
         {table}
       </div>
     );
   }
 }
 
-UsersPage.propTypes = {
-  users: ImmutablePropTypes.list.isRequired,
+IdeasPage.propTypes = {
+  ideas: ImmutablePropTypes.list.isRequired,
+  loading: PropTypes.bool.isRequired,
+  loadError: PropTypes.bool.isRequired,
+  loaded: PropTypes.bool.isRequired,
   firstPageNumber: PropTypes.number,
   firstPageItemCount: PropTypes.number,
   prevPageNumber: PropTypes.number,
@@ -150,13 +150,15 @@ UsersPage.propTypes = {
   lastPageNumber: PropTypes.number,
   lastPageItemCount: PropTypes.number,
   pageCount: PropTypes.number,
-  loadingUsers: PropTypes.bool.isRequired,
-  loadUsersError: PropTypes.bool.isRequired,
-  loadUsers: PropTypes.func.isRequired,
+  loadIdeas: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  users: makeSelectUsers(),
+  // locale: makeSelectLocale(),
+  ideas: selectIdeasIds,
+  loading: selectIdeasLoading,
+  loadError: selectIdeasLoadError,
+  loaded: selectIdeasLoaded,
   firstPageNumber: selectFirstPageNumber,
   firstPageItemCount: selectFirstPageItemCount,
   prevPageNumber: selectPrevPageNumber,
@@ -168,10 +170,8 @@ const mapStateToProps = createStructuredSelector({
   lastPageNumber: selectLastPageNumber,
   lastPageItemCount: selectLastPageItemCount,
   pageCount: selectPageCount,
-  loadingUsers: selectLoadingUsers,
-  loadUsersError: selectLoadUsersError,
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ loadUsers }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ loadIdeas }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersPage);
+export default connect(mapStateToProps, mapDispatchToProps)(IdeasPage);

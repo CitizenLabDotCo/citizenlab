@@ -110,4 +110,8 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.loadAreasError',
     defaultMessage: 'Cannot load area list',
   },
+  invalidForm: {
+    id: 'app.containers.IdeasNewPage.invalidForm',
+    defaultMessage: 'Invalid form fields',
+  },
 });

@@ -8,7 +8,7 @@ import { fromJS } from 'immutable';
 import {
   SAVE_DRAFT, PUBLISH_IDEA_REQUEST, PUBLISH_IDEA_ERROR, PUBLISH_IDEA_SUCCESS, SET_TITLE, STORE_ATTACHMENT,
   STORE_IMAGE, STORE_IMAGE_ERROR, STORE_ATTACHMENT_ERROR, LOAD_TOPICS_REQUEST, LOAD_AREAS_REQUEST, LOAD_TOPICS_SUCCESS,
-  LOAD_TOPICS_ERROR, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR, STORE_SELECTED_TOPICS, STORE_SELECTED_AREAS,
+  LOAD_TOPICS_ERROR, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR, STORE_SELECTED_TOPICS, STORE_SELECTED_AREAS, INVALID_FORM,
 } from './constants';
 
 export const ideasNewPageInitialState = fromJS({
@@ -32,6 +32,7 @@ export const ideasNewPageInitialState = fromJS({
     images: [],
     loadImagesError: false,
     storeImageError: false,
+    invalidForm: false,
   },
   topics: {
     ids: [],
@@ -51,11 +52,13 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
   switch (action.type) {
     case SAVE_DRAFT:
       return state
+        .setIn(['draft', 'invalidForm'], false)
         .setIn(['draft', 'loadError'], false)
         .setIn(['draft', 'storeError'], false)
         .setIn(['draft', 'content'], action.draft);
     case PUBLISH_IDEA_REQUEST:
       return state
+        .setIn(['draft', 'invalidForm'], false)
         .setIn(['draft', 'loadError'], false)
         .setIn(['draft', 'storeError'], false)
         .setIn(['draft', 'submitting'], true)
@@ -71,12 +74,14 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
         .setIn(['draft', 'submitted'], true);
     case SET_TITLE:
       return state
+        .setIn(['draft', 'invalidForm'], false)
         .setIn(['draft', 'title'], action.payload)
         .setIn(['draft', 'shortTitleError'], action.payload.length < 5)
         .setIn(['draft', 'longTitleError'], action.payload.length > 120)
         .setIn(['draft', 'titleLength'], action.payload.length);
     case STORE_ATTACHMENT:
       return state
+        .setIn(['draft', 'invalidForm'], false)
         .setIn(['draft', 'storeAttachmentError'], false)
          // file names
         .updateIn(['draft', 'attachments'], (attachments) => attachments.concat(action.payload));
@@ -85,6 +90,7 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
         .setIn(['draft', 'storeAttachmentError'], true);
     case STORE_IMAGE:
       return state
+        .setIn(['draft', 'invalidForm'], false)
         .setIn(['draft', 'storeImageError'], false)
          // image URLs
         .updateIn(['draft', 'images'], (images) => images.concat(action.payload));
@@ -123,10 +129,15 @@ function ideasNewPageReducer(state = ideasNewPageInitialState, action) {
         .setIn(['areas', 'loading'], false);
     case STORE_SELECTED_TOPICS:
       return state
+        .setIn(['draft', 'invalidForm'], false)
         .setIn(['topics', 'selected'], fromJS(action.payload));
     case STORE_SELECTED_AREAS:
       return state
+        .setIn(['draft', 'invalidForm'], false)
         .setIn(['areas', 'selected'], fromJS(action.payload));
+    case INVALID_FORM:
+      return state
+        .setIn(['draft', 'invalidForm'], true);
     default:
       return state;
   }
