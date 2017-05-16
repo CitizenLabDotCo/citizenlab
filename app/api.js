@@ -165,3 +165,15 @@ export function submitIdeaVote(ideaId, mode) {
     method: 'POST',
   });
 }
+
+export function fetchUsersReport(queryParameters) {
+  return request(`${API_PATH}/stats/users_by_time`, null, null, queryParameters);
+}
+
+export function fetchIdeaTopicsReport(queryParameters) {
+  return request(`${API_PATH}/stats/ideas_by_topic`, null, null, queryParameters);
+}
+
+export function fetchIdeaAreasReport(queryParameters) {
+  return request(`${API_PATH}/stats/ideas_by_topic`, null, null, queryParameters);
+}

@@ -11,7 +11,7 @@ export default defineMessages({
     defaultMessage: 'Loading...',
   },
   loadError: {
-    id: 'app.containers.AdminPages.loading',
+    id: 'app.containers.AdminPages.loadError',
     defaultMessage: 'Couldn\' load pages',
   },
   page: {
