@@ -59,6 +59,24 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
+    }, { 
+      path: '/register/complete',
+      name: 'registrationComplete',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/completeRegistrationPage'),
+//          import('containers/completeRegistrationPage/reducers'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+//          injectReducer('usersEditPage', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
     }, {
       path: '/profile/edit',
       name: 'usersEditPage',

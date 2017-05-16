@@ -6,6 +6,7 @@ import { storeJwt, loadCurrentUserRequest, signInUserRequest } from 'utils/auth/
 import { push } from 'react-router-redux';
 
 import hello from 'hellojs';
+
 import {
   CREATE_EMAIL_USER_REQUEST,
   CREATE_SOCIAL_USER_REQUEST,
@@ -22,7 +23,7 @@ function* createEmailUser(action) {
     const response = yield call(createUser, action.payload);
     yield put(signInUserRequest(action.payload.email, action.payload.password, response));
     yield put(createEmailUserSuccess(response));
-    yield put(push('/complete-registration'));
+    yield put(push('/register/complete'));
   } catch (e) {
     yield put(createEmailUserError(e));
   }
