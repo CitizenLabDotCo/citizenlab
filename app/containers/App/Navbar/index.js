@@ -3,8 +3,15 @@ import React, { PropTypes } from 'react';
 import { Menu, Button, Dropdown, Icon, Image } from 'semantic-ui-react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
+import { createStructuredSelector } from 'reselect';
+
+import { preprocess } from 'utils';
+
+import { signOutCurrentUser as signOutAction } from 'utils/auth/actions';
+import { makeSelectCurrentUserImmutable } from 'utils/auth/selectors';
+
+import SearchWidget from 'containers/SearchWidget';
 import messages from './messages';
-import SearchWidget from '../../SearchWidget';
 
 class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -20,19 +27,18 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
   }
 
   trigger(currentUser) {
+    const avatar = currentUser.getIn(['attributes', 'avatar', 'small']);
+    const first_name = currentUser.getIn(['attributes', 'first_name']);
     return (
       <span>
-        <Image avatar src={currentUser.attributes.avatar.small} />
-        {currentUser.attributes.first_name}
+        <Image avatar src={avatar} />
+        {first_name}
       </span>
     );
   }
 
-  signOutClick = () => {
-    // todo
-  }
-
   userMenu(currentUser) {
+    const { signOutCurrentUser } = this.props;
     return (
       <Dropdown item trigger={this.trigger(currentUser)}>
         <Dropdown.Menu>
@@ -40,7 +46,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
             <Link to="/profile/edit"><FormattedMessage {...messages.editProfile} /></Link>
           </Dropdown.Item>
           <Dropdown.Item>
-            <Link onClick={this.signOutClick}>Sign out</Link>
+            <Link onClick={signOutCurrentUser}>Sign out</Link>
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -75,7 +81,11 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
 Navbar.propTypes = {
   currentUser: PropTypes.object,
   currentTenant: PropTypes.object.isRequired,
+  signOutCurrentUser: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = createStructuredSelector({
+  currentUser: makeSelectCurrentUserImmutable(),
+});
 
-export default injectIntl(Navbar);
+export default injectIntl(preprocess(mapStateToProps, { signOutCurrentUser: signOutAction })(Navbar));

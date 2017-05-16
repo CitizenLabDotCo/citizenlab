@@ -1,9 +1,9 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { createUser, socialRegister, socialLogin } from 'api';
 import { makeSelectSetting } from 'utils/tenant/selectors';
-import { setJwt } from 'utils/request';
-import { storeJwt, loadCurrentUserRequest } from 'utils/auth/actions';
-
+import { setJwt } from 'utils/auth/jwt';
+import { storeJwt, loadCurrentUserRequest, signInUserRequest } from 'utils/auth/actions';
+import { push } from 'react-router-redux';
 
 import hello from 'hellojs';
 import {
@@ -17,11 +17,12 @@ import {
   createSocialUserError,
 } from './actions';
 
-
 function* createEmailUser(action) {
   try {
-    const json = yield call(createUser, action.payload);
-    yield put(createEmailUserSuccess(json));
+    const response = yield call(createUser, action.payload);
+    yield put(signInUserRequest(action.payload.email, action.payload.password, response));
+    yield put(createEmailUserSuccess(response));
+    yield put(push('/complete-registration'));
   } catch (e) {
     yield put(createEmailUserError(e));
   }
@@ -46,7 +47,6 @@ function* createSocialUser(action) {
     yield put(createSocialUserError(network, err));
   }
 }
-
 
 export function* watchEmail() {
   yield takeLatest(CREATE_EMAIL_USER_REQUEST, createEmailUser);

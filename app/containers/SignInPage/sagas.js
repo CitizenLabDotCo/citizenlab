@@ -1,21 +1,18 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
-import { storeJwt, loadCurrentUserRequest } from 'utils/auth/actions';
-import { login, socialLogin } from 'api';
-import { setJwt } from 'utils/request';
+import { storeJwt, loadCurrentUserRequest, signInUserRequest } from 'utils/auth/actions';
+import { socialLogin } from 'api';
+import { setJwt } from 'utils/auth/jwt';
 import { makeSelectSetting } from 'utils/tenant/selectors';
 import { push } from 'react-router-redux';
 import hello from 'hellojs';
 import { AUTHENTICATE_EMAIL_REQUEST, AUTHENTICATE_SOCIAL_REQUEST } from './constants';
 import { authenticateEmailError, authenticateEmailSuccess, authenticateSocialError, authenticateSocialSuccess } from './actions';
 
-export function* fetchJwt(action) {
+export function* logInUser(action) {
   try {
-    const jwtResponse = yield call(login, action.payload.email, action.payload.password);
-    yield put(storeJwt(jwtResponse.jwt));
-    setJwt(jwtResponse.jwt);
-    yield put(loadCurrentUserRequest());
+    yield put(signInUserRequest(action.payload.email, action.payload.password));
     yield put(authenticateEmailSuccess());
-    yield put(push('/ideas'));
+    yield put(push('/'));
   } catch (err) {
     yield put(authenticateEmailError(err));
   }
@@ -39,7 +36,7 @@ function* authSocial(action) {
 }
 
 export function* emailSaga() {
-  yield takeLatest(AUTHENTICATE_EMAIL_REQUEST, fetchJwt);
+  yield takeLatest(AUTHENTICATE_EMAIL_REQUEST, logInUser);
 }
 
 export function* socialSaga() {

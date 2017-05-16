@@ -17,12 +17,13 @@ import { createStructuredSelector } from 'reselect';
 import { Saga } from 'react-redux-saga';
 import { Container } from 'semantic-ui-react';
 
-import { makeSelectCurrentUser } from 'utils/auth/selectors';
 import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
 import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
 
-import authSaga from 'utils/auth/sagas';
+import WatchSagas from 'containers/WatchSagas';
+
+import authSagas from 'utils/auth/sagas';
 import tenantSaga from 'utils/tenant/sagas';
 
 import Navbar from './Navbar';
@@ -35,15 +36,11 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
   }
 
   content() {
-    const { currentTenant, currentUser } = this.props;
+    const { currentTenant } = this.props;
     if (currentTenant) {
       return (
         <div>
-          <Navbar
-            currentUser={currentUser}
-            currentTenant={currentTenant}
-          >
-          </Navbar>
+          <Navbar currentTenant={currentTenant} />
           <Container>
             <div>
               {React.Children.toArray(this.props.children)}
@@ -59,7 +56,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
   render() {
     return (
       <div>
-        <Saga saga={authSaga} />
+        <WatchSagas sagas={authSagas} />
         <Saga saga={tenantSaga} />
         {this.content()}
       </div>
@@ -70,13 +67,11 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
 App.propTypes = {
   children: React.PropTypes.node,
   dispatch: React.PropTypes.func,
-  currentUser: React.PropTypes.object,
   currentTenant: React.PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   currentTenant: makeSelectCurrentTenant(),
-  currentUser: makeSelectCurrentUser(),
 });
 
 export default connect(mapStateToProps)(App);
