@@ -6,36 +6,29 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
-import { Row, Column, Button, Label } from 'components/Foundation';
+import { getFromState } from 'utils/immutables';
+import { Container, Label, Divider } from 'semantic-ui-react';
 import styled from 'styled-components';
 import Breadcrumbs from 'components/Breadcrumbs';
-import draftToHtml from 'draftjs-to-html';
-import { FormattedMessage } from 'react-intl';
-import { Saga } from 'react-redux-saga';
+import { injectIntl } from 'react-intl';
+import { preprocess } from 'utils/reactRedux';
+import { bindActionCreators } from 'redux';
+import WatchSagas from 'containers/WatchSagas';
 
 import {
-  makeSelectStored, makeSelectContent, makeSelectLoadError, makeSelectLoading, makeSelectStoreError,
-  makeSelectSubmitError, makeSelectSubmitted, makeSelectSubmitting, makeSelectShortTitleError, makeSelectLongTitleError,
-  makeSelectTitleLength, makeSelectAttachments, makeSelectStoreAttachmentError, makeSelectImages,
-  makeSelectStoreImageError, makeSelectTitle,
-} from './selectors';
-
-import {
-  saveDraft, setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
-  publishIdeaRequest,
+  setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
+  publishIdeaRequest, loadTopicsRequest, loadAreasRequest, storeSelectedTopics, storeSelectedAreas, invalidForm,
 } from './actions';
-
-import IdeaEditorWrapper from './IdeaEditorWrapper';
-import messages from './messages';
-import AttachmentList from './AttachmentList';
-import ImageList from './ImageList';
-import canPublish from './canPublish';
+import IdeaEditorWrapper from './editor/IdeaEditorWrapper';
+import AttachmentList from './attachments/AttachmentList';
+import ImageList from './images/ImageList';
+import canPublish from './editor/canPublish';
+import { selectSubmitIdea } from './selectors';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
-import { watchStoreIdea } from './sagas';
+import sagas from './sagas';
 
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -44,12 +37,21 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
     // provide 'this' context to callbacks
     this.saveDraft = this.saveDraft.bind(this);
     this.storeIdea = this.storeIdea.bind(this);
+    this.storeTopics = this.storeTopics.bind(this);
+    this.storeAreas = this.storeAreas.bind(this);
+  }
+
+  componentDidMount() {
+    const { loadTopicsRequest: ltr, loadAreasRequest: lar } = this.props;
+
+    // load topics and areas
+    ltr();
+    lar();
   }
 
   sendIdea(isDraft) {
-    const { content, shortTitleError, longTitleError, title, images, attachments, user, locale } = this.props;
-
-    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments, user && user.id, locale, isDraft);
+    const { content, shortTitleError, longTitleError, title, images, attachments, user, locale, selectedTopics, selectedAreas } = this.props;
+    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments, user && user.id, locale, isDraft, selectedTopics.toJS(), selectedAreas.toJS());
   }
 
   saveDraft() {
@@ -58,6 +60,14 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
 
   storeIdea() {
     this.sendIdea(false);
+  }
+
+  storeTopics(topics) {
+    this.props.storeSelectedTopics(topics);
+  }
+
+  storeAreas(areas) {
+    this.props.storeSelectedAreas(areas);
   }
 
   render() {
@@ -76,152 +86,132 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
       margin: 20px 0 10px;
     `;
 
-    const StyledHr = styled.hr`
-      width: 80%;
-        margin-left: 10px;
-    `;
-
-    // eslint-disable-next-line no-shadow
-    const { className, attachments, storeAttachment, storeAttachmentError, images, storeImage, storeImageError } = this.props;
-
+    const { className, storeAttachment: storeAtt, storeImage: storeImg, setTitle: setT } = this.props;
     return (
-      <div className={className}>
+      <Container className={className}>
         <Helmet
           title="IdeasNewPage"
           meta={[
             { name: 'description', content: 'Description of IdeasNewPage' },
           ]}
         />
-        <Saga saga={watchStoreIdea} />
+        <WatchSagas sagas={sagas} />
+
         <Breadcrumbs />
-        <Row>
-          <Column large={7} offsetOnLarge={1}>
-            <Row>
-              <IdeaEditorWrapper
-                {...this.props}
-              />
-            </Row>
-            <Row>
-              <StyledLabel>Add image(s)</StyledLabel>
-              <ImageList
-                storeImage={storeImage}
-                images={images}
-                storeImageError={storeImageError}
-              />
-            </Row>
-          </Column>
-          <Column large={4}>
-            <Row>
-              {/* TODO: style buttons */}
-              <Column large={5} offsetOnLarge={1}>
-                <Button onClick={this.saveDraft}>
-                  <FormattedMessage {...messages.saveAsDraft} />
-                </Button>
-              </Column>
-              <Column large={5} offsetOnLarge={1}>
-                <Button onClick={this.storeIdea}>
-                  <FormattedMessage {...messages.publish} />
-                </Button>
-              </Column>
-            </Row>
-            <Row isExpanded>
-              <StyledLabel>Location</StyledLabel>
-              {/* TODO: location image here*/}
-              <StyledHr />
-              <StyledLabel>Attachments</StyledLabel>
-              <AttachmentList
-                storeAttachment={storeAttachment}
-                attachments={attachments}
-                storeAttachmentError={storeAttachmentError}
-              />
-            </Row>
-          </Column>
-        </Row>
-      </div>
+        <IdeaEditorWrapper
+          saveDraft={this.saveDraft}
+          storeIdea={this.storeIdea}
+          storeTopics={this.storeTopics}
+          storeAreas={this.storeAreas}
+          setTitle={setT}
+        />
+        <StyledLabel>Add image(s)</StyledLabel>
+        <ImageList
+          storeImage={storeImg}
+        />
+        <StyledLabel>Location</StyledLabel>
+        {/* TODO: location image here*/}
+        <Divider />
+        <StyledLabel>Attachments</StyledLabel>
+        <AttachmentList
+          storeAttachment={storeAtt}
+        />
+      </Container>
     );
   }
 }
 
 IdeasNewPage.propTypes = {
   className: PropTypes.string,
+  // mapDispatch
   publishIdeaClick: PropTypes.func.isRequired,
+  storeAttachment: PropTypes.func.isRequired,
+  storeImage: PropTypes.func.isRequired,
+  user: PropTypes.object,
+  storeSelectedTopics: PropTypes.func.isRequired,
+  storeSelectedAreas: PropTypes.func.isRequired,
+  locale: PropTypes.string,
+  loadTopicsRequest: PropTypes.func.isRequired,
+  loadAreasRequest: PropTypes.func.isRequired,
+  // from mergeProps
+  content: PropTypes.string,
   shortTitleError: PropTypes.bool.isRequired,
   longTitleError: PropTypes.bool.isRequired,
-  content: PropTypes.string,
-  storeAttachment: PropTypes.func.isRequired,
-  attachments: PropTypes.any.isRequired,
-  storeAttachmentError: PropTypes.bool.isRequired,
-  storeImage: PropTypes.func.isRequired,
-  images: PropTypes.any.isRequired,
-  storeImageError: PropTypes.bool.isRequired,
-  user: PropTypes.object,
   title: PropTypes.string.isRequired,
-  locale: PropTypes.string.isRequired,
+  images: PropTypes.any.isRequired,
+  attachments: PropTypes.any.isRequired,
+  selectedTopics: PropTypes.any.isRequired,
+  selectedAreas: PropTypes.any.isRequired,
+  setTitle: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: makeSelectLoading(),
-  loadError: makeSelectLoadError(),
-  storeError: makeSelectStoreError(),
-  content: makeSelectContent(),
-  submitError: makeSelectSubmitError(),
-  submitted: makeSelectSubmitted(),
-  submitting: makeSelectSubmitting(),
-  stored: makeSelectStored(),
-  shortTitleError: makeSelectShortTitleError(),
-  longTitleError: makeSelectLongTitleError(),
-  titleLength: makeSelectTitleLength(),
-  attachments: makeSelectAttachments(),
-  storeAttachmentError: makeSelectStoreAttachmentError(),
-  images: makeSelectImages(),
-  storeImageError: makeSelectStoreImageError(),
+  ideasNewPageState: selectSubmitIdea,
   locale: makeSelectLocale(),
   user: makeSelectCurrentUser(),
-  title: makeSelectTitle(),
 });
 
-export function mapDispatchToProps(dispatch) {
-  return {
-    storeDraftCopy(content) {
-      // convert to HTML
-      const htmlContent = draftToHtml(content);
+const customActionCreators = {
+  publishIdeaClick(content, titleError, title, images, attachments, userId, locale, isDraft, topics, areas) {
+    const contentNotNull = content || '<p></p>';
 
-      dispatch(saveDraft(htmlContent));
-    },
-    publishIdeaClick(content, titleError, title, images, attachments, userId, locale, isDraft) {
-      const contentNotNull = content || '<p></p>';
+    if (canPublish(contentNotNull, titleError, topics, areas)) {
+      // inject strings for current locale as a mutiloc object
+      const htmlContents = {};
+      const titles = {};
+      htmlContents[locale] = contentNotNull;
+      titles[locale] = title;
 
-      if (canPublish(contentNotNull, titleError)) {
-        // inject strings for current locale as a mutiloc object
-        const htmlContents = {};
-        const titles = {};
-        htmlContents[locale] = contentNotNull;
-        titles[locale] = title;
+      return publishIdeaRequest(htmlContents, titles, images, attachments, userId, isDraft);
+    }
+    return invalidForm();
+  },
+  setTitle(e) {
+    return setTitle(e.target.value);
+  },
+  storeAttachment(file) {
+    if (file) {
+      return storeAttachment(file);
+    }
+    return storeAttachmentError();
+  },
+  storeImage(file) {
+    if (file) {
+      return storeImage(file);
+    }
+    return storeImageError();
+  },
+};
 
-        dispatch(publishIdeaRequest(htmlContents, titles, images, attachments, userId, isDraft));
-      }
-    },
-    setTitle(e) {
-      dispatch(setTitle(e.target.value));
-    },
-    storeAttachment(file) {
-      if (file) {
-        dispatch(storeAttachment(file));
-      } else {
-        dispatch(storeAttachmentError());
-      }
-    },
-    storeImage(file) {
-      if (file) {
-        dispatch(storeImage(file));
-      } else {
-        dispatch(storeImageError());
-      }
-    },
-  };
-}
+export const mapDispatchToProps = (dispatch) => bindActionCreators({
+  /*
+   * auto-binding
+   */
+  loadTopicsRequest,
+  loadAreasRequest,
+  storeSelectedTopics,
+  storeSelectedAreas,
+  /*
+   * manual bindings
+   * (return actions to dispatch - with custom logic)
+   */
+  ...customActionCreators,
+}, dispatch);
 
-export default styled(connect(mapStateToProps, mapDispatchToProps)(IdeasNewPage))`
+const mergeProps = ({ ideasNewPageState: pageState }, dispatchProps) => ({
+  content: getFromState(pageState, 'draft', 'content'),
+  longTitleError: getFromState(pageState, 'draft', 'longTitleError'),
+  shortTitleError: getFromState(pageState, 'draft', 'shortTitleError'),
+  title: getFromState(pageState, 'draft', 'title'),
+  images: getFromState(pageState, 'draft', 'images'),
+  attachments: getFromState(pageState, 'draft', 'attachments'),
+  selectedTopics: getFromState(pageState, 'topics', 'selected'),
+  selectedAreas: getFromState(pageState, 'areas', 'selected'),
+  ...dispatchProps,
+});
+
+// preprocess to avoid unnecessary re-renders when using mapDispatchToProps
+export default styled(injectIntl(preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(IdeasNewPage)))`
   backgroundColor: '#eeeeee';
   minHeight: '850px';
   width: '100%';

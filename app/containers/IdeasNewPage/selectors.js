@@ -1,102 +1,30 @@
 import { createSelector } from 'reselect';
+import { selectResourcesDomain } from 'utils/resources/selectors';
 
 const selectSubmitIdea = (state) => state.get('submitIdea');
 
-const makeSelectLoading = () => createSelector(
+const makeSelectTopics = () => createSelector(
   selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'loading'])
+  selectResourcesDomain(),
+  (submitIdeaState, resources) => {
+    const ids = submitIdeaState.getIn(['topics', 'ids']);
+    const topics = resources.get('topics');
+    return ids.map((id) => topics.get(id));
+  }
 );
 
-const makeSelectLoadError = () => createSelector(
+const makeSelectAreas = () => createSelector(
   selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'loadError'])
-);
-
-const makeSelectStoreError = () => createSelector(
-  selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'storeError'])
-);
-
-const makeSelectContent = () => createSelector(
-  selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'content'])
-);
-
-const makeSelectStored = () => createSelector(
-  selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'stored'])
-);
-
-const makeSelectSubmitting = () => createSelector(
-  selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'submitting'])
-);
-
-const makeSelectSubmitError = () => createSelector(
-  selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'submitError'])
-);
-
-const makeSelectSubmitted = () => createSelector(
-  selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'submitted'])
-);
-
-const makeSelectLongTitleError = () => createSelector(
-  selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'longTitleError'])
-);
-
-const makeSelectShortTitleError = () => createSelector(
-  selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'shortTitleError'])
-);
-
-const makeSelectTitleLength = () => createSelector(
-  selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'titleLength'])
-);
-
-const makeSelectAttachments = () => createSelector(
-  selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'attachments'])
-);
-
-const makeSelectStoreAttachmentError = () => createSelector(
-  selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'storeAttachmentError'])
-);
-
-const makeSelectImages = () => createSelector(
-  selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'images'])
-);
-
-const makeSelectStoreImageError = () => createSelector(
-  selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'storeImageError'])
-);
-
-const makeSelectTitle = () => createSelector(
-  selectSubmitIdea,
-  (submitIdeaState) => submitIdeaState.getIn(['draft', 'title'])
+  selectResourcesDomain(),
+  (submitIdeaState, resources) => {
+    const ids = submitIdeaState.getIn(['areas', 'ids']);
+    const areas = resources.get('areas');
+    return ids.map((id) => areas.get(id));
+  }
 );
 
 export {
-  makeSelectLoading,
-  makeSelectLoadError,
-  makeSelectStoreError,
-  makeSelectContent,
-  makeSelectStored,
-  makeSelectSubmitting,
-  makeSelectSubmitError,
-  makeSelectSubmitted,
-  makeSelectLongTitleError,
-  makeSelectShortTitleError,
-  makeSelectTitleLength,
-  makeSelectAttachments,
-  makeSelectStoreAttachmentError,
-  makeSelectImages,
-  makeSelectStoreImageError,
-  makeSelectTitle,
+  selectSubmitIdea,
+  makeSelectTopics,
+  makeSelectAreas,
 };

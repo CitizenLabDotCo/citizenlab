@@ -3,20 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { Grid } from 'semantic-ui-react';
+import { Card, Grid } from 'semantic-ui-react';
 import IdeaCard from 'components/IdeaCard';
 import selectIdeasIndexPageDomain from '../../selectors';
 
 const { Column, Row } = Grid;
 
 const IdeasCards = ({ ideas }) => (
-  <Row>
+  <Card.Group stackable>
     {ideas.map((id) => (
-      <Column key={id} style={{ paddingTop: '0', paddingBottom: '10px' }}>
-        <IdeaCard id={id} />
-      </Column>
+      <IdeaCard key={id} id={id} />
     ))}
-  </Row>
+  </Card.Group>
 );
 
 IdeasCards.propTypes = {

@@ -188,20 +188,16 @@ export default function createRoutes(store) {
       },
       childRoutes: [
         {
-          path: '/admin/users',
-          name: 'usersPage',
+          path: '/admin/dashboard',
+          name: 'dashboardPage',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
-              import('containers/AdminPage/UsersPage/reducer'),
-              import('containers/AdminPage/UsersPage/sagas'),
-              import('containers/AdminPage/UsersPage'),
+              import('containers/AdminPage/DashboardPage'),
             ]);
 
             const renderRoute = loadModule(cb);
 
-            importModules.then(([reducer, sagas, component]) => {
-              injectReducer('usersPage', reducer.default);
-              injectSagas(sagas.default);
+            importModules.then(([component]) => {
               renderRoute(component);
             });
 
@@ -209,21 +205,56 @@ export default function createRoutes(store) {
           },
         },
         {
-          path: '/admin/dashboard',
-          name: 'dashboardPage',
+          path: '/admin/settings',
+          name: 'settingsPage',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
-              // import('containers/AdminPage/DashboardPage/reducer'),
-              // import('containers/AdminPage/DashboardPage/sagas'),
-              import('containers/AdminPage/DashboardPage'),
+              import('containers/AdminPage/SettingsPage/reducer'),
+              import('containers/AdminPage/SettingsPage'),
             ]);
 
             const renderRoute = loadModule(cb);
 
-            // importModules.then(([reducer, sagas, component]) => {
-            importModules.then(([component]) => {
-              // injectReducer('usersPage', reducer.default);
-              // injectSagas(sagas.default);
+            importModules.then(([reducer, component]) => {
+              injectReducer('settingsPage', reducer.default);
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
+          path: '/admin/users',
+          name: 'usersPage',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/AdminPage/UsersPage/reducer'),
+              import('containers/AdminPage/UsersPage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([reducer, component]) => {
+              injectReducer('usersPage', reducer.default);
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
+          path: '/admin/ideas',
+          name: 'ideasPage',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/AdminPage/IdeasPage/reducer'),
+              import('containers/AdminPage/IdeasPage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([reducer, component]) => {
+              injectReducer('ideasPage', reducer.default);
               renderRoute(component);
             });
 
@@ -231,6 +262,44 @@ export default function createRoutes(store) {
           },
         },
       ],
+    },
+    {
+      path: '/admin/pages',
+      name: 'adminPages',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/AdminPage/AdminPages'),
+          import('containers/AdminPage/AdminPages/reducer'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component, reducer]) => {
+          injectReducer('adminPages', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
+      path: '/admin/pages/new',
+      name: 'adminPagesNew',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/AdminPage/AdminPagesNew'),
+          import('containers/AdminPage/AdminPagesNew/reducer'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component, reducer]) => {
+          injectReducer('adminPagesNew', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
     },
     {
       path: '*',

@@ -1,4 +1,6 @@
-// utility functions shared by different test files
+/*
+ * utility functions shared by different test files
+ */
 
 export const generateResourcesIdeaValue = (id) => ({
   data: {
@@ -17,6 +19,15 @@ export const generateResourcesTopicValue = (id) => ({
 });
 
 export const generateResourcesAreaValue = (id) => ({
+  data: {
+    id,
+    attributes: {},
+    relationships: {},
+  },
+});
+
+
+export const generateResourcesPageValue = (id) => ({
   data: {
     id,
     attributes: {},

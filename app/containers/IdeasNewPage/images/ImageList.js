@@ -1,0 +1,152 @@
+/**
+*
+* AttachmentList
+*
+*/
+
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Grid, Segment, Input, Label } from 'semantic-ui-react';
+import { FormattedMessage } from 'react-intl';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { getFromState } from 'utils/immutables';
+
+import Image from './Image';
+import messages from '../messages';
+import { selectSubmitIdea } from '../selectors';
+
+export const Images = (props) => (<Grid columns={4}>
+  <Grid.Row>
+    {props.images.map((image, index) => (
+      <Grid.Column
+        key={index}
+        width={4}
+        textAlign="center"
+      ><Image
+        source={image}
+      /></Grid.Column>
+    ))}
+  </Grid.Row>
+</Grid>);
+
+const FileInput = (props) => (
+  <Input
+    type="file"
+    id="upload-image"
+    onChange={props.onFileUpload}
+    className={props.className}
+  />
+);
+
+export const StyledFileInput = styled(FileInput)`
+  opacity: 0;
+  z-index: 1;
+  width: 100px;
+  height: 100px;
+  margin-left: 10px;
+  display: inline-block;
+  position: absolute !important; // override SUI's position
+  height: 4rem;
+`;
+
+class ImageList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  constructor() {
+    super();
+
+    this.state = {
+      images: [],
+    };
+
+    // set necessary bindings
+    this.onFileUpload = this.onFileUpload.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      images: nextProps.images,
+    });
+  }
+
+  onFileUpload(e) {
+    const files = e.target.files;
+
+    if (files.length < 1) {
+      this.props.storeImage(null);
+    } else {
+      // convert image to data url
+
+      const reader = new FileReader();
+      reader.readAsDataURL(files[0]);
+
+      reader.addEventListener('load', () => {
+        this.props.storeImage(reader.result);
+
+        // reset file input
+        document.getElementById('upload-image').value = null;
+      });
+    }
+  }
+
+  render() {
+    const ImagesStyled = styled(Images)`
+      // no style for now
+    `;
+
+    const StyledImageButton = styled.div`
+      background: no-repeat center url('https://image.flaticon.com/icons/svg/61/61112.svg');
+      background-size: 100%;
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      z-index: 2;
+    `;
+
+    const { images, storeImageError } = this.props;
+
+    return (
+      <div>
+        {storeImageError && <Label>
+          <FormattedMessage {...messages.storeImageError} />
+        </Label>}
+        <Segment>
+          <ImagesStyled images={images} />
+          <div>
+            <StyledFileInput onFileUpload={this.onFileUpload} />
+            <StyledImageButton />
+          </div>
+        </Segment>
+      </div>
+    );
+  }
+}
+
+ImageList.propTypes = {
+  storeImage: PropTypes.func.isRequired,
+  storeImageError: PropTypes.bool.isRequired,
+  images: PropTypes.any.isRequired,
+};
+
+Images.propTypes = {
+  images: PropTypes.any.isRequired,
+};
+
+FileInput.propTypes = {
+  onFileUpload: PropTypes.func.isRequired,
+  className: PropTypes.string,
+};
+
+const mapStateToProps = createStructuredSelector({
+  ideasNewPageState: selectSubmitIdea,
+});
+
+const mergeProps = ({ ideasNewPageState: pageState }, dispatchProps, { storeImage }) => ({
+  images: getFromState(pageState, 'draft', 'images'),
+  storeImageError: getFromState(pageState, 'draft', 'storeImageError'),
+  storeImage,
+});
+
+export default styled(connect(mapStateToProps, null, mergeProps)(ImageList))`
+  // none yet
+`;
