@@ -1,41 +1,43 @@
 import { fromJS } from 'immutable';
-// import { numberMock, stringMock, linkMock } from 'utils/testing/constants';
-// import { expectPropertyNotNull } from 'utils/testing/methods';
+import { stringMock, objectMock } from 'utils/testing/constants';
 
-import dashboardPage from '../reducer';
+import dashboardPage, { initialState, setInForReport } from '../reducer';
+import { loadUsersReportError, loadUsersReportRequest, loadUsersReportSuccess } from '../actions';
 
 
-describe('adminPagesReducer', () => {
-  const expectedInitialState = {
-    newUsers: {
-      loading: false,
-      data: {},
-      loadError: false,
-      prevPageNumber: null,
-      currentPageNumber: null,
-      nextPageNumber: null,
-      lastPageNumber: null,
-    },
-    ideasByTopic: {
-      loading: false,
-      data: {},
-      loadError: false,
-    },
-    ideasByArea: {
-      loading: false,
-      data: {},
-      loadError: false,
-    },
-  };
+describe('dashboardPage', () => {
+  const expectedInitialState = initialState;
 
   it('returns the initial state', () => {
     expect(dashboardPage(undefined, {})).toEqual(fromJS(expectedInitialState));
   });
 
-  describe('setInForTimedReport', () => {
-    it('should set all the relevant report properties', () => {
-     // TODO (incl. 1+ tests on pagination)
-      expect(true).toEqual(true);
+  describe('setInForReport', () => {
+    describe('request', () => {
+      it('should set loading=true, loadError null', () => {
+        const nextState = setInForReport(
+          fromJS(expectedInitialState), loadUsersReportRequest(stringMock, stringMock, stringMock), 'newUsers', 'request').toJS();
+        expect(nextState.newUsers.loading).toBeTruthy();
+        expect(nextState.newUsers.loadError).toBeNull();
+      });
+    });
+
+    describe('success', () => {
+      it('should set loading=false and data not null', () => {
+        const nextState = setInForReport(
+          fromJS(expectedInitialState), loadUsersReportSuccess(objectMock), 'newUsers', 'success').toJS();
+        expect(nextState.newUsers.loading).toBeFalsy();
+        expect(nextState.newUsers.data).not.toBeNull();
+      });
+    });
+
+    describe('error', () => {
+      it('should set loading=false, loadError not null', () => {
+        const nextState = setInForReport(
+          fromJS(expectedInitialState), loadUsersReportError(stringMock), 'newUsers', 'error').toJS();
+        expect(nextState.newUsers.loading).toBeFalsy();
+        expect(nextState.newUsers.loadError).not.toBeNull();
+      });
     });
   });
 });

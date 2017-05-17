@@ -6,7 +6,6 @@
 import { call, put } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
 import { fetchUsersReport, fetchIdeaTopicsReport, fetchIdeaAreasReport } from 'api';
-import { mergeJsonApiResources } from 'utils/resources/actions';
 
 import {
   loadIdeaAreasReportError, loadIdeaAreasReportSuccess, loadIdeaTopicsReportError, loadIdeaTopicsReportSuccess,
@@ -37,7 +36,6 @@ export function* getIdeaTopicsReport(action) {
       end_at: action.endAt,
     });
 
-    yield put(mergeJsonApiResources(response));
     yield put(loadIdeaTopicsReportSuccess(response));
   } catch (err) {
     yield put(loadIdeaTopicsReportError(JSON.stringify(err)));
@@ -51,7 +49,6 @@ export function* getIdeaAreasReport(action) {
       end_at: action.endAt,
     });
 
-    yield put(mergeJsonApiResources(response));
     yield put(loadIdeaAreasReportSuccess(response));
   } catch (err) {
     yield put(loadIdeaAreasReportError(JSON.stringify(err)));

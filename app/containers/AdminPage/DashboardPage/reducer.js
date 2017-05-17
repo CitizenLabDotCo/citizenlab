@@ -13,7 +13,7 @@ import {
 } from './constants';
 
 // *Page* refer to starting / ending time reference period
-const initialState = fromJS({
+export const initialState = fromJS({
   // dashboard-wise
   startAt: null,
   endAt: null,
@@ -21,16 +21,17 @@ const initialState = fromJS({
   newUsers: {
     loading: false,
     data: {},
-    loadError: false,
+    loadError: null,
   },
   ideasByTopic: {
     loading: false,
     data: {},
+    loadError: null,
   },
   ideasByArea: {
     loading: false,
     data: {},
-    loadError: false,
+    loadError: null,
   },
 });
 
@@ -39,7 +40,7 @@ export const setInForReport = (state, action, which, operation) => {
     case 'request':
       return state
         .setIn([which, 'loading'], true)
-        .setIn([which, 'loadError'], false);
+        .setIn([which, 'loadError'], null);
     case 'success': {
       return state
         .setIn([which, 'data'], fromJS(action.payload.data))
@@ -48,7 +49,7 @@ export const setInForReport = (state, action, which, operation) => {
     case 'error':
       return state
         .setIn([which, 'loading'], false)
-        .setIn([which, 'loadError'], true);
+        .setIn([which, 'loadError'], action.error);
     default:
       return state;
   }
