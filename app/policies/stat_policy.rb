@@ -22,7 +22,6 @@ class StatPolicy < ApplicationPolicy
 
   def ideas_by_topic?
     user && user.admin?
-    true
   end
 
   def ideas_by_area?

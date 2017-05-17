@@ -32,7 +32,8 @@ class Api::V1::StatsController < ApplicationController
       .order("demographics->'domicile'")
       .count
     serie['_blank'] = serie.delete nil
-    render json: serie
+    areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
+    render json: {data: serie, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
   end
 
   def users_by_education
@@ -50,7 +51,8 @@ class Api::V1::StatsController < ApplicationController
       .group("ideas_topics.topic_id")
       .order("ideas_topics.topic_id")
       .count
-    render json: serie
+    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+    render json: {data: serie, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
   end
 
   def ideas_by_area
@@ -59,7 +61,8 @@ class Api::V1::StatsController < ApplicationController
       .group("areas_ideas.area_id")
       .order("areas_ideas.area_id")
       .count
-    render json: serie
+    areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
+    render json: {data: serie, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
   end
 
   def ideas_by_time
