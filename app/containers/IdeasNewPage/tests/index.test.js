@@ -79,16 +79,16 @@ describe('<IdeasNewPage />', () => {
       }
       const parsedItems = selectedItems.map((item) => item.value);
 
-      describe('handleTopicsSelect', () => {
+      describe('storeSelectedTopics', () => {
         it('should dispatch storeSelectedTopics with provided ids', () => {
-          result.handleTopicsSelect(selectedItems);
+          result.storeSelectedTopics(selectedItems);
           expect(dispatch).toHaveBeenCalledWith(storeSelectedTopics(parsedItems));
         });
       });
 
-      describe('handleAreasSelect', () => {
+      describe('storeSelectedAreas', () => {
         it('should dispatch storeSelectedAreas with provided ids', () => {
-          result.handleAreasSelect(selectedItems);
+          result.storeSelectedAreas(selectedItems);
           expect(dispatch).toHaveBeenCalledWith(storeSelectedAreas(parsedItems));
         });
       });

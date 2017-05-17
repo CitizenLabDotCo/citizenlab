@@ -181,6 +181,15 @@ const customActionCreators = {
     }
     return storeImageError();
   },
+  storeSelectedTopics(topics) {
+    const ids = topics.map((topic) => topic.value);
+    return storeSelectedTopics(ids);
+  },
+
+  storeSelectedAreas(areas) {
+    const ids = areas.map((area) => area.value);
+    return storeSelectedAreas(ids);
+  },
 };
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
@@ -189,8 +198,6 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
    */
   loadTopicsRequest,
   loadAreasRequest,
-  storeSelectedTopics,
-  storeSelectedAreas,
   /*
    * manual bindings
    * (return actions to dispatch - with custom logic)
