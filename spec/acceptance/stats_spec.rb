@@ -90,7 +90,7 @@ resource "Stats" do
       example_request "Users by domicile" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response[:data].values.map(&:class).uniq).to eq [Integer]
       end
 
     end
@@ -133,8 +133,8 @@ resource "Stats" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expected_topics = @ideas_with_topics.flat_map{|i| i.ideas_topics.map(&:topic_id)}.uniq
-        expect(json_response.keys.map(&:to_s).compact.uniq - expected_topics).to eq []
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response[:data].keys.map(&:to_s).compact.uniq - expected_topics).to eq []
+        expect(json_response[:data].values.map(&:class).uniq).to eq [Integer]
       end
 
     end
@@ -150,8 +150,8 @@ resource "Stats" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expected_areas = @ideas_with_areas.flat_map{|i| i.areas_ideas.map(&:area_id)}.uniq
-        expect(json_response.keys.map(&:to_s).compact.uniq - expected_areas).to eq []
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response[:data].keys.map(&:to_s).compact.uniq - expected_areas).to eq []
+        expect(json_response[:data].values.map(&:class).uniq).to eq [Integer]
       end
 
     end
