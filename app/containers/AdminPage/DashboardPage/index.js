@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
@@ -7,21 +9,18 @@ import { bindActionCreators } from 'redux';
 import { preprocess } from 'utils/reactRedux';
 import { getFromState } from 'utils/immutables';
 import WatchSagas from 'containers/WatchSagas';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import styled from 'styled-components';
-import { LineChart, BarChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { injectTFunc } from 'containers/T/utils';
+import FormattedMessageSegment from 'components/FormattedMessageSegment';
+import moment from 'moment';
 
-import Sidebar from './../SideBar/';
 import sagas from './sagas';
 import messages from './messages';
 import { selectAdminDashboard } from './selectors';
 import {
   loadIdeaAreasReportRequest, loadIdeaTopicsReportRequest, loadUsersReportRequest,
 } from './actions';
-
-const Wrapper = styled.div`
-  padding-top: 100px;
-`;
+import { LineChartWrapper } from './LineChartWrapper';
+import { BarChartWrapper } from './BarChartWrapper';
 
 const intervals = [
   'day',
@@ -30,18 +29,17 @@ const intervals = [
   'year',
 ];
 
-// TODO: calculate month depending on each month's length and year based on lapse year or not
-// ... > ! use moment.js (https://momentjs.com/docs/#/plugins/recur/) to go to prev/next day/week/month/year
-const dateIntervalsMs = {
-  day: 24 * 60 * 60 * 1000,
-  week: 24 * 60 * 60 * 1000 * 7,
-  month: 24 * 60 * 60 * 1000 * 30,
-  year: 24 * 60 * 60 * 1000 * 365,
-};
-
 class AdminPages extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
+
+    const startAt = moment().subtract(1, 'months');
+    const endAt = moment().format();
+    this.state = {
+      interval: 'month',
+      startAt,
+      endAt,
+    };
 
     // context for bindings
     this.updateInterval = this.updateInterval.bind(this);
@@ -50,17 +48,7 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
   }
 
   componentDidMount() {
-    const todayDate = new Date();
-    const startAt = new Date(todayDate.getTime() - dateIntervalsMs.month).toISOString();
-    const endAt = todayDate.toISOString();
-    const interval = 'month';
-
-    this.loadAreasRequest(startAt, endAt);
-    this.loadTopicsRequest(startAt, endAt);
-
-    this.state = {
-      interval,
-    };
+    const { startAt, endAt, interval } = this.state;
 
     this.props.loadUsersReportRequest(startAt, endAt, interval);
     this.props.loadIdeaTopicsReportRequest(startAt, endAt);
@@ -68,16 +56,14 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
   }
 
   // day, week, ...
-  updateInterval = (e, { name }) => {
-    const interval = name;
-
-    // TODO: replace with momentJS' methods (see TODO before class definition)
-    const todayDate = new Date();
-    const startAt = new Date(todayDate.getTime() - dateIntervalsMs[interval]).toISOString();
-    const endAt = todayDate.toISOString();
+  updateInterval = (interval) => {
+    const startAt = moment().subtract(1, `${interval}s`);
+    const endAt = moment().format();
 
     this.setState({
       interval,
+      startAt,
+      endAt,
     });
 
     // reload data for charts depending on interval
@@ -89,10 +75,8 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
     const { interval } = this.state;
 
     // calculate new startAt/endAt
-    // TODO: replace with momentJS' methods (see TODO before class definition)
-    const todayDate = new Date();
-    const startAt = new Date(todayDate.getTime() - dateIntervalsMs[interval]).toISOString();
-    const endAt = todayDate.toISOString();
+    const startAt = moment().subtract(1, `${interval}s`);
+    const endAt = moment().format();
 
     const newInterval = (interval === 'day'
       ? interval
@@ -101,6 +85,8 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
 
     this.setState({
       interval: newInterval,
+      startAt,
+      endAt,
     });
 
     this.props.loadUsersReportRequest(startAt, endAt, newInterval);
@@ -113,10 +99,8 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
     const { interval } = this.state;
 
     // calculate new startAt/endAt
-    // TODO: replace with momentJS' methods (see TODO before class definition)
-    const todayDate = new Date();
-    const startAt = new Date(todayDate.getTime() + dateIntervalsMs[interval]).toISOString();
-    const endAt = todayDate.toISOString();
+    const startAt = moment().subtract(1, `${interval}s`);
+    const endAt = moment().format();
 
     const newInterval = (interval === 'day'
         ? interval
@@ -135,137 +119,131 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
   };
 
   render() {
-    const { location, tFunc, newUsers, ideasByTopic, ideasByArea } = this.props;
+    const { tFunc, newUsers, ideasByTopic, ideasByArea } = this.props;
     const { formatMessage } = this.props.intl;
     const { interval } = this.state;
 
     // refactor data for charts (newUsers.data etc. based on API specs response)
-    // name on X axis, value on Y axis
-    const newUsersData = newUsers.stats.map((record) => ({
+    // name on X axis (Y when version layout), value on Y axis (X when version layout)
+    // newUsers etc. are not immutable, but .stats is
+    const newUsersData = newUsers.stats && newUsers.stats.map((record) => ({
       name: tFunc(record.title_multiloc),
       value: newUsers.stats[record.id],
-    }));
+    })).toJS();
 
-    const ideasByTopicData = ideasByTopic.stats.map((record) => ({
+    const ideasByTopicData = ideasByTopic.stats && ideasByTopic.stats.map((record) => ({
       name: tFunc(record.title_multiloc),
       value: record.count,
-    }));
+    })).toJS();
 
-    const ideasByAreaData = ideasByArea.stats.map((record) => ({
-      name: tFunc(record.title_multiloc),
-      value: record.count,
-    }));
+    const ideasByAreaData = ideasByArea.stats && ideasByArea.stats.map((record) => ({
+      name: record.count,
+      value: tFunc(record.title_multiloc),
+    })).toJS();
+
+    console.log(newUsersData, ideasByTopicData, ideasByAreaData);
 
     return (
       <div>
         <WatchSagas sagas={sagas} />
-        <Wrapper>
-          <Grid stackable>
-            <Grid.Row>
-              <Grid.Column width={3}>
-                <Sidebar location={location} />
-              </Grid.Column>
-              <Grid.Column width={10}>
-                <Grid>
-                  <Grid.Row columns={2}>
-                    <Grid.Column width={4}>
-                      <Segment>
-                        {/* Interval */}
-                        <Icon name="left chevron" />
-                        <FormattedMessage {...messages.interval} />
-                        <Icon name="right chevron" />
-                      </Segment>
-                    </Grid.Column>
-                    <Grid.Column width={12}>
-                      <Segment inverted>
-                        <Menu inverted pointing secondary>
-                          <Menu.Item name={formatMessage(messages.day)} active={interval === 'day'} onClick={this.updateInterval} />
-                          <Menu.Item name={formatMessage(messages.week)} active={interval === 'week'} onClick={this.updateInterval} />
-                          <Menu.Item name={formatMessage(messages.month)} active={interval === 'month'} onClick={this.updateInterval} />
-                          <Menu.Item name={formatMessage(messages.year)} active={interval === 'year'} onClick={this.updateInterval} />
-                        </Menu>
-                      </Segment>
-                    </Grid.Column>
-                  </Grid.Row>
-                  <Grid.Row>
-                    {/* TODO: consider wrapping charts in a Chart component within this container ...
-                        ... for code reuse */}
-                    <FormattedMessage {...messages.usersOverTime} />
-                    {newUsers.loading && <FormattedMessage {...messages.loading} />}
-                    {newUsers.loadError && <FormattedMessage {...messages.loadError} />}
-                    {!newUsers.error && newUsersData && <LineChart
-                      width={730}
-                      height={250}
-                      data={newUsersData}
-                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <Tooltip />
-                      <Legend />
-                      <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-                      <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-                    </LineChart>}
-                  </Grid.Row>
-                  <Grid.Row columns={2}>
-                    <Grid.Column width={8}>
-                      <FormattedMessage {...messages.ideasByTopic} />
-                      {ideasByTopic.loading && <FormattedMessage {...messages.loading} />}
-                      {ideasByTopic.loadError && <FormattedMessage {...messages.loadError} />}
-                      {!ideasByTopic.error && ideasByTopicData && <BarChart
-                        width={730}
-                        height={250}
-                        data={ideasByTopicData}
-                        layout="vertical"
-                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                      >
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="pv" />
-                        <Bar dataKey="uv" />
-                      </BarChart>}
-                    </Grid.Column>
-                    <Grid.Column width={8}>
-                      <FormattedMessage {...messages.ideasByArea} />
-                      {!ideasByArea.error && ideasByAreaData && <BarChart
-                        width={730}
-                        height={250}
-                        data={ideasByAreaData}
-                        layout="vertical"
-                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                      >
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <Tooltip />
-                        <Legend />
-                        <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-                        <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-                      </BarChart>}
-                    </Grid.Column>
-                  </Grid.Row>
-                </Grid>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Wrapper>
+        <Grid>
+          <Grid.Row columns={2}>
+            <Grid.Column width={4}>
+              <Segment>
+                {/* Interval */}
+                <span
+                  style={{ cursor: 'pointer' }}
+                  role="presentation"
+                  onClick={this.goToPreviousInterval}
+                >
+                  <Icon name="left chevron" />
+                </span>
+                <FormattedMessage {...messages.interval} />
+                <span
+                  style={{ cursor: 'pointer' }}
+                  role="presentation"
+                  onClick={this.goToFollowingInterval}
+                >
+                  <Icon name="right chevron" />
+                </span>
+              </Segment>
+            </Grid.Column>
+            <Grid.Column width={12}>
+              <Segment inverted>
+                <Menu inverted pointing secondary>
+                  <span
+                    onClick={() => this.updateInterval('day')}
+                    style={{ cursor: 'pointer' }}
+                    role="button"
+                  >
+                    <Menu.Item name={formatMessage(messages.day)} active={interval === 'day'} />
+                  </span>
+                  <span
+                    onClick={() => this.updateInterval('week')}
+                    style={{ cursor: 'pointer' }}
+                    role="presentation"
+                  >
+                    <Menu.Item name={formatMessage(messages.week)} active={interval === 'week'} />
+                  </span>
+                  <span
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => this.updateInterval('month')}
+                    role="presentation"
+                  >
+                    <Menu.Item name={formatMessage(messages.month)} active={interval === 'month'} />
+                  </span>
+                  <span
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => this.updateInterval('year')}
+                    role="presentation"
+                  >
+                    <Menu.Item name={formatMessage(messages.year)} active={interval === 'year'} />
+                  </span>
+                </Menu>
+              </Segment>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            {/* TODO: consider wrapping charts in a Chart component within this container ...
+                ... for code reuse */}
+            <FormattedMessage {...messages.usersOverTime} />
+            {newUsers.loading && <FormattedMessage {...messages.loading} />}
+            {newUsers.loadError && <FormattedMessageSegment message={messages.loadError} />}
+            {!newUsers.error && newUsersData && <LineChartWrapper data={newUsersData} />}
+          </Grid.Row>
+          <Grid.Row columns={2}>
+            <Grid.Column width={8}>
+              <FormattedMessage {...messages.ideasByTopic} />
+              {ideasByTopic.loading && <FormattedMessageSegment message={messages.loading} />}
+              {ideasByTopic.loadError && <FormattedMessageSegment message={messages.loadError} />}
+              {!ideasByTopic.error && ideasByTopicData && <BarChartWrapper
+                data={ideasByTopic}
+                layout="vertical"
+              />}
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <FormattedMessage {...messages.ideasByArea} />
+              {ideasByArea.loading && <FormattedMessageSegment message={messages.loading} />}
+              {ideasByArea.loadError && <FormattedMessageSegment message={messages.loadError} />}
+              {!ideasByArea.error && ideasByAreaData && <BarChartWrapper
+                data={ideasByAreaData}
+                layout="vertical"
+              />}
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </div>
     );
   }
 }
 
 AdminPages.propTypes = {
-  newUsers: ImmutablePropTypes.map.isRequired,
-  ideasByTopic: ImmutablePropTypes.map.isRequired,
-  ideasByArea: ImmutablePropTypes.map.isRequired,
+  newUsers: PropTypes.object.isRequired,
+  ideasByTopic: PropTypes.object.isRequired,
+  ideasByArea: PropTypes.object.isRequired,
   loadUsersReportRequest: PropTypes.func.isRequired,
   loadIdeaTopicsReportRequest: PropTypes.func.isRequired,
   loadIdeaAreasReportRequest: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired,
   intl: intlShape.isRequired,
   tFunc: PropTypes.func.isRequired,
 };
@@ -280,8 +258,12 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
   loadIdeaAreasReportRequest,
 }, dispatch);
 
-const mergeProps = ({ pageState, statTopics, statAreas }, dispatchProps, { location, intl, tFunc }) => ({
-  newUsers: getFromState(pageState, 'newUsers'),
+const mergeProps = ({ pageState, statTopics, statAreas }, dispatchProps, { intl, tFunc }) => ({
+  newUsers: {
+    loading: getFromState(pageState, 'newUsers', 'loading'),
+    loadError: getFromState(pageState, 'newUsers', 'loadError'),
+    stats: getFromState(pageState, 'newUsers', 'data'),
+  },
   ideasByTopic: {
     loading: getFromState(pageState, 'ideasByTopic', 'loading'),
     loadError: getFromState(pageState, 'ideasByTopic', 'loadError'),
@@ -292,10 +274,9 @@ const mergeProps = ({ pageState, statTopics, statAreas }, dispatchProps, { locat
     loadError: getFromState(pageState, 'ideasByArea', 'loadError'),
     stats: getFromState(pageState, 'ideasByArea', 'data'),
   },
-  location,
   intl,
   tFunc,
   ...dispatchProps,
 });
 
-export default injectIntl(preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(AdminPages));
+export default injectTFunc(injectIntl(preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(AdminPages)));
