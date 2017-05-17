@@ -57,4 +57,4 @@ function* watchSocial() {
   yield takeLatest(CREATE_SOCIAL_USER_REQUEST, createSocialUser);
 }
 
-export default {watchEmail, watchSocial}
+export default { watchEmail, watchSocial };

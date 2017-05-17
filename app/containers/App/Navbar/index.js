@@ -52,8 +52,8 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
           <Dropdown.Item onClick={() => goTo('/profile/edit')}>
             <FormattedMessage {...messages.editProfile} />
           </Dropdown.Item>
-          <Dropdown.Item>
-            <Link onClick={signOut}>Sign out</Link>
+          <Dropdown.Item onClick={signOut}>
+            Sign out
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>

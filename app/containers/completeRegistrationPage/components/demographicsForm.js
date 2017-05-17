@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { Grid, Button, Header, Label, Form } from 'semantic-ui-react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
+import { push } from 'react-router-redux';
 import { preprocess } from 'utils';
 
 import { injectTFunc } from 'utils/containers/t/utils';
@@ -80,6 +81,7 @@ class DemographicsForm extends React.Component {
 
   render() {
     const { userId } = this.props;
+    const goTo = () => this.props.push('/');
     const updateCurrentUser = withUserId(this.props.updateCurrentUserRequest, userId);
 
     return (
@@ -94,19 +96,9 @@ class DemographicsForm extends React.Component {
               <DropdownInput name={'education'} options={this.educationOptions()} action={updateCurrentUser} />
               <DropdownInput name={'birth_year'} options={this.birthyearOptions()} action={updateCurrentUser} />
               <DropdownInput name={'domicile'} options={this.domicileOptions()} action={updateCurrentUser} />
-
-
               {this.props.children}
               <Button
-                fluid
-                size={'small'}
-                basic
-                color={'grey'}
-                style={{ position: 'relative', width: '49.9%', display: 'inline-block', margin: '0' }}
-              >
-                skip
-              </Button>
-              <Button
+                onClick={goTo}
                 fluid
                 size={'small'}
                 color={'blue'}
@@ -129,6 +121,7 @@ DemographicsForm.propTypes = {
   userId: PropTypes.string.isRequired,
   areas: ImmutablePropTypes.map.isRequired,
   tFunc: PropTypes.func.isRequired,
+  push: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -136,4 +129,4 @@ const mapStateToProps = createStructuredSelector({
   areas: selectResourcesDomain('areas'),
 });
 
-export default injectTFunc(injectIntl(preprocess(mapStateToProps, { updateCurrentUserRequest })(DemographicsForm)));
+export default injectTFunc(injectIntl(preprocess(mapStateToProps, { updateCurrentUserRequest, push })(DemographicsForm)));
