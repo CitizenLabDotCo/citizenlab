@@ -18,7 +18,7 @@ import {
   createSocialUserError,
 } from './actions';
 
-function* createEmailUser(action) {
+export function* createEmailUser(action) {
   try {
     const response = yield call(createUser, action.payload);
     yield put(signInUserRequest(action.payload.email, action.payload.password, response));
@@ -29,7 +29,7 @@ function* createEmailUser(action) {
   }
 }
 
-function* createSocialUser(action) {
+export function* createSocialUser(action) {
   const { network, locale } = action.payload;
   try {
     const appId = yield select(makeSelectSetting([`${network}_login`, 'app_id']));
@@ -49,10 +49,12 @@ function* createSocialUser(action) {
   }
 }
 
-export function* watchEmail() {
+function* watchEmail() {
   yield takeLatest(CREATE_EMAIL_USER_REQUEST, createEmailUser);
 }
 
-export function* watchSocial() {
+function* watchSocial() {
   yield takeLatest(CREATE_SOCIAL_USER_REQUEST, createSocialUser);
 }
+
+export default {watchEmail, watchSocial}

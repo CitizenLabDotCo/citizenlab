@@ -13,4 +13,4 @@ export function setJwt(jwt) {
 
 export function removeJwt(jwt) {
   window.localStorage.removeItem('jwt', jwt);
-};
+}

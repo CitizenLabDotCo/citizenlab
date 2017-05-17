@@ -45,7 +45,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
   }
 
   userMenu(currentUser) {
-    const { signOut } = this.props;
+    const { signOut, goTo } = this.props;
     return (
       <Dropdown item trigger={this.trigger(currentUser)}>
         <Dropdown.Menu>

@@ -59,7 +59,7 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }, { 
+    }, {
       path: '/register/complete',
       name: 'registrationComplete',
       getComponent(nextState, cb) {

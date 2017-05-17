@@ -1,7 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import { fetchCurrentUser as fetchCurrentUserRequest, login } from 'api';
-//import { push } from 'react-router-redux';
 import { removeJwt, setJwt } from './jwt';
 import { loadCurrentUserRequest, loadCurrentUserError, loadCurrentUserSuccess, deleteCurrentUserLocal, storeJwt } from './actions';
 import { LOAD_CURRENT_USER_REQUEST, SIGNOUT_CURRENT_USER, SIGNIN_USER_REQUEST } from './constants';

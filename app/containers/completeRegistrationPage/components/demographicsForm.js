@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { Grid, Button, Header, Label, Form, Loader } from 'semantic-ui-react';
+import { Grid, Button, Header, Label, Form } from 'semantic-ui-react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { preprocess } from 'utils';
@@ -123,7 +123,6 @@ class DemographicsForm extends React.Component {
 }
 
 DemographicsForm.propTypes = {
-  pending: PropTypes.bool,
   children: PropTypes.element,
   intl: intlShape.isRequired,
   updateCurrentUserRequest: PropTypes.func.isRequired,

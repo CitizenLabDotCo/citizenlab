@@ -13,13 +13,13 @@ import { FormattedMessage } from 'react-intl';
 // import { actions as rrfActions } from 'react-redux-form';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-import { Saga } from 'react-redux-saga';
+import WatchSagas from 'utils/containers/watchSagas';
 
 import { createEmailUserRequest, createSocialUserRequest } from './actions';
 import Form from './Form';
 import makeSelectUsersNewPage from './selectors';
 import { NETWORK_FACEBOOK } from './constants';
-import { watchEmail, watchSocial } from './sagas';
+import sagas from './sagas';
 import messages from './messages';
 
 
@@ -44,8 +44,7 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
             { name: 'description', content: 'Description of UsersNewPage' },
           ]}
         />
-        <Saga saga={watchEmail} />
-        <Saga saga={watchSocial} />
+        <WatchSagas sagas={sagas} />
 
         <Form
           createUser={this.createUser}

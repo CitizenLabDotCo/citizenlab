@@ -1,32 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Radio } from 'semantic-ui-react';
+import { Form } from 'semantic-ui-react';
 import { injectIntl, intlShape } from 'react-intl';
 
 import { appenDableName } from './utils';
 
+import RadioField from './radioField';
 import messages from '../../messages';
 
-
-class RadioField extends React.PureComponent {
-  render() {
-    const { name, text, value, currentValue, handleChange } = this.props;
-    return (
-      <Form.Field>
-        <Radio
-          label={text}
-          name={name}
-          value={value}
-          checked={currentValue === value}
-          onChange={handleChange}
-        />
-      </Form.Field>
-    );
-  }
-}
-
-
-class RadioInput extends Component {
+class RadioInput extends React.Component {
   constructor(props) {
     super();
     const { name } = props;
@@ -37,10 +19,8 @@ class RadioInput extends Component {
   }
 
   handleChange = (e, { value, name }) => {
-    
     const cb = () => this.setState({ currentValue: value });
     this.props.action(name, value, cb);
-
   }
 
   render() {

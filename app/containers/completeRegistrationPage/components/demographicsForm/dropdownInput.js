@@ -4,14 +4,8 @@ import { Dropdown, Form } from 'semantic-ui-react';
 import { injectIntl, intlShape } from 'react-intl';
 import messages from '../../messages';
 
-const appenDableName = (name) => {
-  const camelName = name.replace(/((_|^)\w)/g, (m) => m.slice(-1)[0].toUpperCase());
-  return camelName.charAt(0).toUpperCase() + camelName.slice(1);
-};
+import { appenDableName } from './utils';
 
-// const onDropdownChange = (name, onChange) => (event, { value }) => {
-//   onChange(name, value);
-// };
 class DropdownInput extends React.PureComponent {
 
   constructor(props) {

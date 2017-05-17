@@ -1,4 +1,4 @@
-import { call, put, fn } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import { updateCurrentUser } from 'api';

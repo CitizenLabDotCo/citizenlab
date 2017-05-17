@@ -4,12 +4,16 @@
 
 /* eslint-disable */
 import { call, put } from 'redux-saga/effects';
-import { createUser as createUserSaga } from '../sagas';
+import { createEmailUser as createUserSaga } from '../sagas';
 import {
   CREATE_USER_SUCCESS,
   CREATE_USER_ERROR,
 } from './../constants';
+
+import {createEmailUserError, createEmailUserSuccess} from '../actions';
+
 import { createUser } from 'api';
+import { signInUserRequest } from 'utils/auth/actions';
 
 const newUser = { name: 'tesla' };
 const fakeError = {};
@@ -20,11 +24,17 @@ describe('createUser Saga', () => {
     expect(generator.next().value).toEqual(call(createUser, newUser));
   });
 
+  it('should try to sign in the user', () => {
+    const next = generator.next().value
+    expect(next).toEqual(put(signInUserRequest()));
+  });
+
+//a
   it('should dispatch correct action after success', () => {
-    expect(generator.next().value).toEqual(put({ type: CREATE_USER_SUCCESS, payload: undefined }));
+    expect(generator.next().value).toEqual(put(createEmailUserSuccess()));
   });
 
   it('should dispatch correct action after failure', () => {
-    expect(generator.throw(fakeError).value).toEqual(put({ type: CREATE_USER_ERROR, payload: fakeError, error: true }));
+    expect(generator.throw(fakeError).value).toEqual(put(createEmailUserError({})));
   });
 });
