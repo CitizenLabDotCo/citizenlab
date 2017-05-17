@@ -1,4 +1,4 @@
-import { call, put } from 'redux-saga/effects';
+import { call, put, fn } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import { updateCurrentUser } from 'api';
@@ -15,6 +15,9 @@ export function* updateUser(action) {
 
     yield put(mergeJsonApiResources(currentUserResponse));
     yield put(updateCurrentUserSuccess(field));
+    if (action.callback) {
+      yield call(action.callback);
+    }
   } catch (err) {
     yield put(updateCurrentUserError(err));
   }

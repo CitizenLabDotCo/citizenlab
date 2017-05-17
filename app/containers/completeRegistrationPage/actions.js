@@ -1,11 +1,13 @@
 
 import { UPDATE_CURRENT_USER_REQUEST, UPDATE_CURRENT_USER_SUCCESS, UPDATE_CURRENT_USER_ERROR } from './constants';
 
-export function updateCurrentUserRequest(field, value) {
+export function updateCurrentUserRequest(userId, field, value, callback) {
   return {
     type: UPDATE_CURRENT_USER_REQUEST,
+    userId,
     field,
     value,
+    callback,
   };
 }
 
