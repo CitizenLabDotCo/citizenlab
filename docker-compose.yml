@@ -25,6 +25,7 @@ services:
       - 'redis'
       - 'mailcatcher'
     build: .
+    image: citizenlabdotco/cl2-back:latest
     ports:
       - '4000:4000'
     volumes:
@@ -37,6 +38,7 @@ services:
       - 'postgres'
       - 'redis'
     build: .
+    image: citizenlabdotco/cl2-back:latest
     command: sidekiq -C config/sidekiq.yml.erb
     volumes:
       - '.:/cl2_back'
