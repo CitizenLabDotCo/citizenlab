@@ -5,7 +5,8 @@ import { BarChart, Bar, XAxis, YAxis } from 'recharts';
 export const BarChartWrapper = ({ data, layout }) => (
   <BarChart
     width={730}
-    height={500}
+    // TODO: optimize the height for best rendering
+    height={30 * data.length}
     style={{ border: '1px solid #8884d8' }}
     data={data}
     layout={layout}
