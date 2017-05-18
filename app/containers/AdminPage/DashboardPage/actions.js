@@ -44,7 +44,10 @@ export function loadIdeaTopicsReportRequest(startAt, endAt) {
 export function loadIdeaTopicsReportSuccess(response) {
   return {
     type: LOAD_IDEA_TOPICS_REPORT_SUCCESS,
-    payload: response,
+    payload: {
+      values: response.data,
+      labels: response.topics,
+    },
   };
 }
 
@@ -67,7 +70,10 @@ export function loadIdeaAreasReportRequest(startAt, endAt) {
 export function loadIdeaAreasReportSuccess(response) {
   return {
     type: LOAD_IDEA_AREAS_REPORT_SUCCESS,
-    payload: response,
+    payload: {
+      values: response.data,
+      labels: response.areas,
+    },
   };
 }
 

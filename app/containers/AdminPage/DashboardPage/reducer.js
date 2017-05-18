@@ -20,30 +20,50 @@ export const initialState = fromJS({
   // per-graph
   newUsers: {
     loading: false,
-    data: {},
+    values: fromJS([]),
+    labels: fromJS([]),
     loadError: null,
   },
   ideasByTopic: {
     loading: false,
-    data: {},
+    values: fromJS([]),
+    labels: fromJS([]),
     loadError: null,
   },
   ideasByArea: {
     loading: false,
-    data: {},
+    values: fromJS([]),
+    labels: fromJS([]),
     loadError: null,
   },
 });
 
-export const setInForReport = (state, action, which, operation) => {
+export const setInForReport = (state, action, which, operation, isComposite) => {
   switch (operation) {
     case 'request':
       return state
         .setIn([which, 'loading'], true)
         .setIn([which, 'loadError'], null);
     case 'success': {
+      if (isComposite) {
+        // topics, areas, ...
+        const itemValues = action.payload.values;
+        const itemLabels = action.payload.labels;
+        const values = Object.keys(itemValues).map((item) => itemValues[item]);
+        const labelsMultiloc = Object.keys(itemLabels).map((item) => itemLabels[item].title_multiloc);
+        return state
+          .setIn([which, 'values'], fromJS(values))
+          .setIn([which, 'labels'], fromJS(labelsMultiloc))
+          .setIn([which, 'loading'], false);
+      }
+
+      // new users over time, ...
+      const keys = Object.keys(action.payload);
+      const labels = keys;
+      const values = keys.map((key) => action.payload[key]);
       return state
-        .setIn([which, 'data'], fromJS(action.payload.data))
+        .setIn([which, 'values'], fromJS(values))
+        .setIn([which, 'labels'], fromJS(labels))
         .setIn([which, 'loading'], false);
     }
     case 'error':
@@ -60,19 +80,19 @@ function dashboardPage(state = initialState, action) {
     case LOAD_USERS_REPORT_REQUEST:
       return setInForReport(state, action, 'newUsers', 'request');
     case LOAD_USERS_REPORT_SUCCESS:
-      return setInForReport(state, action, 'newUsers', 'success');
+      return setInForReport(state, action, 'newUsers', 'success', false);
     case LOAD_USERS_REPORT_ERROR:
       return setInForReport(state, action, 'newUsers', 'error');
     case LOAD_IDEA_TOPICS_REPORT_REQUEST:
       return setInForReport(state, action, 'ideasByTopic', 'request');
     case LOAD_IDEA_TOPICS_REPORT_SUCCESS:
-      return setInForReport(state, action, 'ideasByTopic', 'success');
+      return setInForReport(state, action, 'ideasByTopic', 'success', true);
     case LOAD_IDEA_TOPICS_REPORT_ERROR:
       return setInForReport(state, action, 'ideasByTopic', 'error');
     case LOAD_IDEA_AREAS_REPORT_REQUEST:
       return setInForReport(state, action, 'ideasByArea', 'request');
     case LOAD_IDEA_AREAS_REPORT_SUCCESS:
-      return setInForReport(state, action, 'ideasByArea', 'success');
+      return setInForReport(state, action, 'ideasByArea', 'success', true);
     case LOAD_IDEA_AREAS_REPORT_ERROR:
       return setInForReport(state, action, 'ideasByArea', 'error');
     default:

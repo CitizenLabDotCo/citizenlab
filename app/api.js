@@ -175,5 +175,5 @@ export function fetchIdeaTopicsReport(queryParameters) {
 }
 
 export function fetchIdeaAreasReport(queryParameters) {
-  return request(`${API_PATH}/stats/ideas_by_topic`, null, null, queryParameters);
+  return request(`${API_PATH}/stats/ideas_by_area`, null, null, queryParameters);
 }

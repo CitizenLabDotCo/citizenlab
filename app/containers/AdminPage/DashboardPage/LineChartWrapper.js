@@ -1,21 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 export const LineChartWrapper = ({ data }) => (
   <LineChart
     width={730}
-    height={250}
+    height={500}
     data={data}
-    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+    style={{ border: '1px solid #8884d8' }}
   >
-    <XAxis dataKey="name" />
-    <YAxis />
     <CartesianGrid strokeDasharray="3 3" />
+    <Line type="monotone" dataKey="value" stroke="#8884d8" />
+    <XAxis dataKey="label" hide />
+    <YAxis dataKey="value" />
     <Tooltip />
-    <Legend />
-    <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-    <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
   </LineChart>
 );
 

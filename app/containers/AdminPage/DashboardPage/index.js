@@ -33,8 +33,8 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
   constructor() {
     super();
 
-    const startAt = moment().subtract(1, 'months');
-    const endAt = moment().format();
+    const startAt = moment().subtract(1, 'months').toISOString();
+    const endAt = moment().toISOString();
     this.state = {
       interval: 'month',
       startAt,
@@ -57,8 +57,8 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
 
   // day, week, ...
   updateInterval = (interval) => {
-    const startAt = moment().subtract(1, `${interval}s`);
-    const endAt = moment().format();
+    const startAt = moment().subtract(1, `${interval}s`).toISOString();
+    const endAt = moment().toISOString();
 
     this.setState({
       interval,
@@ -75,8 +75,8 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
     const { interval } = this.state;
 
     // calculate new startAt/endAt
-    const startAt = moment().subtract(1, `${interval}s`);
-    const endAt = moment().format();
+    const startAt = moment().subtract(1, `${interval}s`).toISOString();
+    const endAt = moment().toISOString();
 
     const newInterval = (interval === 'day'
       ? interval
@@ -99,8 +99,8 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
     const { interval } = this.state;
 
     // calculate new startAt/endAt
-    const startAt = moment().subtract(1, `${interval}s`);
-    const endAt = moment().format();
+    const startAt = moment().subtract(1, `${interval}s`).toISOString();
+    const endAt = moment().toISOString();
 
     const newInterval = (interval === 'day'
         ? interval
@@ -125,23 +125,19 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
 
     // refactor data for charts (newUsers.data etc. based on API specs response)
     // name on X axis (Y when version layout), value on Y axis (X when version layout)
-    // newUsers etc. are not immutable, but .stats is
-    const newUsersData = newUsers.stats && newUsers.stats.map((record) => ({
-      name: tFunc(record.title_multiloc),
-      value: newUsers.stats[record.id],
-    })).toJS();
-
-    const ideasByTopicData = ideasByTopic.stats && ideasByTopic.stats.map((record) => ({
-      name: tFunc(record.title_multiloc),
-      value: record.count,
-    })).toJS();
-
-    const ideasByAreaData = ideasByArea.stats && ideasByArea.stats.map((record) => ({
-      name: record.count,
-      value: tFunc(record.title_multiloc),
-    })).toJS();
-
-    console.log(newUsersData, ideasByTopicData, ideasByAreaData);
+    // newUsers etc. are not immutable, but .labels / .values are
+    const newUsersData = newUsers.labels.toJS().map((item, index) => ({
+      label: item,
+      value: newUsers.values.toJS()[index],
+    }));
+    const ideasByTopicData = ideasByTopic.labels.toJS().map((item, index) => ({
+      label: `${tFunc(item)} (${ideasByTopic.values.toJS()[index]})`,
+      value: ideasByTopic.values.toJS()[index],
+    }));
+    const ideasByAreaData = ideasByArea.labels.toJS().map((item, index) => ({
+      label: `${tFunc(item)} (${ideasByArea.values.toJS()[index]})`,
+      value: ideasByArea.values.toJS()[index],
+    }));
 
     return (
       <div>
@@ -203,37 +199,34 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
               </Segment>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row>
-            {/* TODO: consider wrapping charts in a Chart component within this container ...
-                ... for code reuse */}
-            <FormattedMessage {...messages.usersOverTime} />
-            {newUsers.loading && <FormattedMessage {...messages.loading} />}
-            {newUsers.loadError && <FormattedMessageSegment message={messages.loadError} />}
-            {!newUsers.error && newUsersData && <LineChartWrapper data={newUsersData} />}
-          </Grid.Row>
-          <Grid.Row columns={2}>
-            <Grid.Column width={8}>
-              <FormattedMessage {...messages.ideasByTopic} />
-              {ideasByTopic.loading && <FormattedMessageSegment message={messages.loading} />}
-              {ideasByTopic.loadError && <FormattedMessageSegment message={messages.loadError} />}
-              {!ideasByTopic.error && ideasByTopicData && <BarChartWrapper
-                data={ideasByTopic}
-                layout="vertical"
-              />}
-            </Grid.Column>
-            <Grid.Column width={8}>
-              <FormattedMessage {...messages.ideasByArea} />
-              {ideasByArea.loading && <FormattedMessageSegment message={messages.loading} />}
-              {ideasByArea.loadError && <FormattedMessageSegment message={messages.loadError} />}
-              {!ideasByArea.error && ideasByAreaData && <BarChartWrapper
-                data={ideasByAreaData}
-                layout="vertical"
-              />}
-            </Grid.Column>
-          </Grid.Row>
         </Grid>
-      </div>
-    );
+        <div>
+          {/* TODO: consider wrapping charts in a Chart component within this container ...
+              ... for code reuse */}
+          <FormattedMessage {...messages.usersOverTime} />
+          {newUsers.loading && <FormattedMessage {...messages.loading} />}
+          {newUsers.loadError && <FormattedMessageSegment message={messages.loadError} />}
+          {!newUsers.error && newUsersData && <LineChartWrapper data={newUsersData} />}
+        </div>
+        <div>
+          <FormattedMessage {...messages.ideasByTopic} />
+          {ideasByTopic.loading && <FormattedMessageSegment message={messages.loading} />}
+          {ideasByTopic.loadError && <FormattedMessageSegment message={messages.loadError} />}
+          {!ideasByTopic.error && ideasByTopicData && <BarChartWrapper
+            data={ideasByTopicData}
+            layout="vertical"
+          />}
+        </div>
+        <div>
+          <FormattedMessage {...messages.ideasByArea} />
+          {ideasByArea.loading && <FormattedMessageSegment message={messages.loading} />}
+          {ideasByArea.loadError && <FormattedMessageSegment message={messages.loadError} />}
+          {!ideasByArea.error && ideasByAreaData && <BarChartWrapper
+            data={ideasByAreaData}
+            layout="vertical"
+          />}
+        </div>
+      </div>);
   }
 }
 
@@ -262,17 +255,20 @@ const mergeProps = ({ pageState, statTopics, statAreas }, dispatchProps, { intl,
   newUsers: {
     loading: getFromState(pageState, 'newUsers', 'loading'),
     loadError: getFromState(pageState, 'newUsers', 'loadError'),
-    stats: getFromState(pageState, 'newUsers', 'data'),
+    values: getFromState(pageState, 'newUsers', 'values'),
+    labels: getFromState(pageState, 'newUsers', 'labels'),
   },
   ideasByTopic: {
     loading: getFromState(pageState, 'ideasByTopic', 'loading'),
     loadError: getFromState(pageState, 'ideasByTopic', 'loadError'),
-    stats: getFromState(pageState, 'ideasByTopic', 'data'),
+    values: getFromState(pageState, 'ideasByTopic', 'values'),
+    labels: getFromState(pageState, 'ideasByTopic', 'labels'),
   },
   ideasByArea: {
     loading: getFromState(pageState, 'ideasByArea', 'loading'),
     loadError: getFromState(pageState, 'ideasByArea', 'loadError'),
-    stats: getFromState(pageState, 'ideasByArea', 'data'),
+    values: getFromState(pageState, 'ideasByArea', 'values'),
+    labels: getFromState(pageState, 'ideasByArea', 'labels'),
   },
   intl,
   tFunc,
