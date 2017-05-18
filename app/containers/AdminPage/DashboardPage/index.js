@@ -22,13 +22,6 @@ import {
 import { LineChartWrapper } from './LineChartWrapper';
 import { BarChartWrapper } from './BarChartWrapper';
 
-const intervals = [
-  'day',
-  'week',
-  'month',
-  'year',
-];
-
 class AdminPages extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
@@ -37,6 +30,7 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
     const endAt = moment().toISOString();
     this.state = {
       interval: 'month',
+      intervalIndex: -1,
       startAt,
       endAt,
     };
@@ -55,6 +49,29 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
     this.props.loadIdeaAreasReportRequest(startAt, endAt);
   }
 
+  getNewBoundaryDates(interval, newIntervalIndex) {
+    let startAt;
+    let endAt;
+
+    // calculate new startAt/endAt
+    if (newIntervalIndex < 0) {
+      startAt = moment().subtract(Math.abs(newIntervalIndex), interval).toISOString();
+      endAt = moment().subtract(Math.abs(newIntervalIndex + 1), interval).toISOString();
+    } else if (newIntervalIndex === 0) {
+      startAt = moment().toISOString();
+      endAt = moment().add(1, interval).toISOString();
+    } else {
+      startAt = moment().add(newIntervalIndex, interval).toISOString();
+      endAt = moment().add(newIntervalIndex + 1, interval).toISOString();
+    }
+
+    return {
+      startAt,
+      endAt,
+    };
+  }
+
+
   // day, week, ...
   updateInterval = (interval) => {
     const startAt = moment().subtract(1, `${interval}s`).toISOString();
@@ -64,6 +81,7 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
       interval,
       startAt,
       endAt,
+      intervalIndex: -1,
     });
 
     // reload data for charts depending on interval
@@ -72,48 +90,36 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
 
   // previous day, week, ...
   goToPreviousInterval = () => {
-    const { interval } = this.state;
+    const { interval, intervalIndex } = this.state;
 
-    // calculate new startAt/endAt
-    const startAt = moment().subtract(1, `${interval}s`).toISOString();
-    const endAt = moment().toISOString();
-
-    const newInterval = (interval === 'day'
-      ? interval
-      : intervals[intervals.indexOf(interval) - 1]
-    );
+    const newIntervalIndex = intervalIndex - 1;
+    const { startAt, endAt } = this.getNewBoundaryDates(interval, newIntervalIndex);
 
     this.setState({
-      interval: newInterval,
       startAt,
       endAt,
+      intervalIndex: newIntervalIndex,
     });
 
-    this.props.loadUsersReportRequest(startAt, endAt, newInterval);
+    this.props.loadUsersReportRequest(startAt, endAt, interval);
     this.props.loadIdeaTopicsReportRequest(startAt, endAt);
     this.props.loadIdeaAreasReportRequest(startAt, endAt);
   };
 
   // following day, week, ...
   goToFollowingInterval = () => {
-    const { interval } = this.state;
+    const { interval, intervalIndex } = this.state;
 
-    // calculate new startAt/endAt
-    const startAt = moment().subtract(1, `${interval}s`).toISOString();
-    const endAt = moment().toISOString();
-
-    const newInterval = (interval === 'day'
-        ? interval
-        : intervals[intervals.indexOf(interval) - 1]
-    );
+    const newIntervalIndex = intervalIndex + 1;
+    const { startAt, endAt } = this.getNewBoundaryDates(interval, newIntervalIndex);
 
     this.setState({
-      interval: newInterval,
       startAt,
       endAt,
+      intervalIndex: newIntervalIndex,
     });
 
-    this.props.loadUsersReportRequest(startAt, endAt, newInterval);
+    this.props.loadUsersReportRequest(startAt, endAt, interval);
     this.props.loadIdeaTopicsReportRequest(startAt, endAt);
     this.props.loadIdeaAreasReportRequest(startAt, endAt);
   };
