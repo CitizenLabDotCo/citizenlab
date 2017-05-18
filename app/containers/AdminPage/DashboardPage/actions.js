@@ -42,13 +42,16 @@ export function loadIdeaTopicsReportRequest(startAt, endAt) {
 }
 
 export function loadIdeaTopicsReportSuccess(response) {
-  return {
-    type: LOAD_IDEA_TOPICS_REPORT_SUCCESS,
-    payload: {
-      values: response.data,
-      labels: response.topics,
-    },
-  };
+  if (response && response.data && response.topics) {
+    return {
+      type: LOAD_IDEA_TOPICS_REPORT_SUCCESS,
+      payload: {
+        values: response.data,
+        labels: response.topics,
+      },
+    };
+  }
+  return loadIdeaTopicsReportError('invalid response');
 }
 
 export function loadIdeaTopicsReportError(error) {
@@ -68,13 +71,16 @@ export function loadIdeaAreasReportRequest(startAt, endAt) {
 }
 
 export function loadIdeaAreasReportSuccess(response) {
-  return {
-    type: LOAD_IDEA_AREAS_REPORT_SUCCESS,
-    payload: {
-      values: response.data,
-      labels: response.areas,
-    },
-  };
+  if (response && response.data && response.areas) {
+    return {
+      type: LOAD_IDEA_AREAS_REPORT_SUCCESS,
+      payload: {
+        values: response.data,
+        labels: response.areas,
+      },
+    };
+  }
+  return loadIdeaAreasReportError('invalid response');
 }
 
 export function loadIdeaAreasReportError(error) {
