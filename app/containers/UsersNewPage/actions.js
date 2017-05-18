@@ -13,10 +13,11 @@ import {
   CREATE_SOCIAL_USER_ERROR,
 } from './constants';
 
-export function createEmailUserRequest(payload) {
+export function createEmailUserRequest(payload, backTo) {
   return {
     type: CREATE_EMAIL_USER_REQUEST,
     payload,
+    backTo,
   };
 }
 

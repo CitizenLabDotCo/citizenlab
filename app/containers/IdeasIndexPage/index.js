@@ -11,7 +11,7 @@ import { bindActionCreators } from 'redux';
 
 import { push } from 'react-router-redux';
 
-import OverlayChildren from 'containers/OverlayChildren';
+import OverlayChildren from 'utils/containers/overlayChildren';
 
 import PageView from './PageView';
 
@@ -50,6 +50,5 @@ IdeasIndex.propTypes = {
 const actions = { push };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
-
 
 export default connect(null, mapDispatchToProps)(IdeasIndex);

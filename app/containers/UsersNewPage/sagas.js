@@ -23,6 +23,7 @@ export function* createEmailUser(action) {
     const response = yield call(createUser, action.payload);
     yield put(signInUserRequest(action.payload.email, action.payload.password, response));
     yield put(createEmailUserSuccess(response));
+    yield select((state) => state.goBackLink.getIn(['goBackLink', 'code']));
     yield put(push('/register/complete'));
   } catch (e) {
     yield put(createEmailUserError(e));

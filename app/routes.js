@@ -14,7 +14,7 @@ const loadModule = (cb) => (componentModule) => {
 
 export default function createRoutes(store) {
   // Create reusable async injectors using getAsyncInjectors factory
-  const { injectReducer, injectSagas } = getAsyncInjectors(store); // eslint-disable-line no-unused-vars
+  const { injectReducer } = getAsyncInjectors(store); // eslint-disable-line no-unused-vars
 
   return [
     {
@@ -65,13 +65,29 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/completeRegistrationPage'),
-//          import('containers/completeRegistrationPage/reducers'),
         ]);
 
         const renderRoute = loadModule(cb);
 
         importModules.then(([component]) => {
-//          injectReducer('usersEditPage', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/register',
+      name: 'usersNewPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/UsersNewPage/reducer'),
+          import('containers/UsersNewPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('usersNewPage', reducer.default);
           renderRoute(component);
         });
 
@@ -152,24 +168,6 @@ export default function createRoutes(store) {
           },
         },
       ],
-    }, {
-      path: '/register',
-      name: 'usersNewPage',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/UsersNewPage/reducer'),
-          import('containers/UsersNewPage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([reducer, component]) => {
-          injectReducer('usersNewPage', reducer.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
     }, {
       path: '/profile/:slug',
       name: 'usersShowPage',

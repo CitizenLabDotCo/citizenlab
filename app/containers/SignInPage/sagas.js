@@ -4,6 +4,7 @@ import { socialLogin } from 'api';
 import { setJwt } from 'utils/auth/jwt';
 import { makeSelectSetting } from 'utils/tenant/selectors';
 import { push } from 'react-router-redux';
+import { goBackTo } from 'utils/store/actions';
 import hello from 'hellojs';
 import { AUTHENTICATE_EMAIL_REQUEST, AUTHENTICATE_SOCIAL_REQUEST } from './constants';
 import { authenticateEmailError, authenticateEmailSuccess, authenticateSocialError, authenticateSocialSuccess } from './actions';
@@ -12,7 +13,12 @@ export function* logInUser(action) {
   try {
     yield put(signInUserRequest(action.payload.email, action.payload.password));
     yield put(authenticateEmailSuccess());
-    yield put(push('/'));
+    const goBackToLink = yield select((state) => state.getIn(['goBackLink', 'code']));
+    if (goBackToLink) {
+      yield put(goBackTo(goBackToLink));
+    } else {
+      yield put(push('/'));
+    }
   } catch (err) {
     yield put(authenticateEmailError(err));
   }

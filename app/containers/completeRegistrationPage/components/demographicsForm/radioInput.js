@@ -19,8 +19,8 @@ class RadioInput extends React.Component {
   }
 
   handleChange = (e, { value, name }) => {
-    const cb = () => this.setState({ currentValue: value });
-    this.props.action(name, value, cb);
+    this.setState({ currentValue: value });
+    this.props.action(name, value);
   }
 
   render() {

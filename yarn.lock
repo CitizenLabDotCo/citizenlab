@@ -5175,7 +5175,7 @@ lodash.topath@~4.5.2:
   version "4.5.2"
   resolved "https://registry.yarnpkg.com/lodash.topath/-/lodash.topath-4.5.2.tgz#3616351f3bba61994a0931989660bd03254fd009"
 
-lodash@4.17.2, lodash@^4.0.0, lodash@^4.15.0, lodash@^4.16.4, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.6.1:
+lodash@4.17.2, lodash@^4.0.0, lodash@^4.0.1, lodash@^4.15.0, lodash@^4.16.4, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.6.1:
   version "4.17.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
 
@@ -5183,7 +5183,7 @@ lodash@^3.10.1:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.0.1, lodash@^4.14.0, lodash@^4.17.4, lodash@^4.3.0:
+lodash@^4.14.0, lodash@^4.17.4, lodash@^4.3.0:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -6591,7 +6591,7 @@ react-deep-force-update@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
 
-react-dom@^15.4.1:
+react-dom@^15.3.2, react-dom@^15.4.1:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.4.2.tgz#015363f05b0a1fd52ae9efdd3a0060d90695208f"
   dependencies:
@@ -6775,7 +6775,7 @@ react@^0.14.2:
     envify "^3.0.0"
     fbjs "^0.6.1"
 
-react@^15.4.1:
+react@^15.3.2, react@^15.4.1:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.4.2.tgz#41f7991b26185392ba9bae96c8889e7e018397ef"
   dependencies:
@@ -6933,6 +6933,14 @@ redux-immutable@3.0.8:
 redux-mock-store@^1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/redux-mock-store/-/redux-mock-store-1.2.3.tgz#1b3ad299da91cb41ba30d68e3b6f024475fb9e1b"
+
+redux-saga-devtools@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/redux-saga-devtools/-/redux-saga-devtools-0.1.1.tgz#10277f75a6ce0b57e484cb1fafa0f15be432a82f"
+  dependencies:
+    react "^15.3.2"
+    react-dom "^15.3.2"
+    styled-components "^1.0.11"
 
 redux-saga-testing@^1.0.2:
   version "1.0.2"
@@ -7689,7 +7697,7 @@ style-loader@0.13.1:
   dependencies:
     loader-utils "^0.2.7"
 
-styled-components@1.1.2:
+styled-components@1.1.2, styled-components@^1.0.11:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-1.1.2.tgz#d9931dc887322ea9b61e7a4fbda25ebd69240854"
   dependencies:

@@ -4,7 +4,6 @@ import { Menu, Button, Dropdown, Icon, Image } from 'semantic-ui-react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-
 import { push } from 'react-router-redux';
 
 import { preprocess } from 'utils';
@@ -21,12 +20,12 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
     const { goTo } = this.props;
     return [
       <Menu.Item key="login">
-        <Button onClick={() => goTo('/sign-in')}>
+        <Button onClick={() => goTo(`/sign-in`)}>
           <FormattedMessage {...messages.login} />
         </Button>
       </Menu.Item>,
       <Menu.Item key="register">
-        <Button onClick={() => goTo('/register')}>
+        <Button onClick={() => goTo(`/register`)}>
           <FormattedMessage {...messages.register} />
         </Button>
       </Menu.Item>,

@@ -1,30 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'semantic-ui-react';
-import { injectIntl } from 'react-intl';
-import { preprocess } from 'utils';
+import { injectIntl, intlShape } from 'react-intl';
 
 import { appenDableName } from './utils';
 import messages from '../../messages';
 
 class TextInput extends React.Component {
-  state = {}
+  constructor(props) {
+    super();
+    const { name } = props;
+    const { formatMessage } = props.intl;
+
+    const toAppendName = appenDableName(name);
+    const placeholder = formatMessage(messages[`placeholder${toAppendName}`]);
+    const label = formatMessage(messages[`label${toAppendName}`]);
+
+    this.state = { placeholder, label };
+  }
 
   handleChange = (event) => {
-    const value = event.target.value;
-    const field = event.target.name;
-    this.setState({ [field]: value });
+    const { name } = this.props;
+    const { value } = event.target;
+    this.props.action(name, value);
+    this.setState({ value });
   }
 
   render() {
-    const { name, placeholder, label } = this.props;
+    const { placeholder, label } = this.state;
+    const { name, icon } = this.props;
     return (
       <Form.Field>
         <Form.Input
-          fluid icon={'user'}
+          fluid icon={icon || 'user'}
           name={name}
           iconPosition={'left'}
           onChange={this.handleChange}
+          value={this.state.value}
           placeholder={placeholder}
           label={label}
         />
@@ -35,17 +47,9 @@ class TextInput extends React.Component {
 
 TextInput.propTypes = {
   name: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  action: PropTypes.func.isRequired,
+  intl: intlShape.isRequired,
+  icon: PropTypes.string,
 };
 
-const mergeProps = (stateP, dispatchP, ownP) => {
-  const { name } = ownP;
-  const { formatMessage } = ownP.intl;
-  const toAppendName = appenDableName(name);
-  const placeholder = formatMessage(messages[`placeholder${toAppendName}`]);
-  const label = formatMessage(messages[`label${toAppendName}`]);
-  return { name, placeholder, label };
-};
-
-export default injectIntl(preprocess(null, null, mergeProps)(TextInput));
+export default injectIntl(TextInput);

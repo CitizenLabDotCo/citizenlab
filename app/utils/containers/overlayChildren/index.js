@@ -26,19 +26,22 @@ class OverlayChildren extends React.Component { // eslint-disable-line react/pre
   constructor(props) {
     super();
     this.isMainView = props.isMainView;
-    this.component = props.component;
     this.pageView = this.isMainView(props) ? this.mainView : this.childView;
+  }
+
+  getChildContext() {
+    const { toChildView, handleClose } = this.props;
+    return { toChildView, handleClose };
   }
 
   mainView = () => {
     const inMainView = this.isMainView(this.props);
-    const { handleClose } = this.props;
-
+    const { handleClose, component, children } = this.props;
     return (
       <div>
-        {React.createElement(this.component, this.props)}
+        {React.createElement(component, this.props)}
         <WrapChild handleClose={handleClose} open={!inMainView}>
-          {this.props.children}
+          {children && React.cloneElement(children, this.props)}
         </WrapChild>
       </div>
     );
@@ -63,11 +66,17 @@ class OverlayChildren extends React.Component { // eslint-disable-line react/pre
   }
 }
 
+OverlayChildren.childContextTypes = {
+  toChildView: PropTypes.func,
+  handleClose: PropTypes.func,
+};
+
 OverlayChildren.propTypes = {
   children: PropTypes.element,
   isMainView: PropTypes.func.isRequired,
   handleClose: PropTypes.func,
   component: PropTypes.any,
+  toChildView: PropTypes.func,
 };
 
 export default OverlayChildren;

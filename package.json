@@ -252,6 +252,7 @@
     "redux": "3.6.0",
     "redux-immutable": "3.0.8",
     "redux-saga": "0.15.3",
+    "redux-saga-devtools": "^0.1.1",
     "redux-thunk": "^2.2.0",
     "reselect": "2.5.4",
     "sanitize.css": "4.1.0",

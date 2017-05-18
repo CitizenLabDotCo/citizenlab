@@ -17,6 +17,9 @@ import { createStructuredSelector } from 'reselect';
 import { Saga } from 'react-redux-saga';
 import { Container } from 'semantic-ui-react';
 
+// import { DockableSagaView } from 'redux-saga-devtools';
+// import { sagamonitor } from 'store';
+
 import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
 import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
@@ -46,6 +49,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
               {React.Children.toArray(this.props.children)}
             </div>
           </Container>
+          {/*<DockableSagaView monitor={sagamonitor}  />*/}
         </div>
       );
     } else { // eslint-disable-line no-else-return

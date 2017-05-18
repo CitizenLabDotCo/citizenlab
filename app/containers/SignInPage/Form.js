@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Button, Header, Label, Form, Message, Loader } from 'semantic-ui-react';
+import { Grid, Button, Label, Form, Message, Loader } from 'semantic-ui-react';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { PropTypes } from 'prop-types';
 
@@ -52,9 +52,6 @@ class RegistrationForm extends React.Component {
       <div >
         <Grid centered verticalAlign={'middle'}>
           <Grid.Column>
-            <Header as={'h2'}>
-              <FormattedMessage {...messages.header} />
-            </Header>
             <Form onSubmit={this.handleSubmit} error={hasError}>
               <Form.Field>
                 <Form.Input

@@ -15,9 +15,6 @@ export function* updateUser(action) {
 
     yield put(mergeJsonApiResources(currentUserResponse));
     yield put(updateCurrentUserSuccess(field));
-    if (action.callback) {
-      yield call(action.callback);
-    }
   } catch (err) {
     yield put(updateCurrentUserError(err));
   }

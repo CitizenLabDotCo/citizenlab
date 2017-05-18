@@ -22,6 +22,10 @@ import IdeaTitle, { TitleStatusWrapper } from './IdeaTitle';
 import { makeSelectAreas, makeSelectTopics, selectSubmitIdea } from '../selectors';
 import multiselectMap from '../multiselectMap';
 
+import { selectAuthDomain } from 'utils/auth/selectors';
+
+import { bindActionCreators } from 'redux'
+
 class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   constructor() {
@@ -45,10 +49,18 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
     this.props.saveDraft();
   }
 
+  publishIdea = () => {
+   // const { toChildView } = this.context;
+   const { userId, storeIdea } = this.props;
+   // if (!userId) return toChildView();
+    storeIdea();
+    //this.props.cur();
+  }
+
   render() {
     const { className, loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
     const { shortTitleError, longTitleError, titleLength } = this.props;
-    const { saveDraft, storeIdea } = this.props;
+    const { saveDraft } = this.props;
     const { topics, areas, loadTopicsError, loadAreasError, loadingTopics, loadingAreas, invalidForm } = this.props;
     const { formatMessage } = this.props.intl;
 
@@ -85,7 +97,7 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
                 </Button>
               </Grid.Column>
               <Grid.Column width={2} textAlign="center">
-                <Button onClick={storeIdea}>
+                <Button onClick={this.publishIdea}>
                   <FormattedMessage {...messages.publish} />
                 </Button>
               </Grid.Column>
@@ -159,16 +171,23 @@ IdeaEditorWrapper.propTypes = {
   storeAreas: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
   invalidForm: PropTypes.bool.isRequired,
+  userId: PropTypes.string,
+};
+
+IdeaEditorWrapper.contextTypes = {
+  toChildView: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   ideasNewPageState: selectSubmitIdea,
   topics: makeSelectTopics(),
   areas: makeSelectAreas(),
+  currentUser: selectAuthDomain('id'),
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { ideasNewPageState: pageState } = stateProps;
+  const { cur } = dispatchProps;
   const { intl, setTitle, saveDraft, storeIdea, storeTopics, storeAreas } = ownProps;
 
   /* eslint-disable */
@@ -193,6 +212,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const invalidForm = getFromState(pageState, 'draft', 'invalidForm');
 
   return {
+    cur,
     /*
      * specific selectors
      */
@@ -223,6 +243,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   /* eslint-enable */
 };
 
-export default styled(injectIntl(connect(mapStateToProps, null, mergeProps)(IdeaEditorWrapper)))`
+const mapDispatchToProps = (dispatch) => bindActionCreators({ cur: () => ({ type: 'user.update.COMPLETE_USER_REGISTRATION' }) }, dispatch);
+
+
+export default styled(injectIntl(connect(mapStateToProps, mapDispatchToProps, mergeProps)(IdeaEditorWrapper)))`
   // none yet
 `;

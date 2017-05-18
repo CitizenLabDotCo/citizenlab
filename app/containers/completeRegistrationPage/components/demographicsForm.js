@@ -4,7 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { Grid, Button, Header, Label, Form } from 'semantic-ui-react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import { push } from 'react-router-redux';
+
 import { preprocess } from 'utils';
 
 import { injectTFunc } from 'utils/containers/t/utils';
@@ -17,7 +17,7 @@ import messages from '../messages';
 import RadioInput from './demographicsForm/radioInput';
 import DropdownInput from './demographicsForm/dropdownInput';
 
-import { updateCurrentUserRequest } from '../actions';
+import { updateCurrentUserRequest, completeUserRegistration } from '../actions';
 
 const RenderError = (props) => {
   const { errorMessage } = props;
@@ -33,6 +33,8 @@ RenderError.propTypes = {
 
 
 const withUserId = (func, userId) => (...args) => func(userId, ...args);
+
+// All of the fields are currently not liked to the result of the db; since they can only change one at the time, we optimistically assume that there will be no errors and the last one will be changed
 
 class DemographicsForm extends React.Component {
   constructor(props) {
@@ -79,9 +81,14 @@ class DemographicsForm extends React.Component {
     ]
   );
 
+  handleClick = () => {
+    const { location } = this.props;
+    const { backTo } = location.query;
+    this.props.completeUserRegistration(backTo);
+  }
+
   render() {
     const { userId } = this.props;
-    const goTo = () => this.props.push('/');
     const updateCurrentUser = withUserId(this.props.updateCurrentUserRequest, userId);
 
     return (
@@ -98,13 +105,14 @@ class DemographicsForm extends React.Component {
               <DropdownInput name={'domicile'} options={this.domicileOptions()} action={updateCurrentUser} />
               {this.props.children}
               <Button
-                onClick={goTo}
+                onClick={this.handleClick}
                 fluid
                 size={'small'}
                 color={'blue'}
+                type={'button'}
                 style={{ position: 'relative', width: '49.9%', display: 'inline-block', margin: '0' }}
               >
-                Next
+                <FormattedMessage {...messages.next} />
               </Button>
             </Form>
           </Grid.Column>
@@ -121,7 +129,8 @@ DemographicsForm.propTypes = {
   userId: PropTypes.string.isRequired,
   areas: ImmutablePropTypes.map.isRequired,
   tFunc: PropTypes.func.isRequired,
-  push: PropTypes.func.isRequired,
+  completeUserRegistration: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -129,4 +138,4 @@ const mapStateToProps = createStructuredSelector({
   areas: selectResourcesDomain('areas'),
 });
 
-export default injectTFunc(injectIntl(preprocess(mapStateToProps, { updateCurrentUserRequest, push })(DemographicsForm)));
+export default injectTFunc(injectIntl(preprocess(mapStateToProps, { updateCurrentUserRequest, completeUserRegistration })(DemographicsForm)));

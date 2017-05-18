@@ -7,7 +7,6 @@ import messages from '../../messages';
 import { appenDableName } from './utils';
 
 class DropdownInput extends React.PureComponent {
-
   constructor(props) {
     super();
     const { name } = props;

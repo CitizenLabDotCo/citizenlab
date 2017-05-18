@@ -109,4 +109,8 @@ export default defineMessages({
     id: 'app.containers.completeRegistrationPage.genderUnspecified',
     defaultMessage: 'Unspecified',
   },
+  next: {
+    id: 'app.containers.completeRegistrationPage.next',
+    defaultMessage: 'Next',
+  },
 });
