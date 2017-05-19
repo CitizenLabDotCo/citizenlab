@@ -5,16 +5,9 @@
  */
 
 import {
-  LOAD_IDEAS_REQUEST, IDEAS_LOADED, IDEAS_LOADING_ERROR, SET_SHOW_IDEA_WITH_INDEX_PAGE, RESET_IDEAS, LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_TOPICS_ERROR, LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR,
+  LOAD_IDEAS_REQUEST, LOAD_IDEAS_SUCCESS, IDEAS_LOADING_ERROR, SET_SHOW_IDEA_WITH_INDEX_PAGE, RESET_IDEAS, LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_TOPICS_ERROR, LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR,
 } from './constants';
 
-
-export function ideasLoaded(ideas) {
-  return {
-    type: IDEAS_LOADED,
-    payload: ideas,
-  };
-}
 
 export function ideasLoadingError(errorMessage) {
   return {
@@ -31,6 +24,13 @@ export function loadIdeas(initialLoad, nextPageNumber, nextPageItemCount, search
     nextPageItemCount,
     search,
     filters,
+  };
+}
+
+export function loadIdeasSuccess(ideas) {
+  return {
+    type: LOAD_IDEAS_SUCCESS,
+    payload: ideas,
   };
 }
 

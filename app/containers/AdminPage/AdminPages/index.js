@@ -6,7 +6,6 @@ import { FormattedMessage } from 'react-intl';
 import { bindActionCreators } from 'redux';
 import T from 'containers/T';
 import { preprocess } from 'utils/reactRedux';
-import { getFromState } from 'utils/immutables';
 import WatchSagas from 'containers/WatchSagas';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
@@ -186,16 +185,16 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
 }, dispatch);
 
 const mergeProps = ({ pageState, pages }, dispatchProps, { location }) => ({
-  pagesIds: getFromState(pageState, 'pageIds'),
-  prevPageNumber: getFromState(pageState, 'prevPageNumber'),
-  prevPageItemCount: getFromState(pageState, 'prevPageItemCount'),
-  currentPageNumber: getFromState(pageState, 'currentPageNumber'),
-  currentPageItemCount: getFromState(pageState, 'currentPageItemCount'),
-  nextPageNumber: getFromState(pageState, 'nextPageNumber'),
-  nextPageItemCount: getFromState(pageState, 'nextPageItemCount'),
-  pageCount: getFromState(pageState, 'pageCount'),
-  loading: getFromState(pageState, 'loading'),
-  loadError: getFromState(pageState, 'loadError'),
+  pagesIds: pageState.get('pageIds'),
+  prevPageNumber: pageState.get('prevPageNumber'),
+  prevPageItemCount: pageState.get('prevPageItemCount'),
+  currentPageNumber: pageState.get('currentPageNumber'),
+  currentPageItemCount: pageState.get('currentPageItemCount'),
+  nextPageNumber: pageState.get('nextPageNumber'),
+  nextPageItemCount: pageState.get('nextPageItemCount'),
+  pageCount: pageState.get('pageCount'),
+  loading: pageState.get('loading'),
+  loadError: pageState.get('loadError'),
   pages,
   location,
   ...dispatchProps,

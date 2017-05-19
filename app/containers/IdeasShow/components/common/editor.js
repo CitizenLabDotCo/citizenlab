@@ -42,11 +42,10 @@ class Editor extends React.PureComponent {
   render() {
     const { editorState } = this.state;
     const { parentId, ideaId } = this.props;
-    if (!this.props.currentUserId) return <div> banana </div>;
     return (
       <Accordion >
         <Accordion.Title style={{ fontSize: '0px', height: '0' }}>
-          <Button style={{ float: 'right' }}> Repply </Button>
+          <Button style={{ float: 'right' }}> Reply </Button>
         </Accordion.Title>
         <Accordion.Title style={{ fontSize: '0px', height: '0' }}>
           <DeleteButton
@@ -88,7 +87,7 @@ class Editor extends React.PureComponent {
 
 Editor.propTypes = {
   submitComment: PropTypes.func,
-  currentUserId: PropTypes.string,
+  // currentUserId: PropTypes.string,
   parentId: PropTypes.string,
   ideaId: PropTypes.string,
 };

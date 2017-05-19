@@ -26,8 +26,9 @@ export const LOAD_COMMENTS_ERROR = 'app/IdeasShow/LOAD_COMMENTS_ERROR';
 
 // store
 export const SAVE_COMMENT_DRAFT = 'app/IdeasShow/SAVE_COMMENT_DRAFT';
-export const STORE_COMMENT_REQUEST = 'app/IdeasShow/STORE_COMMENT';
-export const STORE_COMMENT_ERROR = 'app/IdeasShow/STORE_COMMENT_ERROR';
+export const PUBLISH_COMMENT_REQUEST = 'app/IdeasShow/PUBLISH_COMMENT';
+export const PUBLISH_COMMENT_SUCCESS = 'app/IdeasShow/PUBLISH_COMMENT_SUCCESS';
+export const PUBLISH_COMMENT_ERROR = 'app/IdeasShow/PUBLISH_COMMENT_ERROR';
 
 // delete
 export const DELETE_COMMENT_REQUEST = 'app/IdeasShow/DELETE_COMMENT_REQUEST';

@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import WatchSagas from 'containers/WatchSagas';
 import styled from 'styled-components';
 import { preprocess } from 'utils';
-import { getFromState } from 'utils/immutables';
 import { createStructuredSelector } from 'reselect';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw } from 'draft-js';
@@ -150,11 +149,11 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
 }, dispatch);
 
 const mergeProps = ({ pageState, locale }, dispatchProps, { intl, location }) => ({
-  publishing: getFromState(pageState, 'publishing'),
-  publishError: getFromState(pageState, 'publishError'),
-  invalidFormError: getFromState(pageState, 'invalidFormError'),
-  published: getFromState(pageState, 'published'),
-  title: getFromState(pageState, 'title'),
+  publishing: pageState.get('publishing'),
+  publishError: pageState.get('publishError'),
+  invalidFormError: pageState.get('invalidFormError'),
+  published: pageState.get('published'),
+  title: pageState.get('title'),
   intl,
   locale,
   location,

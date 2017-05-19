@@ -7,7 +7,7 @@
 import { fromJS } from 'immutable';
 
 import {
-  IDEAS_LOADED, LOAD_IDEAS_REQUEST, RESET_IDEAS, SET_SHOW_IDEA_WITH_INDEX_PAGE, LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS,
+  LOAD_IDEAS_SUCCESS, LOAD_IDEAS_REQUEST, RESET_IDEAS, SET_SHOW_IDEA_WITH_INDEX_PAGE, LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS,
 } from './constants';
 import { getPageItemCountFromUrl, getPageNumberFromUrl } from '../../utils/paginationUtils';
 
@@ -37,7 +37,7 @@ function ideasIndexPageReducer(state = initialState, action) {
     case SET_SHOW_IDEA_WITH_INDEX_PAGE:
       return state
         .set('showIdeaWithIndexPage', action.payload);
-    case IDEAS_LOADED: {
+    case LOAD_IDEAS_SUCCESS: {
       const ids = action.payload.data.map((idea) => idea.id);
       const nextPageNumber = getPageNumberFromUrl(action.payload.links.next);
       const nextPageItemCount = getPageItemCountFromUrl(action.payload.links.next);
