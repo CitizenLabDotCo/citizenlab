@@ -51,6 +51,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
 
   sendIdea(isDraft) {
     const { content, shortTitleError, longTitleError, title, images, attachments, user, locale, selectedTopics, selectedAreas } = this.props;
+
     this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments, user && user.id, locale, isDraft, selectedTopics.toJS(), selectedAreas.toJS());
   }
 
@@ -162,7 +163,7 @@ const customActionCreators = {
       htmlContents[locale] = contentNotNull;
       titles[locale] = title;
 
-      return publishIdeaRequest(htmlContents, titles, images, attachments, userId, isDraft);
+      return publishIdeaRequest(htmlContents, titles, images, attachments, userId, isDraft, topics, areas);
     }
     return invalidForm();
   },
@@ -182,13 +183,11 @@ const customActionCreators = {
     return storeImageError();
   },
   storeSelectedTopics(topics) {
-    const ids = topics.map((topic) => topic.value);
-    return storeSelectedTopics(ids);
+    return storeSelectedTopics(topics);
   },
 
   storeSelectedAreas(areas) {
-    const ids = areas.map((area) => area.value);
-    return storeSelectedAreas(ids);
+    return storeSelectedAreas(areas);
   },
 };
 
@@ -198,6 +197,8 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
    */
   loadTopicsRequest,
   loadAreasRequest,
+  storeSelectedTopics,
+  storeSelectedAreas,
   /*
    * manual bindings
    * (return actions to dispatch - with custom logic)
@@ -205,7 +206,7 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
   ...customActionCreators,
 }, dispatch);
 
-const mergeProps = ({ ideasNewPageState: pageState }, dispatchProps) => ({
+const mergeProps = ({ ideasNewPageState: pageState, locale, user }, dispatchProps) => ({
   content: getFromState(pageState, 'draft', 'content'),
   longTitleError: getFromState(pageState, 'draft', 'longTitleError'),
   shortTitleError: getFromState(pageState, 'draft', 'shortTitleError'),
@@ -214,6 +215,8 @@ const mergeProps = ({ ideasNewPageState: pageState }, dispatchProps) => ({
   attachments: getFromState(pageState, 'draft', 'attachments'),
   selectedTopics: getFromState(pageState, 'topics', 'selected'),
   selectedAreas: getFromState(pageState, 'areas', 'selected'),
+  locale,
+  user,
   ...dispatchProps,
 });
 
