@@ -9,7 +9,7 @@ import { getPageItemCountFromUrl, getPageNumberFromUrl } from 'utils/paginationU
 
 import { LOAD_PROJECTS_ERROR, LOAD_PROJECTS_REQUEST, LOAD_PROJECTS_SUCCESS, RESET_PROJECTS } from './constants';
 
-const initialState = fromJS({
+export const initialState = fromJS({
   loading: false,
   loadError: null,
   nextPageNumber: null,
