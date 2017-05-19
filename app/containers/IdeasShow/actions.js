@@ -5,8 +5,8 @@
  */
 
 import {
-  LOAD_IDEA_REQUEST, LOAD_IDEA_SUCCESS, LOAD_IDEA_ERROR, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_ERROR, STORE_COMMENT_ERROR, STORE_COMMENT_REQUEST, SAVE_COMMENT_DRAFT, LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_SUCCESS, LOAD_COMMENTS_ERROR, RESET_PAGE_DATA, LOAD_IDEA_VOTES_SUCCESS,
-LOAD_IDEA_VOTES_ERROR, VOTE_IDEA_SUCCESS, VOTE_IDEA_REQUEST, DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_ERROR,
+  LOAD_IDEA_REQUEST, LOAD_IDEA_SUCCESS, LOAD_IDEA_ERROR, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_ERROR, PUBLISH_COMMENT_ERROR, PUBLISH_COMMENT_REQUEST, SAVE_COMMENT_DRAFT, LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_SUCCESS, LOAD_COMMENTS_ERROR, RESET_PAGE_DATA, LOAD_IDEA_VOTES_SUCCESS,
+LOAD_IDEA_VOTES_ERROR, VOTE_IDEA_SUCCESS, VOTE_IDEA_REQUEST, DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_ERROR, PUBLISH_COMMENT_SUCCESS,
 } from './constants';
 
 export function loadIdea(payload) {
@@ -48,7 +48,7 @@ export function loadComments(ideaId, nextCommentPageNumber, nextCommentPageItemC
   };
 }
 
-export function commentsLoaded(payload) {
+export function loadCommentsSuccess(payload) {
   return {
     type: LOAD_COMMENTS_SUCCESS,
     payload,
@@ -64,7 +64,7 @@ export function commentsLoadError(loadCommentsError) {
 
 export function publishComment(ideaId, userId, htmlContents, parentId) {
   return {
-    type: STORE_COMMENT_REQUEST,
+    type: PUBLISH_COMMENT_REQUEST,
     ideaId,
     userId,
     htmlContents,
@@ -72,9 +72,16 @@ export function publishComment(ideaId, userId, htmlContents, parentId) {
   };
 }
 
+export function publishCommentSuccess(payload) {
+  return {
+    type: PUBLISH_COMMENT_SUCCESS,
+    payload,
+  };
+}
+
 export function publishCommentError(storeCommentError) {
   return {
-    type: STORE_COMMENT_ERROR,
+    type: PUBLISH_COMMENT_ERROR,
     storeCommentError,
   };
 }
@@ -86,17 +93,17 @@ export function deleteComment(commentId) {
   };
 }
 
-export function deleteCommentSuccess(commentID) {
+export function deleteCommentSuccess(commentId) {
   return {
     type: DELETE_COMMENT_SUCCESS,
-    commentID,
+    commentId,
   };
 }
 
-export function deleteCommentError(commentID) {
+export function deleteCommentError(commentId) {
   return {
     type: DELETE_COMMENT_ERROR,
-    commentID,
+    commentId,
   };
 }
 
