@@ -5,7 +5,6 @@ class UserMailer < ApplicationMailer
   def welcome(user)
     I18n.with_locale(user.locale) do
       @user = user
-      byebug
       default_liquid_params
       @intro = render_liquid_snippet user, 'intro'
       @step1 = render_liquid_snippet user, 'step1'
