@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'info@citizenlab.co'
+  default from: 'hello@citizenlab.co'
   layout 'mailer'
 end
