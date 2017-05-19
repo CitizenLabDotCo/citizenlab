@@ -193,12 +193,14 @@ export default function createRoutes(store) {
           getComponent(nextState, cb) {
             const importModules = Promise.all([
               import('containers/AdminPage/DashboardPage'),
+              import('containers/AdminPage/DashboardPage/reducer'),
             ]);
 
             const renderRoute = loadModule(cb);
 
-            importModules.then(([component]) => {
+            importModules.then(([component, reducer]) => {
               renderRoute(component);
+              injectReducer('dashboardPage', reducer.default);
             });
 
             importModules.catch(errorLoading);
