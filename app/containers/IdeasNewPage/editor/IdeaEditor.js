@@ -5,7 +5,6 @@ import { Editor } from 'react-draft-wysiwyg';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { getFromState } from 'utils/immutables';
 import draftToHtml from 'draftjs-to-html';
 
 import { getEditorState } from './editorState';
@@ -87,7 +86,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mergeProps = ({ ideasNewPageState: pageState }, { storeDraftCopy }) => ({
-  content: getFromState(pageState, 'draft', 'content'),
+  content: pageState.getIn(['draft', 'content']),
   storeDraftCopy,
 });
 

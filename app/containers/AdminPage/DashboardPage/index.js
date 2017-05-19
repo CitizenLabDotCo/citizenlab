@@ -7,7 +7,6 @@ import { Grid, Icon, Segment, Menu } from 'semantic-ui-react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { bindActionCreators } from 'redux';
 import { preprocess } from 'utils/reactRedux';
-import { getFromState } from 'utils/immutables';
 import WatchSagas from 'containers/WatchSagas';
 import { injectTFunc } from 'containers/T/utils';
 import FormattedMessageSegment from 'components/FormattedMessageSegment';
@@ -259,22 +258,22 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
 
 const mergeProps = ({ pageState, statTopics, statAreas }, dispatchProps, { intl, tFunc }) => ({
   newUsers: {
-    loading: getFromState(pageState, 'newUsers', 'loading'),
-    loadError: getFromState(pageState, 'newUsers', 'loadError'),
-    values: getFromState(pageState, 'newUsers', 'values'),
-    labels: getFromState(pageState, 'newUsers', 'labels'),
+    loading: pageState.getIn(['newUsers', 'loading']),
+    loadError: pageState.getIn(['newUsers', 'loadError']),
+    values: pageState.getIn(['newUsers', 'values']),
+    labels: pageState.getIn(['newUsers', 'labels']),
   },
   ideasByTopic: {
-    loading: getFromState(pageState, 'ideasByTopic', 'loading'),
-    loadError: getFromState(pageState, 'ideasByTopic', 'loadError'),
-    values: getFromState(pageState, 'ideasByTopic', 'values'),
-    labels: getFromState(pageState, 'ideasByTopic', 'labels'),
+    loading: pageState.getIn(['ideasByTopic', 'loading']),
+    loadError: pageState.getIn(['ideasByTopic', 'loadError']),
+    values: pageState.getIn(['ideasByTopic', 'values']),
+    labels: pageState.getIn(['ideasByTopic', 'labels']),
   },
   ideasByArea: {
-    loading: getFromState(pageState, 'ideasByArea', 'loading'),
-    loadError: getFromState(pageState, 'ideasByArea', 'loadError'),
-    values: getFromState(pageState, 'ideasByArea', 'values'),
-    labels: getFromState(pageState, 'ideasByArea', 'labels'),
+    loading: pageState.getIn(['ideasByArea', 'loading']),
+    loadError: pageState.getIn(['ideasByArea', 'loadError']),
+    values: pageState.getIn(['ideasByArea', 'values']),
+    labels: pageState.getIn(['ideasByArea', 'labels']),
   },
   intl,
   tFunc,

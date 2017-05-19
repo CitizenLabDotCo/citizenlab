@@ -8,7 +8,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
-import { getFromState } from 'utils/immutables';
 import { Container, Label, Divider } from 'semantic-ui-react';
 import styled from 'styled-components';
 import Breadcrumbs from 'components/Breadcrumbs';
@@ -199,14 +198,14 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
 }, dispatch);
 
 const mergeProps = ({ ideasNewPageState: pageState }, dispatchProps) => ({
-  content: getFromState(pageState, 'draft', 'content'),
-  longTitleError: getFromState(pageState, 'draft', 'longTitleError'),
-  shortTitleError: getFromState(pageState, 'draft', 'shortTitleError'),
-  title: getFromState(pageState, 'draft', 'title'),
-  images: getFromState(pageState, 'draft', 'images'),
-  attachments: getFromState(pageState, 'draft', 'attachments'),
-  selectedTopics: getFromState(pageState, 'topics', 'selected'),
-  selectedAreas: getFromState(pageState, 'areas', 'selected'),
+  content: pageState.getIn(['draft', 'content']),
+  longTitleError: pageState.getIn(['draft', 'longTitleError']),
+  shortTitleError: pageState.getIn(['draft', 'shortTitleError']),
+  title: pageState.getIn(['draft', 'title']),
+  images: pageState.getIn(['draft', 'images']),
+  attachments: pageState.getIn(['draft', 'attachments']),
+  selectedTopics: pageState.getIn(['topics', 'selected']),
+  selectedAreas: pageState.getIn(['areas', 'selected']),
   ...dispatchProps,
 });
 

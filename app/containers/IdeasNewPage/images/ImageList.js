@@ -11,7 +11,6 @@ import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { getFromState } from 'utils/immutables';
 
 import Image from './Image';
 import messages from '../messages';
@@ -142,8 +141,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mergeProps = ({ ideasNewPageState: pageState }, dispatchProps, { storeImage }) => ({
-  images: getFromState(pageState, 'draft', 'images'),
-  storeImageError: getFromState(pageState, 'draft', 'storeImageError'),
+  images: pageState.getIn(['draft', 'images']),
+  storeImageError: pageState.getIn(['draft', 'storeImageError']),
   storeImage,
 });
 

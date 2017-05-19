@@ -11,7 +11,6 @@ import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { getFromState } from 'utils/immutables';
 
 import { selectSubmitIdea } from '../selectors';
 import Attachment from './Attachment';
@@ -128,8 +127,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mergeProps = ({ ideasNewPageState: pageState }, dispatchProps, { storeAttachment }) => ({
-  attachments: getFromState(pageState, 'draft', 'attachments'),
-  storeAttachmentError: getFromState(pageState, 'draft', 'storeAttachmentError'),
+  attachments: pageState.getIn(['draft', 'attachments']),
+  storeAttachmentError: pageState.getIn(['draft', 'storeAttachmentError']),
   storeAttachment,
 });
 
