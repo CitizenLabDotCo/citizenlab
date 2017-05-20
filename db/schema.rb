@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170509093623) do
+ActiveRecord::Schema.define(version: 20170520134018) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,18 @@ ActiveRecord::Schema.define(version: 20170509093623) do
     t.index ["email", "snippet", "locale"], name: "index_email_snippets_on_email_and_snippet_and_locale", using: :btree
   end
 
+  create_table "events", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "project_id"
+    t.jsonb    "title_multiloc",       default: {}
+    t.jsonb    "description_multiloc", default: {}
+    t.json     "location_multiloc",    default: {}
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.index ["project_id"], name: "index_events_on_project_id", using: :btree
+  end
+
   create_table "ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.jsonb    "title_multiloc",     default: {}
     t.jsonb    "body_multiloc",      default: {}
@@ -98,6 +110,17 @@ ActiveRecord::Schema.define(version: 20170509093623) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.index ["slug"], name: "index_pages_on_slug", using: :btree
+  end
+
+  create_table "phases", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "project_id"
+    t.jsonb    "title_multiloc",       default: {}
+    t.jsonb    "description_multiloc", default: {}
+    t.date     "start_at"
+    t.date     "end_at"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.index ["project_id"], name: "index_phases_on_project_id", using: :btree
   end
 
   create_table "projects", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -168,10 +191,12 @@ ActiveRecord::Schema.define(version: 20170509093623) do
   add_foreign_key "areas_projects", "projects"
   add_foreign_key "comments", "ideas"
   add_foreign_key "comments", "users", column: "author_id"
+  add_foreign_key "events", "projects"
   add_foreign_key "ideas", "projects"
   add_foreign_key "ideas", "users", column: "author_id"
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
+  add_foreign_key "phases", "projects"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "votes", "users"

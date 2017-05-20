@@ -29,7 +29,10 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
       end
 
-      resources :projects
+      resources :projects do
+        resources :phases, shallow: true
+        resources :events, shallow: true
+      end
 
       scope 'stats', controller: 'stats' do
         get 'users_by_time'

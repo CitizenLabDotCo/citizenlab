@@ -1,0 +1,102 @@
+require 'rails_helper'
+require 'rspec_api_documentation/dsl'
+
+resource "Events" do
+
+  before do
+    header "Content-Type", "application/json"
+    @project = create(:project)
+    @events = create_list(:event, 2, project: @project)
+  end
+
+  get "api/v1/projects/:project_id/events" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of events per page"
+    end
+    
+    let(:project_id) { @project.id }
+    example_request "List events of a project" do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 2
+    end
+  end
+
+  get "api/v1/events/:id" do
+    let(:id) { @events.first.id }
+
+    example_request "Get one event by id" do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data, :id)).to eq @events.first.id
+    end
+  end
+
+  context "when authenticated" do
+    before do
+      @user = create(:admin)
+      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      header 'Authorization', "Bearer #{token}"
+    end
+
+    post "api/v1/projects/:project_id/events" do
+      with_options scope: :event do
+        parameter :title_multiloc, "The title of the event in nultiple locales", required: true
+        parameter :description_multiloc, "The description of the event in multiple languages. Supports basic HTML.", required: false
+        parameter :location_multiloc, "The location of the event. Textual", required: false
+        parameter :start_at, "The start datetime of the event", required: true
+        parameter :end_at, "The end datetime of the event", required: true
+      end
+
+      let(:project_id) { @project.id }
+      let(:event) { build(:event) }
+      let(:title_multiloc) { event.title_multiloc }
+      let(:start_at) { event.start_at }
+      let(:end_at) { event.end_at }
+
+      example_request "Create a event in a project" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data,:attributes,:start_at)).to eq start_at.iso8601(3)
+        expect(json_response.dig(:data,:attributes,:end_at)).to eq end_at.iso8601(3)
+        expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
+      end
+
+    end
+
+    patch "api/v1/events/:id" do
+      with_options scope: :event do
+        parameter :project_id, "The id of the project this event belongs to"
+        parameter :title_multiloc, "The title of the event in nultiple locales"
+        parameter :description_multiloc, "The description of the event in multiple languages. Supports basic HTML."
+        parameter :location_multiloc, "The location of the event. Textual"
+        parameter :start_at, "The start datetime of the event"
+        parameter :end_at, "The end datetime of the event"
+      end
+
+      let(:event) { create(:event, project: @project) }
+      let(:id) { event.id }
+      let(:location_multiloc) { build(:event).location_multiloc }
+
+      example_request "Update a event" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:location_multiloc).stringify_keys).to match location_multiloc
+      end
+    end
+
+
+    delete "api/v1/events/:id" do
+      let(:event) { create(:event, project: @project) }
+      let(:id) { event.id }
+      example_request "Delete a event" do
+        expect(response_status).to eq 200
+        expect{Comment.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+  end
+
+end

@@ -15,6 +15,8 @@ describe "seedfile" do
       expect(Topic.count).to be > 0
       expect(Area.count).to be > 0
       expect(Project.count).to be > 0
+      expect(Phase.count).to be > 0
+      expect(Event.count).to be > 0
       expect(Idea.count).to be > 0
       expect(Comment.count).to be > 0
       expect(Page.count).to be 5
