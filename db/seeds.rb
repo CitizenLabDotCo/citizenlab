@@ -121,16 +121,55 @@ Apartment::Tenant.switch('localhost') do
     }
   })
 
-  Project.create({
-    title_multiloc: {
-      "en": "Renewing Westbrook parc",
-      "nl": "Westbroek park vernieuwen"
-    },
-    description_multiloc: {
-      "en" => "<p>Let's renew the parc at the city border and make it an enjoyable place for young and old.</p>",
-      "nl" => "<p>Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>"
-    }
-  })
+  4.times do
+    project = Project.create({
+      title_multiloc: {
+        "en": "Renewing Westbrook parc",
+        "nl": "Westbroek park vernieuwen"
+      },
+      description_multiloc: {
+        "en" => "<p>Let's renew the parc at the city border and make it an enjoyable place for young and old.</p>",
+        "nl" => "<p>Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>"
+      }
+    })
+
+    start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
+    rand(5).times do
+      start_at += 1.days
+      project.phases.create({
+        title_multiloc: {
+          "en": Faker::Lorem.sentence,
+          "nl": Faker::Lorem.sentence
+        },
+        description_multiloc: {
+          "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+          "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+        },
+        start_at: start_at,
+        end_at: (start_at += rand(120).days)
+      })
+    end
+    rand(5).times do
+      start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
+      project.events.create({
+        title_multiloc: {
+          "en": Faker::Lorem.sentence,
+          "nl": Faker::Lorem.sentence
+        },
+        description_multiloc: {
+          "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+          "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+        },
+        location_multiloc: {
+          "en" => Faker::Address.street_address,
+          "nl" => Faker::Address.street_address
+        },
+        start_at: start_at,
+        end_at: start_at + rand(12).hours
+      })
+    end
+  end
+
 
   30.times do 
     idea = Idea.create({
