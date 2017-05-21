@@ -50,6 +50,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
 
   sendIdea(isDraft) {
     const { content, shortTitleError, longTitleError, title, images, attachments, user, locale, selectedTopics, selectedAreas } = this.props;
+
     this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments, user && user.id, locale, isDraft, selectedTopics.toJS(), selectedAreas.toJS());
   }
 
@@ -161,7 +162,7 @@ const customActionCreators = {
       htmlContents[locale] = contentNotNull;
       titles[locale] = title;
 
-      return publishIdeaRequest(htmlContents, titles, images, attachments, userId, isDraft);
+      return publishIdeaRequest(htmlContents, titles, images, attachments, userId, isDraft, topics, areas);
     }
     return invalidForm();
   },
@@ -197,7 +198,7 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
   ...customActionCreators,
 }, dispatch);
 
-const mergeProps = ({ ideasNewPageState: pageState }, dispatchProps) => ({
+const mergeProps = ({ ideasNewPageState: pageState, locale, user }, dispatchProps) => ({
   content: pageState.getIn(['draft', 'content']),
   longTitleError: pageState.getIn(['draft', 'longTitleError']),
   shortTitleError: pageState.getIn(['draft', 'shortTitleError']),
@@ -206,6 +207,8 @@ const mergeProps = ({ ideasNewPageState: pageState }, dispatchProps) => ({
   attachments: pageState.getIn(['draft', 'attachments']),
   selectedTopics: pageState.getIn(['topics', 'selected']),
   selectedAreas: pageState.getIn(['areas', 'selected']),
+  locale,
+  user,
   ...dispatchProps,
 });
 
