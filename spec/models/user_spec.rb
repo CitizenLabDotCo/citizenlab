@@ -85,6 +85,25 @@ RSpec.describe User, type: :model do
 
   end
 
+  describe "locale" do
+    before do
+      tenant = Tenant.current
+      settings = tenant.settings
+      settings['core']['locales'] = ["en","nl","fr"]
+      tenant.update!(settings: settings)
+    end
+
+    it "is valid when it's one of the tenant locales" do
+      user = build(:user, locale: "nl")
+      expect(user).to be_valid
+    end
+
+    it "is invalid when it's not one of the tenant locales" do
+      user = build(:user, locale: "pt")
+      expect{ user.valid? }.to change{ user.errors[:locale] }
+    end
+  end
+
   describe "slug" do
 
     it "is valid when it's only containing alphanumeric and hyphens" do
