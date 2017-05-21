@@ -139,10 +139,10 @@ table th, table td {
               </tr>
               <tr>
                 <td>
-                    <span class="name">lab</span>
+                    <span class="name">project</span>
                 </td>
                 <td>
-                  <span class="description">Filter by lab</span>
+                  <span class="description">Filter by project</span>
                 </td>
               </tr>
               <tr>
@@ -173,10 +173,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?areas[]=9bb8fdbf-ccb0-4bc4-886c-b2649d273a90&amp;areas[]=dd142dc4-14ea-4f30-9373-d415336b9857</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=7bb190c4-cffe-4926-b02d-34bebb0e7a01&amp;areas[]=9a076f55-a4e8-4682-8a54-801008fd68d5</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">areas: [&quot;9bb8fdbf-ccb0-4bc4-886c-b2649d273a90&quot;, &quot;dd142dc4-14ea-4f30-9373-d415336b9857&quot;]</pre>
+            <pre class="request query_parameters highlight">areas: [&quot;7bb190c4-cffe-4926-b02d-34bebb0e7a01&quot;, &quot;9a076f55-a4e8-4682-8a54-801008fd68d5&quot;]</pre>
 
 
 
@@ -186,19 +186,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;0783173848da09f85dccd048a440f7f4&quot;
+ETag: W/&quot;a26cb24cd0f6fb3221151b3fa2429c06&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 78f1ab49-c1db-461f-8da7-0bf730618b99
-X-Runtime: 0.022063
+X-Request-Id: 8541364c-048c-484f-b5e5-6583e1a02b60
+X-Runtime: 0.032011
 Vary: Origin
-Content-Length: 1572</pre>
+Content-Length: 1544</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;24112bdf-23a6-4ee5-979a-e771fcabe7ea&quot;,
+      &quot;id&quot;: &quot;1e7f4240-4bb5-4712-ba53-a7868f0f6b36&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -209,15 +209,16 @@ Content-Length: 1572</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Mervin Beer&quot;,
+        &quot;author_name&quot;: &quot;Ariane O&#39;Kon&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-04-26T19:29:57.619Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:29:57.619Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:16.535Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:16.535Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-21T17:47:16.535Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -228,25 +229,25 @@ Content-Length: 1572</pre>
         &quot;areas&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;9bb8fdbf-ccb0-4bc4-886c-b2649d273a90&quot;,
+              &quot;id&quot;: &quot;7bb190c4-cffe-4926-b02d-34bebb0e7a01&quot;,
               &quot;type&quot;: &quot;areas&quot;
             },
             {
-              &quot;id&quot;: &quot;dd142dc4-14ea-4f30-9373-d415336b9857&quot;,
+              &quot;id&quot;: &quot;9a076f55-a4e8-4682-8a54-801008fd68d5&quot;,
               &quot;type&quot;: &quot;areas&quot;
             }
           ]
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;13915b8b-464c-44da-ad1f-b149f511a4d1&quot;,
+            &quot;id&quot;: &quot;81fa1a4b-7177-4528-8250-419ee529694e&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
-        &quot;lab&quot;: {
+        &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;c103e822-2642-40be-a5c1-0ea27dc75a68&quot;,
-            &quot;type&quot;: &quot;labs&quot;
+            &quot;id&quot;: &quot;855e4681-526c-49db-939c-e7394a180315&quot;,
+            &quot;type&quot;: &quot;projects&quot;
           }
         }
       }
@@ -254,23 +255,23 @@ Content-Length: 1572</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;13915b8b-464c-44da-ad1f-b149f511a4d1&quot;,
+      &quot;id&quot;: &quot;81fa1a4b-7177-4528-8250-419ee529694e&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Mervin&quot;,
-        &quot;last_name&quot;: &quot;Beer&quot;,
-        &quot;slug&quot;: &quot;mervin-beer&quot;,
+        &quot;first_name&quot;: &quot;Ariane&quot;,
+        &quot;last_name&quot;: &quot;O&#39;Kon&quot;,
+        &quot;slug&quot;: &quot;ariane-o-kon&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/13915b8b-464c-44da-ad1f-b149f511a4d1/small_c37bbefc5b2347b10743e124ccb7c1ca.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/13915b8b-464c-44da-ad1f-b149f511a4d1/medium_c37bbefc5b2347b10743e124ccb7c1ca.png&quot;,
-          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/13915b8b-464c-44da-ad1f-b149f511a4d1/large_c37bbefc5b2347b10743e124ccb7c1ca.png&quot;
+          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/81fa1a4b-7177-4528-8250-419ee529694e/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/81fa1a4b-7177-4528-8250-419ee529694e/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/81fa1a4b-7177-4528-8250-419ee529694e/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-04-26T19:29:57.610Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:29:57.610Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:16.521Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:16.521Z&quot;
       }
     }
   ],

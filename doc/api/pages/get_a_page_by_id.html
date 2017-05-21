@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pages API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Pages API</h1>
+
+      <div class="article">
+        <h2>Get a page by id</h2>
+        <h3>GET api/v1/pages/:id</h3>
+
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNDEsInN1YiI6IjU2YWFjZWM2LTFjZjItNDIwOS05YjdkLWEwYjZlZWJkMjMyOCJ9.qYVO4WkDFRAYQEwDvrgIGJCXjzOAWRTZIs_-e_7ifvU
+Content-Type: application/json
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/pages/6523defb-86cd-44af-a330-5453960231c3</pre>
+
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;a03ebf0bd0d1bd9f968e64b8412f3707&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 32bcec77-3875-41ce-a429-a334286fc536
+X-Runtime: 0.012610
+Vary: Origin
+Content-Length: 1353</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;6523defb-86cd-44af-a330-5453960231c3&quot;,
+    &quot;type&quot;: &quot;pages&quot;,
+    &quot;attributes&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Itaque explicabo qui accusamus et deleniti.&quot;,
+        &quot;nl&quot;: &quot;Facilis cupiditate eveniet qui et sed repellendus iusto vitae.&quot;
+      },
+      &quot;body_multiloc&quot;: {
+        &quot;en&quot;: &quot;&lt;p&gt;Corrupti nemo quia voluptatem et. Ut magni quam a perspiciatis eos. Beatae vero veniam. Pariatur quod consequatur sunt dolores. Ipsam reprehenderit in molestiae.&lt;/p&gt;&lt;p&gt;Aut nemo pariatur unde laudantium ratione reprehenderit. Totam tempore est quas. Aut eaque sint quasi.&lt;/p&gt;&lt;p&gt;Aspernatur nihil ducimus aut qui et. Temporibus sit et eum blanditiis ut quisquam. Est autem nihil enim.&lt;/p&gt;&quot;,
+        &quot;nl&quot;: &quot;&lt;p&gt;Assumenda quae aut sed fuga explicabo sint. Vero modi itaque nemo enim voluptatem. Sit quo distinctio nam laboriosam et et quasi.&lt;/p&gt;&lt;p&gt;Consequatur eaque ut quis saepe dolorem facere. Possimus unde et suscipit eum voluptatem. Labore repudiandae id excepturi. Assumenda laborum doloribus similique aspernatur.&lt;/p&gt;&lt;p&gt;Vitae rem qui et voluptas. Sunt voluptas laborum et. Fuga perspiciatis aliquid at sed commodi animi eveniet. Molestiae quis tenetur quae officiis voluptates ut enim.&lt;/p&gt;&quot;
+      },
+      &quot;slug&quot;: &quot;animi-esse&quot;,
+      &quot;created_at&quot;: &quot;2017-05-21T17:47:21.421Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-05-21T17:47:21.421Z&quot;
+    }
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

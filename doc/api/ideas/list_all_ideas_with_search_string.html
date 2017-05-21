@@ -139,10 +139,10 @@ table th, table td {
               </tr>
               <tr>
                 <td>
-                    <span class="name">lab</span>
+                    <span class="name">project</span>
                 </td>
                 <td>
-                  <span class="description">Filter by lab</span>
+                  <span class="description">Filter by project</span>
                 </td>
               </tr>
               <tr>
@@ -186,19 +186,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;2231cb3e94a583f8a3a007e5affb6a8f&quot;
+ETag: W/&quot;ef2ea5765cb7faf9767242a0c1ad1228&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 27f00f4d-face-4286-a72a-38ea8910e415
-X-Runtime: 0.031389
+X-Request-Id: dcffc4a0-33bd-4a21-a061-4a92daf52207
+X-Runtime: 0.038263
 Vary: Origin
-Content-Length: 1440</pre>
+Content-Length: 1406</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;66a4a101-813e-49fc-ac8c-ef6f3d29b265&quot;,
+      &quot;id&quot;: &quot;c2034571-668d-46c8-a72f-e528d448a95c&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -208,15 +208,16 @@ Content-Length: 1440</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Nellie Leffler&quot;,
+        &quot;author_name&quot;: &quot;Magnus Mayert&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-04-26T19:30:19.512Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:30:19.512Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:18.102Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:18.102Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-21T17:47:18.102Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -231,14 +232,14 @@ Content-Length: 1440</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;8edd2bff-736b-4f6a-b400-5baebafbe747&quot;,
+            &quot;id&quot;: &quot;03076558-81cc-455e-b267-801d61a739e2&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
-        &quot;lab&quot;: {
+        &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;b3f50bc2-4a6f-48ae-a820-fb82bc1f3363&quot;,
-            &quot;type&quot;: &quot;labs&quot;
+            &quot;id&quot;: &quot;9ff82a83-f384-41ae-a63b-64c1e42d8315&quot;,
+            &quot;type&quot;: &quot;projects&quot;
           }
         }
       }
@@ -246,23 +247,23 @@ Content-Length: 1440</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;8edd2bff-736b-4f6a-b400-5baebafbe747&quot;,
+      &quot;id&quot;: &quot;03076558-81cc-455e-b267-801d61a739e2&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Nellie&quot;,
-        &quot;last_name&quot;: &quot;Leffler&quot;,
-        &quot;slug&quot;: &quot;nellie-leffler&quot;,
+        &quot;first_name&quot;: &quot;Magnus&quot;,
+        &quot;last_name&quot;: &quot;Mayert&quot;,
+        &quot;slug&quot;: &quot;magnus-mayert&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/8edd2bff-736b-4f6a-b400-5baebafbe747/small_0cfaf91a93d1d000676ada729d32f2d4.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/8edd2bff-736b-4f6a-b400-5baebafbe747/medium_0cfaf91a93d1d000676ada729d32f2d4.png&quot;,
-          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/8edd2bff-736b-4f6a-b400-5baebafbe747/large_0cfaf91a93d1d000676ada729d32f2d4.png&quot;
+          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/03076558-81cc-455e-b267-801d61a739e2/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/03076558-81cc-455e-b267-801d61a739e2/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/03076558-81cc-455e-b267-801d61a739e2/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-04-26T19:30:19.502Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:30:19.502Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:18.090Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:18.090Z&quot;
       }
     }
   ],

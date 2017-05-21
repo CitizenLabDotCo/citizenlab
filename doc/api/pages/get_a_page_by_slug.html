@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pages API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Pages API</h1>
+
+      <div class="article">
+        <h2>Get a page by slug</h2>
+        <h3>GET api/v1/pages/by_slug/:slug</h3>
+
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNDEsInN1YiI6IjEzYWZjZGFhLTM3N2EtNGQzOC1iODQ2LTdmNWYwYjk1ODI0OSJ9.vQCG_BEJEotCV4W_FvzCzn0UMLPUK9bAp2aTYwkj4K4
+Content-Type: application/json
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/pages/by_slug/ipsa-aut</pre>
+
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;9591b11f807edca035ec27d1bb8377d0&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: c47af8dc-1072-4495-ae4a-c84a9667930f
+X-Runtime: 0.011448
+Vary: Origin
+Content-Length: 1283</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;1af6957a-2bdb-4d35-ac75-eb43c631fdd1&quot;,
+    &quot;type&quot;: &quot;pages&quot;,
+    &quot;attributes&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Sunt corporis voluptatem ex non.&quot;,
+        &quot;nl&quot;: &quot;Voluptatem impedit est sit voluptatem corporis et est ut.&quot;
+      },
+      &quot;body_multiloc&quot;: {
+        &quot;en&quot;: &quot;&lt;p&gt;Quaerat maiores quis deserunt. Dolore culpa iste reprehenderit iusto ut. In qui omnis exercitationem velit et aut.&lt;/p&gt;&lt;p&gt;Optio voluptatem deleniti et. Porro eaque voluptatibus dolorem. Quis repellat deleniti rerum repellendus facilis doloremque.&lt;/p&gt;&lt;p&gt;Id rerum et labore. Aliquid unde itaque dolorem. Sunt nihil optio aut. Quod illo veniam.&lt;/p&gt;&quot;,
+        &quot;nl&quot;: &quot;&lt;p&gt;Consequuntur ad quibusdam ut accusantium asperiores veniam porro. Et quia omnis impedit. Eius minima corporis et.&lt;/p&gt;&lt;p&gt;Incidunt cumque voluptas omnis quas adipisci minima sunt. Voluptatem enim omnis. Rerum quam vel blanditiis incidunt nisi. Rem cumque quod non consequatur nemo aut perferendis.&lt;/p&gt;&lt;p&gt;Ullam unde nam dolor occaecati voluptatem ut porro. Consequuntur excepturi sunt et odit ipsam placeat nesciunt. Asperiores minus veniam id assumenda labore doloremque.&lt;/p&gt;&quot;
+      },
+      &quot;slug&quot;: &quot;ipsa-aut&quot;,
+      &quot;created_at&quot;: &quot;2017-05-21T17:47:21.517Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-05-21T17:47:21.517Z&quot;
+    }
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

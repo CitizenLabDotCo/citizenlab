@@ -153,12 +153,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMzMjEzNzMsInN1YiI6IjNhZGM2YTc3LTE0YWMtNGZmNS1iODY2LTc2ODZhNTRhYTg3NCJ9.iCgH6Y428JfpVdCu5gedQM8gh_cpTrnf0EFcJfNpHNI
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyMzQsInN1YiI6ImE0OWU2MWY2LTMyMGQtNGUzNi05MGY0LThlMTE2MjY5NDhmOCJ9.QpzZv8NS_czrUvxbBBl1sg3JIBcjx5MN2Ds84XpV4S4
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/comments/92d7dd49-80a3-46c8-b5f1-2102362e539f</pre>
+          <pre class="request route highlight">PATCH api/v1/comments/58e90ffe-4d95-4252-8b40-eb83b18c6681</pre>
 
 
             <h4>Body</h4>
@@ -171,37 +171,37 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;8cdd9efa004907c79a547f357a924edc&quot;
+ETag: W/&quot;46fe1cb4ff421510d0b8a36b32b57034&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 5dba29dd-fe36-4b98-a079-78249e28d40c
-X-Runtime: 0.018441
+X-Request-Id: d5f8a9f3-36a8-4694-9c7a-caf797ac024f
+X-Runtime: 0.022592
 Vary: Origin
-Content-Length: 1252</pre>
+Content-Length: 1228</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;92d7dd49-80a3-46c8-b5f1-2102362e539f&quot;,
+    &quot;id&quot;: &quot;58e90ffe-4d95-4252-8b40-eb83b18c6681&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
         &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
       },
-      &quot;created_at&quot;: &quot;2017-04-26T19:29:33.316Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-04-26T19:29:33.316Z&quot;
+      &quot;created_at&quot;: &quot;2017-05-21T17:47:14.200Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-05-21T17:47:14.200Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;47c38985-571c-4caf-9934-24a4008f3ef5&quot;,
+          &quot;id&quot;: &quot;97243b07-27bf-467a-afbb-1004eba7cbcb&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;3adc6a77-14ac-4ff5-b866-7686a54aa874&quot;,
+          &quot;id&quot;: &quot;a49e61f6-320d-4e36-90f4-8e11626948f8&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
@@ -212,24 +212,28 @@ Content-Length: 1252</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;3adc6a77-14ac-4ff5-b866-7686a54aa874&quot;,
+      &quot;id&quot;: &quot;a49e61f6-320d-4e36-90f4-8e11626948f8&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Maddison&quot;,
-        &quot;last_name&quot;: &quot;Kuhn&quot;,
-        &quot;slug&quot;: &quot;maddison-kuhn&quot;,
+        &quot;first_name&quot;: &quot;Maribel&quot;,
+        &quot;last_name&quot;: &quot;Kuhic&quot;,
+        &quot;slug&quot;: &quot;maribel-kuhic&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/3adc6a77-14ac-4ff5-b866-7686a54aa874/small_95635239ee3abb08a81774e04995edf5.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/3adc6a77-14ac-4ff5-b866-7686a54aa874/medium_95635239ee3abb08a81774e04995edf5.png&quot;,
-          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/3adc6a77-14ac-4ff5-b866-7686a54aa874/large_95635239ee3abb08a81774e04995edf5.png&quot;
+          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/a49e61f6-320d-4e36-90f4-8e11626948f8/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/a49e61f6-320d-4e36-90f4-8e11626948f8/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/a49e61f6-320d-4e36-90f4-8e11626948f8/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-04-26T19:29:33.306Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:29:33.306Z&quot;,
-        &quot;email&quot;: &quot;erin_nader@huelpinka.info&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:14.185Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:14.185Z&quot;,
+        &quot;email&quot;: &quot;hattie@botsford.co&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
       }
     }
   ]

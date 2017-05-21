@@ -1,12 +1,19 @@
 class Api::V1::UsersController < ::ApplicationController
   # before_action :authenticate_user, except: [:create]
   before_action :set_user, only: [:show, :update, :destroy]
+  skip_after_action :verify_authorized, only: [:index_xlsx]
 
   def index
     @users = policy_scope(User)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
     render json: @users
+  end
+
+  def index_xlsx
+    @users = policy_scope(User).all
+    xlsx = XlsxService.new.generate_users_xlsx @users
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users.xlsx'
   end
 
   def me

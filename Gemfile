@@ -75,3 +75,5 @@ gem "liquid", "~> 4.0"
 gem "premailer-rails", "~> 1.9.6"
 gem "koala", "~> 3.0"
 gem 'groupdate', "~> 3.2.0"
+gem 'rubyzip', '~> 1.1.0'
+gem 'axlsx', '2.1.0.pre'

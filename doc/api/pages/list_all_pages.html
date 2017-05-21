@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pages API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Pages API</h1>
+
+      <div class="article">
+        <h2>List all pages</h2>
+        <h3>GET api/v1/pages</h3>
+
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNDEsInN1YiI6Ijk5ZTcyZjA5LTY5MzEtNGUwYy04ZjdmLTA1ZmU3ZmFjMDMwNiJ9.UHXo2VCBlGoD0nbl4j1icXelmLwzOuSsdNY3zxEOqqg
+Content-Type: application/json
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/pages</pre>
+
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;0b8ea5ded62af239d10defb4a7927664&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: e38e9d91-793c-474e-9e75-da467c49a2c7
+X-Runtime: 0.021706
+Vary: Origin
+Content-Length: 7152</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;d71e85d3-ef5e-4fee-bccf-4bce6f723298&quot;,
+      &quot;type&quot;: &quot;pages&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Perspiciatis veniam iusto assumenda dolor aut ea nihil.&quot;,
+          &quot;nl&quot;: &quot;Ex nobis non laborum.&quot;
+        },
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;Voluptas fuga incidunt et eveniet repellendus. Deserunt veritatis qui totam amet aut voluptate et. Delectus voluptas consectetur.&lt;/p&gt;&lt;p&gt;Soluta consequuntur totam laborum quod qui. Et cupiditate soluta totam magnam et. Ut quam minus a ex sunt. Beatae porro ut dignissimos magni blanditiis. Nihil eius qui est quo.&lt;/p&gt;&lt;p&gt;Quis quam non eligendi eum necessitatibus. Laboriosam similique sed neque illum expedita voluptatem et. Repellat sit commodi deserunt qui qui earum. Omnis hic eligendi enim quaerat ad fuga consequatur. Occaecati consequatur veritatis aliquam incidunt quo quos quia.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Quis earum quod error cupiditate. Numquam omnis rem eum in non asperiores. Ea voluptas nobis et ex qui. Dolores magnam adipisci.&lt;/p&gt;&lt;p&gt;Consequuntur quidem velit ut quo minus id. Perspiciatis fugit officia quam ex. Minima occaecati molestiae mollitia sequi debitis. Velit eveniet expedita magnam. Corporis harum eos similique quasi.&lt;/p&gt;&lt;p&gt;Odit unde fugit. Itaque id est fuga maiores. Ducimus corrupti provident quidem ut. Nobis laborum aut praesentium. Totam error nihil nobis qui est qui quis.&lt;/p&gt;&quot;
+        },
+        &quot;slug&quot;: &quot;laborum-veritatis&quot;,
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:21.211Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:21.211Z&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;69d839c2-8c93-4817-9099-a746277102fc&quot;,
+      &quot;type&quot;: &quot;pages&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Ipsum reprehenderit quo accusamus minima et architecto aliquam dolorum.&quot;,
+          &quot;nl&quot;: &quot;Voluptas vitae dolor et officia doloremque.&quot;
+        },
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;Incidunt officiis veritatis eum. Libero at eos. Vel est non ut optio.&lt;/p&gt;&lt;p&gt;Quia possimus quae ex maiores deserunt quam officiis. Dolore accusantium minus in quaerat dicta qui velit. Odio ipsam quisquam quis tenetur sed. Ut saepe excepturi.&lt;/p&gt;&lt;p&gt;Praesentium maiores architecto odit est eos a ex. Reprehenderit odit et enim repellat tempore. Laborum ut ratione. Quam esse quod iste.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Fugit vitae et ipsa nobis consequuntur. Earum laborum et labore vel harum quos. Ex aut qui. Nostrum et vel molestiae saepe expedita.&lt;/p&gt;&lt;p&gt;Repellendus ea porro exercitationem delectus voluptatem temporibus et. Et totam doloribus consectetur. Accusantium pariatur nihil enim sit cupiditate est. Quibusdam rerum placeat cumque. Quod vel sit enim voluptate a eveniet quis.&lt;/p&gt;&lt;p&gt;Nesciunt porro aut ut. Sint maiores quae non occaecati molestias omnis sed. Non voluptatem qui aut cupiditate recusandae. Officia alias aut inventore aliquam. Accusantium provident optio harum iure dolor voluptatem.&lt;/p&gt;&quot;
+        },
+        &quot;slug&quot;: &quot;enim-quia&quot;,
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:21.222Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:21.222Z&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;1239e477-1894-41cf-abc3-4efba55e9c82&quot;,
+      &quot;type&quot;: &quot;pages&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Cupiditate reiciendis consectetur accusamus ab.&quot;,
+          &quot;nl&quot;: &quot;Rem corrupti ut est rerum possimus inventore.&quot;
+        },
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;Quam hic eveniet corporis quisquam perspiciatis. Modi nemo qui quibusdam rerum est voluptates. Quibusdam ratione occaecati iure eum laboriosam. Maxime quasi sapiente sunt sed.&lt;/p&gt;&lt;p&gt;Odit illo nihil non tempora commodi. Quia molestiae porro ut labore. Ut quos magnam voluptatum.&lt;/p&gt;&lt;p&gt;Quis voluptatem tenetur harum et enim. Exercitationem esse quasi ullam et minima ex eaque. Quam quia similique dolorum. Architecto facilis neque ratione dignissimos voluptates quia amet.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Debitis quia et quia dolorum nostrum nisi delectus. Ullam porro amet voluptatem quaerat officia. Voluptates ut deleniti. Ut optio maxime quo.&lt;/p&gt;&lt;p&gt;Beatae aut est voluptas maxime. Cupiditate debitis iure vel sint. Aliquid aut culpa nobis.&lt;/p&gt;&lt;p&gt;Quia tempora sed voluptatum dolorem ad aspernatur. Fugiat et unde culpa est beatae est nam. Nostrum ipsum dolorem a in maiores accusantium.&lt;/p&gt;&quot;
+        },
+        &quot;slug&quot;: &quot;quaerat-alias&quot;,
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:21.234Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:21.234Z&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;6564fca0-4dcc-4bc7-a933-d1b4745c7eb8&quot;,
+      &quot;type&quot;: &quot;pages&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Incidunt ipsam impedit cum omnis est.&quot;,
+          &quot;nl&quot;: &quot;Ab et quaerat est necessitatibus sed.&quot;
+        },
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;Facere expedita neque sunt. Sed a omnis dicta. Non dolores quia saepe.&lt;/p&gt;&lt;p&gt;Et quasi ducimus. Sed omnis voluptatem aperiam iusto numquam quia perferendis. Fugiat blanditiis quisquam eos.&lt;/p&gt;&lt;p&gt;Quae enim aspernatur dolorem optio sed explicabo. Modi quia voluptatem minus ut qui. Aperiam nostrum voluptatum architecto. Aut voluptatem totam voluptatibus quisquam. Ut occaecati totam asperiores.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Voluptatem magnam velit optio iste. Dolor non perferendis et deserunt aperiam quis. Enim totam vitae.&lt;/p&gt;&lt;p&gt;Autem saepe velit et rerum est omnis laborum. Quo voluptatem optio animi ut. Libero quis ea qui esse voluptatem.&lt;/p&gt;&lt;p&gt;Cum id ad iure sapiente sunt illum provident. Consequatur similique dolor voluptas eligendi non consectetur totam. Animi repudiandae exercitationem nam id rerum quia. Quis repellendus reprehenderit dolorem doloribus at. Facere voluptatem delectus ut asperiores quod.&lt;/p&gt;&quot;
+        },
+        &quot;slug&quot;: &quot;dignissimos-reiciendis&quot;,
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:21.244Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:21.244Z&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;f6040f3a-76fb-4e0a-aa85-3ba5f94a97cb&quot;,
+      &quot;type&quot;: &quot;pages&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Commodi cupiditate et at eos omnis ad consectetur incidunt.&quot;,
+          &quot;nl&quot;: &quot;Et aut odit numquam debitis.&quot;
+        },
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;Reiciendis inventore ad quia eius hic. Voluptates dignissimos atque alias tempore et dolores modi. Porro sunt et veniam quia. Reprehenderit eos sit laborum et ut.&lt;/p&gt;&lt;p&gt;Numquam perferendis et omnis modi. Dolor totam ipsum non autem quo. Dolores eos labore et. Maxime et excepturi occaecati rem quisquam.&lt;/p&gt;&lt;p&gt;Dicta est et earum ullam tempore mollitia et. Aut ex nulla et. Rerum ex officiis molestiae sunt. Aut repudiandae perferendis.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Eum animi quia qui aut cupiditate ut. Nostrum et natus. Adipisci repellendus occaecati alias et nostrum quia et. Natus quia asperiores. Voluptatem quasi nihil est.&lt;/p&gt;&lt;p&gt;Eum accusantium sed qui tempore ipsa. Aliquam animi est iste eos ea voluptatem. Harum sit facilis et est. Eligendi ab quia. Voluptates dolor placeat voluptatum labore numquam temporibus.&lt;/p&gt;&lt;p&gt;Consequatur reiciendis et tenetur dolorum voluptatem recusandae sint. Eligendi blanditiis sit iusto nesciunt expedita accusamus. Vitae quam harum rerum nemo deleniti sed. Et animi a veniam.&lt;/p&gt;&quot;
+        },
+        &quot;slug&quot;: &quot;eum_in&quot;,
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:21.255Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:21.255Z&quot;
+      }
+    }
+  ],
+  &quot;links&quot;: {
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

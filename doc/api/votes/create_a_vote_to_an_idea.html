@@ -144,13 +144,13 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMzMjE0NzcsInN1YiI6ImE3NGViMWRmLTc3NGMtNDNiZi1hMGQ5LWMzOTljYmIyMzQ5ZSJ9.EhMJU2MI-zOOT7Kn2RUhx_4ED1q6kyTlXICfuY7EHSg
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNTksInN1YiI6IjY5Yzg2YTQ3LThjMzctNDAxOC04MjhmLWJjMjM0N2I5OGNkNSJ9.JG0QFGA78KxqaMLrOtTSwI6krqI7S6Pmn6Txr5212t8
+Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/ideas/1d7f5d28-6582-4f81-b052-d0bca25d71b2/votes</pre>
+          <pre class="request route highlight">POST api/v1/ideas/cb158b9e-aeb5-4cdc-815b-838c039b0fcc/votes</pre>
 
 
             <h4>Body</h4>
@@ -163,18 +163,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;29230ac29910e49df76c4fe578def5bf&quot;
+ETag: W/&quot;7b1464122b430c7a50730a053ee678b9&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: b00c35c4-292a-4d78-9608-ce259c45b553
-X-Runtime: 0.020124
+X-Request-Id: d80f7465-6c7d-451e-91f5-fc0b9fec2636
+X-Runtime: 0.018156
 Vary: Origin
-Content-Length: 1033</pre>
+Content-Length: 271</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;490dc826-9966-4087-85c6-88f931372c06&quot;,
+    &quot;id&quot;: &quot;ace625c0-3cec-4b2c-8dea-040b99aa41ae&quot;,
     &quot;type&quot;: &quot;votes&quot;,
     &quot;attributes&quot;: {
       &quot;mode&quot;: &quot;up&quot;
@@ -182,41 +182,18 @@ Content-Length: 1033</pre>
     &quot;relationships&quot;: {
       &quot;votable&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;1d7f5d28-6582-4f81-b052-d0bca25d71b2&quot;,
+          &quot;id&quot;: &quot;cb158b9e-aeb5-4cdc-815b-838c039b0fcc&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;user&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;a74eb1df-774c-43bf-a0d9-c399cbb2349e&quot;,
+          &quot;id&quot;: &quot;69c86a47-8c37-4018-828f-bc2347b98cd5&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       }
     }
-  },
-  &quot;included&quot;: [
-    {
-      &quot;id&quot;: &quot;a74eb1df-774c-43bf-a0d9-c399cbb2349e&quot;,
-      &quot;type&quot;: &quot;users&quot;,
-      &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Marielle&quot;,
-        &quot;last_name&quot;: &quot;Jenkins&quot;,
-        &quot;slug&quot;: &quot;marielle-jenkins&quot;,
-        &quot;locale&quot;: &quot;en&quot;,
-        &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/a74eb1df-774c-43bf-a0d9-c399cbb2349e/small_3324249fc6b15cb48d60902d4a86e2ba.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/a74eb1df-774c-43bf-a0d9-c399cbb2349e/medium_3324249fc6b15cb48d60902d4a86e2ba.png&quot;,
-          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/a74eb1df-774c-43bf-a0d9-c399cbb2349e/large_3324249fc6b15cb48d60902d4a86e2ba.png&quot;
-        },
-        &quot;roles&quot;: [
-
-        ],
-        &quot;created_at&quot;: &quot;2017-04-26T19:31:17.153Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:31:17.153Z&quot;,
-        &quot;email&quot;: &quot;valentine_stracke@smith.name&quot;
-      }
-    }
-  ]
+  }
 }</pre>
       </div>
     </div>

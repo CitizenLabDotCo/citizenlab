@@ -117,7 +117,8 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMzMjE0NjcsInN1YiI6IjFhN2FlOGMwLTY2ZGYtNGM3MS1iN2ZmLWMzZTkzMzAyYjk4MiJ9.4K0jtm0kLUgTSMhxwoXC05DkKv1p7CQQfadM0Q9dUJM
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNTYsInN1YiI6IjVjNWU3NTVhLTAxNDYtNDVmMy04NjdhLTA4MGE5MjZjMDI0MiJ9.VTuWiMtQcTLF3FZrgfmITmxciy2SOCQvsF63qw5qD5k
+Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
@@ -133,18 +134,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;0d13a3f584668a14cfe355e99eb1f0fe&quot;
+ETag: W/&quot;bd7ea7b7b640dbc0b74ed8df072e0d37&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: e34fa3c0-3e67-4a86-99dc-7fadf37e1873
-X-Runtime: 0.009275
+X-Request-Id: 0b5952a9-da6c-4dd2-bb89-ce703f974cea
+X-Runtime: 0.016647
 Vary: Origin
-Content-Length: 284</pre>
+Content-Length: 323</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;8ba4e85b-1e38-493d-b29a-3354f03656f0&quot;,
+    &quot;id&quot;: &quot;4f6d238b-34aa-44dc-8932-8c2584db3767&quot;,
     &quot;type&quot;: &quot;tenants&quot;,
     &quot;attributes&quot;: {
       &quot;name&quot;: &quot;test-tenant&quot;,
@@ -158,12 +159,13 @@ Content-Length: 284</pre>
             &quot;fr&quot;,
             &quot;nl&quot;
           ],
-          &quot;organization&quot;: {
+          &quot;timezone&quot;: &quot;Europe/Brussels&quot;,
+          &quot;organization_name&quot;: {
             &quot;en&quot;: &quot;Liege&quot;,
             &quot;fr&quot;: &quot;Liege&quot;,
             &quot;nl&quot;: &quot;Luik&quot;
           },
-          &quot;default_locale&quot;: &quot;en&quot;
+          &quot;organization_type&quot;: &quot;city&quot;
         }
       }
     }

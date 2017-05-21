@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Projects API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Projects API</h1>
+
+      <div class="article">
+        <h2>List all projects</h2>
+        <h3>GET api/v1/projects</h3>
+
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNDIsInN1YiI6ImY0YzlmNTg0LWM1NDctNDRhNC1hZGM5LWQ1OTQzYzM3ZmNhZCJ9.EpQCv3Vz-Cm98BXBsaU3VDok5NvE7jUy7IZ-TuWuTh8
+Content-Type: application/json
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/projects</pre>
+
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;f6eb0f5b6d059ea42fccd2d1979f02f7&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 612ec557-b770-4300-be0c-f729b8c68c5b
+X-Runtime: 0.019445
+Vary: Origin
+Content-Length: 2744</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;bee669a8-2735-4015-a9b9-fdff5f1f1f9e&quot;,
+      &quot;type&quot;: &quot;projects&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Renew West Parc&quot;,
+          &quot;nl&quot;: &quot;Westpark vernieuwen&quot;
+        },
+        &quot;description_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;Let&#39;s renew the parc at the city border and make it an enjoyable place for young and old.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.&lt;/p&gt;&quot;
+        },
+        &quot;slug&quot;: &quot;renew-west-parc&quot;,
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:22.472Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:22.472Z&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;9a19e780-4728-4eeb-9711-5c5b64164f33&quot;,
+      &quot;type&quot;: &quot;projects&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Renew West Parc&quot;,
+          &quot;nl&quot;: &quot;Westpark vernieuwen&quot;
+        },
+        &quot;description_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;Let&#39;s renew the parc at the city border and make it an enjoyable place for young and old.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.&lt;/p&gt;&quot;
+        },
+        &quot;slug&quot;: &quot;renew-west-parc-1&quot;,
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:22.483Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:22.483Z&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;76b390d2-7754-4b55-baaa-ad3635462a17&quot;,
+      &quot;type&quot;: &quot;projects&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Renew West Parc&quot;,
+          &quot;nl&quot;: &quot;Westpark vernieuwen&quot;
+        },
+        &quot;description_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;Let&#39;s renew the parc at the city border and make it an enjoyable place for young and old.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.&lt;/p&gt;&quot;
+        },
+        &quot;slug&quot;: &quot;renew-west-parc-2&quot;,
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:22.498Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:22.498Z&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;e49eb9df-cdb1-4241-8f7f-222988ec4a76&quot;,
+      &quot;type&quot;: &quot;projects&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Renew West Parc&quot;,
+          &quot;nl&quot;: &quot;Westpark vernieuwen&quot;
+        },
+        &quot;description_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;Let&#39;s renew the parc at the city border and make it an enjoyable place for young and old.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.&lt;/p&gt;&quot;
+        },
+        &quot;slug&quot;: &quot;renew-west-parc-3&quot;,
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:22.508Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:22.508Z&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;3f353f20-0d1a-4263-bfe4-46482d19cdef&quot;,
+      &quot;type&quot;: &quot;projects&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Renew West Parc&quot;,
+          &quot;nl&quot;: &quot;Westpark vernieuwen&quot;
+        },
+        &quot;description_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;Let&#39;s renew the parc at the city border and make it an enjoyable place for young and old.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.&lt;/p&gt;&quot;
+        },
+        &quot;slug&quot;: &quot;renew-west-parc-4&quot;,
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:22.521Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:22.521Z&quot;
+      }
+    }
+  ],
+  &quot;links&quot;: {
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

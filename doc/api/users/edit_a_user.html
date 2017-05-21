@@ -169,6 +169,46 @@ table th, table td {
                   <span class="description">Base64 encoded avatar image</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">user[roles]</span>
+                </td>
+                <td>
+                  <span class="description">Roles array, only allowed when admin</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">user[gender]</span>
+                </td>
+                <td>
+                  <span class="description">Either &#39;male&#39;, &#39;female&#39; or &#39;unspecified&#39;</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">user[birthyear]</span>
+                </td>
+                <td>
+                  <span class="description">The year, as an integer, the user was born</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">user[domicile]</span>
+                </td>
+                <td>
+                  <span class="description">Either an exisiting Area id or &#39;outside&#39;, to specify the user does not live in the city</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">user[education]</span>
+                </td>
+                <td>
+                  <span class="description">An integer from 0 to 8 (inclusive), corresponding to the ISCED 2011 standard</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -177,12 +217,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMzMjE0NzEsInN1YiI6IjA3NzlkYzNlLTFlYzItNDNmMy1hZGE2LTE0ZDFjNmIxZmFkOSJ9.eAZgnHb-x4hotmU0zHSXg-CsJyfwAKKeU6q3bfCx044
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNTksInN1YiI6IjEwZWNkZjRjLTlhMjYtNDdkNy05MjAwLTExZDlmYmQ1OGQ0MCJ9.JwMuDvfoI0MHLVn4Lp8Vvz6hubeBgcyYM-P2triQnIE
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PUT api/v1/users/0779dc3e-1ec2-43f3-ada6-14d1c6b1fad9</pre>
+          <pre class="request route highlight">PUT api/v1/users/10ecdf4c-9a26-47d7-9200-11d9fbd58d40</pre>
 
 
             <h4>Body</h4>
@@ -195,35 +235,39 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;9b6deb18d496ae4180d7efeae233f2b8&quot;
+ETag: W/&quot;0362abced6157122de0981398837e638&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 1b61fef8-3d22-4c35-846c-26035e1af5c9
-X-Runtime: 0.021290
+X-Request-Id: 8b3b5840-f0d7-49d5-9128-65b4d791c5fc
+X-Runtime: 0.029748
 Vary: Origin
-Content-Length: 738</pre>
+Content-Length: 732</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;0779dc3e-1ec2-43f3-ada6-14d1c6b1fad9&quot;,
+    &quot;id&quot;: &quot;10ecdf4c-9a26-47d7-9200-11d9fbd58d40&quot;,
     &quot;type&quot;: &quot;users&quot;,
     &quot;attributes&quot;: {
       &quot;first_name&quot;: &quot;Edmond&quot;,
-      &quot;last_name&quot;: &quot;Haley&quot;,
-      &quot;slug&quot;: &quot;zelda-haley&quot;,
+      &quot;last_name&quot;: &quot;Reinger&quot;,
+      &quot;slug&quot;: &quot;dayana-reinger&quot;,
       &quot;locale&quot;: &quot;en&quot;,
       &quot;avatar&quot;: {
-        &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/0779dc3e-1ec2-43f3-ada6-14d1c6b1fad9/small_a1bd8e638913ebfb73f278aa9796ee67.png&quot;,
-        &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/0779dc3e-1ec2-43f3-ada6-14d1c6b1fad9/medium_a1bd8e638913ebfb73f278aa9796ee67.png&quot;,
-        &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/0779dc3e-1ec2-43f3-ada6-14d1c6b1fad9/large_a1bd8e638913ebfb73f278aa9796ee67.png&quot;
+        &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/10ecdf4c-9a26-47d7-9200-11d9fbd58d40/small_robot.jpg&quot;,
+        &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/10ecdf4c-9a26-47d7-9200-11d9fbd58d40/medium_robot.jpg&quot;,
+        &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/10ecdf4c-9a26-47d7-9200-11d9fbd58d40/large_robot.jpg&quot;
       },
       &quot;roles&quot;: [
 
       ],
-      &quot;created_at&quot;: &quot;2017-04-26T19:31:11.119Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-04-26T19:31:11.145Z&quot;,
-      &quot;email&quot;: &quot;darron@shields.org&quot;
+      &quot;created_at&quot;: &quot;2017-05-21T17:47:38.896Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-05-21T17:47:39.049Z&quot;,
+      &quot;email&quot;: &quot;shannon.wisozk@borer.com&quot;,
+      &quot;gender&quot;: null,
+      &quot;birthyear&quot;: null,
+      &quot;domicile&quot;: null,
+      &quot;education&quot;: null
     }
   }
 }</pre>

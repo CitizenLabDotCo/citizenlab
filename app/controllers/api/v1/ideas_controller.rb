@@ -4,6 +4,8 @@ class Api::V1::IdeasController < ApplicationController
   rescue_from UnsupportedImageError, with: :send_unsupported_image_error
 
   before_action :set_idea, only: [:show, :update, :destroy]
+  skip_after_action :verify_authorized, only: [:index_xlsx]
+  
 
   def index
     @ideas = policy_scope(Idea).includes(:author, :topics, :areas, :project)
@@ -17,6 +19,16 @@ class Api::V1::IdeasController < ApplicationController
     @ideas = @ideas.search_by_all(params[:search]) if params[:search].present?
 
     render json: @ideas, include: ['author']
+  end
+
+  def index_xlsx
+    I18n.with_locale(current_user&.locale) do
+      @ideas = policy_scope(Idea)
+        .includes(:author, :topics, :areas, :project)
+      @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
+      xlsx = XlsxService.new.generate_ideas_xlsx @ideas
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
+    end
   end
 
   def show

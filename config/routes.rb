@@ -2,13 +2,18 @@ Rails.application.routes.draw do
 
   namespace :api, :defaults => {:format => :json} do
     namespace :v1 do
+
+      get 'comments/as_xlsx' => 'comments#index_xlsx'
+
       resources :ideas do
         resources :comments, shallow: true
         resources :votes, except: [:update], shallow: true, defaults: { votable: 'Idea' } do
           post :up, on: :collection
           post :down, on: :collection
         end
+        get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
+
 
       # auth
       post 'user_token' => 'user_token#create'
@@ -17,6 +22,7 @@ Rails.application.routes.draw do
 
       resources :users do
         get :me, on: :collection
+        get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
       resources :topics, only: [:index, :show]

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stats API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Stats API</h1>
+
+      <div class="article">
+        <h2>Ideas by time (published_at)</h2>
+        <h3>GET api/v1/stats/ideas_by_time</h3>
+
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="required">
+                    <span class="name">start_at</span>
+                </td>
+                <td>
+                  <span class="description">Date defining from where results should start</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="required">
+                    <span class="name">end_at</span>
+                </td>
+                <td>
+                  <span class="description">Date defining till when results should go</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">interval</span>
+                </td>
+                <td>
+                  <span class="description">Either day, week, month, year</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNTUsInN1YiI6IjYwNTVjMGYyLThmOGUtNDEzYi1hMjZmLWIzN2QwOWJkZDhmMyJ9.1uf1nb7QkLfjY7nlkLdb7rzXkw9qscqwmiFxKJOHGeQ
+Content-Type: application/json
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/stats/ideas_by_time?start_at=2017-01-01+00%3A00%3A00+%2B0100&amp;end_at=2017-12-31+23%3A59%3A59+%2B0100&amp;interval=day</pre>
+
+            <h4>Query Parameters</h4>
+            <pre class="request query_parameters highlight">start_at: 2017-01-01 00:00:00 +0100
+end_at: 2017-12-31 23:59:59 +0100
+interval: day</pre>
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;873482437a96690785121490cb17c9c1&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: e3ab6a9f-8c5e-4684-865c-1733509d6e74
+X-Runtime: 0.116816
+Vary: Origin
+Content-Length: 5477</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;2017-01-01&quot;: 0,
+  &quot;2017-01-02&quot;: 0,
+  &quot;2017-01-03&quot;: 0,
+  &quot;2017-01-04&quot;: 0,
+  &quot;2017-01-05&quot;: 0,
+  &quot;2017-01-06&quot;: 0,
+  &quot;2017-01-07&quot;: 0,
+  &quot;2017-01-08&quot;: 0,
+  &quot;2017-01-09&quot;: 0,
+  &quot;2017-01-10&quot;: 0,
+  &quot;2017-01-11&quot;: 0,
+  &quot;2017-01-12&quot;: 0,
+  &quot;2017-01-13&quot;: 0,
+  &quot;2017-01-14&quot;: 0,
+  &quot;2017-01-15&quot;: 0,
+  &quot;2017-01-16&quot;: 0,
+  &quot;2017-01-17&quot;: 0,
+  &quot;2017-01-18&quot;: 0,
+  &quot;2017-01-19&quot;: 0,
+  &quot;2017-01-20&quot;: 0,
+  &quot;2017-01-21&quot;: 0,
+  &quot;2017-01-22&quot;: 0,
+  &quot;2017-01-23&quot;: 0,
+  &quot;2017-01-24&quot;: 0,
+  &quot;2017-01-25&quot;: 0,
+  &quot;2017-01-26&quot;: 0,
+  &quot;2017-01-27&quot;: 0,
+  &quot;2017-01-28&quot;: 0,
+  &quot;2017-01-29&quot;: 0,
+  &quot;2017-01-30&quot;: 0,
+  &quot;2017-01-31&quot;: 0,
+  &quot;2017-02-01&quot;: 0,
+  &quot;2017-02-02&quot;: 0,
+  &quot;2017-02-03&quot;: 0,
+  &quot;2017-02-04&quot;: 0,
+  &quot;2017-02-05&quot;: 0,
+  &quot;2017-02-06&quot;: 0,
+  &quot;2017-02-07&quot;: 0,
+  &quot;2017-02-08&quot;: 0,
+  &quot;2017-02-09&quot;: 0,
+  &quot;2017-02-10&quot;: 0,
+  &quot;2017-02-11&quot;: 0,
+  &quot;2017-02-12&quot;: 0,
+  &quot;2017-02-13&quot;: 0,
+  &quot;2017-02-14&quot;: 0,
+  &quot;2017-02-15&quot;: 0,
+  &quot;2017-02-16&quot;: 0,
+  &quot;2017-02-17&quot;: 0,
+  &quot;2017-02-18&quot;: 0,
+  &quot;2017-02-19&quot;: 0,
+  &quot;2017-02-20&quot;: 0,
+  &quot;2017-02-21&quot;: 0,
+  &quot;2017-02-22&quot;: 0,
+  &quot;2017-02-23&quot;: 0,
+  &quot;2017-02-24&quot;: 0,
+  &quot;2017-02-25&quot;: 0,
+  &quot;2017-02-26&quot;: 0,
+  &quot;2017-02-27&quot;: 0,
+  &quot;2017-02-28&quot;: 0,
+  &quot;2017-03-01&quot;: 0,
+  &quot;2017-03-02&quot;: 0,
+  &quot;2017-03-03&quot;: 0,
+  &quot;2017-03-04&quot;: 0,
+  &quot;2017-03-05&quot;: 0,
+  &quot;2017-03-06&quot;: 0,
+  &quot;2017-03-07&quot;: 0,
+  &quot;2017-03-08&quot;: 0,
+  &quot;2017-03-09&quot;: 0,
+  &quot;2017-03-10&quot;: 0,
+  &quot;2017-03-11&quot;: 0,
+  &quot;2017-03-12&quot;: 0,
+  &quot;2017-03-13&quot;: 0,
+  &quot;2017-03-14&quot;: 0,
+  &quot;2017-03-15&quot;: 0,
+  &quot;2017-03-16&quot;: 0,
+  &quot;2017-03-17&quot;: 0,
+  &quot;2017-03-18&quot;: 0,
+  &quot;2017-03-19&quot;: 0,
+  &quot;2017-03-20&quot;: 0,
+  &quot;2017-03-21&quot;: 0,
+  &quot;2017-03-22&quot;: 0,
+  &quot;2017-03-23&quot;: 0,
+  &quot;2017-03-24&quot;: 0,
+  &quot;2017-03-25&quot;: 0,
+  &quot;2017-03-26&quot;: 0,
+  &quot;2017-03-27&quot;: 0,
+  &quot;2017-03-28&quot;: 0,
+  &quot;2017-03-29&quot;: 0,
+  &quot;2017-03-30&quot;: 0,
+  &quot;2017-03-31&quot;: 0,
+  &quot;2017-04-01&quot;: 0,
+  &quot;2017-04-02&quot;: 0,
+  &quot;2017-04-03&quot;: 0,
+  &quot;2017-04-04&quot;: 0,
+  &quot;2017-04-05&quot;: 0,
+  &quot;2017-04-06&quot;: 0,
+  &quot;2017-04-07&quot;: 0,
+  &quot;2017-04-08&quot;: 0,
+  &quot;2017-04-09&quot;: 0,
+  &quot;2017-04-10&quot;: 0,
+  &quot;2017-04-11&quot;: 0,
+  &quot;2017-04-12&quot;: 0,
+  &quot;2017-04-13&quot;: 0,
+  &quot;2017-04-14&quot;: 0,
+  &quot;2017-04-15&quot;: 0,
+  &quot;2017-04-16&quot;: 0,
+  &quot;2017-04-17&quot;: 0,
+  &quot;2017-04-18&quot;: 0,
+  &quot;2017-04-19&quot;: 0,
+  &quot;2017-04-20&quot;: 0,
+  &quot;2017-04-21&quot;: 0,
+  &quot;2017-04-22&quot;: 0,
+  &quot;2017-04-23&quot;: 0,
+  &quot;2017-04-24&quot;: 0,
+  &quot;2017-04-25&quot;: 0,
+  &quot;2017-04-26&quot;: 0,
+  &quot;2017-04-27&quot;: 0,
+  &quot;2017-04-28&quot;: 0,
+  &quot;2017-04-29&quot;: 0,
+  &quot;2017-04-30&quot;: 0,
+  &quot;2017-05-01&quot;: 0,
+  &quot;2017-05-02&quot;: 0,
+  &quot;2017-05-03&quot;: 0,
+  &quot;2017-05-04&quot;: 0,
+  &quot;2017-05-05&quot;: 0,
+  &quot;2017-05-06&quot;: 0,
+  &quot;2017-05-07&quot;: 0,
+  &quot;2017-05-08&quot;: 0,
+  &quot;2017-05-09&quot;: 0,
+  &quot;2017-05-10&quot;: 0,
+  &quot;2017-05-11&quot;: 0,
+  &quot;2017-05-12&quot;: 0,
+  &quot;2017-05-13&quot;: 0,
+  &quot;2017-05-14&quot;: 0,
+  &quot;2017-05-15&quot;: 0,
+  &quot;2017-05-16&quot;: 0,
+  &quot;2017-05-17&quot;: 0,
+  &quot;2017-05-18&quot;: 0,
+  &quot;2017-05-19&quot;: 0,
+  &quot;2017-05-20&quot;: 0,
+  &quot;2017-05-21&quot;: 11,
+  &quot;2017-05-22&quot;: 0,
+  &quot;2017-05-23&quot;: 0,
+  &quot;2017-05-24&quot;: 0,
+  &quot;2017-05-25&quot;: 0,
+  &quot;2017-05-26&quot;: 0,
+  &quot;2017-05-27&quot;: 0,
+  &quot;2017-05-28&quot;: 0,
+  &quot;2017-05-29&quot;: 0,
+  &quot;2017-05-30&quot;: 0,
+  &quot;2017-05-31&quot;: 0,
+  &quot;2017-06-01&quot;: 0,
+  &quot;2017-06-02&quot;: 0,
+  &quot;2017-06-03&quot;: 0,
+  &quot;2017-06-04&quot;: 0,
+  &quot;2017-06-05&quot;: 0,
+  &quot;2017-06-06&quot;: 0,
+  &quot;2017-06-07&quot;: 0,
+  &quot;2017-06-08&quot;: 0,
+  &quot;2017-06-09&quot;: 0,
+  &quot;2017-06-10&quot;: 0,
+  &quot;2017-06-11&quot;: 0,
+  &quot;2017-06-12&quot;: 0,
+  &quot;2017-06-13&quot;: 0,
+  &quot;2017-06-14&quot;: 0,
+  &quot;2017-06-15&quot;: 0,
+  &quot;2017-06-16&quot;: 0,
+  &quot;2017-06-17&quot;: 0,
+  &quot;2017-06-18&quot;: 0,
+  &quot;2017-06-19&quot;: 0,
+  &quot;2017-06-20&quot;: 0,
+  &quot;2017-06-21&quot;: 0,
+  &quot;2017-06-22&quot;: 0,
+  &quot;2017-06-23&quot;: 0,
+  &quot;2017-06-24&quot;: 0,
+  &quot;2017-06-25&quot;: 0,
+  &quot;2017-06-26&quot;: 0,
+  &quot;2017-06-27&quot;: 0,
+  &quot;2017-06-28&quot;: 0,
+  &quot;2017-06-29&quot;: 0,
+  &quot;2017-06-30&quot;: 0,
+  &quot;2017-07-01&quot;: 0,
+  &quot;2017-07-02&quot;: 0,
+  &quot;2017-07-03&quot;: 0,
+  &quot;2017-07-04&quot;: 0,
+  &quot;2017-07-05&quot;: 0,
+  &quot;2017-07-06&quot;: 0,
+  &quot;2017-07-07&quot;: 0,
+  &quot;2017-07-08&quot;: 0,
+  &quot;2017-07-09&quot;: 0,
+  &quot;2017-07-10&quot;: 0,
+  &quot;2017-07-11&quot;: 0,
+  &quot;2017-07-12&quot;: 0,
+  &quot;2017-07-13&quot;: 0,
+  &quot;2017-07-14&quot;: 0,
+  &quot;2017-07-15&quot;: 0,
+  &quot;2017-07-16&quot;: 0,
+  &quot;2017-07-17&quot;: 0,
+  &quot;2017-07-18&quot;: 0,
+  &quot;2017-07-19&quot;: 0,
+  &quot;2017-07-20&quot;: 0,
+  &quot;2017-07-21&quot;: 0,
+  &quot;2017-07-22&quot;: 0,
+  &quot;2017-07-23&quot;: 0,
+  &quot;2017-07-24&quot;: 0,
+  &quot;2017-07-25&quot;: 0,
+  &quot;2017-07-26&quot;: 0,
+  &quot;2017-07-27&quot;: 0,
+  &quot;2017-07-28&quot;: 0,
+  &quot;2017-07-29&quot;: 0,
+  &quot;2017-07-30&quot;: 0,
+  &quot;2017-07-31&quot;: 0,
+  &quot;2017-08-01&quot;: 0,
+  &quot;2017-08-02&quot;: 0,
+  &quot;2017-08-03&quot;: 0,
+  &quot;2017-08-04&quot;: 0,
+  &quot;2017-08-05&quot;: 0,
+  &quot;2017-08-06&quot;: 0,
+  &quot;2017-08-07&quot;: 0,
+  &quot;2017-08-08&quot;: 0,
+  &quot;2017-08-09&quot;: 0,
+  &quot;2017-08-10&quot;: 0,
+  &quot;2017-08-11&quot;: 0,
+  &quot;2017-08-12&quot;: 0,
+  &quot;2017-08-13&quot;: 0,
+  &quot;2017-08-14&quot;: 0,
+  &quot;2017-08-15&quot;: 0,
+  &quot;2017-08-16&quot;: 0,
+  &quot;2017-08-17&quot;: 0,
+  &quot;2017-08-18&quot;: 0,
+  &quot;2017-08-19&quot;: 0,
+  &quot;2017-08-20&quot;: 0,
+  &quot;2017-08-21&quot;: 0,
+  &quot;2017-08-22&quot;: 0,
+  &quot;2017-08-23&quot;: 0,
+  &quot;2017-08-24&quot;: 0,
+  &quot;2017-08-25&quot;: 0,
+  &quot;2017-08-26&quot;: 0,
+  &quot;2017-08-27&quot;: 0,
+  &quot;2017-08-28&quot;: 0,
+  &quot;2017-08-29&quot;: 0,
+  &quot;2017-08-30&quot;: 0,
+  &quot;2017-08-31&quot;: 0,
+  &quot;2017-09-01&quot;: 0,
+  &quot;2017-09-02&quot;: 0,
+  &quot;2017-09-03&quot;: 0,
+  &quot;2017-09-04&quot;: 0,
+  &quot;2017-09-05&quot;: 0,
+  &quot;2017-09-06&quot;: 0,
+  &quot;2017-09-07&quot;: 0,
+  &quot;2017-09-08&quot;: 0,
+  &quot;2017-09-09&quot;: 0,
+  &quot;2017-09-10&quot;: 0,
+  &quot;2017-09-11&quot;: 0,
+  &quot;2017-09-12&quot;: 0,
+  &quot;2017-09-13&quot;: 0,
+  &quot;2017-09-14&quot;: 0,
+  &quot;2017-09-15&quot;: 0,
+  &quot;2017-09-16&quot;: 0,
+  &quot;2017-09-17&quot;: 0,
+  &quot;2017-09-18&quot;: 0,
+  &quot;2017-09-19&quot;: 0,
+  &quot;2017-09-20&quot;: 0,
+  &quot;2017-09-21&quot;: 0,
+  &quot;2017-09-22&quot;: 0,
+  &quot;2017-09-23&quot;: 0,
+  &quot;2017-09-24&quot;: 0,
+  &quot;2017-09-25&quot;: 0,
+  &quot;2017-09-26&quot;: 0,
+  &quot;2017-09-27&quot;: 0,
+  &quot;2017-09-28&quot;: 0,
+  &quot;2017-09-29&quot;: 0,
+  &quot;2017-09-30&quot;: 0,
+  &quot;2017-10-01&quot;: 0,
+  &quot;2017-10-02&quot;: 0,
+  &quot;2017-10-03&quot;: 0,
+  &quot;2017-10-04&quot;: 0,
+  &quot;2017-10-05&quot;: 0,
+  &quot;2017-10-06&quot;: 0,
+  &quot;2017-10-07&quot;: 0,
+  &quot;2017-10-08&quot;: 0,
+  &quot;2017-10-09&quot;: 0,
+  &quot;2017-10-10&quot;: 0,
+  &quot;2017-10-11&quot;: 0,
+  &quot;2017-10-12&quot;: 0,
+  &quot;2017-10-13&quot;: 0,
+  &quot;2017-10-14&quot;: 0,
+  &quot;2017-10-15&quot;: 0,
+  &quot;2017-10-16&quot;: 0,
+  &quot;2017-10-17&quot;: 0,
+  &quot;2017-10-18&quot;: 0,
+  &quot;2017-10-19&quot;: 0,
+  &quot;2017-10-20&quot;: 0,
+  &quot;2017-10-21&quot;: 0,
+  &quot;2017-10-22&quot;: 0,
+  &quot;2017-10-23&quot;: 0,
+  &quot;2017-10-24&quot;: 0,
+  &quot;2017-10-25&quot;: 0,
+  &quot;2017-10-26&quot;: 0,
+  &quot;2017-10-27&quot;: 0,
+  &quot;2017-10-28&quot;: 0,
+  &quot;2017-10-29&quot;: 0,
+  &quot;2017-10-30&quot;: 0,
+  &quot;2017-10-31&quot;: 0,
+  &quot;2017-11-01&quot;: 0,
+  &quot;2017-11-02&quot;: 0,
+  &quot;2017-11-03&quot;: 0,
+  &quot;2017-11-04&quot;: 0,
+  &quot;2017-11-05&quot;: 0,
+  &quot;2017-11-06&quot;: 0,
+  &quot;2017-11-07&quot;: 0,
+  &quot;2017-11-08&quot;: 0,
+  &quot;2017-11-09&quot;: 0,
+  &quot;2017-11-10&quot;: 0,
+  &quot;2017-11-11&quot;: 0,
+  &quot;2017-11-12&quot;: 0,
+  &quot;2017-11-13&quot;: 0,
+  &quot;2017-11-14&quot;: 0,
+  &quot;2017-11-15&quot;: 0,
+  &quot;2017-11-16&quot;: 0,
+  &quot;2017-11-17&quot;: 0,
+  &quot;2017-11-18&quot;: 0,
+  &quot;2017-11-19&quot;: 0,
+  &quot;2017-11-20&quot;: 0,
+  &quot;2017-11-21&quot;: 0,
+  &quot;2017-11-22&quot;: 0,
+  &quot;2017-11-23&quot;: 0,
+  &quot;2017-11-24&quot;: 0,
+  &quot;2017-11-25&quot;: 0,
+  &quot;2017-11-26&quot;: 0,
+  &quot;2017-11-27&quot;: 0,
+  &quot;2017-11-28&quot;: 0,
+  &quot;2017-11-29&quot;: 0,
+  &quot;2017-11-30&quot;: 0,
+  &quot;2017-12-01&quot;: 0,
+  &quot;2017-12-02&quot;: 0,
+  &quot;2017-12-03&quot;: 0,
+  &quot;2017-12-04&quot;: 0,
+  &quot;2017-12-05&quot;: 0,
+  &quot;2017-12-06&quot;: 0,
+  &quot;2017-12-07&quot;: 0,
+  &quot;2017-12-08&quot;: 0,
+  &quot;2017-12-09&quot;: 0,
+  &quot;2017-12-10&quot;: 0,
+  &quot;2017-12-11&quot;: 0,
+  &quot;2017-12-12&quot;: 0,
+  &quot;2017-12-13&quot;: 0,
+  &quot;2017-12-14&quot;: 0,
+  &quot;2017-12-15&quot;: 0,
+  &quot;2017-12-16&quot;: 0,
+  &quot;2017-12-17&quot;: 0,
+  &quot;2017-12-18&quot;: 0,
+  &quot;2017-12-19&quot;: 0,
+  &quot;2017-12-20&quot;: 0,
+  &quot;2017-12-21&quot;: 0,
+  &quot;2017-12-22&quot;: 0,
+  &quot;2017-12-23&quot;: 0,
+  &quot;2017-12-24&quot;: 0,
+  &quot;2017-12-25&quot;: 0,
+  &quot;2017-12-26&quot;: 0,
+  &quot;2017-12-27&quot;: 0,
+  &quot;2017-12-28&quot;: 0,
+  &quot;2017-12-29&quot;: 0,
+  &quot;2017-12-30&quot;: 0,
+  &quot;2017-12-31&quot;: 0
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

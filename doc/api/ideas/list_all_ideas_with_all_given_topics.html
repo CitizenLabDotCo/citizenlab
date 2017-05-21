@@ -139,10 +139,10 @@ table th, table td {
               </tr>
               <tr>
                 <td>
-                    <span class="name">lab</span>
+                    <span class="name">project</span>
                 </td>
                 <td>
-                  <span class="description">Filter by lab</span>
+                  <span class="description">Filter by project</span>
                 </td>
               </tr>
               <tr>
@@ -173,10 +173,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=32529cd3-ffe3-4ec4-b9f3-0964dfe4edfe&amp;topics[]=e432bc84-c90f-4670-a1ba-0f30f160c0e1</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=6cda5f11-c293-4f0f-8115-23583a91ffc0&amp;topics[]=6c3dc97a-98b7-4b87-9f3c-f1811413fa5c</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;32529cd3-ffe3-4ec4-b9f3-0964dfe4edfe&quot;, &quot;e432bc84-c90f-4670-a1ba-0f30f160c0e1&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;6cda5f11-c293-4f0f-8115-23583a91ffc0&quot;, &quot;6c3dc97a-98b7-4b87-9f3c-f1811413fa5c&quot;]</pre>
 
 
 
@@ -186,19 +186,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;0a71979d624790014f45b843ebeeda06&quot;
+ETag: W/&quot;a40dcbafd3ca9f1f37009cb3d4557c89&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 5549e7f1-8529-45d8-817a-e9bf40647afc
-X-Runtime: 0.031424
+X-Request-Id: 111f8ef9-9739-4868-bbaf-17c1bb7f9353
+X-Runtime: 0.032648
 Vary: Origin
-Content-Length: 1586</pre>
+Content-Length: 1549</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;98c49ffb-6dbd-4887-bada-bffb81ff2f8a&quot;,
+      &quot;id&quot;: &quot;2b2c7b63-3077-4223-b5e7-1a94000554a3&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -209,25 +209,26 @@ Content-Length: 1586</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Howell Turcotte&quot;,
+        &quot;author_name&quot;: &quot;Harmon Jacobi&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-04-26T19:29:49.301Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:29:49.301Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:15.629Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:15.629Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-21T17:47:15.629Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;32529cd3-ffe3-4ec4-b9f3-0964dfe4edfe&quot;,
+              &quot;id&quot;: &quot;6cda5f11-c293-4f0f-8115-23583a91ffc0&quot;,
               &quot;type&quot;: &quot;topics&quot;
             },
             {
-              &quot;id&quot;: &quot;e432bc84-c90f-4670-a1ba-0f30f160c0e1&quot;,
+              &quot;id&quot;: &quot;6c3dc97a-98b7-4b87-9f3c-f1811413fa5c&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -239,14 +240,14 @@ Content-Length: 1586</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;76232ba9-6a50-4936-85ad-30518db49dbb&quot;,
+            &quot;id&quot;: &quot;d61157ca-0722-4bc4-9cdc-d4b990dbd5f8&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
-        &quot;lab&quot;: {
+        &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;39fc7511-f82b-4763-9ffe-f5d2a0a23d86&quot;,
-            &quot;type&quot;: &quot;labs&quot;
+            &quot;id&quot;: &quot;d1673062-15df-44aa-8d2d-778be68c9372&quot;,
+            &quot;type&quot;: &quot;projects&quot;
           }
         }
       }
@@ -254,23 +255,23 @@ Content-Length: 1586</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;76232ba9-6a50-4936-85ad-30518db49dbb&quot;,
+      &quot;id&quot;: &quot;d61157ca-0722-4bc4-9cdc-d4b990dbd5f8&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Howell&quot;,
-        &quot;last_name&quot;: &quot;Turcotte&quot;,
-        &quot;slug&quot;: &quot;howell-turcotte&quot;,
+        &quot;first_name&quot;: &quot;Harmon&quot;,
+        &quot;last_name&quot;: &quot;Jacobi&quot;,
+        &quot;slug&quot;: &quot;harmon-jacobi&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/76232ba9-6a50-4936-85ad-30518db49dbb/small_a6b268cbb77756864ae8734778d79d34.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/76232ba9-6a50-4936-85ad-30518db49dbb/medium_a6b268cbb77756864ae8734778d79d34.png&quot;,
-          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/76232ba9-6a50-4936-85ad-30518db49dbb/large_a6b268cbb77756864ae8734778d79d34.png&quot;
+          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/d61157ca-0722-4bc4-9cdc-d4b990dbd5f8/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/d61157ca-0722-4bc4-9cdc-d4b990dbd5f8/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/d61157ca-0722-4bc4-9cdc-d4b990dbd5f8/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-04-26T19:29:49.291Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:29:49.291Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:15.615Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:15.615Z&quot;
       }
     }
   ],

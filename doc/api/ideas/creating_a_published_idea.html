@@ -123,10 +123,10 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
-                    <span class="name">idea[lab_id]</span>
+                    <span class="name">idea[project_id]</span>
                 </td>
                 <td>
-                  <span class="description">The idea of the lab that hosts the idea</span>
+                  <span class="description">The idea of the project that hosts the idea</span>
                 </td>
               </tr>
               <tr>
@@ -166,7 +166,7 @@ table th, table td {
                     <span class="name">idea[images]</span>
                 </td>
                 <td>
-                  <span class="description">Multipart form encoded images</span>
+                  <span class="description">Array with base64 encoded images</span>
                 </td>
               </tr>
               <tr>
@@ -174,7 +174,23 @@ table th, table td {
                     <span class="name">idea[files]</span>
                 </td>
                 <td>
-                  <span class="description">Multipart form encoded files</span>
+                  <span class="description">Array with base64 encoded files</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">idea[topic_ids]</span>
+                </td>
+                <td>
+                  <span class="description">Array of ids of the associated topics</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">idea[area_ids]</span>
+                </td>
+                <td>
+                  <span class="description">Array of ids of the associated areas</span>
                 </td>
               </tr>
             </tbody>
@@ -185,7 +201,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMzMjE0MjcsInN1YiI6IjEzMGM1MzQxLTU5ZjQtNDJhNi1hMDc2LTMxMTc2YjI1ODFlYSJ9.ndoLb9z9UlJFBN8SYhKkotYuHtlsEMhhE9-YuAH99-o
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyMzksInN1YiI6IjY4NzgxZjk2LWY3MGQtNDc2OC1iNTAxLWNiZjk2N2MwYTQ2MSJ9.i4nbnNOYhwuODvbCmCFxp6SOCKuurYZ4TfApKkPZH00
 Host: example.org
 Cookie: </pre>
 
@@ -194,7 +210,7 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"idea":{"lab_id":"c25d710f-0038-4719-adeb-cbe135ad4ebd","author_id":"ceab47c1-41b6-4046-a7c4-0eba84281cc0","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"}}}</pre>
+            <pre class="request body">{"idea":{"project_id":"cbe9096a-06f3-4f72-993d-36e09685e659","author_id":"37a4e569-a8b3-4ed8-8f00-0ad7f06b36d0","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"},"topic_ids":["b06d1d76-d04a-472a-885d-26a5402d752f","33eeac57-b917-49d2-9749-52f899ead0ff"],"area_ids":["0e464219-73f7-4ece-a2db-6e136abc6d4c","ae489a8d-dfd3-4ca9-ba89-697d1b4fc8ec"]}}</pre>
 
 
             <h3>Response</h3>
@@ -203,18 +219,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;b9c48e0da61ef2c2f35913ea9d7ccdac&quot;
+ETag: W/&quot;6c78578b157e985fb3cb9aa81bc98ca6&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 323a3901-b02c-4a0d-b12a-d658729fa4e4
-X-Runtime: 0.033685
+X-Request-Id: 58f7f179-a0d1-4709-8df6-d309306ff671
+X-Runtime: 0.072536
 Vary: Origin
-Content-Length: 1453</pre>
+Content-Length: 3273</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;c2270ad6-ba03-4fed-9626-77fc78932031&quot;,
+    &quot;id&quot;: &quot;862401ea-3fa1-4514-9715-e80be2e832cf&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -225,60 +241,133 @@ Content-Length: 1453</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Giovanna Reinger&quot;,
+      &quot;author_name&quot;: &quot;Timothy Ziemann&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;images&quot;: [
 
       ],
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
-      &quot;created_at&quot;: &quot;2017-04-26T19:30:28.541Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-04-26T19:30:28.541Z&quot;
+      &quot;created_at&quot;: &quot;2017-05-21T17:47:19.212Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-05-21T17:47:19.212Z&quot;,
+      &quot;published_at&quot;: &quot;2017-05-21T17:47:19.211Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
         &quot;data&quot;: [
-
+          {
+            &quot;id&quot;: &quot;b06d1d76-d04a-472a-885d-26a5402d752f&quot;,
+            &quot;type&quot;: &quot;topics&quot;
+          },
+          {
+            &quot;id&quot;: &quot;33eeac57-b917-49d2-9749-52f899ead0ff&quot;,
+            &quot;type&quot;: &quot;topics&quot;
+          }
         ]
       },
       &quot;areas&quot;: {
         &quot;data&quot;: [
-
+          {
+            &quot;id&quot;: &quot;0e464219-73f7-4ece-a2db-6e136abc6d4c&quot;,
+            &quot;type&quot;: &quot;areas&quot;
+          },
+          {
+            &quot;id&quot;: &quot;ae489a8d-dfd3-4ca9-ba89-697d1b4fc8ec&quot;,
+            &quot;type&quot;: &quot;areas&quot;
+          }
         ]
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;ceab47c1-41b6-4046-a7c4-0eba84281cc0&quot;,
+          &quot;id&quot;: &quot;37a4e569-a8b3-4ed8-8f00-0ad7f06b36d0&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
-      &quot;lab&quot;: {
+      &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;c25d710f-0038-4719-adeb-cbe135ad4ebd&quot;,
-          &quot;type&quot;: &quot;labs&quot;
+          &quot;id&quot;: &quot;cbe9096a-06f3-4f72-993d-36e09685e659&quot;,
+          &quot;type&quot;: &quot;projects&quot;
         }
       }
     }
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;ceab47c1-41b6-4046-a7c4-0eba84281cc0&quot;,
+      &quot;id&quot;: &quot;b06d1d76-d04a-472a-885d-26a5402d752f&quot;,
+      &quot;type&quot;: &quot;topics&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Health&quot;,
+          &quot;nl&quot;: &quot;Gezondheid&quot;
+        },
+        &quot;description_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;How are the people feeling?&lt;/p&gt;&lt;p&gt;What is the expected agespan?&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Hoe voelen de mensen zich?&lt;/p&gt;&lt;p&gt;Wat is de levensverwachting?&lt;/p&gt;&quot;
+        },
+        &quot;icon&quot;: &quot;medical&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;33eeac57-b917-49d2-9749-52f899ead0ff&quot;,
+      &quot;type&quot;: &quot;topics&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Health&quot;,
+          &quot;nl&quot;: &quot;Gezondheid&quot;
+        },
+        &quot;description_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;How are the people feeling?&lt;/p&gt;&lt;p&gt;What is the expected agespan?&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Hoe voelen de mensen zich?&lt;/p&gt;&lt;p&gt;Wat is de levensverwachting?&lt;/p&gt;&quot;
+        },
+        &quot;icon&quot;: &quot;medical&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;0e464219-73f7-4ece-a2db-6e136abc6d4c&quot;,
+      &quot;type&quot;: &quot;areas&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Westside&quot;,
+          &quot;nl&quot;: &quot;Westerbuurt&quot;
+        },
+        &quot;description_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;A &lt;i&gt;calm&lt;/i&gt; space to relax, where the city meets the woods.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Een &lt;i&gt;kalme&lt;/i&gt; buurt om te relaxen, waar de stad en het bos samensmelten.&lt;/p&gt;&quot;
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;ae489a8d-dfd3-4ca9-ba89-697d1b4fc8ec&quot;,
+      &quot;type&quot;: &quot;areas&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Westside&quot;,
+          &quot;nl&quot;: &quot;Westerbuurt&quot;
+        },
+        &quot;description_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;A &lt;i&gt;calm&lt;/i&gt; space to relax, where the city meets the woods.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Een &lt;i&gt;kalme&lt;/i&gt; buurt om te relaxen, waar de stad en het bos samensmelten.&lt;/p&gt;&quot;
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;37a4e569-a8b3-4ed8-8f00-0ad7f06b36d0&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Giovanna&quot;,
-        &quot;last_name&quot;: &quot;Reinger&quot;,
-        &quot;slug&quot;: &quot;giovanna-reinger&quot;,
+        &quot;first_name&quot;: &quot;Timothy&quot;,
+        &quot;last_name&quot;: &quot;Ziemann&quot;,
+        &quot;slug&quot;: &quot;timothy-ziemann&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/ceab47c1-41b6-4046-a7c4-0eba84281cc0/small_0a4619ea5f450e4c9c5ca549777526d2.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/ceab47c1-41b6-4046-a7c4-0eba84281cc0/medium_0a4619ea5f450e4c9c5ca549777526d2.png&quot;,
-          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/ceab47c1-41b6-4046-a7c4-0eba84281cc0/large_0a4619ea5f450e4c9c5ca549777526d2.png&quot;
+          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/37a4e569-a8b3-4ed8-8f00-0ad7f06b36d0/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/37a4e569-a8b3-4ed8-8f00-0ad7f06b36d0/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/37a4e569-a8b3-4ed8-8f00-0ad7f06b36d0/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-04-26T19:30:27.956Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:30:27.956Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:19.099Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:19.099Z&quot;
       }
     }
   ]

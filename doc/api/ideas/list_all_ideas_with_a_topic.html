@@ -139,10 +139,10 @@ table th, table td {
               </tr>
               <tr>
                 <td>
-                    <span class="name">lab</span>
+                    <span class="name">project</span>
                 </td>
                 <td>
-                  <span class="description">Filter by lab</span>
+                  <span class="description">Filter by project</span>
                 </td>
               </tr>
               <tr>
@@ -173,10 +173,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=2d5f0523-866c-47b1-9b20-2c7c5a2a9298</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=6da95bb2-cfd0-46cf-8d16-a915725a5882</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;2d5f0523-866c-47b1-9b20-2c7c5a2a9298&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;6da95bb2-cfd0-46cf-8d16-a915725a5882&quot;]</pre>
 
 
 
@@ -186,19 +186,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;54ace54773de33f7f66f70eb6ec454e4&quot;
+ETag: W/&quot;f439e0fbb6bb5ec58d51f4fe772281a4&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 09b06c93-203c-4455-a204-4c6200bc621e
-X-Runtime: 0.034512
+X-Request-Id: b1956802-c8a3-4c2f-926e-23c2388b43f7
+X-Runtime: 0.036516
 Vary: Origin
-Content-Length: 1512</pre>
+Content-Length: 1487</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;6d10f33f-284b-40c1-87b4-5e60c5300456&quot;,
+      &quot;id&quot;: &quot;3cb03c7f-ce0f-46b8-b452-5e764f77adb9&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -209,21 +209,22 @@ Content-Length: 1512</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Paige Kiehn&quot;,
+        &quot;author_name&quot;: &quot;Donald Wisozk&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-04-26T19:29:45.274Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:29:45.274Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:15.296Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:15.296Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-21T17:47:15.296Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;2d5f0523-866c-47b1-9b20-2c7c5a2a9298&quot;,
+              &quot;id&quot;: &quot;6da95bb2-cfd0-46cf-8d16-a915725a5882&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -235,14 +236,14 @@ Content-Length: 1512</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;d8978e41-8d33-4184-8d16-0c141a3b9b1b&quot;,
+            &quot;id&quot;: &quot;9d664a02-3217-46cb-9db5-76518b7acbd8&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
-        &quot;lab&quot;: {
+        &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;3009f69c-479e-4358-a5d2-5190a8f094a0&quot;,
-            &quot;type&quot;: &quot;labs&quot;
+            &quot;id&quot;: &quot;a75ad614-d99c-43a3-9a52-9180499b933f&quot;,
+            &quot;type&quot;: &quot;projects&quot;
           }
         }
       }
@@ -250,23 +251,23 @@ Content-Length: 1512</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;d8978e41-8d33-4184-8d16-0c141a3b9b1b&quot;,
+      &quot;id&quot;: &quot;9d664a02-3217-46cb-9db5-76518b7acbd8&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Paige&quot;,
-        &quot;last_name&quot;: &quot;Kiehn&quot;,
-        &quot;slug&quot;: &quot;paige-kiehn&quot;,
+        &quot;first_name&quot;: &quot;Donald&quot;,
+        &quot;last_name&quot;: &quot;Wisozk&quot;,
+        &quot;slug&quot;: &quot;donald-wisozk&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/d8978e41-8d33-4184-8d16-0c141a3b9b1b/small_d46ceef6927396ea6c72846868d89c9e.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/d8978e41-8d33-4184-8d16-0c141a3b9b1b/medium_d46ceef6927396ea6c72846868d89c9e.png&quot;,
-          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/d8978e41-8d33-4184-8d16-0c141a3b9b1b/large_d46ceef6927396ea6c72846868d89c9e.png&quot;
+          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/9d664a02-3217-46cb-9db5-76518b7acbd8/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/9d664a02-3217-46cb-9db5-76518b7acbd8/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/9d664a02-3217-46cb-9db5-76518b7acbd8/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-04-26T19:29:45.263Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:29:45.263Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:15.282Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:15.282Z&quot;
       }
     }
   ],
