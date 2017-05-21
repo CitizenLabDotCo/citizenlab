@@ -58,9 +58,9 @@ export function fetchIdeas(query, queryParameters) {
   return request(`${API_PATH}/ideas${railsfriendlyQuery}`, null, null, queryParameters);
 }
 
-// export function filterIdeas(query) {
-//   return request(`${API_PATH}/ideas${railsfriendlyQuery}`);
-// }
+export function fetchProjects(queryParameters) {
+  return request(`${API_PATH}/projects`, null, null, queryParameters);
+}
 
 export function fetchTopics(queryParameters) {
   return request(`${API_PATH}/topics`, null, null, queryParameters);

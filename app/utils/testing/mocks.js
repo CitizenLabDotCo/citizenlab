@@ -35,6 +35,16 @@ export const generateResourcesPageValue = (id) => ({
   },
 });
 
+export const generateResourcesProjectValue = (id) => ({
+  data: {
+    id,
+    attributes: {},
+    relationships: {},
+  },
+  links: {},
+});
+
+
 export const generateResourcesVoteValue = (id, allUp, allDown) => {
   let mode;
   if (allUp) {
