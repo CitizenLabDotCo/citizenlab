@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Users API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Users API</h1>
+
+      <div class="article">
+        <h2>Get all users on the second page with fixed page size</h2>
+        <h3>GET api/v1/users</h3>
+
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNTcsInN1YiI6ImRlYmFlMTkwLTllNjMtNGEzNy04ZmM3LTJkZWEyZGFhNjcyZSJ9.GqwAMmuy2TibOqOFEwiAD14calofmqnhu3MKFYvugD0
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/users?page%5Bnumber%5D=2&amp;page%5Bsize%5D=2</pre>
+
+            <h4>Query Parameters</h4>
+            <pre class="request query_parameters highlight">page: {&quot;number&quot;=&gt;&quot;2&quot;, &quot;size&quot;=&gt;&quot;2&quot;}</pre>
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;743c8291e6549f2ea555270481e80e3a&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 06970459-bb1f-46ae-9a5b-d96564be96a2
+X-Runtime: 0.019064
+Vary: Origin
+Content-Length: 1875</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;205a2352-1544-43b2-9cf7-a4a3c31fc379&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Abagail&quot;,
+        &quot;last_name&quot;: &quot;Block&quot;,
+        &quot;slug&quot;: &quot;abagail-block&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/205a2352-1544-43b2-9cf7-a4a3c31fc379/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/205a2352-1544-43b2-9cf7-a4a3c31fc379/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/205a2352-1544-43b2-9cf7-a4a3c31fc379/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:37.403Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:37.403Z&quot;,
+        &quot;email&quot;: &quot;jon@balistrerilindgren.biz&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
+      }
+    },
+    {
+      &quot;id&quot;: &quot;b11f6c4d-df94-49c3-a69d-c5cee907c0ac&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Murl&quot;,
+        &quot;last_name&quot;: &quot;Cremin&quot;,
+        &quot;slug&quot;: &quot;murl-cremin&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/b11f6c4d-df94-49c3-a69d-c5cee907c0ac/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/b11f6c4d-df94-49c3-a69d-c5cee907c0ac/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/b11f6c4d-df94-49c3-a69d-c5cee907c0ac/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:37.431Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:37.431Z&quot;,
+        &quot;email&quot;: &quot;filiberto_barton@mante.org&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
+      }
+    }
+  ],
+  &quot;links&quot;: {
+    &quot;self&quot;: &quot;http://example.org/api/v1/users?page%5Bnumber%5D=2&amp;page%5Bsize%5D=2&quot;,
+    &quot;first&quot;: &quot;http://example.org/api/v1/users?page%5Bnumber%5D=1&amp;page%5Bsize%5D=2&quot;,
+    &quot;prev&quot;: &quot;http://example.org/api/v1/users?page%5Bnumber%5D=1&amp;page%5Bsize%5D=2&quot;,
+    &quot;next&quot;: &quot;http://example.org/api/v1/users?page%5Bnumber%5D=3&amp;page%5Bsize%5D=2&quot;,
+    &quot;last&quot;: &quot;http://example.org/api/v1/users?page%5Bnumber%5D=3&amp;page%5Bsize%5D=2&quot;
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,6 +1,7 @@
 class Api::V1::CommentsController < ApplicationController
 
   before_action :set_comment, only: [:show, :update, :destroy]
+  skip_after_action :verify_authorized, only: [:index_xlsx]
 
   def index
     @comments = policy_scope(Comment)
@@ -10,6 +11,17 @@ class Api::V1::CommentsController < ApplicationController
       .per(params.dig(:page, :size))
       .order(:lft)
     render json: @comments, include: ['author']
+  end
+
+  def index_xlsx
+    I18n.with_locale(current_user&.locale) do
+      @comments = policy_scope(Comment)
+        .includes(:author, :idea)
+        .order(:lft)
+      @comments = @comments.where(idea: {project_id: params[:project]}) if params[:project].present?
+      xlsx = XlsxService.new.generate_comments_xlsx @comments
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments.xlsx'
+    end
   end
 
   def show

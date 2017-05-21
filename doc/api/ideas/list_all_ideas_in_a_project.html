@@ -109,7 +109,7 @@ table th, table td {
       <h1>Ideas API</h1>
 
       <div class="article">
-        <h2>List all ideas in a lab</h2>
+        <h2>List all ideas in a project</h2>
         <h3>GET api/v1/ideas</h3>
 
           <h3>Parameters</h3>
@@ -139,10 +139,10 @@ table th, table td {
               </tr>
               <tr>
                 <td>
-                    <span class="name">lab</span>
+                    <span class="name">project</span>
                 </td>
                 <td>
-                  <span class="description">Filter by lab</span>
+                  <span class="description">Filter by project</span>
                 </td>
               </tr>
               <tr>
@@ -173,10 +173,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?lab=e8d7b794-e2b9-47f8-b01f-31848340b663</pre>
+          <pre class="request route highlight">GET api/v1/ideas?project=d6bf6a46-9104-4242-82cd-992821d812ef</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">lab: e8d7b794-e2b9-47f8-b01f-31848340b663</pre>
+            <pre class="request query_parameters highlight">project: d6bf6a46-9104-4242-82cd-992821d812ef</pre>
 
 
 
@@ -186,19 +186,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;9646c30251b74d42f12ffd8e74237986&quot;
+ETag: W/&quot;de351384cd3d02b2411bf97fc01e603c&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: d2780a16-77f6-45b3-bac0-41393ed9c132
-X-Runtime: 0.026808
+X-Request-Id: adbab3cd-6929-49f7-ae54-04ee7fec5d89
+X-Runtime: 0.028752
 Vary: Origin
-Content-Length: 1454</pre>
+Content-Length: 1426</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;c7f14979-3e93-4057-89d8-777828006a56&quot;,
+      &quot;id&quot;: &quot;fb0dc290-58a8-484a-9530-1ab481d729f1&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -209,15 +209,16 @@ Content-Length: 1454</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Isaiah Berge&quot;,
+        &quot;author_name&quot;: &quot;Denis Volkman&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-04-26T19:30:10.961Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:30:10.961Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:17.387Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:17.387Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-21T17:47:17.387Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -232,14 +233,14 @@ Content-Length: 1454</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;30821ce3-f370-40fd-93e3-1bea6ae7e58d&quot;,
+            &quot;id&quot;: &quot;e6458908-b597-4298-b187-fc391827321d&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
-        &quot;lab&quot;: {
+        &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;e8d7b794-e2b9-47f8-b01f-31848340b663&quot;,
-            &quot;type&quot;: &quot;labs&quot;
+            &quot;id&quot;: &quot;d6bf6a46-9104-4242-82cd-992821d812ef&quot;,
+            &quot;type&quot;: &quot;projects&quot;
           }
         }
       }
@@ -247,23 +248,23 @@ Content-Length: 1454</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;30821ce3-f370-40fd-93e3-1bea6ae7e58d&quot;,
+      &quot;id&quot;: &quot;e6458908-b597-4298-b187-fc391827321d&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Isaiah&quot;,
-        &quot;last_name&quot;: &quot;Berge&quot;,
-        &quot;slug&quot;: &quot;isaiah-berge&quot;,
+        &quot;first_name&quot;: &quot;Denis&quot;,
+        &quot;last_name&quot;: &quot;Volkman&quot;,
+        &quot;slug&quot;: &quot;denis-volkman&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/30821ce3-f370-40fd-93e3-1bea6ae7e58d/small_74becab2daafc36572e49d9658ad112b.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/30821ce3-f370-40fd-93e3-1bea6ae7e58d/medium_74becab2daafc36572e49d9658ad112b.png&quot;,
-          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/30821ce3-f370-40fd-93e3-1bea6ae7e58d/large_74becab2daafc36572e49d9658ad112b.png&quot;
+          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/e6458908-b597-4298-b187-fc391827321d/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/e6458908-b597-4298-b187-fc391827321d/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/e6458908-b597-4298-b187-fc391827321d/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-04-26T19:30:10.951Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:30:10.951Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:17.373Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:17.373Z&quot;
       }
     }
   ],

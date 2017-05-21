@@ -131,6 +131,14 @@ resource "Ideas" do
     end
   end
 
+  get "api/v1/ideas/as_xlsx" do
+    parameter :project, 'Filter by project', required: false
+
+    example_request "XLSX export" do
+      expect(status).to eq 200
+    end
+  end
+
 
   get "api/v1/ideas/:id" do
     let(:id) {@ideas.first.id}

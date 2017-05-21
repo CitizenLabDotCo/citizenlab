@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stats API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Stats API</h1>
+
+      <div class="article">
+        <h2>Ideas by area</h2>
+        <h3>GET api/v1/stats/ideas_by_area</h3>
+
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="required">
+                    <span class="name">start_at</span>
+                </td>
+                <td>
+                  <span class="description">Date defining from where results should start</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="required">
+                    <span class="name">end_at</span>
+                </td>
+                <td>
+                  <span class="description">Date defining till when results should go</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNTQsInN1YiI6IjgwOWVkNjAwLTIwMTQtNDI5MS05ZTBjLWY0MWQ3YjYyNTI5NCJ9.6O_xQ56vH0kNg8G0PkCF6GKzR4xnzoKU6oMwbz-_sRA
+Content-Type: application/json
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/stats/ideas_by_area?start_at=2017-01-01+00%3A00%3A00+%2B0100&amp;end_at=2017-12-31+23%3A59%3A59+%2B0100</pre>
+
+            <h4>Query Parameters</h4>
+            <pre class="request query_parameters highlight">start_at: 2017-01-01 00:00:00 +0100
+end_at: 2017-12-31 23:59:59 +0100</pre>
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;da12425b3c01faea9f9b9c506aec5521&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: b8e4f754-a8b6-4913-ad06-641e6593ae2a
+X-Runtime: 0.011408
+Vary: Origin
+Content-Length: 1380</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: {
+    &quot;27f3366b-176d-4ae1-b1bd-8b20c41e2601&quot;: 1,
+    &quot;2f48be31-3ca6-4e8a-8940-b1a73875ef31&quot;: 1,
+    &quot;418fa4b1-fa37-4fa0-926c-375c2ce8eff5&quot;: 1,
+    &quot;5f902738-5560-4384-affb-7a919ba5bfb5&quot;: 1,
+    &quot;687bf2a1-6c85-46ef-8ea0-000e16f87c07&quot;: 1,
+    &quot;92b5182d-a46d-43bd-8e61-5b38ca77b599&quot;: 1,
+    &quot;938337f2-4b20-42f2-98b5-508e6a41accc&quot;: 1,
+    &quot;c9b91f4d-af1d-4bb1-928d-df023b94de7a&quot;: 1,
+    &quot;e5c4faf1-70cd-4f78-8651-d0f130ceb071&quot;: 1,
+    &quot;ff32380a-225b-4164-a101-6316c8b0d7f1&quot;: 1
+  },
+  &quot;areas&quot;: {
+    &quot;418fa4b1-fa37-4fa0-926c-375c2ce8eff5&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Westside&quot;,
+        &quot;nl&quot;: &quot;Westerbuurt&quot;
+      }
+    },
+    &quot;e5c4faf1-70cd-4f78-8651-d0f130ceb071&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Westside&quot;,
+        &quot;nl&quot;: &quot;Westerbuurt&quot;
+      }
+    },
+    &quot;27f3366b-176d-4ae1-b1bd-8b20c41e2601&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Westside&quot;,
+        &quot;nl&quot;: &quot;Westerbuurt&quot;
+      }
+    },
+    &quot;92b5182d-a46d-43bd-8e61-5b38ca77b599&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Westside&quot;,
+        &quot;nl&quot;: &quot;Westerbuurt&quot;
+      }
+    },
+    &quot;5f902738-5560-4384-affb-7a919ba5bfb5&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Westside&quot;,
+        &quot;nl&quot;: &quot;Westerbuurt&quot;
+      }
+    },
+    &quot;2f48be31-3ca6-4e8a-8940-b1a73875ef31&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Westside&quot;,
+        &quot;nl&quot;: &quot;Westerbuurt&quot;
+      }
+    },
+    &quot;ff32380a-225b-4164-a101-6316c8b0d7f1&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Westside&quot;,
+        &quot;nl&quot;: &quot;Westerbuurt&quot;
+      }
+    },
+    &quot;687bf2a1-6c85-46ef-8ea0-000e16f87c07&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Westside&quot;,
+        &quot;nl&quot;: &quot;Westerbuurt&quot;
+      }
+    },
+    &quot;938337f2-4b20-42f2-98b5-508e6a41accc&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Westside&quot;,
+        &quot;nl&quot;: &quot;Westerbuurt&quot;
+      }
+    },
+    &quot;c9b91f4d-af1d-4bb1-928d-df023b94de7a&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Westside&quot;,
+        &quot;nl&quot;: &quot;Westerbuurt&quot;
+      }
+    }
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

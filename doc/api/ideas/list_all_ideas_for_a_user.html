@@ -139,10 +139,10 @@ table th, table td {
               </tr>
               <tr>
                 <td>
-                    <span class="name">lab</span>
+                    <span class="name">project</span>
                 </td>
                 <td>
-                  <span class="description">Filter by lab</span>
+                  <span class="description">Filter by project</span>
                 </td>
               </tr>
               <tr>
@@ -173,10 +173,10 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?author=75fe17cd-e1fd-464c-a8a6-4efb3cd3d1ed</pre>
+          <pre class="request route highlight">GET api/v1/ideas?author=89e729d4-d617-4cdc-bb14-79ddd7f66c2b</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">author: 75fe17cd-e1fd-464c-a8a6-4efb3cd3d1ed</pre>
+            <pre class="request query_parameters highlight">author: 89e729d4-d617-4cdc-bb14-79ddd7f66c2b</pre>
 
 
 
@@ -186,19 +186,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;f4ff0f3c8eefa6b14464425854bfca4e&quot;
+ETag: W/&quot;9df200f21aa3ab8b1f68ec6e1b479e23&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 7a20dc02-0977-4e1e-be1b-31392ffe7cc4
-X-Runtime: 0.026428
+X-Request-Id: 3aa169df-9153-409f-b066-0482da2abb9d
+X-Runtime: 0.031709
 Vary: Origin
-Content-Length: 1463</pre>
+Content-Length: 1438</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;a1f7650c-b93f-4548-8075-168b7e3edc93&quot;,
+      &quot;id&quot;: &quot;86456045-efff-4842-9c67-567290fa0d0a&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -209,15 +209,16 @@ Content-Length: 1463</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Gilbert Hegmann&quot;,
+        &quot;author_name&quot;: &quot;Bernadette Barton&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-04-26T19:30:14.411Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:30:14.411Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:17.729Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:17.729Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-21T17:47:17.729Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -232,14 +233,14 @@ Content-Length: 1463</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;75fe17cd-e1fd-464c-a8a6-4efb3cd3d1ed&quot;,
+            &quot;id&quot;: &quot;89e729d4-d617-4cdc-bb14-79ddd7f66c2b&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
-        &quot;lab&quot;: {
+        &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;c391620c-9a18-4949-8ee7-72b3b9bb0137&quot;,
-            &quot;type&quot;: &quot;labs&quot;
+            &quot;id&quot;: &quot;0601aed5-752d-4ded-9634-d52e8260c30d&quot;,
+            &quot;type&quot;: &quot;projects&quot;
           }
         }
       }
@@ -247,23 +248,23 @@ Content-Length: 1463</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;75fe17cd-e1fd-464c-a8a6-4efb3cd3d1ed&quot;,
+      &quot;id&quot;: &quot;89e729d4-d617-4cdc-bb14-79ddd7f66c2b&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Gilbert&quot;,
-        &quot;last_name&quot;: &quot;Hegmann&quot;,
-        &quot;slug&quot;: &quot;gilbert-hegmann&quot;,
+        &quot;first_name&quot;: &quot;Bernadette&quot;,
+        &quot;last_name&quot;: &quot;Barton&quot;,
+        &quot;slug&quot;: &quot;bernadette-barton&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/75fe17cd-e1fd-464c-a8a6-4efb3cd3d1ed/small_7a541334884a6a34e510fe1576082a27.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/75fe17cd-e1fd-464c-a8a6-4efb3cd3d1ed/medium_7a541334884a6a34e510fe1576082a27.png&quot;,
-          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/75fe17cd-e1fd-464c-a8a6-4efb3cd3d1ed/large_7a541334884a6a34e510fe1576082a27.png&quot;
+          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/89e729d4-d617-4cdc-bb14-79ddd7f66c2b/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/89e729d4-d617-4cdc-bb14-79ddd7f66c2b/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/89e729d4-d617-4cdc-bb14-79ddd7f66c2b/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-04-26T19:30:14.394Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:30:14.394Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:17.698Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:17.698Z&quot;
       }
     }
   ],

@@ -3,6 +3,9 @@ class User < ApplicationRecord
   mount_base64_uploader :avatar, AvatarUploader
 
   has_many :ideas, foreign_key: :author_id
+  has_many :comments, foreign_key: :author_id
+  has_many :votes
+
   store_accessor :demographics, :gender, :birthyear, :domicile, :education
 
   validates :email, :slug, uniqueness: true

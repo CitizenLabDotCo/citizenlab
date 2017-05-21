@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Phases API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Phases API</h1>
+
+      <div class="article">
+        <h2>Create a phase in a project</h2>
+        <h3>POST api/v1/projects/:project_id/phases</h3>
+
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="required">
+                    <span class="name">phase[title_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">The title of the phase in nultiple locales</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">phase[description_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">The description of the phase in multiple languages. Supports basic HTML.</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="required">
+                    <span class="name">phase[start_at]</span>
+                </td>
+                <td>
+                  <span class="description">The start date of the phase</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="required">
+                    <span class="name">phase[end_at]</span>
+                </td>
+                <td>
+                  <span class="description">The end date of the phase</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNDIsInN1YiI6ImQzZmM3MWRhLTMzNWYtNGZhYi05YjY2LTIyOTEzZjkzNGJhZSJ9._zJA_FKDPY256IUHcoGeRbQ7KunW0j07NWc9A5cnOvI
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">POST api/v1/projects/533e629e-4442-4225-af4b-def28acb942e/phases</pre>
+
+
+            <h4>Body</h4>
+            <pre class="request body">{"phase":{"title_multiloc":{"en":"Idea phase","nl":"Ideeën fase"},"start_at":"2017-05-01","end_at":"2017-06-30"}}</pre>
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;8a0883bdd0295f964297fe7875004139&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: dd6af16e-1ea5-4b4c-85c5-7dbd9dfb29b5
+X-Runtime: 0.017450
+Vary: Origin
+Content-Length: 395</pre>
+            <h4>Status</h4>
+            <pre class="response status">201 Created</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;01350f3c-ba6c-481a-b18b-0756db95c797&quot;,
+    &quot;type&quot;: &quot;phases&quot;,
+    &quot;attributes&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Idea phase&quot;,
+        &quot;nl&quot;: &quot;Ideeën fase&quot;
+      },
+      &quot;description_multiloc&quot;: {
+      },
+      &quot;start_at&quot;: &quot;2017-05-01&quot;,
+      &quot;end_at&quot;: &quot;2017-06-30&quot;,
+      &quot;created_at&quot;: &quot;2017-05-21T17:47:22.265Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-05-21T17:47:22.265Z&quot;
+    },
+    &quot;relationships&quot;: {
+      &quot;project&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;533e629e-4442-4225-af4b-def28acb942e&quot;,
+          &quot;type&quot;: &quot;projects&quot;
+        }
+      }
+    }
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

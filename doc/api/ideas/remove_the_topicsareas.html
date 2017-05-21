@@ -109,7 +109,7 @@ table th, table td {
       <h1>Ideas API</h1>
 
       <div class="article">
-        <h2>Updating the idea title</h2>
+        <h2>Remove the topics/areas</h2>
         <h3>PATCH api/v1/ideas/:id</h3>
 
           <h3>Parameters</h3>
@@ -123,10 +123,10 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
-                    <span class="name">idea[lab_id]</span>
+                    <span class="name">idea[project_id]</span>
                 </td>
                 <td>
-                  <span class="description">The idea of the lab that hosts the idea</span>
+                  <span class="description">The idea of the project that hosts the idea</span>
                 </td>
               </tr>
               <tr>
@@ -166,7 +166,7 @@ table th, table td {
                     <span class="name">idea[images]</span>
                 </td>
                 <td>
-                  <span class="description">Base64 encoded images</span>
+                  <span class="description">Array with base64 encoded images</span>
                 </td>
               </tr>
               <tr>
@@ -174,7 +174,23 @@ table th, table td {
                     <span class="name">idea[files]</span>
                 </td>
                 <td>
-                  <span class="description">Multipart form encoded files</span>
+                  <span class="description">Array with base64 encoded files</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">idea[topic_ids]</span>
+                </td>
+                <td>
+                  <span class="description">Array of ids of the associated topics</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">idea[area_ids]</span>
+                </td>
+                <td>
+                  <span class="description">Array of ids of the associated areas</span>
                 </td>
               </tr>
             </tbody>
@@ -185,16 +201,16 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTMzMjE0MzYsInN1YiI6IjFjODhlMTBkLTljYzgtNGYwMi1iNjUyLTExOGUyZjhmYzllNyJ9.Yf3Ry3M9hoKu4qHnrk_ssDpFi1h0flGNA53LaSgC-OQ
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNDAsInN1YiI6Ijk4MGIzNzI1LWZkMjctNGQ2MS04NWE2LTcwNTI2Yzg3NDY4ZiJ9.1d4Yur81Q9ub6FsLE2Z9VM7e4L0_N4q5T28tmVfgQoc
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/ideas/8ccd9d81-fa85-4a8b-9f12-1dfded06a167</pre>
+          <pre class="request route highlight">PATCH api/v1/ideas/d235d0f6-e55e-420d-a488-bc84c2256764</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"idea":{"title_multiloc":{"en":"Changed title"}}}</pre>
+            <pre class="request body">{"idea":{"topic_ids":[],"area_ids":[]}}</pre>
 
 
             <h3>Response</h3>
@@ -203,36 +219,38 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;791ccbe1ff598fae6a53535e3ecb357f&quot;
+ETag: W/&quot;8c0ac8434d314886fa3a7b273422aba0&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 4f144ede-4939-4efd-8685-4e5814c1a573
-X-Runtime: 0.036831
+X-Request-Id: 28e815a5-520b-46c7-9c90-78375eb45847
+X-Runtime: 0.046028
 Vary: Origin
-Content-Length: 1457</pre>
+Content-Length: 1511</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;8ccd9d81-fa85-4a8b-9f12-1dfded06a167&quot;,
+    &quot;id&quot;: &quot;d235d0f6-e55e-420d-a488-bc84c2256764&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
-        &quot;en&quot;: &quot;Changed title&quot;
+        &quot;en&quot;: &quot;Plant more trees&quot;,
+        &quot;nl&quot;: &quot;Plant meer bomen&quot;
       },
       &quot;body_multiloc&quot;: {
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Concepcion Klein&quot;,
+      &quot;author_name&quot;: &quot;Ima Schulist&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;images&quot;: [
 
       ],
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
-      &quot;created_at&quot;: &quot;2017-04-26T19:30:36.689Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-04-26T19:30:36.703Z&quot;
+      &quot;created_at&quot;: &quot;2017-05-21T17:47:20.396Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-05-21T17:47:20.396Z&quot;,
+      &quot;published_at&quot;: &quot;2017-05-21T17:47:20.396Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -247,38 +265,42 @@ Content-Length: 1457</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;1c88e10d-9cc8-4f02-b652-118e2f8fc9e7&quot;,
+          &quot;id&quot;: &quot;980b3725-fd27-4d61-85a6-70526c87468f&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
-      &quot;lab&quot;: {
+      &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;fbb8ca30-cf1c-40a6-9b8f-8c3e37da9217&quot;,
-          &quot;type&quot;: &quot;labs&quot;
+          &quot;id&quot;: &quot;d05541a9-014c-4049-b797-1561835d5a83&quot;,
+          &quot;type&quot;: &quot;projects&quot;
         }
       }
     }
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;1c88e10d-9cc8-4f02-b652-118e2f8fc9e7&quot;,
+      &quot;id&quot;: &quot;980b3725-fd27-4d61-85a6-70526c87468f&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Concepcion&quot;,
-        &quot;last_name&quot;: &quot;Klein&quot;,
-        &quot;slug&quot;: &quot;concepcion-klein&quot;,
+        &quot;first_name&quot;: &quot;Ima&quot;,
+        &quot;last_name&quot;: &quot;Schulist&quot;,
+        &quot;slug&quot;: &quot;ima-schulist&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/1c88e10d-9cc8-4f02-b652-118e2f8fc9e7/small_5b851ab66eeb9788c6008ce2f9c41ce0.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/1c88e10d-9cc8-4f02-b652-118e2f8fc9e7/medium_5b851ab66eeb9788c6008ce2f9c41ce0.png&quot;,
-          &quot;large&quot;: &quot;/uploads/8ba4e85b-1e38-493d-b29a-3354f03656f0/user/avatar/1c88e10d-9cc8-4f02-b652-118e2f8fc9e7/large_5b851ab66eeb9788c6008ce2f9c41ce0.png&quot;
+          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/980b3725-fd27-4d61-85a6-70526c87468f/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/980b3725-fd27-4d61-85a6-70526c87468f/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/980b3725-fd27-4d61-85a6-70526c87468f/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-04-26T19:30:36.672Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-04-26T19:30:36.672Z&quot;,
-        &quot;email&quot;: &quot;mable@schoenkub.name&quot;
+        &quot;created_at&quot;: &quot;2017-05-21T17:47:20.363Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-21T17:47:20.363Z&quot;,
+        &quot;email&quot;: &quot;leo_marks@deckowglover.org&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
       }
     }
   ]

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stats API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Stats API</h1>
+
+      <div class="article">
+        <h2>Ideas by topic</h2>
+        <h3>GET api/v1/stats/ideas_by_topic</h3>
+
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="required">
+                    <span class="name">start_at</span>
+                </td>
+                <td>
+                  <span class="description">Date defining from where results should start</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="required">
+                    <span class="name">end_at</span>
+                </td>
+                <td>
+                  <span class="description">Date defining till when results should go</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNTMsInN1YiI6IjU3YzljMzhiLTEwYmMtNGRkZi05NWEzLTQ4YWYyYzI3YWU1MSJ9.hy74XShKNvc4-Qd0M48ok_3dBgtSZ_EAYlnQniGIg_0
+Content-Type: application/json
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/stats/ideas_by_topic?start_at=2017-01-01+00%3A00%3A00+%2B0100&amp;end_at=2017-12-31+23%3A59%3A59+%2B0100</pre>
+
+            <h4>Query Parameters</h4>
+            <pre class="request query_parameters highlight">start_at: 2017-01-01 00:00:00 +0100
+end_at: 2017-12-31 23:59:59 +0100</pre>
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;c87b94931b581b7d65e4102d91bf7526&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 892fbd32-0f7c-4448-96e4-a5c195b0abf8
+X-Runtime: 0.010864
+Vary: Origin
+Content-Length: 1351</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: {
+    &quot;0689a4dd-e4f5-404b-a696-e9539811fe00&quot;: 1,
+    &quot;122102eb-dddc-4b7a-8482-abc8578cb1e1&quot;: 1,
+    &quot;3a517604-456c-46ac-bd8f-942cfe5350f5&quot;: 1,
+    &quot;658bb5b2-6b41-45d2-a4f7-d250a4afd87e&quot;: 1,
+    &quot;73d5a9cf-3497-4871-950b-179615c1fbeb&quot;: 1,
+    &quot;7efb6856-7f98-47b6-89b2-474358d498c4&quot;: 1,
+    &quot;949de079-f2d4-4478-bc83-bed658f0295b&quot;: 1,
+    &quot;9f2684e4-4106-43c3-87c7-d56e6c8c5305&quot;: 1,
+    &quot;e088dfe1-0fb7-4e0f-a38d-c56a8798f07f&quot;: 1,
+    &quot;f4ff7a1f-238e-4b3f-ae2c-28c987a7886f&quot;: 1
+  },
+  &quot;topics&quot;: {
+    &quot;9f2684e4-4106-43c3-87c7-d56e6c8c5305&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Health&quot;,
+        &quot;nl&quot;: &quot;Gezondheid&quot;
+      }
+    },
+    &quot;122102eb-dddc-4b7a-8482-abc8578cb1e1&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Health&quot;,
+        &quot;nl&quot;: &quot;Gezondheid&quot;
+      }
+    },
+    &quot;3a517604-456c-46ac-bd8f-942cfe5350f5&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Health&quot;,
+        &quot;nl&quot;: &quot;Gezondheid&quot;
+      }
+    },
+    &quot;73d5a9cf-3497-4871-950b-179615c1fbeb&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Health&quot;,
+        &quot;nl&quot;: &quot;Gezondheid&quot;
+      }
+    },
+    &quot;658bb5b2-6b41-45d2-a4f7-d250a4afd87e&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Health&quot;,
+        &quot;nl&quot;: &quot;Gezondheid&quot;
+      }
+    },
+    &quot;e088dfe1-0fb7-4e0f-a38d-c56a8798f07f&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Health&quot;,
+        &quot;nl&quot;: &quot;Gezondheid&quot;
+      }
+    },
+    &quot;0689a4dd-e4f5-404b-a696-e9539811fe00&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Health&quot;,
+        &quot;nl&quot;: &quot;Gezondheid&quot;
+      }
+    },
+    &quot;949de079-f2d4-4478-bc83-bed658f0295b&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Health&quot;,
+        &quot;nl&quot;: &quot;Gezondheid&quot;
+      }
+    },
+    &quot;f4ff7a1f-238e-4b3f-ae2c-28c987a7886f&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Health&quot;,
+        &quot;nl&quot;: &quot;Gezondheid&quot;
+      }
+    },
+    &quot;7efb6856-7f98-47b6-89b2-474358d498c4&quot;: {
+      &quot;title_multiloc&quot;: {
+        &quot;en&quot;: &quot;Health&quot;,
+        &quot;nl&quot;: &quot;Gezondheid&quot;
+      }
+    }
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

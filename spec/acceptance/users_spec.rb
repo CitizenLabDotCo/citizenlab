@@ -54,6 +54,12 @@ resource "Users" do
           expect(json_response[:data].size).to eq 2
         end
       end
+
+      get "api/v1/users/as_xlsx" do
+        example_request "XLSX export" do
+          expect(status).to eq 200
+        end
+      end
     end
 
     get "api/v1/users" do
