@@ -14,7 +14,7 @@ import { signInUserSuccessWatcher } from './sagas';
 
 import FacebookAuthButton from 'components/forms/facebookAuthButton';
 import RegisterButton from './components/registerButton';
-import Form from 'utils/auth/components/form';
+import Form from './components/form';
 
 export class SignInPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -34,7 +34,7 @@ export class SignInPage extends React.PureComponent { // eslint-disable-line rea
           <FormattedMessage {...messages.header} />
         </h1>
 
-        <Form newUser={false} />
+        <Form />
         <RegisterButton />
         <FacebookAuthButton type={'login'} />
 

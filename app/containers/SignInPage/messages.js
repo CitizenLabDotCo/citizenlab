@@ -10,8 +10,8 @@ export default defineMessages({
     id: 'app.containers.SignInPage.header',
     defaultMessage: 'SignInPage',
   },
-  authError: {
-    id: 'app.containers.SignInPage.authError',
+  authErrorInvalid: {
+    id: 'app.containers.SignInPage.authErrorInvalid',
     defaultMessage: 'Password o Email Invalid',
   },
 

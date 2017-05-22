@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 
 import SignInButton from './components/signInButton';
 import FacebookAuthButton from 'components/forms/facebookAuthButton';
-import Form from 'utils/auth/components/form';
+import Form from './components/form';
 
 import messages from './messages';
 
@@ -28,7 +28,7 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
           <FormattedMessage {...messages.header} />
         </h1>
 
-        <Form newUser />
+        <Form />
         <SignInButton />
         <FacebookAuthButton type={'login'} />
       </div>

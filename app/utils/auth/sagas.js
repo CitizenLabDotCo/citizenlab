@@ -37,12 +37,9 @@ export function* signInUser({ email, password, currentUser }, success, error) {
     yield call(fetchCurrentUser, { currentUser });
     if (success) yield success();
   } catch (e) {
-    if (error) yield error();
+    if (error) yield error({ auth: [{ error: 'invalid' }] });
   }
 }
-
-
-export const enterNewUser = (newUser) => newUser ? createUser : signInUser;
 
 export function* socialAuth(action) {
   const { network, locale } = action.payload;
@@ -70,8 +67,9 @@ export function* createUser(data, success, error) {
   try {
     const response = yield call(createUserRequest, data);
     yield call(signInUser, { email, password, response });
+    if (success) yield success();
   } catch (e) {
-    if (error) yield error(e);
+    if (error) yield error(e.json.errors);
   }
 }
 
