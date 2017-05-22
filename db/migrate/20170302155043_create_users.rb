@@ -8,6 +8,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.jsonb :services, default: {}
       t.jsonb :demographics, default: {}
       t.jsonb :roles, default: []
+      t.string :reset_password_token
 
       t.timestamps
     end
