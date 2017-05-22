@@ -13,9 +13,8 @@ import createReducer from './reducers';
 import { saveState } from './persistedData';
 
 
-const sagamonitor = createSagaMonitor();
-export { sagamonitor };
-const sagaMiddleware = createSagaMiddleware({ sagaMonitor: sagamonitor });
+export const sagamonitor = createSagaMonitor();
+export const sagaMiddleware = createSagaMiddleware({ sagaMonitor: sagamonitor });
 
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares

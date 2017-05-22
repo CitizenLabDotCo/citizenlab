@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import { STORE_JWT, LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from './constants';
+import { STORE_JWT, LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL, SIGNIN_USER_ERROR } from './constants';
 
 const initialState = fromJS({});
 

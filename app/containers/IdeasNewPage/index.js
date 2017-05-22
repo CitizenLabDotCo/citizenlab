@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { store } from 'app';
-import OverlayChildren from 'utils/containers/overlayChildren';
+// import OverlayChildren from 'utils/containers/overlayChildren';
 import { getAsyncInjectors } from 'utils/asyncInjectors';
 
 import PageView from './pageView';
@@ -36,7 +36,7 @@ class IdeasNewPage extends React.Component {
   toChildView = () => this.setState({ mainView: false })
 
   render() {
-    let children = null;
+//    let children = null;
     if (this.state.children) {
       children = React.createElement(this.state.children);
     }

@@ -35,23 +35,3 @@ export function createEmailUserError(payload) {
   };
 }
 
-export function createSocialUserRequest(network, locale) {
-  return {
-    type: CREATE_SOCIAL_USER_REQUEST,
-    payload: { network, locale },
-  };
-}
-
-export function createSocialUserSuccess(network, payload) {
-  return {
-    type: CREATE_SOCIAL_USER_SUCCESS,
-    payload,
-  };
-}
-
-export function createSocialUserError(network, error) {
-  return {
-    type: CREATE_SOCIAL_USER_ERROR,
-    payload: { network, error },
-  };
-}

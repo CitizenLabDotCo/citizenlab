@@ -13,7 +13,8 @@ import usersNewPageReducer from 'containers/UsersNewPage/reducer';
 import searchWidgetReducer from 'containers/SearchWidget/reducer';
 import ideasShowReducer from 'containers/IdeasShow/reducer';
 import resourcesReducer from 'utils/resources/reducer';
-import goBackLink from 'utils/store/reducer';
+import { utilsReducer, errorsReducer} from 'utils/store/reducer';
+
 import authReducer from 'utils/auth/reducer';
 import tenantReducer from 'utils/tenant/reducer';
 import { persistedDataReducer } from './persistedData';
@@ -53,7 +54,8 @@ function routeReducer(state = routeInitialState, action) {
 
 export default function createReducer(asyncReducers) {
   return combineReducers({
-    goBackLink: goBackLink,
+    goBackLink: utilsReducer,
+    errors: errorsReducer,
     route: routeReducer,
     auth: authReducer,
     tenant: tenantReducer,

@@ -10,36 +10,25 @@ export default defineMessages({
     id: 'app.containers.SignInPage.header',
     defaultMessage: 'SignInPage',
   },
-  labelPassword: {
-    id: 'app.containers.UsersShowPage.labelPassword',
-    defaultMessage: 'Password',
+  authError: {
+    id: 'app.containers.SignInPage.authError',
+    defaultMessage: 'Password o Email Invalid',
   },
-  labelEmail: {
-    id: 'app.containers.UsersShowPage.labelEmail',
-    defaultMessage: 'Email',
-  },
-  placeholderPassword: {
-    id: 'app.containers.UsersShowPage.placeholderPassword',
-    defaultMessage: 'Your Password...',
-  },
-  placeholderEmail: {
-    id: 'app.containers.UsersShowPage.placeholderEmail',
-    defaultMessage: 'Your Email...',
-  },
+
   buttonSignIn: {
-    id: 'app.containers.UsersShowPage.buttonSignIn',
+    id: 'app.containers.SignInPage.buttonSignIn',
     defaultMessage: 'Sign In',
   },
   noAccountYet: {
-    id: 'app.containers.UsersShowPage.noAccountYet',
+    id: 'app.containers.SignInPage.noAccountYet',
     defaultMessage: 'New here?',
   },
   signUpNow: {
-    id: 'app.containers.UsersShowPage.signUpNow',
+    id: 'app.containers.SignInPage.signUpNow',
     defaultMessage: 'Sign Up Now!',
   },
   facebookSignIn: {
-    id: 'app.containers.UsersShowPage.facebookSignIn',
+    id: 'app.containers.SignInPage.facebookSignIn',
     defaultMessage: 'Sign In With Facebook',
   },
 });

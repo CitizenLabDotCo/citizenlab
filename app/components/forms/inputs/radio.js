@@ -6,7 +6,7 @@ import { injectIntl, intlShape } from 'react-intl';
 import { appenDableName } from './utils';
 
 import RadioField from './radioField';
-import messages from '../../messages';
+import messages from './messages';
 
 class RadioInput extends React.Component {
   constructor(props) {

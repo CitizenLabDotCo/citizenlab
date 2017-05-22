@@ -18,44 +18,5 @@ import {
   createSocialUserError,
 } from './actions';
 
-export function* createEmailUser(action) {
-  try {
-    const response = yield call(createUser, action.payload);
-    yield put(signInUserRequest(action.payload.email, action.payload.password, response));
-    yield put(createEmailUserSuccess(response));
-    yield select((state) => state.goBackLink.getIn(['goBackLink', 'code']));
-    yield put(push('/register/complete'));
-  } catch (e) {
-    yield put(createEmailUserError(e));
-  }
-}
 
-export function* createSocialUser(action) {
-  const { network, locale } = action.payload;
-  try {
-    const appId = yield select(makeSelectSetting([`${network}_login`, 'app_id']));
-    hello.init({ [network]: appId });
-    const h = hello(network);
-    const data = yield call([h, h.login], [{ scope: 'email' }]);
-    yield call(socialRegister, network, data.authResponse.access_token, locale);
 
-    // Yay! Registered! Now let's sign in :)
-    const jwtResponse = yield call(socialLogin, network, data.authResponse.access_token);
-    yield put(storeJwt(jwtResponse.jwt));
-    setJwt(jwtResponse.jwt);
-    yield put(loadCurrentUserRequest());
-    yield put(createSocialUserSuccess(network));
-  } catch (err) {
-    yield put(createSocialUserError(network, err));
-  }
-}
-
-function* watchEmail() {
-  yield takeLatest(CREATE_EMAIL_USER_REQUEST, createEmailUser);
-}
-
-function* watchSocial() {
-  yield takeLatest(CREATE_SOCIAL_USER_REQUEST, createSocialUser);
-}
-
-export default { watchEmail, watchSocial };

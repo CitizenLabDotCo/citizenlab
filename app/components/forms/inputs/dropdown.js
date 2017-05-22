@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown, Form } from 'semantic-ui-react';
 import { injectIntl, intlShape } from 'react-intl';
-import messages from '../../messages';
-
+import messages from './messages';
 import { appenDableName } from './utils';
 
 class DropdownInput extends React.PureComponent {

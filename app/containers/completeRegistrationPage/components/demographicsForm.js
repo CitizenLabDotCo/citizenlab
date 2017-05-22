@@ -14,8 +14,8 @@ import { selectResourcesDomain } from 'utils/resources/selectors';
 
 import messages from '../messages';
 
-import RadioInput from './demographicsForm/radioInput';
-import DropdownInput from './demographicsForm/dropdownInput';
+import RadioInput from 'components/forms/inputs/radio';
+import DropdownInput from 'components/forms/inputs/dropdown';
 
 import { updateCurrentUserRequest, completeUserRegistration } from '../actions';
 

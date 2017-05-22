@@ -20,7 +20,7 @@ import {
 
 import messages from './messages';
 import { storeAvatar, storeAvatarError, updateCurrentUser, updateLocale } from './actions';
-import ProfileForm from './ProfileForm';
+// import ProfileForm from './ProfileForm';
 import { loadCurrentUser } from '../App/actions';
 import { watchLoadCurrentUser, watchStoreAvatar, watchStoreCurrentUser } from './sagas';
 
@@ -37,7 +37,9 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
   }
 
   render() {
-    const { loading, loadError, storeError, processing, stored, userData, onAvatarUpload, avatarUploadError, onProfileFormSubmit, onLocaleChangeClick } = this.props;
+    const { loading, loadError, storeError, processing, stored,
+      // userData, onAvatarUpload, avatarUploadError, onProfileFormSubmit, onLocaleChangeClick
+    } = this.props;
 
     return (
       <ProfileDiv>
@@ -57,13 +59,13 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
         {processing && <FormattedMessage {...messages.processing} />}
         {stored && <FormattedMessage {...messages.stored} />}
 
-        <ProfileForm
+        {/*<ProfileForm
           onLocaleChangeClick={onLocaleChangeClick}
           userData={userData}
           avatarUpload={onAvatarUpload}
           onFormSubmit={onProfileFormSubmit}
           avatarUploadError={avatarUploadError}
-        />
+        />*/}
       </ProfileDiv>
     );
   }
