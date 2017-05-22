@@ -4,7 +4,7 @@
 // import { PagesShowPage } from '../index';
 
 describe('<PagesShowPage />', () => {
-  it('Expect to have unit tests specified', () => {
+  it('should have meaningful tests in the future', () => {
     expect(true).toEqual(true);
   });
 });

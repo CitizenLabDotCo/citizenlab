@@ -7,7 +7,7 @@
 import { fromJS } from 'immutable';
 import { LOAD_PAGE_ERROR, LOAD_PAGE_REQUEST, LOAD_PAGE_SUCCESS } from './constants';
 
-const initialState = fromJS({
+export const initialState = fromJS({
   loading: false,
   loadError: null,
   page: null,
