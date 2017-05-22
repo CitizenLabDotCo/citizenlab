@@ -1,25 +1,20 @@
 import { createSelector } from 'reselect';
+import { selectResourcesDomain } from 'utils/resources/selectors';
+import { fromJS } from 'immutable';
 
-/**
- * Direct selector to the pagesShowPage state domain
- */
-const selectPagesShowPageDomain = () => (state) => state.get('pagesShowPage');
+const selectPagesShowPage = (state) => state.get('pagesShowPage');
 
-/**
- * Other specific selectors
- */
-
-
-/**
- * Default selector used by PagesShowPage
- */
-
-const makeSelectPagesShowPage = () => createSelector(
-  selectPagesShowPageDomain(),
-  (substate) => substate.toJS()
+const makeSelectPage = () => createSelector(
+  selectPagesShowPage,
+  selectResourcesDomain(),
+  (pageState, resources) => {
+    const id = pageState.get('page', fromJS(null));
+    const pages = resources.get('pages', fromJS({}));
+    return pages && pages.get(id);
+  }
 );
 
-export default makeSelectPagesShowPage;
+export default selectPagesShowPage;
 export {
-  selectPagesShowPageDomain,
+  makeSelectPage,
 };

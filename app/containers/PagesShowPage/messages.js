@@ -10,4 +10,8 @@ export default defineMessages({
     id: 'app.containers.PagesShowPage.header',
     defaultMessage: 'This is PagesShowPage container !',
   },
+  loading: {
+    id: 'app.containers.PagesShowPage.loading',
+    defaultMessage: 'Loading page...',
+  },
 });

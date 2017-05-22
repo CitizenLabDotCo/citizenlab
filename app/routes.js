@@ -322,7 +322,7 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/pages/:slug',
+      path: '/pages/:id',
       name: 'pagesShowPage',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
