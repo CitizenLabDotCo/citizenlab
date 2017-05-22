@@ -45,7 +45,7 @@ describe('UserShowPage sagas', () => {
       expect(result).toEqual(put(mergeJsonApiResources(undefined)));
     });
 
-    it('then, should dispatch userIdeasLoaded action', (result) => {
+    it('then, should dispatch loadUserIdeasSuccess action', (result) => {
       expect(result).toEqual(put(loadUserIdeasSuccess(undefined)));
     });
   });
