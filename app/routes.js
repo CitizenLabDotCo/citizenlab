@@ -322,6 +322,24 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/sign-in/recovery',
+      name: 'usersPasswordRecovery',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/UsersPasswordRecovery/reducer'),
+          import('containers/UsersPasswordRecovery'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('usersPasswordRecovery', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
