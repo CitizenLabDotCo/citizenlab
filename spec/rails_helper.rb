@@ -68,3 +68,5 @@ RSpec.configure do |config|
 
   
 end
+
+ActiveJob::Base.queue_adapter = :test

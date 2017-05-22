@@ -23,6 +23,8 @@ Rails.application.routes.draw do
       resources :users do
         get :me, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
+        post "reset_password_email" => "reset_password#reset_password_email", on: :collection
+        post "reset_password" => "reset_password#reset_password", on: :collection
       end
 
       resources :topics, only: [:index, :show]

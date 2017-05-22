@@ -160,11 +160,12 @@ ActiveRecord::Schema.define(version: 20170520134018) do
     t.string   "email"
     t.string   "password_digest"
     t.string   "slug"
-    t.jsonb    "services",        default: {}
-    t.jsonb    "demographics",    default: {}
-    t.jsonb    "roles",           default: []
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.jsonb    "services",             default: {}
+    t.jsonb    "demographics",         default: {}
+    t.jsonb    "roles",                default: []
+    t.string   "reset_password_token"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.string   "avatar"
     t.string   "first_name"
     t.string   "last_name"
