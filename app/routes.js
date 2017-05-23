@@ -34,6 +34,22 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/landing',
+      name: 'landing',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/LandingPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '/dev/foundation',
       name: 'foundationDemoPage',
       getComponent(location, cb) {

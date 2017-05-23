@@ -43,7 +43,7 @@ Error.propTypes = {
 
 export default styled(TitleStatus)`
   font-stretch: normal;
-  font-family: OpenSans;
+  font-family: 'proxima-nova';
   text-align: left;
   letter-spacing: normal;
   font-style: normal;

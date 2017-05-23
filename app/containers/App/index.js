@@ -39,6 +39,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     if (currentTenant) {
       return (
         <div>
+          {/*
           <Navbar
             currentUser={currentUser}
             currentTenant={currentTenant}
@@ -49,6 +50,8 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
               {React.Children.toArray(this.props.children)}
             </div>
           </Container>
+          */}
+          {React.Children.toArray(this.props.children)}
         </div>
       );
     } else { // eslint-disable-line no-else-return
