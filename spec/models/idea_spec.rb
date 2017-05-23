@@ -23,9 +23,10 @@ RSpec.describe Idea, type: :model do
   context "published at" do
     it "gets set immediately when creating a published idea" do
       t = Time.now
-      travel_to t
-      idea = create(:idea, publication_status: 'published')
-      expect(idea.published_at.to_i).to eq t.to_i
+      travel_to t do
+        idea = create(:idea, publication_status: 'published')
+        expect(idea.published_at.to_i).to eq t.to_i
+      end
     end
 
     it "stays empty when creating a draft" do
@@ -36,9 +37,10 @@ RSpec.describe Idea, type: :model do
     it "gets filled in when publishing a draft" do
       idea = create(:idea, publication_status: 'draft')
       t = Time.now + 1.week
-      travel_to t
-      idea.update(publication_status: 'published')
-      expect(idea.published_at.to_i).to eq t.to_i
+      travel_to t do
+        idea.update(publication_status: 'published')
+        expect(idea.published_at.to_i).to eq t.to_i
+      end
     end
 
     it "doesn't change again when already published once" do
@@ -50,7 +52,84 @@ RSpec.describe Idea, type: :model do
       travel_to t+1.week
       idea.update(publication_status: 'published')
       expect(idea.published_at.to_i).to eq t.to_i
+      travel_back
+    end
+  end
+
+  describe "order_new" do
+    before do
+      5.times do |i|
+        travel_to Time.now+i.week do 
+          create(:idea)
+        end
+      end
     end
 
+    it "sorts from new to old by default" do
+      time_serie = Idea.order_new.pluck(:published_at)
+      expect(time_serie).to eq time_serie.sort.reverse
+    end
+
+    it "sorts from new to old when asking desc" do
+      time_serie = Idea.order_new(:desc).pluck(:published_at)
+      expect(time_serie).to eq time_serie.sort.reverse
+    end
+
+    it "sorts from old to new when asking asc" do
+      time_serie = Idea.order_new(:asc).pluck(:published_at)
+      expect(time_serie).to eq time_serie.sort      
+    end
   end
+
+  describe "order_popular" do
+    before do
+      5.times do |i|
+        idea = create(:idea)
+        rand(20).times{create(:vote, votable: idea, mode: ['up','down'][rand(1)])}
+      end
+    end
+
+    it "sorts from popular to unpopular by default" do
+      score_serie = Idea.order_popular.map(&:score)
+      expect(score_serie).to eq score_serie.sort.reverse
+    end
+
+    it "sorts from popular to unpopular when asking desc" do
+      score_serie = Idea.order_popular(:desc).map(&:score)
+      expect(score_serie).to eq score_serie.sort.reverse
+    end
+
+    it "sorts from unpopular to popular when asking asc" do
+      score_serie = Idea.order_popular(:asc).map(&:score)
+      expect(score_serie).to eq score_serie.sort      
+    end
+  end
+
+  describe "order_trending" do
+    before do
+
+      5.times do |i|
+        travel_to(Time.now-7.day + i.day) do 
+          idea = create(:idea)
+          rand(20).times{create(:vote, votable: idea, mode: ['up','down'][rand(1)])}
+        end
+      end
+    end
+
+    it "sorts from trending to untrending by default" do
+      trending_score_sorted = Idea.order_trending.map(&:id)
+      expect(trending_score_sorted).to eq Idea.all.sort_by(&:trending_score).map(&:id).reverse
+    end
+
+    it "sorts from trending to untrending when asking desc" do
+      trending_score_sorted = Idea.order_trending(:desc).map(&:id)
+      expect(trending_score_sorted).to eq Idea.all.sort_by(&:trending_score).map(&:id).reverse
+    end
+
+    it "sorts from untrending to trending when asking asc" do
+      trending_score_sorted = Idea.order_trending(:asc).map(&:id)
+      expect(trending_score_sorted).to eq Idea.all.sort_by(&:trending_score).map(&:id)   
+    end
+  end
+
 end
