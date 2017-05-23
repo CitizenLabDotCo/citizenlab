@@ -1,7 +1,6 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import hello from 'hellojs';
-import { push } from 'react-router-redux';
 
 import { makeSelectSetting } from 'utils/tenant/selectors';
 import { fetchCurrentUser as fetchCurrentUserRequest, createUser as createUserRequest, login, socialLogin, socialRegister } from 'api';

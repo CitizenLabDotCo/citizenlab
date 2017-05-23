@@ -16,4 +16,9 @@ const Button = ({ message, loading }) => (
   </LayOutButton>
 );
 
+Button.propTypes = {
+  message: PropTypes.object.isRequied,
+  loading: PropTypes.bool,
+};
+
 export default Button;

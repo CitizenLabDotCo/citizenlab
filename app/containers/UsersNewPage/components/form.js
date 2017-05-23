@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 
 // Comoponents
-import FormComponent from 'utils/auth/components/form';
+import FormComponent from 'components/forms/formComponent';
 import { Form } from 'semantic-ui-react';
 import TextInput from 'components/forms/inputs/text';
 import Button from 'components/buttons/loader';

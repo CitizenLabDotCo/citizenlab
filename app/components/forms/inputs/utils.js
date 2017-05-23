@@ -4,6 +4,4 @@ export const appenDableName = (name) => {
   return camelName.charAt(0).toUpperCase() + camelName.slice(1);
 };
 
-export const toCammelCase = (name) => {
-  return name.replace(/(_\w)/g, (m) => m.slice(-1)[0].toUpperCase());
-};
+export const toCammelCase = (name) => name.replace(/(_\w)/g, (m) => m.slice(-1)[0].toUpperCase());

@@ -11,7 +11,7 @@ import { createSocialUserRequest } from 'utils/auth/actions';
 const types = {
   register: 'authLoginButtonFacebook',
   login: 'authLoginButtonFacebook',
-}
+};
 
 const FacebookAuthButton = ({ facebookAuth, type }) => (
   <div style={{ marginTop: '1em', width: '100%', display: 'block' }}>
@@ -24,8 +24,9 @@ const FacebookAuthButton = ({ facebookAuth, type }) => (
 
 FacebookAuthButton.propTypes = {
   facebookAuth: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => ({facebookAuth: () => dispatch(createSocialUserRequest(NETWORK_FACEBOOK))})
+const mapDispatchToProps = (dispatch) => ({ facebookAuth: () => dispatch(createSocialUserRequest(NETWORK_FACEBOOK)) });
 
 export default connect(null, mapDispatchToProps)(FacebookAuthButton);

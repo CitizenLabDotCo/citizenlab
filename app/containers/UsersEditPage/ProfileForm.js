@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { Column, Row, Label } from 'components/Foundation';
 import LocaleChanger from 'components/LocaleChanger';
 
-import FormInput from '../../components/FormInput/index';
+// import FormInput from '/components/FormInput/index';
 import messages from './messages';
 import Avatar from './Avatar';
 
@@ -14,7 +14,6 @@ const LabelInputPair = (props) => (
     {!props.hidden && <Label htmlFor={props.id}>
       <FormattedMessage {...messages[props.id]} />
     </Label>}
-    <FormInput id={props.id} hidden={props.hidden} />
   </div>
 );
 

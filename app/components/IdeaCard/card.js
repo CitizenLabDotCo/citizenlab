@@ -9,9 +9,9 @@ import T from 'containers/T';
 
 import { selectResourcesDomain } from 'utils/resources/selectors';
 import Author from './card/author';
-import Tags from './card/tags';
+// import Tags from './card/tags';
 
-const Card = ({ header, images, label, labelObj, authorId, topicsData, areasData, viewIdea, votes }) => {
+const Card = ({ header, images, label, labelObj, authorId, viewIdea, votes }) => {
   if (!header) return null;
 
   return (
@@ -61,8 +61,6 @@ Card.propTypes = {
   labelObj: PropTypes.object,
   header: PropTypes.any,
   authorId: PropTypes.any,
-  topicsData: PropTypes.any,
-  areasData: PropTypes.any,
   viewIdea: PropTypes.any,
   votes: PropTypes.number,
 };

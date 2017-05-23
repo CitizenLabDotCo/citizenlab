@@ -7,18 +7,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { bindActionCreators } from 'redux';
-import { Icon, Sidebar as LayoutSidebar, Segment } from 'semantic-ui-react';
+// import { Sidebar as LayoutSidebar } from 'semantic-ui-react';
 
 import WatchSagas from 'containers/WatchSagas';
 
-import messages from './messages';
 import sagasWatchers from './sagas';
 import { filterIdeas, loadIdeas, loadTopicsRequest, loadAreasRequest } from './actions';
 
-
-import Sidebar from './components/sidebar';
+// implemented but not used now.
+// import Sidebar from './components/sidebar';
 import Panel from './components/panel';
 
 
@@ -64,7 +62,7 @@ class View extends React.Component {
 
   render() {
     // this component will controll the proper rerender of the view when the Topics and Areas list is toggled.
-    const { visible } = this.state;
+    // const { visible } = this.state;
     return (
       <div>
         <WatchSagas sagas={sagasWatchers} />

@@ -59,7 +59,7 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
         {processing && <FormattedMessage {...messages.processing} />}
         {stored && <FormattedMessage {...messages.stored} />}
 
-        {/*<ProfileForm
+        {/* <ProfileForm
           onLocaleChangeClick={onLocaleChangeClick}
           userData={userData}
           avatarUpload={onAvatarUpload}
@@ -75,14 +75,9 @@ UsersEditPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   loadError: PropTypes.bool.isRequired,
   storeError: PropTypes.bool.isRequired,
-  userData: PropTypes.object,
   processing: PropTypes.bool.isRequired,
   stored: PropTypes.bool.isRequired,
   initData: PropTypes.func.isRequired,
-  onProfileFormSubmit: PropTypes.func.isRequired,
-  onAvatarUpload: PropTypes.func.isRequired,
-  avatarUploadError: PropTypes.bool.isRequired,
-  onLocaleChangeClick: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

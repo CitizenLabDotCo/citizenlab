@@ -48,7 +48,6 @@ class TextInput extends React.PureComponent {
     const { placeholder, label, type } = this.text;
     const { showError, value } = this.state;
     const error = errors && messages[toCammelCase(errors.slice(-1)[0])];
-    console.log(errors && toCammelCase(errors.slice(-1)[0]))
     const icon = this.icons[name];
     return (
       <Form.Field>

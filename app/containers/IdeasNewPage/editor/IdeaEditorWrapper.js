@@ -23,7 +23,7 @@ import multiselectMap from '../multiselectMap';
 
 import { selectAuthDomain } from 'utils/auth/selectors';
 
-import { bindActionCreators } from 'redux'
+import { bindActionCreators } from 'redux';
 
 class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -49,11 +49,11 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
   }
 
   publishIdea = () => {
-   // const { toChildView } = this.context;
-   const { userId, storeIdea } = this.props;
-   // if (!userId) return toChildView();
+    // const { toChildView } = this.context;
+    const { storeIdea } = this.props;
+    // if (!userId) return toChildView();
     storeIdea();
-    //this.props.cur();
+    // this.props.cur();
   }
 
   render() {
@@ -170,7 +170,6 @@ IdeaEditorWrapper.propTypes = {
   storeAreas: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
   invalidForm: PropTypes.bool.isRequired,
-  userId: PropTypes.string,
 };
 
 IdeaEditorWrapper.contextTypes = {

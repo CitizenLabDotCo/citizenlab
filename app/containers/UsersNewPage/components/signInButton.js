@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Message } from 'semantic-ui-react'
+import { Message } from 'semantic-ui-react';
 import { preprocess } from 'utils';
 import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
