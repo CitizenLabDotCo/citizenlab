@@ -99,7 +99,13 @@ class RegistrationForm extends React.Component {
               {/* 'ERROR THE LINK IS NOT PROPERLY HANDLED'*/ }
               <FormattedMessage {...messages.noAccountYet} />
               {' '}
-              <a href={'/'}><FormattedMessage {...messages.signUpNow} /></a>
+              <a href={'/register'}><FormattedMessage {...messages.signUpNow} /></a>
+            </Message>
+
+            <Message>
+              <FormattedMessage {...messages.forgotPassword} />
+              {' '}
+              <a href={'/sign-in/recovery'}><FormattedMessage {...messages.recoverPassword} /></a>
             </Message>
 
           </Grid.Column>
