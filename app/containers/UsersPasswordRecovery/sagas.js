@@ -1,7 +1,6 @@
 import { call, put } from 'redux-saga/effects';
-import { takeLatest, delay } from 'redux-saga';
+import { takeLatest } from 'redux-saga';
 import { getRecoveryLink } from 'api';
-import { push } from 'react-router-redux';
 
 import { SEND_RECOVERY_LINK_REQUEST } from './constants';
 import { sendRecoveryLinkError, sendRecoveryLinkSuccess } from './actions';
@@ -11,8 +10,8 @@ export function* postResetLink(action) {
   try {
     yield call(getRecoveryLink, action.email);
     yield put(sendRecoveryLinkSuccess());
-    yield call(delay, 3000);
-    yield put(push('/sign-in'));
+    // yield call(delay, 3000);
+    // yield put(push('/sign-in'));
   } catch (err) {
     yield put(sendRecoveryLinkError());
   }

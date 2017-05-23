@@ -15,7 +15,6 @@ import { createStructuredSelector } from 'reselect';
 import TextInput from 'components/forms/inputs/text';
 import Button from 'components/buttons/loader';
 import { Form } from 'semantic-ui-react';
-import * as emailValidator from 'email-validator';
 
 import sagas from './sagas';
 import selectUsersPasswordRecovery from './selectors';
@@ -29,7 +28,6 @@ export class UsersPasswordRecovery extends React.PureComponent { // eslint-disab
 
     this.state = {
       email: '',
-      invalidEmail: false,
     };
 
     // provide context to bindings
@@ -38,12 +36,6 @@ export class UsersPasswordRecovery extends React.PureComponent { // eslint-disab
   }
 
   handleChange = (name, value) => {
-    if (name === 'email') {
-      this.setState({
-        invalidEmail: !emailValidator.validate(value),
-      });
-    }
-
     this.setState({
       [name]: value,
     });
@@ -52,16 +44,15 @@ export class UsersPasswordRecovery extends React.PureComponent { // eslint-disab
   handleSubmit(e) {
     e.preventDefault();
 
-    const { email, invalidEmail } = this.state;
+    const { email } = this.state;
 
-    if (email.length > 0 && !invalidEmail) {
+    if (email.length > 0) {
       this.props.sendRecoveryLinkRequest(email);
     }
   }
 
   render() {
     const { processing, sent, notFoundError } = this.props;
-    const { invalidEmail } = this.state;
 
     return (
       <div>
@@ -81,7 +72,6 @@ export class UsersPasswordRecovery extends React.PureComponent { // eslint-disab
         </Form>
 
         {notFoundError && <div><FormattedMessage {...messages.notFoundError} /></div>}
-        {invalidEmail && <div><FormattedMessage {...messages.invalidEmail} /></div>}
       </div>
     );
   }

@@ -16,11 +16,7 @@ export default defineMessages({
   },
   sent: {
     id: 'app.containers.UsersPasswordRecovery.sent',
-    defaultMessage: 'Link sent! Redirecting...',
-  },
-  invalidEmail: {
-    id: 'app.containers.UsersPasswordRecovery.invalidEmail',
-    defaultMessage: 'Email is invalid!',
+    defaultMessage: 'Link sent!',
   },
   notFoundError: {
     id: 'app.containers.UsersPasswordRecovery.notFoundError',

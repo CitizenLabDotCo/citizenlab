@@ -16,7 +16,7 @@ export default defineMessages({
   },
   sent: {
     id: 'app.containers.UsersPasswordReset.sent',
-    defaultMessage: 'Success! Redirecting...',
+    defaultMessage: 'Success!',
   },
   invalidPassword: {
     id: 'app.containers.UsersPasswordReset.invalidPassword',
