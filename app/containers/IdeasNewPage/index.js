@@ -75,7 +75,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
       height: 16px;
       opacity: 0.5;
       font-stretch: normal;
-      font-family: OpenSans;
+      font-family: 'proxima-nova';
       text-align: left;
       letter-spacing: normal;
       font-style: normal;
