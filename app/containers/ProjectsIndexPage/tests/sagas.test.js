@@ -28,7 +28,7 @@ describe('ProjectsIndexPage sagas', () => {
       expect(result).toEqual(put(mergeJsonApiResources()));
     });
 
-    it('then, should dispatch ideaPublished action', (result) => {
+    it('then, should dispatch loadProjectsSuccess action', (result) => {
       expect(result).toEqual(put(loadProjectsSuccess()));
     });
   });
