@@ -96,6 +96,23 @@ export function createPage(body) {
   });
 }
 
+export function getRecoveryLink(email) {
+  return request(`${API_PATH}/users/reset_password_email`, { user: {
+    email,
+  } }, {
+    method: 'POST',
+  });
+}
+
+export function resetPassword(password, token) {
+  return request(`${API_PATH}/users/reset_password`, { user: {
+    password,
+    token,
+  } }, {
+    method: 'POST',
+  });
+}
+
 export function fetchUser(userId) {
   return request(`${API_PATH}/users/${userId}`);
 }
