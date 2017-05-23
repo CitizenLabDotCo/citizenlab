@@ -11,23 +11,19 @@ export default defineMessages({
     defaultMessage: 'Request a reset link',
   },
   submit: {
-    id: 'app.containers.AdminPages.submit',
+    id: 'app.containers.UsersPasswordRecovery.submit',
     defaultMessage: 'Submit',
-  },
-  processing: {
-    id: 'app.containers.UsersPasswordRecovery.processing',
-    defaultMessage: 'Processing...',
   },
   sent: {
     id: 'app.containers.UsersPasswordRecovery.sent',
     defaultMessage: 'Link sent! Redirecting...',
   },
   invalidEmail: {
-    id: 'app.containers.AdminPages.invalidEmail',
+    id: 'app.containers.UsersPasswordRecovery.invalidEmail',
     defaultMessage: 'Email is invalid!',
   },
   notFoundError: {
-    id: 'app.containers.AdminPages.notFoundError',
+    id: 'app.containers.UsersPasswordRecovery.notFoundError',
     defaultMessage: 'Not found!',
   },
 });

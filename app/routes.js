@@ -340,12 +340,12 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/sign-in/reset-password',
-      name: 'resetUserPassword',
+      path: '/reset-password',
+      name: 'UsersPasswordReset',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/ResetUserPassword/reducer'),
-          import('containers/ResetUserPassword'),
+          import('containers/UsersPasswordReset/reducer'),
+          import('containers/UsersPasswordReset'),
         ]);
 
         const renderRoute = loadModule(cb);

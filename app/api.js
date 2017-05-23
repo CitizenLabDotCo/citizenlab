@@ -100,6 +100,15 @@ export function getRecoveryLink(email) {
   });
 }
 
+export function resetPassword(password, token) {
+  return request(`${API_PATH}/users/reset_password`, { user: {
+    password,
+    token,
+  } }, {
+    method: 'POST',
+  });
+}
+
 export function fetchUser(userId) {
   return request(`${API_PATH}/users/${userId}`);
 }
