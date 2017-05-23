@@ -3,9 +3,7 @@
  */
 
 /* eslint-disable redux-saga/yield-effects */
-import { delay } from 'redux-saga';
 import { put, call } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
 import sagaHelper from 'redux-saga-testing';
 import { resetPassword } from 'api';
 import { stringMock } from 'utils/testing/constants';
