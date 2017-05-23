@@ -4,7 +4,7 @@
 // import { ResetUserPassword } from '../index';
 
 describe('<ResetUserPassword />', () => {
-  it('Expect to have unit tests specified', () => {
+  it('should have meaningful tests in the future', () => {
     expect(true).toEqual(true);
   });
 });

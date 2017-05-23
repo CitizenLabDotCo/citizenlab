@@ -4,5 +4,7 @@
 // import { UsersPasswordRecovery } from '../index';
 
 describe('<UsersPasswordRecovery />', () => {
-  expect(true).toEqual(true);
+  it('should have meaningful tests in the future', () => {
+    expect(true).toEqual(true);
+  });
 });
