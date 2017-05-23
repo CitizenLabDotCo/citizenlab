@@ -19,7 +19,7 @@ export default defineMessages({
     defaultMessage: 'Page',
   },
   noPages: {
-    id: 'app.containers.AdminPages.page',
+    id: 'app.containers.AdminPages.noPages',
     defaultMessage: 'No pages',
   },
 });
