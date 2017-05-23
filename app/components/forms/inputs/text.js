@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Form } from 'semantic-ui-react';
 import { injectIntl, intlShape } from 'react-intl';
 
-import RenderError from 'components/forms/RenderError';
+import RenderError from 'components/forms/renderError';
 
 import { appenDableName, toCammelCase } from './utils';
 import messages from './messages';

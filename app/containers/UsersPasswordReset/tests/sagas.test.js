@@ -28,13 +28,5 @@ describe('UsersPasswordRecovery sagas', () => {
     it('then, should dispatch resetPasswordSuccess action', (result) => {
       expect(result).toEqual(put(resetPasswordSuccess()));
     });
-
-    it('then, should wait for 3s', (result) => {
-      expect(result).toEqual(call(delay, 3000));
-    });
-
-    it('then, should dispatch push(\'/sign-in', (result) => {
-      expect(result).toEqual(put(push('/sign-in')));
-    });
   });
 });
