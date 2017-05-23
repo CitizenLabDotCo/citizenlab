@@ -72,11 +72,7 @@ class TextInput extends React.PureComponent {
 TextInput.propTypes = {
   name: PropTypes.string.isRequired,
   action: PropTypes.func.isRequired,
-<<<<<<< HEAD
-  intl: intlShape.isRequired,
-=======
   intl: intlShape,
->>>>>>> master
   errors: PropTypes.array,
 };
 
