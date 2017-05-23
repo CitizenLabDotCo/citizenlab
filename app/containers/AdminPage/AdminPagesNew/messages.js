@@ -28,7 +28,7 @@ export default defineMessages({
   },
   published: {
     id: 'app.containers.AdminPages.AdminPagesNew.published',
-    defaultMessage: 'Page published! Redirecting...',
+    defaultMessage: 'Page published!',
   },
   titlePlaceholder: {
     id: 'app.containers.AdminPages.AdminPagesNew.titlePlaceholder',

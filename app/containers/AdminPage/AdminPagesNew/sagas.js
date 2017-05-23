@@ -6,15 +6,10 @@
 import { call, put } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
 import { createPage } from 'api';
-import { push } from 'react-router-redux';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 
 import { publishPageSuccess, publishPageError } from './actions';
 import { PUBLISH_PAGE_REQUEST } from './constants';
-
-const routeToPage = (pageId) => {
-  push(`/pages/${pageId}`);
-};
 
 // Individual exports for testing
 export function* postPage(action) {
@@ -22,8 +17,8 @@ export function* postPage(action) {
 
   // merge relevant fields to match API request body format
   const requestBody = {
-    title_multiloc: payload,
-    body_multiloc: titles,
+    title_multiloc: titles,
+    body_multiloc: payload,
   };
 
   try {
@@ -31,8 +26,6 @@ export function* postPage(action) {
 
     yield put(mergeJsonApiResources(response));
     yield put(publishPageSuccess());
-    // redirect to created paged
-    setTimeout(() => routeToPage(response.data.id), 3000);
   } catch (err) {
     yield put(publishPageError(JSON.stringify(err)));
   }
