@@ -8,7 +8,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
-import { getFromState } from 'utils/immutables';
 import { Container, Label, Divider } from 'semantic-ui-react';
 import styled from 'styled-components';
 import Breadcrumbs from 'components/Breadcrumbs';
@@ -51,6 +50,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
 
   sendIdea(isDraft) {
     const { content, shortTitleError, longTitleError, title, images, attachments, user, locale, selectedTopics, selectedAreas } = this.props;
+
     this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments, user && user.id, locale, isDraft, selectedTopics.toJS(), selectedAreas.toJS());
   }
 
@@ -162,7 +162,7 @@ const customActionCreators = {
       htmlContents[locale] = contentNotNull;
       titles[locale] = title;
 
-      return publishIdeaRequest(htmlContents, titles, images, attachments, userId, isDraft);
+      return publishIdeaRequest(htmlContents, titles, images, attachments, userId, isDraft, topics, areas);
     }
     return invalidForm();
   },
@@ -198,15 +198,17 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
   ...customActionCreators,
 }, dispatch);
 
-const mergeProps = ({ ideasNewPageState: pageState }, dispatchProps) => ({
-  content: getFromState(pageState, 'draft', 'content'),
-  longTitleError: getFromState(pageState, 'draft', 'longTitleError'),
-  shortTitleError: getFromState(pageState, 'draft', 'shortTitleError'),
-  title: getFromState(pageState, 'draft', 'title'),
-  images: getFromState(pageState, 'draft', 'images'),
-  attachments: getFromState(pageState, 'draft', 'attachments'),
-  selectedTopics: getFromState(pageState, 'topics', 'selected'),
-  selectedAreas: getFromState(pageState, 'areas', 'selected'),
+const mergeProps = ({ ideasNewPageState: pageState, locale, user }, dispatchProps) => ({
+  content: pageState.getIn(['draft', 'content']),
+  longTitleError: pageState.getIn(['draft', 'longTitleError']),
+  shortTitleError: pageState.getIn(['draft', 'shortTitleError']),
+  title: pageState.getIn(['draft', 'title']),
+  images: pageState.getIn(['draft', 'images']),
+  attachments: pageState.getIn(['draft', 'attachments']),
+  selectedTopics: pageState.getIn(['topics', 'selected']),
+  selectedAreas: pageState.getIn(['areas', 'selected']),
+  locale,
+  user,
   ...dispatchProps,
 });
 

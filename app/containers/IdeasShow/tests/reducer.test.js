@@ -4,7 +4,7 @@ import { stringMock } from 'utils/testing/constants';
 
 import ideasShowReducer from '../reducer';
 import { generateResourcesVoteValue, generateResourcesCommentValue } from './__shared';
-import { commentsLoaded, ideaLoadError, loadComments, resetPageData, votesLoaded } from '../actions';
+import { loadCommentsSuccess, ideaLoadError, loadComments, resetPageData, votesLoaded, publishCommentSuccess, deleteCommentSuccess } from '../actions';
 
 describe('ideasShowReducer', () => {
   const initialState = {
@@ -87,11 +87,38 @@ describe('ideasShowReducer', () => {
       }
 
       const nextState = ideasShowReducer(
-        fromJS(initialStateWithComments), commentsLoaded(payload)
+        fromJS(initialStateWithComments), loadCommentsSuccess(payload)
       ).toJS();
       expect(nextState.comments.length).toEqual(i + 10);
     });
   });
+
+  describe('PUBLISH_COMMENT_SUCCESS', () => {
+    it('returns existing comments with new comments', () => {
+      const initialStateWithComments = initialState;
+      // comments from resources
+      const payload = generateResourcesCommentValue(12341234);
+      const nextState = ideasShowReducer(
+        fromJS(initialStateWithComments), publishCommentSuccess(payload)
+      ).toJS();
+      expect(nextState.comments.length).toEqual(21);
+      expect(nextState.comments.indexOf(12341234)).not.toEqual(-1);
+    });
+  });
+
+  describe('DELETE_COMMENT_SUCCESS', () => {
+    it('returns existing comments with new comments', () => {
+      const initialStateWithComments = initialState;
+      // comments from resources
+
+      const nextState = ideasShowReducer(
+        fromJS(initialStateWithComments), deleteCommentSuccess(12341234)
+      ).toJS();
+      expect(nextState.comments.length).toEqual(19);
+      expect(nextState.comments.indexOf(12341234)).toEqual(-1);
+    });
+  });
+
 
   describe('RESET_PAGE_DATA', () => {
     it('returns comments and votes as empty arrays, idea null and resetEditorContent false', () => {

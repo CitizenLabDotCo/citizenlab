@@ -58,9 +58,9 @@ export function fetchIdeas(query, queryParameters) {
   return request(`${API_PATH}/ideas${railsfriendlyQuery}`, null, null, queryParameters);
 }
 
-// export function filterIdeas(query) {
-//   return request(`${API_PATH}/ideas${railsfriendlyQuery}`);
-// }
+export function fetchProjects(queryParameters) {
+  return request(`${API_PATH}/projects`, null, null, queryParameters);
+}
 
 export function fetchTopics(queryParameters) {
   return request(`${API_PATH}/topics`, null, null, queryParameters);
@@ -164,4 +164,16 @@ export function submitIdeaVote(ideaId, mode) {
   return request(`${API_PATH}/ideas/${ideaId}/votes`, body, {
     method: 'POST',
   });
+}
+
+export function fetchUsersReport(queryParameters) {
+  return request(`${API_PATH}/stats/users_by_time`, null, null, queryParameters);
+}
+
+export function fetchIdeaTopicsReport(queryParameters) {
+  return request(`${API_PATH}/stats/ideas_by_topic`, null, null, queryParameters);
+}
+
+export function fetchIdeaAreasReport(queryParameters) {
+  return request(`${API_PATH}/stats/ideas_by_area`, null, null, queryParameters);
 }

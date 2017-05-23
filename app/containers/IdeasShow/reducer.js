@@ -8,8 +8,8 @@ import { fromJS } from 'immutable';
 
 import {
   LOAD_IDEA_VOTES_ERROR, LOAD_IDEA_VOTES_REQUEST, LOAD_IDEA_VOTES_SUCCESS, RESET_PAGE_DATA, LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_ERROR, LOAD_COMMENTS_SUCCESS,
-  LOAD_IDEA_SUCCESS, STORE_COMMENT_REQUEST, STORE_COMMENT_ERROR, SAVE_COMMENT_DRAFT,
-  LOAD_IDEA_REQUEST, LOAD_IDEA_ERROR, VOTE_IDEA_ERROR, VOTE_IDEA_REQUEST, VOTE_IDEA_SUCCESS,
+  LOAD_IDEA_SUCCESS, PUBLISH_COMMENT_REQUEST, PUBLISH_COMMENT_ERROR, SAVE_COMMENT_DRAFT,
+  LOAD_IDEA_REQUEST, LOAD_IDEA_ERROR, VOTE_IDEA_ERROR, VOTE_IDEA_REQUEST, VOTE_IDEA_SUCCESS, PUBLISH_COMMENT_SUCCESS, DELETE_COMMENT_SUCCESS,
 } from './constants';
 import { getPageItemCountFromUrl, getPageNumberFromUrl } from '../../utils/paginationUtils';
 
@@ -104,16 +104,27 @@ export default function ideasShowReducer(state = initialState, action) {
       return state
         .set('activeParentId', action.activeParentId)
         .set('commentContent', action.commentContent);
-    case STORE_COMMENT_REQUEST:
+    case PUBLISH_COMMENT_REQUEST:
       return state
         .set('storeCommentError', null)
         .set('resetEditorContent', true)
         .set('submittingComment', true);
-    case STORE_COMMENT_ERROR:
+    case PUBLISH_COMMENT_SUCCESS: {
+      const id = action.payload.data.id;
+      return state
+        .set('submittingComment', false)
+        .update('comments', (comments) => comments.concat(id))
+        .set('loadingComments', false);
+    }
+    case PUBLISH_COMMENT_ERROR:
       return state
         .set('resetEditorContent', false)
         .set('storeCommentError', action.storeCommentError)
         .set('submittingComment', false);
+    case DELETE_COMMENT_SUCCESS: {
+      const commentIndex = state.get('comments').findIndex((id) => action.commentId === id);
+      return state.deleteIn(['comments', commentIndex]);
+    }
     case RESET_PAGE_DATA:
       return state
         .set('idea', null)

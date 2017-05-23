@@ -45,7 +45,7 @@ class Editor extends React.PureComponent {
     return (
       <Accordion >
         <Accordion.Title style={{ fontSize: '0px', height: '0' }}>
-          <Button style={{ float: 'right' }}> Repply </Button>
+          <Button style={{ float: 'right' }}> Reply </Button>
         </Accordion.Title>
         <Accordion.Title style={{ fontSize: '0px', height: '0' }}>
           <DeleteButton

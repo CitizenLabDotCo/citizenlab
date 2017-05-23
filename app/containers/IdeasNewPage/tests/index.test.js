@@ -2,7 +2,7 @@ import { stringMock } from 'utils/testing/constants';
 
 import canPublish from '../editor/canPublish';
 import { mapDispatchToProps } from '../index';
-import { storeAttachmentError, storeImageError, storeSelectedAreas, storeSelectedTopics } from '../actions';
+import { storeAttachmentError, storeImageError } from '../actions';
 
 describe('<IdeasNewPage />', () => {
   describe('canPublish', () => {
@@ -64,33 +64,6 @@ describe('<IdeasNewPage />', () => {
       it('should dispatch storeImageError if no image is provided', () => {
         result.storeImage(null);
         expect(dispatch).toHaveBeenCalledWith(storeImageError());
-      });
-    });
-    describe('store topics and areas', () => {
-      const selectedItems = [];
-      for (let i = 0; i < 3; i += 1) {
-        selectedItems.push({
-          label: {
-            en: stringMock,
-            nl: stringMock,
-          },
-          value: stringMock,
-        });
-      }
-      const parsedItems = selectedItems.map((item) => item.value);
-
-      describe('handleTopicsSelect', () => {
-        it('should dispatch storeSelectedTopics with provided ids', () => {
-          result.handleTopicsSelect(selectedItems);
-          expect(dispatch).toHaveBeenCalledWith(storeSelectedTopics(parsedItems));
-        });
-      });
-
-      describe('handleAreasSelect', () => {
-        it('should dispatch storeSelectedAreas with provided ids', () => {
-          result.handleAreasSelect(selectedItems);
-          expect(dispatch).toHaveBeenCalledWith(storeSelectedAreas(parsedItems));
-        });
       });
     });
   });

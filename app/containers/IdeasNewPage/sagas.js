@@ -20,8 +20,8 @@ export const getIdeaRequestContent = (ideaMultiloc, titleMultiloc, images, attac
   result.body_multiloc = ideaMultiloc;
   result.images = images;
   result.files = attachments.toJS();
-  result.topics = topics;
-  result.areas = areas;
+  result.topic_ids = topics;
+  result.areas_ids = areas;
 
   return result;
 };
