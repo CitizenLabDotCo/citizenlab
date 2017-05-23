@@ -18,6 +18,25 @@ class Api::V1::IdeasController < ApplicationController
     @ideas = @ideas.where(author_id: params[:author]) if params[:author].present?
     @ideas = @ideas.search_by_all(params[:search]) if params[:search].present?
 
+    @ideas = case params[:sort]
+      when "new"
+        @ideas.order_new
+      when "-new"
+        @ideas.order_new(:asc)
+      when "trending"
+        @ideas.order_trending
+      when "-trending"
+        @ideas.order_trending(:asc)
+      when "popular"
+        @ideas.order_popular
+      when "-popular"
+        @ideas.order_popular(:asc)
+      when nil
+        @ideas
+      else
+        raise "Unsupported sort method"
+    end
+
     render json: @ideas, include: ['author']
   end
 

@@ -14,6 +14,7 @@ resource "Ideas" do
     parameter :project, 'Filter by project', required: false
     parameter :author, 'Filter by author (user id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
+    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular' or '-popular'", required: false
 
     example_request "List all ideas" do
       expect(status).to eq(200)
@@ -127,6 +128,16 @@ resource "Ideas" do
       do_request(search: "uniqque")
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq i1.id
+    end
+
+    example "List all ideas sorted by new" do
+      u = create(:user)
+      i1 = create(:idea)
+
+      do_request(sort: "new")
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 6
       expect(json_response[:data][0][:id]).to eq i1.id
     end
   end

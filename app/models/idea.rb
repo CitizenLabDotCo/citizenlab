@@ -40,6 +40,21 @@ class Idea < ApplicationRecord
     .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
   end)
 
+  scope :order_new, -> (direction=:desc) {order(published_at: direction)}
+  scope :order_popular, -> (direction=:desc) {order("(upvotes_count - downvotes_count) #{direction}")}
+  # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
+  scope :order_trending, (Proc.new do |direction|
+    direction ||= :desc
+    order(<<~EOS
+      (
+        (upvotes_count - downvotes_count)
+        /
+        power(ABS(EXTRACT(epoch FROM (NOW() - published_at))/3600) , 1.1)
+      ) #{direction}
+    EOS
+    )
+  end)
+
   scope :published, -> {where publication_status: 'published'}
 
   def draft?
@@ -48,6 +63,15 @@ class Idea < ApplicationRecord
 
   def published?
     self.publication_status == 'published'
+  end
+
+  def score
+    upvotes_count - downvotes_count
+  end
+
+  def trending_score
+    score /
+    ((Time.now - published_at).abs / 3600)**1.1
   end
 
   def set_author_name
