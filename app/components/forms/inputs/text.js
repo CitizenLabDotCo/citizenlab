@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Form } from 'semantic-ui-react';
 import { injectIntl, intlShape } from 'react-intl';
 
+import RenderError from 'components/forms/RenderError';
+
 import { appenDableName, toCammelCase } from './utils';
 import messages from './messages';
-
-import RenderError from 'components/forms/renderError';
 
 class TextInput extends React.PureComponent {
   constructor(props) {
@@ -72,7 +72,11 @@ class TextInput extends React.PureComponent {
 TextInput.propTypes = {
   name: PropTypes.string.isRequired,
   action: PropTypes.func.isRequired,
+<<<<<<< HEAD
   intl: intlShape.isRequired,
+=======
+  intl: intlShape,
+>>>>>>> master
   errors: PropTypes.array,
 };
 

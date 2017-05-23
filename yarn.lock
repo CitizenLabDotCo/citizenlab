@@ -4970,6 +4970,10 @@ load-json-file@^1.0.0:
     pinkie-promise "^2.0.0"
     strip-bom "^2.0.0"
 
+loadash@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/loadash/-/loadash-0.0.1.tgz#7537b44df4ef299b25b3c962109d26e453f8135e"
+
 loader-runner@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-2.2.0.tgz#824c1b699c4e7a2b6501b85902d5b862bf45b3fa"

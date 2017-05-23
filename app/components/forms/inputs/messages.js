@@ -55,7 +55,7 @@ export default defineMessages({
     defaultMessage: 'Choose one...',
   },
 
-
+  // Education
   education0: {
     id: 'app.containers.UserFormInput.education0',
     defaultMessage: 'None',

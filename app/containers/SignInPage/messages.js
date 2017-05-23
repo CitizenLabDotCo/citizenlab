@@ -23,9 +23,17 @@ export default defineMessages({
     id: 'app.containers.SignInPage.noAccountYet',
     defaultMessage: 'New here?',
   },
+  forgotPassword: {
+    id: 'app.containers.UsersShowPage.forgotPassword',
+    defaultMessage: 'Forgot your password?',
+  },
   signUpNow: {
     id: 'app.containers.SignInPage.signUpNow',
     defaultMessage: 'Sign Up Now!',
+  },
+  recoverPassword: {
+    id: 'app.containers.UsersShowPage.recoverPassword',
+    defaultMessage: 'Recover password',
   },
   facebookSignIn: {
     id: 'app.containers.SignInPage.facebookSignIn',

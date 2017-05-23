@@ -336,6 +336,60 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/sign-in/recover-password',
+      name: 'usersPasswordRecovery',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/UsersPasswordRecovery/reducer'),
+          import('containers/UsersPasswordRecovery'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('usersPasswordRecovery', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/reset-password',
+      name: 'UsersPasswordReset',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/UsersPasswordReset/reducer'),
+          import('containers/UsersPasswordReset'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('resetUserPassword', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/pages/:id',
+      name: 'pagesShowPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/PagesShowPage/reducer'),
+          import('containers/PagesShowPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('pagesShowPage', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

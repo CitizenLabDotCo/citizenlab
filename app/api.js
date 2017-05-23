@@ -82,12 +82,33 @@ export function fetchUsers(queryParameters) {
   return request(`${API_PATH}/users`, null, null, queryParameters);
 }
 
+export function fetchPage(pageId) {
+  return request(`${API_PATH}/pages/${pageId}`);
+}
+
 export function fetchPages(queryParameters) {
   return request(`${API_PATH}/pages`, null, null, queryParameters);
 }
 
 export function createPage(body) {
   return request(`${API_PATH}/pages`, { page: body }, {
+    method: 'POST',
+  });
+}
+
+export function getRecoveryLink(email) {
+  return request(`${API_PATH}/users/reset_password_email`, { user: {
+    email,
+  } }, {
+    method: 'POST',
+  });
+}
+
+export function resetPassword(password, token) {
+  return request(`${API_PATH}/users/reset_password`, { user: {
+    password,
+    token,
+  } }, {
     method: 'POST',
   });
 }

@@ -18,16 +18,12 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.ButtonRegister',
     defaultMessage: 'Create Account',
   },
-  buttonRegisterFacebook: {
-    id: 'app.containers.UsersShowPage.ButtonRegisterFacebook',
-    defaultMessage: 'Register with Facebook',
-  },
   signUpAction1: {
-    id: 'app.containers.UsersShowPage.ButtonSignIn',
+    id: 'app.containers.UsersNewPage.signUpAction1',
     defaultMessage: 'New to us?',
   },
   signUpAction2: {
-    id: 'app.containers.UsersShowPage.ButtonSignIn',
+    id: 'app.containers.UsersNewPage.signUpAction2',
     defaultMessage: 'Sign Up Now!',
   },
 });
