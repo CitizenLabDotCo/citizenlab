@@ -6,13 +6,13 @@
 /* eslint-disable redux-saga/yield-effects */
 import { call, put } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
-import { createIdeaComment, fetchIdea, fetchIdeaComments, fetchIdeaVotes, submitIdeaVote } from 'api';
+import { createIdeaComment, fetchIdea, fetchIdeaComments, fetchIdeaVotes, submitIdeaVote, deleteIdeaComment } from 'api';
 
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import { stringMock } from 'utils/testing/constants';
 
-import { getIdeaVotes, loadIdea, loadIdeaComments, postIdeaVote, publishComment } from '../sagas';
-import { commentsLoaded, ideaVoted, loadComments, loadIdeaSuccess, votesLoaded } from '../actions';
+import { getIdeaVotes, loadIdea, loadIdeaComments, postIdeaVote, publishComment, deleteComment } from '../sagas';
+import { loadCommentsSuccess, ideaVoted, publishCommentSuccess, loadIdeaSuccess, votesLoaded, deleteCommentSuccess } from '../actions';
 
 describe('sagas', () => {
   describe('getIdeaVotes', () => {
@@ -71,7 +71,7 @@ describe('sagas', () => {
     });
 
     it('then, should dispatch commentsLoaded action', (result) => {
-      expect(result).toEqual(put(commentsLoaded()));
+      expect(result).toEqual(put(loadCommentsSuccess()));
     });
   });
 
@@ -117,7 +117,6 @@ describe('sagas', () => {
       parentId: null,
     };
     const ideaId = mockedAction.ideaId;
-
     const it = sagaHelper(publishComment(mockedAction));
 
     it('should have called the correct API', (result) => {
@@ -129,7 +128,26 @@ describe('sagas', () => {
     });
 
     it('then, should dispatch loadComments action', (result) => {
-      expect(result).toEqual(put(loadComments(ideaId, null, null, true)));
+      expect(result).toEqual(put(publishCommentSuccess()));
+    });
+  });
+
+  describe('deleteComment', () => {
+    const mockId = 'asdfasdfasdf';
+
+    const mockedAction = {
+      commentId: mockId,
+    };
+
+    const commentId = mockedAction.commentId;
+    const it = sagaHelper(deleteComment(mockedAction));
+
+    it('should have called the correct API', (result) => {
+      expect(result).toEqual(call(deleteIdeaComment, commentId));
+    });
+
+    it('then, should dispatch mergeJsonApiResources action', (result) => {
+      expect(result).toEqual(put(deleteCommentSuccess(commentId)));
     });
   });
 });

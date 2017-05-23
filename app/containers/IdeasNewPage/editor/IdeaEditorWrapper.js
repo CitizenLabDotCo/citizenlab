@@ -11,7 +11,6 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Container, Grid, Button } from 'semantic-ui-react';
 import MultiSelectT from 'components/MultiSelectT';
 import { connect } from 'react-redux';
-import { getFromState } from 'utils/immutables';
 import { createStructuredSelector } from 'reselect';
 import FormattedMessageSegment from 'components/FormattedMessageSegment';
 
@@ -191,25 +190,25 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { intl, setTitle, saveDraft, storeIdea, storeTopics, storeAreas } = ownProps;
 
   /* eslint-disable */
-  const loading = getFromState(pageState, 'draft', 'loading');
-  const loadError = getFromState(pageState, 'draft', 'loadError');
-  const stored = getFromState(pageState, 'draft', 'stored');
-  const storeError = getFromState(pageState, 'draft', 'storeError');
-  const submitting = getFromState(pageState, 'draft', 'submitting');
-  const submitError = getFromState(pageState, 'draft', 'submitError');
-  const submitted = getFromState(pageState, 'draft', 'submitted');
-  const title = getFromState(pageState, 'draft', 'title');
-  const longTitleError = getFromState(pageState, 'draft', 'longTitleError');
-  const shortTitleError = getFromState(pageState, 'draft', 'shortTitleError');
-  const titleLength = getFromState(pageState, 'draft', 'titleLength');
+  const loading = pageState.getIn(['draft', 'loading']);
+  const loadError = pageState.getIn(['draft', 'loadError']);
+  const stored = pageState.getIn(['draft', 'stored']);
+  const storeError = pageState.getIn(['draft', 'storeError']);
+  const submitting = pageState.getIn(['draft', 'submitting']);
+  const submitError = pageState.getIn(['draft', 'submitError']);
+  const submitted = pageState.getIn(['draft', 'submitted']);
+  const title = pageState.getIn(['draft', 'title']);
+  const longTitleError = pageState.getIn(['draft', 'longTitleError']);
+  const shortTitleError = pageState.getIn(['draft', 'shortTitleError']);
+  const titleLength = pageState.getIn(['draft', 'titleLength']);
 
-  const loadTopicsError = getFromState(pageState, 'topics', 'loadError');
-  const loadingTopics = getFromState(pageState, 'topics', 'loading');
+  const loadTopicsError = pageState.getIn(['topics', 'loadError']);
+  const loadingTopics = pageState.getIn(['topics', 'loading']);
 
-  const loadAreasError = getFromState(pageState, 'areas', 'loadError');
-  const loadingAreas = getFromState(pageState, 'areas', 'loading');
+  const loadAreasError = pageState.getIn(['areas', 'loadError']);
+  const loadingAreas = pageState.getIn(['areas', 'loading']);
 
-  const invalidForm = getFromState(pageState, 'draft', 'invalidForm');
+  const invalidForm = pageState.getIn(['draft', 'invalidForm']);
 
   return {
     cur,

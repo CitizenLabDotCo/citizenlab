@@ -31,7 +31,15 @@ export default function request(url, data, options, queryParameters) {
     : url);
 
   return fetch(urlWithParams, Object.assign(defaultOptions, options))
-    .then((response) => Promise.all([response, response.json()]))
+    .then((response) => (
+      Promise.all([
+        response,
+        response.json().catch(() => {
+          if (response.ok) return {};
+          return new Error('usuported case. no valid jason and not ok reponse');
+        }),
+      ])
+    ))
     .then((result) => {
       const response = result[0];
       const json = result[1];
