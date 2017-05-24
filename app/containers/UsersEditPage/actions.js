@@ -26,8 +26,8 @@ export function loadCurrentUserSuccess(currentUser) {
 
   return {
     type: LOAD_CURRENT_USER_SUCCESS,
-    payload: currentUser.data.attributes,
-    userId: currentUser.data.id,
+    payload: currentUserWithAvatar.data.attributes,
+    userId: currentUserWithAvatar.data.id,
   };
 }
 

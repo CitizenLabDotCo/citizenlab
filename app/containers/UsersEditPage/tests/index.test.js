@@ -7,7 +7,7 @@ describe('mapDispatchToProps', () => {
       const dispatch = jest.fn();
       const result = mapDispatchToProps(dispatch);
       const locale = 'en';
-      result.onLocaleChangeClick(locale);
+      result.updateLocale(locale);
       expect(dispatch).toHaveBeenCalledWith(updateLocale(locale));
     });
   });
