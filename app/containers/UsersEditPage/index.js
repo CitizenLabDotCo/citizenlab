@@ -23,6 +23,8 @@ import { storeAvatar, storeAvatarError, updateCurrentUser, updateLocale } from '
 import ProfileForm from './ProfileForm';
 import { loadCurrentUser } from '../App/actions';
 import sagas from './sagas';
+import { LOAD_CURRENT_USER_REQUEST } from 'utils/auth/constants';
+import { UPDATE_CURRENT_USER_REQUEST, STORE_AVATAR_REQUEST } from 'containers/UsersEditPage/constants';
 
 
 const ProfileDiv = styled.div`
@@ -68,21 +70,27 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
 }
 
 UsersEditPage.propTypes = {
-  loading: PropTypes.bool.isRequired,
-  loadError: PropTypes.bool.isRequired,
-  storeError: PropTypes.bool.isRequired,
+  loadError: PropTypes.bool,
+  loading: PropTypes.bool,
+  storeError: PropTypes.bool,
   currentUser: PropTypes.object,
-  processing: PropTypes.bool.isRequired,
+  processing: PropTypes.bool,
   stored: PropTypes.bool.isRequired,
   loadCurrentUser: PropTypes.func.isRequired,
   updateCurrentUser: PropTypes.func.isRequired,
   onAvatarUpload: PropTypes.func.isRequired,
-  avatarUploadError: PropTypes.bool.isRequired,
+  avatarUploadError: PropTypes.bool,
   updateLocale: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   pageState: selectProfile,
+  // here, rather than mergeProps, for correct re-render trigger
+  loading: (state) => state.getIn(['tempState', LOAD_CURRENT_USER_REQUEST, 'loading']),
+  storeError: (state) => state.getIn(['tempState', UPDATE_CURRENT_USER_REQUEST, 'error']),
+  loadError: (state) => state.getIn(['tempState', LOAD_CURRENT_USER_REQUEST, 'error']),
+  processing: (state) => state.getIn(['tempState', UPDATE_CURRENT_USER_REQUEST, 'loading']),
+  avatarUploadError: (state) => state.getIn(['tempState', STORE_AVATAR_REQUEST, 'error']),
 });
 
 const customActionCreators = {
@@ -101,14 +109,10 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
   ...customActionCreators,
 }, dispatch);
 
-const mergeProps = ({ pageState }, dispatchProps) => ({
-  loading: pageState.get('loading'),
-  loadError: pageState.get('loadError'),
-  storeError: pageState.get('storeError'),
-  currentUser: pageState.get('currentUser').toJS(),
-  processing: pageState.get('processing'),
-  stored: pageState.get('stored'),
-  avatarUploadError: pageState.get('avatarUploadError'),
+const mergeProps = (stateProps, dispatchProps) => ({
+  currentUser: stateProps.pageState.get('currentUser').toJS(),
+  stored: stateProps.pageState.get('stored'),
+  ...stateProps,
   ...dispatchProps,
 });
 

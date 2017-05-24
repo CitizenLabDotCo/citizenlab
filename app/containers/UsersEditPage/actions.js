@@ -5,8 +5,9 @@
  */
 
 import {
-  LOAD_CURRENT_USER_SUCCESS, LOAD_CURRENT_USER_ERROR, STORE_AVATAR, UPDATE_CURRENT_USER_SUCCESS,
-  UPDATE_CURRENT_USER_ERROR, UPDATE_CURRENT_USER, STORE_AVATAR_ERROR, UPDATE_USER_LOCALE, STORE_AVATAR_SUCCESS,
+  LOAD_CURRENT_USER_SUCCESS, LOAD_CURRENT_USER_ERROR, STORE_AVATAR_REQUEST,
+  UPDATE_CURRENT_USER_SUCCESS, UPDATE_CURRENT_USER_ERROR, STORE_AVATAR_ERROR, UPDATE_USER_LOCALE,
+  STORE_AVATAR_SUCCESS, UPDATE_CURRENT_USER_REQUEST,
 } from './constants';
 
 export function loadCurrentUserSuccess(currentUser) {
@@ -39,7 +40,7 @@ export function loadCurrentUserError() {
 
 export function updateCurrentUser(currentUser) {
   return {
-    type: UPDATE_CURRENT_USER,
+    type: UPDATE_CURRENT_USER_REQUEST,
     payload: currentUser,
     userId: currentUser.userId,
   };
@@ -77,7 +78,7 @@ export function updateCurrentUserError() {
 
 export function storeAvatar(avatarBase64, userId) {
   return {
-    type: STORE_AVATAR,
+    type: STORE_AVATAR_REQUEST,
     avatarBase64,
     userId,
   };

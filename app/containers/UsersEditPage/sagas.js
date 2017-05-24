@@ -7,7 +7,7 @@ import { fetchCurrentUser, updateCurrentUser } from 'api';
 import {
   loadCurrentUserError, storeAvatarError, storeAvatarSuccess, updateCurrentUserError, updateCurrentUserSuccess, loadCurrentUserSuccess,
 } from './actions';
-import { STORE_AVATAR, UPDATE_CURRENT_USER } from './constants';
+import { STORE_AVATAR_REQUEST, UPDATE_CURRENT_USER_REQUEST } from './constants';
 import { LOAD_CURRENT_USER } from '../App/constants';
 
 // Individual exports for testing
@@ -59,11 +59,11 @@ function* watchLoadCurrentUser() {
 }
 
 function* watchStoreAvatar() {
-  yield takeLatest(STORE_AVATAR, postAvatar);
+  yield takeLatest(STORE_AVATAR_REQUEST, postAvatar);
 }
 
 function* watchStoreCurrentUser() {
-  yield takeLatest(UPDATE_CURRENT_USER, postProfile);
+  yield takeLatest(UPDATE_CURRENT_USER_REQUEST, postProfile);
 }
 
 export default {

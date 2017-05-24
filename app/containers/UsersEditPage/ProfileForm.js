@@ -89,5 +89,5 @@ ProfileForm.propTypes = {
   avatarUpload: PropTypes.func.isRequired,
   onLocaleChangeClick: PropTypes.func.isRequired,
   userData: PropTypes.object,
-  avatarUploadError: PropTypes.bool.isRequired,
+  avatarUploadError: PropTypes.bool,
 };

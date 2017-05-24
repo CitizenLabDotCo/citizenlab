@@ -111,7 +111,7 @@ class Avatar extends React.PureComponent {
 
 Avatar.propTypes = {
   onAvatarUpload: PropTypes.func.isRequired,
-  avatarUploadError: PropTypes.bool.isRequired,
+  avatarUploadError: PropTypes.bool,
   avatarURL: PropTypes.any,
   userId: PropTypes.string,
 };
