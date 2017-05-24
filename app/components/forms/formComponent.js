@@ -13,7 +13,7 @@ class FormComponent extends React.Component {
     const { run } = this.context.sagas;
     const saga = this.saga || this.props.saga;
     if (!prevState.loading && this.state.loading) {
-      run(this.saga, this.values, this.defaulSuccess, this.handleErrors);
+      run(saga, this.values, this.defaulOnSuccess, this.defaulOnError);
     }
   }
 
@@ -21,13 +21,13 @@ class FormComponent extends React.Component {
     this.values[name] = value;
   }
 
-  defaulhandleSuccess = (...args) => {
+  defaulOnSuccess = (...args) => {
     this.setState({ loading: false }, () => {
       this.handleSuccess(...args);
     });
   }
 
-  defaulhandleError = (e = {}) => {
+  defaulOnError = (e = {}) => {
     const toNewState = { loading: false, error: true };
     const errorsObje = {};
     // translate Errors to arrays snake case strings
@@ -54,6 +54,10 @@ class FormComponent extends React.Component {
 
 FormComponent.contextTypes = {
   sagas: PropTypes.func.isRequired,
+};
+
+FormComponent.propTypes = {
+  saga: PropTypes.func.isRequired,
 };
 
 export default FormComponent;

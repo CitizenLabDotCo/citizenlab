@@ -55,7 +55,7 @@ export default function ideasShowReducer(state = initialState, action) {
         .set('nextCommentPageItemCount', nextCommentPageItemCount);
     }
     case PUBLISH_COMMENT_SUCCESS: {
-      const id = action.payload.id;
+      const id = action.payload.data.id;
       return state
         .update('comments', (comments) => comments.concat(id));
     }

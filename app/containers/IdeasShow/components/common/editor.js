@@ -1,90 +1,66 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Accordion } from 'semantic-ui-react';
-import { Editor as TextBox } from 'react-draft-wysiwyg';
 
-import { FormattedMessage, injectIntl } from 'react-intl';
-import { EditorState, convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
+// components
+import { Button } from 'semantic-ui-react';
+import EditorForm from './editorForm';
+import DeleteButton from './deleteButton';
+import { FormattedMessage } from 'react-intl';
 
-import { createStructuredSelector } from 'reselect';
-import { selectAuthDomain } from 'utils/auth/selectors';
-import { preprocess } from 'utils';
-import { publishComment, publishCommentError } from '../../actions';
+// sagas
+import { publishCommentFork } from '../../sagas';
+
+// messages
 import messages from '../../messages';
 
-import DeleteButton from './deleteButton';
-
+/* eslint-disable react/sort-comp*/
 class Editor extends React.PureComponent {
 
+  constructor() {
+    super();
+    this.state = { visible: false };
+  }
 
+  toggleEditor = () => {
+    this.setState({ visible: !this.state.visible });
+  }
 
-
-
+  closeEditor = () => {
+    this.setState({ visible: false });
+  }
 
   render() {
-    const { editorState } = this.state;
+    const display = this.state.visible ? 'block' : 'none';
     const { parentId, ideaId } = this.props;
     return (
-      <Accordion >
-        <Accordion.Title style={{ fontSize: '0px', height: '0' }}>
-          <Button style={{ float: 'right' }}> Reply </Button>
-        </Accordion.Title>
-        <Accordion.Title style={{ fontSize: '0px', height: '0' }}>
-          <DeleteButton
-            commentId={parentId}
-            ideaId={ideaId}
-          >
-            Delete
+      <div>
+        <div style={{ height: '50px' }}>
+          <Button style={{ float: 'right' }} onClick={this.toggleEditor}>
+            <FormattedMessage {...messages.commentRepplyButton} />
+          </Button>
+          <DeleteButton commentId={parentId} ideaId={ideaId} >
+            <FormattedMessage {...messages.commentDeleteButton} />
           </DeleteButton>
-        </Accordion.Title>
-        <div style={{ height: '40px' }} />
-        <Accordion.Content>
-          <CommentForm />
-        </Accordion.Content>
-      </Accordion>
+        </div>
+        <div style={{ display }}>
+          <EditorForm
+            parentId={parentId}
+            ideaId={ideaId}
+            saga={publishCommentFork}
+            onSuccess={this.closeEditor}
+          />
+        </div>
+      </div>
 
     );
   }
 }
 
 Editor.propTypes = {
-  submitComment: PropTypes.func,
-  // currentUserId: PropTypes.string,
   parentId: PropTypes.string,
-  ideaId: PropTypes.string,
+  ideaId: PropTypes.string.isRequired,
 };
 
 // publishCommentClick
 
-
-const publishCommentAction = (ideaId, userId, locale, parentId, editorState) => {
-  if (!editorState) return publishCommentError('');
-
-  const editorContent = convertToRaw(editorState.getCurrentContent());
-  const htmlContent = draftToHtml(editorContent);
-  if (htmlContent && htmlContent.trim() !== '<p></p>') {
-    const htmlContents = {};
-    htmlContents[locale] = htmlContent;
-    return publishComment(ideaId, userId, htmlContents, parentId);
-  }
-  return publishCommentError('');
-};
-
-const mergeProps = (stateP, dispatchP, ownP) => {
-  const { ideaId, parentId } = ownP;
-  const { currentUserId } = stateP;
-  const submitAction = dispatchP.publishCommentAction;
-  const locale = ownP.intl.locale;
-  const submitComment = submitAction.bind(undefined, ideaId, currentUserId, locale, parentId);
-
-
-  return {
-    currentUserId,
-    submitComment,
-    parentId,
-    ideaId,
-  };
-};
-const connectedEditor = preprocess(null, { publishCommentAction }, mergeProps)(Editor);
-export default injectIntl(connectedEditor);
+export default Editor;

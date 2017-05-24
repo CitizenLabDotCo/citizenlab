@@ -18,11 +18,12 @@ import messages from '../messages';
 class RtfEditor extends React.Component {
   constructor(props) {
     super();
-    this.state = { editorState: EditorState.createEmpty(), showError: true };
+    this.editorState = EditorState.createEmpty();
+    this.state = { showError: true };
     const { formatMessage } = props.intl;
 
     const toAppendName = appenDableName(name);
-    const label = formatMessage(messages[`label${toAppendName}`]);
+    const label = formatMessage(props.label || messages[`label${toAppendName}`]);
     this.text = { label };
   }
 
@@ -44,25 +45,27 @@ class RtfEditor extends React.Component {
   render() {
     const { errors } = this.props;
     const { label } = this.text;
-    const { showError, editorState } = this.state;
+    const { showError } = this.state;
     // if (Object.keys(errors).length !== 0) console.log(errors);
-    // const error = errors && messages[toCammelCase(errors.slice(-1)[0])];
+    const error = errors && messages[toCammelCase(errors.slice(-1)[0])];
 
     return (
       <Form.Field>
         <RenderError message={error} showError={showError} />
         <label htmlFor={'textBox'}>{label}</label>
-        <TextBox
-          toolbarHidden
-          toolbar={{
-            options: ['inline'],
-            inline: {
-              options: ['bold', 'italic', 'underline'],
-            },
-          }}
-          editorState={editorState}
-          onEditorStateChange={this.handleChange}
-        />
+        <div style={{ border: '1px solid black' }}>
+          <TextBox
+            toolbarHidden
+            toolbar={{
+              options: ['inline'],
+              inline: {
+                options: ['bold', 'italic', 'underline'],
+              },
+            }}
+            defaultEditorState={this.editorState}
+            onEditorStateChange={this.handleChange}
+          />
+        </div>
       </Form.Field>
     );
   }
@@ -73,6 +76,7 @@ RtfEditor.propTypes = {
   action: PropTypes.func.isRequired,
   intl: intlShape,
   errors: PropTypes.array,
+  label: PropTypes.object,
 };
 
 export default injectIntl(RtfEditor);

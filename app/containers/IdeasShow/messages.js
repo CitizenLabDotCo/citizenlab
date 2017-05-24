@@ -18,6 +18,23 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentEditorHeader',
     defaultMessage: 'Comment the idea!',
   },
+
+  commentEditorLabel: {
+    id: 'app.containers.IdeasShow.commentEditorLabel',
+    defaultMessage: 'Comment the idea!',
+  },
+
+  commentRepplyButton: {
+    id: 'app.containers.IdeasShow.commentRepplyButton',
+    defaultMessage: 'Comment the idea!',
+  },
+
+  commentDeleteButton: {
+    id: 'app.containers.IdeasShow.commentRepplyButton',
+    defaultMessage: 'Comment the idea!',
+  },
+
+
   loadingIdea: {
     id: 'app.containers.IdeasShow.loadingIdea',
     defaultMessage: 'Loading idea...',

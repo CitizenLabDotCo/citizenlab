@@ -4,48 +4,34 @@ import PropTypes from 'prop-types';
 // components
 import FormComponent from 'components/forms/formComponent';
 import { Form } from 'semantic-ui-react';
-import RtfEditor from 'commponents/forms/inputs/rtfEditor';
+import RtfEditor from 'components/forms/inputs/rtfEditor';
 import Button from 'components/buttons/loader';
-
-// draft-js
-import { EditorState, convertToRaw } from 'draft-js';
 
 // messages
 import messages from '../../messages';
 
-class CommentForm extends FormComponent {
-  constructor() {
-    super();
-    this.values = {ideaId: props.ideaId, parentId: props.parentId}
-  }
-
-  handleError = (errors) => {
-    console.log(errors)
-    // this.setState({errors})
+class EditorForm extends FormComponent {
+  constructor(props) {
+    super(props);
+    this.values = { ideaId: props.ideaId, parentId: props.parentId };
   }
 
   handleSuccess = () => {
-    console.log("banana")
+    this.props.onSuccess()
   }
 
-  publishComment() {
-    this.props.submitComment(this.state.editorState);
-  }
-
-
+  /* eslint-disable react/jsx-boolean-value*/
   render() {
-    const { editorState } = this.state;
-    const { loading } = this.state.loading;
+    const { loading } = this.state;
+    const { errors, error } = this.state;
     return (
-      <Form>
+      <Form error={error} onSubmit={this.handleSubmit}>
         {/* TODO #later: customize toolbar and set up desired functions (image etc.)
             based on https://github.com/jpuri/react-draft-wysiwyg/blob/master/docs/src/components/Demo/index.js */}
         <div style={{ border: '1px solid black' }} />
-        <RtfEditor name={'comment'} action={this.handleChange} errors={errors.text} />
+        <RtfEditor name={'comment'} action={this.handleChange} errors={errors.text} label={messages.commentEditorLabel} />
         <Button
-          fluid={false}
-          size={'medium'}
-          style={{ float: 'right' }}
+          fluid={true}
           onClick={this.handleClick}
           message={messages.publishComment}
           loading={loading}
@@ -55,37 +41,10 @@ class CommentForm extends FormComponent {
   }
 }
 
-
-const publishCommentAction = (ideaId, parentId, locale, editorState) => {
-  if (!editorState) return publishCommentError('');
-
-  const editorContent = convertToRaw(editorState.getCurrentContent());
-  const htmlContent = draftToHtml(editorContent);
-  if (htmlContent && htmlContent.trim() !== '<p></p>') {
-    const htmlContents = {};
-    htmlContents[locale] = htmlContent;
-    return publishComment(ideaId, userId, htmlContents, parentId);
-  }
-  return publishCommentError('');
+EditorForm.propTypes = {
+  parentId: PropTypes.string,
+  ideaId: PropTypes.string.isRequired,
 };
 
-const mergeProps = (stateP, dispatchP, ownP) => {
-  const { ideaId, parentId } = ownP;
-  const { currentUserId } = stateP;
-  const submitAction = dispatchP.publishCommentAction;
-  const locale = ownP.intl.locale;
-  const submitComment = submitAction.bind(undefined, ideaId, currentUserId, locale, parentId);
 
-
-  return {
-    currentUserId,
-    submitComment,
-    parentId,
-    ideaId,
-  };
-};
-
-const connectedEditor = preprocess(null, { publishCommentAction }, mergeProps)(CommentForm);
-export default injectIntl(connectedEditor);
-
-export default CommentForm
+export default EditorForm;

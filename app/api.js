@@ -131,7 +131,6 @@ export function createIdeaComment(ideaId, htmlContents, parentId) {
     body_multiloc: htmlContents,
     parent_id: parentId,
   };
-
   return request(`${API_PATH}/ideas/${ideaId}/comments`, { comment: body }, {
     method: 'POST',
   });

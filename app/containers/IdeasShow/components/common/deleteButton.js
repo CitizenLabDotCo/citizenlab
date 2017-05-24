@@ -25,7 +25,6 @@ class DeleteButton extends React.Component {
     return (
       <LoaderButton
         fluid={false}
-        size={'medium'}
         style={{ float: 'right' }}
         onClick={this.handleClick}
         message={messages.deleteComment}
