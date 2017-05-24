@@ -97,7 +97,7 @@ COPY . .
 
 EXPOSE 4000
 
-CMD rake db:migrate && puma -C config/puma.rb
+CMD puma -C config/puma.rb
 # This is the command that's going to be ran by default if you run the
 # Docker image without any arguments.
 #

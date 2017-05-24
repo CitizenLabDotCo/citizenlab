@@ -27,11 +27,32 @@ pipeline {
         sh 'cp -r doc/api/* /var/www/apidocs'
       }
     }
+    stage('Push docker image') {
+      steps {
+        echo 'Building containers'
+        script {
+          sh 'rm -rf public/uploads/*'
+          docker.withRegistry("https://index.docker.io/v1/",'docker-hub-credentials') {
+            def image = docker.build('citizenlabdotco/cl2-back:latest')
+            image.push('latest')
+          }
+        }
+      }
+    }
+    stage('Deploy to staging') {
+      steps {
+        sshagent (credentials: ['local-ssh-user']) {
+          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.157.143.6 sudo docker run --env-file cl2-deployment/.env-staging -it citizenlabdotco/cl2-back:latest rake db:migrate'
+          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.157.143.6 cd cl2-deployment && sudo docker stack deploy --compose-file docker-compose-staging.yml cl2-back-stg --with-registry-auth'
+        }
+      }
+    }
   }
   post {
     always {
       junit 'spec/reports/**/*.xml'
       sh 'docker-compose down --volumes'
+      cleanWs()
     }
     success {
       slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} passed all tests!\nMore info at ${env.BUILD_URL}"
