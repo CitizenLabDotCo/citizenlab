@@ -6,7 +6,8 @@
 
 import { fromJS } from 'immutable';
 import {
-  STORE_AVATAR_REQUEST, LOAD_CURRENT_USER_SUCCESS, UPDATE_CURRENT_USER_REQUEST, UPDATE_CURRENT_USER_SUCCESS, UPDATE_CURRENT_USER_ERROR, UPDATE_USER_LOCALE,
+  LOAD_CURRENT_USER_SUCCESS, UPDATE_CURRENT_USER_REQUEST, UPDATE_CURRENT_USER_SUCCESS,
+  UPDATE_USER_LOCALE,
 } from './constants';
 
 export const usersEditPageInitialState = fromJS({
@@ -34,13 +35,6 @@ export default function usersEditPageReducer(state = usersEditPageInitialState, 
     case UPDATE_CURRENT_USER_SUCCESS:
       return state
         .set('stored', true);
-    case UPDATE_CURRENT_USER_ERROR:
-      return state
-        // restore existing currentUser data to keep form state consistency
-        .set('currentUser', state.get('currentUser'));
-    case STORE_AVATAR_REQUEST:
-      return state
-        .set('currentUser', fromJS(state.get('currentUser')).set('avatar', action.avatarBase64));
     case UPDATE_USER_LOCALE:
       return state
         .set('currentUser', fromJS(state.get('currentUser')).set('locale', action.userLocale));

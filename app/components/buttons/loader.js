@@ -17,7 +17,7 @@ const Button = ({ message, loading }) => (
 );
 
 Button.propTypes = {
-  message: PropTypes.object.isRequied,
+  message: PropTypes.object.isRequired,
   loading: PropTypes.bool,
 };
 

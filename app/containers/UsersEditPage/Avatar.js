@@ -22,6 +22,10 @@ class Avatar extends React.PureComponent {
   constructor() {
     super();
 
+    this.state = {
+      avatar: null,
+    };
+
     // bind props to use them within other props (onDrop)
     this.onDrop = this.onDrop.bind(this);
   }
@@ -40,6 +44,9 @@ class Avatar extends React.PureComponent {
     reader.readAsDataURL(files[0]);
 
     reader.onload = () => {
+      this.setState({
+        avatar: reader.result,
+      });
       this.props.onAvatarUpload(reader.result, this.props.userId);
     };
 
@@ -50,6 +57,7 @@ class Avatar extends React.PureComponent {
 
   render() {
     const { avatarURL, avatarUploadError } = this.props;
+    const { avatar } = this.state;
 
     const FileInput = (props) => (
       <input
@@ -86,7 +94,7 @@ class Avatar extends React.PureComponent {
           accept="image/*"
           multiple={false}
         >
-          { dropzoneImage(avatarURL) }
+          { dropzoneImage(avatar || avatarURL) }
         </Dropzone>
         <div>
           <FormattedMessage {...messages.dragToUpload} /> <FormattedMessage {...messages.or} />
