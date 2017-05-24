@@ -54,4 +54,12 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.clickToUpload',
     defaultMessage: 'Click',
   },
+  submit: {
+    id: 'app.containers.UsersEditPage.submit',
+    defaultMessage: 'Submit',
+  },
+  or: {
+    id: 'app.containers.UsersEditPage.or',
+    defaultMessage: 'or...',
+  },
 });

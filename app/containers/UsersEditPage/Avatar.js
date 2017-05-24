@@ -1,27 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
-import { Button, Label } from 'components/Foundation';
+import { Container, Button, Label, Image } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
 import messages from './messages';
 
 export function dropzoneImage(avatarURL) {
-  const style = {
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    backgroundImage: `url('${avatarURL}')`,
-    backgroundSize: '100%',
-    margin: '5% auto',
-    width: '90%',
-    height: '90%',
-  };
-
   return (
-    avatarURL
-      ? (<div style={style}></div>)
-      : <span />
+    avatarURL ? (<Image
+      src={avatarURL}
+      width="90%"
+      height="90%"
+      style={{ margin: '5% auto' }}
+    />) : <span />
   );
 }
 
@@ -87,7 +80,7 @@ class Avatar extends React.PureComponent {
     `;
 
     return (
-      <div>
+      <Container>
         <Dropzone
           onDrop={this.onDrop}
           accept="image/*"
@@ -96,8 +89,13 @@ class Avatar extends React.PureComponent {
           { dropzoneImage(avatarURL) }
         </Dropzone>
         <div>
-          <FormattedMessage {...messages.dragToUpload} /> or
-          <span>
+          <FormattedMessage {...messages.dragToUpload} /> <FormattedMessage {...messages.or} />
+          <span
+            style={{
+              marginLeft: '10px',
+              display: 'inline-block',
+            }}
+          >
             <StyledFileInput />
             <StyledFileButton />
           </span>
@@ -106,7 +104,7 @@ class Avatar extends React.PureComponent {
         {avatarUploadError && <Label>
           <FormattedMessage {...messages.avatarUploadError} />
         </Label>}
-      </div>
+      </Container>
     );
   }
 }
