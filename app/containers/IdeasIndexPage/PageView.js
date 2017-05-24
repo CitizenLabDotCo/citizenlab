@@ -13,7 +13,7 @@ import { bindActionCreators } from 'redux';
 import WatchSagas from 'containers/WatchSagas';
 
 import sagasWatchers from './sagas';
-import { filterIdeas, loadIdeas, loadTopicsRequest, loadAreasRequest } from './actions';
+import { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest } from './actions';
 
 // implemented but not used now.
 // import Sidebar from './components/sidebar';
@@ -31,7 +31,9 @@ class View extends React.Component {
   componentDidMount() {
     this.props.loadTopicsRequest();
     this.props.loadAreasRequest();
-    this.getideas();
+    const { routeParams } = this.props;
+    const project = routeParams.slug;
+    this.getideas(null, { project });
   }
 
   /* Component should update if new query params are provided */
@@ -47,14 +49,13 @@ class View extends React.Component {
     return current !== visible;
   }
 
-  getideas = (props) => {
-    const data = props || this.props;
+  getideas = (location, query) => {
+    const data = location || this.props;
     const search = data.location.search;
-
     if (search) {
-      this.props.filterIdeas(search);
+      this.props.filterIdeas(search, query);
     } else {
-      this.props.loadIdeas(true);
+      this.props.loadIdeasRequest(true, null, null, null, query);
     }
   }
 
@@ -124,10 +125,11 @@ View.propTypes = {
   loadAreasRequest: PropTypes.func.isRequired,
   location: PropTypes.object,
   filterIdeas: PropTypes.func.isRequired,
-  loadIdeas: PropTypes.func.isRequired,
+  loadIdeasRequest: PropTypes.func.isRequired,
+  routeParams: PropTypes.object.isRequired,
 };
 
-const actions = { filterIdeas, loadIdeas, loadTopicsRequest, loadAreasRequest };
+const actions = { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 

@@ -336,6 +336,58 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/projects/:slug',
+      name: 'ProjectShow',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/ProjectShowPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+      childRoutes: [
+        {
+          path: '/projects/:slug/ideas',
+          name: 'ProjectShow',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/IdeasIndexPage/reducer'),
+              import('containers/IdeasIndexPage'),
+            ]);
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([reducer, component]) => {
+              injectReducer('ideasIndexPage', reducer.default);
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        }, {
+          path: '/projects/:slug/info',
+          name: 'ProjectShow',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/ProjectsShowPage/info'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+      ],
+    }, {
       path: '/sign-in/recover-password',
       name: 'usersPasswordRecovery',
       getComponent(nextState, cb) {

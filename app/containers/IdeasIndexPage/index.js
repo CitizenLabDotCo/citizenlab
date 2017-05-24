@@ -13,12 +13,12 @@ import { push } from 'react-router-redux';
 
 import OverlayChildren from 'utils/containers/overlayChildren';
 
-import PageView from './PageView';
+import PageView from './pageView';
 
-// Ideas show does not use helmet at this view is controlled by RouterIndexShow
+// need to implement Helmet
 class IdeasIndex extends React.Component {
 
-  isMainView = ({ params }) => !params.slug;
+  isMainView = ({ params }) => true;
   backToMainView = () => this.props.push('/ideas');
 
   render() {

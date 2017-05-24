@@ -66,6 +66,7 @@ export class ProjectsIndexPage extends React.PureComponent { // eslint-disable-l
 
         {projectsMap(projectsImm).map((project) => (<div key={project.id}>
           <T value={project.attributes.title_multiloc} />
+          {project.id}
         </div>))}
 
         {nextPageNumber && <Button onClick={this.goToNextPage}>
