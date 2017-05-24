@@ -5,11 +5,10 @@ import { mergeJsonApiResources } from 'utils/resources/actions';
 import { fetchCurrentUser, updateCurrentUser } from 'api';
 
 import {
-  loadCurrentUserError, storeAvatarError, storeAvatarSuccess, updateCurrentUserError, updateCurrentUserSuccess,
+  loadCurrentUserError, storeAvatarError, storeAvatarSuccess, updateCurrentUserError, updateCurrentUserSuccess, loadCurrentUserSuccess,
 } from './actions';
 import { STORE_AVATAR, UPDATE_CURRENT_USER } from './constants';
 import { LOAD_CURRENT_USER } from '../App/constants';
-import { loadCurrentUserSuccess } from '../../utils/auth/actions';
 
 // Individual exports for testing
 export function* getProfile() {
@@ -55,14 +54,20 @@ export function* postAvatar(action) {
   }
 }
 
-export function* watchLoadCurrentUser() {
+function* watchLoadCurrentUser() {
   yield takeLatest(LOAD_CURRENT_USER, getProfile);
 }
 
-export function* watchStoreAvatar() {
+function* watchStoreAvatar() {
   yield takeLatest(STORE_AVATAR, postAvatar);
 }
 
-export function* watchStoreCurrentUser() {
+function* watchStoreCurrentUser() {
   yield takeLatest(UPDATE_CURRENT_USER, postProfile);
 }
+
+export default {
+  watchLoadCurrentUser,
+  watchStoreAvatar,
+  watchStoreCurrentUser,
+};

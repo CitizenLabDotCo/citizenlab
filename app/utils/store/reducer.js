@@ -18,6 +18,7 @@ function utilsReducer(state = Map(), action) {
 const toDefaultType = (type) => {
   const actionArray = type.split('_')
   actionArray.pop()
+  actionArray.push('REQUEST')
   return actionArray.join('_')
 }
 

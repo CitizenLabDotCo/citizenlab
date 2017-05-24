@@ -10,7 +10,7 @@ import { fetchCurrentUser } from 'api';
 import { localStorageMock } from 'utils/testing/methods';
 
 import { getProfile } from '../sagas';
-import { loadCurrentUserSuccess } from '../../../utils/auth/actions';
+import { loadCurrentUserSuccess } from './../actions';
 
 describe('UserEditPage sagas', () => {
   // mock localStorage

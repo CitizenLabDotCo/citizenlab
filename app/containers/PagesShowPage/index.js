@@ -46,8 +46,6 @@ export class PagesShowPage extends React.PureComponent { // eslint-disable-line 
         {loadError && <div>{loadError}</div>}
 
         {page && <div>
-          <div><T value={page.attributes.title_multiloc} /></div>
-          <br />
           <div><T value={page.attributes.body_multiloc} /></div>
         </div>}
       </div>

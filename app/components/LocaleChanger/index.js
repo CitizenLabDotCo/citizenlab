@@ -5,21 +5,26 @@
 */
 
 import React, { PropTypes } from 'react';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
-import Select from 'react-select';
+import { Dropdown, Container } from 'semantic-ui-react';
 
 import { appLocales } from '../../i18n';
 import messages from './messages';
 
 export const LocaleSelector = (props) => (
-  <Select
-    name="form-field-name"
-    value={props.userLocale}
+  <Dropdown
+    className={props.className}
+    selection
+    text={props.userLocale}
     options={props.options}
     onChange={props.onLocaleChangeClick}
   />
 );
+
+const LocaleSelectorStyled = styled(LocaleSelector)`
+  margin-left: 10px;
+`;
 
 export default class LocaleChanger extends React.PureComponent {
   constructor() {
@@ -29,25 +34,28 @@ export default class LocaleChanger extends React.PureComponent {
     this.localeChangeClick.bind(this);
   }
 
-  localeChangeClick = (result) => {
+  localeChangeClick = (event, result) => {
     this.props.onLocaleChangeClick(result.value);
   };
 
   render() {
     const options = appLocales.map((appLocale) => ({
       value: appLocale.id,
+      key: appLocale.id,
       label: appLocale.name,
     }));
 
+    const { userLocale } = this.props;
+
     return (
-      <div>
+      <Container>
         <FormattedMessage {...messages.header} />
-        {this.props.userLocale && <LocaleSelector
+        {userLocale && <LocaleSelectorStyled
           onLocaleChangeClick={this.localeChangeClick}
           options={options}
-          userLocale={this.props.userLocale}
+          userLocale={userLocale}
         />}
-      </div>
+      </Container>
     );
   }
 }
@@ -61,4 +69,5 @@ LocaleSelector.propTypes = {
   onLocaleChangeClick: PropTypes.func.isRequired,
   userLocale: PropTypes.string, // received async
   options: PropTypes.array.isRequired,
+  className: PropTypes.string,
 };

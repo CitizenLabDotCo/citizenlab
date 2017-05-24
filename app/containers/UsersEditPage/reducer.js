@@ -17,7 +17,7 @@ export const usersEditPageInitialState = fromJS({
   storeError: false,
   processing: false,
   stored: false,
-  currentUser: { },
+  currentUser: fromJS({ }),
   avatarStored: false,
   avatarUploadError: false,
   avatarURL: '',
@@ -29,7 +29,7 @@ export default function usersEditPageReducer(state = usersEditPageInitialState, 
   if (action.payload) {
     const userId = action.userId;
     if (userId) {
-      currentUserWithId = fromJS(action.payload).set('userId', userId).toJS();
+      currentUserWithId = fromJS(action.payload).set('userId', userId);
     }
   }
 
@@ -65,7 +65,7 @@ export default function usersEditPageReducer(state = usersEditPageInitialState, 
     case STORE_AVATAR:
       return state
         .set('avatarUploadError', false)
-        .set('currentUser', fromJS(state.get('currentUser')).set('avatar', action.avatarBase64).toJS());
+        .set('currentUser', fromJS(state.get('currentUser')).set('avatar', action.avatarBase64));
     case STORE_AVATAR_SUCCESS:
       return state
         .set('avatarUploadError', false);
@@ -74,7 +74,7 @@ export default function usersEditPageReducer(state = usersEditPageInitialState, 
         .set('avatarUploadError', true);
     case UPDATE_USER_LOCALE:
       return state
-        .set('currentUser', fromJS(state.get('currentUser')).set('locale', action.userLocale).toJS());
+        .set('currentUser', fromJS(state.get('currentUser')).set('locale', action.userLocale));
     default:
       return state;
   }

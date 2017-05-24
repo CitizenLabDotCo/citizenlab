@@ -6,23 +6,23 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
-import { Saga } from 'react-redux-saga';
+import FormattedMessageSegment from 'components/FormattedMessageSegment';
+import WatchSagas from 'containers/WatchSagas/';
+import { preprocess } from 'utils/reactRedux';
+import { bindActionCreators } from 'redux';
 
 import {
-  makeSelectAvatarUploadError, makeSelectLoadError, makeSelectLoading, makeSelectProcessing,
-  makeSelectStored, makeSelectStoreError, makeSelectUserData,
+  selectProfile,
 } from './selectors';
 
 import messages from './messages';
 import { storeAvatar, storeAvatarError, updateCurrentUser, updateLocale } from './actions';
-// import ProfileForm from './ProfileForm';
+import ProfileForm from './ProfileForm';
 import { loadCurrentUser } from '../App/actions';
-import { watchLoadCurrentUser, watchStoreAvatar, watchStoreCurrentUser } from './sagas';
+import sagas from './sagas';
 
 
 const ProfileDiv = styled.div`
@@ -33,13 +33,11 @@ const ProfileDiv = styled.div`
 export class UsersEditPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
     // fetch existing profile / avatar
-    this.props.initData();
+    this.props.loadCurrentUser();
   }
 
   render() {
-    const { loading, loadError, storeError, processing, stored,
-      // userData, onAvatarUpload, avatarUploadError, onProfileFormSubmit, onLocaleChangeClick
-    } = this.props;
+    const { loading, loadError, storeError, processing, stored, currentUser, onAvatarUpload, avatarUploadError } = this.props;
 
     return (
       <ProfileDiv>
@@ -49,23 +47,21 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
             { name: 'description', content: 'UsersEditPage' },
           ]}
         />
-        <Saga saga={watchLoadCurrentUser} />
-        <Saga saga={watchStoreAvatar} />
-        <Saga saga={watchStoreCurrentUser} />
+        <WatchSagas sagas={sagas} />
 
-        {loading && <FormattedMessage {...messages.loading} />}
-        {loadError && <FormattedMessage {...messages.loadError} />}
-        {storeError && <FormattedMessage {...messages.storeError} />}
-        {processing && <FormattedMessage {...messages.processing} />}
-        {stored && <FormattedMessage {...messages.stored} />}
+        {loading && <FormattedMessageSegment message={messages.loading} />}
+        {loadError && <FormattedMessageSegment message={messages.loadError} />}
+        {storeError && <FormattedMessageSegment message={messages.storeError} />}
+        {processing && <FormattedMessageSegment message={messages.processing} />}
+        {stored && <FormattedMessageSegment message={messages.stored} />}
 
-        {/* <ProfileForm
-          onLocaleChangeClick={onLocaleChangeClick}
-          userData={userData}
+        <ProfileForm
+          onLocaleChangeClick={this.props.updateLocale}
+          userData={currentUser}
           avatarUpload={onAvatarUpload}
-          onFormSubmit={onProfileFormSubmit}
+          onFormSubmit={this.props.updateCurrentUser}
           avatarUploadError={avatarUploadError}
-        />*/}
+        />
       </ProfileDiv>
     );
   }
@@ -75,40 +71,45 @@ UsersEditPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   loadError: PropTypes.bool.isRequired,
   storeError: PropTypes.bool.isRequired,
+  currentUser: PropTypes.object,
   processing: PropTypes.bool.isRequired,
   stored: PropTypes.bool.isRequired,
-  initData: PropTypes.func.isRequired,
+  loadCurrentUser: PropTypes.func.isRequired,
+  updateCurrentUser: PropTypes.func.isRequired,
+  onAvatarUpload: PropTypes.func.isRequired,
+  avatarUploadError: PropTypes.bool.isRequired,
+  updateLocale: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: makeSelectLoading(),
-  loadError: makeSelectLoadError(),
-  storeError: makeSelectStoreError(),
-  userData: makeSelectUserData(),
-  processing: makeSelectProcessing(),
-  stored: makeSelectStored(),
-  avatarUploadError: makeSelectAvatarUploadError(),
+  pageState: selectProfile,
 });
 
-export function mapDispatchToProps(dispatch) {
-  return {
-    initData: () => {
-      dispatch(loadCurrentUser());
-    },
-    onProfileFormSubmit: (values) => {
-      dispatch(updateCurrentUser(values));
-    },
-    onAvatarUpload: (imageBase64, userId) => {
-      if (imageBase64 && userId) {
-        dispatch(storeAvatar(imageBase64, userId));
-      } else {
-        dispatch(storeAvatarError());
-      }
-    },
-    onLocaleChangeClick: (locale) => {
-      dispatch(updateLocale(locale));
-    },
-  };
-}
+const customActionCreators = {
+  onAvatarUpload(imageBase64, userId) {
+    if (imageBase64 && userId) {
+      return storeAvatar(imageBase64, userId);
+    }
+    return storeAvatarError();
+  },
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersEditPage);
+export const mapDispatchToProps = (dispatch) => bindActionCreators({
+  loadCurrentUser,
+  updateCurrentUser,
+  updateLocale,
+  ...customActionCreators,
+}, dispatch);
+
+const mergeProps = ({ pageState }, dispatchProps) => ({
+  loading: pageState.get('loading'),
+  loadError: pageState.get('loadError'),
+  storeError: pageState.get('storeError'),
+  currentUser: pageState.get('currentUser').toJS(),
+  processing: pageState.get('processing'),
+  stored: pageState.get('stored'),
+  avatarUploadError: pageState.get('avatarUploadError'),
+  ...dispatchProps,
+});
+
+export default preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(UsersEditPage);
