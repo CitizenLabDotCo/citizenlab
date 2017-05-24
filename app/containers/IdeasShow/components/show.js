@@ -1,21 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createStructuredSelector } from 'reselect';
-import { preprocess } from 'utils';
+
+// components
 import { Comment } from 'semantic-ui-react';
-
-import T from 'containers/T';
 import ImageCarousel from 'components/ImageCarousel';
-import Autorize from 'utils/containers/authorize';
-
-import { selectIdea } from '../selectors';
-
 import Author from './common/author';
 import Editor from './common/editor';
-
 import Votes from './show/votes';
-
 import Comments from './comments';
+import T from 'containers/T';
+import Autorize from 'utils/containers/authorize';
+
+// store
+import { createStructuredSelector } from 'reselect';
+import { preprocess } from 'utils';
+import { selectIdea } from '../selectors';
 
 const Carousel = ({ images }) => {
   if (!images[0]) return null;

@@ -3,22 +3,31 @@ import PropTypes from 'prop-types';
 import { Loader, Button as LayOutButton } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 
-const Button = ({ message, loading }) => (
-  <LayOutButton fluid size={'small'} style={{ position: 'relative' }}>
+const Button = (props) => (
+  <LayOutButton {...props}>
     {
-      loading ?
+      props.loading ?
         <div style={{ position: 'relative' }}>
           <span style={{ color: 'rgba(0, 0, 0, 0)' }}> o </span>
           <Loader size={'mini'} active />
         </div> :
-        <FormattedMessage {...message} />
+        <FormattedMessage {...props.message} />
     }
   </LayOutButton>
 );
 
 Button.propTypes = {
-  message: PropTypes.object.isRequied,
+  message: PropTypes.object.isRequired,
   loading: PropTypes.bool,
+  onCLick: PropTypes.func,
+  style: PropTypes.object,
+};
+
+Button.defaultProps = {
+  onCLick: () => {},
+  fluid: true,
+  style: { position: 'relative' },
+  size: 'small',
 };
 
 export default Button;

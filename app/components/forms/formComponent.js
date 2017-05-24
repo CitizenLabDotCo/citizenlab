@@ -11,17 +11,23 @@ class FormComponent extends React.Component {
 
   componentDidUpdate(prevProvs, prevState) {
     const { run } = this.context.sagas;
+    const saga = this.saga || this.props.saga;
     if (!prevState.loading && this.state.loading) {
-      run(this.saga, this.values, this.handleSuccess, this.handleErrors);
+      run(this.saga, this.values, this.defaulSuccess, this.handleErrors);
     }
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    this.setState({ loading: true, errors: {}, error: false });
+  handleChange = (name, value) => {
+    this.values[name] = value;
   }
 
-  handleErrors = (e = {}) => {
+  defaulhandleSuccess = (...args) => {
+    this.setState({ loading: false }, () => {
+      this.handleSuccess(...args);
+    });
+  }
+
+  defaulhandleError = (e = {}) => {
     const toNewState = { loading: false, error: true };
     const errorsObje = {};
     // translate Errors to arrays snake case strings
@@ -32,7 +38,17 @@ class FormComponent extends React.Component {
     });
     toNewState.errors = errorsObje;
 
-    return this.setState(toNewState);
+    this.setState(toNewState, () => {
+      this.handleError(e);
+    });
+  }
+
+  handleSuccess = () => {}
+  handleError = () => {}
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.setState({ loading: true, errors: {}, error: false });
   }
 }
 

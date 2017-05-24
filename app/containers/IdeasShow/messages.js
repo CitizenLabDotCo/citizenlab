@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.loadingIdea',
     defaultMessage: 'Loading idea...',
   },
+  oneSecond: {
+    id: 'app.containers.IdeasShow.oneSecond',
+    defaultMessage: 'Just one second...',
+  },
   ideaNotFound: {
     id: 'app.containers.IdeasShow.ideaNotFound',
     defaultMessage: 'Ups... it seems that this idea has be removed or forgotten!',

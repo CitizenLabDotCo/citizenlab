@@ -26,14 +26,7 @@ class SignInForm extends FormComponent {
     this.state = { errors: {} };
   }
 
-  handleChange = (name, value) => {
-    this.values[name] = value;
-  }
-
-  handleSuccess = () => {
-    this.setState({ loading: false });
-    return this.props.goTo('/');
-  }
+  handleSuccess = () => this.props.goTo('/')
 
   render() {
     const { error, errors } = this.state;

@@ -14,7 +14,6 @@ export default defineMessages({
     id: 'app.containers.SignInPage.authErrorInvalid',
     defaultMessage: 'Password o Email Invalid',
   },
-
   buttonSignIn: {
     id: 'app.containers.SignInPage.buttonSignIn',
     defaultMessage: 'Sign In',

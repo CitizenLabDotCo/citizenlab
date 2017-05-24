@@ -126,9 +126,8 @@ export function fetchIdeaComments(nextCommentPageNumber, nextCommentPageItemCoun
   return request(`${API_PATH}/ideas/${ideaId}/comments`, null, null, queryParameters);
 }
 
-export function createIdeaComment(ideaId, userId, htmlContents, parentId) {
+export function createIdeaComment(ideaId, htmlContents, parentId) {
   const body = {
-    author_id: userId,
     body_multiloc: htmlContents,
     parent_id: parentId,
   };

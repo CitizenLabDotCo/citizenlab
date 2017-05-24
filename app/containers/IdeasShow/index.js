@@ -6,16 +6,16 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import WatchSagas from 'containers/WatchSagas';
-
-import sagasWatchers from './sagas';
-import { loadComments, loadVotes, loadIdea } from './actions';
-import { LoadErrorMessage, LoadingIdeaMessage } from './components/loadMessages';
+// components
 import Show from './components/show';
+import LoadMessages from './components/loadMessages';
 
+// store
+import { preprocess } from 'utils';
+import WatchSagas from 'containers/WatchSagas';
+import sagasWatchers from './sagas';
+import { loadCommentsRequest, loadVotesRequest, loadIdeaRequest, resetPageData } from './actions';
 
 // Ideas show does not use helmet at this view is controlled by RouterIndexShow
 class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -26,17 +26,20 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
   }
 
   componentDidMount() {
-    this.props.loadIdea(this.id);
-    this.props.loadComments(this.id);
-    this.props.loadVotes(this.id);
+    this.props.loadIdeaRequest(this.id);
+    this.props.loadCommentsRequest(this.id);
+    this.props.loadVotesRequest(this.id);
+  }
+
+  componentWillUnmount() {
+    this.props.resetPageData();
   }
 
   render() {
     return (
       <div>
         <WatchSagas sagas={sagasWatchers} />
-        <LoadErrorMessage />
-        <LoadingIdeaMessage />
+        <LoadMessages />
         <Show />
       </div>
     );
@@ -44,14 +47,10 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
 }
 
 IdeasShow.propTypes = {
-  loadComments: PropTypes.func.isRequired,
-  loadVotes: PropTypes.func.isRequired,
+  loadIdeaRequest: PropTypes.func.isRequired,
+  loadVotesRequest: PropTypes.func.isRequired,
+  loadCommentsRequest: PropTypes.func,
   params: PropTypes.object,
-  loadIdea: PropTypes.func,
 };
 
-const ideasShowActions = { loadIdea, loadComments, loadVotes };
-const mapDispatchToProps = (dispatch) => bindActionCreators(ideasShowActions, dispatch);
-
-
-export default connect(null, mapDispatchToProps)(IdeasShow);
+export default preprocess(null, { loadIdeaRequest, loadCommentsRequest, loadVotesRequest, resetPageData })(IdeasShow);
