@@ -13,19 +13,11 @@ import {
 import { getPageItemCountFromUrl, getPageNumberFromUrl } from '../../utils/paginationUtils';
 
 const initialState = fromJS({
-  loadingIdea: false,
   idea: null,
   votes: [],
-  ideaVotesLoadError: null,
-  submittingVote: false,
-  ideaVoteSubmitError: null,
-  commentContent: null,
-  storeCommentError: null,
-  submittingComment: false,
   comments: [],
   nextCommentPageNumber: null,
   nextCommentPageItemCount: null,
-  activeParentId: null,
 });
 
 export default function ideasShowReducer(state = initialState, action) {

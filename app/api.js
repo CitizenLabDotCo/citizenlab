@@ -74,6 +74,10 @@ export function fetchIdea(id) {
   return request(`${API_PATH}/ideas/${id}`);
 }
 
+export function fetchProject(id) {
+  return request(`${API_PATH}/projects/${id}`);
+}
+
 export function fetchCurrentUser() {
   return request(`${API_PATH}/users/me`);
 }

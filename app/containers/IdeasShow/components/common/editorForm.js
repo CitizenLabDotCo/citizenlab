@@ -17,7 +17,7 @@ class EditorForm extends FormComponent {
   }
 
   handleSuccess = () => {
-    this.props.onSuccess()
+    this.props.onSuccess();
   }
 
   /* eslint-disable react/jsx-boolean-value*/
@@ -45,6 +45,5 @@ EditorForm.propTypes = {
   parentId: PropTypes.string,
   ideaId: PropTypes.string.isRequired,
 };
-
 
 export default EditorForm;

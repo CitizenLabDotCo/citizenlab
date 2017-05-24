@@ -51,6 +51,7 @@ IdeasShow.propTypes = {
   loadVotesRequest: PropTypes.func.isRequired,
   loadCommentsRequest: PropTypes.func,
   params: PropTypes.object,
+  resetPageData: PropTypes.func.isRequired,
 };
 
 export default preprocess(null, { loadIdeaRequest, loadCommentsRequest, loadVotesRequest, resetPageData })(IdeasShow);
