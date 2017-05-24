@@ -117,6 +117,14 @@ injectGlobal`
   }
   */
 
+  html {
+    box-sizing: border-box;
+  }
+
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+  
   html,
   body {
     height: 100%;
@@ -127,7 +135,7 @@ injectGlobal`
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 
-  body.fontLoaded {
+  body.fontLoaded, body.fontLoaded * {
     font-family: 'proxima-nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 

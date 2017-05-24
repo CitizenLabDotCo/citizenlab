@@ -5,6 +5,7 @@ import { lighten } from 'polished';
 
 import { Popup } from 'semantic-ui-react';
 
+import { media } from '../../utils/styleUtils';
 import headerImage from '../../../assets/img/landingpage/header.png';
 import logoImage from '../../../assets/img/landingpage/logo.png';
 
@@ -12,112 +13,215 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #f2f2f2;
+  background: #f6f6f6;
 `;
 
 const Header = styled.div`
   width: 100%;
-  height: 305px;
   display: flex;
   positiob: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-left: 25px;
+  padding-right: 25px;
   background-image: url(${headerImage});
   background-repeat: no-repeat;
   background-position: center top;
   background-size: cover;
+
+  ${media.notPhone`
+    height: 305px;
+  `}
+
+  ${media.phone`
+    min-height: 305px;
+  `}
 `;
 
 const Logo = styled.img`
-  width: 100px;
-  position: absolute;
-  top: 30px;
-  left: 30px;
-  cursor: pointer;
+  ${media.notPhone`
+    width: 100px;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    cursor: pointer;
+  `}
+
+  ${media.phone`
+    width: 100px;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+  `}
 `;
 
-const AddIdeaButton = styled.div`
-  color: #fff;
-  font-weight: 600;
-  font-size: 19px;
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  padding: 14px 20px;
+const AddIdeaButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 6px;
   background: #00a8e2;
   cursor: pointer;
+  transition: all 200ms ease-out;
+
+  ${media.notPhone`
+    padding: 13px 22px;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+  `}
+
+  ${media.phone`
+    width: 100%;
+    height: 55px;
+    margin-top: 35px;
+    margin-bottom: 35px;
+    margin-left: auto;
+    margin-right: auto;
+  `}
 
   &:hover {
-    background: ${lighten(0.2, '#00a8e2')};
+    background: ${lighten(0.1, '#00a8e2')};
   }
+`;
+
+const AddIdeaButton = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const AddIdeaButtonIcon = styled.svg`
+  fill: #fff;
+
+  ${media.notPhone`
+    height: 32px;
+    margin-top: -8px;
+  `}
+
+  ${media.phone`
+    height: 38px;
+    margin-top: -8px;
+  `}
+`;
+
+const AddIdeaButtonText = styled.span`
+  color: #fff;
+  font-weight: 500;
+  font-size: 19px;
+
+  ${media.phone`
+    font-size: 22px;
+  `}
 `;
 
 const HeaderTitle = styled.h1`
   color: #fff;
-  font-size: 48px;
-  font-weight: 600;
-  font-family: 'proxima-nova';
+  font-size: 46px;
+  line-height: 50px;
+  font-weight: 500;
   text-align: center;
   margin: 0;
   padding: 0;
-  padding-top: 90px;
+  padding-top: 120px;
   display: flex;
+
+  ${media.tablet`
+    font-size: 40px;
+    line-height: 48px;
+    padding-top: 130px;
+  `}
+
+  ${media.phone`
+    font-weight: 600;
+    font-size: 34px;
+    line-height: 38px;
+    padding-top: 35px;
+  `}
+
+  ${media.smallPhone`
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 34px;
+  `}
 `;
 
 const HeaderSubtitle = styled.h2`
   color: #fff;
   font-size: 32px;
+  line-height: 36px;
   font-weight: 100;
-  font-family: 'proxima-nova';
   text-align: center;
   margin: 0;
   padding: 0;
-  margin-top: 0px;
   opacity: 0.8;
+
+  ${media.tablet`
+    font-size: 28px;
+    line-height: 32px;
+  `}
+
+  ${media.notPhone`
+    margin-top: 5px;
+  `}
+
+  ${media.phone`
+    font-size: 24px;
+    line-height: 28px;
+  `}
+
+  ${media.smallPhone`
+    font-size: 20px;
+    line-height: 24px;
+  `}
 `;
 
 const TabBar = styled.div`
   width: 100%;
-  height: 60px;
   display: flex;
   justify-content: center;
+  padding-left: 30px;
+  padding-right: 30px;
   background: white;
+  border-bottom: solid 1px #e0e0e0;
+
+  ${media.phone`
+    justify-content: center;
+  `}
 `;
 
 const TabBarInner = styled.div`
-  width: 100%;
   max-width: 1050px;
   display: flex;
-  align-items: center;
+
+  ${media.notPhone`
+    width: 100%;
+  `}
 `;
 
 const TabLine = styled.div`
   height: 4px;
   position: absolute;
   bottom: 0px;
-  left: 25px;
-  right: 25px;
+  left: 0px;
+  right: 0px;
   background: #00a8e2;
 `;
 
 const Tab = styled.div`
-  height: 60px;
   font-size: 19px;
   font-weight: 500;
-  color: ${(props) => props.active ? '#00a8e2' : '#999'};
+  color: ${(props) => props.active ? '#00a8e2' : '#444'};
   text-transform: uppercase;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 25px;
-  padding-right: 25px;
+  padding-top: 22px;
+  padding-bottom: 22px;
+  padding-left: 0px;
+  padding-right: 0px;
   cursor: pointer;
   position: relative;
-
-  &:first-child {
-    padding-left: 0px;
-  }
+  margin-right: 50px;
 
   &:hover {
     color: #00a8e2;
@@ -127,42 +231,134 @@ const Tab = styled.div`
     opacity: ${(props) => props.active ? 1 : 0};
   }
 
-  &:first-child > ${TabLine} {
-    left: 0px;
+  &:last-child {
+    margin-right: 0px;
   }
+
+  ${media.phone`
+    font-size: 18px;
+    margin-right: 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  `}
+
+  ${media.smallPhone`
+    font-size: 16px;
+    margin-right: 30px;
+  `}
 `;
 
 const ContentContainer = styled.div`
-  width: 100%;
-  max-width: 1050px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-left: 30px;
+  padding-right: 30px;
+`;
+
+const Content = styled.div`
+  width: 100%;
+  max-width: 1050px;
   padding-bottom: 200px;
-  margin-top: 50px;
 `;
 
-const IdeasTitle = styled.h2`
+const SectionHeader = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-top: 80px;
+  padding-bottom: 10px;
+  /* border: solid 1px purple; */
+
+  ${media.phone`
+    padding-top: 50px;
+  `}
+
+  ${media.smallPhone`
+    flex-wrap: wrap;
+  `}
+`;
+
+const SectionTitle = styled.h2`
+  flex: 1;
   color: #555;
-  font-size: 32px;
-  font-weight: 600;
-  -webkit-font-smoothing: antialiased;
+  font-size: 34px;
+  line-height: 38px;
+  font-weight: 300;
+  margin: 0;
+  margin-right: 20px;
+  /* border: solid 1px green; */
+
+  ${media.phone`
+    font-size: 32px;
+    line-height: 36px;
+  `}
 `;
 
-const IdeasContainer = styled.div`
+const ViewAllButton = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  cursor: pointer;
+  /* border: solid 1px red; */
+
+  &:hover {
+    div {
+      color: ${lighten(0.1, '#00a8e2')};
+    }
+  
+    svg {
+      fill: ${lighten(0.1, '#00a8e2')};
+    }
+  }
+
+  ${media.phone`
+    margin-top: 10px;
+  `}
+`;
+
+const ViewAllButtonText = styled.div`
+  color: #00a8e2;
+  font-size: 18px;
+  line-height: 16px;
+  margin-right: 7px;
+  /* border: solid 1px red; */
+`;
+
+const ViewAllButtonIcon = styled.svg`
+  fill: #00a8e2;
+  height: 12px;
+  margin-top: 0px;
+  /* border: solid 1px red; */
+`;
+
+const SectionContainer = styled.div`
   font-size: 20px;
   color: #999;
   margin-top: 10px;
+  display: flex;
+
+  ${media.tablet`
+    flex-wrap: wrap;
+  `}
+
+  ${media.phone`
+    flex-direction: column;
+  `}
 `;
 
-const IdeasRow = styled.div`
-  display: flex;
-  /* justify-content: space-between; */
+const IdeasContainer = SectionContainer.extend`
+  ${media.tablet`
+    flex-wrap: wrap;
+  `}
+
+  ${media.phone`
+    flex-direction: column;
+  `}
 `;
 
 const Idea = styled.div`
-  width: 250px;
-  /* width: 30%; */
+  width: calc(50% - 10px);
   height: 220px;
   padding: 20px;
   display: flex;
@@ -171,16 +367,36 @@ const Idea = styled.div`
   border-radius: 8px;
   background: #fff;
   cursor: pointer;
-  /* transition: box-shadow 500ms cubic-bezier(0.19, 1, 0.22, 1); */
-  transition: all 200ms ease;
+  border: solid 1px #e0e0e0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transition: all 250ms ease-out;
 
-  &:not(:first-child) {
-    margin-left: 20px;
-  }
+  ${media.phone`
+    width: 100%;
+    margin-bottom: 20px;
+  `}
+
+  ${media.tablet`
+    width: calc(50% - 10px);
+    margin-bottom: 20px;
+
+    &:nth-child(even) {
+      margin-left: 20px;
+    }
+  `}
+
+  ${media.desktop`
+    &:not(:first-child) {
+      margin-left: 20px;
+    }
+  `}
 
   &:hover {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    /* box-shadow: 0 0 8px 0 rgba(0,0,0,0.12), 0 5px 8px 0 rgba(0,0,0,0.12); */
+    /* border-color: #ccc; */
+    /* box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.15); */
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.12), 0 15px 45px 0 rgba(0,0,0,0.12);
+    transform: scale(1.02);
   }
 `;
 
@@ -190,16 +406,16 @@ const IdeaContent = styled.div`
 `;
 
 const IdeaTitle = styled.div`
-  color: #444;
+  color: #333;
   font-size: 25px;
-  font-weight: 400;
-  line-height: 28px;
+  font-weight: 300;
+  line-height: 30px;
 `;
 
 const IdeaMeta = styled.div`
   color: #999;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 300;
   margin-top: 7px;
 `;
 
@@ -252,8 +468,8 @@ const VoteDown = Vote.extend`
 `;
 
 const ThumbIcon = styled.svg`
-  fill: #999;
-  height: 32px;
+  fill: #aaa;
+  height: 26px;
   cursor: pointer;
   display: inline-block;
   align-self: flex-end;
@@ -265,16 +481,14 @@ const ThumbIcon = styled.svg`
 
 const ThumbUpIcon = ThumbIcon.extend``;
 
-const ThumbDownIcon = ThumbIcon.extend`
-  margin-bottom: -9px;
-`;
+const ThumbDownIcon = ThumbIcon.extend``;
 
 const VoteCount = styled.div`
-  color: #999;
+  color: #aaa;
   font-weight: 300;
   font-size: 16px;
-  margin-top: 16px;
-  margin-left: 3px;
+  margin-top: 10px;
+  margin-left: 4px;
 `;
 
 const CommentContainer = styled.div`
@@ -291,40 +505,81 @@ const CommentContainer = styled.div`
 `;
 
 const CommentIcon = styled.svg`
-  fill: #999;
-  height: 34px;
+  fill: #aaa;
+  height: 30px;
   cursor: pointer;
   display: inline-block;
   align-self: flex-end;
-  margin-bottom: -6px;
 `;
 
 const CommentCountContainer = styled.div`
   width: 27px;
   height: 22px;
   position: absolute;
-  top: 12px;
-  left: 4px;
+  top: 2px;
+  left: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
 const CommentCount = styled.div`
-  color: #999;
+  color: #aaa;
   font-weight: 300;
-  font-size: 16px;
+  font-size: 14px;
   margin-top: 0px;
 `;
+
+const Project = styled.div`
+  width: calc(50% - 10px);
+  height: 342px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  border: solid 1px #e0e0e0;
+  margin-bottom: 20px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transition: all 250ms ease-out;
+
+  ${media.phone`
+    width: 100%;
+    margin-bottom: 20px;
+  `}
+
+  ${media.notPhone`
+    &:nth-child(even) {
+      margin-left: 20px;
+    }
+  `}
+
+  &:hover {
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.12), 0 15px 45px 0 rgba(0,0,0,0.12);
+    transform: scale(1.02);
+  }
+`;
+
 
 function LandingPage() { // eslint-disable-line react/prefer-stateless-function
   return (
     <Container>
       <Header>
         <Logo src={logoImage} styleName="logo" alt="logo" />
-        <AddIdeaButton>Add an idea</AddIdeaButton>
         <HeaderTitle>Co-create Oostende</HeaderTitle>
         <HeaderSubtitle>Share your ideas for Oostende and co-create your city</HeaderSubtitle>
+        <AddIdeaButtonContainer>
+          <AddIdeaButton>
+            <AddIdeaButtonIcon height="100%" viewBox="0 0 24 24">
+              <path fill="none" d="M0 0h24v24H0V0z" /><path d="M6.57 21.64c0 .394.32.716.716.716h2.867c.394 0 .717-.322.717-.717v-.718h-4.3v.717zM8.72 8.02C5.95 8.02 3.7 10.273 3.7 13.04c0 1.704.853 3.202 2.15 4.112v1.62c0 .394.322.716.717.716h4.3c.393 0 .716-.322.716-.717v-1.618c1.298-.91 2.15-2.408 2.15-4.113 0-2.768-2.25-5.02-5.017-5.02zm2.04 7.957l-.608.43v1.648H7.286v-1.648l-.61-.43c-.967-.674-1.54-1.77-1.54-2.938 0-1.98 1.605-3.585 3.583-3.585s3.583 1.605 3.583 3.584c0 1.167-.574 2.263-1.542 2.937zM20.3 7.245h-3.61v3.61h-1.202v-3.61h-3.61V6.042h3.61v-3.61h1.202v3.61h3.61v1.203z" />
+            </AddIdeaButtonIcon>
+            <AddIdeaButtonText>
+              Add an idea
+            </AddIdeaButtonText>
+          </AddIdeaButton>
+        </AddIdeaButtonContainer>
       </Header>
 
       <TabBar>
@@ -336,9 +591,17 @@ function LandingPage() { // eslint-disable-line react/prefer-stateless-function
       </TabBar>
 
       <ContentContainer>
-        <IdeasTitle>Ideas for Oostende</IdeasTitle>
-        <IdeasContainer>
-          <IdeasRow>
+        <Content>
+          <SectionHeader>
+            <SectionTitle>Ideas for Oostende</SectionTitle>
+            <ViewAllButton>
+              <ViewAllButtonText>View all ideas</ViewAllButtonText>
+              <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
+                <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
+              </ViewAllButtonIcon>
+            </ViewAllButton>
+          </SectionHeader>
+          <SectionContainer>
             <Idea>
               <IdeaContent>
                 <IdeaTitle>Tunnel underneath the railroad</IdeaTitle>
@@ -372,10 +635,10 @@ function LandingPage() { // eslint-disable-line react/prefer-stateless-function
                         <VoteCount>0</VoteCount>
                       </VoteUp>
                     }
-                    content="Retract vote up"
+                    content="Retract vote"
                     position="bottom center"
+                    size="medium"
                     inverted
-                    basic
                   />
 
                   <Popup
@@ -387,10 +650,10 @@ function LandingPage() { // eslint-disable-line react/prefer-stateless-function
                         <VoteCount>0</VoteCount>
                       </VoteDown>
                     }
-                    content="Vote down"
+                    content="Vote"
                     position="bottom center"
+                    size="medium"
                     inverted
-                    basic
                   />
                 </VotesContainer>
                 <Popup
@@ -406,8 +669,8 @@ function LandingPage() { // eslint-disable-line react/prefer-stateless-function
                   }
                   content="View comments"
                   position="bottom center"
+                  size="medium"
                   inverted
-                  basic
                 />
               </IdeaFooter>
             </Idea>
@@ -504,9 +767,22 @@ function LandingPage() { // eslint-disable-line react/prefer-stateless-function
                 </CommentContainer>
               </IdeaFooter>
             </Idea>
+          </SectionContainer>
 
-          </IdeasRow>
-        </IdeasContainer>
+          <SectionHeader>
+            <SectionTitle>Projects from Oostende</SectionTitle>
+            <ViewAllButton>
+              <ViewAllButtonText>View all projects</ViewAllButtonText>
+              <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
+                <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
+              </ViewAllButtonIcon>
+            </ViewAllButton>
+          </SectionHeader>
+          <SectionContainer>
+            <Project></Project>
+            <Project></Project>
+          </SectionContainer>
+        </Content>
       </ContentContainer>
     </Container>
   );
