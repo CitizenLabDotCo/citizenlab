@@ -15,7 +15,7 @@ import Helmet from 'react-helmet';
 
 // store
 import { preprocess } from 'utils';
-import { push } from 'react-router-redux'
+import { push } from 'react-router-redux';
 import sagasWatchers from './sagas';
 import { loadProjectRequest } from './actions';
 
@@ -59,6 +59,7 @@ ProjectView.propTypes = {
   params: PropTypes.object.isRequired,
   loadProjectRequest: PropTypes.func.isRequired,
   children: PropTypes.any,
+  push: PropTypes.func.isRequired,
 };
 
 export default preprocess(null, { loadProjectRequest, push })(ProjectView);

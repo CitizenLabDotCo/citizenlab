@@ -18,7 +18,7 @@ import PageView from './pageView';
 // need to implement Helmet
 class IdeasIndex extends React.Component {
 
-  isMainView = ({ params }) => true;
+  isMainView = () => true;
   backToMainView = () => this.props.push('/ideas');
 
   render() {
