@@ -15,6 +15,8 @@ function Sidebar(props) {
       <Menu.Item name={formatMessage({ ...messages.users })} as={Link} to="/admin/users" active={props.location.pathname === '/admin/users'} />
       <Menu.Item name={formatMessage({ ...messages.pages })} as={Link} to="/admin/pages" active={props.location.pathname === '/admin/pages'} />
       <Menu.Item name={formatMessage({ ...messages.newPage })} as={Link} to="/admin/pages/new" active={props.location.pathname === '/admin/pages/new'} />
+      <Menu.Item name={formatMessage({ ...messages.projects })} as={Link} to="/admin/projects" active={props.location.pathname === '/admin/dashboard'} />
+
     </Menu>
   );
 }

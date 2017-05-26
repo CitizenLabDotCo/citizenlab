@@ -58,9 +58,6 @@ export function fetchIdeas(query, queryParameters) {
   return request(`${API_PATH}/ideas${railsfriendlyQuery}`, null, null, queryParameters);
 }
 
-export function fetchProjects(queryParameters) {
-  return request(`${API_PATH}/projects`, null, null, queryParameters);
-}
 
 export function fetchTopics(queryParameters) {
   return request(`${API_PATH}/topics`, null, null, queryParameters);
@@ -72,10 +69,6 @@ export function fetchAreas(queryParameters) {
 
 export function fetchIdea(id) {
   return request(`${API_PATH}/ideas/${id}`);
-}
-
-export function fetchProject(id) {
-  return request(`${API_PATH}/projects/${id}`);
 }
 
 export function fetchCurrentUser() {
@@ -200,3 +193,31 @@ export function fetchIdeaTopicsReport(queryParameters) {
 export function fetchIdeaAreasReport(queryParameters) {
   return request(`${API_PATH}/stats/ideas_by_area`, null, null, queryParameters);
 }
+
+// projects
+export function fetchProjects(queryParameters) {
+  return request(`${API_PATH}/projects`, null, null, queryParameters);
+}
+
+export function createProject(data) {
+  return request(`${API_PATH}/projects`, { project: data }, {
+    method: 'POST',
+  });
+}
+
+export function updateProject(id, data) {
+  return request(`${API_PATH}/projects/${id}`, { project: data }, {
+    method: 'PUT',
+  });
+}
+
+export function fetchProject(id) {
+  return request(`${API_PATH}/projects/${id}`);
+}
+
+export function deleteProject(id) {
+  return request(`${API_PATH}/projects/${id}`, null, {
+    method: 'DELETE',
+  });
+}
+

@@ -4,14 +4,13 @@ const makeSelectLocationState = () => {
   let prevRoutingStateJS;
 
   return (state) => {
-    const routingState = state.get('route'); // or state.route
-
-    if (!routingState.equals(prevRoutingState)) {
+    const routingState = state.get('route').last(); // or state.route
+    if (routingState && !routingState.equals(prevRoutingState)) {
       prevRoutingState = routingState;
-      prevRoutingStateJS = routingState.toJS();
+      prevRoutingStateJS = prevRoutingState.toJS();
     }
 
-    return prevRoutingStateJS;
+    return prevRoutingStateJS || { locationBeforeTransitions: null };
   };
 };
 

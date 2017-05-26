@@ -277,6 +277,78 @@ export default function createRoutes(store) {
             importModules.catch(errorLoading);
           },
         },
+        {
+          path: '/admin/projects',
+          name: 'ideasPage',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('resources/projects/reducer'),
+              import('containers/AdminPage/projects'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([reducer, component]) => {
+              injectReducer('adminProjects', reducer.default);
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+          indexRoute: {
+            name: 'ideasPage',
+            getComponent(nextState, cb) {
+              const importModules = Promise.all([
+                import('containers/AdminPage/projects/views/all'),
+              ]);
+
+              const renderRoute = loadModule(cb);
+
+              importModules.then(([component]) => {
+                renderRoute(component);
+              });
+
+              importModules.catch(errorLoading);
+            },
+          },
+          childRoutes: [
+            {
+              path: '/admin/projects/create',
+              name: 'ideasPage',
+              getComponent(nextState, cb) {
+                const importModules = Promise.all([
+                  import('containers/AdminPage/projects/views/form'),
+                ]);
+
+                const renderRoute = loadModule(cb);
+
+                importModules.then(([component]) => {
+                  renderRoute(component);
+                });
+
+                importModules.catch(errorLoading);
+              },
+            },
+            {
+              path: '/admin/projects/:slug/edit',
+              name: 'ideasPage',
+              getComponent(nextState, cb) {
+                const importModules = Promise.all([
+                  import('containers/AdminPage/projects/views/form'),
+                ]);
+
+                const renderRoute = loadModule(cb);
+
+                importModules.then(([component]) => {
+                  renderRoute(component);
+                });
+
+                importModules.catch(errorLoading);
+              },
+            },
+
+          ],
+        },
       ],
     },
     {

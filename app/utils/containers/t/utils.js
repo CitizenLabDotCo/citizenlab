@@ -1,7 +1,8 @@
 import { makeSelectSetting } from 'utils/tenant/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { Iterable } from 'immutable';
-import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { preprocess } from 'utils';
 
 const isImmutable = Iterable.isIterable;
 
@@ -52,15 +53,16 @@ export const findTranslatedText = (value, userLocale, tenantLocales) => {
 // works as the T component, but as a function. This is useful for passing a
 // translated value as a prop, e.g. as a placeholder
 export function injectTFunc(component) {
-  const mapStateToProps = (state) => {
-    const selectLocale = makeSelectLocale();
-    const selectTenantLocales = makeSelectSetting(['core', 'locales']);
-    return {
-      tFunc(value) {
-        return findTranslatedText(value, selectLocale(state), selectTenantLocales(state));
-      },
-    };
+  const mapStateToProps = () => createStructuredSelector({
+    locale: makeSelectLocale(),
+    tenantLocales: makeSelectSetting(['core', 'locales']),
+  });
+
+  const mergeProps = (stateP, dispatchP, ownP) => {
+    const { locale, tenantLocales } = stateP;
+    const tFunc = (value) => findTranslatedText(value, locale, tenantLocales);
+    return { tFunc, ...ownP };
   };
 
-  return connect(mapStateToProps)(component);
+  return preprocess(mapStateToProps, null, mergeProps)(component);
 }

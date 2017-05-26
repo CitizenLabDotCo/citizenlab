@@ -7,7 +7,7 @@ import {
 } from './constants';
 
 import {
-  loadIdeaSuccess, loadIdeaError, loadVotesError, loadVotesSuccess, voteIdeaError, voteIdeaSuccess, loadCommentsSuccess, loadcommentsError, deleteCommentSuccess, publishCommentSuccess,
+  loadIdeaSuccess, loadIdeaError, loadVotesError, loadVotesSuccess, voteIdeaError, voteIdeaSuccess, loadCommentsSuccess, deleteCommentSuccess, publishCommentSuccess,
 } from './actions';
 
 export function* loadIdea(action) {

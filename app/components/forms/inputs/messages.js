@@ -156,4 +156,17 @@ export default defineMessages({
     id: 'app.containers.UserFormInput.passwordErrorTooShort',
     defaultMessage: 'Password too short, at least 5 characters',
   },
+
+  // Title
+  labelTitle: {
+    id: 'app.containers.resouce.labelTitle',
+    defaultMessage: 'Title',
+  },
+
+  // Description
+  labelDescription: {
+    id: 'app.containers.resouce.labelDescription',
+    defaultMessage: 'Description',
+  },
+
 });

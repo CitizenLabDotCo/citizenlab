@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { injectTFunc } from 'utils/containers/t/utils';
 
 // components
 import { Editor as TextBox } from 'react-draft-wysiwyg';
@@ -7,20 +8,22 @@ import { Form } from 'semantic-ui-react';
 import RenderError from 'components/forms/renderError';
 
 // draft-js
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 
 // messages
 import { injectIntl, intlShape } from 'react-intl';
 import { appenDableName, toCammelCase } from './utils';
-import messages from '../messages';
+import messages from './messages';
 
 class RtfEditor extends React.Component {
   constructor(props) {
     super();
-    this.editorState = EditorState.createEmpty();
+    this.editorState = this.createEditorState(props);
     this.state = { showError: true };
     const { formatMessage } = props.intl;
+    const { name } = props;
 
     const toAppendName = appenDableName(name);
     const label = formatMessage(props.label || messages[`label${toAppendName}`]);
@@ -29,6 +32,18 @@ class RtfEditor extends React.Component {
 
   componentWillReceiveProps() {
     this.setState({ showError: true });
+  }
+
+  createEditorState = ({ initialValue, tFunc }) => {
+    if (!initialValue) return EditorState.createEmpty();
+    let localInitValue = tFunc(initialValue);
+    if (!localInitValue.includes('<p>')) {
+      localInitValue = `<p>${localInitValue}</p>`;
+    }
+    const blocksFromHtml = htmlToDraft(localInitValue);
+    const contentBlocks = blocksFromHtml.contentBlocks;
+    const contentState = ContentState.createFromBlockArray(contentBlocks);
+    return EditorState.createWithContent(contentState);
   }
 
   handleChange = (editorState) => {
@@ -74,9 +89,11 @@ class RtfEditor extends React.Component {
 RtfEditor.propTypes = {
   name: PropTypes.string.isRequired,
   action: PropTypes.func.isRequired,
+  initialValue: PropTypes.object,
   intl: intlShape,
   errors: PropTypes.array,
   label: PropTypes.object,
+  tFunc: PropTypes.func,
 };
 
-export default injectIntl(RtfEditor);
+export default injectTFunc(injectIntl(RtfEditor));

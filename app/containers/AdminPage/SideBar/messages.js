@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.newPage',
     defaultMessage: 'Create page',
   },
+  projects: {
+    id: 'app.containers.AdminPage.SideBar.newPage',
+    defaultMessage: 'Create page',
+  },
 });

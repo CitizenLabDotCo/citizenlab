@@ -31,7 +31,6 @@ export function checkStore(store) {
 export function injectAsyncReducer(store, isValid) {
   return function injectReducer(name, asyncReducer) {
     if (!isValid) checkStore(store);
-
     invariant(
       isString(name) && !isEmpty(name) && isFunction(asyncReducer),
       '(app/utils...) injectAsyncReducer: Expected `asyncReducer` to be a reducer function'

@@ -27,9 +27,7 @@ import { persistedDataReducer } from './persistedData';
  */
 
 // Initial routing state
-const routeInitialState = fromJS({
-  locationBeforeTransitions: null,
-});
+const routeInitialState = fromJS([]);
 
 /**
  * Merge route into the global application state
@@ -38,9 +36,9 @@ function routeReducer(state = routeInitialState, action) {
   switch (action.type) {
     /* istanbul ignore next */
     case LOCATION_CHANGE:
-      return state.merge({
+      return state.push(fromJS({
         locationBeforeTransitions: action.payload,
-      });
+      }));
     default:
       return state;
   }

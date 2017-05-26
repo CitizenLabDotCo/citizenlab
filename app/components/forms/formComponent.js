@@ -7,6 +7,7 @@ class FormComponent extends React.Component {
   constructor() {
     super();
     this.state = { errors: {} };
+    this.values = {};
   }
 
   componentDidUpdate(prevProvs, prevState) {
@@ -17,17 +18,23 @@ class FormComponent extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.unmounted = true;
+  }
+
   handleChange = (name, value) => {
     this.values[name] = value;
   }
 
   defaulOnSuccess = (...args) => {
+    if (this.unmounted) return;
     this.setState({ loading: false }, () => {
       this.handleSuccess(...args);
     });
   }
 
   defaulOnError = (e = {}) => {
+    if (this.unmounted) return;
     const toNewState = { loading: false, error: true };
     const errorsObje = {};
     // translate Errors to arrays snake case strings
