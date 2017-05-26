@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 
 import WatchSagas from 'containers/WatchSagas';
 import { Saga } from 'react-redux-saga';
@@ -21,6 +22,12 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
   render() {
     return (
       <div>
+        <Helmet
+          title="Complete registration page"
+          meta={[
+            { name: 'description', content: 'Complete registration' },
+          ]}
+        />
         <WatchSagas sagas={sagas} />
         <Saga saga={indexSagas.watchLoadAreas} />
         <DemographicsForm />

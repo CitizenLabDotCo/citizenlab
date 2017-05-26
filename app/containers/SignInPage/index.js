@@ -22,9 +22,9 @@ export class SignInPage extends React.PureComponent { // eslint-disable-line rea
     return (
       <div>
         <Helmet
-          title="SignInPage"
+          title="Sign in page"
           meta={[
-            { name: 'description', content: 'Description of SignInPage' },
+            { name: 'description', content: 'Page to sign in the platform' },
           ]}
         />
 

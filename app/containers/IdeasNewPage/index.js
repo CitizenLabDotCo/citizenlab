@@ -90,9 +90,9 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
     return (
       <Container className={className}>
         <Helmet
-          title="IdeasNewPage"
+          title="Publish idea page"
           meta={[
-            { name: 'description', content: 'Description of IdeasNewPage' },
+            { name: 'description', content: 'Publish a new idea' },
           ]}
         />
         <WatchSagas sagas={sagas} />
