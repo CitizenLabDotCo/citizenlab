@@ -38,7 +38,7 @@ ActionButton.propTypes = {
 
 ActionButton.defaultProps = {
   fluid: false,
-}
+};
 
 export default ActionButton;
 

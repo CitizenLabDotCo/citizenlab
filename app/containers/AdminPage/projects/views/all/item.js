@@ -15,13 +15,12 @@ import { deleteProjectRequest } from 'resources/projects/actions';
 // messages
 import messages from '../messages';
 
-const Item = ({ title, goToEdit, deleteProject, projectId }) => (
-    <div style={{ height: '35px', marginTop: '10px', backgroundColor: 'white' }}>
-      <ActionButton action={deleteProject} message={messages.deleteButton} fluid={false} />
-      <ActionButton action={goToEdit} message={messages.updateButton} />
-      <span> <T value={title} /> {projectId} </span>
-
-    </div>
+const Item = ({ title, goToEdit, deleteProject }) => (
+  <div style={{ height: '35px', marginTop: '10px', backgroundColor: 'white' }}>
+    <ActionButton action={deleteProject} message={messages.deleteButton} fluid={false} />
+    <ActionButton action={goToEdit} message={messages.updateButton} />
+    <span> <T value={title} /> </span>
+  </div>
 );
 
 Item.propTypes = {
