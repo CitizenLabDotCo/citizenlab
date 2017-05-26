@@ -23,7 +23,7 @@ export default defineMessages({
     defaultMessage: 'Create page',
   },
   projects: {
-    id: 'app.containers.AdminPage.SideBar.newPage',
-    defaultMessage: 'Create page',
+    id: 'app.containers.AdminPage.SideBar.projects',
+    defaultMessage: 'Projects',
   },
 });

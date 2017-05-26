@@ -26,4 +26,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Projects.Views.form.publishButton',
     defaultMessage: 'Publish Project',
   },
+
+  porjectLoadingMessage: {
+    id: 'app.containers.AdminPage.Projects.Views.edit.porjectLoadingMessage',
+    defaultMessage: 'Loading Project...',
+  },
+  porjectLoadingError: {
+    id: 'app.containers.AdminPage.Projects.Views.edit.porjectLoadingError',
+    defaultMessage: 'Project not found!',
+  },
+
 });

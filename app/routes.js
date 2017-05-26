@@ -317,7 +317,7 @@ export default function createRoutes(store) {
               name: 'ideasPage',
               getComponent(nextState, cb) {
                 const importModules = Promise.all([
-                  import('containers/AdminPage/projects/views/form'),
+                  import('containers/AdminPage/projects/views/create'),
                 ]);
 
                 const renderRoute = loadModule(cb);
@@ -334,7 +334,7 @@ export default function createRoutes(store) {
               name: 'ideasPage',
               getComponent(nextState, cb) {
                 const importModules = Promise.all([
-                  import('containers/AdminPage/projects/views/form'),
+                  import('containers/AdminPage/projects/views/edit'),
                 ]);
 
                 const renderRoute = loadModule(cb);

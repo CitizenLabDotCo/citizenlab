@@ -17,7 +17,6 @@ import Button from 'components/buttons/loader';
 // store
 import { preprocess } from 'utils';
 import { createStructuredSelector } from 'reselect';
-import { publishProjectFork, updateProjectFork } from 'resources/projects/sagas';
 import { loadProjectRequest } from 'resources/projects/actions';
 
 // messages
@@ -25,25 +24,8 @@ import messages from './messages';
 
 class EditorForm extends FormComponent {
   constructor(props) {
-    super(props);
-    const { routeParams } = props;
-    this.slug = routeParams.slug;
-
-    this.saga = publishProjectFork;
-    if (this.slug) this.saga = updateProjectFork;
-
+    super();
     this.setInitialValues(props);
-  }
-
-  componentDidMount() {
-    const { routeParams } = this.props;
-    const slug = routeParams.slug;
-    if (slug) this.props.loadProjectRequest(slug);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { routeParams } = nextProps;
-    if (routeParams.slug) this.setInitialValues(nextProps);
   }
 
   handleSuccess = () => {
@@ -60,11 +42,8 @@ class EditorForm extends FormComponent {
   }
 
   render() {
-    const { routeParams, project } = this.props;
     const { loading } = this.state;
     const { errors, error } = this.state;
-    if (routeParams.slug && !project) return null;
-    console.log(this.values)
     return (
       <Form error={error} onSubmit={this.handleSubmit}>
         <RtfEditor
@@ -80,7 +59,7 @@ class EditorForm extends FormComponent {
           initialValue={this.values.description}
         />
         <Button
-          fluid={true}
+          fluid
           onClick={this.handleClick}
           message={messages.publishButton}
           loading={loading}
@@ -92,12 +71,12 @@ class EditorForm extends FormComponent {
 
 EditorForm.propTypes = {
   goTo: PropTypes.func,
-  routeParams: PropTypes.object.isRequired,
+  slug: PropTypes.string,
   project: ImmutablePropTypes.map,
 };
 
 const mapStateToProps = createStructuredSelector({
-  project: (state, { routeParams }) => state.getIn(['resources', 'projects', routeParams.slug]),
+  project: (state, { slug }) => state.getIn(['resources', 'projects', slug]),
 });
 
 export default preprocess(mapStateToProps, { goTo: push, loadProjectRequest })(EditorForm);
