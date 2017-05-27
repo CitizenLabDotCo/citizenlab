@@ -15,6 +15,7 @@ class Idea < ApplicationRecord
   has_many :votes, as: :votable, dependent: :destroy
   has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
   has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
+  has_many :activities, as: :item
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
   validates :title_multiloc, presence: true, multiloc: {presence: true}
@@ -81,4 +82,5 @@ class Idea < ApplicationRecord
   def set_published_at
     self.published_at ||= Time.now
   end
+
 end

@@ -34,7 +34,7 @@ class Api::V1::UsersController < ::ApplicationController
     @user = User.new(permitted_attributes(User))
     authorize @user
     if @user.save
-      UserMailer.welcome(@user).deliver_later
+      SideFxUserService.new.after_create(@user, current_user)
       render json: @user, status: :created
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
@@ -43,9 +43,20 @@ class Api::V1::UsersController < ::ApplicationController
 
   def update
     if @user.update(permitted_attributes(@user))
+      SideFxUserService.new.after_update(@user, current_user)
       render json: @user, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    user = @user.destroy
+    if user.destroyed?
+      SideFxUserService.new.after_destroy(user, current_user)
+      head :ok
+    else
+      head 500
     end
   end
 
