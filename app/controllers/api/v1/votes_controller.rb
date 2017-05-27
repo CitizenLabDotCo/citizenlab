@@ -21,6 +21,7 @@ class Api::V1::VotesController < ApplicationController
     authorize @vote
 
     if @vote.save
+      SideFxVoteService.new.after_create(@vote, current_user)
       render json: @vote, status: :created
     else
       render json: { errors: @vote.errors.details }, status: :unprocessable_entity
@@ -28,18 +29,21 @@ class Api::V1::VotesController < ApplicationController
   end
 
   def up
-
     upsert_vote "up"
   end
 
   def down
-
     upsert_vote "down"
   end
 
   def destroy
-    @vote.destroy
-    head :ok
+    frozen_vote = @vote.destroy
+    if frozen_vote
+      SideFxVoteService.new.after_destroy(frozen_vote, current_user)
+      head :ok
+    else
+      head 500
+    end
   end
 
   private
@@ -58,7 +62,10 @@ class Api::V1::VotesController < ApplicationController
       render json: {errors: @old_vote.errors.details}, status: :unprocessable_entity
     else
       Vote.transaction do
-        @old_vote.destroy if @old_vote
+        if @old_vote
+          old_vote_frozen = @old_vote.destroy
+          SideFxVoteService.new.after_destroy(old_vote_frozen, current_user)
+        end
         @new_vote = Vote.new(
           user: current_user, 
           votable_type: @votable_type,
@@ -67,6 +74,7 @@ class Api::V1::VotesController < ApplicationController
         )
         authorize @new_vote
         if @new_vote.save
+          SideFxVoteService.new.after_create(@new_vote, current_user)
           render json: @vote, status: :created
         else
           render json: {errors: @new_vote.errors.details}, status: :unprocessable_entity

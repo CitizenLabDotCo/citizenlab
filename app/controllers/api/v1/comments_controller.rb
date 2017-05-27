@@ -35,6 +35,7 @@ class Api::V1::CommentsController < ApplicationController
     authorize @comment
 
     if @comment.save
+      SideFxCommentService.new.after_create(@comment, current_user)
       render json: @comment, status: :created, include: ['author']
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
@@ -43,6 +44,7 @@ class Api::V1::CommentsController < ApplicationController
 
   def update
     if @comment.update(comment_params)
+      SideFxCommentService.new.after_update(@comment, current_user)
       render json: @comment, status: :ok, include: ['author']
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
@@ -50,8 +52,13 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def destroy
-    @comment.destroy
-    head :ok
+    comment = @comment.destroy
+    if comment.destroyed?
+      SideFxCommentService.new.after_destroy(comment, current_user)
+      head :ok
+    else
+      head 500
+    end
   end
 
   private

@@ -59,6 +59,7 @@ class Api::V1::IdeasController < ApplicationController
     @idea = Idea.new(idea_params)
     authorize @idea
     if @idea.save
+      SideFxIdeaService.new.after_create(@idea, current_user)
       render json: @idea, status: :created, include: ['author','topics','areas']
     else
       render json: { errors: @idea.errors.details }, status: :unprocessable_entity
@@ -70,6 +71,7 @@ class Api::V1::IdeasController < ApplicationController
   # patch
   def update
     if @idea.update(idea_params)
+      SideFxIdeaService.new.after_update(@idea, current_user)
       render json: @idea, status: :ok, include: ['author','topics','areas']
     else
       render json: { errors: @idea.errors.details }, status: :unprocessable_entity
@@ -78,8 +80,13 @@ class Api::V1::IdeasController < ApplicationController
 
   # delete
   def destroy
-    @idea.destroy
-    head :ok
+    idea = @idea.destroy
+    if idea.destroyed?
+      SideFxIdeaService.new.after_destroy(idea, current_user)
+      head :ok
+    else
+      head 500
+    end
   end
 
   private

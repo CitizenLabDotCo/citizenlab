@@ -157,7 +157,21 @@ resource "Users" do
         expect(json_response.dig(:data, :attributes, :first_name)).to eq "Edmond"
       end
     end
+
+    delete "api/v1/users/:id" do
+      before do
+        @user.update(roles: [{type: 'admin'}])
+        @subject_user = create(:user)
+      end
+      let(:id) { @subject_user.id }
+      example_request "Delete a user" do
+        expect(response_status).to eq 200
+        expect{User.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
   end
+
 
   private
 

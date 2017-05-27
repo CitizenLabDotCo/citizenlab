@@ -8,7 +8,7 @@ class Api::V1::SocialRegistrationController < ::ApplicationController
     @user = User.new(user_attrs.merge(locale: register_params[:locale]))
     authorize @user
     if @user.save
-      UserMailer.welcome(@user).deliver_later
+      SideFxUserService.new.after_create(@user, current_user)
       render json: @user, status: :created
     else
       render json: {errors: @user.errors.details }, status: :unprocessable_entity

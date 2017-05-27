@@ -10,11 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170520134018) do
+ActiveRecord::Schema.define(version: 20170525125712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "activities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "item_type",               null: false
+    t.uuid     "item_id",                 null: false
+    t.string   "action",                  null: false
+    t.jsonb    "payload",    default: {}, null: false
+    t.uuid     "user_id"
+    t.datetime "acted_at",                null: false
+    t.datetime "created_at",              null: false
+    t.index ["acted_at"], name: "index_activities_on_acted_at", using: :btree
+    t.index ["item_type", "item_id"], name: "index_activities_on_item_type_and_item_id", using: :btree
+    t.index ["user_id"], name: "index_activities_on_user_id", using: :btree
+  end
 
   create_table "areas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.jsonb    "title_multiloc",       default: {}
@@ -186,6 +199,7 @@ ActiveRecord::Schema.define(version: 20170520134018) do
     t.index ["votable_type", "votable_id"], name: "index_votes_on_votable_type_and_votable_id", using: :btree
   end
 
+  add_foreign_key "activities", "users"
   add_foreign_key "areas_ideas", "areas"
   add_foreign_key "areas_ideas", "ideas"
   add_foreign_key "areas_projects", "areas"

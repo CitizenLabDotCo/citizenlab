@@ -30,6 +30,10 @@ class UserPolicy < ApplicationPolicy
     user && (record.id == user.id || user.admin?)
   end
 
+  def destroy?
+    user && user.admin?
+  end
+
   def view_private_attributes?
     user && (record.id == user.id || user.admin?)
   end
