@@ -44,7 +44,7 @@ class TextInput extends React.PureComponent {
   }
 
   render() {
-    const { name, errors } = this.props;
+    const { name, errors, initialValue } = this.props;
     const { placeholder, label, type } = this.text;
     const { showError, value } = this.state;
     const error = errors && messages[toCammelCase(errors.slice(-1)[0])];
@@ -57,7 +57,8 @@ class TextInput extends React.PureComponent {
           name={name}
           iconPosition={'left'}
           onChange={this.handleChange}
-          value={value}
+          // initialValue admissible only when no existing value is set
+          value={(value === '' && initialValue) || value}
           placeholder={placeholder}
           error={!!(error && showError)}
           type={type}
@@ -71,6 +72,7 @@ class TextInput extends React.PureComponent {
 
 TextInput.propTypes = {
   name: PropTypes.string.isRequired,
+  initialValue: PropTypes.string,
   action: PropTypes.func.isRequired,
   intl: intlShape,
   errors: PropTypes.array,

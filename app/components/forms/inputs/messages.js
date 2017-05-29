@@ -169,4 +169,13 @@ export default defineMessages({
     defaultMessage: 'Description',
   },
 
+  // Intl
+  placeholderLocale: {
+    id: 'app.containers.UserFormInput.placeholderLocale',
+    defaultMessage: 'Your language',
+  },
+  labelLocale: {
+    id: 'app.containers.UserFormInput.labelLocale',
+    defaultMessage: 'Choose one...',
+  },
 });

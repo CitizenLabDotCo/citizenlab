@@ -4,21 +4,23 @@
 *
 */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
-import { Dropdown, Container } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
+import DropdownInput from 'components/forms/inputs/dropdown';
 
 import { appLocales } from '../../i18n';
 import messages from './messages';
 
 export const LocaleSelector = (props) => (
-  <Dropdown
+  <DropdownInput
     className={props.className}
-    selection
+    name="locale"
     text={props.userLocale}
     options={props.options}
-    onChange={props.onLocaleChangeClick}
+    action={props.onLocaleChangeClick}
   />
 );
 
@@ -34,8 +36,8 @@ export default class LocaleChanger extends React.PureComponent {
     this.localeChangeClick.bind(this);
   }
 
-  localeChangeClick = (event, result) => {
-    this.props.onLocaleChangeClick(result.value);
+  localeChangeClick = (name, value) => {
+    this.props.onLocaleChangeClick(value);
   };
 
   render() {
