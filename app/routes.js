@@ -215,8 +215,8 @@ export default function createRoutes(store) {
             const renderRoute = loadModule(cb);
 
             importModules.then(([component, reducer]) => {
-              renderRoute(component);
               injectReducer('dashboardPage', reducer.default);
+              renderRoute(component);
             });
 
             importModules.catch(errorLoading);

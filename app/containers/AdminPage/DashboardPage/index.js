@@ -22,7 +22,7 @@ import {
 import { LineChartWrapper } from './LineChartWrapper';
 import { BarChartWrapper } from './BarChartWrapper';
 
-class AdminPages extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class DashboardPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
 
@@ -240,7 +240,7 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
   }
 }
 
-AdminPages.propTypes = {
+DashboardPage.propTypes = {
   newUsers: PropTypes.object.isRequired,
   ideasByTopic: PropTypes.object.isRequired,
   ideasByArea: PropTypes.object.isRequired,
@@ -285,4 +285,4 @@ const mergeProps = ({ pageState, statTopics, statAreas }, dispatchProps, { intl,
   ...dispatchProps,
 });
 
-export default injectTFunc(injectIntl(preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(AdminPages)));
+export default injectTFunc(injectIntl(preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(DashboardPage)));
