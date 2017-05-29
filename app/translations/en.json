@@ -18,7 +18,7 @@
   "app.containers.AdminPage.DashboardPage.ideasByArea":"Ideas by area",
   "app.containers.AdminPage.DashboardPage.ideasByTopic":"Ideas by topic",
   "app.containers.AdminPage.DashboardPage.interval":"Interval",
-  "app.containers.AdminPage.DashboardPage.loadError":"Couldn' load data",
+  "app.containers.AdminPage.DashboardPage.loadError":"Couldn't load data",
   "app.containers.AdminPage.DashboardPage.loading":"Loading...",
   "app.containers.AdminPage.DashboardPage.month":"Month",
   "app.containers.AdminPage.DashboardPage.usersOverTime":"Users over time",
