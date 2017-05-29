@@ -54,8 +54,12 @@ export default class ProfileForm extends React.PureComponent {
   handleSubmit(e) {
     e.preventDefault();
     const { user } = this.state;
+    const { userData } = this.props;
 
-    this.props.onFormSubmit(user);
+    const userWithLocale = Object.assign({}, user);
+    userWithLocale.locale = userData.locale;
+
+    this.props.onFormSubmit(userWithLocale);
   }
 
   render() {

@@ -22,4 +22,12 @@ export default defineMessages({
     id: 'app.containers.AdminPages.noPages',
     defaultMessage: 'No pages',
   },
+  helmetTitle: {
+    id: 'app.containers.AdminPages.helmetTitle',
+    defaultMessage: 'Admin pages',
+  },
+  helmetDescription: {
+    id: 'app.containers.AdminPages.helmetDescription',
+    defaultMessage: 'List of pages published on the platform by admin',
+  },
 });

@@ -14,7 +14,7 @@ import { push } from 'react-router-redux';
 
 import OverlayChildren from 'utils/containers/overlayChildren';
 
-import PageView from './pageView';
+import PageView from './PageView';
 
 // need to implement Helmet
 class IdeasIndex extends React.Component {
