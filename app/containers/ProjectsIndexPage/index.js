@@ -14,6 +14,8 @@ import { preprocess } from 'utils/reactRedux';
 import { bindActionCreators } from 'redux';
 import WatchSagas from 'containers/WatchSagas';
 import { Button, Label } from 'semantic-ui-react';
+import { Link } from 'react-router';
+
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import T from 'containers/T';
 
@@ -65,8 +67,10 @@ export class ProjectsIndexPage extends React.PureComponent { // eslint-disable-l
         {loadError && <Label>{loadError}</Label>}
 
         {projectsMap(projectsImm).map((project) => (<div key={project.id}>
-          <T value={project.attributes.title_multiloc} />
-          {project.id}
+          <Link to={`/projects/${project.id}`}>
+            <T value={project.attributes.title_multiloc} />
+            {project.id}
+          </Link>
         </div>))}
 
         {nextPageNumber && <Button onClick={this.goToNextPage}>

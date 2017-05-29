@@ -22,7 +22,7 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
   constructor(props) {
     super();
     const { params } = props;
-    this.id = params.slug;
+    this.id = params.ideaId;
   }
 
   componentDidMount() {

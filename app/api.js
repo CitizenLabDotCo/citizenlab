@@ -221,3 +221,31 @@ export function deleteProject(id) {
   });
 }
 
+
+// areas
+export function loadAreas(queryParameters) {
+  return request(`${API_PATH}/areas`, null, null, queryParameters);
+}
+
+export function createArea(data) {
+  return request(`${API_PATH}/areas`, { area: data }, {
+    method: 'POST',
+  });
+}
+
+export function updateArea(id, data) {
+  return request(`${API_PATH}/areas/${id}`, { area: data }, {
+    method: 'PUT',
+  });
+}
+
+export function loadArea(id) {
+  return request(`${API_PATH}/areas/${id}`);
+}
+
+export function deleteArea(id) {
+  return request(`${API_PATH}/areas/${id}`, null, {
+    method: 'DELETE',
+  });
+}
+

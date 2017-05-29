@@ -64,7 +64,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
     return (
       <Menu>
         <Menu.Item>{currentTenant.attributes.name}</Menu.Item>
-        <Menu.Item><Link to="/ideas"><FormattedMessage {...messages.ideas} /></Link></Menu.Item>
+        <Menu.Item><Link to="/projects"><FormattedMessage {...messages.projects} /></Link></Menu.Item>
         <Menu.Item>
           <SearchWidget />
         </Menu.Item>

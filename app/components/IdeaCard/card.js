@@ -67,12 +67,14 @@ Card.propTypes = {
 
 const mapStateToProps = () => createStructuredSelector({
   idea: (state, { id }) => selectResourcesDomain('ideas', id)(state),
+  location: (state) => state.getIn(['route', 'locationBeforeTransitions', 'pathname']),
+
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ push }, dispatch);
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { id } = ownProps;
-  const { idea } = stateProps;
+  const { idea, location } = stateProps;
   if (!idea) return {};
 
   const attributes = idea.get('attributes');
@@ -87,7 +89,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const topicsData = relationships.getIn(['topics', 'data']);
   const areasData = relationships.getIn(['areas', 'data']);
   const changePage = dispatchProps.push;
-  const viewIdea = () => changePage(`/ideas/${id}`);
+  const viewIdea = () => changePage(`${location}/${id}`);
   return {
     header,
     images,

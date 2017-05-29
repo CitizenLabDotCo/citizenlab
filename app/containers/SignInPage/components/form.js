@@ -23,7 +23,6 @@ class SignInForm extends FormComponent {
     super(props);
     this.values = { locale: props.userLocale };
     this.saga = signInUser;
-    this.state = { errors: {} };
   }
 
   handleSuccess = () => this.props.goTo('/')

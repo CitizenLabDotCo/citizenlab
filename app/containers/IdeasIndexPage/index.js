@@ -18,8 +18,13 @@ import PageView from './pageView';
 // need to implement Helmet
 class IdeasIndex extends React.Component {
 
-  isMainView = () => true;
-  backToMainView = () => this.props.push('/ideas');
+  isMainView = ({ params }) => !params.ideaId
+
+  backToMainView = () => {
+    const goTo = this.props.push;
+    const { params } = this.props;
+    return () => goTo(`/projects/${params.slug}/ideas`);
+  };
 
   render() {
     const { children } = this.props;
@@ -45,6 +50,7 @@ IdeasIndex.contextTypes = {
 IdeasIndex.propTypes = {
   children: PropTypes.element,
   push: PropTypes.func.isRequired,
+  params: PropTypes.object.isRequired,
 };
 
 const actions = { push };

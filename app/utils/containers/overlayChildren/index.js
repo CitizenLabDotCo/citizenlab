@@ -40,7 +40,7 @@ class OverlayChildren extends React.Component { // eslint-disable-line react/pre
     return (
       <div>
         {React.createElement(component, this.props)}
-        <WrapChild handleClose={handleClose} open={!inMainView}>
+        <WrapChild handleClose={handleClose(this.props)} open={!inMainView}>
           {children && React.cloneElement(children, this.props)}
         </WrapChild>
       </div>

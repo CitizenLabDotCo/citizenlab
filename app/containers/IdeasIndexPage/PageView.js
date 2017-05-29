@@ -6,14 +6,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { preprocess } from 'utils';
 // import { Sidebar as LayoutSidebar } from 'semantic-ui-react';
 
 import WatchSagas from 'containers/WatchSagas';
 
 import sagasWatchers from './sagas';
-import { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest } from './actions';
+import { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest, resetIdeas } from './actions';
 
 // implemented but not used now.
 // import Sidebar from './components/sidebar';
@@ -47,6 +46,10 @@ class View extends React.Component {
   shouldComponentUpdate(props, { visible }) {
     const current = this.state.visible;
     return current !== visible;
+  }
+
+  componentWillUnmount() {
+    this.props.resetIdeas();
   }
 
   getideas = (location, query) => {
@@ -129,9 +132,6 @@ View.propTypes = {
   routeParams: PropTypes.object.isRequired,
 };
 
-const actions = { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest };
+const actions = { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest, resetIdeas };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
-
-
-export default connect(null, mapDispatchToProps)(View);
+export default preprocess(null, actions)(View);

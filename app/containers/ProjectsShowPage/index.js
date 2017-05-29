@@ -48,8 +48,7 @@ class ProjectView extends React.PureComponent { // eslint-disable-line react/pre
             <a onClick={() => this.props.push(`/projects/${this.id}/info`)}> Info </a>
           </li>
         </ul>
-        {this.id}
-        {React.cloneElement(this.props.children, { projectId: this.id })}
+        {this.props.children && React.cloneElement(this.props.children, { projectId: this.id })}
       </div>
     );
   }

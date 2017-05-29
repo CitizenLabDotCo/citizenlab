@@ -22,17 +22,9 @@ class RegistrationForm extends FormComponent {
     super(props);
     this.values = { locale: props.userLocale };
     this.saga = createUser;
-    this.state = { errors: {} };
   }
 
-  handleChange = (name, value) => {
-    this.values[name] = value;
-  }
-
-  handleSuccess = () => {
-    this.setState({ loading: false });
-    return this.props.goTo('/register/complete');
-  }
+  handleSuccess = () => this.props.goTo('/register/complete');
 
   render() {
     const { error, errors } = this.state;
