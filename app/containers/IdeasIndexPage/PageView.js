@@ -130,6 +130,7 @@ View.propTypes = {
   filterIdeas: PropTypes.func.isRequired,
   loadIdeasRequest: PropTypes.func.isRequired,
   routeParams: PropTypes.object.isRequired,
+  resetIdeas: PropTypes.func.isRequired,
 };
 
 const actions = { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest, resetIdeas };
