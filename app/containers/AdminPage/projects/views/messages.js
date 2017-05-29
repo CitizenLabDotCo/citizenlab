@@ -27,12 +27,12 @@ export default defineMessages({
     defaultMessage: 'Publish Project',
   },
 
-  porjectLoadingMessage: {
-    id: 'app.containers.AdminPage.Projects.Views.edit.porjectLoadingMessage',
+  projectLoadingMessage: {
+    id: 'app.containers.AdminPage.Projects.Views.edit.projectLoadingMessage',
     defaultMessage: 'Loading Project...',
   },
-  porjectLoadingError: {
-    id: 'app.containers.AdminPage.Projects.Views.edit.porjectLoadingError',
+  projectLoadingError: {
+    id: 'app.containers.AdminPage.Projects.Views.edit.projectLoadingError',
     defaultMessage: 'Project not found!',
   },
 

@@ -7,9 +7,9 @@ import Form from './form';
 
 // store
 import { preprocess } from 'utils';
-import { updateProjectFork } from 'resources/projects/sagas';
-import { loadProjectRequest } from 'resources/projects/actions';
-import { LOAD_PROJECT_REQUEST } from 'resources/projects/constants';
+import { updateAreaFork } from 'resources/areas/sagas';
+import { loadAreaRequest } from 'resources/areas/actions';
+import { LOAD_AREA_REQUEST } from 'resources/areas/constants';
 
 // messages
 import messages from './messages';
@@ -17,11 +17,11 @@ import messages from './messages';
 const Edit = ({ resourceLoader, slug }) => (
   <Loader
     resourceLoader={resourceLoader}
-    loadingMessage={messages.projectLoadingMessage}
-    errorMessage={messages.projectLoadingError}
-    listenenTo={LOAD_PROJECT_REQUEST}
+    loadingMessage={messages.areaLoadingMessage}
+    errorMessage={messages.areaLoadingError}
+    listenenTo={LOAD_AREA_REQUEST}
   >
-    <Form slug={slug} saga={updateProjectFork} />
+    <Form slug={slug} saga={updateAreaFork} />
   </Loader>
 );
 
@@ -32,9 +32,9 @@ Edit.propTypes = {
 
 const mergeProps = (stateP, dispatchP, ownP) => {
   const { slug } = ownP.routeParams;
-  const dispatchLoadProject = dispatchP.loadProjectRequest;
-  const resourceLoader = () => dispatchLoadProject(slug);
+  const dispatchLoadArea = dispatchP.loadAreaRequest;
+  const resourceLoader = () => dispatchLoadArea(slug);
   return { slug, resourceLoader };
 };
 
-export default preprocess(null, { loadProjectRequest }, mergeProps)(Edit);
+export default preprocess(null, { loadAreaRequest }, mergeProps)(Edit);
