@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { Grid, Icon, Menu, Table } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
@@ -135,6 +136,12 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
     return (
       <div>
         <WatchSagas sagas={sagas} />
+        <Helmet
+          title="Admin pages"
+          meta={[
+            { name: 'description', content: 'List of pages published on the platform by admin' },
+          ]}
+        />
         <Wrapper>
           <Grid stackable>
             <Grid.Row>

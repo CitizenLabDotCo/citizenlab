@@ -67,9 +67,9 @@ export class UsersPasswordReset extends React.PureComponent { // eslint-disable-
     return (
       <div>
         <Helmet
-          title="UsersPasswordReset"
+          title="User password reset page"
           meta={[
-            { name: 'description', content: 'Reset your password' },
+            { name: 'description', content: 'Reset your password using the link send by email' },
           ]}
         />
         <WatchSagas sagas={sagas} />

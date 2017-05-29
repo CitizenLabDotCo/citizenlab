@@ -6,6 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -25,6 +26,12 @@ class IdeasIndex extends React.Component {
     const { children } = this.props;
     return (
       <div>
+        <Helmet
+          title="Ideas index page"
+          meta={[
+            { name: 'description', content: 'List of ideas on the platform' },
+          ]}
+        />
         <OverlayChildren
           component={PageView}
           isMainView={this.isMainView}

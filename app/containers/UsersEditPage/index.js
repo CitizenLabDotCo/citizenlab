@@ -63,9 +63,9 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
     return (
       <ProfileDiv>
         <Helmet
-          title="UsersEditPage"
+          title="User edit page"
           meta={[
-            { name: 'description', content: 'UsersEditPage' },
+            { name: 'description', content: 'Edit user profile' },
           ]}
         />
         <WatchSagas sagas={sagas} />

@@ -57,9 +57,9 @@ export class UsersPasswordRecovery extends React.PureComponent { // eslint-disab
     return (
       <div>
         <Helmet
-          title="UsersPasswordRecovery"
+          title="User password recovery page"
           meta={[
-            { name: 'description', content: 'Recover your password' },
+            { name: 'description', content: 'Email reset link request' },
           ]}
         />
         <WatchSagas sagas={sagas} />

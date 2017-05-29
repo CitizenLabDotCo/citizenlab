@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Helmet from 'react-helmet';
+import { injectTFunc } from 'containers/T/utils';
+
 // components
 import { Comment } from 'semantic-ui-react';
 import ImageCarousel from 'components/ImageCarousel';
@@ -31,12 +34,17 @@ class Show extends React.PureComponent {
 
   render() {
     const {
-      id, idea, images, authorId, title_multiloc,
-      body_multiloc, created_at, votes, location } = this.props;
+      id, idea, images, authorId, title_multiloc, body_multiloc, created_at, votes, location, tFunc } = this.props;
 
     if (!title_multiloc) return null;
     return(
       <div>
+        <Helmet
+          title="Show idea"
+          meta={[
+            { name: 'description', content: tFunc(title_multiloc) },
+          ]}
+        />
         <Carousel images={images} />
         <h2>
           <T value={title_multiloc} />
@@ -69,6 +77,7 @@ class Show extends React.PureComponent {
 
 Show.propTypes = {
   id: PropTypes.string,
+  tFUnc: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -77,7 +86,7 @@ const mapStateToProps = createStructuredSelector({
 
 /* eslint-disable camelcase*/
 
-const mergeProps = ({ idea }, dispatchProps, { location }) => {
+const mergeProps = ({ idea }, dispatchProps, { tFunc, location }) => {
   if (!idea) return {};
   const attributes = idea.get('attributes').toObject();
   const id = idea.get('id')
@@ -106,12 +115,13 @@ const mergeProps = ({ idea }, dispatchProps, { location }) => {
     areas,
     topics,
     location,
+    tFunc,
   };
 
 };
 
 
-export default preprocess(mapStateToProps, null, mergeProps)(Show);
+export default injectTFunc(preprocess(mapStateToProps, null, mergeProps)(Show));
 
 /*
 
