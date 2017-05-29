@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import generateErrorsObject from './generateErrorsObject';
 
 // Comoponents
 
@@ -36,7 +37,7 @@ class FormComponent extends React.Component {
         (ele) => `${type}_error_${ele.error}`
       );
     });
-    toNewState.errors = errorsObje;
+    toNewState.errors = generateErrorsObject(e);
 
     this.setState(toNewState, () => {
       this.handleError(e);
