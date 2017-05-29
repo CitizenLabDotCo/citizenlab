@@ -12,6 +12,8 @@
  */
 
 import React from 'react';
+import Helmet from 'react-helmet';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Saga } from 'react-redux-saga';
@@ -43,6 +45,12 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     if (currentTenant) {
       return (
         <div>
+          <Helmet
+            title="Home page"
+            meta={[
+              { name: 'description', content: `Citizenlab 2 platform ${currentTenant.attributes.name}` },
+            ]}
+          />
           <Navbar currentTenant={currentTenant} />
           <Container>
             <div>
@@ -69,9 +77,9 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
 }
 
 App.propTypes = {
-  children: React.PropTypes.node,
-  dispatch: React.PropTypes.func,
-  currentTenant: React.PropTypes.object,
+  children: PropTypes.node,
+  dispatch: PropTypes.func,
+  currentTenant: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({

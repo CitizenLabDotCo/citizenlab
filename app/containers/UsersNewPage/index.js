@@ -19,9 +19,9 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
     return (
       <div>
         <Helmet
-          title="UsersNewPage"
+          title="Registration page"
           meta={[
-            { name: 'description', content: 'Description of UsersNewPage' },
+            { name: 'description', content: 'Register to the platform as a user' },
           ]}
         />
         <h1>

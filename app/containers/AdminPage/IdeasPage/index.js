@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { Saga } from 'react-redux-saga';
@@ -126,6 +127,12 @@ class IdeasPage extends React.Component { // eslint-disable-line react/prefer-st
 
     return (
       <div>
+        <Helmet
+          title="Ideas admin page"
+          meta={[
+            { name: 'description', content: 'List of ideas in admin backoffice' },
+          ]}
+        />
         <h1>Ideas</h1>
         <Saga saga={watchLoadIdeas} />
         {table}

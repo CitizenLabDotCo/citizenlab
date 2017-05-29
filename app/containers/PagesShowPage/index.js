@@ -32,7 +32,7 @@ export class PagesShowPage extends React.PureComponent { // eslint-disable-line 
     return (
       <div>
         <Helmet
-          title="PagesShowPage"
+          title="Page show page"
           meta={[
             { name: 'description', content: 'Displays page created by admin' },
           ]}

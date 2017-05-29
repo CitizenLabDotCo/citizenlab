@@ -24,8 +24,10 @@ class DropdownInput extends React.PureComponent {
   };
 
   render() {
-    const { name, options } = this.props;
-    const { placeholder, label } = this.state;
+    const { name, options, text } = this.props;
+    const { placeholder: ph, label } = this.state;
+
+    const placeholder = (text ? null : ph);
 
     return (
       <Form.Field>
@@ -35,6 +37,7 @@ class DropdownInput extends React.PureComponent {
           options={options}
           fluid
           name={name}
+          text={text}
           onChange={this.handleChange}
           placeholder={placeholder}
         />
@@ -47,6 +50,7 @@ DropdownInput.propTypes = {
   name: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   action: PropTypes.func.isRequired,
+  text: PropTypes.string,
   intl: intlShape.isRequired,
 };
 

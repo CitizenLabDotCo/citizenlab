@@ -36,11 +36,13 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
   }
 
   render() {
+    const { location } = this.props;
+
     return (
       <div>
         <WatchSagas sagas={sagasWatchers} />
         <LoadMessages />
-        <Show />
+        <Show location={location} />
       </div>
     );
   }
@@ -52,6 +54,7 @@ IdeasShow.propTypes = {
   loadCommentsRequest: PropTypes.func,
   params: PropTypes.object,
   resetPageData: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export default preprocess(null, { loadIdeaRequest, loadCommentsRequest, loadVotesRequest, resetPageData })(IdeasShow);

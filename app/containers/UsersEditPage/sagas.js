@@ -5,9 +5,9 @@ import { mergeJsonApiResources } from 'utils/resources/actions';
 import { fetchCurrentUser, updateCurrentUser } from 'api';
 
 import {
-  loadCurrentUserError, storeAvatarError, storeAvatarSuccess, updateCurrentUserError, updateCurrentUserSuccess, loadCurrentUserSuccess,
+  loadCurrentUserError, storeAvatarError, updateCurrentUserError, updateCurrentUserSuccess, loadCurrentUserSuccess,
 } from './actions';
-import { STORE_AVATAR, UPDATE_CURRENT_USER } from './constants';
+import { STORE_AVATAR_REQUEST, UPDATE_CURRENT_USER_REQUEST } from './constants';
 import { LOAD_CURRENT_USER } from '../App/constants';
 
 // Individual exports for testing
@@ -29,11 +29,10 @@ export function* postProfile(action) {
     const userId = action.userId;
 
     const currentUserResponse = yield call(updateCurrentUser, payload, userId);
-
     yield put(mergeJsonApiResources(currentUserResponse));
-    yield put(updateCurrentUserSuccess(currentUserResponse));
+    yield put(updateCurrentUserSuccess());
   } catch (err) {
-    yield put(updateCurrentUserError());
+    yield put(updateCurrentUserError(err.json));
   }
 }
 
@@ -47,8 +46,6 @@ export function* postAvatar(action) {
     const userId = action.userId;
 
     yield call(updateCurrentUser, payload, userId);
-
-    yield put(storeAvatarSuccess());
   } catch (err) {
     yield put(storeAvatarError());
   }
@@ -59,11 +56,11 @@ function* watchLoadCurrentUser() {
 }
 
 function* watchStoreAvatar() {
-  yield takeLatest(STORE_AVATAR, postAvatar);
+  yield takeLatest(STORE_AVATAR_REQUEST, postAvatar);
 }
 
 function* watchStoreCurrentUser() {
-  yield takeLatest(UPDATE_CURRENT_USER, postProfile);
+  yield takeLatest(UPDATE_CURRENT_USER_REQUEST, postProfile);
 }
 
 export default {

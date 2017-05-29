@@ -1,20 +1,27 @@
 import {
-  loadCurrentUserError, loadCurrentUserSuccess, updateCurrentUserError, updateCurrentUserSuccess,
+  loadCurrentUserSuccess,
 } from '../actions';
+import { stringMock } from 'utils/testing/constants';
 
-describe('actions', () => {
-  const apiResponse = {
-    data: {
-      attributes: {},
-      id: 'anything',
-    },
-  };
+describe('UsersEditPage actions', () => {
+  describe('loadCurrentUserSuccess', () => {
+    const apiResponse = {
+      data: {
+        attributes: {
+          avatar: {
+            medium: `${stringMock}a`,
+          },
+        },
+        id: `${stringMock}b`,
+      },
+    };
 
-  it('should not return loadCurrentUserError().type', () => {
-    expect(loadCurrentUserSuccess(apiResponse)).not.toEqual(loadCurrentUserError());
-  });
+    it('should should avatar as a string', () => {
+      expect(loadCurrentUserSuccess(apiResponse).payload.avatar).toEqual(`${stringMock}a`);
+    });
 
-  it('should not return storeCurrentUserError().type', () => {
-    expect(updateCurrentUserSuccess(apiResponse)).not.toEqual(updateCurrentUserError());
+    it('should should userId not null', () => {
+      expect(loadCurrentUserSuccess(apiResponse).userId).toEqual(`${stringMock}b`);
+    });
   });
 });
