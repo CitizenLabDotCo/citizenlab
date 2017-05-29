@@ -258,7 +258,7 @@
     "sanitize.css": "4.1.0",
     "semantic-ui-css": "^2.2.10",
     "semantic-ui-react": "^0.67.2",
-    "styled-components": "2.0.0-19",
+    "styled-components": "2.0.0",
     "url-parse": "^1.1.8",
     "warning": "3.0.0",
     "whatwg-fetch": "2.0.1",

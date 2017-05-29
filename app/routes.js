@@ -35,15 +35,17 @@ export default function createRoutes(store) {
       },
     }, {
       path: '/landing',
-      name: 'landing',
+      name: 'landingPage',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
+          import('containers/LandingPage/reducer'),
           import('containers/LandingPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([component]) => {
+        importModules.then(([reducer, component]) => {
+          injectReducer('landingPage', reducer.default);
           renderRoute(component);
         });
 
