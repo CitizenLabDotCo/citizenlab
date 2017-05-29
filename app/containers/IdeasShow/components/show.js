@@ -10,6 +10,7 @@ import Votes from './show/votes';
 import Comments from './comments';
 import T from 'containers/T';
 import Autorize from 'utils/containers/authorize';
+import ShareButtons from './ShareButtons';
 
 // store
 import { createStructuredSelector } from 'reselect';
@@ -31,7 +32,8 @@ class Show extends React.PureComponent {
   render() {
     const {
       id, idea, images, authorId, title_multiloc,
-      body_multiloc, created_at, votes } = this.props;
+      body_multiloc, created_at, votes, location } = this.props;
+
     if (!title_multiloc) return null;
     return(
       <div>
@@ -39,6 +41,7 @@ class Show extends React.PureComponent {
         <h2>
           <T value={title_multiloc} />
         </h2>
+        <ShareButtons location={location} image={images[0] && images[0].medium} />
         <Votes ideaId={id} />
         <Comment.Group style={{ maxWidth: 'none' }}>
           <Comment>
@@ -74,7 +77,7 @@ const mapStateToProps = createStructuredSelector({
 
 /* eslint-disable camelcase*/
 
-const mergeProps = ({ idea }, dispatchProps) => {
+const mergeProps = ({ idea }, dispatchProps, { location }) => {
   if (!idea) return {};
   const attributes = idea.get('attributes').toObject();
   const id = idea.get('id')
@@ -102,6 +105,7 @@ const mergeProps = ({ idea }, dispatchProps) => {
     authorId,
     areas,
     topics,
+    location,
   };
 
 };
