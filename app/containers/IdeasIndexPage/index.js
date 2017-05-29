@@ -14,7 +14,7 @@ import { push } from 'react-router-redux';
 
 import OverlayChildren from 'utils/containers/overlayChildren';
 
-import PageView from './PageView';
+import PageView from './pageView';
 
 import messages from './messages';
 
