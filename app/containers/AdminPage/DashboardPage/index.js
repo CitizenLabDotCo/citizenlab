@@ -2,6 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { Grid, Icon, Segment, Menu } from 'semantic-ui-react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
@@ -147,6 +148,12 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
     return (
       <div>
         <WatchSagas sagas={sagas} />
+        <Helmet
+          title="Admin dashboard page"
+          meta={[
+            { name: 'description', content: 'Dashboard for activities on the platform' },
+          ]}
+        />
         <Grid>
           <Grid.Row columns={2}>
             <Grid.Column width={4}>

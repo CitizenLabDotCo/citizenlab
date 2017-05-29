@@ -53,7 +53,7 @@ export class ProjectsIndexPage extends React.PureComponent { // eslint-disable-l
     return (
       <div className={className}>
         <Helmet
-          title="Project listing"
+          title="Project listing page"
           meta={[
             { name: 'description', content: 'Project listing' },
           ]}

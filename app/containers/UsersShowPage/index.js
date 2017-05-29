@@ -40,9 +40,9 @@ export class UsersShowPage extends React.PureComponent { // eslint-disable-line 
     return (
       <div>
         <Helmet
-          title="UsersShowPage"
+          title="User profile page"
           meta={[
-            { name: 'description', content: 'User Profile' },
+            { name: 'description', content: 'Show user profile' },
           ]}
         />
         <Saga saga={watchLoadUser} />

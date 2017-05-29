@@ -5,8 +5,9 @@
  */
 
 import {
-  LOAD_CURRENT_USER_SUCCESS, LOAD_CURRENT_USER_ERROR, STORE_AVATAR, UPDATE_CURRENT_USER_SUCCESS,
-  UPDATE_CURRENT_USER_ERROR, UPDATE_CURRENT_USER, STORE_AVATAR_ERROR, UPDATE_USER_LOCALE, STORE_AVATAR_SUCCESS,
+  LOAD_CURRENT_USER_SUCCESS, LOAD_CURRENT_USER_ERROR, STORE_AVATAR_REQUEST,
+  UPDATE_CURRENT_USER_SUCCESS, UPDATE_CURRENT_USER_ERROR, STORE_AVATAR_ERROR, UPDATE_USER_LOCALE,
+  UPDATE_CURRENT_USER_REQUEST,
 } from './constants';
 
 export function loadCurrentUserSuccess(currentUser) {
@@ -39,7 +40,7 @@ export function loadCurrentUserError() {
 
 export function updateCurrentUser(currentUser) {
   return {
-    type: UPDATE_CURRENT_USER,
+    type: UPDATE_CURRENT_USER_REQUEST,
     payload: currentUser,
     userId: currentUser.userId,
   };
@@ -52,40 +53,24 @@ export function updateLocale(userLocale) {
   };
 }
 
-export function updateCurrentUserSuccess(currentUser) {
-  const validResponse = !!(currentUser && currentUser.data);
-  const currentUserWithAvatar = currentUser;
-
-  if (validResponse && !currentUserWithAvatar.data.attributes.avatar) {
-    currentUserWithAvatar.data.attributes.avatar = '';
-  }
-
+export function updateCurrentUserSuccess() {
   return {
-    type: (validResponse
-        ? UPDATE_CURRENT_USER_SUCCESS
-        : UPDATE_CURRENT_USER_ERROR),
-    payload: validResponse && currentUser.data.attributes,
-    userId: currentUser.data.id,
+    type: UPDATE_CURRENT_USER_SUCCESS,
   };
 }
 
-export function updateCurrentUserError() {
+export function updateCurrentUserError(errors) {
   return {
     type: UPDATE_CURRENT_USER_ERROR,
+    errors,
   };
 }
 
 export function storeAvatar(avatarBase64, userId) {
   return {
-    type: STORE_AVATAR,
+    type: STORE_AVATAR_REQUEST,
     avatarBase64,
     userId,
-  };
-}
-
-export function storeAvatarSuccess() {
-  return {
-    type: STORE_AVATAR_SUCCESS,
   };
 }
 

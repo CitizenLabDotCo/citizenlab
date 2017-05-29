@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Helmet from 'react-helmet';
+import { injectTFunc } from 'containers/T/utils';
+
 // components
 import { Comment } from 'semantic-ui-react';
 import ImageCarousel from 'components/ImageCarousel';
@@ -10,6 +13,7 @@ import Votes from './show/votes';
 import Comments from './comments';
 import T from 'containers/T';
 import Autorize from 'utils/containers/authorize';
+import ShareButtons from './ShareButtons';
 
 // store
 import { createStructuredSelector } from 'reselect';
@@ -30,15 +34,22 @@ class Show extends React.PureComponent {
 
   render() {
     const {
-      id, idea, images, authorId, title_multiloc,
-      body_multiloc, created_at, votes } = this.props;
+      id, idea, images, authorId, title_multiloc, body_multiloc, created_at, votes, location, tFunc } = this.props;
+
     if (!title_multiloc) return null;
     return(
       <div>
+        <Helmet
+          title="Show idea"
+          meta={[
+            { name: 'description', content: tFunc(title_multiloc) },
+          ]}
+        />
         <Carousel images={images} />
         <h2>
           <T value={title_multiloc} />
         </h2>
+        <ShareButtons location={location} image={images[0] && images[0].medium} />
         <Votes ideaId={id} />
         <Comment.Group style={{ maxWidth: 'none' }}>
           <Comment>
@@ -66,6 +77,7 @@ class Show extends React.PureComponent {
 
 Show.propTypes = {
   id: PropTypes.string,
+  tFUnc: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -74,7 +86,7 @@ const mapStateToProps = createStructuredSelector({
 
 /* eslint-disable camelcase*/
 
-const mergeProps = ({ idea }, dispatchProps) => {
+const mergeProps = ({ idea }, dispatchProps, { tFunc, location }) => {
   if (!idea) return {};
   const attributes = idea.get('attributes').toObject();
   const id = idea.get('id')
@@ -102,12 +114,14 @@ const mergeProps = ({ idea }, dispatchProps) => {
     authorId,
     areas,
     topics,
+    location,
+    tFunc,
   };
 
 };
 
 
-export default preprocess(mapStateToProps, null, mergeProps)(Show);
+export default injectTFunc(preprocess(mapStateToProps, null, mergeProps)(Show));
 
 /*
 
