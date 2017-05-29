@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 import { FormattedMessage } from 'react-intl';
 import { Saga } from 'react-redux-saga';
 
@@ -21,11 +21,9 @@ export class SignInPage extends React.PureComponent { // eslint-disable-line rea
   render() {
     return (
       <div>
-        <Helmet
-          title="Sign in page"
-          meta={[
-            { name: 'description', content: 'Page to sign in the platform' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
 
         <Saga saga={signInUserSuccessWatcher} />

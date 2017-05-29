@@ -11,13 +11,15 @@ import PropTypes from 'prop-types';
 // import Show from './components/show';
 // import LoadMessages from './components/loadMessages';
 import WatchSagas from 'containers/WatchSagas';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 
 // store
 import { preprocess } from 'utils';
 import { push } from 'react-router-redux';
 import sagasWatchers from './sagas';
 import { loadProjectRequest } from './actions';
+
+import messages from './messages';
 
 class ProjectView extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -33,11 +35,9 @@ class ProjectView extends React.PureComponent { // eslint-disable-line react/pre
   render() {
     return (
       <div>
-        <Helmet
-          title="ProjectShowPage"
-          meta={[
-            { name: 'description', content: 'Description of ProjectShowPage' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <WatchSagas sagas={sagasWatchers} />
         <ul>

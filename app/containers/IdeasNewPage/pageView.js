@@ -6,7 +6,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { Container, Label, Divider } from 'semantic-ui-react';
 import styled from 'styled-components';
@@ -89,12 +88,6 @@ export class PageView extends React.PureComponent { // eslint-disable-line react
     const { className, storeAttachment: storeAtt, storeImage: storeImg, setTitle: setT } = this.props;
     return (
       <Container className={className}>
-        <Helmet
-          title="IdeasNewPage"
-          meta={[
-            { name: 'description', content: 'Description of IdeasNewPage' },
-          ]}
-        />
         <WatchSagas sagas={{ watchGetTopics: sagas.watchGetTopics, watchGetAreas: sagas.watchGetAreas }} />
 
         <Breadcrumbs />

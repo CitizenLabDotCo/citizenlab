@@ -75,5 +75,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.deleteComment',
     defaultMessage: 'Delete',
   },
-
+  helmetTitle: {
+    id: 'app.containers.IdeasShow.helmetTitle',
+    defaultMessage: 'Show idea',
+  },
 });

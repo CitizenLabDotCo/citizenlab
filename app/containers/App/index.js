@@ -18,6 +18,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Saga } from 'react-redux-saga';
 import { Container } from 'semantic-ui-react';
+import { injectIntl, intlShape } from 'react-intl';
 
 // import { DockableSagaView } from 'redux-saga-devtools';
 // import { sagamonitor } from 'store';
@@ -33,6 +34,8 @@ import tenantSaga from 'utils/tenant/sagas';
 
 import Navbar from './Navbar';
 
+import messages from './messages';
+
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   componentDidMount() {
@@ -42,13 +45,15 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
 
   content() {
     const { currentTenant } = this.props;
+    const { formatMessage } = this.props.intl;
+
     if (currentTenant) {
       return (
         <div>
           <Helmet
-            title="Home page"
+            title={formatMessage(messages.helmetTitle)}
             meta={[
-              { name: 'description', content: `Citizenlab 2 platform ${currentTenant.attributes.name}` },
+              { name: 'description', content: formatMessage(messages.helmetDescription, { tenantName: currentTenant.attributes.name }) },
             ]}
           />
           <Navbar currentTenant={currentTenant} />
@@ -80,10 +85,11 @@ App.propTypes = {
   children: PropTypes.node,
   dispatch: PropTypes.func,
   currentTenant: PropTypes.object,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   currentTenant: makeSelectCurrentTenant(),
 });
 
-export default connect(mapStateToProps)(App);
+export default injectIntl(connect(mapStateToProps)(App));

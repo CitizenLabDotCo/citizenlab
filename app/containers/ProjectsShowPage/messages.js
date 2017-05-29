@@ -14,4 +14,12 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.projectNotFound',
     defaultMessage: 'Ups... it seems that this project has be removed or forgotten!',
   },
+  helmetTitle: {
+    id: 'app.containers.IdeasShow.helmetTitle',
+    defaultMessage: 'Idea show page',
+  },
+  helmetDescription: {
+    id: 'app.containers.IdeasShow.helmetDescription',
+    defaultMessage: 'Display an idea',
+  },
 });

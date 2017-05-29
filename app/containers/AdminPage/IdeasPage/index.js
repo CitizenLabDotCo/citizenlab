@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { Saga } from 'react-redux-saga';
@@ -31,6 +31,7 @@ import {
 import { loadIdeas } from './actions';
 import { watchLoadIdeas } from './sagas';
 import IdeaTableRow from './components/ideaTableRow';
+import messages from './messages';
 
 
 class IdeasPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -127,11 +128,9 @@ class IdeasPage extends React.Component { // eslint-disable-line react/prefer-st
 
     return (
       <div>
-        <Helmet
-          title="Ideas admin page"
-          meta={[
-            { name: 'description', content: 'List of ideas in admin backoffice' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <h1>Ideas</h1>
         <Saga saga={watchLoadIdeas} />

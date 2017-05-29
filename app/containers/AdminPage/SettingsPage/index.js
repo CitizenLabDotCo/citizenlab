@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { Saga } from 'react-redux-saga';
@@ -13,6 +13,7 @@ import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { makeSelectCurrentTenant } from './selectors';
 import { saveSettings } from './actions';
 import { watchSaveSettings } from './sagas';
+import messages from './messages';
 
 
 class SettingsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -110,11 +111,9 @@ class SettingsPage extends React.Component { // eslint-disable-line react/prefer
 
     return (
       <div>
-        <Helmet
-          title="Admin settings page"
-          meta={[
-            { name: 'description', content: 'Admin settings page' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <h1>Settings</h1>
         <Saga saga={watchSaveSettings} />

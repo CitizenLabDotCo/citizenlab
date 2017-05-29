@@ -46,4 +46,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.year',
     defaultMessage: 'Year',
   },
+  helmetTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
+    defaultMessage: 'Admin dashboard page',
+  },
+  helmetDescription: {
+    id: 'app.containers.AdminPage.DashboardPage.helmetDescription',
+    defaultMessage: 'Dashboard for activities on the platform',
+  },
 });

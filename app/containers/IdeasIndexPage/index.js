@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -15,6 +15,8 @@ import { push } from 'react-router-redux';
 import OverlayChildren from 'utils/containers/overlayChildren';
 
 import PageView from './PageView';
+
+import messages from './messages';
 
 // need to implement Helmet
 class IdeasIndex extends React.Component {
@@ -31,11 +33,9 @@ class IdeasIndex extends React.Component {
     const { children } = this.props;
     return (
       <div>
-        <Helmet
-          title="Ideas index page"
-          meta={[
-            { name: 'description', content: 'List of ideas on the platform' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <OverlayChildren
           component={PageView}

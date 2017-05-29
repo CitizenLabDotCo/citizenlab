@@ -26,4 +26,12 @@ export default defineMessages({
     id: 'app.containers.UsersNewPage.signUpAction2',
     defaultMessage: 'Sign Up Now!',
   },
+  helmetTitle: {
+    id: 'app.containers.UsersNewPage.helmetTitle',
+    defaultMessage: 'Registration page',
+  },
+  helmetDescription: {
+    id: 'app.containers.UsersNewPage.helmetDescription',
+    defaultMessage: 'Register to the platform as a user',
+  },
 });

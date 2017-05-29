@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { bindActionCreators } from 'redux';
 import WatchSagas from 'containers/WatchSagas';
@@ -71,11 +71,9 @@ class AdminPagesNew extends React.Component { // eslint-disable-line react/prefe
 
     return (
       <Wrapper>
-        <Helmet
-          title="New admin page"
-          meta={[
-            { name: 'description', content: 'Publish a new page' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <WatchSagas sagas={sagas} />
         {publishing && <FormattedMessageSegment message={messages.publishing} />}

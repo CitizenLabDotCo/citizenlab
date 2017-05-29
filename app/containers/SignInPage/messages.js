@@ -38,4 +38,12 @@ export default defineMessages({
     id: 'app.containers.SignInPage.facebookSignIn',
     defaultMessage: 'Sign In With Facebook',
   },
+  helmetTitle: {
+    id: 'app.containers.SignInPage.helmetTitle',
+    defaultMessage: 'Sign in page',
+  },
+  helmetDescription: {
+    id: 'app.containers.SignInPage.helmetDescription',
+    defaultMessage: 'Page to sign in to the platform',
+  },
 });

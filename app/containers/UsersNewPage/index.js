@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 import { FormattedMessage } from 'react-intl';
 
 import SignInButton from './components/signInButton';
@@ -18,11 +18,9 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
   render() {
     return (
       <div>
-        <Helmet
-          title="Registration page"
-          meta={[
-            { name: 'description', content: 'Register to the platform as a user' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <h1>
           <FormattedMessage {...messages.header} />

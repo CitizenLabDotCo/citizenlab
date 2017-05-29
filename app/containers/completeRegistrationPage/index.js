@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 
 import WatchSagas from 'containers/WatchSagas';
 import { Saga } from 'react-redux-saga';
@@ -12,6 +12,7 @@ import { dispatchable } from 'utils/dispatchable';
 
 import sagas from './sagas';
 import DemographicsForm from './components/demographicsForm';
+import messages from './messages';
 
 // Ideas show does not use helmet at this view is controlled by RouterIndexShow
 class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -22,11 +23,9 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
   render() {
     return (
       <div>
-        <Helmet
-          title="Complete registration page"
-          meta={[
-            { name: 'description', content: 'Complete registration' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <WatchSagas sagas={sagas} />
         <Saga saga={indexSagas.watchLoadAreas} />

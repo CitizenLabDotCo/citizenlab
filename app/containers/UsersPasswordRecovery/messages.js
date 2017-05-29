@@ -22,4 +22,12 @@ export default defineMessages({
     id: 'app.containers.UsersPasswordRecovery.notFoundError',
     defaultMessage: 'Not found!',
   },
+  helmetTitle: {
+    id: 'app.containers.UsersPasswordRecovery.helmetTitle',
+    defaultMessage: 'User password recovery page',
+  },
+  helmetDescription: {
+    id: 'app.containers.UsersPasswordRecovery.helmetDescription',
+    defaultMessage: 'Email reset link request',
+  },
 });

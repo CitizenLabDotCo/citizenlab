@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
@@ -52,11 +52,9 @@ export class ProjectsIndexPage extends React.PureComponent { // eslint-disable-l
     const { className, loading, loadError, nextPageNumber, projectsImm } = this.props;
     return (
       <div className={className}>
-        <Helmet
-          title="Project listing page"
-          meta={[
-            { name: 'description', content: 'Project listing' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <WatchSagas sagas={sagas} />
 

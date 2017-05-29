@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { preprocess } from 'utils/reactRedux';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import WatchSagas from 'containers/WatchSagas';
@@ -31,11 +31,9 @@ export class PagesShowPage extends React.PureComponent { // eslint-disable-line 
 
     return (
       <div>
-        <Helmet
-          title="Page show page"
-          meta={[
-            { name: 'description', content: 'Displays page created by admin' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <WatchSagas sagas={sagas} />
         {page && <div>

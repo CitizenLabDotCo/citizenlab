@@ -18,4 +18,12 @@ export default defineMessages({
     id: 'app.containers.ProjectsIndexPage.loading',
     defaultMessage: 'Loading...',
   },
+  helmetTitle: {
+    id: 'app.containers.ProjectsIndexPage.helmetTitle',
+    defaultMessage: 'Project listing page',
+  },
+  helmetDescription: {
+    id: 'app.containers.ProjectsIndexPage.helmetDescription',
+    defaultMessage: 'Project listing',
+  },
 });

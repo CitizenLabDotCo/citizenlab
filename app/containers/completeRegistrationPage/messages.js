@@ -113,4 +113,12 @@ export default defineMessages({
     id: 'app.containers.completeRegistrationPage.next',
     defaultMessage: 'Next',
   },
+  helmetTitle: {
+    id: 'app.containers.completeRegistrationPage.helmetTitle',
+    defaultMessage: 'Complete registration page',
+  },
+  helmetDescription: {
+    id: 'app.containers.completeRegistrationPage.helmetDescription',
+    defaultMessage: 'Complete registration',
+  },
 });

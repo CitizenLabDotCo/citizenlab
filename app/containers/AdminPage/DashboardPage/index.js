@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 import { createStructuredSelector } from 'reselect';
 import { Grid, Icon, Segment, Menu } from 'semantic-ui-react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
@@ -148,11 +148,9 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
     return (
       <div>
         <WatchSagas sagas={sagas} />
-        <Helmet
-          title="Admin dashboard page"
-          meta={[
-            { name: 'description', content: 'Dashboard for activities on the platform' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <Grid>
           <Grid.Row columns={2}>

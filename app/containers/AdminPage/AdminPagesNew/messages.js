@@ -34,4 +34,12 @@ export default defineMessages({
     id: 'app.containers.AdminPages.AdminPagesNew.titlePlaceholder',
     defaultMessage: 'Page title...',
   },
+  helmetTitle: {
+    id: 'app.containers.AdminPages.AdminPagesNew.helmetTitle',
+    defaultMessage: 'New admin page',
+  },
+  helmetDescription: {
+    id: 'app.containers.AdminPages.AdminPagesNew.helmetDescription',
+    defaultMessage: 'Publish a new page',
+  },
 });

@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 import WatchSagas from 'containers/WatchSagas/';
@@ -62,11 +62,9 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
 
     return (
       <ProfileDiv>
-        <Helmet
-          title="User edit page"
-          meta={[
-            { name: 'description', content: 'Edit user profile' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <WatchSagas sagas={sagas} />
 

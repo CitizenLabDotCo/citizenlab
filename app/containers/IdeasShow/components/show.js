@@ -20,6 +20,10 @@ import { createStructuredSelector } from 'reselect';
 import { preprocess } from 'utils';
 import { selectIdea } from '../selectors';
 
+// intl
+import { injectIntl, intlShape } from 'react-intl';
+import messages from './../messages';
+
 const Carousel = ({ images }) => {
   if (!images[0]) return null;
   return <ImageCarousel ideaImages={images} />;
@@ -32,15 +36,16 @@ Carousel.propTypes = {
 /* eslint-disable */
 class Show extends React.PureComponent {
 
-  render() {
+  render() {console.log(this.props);
     const {
       id, idea, images, authorId, title_multiloc, body_multiloc, created_at, votes, location, tFunc } = this.props;
+    const { formatMessage } = this.props.intl;
 
     if (!title_multiloc) return null;
     return(
       <div>
         <Helmet
-          title="Show idea"
+          title={formatMessage(messages.helmetTitle)}
           meta={[
             { name: 'description', content: tFunc(title_multiloc) },
           ]}
@@ -77,7 +82,8 @@ class Show extends React.PureComponent {
 
 Show.propTypes = {
   id: PropTypes.string,
-  tFUnc: PropTypes.func,
+  tFunc: PropTypes.func,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -86,8 +92,10 @@ const mapStateToProps = createStructuredSelector({
 
 /* eslint-disable camelcase*/
 
-const mergeProps = ({ idea }, dispatchProps, { tFunc, location }) => {
-  if (!idea) return {};
+const mergeProps = ({ idea }, dispatchProps, { tFunc, location, intl }) => {
+  if (!idea) return {
+    intl,
+  };
   const attributes = idea.get('attributes').toObject();
   const id = idea.get('id')
   const {
@@ -116,12 +124,13 @@ const mergeProps = ({ idea }, dispatchProps, { tFunc, location }) => {
     topics,
     location,
     tFunc,
+    intl,
   };
 
 };
 
 
-export default injectTFunc(preprocess(mapStateToProps, null, mergeProps)(Show));
+export default injectIntl(injectTFunc(preprocess(mapStateToProps, null, mergeProps)(Show)));
 
 /*
 

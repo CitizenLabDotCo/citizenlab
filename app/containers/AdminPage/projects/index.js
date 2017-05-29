@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 
 // components
 // import { FormattedMessage } from 'react-intl';
@@ -11,7 +11,7 @@ import sagas from 'resources/projects/sagas';
 import { preprocess } from 'utils';
 
 // messages
-// import messages from './messages';
+import messages from './messages';
 import { loadProjectsRequest, resetProjects } from 'resources/projects/actions';
 
 class ProjectDashboard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -28,11 +28,9 @@ class ProjectDashboard extends React.PureComponent { // eslint-disable-line reac
   render() {
     return (
       <div>
-        <Helmet
-          title="ProjectDashboard"
-          meta={[
-            { name: 'description', content: 'Description of ProjectDashboard' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <WatchSagas sagas={sagas} />
         {this.props.children}

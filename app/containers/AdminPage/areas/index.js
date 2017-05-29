@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 
 // components
 // import { FormattedMessage } from 'react-intl';
@@ -11,7 +11,7 @@ import sagas from 'resources/areas/sagas';
 import { preprocess } from 'utils';
 
 // messages
-// import messages from './messages';
+import messages from './messages';
 import { loadAreasRequest, resetAreas } from 'resources/areas/actions';
 
 class AreaDashboard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -28,11 +28,9 @@ class AreaDashboard extends React.PureComponent { // eslint-disable-line react/p
   render() {
     return (
       <div>
-        <Helmet
-          title="AreaDashboard"
-          meta={[
-            { name: 'description', content: 'Description of AreaDashboard' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <WatchSagas sagas={sagas} />
         {this.props.children}

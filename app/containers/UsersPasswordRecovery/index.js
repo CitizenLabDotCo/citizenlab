@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { preprocess } from 'utils/reactRedux';
 import { bindActionCreators } from 'redux';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 import { FormattedMessage } from 'react-intl';
 import WatchSagas from 'containers/WatchSagas';
 import { createStructuredSelector } from 'reselect';
@@ -56,11 +56,9 @@ export class UsersPasswordRecovery extends React.PureComponent { // eslint-disab
 
     return (
       <div>
-        <Helmet
-          title="User password recovery page"
-          meta={[
-            { name: 'description', content: 'Email reset link request' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <WatchSagas sagas={sagas} />
         <FormattedMessage {...messages.header} />

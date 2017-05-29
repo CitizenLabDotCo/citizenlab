@@ -26,4 +26,12 @@ export default defineMessages({
     id: 'app.containers.IdeasIndexPage.areas',
     defaultMessage: 'Areas',
   },
+  helmetTitle: {
+    id: 'app.containers.IdeasIndexPage.helmetTitle',
+    defaultMessage: 'Ideas index page',
+  },
+  helmetDescription: {
+    id: 'app.containers.IdeasIndexPage.helmetDescription',
+    defaultMessage: 'List of ideas on the platform',
+  },
 });

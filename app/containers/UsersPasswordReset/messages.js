@@ -26,4 +26,12 @@ export default defineMessages({
     id: 'app.containers.UsersPasswordReset.error',
     defaultMessage: 'Unexpected error',
   },
+  helmetTitle: {
+    id: 'app.containers.UsersPasswordReset.helmetTitle',
+    defaultMessage: 'User password reset page',
+  },
+  helmetDescription: {
+    id: 'app.containers.UsersPasswordReset.helmetDescription',
+    defaultMessage: 'Reset your password using the link sent by email',
+  },
 });

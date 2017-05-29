@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 import { createStructuredSelector } from 'reselect';
 import { Container, Label, Divider } from 'semantic-ui-react';
 import styled from 'styled-components';
@@ -28,6 +28,7 @@ import { selectSubmitIdea } from './selectors';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 import sagas from './sagas';
+import messages from './messages';
 
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -89,11 +90,9 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
     const { className, storeAttachment: storeAtt, storeImage: storeImg, setTitle: setT } = this.props;
     return (
       <Container className={className}>
-        <Helmet
-          title="Publish idea page"
-          meta={[
-            { name: 'description', content: 'Publish a new idea' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <WatchSagas sagas={sagas} />
 
