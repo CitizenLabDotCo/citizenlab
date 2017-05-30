@@ -2,11 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Popup } from 'semantic-ui-react';
-import { connect } from 'react-redux';
 import T from 'containers/T';
 import moment from 'moment';
-// import { createStructuredSelector } from 'reselect';
-// import { selectResourcesDomain } from 'utils/resources/selectors';
 import { media } from '../../../utils/styleUtils';
 
 const IdeaContainer = styled.div`
@@ -246,16 +243,5 @@ Idea.propTypes = {
   idea: PropTypes.any,
   onClick: PropTypes.func,
 };
-
-/*
-Idea.propTypes = {
-  id: PropTypes.string.isRequired,
-  idea: PropTypes.any.isRequired,
-};
-
-const mapStateToProps = () => createStructuredSelector({
-  idea: (state, { id }) => selectResourcesDomain('ideas', id)(state),
-});
-*/
 
 export default Idea;

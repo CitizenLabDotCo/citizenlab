@@ -399,8 +399,6 @@ class LandingPage extends React.Component {
       ));
     }
 
-    console.log(projects.toJS());
-
     return (
       <div>
         <WatchSagas sagas={sagas} />

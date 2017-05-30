@@ -21,7 +21,7 @@ function* getIdeas(action) {
 
 function* getProjects(action) {
   try {
-    const projectsResponse = yield call(fetchProjects, null, {
+    const projectsResponse = yield call(fetchProjects, {
       'page[number]': action.nextPageNumber,
       'page[size]': action.nextPageItemCount,
     });
