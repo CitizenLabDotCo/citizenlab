@@ -17,7 +17,7 @@ describe('IdeasNewPage sagas', () => {
   describe('postIdea', () => {
     describe('publish', () => {
       const action = {
-        userId: stringMock,
+        userId: '123454312',
         titles: {
           en: stringMock,
         },

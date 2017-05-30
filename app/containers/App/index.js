@@ -12,20 +12,29 @@
  */
 
 import React from 'react';
+import Helmet from 'react-helmet';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Saga } from 'react-redux-saga';
 import { Container } from 'semantic-ui-react';
+import { injectIntl, intlShape } from 'react-intl';
 
-import { makeSelectCurrentUser } from 'utils/auth/selectors';
+// import { DockableSagaView } from 'redux-saga-devtools';
+// import { sagamonitor } from 'store';
+
 import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
 import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
 
-import authSaga from 'utils/auth/sagas';
+import WatchSagas from 'containers/WatchSagas';
+
+import authSagas from 'utils/auth/sagas';
 import tenantSaga from 'utils/tenant/sagas';
 
 import Navbar from './Navbar';
+
+import messages from './messages';
 
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -35,23 +44,25 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
   }
 
   content() {
-    const { currentUser, currentTenant } = this.props;
+    const { currentTenant } = this.props;
+    const { formatMessage } = this.props.intl;
+
     if (currentTenant) {
       return (
         <div>
-          {/*
-          <Navbar
-            currentUser={currentUser}
-            currentTenant={currentTenant}
-          >
-          </Navbar>
-          <Container>
+          <Helmet
+            title={formatMessage(messages.helmetTitle)}
+            meta={[
+              { name: 'description', content: formatMessage(messages.helmetDescription, { tenantName: currentTenant.attributes.name }) },
+            ]}
+          />
+          <Navbar currentTenant={currentTenant} />
+          {/* <Container> */ }
             <div>
               {React.Children.toArray(this.props.children)}
             </div>
-          </Container>
-          */}
-          {React.Children.toArray(this.props.children)}
+          {/* </Container> */ }
+          {/* <DockableSagaView monitor={sagamonitor}  /> */}
         </div>
       );
     } else { // eslint-disable-line no-else-return
@@ -62,7 +73,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
   render() {
     return (
       <div>
-        <Saga saga={authSaga} />
+        <WatchSagas sagas={authSagas} />
         <Saga saga={tenantSaga} />
         {this.content()}
       </div>
@@ -71,15 +82,14 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
 }
 
 App.propTypes = {
-  children: React.PropTypes.node,
-  dispatch: React.PropTypes.func,
-  currentUser: React.PropTypes.object,
-  currentTenant: React.PropTypes.object,
+  children: PropTypes.node,
+  dispatch: PropTypes.func,
+  currentTenant: PropTypes.object,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   currentTenant: makeSelectCurrentTenant(),
-  currentUser: makeSelectCurrentUser(),
 });
 
-export default connect(mapStateToProps)(App);
+export default injectIntl(connect(mapStateToProps)(App));

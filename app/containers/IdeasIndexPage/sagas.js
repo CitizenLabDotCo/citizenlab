@@ -14,13 +14,15 @@ import {
 
 export function* getIdeas(action) {
   try {
+    const queryParams = {
+      'page[number]': action.nextPageNumber,
+      'page[size]': action.nextPageItemCount,
+      ...action.filters,
+    };
+    Object.keys(queryParams).forEach((key) => (!queryParams[key] && (delete queryParams[key])));
     const ideaResponse = yield call(fetchIdeas,
       action.search,
-      {
-        'page[number]': action.nextPageNumber,
-        'page[size]': action.nextPageItemCount,
-        ...action.filters,
-      }
+      queryParams
     );
     yield put(mergeJsonApiResources(ideaResponse));
     if (action.initialLoad) {

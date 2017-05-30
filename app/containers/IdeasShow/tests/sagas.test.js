@@ -11,8 +11,8 @@ import { createIdeaComment, fetchIdea, fetchIdeaComments, fetchIdeaVotes, submit
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import { stringMock } from 'utils/testing/constants';
 
-import { getIdeaVotes, loadIdea, loadIdeaComments, postIdeaVote, publishComment, deleteComment } from '../sagas';
-import { loadCommentsSuccess, ideaVoted, publishCommentSuccess, loadIdeaSuccess, votesLoaded, deleteCommentSuccess } from '../actions';
+import { getIdeaVotes, loadIdea, loadIdeaComments, postIdeaVote, publishCommentFlow, deleteComment } from '../sagas';
+import { loadCommentsSuccess, voteIdeaSuccess, publishCommentSuccess, loadIdeaSuccess, loadVotesSuccess, deleteCommentSuccess } from '../actions';
 
 describe('sagas', () => {
   describe('getIdeaVotes', () => {
@@ -29,8 +29,8 @@ describe('sagas', () => {
       expect(result).toEqual(put(mergeJsonApiResources()));
     });
 
-    it('then, should dispatch votesLoaded action', (result) => {
-      expect(result).toEqual(put(votesLoaded()));
+    it('then, should dispatch loadVotesSuccess action', (result) => {
+      expect(result).toEqual(put(loadVotesSuccess()));
     });
   });
 
@@ -93,7 +93,7 @@ describe('sagas', () => {
       });
 
       it('then, should dispatch loadIdeaSuccess action', (result) => {
-        expect(result).toEqual(put(ideaVoted()));
+        expect(result).toEqual(put(voteIdeaSuccess()));
       });
     };
 
@@ -112,15 +112,14 @@ describe('sagas', () => {
 
     const mockedAction = {
       ideaId: mockString,
-      userId: mockString,
-      htmlContents: mockObject,
-      parentId: null,
+      comment: mockObject,
+      parentId: 1234,
     };
-    const ideaId = mockedAction.ideaId;
-    const it = sagaHelper(publishComment(mockedAction));
+
+    const it = sagaHelper(publishCommentFlow(mockedAction));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(createIdeaComment, ideaId, mockedAction.userId, mockedAction.htmlContents, mockedAction.parentId));
+      expect(result).toEqual(call(createIdeaComment, mockedAction.ideaId, mockedAction.comment, mockedAction.parentId));
     });
 
     it('then, should dispatch mergeJsonApiResources action', (result) => {

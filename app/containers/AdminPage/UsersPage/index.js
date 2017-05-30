@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import HelmetIntl from 'components/HelmetIntl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { Saga } from 'react-redux-saga';
@@ -25,6 +26,7 @@ import {
 } from './selectors';
 import { loadUsers } from './actions';
 import { watchLoadUsers } from './sagas';
+import messages from './messages';
 
 class UsersPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
@@ -129,6 +131,10 @@ class UsersPage extends React.Component { // eslint-disable-line react/prefer-st
 
     return (
       <div>
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
+        />
         <h1>Users</h1>
         <Saga saga={watchLoadUsers} />
         {table}

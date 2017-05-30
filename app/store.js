@@ -6,12 +6,15 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
+import { createSagaMonitor } from 'redux-saga-devtools';
 
 import _ from 'lodash';
 import createReducer from './reducers';
 import { saveState } from './persistedData';
 
-const sagaMiddleware = createSagaMiddleware();
+
+export const sagamonitor = createSagaMonitor();
+export const sagaMiddleware = createSagaMiddleware({ sagaMonitor: sagamonitor });
 
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares

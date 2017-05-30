@@ -1,1 +1,1 @@
-export { preprocess } from './reactRedux';
+export * from './reactRedux';

@@ -18,7 +18,6 @@ const makeSelectCurrentUserImmutable = (...type) => createSelector(
   (id, resources) => resources.getIn(['users', id, ...type]),
 );
 
-
 export {
   selectAuthDomain,
   makeSelectCurrentUser,

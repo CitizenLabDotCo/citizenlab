@@ -9,9 +9,9 @@ import T from 'containers/T';
 
 import { selectResourcesDomain } from 'utils/resources/selectors';
 import Author from './card/author';
-import Tags from './card/tags';
+// import Tags from './card/tags';
 
-const Card = ({ header, images, label, labelObj, authorId, topicsData, areasData, viewIdea, votes }) => {
+const Card = ({ header, images, label, labelObj, authorId, viewIdea, votes }) => {
   if (!header) return null;
 
   return (
@@ -61,20 +61,20 @@ Card.propTypes = {
   labelObj: PropTypes.object,
   header: PropTypes.any,
   authorId: PropTypes.any,
-  topicsData: PropTypes.any,
-  areasData: PropTypes.any,
   viewIdea: PropTypes.any,
   votes: PropTypes.number,
 };
 
 const mapStateToProps = () => createStructuredSelector({
   idea: (state, { id }) => selectResourcesDomain('ideas', id)(state),
+  location: (state) => state.getIn(['route', 'locationBeforeTransitions', 'pathname']),
+
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ push }, dispatch);
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { id } = ownProps;
-  const { idea } = stateProps;
+  const { idea, location } = stateProps;
   if (!idea) return {};
 
   const attributes = idea.get('attributes');
@@ -89,7 +89,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const topicsData = relationships.getIn(['topics', 'data']);
   const areasData = relationships.getIn(['areas', 'data']);
   const changePage = dispatchProps.push;
-  const viewIdea = () => changePage(`/ideas/${id}`);
+  const viewIdea = () => changePage(`${location}/${id}`);
   return {
     header,
     images,

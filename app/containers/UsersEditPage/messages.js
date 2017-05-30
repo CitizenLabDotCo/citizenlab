@@ -54,4 +54,20 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.clickToUpload',
     defaultMessage: 'Click',
   },
+  submit: {
+    id: 'app.containers.UsersEditPage.submit',
+    defaultMessage: 'Submit',
+  },
+  or: {
+    id: 'app.containers.UsersEditPage.or',
+    defaultMessage: 'or...',
+  },
+  helmetTitle: {
+    id: 'app.containers.UsersEditPage.helmetTitle',
+    defaultMessage: 'User edit page',
+  },
+  helmetDescription: {
+    id: 'app.containers.UsersEditPage.helmetDescription',
+    defaultMessage: 'Edit user profile',
+  },
 });

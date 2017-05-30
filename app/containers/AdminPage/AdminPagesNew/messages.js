@@ -28,10 +28,18 @@ export default defineMessages({
   },
   published: {
     id: 'app.containers.AdminPages.AdminPagesNew.published',
-    defaultMessage: 'Page published! Redirecting...',
+    defaultMessage: 'Page published!',
   },
   titlePlaceholder: {
     id: 'app.containers.AdminPages.AdminPagesNew.titlePlaceholder',
     defaultMessage: 'Page title...',
+  },
+  helmetTitle: {
+    id: 'app.containers.AdminPages.AdminPagesNew.helmetTitle',
+    defaultMessage: 'New admin page',
+  },
+  helmetDescription: {
+    id: 'app.containers.AdminPages.AdminPagesNew.helmetDescription',
+    defaultMessage: 'Publish a new page',
   },
 });

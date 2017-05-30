@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Helmet from 'react-helmet';
+import HelmetIntl from 'components/HelmetIntl';
 import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import { Saga } from 'react-redux-saga';
@@ -39,11 +39,9 @@ export class UsersShowPage extends React.PureComponent { // eslint-disable-line 
 
     return (
       <div>
-        <Helmet
-          title="UsersShowPage"
-          meta={[
-            { name: 'description', content: 'User Profile' },
-          ]}
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
         <Saga saga={watchLoadUser} />
         <Saga saga={watchLoadUserIdeas} />

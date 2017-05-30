@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import HelmetIntl from 'components/HelmetIntl';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { bindActionCreators } from 'redux';
 import WatchSagas from 'containers/WatchSagas';
 import styled from 'styled-components';
 import { preprocess } from 'utils';
-import { getFromState } from 'utils/immutables';
 import { createStructuredSelector } from 'reselect';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw } from 'draft-js';
@@ -71,6 +71,10 @@ class AdminPagesNew extends React.Component { // eslint-disable-line react/prefe
 
     return (
       <Wrapper>
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
+        />
         <WatchSagas sagas={sagas} />
         {publishing && <FormattedMessageSegment message={messages.publishing} />}
         {publishError && <FormattedMessageSegment
@@ -150,11 +154,11 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
 }, dispatch);
 
 const mergeProps = ({ pageState, locale }, dispatchProps, { intl, location }) => ({
-  publishing: getFromState(pageState, 'publishing'),
-  publishError: getFromState(pageState, 'publishError'),
-  invalidFormError: getFromState(pageState, 'invalidFormError'),
-  published: getFromState(pageState, 'published'),
-  title: getFromState(pageState, 'title'),
+  publishing: pageState.get('publishing'),
+  publishError: pageState.get('publishError'),
+  invalidFormError: pageState.get('invalidFormError'),
+  published: pageState.get('published'),
+  title: pageState.get('title'),
   intl,
   locale,
   location,

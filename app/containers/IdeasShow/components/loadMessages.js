@@ -1,60 +1,60 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
-import { createStructuredSelector } from 'reselect';
+
+// Components
 import { Message, Icon } from 'semantic-ui-react';
+import { FormattedMessage } from 'react-intl';
 
+// Store
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { LOAD_IDEA_REQUEST } from '../constants';
+
+// messages
 import messages from '../messages';
-import selectIdeasShowPageDomain from '../selectors';
 
 
-const loadErrorMessage = ({ loadIdeaError }) => {
-  if (!loadIdeaError) return null;
-  return (
-    <Message icon negative>
-      <Icon name={'pointing right'} />
+const ErrorMessage = () => (
+  <Message icon negative>
+    <Icon name={'pointing right'} />
+    <Message.Header>
+      <FormattedMessage {...messages.ideaNotFound} />
+    </Message.Header>
+  </Message>
+);
+
+
+const LoadingMessage = () => (
+  <Message icon>
+    <Icon name={'circle notched'} loading />
+    <Message.Content>
       <Message.Header>
-        <FormattedMessage {...messages.ideaNotFound} />
+        <FormattedMessage {...messages.oneSecond} />
+        <div>
+          <FormattedMessage {...messages.loadingIdea} />
+        </div>
       </Message.Header>
-    </Message>
-  );
+    </Message.Content>
+  </Message>
+);
+
+const TempMessages = ({ loading, error }) => {
+  if (loading) {
+    return <LoadingMessage />;
+  } else if (error) {
+    return <ErrorMessage />;
+  }
+  return null;
 };
 
-loadErrorMessage.propTypes = {
-  loadIdeaError: PropTypes.string,
+TempMessages.propTypes = {
+  loading: PropTypes.bool,
+  error: PropTypes.bool,
 };
 
-const loadErrorMessageMDP = createStructuredSelector({
-  loadIdeaError: selectIdeasShowPageDomain('loadIdeaError'),
+const mapStateToProps = createStructuredSelector({
+  loading: (state) => state.getIn(['tempState', LOAD_IDEA_REQUEST, 'loading']),
+  error: (state) => state.getIn(['tempState', LOAD_IDEA_REQUEST, 'error']),
 });
 
-export const LoadErrorMessage = connect(loadErrorMessageMDP)(loadErrorMessage);
-
-
-const loadingIdeaMessage = ({ loadingIdea }) => {
-  if (!loadingIdea) return null;
-  return (
-    <Message icon>
-      <Icon name={'circle notched'} loading />
-      <Message.Content>
-        <Message.Header>Just one second
-          <div>
-            <FormattedMessage {...messages.loadingIdea} />
-          </div>
-        </Message.Header>
-      </Message.Content>
-    </Message>
-  );
-};
-
-loadingIdeaMessage.propTypes = {
-  loadingIdea: PropTypes.bool.isRequired,
-};
-
-const loadingIdeaMessageMDP = createStructuredSelector({
-  loadingIdea: selectIdeasShowPageDomain('loadingIdea'),
-});
-
-export const LoadingIdeaMessage = connect(loadingIdeaMessageMDP)(loadingIdeaMessage);
+export default connect(mapStateToProps)(TempMessages);

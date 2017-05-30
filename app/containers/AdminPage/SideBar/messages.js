@@ -22,4 +22,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.newPage',
     defaultMessage: 'Create page',
   },
+  projects: {
+    id: 'app.containers.AdminPage.SideBar.projects',
+    defaultMessage: 'Projects',
+  },
+  areas: {
+    id: 'app.containers.AdminPage.SideBar.areas',
+    defaultMessage: 'Areas',
+  },
+
 });

@@ -114,4 +114,12 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.invalidForm',
     defaultMessage: 'Invalid form fields',
   },
+  helmetTitle: {
+    id: 'app.containers.IdeasNewPage.helmetTitle',
+    defaultMessage: 'Publish idea page',
+  },
+  helmetDescription: {
+    id: 'app.containers.IdeasNewPage.helmetDescription',
+    defaultMessage: 'Publish a new idea',
+  },
 });

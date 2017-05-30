@@ -24,7 +24,7 @@ export function saveDraft(content) {
   };
 }
 
-export function publishIdeaRequest(contents, titles, images, attachments, userId, isDraft) {
+export function publishIdeaRequest(contents, titles, images, attachments, userId, isDraft, topics, areas) {
   return (contents
     ? {
       type: PUBLISH_IDEA_REQUEST,
@@ -34,6 +34,8 @@ export function publishIdeaRequest(contents, titles, images, attachments, userId
       attachments,
       userId,
       isDraft,
+      topics,
+      areas,
     }
     : {
       type: PUBLISH_IDEA_ERROR,

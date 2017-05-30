@@ -10,36 +10,40 @@ export default defineMessages({
     id: 'app.containers.SignInPage.header',
     defaultMessage: 'SignInPage',
   },
-  labelPassword: {
-    id: 'app.containers.UsersShowPage.labelPassword',
-    defaultMessage: 'Password',
-  },
-  labelEmail: {
-    id: 'app.containers.UsersShowPage.labelEmail',
-    defaultMessage: 'Email',
-  },
-  placeholderPassword: {
-    id: 'app.containers.UsersShowPage.placeholderPassword',
-    defaultMessage: 'Your Password...',
-  },
-  placeholderEmail: {
-    id: 'app.containers.UsersShowPage.placeholderEmail',
-    defaultMessage: 'Your Email...',
+  authErrorInvalid: {
+    id: 'app.containers.SignInPage.authErrorInvalid',
+    defaultMessage: 'Password o Email Invalid',
   },
   buttonSignIn: {
-    id: 'app.containers.UsersShowPage.buttonSignIn',
+    id: 'app.containers.SignInPage.buttonSignIn',
     defaultMessage: 'Sign In',
   },
   noAccountYet: {
-    id: 'app.containers.UsersShowPage.noAccountYet',
+    id: 'app.containers.SignInPage.noAccountYet',
     defaultMessage: 'New here?',
   },
+  forgotPassword: {
+    id: 'app.containers.UsersShowPage.forgotPassword',
+    defaultMessage: 'Forgot your password?',
+  },
   signUpNow: {
-    id: 'app.containers.UsersShowPage.signUpNow',
+    id: 'app.containers.SignInPage.signUpNow',
     defaultMessage: 'Sign Up Now!',
   },
+  recoverPassword: {
+    id: 'app.containers.UsersShowPage.recoverPassword',
+    defaultMessage: 'Recover password',
+  },
   facebookSignIn: {
-    id: 'app.containers.UsersShowPage.facebookSignIn',
+    id: 'app.containers.SignInPage.facebookSignIn',
     defaultMessage: 'Sign In With Facebook',
+  },
+  helmetTitle: {
+    id: 'app.containers.SignInPage.helmetTitle',
+    defaultMessage: 'Sign in page',
+  },
+  helmetDescription: {
+    id: 'app.containers.SignInPage.helmetDescription',
+    defaultMessage: 'Page to sign in to the platform',
   },
 });

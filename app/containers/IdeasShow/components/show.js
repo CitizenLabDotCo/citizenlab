@@ -1,21 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createStructuredSelector } from 'reselect';
-import { preprocess } from 'utils';
+
+import Helmet from 'react-helmet';
+import { injectTFunc } from 'containers/T/utils';
+
+// components
 import { Comment } from 'semantic-ui-react';
-
-import T from 'containers/T';
 import ImageCarousel from 'components/ImageCarousel';
-import Autorize from 'utils/containers/authorize';
-
-import { selectIdea } from '../selectors';
-
 import Author from './common/author';
 import Editor from './common/editor';
-
 import Votes from './show/votes';
-
 import Comments from './comments';
+import T from 'containers/T';
+import Autorize from 'utils/containers/authorize';
+import ShareButtons from './ShareButtons';
+
+// store
+import { createStructuredSelector } from 'reselect';
+import { preprocess } from 'utils';
+import { selectIdea } from '../selectors';
+
+// intl
+import { injectIntl, intlShape } from 'react-intl';
+import messages from './../messages';
 
 const Carousel = ({ images }) => {
   if (!images[0]) return null;
@@ -29,17 +36,25 @@ Carousel.propTypes = {
 /* eslint-disable */
 class Show extends React.PureComponent {
 
-  render() {
+  render() {console.log(this.props);
     const {
-      id, idea, images, authorId, title_multiloc,
-      body_multiloc, created_at, votes } = this.props;
+      id, idea, images, authorId, title_multiloc, body_multiloc, created_at, votes, location, tFunc } = this.props;
+    const { formatMessage } = this.props.intl;
+
     if (!title_multiloc) return null;
     return(
       <div>
+        <Helmet
+          title={formatMessage(messages.helmetTitle)}
+          meta={[
+            { name: 'description', content: tFunc(title_multiloc) },
+          ]}
+        />
         <Carousel images={images} />
         <h2>
           <T value={title_multiloc} />
         </h2>
+        <ShareButtons location={location} image={images[0] && images[0].medium} />
         <Votes ideaId={id} />
         <Comment.Group style={{ maxWidth: 'none' }}>
           <Comment>
@@ -67,6 +82,8 @@ class Show extends React.PureComponent {
 
 Show.propTypes = {
   id: PropTypes.string,
+  tFunc: PropTypes.func,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -75,8 +92,10 @@ const mapStateToProps = createStructuredSelector({
 
 /* eslint-disable camelcase*/
 
-const mergeProps = ({ idea }, dispatchProps) => {
-  if (!idea) return {};
+const mergeProps = ({ idea }, dispatchProps, { tFunc, location, intl }) => {
+  if (!idea) return {
+    intl,
+  };
   const attributes = idea.get('attributes').toObject();
   const id = idea.get('id')
   const {
@@ -103,12 +122,15 @@ const mergeProps = ({ idea }, dispatchProps) => {
     authorId,
     areas,
     topics,
+    location,
+    tFunc,
+    intl,
   };
 
 };
 
 
-export default preprocess(mapStateToProps, null, mergeProps)(Show);
+export default injectIntl(injectTFunc(preprocess(mapStateToProps, null, mergeProps)(Show)));
 
 /*
 

@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { Card, Grid } from 'semantic-ui-react';
+import { Card } from 'semantic-ui-react';
 import IdeaCard from 'components/IdeaCard';
 import selectIdeasIndexPageDomain from '../../selectors';
-
-const { Column, Row } = Grid;
 
 const IdeasCards = ({ ideas }) => (
   <Card.Group stackable>

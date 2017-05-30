@@ -11,7 +11,6 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Container, Grid, Button } from 'semantic-ui-react';
 import MultiSelectT from 'components/MultiSelectT';
 import { connect } from 'react-redux';
-import { getFromState } from 'utils/immutables';
 import { createStructuredSelector } from 'reselect';
 import FormattedMessageSegment from 'components/FormattedMessageSegment';
 
@@ -21,6 +20,10 @@ import messages from '../messages';
 import IdeaTitle, { TitleStatusWrapper } from './IdeaTitle';
 import { makeSelectAreas, makeSelectTopics, selectSubmitIdea } from '../selectors';
 import multiselectMap from '../multiselectMap';
+
+import { selectAuthDomain } from 'utils/auth/selectors';
+
+import { bindActionCreators } from 'redux';
 
 class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -45,10 +48,18 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
     this.props.saveDraft();
   }
 
+  publishIdea = () => {
+    // const { toChildView } = this.context;
+    const { storeIdea } = this.props;
+    // if (!userId) return toChildView();
+    storeIdea();
+    // this.props.cur();
+  }
+
   render() {
     const { className, loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
     const { shortTitleError, longTitleError, titleLength } = this.props;
-    const { saveDraft, storeIdea } = this.props;
+    const { saveDraft } = this.props;
     const { topics, areas, loadTopicsError, loadAreasError, loadingTopics, loadingAreas, invalidForm } = this.props;
     const { formatMessage } = this.props.intl;
 
@@ -85,7 +96,7 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
                 </Button>
               </Grid.Column>
               <Grid.Column width={2} textAlign="center">
-                <Button onClick={storeIdea}>
+                <Button onClick={this.publishIdea}>
                   <FormattedMessage {...messages.publish} />
                 </Button>
               </Grid.Column>
@@ -161,38 +172,45 @@ IdeaEditorWrapper.propTypes = {
   invalidForm: PropTypes.bool.isRequired,
 };
 
+IdeaEditorWrapper.contextTypes = {
+  toChildView: PropTypes.func,
+};
+
 const mapStateToProps = createStructuredSelector({
   ideasNewPageState: selectSubmitIdea,
   topics: makeSelectTopics(),
   areas: makeSelectAreas(),
+  currentUser: selectAuthDomain('id'),
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { ideasNewPageState: pageState } = stateProps;
+  const { cur } = dispatchProps;
   const { intl, setTitle, saveDraft, storeIdea, storeTopics, storeAreas } = ownProps;
 
   /* eslint-disable */
-  const loading = getFromState(pageState, 'draft', 'loading');
-  const loadError = getFromState(pageState, 'draft', 'loadError');
-  const stored = getFromState(pageState, 'draft', 'stored');
-  const storeError = getFromState(pageState, 'draft', 'storeError');
-  const submitting = getFromState(pageState, 'draft', 'submitting');
-  const submitError = getFromState(pageState, 'draft', 'submitError');
-  const submitted = getFromState(pageState, 'draft', 'submitted');
-  const title = getFromState(pageState, 'draft', 'title');
-  const longTitleError = getFromState(pageState, 'draft', 'longTitleError');
-  const shortTitleError = getFromState(pageState, 'draft', 'shortTitleError');
-  const titleLength = getFromState(pageState, 'draft', 'titleLength');
+  const loading = pageState.getIn(['draft', 'loading']);
+  const loadError = pageState.getIn(['draft', 'loadError']);
+  const stored = pageState.getIn(['draft', 'stored']);
+  const storeError = pageState.getIn(['draft', 'storeError']);
+  const submitting = pageState.getIn(['draft', 'submitting']);
+  const submitError = pageState.getIn(['draft', 'submitError']);
+  const submitted = pageState.getIn(['draft', 'submitted']);
+  const title = pageState.getIn(['draft', 'title']);
+  const longTitleError = pageState.getIn(['draft', 'longTitleError']);
+  const shortTitleError = pageState.getIn(['draft', 'shortTitleError']);
+  const titleLength = pageState.getIn(['draft', 'titleLength']);
 
-  const loadTopicsError = getFromState(pageState, 'topics', 'loadError');
-  const loadingTopics = getFromState(pageState, 'topics', 'loading');
+  const loadTopicsError = pageState.getIn(['topics', 'loadError']);
+  const loadingTopics = pageState.getIn(['topics', 'loading']);
 
-  const loadAreasError = getFromState(pageState, 'areas', 'loadError');
-  const loadingAreas = getFromState(pageState, 'areas', 'loading');
+  const loadAreasError = pageState.getIn(['areas', 'loadError']);
+  const loadingAreas = pageState.getIn(['areas', 'loading']);
 
-  const invalidForm = getFromState(pageState, 'draft', 'invalidForm');
+  const invalidForm = pageState.getIn(['draft', 'invalidForm']);
 
   return {
+    cur,
     /*
      * specific selectors
      */
@@ -223,6 +241,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   /* eslint-enable */
 };
 
-export default styled(injectIntl(connect(mapStateToProps, null, mergeProps)(IdeaEditorWrapper)))`
+const mapDispatchToProps = (dispatch) => bindActionCreators({ cur: () => ({ type: 'user.update.COMPLETE_USER_REGISTRATION' }) }, dispatch);
+
+
+export default styled(injectIntl(connect(mapStateToProps, mapDispatchToProps, mergeProps)(IdeaEditorWrapper)))`
   // none yet
 `;

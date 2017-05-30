@@ -1,33 +1,12 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { createComponentWithIntl, mountWithIntl } from 'utils/testing/intl';
-import { localStorageMock } from 'utils/testing/methods';
-import { jestFn } from 'utils/testing/constants';
+import { createComponentWithIntl } from 'utils/testing/intl';
 
 import messages from '../messages';
-import ProfileForm from '../ProfileForm';
 import { mapDispatchToProps } from '../index';
 import { updateCurrentUser } from '../actions';
 
 describe('<ProfileForm />', () => {
-  // mock localStorage
-  Object.defineProperty(window, 'localStorage', { value: localStorageMock() });
-
-  it('calls onSubmit handler', () => {
-    const handleSubmitMock = jest.fn();
-    const user = {};
-
-    const wrapper = mountWithIntl(<ProfileForm
-      onFormSubmit={handleSubmitMock}
-      avatarUpload={jestFn}
-      avatarUploadError={jestFn}
-      onLocaleChangeClick={jestFn}
-      userData={user}
-    />);
-    wrapper.find('[type="submit"]').get(0).click();
-    expect(handleSubmitMock.mock.calls.length).toEqual(1);
-  });
-
   describe('onFormSubmit', () => {
     it('updateCurrentUser action should be dispatched', () => {
       const dispatch = jest.fn();
@@ -37,7 +16,7 @@ describe('<ProfileForm />', () => {
         userId: 'anything',
       };
 
-      result.onProfileFormSubmit(payload);
+      result.updateCurrentUser(payload);
 
       expect(dispatch).toHaveBeenCalledWith(updateCurrentUser(payload));
     });

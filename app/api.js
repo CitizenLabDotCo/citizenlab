@@ -58,9 +58,6 @@ export function fetchIdeas(query, queryParameters) {
   return request(`${API_PATH}/ideas${railsfriendlyQuery}`, null, null, queryParameters);
 }
 
-// export function filterIdeas(query) {
-//   return request(`${API_PATH}/ideas${railsfriendlyQuery}`);
-// }
 
 export function fetchTopics(queryParameters) {
   return request(`${API_PATH}/topics`, null, null, queryParameters);
@@ -82,8 +79,8 @@ export function fetchUsers(queryParameters) {
   return request(`${API_PATH}/users`, null, null, queryParameters);
 }
 
-export function fetchProjects(queryParameters) {
-  return request(`${API_PATH}/projects`, null, null, queryParameters);
+export function fetchPage(pageId) {
+  return request(`${API_PATH}/pages/${pageId}`);
 }
 
 export function fetchPages(queryParameters) {
@@ -92,6 +89,23 @@ export function fetchPages(queryParameters) {
 
 export function createPage(body) {
   return request(`${API_PATH}/pages`, { page: body }, {
+    method: 'POST',
+  });
+}
+
+export function getRecoveryLink(email) {
+  return request(`${API_PATH}/users/reset_password_email`, { user: {
+    email,
+  } }, {
+    method: 'POST',
+  });
+}
+
+export function resetPassword(password, token) {
+  return request(`${API_PATH}/users/reset_password`, { user: {
+    password,
+    token,
+  } }, {
     method: 'POST',
   });
 }
@@ -109,13 +123,11 @@ export function fetchIdeaComments(nextCommentPageNumber, nextCommentPageItemCoun
   return request(`${API_PATH}/ideas/${ideaId}/comments`, null, null, queryParameters);
 }
 
-export function createIdeaComment(ideaId, userId, htmlContents, parentId) {
+export function createIdeaComment(ideaId, htmlContents, parentId) {
   const body = {
-    author_id: userId,
     body_multiloc: htmlContents,
     parent_id: parentId,
   };
-
   return request(`${API_PATH}/ideas/${ideaId}/comments`, { comment: body }, {
     method: 'POST',
   });
@@ -169,3 +181,71 @@ export function submitIdeaVote(ideaId, mode) {
     method: 'POST',
   });
 }
+
+export function fetchUsersReport(queryParameters) {
+  return request(`${API_PATH}/stats/users_by_time`, null, null, queryParameters);
+}
+
+export function fetchIdeaTopicsReport(queryParameters) {
+  return request(`${API_PATH}/stats/ideas_by_topic`, null, null, queryParameters);
+}
+
+export function fetchIdeaAreasReport(queryParameters) {
+  return request(`${API_PATH}/stats/ideas_by_area`, null, null, queryParameters);
+}
+
+// projects
+export function fetchProjects(queryParameters) {
+  return request(`${API_PATH}/projects`, null, null, queryParameters);
+}
+
+export function createProject(data) {
+  return request(`${API_PATH}/projects`, { project: data }, {
+    method: 'POST',
+  });
+}
+
+export function updateProject(id, data) {
+  return request(`${API_PATH}/projects/${id}`, { project: data }, {
+    method: 'PUT',
+  });
+}
+
+export function fetchProject(id) {
+  return request(`${API_PATH}/projects/${id}`);
+}
+
+export function deleteProject(id) {
+  return request(`${API_PATH}/projects/${id}`, null, {
+    method: 'DELETE',
+  });
+}
+
+
+// areas
+export function loadAreas(queryParameters) {
+  return request(`${API_PATH}/areas`, null, null, queryParameters);
+}
+
+export function createArea(data) {
+  return request(`${API_PATH}/areas`, { area: data }, {
+    method: 'POST',
+  });
+}
+
+export function updateArea(id, data) {
+  return request(`${API_PATH}/areas/${id}`, { area: data }, {
+    method: 'PUT',
+  });
+}
+
+export function loadArea(id) {
+  return request(`${API_PATH}/areas/${id}`);
+}
+
+export function deleteArea(id) {
+  return request(`${API_PATH}/areas/${id}`, null, {
+    method: 'DELETE',
+  });
+}
+

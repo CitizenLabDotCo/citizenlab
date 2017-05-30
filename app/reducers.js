@@ -9,11 +9,11 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import usersEditPageReducer from 'containers/UsersEditPage/reducer';
 import ideasNewPageReducer from 'containers/IdeasNewPage/reducer';
-import usersNewPageReducer from 'containers/UsersNewPage/reducer';
 import searchWidgetReducer from 'containers/SearchWidget/reducer';
 import ideasShowReducer from 'containers/IdeasShow/reducer';
 import resourcesReducer from 'utils/resources/reducer';
-import actionsReducer from 'utils/store/reducer';
+import { utilsReducer, tempStateReducer } from 'utils/store/reducer';
+
 import authReducer from 'utils/auth/reducer';
 import tenantReducer from 'utils/tenant/reducer';
 import { persistedDataReducer } from './persistedData';
@@ -38,9 +38,9 @@ function routeReducer(state = routeInitialState, action) {
   switch (action.type) {
     /* istanbul ignore next */
     case LOCATION_CHANGE:
-      return state.merge({
+      return state.merge(fromJS({
         locationBeforeTransitions: action.payload,
-      });
+      }));
     default:
       return state;
   }
@@ -53,7 +53,8 @@ function routeReducer(state = routeInitialState, action) {
 
 export default function createReducer(asyncReducers) {
   return combineReducers({
-    actions: actionsReducer,
+    goBackLink: utilsReducer,
+    tempState: tempStateReducer,
     route: routeReducer,
     auth: authReducer,
     tenant: tenantReducer,
@@ -62,7 +63,6 @@ export default function createReducer(asyncReducers) {
     resources: resourcesReducer,
     ideasShow: ideasShowReducer,
     profile: usersEditPageReducer,
-    usersNewPage: usersNewPageReducer,
     submitIdea: ideasNewPageReducer,
     searchWidget: searchWidgetReducer,
     ...asyncReducers,

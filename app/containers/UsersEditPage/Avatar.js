@@ -1,33 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
-import { Button, Label } from 'components/Foundation';
+import { Container, Button, Label, Image } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
 import messages from './messages';
 
 export function dropzoneImage(avatarURL) {
-  const style = {
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    backgroundImage: `url('${avatarURL}')`,
-    backgroundSize: '100%',
-    margin: '5% auto',
-    width: '90%',
-    height: '90%',
-  };
-
   return (
-    avatarURL
-      ? (<div style={style}></div>)
-      : <span />
+    avatarURL ? (<Image
+      src={avatarURL}
+      width="90%"
+      height="90%"
+      style={{ margin: '5% auto' }}
+    />) : <span />
   );
 }
 
 class Avatar extends React.PureComponent {
   constructor() {
     super();
+
+    this.state = {
+      avatar: null,
+    };
 
     // bind props to use them within other props (onDrop)
     this.onDrop = this.onDrop.bind(this);
@@ -47,6 +44,9 @@ class Avatar extends React.PureComponent {
     reader.readAsDataURL(files[0]);
 
     reader.onload = () => {
+      this.setState({
+        avatar: reader.result,
+      });
       this.props.onAvatarUpload(reader.result, this.props.userId);
     };
 
@@ -57,6 +57,7 @@ class Avatar extends React.PureComponent {
 
   render() {
     const { avatarURL, avatarUploadError } = this.props;
+    const { avatar } = this.state;
 
     const FileInput = (props) => (
       <input
@@ -87,17 +88,22 @@ class Avatar extends React.PureComponent {
     `;
 
     return (
-      <div>
+      <Container>
         <Dropzone
           onDrop={this.onDrop}
           accept="image/*"
           multiple={false}
         >
-          { dropzoneImage(avatarURL) }
+          { dropzoneImage(avatar || avatarURL) }
         </Dropzone>
         <div>
-          <FormattedMessage {...messages.dragToUpload} /> or
-          <span>
+          <FormattedMessage {...messages.dragToUpload} /> <FormattedMessage {...messages.or} />
+          <span
+            style={{
+              marginLeft: '10px',
+              display: 'inline-block',
+            }}
+          >
             <StyledFileInput />
             <StyledFileButton />
           </span>
@@ -106,14 +112,14 @@ class Avatar extends React.PureComponent {
         {avatarUploadError && <Label>
           <FormattedMessage {...messages.avatarUploadError} />
         </Label>}
-      </div>
+      </Container>
     );
   }
 }
 
 Avatar.propTypes = {
   onAvatarUpload: PropTypes.func.isRequired,
-  avatarUploadError: PropTypes.bool.isRequired,
+  avatarUploadError: PropTypes.bool,
   avatarURL: PropTypes.any,
   userId: PropTypes.string,
 };

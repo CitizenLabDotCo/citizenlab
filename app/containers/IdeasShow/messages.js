@@ -18,9 +18,30 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentEditorHeader',
     defaultMessage: 'Comment the idea!',
   },
+
+  commentEditorLabel: {
+    id: 'app.containers.IdeasShow.commentEditorLabel',
+    defaultMessage: 'Comment the idea!',
+  },
+
+  commentRepplyButton: {
+    id: 'app.containers.IdeasShow.commentRepplyButton',
+    defaultMessage: 'Comment the idea!',
+  },
+
+  commentDeleteButton: {
+    id: 'app.containers.IdeasShow.commentRepplyButton',
+    defaultMessage: 'Comment the idea!',
+  },
+
+
   loadingIdea: {
     id: 'app.containers.IdeasShow.loadingIdea',
     defaultMessage: 'Loading idea...',
+  },
+  oneSecond: {
+    id: 'app.containers.IdeasShow.oneSecond',
+    defaultMessage: 'Just one second...',
   },
   ideaNotFound: {
     id: 'app.containers.IdeasShow.ideaNotFound',
@@ -53,5 +74,9 @@ export default defineMessages({
   deleteComment: {
     id: 'app.containers.IdeasShow.deleteComment',
     defaultMessage: 'Delete',
+  },
+  helmetTitle: {
+    id: 'app.containers.IdeasShow.helmetTitle',
+    defaultMessage: 'Show idea',
   },
 });

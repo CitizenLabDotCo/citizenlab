@@ -6,9 +6,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  ideas: {
-    id: 'app.containers.app.navbar.ideas',
-    defaultMessage: 'Ideas',
+  projects: {
+    id: 'app.containers.app.navbar.projects',
+    defaultMessage: 'Projects',
   },
   search: {
     id: 'app.containers.app.navbar.search',
@@ -20,7 +20,7 @@ export default defineMessages({
   },
   login: {
     id: 'app.containers.app.navbar.login',
-    defaultMessage: 'Login',
+    defaultMessage: 'Log in',
   },
   register: {
     id: 'app.containers.app.navbar.register',

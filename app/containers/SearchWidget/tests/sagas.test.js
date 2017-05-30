@@ -10,6 +10,7 @@ import { mergeJsonApiResources } from 'utils/resources/actions';
 import { getIdeasFiltered } from '../sagas';
 import { searchIdeasSuccess } from '../actions';
 
+/* eslint-disable redux-saga/yield-effects */
 describe('SearchWidget sagas', () => {
   describe('getIdeasFiltered', () => {
     const action = {

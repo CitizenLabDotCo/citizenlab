@@ -1,14 +1,13 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, fork } from 'redux-saga/effects';
 import { fetchIdea, fetchIdeaVotes, submitIdeaVote, createIdeaComment, fetchIdeaComments, deleteIdeaComment } from 'api';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 
 import {
-  LOAD_IDEA_REQUEST, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_REQUEST, LOAD_COMMENTS_REQUEST, DELETE_COMMENT_REQUEST, PUBLISH_COMMENT_REQUEST,
+  LOAD_IDEA_REQUEST, LOAD_VOTES_REQUEST, VOTE_IDEA_REQUEST, LOAD_COMMENTS_REQUEST, DELETE_COMMENT_REQUEST,
 } from './constants';
 
 import {
-  loadIdeaSuccess, ideaLoadError, loadVotesError, votesLoaded, voteIdeaError, ideaVoted, loadCommentsSuccess, commentsLoadError, publishCommentError, deleteCommentSuccess, publishCommentSuccess,
-} from './actions';
+  loadIdeaSuccess, loadIdeaError, loadVotesError, loadVotesSuccess, voteIdeaError, voteIdeaSuccess, loadCommentsSuccess, deleteCommentSuccess, publishCommentSuccess, loadcommentsError } from './actions';
 
 export function* loadIdea(action) {
   try {
@@ -16,7 +15,7 @@ export function* loadIdea(action) {
     yield put(mergeJsonApiResources(response));
     yield put(loadIdeaSuccess(response));
   } catch (e) {
-    yield put(ideaLoadError(JSON.stringify(e)));
+    yield put(loadIdeaError(JSON.stringify(e)));
   }
 }
 
@@ -25,9 +24,9 @@ export function* getIdeaVotes(action) {
     const { ideaId } = action;
     const response = yield call(fetchIdeaVotes, ideaId);
     yield put(mergeJsonApiResources(response));
-    yield put(votesLoaded(response));
+    yield put(loadVotesSuccess(response));
   } catch (e) {
-    yield put(loadVotesError(JSON.stringify(e)));
+    yield put(loadVotesError(e));
   }
 }
 
@@ -36,7 +35,7 @@ export function* postIdeaVote(action) {
     const { ideaId, mode } = action;
     const response = yield call(submitIdeaVote, ideaId, mode);
     yield put(mergeJsonApiResources(response));
-    yield put(ideaVoted(response));
+    yield put(voteIdeaSuccess(response));
   } catch (e) {
     yield put(voteIdeaError(JSON.stringify(e)));
   }
@@ -48,20 +47,29 @@ export function* loadIdeaComments(action) {
     yield put(mergeJsonApiResources(response));
     yield put(loadCommentsSuccess(response));
   } catch (e) {
-    yield put(commentsLoadError(JSON.stringify(e.errors || e.json)));
+    yield put(loadcommentsError());
   }
 }
 
-export function* publishComment(action) {
+export function* publishCommentFlow({ ideaId, parentId, comment }) {
+  const response = yield call(createIdeaComment, ideaId, comment, parentId);
+  yield put(mergeJsonApiResources(response));
+  yield put(publishCommentSuccess(response));
+}
+
+export function* publishCommentSaga(data, success, error) {
   try {
-    const ideaId = action.ideaId;
-    const response = yield call(createIdeaComment, ideaId, action.userId, action.htmlContents, action.parentId);
-    yield put(mergeJsonApiResources(response));
-    yield put(publishCommentSuccess(response));
+    yield call(publishCommentFlow, data);
+    if (success) success();
   } catch (e) {
-    yield put(publishCommentError(JSON.stringify(e.errors)));
+    if (error) error();
   }
 }
+
+export function* publishCommentFork(data, success, error) {
+  yield fork(publishCommentSaga, data, success, error);
+}
+
 
 export function* deleteComment(action) {
   const { commentId } = action;
@@ -74,7 +82,7 @@ function* watchLoadIdea() {
 }
 
 function* watchLoadIdeaVotes() {
-  yield takeLatest(LOAD_IDEA_VOTES_REQUEST, getIdeaVotes);
+  yield takeLatest(LOAD_VOTES_REQUEST, getIdeaVotes);
 }
 
 function* watchVoteIdea() {
@@ -83,10 +91,6 @@ function* watchVoteIdea() {
 
 function* watchLoadComments() {
   yield takeLatest(LOAD_COMMENTS_REQUEST, loadIdeaComments);
-}
-
-function* watchPublishComment() {
-  yield takeLatest(PUBLISH_COMMENT_REQUEST, publishComment);
 }
 
 function* watchDeleteComment() {
@@ -98,6 +102,5 @@ export default {
   watchLoadIdeaVotes,
   watchVoteIdea,
   watchLoadComments,
-  watchPublishComment,
   watchDeleteComment,
 };

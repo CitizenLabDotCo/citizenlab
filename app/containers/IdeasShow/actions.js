@@ -5,11 +5,11 @@
  */
 
 import {
-  LOAD_IDEA_REQUEST, LOAD_IDEA_SUCCESS, LOAD_IDEA_ERROR, LOAD_IDEA_VOTES_REQUEST, VOTE_IDEA_ERROR, PUBLISH_COMMENT_ERROR, PUBLISH_COMMENT_REQUEST, SAVE_COMMENT_DRAFT, LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_SUCCESS, LOAD_COMMENTS_ERROR, RESET_PAGE_DATA, LOAD_IDEA_VOTES_SUCCESS,
-LOAD_IDEA_VOTES_ERROR, VOTE_IDEA_SUCCESS, VOTE_IDEA_REQUEST, DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_ERROR, PUBLISH_COMMENT_SUCCESS,
+  LOAD_IDEA_REQUEST, LOAD_IDEA_SUCCESS, LOAD_IDEA_ERROR, LOAD_VOTES_REQUEST, VOTE_IDEA_ERROR, PUBLISH_COMMENT_ERROR, PUBLISH_COMMENT_REQUEST, SAVE_COMMENT_DRAFT, LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_SUCCESS, LOAD_COMMENTS_ERROR, RESET_PAGE_DATA, LOAD_VOTES_SUCCESS,
+LOAD_VOTES_ERROR, VOTE_IDEA_SUCCESS, VOTE_IDEA_REQUEST, DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_ERROR, PUBLISH_COMMENT_SUCCESS,
 } from './constants';
 
-export function loadIdea(payload) {
+export function loadIdeaRequest(payload) {
   return {
     type: LOAD_IDEA_REQUEST,
     payload,
@@ -23,10 +23,10 @@ export function loadIdeaSuccess(payload) {
   };
 }
 
-export function ideaLoadError(loadIdeaError) {
+export function loadIdeaError(error) {
   return {
     type: LOAD_IDEA_ERROR,
-    loadIdeaError,
+    error,
   };
 }
 
@@ -38,7 +38,7 @@ export function saveCommentDraft(commentContent, activeParentId) {
   };
 }
 
-export function loadComments(ideaId, nextCommentPageNumber, nextCommentPageItemCount, initialLoad = true) {
+export function loadCommentsRequest(ideaId, nextCommentPageNumber, nextCommentPageItemCount, initialLoad = true) {
   return {
     type: LOAD_COMMENTS_REQUEST,
     ideaId,
@@ -55,14 +55,14 @@ export function loadCommentsSuccess(payload) {
   };
 }
 
-export function commentsLoadError(loadCommentsError) {
+export function loadCommentsError(error) {
   return {
     type: LOAD_COMMENTS_ERROR,
-    loadCommentsError,
+    error,
   };
 }
 
-export function publishComment(ideaId, userId, htmlContents, parentId) {
+export function publishCommentRequest(ideaId, userId, htmlContents, parentId) {
   return {
     type: PUBLISH_COMMENT_REQUEST,
     ideaId,
@@ -79,14 +79,14 @@ export function publishCommentSuccess(payload) {
   };
 }
 
-export function publishCommentError(storeCommentError) {
+export function publishCommentError(error) {
   return {
     type: PUBLISH_COMMENT_ERROR,
-    storeCommentError,
+    error,
   };
 }
 
-export function deleteComment(commentId) {
+export function deleteCommentRequest(commentId) {
   return {
     type: DELETE_COMMENT_REQUEST,
     commentId,
@@ -113,28 +113,28 @@ export function resetPageData() {
   };
 }
 
-export function loadVotes(ideaId) {
+export function loadVotesRequest(ideaId) {
   return {
-    type: LOAD_IDEA_VOTES_REQUEST,
+    type: LOAD_VOTES_REQUEST,
     ideaId,
   };
 }
 
-export function votesLoaded(payload) {
+export function loadVotesSuccess(payload) {
   return {
-    type: LOAD_IDEA_VOTES_SUCCESS,
+    type: LOAD_VOTES_SUCCESS,
     payload,
   };
 }
 
 export function loadVotesError(error) {
   return {
-    type: LOAD_IDEA_VOTES_ERROR,
+    type: LOAD_VOTES_ERROR,
     error,
   };
 }
 
-export function voteIdea(ideaId, mode) {
+export function voteIdeaRequest(ideaId, mode) {
   return {
     type: VOTE_IDEA_REQUEST,
     ideaId,
@@ -142,7 +142,7 @@ export function voteIdea(ideaId, mode) {
   };
 }
 
-export function ideaVoted(payload) {
+export function voteIdeaSuccess(payload) {
   return {
     type: VOTE_IDEA_SUCCESS,
     payload,

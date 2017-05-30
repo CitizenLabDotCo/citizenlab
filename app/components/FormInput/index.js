@@ -4,7 +4,8 @@
 *
 */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Control } from 'react-redux-form';
 import styled from 'styled-components';
 
@@ -28,4 +29,8 @@ FormInput.propTypes = {
 
 export default styled(FormInput)`
   visibility: ${(props) => props.hidden ? 'hidden' : 'visible'};
+  display: inline-block;
+  line-height: 1em;
+  border: 1px solid gray;
+  margin-left: 10px;
 `;
