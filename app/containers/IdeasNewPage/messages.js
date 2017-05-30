@@ -40,7 +40,7 @@ export default defineMessages({
   },
   submitted: {
     id: 'app.containers.IdeasNewPage.submitted',
-    defaultMessage: 'Successfully published!',
+    defaultMessage: 'Success!',
   },
   shortTitleError: {
     id: 'app.containers.IdeasNewPage.shortTitleError',
