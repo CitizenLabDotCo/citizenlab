@@ -16,6 +16,11 @@ const authorizations = {
       return (authorId === userId);
     },
   },
+  users: {
+    admin: {
+      check: (user) => userIs(user, 'admin'),
+    },
+  },
   routes: {
     admin: {
       check: (user, resource) => {

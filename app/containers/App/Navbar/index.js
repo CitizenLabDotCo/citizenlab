@@ -1,17 +1,22 @@
 import React, { PropTypes } from 'react';
-// import { TopBar, TopBarTitle, TopBarLeft, TopBarRight, Menu, MenuItem } from 'components/Foundation';
+import { push } from 'react-router-redux';
+
+// components
 import { Menu, Button, Dropdown, Icon, Image } from 'semantic-ui-react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { createStructuredSelector } from 'reselect';
-import { push } from 'react-router-redux';
+import SearchWidget from 'containers/SearchWidget';
 
+// components - authorizations
+import Authorize from 'utils/containers/authorize';
+
+// store
+import { createStructuredSelector } from 'reselect';
 import { preprocess } from 'utils';
 
 import { signOutCurrentUser } from 'utils/auth/actions';
 import { makeSelectCurrentUserImmutable } from 'utils/auth/selectors';
 
-import SearchWidget from 'containers/SearchWidget';
 import messages from './messages';
 
 class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -48,11 +53,16 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
     return (
       <Dropdown item trigger={this.trigger(currentUser)}>
         <Dropdown.Menu>
+          <Authorize action={['users', 'admin']} >
+            <Dropdown.Item onClick={() => goTo('/admin')}>
+              <FormattedMessage {...messages.admin} />
+            </Dropdown.Item>
+          </Authorize>
           <Dropdown.Item onClick={() => goTo('/profile/edit')}>
             <FormattedMessage {...messages.editProfile} />
           </Dropdown.Item>
           <Dropdown.Item onClick={signOut}>
-            Sign out
+            <FormattedMessage {...messages.signOut} />
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
