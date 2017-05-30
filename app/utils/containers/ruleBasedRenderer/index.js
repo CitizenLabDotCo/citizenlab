@@ -23,18 +23,6 @@ class RuleBasedRenderer extends React.Component {
     this.rule = (action && action.reduce((a, b) => a[b], rules)) || {};
   }
 
-  // componentWillReceiveProps() {
-  //   if (this.authorized !== this.state.authorized) {
-  //     this.setState({ authorized: this.authorized });
-  //   }
-  // }
-
-  // shouldComponentUpdate(nextProps) {
-  //   const nextChildren = nextProps;
-  //   const children = this.props;
-  //   return this.authorized !== this.state.authorized || nextChildren !== children;
-  // }
-
   render() {
     const authorized = checkIfAutorized(this.rule, this.props);
     const authorizedComponent = getRuledComponent(authorized, this.props);
