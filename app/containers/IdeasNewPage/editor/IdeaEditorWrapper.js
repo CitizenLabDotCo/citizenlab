@@ -18,12 +18,16 @@ import FormattedMessageSegment from 'components/FormattedMessageSegment';
 import IdeaEditor from './IdeaEditor';
 import messages from '../messages';
 import IdeaTitle, { TitleStatusWrapper } from './IdeaTitle';
-import { makeSelectAreas, makeSelectTopics, selectSubmitIdea } from '../selectors';
+import { makeSelectAreas, makeSelectTopics, makeSelectProjects, selectSubmitIdea } from '../selectors';
 import multiselectMap from '../multiselectMap';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import { selectAuthDomain } from 'utils/auth/selectors';
 
 import { bindActionCreators } from 'redux';
+import { LOAD_AREAS_REQUEST } from 'resources/areas/constants';
+import { LOAD_TOPICS_REQUEST } from 'resources/topics/constants';
+import { LOAD_PROJECTS_REQUEST } from 'resources/projects/constants';
 
 class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -33,6 +37,7 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
     // provide 'this' context
     this.storeTopics = this.storeTopics.bind(this);
     this.storeAreas = this.storeAreas.bind(this);
+    this.storeProject = this.storeProject.bind(this);
     this.saveDraft = this.saveDraft.bind(this);
   }
 
@@ -42,6 +47,10 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
 
   storeAreas(areas) {
     this.props.storeAreas(areas);
+  }
+
+  storeProject(projects) {
+    this.props.storeProject(projects);
   }
 
   saveDraft() {
@@ -60,12 +69,13 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
     const { className, loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
     const { shortTitleError, longTitleError, titleLength } = this.props;
     const { saveDraft } = this.props;
-    const { topics, areas, loadTopicsError, loadAreasError, loadingTopics, loadingAreas, invalidForm } = this.props;
+    const { topics, areas, projects, loadTopicsError, loadAreasError, loadProjectsError, loadingTopics, loadingAreas, loadingProjects, invalidForm } = this.props;
     const { formatMessage } = this.props.intl;
 
     // refactor topics and areas to match format expected by Multiselect
     const topicsSelect = multiselectMap(topics);
     const areasSelect = multiselectMap(areas);
+    const projectsSelect = multiselectMap(projects);
 
     return (
       <div>
@@ -104,7 +114,8 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
           </Grid>
           <Grid columns={2}>
             <Grid.Row>
-              <Grid.Column width={8} textAlign="center">
+              {/* TOPICS */}
+              <Grid.Column width={5} textAlign="center">
                 {!(loadingTopics || loadTopicsError) && <MultiSelectT
                   options={topicsSelect}
                   maxSelectionLength={3}
@@ -118,7 +129,8 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
                 </div>}
                 {loadingTopics && <FormattedMessage {...messages.loadingTopics} />}
               </Grid.Column>
-              <Grid.Column width={8} textAlign="center">
+              {/* AREAS */}
+              <Grid.Column width={5} textAlign="center">
                 {!(loadingAreas || loadAreasError) && <MultiSelectT
                   options={areasSelect}
                   maxSelectionLength={3}
@@ -131,6 +143,22 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
                   {/* TODO: retry button with dispatch here? */}
                 </div>}
                 {loadingAreas && <FormattedMessage {...messages.loadingAreas} />}
+              </Grid.Column>
+              {/* PROJECTS */}
+              <Grid.Column width={5} textAlign="center">
+                {!(loadingProjects || loadProjectsError) && <MultiSelectT
+                  options={projectsSelect}
+                  maxSelectionLength={1}
+                  singleSelection
+                  placeholder={formatMessage({ ...messages.projectsPlaceholder })}
+                  optionLabel={formatMessage({ ...messages.projectsLabel })}
+                  handleOptionsAdded={this.storeProject}
+                />}
+                {loadProjectsError && <div>
+                  <FormattedMessage {...messages.loadAreasError} /> - {loadProjectsError}
+                  {/* TODO: retry button with dispatch here? */}
+                </div>}
+                {loadingProjects && <FormattedMessage {...messages.loadingProjects} />}
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -160,16 +188,23 @@ IdeaEditorWrapper.propTypes = {
   setTitle: PropTypes.func.isRequired,
   saveDraft: PropTypes.func.isRequired,
   storeIdea: PropTypes.func.isRequired,
-  topics: PropTypes.any.isRequired,
-  loadingTopics: PropTypes.bool.isRequired,
-  loadTopicsError: PropTypes.string,
-  areas: PropTypes.any.isRequired,
-  loadingAreas: PropTypes.bool.isRequired,
-  loadAreasError: PropTypes.string,
-  storeTopics: PropTypes.func.isRequired,
-  storeAreas: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
   invalidForm: PropTypes.bool.isRequired,
+  // topics
+  topics: ImmutablePropTypes.list.isRequired,
+  loadingTopics: PropTypes.bool,
+  loadTopicsError: PropTypes.bool,
+  storeTopics: PropTypes.func.isRequired,
+  // areas
+  areas: ImmutablePropTypes.list.isRequired,
+  loadingAreas: PropTypes.bool,
+  loadAreasError: PropTypes.bool,
+  storeAreas: PropTypes.func.isRequired,
+  // projects
+  projects: ImmutablePropTypes.list.isRequired,
+  loadingProjects: PropTypes.bool,
+  loadProjectsError: PropTypes.bool,
+  storeProject: PropTypes.func.isRequired,
 };
 
 IdeaEditorWrapper.contextTypes = {
@@ -177,16 +212,24 @@ IdeaEditorWrapper.contextTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  ideasNewPageState: selectSubmitIdea,
+  pageState: selectSubmitIdea,
   topics: makeSelectTopics(),
   areas: makeSelectAreas(),
+  projects: makeSelectProjects(),
   currentUser: selectAuthDomain('id'),
+  // here, rather than mergeProps, for correct re-render trigger
+  loadingAreas: (state) => state.getIn(['tempState', LOAD_AREAS_REQUEST, 'loading']),
+  loadAreasError: (state) => state.getIn(['tempState', LOAD_AREAS_REQUEST, 'error']),
+  loadingTopics: (state) => state.getIn(['tempState', LOAD_TOPICS_REQUEST, 'loading']),
+  loadTopicsError: (state) => state.getIn(['tempState', LOAD_TOPICS_REQUEST, 'error']),
+  loadingProjects: (state) => state.getIn(['tempState', LOAD_PROJECTS_REQUEST, 'loading']),
+  loadProjectsError: (state) => state.getIn(['tempState', LOAD_PROJECTS_REQUEST, 'error']),
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { ideasNewPageState: pageState } = stateProps;
+  const { pageState } = stateProps;
   const { cur } = dispatchProps;
-  const { intl, setTitle, saveDraft, storeIdea, storeTopics, storeAreas } = ownProps;
+  const { intl, setTitle, saveDraft, storeIdea, storeTopics, storeAreas, storeProject } = ownProps;
 
   /* eslint-disable */
   const loading = pageState.getIn(['draft', 'loading']);
@@ -200,13 +243,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const longTitleError = pageState.getIn(['draft', 'longTitleError']);
   const shortTitleError = pageState.getIn(['draft', 'shortTitleError']);
   const titleLength = pageState.getIn(['draft', 'titleLength']);
-
-  const loadTopicsError = pageState.getIn(['topics', 'loadError']);
-  const loadingTopics = pageState.getIn(['topics', 'loading']);
-
-  const loadAreasError = pageState.getIn(['areas', 'loadError']);
-  const loadingAreas = pageState.getIn(['areas', 'loading']);
-
   const invalidForm = pageState.getIn(['draft', 'invalidForm']);
 
   return {
@@ -219,13 +255,12 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     /*
      * Props from store
      */
-    loading, loadError,
-    storeError, stored,
-    submitting, submitError, submitted,
-    title, longTitleError, shortTitleError, titleLength,
-    loadTopicsError, loadingTopics,
-    loadAreasError, loadingAreas,
-    invalidForm,
+    // idea
+    loading, loadError, storeError, stored, submitting, submitError, submitted,
+    title, longTitleError, shortTitleError, titleLength, invalidForm,
+
+    // areas, topics and projects
+    ...stateProps,
     // -----------------
     /*
      * own props
@@ -236,6 +271,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     storeIdea,
     storeTopics,
     storeAreas,
+    storeProject,
 
   };
   /* eslint-enable */

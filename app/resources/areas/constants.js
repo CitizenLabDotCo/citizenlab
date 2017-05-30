@@ -1,6 +1,6 @@
 /*
  *
- * ProjectsIndexPage constants
+ * resources/areas constants
  *
  */
 
@@ -12,7 +12,7 @@ export const LOAD_AREA_REQUEST = 'app/resources/areas/LOAD_AREA_REQUEST';
 export const LOAD_AREA_SUCCESS = 'app/resources/areas/LOAD_AREA_SUCCESS';
 export const LOAD_AREA_ERROR = 'app/resources/areas/LOAD_AREA_ERROR';
 
-export const PUBLISH_AREA_SUCCESS = 'app/resources/areas/PUBLISH_AREA_SUCCESS';
+export const CREATE_AREA_SUCCESS = 'app/resources/areas/CREATE_AREA_SUCCESS';
 
 export const DELETE_AREA_REQUEST = 'app/resources/areas/DELETE_AREA_REQUEST';
 export const DELETE_AREA_SUCCESS = 'app/resources/areas/DELETE_AREA_SUCCESS';

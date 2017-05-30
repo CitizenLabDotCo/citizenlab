@@ -1,6 +1,6 @@
 /*
  *
- * ProjectsIndexPage reducer
+ * resources/areas reducer
  *
  */
 

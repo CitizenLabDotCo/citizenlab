@@ -31,7 +31,7 @@ export function* fetchProjectSaga(action) {
     yield put(mergeJsonApiResources(response));
     yield put(loadProjectSuccess());
   } catch (e) {
-    yield put(loadProjectError(e.json.erros));
+    yield put(loadProjectError(e.json.errors));
   }
 }
 
@@ -47,7 +47,7 @@ export function* publishProjectSaga(action, success, error) {
     yield put(publishProjectSuccess(response));
     if (success) yield success();
   } catch (e) {
-    if (error) yield success(e.json.erros);
+    if (error) yield success(e.json.errors);
   }
 }
 
@@ -67,7 +67,7 @@ export function* updateProjectSaga(action, success, error) {
     yield put(mergeJsonApiResources(response));
     if (success) yield success();
   } catch (e) {
-    if (error) yield error(e.json.erros);
+    if (error) yield error(e.json.errors);
   }
 }
 

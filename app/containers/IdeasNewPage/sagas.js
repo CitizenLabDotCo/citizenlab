@@ -1,21 +1,17 @@
 import { takeLatest } from 'redux-saga';
 import { call, put, take } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
-import { createIdea, fetchTopics, fetchAreas } from 'api';
+import { createIdea } from 'api';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import { setGoBackToCode } from 'utils/store/actions';
 
 import {
-  loadAreasError,
-  loadAreasSuccess,
-  loadTopicsError,
-  loadTopicsSuccess,
-  publishIdeaError, publishIdeaSuccess,
+ publishIdeaError, publishIdeaSuccess,
 } from './actions';
-import { LOAD_AREAS_REQUEST, LOAD_TOPICS_REQUEST, PUBLISH_IDEA_REQUEST } from './constants';
+import { PUBLISH_IDEA_REQUEST } from './constants';
 
 
-export const getIdeaRequestContent = (ideaMultiloc, titleMultiloc, images, attachments, userId, isDraft, topics, areas) => {
+export const getIdeaRequestContent = (ideaMultiloc, titleMultiloc, images, /* attachments, */ userId, isDraft, topics, areas, projects) => {
   const result = {};
 
   result.author_id = userId;
@@ -23,9 +19,10 @@ export const getIdeaRequestContent = (ideaMultiloc, titleMultiloc, images, attac
   result.title_multiloc = titleMultiloc;
   result.body_multiloc = ideaMultiloc;
   result.images = images;
-  result.files = attachments.toJS();
+  // result.files = attachments.toJS();
   result.topic_ids = topics;
   result.areas_ids = areas;
+  result.project_id = projects[0]; // can be null
 
   return result;
 };
@@ -39,10 +36,10 @@ export function* postIdea(action) {
     yield take(matRandom);
     yield put(push('/ideas/new'));
   }
-  const { payload, titles, images, attachments, topics, areas, userId, isDraft } = action;
+  const { payload, titles, images, /* attachments, */ topics, areas, projects, userId, isDraft } = action;
 
   // merge relevant fields to match API request body format
-  const requestBody = getIdeaRequestContent(payload, titles, images, attachments, userId, isDraft, topics, areas);
+  const requestBody = getIdeaRequestContent(payload, titles, images, /* attachments, */ userId, isDraft, topics, areas, projects);
   try {
     const response = yield call(createIdea, requestBody);
     yield put(mergeJsonApiResources(response));
@@ -52,42 +49,10 @@ export function* postIdea(action) {
   }
 }
 
-export function* getTopics() {
-  try {
-    const response = yield call(fetchTopics);
-
-    yield put(mergeJsonApiResources(response));
-    yield put(loadTopicsSuccess(response));
-  } catch (err) {
-    yield put(loadTopicsError(JSON.stringify(err)));
-  }
-}
-
-export function* getAreas() {
-  try {
-    const response = yield call(fetchAreas);
-
-    yield put(mergeJsonApiResources(response));
-    yield put(loadAreasSuccess(response));
-  } catch (err) {
-    yield put(loadAreasError(JSON.stringify(err)));
-  }
-}
-
 function* watchStoreIdea() {
   yield takeLatest(PUBLISH_IDEA_REQUEST, postIdea);
 }
 
-function* watchGetTopics() {
-  yield takeLatest(LOAD_TOPICS_REQUEST, getTopics);
-}
-
-function* watchGetAreas() {
-  yield takeLatest(LOAD_AREAS_REQUEST, getAreas);
-}
-
 export default {
   watchStoreIdea,
-  watchGetTopics,
-  watchGetAreas,
 };

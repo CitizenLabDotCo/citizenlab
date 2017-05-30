@@ -34,14 +34,14 @@ describe('ideasNewPageReducer', () => {
     topics: {
       ids: [],
       selected: [],
-      loadError: null,
-      loading: false,
     },
     areas: {
       ids: [],
       selected: [],
-      loadError: null,
-      loading: false,
+    },
+    projects: {
+      ids: [],
+      selected: [],
     },
   };
 

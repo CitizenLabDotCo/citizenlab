@@ -92,6 +92,14 @@ export default defineMessages({
   },
   areasPlaceholder: {
     id: 'app.containers.IdeasNewPage.areasPlaceholder',
+    defaultMessage: 'Select projects',
+  },
+  projectsLabel: {
+    id: 'app.containers.IdeasNewPage.projectsLabel',
+    defaultMessage: 'projects',
+  },
+  projectsPlaceholder: {
+    id: 'app.containers.IdeasNewPage.projectsPlaceholder',
     defaultMessage: 'Select areas',
   },
   loadingTopics: {
@@ -109,6 +117,14 @@ export default defineMessages({
   loadAreasError: {
     id: 'app.containers.IdeasNewPage.loadAreasError',
     defaultMessage: 'Cannot load area list',
+  },
+  loadingProjects: {
+    id: 'app.containers.IdeasNewPage.loadingProjects',
+    defaultMessage: 'Loading projects...',
+  },
+  loadProjectsError: {
+    id: 'app.containers.IdeasNewPage.loadProjectsError',
+    defaultMessage: 'Cannot load project list',
   },
   invalidForm: {
     id: 'app.containers.IdeasNewPage.invalidForm',
