@@ -19,7 +19,7 @@ export function* getProjects(action) {
     yield put(mergeJsonApiResources(response));
     yield put(loadProjectsSuccess(response));
   } catch (e) {
-    yield put(loadProjectsError(e.json.erros));
+    yield put(loadProjectsError(e.json.errors));
   }
 }
 
