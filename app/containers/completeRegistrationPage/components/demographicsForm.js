@@ -81,6 +81,19 @@ class DemographicsForm extends React.Component {
     ]
   );
 
+  button = (message, color) => (
+    <Button
+      onClick={this.handleClick}
+      fluid
+      size={'small'}
+      color={color}
+      type={'button'}
+      style={{ position: 'relative', width: '45.9%', display: 'inline-block', margin: '0' }}
+    >
+      <FormattedMessage {...message} />
+    </Button>
+)
+
   handleClick = () => {
     const { location } = this.props;
     const { backTo } = location.query;
@@ -104,16 +117,8 @@ class DemographicsForm extends React.Component {
               <DropdownInput name={'birth_year'} options={this.birthyearOptions()} action={updateCurrentUser} />
               <DropdownInput name={'domicile'} options={this.domicileOptions()} action={updateCurrentUser} />
               {this.props.children}
-              <Button
-                onClick={this.handleClick}
-                fluid
-                size={'small'}
-                color={'blue'}
-                type={'button'}
-                style={{ position: 'relative', width: '49.9%', display: 'inline-block', margin: '0' }}
-              >
-                <FormattedMessage {...messages.next} />
-              </Button>
+              {this.button(messages.skip, 'grey')}
+              {this.button(messages.next, 'blue')}
             </Form>
           </Grid.Column>
         </Grid>

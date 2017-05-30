@@ -113,6 +113,11 @@ export default defineMessages({
     id: 'app.containers.completeRegistrationPage.next',
     defaultMessage: 'Next',
   },
+  skip: {
+    id: 'app.containers.completeRegistrationPage.skip',
+    defaultMessage: 'Skip',
+  },
+
   helmetTitle: {
     id: 'app.containers.completeRegistrationPage.helmetTitle',
     defaultMessage: 'Complete registration page',

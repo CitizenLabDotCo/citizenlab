@@ -14,37 +14,46 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { Saga } from 'react-redux-saga';
-import { Container } from 'semantic-ui-react';
 import { injectIntl, intlShape } from 'react-intl';
-
 // import { DockableSagaView } from 'redux-saga-devtools';
 // import { sagamonitor } from 'store';
 
-import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
-import { loadCurrentUserRequest } from 'utils/auth/actions';
-import { loadCurrentTenantRequest } from 'utils/tenant/actions';
+// components
+import { Container } from 'semantic-ui-react';
+import Navbar from './Navbar';
+import messages from './messages';
+import Loader from 'components/loaders';
+import ForbiddenRoute from 'components/routing/forbiddenRoute';
 
+// components - authorizations
+import Authorize, { Else } from 'utils/containers/authorize';
+
+// components - sagas
 import WatchSagas from 'containers/WatchSagas';
 
+// store
+import { preprocess } from 'utils';
+import { createStructuredSelector } from 'reselect';
 import authSagas from 'utils/auth/sagas';
 import tenantSaga from 'utils/tenant/sagas';
-
-import Navbar from './Navbar';
-
-import messages from './messages';
+import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
+import { loadCurrentUserRequest } from 'utils/auth/actions';
+import { LOAD_CURRENT_USER_REQUEST } from 'utils/auth/constants';
+import { loadCurrentTenantRequest } from 'utils/tenant/actions';
 
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
+  constructor() {
+    super();
+    this.key = 0;
+  }
+
   componentDidMount() {
-    this.props.dispatch(loadCurrentTenantRequest());
-    this.props.dispatch(loadCurrentUserRequest());
+    this.props.loadCurrentTenantRequest();
   }
 
   content() {
-    const { currentTenant } = this.props;
+    const { currentTenant, location, children, loadUser } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (currentTenant) {
@@ -58,9 +67,20 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
           />
           <Navbar currentTenant={currentTenant} />
           <Container>
-            <div>
-              {this.props.children}
-            </div>
+            <Loader
+              resourceLoader={loadUser}
+              loadingMessage={messages.currentUserLoadingMessage}
+              errorMessage={messages.currentUserLoadingError}
+              listenenTo={LOAD_CURRENT_USER_REQUEST}
+              withError={false}
+            >
+              <Authorize action={['routes', 'admin']} resource={location.pathname}>
+                {children}
+                <Else>
+                  <ForbiddenRoute />
+                </Else>
+              </Authorize>
+            </Loader>
           </Container>
           {/* <DockableSagaView monitor={sagamonitor}  /> */}
         </div>
@@ -74,7 +94,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     return (
       <div>
         <WatchSagas sagas={authSagas} />
-        <Saga saga={tenantSaga} />
+        <WatchSagas sagas={{ tenantSaga }} />
         {this.content()}
       </div>
     );
@@ -86,10 +106,18 @@ App.propTypes = {
   dispatch: PropTypes.func,
   currentTenant: PropTypes.object,
   intl: intlShape.isRequired,
+  location: PropTypes.object,
+  loadCurrentTenantRequest: PropTypes.func.isRequired,
+  loadUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   currentTenant: makeSelectCurrentTenant(),
 });
 
-export default injectIntl(connect(mapStateToProps)(App));
+const actions = {
+  loadUser: loadCurrentUserRequest,
+  loadCurrentTenantRequest,
+};
+
+export default injectIntl(preprocess(mapStateToProps, actions)(App));

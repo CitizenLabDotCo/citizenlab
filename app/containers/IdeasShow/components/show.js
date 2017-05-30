@@ -36,7 +36,7 @@ Carousel.propTypes = {
 /* eslint-disable */
 class Show extends React.PureComponent {
 
-  render() {console.log(this.props);
+  render() {
     const {
       id, idea, images, authorId, title_multiloc, body_multiloc, created_at, votes, location, tFunc } = this.props;
     const { formatMessage } = this.props.intl;

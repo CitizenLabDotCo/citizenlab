@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 
 
 // this function returns one of the two children of the components according if the check returns true or false
-const createRuledComponent = ({ check = () => true }) => ({ base, resource, children }) => {
-  const isAutorized = check(base, resource);
+
+const checkIfAutorized = ({ check = () => true }, { base, resource }) => check(base, resource);
+
+const getRuledComponent = (isAutorized, { children }) => {
   const elements = React.Children.toArray(children);
   const onValidElement = elements[0];
   if (isAutorized) return onValidElement;
@@ -18,12 +20,29 @@ class RuleBasedRenderer extends React.Component {
     super();
     const { action } = props;
     const rules = props.authorizations;
-    const rule = (action && action.reduce((a, b) => a[b], rules)) || {};
-    this.authorized = React.createElement(createRuledComponent(rule), props);
+    this.rule = (action && action.reduce((a, b) => a[b], rules)) || {};
+    const authorized = checkIfAutorized(this.rule, props);
+    this.state = { authorized };
+    this.authorizedComponent = getRuledComponent(authorized, props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.authorized = checkIfAutorized(this.rule, nextProps);
+    this.authorizedComponent = getRuledComponent(this.authorized, nextProps);
+
+    if (this.authorized !== this.state.authorized) {
+      this.setState({ authorized: this.authorized });
+    }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const nextChildren = nextProps;
+    const children = this.props;
+    return this.authorized !== this.state.authorized || nextChildren !== children;
   }
 
   render() {
-    return this.authorized;
+    return this.authorizedComponent;
   }
 }
 
