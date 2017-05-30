@@ -27,7 +27,7 @@ import { persistedDataReducer } from './persistedData';
  */
 
 // Initial routing state
-const routeInitialState = fromJS({ 'locationBeforeTransitions': null });
+const routeInitialState = fromJS({ locationBeforeTransitions: null });
 
 /**
  * Merge route into the global application state

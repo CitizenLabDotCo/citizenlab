@@ -57,5 +57,4 @@ IdeasIndex.propTypes = {
   params: PropTypes.object.isRequired,
 };
 
-const actions = { push };
 export default preprocess(null, { push })(IdeasIndex);
