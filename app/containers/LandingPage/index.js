@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { lighten } from 'polished';
 import WatchSagas from 'containers/WatchSagas';
 import { preprocess } from 'utils';
-import { getFromState } from 'utils/immutables';
 
 import {
   selectLandingPage,
@@ -488,11 +487,11 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { pageState, ideas, projects } = stateProps;
   return {
     ideas,
-    loadingIdeas: getFromState(pageState, 'loadingIdeas'),
-    loadIdeasError: getFromState(pageState, 'loadIdeasError'),
+    loadingIdeas: pageState.get('loadingIdeas'),
+    loadIdeasError: pageState.get('loadIdeasError'),
     projects,
-    loadingProjects: getFromState(pageState, 'loadingProjects'),
-    loadProjectsError: getFromState(pageState, 'loadProjectsError'),
+    loadingProjects: pageState.get('loadingProjects'),
+    loadProjectsError: pageState.get('loadProjectsError'),
     ...dispatchProps,
     ...ownProps,
   };
