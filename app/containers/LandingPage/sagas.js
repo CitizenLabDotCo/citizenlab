@@ -1,15 +1,14 @@
 import { call, put } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
-import { ideasLoaded, ideasLoadError } from './actions';
-import { LOAD_IDEAS_REQUEST } from './constants';
-import { fetchIdeas } from '../../api';
+import { ideasLoaded, ideasLoadError, projectsLoaded, projectsLoadError } from './actions';
+import { LOAD_IDEAS_REQUEST, LOAD_PROJECTS_REQUEST } from './constants';
+import { fetchIdeas, fetchProjects } from '../../api';
 import { mergeJsonApiResources } from '../../utils/resources/actions';
 
 function* getIdeas(action) {
   try {
-    console.log('action.nextPageNumber: ' + action.nextPageNumber);
-    console.log('action.nextPageItemCount: ' + action.nextPageItemCount);
-    const ideasResponse = yield call(fetchIdeas, {
+    const ideasResponse = yield call(fetchIdeas, null, {
+      sort: 'trending',
       'page[number]': action.nextPageNumber,
       'page[size]': action.nextPageItemCount,
     });
@@ -20,6 +19,28 @@ function* getIdeas(action) {
   }
 }
 
-export function* watchLoadIdeas() {
+function* getProjects(action) {
+  try {
+    const projectsResponse = yield call(fetchProjects, null, {
+      'page[number]': action.nextPageNumber,
+      'page[size]': action.nextPageItemCount,
+    });
+    yield put(mergeJsonApiResources(projectsResponse));
+    yield put(projectsLoaded(projectsResponse));
+  } catch (err) {
+    yield put(projectsLoadError(err));
+  }
+}
+
+function* watchLoadIdeas() {
   yield takeLatest(LOAD_IDEAS_REQUEST, getIdeas);
 }
+
+function* watchLoadProjects() {
+  yield takeLatest(LOAD_PROJECTS_REQUEST, getProjects);
+}
+
+export default {
+  watchLoadIdeas,
+  watchLoadProjects,
+};
