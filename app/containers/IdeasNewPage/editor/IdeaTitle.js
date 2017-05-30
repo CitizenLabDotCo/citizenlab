@@ -40,7 +40,7 @@ export default styled(IdeaTitle)`
   height: 36px;
   border: 1px solid #CCE2FF;
   font-stretch: normal;
-  font-family: OpenSans;
+  font-family: 'proxima-nova';
   letter-spacing: normal;
   font-style: normal;
   line-height: 1.5;
