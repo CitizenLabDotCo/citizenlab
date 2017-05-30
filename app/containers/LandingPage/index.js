@@ -1,24 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
-import { Saga } from 'react-redux-saga';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 import { lighten } from 'polished';
+import WatchSagas from 'containers/WatchSagas';
+import { preprocess } from 'utils';
+import { getFromState } from 'utils/immutables';
 
 import {
-  selectLoadingIdeas,
-  selectLoadIdeasError,
+  selectLandingPage,
   makeSelectIdeas,
+  makeSelectProjects,
 } from './selectors';
-import { loadIdeas } from './actions';
-import { watchLoadIdeas } from './sagas';
+import { loadIdeas, loadProjects } from './actions';
+import sagas from './sagas';
 import Idea from './components/idea';
+import Project from './components/project';
 import { media } from '../../utils/styleUtils';
 import headerImage from '../../../assets/img/landingpage/header.png';
-import projectImage from '../../../assets/img/landingpage/project1.png';
 import logoImage from '../../../assets/img/landingpage/logo.png';
 
 const Container = styled.div`
@@ -359,87 +360,51 @@ const SectionContainer = styled.div`
   `}
 `;
 
-const Project = styled.div`
-  width: calc(50% - 10px);
-  height: 342px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 8px;
-  background: #fff;
-  cursor: pointer;
-  /* border: solid 1px #e0e0e0; */
-  padding: 20px;
-  padding-top: 225px;
-  margin-bottom: 20px;
-  background-image: url(${projectImage});
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: 516px;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transition: all 250ms ease-out;
-
-  ${media.phone`
-    width: 100%;
-  `}
-
-  ${media.tablet`
-    width: 100%;
-  `}
-
-  ${media.desktop`
-    &:nth-child(even) {
-      margin-left: 20px;
-    }
-  `}
-
-  &:hover {
-    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.12), 0 15px 45px 0 rgba(0,0,0,0.12);
-    transform: scale(1.01);
-  }
-`;
-
-const ProjectTitle = styled.div`
-  color: #333;
-  font-size: 25px;
-  font-weight: 500;
-  line-height: 30px;
-`;
-
-const ProjectMeta = styled.div`
-  display: flex;
-  margin-top: 5px;
-  margin-left: -6px;
-  align-items: center;
-`;
-
-const ProjectMetaIcon = styled.svg`
-  fill: #aaa;
-  height: 24px;
-`;
-
-const ProjectMetaText = styled.div`
-  color: #aaa;
-  font-weight: 400;
-  font-size: 18px;
-`;
-
 class LandingPage extends React.Component {
   componentDidMount() {
     this.props.loadIdeas(1, 4);
+    this.props.loadProjects(1, 2);
   }
 
   openIdea = (id) => () => {
     console.log(id);
   };
 
+  openProject = (id) => () => {
+    console.log(id);
+  };
+
   render() {
-    console.log(this.props.ideas.toJS());
+    let ideasList = null;
+    let projectsList = null;
+    const { ideas, loadingIdeas, loadIdeasError, projects, loadingProjects, loadProjectsError } = this.props;
+
+    if (loadingIdeas) {
+      ideasList = <div>Loading...</div>;
+    } else if (loadIdeasError) {
+      ideasList = <div>An error occured</div>;
+    } else if (ideas && ideas.size > 0) {
+      ideasList = ideas.map((idea) => (
+        <Idea key={idea.get('id')} idea={idea.get('attributes')} onClick={this.openIdea(idea.get('id'))}></Idea>
+      ));
+    }
+
+    if (loadingProjects) {
+      projectsList = <div>Loading...</div>;
+    } else if (loadProjectsError) {
+      projectsList = <div>An error occured</div>;
+    } else if (projects && projects.size > 0) {
+      projectsList = projects.map((project) => (
+        <Project key={project.get('id')} project={project.get('attributes')} onClick={this.openProject(project.get('id'))}></Project>
+      ));
+    }
+
+    console.log(projects.toJS());
 
     return (
       <div>
-        <Saga saga={watchLoadIdeas} />
+        <WatchSagas sagas={sagas} />
+
         <Container>
           <Header>
             <Logo src={logoImage} styleName="logo" alt="logo" />
@@ -477,10 +442,7 @@ class LandingPage extends React.Component {
                 </ViewAllButton>
               </SectionHeader>
               <SectionContainer>
-                <Idea onClick={this.openIdea(1)}></Idea>
-                <Idea onClick={this.openIdea(2)}></Idea>
-                <Idea></Idea>
-                <Idea></Idea>
+                {ideasList}
               </SectionContainer>
 
               <SectionHeader>
@@ -493,28 +455,7 @@ class LandingPage extends React.Component {
                 </ViewAllButton>
               </SectionHeader>
               <SectionContainer>
-                <Project>
-                  <ProjectTitle>A random project title</ProjectTitle>
-                  <ProjectMeta>
-                    <ProjectMetaIcon height="100%" viewBox="0 0 24 24">
-                      <defs><path d="M0 0h24v24H0V0z" id="a" /></defs><clipPath id="b"><use overflow="visible" /></clipPath><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z" />
-                    </ProjectMetaIcon>
-                    <ProjectMetaText>
-                      34 ideas
-                    </ProjectMetaText>
-                  </ProjectMeta>
-                </Project>
-                <Project>
-                  <ProjectTitle>A random project title</ProjectTitle>
-                  <ProjectMeta>
-                    <ProjectMetaIcon height="100%" viewBox="0 0 24 24">
-                      <defs><path d="M0 0h24v24H0V0z" id="a" /></defs><clipPath id="b"><use overflow="visible" /></clipPath><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z" />
-                    </ProjectMetaIcon>
-                    <ProjectMetaText>
-                      34 ideas
-                    </ProjectMetaText>
-                  </ProjectMeta>
-                </Project>
+                {projectsList}
               </SectionContainer>
             </Content>
           </ContentContainer>
@@ -528,15 +469,35 @@ LandingPage.propTypes = {
   ideas: ImmutablePropTypes.list.isRequired,
   loadingIdeas: PropTypes.bool,
   loadIdeasError: PropTypes.bool.isRequired,
+  projects: ImmutablePropTypes.list.isRequired,
+  loadingProjects: PropTypes.bool,
+  loadProjectsError: PropTypes.bool.isRequired,
   loadIdeas: PropTypes.func.isRequired,
+  loadProjects: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loadingIdeas: selectLoadingIdeas,
-  loadIdeasError: selectLoadIdeasError,
+  pageState: selectLandingPage,
   ideas: makeSelectIdeas(),
+  projects: makeSelectProjects(),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ loadIdeas }, dispatch);
+const actions = { loadIdeas, loadProjects };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  const { pageState, ideas, projects } = stateProps;
+  return {
+    ideas,
+    loadingIdeas: getFromState(pageState, 'loadingIdeas'),
+    loadIdeasError: getFromState(pageState, 'loadIdeasError'),
+    projects,
+    loadingProjects: getFromState(pageState, 'loadingProjects'),
+    loadProjectsError: getFromState(pageState, 'loadProjectsError'),
+    ...dispatchProps,
+    ...ownProps,
+  };
+};
+
+export default preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(LandingPage);

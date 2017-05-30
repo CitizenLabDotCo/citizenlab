@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Popup } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import T from 'containers/T';
+import moment from 'moment';
 // import { createStructuredSelector } from 'reselect';
 // import { selectResourcesDomain } from 'utils/resources/selectors';
 import { media } from '../../../utils/styleUtils';
@@ -183,8 +185,8 @@ class Idea extends React.Component {
     return (
       <IdeaContainer onClick={this.props.onClick}>
         <IdeaContent>
-          <IdeaTitle>Tunnel underneath the railroad</IdeaTitle>
-          <IdeaMeta>3 days ago</IdeaMeta>
+          <IdeaTitle><T value={this.props.idea.get('title_multiloc')} /></IdeaTitle>
+          <IdeaMeta>{moment(this.props.idea.get('created_at')).fromNow()}</IdeaMeta>
         </IdeaContent>
         <IdeaFooter>
           <VotesContainer>
@@ -241,6 +243,7 @@ class Idea extends React.Component {
 }
 
 Idea.propTypes = {
+  idea: PropTypes.any,
   onClick: PropTypes.func,
 };
 
@@ -255,4 +258,4 @@ const mapStateToProps = () => createStructuredSelector({
 });
 */
 
-export default connect(null, null)(Idea);
+export default Idea;
