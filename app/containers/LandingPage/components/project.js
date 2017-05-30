@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import T from 'containers/T';
-
 import { media } from '../../../utils/styleUtils';
 import projectImage from '../../../../assets/img/landingpage/project1.png';
 
