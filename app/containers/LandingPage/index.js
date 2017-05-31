@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { lighten } from 'polished';
 import WatchSagas from 'containers/WatchSagas';
 import { preprocess } from 'utils';
-import { getFromState } from 'utils/immutables';
 
 import {
   selectLandingPage,
@@ -20,28 +19,23 @@ import Idea from './components/idea';
 import Project from './components/project';
 import { media } from '../../utils/styleUtils';
 import headerImage from '../../../assets/img/landingpage/header.png';
-import logoImage from '../../../assets/img/landingpage/logo.png';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #f4f4f4;
+  background: #f2f2f2;
 `;
 
-const Header = styled.div`
+const HeaderContainer = styled.div`
   width: 100%;
-  display: flex;
-  positiob: relative;
+  height: 305px;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-left: 25px;
   padding-right: 25px;
-  background-image: url(${headerImage});
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
+  position: relative;
 
   ${media.notPhone`
     height: 305px;
@@ -52,82 +46,26 @@ const Header = styled.div`
   `}
 `;
 
-const Logo = styled.img`
-  ${media.notPhone`
-    width: 100px;
-    position: absolute;
-    top: 30px;
-    left: 30px;
-    cursor: pointer;
-  `}
-
-  ${media.phone`
-    width: 100px;
-    margin-top: 30px;
-    margin-left: auto;
-    margin-right: auto;
-  `}
+const HeaderOverlay = styled.div`
+  background-color: #003a7d;
+  opacity: 0.65;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 `;
 
-const AddIdeaButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  background: #00a8e2;
-  cursor: pointer;
-  transition: all 200ms ease-out;
-
-  ${media.notPhone`
-    padding: 13px 22px;
-    position: absolute;
-    top: 30px;
-    right: 30px;
-  `}
-
-  ${media.phone`
-    width: 100%;
-    height: 55px;
-    margin-top: 35px;
-    margin-bottom: 35px;
-    margin-left: auto;
-    margin-right: auto;
-  `}
-
-  &:hover {
-    background: ${lighten(0.1, '#00a8e2')};
-  }
-`;
-
-const AddIdeaButton = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const AddIdeaButtonIcon = styled.svg`
-  fill: #fff;
-
-  ${media.notPhone`
-    height: 32px;
-    margin-top: -8px;
-  `}
-
-  ${media.phone`
-    height: 38px;
-    margin-top: -8px;
-  `}
-`;
-
-const AddIdeaButtonText = styled.span`
-  color: #fff;
-  font-weight: 500;
-  font-size: 19px;
-
-  ${media.phone`
-    font-size: 22px;
-  `}
+const HeaderBackground = styled.div`
+  background-image: url(${headerImage});
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 `;
 
 const HeaderTitle = styled.h1`
@@ -138,20 +76,19 @@ const HeaderTitle = styled.h1`
   text-align: center;
   margin: 0;
   padding: 0;
-  padding-top: 120px;
+  padding-top: 115px;
   display: flex;
+  z-index: 1;
 
   ${media.tablet`
     font-size: 40px;
     line-height: 48px;
-    padding-top: 130px;
   `}
 
   ${media.phone`
     font-weight: 600;
     font-size: 34px;
     line-height: 38px;
-    padding-top: 35px;
   `}
 
   ${media.smallPhone`
@@ -163,21 +100,19 @@ const HeaderTitle = styled.h1`
 
 const HeaderSubtitle = styled.h2`
   color: #fff;
-  font-size: 32px;
-  line-height: 36px;
+  font-size: 30px;
+  line-height: 34px;
   font-weight: 100;
   text-align: center;
   margin: 0;
+  margin-top: 10px;
   padding: 0;
   opacity: 0.8;
+  z-index: 1;
 
   ${media.tablet`
     font-size: 28px;
     line-height: 32px;
-  `}
-
-  ${media.notPhone`
-    margin-top: 5px;
   `}
 
   ${media.phone`
@@ -272,15 +207,18 @@ const ContentContainer = styled.div`
 const Content = styled.div`
   width: 100%;
   max-width: 1050px;
-  padding-bottom: 200px;
+`;
+
+const Section = styled.div`
+  margin-top: 80px;
+  padding-bottom: 30px;
 `;
 
 const SectionHeader = styled.div`
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding-top: 80px;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
   /* border: solid 1px purple; */
 
   ${media.phone`
@@ -295,9 +233,9 @@ const SectionHeader = styled.div`
 const SectionTitle = styled.h2`
   flex: 1;
   color: #555;
-  font-size: 34px;
-  line-height: 38px;
-  font-weight: 300;
+  font-size: 31px;
+  line-height: 35px;
+  font-weight: 400;
   margin: 0;
   margin-right: 20px;
   /* border: solid 1px green; */
@@ -313,15 +251,14 @@ const ViewAllButton = styled.div`
   align-items: center;
   margin-bottom: 8px;
   cursor: pointer;
-  /* border: solid 1px red; */
 
   &:hover {
     div {
-      color: ${lighten(0.1, '#00a8e2')};
+      color: #00a8e2;
     }
   
     svg {
-      fill: ${lighten(0.1, '#00a8e2')};
+      fill: #00a8e2;
     }
   }
 
@@ -331,18 +268,19 @@ const ViewAllButton = styled.div`
 `;
 
 const ViewAllButtonText = styled.div`
+  /* color: #888; */
   color: #00a8e2;
   font-size: 18px;
+  font-weight: 300;
   line-height: 16px;
   margin-right: 7px;
-  /* border: solid 1px red; */
 `;
 
 const ViewAllButtonIcon = styled.svg`
+  /* fill: #888; */
   fill: #00a8e2;
-  height: 12px;
-  margin-top: 0px;
-  /* border: solid 1px red; */
+  height: 11px;
+  margin-top: -1px;
 `;
 
 const SectionContainer = styled.div`
@@ -360,6 +298,20 @@ const SectionContainer = styled.div`
   `}
 `;
 
+const Footer = styled.div`
+  color: #333;
+  font-weight: 400;
+  font-size: 17px;
+  text-align: center;
+  display: inline-block;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-top: 60px;
+  margin-bottom: 50px;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
 class LandingPage extends React.Component {
   componentDidMount() {
     this.props.loadIdeas(1, 4);
@@ -368,6 +320,7 @@ class LandingPage extends React.Component {
 
   openIdea = (id) => () => {
     console.log(id);
+    window.history.pushState('page2', 'Title', '/page2.php');
   };
 
   openProject = (id) => () => {
@@ -404,21 +357,12 @@ class LandingPage extends React.Component {
         <WatchSagas sagas={sagas} />
 
         <Container>
-          <Header>
-            <Logo src={logoImage} styleName="logo" alt="logo" />
+          <HeaderContainer>
+            <HeaderBackground></HeaderBackground>
+            <HeaderOverlay></HeaderOverlay>
             <HeaderTitle>Co-create Oostende</HeaderTitle>
             <HeaderSubtitle>Share your ideas for Oostende and co-create your city</HeaderSubtitle>
-            <AddIdeaButtonContainer>
-              <AddIdeaButton>
-                <AddIdeaButtonIcon height="100%" viewBox="0 0 24 24">
-                  <path fill="none" d="M0 0h24v24H0V0z" /><path d="M6.57 21.64c0 .394.32.716.716.716h2.867c.394 0 .717-.322.717-.717v-.718h-4.3v.717zM8.72 8.02C5.95 8.02 3.7 10.273 3.7 13.04c0 1.704.853 3.202 2.15 4.112v1.62c0 .394.322.716.717.716h4.3c.393 0 .716-.322.716-.717v-1.618c1.298-.91 2.15-2.408 2.15-4.113 0-2.768-2.25-5.02-5.017-5.02zm2.04 7.957l-.608.43v1.648H7.286v-1.648l-.61-.43c-.967-.674-1.54-1.77-1.54-2.938 0-1.98 1.605-3.585 3.583-3.585s3.583 1.605 3.583 3.584c0 1.167-.574 2.263-1.542 2.937zM20.3 7.245h-3.61v3.61h-1.202v-3.61h-3.61V6.042h3.61v-3.61h1.202v3.61h3.61v1.203z" />
-                </AddIdeaButtonIcon>
-                <AddIdeaButtonText>
-                  Add an idea
-                </AddIdeaButtonText>
-              </AddIdeaButton>
-            </AddIdeaButtonContainer>
-          </Header>
+          </HeaderContainer>
 
           <TabBar>
             <TabBarInner>
@@ -430,33 +374,39 @@ class LandingPage extends React.Component {
 
           <ContentContainer>
             <Content>
-              <SectionHeader>
-                <SectionTitle>Ideas for Oostende</SectionTitle>
-                <ViewAllButton>
-                  <ViewAllButtonText>View all ideas</ViewAllButtonText>
-                  <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
-                    <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
-                  </ViewAllButtonIcon>
-                </ViewAllButton>
-              </SectionHeader>
-              <SectionContainer>
-                {ideasList}
-              </SectionContainer>
+              <Section>
+                <SectionHeader>
+                  <SectionTitle>Ideas for Oostende</SectionTitle>
+                  <ViewAllButton>
+                    <ViewAllButtonText>View all ideas</ViewAllButtonText>
+                    <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
+                      <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
+                    </ViewAllButtonIcon>
+                  </ViewAllButton>
+                </SectionHeader>
+                <SectionContainer>
+                  {ideasList}
+                </SectionContainer>
+              </Section>
 
-              <SectionHeader>
-                <SectionTitle>Projects from Oostende</SectionTitle>
-                <ViewAllButton>
-                  <ViewAllButtonText>View all projects</ViewAllButtonText>
-                  <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
-                    <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
-                  </ViewAllButtonIcon>
-                </ViewAllButton>
-              </SectionHeader>
-              <SectionContainer>
-                {projectsList}
-              </SectionContainer>
+              <Section>
+                <SectionHeader>
+                  <SectionTitle>Projects from Oostende</SectionTitle>
+                  <ViewAllButton>
+                    <ViewAllButtonText>View all projects</ViewAllButtonText>
+                    <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
+                      <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
+                    </ViewAllButtonIcon>
+                  </ViewAllButton>
+                </SectionHeader>
+                <SectionContainer>
+                  {projectsList}
+                </SectionContainer>
+              </Section>
             </Content>
           </ContentContainer>
+
+          <Footer>Powered by CitizenLab | Geef je feedback over het platform</Footer>
         </Container>
       </div>
     );
@@ -488,11 +438,11 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { pageState, ideas, projects } = stateProps;
   return {
     ideas,
-    loadingIdeas: getFromState(pageState, 'loadingIdeas'),
-    loadIdeasError: getFromState(pageState, 'loadIdeasError'),
+    loadingIdeas: pageState.get('loadingIdeas'),
+    loadIdeasError: pageState.get('loadIdeasError'),
     projects,
-    loadingProjects: getFromState(pageState, 'loadingProjects'),
-    loadProjectsError: getFromState(pageState, 'loadProjectsError'),
+    loadingProjects: pageState.get('loadingProjects'),
+    loadProjectsError: pageState.get('loadProjectsError'),
     ...dispatchProps,
     ...ownProps,
   };

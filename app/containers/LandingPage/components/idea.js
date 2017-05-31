@@ -54,17 +54,17 @@ const IdeaContent = styled.div`
 `;
 
 const IdeaTitle = styled.div`
-  color: #333;
-  font-size: 25px;
+  color: #444;
+  font-size: 23px;
   font-weight: 300;
-  line-height: 30px;
+  line-height: 27px;
 `;
 
 const IdeaMeta = styled.div`
   color: #999;
   font-size: 16px;
   font-weight: 300;
-  margin-top: 7px;
+  margin-top: 12px;
 `;
 
 const IdeaFooter = styled.div`

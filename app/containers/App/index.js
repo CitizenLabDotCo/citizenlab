@@ -58,9 +58,9 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
           />
           <Navbar currentTenant={currentTenant} />
           {/* <Container> */ }
-            <div>
-              {React.Children.toArray(this.props.children)}
-            </div>
+          <div>
+            {React.Children.toArray(this.props.children)}
+          </div>
           {/* </Container> */ }
           {/* <DockableSagaView monitor={sagamonitor}  /> */}
         </div>
