@@ -41,6 +41,22 @@ import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { LOAD_CURRENT_USER_REQUEST } from 'utils/auth/constants';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
 
+
+const Conteinerize = ({ location, children }) => {
+  const { pathname } = location;
+  if (pathname.split('/')[1] === 'admin') return children;
+  return (
+    <Container>
+      {children}
+    </Container>
+  );
+};
+
+Conteinerize.propTypes = {
+  location: PropTypes.object,
+  children: PropTypes.any,
+};
+
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   constructor() {
@@ -66,7 +82,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
             ]}
           />
           <Navbar currentTenant={currentTenant} />
-          <Container>
+          <Conteinerize location={location}>
             <Loader
               resourceLoader={loadUser}
               loadingMessage={messages.currentUserLoadingMessage}
@@ -81,7 +97,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
                 </Else>
               </Authorize>
             </Loader>
-          </Container>
+          </Conteinerize>
           {/* <DockableSagaView monitor={sagamonitor}  /> */}
         </div>
       );

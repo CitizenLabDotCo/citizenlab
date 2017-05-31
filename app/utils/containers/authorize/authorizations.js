@@ -1,4 +1,4 @@
-const userIs = (user, role) => user && user.getIn(['attributes', 'roles']).some((ro) => ro === role);
+const userIs = (user, role) => user && user.getIn(['attributes', 'roles']).some((ro) => ro.get('type') === role);
 
 const authorizations = {
   comments: {
@@ -8,7 +8,7 @@ const authorizations = {
     delete: (user, resource) => {
       if (!user) return false;
 
-      const isUserAdmin = user && user.getIn(['attributes', 'roles']).some((role) => role === 'admin');
+      const isUserAdmin = user && user.getIn(['attributes', 'roles']).some((role) => role.get('type') === 'admin');
       if (isUserAdmin) return true;
 
       const authorId = resource && resource.getIn(['relationships', 'author', 'data', 'id']);

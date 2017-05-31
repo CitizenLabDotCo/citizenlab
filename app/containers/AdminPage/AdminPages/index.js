@@ -21,10 +21,6 @@ import {
 import { loadPagesRequest } from './actions';
 import messages from './messages';
 
-const Wrapper = styled.div`
-  padding-top: 100px;
-`;
-
 class AdminPages extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
     const { loadPagesRequest: lpr } = this.props;
@@ -140,18 +136,16 @@ class AdminPages extends React.Component { // eslint-disable-line react/prefer-s
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <Wrapper>
-          <Grid stackable>
-            <Grid.Row>
-              <Grid.Column width={3}>
-                <Sidebar location={location} />
-              </Grid.Column>
-              <Grid.Column width={10}>
-                {table}
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Wrapper>
+        <Grid stackable>
+          <Grid.Row>
+            <Grid.Column width={3}>
+              <Sidebar location={location} />
+            </Grid.Column>
+            <Grid.Column width={10}>
+              {table}
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </div>
     );
   }
