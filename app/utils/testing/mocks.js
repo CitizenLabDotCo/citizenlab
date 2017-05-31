@@ -35,6 +35,14 @@ export const generateResourcesPageValue = (id) => ({
   },
 });
 
+export const generateResourcesUserValue = (id) => ({
+  data: {
+    id,
+    attributes: {},
+    relationships: {},
+  },
+});
+
 export const generateResourcesProjectValue = (id) => ({
   data: {
     id,

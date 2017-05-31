@@ -28,7 +28,7 @@ describe('UserShowPage sagas', () => {
     });
 
     it('then, should dispatch userLoaded action', (result) => {
-      expect(result).toEqual(put(loadUserSuccess(undefined)));
+      expect(result).toEqual(put(loadUserSuccess()));
     });
   });
 
@@ -36,7 +36,7 @@ describe('UserShowPage sagas', () => {
     const it = sagaHelper(getUserIdeas(mockedAction));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(fetchIdeas, {
+      expect(result).toEqual(call(fetchIdeas, null, {
         author_id: stringMock,
       }));
     });
@@ -46,7 +46,7 @@ describe('UserShowPage sagas', () => {
     });
 
     it('then, should dispatch loadUserIdeasSuccess action', (result) => {
-      expect(result).toEqual(put(loadUserIdeasSuccess(undefined)));
+      expect(result).toEqual(put(loadUserIdeasSuccess()));
     });
   });
 });

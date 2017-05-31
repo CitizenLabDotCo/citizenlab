@@ -23,10 +23,10 @@ export function loadUserSuccess(response) {
   };
 }
 
-export function loadUserError(error) {
+export function loadUserError(errors) {
   return {
     type: LOAD_USER_ERROR,
-    payload: error,
+    errors,
   };
 }
 

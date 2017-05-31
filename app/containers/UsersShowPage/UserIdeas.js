@@ -3,35 +3,34 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import IdeaCard from 'components/IdeaCard';
-import { Label, Card, Segment } from 'semantic-ui-react';
+import { Card } from 'semantic-ui-react';
 
 import messages from './messages';
+import { makeSelectIdeas } from './selectors';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { LOAD_USER_IDEAS_REQUEST } from './constants';
 
 // eslint-disable-next-line react/prop-types
-const UserIdeasWrapper = ({ userIdeas, goToIdea }) => (<Segment basic>
-  <Card.Group itemsPerRow={4} doubling stackable>{userIdeas.map((userIdea) => (
-    <IdeaCard
-      idea={userIdea}
-      onClick={() => goToIdea(userIdea.id)}
-    />
-  ))}
-  </Card.Group>
-</Segment>);
+const UserIdeasWrapper = ({ userIdeas }) => (<Card.Group stackable>{userIdeas.map((idea) => (
+  <IdeaCard
+    key={idea.id}
+    id={idea.id}
+    project={idea.relationships.project && idea.relationships.project.data.id}
+  />
+))}</Card.Group>);
 
 function UserIdeas(props) {
-  const { loadingUserIdeas, loadUserIdeasError, userIdeas, goToIdea } = props;
+  const { userIdeas, loadingUserIdeas, loadUserIdeasError } = props;
 
   return (
     <div className={props.className}>
-      {loadingUserIdeas && <Label>
-        <FormattedMessage {...messages.loadingIdeas} />
-      </Label>}
-      {loadUserIdeasError && <Label>
-        {loadUserIdeasError}
-        </Label>}
+      {/* STATUS MESSAGES */}
+      {loadingUserIdeas && <FormattedMessage {...messages.loadingUserIdeas} />}
+      {loadUserIdeasError && <FormattedMessage {...messages.loadUserIdeasError} />}
+      {/* IDEAS */}
       <UserIdeasWrapper
         userIdeas={userIdeas}
-        goToIdea={goToIdea}
       />
     </div>
   );
@@ -39,17 +38,22 @@ function UserIdeas(props) {
 
 UserIdeas.propTypes = {
   className: PropTypes.string,
-  loadingUserIdeas: PropTypes.bool.isRequired,
-  loadUserIdeasError: PropTypes.string,
+  loadingUserIdeas: PropTypes.bool,
+  loadUserIdeasError: PropTypes.bool,
   userIdeas: PropTypes.any,
-  goToIdea: PropTypes.func.isRequired,
 };
 
 UserIdeasWrapper.PropTypes = {
   userIdeas: PropTypes.any.isRequired,
-  goToIdea: PropTypes.func.isRequired,
 };
 
-export default styled(UserIdeas)`
+const mapStateToProps = createStructuredSelector({
+  userIdeas: makeSelectIdeas(),
+  // here, rather than mergeProps, for correct re-render trigger
+  loadingUserIdeas: (state) => state.getIn(['tempState', LOAD_USER_IDEAS_REQUEST, 'loading']),
+  loadUserIdeasError: (state) => state.getIn(['tempState', LOAD_USER_IDEAS_REQUEST, 'error']),
+});
+
+export default styled(connect(mapStateToProps)(UserIdeas))`
   // none yet
 `;

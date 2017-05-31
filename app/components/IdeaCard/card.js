@@ -63,6 +63,7 @@ Card.propTypes = {
   authorId: PropTypes.any,
   viewIdea: PropTypes.any,
   votes: PropTypes.number,
+  project: PropTypes.string,
 };
 
 const mapStateToProps = () => createStructuredSelector({
@@ -76,6 +77,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   if (!idea) return {};
 
   const attributes = idea.get('attributes');
+
   const images = attributes.getIn(['images', '0', 'medium']);
   const label = parseInt(id.match(/\d+/), 10) % 5 === 0;
   const labelObj = { as: 'a', corner: 'right', icon: 'university' };
