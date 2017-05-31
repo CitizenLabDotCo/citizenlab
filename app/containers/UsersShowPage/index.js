@@ -11,12 +11,9 @@ import HelmetIntl from 'components/HelmetIntl';
 import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import { Saga } from 'react-redux-saga';
-import { push } from 'react-router-redux';
-import { Container, Label } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 
 import {
-  makeSelectIdeas,
-  makeSelectLoadingUser, makeSelectLoadingUserIdeas, makeSelectLoadUserError, makeSelectLoadUserIdeasError,
   makeSelectUser,
 } from './selectors';
 import messages from './messages';
@@ -24,6 +21,8 @@ import Avatar from './Avatar';
 import UserIdeas from './UserIdeas';
 import { watchLoadUser, watchLoadUserIdeas } from './sagas';
 import { loadUserIdeasRequest, loadUserRequest } from './actions';
+import { LOAD_USER_REQUEST } from './constants';
+import T from 'containers/T';
 
 export class UsersShowPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
@@ -34,8 +33,8 @@ export class UsersShowPage extends React.PureComponent { // eslint-disable-line 
   }
 
   render() {
-    const { loadingUser, loadUserError, userData, loadingUserIdeas, loadUserIdeasError, ideas, goToIdea } = this.props;
-    const avatarURL = (userData && userData.avatar ? userData.avatar.medium : '');
+    const { loadingUser, loadUserError, user } = this.props;
+    const avatarURL = (user && user.avatar ? user.avatar.medium : '');
 
     return (
       <div>
@@ -49,25 +48,18 @@ export class UsersShowPage extends React.PureComponent { // eslint-disable-line 
           fluid
           textAlign="center"
         >
+          {/* AVATAR */}
           <Avatar avatarURL={avatarURL} />
-          {userData && <Label
-            centered
-            attached=""
-          >
-            {userData.first_name} {userData.last_name}
-          </Label>}
-          {loadingUser && <Label centered>
-            <FormattedMessage {...messages.loadingUser} />
-          </Label>}
-          {loadUserError && <Label centered>
-            {loadUserError}
-            </Label>}
-          <UserIdeas
-            loadingUserIdeas={loadingUserIdeas}
-            loadUserIdeasError={loadUserIdeasError}
-            userIdeas={ideas}
-            goToIdea={goToIdea}
-          />
+          {/* USER INFORMATION */}
+          {user && <div>
+            <div>{user.first_name}&nbsp;{user.last_name}</div>
+            {user.bio_multiloc && <T value={user.bio_mutiloc} />}
+          </div>}
+          {/* USER IDEAS */}
+          {user && <UserIdeas />}
+          {/* STATUS MESSAGES */}
+          {loadingUser && <FormattedMessage {...messages.loadingUser} />}
+          {loadUserError && <FormattedMessage {...messages.loadUserError} />}
         </Container>
       </div>
     );
@@ -77,23 +69,16 @@ export class UsersShowPage extends React.PureComponent { // eslint-disable-line 
 UsersShowPage.propTypes = {
   params: PropTypes.object,
   loadUser: PropTypes.func.isRequired,
-  loadingUser: PropTypes.bool.isRequired,
-  loadUserError: PropTypes.string,
-  userData: PropTypes.object,
+  loadingUser: PropTypes.bool,
+  loadUserError: PropTypes.bool,
+  user: PropTypes.object,
   loadUserIdeas: PropTypes.func.isRequired,
-  loadingUserIdeas: PropTypes.bool.isRequired,
-  loadUserIdeasError: PropTypes.bool,
-  ideas: PropTypes.any.isRequired,
-  goToIdea: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loadingUser: makeSelectLoadingUser(),
-  loadUserError: makeSelectLoadUserError(),
-  userData: makeSelectUser(),
-  loadingUserIdeas: makeSelectLoadingUserIdeas(),
-  loadUserIdeasError: makeSelectLoadUserIdeasError(),
-  ideas: makeSelectIdeas(),
+  loadingUser: (state) => state.getIn(['tempState', LOAD_USER_REQUEST, 'loading']),
+  loadUserError: (state) => state.getIn(['tempState', LOAD_USER_REQUEST, 'error']),
+  user: makeSelectUser(),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -103,9 +88,6 @@ export function mapDispatchToProps(dispatch) {
     },
     loadUserIdeas(userId) {
       dispatch(loadUserIdeasRequest(userId));
-    },
-    goToIdea(ideaId) {
-      dispatch(push(`/ideas/${ideaId}`));
     },
   };
 }

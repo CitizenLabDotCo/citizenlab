@@ -10,9 +10,17 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.loadingUser',
     defaultMessage: 'Loading...',
   },
-  loadingIdeas: {
-    id: 'app.containers.UsersShowPage.loadingIdeas',
-    defaultMessage: 'Loading...',
+  loadUserError: {
+    id: 'app.containers.UsersShowPage.loadUserError',
+    defaultMessage: 'User couldn\'t be loaded',
+  },
+  loadingUserIdeas: {
+    id: 'app.containers.UsersShowPage.loadingUserIdeas',
+    defaultMessage: 'Loading user ideas...',
+  },
+  loadUserIdeasError: {
+    id: 'app.containers.UsersShowPage.loadUserIdeasError',
+    defaultMessage: 'User\'s ideas couldn\'t be loaded',
   },
   helmetTitle: {
     id: 'app.containers.UsersShowPage.helmetTitle',

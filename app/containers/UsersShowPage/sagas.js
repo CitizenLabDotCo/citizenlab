@@ -15,19 +15,19 @@ export function* getUser(action) {
     yield put(mergeJsonApiResources(userResponse));
     yield put(loadUserSuccess(userResponse));
   } catch (err) {
-    yield put(loadUserError(JSON.stringify(err)));
+    yield put(loadUserError());
   }
 }
 
 export function* getUserIdeas(action) {
   try {
-    const userIdeasResponse = yield call(fetchIdeas, {
+    const userIdeasResponse = yield call(fetchIdeas, null, {
       author_id: action.userId,
     });
     yield put(mergeJsonApiResources(userIdeasResponse));
     yield put(loadUserIdeasSuccess(userIdeasResponse));
   } catch (err) {
-    yield put(loadUserIdeasError(JSON.stringify(err)));
+    yield put(loadUserIdeasError());
   }
 }
 

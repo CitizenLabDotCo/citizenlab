@@ -6,16 +6,6 @@ import { selectResourcesDomain } from 'utils/resources/selectors';
 
 const selectUserShowPage = (state) => state.get('usersShowPage');
 
-const makeSelectLoadingUser = () => createSelector(
-  selectUserShowPage,
-  (userShowPageState) => userShowPageState.get('loadingUser')
-);
-
-const makeSelectLoadUserError = () => createSelector(
-  selectUserShowPage,
-  (userShowPageState) => userShowPageState.get('loadUserError')
-);
-
 const makeSelectUser = () => createSelector(
   selectUserShowPage,
   selectResourcesDomain(),
@@ -24,16 +14,6 @@ const makeSelectUser = () => createSelector(
     const users = resources.get('users', fromJS({})).toJS();
     return users[id] ? users[id].attributes : null;
   }
-);
-
-const makeSelectLoadingUserIdeas = () => createSelector(
-  selectUserShowPage,
-  (userShowPageState) => userShowPageState.get('loadingUserIdeas')
-);
-
-const makeSelectLoadUserIdeasError = () => createSelector(
-  selectUserShowPage,
-  (userShowPageState) => userShowPageState.get('loadUserIdeasError')
 );
 
 const makeSelectIdeas = () => createSelector(
@@ -46,10 +26,8 @@ const makeSelectIdeas = () => createSelector(
 );
 
 export {
-  makeSelectLoadingUser,
-  makeSelectLoadUserError,
+  selectUserShowPage,
   makeSelectUser,
-  makeSelectLoadingUserIdeas,
-  makeSelectLoadUserIdeasError,
   makeSelectIdeas,
 };
+

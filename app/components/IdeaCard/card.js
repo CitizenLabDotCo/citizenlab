@@ -63,6 +63,7 @@ Card.propTypes = {
   authorId: PropTypes.any,
   viewIdea: PropTypes.any,
   votes: PropTypes.number,
+  project: PropTypes.string,
 };
 
 const mapStateToProps = () => createStructuredSelector({
@@ -73,11 +74,12 @@ const mapStateToProps = () => createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ push }, dispatch);
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { id } = ownProps;
+  const { id, project } = ownProps;
   const { idea, location } = stateProps;
   if (!idea) return {};
 
   const attributes = idea.get('attributes');
+
   const images = attributes.getIn(['images', '0', 'medium']);
   const label = parseInt(id.match(/\d+/), 10) % 5 === 0;
   const labelObj = { as: 'a', corner: 'right', icon: 'university' };
@@ -89,7 +91,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const topicsData = relationships.getIn(['topics', 'data']);
   const areasData = relationships.getIn(['areas', 'data']);
   const changePage = dispatchProps.push;
-  const viewIdea = () => changePage(`${location}/${id}`);
+  const viewIdea = () => changePage(project
+    ? `projects/${project}/${id}`
+    : `${location}/${id}`);
   return {
     header,
     images,
