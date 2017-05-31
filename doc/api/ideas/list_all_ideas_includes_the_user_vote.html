@@ -109,7 +109,7 @@ table th, table td {
       <h1>Ideas API</h1>
 
       <div class="article">
-        <h2>List all ideas</h2>
+        <h2>List all ideas includes the user_vote</h2>
         <h3>GET api/v1/ideas</h3>
 
           <h3>Parameters</h3>
@@ -177,7 +177,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjAsInN1YiI6ImFjMWI2YjdhLWM0OTMtNGIzMy1iMDFlLWZiNjM5N2NlMWE5YiJ9.9m7JuNafRQidLsnHQRp2oC2RLjgYgZza2NGA4wQvNDA
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjMsInN1YiI6IjFlYjUxNWI5LWVlMzMtNDdlYy1hMWQwLTM1NDVkNTU1OWE1YiJ9.oD-7VmY8zidx2Tr-XhlEfmjp-WcMhgov3t7ZXbkJGL8
 Host: example.org
 Cookie: </pre>
 
@@ -193,19 +193,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;63190a17e2deab6552b10242733392c0&quot;
+ETag: W/&quot;4722d8808f4fd23a1ad711228aa2a2d2&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: af352973-49bb-42d0-b3ed-a5d312db2bac
-X-Runtime: 0.117803
+X-Request-Id: dd83ac0d-08e4-4c37-8b8e-7b95a70aebf5
+X-Runtime: 0.084620
 Vary: Origin
-Content-Length: 7190</pre>
+Content-Length: 8969</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;b4d80e48-2af0-4f91-a71f-fd1a3133c713&quot;,
+      &quot;id&quot;: &quot;8ca9ceee-3618-4fbc-9480-ca475d4fd52e&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -216,16 +216,16 @@ Content-Length: 7190</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Francis Koss&quot;,
+        &quot;author_name&quot;: &quot;Viva Keeling&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:39.955Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:39.955Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-31T15:13:39.955Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.687Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.687Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-31T15:13:43.687Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -240,13 +240,13 @@ Content-Length: 7190</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;ced75c77-ae2f-4969-9888-502965ea657e&quot;,
+            &quot;id&quot;: &quot;2c992ce3-46c1-4b2b-988c-7842dde73c0d&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;eac7af5c-c30d-45d6-8d8d-9423ef33d0d8&quot;,
+            &quot;id&quot;: &quot;593cffd4-b75e-47b0-817e-f6598e7e956e&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -256,7 +256,7 @@ Content-Length: 7190</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;0ff479b8-5dda-4d71-99bf-94ee23d12ac6&quot;,
+      &quot;id&quot;: &quot;179bf7f2-4bc4-4059-9e76-d8a2d038d09c&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -267,16 +267,16 @@ Content-Length: 7190</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Anabel Gibson&quot;,
+        &quot;author_name&quot;: &quot;Phyllis Gleason&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.003Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.003Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-31T15:13:40.003Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.730Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.730Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-31T15:13:43.730Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -291,13 +291,13 @@ Content-Length: 7190</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;e86af932-07d3-4944-bc9c-b3c4b430e81d&quot;,
+            &quot;id&quot;: &quot;27eec24c-0806-421e-a1c7-5454bd03db10&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;c6d4e928-82ef-47f9-ad80-2c2973696674&quot;,
+            &quot;id&quot;: &quot;b0781512-e38c-4e7b-9d53-9a9ed4913169&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -307,7 +307,7 @@ Content-Length: 7190</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;db99733f-c2ff-4427-8907-dcdf3f960122&quot;,
+      &quot;id&quot;: &quot;b0aad7d7-9970-47d1-81dd-350c1f8669c0&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -318,16 +318,16 @@ Content-Length: 7190</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Deborah Brown&quot;,
+        &quot;author_name&quot;: &quot;Jordy McKenzie&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.045Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.045Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-31T15:13:40.045Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.785Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.785Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-31T15:13:43.785Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -342,13 +342,13 @@ Content-Length: 7190</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;9910f5aa-7dc5-4449-93be-c6865f2cd669&quot;,
+            &quot;id&quot;: &quot;5e17b3f2-f9cf-4636-a44e-563a9f5a56ff&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;b297d967-1516-4e1d-a67e-fe2da8dffd20&quot;,
+            &quot;id&quot;: &quot;6e9af6a4-08d8-4d10-9625-36d60a3a67f7&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -358,7 +358,7 @@ Content-Length: 7190</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;65a447b8-201a-4f55-9285-4eae46590ae8&quot;,
+      &quot;id&quot;: &quot;fc04d948-2a8d-4e88-9ed0-d91d5471277e&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -369,16 +369,16 @@ Content-Length: 7190</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Lynn Koss&quot;,
+        &quot;author_name&quot;: &quot;Joanne Senger&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.088Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.088Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-31T15:13:40.087Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.829Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.829Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-31T15:13:43.829Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -393,13 +393,13 @@ Content-Length: 7190</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;59b35159-3892-4703-bb17-25876f8fc3e6&quot;,
+            &quot;id&quot;: &quot;84408011-617f-484d-ba9a-ca721165ced9&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;8cb5f24c-60ce-4817-9c0c-bd1f2eb5332d&quot;,
+            &quot;id&quot;: &quot;34fabaf5-e00a-41bf-bb6e-99649006dd20&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -409,7 +409,7 @@ Content-Length: 7190</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;50d14267-efdf-41c1-b840-ad6f2187c593&quot;,
+      &quot;id&quot;: &quot;1536fe05-744a-4a77-8c89-498d36d513f8&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -420,16 +420,16 @@ Content-Length: 7190</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Name Kozey&quot;,
+        &quot;author_name&quot;: &quot;Myrl Kilback&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.136Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.136Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-31T15:13:40.136Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.872Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.872Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-31T15:13:43.872Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -444,131 +444,228 @@ Content-Length: 7190</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;b12542fd-aad4-4e71-88f8-e16bdf60c192&quot;,
+            &quot;id&quot;: &quot;72b1aa04-0256-4213-bf95-0e0ffee86601&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;871a9431-81ec-4c33-931e-b5b741bc8a9b&quot;,
+            &quot;id&quot;: &quot;31ce6f36-a81b-4b56-95ca-1d997dffc986&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;user_vote&quot;: {
           &quot;data&quot;: null
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;7eeb6887-be83-45db-986b-49d986cffff4&quot;,
+      &quot;type&quot;: &quot;ideas&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        },
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
+        },
+        &quot;author_name&quot;: &quot;Pierre Kling&quot;,
+        &quot;publication_status&quot;: &quot;published&quot;,
+        &quot;images&quot;: [
+
+        ],
+        &quot;upvotes_count&quot;: 1,
+        &quot;downvotes_count&quot;: 0,
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.949Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.949Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-31T15:13:43.949Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;topics&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;author&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;183e2935-062e-48c4-9a32-73b7b29b38af&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;project&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;24fdf72e-a290-427d-984e-0830f516ae70&quot;,
+            &quot;type&quot;: &quot;projects&quot;
+          }
+        },
+        &quot;user_vote&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;27453c55-2f16-4758-8b6b-f7034e482c39&quot;,
+            &quot;type&quot;: &quot;votes&quot;
+          }
         }
       }
     }
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;ced75c77-ae2f-4969-9888-502965ea657e&quot;,
+      &quot;id&quot;: &quot;2c992ce3-46c1-4b2b-988c-7842dde73c0d&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Francis&quot;,
-        &quot;last_name&quot;: &quot;Koss&quot;,
-        &quot;slug&quot;: &quot;francis-koss&quot;,
+        &quot;first_name&quot;: &quot;Viva&quot;,
+        &quot;last_name&quot;: &quot;Keeling&quot;,
+        &quot;slug&quot;: &quot;viva-keeling&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/ced75c77-ae2f-4969-9888-502965ea657e/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/ced75c77-ae2f-4969-9888-502965ea657e/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/ced75c77-ae2f-4969-9888-502965ea657e/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/2c992ce3-46c1-4b2b-988c-7842dde73c0d/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/2c992ce3-46c1-4b2b-988c-7842dde73c0d/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/2c992ce3-46c1-4b2b-988c-7842dde73c0d/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:39.944Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:39.944Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.671Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.671Z&quot;
       }
     },
     {
-      &quot;id&quot;: &quot;e86af932-07d3-4944-bc9c-b3c4b430e81d&quot;,
+      &quot;id&quot;: &quot;27eec24c-0806-421e-a1c7-5454bd03db10&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Anabel&quot;,
-        &quot;last_name&quot;: &quot;Gibson&quot;,
-        &quot;slug&quot;: &quot;anabel-gibson&quot;,
+        &quot;first_name&quot;: &quot;Phyllis&quot;,
+        &quot;last_name&quot;: &quot;Gleason&quot;,
+        &quot;slug&quot;: &quot;phyllis-gleason&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/e86af932-07d3-4944-bc9c-b3c4b430e81d/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/e86af932-07d3-4944-bc9c-b3c4b430e81d/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/e86af932-07d3-4944-bc9c-b3c4b430e81d/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/27eec24c-0806-421e-a1c7-5454bd03db10/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/27eec24c-0806-421e-a1c7-5454bd03db10/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/27eec24c-0806-421e-a1c7-5454bd03db10/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:39.986Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:39.986Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.719Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.719Z&quot;
       }
     },
     {
-      &quot;id&quot;: &quot;9910f5aa-7dc5-4449-93be-c6865f2cd669&quot;,
+      &quot;id&quot;: &quot;5e17b3f2-f9cf-4636-a44e-563a9f5a56ff&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Deborah&quot;,
-        &quot;last_name&quot;: &quot;Brown&quot;,
-        &quot;slug&quot;: &quot;deborah-brown&quot;,
+        &quot;first_name&quot;: &quot;Jordy&quot;,
+        &quot;last_name&quot;: &quot;McKenzie&quot;,
+        &quot;slug&quot;: &quot;jordy-mckenzie&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/9910f5aa-7dc5-4449-93be-c6865f2cd669/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/9910f5aa-7dc5-4449-93be-c6865f2cd669/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/9910f5aa-7dc5-4449-93be-c6865f2cd669/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/5e17b3f2-f9cf-4636-a44e-563a9f5a56ff/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/5e17b3f2-f9cf-4636-a44e-563a9f5a56ff/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/5e17b3f2-f9cf-4636-a44e-563a9f5a56ff/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.033Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.033Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.768Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.768Z&quot;
       }
     },
     {
-      &quot;id&quot;: &quot;59b35159-3892-4703-bb17-25876f8fc3e6&quot;,
+      &quot;id&quot;: &quot;84408011-617f-484d-ba9a-ca721165ced9&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Lynn&quot;,
-        &quot;last_name&quot;: &quot;Koss&quot;,
-        &quot;slug&quot;: &quot;lynn-koss&quot;,
+        &quot;first_name&quot;: &quot;Joanne&quot;,
+        &quot;last_name&quot;: &quot;Senger&quot;,
+        &quot;slug&quot;: &quot;joanne-senger&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/59b35159-3892-4703-bb17-25876f8fc3e6/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/59b35159-3892-4703-bb17-25876f8fc3e6/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/59b35159-3892-4703-bb17-25876f8fc3e6/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/84408011-617f-484d-ba9a-ca721165ced9/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/84408011-617f-484d-ba9a-ca721165ced9/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/84408011-617f-484d-ba9a-ca721165ced9/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.077Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.077Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.815Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.815Z&quot;
       }
     },
     {
-      &quot;id&quot;: &quot;b12542fd-aad4-4e71-88f8-e16bdf60c192&quot;,
+      &quot;id&quot;: &quot;72b1aa04-0256-4213-bf95-0e0ffee86601&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Name&quot;,
-        &quot;last_name&quot;: &quot;Kozey&quot;,
-        &quot;slug&quot;: &quot;name-kozey&quot;,
+        &quot;first_name&quot;: &quot;Myrl&quot;,
+        &quot;last_name&quot;: &quot;Kilback&quot;,
+        &quot;slug&quot;: &quot;myrl-kilback&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/b12542fd-aad4-4e71-88f8-e16bdf60c192/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/b12542fd-aad4-4e71-88f8-e16bdf60c192/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/b12542fd-aad4-4e71-88f8-e16bdf60c192/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/72b1aa04-0256-4213-bf95-0e0ffee86601/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/72b1aa04-0256-4213-bf95-0e0ffee86601/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/72b1aa04-0256-4213-bf95-0e0ffee86601/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.121Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.121Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.861Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.861Z&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;183e2935-062e-48c4-9a32-73b7b29b38af&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Pierre&quot;,
+        &quot;last_name&quot;: &quot;Kling&quot;,
+        &quot;slug&quot;: &quot;pierre-kling&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/183e2935-062e-48c4-9a32-73b7b29b38af/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/183e2935-062e-48c4-9a32-73b7b29b38af/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/183e2935-062e-48c4-9a32-73b7b29b38af/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.938Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.938Z&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;27453c55-2f16-4758-8b6b-f7034e482c39&quot;,
+      &quot;type&quot;: &quot;votes&quot;,
+      &quot;attributes&quot;: {
+        &quot;mode&quot;: &quot;up&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;votable&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;7eeb6887-be83-45db-986b-49d986cffff4&quot;,
+            &quot;type&quot;: &quot;ideas&quot;
+          }
+        },
+        &quot;user&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;1eb515b9-ee33-47ec-a1d0-3545d5559a5b&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        }
       }
     }
   ],

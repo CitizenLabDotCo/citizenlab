@@ -117,13 +117,13 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNTksInN1YiI6IjMwMzYyYWQwLTYzOWItNGE5ZC1hOGM1LTNkYjJmNTcyYzM0YyJ9.soq1CNb4C77jQuCcIaIGNeAcZPqAkQJzt_fd3rB96dY
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwNDUsInN1YiI6IjMzNTc2OGY5LTcxMTktNDI1Mi04YzE1LTgzZjM4MGE0NWU4YyJ9.T_OJTjqWWUbXHG41ovDd_JwyJ9LwXeKRWrNtKxqcH_c
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/votes/80d4749f-7bc0-42db-9ebf-fbca099be7d3</pre>
+          <pre class="request route highlight">GET api/v1/votes/e8a36636-c9ed-4115-9054-82ae069912ea</pre>
 
 
 
@@ -134,18 +134,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;19066615f7dc12b083472b0d6ca374fe&quot;
+ETag: W/&quot;2008e5dd8cd58025768cc8c9d21cc068&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 78649f59-b9b3-4e1c-9a2f-8b4d241bc799
-X-Runtime: 0.022871
+X-Request-Id: 5c598b22-b8f0-41f0-a00b-4a83ad089966
+X-Runtime: 0.020941
 Vary: Origin
-Content-Length: 1010</pre>
+Content-Length: 1031</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;80d4749f-7bc0-42db-9ebf-fbca099be7d3&quot;,
+    &quot;id&quot;: &quot;e8a36636-c9ed-4115-9054-82ae069912ea&quot;,
     &quot;type&quot;: &quot;votes&quot;,
     &quot;attributes&quot;: {
       &quot;mode&quot;: &quot;up&quot;
@@ -153,13 +153,13 @@ Content-Length: 1010</pre>
     &quot;relationships&quot;: {
       &quot;votable&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;4fcd9fd1-01af-4c0a-92eb-09f508c565c3&quot;,
+          &quot;id&quot;: &quot;7ddefe1b-b08a-421d-8022-796fc50e45e5&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;user&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;65788c40-7596-4004-a1db-1f570ea94412&quot;,
+          &quot;id&quot;: &quot;ccba051b-3652-4e07-8e3a-145335203e33&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       }
@@ -167,24 +167,26 @@ Content-Length: 1010</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;65788c40-7596-4004-a1db-1f570ea94412&quot;,
+      &quot;id&quot;: &quot;ccba051b-3652-4e07-8e3a-145335203e33&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Alexandro&quot;,
-        &quot;last_name&quot;: &quot;Stracke&quot;,
-        &quot;slug&quot;: &quot;alexandro-stracke&quot;,
+        &quot;first_name&quot;: &quot;Roosevelt&quot;,
+        &quot;last_name&quot;: &quot;King&quot;,
+        &quot;slug&quot;: &quot;roosevelt-king&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/65788c40-7596-4004-a1db-1f570ea94412/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/65788c40-7596-4004-a1db-1f570ea94412/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/65788c40-7596-4004-a1db-1f570ea94412/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/ccba051b-3652-4e07-8e3a-145335203e33/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/ccba051b-3652-4e07-8e3a-145335203e33/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/ccba051b-3652-4e07-8e3a-145335203e33/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:39.354Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:39.354Z&quot;,
-        &quot;email&quot;: &quot;trisha@gislason.info&quot;,
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-05-31T15:14:05.171Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:14:05.171Z&quot;,
+        &quot;email&quot;: &quot;athena@keeblerwilliamson.info&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

@@ -161,6 +161,14 @@ table th, table td {
                   <span class="description">Filter by searching in title, body and author name</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">sort</span>
+                </td>
+                <td>
+                  <span class="description">Either &#39;new&#39;, &#39;-new&#39;, &#39;trending&#39;, &#39;-trending&#39;, &#39;popular&#39; or &#39;-popular&#39;</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -169,14 +177,15 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjAsInN1YiI6IjU0YjRjN2E2LTA1NDctNDJkNy04N2MzLTFiOTIyMWY5OThhOCJ9.9sgeAa5sAJ-OQ5FnMmORZFiiT_goAb58tevdJmDTbBM
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=6cda5f11-c293-4f0f-8115-23583a91ffc0&amp;topics[]=6c3dc97a-98b7-4b87-9f3c-f1811413fa5c</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=327a68e7-84b6-4bb0-be3d-a397d284a539&amp;topics[]=176bb06b-3dc8-442c-9a46-be28eed8912c</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;6cda5f11-c293-4f0f-8115-23583a91ffc0&quot;, &quot;6c3dc97a-98b7-4b87-9f3c-f1811413fa5c&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;327a68e7-84b6-4bb0-be3d-a397d284a539&quot;, &quot;176bb06b-3dc8-442c-9a46-be28eed8912c&quot;]</pre>
 
 
 
@@ -186,19 +195,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;a40dcbafd3ca9f1f37009cb3d4557c89&quot;
+ETag: W/&quot;c8d58d055474b01dc3e71aab8073b9d1&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 111f8ef9-9739-4868-bbaf-17c1bb7f9353
-X-Runtime: 0.032648
+X-Request-Id: 3217d45f-e203-4c89-a83f-a38bb31c869b
+X-Runtime: 0.033612
 Vary: Origin
-Content-Length: 1549</pre>
+Content-Length: 1593</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;2b2c7b63-3077-4223-b5e7-1a94000554a3&quot;,
+      &quot;id&quot;: &quot;44c5ee66-d173-4df2-9776-399df058b7ea&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -209,26 +218,26 @@ Content-Length: 1549</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Harmon Jacobi&quot;,
+        &quot;author_name&quot;: &quot;Conrad Hirthe&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:15.629Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:15.629Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-21T17:47:15.629Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.643Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.643Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-31T15:13:40.643Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;6cda5f11-c293-4f0f-8115-23583a91ffc0&quot;,
+              &quot;id&quot;: &quot;327a68e7-84b6-4bb0-be3d-a397d284a539&quot;,
               &quot;type&quot;: &quot;topics&quot;
             },
             {
-              &quot;id&quot;: &quot;6c3dc97a-98b7-4b87-9f3c-f1811413fa5c&quot;,
+              &quot;id&quot;: &quot;176bb06b-3dc8-442c-9a46-be28eed8912c&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -240,38 +249,43 @@ Content-Length: 1549</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;d61157ca-0722-4bc4-9cdc-d4b990dbd5f8&quot;,
+            &quot;id&quot;: &quot;d25db042-5d82-49fa-9a50-9f45d894bda2&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;d1673062-15df-44aa-8d2d-778be68c9372&quot;,
+            &quot;id&quot;: &quot;ef52481a-081a-43ff-ae37-3e3599da2d6c&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
+        },
+        &quot;user_vote&quot;: {
+          &quot;data&quot;: null
         }
       }
     }
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;d61157ca-0722-4bc4-9cdc-d4b990dbd5f8&quot;,
+      &quot;id&quot;: &quot;d25db042-5d82-49fa-9a50-9f45d894bda2&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Harmon&quot;,
-        &quot;last_name&quot;: &quot;Jacobi&quot;,
-        &quot;slug&quot;: &quot;harmon-jacobi&quot;,
+        &quot;first_name&quot;: &quot;Conrad&quot;,
+        &quot;last_name&quot;: &quot;Hirthe&quot;,
+        &quot;slug&quot;: &quot;conrad-hirthe&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/d61157ca-0722-4bc4-9cdc-d4b990dbd5f8/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/d61157ca-0722-4bc4-9cdc-d4b990dbd5f8/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/d61157ca-0722-4bc4-9cdc-d4b990dbd5f8/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/d25db042-5d82-49fa-9a50-9f45d894bda2/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/d25db042-5d82-49fa-9a50-9f45d894bda2/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/d25db042-5d82-49fa-9a50-9f45d894bda2/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:15.615Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:15.615Z&quot;
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.627Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.627Z&quot;
       }
     }
   ],

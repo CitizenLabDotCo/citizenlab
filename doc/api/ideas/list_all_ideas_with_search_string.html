@@ -161,6 +161,14 @@ table th, table td {
                   <span class="description">Filter by searching in title, body and author name</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">sort</span>
+                </td>
+                <td>
+                  <span class="description">Either &#39;new&#39;, &#39;-new&#39;, &#39;trending&#39;, &#39;-trending&#39;, &#39;popular&#39; or &#39;-popular&#39;</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -169,6 +177,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjMsInN1YiI6ImQ1NmMwOTRmLWViYmItNGNkMy1iMjVjLTdiY2VmYjk2NWNkZiJ9.zFgbD2_Ras4WiN2vZiQ6XdVBHYYQ9wi63Ww7UosdDzQ
 Host: example.org
 Cookie: </pre>
 
@@ -186,19 +195,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;ef2ea5765cb7faf9767242a0c1ad1228&quot;
+ETag: W/&quot;61327bcf5ec81d2516f633d0d067b7a3&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: dcffc4a0-33bd-4a21-a061-4a92daf52207
-X-Runtime: 0.038263
+X-Request-Id: 73c657b3-3bed-4c71-83bb-63f15a17a375
+X-Runtime: 0.033386
 Vary: Origin
-Content-Length: 1406</pre>
+Content-Length: 1441</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;c2034571-668d-46c8-a72f-e528d448a95c&quot;,
+      &quot;id&quot;: &quot;1c129f11-b5e5-4bdc-804c-24569e30477b&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -208,16 +217,16 @@ Content-Length: 1406</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Magnus Mayert&quot;,
+        &quot;author_name&quot;: &quot;Reta Hilll&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:18.102Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:18.102Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-21T17:47:18.102Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.163Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.163Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-31T15:13:43.163Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -232,38 +241,43 @@ Content-Length: 1406</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;03076558-81cc-455e-b267-801d61a739e2&quot;,
+            &quot;id&quot;: &quot;38579aee-a3be-446a-b997-20cf95fc010f&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;9ff82a83-f384-41ae-a63b-64c1e42d8315&quot;,
+            &quot;id&quot;: &quot;1aaea973-f85d-4262-a3fa-e3f73d7a13a8&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
+        },
+        &quot;user_vote&quot;: {
+          &quot;data&quot;: null
         }
       }
     }
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;03076558-81cc-455e-b267-801d61a739e2&quot;,
+      &quot;id&quot;: &quot;38579aee-a3be-446a-b997-20cf95fc010f&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Magnus&quot;,
-        &quot;last_name&quot;: &quot;Mayert&quot;,
-        &quot;slug&quot;: &quot;magnus-mayert&quot;,
+        &quot;first_name&quot;: &quot;Reta&quot;,
+        &quot;last_name&quot;: &quot;Hilll&quot;,
+        &quot;slug&quot;: &quot;reta-hilll&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/03076558-81cc-455e-b267-801d61a739e2/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/03076558-81cc-455e-b267-801d61a739e2/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/03076558-81cc-455e-b267-801d61a739e2/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/38579aee-a3be-446a-b997-20cf95fc010f/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/38579aee-a3be-446a-b997-20cf95fc010f/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/38579aee-a3be-446a-b997-20cf95fc010f/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:18.090Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:18.090Z&quot;
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.147Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.147Z&quot;
       }
     }
   ],

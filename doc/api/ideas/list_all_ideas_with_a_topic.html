@@ -161,6 +161,14 @@ table th, table td {
                   <span class="description">Filter by searching in title, body and author name</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">sort</span>
+                </td>
+                <td>
+                  <span class="description">Either &#39;new&#39;, &#39;-new&#39;, &#39;trending&#39;, &#39;-trending&#39;, &#39;popular&#39; or &#39;-popular&#39;</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -169,14 +177,15 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjAsInN1YiI6IjFmMGI0YTZmLTYwOTAtNDIzZi1iODI2LThjMTU3M2ZkOTg3ZCJ9.xyS0JP3NIo9v3hsXI80-JD2wYpoIhwCf17SlqEydAHs
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=6da95bb2-cfd0-46cf-8d16-a915725a5882</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=3bdeae2d-293d-40dd-a0f0-b16c29d46ab0</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;6da95bb2-cfd0-46cf-8d16-a915725a5882&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;3bdeae2d-293d-40dd-a0f0-b16c29d46ab0&quot;]</pre>
 
 
 
@@ -186,19 +195,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;f439e0fbb6bb5ec58d51f4fe772281a4&quot;
+ETag: W/&quot;277d6111916e8f555ffe094b0d6e1625&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: b1956802-c8a3-4c2f-926e-23c2388b43f7
-X-Runtime: 0.036516
+X-Request-Id: eae1d493-aa60-4d76-9f83-9dc1624b03f4
+X-Runtime: 0.039434
 Vary: Origin
-Content-Length: 1487</pre>
+Content-Length: 1531</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;3cb03c7f-ce0f-46b8-b452-5e764f77adb9&quot;,
+      &quot;id&quot;: &quot;b7feb0a4-9a45-46bb-8b05-4f56384bd5b0&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -209,22 +218,22 @@ Content-Length: 1487</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Donald Wisozk&quot;,
+        &quot;author_name&quot;: &quot;Jesus Hilpert&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:15.296Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:15.296Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-21T17:47:15.296Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.322Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.322Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-31T15:13:40.322Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;6da95bb2-cfd0-46cf-8d16-a915725a5882&quot;,
+              &quot;id&quot;: &quot;3bdeae2d-293d-40dd-a0f0-b16c29d46ab0&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -236,38 +245,43 @@ Content-Length: 1487</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;9d664a02-3217-46cb-9db5-76518b7acbd8&quot;,
+            &quot;id&quot;: &quot;adf0d060-c984-4996-99e4-487d89db184e&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;a75ad614-d99c-43a3-9a52-9180499b933f&quot;,
+            &quot;id&quot;: &quot;9ae684ca-f667-4b85-9ee3-b0f8f7040f2d&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
+        },
+        &quot;user_vote&quot;: {
+          &quot;data&quot;: null
         }
       }
     }
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;9d664a02-3217-46cb-9db5-76518b7acbd8&quot;,
+      &quot;id&quot;: &quot;adf0d060-c984-4996-99e4-487d89db184e&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Donald&quot;,
-        &quot;last_name&quot;: &quot;Wisozk&quot;,
-        &quot;slug&quot;: &quot;donald-wisozk&quot;,
+        &quot;first_name&quot;: &quot;Jesus&quot;,
+        &quot;last_name&quot;: &quot;Hilpert&quot;,
+        &quot;slug&quot;: &quot;jesus-hilpert&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/9d664a02-3217-46cb-9db5-76518b7acbd8/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/9d664a02-3217-46cb-9db5-76518b7acbd8/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/9d664a02-3217-46cb-9db5-76518b7acbd8/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/adf0d060-c984-4996-99e4-487d89db184e/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/adf0d060-c984-4996-99e4-487d89db184e/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/adf0d060-c984-4996-99e4-487d89db184e/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:15.282Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:15.282Z&quot;
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.312Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.312Z&quot;
       }
     }
   ],
