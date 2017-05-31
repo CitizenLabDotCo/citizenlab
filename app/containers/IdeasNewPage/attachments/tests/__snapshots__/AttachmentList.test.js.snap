@@ -9,12 +9,12 @@ ShallowWrapper {
   },
   "length": 1,
   "node": <FileInput
-    className="fzkyMl"
+    className="sc-bwzfXH kaEdHV"
     onFileUpload={[Function]}
 />,
   "nodes": Array [
     <FileInput
-      className="fzkyMl"
+      className="sc-bwzfXH kaEdHV"
       onFileUpload={[Function]}
 />,
   ],
@@ -24,7 +24,7 @@ ShallowWrapper {
       "_calledComponentWillUnmount": false,
       "_compositeType": 0,
       "_context": Object {},
-      "_currentElement": <Styled(undefined)
+      "_currentElement": <Styled(FileInput)
         onFileUpload={[Function]}
 />,
       "_debugID": 19,
@@ -32,7 +32,9 @@ ShallowWrapper {
       "_hostParent": null,
       "_instance": StyledComponent {
         "_reactInternalInstance": [Circular],
+        "attrs": Object {},
         "context": Object {
+          "__styled-components-stylesheet__": undefined,
           "__styled-components__": undefined,
         },
         "props": Object {
@@ -40,7 +42,7 @@ ShallowWrapper {
         },
         "refs": Object {},
         "state": Object {
-          "generatedClassName": "fzkyMl",
+          "generatedClassName": "kaEdHV",
           "theme": Object {},
         },
         "updater": Object {
@@ -62,12 +64,12 @@ ShallowWrapper {
       "_pendingStateQueue": null,
       "_renderedComponent": NoopInternalComponent {
         "_currentElement": <FileInput
-          className="fzkyMl"
+          className="sc-bwzfXH kaEdHV"
           onFileUpload={[Function]}
 />,
         "_debugID": 20,
         "_renderedOutput": <FileInput
-          className="fzkyMl"
+          className="sc-bwzfXH kaEdHV"
           onFileUpload={[Function]}
 />,
       },
@@ -81,7 +83,7 @@ ShallowWrapper {
     "render": [Function],
   },
   "root": [Circular],
-  "unrendered": <Styled(undefined)
+  "unrendered": <Styled(FileInput)
     onFileUpload={[Function]}
 />,
 }
