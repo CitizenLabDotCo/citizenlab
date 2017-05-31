@@ -11,18 +11,22 @@ import messages from './messages';
 class TextInput extends React.PureComponent {
   constructor(props) {
     super();
-    const { name } = props;
+    const { name, initialValue } = props;
     const { formatMessage } = props.intl;
     const type = (name === 'password') ? name : 'text';
     const toAppendName = appenDableName(name);
     const placeholder = formatMessage(messages[`placeholder${toAppendName}`]);
     const label = formatMessage(messages[`label${toAppendName}`]);
     this.text = { placeholder, label, type };
-    this.state = { showError: true, value: '' };
+    this.state = { showError: true, value: initialValue || '' };
   }
 
-  componentWillReceiveProps() {
-    this.setState({ showError: true });
+  componentWillReceiveProps(newProps) {
+    const newState = { showError: true };
+    if (newProps.initialValue && !this.props.initialValue) {
+      newState.value = newProps.initialValue;
+    }
+    this.setState(newState);
   }
 
   icons = {
@@ -44,7 +48,7 @@ class TextInput extends React.PureComponent {
   }
 
   render() {
-    const { name, errors, initialValue } = this.props;
+    const { name, errors } = this.props;
     const { placeholder, label, type } = this.text;
     const { showError, value } = this.state;
     const error = errors && messages[toCammelCase(errors.slice(-1)[0])];
@@ -58,7 +62,7 @@ class TextInput extends React.PureComponent {
           iconPosition={'left'}
           onChange={this.handleChange}
           // initialValue admissible only when no existing value is set
-          value={(value === '' && initialValue) || value}
+          value={value}
           placeholder={placeholder}
           error={!!(error && showError)}
           type={type}

@@ -4,9 +4,8 @@
  *
  */
 import {
-  SAVE_DRAFT, PUBLISH_IDEA_ERROR, PUBLISH_IDEA_SUCCESS, PUBLISH_IDEA_REQUEST, SET_TITLE, STORE_ATTACHMENT, STORE_IMAGE,
-  STORE_ATTACHMENT_ERROR, STORE_IMAGE_ERROR, LOAD_TOPICS_REQUEST, LOAD_TOPICS_SUCCESS, LOAD_TOPICS_ERROR,
-  LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, LOAD_AREAS_ERROR, STORE_SELECTED_TOPICS, STORE_SELECTED_AREAS, INVALID_FORM,
+  SAVE_DRAFT, PUBLISH_IDEA_ERROR, PUBLISH_IDEA_SUCCESS, PUBLISH_IDEA_REQUEST, SET_TITLE, STORE_ATTACHMENT, STORE_IMAGE, STORE_ATTACHMENT_ERROR, STORE_IMAGE_ERROR, INVALID_FORM, STORE_SELECTED_TOPICS,
+ STORE_SELECTED_AREAS, STORE_SELECTED_PROJECT, RESET_DATA,
 } from './constants';
 
 /*
@@ -24,18 +23,21 @@ export function saveDraft(content) {
   };
 }
 
-export function publishIdeaRequest(contents, titles, images, attachments, userId, isDraft, topics, areas) {
+export function publishIdeaRequest(contents, titles, images, /* attachments, */ userId, isDraft, topics, areas, projects) {
+  // console.log([contents, titles, images, userId, isDraft, topics, areas, projects]);
+
   return (contents
     ? {
       type: PUBLISH_IDEA_REQUEST,
       payload: contents,
       titles,
       images,
-      attachments,
+      // attachments,
       userId,
       isDraft,
       topics,
       areas,
+      projects,
     }
     : {
       type: PUBLISH_IDEA_ERROR,
@@ -88,46 +90,6 @@ export function storeImageError() {
   };
 }
 
-export function loadTopicsRequest() {
-  return {
-    type: LOAD_TOPICS_REQUEST,
-  };
-}
-
-export function loadTopicsSuccess(response) {
-  return {
-    type: LOAD_TOPICS_SUCCESS,
-    payload: response,
-  };
-}
-
-export function loadTopicsError(error) {
-  return {
-    type: LOAD_TOPICS_ERROR,
-    error,
-  };
-}
-
-export function loadAreasRequest() {
-  return {
-    type: LOAD_AREAS_REQUEST,
-  };
-}
-
-export function loadAreasSuccess(response) {
-  return {
-    type: LOAD_AREAS_SUCCESS,
-    payload: response,
-  };
-}
-
-export function loadAreasError(error) {
-  return {
-    type: LOAD_AREAS_ERROR,
-    error,
-  };
-}
-
 export function storeSelectedTopics(topics) {
   return {
     type: STORE_SELECTED_TOPICS,
@@ -142,8 +104,21 @@ export function storeSelectedAreas(areas) {
   };
 }
 
+export function storeSelectedProject(projects) {
+  return {
+    type: STORE_SELECTED_PROJECT,
+    payload: projects,
+  };
+}
+
 export function invalidForm() {
   return {
     type: INVALID_FORM,
+  };
+}
+
+export function resetData() {
+  return {
+    type: RESET_DATA,
   };
 }

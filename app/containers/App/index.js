@@ -14,6 +14,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
+
 import { injectIntl, intlShape } from 'react-intl';
 // import { DockableSagaView } from 'redux-saga-devtools';
 // import { sagamonitor } from 'store';

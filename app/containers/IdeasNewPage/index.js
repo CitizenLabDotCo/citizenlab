@@ -15,13 +15,14 @@ import { injectIntl } from 'react-intl';
 import { preprocess } from 'utils/reactRedux';
 import { bindActionCreators } from 'redux';
 import WatchSagas from 'containers/WatchSagas';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import {
   setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
-  publishIdeaRequest, loadTopicsRequest, loadAreasRequest, storeSelectedTopics, storeSelectedAreas, invalidForm,
+  publishIdeaRequest, storeSelectedTopics, storeSelectedAreas, invalidForm, storeSelectedProject, resetData,
 } from './actions';
 import IdeaEditorWrapper from './editor/IdeaEditorWrapper';
-import AttachmentList from './attachments/AttachmentList';
+// import AttachmentList from './attachments/AttachmentList';
 import ImageList from './images/ImageList';
 import canPublish from './editor/canPublish';
 import { selectSubmitIdea } from './selectors';
@@ -29,6 +30,15 @@ import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 import sagas from './sagas';
 import messages from './messages';
+import { Saga } from 'react-redux-saga';
+
+// areas, topics and projects
+import sagasAreas from 'resources/areas/sagas';
+import sagasTopics from 'resources/topics/sagas';
+import sagasProjects from 'resources/projects/sagas';
+import { loadTopicsRequest } from 'resources/topics/actions';
+import { loadAreasRequest } from 'resources/areas/actions';
+import { loadProjectsRequest } from 'resources/projects/actions';
 
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -39,20 +49,24 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
     this.storeIdea = this.storeIdea.bind(this);
     this.storeTopics = this.storeTopics.bind(this);
     this.storeAreas = this.storeAreas.bind(this);
+    this.storeProject = this.storeProject.bind(this);
   }
 
   componentDidMount() {
-    const { loadTopicsRequest: ltr, loadAreasRequest: lar } = this.props;
+    // load topics, areas and projects
+    this.props.loadTopicsRequest(true);
+    this.props.loadAreasRequest(true);
+    this.props.loadProjectsRequest(true);
+  }
 
-    // load topics and areas
-    ltr();
-    lar();
+  componentWillUnmount() {
+    // reset state
+    this.props.resetData();
   }
 
   sendIdea(isDraft) {
-    const { content, shortTitleError, longTitleError, title, images, attachments, user, locale, selectedTopics, selectedAreas } = this.props;
-
-    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, attachments, user && user.id, locale, isDraft, selectedTopics.toJS(), selectedAreas.toJS());
+    const { content, shortTitleError, longTitleError, title, images, /* attachments, */ user, locale, selectedTopics, selectedAreas, selectedProjects } = this.props;
+    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, /* attachments, */ user && user.id, locale, isDraft, selectedTopics.toJS(), selectedAreas.toJS(), selectedProjects.toJS());
   }
 
   saveDraft() {
@@ -71,12 +85,16 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
     this.props.storeSelectedAreas(areas);
   }
 
+  storeProject(project) {
+    this.props.storeSelectedProject(project);
+  }
+
   render() {
     const StyledLabel = styled(Label)`
       height: 16px;
       opacity: 0.5;
       font-stretch: normal;
-      font-family: OpenSans;
+      font-family: 'proxima-nova';
       text-align: left;
       letter-spacing: normal;
       font-style: normal;
@@ -87,7 +105,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
       margin: 20px 0 10px;
     `;
 
-    const { className, storeAttachment: storeAtt, storeImage: storeImg, setTitle: setT } = this.props;
+    const { className, /* storeAttachment: storeAtt,*/ storeImage: storeImg, setTitle: setT } = this.props;
     return (
       <Container className={className}>
         <HelmetIntl
@@ -95,6 +113,9 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
           description={messages.helmetDescription}
         />
         <WatchSagas sagas={sagas} />
+        <Saga saga={sagasTopics.loadTopicsWatcher} />
+        <Saga saga={sagasAreas.loadAreasWatcher} />
+        <Saga saga={sagasProjects.fetchProjectsWatcher} />
 
         <Breadcrumbs />
         <IdeaEditorWrapper
@@ -102,19 +123,20 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
           storeIdea={this.storeIdea}
           storeTopics={this.storeTopics}
           storeAreas={this.storeAreas}
+          storeProject={this.storeProject}
           setTitle={setT}
         />
         <StyledLabel>Add image(s)</StyledLabel>
         <ImageList
           storeImage={storeImg}
         />
-        <StyledLabel>Location</StyledLabel>
-        {/* TODO: location image here*/}
+        {/* <StyledLabel>Location</StyledLabel> */}
+        {/* TODO: location image here */}
         <Divider />
-        <StyledLabel>Attachments</StyledLabel>
-        <AttachmentList
-          storeAttachment={storeAtt}
-        />
+        {/* <StyledLabel>Attachments</StyledLabel> */}
+        {/* <AttachmentList */}
+        {/* storeAttachment={storeAtt} */}
+        {/* /> */}
       </Container>
     );
   }
@@ -124,11 +146,12 @@ IdeasNewPage.propTypes = {
   className: PropTypes.string,
   // mapDispatch
   publishIdeaClick: PropTypes.func.isRequired,
-  storeAttachment: PropTypes.func.isRequired,
+  // storeAttachment: PropTypes.func.isRequired,
   storeImage: PropTypes.func.isRequired,
   user: PropTypes.object,
   storeSelectedTopics: PropTypes.func.isRequired,
   storeSelectedAreas: PropTypes.func.isRequired,
+  storeSelectedProject: PropTypes.func.isRequired,
   locale: PropTypes.string,
   loadTopicsRequest: PropTypes.func.isRequired,
   loadAreasRequest: PropTypes.func.isRequired,
@@ -138,10 +161,13 @@ IdeasNewPage.propTypes = {
   longTitleError: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   images: PropTypes.any.isRequired,
-  attachments: PropTypes.any.isRequired,
-  selectedTopics: PropTypes.any.isRequired,
-  selectedAreas: PropTypes.any.isRequired,
+  // attachments: PropTypes.any.isRequired,
+  selectedTopics: ImmutablePropTypes.list.isRequired,
+  selectedAreas: ImmutablePropTypes.list.isRequired,
+  selectedProjects: ImmutablePropTypes.list.isRequired,
   setTitle: PropTypes.func.isRequired,
+  loadProjectsRequest: PropTypes.func.isRequired,
+  resetData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -151,17 +177,17 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const customActionCreators = {
-  publishIdeaClick(content, titleError, title, images, attachments, userId, locale, isDraft, topics, areas) {
+  publishIdeaClick(content, titleError, title, images, /* attachments, */ userId, locale, isDraft, topics, areas, projects) {
     const contentNotNull = content || '<p></p>';
 
-    if (canPublish(contentNotNull, titleError, topics, areas)) {
+    if (canPublish(contentNotNull, titleError, topics, areas, projects)) {
       // inject strings for current locale as a mutiloc object
       const htmlContents = {};
       const titles = {};
       htmlContents[locale] = contentNotNull;
       titles[locale] = title;
 
-      return publishIdeaRequest(htmlContents, titles, images, attachments, userId, isDraft, topics, areas);
+      return publishIdeaRequest(htmlContents, titles, images, /* attachments, */ userId, isDraft, topics, areas, projects);
     }
     return invalidForm();
   },
@@ -190,6 +216,9 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
   loadAreasRequest,
   storeSelectedTopics,
   storeSelectedAreas,
+  storeSelectedProject,
+  loadProjectsRequest,
+  resetData,
   /*
    * manual bindings
    * (return actions to dispatch - with custom logic)
@@ -206,6 +235,7 @@ const mergeProps = ({ ideasNewPageState: pageState, locale, user }, dispatchProp
   attachments: pageState.getIn(['draft', 'attachments']),
   selectedTopics: pageState.getIn(['topics', 'selected']),
   selectedAreas: pageState.getIn(['areas', 'selected']),
+  selectedProjects: pageState.getIn(['projects', 'selected']),
   locale,
   user,
   ...dispatchProps,

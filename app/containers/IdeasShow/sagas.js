@@ -7,7 +7,7 @@ import {
 } from './constants';
 
 import {
-  loadIdeaSuccess, loadIdeaError, loadVotesError, loadVotesSuccess, voteIdeaError, voteIdeaSuccess, loadCommentsSuccess, deleteCommentSuccess, publishCommentSuccess, loadcommentsError } from './actions';
+  loadIdeaSuccess, loadIdeaError, loadVotesError, loadVotesSuccess, voteIdeaError, voteIdeaSuccess, loadCommentsSuccess, deleteCommentSuccess, publishCommentSuccess, loadCommentsError } from './actions';
 
 export function* loadIdea(action) {
   try {
@@ -47,7 +47,7 @@ export function* loadIdeaComments(action) {
     yield put(mergeJsonApiResources(response));
     yield put(loadCommentsSuccess(response));
   } catch (e) {
-    yield put(loadcommentsError());
+    yield put(loadCommentsError());
   }
 }
 

@@ -17,6 +17,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import FontFaceObserver from 'fontfaceobserver';
 import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 import 'react-select/dist/react-select.css';
@@ -63,13 +64,26 @@ import 'foundation-sites/dist/js/foundation.min';
 // Import root routes
 import createRoutes from './routes';
 
+<<<<<<< HEAD
+=======
+import { loadState } from './persistedData';
+
+// Observe loading of custom font
+const proximaNovaObserver = new FontFaceObserver('proxima-nova', {});
+
+// When custom font is loaded, add a 'fontLoaded' class to the body tag
+proximaNovaObserver.load().then(() => {
+  document.body.classList.add('fontLoaded');
+}, () => {
+  document.body.classList.remove('fontLoaded');
+});
+>>>>>>> master
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router
 // Optionally, this could be changed to leverage a created history
 // e.g. `const browserHistory = useRouterHistory(createBrowserHistory)();`
 
-import { loadState } from './persistedData';
 const initialState = fromJS({
   persistedData: loadState(),
 });

@@ -8,7 +8,7 @@ import { preprocess } from 'utils';
 import { selectAuthDomain } from 'utils/auth/selectors';
 
 import { makeSelectOwnVotesTot } from '../../selectors';
-import { voteIdea } from '../../actions';
+import { voteIdeaRequest } from '../../actions';
 
 /* eslint-disable */
 const Votes =  ({ votes, voteUp, voteDown, disableUp, disableDown }) => (
@@ -40,9 +40,9 @@ const mapStateToProps = createStructuredSelector({
 const mergeProps = (stateP, dispatchP, ownP) => {
   const {auth, totOwnVotes} = stateP;
   const { ideaId } = ownP;
-  const { voteIdea } = dispatchP;
-  const voteUp = () => voteIdea(ideaId, 'up')
-  const voteDown = () => voteIdea(ideaId, 'down')
+  const { voteIdeaRequest } = dispatchP;
+  const voteUp = () => voteIdeaRequest(ideaId, 'up')
+  const voteDown = () => voteIdeaRequest(ideaId, 'down')
   const disableUp = !auth || totOwnVotes > 0
   const disableDown = !auth || totOwnVotes < 0
   return {
@@ -56,4 +56,4 @@ const mergeProps = (stateP, dispatchP, ownP) => {
 }
 
 
-export default preprocess(mapStateToProps, { voteIdea }, mergeProps)(Votes);
+export default preprocess(mapStateToProps, { voteIdeaRequest }, mergeProps)(Votes);
