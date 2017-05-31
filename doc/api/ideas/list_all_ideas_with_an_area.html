@@ -161,6 +161,14 @@ table th, table td {
                   <span class="description">Filter by searching in title, body and author name</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">sort</span>
+                </td>
+                <td>
+                  <span class="description">Either &#39;new&#39;, &#39;-new&#39;, &#39;trending&#39;, &#39;-trending&#39;, &#39;popular&#39; or &#39;-popular&#39;</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -169,14 +177,15 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjEsInN1YiI6ImQ5ZjljYmQ3LTRjMjgtNDE1My1iYmYzLTZjMWQxNjMxOGM1NyJ9.pVXMpZQv4l1ScJEZoJNHT4D2tbhZUuEc2SajqRPe8o0
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?areas[]=3584222e-9a05-4ee0-92db-0eddd6751f36</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=987ab662-17cd-44ec-9b3d-1463f7ff43d9</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">areas: [&quot;3584222e-9a05-4ee0-92db-0eddd6751f36&quot;]</pre>
+            <pre class="request query_parameters highlight">areas: [&quot;987ab662-17cd-44ec-9b3d-1463f7ff43d9&quot;]</pre>
 
 
 
@@ -186,19 +195,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;01894a24586f43cfcd7810e7e7cc2c73&quot;
+ETag: W/&quot;ea66e542e5a6ed7b2cc7259b723980c5&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 57116b30-6997-4deb-8fa8-82e49937a371
-X-Runtime: 0.034158
+X-Request-Id: c34d29e3-f99b-4693-b7cf-939b9f4f37f0
+X-Runtime: 0.036361
 Vary: Origin
-Content-Length: 1495</pre>
+Content-Length: 1530</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;3226bc5d-39d4-4f90-b0b2-fd40255c03ba&quot;,
+      &quot;id&quot;: &quot;6108e0ed-f8b1-4a62-abab-98dd5f39cb25&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -209,16 +218,16 @@ Content-Length: 1495</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Monte Jakubowski&quot;,
+        &quot;author_name&quot;: &quot;Torrey Erdman&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;images&quot;: [
 
         ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:16.217Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:16.217Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-21T17:47:16.217Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:41.265Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:41.265Z&quot;,
+        &quot;published_at&quot;: &quot;2017-05-31T15:13:41.265Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -229,45 +238,50 @@ Content-Length: 1495</pre>
         &quot;areas&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;3584222e-9a05-4ee0-92db-0eddd6751f36&quot;,
+              &quot;id&quot;: &quot;987ab662-17cd-44ec-9b3d-1463f7ff43d9&quot;,
               &quot;type&quot;: &quot;areas&quot;
             }
           ]
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;20875c51-4723-4e5a-9ed6-3ba464862552&quot;,
+            &quot;id&quot;: &quot;ca530cf4-3706-412d-9dce-4a855ace4ad4&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;8d6b6708-961c-490a-889c-ab4cb9efc544&quot;,
+            &quot;id&quot;: &quot;dab800d8-37ec-4f0b-a1eb-944282e562d6&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
+        },
+        &quot;user_vote&quot;: {
+          &quot;data&quot;: null
         }
       }
     }
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;20875c51-4723-4e5a-9ed6-3ba464862552&quot;,
+      &quot;id&quot;: &quot;ca530cf4-3706-412d-9dce-4a855ace4ad4&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Monte&quot;,
-        &quot;last_name&quot;: &quot;Jakubowski&quot;,
-        &quot;slug&quot;: &quot;monte-jakubowski&quot;,
+        &quot;first_name&quot;: &quot;Torrey&quot;,
+        &quot;last_name&quot;: &quot;Erdman&quot;,
+        &quot;slug&quot;: &quot;torrey-erdman&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/20875c51-4723-4e5a-9ed6-3ba464862552/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/20875c51-4723-4e5a-9ed6-3ba464862552/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/20875c51-4723-4e5a-9ed6-3ba464862552/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/ca530cf4-3706-412d-9dce-4a855ace4ad4/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/ca530cf4-3706-412d-9dce-4a855ace4ad4/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/ca530cf4-3706-412d-9dce-4a855ace4ad4/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:16.202Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:16.202Z&quot;
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:41.253Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:41.253Z&quot;
       }
     }
   ],

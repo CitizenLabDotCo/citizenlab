@@ -118,11 +118,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjQsInN1YiI6ImNkMmE2OTBmLTRkMjMtNGQ2ZC05OWYzLTAwZTU0YWQ0NWM4MiJ9.636YAHS7kQKvmliX7Es0_Eyo6AtaI-p5wPVk25ngoHk
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas/7e08aff5-43d6-412c-886e-439aa22cdbaf</pre>
+          <pre class="request route highlight">GET api/v1/ideas/2c4911c0-b20c-46a6-a79d-e733c258e8e4</pre>
 
 
 
@@ -133,18 +134,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;014131637a2e8cf00b953d557aff5a77&quot;
+ETag: W/&quot;6f1d7c304d8a26ee020751cd71ceec7f&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 0061d5d5-f8d1-4d36-949c-18c77f704b3f
-X-Runtime: 0.035881
+X-Request-Id: af047056-89a8-4670-8ec8-af87305a7dac
+X-Runtime: 0.040959
 Vary: Origin
-Content-Length: 1419</pre>
+Content-Length: 1485</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;7e08aff5-43d6-412c-886e-439aa22cdbaf&quot;,
+    &quot;id&quot;: &quot;2c4911c0-b20c-46a6-a79d-e733c258e8e4&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -155,16 +156,16 @@ Content-Length: 1419</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Alisa Buckridge&quot;,
+      &quot;author_name&quot;: &quot;Mackenzie Runolfsdottir&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;images&quot;: [
 
       ],
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
-      &quot;created_at&quot;: &quot;2017-05-21T17:47:18.546Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-05-21T17:47:18.546Z&quot;,
-      &quot;published_at&quot;: &quot;2017-05-21T17:47:18.545Z&quot;
+      &quot;created_at&quot;: &quot;2017-05-31T15:13:44.397Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-05-31T15:13:44.397Z&quot;,
+      &quot;published_at&quot;: &quot;2017-05-31T15:13:44.397Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -179,37 +180,44 @@ Content-Length: 1419</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;0eb7d8e2-1a69-40b7-9b6e-f3c5d3d3971b&quot;,
+          &quot;id&quot;: &quot;fb70e343-9016-46f3-8f16-e8df032e611d&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;24823949-f69d-445c-994d-e8845e1a867a&quot;,
+          &quot;id&quot;: &quot;8e43a027-5e28-4877-9564-69a69aa31242&quot;,
           &quot;type&quot;: &quot;projects&quot;
         }
+      },
+      &quot;user_vote&quot;: {
+        &quot;data&quot;: [
+
+        ]
       }
     }
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;0eb7d8e2-1a69-40b7-9b6e-f3c5d3d3971b&quot;,
+      &quot;id&quot;: &quot;fb70e343-9016-46f3-8f16-e8df032e611d&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Alisa&quot;,
-        &quot;last_name&quot;: &quot;Buckridge&quot;,
-        &quot;slug&quot;: &quot;alisa-buckridge&quot;,
+        &quot;first_name&quot;: &quot;Mackenzie&quot;,
+        &quot;last_name&quot;: &quot;Runolfsdottir&quot;,
+        &quot;slug&quot;: &quot;mackenzie-runolfsdottir&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/0eb7d8e2-1a69-40b7-9b6e-f3c5d3d3971b/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/0eb7d8e2-1a69-40b7-9b6e-f3c5d3d3971b/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/0eb7d8e2-1a69-40b7-9b6e-f3c5d3d3971b/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/fb70e343-9016-46f3-8f16-e8df032e611d/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/fb70e343-9016-46f3-8f16-e8df032e611d/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/fb70e343-9016-46f3-8f16-e8df032e611d/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:18.531Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:18.531Z&quot;
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:44.386Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:44.386Z&quot;
       }
     }
   ]

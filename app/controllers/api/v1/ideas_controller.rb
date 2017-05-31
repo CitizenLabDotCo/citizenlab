@@ -18,6 +18,7 @@ class Api::V1::IdeasController < ApplicationController
     @ideas = @ideas.where(author_id: params[:author]) if params[:author].present?
     @ideas = @ideas.search_by_all(params[:search]) if params[:search].present?
 
+
     @ideas = case params[:sort]
       when "new"
         @ideas.order_new
@@ -37,7 +38,14 @@ class Api::V1::IdeasController < ApplicationController
         raise "Unsupported sort method"
     end
 
-    render json: @ideas, include: ['author']
+    if current_user
+      votes = Vote.where(user: current_user, votable: @ideas.all)
+      votes_by_idea_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
+      render json: @ideas, include: ['author', 'user_vote'], vbii: votes_by_idea_id
+    else
+      render json: @ideas, include: ['author']
+    end
+
   end
 
   def index_xlsx
@@ -51,7 +59,7 @@ class Api::V1::IdeasController < ApplicationController
   end
 
   def show
-    render json: @idea, include: ['author','topics','areas']
+    render json: @idea, include: ['author','topics','areas','user_vote']
   end
 
   # insert
@@ -60,7 +68,7 @@ class Api::V1::IdeasController < ApplicationController
     authorize @idea
     if @idea.save
       SideFxIdeaService.new.after_create(@idea, current_user)
-      render json: @idea, status: :created, include: ['author','topics','areas']
+      render json: @idea, status: :created, include: ['author','topics','areas','user_vote']
     else
       render json: { errors: @idea.errors.details }, status: :unprocessable_entity
     end
@@ -72,7 +80,7 @@ class Api::V1::IdeasController < ApplicationController
   def update
     if @idea.update(idea_params)
       SideFxIdeaService.new.after_update(@idea, current_user)
-      render json: @idea, status: :ok, include: ['author','topics','areas']
+      render json: @idea, status: :ok, include: ['author','topics','areas','user_vote']
     else
       render json: { errors: @idea.errors.details }, status: :unprocessable_entity
     end

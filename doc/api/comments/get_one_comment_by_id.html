@@ -122,7 +122,7 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/comments/88fd1f26-12cf-4a34-bfcb-d53e1001df70</pre>
+          <pre class="request route highlight">GET api/v1/comments/f307e7a0-d353-4881-b62a-8bd1759ca75b</pre>
 
 
 
@@ -133,37 +133,37 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;a8b4fd9038a6566a6ed2e80d7cfe257a&quot;
+ETag: W/&quot;7968db40b70fbb83215f3ecc1dcf24ef&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 5b8f1715-2e83-44d0-843d-02a79df832d3
-X-Runtime: 0.020637
+X-Request-Id: 56fbf248-de89-47eb-a031-8b893e3b85f9
+X-Runtime: 0.018131
 Vary: Origin
-Content-Length: 1131</pre>
+Content-Length: 1161</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;88fd1f26-12cf-4a34-bfcb-d53e1001df70&quot;,
+    &quot;id&quot;: &quot;f307e7a0-d353-4881-b62a-8bd1759ca75b&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
         &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
       },
-      &quot;created_at&quot;: &quot;2017-05-21T17:47:13.469Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-05-21T17:47:13.469Z&quot;
+      &quot;created_at&quot;: &quot;2017-05-31T15:13:38.416Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-05-31T15:13:38.416Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;810916cd-2f6c-4cd5-886b-fde5ddf7fa6f&quot;,
+          &quot;id&quot;: &quot;86c7a676-da8b-43f0-850a-788896b8735c&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;de549cba-bf2d-445c-969c-227417b02621&quot;,
+          &quot;id&quot;: &quot;867dd2b4-9025-428b-9205-5d61a4290f6d&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
@@ -174,23 +174,25 @@ Content-Length: 1131</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;de549cba-bf2d-445c-969c-227417b02621&quot;,
+      &quot;id&quot;: &quot;867dd2b4-9025-428b-9205-5d61a4290f6d&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Rory&quot;,
-        &quot;last_name&quot;: &quot;Cronin&quot;,
-        &quot;slug&quot;: &quot;rory-cronin&quot;,
+        &quot;first_name&quot;: &quot;Marisol&quot;,
+        &quot;last_name&quot;: &quot;Hermiston&quot;,
+        &quot;slug&quot;: &quot;marisol-hermiston&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/de549cba-bf2d-445c-969c-227417b02621/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/de549cba-bf2d-445c-969c-227417b02621/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/de549cba-bf2d-445c-969c-227417b02621/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/867dd2b4-9025-428b-9205-5d61a4290f6d/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/867dd2b4-9025-428b-9205-5d61a4290f6d/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/867dd2b4-9025-428b-9205-5d61a4290f6d/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:13.457Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:13.457Z&quot;
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:38.399Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:38.399Z&quot;
       }
     }
   ]

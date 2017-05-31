@@ -209,6 +209,14 @@ table th, table td {
                   <span class="description">An integer from 0 to 8 (inclusive), corresponding to the ISCED 2011 standard</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">user[bio_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">A little text, allowing the user to describe herself. Multiloc and non-html</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -217,12 +225,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTU0NzUyNTksInN1YiI6IjEwZWNkZjRjLTlhMjYtNDdkNy05MjAwLTExZDlmYmQ1OGQ0MCJ9.JwMuDvfoI0MHLVn4Lp8Vvz6hubeBgcyYM-P2triQnIE
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwNDQsInN1YiI6IjUzZTFlOGVmLWUxZmMtNGJhMS1hZWMzLTAzNGI4MGU5NmRmZSJ9.rQ4zteF5zsYXM123h3ozVQZLauua4PgiJ2BehgmLnaM
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PUT api/v1/users/10ecdf4c-9a26-47d7-9200-11d9fbd58d40</pre>
+          <pre class="request route highlight">PUT api/v1/users/53e1e8ef-e1fc-4ba1-aec3-034b80e96dfe</pre>
 
 
             <h4>Body</h4>
@@ -235,35 +243,37 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;0362abced6157122de0981398837e638&quot;
+ETag: W/&quot;600e726a0e3a7601ef1b0a091a785edd&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 8b3b5840-f0d7-49d5-9128-65b4d791c5fc
-X-Runtime: 0.029748
+X-Request-Id: 891a858b-4b35-4b9a-b2ff-ad3fc2612c51
+X-Runtime: 0.026696
 Vary: Origin
-Content-Length: 732</pre>
+Content-Length: 747</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;10ecdf4c-9a26-47d7-9200-11d9fbd58d40&quot;,
+    &quot;id&quot;: &quot;53e1e8ef-e1fc-4ba1-aec3-034b80e96dfe&quot;,
     &quot;type&quot;: &quot;users&quot;,
     &quot;attributes&quot;: {
       &quot;first_name&quot;: &quot;Edmond&quot;,
-      &quot;last_name&quot;: &quot;Reinger&quot;,
-      &quot;slug&quot;: &quot;dayana-reinger&quot;,
+      &quot;last_name&quot;: &quot;Hauck&quot;,
+      &quot;slug&quot;: &quot;sadie-hauck&quot;,
       &quot;locale&quot;: &quot;en&quot;,
       &quot;avatar&quot;: {
-        &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/10ecdf4c-9a26-47d7-9200-11d9fbd58d40/small_robot.jpg&quot;,
-        &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/10ecdf4c-9a26-47d7-9200-11d9fbd58d40/medium_robot.jpg&quot;,
-        &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/10ecdf4c-9a26-47d7-9200-11d9fbd58d40/large_robot.jpg&quot;
+        &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/53e1e8ef-e1fc-4ba1-aec3-034b80e96dfe/small_robot.jpg&quot;,
+        &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/53e1e8ef-e1fc-4ba1-aec3-034b80e96dfe/medium_robot.jpg&quot;,
+        &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/53e1e8ef-e1fc-4ba1-aec3-034b80e96dfe/large_robot.jpg&quot;
       },
       &quot;roles&quot;: [
 
       ],
-      &quot;created_at&quot;: &quot;2017-05-21T17:47:38.896Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-05-21T17:47:39.049Z&quot;,
-      &quot;email&quot;: &quot;shannon.wisozk@borer.com&quot;,
+      &quot;bio_multiloc&quot;: {
+      },
+      &quot;created_at&quot;: &quot;2017-05-31T15:14:04.532Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-05-31T15:14:04.693Z&quot;,
+      &quot;email&quot;: &quot;tracey_gulgowski@deckow.io&quot;,
       &quot;gender&quot;: null,
       &quot;birthyear&quot;: null,
       &quot;domicile&quot;: null,

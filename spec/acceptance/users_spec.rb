@@ -108,6 +108,7 @@ resource "Users" do
         parameter :birthyear, "The year, as an integer, the user was born"
         parameter :domicile, "Either an exisiting Area id or 'outside', to specify the user does not live in the city"
         parameter :education, "An integer from 0 to 8 (inclusive), corresponding to the ISCED 2011 standard"
+        parameter :bio_multiloc, "A little text, allowing the user to describe herself. Multiloc and non-html"
       end
 
       let(:first_name) {Faker::Name.first_name}
@@ -146,6 +147,7 @@ resource "Users" do
         parameter :birthyear, "The year, as an integer, the user was born"
         parameter :domicile, "Either an exisiting Area id or 'outside', to specify the user does not live in the city"
         parameter :education, "An integer from 0 to 8 (inclusive), corresponding to the ISCED 2011 standard"
+        parameter :bio_multiloc, "A little text, allowing the user to describe herself. Multiloc and non-html"
       end
 
       let(:id) { @user.id }

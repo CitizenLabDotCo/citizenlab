@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Topics API</title>
+    <title>Users API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,22 +106,24 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Topics API</h1>
+      <h1>Users API</h1>
 
       <div class="article">
-        <h2>Get one topic by id</h2>
-        <h3>GET api/v1/topics/:id</h3>
+        <h2>Delete a user</h2>
+        <h3>DELETE api/v1/users/:id</h3>
 
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Host: example.org
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwNDQsInN1YiI6Ijk3Y2Y5MmRjLWJjN2ItNDNiMS05ZWQ1LWEwNzE1ZTI4NWJlZSJ9.cZRVL7GObVrORh9k2hWbtAF3lwHtCNtnZZYm13sowK8
+Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/topics/aeb6c166-a13e-4fbb-8d51-e3d77154a120</pre>
+          <pre class="request route highlight">DELETE api/v1/users/100f217a-4fe7-4537-806d-f3cf14d8d7df</pre>
 
 
 
@@ -131,33 +133,14 @@ Cookie: </pre>
               <pre class="response headers">X-Frame-Options: SAMEORIGIN
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;d6aa13f950f3ff8a7847eff4c4150ec6&quot;
-Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 1af9067c-7df1-4bb9-93eb-9499c3536f05
-X-Runtime: 0.007845
+Content-Type: application/json
+Cache-Control: no-cache
+X-Request-Id: 6209d9ae-0058-4d88-be24-1fa1b0b75808
+X-Runtime: 0.013874
 Vary: Origin
-Content-Length: 412</pre>
+Content-Length: 0</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
-              <h4>Body</h4>
-              <pre class="response body">{
-  &quot;data&quot;: {
-    &quot;id&quot;: &quot;aeb6c166-a13e-4fbb-8d51-e3d77154a120&quot;,
-    &quot;type&quot;: &quot;topics&quot;,
-    &quot;attributes&quot;: {
-      &quot;title_multiloc&quot;: {
-        &quot;en&quot;: &quot;Health&quot;,
-        &quot;nl&quot;: &quot;Gezondheid&quot;
-      },
-      &quot;description_multiloc&quot;: {
-        &quot;en&quot;: &quot;&lt;p&gt;How are the people feeling?&lt;/p&gt;&lt;p&gt;What is the expected agespan?&lt;/p&gt;&quot;,
-        &quot;nl&quot;: &quot;&lt;p&gt;Hoe voelen de mensen zich?&lt;/p&gt;&lt;p&gt;Wat is de levensverwachting?&lt;/p&gt;&quot;
-      },
-      &quot;icon&quot;: &quot;medical&quot;
-    }
-  }
-}</pre>
       </div>
     </div>
   </body>

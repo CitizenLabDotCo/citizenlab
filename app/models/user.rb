@@ -13,6 +13,8 @@ class User < ApplicationRecord
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
   validates :first_name, :last_name, :slug, :email, presence: true
   validates :locale, presence: true, inclusion: { in: proc {Tenant.settings('core','locales')} }
+  validates :bio_multiloc, multiloc: {presence: false}
+
 
   validates :gender, inclusion: {in: %w(male female unspecified)}, allow_nil: true
   validates :birthyear, numericality: {only_integer: true, greater_than: Time.now.year - 120, less_than: Time.now.year}, allow_nil: true

@@ -149,7 +149,7 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas/e75fedde-3ff1-4411-badb-97144d439faa/comments</pre>
+          <pre class="request route highlight">GET api/v1/ideas/12ba94cb-72ee-4d5c-8daa-c5706eb2583b/comments</pre>
 
 
 
@@ -160,38 +160,38 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;027f04701380854b724cabfb106821ef&quot;
+ETag: W/&quot;cd4ea0346775fa92c5201134e0943404&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: e7bb4924-140a-47ba-ba4d-ad9ecf047976
-X-Runtime: 0.162999
+X-Request-Id: 657827fa-99b1-480f-b581-0335fcbffe16
+X-Runtime: 0.067420
 Vary: Origin
-Content-Length: 2266</pre>
+Content-Length: 2296</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;2456dd44-bff0-46bf-adeb-fef33d89ffb2&quot;,
+      &quot;id&quot;: &quot;7233f80c-d8ac-406f-9248-d269b69bdfd4&quot;,
       &quot;type&quot;: &quot;comments&quot;,
       &quot;attributes&quot;: {
         &quot;body_multiloc&quot;: {
           &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
         },
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:13.011Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:13.011Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:38.051Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:38.051Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;idea&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;e75fedde-3ff1-4411-badb-97144d439faa&quot;,
+            &quot;id&quot;: &quot;12ba94cb-72ee-4d5c-8daa-c5706eb2583b&quot;,
             &quot;type&quot;: &quot;ideas&quot;
           }
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;97a967dc-5cde-4d0a-b994-9d319ab6d704&quot;,
+            &quot;id&quot;: &quot;00da6b29-62c8-42f5-9051-d15dc8076d9c&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
@@ -201,26 +201,26 @@ Content-Length: 2266</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;67913254-67a2-4c58-ac3e-52d786a2feef&quot;,
+      &quot;id&quot;: &quot;40f2132d-317a-41df-a839-e0aec6162529&quot;,
       &quot;type&quot;: &quot;comments&quot;,
       &quot;attributes&quot;: {
         &quot;body_multiloc&quot;: {
           &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
         },
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:13.051Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:13.051Z&quot;
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:38.085Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:38.085Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;idea&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;e75fedde-3ff1-4411-badb-97144d439faa&quot;,
+            &quot;id&quot;: &quot;12ba94cb-72ee-4d5c-8daa-c5706eb2583b&quot;,
             &quot;type&quot;: &quot;ideas&quot;
           }
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;0245bcd4-dd11-428d-8251-3c1dc47b60f5&quot;,
+            &quot;id&quot;: &quot;5b508b1d-36e8-4ce6-bda5-8507a1da51fc&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
@@ -232,43 +232,47 @@ Content-Length: 2266</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;97a967dc-5cde-4d0a-b994-9d319ab6d704&quot;,
+      &quot;id&quot;: &quot;00da6b29-62c8-42f5-9051-d15dc8076d9c&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Pearl&quot;,
-        &quot;last_name&quot;: &quot;Jenkins&quot;,
-        &quot;slug&quot;: &quot;pearl-jenkins&quot;,
+        &quot;first_name&quot;: &quot;Jacinthe&quot;,
+        &quot;last_name&quot;: &quot;Kiehn&quot;,
+        &quot;slug&quot;: &quot;jacinthe-kiehn&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/97a967dc-5cde-4d0a-b994-9d319ab6d704/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/97a967dc-5cde-4d0a-b994-9d319ab6d704/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/97a967dc-5cde-4d0a-b994-9d319ab6d704/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/00da6b29-62c8-42f5-9051-d15dc8076d9c/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/00da6b29-62c8-42f5-9051-d15dc8076d9c/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/00da6b29-62c8-42f5-9051-d15dc8076d9c/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:12.990Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:12.990Z&quot;
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:38.039Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:38.039Z&quot;
       }
     },
     {
-      &quot;id&quot;: &quot;0245bcd4-dd11-428d-8251-3c1dc47b60f5&quot;,
+      &quot;id&quot;: &quot;5b508b1d-36e8-4ce6-bda5-8507a1da51fc&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Destiney&quot;,
-        &quot;last_name&quot;: &quot;Herzog&quot;,
-        &quot;slug&quot;: &quot;destiney-herzog&quot;,
+        &quot;first_name&quot;: &quot;Mittie&quot;,
+        &quot;last_name&quot;: &quot;Feil&quot;,
+        &quot;slug&quot;: &quot;mittie-feil&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/0245bcd4-dd11-428d-8251-3c1dc47b60f5/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/0245bcd4-dd11-428d-8251-3c1dc47b60f5/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4f6d238b-34aa-44dc-8932-8c2584db3767/user/avatar/0245bcd4-dd11-428d-8251-3c1dc47b60f5/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/5b508b1d-36e8-4ce6-bda5-8507a1da51fc/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/5b508b1d-36e8-4ce6-bda5-8507a1da51fc/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/5b508b1d-36e8-4ce6-bda5-8507a1da51fc/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
-        &quot;created_at&quot;: &quot;2017-05-21T17:47:13.038Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-21T17:47:13.038Z&quot;
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-05-31T15:13:38.076Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-05-31T15:13:38.076Z&quot;
       }
     }
   ],
