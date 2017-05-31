@@ -64,8 +64,6 @@ import 'foundation-sites/dist/js/foundation.min';
 // Import root routes
 import createRoutes from './routes';
 
-<<<<<<< HEAD
-=======
 import { loadState } from './persistedData';
 
 // Observe loading of custom font
@@ -77,7 +75,6 @@ proximaNovaObserver.load().then(() => {
 }, () => {
   document.body.classList.remove('fontLoaded');
 });
->>>>>>> master
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router
