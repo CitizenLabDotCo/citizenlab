@@ -45,9 +45,11 @@ class MultiSelectT extends React.PureComponent { // eslint-disable-line react/pr
   };
 
   handleChange(e, data) {
+    const { maxSelectionLength } = this.props;
+
     const options = data.value;
     this.props.handleOptionsAdded(options);
-    this.setState({ error: options.length > 3 });
+    this.setState({ error: options.length > maxSelectionLength });
   }
 
   /* eslint-disable */

@@ -1,6 +1,6 @@
 /*
  *
- * ProjectsIndexPage constants
+ * resources/projects constants
  *
  */
 

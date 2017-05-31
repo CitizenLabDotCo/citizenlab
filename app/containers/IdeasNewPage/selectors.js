@@ -23,8 +23,19 @@ const makeSelectAreas = () => createSelector(
   }
 );
 
+const makeSelectProjects = () => createSelector(
+  selectSubmitIdea,
+  selectResourcesDomain(),
+  (submitIdeaState, resources) => {
+    const ids = submitIdeaState.getIn(['projects', 'ids']);
+    const projects = resources.get('projects');
+    return ids.map((id) => projects.get(id));
+  }
+);
+
 export {
   selectSubmitIdea,
   makeSelectTopics,
+  makeSelectProjects,
   makeSelectAreas,
 };

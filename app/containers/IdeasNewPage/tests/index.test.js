@@ -2,7 +2,7 @@ import { stringMock } from 'utils/testing/constants';
 
 import canPublish from '../editor/canPublish';
 import { mapDispatchToProps } from '../index';
-import { storeAttachmentError, storeImageError } from '../actions';
+import { /* storeAttachmentError, */ storeImageError } from '../actions';
 
 describe('<IdeasNewPage />', () => {
   describe('canPublish', () => {
@@ -12,8 +12,9 @@ describe('<IdeasNewPage />', () => {
       const titleError = true;
       const topics = [stringMock];
       const areas = [stringMock];
+      const projects = [];
 
-      expect(canPublish(content, titleError, topics, areas)).toEqual(false);
+      expect(canPublish(content, titleError, topics, areas, projects)).toEqual(false);
     });
 
     it('should not allow publishing an idea if content is invalid', () => {
@@ -23,8 +24,9 @@ describe('<IdeasNewPage />', () => {
       const titleError = false;
       const topics = [stringMock];
       const areas = [stringMock];
+      const projects = [];
 
-      expect(canPublish(content, titleError, topics, areas)).toEqual(false);
+      expect(canPublish(content, titleError, topics, areas, projects)).toEqual(false);
     });
 
     it('should not allow publishing an idea if no topic specified', () => {
@@ -34,8 +36,21 @@ describe('<IdeasNewPage />', () => {
       const titleError = false;
       const topics = [];
       const areas = [stringMock];
+      const projects = [];
 
-      expect(canPublish(content, titleError, topics, areas)).toEqual(false);
+      expect(canPublish(content, titleError, topics, areas, projects)).toEqual(false);
+    });
+
+    it('should not allow publishing an idea if more than 1 project specified', () => {
+      // empty content
+      const content = `<p>${stringMock}</p>`;
+      // we assume title is valid
+      const titleError = false;
+      const topics = [];
+      const areas = [stringMock];
+      const projects = [stringMock, stringMock];
+
+      expect(canPublish(content, titleError, topics, areas, projects)).toEqual(false);
     });
 
     it('should not allow publishing an idea if content is invalid', () => {
@@ -45,8 +60,9 @@ describe('<IdeasNewPage />', () => {
       const titleError = false;
       const topics = [stringMock];
       const areas = [];
+      const projects = [];
 
-      expect(canPublish(content, titleError, topics, areas)).toEqual(false);
+      expect(canPublish(content, titleError, topics, areas, projects)).toEqual(false);
     });
   });
 
@@ -54,12 +70,12 @@ describe('<IdeasNewPage />', () => {
     const dispatch = jest.fn();
     const result = mapDispatchToProps(dispatch);
 
-    describe('storeAttachment', () => {
-      it('should dispatch storeAttachmentError if no attachment is provided', () => {
-        result.storeAttachment(null);
-        expect(dispatch).toHaveBeenCalledWith(storeAttachmentError());
-      });
-    });
+    // describe('storeAttachment', () => {
+    //   it('should dispatch storeAttachmentError if no attachment is provided', () => {
+    //     result.storeAttachment(null);
+    //     expect(dispatch).toHaveBeenCalledWith(storeAttachmentError());
+    //   });
+    // });
     describe('storeImage', () => {
       it('should dispatch storeImageError if no image is provided', () => {
         result.storeImage(null);

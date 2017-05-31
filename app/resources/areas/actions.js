@@ -1,6 +1,6 @@
 /*
  *
- * AreasIndexPage actions
+ * resources/areas actions
  *
  */
 
