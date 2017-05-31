@@ -31,26 +31,34 @@ module.exports = (options) => ({
       exclude: /node_modules/,
       loaders: ['style-loader', 'css-loader', 'sass-loader'],
     }, {
-      test: /\.(eot|svg|ttf|woff|woff2)$/,
+      test: /\.(eot|svg|ttf|woff|woff2|jpg|png|gif)$/,
       loader: 'file-loader',
-    }, {
-      test: /\.(jpg|png|gif)$/,
-      loaders: [
-        'file-loader',
-        {
-          loader: 'image-webpack-loader',
-          query: {
-            progressive: true,
-            optimizationLevel: 7,
-            interlaced: false,
-            pngquant: {
-              quality: '65-90',
-              speed: 4,
-            },
-          },
-        },
-      ],
-    }, {
+    },
+    // {
+    //   test: /\.(jpg|png|gif)$/,
+    //   loaders: [
+    //     'file-loader',
+    //     {
+    //       loader: 'image-webpack-loader',
+    //       query: {
+    //         mozjpeg: {
+    //           progressive: true,
+    //         },
+    //         gifsicle: {
+    //           interlaced: false,
+    //         },
+    //         optipng: {
+    //           optimizationLevel: 7,
+    //         },
+    //         pngquant: {
+    //           quality: '65-90',
+    //           speed: 4,
+    //         },
+    //       },
+    //     },
+    //   ],
+    // },
+    {
       test: /\.html$/,
       loader: 'html-loader',
     }, {
