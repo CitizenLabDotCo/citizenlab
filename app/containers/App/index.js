@@ -17,7 +17,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Saga } from 'react-redux-saga';
-import { Container } from 'semantic-ui-react';
 import { injectIntl, intlShape } from 'react-intl';
 
 // import { DockableSagaView } from 'redux-saga-devtools';
@@ -57,11 +56,11 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
             ]}
           />
           <Navbar currentTenant={currentTenant} />
-          <Container>
-            <div>
-              {React.Children.toArray(this.props.children)}
-            </div>
-          </Container>
+          {/* <Container> */ }
+          <div>
+            {React.Children.toArray(this.props.children)}
+          </div>
+          {/* </Container> */ }
           {/* <DockableSagaView monitor={sagamonitor}  /> */}
         </div>
       );

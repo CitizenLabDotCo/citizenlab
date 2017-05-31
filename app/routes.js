@@ -34,6 +34,24 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/landing',
+      name: 'landingPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/LandingPage/reducer'),
+          import('containers/LandingPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('landingPage', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '/dev/foundation',
       name: 'foundationDemoPage',
       getComponent(location, cb) {
