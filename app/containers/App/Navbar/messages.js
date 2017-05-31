@@ -30,8 +30,13 @@ export default defineMessages({
     id: 'app.containers.app.navbar.editProfile',
     defaultMessage: 'Edit profile',
   },
-  logout: {
-    id: 'app.containers.app.navbar.logout',
+  signOut: {
+    id: 'app.containers.app.navbar.signOut',
     defaultMessage: 'Sign out',
   },
+  admin: {
+    id: 'app.containers.app.navbar.admin',
+    defaultMessage: 'Admin',
+  },
+
 });

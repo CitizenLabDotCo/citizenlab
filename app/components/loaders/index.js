@@ -62,22 +62,35 @@ class TempMessages extends React.Component {
     this.props.resourceLoader();
   }
 
-  componentWillReceiveProps() {
-    if (this.state.initial) {
+  componentWillReceiveProps(nextProps) {
+    const { initial, completed } = this.state;
+    const { loading, error, withError } = nextProps;
+
+    if (initial) {
       this.setState({ initial: false });
+    } else if (!loading && !(error && withError) && !completed) {
+      this.setState({ completed: true });
     }
   }
 
+
+  // shouldComponentUpdate() {
+  //   const { completed } = this.state;
+  //   return !completed;
+  // }
+
+
   render() {
-    const { initial } = this.state;
-    const { loading, error, loadingMessage, errorMessage } = this.props;
-    console.log(initial, loading, error);
+    const { initial, completed } = this.state;
+    const { loading, error, loadingMessage, errorMessage, withError } = this.props;
     if (loading || initial) {
       return <LoadingMessage loadingMessage={loadingMessage} />;
-    } else if (error) {
+    } else if (error && withError) {
       return <ErrorMessage errorMessage={errorMessage} />;
+    } else if (completed) {
+      return this.props.children;
     }
-    return this.props.children;
+    return null;
   }
 }
 
@@ -88,6 +101,11 @@ TempMessages.propTypes = {
   errorMessage: PropTypes.object.isRequired,
   children: PropTypes.object,
   resourceLoader: PropTypes.func.isRequired,
+  withError: PropTypes.bool,
+};
+
+TempMessages.defaultProps = {
+  withError: true,
 };
 
 const mapStateToProps = createStructuredSelector({

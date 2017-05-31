@@ -1,6 +1,6 @@
 /*
  *
- * ProjectsIndexPage actions
+ * resources/projects actions
  *
  */
 

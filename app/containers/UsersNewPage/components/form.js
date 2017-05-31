@@ -24,7 +24,9 @@ class RegistrationForm extends FormComponent {
     this.saga = createUser;
   }
 
-  handleSuccess = () => this.props.goTo('/register/complete');
+  handleSuccess = () => {
+    this.props.goTo('/register/complete');
+  }
 
   render() {
     const { error, errors } = this.state;

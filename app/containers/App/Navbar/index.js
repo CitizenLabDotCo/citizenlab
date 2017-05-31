@@ -1,11 +1,21 @@
 import React, { PropTypes } from 'react';
-import { Dropdown } from 'semantic-ui-react';
-import { Link } from 'react-router';
-import { FormattedMessage, injectIntl } from 'react-intl';
-import { createStructuredSelector } from 'reselect';
+
+// import { Dropdown } from 'semantic-ui-react';
 import { push } from 'react-router-redux';
 import styled from 'styled-components';
 import { lighten } from 'polished';
+
+// components
+// import { Menu, Button, Dropdown, Icon, Image } from 'semantic-ui-react';
+import { Link } from 'react-router';
+import { FormattedMessage, injectIntl } from 'react-intl';
+// import SearchWidget from 'containers/SearchWidget';
+
+// components - authorizations
+// import Authorize from 'utils/containers/authorize';
+
+// store
+import { createStructuredSelector } from 'reselect';
 import { preprocess } from 'utils';
 import { signOutCurrentUser } from 'utils/auth/actions';
 import { makeSelectCurrentUserImmutable } from 'utils/auth/selectors';
@@ -124,6 +134,22 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
         </Dropdown.Item>
         <Dropdown.Item onClick={signOut}>
           Sign out
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+
+    <Dropdown item trigger={this.trigger(currentUser)}>
+      <Dropdown.Menu>
+        <Authorize action={['users', 'admin']} >
+          <Dropdown.Item onClick={() => goTo('/admin')}>
+            <FormattedMessage {...messages.admin} />
+          </Dropdown.Item>
+        </Authorize>
+        <Dropdown.Item onClick={() => goTo('/profile/edit')}>
+          <FormattedMessage {...messages.editProfile} />
+        </Dropdown.Item>
+        <Dropdown.Item onClick={signOut}>
+          <FormattedMessage {...messages.signOut} />
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>

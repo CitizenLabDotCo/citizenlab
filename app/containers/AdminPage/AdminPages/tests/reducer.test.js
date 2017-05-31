@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 import { generateResourcesPageValue } from 'utils/testing/mocks';
-import { numberMock, stringMock, linkMock } from 'utils/testing/constants';
+import { numberMock, linkMock } from 'utils/testing/constants';
 import { expectPropertyNotNull } from 'utils/testing/methods';
 
 import adminPageReducer from '../reducer';
@@ -45,7 +45,7 @@ describe('adminPagesReducer', () => {
     });
 
     it('should return prevPageNumber and prevPageItemCount not null if links.prev is not null', () => {
-      apiResponse.links.prev = stringMock;
+      apiResponse.links.prev = linkMock;
 
       const nextState = adminPageReducer(
         fromJS(expectedInitialState), loadPagesSuccess(apiResponse, numberMock)
@@ -56,7 +56,7 @@ describe('adminPagesReducer', () => {
     });
 
     it('should return currentPageNumber and currentPageItemCount not null if links.self is not null', () => {
-      apiResponse.links.self = stringMock;
+      apiResponse.links.self = linkMock;
 
       const nextState = adminPageReducer(
         fromJS(expectedInitialState), loadPagesSuccess(apiResponse, numberMock)
@@ -67,7 +67,7 @@ describe('adminPagesReducer', () => {
     });
 
     it('should return nextPageNumber and nextPageItemCount not null if links.next is not null', () => {
-      apiResponse.links.next = stringMock;
+      apiResponse.links.next = linkMock;
 
       const nextState = adminPageReducer(
         fromJS(expectedInitialState), loadPagesSuccess(apiResponse, numberMock)

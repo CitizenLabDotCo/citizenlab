@@ -1,6 +1,6 @@
 
 import { createStructuredSelector } from 'reselect';
-import { preprocess } from 'utils';
+import { connect } from 'react-redux';
 
 import RuleBasedRenderer from 'utils/containers/ruleBasedRenderer';
 
@@ -14,6 +14,6 @@ const mapStateToProps = () => createStructuredSelector({
 
 const mergeProps = (stateP, dispatchP, ownP) => Object.assign({}, stateP, ownP, { authorizations });
 
-const Authorize = preprocess(mapStateToProps, null, mergeProps)(RuleBasedRenderer);
+const Authorize = connect(mapStateToProps, null, mergeProps)(RuleBasedRenderer);
 export default Authorize;
 export { Authorize as Else };

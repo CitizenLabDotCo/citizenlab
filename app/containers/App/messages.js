@@ -18,4 +18,16 @@ export default defineMessages({
     id: 'app.containers.App.helmetDescription',
     defaultMessage: 'Citizenlab 2 platform {tenantName}',
   },
+  unAuthorizedUser: {
+    id: 'app.containers.App.unAuthorizedUser',
+    defaultMessage: 'Ups; it looks like you wandered to the wrong page...',
+  },
+  currentUserLoadingMessage: {
+    id: 'app.containers.App.currentUserLoadingMessage',
+    defaultMessage: 'loading...',
+  },
+  currentUserLoadingError: {
+    id: 'app.containers.App.currentUserLoadingError',
+    defaultMessage: 'Ups; something went terrybly wrong. kill the developer!',
+  },
 });

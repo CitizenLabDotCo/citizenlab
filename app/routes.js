@@ -146,46 +146,46 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     },
-    // {
-    //   path: '/ideas',
-    //   name: 'ideasPage',
-    //   getComponent(nextState, cb) {
-    //     const importModules = Promise.all([
-    //       import('containers/IdeasIndexPage/reducer'),
-    //       import('containers/IdeasIndexPage'),
+    {
+      path: '/ideas',
+      name: 'ideasPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/IdeasIndexPage/reducer'),
+          import('containers/IdeasIndexPage'),
 
-    //     ]);
-    //     const renderRoute = loadModule(cb);
+        ]);
+        const renderRoute = loadModule(cb);
 
-    //     importModules.then(([reducer, component]) => {
-    //       injectReducer('ideasIndexPage', reducer.default);
-    //       renderRoute(component);
-    //     });
+        importModules.then(([reducer, component]) => {
+          injectReducer('ideasIndexPage', reducer.default);
+          renderRoute(component);
+        });
 
-    //     importModules.catch(errorLoading);
-    //   },
-    //   childRoutes: [
-    //     {
-    //       path: ':slug',
-    //       name: 'ideasShow',
-    //       getComponent(nextState, cb) {
-    //         const importModules = Promise.all([
-    //           import('containers/IdeasShow/reducer'),
-    //           import('containers/IdeasShow'),
-    //         ]);
+        importModules.catch(errorLoading);
+      },
+      childRoutes: [
+        {
+          path: ':ideaId',
+          name: 'ideasShow',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/IdeasShow/reducer'),
+              import('containers/IdeasShow'),
+            ]);
 
-    //         const renderRoute = loadModule(cb);
+            const renderRoute = loadModule(cb);
 
-    //         importModules.then(([reducer, component]) => {
-    //           injectReducer('ideasShow', reducer.default);
-    //           renderRoute(component);
-    //         });
+            importModules.then(([reducer, component]) => {
+              injectReducer('ideasShow', reducer.default);
+              renderRoute(component);
+            });
 
-    //         importModules.catch(errorLoading);
-    //       },
-    //     },
-    //   ],
-    // },
+            importModules.catch(errorLoading);
+          },
+        },
+      ],
+    },
     {
       path: '/profile/:slug',
       name: 'usersShowPage',
@@ -522,7 +522,7 @@ export default function createRoutes(store) {
           getComponent(nextState, cb) {
             const importModules = Promise.all([
               import('containers/IdeasIndexPage/reducer'),
-              import('containers/IdeasIndexPage'),
+              import('containers/ProjectsShowPage/ideas'),
             ]);
             const renderRoute = loadModule(cb);
 

@@ -21,6 +21,7 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
   }
 
   render() {
+    const { location } = this.props;
     return (
       <div>
         <HelmetIntl
@@ -29,14 +30,15 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
         />
         <WatchSagas sagas={sagas} />
         <Saga saga={indexSagas.watchLoadAreas} />
-        <DemographicsForm />
+        <DemographicsForm location={location} />
       </div>
     );
   }
 }
 
 IdeasShow.propTypes = {
-  loadAreasRequest: PropTypes.func.isRequied,
+  loadAreasRequest: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export default dispatchable({ loadAreasRequest })(IdeasShow);
