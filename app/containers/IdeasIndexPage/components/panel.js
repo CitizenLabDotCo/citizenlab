@@ -6,8 +6,7 @@ import IdeaCards from './panel/ideaCards';
 const Panel = () => (
   <Segment style={{ width: 1000, marginLeft: 'auto', marginRight: 'auto' }} basic>
     <IdeaCards />
-    {/* <LoadButton />*/}
-    </Segment>
+  </Segment>
 );
 
 export default Panel;

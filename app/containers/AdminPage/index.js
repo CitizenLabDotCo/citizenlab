@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
 import Sidebar from './SideBar/';
 
-
-
 function AdminPage(props) { // eslint-disable-line react/prefer-stateless-function
   return (
     <div>

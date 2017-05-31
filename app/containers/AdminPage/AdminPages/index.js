@@ -9,7 +9,6 @@ import T from 'containers/T';
 import { preprocess } from 'utils/reactRedux';
 import WatchSagas from 'containers/WatchSagas';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import styled from 'styled-components';
 import { push } from 'react-router-redux';
 
 import Sidebar from './../SideBar/';
