@@ -6,17 +6,16 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { preprocess } from 'utils';
-// import { Sidebar as LayoutSidebar } from 'semantic-ui-react';
 
+// components
 import WatchSagas from 'containers/WatchSagas';
+import { Segment } from 'semantic-ui-react';
+import IdeaCards from './components/ideaCards';
 
-import sagasWatchers from './sagas';
+// store
+import { preprocess } from 'utils';
 import { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest, resetIdeas } from './actions';
-
-// implemented but not used now.
-// import Sidebar from './components/sidebar';
-import Panel from './components/panel';
+import sagasWatchers from './sagas';
 
 
 class View extends React.Component {
@@ -30,9 +29,8 @@ class View extends React.Component {
   componentDidMount() {
     this.props.loadTopicsRequest();
     this.props.loadAreasRequest();
-    const { routeParams } = this.props;
-    const project = routeParams.slug;
-    this.getideas(null, { project });
+    const { filter } = this.props;
+    this.getideas(null, filter);
   }
 
   /* Component should update if new query params are provided */
@@ -65,12 +63,14 @@ class View extends React.Component {
   toggleVisibility = () => this.setState({ visible: !this.state.visible })
 
   render() {
-    // this component will controll the proper rerender of the view when the Topics and Areas list is toggled.
-    // const { visible } = this.state;
+    const { filter } = this.props;
     return (
       <div>
         <WatchSagas sagas={sagasWatchers} />
-        <Panel />
+        <Segment style={{ width: 1000, marginLeft: 'auto', marginRight: 'auto' }} basic>
+          <IdeaCards filter={filter} />
+        </Segment>
+
 
         {/*
         <h1>
@@ -129,8 +129,12 @@ View.propTypes = {
   location: PropTypes.object,
   filterIdeas: PropTypes.func.isRequired,
   loadIdeasRequest: PropTypes.func.isRequired,
-  routeParams: PropTypes.object.isRequired,
   resetIdeas: PropTypes.func.isRequired,
+  filter: PropTypes.object,
+};
+
+View.defaultProps = {
+  location: {},
 };
 
 const actions = { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest, resetIdeas };

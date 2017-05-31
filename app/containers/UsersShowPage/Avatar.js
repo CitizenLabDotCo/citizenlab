@@ -3,15 +3,18 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Segment, Image } from 'semantic-ui-react';
 
-function Avatar(props) {
-  return (<Segment>
-    {props.avatarURL && <Image
-      className={props.className}
-      centered
-      src={props.avatarURL}
-      shape="circular"
-    />}
-  </Segment>);
+function Avatar({ avatarURL, className }) {
+  if (!avatarURL) return null;
+  return (
+    <Segment>
+      <Image
+        className={className}
+        centered
+        src={avatarURL}
+        shape="circular"
+      />
+    </Segment>
+  );
 }
 
 Avatar.propTypes = {

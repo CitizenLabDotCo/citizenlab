@@ -35,17 +35,18 @@ IdeasCards.propTypes = {
 };
 
 
-const mergeProps = ({ ideas, nextPageNumber, nextPageItemCount, search }, { getNextPage }) => ({
-  loadMoreIdeas: getNextPage.bind(null, nextPageNumber, nextPageItemCount, search),
-  hasMore: !!(nextPageNumber && nextPageItemCount),
-  ideas,
-});
-
 const mapStateToProps = createStructuredSelector({
   ideas: selectIdeasIndexPageDomain('ideas'),
   nextPageNumber: selectIdeasIndexPageDomain('nextPageNumber'),
   nextPageItemCount: selectIdeasIndexPageDomain('nextPageItemCount'),
   search: (state) => state.getIn(['route', 'locationBeforeTransitions', 'search']),
 });
+
+const mergeProps = ({ ideas, nextPageNumber, nextPageItemCount, search }, { getNextPage }, { filter }) => ({
+  loadMoreIdeas: getNextPage.bind(null, nextPageNumber, nextPageItemCount, search, filter),
+  hasMore: !!(nextPageNumber && nextPageItemCount),
+  ideas,
+});
+
 
 export default preprocess(mapStateToProps, { getNextPage: loadNextPage }, mergeProps)(IdeasCards);

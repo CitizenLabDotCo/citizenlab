@@ -20,7 +20,7 @@ import { push } from 'react-router-redux';
 import messages from 'containers/IdeasIndexPage/messages';
 
 // need to implement Helmet
-class IdeasIndex extends React.Component {
+class ProjectIdeasIndex extends React.Component {
 
   isMainView = ({ params }) => !params.ideaId
 
@@ -31,7 +31,7 @@ class IdeasIndex extends React.Component {
   };
 
   render() {
-    const { children } = this.props;
+    const { children, params } = this.props;
     return (
       <div>
         <HelmetIntl
@@ -42,6 +42,7 @@ class IdeasIndex extends React.Component {
           component={PageView}
           isMainView={this.isMainView}
           handleClose={this.backToMainView}
+          filter={{ project: params.slug }}
           {...this.props}
         >
           {children}
@@ -51,10 +52,10 @@ class IdeasIndex extends React.Component {
   }
 }
 
-IdeasIndex.propTypes = {
+ProjectIdeasIndex.propTypes = {
   children: PropTypes.element,
   push: PropTypes.func.isRequired,
   params: PropTypes.object.isRequired,
 };
 
-export default preprocess(null, { push })(IdeasIndex);
+export default preprocess(null, { push })(ProjectIdeasIndex);

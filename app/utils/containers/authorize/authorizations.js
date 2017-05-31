@@ -30,7 +30,7 @@ const authorizations = {
           return isAdmin;
         } else if (paths[0] === 'register' && paths[1] === 'complete') {
           return !!user;
-        } else if (paths[0] === 'profile' && paths[1] === 'edit') {
+        } else if (paths[0] === 'profile') {
           return !!user;
         }
         return true;
