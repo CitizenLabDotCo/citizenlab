@@ -6,7 +6,9 @@ import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 import { lighten } from 'polished';
 import WatchSagas from 'containers/WatchSagas';
+import Modal from 'components/Modal';
 import { preprocess } from 'utils';
+import IdeasShow from 'containers/IdeasShow';
 
 import {
   selectLandingPage,
@@ -313,24 +315,48 @@ const Footer = styled.div`
 `;
 
 class LandingPage extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      modalOpened: false,
+      pageUrl: null,
+      modalUrl: null,
+      selectedIdeaId: null,
+    };
+  }
+
   componentDidMount() {
     this.props.loadIdeas(1, 4);
     this.props.loadProjects(1, 2);
   }
 
   openIdea = (id) => () => {
-    console.log(id);
-    window.history.pushState('page2', 'Title', '/page2.php');
+    this.setState({
+      modalOpened: true,
+      pageUrl: window.location.href,
+      modalUrl: `${window.location.protocol}//${window.location.host}/idea/${id}#bleh`,
+      selectedIdeaId: id,
+    });
   };
 
   openProject = (id) => () => {
     console.log(id);
   };
 
+  closeModal = () => {
+    this.setState({
+      modalOpened: false,
+      pageUrl: null,
+      modalUrl: null,
+      selectedIdeaId: null,
+    });
+  }
+
   render() {
     let ideasList = null;
     let projectsList = null;
-    const { ideas, loadingIdeas, loadIdeasError, projects, loadingProjects, loadProjectsError } = this.props;
+    const { ideas, loadingIdeas, loadIdeasError, projects, loadingProjects, loadProjectsError, location } = this.props;
 
     if (loadingIdeas) {
       ideasList = <div>Loading...</div>;
@@ -408,6 +434,10 @@ class LandingPage extends React.Component {
 
           <Footer>Powered by CitizenLab | Geef je feedback over het platform</Footer>
         </Container>
+
+        <Modal opened={this.state.modalOpened} close={this.closeModal} parentUrl={this.state.pageUrl} url={this.state.modalUrl}>
+          <IdeasShow location={location} id={this.state.selectedIdeaId} />
+        </Modal>
       </div>
     );
   }
@@ -422,6 +452,7 @@ LandingPage.propTypes = {
   loadProjectsError: PropTypes.bool.isRequired,
   loadIdeas: PropTypes.func.isRequired,
   loadProjects: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
