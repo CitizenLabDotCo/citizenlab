@@ -28,11 +28,11 @@ class Tenant < ApplicationRecord
   end
 
   def create_apartment_tenant
-    Apartment::Tenant.create(self.host)
+    Apartment::Tenant.create(self.host.gsub(/\./, "_"))
   end
 
   def delete_apartment_tenant
-    Apartment::Tenant.drop(self.host)
+    Apartment::Tenant.drop(self.host.gsub(/\./, "_"))
   end
 
   def update_tenant_schema

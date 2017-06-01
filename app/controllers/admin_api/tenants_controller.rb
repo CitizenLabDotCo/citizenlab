@@ -22,7 +22,7 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
 
   def update
     updated_settings = Tenant.current.settings.deep_merge(tenant_params[:settings].to_h)
-    if @tenant.update(settings: updated_settings)
+    if @tenant.update(tenant_params)
       render json: @tenant, status: :ok
     else
       render json: {errors: @tenant.errors.details}, status: :unprocessable_entity
@@ -49,7 +49,7 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
     # schema validation, however, should be covering all settings that are not
     # allowed
     all_settings = params.require(:tenant).fetch(:settings, nil).try(:permit!)
-    params.require(:tenant).permit(:title).merge(:settings => all_settings)
+    params.require(:tenant).permit(:name, :host).merge(:settings => all_settings)
   end
 
 end
