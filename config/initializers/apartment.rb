@@ -85,8 +85,14 @@ end
 # Rails.application.config.middleware.use 'Apartment::Elevators::Generic', lambda { |request|
 #   request.host.split('.').first
 # }
-Rails.application.config.middleware.use Apartment::Elevators::Generic, Proc.new { |request| request.host.gsub(/\./, "_") }
-# Rails.application.config.middleware.use RescuedApartmentMiddleware, Proc.new { |request| request.host.gsub(/\./, "_") }
+Rails.application.config.middleware.use Apartment::Elevators::Generic, (Proc.new do |request|
+  if request.path =~ /^\/admin_api\/.*/
+    nil
+  else
+    request.host.gsub(/\./, "_")
+  end
+end)
+# Rails.application.config.middleware.use RescuedApartmentElevator, Proc.new { |request| puts request.path; request.host.gsub(/\./, "_") }
 # Rails.application.config.middleware.use Apartment::Elevators::Domain
 # Rails.application.config.middleware.use 'Apartment::Elevators::Subdomain'
 # Rails.application.config.middleware.use 'Apartment::Elevators::FirstSubdomain'
