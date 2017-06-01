@@ -2,7 +2,7 @@ class Api::V1::TopicsController < ApplicationController
    before_action :set_topic, only: [:show, :update, :destroy]
 
    def index
-     @topics = policy_scope(Topic).page(params[:page])
+     @topics = policy_scope(Topic)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
      render json: @topics
