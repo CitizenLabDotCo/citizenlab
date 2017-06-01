@@ -7,15 +7,14 @@
   "properties":
     {
       "core": {
-        "allOf": [
-          {"$ref": "#/definitions/feature"},
-          {
+        "type": "object",
             "description": "The core of the system. Container for general settings. Always enabled",
             "required-settings": ["organization_type", "timezone","locales"],
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {},
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"},
               "organization_type": {
                 "type": "string",
                 "enum": ["city", "generic"]
@@ -53,76 +52,61 @@
                 "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
               }
             }
-          }
-        ]
       },
 
       "topics": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"Topics can be shown",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "map": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"Displaying a map where all ideas are plotted on",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "areas": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"Allow geographical areas(neighbourhoods, cities ...) to be defined",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "pages": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"Allow custom pages to be made, and potentially be added to the navigation",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "facebook_login": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"Allow signing in and registering through a facebook account",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "required-settings": ["app_id"],
             "properties": {
-              "allowed": {},
-              "enabled": {},
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"},
               "app_id": {
                 "type": "string"
               },
@@ -131,338 +115,267 @@
                 "private": true
               }
             }
-          }
-        ]
       },
 
       "google_login": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"Allow signing in and registering through a google account",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "twitter_login": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"Allow signing in and registering through twitter",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "comments": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"Allow comments to be posted on ideas",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "comments_votes": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"Allow users to vote on comments",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "comments_mentions": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"@user (twitter style) mentions generate notifications",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "notifications": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "ideas_votes": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"Votes can be placed on an idea",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "ideas_images": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"ideas can contain image(s)",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "ideas_location": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"Allows location",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "ideas_attachments": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"Allow attachments",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "projects": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "projects_phases": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "projects_pages": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "projects_events": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "projects_info": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "projects_map": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "projects_perimeter": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "multi_locales": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "email_digest_user": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "email_digest_admin": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "excel_export": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":	"",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "properties": {
-              "allowed": {},
-              "enabled": {}
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"}
             }
-          }
-        ]
       },
 
       "mixpanel_tracking": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description":  "Allows the app interactions of the users to be tracked by mixpanel",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "required-settings": ["project_token"],
             "properties": {
-              "allowed": {},
-              "enabled": {},
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"},
               "project_token": {
                 "type": "string"
               }
             }
-          }
-        ]
       },
 
       "ga_tracking": {
-        "allOf": [
-          {"$ref": "#definitions/feature"},
-          {
+        "type": "object",
             "description": "Allows the app interactions of the users to be tracked by Google Analytics",
             "additionalProperties": false,
+            "required": ["allowed", "enabled"],
             "required-settings": ["tracking_id"],
             "properties": {
-              "allowed": {},
-              "enabled": {},
+              "allowed": { "type": "boolean"},
+              "enabled": { "type": "boolean"},
               "tracking_id": {
                 "type": "string"
               }
             }
-          }
-        ]
       }
 
     },
@@ -482,18 +395,6 @@
       "additionalProperties": false,
       "properties": {
         <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\"}"}.join(",") %>
-      }
-    },
-    "feature": {
-      "type": "Object",
-      "required": ["allowed","enabled"],
-      "properties": {
-        "allowed": {
-          "type": "boolean"
-        },
-        "enabled": {
-          "type": "boolean"
-        }
       }
     }
   }
