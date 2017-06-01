@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 // components
 import InfiniteScroll from 'react-infinite-scroller';
-import { Card } from 'semantic-ui-react';
 import IdeaCard from 'components/IdeaCard';
 
 
@@ -14,18 +13,18 @@ import selectIdeasIndexPageDomain from 'containers/IdeasIndexPage/selectors';
 import { loadNextPage } from 'containers/IdeasIndexPage/actions';
 
 const IdeasCards = ({ ideas, hasMore, loadMoreIdeas }) => (
-    <InfiniteScroll
-      element={'div'}
-      loadMore={loadMoreIdeas}
-      className={'ui stackable cards'}
-      initialLoad={false}
-      hasMore={hasMore}
-      loader={<div className="loader"></div>}
-    >
-      {ideas.map((id) => (
-        <IdeaCard key={id} id={id} />
-      ))}
-    </InfiniteScroll>
+  <InfiniteScroll
+    element={'div'}
+    loadMore={loadMoreIdeas}
+    className={'ui stackable cards'}
+    initialLoad={false}
+    hasMore={hasMore}
+    loader={<div className="loader"></div>}
+  >
+    {ideas.map((id) => (
+      <IdeaCard key={id} id={id} />
+    ))}
+  </InfiniteScroll>
 );
 
 IdeasCards.propTypes = {
