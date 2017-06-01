@@ -42,7 +42,7 @@ pipeline {
     stage('Deploy to staging') {
       steps {
         sshagent (credentials: ['local-ssh-user']) {
-          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.157.143.6 docker run --env-file cl2-deployment/.env-staging citizenlabdotco/cl2-back:latest rake db:migrate'
+          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.157.143.6 "docker pull citizenlabdotco/cl2-back:latest && docker run --env-file cl2-deployment/.env-staging citizenlabdotco/cl2-back:latest rake db:migrate"'
           sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.157.143.6 "cd cl2-deployment && docker stack deploy --compose-file docker-compose-staging.yml cl2-back-stg --with-registry-auth"'
         }
       }

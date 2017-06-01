@@ -7,6 +7,7 @@ require 'apartment/elevators/generic'
 # require 'apartment/elevators/subdomain'
 # require 'apartment/elevators/first_subdomain'
 
+require 'rescued_apartment_middleware'
 #
 # Apartment Configuration
 #
@@ -86,7 +87,8 @@ end
 # Rails.application.config.middleware.use 'Apartment::Elevators::Generic', lambda { |request|
 #   request.host.split('.').first
 # }
-Rails.application.config.middleware.use Apartment::Elevators::Generic, Proc.new { |request| request.host.gsub(/\./, "_") }
+# Rails.application.config.middleware.use Apartment::Elevators::Generic, Proc.new { |request| request.host.gsub(/\./, "_") }
+Rails.application.config.middleware.use RescuedApartmentMiddleware, Proc.new { |request| request.host.gsub(/\./, "_") }
 # Rails.application.config.middleware.use Apartment::Elevators::Domain
 # Rails.application.config.middleware.use 'Apartment::Elevators::Subdomain'
 # Rails.application.config.middleware.use 'Apartment::Elevators::FirstSubdomain'
