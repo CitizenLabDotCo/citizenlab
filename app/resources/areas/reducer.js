@@ -10,9 +10,9 @@ import { getPageItemCountFromUrl, getPageNumberFromUrl } from 'utils/paginationU
 import { LOAD_AREAS_SUCCESS, RESET_AREAS, DELETE_AREA_SUCCESS, CREATE_AREA_SUCCESS } from './constants';
 
 export const initialState = fromJS({
-  nextPageNumber: null,
-  nextPageItemCount: null,
-  areas: [],
+  nextPageNumber: 1,
+  nextPageItemCount: 3,
+  loaded: [],
 });
 
 function areasReducer(state = initialState, action) {
@@ -22,20 +22,19 @@ function areasReducer(state = initialState, action) {
       const nextPageNumber = getPageNumberFromUrl(action.payload.links.next);
       const nextPageItemCount = getPageItemCountFromUrl(action.payload.links.next);
       return state
-        .update('areas', (areas) => areas.concat(ids))
+        .update('loaded', (areas) => areas.concat(ids))
         .set('nextPageNumber', nextPageNumber)
         .set('nextPageItemCount', nextPageItemCount);
     }
     case RESET_AREAS:
-      return state
-        .set('areas', fromJS([]));
+      return initialState;
     case DELETE_AREA_SUCCESS: {
-      const areaIndex = state.get('areas').findIndex((id) => action.id === id);
-      return state.deleteIn(['areas', areaIndex]);
+      const areaIndex = state.get('loaded').findIndex((id) => action.id === id);
+      return state.deleteIn(['loaded', areaIndex]);
     }
     case CREATE_AREA_SUCCESS: {
       const { id } = action.payload.data;
-      return state.update('areas', (areas) => areas.concat(id));
+      return state.update('loaded', (areas) => areas.concat(id));
     }
     default:
       return state;

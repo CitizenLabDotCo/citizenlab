@@ -12,7 +12,7 @@ export const LOAD_PROJECT_REQUEST = 'app/resources/projects/LOAD_PROJECT_REQUEST
 export const LOAD_PROJECT_SUCCESS = 'app/resources/projects/LOAD_PROJECT_SUCCESS';
 export const LOAD_PROJECT_ERROR = 'app/resources/projects/LOAD_PROJECT_ERROR';
 
-export const PUBLISH_PROJECT_SUCCESS = 'app/resources/projects/PUBLISH_PROJECT_SUCCESS';
+export const CREATE_PROJECT_SUCCESS = 'app/resources/projects/CREATE_PROJECT_SUCCESS';
 
 export const DELETE_PROJECT_REQUEST = 'app/resources/projects/DELETE_PROJECT_REQUEST';
 export const DELETE_PROJECT_SUCCESS = 'app/resources/projects/DELETE_PROJECT_SUCCESS';

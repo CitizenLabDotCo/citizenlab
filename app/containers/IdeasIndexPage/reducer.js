@@ -10,8 +10,8 @@ import { LOAD_IDEAS_SUCCESS, RESET_IDEAS, LOAD_TOPICS_SUCCESS, LOAD_AREAS_SUCCES
 import { getPageItemCountFromUrl, getPageNumberFromUrl } from '../../utils/paginationUtils';
 
 const initialState = fromJS({
-  nextPageNumber: null,
-  nextPageItemCount: null,
+  nextPageNumber: 1,
+  nextPageItemCount: 3,
   ideas: [],
   topics: {},
   areas: {},

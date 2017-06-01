@@ -16,7 +16,7 @@ export function* getIdeas(action) {
   try {
     const queryParams = {
       'page[number]': action.nextPageNumber,
-      'page[size]': action.nextPageItemCount || 7,
+      'page[size]': action.nextPageItemCount,
       ...action.filters,
     };
     Object.keys(queryParams).forEach((key) => (!queryParams[key] && (delete queryParams[key])));

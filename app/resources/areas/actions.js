@@ -7,10 +7,9 @@
 import {
   LOAD_AREAS_ERROR, LOAD_AREAS_REQUEST, LOAD_AREAS_SUCCESS, RESET_AREAS, LOAD_AREA_REQUEST, LOAD_AREA_SUCCESS, LOAD_AREA_ERROR, DELETE_AREA_REQUEST, DELETE_AREA_SUCCESS, DELETE_AREA_ERROR, CREATE_AREA_SUCCESS } from './constants';
 
-export function loadAreasRequest(initialLoad, nextPageNumber, nextPageItemCount) {
+export function loadAreasRequest(nextPageNumber, nextPageItemCount) {
   return {
     type: LOAD_AREAS_REQUEST,
-    initialLoad,
     nextPageNumber,
     nextPageItemCount,
   };

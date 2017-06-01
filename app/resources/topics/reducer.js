@@ -7,12 +7,12 @@
 import { fromJS } from 'immutable';
 import { getPageItemCountFromUrl, getPageNumberFromUrl } from 'utils/paginationUtils';
 
-import { LOAD_TOPICS_SUCCESS, RESET_TOPICS } from './constants';
+import { LOAD_TOPICS_SUCCESS, RESET_TOPICS, DELETE_TOPIC_SUCCESS, CREATE_TOPIC_SUCCESS } from './constants';
 
 export const initialState = fromJS({
-  nextPageNumber: null,
-  nextPageItemCount: null,
-  topics: [],
+  nextPageNumber: 1,
+  nextPageItemCount: 3,
+  loaded: [],
 });
 
 function topicsReducer(state = initialState, action) {
@@ -22,13 +22,20 @@ function topicsReducer(state = initialState, action) {
       const nextPageNumber = getPageNumberFromUrl(action.payload.links.next);
       const nextPageItemCount = getPageItemCountFromUrl(action.payload.links.next);
       return state
-        .update('topics', (areas) => areas.concat(ids))
+        .update('loaded', (topics) => topics.concat(ids))
         .set('nextPageNumber', nextPageNumber)
         .set('nextPageItemCount', nextPageItemCount);
     }
     case RESET_TOPICS:
-      return state
-        .set('topics', fromJS([]));
+      return initialState;
+    case DELETE_TOPIC_SUCCESS: {
+      const topicIndex = state.get('loaded').findIndex((id) => action.id === id);
+      return state.deleteIn(['loaded', topicIndex]);
+    }
+    case CREATE_TOPIC_SUCCESS: {
+      const { id } = action.payload.data;
+      return state.update('loaded', (topics) => topics.concat(id));
+    }
     default:
       return state;
   }

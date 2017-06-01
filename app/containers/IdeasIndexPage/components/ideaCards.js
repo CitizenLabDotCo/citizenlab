@@ -10,21 +10,42 @@ import IdeaCard from 'components/IdeaCard';
 import { preprocess } from 'utils';
 import { createStructuredSelector } from 'reselect';
 import selectIdeasIndexPageDomain from 'containers/IdeasIndexPage/selectors';
-import { loadNextPage } from 'containers/IdeasIndexPage/actions';
+import { loadIdeasRequest } from 'containers/IdeasIndexPage/actions';
+
+// style
+import { media } from 'utils/styleUtils';
+import styled from 'styled-components';
+
+
+const InfiniteScrollStyled = styled(InfiniteScroll)`
+  font-size: 20px;
+  color: #999;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+
+  ${media.tablet`
+    flex-wrap: wrap;
+  `}
+
+  ${media.phone`
+    flex-direction: column;
+  `}
+`;
 
 const IdeasCards = ({ ideas, hasMore, loadMoreIdeas }) => (
-  <InfiniteScroll
+  <InfiniteScrollStyled
     element={'div'}
     loadMore={loadMoreIdeas}
     className={'ui stackable cards'}
-    initialLoad={false}
+    initialLoad
     hasMore={hasMore}
     loader={<div className="loader"></div>}
   >
     {ideas.map((id) => (
       <IdeaCard key={id} id={id} />
     ))}
-  </InfiniteScroll>
+  </InfiniteScrollStyled>
 );
 
 IdeasCards.propTypes = {
@@ -41,14 +62,19 @@ const mapStateToProps = createStructuredSelector({
   search: (state) => state.getIn(['route', 'locationBeforeTransitions', 'search']),
 });
 
-const mergeProps = (
-  { ideas, nextPageNumber, nextPageItemCount, search },
-  { getNextPage },
-  { filter, maxNumber, hasMore }) => ({
-    loadMoreIdeas: getNextPage.bind(null, maxNumber || nextPageNumber, nextPageItemCount, search, filter),
-    hasMore: hasMore || !!((maxNumber || nextPageNumber) && nextPageItemCount),
+const mergeProps = (state, dispatch, own) => {
+  const { ideas, nextPageNumber, nextPageItemCount, search } = state;
+  const { load } = dispatch;
+  const { filter, maxNumber } = own;
+  let { hasMore } = own;
+  if (hasMore !== false) hasMore = !!(nextPageNumber && (maxNumber || nextPageItemCount));
+
+  return {
+    loadMoreIdeas: () => load(nextPageNumber, maxNumber || nextPageItemCount, search, filter),
+    hasMore,
     ideas,
-  });
+  };
+};
 
 
-export default preprocess(mapStateToProps, { getNextPage: loadNextPage }, mergeProps)(IdeasCards);
+export default preprocess(mapStateToProps, { load: loadIdeasRequest }, mergeProps)(IdeasCards);

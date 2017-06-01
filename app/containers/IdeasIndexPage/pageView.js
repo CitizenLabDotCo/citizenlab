@@ -29,8 +29,6 @@ class View extends React.Component {
   componentDidMount() {
     this.props.loadTopicsRequest();
     this.props.loadAreasRequest();
-    const { filter } = this.props;
-    this.getideas(null, filter);
   }
 
   /* Component should update if new query params are provided */
@@ -70,50 +68,6 @@ class View extends React.Component {
         <Segment style={{ width: 1000, marginLeft: 'auto', marginRight: 'auto' }} basic>
           <IdeaCards filter={filter} />
         </Segment>
-
-
-        {/*
-        <h1>
-          <FormattedMessage {...messages.header} />
-        </h1>
-
-        <div style={{ display: 'table', lineHeight: 0, fontSize: '0', width: '100%' }}>
-          <div
-            style={{
-              display: 'table-cell',
-              width: '50px',
-              height: '100%',
-              overflow: 'visible',
-              lineHeight: 0,
-              fontSize: '0',
-              marginTop: '5px',
-              backgroundColor: '#1b1c1d',
-            }}
-          >
-            <div style={{ textAlign: 'center' }}>
-              <Icon
-                onClick={this.toggleVisibility}
-                name={'bars'}
-                style={{
-                  verticalAlign: 'top',
-                  fontSize: '26px',
-                  lineHeight: '46px',
-                  color: 'white',
-                  cursor: 'pointer',
-                }}
-              />
-            </div>
-          </div>
-
-
-          <LayoutSidebar.Pushable as={Segment} style={{ margin: '0', padding: '0', border: 'none', borderRadius: 0 }}>
-            <Sidebar visible={visible} toggleVisibility={this.toggleVisibility} />
-            <LayoutSidebar.Pusher>
-              <Panel />
-            </LayoutSidebar.Pusher>
-          </LayoutSidebar.Pushable>
-        </div>
-        */}
       </div>
     );
   }
