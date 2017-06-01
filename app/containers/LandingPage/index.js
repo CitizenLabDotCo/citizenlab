@@ -4,7 +4,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
-// import { lighten } from 'polished';
 import WatchSagas from 'containers/WatchSagas';
 import Modal from 'components/Modal';
 import { preprocess } from 'utils';
