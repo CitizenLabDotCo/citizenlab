@@ -58,7 +58,6 @@ export function* createUserFork(action, success, error) {
 export function* updateUserSaga({ id, data }, success, error) {
   try {
     const response = yield call(updateResource, 'user', id, data);
-      console.log(response)
     yield put(mergeJsonApiResources(response));
     if (success) yield success();
   } catch (e) {

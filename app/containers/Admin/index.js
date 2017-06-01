@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
-import Sidebar from './SideBar/';
+import Sidebar from './sideBar/';
 
 function AdminPage(props) { // eslint-disable-line react/prefer-stateless-function
   return (

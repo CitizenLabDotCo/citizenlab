@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 
 // components
 import { FormattedMessage } from 'react-intl';
-import ActionButton from 'components/buttons/action.js';
+// import ActionButton from 'components/buttons/action.js';
 import IdeasBorad from 'containers/IdeasIndexPage/pageView';
 
 // store
@@ -13,7 +13,7 @@ import { preprocess } from 'utils';
 // messages
 import messages from './messages';
 
-const AllIdeas = ({ location, goTo }) => (
+const AllIdeas = () => (
   <div>
     <h1>
       <FormattedMessage {...messages.headerIndex} />

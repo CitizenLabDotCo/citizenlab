@@ -6,7 +6,7 @@
 /* eslint-disable redux-saga/yield-effects */
 import { call, put } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
-import { loadTopics, loadTopic, deleteTopic } from 'api';
+import { loadResources, loadResource, deleteResource } from 'api';
 
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import { stringMock, mockNumber } from 'utils/testing/constants';
@@ -23,7 +23,7 @@ describe('resources/topics sagas', () => {
     const it = sagaHelper(loadTopicsSaga(mockedAction));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(loadTopics, {
+      expect(result).toEqual(call(loadResources, 'topic', {
         'page[number]': mockedAction.nextPageNumber,
         'page[size]': mockedAction.nextPageItemCount,
       }));
@@ -45,7 +45,7 @@ describe('resources/topics sagas', () => {
     const it = sagaHelper(loadTopicSaga(mockedAction));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(loadTopic, mockedAction.id));
+      expect(result).toEqual(call(loadResource, 'topic', mockedAction.id));
     });
 
     it('then, should dispatch mergeJsonApiResources action', (result) => {
@@ -64,7 +64,7 @@ describe('resources/topics sagas', () => {
     const it = sagaHelper(deleteTopicSaga(mockedAction));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(deleteTopic, mockedAction.id));
+      expect(result).toEqual(call(deleteResource, 'topic', mockedAction.id));
     });
 
     it('then, should dispatch deleteTopicSuccess action', (result) => {

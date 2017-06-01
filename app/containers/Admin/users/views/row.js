@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ImPropTypes from 'react-immutable-proptypes'; 
+import ImPropTypes from 'react-immutable-proptypes';
 import { push } from 'react-router-redux';
 
 // components
 import ActionButton from 'components/buttons/action.js';
 import { Table } from 'semantic-ui-react';
-import SliderForm from './sliderForm'
+import SliderForm from './sliderForm';
 // store
 import { preprocess } from 'utils';
 import { createStructuredSelector } from 'reselect';
@@ -23,15 +23,16 @@ const Row = ({ userId, firstName, lastName, email, createdAt, roles, deleteUser 
     <Table.Cell>{email}</Table.Cell>
     <Table.Cell>{createdAt}</Table.Cell>
     <Table.Cell>
-        <SliderForm roles={roles} userId={userId} />
+      <SliderForm roles={roles} userId={userId} />
     </Table.Cell>
     <Table.Cell>
-        <ActionButton action={deleteUser} message={messages.deleteButton} fluid={false} />
+      <ActionButton action={deleteUser} message={messages.deleteButton} fluid={false} />
     </Table.Cell>
   </Table.Row>
 );
 
 Row.propTypes = {
+  userId: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
@@ -59,14 +60,3 @@ const mergeProps = (stateP, dispatchP, ownP) => {
 };
 
 export default preprocess(mapStateToProps, { goTo: push, deleteUser: deleteUserRequest, updateUser: updateUserRequest }, mergeProps)(Row);
-
-
-/*
-  <div style={{ height: '35px', marginTop: '10px', backgroundColor: 'white' }}>
-    
-    <ActionButton action={goToEdit} message={messages.updateButton} />
-    <span> <T value={title} /> </span>
-  </div>
-
-
-*/

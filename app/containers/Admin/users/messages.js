@@ -14,5 +14,5 @@ export default defineMessages({
   helmetDescription: {
     id: 'app.containers.Admin.User.helmetDescription',
     defaultMessage: 'User list in admin backoffice',
-  }
+  },
 });

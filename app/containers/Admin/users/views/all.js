@@ -26,39 +26,39 @@ const AllUsers = ({ loaded, load, hasMore }) => (
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>
-              <FormattedMessage {...messages.avatar} />
+            <FormattedMessage {...messages.avatar} />
           </Table.HeaderCell>
           <Table.HeaderCell>
-              <FormattedMessage {...messages.firstName} />
+            <FormattedMessage {...messages.firstName} />
           </Table.HeaderCell>
           <Table.HeaderCell>
-              <FormattedMessage {...messages.lastName} />
+            <FormattedMessage {...messages.lastName} />
           </Table.HeaderCell>
           <Table.HeaderCell>
-              <FormattedMessage {...messages.email} />
+            <FormattedMessage {...messages.email} />
           </Table.HeaderCell>
           <Table.HeaderCell>
-              <FormattedMessage {...messages.member} />
+            <FormattedMessage {...messages.member} />
            since</Table.HeaderCell>
           <Table.HeaderCell>
-              <FormattedMessage {...messages.admin} />
+            <FormattedMessage {...messages.admin} />
           </Table.HeaderCell>
           <Table.HeaderCell>
-              <FormattedMessage {...messages.delete} />
+            <FormattedMessage {...messages.delete} />
           </Table.HeaderCell>
 
         </Table.Row>
       </Table.Header>
 
-        <InfiniteScroll
-          element={'tbody'}
-          loadMore={load}
-          initialLoad
-          hasMore={hasMore}
-          loader={<tr className="loader"></tr>}
-        >
-          {loaded.map((id) => <Row key={id} userId={id} />)}
-        </InfiniteScroll>
+      <InfiniteScroll
+        element={'tbody'}
+        loadMore={load}
+        initialLoad
+        hasMore={hasMore}
+        loader={<tr className="loader"></tr>}
+      >
+        {loaded.map((id) => <Row key={id} userId={id} />)}
+      </InfiniteScroll>
     </Table>
   </div>
 );

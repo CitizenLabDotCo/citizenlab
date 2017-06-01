@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import ImPropTypes from 'react-immutable-proptypes';
 
 // components
-import { Popup, Icon } from 'semantic-ui-react';
+import { Popup } from 'semantic-ui-react';
 import T from 'containers/T';
-import Authorize from 'utils/containers/authorize';
+
 // style
 import styled from 'styled-components';
 import moment from 'moment';
@@ -137,44 +137,44 @@ const VoteCount = styled.div`
   margin-left: 4px;
 `;
 
-const CommentContainer = styled.div`
-  display: flex;
-  position: relative;
+// const CommentContainer = styled.div`
+//   display: flex;
+//   position: relative;
 
-  &:hover svg {
-    fill: #000;
-  }
+//   &:hover svg {
+//     fill: #000;
+//   }
 
-  &:hover div {
-    color: #000;
-  }
-`;
+//   &:hover div {
+//     color: #000;
+//   }
+// `;
 
-const CommentIcon = styled.svg`
-  fill: #aaa;
-  height: 30px;
-  cursor: pointer;
-  display: inline-block;
-  align-self: flex-end;
-`;
+// const CommentIcon = styled.svg`
+//   fill: #aaa;
+//   height: 30px;
+//   cursor: pointer;
+//   display: inline-block;
+//   align-self: flex-end;
+// `;
 
-const CommentCountContainer = styled.div`
-  width: 27px;
-  height: 22px;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+// const CommentCountContainer = styled.div`
+//   width: 27px;
+//   height: 22px;
+//   position: absolute;
+//   top: 2px;
+//   left: 2px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// `;
 
-const CommentCount = styled.div`
-  color: #aaa;
-  font-weight: 300;
-  font-size: 14px;
-  margin-top: 0px;
-`;
+// const CommentCount = styled.div`
+//   color: #aaa;
+//   font-weight: 300;
+//   font-size: 14px;
+//   margin-top: 0px;
+// `;
 
 
 // class VotesContainer extends React.Component {

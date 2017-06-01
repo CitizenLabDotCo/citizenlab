@@ -6,24 +6,24 @@
 /* eslint-disable redux-saga/yield-effects */
 import { call, put } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
-import { loadAreas, loadArea, deleteArea } from 'api';
+import { loadResources, loadResource, deleteResource } from 'api';
 
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import { stringMock, mockNumber } from 'utils/testing/constants';
 
-import { loadAreasSaga, loadAreaSaga, deleteAreaSaga } from '../sagas';
-import { deleteAreaSuccess, loadAreasSuccess, loadAreaSuccess } from '../actions';
+import { loadEventsSaga, loadEventSaga, deleteEventSaga } from '../sagas';
+import { deleteEventSuccess, loadEventsSuccess, loadEventSuccess } from '../actions';
 
 describe('resources/events sagas', () => {
-  describe('loadAreasSaga', () => {
+  describe('loadEventsSaga', () => {
     const mockedAction = {
       nextPageNumber: mockNumber,
       nextPageItemCount: mockNumber,
     };
-    const it = sagaHelper(loadAreasSaga(mockedAction));
+    const it = sagaHelper(loadEventsSaga(mockedAction));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(loadAreas, {
+      expect(result).toEqual(call(loadResources, 'event', {
         'page[number]': mockedAction.nextPageNumber,
         'page[size]': mockedAction.nextPageItemCount,
       }));
@@ -33,42 +33,42 @@ describe('resources/events sagas', () => {
       expect(result).toEqual(put(mergeJsonApiResources()));
     });
 
-    it('then, should dispatch loadAreasSuccess action', (result) => {
-      expect(result).toEqual(put(loadAreasSuccess()));
+    it('then, should dispatch loadEventsSuccess action', (result) => {
+      expect(result).toEqual(put(loadEventsSuccess()));
     });
   });
 
-  describe('loadAreaSaga', () => {
+  describe('loadEventSaga', () => {
     const mockedAction = {
       id: stringMock,
     };
-    const it = sagaHelper(loadAreaSaga(mockedAction));
+    const it = sagaHelper(loadEventSaga(mockedAction));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(loadArea, mockedAction.id));
+      expect(result).toEqual(call(loadResource, 'event', mockedAction.id));
     });
 
     it('then, should dispatch mergeJsonApiResources action', (result) => {
       expect(result).toEqual(put(mergeJsonApiResources()));
     });
 
-    it('then, should dispatch loadAreaSuccess action', (result) => {
-      expect(result).toEqual(put(loadAreaSuccess()));
+    it('then, should dispatch loadEventSuccess action', (result) => {
+      expect(result).toEqual(put(loadEventSuccess()));
     });
   });
 
-  describe('deleteAreaSaga', () => {
+  describe('deleteEventSaga', () => {
     const mockedAction = {
       id: stringMock,
     };
-    const it = sagaHelper(deleteAreaSaga(mockedAction));
+    const it = sagaHelper(deleteEventSaga(mockedAction));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(deleteArea, mockedAction.id));
+      expect(result).toEqual(call(deleteResource, 'event', mockedAction.id));
     });
 
-    it('then, should dispatch deleteAreaSuccess action', (result) => {
-      expect(result).toEqual(put(deleteAreaSuccess(mockedAction.id)));
+    it('then, should dispatch deleteEventSuccess action', (result) => {
+      expect(result).toEqual(put(deleteEventSuccess(mockedAction.id)));
     });
   });
 });

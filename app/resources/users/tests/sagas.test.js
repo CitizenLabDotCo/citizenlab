@@ -6,7 +6,7 @@
 /* eslint-disable redux-saga/yield-effects */
 import { call, put } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
-import { loadUsers, loadUser, deleteUser } from 'api';
+import { loadResources, loadResource, deleteResource } from 'api';
 
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import { stringMock, mockNumber } from 'utils/testing/constants';
@@ -17,15 +17,15 @@ import { deleteUserSuccess, loadUsersSuccess, loadUserSuccess } from '../actions
 describe('resources/users sagas', () => {
   describe('loadUsersSaga', () => {
     const mockedAction = {
-      nextUserNumber: mockNumber,
-      nextUserItemCount: mockNumber,
+      nextPageNumber: mockNumber,
+      nextPageItemCount: mockNumber,
     };
     const it = sagaHelper(loadUsersSaga(mockedAction));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(loadUsers, {
-        'User[number]': mockedAction.nextUserNumber,
-        'User[size]': mockedAction.nextUserItemCount,
+      expect(result).toEqual(call(loadResources, 'user', {
+        'page[number]': mockedAction.nextPageNumber,
+        'page[size]': mockedAction.nextPageItemCount,
       }));
     });
 
@@ -45,7 +45,7 @@ describe('resources/users sagas', () => {
     const it = sagaHelper(loadUserSaga(mockedAction));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(loadUser, mockedAction.id));
+      expect(result).toEqual(call(loadResource, 'user', mockedAction.id));
     });
 
     it('then, should dispatch mergeJsonApiResources action', (result) => {
@@ -64,7 +64,7 @@ describe('resources/users sagas', () => {
     const it = sagaHelper(deleteUserSaga(mockedAction));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(deleteUser, mockedAction.id));
+      expect(result).toEqual(call(deleteResource, 'user', mockedAction.id));
     });
 
     it('then, should dispatch deleteUserSuccess action', (result) => {
