@@ -6,17 +6,18 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { Card } from 'semantic-ui-react';
 import IdeaCard from 'components/IdeaCard';
 
+
 // store
 import { preprocess } from 'utils';
 import { createStructuredSelector } from 'reselect';
 import selectIdeasIndexPageDomain from 'containers/IdeasIndexPage/selectors';
 import { loadNextPage } from 'containers/IdeasIndexPage/actions';
 
-
 const IdeasCards = ({ ideas, hasMore, loadMoreIdeas }) => (
-  <Card.Group stackable>
     <InfiniteScroll
+      element={'div'}
       loadMore={loadMoreIdeas}
+      className={'ui stackable cards'}
       initialLoad={false}
       hasMore={hasMore}
       loader={<div className="loader"></div>}
@@ -25,7 +26,6 @@ const IdeasCards = ({ ideas, hasMore, loadMoreIdeas }) => (
         <IdeaCard key={id} id={id} />
       ))}
     </InfiniteScroll>
-  </Card.Group>
 );
 
 IdeasCards.propTypes = {
@@ -42,11 +42,14 @@ const mapStateToProps = createStructuredSelector({
   search: (state) => state.getIn(['route', 'locationBeforeTransitions', 'search']),
 });
 
-const mergeProps = ({ ideas, nextPageNumber, nextPageItemCount, search }, { getNextPage }, { filter }) => ({
-  loadMoreIdeas: getNextPage.bind(null, nextPageNumber, nextPageItemCount, search, filter),
-  hasMore: !!(nextPageNumber && nextPageItemCount),
-  ideas,
-});
+const mergeProps = (
+  { ideas, nextPageNumber, nextPageItemCount, search },
+  { getNextPage },
+  { filter, maxNumber, hasMore }) => ({
+    loadMoreIdeas: getNextPage.bind(null, maxNumber || nextPageNumber, nextPageItemCount, search, filter),
+    hasMore: hasMore || !!((maxNumber || nextPageNumber) && nextPageItemCount),
+    ideas,
+  });
 
 
 export default preprocess(mapStateToProps, { getNextPage: loadNextPage }, mergeProps)(IdeasCards);
