@@ -35,5 +35,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Pages.Views.edit.pageLoadingError',
     defaultMessage: 'Page not found!',
   },
+  tableTitle: {
+    id: 'app.containers.AdminPage.AreaDashboard.tableTitle',
+    defaultMessage: 'Pages',
+  },
 
 });

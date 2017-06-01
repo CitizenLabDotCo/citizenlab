@@ -15,9 +15,27 @@ import { updateUserRequest, deleteUserRequest } from 'resources/users/actions';
 // messages
 import messages from './messages';
 
-const Row = ({ userId, firstName, lastName, email, createdAt, roles, deleteUser }) => (
+// style
+import styled from 'styled-components';
+
+const UserImage = styled.img`
+  height: 46px;
+  cursor: pointer;
+  display: flex;
+  border-radius: 50%;
+  opacity: 0.75;
+  transition: opacity 200ms ease;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const Row = ({ userId, avatar, firstName, lastName, email, createdAt, roles, deleteUser }) => (
   <Table.Row>
-    <Table.Cell>avatar</Table.Cell>
+    <Table.Cell textAlign={'center'}>
+      <UserImage avatar src={avatar} />
+    </Table.Cell>
     <Table.Cell>{firstName}</Table.Cell>
     <Table.Cell>{lastName}</Table.Cell>
     <Table.Cell>{email}</Table.Cell>
@@ -32,6 +50,7 @@ const Row = ({ userId, firstName, lastName, email, createdAt, roles, deleteUser 
 );
 
 Row.propTypes = {
+  avatar: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,

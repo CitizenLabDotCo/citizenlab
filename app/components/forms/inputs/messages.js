@@ -178,4 +178,8 @@ export default defineMessages({
     id: 'app.containers.UserFormInput.labelLocale',
     defaultMessage: 'Choose one...',
   },
+  multiSelectNoResult: {
+    id: 'app.containers.UserFormInput.multiSelectNoResult',
+    defaultMessage: 'No match found...',
+  },
 });

@@ -6,13 +6,9 @@
 */
 
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import T from 'containers/T';
-import { makeSelectSetting } from 'utils/tenant/selectors';
-import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-import { createStructuredSelector } from 'reselect';
 import { Dropdown } from 'semantic-ui-react';
 import { injectTFunc } from 'containers/T/utils';
 
@@ -96,9 +92,4 @@ MultiSelectT.propTypes = {
   tFunc: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  userLocale: makeSelectLocale(),
-  tenantLocales: makeSelectSetting(['core', 'locales']),
-});
-
-export default injectTFunc(injectIntl(connect(mapStateToProps)(MultiSelectT)));
+export default injectTFunc(injectIntl(MultiSelectT));

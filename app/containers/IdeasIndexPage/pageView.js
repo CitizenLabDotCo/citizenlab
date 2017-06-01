@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 
 // components
 import WatchSagas from 'containers/WatchSagas';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Grid } from 'semantic-ui-react';
 import IdeaCards from './components/ideaCards';
 
 // store
@@ -17,6 +17,42 @@ import { preprocess } from 'utils';
 import { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest, resetIdeas } from './actions';
 import sagasWatchers from './sagas';
 
+const topBar = () => (
+    <Grid columns={2}>
+      <Grid.Row>
+        {/* TOPICS */}
+        <Grid.Column width={5} textAlign="center">
+          {<MultiSelectT
+            options={topicsSelect}
+            maxSelectionLength={3}
+            placeholder={formatMessage({ ...messages.topicsPlaceholder })}
+            optionLabel={formatMessage({ ...messages.topicsLabel })}
+            handleOptionsAdded={this.storeTopics}
+          />}
+        </Grid.Column>
+        {/* AREAS */}
+        <Grid.Column width={5} textAlign="center">
+          <MultiSelectT
+            options={areasSelect}
+            maxSelectionLength={3}
+            placeholder={formatMessage({ ...messages.areasPlaceholder })}
+            optionLabel={formatMessage({ ...messages.areasLabel })}
+            handleOptionsAdded={this.storeAreas}
+          />
+        </Grid.Column>
+        <Grid.Column width={5} textAlign="center">
+          <MultiSelectT
+            options={projectsSelect}
+            maxSelectionLength={1}
+            singleSelection
+            placeholder={formatMessage({ ...messages.projectsPlaceholder })}
+            optionLabel={formatMessage({ ...messages.projectsLabel })}
+            handleOptionsAdded={this.storeProject}
+          />}
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+)
 
 class View extends React.Component {
   constructor(props) {
@@ -66,6 +102,7 @@ class View extends React.Component {
       <div>
         <WatchSagas sagas={sagasWatchers} />
         <Segment style={{ width: 1000, marginLeft: 'auto', marginRight: 'auto' }} basic>
+
           <IdeaCards filter={filter} />
         </Segment>
       </div>

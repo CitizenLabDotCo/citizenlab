@@ -35,5 +35,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Areas.Views.edit.areaLoadingError',
     defaultMessage: 'Area not found!',
   },
-
+  tableTitle: {
+    id: 'app.containers.AdminPage.AreaDashboard.tableTitle',
+    defaultMessage: 'Areas',
+  },
 });

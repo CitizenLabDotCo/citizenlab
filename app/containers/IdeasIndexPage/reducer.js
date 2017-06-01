@@ -13,8 +13,14 @@ const initialState = fromJS({
   nextPageNumber: 1,
   nextPageItemCount: 3,
   ideas: [],
-  topics: {},
-  areas: {},
+  topics: {
+    nextPageNumber: 1,
+    nextPageItemCount: 1000,
+  },
+  areas: {
+    nextPageNumber: 1,
+    nextPageItemCount: 1000,
+  },
 });
 
 function ideasIndexPageReducer(state = initialState, action) {
@@ -25,32 +31,30 @@ function ideasIndexPageReducer(state = initialState, action) {
       const nextPageItemCount = getPageItemCountFromUrl(action.payload.links.next);
 
       return state
-        .update('ideas', (ideas) => (action.initialLoad ? fromJS(ids) : ideas.concat(ids)))
+        .update('ideas', (ideas) => (action.nextPageNumber === 1 ? fromJS(ids) : ideas.concat(ids)))
         .set('nextPageNumber', nextPageNumber)
         .set('nextPageItemCount', nextPageItemCount);
     }
     case RESET_IDEAS: {
-      const taEmpty = {};
-      return state
-        .update('ideas', () => fromJS([]))
-        .update('topics', () => fromJS(taEmpty))
-        .update('areas', () => fromJS(taEmpty))
-        .set('nextPageNumber', null)
-        .set('nextPageItemCount', null);
+      return initialState;
     }
     case LOAD_TOPICS_SUCCESS: {
       const ids = action.payload.data.map((topic) => topic.id);
       const nextPageNumber = getPageItemCountFromUrl(action.payload.links.next);
+      const nextPageItemCount = getPageItemCountFromUrl(action.payload.links.next);
       return state
         .setIn(['topics', 'ids'], fromJS(ids))
-        .setIn(['topics', 'nextPageNumber'], nextPageNumber);
+        .setIn(['topics', 'nextPageNumber'], nextPageNumber)
+        .setIn(['topics', 'nextPageItemCount'], nextPageItemCount);
     }
     case LOAD_AREAS_SUCCESS: {
       const ids = action.payload.data.map((area) => area.id);
       const nextPageNumber = getPageItemCountFromUrl(action.payload.links.next);
+      const nextPageItemCount = getPageItemCountFromUrl(action.payload.links.next);
       return state
         .setIn(['areas', 'ids'], fromJS(ids))
-        .setIn(['areas', 'nextPageNumber'], nextPageNumber);
+        .setIn(['areas', 'nextPageNumber'], nextPageNumber)
+        .setIn(['areas', 'nextPageItemCount'], nextPageItemCount);
     }
     default:
       return state;

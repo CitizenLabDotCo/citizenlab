@@ -115,7 +115,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
         <WatchSagas sagas={sagas} />
         <Saga saga={sagasTopics.loadTopicsWatcher} />
         <Saga saga={sagasAreas.loadAreasWatcher} />
-        <Saga saga={sagasProjects.fetchProjectsWatcher} />
+        <Saga saga={sagasProjects.loadProjectsWatcher} />
 
         <Breadcrumbs />
         <IdeaEditorWrapper
