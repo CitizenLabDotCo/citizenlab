@@ -139,6 +139,10 @@ injectGlobal`
     font-family: 'proxima-nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 
+  body.modal-active {
+    overflow: hidden;
+  }
+
   #app {
     background-color: #fafafa;
     min-height: 100%;

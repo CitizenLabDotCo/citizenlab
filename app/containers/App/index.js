@@ -84,22 +84,23 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
           />
           <Navbar currentTenant={currentTenant} />
 
-          <Conteinerize location={location}>
-            <Loader
-              resourceLoader={loadUser}
-              loadingMessage={messages.currentUserLoadingMessage}
-              errorMessage={messages.currentUserLoadingError}
-              listenenTo={LOAD_CURRENT_USER_REQUEST}
-              withError={false}
-            >
-              <Authorize action={['routes', 'admin']} resource={location.pathname}>
-                {children}
-                <Else>
-                  <ForbiddenRoute />
-                </Else>
-              </Authorize>
-            </Loader>
-          </Conteinerize>
+          {/* Note: please, no <Container> wrapper! It breaks the layout. */}
+          {/* <Conteinerize location={location}> */}
+          <Loader
+            resourceLoader={loadUser}
+            loadingMessage={messages.currentUserLoadingMessage}
+            errorMessage={messages.currentUserLoadingError}
+            listenenTo={LOAD_CURRENT_USER_REQUEST}
+            withError={false}
+          >
+            <Authorize action={['routes', 'admin']} resource={location.pathname}>
+              {children}
+              <Else>
+                <ForbiddenRoute />
+              </Else>
+            </Authorize>
+          </Loader>
+          {/* </Conteinerize> */}
           {/* <DockableSagaView monitor={sagamonitor}  /> */}
         </div>
       );
