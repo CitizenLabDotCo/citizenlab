@@ -2,7 +2,7 @@ class Api::V1::AreasController < ApplicationController
   before_action :set_area, only: [:show, :update, :destroy]
 
   def index
-    @areas = policy_scope(Area).page(params[:page])
+    @areas = policy_scope(Area)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
     render json: @areas
