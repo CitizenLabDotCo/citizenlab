@@ -8,6 +8,8 @@ import WatchSagas from 'containers/WatchSagas';
 import Modal from 'components/Modal';
 import { preprocess } from 'utils';
 import IdeasShow from 'containers/IdeasShow';
+import { Link } from 'react-router';
+import { lighten, darken } from 'polished';
 
 import {
   selectLandingPage,
@@ -251,6 +253,22 @@ const SectionTitle = styled.h2`
   `}
 `;
 
+const ViewAllButtonText = styled(Link)`
+  color: #00a8e2;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 16px;
+  margin-right: 7px;
+  cursor: pointer;
+`;
+
+const ViewAllButtonIcon = styled.svg`
+  fill: #00a8e2;
+  height: 11px;
+  margin-top: -1px;
+  cursor: pointer;
+`;
+
 const ViewAllButton = styled.div`
   display: flex;
   align-items: center;
@@ -258,34 +276,18 @@ const ViewAllButton = styled.div`
   cursor: pointer;
 
   &:hover {
-    div {
-      color: #00a8e2;
+    ${ViewAllButtonIcon} {
+      fill: ${lighten(0.2, '#00a8e2')};
     }
-  
-    svg {
-      fill: #00a8e2;
+
+    ${ViewAllButtonText} {
+      color: ${lighten(0.2, '#00a8e2')};
     }
   }
 
   ${media.phone`
     margin-top: 10px;
   `}
-`;
-
-const ViewAllButtonText = styled.div`
-  /* color: #888; */
-  color: #00a8e2;
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 16px;
-  margin-right: 7px;
-`;
-
-const ViewAllButtonIcon = styled.svg`
-  /* fill: #888; */
-  fill: #00a8e2;
-  height: 11px;
-  margin-top: -1px;
 `;
 
 const SectionContainer = styled.div`
@@ -409,7 +411,7 @@ class LandingPage extends React.Component {
                 <SectionHeader>
                   <SectionTitle>Ideas for Oostende</SectionTitle>
                   <ViewAllButton>
-                    <ViewAllButtonText>View all ideas</ViewAllButtonText>
+                    <ViewAllButtonText to="/ideas">View all ideas</ViewAllButtonText>
                     <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
                       <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
                     </ViewAllButtonIcon>
@@ -424,7 +426,7 @@ class LandingPage extends React.Component {
                 <SectionHeader>
                   <SectionTitle>Projects from Oostende</SectionTitle>
                   <ViewAllButton>
-                    <ViewAllButtonText>View all projects</ViewAllButtonText>
+                    <ViewAllButtonText to="/projects">View all projects</ViewAllButtonText>
                     <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
                       <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
                     </ViewAllButtonIcon>
