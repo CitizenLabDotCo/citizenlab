@@ -12,13 +12,18 @@ export const TitleStatusWrapper = (props) => (
   />
 );
 
+const StyledInput = styled(Input)`
+  width: 100%;
+`;
+
 function IdeaTitle(props) {
-  const { className, setTitle } = props;
+  const { setTitle } = props;
 
   return (
-    <Input
+    <StyledInput
       type="text"
-      className={className}
+      size="medium"
+      placeholder="The title of your idea"
       onChange={setTitle}
     />
   );
@@ -26,7 +31,6 @@ function IdeaTitle(props) {
 
 IdeaTitle.propTypes = {
   setTitle: PropTypes.func.isRequired,
-  className: PropTypes.string,
 };
 
 TitleStatusWrapper.propTypes = {
@@ -38,7 +42,6 @@ TitleStatusWrapper.propTypes = {
 export default styled(IdeaTitle)`
   width: 100%;
   height: 36px;
-  border: 1px solid #CCE2FF;
   font-stretch: normal;
   font-family: 'proxima-nova';
   letter-spacing: normal;

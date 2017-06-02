@@ -108,7 +108,7 @@ export default defineMessages({
   },
   projectsPlaceholder: {
     id: 'app.containers.IdeasNewPage.projectsPlaceholder',
-    defaultMessage: 'Select areas',
+    defaultMessage: 'Select projects',
   },
   loadingTopics: {
     id: 'app.containers.IdeasNewPage.loadingTopics',
