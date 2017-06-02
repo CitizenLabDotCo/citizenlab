@@ -40,14 +40,8 @@ const FileInput = (props) => (
 );
 
 export const StyledFileInput = styled(FileInput)`
-  opacity: 0;
-  z-index: 1;
-  width: 100px;
-  height: 100px;
-  margin-left: 10px;
-  display: inline-block;
-  position: absolute !important; // override SUI's position
-  height: 4rem;
+  width: 100%;
+  border: solid 1px green;
 `;
 
 class ImageList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -100,6 +94,7 @@ class ImageList extends React.PureComponent { // eslint-disable-line react/prefe
       height: 100px;
       margin: 10px;
       z-index: 2;
+      border: solid 1px red;
     `;
 
     const { images, storeImageError } = this.props;
@@ -109,13 +104,13 @@ class ImageList extends React.PureComponent { // eslint-disable-line react/prefe
         {storeImageError && <Label>
           <FormattedMessage {...messages.storeImageError} />
         </Label>}
-        <Segment>
-          <ImagesStyled images={images} />
-          <div>
+        <ImagesStyled images={images} />
+        <div>
+          <Segment>
             <StyledFileInput onFileUpload={this.onFileUpload} />
-            <StyledImageButton />
-          </div>
-        </Segment>
+            {/* <StyledImageButton /> */}
+          </Segment>
+        </div>
       </div>
     );
   }

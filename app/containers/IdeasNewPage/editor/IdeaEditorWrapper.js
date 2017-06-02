@@ -19,10 +19,6 @@ import { LOAD_AREAS_REQUEST } from 'resources/areas/constants';
 import { LOAD_TOPICS_REQUEST } from 'resources/topics/constants';
 import { LOAD_PROJECTS_REQUEST } from 'resources/projects/constants';
 
-const IdeaInput = styled(Input)`
-  width: 100%;
-`;
-
 class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
@@ -32,12 +28,6 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
     this.storeAreas = this.storeAreas.bind(this);
     this.storeProject = this.storeProject.bind(this);
     this.saveDraft = this.saveDraft.bind(this);
-
-    this.ideaTitleInput = null;
-  }
-
-  componentDidMount() {
-    this.ideaTitleInput.focus();
   }
 
   storeTopics(topics) {
@@ -65,8 +55,9 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
   }
 
   render() {
-    const { className, loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
-    const { shortTitleError, longTitleError, titleLength } = this.props;
+    console.log(this.props.storeImage);
+    const { storeImage, loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
+    // const { shortTitleError, longTitleError, titleLength } = this.props;
     const { saveDraft } = this.props;
     const { topics, areas, projects, loadTopicsError, loadAreasError, loadProjectsError, loadingTopics, loadingAreas, loadingProjects, invalidForm } = this.props;
     const { formatMessage } = this.props.intl;
@@ -75,8 +66,6 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
     const topicsSelect = multiselectMap(topics);
     const areasSelect = multiselectMap(areas);
     const projectsSelect = multiselectMap(projects);
-
-    console.log(this.storeTopics);
 
     return (
       <Form>

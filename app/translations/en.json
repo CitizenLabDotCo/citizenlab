@@ -101,7 +101,7 @@
   "app.containers.IdeasNewPage.loadingTopics": "Loading topics...",
   "app.containers.IdeasNewPage.longTitleError": "Too long (max 120 chars)",
   "app.containers.IdeasNewPage.projectsLabel": "projects",
-  "app.containers.IdeasNewPage.projectsPlaceholder": "Select areas",
+  "app.containers.IdeasNewPage.projectsPlaceholder": "Select project",
   "app.containers.IdeasNewPage.publish": "Publish",
   "app.containers.IdeasNewPage.saveAsDraft": "Save as draft",
   "app.containers.IdeasNewPage.shortTitleError": "Too short (min 5 chars)",

@@ -35,7 +35,6 @@ import { loadTopicsRequest } from 'resources/topics/actions';
 import { loadAreasRequest } from 'resources/areas/actions';
 import { loadProjectsRequest } from 'resources/projects/actions';
 
-
 const PageContainer = styled.div`
   background: '#eeeeee';
 `;
@@ -49,6 +48,7 @@ const FormContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding-top: 50px;
+  padding-bottom: 100px;
   padding-left: 20px;
   padding-right: 20px;
 `;
@@ -128,7 +128,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
             <WatchSagas sagas={sagas} />
             <Saga saga={sagasTopics.loadTopicsWatcher} />
             <Saga saga={sagasAreas.loadAreasWatcher} />
-            <Saga saga={sagasProjects.fetchProjectsWatcher} />
+            <Saga saga={sagasProjects.loadProjectsWatcher} />
 
             {/* <Breadcrumbs /> */}
 
@@ -139,12 +139,15 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
               storeAreas={this.storeAreas}
               storeProject={this.storeProject}
               setTitle={setT}
+              storeImage={storeImg}
             />
 
+            {/*
             <FormLabel>
               <FormattedMessage {...messages.addImageLabel} />
             </FormLabel>
             <ImageList storeImage={storeImg} />
+            */}
 
             {/* <StyledLabel>Location</StyledLabel> */}
             {/* TODO: location image here */}

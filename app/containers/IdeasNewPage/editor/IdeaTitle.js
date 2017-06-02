@@ -17,12 +17,12 @@ const StyledInput = styled(Input)`
 `;
 
 function IdeaTitle(props) {
-  const { className, setTitle } = props;
+  const { setTitle } = props;
 
   return (
     <StyledInput
       type="text"
-      size="large"
+      size="medium"
       placeholder="The title of your idea"
       onChange={setTitle}
     />
@@ -31,7 +31,6 @@ function IdeaTitle(props) {
 
 IdeaTitle.propTypes = {
   setTitle: PropTypes.func.isRequired,
-  className: PropTypes.string,
 };
 
 TitleStatusWrapper.propTypes = {
