@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import { Button, Checkbox, Form, Input, Radio, Select, TextArea } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react';
 import MultiSelectT from 'components/MultiSelectT';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import FormattedMessageSegment from 'components/FormattedMessageSegment';
 import IdeaEditor from './IdeaEditor';
 import messages from '../messages';
-import IdeaTitle, { TitleStatusWrapper } from './IdeaTitle';
+import IdeaTitle from './IdeaTitle';
 import { makeSelectAreas, makeSelectTopics, makeSelectProjects, selectSubmitIdea } from '../selectors';
 import multiselectMap from '../multiselectMap';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -55,8 +55,7 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
   }
 
   render() {
-    console.log(this.props.storeImage);
-    const { storeImage, loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
+    const { loading, loadError, stored, storeError, submitting, submitError, submitted, setTitle } = this.props;
     // const { shortTitleError, longTitleError, titleLength } = this.props;
     const { saveDraft } = this.props;
     const { topics, areas, projects, loadTopicsError, loadAreasError, loadProjectsError, loadingTopics, loadingAreas, loadingProjects, invalidForm } = this.props;

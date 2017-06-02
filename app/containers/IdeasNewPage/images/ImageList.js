@@ -108,7 +108,7 @@ class ImageList extends React.PureComponent { // eslint-disable-line react/prefe
         <div>
           <Segment>
             <StyledFileInput onFileUpload={this.onFileUpload} />
-            {/* <StyledImageButton /> */}
+            <StyledImageButton />
           </Segment>
         </div>
       </div>
