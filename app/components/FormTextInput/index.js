@@ -9,7 +9,7 @@ const Input = styled.input`
   font-weight: 400;
 `;
 
-function FormTextInput(props) {
+function FormTextInput() {
   return (
     <Input type="text" />
   );

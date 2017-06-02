@@ -118,4 +118,4 @@ Project.propTypes = {
   goTo: PropTypes.func.isRequired,
 };
 
-export default preprocess(mapStateToProps, {goTo: push})(Project);
+export default preprocess(mapStateToProps, { goTo: push })(Project);
