@@ -26,6 +26,8 @@ end
 Tenant.create({
   name: 'local',
   host: 'localhost',
+  logo: Rails.root.join("spec/fixtures/logo.png").open,
+  header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
   settings: {
     core: {
       allowed: true,

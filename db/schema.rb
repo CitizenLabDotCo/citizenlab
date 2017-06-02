@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170531144653) do
+ActiveRecord::Schema.define(version: 20170602105428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -158,6 +158,8 @@ ActiveRecord::Schema.define(version: 20170531144653) do
     t.jsonb    "settings",   default: {}
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.string   "logo"
+    t.string   "header_bg"
     t.index ["host"], name: "index_tenants_on_host", using: :btree
   end
 

@@ -20,11 +20,17 @@ resource "Tenants" do
 
   patch "api/v1/tenants/:id" do
 
-    with_options scope: :tenant do   parameter :settings, "The changes to the\
-    settings object. This will me merged with the existing settings. Arrays\
-    will not be merged, but override their values", extra: "" end
+    with_options scope: :tenant do   
+      parameter :settings, "The changes to the\
+      settings object. This will me merged with the existing settings. Arrays\
+      will not be merged, but override their values", extra: ""
+      parameter :logo, "Base64 encoded logo"
+      parameter :header_bg, "Base64 encoded header"
+    end
 
     let(:id) { Tenant.current.id }
+    let(:logo) { base64_encoded_image("logo.png")}
+    let(:header_bg) { base64_encoded_image("header.jpg")}
     let(:settings) {
       {
         "core" => {
@@ -77,6 +83,17 @@ resource "Tenants" do
 
     end
 
+  end
+
+    private
+
+
+  def base64_encoded_image filename
+    "data:image/#{filename.split('.').last};base64,#{encode_image_as_base64(filename)}"
+  end
+
+  def encode_image_as_base64(filename)
+    Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))
   end
 
 end
