@@ -57,7 +57,7 @@ const HeaderContainer = styled.div`
 `;
 
 const HeaderOverlay = styled.div`
-  background-color: #003a7d;
+  background-color: ${(props) => props.theme.mainBg};
   opacity: 0.65;
   position: absolute;
   top: 0;
@@ -259,7 +259,7 @@ const SectionTitle = styled.h2`
 `;
 
 const ViewAllButtonText = styled.div`
-  color: ${(props) => props.theme.mainBg};
+  color: ${(props) => props.theme.accentBg};
   font-size: 18px;
   font-weight: 300;
   line-height: 16px;
@@ -268,7 +268,7 @@ const ViewAllButtonText = styled.div`
 `;
 
 const ViewAllButtonIcon = styled.svg`
-  fill: ${(props) => props.theme.mainBg};
+  fill: ${(props) => props.theme.accentBg};
   height: 11px;
   margin-top: -1px;
   cursor: pointer;
@@ -282,11 +282,11 @@ const ViewAllButton = styled(Link)`
 
   &:hover {
     ${ViewAllButtonIcon} {
-      fill: ${(props) => lighten(0.2, props.theme.mainBg)};
+      fill: ${(props) => lighten(0.2, props.theme.accentBg)};
     }
 
     ${ViewAllButtonText} {
-      color: ${(props) => lighten(0.2, props.theme.mainBg)};
+      color: ${(props) => lighten(0.2, props.theme.accentBg)};
     }
   }
 

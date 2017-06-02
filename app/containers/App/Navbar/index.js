@@ -59,11 +59,11 @@ const MenuItems = styled.div`
     color: ${(props) => !props.secondary ? '#666' : 'rgba(255, 255, 255, 0.5)'};
 
     &:hover {
-      color: ${(props) => !props.secondary ? props.theme.mainBg : '#fff'};
+      color: ${(props) => !props.secondary ? props.theme.accentFg : '#fff'};
     }
 
     &.active {
-      color: ${(props) => !props.secondary ? props.theme.mainBg : '#fff'};
+      color: ${(props) => !props.secondary ? props.theme.accentFg : '#fff'};
     }
   }
 `;
@@ -88,7 +88,7 @@ const Button = styled.div`
   justify-content: center;
   padding: 10px 20px;
   border-radius: 6px;
-  background: ${(props) => props.theme.mainBg};
+  background: ${(props) => props.theme.accentFg};
   cursor: pointer;
   transition: all 200ms ease-out;
   margin-right: 0px;
@@ -99,7 +99,7 @@ const Button = styled.div`
   }
 
   &:hover {
-    background: ${(props) => lighten(0.1, props.theme.mainBg)};
+    background: ${(props) => lighten(0.1, props.theme.accentFg)};
   }
 `;
 
