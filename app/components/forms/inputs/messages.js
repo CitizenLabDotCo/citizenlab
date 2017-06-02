@@ -212,10 +212,4 @@ export default defineMessages({
     id: 'app.containers.UserFormInput.labelProject',
     defaultMessage: 'Choose one...',
   },
-
-  // MultiSelect
-  noResultsMultiSelect: {
-    id: 'app.containers.UserFormInput.noResultsMultiSelect',
-    defaultMessage: 'No match found...',
-  },
 });

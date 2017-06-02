@@ -35,7 +35,7 @@ const InfiniteScrollStyled = styled(InfiniteScroll)`
 
 class IdeasCards extends React.Component {
   componentWillReceiveProps(newProps) {
-    if (newProps.isNewSearch) this.props.resetIdeas();
+    if (newProps.isNewSearch) this.props.reset();
   }
   render() {
     const { loadMoreIdeas, hasMore, ideas } = this.props;
@@ -60,6 +60,7 @@ IdeasCards.propTypes = {
   ideas: PropTypes.any,
   hasMore: PropTypes.bool,
   loadMoreIdeas: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
 };
 
 
@@ -73,10 +74,10 @@ const mapStateToProps = createStructuredSelector({
 
 const mergeProps = (state, dispatch, own) => {
   const { ideas, nextPageNumber, nextPageItemCount, lastSearch, newSearch } = state;
-  const { load, resetIdeas } = dispatch;
+  const { load, reset } = dispatch;
   const { filter, maxNumber } = own;
   let { hasMore } = own;
-  const isNewSearch = lastSearch !== newSearch && nextPageNumber !==1;
+  const isNewSearch = lastSearch !== newSearch && nextPageNumber !== 1;
   if (hasMore !== false) hasMore = !!(nextPageNumber && (maxNumber || nextPageItemCount)) || isNewSearch;
   console.log(isNewSearch, hasMore);
   return {
@@ -84,9 +85,9 @@ const mergeProps = (state, dispatch, own) => {
     hasMore,
     ideas,
     isNewSearch,
-    resetIdeas,
+    reset,
   };
 };
 
 
-export default preprocess(mapStateToProps, { load: loadIdeasRequest, resetIdeas }, mergeProps)(IdeasCards);
+export default preprocess(mapStateToProps, { load: loadIdeasRequest, reset: resetIdeas }, mergeProps)(IdeasCards);

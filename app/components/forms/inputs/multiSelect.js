@@ -49,11 +49,16 @@ class MultiSelect extends React.PureComponent {
 }
 
 MultiSelect.propTypes = {
+  value: PropTypes.array.isRequired,
   name: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   action: PropTypes.func.isRequired,
   text: PropTypes.string,
   intl: intlShape.isRequired,
+};
+
+MultiSelect.defaultProps = {
+  value: [],
 };
 
 export default injectIntl(MultiSelect);
