@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
 // import ActionButton from 'components/buttons/action.js';
 // import IdeasBorad from 'containers/IdeasIndexPage/pageView';
@@ -18,7 +18,8 @@ const AllIdeas = ({ title, description }) => (
 );
 
 AllIdeas.propTypes = {
-  params: PropTypes.object.isRequired,
+  description: ImmutablePropTypes.map,
+  title: ImmutablePropTypes.map,
 };
 
 const mapStateToProps = createStructuredSelector({

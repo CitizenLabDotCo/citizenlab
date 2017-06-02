@@ -23,9 +23,7 @@ import canPublish from './editor/canPublish';
 import { selectSubmitIdea } from './selectors';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
-import sagas from './sagas';
 import messages from './messages';
-import { Saga } from 'react-redux-saga';
 
 // areas, topics and projects
 import sagasAreas from 'resources/areas/sagas';
@@ -122,10 +120,9 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
               <FormattedMessage {...messages.pageTitle} />
             </PageTitle>
 
-            <WatchSagas sagas={sagas} />
-            <Saga saga={sagasTopics.loadTopicsWatcher} />
-            <Saga saga={sagasAreas.loadAreasWatcher} />
-            <Saga saga={sagasProjects.fetchProjectsWatcher} />
+            <WatchSagas sagas={sagasTopics} />
+            <WatchSagas sagas={sagasAreas} />
+            <WatchSagas sagas={sagasProjects} />
 
             {/* <Breadcrumbs /> */}
 

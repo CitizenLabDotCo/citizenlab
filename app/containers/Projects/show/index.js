@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 import { Link } from 'react-router';
 
@@ -132,16 +131,15 @@ class ProjectView extends React.Component {
 
             </Menu>
           </Segment>
-            <Loader
-              resourceLoader={() => loadProject(params.projectId)}
-              loadingMessage={messages.LoadingMessage}
-              errorMessage={messages.LoadingError}
-              listenenTo={LOAD_PROJECT_REQUEST}
-              withError={false}
-              state="asdf"
-            >
-              {this.props.children }
-            </Loader>
+          <Loader
+            resourceLoader={() => loadProject(params.projectId)}
+            loadingMessage={messages.LoadingMessage}
+            errorMessage={messages.LoadingError}
+            listenenTo={LOAD_PROJECT_REQUEST}
+            withError={false}
+          >
+            {this.props.children }
+          </Loader>
           <Footer>
           </Footer>
         </Container>
