@@ -21,7 +21,7 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
   end
 
   def update
-    updated_settings = Tenant.current.settings.deep_merge(tenant_params[:settings].to_h)
+    updated_settings = @tenant.settings.deep_merge(tenant_params[:settings].to_h)
     if @tenant.update(tenant_params)
       render json: @tenant, status: :ok
     else
