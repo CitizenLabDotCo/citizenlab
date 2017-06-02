@@ -49,7 +49,7 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
     # schema validation, however, should be covering all settings that are not
     # allowed
     all_settings = params.require(:tenant).fetch(:settings, nil).try(:permit!)
-    params.require(:tenant).permit(:name, :host).merge(:settings => all_settings)
+    params.require(:tenant).permit(:name, :host, :logo, :header_bg).merge(:settings => all_settings)
   end
 
 end

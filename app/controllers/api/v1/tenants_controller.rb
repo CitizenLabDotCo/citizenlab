@@ -32,7 +32,7 @@ class Api::V1::TenantsController < ApplicationController
     # schema validation, however, should be covering all settings that are not
     # allowed
     all_settings = params.require(:tenant).fetch(:settings, nil).try(:permit!)
-    params.require(:tenant).permit(:title).merge(:settings => all_settings)
+    params.require(:tenant).permit(:logo, :header_bg).merge(:settings => all_settings)
   end
 
 end

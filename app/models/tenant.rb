@@ -2,6 +2,9 @@ require_dependency "tenant_schema/extended_schema"
 
 class Tenant < ApplicationRecord
 
+  mount_base64_uploader :logo, LogoUploader
+  mount_base64_uploader :header_bg, HeaderBgUploader
+
   validates :name, :host, presence: true
   validates :host, uniqueness: true
 
