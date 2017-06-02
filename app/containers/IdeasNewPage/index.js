@@ -1,17 +1,12 @@
-/*
- *
- * IdeasNewPage
- *
- */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import HelmetIntl from 'components/HelmetIntl';
 import { createStructuredSelector } from 'reselect';
-import { Container, Label, Divider } from 'semantic-ui-react';
+// import { Container, Label, Divider } from 'semantic-ui-react';
 import styled from 'styled-components';
-import Breadcrumbs from 'components/Breadcrumbs';
-import { injectIntl } from 'react-intl';
+import FormLabel from 'components/FormLabel';
+// import Breadcrumbs from 'components/Breadcrumbs';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { preprocess } from 'utils/reactRedux';
 import { bindActionCreators } from 'redux';
 import WatchSagas from 'containers/WatchSagas';
@@ -39,6 +34,29 @@ import sagasProjects from 'resources/projects/sagas';
 import { loadTopicsRequest } from 'resources/topics/actions';
 import { loadAreasRequest } from 'resources/areas/actions';
 import { loadProjectsRequest } from 'resources/projects/actions';
+
+
+const PageContainer = styled.div`
+  background: '#eeeeee';
+`;
+
+const FormContainer = styled.div`
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 100px;
+`;
+
+const PageTitle = styled.div`
+  color: #444;
+  font-weight: 400;
+  font-size: 34px;
+  text-align: center;
+  margin-bottom: 20px;
+`;
 
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -90,60 +108,57 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
   }
 
   render() {
-    const StyledLabel = styled(Label)`
-      height: 16px;
-      opacity: 0.5;
-      font-stretch: normal;
-      font-family: 'proxima-nova';
-      text-align: left;
-      letter-spacing: normal;
-      font-style: normal;
-      line-height: 1.33;
-      color: #303839;
-      font-size: 12px;
-      font-weight: bold;
-      margin: 20px 0 10px;
-    `;
+    const { /* className, storeAttachment: storeAtt, */ storeImage: storeImg, setTitle: setT } = this.props;
 
-    const { className, /* storeAttachment: storeAtt,*/ storeImage: storeImg, setTitle: setT } = this.props;
     return (
-      <Container className={className}>
+      <div>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <WatchSagas sagas={sagas} />
-        <Saga saga={sagasTopics.loadTopicsWatcher} />
-        <Saga saga={sagasAreas.loadAreasWatcher} />
-        <Saga saga={sagasProjects.fetchProjectsWatcher} />
+        <PageContainer>
+          <FormContainer>
+            <PageTitle>
+              <FormattedMessage {...messages.pageTitle} />
+            </PageTitle>
 
-        <Breadcrumbs />
-        <IdeaEditorWrapper
-          saveDraft={this.saveDraft}
-          storeIdea={this.storeIdea}
-          storeTopics={this.storeTopics}
-          storeAreas={this.storeAreas}
-          storeProject={this.storeProject}
-          setTitle={setT}
-        />
-        <StyledLabel>Add image(s)</StyledLabel>
-        <ImageList
-          storeImage={storeImg}
-        />
-        {/* <StyledLabel>Location</StyledLabel> */}
-        {/* TODO: location image here */}
-        <Divider />
-        {/* <StyledLabel>Attachments</StyledLabel> */}
-        {/* <AttachmentList */}
-        {/* storeAttachment={storeAtt} */}
-        {/* /> */}
-      </Container>
+            <WatchSagas sagas={sagas} />
+            <Saga saga={sagasTopics.loadTopicsWatcher} />
+            <Saga saga={sagasAreas.loadAreasWatcher} />
+            <Saga saga={sagasProjects.fetchProjectsWatcher} />
+
+            {/* <Breadcrumbs /> */}
+
+            <IdeaEditorWrapper
+              saveDraft={this.saveDraft}
+              storeIdea={this.storeIdea}
+              storeTopics={this.storeTopics}
+              storeAreas={this.storeAreas}
+              storeProject={this.storeProject}
+              setTitle={setT}
+            />
+
+            <FormLabel>
+              <FormattedMessage {...messages.addImageLabel} />
+            </FormLabel>
+            <ImageList storeImage={storeImg} />
+
+            {/* <StyledLabel>Location</StyledLabel> */}
+            {/* TODO: location image here */}
+            {/* <Divider /> */}
+            {/* <StyledLabel>Attachments</StyledLabel> */}
+            {/* <AttachmentList */}
+            {/* storeAttachment={storeAtt} */}
+            {/* /> */}
+          </FormContainer>
+        </PageContainer>
+      </div>
     );
   }
 }
 
 IdeasNewPage.propTypes = {
-  className: PropTypes.string,
+  // className: PropTypes.string,
   // mapDispatch
   publishIdeaClick: PropTypes.func.isRequired,
   // storeAttachment: PropTypes.func.isRequired,
@@ -242,9 +257,4 @@ const mergeProps = ({ ideasNewPageState: pageState, locale, user }, dispatchProp
 });
 
 // preprocess to avoid unnecessary re-renders when using mapDispatchToProps
-export default styled(injectIntl(preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(IdeasNewPage)))`
-  backgroundColor: '#eeeeee';
-  minHeight: '850px';
-  width: '100%';
-  margin-top: 30px;
-`;
+export default injectIntl(preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(IdeasNewPage));

@@ -6,6 +6,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  pageTitle: {
+    id: 'app.containers.IdeasNewPage.pageTitle',
+    defaultMessage: 'Add an idea',
+  },
+  addImageLabel: {
+    id: 'app.containers.IdeasNewPage.addImageLabel',
+    defaultMessage: 'Add image(s)',
+  },
   publish: {
     id: 'app.containers.IdeasNewPage.publish',
     defaultMessage: 'Publish',
