@@ -250,8 +250,9 @@ export function deleteArea(id) {
 }
 
 // resource
-export function loadResources(type, queryParameters) {
-  return request(`${API_PATH}/${type}s`, null, null, queryParameters);
+export function loadResources(type, queryParameters, search) {
+  const railsfriendlySearch = (search || '').replace(/[[0-9]+]/g, '[]');
+  return request(`${API_PATH}/${type}s${railsfriendlySearch}`, null, null, queryParameters);
 }
 
 export function createResource(type, data) {

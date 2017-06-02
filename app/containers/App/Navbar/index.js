@@ -12,7 +12,7 @@ import { signOutCurrentUser } from 'utils/auth/actions';
 import { makeSelectCurrentUserImmutable } from 'utils/auth/selectors';
 import ClickOutside from 'utils/containers/clickOutside';
 import messages from './messages';
-import { media } from '../../../utils/styleUtils';
+// import { media } from '/utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;

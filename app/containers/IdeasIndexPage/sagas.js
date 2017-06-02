@@ -9,7 +9,6 @@ import {
   loadTopicsError,
   loadAreasSuccess,
   loadAreasError,
-  resetIdeas,
 } from './actions';
 
 export function* getIdeas(action) {
@@ -20,14 +19,8 @@ export function* getIdeas(action) {
       ...action.filters,
     };
     Object.keys(queryParams).forEach((key) => (!queryParams[key] && (delete queryParams[key])));
-    const ideaResponse = yield call(fetchIdeas,
-      action.search,
-      queryParams
-    );
+    const ideaResponse = yield call(fetchIdeas, action.search, queryParams);
     yield put(mergeJsonApiResources(ideaResponse));
-    if (action.initialLoad) {
-      yield put(resetIdeas());
-    }
     yield put(loadIdeasSuccess(ideaResponse));
   } catch (err) {
     yield put(ideasLoadingError(err));

@@ -35,5 +35,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Projects.Views.edit.projectLoadingError',
     defaultMessage: 'Project not found!',
   },
-
+  tableTitle: {
+    id: 'app.containers.AdminPage.AreaDashboard.tableTitle',
+    defaultMessage: 'Projects',
+  },
 });

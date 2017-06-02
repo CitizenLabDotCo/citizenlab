@@ -4,7 +4,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { push } from 'react-router-redux';
 
 // components
-import Item from './all/item';
+import { Table } from 'semantic-ui-react';
+import Row from './row';
 import { FormattedMessage } from 'react-intl';
 import ActionButton from 'components/buttons/action.js';
 
@@ -25,15 +26,31 @@ const AllPages = ({ loaded, goToCreate, load, hasMore }) => (
     <div style={{ clear: 'both', overflow: 'auto' }}>
       <ActionButton action={goToCreate} message={messages.createButton} fluid />
     </div>
-    <InfiniteScroll
-      element={'div'}
-      loadMore={load}
-      initialLoad
-      hasMore={hasMore}
-      loader={<div className="loader"></div>}
-    >
-      {loaded.map((id) => <Item key={id} pageId={id} />)}
-    </InfiniteScroll>
+    <Table celled>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeaderCell>
+            <FormattedMessage {...messages.tableTitle} />
+          </Table.HeaderCell>
+          <Table.HeaderCell>
+            <FormattedMessage {...messages.updateButton} />
+          </Table.HeaderCell>
+          <Table.HeaderCell>
+            <FormattedMessage {...messages.deleteButton} />
+          </Table.HeaderCell>
+        </Table.Row>
+      </Table.Header>
+
+      <InfiniteScroll
+        element={'tbody'}
+        loadMore={load}
+        initialLoad
+        hasMore={hasMore}
+        loader={<tr className="loader"></tr>}
+      >
+        {loaded.map((id) => <Row key={id} pageId={id} />)}
+      </InfiniteScroll>
+    </Table>
   </div>
 );
 

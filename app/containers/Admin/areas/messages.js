@@ -15,4 +15,5 @@ export default defineMessages({
     id: 'app.containers.AdminPage.AreaDashboard.helmetDescription',
     defaultMessage: 'Area list in admin backoffice',
   },
+
 });
