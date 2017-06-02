@@ -4,12 +4,12 @@ CarrierWave.configure do |config|
 
   config.fog_credentials = {
     provider:              'AWS',                        # required
-    aws_access_key_id:     'AKIAIVPAC7L3XFV4DHQA',                        # required
-    aws_secret_access_key: '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',                        # required
-    region:                'eu-central-1',                  # optional, defaults to 'us-east-1'
+    aws_access_key_id:     ENV.fetch('AWS_ACCESS_KEY_ID'),                        # required
+    aws_secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY'),                        # required
+    region:                ENV.fetch('AWS_REGION'),                  # optional, defaults to 'us-east-1'
   }
 
-  config.fog_directory    = 'cl2-tenants-development'
+  config.fog_directory    = ENV.fetch('AWS_S3_BUCKET')
 end
 
 if Rails.env.test? or Rails.env.cucumber?
