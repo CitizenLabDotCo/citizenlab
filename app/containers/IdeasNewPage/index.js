@@ -32,7 +32,7 @@ import sagasProjects from 'resources/projects/sagas';
 import { loadTopicsRequest } from 'resources/topics/actions';
 import { loadAreasRequest } from 'resources/areas/actions';
 import { loadProjectsRequest } from 'resources/projects/actions';
-
+import sagas from './sagas';
 
 const PageContainer = styled.div`
   background: '#eeeeee';
@@ -123,6 +123,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
             <WatchSagas sagas={sagasTopics} />
             <WatchSagas sagas={sagasAreas} />
             <WatchSagas sagas={sagasProjects} />
+            <WatchSagas sagas={sagas} />
 
             {/* <Breadcrumbs /> */}
 
