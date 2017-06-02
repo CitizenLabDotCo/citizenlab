@@ -21,9 +21,8 @@ import sagas from './sagas';
 import Idea from './components/idea';
 import Project from './components/project';
 import { media } from 'utils/styleUtils';
-import headerImage from '../../../assets/img/landingpage/header.png';
 
-import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
+import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
 
 import { injectTFunc } from 'utils/containers/t/utils';
 import { FormattedMessage } from 'react-intl';
@@ -68,7 +67,7 @@ const HeaderOverlay = styled.div`
 `;
 
 const HeaderBackground = styled.div`
-  background-image: url(${headerImage});
+  background-image: url(${(props) => props.src});
   background-repeat: no-repeat;
   background-position: center top;
   background-size: cover;
@@ -260,7 +259,7 @@ const SectionTitle = styled.h2`
 `;
 
 const ViewAllButtonText = styled.div`
-  color: #00a8e2;
+  color: ${(props) => props.theme.mainBg};
   font-size: 18px;
   font-weight: 300;
   line-height: 16px;
@@ -269,7 +268,7 @@ const ViewAllButtonText = styled.div`
 `;
 
 const ViewAllButtonIcon = styled.svg`
-  fill: #00a8e2;
+  fill: ${(props) => props.theme.mainBg};
   height: 11px;
   margin-top: -1px;
   cursor: pointer;
@@ -283,11 +282,11 @@ const ViewAllButton = styled(Link)`
 
   &:hover {
     ${ViewAllButtonIcon} {
-      fill: ${lighten(0.2, '#00a8e2')};
+      fill: ${(props) => lighten(0.2, props.theme.mainBg)};
     }
 
     ${ViewAllButtonText} {
-      color: ${lighten(0.2, '#00a8e2')};
+      color: ${(props) => lighten(0.2, props.theme.mainBg)};
     }
   }
 
@@ -390,7 +389,8 @@ class LandingPage extends React.Component {
     }
 
     const { tenant, tFunc } = this.props;
-    const tenantName = tenant.attributes.settings.core.organization_name;
+    const tenantName = tenant.getIn(['attributes', 'settings', 'core', 'organization_name']);
+    const tenantHeaderBg = tenant.getIn(['attributes', 'header_bg', 'large']);
 
     return (
       <div>
@@ -398,7 +398,7 @@ class LandingPage extends React.Component {
 
         <Container>
           <HeaderContainer>
-            <HeaderBackground></HeaderBackground>
+            <HeaderBackground src={tenantHeaderBg}></HeaderBackground>
             <HeaderOverlay></HeaderOverlay>
             <HeaderTitle>
               <FormattedMessage {...messages.titleCity} values={{ name: tFunc(tenantName) }} />
@@ -484,14 +484,14 @@ LandingPage.propTypes = {
   loadProjects: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
   tFunc: PropTypes.func.isRequired,
-  tenant: PropTypes.object.isRequired,
+  tenant: ImmutablePropTypes.map.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   pageState: selectLandingPage,
   ideas: makeSelectIdeas(),
   projects: makeSelectProjects(),
-  tenant: makeSelectCurrentTenant(),
+  tenant: makeSelectCurrentTenantImm(),
 });
 
 const actions = { loadIdeas, loadProjects };

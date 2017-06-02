@@ -25,7 +25,7 @@ import Navbar from './Navbar';
 import messages from './messages';
 import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-
+import { ThemeProvider } from 'styled-components';
 // components - authorizations
 import Authorize, { Else } from 'utils/containers/authorize';
 
@@ -75,35 +75,44 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     const { formatMessage } = this.props.intl;
 
     if (currentTenant) {
-      return (
-        <div>
-          <Helmet
-            title={formatMessage(messages.helmetTitle)}
-            meta={[
-              { name: 'description', content: formatMessage(messages.helmetDescription, { tenantName: currentTenant.attributes.name }) },
-            ]}
-          />
-          <Navbar currentTenant={currentTenant} location={this.props.location.pathname} />
+      const theme = {
+        mainBg: currentTenant.attributes.settings.core.style_main_bg || '#00a8e2',
+        mainFg: currentTenant.attributes.settings.core.style_main_fg,
+        accentBg: currentTenant.attributes.settings.core.style_accent_bg,
+        accentFg: currentTenant.attributes.settings.core.style_accent_fg,
+      };
 
-          {/* Note: please, no <Container> wrapper! It breaks the layout. */}
-          {/* <Conteinerize location={location}> */}
-          <Loader
-            resourceLoader={loadUser}
-            loadingMessage={messages.currentUserLoadingMessage}
-            errorMessage={messages.currentUserLoadingError}
-            listenenTo={LOAD_CURRENT_USER_REQUEST}
-            withError={false}
-          >
-            <Authorize action={['routes', 'admin']} resource={location.pathname}>
-              {children}
-              <Else>
-                <ForbiddenRoute />
-              </Else>
-            </Authorize>
-          </Loader>
-          {/* </Conteinerize> */}
-          {/* <DockableSagaView monitor={sagamonitor}  /> */}
-        </div>
+      return (
+        <ThemeProvider theme={theme}>
+          <div>
+            <Helmet
+              title={formatMessage(messages.helmetTitle)}
+              meta={[
+                { name: 'description', content: formatMessage(messages.helmetDescription, { tenantName: currentTenant.attributes.name }) },
+              ]}
+            />
+            <Navbar currentTenant={currentTenant} location={this.props.location.pathname} />
+
+            {/* Note: please, no <Container> wrapper! It breaks the layout. */}
+            {/* <Conteinerize location={location}> */}
+            <Loader
+              resourceLoader={loadUser}
+              loadingMessage={messages.currentUserLoadingMessage}
+              errorMessage={messages.currentUserLoadingError}
+              listenenTo={LOAD_CURRENT_USER_REQUEST}
+              withError={false}
+            >
+              <Authorize action={['routes', 'admin']} resource={location.pathname}>
+                {children}
+                <Else>
+                  <ForbiddenRoute />
+                </Else>
+              </Authorize>
+            </Loader>
+            {/* </Conteinerize> */}
+            {/* <DockableSagaView monitor={sagamonitor}  /> */}
+          </div>
+        </ThemeProvider>
       );
     } else { // eslint-disable-line no-else-return
       return <div>Loading...</div>;

@@ -5,7 +5,7 @@ import ImPropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 import T from 'containers/T';
 import { media } from 'utils/styleUtils';
-import projectImage from '../../../assets/img/landingpage/project1.png';
+import projectImage from 'assets/img/landingpage/project1.png';
 
 // store
 import { createStructuredSelector } from 'reselect';
@@ -90,7 +90,7 @@ class Project extends React.Component {
   render() {
     const { title, description, goTo, id } = this.props;
     return (
-      <ProjectContainer onClick={() => goTo(`project/${id}`)}>
+      <ProjectContainer onClick={() => goTo(`projects/${id}`)}>
         <ProjectImage></ProjectImage>
         <ProjectContent>
           <ProjectTitle><T value={title} /></ProjectTitle>

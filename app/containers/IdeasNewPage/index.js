@@ -23,9 +23,7 @@ import canPublish from './editor/canPublish';
 import { selectSubmitIdea } from './selectors';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
-import sagas from './sagas';
 import messages from './messages';
-import { Saga } from 'react-redux-saga';
 
 // areas, topics and projects
 import sagasAreas from 'resources/areas/sagas';
@@ -34,6 +32,7 @@ import sagasProjects from 'resources/projects/sagas';
 import { loadTopicsRequest } from 'resources/topics/actions';
 import { loadAreasRequest } from 'resources/areas/actions';
 import { loadProjectsRequest } from 'resources/projects/actions';
+import sagas from './sagas';
 
 const PageContainer = styled.div`
   background: '#eeeeee';
