@@ -9,57 +9,88 @@ import PropTypes from 'prop-types';
 
 // components
 import WatchSagas from 'containers/WatchSagas';
-import { Segment, Grid } from 'semantic-ui-react';
+import { Segment } from 'semantic-ui-react';
 import IdeaCards from './components/ideaCards';
+import MultiSelect from 'components/forms/inputs/multiSelect';
 
 // store
+import { push } from 'react-router-redux'
+import { selectResourcesDomain } from 'utils/resources/selectors';
+import { createStructuredSelector } from 'reselect';
 import { preprocess } from 'utils';
 import { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest, resetIdeas } from './actions';
 import sagasWatchers from './sagas';
 
-const topBar = () => (
-    <Grid columns={2}>
-      <Grid.Row>
-        {/* TOPICS */}
-        <Grid.Column width={5} textAlign="center">
-          {<MultiSelectT
-            options={topicsSelect}
-            maxSelectionLength={3}
-            placeholder={formatMessage({ ...messages.topicsPlaceholder })}
-            optionLabel={formatMessage({ ...messages.topicsLabel })}
-            handleOptionsAdded={this.storeTopics}
-          />}
-        </Grid.Column>
-        {/* AREAS */}
-        <Grid.Column width={5} textAlign="center">
-          <MultiSelectT
-            options={areasSelect}
-            maxSelectionLength={3}
-            placeholder={formatMessage({ ...messages.areasPlaceholder })}
-            optionLabel={formatMessage({ ...messages.areasLabel })}
-            handleOptionsAdded={this.storeAreas}
-          />
-        </Grid.Column>
-        <Grid.Column width={5} textAlign="center">
-          <MultiSelectT
-            options={projectsSelect}
-            maxSelectionLength={1}
-            singleSelection
-            placeholder={formatMessage({ ...messages.projectsPlaceholder })}
-            optionLabel={formatMessage({ ...messages.projectsLabel })}
-            handleOptionsAdded={this.storeProject}
-          />}
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
-)
+// parse search
+import queryString from 'query-string';
+
+// translations
+import { injectTFunc } from 'containers/T/utils';
+
+
+const selectTopic = ({ options, value, filterPage }) => (
+  <div>
+    <MultiSelect
+      name={'topics'}
+      options={options}
+      action={filterPage}
+      value={value}
+    />
+  </div>
+);
+
+selectTopic.propTypes = {
+  value: PropTypes.array,
+  options: PropTypes.array.isRequired,
+  filterPage: PropTypes.func,
+};
+
+selectTopic.defaultProps = {
+  options: [],
+  filterPage: () => {},
+  value: [],
+};
+
+const mapStateToProps = () => createStructuredSelector({
+  topics: (state) => selectResourcesDomain('topics')(state),
+  search: (state) => state.getIn(['route', 'locationBeforeTransitions', 'search']),
+});
+
+const mergeQuery = (search, type, ids) => {
+  const query = queryString.parse(search, { arrayFormat: 'index' });
+  query[type] = ids;
+  return queryString.stringify(query, { arrayFormat: 'index' });
+};
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  const { topics, search } = stateProps;
+  if (!topics) return {};
+
+  const { tFunc } = ownProps;
+
+  const options = topics.reactMap((element) => {
+    const value = element.get('id');
+    const text = tFunc(element.getIn(['attributes', 'title_multiloc']));
+    return { text, value };
+  });
+  const { goTo } = dispatchProps;
+
+  const value = queryString.parse(search, { arrayFormat: 'index' }).topics;
+
+  const filterPage = (name, ids) => {
+    goTo(`/ideas?${mergeQuery(search, name, ids)}`);
+  };
+
+  return { options, value, filterPage, ...ownProps };
+};
+
+const SelectTopic = injectTFunc(preprocess(mapStateToProps, { goTo: push }, mergeProps)(selectTopic));
 
 class View extends React.Component {
   constructor(props) {
     super();
     const { location } = props;
     this.search = location.search;
-    this.state = { visible: false };
   }
 
   componentDidMount() {
@@ -67,34 +98,9 @@ class View extends React.Component {
     this.props.loadAreasRequest();
   }
 
-  /* Component should update if new query params are provided */
-  componentWillReceiveProps(nextProps) {
-    const newSearch = nextProps.location.search;
-    const isNewSearch = newSearch !== this.search;
-    this.search = newSearch;
-    if (isNewSearch) this.getideas(nextProps);
-  }
-
-  shouldComponentUpdate(props, { visible }) {
-    const current = this.state.visible;
-    return current !== visible;
-  }
-
   componentWillUnmount() {
     this.props.resetIdeas();
   }
-
-  getideas = (location, query) => {
-    const data = location || this.props;
-    const search = data.location.search;
-    if (search) {
-      this.props.filterIdeas(search, query);
-    } else {
-      this.props.loadIdeasRequest(true, null, null, null, query);
-    }
-  }
-
-  toggleVisibility = () => this.setState({ visible: !this.state.visible })
 
   render() {
     const { filter } = this.props;
@@ -102,7 +108,7 @@ class View extends React.Component {
       <div>
         <WatchSagas sagas={sagasWatchers} />
         <Segment style={{ width: 1000, marginLeft: 'auto', marginRight: 'auto' }} basic>
-
+        <SelectTopic />
           <IdeaCards filter={filter} />
         </Segment>
       </div>

@@ -5,7 +5,7 @@ import { injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 import { appenDableName } from './utils';
 
-class DropdownInput extends React.PureComponent {
+class MultiSelect extends React.PureComponent {
   constructor(props) {
     super();
     const { name } = props;
@@ -14,8 +14,8 @@ class DropdownInput extends React.PureComponent {
     const toAppendName = appenDableName(name);
     const placeholder = formatMessage(messages[`placeholder${toAppendName}`]);
     const label = formatMessage(messages[`label${toAppendName}`]);
-    const noResult = formatMessage(messages.noResultsMessage);
-    this.state = { placeholder, label, noResult };
+    const noResult = formatMessage(messages.noResultsMultiSelect);
+    this.text = { placeholder, label, noResult };
   }
 
   handleChange = (event, { value }) => {
@@ -24,10 +24,8 @@ class DropdownInput extends React.PureComponent {
   };
 
   render() {
-    const { name, options, text } = this.props;
-    const { placeholder: ph, label } = this.state;
-
-    const placeholder = (text ? null : ph);
+    const { name, options, value } = this.props;
+    const { label, placeholder, noResult } = this.text;
 
     return (
       <Form.Field>
@@ -39,8 +37,8 @@ class DropdownInput extends React.PureComponent {
           search
           selection
           fluid
+          value={value}
           placeholder={placeholder}
-          renderLabel={this.valueRenderer}
           onChange={this.handleChange}
           options={options}
           noResultsMessage={noResult}
@@ -50,7 +48,7 @@ class DropdownInput extends React.PureComponent {
   }
 }
 
-DropdownInput.propTypes = {
+MultiSelect.propTypes = {
   name: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   action: PropTypes.func.isRequired,
@@ -58,4 +56,4 @@ DropdownInput.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default injectIntl(DropdownInput);
+export default injectIntl(MultiSelect);

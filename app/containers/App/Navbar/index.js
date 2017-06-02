@@ -30,7 +30,7 @@ const Container = styled.div`
   margin-top: 25px;
   padding-left: 30px;
   padding-right: 30px;
-  position: absolute;
+  // position: absolute;
   background: transparent;
   z-index: 1;
 `;
