@@ -8,7 +8,7 @@ resource "Users" do
 
     get "api/v1/users/me" do
       example_request "Get the authenticated user" do
-        expect(status).to eq(403)
+        expect(status).to eq(404)
       end
     end
 

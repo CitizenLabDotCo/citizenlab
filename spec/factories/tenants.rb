@@ -25,7 +25,7 @@ FactoryGirl.define do
 
   factory :test_tenant, class: Tenant do
     name "test-tenant"
-    host "example_org"
+    host "example.org"
     settings {
       {
         "core" => {
