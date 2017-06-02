@@ -8,6 +8,8 @@ import WatchSagas from 'containers/WatchSagas';
 import Modal from 'components/Modal';
 import { preprocess } from 'utils';
 import IdeasShow from 'containers/IdeasShow';
+import { Link } from 'react-router';
+import { lighten, darken } from 'polished';
 
 import {
   selectLandingPage,
@@ -43,6 +45,8 @@ const HeaderContainer = styled.div`
   padding-left: 25px;
   padding-right: 25px;
   position: relative;
+  z-index: 1;
+  margin-top: -70px;
 
   ${media.notPhone`
     height: 305px;
@@ -255,6 +259,22 @@ const SectionTitle = styled.h2`
   `}
 `;
 
+const ViewAllButtonText = styled(Link)`
+  color: #00a8e2;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 16px;
+  margin-right: 7px;
+  cursor: pointer;
+`;
+
+const ViewAllButtonIcon = styled.svg`
+  fill: #00a8e2;
+  height: 11px;
+  margin-top: -1px;
+  cursor: pointer;
+`;
+
 const ViewAllButton = styled.div`
   display: flex;
   align-items: center;
@@ -262,34 +282,18 @@ const ViewAllButton = styled.div`
   cursor: pointer;
 
   &:hover {
-    div {
-      color: #00a8e2;
+    ${ViewAllButtonIcon} {
+      fill: ${lighten(0.2, '#00a8e2')};
     }
-  
-    svg {
-      fill: #00a8e2;
+
+    ${ViewAllButtonText} {
+      color: ${lighten(0.2, '#00a8e2')};
     }
   }
 
   ${media.phone`
     margin-top: 10px;
   `}
-`;
-
-const ViewAllButtonText = styled.div`
-  /* color: #888; */
-  color: #00a8e2;
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 16px;
-  margin-right: 7px;
-`;
-
-const ViewAllButtonIcon = styled.svg`
-  /* fill: #888; */
-  fill: #00a8e2;
-  height: 11px;
-  margin-top: -1px;
 `;
 
 const SectionContainer = styled.div`
