@@ -7,7 +7,7 @@
 import {
   LOAD_PROJECTS_ERROR, LOAD_PROJECTS_REQUEST, LOAD_PROJECTS_SUCCESS, RESET_PROJECTS, LOAD_PROJECT_REQUEST, LOAD_PROJECT_SUCCESS, LOAD_PROJECT_ERROR, DELETE_PROJECT_REQUEST, DELETE_PROJECT_SUCCESS, DELETE_PROJECT_ERROR, CREATE_PROJECT_SUCCESS } from './constants';
 
-export function loadProjectsRequest(nextPageNumber = 1, nextPageItemCount = 9) {
+export function loadProjectsRequest(nextPageNumber, nextPageItemCount) {
   return {
     type: LOAD_PROJECTS_REQUEST,
     nextPageNumber,

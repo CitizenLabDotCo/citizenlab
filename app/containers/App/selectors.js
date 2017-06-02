@@ -11,7 +11,6 @@ const makeSelectLocation = () => createSelector(
   (route) => route
 );
 
-
 export {
   makeSelectLocationState,
   makeSelectLocation,

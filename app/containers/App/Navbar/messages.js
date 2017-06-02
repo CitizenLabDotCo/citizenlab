@@ -6,10 +6,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  projects: {
-    id: 'app.containers.app.navbar.projects',
-    defaultMessage: 'Projects',
-  },
   search: {
     id: 'app.containers.app.navbar.search',
     defaultMessage: 'Search',
@@ -39,4 +35,17 @@ export default defineMessages({
     defaultMessage: 'Admin',
   },
 
+  pageIdeas: {
+    id: 'app.containers.app.navbar.pageIdeas',
+    defaultMessage: 'Ideas',
+  },
+  pageOverview: {
+    id: 'app.containers.app.navbar.pageOverview',
+    defaultMessage: 'Overview',
+  },
+
+  pageProjects: {
+    id: 'app.containers.app.navbar.pageProjects',
+    defaultMessage: 'Projects',
+  },
 });

@@ -6,126 +6,107 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+
+// components
+import InfiniteScroll from 'react-infinite-scroller';
+// import IdeaCard from 'components/IdeaCard';
 import HelmetIntl from 'components/HelmetIntl';
 import { FormattedMessage } from 'react-intl';
+import WatchSagas from 'utils/containers/watchSagas';
+import ProjectCard from 'components/projects/card';
+import { Segment } from 'semantic-ui-react';
+
+// store
+import { preprocess } from 'utils';
 import { createStructuredSelector } from 'reselect';
+import { loadProjectsRequest, resetProjects } from 'resources/projects/actions';
+import sagaWatchers from 'resources/projects/sagas';
+
+// style
+import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
-import { preprocess } from 'utils/reactRedux';
-import { bindActionCreators } from 'redux';
-import WatchSagas from 'containers/WatchSagas';
-import { Button, Label } from 'semantic-ui-react';
-import { Link } from 'react-router';
-
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import T from 'containers/T';
-
-import sagas from './sagas';
 import messages from './messages';
-import { loadProjectsRequest, resetProjects } from './actions';
-import selectProjectsIndexPage, { makeSelectProjects } from './selectors';
-import projectsMap from './projectsMap';
 
-export class ProjectsIndexPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  constructor() {
-    super();
+const InfiniteScrollStyled = styled(InfiniteScroll)`
+  font-size: 20px;
+  color: #999;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px !important;
+  ${media.tablet`
+    flex-wrap: wrap;
+  `}
 
-    // provide context to bindings
-    this.goToNextPage = this.goToNextPage.bind(this);
-  }
+  ${media.phone`
+    flex-direction: column;
+  `}
+`;
 
-  componentDidMount() {
-    this.props.loadProjectsRequest(true);
-  }
+export class ProjectsList extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   componentWillUnmount() {
-    // reset projects upon page leaving, to avoid double items when going back
-    this.props.resetProjects();
-  }
-
-  goToNextPage() {
-    const { nextPageNumber, nextPageItemCount } = this.props;
-
-    this.props.loadMoreProjects(nextPageNumber, nextPageItemCount);
+    this.props.reset();
   }
 
   render() {
-    const { className, loading, loadError, nextPageNumber, projectsImm } = this.props;
+    const { className, loadMoreIdeas, hasMore, list } = this.props;
     return (
       <div className={className}>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <WatchSagas sagas={sagas} />
+        <WatchSagas sagas={sagaWatchers} />
+        <Segment style={{ width: 1000, marginLeft: 'auto', marginRight: 'auto' }} basic>
 
-        <h1>
-          <FormattedMessage {...messages.header} />
-        </h1>
-        {loading && <FormattedMessage {...messages.loading} />}
-        {loadError && <Label>{loadError}</Label>}
+          <h1>
+            <FormattedMessage {...messages.header} />
+          </h1>
 
-        {projectsMap(projectsImm).map((project) => (<div key={project.id}>
-          <Link to={`/projects/${project.id}`}>
-            <T value={project.attributes.title_multiloc} />
-            {project.id}
-          </Link>
-        </div>))}
-
-        {nextPageNumber && <Button onClick={this.goToNextPage}>
-          <FormattedMessage {...messages.loadMore} />
-        </Button>}
+          <InfiniteScrollStyled
+            element={'div'}
+            loadMore={loadMoreIdeas}
+            className={'ui stackable cards'}
+            initialLoad
+            hasMore={hasMore}
+            loader={<div className="loader"></div>}
+          >
+            {list.map((id) => (
+              <ProjectCard key={id} id={id} />
+            ))}
+          </InfiniteScrollStyled>
+        </Segment>
       </div>
     );
   }
 }
 
-ProjectsIndexPage.propTypes = {
+ProjectsList.propTypes = {
+  list: PropTypes.any,
   className: PropTypes.string,
-  // mapDispatch
-  loadProjectsRequest: PropTypes.func.isRequired,
-  loadMoreProjects: PropTypes.func.isRequired,
-  resetProjects: PropTypes.func.isRequired,
-  nextPageNumber: PropTypes.number,
-  nextPageItemCount: PropTypes.number,
-  loading: PropTypes.bool.isRequired,
-  loadError: PropTypes.bool,
-  projectsImm: ImmutablePropTypes.list.isRequired,
+  hasMore: PropTypes.bool,
+  loadMoreIdeas: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
 };
+
 
 const mapStateToProps = createStructuredSelector({
-  pageState: selectProjectsIndexPage,
-  projectsImm: makeSelectProjects(),
+  list: (state) => state.getIn(['projectRes', 'loaded']),
+  nextPageNumber: (state) => state.getIn(['projectRes', 'nextPageNumber']),
+  nextPageItemCount: (state) => state.getIn(['projectRes', 'nextPageItemCount']),
 });
 
-const customActionCreators = {
-  loadMoreProjects(nextPageNumber, nextPageItemCount) {
-    return loadProjectsRequest(false, nextPageNumber, nextPageItemCount);
-  },
+const mergeProps = (state, dispatch) => {
+  const { list, nextPageNumber, nextPageItemCount } = state;
+  const { load, reset } = dispatch;
+  return {
+    loadMoreIdeas: () => load(nextPageNumber, nextPageItemCount),
+    hasMore: !!(nextPageNumber && nextPageItemCount),
+    list,
+    reset,
+  };
 };
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  /*
-   * auto-binding
-   */
-  loadProjectsRequest,
-  resetProjects,
-  /*
-   * manual bindings
-   * (return actions to dispatch - with custom logic)
-   */
-  ...customActionCreators,
-}, dispatch);
 
-const mergeProps = ({ pageState, projectsImm }, dispatchProps) => ({
-  loading: pageState.get('loading'),
-  loadError: pageState.get('loadError'),
-  nextPageNumber: pageState.get('nextPageNumber'),
-  nextPageItemCount: pageState.get('nextPageItemCount'),
-  projectsImm,
-  ...dispatchProps,
-});
-
-// preprocess to avoid unnecessary re-renders when using mapDispatchToProps
-export default styled(preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(ProjectsIndexPage))`
-  // none yet
-`;
+export default preprocess(mapStateToProps, { load: loadProjectsRequest, reset: resetProjects }, mergeProps)(ProjectsList);

@@ -197,13 +197,13 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
 
           <MenuItems>
             <MenuItem to="/">
-              Overview
+              <FormattedMessage {...messages.pageOverview} />
             </MenuItem>
             <MenuItem to="/ideas">
-              Ideas
+              <FormattedMessage {...messages.pageIdeas} />
             </MenuItem>
             <MenuItem to="/projects">
-              Projects
+              <FormattedMessage {...messages.pageProjects} />
             </MenuItem>
           </MenuItems>
         </Left>
