@@ -18,7 +18,7 @@ import queryString from 'query-string';
 import { injectTFunc } from 'containers/T/utils';
 
 const SelectArea = ({ options, value, filterPage }) => (
-  <div style={{ display: 'inline-block', width: '33%' }}>
+  <div style={{ display: 'inline-block', width: '33%', marginRight: '10px' }}>
     <MultiSelect
       name={'areas'}
       options={options}
