@@ -87,6 +87,7 @@ class ImageList extends React.PureComponent { // eslint-disable-line react/prefe
       // no style for now
     `;
 
+    /*
     const StyledImageButton = styled.div`
       background: no-repeat center url('https://image.flaticon.com/icons/svg/61/61112.svg');
       background-size: 100%;
@@ -96,6 +97,7 @@ class ImageList extends React.PureComponent { // eslint-disable-line react/prefe
       z-index: 2;
       border: solid 1px red;
     `;
+    */
 
     const { images, storeImageError } = this.props;
 
