@@ -37,6 +37,8 @@ const HeaderContainer = styled.div`
   padding-left: 25px;
   padding-right: 25px;
   position: relative;
+  z-index: 1;
+  margin-top: -70px;
 
   ${media.notPhone`
     height: 305px;
