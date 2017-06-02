@@ -4,7 +4,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
-// import { lighten } from 'polished';
 import WatchSagas from 'containers/WatchSagas';
 import Modal from 'components/Modal';
 import { preprocess } from 'utils';
@@ -128,6 +127,7 @@ const HeaderSubtitle = styled.h2`
   `}
 `;
 
+/*
 const TabBar = styled.div`
   width: 100%;
   display: flex;
@@ -197,6 +197,7 @@ const Tab = styled.div`
     margin-right: 30px;
   `}
 `;
+*/
 
 const ContentContainer = styled.div`
   display: flex;
@@ -390,6 +391,7 @@ class LandingPage extends React.Component {
             <HeaderSubtitle>Share your ideas for Oostende and co-create your city</HeaderSubtitle>
           </HeaderContainer>
 
+          {/*
           <TabBar>
             <TabBarInner>
               <Tab first active>Overview<TabLine /></Tab>
@@ -397,6 +399,7 @@ class LandingPage extends React.Component {
               <Tab>Projects<TabLine /></Tab>
             </TabBarInner>
           </TabBar>
+          */}
 
           <ContentContainer>
             <Content>

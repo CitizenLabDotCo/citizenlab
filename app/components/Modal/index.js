@@ -1,9 +1,7 @@
 import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import { CSSTransitionGroup } from 'react-transition-group';
-
 import ClickOutside from 'utils/containers/clickOutside';
-
 
 const enterClassName = 'modal-enter';
 const enterActiveClassName = 'modal-enter-active';
