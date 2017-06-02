@@ -1,18 +1,16 @@
-/**
-*
-* TopicSelect
-* https://github.com/CitizenLabDotCo/cl2-front/wiki/docs_TopicSelect
-*
-*/
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import T from 'containers/T';
 import { Dropdown } from 'semantic-ui-react';
 import { injectTFunc } from 'containers/T/utils';
+import styled from 'styled-components';
 
 import messages from './messages';
+
+const Container = styled.div`
+  width: 100%;
+`;
 
 export const optionRendered = (option) => (<span>
   <T value={JSON.parse(option.label)} />
@@ -55,7 +53,7 @@ class MultiSelectT extends React.PureComponent { // eslint-disable-line react/pr
     const { formatMessage } = this.props.intl;
 
     return (
-      <div className="cl-topic-select">
+      <Container>
         <Dropdown
           closeOnChange
           multiple
@@ -76,7 +74,7 @@ class MultiSelectT extends React.PureComponent { // eslint-disable-line react/pr
             optionLabel,
           }}
         /></div>}
-      </div>
+      </Container>
     );
   }
   /* eslint-enable */

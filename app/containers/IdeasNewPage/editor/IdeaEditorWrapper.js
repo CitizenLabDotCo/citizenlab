@@ -1,36 +1,29 @@
-/**
-*
-* IdeaEditorWrapper
-*
-*/
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import { Container, Grid, Button } from 'semantic-ui-react';
+import { Button, Checkbox, Form, Input, Radio, Select, TextArea } from 'semantic-ui-react'
 import MultiSelectT from 'components/MultiSelectT';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import FormattedMessageSegment from 'components/FormattedMessageSegment';
-
-// import messages from './messages';
 import IdeaEditor from './IdeaEditor';
 import messages from '../messages';
 import IdeaTitle, { TitleStatusWrapper } from './IdeaTitle';
 import { makeSelectAreas, makeSelectTopics, makeSelectProjects, selectSubmitIdea } from '../selectors';
 import multiselectMap from '../multiselectMap';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-
 import { selectAuthDomain } from 'utils/auth/selectors';
-
 import { bindActionCreators } from 'redux';
 import { LOAD_AREAS_REQUEST } from 'resources/areas/constants';
 import { LOAD_TOPICS_REQUEST } from 'resources/topics/constants';
 import { LOAD_PROJECTS_REQUEST } from 'resources/projects/constants';
 
-class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+const IdeaInput = styled(Input)`
+  width: 100%;
+`;
 
+class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
 
@@ -39,6 +32,12 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
     this.storeAreas = this.storeAreas.bind(this);
     this.storeProject = this.storeProject.bind(this);
     this.saveDraft = this.saveDraft.bind(this);
+
+    this.ideaTitleInput = null;
+  }
+
+  componentDidMount() {
+    this.ideaTitleInput.focus();
   }
 
   storeTopics(topics) {
@@ -77,25 +76,10 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
     const areasSelect = multiselectMap(areas);
     const projectsSelect = multiselectMap(projects);
 
-    /*
-    <IdeaTitle setTitle={setTitle} />
-    <TitleStatusWrapper
-      short={shortTitleError}
-      long={longTitleError}
-      length={titleLength}
-    />
-
-    <Button onClick={saveDraft}>
-      <FormattedMessage {...messages.saveAsDraft} />
-    </Button>
-
-    <Button onClick={this.publishIdea}>
-      <FormattedMessage {...messages.publish} />
-    </Button>
-    */
+    console.log(this.storeTopics);
 
     return (
-      <div>
+      <Form>
         {loading && <FormattedMessageSegment message={messages.loading} />}
         {loadError && <FormattedMessageSegment message={messages.loadError} />}
         {stored && <FormattedMessageSegment message={messages.stored} />}
@@ -105,89 +89,81 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
         {invalidForm && <FormattedMessageSegment message={messages.invalidForm} />}
         {submitted && <FormattedMessageSegment message={messages.submitted} />}
 
+        <Form.Group>
+          <IdeaTitle setTitle={setTitle} />
+        </Form.Group>
 
-        <Container>
-          <Grid container>
-            <Grid.Row columns={3}>
-              <Grid.Column width={10}>
-                <IdeaTitle
-                  setTitle={setTitle}
-                />
-                <TitleStatusWrapper
-                  short={shortTitleError}
-                  long={longTitleError}
-                  length={titleLength}
-                />
-              </Grid.Column>
-              <Grid.Column width={4} textAlign="center">
-                <Button onClick={saveDraft}>
-                  <FormattedMessage {...messages.saveAsDraft} />
-                </Button>
-              </Grid.Column>
-              <Grid.Column width={2} textAlign="center">
-                <Button onClick={this.publishIdea}>
-                  <FormattedMessage {...messages.publish} />
-                </Button>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-          <Grid columns={2}>
-            <Grid.Row>
-              {/* TOPICS */}
-              <Grid.Column width={5} textAlign="center">
-                {!(loadingTopics || loadTopicsError) && <MultiSelectT
-                  options={topicsSelect}
-                  maxSelectionLength={3}
-                  placeholder={formatMessage({ ...messages.topicsPlaceholder })}
-                  optionLabel={formatMessage({ ...messages.topicsLabel })}
-                  handleOptionsAdded={this.storeTopics}
-                />}
-                {loadTopicsError && <div>
-                  <FormattedMessage {...messages.loadTopicsError} /> - {loadTopicsError}
-                  {/* TODO: retry button with dispatch here? */}
-                </div>}
-                {loadingTopics && <FormattedMessage {...messages.loadingTopics} />}
-              </Grid.Column>
-              {/* AREAS */}
-              <Grid.Column width={5} textAlign="center">
-                {!(loadingAreas || loadAreasError) && <MultiSelectT
-                  options={areasSelect}
-                  maxSelectionLength={3}
-                  placeholder={formatMessage({ ...messages.areasPlaceholder })}
-                  optionLabel={formatMessage({ ...messages.areasLabel })}
-                  handleOptionsAdded={this.storeAreas}
-                />}
-                {loadAreasError && <div>
-                  <FormattedMessage {...messages.loadAreasError} /> - {loadAreasError}
-                  {/* TODO: retry button with dispatch here? */}
-                </div>}
-                {loadingAreas && <FormattedMessage {...messages.loadingAreas} />}
-              </Grid.Column>
-              {/* PROJECTS */}
-              <Grid.Column width={5} textAlign="center">
-                {!(loadingProjects || loadProjectsError) && <MultiSelectT
-                  options={projectsSelect}
-                  maxSelectionLength={1}
-                  singleSelection
-                  placeholder={formatMessage({ ...messages.projectsPlaceholder })}
-                  optionLabel={formatMessage({ ...messages.projectsLabel })}
-                  handleOptionsAdded={this.storeProject}
-                />}
-                {loadProjectsError && <div>
-                  <FormattedMessage {...messages.loadAreasError} /> - {loadProjectsError}
-                  {/* TODO: retry button with dispatch here? */}
-                </div>}
-                {loadingProjects && <FormattedMessage {...messages.loadingProjects} />}
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Container>
-        <div className={className}>
-          <IdeaEditor
-            saveDraft={this.saveDraft}
+        {/*
+        <Form.Group>
+          <TitleStatusWrapper
+            short={shortTitleError}
+            long={longTitleError}
+            length={titleLength}
           />
-        </div>
-      </div>
+        </Form.Group>
+        */}
+
+        <Form.Group>
+          {!(loadingTopics || loadTopicsError) && <MultiSelectT
+            options={topicsSelect}
+            maxSelectionLength={3}
+            placeholder={formatMessage({ ...messages.topicsPlaceholder })}
+            optionLabel={formatMessage({ ...messages.topicsLabel })}
+            handleOptionsAdded={this.storeTopics}
+          />}
+          {loadTopicsError && <div>
+            <FormattedMessage {...messages.loadTopicsError} /> - {loadTopicsError}
+            {/* TODO: retry button with dispatch here? */}
+          </div>}
+          {loadingTopics && <FormattedMessage {...messages.loadingTopics} />}
+        </Form.Group>
+
+        <Form.Group>
+          {!(loadingAreas || loadAreasError) && <MultiSelectT
+            options={areasSelect}
+            maxSelectionLength={3}
+            placeholder={formatMessage({ ...messages.areasPlaceholder })}
+            optionLabel={formatMessage({ ...messages.areasLabel })}
+            handleOptionsAdded={this.storeAreas}
+          />}
+          {loadAreasError && <div>
+            <FormattedMessage {...messages.loadAreasError} /> - {loadAreasError}
+            {/* TODO: retry button with dispatch here? */}
+          </div>}
+          {loadingAreas && <FormattedMessage {...messages.loadingAreas} />}
+        </Form.Group>
+
+        <Form.Group>
+          {!(loadingProjects || loadProjectsError) && <MultiSelectT
+            options={projectsSelect}
+            maxSelectionLength={1}
+            singleSelection
+            placeholder={formatMessage({ ...messages.projectsPlaceholder })}
+            optionLabel={formatMessage({ ...messages.projectsLabel })}
+            handleOptionsAdded={this.storeProject}
+          />}
+          {loadProjectsError && <div>
+            <FormattedMessage {...messages.loadAreasError} /> - {loadProjectsError}
+            {/* TODO: retry button with dispatch here? */}
+          </div>}
+          {loadingProjects && <FormattedMessage {...messages.loadingProjects} />}
+        </Form.Group>
+
+        <Form.Group>
+          <IdeaEditor saveDraft={this.saveDraft} />
+        </Form.Group>
+
+        <Form.Group>
+          <Button onClick={saveDraft}>
+            <FormattedMessage {...messages.saveAsDraft} />
+          </Button>
+
+          <Button onClick={this.publishIdea}>
+            <FormattedMessage {...messages.publish} />
+          </Button>
+        </Form.Group>
+
+      </Form>
     );
   }
 }

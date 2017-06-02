@@ -41,21 +41,24 @@ const PageContainer = styled.div`
 `;
 
 const FormContainer = styled.div`
-  width: 800px;
+  width: 100%;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 100px;
+  padding-top: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
 `;
 
 const PageTitle = styled.div`
   color: #444;
   font-weight: 400;
-  font-size: 34px;
+  font-size: 38px;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 `;
 
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
