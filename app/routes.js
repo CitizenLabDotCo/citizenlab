@@ -20,7 +20,7 @@ export default function createRoutes(store) {
   const { injectReducer } = getAsyncInjectors(store); // eslint-disable-line no-unused-vars
 
   return [
-    {
+    /* {
       path: '/',
       name: 'home',
       getComponent(nextState, cb) {
@@ -36,8 +36,8 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }, {
-      path: '/landing',
+    }, */ {
+      path: '/',
       name: 'landingPage',
       getComponent(nextState, cb) {
         const importModules = Promise.all([

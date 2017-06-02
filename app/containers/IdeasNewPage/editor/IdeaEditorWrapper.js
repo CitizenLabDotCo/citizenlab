@@ -77,6 +77,23 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
     const areasSelect = multiselectMap(areas);
     const projectsSelect = multiselectMap(projects);
 
+    /*
+    <IdeaTitle setTitle={setTitle} />
+    <TitleStatusWrapper
+      short={shortTitleError}
+      long={longTitleError}
+      length={titleLength}
+    />
+
+    <Button onClick={saveDraft}>
+      <FormattedMessage {...messages.saveAsDraft} />
+    </Button>
+
+    <Button onClick={this.publishIdea}>
+      <FormattedMessage {...messages.publish} />
+    </Button>
+    */
+
     return (
       <div>
         {loading && <FormattedMessageSegment message={messages.loading} />}
@@ -87,6 +104,8 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
         {submitError && <FormattedMessageSegment message={messages.submitError} />}
         {invalidForm && <FormattedMessageSegment message={messages.invalidForm} />}
         {submitted && <FormattedMessageSegment message={messages.submitted} />}
+
+
         <Container>
           <Grid container>
             <Grid.Row columns={3}>

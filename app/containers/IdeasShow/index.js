@@ -22,7 +22,12 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
   constructor(props) {
     super();
     const { params } = props;
-    this.id = params.ideaId;
+
+    if (params && params.ideaId) {
+      this.id = params.ideaId;
+    } else {
+      this.id = props.id;
+    }
   }
 
   componentDidMount() {
@@ -55,6 +60,7 @@ IdeasShow.propTypes = {
   params: PropTypes.object,
   resetPageData: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
+  id: PropTypes.string,
 };
 
 export default preprocess(null, { loadIdeaRequest, loadCommentsRequest, loadVotesRequest, resetPageData })(IdeasShow);
