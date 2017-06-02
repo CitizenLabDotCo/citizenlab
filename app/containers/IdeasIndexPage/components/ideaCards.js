@@ -10,27 +10,57 @@ import IdeaCard from 'components/IdeaCard';
 import { preprocess } from 'utils';
 import { createStructuredSelector } from 'reselect';
 import selectIdeasIndexPageDomain from 'containers/IdeasIndexPage/selectors';
-import { loadNextPage } from 'containers/IdeasIndexPage/actions';
+import { loadIdeasRequest, resetIdeas } from 'containers/IdeasIndexPage/actions';
 
-const IdeasCards = ({ ideas, hasMore, loadMoreIdeas }) => (
-  <InfiniteScroll
-    element={'div'}
-    loadMore={loadMoreIdeas}
-    className={'ui stackable cards'}
-    initialLoad={false}
-    hasMore={hasMore}
-    loader={<div className="loader"></div>}
-  >
-    {ideas.map((id) => (
-      <IdeaCard key={id} id={id} />
-    ))}
-  </InfiniteScroll>
-);
+// style
+import { media } from 'utils/styleUtils';
+import styled from 'styled-components';
+
+
+const InfiniteScrollStyled = styled(InfiniteScroll)`
+  font-size: 20px;
+  color: #999;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px !important;
+  ${media.tablet`
+    flex-wrap: wrap;
+  `}
+
+  ${media.phone`
+    flex-direction: column;
+  `}
+`;
+
+class IdeasCards extends React.Component {
+  componentWillReceiveProps(newProps) {
+    if (newProps.isNewSearch) this.props.reset();
+  }
+  render() {
+    const { loadMoreIdeas, hasMore, ideas } = this.props;
+    return (
+      <InfiniteScrollStyled
+        element={'div'}
+        loadMore={loadMoreIdeas}
+        className={'ui stackable cards'}
+        initialLoad
+        hasMore={hasMore}
+        loader={<div className="loader"></div>}
+      >
+        {ideas.map((id) => (
+          <IdeaCard key={id} id={id} />
+        ))}
+      </InfiniteScrollStyled>
+    );
+  }
+}
 
 IdeasCards.propTypes = {
   ideas: PropTypes.any,
   hasMore: PropTypes.bool,
   loadMoreIdeas: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
 };
 
 
@@ -38,17 +68,26 @@ const mapStateToProps = createStructuredSelector({
   ideas: selectIdeasIndexPageDomain('ideas'),
   nextPageNumber: selectIdeasIndexPageDomain('nextPageNumber'),
   nextPageItemCount: selectIdeasIndexPageDomain('nextPageItemCount'),
-  search: (state) => state.getIn(['route', 'locationBeforeTransitions', 'search']),
+  lastSearch: selectIdeasIndexPageDomain('search'),
+  newSearch: (state) => state.getIn(['route', 'locationBeforeTransitions', 'search']),
 });
 
-const mergeProps = (
-  { ideas, nextPageNumber, nextPageItemCount, search },
-  { getNextPage },
-  { filter, maxNumber, hasMore }) => ({
-    loadMoreIdeas: getNextPage.bind(null, maxNumber || nextPageNumber, nextPageItemCount, search, filter),
-    hasMore: hasMore || !!((maxNumber || nextPageNumber) && nextPageItemCount),
+const mergeProps = (state, dispatch, own) => {
+  const { ideas, nextPageNumber, nextPageItemCount, lastSearch, newSearch } = state;
+  const { load, reset } = dispatch;
+  const { filter, maxNumber } = own;
+  let { hasMore } = own;
+  const isNewSearch = lastSearch !== newSearch && nextPageNumber !== 1;
+  if (hasMore !== false) hasMore = !!(nextPageNumber && (maxNumber || nextPageItemCount)) || isNewSearch;
+  console.log(isNewSearch, hasMore);
+  return {
+    loadMoreIdeas: () => load(nextPageNumber, maxNumber || nextPageItemCount, newSearch, filter),
+    hasMore,
     ideas,
-  });
+    isNewSearch,
+    reset,
+  };
+};
 
 
-export default preprocess(mapStateToProps, { getNextPage: loadNextPage }, mergeProps)(IdeasCards);
+export default preprocess(mapStateToProps, { load: loadIdeasRequest, reset: resetIdeas }, mergeProps)(IdeasCards);

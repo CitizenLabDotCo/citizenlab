@@ -1,5 +1,5 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
-import { loadAreas, createArea, loadArea, deleteArea, updateArea } from 'api';
+import { loadResources, createResource, loadResource, deleteResource, updateResource } from 'api';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import { loadAreasError, loadAreasSuccess, loadAreaSuccess, loadAreaError, deleteAreaSuccess, createAreaSuccess } from './actions';
 import { LOAD_AREAS_REQUEST, LOAD_AREA_REQUEST, DELETE_AREA_REQUEST } from './constants';
@@ -14,7 +14,7 @@ export function* loadAreasSaga(action) {
     });
 
   try {
-    const response = yield call(loadAreas, queryParameters);
+    const response = yield call(loadResources, 'area', queryParameters);
 
     yield put(mergeJsonApiResources(response));
     yield put(loadAreasSuccess(response));
@@ -26,7 +26,7 @@ export function* loadAreasSaga(action) {
 // Individual exports for testing
 export function* loadAreaSaga(action) {
   try {
-    const response = yield call(loadArea, action.id);
+    const response = yield call(loadResource, 'area', action.id);
 
     yield put(mergeJsonApiResources(response));
     yield put(loadAreaSuccess());
@@ -41,7 +41,7 @@ export function* createAreaSaga(action, success, error) {
     description_multiloc: action.description,
   };
   try {
-    const response = yield call(createArea, data);
+    const response = yield call(createResource, 'area', data);
 
     yield put(mergeJsonApiResources(response));
     yield put(createAreaSuccess(response));
@@ -62,7 +62,7 @@ export function* updateAreaSaga(action, success, error) {
     slug: action.slug,
   };
   try {
-    const response = yield call(updateArea, action.id, data);
+    const response = yield call(updateResource, 'area', action.id, data);
 
     yield put(mergeJsonApiResources(response));
     if (success) yield success();
@@ -77,7 +77,7 @@ export function* updateAreaFork(action, success, error) {
 
 export function* deleteAreaSaga(action) {
   try {
-    yield call(deleteArea, action.id);
+    yield call(deleteResource, 'area', action.id);
     yield put(deleteAreaSuccess(action.id));
   } catch (e) {
     yield () => {};

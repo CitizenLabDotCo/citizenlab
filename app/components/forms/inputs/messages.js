@@ -178,4 +178,38 @@ export default defineMessages({
     id: 'app.containers.UserFormInput.labelLocale',
     defaultMessage: 'Choose one...',
   },
+  noResultsMultiSelect: {
+    id: 'app.containers.UserFormInput.noResultsMultiSelect',
+    defaultMessage: 'No match found...',
+  },
+
+  // topics
+  placeholderTopics: {
+    id: 'app.containers.UserFormInput.placeholderTopics',
+    defaultMessage: 'Select Topics',
+  },
+  labelTopics: {
+    id: 'app.containers.UserFormInput.labelTopics',
+    defaultMessage: 'Choose Topics...',
+  },
+
+  // areas
+  placeholderAreas: {
+    id: 'app.containers.UserFormInput.placeholderAreas',
+    defaultMessage: 'Select Areas',
+  },
+  labelAreas: {
+    id: 'app.containers.UserFormInput.labelAreas',
+    defaultMessage: 'Choose Areas...',
+  },
+
+  // Project
+  placeholderProject: {
+    id: 'app.containers.UserFormInput.placeholderProject',
+    defaultMessage: 'Select Project',
+  },
+  labelProject: {
+    id: 'app.containers.UserFormInput.labelProject',
+    defaultMessage: 'Choose one...',
+  },
 });

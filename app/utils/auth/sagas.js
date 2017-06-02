@@ -9,7 +9,6 @@ import { loadCurrentUserError, loadCurrentUserSuccess, deleteCurrentUserLocal, s
 createSocialUserError } from './actions';
 import { LOAD_CURRENT_USER_REQUEST, SIGNOUT_CURRENT_USER, SIGNIN_USER_REQUEST, SOCIAL_AUTH_REQUEST } from './constants';
 
-
 export function* fetchCurrentUser({ currentUser }) {
   try {
     let response = currentUser;

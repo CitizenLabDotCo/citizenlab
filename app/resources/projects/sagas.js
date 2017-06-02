@@ -1,11 +1,11 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
-import { fetchProjects, createProject, fetchProject, deleteProject, updateProject } from 'api';
+import { loadResources, createResource, loadResource, deleteResource, updateResource } from 'api';
 import { mergeJsonApiResources } from 'utils/resources/actions';
-import { loadProjectsError, loadProjectsSuccess, loadProjectSuccess, loadProjectError, deleteProjectSuccess, publishProjectSuccess } from './actions';
+import { loadProjectsError, loadProjectsSuccess, loadProjectSuccess, loadProjectError, deleteProjectSuccess, createProjectSuccess } from './actions';
 import { LOAD_PROJECTS_REQUEST, LOAD_PROJECT_REQUEST, DELETE_PROJECT_REQUEST } from './constants';
 
 // Individual exports for testing
-export function* getProjects(action) {
+export function* loadProjectsSaga(action) {
   const queryParameters = (action.initialLoad
     ? {}
     : {
@@ -14,19 +14,19 @@ export function* getProjects(action) {
     });
 
   try {
-    const response = yield call(fetchProjects, queryParameters);
+    const response = yield call(loadResources, 'project', queryParameters);
 
     yield put(mergeJsonApiResources(response));
     yield put(loadProjectsSuccess(response));
   } catch (e) {
-    yield put(loadProjectsError(e.json.errors));
+    yield put(loadProjectsError(e.json.erros));
   }
 }
 
 // Individual exports for testing
-export function* fetchProjectSaga(action) {
+export function* loadProjectSaga(action) {
   try {
-    const response = yield call(fetchProject, action.id);
+    const response = yield call(loadResource, 'project', action.id);
 
     yield put(mergeJsonApiResources(response));
     yield put(loadProjectSuccess());
@@ -35,24 +35,24 @@ export function* fetchProjectSaga(action) {
   }
 }
 
-export function* publishProjectSaga(action, success, error) {
+export function* createProjectSaga(action, success, error) {
   const data = {
     title_multiloc: action.title,
     description_multiloc: action.description,
   };
   try {
-    const response = yield call(createProject, data);
+    const response = yield call(createResource, 'project', data);
 
     yield put(mergeJsonApiResources(response));
-    yield put(publishProjectSuccess(response));
+    yield put(createProjectSuccess(response));
     if (success) yield success();
   } catch (e) {
     if (error) yield success(e.json.errors);
   }
 }
 
-export function* publishProjectFork(action, success, error) {
-  yield publishProjectSaga(action, success, error);
+export function* createProjectFork(action, success, error) {
+  yield createProjectSaga(action, success, error);
 }
 
 export function* updateProjectSaga(action, success, error) {
@@ -62,7 +62,7 @@ export function* updateProjectSaga(action, success, error) {
     slug: action.slug,
   };
   try {
-    const response = yield call(updateProject, action.id, data);
+    const response = yield call(updateResource, 'project', action.id, data);
 
     yield put(mergeJsonApiResources(response));
     if (success) yield success();
@@ -77,19 +77,19 @@ export function* updateProjectFork(action, success, error) {
 
 export function* deleteProjectSaga(action) {
   try {
-    yield call(deleteProject, action.id);
+    yield call(deleteResource, 'project', action.id);
     yield put(deleteProjectSuccess(action.id));
   } catch (e) {
     yield () => {};
   }
 }
 
-function* fetchProjectsWatcher() {
-  yield takeLatest(LOAD_PROJECTS_REQUEST, getProjects);
+function* loadProjectsWatcher() {
+  yield takeLatest(LOAD_PROJECTS_REQUEST, loadProjectsSaga);
 }
 
-function* fetchProjectWatcher() {
-  yield takeLatest(LOAD_PROJECT_REQUEST, fetchProjectSaga);
+function* loadProjectWatcher() {
+  yield takeLatest(LOAD_PROJECT_REQUEST, loadProjectSaga);
 }
 
 function* deleteProjectWatcher() {
@@ -97,8 +97,8 @@ function* deleteProjectWatcher() {
 }
 
 export default {
-  fetchProjectsWatcher,
-  fetchProjectWatcher,
+  loadProjectsWatcher,
+  loadProjectWatcher,
   deleteProjectWatcher,
 };
 

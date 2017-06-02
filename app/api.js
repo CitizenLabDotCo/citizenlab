@@ -249,3 +249,31 @@ export function deleteArea(id) {
   });
 }
 
+// resource
+export function loadResources(type, queryParameters, search) {
+  const railsfriendlySearch = (search || '').replace(/[[0-9]+]/g, '[]');
+  return request(`${API_PATH}/${type}s${railsfriendlySearch}`, null, null, queryParameters);
+}
+
+export function createResource(type, data) {
+  return request(`${API_PATH}/${type}s`, { [type]: data }, {
+    method: 'POST',
+  });
+}
+
+export function updateResource(type, id, data) {
+  return request(`${API_PATH}/${type}s/${id}`, { [type]: data }, {
+    method: 'PUT',
+  });
+}
+
+export function loadResource(type, id) {
+  return request(`${API_PATH}/${type}s/${id}`);
+}
+
+export function deleteResource(type, id) {
+  return request(`${API_PATH}/${type}s/${id}`, null, {
+    method: 'DELETE',
+  });
+}
+

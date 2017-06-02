@@ -16,10 +16,9 @@ export function ideasLoadingError(errorMessage) {
   };
 }
 
-export function loadIdeasRequest(initialLoad, nextPageNumber, nextPageItemCount, search, filters) {
+export function loadIdeasRequest(nextPageNumber = 1, nextPageItemCount = 9, search, filters) {
   return {
     type: LOAD_IDEAS_REQUEST,
-    initialLoad,
     nextPageNumber,
     nextPageItemCount,
     search,
@@ -32,10 +31,6 @@ export function loadIdeasSuccess(ideas) {
     type: LOAD_IDEAS_SUCCESS,
     payload: ideas,
   };
-}
-
-export function loadNextPage(nextPageNumber, nextPageItemCount, search, filters = {}) {
-  return loadIdeasRequest(false, nextPageNumber, nextPageItemCount, search, filters);
 }
 
 export function filterIdeas(search, params) {

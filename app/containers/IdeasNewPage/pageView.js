@@ -43,7 +43,6 @@ export class PageView extends React.PureComponent { // eslint-disable-line react
   componentDidMount() {
     const { loadTopicsRequest: ltr, loadAreasRequest: lar } = this.props;
     this.context.sagas.run(sagas.watchStoreIdea);
-
     // load topics and areas
     ltr();
     lar();
@@ -88,7 +87,7 @@ export class PageView extends React.PureComponent { // eslint-disable-line react
     const { className, storeAttachment: storeAtt, storeImage: storeImg, setTitle: setT } = this.props;
     return (
       <Container className={className}>
-        <WatchSagas sagas={{ watchGetTopics: sagas.watchGetTopics, watchGetAreas: sagas.watchGetAreas }} />
+        <WatchSagas sagas={{ watchGetTopics: sagas.watchGetTopics, watchGetAreas: sagas.watchGetAreas, watchStoreIdea: sagas.watchStoreIdea }} />
 
         <Breadcrumbs />
         <IdeaEditorWrapper

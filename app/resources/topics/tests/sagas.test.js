@@ -6,13 +6,13 @@
 /* eslint-disable redux-saga/yield-effects */
 import { call, put } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
-import { fetchTopics } from 'api';
+import { loadResources, loadResource, deleteResource } from 'api';
 
 import { mergeJsonApiResources } from 'utils/resources/actions';
-import { mockNumber } from 'utils/testing/constants';
+import { stringMock, mockNumber } from 'utils/testing/constants';
 
-import { loadTopicsSaga } from '../sagas';
-import { loadTopicsSuccess } from '../actions';
+import { loadTopicsSaga, loadTopicSaga, deleteTopicSaga } from '../sagas';
+import { deleteTopicSuccess, loadTopicsSuccess, loadTopicSuccess } from '../actions';
 
 describe('resources/topics sagas', () => {
   describe('loadTopicsSaga', () => {
@@ -23,7 +23,7 @@ describe('resources/topics sagas', () => {
     const it = sagaHelper(loadTopicsSaga(mockedAction));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(fetchTopics, {
+      expect(result).toEqual(call(loadResources, 'topic', {
         'page[number]': mockedAction.nextPageNumber,
         'page[size]': mockedAction.nextPageItemCount,
       }));
@@ -35,6 +35,40 @@ describe('resources/topics sagas', () => {
 
     it('then, should dispatch loadTopicsSuccess action', (result) => {
       expect(result).toEqual(put(loadTopicsSuccess()));
+    });
+  });
+
+  describe('loadTopicSaga', () => {
+    const mockedAction = {
+      id: stringMock,
+    };
+    const it = sagaHelper(loadTopicSaga(mockedAction));
+
+    it('should have called the correct API', (result) => {
+      expect(result).toEqual(call(loadResource, 'topic', mockedAction.id));
+    });
+
+    it('then, should dispatch mergeJsonApiResources action', (result) => {
+      expect(result).toEqual(put(mergeJsonApiResources()));
+    });
+
+    it('then, should dispatch loadTopicSuccess action', (result) => {
+      expect(result).toEqual(put(loadTopicSuccess()));
+    });
+  });
+
+  describe('deleteTopicSaga', () => {
+    const mockedAction = {
+      id: stringMock,
+    };
+    const it = sagaHelper(deleteTopicSaga(mockedAction));
+
+    it('should have called the correct API', (result) => {
+      expect(result).toEqual(call(deleteResource, 'topic', mockedAction.id));
+    });
+
+    it('then, should dispatch deleteTopicSuccess action', (result) => {
+      expect(result).toEqual(put(deleteTopicSuccess(mockedAction.id)));
     });
   });
 });
