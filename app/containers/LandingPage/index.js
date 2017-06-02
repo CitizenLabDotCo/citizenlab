@@ -259,7 +259,7 @@ const SectionTitle = styled.h2`
   `}
 `;
 
-const ViewAllButtonText = styled(Link)`
+const ViewAllButtonText = styled.div`
   color: #00a8e2;
   font-size: 18px;
   font-weight: 300;
@@ -275,7 +275,7 @@ const ViewAllButtonIcon = styled.svg`
   cursor: pointer;
 `;
 
-const ViewAllButton = styled.div`
+const ViewAllButton = styled(Link)`
   display: flex;
   align-items: center;
   margin-bottom: 8px;
@@ -425,7 +425,7 @@ class LandingPage extends React.Component {
                   <SectionTitle>
                     <FormattedMessage {...messages.ideasFrom} values={{ name: tFunc(tenantName) }} />
                   </SectionTitle>
-                  <ViewAllButton>
+                  <ViewAllButton to="/ideas">
                     <ViewAllButtonText>
                       <FormattedMessage {...messages.viewIdeas} />
                     </ViewAllButtonText>
@@ -444,7 +444,7 @@ class LandingPage extends React.Component {
                   <SectionTitle>
                     <FormattedMessage {...messages.projectsFrom} values={{ name: tFunc(tenantName) }} />
                   </SectionTitle>
-                  <ViewAllButton>
+                  <ViewAllButton to="/projects">
                     <ViewAllButtonText>
                       <FormattedMessage {...messages.viewProjects} />
                     </ViewAllButtonText>
