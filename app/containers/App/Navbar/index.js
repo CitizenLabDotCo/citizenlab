@@ -202,14 +202,14 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
             </Logo>
           </Link>
 
-          <MenuItems>
-            <MenuItem to="/">
+          <MenuItems secondary={(this.props.location === '/')}>
+            <MenuItem to="/" activeClassName="active">
               <FormattedMessage {...messages.pageOverview} />
             </MenuItem>
-            <MenuItem to="/ideas">
+            <MenuItem to="/ideas" activeClassName="active">
               <FormattedMessage {...messages.pageIdeas} />
             </MenuItem>
-            <MenuItem to="/projects">
+            <MenuItem to="/projects" activeClassName="active">
               <FormattedMessage {...messages.pageProjects} />
             </MenuItem>
           </MenuItems>
