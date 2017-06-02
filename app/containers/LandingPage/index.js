@@ -9,7 +9,7 @@ import Modal from 'components/Modal';
 import { preprocess } from 'utils';
 import IdeasShow from 'containers/IdeasShow';
 import { Link } from 'react-router';
-import { lighten, darken } from 'polished';
+import { lighten } from 'polished';
 
 import {
   selectLandingPage,
