@@ -20,25 +20,9 @@ export default function createRoutes(store) {
   const { injectReducer } = getAsyncInjectors(store); // eslint-disable-line no-unused-vars
 
   return [
-    /* {
+    {
       path: '/',
       name: 'home',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/HomePage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([component]) => {
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    }, */ {
-      path: '/',
-      name: 'landingPage',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/LandingPage/reducer'),
@@ -54,7 +38,8 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }, {
+    },
+    {
       path: '/dev/foundation',
       name: 'foundationDemoPage',
       getComponent(location, cb) {
@@ -62,7 +47,8 @@ export default function createRoutes(store) {
           .then(loadModule(cb))
           .catch(errorLoading);
       },
-    }, {
+    },
+    {
       path: '/sign-in',
       name: 'signInPage',
       getComponent(nextState, cb) {
@@ -80,7 +66,8 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }, {
+    },
+    {
       path: '/register/complete',
       name: 'registrationComplete',
       getComponent(nextState, cb) {
@@ -96,7 +83,8 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }, {
+    },
+    {
       path: '/register',
       name: 'usersNewPage',
       getComponent(nextState, cb) {
@@ -112,7 +100,8 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }, {
+    },
+    {
       path: '/profile/edit',
       name: 'usersEditPage',
       getComponent(nextState, cb) {
@@ -130,7 +119,8 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }, {
+    },
+    {
       path: '/ideas/new',
       name: 'IdeasNewPage',
       getComponent(nextState, cb) {
@@ -225,7 +215,8 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }, {
+    },
+    {
       path: '/projects/:slug',
       name: 'ProjectShow',
       getComponent(nextState, cb) {
@@ -280,7 +271,8 @@ export default function createRoutes(store) {
               },
             },
           ],
-        }, {
+        },
+        {
           path: '/projects/:slug/info',
           name: 'ProjectShow',
           getComponent(nextState, cb) {
@@ -298,7 +290,8 @@ export default function createRoutes(store) {
           },
         },
       ],
-    }, {
+    },
+    {
       path: '/sign-in/recover-password',
       name: 'usersPasswordRecovery',
       getComponent(nextState, cb) {
@@ -316,7 +309,8 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }, {
+    },
+    {
       path: '/reset-password',
       name: 'UsersPasswordReset',
       getComponent(nextState, cb) {
@@ -334,7 +328,8 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }, {
+    },
+    {
       path: '/pages/:id',
       name: 'pagesShowPage',
       getComponent(nextState, cb) {
@@ -352,7 +347,8 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }, {
+    },
+    {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
