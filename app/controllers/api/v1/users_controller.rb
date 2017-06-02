@@ -22,7 +22,7 @@ class Api::V1::UsersController < ::ApplicationController
     if @user
       render json: @user
     else
-      head :forbidden
+      head 404
     end
   end
 

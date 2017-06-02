@@ -55,7 +55,7 @@ RSpec.describe Tenant, type: :model do
 
   describe "Getting the current tenant" do
     it "succeeds with the correct tenant" do
-      tenant = Tenant.find_by(host: 'example_org')
+      tenant = Tenant.find_by(host: 'example.org')
       expect(Tenant.current).to match(tenant)
     end
   end

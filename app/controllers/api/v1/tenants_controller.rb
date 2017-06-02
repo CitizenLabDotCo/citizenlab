@@ -22,7 +22,7 @@ class Api::V1::TenantsController < ApplicationController
   end
 
   def set_tenant
-    @tenant = Tenant.find_by host: Apartment::Tenant.current
+    @tenant = Tenant.current
     authorize @tenant
   end
 

@@ -20,7 +20,7 @@ class Tenant < ApplicationRecord
   private
 
   def self.current
-    find_by!(host: Apartment::Tenant.current)
+    find_by!(host: Apartment::Tenant.current.gsub(/_/, "."))
   end
 
   def self.settings *path
