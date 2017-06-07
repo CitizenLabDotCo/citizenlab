@@ -177,15 +177,15 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjEsInN1YiI6ImQ5ZjljYmQ3LTRjMjgtNDE1My1iYmYzLTZjMWQxNjMxOGM1NyJ9.pVXMpZQv4l1ScJEZoJNHT4D2tbhZUuEc2SajqRPe8o0
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTY5NDc0NTQsInN1YiI6ImFmNjA2MWJlLWIxMmUtNGU3ZS04MjIyLTcwNzZiOTJiNzNmOCJ9.0SuPIrxpJ3UBC-f1epMCqC_yk_lkO0EaIgacC6gddVM
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?areas[]=987ab662-17cd-44ec-9b3d-1463f7ff43d9</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=da7de444-354b-4b21-8d75-f18fac05e23b</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">areas: [&quot;987ab662-17cd-44ec-9b3d-1463f7ff43d9&quot;]</pre>
+            <pre class="request query_parameters highlight">areas: [&quot;da7de444-354b-4b21-8d75-f18fac05e23b&quot;]</pre>
 
 
 
@@ -195,19 +195,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;ea66e542e5a6ed7b2cc7259b723980c5&quot;
+ETag: W/&quot;48b3c696429ca9d9b4b8e32cd9f7917e&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: c34d29e3-f99b-4693-b7cf-939b9f4f37f0
-X-Runtime: 0.036361
+X-Request-Id: a261fa2d-89b2-47da-afe2-342719c80a1f
+X-Runtime: 0.037791
 Vary: Origin
-Content-Length: 1530</pre>
+Content-Length: 1541</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;6108e0ed-f8b1-4a62-abab-98dd5f39cb25&quot;,
+      &quot;id&quot;: &quot;cad8689a-7e92-4221-a9c3-d91407400057&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -218,16 +218,13 @@ Content-Length: 1530</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Torrey Erdman&quot;,
+        &quot;author_name&quot;: &quot;Olga Ziemann&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
-        &quot;images&quot;: [
-
-        ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:41.265Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:41.265Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-31T15:13:41.265Z&quot;
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:14.103Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:14.103Z&quot;,
+        &quot;published_at&quot;: &quot;2017-06-07T18:44:14.103Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -238,20 +235,25 @@ Content-Length: 1530</pre>
         &quot;areas&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;987ab662-17cd-44ec-9b3d-1463f7ff43d9&quot;,
+              &quot;id&quot;: &quot;da7de444-354b-4b21-8d75-f18fac05e23b&quot;,
               &quot;type&quot;: &quot;areas&quot;
             }
           ]
         },
+        &quot;idea_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;ca530cf4-3706-412d-9dce-4a855ace4ad4&quot;,
+            &quot;id&quot;: &quot;18964b5b-98c2-4851-a044-4958fb0f7135&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;dab800d8-37ec-4f0b-a1eb-944282e562d6&quot;,
+            &quot;id&quot;: &quot;3298e355-d1c0-42e6-8724-a95f58eecab9&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -263,25 +265,25 @@ Content-Length: 1530</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;ca530cf4-3706-412d-9dce-4a855ace4ad4&quot;,
+      &quot;id&quot;: &quot;18964b5b-98c2-4851-a044-4958fb0f7135&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Torrey&quot;,
-        &quot;last_name&quot;: &quot;Erdman&quot;,
-        &quot;slug&quot;: &quot;torrey-erdman&quot;,
+        &quot;first_name&quot;: &quot;Olga&quot;,
+        &quot;last_name&quot;: &quot;Ziemann&quot;,
+        &quot;slug&quot;: &quot;olga-ziemann&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/ca530cf4-3706-412d-9dce-4a855ace4ad4/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/ca530cf4-3706-412d-9dce-4a855ace4ad4/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/ca530cf4-3706-412d-9dce-4a855ace4ad4/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/18964b5b-98c2-4851-a044-4958fb0f7135/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/18964b5b-98c2-4851-a044-4958fb0f7135/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/18964b5b-98c2-4851-a044-4958fb0f7135/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:41.253Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:41.253Z&quot;
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:14.087Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:14.087Z&quot;
       }
     }
   ],

@@ -177,15 +177,15 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjIsInN1YiI6ImQxOTYxY2UzLTQ1NDYtNDkzNC1hZTBmLWNjMGNjNjJmNjFlMyJ9.ti5vTclcdKYwQmqtUZpJ2MhgwnJrh_eyRhMtUFbJSCc
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTY5NDc0NTUsInN1YiI6ImViNWY5ZDg2LThkNTUtNDExMC04OTQ4LWZkYTUwYWVlM2JlZiJ9.1DWZKt0zdEonAJdPrATGfSzmivh3gVcsEmIgy64H9k4
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?author=a06c8ef2-34ac-470a-8819-dc6ab6f7c93d</pre>
+          <pre class="request route highlight">GET api/v1/ideas?author=8a8f45cd-0837-47b2-8021-c64eb72b85a9</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">author: a06c8ef2-34ac-470a-8819-dc6ab6f7c93d</pre>
+            <pre class="request query_parameters highlight">author: 8a8f45cd-0837-47b2-8021-c64eb72b85a9</pre>
 
 
 
@@ -195,19 +195,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;a166e0f3638fa15b6a494181dc4d52f6&quot;
+ETag: W/&quot;848519bf439bf57bf66f83d1763148cb&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 7aba36de-9fa8-4d0a-a353-f0f4d199badc
-X-Runtime: 0.026670
+X-Request-Id: e77376cd-3555-4114-81af-41cb6c8277eb
+X-Runtime: 0.027322
 Vary: Origin
-Content-Length: 1485</pre>
+Content-Length: 1490</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;9488c744-9ec4-46c9-a034-6fc498044a7d&quot;,
+      &quot;id&quot;: &quot;93317ca3-3280-4574-bd4e-c6e4f7f71cd8&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -218,16 +218,13 @@ Content-Length: 1485</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Wilford Macejkovic&quot;,
+        &quot;author_name&quot;: &quot;Zackary Abshire&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
-        &quot;images&quot;: [
-
-        ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:42.812Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:42.812Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-31T15:13:42.812Z&quot;
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:15.600Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:15.600Z&quot;,
+        &quot;published_at&quot;: &quot;2017-06-07T18:44:15.599Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -240,15 +237,20 @@ Content-Length: 1485</pre>
 
           ]
         },
+        &quot;idea_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;a06c8ef2-34ac-470a-8819-dc6ab6f7c93d&quot;,
+            &quot;id&quot;: &quot;8a8f45cd-0837-47b2-8021-c64eb72b85a9&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;ea798646-5a8a-4d4b-b562-2b862ecc991b&quot;,
+            &quot;id&quot;: &quot;91ae30f7-be70-4fa6-bf89-8926b868d232&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -260,25 +262,25 @@ Content-Length: 1485</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;a06c8ef2-34ac-470a-8819-dc6ab6f7c93d&quot;,
+      &quot;id&quot;: &quot;8a8f45cd-0837-47b2-8021-c64eb72b85a9&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Wilford&quot;,
-        &quot;last_name&quot;: &quot;Macejkovic&quot;,
-        &quot;slug&quot;: &quot;wilford-macejkovic&quot;,
+        &quot;first_name&quot;: &quot;Zackary&quot;,
+        &quot;last_name&quot;: &quot;Abshire&quot;,
+        &quot;slug&quot;: &quot;zackary-abshire&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/a06c8ef2-34ac-470a-8819-dc6ab6f7c93d/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/a06c8ef2-34ac-470a-8819-dc6ab6f7c93d/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/a06c8ef2-34ac-470a-8819-dc6ab6f7c93d/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/8a8f45cd-0837-47b2-8021-c64eb72b85a9/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/8a8f45cd-0837-47b2-8021-c64eb72b85a9/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/8a8f45cd-0837-47b2-8021-c64eb72b85a9/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:42.788Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:42.788Z&quot;
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:15.576Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:15.576Z&quot;
       }
     }
   ],

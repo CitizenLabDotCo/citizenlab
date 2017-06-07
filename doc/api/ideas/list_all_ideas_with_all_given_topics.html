@@ -177,15 +177,15 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjAsInN1YiI6IjU0YjRjN2E2LTA1NDctNDJkNy04N2MzLTFiOTIyMWY5OThhOCJ9.9sgeAa5sAJ-OQ5FnMmORZFiiT_goAb58tevdJmDTbBM
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTY5NDc0NTMsInN1YiI6ImRkOWRhMGVlLWU4NTAtNDUxMy04MGVhLTcwN2M0MzQ1MzRiYiJ9.UQXbJl_A7r3h71WgKSZP3LtzYFUGaPExrfEdOEwrD_g
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=327a68e7-84b6-4bb0-be3d-a397d284a539&amp;topics[]=176bb06b-3dc8-442c-9a46-be28eed8912c</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=606a1f20-7c45-466f-9d9e-3ab8af0709d3&amp;topics[]=32c9d445-2236-49a4-a2ff-18693b7da41b</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;327a68e7-84b6-4bb0-be3d-a397d284a539&quot;, &quot;176bb06b-3dc8-442c-9a46-be28eed8912c&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;606a1f20-7c45-466f-9d9e-3ab8af0709d3&quot;, &quot;32c9d445-2236-49a4-a2ff-18693b7da41b&quot;]</pre>
 
 
 
@@ -195,19 +195,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;c8d58d055474b01dc3e71aab8073b9d1&quot;
+ETag: W/&quot;4561d9da5deaa03b4e71ce4b98aa2896&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 3217d45f-e203-4c89-a83f-a38bb31c869b
-X-Runtime: 0.033612
+X-Request-Id: fa3fbec8-8e75-4769-9a09-5537e8529727
+X-Runtime: 0.043907
 Vary: Origin
-Content-Length: 1593</pre>
+Content-Length: 1598</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;44c5ee66-d173-4df2-9776-399df058b7ea&quot;,
+      &quot;id&quot;: &quot;b664b773-cc34-48ce-a27c-8e0a63bfb14c&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -218,26 +218,23 @@ Content-Length: 1593</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Conrad Hirthe&quot;,
+        &quot;author_name&quot;: &quot;Nolan Wiza&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
-        &quot;images&quot;: [
-
-        ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.643Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.643Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-31T15:13:40.643Z&quot;
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:13.495Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:13.495Z&quot;,
+        &quot;published_at&quot;: &quot;2017-06-07T18:44:13.495Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;327a68e7-84b6-4bb0-be3d-a397d284a539&quot;,
+              &quot;id&quot;: &quot;606a1f20-7c45-466f-9d9e-3ab8af0709d3&quot;,
               &quot;type&quot;: &quot;topics&quot;
             },
             {
-              &quot;id&quot;: &quot;176bb06b-3dc8-442c-9a46-be28eed8912c&quot;,
+              &quot;id&quot;: &quot;32c9d445-2236-49a4-a2ff-18693b7da41b&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -247,15 +244,20 @@ Content-Length: 1593</pre>
 
           ]
         },
+        &quot;idea_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;d25db042-5d82-49fa-9a50-9f45d894bda2&quot;,
+            &quot;id&quot;: &quot;7f9def17-cfe3-404f-826f-b58756492a5f&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;ef52481a-081a-43ff-ae37-3e3599da2d6c&quot;,
+            &quot;id&quot;: &quot;1d1c272a-2197-4ea9-bb87-70c9facbf2a0&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -267,25 +269,25 @@ Content-Length: 1593</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;d25db042-5d82-49fa-9a50-9f45d894bda2&quot;,
+      &quot;id&quot;: &quot;7f9def17-cfe3-404f-826f-b58756492a5f&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Conrad&quot;,
-        &quot;last_name&quot;: &quot;Hirthe&quot;,
-        &quot;slug&quot;: &quot;conrad-hirthe&quot;,
+        &quot;first_name&quot;: &quot;Nolan&quot;,
+        &quot;last_name&quot;: &quot;Wiza&quot;,
+        &quot;slug&quot;: &quot;nolan-wiza&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/d25db042-5d82-49fa-9a50-9f45d894bda2/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/d25db042-5d82-49fa-9a50-9f45d894bda2/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/d25db042-5d82-49fa-9a50-9f45d894bda2/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/7f9def17-cfe3-404f-826f-b58756492a5f/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/7f9def17-cfe3-404f-826f-b58756492a5f/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/7f9def17-cfe3-404f-826f-b58756492a5f/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.627Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.627Z&quot;
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:13.477Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:13.477Z&quot;
       }
     }
   ],

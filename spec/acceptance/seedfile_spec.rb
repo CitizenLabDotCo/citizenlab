@@ -18,6 +18,7 @@ describe "seedfile" do
       expect(Phase.count).to be > 0
       expect(Event.count).to be > 0
       expect(Idea.count).to be > 0
+      expect(IdeaImage.count).to be > 0
       expect(Comment.count).to be > 0
       expect(Page.count).to be 5
     end

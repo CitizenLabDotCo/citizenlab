@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170602105428) do
+ActiveRecord::Schema.define(version: 20170607123146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,15 @@ ActiveRecord::Schema.define(version: 20170602105428) do
     t.index ["project_id"], name: "index_events_on_project_id", using: :btree
   end
 
+  create_table "idea_images", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "idea_id"
+    t.string   "image"
+    t.integer  "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idea_id"], name: "index_idea_images_on_idea_id", using: :btree
+  end
+
   create_table "ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.jsonb    "title_multiloc",     default: {}
     t.jsonb    "body_multiloc",      default: {}
@@ -98,7 +107,6 @@ ActiveRecord::Schema.define(version: 20170602105428) do
     t.uuid     "project_id"
     t.uuid     "author_id"
     t.string   "author_name"
-    t.jsonb    "images"
     t.jsonb    "files"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
@@ -210,6 +218,7 @@ ActiveRecord::Schema.define(version: 20170602105428) do
   add_foreign_key "comments", "ideas"
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "events", "projects"
+  add_foreign_key "idea_images", "ideas"
   add_foreign_key "ideas", "projects"
   add_foreign_key "ideas", "users", column: "author_id"
   add_foreign_key "ideas_topics", "ideas"

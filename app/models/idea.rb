@@ -1,6 +1,5 @@
 class Idea < ApplicationRecord
   include PgSearch
-  mount_uploaders :images, IdeaImageUploader
   mount_uploaders :files, IdeaFileUploader
 
   pg_search_scope :search_by_all, :against => [:title_multiloc, :body_multiloc, :author_name]
@@ -17,6 +16,7 @@ class Idea < ApplicationRecord
   has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
   has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
   has_many :activities, as: :item
+  has_many :idea_images, dependent: :destroy
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
   validates :title_multiloc, presence: true, multiloc: {presence: true}

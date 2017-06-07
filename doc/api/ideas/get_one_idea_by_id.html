@@ -118,12 +118,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjQsInN1YiI6ImNkMmE2OTBmLTRkMjMtNGQ2ZC05OWYzLTAwZTU0YWQ0NWM4MiJ9.636YAHS7kQKvmliX7Es0_Eyo6AtaI-p5wPVk25ngoHk
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTY5NDc0NTcsInN1YiI6IjhhYjUzZDQ2LWM5YTYtNDcwNi1hYjkzLTc3Mzg2ZWYyM2M1OSJ9.nRYvqa9870KOt4WPGS7pFnnKpQe9kACbI4S5BIAbHmw
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas/2c4911c0-b20c-46a6-a79d-e733c258e8e4</pre>
+          <pre class="request route highlight">GET api/v1/ideas/9ed2b1eb-40a8-4a24-a2c4-8b32ca7820f8</pre>
 
 
 
@@ -134,18 +134,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;6f1d7c304d8a26ee020751cd71ceec7f&quot;
+ETag: W/&quot;afa19e14bb83c7f1136798789248486c&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: af047056-89a8-4670-8ec8-af87305a7dac
-X-Runtime: 0.040959
+X-Request-Id: 75fc3e54-1002-4cb6-b633-9908dbb31ae7
+X-Runtime: 0.035736
 Vary: Origin
-Content-Length: 1485</pre>
+Content-Length: 1472</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;2c4911c0-b20c-46a6-a79d-e733c258e8e4&quot;,
+    &quot;id&quot;: &quot;9ed2b1eb-40a8-4a24-a2c4-8b32ca7820f8&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -156,16 +156,13 @@ Content-Length: 1485</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Mackenzie Runolfsdottir&quot;,
+      &quot;author_name&quot;: &quot;Monroe D&#39;Amore&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
-      &quot;images&quot;: [
-
-      ],
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
-      &quot;created_at&quot;: &quot;2017-05-31T15:13:44.397Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-05-31T15:13:44.397Z&quot;,
-      &quot;published_at&quot;: &quot;2017-05-31T15:13:44.397Z&quot;
+      &quot;created_at&quot;: &quot;2017-06-07T18:44:17.180Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-06-07T18:44:17.180Z&quot;,
+      &quot;published_at&quot;: &quot;2017-06-07T18:44:17.180Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -178,15 +175,20 @@ Content-Length: 1485</pre>
 
         ]
       },
+      &quot;idea_images&quot;: {
+        &quot;data&quot;: [
+
+        ]
+      },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;fb70e343-9016-46f3-8f16-e8df032e611d&quot;,
+          &quot;id&quot;: &quot;831f9686-4502-4f88-a090-bbe2b3fb768d&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;8e43a027-5e28-4877-9564-69a69aa31242&quot;,
+          &quot;id&quot;: &quot;8f808c85-64ce-43ee-80c9-3871f32bf1bd&quot;,
           &quot;type&quot;: &quot;projects&quot;
         }
       },
@@ -199,25 +201,25 @@ Content-Length: 1485</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;fb70e343-9016-46f3-8f16-e8df032e611d&quot;,
+      &quot;id&quot;: &quot;831f9686-4502-4f88-a090-bbe2b3fb768d&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Mackenzie&quot;,
-        &quot;last_name&quot;: &quot;Runolfsdottir&quot;,
-        &quot;slug&quot;: &quot;mackenzie-runolfsdottir&quot;,
+        &quot;first_name&quot;: &quot;Monroe&quot;,
+        &quot;last_name&quot;: &quot;D&#39;Amore&quot;,
+        &quot;slug&quot;: &quot;monroe-d-amore&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/fb70e343-9016-46f3-8f16-e8df032e611d/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/fb70e343-9016-46f3-8f16-e8df032e611d/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/fb70e343-9016-46f3-8f16-e8df032e611d/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/831f9686-4502-4f88-a090-bbe2b3fb768d/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/831f9686-4502-4f88-a090-bbe2b3fb768d/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/831f9686-4502-4f88-a090-bbe2b3fb768d/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:44.386Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:44.386Z&quot;
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:17.166Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:17.166Z&quot;
       }
     }
   ]

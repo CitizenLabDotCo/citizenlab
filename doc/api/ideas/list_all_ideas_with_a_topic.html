@@ -177,15 +177,15 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjAsInN1YiI6IjFmMGI0YTZmLTYwOTAtNDIzZi1iODI2LThjMTU3M2ZkOTg3ZCJ9.xyS0JP3NIo9v3hsXI80-JD2wYpoIhwCf17SlqEydAHs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTY5NDc0NTMsInN1YiI6IjYwMTljZTMzLTAxMTQtNGNhNy04M2VhLTU3ZmJlNzY1NjAwNiJ9.Fqm3GxsbiLpw5UhNKhzuysqdsbcY639ZXBsRfIyBABU
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=3bdeae2d-293d-40dd-a0f0-b16c29d46ab0</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=638cd8d0-bb2e-4eb2-8f94-a98b9182e593</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;3bdeae2d-293d-40dd-a0f0-b16c29d46ab0&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;638cd8d0-bb2e-4eb2-8f94-a98b9182e593&quot;]</pre>
 
 
 
@@ -195,19 +195,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;277d6111916e8f555ffe094b0d6e1625&quot;
+ETag: W/&quot;51e2bc8ebaef099a74c8bd85dc204b87&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: eae1d493-aa60-4d76-9f83-9dc1624b03f4
-X-Runtime: 0.039434
+X-Request-Id: 1880b47c-3157-4808-baed-f514aad4968f
+X-Runtime: 0.049364
 Vary: Origin
-Content-Length: 1531</pre>
+Content-Length: 1536</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;b7feb0a4-9a45-46bb-8b05-4f56384bd5b0&quot;,
+      &quot;id&quot;: &quot;800cd534-c5e4-4378-8b74-1925d180a43f&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -218,22 +218,19 @@ Content-Length: 1531</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Jesus Hilpert&quot;,
+        &quot;author_name&quot;: &quot;Cecil Moen&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
-        &quot;images&quot;: [
-
-        ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.322Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.322Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-31T15:13:40.322Z&quot;
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:13.169Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:13.169Z&quot;,
+        &quot;published_at&quot;: &quot;2017-06-07T18:44:13.169Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;3bdeae2d-293d-40dd-a0f0-b16c29d46ab0&quot;,
+              &quot;id&quot;: &quot;638cd8d0-bb2e-4eb2-8f94-a98b9182e593&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -243,15 +240,20 @@ Content-Length: 1531</pre>
 
           ]
         },
+        &quot;idea_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;adf0d060-c984-4996-99e4-487d89db184e&quot;,
+            &quot;id&quot;: &quot;18c75c71-20a0-49ec-ac5c-5f72ac6ed0e8&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;9ae684ca-f667-4b85-9ee3-b0f8f7040f2d&quot;,
+            &quot;id&quot;: &quot;a7318043-7581-495f-8a8b-4d338dea8a5b&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -263,25 +265,25 @@ Content-Length: 1531</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;adf0d060-c984-4996-99e4-487d89db184e&quot;,
+      &quot;id&quot;: &quot;18c75c71-20a0-49ec-ac5c-5f72ac6ed0e8&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Jesus&quot;,
-        &quot;last_name&quot;: &quot;Hilpert&quot;,
-        &quot;slug&quot;: &quot;jesus-hilpert&quot;,
+        &quot;first_name&quot;: &quot;Cecil&quot;,
+        &quot;last_name&quot;: &quot;Moen&quot;,
+        &quot;slug&quot;: &quot;cecil-moen&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/adf0d060-c984-4996-99e4-487d89db184e/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/adf0d060-c984-4996-99e4-487d89db184e/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/adf0d060-c984-4996-99e4-487d89db184e/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/18c75c71-20a0-49ec-ac5c-5f72ac6ed0e8/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/18c75c71-20a0-49ec-ac5c-5f72ac6ed0e8/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/18c75c71-20a0-49ec-ac5c-5f72ac6ed0e8/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:40.312Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:40.312Z&quot;
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:13.159Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:13.159Z&quot;
       }
     }
   ],
