@@ -187,9 +187,13 @@ Apartment::Tenant.switch('localhost') do
       areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
       author: User.offset(rand(User.count)).first,
       project: Project.offset(rand(Project.count)).first,
-      publication_status: 'published',
-      images: [0,0,1,1,2][rand(5)].times.map{ Rails.root.join("spec/fixtures/image#{rand(20)}.png").open }
+      publication_status: 'published'
     })
+
+    [0,0,1,1,2][rand(5)].times do |i|
+      idea.idea_images.create(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+    end
+
     User.all.each do |u|
       r = rand(5)
       if r == 0

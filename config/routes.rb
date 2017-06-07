@@ -11,6 +11,7 @@ Rails.application.routes.draw do
           post :up, on: :collection
           post :down, on: :collection
         end
+        resources :images, defaults: {container_class: Idea, image_class: IdeaImage}
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 

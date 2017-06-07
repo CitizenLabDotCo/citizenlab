@@ -153,12 +153,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMTksInN1YiI6ImU2ZjVhZmViLWZkNzctNDk5Ny1hNzExLWEwNmZjMmJjOGU4ZSJ9.9YTKYV3fkGnZG1Wx3gwuQ41xqgLe1y_UBRrlKSyfn_s
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTY5NDc0NTEsInN1YiI6IjlmNGY4MzJlLWRiODQtNGUwNS1iOGNlLTUxZmYzOGUyMzIyNSJ9.0xU2VtZ9ym92Z52BcPkMf72wmxdXEpmNFlTc1Y2Zs8Y
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/comments/e18fb68e-81f3-47ff-a1e6-2b7bbdd39904</pre>
+          <pre class="request route highlight">PATCH api/v1/comments/5cdb492e-1096-47b6-8f85-ef3e8d248881</pre>
 
 
             <h4>Body</h4>
@@ -171,37 +171,37 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;f164132eb14138b8f8593072c769f6b9&quot;
+ETag: W/&quot;775b4b7f2f19ffa99701243c9ceba139&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 180adb99-cfa1-4654-aaab-f4d140de9fd6
-X-Runtime: 0.023566
+X-Request-Id: 3a37a749-9923-47dc-88e2-97e00cc8dc60
+X-Runtime: 0.018368
 Vary: Origin
-Content-Length: 1238</pre>
+Content-Length: 1245</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;e18fb68e-81f3-47ff-a1e6-2b7bbdd39904&quot;,
+    &quot;id&quot;: &quot;5cdb492e-1096-47b6-8f85-ef3e8d248881&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
         &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
       },
-      &quot;created_at&quot;: &quot;2017-05-31T15:13:39.147Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-05-31T15:13:39.147Z&quot;
+      &quot;created_at&quot;: &quot;2017-06-07T18:44:11.568Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-06-07T18:44:11.568Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;dfcf73a2-7d4c-462b-97fc-90fe71f3c62c&quot;,
+          &quot;id&quot;: &quot;ded6d427-0e0d-477b-9dba-d162135f893a&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;e6f5afeb-fd77-4997-a711-a06fc2bc8e8e&quot;,
+          &quot;id&quot;: &quot;9f4f832e-db84-4e05-b8ce-51ff38e23225&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
@@ -212,26 +212,26 @@ Content-Length: 1238</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;e6f5afeb-fd77-4997-a711-a06fc2bc8e8e&quot;,
+      &quot;id&quot;: &quot;9f4f832e-db84-4e05-b8ce-51ff38e23225&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Ashly&quot;,
-        &quot;last_name&quot;: &quot;Crona&quot;,
-        &quot;slug&quot;: &quot;ashly-crona&quot;,
+        &quot;first_name&quot;: &quot;Trycia&quot;,
+        &quot;last_name&quot;: &quot;Senger&quot;,
+        &quot;slug&quot;: &quot;trycia-senger&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/e6f5afeb-fd77-4997-a711-a06fc2bc8e8e/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/e6f5afeb-fd77-4997-a711-a06fc2bc8e8e/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/e6f5afeb-fd77-4997-a711-a06fc2bc8e8e/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/9f4f832e-db84-4e05-b8ce-51ff38e23225/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/9f4f832e-db84-4e05-b8ce-51ff38e23225/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/9f4f832e-db84-4e05-b8ce-51ff38e23225/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:39.135Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:39.135Z&quot;,
-        &quot;email&quot;: &quot;mina@braun.org&quot;,
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:11.550Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:11.550Z&quot;,
+        &quot;email&quot;: &quot;jadyn@kovacek.com&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

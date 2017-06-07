@@ -1,8 +1,9 @@
 class Api::V1::IdeaSerializer < ActiveModel::Serializer
-  attributes :id, :title_multiloc, :body_multiloc, :author_name, :publication_status, :images, :upvotes_count, :downvotes_count, :created_at, :updated_at, :published_at
+  attributes :id, :title_multiloc, :body_multiloc, :author_name, :publication_status, :upvotes_count, :downvotes_count, :created_at, :updated_at, :published_at
 
   has_many :topics
   has_many :areas
+  has_many :idea_images, serializer: ImageSerializer
 
   belongs_to :author
   belongs_to :project
@@ -13,12 +14,6 @@ class Api::V1::IdeaSerializer < ActiveModel::Serializer
       votes_by_idea_id[object.id]
     elsif scope
       object.votes.where(user_id: scope.id)
-    end
-  end
-
-  def images
-    object.images.map do |img|
-      img.versions.map{|k, v| [k.to_s, v.url]}.to_h
     end
   end
 

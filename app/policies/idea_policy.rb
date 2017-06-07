@@ -12,6 +12,10 @@ class IdeaPolicy < ApplicationPolicy
     end
   end
 
+  def images_index?
+    show?
+  end
+
   def create?
     record.draft? || user
   end

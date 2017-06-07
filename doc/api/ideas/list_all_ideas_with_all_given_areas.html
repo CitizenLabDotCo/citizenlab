@@ -177,15 +177,15 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjEsInN1YiI6ImQ0Mzk1Mzk4LTgzMTYtNGMyNC04YjkwLTg1ZGY5NjRkYzExMiJ9.xGQFjCaWF2ts20mhCfn8GT0T1fH5AWVW3mazyqvPNFc
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTY5NDc0NTQsInN1YiI6ImExNWIzZTU3LTAwOGItNGQ4OS1iNWY2LTM4MjJjMzMyZDhjZiJ9.c2sohGLM16hG5u_0UqKqN6ZNW0DX0kJxvgrk8EYEIzc
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?areas[]=52eab69c-f535-4e61-b283-4909c4238c15&amp;areas[]=aeadec28-ad54-46d5-93b3-096f955a85e5</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=cbceaeab-2e0b-454e-83d2-2ae2414d99be&amp;areas[]=a4ad98dd-6634-44e0-a4d5-02daca3ce02b</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">areas: [&quot;52eab69c-f535-4e61-b283-4909c4238c15&quot;, &quot;aeadec28-ad54-46d5-93b3-096f955a85e5&quot;]</pre>
+            <pre class="request query_parameters highlight">areas: [&quot;cbceaeab-2e0b-454e-83d2-2ae2414d99be&quot;, &quot;a4ad98dd-6634-44e0-a4d5-02daca3ce02b&quot;]</pre>
 
 
 
@@ -195,19 +195,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;a26726725c66db60cbd3dedf6da235cb&quot;
+ETag: W/&quot;4f0c0ea610a0db9dd3f4e4990d28615a&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 556ccd0a-c659-49a3-9c85-b082f7595ede
-X-Runtime: 0.038214
+X-Request-Id: f435952f-48dd-4dc1-a91a-ca2c4a1658a2
+X-Runtime: 0.039414
 Vary: Origin
-Content-Length: 1588</pre>
+Content-Length: 1608</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;b5f390d4-22da-4bb4-bdec-44d74d61e07e&quot;,
+      &quot;id&quot;: &quot;276d59eb-9ac1-49f1-aa30-f9475599252c&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -218,16 +218,13 @@ Content-Length: 1588</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Gerardo Moen&quot;,
+        &quot;author_name&quot;: &quot;Jewell Kuvalis&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
-        &quot;images&quot;: [
-
-        ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:41.581Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:41.581Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-31T15:13:41.580Z&quot;
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:14.408Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:14.408Z&quot;,
+        &quot;published_at&quot;: &quot;2017-06-07T18:44:14.408Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -238,24 +235,29 @@ Content-Length: 1588</pre>
         &quot;areas&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;52eab69c-f535-4e61-b283-4909c4238c15&quot;,
+              &quot;id&quot;: &quot;cbceaeab-2e0b-454e-83d2-2ae2414d99be&quot;,
               &quot;type&quot;: &quot;areas&quot;
             },
             {
-              &quot;id&quot;: &quot;aeadec28-ad54-46d5-93b3-096f955a85e5&quot;,
+              &quot;id&quot;: &quot;a4ad98dd-6634-44e0-a4d5-02daca3ce02b&quot;,
               &quot;type&quot;: &quot;areas&quot;
             }
           ]
         },
+        &quot;idea_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;d0133827-015f-4a9b-ab7d-ce42542e0ce7&quot;,
+            &quot;id&quot;: &quot;54068109-b661-4fbe-ba39-13d7697c91d1&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;1708e2a9-cc79-49d7-9600-16cdc8b79cca&quot;,
+            &quot;id&quot;: &quot;9546119e-59ac-4ecb-9c76-e7d9f8e2fbf7&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -267,25 +269,25 @@ Content-Length: 1588</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;d0133827-015f-4a9b-ab7d-ce42542e0ce7&quot;,
+      &quot;id&quot;: &quot;54068109-b661-4fbe-ba39-13d7697c91d1&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Gerardo&quot;,
-        &quot;last_name&quot;: &quot;Moen&quot;,
-        &quot;slug&quot;: &quot;gerardo-moen&quot;,
+        &quot;first_name&quot;: &quot;Jewell&quot;,
+        &quot;last_name&quot;: &quot;Kuvalis&quot;,
+        &quot;slug&quot;: &quot;jewell-kuvalis&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/d0133827-015f-4a9b-ab7d-ce42542e0ce7/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/d0133827-015f-4a9b-ab7d-ce42542e0ce7/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/d0133827-015f-4a9b-ab7d-ce42542e0ce7/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/54068109-b661-4fbe-ba39-13d7697c91d1/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/54068109-b661-4fbe-ba39-13d7697c91d1/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/54068109-b661-4fbe-ba39-13d7697c91d1/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:41.569Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:41.569Z&quot;
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:14.395Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:14.395Z&quot;
       }
     }
   ],

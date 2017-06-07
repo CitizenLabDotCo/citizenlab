@@ -177,7 +177,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjMsInN1YiI6ImQ1NmMwOTRmLWViYmItNGNkMy1iMjVjLTdiY2VmYjk2NWNkZiJ9.zFgbD2_Ras4WiN2vZiQ6XdVBHYYQ9wi63Ww7UosdDzQ
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTY5NDc0NTUsInN1YiI6IjBmZjJlMGQzLWI5NTAtNGE1Yy1hYjQ2LTM4NzFiZDAwMmU3OCJ9.gVjABcf-jlgH19E38nRqnp3jgFU3CysyQ9Vq_7xDrAg
 Host: example.org
 Cookie: </pre>
 
@@ -195,19 +195,19 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;61327bcf5ec81d2516f633d0d067b7a3&quot;
+ETag: W/&quot;60a85b33dc3c0ea0195d4e1b0cef5ce1&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 73c657b3-3bed-4c71-83bb-63f15a17a375
-X-Runtime: 0.033386
+X-Request-Id: 78ad3d7c-23d7-4371-a9aa-74597f2e9bb1
+X-Runtime: 0.038629
 Vary: Origin
-Content-Length: 1441</pre>
+Content-Length: 1470</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;1c129f11-b5e5-4bdc-804c-24569e30477b&quot;,
+      &quot;id&quot;: &quot;e33fa6fb-4b88-4720-8f0c-0bc804f4233d&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -217,16 +217,13 @@ Content-Length: 1441</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Reta Hilll&quot;,
+        &quot;author_name&quot;: &quot;Eusebio Gaylord&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
-        &quot;images&quot;: [
-
-        ],
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.163Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.163Z&quot;,
-        &quot;published_at&quot;: &quot;2017-05-31T15:13:43.163Z&quot;
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:15.938Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:15.938Z&quot;,
+        &quot;published_at&quot;: &quot;2017-06-07T18:44:15.937Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -239,15 +236,20 @@ Content-Length: 1441</pre>
 
           ]
         },
+        &quot;idea_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;38579aee-a3be-446a-b997-20cf95fc010f&quot;,
+            &quot;id&quot;: &quot;883833d5-9aaf-4144-8b71-d20e92eb8a96&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;1aaea973-f85d-4262-a3fa-e3f73d7a13a8&quot;,
+            &quot;id&quot;: &quot;fb3db6a9-ac78-4b7b-b2b6-05411fabe07d&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -259,25 +261,25 @@ Content-Length: 1441</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;38579aee-a3be-446a-b997-20cf95fc010f&quot;,
+      &quot;id&quot;: &quot;883833d5-9aaf-4144-8b71-d20e92eb8a96&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Reta&quot;,
-        &quot;last_name&quot;: &quot;Hilll&quot;,
-        &quot;slug&quot;: &quot;reta-hilll&quot;,
+        &quot;first_name&quot;: &quot;Eusebio&quot;,
+        &quot;last_name&quot;: &quot;Gaylord&quot;,
+        &quot;slug&quot;: &quot;eusebio-gaylord&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/38579aee-a3be-446a-b997-20cf95fc010f/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/38579aee-a3be-446a-b997-20cf95fc010f/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/38579aee-a3be-446a-b997-20cf95fc010f/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/883833d5-9aaf-4144-8b71-d20e92eb8a96/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/883833d5-9aaf-4144-8b71-d20e92eb8a96/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/883833d5-9aaf-4144-8b71-d20e92eb8a96/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:43.147Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:43.147Z&quot;
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:15.928Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:15.928Z&quot;
       }
     }
   ],

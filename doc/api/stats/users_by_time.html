@@ -152,17 +152,17 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMzcsInN1YiI6IjU3ZmY2MTAyLTRlMGUtNGU1ZS1hZWE4LTJiYTc0M2Q5YzVlNSJ9.uHqnu50fPQRYKtAmQig3tU5jjLl6RZgQFjSRNcDO6Uk
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTY5NDc0NzAsInN1YiI6Ijc4YWIzNDA4LTNlY2UtNGY5ZS1hOWQzLTlkZGY2NTcwMjY3MCJ9.RQuulBjvcqmNaccQRoVnpWfZt7UGaNd-gDpfxQH5HXk
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/stats/users_by_time?start_at=2017-05-01+00%3A00%3A00+%2B0200&amp;end_at=2017-05-31+23%3A59%3A59+%2B0200&amp;interval=day</pre>
+          <pre class="request route highlight">GET api/v1/stats/users_by_time?start_at=2017-06-01+00%3A00%3A00+%2B0200&amp;end_at=2017-06-30+23%3A59%3A59+%2B0200&amp;interval=day</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">start_at: 2017-05-01 00:00:00 +0200
-end_at: 2017-05-31 23:59:59 +0200
+            <pre class="request query_parameters highlight">start_at: 2017-06-01 00:00:00 +0200
+end_at: 2017-06-30 23:59:59 +0200
 interval: day</pre>
 
 
@@ -173,47 +173,46 @@ interval: day</pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;0d88500c8337463999cd1ee49b7b5ad1&quot;
+ETag: W/&quot;4e9f100b5d424a33de987c5c88bd3cf4&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: dd3464c5-67aa-4122-bc23-963d095c7a0e
-X-Runtime: 0.035274
+X-Request-Id: 3d7297e9-8a6c-430c-99f2-1a7e33493d2d
+X-Runtime: 0.034724
 Vary: Origin
-Content-Length: 467</pre>
+Content-Length: 452</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;2017-05-01&quot;: 0,
-  &quot;2017-05-02&quot;: 0,
-  &quot;2017-05-03&quot;: 0,
-  &quot;2017-05-04&quot;: 0,
-  &quot;2017-05-05&quot;: 0,
-  &quot;2017-05-06&quot;: 0,
-  &quot;2017-05-07&quot;: 0,
-  &quot;2017-05-08&quot;: 0,
-  &quot;2017-05-09&quot;: 0,
-  &quot;2017-05-10&quot;: 0,
-  &quot;2017-05-11&quot;: 0,
-  &quot;2017-05-12&quot;: 0,
-  &quot;2017-05-13&quot;: 0,
-  &quot;2017-05-14&quot;: 0,
-  &quot;2017-05-15&quot;: 0,
-  &quot;2017-05-16&quot;: 0,
-  &quot;2017-05-17&quot;: 0,
-  &quot;2017-05-18&quot;: 0,
-  &quot;2017-05-19&quot;: 0,
-  &quot;2017-05-20&quot;: 0,
-  &quot;2017-05-21&quot;: 0,
-  &quot;2017-05-22&quot;: 0,
-  &quot;2017-05-23&quot;: 0,
-  &quot;2017-05-24&quot;: 0,
-  &quot;2017-05-25&quot;: 0,
-  &quot;2017-05-26&quot;: 0,
-  &quot;2017-05-27&quot;: 0,
-  &quot;2017-05-28&quot;: 0,
-  &quot;2017-05-29&quot;: 0,
-  &quot;2017-05-30&quot;: 0,
-  &quot;2017-05-31&quot;: 21
+  &quot;2017-06-01&quot;: 0,
+  &quot;2017-06-02&quot;: 0,
+  &quot;2017-06-03&quot;: 0,
+  &quot;2017-06-04&quot;: 0,
+  &quot;2017-06-05&quot;: 0,
+  &quot;2017-06-06&quot;: 0,
+  &quot;2017-06-07&quot;: 21,
+  &quot;2017-06-08&quot;: 0,
+  &quot;2017-06-09&quot;: 0,
+  &quot;2017-06-10&quot;: 0,
+  &quot;2017-06-11&quot;: 0,
+  &quot;2017-06-12&quot;: 0,
+  &quot;2017-06-13&quot;: 0,
+  &quot;2017-06-14&quot;: 0,
+  &quot;2017-06-15&quot;: 0,
+  &quot;2017-06-16&quot;: 0,
+  &quot;2017-06-17&quot;: 0,
+  &quot;2017-06-18&quot;: 0,
+  &quot;2017-06-19&quot;: 0,
+  &quot;2017-06-20&quot;: 0,
+  &quot;2017-06-21&quot;: 0,
+  &quot;2017-06-22&quot;: 0,
+  &quot;2017-06-23&quot;: 0,
+  &quot;2017-06-24&quot;: 0,
+  &quot;2017-06-25&quot;: 0,
+  &quot;2017-06-26&quot;: 0,
+  &quot;2017-06-27&quot;: 0,
+  &quot;2017-06-28&quot;: 0,
+  &quot;2017-06-29&quot;: 0,
+  &quot;2017-06-30&quot;: 0
 }</pre>
       </div>
     </div>

@@ -183,8 +183,6 @@ resource "Ideas" do
       parameter :publication_status, "Password", required: true, extra: "One of #{Idea::PUBLICATION_STATUSES.join(",")}"
       parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
       parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
-      parameter :images, "Array with base64 encoded images"
-      parameter :files, "Array with base64 encoded files"
       parameter :topic_ids, "Array of ids of the associated topics"
       parameter :area_ids, "Array of ids of the associated areas"
     end
@@ -207,21 +205,6 @@ resource "Ideas" do
       end
     end
 
-    describe do
-      let(:idea) { build(:idea) }
-      let(:project_id) { create(:project).id }
-      let(:author_id) { create(:user).id }
-      let(:publication_status) { 'published' }
-      let(:title_multiloc) { idea.title_multiloc }
-      let(:body_multiloc) { idea.body_multiloc }
-      let(:images) { [base64_encoded_image_1, base64_encoded_image_2_as_data_uri] }
-
-      example_request "Creating a published idea with image" do
-        json_response = json_parse(response_body)
-        expect(response_status).to eq 201
-        expect(json_response.dig(:data,:attributes,:images).size).to eq 2
-      end
-    end
   end
 
 
@@ -236,8 +219,6 @@ resource "Ideas" do
       parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES}.join(', ')}"
       parameter :title_multiloc, "Multi-locale field with the idea title", extra: "Maximum 100 characters"
       parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
-      parameter :images, "Array with base64 encoded images"
-      parameter :files, "Array with base64 encoded files"
       parameter :topic_ids, "Array of ids of the associated topics"
       parameter :area_ids, "Array of ids of the associated areas"
     end
@@ -303,16 +284,4 @@ resource "Ideas" do
   end
 
 
-  private
-  def base64_encoded_image_1
-    encode_image_as_base64("robot.jpg")
-  end
-
-  def base64_encoded_image_2_as_data_uri
-    "data:image/jpg;base64,#{encode_image_as_base64("lorem-ipsum.jpg")}"
-  end
-
-  def encode_image_as_base64(filename)
-    Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))
-  end
 end

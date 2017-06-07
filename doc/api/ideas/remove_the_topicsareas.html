@@ -163,22 +163,6 @@ table th, table td {
               </tr>
               <tr>
                 <td>
-                    <span class="name">idea[images]</span>
-                </td>
-                <td>
-                  <span class="description">Array with base64 encoded images</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                    <span class="name">idea[files]</span>
-                </td>
-                <td>
-                  <span class="description">Array with base64 encoded files</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
                     <span class="name">idea[topic_ids]</span>
                 </td>
                 <td>
@@ -201,12 +185,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTYzMzAwMjYsInN1YiI6ImY1YTFhYzY3LTYwZWUtNGM3Ny04MGY3LWYwYzk5MGQ3NzY4ZCJ9.lIWkn6WO6Xgyf9x_fpMWJPUdx2UWK__mSBQq_Li0Jz4
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTY5NDc0NTgsInN1YiI6IjMyNDFhMTQxLTQzODYtNDc3Ni1iYmE5LTMzYjFkNjA2NzZhMSJ9.FmrslXP87TPGcwOjlcNIEBu4rNIx9gkog2gq0n-ggGg
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/ideas/f57d3c78-99ef-424c-89ad-a4045d7da767</pre>
+          <pre class="request route highlight">PATCH api/v1/ideas/ce34f254-d329-4987-9c73-d441abb625aa</pre>
 
 
             <h4>Body</h4>
@@ -219,18 +203,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;c58f0ce1e85a057444a77e66d8c79c22&quot;
+ETag: W/&quot;dbcc1e6b1bea88deb0d4702cb036cd8d&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 31f92a67-599c-45df-bb00-53fe449a8c4a
-X-Runtime: 0.049634
+X-Request-Id: 87fa340d-9f06-4b05-8895-321291df0d0f
+X-Runtime: 0.051263
 Vary: Origin
-Content-Length: 1538</pre>
+Content-Length: 1581</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;f57d3c78-99ef-424c-89ad-a4045d7da767&quot;,
+    &quot;id&quot;: &quot;ce34f254-d329-4987-9c73-d441abb625aa&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -241,16 +225,13 @@ Content-Length: 1538</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Fredy Lowe&quot;,
+      &quot;author_name&quot;: &quot;Darian Bogisich&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
-      &quot;images&quot;: [
-
-      ],
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
-      &quot;created_at&quot;: &quot;2017-05-31T15:13:46.117Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-05-31T15:13:46.117Z&quot;,
-      &quot;published_at&quot;: &quot;2017-05-31T15:13:46.117Z&quot;
+      &quot;created_at&quot;: &quot;2017-06-07T18:44:18.485Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-06-07T18:44:18.485Z&quot;,
+      &quot;published_at&quot;: &quot;2017-06-07T18:44:18.485Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -263,15 +244,20 @@ Content-Length: 1538</pre>
 
         ]
       },
+      &quot;idea_images&quot;: {
+        &quot;data&quot;: [
+
+        ]
+      },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;f5a1ac67-60ee-4c77-80f7-f0c990d7768d&quot;,
+          &quot;id&quot;: &quot;3241a141-4386-4776-bba9-33b1d60676a1&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;5dca1ed8-2a6b-4a13-8851-019666cbc8ca&quot;,
+          &quot;id&quot;: &quot;fef4efeb-ba44-4396-9fc0-77fe54d3e84d&quot;,
           &quot;type&quot;: &quot;projects&quot;
         }
       },
@@ -284,26 +270,26 @@ Content-Length: 1538</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;f5a1ac67-60ee-4c77-80f7-f0c990d7768d&quot;,
+      &quot;id&quot;: &quot;3241a141-4386-4776-bba9-33b1d60676a1&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Fredy&quot;,
-        &quot;last_name&quot;: &quot;Lowe&quot;,
-        &quot;slug&quot;: &quot;fredy-lowe&quot;,
+        &quot;first_name&quot;: &quot;Darian&quot;,
+        &quot;last_name&quot;: &quot;Bogisich&quot;,
+        &quot;slug&quot;: &quot;darian-bogisich&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/f5a1ac67-60ee-4c77-80f7-f0c990d7768d/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/f5a1ac67-60ee-4c77-80f7-f0c990d7768d/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/9391438d-5464-4279-8664-ba028bd7c27d/user/avatar/f5a1ac67-60ee-4c77-80f7-f0c990d7768d/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/3241a141-4386-4776-bba9-33b1d60676a1/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/3241a141-4386-4776-bba9-33b1d60676a1/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/3241a141-4386-4776-bba9-33b1d60676a1/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-05-31T15:13:46.093Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-05-31T15:13:46.093Z&quot;,
-        &quot;email&quot;: &quot;selina@feest.name&quot;,
+        &quot;created_at&quot;: &quot;2017-06-07T18:44:18.455Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-07T18:44:18.455Z&quot;,
+        &quot;email&quot;: &quot;jeanne_weber@mcglynndooley.info&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
