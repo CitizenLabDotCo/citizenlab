@@ -6,7 +6,8 @@ const Label = styled.label`
   color: #333;
   font-size: 16px;
   font-weight: 400;
-  margin-bottom: 4px;
+  display: flex;
+  padding-bottom: 4px;
 `;
 
 function FormLabel(props) {

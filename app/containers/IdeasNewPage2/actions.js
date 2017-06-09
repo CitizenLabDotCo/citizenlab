@@ -5,6 +5,8 @@ import {
   LOAD_TOPICS_SUCCESS,
   LOAD_AREAS_SUCCESS,
   LOAD_PROJECTS_SUCCESS,
+  SUBMIT_IDEA_REQUEST,
+  SUBMIT_IDEA_SUCCESS,
 } from './constants';
 
 export function loadTopics() {
@@ -43,5 +45,19 @@ export function projectsLoaded(projects) {
   return {
     type: LOAD_PROJECTS_SUCCESS,
     payload: { projects },
+  };
+}
+
+export function submitIdea(userId, title, description, topics, areas, project, publicationStatus) {
+  return {
+    type: SUBMIT_IDEA_REQUEST,
+    payload: { userId, title, description, topics, areas, project, publicationStatus },
+  };
+}
+
+export function ideaSubmitted(ideaId) {
+  return {
+    type: SUBMIT_IDEA_SUCCESS,
+    payload: { ideaId },
   };
 }

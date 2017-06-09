@@ -1,10 +1,11 @@
 import { fromJS } from 'immutable';
-import { LOAD_TOPICS_SUCCESS, LOAD_AREAS_SUCCESS, LOAD_PROJECTS_SUCCESS } from './constants';
+import { LOAD_TOPICS_SUCCESS, LOAD_AREAS_SUCCESS, LOAD_PROJECTS_SUCCESS, SUBMIT_IDEA_SUCCESS } from './constants';
 
 const initialState = fromJS({
   topics: [],
   areas: [],
   projects: [],
+  ideaId: null,
 });
 
 function IdeasNewPage2Reducer(state = initialState, action) {
@@ -20,6 +21,11 @@ function IdeasNewPage2Reducer(state = initialState, action) {
     case LOAD_PROJECTS_SUCCESS: {
       const projects = action.payload.projects.data.map((project) => project.id);
       return state.set('projects', fromJS(projects));
+    }
+    case SUBMIT_IDEA_SUCCESS: {
+      console.log(action.payload.ideaId);
+      const ideaId = action.payload.ideaId;
+      return state.set('ideaId', ideaId);
     }
     default:
       return state;

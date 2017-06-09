@@ -4,9 +4,12 @@ import { Dropdown } from 'semantic-ui-react';
 import _ from 'lodash';
 
 class MultipleSelect extends React.Component {
-  handleChange = (event, data) => {
+  handleOnChange = (event, data) => {
     let value = data.value;
 
+    // Check if the 'max' attribute has been set.
+    // If so, check if the currently selected items count is larger than the max value.
+    // If so, emit the previous array of selected items instead of the new one.
     if (this.props.max && _.has(data, 'value.length')) {
       value = (data.value.length > this.props.max ? this.props.value : value);
     }
@@ -25,7 +28,7 @@ class MultipleSelect extends React.Component {
         value={this.props.value}
         placeholder={this.props.placeholder}
         options={this.props.options}
-        onChange={this.handleChange}
+        onChange={this.handleOnChange}
       />
     );
   }

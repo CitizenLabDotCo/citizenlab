@@ -4,3 +4,5 @@ export const LOAD_PROJECTS_REQUEST = 'app/IdeasNewPage2/LOAD_PROJECTS_REQUEST';
 export const LOAD_TOPICS_SUCCESS = 'app/IdeasNewPage2/LOAD_TOPICS_SUCCESS';
 export const LOAD_AREAS_SUCCESS = 'app/IdeasNewPage2/LOAD_AREAS_SUCCESS';
 export const LOAD_PROJECTS_SUCCESS = 'app/IdeasNewPage2/LOAD_PROJECTS_SUCCESS';
+export const SUBMIT_IDEA_REQUEST = 'app/IdeasNewPage2/SUBMIT_IDEA_REQUEST';
+export const SUBMIT_IDEA_SUCCESS = 'app/IdeasNewPage2/SUBMIT_IDEA_SUCCESS';

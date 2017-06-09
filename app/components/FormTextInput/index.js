@@ -7,6 +7,15 @@ const Input = styled.input`
   color: #333;
   font-size: 16px;
   font-weight: 400;
+  padding: 10px;
+  border-radius: 5px;
+  border: solid 1px #ccc;
+  background: #fff;
+  outline: none;
+
+  &:focus {
+    border-color: #000;
+  }
 `;
 
 function FormTextInput() {
