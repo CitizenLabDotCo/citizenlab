@@ -96,6 +96,7 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
         <Form.Group>
           {!(loadingTopics || loadTopicsError) && <MultiSelectT
             options={topicsSelect}
+            name={'topics'}
             maxSelectionLength={3}
             placeholder={formatMessage({ ...messages.topicsPlaceholder })}
             optionLabel={formatMessage({ ...messages.topicsLabel })}
@@ -111,6 +112,7 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
         <Form.Group>
           {!(loadingAreas || loadAreasError) && <MultiSelectT
             options={areasSelect}
+            name={'areas'}
             maxSelectionLength={3}
             placeholder={formatMessage({ ...messages.areasPlaceholder })}
             optionLabel={formatMessage({ ...messages.areasLabel })}
@@ -126,6 +128,7 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
         <Form.Group>
           {!(loadingProjects || loadProjectsError) && <MultiSelectT
             options={projectsSelect}
+            name={'projects'}
             maxSelectionLength={1}
             singleSelection
             placeholder={formatMessage({ ...messages.projectsPlaceholder })}
