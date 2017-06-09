@@ -46,7 +46,9 @@ class IdeaEditorWrapper extends React.PureComponent { // eslint-disable-line rea
     this.props.saveDraft();
   }
 
-  publishIdea = () => {
+  publishIdea = (evt) => {
+    evt.preventDefault();
+
     // const { toChildView } = this.context;
     const { storeIdea } = this.props;
     // if (!userId) return toChildView();
