@@ -4,7 +4,6 @@
 // about the code splitting business
 
 import admin from 'containers/Admin/routes';
-import projects from 'containers/Projects/routes';
 
 import { getAsyncInjectors } from 'utils/asyncInjectors';
 
