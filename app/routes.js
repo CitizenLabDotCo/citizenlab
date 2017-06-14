@@ -198,7 +198,126 @@ export default function createRoutes(store) {
       },
     },
     admin(injectReducer),
-    projects(injectReducer),
+    {
+      path: '/projects',
+      name: 'Project page',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('resources/projects/reducer'),
+          import('containers/Projects'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('projectsRes', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+      indexRoute: {
+        name: 'Project page',
+        getComponent(nextState, cb) {
+          const importModules = Promise.all([
+            import('containers/Projects/index/index.js'),
+          ]);
+
+          const renderRoute = loadModule(cb);
+
+          importModules.then(([component]) => {
+            renderRoute(component);
+          });
+
+          importModules.catch(errorLoading);
+        },
+      },
+      childRoutes: [
+        {
+          path: '/projects/:projectId',
+          name: 'Project page',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/Projects/show'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+          indexRoute: {
+            name: 'Project page',
+            getComponent(nextState, cb) {
+              const importModules = Promise.all([
+                import('containers/Projects/show/info'),
+              ]);
+
+              const renderRoute = loadModule(cb);
+
+              importModules.then(([component]) => {
+                renderRoute(component);
+              });
+
+              importModules.catch(errorLoading);
+            },
+          },
+          childRoutes: [
+            {
+              path: '/projects/:projectId/timeline',
+              name: 'Project timeline page',
+              getComponent(nextState, cb) {
+                const importModules = Promise.all([
+                  import('containers/Projects/show/timeline'),
+                ]);
+
+                const renderRoute = loadModule(cb);
+                importModules.then(([component]) => {
+                  renderRoute(component);
+                });
+
+                importModules.catch(errorLoading);
+              },
+            },
+            {
+              name: 'Project page',
+              getComponent(nextState, cb) {
+                const importModules = Promise.all([
+                  import('containers/Projects/show/info'),
+                ]);
+
+                const renderRoute = loadModule(cb);
+
+                importModules.then(([component]) => {
+                  renderRoute(component);
+                });
+
+                importModules.catch(errorLoading);
+              },
+            },
+            {
+              path: '/projects/:projectId/ideas',
+              name: 'ideas 4 projects page',
+              getComponent(nextState, cb) {
+                const importModules = Promise.all([
+                  import('containers/Projects/show/ideas'),
+                ]);
+
+                const renderRoute = loadModule(cb);
+
+                importModules.then(([component]) => {
+                  renderRoute(component);
+                });
+
+                importModules.catch(errorLoading);
+              },
+            },
+          ],
+        },
+      ],
+    },
     {
       path: '/sign-in/recover-password',
       name: 'usersPasswordRecovery',
