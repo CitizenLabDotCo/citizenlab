@@ -52,6 +52,15 @@ export const generateResourcesProjectValue = (id) => ({
   links: {},
 });
 
+export const generateResourcesPhaseValue = (id) => ({
+  data: {
+    id,
+    attributes: {},
+    relationships: {},
+  },
+  links: {},
+});
+
 
 export const generateResourcesVoteValue = (id, allUp, allDown) => {
   let mode;

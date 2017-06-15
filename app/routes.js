@@ -270,11 +270,14 @@ export default function createRoutes(store) {
               getComponent(nextState, cb) {
                 const importModules = Promise.all([
                   import('containers/Projects/show/timeline'),
+                  import('containers/Projects/show/timeline/reducer'),
                 ]);
 
                 const renderRoute = loadModule(cb);
-                importModules.then(([component]) => {
+                importModules.then(([component, reducer]) => {
                   renderRoute(component);
+
+                  injectReducer('projectTimeline', reducer.default);
                 });
 
                 importModules.catch(errorLoading);

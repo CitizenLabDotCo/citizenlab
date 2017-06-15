@@ -113,7 +113,7 @@ class ProjectView extends React.Component {
             <HeaderOverlay></HeaderOverlay>
           </HeaderContainer>
 
-          <Segment inverted style={{ width: '100%', margin: 0 }}>
+          <Segment inverted style={{ width: '100%', margin: 0, zIndex: 999 }}>
             <Menu inverted pointing secondary>
               <Menu.Item
                 name={formatMessage(messages.navInfo)}
