@@ -3,7 +3,7 @@ import { generateResourcesPhaseValue } from 'utils/testing/mocks';
 
 import { makeSelectPhases } from '../selectors';
 
-describe('IdeasNewPage selectors', () => {
+describe('ProjectsTimeline selectors', () => {
   describe('makeSelectPhases', () => {
     it('it should select project\'s phases', () => {
       const selector = makeSelectPhases();
