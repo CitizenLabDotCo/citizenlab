@@ -2,9 +2,9 @@ class User < ApplicationRecord
   has_secure_password validations: false
   mount_base64_uploader :avatar, AvatarUploader
 
-  has_many :ideas, foreign_key: :author_id
-  has_many :comments, foreign_key: :author_id
-  has_many :votes
+  has_many :ideas, foreign_key: :author_id, dependent: :nullify
+  has_many :comments, foreign_key: :author_id, dependent: :nullify
+  has_many :votes, dependent: :nullify
 
   store_accessor :demographics, :gender, :birthyear, :domicile, :education
 
