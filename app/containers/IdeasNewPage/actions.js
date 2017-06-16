@@ -1,6 +1,6 @@
 /*
  *
- * ProjectView.timeline actions
+ * ProjectView.IdeasNewPage actions
  *
  */
 import {

@@ -267,7 +267,7 @@ export default function createRoutes(store) {
           childRoutes: [
             {
               path: '/projects/:projectId/timeline',
-              name: 'Project timeline page',
+              name: 'Project\'s timeline page',
               getComponent(nextState, cb) {
                 const importModules = Promise.all([
                   import('containers/Projects/show/timeline/reducer'),
@@ -277,6 +277,24 @@ export default function createRoutes(store) {
                 const renderRoute = loadModule(cb);
                 importModules.then(([reducer, component]) => {
                   injectReducer('projectTimeline', reducer.default);
+                  renderRoute(component);
+                });
+
+                importModules.catch(errorLoading);
+              },
+            },
+            {
+              path: '/projects/:projectId/events',
+              name: 'Project\'s events page',
+              getComponent(nextState, cb) {
+                const importModules = Promise.all([
+                  import('containers/Projects/show/events/reducer'),
+                  import('containers/Projects/show/events'),
+                ]);
+
+                const renderRoute = loadModule(cb);
+                importModules.then(([reducer, component]) => {
+                  injectReducer('projectEvents', reducer.default);
                   renderRoute(component);
                 });
 

@@ -6,10 +6,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  header: {
-    id: 'app.containers.ProjectsTimeline.header',
-    defaultMessage: 'Timeline',
-  },
   pastPhase: {
     id: 'app.containers.ProjectsTimeline.pastPhase',
     defaultMessage: 'Past Phase',

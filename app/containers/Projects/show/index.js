@@ -135,6 +135,13 @@ class ProjectView extends React.Component {
                 active={activeItem === 'messages'}
                 onClick={this.handleItemClick}
               />
+              <Menu.Item
+                name={formatMessage(messages.navEvents)}
+                as={Link}
+                to={`${basePath}/events`}
+                active={activeItem === 'messages'}
+                onClick={this.handleItemClick}
+              />
             </Menu>
           </Segment>
           <Loader

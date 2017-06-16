@@ -30,6 +30,10 @@ export default defineMessages({
     id: 'app.containers.Projects.navTimeline',
     defaultMessage: 'Timeline',
   },
+  navEvents: {
+    id: 'app.containers.Projects.navEvents',
+    defaultMessage: 'Events',
+  },
   LoadingMessage: {
     id: 'app.containers.Projects.LoadingMessage',
     defaultMessage: 'Loading',

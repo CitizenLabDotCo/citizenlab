@@ -1,11 +1,13 @@
 import moment from 'moment';
 
-export const getCurrentPhaseId = (phases) => {
-  if (!phases) return -1;
-  const p = phases.filter((phase) => getPhaseType(phase.attributes.start_at, phase.attributes.end_at) === 'current')[0];
+export const getCurrentPhaseId = (items) => {
+  if (!items) return -1;
+  const p = items.filter((item) => getPhaseType(item.attributes.start_at, item.attributes.end_at) === 'current')[0];
 
   return p && p.id;
 };
+
+export const getCurrentEventId = getCurrentPhaseId;
 
 /* @params:
  * - Date iso: string
@@ -29,3 +31,5 @@ export const getPhaseType = (startingDate, endingDate) => {
  * - date: string (day month) matching current locale
  */
 export const parseDate = (dateIsoString, locale) => moment(dateIsoString).locale(locale).format('DD MMM');
+
+export const parseTime = (dateIsoString, locale) => moment(dateIsoString).locale(locale).format('H.MM A');
