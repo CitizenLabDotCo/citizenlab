@@ -10,7 +10,6 @@ import {
 
 // Individual exports for testing
 export function* loadProjectPhasesSaga(action) {
-  console.log(action);
   try {
     const response = yield call(fetchProjectPhases, action.payload);
 

@@ -32,13 +32,17 @@ const ProjectPhaseHeader = ({ title, fromTo, tillTo, phase }) => (<Grid>
       {/* NONE HERE (no offset property available */}
     </Grid.Column>
     <Grid.Column width={8}>
-      <ProjectPhaseNameStyled phase>{title}</ProjectPhaseNameStyled>
+      <ProjectPhaseNameStyled phase={phase}>{title}</ProjectPhaseNameStyled>
     </Grid.Column>
     <Grid.Column width={6} textAlign="center">
       <strong>{fromTo} - {tillTo}</strong>
     </Grid.Column>
   </Grid.Row>
 </Grid>);
+
+const ProjectPhaseHeaderStyled = styled(ProjectPhaseHeader)`
+  height: 40px;
+`;
 
 const ProjectPhaseNameStyled = styled.div`
   font-size: 16px;
@@ -54,10 +58,6 @@ const ProjectDescriptionStyled = styled.div`
   color: #777777;
   width: 80%;
   overflow-wrap: break-word
-`;
-
-const ProjectPhaseHeaderStyled = styled(ProjectPhaseHeader)`
-  height: 40px;
 `;
 
 const ProjectPhaseInner = ({ titleMultiloc, descriptionMultiloc }) => (<Grid>
@@ -102,6 +102,7 @@ class ProjectPhase extends React.PureComponent {
       return formatMessage(messages.pastPhase);
     }
 
+    // coming phase
     return formatMessage(messages.comingPhase);
   };
 
@@ -111,12 +112,12 @@ class ProjectPhase extends React.PureComponent {
     return (<Grid className={className}>
       <Grid.Row>
         <Grid.Column verticalAlign="middle" width={1}>
-          <ProjectPhaseIndexStyled current>
+          <ProjectPhaseIndexStyled phase={phase}>
             {phaseIndex}
           </ProjectPhaseIndexStyled>
         </Grid.Column>
         <Grid.Column width={15}>
-          <ProjectPhaseOuterStyled current>
+          <ProjectPhaseOuterStyled phase={phase}>
             <ProjectPhaseHeaderStyled
               title={this.getPhaseTitle(phase, intl)}
               phase={phase}
@@ -158,6 +159,6 @@ ProjectPhaseHeader.propTypes = {
 };
 
 export default styled(injectIntl(ProjectPhase))`
-  margin-top: ${(props) => props.phaseIndex === 1 ? '-150px !important' : 'inherit'};
-  opacity: ${(props) => props.phaseIndex === 1 ? '0.7' : 'inherit'};
+  /* margin-top: ${(props) => props.phaseIndex === 1 ? '-150px !important' : 'inherit'}; */ // TODO: scroll behavior here
+  opacity: ${(props) => props.phase === 'past' ? '0.7' : 'inherit'};
 `;
