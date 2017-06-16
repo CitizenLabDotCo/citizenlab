@@ -34,6 +34,9 @@ export class T extends React.PureComponent { // eslint-disable-line react/prefer
 
     return (
       <span
+        style={{
+          fontSize: 'inherit',
+        }}
         className="cl-translated-text"
         dangerouslySetInnerHTML={{ __html: findTranslatedText(value, userLocale || this.fallbackUserLocale, tenantLocales || this.fallbackTenantLocales) }}
       />

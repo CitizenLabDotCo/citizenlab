@@ -113,7 +113,7 @@ class ProjectView extends React.Component {
             <HeaderOverlay></HeaderOverlay>
           </HeaderContainer>
 
-          <Segment inverted style={{ width: '100%', margin: 0 }}>
+          <Segment inverted style={{ width: '100%', margin: 0, zIndex: 999 }}>
             <Menu inverted pointing secondary>
               <Menu.Item
                 name={formatMessage(messages.navInfo)}
@@ -128,7 +128,13 @@ class ProjectView extends React.Component {
                 active={activeItem === 'messages'}
                 onClick={this.handleItemClick}
               />
-
+              <Menu.Item
+                name={formatMessage(messages.navTimeline)}
+                as={Link}
+                to={`${basePath}/timeline`}
+                active={activeItem === 'messages'}
+                onClick={this.handleItemClick}
+              />
             </Menu>
           </Segment>
           <Loader

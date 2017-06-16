@@ -194,7 +194,9 @@ export function fetchIdeaAreasReport(queryParameters) {
   return request(`${API_PATH}/stats/ideas_by_area`, null, null, queryParameters);
 }
 
-// projects
+/*
+ * projects
+ */
 export function fetchProjects(queryParameters) {
   return request(`${API_PATH}/projects`, null, null, queryParameters);
 }
@@ -213,6 +215,10 @@ export function updateProject(id, data) {
 
 export function fetchProject(id) {
   return request(`${API_PATH}/projects/${id}`);
+}
+
+export function fetchProjectPhases(id) {
+  return request(`${API_PATH}/projects/${id}/phases`);
 }
 
 export function deleteProject(id) {
