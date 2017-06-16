@@ -252,6 +252,7 @@ export default function createRoutes(store) {
             getComponent(nextState, cb) {
               const importModules = Promise.all([
                 import('containers/Projects/show/info'),
+                import('containers/Projects/show/timeline/reducer'),
               ]);
 
               const renderRoute = loadModule(cb);
@@ -269,15 +270,14 @@ export default function createRoutes(store) {
               name: 'Project timeline page',
               getComponent(nextState, cb) {
                 const importModules = Promise.all([
-                  import('containers/Projects/show/timeline'),
                   import('containers/Projects/show/timeline/reducer'),
+                  import('containers/Projects/show/timeline'),
                 ]);
 
                 const renderRoute = loadModule(cb);
-                importModules.then(([component, reducer]) => {
-                  renderRoute(component);
-
+                importModules.then(([reducer, component]) => {
                   injectReducer('projectTimeline', reducer.default);
+                  renderRoute(component);
                 });
 
                 importModules.catch(errorLoading);
