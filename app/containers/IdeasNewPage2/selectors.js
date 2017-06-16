@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import { fromJS } from 'immutable';
 
-const selectIdeasNewPage2 = (state) => state.get('ideasNewPage2');
 const selectTopics = (state) => state.getIn(['resources', 'topics']);
 const selectTopicsIds = (state) => state.getIn(['ideasNewPage2', 'topics']);
 const selectAreas = (state) => state.getIn(['resources', 'areas']);
@@ -48,7 +47,6 @@ const makeSelectProjects = () => createSelector(
 );
 
 export {
-  selectIdeasNewPage2,
   makeSelectTopics,
   makeSelectProjects,
   makeSelectAreas,

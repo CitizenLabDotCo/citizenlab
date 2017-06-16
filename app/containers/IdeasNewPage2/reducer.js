@@ -23,7 +23,6 @@ function IdeasNewPage2Reducer(state = initialState, action) {
       return state.set('projects', fromJS(projects));
     }
     case SUBMIT_IDEA_SUCCESS: {
-      console.log(action.payload.ideaId);
       const ideaId = action.payload.ideaId;
       return state.set('ideaId', ideaId);
     }
