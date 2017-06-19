@@ -54,4 +54,4 @@ export const getDateObject = (dateIsoString, locale) => {
   };
 };
 
-export const parseTime = (dateIsoString, locale) => moment(dateIsoString).locale(locale).format('H.MM A');
+export const parseTime = (dateIsoString) => moment(dateIsoString).format('h.MM A');

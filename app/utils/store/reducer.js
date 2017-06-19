@@ -30,7 +30,7 @@ function tempStateReducer(state = Map(), action) {
   }
 
   const actionUId = action.uid || toDefaultType(action.type);
-  console.log(actionKind);
+
   if (actionKind === 'REQUEST') {
     return state.set(actionUId, fromJS({ loading: true, errors: {} }));
   }

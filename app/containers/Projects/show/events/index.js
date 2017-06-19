@@ -59,8 +59,8 @@ class ProjectsEvents extends React.PureComponent {
           key={event.id}
           fromTo={getDateObject(event.attributes.start_at, locale)}
           tillTo={getDateObject(event.attributes.start_at, locale)}
-          fromTime={parseTime(event.attributes.start_at, locale)}
-          tillTime={parseTime(event.attributes.end_at, locale)}
+          fromTime={parseTime(event.attributes.start_at)}
+          tillTime={parseTime(event.attributes.end_at)}
           titleMultiloc={event.attributes.title_multiloc}
           descriptionMultiloc={event.attributes.description_multiloc}
           locationMultiloc={event.attributes.location_multiloc}

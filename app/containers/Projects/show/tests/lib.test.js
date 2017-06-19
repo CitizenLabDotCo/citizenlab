@@ -1,6 +1,6 @@
 import { generateResourcesPhaseValue } from 'utils/testing/mocks';
 import { stringMock } from 'utils/testing/constants';
-import { getCurrentPhaseId, getPhaseType, parseDate } from '../lib';
+import { getCurrentPhaseId, getPhaseType, parseDate, parseTime } from '../lib';
 
 describe('ProjectsTimeline/lib.js', () => {
   describe('getPhaseType', () => {
@@ -63,6 +63,18 @@ describe('ProjectsTimeline/lib.js', () => {
 
       // en
       expect(parseDate('2017-04-30', 'en')).toEqual('30 Apr');
+    });
+  });
+
+  describe('parseTime', () => {
+    it('should return the time in -x[x]:y[y] [a|m]- format', () => {
+      // AM
+      expect(parseTime('2018-01-31T02:00:00.000Z')).toEqual('3.01 AM');
+
+      // PM
+      it('should return the time in -x[x]:y[y] [a|m]- format', () => {
+        expect(parseTime('2018-01-31T12:00:00.000Z')).toEqual('1.01 PM');
+      });
     });
   });
 });
