@@ -7,16 +7,16 @@ import { createStructuredSelector } from 'reselect';
 import { makeSelectEvents } from './selectors';
 import { loadProjectEventsRequest } from 'resources/projects/events/actions';
 import WatchSagas from 'utils/containers/watchSagas';
-import sagas from 'resources/projects/phases/sagas';
+import sagas from 'resources/projects/events/sagas';
 import ProjectEvent from './ProjectEvent';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { LOAD_PROJECT_EVENTS_REQUEST } from 'resources/projects/events/constants';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import scrollToComponent from 'react-scroll-to-component';
-import { getCurrentEventId } from '../lib';
+import { getCurrentEventId, getDateObject, getEventType, parseTime } from '../lib';
 
-const ProjectPhasesStyled = styled.div`
+const ProjectEventsStyled = styled.div`
   width: 100%;
   /* TODO: this can be improved by using dots as background with arrow from glyphicons [SUI] or with repeated background of 1x3px */
   border-left: dotted 3px #d7d7d7;
@@ -43,7 +43,7 @@ class ProjectsEvents extends React.PureComponent {
   }
 
   render() {
-    const { events, loading, error/* , locale */} = this.props;
+    const { events, loading, error, locale } = this.props;
 
     return (<div>
       <WatchSagas sagas={sagas} />
@@ -51,11 +51,21 @@ class ProjectsEvents extends React.PureComponent {
       {loading && <FormattedMessage {...messages.loading} />}
       {error && <FormattedMessage {...messages.error} />}
 
-      <ProjectPhasesStyled>
+      <ProjectEventsStyled>
         {/* TODO: pass appropriate props */}
-        {events && events.map((event, index) => (<ProjectEvent
+        {events && events.map((event) => (<ProjectEvent
+          ref={(eventL) => { this[`phase-${event.id}`] = eventL; }}
+          event={getEventType(event.attributes.start_at, event.attributes.end_at)}
+          key={event.id}
+          fromTo={getDateObject(event.attributes.start_at, locale)}
+          tillTo={getDateObject(event.attributes.start_at, locale)}
+          fromTime={parseTime(event.attributes.start_at, locale)}
+          tillTime={parseTime(event.attributes.end_at, locale)}
+          titleMultiloc={event.attributes.title_multiloc}
+          descriptionMultiloc={event.attributes.description_multiloc}
+          locationMultiloc={event.attributes.location_multiloc}
         />))}
-      </ProjectPhasesStyled>
+      </ProjectEventsStyled>
     </div>);
   }
 }

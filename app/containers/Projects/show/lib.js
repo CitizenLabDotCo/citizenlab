@@ -25,11 +25,27 @@ export const getPhaseType = (startingDate, endingDate) => {
   return 'current';
 };
 
+export const getEventType = getPhaseType;
+
 /* @params:
  * - Date iso: string
  * @returns
  * - date: string (day month) matching current locale
  */
 export const parseDate = (dateIsoString, locale) => moment(dateIsoString).locale(locale).format('DD MMM');
+
+/* @params:
+ * - Date iso: string
+ * @returns
+ * - intl & human-readable Date: object
+ */
+export const getDateObject = (dateIsoString, locale) => {
+  const momentDate = moment(dateIsoString).locale(locale);
+  return {
+    day: momentDate.format('DD'),
+    month: momentDate.format('MMM'),
+    year: momentDate.format('YYYY'),
+  };
+};
 
 export const parseTime = (dateIsoString, locale) => moment(dateIsoString).locale(locale).format('H.MM A');
