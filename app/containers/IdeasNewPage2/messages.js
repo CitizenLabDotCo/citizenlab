@@ -27,7 +27,7 @@ export default defineMessages({
   },
   topicsPlaceholder: {
     id: 'app.containers.IdeasNewPage2.topicsPlaceholder',
-    defaultMessage: 'Select one or two topics to which your idea belongs',
+    defaultMessage: 'Select one or two topics',
   },
   areasLabel: {
     id: 'app.containers.IdeasNewPage2.areasLabel',
@@ -35,7 +35,7 @@ export default defineMessages({
   },
   areasPlaceholder: {
     id: 'app.containers.IdeasNewPage2.areasPlaceholder',
-    defaultMessage: 'Select one or two neighbourhoods to which your idea belongs',
+    defaultMessage: 'Select one or two neighbourhoods',
   },
   projectsLabel: {
     id: 'app.containers.IdeasNewPage2.projectsLabel',
@@ -43,7 +43,15 @@ export default defineMessages({
   },
   projectsPlaceholder: {
     id: 'app.containers.IdeasNewPage2.projectsPlaceholder',
-    defaultMessage: 'Select a project to which your idea belongs',
+    defaultMessage: 'Select a project',
+  },
+  locationLabel: {
+    id: 'app.containers.IdeasNewPage2.projectsLabel',
+    defaultMessage: 'Location (optional)',
+  },
+  locationPlaceholder: {
+    id: 'app.containers.IdeasNewPage2.projectsPlaceholder',
+    defaultMessage: 'Select a location for your idea',
   },
   submit: {
     id: 'app.containers.IdeasNewPage2.submit',

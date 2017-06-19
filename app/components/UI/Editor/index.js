@@ -9,8 +9,12 @@ const Container = styled.div`
   border-radius: 5px;
   border: solid 1px;
   overflow: hidden;
-  border-color: ${(props) => props.focussed ? '#333' : '#bbb'};
+  border-color: ${(props) => props.focussed ? '#333' : '#ccc'};
   background: #fff;
+
+  &:not(:focus):hover {
+    border-color: ${(props) => props.focussed ? '#000' : '#999'};
+  }
 
   .rdw-editor-toolbar {
     width: auto;
