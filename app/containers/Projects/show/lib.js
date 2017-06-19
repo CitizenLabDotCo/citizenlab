@@ -7,8 +7,6 @@ export const getCurrentPhaseId = (items) => {
   return p && p.id;
 };
 
-export const getCurrentEventId = getCurrentPhaseId;
-
 /* @params:
  * - Date iso: string
  * - Date iso: string
@@ -26,6 +24,14 @@ export const getPhaseType = (startingDate, endingDate) => {
 };
 
 export const getEventType = getPhaseType;
+
+export const getComingEventId = (items) => {
+  if (!items) return -1;
+  const p = items.filter((item) => getEventType(item.attributes.start_at, item.attributes.end_at) === 'current' || getEventType(item.attributes.start_at, item.attributes.end_at) === 'coming')[0];
+
+  return p && p.id;
+};
+
 
 /* @params:
  * - Date iso: string

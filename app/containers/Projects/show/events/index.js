@@ -14,7 +14,7 @@ import { LOAD_PROJECT_EVENTS_REQUEST } from 'resources/projects/events/constants
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import scrollToComponent from 'react-scroll-to-component';
-import { getCurrentEventId, getDateObject, getEventType, parseTime } from '../lib';
+import { getComingEventId, getDateObject, getEventType, parseTime } from '../lib';
 
 const ProjectEventsStyled = styled.div`
   width: 100%;
@@ -29,10 +29,10 @@ class ProjectsEvents extends React.PureComponent {
 
   componentDidUpdate() {
     const { events, loading } = this.props;
-    const currentEventId = getCurrentEventId(events);
+    const eventId = getComingEventId(events);
     if (events && !loading && events.length > 0) {
-      if (currentEventId) {
-        scrollToComponent(this[`phase-${currentEventId}`], {
+      if (eventId) {
+        scrollToComponent(this[`event-${eventId}`], {
           offset: 400,
           align: 'middle',
           duration: 500,
@@ -54,7 +54,7 @@ class ProjectsEvents extends React.PureComponent {
       <ProjectEventsStyled>
         {/* TODO: pass appropriate props */}
         {events && events.map((event) => (<ProjectEvent
-          ref={(eventL) => { this[`phase-${event.id}`] = eventL; }}
+          ref={(eventL) => { this[`event-${event.id}`] = eventL; }}
           event={getEventType(event.attributes.start_at, event.attributes.end_at)}
           key={event.id}
           fromTo={getDateObject(event.attributes.start_at, locale)}
