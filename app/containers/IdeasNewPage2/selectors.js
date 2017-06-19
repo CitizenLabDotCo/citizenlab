@@ -7,6 +7,7 @@ const selectAreas = (state) => state.getIn(['resources', 'areas']);
 const selectAreasIds = (state) => state.getIn(['ideasNewPage2', 'areas']);
 const selectProjects = (state) => state.getIn(['resources', 'projects']);
 const selectProjectsIds = (state) => state.getIn(['ideasNewPage2', 'projects']);
+const selectIdeaId = (state) => state.getIn(['ideasNewPage2', 'ideaId']);
 
 const empty = fromJS([]);
 
@@ -46,8 +47,14 @@ const makeSelectProjects = () => createSelector(
   }
 );
 
+const makeSelectIdeaId = () => createSelector(
+  selectIdeaId,
+  (ideaId) => (ideaId || null)
+);
+
 export {
   makeSelectTopics,
   makeSelectProjects,
   makeSelectAreas,
+  makeSelectIdeaId,
 };

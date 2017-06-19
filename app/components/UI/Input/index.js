@@ -10,9 +10,13 @@ const StyledInput = styled.input`
   font-weight: 300;
   padding: 12px;
   border-radius: 5px;
-  border: solid 1px #bbb;
+  border: solid 1px #ccc;
   background: #fff;
   outline: none;
+
+  &:not(:focus):hover {
+    border-color: #999;
+  }
 
   &:focus {
     border-color: #000;

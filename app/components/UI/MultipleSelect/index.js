@@ -9,6 +9,12 @@ const StyledMultipleSelect = styled(Select)`
     margin: 0;
     padding: 0;
 
+    &:not(.is-open):hover {
+      .Select-control {
+        border-color: #999;
+      }
+    }
+
     &.is-open {
       .Select-control {
         border-bottom-right-radius: 0;
@@ -43,7 +49,7 @@ const StyledMultipleSelect = styled(Select)`
       padding: 5px;
       display: flex;
       cursor: pointer;
-      border-color: #bbb;
+      border-color: #ccc;
       border-radius: 5px;
       position: relative;
       box-shadow: none !important;
@@ -68,10 +74,6 @@ const StyledMultipleSelect = styled(Select)`
         }
       }
 
-      .Select-clear-zone {
-        display: none;
-      }
-
       .Select-multi-value-wrapper {
         width: calc(100% - 30px);
         height: auto;
@@ -82,7 +84,7 @@ const StyledMultipleSelect = styled(Select)`
         .Select-placeholder {
           font-size: 17px;
           font-weight: 300;
-          line-height: 31px;
+          line-height: 32px;
           padding: 0px;
           margin: 0px;
           margin-left: 6px;
@@ -98,7 +100,7 @@ const StyledMultipleSelect = styled(Select)`
           height: auto;
           font-size: 17px;
           font-weight: 300;
-          line-height: 31px;
+          line-height: 32px;
           padding: 0px;
           margin: 0px;
           margin-left: 6px;
@@ -109,62 +111,62 @@ const StyledMultipleSelect = styled(Select)`
             margin: 0px;
           }
         }
-      }
 
-      .Select-value {
-        height: 31px;
-        display: inline-flex;
-        align-items: center;
-        padding: 0px;
-        margin: 0px;
-        margin-right: 5px;
-        margin-bottom: 5px;
-        border: none;
-        border-radius: 3px;
-        overflow: hidden;
-        cursor: pointer;
-        background: ${(props) => props.theme.accentFg || '#777'};
-
-        &:last-child {
-          margin-right: 0px;
-        }
-
-        .Select-value-icon {
-          color: #fff;
-          width: auto;
-          height: 100%;
-          font-size: 23px;
-          font-weight: 100;
-          border: none;
-          border-radius: 0;
-          padding: 0px;
-          padding-left: 8px;
-          padding-right: 8px;
-          margin: 0px;
-          border: none;
+        .Select-value {
+          height: auto;
           display: inline-flex;
           align-items: center;
-          justify-content: center;
-
-          &:hover {
-            background: ${(props) => darken(0.25, (props.theme.accentFg || '#777'))};
-          }
-        }
-
-        .Select-value-label {
-          color: #fff;
-          font-size: 16px;
-          font-weight: 300;
-          line-height: 31px;
-          white-space: nowrap;
+          padding: 0px;
+          margin: 0px;
+          margin-right: 5px;
+          margin-bottom: 5px;
           border: none;
-          border-radius: 0;
-          padding: 0;
-          padding-top: 1px;
-          padding-left: 1px;
-          padding-right: 9px;
-          margin: 0;
+          border-radius: 3px;
+          overflow: hidden;
           cursor: pointer;
+          background: ${(props) => props.theme.accentFg || '#777'};
+
+          &:last-child {
+            margin-right: 0px;
+          }
+
+          .Select-value-icon {
+            color: #fff;
+            width: auto;
+            height: 100%;
+            font-size: 23px;
+            font-weight: 100;
+            border: none;
+            border-radius: 0;
+            padding: 0px;
+            padding-left: 8px;
+            padding-right: 8px;
+            margin: 0px;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+              background: ${(props) => darken(0.25, (props.theme.accentFg || '#777'))};
+            }
+          }
+
+          .Select-value-label {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 32px;
+            white-space: nowrap;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+            padding-top: 0px;
+            padding-left: 4px;
+            padding-right: 10px;
+            margin: 0;
+            cursor: pointer;
+          }
         }
       }
     }
@@ -212,21 +214,10 @@ class MultipleSelect extends React.Component {
       selectedValue = (value.length > this.props.max ? this.props.value : value);
     }
 
-    if (selectedValue && selectedValue.length && selectedValue.length === this.props.max) {
-      console.log('max reached');
-    }
-
     this.props.onChange(selectedValue);
   }
 
-  bleh = (event) => {
-    console.log(event);
-    console.log('zolg');
-  }
-
   render() {
-    // const disabled = !(this.props.value && this.props.value.length === this.props.max);
-
     return (
       <StyledMultipleSelect
         multi
@@ -241,7 +232,6 @@ class MultipleSelect extends React.Component {
         placeholder={<span>{this.props.placeholder}</span>}
         options={this.props.options}
         onChange={this.handleOnChange}
-        onOpen={this.bleh}
       />
     );
   }

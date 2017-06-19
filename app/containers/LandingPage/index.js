@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 import WatchSagas from 'containers/WatchSagas';
-import Modal from 'components/Modal';
+import Modal from 'components/UI/Modal';
 import { preprocess } from 'utils';
 import IdeasShow from 'containers/IdeasShow';
 import { Link } from 'react-router';

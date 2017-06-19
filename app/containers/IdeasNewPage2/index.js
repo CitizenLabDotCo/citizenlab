@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
-import { Button, Dropdown } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import { preprocess } from 'utils';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -10,18 +10,23 @@ import { EditorState, convertToRaw } from 'draft-js';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { injectTFunc } from 'utils/containers/t/utils';
 import WatchSagas from 'containers/WatchSagas';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { API_PATH } from 'containers/App/constants';
 import sagas from './sagas';
 import { loadTopics, loadAreas, loadProjects, submitIdea } from './actions';
-import { makeSelectTopics, makeSelectAreas, makeSelectProjects } from './selectors';
+import { makeSelectTopics, makeSelectAreas, makeSelectProjects, makeSelectIdeaId } from './selectors';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 import messages from './messages';
-import MultipleSelect from 'components/MultipleSelect';
-import Label from 'components/Form/Label';
-import Input from 'components/Form/Input';
-import Editor from 'components/Form/Editor';
+import Select from 'components/UI/Select';
+import MultipleSelect from 'components/UI/MultipleSelect';
+import Label from 'components/UI/Label';
+import Input from 'components/UI/Input';
+import LocationInput from 'components/UI/LocationInput';
+import Editor from 'components/UI/Editor';
 import draftToHtml from 'draftjs-to-html';
-import DropzoneComponent from 'react-dropzone-component';
+import Dropzone from 'react-dropzone';
+// import DropzoneComponent from 'react-dropzone-component';
 import 'dropzone/dist/min/dropzone.min.css';
 import 'react-dropzone-component/styles/filepicker.css';
 
@@ -48,12 +53,7 @@ const FormContainer = styled.div`
   max-width: 650px;
 `;
 
-const InputWrapper = styled.div`
-  width: 100%;
-  padding-bottom: 40px;
-`;
-
-const MultipleSelectWrapper = styled.div`
+const FormElement = styled.div`
   width: 100%;
   margin-bottom: 40px;
 `;
@@ -62,18 +62,27 @@ const EditorWrapper = styled.div`
   margin-bottom: 40px;
 `;
 
+/*
 const StyledDropzone = styled(DropzoneComponent)`
   background: red;
   cursor: pointer;
   margin-bottom: 40px;
-  background: #fff !important;
-  border-width: 2px !important;
-  border-color: #ccc !important;
+  background: transparent !important;
+  border-width: 1.5px !important;
+  border-color: #999 !important;
 
   &:hover {
-    border-color: #666 !important;
+    border-color: #000 !important;
+  }
+
+  .dz-message {
+    color: #333;
+    font-size: 16px;
+    font-weight: 300;
+    margin: 20px 0px;
   }
 `;
+*/
 
 class IdeasNewPage2 extends React.Component {
   constructor() {
@@ -81,10 +90,11 @@ class IdeasNewPage2 extends React.Component {
 
     this.state = {
       title: '',
-      topics: [],
-      areas: [],
-      projects: [],
       description: EditorState.createEmpty(),
+      selectedTopics: [],
+      selectedAreas: [],
+      selectedProject: null,
+      location: '',
       images: [],
     };
 
@@ -103,21 +113,10 @@ class IdeasNewPage2 extends React.Component {
 
     if (list && list.size && list.size > 0) {
       list.forEach((item) => {
-        const id = item.get('id');
-        const title = this.props.tFunc(item.getIn(['attributes', 'title_multiloc']).toJS());
-
         options.push({
-          value: id,
-          label: title,
+          value: item.get('id'),
+          label: this.props.tFunc(item.getIn(['attributes', 'title_multiloc']).toJS()),
         });
-
-        /*
-        options.push({
-          key: id,
-          value: id,
-          text: title,
-        });
-        */
       });
     }
 
@@ -128,13 +127,32 @@ class IdeasNewPage2 extends React.Component {
     this.setState({ title });
   }
 
-  handleMultipleSelectOnChange = (name) => (value) => {
-    this.setState({ [name]: value });
-  }
-
-  handleEditorOnChange = (description) => {
+  handleDescriptionOnChange = (description) => {
     this.setState({ description });
   }
+
+  handleTopicsOnChange = (selectedTopics) => {
+    this.setState({ selectedTopics });
+  }
+
+  handleAreasOnChange = (selectedAreas) => {
+    this.setState({ selectedAreas });
+  }
+
+  handleProjectOnChange = (selectedProject) => {
+    // console.log('selectedProject:');
+    // console.log(selectedProject);
+    this.setState({ selectedProject });
+  }
+
+  handleLocationOnChange = (location) => {
+    this.setState({ location });
+  }
+
+  handleOnDrop = (images) => {
+    console.log(images);
+    this.setState({ images });
+  };
 
   submitIdea = () => {
     const { user, locale } = this.props;
@@ -150,6 +168,13 @@ class IdeasNewPage2 extends React.Component {
     const publicationStatus = 'draft';
 
     this.props.submitIdea(userId, localTitle, localDescription, topics, areas, project, publicationStatus);
+
+    /*
+    geocodeByAddress(this.state.address)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => console.log('Success', latLng))
+      .catch(error => console.error('Error', error))
+    */
   }
 
   render() {
@@ -174,7 +199,7 @@ class IdeasNewPage2 extends React.Component {
 
           <FormContainer>
             <Label value={formatMessage(messages.titleLabel)} htmlFor="title" />
-            <InputWrapper>
+            <FormElement>
               <Input
                 type="text"
                 id="title"
@@ -182,59 +207,79 @@ class IdeasNewPage2 extends React.Component {
                 placeholder={formatMessage(messages.titlePlaceholder)}
                 onChange={this.handleTitleOnChange}
               />
-            </InputWrapper>
+            </FormElement>
 
             <Label value={formatMessage(messages.descriptionLabel)} />
             <EditorWrapper>
               <Editor
                 value={this.state.description}
                 placeholder={formatMessage(messages.descriptionPlaceholder)}
-                onChange={this.handleEditorOnChange}
+                onChange={this.handleDescriptionOnChange}
                 toolbarConfig={editorToolbarConfig}
               />
             </EditorWrapper>
 
             <Label value={formatMessage(messages.topicsLabel)} />
-            <MultipleSelectWrapper>
+            <FormElement>
               <MultipleSelect
-                value={this.state.topics}
+                value={this.state.selectedTopics}
                 placeholder={formatMessage(messages.topicsPlaceholder)}
                 options={this.getOptions(this.props.topics)}
-                onChange={this.handleMultipleSelectOnChange('topics')}
+                onChange={this.handleTopicsOnChange}
                 max={20}
               />
-            </MultipleSelectWrapper>
+            </FormElement>
 
+            {/*
             <Label value={formatMessage(messages.areasLabel)} />
-            <MultipleSelectWrapper>
+            <FormElement>
               <MultipleSelect
-                value={this.state.areas}
+                value={this.state.selectedAreas}
                 placeholder={formatMessage(messages.areasPlaceholder)}
                 options={this.getOptions(this.props.areas)}
-                onChange={this.handleMultipleSelectOnChange('areas')}
+                onChange={this.handleAreasOnChange}
                 max={2}
               />
-            </MultipleSelectWrapper>
+            </FormElement>
+            */}
 
             <Label value={formatMessage(messages.projectsLabel)} />
-            <MultipleSelectWrapper>
-              <Dropdown
-                scrolling
-                selection
-                fluid
-                value={this.state.projects[0]}
+            <FormElement>
+              <Select
+                clearable
+                value={this.state.selectedProject}
                 placeholder={formatMessage(messages.projectsPlaceholder)}
                 options={this.getOptions(this.props.projects)}
-                onChange={this.handleOnChange}
+                onChange={this.handleProjectOnChange}
               />
-            </MultipleSelectWrapper>
+            </FormElement>
+
+            <FormElement>
+              <Label value={formatMessage(messages.locationLabel)} />
+              <LocationInput
+                value={this.state.location}
+                placeholder={formatMessage(messages.locationPlaceholder)}
+                onChange={this.handleLocationOnChange}
+              />
+            </FormElement>
 
             <Label value={formatMessage(messages.imagesLabel)} />
+            <Dropzone
+              multiple
+              accept="image/jpg, image/jpeg, image/png, image/gif"
+              maxSize={2097152}
+              onDrop={this.handleOnDrop}
+            >
+              <p>Try dropping some files here, or click to select files to upload.</p>
+            </Dropzone>
+            <div>{this.state.images.map((image, index) => <img width="100" key={index} alt="none" src={image.preview} />)}</div>
+
+            {/*
             <StyledDropzone
               config={{
                 iconFiletypes: ['.jpg', '.png', '.gif'],
                 showFiletypeIcon: true,
-                postUrl: 'none',
+                postUrl: `${API_PATH}/ideas/${this.props.ideaId}/images`,
               }}
               djsConfig={{
                 acceptedFiles: 'image/jpeg, image/png, image/gif',
@@ -249,6 +294,7 @@ class IdeasNewPage2 extends React.Component {
                 removedfile: (image) => console.log(image),
               }}
             />
+            */}
 
             <Button onClick={this.submitIdea}>
               <FormattedMessage {...messages.submit} />
@@ -268,6 +314,7 @@ IdeasNewPage2.propTypes = {
   topics: ImmutablePropTypes.list.isRequired,
   areas: ImmutablePropTypes.list.isRequired,
   projects: ImmutablePropTypes.list.isRequired,
+  ideaId: PropTypes.string,
   loadTopics: PropTypes.func.isRequired,
   loadAreas: PropTypes.func.isRequired,
   loadProjects: PropTypes.func.isRequired,
@@ -280,6 +327,7 @@ const mapStateToProps = createStructuredSelector({
   topics: makeSelectTopics(),
   areas: makeSelectAreas(),
   projects: makeSelectProjects(),
+  ideaId: makeSelectIdeaId(),
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
@@ -290,13 +338,14 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
 }, dispatch);
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { locale, user, topics, areas, projects } = stateProps;
+  const { locale, user, topics, areas, projects, ideaId } = stateProps;
   return {
     locale,
     user,
     topics,
     areas,
     projects,
+    ideaId,
     ...dispatchProps,
     ...ownProps,
   };
