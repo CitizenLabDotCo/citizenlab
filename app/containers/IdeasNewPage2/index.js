@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
-import { Button } from 'semantic-ui-react';
+import { darken } from 'polished';
 import { preprocess } from 'utils';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -10,8 +10,8 @@ import { EditorState, convertToRaw } from 'draft-js';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { injectTFunc } from 'utils/containers/t/utils';
 import WatchSagas from 'containers/WatchSagas';
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
-import { API_PATH } from 'containers/App/constants';
+// import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+// import { API_PATH } from 'containers/App/constants';
 import sagas from './sagas';
 import { loadTopics, loadAreas, loadProjects, submitIdea } from './actions';
 import { makeSelectTopics, makeSelectAreas, makeSelectProjects, makeSelectIdeaId } from './selectors';
@@ -24,11 +24,10 @@ import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
 import Editor from 'components/UI/Editor';
+import Button from 'components/UI/Button';
+import Icon from 'components/Icon';
 import draftToHtml from 'draftjs-to-html';
 import Dropzone from 'react-dropzone';
-// import DropzoneComponent from 'react-dropzone-component';
-import 'dropzone/dist/min/dropzone.min.css';
-import 'react-dropzone-component/styles/filepicker.css';
 
 const PageContainer = styled.div`
   display: flex;
@@ -50,7 +49,7 @@ const PageTitle = styled.h2`
 
 const FormContainer = styled.div`
   width: 100%;
-  max-width: 650px;
+  max-width: 580px;
 `;
 
 const FormElement = styled.div`
@@ -62,27 +61,75 @@ const EditorWrapper = styled.div`
   margin-bottom: 40px;
 `;
 
-/*
-const StyledDropzone = styled(DropzoneComponent)`
-  background: red;
+const StyledDropzone = styled(Dropzone)`
+  width: 100%;
+  min-height: 100px;
+  display: flex;
+  border-radius: 5px;
+  border: dashed 2px #999;
+  padding: 15px;
   cursor: pointer;
-  margin-bottom: 40px;
-  background: transparent !important;
-  border-width: 1.5px !important;
-  border-color: #999 !important;
+  position: relative;
+  background: transparent;
 
   &:hover {
-    border-color: #000 !important;
-  }
-
-  .dz-message {
-    color: #333;
-    font-size: 16px;
-    font-weight: 300;
-    margin: 20px 0px;
+    border-color: #000;
   }
 `;
-*/
+
+const UploadMessage = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  > span {
+    color: #999;
+    font-size: 18px;
+    font-weight: 300;
+  }
+`;
+
+const UploadedImage = styled.div`
+  width: 150px;
+  height: 120px;
+  margin-right: 15px;
+  border: solid 1px #999;
+  border-radius: 5px;
+  position: relative;
+  background-size: cover;
+
+  &:last-child {
+    margin-right: 0px;
+  }
+`;
+
+const RemoveUploadedImage = styled.div`
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  z-index: 2;
+  padding: 0px;
+  border-radius: 50%;
+  background: #f8f8f8;
+  cursor: pointer;
+
+  &:hover svg {
+    fill: ${(props) => darken(0.15, (props.theme.accentFg || '#000'))};
+  }
+
+  svg {
+    fill: ${(props) => props.theme.accentFg || '#777'};
+  }
+`;
 
 class IdeasNewPage2 extends React.Component {
   constructor() {
@@ -106,6 +153,14 @@ class IdeasNewPage2 extends React.Component {
     this.props.loadAreas();
     this.props.loadProjects();
     this.submitIdea();
+
+    // autofocus the title input field on first render;
+    console.log('wurps');
+    console.log(this.titleInput);
+    if (this.titleInput) {
+      console.log('zolg');
+      this.titleInput.focus();
+    }
   }
 
   getOptions(list) {
@@ -140,8 +195,6 @@ class IdeasNewPage2 extends React.Component {
   }
 
   handleProjectOnChange = (selectedProject) => {
-    // console.log('selectedProject:');
-    // console.log(selectedProject);
     this.setState({ selectedProject });
   }
 
@@ -149,10 +202,32 @@ class IdeasNewPage2 extends React.Component {
     this.setState({ location });
   }
 
-  handleOnDrop = (images) => {
-    console.log(images);
-    this.setState({ images });
+  handleOnDrop = (newImages) => {
+    this.setState((state) => {
+      const images = [...state.images, ...newImages];
+
+      // convert to base64
+      // const reader = new FileReader();
+      // reader.onload = (event) => console.log(event.target.result);
+      // reader.readAsDataURL(images[0]);
+
+      return {
+        images,
+      };
+    });
   };
+
+  removeImage = (removedImage) => (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.setState((state) => {
+      const images = state.images.filter((image) => image.preview !== removedImage.preview);
+      return {
+        images,
+      };
+    });
+  }
 
   submitIdea = () => {
     const { user, locale } = this.props;
@@ -206,6 +281,7 @@ class IdeasNewPage2 extends React.Component {
                 value={this.state.title}
                 placeholder={formatMessage(messages.titlePlaceholder)}
                 onChange={this.handleTitleOnChange}
+                innerRef={(innerRef) => { console.log('bleh'); console.log(innerRef); this.titleInput = innerRef; }}
               />
             </FormElement>
 
@@ -230,19 +306,6 @@ class IdeasNewPage2 extends React.Component {
               />
             </FormElement>
 
-            {/*
-            <Label value={formatMessage(messages.areasLabel)} />
-            <FormElement>
-              <MultipleSelect
-                value={this.state.selectedAreas}
-                placeholder={formatMessage(messages.areasPlaceholder)}
-                options={this.getOptions(this.props.areas)}
-                onChange={this.handleAreasOnChange}
-                max={2}
-              />
-            </FormElement>
-            */}
-
             <Label value={formatMessage(messages.projectsLabel)} />
             <FormElement>
               <Select
@@ -263,42 +326,31 @@ class IdeasNewPage2 extends React.Component {
               />
             </FormElement>
 
-            <Label value={formatMessage(messages.imagesLabel)} />
-            <Dropzone
-              multiple
-              accept="image/jpg, image/jpeg, image/png, image/gif"
-              maxSize={2097152}
-              onDrop={this.handleOnDrop}
-            >
-              <p>Try dropping some files here, or click to select files to upload.</p>
-            </Dropzone>
-            <div>{this.state.images.map((image, index) => <img width="100" key={index} alt="none" src={image.preview} />)}</div>
+            <FormElement>
+              <Label value={formatMessage(messages.imagesLabel)} />
+              <StyledDropzone
+                multiple
+                accept="image/jpg, image/jpeg, image/png, image/gif"
+                maxSize={2097152000}
+                onDrop={this.handleOnDrop}
+              >
+                {!this.state.images || this.state.images.length < 1
+                  ? <UploadMessage><span>Drop images here</span></UploadMessage>
+                  : this.state.images.map((image) => (
+                    <UploadedImage
+                      key={image.lastModified}
+                      style={{ backgroundImage: `url(${image.preview})` }}
+                    >
+                      <RemoveUploadedImage onClick={this.removeImage(image)}>
+                        <Icon iconName="close" />
+                      </RemoveUploadedImage>
+                    </UploadedImage>
+                  ))
+                }
+              </StyledDropzone>
+            </FormElement>
 
-            {/*
-            <StyledDropzone
-              config={{
-                iconFiletypes: ['.jpg', '.png', '.gif'],
-                showFiletypeIcon: true,
-                postUrl: `${API_PATH}/ideas/${this.props.ideaId}/images`,
-              }}
-              djsConfig={{
-                acceptedFiles: 'image/jpeg, image/png, image/gif',
-                autoProcessQueue: false,
-                addRemoveLinks: true,
-                maxFiles: 5,
-                maxFileSize: 5,
-              }}
-              eventHandlers={{
-                init: (dropzone) => (this.dropzone = dropzone),
-                addedfile: (image) => console.log(image),
-                removedfile: (image) => console.log(image),
-              }}
-            />
-            */}
-
-            <Button onClick={this.submitIdea}>
-              <FormattedMessage {...messages.submit} />
-            </Button>
+            <Button size="medium" text={formatMessage(messages.submit)} onClick={this.submitIdea} />
           </FormContainer>
         </PageContainer>
       </div>

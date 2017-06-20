@@ -10,7 +10,7 @@ const LocationInputWrapper = styled.div`
     width: 100%;
     color: #333;
     font-size: 17px;
-    line-height: 17px;
+    line-height: 22px;
     font-weight: 300;
     padding: 12px;
     border-radius: 5px;
@@ -60,7 +60,7 @@ const LocationInput = ({ value, placeholder, onChange }) => {
     autoFocus: true,
   };
 
-  const AutocompleteItem = ({ formattedSuggestion }) => (
+  const AutocompleteItem = ({ formattedSuggestion }) => ( // eslint-disable-line
     <StyledAutocompleteItem className="autocompleteItemInner">
       <strong>{formattedSuggestion.mainText}</strong>{' '}{formattedSuggestion.secondaryText}
     </StyledAutocompleteItem>

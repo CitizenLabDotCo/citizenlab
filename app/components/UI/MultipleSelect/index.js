@@ -148,7 +148,7 @@ const StyledMultipleSelect = styled(Select)`
             justify-content: center;
 
             &:hover {
-              background: ${(props) => darken(0.25, (props.theme.accentFg || '#777'))};
+              background: ${(props) => darken(0.15, (props.theme.accentFg || '#777'))};
             }
           }
 
