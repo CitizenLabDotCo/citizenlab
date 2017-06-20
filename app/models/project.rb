@@ -11,6 +11,7 @@ class Project < ApplicationRecord
   has_many :areas, through: :areas_projects
   has_many :phases, dependent: :destroy
   has_many :events, dependent: :destroy
+  has_many :pages, dependent: :destroy
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}

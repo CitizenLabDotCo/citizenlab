@@ -153,12 +153,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTY5NDc0NTEsInN1YiI6ImY4ODc3ZDdmLTEwN2EtNDBlNC04ZTFhLTU1ODBhNTcwNGJjNCJ9.hYyHti9aaa5oOS8sZBM14o9Hx8CmiAJSZfFkEMqX6Rw
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTgwMzI3ODYsInN1YiI6IjM4YjA1NzdhLTIyMDgtNDQxMS1hYzU4LTA1NTQxNDhhNmFjZCJ9.w-r7uMxzY1JZRLMVBfEX6s2UBHWKawtCGzZEOc8Rj5w
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/ideas/116ea66c-db70-49b2-a4bc-94f15eb0f3b8/comments</pre>
+          <pre class="request route highlight">POST api/v1/ideas/6e0b506b-ed12-486c-bf2a-f0a03fdc395a/comments</pre>
 
 
             <h4>Body</h4>
@@ -171,37 +171,37 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;f069273b422d11d5da19cdb5588005cd&quot;
+ETag: W/&quot;0bc037f3ab68f6a3777526718c06b1eb&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 3d52dcfd-075a-424d-a127-00af5dfe555d
-X-Runtime: 0.027630
+X-Request-Id: c9bf4b07-1b8f-4454-9cab-e124cdf4abce
+X-Runtime: 0.057800
 Vary: Origin
-Content-Length: 1248</pre>
+Content-Length: 1246</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;7181a369-f356-45c3-9eac-9a884f54479e&quot;,
+    &quot;id&quot;: &quot;6090b08a-28de-4002-bb87-18309a23314a&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
         &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
       },
-      &quot;created_at&quot;: &quot;2017-06-07T18:44:11.165Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-06-07T18:44:11.165Z&quot;
+      &quot;created_at&quot;: &quot;2017-06-20T08:13:06.523Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-06-20T08:13:06.523Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;116ea66c-db70-49b2-a4bc-94f15eb0f3b8&quot;,
+          &quot;id&quot;: &quot;6e0b506b-ed12-486c-bf2a-f0a03fdc395a&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;f8877d7f-107a-40e4-8e1a-5580a5704bc4&quot;,
+          &quot;id&quot;: &quot;38b0577a-2208-4411-ac58-0554148a6acd&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
@@ -212,26 +212,26 @@ Content-Length: 1248</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;f8877d7f-107a-40e4-8e1a-5580a5704bc4&quot;,
+      &quot;id&quot;: &quot;38b0577a-2208-4411-ac58-0554148a6acd&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Kenton&quot;,
-        &quot;last_name&quot;: &quot;Emmerich&quot;,
-        &quot;slug&quot;: &quot;kenton-emmerich&quot;,
+        &quot;first_name&quot;: &quot;Duncan&quot;,
+        &quot;last_name&quot;: &quot;Wiza&quot;,
+        &quot;slug&quot;: &quot;duncan-wiza&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/f8877d7f-107a-40e4-8e1a-5580a5704bc4/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/f8877d7f-107a-40e4-8e1a-5580a5704bc4/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/f8877d7f-107a-40e4-8e1a-5580a5704bc4/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/38b0577a-2208-4411-ac58-0554148a6acd/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/38b0577a-2208-4411-ac58-0554148a6acd/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/38b0577a-2208-4411-ac58-0554148a6acd/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-06-07T18:44:11.072Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-06-07T18:44:11.072Z&quot;,
-        &quot;email&quot;: &quot;junius@maggio.co&quot;,
+        &quot;created_at&quot;: &quot;2017-06-20T08:13:06.329Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-20T08:13:06.329Z&quot;,
+        &quot;email&quot;: &quot;nettie@olsonadams.info&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

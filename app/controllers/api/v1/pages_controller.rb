@@ -6,6 +6,9 @@ class Api::V1::PagesController < ::ApplicationController
     @pages = policy_scope(Page)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
+
+    @pages = @pages.where(project_id: params[:project]) if params[:project].present?
+
     render json: @pages
   end
 

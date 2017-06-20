@@ -206,7 +206,7 @@ Apartment::Tenant.switch('localhost') do
     create_comment_tree(idea, nil)
   end
 
-  5.times do 
+  8.times do 
     Page.create({
       title_multiloc: {
         "en" => Faker::Lorem.sentence,
@@ -215,7 +215,8 @@ Apartment::Tenant.switch('localhost') do
       body_multiloc: {
         "en": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
         "nl": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-      }
+      },
+      project: rand(1) == 1 ? Project.offset(rand(Project.count)).first : nil,
     })
   end
 
