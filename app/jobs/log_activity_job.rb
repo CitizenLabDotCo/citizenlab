@@ -15,7 +15,9 @@ class LogActivityJob < ApplicationJob
     activity.acted_at = Time.at(acted_at)
     activity.payload = options[:payload] || {}
 
-    activity.save
+    activity.save!
+
+    MakeNotificationsJob.perform_later(activity)
   end
 
 end

@@ -18,5 +18,11 @@ RSpec.describe LogActivityJob, type: :job do
       user = create(:user)
       expect{job.perform("Idea/#{frozen_idea.id}", "created", user, Time.now)}.to change{Activity.count}.from(0).to(1)
     end
+
+    it "enqueues a MakeNotificationsJob" do
+      idea = create(:idea)
+      user = create(:user)
+      expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(MakeNotificationsJob)
+    end
   end
 end
