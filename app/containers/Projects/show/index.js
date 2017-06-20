@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'react-router';
 
 // components
 import { Menu, Segment } from 'semantic-ui-react';
@@ -17,10 +16,18 @@ import { preprocess } from 'utils';
 import { LOAD_PROJECT_REQUEST } from 'resources/projects/constants';
 import { loadProjectRequest } from 'resources/projects/actions';
 import sagasWatchers from 'resources/projects/sagas';
+import sagasWatchersPages from 'resources/projects/pages/sagas';
 
 // message
 import messages from './messages';
 import { injectIntl, intlShape } from 'react-intl';
+import { loadProjectPagesRequest } from 'resources/projects/pages/actions';
+import { createStructuredSelector } from 'reselect';
+import { makeSelectProjectPages } from './selectors';
+import { injectTFunc } from 'containers/T/utils';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import MenuItemStyled from './MenuItemStyled';
+
 
 const Container = styled.div`
   display: flex;
@@ -96,16 +103,29 @@ class ProjectView extends React.Component {
       modalUrl: null,
       selectedIdeaId: null,
     };
+
+    // provide context to bindings
+    this.combinedLoader = this.combinedLoader.bind(this);
+  }
+
+  combinedLoader() {
+    const { loadProject, loadProjectPages, params } = this.props;
+    const projectId = params.projectId;
+
+    loadProject(projectId);
+    loadProjectPages(projectId);
   }
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { location, loadProject, params } = this.props;
+    const { location, params, pages, tFunc } = this.props;
     const basePath = `/projects/${params.projectId}`;
     const activeItem = location.pathname;
+
     return (
       <div>
         <WatchSagas sagas={sagasWatchers} />
+        <WatchSagas sagas={sagasWatchersPages} />
 
         <Container>
           <HeaderContainer>
@@ -115,36 +135,41 @@ class ProjectView extends React.Component {
 
           <Segment inverted style={{ width: '100%', margin: 0, zIndex: 999 }}>
             <Menu inverted pointing secondary>
-              <Menu.Item
-                name={formatMessage(messages.navInfo)}
-                as={Link}
+              <MenuItemStyled
+                title={formatMessage(messages.navInfo)}
+                key={0}
                 to={`${basePath}`}
                 active={location.pathname === '/admin/users'}
               />
-              <Menu.Item
-                name={formatMessage(messages.navIdeas)}
-                as={Link}
+              <MenuItemStyled
+                title={formatMessage(messages.navIdeas)}
+                key={1}
                 to={`${basePath}/ideas`}
                 active={activeItem === 'messages'}
-                onClick={this.handleItemClick}
               />
-              <Menu.Item
-                name={formatMessage(messages.navTimeline)}
-                as={Link}
+              <MenuItemStyled
+                title={formatMessage(messages.navTimeline)}
+                key={2}
                 to={`${basePath}/timeline`}
                 active={activeItem === 'messages'}
-                onClick={this.handleItemClick}
               />
+              {pages && pages.toJS().map((page, index) => ((index < 2 ? <MenuItemStyled
+                key={999 + index}
+                title={tFunc(page.attributes.title_multiloc)}
+                to={`${basePath}/page/${page.id}`}
+                active={location.pathname === `${basePath}/page/${page.id}`}
+              /> : <span style={{ display: 'none' }}></span>)))}
+
             </Menu>
           </Segment>
           <Loader
-            resourceLoader={() => loadProject(params.projectId)}
+            resourceLoader={this.combinedLoader}
             loadingMessage={messages.LoadingMessage}
             errorMessage={messages.LoadingError}
             listenenTo={LOAD_PROJECT_REQUEST}
             withError={false}
           >
-            {this.props.children }
+            {this.props.children}
           </Loader>
           <Footer>
           </Footer>
@@ -158,9 +183,19 @@ class ProjectView extends React.Component {
 ProjectView.propTypes = {
   children: PropTypes.any,
   loadProject: PropTypes.func.isRequired,
+  loadProjectPages: PropTypes.func.isRequired,
   params: PropTypes.object,
   location: PropTypes.object,
   intl: intlShape,
+  pages: ImmutablePropTypes.list,
+  tFunc: PropTypes.func.isRequired,
 };
 
-export default injectIntl(preprocess(null, { loadProject: loadProjectRequest })(ProjectView));
+const mapStateToProps = () => createStructuredSelector({
+  pages: makeSelectProjectPages(),
+});
+
+export default injectTFunc(injectIntl(preprocess(mapStateToProps, {
+  loadProject: loadProjectRequest,
+  loadProjectPages: loadProjectPagesRequest,
+})(ProjectView)));

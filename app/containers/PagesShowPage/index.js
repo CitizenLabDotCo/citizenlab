@@ -20,10 +20,38 @@ import messages from './messages';
 import { loadPageRequest } from './actions';
 
 export class PagesShowPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  constructor() {
+    super();
+
+    this.state = {
+      loadedId: null,
+    }
+
+    // provide context to bindings
+    this.loadPage = this.loadPage.bind(this);
+  }
+
   componentDidMount() {
     const { id } = this.props.params;
 
+    this.loadPage(id);
+  }
+
+  componentWillReceiveProps() {
+    const { id } = this.props.params;
+
+    // TODO: fix repeated loading
+    // if (id !== this.state.loadedId) {
+    this.loadPage(id);
+    // }
+  }
+
+  loadPage(id) {
     this.props.loadPageRequest(id);
+
+    this.setState({
+      loadedId: id,
+    });
   }
 
   render() {
