@@ -42,23 +42,25 @@ class FilterSelector extends React.Component {
     if (!this.props.multiple) {
       newSelection = [value];
     } else if (_.includes(newSelection, value)) {
-      newSelection = _.reject(newSelection, value);
+      newSelection = _.without(newSelection, value);
     } else {
-      newSelection = newSelection.push(value);
+      newSelection.push(value);
     }
 
     this.setState({ selected: newSelection, currentTitle: this.getTitle(newSelection) });
-    this.props.onChange(newSelection);
+    if (this.props.onChange) {
+      this.props.onChange(newSelection);
+    }
   }
 
   render() {
     const { deployed, selected, currentTitle } = this.state;
-    const { values } = this.props;
+    const { values, multiple } = this.props;
 
     return (
-      <div tabIndex="0" role="listbox" aria-expanded={deployed} onChange={console.log}>
+      <div tabIndex="0" role="listbox" aria-multiselectable={multiple} aria-expanded={deployed}>
         <Title title={currentTitle} deployed={deployed} onClick={this.toggleExpanded} />
-        {deployed && <ValuesList values={values} selected={selected} />}
+        {deployed && <ValuesList values={values} selected={selected} onChange={this.selectionChange} multiple={multiple} />}
       </div>
     );
   }

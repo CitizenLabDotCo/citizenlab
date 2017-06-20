@@ -18,7 +18,7 @@ import queryString from 'query-string';
 import { injectTFunc } from 'containers/T/utils';
 
 const SelectTopic = ({ options }) => (
-  <FilterSelector title="topics" values={options} />
+  <FilterSelector title="topics" values={options} multiple />
 );
 
 SelectTopic.propTypes = {
@@ -37,7 +37,6 @@ const mapStateToProps = () => createStructuredSelector({
   topics: (state) => selectResourcesDomain('topics')(state),
   search: (state) => state.getIn(['route', 'locationBeforeTransitions', 'search']),
   location: (state) => state.getIn(['route', 'locationBeforeTransitions', 'pathname']),
-
 });
 
 const mergeQuery = (search, type, ids) => {
