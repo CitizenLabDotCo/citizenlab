@@ -153,12 +153,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTY5NDc0NTEsInN1YiI6IjlmNGY4MzJlLWRiODQtNGUwNS1iOGNlLTUxZmYzOGUyMzIyNSJ9.0xU2VtZ9ym92Z52BcPkMf72wmxdXEpmNFlTc1Y2Zs8Y
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTgwMzI3ODcsInN1YiI6IjQxZDkzODdmLThmMmUtNDE0OC05YWYyLTFiYjdhNmNlZmNmMSJ9.2FG00L4lM7jzD748EKwj3VUQKaxi2Nr0wAHti0atC5Y
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/comments/5cdb492e-1096-47b6-8f85-ef3e8d248881</pre>
+          <pre class="request route highlight">PATCH api/v1/comments/3525bce2-39cc-41f7-9995-4a3a50aba60a</pre>
 
 
             <h4>Body</h4>
@@ -171,37 +171,37 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;775b4b7f2f19ffa99701243c9ceba139&quot;
+ETag: W/&quot;dd111289b5531ded547af10ab1575616&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 3a37a749-9923-47dc-88e2-97e00cc8dc60
-X-Runtime: 0.018368
+X-Request-Id: 026f03ed-4384-48d2-8aa8-995feeba5e77
+X-Runtime: 0.052608
 Vary: Origin
-Content-Length: 1245</pre>
+Content-Length: 1248</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;5cdb492e-1096-47b6-8f85-ef3e8d248881&quot;,
+    &quot;id&quot;: &quot;3525bce2-39cc-41f7-9995-4a3a50aba60a&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
         &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
       },
-      &quot;created_at&quot;: &quot;2017-06-07T18:44:11.568Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-06-07T18:44:11.568Z&quot;
+      &quot;created_at&quot;: &quot;2017-06-20T08:13:07.433Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-06-20T08:13:07.433Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;ded6d427-0e0d-477b-9dba-d162135f893a&quot;,
+          &quot;id&quot;: &quot;af9e6976-4db5-4f11-a3ba-7ab26c1d8c39&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;9f4f832e-db84-4e05-b8ce-51ff38e23225&quot;,
+          &quot;id&quot;: &quot;41d9387f-8f2e-4148-9af2-1bb7a6cefcf1&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       },
@@ -212,26 +212,26 @@ Content-Length: 1245</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;9f4f832e-db84-4e05-b8ce-51ff38e23225&quot;,
+      &quot;id&quot;: &quot;41d9387f-8f2e-4148-9af2-1bb7a6cefcf1&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Trycia&quot;,
-        &quot;last_name&quot;: &quot;Senger&quot;,
-        &quot;slug&quot;: &quot;trycia-senger&quot;,
+        &quot;first_name&quot;: &quot;Leland&quot;,
+        &quot;last_name&quot;: &quot;Smitham&quot;,
+        &quot;slug&quot;: &quot;leland-smitham&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/9f4f832e-db84-4e05-b8ce-51ff38e23225/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/9f4f832e-db84-4e05-b8ce-51ff38e23225/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/9f4f832e-db84-4e05-b8ce-51ff38e23225/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/41d9387f-8f2e-4148-9af2-1bb7a6cefcf1/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/41d9387f-8f2e-4148-9af2-1bb7a6cefcf1/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/41d9387f-8f2e-4148-9af2-1bb7a6cefcf1/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-06-07T18:44:11.550Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-06-07T18:44:11.550Z&quot;,
-        &quot;email&quot;: &quot;jadyn@kovacek.com&quot;,
+        &quot;created_at&quot;: &quot;2017-06-20T08:13:07.405Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-20T08:13:07.405Z&quot;,
+        &quot;email&quot;: &quot;kendall@treutel.co&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

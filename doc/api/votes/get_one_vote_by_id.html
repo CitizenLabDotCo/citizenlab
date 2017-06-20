@@ -117,13 +117,13 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTY5NDc0NzgsInN1YiI6Ijc1NTYyMzllLWZhNjQtNDY3YS05NmY3LWNlNTRhNjE1YmNkMSJ9.zoFT0rIW_tJ-Bwg-RA-mG-4-VMgj3fbk0bcoAo4suyY
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTgwMzI4MzgsInN1YiI6IjE0MzkyMjc5LTBiMzMtNDE4ZC05YTNjLTdhYTMyNzExNTdiMiJ9.oiO8PCeGi0EIsSdNHpb1HvLm18JoRfNhBAtX4V64b8s
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/votes/872c8c01-df6a-45cb-8c11-53c2d101e063</pre>
+          <pre class="request route highlight">GET api/v1/votes/b96e58eb-32d7-4d61-a020-b2da551148be</pre>
 
 
 
@@ -134,18 +134,18 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
-ETag: W/&quot;13a97fb5f95719bb62051cc55ecbabf4&quot;
+ETag: W/&quot;d0d405e91e8f2bb240c226cebf18e80f&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 7940e27d-b5b0-404e-bcbd-71a09cbca180
-X-Runtime: 0.018590
+X-Request-Id: fcf16508-e470-42e9-80ac-f74f3e66f66c
+X-Runtime: 0.038040
 Vary: Origin
-Content-Length: 1031</pre>
+Content-Length: 1034</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;872c8c01-df6a-45cb-8c11-53c2d101e063&quot;,
+    &quot;id&quot;: &quot;b96e58eb-32d7-4d61-a020-b2da551148be&quot;,
     &quot;type&quot;: &quot;votes&quot;,
     &quot;attributes&quot;: {
       &quot;mode&quot;: &quot;up&quot;
@@ -153,13 +153,13 @@ Content-Length: 1031</pre>
     &quot;relationships&quot;: {
       &quot;votable&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;64487131-2179-431e-aae1-52fa5a842b99&quot;,
+          &quot;id&quot;: &quot;c6e06af7-57b8-4998-a960-93c81684b675&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;user&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;63c519b8-2204-4152-b050-55bb28c6b00f&quot;,
+          &quot;id&quot;: &quot;a8bcf3ef-1cce-4ffc-83d8-c45b7c9421fd&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       }
@@ -167,26 +167,26 @@ Content-Length: 1031</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;63c519b8-2204-4152-b050-55bb28c6b00f&quot;,
+      &quot;id&quot;: &quot;a8bcf3ef-1cce-4ffc-83d8-c45b7c9421fd&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Seamus&quot;,
-        &quot;last_name&quot;: &quot;Lindgren&quot;,
-        &quot;slug&quot;: &quot;seamus-lindgren&quot;,
+        &quot;first_name&quot;: &quot;Delaney&quot;,
+        &quot;last_name&quot;: &quot;Russel&quot;,
+        &quot;slug&quot;: &quot;delaney-russel&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/63c519b8-2204-4152-b050-55bb28c6b00f/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/63c519b8-2204-4152-b050-55bb28c6b00f/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/21770129-aced-404e-8dfc-28c5839bee4e/user/avatar/63c519b8-2204-4152-b050-55bb28c6b00f/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/a8bcf3ef-1cce-4ffc-83d8-c45b7c9421fd/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/a8bcf3ef-1cce-4ffc-83d8-c45b7c9421fd/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/a8bcf3ef-1cce-4ffc-83d8-c45b7c9421fd/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-06-07T18:44:38.437Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-06-07T18:44:38.437Z&quot;,
-        &quot;email&quot;: &quot;abelardo.hudson@jacobi.name&quot;,
+        &quot;created_at&quot;: &quot;2017-06-20T08:13:58.604Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-20T08:13:58.604Z&quot;,
+        &quot;email&quot;: &quot;angelina.greenfelder@leannon.biz&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

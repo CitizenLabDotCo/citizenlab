@@ -11,12 +11,28 @@ resource "Pages" do
   end
 
   get "api/v1/pages" do
+
+    parameter :project, "The id of a project, if you want the pages for that project only"
+
     example_request "List all pages" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
     end
+
+
+    example "List all pages in a project" do
+      project = create(:project)
+      pages = create_list(:page, 3, project: project)
+
+      do_request(project: project.id)
+
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 3
+    end
   end
+
 
   get "api/v1/pages" do
     example "Get all pages on the second page with fixed page size" do

@@ -20,7 +20,7 @@ describe "seedfile" do
       expect(Idea.count).to be > 0
       expect(IdeaImage.count).to be > 0
       expect(Comment.count).to be > 0
-      expect(Page.count).to be 5
+      expect(Page.count).to be 8
     end
   end
 
