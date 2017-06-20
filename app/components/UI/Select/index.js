@@ -43,9 +43,9 @@ const StyledSelect = styled(ReactSelect)`
 
     .Select-control {
       width: 100%;
-      height: auto;
+      min-height: 44px;
       margin: 0px;
-      padding: 5px;
+      padding: 0px;
       display: flex;
       cursor: pointer;
       border-color: #ccc;
@@ -85,7 +85,6 @@ const StyledSelect = styled(ReactSelect)`
         top: 0;
         bottom: 0;
         right: 30px;
-        z-index: 100;
 
         &:hover {
           .Select-clear {
@@ -105,7 +104,8 @@ const StyledSelect = styled(ReactSelect)`
         padding: 0px;
         position: relative;
 
-        .Select-placeholder {
+        .Select-placeholder, 
+        .Select-value {
           font-size: 17px;
           font-weight: 300;
           line-height: 32px;
@@ -114,37 +114,6 @@ const StyledSelect = styled(ReactSelect)`
           margin-left: 6px;
           display: flex;
           align-items: center;
-        }
-
-        .Select-value {
-          height: 32px;
-          display: inline-flex;
-          align-items: center;
-          padding: 0px;
-          margin: 0px;
-          margin-right: 5px;
-          margin-bottom: 5px;
-          border: none;
-          border-radius: 3px;
-          overflow: hidden;
-          cursor: pointer;
-          background: transparent;
-
-          .Select-value-label {
-            color: #333;
-            font-size: 17px;
-            font-weight: 300;
-            line-height: 32px;
-            white-space: nowrap;
-            border: none;
-            border-radius: 0;
-            padding: 0;
-            padding-top: 1px;
-            padding-left: 4px;
-            padding-right: 10px;
-            margin: 0;
-            cursor: pointer;
-          }
         }
       }
     }

@@ -63,7 +63,7 @@ const EditorWrapper = styled.div`
 
 const StyledDropzone = styled(Dropzone)`
   width: 100%;
-  min-height: 100px;
+  min-height: 120px;
   display: flex;
   border-radius: 5px;
   border: dashed 2px #999;
@@ -77,10 +77,11 @@ const StyledDropzone = styled(Dropzone)`
   }
 `;
 
-const UploadMessage = styled.div`
+const UploadMessageContainer = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: absolute;
@@ -88,12 +89,22 @@ const UploadMessage = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+`;
 
-  > span {
-    color: #999;
-    font-size: 18px;
-    font-weight: 300;
+const UploadIcon = styled.div`
+  height: 40px;
+  margin-top: -10px;
+  margin-bottom: 5px;
+
+  svg {
+    fill: #999;
   }
+`;
+
+const UploadMessage = styled.span`
+    color: #999;
+    font-size: 17px;
+    font-weight: 300;
 `;
 
 const UploadedImage = styled.div`
@@ -155,10 +166,7 @@ class IdeasNewPage2 extends React.Component {
     this.submitIdea();
 
     // autofocus the title input field on first render;
-    console.log('wurps');
-    console.log(this.titleInput);
     if (this.titleInput) {
-      console.log('zolg');
       this.titleInput.focus();
     }
   }
@@ -216,6 +224,10 @@ class IdeasNewPage2 extends React.Component {
       };
     });
   };
+
+  handleSetRef = (element) => {
+    this.titleInput = element;
+  }
 
   removeImage = (removedImage) => (event) => {
     event.preventDefault();
@@ -281,7 +293,7 @@ class IdeasNewPage2 extends React.Component {
                 value={this.state.title}
                 placeholder={formatMessage(messages.titlePlaceholder)}
                 onChange={this.handleTitleOnChange}
-                innerRef={(innerRef) => { console.log('bleh'); console.log(innerRef); this.titleInput = innerRef; }}
+                setRef={this.handleSetRef}
               />
             </FormElement>
 
@@ -335,14 +347,23 @@ class IdeasNewPage2 extends React.Component {
                 onDrop={this.handleOnDrop}
               >
                 {!this.state.images || this.state.images.length < 1
-                  ? <UploadMessage><span>Drop images here</span></UploadMessage>
+                  ? (
+                    <UploadMessageContainer>
+                      <UploadIcon>
+                        <Icon name="upload" />
+                      </UploadIcon>
+                      <UploadMessage>
+                        Drop images here
+                      </UploadMessage>
+                    </UploadMessageContainer>
+                  )
                   : this.state.images.map((image) => (
                     <UploadedImage
                       key={image.lastModified}
                       style={{ backgroundImage: `url(${image.preview})` }}
                     >
                       <RemoveUploadedImage onClick={this.removeImage(image)}>
-                        <Icon iconName="close" />
+                        <Icon name="close" />
                       </RemoveUploadedImage>
                     </UploadedImage>
                   ))
@@ -350,7 +371,7 @@ class IdeasNewPage2 extends React.Component {
               </StyledDropzone>
             </FormElement>
 
-            <Button size="medium" text={formatMessage(messages.submit)} onClick={this.submitIdea} />
+            <Button size="2" text={formatMessage(messages.submit)} onClick={this.submitIdea} />
           </FormContainer>
         </PageContainer>
       </div>
