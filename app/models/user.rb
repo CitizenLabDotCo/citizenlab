@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :votes, dependent: :nullify
+  has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
 
   store_accessor :demographics, :gender, :birthyear, :domicile, :education
 

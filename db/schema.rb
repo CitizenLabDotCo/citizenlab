@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170620074738) do
+ActiveRecord::Schema.define(version: 20170620083943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,6 +124,21 @@ ActiveRecord::Schema.define(version: 20170620074738) do
     t.index ["topic_id"], name: "index_ideas_topics_on_topic_id", using: :btree
   end
 
+  create_table "notifications", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "type"
+    t.datetime "read_at"
+    t.uuid     "recipient_id"
+    t.string   "user_id"
+    t.string   "idea_id"
+    t.string   "comment_id"
+    t.string   "project_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["created_at"], name: "index_notifications_on_created_at", using: :btree
+    t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at", using: :btree
+    t.index ["recipient_id"], name: "index_notifications_on_recipient_id", using: :btree
+  end
+
   create_table "pages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.jsonb    "title_multiloc", default: {}
     t.jsonb    "body_multiloc",  default: {}
@@ -225,6 +240,7 @@ ActiveRecord::Schema.define(version: 20170620074738) do
   add_foreign_key "ideas", "users", column: "author_id"
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
+  add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "pages", "projects"
   add_foreign_key "phases", "projects"
   add_foreign_key "projects_topics", "projects"
