@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Menu, Segment } from 'semantic-ui-react';
 import Loader from 'components/loaders';
 import WatchSagas from 'containers/WatchSagas';
+import T from 'containers/T';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -20,14 +21,13 @@ import sagasWatchersPages from 'resources/projects/pages/sagas';
 
 // message
 import messages from './messages';
-import { injectIntl, intlShape } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { loadProjectPagesRequest } from 'resources/projects/pages/actions';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectProjectPages } from './selectors';
 import { injectTFunc } from 'containers/T/utils';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import MenuItemStyled from './MenuItemStyled';
-
 
 const Container = styled.div`
   display: flex;
@@ -58,7 +58,6 @@ const HeaderContainer = styled.div`
 `;
 
 const HeaderOverlay = styled.div`
-  opacity: 0.65;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -67,6 +66,8 @@ const HeaderOverlay = styled.div`
 `;
 
 const HeaderBackground = styled.div`
+  opacity: 0.65;
+  filter: blur(1px);
   background-image: url(${projectImage});
   background-repeat: no-repeat;
   background-position: center top;
@@ -91,6 +92,30 @@ const Footer = styled.div`
   margin-bottom: 50px;
   margin-left: auto;
   margin-right: auto;
+`;
+
+const MenuStyled = styled(Menu)`
+  margin-bottom: 10px;
+  border-bottom: none !important;
+`;
+
+const ProjectHeaderStyled = styled.div`
+  font-size: 25px;
+  text-align: center;
+  color: #ffffff;
+  width: 100%;
+  display: block;
+  margin-top: 150px;
+`;
+
+const ProjectTitleStyled = styled.div`
+  position: absolute;
+  font-size: 45px;
+  text-align: center;
+  color: #ffffff;
+  width: 100%;
+  display: block;
+  margin-top: 30px;
 `;
 
 class ProjectView extends React.Component {
@@ -118,9 +143,8 @@ class ProjectView extends React.Component {
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { location, params, pages, tFunc } = this.props;
+    const { location, params, pages, tFunc, projectTitle } = this.props;
     const basePath = `/projects/${params.projectId}`;
-    const activeItem = location.pathname;
 
     return (
       <div>
@@ -130,40 +154,63 @@ class ProjectView extends React.Component {
         <Container>
           <HeaderContainer>
             <HeaderBackground></HeaderBackground>
-            <HeaderOverlay></HeaderOverlay>
+            <HeaderOverlay>
+              <ProjectHeaderStyled>
+                <FormattedMessage {...messages.project} />
+              </ProjectHeaderStyled>
+              <ProjectTitleStyled>
+                {projectTitle && <T value={projectTitle.toJS()} />}
+              </ProjectTitleStyled>
+            </HeaderOverlay>
           </HeaderContainer>
 
-          <Segment inverted style={{ width: '100%', margin: 0, zIndex: 999 }}>
-            <Menu inverted pointing secondary>
+          <Segment
+            style={{
+              width: '100%',
+              margin: '0 0 15px',
+              zIndex: 999,
+              border: 0,
+              padding: 0,
+            }}
+          >
+            <MenuStyled
+              pointing
+              secondary
+              style={{
+                marginBottom: '10px',
+                borderBottom: 'none !important',
+              }}
+            >
               <MenuItemStyled
                 title={formatMessage(messages.navInfo)}
                 key={0}
                 to={`${basePath}`}
-                active={location.pathname === '/admin/users'}
+                active={location.pathname === `${basePath}`}
               />
               <MenuItemStyled
                 title={formatMessage(messages.navIdeas)}
                 key={1}
                 to={`${basePath}/ideas`}
-                active={activeItem === 'messages'}
+                active={location.pathname === `${basePath}/ideas`}
               />
               <MenuItemStyled
                 title={formatMessage(messages.navTimeline)}
                 key={2}
                 to={`${basePath}/timeline`}
-                active={activeItem === 'messages'}
+                active={location.pathname === `${basePath}/timeline`}
               />
               {pages && pages.toJS().map((page, index) => ((index < 2 ? <MenuItemStyled
                 key={999 + page.id}
                 title={tFunc(page.attributes.title_multiloc)}
                 to={`${basePath}/page/${page.id}`}
+                isProject
                 active={location.pathname === `${basePath}/page/${page.id}`}
               /> : <span
                 style={{ display: 'none' }}
                 key={999 + page.id}
               ></span>)))}
 
-            </Menu>
+            </MenuStyled>
           </Segment>
           <Loader
             resourceLoader={this.combinedLoader}
@@ -172,6 +219,7 @@ class ProjectView extends React.Component {
             listenenTo={LOAD_PROJECT_REQUEST}
             withError={false}
           >
+            {/* FROM REACT ROUTER */}
             {this.props.children}
           </Loader>
           <Footer>
@@ -192,10 +240,12 @@ ProjectView.propTypes = {
   intl: intlShape,
   pages: ImmutablePropTypes.list,
   tFunc: PropTypes.func.isRequired,
+  projectTitle: PropTypes.object,
 };
 
 const mapStateToProps = () => createStructuredSelector({
   pages: makeSelectProjectPages(),
+  projectTitle: (state, { params }) => state.getIn(['resources', 'projects', params.projectId, 'attributes', 'title_multiloc']),
 });
 
 export default injectTFunc(injectIntl(preprocess(mapStateToProps, {

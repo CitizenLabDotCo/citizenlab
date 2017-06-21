@@ -14,7 +14,7 @@ export function* loadProjectPagesSaga(action) {
     const response = yield call(fetchPages, {
       'page[number]': 1,
       'page[size]': 3,
-      // project: action.payload, // TODO: uncomment this
+      project: action.payload,
     });
 
     yield put(mergeJsonApiResources(response));
