@@ -37,6 +37,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const id = element.get('id');
   const title = element.getIn(['attributes', 'title_multiloc']);
   const filter = dispatchProps.push;
+
   const filterPage = () => {
     filter(`/ideas?${mergeQuery(ownProps.location, type, id)}`);
   };
