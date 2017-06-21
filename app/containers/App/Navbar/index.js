@@ -296,5 +296,5 @@ const mergeProps = (stateP, dispatchP, ownP) => {
 };
 
 export default injectIntl(preprocess(mapStateToProps, { signOutCurrentUser, push }, mergeProps)(styled(Navbar)`
-  background-color: ${(props) => props.location.indexOf('projects') !== -1 || props.location.indexOf('ideas') !== -1 ? '#000000' : '#ffffff'};
+  background-color: ${(props) => props.menuBg};
 `));

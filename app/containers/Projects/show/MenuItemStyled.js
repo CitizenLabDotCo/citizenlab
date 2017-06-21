@@ -31,9 +31,8 @@ export default styled(MenuItemStyled)`
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   opacity: ${(props) => props.active ? 'inherit' : '0.6'};
-  border-color: ${(props) => props.active ? `${props.theme.accentFg} !important` : '#fff'};
   color: #232f45 !important;
-  border-bottom-color: ${(props) => props.active ? '#6080ad !important' : 'inherit'};
+  border-bottom-color: ${(props) => props.active ? `${props.theme.main} !important` : 'inherit'};
   background-color: #ffffff !important;
   text-align: center;
   margin-bottom: 2px !important;

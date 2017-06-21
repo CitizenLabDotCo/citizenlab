@@ -10,7 +10,7 @@ import T from 'containers/T';
 
 // style
 import { media } from 'utils/styleUtils';
-import projectImage from 'assets/img/landingpage/project1.png';
+// import projectImage from 'assets/img/landingpage/project1.png';
 
 // store
 import { preprocess } from 'utils';
@@ -68,7 +68,7 @@ const HeaderOverlay = styled.div`
 const HeaderBackground = styled.div`
   opacity: 0.65;
   filter: blur(1px);
-  background-image: url(${projectImage});
+  background-image: url(${(props) => props.projectCover});
   background-repeat: no-repeat;
   background-position: center top;
   background-size: cover;
@@ -143,7 +143,7 @@ class ProjectView extends React.Component {
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { location, params, pages, tFunc, projectTitle } = this.props;
+    const { location, params, pages, tFunc, project } = this.props;
     const basePath = `/projects/${params.projectId}`;
 
     return (
@@ -153,13 +153,15 @@ class ProjectView extends React.Component {
 
         <Container>
           <HeaderContainer>
-            <HeaderBackground></HeaderBackground>
+            <HeaderBackground
+              projectCover={project && project.toJS().attributes.project_cover_image}
+            />
             <HeaderOverlay>
               <ProjectHeaderStyled>
                 <FormattedMessage {...messages.project} />
               </ProjectHeaderStyled>
               <ProjectTitleStyled>
-                {projectTitle && <T value={projectTitle.toJS()} />}
+                {project && <T value={project.toJS().attributes.title_multiloc} />}
               </ProjectTitleStyled>
             </HeaderOverlay>
           </HeaderContainer>
@@ -208,7 +210,7 @@ class ProjectView extends React.Component {
               /> : <span
                 style={{ display: 'none' }}
                 key={999 + page.id}
-              ></span>)))}
+              />)))}
 
             </MenuStyled>
           </Segment>
@@ -240,12 +242,12 @@ ProjectView.propTypes = {
   intl: intlShape,
   pages: ImmutablePropTypes.list,
   tFunc: PropTypes.func.isRequired,
-  projectTitle: PropTypes.object,
+  project: PropTypes.object,
 };
 
 const mapStateToProps = () => createStructuredSelector({
   pages: makeSelectProjectPages(),
-  projectTitle: (state, { params }) => state.getIn(['resources', 'projects', params.projectId, 'attributes', 'title_multiloc']),
+  project: (state, { params }) => state.getIn(['resources', 'projects', params.projectId]),
 });
 
 export default injectTFunc(injectIntl(preprocess(mapStateToProps, {

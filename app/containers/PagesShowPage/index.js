@@ -18,6 +18,7 @@ import selectPagesShowPage, { makeSelectPage } from './selectors';
 import sagas from './sagas';
 import messages from './messages';
 import { loadPageRequest } from './actions';
+import styled from 'styled-components';
 
 export class PagesShowPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -34,40 +35,28 @@ export class PagesShowPage extends React.PureComponent { // eslint-disable-line 
     this.loadPage(id);
   }
 
-  // componentDidUpdate() {
-  //   console.log(this.props);
-  //   // triggered on component render and page refresh
-  //   const { id } = this.props.params;
-  //
-  //   // TODO: fix repeated loading
-  //   // if (id !== this.state.loadedId) {
-  //   this.loadPage(id);
-  //   // }
-  // }
-
   loadPage(id) {
     this.props.loadPageRequest(id);
   }
 
   render() {
-    const { loading, loadError, page } = this.props;
+    const { loading, loadError, page, className } = this.props;
 
     return (
-      <div>
+      <div className={className}>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
         <WatchSagas sagas={sagas} />
-        {page && <div>
-          <FormattedMessage {...messages.header} /> {page.id}
-        </div>}
-
         {loading && <div><FormattedMessage {...messages.loading} /></div>}
         {loadError && <div>{loadError}</div>}
 
         {page && <div>
-          <div><T value={page.attributes.body_multiloc} /></div>
+          <div>
+            <h1><T value={page.attributes.title_multiloc} /></h1>
+            <T value={page.attributes.body_multiloc} />
+          </div>
         </div>}
       </div>
     );
@@ -80,6 +69,7 @@ PagesShowPage.propTypes = {
   page: PropTypes.object,
   loadPageRequest: PropTypes.func.isRequired,
   params: PropTypes.object.isRequired,
+  className: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -100,4 +90,7 @@ const mergeProps = ({ pageState, page }, dispatchProps, { params }) => ({
 });
 
 
-export default preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(PagesShowPage);
+export default preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(styled(PagesShowPage)`
+  width: 80%;
+  margin: auto;
+`);
