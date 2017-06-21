@@ -67,10 +67,10 @@ import createRoutes from './routes';
 import { loadState } from './persistedData';
 
 // Observe loading of custom font
-const proximaNovaObserver = new FontFaceObserver('proxima-nova', {});
+const fontObserver = new FontFaceObserver('circular', {});
 
 // When custom font is loaded, add a 'fontLoaded' class to the body tag
-proximaNovaObserver.load().then(() => {
+fontObserver.load().then(() => {
   document.body.classList.add('fontLoaded');
 }, () => {
   document.body.classList.remove('fontLoaded');
