@@ -14,7 +14,6 @@ const initialState = fromJS({
 function projectContainer(state = initialState, action) {
   switch (action.type) {
     case LOAD_PROJECT_PAGES_SUCCESS: {
-      console.log(action.payload.data);
       const ids = action.payload.data.map((pages) => pages.id);
       return state
         .set('pages', fromJS(ids));

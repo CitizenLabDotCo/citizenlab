@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
-const MenuItemStyled = ({ title, to, active, className, key }) => (<Menu.Item
-  key={key}
+const MenuItemStyled = ({ title, to, active, className }) => (<Menu.Item
   className={className}
   name={title}
   as={Link}

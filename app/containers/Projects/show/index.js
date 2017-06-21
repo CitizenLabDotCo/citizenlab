@@ -154,11 +154,14 @@ class ProjectView extends React.Component {
                 active={activeItem === 'messages'}
               />
               {pages && pages.toJS().map((page, index) => ((index < 2 ? <MenuItemStyled
-                key={999 + index}
+                key={999 + page.id}
                 title={tFunc(page.attributes.title_multiloc)}
                 to={`${basePath}/page/${page.id}`}
                 active={location.pathname === `${basePath}/page/${page.id}`}
-              /> : <span style={{ display: 'none' }}></span>)))}
+              /> : <span
+                style={{ display: 'none' }}
+                key={999 + page.id}
+              ></span>)))}
 
             </Menu>
           </Segment>
