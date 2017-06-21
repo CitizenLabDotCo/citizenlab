@@ -54,9 +54,22 @@ class FormComponent extends React.Component {
   handleSuccess = () => {}
   handleError = () => {}
 
+  defaultBeforeSubmit = () => {
+    this.beforeSubmit();
+  }
+
+  beforeSubmit = () => {}
+
+  defaultAfterSubmit = () => {
+    this.afterSubmit();
+  }
+
+  afterSubmit = () => {}
+
   handleSubmit = (event) => {
-    event.preventDefault();
-    this.setState({ loading: true, errors: {}, error: false });
+    if (event && event.preventDefault) event.preventDefault();
+    this.defaultBeforeSubmit();
+    this.setState({ loading: true, errors: {}, error: false }, this.defaultAfterSubmit);
   }
 }
 

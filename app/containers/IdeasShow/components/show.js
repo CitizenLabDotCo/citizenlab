@@ -112,7 +112,7 @@ const mergeProps = ({ idea }, dispatchProps, { tFunc, location, intl }) => {
   const authorId = relationships.getIn(['author', 'data', 'id'])
   const areas = relationships.getIn(['areas','data']).map(getIds)
   const topics = relationships.getIn(['topics','data']).map(getIds)
-  const voteId = relationships.getIn(['votes','data', 'id'])
+  const voteId = relationships.getIn(['user_vote','data', 0, 'id'])
   return {
     id,
     images: images.toJS(),
@@ -124,6 +124,7 @@ const mergeProps = ({ idea }, dispatchProps, { tFunc, location, intl }) => {
     areas,
     topics,
     location,
+    voteId,
     tFunc,
     intl,
   };

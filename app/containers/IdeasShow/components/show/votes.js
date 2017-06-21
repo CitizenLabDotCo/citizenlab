@@ -12,7 +12,7 @@ import FormComponent from 'components/forms/formComponent';
 // store
 import { preprocess } from 'utils';
 import { loadIdeaRequest } from 'resources/ideas/actions';
-import { loadIdeaSagaFork } from 'resources/ideas/sagas';
+import { loadIdeaSagaFork, deleteIdeasVoteSagaFork, createIdeasVoteSagaFork } from 'resources/ideas/sagas';
 
 /* eslint-disable */
 
@@ -46,12 +46,13 @@ class Votes extends FormComponent {
   beforeSubmit = () => {
     const { ideaId, voteId } = this.props;
     this.values.mode = this.state.mode;
+    console.log(this.values.intMode)
     if (this.values.intMode === 0) {
       this.values.id = voteId
-      // this.values = actions.vote.delete.request(this.values)
+      this.saga = deleteIdeasVoteSagaFork
     } else {
       this.values.id = ideaId
-      // this.values = actions.idea.vote.create.request(this.values)
+      this.saga = createIdeasVoteSagaFork
     }
   }
 
@@ -62,7 +63,6 @@ class Votes extends FormComponent {
   render() {
     const { votesUp, votesDown, createVote, destroyVote, ideaId, auth } = this.props;
     const { loading, mode } = this.props;
-
     const votes = votesUp - votesDown;
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -93,6 +93,7 @@ const mapStateToProps = createStructuredSelector({
   votesUp: (state, { ideaId }) => state.getIn(['resources', 'ideas', ideaId, 'attributes', 'upvotes_count']),
   votesDown: (state, { ideaId }) => state.getIn(['resources', 'ideas', ideaId, 'attributes', 'downvotes_count']),
   mode: (state, { voteId }) => state.getIn(['resources', 'votes', voteId, 'attributes', 'mode']),
+  state: (state) => state
 });
 
 
