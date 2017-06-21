@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeLatest, call, put, fork } from 'redux-saga/effects';
 import { loadResources, createResource, loadResource, deleteResource, updateResource } from 'api';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import { loadIdeasError, loadIdeasSuccess, loadIdeaSuccess, loadIdeaError, deleteIdeaSuccess, createIdeaSuccess } from './actions';
@@ -33,6 +33,10 @@ export function* loadIdeaSaga(action) {
   } catch (e) {
     yield put(loadIdeaError(e.json.errors));
   }
+}
+
+export function* loadIdeaSagaFork(action, success, error) {
+  yield fork(loadIdeaSaga, action, success, error);
 }
 
 export function* createIdeaSaga(action, success, error) {

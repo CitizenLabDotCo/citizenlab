@@ -38,7 +38,7 @@ class Show extends React.PureComponent {
 
   render() {
     const {
-      id, idea, images, authorId, title_multiloc, body_multiloc, created_at, votes, location, tFunc } = this.props;
+      id, idea, images, authorId, title_multiloc, body_multiloc, created_at, votes, voteId, location, tFunc } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (!title_multiloc) return null;
@@ -55,7 +55,7 @@ class Show extends React.PureComponent {
           <T value={title_multiloc} />
         </h2>
         <ShareButtons location={location} image={images[0] && images[0].medium} />
-        <Votes ideaId={id} />
+        <Votes ideaId={id} voteId={voteId} />
         <Comment.Group style={{ maxWidth: 'none' }}>
           <Comment>
             <Comment.Content>
@@ -112,6 +112,7 @@ const mergeProps = ({ idea }, dispatchProps, { tFunc, location, intl }) => {
   const authorId = relationships.getIn(['author', 'data', 'id'])
   const areas = relationships.getIn(['areas','data']).map(getIds)
   const topics = relationships.getIn(['topics','data']).map(getIds)
+  const voteId = relationships.getIn(['votes','data', 'id'])
   return {
     id,
     images: images.toJS(),
