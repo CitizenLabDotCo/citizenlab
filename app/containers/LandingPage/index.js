@@ -57,8 +57,8 @@ const HeaderContainer = styled.div`
 `;
 
 const HeaderOverlay = styled.div`
-  background-color: ${(props) => props.theme.color.main};
-  opacity: 0.65;
+  background-color: #000;
+  opacity: 0.35;
   position: absolute;
   top: 0;
   bottom: 0;
