@@ -111,7 +111,7 @@ const StyledSelect = styled(ReactSelect)`
           line-height: 32px;
           padding: 0px;
           margin: 0px;
-          margin-left: 6px;
+          margin-left: 12px;
           display: flex;
           align-items: center;
         }

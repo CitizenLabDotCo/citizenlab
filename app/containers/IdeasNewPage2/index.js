@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
-import { darken } from 'polished';
 import { preprocess } from 'utils';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -25,9 +24,8 @@ import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
 import Editor from 'components/UI/Editor';
 import Button from 'components/UI/Button';
-import Icon from 'components/Icon';
+import Upload from 'components/UI/Upload';
 import draftToHtml from 'draftjs-to-html';
-import Dropzone from 'react-dropzone';
 
 const PageContainer = styled.div`
   display: flex;
@@ -41,9 +39,9 @@ const PageContainer = styled.div`
 `;
 
 const PageTitle = styled.h2`
-  color: #333;
+  color: #444;
   font-size: 36px;
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 20px;
 `;
 
@@ -59,87 +57,6 @@ const FormElement = styled.div`
 
 const EditorWrapper = styled.div`
   margin-bottom: 40px;
-`;
-
-const StyledDropzone = styled(Dropzone)`
-  width: 100%;
-  min-height: 120px;
-  display: flex;
-  border-radius: 5px;
-  border: dashed 2px #999;
-  padding: 15px;
-  cursor: pointer;
-  position: relative;
-  background: transparent;
-
-  &:hover {
-    border-color: #000;
-  }
-`;
-
-const UploadMessageContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
-const UploadIcon = styled.div`
-  height: 40px;
-  margin-top: -10px;
-  margin-bottom: 5px;
-
-  svg {
-    fill: #999;
-  }
-`;
-
-const UploadMessage = styled.span`
-    color: #999;
-    font-size: 17px;
-    font-weight: 300;
-`;
-
-const UploadedImage = styled.div`
-  width: 150px;
-  height: 120px;
-  margin-right: 15px;
-  border: solid 1px #999;
-  border-radius: 5px;
-  position: relative;
-  background-size: cover;
-
-  &:last-child {
-    margin-right: 0px;
-  }
-`;
-
-const RemoveUploadedImage = styled.div`
-  width: 28px;
-  height: 28px;
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  z-index: 2;
-  padding: 0px;
-  border-radius: 50%;
-  background: #f8f8f8;
-  cursor: pointer;
-
-  &:hover svg {
-    fill: ${(props) => darken(0.15, (props.theme.accentFg || '#000'))};
-  }
-
-  svg {
-    fill: ${(props) => props.theme.accentFg || '#777'};
-  }
 `;
 
 class IdeasNewPage2 extends React.Component {
@@ -198,10 +115,6 @@ class IdeasNewPage2 extends React.Component {
     this.setState({ selectedTopics });
   }
 
-  handleAreasOnChange = (selectedAreas) => {
-    this.setState({ selectedAreas });
-  }
-
   handleProjectOnChange = (selectedProject) => {
     this.setState({ selectedProject });
   }
@@ -210,18 +123,26 @@ class IdeasNewPage2 extends React.Component {
     this.setState({ location });
   }
 
-  handleOnDrop = (newImages) => {
+  async getBase64(image) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (event) => resolve(event.target.result);
+      reader.readAsDataURL(image);
+    });
+  }
+
+  handleUploadOnAdd = async (image) => {
+    const base64 = await this.getBase64(image);
     this.setState((state) => {
-      const images = [...state.images, ...newImages];
+      const images = [...state.images, { ...image, base64 }];
+      return { images };
+    });
+  };
 
-      // convert to base64
-      // const reader = new FileReader();
-      // reader.onload = (event) => console.log(event.target.result);
-      // reader.readAsDataURL(images[0]);
-
-      return {
-        images,
-      };
+  handleUploadOnRemove = (removedImage) => {
+    this.setState((state) => {
+      const images = state.images.filter((image) => image.preview !== removedImage.preview);
+      return { images };
     });
   };
 
@@ -235,9 +156,7 @@ class IdeasNewPage2 extends React.Component {
 
     this.setState((state) => {
       const images = state.images.filter((image) => image.preview !== removedImage.preview);
-      return {
-        images,
-      };
+      return { images };
     });
   }
 
@@ -339,36 +258,17 @@ class IdeasNewPage2 extends React.Component {
             </FormElement>
 
             <FormElement>
-              <Label value={formatMessage(messages.imagesLabel)} />
-              <StyledDropzone
+              <Label value={formatMessage(messages.imageUploadLabel)} />
+              <Upload
                 multiple
+                items={this.state.images}
                 accept="image/jpg, image/jpeg, image/png, image/gif"
                 maxSize={2097152000}
-                onDrop={this.handleOnDrop}
-              >
-                {!this.state.images || this.state.images.length < 1
-                  ? (
-                    <UploadMessageContainer>
-                      <UploadIcon>
-                        <Icon name="upload" />
-                      </UploadIcon>
-                      <UploadMessage>
-                        Drop images here
-                      </UploadMessage>
-                    </UploadMessageContainer>
-                  )
-                  : this.state.images.map((image) => (
-                    <UploadedImage
-                      key={image.lastModified}
-                      style={{ backgroundImage: `url(${image.preview})` }}
-                    >
-                      <RemoveUploadedImage onClick={this.removeImage(image)}>
-                        <Icon name="close" />
-                      </RemoveUploadedImage>
-                    </UploadedImage>
-                  ))
-                }
-              </StyledDropzone>
+                maxItems={4}
+                placeholder={formatMessage(messages.imageUploadPlaceholder)}
+                onAdd={this.handleUploadOnAdd}
+                onRemove={this.handleUploadOnRemove}
+              />
             </FormElement>
 
             <Button size="2" text={formatMessage(messages.submit)} onClick={this.submitIdea} />

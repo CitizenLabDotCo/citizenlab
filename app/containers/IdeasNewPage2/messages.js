@@ -53,12 +53,16 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage2.projectsPlaceholder',
     defaultMessage: 'Optionally enter a location',
   },
+  imageUploadLabel: {
+    id: 'app.containers.IdeasNewPage2.imagesLabel',
+    defaultMessage: 'Images (optional, max. 5)',
+  },
+  imageUploadPlaceholder: {
+    id: 'app.containers.IdeasNewPage2.uploadPlaceholder',
+    defaultMessage: 'Optionally upload up to 5 images by dropping them here',
+  },
   submit: {
     id: 'app.containers.IdeasNewPage2.submit',
     defaultMessage: 'Submit idea',
-  },
-  imagesLabel: {
-    id: 'app.containers.IdeasNewPage2.imagesLabel',
-    defaultMessage: 'Images (optional, max. 5)',
   },
 });
