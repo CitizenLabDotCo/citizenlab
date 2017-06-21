@@ -29,6 +29,7 @@ class FormComponent extends React.Component {
 
   defaulOnSuccess = (...args) => {
     if (this.unmounted) return;
+
     this.setState({ loading: false }, () => {
       this.handleSuccess(...args);
     });

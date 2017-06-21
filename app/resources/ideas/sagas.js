@@ -44,9 +44,9 @@ export function* createIdeasVoteSaga(action, success, error) {
   try {
     const response = yield call(createResource, 'vote', action, 'ideas', action.id, 'votes');
     yield put(mergeJsonApiResources(response));
-    if (success) yield success;
+    if (success) yield success();
   } catch (e) {
-    if (error) yield error;
+    if (error) yield error();
   }
 }
 
@@ -58,9 +58,9 @@ export function* deleteIdeasVoteSaga(action, success, error) {
   try {
     const response = yield call(deleteResource, 'vote', action.id);
     yield put(mergeJsonApiResources(response));
-    if (success) yield success;
+    if (success) yield success();
   } catch (e) {
-    if (error) yield error;
+    if (error) yield error();
   }
 }
 
