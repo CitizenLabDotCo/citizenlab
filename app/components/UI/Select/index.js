@@ -80,6 +80,7 @@ const StyledSelect = styled(ReactSelect)`
         align-items: center;
         justify-content: center;
         padding: 0px;
+        padding-bottom: 3px;
         margin: 0px;
         position: absolute;
         top: 0;
@@ -110,6 +111,7 @@ const StyledSelect = styled(ReactSelect)`
           font-weight: 300;
           line-height: 32px;
           padding: 0px;
+          padding-bottom: 1px;
           margin: 0px;
           margin-left: 12px;
           display: flex;

@@ -67,14 +67,17 @@ import createRoutes from './routes';
 import { loadState } from './persistedData';
 
 // Observe loading of custom font
-const fontObserver = new FontFaceObserver('circular', {});
+const circular = new FontFaceObserver('circular');
+const proxima = new FontFaceObserver('proxima-nova');
 
 // When custom font is loaded, add a 'fontLoaded' class to the body tag
-fontObserver.load().then(() => {
+circular.load().then(() => {
   document.body.classList.add('fontLoaded');
 }, () => {
   document.body.classList.remove('fontLoaded');
 });
+
+proxima.load();
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router
