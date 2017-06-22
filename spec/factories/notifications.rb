@@ -1,11 +1,12 @@
 FactoryGirl.define do
-  factory :notification do
-    type ""
-    read_at "2017-06-20 08:39:43"
-    recipient_id "MyString"
-    user_id "MyString"
-    idea_id "MyString"
-    comment_id "MyString"
-    project_id "MyString"
+  factory :notification, class: 'Notification' do
+    read_at nil
+    recipient
+  end
+
+  factory :comment_on_your_comment, parent: :notification, class: 'Notifications::CommentOnYourComment' do
+    user
+    comment
+    idea
   end
 end

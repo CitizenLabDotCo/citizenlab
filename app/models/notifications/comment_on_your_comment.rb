@@ -4,6 +4,7 @@ module Notifications
     belongs_to :user
     belongs_to :comment
     belongs_to :idea
+    belongs_to :project, optional: true
 
     validates :comment_id, presence: true
     validates :user_id, presence: true

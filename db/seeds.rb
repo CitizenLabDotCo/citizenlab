@@ -6,6 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+Rails.application.eager_load!
 
 def create_comment_tree(idea, parent, depth=0)
   amount = rand(5/(depth+1))
@@ -19,6 +20,7 @@ def create_comment_tree(idea, parent, depth=0)
       idea: idea,
       parent: parent
     })
+    MakeNotificationsJob.perform_now(Activity.new(item: c, action: 'created', user: c.author, acted_at: Time.now))
     create_comment_tree(idea, c, depth+1)
   end
 end

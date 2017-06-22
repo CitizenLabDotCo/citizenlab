@@ -21,6 +21,7 @@ describe "seedfile" do
       expect(IdeaImage.count).to be > 0
       expect(Comment.count).to be > 0
       expect(Page.count).to be 8
+      expect(Notification.count).to be > 0
     end
   end
 

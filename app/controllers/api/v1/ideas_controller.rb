@@ -59,7 +59,7 @@ class Api::V1::IdeasController < ApplicationController
   end
 
   def show
-    render json: @idea, include: ['author','topics','areas','user_vote','idea_images']
+    render json: @idea, include: ['author','topics','areas','user_vote','idea_images'], serializer: Api::V1::IdeaSerializer
   end
 
   # insert
