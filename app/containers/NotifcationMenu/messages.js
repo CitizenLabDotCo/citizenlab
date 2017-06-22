@@ -12,6 +12,14 @@ export default defineMessages({
   },
   error: {
     id: 'app.containers.NotificationMenu.error',
-    defaultMessage: 'Couldn\'t load notifications,
+    defaultMessage: 'Couldn\'t load notifications',
+  },
+  loadMore: {
+    id: 'app.containers.NotificationMenu.loadMore',
+    defaultMessage: 'Load more...',
+  },
+  clearAll: {
+    id: 'app.containers.NotificationMenu.clearAll',
+    defaultMessage: 'Clear all',
   },
 });
