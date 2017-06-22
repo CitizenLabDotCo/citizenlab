@@ -52,11 +52,11 @@ const FormContainer = styled.div`
 
 const FormElement = styled.div`
   width: 100%;
-  margin-bottom: 40px;
+  margin-bottom: 42px;
 `;
 
 const EditorWrapper = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: 42px;
 `;
 
 class IdeasNewPage2 extends React.Component {
@@ -233,7 +233,7 @@ class IdeasNewPage2 extends React.Component {
                 placeholder={formatMessage(messages.topicsPlaceholder)}
                 options={this.getOptions(this.props.topics)}
                 onChange={this.handleTopicsOnChange}
-                max={20}
+                max={2}
               />
             </FormElement>
 
@@ -263,8 +263,8 @@ class IdeasNewPage2 extends React.Component {
                 multiple
                 items={this.state.images}
                 accept="image/jpg, image/jpeg, image/png, image/gif"
-                maxSize={2097152000}
-                maxItems={4}
+                maxSize={50000}
+                maxItems={5}
                 placeholder={formatMessage(messages.imageUploadPlaceholder)}
                 onAdd={this.handleUploadOnAdd}
                 onRemove={this.handleUploadOnRemove}

@@ -59,7 +59,7 @@ export default defineMessages({
   },
   imageUploadPlaceholder: {
     id: 'app.containers.IdeasNewPage2.uploadPlaceholder',
-    defaultMessage: 'Optionally upload up to 5 images by dropping them here',
+    defaultMessage: 'Drop image(s) here',
   },
   submit: {
     id: 'app.containers.IdeasNewPage2.submit',

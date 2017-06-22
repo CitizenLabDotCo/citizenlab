@@ -63,7 +63,7 @@ const Container = styled.div`
   }
 
   .rdw-editor-main {
-    min-height: 250px;
+    min-height: 230px;
     font-size: 17px;
     line-height: 23px;
     font-weight: 300;

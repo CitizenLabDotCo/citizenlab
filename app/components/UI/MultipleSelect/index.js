@@ -83,9 +83,10 @@ const StyledMultipleSelect = styled(Select)`
 
         .Select-placeholder {
           font-size: 17px;
-          font-weight: 300;
+          font-weight: 400;
           line-height: 32px;
           padding: 0px;
+          padding-bottom: 1px;
           margin: 0px;
           margin-left: 6px;
           position: absolute;
@@ -99,7 +100,7 @@ const StyledMultipleSelect = styled(Select)`
         .Select-input {
           height: auto;
           font-size: 17px;
-          font-weight: 300;
+          font-weight: 400;
           line-height: 32px;
           padding: 0px;
           margin: 0px;
@@ -135,10 +136,11 @@ const StyledMultipleSelect = styled(Select)`
             width: auto;
             height: 100%;
             font-size: 23px;
-            font-weight: 100;
+            font-weight: 400;
             border: none;
             border-radius: 0;
             padding: 0px;
+            padding-bottom: 2px;
             padding-left: 8px;
             padding-right: 8px;
             margin: 0px;
@@ -155,13 +157,14 @@ const StyledMultipleSelect = styled(Select)`
           .Select-value-label {
             color: #fff;
             font-size: 16px;
-            font-weight: 300;
-            line-height: 32px;
+            font-weight: 400;
+            line-height: auto;
             white-space: nowrap;
             border: none;
             border-radius: 0;
             padding: 0;
             padding-top: 0px;
+            padding-bottom: 2px;
             padding-left: 4px;
             padding-right: 10px;
             margin: 0;
@@ -185,7 +188,7 @@ const StyledMultipleSelect = styled(Select)`
 
         .Select-option {
           font-size: 17px;
-          font-weight: 300;
+          font-weight: 400;
 
           &:hover, 
           &:focus, 
@@ -198,7 +201,7 @@ const StyledMultipleSelect = styled(Select)`
         .Select-noresults {
           color: #cc0000;
           font-size: 17px;
-          font-weight: 500;
+          font-weight: 400;
           padding: 14px 12px;
         }
       }

@@ -5,13 +5,31 @@ import { darken } from 'polished';
 
 const StyledButton = styled.button`
   color: #fff;
-  font-size: 16px;
-  font-weight: 500;
-  padding-top: 8px;
-  padding-bottom: 9px;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 10px;
+  font-size: ${(props) => {
+    switch (props.size) {
+      case '2':
+        return '17px';
+      case '3':
+        return '18px';
+      case '4':
+        return '19px';
+      default:
+        return '16px';
+    }
+  }};
+  font-weight: 400;
+  padding: ${(props) => {
+    switch (props.size) {
+      case '2':
+        return '11px 16px';
+      case '3':
+        return '12px 17px';
+      case '4':
+        return '13px 18px';
+      default:
+        return '10px 15px';
+    }
+  }};
   border-radius: 5px;
   background: ${(props) => props.theme.accentFg || '#e0e0e0'};
   transition: background 150ms ease;
@@ -21,34 +39,7 @@ const StyledButton = styled.button`
   }
 `;
 
-const NormalStyledButton = StyledButton.extend`
-  font-size: 16px;
-  padding-top: 8px;
-  padding-bottom: 9px;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 10px;
-`;
-
-const MediumStyledButton = StyledButton.extend`
-  font-size: 18px;
-  padding: 13px 19px;
-`;
-
-const LargeStyledButton = StyledButton.extend`
-  font-size: 19px;
-  padding: 14px 20px;
-`;
-
-const Button = ({ text, size }) => {
-  if (size === '2') {
-    return <MediumStyledButton>{text}</MediumStyledButton>;
-  } else if (size === '3') {
-    return <LargeStyledButton>{text}</LargeStyledButton>;
-  }
-
-  return <NormalStyledButton>{text}</NormalStyledButton>;
-};
+const Button = ({ text, size }) => <StyledButton size={size}>{text}</StyledButton>;
 
 Button.propTypes = {
   text: PropTypes.string.isRequired,
