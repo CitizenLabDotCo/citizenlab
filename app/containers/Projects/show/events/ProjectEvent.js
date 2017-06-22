@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Image } from 'semantic-ui-react';
+import { Image, Grid } from 'semantic-ui-react';
 import T from 'containers/T';
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 import * as locationIcon from './assets/location_icon.png';
 
 const EventYearStyled = styled.div`
@@ -36,8 +37,7 @@ const EventDateStyled = styled(EventDate)`
   line-height: 1.08;
   color: #ffffff;
   text-align: center;
-  margin: 13px auto;
-  width: 90%;
+  width: 20%;
   position: relative;
   display: table;
 `;
@@ -47,8 +47,12 @@ const EventDateInnerStyled = styled.div`
   vertical-align: middle;
 `;
 
+const TimeLabel = styled.span`
+  display: inline-block;
+`;
+
 const EventHeader = ({ fromTime, tillTime, className }) => (<div className={className}>
-  {fromTime} - {tillTime}
+  <TimeLabel>{fromTime}</TimeLabel>&nbsp; -<TimeLabel>{tillTime}</TimeLabel>
 </div>);
 
 const EventHeaderStyled = styled(EventHeader)`
@@ -84,7 +88,13 @@ const EventInformation = ({ fromTime, tillTime, titleMultiloc, className, descri
 
 const EventInformationColumn = styled.div`
   border-right: 3px solid #eaeaea;
-  padding: 0 20px;
+  padding: 5px 20px;
+  width: 50%;
+  
+   ${media.phone`
+    width: 80%;
+    border-right: none;
+  `}
 `;
 
 const EventAddressStyled = styled.div`
@@ -94,10 +104,15 @@ const EventAddressStyled = styled.div`
 
 const EventLocation = ({ locationMultiloc, className }) => (<div className={className}><Grid>
   <Grid.Row>
-    <Grid.Column width={3}>
+    <Grid.Column width={4}>
       <Image src={locationIcon} />
     </Grid.Column>
-    <Grid.Column width={12}>
+    <Grid.Column
+      width={12}
+      style={{
+        padding: '0 10px 0 0 !important',
+      }}
+    >
       <EventAddressStyled>
         <T value={locationMultiloc} />
       </EventAddressStyled>
@@ -106,7 +121,13 @@ const EventLocation = ({ locationMultiloc, className }) => (<div className={clas
 </Grid></div>);
 
 const EventLocationStyled = styled(EventLocation)`
-  margin-top: 50px;
+  padding: 5px 0 0 15px;
+  width: 30%;
+  
+  ${media.phone`
+    width: 60%;
+    margin: auto;
+  `}
 `;
 
 class ProjectEvent extends React.PureComponent {
@@ -116,33 +137,22 @@ class ProjectEvent extends React.PureComponent {
       descriptionMultiloc, locationMultiloc, className,
     } = this.props;
 
-    return (<div className={className}><Grid><Grid.Row>
-      <Grid.Column width={3}>
-        <EventDateStyled
-          fromTo={fromTo}
-          tillTo={tillTo}
-          event={event}
-        />
-      </Grid.Column>
-      <Grid.Column
-        width={7}
-        style={{
-          padding: '30px 10px',
-        }}
-      >
-        <EventInformationColumn><EventInformation
-          fromTime={fromTime}
-          tillTime={tillTime}
-          titleMultiloc={titleMultiloc}
-          descriptionMultiloc={descriptionMultiloc}
-        /></EventInformationColumn>
-      </Grid.Column>
-      <Grid.Column width={6}>
-        <EventLocationStyled
-          locationMultiloc={locationMultiloc}
-        />
-      </Grid.Column>
-    </Grid.Row></Grid></div>);
+    return (<div className={className}>
+      <EventDateStyled
+        fromTo={fromTo}
+        tillTo={tillTo}
+        event={event}
+      />
+      <EventInformationColumn><EventInformation
+        fromTime={fromTime}
+        tillTime={tillTime}
+        titleMultiloc={titleMultiloc}
+        descriptionMultiloc={descriptionMultiloc}
+      /></EventInformationColumn>
+      <EventLocationStyled
+        locationMultiloc={locationMultiloc}
+      />
+    </div>);
   }
 }
 
@@ -186,9 +196,22 @@ EventLocation.propTypes = {
 export default styled(ProjectEvent)`
   opacity: ${(props) => props.event === 'past' ? '0.7' : 'inherit'};
   min-height: 166px;
-  width: 60%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content:: center;
+  width: 70%;
   margin: 12px auto !important;
+  padding: 10px;
   border-radius: 5px;
   background-color: #ffffff;
   border: solid 1px #eaeaea;
+  
+  ${media.phone`
+    width: 90%;
+  `}
+  
+  ${media.tablet`
+    width: 50%;
+  `}
 `;
