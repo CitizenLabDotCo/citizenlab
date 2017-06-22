@@ -8,8 +8,7 @@ pipeline {
         sh 'docker-compose up -d postgres redis'
         sleep 10
         echo 'Setting up database'
-        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm web bundle exec rake db:create'
-        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm web bundle exec rake db:migrate'
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rake db:create db:migrate'
       }
     }
     stage('Test') {
