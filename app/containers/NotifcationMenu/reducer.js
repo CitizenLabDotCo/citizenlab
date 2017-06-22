@@ -1,17 +1,18 @@
 /*
  *
- * NotifcationMenu reducer
+ * NotificationMenu reducer
  *
  */
 
 import { fromJS } from 'immutable';
-import {
-  DEFAULT_ACTION,
-} from './constants';
 
-const initialState = fromJS({});
+const initialState = fromJS({
+  notifications: [],
+  nextPageNumber: 1,
+  nextPageItemCount: 25,
+});
 
-function notifcationMenuReducer(state = initialState, action) {
+function notificationMenuReducer(state = initialState, action) {
   switch (action.type) {
     case DEFAULT_ACTION:
       return state;
@@ -20,4 +21,4 @@ function notifcationMenuReducer(state = initialState, action) {
   }
 }
 
-export default notifcationMenuReducer;
+export default notificationMenuReducer;

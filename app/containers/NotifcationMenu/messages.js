@@ -1,13 +1,17 @@
 /*
- * NotifcationMenu Messages
+ * NotificationMenu Messages
  *
- * This contains all the text for the NotifcationMenu component.
+ * This contains all the text for the NotificationMenu component.
  */
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  header: {
-    id: 'app.containers.NotifcationMenu.header',
-    defaultMessage: 'This is NotifcationMenu container !',
+  loading: {
+    id: 'app.containers.NotificationMenu.loading',
+    defaultMessage: 'Loading notifications...',
+  },
+  error: {
+    id: 'app.containers.NotificationMenu.error',
+    defaultMessage: 'Couldn\'t load notifications,
   },
 });

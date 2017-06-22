@@ -1,41 +1,92 @@
 /*
  *
- * NotifcationMenu
+ * NotificationMenu
  *
  */
 
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
-import { Saga } from 'react-redux-saga';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
-import makeSelectNotifcationMenu from './selectors';
-import defaultSaga from './sagas';
+import selectNotifications, { makeSelectNotifications } from './selectors';
 import messages from './messages';
+import { bindActionCreators } from 'redux';
+import { preprocess } from 'utils/reactRedux';
+import * as ImmutablePropTypes from 'react-immutable-proptypes';
+import {
+  loadNotificationsRequest, markAllNotificationsAsReadRequest, markNotificationAsReadRequest,
+} from 'resources/notifications/actions';
+import Loader from 'components/loaders';
+import { LOAD_NOTIFICATIONS_REQUEST } from 'resources/notifications/constants';
+import CommentOnCommentNotification from './components/CommentOnCommentNotification';
 
-export class NotifcationMenu extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class NotificationMenu extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  constructor() {
+    super();
+
+    // provide context to bindings
+    this.loadMoreNotifications = this.loadMoreNotifications.bind(this);
+  }
+
+  loadMoreNotifications() {
+    const { nextPageNumber, nextPageItemCount } = this.props;
+
+    this.props.loadNotifications(nextPageNumber, nextPageItemCount);
+  }
+
+
   render() {
+    const { notifications, nextPageNumber, nextPageItemCount } = this.props;
+
     return (
       <div>
-        <Saga saga={defaultSaga} />
-        <FormattedMessage {...messages.header} />
+        <Loader
+          resourceLoader={loadNotificationsRequest}
+          loaderParameters={{
+            nextPageNumber,
+            nextPageItemCount,
+          }}
+          loadingMessage={messages.loading}
+          errorMessage={messages.error}
+          listenenTo={LOAD_NOTIFICATIONS_REQUEST}
+        >
+          {notifications && notifications.toJS().map((notification) => (<CommentOnCommentNotification
+            key={notification.id}
+            // OTHER PROPS HERE
+          />))}
+        </Loader>
       </div>
     );
   }
 }
 
-NotifcationMenu.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+NotificationMenu.propTypes = {
+  notifications: ImmutablePropTypes.list,
+  loadNotifications: PropTypes.func.isRequired,
+  setNotificationAsRead: PropTypes.func.isRequired,
+  setAllNotificationsAsRead: PropTypes.func.isRequired,
+  nextPageNumber: PropTypes.number.isRequired,
+  nextPageItemCount: PropTypes.number.isRequired,
+  notificationCount: PropTypes.number,
 };
 
 const mapStateToProps = createStructuredSelector({
-  NotifcationMenu: makeSelectNotifcationMenu(),
+  pageState: selectNotifications,
+  notifications: makeSelectNotifications(),
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
+export const mapDispatchToProps = (dispatch) => bindActionCreators({
+  loadNotifications: loadNotificationsRequest,
+  setNotificationAsRead: markNotificationAsReadRequest,
+  setAllNotificationsAsRead: markAllNotificationsAsReadRequest,
+}, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotifcationMenu);
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+  nextPageNumber: ,
+  nextPageItemCount: ,
+  notificationCount: ,
+  ...stateProps,
+  ...dispatchProps,
+  ...ownProps,
+});
+
+export default preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(NotificationMenu);

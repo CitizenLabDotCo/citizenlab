@@ -59,7 +59,7 @@ class TempMessages extends React.Component {
   }
 
   componentDidMount() {
-    this.props.resourceLoader();
+    this.props.resourceLoader(this.props.loaderParameters);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -101,11 +101,13 @@ TempMessages.propTypes = {
   errorMessage: PropTypes.object.isRequired,
   children: PropTypes.object,
   resourceLoader: PropTypes.func.isRequired,
+  loaderParameters: PropTypes.object.isRequired,
   withError: PropTypes.bool,
 };
 
 TempMessages.defaultProps = {
   withError: true,
+  loaderParameters: {},
 };
 
 const mapStateToProps = createStructuredSelector({

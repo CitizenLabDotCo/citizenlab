@@ -285,3 +285,22 @@ export function deleteResource(type, id) {
   });
 }
 
+/*
+ * notifications
+ */
+
+export function fetchNotifications(queryParameters) {
+  return request(`${API_PATH}/notifications`, null, null, queryParameters);
+}
+
+export function markNotificationRead(notificationId) {
+  return request(`${API_PATH}/notifications/${notificationId}/mark_read`, null, {
+    method: 'POST',
+  });
+}
+
+export function markAllNotificationsRead() {
+  return request(`${API_PATH}/notifications/mark_all_read`, null, {
+    method: 'POST',
+  });
+}

@@ -1,25 +1,19 @@
 import { createSelector } from 'reselect';
+import { selectResourcesDomain } from 'utils/resources/selectors';
 
-/**
- * Direct selector to the notifcationMenu state domain
- */
-const selectNotifcationMenuDomain = () => (state) => state.get('notifcationMenu');
+const selectNotifications = (state) => state.get('notificationMenu');
 
-/**
- * Other specific selectors
- */
-
-
-/**
- * Default selector used by NotifcationMenu
- */
-
-const makeSelectNotifcationMenu = () => createSelector(
-  selectNotifcationMenuDomain(),
-  (substate) => substate.toJS()
+const makeSelectNotifications = () => createSelector(
+  selectNotifications,
+  selectResourcesDomain(),
+  (notificationMenuState, resources) => {
+    const ids = notificationMenuState.get('notifications');
+    const notifications = resources.get('notification');
+    return notifications && ids.map((id) => notifications.get(id));
+  }
 );
 
-export default makeSelectNotifcationMenu;
+export default selectNotifications;
 export {
-  selectNotifcationMenuDomain,
+  makeSelectNotifications,
 };
