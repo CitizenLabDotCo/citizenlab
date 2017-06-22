@@ -24,7 +24,7 @@ import trakingSaga from './gaSagas';
   a.async = 1;
   a.src = g;
   m.parentNode.insertBefore(a, m)
-})(window, document, 'script', 'https://www.google-analytics.com/analytics_debug.js', 'ga');
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 // user the following script for debuggin
 // https://www.google-analytics.com/analytics_debug.js
 // or 
