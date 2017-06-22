@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.clearAll',
     defaultMessage: 'Clear all',
   },
+  noNotifications: {
+    id: 'app.containers.NotificationMenu.noNotifications',
+    defaultMessage: 'You don\'t have any notifications yet',
+  },
 });

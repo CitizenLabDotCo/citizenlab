@@ -13,6 +13,10 @@ import { makeSelectCurrentUserImmutable } from 'utils/auth/selectors';
 import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
 import ClickOutside from 'utils/containers/clickOutside';
 import messages from './messages';
+import { NotificationMenu } from 'containers/NotifcationMenu';
+import NotificationCount from 'containers/NotifcationMenu/components/NotificationCount';
+import { selectResourcesDomain } from 'utils/resources/selectors';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
 const Container = styled.div`
   width: 100%;
@@ -166,29 +170,42 @@ const DropdownItem = styled.div`
   }
 `;
 
+const NotificationMenuContainer = styled.div`
+  right: 20px;
+  top: 10px;
+  position: relative;
+`;
+
 class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
 
     this.state = {
       dropdownOpened: false,
+      notificationPanelOpened: false,
     };
   }
 
   toggleDropdown = () => {
     this.setState((state) => ({ dropdownOpened: !state.dropdownOpened }));
-  }
+  };
 
   closeDropdown = () => {
     this.setState({ dropdownOpened: false });
-  }
+  };
 
   goTo = (path) => () => {
     this.props.goTo(path);
-  }
+  };
+
+  toggleNotificationPanel = () => {
+    this.setState({
+      notificationPanelOpened: !this.state.notificationPanelOpened,
+    });
+  };
 
   render() {
-    const { tenantLogo, currentUser, location } = this.props;
+    const { tenantLogo, currentUser, location, notifications } = this.props;
     const avatar = (currentUser ? currentUser.getIn(['attributes', 'avatar', 'large']) : null);
     // const { logo } = currentTenant.getIn('attributes', 'logo', 'small');
     // #023F88
@@ -216,6 +233,12 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
         <Right>
           {currentUser ?
             <div>
+              <NotificationMenuContainer onClick={this.toggleNotificationPanel}>
+                <NotificationCount
+                  count={notifications && notifications.size}
+                />
+                <NotificationMenu show={this.state.notificationPanelOpened} />
+              </NotificationMenuContainer>
               <Button onClick={this.goTo('/ideas/new')}>
                 <ButtonIcon height="100%" viewBox="0 0 24 24">
                   <path fill="none" d="M0 0h24v24H0V0z" /><path d="M6.57 21.64c0 .394.32.716.716.716h2.867c.394 0 .717-.322.717-.717v-.718h-4.3v.717zM8.72 8.02C5.95 8.02 3.7 10.273 3.7 13.04c0 1.704.853 3.202 2.15 4.112v1.62c0 .394.322.716.717.716h4.3c.393 0 .716-.322.716-.717v-1.618c1.298-.91 2.15-2.408 2.15-4.113 0-2.768-2.25-5.02-5.017-5.02zm2.04 7.957l-.608.43v1.648H7.286v-1.648l-.61-.43c-.967-.674-1.54-1.77-1.54-2.938 0-1.98 1.605-3.585 3.583-3.585s3.583 1.605 3.583 3.584c0 1.167-.574 2.263-1.542 2.937zM20.3 7.245h-3.61v3.61h-1.202v-3.61h-3.61V6.042h3.61v-3.61h1.202v3.61h3.61v1.203z" />
@@ -271,11 +294,13 @@ Navbar.propTypes = {
   location: PropTypes.string.isRequired,
   signOut: PropTypes.func.isRequired,
   goTo: PropTypes.func.isRequired,
+  notifications: ImmutablePropTypes.list,
 };
 
 const mapStateToProps = createStructuredSelector({
   currentUser: makeSelectCurrentUserImmutable(),
   tenantLogo: makeSelectCurrentTenantImm('attributes', 'logo', 'small'),
+  notifications: selectResourcesDomain(['notification']),
 });
 
 const mergeProps = (stateP, dispatchP, ownP) => {
