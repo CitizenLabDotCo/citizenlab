@@ -43,6 +43,7 @@ SelectArea.defaultProps = {
 const mapStateToProps = () => createStructuredSelector({
   areas: (state) => selectResourcesDomain('areas')(state),
   search: (state) => state.getIn(['route', 'locationBeforeTransitions', 'search']),
+  location: (state) => state.getIn(['route', 'locationBeforeTransitions', 'pathname']),
 });
 
 const mergeQuery = (search, type, ids) => {
@@ -52,7 +53,7 @@ const mergeQuery = (search, type, ids) => {
 };
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { areas, search } = stateProps;
+  const { areas, search, location } = stateProps;
   if (!areas) return {};
 
   const { tFunc } = ownProps;
@@ -67,7 +68,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const value = queryString.parse(search, { arrayFormat: 'index' }).areas;
 
   const filterPage = (name, ids) => {
-    goTo(`/ideas?${mergeQuery(search, name, ids)}`);
+    goTo(`${location}?${mergeQuery(search, name, ids)}`);
   };
 
   return { options, value, filterPage, ...ownProps };

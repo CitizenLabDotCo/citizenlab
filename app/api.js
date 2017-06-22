@@ -265,8 +265,10 @@ export function loadResources(type, queryParameters, search) {
   return request(`${API_PATH}/${type}s${railsfriendlySearch}`, null, null, queryParameters);
 }
 
-export function createResource(type, data) {
-  return request(`${API_PATH}/${type}s`, { [type]: data }, {
+export function createResource(type, data, ...extra) {
+  let reqString = `${API_PATH}/${type}s`;
+  if (extra[0]) reqString = `${API_PATH}/${extra.join('/')}`;
+  return request(reqString, { [type]: data }, {
     method: 'POST',
   });
 }
