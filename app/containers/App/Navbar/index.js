@@ -267,7 +267,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
 
 Navbar.propTypes = {
   currentUser: PropTypes.object,
-  tenantLogo: PropTypes.string.isRequired,
+  tenantLogo: PropTypes.string,
   location: PropTypes.string.isRequired,
   signOut: PropTypes.func.isRequired,
   goTo: PropTypes.func.isRequired,

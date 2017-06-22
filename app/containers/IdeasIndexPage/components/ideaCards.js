@@ -34,15 +34,27 @@ const InfiniteScrollStyled = styled(InfiniteScroll)`
 `;
 
 class IdeasCards extends React.Component {
+  constructor() {
+    super();
+    this.first = true;
+  }
+
   componentWillReceiveProps(newProps) {
+    if (newProps.nextPageNumber !== this.props.nextPageNumber) this.first = true;
     if (newProps.isNewSearch) this.props.reset();
   }
+
+  loadMoreIdeas = () => {
+    if (this.first) this.props.loadMoreIdeas();
+    this.first = false;
+  }
+
   render() {
-    const { loadMoreIdeas, hasMore, ideas } = this.props;
+    const { hasMore, ideas } = this.props;
     return (
       <InfiniteScrollStyled
         element={'div'}
-        loadMore={loadMoreIdeas}
+        loadMore={this.loadMoreIdeas}
         className={'ui stackable cards'}
         initialLoad
         hasMore={hasMore}
@@ -57,6 +69,7 @@ class IdeasCards extends React.Component {
 }
 
 IdeasCards.propTypes = {
+  nextPageNumber: PropTypes.any,
   ideas: PropTypes.any,
   hasMore: PropTypes.bool,
   loadMoreIdeas: PropTypes.func.isRequired,
@@ -67,21 +80,22 @@ IdeasCards.propTypes = {
 const mapStateToProps = createStructuredSelector({
   ideas: selectIdeasIndexPageDomain('ideas'),
   nextPageNumber: selectIdeasIndexPageDomain('nextPageNumber'),
-  nextPageItemCount: selectIdeasIndexPageDomain('nextPageItemCount'),
+  nextPageSize: selectIdeasIndexPageDomain('nextPageItemCount'),
   lastSearch: selectIdeasIndexPageDomain('search'),
   newSearch: (state) => state.getIn(['route', 'locationBeforeTransitions', 'search']),
 });
 
 const mergeProps = (state, dispatch, own) => {
-  const { ideas, nextPageNumber, nextPageItemCount, lastSearch, newSearch } = state;
+  const { ideas, nextPageNumber, nextPageSize, lastSearch, newSearch } = state;
   const { load, reset } = dispatch;
   const { filter, maxNumber } = own;
   let { hasMore } = own;
   const isNewSearch = lastSearch !== newSearch && nextPageNumber !== 1;
-  if (hasMore !== false) hasMore = !!(nextPageNumber && (maxNumber || nextPageItemCount)) || isNewSearch;
-  console.log(isNewSearch, hasMore);
+  if (hasMore !== false) hasMore = !!(nextPageNumber && (maxNumber || nextPageSize)) || isNewSearch;
+
   return {
-    loadMoreIdeas: () => load(nextPageNumber, maxNumber || nextPageItemCount, newSearch, filter),
+    nextPageNumber,
+    loadMoreIdeas: () => load(nextPageNumber, maxNumber || nextPageSize, newSearch, filter),
     hasMore,
     ideas,
     isNewSearch,
