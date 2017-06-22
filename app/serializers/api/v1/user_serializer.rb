@@ -8,12 +8,18 @@ class Api::V1::UserSerializer < ActiveModel::Serializer
   attribute :domicile, if: :view_private_attributes?
   attribute :education, if: :view_private_attributes?
 
+  attribute :unread_notifications, if: :unread_notifications
+
   def view_private_attributes?
     Pundit.policy!(current_user, object).view_private_attributes?
   end
 
   def avatar
     object.avatar && object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
+  end
+
+  def unread_notifications
+    instance_options[:unread_notifications]
   end
 
 end

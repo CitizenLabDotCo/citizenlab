@@ -19,8 +19,10 @@ class Api::V1::UsersController < ::ApplicationController
   def me
     @user = current_user
     skip_authorization
+
     if @user
-      render json: @user
+      unread_notifications = @user.notifications.unread.count
+      render json: @user, unread_notifications: unread_notifications
     else
       head 404
     end

@@ -43,6 +43,11 @@ Rails.application.routes.draw do
         resources :events, shallow: true
       end
 
+      resources :notifications, only: [:index, :show] do
+        post 'mark_read', on: :member
+        post 'mark_all_read', on: :collection
+      end
+
       scope 'stats', controller: 'stats' do
         get 'users_by_time'
         get 'users_by_gender'
