@@ -263,7 +263,7 @@ class IdeasNewPage2 extends React.Component {
                 multiple
                 items={this.state.images}
                 accept="image/jpg, image/jpeg, image/png, image/gif"
-                maxSize={50000}
+                maxSize={5000000}
                 maxItems={5}
                 placeholder={formatMessage(messages.imageUploadPlaceholder)}
                 onAdd={this.handleUploadOnAdd}
@@ -271,7 +271,12 @@ class IdeasNewPage2 extends React.Component {
               />
             </FormElement>
 
-            <Button size="2" text={formatMessage(messages.submit)} onClick={this.submitIdea} />
+            <Button
+              loading={false}
+              size="2"
+              text={formatMessage(messages.submit)}
+              onClick={this.submitIdea}
+            />
           </FormContainer>
         </PageContainer>
       </div>
