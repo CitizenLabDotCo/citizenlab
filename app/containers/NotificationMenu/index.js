@@ -53,7 +53,7 @@ export class NotificationMenu extends React.PureComponent { // eslint-disable-li
 
   render() {
     const {
-      notifications, show, className, error, locale,
+      notifications, show, className, error, locale, loading,
       markNotificationAsReadRequest: mnarr, nextPageNumber,
     } = this.props;
 
@@ -63,7 +63,7 @@ export class NotificationMenu extends React.PureComponent { // eslint-disable-li
       <WatchSagas sagas={sagas} />
       {show && <InfiniteScroll
         element={'div'}
-        hasMore={!!nextPageNumber}
+        hasMore={!(!nextPageNumber || loading)}
         threshold={5}
         loadMore={this.loadMoreNotifications}
         loader={<FormattedMessage {...messages.loading} />}
@@ -108,10 +108,11 @@ NotificationMenu.propTypes = {
   loadNotificationsRequest: PropTypes.func.isRequired,
   markNotificationAsReadRequest: PropTypes.func.isRequired,
   markAllNotificationsAsReadRequest: PropTypes.func.isRequired,
-  nextPageNumber: PropTypes.number.isRequired,
-  nextPageItemCount: PropTypes.number.isRequired,
+  nextPageNumber: PropTypes.number,
+  nextPageItemCount: PropTypes.number,
   show: PropTypes.bool.isRequired,
   error: PropTypes.bool,
+  loading: PropTypes.bool,
   className: PropTypes.string,
   locale: ImmutablePropTypes.map,
 };
@@ -122,6 +123,7 @@ const mapStateToProps = createStructuredSelector({
   nextPageNumber: (state) => state.getIn(['notificationMenu', 'nextPageNumber']),
   nextPageItemCount: (state) => state.getIn(['notificationMenu', 'nextPageItemCount']),
   error: (state) => state.getIn(['tempState', LOAD_NOTIFICATIONS_REQUEST, 'error']),
+  loading: (state) => state.getIn(['tempState', LOAD_NOTIFICATIONS_REQUEST, 'loading']),
   locale: selectLanguage,
 });
 
