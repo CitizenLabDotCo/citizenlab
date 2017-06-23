@@ -11,12 +11,12 @@ import messages from './messages';
 import LinkTo from '../common/LinkTo';
 import PostedAtLabel from '../common/PostedAtLabel';
 import ClearNotification from '../common/ClearNotification';
-import * as mentionIcon from '../../assets/mention_icon.svg';
+import * as commentIcon from '../../assets/comment_icon.svg';
 
 
 const CommentOnIdeaNotification = ({ notification, tFunc, clearNotification, locale, className }) => (<Segment><Grid className={className}><Grid.Row>
   <Grid.Column width={2}>
-    <Image centered src={mentionIcon} />
+    <Image centered src={commentIcon} />
   </Grid.Column>
   <Grid.Column width={14} style={{ paddingRight: '25px' }}>
     {<LinkTo
