@@ -263,7 +263,7 @@ class IdeasNewPage2 extends React.Component {
                 multiple
                 items={this.state.images}
                 accept="image/jpg, image/jpeg, image/png, image/gif"
-                maxSize={5000000}
+                maxSize={50000}
                 maxItems={5}
                 placeholder={formatMessage(messages.imageUploadPlaceholder)}
                 onAdd={this.handleUploadOnAdd}
