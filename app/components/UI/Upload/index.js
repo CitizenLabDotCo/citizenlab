@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 import { darken } from 'polished';
 import Dropzone from 'react-dropzone';
 import Icon from 'components/Icon';
@@ -19,13 +20,13 @@ const UploadIcon = styled.div`
 `;
 
 const UploadMessage = styled.span`
-    max-width: 300px;
-    color: #999;
-    font-size: 15px;
-    line-height: 20px;
-    font-weight: 300;
-    text-align: center;
-    margin-bottom: 5px;
+  max-width: 300px;
+  color: #999;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 5px;
 `;
 
 const StyledDropzone = styled(Dropzone)`
@@ -36,10 +37,13 @@ const StyledDropzone = styled(Dropzone)`
   border-radius: 5px;
   border: dashed 1.5px #999;
   padding: 20px;
-  padding-bottom: 0px;
   cursor: pointer;
   position: relative;
-  background: transparent;
+  background: #f0f0f0;
+
+  ${media.phone`
+    flex-direction: column;
+  `}
 
   &:hover {
     border-color: #000;
@@ -69,34 +73,48 @@ const UploadMessageContainer = styled.div`
 `;
 
 const UploadedItem = styled.div`
-  width: calc(33% - 12px);
+  width: calc(33% - 13px);
   height: 130px;
-  margin-right: 20px;
-  margin-bottom: 20px;
-  border: solid 1px #aaa;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  border: solid 1px #ccc;
   border-radius: 5px;
   position: relative;
   background-size: cover;
 
-  &:nth-child(3) {
-    margin-right: 0px;
+  &:not(:first-child) {
+    margin-left: 20px;
+
+    ${media.phone`
+      margin-top: 20px;
+    `}
   }
 
-  &:last-child {
-    margin-right: 0px;
+  &:nth-child(4) {
+    margin-left: 0px;
   }
+
+  ${media.notPhone`
+    margin-top: 20px;
+  `}
+
+  ${media.phone`
+    width: 100%;
+    height: 150px;
+    margin-left: 0px !important;
+  `}
 `;
 
 const RemoveUploadedItem = styled.div`
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 28px;
   position: absolute;
   top: -11px;
   right: -11px;
   z-index: 2;
-  padding: 0px;
+  padding: 2px;
   border-radius: 50%;
-  background: #fff;
+  background: #f0f0f0;
   cursor: pointer;
 
   &:hover svg {
@@ -152,16 +170,16 @@ class Upload extends React.Component {
     }
   }
 
-  removeItem = (items) => (event) => {
+  removeItem = (item) => (event) => {
     event.preventDefault();
     event.stopPropagation();
-    items.filter((item) => item.preview).forEach((item) => this.destroyPreview(item.preview));
-    this.props.onRemove(items);
+    this.destroyPreview(item);
+    this.props.onRemove(item);
   };
 
-  destroyPreview(itemPreview) {
-    if (itemPreview) {
-      window.URL.revokeObjectURL(itemPreview);
+  destroyPreview(item) {
+    if (item.preview) {
+      window.URL.revokeObjectURL(item.preview);
     }
   }
 
