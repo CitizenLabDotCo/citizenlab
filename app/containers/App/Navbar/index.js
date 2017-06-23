@@ -13,10 +13,8 @@ import { makeSelectCurrentUserImmutable } from 'utils/auth/selectors';
 import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
 import ClickOutside from 'utils/containers/clickOutside';
 import messages from './messages';
-import NotificationMenu from 'containers/NotifcationMenu';
-import NotificationCount from 'containers/NotifcationMenu/components/NotificationCount';
-import { selectResourcesDomain } from 'utils/resources/selectors';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+import NotificationMenu from 'containers/NotificationMenu';
+import NotificationCount from 'containers/NotificationMenu/components/NotificationCount';
 
 const Container = styled.div`
   width: 100%;
@@ -205,7 +203,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
   };
 
   render() {
-    const { tenantLogo, currentUser, location, notifications } = this.props;
+    const { tenantLogo, currentUser, location } = this.props;
     const avatar = (currentUser ? currentUser.getIn(['attributes', 'avatar', 'large']) : null);
     // const { logo } = currentTenant.getIn('attributes', 'logo', 'small');
     // #023F88
@@ -235,7 +233,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
             <div>
               <NotificationMenuContainer onClick={this.toggleNotificationPanel}>
                 <NotificationCount
-                  count={notifications && notifications.size}
+                  count={currentUser.getIn(['attributes', 'unread_notifications'])}
                 />
                 <NotificationMenu show={this.state.notificationPanelOpened} />
               </NotificationMenuContainer>
@@ -294,13 +292,11 @@ Navbar.propTypes = {
   location: PropTypes.string.isRequired,
   signOut: PropTypes.func.isRequired,
   goTo: PropTypes.func.isRequired,
-  notifications: ImmutablePropTypes.list,
 };
 
 const mapStateToProps = createStructuredSelector({
   currentUser: makeSelectCurrentUserImmutable(),
   tenantLogo: makeSelectCurrentTenantImm('attributes', 'logo', 'small'),
-  notifications: selectResourcesDomain(['notification']),
 });
 
 const mergeProps = (stateP, dispatchP, ownP) => {
