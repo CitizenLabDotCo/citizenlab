@@ -59,7 +59,7 @@ class TempMessages extends React.Component {
   }
 
   componentDidMount() {
-    this.props.resourceLoader(...this.props.loaderParameters);
+    this.props.resourceLoader();
   }
 
   componentWillReceiveProps(nextProps) {

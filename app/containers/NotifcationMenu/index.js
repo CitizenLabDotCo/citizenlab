@@ -14,16 +14,16 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import {
   loadNotificationsRequest, markAllNotificationsAsReadRequest, markNotificationAsReadRequest,
 } from 'resources/notifications/actions';
-import Loader from 'components/loaders';
 import { LOAD_NOTIFICATIONS_REQUEST } from 'resources/notifications/constants';
 import CommentOnCommentNotification from './components/CommentOnCommentNotification';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
-import { Button } from './components/Button';
 import { Image } from 'semantic-ui-react';
 import * as noNotificationImage from './assets/no_notification_image.png';
 import { connect } from 'react-redux';
-
+import WatchSagas from 'containers/WatchSagas';
+import sagas from 'resources/notifications/sagas';
+import { selectLanguage } from 'containers/LanguageProvider/selectors';
 
 export class NotificationMenu extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -35,17 +35,24 @@ export class NotificationMenu extends React.PureComponent { // eslint-disable-li
     this.getNotificationComponent = this.getNotificationComponent.bind(this);
   }
 
-  getNotificationComponent(notification) {
-    if (notification.type === 'comment_on_your_comment') {
+  componentDidMount() {
+    const { nextPageNumber, nextPageItemCount } = this.props;
+    this.props.loadNotificationsRequest(nextPageNumber, nextPageItemCount);
+  }
+
+  getNotificationComponent(notification, locale) {
+    if (notification.attributes.type === 'comment_on_your_comment') {
       return (<CommentOnCommentNotification
-        key={notification.id}
+        id={notification.id}
+        locale={locale}
         attributes={notification.attributes}
         clearNotification={this.props.markNotificationAsReadRequest}
       />);
-    } else if (notification.type === 'comment_on_your_idea') {
+    } else if (notification.attributes.type === 'comment_on_your_idea') {
       // TODO: replace with CommentOnIdeaNotification once implemented
       return (<CommentOnCommentNotification
-        key={notification.id}
+        id={notification.id}
+        locale={locale}
         attributes={notification.attributes}
         clearNotification={this.props.markNotificationAsReadRequest}
       />);
@@ -63,38 +70,35 @@ export class NotificationMenu extends React.PureComponent { // eslint-disable-li
   }
 
   render() {
-    const { notifications, nextPageNumber, nextPageItemCount, show, className } = this.props;
+    const { notifications, show, className, loading, error, locale } = this.props;
     const classRef = this;
 
-    return (
-      <div className={className}>
-        {show && <Loader
-          resourceLoader={loadNotificationsRequest}
-          loaderParameters={[nextPageNumber, nextPageItemCount]}
-          loadingMessage={messages.loading}
-          errorMessage={messages.error}
-          listenenTo={LOAD_NOTIFICATIONS_REQUEST}
-        >
+    const localeString = locale.toJS().locale;
+
+    return (<div>
+      <WatchSagas sagas={sagas} />
+      {show && <div className={className}>
+        <div>
+          {/* NOTIFICATIONS */}
           {notifications && <span>
-            {notifications.size > 0 && notifications.toJS().map((notification) => <span>
-              {classRef.getNotificationComponent(notification)}
-              <div onClick={this.clearNotifications}>
-                <FormattedMessage {...messages.clearAll} />
-              </div>
+            {notifications.size > 0 && notifications.toJS().map((notification) => <span key={notification.id}>
+              {classRef.getNotificationComponent(notification, localeString)}
             </span>)}
+            {notifications.size > 0 && <button onClick={this.clearNotifications}>
+              <FormattedMessage {...messages.clearAll} />
+            </button>}
 
-            {nextPageNumber && <Button onClick={this.loadMoreNotifications}>
-              <FormattedMessage {...messages.loadMore} />
-            </Button>}
-
+            {/* STATUS MESSAGES */}
             {notifications.size === 0 && <div>
               <Image src={noNotificationImage} centered />
               <FormattedMessage {...messages.noNotifications} />
             </div>}
+            {error && <FormattedMessage {...messages.error} />}
+            {loading && <FormattedMessage {...messages.loading} />}
           </span>}
-        </Loader>}
-      </div>
-    );
+        </div>
+      </div>}
+    </div>);
   }
 }
 
@@ -106,14 +110,20 @@ NotificationMenu.propTypes = {
   nextPageNumber: PropTypes.number.isRequired,
   nextPageItemCount: PropTypes.number.isRequired,
   show: PropTypes.bool.isRequired,
+  loading: PropTypes.bool,
+  error: PropTypes.bool,
   className: PropTypes.string,
+  locale: ImmutablePropTypes.map,
 };
 
 const mapStateToProps = createStructuredSelector({
   pageState: selectNotifications,
   notifications: makeSelectNotifications(),
-  nextPageNumber: (state) => state.getIn(['tempState', LOAD_NOTIFICATIONS_REQUEST, 'nextPageNumber']),
-  nextPageItemCount: (state) => state.getIn(['tempState', LOAD_NOTIFICATIONS_REQUEST, 'nextPageItemCount']),
+  nextPageNumber: (state) => state.getIn(['notificationMenu', 'nextPageNumber']),
+  nextPageItemCount: (state) => state.getIn(['notificationMenu', 'nextPageItemCount']),
+  loading: (state) => state.getIn(['tempState', LOAD_NOTIFICATIONS_REQUEST, 'loading']),
+  error: (state) => state.getIn(['tempState', LOAD_NOTIFICATIONS_REQUEST, 'error']),
+  locale: selectLanguage,
 });
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
@@ -122,8 +132,15 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
   markAllNotificationsAsReadRequest,
 }, dispatch);
 
+
 export default connect(mapStateToProps, mapDispatchToProps)(styled(NotificationMenu)`
   position: absolute;
-  width: 250px;
+  width: 384.9px;
+  height: 387px;
   top: 39px;
+  right: 0;
+  overflow-y: scroll;
+  border-radius: 5px;
+  background-color: #ffffff;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
 `);

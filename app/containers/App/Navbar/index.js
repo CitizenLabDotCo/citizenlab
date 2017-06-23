@@ -13,7 +13,7 @@ import { makeSelectCurrentUserImmutable } from 'utils/auth/selectors';
 import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
 import ClickOutside from 'utils/containers/clickOutside';
 import messages from './messages';
-import { NotificationMenu } from 'containers/NotifcationMenu';
+import NotificationMenu from 'containers/NotifcationMenu';
 import NotificationCount from 'containers/NotifcationMenu/components/NotificationCount';
 import { selectResourcesDomain } from 'utils/resources/selectors';
 import ImmutablePropTypes from 'react-immutable-proptypes';

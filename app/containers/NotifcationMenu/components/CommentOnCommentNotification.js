@@ -7,31 +7,38 @@ import { FormattedMessage } from 'react-intl';
 import { injectTFunc } from 'containers/T/utils';
 import styled from 'styled-components';
 import messages from './messages';
-import { parseDate } from '../lib';
 
 import * as clearIcon from '../assets/clear_icon.png';
+import UserMention from './common/UserMention';
+import PostedAtLabel from './common/PostedAtLabel';
 
-const CommentOnCommentNotification = ({ key, tFunc, attributes, clearNotification }) => (<Segment>
+const CommentOnCommentNotification = ({ id, tFunc, attributes, clearNotification, locale }) => (<Segment>
+  {<UserMention
+    fullName={`${attributes.user_first_name} ${attributes.user_last_name}`}
+    slug={attributes.user_slug}
+  />}
   <FormattedMessage
     {...messages.body}
     values={{
-      when: parseDate(attributes.created_at),
-      fullName: `${attributes.user_first_name}&nbsp;${attributes.user_last_name}`,
       ideaTitleMultiloc: tFunc(attributes.idea_title),
     }}
   />
-  {/* TODO: add clickable slug based on notification.user_slug (split if from FormattedMessage - i.e. multiple formatted messages */}
+  <PostedAtLabel
+    createdAt={attributes.created_at}
+    locale={locale}
+  />
   <Image
-    onClick={() => clearNotification(key)}
+    onClick={() => clearNotification(id)}
     src={clearIcon}
   />
 </Segment>);
 
 CommentOnCommentNotification.propTypes = {
-  key: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   tFunc: PropTypes.func,
   attributes: PropTypes.object.isRequired,
   clearNotification: PropTypes.func.isRequired,
+  locale: PropTypes.string.isRequired,
 };
 
 export default injectTFunc(styled(CommentOnCommentNotification)`
