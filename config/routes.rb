@@ -61,6 +61,10 @@ Rails.application.routes.draw do
         get 'votes_by_time'
       end
 
+      scope 'mentions', controller: 'mentions' do
+        get 'users'
+      end
+
     end
 
   end
