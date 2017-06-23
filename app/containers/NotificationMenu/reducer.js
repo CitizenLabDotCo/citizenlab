@@ -11,7 +11,7 @@ import { getPageItemCountFromUrl, getPageNumberFromUrl } from 'utils/paginationU
 const initialState = fromJS({
   notifications: [],
   nextPageNumber: 1,
-  nextPageItemCount: 25,
+  nextPageItemCount: 10,
 });
 
 function notificationMenuReducer(state = initialState, action) {
