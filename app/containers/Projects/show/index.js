@@ -179,7 +179,6 @@ class ProjectView extends React.Component {
               pointing
               secondary
               style={{
-                marginBottom: '10px',
                 borderBottom: 'none !important',
               }}
             >
