@@ -25,6 +25,7 @@ const IdeaTitleStyled = styled.header`
   font-size: 30px;
   font-weight: bold;
   color: #000000;
+  line-height: 1em;
 `;
 
 const IdeaBodyStyled = styled.div`
