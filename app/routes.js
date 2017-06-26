@@ -251,13 +251,14 @@ export default function createRoutes(store) {
             name: 'Project page',
             getComponent(nextState, cb) {
               const importModules = Promise.all([
+                import('containers/Projects/show/info/reducer'),
                 import('containers/Projects/show/info'),
-                import('containers/Projects/show/timeline/reducer'),
               ]);
 
               const renderRoute = loadModule(cb);
 
-              importModules.then(([component]) => {
+              importModules.then(([reducer, component]) => {
+                injectReducer('projectInfo', reducer.default);
                 renderRoute(component);
               });
 
