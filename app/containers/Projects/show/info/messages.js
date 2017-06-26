@@ -8,7 +8,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   addIdea: {
     id: 'app.containers.Projects.info.addIdea',
-    defaultMessage: 'Add an idea in this project',
+    defaultMessage: 'Add an idea to this project',
   },
   topics: {
     id: 'app.containers.Projects.info.topics',
