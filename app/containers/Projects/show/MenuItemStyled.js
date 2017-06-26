@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 const MenuItemWrapperStyled = styled.div`
   width: ${(props) => props.isProject ? '20%' : '10%'};
   padding: 14px !important;
-  margin: 0 auto !important;
+  margin-right: 55px;
   overflow: hidden;
 `;
 
