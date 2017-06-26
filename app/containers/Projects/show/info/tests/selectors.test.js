@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import { generateResourcesProjectValue } from 'utils/testing/mocks';
+import { generateResourcesTopicValue } from 'utils/testing/mocks';
 
 import { makeSelectTopics } from '../selectors';
 
@@ -10,7 +10,7 @@ describe('ProjectsInfo selectors', () => {
 
       const state = {
         // page name nested for proper conversion by fromJS
-        projectTimeline: {
+        projectInfo: {
           topics: [],
         },
         resources: {
@@ -20,14 +20,14 @@ describe('ProjectsInfo selectors', () => {
 
       let i = 0;
       while (i < 3) {
-        state.projectTimeline.topics.push(i.toString());
-        state.resources.topics[i.toString()] = generateResourcesProjectValue(i.toString()).data;
+        state.projectInfo.topics.push(i.toString());
+        state.resources.topics[i.toString()] = generateResourcesTopicValue(i.toString()).data;
 
         i += 1;
       }
 
       const resourcesImm = fromJS(state.resources);
-      const expectedResult = fromJS(state.projectTimeline.phases).map((id) => resourcesImm.get('phases').get(id));
+      const expectedResult = fromJS(state.projectInfo.topics).map((id) => resourcesImm.get('topics').get(id));
 
       expect(selector(fromJS(state))).toEqual(expectedResult);
     });
