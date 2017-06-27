@@ -11,7 +11,7 @@ const ProjectPhaseOuterStyled = styled.div`
   min-height: 398px;
   margin: 15px auto;
   border-radius: 5px;
-  border-left: ${(props) => props.phase === 'current' ? `3px ${props.theme.mainFg} solid` : 'inherit'};
+  border-left: ${(props) => props.phase === 'current' ? `3px ${props.theme.color.main} solid` : 'inherit'};
   background-color: #ffffff;
   box-shadow: 0 1px 20px 0 rgba(0, 0, 0, 0.07);
 `;
@@ -47,7 +47,7 @@ const ProjectPhaseHeaderStyled = styled(ProjectPhaseHeader)`
 const ProjectPhaseNameStyled = styled.div`
   font-size: 16px;
   font-weight: 600;
-  color: ${(props) => (props.phase === 'current' ? props.theme.mainFg : 'gray')};
+  color: ${(props) => (props.phase === 'current' ? props.theme.color.main : 'gray')};
 `;
 
 const ProjectDescriptionStyled = styled.div`
@@ -89,7 +89,7 @@ const ProjectPhaseIndexStyled = styled.div`
   font-weight: bold;
   font-size: 16px;
   padding-top: 12px;
-  background-color: ${(props) => (props.phase === 'current' ? props.theme.mainFg : 'gray')}
+  background-color: ${(props) => (props.phase === 'current' ? props.theme.color.main : 'gray')}
 `;
 
 class ProjectPhase extends React.PureComponent {
