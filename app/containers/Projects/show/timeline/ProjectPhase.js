@@ -11,7 +11,7 @@ const ProjectPhaseOuterStyled = styled.div`
   min-height: 398px;
   margin: 15px auto;
   border-radius: 5px;
-  border-left: ${(props) => props.phase === 'current' ? '3px #32b67a solid' : 'inherit'};
+  border-left: ${(props) => props.phase === 'current' ? '3px #00bc6a solid' : 'inherit'};
   background-color: #ffffff;
   box-shadow: 0 1px ${(props) => props.phase === 'current' ? ' 20px' : '2px'} 0 rgba(0, 0, 0, 0.07);
 `;
@@ -43,7 +43,7 @@ const ProjectPhaseHeader = ({ title, fromTo, tillTo, phase, className }) => (<Gr
 const ProjectPhaseHeaderStyled = styled(ProjectPhaseHeader)`
   height: 40px;
   background-color: #f9f9f9;
-  border-bottom: 1px line #eaeaea;
+  border-bottom: 1px solid #eaeaea;
   margin: 0 !important;
 `;
 
@@ -119,7 +119,9 @@ class ProjectPhase extends React.PureComponent {
             {phaseIndex}
           </ProjectPhaseIndexStyled>
         </Grid.Column>
-        <Grid.Column width={15}>
+        <Grid.Column
+          width={15}
+        >
           <ProjectPhaseOuterStyled phase={phase}>
             <ProjectPhaseHeaderStyled
               title={this.getPhaseTitle(phase, intl)}
