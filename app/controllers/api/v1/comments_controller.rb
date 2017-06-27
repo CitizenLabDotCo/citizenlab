@@ -34,6 +34,8 @@ class Api::V1::CommentsController < ApplicationController
     @comment.author ||= current_user
     authorize @comment
 
+    SideFxCommentService.new.before_create(@comment, current_user)
+
     if @comment.save
       SideFxCommentService.new.after_create(@comment, current_user)
       render json: @comment, status: :created, include: ['author']
@@ -43,7 +45,11 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def update
-    if @comment.update(comment_params)
+    @comment.attributes = comment_params
+
+    SideFxCommentService.new.before_update(@comment, current_user)
+
+    if @comment.save(comment_params)
       SideFxCommentService.new.after_update(@comment, current_user)
       render json: @comment, status: :ok, include: ['author']
     else
@@ -52,6 +58,9 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def destroy
+
+    SideFxCommentService.new.before_destroy(@comment, current_user)
+
     comment = @comment.destroy
     if comment.destroyed?
       SideFxCommentService.new.after_destroy(comment, current_user)

@@ -25,9 +25,14 @@ describe MentionService do
       expect(result).to eq []
     end
 
-    it "returns a mention when it's in expected firstname-lastname form" do
+    it "returns a mention when it's in most common firstname-lastname form" do
       result = service.extract_mentions("This @koen-gremmelprez should trigger")
       expect(result).to eq ["koen-gremmelprez"]
+    end
+
+    it "returns a mention when it's got more than 2 segments" do
+      result = service.extract_mentions("This @marcus-d-amore should trigger")
+      expect(result).to eq ["marcus-d-amore"]
     end
 
     it "returns multiple valid mentions" do
@@ -61,20 +66,25 @@ describe MentionService do
 
     end
 
-    it "return the same text when there's no mention" do
+    it "returns the same text when there's no mention" do
       message = "There is no mention in here :("
       result = service.process_mentions(message)
-      expect(result).to eq message
+      expect(result).to eq [message, []]
     end
 
     it "processes a single mention as it should" do
       result = service.process_mentions(@u1_mention)
-      expect(result).to eq "<span class=\"cl-mention-user\" data-user-id=\"#{@u1.id}\">#{@u1_mention}</span>"
+      expect(result).to eq ["<span class=\"cl-mention-user\" data-user-id=\"#{@u1.id}\">#{@u1_mention}</span>", [@u1.id]]
     end
 
     it "processes multiple mentions as it should" do
       result = service.process_mentions("#{@u1_mention} and #{@u2_mention} are sitting in a tree")
-      expect(result).to eq "#{@u1_mention_expanded} and #{@u2_mention_expanded} are sitting in a tree"
+      expect(result).to eq ["#{@u1_mention_expanded} and #{@u2_mention_expanded} are sitting in a tree", [@u1.id,@u2.id]]
+    end
+
+    it "only returns new unexpanded mentions as users" do
+      result = service.process_mentions("#{@u1_mention} and #{@u2_mention_expanded}")
+      expect(result).to eq ["#{@u1_mention_expanded} and #{@u2_mention_expanded}", [@u1.id]]
     end
   end
 
@@ -95,6 +105,12 @@ describe MentionService do
     end
   end
 
+  describe "remove_expanded_mentions" do
 
+    it "removes the expanded mentions" do
+      result = service.remove_expanded_mentions("There is one unexpanded mention: @koen-gremmelprez. But also one expanded mention <span class=\"cl-mention-user\" data-user-id=\"abc123\">@jos-joossens</span>")
+      expect(result).to eq "There is one unexpanded mention: @koen-gremmelprez. But also one expanded mention @jos-joossens"
+    end
+  end
 
 end
