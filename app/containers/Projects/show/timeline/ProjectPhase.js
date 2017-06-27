@@ -11,9 +11,9 @@ const ProjectPhaseOuterStyled = styled.div`
   min-height: 398px;
   margin: 15px auto;
   border-radius: 5px;
-  border-left: ${(props) => props.phase === 'current' ? `3px ${props.theme.color.main} solid` : 'inherit'};
+  border-left: ${(props) => props.phase === 'current' ? '3px #32b67a solid' : 'inherit'};
   background-color: #ffffff;
-  box-shadow: 0 1px 20px 0 rgba(0, 0, 0, 0.07);
+  box-shadow: 0 1px ${(props) => props.phase === 'current' ? ' 20px' : '2px'} 0 rgba(0, 0, 0, 0.07);
 `;
 
 const ProjectTitleStyled = styled.div`
@@ -26,7 +26,7 @@ const ProjectTitleStyled = styled.div`
 `;
 
 // eslint-disable-next-line no-unused-vars
-const ProjectPhaseHeader = ({ title, fromTo, tillTo, phase }) => (<Grid>
+const ProjectPhaseHeader = ({ title, fromTo, tillTo, phase, className }) => (<Grid className={className}>
   <Grid.Row>
     <Grid.Column width={2}>
       {/* NONE HERE (no offset property available */}
@@ -42,12 +42,15 @@ const ProjectPhaseHeader = ({ title, fromTo, tillTo, phase }) => (<Grid>
 
 const ProjectPhaseHeaderStyled = styled(ProjectPhaseHeader)`
   height: 40px;
+  background-color: #f9f9f9;
+  border-bottom: 1px line #eaeaea;
+  margin: 0 !important;
 `;
 
 const ProjectPhaseNameStyled = styled.div`
   font-size: 16px;
   font-weight: 600;
-  color: ${(props) => (props.phase === 'current' ? props.theme.color.main : 'gray')};
+  color: ${(props) => (props.phase === 'current' ? '#32b67a' : 'gray')};
 `;
 
 const ProjectDescriptionStyled = styled.div`
@@ -89,7 +92,7 @@ const ProjectPhaseIndexStyled = styled.div`
   font-weight: bold;
   font-size: 16px;
   padding-top: 12px;
-  background-color: ${(props) => (props.phase === 'current' ? props.theme.color.main : 'gray')}
+  background-color: ${(props) => (props.phase === 'current' ? '#32b67a' : 'gray')}
 `;
 
 class ProjectPhase extends React.PureComponent {
@@ -156,6 +159,7 @@ ProjectPhaseHeader.propTypes = {
   tillTo: PropTypes.string.isRequired,
   phase: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  className: PropTypes.string,
 };
 
 export default styled(injectIntl(ProjectPhase))`
