@@ -202,6 +202,10 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
     });
   };
 
+  closeNotificationPanel = () => {
+    this.setState({ notificationPanelOpened: false });
+  };
+
   render() {
     const { tenantLogo, currentUser, location } = this.props;
     const avatar = (currentUser ? currentUser.getIn(['attributes', 'avatar', 'large']) : null);
@@ -230,7 +234,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
         </Left>
         <Right>
           {currentUser ?
-            <div>
+            <ClickOutside onClickOutside={this.closeNotificationPanel}>
               <NotificationMenuContainer onClick={this.toggleNotificationPanel}>
                 <NotificationCount
                   count={currentUser.getIn(['attributes', 'unread_notifications'])}
@@ -265,7 +269,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
                   null
                 }
               </User>
-            </div>
+            </ClickOutside>
            :
             <div>
               <Button onClick={this.goTo('/sign-in')}>

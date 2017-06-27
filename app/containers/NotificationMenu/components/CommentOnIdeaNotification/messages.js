@@ -8,6 +8,6 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   body: {
     id: 'app.containers.NotificationMenu.components.CommentOnIdeaNotification.body',
-    defaultMessage: 'commented on the idea ',
+    defaultMessage: 'commented on the idea you are following',
   },
 });

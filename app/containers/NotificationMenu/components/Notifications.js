@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import CommentOnCommentNotification from './CommentOnCommentNotification/index';
 import CommentOnIdeaNotification from './CommentOnIdeaNotification/index';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import styled from 'styled-components';
 
 class Notifications extends React.PureComponent {
   constructor() {
@@ -52,4 +53,6 @@ Notifications.propTypes = {
   markNotificationAsReadRequest: PropTypes.func.isRequired,
 };
 
-export default Notifications;
+export default styled(Notifications)`
+  background-color: #ffffff;
+`;

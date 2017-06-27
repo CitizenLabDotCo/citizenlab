@@ -18,12 +18,13 @@ const Counter = styled.div`
   position: absolute;
   top: -16px;
   right: -11px;
+  display: ${(props) => props.notZero ? 'block' : 'none'};
 `;
 
 // used in Navbar
 const NotificationCount = ({ count, className }) => (<div className={className}>
   <Image src={notificationBell} />
-  {count && count > 0 && <Counter>{count}</Counter>}
+  <Counter notZero={count > 0} >count</Counter>
 </div>);
 
 NotificationCount.propTypes = {

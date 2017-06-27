@@ -17,15 +17,15 @@ import {
 import { LOAD_NOTIFICATIONS_REQUEST } from 'resources/notifications/constants';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
-import { Image } from 'semantic-ui-react';
+import { Image, Loader } from 'semantic-ui-react';
 import * as noNotificationImage from './assets/no_notification_image.svg';
 import { connect } from 'react-redux';
 import WatchSagas from 'containers/WatchSagas';
 import sagas from 'resources/notifications/sagas';
 import { selectLanguage } from 'containers/LanguageProvider/selectors';
 import Notifications from './components/Notifications';
-import ClearNotificationsFooter from './ClearNotificationsFooter';
 import InfiniteScroll from 'react-infinite-scroller';
+import ClearNotificationsFooter from './ClearNotificationsFooter';
 
 export class NotificationMenu extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -39,6 +39,8 @@ export class NotificationMenu extends React.PureComponent { // eslint-disable-li
   componentDidMount() {
     const { nextPageNumber, nextPageItemCount } = this.props;
     this.props.loadNotificationsRequest(nextPageNumber, nextPageItemCount);
+
+    window.addEventListener('click', this.handleWindowClick);
   }
 
   clearNotifications() {
@@ -53,28 +55,22 @@ export class NotificationMenu extends React.PureComponent { // eslint-disable-li
 
   render() {
     const {
-      notifications, show, className, error, locale, loading,
-      markNotificationAsReadRequest: mnarr, nextPageNumber,
+      notifications, className, error, locale, loading,
+      markNotificationAsReadRequest: mnarr, nextPageNumber, show,
     } = this.props;
 
     const localeString = locale.toJS().locale;
 
-    return (<div>
+    return (<div className={className}>
       <WatchSagas sagas={sagas} />
       {show && <InfiniteScroll
         element={'div'}
         hasMore={!(!nextPageNumber || loading)}
-        threshold={5}
         loadMore={this.loadMoreNotifications}
-        loader={<FormattedMessage {...messages.loading} />}
-        className={className}
+        threshold={0}
+        useWindow={false}
       >
-        <div
-          style={{
-            height: '387px',
-            overflowY: 'scroll',
-          }}
-        >
+        <div>
           {/* NOTIFICATIONS */}
           {notifications && <span>
             <Notifications
@@ -97,8 +93,9 @@ export class NotificationMenu extends React.PureComponent { // eslint-disable-li
             {error && <FormattedMessage {...messages.error} />}
           </span>}
         </div>
-        <ClearNotificationsFooter onClick={this.props.markAllNotificationsAsReadRequest} />
+        <Loader active={!(!nextPageNumber || loading)} style={{ position: 'relative', marginTop: '30px' }} />
       </InfiniteScroll>}
+      <ClearNotificationsFooter onClick={this.props.markAllNotificationsAsReadRequest} />
     </div>);
   }
 }
@@ -136,6 +133,9 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
 
 export default connect(mapStateToProps, mapDispatchToProps)(styled(NotificationMenu)`
   position: absolute;
+  height: 387px;
+  display: ${(props) => props.show ? 'block' : 'none'};
+  overflow-y: scroll;
   width: 384.9px;
   top: 39px;
   right: 0;
