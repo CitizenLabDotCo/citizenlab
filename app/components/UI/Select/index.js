@@ -155,35 +155,44 @@ const StyledSelect = styled(ReactSelect)`
   }
 `;
 
-class Select extends React.Component {
-  handleOnChange = (value) => {
-    this.props.onChange(value);
-  }
+const emptyObject = {};
+const emptyArray = [];
 
-  render() {
-    return (
-      <StyledSelect
-        openOnFocus
-        searchable={false}
-        clearable={this.props.clearable || false}
-        scrollMenuIntoView={false}
-        autoBlur={this.props.autoBlur || true}
-        value={this.props.value}
-        placeholder={this.props.placeholder}
-        options={this.props.options}
-        onChange={this.handleOnChange}
-      />
-    );
-  }
-}
+const Select = ({ value, placeholder, options, autoBlur, clearable, onChange }) => {
+  const handleOnChange = (newValue) => {
+    onChange(newValue);
+  };
+
+  return (
+    <StyledSelect
+      openOnFocus
+      searchable={false}
+      clearable={clearable}
+      scrollMenuIntoView={false}
+      autoBlur={autoBlur}
+      value={value || emptyObject}
+      placeholder={placeholder}
+      options={options || emptyArray}
+      onChange={handleOnChange}
+    />
+  );
+};
 
 Select.propTypes = {
   value: PropTypes.object,
-  placeholder: PropTypes.string.isRequired,
-  options: PropTypes.array.isRequired,
+  placeholder: PropTypes.string,
+  options: PropTypes.array,
   autoBlur: PropTypes.bool,
   clearable: PropTypes.bool,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
+};
+
+Select.defaultProps = {
+  value: [],
+  placeholder: '',
+  options: [],
+  autoBlur: true,
+  clearable: false,
 };
 
 export default Select;

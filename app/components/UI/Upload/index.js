@@ -37,11 +37,12 @@ const StyledDropzone = styled(Dropzone)`
   border-radius: 5px;
   border: dashed 1.5px #999;
   padding: 20px;
+  padding-bottom: 0px;
   cursor: pointer;
   position: relative;
   background: #f0f0f0;
 
-  ${media.phone`
+  ${media.smallPhone`
     flex-direction: column;
   `}
 
@@ -73,35 +74,33 @@ const UploadMessageContainer = styled.div`
 `;
 
 const UploadedItem = styled.div`
-  width: calc(33% - 13px);
-  height: 130px;
   margin-right: 0px;
-  margin-bottom: 0px;
+  margin-bottom: 20px;
   border: solid 1px #ccc;
   border-radius: 5px;
   position: relative;
   background-size: cover;
 
-  &:not(:first-child) {
-    margin-left: 20px;
-
-    ${media.phone`
-      margin-top: 20px;
-    `}
-  }
-
-  &:nth-child(4) {
-    margin-left: 0px;
-  }
-
   ${media.notPhone`
-    margin-top: 20px;
+    width: calc(33% - 13px);
+    height: 130px;
+
+    &:not(:nth-child(3n)) {
+      margin-right: 20px;
+    }
   `}
 
   ${media.phone`
+    width: calc(50% - 10px);
+    height: 130px;
+
+    &:not(:nth-child(2n)) {
+      margin-right: 20px;
+    }
+  `}
+
+  ${media.smallPhone`
     width: 100%;
-    height: 150px;
-    margin-left: 0px !important;
   `}
 `;
 
@@ -129,10 +128,7 @@ const RemoveUploadedItem = styled.div`
 class Upload extends React.Component {
   constructor() {
     super();
-    this.state = {
-      error: false,
-      errorMessage: null,
-    };
+    this.state = { error: null };
   }
 
   componentWillUnmount() {
@@ -157,15 +153,11 @@ class Upload extends React.Component {
       const { formatMessage } = this.props.intl;
 
       this.setState({
-        error: true,
-        errorMessage: formatMessage(messages.errorMaxSizeExceeded, { maxFileSize: this.props.maxSize / 1000000 }),
+        error: formatMessage(messages.errorMaxSizeExceeded, { maxFileSize: this.props.maxSize / 1000000 }),
       });
 
       setTimeout(() => {
-        this.setState({
-          error: false,
-          errorMessage: null,
-        });
+        this.setState({ error: null });
       }, 5000);
     }
   }
@@ -185,18 +177,18 @@ class Upload extends React.Component {
 
   render() {
     const { items, placeholder, multiple, accept, maxSize } = this.props;
-    const { error, errorMessage } = this.state;
+    const { error } = this.state;
 
     return (
       <div>
         <StyledDropzone
           multiple={multiple}
           accept={accept}
-          maxSize={maxSize || Infinity}
+          maxSize={maxSize}
           onDrop={this.handleOnDrop}
           onDropRejected={this.handleOnDropRejected}
         >
-          {!items || items.length < 1
+          { !items || items.length < 1
             ? (
               <UploadMessageContainer>
                 <UploadIcon><Icon name="upload" /></UploadIcon>
@@ -214,14 +206,7 @@ class Upload extends React.Component {
             )
           }
         </StyledDropzone>
-        <Error
-          size="1"
-          text={errorMessage}
-          marginTop="10px"
-          marginBottom="0px"
-          opened={error}
-          showIcon={false}
-        />
+        <Error text={error} />
       </div>
     );
   }
@@ -229,14 +214,23 @@ class Upload extends React.Component {
 
 Upload.propTypes = {
   intl: intlShape.isRequired,
-  multiple: PropTypes.bool.isRequired,
-  items: PropTypes.array.isRequired,
+  multiple: PropTypes.bool,
+  items: PropTypes.array,
   accept: PropTypes.string.isRequired,
   maxSize: PropTypes.number,
   maxItems: PropTypes.number,
-  placeholder: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
   onAdd: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
+};
+
+Upload.defaultProps = {
+  intl: intlShape.isRequired,
+  multiple: false,
+  items: [],
+  maxSize: Infinity,
+  maxItems: null,
+  placeholder: '',
 };
 
 export default injectIntl(Upload);

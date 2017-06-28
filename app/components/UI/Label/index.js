@@ -13,8 +13,13 @@ const StyledLabel = styled.label`
 const Label = ({ value, htmlFor }) => <StyledLabel htmlFor={htmlFor}>{value}</StyledLabel>;
 
 Label.propTypes = {
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   htmlFor: PropTypes.string,
+};
+
+Label.defaultProps = {
+  value: '',
+  htmlFor: '',
 };
 
 export default Label;

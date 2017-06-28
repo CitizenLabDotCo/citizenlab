@@ -3,8 +3,6 @@ import { fromJS } from 'immutable';
 
 const selectTopics = (state) => state.getIn(['resources', 'topics']);
 const selectTopicsIds = (state) => state.getIn(['ideasNewPage2', 'topics']);
-const selectAreas = (state) => state.getIn(['resources', 'areas']);
-const selectAreasIds = (state) => state.getIn(['ideasNewPage2', 'areas']);
 const selectProjects = (state) => state.getIn(['resources', 'projects']);
 const selectProjectsIds = (state) => state.getIn(['ideasNewPage2', 'projects']);
 const selectIdeaId = (state) => state.getIn(['ideasNewPage2', 'ideaId']);
@@ -17,18 +15,6 @@ const makeSelectTopics = () => createSelector(
   (topicsIds, topics) => {
     if (topics && topicsIds) {
       return topicsIds.map((id) => topics.get(id));
-    }
-
-    return empty;
-  }
-);
-
-const makeSelectAreas = () => createSelector(
-  selectAreasIds,
-  selectAreas,
-  (areasIds, areas) => {
-    if (areas && areasIds) {
-      return areasIds.map((id) => areas.get(id));
     }
 
     return empty;
@@ -55,6 +41,5 @@ const makeSelectIdeaId = () => createSelector(
 export {
   makeSelectTopics,
   makeSelectProjects,
-  makeSelectAreas,
   makeSelectIdeaId,
 };

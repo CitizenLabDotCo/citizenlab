@@ -209,44 +209,46 @@ const StyledMultipleSelect = styled(Select)`
   }
 `;
 
-class MultipleSelect extends React.Component {
-  handleOnChange = (value) => {
-    let selectedValue = value;
+const emptyArray = [];
 
-    if (this.props.max && value && value.length > 0) {
-      selectedValue = (value.length > this.props.max ? this.props.value : value);
-    }
+const MultipleSelect = ({ value, placeholder, options, max, autoBlur, onChange }) => {
+  const handleOnChange = (newValue) => {
+    onChange((max && newValue && newValue.length > max ? value : newValue));
+  };
 
-    this.props.onChange(selectedValue);
-  }
-
-  render() {
-    return (
-      <StyledMultipleSelect
-        multi
-        searchable
-        openOnFocus
-        autoBlur={this.props.autoBlur || true}
-        backspaceRemoves={false}
-        scrollMenuIntoView={false}
-        allowCreate={false}
-        clearable={false}
-        value={this.props.value}
-        placeholder={<span>{this.props.placeholder}</span>}
-        options={this.props.options}
-        onChange={this.handleOnChange}
-      />
-    );
-  }
-}
+  return (
+    <StyledMultipleSelect
+      multi
+      searchable
+      openOnFocus
+      autoBlur={autoBlur}
+      backspaceRemoves={false}
+      scrollMenuIntoView={false}
+      allowCreate={false}
+      clearable={false}
+      value={value || emptyArray}
+      placeholder={<span>{placeholder}</span>}
+      options={options || emptyArray}
+      onChange={handleOnChange}
+    />
+  );
+};
 
 MultipleSelect.propTypes = {
-  value: PropTypes.array.isRequired,
-  placeholder: PropTypes.string.isRequired,
-  options: PropTypes.array.isRequired,
+  value: PropTypes.array,
+  placeholder: PropTypes.string,
+  options: PropTypes.array,
   max: PropTypes.number,
   autoBlur: PropTypes.bool,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
+};
+
+MultipleSelect.defaultProps = {
+  value: [],
+  placeholder: '',
+  options: [],
+  max: null,
+  autoBlur: true,
 };
 
 export default MultipleSelect;
