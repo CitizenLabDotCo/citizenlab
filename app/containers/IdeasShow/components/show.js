@@ -13,12 +13,12 @@ import Votes from './show/votes';
 import Comments from './comments';
 import T from 'containers/T';
 import Autorize from 'utils/containers/authorize';
-import ShareButtons from './ShareButtons';
+// import ShareButtons from './ShareButtons';
 
 // store
 import { createStructuredSelector } from 'reselect';
 import { preprocess } from 'utils';
-import { selectIdea } from '../selectors';
+import { makeSelectIdeaImages, selectIdea } from '../selectors';
 
 // intl
 import { injectIntl, intlShape } from 'react-intl';
@@ -54,7 +54,7 @@ class Show extends React.PureComponent {
         <h2>
           <T value={title_multiloc} />
         </h2>
-        <ShareButtons location={location} image={images[0] && images[0].medium} />
+        {/* <ShareButtons location={location} image={images[0] && images[0].medium} /> */}
         <Votes ideaId={id} voteId={voteId} />
         <Comment.Group style={{ maxWidth: 'none' }}>
           <Comment>
@@ -88,18 +88,19 @@ Show.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   idea: selectIdea,
+  images: makeSelectIdeaImages(),
 });
 
 /* eslint-disable camelcase*/
 
-const mergeProps = ({ idea }, dispatchProps, { tFunc, location, intl }) => {
+const mergeProps = ({ idea, images }, dispatchProps, { tFunc, location, intl }) => {
   if (!idea) return {
     intl,
   };
+
   const attributes = idea.get('attributes').toObject();
   const id = idea.get('id')
   const {
-    images,
     body_multiloc,
     created_at,
     downvotes_count,
@@ -115,7 +116,7 @@ const mergeProps = ({ idea }, dispatchProps, { tFunc, location, intl }) => {
   const voteId = relationships.getIn(['user_vote','data', 0, 'id'])
   return {
     id,
-    images: images.toJS(),
+    images: images && images.toJS(),
     body_multiloc,
     created_at,
     votes: downvotes_count + upvotes_count,
