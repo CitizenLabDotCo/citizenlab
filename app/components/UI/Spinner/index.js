@@ -21,9 +21,15 @@ const StyledSpinner = styled.div`
 const Spinner = ({ size, thickness, color }) => <StyledSpinner size={size} thickness={thickness} color={color} />;
 
 Spinner.propTypes = {
-  size: PropTypes.string.isRequired,
-  thickness: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
+  size: PropTypes.string,
+  thickness: PropTypes.string,
+  color: PropTypes.string,
+};
+
+Spinner.defaultProps = {
+  size: '26px',
+  thickness: '3px',
+  color: '#fff',
 };
 
 export default Spinner;

@@ -5,15 +5,14 @@ import styled from 'styled-components';
 import { preprocess } from 'utils';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { EditorState, convertToRaw } from 'draft-js';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { injectTFunc } from 'utils/containers/t/utils';
 import WatchSagas from 'containers/WatchSagas';
 // import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 // import { API_PATH } from 'containers/App/constants';
 import sagas from './sagas';
-import { loadTopics, loadAreas, loadProjects, submitIdea } from './actions';
-import { makeSelectTopics, makeSelectAreas, makeSelectProjects, makeSelectIdeaId } from './selectors';
+import { loadTopics, loadProjects, submitIdea } from './actions';
+import { makeSelectTopics, makeSelectProjects, makeSelectIdeaId } from './selectors';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 import messages from './messages';
@@ -25,7 +24,6 @@ import LocationInput from 'components/UI/LocationInput';
 import Editor from 'components/UI/Editor';
 import Button from 'components/UI/Button';
 import Upload from 'components/UI/Upload';
-import draftToHtml from 'draftjs-to-html';
 
 const PageContainer = styled.div`
   display: flex;
@@ -64,25 +62,28 @@ class IdeasNewPage2 extends React.Component {
     super();
 
     this.state = {
-      title: '',
-      description: EditorState.createEmpty(),
-      selectedTopics: [],
-      selectedAreas: [],
-      selectedProject: null,
-      location: '',
-      images: [],
+      title: null,
+      titleError: null,
+      description: null,
+      descriptionError: null,
+      topics: null,
+      project: null,
+      location: null,
+      images: null,
     };
 
     this.dropzone = null;
   }
 
   componentDidMount() {
+    // get form data
     this.props.loadTopics();
-    this.props.loadAreas();
     this.props.loadProjects();
-    this.submitIdea();
 
-    // autofocus the title input field on first render;
+    // generate ideaId
+    // this.props.submitIdea(null, null, null, null, null, null, 'draft');
+
+    // autofocus the title input field on initial render;
     if (this.titleInput) {
       this.titleInput.focus();
     }
@@ -103,6 +104,14 @@ class IdeasNewPage2 extends React.Component {
     return options;
   }
 
+  async getBase64(image) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (event) => resolve(event.target.result);
+      reader.readAsDataURL(image);
+    });
+  }
+
   handleTitleOnChange = (title) => {
     this.setState({ title });
   }
@@ -111,24 +120,16 @@ class IdeasNewPage2 extends React.Component {
     this.setState({ description });
   }
 
-  handleTopicsOnChange = (selectedTopics) => {
-    this.setState({ selectedTopics });
+  handleTopicsOnChange = (topics) => {
+    this.setState({ topics });
   }
 
-  handleProjectOnChange = (selectedProject) => {
-    this.setState({ selectedProject });
+  handleProjectOnChange = (project) => {
+    this.setState({ project });
   }
 
   handleLocationOnChange = (location) => {
     this.setState({ location });
-  }
-
-  async getBase64(image) {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (event) => resolve(event.target.result);
-      reader.readAsDataURL(image);
-    });
   }
 
   handleUploadOnAdd = async (image) => {
@@ -160,20 +161,27 @@ class IdeasNewPage2 extends React.Component {
     });
   }
 
-  submitIdea = () => {
+  handleOnSubmit = () => {
+    let hasErrors = false;
     const { user, locale } = this.props;
-    const { title, description, topics, areas, projects } = this.state;
+    const { title, description, topics, project, location, images } = this.state;
 
-    const userId = (user ? user.id : null);
-    const localTitle = { [locale]: title || 'none' };
-    const htmlEditorContent = draftToHtml(convertToRaw(description.getCurrentContent()));
-    const localDescription = { [locale]: htmlEditorContent || '<p></p>' };
-    const project = (projects ? projects[0] : null);
-    // const images = null;
-    // const publicationStatus = (isDraft ? 'draft' : 'published');
-    const publicationStatus = 'draft';
+    if (!title) {
+      hasErrors = true;
+      this.setState({ titleError: 'This is a required field' });
+    }
 
-    this.props.submitIdea(userId, localTitle, localDescription, topics, areas, project, publicationStatus);
+    if (!description) {
+      hasErrors = true;
+      this.setState({ descriptionError: 'This is a required field' });
+    }
+
+    const localTitle = { [locale]: title };
+    const localDescription = { [locale]: description };
+
+    if (!hasErrors) {
+      this.props.submitIdea(user.id, localTitle, localDescription, topics, location, project, 'published');
+    }
 
     /*
     geocodeByAddress(this.state.address)
@@ -184,16 +192,9 @@ class IdeasNewPage2 extends React.Component {
   }
 
   render() {
+    const { topics, projects } = this.props;
     const { formatMessage } = this.props.intl;
-    const editorToolbarConfig = {
-      options: ['inline', 'list', 'link'],
-      inline: {
-        options: ['bold', 'italic'],
-      },
-      list: {
-        options: ['unordered', 'ordered'],
-      },
-    };
+    const { title, titleError, description, descriptionError, topics: selectedTopics, project, location, images } = this.state;
 
     return (
       <div>
@@ -209,8 +210,9 @@ class IdeasNewPage2 extends React.Component {
               <Input
                 type="text"
                 id="title"
-                value={this.state.title}
+                value={title}
                 placeholder={formatMessage(messages.titlePlaceholder)}
+                error={titleError}
                 onChange={this.handleTitleOnChange}
                 setRef={this.handleSetRef}
               />
@@ -219,19 +221,19 @@ class IdeasNewPage2 extends React.Component {
             <Label value={formatMessage(messages.descriptionLabel)} />
             <EditorWrapper>
               <Editor
-                value={this.state.description}
+                value={description}
                 placeholder={formatMessage(messages.descriptionPlaceholder)}
+                error={descriptionError}
                 onChange={this.handleDescriptionOnChange}
-                toolbarConfig={editorToolbarConfig}
               />
             </EditorWrapper>
 
             <Label value={formatMessage(messages.topicsLabel)} />
             <FormElement>
               <MultipleSelect
-                value={this.state.selectedTopics}
+                value={selectedTopics}
                 placeholder={formatMessage(messages.topicsPlaceholder)}
-                options={this.getOptions(this.props.topics)}
+                options={this.getOptions(topics)}
                 onChange={this.handleTopicsOnChange}
                 max={2}
               />
@@ -241,9 +243,9 @@ class IdeasNewPage2 extends React.Component {
             <FormElement>
               <Select
                 clearable
-                value={this.state.selectedProject}
+                value={project}
                 placeholder={formatMessage(messages.projectsPlaceholder)}
-                options={this.getOptions(this.props.projects)}
+                options={this.getOptions(projects)}
                 onChange={this.handleProjectOnChange}
               />
             </FormElement>
@@ -251,7 +253,7 @@ class IdeasNewPage2 extends React.Component {
             <FormElement>
               <Label value={formatMessage(messages.locationLabel)} />
               <LocationInput
-                value={this.state.location}
+                value={location}
                 placeholder={formatMessage(messages.locationPlaceholder)}
                 onChange={this.handleLocationOnChange}
               />
@@ -261,9 +263,9 @@ class IdeasNewPage2 extends React.Component {
               <Label value={formatMessage(messages.imageUploadLabel)} />
               <Upload
                 multiple
-                items={this.state.images}
+                items={images}
                 accept="image/jpg, image/jpeg, image/png, image/gif"
-                maxSize={50000}
+                maxSize={5000000}
                 maxItems={5}
                 placeholder={formatMessage(messages.imageUploadPlaceholder)}
                 onAdd={this.handleUploadOnAdd}
@@ -275,7 +277,7 @@ class IdeasNewPage2 extends React.Component {
               loading={false}
               size="2"
               text={formatMessage(messages.submit)}
-              onClick={this.submitIdea}
+              onClick={this.handleOnSubmit}
             />
           </FormContainer>
         </PageContainer>
@@ -290,11 +292,9 @@ IdeasNewPage2.propTypes = {
   locale: PropTypes.string.isRequired,
   user: PropTypes.object,
   topics: ImmutablePropTypes.list.isRequired,
-  areas: ImmutablePropTypes.list.isRequired,
   projects: ImmutablePropTypes.list.isRequired,
   ideaId: PropTypes.string,
   loadTopics: PropTypes.func.isRequired,
-  loadAreas: PropTypes.func.isRequired,
   loadProjects: PropTypes.func.isRequired,
   submitIdea: PropTypes.func.isRequired,
 };
@@ -303,25 +303,22 @@ const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
   user: makeSelectCurrentUser(),
   topics: makeSelectTopics(),
-  areas: makeSelectAreas(),
   projects: makeSelectProjects(),
   ideaId: makeSelectIdeaId(),
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   loadTopics,
-  loadAreas,
   loadProjects,
   submitIdea,
 }, dispatch);
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { locale, user, topics, areas, projects, ideaId } = stateProps;
+  const { locale, user, topics, projects, ideaId } = stateProps;
   return {
     locale,
     user,
     topics,
-    areas,
     projects,
     ideaId,
     ...dispatchProps,

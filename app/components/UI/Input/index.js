@@ -1,8 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Icon from 'components/Icon';
+import Error from 'components/UI/Error';
+import _ from 'lodash';
 
 const InputWrapper = styled.div`
+  position: relative;
+
   input {
     width: 100%;
     color: #333;
@@ -10,22 +15,40 @@ const InputWrapper = styled.div`
     line-height: 22px;
     font-weight: 300;
     padding: 12px;
+    padding-right: ${(props) => props.error ? '40px' : '12px'};
     border-radius: 5px;
-    border: solid 1px #ccc;
+    border: solid 1px;
+    border-color: ${(props) => props.error ? '#fc3c2d' : '#ccc'};
     background: #fff;
     outline: none;
 
     &:not(:focus):hover {
-      border-color: #999;
+      border-color: ${(props) => props.error ? '#fc3c2d' : '#999'};
     }
 
     &:focus {
-      border-color: #000;
+      border-color: ${(props) => props.error ? '#fc3c2d' : '#000'};
     }
   }
 `;
 
-const Input = ({ value, placeholder, onChange, setRef }) => {
+const IconWrapper = styled.div`
+  width: 22px;
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  z-index: 1;
+
+  svg  {
+    fill: red;
+  }
+`;
+
+const emptyString = '';
+
+const Input = ({ value, placeholder, error, onChange, setRef }) => {
+  const hasError = (_.isString(error) && !_.isEmpty(error));
+
   const handleOnChange = (event) => {
     onChange(event.target.value);
   };
@@ -35,23 +58,32 @@ const Input = ({ value, placeholder, onChange, setRef }) => {
   };
 
   return (
-    <InputWrapper>
+    <InputWrapper error={hasError}>
       <input
         type="text"
         placeholder={placeholder}
-        value={value}
+        value={value || emptyString}
         onChange={handleOnChange}
         ref={handleRef}
       />
+      <Error text={error} />
+      { hasError && <IconWrapper><Icon name="error" /></IconWrapper>}
     </InputWrapper>
   );
 };
 
 Input.propTypes = {
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   placeholder: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  setRef: PropTypes.func.isRequired,
+  error: PropTypes.string,
+  onChange: PropTypes.func,
+  setRef: PropTypes.func,
+};
+
+Input.defaultProps = {
+  value: '',
+  placeholder: '',
+  error: null,
 };
 
 export default Input;

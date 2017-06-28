@@ -29,14 +29,6 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage2.topicsPlaceholder',
     defaultMessage: 'Optionally select one or two topics',
   },
-  areasLabel: {
-    id: 'app.containers.IdeasNewPage2.areasLabel',
-    defaultMessage: 'Neighbourhoods (optional, max. 2)',
-  },
-  areasPlaceholder: {
-    id: 'app.containers.IdeasNewPage2.areasPlaceholder',
-    defaultMessage: 'Optionally select one or two neighbourhoods',
-  },
   projectsLabel: {
     id: 'app.containers.IdeasNewPage2.projectsLabel',
     defaultMessage: 'Project (optional)',
@@ -55,11 +47,11 @@ export default defineMessages({
   },
   imageUploadLabel: {
     id: 'app.containers.IdeasNewPage2.imagesLabel',
-    defaultMessage: 'Images (optional, max. 5)',
+    defaultMessage: 'Image (optional)',
   },
   imageUploadPlaceholder: {
     id: 'app.containers.IdeasNewPage2.uploadPlaceholder',
-    defaultMessage: 'Drop image(s) here',
+    defaultMessage: 'Upload an image',
   },
   submit: {
     id: 'app.containers.IdeasNewPage2.submit',

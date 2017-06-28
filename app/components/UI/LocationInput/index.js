@@ -47,14 +47,16 @@ const StyledAutocompleteItem = styled.div`
   }
 `;
 
+const emptyString = '';
+
 const LocationInput = ({ value, placeholder, onChange }) => {
   const handleOnChange = (address) => {
     onChange(address);
   };
 
   const inputProps = {
-    value,
-    placeholder,
+    value: (value || emptyString),
+    placeholder: (placeholder || emptyString),
     onChange: handleOnChange,
     type: 'search',
     autoFocus: true,
@@ -95,7 +97,12 @@ const LocationInput = ({ value, placeholder, onChange }) => {
 LocationInput.propTypes = {
   value: PropTypes.string,
   placeholder: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
+};
+
+LocationInput.defaultProps = {
+  value: '',
+  placeholder: '',
 };
 
 export default LocationInput;

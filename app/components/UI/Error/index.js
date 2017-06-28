@@ -6,17 +6,15 @@ import { CSSTransitionGroup } from 'react-transition-group';
 import _ from 'lodash';
 
 const ErrorMessageText = styled.div`
-  color: #d30915;
+  color: #f93e36;
   font-weight: 400;
 `;
 
-const ErrorMessageIcon = styled.div`
-  padding-top: -2px;
-  padding-left: 8px;
-  padding-right: 8px;
+const IconWrapper = styled.div`
+  margin-right: 8px;
 
   svg {
-    fill: #d30915;
+    fill: #f93e36;
   }
 `;
 
@@ -24,7 +22,8 @@ const StyledErrorMessageInner = styled.div`
   display: flex;
   align-items: center;
   border-radius: 5px;
-  background: rgba(211, 9, 21, 0.12);
+  background: #feebea;
+  background: rgba(252, 60, 45, 0.1);
 `;
 
 const StyledErrorMessage = styled.div`
@@ -43,7 +42,7 @@ const StyledErrorMessage = styled.div`
         case '4':
           return '15px';
         default:
-          return '12px';
+          return '12px 13px';
       }
     }};
   }
@@ -63,17 +62,17 @@ const StyledErrorMessage = styled.div`
     }};
   }
 
-  ${ErrorMessageIcon} {
+  ${IconWrapper} {
     height: ${(props) => {
       switch (props.size) {
         case '2':
-          return '26px';
+          return '23px';
         case '3':
-          return '27px';
+          return '24px';
         case '4':
-          return '28px';
-        default:
           return '25px';
+        default:
+          return '22px';
       }
     }};
   }
@@ -110,9 +109,10 @@ const StyledErrorMessage = styled.div`
   }
 `;
 
-const Error = ({ text, size, opened, showIcon, marginTop, marginBottom }) => {
+const Error = ({ text, size, marginTop, marginBottom, showIcon }) => {
   const enterTime = 250;
   const leaveTime = 250;
+  const opened = (_.isString(text) && !_.isEmpty(text));
 
   if (opened) {
     return (
@@ -127,11 +127,7 @@ const Error = ({ text, size, opened, showIcon, marginTop, marginBottom }) => {
           marginBottom={marginBottom}
         >
           <StyledErrorMessageInner>
-            {((_.isBoolean(showIcon) && showIcon === true) || !_.isBoolean(showIcon)) &&
-              <ErrorMessageIcon>
-                <Icon name="error" />
-              </ErrorMessageIcon>
-            }
+            { showIcon && <IconWrapper><Icon name="error" /></IconWrapper> }
             <ErrorMessageText>
               {text}
             </ErrorMessageText>
@@ -153,10 +149,17 @@ const Error = ({ text, size, opened, showIcon, marginTop, marginBottom }) => {
 Error.propTypes = {
   text: PropTypes.string,
   size: PropTypes.string,
-  marginTop: PropTypes.string.isRequired,
-  marginBottom: PropTypes.string.isRequired,
-  opened: PropTypes.bool.isRequired,
+  marginTop: PropTypes.string,
+  marginBottom: PropTypes.string,
   showIcon: PropTypes.bool,
+};
+
+Error.defaultProps = {
+  text: null,
+  size: '1',
+  marginTop: '8px',
+  marginBottom: '0px',
+  showIcon: false,
 };
 
 export default Error;

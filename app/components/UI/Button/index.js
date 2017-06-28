@@ -67,14 +67,20 @@ const SpinnerWrapper = styled.div`
 const Button = ({ text, size, loading }) => (
   <StyledButton size={size} loading={loading}>
     <ButtonText>{text}</ButtonText>
-    {loading && <SpinnerWrapper><Spinner size="26px" color="#fff" thickness="3px" /></SpinnerWrapper>}
+    { loading && <SpinnerWrapper><Spinner /></SpinnerWrapper> }
   </StyledButton>
 );
 
 Button.propTypes = {
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
   size: PropTypes.string,
   loading: PropTypes.bool,
+};
+
+Button.defaultProps = {
+  text: '',
+  size: '1',
+  loading: false,
 };
 
 export default Button;
