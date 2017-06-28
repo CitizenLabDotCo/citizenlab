@@ -66,8 +66,8 @@ const Input = ({ value, placeholder, error, onChange, setRef }) => {
         onChange={handleOnChange}
         ref={handleRef}
       />
-      <Error text={error} />
       { hasError && <IconWrapper><Icon name="error" /></IconWrapper>}
+      <Error text={error} />
     </InputWrapper>
   );
 };

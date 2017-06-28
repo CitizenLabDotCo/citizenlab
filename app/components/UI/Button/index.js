@@ -15,6 +15,7 @@ const StyledButton = styled.button`
   justify-content: center;
   border-radius: 5px;
   position: relative;
+  outline: none;
   background: ${(props) => props.theme.accentFg || '#e0e0e0'};
   transition: background 150ms ease;
 
@@ -34,13 +35,13 @@ const StyledButton = styled.button`
     padding: ${(props) => {
       switch (props.size) {
         case '2':
-          return '11px 16px';
-        case '3':
-          return '12px 17px';
-        case '4':
-          return '13px 18px';
-        default:
           return '10px 15px';
+        case '3':
+          return '11px 16px';
+        case '4':
+          return '12px 17px';
+        default:
+          return '9px 14px';
       }
     }};
     opacity: ${(props) => props.loading ? 0 : 1}
@@ -64,22 +65,33 @@ const SpinnerWrapper = styled.div`
   justify-content: center;
 `;
 
-const Button = ({ text, size, loading }) => (
-  <StyledButton size={size} loading={loading}>
-    <ButtonText>{text}</ButtonText>
-    { loading && <SpinnerWrapper><Spinner /></SpinnerWrapper> }
-  </StyledButton>
-);
+const Button = ({ text, size, loading, disabled, onClick }) => {
+  const handleOnClick = (event) => {
+    if (!disabled) {
+      onClick(event);
+    }
+  };
+
+  return (
+    <StyledButton size={size} loading={loading} onClick={handleOnClick} disabled={disabled}>
+      <ButtonText>{text}</ButtonText>
+      { loading && <SpinnerWrapper><Spinner /></SpinnerWrapper> }
+    </StyledButton>
+  );
+};
 
 Button.propTypes = {
   text: PropTypes.string,
   size: PropTypes.string,
   loading: PropTypes.bool,
+  disabled: PropTypes.bool,
+  onClick: PropTypes.func.isRequired,
 };
 
 Button.defaultProps = {
   text: '',
   size: '1',
+  disabled: false,
   loading: false,
 };
 

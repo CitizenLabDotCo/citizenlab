@@ -8,6 +8,7 @@ import Icon from 'components/Icon';
 import Error from 'components/UI/Error';
 import { injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
+import _ from 'lodash';
 
 const UploadIcon = styled.div`
   height: 40px;
@@ -40,7 +41,7 @@ const StyledDropzone = styled(Dropzone)`
   padding-bottom: 0px;
   cursor: pointer;
   position: relative;
-  background: #f0f0f0;
+  background: #fff;
 
   ${media.smallPhone`
     flex-direction: column;
@@ -113,7 +114,7 @@ const RemoveUploadedItem = styled.div`
   z-index: 2;
   padding: 2px;
   border-radius: 50%;
-  background: #f0f0f0;
+  background: #fff;
   cursor: pointer;
 
   &:hover svg {
@@ -132,13 +133,13 @@ class Upload extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.items.filter((item) => item.preview).forEach((item) => this.destroyItem(item.preview));
+    _(this.props.items).filter((item) => item.preview).forEach((item) => this.destroyItem(item.preview));
   }
 
   handleOnDrop = (items) => {
     const maxItemsCount = this.props.maxItems;
-    const oldItemsCount = this.props.items.length;
-    const newItemsCount = items.length;
+    const oldItemsCount = _.size(this.props.items);
+    const newItemsCount = _.size(items);
     const remainingItemsCount = maxItemsCount - oldItemsCount;
 
     if (maxItemsCount && newItemsCount > remainingItemsCount) {

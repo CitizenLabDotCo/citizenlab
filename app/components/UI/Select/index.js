@@ -155,7 +155,6 @@ const StyledSelect = styled(ReactSelect)`
   }
 `;
 
-const emptyObject = {};
 const emptyArray = [];
 
 const Select = ({ value, placeholder, options, autoBlur, clearable, onChange }) => {
@@ -170,7 +169,7 @@ const Select = ({ value, placeholder, options, autoBlur, clearable, onChange }) 
       clearable={clearable}
       scrollMenuIntoView={false}
       autoBlur={autoBlur}
-      value={value || emptyObject}
+      value={value}
       placeholder={placeholder}
       options={options || emptyArray}
       onChange={handleOnChange}
@@ -188,7 +187,7 @@ Select.propTypes = {
 };
 
 Select.defaultProps = {
-  value: [],
+  value: null,
   placeholder: '',
   options: [],
   autoBlur: true,
