@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Icon from 'components/Icon';
 import Error from 'components/UI/Error';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState } from 'draft-js';
 import { Editor as DraftEditor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import draftToHtml from 'draftjs-to-html';
 import _ from 'lodash';
 
 const Container = styled.div``;
@@ -15,7 +14,7 @@ const DraftEditorContainer = styled.div`
   width: 100%;
   border-radius: 5px;
   border: solid 1px;
-  overflow: hidden;
+  /* overflow: hidden; */
   border-color: ${(props) => {
     if (props.error) {
       return '#fc3c2d';
@@ -47,24 +46,34 @@ const DraftEditorContainer = styled.div`
     margin: 0;
     border-radius: 0px;
     border: none;
-    background: #fff;
-    border-bottom: solid 1px #f0f0f0;
+    background: transparent;
+    border-bottom: solid 1px #e0e0e0;
 
-    .rdw-inline-wrapper,
-    .rdw-list-wrapper,
-    .rdw-link-wrapper,
-    .rdw-option-wrapper {
+    .rdw-emoji-modal,
+    .rdw-link-modal {
+      box-shadow: none;
+      border: solid 1px #666;
+      border-radius: 3px;
+      top: 30px;
+    }
+
+    .rdw-link-modal {
+      min-height: 215px;
+    }
+
+    > div {
       margin: 0;
       padding: 0;
       border: none;
     }
 
     .rdw-option-wrapper {
-      padding: 12px 10px;
+      padding: 14px 10px;
       margin-right: 3px;
+      border: solid 1px transparent;
       border-radius: 3px;
       background: transparent;
-      opacity: 0.5;
+      opacity: 1;
 
       &.rdw-option-disabled {
         opacity: 0.2;
@@ -75,19 +84,20 @@ const DraftEditorContainer = styled.div`
         box-shadow: none;
 
         &:not(.rdw-option-disabled) {
-          opacity: 1;
+          border-color: #ccc;
         }
       }
 
       &.rdw-option-active {
         box-shadow: none;
-        opacity: 1;
+        background: #f0f0f0;
+        border-color: #ccc;
       }
     }
   }
 
   .rdw-editor-main {
-    min-height: 210px;
+    min-height: 230px;
     font-size: 17px;
     line-height: 23px;
     font-weight: 300;
@@ -96,6 +106,30 @@ const DraftEditorContainer = styled.div`
     margin: 0px;
     margin-top: 0px;
     background: transparent;
+    overflow: visible;
+
+    .rdw-suggestion-dropdown {
+      box-shadow: none;
+      border: solid 1px #666;
+      border-radius: 3px;
+      position: absolute;
+      z-index: 9999;
+
+      .rdw-suggestion-option {
+        padding: 8px 12px;
+        margin: 0;
+        border-color: #e0e0e0;
+        cursor: pointer;
+
+        &:last-child {
+          border: none;
+        }
+      }
+    }
+
+    .rdw-mention-link {
+      cursor: pointer;
+    }
 
     .public-DraftStyleDefault-block {
       font-size: 17px;
@@ -139,7 +173,7 @@ class Editor extends React.PureComponent {
     const { value, placeholder, error, toolbarConfig } = this.props;
     const { focussed } = this.state;
     const hasError = (_.isString(error) && !_.isEmpty(error));
-    const editorState = (value !== null ? draftToHtml(convertToRaw(value.getCurrentContent())) : EditorState.createEmpty());
+    const editorState = (value === null ? EditorState.createEmpty() : value);
 
     return (
       <Container>
@@ -151,6 +185,24 @@ class Editor extends React.PureComponent {
             toolbar={toolbarConfig}
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
+            mention={{
+              separator: ' ',
+              trigger: '@',
+              caseSensitive: false,
+              mentionClassName: 'mention-className',
+              dropdownClassName: 'dropdown-className',
+              optionClassName: 'option-className',
+              suggestions: [
+                { text: 'apple', value: 'apple', url: 'apple' },
+                { text: 'banana', value: 'banana', url: 'banana' },
+                { text: 'cherry', value: 'cherry', url: 'cherry' },
+                { text: 'durian', value: 'durian', url: 'durian' },
+                { text: 'eggfruit', value: 'eggfruit', url: 'eggfruit' },
+                { text: 'fig', value: 'fig', url: 'fig' },
+                { text: 'grapefruit', value: 'grapefruit', url: 'grapefruit' },
+                { text: 'honeydew', value: 'honeydew', url: 'honeydew' },
+              ],
+            }}
           />
           { hasError && <IconWrapper><Icon name="error" /></IconWrapper> }
         </DraftEditorContainer>
@@ -173,7 +225,7 @@ Editor.defaultProps = {
   placeholder: '',
   error: null,
   toolbarConfig: {
-    options: ['inline', 'list', 'link'],
+    options: ['inline', 'list', 'link', 'emoji'],
     inline: {
       options: ['bold', 'italic'],
     },

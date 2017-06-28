@@ -24,8 +24,16 @@ import LocationInput from 'components/UI/LocationInput';
 import Editor from 'components/UI/Editor';
 import Button from 'components/UI/Button';
 import Upload from 'components/UI/Upload';
+import { convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import _ from 'lodash';
 
 const PageContainer = styled.div`
+  background: #f8f8f8;
+  position: relative;
+`;
+
+const FormContainerOuter = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,7 +41,6 @@ const PageContainer = styled.div`
   padding-right: 30px;
   padding-top: 40px;
   padding-bottom: 100px;
-  background: #f8f8f8;
 `;
 
 const PageTitle = styled.h2`
@@ -43,18 +50,36 @@ const PageTitle = styled.h2`
   margin-bottom: 20px;
 `;
 
-const FormContainer = styled.div`
+const FormContainerInner = styled.div`
   width: 100%;
   max-width: 580px;
 `;
 
 const FormElement = styled.div`
   width: 100%;
-  margin-bottom: 42px;
+  margin-bottom: 44px;
 `;
 
 const EditorWrapper = styled.div`
-  margin-bottom: 42px;
+  margin-bottom: 44px;
+`;
+
+const ButtonBar = styled.div`
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: solid 1px red;
+  background: #fff;
+  position: sticky;
+  bottom: 30px;
+`;
+
+const ButtonBarInner = styled.div`
+  max-width: 580px;
+  padding: 20px;
+  background: #fff;
 `;
 
 class IdeasNewPage2 extends React.Component {
@@ -113,11 +138,17 @@ class IdeasNewPage2 extends React.Component {
   }
 
   handleTitleOnChange = (title) => {
-    this.setState({ title });
+    this.setState({
+      title,
+      titleError: null,
+    });
   }
 
   handleDescriptionOnChange = (description) => {
-    this.setState({ description });
+    this.setState((state) => ({
+      description,
+      descriptionError: (description.getCurrentContent().hasText() ? null : state.descriptionError),
+    }));
   }
 
   handleTopicsOnChange = (topics) => {
@@ -134,8 +165,10 @@ class IdeasNewPage2 extends React.Component {
 
   handleUploadOnAdd = async (image) => {
     const base64 = await this.getBase64(image);
+
     this.setState((state) => {
-      const images = [...state.images, { ...image, base64 }];
+      const newImage = { ...image, base64 };
+      const images = (state.images ? [...state.images, newImage] : [newImage]);
       return { images };
     });
   };
@@ -164,23 +197,32 @@ class IdeasNewPage2 extends React.Component {
   handleOnSubmit = () => {
     let hasErrors = false;
     const { user, locale } = this.props;
+    const { formatMessage } = this.props.intl;
     const { title, description, topics, project, location, images } = this.state;
 
     if (!title) {
       hasErrors = true;
-      this.setState({ titleError: 'This is a required field' });
+      this.setState({ titleError: formatMessage(messages.titleEmptyError) });
     }
 
-    if (!description) {
+    if (!description || !description.getCurrentContent().hasText()) {
       hasErrors = true;
-      this.setState({ descriptionError: 'This is a required field' });
+      this.setState({ descriptionError: formatMessage(messages.descriptionEmptyError) });
     }
-
-    const localTitle = { [locale]: title };
-    const localDescription = { [locale]: description };
 
     if (!hasErrors) {
-      this.props.submitIdea(user.id, localTitle, localDescription, topics, location, project, 'published');
+      const localTitle = { [locale]: title };
+      const localDescription = { [locale]: draftToHtml(convertToRaw(description.getCurrentContent())) };
+
+      console.log(user);
+      console.log(localTitle);
+      console.log(localDescription);
+      console.log(topics);
+      console.log(location);
+      console.log(project);
+      console.log(images);
+
+      // this.props.submitIdea(user.id, localTitle, localDescription, topics, location, project, 'published');
     }
 
     /*
@@ -195,91 +237,99 @@ class IdeasNewPage2 extends React.Component {
     const { topics, projects } = this.props;
     const { formatMessage } = this.props.intl;
     const { title, titleError, description, descriptionError, topics: selectedTopics, project, location, images } = this.state;
+    const uploadedImages = _(images).map((image) => _.omit(image, 'base64')).value();
 
     return (
       <div>
         <WatchSagas sagas={sagas} />
+
         <PageContainer>
-          <PageTitle>
-            <FormattedMessage {...messages.pageTitle} />
-          </PageTitle>
+          <FormContainerOuter>
+            <PageTitle>
+              <FormattedMessage {...messages.pageTitle} />
+            </PageTitle>
 
-          <FormContainer>
-            <Label value={formatMessage(messages.titleLabel)} htmlFor="title" />
-            <FormElement>
-              <Input
-                type="text"
-                id="title"
-                value={title}
-                placeholder={formatMessage(messages.titlePlaceholder)}
-                error={titleError}
-                onChange={this.handleTitleOnChange}
-                setRef={this.handleSetRef}
+            <FormContainerInner>
+              <Label value={formatMessage(messages.titleLabel)} htmlFor="title" />
+              <FormElement>
+                <Input
+                  type="text"
+                  id="title"
+                  value={title}
+                  placeholder={formatMessage(messages.titlePlaceholder)}
+                  error={titleError}
+                  onChange={this.handleTitleOnChange}
+                  setRef={this.handleSetRef}
+                />
+              </FormElement>
+
+              <Label value={formatMessage(messages.descriptionLabel)} />
+              <EditorWrapper>
+                <Editor
+                  value={description}
+                  placeholder={formatMessage(messages.descriptionPlaceholder)}
+                  error={descriptionError}
+                  onChange={this.handleDescriptionOnChange}
+                />
+              </EditorWrapper>
+
+              <Label value={formatMessage(messages.topicsLabel)} />
+              <FormElement>
+                <MultipleSelect
+                  value={selectedTopics}
+                  placeholder={formatMessage(messages.topicsPlaceholder)}
+                  options={this.getOptions(topics)}
+                  onChange={this.handleTopicsOnChange}
+                  max={2}
+                />
+              </FormElement>
+
+              <Label value={formatMessage(messages.projectsLabel)} />
+              <FormElement>
+                <Select
+                  clearable
+                  value={project}
+                  placeholder={formatMessage(messages.projectsPlaceholder)}
+                  options={this.getOptions(projects)}
+                  onChange={this.handleProjectOnChange}
+                />
+              </FormElement>
+
+              <FormElement>
+                <Label value={formatMessage(messages.locationLabel)} />
+                <LocationInput
+                  value={location}
+                  placeholder={formatMessage(messages.locationPlaceholder)}
+                  onChange={this.handleLocationOnChange}
+                />
+              </FormElement>
+
+              <FormElement>
+                <Label value={formatMessage(messages.imageUploadLabel)} />
+                <Upload
+                  multiple
+                  items={uploadedImages}
+                  accept="image/jpg, image/jpeg, image/png, image/gif"
+                  maxSize={5000000}
+                  maxItems={5}
+                  placeholder={formatMessage(messages.imageUploadPlaceholder)}
+                  onAdd={this.handleUploadOnAdd}
+                  onRemove={this.handleUploadOnRemove}
+                />
+              </FormElement>
+            </FormContainerInner>
+          </FormContainerOuter>
+
+          <ButtonBar>
+            <ButtonBarInner>
+              <Button
+                size="2"
+                loading={false}
+                text={formatMessage(messages.submit)}
+                onClick={this.handleOnSubmit}
               />
-            </FormElement>
-
-            <Label value={formatMessage(messages.descriptionLabel)} />
-            <EditorWrapper>
-              <Editor
-                value={description}
-                placeholder={formatMessage(messages.descriptionPlaceholder)}
-                error={descriptionError}
-                onChange={this.handleDescriptionOnChange}
-              />
-            </EditorWrapper>
-
-            <Label value={formatMessage(messages.topicsLabel)} />
-            <FormElement>
-              <MultipleSelect
-                value={selectedTopics}
-                placeholder={formatMessage(messages.topicsPlaceholder)}
-                options={this.getOptions(topics)}
-                onChange={this.handleTopicsOnChange}
-                max={2}
-              />
-            </FormElement>
-
-            <Label value={formatMessage(messages.projectsLabel)} />
-            <FormElement>
-              <Select
-                clearable
-                value={project}
-                placeholder={formatMessage(messages.projectsPlaceholder)}
-                options={this.getOptions(projects)}
-                onChange={this.handleProjectOnChange}
-              />
-            </FormElement>
-
-            <FormElement>
-              <Label value={formatMessage(messages.locationLabel)} />
-              <LocationInput
-                value={location}
-                placeholder={formatMessage(messages.locationPlaceholder)}
-                onChange={this.handleLocationOnChange}
-              />
-            </FormElement>
-
-            <FormElement>
-              <Label value={formatMessage(messages.imageUploadLabel)} />
-              <Upload
-                multiple
-                items={images}
-                accept="image/jpg, image/jpeg, image/png, image/gif"
-                maxSize={5000000}
-                maxItems={5}
-                placeholder={formatMessage(messages.imageUploadPlaceholder)}
-                onAdd={this.handleUploadOnAdd}
-                onRemove={this.handleUploadOnRemove}
-              />
-            </FormElement>
-
-            <Button
-              loading={false}
-              size="2"
-              text={formatMessage(messages.submit)}
-              onClick={this.handleOnSubmit}
-            />
-          </FormContainer>
+            </ButtonBarInner>
+          </ButtonBar>
         </PageContainer>
       </div>
     );

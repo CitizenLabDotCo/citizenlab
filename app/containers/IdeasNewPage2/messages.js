@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage2.titlePlaceholder',
     defaultMessage: 'Enter the title of your idea',
   },
+  titleEmptyError: {
+    id: 'app.containers.IdeasNewPage2.titleEmptyError',
+    defaultMessage: 'Please provide a title for your idea',
+  },
   descriptionLabel: {
     id: 'app.containers.IdeasNewPage2.descriptionLabel',
     defaultMessage: 'Description',
@@ -20,6 +24,10 @@ export default defineMessages({
   descriptionPlaceholder: {
     id: 'app.containers.IdeasNewPage2.descriptionPlaceholder',
     defaultMessage: 'Enter the description of your idea',
+  },
+  descriptionEmptyError: {
+    id: 'app.containers.IdeasNewPage2.titleEmptyError',
+    defaultMessage: 'Please provide a description for your idea',
   },
   topicsLabel: {
     id: 'app.containers.IdeasNewPage2.topicsLabel',

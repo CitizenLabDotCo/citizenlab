@@ -42,7 +42,7 @@ const StyledErrorMessage = styled.div`
         case '4':
           return '15px';
         default:
-          return '12px 13px';
+          return '11px 13px';
       }
     }};
   }
@@ -157,7 +157,7 @@ Error.propTypes = {
 Error.defaultProps = {
   text: null,
   size: '1',
-  marginTop: '8px',
+  marginTop: '6px',
   marginBottom: '0px',
   showIcon: false,
 };
