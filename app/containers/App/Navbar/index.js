@@ -208,7 +208,6 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
 
   render() {
     const { tenantLogo, currentUser, location } = this.props;
-    console.log(currentUser && currentUser.toJS(), currentUser && currentUser.getIn(['attributes', 'unread_notifications']));
     const avatar = (currentUser ? currentUser.getIn(['attributes', 'avatar', 'large']) : null);
     // const { logo } = currentTenant.getIn('attributes', 'logo', 'small');
     // #023F88
