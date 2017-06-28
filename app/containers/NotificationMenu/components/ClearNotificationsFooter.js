@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import * as clearIcon from './assets/clear_icon.svg';
+import * as clearIcon from '../assets/clear_icon.svg';
 import { Image } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 const ClearNotificationsFooter = ({ onClick, className }) => (<div className={className}>
   <button onClick={onClick}>

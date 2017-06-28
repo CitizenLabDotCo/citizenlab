@@ -13,7 +13,7 @@ import Votes from './show/votes';
 import Comments from './comments';
 import T from 'containers/T';
 import Autorize from 'utils/containers/authorize';
-import ShareButtons from './ShareButtons';
+// import ShareButtons from './ShareButtons';
 
 // store
 import { createStructuredSelector } from 'reselect';
@@ -38,7 +38,7 @@ class Show extends React.PureComponent {
 
   render() {
     const {
-      id, idea, images, authorId, title_multiloc, body_multiloc, created_at, votes, voteId, location, tFunc } = this.props;
+      id, /* idea, images, */authorId, title_multiloc, body_multiloc, created_at, voteId, /* votes, location, */ tFunc } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (!title_multiloc) return null;
@@ -50,11 +50,11 @@ class Show extends React.PureComponent {
             { name: 'description', content: tFunc(title_multiloc) },
           ]}
         />
-        <Carousel images={images} />
+        {/*<Carousel images={images} />*/}
         <h2>
           <T value={title_multiloc} />
         </h2>
-        <ShareButtons location={location} image={images[0] && images[0].medium} />
+        {/*<ShareButtons location={location} image={images[0] && images[0].medium} />*/}
         <Votes ideaId={id} voteId={voteId} />
         <Comment.Group style={{ maxWidth: 'none' }}>
           <Comment>
@@ -99,7 +99,7 @@ const mergeProps = ({ idea }, dispatchProps, { tFunc, location, intl }) => {
   const attributes = idea.get('attributes').toObject();
   const id = idea.get('id')
   const {
-    images,
+    // images,
     body_multiloc,
     created_at,
     downvotes_count,
@@ -109,13 +109,13 @@ const mergeProps = ({ idea }, dispatchProps, { tFunc, location, intl }) => {
   const relationships = idea.get('relationships');
 
   const getIds = (val, key) => val.get('id');
-  const authorId = relationships.getIn(['author', 'data', 'id'])
-  const areas = relationships.getIn(['areas','data']).map(getIds)
-  const topics = relationships.getIn(['topics','data']).map(getIds)
-  const voteId = relationships.getIn(['user_vote','data', 0, 'id'])
+  const authorId = relationships.getIn(['author', 'data', 'id']);
+  const areas = relationships.getIn(['areas','data']).map(getIds);
+  const topics = relationships.getIn(['topics','data']).map(getIds);
+  const voteId = relationships.getIn(['user_vote','data', 0, 'id']);
   return {
     id,
-    images: images.toJS(),
+    // images: images.toJS(),
     body_multiloc,
     created_at,
     votes: downvotes_count + upvotes_count,

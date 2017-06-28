@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CommentOnCommentNotification from './CommentOnCommentNotification/index';
 import CommentOnIdeaNotification from './CommentOnIdeaNotification/index';
+import MentionOnCommentNotification from './MentionOnCommentNotification/index';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 
@@ -35,6 +36,12 @@ class Notifications extends React.PureComponent {
       /></NotificationWrapperStyled>);
     } else if (notification.attributes.type === 'comment_on_your_idea') {
       return (<NotificationWrapperStyled isRead={!!notification.attributes.read_at}><CommentOnIdeaNotification
+        notification={notification}
+        locale={locale}
+        clearNotification={this.props.markNotificationAsReadRequest}
+      /></NotificationWrapperStyled>);
+    } else if (notification.attributes.type === 'mention_in_comment') {
+      return (<NotificationWrapperStyled isRead={!!notification.attributes.read_at}><MentionOnCommentNotification
         notification={notification}
         locale={locale}
         clearNotification={this.props.markNotificationAsReadRequest}

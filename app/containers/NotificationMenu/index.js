@@ -25,7 +25,7 @@ import sagas from 'resources/notifications/sagas';
 import { selectLanguage } from 'containers/LanguageProvider/selectors';
 import Notifications from './components/Notifications';
 import InfiniteScroll from 'react-infinite-scroller';
-import ClearNotificationsFooter from './ClearNotificationsFooter';
+import ClearNotificationsFooter from './components/ClearNotificationsFooter';
 
 export class NotificationMenu extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
