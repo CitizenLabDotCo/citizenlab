@@ -39,8 +39,6 @@ export class NotificationMenu extends React.PureComponent { // eslint-disable-li
   componentDidMount() {
     const { nextPageNumber, nextPageItemCount } = this.props;
     this.props.loadNotificationsRequest(nextPageNumber, nextPageItemCount);
-
-    window.addEventListener('click', this.handleWindowClick);
   }
 
   clearNotifications() {
