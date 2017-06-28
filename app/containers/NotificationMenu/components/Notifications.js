@@ -5,6 +5,19 @@ import CommentOnIdeaNotification from './CommentOnIdeaNotification/index';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 
+const NotificationWrapperStyled = styled.div`
+  &:hover {
+    background-color: #f9f9f9;
+   
+    // show 'clear notification' button on hover
+    div > button.clear-notification {
+      display: block !important;
+    }
+    
+    opacity: ${(props) => props.isRead ? '0.5' : 'inherit'};
+  }
+`;
+
 class Notifications extends React.PureComponent {
   constructor() {
     super();
@@ -15,17 +28,17 @@ class Notifications extends React.PureComponent {
 
   getNotificationComponent(notification, locale) {
     if (notification.attributes.type === 'comment_on_your_comment') {
-      return (<CommentOnCommentNotification
+      return (<NotificationWrapperStyled isRead={!!notification.attributes.read_at}><CommentOnCommentNotification
         notification={notification}
         locale={locale}
         clearNotification={this.props.markNotificationAsReadRequest}
-      />);
+      /></NotificationWrapperStyled>);
     } else if (notification.attributes.type === 'comment_on_your_idea') {
-      return (<CommentOnIdeaNotification
+      return (<NotificationWrapperStyled isRead={!!notification.attributes.read_at}><CommentOnIdeaNotification
         notification={notification}
         locale={locale}
         clearNotification={this.props.markNotificationAsReadRequest}
-      />);
+      /></NotificationWrapperStyled>);
     }
   }
 
@@ -55,4 +68,5 @@ Notifications.propTypes = {
 
 export default styled(Notifications)`
   background-color: #ffffff;
+  padding-top: 10px;
 `;

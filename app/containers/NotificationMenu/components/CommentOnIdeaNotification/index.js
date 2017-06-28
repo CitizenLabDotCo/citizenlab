@@ -54,7 +54,6 @@ CommentOnIdeaNotification.propTypes = {
 
 export default styled(CommentOnIdeaNotification)`
   font-weight: ${(props) => props.notification.attributes.read_at ? 'inherit' : 'bold'};
-  background-color: ${(props) => props.notification.attributes.read_at ? '#ffffff' : '#fafafa'};
   width: calc(100% - 20px);
   margin: auto !important;
 `;
