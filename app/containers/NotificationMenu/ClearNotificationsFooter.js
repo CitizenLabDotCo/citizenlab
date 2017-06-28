@@ -25,13 +25,14 @@ ClearNotificationsFooter.propTypes = {
 };
 
 export default styled(ClearNotificationsFooter)`
- position: absolute;
- right: 0;
- background-color: #fcfcfc;
- padding: 10px;
- font-family: CircularStd-Book !important;
- font-size: 15px;
- color: #6b6b6b;
- width: 100%;
- text-align: right;
+  position: absolute;
+  right: 0;
+  background-color: #fcfcfc;
+  padding: 10px;
+  font-family: CircularStd-Book !important;
+  font-size: 15px;
+  color: #6b6b6b;
+  width: 100%;
+  -webkit-text-align: right;
+  text-align: right;
 `;

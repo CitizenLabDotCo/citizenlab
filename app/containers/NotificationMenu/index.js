@@ -63,11 +63,11 @@ export class NotificationMenu extends React.PureComponent { // eslint-disable-li
 
     return (<div className={className}>
       <WatchSagas sagas={sagas} />
-      {show && <InfiniteScroll
+      {show && <div style={{ height: '344.9px', overflowY: 'scroll' }}><InfiniteScroll
         element={'div'}
         hasMore={!(!nextPageNumber || loading)}
         loadMore={this.loadMoreNotifications}
-        threshold={0}
+        threshold={10}
         useWindow={false}
       >
         <div>
@@ -93,8 +93,8 @@ export class NotificationMenu extends React.PureComponent { // eslint-disable-li
             {error && <FormattedMessage {...messages.error} />}
           </span>}
         </div>
-        <Loader active={!(!nextPageNumber || loading)} style={{ position: 'relative', marginTop: '30px' }} />
-      </InfiniteScroll>}
+        <Loader active={loading} style={{ position: 'relative', marginTop: '30px', top: '0' }} />
+      </InfiniteScroll></div>}
       <ClearNotificationsFooter onClick={this.props.markAllNotificationsAsReadRequest} />
     </div>);
   }
@@ -135,7 +135,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(styled(NotificationM
   position: absolute;
   height: 387px;
   display: ${(props) => props.show ? 'block' : 'none'};
-  overflow-y: scroll;
   width: 384.9px;
   top: 39px;
   right: 0;

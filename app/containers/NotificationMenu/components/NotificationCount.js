@@ -24,7 +24,7 @@ const Counter = styled.div`
 // used in Navbar
 const NotificationCount = ({ count, className }) => (<div className={className}>
   <Image src={notificationBell} />
-  <Counter notZero={count > 0} >count</Counter>
+  <Counter notZero={count > 0}>{count > 0 ? count : ''}</Counter>
 </div>);
 
 NotificationCount.propTypes = {
