@@ -62,3 +62,4 @@ export const makeSelectIdeaImages = () => createSelector(
       : fromJS([]))
 );
 
+export default selectIdeasShow;

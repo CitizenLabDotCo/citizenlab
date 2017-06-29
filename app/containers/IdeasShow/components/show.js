@@ -13,7 +13,7 @@ import Votes from './show/votes';
 import Comments from './comments';
 import T from 'containers/T';
 import Autorize from 'utils/containers/authorize';
-// import ShareButtons from './ShareButtons';
+import ShareButtons from './ShareButtons';
 
 // store
 import { createStructuredSelector } from 'reselect';
@@ -50,11 +50,11 @@ class Show extends React.PureComponent {
             { name: 'description', content: tFunc(title_multiloc) },
           ]}
         />
-        <Carousel images={images} />
+        <Carousel images={images.map((image) => image.attributes.versions)} />
         <h2>
           <T value={title_multiloc} />
         </h2>
-        {/* <ShareButtons location={location} image={images[0] && images[0].medium} /> */}
+         <ShareButtons location={location} image={images[0] && images[0].attributes.versions.medium} />
         <Votes ideaId={id} voteId={voteId} />
         <Comment.Group style={{ maxWidth: 'none' }}>
           <Comment>
