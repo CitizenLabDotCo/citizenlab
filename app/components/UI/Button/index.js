@@ -19,7 +19,28 @@ const StyledButton = styled.button`
   background: ${(props) => props.theme.accentFg || '#e0e0e0'};
   transition: background 150ms ease;
 
+  &.disabled {
+    background: #ccc;
+    cursor: not-allowed;
+
+    > ${ButtonText} {
+      color: #fff;
+    }
+  }
+
+  /*
+  &.disabled {
+    background: #f1f1f2;
+    cursor: not-allowed;
+
+    > ${ButtonText} {
+      color: #c1c1c1;
+    }
+  }
+  */
+
   > ${ButtonText} {
+    white-space: nowrap;
     font-size: ${(props) => {
       switch (props.size) {
         case '2':
@@ -35,7 +56,7 @@ const StyledButton = styled.button`
     padding: ${(props) => {
       switch (props.size) {
         case '2':
-          return '10px 15px';
+          return '9px 15px';
         case '3':
           return '11px 16px';
         case '4':
@@ -47,8 +68,8 @@ const StyledButton = styled.button`
     opacity: ${(props) => props.loading ? 0 : 1}
   }
 
-  &:hover {
-    background: ${(props) => darken(0.15, (props.theme.accentFg || '#ccc'))};
+  &:not(.disabled):hover {
+    background: ${(props) => darken(0.2, (props.theme.accentFg || '#ccc'))};
   }
 `;
 
@@ -65,7 +86,7 @@ const SpinnerWrapper = styled.div`
   justify-content: center;
 `;
 
-const Button = ({ text, size, loading, disabled, onClick }) => {
+const Button = ({ text, size, loading, disabled, onClick, className }) => {
   const handleOnClick = (event) => {
     if (!disabled) {
       onClick(event);
@@ -73,7 +94,13 @@ const Button = ({ text, size, loading, disabled, onClick }) => {
   };
 
   return (
-    <StyledButton size={size} loading={loading} onClick={handleOnClick} disabled={disabled}>
+    <StyledButton
+      size={size}
+      loading={loading}
+      onClick={handleOnClick}
+      disabled={disabled}
+      className={`${disabled && 'disabled'} Button ${className}`}
+    >
       <ButtonText>{text}</ButtonText>
       { loading && <SpinnerWrapper><Spinner /></SpinnerWrapper> }
     </StyledButton>
@@ -86,6 +113,7 @@ Button.propTypes = {
   loading: PropTypes.bool,
   disabled: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
+  className: PropTypes.string,
 };
 
 Button.defaultProps = {

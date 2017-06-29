@@ -7,7 +7,7 @@ export default defineMessages({
   },
   titleLabel: {
     id: 'app.containers.IdeasNewPage2.titleLabel',
-    defaultMessage: 'Title',
+    defaultMessage: 'Title (required)',
   },
   titlePlaceholder: {
     id: 'app.containers.IdeasNewPage2.titlePlaceholder',
@@ -19,7 +19,7 @@ export default defineMessages({
   },
   descriptionLabel: {
     id: 'app.containers.IdeasNewPage2.descriptionLabel',
-    defaultMessage: 'Description',
+    defaultMessage: 'Description (required)',
   },
   descriptionPlaceholder: {
     id: 'app.containers.IdeasNewPage2.descriptionPlaceholder',
@@ -35,7 +35,7 @@ export default defineMessages({
   },
   topicsPlaceholder: {
     id: 'app.containers.IdeasNewPage2.topicsPlaceholder',
-    defaultMessage: 'Optionally select one or two topics',
+    defaultMessage: 'Optionally select one or two topics for your idea',
   },
   projectsLabel: {
     id: 'app.containers.IdeasNewPage2.projectsLabel',
@@ -43,7 +43,7 @@ export default defineMessages({
   },
   projectsPlaceholder: {
     id: 'app.containers.IdeasNewPage2.projectsPlaceholder',
-    defaultMessage: 'Optionally select a project',
+    defaultMessage: 'Optionally select a project to which your idea belongs',
   },
   locationLabel: {
     id: 'app.containers.IdeasNewPage2.projectsLabel',
@@ -51,18 +51,22 @@ export default defineMessages({
   },
   locationPlaceholder: {
     id: 'app.containers.IdeasNewPage2.projectsPlaceholder',
-    defaultMessage: 'Optionally enter a location',
+    defaultMessage: 'Optionally enter a location for your idea',
   },
   imageUploadLabel: {
     id: 'app.containers.IdeasNewPage2.imagesLabel',
-    defaultMessage: 'Image (optional)',
+    defaultMessage: 'Image (optional, max. 5 Mb)',
   },
   imageUploadPlaceholder: {
     id: 'app.containers.IdeasNewPage2.uploadPlaceholder',
-    defaultMessage: 'Upload an image',
+    defaultMessage: 'Optionally upload an image that represents your idea',
   },
   submit: {
     id: 'app.containers.IdeasNewPage2.submit',
     defaultMessage: 'Submit idea',
+  },
+  formError: {
+    id: 'app.containers.IdeasNewPage2.formError',
+    defaultMessage: 'Oops, something went wrong! Errors are highlighted.',
   },
 });

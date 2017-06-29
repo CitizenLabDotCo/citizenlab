@@ -21,9 +21,9 @@ const UploadIcon = styled.div`
 `;
 
 const UploadMessage = styled.span`
-  max-width: 300px;
+  max-width: 90%;
   color: #999;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 20px;
   font-weight: 300;
   text-align: center;
@@ -111,14 +111,14 @@ const RemoveUploadedItem = styled.div`
   position: absolute;
   top: -11px;
   right: -11px;
-  z-index: 2;
+  z-index: 1;
   padding: 2px;
   border-radius: 50%;
   background: #fff;
   cursor: pointer;
 
   &:hover svg {
-    fill: ${(props) => darken(0.20, (props.theme.accentFg || '#000'))};
+    fill: ${(props) => darken(0.2, (props.theme.accentFg || '#000'))};
   }
 
   svg {
