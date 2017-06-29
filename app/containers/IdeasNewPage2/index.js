@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 import { preprocess } from 'utils';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { injectTFunc } from 'utils/containers/t/utils';
 import WatchSagas from 'containers/WatchSagas';
-// import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 // import { API_PATH } from 'containers/App/constants';
 import sagas from './sagas';
 import { loadTopics, loadProjects, submitIdea } from './actions';
@@ -24,13 +25,14 @@ import LocationInput from 'components/UI/LocationInput';
 import Editor from 'components/UI/Editor';
 import Button from 'components/UI/Button';
 import Upload from 'components/UI/Upload';
+import Error from 'components/UI/Error';
+// import Icon from 'components/Icon';
 import { convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import _ from 'lodash';
 
 const PageContainer = styled.div`
-  background: #f8f8f8;
-  position: relative;
+  background: #f2f2f2;
 `;
 
 const FormContainerOuter = styled.div`
@@ -47,7 +49,7 @@ const PageTitle = styled.h2`
   color: #444;
   font-size: 36px;
   font-weight: 500;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 `;
 
 const FormContainerInner = styled.div`
@@ -64,22 +66,44 @@ const EditorWrapper = styled.div`
   margin-bottom: 44px;
 `;
 
+const MobileButton = styled.div`
+  ${media.notPhone`
+    display: none;
+  `}
+`;
+
 const ButtonBar = styled.div`
   width: 100%;
-  height: 60px;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top: solid 1px red;
   background: #fff;
-  position: sticky;
-  bottom: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  position: fixed;
+  z-index: 99999;
+  bottom: 0px;
+  box-shadow: 0 -3px 3px 0 rgba(0, 0, 0, 0.05);
+
+  ${media.phone`
+    display: none;
+  `}
 `;
 
 const ButtonBarInner = styled.div`
+  width: 100%;
   max-width: 580px;
-  padding: 20px;
-  background: #fff;
+  display: flex;
+  align-items: center;
+
+  .Button {
+    margin-right: 10px;
+  }
+
+  .Error {
+    flex: 1;
+  }
 `;
 
 class IdeasNewPage2 extends React.Component {
@@ -135,6 +159,11 @@ class IdeasNewPage2 extends React.Component {
       reader.onload = (event) => resolve(event.target.result);
       reader.readAsDataURL(image);
     });
+  }
+
+  async convertToLatLng(location) {
+    const results = await geocodeByAddress(location);
+    return getLatLng(results[0]);
   }
 
   handleTitleOnChange = (title) => {
@@ -194,7 +223,7 @@ class IdeasNewPage2 extends React.Component {
     });
   }
 
-  handleOnSubmit = () => {
+  handleOnSubmit = async () => {
     let hasErrors = false;
     const { user, locale } = this.props;
     const { formatMessage } = this.props.intl;
@@ -211,9 +240,10 @@ class IdeasNewPage2 extends React.Component {
     }
 
     if (!hasErrors) {
-      const localTitle = { [locale]: title };
-      const localDescription = { [locale]: draftToHtml(convertToRaw(description.getCurrentContent())) };
+      // const localTitle = { [locale]: title };
+      // const localDescription = { [locale]: draftToHtml(convertToRaw(description.getCurrentContent())) };
 
+      /*
       console.log(user);
       console.log(localTitle);
       console.log(localDescription);
@@ -221,6 +251,10 @@ class IdeasNewPage2 extends React.Component {
       console.log(location);
       console.log(project);
       console.log(images);
+      */
+
+      const latLng = await this.convertToLatLng(location);
+      console.log(latLng);
 
       // this.props.submitIdea(user.id, localTitle, localDescription, topics, location, project, 'published');
     }
@@ -238,6 +272,8 @@ class IdeasNewPage2 extends React.Component {
     const { formatMessage } = this.props.intl;
     const { title, titleError, description, descriptionError, topics: selectedTopics, project, location, images } = this.state;
     const uploadedImages = _(images).map((image) => _.omit(image, 'base64')).value();
+    const hasRequiredContent = _.isString(title) && !_.isEmpty(title) && description && description.getCurrentContent().hasText();
+    const hasError = _.isString(titleError) || _.isString(descriptionError);
 
     return (
       <div>
@@ -317,9 +353,17 @@ class IdeasNewPage2 extends React.Component {
                   onRemove={this.handleUploadOnRemove}
                 />
               </FormElement>
+              <MobileButton>
+                <Button
+                  size="2"
+                  loading={false}
+                  text={formatMessage(messages.submit)}
+                  onClick={this.handleOnSubmit}
+                  disabled={!hasRequiredContent}
+                />
+              </MobileButton>
             </FormContainerInner>
           </FormContainerOuter>
-
           <ButtonBar>
             <ButtonBarInner>
               <Button
@@ -327,7 +371,9 @@ class IdeasNewPage2 extends React.Component {
                 loading={false}
                 text={formatMessage(messages.submit)}
                 onClick={this.handleOnSubmit}
+                disabled={!hasRequiredContent}
               />
+              { hasError && <Error text={formatMessage(messages.formError)} marginTop="0px" showBackground={false} /> }
             </ButtonBarInner>
           </ButtonBar>
         </PageContainer>

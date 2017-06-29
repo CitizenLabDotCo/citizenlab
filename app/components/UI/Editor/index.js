@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Icon from 'components/Icon';
+// import Icon from 'components/Icon';
 import Error from 'components/UI/Error';
 import { EditorState } from 'draft-js';
 import { Editor as DraftEditor } from 'react-draft-wysiwyg';
@@ -139,10 +139,11 @@ const DraftEditorContainer = styled.div`
   }
 `;
 
+/*
 const IconWrapper = styled.div`
-  width: 22px;
+  width: 20px;
   position: absolute;
-  top: 9px;
+  top: 61px;
   right: 13px;
   z-index: 1;
 
@@ -150,6 +151,7 @@ const IconWrapper = styled.div`
     fill: red;
   }
 `;
+*/
 
 class Editor extends React.PureComponent {
   constructor() {
@@ -204,7 +206,7 @@ class Editor extends React.PureComponent {
               ],
             }}
           />
-          { hasError && <IconWrapper><Icon name="error" /></IconWrapper> }
+          {/* hasError && <IconWrapper><Icon name="error" /></IconWrapper> */}
         </DraftEditorContainer>
         <Error text={error} />
       </Container>

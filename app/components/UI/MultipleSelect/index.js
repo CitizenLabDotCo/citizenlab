@@ -122,7 +122,7 @@ const StyledMultipleSelect = styled(Select)`
           margin-right: 5px;
           margin-bottom: 5px;
           border: none;
-          border-radius: 3px;
+          border-radius: 5px;
           overflow: hidden;
           cursor: pointer;
           background: ${(props) => props.theme.accentFg || '#777'};
@@ -150,7 +150,7 @@ const StyledMultipleSelect = styled(Select)`
             justify-content: center;
 
             &:hover {
-              background: ${(props) => darken(0.15, (props.theme.accentFg || '#777'))};
+              background: ${(props) => darken(0.2, (props.theme.accentFg || '#777'))};
             }
           }
 
@@ -182,6 +182,7 @@ const StyledMultipleSelect = styled(Select)`
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
       overflow: hidden;
+      z-index: 9999;
 
       .Select-menu {
         max-height: 212px;

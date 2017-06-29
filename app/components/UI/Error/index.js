@@ -19,11 +19,12 @@ const IconWrapper = styled.div`
 `;
 
 const StyledErrorMessageInner = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   border-radius: 5px;
-  background: #feebea;
   background: rgba(252, 60, 45, 0.1);
+  background: ${(props) => (props.showBackground ? 'rgba(252, 60, 45, 0.1)' : 'transparent')};
 `;
 
 const StyledErrorMessage = styled.div`
@@ -36,13 +37,13 @@ const StyledErrorMessage = styled.div`
     padding: ${(props) => {
       switch (props.size) {
         case '2':
-          return '13px';
+          return '11px';
         case '3':
-          return '14px';
+          return '12px';
         case '4':
-          return '15px';
+          return '13px';
         default:
-          return '11px 13px';
+          return '10px 13px';
       }
     }};
   }
@@ -109,7 +110,7 @@ const StyledErrorMessage = styled.div`
   }
 `;
 
-const Error = ({ text, size, marginTop, marginBottom, showIcon }) => {
+const Error = ({ text, size, marginTop, marginBottom, showIcon, showBackground, className }) => {
   const enterTime = 250;
   const leaveTime = 250;
   const opened = (_.isString(text) && !_.isEmpty(text));
@@ -120,13 +121,14 @@ const Error = ({ text, size, marginTop, marginBottom, showIcon }) => {
         transitionName="error"
         transitionEnterTimeout={enterTime}
         transitionLeaveTimeout={leaveTime}
+        className={`Error ${className}`}
       >
         <StyledErrorMessage
           size={size}
           marginTop={marginTop}
           marginBottom={marginBottom}
         >
-          <StyledErrorMessageInner>
+          <StyledErrorMessageInner showBackground={showBackground}>
             { showIcon && <IconWrapper><Icon name="error" /></IconWrapper> }
             <ErrorMessageText>
               {text}
@@ -152,14 +154,17 @@ Error.propTypes = {
   marginTop: PropTypes.string,
   marginBottom: PropTypes.string,
   showIcon: PropTypes.bool,
+  showBackground: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 Error.defaultProps = {
   text: null,
   size: '1',
-  marginTop: '6px',
+  marginTop: '5px',
   marginBottom: '0px',
-  showIcon: false,
+  showIcon: true,
+  showBackground: true,
 };
 
 export default Error;

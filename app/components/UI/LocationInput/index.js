@@ -71,6 +71,7 @@ const LocationInput = ({ value, placeholder, onChange }) => {
   return (
     <LocationInputWrapper>
       <PlacesAutocomplete
+        highlightFirstSuggestion
         inputProps={inputProps}
         autocompleteItem={AutocompleteItem}
         styles={{

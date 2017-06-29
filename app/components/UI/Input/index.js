@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Icon from 'components/Icon';
+import { media } from 'utils/styleUtils';
+// import Icon from 'components/Icon';
 import Error from 'components/UI/Error';
 import _ from 'lodash';
 
@@ -15,12 +16,15 @@ const InputWrapper = styled.div`
     line-height: 22px;
     font-weight: 300;
     padding: 12px;
-    padding-right: ${(props) => props.error ? '40px' : '12px'};
     border-radius: 5px;
     border: solid 1px;
     border-color: ${(props) => props.error ? '#fc3c2d' : '#ccc'};
     background: #fff;
     outline: none;
+
+    ${media.notPhone`
+      padding-right: ${(props) => props.error && '40px'};
+    `}
 
     &:not(:focus):hover {
       border-color: ${(props) => props.error ? '#fc3c2d' : '#999'};
@@ -32,17 +36,23 @@ const InputWrapper = styled.div`
   }
 `;
 
+/*
 const IconWrapper = styled.div`
-  width: 22px;
+  width: 20px;
   position: absolute;
   top: 13px;
   right: 13px;
   z-index: 1;
 
   svg  {
-    fill: red;
+    fill: #f93e36;
   }
+
+  ${media.phone`
+    display: none;
+  `}
 `;
+*/
 
 const emptyString = '';
 
@@ -66,7 +76,7 @@ const Input = ({ value, placeholder, error, onChange, setRef }) => {
         onChange={handleOnChange}
         ref={handleRef}
       />
-      { hasError && <IconWrapper><Icon name="error" /></IconWrapper>}
+      {/* hasError && <IconWrapper><Icon name="error" /></IconWrapper> */}
       <Error text={error} />
     </InputWrapper>
   );
