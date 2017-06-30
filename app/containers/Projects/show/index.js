@@ -200,6 +200,13 @@ class ProjectView extends React.Component {
                 to={`${basePath}/timeline`}
                 active={location.pathname === `${basePath}/timeline`}
               />
+              <MenuItemStyled
+                title={formatMessage(messages.navEvents)}
+                key={3}
+                to={`${basePath}/events`}
+                active={activeItem === 'messages'}
+              />
+            </Menu>
               {pages && pages.toJS().map((page, index) => ((index < 2 ? <MenuItemStyled
                 key={999 + page.id}
                 title={tFunc(page.attributes.title_multiloc)}

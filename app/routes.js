@@ -287,6 +287,23 @@ export default function createRoutes(store) {
               },
             },
             {
+              path: '/projects/:projectId/events',
+              name: 'Project\'s events page',
+              getComponent(nextState, cb) {
+                const importModules = Promise.all([
+                  import('containers/Projects/show/events/reducer'),
+                  import('containers/Projects/show/events'),
+                });
+
+                const renderRoute = loadModule(cb);
+                importModules.then(([reducer, component]) => {
+                  injectReducer('projectEvents', reducer.default);
+                  renderRoute(component);
+                });
+
+                importModules.catch(errorLoading);
+            },
+            {
               path: '/projects/:projectId/page/:pageId',
               name: 'Project\'s page',
               getComponent(nextState, cb) {

@@ -14,7 +14,7 @@ import { LOAD_PROJECT_PHASES_REQUEST } from 'resources/projects/phases/constants
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import scrollToComponent from 'react-scroll-to-component';
-import { getCurrentPhaseId, getPhaseType, parseDate } from './lib';
+import { getCurrentPhaseId, getPhaseType, parseDate } from '../lib';
 
 const ProjectPhasesStyled = styled.div`
   width: 100%;

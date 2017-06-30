@@ -83,6 +83,32 @@ export const generateResourcesPhaseValue = (id, which) => {
   };
 };
 
+export const generateResourcesEventValue = (id, which) => {
+  let startAt;
+  let endAt;
+
+  if (which === 'past') {
+    startAt = moment().subtract(3, 'month');
+    endAt = moment().subtract(1, 'month');
+  } else {
+    // current / coming
+    startAt = moment().add(1, 'month');
+    endAt = moment().add(3, 'month');
+  }
+
+  return {
+    data: {
+      id,
+      attributes: {
+        start_at: startAt.format('YYYY-MM-DD'),
+        end_at: endAt.format('YYYY-MM-DD'),
+      },
+      relationships: {},
+    },
+    links: {},
+  };
+};
+
 
 export const generateResourcesVoteValue = (id, allUp, allDown) => {
   let mode;
