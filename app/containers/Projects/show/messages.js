@@ -10,6 +10,10 @@ export default defineMessages({
     id: 'app.containers.Projects.header',
     defaultMessage: 'Projects',
   },
+  project: {
+    id: 'app.containers.Projects.project',
+    defaultMessage: 'Project',
+  },
   helmetDescription: {
     id: 'app.containers.Projects.helmetDescription',
     defaultMessage: 'Project Show page listing',
