@@ -13,7 +13,7 @@ import Votes from './show/votes';
 import Comments from './comments';
 import T from 'containers/T';
 import Autorize from 'utils/containers/authorize';
-// import ShareButtons from './ShareButtons';
+import ShareButtons from './ShareButtons';
 
 // store
 import { createStructuredSelector } from 'reselect';
@@ -38,7 +38,7 @@ class Show extends React.PureComponent {
 
   render() {
     const {
-      id, /* idea, images, */authorId, title_multiloc, body_multiloc, created_at, voteId, /* votes, location, */ tFunc } = this.props;
+      id, images, authorId, title_multiloc, body_multiloc, created_at, voteId, /* votes, location, */ tFunc } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (!title_multiloc) return null;
