@@ -83,6 +83,16 @@ export const generateResourcesPhaseValue = (id, which) => {
   };
 };
 
+export const generateResourcesNotificationValue = (id, attributes) => {
+  return {
+    data: {
+      id,
+      attributes,
+      relationships: {},
+    },
+  };
+};
+
 export const generateResourcesEventValue = (id, which) => {
   let startAt;
   let endAt;
@@ -108,7 +118,6 @@ export const generateResourcesEventValue = (id, which) => {
     links: {},
   };
 };
-
 
 export const generateResourcesVoteValue = (id, allUp, allDown) => {
   let mode;
@@ -143,3 +152,4 @@ export const generateResourcesCommentValue = (id) => ({
     relationships: {},
   },
 });
+

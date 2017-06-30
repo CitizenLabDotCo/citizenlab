@@ -13,7 +13,7 @@ import Votes from './show/votes';
 import Comments from './comments';
 import T from 'containers/T';
 import Autorize from 'utils/containers/authorize';
-import ShareButtons from './ShareButtons';
+// import ShareButtons from './ShareButtons';
 
 // store
 import { createStructuredSelector } from 'reselect';
@@ -38,7 +38,7 @@ class Show extends React.PureComponent {
 
   render() {
     const {
-      id, idea, images, authorId, title_multiloc, body_multiloc, created_at, votes, voteId, location, tFunc } = this.props;
+      id, /* idea, images, */authorId, title_multiloc, body_multiloc, created_at, voteId, /* votes, location, */ tFunc } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (!title_multiloc) return null;
@@ -110,10 +110,10 @@ const mergeProps = ({ idea, images }, dispatchProps, { tFunc, location, intl }) 
   const relationships = idea.get('relationships');
 
   const getIds = (val, key) => val.get('id');
-  const authorId = relationships.getIn(['author', 'data', 'id'])
-  const areas = relationships.getIn(['areas','data']).map(getIds)
-  const topics = relationships.getIn(['topics','data']).map(getIds)
-  const voteId = relationships.getIn(['user_vote','data', 0, 'id'])
+  const authorId = relationships.getIn(['author', 'data', 'id']);
+  const areas = relationships.getIn(['areas','data']).map(getIds);
+  const topics = relationships.getIn(['topics','data']).map(getIds);
+  const voteId = relationships.getIn(['user_vote','data', 0, 'id']);
   return {
     id,
     images: images && images.toJS(),
@@ -134,19 +134,3 @@ const mergeProps = ({ idea, images }, dispatchProps, { tFunc, location, intl }) 
 
 
 export default injectIntl(injectTFunc(preprocess(mapStateToProps, null, mergeProps)(Show)));
-
-/*
-
-    const { attributes, relationships } = idea;
-    const authorId = relationships.author && relationships.author.id;
-
-
-        { attributes.images && attributes.images.length > 0 && <ImageCarousel
-          ideaImages={attributes.images}
-        />}
-
-        <IdeaContent>
-          
-        </IdeaContent>
-        <Comments idea={idea} />
-*/
