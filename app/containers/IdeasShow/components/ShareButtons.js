@@ -33,7 +33,7 @@ ShareButtons.propTypes = {
   location: PropTypes.object.isRequired,
   appIdFb: PropTypes.string,
   appIdTw: PropTypes.string,
-  image: PropTypes.string.isRequired,
+  image: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({

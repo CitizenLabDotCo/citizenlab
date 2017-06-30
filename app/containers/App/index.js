@@ -79,7 +79,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
         color: {
           main: '#ef0071',
           menuBg: '#fff',
-        }
+        },
       };
 
       return (
