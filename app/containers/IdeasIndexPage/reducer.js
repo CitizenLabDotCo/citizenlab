@@ -40,7 +40,6 @@ function ideasIndexPageReducer(state = initialState, action) {
         .set('nextPageItemCount', nextPageItemCount);
     }
     case RESET_IDEAS: {
-      console.log(initialState.toJS());
       return initialState;
     }
     case LOAD_TOPICS_SUCCESS: {

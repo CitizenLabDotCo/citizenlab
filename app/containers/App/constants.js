@@ -14,3 +14,5 @@ export const API_PATH = (process.env.NODE_ENV === 'development') ? 'http://local
 
 export const LOADED_CURRENT_TENANT = 'app/App/LOADED_CURRENT_TENANT';
 export const LOAD_CURRENT_USER = 'app/App/LOAD_CURRENT_USER';
+export const CL_GA_TRACKING_ID = 'UA-65562281-44';
+export const CL_GA_TRACKER_NAME = 'CitizenLab2';
