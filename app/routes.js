@@ -293,7 +293,7 @@ export default function createRoutes(store) {
                 const importModules = Promise.all([
                   import('containers/Projects/show/events/reducer'),
                   import('containers/Projects/show/events'),
-                });
+                ]);
 
                 const renderRoute = loadModule(cb);
                 importModules.then(([reducer, component]) => {
@@ -302,6 +302,7 @@ export default function createRoutes(store) {
                 });
 
                 importModules.catch(errorLoading);
+              },
             },
             {
               path: '/projects/:projectId/page/:pageId',

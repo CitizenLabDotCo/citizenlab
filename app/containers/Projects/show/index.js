@@ -178,9 +178,6 @@ class ProjectView extends React.Component {
             <MenuStyled
               pointing
               secondary
-              style={{
-                borderBottom: 'none !important',
-              }}
             >
               <MenuItemStyled
                 title={formatMessage(messages.navInfo)}
@@ -204,9 +201,8 @@ class ProjectView extends React.Component {
                 title={formatMessage(messages.navEvents)}
                 key={3}
                 to={`${basePath}/events`}
-                active={activeItem === 'messages'}
+                active={location.pathname === `${basePath}/events`}
               />
-            </Menu>
               {pages && pages.toJS().map((page, index) => ((index < 2 ? <MenuItemStyled
                 key={999 + page.id}
                 title={tFunc(page.attributes.title_multiloc)}
@@ -217,7 +213,6 @@ class ProjectView extends React.Component {
                 style={{ display: 'none' }}
                 key={999 + page.id}
               />)))}
-
             </MenuStyled>
           </Segment>
           <Loader

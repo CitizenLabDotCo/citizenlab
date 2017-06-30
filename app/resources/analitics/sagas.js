@@ -10,7 +10,7 @@ export default (runSaga, trakers) => {
 
     try {
       // Google Analytics
-      // call all the trakers
+      // call all the trackers
       yield trakers.map((trakerName) => call(window.ga, `${trakerName}.send`, {
         hitType: 'event',
         eventCategory: message,
