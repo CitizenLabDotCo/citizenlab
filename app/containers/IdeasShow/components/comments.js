@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Comment } from 'semantic-ui-react';
-import makeSelectIdeasShow, { makeSelectComments } from 'containers/IdeasShow/selectors';
+import selectIdeasShow, { makeSelectComments } from 'containers/IdeasShow/selectors';
 
 import MapChildren from './comments/mapChildren';
 
@@ -41,8 +41,8 @@ CommentContainer.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   comments: makeSelectComments,
-  storeCommentError: makeSelectIdeasShow('storeCommentError'),
-  resetEditorContent: makeSelectIdeasShow('resetEditorContent'),
+  storeCommentError: selectIdeasShow('storeCommentError'),
+  resetEditorContent: selectIdeasShow('resetEditorContent'),
 });
 
 export default connect(mapStateToProps)(CommentContainer);

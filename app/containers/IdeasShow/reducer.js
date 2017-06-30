@@ -16,6 +16,7 @@ const initialState = fromJS({
   idea: null,
   votes: [],
   comments: [],
+  images: [],
   nextCommentPageNumber: null,
   nextCommentPageItemCount: null,
 });
@@ -24,6 +25,7 @@ export default function ideasShowReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_IDEA_SUCCESS:
       return state
+        .set('images', fromJS(action.payload.data.relationships.idea_images.data.map((image) => image.id)))
         .set('idea', action.payload.data.id);
     case LOAD_VOTES_SUCCESS: {
       const votesIds = action.payload.data.map((vote) => vote.id);

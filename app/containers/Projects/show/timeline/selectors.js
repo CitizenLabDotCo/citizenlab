@@ -1,6 +1,3 @@
-/**
- * Direct selector to the ProjectsTimeline state domain
- */
 import { createSelector } from 'reselect';
 import { selectResourcesDomain } from 'utils/resources/selectors';
 
