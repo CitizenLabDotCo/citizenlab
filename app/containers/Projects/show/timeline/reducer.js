@@ -1,13 +1,10 @@
 /*
  *
- * SignInPage reducer
+ * ProjectsTimeline reducer
  *
  */
 
 import { fromJS } from 'immutable';
-import {
-
-} from './constants';
 import { LOAD_PROJECT_PHASES_SUCCESS } from 'resources/projects/phases/constants';
 
 const initialState = fromJS({

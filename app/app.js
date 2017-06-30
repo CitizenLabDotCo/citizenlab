@@ -66,6 +66,10 @@ import createRoutes from './routes';
 
 import { loadState } from './persistedData';
 
+
+// ga
+import { createGa } from 'config/ga';
+
 // Observe loading of custom font
 const proximaNovaObserver = new FontFaceObserver('proxima-nova', {});
 
@@ -87,12 +91,17 @@ const initialState = fromJS({
 
 export const store = configureStore(initialState, browserHistory);
 
+// initialize Ga & Mix Pannel
+// before syncing with browserHistory to guarantee ga is hit at first page load.
+createGa(store, getSagaMiddleware());
+
 // Sync history and store, as the react-router-redux reducer
 // is under the non-default key ("routing"), selectLocationState
 // must be provided for resolving how to retrieve the "route" in the state
 const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: makeSelectLocationState(),
 });
+
 
 // Set up the router, wrapping all Routes in the App component
 const rootRoute = {

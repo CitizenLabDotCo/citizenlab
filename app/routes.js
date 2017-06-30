@@ -237,11 +237,13 @@ export default function createRoutes(store) {
           name: 'Project page',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
+              import('containers/Projects/show/reducer'),
               import('containers/Projects/show'),
             ]);
 
             const renderRoute = loadModule(cb);
-            importModules.then(([component]) => {
+            importModules.then(([reducer, component]) => {
+              injectReducer('projectContainer', reducer.default);
               renderRoute(component);
             });
 
@@ -251,13 +253,14 @@ export default function createRoutes(store) {
             name: 'Project page',
             getComponent(nextState, cb) {
               const importModules = Promise.all([
+                import('containers/Projects/show/info/reducer'),
                 import('containers/Projects/show/info'),
-                import('containers/Projects/show/timeline/reducer'),
               ]);
 
               const renderRoute = loadModule(cb);
 
-              importModules.then(([component]) => {
+              importModules.then(([reducer, component]) => {
+                injectReducer('projectInfo', reducer.default);
                 renderRoute(component);
               });
 
@@ -277,6 +280,42 @@ export default function createRoutes(store) {
                 const renderRoute = loadModule(cb);
                 importModules.then(([reducer, component]) => {
                   injectReducer('projectTimeline', reducer.default);
+                  renderRoute(component);
+                });
+
+                importModules.catch(errorLoading);
+              },
+            },
+            {
+              path: '/projects/:projectId/events',
+              name: 'Project\'s events page',
+              getComponent(nextState, cb) {
+                const importModules = Promise.all([
+                  import('containers/Projects/show/events/reducer'),
+                  import('containers/Projects/show/events'),
+                ]);
+
+                const renderRoute = loadModule(cb);
+                importModules.then(([reducer, component]) => {
+                  injectReducer('projectEvents', reducer.default);
+                  renderRoute(component);
+                });
+
+                importModules.catch(errorLoading);
+              },
+            },
+            {
+              path: '/projects/:projectId/page/:pageId',
+              name: 'Project\'s page',
+              getComponent(nextState, cb) {
+                const importModules = Promise.all([
+                  import('containers/PagesShowPage/reducer'),
+                  import('containers/Projects/show/page'),
+                ]);
+
+                const renderRoute = loadModule(cb);
+                importModules.then(([reducer, component]) => {
+                  injectReducer('pagesShowPage', reducer.default);
                   renderRoute(component);
                 });
 

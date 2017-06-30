@@ -232,6 +232,7 @@
     "json-api-normalizer": "^0.4.0",
     "lodash": "4.17.2",
     "minimist": "1.2.0",
+    "mixpanel-browser": "^2.11.1",
     "moment": "^2.18.1",
     "motion-ui": "^1.2.2",
     "polished": "1.1.3",

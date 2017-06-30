@@ -38,6 +38,10 @@ const Left = styled.div`
   }
 `;
 
+const MenuItemWrapper = styled.div`
+  opacity: ${(props) => props.active ? '1' : '0.65'};
+`;
+
 const MenuItem = styled(Link)`
   height: 100%;
   font-size: 18px;
@@ -49,6 +53,7 @@ const MenuItem = styled(Link)`
   padding-left: 16px;
   padding-right: 16px;
   cursor: pointer;
+  color: #ffffff !important;
   transition: all 150ms ease;
 `;
 
@@ -207,12 +212,11 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
   };
 
   render() {
-    const { tenantLogo, currentUser, location } = this.props;
+    const { tenantLogo, currentUser, location, className } = this.props;
     const avatar = (currentUser ? currentUser.getIn(['attributes', 'avatar', 'large']) : null);
-    // const { logo } = currentTenant.getIn('attributes', 'logo', 'small');
-    // #023F88
+
     return (
-      <Container>
+      <Container className={className}>
         <Left>
           <Link to="/">
             <Logo height="100%" viewBox="0 0 443.04 205.82" secondary={(location === '/')}>
@@ -220,16 +224,22 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
             </Logo>
           </Link>
 
-          <MenuItems secondary={(this.props.location === '/')}>
-            <MenuItem to="/" activeClassName="active">
-              <FormattedMessage {...messages.pageOverview} />
-            </MenuItem>
-            <MenuItem to="/ideas" activeClassName="active">
-              <FormattedMessage {...messages.pageIdeas} />
-            </MenuItem>
-            <MenuItem to="/projects" activeClassName="active">
-              <FormattedMessage {...messages.pageProjects} />
-            </MenuItem>
+          <MenuItems>
+            <MenuItemWrapper active={this.props.location === '/'}>
+              <MenuItem to="/">
+                <FormattedMessage {...messages.pageOverview} />
+              </MenuItem>
+            </MenuItemWrapper>
+            <MenuItemWrapper active={this.props.location.indexOf('ideas') !== -1}>
+              <MenuItem to="/ideas">
+                <FormattedMessage {...messages.pageIdeas} />
+              </MenuItem>
+            </MenuItemWrapper>
+            <MenuItemWrapper active={this.props.location.indexOf('projects') !== -1}>
+              <MenuItem to="/projects">
+                <FormattedMessage {...messages.pageProjects} />
+              </MenuItem>
+            </MenuItemWrapper>
           </MenuItems>
         </Left>
         <Right>
@@ -291,8 +301,9 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
 }
 
 Navbar.propTypes = {
+  className: PropTypes.string,
   currentUser: PropTypes.object,
-  tenantLogo: PropTypes.string.isRequired,
+  tenantLogo: PropTypes.string,
   location: PropTypes.string.isRequired,
   signOut: PropTypes.func.isRequired,
   goTo: PropTypes.func.isRequired,
@@ -309,4 +320,6 @@ const mergeProps = (stateP, dispatchP, ownP) => {
   return Object.assign({}, stateP, { signOut, goTo }, ownP);
 };
 
-export default injectIntl(preprocess(mapStateToProps, { signOutCurrentUser, push }, mergeProps)(Navbar));
+export default injectIntl(preprocess(mapStateToProps, { signOutCurrentUser, push }, mergeProps)(styled(Navbar)`
+  background-color: ${(props) => props.menuBg};
+`));

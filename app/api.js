@@ -221,6 +221,10 @@ export function fetchProjectPhases(id) {
   return request(`${API_PATH}/projects/${id}/phases`);
 }
 
+export function fetchProjectEvents(id) {
+  return request(`${API_PATH}/projects/${id}/events`);
+}
+
 export function deleteProject(id) {
   return request(`${API_PATH}/projects/${id}`, null, {
     method: 'DELETE',
