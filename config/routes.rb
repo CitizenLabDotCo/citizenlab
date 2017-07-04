@@ -41,6 +41,7 @@ Rails.application.routes.draw do
       resources :projects do
         resources :phases, shallow: true
         resources :events, shallow: true
+        resources :images, defaults: {container_class: Project, image_class: ProjectImage}
       end
 
       resources :notifications, only: [:index, :show] do

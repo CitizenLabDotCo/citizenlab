@@ -16,6 +16,10 @@ class ProjectPolicy < ApplicationPolicy
     user && user.admin?
   end
 
+  def images_index?
+    show?
+  end
+
   def show?
     true
   end

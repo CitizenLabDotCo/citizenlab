@@ -2,8 +2,8 @@ class Project < ApplicationRecord
 
   @@sanitizer = Rails::Html::WhiteListSanitizer.new
 
-  mount_uploader :images, ProjectImageUploader
-  # mount_uploader :files, ProjectFileUploader
+  mount_base64_uploader :header_bg, HeaderBgUploader
+
 
   has_many :projects_topics, dependent: :destroy
   has_many :topics, through: :projects_topics
@@ -12,6 +12,8 @@ class Project < ApplicationRecord
   has_many :phases, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :pages, dependent: :destroy
+  has_many :project_images, dependent: :destroy
+
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
