@@ -177,37 +177,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTgwMzI3OTMsInN1YiI6ImE2NzAwMGY2LWNhMGQtNDk4MS04YWVhLTMyMjY1NjE0Y2JjMyJ9.ZOT50HbseABhHaNYbFq4e8It3MOi28Ci08B2qDh4Ky0
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNTEsInN1YiI6ImFkYmE4NDZlLTIzMWItNDQ5NC1iY2VkLTJkZjQ1MjVlY2VhOCJ9.QN6NTYSQpCcBeVicCdTYFBjB1pIv9D_Oc_k6jrIG4f4
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?areas[]=ff03504d-b3f0-438b-b4da-891f6288550c&amp;areas[]=bf3dde2a-b2db-4d79-9ce7-d4ca20ad28df</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=0bdf729f-3d9c-4a28-ba74-381db7e00a3b&amp;areas[]=41df6100-900b-4b15-ae59-145c0848b044</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">areas: [&quot;ff03504d-b3f0-438b-b4da-891f6288550c&quot;, &quot;bf3dde2a-b2db-4d79-9ce7-d4ca20ad28df&quot;]</pre>
+            <pre class="request query_parameters highlight">areas: [&quot;0bdf729f-3d9c-4a28-ba74-381db7e00a3b&quot;, &quot;41df6100-900b-4b15-ae59-145c0848b044&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
-              <pre class="response headers">X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;ae90419d48a097e0781809ed86733a5c&quot;
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;e9017dbdbd872237ee658d9815df2b6f&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 718eebec-86d5-4c6a-981a-5350a7c4194a
-X-Runtime: 0.073787
+X-Request-Id: be79b265-0e2b-427a-82e6-c083ef1a83e2
+X-Runtime: 0.043710
 Vary: Origin
-Content-Length: 1611</pre>
+Content-Length: 1659</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;96983707-fa03-460e-91a7-dbfb30ba0449&quot;,
+      &quot;id&quot;: &quot;5acdb340-a2ea-42d1-bd5e-678cc76f914a&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -218,13 +215,15 @@ Content-Length: 1611</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Mohammed Harber&quot;,
+        &quot;author_name&quot;: &quot;Alvera Bins&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-06-20T08:13:13.191Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-06-20T08:13:13.191Z&quot;,
-        &quot;published_at&quot;: &quot;2017-06-20T08:13:13.191Z&quot;
+        &quot;location_point_geojson&quot;: null,
+        &quot;location_description&quot;: null,
+        &quot;created_at&quot;: &quot;2017-07-04T13:10:51.329Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-04T13:10:51.329Z&quot;,
+        &quot;published_at&quot;: &quot;2017-07-04T13:10:51.329Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -235,11 +234,11 @@ Content-Length: 1611</pre>
         &quot;areas&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;ff03504d-b3f0-438b-b4da-891f6288550c&quot;,
+              &quot;id&quot;: &quot;0bdf729f-3d9c-4a28-ba74-381db7e00a3b&quot;,
               &quot;type&quot;: &quot;areas&quot;
             },
             {
-              &quot;id&quot;: &quot;bf3dde2a-b2db-4d79-9ce7-d4ca20ad28df&quot;,
+              &quot;id&quot;: &quot;41df6100-900b-4b15-ae59-145c0848b044&quot;,
               &quot;type&quot;: &quot;areas&quot;
             }
           ]
@@ -251,13 +250,13 @@ Content-Length: 1611</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;f04402a1-01b7-45da-9a86-65a71167bede&quot;,
-            &quot;type&quot;: &quot;users&quot;
+            &quot;id&quot;: &quot;4a4bb133-99fe-4e4c-ab04-0e956a888c96&quot;,
+            &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;f4d13a74-911d-4449-afcf-dd4f80f958b0&quot;,
+            &quot;id&quot;: &quot;9b6b8d2f-77e4-4bbf-ac51-73d8ff008f80&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -269,25 +268,25 @@ Content-Length: 1611</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;f04402a1-01b7-45da-9a86-65a71167bede&quot;,
+      &quot;id&quot;: &quot;4a4bb133-99fe-4e4c-ab04-0e956a888c96&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Mohammed&quot;,
-        &quot;last_name&quot;: &quot;Harber&quot;,
-        &quot;slug&quot;: &quot;mohammed-harber&quot;,
+        &quot;first_name&quot;: &quot;Alvera&quot;,
+        &quot;last_name&quot;: &quot;Bins&quot;,
+        &quot;slug&quot;: &quot;alvera-bins&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/f04402a1-01b7-45da-9a86-65a71167bede/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/f04402a1-01b7-45da-9a86-65a71167bede/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/f04402a1-01b7-45da-9a86-65a71167bede/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/4a4bb133-99fe-4e4c-ab04-0e956a888c96/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/4a4bb133-99fe-4e4c-ab04-0e956a888c96/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/4a4bb133-99fe-4e4c-ab04-0e956a888c96/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-06-20T08:13:13.165Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-06-20T08:13:13.165Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-04T13:10:51.313Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-04T13:10:51.313Z&quot;
       }
     }
   ],

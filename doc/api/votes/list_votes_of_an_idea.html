@@ -117,36 +117,33 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTgwMzI4MzgsInN1YiI6IjY0YzY3YjViLTBmNDUtNDhkYy04MDUyLWJlNGU1NzAzN2VmNSJ9.bLnY5qQPJVOFzexdFDn7xlzOxEPd2DAT2hUs7_2xZQU
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyODAsInN1YiI6IjQzMDQ3ZmZjLTg5OGItNDU5ZC04MzFjLTViZTNhYzY0MmNlOCJ9.xrCR3l2imfvZKhVMimSQWMttkPFfS2JmGOqmsdoQxeM
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas/386c6244-4963-41ff-83b0-9322a8357979/votes</pre>
+          <pre class="request route highlight">GET api/v1/ideas/563c3770-e0f3-48a1-a798-7ba0710cd662/votes</pre>
 
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
-              <pre class="response headers">X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;dc94a6ea61368ccf95f8a42aaa86fe23&quot;
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;cfc04d0b4f429222b0189957686c9a13&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: c6a9e6fe-1e5e-405a-95f9-5d24cc834fe3
-X-Runtime: 0.065904
+X-Request-Id: e0afcfac-f80e-4c9d-bb39-99cea1658b9d
+X-Runtime: 0.029583
 Vary: Origin
-Content-Length: 2037</pre>
+Content-Length: 2044</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;1c4c0f90-cdeb-48d7-bfd1-c48aaf29090a&quot;,
+      &quot;id&quot;: &quot;18242f7b-514b-4af1-8748-b36f0fc37773&quot;,
       &quot;type&quot;: &quot;votes&quot;,
       &quot;attributes&quot;: {
         &quot;mode&quot;: &quot;up&quot;
@@ -154,20 +151,20 @@ Content-Length: 2037</pre>
       &quot;relationships&quot;: {
         &quot;votable&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;386c6244-4963-41ff-83b0-9322a8357979&quot;,
-            &quot;type&quot;: &quot;ideas&quot;
+            &quot;id&quot;: &quot;563c3770-e0f3-48a1-a798-7ba0710cd662&quot;,
+            &quot;type&quot;: &quot;votables&quot;
           }
         },
         &quot;user&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;07e450d2-7d2d-4676-b290-ad3f1355ea32&quot;,
+            &quot;id&quot;: &quot;59a5f075-aaf9-487f-89fe-5c1abad1b0b5&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         }
       }
     },
     {
-      &quot;id&quot;: &quot;d1384124-add2-489e-8e25-069b32c23cd5&quot;,
+      &quot;id&quot;: &quot;2fc1c635-32bd-49f9-9b47-a182195d2d88&quot;,
       &quot;type&quot;: &quot;votes&quot;,
       &quot;attributes&quot;: {
         &quot;mode&quot;: &quot;up&quot;
@@ -175,13 +172,13 @@ Content-Length: 2037</pre>
       &quot;relationships&quot;: {
         &quot;votable&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;386c6244-4963-41ff-83b0-9322a8357979&quot;,
-            &quot;type&quot;: &quot;ideas&quot;
+            &quot;id&quot;: &quot;563c3770-e0f3-48a1-a798-7ba0710cd662&quot;,
+            &quot;type&quot;: &quot;votables&quot;
           }
         },
         &quot;user&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;08698489-d334-4371-b613-854986200186&quot;,
+            &quot;id&quot;: &quot;2b167d90-b2c2-4cef-b5a5-03b93bbd6cc0&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         }
@@ -190,26 +187,26 @@ Content-Length: 2037</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;07e450d2-7d2d-4676-b290-ad3f1355ea32&quot;,
+      &quot;id&quot;: &quot;59a5f075-aaf9-487f-89fe-5c1abad1b0b5&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Pinkie&quot;,
-        &quot;last_name&quot;: &quot;Pfannerstill&quot;,
-        &quot;slug&quot;: &quot;pinkie-pfannerstill&quot;,
+        &quot;first_name&quot;: &quot;Dudley&quot;,
+        &quot;last_name&quot;: &quot;Homenick&quot;,
+        &quot;slug&quot;: &quot;dudley-homenick&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/07e450d2-7d2d-4676-b290-ad3f1355ea32/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/07e450d2-7d2d-4676-b290-ad3f1355ea32/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/07e450d2-7d2d-4676-b290-ad3f1355ea32/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/59a5f075-aaf9-487f-89fe-5c1abad1b0b5/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/59a5f075-aaf9-487f-89fe-5c1abad1b0b5/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/59a5f075-aaf9-487f-89fe-5c1abad1b0b5/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-06-20T08:13:58.258Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-06-20T08:13:58.258Z&quot;,
-        &quot;email&quot;: &quot;luther@gerholddare.biz&quot;,
+        &quot;created_at&quot;: &quot;2017-07-04T13:11:20.896Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-04T13:11:20.896Z&quot;,
+        &quot;email&quot;: &quot;claudia@hodkiewicz.io&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -217,26 +214,26 @@ Content-Length: 2037</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;08698489-d334-4371-b613-854986200186&quot;,
+      &quot;id&quot;: &quot;2b167d90-b2c2-4cef-b5a5-03b93bbd6cc0&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Mathilde&quot;,
-        &quot;last_name&quot;: &quot;Collins&quot;,
-        &quot;slug&quot;: &quot;mathilde-collins&quot;,
+        &quot;first_name&quot;: &quot;Madison&quot;,
+        &quot;last_name&quot;: &quot;Rodriguez&quot;,
+        &quot;slug&quot;: &quot;madison-rodriguez&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/08698489-d334-4371-b613-854986200186/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/08698489-d334-4371-b613-854986200186/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/08698489-d334-4371-b613-854986200186/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/2b167d90-b2c2-4cef-b5a5-03b93bbd6cc0/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/2b167d90-b2c2-4cef-b5a5-03b93bbd6cc0/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/2b167d90-b2c2-4cef-b5a5-03b93bbd6cc0/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-06-20T08:13:58.185Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-06-20T08:13:58.185Z&quot;,
-        &quot;email&quot;: &quot;judy@witting.net&quot;,
+        &quot;created_at&quot;: &quot;2017-07-04T13:11:20.863Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-04T13:11:20.863Z&quot;,
+        &quot;email&quot;: &quot;margaretta.west@west.net&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

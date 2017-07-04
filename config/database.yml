@@ -15,7 +15,9 @@
 # gem 'pg'
 #
 default: &default
-  adapter: postgresql
+  adapter: postgis
+  # adapter: postgresql
+  postgis_schema: "shared_extensions"
   schema_search_path: "public,shared_extensions"
   encoding: unicode
   # For details on connection pooling, see Rails configuration guide
@@ -63,6 +65,8 @@ development:
 test:
   <<: *default
   database: cl2_back_test
+  schema_search_path: public,shared_extensions
+  
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is

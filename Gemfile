@@ -8,7 +8,7 @@ end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 # gem 'rails', '~> 5.1.0.beta1'
-gem 'rails', '~> 5.0.1'
+gem 'rails', '~> 5.1.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
@@ -60,7 +60,7 @@ gem "sidekiq", "~> 4.2.9"
 gem "sidekiq-cron", "~> 0.4.5"
 gem "apartment", "~> 1.2.0"
 gem "apartment-sidekiq", "~> 1.1.0"
-gem "carrierwave", "~> 1.0"
+gem "carrierwave", "~> 1.1.0"
 gem "kaminari", "~> 1.0.1"
 gem "activerecord_json_validator", "~> 1.2.0"
 
@@ -68,7 +68,7 @@ gem "rest-client"
 gem "fog-aws"
 gem "mini_magick"
 gem "carrierwave-base64", "~> 2.5"
-gem "awesome_nested_set", "~> 3.1.2"
+gem "awesome_nested_set", "~> 3.1.3"
 gem "pg_search", "~> 2.0.1"
 gem "counter_culture", "~> 1.0"
 gem "liquid", "~> 4.0"
@@ -77,3 +77,6 @@ gem "koala", "~> 3.0"
 gem 'groupdate', "~> 3.2.0"
 gem 'rubyzip', '~> 1.1.0'
 gem 'axlsx', '2.1.0.pre'
+gem 'rgeo-geojson'
+
+gem 'activerecord-postgis-adapter', '~> 5.0'

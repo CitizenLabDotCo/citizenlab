@@ -144,13 +144,13 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTgwMzI4MzgsInN1YiI6ImU2ODkyNzg0LTNkZDEtNGEyMi1iOGUzLWFkZjRhNzJlOTFmZSJ9.ajW41K1mbrDjDzjWS4qNGcTxxxHKVCim_v-uUnivmY4
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyODEsInN1YiI6ImI2MmNlMzA0LTQzMmItNGM0My04N2E3LTViZjdiNWVmOWFhZCJ9.sHhOESKxfcA_z4zPRGqZGBEma85TESCAq-HCaN8CVUM
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/ideas/e9a575eb-244d-438b-a472-4cac758a1603/votes</pre>
+          <pre class="request route highlight">POST api/v1/ideas/3aa0b7da-48b9-4b6f-b4f5-d15e4ccec5cb/votes</pre>
 
 
             <h4>Body</h4>
@@ -159,22 +159,19 @@ Cookie: </pre>
 
             <h3>Response</h3>
               <h4>Headers</h4>
-              <pre class="response headers">X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;12cc901fdd603e5d938b2a37ef159ea5&quot;
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;27637e41e9e51bf23e408c45955b2dde&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 0ec0d535-3841-4306-ade7-9d876b7db033
-X-Runtime: 0.031335
+X-Request-Id: e3d85e51-22a7-4c75-b9ea-0054a1d2077c
+X-Runtime: 0.025980
 Vary: Origin
-Content-Length: 271</pre>
+Content-Length: 274</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;3fb09784-64e9-456a-a26f-0305d6a53631&quot;,
+    &quot;id&quot;: &quot;fd8360df-a21d-4db9-a0ed-a9767db2571d&quot;,
     &quot;type&quot;: &quot;votes&quot;,
     &quot;attributes&quot;: {
       &quot;mode&quot;: &quot;up&quot;
@@ -182,13 +179,13 @@ Content-Length: 271</pre>
     &quot;relationships&quot;: {
       &quot;votable&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;e9a575eb-244d-438b-a472-4cac758a1603&quot;,
-          &quot;type&quot;: &quot;ideas&quot;
+          &quot;id&quot;: &quot;3aa0b7da-48b9-4b6f-b4f5-d15e4ccec5cb&quot;,
+          &quot;type&quot;: &quot;votables&quot;
         }
       },
       &quot;user&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;e6892784-3dd1-4a22-b8e3-adf4a72e91fe&quot;,
+          &quot;id&quot;: &quot;b62ce304-432b-4c43-87a7-5bf7b5ef9aad&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       }

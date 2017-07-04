@@ -152,67 +152,65 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTgwMzI4MjIsInN1YiI6IjlmNDc1NDA0LWI5MzctNDg5Yy1hMjU3LTQyNjU2MWRhZTdmNyJ9.f_12a0EO3AMm0uQkdHnSYcW2GlqeYgCpx_57r6K9qU0
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNzIsInN1YiI6ImRjOGUzZTlhLWRiNTgtNDUwZS1iYWQ1LTg5YTE4NGZmZjI1ZSJ9.C1gHFwLXqxaDYMltgBuSUKMQLt1SnAV38ti5Rw4HRjo
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/stats/users_by_time?start_at=2017-06-01+00%3A00%3A00+%2B0200&amp;end_at=2017-06-30+23%3A59%3A59+%2B0200&amp;interval=day</pre>
+          <pre class="request route highlight">GET api/v1/stats/users_by_time?start_at=2017-07-01+00%3A00%3A00+%2B0200&amp;end_at=2017-07-31+23%3A59%3A59+%2B0200&amp;interval=day</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">start_at: 2017-06-01 00:00:00 +0200
-end_at: 2017-06-30 23:59:59 +0200
+            <pre class="request query_parameters highlight">start_at: 2017-07-01 00:00:00 +0200
+end_at: 2017-07-31 23:59:59 +0200
 interval: day</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
-              <pre class="response headers">X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;e9cdfa421f2fce464d6fafb5d81a1344&quot;
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;39bea855a45e45c365c8c5a36d1e0e99&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 1097bf47-d83e-43e2-a0de-bb3aa7c26bc7
-X-Runtime: 0.087655
+X-Request-Id: dc694914-799e-4066-a9dc-e26976a6f682
+X-Runtime: 0.033840
 Vary: Origin
-Content-Length: 452</pre>
+Content-Length: 467</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;2017-06-01&quot;: 0,
-  &quot;2017-06-02&quot;: 0,
-  &quot;2017-06-03&quot;: 0,
-  &quot;2017-06-04&quot;: 0,
-  &quot;2017-06-05&quot;: 0,
-  &quot;2017-06-06&quot;: 0,
-  &quot;2017-06-07&quot;: 0,
-  &quot;2017-06-08&quot;: 0,
-  &quot;2017-06-09&quot;: 0,
-  &quot;2017-06-10&quot;: 0,
-  &quot;2017-06-11&quot;: 0,
-  &quot;2017-06-12&quot;: 0,
-  &quot;2017-06-13&quot;: 0,
-  &quot;2017-06-14&quot;: 0,
-  &quot;2017-06-15&quot;: 0,
-  &quot;2017-06-16&quot;: 0,
-  &quot;2017-06-17&quot;: 0,
-  &quot;2017-06-18&quot;: 0,
-  &quot;2017-06-19&quot;: 0,
-  &quot;2017-06-20&quot;: 21,
-  &quot;2017-06-21&quot;: 0,
-  &quot;2017-06-22&quot;: 0,
-  &quot;2017-06-23&quot;: 0,
-  &quot;2017-06-24&quot;: 0,
-  &quot;2017-06-25&quot;: 0,
-  &quot;2017-06-26&quot;: 0,
-  &quot;2017-06-27&quot;: 0,
-  &quot;2017-06-28&quot;: 0,
-  &quot;2017-06-29&quot;: 0,
-  &quot;2017-06-30&quot;: 0
+  &quot;2017-07-01&quot;: 0,
+  &quot;2017-07-02&quot;: 0,
+  &quot;2017-07-03&quot;: 0,
+  &quot;2017-07-04&quot;: 21,
+  &quot;2017-07-05&quot;: 0,
+  &quot;2017-07-06&quot;: 0,
+  &quot;2017-07-07&quot;: 0,
+  &quot;2017-07-08&quot;: 0,
+  &quot;2017-07-09&quot;: 0,
+  &quot;2017-07-10&quot;: 0,
+  &quot;2017-07-11&quot;: 0,
+  &quot;2017-07-12&quot;: 0,
+  &quot;2017-07-13&quot;: 0,
+  &quot;2017-07-14&quot;: 0,
+  &quot;2017-07-15&quot;: 0,
+  &quot;2017-07-16&quot;: 0,
+  &quot;2017-07-17&quot;: 0,
+  &quot;2017-07-18&quot;: 0,
+  &quot;2017-07-19&quot;: 0,
+  &quot;2017-07-20&quot;: 0,
+  &quot;2017-07-21&quot;: 0,
+  &quot;2017-07-22&quot;: 0,
+  &quot;2017-07-23&quot;: 0,
+  &quot;2017-07-24&quot;: 0,
+  &quot;2017-07-25&quot;: 0,
+  &quot;2017-07-26&quot;: 0,
+  &quot;2017-07-27&quot;: 0,
+  &quot;2017-07-28&quot;: 0,
+  &quot;2017-07-29&quot;: 0,
+  &quot;2017-07-30&quot;: 0,
+  &quot;2017-07-31&quot;: 0
 }</pre>
       </div>
     </div>

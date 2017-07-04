@@ -175,6 +175,9 @@ Apartment::Tenant.switch('localhost') do
   end
 
 
+  MAP_CENTER = [50.8503, 4.3517]
+  MAP_OFFSET = 0.5
+
   30.times do 
     idea = Idea.create({
       "title_multiloc": {
@@ -189,7 +192,9 @@ Apartment::Tenant.switch('localhost') do
       areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
       author: User.offset(rand(User.count)).first,
       project: Project.offset(rand(Project.count)).first,
-      publication_status: 'published'
+      publication_status: 'published',
+      location_point: rand(2) == 0 ? nil : "POINT(#{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)})",
+      location_description: rand(2) == 0 ? nil : Faker::Address.street_address
     })
 
     [0,0,1,1,2][rand(5)].times do |i|

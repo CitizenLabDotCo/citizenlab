@@ -185,6 +185,8 @@ resource "Ideas" do
       parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
       parameter :topic_ids, "Array of ids of the associated topics"
       parameter :area_ids, "Array of ids of the associated areas"
+      parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
+      parameter :location_description, "A human readable description of the location the idea applies to"
     end
 
     describe do
@@ -196,12 +198,16 @@ resource "Ideas" do
       let(:body_multiloc) { idea.body_multiloc }
       let(:topic_ids) { create_list(:topic, 2).map(&:id) }
       let(:area_ids) { create_list(:area, 2).map(&:id) }
+      let(:location_point_geojson) { {type: "Point", coordinates: [51.11520776293035, 3.921154106874878]} }
+      let(:location_description) { "Stanley Road 4" }
 
       example_request "Creating a published idea" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match topic_ids
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+        expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
+        expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
       end
     end
 
@@ -221,11 +227,15 @@ resource "Ideas" do
       parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
       parameter :topic_ids, "Array of ids of the associated topics"
       parameter :area_ids, "Array of ids of the associated areas"
+      parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
+      parameter :location_description, "A human readable description of the location the idea applies to"
     end
 
     let(:id) { @idea.id }
     let(:topic_ids) { create_list(:topic, 2).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
+    let(:location_point_geojson) { {type: "Point", coordinates: [51.4365635, 3.825930459]} }
+    let(:location_description) { "Watkins Road 8" }
 
     describe do
       let(:title_multiloc) { {"en" => "Changed title" } }
@@ -235,6 +245,8 @@ resource "Ideas" do
         expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
         expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match topic_ids
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+        expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
+        expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
       end
     end
 

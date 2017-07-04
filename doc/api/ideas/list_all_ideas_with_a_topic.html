@@ -177,37 +177,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTgwMzI3OTEsInN1YiI6ImE4ZjUyNmQzLTQ5OGEtNGNlYi1iMTBjLTIwOGMzZmQwMjljNSJ9.2cB_m8v-nkCK1EX17Fe2ZtR84AGb1c3SRxhPPhCyHYA
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNTAsInN1YiI6IjhmMTYzMDhmLTMzN2EtNDJmYi1hY2YyLTAyOTgzZjlmOTc5MSJ9.eQzyGLRs7JI-ZThQN19SSD4Gt34irc_zXsjKQdCPnfs
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=1f5ece79-e515-4663-b619-5cb98579b79c</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=7e728ae0-b5d9-4c9e-87cd-9908b1f16850</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;1f5ece79-e515-4663-b619-5cb98579b79c&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;7e728ae0-b5d9-4c9e-87cd-9908b1f16850&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
-              <pre class="response headers">X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;e09d2de54db7db779dbd8a640e853777&quot;
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;fc8ebc39f81d713b0c058ff87b63282e&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 7bcd14a3-0321-42a0-b13e-03c3eebc5f23
-X-Runtime: 0.085154
+X-Request-Id: f83b58dc-3de3-4af5-906e-d3af5bdc40b6
+X-Runtime: 0.042562
 Vary: Origin
-Content-Length: 1536</pre>
+Content-Length: 1608</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;826bc1f9-afa6-4839-9ced-627c7d046b27&quot;,
+      &quot;id&quot;: &quot;b5f7d8d3-638b-4bbb-abeb-3c085593e9a8&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -218,19 +215,21 @@ Content-Length: 1536</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Name Welch&quot;,
+        &quot;author_name&quot;: &quot;Muhammad Lesch&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-06-20T08:13:10.743Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-06-20T08:13:10.743Z&quot;,
-        &quot;published_at&quot;: &quot;2017-06-20T08:13:10.743Z&quot;
+        &quot;location_point_geojson&quot;: null,
+        &quot;location_description&quot;: null,
+        &quot;created_at&quot;: &quot;2017-07-04T13:10:50.022Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-04T13:10:50.022Z&quot;,
+        &quot;published_at&quot;: &quot;2017-07-04T13:10:50.021Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;1f5ece79-e515-4663-b619-5cb98579b79c&quot;,
+              &quot;id&quot;: &quot;7e728ae0-b5d9-4c9e-87cd-9908b1f16850&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -247,13 +246,13 @@ Content-Length: 1536</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;10a904fd-bb80-4311-be4f-41a4bc196edb&quot;,
-            &quot;type&quot;: &quot;users&quot;
+            &quot;id&quot;: &quot;49ab3082-cd29-4eee-b116-8f4b49a4eb43&quot;,
+            &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;2736e1d2-f172-4a63-b7ad-6bd15337f3a7&quot;,
+            &quot;id&quot;: &quot;16ac610c-0051-47d9-81b8-ca8e12f8dadb&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -265,25 +264,25 @@ Content-Length: 1536</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;10a904fd-bb80-4311-be4f-41a4bc196edb&quot;,
+      &quot;id&quot;: &quot;49ab3082-cd29-4eee-b116-8f4b49a4eb43&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Name&quot;,
-        &quot;last_name&quot;: &quot;Welch&quot;,
-        &quot;slug&quot;: &quot;name-welch&quot;,
+        &quot;first_name&quot;: &quot;Muhammad&quot;,
+        &quot;last_name&quot;: &quot;Lesch&quot;,
+        &quot;slug&quot;: &quot;muhammad-lesch&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/10a904fd-bb80-4311-be4f-41a4bc196edb/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/10a904fd-bb80-4311-be4f-41a4bc196edb/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/10a904fd-bb80-4311-be4f-41a4bc196edb/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/49ab3082-cd29-4eee-b116-8f4b49a4eb43/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/49ab3082-cd29-4eee-b116-8f4b49a4eb43/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/49ab3082-cd29-4eee-b116-8f4b49a4eb43/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-06-20T08:13:10.724Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-06-20T08:13:10.724Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-04T13:10:50.010Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-04T13:10:50.010Z&quot;
       }
     }
   ],

@@ -1,5 +1,5 @@
 class Api::V1::IdeaSerializer < ActiveModel::Serializer
-  attributes :id, :title_multiloc, :body_multiloc, :author_name, :publication_status, :upvotes_count, :downvotes_count, :created_at, :updated_at, :published_at
+  attributes :id, :title_multiloc, :body_multiloc, :author_name, :publication_status, :upvotes_count, :downvotes_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at
 
   has_many :topics
   has_many :areas
@@ -14,6 +14,10 @@ class Api::V1::IdeaSerializer < ActiveModel::Serializer
 
   def passed_options
     @instance_options
+  end
+
+  def location_point_geojson
+    RGeo::GeoJSON.encode(object.location_point)
   end
 
   def signed_in?

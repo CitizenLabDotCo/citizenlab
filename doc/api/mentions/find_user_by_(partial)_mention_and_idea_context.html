@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mentions API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Mentions API</h1>
+
+        <p class="explanation">Returns the 5 best matches</p>
+
+      <div class="article">
+        <h2>Find user by (partial) mention and idea context</h2>
+        <h3>GET api/v1/mentions/users</h3>
+
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="required">
+                    <span class="name">mention</span>
+                </td>
+                <td>
+                  <span class="description">The (partial) search string for the mention (without the @)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">idea_id</span>
+                </td>
+                <td>
+                  <span class="description">An idea that is used as a context to return related users first</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNTYsInN1YiI6Ijk2YTJlNDUwLTliNmMtNDBiNi04ZTNjLWQ0YmI5MzAzNTUzZiJ9.6EnCURHP0z0g8m9OuII_umb7GnaKwww80a5VddIUH6o
+Content-Type: application/json
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/mentions/users?mention=jozefius&amp;idea_id=2a7bebf7-53db-4b0e-b884-d618832796e2</pre>
+
+            <h4>Query Parameters</h4>
+            <pre class="request query_parameters highlight">mention: jozefius
+idea_id: 2a7bebf7-53db-4b0e-b884-d618832796e2</pre>
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;ccbc3fd6d3132d1ad880d9e8ba7881ca&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 9050ac20-99f5-4cad-a8b0-caf0d3356cde
+X-Runtime: 0.031762
+Vary: Origin
+Content-Length: 2612</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;7c92cff1-891c-42cd-8dfb-25a4d16661b5&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;jozefius&quot;,
+        &quot;last_name&quot;: &quot;Hyatt&quot;,
+        &quot;slug&quot;: &quot;jozefius-hyatt&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/7c92cff1-891c-42cd-8dfb-25a4d16661b5/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/7c92cff1-891c-42cd-8dfb-25a4d16661b5/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/7c92cff1-891c-42cd-8dfb-25a4d16661b5/large_robot.jpg&quot;
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;bbeea970-7040-4291-8bfd-ef52fb37d79a&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;jozefius&quot;,
+        &quot;last_name&quot;: &quot;Kuhic&quot;,
+        &quot;slug&quot;: &quot;jozefius-kuhic&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/bbeea970-7040-4291-8bfd-ef52fb37d79a/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/bbeea970-7040-4291-8bfd-ef52fb37d79a/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/bbeea970-7040-4291-8bfd-ef52fb37d79a/large_robot.jpg&quot;
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;c0875a2f-5949-48ad-93ed-dba4728ae083&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;jozefius&quot;,
+        &quot;last_name&quot;: &quot;Block&quot;,
+        &quot;slug&quot;: &quot;jozefius-block&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/c0875a2f-5949-48ad-93ed-dba4728ae083/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/c0875a2f-5949-48ad-93ed-dba4728ae083/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/c0875a2f-5949-48ad-93ed-dba4728ae083/large_robot.jpg&quot;
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;58d125a0-c822-4a01-9591-8e8d5da6e688&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;jozefius&quot;,
+        &quot;last_name&quot;: &quot;Schumm&quot;,
+        &quot;slug&quot;: &quot;jozefius-schumm&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/58d125a0-c822-4a01-9591-8e8d5da6e688/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/58d125a0-c822-4a01-9591-8e8d5da6e688/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/58d125a0-c822-4a01-9591-8e8d5da6e688/large_robot.jpg&quot;
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;c9a27949-770d-42a0-8d55-f97fcb38d843&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;jozefius&quot;,
+        &quot;last_name&quot;: &quot;Towne&quot;,
+        &quot;slug&quot;: &quot;jozefius-towne&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/c9a27949-770d-42a0-8d55-f97fcb38d843/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/c9a27949-770d-42a0-8d55-f97fcb38d843/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/c9a27949-770d-42a0-8d55-f97fcb38d843/large_robot.jpg&quot;
+        }
+      }
+    }
+  ]
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

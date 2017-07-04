@@ -14,7 +14,7 @@ class Tenant < ApplicationRecord
 
   after_create :create_apartment_tenant
   after_destroy :delete_apartment_tenant
-  after_update :update_tenant_schema, if: :host_changed?
+  after_update :update_tenant_schema, if: :saved_change_to_host?
 
   before_validation :validate_missing_feature_dependencies
   # before_validation :validate_required_settings

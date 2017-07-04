@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Notifications API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Notifications API</h1>
+
+        <p class="explanation">Notifications are sorted by descending creation date</p>
+
+      <div class="article">
+        <h2>List all notifications</h2>
+        <h3>GET api/v1/notifications</h3>
+
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of notifications per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[only_unread]</span>
+                </td>
+                <td>
+                  <span class="description">Add this parameter if you only want to receive unread notifications</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNTcsInN1YiI6Ijc5YTJhZGEwLTBiM2MtNGU0Mi05ZDM1LTAxMTVjODQ5ZmE1NCJ9.jgb6zhbAAwWwJtax767J3o1uif29Y0Dcf5TBpF6DUX8
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/notifications</pre>
+
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;9794934fed48e8a6fcd5c625cec9dbac&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: c42d355d-3194-477d-b9ce-1f1956b028f6
+X-Runtime: 0.039119
+Vary: Origin
+Content-Length: 2441</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;18750c85-6cfd-407a-b077-9847e34f9ffc&quot;,
+      &quot;type&quot;: &quot;notification&quot;,
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;comment_on_your_comment&quot;,
+        &quot;read_at&quot;: &quot;2017-07-04T13:10:57.627Z&quot;,
+        &quot;created_at&quot;: &quot;2017-07-04T13:10:57.960Z&quot;,
+        &quot;user_first_name&quot;: &quot;Robbie&quot;,
+        &quot;user_last_name&quot;: &quot;Bednar&quot;,
+        &quot;user_slug&quot;: &quot;robbie-bednar&quot;,
+        &quot;idea_title&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        }
+      },
+      &quot;relationships&quot;: {
+        &quot;user&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;74bc71e9-5e90-45ce-acb7-95b829ac74f2&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;idea&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;73ccad2b-58e7-4c3a-94b9-f8ef8cbc047e&quot;,
+            &quot;type&quot;: &quot;ideas&quot;
+          }
+        },
+        &quot;comment&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;36889244-8654-495f-88fa-8b84369c37b9&quot;,
+            &quot;type&quot;: &quot;comments&quot;
+          }
+        },
+        &quot;project&quot;: {
+          &quot;data&quot;: null
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;9783e780-ff52-402b-91e2-23f4625de3dc&quot;,
+      &quot;type&quot;: &quot;notification&quot;,
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;comment_on_your_comment&quot;,
+        &quot;read_at&quot;: &quot;2017-07-04T13:10:57.627Z&quot;,
+        &quot;created_at&quot;: &quot;2017-07-04T13:10:57.791Z&quot;,
+        &quot;user_first_name&quot;: &quot;Brielle&quot;,
+        &quot;user_last_name&quot;: &quot;Hegmann&quot;,
+        &quot;user_slug&quot;: &quot;brielle-hegmann&quot;,
+        &quot;idea_title&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        }
+      },
+      &quot;relationships&quot;: {
+        &quot;user&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;d2924390-efc5-4d1a-b5f7-99421878e3e8&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;idea&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;d393bded-d1d3-469b-a5d7-2831f5463ed5&quot;,
+            &quot;type&quot;: &quot;ideas&quot;
+          }
+        },
+        &quot;comment&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;e661112e-ca10-4391-a220-9d4be40e1b16&quot;,
+            &quot;type&quot;: &quot;comments&quot;
+          }
+        },
+        &quot;project&quot;: {
+          &quot;data&quot;: null
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;734a8c85-3c9f-4f2d-9f21-0e0e6d41fb05&quot;,
+      &quot;type&quot;: &quot;notification&quot;,
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;comment_on_your_comment&quot;,
+        &quot;read_at&quot;: null,
+        &quot;created_at&quot;: &quot;2017-07-04T13:10:57.625Z&quot;,
+        &quot;user_first_name&quot;: &quot;Waldo&quot;,
+        &quot;user_last_name&quot;: &quot;Kirlin&quot;,
+        &quot;user_slug&quot;: &quot;waldo-kirlin&quot;,
+        &quot;idea_title&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        }
+      },
+      &quot;relationships&quot;: {
+        &quot;user&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;a7a33a81-5cb5-43d9-9a99-1302efbcead1&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;idea&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;f501b415-0baf-46cc-80a2-1fba461722ab&quot;,
+            &quot;type&quot;: &quot;ideas&quot;
+          }
+        },
+        &quot;comment&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;8c6523c8-7ee3-4cce-a223-18fc39764553&quot;,
+            &quot;type&quot;: &quot;comments&quot;
+          }
+        },
+        &quot;project&quot;: {
+          &quot;data&quot;: null
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;3796ef7a-70a9-4788-9b73-533f6193157a&quot;,
+      &quot;type&quot;: &quot;notification&quot;,
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;comment_on_your_comment&quot;,
+        &quot;read_at&quot;: null,
+        &quot;created_at&quot;: &quot;2017-07-04T13:10:57.457Z&quot;,
+        &quot;user_first_name&quot;: &quot;Cara&quot;,
+        &quot;user_last_name&quot;: &quot;D&#39;Amore&quot;,
+        &quot;user_slug&quot;: &quot;cara-d-amore&quot;,
+        &quot;idea_title&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        }
+      },
+      &quot;relationships&quot;: {
+        &quot;user&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;c8509ca6-c28a-4bf0-98d4-b97526404009&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;idea&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;e425f500-2fbf-4ab3-8c9b-68f9ebb7016f&quot;,
+            &quot;type&quot;: &quot;ideas&quot;
+          }
+        },
+        &quot;comment&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;870a9641-cb3f-4d1b-83f4-8238a4e76e03&quot;,
+            &quot;type&quot;: &quot;comments&quot;
+          }
+        },
+        &quot;project&quot;: {
+          &quot;data&quot;: null
+        }
+      }
+    }
+  ],
+  &quot;links&quot;: {
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

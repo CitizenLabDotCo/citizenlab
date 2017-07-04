@@ -152,67 +152,65 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTgwMzI4MzMsInN1YiI6ImUwZTQ2NGVjLThmYTMtNDllNS05ODY4LTdlM2MzOGJjOWMwZSJ9.DXy53Uc8UwKTvMfpcy8OV2xJBh4RGD6s1rHNqGgWWu4
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNzcsInN1YiI6IjdhMThhYTE5LWM5MzItNDExYi04MGI0LTA2MjdkYTYyODU0ZiJ9.be-d5PNU3E7OX3D6BXnMkrRHcgFf8w3ylOIfPy-oeg0
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/stats/comments_by_time?start_at=2017-06-01+00%3A00%3A00+%2B0200&amp;end_at=2017-06-30+23%3A59%3A59+%2B0200&amp;interval=day</pre>
+          <pre class="request route highlight">GET api/v1/stats/comments_by_time?start_at=2017-07-01+00%3A00%3A00+%2B0200&amp;end_at=2017-07-31+23%3A59%3A59+%2B0200&amp;interval=day</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">start_at: 2017-06-01 00:00:00 +0200
-end_at: 2017-06-30 23:59:59 +0200
+            <pre class="request query_parameters highlight">start_at: 2017-07-01 00:00:00 +0200
+end_at: 2017-07-31 23:59:59 +0200
 interval: day</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
-              <pre class="response headers">X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;5d7181e956a78d1541459001311cd967&quot;
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;54078a0a67639d901f389ee12fcd2b26&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: efd38c9b-236f-4d95-a6fc-a773829c7e60
-X-Runtime: 0.022134
+X-Request-Id: ec590ec5-09c9-4ddb-8ff2-144f24e3a808
+X-Runtime: 0.020300
 Vary: Origin
-Content-Length: 451</pre>
+Content-Length: 466</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;2017-06-01&quot;: 0,
-  &quot;2017-06-02&quot;: 0,
-  &quot;2017-06-03&quot;: 0,
-  &quot;2017-06-04&quot;: 0,
-  &quot;2017-06-05&quot;: 0,
-  &quot;2017-06-06&quot;: 0,
-  &quot;2017-06-07&quot;: 0,
-  &quot;2017-06-08&quot;: 0,
-  &quot;2017-06-09&quot;: 0,
-  &quot;2017-06-10&quot;: 0,
-  &quot;2017-06-11&quot;: 0,
-  &quot;2017-06-12&quot;: 0,
-  &quot;2017-06-13&quot;: 0,
-  &quot;2017-06-14&quot;: 0,
-  &quot;2017-06-15&quot;: 0,
-  &quot;2017-06-16&quot;: 0,
-  &quot;2017-06-17&quot;: 0,
-  &quot;2017-06-18&quot;: 0,
-  &quot;2017-06-19&quot;: 0,
-  &quot;2017-06-20&quot;: 0,
-  &quot;2017-06-21&quot;: 0,
-  &quot;2017-06-22&quot;: 0,
-  &quot;2017-06-23&quot;: 0,
-  &quot;2017-06-24&quot;: 0,
-  &quot;2017-06-25&quot;: 0,
-  &quot;2017-06-26&quot;: 0,
-  &quot;2017-06-27&quot;: 0,
-  &quot;2017-06-28&quot;: 0,
-  &quot;2017-06-29&quot;: 0,
-  &quot;2017-06-30&quot;: 0
+  &quot;2017-07-01&quot;: 0,
+  &quot;2017-07-02&quot;: 0,
+  &quot;2017-07-03&quot;: 0,
+  &quot;2017-07-04&quot;: 0,
+  &quot;2017-07-05&quot;: 0,
+  &quot;2017-07-06&quot;: 0,
+  &quot;2017-07-07&quot;: 0,
+  &quot;2017-07-08&quot;: 0,
+  &quot;2017-07-09&quot;: 0,
+  &quot;2017-07-10&quot;: 0,
+  &quot;2017-07-11&quot;: 0,
+  &quot;2017-07-12&quot;: 0,
+  &quot;2017-07-13&quot;: 0,
+  &quot;2017-07-14&quot;: 0,
+  &quot;2017-07-15&quot;: 0,
+  &quot;2017-07-16&quot;: 0,
+  &quot;2017-07-17&quot;: 0,
+  &quot;2017-07-18&quot;: 0,
+  &quot;2017-07-19&quot;: 0,
+  &quot;2017-07-20&quot;: 0,
+  &quot;2017-07-21&quot;: 0,
+  &quot;2017-07-22&quot;: 0,
+  &quot;2017-07-23&quot;: 0,
+  &quot;2017-07-24&quot;: 0,
+  &quot;2017-07-25&quot;: 0,
+  &quot;2017-07-26&quot;: 0,
+  &quot;2017-07-27&quot;: 0,
+  &quot;2017-07-28&quot;: 0,
+  &quot;2017-07-29&quot;: 0,
+  &quot;2017-07-30&quot;: 0,
+  &quot;2017-07-31&quot;: 0
 }</pre>
       </div>
     </div>

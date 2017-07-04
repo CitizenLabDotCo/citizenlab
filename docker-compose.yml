@@ -2,7 +2,7 @@ version: '2'
 
 services:
   postgres:
-    image: 'postgres:9.6'
+    image: 'camptocamp/postgres:9.6'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres

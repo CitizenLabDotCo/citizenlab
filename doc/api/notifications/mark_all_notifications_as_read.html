@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Notifications API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Notifications API</h1>
+
+      <div class="article">
+        <h2>Mark all notifications as read</h2>
+        <h3>POST api/v1/notifications/mark_all_read</h3>
+          <p class="explanation">
+            Returns all the notifications that have been changed
+          </p>
+
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNjAsInN1YiI6IjE3YWUzZmJlLTcxOGUtNDRhOC04NmVlLTdjODkzZjRkMmU2ZCJ9.FSnRoykbOECBnDl-yBtAg83brdUjPculaDEhTU2vHMM
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">POST api/v1/notifications/mark_all_read</pre>
+
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;d666b88f6766203a1d61909f3330c0b9&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 109a2b0c-e9ff-425c-b7af-c0d432abcc73
+X-Runtime: 0.025789
+Vary: Origin
+Content-Length: 1244</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;d6dddaef-1d23-4ebb-9dfc-2c6eec07f73c&quot;,
+      &quot;type&quot;: &quot;notification&quot;,
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;comment_on_your_comment&quot;,
+        &quot;read_at&quot;: &quot;2017-07-04T13:11:00.103Z&quot;,
+        &quot;created_at&quot;: &quot;2017-07-04T13:10:59.761Z&quot;,
+        &quot;user_first_name&quot;: &quot;Derek&quot;,
+        &quot;user_last_name&quot;: &quot;Cremin&quot;,
+        &quot;user_slug&quot;: &quot;derek-cremin&quot;,
+        &quot;idea_title&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        }
+      },
+      &quot;relationships&quot;: {
+        &quot;user&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;9cf3f0c0-cb53-4d5d-b5ac-1d6463c6d8ae&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;idea&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;be9158b0-1568-4b6d-8af5-d20c44490794&quot;,
+            &quot;type&quot;: &quot;ideas&quot;
+          }
+        },
+        &quot;comment&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;273ed426-0eec-4bcc-b5b7-586fea800389&quot;,
+            &quot;type&quot;: &quot;comments&quot;
+          }
+        },
+        &quot;project&quot;: {
+          &quot;data&quot;: null
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;dd90bd41-863d-4abb-95e1-61951c9a56ef&quot;,
+      &quot;type&quot;: &quot;notification&quot;,
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;comment_on_your_comment&quot;,
+        &quot;read_at&quot;: &quot;2017-07-04T13:11:00.103Z&quot;,
+        &quot;created_at&quot;: &quot;2017-07-04T13:10:59.599Z&quot;,
+        &quot;user_first_name&quot;: &quot;Rosalia&quot;,
+        &quot;user_last_name&quot;: &quot;Leffler&quot;,
+        &quot;user_slug&quot;: &quot;rosalia-leffler&quot;,
+        &quot;idea_title&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        }
+      },
+      &quot;relationships&quot;: {
+        &quot;user&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;453eb265-b076-4e82-9607-8cdc384726db&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        },
+        &quot;idea&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;e576e54a-9c33-44c3-b776-cdde01d7378e&quot;,
+            &quot;type&quot;: &quot;ideas&quot;
+          }
+        },
+        &quot;comment&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;47a0a25e-5175-49ba-8c50-1390f1f0ec6a&quot;,
+            &quot;type&quot;: &quot;comments&quot;
+          }
+        },
+        &quot;project&quot;: {
+          &quot;data&quot;: null
+        }
+      }
+    }
+  ]
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>
