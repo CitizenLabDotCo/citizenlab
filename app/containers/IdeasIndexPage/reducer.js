@@ -11,7 +11,7 @@ import { getPageItemCountFromUrl, getPageNumberFromUrl } from '../../utils/pagin
 
 const initialState = fromJS({
   nextPageNumber: 1,
-  nextPageItemCount: 3,
+  nextPageItemCount: 12,
   search: '',
   ideas: [],
   topics: {
