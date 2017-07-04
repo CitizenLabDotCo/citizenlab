@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170703234313) do
+ActiveRecord::Schema.define(version: 20170704729304) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,13 +166,22 @@ ActiveRecord::Schema.define(version: 20170703234313) do
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
+  create_table "project_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_id"
+    t.string "image"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_images_on_project_id"
+  end
+
   create_table "projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc"
     t.jsonb "description_multiloc"
-    t.jsonb "images", default: []
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "header_bg"
   end
 
   create_table "projects_topics", id: false, force: :cascade do |t|
@@ -248,6 +257,7 @@ ActiveRecord::Schema.define(version: 20170703234313) do
   add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "pages", "projects"
   add_foreign_key "phases", "projects"
+  add_foreign_key "project_images", "projects"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "votes", "users"

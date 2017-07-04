@@ -134,8 +134,13 @@ Apartment::Tenant.switch('localhost') do
       description_multiloc: {
         "en" => "<p>Let's renew the parc at the city border and make it an enjoyable place for young and old.</p>",
         "nl" => "<p>Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>"
-      }
+      },
+      header_bg: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open
     })
+
+    [0,1,2,3,4][rand(5)].times do |i|
+      project.project_images.create(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+    end
 
     start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
     rand(5).times do

@@ -42,11 +42,15 @@ resource "Projects" do
       parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
       parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
       parameter :slug, "The unique slug of the project. If not given, it will be auto generated"
+      parameter :header_bg, "Base64 encoded header image"
+
     end
 
     let(:project) { build(:project) }
     let(:title_multiloc) { project.title_multiloc }
     let(:description_multiloc) { project.description_multiloc }
+    let(:header_bg) { encode_image_as_base64("header.jpg")}
+
 
     example_request "Create a project" do
       expect(response_status).to eq 201
@@ -65,12 +69,15 @@ resource "Projects" do
       parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
       parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
       parameter :slug, "The unique slug of the project"
+      parameter :header_bg, "Base64 encoded header image"
     end
 
     let(:id) { @project.id }
     let(:title_multiloc) { {"en" => "Changed title" } }
     let(:description_multiloc) { {"en" => "Changed body" } }
     let(:slug) { "changed-title" }
+    let(:header_bg) { encode_image_as_base64("header.jpg")}
+
     example_request "Updating the project" do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
@@ -87,5 +94,11 @@ resource "Projects" do
       expect(response_status).to eq 200
       expect{Project.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
+  end
+
+  private
+
+  def encode_image_as_base64 filename
+    "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
   end
 end
