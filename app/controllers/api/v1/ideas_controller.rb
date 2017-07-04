@@ -111,6 +111,8 @@ class Api::V1::IdeasController < ApplicationController
 			:publication_status,
 			:project_id,
 			:author_id,
+      :location_description,
+      location_point_geojson: [:type, coordinates: []],
 			title_multiloc: [:en, :nl, :fr],
       body_multiloc: [:en, :nl, :fr],
       topic_ids: [],

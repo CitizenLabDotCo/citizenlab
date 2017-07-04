@@ -122,49 +122,46 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/comments/78f42c02-06ad-4235-aeff-4fdd2f077585</pre>
+          <pre class="request route highlight">GET api/v1/comments/3fc602f2-0f81-4a58-92d3-df5eda64346f</pre>
 
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
-              <pre class="response headers">X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;e7ddf4a12cf7bc02937a7a07a889e8f3&quot;
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;97b59ab9bd422457b226c244ef9d0bbf&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: c34f2847-90f3-41d0-9fed-7c60cbeae456
-X-Runtime: 0.040538
+X-Request-Id: 8e856625-8595-499e-a671-842f03db6be4
+X-Runtime: 0.030122
 Vary: Origin
-Content-Length: 1159</pre>
+Content-Length: 1149</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;78f42c02-06ad-4235-aeff-4fdd2f077585&quot;,
+    &quot;id&quot;: &quot;3fc602f2-0f81-4a58-92d3-df5eda64346f&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
         &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
       },
-      &quot;created_at&quot;: &quot;2017-06-20T08:13:05.942Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-06-20T08:13:05.942Z&quot;
+      &quot;created_at&quot;: &quot;2017-07-04T13:10:47.417Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-07-04T13:10:47.417Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;bf13fa2c-5184-451f-b8d7-7645d16f277c&quot;,
+          &quot;id&quot;: &quot;f5833a40-8345-4909-ab0a-a22b86871f21&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;3f6bac1e-1a8a-466e-bacc-25f5d23fae6f&quot;,
-          &quot;type&quot;: &quot;users&quot;
+          &quot;id&quot;: &quot;56c8b832-c28b-4925-abd7-a4ff6afbef75&quot;,
+          &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;parent&quot;: {
@@ -174,25 +171,25 @@ Content-Length: 1159</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;3f6bac1e-1a8a-466e-bacc-25f5d23fae6f&quot;,
+      &quot;id&quot;: &quot;56c8b832-c28b-4925-abd7-a4ff6afbef75&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Jordy&quot;,
-        &quot;last_name&quot;: &quot;Hodkiewicz&quot;,
-        &quot;slug&quot;: &quot;jordy-hodkiewicz&quot;,
+        &quot;first_name&quot;: &quot;Elta&quot;,
+        &quot;last_name&quot;: &quot;Upton&quot;,
+        &quot;slug&quot;: &quot;elta-upton&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/3f6bac1e-1a8a-466e-bacc-25f5d23fae6f/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/3f6bac1e-1a8a-466e-bacc-25f5d23fae6f/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/3f6bac1e-1a8a-466e-bacc-25f5d23fae6f/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/56c8b832-c28b-4925-abd7-a4ff6afbef75/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/56c8b832-c28b-4925-abd7-a4ff6afbef75/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/56c8b832-c28b-4925-abd7-a4ff6afbef75/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-06-20T08:13:05.915Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-06-20T08:13:05.915Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-04T13:10:47.400Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-04T13:10:47.400Z&quot;
       }
     }
   ]

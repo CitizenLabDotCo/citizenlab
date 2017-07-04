@@ -177,6 +177,22 @@ table th, table td {
                   <span class="description">Array of ids of the associated areas</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">idea[location_point_geojson]</span>
+                </td>
+                <td>
+                  <span class="description">A GeoJSON point that situates the location the idea applies to</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">idea[location_description]</span>
+                </td>
+                <td>
+                  <span class="description">A human readable description of the location the idea applies to</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -185,7 +201,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTgwMzI3OTksInN1YiI6IjEyMzYzMzVlLWMwYmMtNDk1OS1iZTEwLWQ2MzU3OWM5NGMwZCJ9.8yTmcMuwv5O2tCFCaXwxzcIR1qeqOpakNWs1p8bldgI
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNTQsInN1YiI6IjY5MTVjZWVjLThiZTctNGNmYS1iZTE2LWFhMWYxZTMwNmQ4OCJ9.bKkxEhzzDCB56pqPwElBkSOzGoKmKpBhI_8xCg2C-3o
 Host: example.org
 Cookie: </pre>
 
@@ -194,27 +210,24 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"idea":{"project_id":"d50eeb79-f283-4a12-add8-5cf40005642a","author_id":"dcf3fa35-9b99-4cc7-95bd-342c18fe44a9","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"},"topic_ids":["01a268b4-c975-4612-ac87-967b8e8a1271","bc17b52f-be37-4523-9a33-1adf2052146c"],"area_ids":["f8909c90-4b5d-4b48-941a-56ac5f03b568","1a23ecbf-b88e-409d-8f36-561b339c8730"]}}</pre>
+            <pre class="request body">{"idea":{"project_id":"5e8bae04-d051-4f5c-a6d7-6713110ed27f","author_id":"0ad4e08d-0202-458e-9f4e-cf0f2eb497e3","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"},"topic_ids":["e98f22f8-6e5c-4431-ad1e-8ae1b045e299","12c66989-f164-418b-bdbf-2539694f49ae"],"area_ids":["27f12fec-a920-47ed-80d3-5238217bcf8b","b6036241-5e75-4e96-a6dd-a79454b94afe"],"location_point_geojson":{"type":"Point","coordinates":[51.11520776293035,3.921154106874878]},"location_description":"Stanley Road 4"}}</pre>
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
-              <pre class="response headers">X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;4d48a082b8054f8f7f88fb171e10c95c&quot;
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;9cd02f8ff22b4d29998065d7853e145e&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 76e4025e-0ae8-49ae-bcf3-07a1c565992d
-X-Runtime: 0.160598
+X-Request-Id: 1f1ed1c0-ab8f-41a1-ad14-fec08a8e353d
+X-Runtime: 0.068050
 Vary: Origin
-Content-Length: 3332</pre>
+Content-Length: 3461</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;8bdf66d1-406b-4309-94d7-0c5131977fcb&quot;,
+    &quot;id&quot;: &quot;91ce72f9-6b2c-44cd-b66a-5b7e314dc6c4&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -225,23 +238,31 @@ Content-Length: 3332</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Griffin Tremblay&quot;,
+      &quot;author_name&quot;: &quot;Shanelle Yost&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
-      &quot;created_at&quot;: &quot;2017-06-20T08:13:20.133Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-06-20T08:13:20.133Z&quot;,
-      &quot;published_at&quot;: &quot;2017-06-20T08:13:20.133Z&quot;
+      &quot;location_point_geojson&quot;: {
+        &quot;type&quot;: &quot;Point&quot;,
+        &quot;coordinates&quot;: [
+          51.11520776293035,
+          3.921154106874878
+        ]
+      },
+      &quot;location_description&quot;: &quot;Stanley Road 4&quot;,
+      &quot;created_at&quot;: &quot;2017-07-04T13:10:54.916Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-07-04T13:10:54.916Z&quot;,
+      &quot;published_at&quot;: &quot;2017-07-04T13:10:54.916Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
         &quot;data&quot;: [
           {
-            &quot;id&quot;: &quot;01a268b4-c975-4612-ac87-967b8e8a1271&quot;,
+            &quot;id&quot;: &quot;e98f22f8-6e5c-4431-ad1e-8ae1b045e299&quot;,
             &quot;type&quot;: &quot;topics&quot;
           },
           {
-            &quot;id&quot;: &quot;bc17b52f-be37-4523-9a33-1adf2052146c&quot;,
+            &quot;id&quot;: &quot;12c66989-f164-418b-bdbf-2539694f49ae&quot;,
             &quot;type&quot;: &quot;topics&quot;
           }
         ]
@@ -249,11 +270,11 @@ Content-Length: 3332</pre>
       &quot;areas&quot;: {
         &quot;data&quot;: [
           {
-            &quot;id&quot;: &quot;f8909c90-4b5d-4b48-941a-56ac5f03b568&quot;,
+            &quot;id&quot;: &quot;27f12fec-a920-47ed-80d3-5238217bcf8b&quot;,
             &quot;type&quot;: &quot;areas&quot;
           },
           {
-            &quot;id&quot;: &quot;1a23ecbf-b88e-409d-8f36-561b339c8730&quot;,
+            &quot;id&quot;: &quot;b6036241-5e75-4e96-a6dd-a79454b94afe&quot;,
             &quot;type&quot;: &quot;areas&quot;
           }
         ]
@@ -265,26 +286,24 @@ Content-Length: 3332</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;dcf3fa35-9b99-4cc7-95bd-342c18fe44a9&quot;,
-          &quot;type&quot;: &quot;users&quot;
+          &quot;id&quot;: &quot;0ad4e08d-0202-458e-9f4e-cf0f2eb497e3&quot;,
+          &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;d50eeb79-f283-4a12-add8-5cf40005642a&quot;,
+          &quot;id&quot;: &quot;5e8bae04-d051-4f5c-a6d7-6713110ed27f&quot;,
           &quot;type&quot;: &quot;projects&quot;
         }
       },
       &quot;user_vote&quot;: {
-        &quot;data&quot;: [
-
-        ]
+        &quot;data&quot;: null
       }
     }
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;01a268b4-c975-4612-ac87-967b8e8a1271&quot;,
+      &quot;id&quot;: &quot;e98f22f8-6e5c-4431-ad1e-8ae1b045e299&quot;,
       &quot;type&quot;: &quot;topics&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -299,7 +318,7 @@ Content-Length: 3332</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;bc17b52f-be37-4523-9a33-1adf2052146c&quot;,
+      &quot;id&quot;: &quot;12c66989-f164-418b-bdbf-2539694f49ae&quot;,
       &quot;type&quot;: &quot;topics&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -314,7 +333,7 @@ Content-Length: 3332</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;f8909c90-4b5d-4b48-941a-56ac5f03b568&quot;,
+      &quot;id&quot;: &quot;27f12fec-a920-47ed-80d3-5238217bcf8b&quot;,
       &quot;type&quot;: &quot;areas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -328,7 +347,7 @@ Content-Length: 3332</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;1a23ecbf-b88e-409d-8f36-561b339c8730&quot;,
+      &quot;id&quot;: &quot;b6036241-5e75-4e96-a6dd-a79454b94afe&quot;,
       &quot;type&quot;: &quot;areas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -342,25 +361,25 @@ Content-Length: 3332</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;dcf3fa35-9b99-4cc7-95bd-342c18fe44a9&quot;,
+      &quot;id&quot;: &quot;0ad4e08d-0202-458e-9f4e-cf0f2eb497e3&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Griffin&quot;,
-        &quot;last_name&quot;: &quot;Tremblay&quot;,
-        &quot;slug&quot;: &quot;griffin-tremblay&quot;,
+        &quot;first_name&quot;: &quot;Shanelle&quot;,
+        &quot;last_name&quot;: &quot;Yost&quot;,
+        &quot;slug&quot;: &quot;shanelle-yost&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/dcf3fa35-9b99-4cc7-95bd-342c18fe44a9/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/dcf3fa35-9b99-4cc7-95bd-342c18fe44a9/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/dcf3fa35-9b99-4cc7-95bd-342c18fe44a9/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/0ad4e08d-0202-458e-9f4e-cf0f2eb497e3/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/0ad4e08d-0202-458e-9f4e-cf0f2eb497e3/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/0ad4e08d-0202-458e-9f4e-cf0f2eb497e3/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-06-20T08:13:19.913Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-06-20T08:13:19.913Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-04T13:10:54.809Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-04T13:10:54.809Z&quot;
       }
     }
   ]

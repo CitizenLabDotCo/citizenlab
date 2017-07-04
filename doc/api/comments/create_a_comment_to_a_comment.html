@@ -153,88 +153,85 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTgwMzI3ODYsInN1YiI6ImVlMDkxZDRkLTRlNjktNGI1YS04MzYyLThiZTBlNWNlY2FhMiJ9.PjY_JdnwdpvjS23LfvBlsv2FUy3ekVe8KD2nl0nIYhI
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNDcsInN1YiI6IjUxOGE0Y2FiLTZhOGUtNGZkMy05ODFhLWY2YTMyZTQxMTA2ZSJ9.g6uvCmXjorm-5az5oGq6-864wdihPCgJ_teBqWAnXFI
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/ideas/7dd9e5a9-4d1c-4721-89d9-d6e02dd7467f/comments</pre>
+          <pre class="request route highlight">POST api/v1/ideas/df25c590-17fd-488e-9c96-65406475fc64/comments</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"comment":{"body_multiloc":{"en":"\u003cp\u003eI think this is a very good idea!\u003c/p\u003e","nl":"\u003cp\u003eGeweldig idee!\u003c/p\u003e"},"parent_id":"d1a41f16-e216-4ff4-ac43-11d0b9ce80fc"}}</pre>
+            <pre class="request body">{"comment":{"body_multiloc":{"en":"\u003cp\u003eI think this is a very good idea!\u003c/p\u003e","nl":"\u003cp\u003eGeweldig idee!\u003c/p\u003e"},"parent_id":"01d484c6-b71f-4da2-b103-0d8a86ec85d1"}}</pre>
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
-              <pre class="response headers">X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;c5fd0983ab08bdd59f3bb52f763daad9&quot;
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;6f29cd1c03e0106e3a0191b0c1a06c8a&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: a86731f6-c752-4eec-863f-9a267c38b7a7
-X-Runtime: 0.087054
+X-Request-Id: 9553dd90-332d-4ff2-9a3b-2e0153261258
+X-Runtime: 0.047622
 Vary: Origin
-Content-Length: 1297</pre>
+Content-Length: 1308</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;bb211675-eeb7-4a8f-a349-46377b284116&quot;,
+    &quot;id&quot;: &quot;9fb952de-e6c5-4582-aee2-6796f3e82153&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
         &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
       },
-      &quot;created_at&quot;: &quot;2017-06-20T08:13:07.048Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-06-20T08:13:07.066Z&quot;
+      &quot;created_at&quot;: &quot;2017-07-04T13:10:48.018Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-07-04T13:10:48.027Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;7dd9e5a9-4d1c-4721-89d9-d6e02dd7467f&quot;,
+          &quot;id&quot;: &quot;df25c590-17fd-488e-9c96-65406475fc64&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;ee091d4d-4e69-4b5a-8362-8be0e5cecaa2&quot;,
-          &quot;type&quot;: &quot;users&quot;
+          &quot;id&quot;: &quot;518a4cab-6a8e-4fd3-981a-f6a32e41106e&quot;,
+          &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;parent&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;d1a41f16-e216-4ff4-ac43-11d0b9ce80fc&quot;,
-          &quot;type&quot;: &quot;comments&quot;
+          &quot;id&quot;: &quot;01d484c6-b71f-4da2-b103-0d8a86ec85d1&quot;,
+          &quot;type&quot;: &quot;parents&quot;
         }
       }
     }
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;ee091d4d-4e69-4b5a-8362-8be0e5cecaa2&quot;,
+      &quot;id&quot;: &quot;518a4cab-6a8e-4fd3-981a-f6a32e41106e&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Fiona&quot;,
-        &quot;last_name&quot;: &quot;Mann&quot;,
-        &quot;slug&quot;: &quot;fiona-mann&quot;,
+        &quot;first_name&quot;: &quot;Tomas&quot;,
+        &quot;last_name&quot;: &quot;Miller&quot;,
+        &quot;slug&quot;: &quot;tomas-miller&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/ee091d4d-4e69-4b5a-8362-8be0e5cecaa2/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/ee091d4d-4e69-4b5a-8362-8be0e5cecaa2/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/ee091d4d-4e69-4b5a-8362-8be0e5cecaa2/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/518a4cab-6a8e-4fd3-981a-f6a32e41106e/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/518a4cab-6a8e-4fd3-981a-f6a32e41106e/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/518a4cab-6a8e-4fd3-981a-f6a32e41106e/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-06-20T08:13:06.856Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-06-20T08:13:06.856Z&quot;,
-        &quot;email&quot;: &quot;devin@moore.name&quot;,
+        &quot;created_at&quot;: &quot;2017-07-04T13:10:47.912Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-04T13:10:47.912Z&quot;,
+        &quot;email&quot;: &quot;jake.greenholt@orn.com&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

@@ -137,12 +137,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTgwMzI4MDIsInN1YiI6IjRjYzhiNTFkLWM0MzYtNDdmZi1iNDI0LWU0MDZjNTZlMTVkMCJ9.ehVVKhEwcL09SFWfd_d8UiMdKkhqLf-3YjatAkAGNAg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNTYsInN1YiI6IjJlZWQ3NDNlLWU5M2MtNDA2NC05MzU0LWMyNDY5MzAwZGUwNyJ9.x3hNv3qNWq3ra0_tbrUDF3cHeceMSgHnLuL2iTGBZgY
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/ideas/3967c7ce-2be9-4f53-af70-e72b3d4954aa</pre>
+          <pre class="request route highlight">PATCH api/v1/ideas/19328399-f484-483f-90fe-7a09a55589c2</pre>
 
 
             <h4>Body</h4>
@@ -151,22 +151,19 @@ Cookie: </pre>
 
             <h3>Response</h3>
               <h4>Headers</h4>
-              <pre class="response headers">X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;8be503e6edfff1e5e0171b7940de4aed&quot;
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;5e7c19e7db61e0f047bfedf84338d225&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: b94ae840-41a9-4ada-98ea-786ec846c72f
-X-Runtime: 0.048523
+X-Request-Id: bc37d9e3-c6f0-4266-81f2-adfb847150ba
+X-Runtime: 0.038592
 Vary: Origin
-Content-Length: 1575</pre>
+Content-Length: 1637</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;3967c7ce-2be9-4f53-af70-e72b3d4954aa&quot;,
+    &quot;id&quot;: &quot;19328399-f484-483f-90fe-7a09a55589c2&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -177,13 +174,15 @@ Content-Length: 1575</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Chanelle Ferry&quot;,
+      &quot;author_name&quot;: &quot;Mabelle Durgan&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
-      &quot;created_at&quot;: &quot;2017-06-20T08:13:22.101Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-06-20T08:13:22.120Z&quot;,
-      &quot;published_at&quot;: &quot;2017-06-20T08:13:22.119Z&quot;
+      &quot;location_point_geojson&quot;: null,
+      &quot;location_description&quot;: null,
+      &quot;created_at&quot;: &quot;2017-07-04T13:10:56.028Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-07-04T13:10:56.046Z&quot;,
+      &quot;published_at&quot;: &quot;2017-07-04T13:10:56.045Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -203,45 +202,43 @@ Content-Length: 1575</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;4cc8b51d-c436-47ff-b424-e406c56e15d0&quot;,
-          &quot;type&quot;: &quot;users&quot;
+          &quot;id&quot;: &quot;2eed743e-e93c-4064-9354-c2469300de07&quot;,
+          &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;8e51415f-829b-465d-8d33-07f1e0c3206e&quot;,
+          &quot;id&quot;: &quot;f0ada8ac-add6-459b-b052-b441d8073422&quot;,
           &quot;type&quot;: &quot;projects&quot;
         }
       },
       &quot;user_vote&quot;: {
-        &quot;data&quot;: [
-
-        ]
+        &quot;data&quot;: null
       }
     }
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;4cc8b51d-c436-47ff-b424-e406c56e15d0&quot;,
+      &quot;id&quot;: &quot;2eed743e-e93c-4064-9354-c2469300de07&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Chanelle&quot;,
-        &quot;last_name&quot;: &quot;Ferry&quot;,
-        &quot;slug&quot;: &quot;chanelle-ferry&quot;,
+        &quot;first_name&quot;: &quot;Mabelle&quot;,
+        &quot;last_name&quot;: &quot;Durgan&quot;,
+        &quot;slug&quot;: &quot;mabelle-durgan&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/4cc8b51d-c436-47ff-b424-e406c56e15d0/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/4cc8b51d-c436-47ff-b424-e406c56e15d0/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/744e74bb-b00b-46e1-915c-8f27d4e9e658/user/avatar/4cc8b51d-c436-47ff-b424-e406c56e15d0/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/2eed743e-e93c-4064-9354-c2469300de07/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/2eed743e-e93c-4064-9354-c2469300de07/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/2eed743e-e93c-4064-9354-c2469300de07/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-06-20T08:13:22.067Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-06-20T08:13:22.067Z&quot;,
-        &quot;email&quot;: &quot;walker.conn@kozeydaniel.info&quot;,
+        &quot;created_at&quot;: &quot;2017-07-04T13:10:56.003Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-04T13:10:56.003Z&quot;,
+        &quot;email&quot;: &quot;laisha_powlowski@jenkins.biz&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

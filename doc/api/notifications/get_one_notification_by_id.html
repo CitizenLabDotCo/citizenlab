@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Notifications API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Notifications API</h1>
+
+      <div class="article">
+        <h2>Get one notification by id</h2>
+        <h3>GET api/v1/notifications/:id</h3>
+
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNTksInN1YiI6ImMzMTBiYmY3LTdlZjUtNDc1Yy05ZTNkLTExODkyZDU1MDBmNiJ9.587D1SOyyl7nIQlwaamVZ-dIsBPhQW6IyrAX6W9nYzM
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/notifications/3c8c2ec9-8f1f-44ff-934a-44e78378c5d3</pre>
+
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;9f01ebe213f71fe45669b4981de71a24&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 1fcc2970-311c-4c9a-9ad5-5da10224a16b
+X-Runtime: 0.014654
+Vary: Origin
+Content-Length: 598</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;3c8c2ec9-8f1f-44ff-934a-44e78378c5d3&quot;,
+    &quot;type&quot;: &quot;notification&quot;,
+    &quot;attributes&quot;: {
+      &quot;type&quot;: &quot;comment_on_your_comment&quot;,
+      &quot;read_at&quot;: null,
+      &quot;created_at&quot;: &quot;2017-07-04T13:10:59.046Z&quot;,
+      &quot;user_first_name&quot;: &quot;Olaf&quot;,
+      &quot;user_last_name&quot;: &quot;Daniel&quot;,
+      &quot;user_slug&quot;: &quot;olaf-daniel&quot;,
+      &quot;idea_title&quot;: {
+        &quot;en&quot;: &quot;Plant more trees&quot;,
+        &quot;nl&quot;: &quot;Plant meer bomen&quot;
+      }
+    },
+    &quot;relationships&quot;: {
+      &quot;user&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;b227fc63-cc6b-4d13-9323-56b107f29716&quot;,
+          &quot;type&quot;: &quot;users&quot;
+        }
+      },
+      &quot;idea&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;d04b1932-1cc0-4ac5-980b-e74675a2a815&quot;,
+          &quot;type&quot;: &quot;ideas&quot;
+        }
+      },
+      &quot;comment&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;317d1bde-e88d-4cd6-a1e7-f079e349d32e&quot;,
+          &quot;type&quot;: &quot;comments&quot;
+        }
+      },
+      &quot;project&quot;: {
+        &quot;data&quot;: null
+      }
+    }
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

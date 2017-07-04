@@ -59,6 +59,10 @@ class Idea < ApplicationRecord
 
   scope :published, -> {where publication_status: 'published'}
 
+  def location_point_geojson= geojson_point
+    self.location_point = RGeo::GeoJSON.decode(geojson_point)
+  end
+
   def draft?
     self.publication_status == 'draft'
   end
