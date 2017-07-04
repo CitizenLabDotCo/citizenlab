@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 // components
 import IdeaCard from 'components/IdeaCard';
 
+import { FormattedMessage } from 'react-intl';
+import messages from '../messages';
+
 // store
 import { preprocess } from 'utils';
 import { createStructuredSelector } from 'reselect';
@@ -66,7 +69,7 @@ class IdeasCards extends React.Component {
           <IdeaCard key={id} id={id} />
         ))}
         {hasMore &&
-          <LoadMoreButton onClick={this.loadMoreIdeas}>Load More</LoadMoreButton>
+          <LoadMoreButton onClick={this.loadMoreIdeas}><FormattedMessage {...messages.loadMore} /></LoadMoreButton>
         }
       </IdeasList>
     );
