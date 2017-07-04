@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // components
-import InfiniteScroll from 'react-infinite-scroller';
 import IdeaCard from 'components/IdeaCard';
-
 
 // store
 import { preprocess } from 'utils';
@@ -17,11 +15,12 @@ import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 
-const InfiniteScrollStyled = styled(InfiniteScroll)`
+const IdeasList = styled.div`
   font-size: 20px;
   color: #999;
   margin-top: 10px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 10px !important;
   ${media.tablet`
@@ -33,10 +32,17 @@ const InfiniteScrollStyled = styled(InfiniteScroll)`
   `}
 `;
 
+const LoadMoreButton = styled.button`
+  background: rgba(34, 34, 34, 0.05);
+  color: #6b6b6b;
+  flex: 1 0 100%;
+  padding: 1.5rem 0;
+  text-align: center;
+`;
+
 class IdeasCards extends React.Component {
-  constructor() {
-    super();
-    this.first = true;
+  componentDidMount() {
+    this.loadMoreIdeas();
   }
 
   componentWillReceiveProps(newProps) {
@@ -45,25 +51,20 @@ class IdeasCards extends React.Component {
   }
 
   loadMoreIdeas = () => {
-    if (this.first) this.props.loadMoreIdeas();
-    this.first = false;
+    this.props.loadMoreIdeas();
   }
 
   render() {
     const { hasMore, ideas } = this.props;
     return (
-      <InfiniteScrollStyled
-        element={'div'}
-        loadMore={this.loadMoreIdeas}
-        className={'ui stackable cards'}
-        initialLoad
-        hasMore={hasMore}
-        loader={<div className="loader"></div>}
-      >
+      <IdeasList>
         {ideas.map((id) => (
           <IdeaCard key={id} id={id} />
         ))}
-      </InfiniteScrollStyled>
+        {hasMore &&
+          <LoadMoreButton onClick={this.loadMoreIdeas}>Load More</LoadMoreButton>
+        }
+      </IdeasList>
     );
   }
 }
