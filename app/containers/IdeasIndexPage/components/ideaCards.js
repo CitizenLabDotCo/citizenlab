@@ -38,6 +38,10 @@ const LoadMoreButton = styled.button`
   flex: 1 0 100%;
   padding: 1.5rem 0;
   text-align: center;
+
+  :hover{
+    background: rgba(34, 34, 34, 0.10);
+  }
 `;
 
 class IdeasCards extends React.Component {
