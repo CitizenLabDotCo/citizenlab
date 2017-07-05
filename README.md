@@ -9,9 +9,11 @@ Build the docker compose images
 docker-compose up --build -d
 ```
 Some containers will fail, because the database is not setup yet.
-On the first run, use this command to create the database and populate it with some dummy data:
+On the first run, use these commands to create the database and populate it with some dummy data:
 
 ```
+docker-compose run --user "$(id -u):$(id -g)" web bundle exec rake db:create
+
 docker-compose run --user "$(id -u):$(id -g)" web bundle exec rake db:reset
 ```
 
