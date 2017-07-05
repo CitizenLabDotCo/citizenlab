@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import Error from 'components/UI/Error';
 import _ from 'lodash';
-import * as MaskedTextInput from 'react-text-mask';
+import MaskedInput from 'react-text-mask';
 
 const InputWrapper = styled.div`
   position: relative;
@@ -38,48 +38,42 @@ const InputWrapper = styled.div`
 
 const emptyString = '';
 
-const MaskedInput = ({ type, value, placeholder, error, onChange, setRef }) => {
+const MaskedTextInput = ({ value, placeholder, mask, error, onChange }) => {
   const hasError = (_.isString(error) && !_.isEmpty(error));
 
   const handleOnChange = (event) => {
     onChange(event.target.value);
   };
 
-  const handleRef = (element) => {
-    if (_.isFunction(setRef)) {
-      setRef(element);
-    }
-  };
-
   return (
     <InputWrapper error={hasError}>
-      <MaskedTextInput
-        mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
-        type={type}
-        placeholder={placeholder}
+      <MaskedInput
+        guide={false}
+        showMask={false}
+        keepCharPositions={false}
+        mask={mask}
+        type="text"
         value={value || emptyString}
+        placeholder={placeholder}
         onChange={handleOnChange}
-        ref={handleRef}
       />
       <Error text={error} />
     </InputWrapper>
   );
 };
 
-MaskedInput.propTypes = {
-  type: PropTypes.string,
+MaskedTextInput.propTypes = {
   value: PropTypes.string,
   placeholder: PropTypes.string,
+  mask: PropTypes.any.isRequired,
   error: PropTypes.string,
   onChange: PropTypes.func,
-  setRef: PropTypes.func,
 };
 
-MaskedInput.defaultProps = {
-  type: 'text',
+MaskedTextInput.defaultProps = {
   value: '',
   placeholder: '',
   error: null,
 };
 
-export default MaskedInput;
+export default MaskedTextInput;
