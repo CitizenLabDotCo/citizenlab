@@ -191,7 +191,8 @@ resource "Ideas" do
 
     describe do
       let(:idea) { build(:idea) }
-      let(:project_id) { create(:project).id }
+      let(:project) { create(:project) }
+      let(:project_id) { project.id }
       let(:author_id) { create(:user).id }
       let(:publication_status) { 'published' }
       let(:title_multiloc) { idea.title_multiloc }
@@ -208,6 +209,7 @@ resource "Ideas" do
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
+        expect(project.reload.ideas_count).to eq 1
       end
     end
 
@@ -292,6 +294,7 @@ resource "Ideas" do
     example_request "Delete an idea" do
       expect(response_status).to eq 200
       expect{Idea.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect(@idea.project.reload.ideas_count).to eq 0
     end
   end
 

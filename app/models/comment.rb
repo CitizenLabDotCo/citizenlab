@@ -2,6 +2,7 @@ class Comment < ApplicationRecord
   acts_as_nested_set
   belongs_to :author, class_name: 'User'
   belongs_to :idea
+  counter_culture :idea
   # belongs_to :parent, class_name: 'Comment', optional: true
 
   validates :body_multiloc, presence: true, multiloc: {presence: true}
