@@ -158,7 +158,7 @@ const StyledSelect = styled(ReactSelect)`
 
 const emptyArray = [];
 
-const Select = ({ value, placeholder, options, autoBlur, clearable, onChange }) => {
+const Select = ({ value, placeholder, options, autoBlur, clearable, searchable, onChange }) => {
   const handleOnChange = (newValue) => {
     onChange(newValue);
   };
@@ -166,8 +166,8 @@ const Select = ({ value, placeholder, options, autoBlur, clearable, onChange }) 
   return (
     <StyledSelect
       openOnFocus
-      searchable={false}
       clearable={clearable}
+      searchable={searchable}
       scrollMenuIntoView={false}
       autoBlur={autoBlur}
       value={value}
@@ -184,6 +184,7 @@ Select.propTypes = {
   options: PropTypes.array,
   autoBlur: PropTypes.bool,
   clearable: PropTypes.bool,
+  searchable: PropTypes.bool,
   onChange: PropTypes.func,
 };
 
@@ -193,6 +194,7 @@ Select.defaultProps = {
   options: [],
   autoBlur: true,
   clearable: false,
+  searchable: false,
 };
 
 export default Select;

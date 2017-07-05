@@ -36,28 +36,12 @@ import WatchSagas from 'containers/WatchSagas';
 import { preprocess } from 'utils';
 import { createStructuredSelector } from 'reselect';
 import authSagas from 'utils/auth/sagas';
+import areasSagas from 'utils/areas/sagas';
 import tenantSaga from 'utils/tenant/sagas';
 import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
 import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { LOAD_CURRENT_USER_REQUEST } from 'utils/auth/constants';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
-
-/*
-const Conteinerize = ({ location, children }) => {
-  const { pathname } = location;
-  if (pathname.split('/')[1] === 'admin') return children;
-  return (
-    <Container>
-      {children}
-    </Container>
-  );
-};
-
-Conteinerize.propTypes = {
-  location: PropTypes.object,
-  children: PropTypes.any,
-};
-*/
 
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -93,8 +77,6 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
             />
             <Navbar currentTenant={currentTenant} location={this.props.location.pathname} />
 
-            {/* Note: please, no <Container> wrapper! It breaks the layout. */}
-            {/* <Conteinerize location={location}> */}
             <Loader
               resourceLoader={loadUser}
               loadingMessage={messages.currentUserLoadingMessage}
@@ -109,8 +91,6 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
                 </Else>
               </Authorize>
             </Loader>
-            {/* </Conteinerize> */}
-            {/* <DockableSagaView monitor={sagamonitor}  /> */}
           </div>
         </ThemeProvider>
       );
@@ -123,6 +103,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     return (
       <div>
         <WatchSagas sagas={authSagas} />
+        <WatchSagas sagas={areasSagas} />
         <WatchSagas sagas={{ tenantSaga }} />
         {this.content()}
       </div>

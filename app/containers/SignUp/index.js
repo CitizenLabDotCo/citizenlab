@@ -5,6 +5,8 @@ import { createStructuredSelector } from 'reselect';
 import { injectIntl, intlShape } from 'react-intl';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { connect } from 'react-redux';
+import { loadAreas } from 'utils/areas/actions';
+import { createUserRequest } from 'utils/auth/actions';
 import styled from 'styled-components';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
@@ -12,7 +14,6 @@ import Button from 'components/UI/Button';
 import Select from 'components/UI/Select';
 import _ from 'lodash';
 import messages from './messages';
-import { createUserRequest } from 'utils/auth/actions';
 
 const Container = styled.div`
   background: #f2f2f2;
@@ -58,8 +59,7 @@ export class SignUp extends React.Component {
       emailError: null,
       password: null,
       passwordError: null,
-      dateOfBirth: null,
-      dateOfBirthError: null,
+      yearOfBirth: null,
       gender: null,
     };
   }
@@ -92,18 +92,15 @@ export class SignUp extends React.Component {
     });
   }
 
-  handleDateOfBirthOnChange = (dateOfBirth) => {
-    this.setState({
-      dateOfBirth,
-      dateOfBirthError: null,
-    });
+  handleYearOfBirthOnChange = (yearOfBirth) => {
+    this.setState({ yearOfBirth });
   }
 
   handleGenderOnChange = (gender) => {
     this.setState({ gender });
   }
 
-  handleOnSubmit = (firstName, lastName, email, password, dateOfBirth, gender, locale, formatMessage, onSignedIn) => () => {
+  handleOnSubmit = (firstName, lastName, email, password, yearOfBirth, gender, locale, formatMessage, onSignedIn) => () => {
     let hasError = false;
 
     if (!firstName) {
@@ -127,7 +124,7 @@ export class SignUp extends React.Component {
     }
 
     if (!hasError) {
-      console.log(firstName, lastName, email, password, dateOfBirth, gender, locale);
+      console.log(firstName, lastName, email, password, yearOfBirth, gender, locale);
       // onSignedIn();
       // this.props.createUserRequest(firstName, lastName, email, password, locale, null, null, null);
     }
@@ -145,8 +142,7 @@ export class SignUp extends React.Component {
       emailError,
       password,
       passwordError,
-      dateOfBirth,
-      dateOfBirthError,
+      yearOfBirth,
       gender,
     } = this.state;
 
@@ -206,15 +202,24 @@ export class SignUp extends React.Component {
                 />
               </FormElement>
 
-              <Label value={formatMessage(messages.dateOfBirthLabel)} htmlFor="dateOfBirth" />
+              <Label value={formatMessage(messages.yearOfBirthLabel)} htmlFor="yearOfBirth" />
               <FormElement>
-                <Input
-                  id="dateOfBirth"
-                  type="date"
-                  value={dateOfBirth}
-                  placeholder={formatMessage(messages.dateOfBirthPlaceholder)}
-                  error={dateOfBirthError}
-                  onChange={this.handleDateOfBirthOnChange}
+                <Select
+                  clearable
+                  searchable
+                  value={yearOfBirth}
+                  placeholder={formatMessage(messages.yearOfBirthPlaceholder)}
+                  options={[{
+                    value: '1998',
+                    label: '1998',
+                  }, {
+                    value: '1999',
+                    label: '1999',
+                  }, {
+                    value: '2000',
+                    label: '2000',
+                  }]}
+                  onChange={this.handleYearOfBirthOnChange}
                 />
               </FormElement>
 
@@ -243,7 +248,7 @@ export class SignUp extends React.Component {
                   size="2"
                   loading={processing}
                   text={formatMessage(messages.submit)}
-                  onClick={this.handleOnSubmit(firstName, lastName, email, password, dateOfBirth, gender, locale, formatMessage, onSignedIn)}
+                  onClick={this.handleOnSubmit(firstName, lastName, email, password, yearOfBirth, gender, locale, formatMessage, onSignedIn)}
                   disabled={!hasRequiredContent}
                 />
                 { hasError && <Error text={formatMessage(messages.formError)} marginTop="0px" showBackground={false} /> }
@@ -262,6 +267,7 @@ SignUp.propTypes = {
   intl: intlShape,
   locale: PropTypes.string,
   processing: PropTypes.bool,
+  loadAreas: PropTypes.func,
   createUserRequest: PropTypes.func,
 };
 
@@ -270,6 +276,9 @@ const mapStateToProps = createStructuredSelector({
   processing: (state) => state.getIn(['signUp', 'processing']),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ createUserRequest }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  loadAreas,
+  createUserRequest,
+}, dispatch);
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(SignUp));

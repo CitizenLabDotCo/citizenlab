@@ -7,11 +7,11 @@ export default defineMessages({
   },
   firstNameLabel: {
     id: 'app.containers.IdeasNewPage2.firstNameLabel',
-    defaultMessage: 'First name',
+    defaultMessage: 'First name (required)',
   },
   firstNamePlaceholder: {
     id: 'app.containers.IdeasNewPage2.firstNamePlaceholder',
-    defaultMessage: 'First name',
+    defaultMessage: 'Enter your first name',
   },
   firstNameEmptyError: {
     id: 'app.containers.IdeasNewPage2.firstNameEmptyError',
@@ -19,11 +19,11 @@ export default defineMessages({
   },
   lastNameLabel: {
     id: 'app.containers.IdeasNewPage2.lastNameLabel',
-    defaultMessage: 'Last name',
+    defaultMessage: 'Last name (required)',
   },
   lastNamePlaceholder: {
     id: 'app.containers.IdeasNewPage2.lastNamePlaceholder',
-    defaultMessage: 'Last Name',
+    defaultMessage: 'Enter your last name',
   },
   lastNameEmptyError: {
     id: 'app.containers.IdeasNewPage2.lastNameEmptyError',
@@ -31,11 +31,11 @@ export default defineMessages({
   },
   emailLabel: {
     id: 'app.containers.IdeasNewPage2.emailLabel',
-    defaultMessage: 'Email',
+    defaultMessage: 'Email (required)',
   },
   emailPlaceholder: {
     id: 'app.containers.IdeasNewPage2.emailPlaceholder',
-    defaultMessage: 'Email',
+    defaultMessage: 'Enter your email address',
   },
   emailEmptyError: {
     id: 'app.containers.IdeasNewPage2.emailEmptyError',
@@ -43,27 +43,23 @@ export default defineMessages({
   },
   passwordLabel: {
     id: 'app.containers.IdeasNewPage2.passwordLabel',
-    defaultMessage: 'Password',
+    defaultMessage: 'Password (required)',
   },
   passwordPlaceholder: {
     id: 'app.containers.IdeasNewPage2.passwordPlaceholder',
-    defaultMessage: 'Password',
+    defaultMessage: 'Enter a password',
   },
   passwordEmptyError: {
     id: 'app.containers.IdeasNewPage2.emailEmptyError',
     defaultMessage: 'Please enter a password',
   },
-  dateOfBirthLabel: {
-    id: 'app.containers.IdeasNewPage2.dateOfBirthLabel',
-    defaultMessage: 'Date of birth (optional)',
+  yearOfBirthLabel: {
+    id: 'app.containers.IdeasNewPage2.yearOfBirthLabel',
+    defaultMessage: 'Year of birth (optional)',
   },
-  dateOfBirthPlaceholder: {
-    id: 'app.containers.IdeasNewPage2.dateOfBirthPlaceholder',
-    defaultMessage: 'Your date of birth',
-  },
-  dateOfBirthError: {
-    id: 'app.containers.IdeasNewPage2.dateOfBirthError',
-    defaultMessage: 'Please enter a valid date of birth',
+  yearOfBirthPlaceholder: {
+    id: 'app.containers.IdeasNewPage2.yearOfBirthPlaceholder',
+    defaultMessage: 'Optionally select your year of birth',
   },
   genderLabel: {
     id: 'app.containers.IdeasNewPage2.genderLabel',
@@ -71,7 +67,19 @@ export default defineMessages({
   },
   genderPlaceholder: {
     id: 'app.containers.IdeasNewPage2.genderPlaceholder',
-    defaultMessage: 'Your gender',
+    defaultMessage: 'Optionally select your gender',
+  },
+  male: {
+    id: 'app.containers.IdeasNewPage2.male',
+    defaultMessage: 'Male',
+  },
+  female: {
+    id: 'app.containers.IdeasNewPage2.female',
+    defaultMessage: 'Female',
+  },
+  unspecified: {
+    id: 'app.containers.IdeasNewPage2.unspecified',
+    defaultMessage: 'Unspecified',
   },
   submit: {
     id: 'app.containers.IdeasNewPage2.submit',
