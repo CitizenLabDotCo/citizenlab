@@ -118,11 +118,11 @@ const RemoveUploadedItem = styled.div`
   cursor: pointer;
 
   &:hover svg {
-    fill: ${(props) => darken(0.2, (props.theme.accentFg || '#000'))};
+    fill: ${(props) => darken(0.2, (props.theme.color.main || '#000'))};
   }
 
   svg {
-    fill: ${(props) => props.theme.accentFg || '#777'};
+    fill: ${(props) => props.theme.color.main || '#777'};
   }
 `;
 

@@ -6,7 +6,8 @@ import { media } from 'utils/styleUtils';
 import { preprocess } from 'utils';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
+import { browserHistory } from 'react-router';
 import { injectTFunc } from 'utils/containers/t/utils';
 import WatchSagas from 'containers/WatchSagas';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
@@ -26,12 +27,13 @@ import Editor from 'components/UI/Editor';
 import Button from 'components/UI/Button';
 import Upload from 'components/UI/Upload';
 import Error from 'components/UI/Error';
+import SignUp from 'containers/SignUp';
 // import Icon from 'components/Icon';
 import { convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import _ from 'lodash';
 
-const PageContainer = styled.div`
+const Container = styled.div`
   background: #f2f2f2;
 `;
 
@@ -45,7 +47,7 @@ const FormContainerOuter = styled.div`
   padding-bottom: 100px;
 `;
 
-const PageTitle = styled.h2`
+const Title = styled.h2`
   color: #444;
   font-size: 36px;
   font-weight: 500;
@@ -54,7 +56,7 @@ const PageTitle = styled.h2`
 
 const FormContainerInner = styled.div`
   width: 100%;
-  max-width: 580px;
+  max-width: 550px;
 `;
 
 const FormElement = styled.div`
@@ -67,6 +69,19 @@ const EditorWrapper = styled.div`
 `;
 
 const MobileButton = styled.div`
+  width: 100%;
+  max-width: 550px;
+  display: flex;
+  align-items: center;
+
+  .Button {
+    margin-right: 10px;
+  }
+
+  .Error {
+    flex: 1;
+  }
+
   ${media.notPhone`
     display: none;
   `}
@@ -74,7 +89,7 @@ const MobileButton = styled.div`
 
 const ButtonBar = styled.div`
   width: 100%;
-  height: 72px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,7 +108,7 @@ const ButtonBar = styled.div`
 
 const ButtonBarInner = styled.div`
   width: 100%;
-  max-width: 580px;
+  max-width: 550px;
   display: flex;
   align-items: center;
 
@@ -120,8 +135,6 @@ class IdeasNewPage2 extends React.Component {
       location: null,
       images: null,
     };
-
-    this.dropzone = null;
   }
 
   componentDidMount() {
@@ -224,52 +237,45 @@ class IdeasNewPage2 extends React.Component {
   }
 
   handleOnSubmit = async () => {
-    let hasErrors = false;
+    let hasError = false;
+    let latLng = null;
     const { user, locale } = this.props;
     const { formatMessage } = this.props.intl;
     const { title, description, topics, project, location, images } = this.state;
 
     if (!title) {
-      hasErrors = true;
+      hasError = true;
       this.setState({ titleError: formatMessage(messages.titleEmptyError) });
     }
 
     if (!description || !description.getCurrentContent().hasText()) {
-      hasErrors = true;
+      hasError = true;
       this.setState({ descriptionError: formatMessage(messages.descriptionEmptyError) });
     }
 
-    if (!hasErrors) {
-      // const localTitle = { [locale]: title };
-      // const localDescription = { [locale]: draftToHtml(convertToRaw(description.getCurrentContent())) };
+    if (!hasError) {
+      const localTitle = { [locale]: title };
+      const localDescription = { [locale]: draftToHtml(convertToRaw(description.getCurrentContent())) };
 
-      /*
+      if (location) {
+        latLng = await this.convertToLatLng(location);
+      }
+
       console.log(user);
       console.log(localTitle);
       console.log(localDescription);
       console.log(topics);
-      console.log(location);
+      console.log(latLng);
       console.log(project);
       console.log(images);
-      */
-
-      const latLng = await this.convertToLatLng(location);
-      console.log(latLng);
 
       // this.props.submitIdea(user.id, localTitle, localDescription, topics, location, project, 'published');
     }
-
-    /*
-    geocodeByAddress(this.state.address)
-      .then(results => getLatLng(results[0]))
-      .then(latLng => console.log('Success', latLng))
-      .catch(error => console.error('Error', error))
-    */
   }
 
   render() {
-    const { topics, projects } = this.props;
-    const { formatMessage } = this.props.intl;
+    const { topics, projects, intl } = this.props;
+    const { formatMessage } = intl;
     const { title, titleError, description, descriptionError, topics: selectedTopics, project, location, images } = this.state;
     const uploadedImages = _(images).map((image) => _.omit(image, 'base64')).value();
     const hasRequiredContent = _.isString(title) && !_.isEmpty(title) && description && description.getCurrentContent().hasText();
@@ -279,17 +285,14 @@ class IdeasNewPage2 extends React.Component {
       <div>
         <WatchSagas sagas={sagas} />
 
-        <PageContainer>
+        <Container>
           <FormContainerOuter>
-            <PageTitle>
-              <FormattedMessage {...messages.pageTitle} />
-            </PageTitle>
+            <Title>{formatMessage(messages.formTitle)}</Title>
 
             <FormContainerInner>
               <Label value={formatMessage(messages.titleLabel)} htmlFor="title" />
               <FormElement>
                 <Input
-                  type="text"
                   id="title"
                   value={title}
                   placeholder={formatMessage(messages.titlePlaceholder)}
@@ -361,6 +364,7 @@ class IdeasNewPage2 extends React.Component {
                   onClick={this.handleOnSubmit}
                   disabled={!hasRequiredContent}
                 />
+                { hasError && <Error text={formatMessage(messages.formError)} marginTop="0px" showBackground={false} /> }
               </MobileButton>
             </FormContainerInner>
           </FormContainerOuter>
@@ -376,7 +380,9 @@ class IdeasNewPage2 extends React.Component {
               { hasError && <Error text={formatMessage(messages.formError)} marginTop="0px" showBackground={false} /> }
             </ButtonBarInner>
           </ButtonBar>
-        </PageContainer>
+        </Container>
+
+        <SignUp opened={true} onSignedIn={() => browserHistory.push('/ideas')} />
       </div>
     );
   }

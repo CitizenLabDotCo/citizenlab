@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  pageTitle: {
-    id: 'app.containers.IdeasNewPage2.pageTitle',
+  formTitle: {
+    id: 'app.containers.IdeasNewPage2.formTitle',
     defaultMessage: 'Add your idea',
   },
   titleLabel: {

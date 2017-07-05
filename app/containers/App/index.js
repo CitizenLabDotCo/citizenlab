@@ -76,10 +76,10 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
 
     if (currentTenant) {
       const theme = {
-        mainBg: currentTenant.attributes.settings.core.style_main_bg || '#00a8e2',
-        mainFg: currentTenant.attributes.settings.core.style_main_fg,
-        accentBg: currentTenant.attributes.settings.core.style_accent_bg,
-        accentFg: currentTenant.attributes.settings.core.style_accent_fg,
+        color: {
+          main: '#ef0071',
+          menuBg: '#fff',
+        },
       };
 
       return (
@@ -91,7 +91,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
                 { name: 'description', content: formatMessage(messages.helmetDescription, { tenantName: currentTenant.attributes.name }) },
               ]}
             />
-            {/* <Navbar currentTenant={currentTenant} location={this.props.location.pathname} /> */}
+            <Navbar currentTenant={currentTenant} location={this.props.location.pathname} />
 
             {/* Note: please, no <Container> wrapper! It breaks the layout. */}
             {/* <Conteinerize location={location}> */}
