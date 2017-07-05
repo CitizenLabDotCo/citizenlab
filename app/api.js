@@ -58,7 +58,6 @@ export function fetchIdeas(query, queryParameters) {
   return request(`${API_PATH}/ideas${railsfriendlyQuery}`, null, null, queryParameters);
 }
 
-
 export function fetchTopics(queryParameters) {
   return request(`${API_PATH}/topics`, null, null, queryParameters);
 }
@@ -306,5 +305,21 @@ export function markNotificationRead(notificationId) {
 export function markAllNotificationsRead() {
   return request(`${API_PATH}/notifications/mark_all_read`, null, {
     method: 'POST',
+  });
+}
+
+/*
+ * export
+ */
+
+export function fetchIdeasXlsx(project) {
+  return request(`${API_PATH}/ideas/as_xlsx`, null, null, {
+    project,
+  });
+}
+
+export function fetchCommentsXlsx(project) {
+  return request(`${API_PATH}/comments/as_xlsx`, null, null, {
+    project,
   });
 }

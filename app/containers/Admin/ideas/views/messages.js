@@ -32,8 +32,23 @@ export default defineMessages({
     defaultMessage: 'Loading Idea...',
   },
   ideaLoadingError: {
-    id: 'app.containers.AdminPage.Ideas.Views.edit.ideaLoadingError',
+    id: 'app.containers.AdminPage.Ideas.Views.all.ideaLoadingError',
     defaultMessage: 'Idea not found!',
   },
-
+  exportIdeas: {
+    id: 'app.containers.AdminPage.IdeaDashboard.exportIdeas',
+    defaultMessage: 'Export all ideas',
+  },
+  exportComments: {
+    id: 'app.containers.AdminPage.IdeaDashboard.exportComments',
+    defaultMessage: 'Export all comments',
+  },
+  processingDownload: {
+    id: 'app.containers.AdminPage.Ideas.Views.all.processingDownload',
+    defaultMessage: 'Processing...',
+  },
+  downloadError: {
+    id: 'app.containers.AdminPage.Ideas.Views.all.downloadError',
+    defaultMessage: 'Error while downloading. Please retry',
+  },
 });
