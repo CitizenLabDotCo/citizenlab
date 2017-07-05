@@ -125,7 +125,7 @@ const StyledMultipleSelect = styled(Select)`
           border-radius: 5px;
           overflow: hidden;
           cursor: pointer;
-          background: ${(props) => props.theme.accentFg || '#777'};
+          background: ${(props) => props.theme.color.main || '#777'};
 
           &:last-child {
             margin-right: 0px;
@@ -150,7 +150,7 @@ const StyledMultipleSelect = styled(Select)`
             justify-content: center;
 
             &:hover {
-              background: ${(props) => darken(0.2, (props.theme.accentFg || '#777'))};
+              background: ${(props) => darken(0.2, (props.theme.color.main || '#777'))};
             }
           }
 

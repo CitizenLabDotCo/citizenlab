@@ -16,7 +16,7 @@ const StyledButton = styled.button`
   border-radius: 5px;
   position: relative;
   outline: none;
-  background: ${(props) => props.theme.accentFg || '#e0e0e0'};
+  background: ${(props) => props.theme.color.main || '#e0e0e0'};
   transition: background 150ms ease;
 
   &.disabled {
@@ -69,7 +69,7 @@ const StyledButton = styled.button`
   }
 
   &:not(.disabled):hover {
-    background: ${(props) => darken(0.2, (props.theme.accentFg || '#ccc'))};
+    background: ${(props) => darken(0.2, (props.theme.color.main || '#ccc'))};
   }
 `;
 
