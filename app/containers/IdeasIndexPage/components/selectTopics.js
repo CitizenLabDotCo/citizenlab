@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // components
-import MultiSelect from 'components/forms/inputs/multiSelect';
+import FilterSelector from 'containers/FilterSelector';
 
 // store
 import { push } from 'react-router-redux';
@@ -17,15 +17,8 @@ import queryString from 'query-string';
 // translations
 import { injectTFunc } from 'containers/T/utils';
 
-const SelectTopic = ({ options, value, filterPage }) => (
-  <div style={{ display: 'inline-block', width: '33%', marginRight: '10px' }}>
-    <MultiSelect
-      name={'topics'}
-      options={options}
-      action={filterPage}
-      value={value}
-    />
-  </div>
+const SelectTopic = ({ options }) => (
+  <FilterSelector title="topics" values={options} />
 );
 
 SelectTopic.propTypes = {

@@ -12,9 +12,7 @@ import WatchSagas from 'containers/WatchSagas';
 import { Segment } from 'semantic-ui-react';
 import IdeaCards from './components/ideaCards';
 
-import SelectTopic from './components/selectTopics';
-import SelectArea from './components/selectAreas';
-
+import SelectTopics from './components/selectTopics';
 
 // store
 import { preprocess } from 'utils';
@@ -43,8 +41,7 @@ class View extends React.Component {
       <div>
         <WatchSagas sagas={sagasWatchers} />
         <Segment style={{ width: 1000, marginLeft: 'auto', marginRight: 'auto' }} basic>
-          {withFilters && <SelectArea />}
-          {withFilters && <SelectTopic />}
+          {withFilters && <SelectTopics />}
           <IdeaCards filter={filter} />
         </Segment>
       </div>
