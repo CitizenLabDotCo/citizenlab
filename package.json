@@ -267,6 +267,7 @@
     "redux-saga-devtools": "^0.1.1",
     "redux-thunk": "^2.2.0",
     "reselect": "2.5.4",
+    "rxjs": "^5.4.2",
     "sanitize.css": "4.1.0",
     "semantic-ui-css": "^2.2.10",
     "semantic-ui-react": "^0.67.2",
