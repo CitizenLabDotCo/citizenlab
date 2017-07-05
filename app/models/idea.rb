@@ -5,6 +5,7 @@ class Idea < ApplicationRecord
   pg_search_scope :search_by_all, :against => [:title_multiloc, :body_multiloc, :author_name]
 
   belongs_to :project, optional: true
+  counter_culture :project
   belongs_to :author, class_name: 'User', optional: true
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, through: :ideas_topics

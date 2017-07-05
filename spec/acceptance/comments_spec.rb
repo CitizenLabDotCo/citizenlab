@@ -67,6 +67,7 @@ resource "Comments" do
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
         expect(json_response.dig(:data,:relationships,:parent,:data)).to be_nil
         expect(json_response.dig(:data,:relationships,:idea,:data,:id)).to eq idea_id
+        expect(@idea.reload.comments_count).to eq 3
       end
 
       describe do
@@ -79,6 +80,7 @@ resource "Comments" do
           expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
           expect(json_response.dig(:data,:relationships,:parent,:data, :id)).to eq parent_id
           expect(json_response.dig(:data,:relationships,:idea,:data,:id)).to eq idea_id
+          expect(@idea.reload.comments_count).to eq 3
         end
       end
     end
@@ -98,6 +100,7 @@ resource "Comments" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
+        expect(@idea.reload.comments_count).to eq 3
       end
     end
 
@@ -108,6 +111,7 @@ resource "Comments" do
       example_request "Delete a comment" do
         expect(response_status).to eq 200
         expect{Comment.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect(@idea.reload.comments_count).to eq 2
       end
     end
 
