@@ -9,7 +9,7 @@ class Ideas extends React.PureComponent {
     this.subscriptions = [];
     this.state = {
       loading: true,
-      ideaIds: null,
+      ideas: null,
     };
   }
 
@@ -21,11 +21,10 @@ class Ideas extends React.PureComponent {
         'page[size]': 5,
       })
       .filter((ideas) => ideas)
-      .map((ideas) => ideas.map((idea) => idea.id))
-      .subscribe((ideaIds) => {
+      .subscribe((ideas) => {
         this.setState({
           loading: false,
-          ideaIds,
+          ideas,
         });
       }),
     ];
@@ -35,18 +34,14 @@ class Ideas extends React.PureComponent {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  handleOnClick = (id) => () => {
-    IdeasObserver.select(id);
-  }
-
   render() {
-    const { loading, ideaIds } = this.state;
+    const { loading, ideas } = this.state;
 
     return (
       <div>
         <h1>Ideas</h1>
         { loading && 'Loading...' }
-        { ideaIds && ideaIds.map((ideaId) => <Idea key={ideaId} id={ideaId} />) }
+        { ideas && ideas.map((idea) => <Idea key={idea.id} idea={idea} />) }
       </div>
     );
   }

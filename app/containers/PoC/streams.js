@@ -11,6 +11,7 @@ class Streams {
 
   arrayStream(url, onChildAdded = false, queryParameters = null) {
     const urlWithParams = (queryParameters ? withQuery(url, queryParameters) : url);
+    console.log(urlWithParams);
 
     if (!this.arrayStreams[urlWithParams]) {
       this.arrayStreams[urlWithParams] = {};
