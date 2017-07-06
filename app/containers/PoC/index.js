@@ -20,7 +20,7 @@ class Ideas extends React.PureComponent {
         'page[number]': 1,
         'page[size]': 5,
       })
-      .filter((ideas) => _.isArray(ideas) && !_.isEmpty(ideas))
+      .filter((ideas) => ideas)
       .map((ideas) => ideas.map((idea) => idea.id))
       .subscribe((ideaIds) => {
         this.setState({

@@ -23,7 +23,7 @@ class Idea extends React.PureComponent {
   componentDidMount() {
     this.subscriptions = [
       IdeasObserver.observe()
-        .filter((ideas) => _.isArray(ideas) && !_.isEmpty(ideas))
+        .filter((ideas) => ideas)
         .switchMap((ideas) => Rx.Observable.from(ideas))
         .filter((idea) => idea.id === this.props.id)
         .distinctUntilChanged()
