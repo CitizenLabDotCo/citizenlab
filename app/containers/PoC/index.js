@@ -1,7 +1,6 @@
 import React from 'react';
-import IdeasObserver from './ideasObserver';
+import IdeasStream from './ideasStream';
 import Idea from './idea';
-import _ from 'lodash';
 
 class Ideas extends React.PureComponent {
   constructor() {
@@ -15,13 +14,11 @@ class Ideas extends React.PureComponent {
 
   componentDidMount() {
     this.subscriptions = [
-      IdeasObserver.observe({
+      IdeasStream.observe({
         sort: 'trending',
         'page[number]': 1,
         'page[size]': 5,
-      })
-      .filter((ideas) => ideas)
-      .subscribe((ideas) => {
+      }).filter((ideas) => ideas).subscribe((ideas) => {
         this.setState({
           loading: false,
           ideas,

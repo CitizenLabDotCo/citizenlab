@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import IdeasObserver from './ideasObserver';
+import IdeasStream from './ideasStream';
 import styled from 'styled-components';
 
 const StyledIdea = styled.div`
@@ -12,9 +12,8 @@ const StyledIdea = styled.div`
 `;
 
 class Idea extends React.PureComponent {
-
   handleOnClick = (id) => () => {
-    IdeasObserver.select(id);
+    IdeasStream.select(id);
   }
 
   render() {

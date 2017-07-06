@@ -11,7 +11,6 @@ class Streams {
 
   arrayStream(url, onChildAdded = false, queryParameters = null) {
     const urlWithParams = (queryParameters ? withQuery(url, queryParameters) : url);
-    console.log(urlWithParams);
 
     if (!this.arrayStreams[urlWithParams]) {
       this.arrayStreams[urlWithParams] = {};
@@ -21,8 +20,6 @@ class Streams {
 
         request(url, null, null, queryParameters).then((response) => {
           internalObserver.next(response.data);
-        }).catch((error) => {
-          console.log(error);
         });
 
         return () => {

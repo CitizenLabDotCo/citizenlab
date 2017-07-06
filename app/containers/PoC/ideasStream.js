@@ -1,15 +1,15 @@
 import { API_PATH } from 'containers/App/constants';
 import Streams from './streams';
 
-class IdeasObserver {
+class IdeasStream {
   constructor() {
     this.stream = null;
   }
 
   observe(queryParameters = null) {
-    // const urlWithParams = (queryParameters ? withQuery(url, queryParameters) : url);
-    const onChildAdded = (list, newItem) => ({ ...newItem, selected: false });
-    this.stream = Streams.arrayStream(`${API_PATH}/ideas`, onChildAdded, queryParameters);
+    const url = `${API_PATH}/ideas`;
+    const onIdeaAdded = (ideas, addedIdea) => ({ ...addedIdea, selected: false });
+    this.stream = Streams.arrayStream(url, onIdeaAdded, queryParameters);
     return this.stream.observable;
   }
 
@@ -36,4 +36,4 @@ class IdeasObserver {
   }
 }
 
-export default new IdeasObserver();
+export default new IdeasStream();
