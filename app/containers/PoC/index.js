@@ -15,15 +15,19 @@ class Ideas extends React.PureComponent {
 
   componentDidMount() {
     this.subscriptions = [
-      IdeasObserver.observe()
-        .filter((ideas) => _.isArray(ideas) && !_.isEmpty(ideas))
-        .map((ideas) => ideas.map((idea) => idea.id))
-        .subscribe((ideaIds) => {
-          this.setState({
-            loading: false,
-            ideaIds,
-          });
-        }),
+      IdeasObserver.observe({
+        sort: 'trending',
+        'page[number]': 1,
+        'page[size]': 5,
+      })
+      .filter((ideas) => _.isArray(ideas) && !_.isEmpty(ideas))
+      .map((ideas) => ideas.map((idea) => idea.id))
+      .subscribe((ideaIds) => {
+        this.setState({
+          loading: false,
+          ideaIds,
+        });
+      }),
     ];
   }
 

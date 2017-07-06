@@ -9,7 +9,7 @@ class Streams {
     this.arrayStreams = {};
   }
 
-  arrayStream(url, onChildAdded = false, queryParameters = false) {
+  arrayStream(url, onChildAdded = false, queryParameters = null) {
     const urlWithParams = (queryParameters ? withQuery(url, queryParameters) : url);
 
     if (!this.arrayStreams[urlWithParams]) {
@@ -18,7 +18,7 @@ class Streams {
       this.arrayStreams[urlWithParams].observable = Rx.Observable.create((internalObserver) => {
         this.arrayStreams[urlWithParams].observer = internalObserver;
 
-        request(url, null, null, null).then((response) => {
+        request(url, null, null, queryParameters).then((response) => {
           internalObserver.next(response.data);
         }).catch((error) => {
           console.log(error);

@@ -3,6 +3,15 @@ import PropTypes from 'prop-types';
 import IdeasObserver from './ideasObserver';
 import _ from 'lodash';
 import Rx from 'rxjs/Rx';
+import styled from 'styled-components';
+
+const StyledIdea = styled.div`
+  color: ${(props) => props.selected ? 'white' : '#333'};
+  font-size: 18px;
+  padding: 10px;
+  cursor: pointer;
+  background: ${(props) => props.selected ? 'green' : 'white'};
+`;
 
 class Idea extends React.PureComponent {
   constructor() {
@@ -19,6 +28,7 @@ class Idea extends React.PureComponent {
         .filter((idea) => idea.id === this.props.id)
         .distinctUntilChanged()
         .subscribe((idea) => {
+          console.log(`Rendered component ${idea.id}`);
           this.setState({ idea });
         }),
     ];
@@ -37,7 +47,7 @@ class Idea extends React.PureComponent {
 
     return (
       <div>
-        { idea && <div onClick={this.handleOnClick(idea.id)} style={{ background: (idea.selected ? 'red' : 'white') }}>{idea.id}</div> }
+        { idea && <StyledIdea onClick={this.handleOnClick(idea.id)} selected={idea.selected}>{idea.id}</StyledIdea> }
       </div>
     );
   }
