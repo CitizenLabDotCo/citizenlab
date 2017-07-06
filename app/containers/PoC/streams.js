@@ -1,21 +1,22 @@
+import 'whatwg-fetch';
+import * as withQuery from 'with-query';
 import Rx from 'rxjs/Rx';
 import _ from 'lodash';
 import request from 'utils/request';
 
 class Streams {
   constructor() {
-    this.objectStreams = {};
     this.arrayStreams = {};
   }
 
-  arrayStream(url, onChildAdded = false, queryKey = false) {
-    const urlString = (!queryKey ? url : `${url}/querykey=${queryKey}`);
+  arrayStream(url, onChildAdded = false, queryParameters = false) {
+    const urlWithParams = (queryParameters ? withQuery(url, queryParameters) : url);
 
-    if (!this.arrayStreams[urlString]) {
-      this.arrayStreams[urlString] = {};
+    if (!this.arrayStreams[urlWithParams]) {
+      this.arrayStreams[urlWithParams] = {};
 
-      this.arrayStreams[urlString].observable = Rx.Observable.create((internalObserver) => {
-        this.arrayStreams[urlString].observer = internalObserver;
+      this.arrayStreams[urlWithParams].observable = Rx.Observable.create((internalObserver) => {
+        this.arrayStreams[urlWithParams].observer = internalObserver;
 
         request(url, null, null, null).then((response) => {
           internalObserver.next(response.data);
@@ -24,7 +25,7 @@ class Streams {
         });
 
         return () => {
-          delete this.arrayStreams[urlString];
+          delete this.arrayStreams[urlWithParams];
         };
       })
       .startWith(null)
@@ -39,7 +40,7 @@ class Streams {
           data = current;
         }
 
-        this.arrayStreams[urlString].data = data;
+        this.arrayStreams[urlWithParams].data = data;
 
         return data;
       })
@@ -48,7 +49,7 @@ class Streams {
       .refCount();
     }
 
-    return this.arrayStreams[urlString];
+    return this.arrayStreams[urlWithParams];
   }
 }
 

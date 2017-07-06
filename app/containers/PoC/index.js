@@ -1,7 +1,8 @@
 import React from 'react';
 import IdeasObserver from './ideasObserver';
+import Idea from './idea';
 
-class Idea extends React.PureComponent {
+class Ideas extends React.PureComponent {
   constructor() {
     super();
     this.subscriptions = [];
@@ -30,20 +31,10 @@ class Idea extends React.PureComponent {
     return (
       <div>
         <h1>test</h1>
-        <div>
-          {ideas && ideas.map((idea) => (
-            <div
-              key={idea.id}
-              onClick={this.handleOnClick(idea.id)}
-              style={{ background: (idea.selected ? 'red' : 'white') }}
-            >
-              {idea.id}
-            </div>
-          ))}
-        </div>
+        {ideas && ideas.map((idea) => <Idea key={idea.id} id={idea.id} />)}
       </div>
     );
   }
 }
 
-export default Idea;
+export default Ideas;
