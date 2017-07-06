@@ -37,15 +37,7 @@ class Idea extends React.PureComponent {
 
     return (
       <div>
-        {idea && (
-          <div
-            key={idea.id}
-            onClick={this.handleOnClick(idea.id)}
-            style={{ background: (idea.selected ? 'red' : 'white') }}
-          >
-            {idea.id}
-          </div>
-        )}
+        { idea && <div onClick={this.handleOnClick(idea.id)} style={{ background: (idea.selected ? 'red' : 'white') }}>{idea.id}</div> }
       </div>
     );
   }

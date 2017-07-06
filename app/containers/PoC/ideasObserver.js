@@ -6,9 +6,9 @@ class IdeasObserver {
     this.stream = null;
   }
 
-  observe() {
+  observe(queryParameters = false) {
     const onChildAdded = (list, newItem) => ({ ...newItem, selected: false });
-    this.stream = Streams.arrayStream(`${API_PATH}/ideas`, onChildAdded);
+    this.stream = Streams.arrayStream(`${API_PATH}/ideas`, onChildAdded, queryParameters);
     return this.stream.observable;
   }
 

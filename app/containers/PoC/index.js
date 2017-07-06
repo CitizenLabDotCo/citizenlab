@@ -1,19 +1,29 @@
 import React from 'react';
 import IdeasObserver from './ideasObserver';
 import Idea from './idea';
+import _ from 'lodash';
 
 class Ideas extends React.PureComponent {
   constructor() {
     super();
     this.subscriptions = [];
-    this.state = { ideas: null };
+    this.state = {
+      loading: true,
+      ideaIds: null,
+    };
   }
 
   componentDidMount() {
     this.subscriptions = [
-      IdeasObserver.observe().subscribe((ideas) => {
-        this.setState({ ideas });
-      }),
+      IdeasObserver.observe()
+        .filter((ideas) => _.isArray(ideas) && !_.isEmpty(ideas))
+        .map((ideas) => ideas.map((idea) => idea.id))
+        .subscribe((ideaIds) => {
+          this.setState({
+            loading: false,
+            ideaIds,
+          });
+        }),
     ];
   }
 
@@ -26,12 +36,13 @@ class Ideas extends React.PureComponent {
   }
 
   render() {
-    const { ideas } = this.state;
+    const { loading, ideaIds } = this.state;
 
     return (
       <div>
-        <h1>test</h1>
-        {ideas && ideas.map((idea) => <Idea key={idea.id} id={idea.id} />)}
+        <h1>Ideas</h1>
+        { loading && 'Loading...' }
+        { ideaIds && ideaIds.map((ideaId) => <Idea key={ideaId} id={ideaId} />) }
       </div>
     );
   }
