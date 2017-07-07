@@ -54,6 +54,7 @@ export default function request(url, data, options, queryParameters) {
     });
 }
 
+// we use xhr rather than fetch API, to enforce response type
 export function requestBlob(url, type, queryParameters) {
   const urlWithParams = (queryParameters
     ? withQuery(url, queryParameters)

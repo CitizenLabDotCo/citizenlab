@@ -7,21 +7,21 @@ import {
 import { fetchIdeasXlsx, fetchCommentsXlsx } from 'api';
 import * as FileSaver from './lib/FileSaver.min';
 
-function* getIdeasXlsx() {
+// individual exports for testing
+export function* getIdeasXlsx() {
   try {
-    const response = yield call(fetchIdeasXlsx);
-    FileSaver.saveAs(response, 'users-export.xlsx');
+    FileSaver.saveAs(yield call(fetchIdeasXlsx), 'users-export.xlsx');
     yield put(ideasXlsxLoaded());
   } catch (err) {
     // err is string
+    console.log(err);
     yield put(ideasXlsxLoadError(err));
   }
 }
 
-function* getCommentsXlsx() {
+export function* getCommentsXlsx() {
   try {
-    const response = yield call(fetchCommentsXlsx);
-    FileSaver.saveAs(response, 'comments-export.xlsx');
+    FileSaver.saveAs(yield call(fetchCommentsXlsx), 'comments-export.xlsx');
     yield put(commentsXlsxLoaded());
   } catch (err) {
     // err is string
