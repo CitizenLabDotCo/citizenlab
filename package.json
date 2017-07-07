@@ -107,10 +107,7 @@
         "error",
         "always"
       ],
-      "arrow-body-style": [
-        2,
-        "as-needed"
-      ],
+      "arrow-body-style": "off",
       "comma-dangle": [
         2,
         "always-multiline"
@@ -273,6 +270,7 @@
     "semantic-ui-react": "^0.67.2",
     "styled-components": "2.0.0",
     "url-parse": "^1.1.8",
+    "uuid": "^3.1.0",
     "warning": "3.0.0",
     "whatwg-fetch": "2.0.1",
     "with-query": "^1.0.2"
