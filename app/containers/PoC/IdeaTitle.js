@@ -10,10 +10,10 @@ const Container = styled.div`
   font-weight: 600;
   padding: 20px;
   cursor: pointer;
-  background: ${(props) => props.selected ? '#f4f4f4' : 'white'};
+  background: ${(props) => props.selected ? '#e0e0e0' : 'white'};
 
   &:hover {
-    background: ${(props) => props.selected ? '#f4f4f4' : '#e0e0e0'};
+    background: ${(props) => props.selected ? '#ddd' : '#e0e0e0'};
   }
 `;
 
