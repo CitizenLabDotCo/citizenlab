@@ -2,10 +2,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import styled from 'styled-components';
 
 // Components
 import Title from './components/title';
 import ValuesList from './components/valuesList';
+
+// Style
+const Container = styled.div`
+  display: inline-block;
+  position: relative;
+  outline: none;
+`;
 
 class FilterSelector extends React.Component {
   constructor(props) {
@@ -58,10 +66,10 @@ class FilterSelector extends React.Component {
     const { values, multiple } = this.props;
 
     return (
-      <div tabIndex="0" role="listbox" aria-multiselectable={multiple} aria-expanded={deployed}>
+      <Container tabIndex="0" role="listbox" aria-multiselectable={multiple} aria-expanded={deployed}>
         <Title title={currentTitle} deployed={deployed} onClick={this.toggleExpanded} />
         {deployed && <ValuesList values={values} selected={selected} onChange={this.selectionChange} multiple={multiple} />}
-      </div>
+      </Container>
     );
   }
 }

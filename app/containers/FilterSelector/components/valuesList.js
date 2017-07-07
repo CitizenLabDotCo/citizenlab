@@ -8,13 +8,15 @@ import styled from 'styled-components';
 import Icon from 'components/Icon';
 
 // Styles
-const StyledList = styled.div`
+const Overlay = styled.div`
   border-radius: 5px;
   background-color: #ffffff;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
   border: solid 1px #eaeaea;
   padding: 10px;
   position: absolute;
+  top: 2rem;
+  left: 0;
   z-index: 10;
 
   ::after {
@@ -28,6 +30,7 @@ const StyledList = styled.div`
     display: block;
     position:absolute;
     top: -2rem;
+    left: 1rem;
   }
 `;
 
@@ -42,11 +45,16 @@ const ListWrapper = styled.ul`
 const StyledOption = styled.li`
   padding: .8rem;
   color: #888;
+  display: flex;
 
   :hover, :focus {
     background-color: #f9f9f9;
     color: #222;
   }
+`;
+
+const OptionText = styled.span`
+  flex: 1;
 `;
 
 const Checkmark = styled.span`
@@ -58,8 +66,8 @@ const Checkmark = styled.span`
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, .1);
   color: white;
   display: inline-block;
-  float: right;
   height: 1.5rem;
+  margin-left: .5rem;
   text-align: center;
   width: 1.5rem;
 
@@ -77,7 +85,7 @@ class ValuesList extends React.Component {
     const { values, multiple } = this.props;
 
     return (
-      <StyledList>
+      <Overlay>
         <ListWrapper>
           {values && values.map((entry) => {
             const isSelected = this.isSelected(entry.value);
@@ -85,7 +93,7 @@ class ValuesList extends React.Component {
 
             return (
               <StyledOption role="option" aria-selected={isSelected} key={entry.value} onClick={clickHandler}>
-                {entry.text}
+                <OptionText>{entry.text}</OptionText>
                 {multiple && <Checkmark selected={isSelected}>
                   <Icon name="checkmark" />
                 </Checkmark>}
@@ -94,7 +102,7 @@ class ValuesList extends React.Component {
           }
           )}
         </ListWrapper>
-      </StyledList>
+      </Overlay>
     );
   }
 }

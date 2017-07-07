@@ -34,6 +34,13 @@ const getIcon = (name) => {
         </svg>
       );
     }
+    case 'dropdown': {
+      return (
+        <svg width="9" height="6" viewBox="0 0 9 6">
+          <path fill="#A6A6A6" fillRule="evenodd" d="M7.939 0L4.5 3.439 1.061 0 0 1.061l4.5 4.5 4.5-4.5z" />
+        </svg>
+      );
+    }
     default:
       return null;
   }
