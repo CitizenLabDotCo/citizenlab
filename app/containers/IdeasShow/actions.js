@@ -20,14 +20,14 @@ export function loadIdeaSuccess(payload) {
   return {
     type: LOAD_IDEA_SUCCESS,
     payload,
-    meta: {
+   /* meta: {
       tracking: {
         message: 'Idea loaded!',
         attributes: {
           ideaId: payload.data.id,
         },
       },
-    },
+    }, */
   };
 }
 
