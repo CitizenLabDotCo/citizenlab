@@ -23,6 +23,8 @@ describe('resources/projects/pages sagas', () => {
 
     it('should have called the correct API', (result) => {
       expect(result).toEqual(call(fetchPages, {
+        'page[number]': 1,
+        'page[size]': 3,
         project: mockedAction.payload,
       }));
     });
