@@ -6,7 +6,6 @@ import {
 } from './constants';
 import { fetchIdeasXlsx, fetchCommentsXlsx } from 'api';
 import * as FileSaver from './lib/FileSaver.min';
-import * as XLSX from 'xlsx';
 
 function* getIdeasXlsx() {
   try {
@@ -16,14 +15,7 @@ function* getIdeasXlsx() {
        [response],
        { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
     );
-    // load workbook
-    const data = new Uint8Array(blob);
-    const arr = [];
-    for (let i = 0; i !== data.length; i += 1) arr[i] = String.fromCharCode(data[i]);
-    const bstr = arr.join('');
-    const workbook = XLSX.read(bstr, { type: 'binary' });
-    const finalBlob = new Blob([workbook.Sheets.Sheet1], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    FileSaver.saveAs(finalBlob);
+    FileSaver.saveAs(blob);
     yield put(ideasXlsxLoaded());
   } catch (err) {
     yield put(ideasXlsxLoadError(err.json.errors));

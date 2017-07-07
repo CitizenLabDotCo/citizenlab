@@ -274,8 +274,7 @@
     "url-parse": "^1.1.8",
     "warning": "3.0.0",
     "whatwg-fetch": "2.0.1",
-    "with-query": "^1.0.2",
-    "xlsx": "^0.10.7"
+    "with-query": "^1.0.2"
   },
   "devDependencies": {
     "babel-cli": "6.18.0",
