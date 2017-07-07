@@ -10,25 +10,22 @@ import * as FileSaver from './lib/FileSaver.min';
 function* getIdeasXlsx() {
   try {
     const response = yield call(fetchIdeasXlsx);
-    // console.log(s2ab(btoa(response)));
-    const blob = new Blob(
-       [response],
-       { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
-    );
-    FileSaver.saveAs(blob);
+    FileSaver.saveAs(response, 'users-export.xlsx');
     yield put(ideasXlsxLoaded());
   } catch (err) {
-    yield put(ideasXlsxLoadError(err.json.errors));
+    // err is string
+    yield put(ideasXlsxLoadError(err));
   }
 }
 
 function* getCommentsXlsx() {
   try {
     const response = yield call(fetchCommentsXlsx);
-    FileSaver.saveAs(new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' }));
+    FileSaver.saveAs(response, 'comments-export.xlsx');
     yield put(commentsXlsxLoaded());
   } catch (err) {
-    yield put(commentsXlsxLoadError(err.json.errors));
+    // err is string
+    yield put(commentsXlsxLoadError(err));
   }
 }
 

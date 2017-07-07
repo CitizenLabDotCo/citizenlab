@@ -36,7 +36,7 @@ export default function request(url, data, options, queryParameters) {
         response,
         response.json().catch(() => {
           if (response.ok) return {};
-          return new Error('usuported case. no valid jason and not ok reponse');
+          return new Error('unsupported case. no valid json and not ok response');
         }),
       ])
     ))
@@ -52,4 +52,28 @@ export default function request(url, data, options, queryParameters) {
       error.json = json;
       throw error;
     });
+}
+
+export function requestBlob(url, type, queryParameters) {
+  const urlWithParams = (queryParameters
+    ? withQuery(url, queryParameters)
+    : url);
+
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', urlWithParams, true);
+    xhr.responseType = 'blob';
+    xhr.setRequestHeader('Content-Type', type);
+    xhr.setRequestHeader('Authorization', `Bearer ${getJwt()}`);
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        const blob = new Blob([xhr.response], { type });
+        resolve(blob);
+      } else {
+        const error = new Error(xhr.statusText);
+        reject(error);
+      }
+    };
+    xhr.send(null);
+  });
 }

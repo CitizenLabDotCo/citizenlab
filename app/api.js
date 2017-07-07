@@ -1,4 +1,4 @@
-import request from 'utils/request';
+import request, { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 
 export function login(email, password) {
@@ -313,13 +313,17 @@ export function markAllNotificationsRead() {
  */
 
 export function fetchIdeasXlsx(project) {
-  return request(`${API_PATH}/ideas/as_xlsx`, null, null, {
-    project,
-  });
+  return requestBlob(
+    `${API_PATH}/ideas/as_xlsx`,
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    { project }
+  );
 }
 
 export function fetchCommentsXlsx(project) {
-  return request(`${API_PATH}/comments/as_xlsx`, null, null, {
-    project,
-  });
+  return requestBlob(
+    `${API_PATH}/comments/as_xlsx`,
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    { project }
+  );
 }
