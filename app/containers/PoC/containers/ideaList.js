@@ -13,7 +13,7 @@ const Container = styled.div`
   padding-bottom: 100px;
 `;
 
-class IdeasList extends React.PureComponent {
+class IdeaList extends React.PureComponent {
   constructor() {
     super();
     this.subscriptions = [];
@@ -57,4 +57,4 @@ class IdeasList extends React.PureComponent {
   }
 }
 
-export default IdeasList;
+export default IdeaList;
