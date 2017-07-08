@@ -1,4 +1,11 @@
-class Actions {
+import { API_PATH } from 'containers/App/constants';
+import Streams from '../utils/streams';
+
+class IdeaListService {
+  observe(queryParameters = null, localProperties = false) {
+    return Streams.create(`${API_PATH}/ideas`, queryParameters, localProperties);
+  }
+
   toggleIdea(observer, ideaID) {
     const action = (ideas) => ideas.map((idea) => {
       if (idea.id === ideaID) {
@@ -22,4 +29,4 @@ class Actions {
   }
 }
 
-export default new Actions();
+export default new IdeaListService();

@@ -1,10 +1,8 @@
 import React from 'react';
-import IdeaTitle from './IdeaTitle';
-import IdeaContent from './IdeaContent';
-import { API_PATH } from 'containers/App/constants';
-import Stream from './stream';
-import _ from 'lodash';
+import IdeaTitle from './ideaTitle';
+import IdeaContent from './ideaContent';
 import styled from 'styled-components';
+import IdeaListService from '../services/ideaListService';
 
 const Container = styled.div`
   width: 100%;
@@ -15,21 +13,17 @@ const Container = styled.div`
   padding-bottom: 100px;
 `;
 
-class Ideas extends React.PureComponent {
+class IdeasList extends React.PureComponent {
   constructor() {
     super();
     this.subscriptions = [];
+    this.ideasStream = IdeaListService.observe({ sort: 'trending', 'page[number]': 7, 'page[size]': 5 }, { selected: false });
     this.state = { loading: true, ideas: null };
-
-    const apiEndpoint = `${API_PATH}/ideas`;
-    const queryParameters = { sort: 'trending', 'page[number]': 7, 'page[size]': 5 };
-    const localProperties = { selected: false };
-    this.ideasStream = Stream.create(apiEndpoint, queryParameters, localProperties);
   }
 
   componentDidMount() {
     this.subscriptions = [
-      this.ideasStream.observable.filter((ideas) => !_.isEmpty(ideas)).subscribe((ideas) => {
+      this.ideasStream.observable.subscribe((ideas) => {
         this.setState({ loading: false, ideas });
       }),
     ];
@@ -63,4 +57,4 @@ class Ideas extends React.PureComponent {
   }
 }
 
-export default Ideas;
+export default IdeasList;

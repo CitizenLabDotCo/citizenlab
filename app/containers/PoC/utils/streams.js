@@ -4,13 +4,13 @@ import _ from 'lodash';
 import request from 'utils/request';
 import { v4 as uuid } from 'uuid';
 
-class Stream {
+class Streams {
   constructor() {
-    this.streams = [];
+    this.listOfStreams = [];
   }
 
   create(apiEndpoint, queryParameters = null, localProperties = false) {
-    const existingStream = this.streams.find((item) => {
+    const existingStream = this.listOfStreams.find((item) => {
       return (
         _.isEqual(item.apiEndpoint, apiEndpoint) &&
         _.isEqual(item.queryParameters, queryParameters) &&
@@ -37,7 +37,7 @@ class Stream {
         });
 
         return () => {
-          this.streams = this.streams.filter((stream) => stream.id !== newStream.id);
+          this.listOfStreams = this.listOfStreams.filter((stream) => stream.id !== newStream.id);
         };
       })
       .startWith('initial')
@@ -50,7 +50,7 @@ class Stream {
           } else if (_.isObject(current)) {
             data = { ...current, ...localProperties };
           } else {
-            console.log('current is no object or array');
+            console.log('current is no Object or Array');
           }
         } else if (_.isFunction(current)) {
           data = current(data);
@@ -67,7 +67,7 @@ class Stream {
       .publishReplay(1)
       .refCount();
 
-      this.streams = [...this.streams, newStream];
+      this.listOfStreams = [...this.listOfStreams, newStream];
 
       return newStream;
     }
@@ -76,4 +76,4 @@ class Stream {
   }
 }
 
-export default new Stream();
+export default new Streams();

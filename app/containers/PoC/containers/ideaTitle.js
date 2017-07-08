@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import actions from './actions';
+import IdeaListService from '../services/ideaListService';
 
 const Container = styled.div`
   width: 100%;
@@ -20,12 +20,12 @@ const Container = styled.div`
 class IdeaTitle extends React.PureComponent {
   handleOnClick = () => {
     const { observer, id } = this.props;
-    actions.toggleIdea(observer, id);
+    IdeaListService.toggleIdea(observer, id);
   }
 
   render() {
     const { id, title, selected } = this.props;
-    console.log(`Rendered IdeaTitle ${id}`);
+    console.log(`Rendered IdeaTitle for idea ${id}`);
     return <Container onClick={this.handleOnClick} selected={selected}>{title}</Container>;
   }
 }
