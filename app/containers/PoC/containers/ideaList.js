@@ -4,7 +4,7 @@ import _ from 'lodash';
 import IdeaTitle from './ideaTitle';
 import IdeaContent from './ideaContent';
 import styled from 'styled-components';
-import IdeasService from '../services/ideasService';
+import { observeMultipleIdeas, toggleIdea } from '../services/ideaService';
 
 const Container = styled.div`
   width: 100%;
@@ -54,7 +54,7 @@ class IdeaList extends React.PureComponent {
     this.state = { loading: true, ideas: null };
     this.ideasQueryParameters = { sort: 'trending', 'page[number]': 1, 'page[size]': 5 };
     this.ideasLocalProperties = { selected: false };
-    this.ideasStreams = [IdeasService.observe(this.ideasQueryParameters, this.ideasLocalProperties)];
+    this.ideasStreams = [observeMultipleIdeas(this.ideasQueryParameters, this.ideasLocalProperties)];
     this.ideasStreamsSubscriptions = [];
   }
 
@@ -73,7 +73,7 @@ class IdeaList extends React.PureComponent {
   loadMore = () => {
     const pageNumber = (this.ideasStreams.length + 2);
     const queryParameters = { ...this.ideasQueryParameters, 'page[number]': pageNumber };
-    this.ideasStreams.push(IdeasService.observe(queryParameters, this.ideasLocalProperties));
+    this.ideasStreams.push(observeMultipleIdeas(queryParameters, this.ideasLocalProperties));
 
     this.ideasStreamsSubscriptions.push(
       Rx.Observable.combineLatest(
@@ -92,7 +92,7 @@ class IdeaList extends React.PureComponent {
 
   handleOnClick = (id) => {
     const observers = this.ideasStreams.map((ideaStream) => ideaStream.observer);
-    IdeasService.toggleIdea(observers, id);
+    toggleIdea(observers, id);
   }
 
   render() {

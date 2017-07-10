@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import IdeaService from '../services/ideaService';
+import { observeIdeaRelationShips } from '../services/ideaService';
 
 const Container = styled.div`
   width: 100%;
@@ -35,7 +35,7 @@ class IdeaContent extends React.PureComponent {
 
   componentDidMount() {
     this.subscriptions = [
-      IdeaService.observeRelationShips(this.props.idea).subscribe((data) => {
+      observeIdeaRelationShips(this.props.idea).subscribe((data) => {
         const { topics, areas, images, author, project } = data;
         this.setState({ loading: false, topics, areas, images, author, project });
       }),
