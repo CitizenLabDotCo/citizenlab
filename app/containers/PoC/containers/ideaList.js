@@ -52,37 +52,37 @@ class IdeaList extends React.PureComponent {
   constructor() {
     super();
     this.state = { loading: true, ideas: null };
-    this.ideasQueryParameters = { sort: 'trending', 'page[number]': 1, 'page[size]': 5 };
-    this.ideasLocalProperties = { selected: false };
-    this.ideasStreams = [observeMultipleIdeas(this.ideasQueryParameters, this.ideasLocalProperties)];
-    this.ideasStreamsSubscriptions = [];
+    this.queryParams = { sort: 'trending', 'page[number]': 1, 'page[size]': 5 };
+    this.localProps = { selected: false };
+    this.streams = [observeMultipleIdeas(this.queryParams, this.localProps)];
+    this.subscriptions = [];
   }
 
   componentDidMount() {
-    this.ideasStreamsSubscriptions = [
-      this.ideasStreams[0].observable.subscribe((ideas) => {
+    this.subscriptions = [
+      this.streams[0].observable.subscribe((ideas) => {
         this.setState({ loading: false, ideas });
       }),
     ];
   }
 
   componentWillUnmount() {
-    this.ideasStreamsSubscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   loadMore = () => {
-    const pageNumber = (this.ideasStreams.length + 2);
-    const queryParameters = { ...this.ideasQueryParameters, 'page[number]': pageNumber };
-    this.ideasStreams.push(observeMultipleIdeas(queryParameters, this.ideasLocalProperties));
+    const pageNumber = (this.streams.length + 2);
+    const queryParams = { ...this.queryParams, 'page[number]': pageNumber };
+    this.streams.push(observeMultipleIdeas(queryParams, this.localProps));
 
-    this.ideasStreamsSubscriptions.push(
+    this.subscriptions.push(
       Rx.Observable.combineLatest(
-        this.ideasStreams.map((ideaStream) => ideaStream.observable),
+        this.streams.map((stream) => stream.observable),
         (...args) => _.flatten(args)
       ).subscribe((ideas) => {
-        if (this.ideasStreamsSubscriptions.length === 2) {
-          this.ideasStreamsSubscriptions[0].unsubscribe();
-          this.ideasStreamsSubscriptions = [this.ideasStreamsSubscriptions[1]];
+        if (this.subscriptions.length === 2) {
+          this.subscriptions[0].unsubscribe();
+          this.subscriptions = [this.subscriptions[1]];
         }
 
         this.setState({ ideas });
@@ -91,7 +91,7 @@ class IdeaList extends React.PureComponent {
   }
 
   handleOnClick = (id) => {
-    const observers = this.ideasStreams.map((ideaStream) => ideaStream.observer);
+    const observers = this.streams.map((stream) => stream.observer);
     toggleIdea(observers, id);
   }
 
