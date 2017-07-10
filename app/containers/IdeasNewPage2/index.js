@@ -271,6 +271,10 @@ class IdeasNewPage2 extends React.Component {
     }
   }
 
+  handleOnSignedUp = () => {
+    browserHistory.push('/ideas');
+  }
+
   render() {
     const { topics, projects, intl } = this.props;
     const { formatMessage } = intl;
@@ -380,7 +384,7 @@ class IdeasNewPage2 extends React.Component {
           </ButtonBar>
         </Container>
 
-        <SignUp opened={true} onSignedIn={() => browserHistory.push('/ideas')} />
+        <SignUp opened={true} onSignedUp={this.handleOnSignedUp} />
       </div>
     );
   }

@@ -81,6 +81,14 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage2.unspecified',
     defaultMessage: 'Unspecified',
   },
+  areaLabel: {
+    id: 'app.containers.IdeasNewPage2.areaLabel',
+    defaultMessage: 'Area (optional)',
+  },
+  areaPlaceholder: {
+    id: 'app.containers.IdeasNewPage2.areaPlaceholder',
+    defaultMessage: 'Optionally select your area',
+  },
   submit: {
     id: 'app.containers.IdeasNewPage2.submit',
     defaultMessage: 'Sign up',
