@@ -1,26 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import IdeaListService from '../services/ideaListService';
 
 const Container = styled.div`
   width: 100%;
   color: #333;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   padding: 20px;
   cursor: pointer;
-  background: ${(props) => props.selected ? '#e0e0e0' : 'white'};
+  user-select: none;
+  background: ${(props) => props.selected ? '#eee' : '#fff'};
 
   &:hover {
-    background: ${(props) => props.selected ? '#ddd' : '#e0e0e0'};
+    background: #eee;
   }
 `;
 
 class IdeaTitle extends React.PureComponent {
   handleOnClick = () => {
-    const { observer, id } = this.props;
-    IdeaListService.toggleIdea(observer, id);
+    this.props.onClick(this.props.id);
   }
 
   render() {
@@ -34,7 +33,7 @@ IdeaTitle.propTypes = {
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   selected: PropTypes.bool.isRequired,
-  observer: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default IdeaTitle;

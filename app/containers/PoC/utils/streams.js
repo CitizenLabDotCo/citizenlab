@@ -10,11 +10,11 @@ class Streams {
   }
 
   create(apiEndpoint, queryParameters = null, localProperties = false) {
-    const existingStream = this.listOfStreams.find((item) => {
+    const existingStream = this.listOfStreams.find((stream) => {
       return (
-        _.isEqual(item.apiEndpoint, apiEndpoint) &&
-        _.isEqual(item.queryParameters, queryParameters) &&
-        _.isEqual(item.localProperties, localProperties)
+        _.isEqual(stream.apiEndpoint, apiEndpoint) &&
+        _.isEqual(stream.queryParameters, queryParameters) &&
+        _.isEqual(stream.localProperties, localProperties)
       );
     });
 

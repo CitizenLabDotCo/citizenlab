@@ -5,13 +5,17 @@ import IdeaService from '../services/ideaService';
 
 const Container = styled.div`
   width: 100%;
-  background: #f0f0f0;
-  padding: 10px 25px;
+  padding: 0px 0px;
+  background: #fff;
+  padding: 0px 20px;
+  padding-bottom: 20px;
+  display: ${(props) => props.selected ? 'block' : 'none'};
 `;
 
 const ListItem = styled.div`
   color: #333;;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 300;
   padding: 10px 0px;
 `;
 
@@ -49,16 +53,16 @@ class IdeaContent extends React.PureComponent {
     console.log(`Rendered IdeaConent for idea ${idea.id}`);
 
     return (
-      <Container>
+      <Container selected={idea.selected}>
         { loading && <ListItem>Loading...</ListItem> }
         { !loading &&
           <div>
-            <ListItem>{idea.attributes.body_multiloc.en}</ListItem>
-            <ListItem>Topics: { topics ? topics.map((topic) => `${topic.attributes.title_multiloc.en}, `) : 'none' }</ListItem>
-            <ListItem>Areas: { areas ? areas.map((area) => `${area.attributes.title_multiloc.en}, `) : 'none' }</ListItem>
-            <ListItem>Images: { images ? images.map((image) => `${image.id}, `) : 'none' }</ListItem>
-            <ListItem>Author: { author ? `${author.attributes.first_name} ${author.attributes.last_name}` : 'none' }</ListItem>
-            <ListItem>Project: { project ? project.attributes.title_multiloc.en : 'none' }</ListItem>
+            <ListItem dangerouslySetInnerHTML={{ __html: idea.attributes.body_multiloc.en }} />
+            <ListItem><strong>Topics:</strong> { topics ? topics.map((topic) => `${topic.attributes.title_multiloc.en}, `) : 'none' }</ListItem>
+            <ListItem><strong>Areas:</strong> { areas ? areas.map((area) => `${area.attributes.title_multiloc.en}, `) : 'none' }</ListItem>
+            <ListItem><strong>Images:</strong> { images ? images.map((image) => `${image.id}, `) : 'none' }</ListItem>
+            <ListItem><strong>Author:</strong> { author ? `${author.attributes.first_name} ${author.attributes.last_name}` : 'none' }</ListItem>
+            <ListItem><strong>Project:</strong> { project ? project.attributes.title_multiloc.en : 'none' }</ListItem>
           </div>
         }
       </Container>

@@ -1,12 +1,12 @@
 import { API_PATH } from 'containers/App/constants';
 import Streams from '../utils/streams';
 
-class IdeaListService {
+class IdeasService {
   observe(queryParameters = null, localProperties = false) {
     return Streams.create(`${API_PATH}/ideas`, queryParameters, localProperties);
   }
 
-  toggleIdea(observer, ideaID) {
+  toggleIdea(observers, ideaID) {
     const action = (ideas) => ideas.map((idea) => {
       if (idea.id === ideaID) {
         return {
@@ -25,8 +25,8 @@ class IdeaListService {
       return idea;
     });
 
-    observer.next(action);
+    observers.forEach((observer) => observer.next(action));
   }
 }
 
-export default new IdeaListService();
+export default new IdeasService();
