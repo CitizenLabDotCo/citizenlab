@@ -18,6 +18,11 @@ module.exports = (options) => ({
       exclude: /node_modules/,
       query: options.babelQuery,
     }, {
+      test: /\.ts(x?)$/,
+      exclude: /node_modules/,
+      loader: ['babel-loader', 'ts-loader'],
+    }, {
+
       // Do not transform vendor's CSS with CSS-modules
       // The point is that they remain in global scope.
       // Since we require these CSS files in our JS or CSS files,
@@ -95,6 +100,8 @@ module.exports = (options) => ({
       '.js',
       '.jsx',
       '.react.js',
+      '.ts',
+      '.tsx',
     ],
     // Applied this hack https://github.com/react-boilerplate/react-boilerplate/issues/1657
     // It allows us to build using libraries that don't transpile to ES5, as they should.

@@ -277,6 +277,7 @@
     "with-query": "^1.0.2"
   },
   "devDependencies": {
+    "@types/react": "^15.0.35",
     "babel-cli": "6.18.0",
     "babel-core": "6.21.0",
     "babel-eslint": "7.1.1",
@@ -342,6 +343,8 @@
     "shelljs": "0.7.5",
     "sinon": "2.0.0-pre",
     "style-loader": "0.13.1",
+    "ts-loader": "^2.2.2",
+    "typescript": "^2.4.1",
     "url-loader": "0.5.7",
     "webpack": "2.2.0-rc.3",
     "webpack-dev-middleware": "1.9.0",
