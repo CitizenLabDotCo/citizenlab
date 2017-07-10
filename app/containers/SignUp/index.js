@@ -4,9 +4,11 @@ import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { injectIntl, intlShape } from 'react-intl';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
+import { makeSelectAreas } from 'utils/areas/selectors';
 import { connect } from 'react-redux';
 import { loadAreas } from 'utils/areas/actions';
 import { createUserRequest } from 'utils/auth/actions';
+import { injectTFunc } from 'utils/containers/t/utils';
 import styled from 'styled-components';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
@@ -61,7 +63,46 @@ export class SignUp extends React.Component {
       passwordError: null,
       yearOfBirth: null,
       gender: null,
+      area: null,
     };
+  }
+
+  componentDidMount() {
+    this.props.loadAreas();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.loginPending && !nextProps.loginPending && !nextProps.loginError) {
+      // Login success, redirect the page here.
+    }
+  }
+
+  getOptions(list) {
+    const options = [];
+
+    if (list && list.size && list.size > 0) {
+      list.forEach((item) => {
+        options.push({
+          value: item.get('id'),
+          label: this.props.tFunc(item.getIn(['attributes', 'title_multiloc']).toJS()),
+        });
+      });
+    }
+
+    return options;
+  }
+
+  getYears() {
+    const years = [];
+
+    for (let i = 1900; i <= 2017; i++) { // eslint-disable-line
+      years.push({
+        value: i,
+        label: i,
+      });
+    }
+
+    return years;
   }
 
   handleFirstNameOnChange = (firstName) => {
@@ -100,7 +141,11 @@ export class SignUp extends React.Component {
     this.setState({ gender });
   }
 
-  handleOnSubmit = (firstName, lastName, email, password, yearOfBirth, gender, locale, formatMessage, onSignedIn) => () => {
+  handleAreaOnChange = (area) => {
+    this.setState({ area });
+  }
+
+  handleOnSubmit = (firstName, lastName, email, password, yearOfBirth, gender, area, locale, formatMessage, onSignedUp) => () => {
     let hasError = false;
 
     if (!firstName) {
@@ -124,14 +169,14 @@ export class SignUp extends React.Component {
     }
 
     if (!hasError) {
-      console.log(firstName, lastName, email, password, yearOfBirth, gender, locale);
-      // onSignedIn();
+      console.log(firstName, lastName, email, password, yearOfBirth, gender, area, locale);
+      // onSignedUp();
       // this.props.createUserRequest(firstName, lastName, email, password, locale, null, null, null);
     }
   }
 
   render() {
-    const { onSignedIn, intl, locale, processing } = this.props;
+    const { onSignedUp, intl, locale, processing, areas } = this.props;
     const { formatMessage } = intl;
     const {
       firstName,
@@ -144,6 +189,7 @@ export class SignUp extends React.Component {
       passwordError,
       yearOfBirth,
       gender,
+      area,
     } = this.state;
 
     const hasRequiredContent = [firstName, lastName, email, password].every((value) => _.isString(value) && !_.isEmpty(value));
@@ -209,16 +255,7 @@ export class SignUp extends React.Component {
                   searchable
                   value={yearOfBirth}
                   placeholder={formatMessage(messages.yearOfBirthPlaceholder)}
-                  options={[{
-                    value: '1998',
-                    label: '1998',
-                  }, {
-                    value: '1999',
-                    label: '1999',
-                  }, {
-                    value: '2000',
-                    label: '2000',
-                  }]}
+                  options={this.getYears()}
                   onChange={this.handleYearOfBirthOnChange}
                 />
               </FormElement>
@@ -227,6 +264,7 @@ export class SignUp extends React.Component {
               <FormElement>
                 <Select
                   clearable
+                  id="gender"
                   value={gender}
                   placeholder={formatMessage(messages.genderPlaceholder)}
                   options={[{
@@ -243,12 +281,24 @@ export class SignUp extends React.Component {
                 />
               </FormElement>
 
+              <Label value={formatMessage(messages.areaLabel)} htmlFor="area" />
+              <FormElement>
+                <Select
+                  clearable
+                  id="area"
+                  value={area}
+                  placeholder={formatMessage(messages.areaPlaceholder)}
+                  options={this.getOptions(areas)}
+                  onChange={this.handleAreaOnChange}
+                />
+              </FormElement>
+
               <FormElement>
                 <Button
                   size="2"
                   loading={processing}
                   text={formatMessage(messages.submit)}
-                  onClick={this.handleOnSubmit(firstName, lastName, email, password, yearOfBirth, gender, locale, formatMessage, onSignedIn)}
+                  onClick={this.handleOnSubmit(firstName, lastName, email, password, yearOfBirth, gender, area, locale, formatMessage, onSignedUp)}
                   disabled={!hasRequiredContent}
                 />
                 { hasError && <Error text={formatMessage(messages.formError)} marginTop="0px" showBackground={false} /> }
@@ -263,10 +313,12 @@ export class SignUp extends React.Component {
 
 SignUp.propTypes = {
   opened: PropTypes.bool.isRequired,
-  onSignedIn: PropTypes.func.isRequired,
+  onSignedUp: PropTypes.func.isRequired,
   intl: intlShape,
+  tFunc: PropTypes.func.isRequired,
   locale: PropTypes.string,
   processing: PropTypes.bool,
+  areas: PropTypes.array,
   loadAreas: PropTypes.func,
   createUserRequest: PropTypes.func,
 };
@@ -274,6 +326,7 @@ SignUp.propTypes = {
 const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
   processing: (state) => state.getIn(['signUp', 'processing']),
+  areas: makeSelectAreas(),
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
@@ -281,4 +334,4 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   createUserRequest,
 }, dispatch);
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(SignUp));
+export default injectTFunc(injectIntl(connect(mapStateToProps, mapDispatchToProps)(SignUp)));
