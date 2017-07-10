@@ -1,0 +1,1 @@
+export const ACTION_PREFIX = 'ADMIN/USERS/INDEX';

@@ -6,18 +6,13 @@ import { LOAD_USERS_REQUEST, LOAD_USER_REQUEST, DELETE_USER_REQUEST } from './co
 
 // Individual exports for testing
 export function* loadUsersSaga(action) {
-  const queryParameters = (action.initialLoad
-    ? {}
-    : {
-      'Page[number]': action.nextPageNumber,
-      'Page[size]': action.nextPageItemCount,
-    });
+  const queryParameters = action.queryParams;
 
   try {
     const response = yield call(loadResources, 'user', queryParameters);
 
     yield put(mergeJsonApiResources(response));
-    yield put(loadUsersSuccess(response));
+    yield put(loadUsersSuccess(response, { actionPrefix: action.actionPrefix }));
   } catch (e) {
     yield put(loadUsersError(e.json.erros));
   }
@@ -78,21 +73,28 @@ export function* deleteUserSaga(action) {
   }
 }
 
-function* loadUsersWatcher() {
-  yield takeLatest(LOAD_USERS_REQUEST, loadUsersSaga);
+function* loadUsersWatcher(actionPrefix = '') {
+  yield takeLatest(actionPrefix + LOAD_USERS_REQUEST, loadUsersSaga);
 }
 
-function* loadUserWatcher() {
-  yield takeLatest(LOAD_USER_REQUEST, loadUserSaga);
+function* loadUserWatcher(actionPrefix = '') {
+  yield takeLatest(actionPrefix + LOAD_USER_REQUEST, loadUserSaga);
 }
 
-function* deleteUserWatcher() {
-  yield takeLatest(DELETE_USER_REQUEST, deleteUserSaga);
+function* deleteUserWatcher(actionPrefix = '') {
+  yield takeLatest(actionPrefix + DELETE_USER_REQUEST, deleteUserSaga);
 }
+
+export function makeLoadUsersWatcher(actionPrefix = '') {
+  return function* watcher() {
+    yield takeLatest(actionPrefix + LOAD_USERS_REQUEST, loadUsersSaga);
+  };
+}
+
 
 export default {
   loadUsersWatcher,
   loadUserWatcher,
   deleteUserWatcher,
+  makeLoadUsersWatcher,
 };
-

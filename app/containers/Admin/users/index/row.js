@@ -7,6 +7,8 @@ import { push } from 'react-router-redux';
 import ActionButton from 'components/buttons/action.js';
 import { Table } from 'semantic-ui-react';
 import SliderForm from './sliderForm';
+import { FormattedDate } from 'react-intl';
+
 // store
 import { preprocess } from 'utils';
 import { createStructuredSelector } from 'reselect';
@@ -36,10 +38,9 @@ const Row = ({ userId, avatar, firstName, lastName, email, createdAt, roles, del
     <Table.Cell textAlign={'center'}>
       <UserImage avatar src={avatar} />
     </Table.Cell>
-    <Table.Cell>{firstName}</Table.Cell>
-    <Table.Cell>{lastName}</Table.Cell>
+    <Table.Cell>{firstName} {lastName}</Table.Cell>
     <Table.Cell>{email}</Table.Cell>
-    <Table.Cell>{createdAt}</Table.Cell>
+    <Table.Cell><FormattedDate value={createdAt}></FormattedDate></Table.Cell>
     <Table.Cell>
       <SliderForm roles={roles} userId={userId} />
     </Table.Cell>
@@ -67,7 +68,7 @@ const mapStateToProps = () => createStructuredSelector({
 const mergeProps = (stateP, dispatchP, ownP) => {
   const { userId } = ownP;
   const attributes = stateP.user.get('attributes');
-  const avatar = attributes.getIn(['avatar', 'small']);
+  const avatar = attributes.getIn(['avatar', 'medium']);
   const firstName = attributes.get('first_name');
   const lastName = attributes.get('last_name');
   const email = attributes.get('email');

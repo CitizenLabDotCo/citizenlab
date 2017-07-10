@@ -8,7 +8,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   headerIndex: {
     id: 'app.containers.AdminUser.Users.Views.all.headerIndex',
-    defaultMessage: 'All Users',
+    defaultMessage: 'Users',
   },
   deleteButton: {
     id: 'app.containers.AdminUser.Users.Views.all.deleteButton',
@@ -39,13 +39,9 @@ export default defineMessages({
     id: 'app.containers.Admin.User.avatar',
     defaultMessage: 'Avatar',
   },
-  firstName: {
-    id: 'app.containers.Admin.User.firstName',
-    defaultMessage: 'First Name',
-  },
-  lastName: {
-    id: 'app.containers.Admin.User.lastName',
-    defaultMessage: 'Last Name',
+  name: {
+    id: 'app.containers.Admin.User.name',
+    defaultMessage: 'Name',
   },
   email: {
     id: 'app.containers.Admin.User.email',
@@ -57,7 +53,7 @@ export default defineMessages({
   },
   admin: {
     id: 'app.containers.Admin.User.admin',
-    defaultMessage: 'Sdmin',
+    defaultMessage: 'Admin',
   },
   delete: {
     id: 'app.containers.Admin.User.delete',

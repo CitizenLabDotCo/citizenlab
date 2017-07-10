@@ -4,8 +4,8 @@ import HelmetIntl from 'components/HelmetIntl';
 
 // components
 // import { FormattedMessage } from 'react-intl';
-import WatchSagas from 'utils/containers/watchSagas';
-import sagas from 'resources/users/sagas';
+// import WatchSagas from 'utils/containers/watchSagas';
+// import sagas from 'resources/users/sagas';
 
 // store
 import { preprocess } from 'utils';
@@ -28,7 +28,6 @@ class UserDashboard extends React.PureComponent { // eslint-disable-line react/p
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <WatchSagas sagas={sagas} />
         {this.props.children}
       </div>
 
