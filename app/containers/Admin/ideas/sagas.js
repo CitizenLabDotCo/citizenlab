@@ -5,7 +5,7 @@ import {
   LOAD_COMMENTS_XLSX_REQUEST, LOAD_IDEAS_XLSX_REQUEST,
 } from './constants';
 import { fetchIdeasXlsx, fetchCommentsXlsx } from 'api';
-import * as FileSaver from './lib/FileSaver.min';
+import FileSaver from 'file-saver';
 
 // individual exports for testing
 export function* getIdeasXlsx() {
