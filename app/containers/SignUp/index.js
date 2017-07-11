@@ -17,6 +17,7 @@ import Button from 'components/UI/Button';
 import Select from 'components/UI/Select';
 import _ from 'lodash';
 import messages from './messages';
+import { fromJS } from 'immutable';
 
 const Container = styled.div`
   background: #f2f2f2;
@@ -146,8 +147,10 @@ export class SignUp extends React.Component {
     this.setState({ area });
   }
 
-  handleOnSubmit = (firstName, lastName, email, password, yearOfBirth, gender, area, locale, formatMessage, onSignedUp) => () => {
+  handleOnSubmit = () => {
     let hasError = false;
+    const { formatMessage } = this.props.intl;
+    const { firstName, lastName, email, password, yearOfBirth, gender, area } = this.state;
 
     if (!firstName) {
       hasError = true;
@@ -178,8 +181,8 @@ export class SignUp extends React.Component {
   }
 
   render() {
-    const { onSignedUp, intl, locale, processing, areas } = this.props;
-    const { formatMessage } = intl;
+    const { processing, areas } = this.props;
+    const { formatMessage } = this.props.intl;
     const {
       firstName,
       firstNameError,
@@ -193,9 +196,10 @@ export class SignUp extends React.Component {
       gender,
       area,
     } = this.state;
-
     const hasRequiredContent = [firstName, lastName, email, password].every((value) => _.isString(value) && !_.isEmpty(value));
     const hasError = [firstNameError, lastNameError, emailError, passwordError].some((value) => _.isString(value));
+
+    console.log(fromJS([]));
 
     return (
       <div>
@@ -300,7 +304,7 @@ export class SignUp extends React.Component {
                   size="2"
                   loading={processing}
                   text={formatMessage(messages.submit)}
-                  onClick={this.handleOnSubmit(firstName, lastName, email, password, yearOfBirth, gender, area, locale, formatMessage, onSignedUp)}
+                  onClick={this.handleOnSubmit}
                   disabled={!hasRequiredContent}
                 />
                 { hasError && <Error text={formatMessage(messages.formError)} marginTop="0px" showBackground={false} /> }
