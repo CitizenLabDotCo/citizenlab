@@ -1,14 +1,12 @@
 import { fromJS } from 'immutable';
 import { SIGNIN_USER_REQUEST, SIGNIN_USER_ERROR, LOAD_CURRENT_USER_SUCCESS } from 'utils/auth/constants';
 
-const immutableNull = fromJS(null);
-
 const initialState = fromJS({
   areas: [],
   processing: false,
   success: false,
   error: false,
-  user: immutableNull,
+  user: null,
 });
 
 function SignInReducer(state = initialState, action) {
@@ -18,7 +16,7 @@ function SignInReducer(state = initialState, action) {
         .set('processing', true)
         .set('success', false)
         .set('error', false)
-        .set('user', immutableNull);
+        .set('user', null);
     }
     case LOAD_CURRENT_USER_SUCCESS: {
       const user = action.payload.user;
@@ -34,7 +32,7 @@ function SignInReducer(state = initialState, action) {
         .set('processing', false)
         .set('success', false)
         .set('error', fromJS(error))
-        .set('user', immutableNull);
+        .set('user', null);
     }
     default:
       return state;

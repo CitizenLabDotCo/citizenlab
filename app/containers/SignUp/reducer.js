@@ -1,14 +1,12 @@
 import { fromJS } from 'immutable';
 import { CREATE_USER_REQUEST, CREATE_USER_SUCCESS, CREATE_USER_ERROR } from 'utils/auth/constants';
 
-const immutableNull = fromJS(null);
-
 const initialState = fromJS({
   areas: [],
   processing: false,
   success: false,
   error: false,
-  user: immutableNull,
+  user: null,
 });
 
 function SignUpReducer(state = initialState, action) {
@@ -18,7 +16,7 @@ function SignUpReducer(state = initialState, action) {
         .set('processing', true)
         .set('success', false)
         .set('error', false)
-        .set('user', immutableNull);
+        .set('user', null);
     }
     case CREATE_USER_SUCCESS: {
       const user = action.payload.user;
@@ -34,7 +32,7 @@ function SignUpReducer(state = initialState, action) {
         .set('processing', false)
         .set('success', false)
         .set('error', fromJS(error))
-        .set('user', immutableNull);
+        .set('user', null);
     }
     default:
       return state;

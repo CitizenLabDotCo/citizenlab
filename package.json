@@ -108,8 +108,8 @@
         "always"
       ],
       "arrow-body-style": [
-        2,
-        "as-needed"
+        "error", 
+        "always"
       ],
       "comma-dangle": [
         2,
