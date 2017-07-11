@@ -36,7 +36,7 @@ export default function request(url, data, options, queryParameters) {
         response,
         response.json().catch(() => {
           if (response.ok) return {};
-          return new Error('usuported case. no valid jason and not ok reponse');
+          return new Error('Unsupported case. No valid JSON.');
         }),
       ])
     ))

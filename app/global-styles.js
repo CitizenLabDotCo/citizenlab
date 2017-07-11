@@ -171,7 +171,7 @@ injectGlobal`
   }
 
   body.fontLoaded, body.fontLoaded * {
-    font-family: 'circular', 'proxima-nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'circular', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 
   body.modal-active {
@@ -186,7 +186,7 @@ injectGlobal`
 
   p,
   label {
-    font-family: Georgia, Times, 'Times New Roman', serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     line-height: 1.5em;
   }
 

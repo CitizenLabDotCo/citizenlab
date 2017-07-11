@@ -100,13 +100,22 @@ const DraftEditorContainer = styled.div`
     min-height: 230px;
     font-size: 17px;
     line-height: 23px;
-    font-weight: 300;
+    font-weight: 400;
     cursor: text;
     padding: 12px;
     margin: 0px;
     margin-top: 0px;
     background: transparent;
     overflow: visible;
+
+    .public-DraftEditorPlaceholder-root {
+      color: #aaa;
+      margin: 0px;
+    }
+
+    .public-DraftStyleDefault-block {
+      margin: 0px;
+    }
 
     .rdw-suggestion-dropdown {
       box-shadow: none;
@@ -130,28 +139,8 @@ const DraftEditorContainer = styled.div`
     .rdw-mention-link {
       cursor: pointer;
     }
-
-    .public-DraftStyleDefault-block {
-      font-size: 17px;
-      line-height: 23px;
-      margin: 0px;
-    }
   }
 `;
-
-/*
-const IconWrapper = styled.div`
-  width: 20px;
-  position: absolute;
-  top: 61px;
-  right: 13px;
-  z-index: 1;
-
-  svg  {
-    fill: red;
-  }
-`;
-*/
 
 class Editor extends React.PureComponent {
   constructor() {
@@ -206,7 +195,6 @@ class Editor extends React.PureComponent {
               ],
             }}
           />
-          {/* hasError && <IconWrapper><Icon name="error" /></IconWrapper> */}
         </DraftEditorContainer>
         <Error text={error} />
       </Container>

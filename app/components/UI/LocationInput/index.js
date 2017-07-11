@@ -10,13 +10,18 @@ const LocationInputWrapper = styled.div`
     width: 100%;
     color: #333;
     font-size: 17px;
-    line-height: 22px;
-    font-weight: 300;
+    line-height: 26px;
+    font-weight: 400;
     padding: 12px;
     border-radius: 5px;
     border: solid 1px #ccc;
     background: #fff;
     outline: none;
+
+    ::placeholder {
+      color: #aaa;
+      opacity: 1;
+    }
 
     &:not(:focus):hover {
       border-color: #999;
@@ -33,7 +38,7 @@ const StyledAutocompleteItem = styled.div`
   color: #999;
   font-size: 17px;
   line-height: 17px;
-  font-weight: 300;
+  font-weight: 400;
   padding: 12px;
   z-index: 9999;
 
