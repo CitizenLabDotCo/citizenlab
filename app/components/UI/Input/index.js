@@ -12,14 +12,19 @@ const InputWrapper = styled.div`
     width: 100%;
     color: #333;
     font-size: 17px;
-    line-height: 22px;
-    font-weight: 300;
+    line-height: 24px;
+    font-weight: 400;
     padding: 12px;
     border-radius: 5px;
     border: solid 1px;
     border-color: ${(props) => props.error ? '#fc3c2d' : '#ccc'};
     background: #fff;
     outline: none;
+
+    &::placeholder {
+      color: #aaa;
+      opacity: 1;
+    }
 
     ${media.notPhone`
       padding-right: ${(props) => props.error && '40px'};

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { darken } from 'polished';
 import Dropzone from 'react-dropzone';
-import Icon from 'components/Icon';
+import Icon from 'components/UI/Icon';
 import Error from 'components/UI/Error';
 import { injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
@@ -16,16 +16,16 @@ const UploadIcon = styled.div`
   margin-bottom: 5px;
 
   svg {
-    fill: #999;
+    fill: #aaa;
   }
 `;
 
 const UploadMessage = styled.span`
   max-width: 90%;
-  color: #999;
+  color: #aaa;
   font-size: 17px;
   line-height: 20px;
-  font-weight: 300;
+  font-weight: 400;
   text-align: center;
   margin-bottom: 5px;
 `;
@@ -49,14 +49,6 @@ const StyledDropzone = styled(Dropzone)`
 
   &:hover {
     border-color: #000;
-
-    ${UploadIcon} svg {
-      fill: #000;
-    }
-
-    ${UploadMessage} {
-      color: #000;
-    }
   }
 `;
 

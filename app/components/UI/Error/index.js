@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Icon from 'components/Icon';
+import Icon from 'components/UI/Icon';
 import { CSSTransitionGroup } from 'react-transition-group';
 import _ from 'lodash';
 

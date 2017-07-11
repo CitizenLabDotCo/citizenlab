@@ -7,7 +7,7 @@ const StyledLabel = styled.label`
   font-size: 17px;
   font-weight: 400;
   display: flex;
-  padding-bottom: 5px;
+  padding-bottom: 6px;
 `;
 
 const Label = ({ value, htmlFor }) => <StyledLabel htmlFor={htmlFor}>{value}</StyledLabel>;

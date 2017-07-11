@@ -82,9 +82,10 @@ const StyledMultipleSelect = styled(Select)`
         position: relative;
 
         .Select-placeholder {
+          color: #aaa;
           font-size: 17px;
           font-weight: 400;
-          line-height: 32px;
+          line-height: 36px;
           padding: 0px;
           padding-bottom: 1px;
           margin: 0px;
@@ -101,7 +102,7 @@ const StyledMultipleSelect = styled(Select)`
           height: auto;
           font-size: 17px;
           font-weight: 400;
-          line-height: 32px;
+          line-height: 36px;
           padding: 0px;
           margin: 0px;
           margin-left: 6px;
@@ -135,8 +136,8 @@ const StyledMultipleSelect = styled(Select)`
             color: #fff;
             width: auto;
             height: 100%;
-            font-size: 23px;
-            font-weight: 400;
+            font-size: 22px;
+            font-weight: 300;
             border: none;
             border-radius: 0;
             padding: 0px;
@@ -148,9 +149,11 @@ const StyledMultipleSelect = styled(Select)`
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            background: transparent;
+            opacity: 0.8;
 
             &:hover {
-              background: ${(props) => darken(0.2, (props.theme.color.main || '#777'))};
+              opacity: 1;
             }
           }
 
@@ -158,7 +161,7 @@ const StyledMultipleSelect = styled(Select)`
             color: #fff;
             font-size: 16px;
             font-weight: 400;
-            line-height: auto;
+            line-height: 34px;
             white-space: nowrap;
             border: none;
             border-radius: 0;
@@ -188,6 +191,7 @@ const StyledMultipleSelect = styled(Select)`
         max-height: 212px;
 
         .Select-option {
+          color: #333;
           font-size: 17px;
           font-weight: 400;
 

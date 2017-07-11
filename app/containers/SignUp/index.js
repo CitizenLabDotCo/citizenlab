@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { injectIntl, intlShape } from 'react-intl';
@@ -72,8 +73,8 @@ export class SignUp extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.loginPending && !nextProps.loginPending && !nextProps.loginError) {
-      // Login success, redirect the page here.
+    if (!this.props.success && nextProps.success) {
+      console.log(nextProps.user);
     }
   }
 
@@ -95,10 +96,10 @@ export class SignUp extends React.Component {
   getYears() {
     const years = [];
 
-    for (let i = 1900; i <= 2017; i++) { // eslint-disable-line
+    for (let year = 1900; year <= 2017; year++) { // eslint-disable-line
       years.push({
-        value: i,
-        label: i,
+        value: year,
+        label: `${year}`,
       });
     }
 
@@ -169,9 +170,10 @@ export class SignUp extends React.Component {
     }
 
     if (!hasError) {
-      console.log(firstName, lastName, email, password, yearOfBirth, gender, area, locale);
-      // onSignedUp();
-      // this.props.createUserRequest(firstName, lastName, email, password, locale, null, null, null);
+      const selectedYearOfBirth = (yearOfBirth ? yearOfBirth.value : null);
+      const selectedGender = (gender ? gender.value : null);
+      const selectedAreaId = (area ? area.value : null);
+      this.props.createUserRequest(firstName, lastName, email, password, selectedGender, selectedYearOfBirth, selectedAreaId);
     }
   }
 
@@ -318,7 +320,10 @@ SignUp.propTypes = {
   tFunc: PropTypes.func.isRequired,
   locale: PropTypes.string,
   processing: PropTypes.bool,
-  areas: PropTypes.array,
+  success: PropTypes.bool,
+  error: PropTypes.bool,
+  user: ImmutablePropTypes.map,
+  areas: ImmutablePropTypes.list,
   loadAreas: PropTypes.func,
   createUserRequest: PropTypes.func,
 };
@@ -326,6 +331,9 @@ SignUp.propTypes = {
 const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
   processing: (state) => state.getIn(['signUp', 'processing']),
+  success: (state) => state.getIn(['signUp', 'success']),
+  error: (state) => state.getIn(['signUp', 'error']),
+  user: (state) => state.getIn(['signUp', 'user']),
   areas: makeSelectAreas(),
 });
 

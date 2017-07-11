@@ -46,7 +46,7 @@ const FormContainerOuter = styled.div`
 `;
 
 const Title = styled.h2`
-  color: #444;
+  color: #333;
   font-size: 36px;
   font-weight: 500;
   margin-bottom: 40px;

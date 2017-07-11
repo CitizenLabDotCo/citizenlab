@@ -43,7 +43,7 @@ const StyledSelect = styled(ReactSelect)`
 
     .Select-control {
       width: 100%;
-      min-height: 44px;
+      min-height: 48px;
       margin: 0px;
       padding: 0px;
       display: flex;
@@ -105,10 +105,16 @@ const StyledSelect = styled(ReactSelect)`
         padding: 0px;
         position: relative;
 
-        .Select-placeholder, 
+        .Select-placeholder {
+          color: #aaa;
+        }
+
+        .Select-placeholder,
+        .Select-input,
         .Select-value {
+          height: 100%;
           font-size: 17px;
-          font-weight: 300;
+          font-weight: 400;
           line-height: 32px;
           padding: 0px;
           padding-bottom: 1px;
@@ -116,6 +122,14 @@ const StyledSelect = styled(ReactSelect)`
           margin-left: 12px;
           display: flex;
           align-items: center;
+
+          > input {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 0px;
+            margin: 0px;
+          }
         }
       }
     }
@@ -134,8 +148,9 @@ const StyledSelect = styled(ReactSelect)`
         max-height: 212px;
 
         .Select-option {
+          color: #333;
           font-size: 17px;
-          font-weight: 300;
+          font-weight: 400;
 
           &:hover, 
           &:focus, 
