@@ -177,7 +177,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNTIsInN1YiI6IjI1OWExNDU3LWY4NDMtNDEzZi04YjUwLWUyYjJiMWYzZmY4OSJ9.txS0LTGNdvdTHPeuyNXoFVsqarmlL0-YNC4DUpXN8pQ
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzcsInN1YiI6IjEwZmVmNDA4LWZiMDAtNDg3Yi05YzU0LTQ3ZTYwYjU0Nzk2YiJ9.RodmnpeqIRndyq2hQwYKxykYWZRuLmfj7bx-OM9eEFE
 Host: example.org
 Cookie: </pre>
 
@@ -192,19 +192,19 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;84b6cffcf14fd7e6757cda5dbd01e2a2&quot;
+ETag: W/&quot;52f0012dc620ac3622199de12db314a0&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 0b05c993-1540-4b3d-ab6c-0409b5817088
-X-Runtime: 0.045497
+X-Request-Id: b523bf09-c88f-4f25-8546-edb38222e617
+X-Runtime: 0.040637
 Vary: Origin
-Content-Length: 1524</pre>
+Content-Length: 1546</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;1d7ab3cd-fd13-46e0-abc2-3e9afff5610f&quot;,
+      &quot;id&quot;: &quot;308fcb09-c136-42fd-8e27-3d730e236063&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -214,15 +214,16 @@ Content-Length: 1524</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Adrain Murphy&quot;,
+        &quot;author_name&quot;: &quot;Sophia Cormier&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
+        &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-07-04T13:10:52.977Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:10:52.977Z&quot;,
-        &quot;published_at&quot;: &quot;2017-07-04T13:10:52.977Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:17.372Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:17.372Z&quot;,
+        &quot;published_at&quot;: &quot;2017-07-11T21:37:17.372Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -242,13 +243,13 @@ Content-Length: 1524</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;6fbd3955-d46a-407d-88c0-cc3cac251de0&quot;,
+            &quot;id&quot;: &quot;0c4d156e-7d12-4eb3-b8f6-14abe99ea267&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;7253f9a4-5506-4dd8-ae00-4d572c656707&quot;,
+            &quot;id&quot;: &quot;0e84c01e-9d88-4907-8eeb-22335be0d665&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -260,25 +261,25 @@ Content-Length: 1524</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;6fbd3955-d46a-407d-88c0-cc3cac251de0&quot;,
+      &quot;id&quot;: &quot;0c4d156e-7d12-4eb3-b8f6-14abe99ea267&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Adrain&quot;,
-        &quot;last_name&quot;: &quot;Murphy&quot;,
-        &quot;slug&quot;: &quot;adrain-murphy&quot;,
+        &quot;first_name&quot;: &quot;Sophia&quot;,
+        &quot;last_name&quot;: &quot;Cormier&quot;,
+        &quot;slug&quot;: &quot;sophia-cormier&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/6fbd3955-d46a-407d-88c0-cc3cac251de0/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/6fbd3955-d46a-407d-88c0-cc3cac251de0/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/6fbd3955-d46a-407d-88c0-cc3cac251de0/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/0c4d156e-7d12-4eb3-b8f6-14abe99ea267/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/0c4d156e-7d12-4eb3-b8f6-14abe99ea267/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/0c4d156e-7d12-4eb3-b8f6-14abe99ea267/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:10:52.962Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:10:52.962Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:17.359Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:17.359Z&quot;
       }
     }
   ],

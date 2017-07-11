@@ -153,12 +153,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNDgsInN1YiI6Ijk4NDk2MDA1LWNkN2UtNDE2MC05MTIxLTlhNzY1YmY2YjBlNiJ9.VZEOr6HmK0sAe5HMQ3syNtBx7w0naTpjI4iSLN3ANzI
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzIsInN1YiI6ImQ4NGYxZjY2LTY3NjgtNDMyZS1iYjQ5LWM1YmFjODU2OWRjMCJ9.gbn6eSLFi6XFAJw7bqgTLSjo5YHQWZwhS_xgieZ4AD8
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/comments/53cb33b5-7bef-4b89-a52e-98b335a292fe</pre>
+          <pre class="request route highlight">PATCH api/v1/comments/52993217-b806-4726-9f5c-afb4adab8195</pre>
 
 
             <h4>Body</h4>
@@ -168,37 +168,37 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;0db7237e00b7e03f734490950dc9f882&quot;
+ETag: W/&quot;ec8cefe7782d392ee49f44c66cb0982b&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 54012a58-83de-4320-9941-bb080b0b0546
-X-Runtime: 0.029879
+X-Request-Id: ac93ca18-2630-440d-a823-ea3fdb376cda
+X-Runtime: 0.020474
 Vary: Origin
-Content-Length: 1253</pre>
+Content-Length: 1245</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;53cb33b5-7bef-4b89-a52e-98b335a292fe&quot;,
+    &quot;id&quot;: &quot;52993217-b806-4726-9f5c-afb4adab8195&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
         &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
       },
-      &quot;created_at&quot;: &quot;2017-07-04T13:10:48.221Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-04T13:10:48.221Z&quot;
+      &quot;created_at&quot;: &quot;2017-07-11T21:37:12.998Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-07-11T21:37:12.998Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;2021212a-b33f-4406-93b6-f619c0ff62c8&quot;,
+          &quot;id&quot;: &quot;5eabc431-72b5-427e-882f-aae446b10c19&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;98496005-cd7e-4160-9121-9a765bf6b0e6&quot;,
+          &quot;id&quot;: &quot;d84f1f66-6768-432e-bb49-c5bac8569dc0&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
@@ -209,26 +209,26 @@ Content-Length: 1253</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;98496005-cd7e-4160-9121-9a765bf6b0e6&quot;,
+      &quot;id&quot;: &quot;d84f1f66-6768-432e-bb49-c5bac8569dc0&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Lexi&quot;,
-        &quot;last_name&quot;: &quot;Volkman&quot;,
-        &quot;slug&quot;: &quot;lexi-volkman&quot;,
+        &quot;first_name&quot;: &quot;Jamaal&quot;,
+        &quot;last_name&quot;: &quot;Cronin&quot;,
+        &quot;slug&quot;: &quot;jamaal-cronin&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/98496005-cd7e-4160-9121-9a765bf6b0e6/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/98496005-cd7e-4160-9121-9a765bf6b0e6/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/98496005-cd7e-4160-9121-9a765bf6b0e6/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/d84f1f66-6768-432e-bb49-c5bac8569dc0/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/d84f1f66-6768-432e-bb49-c5bac8569dc0/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/d84f1f66-6768-432e-bb49-c5bac8569dc0/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:10:48.202Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:10:48.202Z&quot;,
-        &quot;email&quot;: &quot;seth@gorczanynikolaus.biz&quot;,
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:12.982Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:12.982Z&quot;,
+        &quot;email&quot;: &quot;kailey@kutch.co&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

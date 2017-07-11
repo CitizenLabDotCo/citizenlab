@@ -177,34 +177,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNTAsInN1YiI6IjhmMTYzMDhmLTMzN2EtNDJmYi1hY2YyLTAyOTgzZjlmOTc5MSJ9.eQzyGLRs7JI-ZThQN19SSD4Gt34irc_zXsjKQdCPnfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzQsInN1YiI6Ijg2YjJhZTA5LWIwNjEtNDIxOC05NWM1LTI4OGYxMTJkODg4NSJ9.8jRPT62LTBYVirgqkL3d_kTJa4oFDaSVsuJaI2ix6b8
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=7e728ae0-b5d9-4c9e-87cd-9908b1f16850</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=dde26ebb-785d-4595-bf8a-c4f0f7af8e08</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;7e728ae0-b5d9-4c9e-87cd-9908b1f16850&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;dde26ebb-785d-4595-bf8a-c4f0f7af8e08&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;fc8ebc39f81d713b0c058ff87b63282e&quot;
+ETag: W/&quot;a2357a05206781b7c65d58b5687fcb5c&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: f83b58dc-3de3-4af5-906e-d3af5bdc40b6
-X-Runtime: 0.042562
+X-Request-Id: 015b3645-8aa1-4aea-b8f8-5866b54bfb11
+X-Runtime: 0.039515
 Vary: Origin
-Content-Length: 1608</pre>
+Content-Length: 1639</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;b5f7d8d3-638b-4bbb-abeb-3c085593e9a8&quot;,
+      &quot;id&quot;: &quot;21fe0788-768a-4a0a-862c-b557b927ac3f&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -215,21 +215,22 @@ Content-Length: 1608</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Muhammad Lesch&quot;,
+        &quot;author_name&quot;: &quot;Christopher Parker&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
+        &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-07-04T13:10:50.022Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:10:50.022Z&quot;,
-        &quot;published_at&quot;: &quot;2017-07-04T13:10:50.021Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:14.608Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:14.608Z&quot;,
+        &quot;published_at&quot;: &quot;2017-07-11T21:37:14.608Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;7e728ae0-b5d9-4c9e-87cd-9908b1f16850&quot;,
+              &quot;id&quot;: &quot;dde26ebb-785d-4595-bf8a-c4f0f7af8e08&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -246,13 +247,13 @@ Content-Length: 1608</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;49ab3082-cd29-4eee-b116-8f4b49a4eb43&quot;,
+            &quot;id&quot;: &quot;2dc29043-cee7-4ebb-bd86-5af60b47d239&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;16ac610c-0051-47d9-81b8-ca8e12f8dadb&quot;,
+            &quot;id&quot;: &quot;3abad100-cec5-4526-a805-70fa1659c84d&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -264,25 +265,25 @@ Content-Length: 1608</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;49ab3082-cd29-4eee-b116-8f4b49a4eb43&quot;,
+      &quot;id&quot;: &quot;2dc29043-cee7-4ebb-bd86-5af60b47d239&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Muhammad&quot;,
-        &quot;last_name&quot;: &quot;Lesch&quot;,
-        &quot;slug&quot;: &quot;muhammad-lesch&quot;,
+        &quot;first_name&quot;: &quot;Christopher&quot;,
+        &quot;last_name&quot;: &quot;Parker&quot;,
+        &quot;slug&quot;: &quot;christopher-parker&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/49ab3082-cd29-4eee-b116-8f4b49a4eb43/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/49ab3082-cd29-4eee-b116-8f4b49a4eb43/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/49ab3082-cd29-4eee-b116-8f4b49a4eb43/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/2dc29043-cee7-4ebb-bd86-5af60b47d239/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/2dc29043-cee7-4ebb-bd86-5af60b47d239/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/2dc29043-cee7-4ebb-bd86-5af60b47d239/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:10:50.010Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:10:50.010Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:14.598Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:14.598Z&quot;
       }
     }
   ],

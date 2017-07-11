@@ -196,4 +196,25 @@ RSpec.describe User, type: :model do
 
   end
 
+
+  describe "order_role" do
+
+    before do
+      10.times do |i|
+        create(rand(2)==0 ? :admin : :user)
+      end
+    end
+
+    it "sorts from higher level roles to lower level roles by default" do
+      serie = User.order_role.map{|u| u.roles.size}
+      expect(serie).to eq serie.sort.reverse
+    end
+
+    it "sorts from lower level roles to higher level roles with option asc" do
+      serie = User.order_role(:desc).map{|u| u.roles.size}
+      expect(serie).to eq serie.sort
+    end
+
+  end
+
 end

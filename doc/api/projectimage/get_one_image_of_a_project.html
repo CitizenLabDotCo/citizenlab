@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Stats API</title>
+    <title>ProjectImage API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,79 +106,55 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Stats API</h1>
+      <h1>ProjectImage API</h1>
 
       <div class="article">
-        <h2>Users by education</h2>
-        <h3>GET api/v1/stats/users_by_education</h3>
+        <h2>Get one image of a project</h2>
+        <h3>GET api/v1/projects/:project_id/images/:image_id</h3>
 
-          <h3>Parameters</h3>
-          <table class="parameters table table-striped table-bordered table-condensed">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="required">
-                    <span class="name">start_at</span>
-                </td>
-                <td>
-                  <span class="description">Date defining from where results should start</span>
-                </td>
-              </tr>
-              <tr>
-                <td class="required">
-                    <span class="name">end_at</span>
-                </td>
-                <td>
-                  <span class="description">Date defining till when results should go</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NTksInN1YiI6ImUyODAyYjBiLTE5NDItNGM2Yi05OTEyLWNmYjcwZDM0NTBiOCJ9.4wwiMEjionemAwkqlC_vWRLvQu1fdgnWis4M_1vy2XY
-Content-Type: application/json
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NDYsInN1YiI6ImY5ZjI2NTFlLTQwZWUtNDNhMS05ODY3LWZhYmJkNjI5YWQzOCJ9.Cn_GHr8crfY596vY9sj4L6OlIeGWuGnUJ-U6pDGKKGA
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/stats/users_by_education?start_at=2017-01-01+00%3A00%3A00+%2B0100&amp;end_at=2017-12-31+23%3A59%3A59+%2B0100</pre>
+          <pre class="request route highlight">GET api/v1/projects/c2e0d7b4-a85f-4b3b-9165-cc2211a73823/images/23096d3d-d195-4256-82c7-c426b359b2c4</pre>
 
-            <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">start_at: 2017-01-01 00:00:00 +0100
-end_at: 2017-12-31 23:59:59 +0100</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;9c93cd998ba31a3ed97f4cf902701de5&quot;
+ETag: W/&quot;f8f6d03417bd90f041f46b08d7a5c1b6&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 67d10fd5-786e-4823-a386-260a758be815
-X-Runtime: 0.007557
+X-Request-Id: e536ec19-b6a3-4896-a4ae-437ec7c4dff5
+X-Runtime: 0.011934
 Vary: Origin
-Content-Length: 54</pre>
+Content-Length: 594</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;1&quot;: 2,
-  &quot;2&quot;: 4,
-  &quot;3&quot;: 3,
-  &quot;4&quot;: 5,
-  &quot;6&quot;: 1,
-  &quot;7&quot;: 2,
-  &quot;8&quot;: 3,
-  &quot;_blank&quot;: 1
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;23096d3d-d195-4256-82c7-c426b359b2c4&quot;,
+    &quot;type&quot;: &quot;project_images&quot;,
+    &quot;attributes&quot;: {
+      &quot;versions&quot;: {
+        &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/23096d3d-d195-4256-82c7-c426b359b2c4/small_image7.png&quot;,
+        &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/23096d3d-d195-4256-82c7-c426b359b2c4/medium_image7.png&quot;,
+        &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/23096d3d-d195-4256-82c7-c426b359b2c4/large_image7.png&quot;
+      },
+      &quot;ordering&quot;: null,
+      &quot;created_at&quot;: &quot;2017-07-11T21:37:26.207Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-07-11T21:37:26.207Z&quot;
+    }
+  }
 }</pre>
       </div>
     </div>

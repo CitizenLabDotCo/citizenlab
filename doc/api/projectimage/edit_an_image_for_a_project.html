@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>IdeaImage API</title>
+    <title>ProjectImage API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>IdeaImage API</h1>
+      <h1>ProjectImage API</h1>
 
       <div class="article">
-        <h2>Edit an image for an idea</h2>
-        <h3>PATCH api/v1/ideas/:idea_id/images/:image_id</h3>
+        <h2>Edit an image for a project</h2>
+        <h3>PATCH api/v1/projects/:project_id/images/:image_id</h3>
 
           <h3>Parameters</h3>
           <table class="parameters table table-striped table-bordered table-condensed">
@@ -134,7 +134,7 @@ table th, table td {
                     <span class="name">image[ordering]</span>
                 </td>
                 <td>
-                  <span class="description">An integer that is used to order the images within an idea</span>
+                  <span class="description">An integer that is used to order the images within a project</span>
                 </td>
               </tr>
             </tbody>
@@ -145,12 +145,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzQsInN1YiI6IjJmYzczODgxLWI2NWItNDQ2My1hOTFmLWJjOWE5ZjM3NTFjZSJ9.7ChQXywmRH1dGrxzjaFQIB-LwyS_u4K_lu17QGMaB4M
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NDYsInN1YiI6ImZlNjY0ZmJiLTJhN2ItNGNhNy1iZjljLTRiYWYxODZiZmUwOCJ9.Q-IbXRZJ-PfcPfbwY9nBE1pDaUWd_oSb9zQsHI2_Jtw
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/ideas/ba70707f-db66-4f63-bb4a-83acbe2759a2/images/5ae2523b-0511-4e0a-9af8-de848da075bb</pre>
+          <pre class="request route highlight">PATCH api/v1/projects/6f3540ef-1b3c-439a-95e8-dee410ad2b8a/images/55bd7f6a-678f-4ad8-8541-f72d8f6d7ed9</pre>
 
 
             <h4>Body</h4>
@@ -160,28 +160,28 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;1c07a40b021a2d1d107a8d6d3263a94f&quot;
+ETag: W/&quot;0443b020ac815e7b2c35e6ca84d0ea6b&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 97a2187d-a72f-43cd-b686-2de53ef0770f
-X-Runtime: 0.029068
+X-Request-Id: 68867c61-6b21-495b-b70b-e97ba8c159d9
+X-Runtime: 0.034312
 Vary: Origin
-Content-Length: 576</pre>
+Content-Length: 588</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;5ae2523b-0511-4e0a-9af8-de848da075bb&quot;,
-    &quot;type&quot;: &quot;idea_images&quot;,
+    &quot;id&quot;: &quot;55bd7f6a-678f-4ad8-8541-f72d8f6d7ed9&quot;,
+    &quot;type&quot;: &quot;project_images&quot;,
     &quot;attributes&quot;: {
       &quot;versions&quot;: {
-        &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/idea_image/image/5ae2523b-0511-4e0a-9af8-de848da075bb/small_image.png&quot;,
-        &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/idea_image/image/5ae2523b-0511-4e0a-9af8-de848da075bb/medium_image.png&quot;,
-        &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/idea_image/image/5ae2523b-0511-4e0a-9af8-de848da075bb/large_image.png&quot;
+        &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/55bd7f6a-678f-4ad8-8541-f72d8f6d7ed9/small_image.png&quot;,
+        &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/55bd7f6a-678f-4ad8-8541-f72d8f6d7ed9/medium_image.png&quot;,
+        &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/55bd7f6a-678f-4ad8-8541-f72d8f6d7ed9/large_image.png&quot;
       },
       &quot;ordering&quot;: 2,
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:14.039Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:14.083Z&quot;
+      &quot;created_at&quot;: &quot;2017-07-11T21:37:26.435Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-07-11T21:37:26.470Z&quot;
     }
   }
 }</pre>

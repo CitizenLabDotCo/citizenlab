@@ -7,6 +7,32 @@ class Api::V1::UsersController < ::ApplicationController
     @users = policy_scope(User)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
+
+    @users = @users.search_by_all(params[:search]) if params[:search].present?
+
+    @users = case params[:sort]
+      when "created_at"
+        @users.order(created_at: :asc)
+      when "-created_at"
+        @users.order(created_at: :desc)
+      when "last_name"
+        @users.order(last_name: :asc)
+      when "-last_name"
+        @users.order(last_name: :desc)
+      when "email"
+        @users.order(email: :asc)
+      when "-email"
+        @users.order(email: :desc)
+      when "role"
+        @users.order_role(:asc)
+      when "-role"
+        @users.order_role(:desc)
+      when nil
+        @users
+      else
+        raise "Unsupported sort method"
+    end
+
     render json: @users
   end
 

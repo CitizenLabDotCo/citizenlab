@@ -201,7 +201,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNTQsInN1YiI6IjY5MTVjZWVjLThiZTctNGNmYS1iZTE2LWFhMWYxZTMwNmQ4OCJ9.bKkxEhzzDCB56pqPwElBkSOzGoKmKpBhI_8xCg2C-3o
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzksInN1YiI6IjU3YWE1YjI0LWQ1NWUtNDc2YS04MWNhLTU2YmE3NjFlNmI3NyJ9.LvSHWnVoKncKgPZx0aRM1NpErvbAINEidpkmtMmyHj8
 Host: example.org
 Cookie: </pre>
 
@@ -210,24 +210,24 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"idea":{"project_id":"5e8bae04-d051-4f5c-a6d7-6713110ed27f","author_id":"0ad4e08d-0202-458e-9f4e-cf0f2eb497e3","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"},"topic_ids":["e98f22f8-6e5c-4431-ad1e-8ae1b045e299","12c66989-f164-418b-bdbf-2539694f49ae"],"area_ids":["27f12fec-a920-47ed-80d3-5238217bcf8b","b6036241-5e75-4e96-a6dd-a79454b94afe"],"location_point_geojson":{"type":"Point","coordinates":[51.11520776293035,3.921154106874878]},"location_description":"Stanley Road 4"}}</pre>
+            <pre class="request body">{"idea":{"project_id":"4f952d4c-e02f-47e4-8315-1a95a23468c9","author_id":"07a7ce63-b905-4081-ad53-b069ff7fc412","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"},"topic_ids":["df92e759-027c-4867-88f8-dcd7d880ae68","b7cc66a1-5c5f-4674-8472-5d0994b8c732"],"area_ids":["764f1a29-1302-44e2-a850-88f50db55bef","52c80f1e-2bcf-48ab-ba88-5927cabbb4a2"],"location_point_geojson":{"type":"Point","coordinates":[51.11520776293035,3.921154106874878]},"location_description":"Stanley Road 4"}}</pre>
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;9cd02f8ff22b4d29998065d7853e145e&quot;
+ETag: W/&quot;4883dc791074cf6771ef40fedf68a8a4&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 1f1ed1c0-ab8f-41a1-ad14-fec08a8e353d
-X-Runtime: 0.068050
+X-Request-Id: 584bdfe7-3613-4ca2-ba18-b4a0ee8db7cc
+X-Runtime: 0.069568
 Vary: Origin
-Content-Length: 3461</pre>
+Content-Length: 3474</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;91ce72f9-6b2c-44cd-b66a-5b7e314dc6c4&quot;,
+    &quot;id&quot;: &quot;f87c887d-a182-4f6b-9a0b-c9cd41a706b3&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -238,10 +238,11 @@ Content-Length: 3461</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Shanelle Yost&quot;,
+      &quot;author_name&quot;: &quot;Miller Yost&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
+      &quot;comments_count&quot;: 0,
       &quot;location_point_geojson&quot;: {
         &quot;type&quot;: &quot;Point&quot;,
         &quot;coordinates&quot;: [
@@ -250,19 +251,19 @@ Content-Length: 3461</pre>
         ]
       },
       &quot;location_description&quot;: &quot;Stanley Road 4&quot;,
-      &quot;created_at&quot;: &quot;2017-07-04T13:10:54.916Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-04T13:10:54.916Z&quot;,
-      &quot;published_at&quot;: &quot;2017-07-04T13:10:54.916Z&quot;
+      &quot;created_at&quot;: &quot;2017-07-11T21:37:19.226Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-07-11T21:37:19.226Z&quot;,
+      &quot;published_at&quot;: &quot;2017-07-11T21:37:19.226Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
         &quot;data&quot;: [
           {
-            &quot;id&quot;: &quot;e98f22f8-6e5c-4431-ad1e-8ae1b045e299&quot;,
+            &quot;id&quot;: &quot;df92e759-027c-4867-88f8-dcd7d880ae68&quot;,
             &quot;type&quot;: &quot;topics&quot;
           },
           {
-            &quot;id&quot;: &quot;12c66989-f164-418b-bdbf-2539694f49ae&quot;,
+            &quot;id&quot;: &quot;b7cc66a1-5c5f-4674-8472-5d0994b8c732&quot;,
             &quot;type&quot;: &quot;topics&quot;
           }
         ]
@@ -270,11 +271,11 @@ Content-Length: 3461</pre>
       &quot;areas&quot;: {
         &quot;data&quot;: [
           {
-            &quot;id&quot;: &quot;27f12fec-a920-47ed-80d3-5238217bcf8b&quot;,
+            &quot;id&quot;: &quot;764f1a29-1302-44e2-a850-88f50db55bef&quot;,
             &quot;type&quot;: &quot;areas&quot;
           },
           {
-            &quot;id&quot;: &quot;b6036241-5e75-4e96-a6dd-a79454b94afe&quot;,
+            &quot;id&quot;: &quot;52c80f1e-2bcf-48ab-ba88-5927cabbb4a2&quot;,
             &quot;type&quot;: &quot;areas&quot;
           }
         ]
@@ -286,13 +287,13 @@ Content-Length: 3461</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;0ad4e08d-0202-458e-9f4e-cf0f2eb497e3&quot;,
+          &quot;id&quot;: &quot;07a7ce63-b905-4081-ad53-b069ff7fc412&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;5e8bae04-d051-4f5c-a6d7-6713110ed27f&quot;,
+          &quot;id&quot;: &quot;4f952d4c-e02f-47e4-8315-1a95a23468c9&quot;,
           &quot;type&quot;: &quot;projects&quot;
         }
       },
@@ -303,7 +304,7 @@ Content-Length: 3461</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;e98f22f8-6e5c-4431-ad1e-8ae1b045e299&quot;,
+      &quot;id&quot;: &quot;df92e759-027c-4867-88f8-dcd7d880ae68&quot;,
       &quot;type&quot;: &quot;topics&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -318,7 +319,7 @@ Content-Length: 3461</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;12c66989-f164-418b-bdbf-2539694f49ae&quot;,
+      &quot;id&quot;: &quot;b7cc66a1-5c5f-4674-8472-5d0994b8c732&quot;,
       &quot;type&quot;: &quot;topics&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -333,7 +334,7 @@ Content-Length: 3461</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;27f12fec-a920-47ed-80d3-5238217bcf8b&quot;,
+      &quot;id&quot;: &quot;764f1a29-1302-44e2-a850-88f50db55bef&quot;,
       &quot;type&quot;: &quot;areas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -347,7 +348,7 @@ Content-Length: 3461</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;b6036241-5e75-4e96-a6dd-a79454b94afe&quot;,
+      &quot;id&quot;: &quot;52c80f1e-2bcf-48ab-ba88-5927cabbb4a2&quot;,
       &quot;type&quot;: &quot;areas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -361,25 +362,25 @@ Content-Length: 3461</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;0ad4e08d-0202-458e-9f4e-cf0f2eb497e3&quot;,
+      &quot;id&quot;: &quot;07a7ce63-b905-4081-ad53-b069ff7fc412&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Shanelle&quot;,
+        &quot;first_name&quot;: &quot;Miller&quot;,
         &quot;last_name&quot;: &quot;Yost&quot;,
-        &quot;slug&quot;: &quot;shanelle-yost&quot;,
+        &quot;slug&quot;: &quot;miller-yost&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/0ad4e08d-0202-458e-9f4e-cf0f2eb497e3/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/0ad4e08d-0202-458e-9f4e-cf0f2eb497e3/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/0ad4e08d-0202-458e-9f4e-cf0f2eb497e3/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/07a7ce63-b905-4081-ad53-b069ff7fc412/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/07a7ce63-b905-4081-ad53-b069ff7fc412/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/07a7ce63-b905-4081-ad53-b069ff7fc412/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:10:54.809Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:10:54.809Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:19.126Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:19.126Z&quot;
       }
     }
   ]

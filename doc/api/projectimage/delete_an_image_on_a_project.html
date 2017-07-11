@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Votes API</title>
+    <title>ProjectImage API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,41 +106,38 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Votes API</h1>
+      <h1>ProjectImage API</h1>
 
       <div class="article">
-        <h2>Upvote an idea that doesn&#39;t have your vote yet</h2>
-        <h3>POST api/v1/ideas/:idea_id/votes/up</h3>
+        <h2>Delete an image on a project</h2>
+        <h3>DELETE api/v1/projects/:project_id/images/:image_id</h3>
 
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NjUsInN1YiI6IjMxNzA1NWM1LWM1ZjEtNDc1NC1iMzMxLTFiNmIyNzQzMzYyOCJ9.Cu4_bHEzvGk7j-GeIyqTThFKym1iq9FpAhbdB1jlY_M
-Content-Type: application/json
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NDYsInN1YiI6IjlkNjQxMzk0LWU5MGUtNDBiMy05YzY5LWQ2NzRmNzVhNzc0ZiJ9.VFWV1N7Lc4aC_mQ0ZJk_4mUIAF-S3W_nIXRaFcC1kk4
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/ideas/84349693-fad6-4593-855e-16f576a58b6c/votes/up</pre>
+          <pre class="request route highlight">DELETE api/v1/projects/62dcaaba-7a74-4f74-aff4-eb22e2a547b9/images/7d7eb070-8b6e-4df0-94f9-04c92fa5d442</pre>
 
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
-              <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;74234e98afe7498fb5daf1f36ac2d78a&quot;
-Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 2419bd8e-ffda-42f1-b892-8e22ab586eb4
-X-Runtime: 0.021008
+              <pre class="response headers">Content-Type: application/json
+Cache-Control: no-cache
+X-Request-Id: d08c3b49-1b8d-4b27-8559-46a17737b4db
+X-Runtime: 0.012511
 Vary: Origin
-Content-Length: 4</pre>
+Content-Length: 0</pre>
             <h4>Status</h4>
-            <pre class="response status">201 Created</pre>
-              <h4>Body</h4>
-              <pre class="response body">null</pre>
+            <pre class="response status">200 OK</pre>
       </div>
     </div>
   </body>

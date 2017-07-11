@@ -2,7 +2,9 @@ class Idea < ApplicationRecord
   include PgSearch
   mount_uploaders :files, IdeaFileUploader
 
-  pg_search_scope :search_by_all, :against => [:title_multiloc, :body_multiloc, :author_name]
+  pg_search_scope :search_by_all, 
+    :against => [:title_multiloc, :body_multiloc, :author_name],
+    :using => { :tsearch => {:prefix => true} }
 
   belongs_to :project, optional: true
   counter_culture :project

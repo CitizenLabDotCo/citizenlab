@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>IdeaImage API</title>
+    <title>ProjectImage API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>IdeaImage API</h1>
+      <h1>ProjectImage API</h1>
 
       <div class="article">
-        <h2>List all images of an idea</h2>
-        <h3>GET api/v1/ideas/:idea_id/images</h3>
+        <h2>List all images of a project</h2>
+        <h3>GET api/v1/projects/:project_id/images</h3>
 
 
 
@@ -118,12 +118,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzMsInN1YiI6ImU2ZjhmMmZjLTRjZTQtNGQ0OC04Mzc5LTVjMjM3Zjg2ZmIwNiJ9.7LtEg2wDZE2Wchkf6kNiONrGUSxX8bP9yXgapnsNUzw
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NDYsInN1YiI6IjA2YzM3MGJkLTlkZDMtNDdjYi1hNWNjLTYyNmQ2ZmZjMTFhMCJ9.ihaDVTPezH4snjB1p01KeolGYacSYsK3alugChdn53Q
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas/845f7030-4634-47c4-9114-8378ce26d959/images</pre>
+          <pre class="request route highlight">GET api/v1/projects/67878217-6113-4149-9166-08b3f7f13784/images</pre>
 
 
 
@@ -131,43 +131,43 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;81c8dcf2772587bf3abe8220287154c2&quot;
+ETag: W/&quot;ace134f45ed1d42244c1751d12228051&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 743896f2-0cc9-4b5e-bf01-93377b6132cc
-X-Runtime: 0.033122
+X-Request-Id: c5488fd4-1c26-4194-983b-e4973913530b
+X-Runtime: 0.023711
 Vary: Origin
-Content-Length: 1164</pre>
+Content-Length: 1185</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;73766f47-06e4-4c34-8ab1-ea7a05973690&quot;,
-      &quot;type&quot;: &quot;idea_images&quot;,
+      &quot;id&quot;: &quot;cb9434f3-8e4a-4e32-b800-5a2600a137f1&quot;,
+      &quot;type&quot;: &quot;project_images&quot;,
       &quot;attributes&quot;: {
         &quot;versions&quot;: {
-          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/idea_image/image/73766f47-06e4-4c34-8ab1-ea7a05973690/small_image14.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/idea_image/image/73766f47-06e4-4c34-8ab1-ea7a05973690/medium_image14.png&quot;,
-          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/idea_image/image/73766f47-06e4-4c34-8ab1-ea7a05973690/large_image14.png&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/cb9434f3-8e4a-4e32-b800-5a2600a137f1/small_image0.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/cb9434f3-8e4a-4e32-b800-5a2600a137f1/medium_image0.png&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/cb9434f3-8e4a-4e32-b800-5a2600a137f1/large_image0.png&quot;
         },
         &quot;ordering&quot;: null,
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:13.707Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:13.707Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:26.105Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:26.105Z&quot;
       }
     },
     {
-      &quot;id&quot;: &quot;1829a470-8253-4ed5-8690-a92f847db0af&quot;,
-      &quot;type&quot;: &quot;idea_images&quot;,
+      &quot;id&quot;: &quot;fb098712-3bd2-45b1-b3a6-9d1af8056a58&quot;,
+      &quot;type&quot;: &quot;project_images&quot;,
       &quot;attributes&quot;: {
         &quot;versions&quot;: {
-          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/idea_image/image/1829a470-8253-4ed5-8690-a92f847db0af/small_image11.png&quot;,
-          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/idea_image/image/1829a470-8253-4ed5-8690-a92f847db0af/medium_image11.png&quot;,
-          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/idea_image/image/1829a470-8253-4ed5-8690-a92f847db0af/large_image11.png&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/fb098712-3bd2-45b1-b3a6-9d1af8056a58/small_image17.png&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/fb098712-3bd2-45b1-b3a6-9d1af8056a58/medium_image17.png&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/fb098712-3bd2-45b1-b3a6-9d1af8056a58/large_image17.png&quot;
         },
         &quot;ordering&quot;: null,
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:13.725Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:13.725Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:26.123Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:26.123Z&quot;
       }
     }
   ]

@@ -112,13 +112,40 @@ table th, table td {
         <h2>Get all users</h2>
         <h3>GET api/v1/users</h3>
 
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">search</span>
+                </td>
+                <td>
+                  <span class="description">Filter by searching in first_name, last_name and email</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">sort</span>
+                </td>
+                <td>
+                  <span class="description">Sort user by &#39;created_at&#39;, &#39;-created_at&#39;, &#39;last_name&#39;, &#39;-last_name&#39;, &#39;email&#39;, &#39;-email&#39;, &#39;role&#39;, &#39;-role&#39;</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNzgsInN1YiI6Ijg4YTI4N2VjLTUzN2UtNDQwNC04YmY1LWQzNzRhNzMzMWE1NSJ9.RxFVE2MZJ_8KNUKVzKCP7iVMbUikZuUNXIVj9l9bhmU
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NjIsInN1YiI6IjgxZGYxNTYxLTI4NDgtNGEyZC1hNTk3LTJjZDFiOWJhZGFkZSJ9.wXPxOrM8BFxkXRGZqu-V1fndrHPEwtfx_c-TJ-RRKlA
 Host: example.org
 Cookie: </pre>
 
@@ -131,38 +158,38 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;383cc4d7a359f0b3c9717dbe2bb46b9a&quot;
+ETag: W/&quot;96295a4ba76927ececf79231f91ff3e9&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 847da9ba-aed3-47ad-8299-ed35baa09b6a
-X-Runtime: 0.040277
+X-Request-Id: b36fd255-b314-44cf-96a1-9e58fb9f419b
+X-Runtime: 0.032558
 Vary: Origin
-Content-Length: 4476</pre>
+Content-Length: 4473</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;fc9dcf6f-a656-4273-91c7-487c88dd642a&quot;,
+      &quot;id&quot;: &quot;0c252e65-a5b2-424b-bf3e-5045bcb3e280&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Abraham&quot;,
-        &quot;last_name&quot;: &quot;Schneider&quot;,
-        &quot;slug&quot;: &quot;abraham-schneider&quot;,
+        &quot;first_name&quot;: &quot;Bessie&quot;,
+        &quot;last_name&quot;: &quot;Russel&quot;,
+        &quot;slug&quot;: &quot;bessie-russel&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/fc9dcf6f-a656-4273-91c7-487c88dd642a/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/fc9dcf6f-a656-4273-91c7-487c88dd642a/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/fc9dcf6f-a656-4273-91c7-487c88dd642a/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/0c252e65-a5b2-424b-bf3e-5045bcb3e280/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/0c252e65-a5b2-424b-bf3e-5045bcb3e280/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/0c252e65-a5b2-424b-bf3e-5045bcb3e280/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:11:18.497Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:11:18.497Z&quot;,
-        &quot;email&quot;: &quot;karelle@wolf.org&quot;,
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:42.706Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:42.706Z&quot;,
+        &quot;email&quot;: &quot;sebastian_wolff@haley.net&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -170,26 +197,26 @@ Content-Length: 4476</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;38fffd76-6d3f-4e83-8c27-862cff49c140&quot;,
+      &quot;id&quot;: &quot;a540588b-feb3-4c7c-b5ee-1fe2b9c5f1da&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Marilou&quot;,
-        &quot;last_name&quot;: &quot;Yundt&quot;,
-        &quot;slug&quot;: &quot;marilou-yundt&quot;,
+        &quot;first_name&quot;: &quot;Dolores&quot;,
+        &quot;last_name&quot;: &quot;Robel&quot;,
+        &quot;slug&quot;: &quot;dolores-robel&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/38fffd76-6d3f-4e83-8c27-862cff49c140/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/38fffd76-6d3f-4e83-8c27-862cff49c140/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/38fffd76-6d3f-4e83-8c27-862cff49c140/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/a540588b-feb3-4c7c-b5ee-1fe2b9c5f1da/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/a540588b-feb3-4c7c-b5ee-1fe2b9c5f1da/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/a540588b-feb3-4c7c-b5ee-1fe2b9c5f1da/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:11:18.524Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:11:18.524Z&quot;,
-        &quot;email&quot;: &quot;bulah.mccullough@ruel.org&quot;,
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:42.731Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:42.731Z&quot;,
+        &quot;email&quot;: &quot;ubaldo_langworth@herzog.biz&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -197,26 +224,26 @@ Content-Length: 4476</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;7f8fd106-1480-4ce4-bc1b-538beb6c01db&quot;,
+      &quot;id&quot;: &quot;f03dc233-49b7-48b7-b3b6-b72032748c1d&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Ardella&quot;,
-        &quot;last_name&quot;: &quot;Schmeler&quot;,
-        &quot;slug&quot;: &quot;ardella-schmeler&quot;,
+        &quot;first_name&quot;: &quot;Misael&quot;,
+        &quot;last_name&quot;: &quot;Wehner&quot;,
+        &quot;slug&quot;: &quot;misael-wehner&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/7f8fd106-1480-4ce4-bc1b-538beb6c01db/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/7f8fd106-1480-4ce4-bc1b-538beb6c01db/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/7f8fd106-1480-4ce4-bc1b-538beb6c01db/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/f03dc233-49b7-48b7-b3b6-b72032748c1d/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/f03dc233-49b7-48b7-b3b6-b72032748c1d/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/f03dc233-49b7-48b7-b3b6-b72032748c1d/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:11:18.552Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:11:18.552Z&quot;,
-        &quot;email&quot;: &quot;nicolette_bernhard@kuhn.io&quot;,
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:42.755Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:42.755Z&quot;,
+        &quot;email&quot;: &quot;ellie_kihn@jones.io&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -224,26 +251,26 @@ Content-Length: 4476</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;a2b7bb1c-4001-424b-8a7d-2f61704a0f45&quot;,
+      &quot;id&quot;: &quot;b62c7dcb-d072-41de-b265-bf2e1412ad4c&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Mariano&quot;,
-        &quot;last_name&quot;: &quot;Morissette&quot;,
-        &quot;slug&quot;: &quot;mariano-morissette&quot;,
+        &quot;first_name&quot;: &quot;Janis&quot;,
+        &quot;last_name&quot;: &quot;Bednar&quot;,
+        &quot;slug&quot;: &quot;janis-bednar&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/a2b7bb1c-4001-424b-8a7d-2f61704a0f45/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/a2b7bb1c-4001-424b-8a7d-2f61704a0f45/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/a2b7bb1c-4001-424b-8a7d-2f61704a0f45/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/b62c7dcb-d072-41de-b265-bf2e1412ad4c/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/b62c7dcb-d072-41de-b265-bf2e1412ad4c/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/b62c7dcb-d072-41de-b265-bf2e1412ad4c/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:11:18.581Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:11:18.581Z&quot;,
-        &quot;email&quot;: &quot;chase@hudson.io&quot;,
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:42.777Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:42.777Z&quot;,
+        &quot;email&quot;: &quot;carol.mclaughlin@witting.org&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -251,26 +278,26 @@ Content-Length: 4476</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;0fb43f87-662a-4fce-a808-03c88fcd1013&quot;,
+      &quot;id&quot;: &quot;8f88f305-b946-4859-a448-b3a3ed9b33a0&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Gracie&quot;,
-        &quot;last_name&quot;: &quot;Koch&quot;,
-        &quot;slug&quot;: &quot;gracie-koch&quot;,
+        &quot;first_name&quot;: &quot;Eunice&quot;,
+        &quot;last_name&quot;: &quot;Berge&quot;,
+        &quot;slug&quot;: &quot;eunice-berge&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/0fb43f87-662a-4fce-a808-03c88fcd1013/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/0fb43f87-662a-4fce-a808-03c88fcd1013/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/0fb43f87-662a-4fce-a808-03c88fcd1013/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/8f88f305-b946-4859-a448-b3a3ed9b33a0/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/8f88f305-b946-4859-a448-b3a3ed9b33a0/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/8f88f305-b946-4859-a448-b3a3ed9b33a0/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:11:18.610Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:11:18.610Z&quot;,
-        &quot;email&quot;: &quot;elwyn_thompson@sipes.co&quot;,
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:42.800Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:42.800Z&quot;,
+        &quot;email&quot;: &quot;lauretta@sauer.biz&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -278,17 +305,17 @@ Content-Length: 4476</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;88a287ec-537e-4404-8bf5-d374a7331a55&quot;,
+      &quot;id&quot;: &quot;81df1561-2848-4a2d-a597-2cd1b9badade&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Mittie&quot;,
-        &quot;last_name&quot;: &quot;Doyle&quot;,
-        &quot;slug&quot;: &quot;mittie-doyle&quot;,
+        &quot;first_name&quot;: &quot;Columbus&quot;,
+        &quot;last_name&quot;: &quot;Hammes&quot;,
+        &quot;slug&quot;: &quot;columbus-hammes&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/88a287ec-537e-4404-8bf5-d374a7331a55/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/88a287ec-537e-4404-8bf5-d374a7331a55/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/88a287ec-537e-4404-8bf5-d374a7331a55/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/81df1561-2848-4a2d-a597-2cd1b9badade/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/81df1561-2848-4a2d-a597-2cd1b9badade/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/81df1561-2848-4a2d-a597-2cd1b9badade/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
           {
@@ -297,9 +324,9 @@ Content-Length: 4476</pre>
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:11:18.469Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:11:18.633Z&quot;,
-        &quot;email&quot;: &quot;emmanuel@franecki.co&quot;,
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:42.683Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:42.819Z&quot;,
+        &quot;email&quot;: &quot;myrl@klockoondricka.net&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
