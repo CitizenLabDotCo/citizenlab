@@ -177,34 +177,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNTAsInN1YiI6IjQ1MDg0MjllLTA5NDctNGRlOC1hNTQwLTc3YjQ2NDc3YTYwYSJ9.kjfu80f28WG9kTsi2zwmKWSWoUrzv-wEyv27s8Q9ctM
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzUsInN1YiI6IjZkOTgwMWRjLTNlZjItNDQ2ZC05ZjJjLTExNTcyYTJiZWNlZSJ9.IN0jam26qGnKXzhPiwJ3bxqhF5QzQurvfk7PY3tiuxc
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=2f28edeb-3636-4fb3-90ed-d4ad14d37f90&amp;topics[]=ade3e76f-78f4-4f11-983a-e5560cca11a8</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=92a4a540-2106-40e5-9eab-163b1b64a3f0&amp;topics[]=e691d942-edca-455a-b84d-799bd7cb5617</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;2f28edeb-3636-4fb3-90ed-d4ad14d37f90&quot;, &quot;ade3e76f-78f4-4f11-983a-e5560cca11a8&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;92a4a540-2106-40e5-9eab-163b1b64a3f0&quot;, &quot;e691d942-edca-455a-b84d-799bd7cb5617&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;62a9f387c4494308a9dad95b16e96129&quot;
+ETag: W/&quot;c89e4a58c4bbaadc4306418489466c95&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 01ba1587-d5b7-40e3-bd54-00a14b8bd374
-X-Runtime: 0.044646
+X-Request-Id: 4a40d413-bd45-41a0-a1da-c9d865e3b1f5
+X-Runtime: 0.039465
 Vary: Origin
-Content-Length: 1667</pre>
+Content-Length: 1686</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;0679fef0-b5fc-411e-a768-7008b917fd04&quot;,
+      &quot;id&quot;: &quot;aea94efc-6c11-48e6-b353-10c100f9c20b&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -215,25 +215,26 @@ Content-Length: 1667</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Abraham Grant&quot;,
+        &quot;author_name&quot;: &quot;Juwan Volkman&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
+        &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-07-04T13:10:50.351Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:10:50.351Z&quot;,
-        &quot;published_at&quot;: &quot;2017-07-04T13:10:50.351Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:14.919Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:14.919Z&quot;,
+        &quot;published_at&quot;: &quot;2017-07-11T21:37:14.919Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;2f28edeb-3636-4fb3-90ed-d4ad14d37f90&quot;,
+              &quot;id&quot;: &quot;92a4a540-2106-40e5-9eab-163b1b64a3f0&quot;,
               &quot;type&quot;: &quot;topics&quot;
             },
             {
-              &quot;id&quot;: &quot;ade3e76f-78f4-4f11-983a-e5560cca11a8&quot;,
+              &quot;id&quot;: &quot;e691d942-edca-455a-b84d-799bd7cb5617&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -250,13 +251,13 @@ Content-Length: 1667</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;b044f35a-47a4-4c1b-8785-5a2e7b4212c4&quot;,
+            &quot;id&quot;: &quot;91025c00-5d9e-4807-8485-623ef3223de3&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;e4add8bc-859f-4bd7-a2e2-8b8c18d8b434&quot;,
+            &quot;id&quot;: &quot;fe3d9bb0-f4f2-40c2-ac15-53f4ff877ffa&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -268,25 +269,25 @@ Content-Length: 1667</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;b044f35a-47a4-4c1b-8785-5a2e7b4212c4&quot;,
+      &quot;id&quot;: &quot;91025c00-5d9e-4807-8485-623ef3223de3&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Abraham&quot;,
-        &quot;last_name&quot;: &quot;Grant&quot;,
-        &quot;slug&quot;: &quot;abraham-grant&quot;,
+        &quot;first_name&quot;: &quot;Juwan&quot;,
+        &quot;last_name&quot;: &quot;Volkman&quot;,
+        &quot;slug&quot;: &quot;juwan-volkman&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/b044f35a-47a4-4c1b-8785-5a2e7b4212c4/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/b044f35a-47a4-4c1b-8785-5a2e7b4212c4/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/b044f35a-47a4-4c1b-8785-5a2e7b4212c4/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/91025c00-5d9e-4807-8485-623ef3223de3/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/91025c00-5d9e-4807-8485-623ef3223de3/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/91025c00-5d9e-4807-8485-623ef3223de3/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:10:50.335Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:10:50.335Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:14.908Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:14.908Z&quot;
       }
     }
   ],

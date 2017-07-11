@@ -39,19 +39,41 @@ resource "Users" do
       end
 
       get "api/v1/users" do
+
+        parameter :search, 'Filter by searching in first_name, last_name and email', required: false
+        parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
+
         example_request "Get all users" do
           expect(status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 6
         end
-      end
 
-      get "api/v1/users" do
         example "Get all users on the second page with fixed page size" do
           do_request({"page[number]" => 2, "page[size]" => 2})
           expect(status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 2
+        end
+
+        example "List all ideas with search string" do
+          u1 = create(:user, first_name: 'Joskelala')
+          u2 = create(:user, last_name: 'Rudolf')
+
+          do_request(search: "joskela")
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data][0][:id]).to eq u1.id
+        end
+
+        example "List all users sorted by last_name" do
+          do_request(sort: 'last_name')
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].size).to eq 6
+          correctly_sorted = User.all.sort_by{|u| u.last_name}
+          expect(json_response[:data].map{|u| u[:id]}).to eq correctly_sorted.map(&:id)
+
         end
       end
 

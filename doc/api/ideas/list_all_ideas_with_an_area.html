@@ -177,34 +177,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNTEsInN1YiI6Ijg1OThhMDliLWUwYzEtNDJjNy1hZDM1LTFhOTUyODU2MzNhYiJ9.HG1ZnbDVaq4QYdzKzGcpkVeXSmm5j3V1XavsFDSDFkE
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzUsInN1YiI6IjFlNTRmNjY2LTllYzUtNDg2Mi1hNjE3LTgwODA3NzYyODM4NiJ9._6WuyojW1FJvDBGjSAJ4sJ9DqwmMiSCsceGtDYddx2Q
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?areas[]=cdf59c5e-35e6-40b6-87e5-ffc8d7b626c9</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=0f6874d3-6385-4659-89c7-04b7b4929a04</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">areas: [&quot;cdf59c5e-35e6-40b6-87e5-ffc8d7b626c9&quot;]</pre>
+            <pre class="request query_parameters highlight">areas: [&quot;0f6874d3-6385-4659-89c7-04b7b4929a04&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;c6421f9d718d07da23320f284a09151a&quot;
+ETag: W/&quot;3a624756dd6354f9b4cb60a2572ebd30&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 238f1707-20a0-44b8-8e53-819339bf4655
-X-Runtime: 0.040059
+X-Request-Id: e619bc05-553f-45b2-8f62-0725a1370eb8
+X-Runtime: 0.037355
 Vary: Origin
-Content-Length: 1610</pre>
+Content-Length: 1617</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;4bd5ca8b-e78d-4c6f-9bf9-31a2ef2cb2f2&quot;,
+      &quot;id&quot;: &quot;759c3ca4-8db2-46c5-a371-6fffe29e4135&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -215,15 +215,16 @@ Content-Length: 1610</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Adriel Reichert&quot;,
+        &quot;author_name&quot;: &quot;Layla Towne&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
+        &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-07-04T13:10:51.013Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:10:51.013Z&quot;,
-        &quot;published_at&quot;: &quot;2017-07-04T13:10:51.013Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:15.537Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:15.537Z&quot;,
+        &quot;published_at&quot;: &quot;2017-07-11T21:37:15.537Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -234,7 +235,7 @@ Content-Length: 1610</pre>
         &quot;areas&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;cdf59c5e-35e6-40b6-87e5-ffc8d7b626c9&quot;,
+              &quot;id&quot;: &quot;0f6874d3-6385-4659-89c7-04b7b4929a04&quot;,
               &quot;type&quot;: &quot;areas&quot;
             }
           ]
@@ -246,13 +247,13 @@ Content-Length: 1610</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;12c32aa9-7538-47d8-8dad-37f9c95a8dc5&quot;,
+            &quot;id&quot;: &quot;4bfa02c7-0f6a-4d44-81de-d2ddab98ed10&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;3aebd576-7fcd-41c8-91ed-45d303193a28&quot;,
+            &quot;id&quot;: &quot;4ae2c4ad-3643-4cef-8ded-b0dab6725527&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -264,25 +265,25 @@ Content-Length: 1610</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;12c32aa9-7538-47d8-8dad-37f9c95a8dc5&quot;,
+      &quot;id&quot;: &quot;4bfa02c7-0f6a-4d44-81de-d2ddab98ed10&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Adriel&quot;,
-        &quot;last_name&quot;: &quot;Reichert&quot;,
-        &quot;slug&quot;: &quot;adriel-reichert&quot;,
+        &quot;first_name&quot;: &quot;Layla&quot;,
+        &quot;last_name&quot;: &quot;Towne&quot;,
+        &quot;slug&quot;: &quot;layla-towne&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/12c32aa9-7538-47d8-8dad-37f9c95a8dc5/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/12c32aa9-7538-47d8-8dad-37f9c95a8dc5/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/12c32aa9-7538-47d8-8dad-37f9c95a8dc5/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/4bfa02c7-0f6a-4d44-81de-d2ddab98ed10/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/4bfa02c7-0f6a-4d44-81de-d2ddab98ed10/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/4bfa02c7-0f6a-4d44-81de-d2ddab98ed10/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:10:50.998Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:10:50.998Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:15.526Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:15.526Z&quot;
       }
     }
   ],

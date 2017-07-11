@@ -112,13 +112,40 @@ table th, table td {
         <h2>Get all users on the second page with fixed page size</h2>
         <h3>GET api/v1/users</h3>
 
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">search</span>
+                </td>
+                <td>
+                  <span class="description">Filter by searching in first_name, last_name and email</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">sort</span>
+                </td>
+                <td>
+                  <span class="description">Sort user by &#39;created_at&#39;, &#39;-created_at&#39;, &#39;last_name&#39;, &#39;-last_name&#39;, &#39;email&#39;, &#39;-email&#39;, &#39;role&#39;, &#39;-role&#39;</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNzgsInN1YiI6ImU2MmIzMzczLWJmMGMtNDVhMS1iMTIxLWMyOTBhNjlhMzdiYiJ9.ORg1CRI6EVHz7pLMKqcJsH4z_weH6yi1kV38MbJfYnI
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NjIsInN1YiI6IjJjNmMzZjg4LWVlZWYtNGFiMS05YTc5LTMwMGFiYjk1ODIwMSJ9.hIp9t3ToBIcCvFAVu7VGrC_Vd3rdtx5YugArn6qdP0g
 Host: example.org
 Cookie: </pre>
 
@@ -133,38 +160,38 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;3fadd5c723e5ec0d04391d9cf86fbea3&quot;
+ETag: W/&quot;f0760950424a03c55c2100472590982e&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 374d2734-f9ae-46eb-85d6-5758accfffc3
-X-Runtime: 0.023310
+X-Request-Id: d2cce1ba-fb79-47e5-8cba-7507ca708218
+X-Runtime: 0.018803
 Vary: Origin
-Content-Length: 1921</pre>
+Content-Length: 1898</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;3b62d113-3b05-47d5-852d-0e1efce1233a&quot;,
+      &quot;id&quot;: &quot;b2168826-edf7-4e88-98cd-c8163aec44c1&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Claudie&quot;,
-        &quot;last_name&quot;: &quot;Bergnaum&quot;,
-        &quot;slug&quot;: &quot;claudie-bergnaum&quot;,
+        &quot;first_name&quot;: &quot;Eladio&quot;,
+        &quot;last_name&quot;: &quot;Armstrong&quot;,
+        &quot;slug&quot;: &quot;eladio-armstrong&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/3b62d113-3b05-47d5-852d-0e1efce1233a/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/3b62d113-3b05-47d5-852d-0e1efce1233a/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/3b62d113-3b05-47d5-852d-0e1efce1233a/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/b2168826-edf7-4e88-98cd-c8163aec44c1/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/b2168826-edf7-4e88-98cd-c8163aec44c1/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/b2168826-edf7-4e88-98cd-c8163aec44c1/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:11:18.812Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:11:18.812Z&quot;,
-        &quot;email&quot;: &quot;cameron@okon.net&quot;,
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:42.939Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:42.939Z&quot;,
+        &quot;email&quot;: &quot;paris@zulauf.io&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -172,26 +199,26 @@ Content-Length: 1921</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;502f602c-fea9-401e-983a-21a823663a84&quot;,
+      &quot;id&quot;: &quot;3628d4f3-e6ec-4c97-b17e-55717a234422&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Pearl&quot;,
-        &quot;last_name&quot;: &quot;Powlowski&quot;,
-        &quot;slug&quot;: &quot;pearl-powlowski&quot;,
+        &quot;first_name&quot;: &quot;Vito&quot;,
+        &quot;last_name&quot;: &quot;Stanton&quot;,
+        &quot;slug&quot;: &quot;vito-stanton&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/502f602c-fea9-401e-983a-21a823663a84/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/502f602c-fea9-401e-983a-21a823663a84/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/502f602c-fea9-401e-983a-21a823663a84/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/3628d4f3-e6ec-4c97-b17e-55717a234422/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/3628d4f3-e6ec-4c97-b17e-55717a234422/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/3628d4f3-e6ec-4c97-b17e-55717a234422/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:11:18.846Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:11:18.846Z&quot;,
-        &quot;email&quot;: &quot;agustin.frami@rueckerlarkin.name&quot;,
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:42.962Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:42.962Z&quot;,
+        &quot;email&quot;: &quot;stephon@torp.net&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

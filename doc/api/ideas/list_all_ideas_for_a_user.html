@@ -177,34 +177,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNTIsInN1YiI6ImIyOWE2NWNhLTkyNzYtNDA2NC1hYWJhLWEzYzI2MGE3MTFmYiJ9.fsXz-0HDr9_ofh4rnG6BVkpqgMLSzCvjj3NvE_HclBQ
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzYsInN1YiI6ImYyNjQ0NjhlLTg2NzgtNGZkYS1hMTUyLThjMzQyN2Q3MjE3ZCJ9.frrgSiRGWATkiyhINJPbvscfen9b1AzCuSDZ6c4SogY
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?author=5a78ffa7-ca30-4528-bdef-3d3f4e842737</pre>
+          <pre class="request route highlight">GET api/v1/ideas?author=b8759881-9440-44ba-ba6d-a6d5944d6610</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">author: 5a78ffa7-ca30-4528-bdef-3d3f4e842737</pre>
+            <pre class="request query_parameters highlight">author: b8759881-9440-44ba-ba6d-a6d5944d6610</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;a3578c9db2f3f07dcd9de0721ed24238&quot;
+ETag: W/&quot;772954eda9cb08f57b2111220e610ddf&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 1685bbce-32a8-4786-af64-dd2febf66abc
-X-Runtime: 0.054908
+X-Request-Id: c3cc11b3-bf9c-402e-ad7c-a2fa615288f5
+X-Runtime: 0.031321
 Vary: Origin
-Content-Length: 1544</pre>
+Content-Length: 1569</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;699aa9cc-9914-4b4b-91d6-8c03f1078108&quot;,
+      &quot;id&quot;: &quot;65ec230a-748f-47d0-b4cf-fdb8fc319723&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -215,15 +215,16 @@ Content-Length: 1544</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Erwin Fritsch&quot;,
+        &quot;author_name&quot;: &quot;Joanne Lubowitz&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
+        &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-07-04T13:10:52.568Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:10:52.568Z&quot;,
-        &quot;published_at&quot;: &quot;2017-07-04T13:10:52.567Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:17.026Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:17.026Z&quot;,
+        &quot;published_at&quot;: &quot;2017-07-11T21:37:17.026Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -243,13 +244,13 @@ Content-Length: 1544</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;5a78ffa7-ca30-4528-bdef-3d3f4e842737&quot;,
+            &quot;id&quot;: &quot;b8759881-9440-44ba-ba6d-a6d5944d6610&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;defb3777-b4d1-4fa2-ad0c-6394326a0021&quot;,
+            &quot;id&quot;: &quot;9c518a75-72fa-426f-9384-4da0beb63629&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -261,25 +262,25 @@ Content-Length: 1544</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;5a78ffa7-ca30-4528-bdef-3d3f4e842737&quot;,
+      &quot;id&quot;: &quot;b8759881-9440-44ba-ba6d-a6d5944d6610&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Erwin&quot;,
-        &quot;last_name&quot;: &quot;Fritsch&quot;,
-        &quot;slug&quot;: &quot;erwin-fritsch&quot;,
+        &quot;first_name&quot;: &quot;Joanne&quot;,
+        &quot;last_name&quot;: &quot;Lubowitz&quot;,
+        &quot;slug&quot;: &quot;joanne-lubowitz&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/5a78ffa7-ca30-4528-bdef-3d3f4e842737/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/5a78ffa7-ca30-4528-bdef-3d3f4e842737/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/5a78ffa7-ca30-4528-bdef-3d3f4e842737/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/b8759881-9440-44ba-ba6d-a6d5944d6610/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/b8759881-9440-44ba-ba6d-a6d5944d6610/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/b8759881-9440-44ba-ba6d-a6d5944d6610/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:10:52.534Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:10:52.534Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:17.000Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:17.000Z&quot;
       }
     }
   ],

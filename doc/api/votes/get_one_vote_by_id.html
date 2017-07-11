@@ -117,13 +117,13 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyODAsInN1YiI6IjY5OTljN2UxLWNiNGEtNDY0OS1hNmM2LWI3MjdiZGQyNjFhMyJ9.bpP7uNRW-xet4-2w_FJTjxs4vpQDCKjJst2_N8-KFNQ
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NjUsInN1YiI6IjY0MjE2MTJiLWY2NzctNGU4Ni1iZDgzLTlmZGNkNWZlOWMwNSJ9.Ak9Sq_O35PhIRGvz-yEKIhHmUCbiZ15vxqVebmC2U0g
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/votes/7c8a6518-a35e-48bc-9bf1-1e17625328ea</pre>
+          <pre class="request route highlight">GET api/v1/votes/c8ebf8e9-11da-46b9-82ac-bbfce2b18aaf</pre>
 
 
 
@@ -131,18 +131,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;244a059216ae017eb4db2aaf6d5d6dae&quot;
+ETag: W/&quot;b0097767cf31d605bd791444e06d0d87&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 2d3cbf15-b77e-4176-a58c-3088a86cba54
-X-Runtime: 0.018984
+X-Request-Id: 9108dbb1-bdb7-4dd3-ac67-1308ef8ecdd3
+X-Runtime: 0.016826
 Vary: Origin
-Content-Length: 1022</pre>
+Content-Length: 1034</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;7c8a6518-a35e-48bc-9bf1-1e17625328ea&quot;,
+    &quot;id&quot;: &quot;c8ebf8e9-11da-46b9-82ac-bbfce2b18aaf&quot;,
     &quot;type&quot;: &quot;votes&quot;,
     &quot;attributes&quot;: {
       &quot;mode&quot;: &quot;up&quot;
@@ -150,13 +150,13 @@ Content-Length: 1022</pre>
     &quot;relationships&quot;: {
       &quot;votable&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;6aab1724-d7ab-4769-80ed-40b453887464&quot;,
+          &quot;id&quot;: &quot;ebc56924-cbd6-4bcf-bbe5-762710f998a0&quot;,
           &quot;type&quot;: &quot;votables&quot;
         }
       },
       &quot;user&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;744591e9-bf61-4361-aca1-cb2553b3a3bc&quot;,
+          &quot;id&quot;: &quot;fc1e5db2-e85f-450d-921b-6a63db10ffa3&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       }
@@ -164,26 +164,26 @@ Content-Length: 1022</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;744591e9-bf61-4361-aca1-cb2553b3a3bc&quot;,
+      &quot;id&quot;: &quot;fc1e5db2-e85f-450d-921b-6a63db10ffa3&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Jarod&quot;,
-        &quot;last_name&quot;: &quot;Armstrong&quot;,
-        &quot;slug&quot;: &quot;jarod-armstrong&quot;,
+        &quot;first_name&quot;: &quot;Dorthy&quot;,
+        &quot;last_name&quot;: &quot;Kreiger&quot;,
+        &quot;slug&quot;: &quot;dorthy-kreiger&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/744591e9-bf61-4361-aca1-cb2553b3a3bc/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/744591e9-bf61-4361-aca1-cb2553b3a3bc/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/744591e9-bf61-4361-aca1-cb2553b3a3bc/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/fc1e5db2-e85f-450d-921b-6a63db10ffa3/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/fc1e5db2-e85f-450d-921b-6a63db10ffa3/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/fc1e5db2-e85f-450d-921b-6a63db10ffa3/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:11:21.040Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:11:21.040Z&quot;,
-        &quot;email&quot;: &quot;heidi@berge.org&quot;,
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:45.221Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:45.221Z&quot;,
+        &quot;email&quot;: &quot;einar_beahan@jacobikuvalis.co&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

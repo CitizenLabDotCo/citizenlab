@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Users API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Users API</h1>
+
+      <div class="article">
+        <h2>List all users sorted by last_name</h2>
+        <h3>GET api/v1/users</h3>
+
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">search</span>
+                </td>
+                <td>
+                  <span class="description">Filter by searching in first_name, last_name and email</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">sort</span>
+                </td>
+                <td>
+                  <span class="description">Sort user by &#39;created_at&#39;, &#39;-created_at&#39;, &#39;last_name&#39;, &#39;-last_name&#39;, &#39;email&#39;, &#39;-email&#39;, &#39;role&#39;, &#39;-role&#39;</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NjMsInN1YiI6Ijg3MTQ4MjBkLTA0ODQtNGNiMy04MWFmLTliODExZDJiMGVlNCJ9.KuLEcvrjrJ-8FUoKlU4SCXa82sCCEuN7bhjbBN2JSEY
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/users?sort=last_name</pre>
+
+            <h4>Query Parameters</h4>
+            <pre class="request query_parameters highlight">sort: last_name</pre>
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;3b2c75886ddd2caf5e7ba5fe72830738&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 6f98baa9-4aa0-493d-8d28-b7795018ebd0
+X-Runtime: 0.033652
+Vary: Origin
+Content-Length: 4458</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;03616a9c-9e55-4638-9053-b850517d9f16&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Name&quot;,
+        &quot;last_name&quot;: &quot;Corkery&quot;,
+        &quot;slug&quot;: &quot;name-corkery&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/03616a9c-9e55-4638-9053-b850517d9f16/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/03616a9c-9e55-4638-9053-b850517d9f16/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/03616a9c-9e55-4638-9053-b850517d9f16/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:43.314Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:43.314Z&quot;,
+        &quot;email&quot;: &quot;osvaldo@purdy.info&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
+      }
+    },
+    {
+      &quot;id&quot;: &quot;7392b681-ac84-4cfc-9b1c-3a550b4c1721&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Adan&quot;,
+        &quot;last_name&quot;: &quot;Hodkiewicz&quot;,
+        &quot;slug&quot;: &quot;adan-hodkiewicz&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/7392b681-ac84-4cfc-9b1c-3a550b4c1721/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/7392b681-ac84-4cfc-9b1c-3a550b4c1721/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/7392b681-ac84-4cfc-9b1c-3a550b4c1721/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:43.338Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:43.338Z&quot;,
+        &quot;email&quot;: &quot;amya.funk@daniel.biz&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
+      }
+    },
+    {
+      &quot;id&quot;: &quot;8714820d-0484-4cb3-81af-9b811d2b0ee4&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Beau&quot;,
+        &quot;last_name&quot;: &quot;Jaskolski&quot;,
+        &quot;slug&quot;: &quot;beau-jaskolski&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/8714820d-0484-4cb3-81af-9b811d2b0ee4/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/8714820d-0484-4cb3-81af-9b811d2b0ee4/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/8714820d-0484-4cb3-81af-9b811d2b0ee4/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+          {
+            &quot;type&quot;: &quot;admin&quot;
+          }
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:43.248Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:43.377Z&quot;,
+        &quot;email&quot;: &quot;carey_schimmel@schultz.com&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
+      }
+    },
+    {
+      &quot;id&quot;: &quot;f7777d48-4dab-4d81-b3f5-106a5aaad7af&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Lindsay&quot;,
+        &quot;last_name&quot;: &quot;Rath&quot;,
+        &quot;slug&quot;: &quot;lindsay-rath&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/f7777d48-4dab-4d81-b3f5-106a5aaad7af/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/f7777d48-4dab-4d81-b3f5-106a5aaad7af/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/f7777d48-4dab-4d81-b3f5-106a5aaad7af/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:43.292Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:43.292Z&quot;,
+        &quot;email&quot;: &quot;luther@damore.org&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
+      }
+    },
+    {
+      &quot;id&quot;: &quot;04f49370-874f-418e-bcde-4c14fb09b360&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Therese&quot;,
+        &quot;last_name&quot;: &quot;Shanahan&quot;,
+        &quot;slug&quot;: &quot;therese-shanahan&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/04f49370-874f-418e-bcde-4c14fb09b360/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/04f49370-874f-418e-bcde-4c14fb09b360/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/04f49370-874f-418e-bcde-4c14fb09b360/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:43.357Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:43.357Z&quot;,
+        &quot;email&quot;: &quot;marilou@heaney.co&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
+      }
+    },
+    {
+      &quot;id&quot;: &quot;3aa3fe6f-c6b4-4edf-9ca7-da8fcd16c4e1&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Maudie&quot;,
+        &quot;last_name&quot;: &quot;Tromp&quot;,
+        &quot;slug&quot;: &quot;maudie-tromp&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/3aa3fe6f-c6b4-4edf-9ca7-da8fcd16c4e1/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/3aa3fe6f-c6b4-4edf-9ca7-da8fcd16c4e1/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/3aa3fe6f-c6b4-4edf-9ca7-da8fcd16c4e1/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:43.273Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:43.273Z&quot;,
+        &quot;email&quot;: &quot;laila_frami@cremin.co&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
+      }
+    }
+  ],
+  &quot;links&quot;: {
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Stats API</title>
+    <title>Users API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Stats API</h1>
+      <h1>Users API</h1>
 
       <div class="article">
-        <h2>Users by education</h2>
-        <h3>GET api/v1/stats/users_by_education</h3>
+        <h2>List all ideas with search string</h2>
+        <h3>GET api/v1/users</h3>
 
           <h3>Parameters</h3>
           <table class="parameters table table-striped table-bordered table-condensed">
@@ -122,19 +122,19 @@ table th, table td {
             </thead>
             <tbody>
               <tr>
-                <td class="required">
-                    <span class="name">start_at</span>
+                <td>
+                    <span class="name">search</span>
                 </td>
                 <td>
-                  <span class="description">Date defining from where results should start</span>
+                  <span class="description">Filter by searching in first_name, last_name and email</span>
                 </td>
               </tr>
               <tr>
-                <td class="required">
-                    <span class="name">end_at</span>
+                <td>
+                    <span class="name">sort</span>
                 </td>
                 <td>
-                  <span class="description">Date defining till when results should go</span>
+                  <span class="description">Sort user by &#39;created_at&#39;, &#39;-created_at&#39;, &#39;last_name&#39;, &#39;-last_name&#39;, &#39;email&#39;, &#39;-email&#39;, &#39;role&#39;, &#39;-role&#39;</span>
                 </td>
               </tr>
             </tbody>
@@ -144,41 +144,63 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NTksInN1YiI6ImUyODAyYjBiLTE5NDItNGM2Yi05OTEyLWNmYjcwZDM0NTBiOCJ9.4wwiMEjionemAwkqlC_vWRLvQu1fdgnWis4M_1vy2XY
-Content-Type: application/json
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NjMsInN1YiI6ImY0MTViNTg1LWE5NTQtNGExYy05YmNhLTc1ZTE4YzkyM2E5NyJ9.YJ9fBTynudFUSc7fkqzxywcNishFxcriAx7KXp_Ptms
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/stats/users_by_education?start_at=2017-01-01+00%3A00%3A00+%2B0100&amp;end_at=2017-12-31+23%3A59%3A59+%2B0100</pre>
+          <pre class="request route highlight">GET api/v1/users?search=joskela</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">start_at: 2017-01-01 00:00:00 +0100
-end_at: 2017-12-31 23:59:59 +0100</pre>
+            <pre class="request query_parameters highlight">search: joskela</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;9c93cd998ba31a3ed97f4cf902701de5&quot;
+ETag: W/&quot;9c9bc3d9ccd2b1f9bab8ccd682b35dd2&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 67d10fd5-786e-4823-a386-260a758be815
-X-Runtime: 0.007557
+X-Request-Id: b3b4de39-d119-4cba-acd8-3c890be7232a
+X-Runtime: 0.016424
 Vary: Origin
-Content-Length: 54</pre>
+Content-Length: 765</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;1&quot;: 2,
-  &quot;2&quot;: 4,
-  &quot;3&quot;: 3,
-  &quot;4&quot;: 5,
-  &quot;6&quot;: 1,
-  &quot;7&quot;: 2,
-  &quot;8&quot;: 3,
-  &quot;_blank&quot;: 1
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;b4ca5d67-c5a3-496a-bcac-9949d685e0ac&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Joskelala&quot;,
+        &quot;last_name&quot;: &quot;Buckridge&quot;,
+        &quot;slug&quot;: &quot;joskelala-buckridge&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/b4ca5d67-c5a3-496a-bcac-9949d685e0ac/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/b4ca5d67-c5a3-496a-bcac-9949d685e0ac/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/b4ca5d67-c5a3-496a-bcac-9949d685e0ac/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:43.183Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:43.183Z&quot;,
+        &quot;email&quot;: &quot;khalid@ebert.org&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
+      }
+    }
+  ],
+  &quot;links&quot;: {
+  }
 }</pre>
       </div>
     </div>

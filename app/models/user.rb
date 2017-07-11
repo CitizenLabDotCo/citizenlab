@@ -1,6 +1,13 @@
 class User < ApplicationRecord
+  include PgSearch
+
   has_secure_password validations: false
   mount_base64_uploader :avatar, AvatarUploader
+
+  pg_search_scope :search_by_all, 
+    :against => [:first_name, :last_name, :email], 
+    :using => { :tsearch => {:prefix => true} }
+
 
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
@@ -34,6 +41,12 @@ class User < ApplicationRecord
   before_validation :generate_slug, on: :create
   # For prepend: true, see https://github.com/carrierwaveuploader/carrierwave/wiki/Known-Issues#activerecord-callback-ordering
   before_save :generate_avatar, on: :create, prepend: true
+
+  scope :order_role, -> (direction=:asc) {  
+    subquery = User.select("jsonb_array_elements(roles) as ro, id")
+    joins("LEFT OUTER JOIN (#{subquery.to_sql}) as r ON users.id = r.id")
+    .order("ro->>'type' #{direction}")
+  }
 
   def avatar_blank?
     avatar.file.nil?

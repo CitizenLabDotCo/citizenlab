@@ -177,34 +177,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTkyNjAyNTEsInN1YiI6ImFkYmE4NDZlLTIzMWItNDQ5NC1iY2VkLTJkZjQ1MjVlY2VhOCJ9.QN6NTYSQpCcBeVicCdTYFBjB1pIv9D_Oc_k6jrIG4f4
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzYsInN1YiI6Ijk3MmJhZjhlLWY2MDQtNDRmOS1hM2FkLTIxZDRmZjJjYjI2YiJ9.MF4GkK5xeV_3Cz7HoJ7wrEtl0ydQe90f-lGxd06aczk
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?areas[]=0bdf729f-3d9c-4a28-ba74-381db7e00a3b&amp;areas[]=41df6100-900b-4b15-ae59-145c0848b044</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=421f42f4-18c9-4084-9860-17efb686d699&amp;areas[]=e2780c58-f8d0-48d5-a6e4-4082be0bed08</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">areas: [&quot;0bdf729f-3d9c-4a28-ba74-381db7e00a3b&quot;, &quot;41df6100-900b-4b15-ae59-145c0848b044&quot;]</pre>
+            <pre class="request query_parameters highlight">areas: [&quot;421f42f4-18c9-4084-9860-17efb686d699&quot;, &quot;e2780c58-f8d0-48d5-a6e4-4082be0bed08&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;e9017dbdbd872237ee658d9815df2b6f&quot;
+ETag: W/&quot;1dd6d0233e9ea8f2d52f671dc401b11b&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: be79b265-0e2b-427a-82e6-c083ef1a83e2
-X-Runtime: 0.043710
+X-Request-Id: bf9865d4-6fd2-4f10-bf99-ed988ab89995
+X-Runtime: 0.037035
 Vary: Origin
-Content-Length: 1659</pre>
+Content-Length: 1699</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;5acdb340-a2ea-42d1-bd5e-678cc76f914a&quot;,
+      &quot;id&quot;: &quot;e99eb3ca-b25f-4d7a-bd38-563c38181498&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -215,15 +215,16 @@ Content-Length: 1659</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Alvera Bins&quot;,
+        &quot;author_name&quot;: &quot;Georgianna Kessler&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
+        &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-07-04T13:10:51.329Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:10:51.329Z&quot;,
-        &quot;published_at&quot;: &quot;2017-07-04T13:10:51.329Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:15.846Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:15.846Z&quot;,
+        &quot;published_at&quot;: &quot;2017-07-11T21:37:15.846Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -234,11 +235,11 @@ Content-Length: 1659</pre>
         &quot;areas&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;0bdf729f-3d9c-4a28-ba74-381db7e00a3b&quot;,
+              &quot;id&quot;: &quot;421f42f4-18c9-4084-9860-17efb686d699&quot;,
               &quot;type&quot;: &quot;areas&quot;
             },
             {
-              &quot;id&quot;: &quot;41df6100-900b-4b15-ae59-145c0848b044&quot;,
+              &quot;id&quot;: &quot;e2780c58-f8d0-48d5-a6e4-4082be0bed08&quot;,
               &quot;type&quot;: &quot;areas&quot;
             }
           ]
@@ -250,13 +251,13 @@ Content-Length: 1659</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;4a4bb133-99fe-4e4c-ab04-0e956a888c96&quot;,
+            &quot;id&quot;: &quot;465f1b14-2bac-4cbd-9728-1bc778ee3fbd&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;9b6b8d2f-77e4-4bbf-ac51-73d8ff008f80&quot;,
+            &quot;id&quot;: &quot;0d576335-c167-4c13-bff3-c1a8e3356f0a&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
@@ -268,25 +269,25 @@ Content-Length: 1659</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;4a4bb133-99fe-4e4c-ab04-0e956a888c96&quot;,
+      &quot;id&quot;: &quot;465f1b14-2bac-4cbd-9728-1bc778ee3fbd&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Alvera&quot;,
-        &quot;last_name&quot;: &quot;Bins&quot;,
-        &quot;slug&quot;: &quot;alvera-bins&quot;,
+        &quot;first_name&quot;: &quot;Georgianna&quot;,
+        &quot;last_name&quot;: &quot;Kessler&quot;,
+        &quot;slug&quot;: &quot;georgianna-kessler&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/4a4bb133-99fe-4e4c-ab04-0e956a888c96/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/4a4bb133-99fe-4e4c-ab04-0e956a888c96/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/e7f8838f-b474-4677-af0f-5236a704c1d3/user/avatar/4a4bb133-99fe-4e4c-ab04-0e956a888c96/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/465f1b14-2bac-4cbd-9728-1bc778ee3fbd/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/465f1b14-2bac-4cbd-9728-1bc778ee3fbd/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/465f1b14-2bac-4cbd-9728-1bc778ee3fbd/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-04T13:10:51.313Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-04T13:10:51.313Z&quot;
+        &quot;created_at&quot;: &quot;2017-07-11T21:37:15.836Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-07-11T21:37:15.836Z&quot;
       }
     }
   ],
