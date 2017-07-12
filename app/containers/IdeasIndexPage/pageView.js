@@ -6,6 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 // components
 import WatchSagas from 'containers/WatchSagas';
@@ -13,11 +14,18 @@ import { Segment } from 'semantic-ui-react';
 import IdeaCards from './components/ideaCards';
 
 import SelectTopics from './components/selectTopics';
+import SelectAreas from './components/selectAreas';
 
 // store
 import { preprocess } from 'utils';
 import { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest, resetIdeas } from './actions';
 import sagasWatchers from './sagas';
+
+const FiltersArea = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+`;
 
 class View extends React.Component {
   constructor(props) {
@@ -41,7 +49,10 @@ class View extends React.Component {
       <div>
         <WatchSagas sagas={sagasWatchers} />
         <Segment style={{ width: 1000, marginLeft: 'auto', marginRight: 'auto' }} basic>
-          {withFilters && <SelectTopics />}
+          <FiltersArea>
+            {withFilters && <SelectTopics />}
+            {withFilters && <SelectAreas />}
+          </FiltersArea>
           <IdeaCards filter={filter} />
         </Segment>
       </div>

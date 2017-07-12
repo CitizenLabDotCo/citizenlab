@@ -16,27 +16,30 @@ const Container = styled.div`
 `;
 
 class FilterSelector extends React.Component {
-  constructor(props) {
+  constructor() {
     super();
 
     this.baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
 
     this.state = {
       deployed: false,
-      selected: [],
-      currentTitle: props.title,
+      currentTitle: '',
     };
   }
 
-  getTitle = (selection) => {
+  componentWillReceiveProps(nextProps) {
+    this.setState({ currentTitle: this.getTitle(nextProps.selected) });
+  }
+
+  getTitle = (selection, values = this.props.values, multiple = this.props.multiple, title = this.props.title) => {
     let newTitle = '';
 
-    if (!this.props.multiple && selection.length > 0) {
-      newTitle = _.find(this.props.values, { value: selection[0] }).text;
+    if (!multiple && selection.length > 0) {
+      newTitle = _.find(values, { value: selection[0] }).text;
     } else if (selection.length > 0) {
-      newTitle = `${this.props.title} (${selection.length})`;
+      newTitle = `${title} (${selection.length})`;
     } else {
-      newTitle = this.props.title;
+      newTitle = title;
     }
 
     return newTitle;
@@ -47,7 +50,7 @@ class FilterSelector extends React.Component {
   }
 
   selectionChange = (value) => {
-    let newSelection = _.clone(this.state.selected);
+    let newSelection = _.clone(this.props.selected);
 
     if (!this.props.multiple) {
       newSelection = [value];
@@ -57,15 +60,14 @@ class FilterSelector extends React.Component {
       newSelection.push(value);
     }
 
-    this.setState({ selected: newSelection, currentTitle: this.getTitle(newSelection) });
     if (this.props.onChange) {
-      this.props.onChange(newSelection);
+      this.props.onChange(this.props.name, newSelection);
     }
   }
 
   render() {
-    const { deployed, selected, currentTitle } = this.state;
-    const { values, multiple } = this.props;
+    const { deployed, currentTitle } = this.state;
+    const { values, multiple, selected } = this.props;
 
     return (
       <Container tabIndex="0">
@@ -78,6 +80,7 @@ class FilterSelector extends React.Component {
 
 FilterSelector.propTypes = {
   title: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   values: PropTypes.arrayOf(
     PropTypes.shape({
       text: PropTypes.string,
@@ -86,6 +89,7 @@ FilterSelector.propTypes = {
   ),
   onChange: PropTypes.func,
   multiple: PropTypes.bool,
+  selected: PropTypes.array,
 };
 
 export default FilterSelector;

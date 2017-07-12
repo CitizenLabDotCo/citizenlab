@@ -17,8 +17,8 @@ import queryString from 'query-string';
 // translations
 import { injectTFunc } from 'containers/T/utils';
 
-const SelectTopic = ({ options, filterPage }) => (
-  <FilterSelector title="topics" values={options} multiple onChange={filterPage} />
+const SelectTopic = ({ options, value, filterPage }) => (
+  <FilterSelector title="topics" name="topics" selected={value} values={options} multiple onChange={filterPage} />
 );
 
 SelectTopic.propTypes = {
