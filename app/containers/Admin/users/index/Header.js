@@ -6,14 +6,15 @@ import messages from './messages';
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
+  padding: 2rem 0px;
 `;
 
 const HeaderTitle = styled.h1`
   font-family: CircularStd;
   font-size: 35px;
   font-weight: bold;
-  text-align: left;
+  margin: 0;
   color: #101010;
 `;
 

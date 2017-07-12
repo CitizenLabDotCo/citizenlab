@@ -12,7 +12,7 @@ export default defineMessages({
   },
   exportUsers: {
     id: 'app.containers.AdminUser.Users.Views.all.exportUsers',
-    defaultMessage: 'Export users',
+    defaultMessage: 'Export all users',
   },
   deleteButton: {
     id: 'app.containers.AdminUser.Users.Views.all.deleteButton',
@@ -38,10 +38,6 @@ export default defineMessages({
   userLoadingError: {
     id: 'app.containers.AdminUser.Users.Views.edit.userLoadingError',
     defaultMessage: 'User not found!',
-  },
-  avatar: {
-    id: 'app.containers.Admin.User.avatar',
-    defaultMessage: 'Avatar',
   },
   name: {
     id: 'app.containers.Admin.User.name',

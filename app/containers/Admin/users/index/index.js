@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { push } from 'react-router-redux';
+import styled from 'styled-components';
 
 // components
 import Row from './Row';
@@ -26,6 +27,13 @@ import messages from './messages';
 import { ACTION_PREFIX } from './constants';
 import { searchTermChanged, pageSelectionChanged, sortColumnChanged, initialLoad } from './actions';
 import localSagas from './sagas';
+
+const TableContainer = styled.div`
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 30px;
+  bottom: 0px;
+`;
 
 class AllUsers extends React.Component {
 
@@ -60,61 +68,62 @@ class AllUsers extends React.Component {
       <div>
         <WatchSagas sagas={sagas} />
         <Header />
-        <Input icon="search" onChange={this.handleSearchChange} />
-        <Table celled>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>
-                <FormattedMessage {...messages.avatar} />
-              </Table.HeaderCell>
-              <Table.HeaderCell>
-                <SortableHeader
-                  name="name"
-                  direction={sortAttribute === 'last_name' ? sortDirection : null}
-                  onToggle={() => this.handleSortClick('last_name')}
-                />
-              </Table.HeaderCell>
-              <Table.HeaderCell>
-                <SortableHeader
-                  name="email"
-                  direction={sortAttribute === 'email' ? sortDirection : null}
-                  onToggle={() => this.handleSortClick('email')}
-                />
-              </Table.HeaderCell>
-              <Table.HeaderCell>
-                <SortableHeader
-                  name="member"
-                  direction={sortAttribute === 'created_at' ? sortDirection : null}
-                  onToggle={() => this.handleSortClick('created_at')}
-                />
-              </Table.HeaderCell>
-              <Table.HeaderCell>
-                <SortableHeader
-                  name="admin"
-                  direction={sortAttribute === 'roles' ? sortDirection : null}
-                  onToggle={() => this.handleSortClick('role')}
-                />
-              </Table.HeaderCell>
-              <Table.HeaderCell>
-                <FormattedMessage {...messages.delete} />
-              </Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {userIds.map((id) => <Row key={id} userId={id} />)}
-          </Table.Body>
-          <Table.Footer fullWidth>
-            <Table.Row>
-              <Table.HeaderCell colSpan="6">
-                <Pagination
-                  currentPage={this.props.currentPageNumber}
-                  totalPages={this.props.lastPageNumber}
-                  loadPage={this.handlePaginationClick}
-                />
-              </Table.HeaderCell>
-            </Table.Row>
-          </Table.Footer>
-        </Table>
+        <TableContainer>
+          <Input icon="search" onChange={this.handleSearchChange} />
+          <Table>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  <SortableHeader
+                    name="name"
+                    direction={sortAttribute === 'last_name' ? sortDirection : null}
+                    onToggle={() => this.handleSortClick('last_name')}
+                  />
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  <SortableHeader
+                    name="email"
+                    direction={sortAttribute === 'email' ? sortDirection : null}
+                    onToggle={() => this.handleSortClick('email')}
+                  />
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  <SortableHeader
+                    name="member"
+                    direction={sortAttribute === 'created_at' ? sortDirection : null}
+                    onToggle={() => this.handleSortClick('created_at')}
+                  />
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  <SortableHeader
+                    name="admin"
+                    direction={sortAttribute === 'role' ? sortDirection : null}
+                    onToggle={() => this.handleSortClick('role')}
+                  />
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  <FormattedMessage {...messages.delete} />
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {userIds.map((id) => <Row key={id} userId={id} />)}
+            </Table.Body>
+            <Table.Footer fullWidth>
+              <Table.Row>
+                <Table.HeaderCell colSpan="6">
+                  <Pagination
+                    currentPage={this.props.currentPageNumber}
+                    totalPages={this.props.lastPageNumber}
+                    loadPage={this.handlePaginationClick}
+                  />
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Footer>
+          </Table>
+        </TableContainer>
       </div>
     );
   }
