@@ -8,18 +8,12 @@ import HelmetIntl from 'components/HelmetIntl';
 // import sagas from 'resources/users/sagas';
 
 // store
-import { preprocess } from 'utils';
+// import { preprocess } from 'utils';
 
 // messages
 import messages from './messages';
-import { resetUsers } from 'resources/users/actions';
 
 class UserDashboard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-
-  componentWillUnmount() {
-    // reset users upon user leaving, to avoid double items when going back
-    this.props.resetUsers();
-  }
 
   render() {
     return (
@@ -37,8 +31,7 @@ class UserDashboard extends React.PureComponent { // eslint-disable-line react/p
 
 
 UserDashboard.propTypes = {
-  resetUsers: PropTypes.func.isRequired,
   children: PropTypes.element,
 };
 
-export default preprocess(null, { resetUsers })(UserDashboard);
+export default UserDashboard;

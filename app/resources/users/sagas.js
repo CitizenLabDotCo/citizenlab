@@ -1,6 +1,6 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { loadResources, createResource, loadResource, deleteResource, updateResource } from 'api';
-import { mergeJsonApiResources } from 'utils/resources/actions';
+import { mergeJsonApiResources, wrapActionWithPrefix } from 'utils/resources/actions';
 import { loadUsersError, loadUsersSuccess, loadUserSuccess, loadUserError, deleteUserSuccess, createUserSuccess } from './actions';
 import { LOAD_USERS_REQUEST, LOAD_USER_REQUEST, DELETE_USER_REQUEST } from './constants';
 
@@ -12,9 +12,9 @@ export function* loadUsersSaga(action) {
     const response = yield call(loadResources, 'user', queryParameters);
 
     yield put(mergeJsonApiResources(response));
-    yield put(loadUsersSuccess(response, { actionPrefix: action.actionPrefix }));
+    yield put(wrapActionWithPrefix(loadUsersSuccess, action.actionPrefix)(response));
   } catch (e) {
-    yield put(loadUsersError(e.json.erros));
+    yield put(wrapActionWithPrefix(loadUsersError, action.actionPrefix)(e.json.erros));
   }
 }
 
@@ -24,9 +24,9 @@ export function* loadUserSaga(action) {
     const response = yield call(loadResource, 'user', action.id);
 
     yield put(mergeJsonApiResources(response));
-    yield put(loadUserSuccess());
+    yield put(wrapActionWithPrefix(loadUserSuccess, action.actionPrefix)());
   } catch (e) {
-    yield put(loadUserError(e.json.errors));
+    yield put(wrapActionWithPrefix(loadUserError, action.actionPrefix)(e.json.errors));
   }
 }
 
@@ -39,7 +39,7 @@ export function* createUserSaga(action, success, error) {
     const response = yield call(createResource, 'user', data);
 
     yield put(mergeJsonApiResources(response));
-    yield put(createUserSuccess(response));
+    yield put(wrapActionWithPrefix(createUserSuccess, action.actionPrefix)(response));
     if (success) yield success();
   } catch (e) {
     if (error) yield success(e.json.errors);
@@ -67,34 +67,27 @@ export function* updateUserFork(data, success, error) {
 export function* deleteUserSaga(action) {
   try {
     yield call(deleteResource, 'user', action.id);
-    yield put(deleteUserSuccess(action.id));
+    yield put(wrapActionWithPrefix(deleteUserSuccess, action.actionPrefix)(action.id));
   } catch (e) {
     yield () => {};
   }
 }
 
-function* loadUsersWatcher(actionPrefix = '') {
+export function* loadUsersWatcher(actionPrefix = '') {
   yield takeLatest(actionPrefix + LOAD_USERS_REQUEST, loadUsersSaga);
 }
 
-function* loadUserWatcher(actionPrefix = '') {
+export function* loadUserWatcher(actionPrefix = '') {
   yield takeLatest(actionPrefix + LOAD_USER_REQUEST, loadUserSaga);
 }
 
-function* deleteUserWatcher(actionPrefix = '') {
+export function* deleteUserWatcher(actionPrefix = '') {
   yield takeLatest(actionPrefix + DELETE_USER_REQUEST, deleteUserSaga);
 }
 
-export function makeLoadUsersWatcher(actionPrefix = '') {
-  return function* watcher() {
-    yield takeLatest(actionPrefix + LOAD_USERS_REQUEST, loadUsersSaga);
-  };
-}
-
-
-export default {
-  loadUsersWatcher,
-  loadUserWatcher,
-  deleteUserWatcher,
-  makeLoadUsersWatcher,
-};
+// export default {
+//   loadUsersWatcher,
+//   loadUserWatcher,
+//   deleteUserWatcher,
+//   wrapWithActionPrefix,
+// };

@@ -10,6 +10,10 @@ export default defineMessages({
     id: 'app.containers.AdminUser.Users.Views.all.headerIndex',
     defaultMessage: 'Users',
   },
+  exportUsers: {
+    id: 'app.containers.AdminUser.Users.Views.all.exportUsers',
+    defaultMessage: 'Export users',
+  },
   deleteButton: {
     id: 'app.containers.AdminUser.Users.Views.all.deleteButton',
     defaultMessage: 'Delete',

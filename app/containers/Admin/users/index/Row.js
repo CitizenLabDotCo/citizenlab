@@ -1,21 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ImPropTypes from 'react-immutable-proptypes';
-import { push } from 'react-router-redux';
 
 // components
-import ActionButton from 'components/buttons/action.js';
-import { Table } from 'semantic-ui-react';
-import SliderForm from './sliderForm';
-import { FormattedDate } from 'react-intl';
+// import ActionButton from 'components/buttons/action.js';
+import { Table, Popup, Button } from 'semantic-ui-react';
+import SliderForm from './SliderForm';
+import { FormattedDate, FormattedMessage } from 'react-intl';
 
 // store
 import { preprocess } from 'utils';
 import { createStructuredSelector } from 'reselect';
-import { updateUserRequest, deleteUserRequest } from 'resources/users/actions';
+import { deleteUserRequest } from 'resources/users/actions';
+import { wrapActionWithPrefix } from 'utils/resources/actions';
 
 // messages
 import messages from './messages';
+import { ACTION_PREFIX } from './constants';
 
 // style
 import styled from 'styled-components';
@@ -45,7 +46,11 @@ const Row = ({ userId, avatar, firstName, lastName, email, createdAt, roles, del
       <SliderForm roles={roles} userId={userId} />
     </Table.Cell>
     <Table.Cell>
-      <ActionButton action={deleteUser} message={messages.deleteButton} fluid={false} />
+      <Popup
+        trigger={<Button icon="trash" onClick={deleteUser} />}
+        content={<FormattedMessage {...messages.delete} />}
+        position="right center"
+      />
     </Table.Cell>
   </Table.Row>
 );
@@ -65,6 +70,10 @@ const mapStateToProps = () => createStructuredSelector({
   user: (state, { userId }) => state.getIn(['resources', 'users', userId]),
 });
 
+const mapDispatchToProps = {
+  deleteUser: wrapActionWithPrefix(deleteUserRequest, ACTION_PREFIX),
+};
+
 const mergeProps = (stateP, dispatchP, ownP) => {
   const { userId } = ownP;
   const attributes = stateP.user.get('attributes');
@@ -79,4 +88,4 @@ const mergeProps = (stateP, dispatchP, ownP) => {
   return { userId, avatar, firstName, lastName, email, createdAt, roles, deleteUser };
 };
 
-export default preprocess(mapStateToProps, { goTo: push, deleteUser: deleteUserRequest, updateUser: updateUserRequest }, mergeProps)(Row);
+export default preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(Row);

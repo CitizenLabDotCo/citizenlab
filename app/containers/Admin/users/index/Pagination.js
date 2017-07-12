@@ -42,7 +42,7 @@ class Pagination extends PureComponent {
   }
 
   handleItemClick(event, data) {
-    this.props.loadPage(data.name);
+    this.props.loadPage(parseInt(data.name, 10));
   }
 
   render() {
@@ -67,7 +67,7 @@ class Pagination extends PureComponent {
 Pagination.propTypes = {
   currentPage: PropTypes.number.isRequired,
   totalPages: PropTypes.number.isRequired,
-  loadPage: PropTypes.function,
+  loadPage: PropTypes.func.isRequired,
 };
 
 export default Pagination;

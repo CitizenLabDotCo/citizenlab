@@ -2,55 +2,65 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { push } from 'react-router-redux';
-import { Saga } from 'react-redux-saga';
-
 
 // components
-import Row from './row';
-import { Table } from 'semantic-ui-react';
+import Row from './Row';
+import { Table, Input } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
-import Pagination from './pagination';
+import Pagination from './Pagination';
+import Header from './Header';
+import SortableHeader from './SortableHeader';
 
 // store
 import { preprocess } from 'utils';
 import { createStructuredSelector } from 'reselect';
-import { loadUsersRequest } from 'resources/users/actions';
-import { makeLoadUsersWatcher } from 'resources/users/sagas';
+import { loadUsersWatcher, deleteUserWatcher } from 'resources/users/sagas';
+import { resetUsers } from 'resources/users/actions';
+import { wrapActionWithPrefix } from 'utils/resources/actions';
+import { wrapSagaWithPrefix } from 'utils/resources/sagas';
+import WatchSagas from 'utils/containers/watchSagas';
+
 
 // messages
 import messages from './messages';
 import { ACTION_PREFIX } from './constants';
+import { searchTermChanged, pageSelectionChanged, sortColumnChanged, initialLoad } from './actions';
+import localSagas from './sagas';
 
 class AllUsers extends React.Component {
 
   componentDidMount() {
-    this.props.load(
-      {
-        'page[number]': this.props.currentPageNumber,
-        'page[size]': this.props.pageCount,
-      },
-      { actionPrefix: ACTION_PREFIX }
-    );
+    this.props.initialLoad();
+  }
+
+  componentWillUnmount() {
+    this.props.resetUsers();
   }
 
   handlePaginationClick = (page) => {
-    this.props.load(
-      {
-        'page[number]': page,
-        'page[size]': this.props.pageCount,
-      },
-      { actionPrefix: ACTION_PREFIX }
-    );
+    this.props.pageSelectionChanged(page);
+  }
+
+  handleSearchChange = (event) => {
+    this.props.searchTermChanged(event.target.value);
+  }
+
+  handleSortClick = (attribute) => {
+    this.props.sortColumnChanged(attribute);
   }
 
   render() {
-    const { userIds } = this.props;
+    const { userIds, sortDirection, sortAttribute } = this.props;
+    const sagas = {
+      ...localSagas,
+      loadUsers: wrapSagaWithPrefix(loadUsersWatcher, ACTION_PREFIX),
+      deleteUser: wrapSagaWithPrefix(deleteUserWatcher, ACTION_PREFIX),
+    };
     return (
       <div>
-        <Saga saga={makeLoadUsersWatcher(ACTION_PREFIX)} />
-        <h1>
-          <FormattedMessage {...messages.headerIndex} />
-        </h1>
+        <WatchSagas sagas={sagas} />
+        <Header />
+        <Input icon="search" onChange={this.handleSearchChange} />
         <Table celled>
           <Table.Header>
             <Table.Row>
@@ -58,16 +68,32 @@ class AllUsers extends React.Component {
                 <FormattedMessage {...messages.avatar} />
               </Table.HeaderCell>
               <Table.HeaderCell>
-                <FormattedMessage {...messages.name} />
+                <SortableHeader
+                  name="name"
+                  direction={sortAttribute === 'last_name' ? sortDirection : null}
+                  onToggle={() => this.handleSortClick('last_name')}
+                />
               </Table.HeaderCell>
               <Table.HeaderCell>
-                <FormattedMessage {...messages.email} />
+                <SortableHeader
+                  name="email"
+                  direction={sortAttribute === 'email' ? sortDirection : null}
+                  onToggle={() => this.handleSortClick('email')}
+                />
               </Table.HeaderCell>
               <Table.HeaderCell>
-                <FormattedMessage {...messages.member} />
+                <SortableHeader
+                  name="member"
+                  direction={sortAttribute === 'created_at' ? sortDirection : null}
+                  onToggle={() => this.handleSortClick('created_at')}
+                />
               </Table.HeaderCell>
               <Table.HeaderCell>
-                <FormattedMessage {...messages.admin} />
+                <SortableHeader
+                  name="admin"
+                  direction={sortAttribute === 'roles' ? sortDirection : null}
+                  onToggle={() => this.handleSortClick('role')}
+                />
               </Table.HeaderCell>
               <Table.HeaderCell>
                 <FormattedMessage {...messages.delete} />
@@ -96,23 +122,33 @@ class AllUsers extends React.Component {
 
 AllUsers.propTypes = {
   userIds: ImmutablePropTypes.list.isRequired,
-  load: PropTypes.func.isRequired,
-  pageCount: PropTypes.number.isRequired,
   currentPageNumber: PropTypes.number.isRequired,
   lastPageNumber: PropTypes.number.isRequired,
+  searchTermChanged: PropTypes.func.isRequired,
+  pageSelectionChanged: PropTypes.func.isRequired,
+  sortColumnChanged: PropTypes.func.isRequired,
+  initialLoad: PropTypes.func.isRequired,
+  sortDirection: PropTypes.string,
+  sortAttribute: PropTypes.string,
+  resetUsers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loaded: (state) => state.getIn(['adminUsersIndex', 'loaded']),
-  currentPageNumber: (state) => state.getIn(['adminUsersIndex', 'users', 'currentPageNumber']),
+  currentPageNumber: (state) => state.getIn(['adminUsersIndex', 'ui', 'selectedPage']),
+  sortDirection: (state) => state.getIn(['adminUsersIndex', 'ui', 'sortDirection']),
+  sortAttribute: (state) => state.getIn(['adminUsersIndex', 'ui', 'sortAttribute']),
+  searchTerm: (state) => state.getIn(['adminUsersIndex', 'ui', 'searchTerm']),
   lastPageNumber: (state) => state.getIn(['adminUsersIndex', 'users', 'lastPageNumber']),
-  pageCount: (state) => state.getIn(['adminUsersIndex', 'users', 'pageCount']),
   userIds: (state) => state.getIn(['adminUsersIndex', 'users', 'ids']),
 });
 
 const mapDispatchToProps = {
   goTo: push,
-  load: loadUsersRequest,
+  searchTermChanged,
+  pageSelectionChanged,
+  sortColumnChanged,
+  initialLoad,
+  resetUsers: wrapActionWithPrefix(resetUsers, ACTION_PREFIX),
 };
 
 export default preprocess(mapStateToProps, mapDispatchToProps)(AllUsers);

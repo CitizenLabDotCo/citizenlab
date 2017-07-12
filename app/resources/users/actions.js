@@ -7,27 +7,24 @@
 import {
   LOAD_USERS_ERROR, LOAD_USERS_REQUEST, LOAD_USERS_SUCCESS, RESET_USERS, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_ERROR, DELETE_USER_REQUEST, DELETE_USER_SUCCESS, DELETE_USER_ERROR, CREATE_USER_SUCCESS } from './constants';
 
-export function loadUsersRequest(queryParams, { actionPrefix = '' }) {
+export function loadUsersRequest(queryParams) {
   return {
-    type: actionPrefix + LOAD_USERS_REQUEST,
+    type: LOAD_USERS_REQUEST,
     queryParams,
-    actionPrefix,
   };
 }
 
-export function loadUsersSuccess(response, { actionPrefix = '' }) {
+export function loadUsersSuccess(response) {
   return {
-    type: actionPrefix + LOAD_USERS_SUCCESS,
+    type: LOAD_USERS_SUCCESS,
     payload: response,
-    actionPrefix,
   };
 }
 
-export function loadUsersError(error, { actionPrefix = '' }) {
+export function loadUsersError(error) {
   return {
-    type: actionPrefix + LOAD_USERS_ERROR,
+    type: LOAD_USERS_ERROR,
     error,
-    actionPrefix,
   };
 }
 

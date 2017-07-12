@@ -1,26 +1,47 @@
-import { ACTION_PREFIX } from './constants';
+import { ACTION_PREFIX, SEARCH_TERM_CHANGED, SORT_COLUMN_CHANGED, PAGE_SELECTION_CHANGED } from './constants';
 import { fromJS } from 'immutable';
-import { makePrefixedUsersReducer } from 'resources/users/reducer';
+import { combineReducers } from 'redux-immutable';
+import { makeReducerWithPrefix } from 'utils/resources/reducer';
+import usersReducer from 'resources/users/reducer';
 
 const initialState = fromJS({
-  someLocalState: 4,
+  searchTerm: '',
+  sortDirection: 'desc',
+  sortAttribute: 'created_at',
+  selectedPage: 1,
+  pageSize: 10,
 });
 
-const prefixedUsersReducer = makePrefixedUsersReducer(ACTION_PREFIX);
 
-function ideasIndexPageReducer(state = initialState, action) {
+function ideasIndexPageUIReducer(state = initialState, action) {
   switch (action.type) {
-    case 'somelocalaction': {
-      if (!state.getIn(['projects', 'loading'])) {
-        return state.set('someLocalState', action.newLocalState);
+    case SEARCH_TERM_CHANGED: {
+      return state
+        .set('searchTerm', action.payload)
+        .set('selectedPage', 1);
+    }
+    case SORT_COLUMN_CHANGED: {
+      if (action.payload === state.get('sortAttribute')) {
+        return state
+          .update('sortDirection', (d) => d === 'asc' ? 'desc' : 'asc');
       }
-      return state;
+      return state
+        .set('sortAttribute', action.payload)
+        .set('sortDirection', 'desc');
+    }
+    case PAGE_SELECTION_CHANGED: {
+      return state
+        .set('selectedPage', action.payload);
     }
     default: {
-      return state
-        .set('users', prefixedUsersReducer(state.get('users'), action));
+      return state;
     }
   }
 }
 
-export default ideasIndexPageReducer;
+const mountedReducers = combineReducers({
+  ui: ideasIndexPageUIReducer,
+  users: makeReducerWithPrefix(usersReducer, ACTION_PREFIX),
+});
+
+export default mountedReducers;
