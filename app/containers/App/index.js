@@ -103,7 +103,9 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
               withError={false}
             >
               <Authorize action={['routes', 'admin']} resource={location.pathname}>
-                {children}
+                <div style={{ paddingTop: '69px' }}>
+                  {children}
+                </div>
                 <Else>
                   <ForbiddenRoute />
                 </Else>
