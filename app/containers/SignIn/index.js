@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { injectIntl, intlShape } from 'react-intl';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { connect } from 'react-redux';
-import { signInUserRequest } from 'utils/auth/actions';
 import { injectTFunc } from 'utils/containers/t/utils';
 import styled from 'styled-components';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 import _ from 'lodash';
 import messages from './messages';
+import { signIn } from 'services/auth';
+import { isValidEmail } from 'utils/validate';
 
 const Container = styled.div`
   background: #f2f2f2;
@@ -46,117 +46,104 @@ const FormElement = styled.div`
   margin-bottom: 44px;
 `;
 
-export class SignIn extends React.Component {
+export class SignIn extends React.PureComponent {
   constructor() {
     super();
-
     this.state = {
-      firstName: null,
-      firstNameError: null,
-      lastName: null,
-      lastNameError: null,
       email: null,
-      emailError: null,
       password: null,
+      processing: false,
+      emailError: null,
       passwordError: null,
-      yearOfBirth: null,
-      gender: null,
-      area: null,
+      signInError: null,
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.success && nextProps.success) {
-      console.log(nextProps.user);
-    }
-  }
-
   handleEmailOnChange = (email) => {
-    this.setState({
-      email,
-      emailError: null,
-    });
+    this.setState({ email, emailError: null, signInError: null });
   }
 
   handlePasswordOnChange = (password) => {
-    this.setState({
-      password,
-      passwordError: null,
-    });
+    this.setState({ password, passwordError: null, signInError: null });
   }
 
-  handleOnSubmit = () => {
+  handleOnSubmit = async () => {
+    const { onSignedIn } = this.props;
     const { formatMessage } = this.props.intl;
     const { email, password } = this.state;
-    let hasError = false;
 
-    if (!email) {
-      hasError = true;
-      this.setState({ emailError: formatMessage(messages.emailEmptyError) });
-    }
+    if (!email || !isValidEmail(email) || !password) {
+      if (!email) {
+        this.setState({ emailError: formatMessage(messages.noEmailError) });
+      }
 
-    if (!password) {
-      hasError = true;
-      this.setState({ passwordError: formatMessage(messages.passwordEmptyError) });
-    }
+      if (!isValidEmail(email)) {
+        this.setState({ emailError: formatMessage(messages.noValidEmailError) });
+      }
 
-    if (!hasError) {
-      this.props.signInUserRequest(email, password);
+      if (!password) {
+        this.setState({ passwordError: formatMessage(messages.noPasswordError) });
+      }
+    } else {
+      try {
+        this.setState({ processing: true });
+        await signIn(email, password);
+        this.setState({ processing: false });
+        onSignedIn();
+      } catch (error) {
+        this.setState({ processing: false, signInError: formatMessage(messages.signInError) });
+      }
     }
   }
 
   render() {
-    const { processing } = this.props;
     const { formatMessage } = this.props.intl;
-    const { email, emailError, password, passwordError } = this.state;
-    const hasRequiredContent = [email, password].every((value) => _.isString(value) && !_.isEmpty(value));
-    const hasError = [emailError, passwordError].some((value) => _.isString(value));
+    const { email, password, processing, emailError, passwordError, signInError } = this.state;
+    const hasAllRequiredContent = [email, password].every((value) => _.isString(value) && !_.isEmpty(value));
 
     return (
-      <div>
-        <Container>
-          <FormContainerOuter>
-            <Title>{formatMessage(messages.signInTitle)}</Title>
+      <Container>
+        <FormContainerOuter>
+          <Title>{formatMessage(messages.signInTitle)}</Title>
 
-            <FormContainerInner>
-              <Label value={formatMessage(messages.emailLabel)} htmlFor="email" />
-              <FormElement>
-                <Input
-                  type="email"
-                  id="email"
-                  value={email}
-                  placeholder={formatMessage(messages.emailPlaceholder)}
-                  error={emailError}
-                  onChange={this.handleEmailOnChange}
-                />
-              </FormElement>
+          <FormContainerInner>
+            <Label value={formatMessage(messages.emailLabel)} htmlFor="email" />
+            <FormElement>
+              <Input
+                type="email"
+                id="email"
+                value={email}
+                placeholder={formatMessage(messages.emailPlaceholder)}
+                error={emailError}
+                onChange={this.handleEmailOnChange}
+              />
+            </FormElement>
 
-              <Label value={formatMessage(messages.passwordLabel)} htmlFor="password" />
-              <FormElement>
-                <Input
-                  type="password"
-                  id="password"
-                  value={password}
-                  placeholder={formatMessage(messages.passwordPlaceholder)}
-                  error={passwordError}
-                  onChange={this.handlePasswordOnChange}
-                />
-              </FormElement>
+            <Label value={formatMessage(messages.passwordLabel)} htmlFor="password" />
+            <FormElement>
+              <Input
+                type="password"
+                id="password"
+                value={password}
+                placeholder={formatMessage(messages.passwordPlaceholder)}
+                error={passwordError}
+                onChange={this.handlePasswordOnChange}
+              />
+            </FormElement>
 
-              <FormElement>
-                <Button
-                  size="2"
-                  loading={processing}
-                  text={formatMessage(messages.submit)}
-                  onClick={this.handleOnSubmit}
-                  disabled={!hasRequiredContent}
-                />
-                { hasError && <Error text={formatMessage(messages.formError)} marginTop="0px" showBackground={false} /> }
-              </FormElement>
-            </FormContainerInner>
-          </FormContainerOuter>
-        </Container>
-      </div>
+            <FormElement>
+              <Button
+                size="2"
+                loading={processing}
+                text={formatMessage(messages.submit)}
+                onClick={this.handleOnSubmit}
+                disabled={!hasAllRequiredContent}
+              />
+              <Error text={signInError} />
+            </FormElement>
+          </FormContainerInner>
+        </FormContainerOuter>
+      </Container>
     );
   }
 }
@@ -166,24 +153,11 @@ SignIn.propTypes = {
   onSignedIn: PropTypes.func.isRequired,
   intl: intlShape,
   tFunc: PropTypes.func.isRequired,
-  locale: PropTypes.string,
-  processing: PropTypes.bool,
-  success: PropTypes.bool,
-  error: PropTypes.bool,
-  user: ImmutablePropTypes.map,
-  signInUserRequest: PropTypes.func,
+  locale: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
-  processing: (state) => state.getIn(['signIn', 'processing']),
-  success: (state) => state.getIn(['signIn', 'success']),
-  error: (state) => state.getIn(['signIn', 'error']),
-  user: (state) => state.getIn(['signIn', 'user']),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  signInUserRequest,
-}, dispatch);
-
-export default injectTFunc(injectIntl(connect(mapStateToProps, mapDispatchToProps)(SignIn)));
+export default injectTFunc(injectIntl(connect(mapStateToProps, null)(SignIn)));

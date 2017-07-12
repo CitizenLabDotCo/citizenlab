@@ -26,9 +26,7 @@ export default function request(url, data, options, queryParameters) {
     defaultOptions.body = JSON.stringify(data);
   }
 
-  const urlWithParams = (queryParameters
-    ? withQuery(url, queryParameters)
-    : url);
+  const urlWithParams = (queryParameters ? withQuery(url, queryParameters) : url);
 
   return fetch(urlWithParams, Object.assign(defaultOptions, options))
     .then((response) => (

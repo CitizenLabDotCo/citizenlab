@@ -9,8 +9,6 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import usersEditPageReducer from 'containers/UsersEditPage/reducer';
 import ideasNewPageReducer from 'containers/IdeasNewPage/reducer';
-import signUpReducer from 'containers/SignUp/reducer';
-import signInReducer from 'containers/SignIn/reducer';
 import searchWidgetReducer from 'containers/SearchWidget/reducer';
 import ideasShowReducer from 'containers/IdeasShow/reducer';
 import ideasIndex from 'containers/IdeasIndexPage/reducer';
@@ -66,8 +64,6 @@ export default function createReducer(asyncReducers) {
     ideasIndex,
     profile: usersEditPageReducer,
     submitIdea: ideasNewPageReducer,
-    signUp: signUpReducer,
-    signIn: signInReducer,
     searchWidget: searchWidgetReducer,
     ...asyncReducers,
   });
