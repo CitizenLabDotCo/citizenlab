@@ -75,12 +75,12 @@ class FilterSelector extends React.Component {
 }
 
 FilterSelector.propTypes = {
-  title: PropTypes.string.required,
+  title: PropTypes.string.isRequired,
   values: PropTypes.arrayOf(
     PropTypes.shape({
       text: PropTypes.string,
       value: PropTypes.any,
-    }).required
+    })
   ),
   onChange: PropTypes.func,
   multiple: PropTypes.bool,
