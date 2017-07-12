@@ -19,6 +19,8 @@ class FilterSelector extends React.Component {
   constructor(props) {
     super();
 
+    this.baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
+
     this.state = {
       deployed: false,
       selected: [],
@@ -66,9 +68,9 @@ class FilterSelector extends React.Component {
     const { values, multiple } = this.props;
 
     return (
-      <Container tabIndex="0" role="listbox" aria-multiselectable={multiple} aria-expanded={deployed}>
-        <Title title={currentTitle} deployed={deployed} onClick={this.toggleExpanded} />
-        {deployed && <ValuesList values={values} selected={selected} onChange={this.selectionChange} multiple={multiple} />}
+      <Container tabIndex="0">
+        <Title title={currentTitle} deployed={deployed} onClick={this.toggleExpanded} baseID={this.baseID} />
+        <ValuesList deployed={deployed} values={values} selected={selected} onChange={this.selectionChange} multiple={multiple} baseID={this.baseID} />
       </Container>
     );
   }
@@ -85,6 +87,5 @@ FilterSelector.propTypes = {
   onChange: PropTypes.func,
   multiple: PropTypes.bool,
 };
-
 
 export default FilterSelector;

@@ -13,6 +13,7 @@ const Overlay = styled.div`
   background-color: #ffffff;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
   border: solid 1px #eaeaea;
+  display: ${(props) => props.deployed ? 'block' : 'none'};
   padding: 10px;
   position: absolute;
   top: 2rem;
@@ -82,17 +83,17 @@ class ValuesList extends React.Component {
   }
 
   render() {
-    const { values, multiple } = this.props;
+    const { values, multiple, deployed, baseID } = this.props;
 
     return (
-      <Overlay>
-        <ListWrapper>
-          {values && values.map((entry) => {
+      <Overlay deployed={deployed}>
+        <ListWrapper role="listbox" tabIndex="0" aria-labelledby={`${baseID}-label`} aria-multiselectable={multiple}>
+          {values && values.map((entry, index) => {
             const isSelected = this.isSelected(entry.value);
             const clickHandler = () => { this.props.onChange(entry.value); };
 
             return (
-              <StyledOption role="option" aria-selected={isSelected} key={entry.value} onClick={clickHandler}>
+              <StyledOption id={`${baseID}-${index}`} role="option" aria-selected={isSelected} key={entry.value} onClick={clickHandler}>
                 <OptionText>{entry.text}</OptionText>
                 {multiple && <Checkmark selected={isSelected}>
                   <Icon name="checkmark" />
@@ -117,6 +118,8 @@ ValuesList.propTypes = {
   onChange: PropTypes.func,
   selected: PropTypes.array,
   multiple: PropTypes.bool,
+  deployed: PropTypes.bool,
+  baseID: PropTypes.string,
 };
 
 export default ValuesList;

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import Icon from 'components/Icon';
 
 // Style
-const StyledTitle = styled.div`
+const StyledTitle = styled.button`
   color: #6b6b6b;
   cursor: pointer;
   font-size: 1.25rem;
@@ -23,10 +23,10 @@ const StyledTitle = styled.div`
 
 class Title extends React.Component {
   render() {
-    const { title, onClick, deployed } = this.props;
+    const { title, onClick, deployed, baseID } = this.props;
 
     return (
-      <StyledTitle onClick={onClick} deployed={deployed}>
+      <StyledTitle onClick={onClick} deployed={deployed} aria-expanded={deployed} id={`${baseID}-label`}>
         {title}
 
         <Icon name="dropdown" />
@@ -39,6 +39,7 @@ Title.propTypes = {
   title: PropTypes.string,
   deployed: PropTypes.bool,
   onClick: PropTypes.func,
+  baseID: PropTypes.string,
 };
 
 export default Title;
