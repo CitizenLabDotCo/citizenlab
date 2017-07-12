@@ -13,8 +13,8 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage2.firstNamePlaceholder',
     defaultMessage: 'Enter your first name',
   },
-  firstNameEmptyError: {
-    id: 'app.containers.IdeasNewPage2.firstNameEmptyError',
+  noFirstNameError: {
+    id: 'app.containers.IdeasNewPage2.noFirstNameError',
     defaultMessage: 'Please enter your first name',
   },
   lastNameLabel: {
@@ -25,8 +25,8 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage2.lastNamePlaceholder',
     defaultMessage: 'Enter your last name',
   },
-  lastNameEmptyError: {
-    id: 'app.containers.IdeasNewPage2.lastNameEmptyError',
+  noLastNameError: {
+    id: 'app.containers.IdeasNewPage2.noLastNameError',
     defaultMessage: 'Please enter your last name',
   },
   emailLabel: {
@@ -37,9 +37,13 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage2.emailPlaceholder',
     defaultMessage: 'Enter your email address',
   },
-  emailEmptyError: {
-    id: 'app.containers.IdeasNewPage2.emailEmptyError',
+  noEmailError: {
+    id: 'app.containers.IdeasNewPage2.noEmailError',
     defaultMessage: 'Please enter your email address',
+  },
+  noValidEmailError: {
+    id: 'app.containers.IdeasNewPage2.noValidEmailError',
+    defaultMessage: 'Please enter a valid email address',
   },
   passwordLabel: {
     id: 'app.containers.IdeasNewPage2.passwordLabel',
@@ -49,8 +53,8 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage2.passwordPlaceholder',
     defaultMessage: 'Enter a password',
   },
-  passwordEmptyError: {
-    id: 'app.containers.IdeasNewPage2.emailEmptyError',
+  noPasswordError: {
+    id: 'app.containers.IdeasNewPage2.noPasswordError',
     defaultMessage: 'Please enter a password',
   },
   yearOfBirthLabel: {
@@ -93,8 +97,8 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage2.submit',
     defaultMessage: 'Sign up',
   },
-  formError: {
-    id: 'app.containers.IdeasNewPage2.formError',
-    defaultMessage: 'Something went wrong',
+  signUpError: {
+    id: 'app.containers.IdeasNewPage2.signUpError',
+    defaultMessage: 'Something went wrong. Please try again.',
   },
 });

@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
-import { preprocess } from 'utils';
-import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { injectIntl, intlShape } from 'react-intl';
-import { browserHistory } from 'react-router';
+// import { browserHistory } from 'react-router';
 import { injectTFunc } from 'utils/containers/t/utils';
-import WatchSagas from 'containers/WatchSagas';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import Select from 'components/UI/Select';
 import MultipleSelect from 'components/UI/MultipleSelect';
@@ -20,15 +17,16 @@ import Editor from 'components/UI/Editor';
 import Button from 'components/UI/Button';
 import Upload from 'components/UI/Upload';
 import Error from 'components/UI/Error';
+import SignIn from 'containers/SignIn';
 import SignUp from 'containers/SignUp';
 import { convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import _ from 'lodash';
-import sagas from './sagas';
-import { loadTopics, loadProjects, submitIdea } from './actions';
-import { makeSelectTopics, makeSelectProjects, makeSelectIdeaId } from './selectors';
+import Rx from 'rxjs/Rx';
+import { observeTopics } from 'services/topics';
+import { observeProjects } from 'services/projects';
+import { observeSignedInUser } from 'services/auth';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
-import { makeSelectCurrentUser } from '../../utils/auth/selectors';
 import messages from './messages';
 
 const Container = styled.div`
@@ -119,29 +117,48 @@ const ButtonBarInner = styled.div`
   }
 `;
 
-class IdeasNewPage2 extends React.Component {
+class IdeasNewPage2 extends React.PureComponent {
   constructor() {
     super();
 
     this.state = {
-      title: null,
-      titleError: null,
-      description: null,
-      descriptionError: null,
+      user: null,
       topics: null,
-      project: null,
+      projects: null,
+      title: null,
+      description: null,
+      selectedTopics: null,
+      selectedProject: null,
       location: null,
       images: null,
+      processing: false,
+      titleError: null,
+      descriptionError: null,
+      submitError: null,
     };
+
+    this.subscriptions = [];
   }
 
   componentDidMount() {
-    // get form data
-    this.props.loadTopics();
-    this.props.loadProjects();
-
-    // generate ideaId
-    // this.props.submitIdea(null, null, null, null, null, null, 'draft');
+    this.subscriptions = [
+      Rx.Observable.combineLatest(
+        observeTopics().observable,
+        observeProjects().observable,
+        observeSignedInUser().observable,
+        (s1, s2, s3) => ({
+          topics: s1,
+          projects: s2,
+          user: s3,
+        }),
+      ).subscribe(({ topics, projects, user }) => {
+        this.setState({
+          user: !_.isError(user) ? user.data : null,
+          topics: this.getOptions(topics.data),
+          projects: this.getOptions(projects.data),
+        });
+      }),
+    ];
 
     // autofocus the title input field on initial render;
     if (this.titleInput) {
@@ -149,14 +166,18 @@ class IdeasNewPage2 extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
   getOptions(list) {
     const options = [];
 
-    if (list && list.size && list.size > 0) {
+    if (_.isArray(list)) {
       list.forEach((item) => {
         options.push({
-          value: item.get('id'),
-          label: this.props.tFunc(item.getIn(['attributes', 'title_multiloc']).toJS()),
+          value: item.id,
+          label: this.props.tFunc(item.attributes.title_multiloc),
         });
       });
     }
@@ -191,12 +212,12 @@ class IdeasNewPage2 extends React.Component {
     }));
   }
 
-  handleTopicsOnChange = (topics) => {
-    this.setState({ topics });
+  handleTopicsOnChange = (selectedTopics) => {
+    this.setState({ selectedTopics });
   }
 
-  handleProjectOnChange = (project) => {
-    this.setState({ project });
+  handleProjectOnChange = (selectedProject) => {
+    this.setState({ selectedProject });
   }
 
   handleLocationOnChange = (location) => {
@@ -214,79 +235,72 @@ class IdeasNewPage2 extends React.Component {
   };
 
   handleUploadOnRemove = (removedImage) => {
-    this.setState((state) => {
-      const images = state.images.filter((image) => image.preview !== removedImage.preview);
-      return { images };
-    });
+    this.setState((state) => ({ images: state.images.filter((image) => image.preview !== removedImage.preview) }));
   };
 
   handleSetRef = (element) => {
     this.titleInput = element;
   }
 
-  removeImage = (removedImage) => (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.setState((state) => {
-      const images = state.images.filter((image) => image.preview !== removedImage.preview);
-      return { images };
-    });
-  }
-
   handleOnSubmit = async () => {
-    let hasError = false;
-    let latLng = null;
-    const { user, locale } = this.props;
+    const { locale } = this.props;
     const { formatMessage } = this.props.intl;
-    const { title, description, topics, project, location, images } = this.state;
+    const { user, title, description, selectedTopics, selectedProject, location, images } = this.state;
 
-    if (!title) {
-      hasError = true;
-      this.setState({ titleError: formatMessage(messages.titleEmptyError) });
-    }
+    if (!title || !description || !description.getCurrentContent().hasText()) {
+      if (!title) {
+        this.setState({ titleError: formatMessage(messages.titleEmptyError) });
+      }
 
-    if (!description || !description.getCurrentContent().hasText()) {
-      hasError = true;
-      this.setState({ descriptionError: formatMessage(messages.descriptionEmptyError) });
-    }
-
-    if (!hasError) {
+      if (!description || !description.getCurrentContent().hasText()) {
+        this.setState({ descriptionError: formatMessage(messages.descriptionEmptyError) });
+      }
+    } else {
       const localTitle = { [locale]: title };
       const localDescription = { [locale]: draftToHtml(convertToRaw(description.getCurrentContent())) };
-
-      if (location) {
-        latLng = await this.convertToLatLng(location);
-      }
+      const latLng = (location ? await this.convertToLatLng(location) : null);
 
       console.log(user);
       console.log(localTitle);
       console.log(localDescription);
-      console.log(topics);
+      console.log(selectedTopics);
       console.log(latLng);
-      console.log(project);
+      console.log(selectedProject);
       console.log(images);
 
       // this.props.submitIdea(user.id, localTitle, localDescription, topics, location, project, 'published');
     }
   }
 
+  handleOnSignedIn = () => {
+    console.log('signed in');
+    // browserHistory.push('/ideas');
+  }
+
   handleOnSignedUp = () => {
-    browserHistory.push('/ideas');
+    console.log('signed up');
+    // browserHistory.push('/ideas');
   }
 
   render() {
-    const { topics, projects, intl } = this.props;
-    const { formatMessage } = intl;
-    const { title, titleError, description, descriptionError, topics: selectedTopics, project, location, images } = this.state;
+    const { topics, projects } = this.state;
+    const { formatMessage } = this.props.intl;
+    const {
+      title,
+      titleError,
+      description,
+      descriptionError,
+      submitError,
+      selectedTopics,
+      selectedProject,
+      location,
+      images,
+    } = this.state;
     const uploadedImages = _(images).map((image) => _.omit(image, 'base64')).value();
-    const hasRequiredContent = _.isString(title) && !_.isEmpty(title) && description && description.getCurrentContent().hasText();
-    const hasError = _.isString(titleError) || _.isString(descriptionError);
+    const hasAllRequiredContent = _.isString(title) && !_.isEmpty(title) && description && description.getCurrentContent().hasText();
 
     return (
       <div>
-        <WatchSagas sagas={sagas} />
-
         <Container>
           <FormContainerOuter>
             <Title>{formatMessage(messages.formTitle)}</Title>
@@ -319,7 +333,7 @@ class IdeasNewPage2 extends React.Component {
                 <MultipleSelect
                   value={selectedTopics}
                   placeholder={formatMessage(messages.topicsPlaceholder)}
-                  options={this.getOptions(topics)}
+                  options={topics}
                   onChange={this.handleTopicsOnChange}
                   max={2}
                 />
@@ -329,9 +343,9 @@ class IdeasNewPage2 extends React.Component {
               <FormElement>
                 <Select
                   clearable
-                  value={project}
+                  value={selectedProject}
                   placeholder={formatMessage(messages.projectsPlaceholder)}
-                  options={this.getOptions(projects)}
+                  options={projects}
                   onChange={this.handleProjectOnChange}
                 />
               </FormElement>
@@ -348,11 +362,10 @@ class IdeasNewPage2 extends React.Component {
               <FormElement>
                 <Label value={formatMessage(messages.imageUploadLabel)} />
                 <Upload
-                  multiple
                   items={uploadedImages}
                   accept="image/jpg, image/jpeg, image/png, image/gif"
                   maxSize={5000000}
-                  maxItems={5}
+                  maxItems={1}
                   placeholder={formatMessage(messages.imageUploadPlaceholder)}
                   onAdd={this.handleUploadOnAdd}
                   onRemove={this.handleUploadOnRemove}
@@ -364,9 +377,9 @@ class IdeasNewPage2 extends React.Component {
                   loading={false}
                   text={formatMessage(messages.submit)}
                   onClick={this.handleOnSubmit}
-                  disabled={!hasRequiredContent}
+                  disabled={!hasAllRequiredContent}
                 />
-                { hasError && <Error text={formatMessage(messages.formError)} marginTop="0px" showBackground={false} /> }
+                <Error text={submitError} marginTop="0px" showBackground={false} />
               </MobileButton>
             </FormContainerInner>
           </FormContainerOuter>
@@ -377,12 +390,14 @@ class IdeasNewPage2 extends React.Component {
                 loading={false}
                 text={formatMessage(messages.submit)}
                 onClick={this.handleOnSubmit}
-                disabled={!hasRequiredContent}
+                disabled={!hasAllRequiredContent}
               />
-              { hasError && <Error text={formatMessage(messages.formError)} marginTop="0px" showBackground={false} /> }
+              <Error text={submitError} marginTop="0px" showBackground={false} />
             </ButtonBarInner>
           </ButtonBar>
         </Container>
+
+        <SignIn opened={true} onSignedIn={this.handleOnSignedIn} />
 
         <SignUp opened={true} onSignedUp={this.handleOnSignedUp} />
       </div>
@@ -394,40 +409,10 @@ IdeasNewPage2.propTypes = {
   intl: intlShape.isRequired,
   tFunc: PropTypes.func.isRequired,
   locale: PropTypes.string.isRequired,
-  user: PropTypes.object,
-  topics: ImmutablePropTypes.list.isRequired,
-  projects: ImmutablePropTypes.list.isRequired,
-  ideaId: PropTypes.string,
-  loadTopics: PropTypes.func.isRequired,
-  loadProjects: PropTypes.func.isRequired,
-  submitIdea: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
-  user: makeSelectCurrentUser(),
-  topics: makeSelectTopics(),
-  projects: makeSelectProjects(),
-  ideaId: makeSelectIdeaId(),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  loadTopics,
-  loadProjects,
-  submitIdea,
-}, dispatch);
-
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { locale, user, topics, projects, ideaId } = stateProps;
-  return {
-    locale,
-    user,
-    topics,
-    projects,
-    ideaId,
-    ...dispatchProps,
-    ...ownProps,
-  };
-};
-
-export default injectTFunc(injectIntl(preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(IdeasNewPage2)));
+export default injectTFunc(injectIntl(connect(mapStateToProps, null)(IdeasNewPage2)));

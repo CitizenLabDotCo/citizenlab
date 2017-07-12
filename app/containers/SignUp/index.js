@@ -1,23 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { injectIntl, intlShape } from 'react-intl';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-import { makeSelectAreas } from 'utils/areas/selectors';
 import { connect } from 'react-redux';
-import { loadAreas } from 'utils/areas/actions';
-import { createUserRequest } from 'utils/auth/actions';
 import { injectTFunc } from 'utils/containers/t/utils';
 import styled from 'styled-components';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 import Select from 'components/UI/Select';
 import _ from 'lodash';
+import { observeAreas } from 'services/areas';
+import { isValidEmail } from 'utils/validate';
+import { signUp, signIn } from 'services/auth';
 import messages from './messages';
-import { fromJS } from 'immutable';
 
 const Container = styled.div`
   background: #f2f2f2;
@@ -50,89 +48,61 @@ const FormElement = styled.div`
   margin-bottom: 44px;
 `;
 
-export class SignUp extends React.Component {
+export class SignUp extends React.PureComponent {
   constructor() {
     super();
 
     this.state = {
+      areas: null,
+      years: [...Array(118).keys()].map((i) => ({ value: i + 1900, label: `${i + 1900}` })),
       firstName: null,
-      firstNameError: null,
       lastName: null,
-      lastNameError: null,
       email: null,
-      emailError: null,
       password: null,
-      passwordError: null,
       yearOfBirth: null,
       gender: null,
       area: null,
+      processing: null,
+      firstNameError: null,
+      lastNameError: null,
+      emailError: null,
+      passwordError: null,
+      signUpError: null,
     };
+    this.subscriptions = [];
   }
 
   componentDidMount() {
-    this.props.loadAreas();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.success && nextProps.success) {
-      console.log(nextProps.user);
-    }
-  }
-
-  getOptions(list) {
-    const options = [];
-
-    if (list && list.size && list.size > 0) {
-      list.forEach((item) => {
-        options.push({
-          value: item.get('id'),
-          label: this.props.tFunc(item.getIn(['attributes', 'title_multiloc']).toJS()),
+    this.subscriptions = [
+      observeAreas().observable.subscribe(({ data }) => {
+        this.setState({
+          areas: data.map((area) => ({
+            value: area.id,
+            label: this.props.tFunc(area.attributes.title_multiloc),
+          })),
         });
-      });
-    }
-
-    return options;
+      }),
+    ];
   }
 
-  getYears() {
-    const years = [];
-
-    for (let year = 1900; year <= 2017; year++) { // eslint-disable-line
-      years.push({
-        value: year,
-        label: `${year}`,
-      });
-    }
-
-    return years;
+  componentWillUnmount() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   handleFirstNameOnChange = (firstName) => {
-    this.setState({
-      firstName,
-      firstNameError: null,
-    });
+    this.setState({ firstName, firstNameError: null, signUpError: null });
   }
 
   handleLastNameOnChange = (lastName) => {
-    this.setState({
-      lastName,
-      lastNameError: null,
-    });
+    this.setState({ lastName, lastNameError: null, signUpError: null });
   }
 
   handleEmailOnChange = (email) => {
-    this.setState({
-      email,
-      emailError: null,
-    });
+    this.setState({ email, emailError: null, signUpError: null });
   }
 
   handlePasswordOnChange = (password) => {
-    this.setState({
-      password,
-      passwordError: null,
-    });
+    this.setState({ password, passwordError: null, signUpError: null });
   }
 
   handleYearOfBirthOnChange = (yearOfBirth) => {
@@ -147,59 +117,68 @@ export class SignUp extends React.Component {
     this.setState({ area });
   }
 
-  handleOnSubmit = () => {
-    let hasError = false;
+  handleOnSubmit = async () => {
+    const { onSignedUp } = this.props;
     const { formatMessage } = this.props.intl;
     const { firstName, lastName, email, password, yearOfBirth, gender, area } = this.state;
 
-    if (!firstName) {
-      hasError = true;
-      this.setState({ firstNameError: formatMessage(messages.firstNameEmptyError) });
-    }
+    if (!firstName || !lastName || !email || !isValidEmail(email) || !password) {
+      if (!firstName) {
+        this.setState({ firstNameError: formatMessage(messages.noFirstNameError) });
+      }
 
-    if (!lastName) {
-      hasError = true;
-      this.setState({ lastNameError: formatMessage(messages.lastNameEmptyError) });
-    }
+      if (!lastName) {
+        this.setState({ lastNameError: formatMessage(messages.noLastNameError) });
+      }
 
-    if (!email) {
-      hasError = true;
-      this.setState({ emailError: formatMessage(messages.emailEmptyError) });
-    }
+      if (!email) {
+        this.setState({ emailError: formatMessage(messages.noEmailError) });
+      }
 
-    if (!password) {
-      hasError = true;
-      this.setState({ passwordError: formatMessage(messages.passwordEmptyError) });
-    }
+      if (!isValidEmail(email)) {
+        this.setState({ emailError: formatMessage(messages.noValidEmailError) });
+      }
 
-    if (!hasError) {
+      if (!password) {
+        this.setState({ passwordError: formatMessage(messages.noPasswordError) });
+      }
+    } else {
       const selectedYearOfBirth = (yearOfBirth ? yearOfBirth.value : null);
       const selectedGender = (gender ? gender.value : null);
       const selectedAreaId = (area ? area.value : null);
-      this.props.createUserRequest(firstName, lastName, email, password, selectedGender, selectedYearOfBirth, selectedAreaId);
+
+      try {
+        this.setState({ processing: true });
+        await signUp(firstName, lastName, email, password, selectedGender, selectedYearOfBirth, selectedAreaId);
+        await signIn(email, password);
+        this.setState({ processing: false });
+        onSignedUp();
+      } catch (error) {
+        this.setState({ processing: false, signUpError: formatMessage(messages.signUpError) });
+      }
     }
   }
 
   render() {
-    const { processing, areas } = this.props;
     const { formatMessage } = this.props.intl;
     const {
+      areas,
+      years,
       firstName,
-      firstNameError,
       lastName,
-      lastNameError,
       email,
-      emailError,
       password,
-      passwordError,
       yearOfBirth,
       gender,
       area,
+      processing,
+      firstNameError,
+      lastNameError,
+      emailError,
+      passwordError,
+      signUpError,
     } = this.state;
     const hasRequiredContent = [firstName, lastName, email, password].every((value) => _.isString(value) && !_.isEmpty(value));
-    const hasError = [firstNameError, lastNameError, emailError, passwordError].some((value) => _.isString(value));
-
-    console.log(fromJS([]));
 
     return (
       <div>
@@ -261,7 +240,7 @@ export class SignUp extends React.Component {
                   searchable
                   value={yearOfBirth}
                   placeholder={formatMessage(messages.yearOfBirthPlaceholder)}
-                  options={this.getYears()}
+                  options={years}
                   onChange={this.handleYearOfBirthOnChange}
                 />
               </FormElement>
@@ -294,7 +273,7 @@ export class SignUp extends React.Component {
                   id="area"
                   value={area}
                   placeholder={formatMessage(messages.areaPlaceholder)}
-                  options={this.getOptions(areas)}
+                  options={areas}
                   onChange={this.handleAreaOnChange}
                 />
               </FormElement>
@@ -307,7 +286,7 @@ export class SignUp extends React.Component {
                   onClick={this.handleOnSubmit}
                   disabled={!hasRequiredContent}
                 />
-                { hasError && <Error text={formatMessage(messages.formError)} marginTop="0px" showBackground={false} /> }
+                <Error text={signUpError} />
               </FormElement>
             </FormContainerInner>
           </FormContainerOuter>
@@ -323,27 +302,10 @@ SignUp.propTypes = {
   intl: intlShape,
   tFunc: PropTypes.func.isRequired,
   locale: PropTypes.string,
-  processing: PropTypes.bool,
-  success: PropTypes.bool,
-  error: PropTypes.bool,
-  user: ImmutablePropTypes.map,
-  areas: ImmutablePropTypes.list,
-  loadAreas: PropTypes.func,
-  createUserRequest: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
-  processing: (state) => state.getIn(['signUp', 'processing']),
-  success: (state) => state.getIn(['signUp', 'success']),
-  error: (state) => state.getIn(['signUp', 'error']),
-  user: (state) => state.getIn(['signUp', 'user']),
-  areas: makeSelectAreas(),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  loadAreas,
-  createUserRequest,
-}, dispatch);
-
-export default injectTFunc(injectIntl(connect(mapStateToProps, mapDispatchToProps)(SignUp)));
+export default injectTFunc(injectIntl(connect(mapStateToProps, null)(SignUp)));

@@ -107,10 +107,7 @@
         "error",
         "always"
       ],
-      "arrow-body-style": [
-        "error", 
-        "always"
-      ],
+      "arrow-body-style": "off",
       "comma-dangle": [
         2,
         "always-multiline"
@@ -268,6 +265,7 @@
     "redux-saga-testing": "^1.0.5",
     "redux-thunk": "^2.2.0",
     "reselect": "2.5.4",
+    "rxjs": "^5.4.2",
     "sanitize.css": "4.1.0",
     "semantic-ui-css": "^2.2.10",
     "semantic-ui-react": "^0.67.2",

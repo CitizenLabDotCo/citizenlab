@@ -145,14 +145,12 @@ export default function createRoutes(store) {
       name: 'IdeasNewPage2',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/IdeasNewPage2/reducer'),
           import('containers/IdeasNewPage2'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, component]) => {
-          injectReducer('ideasNewPage2', reducer.default);
+        importModules.then(([component]) => {
           renderRoute(component);
         });
 
