@@ -34,4 +34,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.newPage',
     defaultMessage: 'Create page',
   },
+  needHelp: {
+    id: 'app.containers.AdminPage.SideBar.needHelp',
+    defaultMessage: 'Need help?',
+  },
+  readGuide: {
+    id: 'app.containers.AdminPage.SideBar.readGuide',
+    defaultMessage: 'Read our guide',
+  },
 });

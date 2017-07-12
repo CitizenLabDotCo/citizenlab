@@ -8,19 +8,28 @@ const AdminContainerStyled = styled(Grid.Column)`
   padding: 45px 51px 0 51px !important;
 `;
 
+const LeftColumn = styled.div`
+  width: 260px;
+`;
+
+const RightColumn = styled.div`
+  width: calc(100% - 210px);
+  margin-left: 210px;
+  display: inline-block;
+  background-color: #f2f2f2;
+`;
+
 function AdminPage(props) { // eslint-disable-line react/prefer-stateless-function
   return (
     <div className={props.className}>
-      <Grid stackable>
-        <Grid.Row>
-          <Grid.Column width={4}>
-            {<Sidebar {...props} />}
-          </Grid.Column>
-          <AdminContainerStyled width={12}>
-            {props.children}
-          </AdminContainerStyled>
-        </Grid.Row>
-      </Grid>
+      <LeftColumn>
+        {<Sidebar {...props} />}
+      </LeftColumn>
+      <RightColumn>
+        <AdminContainerStyled width={12}>
+          {props.children}
+        </AdminContainerStyled>
+      </RightColumn>
     </div>
   );
 }
