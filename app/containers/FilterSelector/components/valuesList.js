@@ -48,7 +48,7 @@ const StyledOption = styled.li`
   color: #888;
   display: flex;
 
-  :hover, :focus {
+  :hover, &.focused {
     background-color: #f9f9f9;
     color: #222;
   }
@@ -78,22 +78,96 @@ const Checkmark = styled.span`
 `;
 
 class ValuesList extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      currentFocus: 0,
+    };
+  }
+
   isSelected(value) {
     return _.includes(this.props.selected, value);
   }
 
+  updateFocus = (newIndex) => {
+    this.setState({ currentFocus: newIndex });
+    document.getElementById(`${this.props.baseID}-${newIndex}`).scrollIntoView();
+  }
+
+  keypressHandler = (event) => {
+    const keyCodes = {
+      BACKSPACE: 8,
+      TAB: 9,
+      RETURN: 13,
+      ESC: 27,
+      SPACE: 32,
+      PAGE_UP: 33,
+      PAGE_DOWN: 34,
+      END: 35,
+      HOME: 36,
+      LEFT: 37,
+      UP: 38,
+      RIGHT: 39,
+      DOWN: 40,
+      DELETE: 46,
+    };
+    const maxIndex = this.props.values.length - 1;
+
+    switch (event.keyCode) {
+      case keyCodes.UP:
+        event.preventDefault();
+        this.updateFocus(Math.max(0, this.state.currentFocus - 1));
+        break;
+      case keyCodes.DOWN:
+        event.preventDefault();
+        this.updateFocus(Math.min(maxIndex, this.state.currentFocus + 1));
+        break;
+      case keyCodes.HOME:
+        event.preventDefault();
+        this.updateFocus(0);
+        break;
+      case keyCodes.END:
+        event.preventDefault();
+        this.updateFocus(maxIndex);
+        break;
+      case keyCodes.SPACE:
+        event.preventDefault();
+        this.props.onChange(this.props.values[this.state.currentFocus].value);
+        break;
+
+      default:
+        break;
+    }
+  }
+
   render() {
     const { values, multiple, deployed, baseID } = this.props;
+    const { currentFocus } = this.state;
 
     return (
       <Overlay deployed={deployed}>
-        <ListWrapper role="listbox" tabIndex="0" aria-labelledby={`${baseID}-label`} aria-multiselectable={multiple}>
+        <ListWrapper
+          onKeyDown={this.keypressHandler}
+          role="listbox"
+          tabIndex="0"
+          aria-labelledby={`${baseID}-label`}
+          aria-multiselectable={multiple}
+          aria-activedescendant={`${baseID}-${currentFocus}`}
+        >
           {values && values.map((entry, index) => {
             const isSelected = this.isSelected(entry.value);
             const clickHandler = () => { this.props.onChange(entry.value); };
 
             return (
-              <StyledOption id={`${baseID}-${index}`} role="option" aria-selected={isSelected} key={entry.value} onClick={clickHandler}>
+              <StyledOption
+                id={`${baseID}-${index}`}
+                role="option"
+                aria-selected={isSelected}
+                key={entry.value}
+                onClick={clickHandler}
+                className={currentFocus === index ? 'focused' : ''}
+              >
                 <OptionText>{entry.text}</OptionText>
                 {multiple && <Checkmark selected={isSelected}>
                   <Icon name="checkmark" />

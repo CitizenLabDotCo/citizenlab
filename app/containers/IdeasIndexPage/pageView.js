@@ -22,8 +22,11 @@ import { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest, res
 import sagasWatchers from './sagas';
 
 const FiltersArea = styled.div`
+  align-items: center;
   display: flex;
+  height: 3.5rem;
   justify-content: flex-end;
+  margin-bottom: 4.5rem;
   width: 100%;
 `;
 

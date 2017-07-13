@@ -13,6 +13,10 @@ const Container = styled.div`
   display: inline-block;
   position: relative;
   outline: none;
+
+  & + & {
+    margin-left: 2rem;
+  }
 `;
 
 class FilterSelector extends React.Component {
