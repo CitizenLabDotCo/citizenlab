@@ -15,6 +15,7 @@ import IdeaCards from './components/ideaCards';
 
 import SelectTopics from './components/selectTopics';
 import SelectAreas from './components/selectAreas';
+import SelectSort from './components/selectSort';
 
 // store
 import { preprocess } from 'utils';
@@ -52,10 +53,11 @@ class View extends React.Component {
       <div>
         <WatchSagas sagas={sagasWatchers} />
         <Segment style={{ width: 1000, marginLeft: 'auto', marginRight: 'auto' }} basic>
-          <FiltersArea>
-            {withFilters && <SelectTopics />}
-            {withFilters && <SelectAreas />}
-          </FiltersArea>
+          {withFilters && <FiltersArea>
+            <SelectSort />
+            <SelectTopics />
+            <SelectAreas />
+          </FiltersArea>}
           <IdeaCards filter={filter} />
         </Segment>
       </div>
