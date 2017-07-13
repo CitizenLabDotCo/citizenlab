@@ -153,9 +153,9 @@ class IdeasNewPage2 extends React.PureComponent {
         }),
       ).subscribe(({ topics, projects, user }) => {
         this.setState({
-          user: !_.isError(user) ? user.data : null,
-          topics: this.getOptions(topics.data),
-          projects: this.getOptions(projects.data),
+          user: (!_.isError(user) ? user.data : null),
+          topics: (topics ? this.getOptions(topics.data) : null),
+          projects: (projects ? this.getOptions(projects.data) : null),
         });
       }),
     ];
@@ -171,18 +171,12 @@ class IdeasNewPage2 extends React.PureComponent {
   }
 
   getOptions(list) {
-    const options = [];
+    const { tFunc } = this.props;
 
-    if (_.isArray(list)) {
-      list.forEach((item) => {
-        options.push({
-          value: item.id,
-          label: this.props.tFunc(item.attributes.title_multiloc),
-        });
-      });
-    }
-
-    return options;
+    return list.map((item) => ({
+      value: item.id,
+      label: tFunc(item.attributes.title_multiloc),
+    }));
   }
 
   async getBase64(image) {

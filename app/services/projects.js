@@ -5,7 +5,13 @@ function getEndpoint() {
   return `${API_PATH}/projects`;
 }
 
-export function observeProjects() {
+export function observeProjects(
+  headerData = null,
+  httpMethod = null,
+  queryParameters = null,
+  localProperties = false,
+  onEachEmit = null,
+) {
   const apiEndpoint = getEndpoint();
-  return Streams.create(apiEndpoint);
+  return Streams.create(apiEndpoint, headerData, httpMethod, queryParameters, localProperties, onEachEmit);
 }
