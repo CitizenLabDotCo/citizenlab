@@ -21,6 +21,23 @@ export default function createRoutes(store) {
 
   return [
     {
+      path: '/poc',
+      name: 'poc',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/PoC/containers/ideaList'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
       path: '/',
       name: 'home',
       getComponent(nextState, cb) {
