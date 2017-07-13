@@ -79,7 +79,6 @@ export class UsersShowPage extends React.PureComponent { // eslint-disable-line 
     const { loadingUser, loadUserError, users, params, className, locale } = this.props;
 
     const user = users && users.get(params.slug);
-    console.log(users, params.slug, user);
 
     const attributes = user && user.get('attributes');
     const lastName = user && attributes.get('last_name');
