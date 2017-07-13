@@ -3,6 +3,9 @@ import {
   LOAD_CURRENT_USER_REQUEST,
   LOAD_CURRENT_USER_SUCCESS,
   LOAD_CURRENT_USER_ERROR,
+  CREATE_USER_REQUEST,
+  CREATE_USER_SUCCESS,
+  CREATE_USER_ERROR,
   SIGNIN_USER_REQUEST,
   SIGNIN_USER_ERROR,
   SIGNOUT_CURRENT_USER,
@@ -36,6 +39,34 @@ export function loadCurrentUserSuccess(response) {
 export function loadCurrentUserError(error) {
   return {
     type: LOAD_CURRENT_USER_ERROR,
+    payload: error,
+  };
+}
+
+export function createUserRequest(firstName, lastName, email, password, locale, gender, birthday, domicile) {
+  return {
+    type: CREATE_USER_REQUEST,
+    firstName,
+    lastName,
+    email,
+    password,
+    locale,
+    gender,
+    birthday,
+    domicile,
+  };
+}
+
+export function createUserSuccess(user) {
+  return {
+    type: CREATE_USER_SUCCESS,
+    payload: user,
+  };
+}
+
+export function createUserError(error) {
+  return {
+    type: CREATE_USER_ERROR,
     payload: error,
   };
 }
@@ -89,4 +120,3 @@ export function createSocialUserError(network, error) {
     payload: { network, error },
   };
 }
-

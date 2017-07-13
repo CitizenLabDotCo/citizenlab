@@ -1,17 +1,21 @@
 import { fromJS } from 'immutable';
-import { STORE_JWT, LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from './constants';
+import {
+  LOAD_AREAS_REQUEST,
+  LOAD_AREAS_SUCCESS,
+  LOAD_AREAS_ERROR,
+} from './constants';
 
 const initialState = fromJS({});
 
 function authReducer(state = initialState, action) {
   switch (action.type) {
-    case STORE_JWT: {
+    case LOAD_AREAS_REQUEST: {
       return state.set('jwt', action.payload);
     }
-    case LOAD_CURRENT_USER_SUCCESS: {
+    case LOAD_AREAS_SUCCESS: {
       return state.set('id', action.payload.data.id);
     }
-    case DELETE_CURRENT_USER_LOCAL: {
+    case LOAD_AREAS_ERROR: {
       return state.delete('id');
     }
     default:

@@ -12,6 +12,10 @@ import { preprocess } from 'utils/reactRedux';
 import { bindActionCreators } from 'redux';
 import WatchSagas from 'containers/WatchSagas';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import Dropzone from 'react-dropzone';
+import { EditorState, convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import {
   setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
@@ -34,6 +38,11 @@ import { loadTopicsRequest } from 'resources/topics/actions';
 import { loadAreasRequest } from 'resources/areas/actions';
 import { loadProjectsRequest } from 'resources/projects/actions';
 import sagas from './sagas';
+
+import FormComponent from 'components/forms/formComponent';
+import { Form } from 'semantic-ui-react';
+import RtfEditor from 'components/forms/inputs/rtfEditor';
+import Button from 'components/buttons/loader';
 
 const PageContainer = styled.div`
   background: '#eeeeee';
@@ -61,9 +70,23 @@ const PageTitle = styled.div`
   margin-bottom: 50px;
 `;
 
+const StyledDropzone = styled(Dropzone)`
+  background: red;
+  cursor: pointer;
+
+  &:hover {
+    background: green;
+  }
+`;
+
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
+
+    this.state = {
+      editorState: EditorState.createEmpty(),
+      initialStateSet: false,
+    };
 
     // provide 'this' context to callbacks
     this.saveDraft = this.saveDraft.bind(this);
@@ -110,7 +133,38 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
     this.props.storeSelectedProject(project);
   }
 
+  onDrop = (files) => {
+    let formData = null;
+
+    formData = new FormData();
+
+    files.forEach((file, index) => {
+      formData.append(`file${index}`, file);
+    });
+
+    fetch('http://server.com/api/upload', {
+      method: 'POST',
+      body: formData,
+    }).then((res) => {
+      console.log('Status', res);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+  onEditorStateChange = (editorState) => {
+    this.setState({
+      editorState,
+    });
+
+    // store temp draft
+    const rawContent = convertToRaw(editorState.getCurrentContent());
+    console.log(rawContent);
+  };
+
   render() {
+    const { editorState } = this.state;
     const { /* className, storeAttachment: storeAtt, */ storeImage: storeImg, setTitle: setT } = this.props;
 
     return (
@@ -132,6 +186,22 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
 
             {/* <Breadcrumbs /> */}
 
+            <StyledDropzone accept="image/*" onDrop={this.onDrop}>
+              <p>Try dropping some files here, or click to select files to upload.</p>
+            </StyledDropzone>
+
+            {/*
+            <Editor
+              wrapperClassName="wrapper-class"
+              editorClassName="editor-class"
+              toolbarClassName="toolbar-class"
+              wrapperStyle={{ background: 'green' }}
+              editorState={editorState}
+              onEditorStateChange={this.onEditorStateChange}
+            />
+            */}
+
+            {/*
             <IdeaEditorWrapper
               saveDraft={this.saveDraft}
               storeIdea={this.storeIdea}
@@ -141,6 +211,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
               setTitle={setT}
               storeImage={storeImg}
             />
+            */}
 
             {/*
             <FormLabel>
