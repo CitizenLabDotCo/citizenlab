@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as ReactSelect from 'react-select';
 import styled from 'styled-components';
+import Error from 'components/UI/Error';
 
 const StyledSelect = styled(ReactSelect)`
   &.Select--single {
@@ -173,12 +174,12 @@ const StyledSelect = styled(ReactSelect)`
 
 const emptyArray = [];
 
-const Select = ({ value, placeholder, options, autoBlur, clearable, searchable, onChange }) => {
+const Select = ({ value, placeholder, options, autoBlur, clearable, searchable, onChange, error, name }) => {
   const handleOnChange = (newValue) => {
-    onChange(newValue);
+    onChange(newValue, name);
   };
 
-  return (
+  return (<div>
     <StyledSelect
       openOnFocus
       clearable={clearable}
@@ -190,10 +191,12 @@ const Select = ({ value, placeholder, options, autoBlur, clearable, searchable, 
       options={options || emptyArray}
       onChange={handleOnChange}
     />
-  );
+    <Error text={error} />
+  </div>);
 };
 
 Select.propTypes = {
+  name: PropTypes.string,
   value: PropTypes.object,
   placeholder: PropTypes.string,
   options: PropTypes.array,
@@ -201,6 +204,7 @@ Select.propTypes = {
   clearable: PropTypes.bool,
   searchable: PropTypes.bool,
   onChange: PropTypes.func,
+  error: PropTypes.string,
 };
 
 Select.defaultProps = {

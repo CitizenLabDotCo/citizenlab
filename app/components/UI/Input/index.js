@@ -42,11 +42,11 @@ const InputWrapper = styled.div`
 
 const emptyString = '';
 
-const Input = ({ type, value, placeholder, error, onChange, setRef }) => {
+const Input = ({ type, value, placeholder, error, onChange, setRef, name }) => {
   const hasError = (_.isString(error) && !_.isEmpty(error));
 
   const handleOnChange = (event) => {
-    onChange(event.target.value);
+    onChange(event.target.value, name);
   };
 
   const handleRef = (element) => {
@@ -70,6 +70,7 @@ const Input = ({ type, value, placeholder, error, onChange, setRef }) => {
 };
 
 Input.propTypes = {
+  name: PropTypes.string,
   type: PropTypes.string,
   value: PropTypes.string,
   placeholder: PropTypes.string,

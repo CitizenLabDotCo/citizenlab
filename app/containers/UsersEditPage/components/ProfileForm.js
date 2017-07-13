@@ -12,10 +12,14 @@ import { connect } from 'react-redux';
 import { makeSelectSetting } from 'utils/tenant/selectors';
 import { createStructuredSelector } from 'reselect';
 import Input from 'components/UI/Input';
+import Select from 'components/UI/Select';
 import styled from 'styled-components';
 import scrollToComponent from 'react-scroll-to-component';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import LabelWithTooltip from './LabelWithTooltip';
+import TextArea from 'components/UI/TextArea';
+import { injectTFunc } from 'containers/T/utils';
+import moment from 'moment';
 
 const NavItemStyled = styled.button`
   display: block;
@@ -82,6 +86,12 @@ class ProfileForm extends React.PureComponent {
   };
 
   handleChange = (name, value) => {
+    // TODO: split into multiple handlers to handle multiloc attributes and events coming from different inputs
+    // + take value via "name" attribute returned as 2nd arg of callback
+    // + !
+    // for gender empty = 'unspecified'
+    // for education: parse from intl to 0-8
+
     const { user } = this.state;
     user[name] = value;
     this.setState({
@@ -103,7 +113,7 @@ class ProfileForm extends React.PureComponent {
   render() {
     const {
       avatarUploadError, userData: user, onLocaleChangeClick, className,
-      processing, storeErrors, locales,
+      processing, storeErrors, locales, intl, tFunc,
     } = this.props;
     const userLocale = (user
       ? user.locale
@@ -140,6 +150,21 @@ class ProfileForm extends React.PureComponent {
       background-color: #eaeaea; /* Modern Browsers */
     `;
 
+    const genderOptions = [
+      intl.formatMessage(messages.male),
+      intl.formatMessage(messages.female),
+    ];
+
+    const birthYearOptions = [];
+    for (let i = parseInt(moment().format('YYYY'), 10); i >= 1900; i -= 1) {
+      birthYearOptions.push(i);
+    }
+
+    const educationOptions = [];
+    for (let i = 0; i <= 8; i += 1) {
+      educationOptions.push(intl.formatMessage(messages[`ISCED11_${i}`]));
+    }
+
     return (
       <Form onSubmit={this.handleSubmit} className={className}>
         <Grid>
@@ -165,32 +190,48 @@ class ProfileForm extends React.PureComponent {
                 <InputGroupStyled>
                   <LabelInputPairStyled>
                     <LabelWithTooltip id="firstName" hasTooltip />
-                    <Input onChange={this.handleChange} initialValue={user && user.first_name} error={userErrors && userErrors.first_name} />
+                    <Input
+                      name="firstName"
+                      onChange={this.handleChange}
+                      value={user && user.first_name}
+                      error={userErrors && userErrors.first_name && userErrors.first_name[0]}
+                    />
                   </LabelInputPairStyled>
                   <LabelInputPairStyled>
                     <LabelWithTooltip id="lastName" hasTooltip />
-                    <Input onChange={this.handleChange} initialValue={user && user.last_name} error={userErrors && userErrors.last_name_name} />
+                    <Input
+                      name="lastName"
+                      onChange={this.handleChange}
+                      value={user && user.last_name}
+                      error={userErrors && userErrors.last_name && userErrors.last_name[0]}
+                    />
                   </LabelInputPairStyled>
                   <LabelInputPairStyled>
                     <LabelWithTooltip id="email" hasTooltip />
-                    <Input onChange={this.handleChange} initialValue={user && user.email} error={userErrors && userErrors.email} />
+                    <Input
+                      name="email"
+                      onChange={this.handleChange}
+                      value={user && user.email}
+                      error={userErrors && userErrors.email && userErrors.email[0]}
+                    />
                   </LabelInputPairStyled>
                   <LabelInputPairStyled>
-                    <LabelWithTooltip id="oldPassword" hasTooltip />
-                    <Input onChange={this.handleChange} initialValue={user && user.old_password} error={userErrors && userErrors.old_password} />
+                    <LabelWithTooltip id="password" hasTooltip />
+                    <Input
+                      name="password"
+                      onChange={this.handleChange}
+                      value={user && user.password}
+                      error={userErrors && userErrors.password && userErrors.password[0]}
+                    />
                   </LabelInputPairStyled>
-                  <LabelInputPairStyled>
-                    <LabelWithTooltip id="newPassword" hasTooltip />
-                    <Input onChange={this.handleChange} initialValue={user && user.new_password} error={userErrors && userErrors.new_password} />
-                  </LabelInputPairStyled>
-                </InputGroupStyled>
 
-                {/* TODO: use component in components/../UI instead */}
-                {locales && <LocaleChanger
-                  onLocaleChangeClick={onLocaleChangeClick}
-                  userLocale={userLocale}
-                  locales={locales.toJS()}
-                />}
+                  {/* TODO: use component in components/../UI instead */}
+                  {locales && <LocaleChanger
+                    onLocaleChangeClick={onLocaleChangeClick}
+                    userLocale={userLocale}
+                    locales={locales.toJS()}
+                  />}
+                </InputGroupStyled>
               </div>
 
               <SectionSeparatorStyled
@@ -205,7 +246,56 @@ class ProfileForm extends React.PureComponent {
                 <SectionHeaderStyled {...messages.h2sub} />
 
                 <InputGroupStyled>
-                  TODO
+                  <LabelWithTooltip id="gender" hasTooltip />
+                  <Select
+                    name="gender"
+                    placeholder={intl.formatMessage(messages.male)}
+                    options={genderOptions}
+                    onChange={this.handleChange}
+                    value={user.gender}
+                    error={userErrors && userErrors.gender[0]}
+                  />
+
+                  <LabelWithTooltip id="bio" hasTooltip />
+                  <TextArea
+                    name="bio_multiloc"
+                    onInput={this.handleChange}
+                    rows={6}
+                    placeholder={intl.formatMessage(messages.bio_placeholder)}
+                    value={user.bio_multiloc && tFunc(user.bio_multiloc)}
+                    error={userErrors && userErrors.bio_multiloc && userErrors.bio_multiloc[0]}
+                  />
+
+                  <LabelWithTooltip id="area" />
+                  <Select
+                    name="area_multiloc"
+                    placeholder={intl.formatMessage(messages.area_placeholder)}
+                    options={genderOptions}
+                    onChange={this.handleChange}
+                    value={user.gender}
+                    error={userErrors && userErrors.domicilie && userErrors.domicilie[0]}
+                  />
+
+                  <LabelWithTooltip id="birthdate" />
+                  <Select
+                    name="birthdate"
+                    placeholder={intl.formatMessage(messages.area_placeholder)}
+                    options={birthYearOptions}
+                    onChange={this.handleChange}
+                    value={user.birthyear}
+                    error={userErrors && userErrors.birthyear && userErrors.birthyear[0]}
+                  />
+
+                  <LabelWithTooltip id="education" />
+                  <Select
+                    name="education"
+                    placeholder={intl.formatMessage(messages.area_placeholder)}
+                    options={educationOptions}
+                    onChange={this.handleChange}
+                    value={user.education}
+                    error={userErrors && userErrors.education && userErrors.education[0]}
+                  />
+
                 </InputGroupStyled>
               </div>
 
@@ -221,7 +311,7 @@ class ProfileForm extends React.PureComponent {
                 <SectionHeaderStyled {...messages.h3sub} />
 
                 <InputGroupStyled>
-                  TODO
+                  {/* TODO (here labels + switchs from semantic-ui https://react.semantic-ui.com/addons/radio -> with 'toogle' attribute) */}
                 </InputGroupStyled>
               </div>
             </RightColumnStyled>
@@ -243,10 +333,12 @@ ProfileForm.propTypes = {
   processing: PropTypes.bool,
   storeErrors: PropTypes.object,
   locales: ImmutablePropTypes.list,
+  intl: intlShape.isRequired,
+  tFunc: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   locales: makeSelectSetting(['core', 'locales']),
 });
 
-export default connect(mapStateToProps)(ProfileForm);
+export default injectTFunc(injectIntl(connect(mapStateToProps)(ProfileForm)));

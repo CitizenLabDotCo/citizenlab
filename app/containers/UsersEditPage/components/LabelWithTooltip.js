@@ -16,7 +16,10 @@ const TooltipStyled = styled(Image)`
 
 // eslint-disable-next-line no-unused-vars
 const LabelWithTooltip = ({ className, id, hasTooltip, intl, isBold }) => (<div className={className}>
-  <LabelStyled {...messages[id]} isBold />
+  <LabelStyled
+    {...messages[id]}
+    isBold
+  />
   {hasTooltip && <TooltipStyled
     src={tooltipIcon}
     alt={intl.formatMessage(`${id}_tooltip`)}

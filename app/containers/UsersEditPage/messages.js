@@ -69,21 +69,13 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.email_tooltip',
     defaultMessage: 'Your e-mail address to receive notifications',
   },
-  oldPassword: {
-    id: 'app.containers.UsersEditPage.oldPassword',
-    defaultMessage: 'Old Password',
+  password: {
+    id: 'app.containers.UsersEditPage.password',
+    defaultMessage: 'Password',
   },
-  oldPassword_tooltip: {
-    id: 'app.containers.UsersEditPage.oldPassword_tooltip',
-    defaultMessage: 'Your current password',
-  },
-  newPassword: {
-    id: 'app.containers.UsersEditPage.newPassword',
-    defaultMessage: 'New Password',
-  },
-  newPassword_tooltip: {
-    id: 'app.containers.UsersEditPage.newPassword_tooltip',
-    defaultMessage: 'Your new password',
+  password_tooltip: {
+    id: 'app.containers.UsersEditPage.password_tooltip',
+    defaultMessage: 'Your password to log in',
   },
   /*
    * Details
@@ -104,6 +96,14 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.gender_tooltip',
     defaultMessage: 'Your gender',
   },
+  male: {
+    id: 'app.containers.UsersEditPage.male',
+    defaultMessage: 'Male',
+  },
+  female: {
+    id: 'app.containers.UsersEditPage.female',
+    defaultMessage: 'Female',
+  },
   bio: {
     id: 'app.containers.UsersEditPage.bio',
     defaultMessage: 'Bio',
@@ -122,15 +122,51 @@ export default defineMessages({
   },
   area_placeholder: {
     id: 'app.containers.UsersEditPage.area_placeholder',
-    defaultMessage: 'Neibourhood',
+    defaultMessage: 'Neighbourhood',
   },
   birthdate: {
     id: 'app.containers.UsersEditPage.birthdate',
     defaultMessage: 'Date of Birth',
   },
-  diploma: {
-    id: 'app.containers.UsersEditPage.diploma',
+  education: {
+    id: 'app.containers.UsersEditPage.education',
     defaultMessage: 'Highest diploma',
+  },
+  ISCED11_0: {
+    id: 'app.containers.UsersEditPage.ISCED11_0',
+    defaultMessage: 'E1',
+  },
+  ISCED11_1: {
+    id: 'app.containers.UsersEditPage.ISCED11_1',
+    defaultMessage: 'E2',
+  },
+  ISCED11_2: {
+    id: 'app.containers.UsersEditPage.ISCED11_2',
+    defaultMessage: 'E3',
+  },
+  ISCED11_3: {
+    id: 'app.containers.UsersEditPage.ISCED11_3',
+    defaultMessage: 'E4',
+  },
+  ISCED11_4: {
+    id: 'app.containers.UsersEditPage.ISCED11_4',
+    defaultMessage: 'E5',
+  },
+  ISCED11_5: {
+    id: 'app.containers.UsersEditPage.ISCED11_5',
+    defaultMessage: 'E6',
+  },
+  ISCED11_6: {
+    id: 'app.containers.UsersEditPage.ISCED11_6',
+    defaultMessage: 'E7',
+  },
+  ISCED11_7: {
+    id: 'app.containers.UsersEditPage.ISCED11_7',
+    defaultMessage: 'E8',
+  },
+  ISCED11_8: {
+    id: 'app.containers.UsersEditPage.ISCED11_8',
+    defaultMessage: 'E9',
   },
   /*
    * Notifications
