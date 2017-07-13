@@ -47,12 +47,12 @@ class XlsxService
             @@multiloc_service.t(idea.title_multiloc),
             convert_to_text(@@multiloc_service.t(idea.body_multiloc)),
             idea.author_name,
-            idea.author.email,
+            idea.author&.email,
             idea.publication_status,
             idea.published_at,
             idea.upvotes_count,
             idea.downvotes_count,
-            @@multiloc_service.t(idea.project.title_multiloc),
+            @@multiloc_service.t(idea&.project&.title_multiloc),
             idea.topics.map{|t| @@multiloc_service.t(t.title_multiloc)}.join(','),
             idea.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(',')
           ]
@@ -82,12 +82,12 @@ class XlsxService
           sheet.add_row [
             comment.id,
             convert_to_text(@@multiloc_service.t(comment.body_multiloc)),
-            @@multiloc_service.t(comment.idea.title_multiloc),
+            @@multiloc_service.t(comment&.idea.title_multiloc),
             comment.author_name,
-            comment.author.email,
+            comment.author&.email,
             comment.created_at,
             comment.parent_id,
-            @@multiloc_service.t(comment.idea.project&.title_multiloc)
+            @@multiloc_service.t(comment&.idea&.project&.title_multiloc)
           ]
         end
         sheet.column_info[1].width = 65
