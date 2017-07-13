@@ -7,34 +7,43 @@
 import { fromJS } from 'immutable';
 import { getPageItemCountFromUrl, getPageNumberFromUrl } from 'utils/paginationUtils';
 
-import { LOAD_USERS_SUCCESS, RESET_USERS, DELETE_USER_SUCCESS, CREATE_USER_SUCCESS } from './constants';
+import { LOAD_USERS_REQUEST, LOAD_USERS_SUCCESS, RESET_USERS, DELETE_USER_SUCCESS, CREATE_USER_SUCCESS } from './constants';
 
 export const initialState = fromJS({
-  nextPageNumber: 1,
-  nextPageItemCount: 3,
-  loaded: [],
+  currentPageNumber: 1,
+  lastPageNumber: 1,
+  pageCount: 5,
+  loading: false,
+  ids: [],
 });
 
-function usersReducer(state = initialState, action) {
+function usersReducer(state = initialState, action, actionPrefix = '') {
   switch (action.type) {
-    case LOAD_USERS_SUCCESS: {
+    case actionPrefix + LOAD_USERS_REQUEST: {
+      return state.set('loading', true);
+    }
+    case actionPrefix + LOAD_USERS_SUCCESS: {
       const ids = action.payload.data.map((idea) => idea.id);
-      const nextPageNumber = getPageNumberFromUrl(action.payload.links.next);
-      const nextPageItemCount = getPageItemCountFromUrl(action.payload.links.next);
+      const currentPageNumber = getPageNumberFromUrl(action.payload.links.self) || 1;
+      const lastPageNumber = getPageNumberFromUrl(action.payload.links.last) || currentPageNumber;
+      const pageCount = getPageItemCountFromUrl(action.payload.links.self) || state.get('pageCount');
+
       return state
-        .update('loaded', (users) => users.concat(ids))
-        .set('nextPageNumber', nextPageNumber)
-        .set('nextPageItemCount', nextPageItemCount);
+        .set('ids', fromJS(ids))
+        .set('loading', false)
+        .set('currentPageNumber', currentPageNumber)
+        .set('lastPageNumber', lastPageNumber)
+        .set('pageCount', pageCount);
     }
-    case RESET_USERS:
+    case actionPrefix + RESET_USERS:
       return initialState;
-    case DELETE_USER_SUCCESS: {
-      const userIndex = state.get('loaded').findIndex((id) => action.id === id);
-      return state.deleteIn(['loaded', userIndex]);
+    case actionPrefix + DELETE_USER_SUCCESS: {
+      const userIndex = state.get('ids').findIndex((id) => action.id === id);
+      return state.deleteIn(['ids', userIndex]);
     }
-    case CREATE_USER_SUCCESS: {
+    case actionPrefix + CREATE_USER_SUCCESS: {
       const { id } = action.payload.data;
-      return state.update('loaded', (users) => users.concat(id));
+      return state.update('ids', (users) => users.concat(id));
     }
     default:
       return state;

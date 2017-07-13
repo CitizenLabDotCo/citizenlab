@@ -15,7 +15,7 @@ import messages from './messages';
 import { loadCommentsXlsxRequest, loadIdeasXlsxRequest } from '../actions';
 import { createStructuredSelector } from 'reselect';
 import { LOAD_COMMENTS_XLSX_REQUEST, LOAD_IDEAS_XLSX_REQUEST } from '../constants';
-import ExportLabel from '../components/ExportLabel';
+import ExportLabel from 'components/admin/ExportLabel';
 import sagas from '../sagas';
 import WatchSagas from 'containers/WatchSagas';
 
@@ -31,16 +31,18 @@ const AllIdeas = ({ exportIdeas, exportComments, exportingIdeas, exportingCommen
       <Grid.Column width={6}>
         <ExportLabel
           action={exportIdeas}
-          labelId="exportIdeas"
           loading={exportingIdeas}
           error={ideasExportError}
-        />
+        >
+          <FormattedMessage {...messages.exportIdeas} />
+        </ExportLabel>
         <ExportLabel
           action={exportComments}
-          labelId="exportComments"
           loading={exportingComments}
           error={commentsExportError}
-        />
+        >
+          <FormattedMessage {...messages.exportComments} />
+        </ExportLabel>
       </Grid.Column>
     </Grid.Row>
   </Grid>
