@@ -9,8 +9,8 @@ import Row from './Row';
 import { Table, Input } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import Pagination from './Pagination';
-import Header from './Header';
 import SortableHeader from './SortableHeader';
+import ExportLabel from 'components/admin/ExportLabel';
 
 // store
 import { preprocess } from 'utils';
@@ -25,7 +25,7 @@ import WatchSagas from 'utils/containers/watchSagas';
 // messages
 import messages from './messages';
 import { ACTION_PREFIX } from './constants';
-import { searchTermChanged, pageSelectionChanged, sortColumnChanged, initialLoad } from './actions';
+import { searchTermChanged, pageSelectionChanged, sortColumnChanged, initialLoad, loadUsersXlsxRequest } from './actions';
 import localSagas from './sagas';
 
 const TableContainer = styled.div`
@@ -34,6 +34,22 @@ const TableContainer = styled.div`
   padding: 30px;
   bottom: 0px;
 `;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 0px;
+`;
+
+const HeaderTitle = styled.h1`
+  font-family: CircularStd;
+  font-size: 35px;
+  font-weight: bold;
+  margin: 0;
+  color: #101010;
+`;
+
 
 class AllUsers extends React.Component {
 
@@ -67,7 +83,18 @@ class AllUsers extends React.Component {
     return (
       <div>
         <WatchSagas sagas={sagas} />
-        <Header />
+        <HeaderContainer>
+          <HeaderTitle>
+            <FormattedMessage {...messages.headerIndex} />
+          </HeaderTitle>
+          <ExportLabel
+            action={this.props.loadUsersXlsxRequest}
+            loading={this.props.exportLoading}
+            error={this.props.exportError}
+          >
+            <FormattedMessage {...messages.exportUsers} />
+          </ExportLabel>
+        </HeaderContainer>
         <TableContainer>
           <Input icon="search" onChange={this.handleSearchChange} />
           <Table>
@@ -140,6 +167,9 @@ AllUsers.propTypes = {
   sortDirection: PropTypes.string,
   sortAttribute: PropTypes.string,
   resetUsers: PropTypes.func.isRequired,
+  loadUsersXlsxRequest: PropTypes.func.isRequired,
+  exportLoading: PropTypes.bool.isRequired,
+  exportError: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -149,6 +179,8 @@ const mapStateToProps = createStructuredSelector({
   searchTerm: (state) => state.getIn(['adminUsersIndex', 'ui', 'searchTerm']),
   lastPageNumber: (state) => state.getIn(['adminUsersIndex', 'users', 'lastPageNumber']),
   userIds: (state) => state.getIn(['adminUsersIndex', 'users', 'ids']),
+  exportLoading: (state) => state.getIn(['adminUsersIndex', 'ui', 'exportLoading']),
+  exportError: (state) => state.getIn(['adminUsersIndex', 'ui', 'exportError']),
 });
 
 const mapDispatchToProps = {
@@ -158,6 +190,7 @@ const mapDispatchToProps = {
   sortColumnChanged,
   initialLoad,
   resetUsers: wrapActionWithPrefix(resetUsers, ACTION_PREFIX),
+  loadUsersXlsxRequest,
 };
 
 export default preprocess(mapStateToProps, mapDispatchToProps)(AllUsers);

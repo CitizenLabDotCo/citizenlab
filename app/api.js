@@ -327,3 +327,10 @@ export function fetchCommentsXlsx(project) {
     { project }
   );
 }
+
+export function fetchUsersXlsx() {
+  return requestBlob(
+    `${API_PATH}/users/as_xlsx`,
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  );
+}
