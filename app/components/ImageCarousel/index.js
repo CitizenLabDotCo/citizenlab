@@ -11,7 +11,7 @@ import styles from 'react-responsive-carousel/lib/styles/carousel.css';
 
 function ImageCarousel(props) {
   const { ideaImages } = props;
-console.log(ideaImages);
+
   return (
     <div>
       <Carousel axis="horizontal" showThumbs showArrows dynamicHeight autoPlay>

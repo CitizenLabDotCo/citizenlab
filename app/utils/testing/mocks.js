@@ -83,15 +83,13 @@ export const generateResourcesPhaseValue = (id, which) => {
   };
 };
 
-export const generateResourcesNotificationValue = (id, attributes) => {
-  return {
-    data: {
-      id,
-      attributes,
-      relationships: {},
-    },
-  };
-};
+export const generateResourcesNotificationValue = (id, attributes) => ({
+  data: {
+    id,
+    attributes,
+    relationships: {},
+  },
+});
 
 export const generateResourcesEventValue = (id, which) => {
   let startAt;
