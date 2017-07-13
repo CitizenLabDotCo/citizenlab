@@ -4,6 +4,10 @@ import _ from 'lodash';
 import request from 'utils/request';
 import Streams from 'utils/streams';
 
+export function observeSignedInUser() {
+  return Streams.create(`${API_PATH}/users/me`);
+}
+
 export function signIn(email, password) {
   const apiEndpoint = `${API_PATH}/user_token`;
 
@@ -57,8 +61,4 @@ export function signUp(firstName, lastName, email, password, selectedGender = nu
   .catch((error) => {
     throw error;
   });
-}
-
-export function observeSignedInUser() {
-  return Streams.create(`${API_PATH}/users/me`);
 }

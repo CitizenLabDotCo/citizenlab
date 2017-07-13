@@ -2,10 +2,10 @@ import { API_PATH } from 'containers/App/constants';
 import Streams from 'utils/streams';
 
 function getEndpoint() {
-  return `${API_PATH}/users`;
+  return `${API_PATH}/ideas`;
 }
 
-export function observeUsers(
+export function observeIdeas(
   headerData = null,
   httpMethod = null,
   queryParameters = null,
