@@ -13,6 +13,8 @@ import { makeSelectCurrentUserImmutable } from 'utils/auth/selectors';
 import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
 import ClickOutside from 'utils/containers/clickOutside';
 import messages from './messages';
+import NotificationMenu from 'containers/NotificationMenu';
+import NotificationCount from 'containers/NotificationMenu/components/NotificationCount';
 
 const Container = styled.div`
   width: 100%;
@@ -36,6 +38,10 @@ const Left = styled.div`
   }
 `;
 
+const MenuItemWrapper = styled.div`
+  opacity: ${(props) => props.active ? '1' : '0.65'};
+`;
+
 const MenuItem = styled(Link)`
   height: 100%;
   font-size: 18px;
@@ -47,6 +53,7 @@ const MenuItem = styled(Link)`
   padding-left: 16px;
   padding-right: 16px;
   cursor: pointer;
+  color: #ffffff !important;
   transition: all 150ms ease;
 `;
 
@@ -58,7 +65,10 @@ const MenuItems = styled.div`
   ${MenuItem} {
     color: ${(props) => !props.secondary ? '#666' : 'rgba(255, 255, 255, 0.5)'};
 
-    &:hover, 
+    &:hover {
+      color: ${(props) => !props.secondary ? props.theme.color.main : '#fff'};
+    }
+
     &.active {
       color: ${(props) => !props.secondary ? props.theme.color.main : '#fff'};
     }
@@ -163,34 +173,50 @@ const DropdownItem = styled.div`
   }
 `;
 
+const NotificationMenuContainer = styled.div`
+  right: 20px;
+  top: 10px;
+  position: relative;
+`;
+
 class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
 
     this.state = {
       dropdownOpened: false,
+      notificationPanelOpened: false,
     };
   }
 
   toggleDropdown = () => {
     this.setState((state) => ({ dropdownOpened: !state.dropdownOpened }));
-  }
+  };
 
   closeDropdown = () => {
     this.setState({ dropdownOpened: false });
-  }
+  };
 
   goTo = (path) => () => {
     this.props.goTo(path);
-  }
+  };
+
+  toggleNotificationPanel = () => {
+    this.setState({
+      notificationPanelOpened: !this.state.notificationPanelOpened,
+    });
+  };
+
+  closeNotificationPanel = () => {
+    this.setState({ notificationPanelOpened: false });
+  };
 
   render() {
-    const { tenantLogo, currentUser, location } = this.props;
+    const { tenantLogo, currentUser, location, className } = this.props;
     const avatar = (currentUser ? currentUser.getIn(['attributes', 'avatar', 'large']) : null);
-    // const { logo } = currentTenant.getIn('attributes', 'logo', 'small');
-    // #023F88
+
     return (
-      <Container>
+      <Container className={className}>
         <Left>
           <Link to="/">
             <Logo height="100%" viewBox="0 0 443.04 205.82" secondary={(location === '/')}>
@@ -198,21 +224,33 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
             </Logo>
           </Link>
 
-          <MenuItems secondary={(this.props.location === '/')}>
-            <MenuItem to="/" activeClassName="active">
-              <FormattedMessage {...messages.pageOverview} />
-            </MenuItem>
-            <MenuItem to="/ideas" activeClassName="active">
-              <FormattedMessage {...messages.pageIdeas} />
-            </MenuItem>
-            <MenuItem to="/projects" activeClassName="active">
-              <FormattedMessage {...messages.pageProjects} />
-            </MenuItem>
+          <MenuItems>
+            <MenuItemWrapper active={this.props.location === '/'}>
+              <MenuItem to="/">
+                <FormattedMessage {...messages.pageOverview} />
+              </MenuItem>
+            </MenuItemWrapper>
+            <MenuItemWrapper active={this.props.location.indexOf('ideas') !== -1}>
+              <MenuItem to="/ideas">
+                <FormattedMessage {...messages.pageIdeas} />
+              </MenuItem>
+            </MenuItemWrapper>
+            <MenuItemWrapper active={this.props.location.indexOf('projects') !== -1}>
+              <MenuItem to="/projects">
+                <FormattedMessage {...messages.pageProjects} />
+              </MenuItem>
+            </MenuItemWrapper>
           </MenuItems>
         </Left>
         <Right>
           {currentUser ?
-            <div>
+            <ClickOutside onClickOutside={this.closeNotificationPanel}>
+              <NotificationMenuContainer onClick={this.toggleNotificationPanel}>
+                <NotificationCount
+                  count={currentUser.getIn(['attributes', 'unread_notifications'])}
+                />
+                <NotificationMenu show={this.state.notificationPanelOpened} />
+              </NotificationMenuContainer>
               <Button onClick={this.goTo('/ideas/new')}>
                 <ButtonIcon height="100%" viewBox="0 0 24 24">
                   <path fill="none" d="M0 0h24v24H0V0z" /><path d="M6.57 21.64c0 .394.32.716.716.716h2.867c.394 0 .717-.322.717-.717v-.718h-4.3v.717zM8.72 8.02C5.95 8.02 3.7 10.273 3.7 13.04c0 1.704.853 3.202 2.15 4.112v1.62c0 .394.322.716.717.716h4.3c.393 0 .716-.322.716-.717v-1.618c1.298-.91 2.15-2.408 2.15-4.113 0-2.768-2.25-5.02-5.017-5.02zm2.04 7.957l-.608.43v1.648H7.286v-1.648l-.61-.43c-.967-.674-1.54-1.77-1.54-2.938 0-1.98 1.605-3.585 3.583-3.585s3.583 1.605 3.583 3.584c0 1.167-.574 2.263-1.542 2.937zM20.3 7.245h-3.61v3.61h-1.202v-3.61h-3.61V6.042h3.61v-3.61h1.202v3.61h3.61v1.203z" />
@@ -241,7 +279,7 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
                   null
                 }
               </User>
-            </div>
+            </ClickOutside>
            :
             <div>
               <Button onClick={this.goTo('/sign-in')}>
@@ -263,8 +301,9 @@ class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-s
 }
 
 Navbar.propTypes = {
+  className: PropTypes.string,
   currentUser: PropTypes.object,
-  tenantLogo: PropTypes.string.isRequired,
+  tenantLogo: PropTypes.string,
   location: PropTypes.string.isRequired,
   signOut: PropTypes.func.isRequired,
   goTo: PropTypes.func.isRequired,
@@ -281,4 +320,6 @@ const mergeProps = (stateP, dispatchP, ownP) => {
   return Object.assign({}, stateP, { signOut, goTo }, ownP);
 };
 
-export default injectIntl(preprocess(mapStateToProps, { signOutCurrentUser, push }, mergeProps)(Navbar));
+export default injectIntl(preprocess(mapStateToProps, { signOutCurrentUser, push }, mergeProps)(styled(Navbar)`
+  background-color: ${(props) => props.menuBg};
+`));

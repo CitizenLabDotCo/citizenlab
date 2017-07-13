@@ -15,7 +15,7 @@ function ImageCarousel(props) {
   return (
     <div>
       <Carousel axis="horizontal" showThumbs showArrows dynamicHeight autoPlay>
-        {ideaImages.map((ideaImage, index) => (<div key={`image-container-${index}`}>
+        {ideaImages.map((ideaImage) => (<div key={`image-container-${ideaImage.id}`}>
           <img
             role="presentation"
             src={ideaImage.medium}

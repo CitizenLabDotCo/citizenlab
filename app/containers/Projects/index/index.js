@@ -72,7 +72,7 @@ export class ProjectsList extends React.PureComponent { // eslint-disable-line r
             hasMore={hasMore}
             loader={<div className="loader"></div>}
           >
-            {list.map((id) => (
+            {list && list.map((id) => (
               <ProjectCard key={id} id={id} />
             ))}
           </InfiniteScrollStyled>

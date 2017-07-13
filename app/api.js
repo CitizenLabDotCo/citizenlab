@@ -1,4 +1,4 @@
-import request from 'utils/request';
+import request, { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 
 export function login(email, password) {
@@ -57,7 +57,6 @@ export function fetchIdeas(query, queryParameters) {
   const railsfriendlyQuery = (query || '').replace(/[[0-9]+]/g, '[]');
   return request(`${API_PATH}/ideas${railsfriendlyQuery}`, null, null, queryParameters);
 }
-
 
 export function fetchTopics(queryParameters) {
   return request(`${API_PATH}/topics`, null, null, queryParameters);
@@ -194,7 +193,9 @@ export function fetchIdeaAreasReport(queryParameters) {
   return request(`${API_PATH}/stats/ideas_by_area`, null, null, queryParameters);
 }
 
-// projects
+/*
+ * projects
+ */
 export function fetchProjects(queryParameters) {
   return request(`${API_PATH}/projects`, null, null, queryParameters);
 }
@@ -213,6 +214,14 @@ export function updateProject(id, data) {
 
 export function fetchProject(id) {
   return request(`${API_PATH}/projects/${id}`);
+}
+
+export function fetchProjectPhases(id) {
+  return request(`${API_PATH}/projects/${id}/phases`);
+}
+
+export function fetchProjectEvents(id) {
+  return request(`${API_PATH}/projects/${id}/events`);
 }
 
 export function deleteProject(id) {
@@ -255,8 +264,10 @@ export function loadResources(type, queryParameters, search) {
   return request(`${API_PATH}/${type}s${railsfriendlySearch}`, null, null, queryParameters);
 }
 
-export function createResource(type, data) {
-  return request(`${API_PATH}/${type}s`, { [type]: data }, {
+export function createResource(type, data, ...extra) {
+  let reqString = `${API_PATH}/${type}s`;
+  if (extra[0]) reqString = `${API_PATH}/${extra.join('/')}`;
+  return request(reqString, { [type]: data }, {
     method: 'POST',
   });
 }
@@ -277,3 +288,42 @@ export function deleteResource(type, id) {
   });
 }
 
+/*
+ * notifications
+ */
+
+export function fetchNotifications(queryParameters) {
+  return request(`${API_PATH}/notifications`, null, null, queryParameters);
+}
+
+export function markNotificationRead(notificationId) {
+  return request(`${API_PATH}/notifications/${notificationId}/mark_read`, null, {
+    method: 'POST',
+  });
+}
+
+export function markAllNotificationsRead() {
+  return request(`${API_PATH}/notifications/mark_all_read`, null, {
+    method: 'POST',
+  });
+}
+
+/*
+ * export
+ */
+
+export function fetchIdeasXlsx(project) {
+  return requestBlob(
+    `${API_PATH}/ideas/as_xlsx`,
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    { project }
+  );
+}
+
+export function fetchCommentsXlsx(project) {
+  return requestBlob(
+    `${API_PATH}/comments/as_xlsx`,
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    { project }
+  );
+}

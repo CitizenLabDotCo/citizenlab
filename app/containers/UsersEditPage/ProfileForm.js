@@ -4,13 +4,16 @@ import TextInput from 'components/forms/inputs/text';
 import Button from 'components/buttons/loader';
 import { Form, Grid } from 'semantic-ui-react';
 import LocaleChanger from 'components/LocaleChanger';
-
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import messages from './messages';
 import Avatar from './Avatar';
 import generateErrorsObject from 'components/forms/generateErrorsObject';
 import _ from 'lodash';
+import { connect } from 'react-redux';
+import { makeSelectSetting } from 'utils/tenant/selectors';
+import { createStructuredSelector } from 'reselect';
 
-export default class ProfileForm extends React.PureComponent {
+class ProfileForm extends React.PureComponent {
   constructor() {
     super();
 
@@ -63,7 +66,7 @@ export default class ProfileForm extends React.PureComponent {
   }
 
   render() {
-    const { avatarUploadError, userData: user, onLocaleChangeClick, processing, storeErrors } = this.props;
+    const { avatarUploadError, userData: user, onLocaleChangeClick, processing, storeErrors, locales } = this.props;
     const userLocale = (user
       ? user.locale
       : 'en');
@@ -86,10 +89,11 @@ export default class ProfileForm extends React.PureComponent {
                 avatarURL={user.avatar}
                 userId={user.userId}
               />}
-              <LocaleChanger
+              {locales && <LocaleChanger
                 onLocaleChangeClick={onLocaleChangeClick}
                 userLocale={userLocale}
-              />
+                locales={locales.toJS()}
+              />}
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -107,4 +111,11 @@ ProfileForm.propTypes = {
   avatarUploadError: PropTypes.bool,
   processing: PropTypes.bool,
   storeErrors: PropTypes.object,
+  locales: ImmutablePropTypes.list,
 };
+
+const mapStateToProps = createStructuredSelector({
+  locales: makeSelectSetting(['core', 'locales']),
+});
+
+export default connect(mapStateToProps)(ProfileForm);

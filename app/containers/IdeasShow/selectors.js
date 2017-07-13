@@ -1,13 +1,10 @@
-/**
- * Direct selector to the ideasShow state domain
- */
 import { createSelector } from 'reselect';
 
 import { selectResourcesDomain } from 'utils/resources/selectors';
 import { selectAuthDomain } from 'utils/auth/selectors';
 
 const selectIdeasShow = (...types) => (state) => state.getIn(['ideasShow', ...types]);
-export default selectIdeasShow;
+import { fromJS } from 'immutable';
 
 export const selectIdea = createSelector(
   selectIdeasShow('idea'),
@@ -56,3 +53,13 @@ export const makeSelectOwnVotesTot = (ideaId) => createSelector(
     return totVotes;
   },
 );
+
+export const makeSelectIdeaImages = () => createSelector(
+  selectResourcesDomain('idea_images'),
+  selectIdeasShow('images'),
+  (resourcesImages, ideaImages) => (resourcesImages
+      ? ideaImages.map((id) => resourcesImages.get(id))
+      : fromJS([]))
+);
+
+export default selectIdeasShow;
