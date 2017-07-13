@@ -19,7 +19,7 @@ import {
 
 import messages from './messages';
 import { storeAvatar, storeAvatarError, updateCurrentUser, updateLocale } from './actions';
-import ProfileForm from './ProfileForm';
+import ProfileForm from './components/ProfileForm';
 import { loadCurrentUser } from '../App/actions';
 import sagas from './sagas';
 import { LOAD_CURRENT_USER_REQUEST } from 'utils/auth/constants';
@@ -27,11 +27,6 @@ import { UPDATE_CURRENT_USER_REQUEST, STORE_AVATAR_REQUEST } from 'containers/Us
 import { injectIntl, intlShape } from 'react-intl';
 import { Message } from 'semantic-ui-react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-
-const ProfileDiv = styled.div`
-  padding: 20px;
-  border: 1px solid #888;
-`;
 
 const MessageIntl = ({ messageId, error, intl }) => {
   const { formatMessage } = intl;
@@ -55,40 +50,41 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
   }
 
   render() {
-    const { loading, loadError, storeError, processing, stored, currentUser, onAvatarUpload,
-      avatarUploadError, intl, storeErrorsImm } = this.props;
+    const {
+      className, loading, loadError, storeError, processing, stored,
+      currentUser, onAvatarUpload, avatarUploadError, intl, storeErrorsImm,
+    } = this.props;
 
     const storeErrors = storeErrorsImm && storeErrorsImm.toJS().errors;
 
-    return (
-      <ProfileDiv>
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
-        />
-        <WatchSagas sagas={sagas} />
+    return (<div className={className}>
+      <HelmetIntl
+        title={messages.helmetTitle}
+        description={messages.helmetDescription}
+      />
+      <WatchSagas sagas={sagas} />
 
-        {loading && <MessageIntl messageId="loading" intl={intl} />}
-        {loadError && <MessageIntl messageId="loadError" intl={intl} error />}
-        {storeError && <MessageIntl messageId="storeError" intl={intl} error />}
-        {processing && <MessageIntl messageId="processing" intl={intl} />}
-        {stored && <MessageIntl messageId="stored" intl={intl} />}
+      {loading && <MessageIntl messageId="loading" intl={intl} />}
+      {loadError && <MessageIntl messageId="loadError" intl={intl} error />}
+      {storeError && <MessageIntl messageId="storeError" intl={intl} error />}
+      {processing && <MessageIntl messageId="processing" intl={intl} />}
+      {stored && <MessageIntl messageId="stored" intl={intl} />}
 
-        <ProfileForm
-          onLocaleChangeClick={this.props.updateLocale}
-          userData={currentUser}
-          avatarUpload={onAvatarUpload}
-          onFormSubmit={this.props.updateCurrentUser}
-          avatarUploadError={avatarUploadError}
-          processing={processing}
-          storeErrors={storeErrors}
-        />
-      </ProfileDiv>
-    );
+      {currentUser && <ProfileForm
+        onLocaleChangeClick={this.props.updateLocale}
+        userData={currentUser}
+        avatarUpload={onAvatarUpload}
+        onFormSubmit={this.props.updateCurrentUser}
+        avatarUploadError={avatarUploadError}
+        processing={processing}
+        storeErrors={storeErrors}
+      />}
+    </div>);
   }
 }
 
 UsersEditPage.propTypes = {
+  className: PropTypes.string,
   loadError: PropTypes.bool,
   loading: PropTypes.bool,
   storeError: PropTypes.bool,
@@ -139,4 +135,6 @@ const mergeProps = (stateProps, dispatchProps, { intl }) => ({
   intl,
 });
 
-export default injectIntl(preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(UsersEditPage));
+export default injectIntl(preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(styled(UsersEditPage)`
+  width: 80%;
+`));

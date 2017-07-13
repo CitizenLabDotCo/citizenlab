@@ -5,7 +5,7 @@ import { Container, Button, Label, Image } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
-import messages from './messages';
+import messages from '../messages';
 
 export function dropzoneImage(avatarURL) {
   return (
