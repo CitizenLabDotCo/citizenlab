@@ -12,11 +12,18 @@ import HelmetIntl from 'components/HelmetIntl';
 import IdeaCards from 'containers/IdeasIndexPage/pageView';
 import Avatar from './Avatar';
 import T from 'containers/T';
+import WatchSagas from 'containers/WatchSagas';
+
+import { bindActionCreators } from 'redux';
+import { loadUserRequest } from 'resources/users/actions';
+import { selectResourcesDomain } from '../../utils/resources/selectors';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { LOAD_USER_REQUEST } from 'resources/users/constants';
+import sagas from 'resources/users/sagas';
 
 // store
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { makeSelectCurrentUserImmutable } from 'utils/auth/selectors';
 
 import styled from 'styled-components';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
@@ -38,7 +45,6 @@ const InfoContainerStyled = styled.div`
 const FullNameStyled = styled.div`
   width: 100%;
   padding-top: 115px;
-  font-family: Calibre !important;
   font-size: 29px;
   font-weight: 500;
   text-align: center;
@@ -47,7 +53,6 @@ const FullNameStyled = styled.div`
 
 const JoinedAtStyled = styled.div`
   width: 100%;
-  font-family: Calibre !important;
   margin-top: 10px;
   font-size: 18px;
   text-align: center;
@@ -58,7 +63,6 @@ const BioStyled = styled.div`
   width: 551px;
   margin: 23px auto;
   min-height: 165px;
-  font-family: Calibre !important;
   font-size: 20px;
   font-weight: 300;
   line-height: 1.25;
@@ -67,23 +71,33 @@ const BioStyled = styled.div`
 `;
 
 export class UsersShowPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  render() {
-    const { user, params, className, locale } = this.props;
+  componentDidMount() {
+    this.props.loadUserRequest(this.props.params.slug);
+  }
 
-    const attributes = user.get('attributes');
-    const lastName = attributes.get('last_name');
-    const firstName = attributes.get('last_name');
-    const bio = attributes.get('bio_multiloc');
-    const createdAt = attributes.get('created_at');
-    const avatarURL = attributes.getIn(['avatar', 'medium']);
+  render() {
+    const { loadingUser, loadUserError, users, params, className, locale } = this.props;
+
+    const user = users && users.get(params.slug);
+    console.log(users, params.slug, user);
+
+    const attributes = user && user.get('attributes');
+    const lastName = user && attributes.get('last_name');
+    const firstName = user && attributes.get('first_name');
+    const bio = user && attributes.get('bio_multiloc');
+    const createdAt = user && attributes.get('created_at');
+    const avatarURL = user && attributes.getIn(['avatar', 'medium']);
 
     return (
       <div className={className}>
+        <WatchSagas sagas={sagas} />
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <div
+        {loadingUser && <div><FormattedMessage {...messages.loadingUser} /></div>}
+        {loadUserError && <div><FormattedMessage {...messages.loadUserError} /></div>}
+        {user && <div
           style={{
             margin: 'auto',
             width: '80%',
@@ -106,7 +120,7 @@ export class UsersShowPage extends React.PureComponent { // eslint-disable-line 
             }}
             filter={{ author: params.slug }}
           />
-        </div>
+        </div>}
       </div>
     );
   }
@@ -115,17 +129,24 @@ export class UsersShowPage extends React.PureComponent { // eslint-disable-line 
 UsersShowPage.propTypes = {
   className: PropTypes.string,
   params: PropTypes.object,
-  user: PropTypes.object,
+  users: ImmutablePropTypes.map,
+  loadUserRequest: PropTypes.func.isRequired,
+  loadingUser: PropTypes.bool,
+  loadUserError: PropTypes.bool,
   locale: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  user: makeSelectCurrentUserImmutable(),
+  users: selectResourcesDomain('users'),
   locale: makeSelectLocale(),
+  loadingUser: (state) => state.getIn(['tempState', LOAD_USER_REQUEST, 'loading']),
+  loadUserError: (state) => state.getIn(['tempState', LOAD_USER_REQUEST, 'error']),
 });
 
+const mapDispatchToProps = (dispatch) => bindActionCreators({ loadUserRequest }, dispatch);
 
-export default styled(connect(mapStateToProps)(UsersShowPage))`
+
+export default styled(connect(mapStateToProps, mapDispatchToProps)(UsersShowPage))`
   background-color: #f2f2f2;
   margin-top: -162px;
   padding-top: 162px;
