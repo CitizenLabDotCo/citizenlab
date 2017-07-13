@@ -43,6 +43,8 @@ SelectTopic.defaultProps = {
 const mapStateToProps = () => createStructuredSelector({
   topics: (state) => selectResourcesDomain('topics')(state),
   search: (state) => state.getIn(['route', 'locationBeforeTransitions', 'search']),
+  location: (state) => state.getIn(['route', 'locationBeforeTransitions', 'pathname']),
+
 });
 
 const mergeQuery = (search, type, ids) => {
@@ -52,7 +54,7 @@ const mergeQuery = (search, type, ids) => {
 };
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { topics, search } = stateProps;
+  const { topics, search, location } = stateProps;
   if (!topics) return {};
 
   const { tFunc } = ownProps;
@@ -67,7 +69,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const value = queryString.parse(search, { arrayFormat: 'index' }).topics;
 
   const filterPage = (name, ids) => {
-    goTo(`/ideas?${mergeQuery(search, name, ids)}`);
+    goTo(`${location}?${mergeQuery(search, name, ids)}`);
   };
 
   return { options, value, filterPage, ...ownProps };

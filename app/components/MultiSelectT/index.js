@@ -48,7 +48,7 @@ class MultiSelectT extends React.PureComponent { // eslint-disable-line react/pr
 
   /* eslint-disable */
   render() {
-    const { options, maxSelectionLength, optionLabel, placeholder } = this.props;
+    const { options, maxSelectionLength, optionLabel, placeholder, name } = this.props;
     const { error } = this.state;
     const { formatMessage } = this.props.intl;
 
@@ -61,6 +61,7 @@ class MultiSelectT extends React.PureComponent { // eslint-disable-line react/pr
           search
           selection
           fluid
+          name={name}
           placeholder={placeholder}
           renderLabel={this.valueRenderer}
           onChange={this.handleChange}

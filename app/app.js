@@ -66,18 +66,19 @@ import createRoutes from './routes';
 
 import { loadState } from './persistedData';
 
+
+// ga
+import { createGa } from 'config/ga';
+
 // Observe loading of custom font
-const circular = new FontFaceObserver('circular');
-const proxima = new FontFaceObserver('proxima-nova');
+const visuelt = new FontFaceObserver('visuelt');
 
 // When custom font is loaded, add a 'fontLoaded' class to the body tag
-circular.load().then(() => {
+visuelt.load().then(() => {
   document.body.classList.add('fontLoaded');
 }, () => {
   document.body.classList.remove('fontLoaded');
 });
-
-proxima.load();
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router
@@ -90,12 +91,17 @@ const initialState = fromJS({
 
 export const store = configureStore(initialState, browserHistory);
 
+// initialize Ga & Mix Pannel
+// before syncing with browserHistory to guarantee ga is hit at first page load.
+createGa(store, getSagaMiddleware());
+
 // Sync history and store, as the react-router-redux reducer
 // is under the non-default key ("routing"), selectLocationState
 // must be provided for resolving how to retrieve the "route" in the state
 const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: makeSelectLocationState(),
 });
+
 
 // Set up the router, wrapping all Routes in the App component
 const rootRoute = {

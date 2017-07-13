@@ -22,6 +22,7 @@ function IdeaTitle(props) {
   return (
     <StyledInput
       type="text"
+      name="title"
       size="medium"
       placeholder="The title of your idea"
       onChange={setTitle}
@@ -43,7 +44,6 @@ export default styled(IdeaTitle)`
   width: 100%;
   height: 36px;
   font-stretch: normal;
-  font-family: 'proxima-nova';
   letter-spacing: normal;
   font-style: normal;
   line-height: 1.5;

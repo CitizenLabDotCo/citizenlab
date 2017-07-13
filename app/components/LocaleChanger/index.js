@@ -10,8 +10,8 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import { Container } from 'semantic-ui-react';
 import DropdownInput from 'components/forms/inputs/dropdown';
-
 import { appLocales } from '../../i18n';
+
 import messages from './messages';
 
 export const LocaleSelector = (props) => (
@@ -41,13 +41,13 @@ export default class LocaleChanger extends React.PureComponent {
   };
 
   render() {
-    const options = appLocales.map((appLocale) => ({
-      value: appLocale.id,
-      key: appLocale.id,
-      label: appLocale.name,
-    }));
+    const { userLocale, locales } = this.props;
 
-    const { userLocale } = this.props;
+    const options = locales.map((locale) => ({
+      value: appLocales.filter((appLocale) => appLocale.id === locale)[0].id,
+      key: appLocales.filter((appLocale) => appLocale.id === locale)[0].id,
+      label: appLocales.filter((appLocale) => appLocale.id === locale)[0].name,
+    }));
 
     return (
       <Container>
@@ -65,6 +65,7 @@ export default class LocaleChanger extends React.PureComponent {
 LocaleChanger.propTypes = {
   onLocaleChangeClick: PropTypes.func.isRequired,
   userLocale: PropTypes.string, // received async
+  locales: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 LocaleSelector.propTypes = {

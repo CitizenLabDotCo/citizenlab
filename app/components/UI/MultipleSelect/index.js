@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import styled from 'styled-components';
-import { darken } from 'polished';
 
 const StyledMultipleSelect = styled(Select)`
   &.Select--multi {
