@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import styled from 'styled-components';
-import { darken } from 'polished';
 
 const StyledMultipleSelect = styled(Select)`
   &.Select--multi {
@@ -195,8 +194,8 @@ const StyledMultipleSelect = styled(Select)`
           font-size: 17px;
           font-weight: 400;
 
-          &:hover, 
-          &:focus, 
+          &:hover,
+          &:focus,
           &:active,
           &.is-focused {
             background: #eee;
