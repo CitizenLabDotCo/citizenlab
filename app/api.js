@@ -1,4 +1,4 @@
-import request from 'utils/request';
+import request, { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 
 export function login(email, password) {
@@ -57,7 +57,6 @@ export function fetchIdeas(query, queryParameters) {
   const railsfriendlyQuery = (query || '').replace(/[[0-9]+]/g, '[]');
   return request(`${API_PATH}/ideas${railsfriendlyQuery}`, null, null, queryParameters);
 }
-
 
 export function fetchTopics(queryParameters) {
   return request(`${API_PATH}/topics`, null, null, queryParameters);
@@ -307,4 +306,24 @@ export function markAllNotificationsRead() {
   return request(`${API_PATH}/notifications/mark_all_read`, null, {
     method: 'POST',
   });
+}
+
+/*
+ * export
+ */
+
+export function fetchIdeasXlsx(project) {
+  return requestBlob(
+    `${API_PATH}/ideas/as_xlsx`,
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    { project }
+  );
+}
+
+export function fetchCommentsXlsx(project) {
+  return requestBlob(
+    `${API_PATH}/comments/as_xlsx`,
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    { project }
+  );
 }
