@@ -140,6 +140,23 @@ export default function createRoutes(store) {
       },
     },
     {
+      path: '/ideas/new2',
+      name: 'IdeasNewPage2',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/IdeasNewPage2'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
       path: '/ideas',
       name: 'ideasPage',
       getComponent(nextState, cb) {

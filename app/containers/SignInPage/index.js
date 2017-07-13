@@ -65,7 +65,6 @@ SignInPage.propTypes = {
   recoverPassword: PropTypes.func.isRequired,
 };
 
-
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   recoverPassword() {
     return push('/sign-in/recover-password');

@@ -1,9 +1,3 @@
-/*
- *
- * SignInPage reducer
- *
- */
-
 import { fromJS } from 'immutable';
 import {
   AUTHENTICATE_EMAIL_REQUEST,
