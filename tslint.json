@@ -1,11 +1,11 @@
 {
   "extends": ["tslint-config-airbnb", "tslint-react", "tslint-eslint-rules"],
   "rules": {
-    "arrow-parens": true,
     "trailing-comma": [
       "error",
       "always-multiline"
     ],
+    "ter-arrow-parens": [false],
     "ter-arrow-body-style": [
       2,
       "as-needed"
@@ -27,6 +27,7 @@
     "react-a11y-role-has-required-aria-props": 2,
     "react-a11y-role-supports-aria-prop": 2,
     "react-a11y-tabindex-no-positive": 2,
-    "react-a11y-title": 2
+    "react-a11y-title": 2,
+    "variable-name": [false, "ban-keywords", "check-format", "allow-leading-underscore"]
   }
 }
