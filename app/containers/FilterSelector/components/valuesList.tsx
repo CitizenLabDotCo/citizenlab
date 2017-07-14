@@ -13,12 +13,16 @@ const Overlay = styled.div`
   background-color: #ffffff;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
   border: solid 1px #eaeaea;
-  display: ${(props => props.deployed ? 'block' : 'none')};
+  display: none;
   padding: 10px;
   position: absolute;
   top: 2rem;
   left: 0;
   z-index: 10;
+
+  &.deployed {
+    display: block;
+  }
 
   ::after {
     border-color: white;
@@ -167,7 +171,7 @@ class ValuesList extends React.Component<valuesListProps, valuesListState> {
     const { currentFocus } = this.state;
 
     return (
-      <Overlay deployed={deployed}>
+      <Overlay className={deployed ? 'deployed' : ''}>
         <ListWrapper
           onKeyDown={this.keypressHandler}
           role="listbox"
