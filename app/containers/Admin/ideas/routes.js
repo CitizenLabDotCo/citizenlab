@@ -10,19 +10,17 @@ const loadModule = (cb) => (componentModule) => {
   cb(null, componentModule.default);
 };
 
-export default (injectReducer) => ({
+export default () => ({
   path: '/admin/ideas',
   name: 'admin Ideas',
   getComponent(nextState, cb) {
     const importModules = Promise.all([
-      import('containers/IdeasIndexPage/reducer'),
       import('containers/Admin/ideas'),
     ]);
 
     const renderRoute = loadModule(cb);
 
-    importModules.then(([reducer, component]) => {
-      injectReducer('adminIdeas', reducer.default);
+    importModules.then(([component]) => {
       renderRoute(component);
     });
 
@@ -32,7 +30,7 @@ export default (injectReducer) => ({
     name: 'admin ideas index',
     getComponent(nextState, cb) {
       const importModules = Promise.all([
-        import('containers/Admin/ideas/views/all'),
+        import('containers/Admin/ideas/index/index'),
       ]);
 
       const renderRoute = loadModule(cb);
