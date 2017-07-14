@@ -1,8 +1,8 @@
 // Libraries
-import React from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import styled from 'styled-components';
+import * as React from 'react';
+import * as _ from 'lodash';
+import styledComponents from 'styled-components';
+const styled = styledComponents;
 
 // Components
 import Icon from 'components/Icon';
@@ -13,7 +13,7 @@ const Overlay = styled.div`
   background-color: #ffffff;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
   border: solid 1px #eaeaea;
-  display: ${(props) => props.deployed ? 'block' : 'none'};
+  display: ${(props: {deployed: boolean}) => {props.deployed ? 'block' : 'none';}};
   padding: 10px;
   position: absolute;
   top: 2rem;
@@ -59,8 +59,8 @@ const OptionText = styled.span`
 `;
 
 const Checkmark = styled.span`
-  background: ${(props) => props.selected ? '#32b67a' : '#fff'};
-  border-color: ${(props) => props.selected ? '#32b67a' : '#a6a6a6'};
+  background: ${(props: {selected: boolean}) => {props.selected ? '#32b67a' : '#fff';}};
+  border-color: ${(props: {selected: boolean}) => {props.selected ? '#32b67a' : '#a6a6a6';}};
   border-radius: 3px;
   border-style: solid;
   border-width: 1px;
@@ -77,7 +77,25 @@ const Checkmark = styled.span`
   }
 `;
 
-class ValuesList extends React.Component {
+type Value = {
+  text: string,
+  value: any,
+};
+
+type valuesListProps = {
+  values: Value[]
+  onChange: Function,
+  selected: any[],
+  multiple?: boolean,
+  deployed: boolean,
+  baseID: string,
+};
+
+type valuesListState = {
+  currentFocus: number
+};
+
+class ValuesList extends React.Component<valuesListProps, valuesListState> {
   constructor() {
     super();
 
@@ -86,16 +104,19 @@ class ValuesList extends React.Component {
     };
   }
 
-  isSelected(value) {
+  isSelected(value: Value): boolean {
     return _.includes(this.props.selected, value);
   }
 
-  updateFocus = (newIndex) => {
+  updateFocus = (newIndex: number): void => {
     this.setState({ currentFocus: newIndex });
-    document.getElementById(`${this.props.baseID}-${newIndex}`).scrollIntoView();
+    const focusedElement = document.getElementById(`${this.props.baseID}-${newIndex}`);
+    if (focusedElement) {
+      focusedElement.scrollIntoView();
+    }
   }
 
-  keypressHandler = (event) => {
+  keypressHandler = (event: React.SyntheticEvent<KeyboardEvent>): void => {
     const keyCodes = {
       BACKSPACE: 8,
       TAB: 9,
@@ -150,26 +171,25 @@ class ValuesList extends React.Component {
         <ListWrapper
           onKeyDown={this.keypressHandler}
           role="listbox"
-          tabIndex="0"
+          tabIndex={0}
           aria-labelledby={`${baseID}-label`}
           aria-multiselectable={multiple}
           aria-activedescendant={`${baseID}-${currentFocus}`}
         >
           {values && values.map((entry, index) => {
-            const isSelected = this.isSelected(entry.value);
             const clickHandler = () => { this.props.onChange(entry.value); };
 
             return (
               <StyledOption
                 id={`${baseID}-${index}`}
                 role="option"
-                aria-selected={isSelected}
+                aria-selected={this.isSelected(entry.value)}
                 key={entry.value}
                 onClick={clickHandler}
                 className={currentFocus === index ? 'focused' : ''}
               >
                 <OptionText>{entry.text}</OptionText>
-                {multiple && <Checkmark selected={isSelected}>
+                {multiple && <Checkmark selected={this.isSelected(entry.value)}>
                   <Icon name="checkmark" />
                 </Checkmark>}
               </StyledOption>
@@ -181,19 +201,5 @@ class ValuesList extends React.Component {
     );
   }
 }
-
-ValuesList.propTypes = {
-  values: PropTypes.arrayOf(
-    PropTypes.shape({
-      text: PropTypes.string,
-      value: PropTypes.any,
-    })
-  ),
-  onChange: PropTypes.func,
-  selected: PropTypes.array,
-  multiple: PropTypes.bool,
-  deployed: PropTypes.bool,
-  baseID: PropTypes.string,
-};
 
 export default ValuesList;
