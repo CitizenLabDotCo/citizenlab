@@ -9,7 +9,7 @@ import Row from './Row';
 import { Table, Input } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import Pagination from './Pagination';
-import SortableHeader from './SortableHeader';
+import SortableTableHeader from 'components/admin/SortableTableHeader';
 import ExportLabel from 'components/admin/ExportLabel';
 
 // store
@@ -103,32 +103,36 @@ class AllUsers extends React.Component {
                 <Table.HeaderCell>
                 </Table.HeaderCell>
                 <Table.HeaderCell>
-                  <SortableHeader
-                    name="name"
+                  <SortableTableHeader
                     direction={sortAttribute === 'last_name' ? sortDirection : null}
                     onToggle={() => this.handleSortClick('last_name')}
-                  />
+                  >
+                    <FormattedMessage {...messages.name} />
+                  </SortableTableHeader>
                 </Table.HeaderCell>
                 <Table.HeaderCell>
-                  <SortableHeader
-                    name="email"
+                  <SortableTableHeader
                     direction={sortAttribute === 'email' ? sortDirection : null}
                     onToggle={() => this.handleSortClick('email')}
-                  />
+                  >
+                    <FormattedMessage {...messages.email} />
+                  </SortableTableHeader>
                 </Table.HeaderCell>
                 <Table.HeaderCell>
-                  <SortableHeader
-                    name="member"
+                  <SortableTableHeader
                     direction={sortAttribute === 'created_at' ? sortDirection : null}
                     onToggle={() => this.handleSortClick('created_at')}
-                  />
+                  >
+                    <FormattedMessage {...messages.member} />
+                  </SortableTableHeader>
                 </Table.HeaderCell>
                 <Table.HeaderCell>
-                  <SortableHeader
-                    name="admin"
+                  <SortableTableHeader
                     direction={sortAttribute === 'role' ? sortDirection : null}
                     onToggle={() => this.handleSortClick('role')}
-                  />
+                  >
+                    <FormattedMessage {...messages.admin} />
+                  </SortableTableHeader>
                 </Table.HeaderCell>
                 <Table.HeaderCell>
                   <FormattedMessage {...messages.delete} />
