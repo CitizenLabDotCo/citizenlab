@@ -29,7 +29,6 @@ export default styled(ClearNotificationsFooter)`
   right: 0;
   background-color: #fcfcfc;
   padding: 10px;
-  font-family: CircularStd-Book !important;
   font-size: 15px;
   color: #6b6b6b;
   width: 100%;

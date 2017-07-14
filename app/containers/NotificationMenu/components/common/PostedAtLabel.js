@@ -16,7 +16,6 @@ PostedAtLabel.propTypes = {
 };
 
 export default styled(PostedAtLabel)`
-  font-family: CircularStd-Book;
   font-size: 12px;
   color: #a7a7a7;
 `;

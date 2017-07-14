@@ -25,7 +25,7 @@ const Container = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   position: relative;
-  background: #fff;
+  background: ${(props) => !props.secondary ? props.theme.color.menuBg : '#fff'};
   border-bottom: solid 1px #ccc;
 `;
 

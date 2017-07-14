@@ -12,12 +12,14 @@ import { preprocess } from 'utils/reactRedux';
 import { bindActionCreators } from 'redux';
 import WatchSagas from 'containers/WatchSagas';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import Dropzone from 'react-dropzone';
+import { EditorState, convertToRaw } from 'draft-js';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import {
   setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
   publishIdeaRequest, storeSelectedTopics, storeSelectedAreas, invalidForm, storeSelectedProject, resetData,
 } from './actions';
-import IdeaEditorWrapper from './editor/IdeaEditorWrapper';
 // import AttachmentList from './attachments/AttachmentList';
 // import ImageList from './images/ImageList';
 import canPublish from './editor/canPublish';
@@ -61,9 +63,23 @@ const PageTitle = styled.div`
   margin-bottom: 50px;
 `;
 
+const StyledDropzone = styled(Dropzone)`
+  background: red;
+  cursor: pointer;
+
+  &:hover {
+    background: green;
+  }
+`;
+
 export class IdeasNewPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
+
+    this.state = {
+      editorState: EditorState.createEmpty(),
+      initialStateSet: false,
+    };
 
     // provide 'this' context to callbacks
     this.saveDraft = this.saveDraft.bind(this);
@@ -85,13 +101,43 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
     this.props.resetData();
   }
 
-  sendIdea(isDraft) {
-    const { content, shortTitleError, longTitleError, title, images, /* attachments, */ user, locale, selectedTopics, selectedAreas, selectedProjects } = this.props;
-    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, /* attachments, */ user && user.id, locale, isDraft, selectedTopics.toJS(), selectedAreas.toJS(), selectedProjects.toJS());
+  onDrop = (files) => {
+    let formData = null;
+
+    formData = new FormData();
+
+    files.forEach((file, index) => {
+      formData.append(`file${index}`, file);
+    });
+
+    fetch('http://server.com/api/upload', {
+      method: 'POST',
+      body: formData,
+    }).then((res) => {
+      console.log('Status', res);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
+
+  onEditorStateChange = (editorState) => {
+    this.setState({
+      editorState,
+    });
+
+    // store temp draft
+    const rawContent = convertToRaw(editorState.getCurrentContent());
+    console.log(rawContent);
+  };
 
   saveDraft() {
     this.sendIdea(true);
+  }
+
+  sendIdea(isDraft) {
+    const { content, shortTitleError, longTitleError, title, images, /* attachments, */ user, locale, selectedTopics, selectedAreas, selectedProjects } = this.props;
+    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, /* attachments, */ user && user.id, locale, isDraft, selectedTopics.toJS(), selectedAreas.toJS(), selectedProjects.toJS());
   }
 
   storeIdea() {
@@ -111,8 +157,6 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
   }
 
   render() {
-    const { /* className, storeAttachment: storeAtt, */ storeImage: storeImg, setTitle: setT } = this.props;
-
     return (
       <div>
         <HelmetIntl
@@ -132,6 +176,22 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
 
             {/* <Breadcrumbs /> */}
 
+            <StyledDropzone accept="image/*" onDrop={this.onDrop}>
+              <p>Try dropping some files here, or click to select files to upload.</p>
+            </StyledDropzone>
+
+            {/*
+            <Editor
+              wrapperClassName="wrapper-class"
+              editorClassName="editor-class"
+              toolbarClassName="toolbar-class"
+              wrapperStyle={{ background: 'green' }}
+              editorState={editorState}
+              onEditorStateChange={this.onEditorStateChange}
+            />
+            */}
+
+            {/*
             <IdeaEditorWrapper
               saveDraft={this.saveDraft}
               storeIdea={this.storeIdea}
@@ -141,6 +201,7 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
               setTitle={setT}
               storeImage={storeImg}
             />
+            */}
 
             {/*
             <FormLabel>
@@ -168,7 +229,6 @@ IdeasNewPage.propTypes = {
   // mapDispatch
   publishIdeaClick: PropTypes.func.isRequired,
   // storeAttachment: PropTypes.func.isRequired,
-  storeImage: PropTypes.func.isRequired,
   user: PropTypes.object,
   storeSelectedTopics: PropTypes.func.isRequired,
   storeSelectedAreas: PropTypes.func.isRequired,
@@ -186,7 +246,6 @@ IdeasNewPage.propTypes = {
   selectedTopics: ImmutablePropTypes.list.isRequired,
   selectedAreas: ImmutablePropTypes.list.isRequired,
   selectedProjects: ImmutablePropTypes.list.isRequired,
-  setTitle: PropTypes.func.isRequired,
   loadProjectsRequest: PropTypes.func.isRequired,
   resetData: PropTypes.func.isRequired,
 };
