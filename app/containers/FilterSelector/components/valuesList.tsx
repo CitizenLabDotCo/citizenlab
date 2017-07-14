@@ -13,7 +13,7 @@ const Overlay = styled.div`
   background-color: #ffffff;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
   border: solid 1px #eaeaea;
-  display: ${(props: {deployed: boolean}) => {props.deployed ? 'block' : 'none';}};
+  display: ${(props => props.deployed ? 'block' : 'none')};
   padding: 10px;
   position: absolute;
   top: 2rem;
@@ -59,8 +59,8 @@ const OptionText = styled.span`
 `;
 
 const Checkmark = styled.span`
-  background: ${(props: {selected: boolean}) => {props.selected ? '#32b67a' : '#fff';}};
-  border-color: ${(props: {selected: boolean}) => {props.selected ? '#32b67a' : '#a6a6a6';}};
+  background: ${(props) => props.selected ? '#32b67a' : '#fff'};
+  border-color: ${(props) => props.selected ? '#32b67a' : '#a6a6a6'};
   border-radius: 3px;
   border-style: solid;
   border-width: 1px;
@@ -116,7 +116,7 @@ class ValuesList extends React.Component<valuesListProps, valuesListState> {
     }
   }
 
-  keypressHandler = (event: React.SyntheticEvent<KeyboardEvent>): void => {
+  keypressHandler = (event): void => {
     const keyCodes = {
       BACKSPACE: 8,
       TAB: 9,

@@ -48,5 +48,4 @@ export class UsersNewPage extends React.PureComponent { // eslint-disable-line r
   }
 }
 
-
 export default UsersNewPage;

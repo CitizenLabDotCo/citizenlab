@@ -15,14 +15,12 @@ export default (injectReducer) => ({
   name: 'ideasUser',
   getComponent(nextState, cb) {
     const importModules = Promise.all([
-      import('resources/users/reducer'),
       import('containers/Admin/users'),
     ]);
 
     const renderRoute = loadModule(cb);
 
-    importModules.then(([reducer, component]) => {
-      injectReducer('adminUsers', reducer.default);
+    importModules.then(([component]) => {
       renderRoute(component);
     });
 
@@ -32,12 +30,14 @@ export default (injectReducer) => ({
     name: 'admin users index',
     getComponent(nextState, cb) {
       const importModules = Promise.all([
-        import('containers/Admin/users/views/all'),
+        import('containers/Admin/users/index/reducer'),
+        import('containers/Admin/users/index/index'),
       ]);
 
       const renderRoute = loadModule(cb);
 
-      importModules.then(([component]) => {
+      importModules.then(([reducer, component]) => {
+        injectReducer('adminUsersIndex', reducer.default);
         renderRoute(component);
       });
 

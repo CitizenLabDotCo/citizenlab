@@ -14,3 +14,14 @@ export function mergeJsonApiResourcesSuccess() {
     type: MERGE_JSONAPI_RESOURCES_SUCCESS,
   };
 }
+
+export function wrapActionWithPrefix(action, actionPrefix) {
+  return (...args) => {
+    const original = action(...args);
+    if (actionPrefix) {
+      original.type = actionPrefix + original.type;
+      original.actionPrefix = actionPrefix;
+    }
+    return original;
+  };
+}

@@ -21,5 +21,4 @@ SignInButton.propTypes = {
   goTo: PropTypes.func.isRequired,
 };
 
-
 export default preprocess(null, { goTo: push })(SignInButton);
