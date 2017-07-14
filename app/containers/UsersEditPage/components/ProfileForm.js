@@ -90,7 +90,7 @@ class ProfileForm extends React.PureComponent {
 
   // Input, Textarea
   handleInputChange = (value, name) => {
-    const { user } = this.state;
+    const { user } = _.clone(this.state);
     user[name] = value;
     this.setState({
       user,
@@ -99,7 +99,7 @@ class ProfileForm extends React.PureComponent {
 
   // Select
   handleSelectChange = (option, name) => {
-    const { user } = this.state;
+    const { user } = _.clone(this.state);
     user[name] = option.value;
     this.setState({
       user,
@@ -108,7 +108,7 @@ class ProfileForm extends React.PureComponent {
 
   // Switch
   handleToggleChange = (name) => {
-    const { user } = this.state;
+    const { user } = _.clone(this.state);
     user[name] = !user[name];
     this.setState({
       user,
@@ -374,13 +374,55 @@ class ProfileForm extends React.PureComponent {
                 />
 
                 <LabelWithTooltip id="notifications_idea_post" />
-                <Radio toggle onClick={() => this.handleToggleChange('notifications_idea_post')} />
+                <StyledRadio
+                  toggle
+                  checked={this.getToggleValue('notifications_idea_post')}
+                  onClick={() => this.handleToggleChange('notifications_idea_post')}
+                />
 
                 <LabelWithTooltip id="notifications_new_user" />
-                <Radio toggle onClick={() => this.handleToggleChange('notifications_new_user')} />
+                <StyledRadio
+                  toggle
+                  checked={this.getToggleValue('notifications_new_user')}
+                  onClick={() => this.handleToggleChange('notifications_new_user')}
+                />
 
                 <LabelWithTooltip id="notifications_new_comments" />
-                <Radio toggle onClick={() => this.handleToggleChange('notifications_new_comments')} />
+                <StyledRadio
+                  toggle
+                  checked={this.getToggleValue('notifications_new_comments')}
+                  onClick={() => this.handleToggleChange('notifications_new_comments')}
+                />
+
+                <LabelWithTooltip id="notifications_all_app" isBold />
+                <StyledRadio
+                  toggle
+                  checked={this.getToggleValue('notifications_all_app')}
+                  onClick={() => this.handleToggleChange('notifications_all_app')}
+                />
+
+                <LabelWithTooltip id="notifications_comment_on_comment" />
+                <StyledRadio
+                  toggle
+                  checked={this.getToggleValue('notifications_comment_on_comment')}
+                  onClick={() => this.handleToggleChange('notifications_comment_on_comment')}
+                />
+
+                <LabelWithTooltip id="notifications_mention" />
+                <StyledRadio
+                  toggle
+                  checked={this.getToggleValue('notifications_mention')}
+                  onClick={() => this.handleToggleChange('notifications_mention')}
+                />
+
+                <LabelWithTooltip id="notifications_idea_comment" />
+                <StyledRadio
+                  toggle
+                  checked={this.getToggleValue('notifications_idea_comment')}
+                  onClick={() => this.handleToggleChange('notifications_idea_comment')}
+                />
+
+
               </InputGroupStyled>
 
               <Button

@@ -37,4 +37,6 @@ export default styled(TextArea)`
   border-radius: 5px;
   background-color: #ffffff;
   border: solid 1px #a6a6a6;
+  padding: 10px;
+  resize: none;
 `;

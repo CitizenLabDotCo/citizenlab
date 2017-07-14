@@ -6,7 +6,7 @@ import messages from '../messages';
 import styled from 'styled-components';
 import * as tooltipIcon from '../icons/tooltip_tmp.png';
 
-const LabelStyled = styled(FormattedMessage)`
+const LabelStyled = styled.div`
   font-weight: ${(props) => props.isBold ? 'bold' : 'normal'};
 `;
 
@@ -16,10 +16,9 @@ const TooltipStyled = styled(Image)`
 
 // eslint-disable-next-line no-unused-vars
 const LabelWithTooltip = ({ className, id, hasTooltip, intl, isBold }) => (<div className={className}>
-  <LabelStyled
-    {...messages[id]}
-    isBold
-  />
+  <LabelStyled isBold={!!isBold}>
+    <FormattedMessage {...messages[id]} />
+  </LabelStyled>
   {hasTooltip && <TooltipStyled
     src={tooltipIcon}
     title={intl.formatMessage(messages[`${id}_tooltip`])}
