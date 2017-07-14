@@ -11,7 +11,7 @@
     "noImplicitThis": true,
     "strictNullChecks": true,
     "mapRoot": "./",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "moduleResolution": "node",
     "removeComments": true,
     "preserveConstEnums": true,

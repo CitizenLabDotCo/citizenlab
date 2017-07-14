@@ -1,6 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import * as React from 'react';
+import styledComponents from 'styled-components';
+const styled = styledComponents;
+
+type Props = {
+  id: string,
+  title: string,
+  selected: boolean,
+  onClick: (id: string) => void
+};
 
 const Container = styled.div`
   width: 100%;
@@ -10,14 +17,14 @@ const Container = styled.div`
   padding: 20px;
   cursor: pointer;
   user-select: none;
-  background: ${(props) => props.selected ? '#eee' : '#fff'};
+  background: ${props => props.selected ? '#eee' : '#fff'};
 
   &:hover {
     background: #eee;
   }
 `;
 
-class IdeaTitle extends React.PureComponent {
+export default class IdeaTitle extends React.PureComponent<Props> {
   handleOnClick = () => {
     this.props.onClick(this.props.id);
   }
@@ -28,12 +35,3 @@ class IdeaTitle extends React.PureComponent {
     return <Container onClick={this.handleOnClick} selected={selected}>{title}</Container>;
   }
 }
-
-IdeaTitle.propTypes = {
-  id: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  selected: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired,
-};
-
-export default IdeaTitle;

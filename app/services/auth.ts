@@ -1,11 +1,11 @@
 import { API_PATH } from 'containers/App/constants';
 import { getJwt, setJwt } from 'utils/auth/jwt';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import request from 'utils/request';
-import Streams from 'utils/streams';
+import streams from 'utils/streams';
 
 export function observeSignedInUser() {
-  return Streams.create(`${API_PATH}/users/me`);
+  return streams.create(`${API_PATH}/users/me`);
 }
 
 export function signIn(email, password) {
@@ -36,7 +36,15 @@ export function signIn(email, password) {
   });
 }
 
-export function signUp(firstName, lastName, email, password, selectedGender = null, selectedYearOfBirth = null, selectedAreaId = null) {
+export function signUp(
+  firstName,
+  lastName,
+  email,
+  password,
+  selectedGender = null,
+  selectedYearOfBirth = null,
+  selectedAreaId = null
+) {
   const apiEndpoint = `${API_PATH}/users`;
 
   const headerData = {
