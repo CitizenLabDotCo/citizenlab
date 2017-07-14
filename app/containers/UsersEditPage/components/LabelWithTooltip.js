@@ -4,7 +4,7 @@ import { Image } from 'semantic-ui-react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import messages from '../messages';
 import styled from 'styled-components';
-import * as tooltipIcon from '../icons/tooltip-icon.svg';
+import * as tooltipIcon from '../icons/tooltip_tmp.png';
 
 const LabelStyled = styled(FormattedMessage)`
   font-weight: ${(props) => props.isBold ? 'bold' : 'normal'};
@@ -22,7 +22,7 @@ const LabelWithTooltip = ({ className, id, hasTooltip, intl, isBold }) => (<div 
   />
   {hasTooltip && <TooltipStyled
     src={tooltipIcon}
-    alt={intl.formatMessage(`${id}_tooltip`)}
+    title={intl.formatMessage(messages[`${id}_tooltip`])}
   />}
 </div>);
 

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import * as ReactSelect from 'react-select';
 import styled from 'styled-components';
 import Error from 'components/UI/Error';
+import { injectIntl, intlShape } from 'react-intl';
+import messages from './messages';
 
 const StyledSelect = styled(ReactSelect)`
   &.Select--single {
@@ -174,7 +176,7 @@ const StyledSelect = styled(ReactSelect)`
 
 const emptyArray = [];
 
-const Select = ({ value, placeholder, options, autoBlur, clearable, searchable, onChange, error, name }) => {
+const Select = ({ value, placeholder, options, autoBlur, clearable, searchable, onChange, error, name, intl }) => {
   const handleOnChange = (newValue) => {
     onChange(newValue, name);
   };
@@ -190,12 +192,14 @@ const Select = ({ value, placeholder, options, autoBlur, clearable, searchable, 
       placeholder={placeholder}
       options={options || emptyArray}
       onChange={handleOnChange}
+      noResultsText={intl.formatMessage(messages.noResults)}
     />
     <Error text={error} />
   </div>);
 };
 
 Select.propTypes = {
+  intl: intlShape.isRequired,
   name: PropTypes.string,
   value: PropTypes.object,
   placeholder: PropTypes.string,
@@ -216,4 +220,4 @@ Select.defaultProps = {
   searchable: false,
 };
 
-export default Select;
+export default injectIntl(Select);

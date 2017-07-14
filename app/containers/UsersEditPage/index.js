@@ -66,8 +66,8 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
 
       {loading && <MessageIntl messageId="loading" intl={intl} />}
       {loadError && <MessageIntl messageId="loadError" intl={intl} error />}
-      {storeError && <MessageIntl messageId="storeError" intl={intl} error />}
       {processing && <MessageIntl messageId="processing" intl={intl} />}
+      {storeError && <MessageIntl messageId="storeError" intl={intl} error />}
       {stored && <MessageIntl messageId="stored" intl={intl} />}
 
       {currentUser && <ProfileForm

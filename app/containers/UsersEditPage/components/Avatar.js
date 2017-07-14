@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
-import { Container, Button, Label, Image } from 'semantic-ui-react';
+import { Container, Label, Image } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
-import styled from 'styled-components';
 
 import messages from '../messages';
 
@@ -59,34 +58,6 @@ class Avatar extends React.PureComponent {
     const { avatarURL, avatarUploadError } = this.props;
     const { avatar } = this.state;
 
-    const FileInput = (props) => (
-      <input
-        type="file"
-        onChange={this.onDrop}
-        accept="image/*"
-        className={props.className}
-      />
-    );
-    const StyledFileInput = styled(FileInput)`
-      opacity: 0;
-      z-index: 1;
-      width: 100px;
-      margin-left: 10px;
-      display: inline-block;
-      position: absolute;
-      height: 40px;
-    `;
-    const FileButton = (props) => (
-      <Button className={props.className}>
-        <FormattedMessage {...messages.clickToUpload} />
-      </Button>
-    );
-    const StyledFileButton = styled(FileButton)`
-      width: 100px;
-      margin-left: 10px;
-      z-index: 2;
-    `;
-
     return (
       <Container>
         <Dropzone
@@ -96,19 +67,6 @@ class Avatar extends React.PureComponent {
         >
           { dropzoneImage(avatar || avatarURL) }
         </Dropzone>
-        <div>
-          <FormattedMessage {...messages.dragToUpload} /> <FormattedMessage {...messages.or} />
-          <span
-            style={{
-              marginLeft: '10px',
-              display: 'inline-block',
-            }}
-          >
-            <StyledFileInput />
-            <StyledFileButton />
-          </span>
-        </div>
-
         {avatarUploadError && <Label>
           <FormattedMessage {...messages.avatarUploadError} />
         </Label>}

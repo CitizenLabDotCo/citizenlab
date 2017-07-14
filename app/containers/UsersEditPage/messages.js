@@ -18,13 +18,13 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.loading',
     defaultMessage: 'Loading...',
   },
-  processing: {
-    id: 'app.containers.UsersEditPage.processing',
-    defaultMessage: 'Sending...',
-  },
   loadError: {
     id: 'app.containers.UsersEditPage.loadError',
     defaultMessage: 'Can\'t load existing profile',
+  },
+  processing: {
+    id: 'app.containers.UsersEditPage.processing',
+    defaultMessage: 'Sending...',
   },
   storeError: {
     id: 'app.containers.UsersEditPage.storeError',
@@ -44,6 +44,10 @@ export default defineMessages({
   h1sub: {
     id: 'app.containers.UsersEditPage.h1sub',
     defaultMessage: 'Edit your basic information related to your account',
+  },
+  avatarUploadError: {
+    id: 'app.containers.UsersEditPage.avatarUploadError',
+    defaultMessage: 'Avatar upload failed',
   },
   firstName: {
     id: 'app.containers.UsersEditPage.firstName',
@@ -123,6 +127,10 @@ export default defineMessages({
   area_placeholder: {
     id: 'app.containers.UsersEditPage.area_placeholder',
     defaultMessage: 'Neighbourhood',
+  },
+  outside: {
+    id: 'app.containers.UsersEditPage.area_outside',
+    defaultMessage: 'Outside',
   },
   birthdate: {
     id: 'app.containers.UsersEditPage.birthdate',

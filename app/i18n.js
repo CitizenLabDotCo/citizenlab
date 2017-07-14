@@ -14,18 +14,18 @@ import enTranslationMessages from './translations/en.json';
 import frTranslationMessages from './translations/fr.json';
 import nlTranslationMessages from './translations/nl.json';
 
-export const appLocales = [
+export const appLocalePairs = [
   {
-    id: 'en',
-    name: 'English',
+    value: 'en',
+    label: 'English',
   },
   {
-    id: 'fr',
-    name: 'Français',
+    value: 'fr',
+    label: 'Français',
   },
   {
-    id: 'nl',
-    name: 'Nederlands',
+    value: 'nl',
+    label: 'Nederlands',
   },
 ];
 
