@@ -1,6 +1,10 @@
 {
   "extends": ["tslint-config-airbnb", "tslint-react", "tslint-eslint-rules"],
   "rules": {
+    "max-line-length": [
+      true,
+      120
+    ],
     "trailing-comma": [
       "error",
       "always-multiline"
