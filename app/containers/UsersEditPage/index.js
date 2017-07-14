@@ -136,5 +136,6 @@ const mergeProps = (stateProps, dispatchProps, { intl }) => ({
 });
 
 export default injectIntl(preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(styled(UsersEditPage)`
-  width: 80%;
+  background-color: #f2f2f2;
+  margin-top: 71px;
 `));

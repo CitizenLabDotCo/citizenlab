@@ -7,11 +7,15 @@ import styled from 'styled-components';
 import * as tooltipIcon from '../icons/tooltip_tmp.png';
 
 const LabelStyled = styled.div`
+  display: inline-block;
   font-weight: ${(props) => props.isBold ? 'bold' : 'normal'};
 `;
 
 const TooltipStyled = styled(Image)`
-  // TODO
+  display: inline-block !important;
+  margin-left: 5px;
+  height: 17px;
+  width: 15px;
 `;
 
 // eslint-disable-next-line no-unused-vars

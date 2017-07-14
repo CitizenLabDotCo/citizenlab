@@ -20,10 +20,15 @@ import LabelWithTooltip from './LabelWithTooltip';
 import TextArea from 'components/UI/TextArea';
 import { injectTFunc } from 'containers/T/utils';
 import moment from 'moment';
+import { media } from 'utils/styleUtils';
 
 const NavItemStyled = styled.button`
   display: block;
-  // TODO
+  height: 26px;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: left;
+  color: #222222;
 `;
 
 const Nav = ({ goTo }) => (<div>
@@ -55,6 +60,7 @@ class ProfileForm extends React.PureComponent {
   componentWillReceiveProps(nextProps) {
     const user = nextProps.userData;
 
+    // if the user wasn't loaded already ...
     if (!this.state.user || _.isEmpty(this.state.user)) {
       this.setState({
         user,
@@ -91,6 +97,8 @@ class ProfileForm extends React.PureComponent {
   // Input, Textarea
   handleInputChange = (value, name) => {
     const { user } = _.clone(this.state);
+
+    // TODO: add validation (tracking errors in component's state will do)
     user[name] = value;
     this.setState({
       user,
@@ -100,15 +108,19 @@ class ProfileForm extends React.PureComponent {
   // Select
   handleSelectChange = (option, name) => {
     const { user } = _.clone(this.state);
+
+    // TODO: add validation (tracking errors in component's state will do)
     user[name] = option.value;
     this.setState({
       user,
     });
   };
 
-  // Switch
+  // Toggle
   handleToggleChange = (name) => {
     const { user } = _.clone(this.state);
+
+    // TODO: add validation (tracking errors in component's state will do)
     user[name] = !user[name];
     this.setState({
       user,
@@ -141,24 +153,36 @@ class ProfileForm extends React.PureComponent {
     /*
      * styled components
     */
+    const LeftColumnStyled = styled(Grid.Column)`
+      ${media.phone`
+        display: none !important;
+      `}
+    `;
+
     const RightColumnStyled = styled(Grid.Column)`
-      // TODO
+      border-radius: 5px;
+      background-color: #ffffff;
     `;
 
     const InputGroupStyled = styled.div`
       margin-top: 40px;
     `;
 
-    const SectionHeaderStyled = styled(FormattedMessage)`
-      // TODO
+    const SectionHeaderStyled = styled.div`
+      font-size: 25px;
+      font-weight: bold;
+      text-align: left;
+      color: #222222;
     `;
 
-    const SectionSubHeaderStyled = styled(FormattedMessage)`
-      // TODO
+    const SectionSubHeaderStyled = styled.div`
+      font-size: 16px;
+      text-align: left;
+      color: #6b6b6b;
     `;
 
     const LabelInputPairStyled = styled.div`
-      // TODO
+      margin-top: 10px;
     `;
 
     const SectionSeparatorStyled = styled.hr`
@@ -173,6 +197,7 @@ class ProfileForm extends React.PureComponent {
     const StyledRadio = styled(Radio)`
       label:before {
         /* ! cannot override as important is already set on the styled radio */
+        /* TODO: try to fix this */
         background-color: ${(props) => props.checked ? '#3fb57c !important' : 'inherit'};
         border-radius: 500rem;
       }
@@ -203,26 +228,33 @@ class ProfileForm extends React.PureComponent {
     const educationOptions = [];
     for (let i = 0; i <= 8; i += 1) {
       educationOptions.push({
-        value: `ISCED11_${i}`,
+        value: i.toString(),
         label: intl.formatMessage(messages[`ISCED11_${i}`]),
       });
     }
 
     const areas = [];
-    // TODO: areas from selector
+    const areaValue = {};
+    // TODO: areas from selector (object {value-label} format). same for areaValue
 
+    // TODO: fix data not working properly (when we set input, state is overidden and for some reason passed back as props to ProfileForm, ending in inputs resettings their content. e.g. <empty> -> type a -> set state -> empty again [from props])
     return (<div className={className}>
       <Grid>
         <Grid.Row>
-          <Grid.Column width={4}>
+          <LeftColumnStyled width={4}>
             <Nav goTo={this.goToSection} />
-          </Grid.Column>
+          </LeftColumnStyled>
           <RightColumnStyled width={12}>
             {/* BASICS */}
-            <div ref={(section1) => { this['section-basics'] = section1; }}>
-              <SectionHeaderStyled {...messages.h1} />
-              <SectionSubHeaderStyled {...messages.h1sub} />
+            <section ref={(section1) => { this['section-basics'] = section1; }}>
+              <SectionHeaderStyled>
+                <FormattedMessage {...messages.h1} />
+              </SectionHeaderStyled>
+              <SectionSubHeaderStyled>
+                <FormattedMessage {...messages.h1sub} />
+              </SectionSubHeaderStyled>
 
+              {/* TODO: fix avatar not showing up */}
               {/* TODO: style properly and add icon (+ logic) to trash avatar (i.e. send null) */}
               {user && user.userId && <Avatar
                 onAvatarUpload={this.handleAvatarUpload}
@@ -233,6 +265,9 @@ class ProfileForm extends React.PureComponent {
 
               <InputGroupStyled>
                 <LabelInputPairStyled>
+                  {/*
+                   * TODO: move these recurring blocks to a component with props for re-use
+                   */}
                   <LabelWithTooltip id="firstName" hasTooltip />
                   <Input
                     name="firstName"
@@ -276,7 +311,7 @@ class ProfileForm extends React.PureComponent {
                   options={appLocalePairs.filter((locale) => localesJS.find((l) => l === locale.value))}
                 />}
               </InputGroupStyled>
-            </div>
+            </section>
 
             <SectionSeparatorStyled
               style={{
@@ -285,9 +320,13 @@ class ProfileForm extends React.PureComponent {
             />
 
             {/* DETAILS */}
-            <div ref={(section2) => { this['section-details'] = section2; }}>
-              <SectionHeaderStyled {...messages.h2} />
-              <SectionSubHeaderStyled {...messages.h2sub} />
+            <section ref={(section2) => { this['section-details'] = section2; }}>
+              <SectionHeaderStyled>
+                <FormattedMessage {...messages.h2} />
+              </SectionHeaderStyled>
+              <SectionSubHeaderStyled>
+                <FormattedMessage {...messages.h2sub} />
+              </SectionSubHeaderStyled>
 
               <InputGroupStyled>
                 <LabelWithTooltip id="gender" hasTooltip />
@@ -319,10 +358,7 @@ class ProfileForm extends React.PureComponent {
                   placeholder={intl.formatMessage(messages.area_placeholder)}
                   options={areas}
                   onChange={this.handleSelectChange}
-/*                  value={{
-                    value: user.domicilie,
-                    label: user.domicilie,
-                  }}*/
+                  value={areaValue}
                   error={userErrors && userErrors.domicilie && userErrors.domicilie[0]}
                 />
 
@@ -352,7 +388,7 @@ class ProfileForm extends React.PureComponent {
                 />
 
               </InputGroupStyled>
-            </div>
+            </section>
 
             <SectionSeparatorStyled
               style={{
@@ -361,9 +397,13 @@ class ProfileForm extends React.PureComponent {
             />
 
             {/* NOTIFICATIONS */}
-            <div ref={(section3) => { this['section-notifications'] = section3; }}>
-              <SectionHeaderStyled {...messages.h3} />
-              <SectionSubHeaderStyled {...messages.h3sub} />
+            <section ref={(section3) => { this['section-notifications'] = section3; }}>
+              <SectionHeaderStyled>
+                <FormattedMessage {...messages.h3} />
+              </SectionHeaderStyled>
+              <SectionSubHeaderStyled>
+                <FormattedMessage {...messages.h3sub} />
+              </SectionSubHeaderStyled>
 
               <InputGroupStyled>
                 <LabelWithTooltip id="notifications_all_email" isBold />
@@ -430,7 +470,7 @@ class ProfileForm extends React.PureComponent {
                 onClick={this.handleSubmit}
                 loading={processing}
               />
-            </div>
+            </section>
           </RightColumnStyled>
         </Grid.Row>
       </Grid>
