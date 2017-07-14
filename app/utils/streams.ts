@@ -1,23 +1,47 @@
+import { observeIdeas } from 'services/ideas';
+import { Observable } from 'rxjs/Observable';
+import { IStream } from './streams';
 import 'whatwg-fetch';
-import Rx from 'rxjs/Rx';
-import _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
+import * as _ from 'lodash';
 import request from 'utils/request';
 import { v4 as uuid } from 'uuid';
 
+type pureFn<T> = (arg: T) => T;
+type fetchFn<T> = () => Observable<T>;
+interface IObject{ [key: string]: any; }
+export type Observer<T> = Rx.Observer<T | ((arg: T) => T) | Error>;
+export type Observable<T> = Rx.Observable<T>;
+export interface IStream<T> {
+  id: string;
+  apiEndpoint: string;
+  headerData: IObject | null;
+  httpMethod: IObject | null;
+  queryParameters: IObject | null;
+  localProperties: IObject | null;
+  onEachEmit: pureFn<T> | null;
+  fetch: fetchFn<T> | null;
+  observer: Observer<T> | null;
+  observable: Observable<T> | null;
+  data: T | null;
+}
+
 class Streams {
+  listOfStreams: IStream<any>[];
+
   constructor() {
     this.listOfStreams = [];
   }
 
-  create(
-    apiEndpoint,
-    headerData = null,
-    httpMethod = null,
-    queryParameters = null,
-    localProperties = false,
-    onEachEmit = null,
+  create<T>(
+    apiEndpoint: string,
+    headerData: IObject | null = null,
+    httpMethod: IObject | null = null,
+    queryParameters: IObject | null = null,
+    localProperties: IObject | null = null,
+    onEachEmit: pureFn<T> | null = null,
   ) {
-    const existingStream = this.listOfStreams.find((stream) => {
+    const existingStream = <IStream<T>>this.listOfStreams.find((stream) => {
       return (
         _.isEqual(stream.apiEndpoint, apiEndpoint) &&
         _.isEqual(stream.headerData, headerData) &&
@@ -29,8 +53,9 @@ class Streams {
     });
 
     if (!existingStream) {
-      const newStream = {
-        id: uuid(),
+      const id = uuid();
+      const newStream: IStream<T> = {
+        id,
         apiEndpoint,
         headerData,
         httpMethod,
@@ -43,7 +68,7 @@ class Streams {
         data: null,
       };
 
-      newStream.observable = Rx.Observable.create((observer) => {
+      const observable: Observable<T> = Rx.Observable.create((observer: Observer<T>) => {
         newStream.observer = observer;
 
         newStream.fetch = () => {
@@ -51,10 +76,9 @@ class Streams {
             observer.next(response);
           }).catch(() => {
             observer.next(new Error(`promise for api endpoint ${apiEndpoint} did not resolve`));
-            // observer.error(`promise for api endpoint ${apiEndpoint} did not resolve`);
           });
 
-          return newStream.observable;
+          return observable;
         };
 
         newStream.fetch();
@@ -65,18 +89,18 @@ class Streams {
         };
       })
       .startWith('initial')
-      .scan((accumulated, current) => {
+      .scan((accumulated: T, current: T | pureFn<T>) => {
         let data = accumulated;
 
         if (_.isFunction(onEachEmit)) {
-          onEachEmit(data);
+          data = onEachEmit(data);
         }
 
-        if (!_.isFunction(current) && _.isObject(localProperties)) {
+        if (!_.isFunction(current) && localProperties !== null) {
           if (_.isArray(current)) {
-            data = current.map((child) => ({ ...child, ...localProperties }));
+            data = <any>current.map((child) => ({ ...child, ...localProperties }));
           } else if (_.isObject(current)) {
-            data = { ...current, ...localProperties };
+            data = { ...<any>current, ...localProperties };
           } else {
             console.log('current is no Object or Array');
           }
@@ -95,6 +119,8 @@ class Streams {
       .publishReplay(1)
       .refCount();
 
+      newStream.observable = observable;
+
       this.listOfStreams = [...this.listOfStreams, newStream];
 
       return newStream;
@@ -104,4 +130,5 @@ class Streams {
   }
 }
 
-export default new Streams();
+const streams = new Streams();
+export default streams;
