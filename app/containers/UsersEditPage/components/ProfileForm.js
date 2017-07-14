@@ -238,6 +238,7 @@ class ProfileForm extends React.PureComponent {
     // TODO: areas from selector (object {value-label} format). same for areaValue
 
     // TODO: fix data not working properly (when we set input, state is overidden and for some reason passed back as props to ProfileForm, ending in inputs resettings their content. e.g. <empty> -> type a -> set state -> empty again [from props])
+    // perhaps error with FormattedMessage blocking everything?!
     return (<div className={className}>
       <Grid>
         <Grid.Row>
