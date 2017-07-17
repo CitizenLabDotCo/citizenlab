@@ -1,6 +1,5 @@
-import { observeIdeas } from 'services/ideas';
 import { Observable } from 'rxjs/Observable';
-import { IStream } from './streams';
+import { observeIdeas } from 'services/ideas';
 import 'whatwg-fetch';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
@@ -8,21 +7,42 @@ import request from 'utils/request';
 import { v4 as uuid } from 'uuid';
 
 type pureFn<T> = (arg: T) => T;
-type fetchFn<T> = () => Observable<T>;
+type fetchFn<T> = () => IObservable<T>;
 interface IObject{ [key: string]: any; }
-export type Observer<T> = Rx.Observer<T | ((arg: T) => T) | Error>;
-export type Observable<T> = Rx.Observable<T>;
-export interface IStream<T> {
-  id: string;
+export type IObserver<T> = Rx.Observer<T | ((arg: T) => T) | Error>;
+export type IObservable<T> = Rx.Observable<T>;
+export interface IStreamParams<T> {
+  headerData?: IObject;
+  httpMethod?: IObject;
+  queryParameters?: IObject;
+  localProperties?: IObject;
+  onEachEmit?: pureFn<T>;
+  streamName?: string;
+}
+interface IInputStreamParams<T> extends IStreamParams<T> {
+  apiEndpoint: string;
+}
+interface IExtendedStreamParams<T> {
   apiEndpoint: string;
   headerData: IObject | null;
   httpMethod: IObject | null;
   queryParameters: IObject | null;
   localProperties: IObject | null;
   onEachEmit: pureFn<T> | null;
+  streamName: string | null;
+}
+export interface IStream<T> {
+  streamId: string;
+  apiEndpoint: string;
+  headerData: IObject | null;
+  httpMethod: IObject | null;
+  queryParameters: IObject | null;
+  localProperties: IObject | null;
+  onEachEmit: pureFn<T> | null;
+  streamName: string | null;
   fetch: fetchFn<T> | null;
-  observer: Observer<T> | null;
-  observable: Observable<T> | null;
+  observer: IObserver<T> | null;
+  observable: IObservable<T>;
   data: T | null;
 }
 
@@ -33,42 +53,47 @@ class Streams {
     this.listOfStreams = [];
   }
 
-  create<T>(
-    apiEndpoint: string,
-    headerData: IObject | null = null,
-    httpMethod: IObject | null = null,
-    queryParameters: IObject | null = null,
-    localProperties: IObject | null = null,
-    onEachEmit: pureFn<T> | null = null,
-  ) {
+  create<T>(inputParams: IInputStreamParams<T>) {
+    const params: IExtendedStreamParams<T> = {
+      headerData: null,
+      httpMethod: null,
+      queryParameters: null,
+      localProperties: null,
+      onEachEmit: null,
+      streamName: null,
+      ...inputParams
+    };
     const existingStream = <IStream<T>>this.listOfStreams.find((stream) => {
       return (
-        _.isEqual(stream.apiEndpoint, apiEndpoint) &&
-        _.isEqual(stream.headerData, headerData) &&
-        _.isEqual(stream.httpMethod, httpMethod) &&
-        _.isEqual(stream.queryParameters, queryParameters) &&
-        _.isEqual(stream.localProperties, localProperties) &&
-        _.isEqual(stream.onEachEmit, onEachEmit)
+        _.isEqual(stream.apiEndpoint, params.apiEndpoint) &&
+        _.isEqual(stream.headerData, params.headerData) &&
+        _.isEqual(stream.httpMethod, params.httpMethod) &&
+        _.isEqual(stream.queryParameters, params.queryParameters) &&
+        _.isEqual(stream.localProperties, params.localProperties) &&
+        _.isEqual(stream.onEachEmit, params.onEachEmit) && 
+        _.isEqual(stream.streamName, params.streamName)
       );
     });
 
     if (!existingStream) {
-      const id = uuid();
       const newStream: IStream<T> = {
-        id,
-        apiEndpoint,
-        headerData,
-        httpMethod,
-        queryParameters,
-        localProperties,
-        onEachEmit,
+        streamId: uuid(),
+        streamName: params.streamName,
+        apiEndpoint: params.apiEndpoint,
+        headerData: params.headerData,
+        httpMethod: params.httpMethod,
+        queryParameters: params.queryParameters,
+        localProperties: params.localProperties,
+        onEachEmit: params.onEachEmit,
         fetch: null,
         observer: null,
-        observable: null,
+        observable: <any>null,
         data: null,
       };
 
-      const observable: Observable<T> = Rx.Observable.create((observer: Observer<T>) => {
+      const observable: IObservable<T> = Rx.Observable.create((observer: IObserver<T>) => {
+        const { apiEndpoint, headerData, httpMethod, queryParameters } = newStream;
+
         newStream.observer = observer;
 
         newStream.fetch = () => {
@@ -85,12 +110,13 @@ class Streams {
 
         return () => {
           console.log(`stream for api endpoint ${apiEndpoint} completed`);
-          this.listOfStreams = this.listOfStreams.filter((stream) => stream.id !== newStream.id);
+          this.listOfStreams = this.listOfStreams.filter((stream) => stream.streamId !== newStream.streamId);
         };
       })
       .startWith('initial')
       .scan((accumulated: T, current: T | pureFn<T>) => {
         let data = accumulated;
+        const { onEachEmit, localProperties } = newStream;
 
         if (_.isFunction(onEachEmit)) {
           data = onEachEmit(data);
