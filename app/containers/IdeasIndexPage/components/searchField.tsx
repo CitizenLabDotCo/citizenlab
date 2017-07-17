@@ -31,19 +31,36 @@ const StyledForm = styled.form`
 
 type Props = {
   filterPage: Function,
+  value: string,
 };
 
-class SearchField extends React.Component<Props> {
+type State = {
+  value: string,
+};
+
+class SearchField extends React.Component<Props, State> {
   handleSubmit = (event):void => {
     event.preventDefault();
     const value = event.target.search.value;
     this.props.filterPage('search', [value]);
   }
 
+  handleChange = (event):void => {
+    this.setState({ value: event.target.value });
+  }
+
   render() {
+    const { value } = this.state && this.state.value !== null ? this.state : this.props;
+
     return (
       <StyledForm onSubmit={this.handleSubmit}>
-        <input name="search" type="text" placeholder="Search"/>
+        <input
+          name="search"
+          type="text"
+          placeholder="Search"
+          onChange={this.handleChange}
+          value={value}
+        />
       </StyledForm>
     );
   }
@@ -61,25 +78,16 @@ const mergeQuery = (search, type, ids) => {
 };
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { areas, search, location } = stateProps;
-  if (!areas) return {};
-
+  const { search, location } = stateProps;
   const { tFunc } = ownProps;
-
-  const options = areas.reactMap((element) => {
-    const value = element.get('id');
-    const text = tFunc(element.getIn(['attributes', 'title_multiloc']));
-    return { text, value };
-  });
   const { goTo } = dispatchProps;
-
-  const value = queryString.parse(search, { arrayFormat: 'index' }).search;
+  const value = queryString.parse(search).search;
 
   const filterPage = (name, ids) => {
     goTo(`${location}?${mergeQuery(search, name, ids)}`);
   };
 
-  return { options, value, filterPage, ...ownProps };
+  return { value, filterPage, ...ownProps };
 };
 
 export default injectTFunc(connect(mapStateToProps, { goTo: push }, mergeProps)(SearchField));
