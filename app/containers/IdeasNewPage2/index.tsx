@@ -1,3 +1,4 @@
+/*
 import * as React from 'react';
 import styledComponents from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -22,8 +23,9 @@ import { convertToRaw } from 'draft-js';
 import * as draftToHtml from 'draftjs-to-html';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-import { observeTopics } from 'services/topics';
-import { observeProjects } from 'services/projects';
+import { IUser } from 'services/users';
+import { observeTopics, ITopic } from 'services/topics';
+import { observeProjects, IProject } from 'services/projects';
 import { observeSignedInUser } from 'services/auth';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import messages from './messages';
@@ -118,7 +120,31 @@ const ButtonBarInner = styled.div`
   }
 `;
 
-class IdeasNewPage2 extends React.PureComponent {
+type Props = {
+  intl: ReactIntl.IntlShape,
+  tFunc: Function,
+  locale: string,
+};
+
+type State = {
+  user: IUser[] | null,
+  topics: ITopic[] | null,
+  projects: IProject[] | null,
+  title: string | null,
+  description: any,
+  selectedTopics: ITopic[] | null,
+  selectedProject: IProject[] | null,
+  location: any,
+  images: any,
+  processing: boolean,
+  titleError: string | null,
+  descriptionError: string | null,
+  submitError: string | null,
+};
+
+class IdeasNewPage2 extends React.Component<Props, State> {
+  subscriptions: Rx.Subscription[];
+
   constructor() {
     super();
 
@@ -411,3 +437,4 @@ const mapStateToProps = createStructuredSelector({
 });
 
 export default injectTFunc(injectIntl(connect(mapStateToProps, null)(IdeasNewPage2)));
+*/
