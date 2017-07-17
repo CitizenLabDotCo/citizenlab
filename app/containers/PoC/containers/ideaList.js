@@ -3,6 +3,7 @@ import Rx from 'rxjs/Rx';
 import _ from 'lodash';
 import IdeaTitle from './ideaTitle';
 import IdeaContent from './ideaContent';
+import IdeasTable from './ideasTable';
 import styled from 'styled-components';
 import { observeMultipleIdeas, toggleIdea } from '../services/ideaService';
 
@@ -116,6 +117,8 @@ class IdeaList extends React.PureComponent {
           )) }
         </Ideas>
         <LoadMoreBtn onClick={this.loadMore}>Load more ideas</LoadMoreBtn>
+
+        <IdeasTable />
       </Container>
     );
   }
