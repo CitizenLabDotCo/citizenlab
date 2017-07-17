@@ -5,7 +5,7 @@ import request from 'utils/request';
 import streams from 'utils/streams';
 
 export function observeSignedInUser() {
-  return streams.create(`${API_PATH}/users/me`);
+  return streams.create({ apiEndpoint: `${API_PATH}/users/me` });
 }
 
 export function signIn(email, password) {
@@ -22,10 +22,10 @@ export function signIn(email, password) {
     method: 'POST',
   };
 
-  return request(apiEndpoint, headerData, httpMethod).then((data) => {
+  return request(apiEndpoint, headerData, httpMethod, null).then((data) => {
     const jwt = getJwt();
 
-    if (!jwt && _.has(data, jwt)) {
+    if (!jwt && _.has(data, 'jwt')) {
       setJwt(data.jwt);
     }
 
@@ -63,7 +63,7 @@ export function signUp(
     method: 'POST',
   };
 
-  return request(apiEndpoint, headerData, httpMethod).then(() => {
+  return request(apiEndpoint, headerData, httpMethod, null).then(() => {
     return { email, password };
   })
   .catch((error) => {
