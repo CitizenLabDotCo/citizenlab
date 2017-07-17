@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styledComponents from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -20,14 +20,16 @@ import Error from 'components/UI/Error';
 import SignIn from 'containers/SignIn';
 import SignUp from 'containers/SignUp';
 import { convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import _ from 'lodash';
-import Rx from 'rxjs/Rx';
+import * as draftToHtml from 'draftjs-to-html';
+import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
 import { observeTopics } from 'services/topics';
 import { observeProjects } from 'services/projects';
 import { observeSignedInUser } from 'services/auth';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import messages from './messages';
+
+const styled = styledComponents;
 
 const Container = styled.div`
   background: #f2f2f2;

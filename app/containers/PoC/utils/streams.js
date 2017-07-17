@@ -9,22 +9,12 @@ class Streams {
     this.listOfStreams = [];
   }
 
-  create(
-    apiEndpoint,
-    headerData = null,
-    httpMethod = null,
-    queryParameters = null,
-    localProperties = false,
-    onEachEmit = null,
-  ) {
+  create(apiEndpoint, queryParameters = null, localProperties = false) {
     const existingStream = this.listOfStreams.find((stream) => {
       return (
         _.isEqual(stream.apiEndpoint, apiEndpoint) &&
-        _.isEqual(stream.headerData, headerData) &&
-        _.isEqual(stream.httpMethod, httpMethod) &&
         _.isEqual(stream.queryParameters, queryParameters) &&
-        _.isEqual(stream.localProperties, localProperties) &&
-        _.isEqual(stream.onEachEmit, onEachEmit)
+        _.isEqual(stream.localProperties, localProperties)
       );
     });
 
@@ -32,12 +22,8 @@ class Streams {
       const newStream = {
         id: uuid(),
         apiEndpoint,
-        headerData,
-        httpMethod,
         queryParameters,
         localProperties,
-        onEachEmit,
-        fetch: null,
         observer: null,
         observable: null,
         data: null,
@@ -46,31 +32,17 @@ class Streams {
       newStream.observable = Rx.Observable.create((observer) => {
         newStream.observer = observer;
 
-        newStream.fetch = () => {
-          request(apiEndpoint, headerData, httpMethod, queryParameters).then((response) => {
-            observer.next(response);
-          }).catch(() => {
-            observer.next(new Error(`promise for api endpoint ${apiEndpoint} did not resolve`));
-            // observer.error(`promise for api endpoint ${apiEndpoint} did not resolve`);
-          });
-
-          return newStream.observable;
-        };
-
-        newStream.fetch();
+        request(apiEndpoint, null, null, queryParameters).then((response) => {
+          observer.next(response.data);
+        });
 
         return () => {
-          console.log(`stream for api endpoint ${apiEndpoint} completed`);
           this.listOfStreams = this.listOfStreams.filter((stream) => stream.id !== newStream.id);
         };
       })
       .startWith('initial')
       .scan((accumulated, current) => {
         let data = accumulated;
-
-        if (_.isFunction(onEachEmit)) {
-          onEachEmit(data);
-        }
 
         if (!_.isFunction(current) && _.isObject(localProperties)) {
           if (_.isArray(current)) {
