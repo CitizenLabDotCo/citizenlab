@@ -7,7 +7,6 @@ import FilterSelector from 'containers/FilterSelector';
 
 // store
 import { push } from 'react-router-redux';
-import { selectResourcesDomain } from 'utils/resources/selectors';
 import { createStructuredSelector } from 'reselect';
 import { preprocess } from 'utils';
 
@@ -40,7 +39,6 @@ SelectSort.defaultProps = {
 };
 
 const mapStateToProps = () => createStructuredSelector({
-  areas: (state) => selectResourcesDomain('areas')(state),
   search: (state) => state.getIn(['route', 'locationBeforeTransitions', 'search']),
   location: (state) => state.getIn(['route', 'locationBeforeTransitions', 'pathname']),
 });
@@ -52,8 +50,7 @@ const mergeQuery = (search, type, ids) => {
 };
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { areas, search, location } = stateProps;
-  if (!areas) return {};
+  const { search, location } = stateProps;
 
   const options = [
     { text: 'Newest', value: 'new' },
@@ -63,7 +60,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   ];
   const { goTo } = dispatchProps;
 
-  const value = queryString.parse(search).areas;
+  const value = [queryString.parse(search).sort];
 
   const filterPage = (name, ids) => {
     goTo(`${location}?${mergeQuery(search, name, ids)}`);
