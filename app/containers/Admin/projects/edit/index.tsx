@@ -5,6 +5,8 @@ import * as Rx from 'rxjs/Rx';
 // Services
 import { observeProject, IProjectData } from 'services/projects';
 
+// Components
+import TabbedResource from 'components/admin/TabbedResource';
 
 // Localisation
 import { FormattedMessage } from 'react-intl';
@@ -26,17 +28,13 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
   constructor() {
     super();
 
-    console.log('constructor');
-
     this.state = {
       project: null,
     };
   }
 
   componentDidMount() {
-    console.log('did mount');
     this.subscription = observeProject('5eb0322c-d6ac-4100-b50e-354f13b119d1').observable.subscribe((project) => {
-      console.log(project);
       this.setState({ project: project.data });
     });
 
@@ -47,8 +45,38 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
   }
 
   render() {
+    const { project } = this.state;
+
+    const tabbedProps = {
+      resource: {
+        title: project ? project.attributes.title_multiloc : '',
+        publicLink: project ? `/projects/${project.id}` : ''
+      },
+      messages: {
+        viewPublicResource: messages.viewPublicProject,
+      },
+      tabs: [
+        {
+          label: 'general',
+          url: project ? `/admin/projects/${project.attributes.slug}/edit` : '',
+          active: true,
+        },
+        {
+          label: 'timeline',
+          url: project ? `/admin/projects/${project.attributes.slug}/timeline` : '',
+        },
+      ],
+    };
+
     return(
-      <div> Data here </div>
+      <div>
+        <a href="">go back</a>
+        {project &&
+          <TabbedResource {...tabbedProps}>
+            {this.props.children}
+          </TabbedResource>
+        }
+      </div>
     );
   }
 }
