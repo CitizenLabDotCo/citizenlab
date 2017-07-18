@@ -11,7 +11,7 @@ export function observeSignedInUser() {
 export function signIn(email, password) {
   const apiEndpoint = `${API_PATH}/user_token`;
 
-  const headerData = {
+  const bodyData = {
     auth: {
       email,
       password,
@@ -22,7 +22,7 @@ export function signIn(email, password) {
     method: 'POST',
   };
 
-  return request(apiEndpoint, headerData, httpMethod, null).then((data) => {
+  return request(apiEndpoint, bodyData, httpMethod, null).then((data) => {
     const jwt = getJwt();
 
     if (!jwt && _.has(data, 'jwt')) {
@@ -47,7 +47,7 @@ export function signUp(
 ) {
   const apiEndpoint = `${API_PATH}/users`;
 
-  const headerData = {
+  const bodyData = {
     user: {
       firstName,
       lastName,
@@ -63,7 +63,7 @@ export function signUp(
     method: 'POST',
   };
 
-  return request(apiEndpoint, headerData, httpMethod, null).then(() => {
+  return request(apiEndpoint, bodyData, httpMethod, null).then(() => {
     return { email, password };
   })
   .catch((error) => {

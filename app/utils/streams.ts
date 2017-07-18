@@ -12,7 +12,7 @@ interface IObject{ [key: string]: any; }
 export type IObserver<T> = Rx.Observer<T | ((arg: T) => T) | Error>;
 export type IObservable<T> = Rx.Observable<T>;
 export interface IStreamParams<T> {
-  headerData?: IObject;
+  bodyData?: IObject;
   httpMethod?: IObject;
   queryParameters?: IObject;
   localProperties?: IObject;
@@ -24,7 +24,7 @@ interface IInputStreamParams<T> extends IStreamParams<T> {
 }
 interface IExtendedStreamParams<T> {
   apiEndpoint: string;
-  headerData: IObject | null;
+  bodyData: IObject | null;
   httpMethod: IObject | null;
   queryParameters: IObject | null;
   localProperties: IObject | null;
@@ -34,7 +34,7 @@ interface IExtendedStreamParams<T> {
 export interface IStream<T> {
   streamId: string;
   apiEndpoint: string;
-  headerData: IObject | null;
+  bodyData: IObject | null;
   httpMethod: IObject | null;
   queryParameters: IObject | null;
   localProperties: IObject | null;
@@ -55,7 +55,7 @@ class Streams {
 
   create<T>(inputParams: IInputStreamParams<T>) {
     const params: IExtendedStreamParams<T> = {
-      headerData: null,
+      bodyData: null,
       httpMethod: null,
       queryParameters: null,
       localProperties: null,
@@ -66,7 +66,7 @@ class Streams {
     const existingStream = <IStream<T>>this.listOfStreams.find((stream) => {
       return (
         _.isEqual(stream.apiEndpoint, params.apiEndpoint) &&
-        _.isEqual(stream.headerData, params.headerData) &&
+        _.isEqual(stream.bodyData, params.bodyData) &&
         _.isEqual(stream.httpMethod, params.httpMethod) &&
         _.isEqual(stream.queryParameters, params.queryParameters) &&
         _.isEqual(stream.localProperties, params.localProperties) &&
@@ -80,7 +80,7 @@ class Streams {
         streamId: uuid(),
         streamName: params.streamName,
         apiEndpoint: params.apiEndpoint,
-        headerData: params.headerData,
+        bodyData: params.bodyData,
         httpMethod: params.httpMethod,
         queryParameters: params.queryParameters,
         localProperties: params.localProperties,
@@ -92,12 +92,12 @@ class Streams {
       };
 
       const observable: IObservable<T> = Rx.Observable.create((observer: IObserver<T>) => {
-        const { apiEndpoint, headerData, httpMethod, queryParameters } = newStream;
+        const { apiEndpoint, bodyData, httpMethod, queryParameters } = newStream;
 
         newStream.observer = observer;
 
         newStream.fetch = () => {
-          request(apiEndpoint, headerData, httpMethod, queryParameters).then((response) => {
+          request(apiEndpoint, bodyData, httpMethod, queryParameters).then((response) => {
             observer.next(response);
           }).catch(() => {
             observer.next(new Error(`promise for api endpoint ${apiEndpoint} did not resolve`));
@@ -114,7 +114,7 @@ class Streams {
         };
       })
       .startWith('initial')
-      .scan((accumulated: T, current: T | pureFn<T>) => {
+      .scan((accumulated: T, current: 'fetch' | T | pureFn<T>) => {
         let data = accumulated;
         const { onEachEmit, localProperties } = newStream;
 
@@ -122,7 +122,11 @@ class Streams {
           data = onEachEmit(data);
         }
 
-        if (!_.isFunction(current) && localProperties !== null) {
+        if (current === 'fetch') {
+          if (_.isFunction(newStream.fetch)) {
+            newStream.fetch();
+          }
+        } else if (!_.isFunction(current) && localProperties !== null) {
           if (_.isArray(current)) {
             data = <any>current.map((child) => ({ ...child, ...localProperties }));
           } else if (_.isObject(current)) {
