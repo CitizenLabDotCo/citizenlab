@@ -25,7 +25,7 @@ export default function createRoutes(store) {
       name: 'poc',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/PoC/containers/ideaList'),
+          import('containers/PoC/containers/usersTable'),
         ]);
 
         const renderRoute = loadModule(cb);
