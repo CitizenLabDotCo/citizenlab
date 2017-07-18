@@ -7,6 +7,7 @@ class Api::V1::IdeaSerializer < ActiveModel::Serializer
 
   belongs_to :author
   belongs_to :project
+  belongs_to :idea_status
 
   has_one :user_vote, if: :signed_in? do |serializer|
     serializer.cached_user_vote

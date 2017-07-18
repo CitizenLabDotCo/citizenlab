@@ -18,6 +18,7 @@ class Idea < ApplicationRecord
   has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
   has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
   has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
+  belongs_to :idea_status
   has_many :activities, as: :item
   has_many :idea_images, dependent: :destroy
 
@@ -27,8 +28,10 @@ class Idea < ApplicationRecord
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
   validates :author, presence: true, unless: :draft?
   validates :author_name, presence: true, unless: :draft?
+  validates :idea_status, presence: true, unless: :draft?
 
   before_validation :set_author_name, on: :create
+  before_validation :set_idea_status, on: :create
   after_validation :set_published_at, if: ->(idea){ idea.published? && idea.publication_status_changed? }
 
   scope :with_all_topics, (Proc.new do |topic_ids|
@@ -85,6 +88,10 @@ class Idea < ApplicationRecord
 
   def set_author_name
     self.author_name = self.author.display_name if self.author
+  end
+
+  def set_idea_status
+    self.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
   end
 
   def set_published_at

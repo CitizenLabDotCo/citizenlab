@@ -30,4 +30,9 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  statuses:
+    proposed: proposed
+    under_consideration: under consideration
+    accepted: accepted
+    implemented: implemented
+    rejected: rejected

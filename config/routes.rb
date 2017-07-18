@@ -15,6 +15,7 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
+      resources :idea_statuses, only: [:index, :show]
 
       # auth
       post 'user_token' => 'user_token#create'

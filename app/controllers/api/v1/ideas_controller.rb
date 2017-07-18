@@ -8,7 +8,7 @@ class Api::V1::IdeasController < ApplicationController
   
 
   def index
-    @ideas = policy_scope(Idea).includes(:author, :topics, :areas, :project, :idea_images)
+    @ideas = policy_scope(Idea).includes(:author, :idea_status, :topics, :areas, :project, :idea_images)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
@@ -16,6 +16,7 @@ class Api::V1::IdeasController < ApplicationController
     @ideas = @ideas.with_all_areas(params[:areas]) if params[:areas].present?
     @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
     @ideas = @ideas.where(author_id: params[:author]) if params[:author].present?
+    @ideas = @ideas.where(idea_status_id: params[:idea_status]) if params[:idea_status].present?
     @ideas = @ideas.search_by_all(params[:search]) if params[:search].present?
 
 
@@ -64,7 +65,7 @@ class Api::V1::IdeasController < ApplicationController
 
   # insert
   def create
-    @idea = Idea.new(idea_params)
+    @idea = Idea.new(permitted_attributes(Idea))
     authorize @idea
     if @idea.save
       SideFxIdeaService.new.after_create(@idea, current_user)
@@ -76,7 +77,7 @@ class Api::V1::IdeasController < ApplicationController
 
   # patch
   def update
-    if @idea.update(idea_params)
+    if @idea.update(permitted_attributes(Idea))
       SideFxIdeaService.new.after_update(@idea, current_user)
       render json: @idea, status: :ok, include: ['author','topics','areas','user_vote', 'idea_images']
     else
@@ -104,20 +105,6 @@ class Api::V1::IdeasController < ApplicationController
   def set_idea
     @idea = Idea.find params[:id]
     authorize @idea
-  end
-
-  def idea_params
-    params.require(:idea).permit(
-			:publication_status,
-			:project_id,
-			:author_id,
-      :location_description,
-      location_point_geojson: [:type, coordinates: []],
-			title_multiloc: [:en, :nl, :fr],
-      body_multiloc: [:en, :nl, :fr],
-      topic_ids: [],
-      area_ids: []
-    )
   end
 
 end

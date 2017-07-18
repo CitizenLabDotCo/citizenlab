@@ -23,6 +23,7 @@ describe "seedfile" do
       expect(Comment.count).to be > 0
       expect(Page.count).to be 8
       expect(Notification.count).to be > 0
+      expect(IdeaStatus.count).to be > 0
     end
   end
 
