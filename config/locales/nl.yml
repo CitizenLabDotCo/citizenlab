@@ -1,0 +1,7 @@
+nl:
+  statuses:
+    proposed: voorgesteld
+    under_consideration: in overweging
+    accepted: aangenomen
+    implemented: uitgevoerd
+    rejected: afgewezen

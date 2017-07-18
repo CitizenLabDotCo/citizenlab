@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170705093317) do
+ActiveRecord::Schema.define(version: 20170718121258) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,6 +101,15 @@ ActiveRecord::Schema.define(version: 20170705093317) do
     t.index ["idea_id"], name: "index_idea_images_on_idea_id"
   end
 
+  create_table "idea_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "title_multiloc"
+    t.integer "ordering"
+    t.string "code"
+    t.string "color"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "ideas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.jsonb "body_multiloc", default: {}
@@ -117,7 +126,9 @@ ActiveRecord::Schema.define(version: 20170705093317) do
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "location_description"
     t.integer "comments_count", default: 0, null: false
+    t.uuid "idea_status_id"
     t.index ["author_id"], name: "index_ideas_on_author_id"
+    t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
     t.index ["project_id"], name: "index_ideas_on_project_id"
   end
@@ -252,6 +263,7 @@ ActiveRecord::Schema.define(version: 20170705093317) do
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "events", "projects"
   add_foreign_key "idea_images", "ideas"
+  add_foreign_key "ideas", "idea_statuses"
   add_foreign_key "ideas", "projects"
   add_foreign_key "ideas", "users", column: "author_id"
   add_foreign_key "ideas_topics", "ideas"

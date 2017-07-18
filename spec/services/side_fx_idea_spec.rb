@@ -39,6 +39,14 @@ describe SideFxIdeaService do
       expect {service.after_update(idea, user)}.
         to have_enqueued_job(LogActivityJob).with(idea, 'changed_body', user, idea.updated_at.to_i)
     end
+
+    it "logs a 'changed_status' action job when the idea_status has changed" do
+      idea = create(:idea)
+      new_idea_status = create(:idea_status)
+      idea.update(idea_status: new_idea_status)
+      expect {service.after_update(idea, user)}.
+        to have_enqueued_job(LogActivityJob).with(idea, 'changed_status', user, idea.updated_at.to_i, payload: {code: new_idea_status.code})
+    end
   end
 
   describe "after_destroy" do

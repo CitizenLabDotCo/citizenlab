@@ -11,10 +11,7 @@ FactoryGirl.define do
     publication_status "published"
     project
     author
-    # author nil
-    # author_name "MyString"
-    # images ""
-    # files ""
+    idea_status
     factory :idea_with_topics do
       transient do
         topics_count 2

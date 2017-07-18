@@ -56,6 +56,15 @@ RSpec.describe Idea, type: :model do
     end
   end
 
+  context "idea_status" do
+
+    it "gets set to proposed on creation when not set" do
+      create(:idea_status, code: 'proposed')
+      idea = create(:idea, idea_status: nil)
+      expect(idea.idea_status_id).to eq IdeaStatus.find_by(code: 'proposed').id
+    end
+  end
+
   describe "order_new" do
     before do
       5.times do |i|

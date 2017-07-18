@@ -59,6 +59,8 @@ Tenant.create({
 
 Apartment::Tenant.switch('localhost') do
 
+  IdeaStatus.create_defaults
+
   User.create({
     first_name: 'Koen',
     last_name: 'Gremmelprez',
@@ -193,6 +195,7 @@ Apartment::Tenant.switch('localhost') do
         "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
         "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
       },
+      idea_status: IdeaStatus.offset(rand(IdeaStatus.count)).first,
       topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
       areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
       author: User.offset(rand(User.count)).first,

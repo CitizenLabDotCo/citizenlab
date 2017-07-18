@@ -1,0 +1,7 @@
+fr:  
+  statuses:
+    proposed: soumis
+    under_consideration: pris en compte
+    accepted: accepté
+    implemented: mis en oeuvre
+    rejected: rejeté
