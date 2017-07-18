@@ -2,7 +2,8 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import { getPageItemCountFromUrl, getPageNumberFromUrl } from 'utils/paginationUtils';
-import { observeUsers, IUsers } from 'services/users';
+import { observeUsers, updateUser, IUsers, IUserData, IUserUpdate } from 'services/users';
+import { IStream } from 'utils/streams';
 import styledComponents from 'styled-components';
 const styled = styledComponents;
 
@@ -75,6 +76,8 @@ type State = {
 };
 
 export default class UsersTable extends React.PureComponent<Props, State> {
+  usersStream: any;
+  users$: IStream<IUsers> | null;
   state$: Rx.Subject<State>;
   search$: Rx.BehaviorSubject<string>;
   sortBy$: Rx.BehaviorSubject<string>;
@@ -84,6 +87,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
   constructor() {
     super();
     this.state = { users: null, sortBy: 'last_name', pageNumber: 1, pageCount: 0, searchValue: '' };
+    this.users$ = null;
     this.state$ = new Rx.Subject();
     this.search$ = new Rx.BehaviorSubject(this.state.searchValue);
     this.sortBy$ = new Rx.BehaviorSubject(this.state.sortBy);
@@ -104,14 +108,16 @@ export default class UsersTable extends React.PureComponent<Props, State> {
         const sortChanged = (sortBy !== this.state.sortBy);
         pageNumber = (searchChanged || sortChanged ? 1 : pageNumber);
 
-        return observeUsers({
+        this.users$ = observeUsers({
           queryParameters: {
             sort: sortBy,
             'page[number]': pageNumber,
             'page[size]': 4,
             search: searchValue
           }
-        }).observable.map((users) => ({ users, sortBy, pageNumber, searchValue }));
+        });
+
+        return this.users$.observable.map((users) => ({ users, sortBy, pageNumber, searchValue }));
       }).subscribe(({ users, sortBy, pageNumber, searchValue }) => {
         let pageCount: number | null = null;
 
@@ -160,6 +166,14 @@ export default class UsersTable extends React.PureComponent<Props, State> {
     this.search$.next(event.target.value);
   }
 
+  update = (userId) => () => {
+    if (userId && this.users$ !== null && this.users$.observer !== null) {
+      const object: IUserUpdate = { first_name: 'Test' };
+      const observers = [this.users$.observer];
+      updateUser(userId, object, true, observers);
+    }
+  }
+
   render () {
     const { users, pageNumber, pageCount, searchValue } = this.state;
     const sortBy = this.state.sortBy.replace(/^-/, '');
@@ -182,6 +196,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
               <th onClick={this.sortBy('last_name')}>Last name</th>
               <th onClick={this.sortBy('email')}>Email</th>
               <th onClick={this.sortBy('created_at')}>Created at</th>
+              <th>Action</th>
             </tr>
           </thead>
 
@@ -192,6 +207,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
                 <td>{user.attributes.last_name}</td>
                 <td>{user.attributes.email}</td>
                 <td>{user.attributes.created_at}</td>
+                <td><button onClick={this.update(user.id)} >update</button></td>
               </tr>
             )) }
           </tbody>
