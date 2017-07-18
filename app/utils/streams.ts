@@ -97,7 +97,6 @@ class Streams {
         newStream.observer = observer;
 
         newStream.fetch = () => {
-          console.log(apiEndpoint);
           request(apiEndpoint, headerData, httpMethod, queryParameters).then((response) => {
             observer.next(response);
           }).catch(() => {

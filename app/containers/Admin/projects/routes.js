@@ -46,25 +46,8 @@ export default (injectReducer) => ({
   },
   childRoutes: [
     {
-      path: '/admin/projects/create',
-      name: 'admin projects create',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/Admin/projects/views/create'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([component]) => {
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    },
-    {
       path: '/admin/projects/:slug/edit',
-      name: 'admin projects edit',
+      name: 'admin projects single project',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/Admin/projects/edit'),
@@ -78,7 +61,20 @@ export default (injectReducer) => ({
 
         importModules.catch(errorLoading);
       },
-    },
+      indexRoute: {
+        name: 'admin projects single edit',
 
+      },
+      childRoutes: [
+        {
+          path: '/admin/projects/:slug/timeline',
+          name: 'admin projects edit timeline',
+        },
+        {
+          path: '/admin/projects/:slug/events',
+          name: 'admin projects edit events',
+        },
+      ],
+    },
   ],
 });

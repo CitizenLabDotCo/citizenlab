@@ -19,4 +19,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDashboard.editProjectButton',
     defaultMessage: 'See the Project',
   },
+  backToList: {
+    id: 'app.containers.AdminPage.ProjectEdit.backToListButton',
+    defaultMessage: 'Go back',
+  },
+  viewPublicProject: {
+    id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',
+    defaultMessage: 'View project',
+  },
 });

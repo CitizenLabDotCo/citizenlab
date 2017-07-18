@@ -33,7 +33,6 @@ class AdminProjectsList extends React.Component<Props, State> {
 
   componentDidMount() {
     this.subscription = observeProjects().observable.subscribe((projects) => {
-      console.log(projects);
       this.setState({ projects: projects.data });
     });
   }
