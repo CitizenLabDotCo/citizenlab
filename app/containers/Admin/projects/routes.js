@@ -32,7 +32,7 @@ export default (injectReducer) => ({
     name: 'admin projects index',
     getComponent(nextState, cb) {
       const importModules = Promise.all([
-        import('containers/Admin/projects/views/all'),
+        import('containers/Admin/projects/all'),
       ]);
 
       const renderRoute = loadModule(cb);
@@ -64,10 +64,10 @@ export default (injectReducer) => ({
     },
     {
       path: '/admin/projects/:slug/edit',
-      name: 'adming projects edit',
+      name: 'admin projects edit',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/Admin/projects/views/edit'),
+          import('containers/Admin/projects/edit'),
         ]);
 
         const renderRoute = loadModule(cb);

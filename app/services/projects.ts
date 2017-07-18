@@ -4,9 +4,27 @@ import streams, { IStreamParams } from 'utils/streams';
 const apiEndpoint = `${API_PATH}/projects`;
 
 export interface IProject {
-  [key: string]: any;
+  id: string;
+  type: string;
+  attributes: {
+    created_ad: string,
+    description_multiloc: {
+      [key: string]: string
+    },
+    slug: string,
+    title_multiloc: {
+      [key: string]: string
+    },
+    updated_at: string,
+  };
+  relationships: any;
 }
 
-export function observeProjects(streamParams: IStreamParams<IProject[]> | null = null) {
-  return streams.create<IProject[]>({ apiEndpoint, ...streamParams });
+export interface IProjectResponse {
+  data: IProject[];
+  links: any;
+}
+
+export function observeProjects(streamParams: IStreamParams<IProjectResponse> | null = null) {
+  return streams.create<IProjectResponse>({ apiEndpoint, ...streamParams });
 }
