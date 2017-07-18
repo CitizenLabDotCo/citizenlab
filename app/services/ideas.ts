@@ -49,13 +49,6 @@ export interface IIdeaData {
       data: null
     }
   };
-  links: {
-    self: string;
-    first: string;
-    prev: string;
-    next: string;
-    last: string;
-  };
 }
 
 export interface IIdeaIncluded {
@@ -79,13 +72,17 @@ export interface IIdeaIncluded {
 }
 
 export interface IIdeaLinks {
-  [key: string]: any;
+  self: string;
+  first: string;
+  prev: string;
+  next: string;
+  last: string;
 }
 
 export interface IIdeas {
   data: IIdeaData[];
   included: IIdeaIncluded[];
-  links: IIdeaLinks[];
+  links: IIdeaLinks;
 }
 
 export function observeIdeas(streamParams: IStreamParams<IIdeas> | null = null) {

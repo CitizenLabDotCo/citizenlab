@@ -31,7 +31,7 @@ export default class IdeaTitle extends React.PureComponent<Props> {
 
   render() {
     const { id, title, selected } = this.props;
-    console.log(`Rendered IdeaTitle for idea ${id}`);
+    // console.log(`Rendered IdeaTitle for idea ${id}`);
     return <Container onClick={this.handleOnClick} selected={selected}>{title}</Container>;
   }
 }
