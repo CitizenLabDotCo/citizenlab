@@ -3,13 +3,13 @@ import Rx from 'rxjs/Rx';
 import _ from 'lodash';
 import IdeaTitle from './ideaTitle';
 import IdeaContent from './ideaContent';
-import IdeasTable from './ideasTable';
+import UsersTable from './usersTable';
 import styled from 'styled-components';
 import { observeMultipleIdeas, toggleIdea } from '../services/ideaService';
 
 const Container = styled.div`
   width: 100%;
-  max-width: 580px;
+  max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
   padding-top: 50px;
@@ -101,6 +101,7 @@ class IdeaList extends React.PureComponent {
 
     return (
       <Container>
+        {/*
         <Title>Ideas</Title>
         <Ideas>
           { loading && 'Loading...' }
@@ -117,8 +118,8 @@ class IdeaList extends React.PureComponent {
           )) }
         </Ideas>
         <LoadMoreBtn onClick={this.loadMore}>Load more ideas</LoadMoreBtn>
-
-        <IdeasTable />
+        */}
+        <UsersTable />
       </Container>
     );
   }
