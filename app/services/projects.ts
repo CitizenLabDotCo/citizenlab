@@ -3,7 +3,7 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/projects`;
 
-export interface IProject {
+export interface IProjectData {
   id: string;
   type: string;
   attributes: {
@@ -20,11 +20,19 @@ export interface IProject {
   relationships: any;
 }
 
-export interface IProjectResponse {
-  data: IProject[];
-  links: any;
+export interface IProjects {
+  data: IProjectData[];
+  links ?: any;
 }
 
-export function observeProjects(streamParams: IStreamParams<IProjectResponse> | null = null) {
-  return streams.create<IProjectResponse>({ apiEndpoint, ...streamParams });
+export interface IProject {
+  data: IProjectData;
+}
+
+export function observeProjects(streamParams: IStreamParams<IProjects> | null = null) {
+  return streams.create<IProjects>({ apiEndpoint, ...streamParams });
+}
+
+export function observeProject(id, streamParams: IStreamParams<IProject> | null = null) {
+  return streams.create<IProject>({ apiEndpoint: `${apiEndpoint}/${id}`, ...streamParams });
 }

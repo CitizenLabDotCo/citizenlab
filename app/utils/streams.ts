@@ -70,7 +70,7 @@ class Streams {
         _.isEqual(stream.httpMethod, params.httpMethod) &&
         _.isEqual(stream.queryParameters, params.queryParameters) &&
         _.isEqual(stream.localProperties, params.localProperties) &&
-        _.isEqual(stream.onEachEmit, params.onEachEmit) && 
+        _.isEqual(stream.onEachEmit, params.onEachEmit) &&
         _.isEqual(stream.streamName, params.streamName)
       );
     });
@@ -97,6 +97,7 @@ class Streams {
         newStream.observer = observer;
 
         newStream.fetch = () => {
+          console.log(apiEndpoint);
           request(apiEndpoint, headerData, httpMethod, queryParameters).then((response) => {
             observer.next(response);
           }).catch(() => {

@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // Services
-import { observeProjects, IProject } from 'services/projects';
+import { observeProjects, IProjectData } from 'services/projects';
 
 // Localisation
 import { FormattedMessage } from 'react-intl';
@@ -13,11 +13,11 @@ import messages from '../messages';
 
 // Component typing
 type Props = {
-  projects: IProject[]
+  projects: IProjectData[]
 };
 
 type State = {
-  projects: IProject[] | null;
+  projects: IProjectData[] | null;
 };
 
 class AdminProjectsList extends React.Component<Props, State> {
