@@ -50,7 +50,7 @@ class IdeaContent extends React.PureComponent {
     const { idea } = this.props;
     const { loading, topics, areas, images, author, project } = this.state;
 
-    console.log(`Rendered IdeaConent for idea ${idea.id}`);
+    // console.log(`Rendered IdeaConent for idea ${idea.id}`);
 
     return (
       <Container selected={idea.selected}>
