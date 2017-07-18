@@ -125,6 +125,8 @@ class Streams {
         if (current === 'fetch') {
           if (_.isFunction(newStream.fetch)) {
             newStream.fetch();
+          } else {
+            console.log('newStream does not have a fetch method');
           }
         } else if (!_.isFunction(current) && localProperties !== null) {
           if (_.isArray(current)) {

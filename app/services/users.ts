@@ -52,7 +52,7 @@ export interface IUserUpdate {
   first_name?: string;
   last_name?: string;
   email?: string;
-  passowrd?: string;
+  password?: string;
   locale?: string;
   avatar?: string;
   roles?: any[];
@@ -85,7 +85,7 @@ export function updateUser(
       if (observers) {
         observers.forEach((observer) => observer.next('fetch'));
       } else {
-        console.log('please provide one or more observers if you want to do a refetch after the update has finished');
+        console.log('please provide one or more observers if you want to do a refetch after the update');
       }
     }
   }).catch(() => {
