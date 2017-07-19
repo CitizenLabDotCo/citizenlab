@@ -18,7 +18,7 @@ resource "Ideas" do
     parameter :author, 'Filter by author (user id)', required: false
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
-    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular' or '-popular'", required: false
+    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status'", required: false
 
     example_request "List all ideas" do
       expect(status).to eq(200)
