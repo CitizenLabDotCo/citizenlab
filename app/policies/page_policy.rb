@@ -20,12 +20,12 @@ class PagePolicy < ApplicationPolicy
     user && user.admin?
   end
 
-  def by_slug?
+  def show?
     true
   end
 
-  def show?
-    true
+  def by_slug?
+    show?
   end
 
   def update?

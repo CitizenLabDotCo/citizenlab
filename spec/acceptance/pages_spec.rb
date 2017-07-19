@@ -59,7 +59,7 @@ resource "Pages" do
     example_request "Get a page by slug" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :slug)).to eq @pages.first.slug
+      expect(json_response.dig(:data, :id)).to eq @pages.first.id
     end
 
     describe do

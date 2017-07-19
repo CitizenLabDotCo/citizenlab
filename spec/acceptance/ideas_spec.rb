@@ -185,7 +185,23 @@ resource "Ideas" do
     end
   end
 
+  get "api/v1/ideas/by_slug/:slug" do
+    let(:slug) {@ideas.first.slug}
 
+    example_request "Get an idea by slug" do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data, :id)).to eq @ideas.first.id
+    end
+
+    describe do
+      let(:slug) {"unexisting-idea"}
+      example "get an unexisting idea by slug triggers 404", document: false do
+        do_request
+        expect(status).to eq 404
+      end
+    end
+  end
 
   post "api/v1/ideas" do
 

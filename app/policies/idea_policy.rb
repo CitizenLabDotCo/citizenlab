@@ -24,6 +24,10 @@ class IdeaPolicy < ApplicationPolicy
     true
   end
 
+  def by_slug?
+    show?
+  end
+
   def update?
     record.draft? || (user && (record.author_id == user.id || user.admin?))
   end

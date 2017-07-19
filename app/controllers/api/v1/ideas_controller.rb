@@ -79,6 +79,12 @@ class Api::V1::IdeasController < ApplicationController
     render json: @idea, include: ['author','topics','areas','user_vote','idea_images'], serializer: Api::V1::IdeaSerializer
   end
 
+  def by_slug
+    @idea = Idea.find_by!(slug: params[:slug])
+    authorize @idea
+    render json: @idea 
+  end
+
   # insert
   def create
     @idea = Idea.new(permitted_attributes(Idea))

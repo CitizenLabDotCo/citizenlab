@@ -24,6 +24,10 @@ class ProjectPolicy < ApplicationPolicy
     true
   end
 
+  def by_slug?
+    show?
+  end
+
   def update?
     user && (user.admin? || user.project_moderator?(record.project_id))
   end

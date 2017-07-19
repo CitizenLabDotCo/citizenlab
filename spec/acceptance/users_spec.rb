@@ -28,7 +28,7 @@ resource "Users" do
   context "when authenticated" do
     before do
       @user = create(:user)
-      create_list(:user, 5)
+      @users = create_list(:user, 5)
       token = Knock::AuthToken.new(payload: { sub: @user.id }).token
       header 'Authorization', "Bearer #{token}"
     end
@@ -107,6 +107,24 @@ resource "Users" do
       example_request "Get the authenticated user exposes the email field" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :email)).to eq @user.email
+      end
+    end
+
+    get "api/v1/users/by_slug/:slug" do
+      let(:slug) {@users.first.slug}
+
+      example_request "Get a user by slug" do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq @users.first.id
+      end
+
+      describe do
+        let(:slug) {"unexisting-user"}
+        example "get an unexisting user by slug triggers 404", document: false do
+          do_request
+          expect(status).to eq 404
+        end
       end
     end
 
