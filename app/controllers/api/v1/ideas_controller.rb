@@ -8,7 +8,7 @@ class Api::V1::IdeasController < ApplicationController
   
 
   def index
-    @ideas = policy_scope(Idea).includes(:author, :idea_status, :topics, :areas, :project, :idea_images)
+    @ideas = policy_scope(Idea).includes(:author, :topics, :areas, :project, :idea_images)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
@@ -33,6 +33,22 @@ class Api::V1::IdeasController < ApplicationController
         @ideas.order_popular
       when "-popular"
         @ideas.order_popular(:asc)
+      when "author_name"
+        @ideas.order(author_name: :asc)
+      when "-author_name"
+        @ideas.order(author_name: :desc)
+      when "upvotes_count"
+        @ideas.order(upvotes_count: :asc)
+      when "-upvotes_count"
+        @ideas.order(upvotes_count: :desc)
+      when "downvotes_count"
+        @ideas.order(downvotes_count: :asc)
+      when "-downvotes_count"
+        @ideas.order(downvotes_count: :desc)
+      when "status"
+        @ideas.order_status(:asc)
+      when "-status"
+        @ideas.order_status(:desc)
       when nil
         @ideas
       else

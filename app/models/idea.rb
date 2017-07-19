@@ -63,6 +63,11 @@ class Idea < ApplicationRecord
     )
   end)
 
+  scope :order_status, -> (direction=:desc) {
+    joins(:idea_status)
+    .order("idea_statuses.ordering #{direction}")
+  }
+
   scope :published, -> {where publication_status: 'published'}
 
   def location_point_geojson= geojson_point
