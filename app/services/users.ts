@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams, { IStream, IStreamParams } from 'utils/streams';
 import request from 'utils/request';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
@@ -66,12 +66,11 @@ export function observeUsers(streamParams: IStreamParams<IUsers> | null = null) 
   return streams.create<IUsers>({ apiEndpoint, ...streamParams });
 }
 
-export function updateUser(
-  userId: string, 
-  object: IUserUpdate,
-  refetchAfterUpdate: boolean = true,
-  observers: Rx.Observer<any>[] | null = null, 
-) {
+export function observeUser(userId: string, streamParams: IStreamParams<IUser> | null = null) {
+  return streams.create<IUser>({ apiEndpoint: `${apiEndpoint}/userId`, ...streamParams });
+}
+
+export function updateUser(userId: string, object: IUserUpdate) {
   const httpMethod = {
     method: 'PUT'
   };
@@ -80,14 +79,8 @@ export function updateUser(
     user: object
   };
 
-  return request(`${apiEndpoint}/${userId}`, bodyData, httpMethod, null).then(() => {
-    if (refetchAfterUpdate) {
-      if (observers) {
-        observers.forEach((observer) => observer.next('fetch'));
-      } else {
-        console.log('please provide one or more observers if you want to do a refetch after the update');
-      }
-    }
+  return request(`${apiEndpoint}/${userId}`, bodyData, httpMethod, null).then((response: IUser) => {
+    streams.update(userId, response);
   }).catch(() => {
     throw new Error(`error for updateUser() of service Users`);
   });
