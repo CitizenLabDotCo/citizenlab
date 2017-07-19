@@ -17,7 +17,7 @@ export interface IStreamParams<T> {
   queryParameters?: IObject;
   localProperties?: IObject;
   onEachEmit?: pureFn<T>;
-  streamName?: string;
+  name?: string;
 }
 interface IInputStreamParams<T> extends IStreamParams<T> {
   apiEndpoint: string;
@@ -29,12 +29,12 @@ interface IExtendedStreamParams<T> {
   queryParameters: IObject | null;
   localProperties: IObject | null;
   onEachEmit: pureFn<T> | null;
-  streamName: string | null;
+  name: string | null;
 }
 export interface IStream<T> {
-  streamId: string;
-  streamName: string | null;
-  type: 'singleItemStream' | 'arrayOfItemsStream' | 'unknown';
+  id: string;
+  name: string | null;
+  type: 'single' | 'array' | 'unknown';
   apiEndpoint: string;
   bodyData: IObject | null;
   httpMethod: IObject | null;
@@ -62,7 +62,7 @@ class Streams {
       queryParameters: null,
       localProperties: null,
       onEachEmit: null,
-      streamName: null,
+      name: null,
       ...inputParams
     };
     const existingStream = <IStream<T>>this.list.find((stream) => {
@@ -73,14 +73,14 @@ class Streams {
         _.isEqual(stream.queryParameters, params.queryParameters) &&
         _.isEqual(stream.localProperties, params.localProperties) &&
         _.isEqual(stream.onEachEmit, params.onEachEmit) && 
-        _.isEqual(stream.streamName, params.streamName)
+        _.isEqual(stream.name, params.name)
       );
     });
 
     if (!existingStream) {
       const stream: IStream<T> = {
-        streamId: uuid(),
-        streamName: params.streamName,
+        id: uuid(),
+        name: params.name,
         type: 'unknown',
         apiEndpoint: params.apiEndpoint,
         bodyData: params.bodyData,
@@ -103,11 +103,11 @@ class Streams {
         stream.fetch = () => {
           request(apiEndpoint, bodyData, httpMethod, queryParameters).then((response) => {
             if (response.data && _.isArray(response.data)) {
-              stream.type = 'arrayOfItemsStream';
+              stream.type = 'array';
               stream.dataIds = {};
               response.data.forEach(item => stream.dataIds[item.id] = true);
             } else if (response.data && _.isObject(response.data) && _.has(response, 'data.id')) {
-              stream.type = 'singleItemStream';
+              stream.type = 'single';
               stream.dataIds = { [response.data.id]: true };
             }
 
@@ -123,7 +123,7 @@ class Streams {
 
         return () => {
           console.log(`stream for api endpoint ${apiEndpoint} completed`);
-          this.list = this.list.filter((stream) => stream.streamId !== stream.streamId);
+          this.list = this.list.filter(item => item.id !== stream.id);
         };
       })
       .startWith('initial')
@@ -139,7 +139,7 @@ class Streams {
           if (_.isFunction(stream.fetch)) {
             stream.fetch();
           } else {
-            console.log('newStream does not have a fetch method');
+            console.log('stream does not have a fetch method');
           }
         } else if (!_.isFunction(current) && localProperties !== null) {
           if (_.isArray(current)) {
@@ -175,11 +175,13 @@ class Streams {
   }
 
   update<T>(dataId: string, object: any) {
-    streams.list.filter(stream => stream.dataIds[dataId]).forEach((stream) => {
+    console.log('streams:');
+    console.log(this.list);
+    this.list.filter(stream => stream.dataIds[dataId]).forEach((stream) => {
       if (stream.observer !== null) {
-        if (stream.type === 'singleItemStream') {
+        if (stream.type === 'single') {
           stream.observer.next(object);
-        } else if (stream.type === 'arrayOfItemsStream') {
+        } else if (stream.type === 'array') {
           stream.observer.next((item) => ({
             ...item,
             data: item.data.map((child) => (child.id === dataId ? object.data : child))
