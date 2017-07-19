@@ -10,7 +10,14 @@ class Api::V1::CommentsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
       .order(:lft)
-    render json: @comments, include: ['author']
+
+    if current_user
+      votes = Vote.where(user: current_user, votable: @comments.all)
+      votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
+      render json: @comments, include: ['author', 'user_vote'], vbci: votes_by_comment_id
+    else
+      render json: @comments, include: ['author']
+    end
   end
 
   def index_xlsx

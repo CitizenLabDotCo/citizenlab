@@ -6,7 +6,12 @@ Rails.application.routes.draw do
       get 'comments/as_xlsx' => 'comments#index_xlsx'
 
       resources :ideas do
-        resources :comments, shallow: true
+        resources :comments, shallow: true do
+          resources :votes, except: [:update], shallow: true, defaults: { votable: 'Comment' } do
+            post :up, on: :collection
+            post :down, on: :collection
+          end
+        end
         resources :votes, except: [:update], shallow: true, defaults: { votable: 'Idea' } do
           post :up, on: :collection
           post :down, on: :collection
