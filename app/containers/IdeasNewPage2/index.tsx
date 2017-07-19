@@ -1,3 +1,4 @@
+/*
 import * as React from 'react';
 import styledComponents from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -22,8 +23,10 @@ import { convertToRaw } from 'draft-js';
 import * as draftToHtml from 'draftjs-to-html';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-import { observeTopics } from 'services/topics';
-import { observeProjects } from 'services/projects';
+import { IUser } from 'services/users';
+import { IStream } from 'utils/streams';
+import { observeTopics, ITopics } from 'services/topics';
+import { observeProjects, IProjects } from 'services/projects';
 import { observeSignedInUser } from 'services/auth';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import messages from './messages';
@@ -118,10 +121,38 @@ const ButtonBarInner = styled.div`
   }
 `;
 
-class IdeasNewPage2 extends React.PureComponent {
+type Props = {
+  intl: ReactIntl.IntlShape,
+  tFunc: Function,
+  locale: string,
+};
+
+type State = {
+  user: IUser | null,
+  topics: ITopics | null,
+  projects: IProjects | null,
+  title: string | null,
+  description: any,
+  selectedTopics: ITopics | null,
+  selectedProject: IProjects | null,
+  location: any,
+  images: any,
+  processing: boolean,
+  titleError: string | null,
+  descriptionError: string | null,
+  submitError: string | null
+};
+
+class IdeasNewPage2 extends React.PureComponent<Props, State> {
+  state$: Rx.Subject<State>;
+  topics$: IStream<ITopics>;
+  projects$: IStream<IProjects>;
+  user$: IStream<IUser>;
+  subscriptions: Rx.Subscription[];
+  titleInputElement: HTMLInputElement | null;
+
   constructor() {
     super();
-
     this.state = {
       user: null,
       topics: null,
@@ -135,35 +166,39 @@ class IdeasNewPage2 extends React.PureComponent {
       processing: false,
       titleError: null,
       descriptionError: null,
-      submitError: null,
+      submitError: null
     };
-
+    this.state$ = new Rx.Subject();
+    this.topics$ = observeTopics();
+    this.projects$ = observeProjects();
+    this.user$ = observeSignedInUser();
     this.subscriptions = [];
+    this.titleInputElement = null;
   }
 
   componentDidMount() {
     this.subscriptions = [
+      this.state$.distinctUntilChanged().subscribe(state => this.setState(state)),
+
       Rx.Observable.combineLatest(
-        observeTopics().observable,
-        observeProjects().observable,
-        observeSignedInUser().observable,
-        (s1, s2, s3) => ({
-          topics: s1,
-          projects: s2,
-          user: s3,
-        }),
+        this.topics$.observable.distinctUntilChanged(),
+        this.projects$.observable.distinctUntilChanged(),
+        this.user$.observable.distinctUntilChanged(),
+        (topics, projects, user) => ({ topics, projects, user }),
       ).subscribe(({ topics, projects, user }) => {
-        this.setState({
-          user: (!_.isError(user) ? user.data : null),
-          topics: (topics ? this.getOptions(topics.data) : null),
-          projects: (projects ? this.getOptions(projects.data) : null),
-        });
+        this.state$.next({ ...this.state, topics, projects, user });
+
+        // this.setState({
+        //   user: (!_.isError(user) ? user.data : null),
+        //   topics: (topics ? this.getOptions(topics.data) : null),
+        //   projects: (projects ? this.getOptions(projects.data) : null),
+        // });
       }),
     ];
 
     // autofocus the title input field on initial render;
-    if (this.titleInput) {
-      this.titleInput.focus();
+    if (this.titleInputElement !== null) {
+      this.titleInputElement.focus();
     }
   }
 
@@ -227,14 +262,14 @@ class IdeasNewPage2 extends React.PureComponent {
       const images = (state.images ? [...state.images, newImage] : [newImage]);
       return { images };
     });
-  };
+  }
 
   handleUploadOnRemove = (removedImage) => {
     this.setState((state) => ({ images: state.images.filter((image) => image.preview !== removedImage.preview) }));
-  };
+  }
 
   handleSetRef = (element) => {
-    this.titleInput = element;
+    this.titleInputElement = element;
   }
 
   handleOnSubmit = async () => {
@@ -292,7 +327,10 @@ class IdeasNewPage2 extends React.PureComponent {
       images,
     } = this.state;
     const uploadedImages = _(images).map((image) => _.omit(image, 'base64')).value();
-    const hasAllRequiredContent = _.isString(title) && !_.isEmpty(title) && description && description.getCurrentContent().hasText();
+    const hasAllRequiredContent = _.isString(title) && 
+                                  !_.isEmpty(title) && 
+                                  description && 
+                                  description.getCurrentContent().hasText();
 
     return (
       <div>
@@ -411,3 +449,4 @@ const mapStateToProps = createStructuredSelector({
 });
 
 export default injectTFunc(injectIntl(connect(mapStateToProps, null)(IdeasNewPage2)));
+*/

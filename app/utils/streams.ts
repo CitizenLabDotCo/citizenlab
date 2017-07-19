@@ -6,10 +6,10 @@ import * as _ from 'lodash';
 import request from 'utils/request';
 import { v4 as uuid } from 'uuid';
 
-type pureFn<T> = (arg: T) => T;
+export type pureFn<T> = (arg: T) => T;
 type fetchFn<T> = () => IObservable<T>;
 interface IObject{ [key: string]: any; }
-export type IObserver<T> = Rx.Observer<T | ((arg: T) => T) | Error>;
+export type IObserver<T> = Rx.Observer<T | pureFn<T> | Error | 'fetch'>;
 export type IObservable<T> = Rx.Observable<T>;
 export interface IStreamParams<T> {
   bodyData?: IObject;
@@ -33,24 +33,26 @@ interface IExtendedStreamParams<T> {
 }
 export interface IStream<T> {
   streamId: string;
+  streamName: string | null;
+  type: 'singleItemStream' | 'arrayOfItemsStream' | 'unknown';
   apiEndpoint: string;
   bodyData: IObject | null;
   httpMethod: IObject | null;
   queryParameters: IObject | null;
   localProperties: IObject | null;
   onEachEmit: pureFn<T> | null;
-  streamName: string | null;
   fetch: fetchFn<T> | null;
   observer: IObserver<T> | null;
   observable: IObservable<T>;
   data: T | null;
+  dataIds: { [key: string]: true };
 }
 
 class Streams {
-  listOfStreams: IStream<any>[];
+  public list: IStream<any>[];
 
   constructor() {
-    this.listOfStreams = [];
+    this.list = [];
   }
 
   create<T>(inputParams: IInputStreamParams<T>) {
@@ -63,7 +65,7 @@ class Streams {
       streamName: null,
       ...inputParams
     };
-    const existingStream = <IStream<T>>this.listOfStreams.find((stream) => {
+    const existingStream = <IStream<T>>this.list.find((stream) => {
       return (
         _.isEqual(stream.apiEndpoint, params.apiEndpoint) &&
         _.isEqual(stream.bodyData, params.bodyData) &&
@@ -76,9 +78,10 @@ class Streams {
     });
 
     if (!existingStream) {
-      const newStream: IStream<T> = {
+      const stream: IStream<T> = {
         streamId: uuid(),
         streamName: params.streamName,
+        type: 'unknown',
         apiEndpoint: params.apiEndpoint,
         bodyData: params.bodyData,
         httpMethod: params.httpMethod,
@@ -89,15 +92,25 @@ class Streams {
         observer: null,
         observable: <any>null,
         data: null,
+        dataIds: {},
       };
 
       const observable: IObservable<T> = Rx.Observable.create((observer: IObserver<T>) => {
-        const { apiEndpoint, bodyData, httpMethod, queryParameters } = newStream;
+        const { apiEndpoint, bodyData, httpMethod, queryParameters } = stream;
 
-        newStream.observer = observer;
+        stream.observer = observer;
 
-        newStream.fetch = () => {
+        stream.fetch = () => {
           request(apiEndpoint, bodyData, httpMethod, queryParameters).then((response) => {
+            if (response.data && _.isArray(response.data)) {
+              stream.type = 'arrayOfItemsStream';
+              stream.dataIds = {};
+              response.data.forEach(item => stream.dataIds[item.id] = true);
+            } else if (response.data && _.isObject(response.data) && _.has(response, 'data.id')) {
+              stream.type = 'singleItemStream';
+              stream.dataIds = { [response.data.id]: true };
+            }
+
             observer.next(response);
           }).catch(() => {
             observer.next(new Error(`promise for api endpoint ${apiEndpoint} did not resolve`));
@@ -106,25 +119,25 @@ class Streams {
           return observable;
         };
 
-        newStream.fetch();
+        stream.fetch();
 
         return () => {
           console.log(`stream for api endpoint ${apiEndpoint} completed`);
-          this.listOfStreams = this.listOfStreams.filter((stream) => stream.streamId !== newStream.streamId);
+          this.list = this.list.filter((stream) => stream.streamId !== stream.streamId);
         };
       })
       .startWith('initial')
       .scan((accumulated: T, current: 'fetch' | T | pureFn<T>) => {
         let data = accumulated;
-        const { onEachEmit, localProperties } = newStream;
+        const { onEachEmit, localProperties } = stream;
 
         if (_.isFunction(onEachEmit)) {
           data = onEachEmit(data);
         }
 
         if (current === 'fetch') {
-          if (_.isFunction(newStream.fetch)) {
-            newStream.fetch();
+          if (_.isFunction(stream.fetch)) {
+            stream.fetch();
           } else {
             console.log('newStream does not have a fetch method');
           }
@@ -142,7 +155,7 @@ class Streams {
           data = current;
         }
 
-        newStream.data = data;
+        stream.data = data;
 
         return data;
       })
@@ -151,14 +164,33 @@ class Streams {
       .publishReplay(1)
       .refCount();
 
-      newStream.observable = observable;
+      stream.observable = observable;
 
-      this.listOfStreams = [...this.listOfStreams, newStream];
+      this.list = [...this.list, stream];
 
-      return newStream;
+      return stream;
     }
 
     return existingStream;
+  }
+
+  update<T>(dataId: string, object: any) {
+    streams.list.filter(stream => stream.dataIds[dataId]).forEach((stream) => {
+      if (stream.observer !== null) {
+        if (stream.type === 'singleItemStream') {
+          stream.observer.next(object);
+        } else if (stream.type === 'arrayOfItemsStream') {
+          stream.observer.next((item) => ({
+            ...item,
+            data: item.data.map((child) => (child.id === dataId ? object.data : child))
+          }));
+        } else {
+          stream.observer.next('fetch');
+        }
+      } else {
+        console.log('observer is null');
+      }
+    });
   }
 }
 

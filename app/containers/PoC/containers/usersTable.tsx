@@ -167,16 +167,12 @@ export default class UsersTable extends React.PureComponent<Props, State> {
   }
 
   update = (userId) => () => {
-    if (userId && this.users$ !== null && this.users$.observer !== null) {
-      const object: IUserUpdate = { first_name: 'Test' };
-      const observers = [this.users$.observer];
-      updateUser(userId, object, true, observers);
-    }
+    updateUser(userId, { first_name: `Test${Date.now()}` });
   }
 
   render () {
     const { users, pageNumber, pageCount, searchValue } = this.state;
-    const sortBy = this.state.sortBy.replace(/^-/, '');
+    // const sortBy = this.state.sortBy.replace(/^-/, '');
 
     return (
       <Container>
