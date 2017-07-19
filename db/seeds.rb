@@ -42,10 +42,16 @@ Tenant.create({
         "fr" => Faker::Address.city
       },
       timezone: "Europe/Brussels",
-      style_main_bg: Faker::Color.hex_color,
-      style_main_fg: Faker::Color.hex_color,
-      style_accent_bg: Faker::Color.hex_color,
-      style_accent_fg: Faker::Color.hex_color
+      color_main: Faker::Color.hex_color,
+      color_menu_bg: rand(2) == 0 ? "#000000" : "#ffffff"
+    },
+    demographic_fields: {
+      allowed: true,
+      enabled: true,
+      gender: true,
+      domicile: true,
+      birthyear: true,
+      education: true,
     },
     facebook_login: {
       allowed: true,

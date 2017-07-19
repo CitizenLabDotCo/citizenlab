@@ -141,4 +141,12 @@ RSpec.describe Idea, type: :model do
     end
   end
 
+  describe "order_status" do
+    it "sorts from high status to low status when asked desc" do
+      status_sorted = Idea.order_status(:desc).map(&:id)
+      expect(status_sorted).to eq Idea.all.sort_by{|idea| idea.idea_status.ordering}.map(&:id).reverse
+    end
+  end
+
+
 end
