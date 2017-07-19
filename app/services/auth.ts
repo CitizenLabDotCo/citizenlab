@@ -1,3 +1,5 @@
+import { IUser } from 'services/users';
+import { IHttpMethod } from 'typings.d';
 import { API_PATH } from 'containers/App/constants';
 import { getJwt, setJwt } from 'utils/auth/jwt';
 import * as _ from 'lodash';
@@ -5,12 +7,10 @@ import request from 'utils/request';
 import streams from 'utils/streams';
 
 export function observeSignedInUser() {
-  return streams.create({ apiEndpoint: `${API_PATH}/users/me` });
+  return streams.create<IUser>({ apiEndpoint: `${API_PATH}/users/me` });
 }
 
-export function signIn(email, password) {
-  const apiEndpoint = `${API_PATH}/user_token`;
-
+export function signIn(email: string, password: string) {
   const bodyData = {
     auth: {
       email,
@@ -18,11 +18,11 @@ export function signIn(email, password) {
     },
   };
 
-  const httpMethod = {
+  const httpMethod: IHttpMethod = {
     method: 'POST',
   };
 
-  return request(apiEndpoint, bodyData, httpMethod, null).then((data) => {
+  return request(`${API_PATH}/user_token`, bodyData, httpMethod, null).then((data) => {
     const jwt = getJwt();
 
     if (!jwt && _.has(data, 'jwt')) {
@@ -37,16 +37,14 @@ export function signIn(email, password) {
 }
 
 export function signUp(
-  firstName,
-  lastName,
-  email,
-  password,
-  selectedGender = null,
-  selectedYearOfBirth = null,
-  selectedAreaId = null
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string,
+  selectedGender: 'male' | 'female' | null = null,
+  selectedYearOfBirth: number | null = null,
+  selectedAreaId: string | null = null
 ) {
-  const apiEndpoint = `${API_PATH}/users`;
-
   const bodyData = {
     user: {
       firstName,
@@ -59,11 +57,11 @@ export function signUp(
     },
   };
 
-  const httpMethod = {
+  const httpMethod: IHttpMethod = {
     method: 'POST',
   };
 
-  return request(apiEndpoint, bodyData, httpMethod, null).then(() => {
+  return request(`${API_PATH}/users`, bodyData, httpMethod, null).then(() => {
     return { email, password };
   })
   .catch((error) => {
