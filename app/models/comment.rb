@@ -2,8 +2,12 @@ class Comment < ApplicationRecord
   acts_as_nested_set
   belongs_to :author, class_name: 'User'
   belongs_to :idea
+  has_many :votes, as: :votable, dependent: :destroy
+  has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
+  has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
+  has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
+  
   counter_culture :idea
-  # belongs_to :parent, class_name: 'Comment', optional: true
 
   validates :body_multiloc, presence: true, multiloc: {presence: true}
   validates :author_name, presence: true

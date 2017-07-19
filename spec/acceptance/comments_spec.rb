@@ -21,6 +21,7 @@ resource "Comments" do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
+
   end
 
   get "api/v1/comments/as_xlsx" do
@@ -47,6 +48,21 @@ resource "Comments" do
       @user = create(:user)
       token = Knock::AuthToken.new(payload: { sub: @user.id }).token
       header 'Authorization', "Bearer #{token}"
+    end
+
+    get "api/v1/ideas/:idea_id/comments" do
+
+      let(:idea_id) { @idea.id }
+
+      example "List all comments includes the user_vote when authenticated" do
+        comment = create(:comment, idea: @idea)
+        vote = create(:vote, user: @user, votable: comment)
+
+        do_request
+        json_response = json_parse(response_body)
+        expect(json_response[:data].map{|d| d[:relationships][:user_vote][:data]}.compact.first[:id]).to eq vote.id
+        expect(json_response[:included].map{|i| i[:id]}).to include vote.id
+      end
     end
 
     post "api/v1/ideas/:idea_id/comments" do

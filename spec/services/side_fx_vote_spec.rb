@@ -8,13 +8,13 @@ describe SideFxVoteService do
     it "logs a 'upvoted' action when a upvote is created" do
       vote = create(:vote, mode: 'up')
       expect {service.after_create(vote, user)}.
-        to have_enqueued_job(LogActivityJob).with(vote, 'upvoted', user, vote.updated_at.to_i)
+        to have_enqueued_job(LogActivityJob).with(vote, 'idea_upvoted', user, vote.updated_at.to_i)
     end
 
     it "logs a 'downvoted' action when a downvote is created" do
       vote = create(:vote, mode: 'down')
       expect {service.after_create(vote, user)}.
-        to have_enqueued_job(LogActivityJob).with(vote, 'downvoted', user, vote.updated_at.to_i)
+        to have_enqueued_job(LogActivityJob).with(vote, 'idea_downvoted', user, vote.updated_at.to_i)
     end
 
   end

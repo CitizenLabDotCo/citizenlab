@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource "Votes" do
+resource "Idea Votes" do
   before do
     @user = create(:admin)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token

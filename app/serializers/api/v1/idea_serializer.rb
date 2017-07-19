@@ -13,10 +13,6 @@ class Api::V1::IdeaSerializer < ActiveModel::Serializer
     serializer.cached_user_vote
   end
 
-  def passed_options
-    @instance_options
-  end
-
   def location_point_geojson
     RGeo::GeoJSON.encode(object.location_point)
   end
