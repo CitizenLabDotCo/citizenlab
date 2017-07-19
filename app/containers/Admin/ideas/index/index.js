@@ -1,9 +1,18 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { FormattedMessage } from 'react-intl';
 import Pagination from 'components/admin/Pagination';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
+import { observeIdeas } from 'services/ideas';
+import { observeTopics } from 'services/topics';
+import { observeIdeaStatuses } from 'services/idea_statuses';
+import { observeProjects } from 'services/projects';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
+import { injectTFunc } from 'utils/containers/t/utils';
+
+
 // import ExportLabel from 'components/admin/ExportLabel';
 import { Table, Input, Menu, Dropdown } from 'semantic-ui-react';
 
@@ -32,22 +41,99 @@ const HeaderTitle = styled.h1`
   color: #101010;
 `;
 
-class AllIdeas extends Component {
+class AllIdeas extends PureComponent {
 
   constructor() {
     super();
+    this.ideasObservable = null;
+    this.topicsObservable = null;
+    this.projectsObservable = null;
+    this.ideaStatusesObservable = null;
+
     this.state = {
-      sortAttribute: 'published_at',
+      sortAttribute: 'new',
       sortDirection: 'desc',
       ideas: [],
+      topics: [],
+      projects: [],
+      ideaStatuses: [],
       currentPageNumber: 1,
       lastPageNumber: 1,
       searchTerm: '',
+      selectedTopic: [],
+      selectedProject: null,
+      selectedIdeaStatus: null,
     };
   }
 
+  componentDidMount() {
+    this.resubscribeIdeas();
+
+    this.topicsObservable = observeTopics().observable.subscribe((data) => {
+      this.setState({
+        topics: data.data,
+      });
+    });
+
+    this.projectsObservable = observeProjects().observable.subscribe((data) => {
+      this.setState({
+        projects: data.data,
+      });
+    });
+
+    this.ideaStatusesObservable = observeIdeaStatuses().observable.subscribe((data) => {
+      this.setState({
+        ideaStatuses: data.data,
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.ideasObservable.unsubscribe();
+    this.topicsObservable.unsubscribe();
+    this.projectsObservable.unsubscribe();
+    this.ideaStatusesObservable.unsubscribe();
+  }
+
+  resubscribeIdeas() {
+    if (this.ideasObservable) {
+      this.ideasObservable.unsubscribe();
+    }
+
+    const sortSign = this.state.sortDirection === 'desc' ? '-' : '';
+    const queryParams = {
+      'page[size]': 10,
+      'page[number]': this.state.currentPageNumber,
+      search: this.state.searchTerm,
+      sort: `${sortSign}${this.state.sortAttribute}`,
+    };
+
+    if (this.state.selectedProject) {
+      queryParams.project = this.state.selectedProject;
+    }
+
+    if (this.state.selectedTopic) {
+      queryParams['topics[]'] = this.state.selectedTopic;
+    }
+
+    if (this.state.selectedIdeaStatus) {
+      queryParams.idea_status = this.state.selectedIdeaStatus;
+    }
+
+    this.ideasObservable = observeIdeas({
+      queryParameters: queryParams,
+    }).observable.subscribe((data) => {
+      const currentPageNumber = getPageNumberFromUrl(data.links.self) || 1;
+      const lastPageNumber = getPageNumberFromUrl(data.links.last) || currentPageNumber;
+      this.setState({
+        ideas: data.data,
+        lastPageNumber: lastPageNumber || this.state.lastPageNumber,
+      });
+    });
+  }
+
   handlePaginationClick = (page) => {
-    this.setState({ currentPageNumber: page });
+    this.setState({ currentPageNumber: page }, this.resubscribeIdeas);
   }
 
   handleSortClick = (attribute) => {
@@ -58,21 +144,64 @@ class AllIdeas extends Component {
     this.setState({
       sortAttribute: attribute,
       sortDirection: newDirection,
-    });
+    }, this.resubscribeIdeas);
   }
 
   handleSearchChange = (event) => {
     this.setState({
       searchTerm: event.target.value,
       currentPageNumber: 1,
-    });
+    }, this.resubscribeIdeas);
+  }
+
+  handleTopicChange = (event, data) => {
+    this.setState({
+      selectedTopic: data.value,
+      currentPageNumber: 1,
+    }, this.resubscribeIdeas);
+  }
+
+  handleProjectChange = (event, data) => {
+    this.setState({
+      selectedProject: data.value,
+      currentPageNumber: 1,
+    }, this.resubscribeIdeas);
+  }
+
+  handleIdeaStatusFilterChange = (event, data) => {
+    this.setState({
+      selectedIdeaStatus: data.value,
+      currentPageNumber: 1,
+    }, this.resubscribeIdeas);
+  }
+
+  // handleIdeaStatusChange = (idea, statusId) => {
+  // }
+
+  topicOptions = () => {
+    return this.state.topics.map((topic) => ({
+      value: topic.id,
+      text: this.props.tFunc(topic.attributes.title_multiloc),
+    }));
+  }
+
+  projectOptions = () => {
+    return this.state.projects.map((project) => ({
+      value: project.id,
+      text: this.props.tFunc(project.attributes.title_multiloc),
+    }));
+  }
+
+  ideaStatusOptions = () => {
+    return this.state.ideaStatuses.map((status) => ({
+      value: status.id,
+      text: this.props.tFunc(status.attributes.title_multiloc),
+    }));
   }
 
   render() {
     const { sortAttribute, sortDirection, currentPageNumber, lastPageNumber, ideas } = this.state;
-    const topicsOptions = [
-      { text: 'nature', value: 'nature' },
-    ];
+
     return (
       <div>
         <HeaderContainer>
@@ -101,20 +230,20 @@ class AllIdeas extends Component {
             </Menu.Item>
             <Menu.Menu position="right">
               <Menu.Item>
-                <Dropdown placeholder="Topics" fluid multiple selection options={topicsOptions} />
+                <Dropdown placeholder="Topics" fluid selection options={this.topicOptions()} onChange={this.handleTopicChange} />
               </Menu.Item>
               <Menu.Item>
-                <Dropdown placeholder="Projects" fluid multiple selection options={topicsOptions} />
+                <Dropdown placeholder="Projects" fluid selection options={this.projectOptions()} onChange={this.handleProjectChange} />
               </Menu.Item>
               <Menu.Item>
-                <Dropdown placeholder="Status" fluid selection options={topicsOptions} />
+                <Dropdown placeholder="Status" fluid selection options={this.ideaStatusOptions()} onChange={this.handleIdeaStatusFilterChange} />
               </Menu.Item>
             </Menu.Menu>
           </Menu>
           <Table>
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell>
+                <Table.HeaderCell width={5}>
                   <SortableTableHeader
                     direction={sortAttribute === 'title_multiloc' ? sortDirection : null}
                     onToggle={() => this.handleSortClick('title_multiloc')}
@@ -122,7 +251,7 @@ class AllIdeas extends Component {
                     <FormattedMessage {...messages.title} />
                   </SortableTableHeader>
                 </Table.HeaderCell>
-                <Table.HeaderCell>
+                <Table.HeaderCell width={2}>
                   <SortableTableHeader
                     direction={sortAttribute === 'author' ? sortDirection : null}
                     onToggle={() => this.handleSortClick('author')}
@@ -130,23 +259,23 @@ class AllIdeas extends Component {
                     <FormattedMessage {...messages.author} />
                   </SortableTableHeader>
                 </Table.HeaderCell>
-                <Table.HeaderCell>
+                <Table.HeaderCell width={2}>
                   <SortableTableHeader
-                    direction={sortAttribute === 'published_at' ? sortDirection : null}
-                    onToggle={() => this.handleSortClick('published_at')}
+                    direction={sortAttribute === 'new' ? sortDirection : null}
+                    onToggle={() => this.handleSortClick('new')}
                   >
                     <FormattedMessage {...messages.publication_date} />
                   </SortableTableHeader>
                 </Table.HeaderCell>
-                <Table.HeaderCell>
+                <Table.HeaderCell width={1}>
                   <SortableTableHeader
                     direction={sortAttribute === 'upvotes_count' ? sortDirection : null}
                     onToggle={() => this.handleSortClick('upvotes_count')}
                   >
                     <FormattedMessage {...messages.up} />
                   </SortableTableHeader>
-                </Table.HeaderCell>
-                <Table.HeaderCell>
+                </Table.HeaderCell >
+                <Table.HeaderCell width={1}>
                   <SortableTableHeader
                     direction={sortAttribute === 'downvotes_count' ? sortDirection : null}
                     onToggle={() => this.handleSortClick('downvotes_count')}
@@ -154,7 +283,7 @@ class AllIdeas extends Component {
                     <FormattedMessage {...messages.down} />
                   </SortableTableHeader>
                 </Table.HeaderCell>
-                <Table.HeaderCell>
+                <Table.HeaderCell width={2}>
                   <SortableTableHeader
                     direction={sortAttribute === 'implementation_status' ? sortDirection : null}
                     onToggle={() => this.handleSortClick('implementation_status')}
@@ -165,7 +294,14 @@ class AllIdeas extends Component {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {ideas.map((id) => <Row key={id} userId={id} />)}
+              {ideas.map((idea) =>
+                <Row
+                  ideaStatuses={this.state.ideaStatuses}
+                  key={idea.id}
+                  idea={idea}
+                  onIdeaStatusChange={(status) => this.handleIdeaStatusChange(idea, status)}
+                />
+              )}
             </Table.Body>
             <Table.Footer fullWidth>
               <Table.Row>
@@ -185,5 +321,9 @@ class AllIdeas extends Component {
   }
 }
 
+AllIdeas.propTypes = {
+  tFunc: PropTypes.func.isRequired,
+};
 
-export default AllIdeas;
+
+export default injectTFunc(AllIdeas);

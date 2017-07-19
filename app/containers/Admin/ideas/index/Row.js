@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 // import ImPropTypes from 'react-immutable-proptypes';
 
 // components
 // import ActionButton from 'components/buttons/action.js';
-import { Table } from 'semantic-ui-react';
+import { Table, Icon, Dropdown } from 'semantic-ui-react';
 import { FormattedDate } from 'react-intl';
 import T from 'containers/T';
+import { injectTFunc } from 'utils/containers/t/utils';
+
 // store
 // import { preprocess } from 'utils';
 // import { createStructuredSelector } from 'reselect';
@@ -18,25 +20,53 @@ import T from 'containers/T';
 // import { ACTION_PREFIX } from './constants';
 
 // style
-// import styled from 'styled-components';
+import styled from 'styled-components';
 
-class Row extends React.PureComponent {
+const StyledRow = styled.tr`
+  height: 5rem;
+`;
+
+class Row extends PureComponent {
+
+  handleIdeaStatusChange = (event, data) => {
+    this.props.onIdeaStatusChange(data.value);
+  }
+
+  ideaStatusOptions = () => {
+    return this.props.ideaStatuses.map((status) => ({
+      value: status.id,
+      text: this.props.tFunc(status.attributes.title_multiloc),
+    }));
+  }
 
   render() {
-    const idea = this.props.idea;
+    const { idea } = this.props;
+    const attrs = idea.attributes;
     return (
-      <Table.Row>
+      <Table.Row as={StyledRow}>
         <Table.Cell>
-          <T value={idea.attributes.title_multiloc} />
+          <T value={attrs.title_multiloc} />
         </Table.Cell>
-        <Table.Cell></Table.Cell>
-        <Table.Cell></Table.Cell>
+        <Table.Cell>{attrs.author_name}</Table.Cell>
         <Table.Cell>
-          <FormattedDate value={idea.attributes.published_at} />
-        </Table.Cell>
-        <Table.Cell>
+          <FormattedDate value={attrs.published_at} />
         </Table.Cell>
         <Table.Cell>
+          <Icon name="thumbs up" />
+          {attrs.upvotes_count}
+        </Table.Cell>
+        <Table.Cell>
+          <Icon name="thumbs down" />
+          {attrs.downvotes_count}
+        </Table.Cell>
+        <Table.Cell>
+          <Dropdown
+            fluid
+            selection
+            options={this.ideaStatusOptions()}
+            onChange={this.handleIdeaStatusChange}
+            value={idea.relationships.idea_status.data.id}
+          />
         </Table.Cell>
       </Table.Row>
     );
@@ -45,6 +75,9 @@ class Row extends React.PureComponent {
 
 Row.propTypes = {
   idea: PropTypes.object,
+  ideaStatuses: PropTypes.array,
+  onIdeaStatusChange: PropTypes.func,
+  tFunc: PropTypes.func.isRequired,
 };
 
 // const mapStateToProps = () => createStructuredSelector({
@@ -70,4 +103,4 @@ Row.propTypes = {
 
 // export default preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(Row);
 
-export default Row;
+export default injectTFunc(Row);
