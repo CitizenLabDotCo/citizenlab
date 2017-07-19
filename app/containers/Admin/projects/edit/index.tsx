@@ -34,7 +34,8 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.subscription = observeProject('5eb0322c-d6ac-4100-b50e-354f13b119d1').observable.subscribe((project) => {
+    // TODO: use the slug as soon as the API supports it
+    this.subscription = observeProject('8b3cbb36-6f3e-411e-a68e-f1bdc26437ea').observable.subscribe((project) => {
       this.setState({ project: project.data });
     });
 
@@ -65,12 +66,16 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
           label: 'timeline',
           url: project ? `/admin/projects/${project.attributes.slug}/timeline` : '',
         },
+        {
+          label: 'events',
+          url: project ? `/admin/projects/${project.attributes.slug}/events` : '',
+        },
       ],
     };
 
     return(
       <div>
-        <a href="">go back</a>
+        <a href="/admin/projects">go back</a>
         {project &&
           <TabbedResource {...tabbedProps}>
             {this.props.children}
