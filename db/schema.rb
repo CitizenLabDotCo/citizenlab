@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170718121258) do
+ActiveRecord::Schema.define(version: 20170719160834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -127,10 +127,12 @@ ActiveRecord::Schema.define(version: 20170718121258) do
     t.string "location_description"
     t.integer "comments_count", default: 0, null: false
     t.uuid "idea_status_id"
+    t.string "slug", null: false
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
     t.index ["project_id"], name: "index_ideas_on_project_id"
+    t.index ["slug"], name: "index_ideas_on_slug", unique: true
   end
 
   create_table "ideas_topics", id: false, force: :cascade do |t|
@@ -164,7 +166,7 @@ ActiveRecord::Schema.define(version: 20170718121258) do
     t.datetime "updated_at", null: false
     t.uuid "project_id"
     t.index ["project_id"], name: "index_pages_on_project_id"
-    t.index ["slug"], name: "index_pages_on_slug"
+    t.index ["slug"], name: "index_pages_on_slug", unique: true
   end
 
   create_table "phases", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -195,6 +197,7 @@ ActiveRecord::Schema.define(version: 20170718121258) do
     t.datetime "updated_at", null: false
     t.string "header_bg"
     t.integer "ideas_count", default: 0, null: false
+    t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
   create_table "projects_topics", id: false, force: :cascade do |t|
@@ -239,7 +242,7 @@ ActiveRecord::Schema.define(version: 20170718121258) do
     t.string "locale"
     t.jsonb "bio_multiloc", default: {}
     t.index ["email"], name: "index_users_on_email"
-    t.index ["slug"], name: "index_users_on_slug"
+    t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
   create_table "votes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

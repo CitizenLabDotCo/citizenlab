@@ -29,7 +29,10 @@ class Idea < ApplicationRecord
   validates :author, presence: true, unless: :draft?
   validates :author_name, presence: true, unless: :draft?
   validates :idea_status, presence: true, unless: :draft?
+  validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
 
+
+  before_validation :generate_slug, on: :create
   before_validation :set_author_name, on: :create
   before_validation :set_idea_status, on: :create
   after_validation :set_published_at, if: ->(idea){ idea.published? && idea.publication_status_changed? }
@@ -89,6 +92,13 @@ class Idea < ApplicationRecord
   def trending_score
     score /
     ((Time.now - published_at).abs / 3600)**1.1
+  end
+
+  def generate_slug
+    if !self.slug
+      title = MultilocService.new.t self.title_multiloc, self.author
+      self.slug = SlugService.new.generate_slug self, title
+    end
   end
 
   def set_author_name

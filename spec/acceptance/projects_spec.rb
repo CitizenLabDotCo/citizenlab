@@ -37,6 +37,24 @@ resource "Projects" do
     end
   end
 
+  get "api/v1/projects/by_slug/:slug" do
+    let(:slug) {@projects.first.slug}
+
+    example_request "Get a project by slug" do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data, :id)).to eq @projects.first.id
+    end
+
+    describe do
+      let(:slug) {"unexisting-project"}
+      example "get an unexisting project by slug triggers 404", document: false do
+        do_request
+        expect(status).to eq 404
+      end
+    end
+  end
+
   post "api/v1/projects" do
     with_options scope: :project do
       parameter :title_multiloc, "The title of the project, as a multiloc string", required: true

@@ -72,8 +72,7 @@ class User < ApplicationRecord
 
   def generate_slug
     if !self.slug && self.first_name.present?
-      new_slug = [self.first_name.parameterize, self.last_name&.parameterize].compact.join('-')
-      self.slug = SlugService.new.generate_slug self, new_slug
+      self.slug = SlugService.new.generate_slug self, self.display_name
     end
   end
 

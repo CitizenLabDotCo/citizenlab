@@ -26,6 +26,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def by_slug?
+    show?
+  end
+
   def update?
     user && (record.id == user.id || user.admin?)
   end

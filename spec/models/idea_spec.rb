@@ -18,6 +18,11 @@ RSpec.describe Idea, type: :model do
       expect(idea.author_name).to eq u.display_name
     end
 
+    it "should generate a slug on creation" do
+      idea = create(:idea, slug: nil)
+      expect(idea.slug).to be_present
+    end
+
   end
 
   context "published at" do

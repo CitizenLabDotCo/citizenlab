@@ -14,6 +14,12 @@ class Api::V1::ProjectsController < ::ApplicationController
     render json: @project, include: ['project_images']
   end
 
+  def by_slug
+    @project = Project.find_by!(slug: params[:slug])
+    authorize @project
+    render json: @project 
+  end
+
   def create
     @project = Project.new(project_params)
     authorize @project
