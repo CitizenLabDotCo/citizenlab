@@ -175,8 +175,6 @@ class Streams {
   }
 
   update<T>(dataId: string, object: any) {
-    console.log('streams:');
-    console.log(this.list);
     this.list.filter(stream => stream.dataIds[dataId]).forEach((stream) => {
       if (stream.observer !== null) {
         if (stream.type === 'single') {
