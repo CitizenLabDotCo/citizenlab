@@ -1,6 +1,8 @@
 import { IRelationship } from 'typings.d';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import request from 'utils/request';
+import * as Rx from 'rxjs/Rx';
 
 const apiEndpoint = `${API_PATH}/ideas`;
 
@@ -15,7 +17,7 @@ export interface IIdeaData {
       [key: string]: any;
     };
     author_name: string;
-    publication_status: 'draft' | 'published';
+    publication_status: 'draft' | 'published' | 'closed' | 'spam';
     upvotes_count: number;
     downvotes_count: number;
     comments_count: number;
@@ -81,6 +83,43 @@ export interface IIdeas {
   links: IIdeaLinks;
 }
 
+export interface IIdea {
+  data: IIdeaData;
+}
+
+export interface IIdeaUpdate {
+  title_multiloc?: {
+    [key: string]: any;
+  };
+  body_multiloc?: {
+    [key: string]: any;
+  };
+  project_id?: string,
+  author_id?: string,
+  idea_status_id?: string,
+  publication_status?: 'draft' | 'published' | 'closed' | 'spam',
+  topid_ids?: string[],
+  area_ids?: string[],
+  location_point_geojson?: any,
+  location_description?: string,
+}
+
 export function observeIdeas(streamParams: IStreamParams<IIdeas> | null = null) {
   return streams.create<IIdeas>({ apiEndpoint, ...streamParams });
+}
+
+export function updateIdea(ideaId: string, object: IIdeaUpdate) {
+  const httpMethod = {
+    method: 'PUT'
+  };
+
+  const bodyData = {
+    idea: object
+  };
+
+  return request(`${apiEndpoint}/${ideaId}`, bodyData, httpMethod, null).then((response: IIdea) => {
+    streams.update(ideaId, response);
+  }).catch(() => {
+    throw new Error(`error for updateUser() of service Users`);
+  });
 }

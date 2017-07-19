@@ -1,22 +1,27 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import { FormattedMessage } from 'react-intl';
 import Pagination from 'components/admin/Pagination';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
-import { observeIdeas } from 'services/ideas';
+import { observeIdeas, updateIdea } from 'services/ideas';
 import { observeTopics } from 'services/topics';
 import { observeIdeaStatuses } from 'services/idea_statuses';
 import { observeProjects } from 'services/projects';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { injectTFunc } from 'utils/containers/t/utils';
+import WatchSagas from 'utils/containers/watchSagas';
 
 
 // import ExportLabel from 'components/admin/ExportLabel';
 import { Table, Input, Menu, Dropdown } from 'semantic-ui-react';
-
+import ExportLabel from 'components/admin/ExportLabel';
+import { loadIdeasXlsxRequest, loadCommentsXlsxRequest } from './actions';
 import messages from './messages';
+import sagas from './sagas';
 import Row from './Row';
 
 const TableContainer = styled.div`
@@ -39,6 +44,12 @@ const HeaderTitle = styled.h1`
   font-weight: bold;
   margin: 0;
   color: #101010;
+`;
+
+const ExportLabelsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 `;
 
 class AllIdeas extends PureComponent {
@@ -175,8 +186,12 @@ class AllIdeas extends PureComponent {
     }, this.resubscribeIdeas);
   }
 
-  // handleIdeaStatusChange = (idea, statusId) => {
-  // }
+  handleIdeaStatusChange = (idea, statusId) => {
+    updateIdea(
+      idea.id,
+      { idea_status_id: statusId },
+    );
+  }
 
   topicOptions = () => {
     return this.state.topics.map((topic) => ({
@@ -201,27 +216,29 @@ class AllIdeas extends PureComponent {
 
   render() {
     const { sortAttribute, sortDirection, currentPageNumber, lastPageNumber, ideas } = this.state;
-
     return (
       <div>
+        <WatchSagas sagas={sagas} />
         <HeaderContainer>
           <HeaderTitle>
             <FormattedMessage {...messages.header} />
           </HeaderTitle>
-          {/* <ExportLabel
-            action={this.props.loadIdeasXlsxRequest}
-            loading={this.props.exportLoading}
-            error={this.props.exportError}
-          >
-            <FormattedMessage {...messages.exportIdeas} />
-          </ExportLabel>
-          <ExportLabel
-            action={this.props.loadIdeasXlsxRequest}
-            loading={this.props.exportLoading}
-            error={this.props.exportError}
-          >
-            <FormattedMessage {...messages.exportIdeas} />
-          </ExportLabel>*/}
+          <ExportLabelsContainer>
+            <ExportLabel
+              action={this.props.loadIdeasXlsxRequest}
+              loading={this.props.exportIdeasLoading}
+              error={this.props.exportIdeasError}
+            >
+              <FormattedMessage {...messages.exportIdeas} />
+            </ExportLabel>
+            <ExportLabel
+              action={this.props.loadCommentsXlsxRequest}
+              loading={this.props.exportCommentsLoading}
+              error={this.props.exportCommentsError}
+            >
+              <FormattedMessage {...messages.exportComments} />
+            </ExportLabel>
+          </ExportLabelsContainer>
         </HeaderContainer>
         <TableContainer>
           <Menu>
@@ -244,17 +261,12 @@ class AllIdeas extends PureComponent {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell width={5}>
-                  <SortableTableHeader
-                    direction={sortAttribute === 'title_multiloc' ? sortDirection : null}
-                    onToggle={() => this.handleSortClick('title_multiloc')}
-                  >
-                    <FormattedMessage {...messages.title} />
-                  </SortableTableHeader>
+                  <FormattedMessage {...messages.title} />
                 </Table.HeaderCell>
                 <Table.HeaderCell width={2}>
                   <SortableTableHeader
-                    direction={sortAttribute === 'author' ? sortDirection : null}
-                    onToggle={() => this.handleSortClick('author')}
+                    direction={sortAttribute === 'author_name' ? sortDirection : null}
+                    onToggle={() => this.handleSortClick('author_name')}
                   >
                     <FormattedMessage {...messages.author} />
                   </SortableTableHeader>
@@ -285,8 +297,8 @@ class AllIdeas extends PureComponent {
                 </Table.HeaderCell>
                 <Table.HeaderCell width={2}>
                   <SortableTableHeader
-                    direction={sortAttribute === 'implementation_status' ? sortDirection : null}
-                    onToggle={() => this.handleSortClick('implementation_status')}
+                    direction={sortAttribute === 'status' ? sortDirection : null}
+                    onToggle={() => this.handleSortClick('status')}
                   >
                     <FormattedMessage {...messages.status} />
                   </SortableTableHeader>
@@ -323,7 +335,25 @@ class AllIdeas extends PureComponent {
 
 AllIdeas.propTypes = {
   tFunc: PropTypes.func.isRequired,
+  loadIdeasXlsxRequest: PropTypes.func.isRequired,
+  loadCommentsXlsxRequest: PropTypes.func.isRequired,
+  exportIdeasLoading: PropTypes.bool.isRequired,
+  exportCommentsLoading: PropTypes.bool.isRequired,
+  exportIdeasError: PropTypes.string,
+  exportCommentsError: PropTypes.string,
+};
+
+const mapStateToProps = createStructuredSelector({
+  exportIdeasLoading: (state) => state.getIn(['adminIdeasIndex', 'exportIdeasLoading']),
+  exportCommentsLoading: (state) => state.getIn(['adminIdeasIndex', 'exportCommentsLoading']),
+  exportIdeasError: (state) => state.getIn(['adminIdeasIndex', 'exportIdeasError']),
+  exportCommentsError: (state) => state.getIn(['adminIdeasIndex', 'exportCommentsError']),
+});
+
+const mapDispatchToProps = {
+  loadIdeasXlsxRequest,
+  loadCommentsXlsxRequest,
 };
 
 
-export default injectTFunc(AllIdeas);
+export default injectTFunc(connect(mapStateToProps, mapDispatchToProps)(AllIdeas));

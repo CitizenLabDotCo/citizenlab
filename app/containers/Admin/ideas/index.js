@@ -28,7 +28,6 @@ class IdeaDashboard extends React.PureComponent { // eslint-disable-line react/p
         />
         {this.props.children}
       </div>
-
     );
   }
 }

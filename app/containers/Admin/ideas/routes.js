@@ -10,7 +10,7 @@ const loadModule = (cb) => (componentModule) => {
   cb(null, componentModule.default);
 };
 
-export default () => ({
+export default (injectReducer) => ({
   path: '/admin/ideas',
   name: 'admin Ideas',
   getComponent(nextState, cb) {
@@ -30,53 +30,18 @@ export default () => ({
     name: 'admin ideas index',
     getComponent(nextState, cb) {
       const importModules = Promise.all([
-        import('containers/Admin/ideas/index/index'),
+        import('containers/Admin/ideas/all/reducer'),
+        import('containers/Admin/ideas/all/index'),
       ]);
 
       const renderRoute = loadModule(cb);
 
-      importModules.then(([component]) => {
+      importModules.then(([reducer, component]) => {
+        injectReducer('adminIdeasIndex', reducer.default);
         renderRoute(component);
       });
 
       importModules.catch(errorLoading);
     },
   },
-  childRoutes: [
-    {
-      path: '/admin/ideas/create',
-      name: 'ideasIdea',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/Admin/ideas/views/create'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([component]) => {
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    },
-    {
-      path: '/admin/ideas/:slug/edit',
-      name: 'ideasIdea',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/Admin/ideas/views/edit'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([component]) => {
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    },
-
-  ],
 });
