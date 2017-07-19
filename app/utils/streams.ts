@@ -174,14 +174,12 @@ class Streams {
     return existingStream;
   }
 
-  update<T>(dataId: string, object: any) {
-    console.log('streams:');
-    console.log(this.list);
+  update(dataId: string, object: any, refetch: boolean = false) {
     this.list.filter(stream => stream.dataIds[dataId]).forEach((stream) => {
       if (stream.observer !== null) {
-        if (stream.type === 'single') {
+        if (!refetch && stream.type === 'single') {
           stream.observer.next(object);
-        } else if (stream.type === 'array') {
+        } else if (!refetch && stream.type === 'array') {
           stream.observer.next((item) => ({
             ...item,
             data: item.data.map((child) => (child.id === dataId ? object.data : child))

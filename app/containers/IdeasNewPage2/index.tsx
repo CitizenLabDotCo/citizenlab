@@ -122,7 +122,7 @@ const ButtonBarInner = styled.div`
 `;
 
 type Props = {
-  intl: ReactIntl.IntlShape,
+  intl: ReactIntl.InjectedIntl,
   tFunc: Function,
   locale: string,
 };
@@ -218,12 +218,12 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   async getBase64(image) {
     return new Promise((resolve) => {
       const reader = new FileReader();
-      reader.onload = (event) => resolve(event.target.result);
+      reader.onload = (event: any) => resolve(event.target.result);
       reader.readAsDataURL(image);
     });
   }
 
-  async convertToLatLng(location) {
+  async convertToLatLng(location: string) {
     const results = await geocodeByAddress(location);
     return getLatLng(results[0]);
   }
@@ -327,10 +327,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       images,
     } = this.state;
     const uploadedImages = _(images).map((image) => _.omit(image, 'base64')).value();
-    const hasAllRequiredContent = _.isString(title) && 
-                                  !_.isEmpty(title) && 
-                                  description && 
-                                  description.getCurrentContent().hasText();
+    const hasAllRequiredContent = title && description && description.getCurrentContent().hasText();
 
     return (
       <div>
@@ -384,8 +381,9 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
               </FormElement>
 
               <FormElement>
-                <Label value={formatMessage(messages.locationLabel)} />
+                <Label value={formatMessage(messages.locationLabel)} htmlFor="locationinput" />
                 <LocationInput
+                  id="locationinput"
                   value={location}
                   placeholder={formatMessage(messages.locationPlaceholder)}
                   onChange={this.handleLocationOnChange}
@@ -437,12 +435,6 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     );
   }
 }
-
-IdeasNewPage2.propTypes = {
-  intl: intlShape.isRequired,
-  tFunc: PropTypes.func.isRequired,
-  locale: PropTypes.string.isRequired,
-};
 
 const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
