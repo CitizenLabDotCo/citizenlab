@@ -28,7 +28,7 @@ const StyledRow = styled.tr`
 
 class Row extends PureComponent {
 
-  handleIdeaStatusChange = (event, data) => {
+  handleIdeaStatusChangeee = (event, data) => {
     this.props.onIdeaStatusChange(data.value);
   }
 
@@ -64,7 +64,7 @@ class Row extends PureComponent {
             fluid
             selection
             options={this.ideaStatusOptions()}
-            onChange={this.handleIdeaStatusChange}
+            onChange={this.handleIdeaStatusChangeee}
             value={idea.relationships.idea_status.data.id}
           />
         </Table.Cell>
@@ -79,28 +79,5 @@ Row.propTypes = {
   onIdeaStatusChange: PropTypes.func,
   tFunc: PropTypes.func.isRequired,
 };
-
-// const mapStateToProps = () => createStructuredSelector({
-//   user: (state, { userId }) => state.getIn(['resources', 'users', userId]),
-// });
-
-// const mapDispatchToProps = {
-//   deleteUser: wrapActionWithPrefix(deleteUserRequest, ACTION_PREFIX),
-// };
-
-// const mergeProps = (stateP, dispatchP, ownP) => {
-//   const { userId } = ownP;
-//   const attributes = stateP.user.get('attributes');
-//   const firstName = attributes.get('first_name');
-//   const lastName = attributes.get('last_name');
-//   const email = attributes.get('email');
-//   const createdAt = attributes.get('created_at');
-//   const roles = attributes.get('roles');
-//   const deleteUser = () => dispatchP.deleteUser(userId);
-
-//   return { userId, firstName, lastName, email, createdAt, roles, deleteUser };
-// };
-
-// export default preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(Row);
 
 export default injectTFunc(Row);
