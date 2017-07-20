@@ -107,10 +107,6 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
         <label>Header image</label>
         <Upload
           items={uploadedImages}
-          accept="image/jpg, image/jpeg, image/png, image/gif"
-          maxSize={5000000}
-          maxItems={1}
-          placeholder="Upload images"
           onAdd={this.handleUploadOnAdd}
           onRemove={this.handleUploadOnRemove}
         />

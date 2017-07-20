@@ -50,6 +50,7 @@ pipeline {
   post {
     always {
       junit 'junit.xml'
+      cleanWs()
     }
     success {
       slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} passed all tests!\nMore info at ${env.BUILD_URL}"

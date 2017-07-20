@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import PlacesAutocomplete from 'react-places-autocomplete';
+import * as React from 'react';
+import * as PlacesAutocomplete from 'react-places-autocomplete';
+import styledComponents from 'styled-components';
+const styled = styledComponents;
 
 const LocationInputWrapper = styled.div`
   width: 100%;
@@ -54,8 +54,8 @@ const StyledAutocompleteItem = styled.div`
 
 const emptyString = '';
 
-const LocationInput = ({ value, placeholder, onChange }) => {
-  const handleOnChange = (address) => {
+const LocationInput: React.SFC<ILocationInput> = ({ id, value, placeholder, onChange }) => {
+  const handleOnChange = (address: string) => {
     onChange(address);
   };
 
@@ -76,7 +76,8 @@ const LocationInput = ({ value, placeholder, onChange }) => {
   return (
     <LocationInputWrapper>
       <PlacesAutocomplete
-        highlightFirstSuggestion
+        id={id}
+        highlightFirstSuggestion={true}
         inputProps={inputProps}
         autocompleteItem={AutocompleteItem}
         styles={{
@@ -100,15 +101,11 @@ const LocationInput = ({ value, placeholder, onChange }) => {
   );
 };
 
-LocationInput.propTypes = {
-  value: PropTypes.string,
-  placeholder: PropTypes.string,
-  onChange: PropTypes.func,
-};
-
-LocationInput.defaultProps = {
-  value: '',
-  placeholder: '',
-};
+interface ILocationInput {
+  id?: string;
+  value: string;
+  placeholder: string;
+  onChange: (arg: string) => void;
+}
 
 export default LocationInput;

@@ -1,26 +1,24 @@
 import * as React from 'react';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
-// import Icon from 'components/Icon';
 import Error from 'components/UI/Error';
 import { EditorState } from 'draft-js';
 import { Editor as DraftEditor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import * as _ from 'lodash';
+import styledComponents from 'styled-components';
+const styled = styledComponents;
 
 const Container = styled.div``;
 
-interface DraftProps {
-  error?: boolean;
-  focussed?: boolean;
+interface IDraftEditorContainer {
+  error: boolean;
+  focussed: boolean;
 }
 
 const DraftEditorContainer = styled.div`
   width: 100%;
   border-radius: 5px;
   border: solid 1px;
-  /* overflow: hidden; */
-  border-color: ${(props: DraftProps) => {
+  border-color: ${(props: IDraftEditorContainer) => {
     if (props.error) {
       return '#fc3c2d';
     } else if (props.focussed) {
@@ -33,7 +31,7 @@ const DraftEditorContainer = styled.div`
   position: relative;
 
   &:not(:focus):hover {
-    border-color: ${(props: DraftProps) => {
+    border-color: ${(props: IDraftEditorContainer) => {
       if (props.error) {
         return '#fc3c2d';
       } else if (props.focussed) {
@@ -147,40 +145,26 @@ const DraftEditorContainer = styled.div`
   }
 `;
 
-interface Props {
-  value?: any;
+type Props = {
+  id?: string;
+  value: EditorState;
   placeholder?: string;
   error?: string | null;
-  toolbarConfig?: any;
-  onChange: Function;
-}
+  toolbarConfig?: {};
+  onChange: (arg: EditorState) => void;
+};
 
-interface State {
+type State = {
   focussed: boolean;
-}
+};
 
-class Editor extends React.Component<Props, State> {
-  public static defaultProps: Partial<Props> = {
-    value: '',
-    placeholder: '',
-    error: null,
-    toolbarConfig: {
-      options: ['inline', 'list', 'link', 'emoji'],
-      inline: {
-        options: ['bold', 'italic'],
-      },
-      list: {
-        options: ['unordered', 'ordered'],
-      },
-    },
-  };
-
+export default class Editor extends React.PureComponent<Props, State> {
   constructor() {
     super();
     this.state = { focussed: false };
   }
 
-  handleOnEditorStateChange = (editorState) => {
+  handleOnEditorStateChange = (editorState: EditorState) => {
     this.props.onChange(editorState);
   }
 
@@ -193,15 +177,29 @@ class Editor extends React.Component<Props, State> {
   }
 
   render() {
-    const { value, placeholder, error, toolbarConfig } = this.props;
+    let { placeholder, error, toolbarConfig } = this.props;
+    const { id, value } = this.props;
     const { focussed } = this.state;
     const hasError = (_.isString(error) && !_.isEmpty(error));
-    const editorState = (value === null ? EditorState.createEmpty() : value);
+    const editorState = (value || EditorState.createEmpty());
+
+    placeholder = (placeholder || '');
+    error = (error || null);
+    toolbarConfig = (toolbarConfig || {
+      options: ['inline', 'list', 'link', 'emoji'],
+      inline: {
+        options: ['bold', 'italic'],
+      },
+      list: {
+        options: ['unordered', 'ordered'],
+      },
+    });
 
     return (
       <Container>
         <DraftEditorContainer focussed={focussed} error={hasError}>
           <DraftEditor
+            id={id}
             editorState={editorState}
             placeholder={placeholder}
             onEditorStateChange={this.handleOnEditorStateChange}
@@ -228,18 +226,8 @@ class Editor extends React.Component<Props, State> {
             }}
           />
         </DraftEditorContainer>
-        <Error
-          text={error}
-          size={null}
-          marginTop={null}
-          marginBottom={null}
-          showIcon={null}
-          showBackground={null}
-          className={null}
-        />
+        <Error text={error}/>
       </Container>
     );
   }
 }
-
-export default Editor;
