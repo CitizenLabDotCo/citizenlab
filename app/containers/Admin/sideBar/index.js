@@ -48,8 +48,7 @@ const MenuItemContainerStyled = styled.div`
 const MenuItemStyled = styled(Menu.Item)`
   color: #ffffff !important;
   background-color: inherit !important;
-  font-family: CircularStd !important;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: bold;
   text-align: left;
   margin-left: 20px;
@@ -87,15 +86,13 @@ const HelpImageStyled = styled(Image)`
 `;
 
 const NeedHelpLabelStyled = styled.div`
-  font-family: CircularStd !important;
-  font-size: 18px;
+  font-size: 16px;
   text-align: left;
   color: #ffffff;
 `;
 
 const ReadOurGuide = styled(Link)`
-  font-family: CircularStd !important;
-  font-size: 18px;
+  font-size: 16px;
   text-align: left;
   color: #ffffff !important;
   font-weight: bold;
