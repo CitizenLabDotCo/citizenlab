@@ -21,6 +21,23 @@ export default function createRoutes(store) {
 
   return [
     {
+      path: '/poc',
+      name: 'poc',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/PoC/containers/usersTable'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
       path: '/',
       name: 'home',
       getComponent(nextState, cb) {
@@ -133,6 +150,23 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, component]) => {
           injectReducer('ideasNewPageReducer', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
+      path: '/ideas/new2',
+      name: 'IdeasNewPage2',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/IdeasNewPage2'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
           renderRoute(component);
         });
 

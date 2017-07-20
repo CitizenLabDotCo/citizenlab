@@ -5,9 +5,23 @@ import hello from 'hellojs';
 import { makeSelectSetting } from 'utils/tenant/selectors';
 import { fetchCurrentUser as fetchCurrentUserRequest, createUser as createUserRequest, login, socialLogin, socialRegister } from 'api';
 import { removeJwt, setJwt } from './jwt';
-import { loadCurrentUserError, loadCurrentUserSuccess, deleteCurrentUserLocal, storeJwt, createSocialUserSuccess,
-createSocialUserError } from './actions';
-import { LOAD_CURRENT_USER_REQUEST, SIGNOUT_CURRENT_USER, SIGNIN_USER_REQUEST, SOCIAL_AUTH_REQUEST } from './constants';
+import {
+  loadCurrentUserError,
+  loadCurrentUserSuccess,
+  createUserSuccess,
+  createUserError,
+  createSocialUserSuccess,
+  createSocialUserError,
+  deleteCurrentUserLocal,
+  storeJwt,
+} from './actions';
+import {
+  LOAD_CURRENT_USER_REQUEST,
+  CREATE_USER_REQUEST,
+  SIGNOUT_CURRENT_USER,
+  SIGNIN_USER_REQUEST,
+  SOCIAL_AUTH_REQUEST,
+} from './constants';
 
 export function* fetchCurrentUser({ currentUser }) {
   try {
@@ -60,19 +74,23 @@ export function* socialAuth(action) {
   }
 }
 
-export function* createUser(data, success, error) {
+export function* createUser(data) {
   const { email, password } = data;
   try {
-    const response = yield call(createUserRequest, data);
-    yield call(signInUser, { email, password, response });
-    if (success) yield success();
-  } catch (e) {
-    if (error) yield error(e.json.errors);
+    const user = yield call(createUserRequest, data);
+    yield call(signInUser, { email, password, user });
+    yield put(createUserSuccess(user));
+  } catch (error) {
+    yield put(createUserError(error.message));
   }
 }
 
 function* authSagaWatcher() {
   yield takeLatest(LOAD_CURRENT_USER_REQUEST, fetchCurrentUser);
+}
+
+function* createUserWatcher() {
+  yield takeLatest(CREATE_USER_REQUEST, createUser);
 }
 
 function* signOutSagaWatcher() {
@@ -87,5 +105,4 @@ export function* socialAuthSagaWatcher() {
   yield takeLatest(SOCIAL_AUTH_REQUEST, socialAuth);
 }
 
-
-export default { authSagaWatcher, signOutSagaWatcher, signInSagaWatcher, socialAuthSagaWatcher };
+export default { authSagaWatcher, createUserWatcher, signOutSagaWatcher, signInSagaWatcher, socialAuthSagaWatcher };

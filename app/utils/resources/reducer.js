@@ -21,4 +21,8 @@ function resourcesReducer(state = initialState, action) {
   }
 }
 
+export function makeReducerWithPrefix(reducer, actionPrefix) {
+  return (state, action) => reducer(state, action, actionPrefix);
+}
+
 export default resourcesReducer;
