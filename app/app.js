@@ -71,10 +71,10 @@ import { loadState } from './persistedData';
 import { createGa } from 'config/ga';
 
 // Observe loading of custom font
-const proximaNovaObserver = new FontFaceObserver('proxima-nova', {});
+const visuelt = new FontFaceObserver('visuelt');
 
 // When custom font is loaded, add a 'fontLoaded' class to the body tag
-proximaNovaObserver.load().then(() => {
+visuelt.load().then(() => {
   document.body.classList.add('fontLoaded');
 }, () => {
   document.body.classList.remove('fontLoaded');

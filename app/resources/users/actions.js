@@ -7,11 +7,10 @@
 import {
   LOAD_USERS_ERROR, LOAD_USERS_REQUEST, LOAD_USERS_SUCCESS, RESET_USERS, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_ERROR, DELETE_USER_REQUEST, DELETE_USER_SUCCESS, DELETE_USER_ERROR, CREATE_USER_SUCCESS } from './constants';
 
-export function loadUsersRequest(nextUserNumber, nextUserItemCount) {
+export function loadUsersRequest(queryParams) {
   return {
     type: LOAD_USERS_REQUEST,
-    nextUserNumber,
-    nextUserItemCount,
+    queryParams,
   };
 }
 

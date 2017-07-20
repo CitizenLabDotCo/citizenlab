@@ -10,3 +10,9 @@ export function* resourcesMergeDispatch() {
 export function* mergeJsonApiResources() {
   yield take(MERGE_JSONAPI_RESOURCES, resourcesMergeDispatch);
 }
+
+export function wrapSagaWithPrefix(saga, actionPrefix = '') {
+  return function* wrapper() {
+    return yield saga(actionPrefix);
+  };
+}
