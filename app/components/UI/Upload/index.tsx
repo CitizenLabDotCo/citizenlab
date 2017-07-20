@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import * as React from 'react';
 import { media } from 'utils/styleUtils';
 import { darken } from 'polished';
-import Dropzone from 'react-dropzone';
+import * as Dropzone from 'react-dropzone';
 import Icon from 'components/UI/Icon';
 import Error from 'components/UI/Error';
 import { injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
-import _ from 'lodash';
+import * as _ from 'lodash';
+import styledComponents from 'styled-components';
+const styled = styledComponents;
 
 const UploadIcon = styled.div`
   height: 40px;
@@ -118,17 +118,35 @@ const RemoveUploadedItem = styled.div`
   }
 `;
 
-class Upload extends React.Component {
+type Props = {
+  intl: ReactIntl.InjectedIntl;
+  items: Dropzone.ImageFile[];
+  accept: string;
+  maxSize: number;
+  maxItems: number;
+  placeholder: string;
+  onAdd: (arg: Dropzone.ImageFile) => void;
+  onRemove: (arg: Dropzone.ImageFile) => void;
+};
+
+type State = {
+  error: string | null;
+};
+
+export default class Upload extends React.PureComponent<Props, State> {
+  private emptyArray: never[];
+
   constructor() {
     super();
+    this.emptyArray = [];
     this.state = { error: null };
   }
 
   componentWillUnmount() {
-    _(this.props.items).filter((item) => item.preview).forEach((item) => this.destroyItem(item.preview));
+    _(this.props.items).filter(item => item.preview).forEach(item => this.destroyPreview(item));
   }
 
-  handleOnDrop = (items) => {
+  handleOnDrop = (items: Dropzone.ImageFile[]) => {
     const maxItemsCount = this.props.maxItems;
     const oldItemsCount = _.size(this.props.items);
     const newItemsCount = _.size(items);
@@ -139,32 +157,40 @@ class Upload extends React.Component {
     } else {
       items.forEach((item) => this.props.onAdd(item));
     }
-  };
+  }
 
-  handleOnDropRejected = (items) => {
-    if (items.some((item) => item.size > this.props.maxSize)) {
-      const { formatMessage } = this.props.intl;
-      this.setState({ error: formatMessage(messages.errorMaxSizeExceeded, { maxFileSize: this.props.maxSize / 1000000 }) });
+  handleOnDropRejected = (items: Dropzone.ImageFile[]) => {
+    const { maxSize, intl } = this.props;
+    const { formatMessage } = intl;
+
+    if (items.some((item) => item.size > maxSize)) {
+      this.setState({ error: formatMessage(messages.errorMaxSizeExceeded, { maxFileSize: maxSize / 1000000 }) });
       setTimeout(() => this.setState({ error: null }), 5000);
     }
   }
 
-  removeItem = (item) => (event) => {
+  removeItem = (item: Dropzone.ImageFile, event: Event) => {
     event.preventDefault();
     event.stopPropagation();
     this.destroyPreview(item);
     this.props.onRemove(item);
-  };
+  }
 
-  destroyPreview(item) {
-    if (item.preview) {
+  destroyPreview(item: Dropzone.ImageFile) {
+    if (item && item.preview) {
       window.URL.revokeObjectURL(item.preview);
     }
   }
 
   render() {
-    const { items, placeholder, accept, maxSize } = this.props;
+    let { items, accept, maxSize, maxItems, placeholder } = this.props;
     const { error } = this.state;
+
+    items = (items || this.emptyArray);
+    accept = (accept || '*');
+    maxSize = (maxSize || 5000000);
+    maxItems = (maxItems || 1);
+    placeholder = (placeholder || 'Drop your file here');
 
     return (
       <div>
@@ -182,13 +208,17 @@ class Upload extends React.Component {
               </UploadMessageContainer>
             )
             : (
-              items.map((item, index) => (
-                <UploadedItem key={index} style={{ backgroundImage: `url(${item.preview})` }}>
-                  <RemoveUploadedItem onClick={this.removeItem(item)}>
-                    <Icon name="close" />
-                  </RemoveUploadedItem>
-                </UploadedItem>
-              ))
+              items.map((item, index) => {
+                const _onClick = (event) => this.removeItem(item, event);
+
+                return (
+                  <UploadedItem key={index} style={{ backgroundImage: `url(${item.preview})` }}>
+                    <RemoveUploadedItem onClick={_onClick}>
+                      <Icon name="close" />
+                    </RemoveUploadedItem>
+                  </UploadedItem>
+                );
+              })
             )
           }
         </StyledDropzone>
@@ -197,24 +227,3 @@ class Upload extends React.Component {
     );
   }
 }
-
-Upload.propTypes = {
-  intl: intlShape.isRequired,
-  items: PropTypes.array,
-  accept: PropTypes.string.isRequired,
-  maxSize: PropTypes.number,
-  maxItems: PropTypes.number,
-  placeholder: PropTypes.string,
-  onAdd: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired,
-};
-
-Upload.defaultProps = {
-  items: [],
-  accept: '*',
-  maxSize: 5000000,
-  maxItems: 1,
-  placeholder: 'Drop your file here',
-};
-
-export default injectIntl(Upload);

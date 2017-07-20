@@ -1,7 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
 
-const getIcon = (name) => {
+const getIcon = (name: string) => {
   switch (name) {
     case 'close': {
       return (
@@ -32,10 +31,10 @@ const getIcon = (name) => {
   }
 };
 
-const Icon = ({ name }) => getIcon(name);
+const Icon: React.SFC<IIcon> = ({ name }) => getIcon(name);
 
-Icon.propTypes = {
-  name: PropTypes.string.isRequired,
-};
+interface IIcon {
+  name: string;
+}
 
 export default Icon;

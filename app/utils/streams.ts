@@ -9,7 +9,7 @@ import { v4 as uuid } from 'uuid';
 export type pureFn<T> = (arg: T) => T;
 type fetchFn<T> = () => IObservable<T>;
 interface IObject{ [key: string]: any; }
-export type IObserver<T> = Rx.Observer<T | pureFn<T> | Error | 'fetch'>;
+export type IObserver<T> = Rx.Observer<T | pureFn<T> | Error>;
 export type IObservable<T> = Rx.Observable<T>;
 export interface IStreamParams<T> {
   bodyData?: IObject;
@@ -127,7 +127,7 @@ class Streams {
         };
       })
       .startWith('initial')
-      .scan((accumulated: T, current: 'fetch' | T | pureFn<T>) => {
+      .scan((accumulated: T, current: T | pureFn<T>) => {
         let data = accumulated;
         const { onEachEmit, localProperties } = stream;
 
@@ -135,13 +135,7 @@ class Streams {
           data = onEachEmit(data);
         }
 
-        if (current === 'fetch') {
-          if (_.isFunction(stream.fetch)) {
-            stream.fetch();
-          } else {
-            console.log('stream does not have a fetch method');
-          }
-        } else if (!_.isFunction(current) && localProperties !== null) {
+        if (!_.isFunction(current) && localProperties !== null) {
           if (_.isArray(current)) {
             data = <any>current.map((child) => ({ ...child, ...localProperties }));
           } else if (_.isObject(current)) {
@@ -184,8 +178,8 @@ class Streams {
             ...item,
             data: item.data.map((child) => (child.id === dataId ? object.data : child))
           }));
-        } else {
-          stream.observer.next('fetch');
+        } else if (_.isFunction(stream.fetch)) {
+          stream.fetch();
         }
       } else {
         console.log('observer is null');
