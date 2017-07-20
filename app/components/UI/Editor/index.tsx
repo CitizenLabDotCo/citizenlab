@@ -1,21 +1,26 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import * as React from 'react';
+import styledComponents from 'styled-components';
+const styled = styledComponents;
 // import Icon from 'components/Icon';
 import Error from 'components/UI/Error';
 import { EditorState } from 'draft-js';
 import { Editor as DraftEditor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 const Container = styled.div``;
+
+interface DraftProps {
+  error?: boolean;
+  focussed?: boolean;
+}
 
 const DraftEditorContainer = styled.div`
   width: 100%;
   border-radius: 5px;
   border: solid 1px;
   /* overflow: hidden; */
-  border-color: ${(props) => {
+  border-color: ${(props: DraftProps) => {
     if (props.error) {
       return '#fc3c2d';
     } else if (props.focussed) {
@@ -28,7 +33,7 @@ const DraftEditorContainer = styled.div`
   position: relative;
 
   &:not(:focus):hover {
-    border-color: ${(props) => {
+    border-color: ${(props: DraftProps) => {
       if (props.error) {
         return '#fc3c2d';
       } else if (props.focussed) {
@@ -142,7 +147,34 @@ const DraftEditorContainer = styled.div`
   }
 `;
 
-class Editor extends React.PureComponent {
+interface Props {
+  value?: any;
+  placeholder?: string;
+  error?: string | null;
+  toolbarConfig?: any;
+  onChange: Function;
+}
+
+interface State {
+  focussed: boolean;
+}
+
+class Editor extends React.Component<Props, State> {
+  public static defaultProps: Partial<Props> = {
+    value: '',
+    placeholder: '',
+    error: null,
+    toolbarConfig: {
+      options: ['inline', 'list', 'link', 'emoji'],
+      inline: {
+        options: ['bold', 'italic'],
+      },
+      list: {
+        options: ['unordered', 'ordered'],
+      },
+    },
+  };
+
   constructor() {
     super();
     this.state = { focussed: false };
@@ -150,11 +182,11 @@ class Editor extends React.PureComponent {
 
   handleOnEditorStateChange = (editorState) => {
     this.props.onChange(editorState);
-  };
+  }
 
   handleOnFocus = () => {
     this.setState({ focussed: true });
-  };
+  }
 
   handleOnBlur = () => {
     this.setState({ focussed: false });
@@ -196,33 +228,18 @@ class Editor extends React.PureComponent {
             }}
           />
         </DraftEditorContainer>
-        <Error text={error} />
+        <Error
+          text={error}
+          size={null}
+          marginTop={null}
+          marginBottom={null}
+          showIcon={null}
+          showBackground={null}
+          className={null}
+        />
       </Container>
     );
   }
 }
-
-Editor.propTypes = {
-  value: PropTypes.any,
-  placeholder: PropTypes.string,
-  error: PropTypes.string,
-  toolbarConfig: PropTypes.object,
-  onChange: PropTypes.func,
-};
-
-Editor.defaultProps = {
-  value: '',
-  placeholder: '',
-  error: null,
-  toolbarConfig: {
-    options: ['inline', 'list', 'link', 'emoji'],
-    inline: {
-      options: ['bold', 'italic'],
-    },
-    list: {
-      options: ['unordered', 'ordered'],
-    },
-  },
-};
 
 export default Editor;

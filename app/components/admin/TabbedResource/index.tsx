@@ -8,6 +8,8 @@ import { FormattedMessage } from 'react-intl';
 import t from 'utils/containers/t';
 const T = t;
 
+// Global types
+import { Message, Multiloc } from 'typings';
 
 // Styles
 const ResourceHeader = styled.div`
@@ -27,15 +29,6 @@ const Tab = styled.li`
 
 
 // Component typing
-type Message = {
-  id: string,
-  defaultMessage: string,
-};
-
-type Multiloc = {
-  [key: string]: string
-};
-
 type Props = {
   resource: {
     title: string | Multiloc,
