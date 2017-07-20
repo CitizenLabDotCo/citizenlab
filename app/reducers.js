@@ -17,6 +17,7 @@ import resourcesReducer from 'utils/resources/reducer';
 import { utilsReducer, tempStateReducer } from 'utils/store/reducer';
 
 import authReducer from 'utils/auth/reducer';
+import areasReducer from 'utils/areas/reducer';
 import tenantReducer from 'utils/tenant/reducer';
 import { persistedDataReducer } from './persistedData';
 
@@ -55,6 +56,7 @@ export default function createReducer(asyncReducers) {
     tempState: tempStateReducer,
     route: routeReducer,
     auth: authReducer,
+    areas: areasReducer,
     tenant: tenantReducer,
     language: languageProviderReducer,
     persistedData: persistedDataReducer,

@@ -26,6 +26,7 @@
   "app.containers.Admin.User.helmetTitle": "",
   "app.containers.Admin.User.lastName": "",
   "app.containers.Admin.User.member": "",
+  "app.containers.Admin.User.name": "",
   "app.containers.AdminPage.AreaDashboard.helmetDescription": "",
   "app.containers.AdminPage.AreaDashboard.helmetTitle": "",
   "app.containers.AdminPage.AreaDashboard.tableTitle": "",
