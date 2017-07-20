@@ -12,10 +12,7 @@ export function observeSignedInUser() {
 
 export function signIn(email: string, password: string) {
   const bodyData = {
-    auth: {
-      email,
-      password,
-    },
+    auth: { email, password }
   };
 
   const httpMethod: IHttpMethod = {
@@ -53,12 +50,12 @@ export function signUp(
       password,
       selectedGender,
       selectedYearOfBirth,
-      selectedAreaId,
-    },
+      selectedAreaId
+    }
   };
 
   const httpMethod: IHttpMethod = {
-    method: 'POST',
+    method: 'POST'
   };
 
   return request(`${API_PATH}/users`, bodyData, httpMethod, null).then(() => {
