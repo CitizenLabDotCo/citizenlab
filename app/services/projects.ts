@@ -33,6 +33,6 @@ export function observeProjects(streamParams: IStreamParams<IProjects> | null = 
   return streams.create<IProjects>({ apiEndpoint, ...streamParams });
 }
 
-export function observeProject(id, streamParams: IStreamParams<IProject> | null = null) {
-  return streams.create<IProject>({ apiEndpoint: `${apiEndpoint}/${id}`, ...streamParams });
+export function observeProject(slug, streamParams: IStreamParams<IProject> | null = null) {
+  return streams.create<IProject>({ apiEndpoint: `${apiEndpoint}/by_slug/${slug}`, ...streamParams });
 }

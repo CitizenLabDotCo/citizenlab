@@ -16,6 +16,9 @@ import messages from '../messages';
 
 // Component typing
 type Props = {
+  params: {
+    slug: string | null,
+  }
 };
 
 type State = {
@@ -34,15 +37,17 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    // TODO: use the slug as soon as the API supports it
-    this.subscription = observeProject('8b3cbb36-6f3e-411e-a68e-f1bdc26437ea').observable.subscribe((project) => {
-      this.setState({ project: project.data });
-    });
-
+    if (this.props.params.slug) {
+      this.subscription = observeProject(this.props.params.slug).observable.subscribe((project) => {
+        this.setState({ project: project.data });
+      });
+    }
   }
 
   componentWillUnmount() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   render() {
