@@ -1,10 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import * as React from 'react';
 import { media } from 'utils/styleUtils';
 import Error from 'components/UI/Error';
-import _ from 'lodash';
-import MaskedInput from 'react-text-mask';
+import * as _ from 'lodash';
+import * as MaskedInput from 'react-text-mask';
+import styledComponents from 'styled-components';
+const styled = styledComponents;
+
+interface IInputWrapper {
+  error: boolean;
+}
 
 const InputWrapper = styled.div`
   position: relative;
@@ -18,7 +22,7 @@ const InputWrapper = styled.div`
     padding: 12px;
     border-radius: 5px;
     border: solid 1px;
-    border-color: ${(props) => props.error ? '#fc3c2d' : '#ccc'};
+    border-color: ${(props: IInputWrapper) => props.error ? '#fc3c2d' : '#ccc'};
     background: #fff;
     outline: none;
 
@@ -28,26 +32,26 @@ const InputWrapper = styled.div`
     }
 
     ${media.notPhone`
-      padding-right: ${(props) => props.error && '40px'};
+      padding-right: ${(props: IInputWrapper) => props.error && '40px'};
     `}
 
     &:not(:focus):hover {
-      border-color: ${(props) => props.error ? '#fc3c2d' : '#999'};
+      border-color: ${(props: IInputWrapper) => props.error ? '#fc3c2d' : '#999'};
     }
 
     &:focus {
-      border-color: ${(props) => props.error ? '#fc3c2d' : '#000'};
+      border-color: ${(props: IInputWrapper) => props.error ? '#fc3c2d' : '#000'};
     }
   }
 `;
 
 const emptyString = '';
 
-const MaskedTextInput = ({ value, placeholder, mask, error, onChange }) => {
+const MaskedTextInput: React.SFC<IMaskedTextInput> = ({ value, placeholder, mask, error, onChange }) => {
   const hasError = (_.isString(error) && !_.isEmpty(error));
 
-  const handleOnChange = (event) => {
-    onChange(event.target.value);
+  const handleOnChange = (event: React.FormEvent<HTMLInputElement>) => {
+    onChange(event.currentTarget.value);
   };
 
   return (
@@ -67,18 +71,12 @@ const MaskedTextInput = ({ value, placeholder, mask, error, onChange }) => {
   );
 };
 
-MaskedTextInput.propTypes = {
-  value: PropTypes.string,
-  placeholder: PropTypes.string,
-  mask: PropTypes.any.isRequired,
-  error: PropTypes.string,
-  onChange: PropTypes.func,
-};
-
-MaskedTextInput.defaultProps = {
-  value: '',
-  placeholder: '',
-  error: null,
-};
+interface IMaskedTextInput {
+  value: string;
+  placeholder: string;
+  mask: string;
+  error: string;
+  onChange: (arg: string) => void;
+}
 
 export default MaskedTextInput;

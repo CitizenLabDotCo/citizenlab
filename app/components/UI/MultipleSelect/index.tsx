@@ -1,9 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Select from 'react-select';
-import styled from 'styled-components';
+import * as React from 'react';
+import * as _ from 'lodash';
+import * as ReactSelect from 'react-select';
+import { IOption } from 'typings';
+import styledComponents from 'styled-components';
+const styled = styledComponents;
 
-const StyledMultipleSelect = styled(Select)`
+const StyledMultipleSelect = styled(ReactSelect)`
   &.Select--multi {
     margin: 0;
     padding: 0;
@@ -213,22 +215,35 @@ const StyledMultipleSelect = styled(Select)`
   }
 `;
 
+interface IMultipleSelect {
+  value: IOption[] | null;
+  placeholder: string;
+  options: IOption[] | null;
+  max: number;
+  autoBlur?: boolean;
+  onChange: (arg: IOption) => void;
+}
+
+const emptyString = [];
 const emptyArray = [];
 
-const MultipleSelect = ({ value, placeholder, options, max, autoBlur, onChange }) => {
+const MultipleSelect: React.SFC<IMultipleSelect> = ({ value, placeholder, options, max, autoBlur, onChange }) => {
   const handleOnChange = (newValue) => {
     onChange((max && newValue && newValue.length > max ? value : newValue));
   };
 
+  value = (value || emptyArray);
+  options = (options || emptyArray);
+  autoBlur = (_.isBoolean(autoBlur) ? autoBlur : true);
+
   return (
     <StyledMultipleSelect
-      multi
-      searchable
-      openOnFocus
+      multi={true}
+      searchable={true}
+      openOnFocus={true}
       autoBlur={autoBlur}
       backspaceRemoves={false}
       scrollMenuIntoView={false}
-      allowCreate={false}
       clearable={false}
       value={value || emptyArray}
       placeholder={<span>{placeholder}</span>}
@@ -236,23 +251,6 @@ const MultipleSelect = ({ value, placeholder, options, max, autoBlur, onChange }
       onChange={handleOnChange}
     />
   );
-};
-
-MultipleSelect.propTypes = {
-  value: PropTypes.array,
-  placeholder: PropTypes.string,
-  options: PropTypes.array,
-  max: PropTypes.number,
-  autoBlur: PropTypes.bool,
-  onChange: PropTypes.func,
-};
-
-MultipleSelect.defaultProps = {
-  value: [],
-  placeholder: '',
-  options: [],
-  max: null,
-  autoBlur: true,
 };
 
 export default MultipleSelect;
