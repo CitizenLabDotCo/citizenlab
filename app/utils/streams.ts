@@ -6,10 +6,10 @@ import * as _ from 'lodash';
 import request from 'utils/request';
 import { v4 as uuid } from 'uuid';
 
-type pureFn<T> = (arg: T) => T;
+export type pureFn<T> = (arg: T) => T;
 type fetchFn<T> = () => IObservable<T>;
 interface IObject{ [key: string]: any; }
-export type IObserver<T> = Rx.Observer<T | ((arg: T) => T) | Error>;
+export type IObserver<T> = Rx.Observer<T | pureFn<T> | Error>;
 export type IObservable<T> = Rx.Observable<T>;
 export interface IStreamParams<T> {
   bodyData?: IObject;
@@ -17,7 +17,7 @@ export interface IStreamParams<T> {
   queryParameters?: IObject;
   localProperties?: IObject;
   onEachEmit?: pureFn<T>;
-  streamName?: string;
+  name?: string;
 }
 interface IInputStreamParams<T> extends IStreamParams<T> {
   apiEndpoint: string;
@@ -29,28 +29,30 @@ interface IExtendedStreamParams<T> {
   queryParameters: IObject | null;
   localProperties: IObject | null;
   onEachEmit: pureFn<T> | null;
-  streamName: string | null;
+  name: string | null;
 }
 export interface IStream<T> {
-  streamId: string;
+  id: string;
+  name: string | null;
+  type: 'single' | 'array' | 'unknown';
   apiEndpoint: string;
   bodyData: IObject | null;
   httpMethod: IObject | null;
   queryParameters: IObject | null;
   localProperties: IObject | null;
   onEachEmit: pureFn<T> | null;
-  streamName: string | null;
   fetch: fetchFn<T> | null;
   observer: IObserver<T> | null;
   observable: IObservable<T>;
   data: T | null;
+  dataIds: { [key: string]: true };
 }
 
 class Streams {
-  listOfStreams: IStream<any>[];
+  public list: IStream<any>[];
 
   constructor() {
-    this.listOfStreams = [];
+    this.list = [];
   }
 
   create<T>(inputParams: IInputStreamParams<T>) {
@@ -60,10 +62,10 @@ class Streams {
       queryParameters: null,
       localProperties: null,
       onEachEmit: null,
-      streamName: null,
+      name: null,
       ...inputParams
     };
-    const existingStream = <IStream<T>>this.listOfStreams.find((stream) => {
+    const existingStream = <IStream<T>>this.list.find((stream) => {
       return (
         _.isEqual(stream.apiEndpoint, params.apiEndpoint) &&
         _.isEqual(stream.bodyData, params.bodyData) &&
@@ -71,14 +73,15 @@ class Streams {
         _.isEqual(stream.queryParameters, params.queryParameters) &&
         _.isEqual(stream.localProperties, params.localProperties) &&
         _.isEqual(stream.onEachEmit, params.onEachEmit) &&
-        _.isEqual(stream.streamName, params.streamName)
+        _.isEqual(stream.name, params.name)
       );
     });
 
     if (!existingStream) {
-      const newStream: IStream<T> = {
-        streamId: uuid(),
-        streamName: params.streamName,
+      const stream: IStream<T> = {
+        id: uuid(),
+        name: params.name,
+        type: 'unknown',
         apiEndpoint: params.apiEndpoint,
         bodyData: params.bodyData,
         httpMethod: params.httpMethod,
@@ -89,15 +92,25 @@ class Streams {
         observer: null,
         observable: <any>null,
         data: null,
+        dataIds: {},
       };
 
       const observable: IObservable<T> = Rx.Observable.create((observer: IObserver<T>) => {
-        const { apiEndpoint, bodyData, httpMethod, queryParameters } = newStream;
+        const { apiEndpoint, bodyData, httpMethod, queryParameters } = stream;
 
-        newStream.observer = observer;
+        stream.observer = observer;
 
-        newStream.fetch = () => {
+        stream.fetch = () => {
           request(apiEndpoint, bodyData, httpMethod, queryParameters).then((response) => {
+            if (response.data && _.isArray(response.data)) {
+              stream.type = 'array';
+              stream.dataIds = {};
+              response.data.forEach(item => stream.dataIds[item.id] = true);
+            } else if (response.data && _.isObject(response.data) && _.has(response, 'data.id')) {
+              stream.type = 'single';
+              stream.dataIds = { [response.data.id]: true };
+            }
+
             observer.next(response);
           }).catch(() => {
             observer.next(new Error(`promise for api endpoint ${apiEndpoint} did not resolve`));
@@ -106,29 +119,23 @@ class Streams {
           return observable;
         };
 
-        newStream.fetch();
+        stream.fetch();
 
         return () => {
           console.log(`stream for api endpoint ${apiEndpoint} completed`);
-          this.listOfStreams = this.listOfStreams.filter((stream) => stream.streamId !== newStream.streamId);
+          this.list = this.list.filter(item => item.id !== stream.id);
         };
       })
       .startWith('initial')
-      .scan((accumulated: T, current: 'fetch' | T | pureFn<T>) => {
+      .scan((accumulated: T, current: T | pureFn<T>) => {
         let data = accumulated;
-        const { onEachEmit, localProperties } = newStream;
+        const { onEachEmit, localProperties } = stream;
 
         if (_.isFunction(onEachEmit)) {
           data = onEachEmit(data);
         }
 
-        if (current === 'fetch') {
-          if (_.isFunction(newStream.fetch)) {
-            newStream.fetch();
-          } else {
-            console.log('newStream does not have a fetch method');
-          }
-        } else if (!_.isFunction(current) && localProperties !== null) {
+        if (!_.isFunction(current) && localProperties !== null) {
           if (_.isArray(current)) {
             data = <any>current.map((child) => ({ ...child, ...localProperties }));
           } else if (_.isObject(current)) {
@@ -142,7 +149,7 @@ class Streams {
           data = current;
         }
 
-        newStream.data = data;
+        stream.data = data;
 
         return data;
       })
@@ -151,14 +158,33 @@ class Streams {
       .publishReplay(1)
       .refCount();
 
-      newStream.observable = observable;
+      stream.observable = observable;
 
-      this.listOfStreams = [...this.listOfStreams, newStream];
+      this.list = [...this.list, stream];
 
-      return newStream;
+      return stream;
     }
 
     return existingStream;
+  }
+
+  update(dataId: string, object: any, refetch: boolean = false) {
+    this.list.filter(stream => stream.dataIds[dataId]).forEach((stream) => {
+      if (stream.observer !== null) {
+        if (!refetch && stream.type === 'single') {
+          stream.observer.next(object);
+        } else if (!refetch && stream.type === 'array') {
+          stream.observer.next((item) => ({
+            ...item,
+            data: item.data.map((child) => (child.id === dataId ? object.data : child))
+          }));
+        } else if (_.isFunction(stream.fetch)) {
+          stream.fetch();
+        }
+      } else {
+        console.log('observer is null');
+      }
+    });
   }
 }
 

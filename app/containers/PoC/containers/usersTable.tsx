@@ -76,13 +76,13 @@ type State = {
 };
 
 export default class UsersTable extends React.PureComponent<Props, State> {
-  usersStream: any;
-  users$: IStream<IUsers> | null;
-  state$: Rx.Subject<State>;
-  search$: Rx.BehaviorSubject<string>;
-  sortBy$: Rx.BehaviorSubject<string>;
-  pageNumber$: Rx.BehaviorSubject<number>;
-  subscriptions: Rx.Subscription[];
+  private usersStream: any;
+  private users$: IStream<IUsers> | null;
+  private state$: Rx.Subject<State>;
+  private search$: Rx.BehaviorSubject<string>;
+  private sortBy$: Rx.BehaviorSubject<string>;
+  private pageNumber$: Rx.BehaviorSubject<number>;
+  private subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
@@ -167,16 +167,12 @@ export default class UsersTable extends React.PureComponent<Props, State> {
   }
 
   update = (userId) => () => {
-    if (userId && this.users$ !== null && this.users$.observer !== null) {
-      const object: IUserUpdate = { first_name: 'Test' };
-      const observers = [this.users$.observer];
-      updateUser(userId, object, true, observers);
-    }
+    updateUser(userId, { first_name: `Test${Date.now()}` });
   }
 
   render () {
     const { users, pageNumber, pageCount, searchValue } = this.state;
-    const sortBy = this.state.sortBy.replace(/^-/, '');
+    // const sortBy = this.state.sortBy.replace(/^-/, '');
 
     return (
       <Container>

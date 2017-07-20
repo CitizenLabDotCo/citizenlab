@@ -14,25 +14,32 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.users',
     defaultMessage: 'Users',
   },
-  pages: {
-    id: 'app.containers.AdminPage.SideBar.pages',
-    defaultMessage: 'Pages',
-  },
-  newPage: {
-    id: 'app.containers.AdminPage.SideBar.newPage',
-    defaultMessage: 'Create page',
+  groups: {
+    id: 'app.containers.AdminPage.SideBar.groups',
+    defaultMessage: 'Groups',
   },
   projects: {
     id: 'app.containers.AdminPage.SideBar.projects',
     defaultMessage: 'Projects',
   },
-  areas: {
-    id: 'app.containers.AdminPage.SideBar.areas',
-    defaultMessage: 'Areas',
-  },
   ideas: {
     id: 'app.containers.AdminPage.SideBar.ideas',
     defaultMessage: 'Ideas',
   },
-
+  settings: {
+    id: 'app.containers.AdminPage.SideBar.settings',
+    defaultMessage: 'Settings',
+  },
+  newPage: {
+    id: 'app.containers.AdminPage.SideBar.newPage',
+    defaultMessage: 'Create page',
+  },
+  needHelp: {
+    id: 'app.containers.AdminPage.SideBar.needHelp',
+    defaultMessage: 'Need help?',
+  },
+  readGuide: {
+    id: 'app.containers.AdminPage.SideBar.readGuide',
+    defaultMessage: 'Read our guide',
+  },
 });

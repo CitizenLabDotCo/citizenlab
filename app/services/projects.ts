@@ -1,3 +1,4 @@
+import { IRelationship } from 'typings.d';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
@@ -7,26 +8,35 @@ export interface IProjectData {
   id: string;
   type: string;
   attributes: {
-    created_ad: string,
-    description_multiloc: {
-      [key: string]: string
-    },
-    slug: string,
     title_multiloc: {
-      [key: string]: string
-    },
-    updated_at: string,
+      [key: string]: string;
+    };
+    description_multiloc: {
+      [key: string]: string;
+    };
+    slug: string;
+    header_bg: {
+      large: string | null;
+      medium: string | null;
+      small: string | null;
+    };
+    ideas_count: 0,
+    created_at: string;
+    updated_at: string;
   };
-  relationships: any;
-}
-
-export interface IProjects {
-  data: IProjectData[];
-  links ?: any;
+  relationships: {
+    project_images: {
+      data: IRelationship[]
+    }
+  };
 }
 
 export interface IProject {
   data: IProjectData;
+}
+
+export interface IProjects {
+  data: IProjectData[];
 }
 
 export function observeProjects(streamParams: IStreamParams<IProjects> | null = null) {

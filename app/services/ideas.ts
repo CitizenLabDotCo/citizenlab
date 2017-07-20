@@ -1,12 +1,8 @@
+import { IRelationship } from 'typings.d';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/ideas`;
-
-interface IRelationship {
-  id: string;
-  type: string;
-}
 
 export interface IIdeaData {
   id: string;
@@ -63,8 +59,8 @@ export interface IIdeaIncluded {
       small: string;
       medium: string;
       large: string;
-    },
-    roles: any[],
+    };
+    roles: any[];
     bio_multiloc: any;
     created_at: string;
     updated_at: string;
