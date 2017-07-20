@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { Grid, Image, Menu } from 'semantic-ui-react';
+import { Image, Menu } from 'semantic-ui-react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
 import messages from './messages';
@@ -30,7 +30,7 @@ const MenuStyled = styled(Menu)`
 const MenuItemContainerStyled = styled.div`
   opacity: ${(props) => props.active ? '1.0' : '0.6'};
   background-color: ${(props) => props.active ? '#232323' : 'inherit'};
-  
+
   // contained child
   > a:after {
     width: 12px;
@@ -68,15 +68,20 @@ const MenuItemIcon = (icon) => (<Image
 
 const NeedHelpBoxStyled = styled.div`
   height: 110px;
-  width: calc(15% + 6px);
+  width: 209px;
   position: fixed;
   bottom: 0;
   background-color: #464646;
-  padding-top: 40.2px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const HelpTextStyled = styled.div`
+  padding-left: 1rem;
 `;
 
 const HelpImageStyled = styled(Image)`
-  margin-left: 31px;
   width: 34.6px;
   height: 37.2px;
 `;
@@ -121,26 +126,16 @@ function Sidebar(props) {
         <MenuItemStyled icon={MenuItemIcon(settingsIcon)} name={formatMessage({ ...messages.settings })} as={Link} to="/admin/settings" />
       </MenuItemContainerStyled>
       <NeedHelpBoxStyled>
-        <Grid>
-          <Grid.Row>
-            <Grid.Column width={4}>
-              <HelpImageStyled
-                src={needHelpIcon}
-              />
-            </Grid.Column>
-            <Grid.Column
-              width={12}
-              style={{
-                paddingLeft: '35px',
-              }}
-            >
-              <NeedHelpLabelStyled><FormattedMessage {...messages.needHelp} /></NeedHelpLabelStyled>
-              <ReadOurGuide to="/admin/guide">
-                <FormattedMessage {...messages.readGuide} />
-              </ReadOurGuide>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+        <HelpImageStyled
+          src={needHelpIcon}
+        />
+        <HelpTextStyled>
+          <NeedHelpLabelStyled>
+            <FormattedMessage {...messages.needHelp} /></NeedHelpLabelStyled>
+          <ReadOurGuide to="/admin/guide">
+            <FormattedMessage {...messages.readGuide} />
+          </ReadOurGuide>
+        </HelpTextStyled>
       </NeedHelpBoxStyled>
     </MenuStyled>
   );
