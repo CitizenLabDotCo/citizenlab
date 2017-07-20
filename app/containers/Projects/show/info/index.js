@@ -21,7 +21,6 @@ const Left = styled.section`
 `;
 
 const IdeaTitleStyled = styled.header`
-  font-family: CircularStd;
   font-size: 30px;
   font-weight: bold;
   color: #000000;
@@ -30,7 +29,6 @@ const IdeaTitleStyled = styled.header`
 
 const IdeaBodyStyled = styled.div`
   margin-top: 45px; 
-  font-family: CircularStd-Book;
   font-size: 18px;
   line-height: 1.33;
   color: #777777;
@@ -46,7 +44,6 @@ const AddIdeaButtonStyled = styled.button`
   width: 100%;
   height: 85px;
   text-align: center;
-  font-family: CircularStd;
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 25px;
@@ -66,7 +63,6 @@ const ProjectImageStyled = styled(Image)`
 `;
 
 const ProjectSideLabel = styled.header`
-  font-family: CircularStd;
   font-size: 16px;
   font-weight: bold;
   color: #233046;
@@ -83,7 +79,6 @@ const ProjectTopicStyled = styled.div`
   width: 150px;
   height: 49px;
   text-align: right;
-  font-family: CircularStd;
   font-size: 16px;
   font-weight: bold;
   color: #5a5a5a;

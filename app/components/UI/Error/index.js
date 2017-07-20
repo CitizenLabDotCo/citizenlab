@@ -8,6 +8,7 @@ import _ from 'lodash';
 const ErrorMessageText = styled.div`
   color: #f93e36;
   font-weight: 400;
+  line-height: 22px;
 `;
 
 const IconWrapper = styled.div`
@@ -81,17 +82,14 @@ const StyledErrorMessage = styled.div`
   &.error-enter {
     max-height: 0px;
     opacity: 0;
-    transform: scale(0.8);
-    will-change: opacity, transform;
-    transition: max-height 250ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                transform 250ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                opacity 250ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    will-change: opacity;
+    transition: max-height 400ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                opacity 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
   }
 
   &.error-enter-active {
-    max-height: 100px;
+    max-height: 60px;
     opacity: 1;
-    transform: scale(1);
     will-change: auto;
   }
 
@@ -111,7 +109,7 @@ const StyledErrorMessage = styled.div`
 `;
 
 const Error = ({ text, size, marginTop, marginBottom, showIcon, showBackground, className }) => {
-  const enterTime = 250;
+  const enterTime = 400;
   const leaveTime = 250;
   const opened = (_.isString(text) && !_.isEmpty(text));
 

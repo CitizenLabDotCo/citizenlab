@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeLatest, call, put, fork } from 'redux-saga/effects';
 import { loadResources, createResource, loadResource, deleteResource, updateResource } from 'api';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import { loadProjectsError, loadProjectsSuccess, loadProjectSuccess, loadProjectError, deleteProjectSuccess, createProjectSuccess } from './actions';
@@ -52,7 +52,7 @@ export function* createProjectSaga(action, success, error) {
 }
 
 export function* createProjectFork(action, success, error) {
-  yield createProjectSaga(action, success, error);
+  yield fork(createProjectSaga(action, success, error));
 }
 
 export function* updateProjectSaga(action, success, error) {

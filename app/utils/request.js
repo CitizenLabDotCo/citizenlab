@@ -26,9 +26,7 @@ export default function request(url, data, options, queryParameters) {
     defaultOptions.body = JSON.stringify(data);
   }
 
-  const urlWithParams = (queryParameters
-    ? withQuery(url, queryParameters)
-    : url);
+  const urlWithParams = (queryParameters ? withQuery(url, queryParameters) : url);
 
   return fetch(urlWithParams, Object.assign(defaultOptions, options))
     .then((response) => (
@@ -36,7 +34,7 @@ export default function request(url, data, options, queryParameters) {
         response,
         response.json().catch(() => {
           if (response.ok) return {};
-          return new Error('usuported case. no valid jason and not ok reponse');
+          return new Error('Unsupported case. No valid JSON.');
         }),
       ])
     ))
@@ -52,4 +50,29 @@ export default function request(url, data, options, queryParameters) {
       error.json = json;
       throw error;
     });
+}
+
+// we use xhr rather than fetch API, to enforce response type
+export function requestBlob(url, type, queryParameters) {
+  const urlWithParams = (queryParameters
+    ? withQuery(url, queryParameters)
+    : url);
+
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', urlWithParams, true);
+    xhr.responseType = 'blob';
+    xhr.setRequestHeader('Content-Type', type);
+    xhr.setRequestHeader('Authorization', `Bearer ${getJwt()}`);
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        const blob = new Blob([xhr.response], { type });
+        resolve(blob);
+      } else {
+        const error = new Error(xhr.statusText);
+        reject(error);
+      }
+    };
+    xhr.send(null);
+  });
 }

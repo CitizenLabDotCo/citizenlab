@@ -144,14 +144,8 @@ class Upload extends React.Component {
   handleOnDropRejected = (items) => {
     if (items.some((item) => item.size > this.props.maxSize)) {
       const { formatMessage } = this.props.intl;
-
-      this.setState({
-        error: formatMessage(messages.errorMaxSizeExceeded, { maxFileSize: this.props.maxSize / 1000000 }),
-      });
-
-      setTimeout(() => {
-        this.setState({ error: null });
-      }, 5000);
+      this.setState({ error: formatMessage(messages.errorMaxSizeExceeded, { maxFileSize: this.props.maxSize / 1000000 }) });
+      setTimeout(() => this.setState({ error: null }), 5000);
     }
   }
 
@@ -169,13 +163,12 @@ class Upload extends React.Component {
   }
 
   render() {
-    const { items, placeholder, multiple, accept, maxSize } = this.props;
+    const { items, placeholder, accept, maxSize } = this.props;
     const { error } = this.state;
 
     return (
       <div>
         <StyledDropzone
-          multiple={multiple}
           accept={accept}
           maxSize={maxSize}
           onDrop={this.handleOnDrop}
@@ -207,7 +200,6 @@ class Upload extends React.Component {
 
 Upload.propTypes = {
   intl: intlShape.isRequired,
-  multiple: PropTypes.bool,
   items: PropTypes.array,
   accept: PropTypes.string.isRequired,
   maxSize: PropTypes.number,
@@ -218,12 +210,11 @@ Upload.propTypes = {
 };
 
 Upload.defaultProps = {
-  intl: intlShape.isRequired,
-  multiple: false,
   items: [],
-  maxSize: Infinity,
-  maxItems: null,
-  placeholder: '',
+  accept: '*',
+  maxSize: 5000000,
+  maxItems: 1,
+  placeholder: 'Drop your file here',
 };
 
 export default injectIntl(Upload);

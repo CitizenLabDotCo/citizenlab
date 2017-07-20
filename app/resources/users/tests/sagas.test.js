@@ -17,8 +17,10 @@ import { deleteUserSuccess, loadUsersSuccess, loadUserSuccess } from '../actions
 describe('resources/users sagas', () => {
   describe('loadUsersSaga', () => {
     const mockedAction = {
-      nextPageNumber: mockNumber,
-      nextPageItemCount: mockNumber,
+      queryParams: {
+        'page[number]': mockNumber,
+        'page[size]': mockNumber,
+      },
     };
     const it = sagaHelper(loadUsersSaga(mockedAction));
 
