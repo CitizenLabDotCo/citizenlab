@@ -303,7 +303,7 @@ class ProfileForm extends React.Component {
                     <Input
                       key="first_name"
                       name="first_name"
-                      onChange={this.handleInputChange}
+                      onChange={(value) => this.handleInputChange(value, 'first_name')}
                       value={user && user.first_name}
                       error={userErrors && userErrors.first_name && userErrors.first_name[0]}
                     />
@@ -312,7 +312,7 @@ class ProfileForm extends React.Component {
                     <LabelWithTooltip id="lastName" />
                     <Input
                       name="last_name"
-                      onChange={this.handleInputChange}
+                      onChange={(value) => this.handleInputChange(value, 'last_name')}
                       value={user && user.last_name}
                       error={userErrors && userErrors.last_name && userErrors.last_name[0]}
                     />
@@ -321,7 +321,7 @@ class ProfileForm extends React.Component {
                     <LabelWithTooltip id="email" />
                     <Input
                       name="email"
-                      onChange={this.handleInputChange}
+                      onChange={(value) => this.handleInputChange(value, 'email')}
                       value={user && user.email}
                       error={userErrors && userErrors.email && userErrors.email[0]}
                     />
@@ -331,7 +331,7 @@ class ProfileForm extends React.Component {
                     <Input
                       type="password"
                       name="password"
-                      onChange={this.handleInputChange}
+                      onChange={(value) => this.handleInputChange(value, 'password')}
                       value={user && user.password}
                       error={userErrors && userErrors.password && userErrors.password[0]}
                     />
@@ -340,7 +340,7 @@ class ProfileForm extends React.Component {
                     <LabelWithTooltip id="language" />
                     {<Select
                       name="locale"
-                      onChange={this.handleSelectChange}
+                      onChange={(option) => this.handleInputChange(option.value, 'locale')}
                       value={user.locale}
                       options={this.localeOptions()}
                     />}
@@ -371,7 +371,7 @@ class ProfileForm extends React.Component {
                         name="gender"
                         placeholder={intl.formatMessage({ ...messages.male })}
                         options={this.genderOptions()}
-                        onChange={(value) => this.handleInputChange(value, 'gender')}
+                        onChange={(option) => this.handleInputChange(option.value, 'gender')}
                         value={user.gender}
                         error={userErrors && userErrors.gender && userErrors.gender[0]}
                       />
@@ -395,7 +395,7 @@ class ProfileForm extends React.Component {
                         name="domicile"
                         placeholder={intl.formatMessage({ ...messages.domicile_placeholder })}
                         options={this.domicileOptions()}
-                        onChange={this.handleSelectChange}
+                        onChange={(option) => this.handleInputChange(option.value, 'domicile')}
                         value={user.domicile}
                         error={userErrors && userErrors.domicile && userErrors.domicile[0]}
                       />
@@ -407,7 +407,7 @@ class ProfileForm extends React.Component {
                       <Select
                         name="birthyear"
                         options={this.birthYearOptions()}
-                        onChange={this.handleSelectChange}
+                        onChange={(option) => this.handleInputChange(option.value, 'birthyear')}
                         value={user.birthyear}
                         error={userErrors && userErrors.birthyear && userErrors.birthyear[0]}
                       />
@@ -421,7 +421,7 @@ class ProfileForm extends React.Component {
                         name="education"
                         placeholder={intl.formatMessage({ ...messages.education_placeholder })}
                         options={this.educationOptions()}
-                        onChange={this.handleSelectChange}
+                        onChange={(option) => this.handleInputChange(option.value, 'education')}
                         value={user.education}
                         error={userErrors && userErrors.education && userErrors.education[0]}
                       />
