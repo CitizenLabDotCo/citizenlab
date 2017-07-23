@@ -19,11 +19,11 @@ export default defineMessages({
 
   // ideas
   ideasFrom: {
-    id: 'app.containers.landing.loading',
+    id: 'app.containers.landing.ideasFrom',
     defaultMessage: 'Ideas for {name}',
   },
   viewIdeas: {
-    id: 'app.containers.landing.loading',
+    id: 'app.containers.landing.viewIdeas',
     defaultMessage: 'View all Ideas',
   },
 
@@ -33,7 +33,7 @@ export default defineMessages({
     defaultMessage: 'Projects From {name}',
   },
   viewProjects: {
-    id: 'app.containers.landing.loading',
+    id: 'app.containers.landing.viewProjects',
     defaultMessage: 'View all Projects',
   },
 
