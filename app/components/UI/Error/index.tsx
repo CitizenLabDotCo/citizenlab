@@ -1,9 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import * as React from 'react';
 import Icon from 'components/UI/Icon';
-import { CSSTransitionGroup } from 'react-transition-group';
-import _ from 'lodash';
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import * as _ from 'lodash';
+import styledComponents from 'styled-components';
+const styled = styledComponents;
+
+interface IStyledErrorMessageInner {
+  showBackground: boolean;
+}
+
+interface IStyledErrorMessage {
+  size: string;
+  marginTop: string;
+  marginBottom: string;
+}
 
 const ErrorMessageText = styled.div`
   color: #f93e36;
@@ -25,17 +35,17 @@ const StyledErrorMessageInner = styled.div`
   align-items: center;
   border-radius: 5px;
   background: rgba(252, 60, 45, 0.1);
-  background: ${(props) => (props.showBackground ? 'rgba(252, 60, 45, 0.1)' : 'transparent')};
+  background: ${(props: IStyledErrorMessageInner) => (props.showBackground ? 'rgba(252, 60, 45, 0.1)' : 'transparent')};
 `;
 
-const StyledErrorMessage = styled.div`
+const StyledErrorMessage: any = styled.div`
   position: relative;
   overflow: hidden;
 
   ${StyledErrorMessageInner} {
-    margin-top: ${(props) => props.marginTop};
-    margin-bottom: ${(props) => props.marginBottom};
-    padding: ${(props) => {
+    margin-top: ${(props: IStyledErrorMessage) => props.marginTop};
+    margin-bottom: ${(props: IStyledErrorMessage) => props.marginBottom};
+    padding: ${(props: IStyledErrorMessage) => {
       switch (props.size) {
         case '2':
           return '11px';
@@ -50,7 +60,7 @@ const StyledErrorMessage = styled.div`
   }
 
   ${ErrorMessageText} {
-    font-size: ${(props) => {
+    font-size: ${(props: IStyledErrorMessage) => {
       switch (props.size) {
         case '2':
           return '17px';
@@ -65,7 +75,7 @@ const StyledErrorMessage = styled.div`
   }
 
   ${IconWrapper} {
-    height: ${(props) => {
+    height: ${(props: IStyledErrorMessage) => {
       switch (props.size) {
         case '2':
           return '23px';
@@ -108,10 +118,17 @@ const StyledErrorMessage = styled.div`
   }
 `;
 
-const Error = ({ text, size, marginTop, marginBottom, showIcon, showBackground, className }) => {
+const Error: React.SFC<IError> = ({ text, size, marginTop, marginBottom, showIcon, showBackground, className }) => {
   const enterTime = 400;
   const leaveTime = 250;
   const opened = (_.isString(text) && !_.isEmpty(text));
+
+  size = (size || '1');
+  marginTop = (marginTop || '10px');
+  marginBottom = (marginTop || '0px');
+  showIcon = (showIcon || false);
+  showBackground = (showBackground || false);
+  className = (className || '');
 
   if (opened) {
     return (
@@ -127,7 +144,7 @@ const Error = ({ text, size, marginTop, marginBottom, showIcon, showBackground, 
           marginBottom={marginBottom}
         >
           <StyledErrorMessageInner showBackground={showBackground}>
-            { showIcon && <IconWrapper><Icon name="error" /></IconWrapper> }
+            {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
             <ErrorMessageText>
               {text}
             </ErrorMessageText>
@@ -146,23 +163,14 @@ const Error = ({ text, size, marginTop, marginBottom, showIcon, showBackground, 
   );
 };
 
-Error.propTypes = {
-  text: PropTypes.string,
-  size: PropTypes.string,
-  marginTop: PropTypes.string,
-  marginBottom: PropTypes.string,
-  showIcon: PropTypes.bool,
-  showBackground: PropTypes.bool,
-  className: PropTypes.string,
-};
-
-Error.defaultProps = {
-  text: null,
-  size: '1',
-  marginTop: '5px',
-  marginBottom: '0px',
-  showIcon: true,
-  showBackground: true,
-};
+interface IError {
+  text: string | null;
+  size?: string;
+  marginTop?: string;
+  marginBottom?: string;
+  showIcon?: boolean;
+  showBackground?: boolean;
+  className?: string;
+}
 
 export default Error;

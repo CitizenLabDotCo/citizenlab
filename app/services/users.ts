@@ -71,16 +71,11 @@ export function observeUser(userId: string, streamParams: IStreamParams<IUser> |
 }
 
 export function updateUser(userId: string, object: IUserUpdate) {
-  const httpMethod = {
-    method: 'PUT'
-  };
+  const httpMethod = { method: 'PUT' };
+  const bodyData = { user: object };
 
-  const bodyData = {
-    user: object
-  };
-
-  return request(`${apiEndpoint}/${userId}`, bodyData, httpMethod, null).then((response: IUser) => {
-    streams.update(userId, response);
+  return request(`${apiEndpoint}/${userId}`, bodyData, httpMethod, null).then((userObject) => {
+    streams.update(userId, userObject, true);
   }).catch(() => {
     throw new Error(`error for updateUser() of service Users`);
   });

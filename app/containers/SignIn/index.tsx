@@ -1,19 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { createStructuredSelector } from 'reselect';
-import { injectIntl, intlShape } from 'react-intl';
-import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-import { connect } from 'react-redux';
-import { injectTFunc } from 'utils/containers/t/utils';
-import styled from 'styled-components';
+import * as React from 'react';
+import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import _ from 'lodash';
 import messages from './messages';
 import { signIn } from 'services/auth';
 import { isValidEmail } from 'utils/validate';
+import styledComponents from 'styled-components';
+const styled = styledComponents;
 
 const Container = styled.div`
   background: #f2f2f2;
@@ -46,7 +42,35 @@ const FormElement = styled.div`
   margin-bottom: 44px;
 `;
 
-export class SignIn extends React.PureComponent {
+type Props = {
+  opened: boolean;
+  onSignedIn: () => void;
+  intl: ReactIntl.InjectedIntl;
+  locale: string;
+};
+
+type State = {
+  email: string | null;
+  password: string | null;
+  processing: boolean;
+  emailError: string | null;
+  passwordError: string | null;
+  signInError: string | null;
+};
+
+interface IState {
+  email?: string | null;
+  password?: string | null;
+  processing?: boolean;
+  emailError?: string | null;
+  passwordError?: string | null;
+  signInError?: string | null;
+}
+
+export default class SignIn extends React.PureComponent<Props, State> {
+  private state$: Rx.Subject<IState>;
+  private subscriptions: Rx.Subscription[];
+
   constructor() {
     super();
     this.state = {
@@ -57,14 +81,25 @@ export class SignIn extends React.PureComponent {
       passwordError: null,
       signInError: null,
     };
+    this.state$ = new Rx.Subject();
+    this.subscriptions = [];
+  }
+
+  componentDidMount() {
+    this.subscriptions = [
+      this.state$
+        .startWith(this.state)
+        .scan((prevState, updatedStateProps) => ({ ...prevState, ...updatedStateProps }))
+        .subscribe(state => this.setState(state as State)),
+    ];
   }
 
   handleEmailOnChange = (email) => {
-    this.setState({ email, emailError: null, signInError: null });
+    this.state$.next({ email, emailError: null, signInError: null });
   }
 
   handlePasswordOnChange = (password) => {
-    this.setState({ password, passwordError: null, signInError: null });
+    this.state$.next({ password, passwordError: null, signInError: null });
   }
 
   handleOnSubmit = async () => {
@@ -73,25 +108,24 @@ export class SignIn extends React.PureComponent {
     const { email, password } = this.state;
 
     if (!email || !isValidEmail(email) || !password) {
+      let emailError: string | null = null;
+      const passwordError = (!password ? formatMessage(messages.noPasswordError) : null);
+
       if (!email) {
-        this.setState({ emailError: formatMessage(messages.noEmailError) });
+        emailError = formatMessage(messages.noEmailError);
+      } else if (!isValidEmail(email)) {
+        emailError = formatMessage(messages.noValidEmailError);
       }
 
-      if (!isValidEmail(email)) {
-        this.setState({ emailError: formatMessage(messages.noValidEmailError) });
-      }
-
-      if (!password) {
-        this.setState({ passwordError: formatMessage(messages.noPasswordError) });
-      }
+      this.state$.next({ emailError, passwordError });
     } else {
       try {
-        this.setState({ processing: true });
+        this.state$.next({ processing: true });
         await signIn(email, password);
-        this.setState({ processing: false });
+        this.state$.next({ processing: false });
         onSignedIn();
       } catch (error) {
-        this.setState({ processing: false, signInError: formatMessage(messages.signInError) });
+        this.state$.next({ processing: false, signInError: formatMessage(messages.signInError) });
       }
     }
   }
@@ -147,17 +181,3 @@ export class SignIn extends React.PureComponent {
     );
   }
 }
-
-SignIn.propTypes = {
-  opened: PropTypes.bool.isRequired,
-  onSignedIn: PropTypes.func.isRequired,
-  intl: intlShape,
-  tFunc: PropTypes.func.isRequired,
-  locale: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = createStructuredSelector({
-  locale: makeSelectLocale(),
-});
-
-export default injectTFunc(injectIntl(connect(mapStateToProps, null)(SignIn)));
