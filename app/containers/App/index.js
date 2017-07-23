@@ -38,6 +38,7 @@ import { createStructuredSelector } from 'reselect';
 import authSagas from 'utils/auth/sagas';
 import areasSagas from 'utils/areas/sagas';
 import tenantSaga from 'utils/tenant/sagas';
+import analyticsSagas from 'utils/analytics/sagas';
 import { makeSelectCurrentTenant, makeSelectSetting } from 'utils/tenant/selectors';
 
 import { loadCurrentUserRequest } from 'utils/auth/actions';
@@ -110,6 +111,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
       <div>
         <WatchSagas sagas={authSagas} />
         <WatchSagas sagas={areasSagas} />
+        <WatchSagas sagas={analyticsSagas} />
         <WatchSagas sagas={{ tenantSaga }} />
         {this.content()}
       </div>
