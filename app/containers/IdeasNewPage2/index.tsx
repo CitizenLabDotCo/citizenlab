@@ -1,6 +1,4 @@
-/*
 import * as React from 'react';
-import styledComponents from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -14,23 +12,25 @@ import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
 import Editor from 'components/UI/Editor';
+import { EditorState, convertToRaw } from 'draft-js';
 import Button from 'components/UI/Button';
 import Upload from 'components/UI/Upload';
+import { ImageFile } from 'react-dropzone';
 import Error from 'components/UI/Error';
 import SignIn from 'containers/SignIn';
 import SignUp from 'containers/SignUp';
-import { convertToRaw } from 'draft-js';
 import * as draftToHtml from 'draftjs-to-html';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import { IOption } from 'typings';
 import { IUser } from 'services/users';
 import { IStream } from 'utils/streams';
-import { observeTopics, ITopics } from 'services/topics';
-import { observeProjects, IProjects } from 'services/projects';
+import { observeTopics, ITopics, ITopicData } from 'services/topics';
+import { observeProjects, IProjects, IProjectData } from 'services/projects';
 import { observeSignedInUser } from 'services/auth';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import messages from './messages';
-
+import styledComponents from 'styled-components';
 const styled = styledComponents;
 
 const Container = styled.div`
@@ -121,30 +121,50 @@ const ButtonBarInner = styled.div`
   }
 `;
 
+interface ExtendedImageFile extends ImageFile {
+  base64: string;
+}
+
 type Props = {
-  intl: ReactIntl.IntlShape,
+  intl: ReactIntl.InjectedIntl,
   tFunc: Function,
   locale: string,
 };
 
 type State = {
-  user: IUser | null,
-  topics: ITopics | null,
-  projects: IProjects | null,
-  title: string | null,
-  description: any,
-  selectedTopics: ITopics | null,
-  selectedProject: IProjects | null,
-  location: any,
-  images: any,
-  processing: boolean,
-  titleError: string | null,
-  descriptionError: string | null,
-  submitError: string | null
+  user: IUser | null;
+  topics: IOption[] | null;
+  projects: IOption[] | null;
+  title: string | null;
+  description: EditorState;
+  selectedTopics: IOption[] | null;
+  selectedProject: IOption | null;
+  location: any;
+  images: ExtendedImageFile[] | null;
+  processing: boolean;
+  titleError: string | null;
+  descriptionError: string | null;
+  submitError: string | null;
 };
 
+interface IState {
+  user?: IUser | null;
+  topics?: IOption[] | null;
+  projects?: IOption[] | null;
+  title?: string | null;
+  description?: EditorState;
+  selectedTopics?: IOption[] | null;
+  selectedProject?: IOption | null;
+  location?: any;
+  images?: ExtendedImageFile[] | null;
+  processing?: boolean;
+  titleError?: string | null;
+  descriptionError?: string | null;
+  submitError?: string | null;
+}
+
 class IdeasNewPage2 extends React.PureComponent<Props, State> {
-  state$: Rx.Subject<State>;
+  state$: Rx.Subject<IState>;
   topics$: IStream<ITopics>;
   projects$: IStream<IProjects>;
   user$: IStream<IUser>;
@@ -158,7 +178,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       topics: null,
       projects: null,
       title: null,
-      description: null,
+      description: EditorState.createEmpty(),
       selectedTopics: null,
       selectedProject: null,
       location: null,
@@ -178,7 +198,10 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     this.subscriptions = [
-      this.state$.distinctUntilChanged().subscribe(state => this.setState(state)),
+      this.state$
+        .startWith(this.state)
+        .scan((prevState, updatedStateProps) => ({ ...prevState, ...updatedStateProps }))
+        .subscribe(state => this.setState(state as State)),
 
       Rx.Observable.combineLatest(
         this.topics$.observable.distinctUntilChanged(),
@@ -186,13 +209,11 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
         this.user$.observable.distinctUntilChanged(),
         (topics, projects, user) => ({ topics, projects, user }),
       ).subscribe(({ topics, projects, user }) => {
-        this.state$.next({ ...this.state, topics, projects, user });
-
-        // this.setState({
-        //   user: (!_.isError(user) ? user.data : null),
-        //   topics: (topics ? this.getOptions(topics.data) : null),
-        //   projects: (projects ? this.getOptions(projects.data) : null),
-        // });
+        this.state$.next({
+          user: (!_.isError(user) ? user : null),
+          topics: (topics ? this.getOptions(topics) : null),
+          projects: (projects ? this.getOptions(projects) : null)
+        });
       }),
     ];
 
@@ -206,69 +227,64 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  getOptions(list) {
+  getOptions(list: ITopics | IProjects) {
     const { tFunc } = this.props;
 
-    return list.map((item) => ({
+    return (list.data as (ITopicData | IProjectData)[]).map(item => ({
       value: item.id,
-      label: tFunc(item.attributes.title_multiloc),
-    }));
+      label: tFunc(item.attributes.title_multiloc) as string,
+    } as IOption));
   }
 
-  async getBase64(image) {
+  async getBase64(image: ImageFile) {
     return new Promise((resolve) => {
       const reader = new FileReader();
-      reader.onload = (event) => resolve(event.target.result);
+      reader.onload = (event: any) => resolve(event.target.result);
       reader.readAsDataURL(image);
     });
   }
 
-  async convertToLatLng(location) {
+  async convertToLatLng(location: string) {
     const results = await geocodeByAddress(location);
     return getLatLng(results[0]);
   }
 
-  handleTitleOnChange = (title) => {
-    this.setState({
-      title,
-      titleError: null,
-    });
+  handleTitleOnChange = (title: string) => {
+    this.state$.next({ title, titleError: null });
   }
 
-  handleDescriptionOnChange = (description) => {
-    this.setState((state) => ({
+  handleDescriptionOnChange = (description: EditorState) => {
+    this.state$.next({
       description,
-      descriptionError: (description.getCurrentContent().hasText() ? null : state.descriptionError),
-    }));
+      descriptionError: (description.getCurrentContent().hasText() ? null : this.state.descriptionError),
+    });
   }
 
   handleTopicsOnChange = (selectedTopics) => {
-    this.setState({ selectedTopics });
+    this.state$.next({ selectedTopics });
   }
 
   handleProjectOnChange = (selectedProject) => {
-    this.setState({ selectedProject });
+    this.state$.next({ selectedProject });
   }
 
   handleLocationOnChange = (location) => {
-    this.setState({ location });
+    this.state$.next({ location });
   }
 
-  handleUploadOnAdd = async (image) => {
-    const base64 = await this.getBase64(image);
-
-    this.setState((state) => {
-      const newImage = { ...image, base64 };
-      const images = (state.images ? [...state.images, newImage] : [newImage]);
-      return { images };
-    });
+  handleUploadOnAdd = async (image: ImageFile) => {
+    const base64 = await this.getBase64(image) as string;
+    const newImage: ExtendedImageFile = { ...image, base64 };
+    const images: ExtendedImageFile[] = (this.state.images ? [...this.state.images, newImage] : [newImage]);
+    this.state$.next({ images });
   }
 
   handleUploadOnRemove = (removedImage) => {
-    this.setState((state) => ({ images: state.images.filter((image) => image.preview !== removedImage.preview) }));
+    const images = _(this.state.images).filter((image) => image.preview !== removedImage.preview).value();
+    this.state$.next({ images });
   }
 
-  handleSetRef = (element) => {
+  handleSetRef = (element: HTMLInputElement) => {
     this.titleInputElement = element;
   }
 
@@ -278,13 +294,12 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     const { user, title, description, selectedTopics, selectedProject, location, images } = this.state;
 
     if (!title || !description || !description.getCurrentContent().hasText()) {
-      if (!title) {
-        this.setState({ titleError: formatMessage(messages.titleEmptyError) });
-      }
+      const titleError = (!title ? formatMessage(messages.titleEmptyError) : null);
+      const descriptionError = (!description || !description.getCurrentContent().hasText() 
+                                ? formatMessage(messages.descriptionEmptyError) 
+                                : null);
 
-      if (!description || !description.getCurrentContent().hasText()) {
-        this.setState({ descriptionError: formatMessage(messages.descriptionEmptyError) });
-      }
+      this.setState({ titleError, descriptionError });
     } else {
       const localTitle = { [locale]: title };
       const localDescription = { [locale]: draftToHtml(convertToRaw(description.getCurrentContent())) };
@@ -326,11 +341,8 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       location,
       images,
     } = this.state;
-    const uploadedImages = _(images).map((image) => _.omit(image, 'base64')).value();
-    const hasAllRequiredContent = _.isString(title) && 
-                                  !_.isEmpty(title) && 
-                                  description && 
-                                  description.getCurrentContent().hasText();
+    const uploadedImages = _(images).map((image) => _.omit(image, 'base64') as ImageFile).value();
+    const hasAllRequiredContent = title && description && description.getCurrentContent().hasText();
 
     return (
       <div>
@@ -343,6 +355,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
               <FormElement>
                 <Input
                   id="title"
+                  type="text"
                   value={title}
                   placeholder={formatMessage(messages.titlePlaceholder)}
                   error={titleError}
@@ -351,9 +364,10 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
                 />
               </FormElement>
 
-              <Label value={formatMessage(messages.descriptionLabel)} />
+              <Label value={formatMessage(messages.descriptionLabel)} htmlFor="editor" />
               <EditorWrapper>
                 <Editor
+                  id="editor"
                   value={description}
                   placeholder={formatMessage(messages.descriptionPlaceholder)}
                   error={descriptionError}
@@ -361,21 +375,20 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
                 />
               </EditorWrapper>
 
-              <Label value={formatMessage(messages.topicsLabel)} />
+              <Label value={formatMessage(messages.topicsLabel)} htmlFor="topics" />
               <FormElement>
                 <MultipleSelect
                   value={selectedTopics}
                   placeholder={formatMessage(messages.topicsPlaceholder)}
                   options={topics}
-                  onChange={this.handleTopicsOnChange}
                   max={2}
+                  onChange={this.handleTopicsOnChange}
                 />
               </FormElement>
 
-              <Label value={formatMessage(messages.projectsLabel)} />
+              <Label value={formatMessage(messages.projectsLabel)} htmlFor="projects" />
               <FormElement>
                 <Select
-                  clearable
                   value={selectedProject}
                   placeholder={formatMessage(messages.projectsPlaceholder)}
                   options={projects}
@@ -384,8 +397,9 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
               </FormElement>
 
               <FormElement>
-                <Label value={formatMessage(messages.locationLabel)} />
+                <Label value={formatMessage(messages.locationLabel)} htmlFor="location" />
                 <LocationInput
+                  id="location"
                   value={location}
                   placeholder={formatMessage(messages.locationPlaceholder)}
                   onChange={this.handleLocationOnChange}
@@ -395,6 +409,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
               <FormElement>
                 <Label value={formatMessage(messages.imageUploadLabel)} />
                 <Upload
+                  intl={this.props.intl}
                   items={uploadedImages}
                   accept="image/jpg, image/jpeg, image/png, image/gif"
                   maxSize={5000000}
@@ -412,7 +427,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
                   onClick={this.handleOnSubmit}
                   disabled={!hasAllRequiredContent}
                 />
-                <Error text={submitError} marginTop="0px" showBackground={false} />
+                <Error text={submitError} marginTop="0px" />
               </MobileButton>
             </FormContainerInner>
           </FormContainerOuter>
@@ -425,28 +440,32 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
                 onClick={this.handleOnSubmit}
                 disabled={!hasAllRequiredContent}
               />
-              <Error text={submitError} marginTop="0px" showBackground={false} />
+              <Error text={submitError} marginTop="0px" />
             </ButtonBarInner>
           </ButtonBar>
         </Container>
 
-        <SignIn opened={true} onSignedIn={this.handleOnSignedIn} />
+        <SignIn
+          opened={true}
+          onSignedIn={this.handleOnSignedIn}
+          intl={this.props.intl}
+          locale={this.props.locale}
+        />
 
-        <SignUp opened={true} onSignedUp={this.handleOnSignedUp} />
+        <SignUp
+          opened={true}
+          onSignedUp={this.handleOnSignedUp}
+          intl={this.props.intl}
+          tFunc={this.props.tFunc}
+          locale={this.props.locale}
+        />
       </div>
     );
   }
 }
-
-IdeasNewPage2.propTypes = {
-  intl: intlShape.isRequired,
-  tFunc: PropTypes.func.isRequired,
-  locale: PropTypes.string.isRequired,
-};
 
 const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
 });
 
 export default injectTFunc(injectIntl(connect(mapStateToProps, null)(IdeasNewPage2)));
-*/

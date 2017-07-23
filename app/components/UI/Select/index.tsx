@@ -1,7 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import * as _ from 'lodash';
 import * as ReactSelect from 'react-select';
-import styled from 'styled-components';
+import { IOption } from 'typings';
+import styledComponents from 'styled-components';
+const styled = styledComponents;
 
 const StyledSelect = styled(ReactSelect)`
   &.Select--single {
@@ -152,8 +154,8 @@ const StyledSelect = styled(ReactSelect)`
           font-size: 17px;
           font-weight: 400;
 
-          &:hover, 
-          &:focus, 
+          &:hover,
+          &:focus,
           &:active,
           &.is-focused {
             background: #eee;
@@ -171,45 +173,41 @@ const StyledSelect = styled(ReactSelect)`
   }
 `;
 
+interface ISelect {
+  value: IOption | null;
+  placeholder: string;
+  options: IOption[] | null;
+  autoBlur?: boolean;
+  clearable?: boolean;
+  searchable?: boolean;
+  onChange: (arg: IOption) => void;
+}
+
 const emptyArray = [];
 
-const Select = ({ value, placeholder, options, autoBlur, clearable, searchable, onChange }) => {
-  const handleOnChange = (newValue) => {
+const Select: React.SFC<ISelect> = ({ value, placeholder, options, autoBlur, clearable, searchable, onChange }) => {
+  const handleOnChange = (newValue: IOption) => {
     onChange(newValue);
   };
 
+  options = (options || emptyArray);
+  autoBlur = (_.isBoolean(autoBlur) ? autoBlur : true);
+  clearable = (_.isBoolean(clearable) ? clearable : true);
+  searchable = (_.isBoolean(searchable) ? searchable : false);
+
   return (
     <StyledSelect
-      openOnFocus
+      openOnFocus={true}
       clearable={clearable}
       searchable={searchable}
       scrollMenuIntoView={false}
       autoBlur={autoBlur}
-      value={value}
+      value={(value || undefined)}
       placeholder={placeholder}
       options={options || emptyArray}
       onChange={handleOnChange}
     />
   );
-};
-
-Select.propTypes = {
-  value: PropTypes.object,
-  placeholder: PropTypes.string,
-  options: PropTypes.array,
-  autoBlur: PropTypes.bool,
-  clearable: PropTypes.bool,
-  searchable: PropTypes.bool,
-  onChange: PropTypes.func,
-};
-
-Select.defaultProps = {
-  value: null,
-  placeholder: '',
-  options: [],
-  autoBlur: true,
-  clearable: false,
-  searchable: false,
 };
 
 export default Select;

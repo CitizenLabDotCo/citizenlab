@@ -1,14 +1,15 @@
-import React, { PropTypes } from 'react';
-import styled from 'styled-components';
-import { CSSTransitionGroup } from 'react-transition-group';
-import ClickOutside from 'utils/containers/clickOutside';
+import * as React from 'react';
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import clickOutside from 'utils/containers/clickOutside';
+import styledComponents from 'styled-components';
+const styled = styledComponents;
 
 const enterClassName = 'modal-enter';
 const enterActiveClassName = 'modal-enter-active';
 const leaveClassName = 'modal-leave';
 const leaveActiveClassName = 'modal-leave-active';
 
-const ModalContent = styled(ClickOutside)`
+const ModalContent = styled(clickOutside)`
   width: 100%;
   max-width: 800px;
   display: flex;
@@ -104,7 +105,17 @@ const CloseButton = styled.div`
   }
 `;
 
-class Modal extends React.Component {
+type Props = {
+  children: any;
+  opened: boolean;
+  parentUrl?: string;
+  url?: string;
+  close: () => void;
+};
+
+type State = {};
+
+export default class Modal extends React.PureComponent<Props, State> {
 
   handlePopstateEvent = () => {
     if (location.href === this.props.parentUrl) {
@@ -122,7 +133,7 @@ class Modal extends React.Component {
     }
 
     this.props.close();
-  };
+  }
 
   render() {
     if (this.props.opened) {
@@ -161,13 +172,3 @@ class Modal extends React.Component {
     );
   }
 }
-
-Modal.propTypes = {
-  children: PropTypes.any.isRequired,
-  opened: PropTypes.bool.isRequired,
-  close: PropTypes.func.isRequired,
-  parentUrl: PropTypes.string,
-  url: PropTypes.string,
-};
-
-export default Modal;
