@@ -155,8 +155,8 @@ const StyledSelect = styled(ReactSelect)`
           font-size: 17px;
           font-weight: 400;
 
-          &:hover, 
-          &:focus, 
+          &:hover,
+          &:focus,
           &:active,
           &.is-focused {
             background: #eee;
@@ -201,7 +201,10 @@ const Select = ({ value, placeholder, options, autoBlur, clearable, searchable, 
 Select.propTypes = {
   intl: intlShape.isRequired,
   name: PropTypes.string,
-  value: PropTypes.object,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   placeholder: PropTypes.string,
   options: PropTypes.array,
   autoBlur: PropTypes.bool,

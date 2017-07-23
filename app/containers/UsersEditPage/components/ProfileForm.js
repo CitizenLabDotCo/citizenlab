@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from 'components/UI/Button';
-import { Grid, Radio } from 'semantic-ui-react';
-import { appLocalePairs } from 'i18n';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+
+import Button from 'components/UI/Button';
+import { Grid } from 'semantic-ui-react';
+import { appLocalePairs } from 'i18n';
 import messages from '../messages';
 import Avatar from './Avatar';
 import generateErrorsObject from 'components/forms/generateErrorsObject';
@@ -19,8 +20,9 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import LabelWithTooltip from './LabelWithTooltip';
 import TextArea from 'components/UI/TextArea';
 import { injectTFunc } from 'containers/T/utils';
+import { observeAreas } from 'services/areas';
+
 import moment from 'moment';
-import { media } from 'utils/styleUtils';
 
 const NavItemStyled = styled.button`
   display: block;
@@ -38,29 +40,93 @@ const Nav = ({ goTo }) => (<div>
   <NavItemStyled onClick={() => goTo('h2')}>
     <FormattedMessage {...messages.h2} />
   </NavItemStyled>
-  <NavItemStyled onClick={() => goTo('h3')}>
+  {/* <NavItemStyled onClick={() => goTo('h3')}>
     <FormattedMessage {...messages.h3} />
-  </NavItemStyled>
+  </NavItemStyled> */}
 </div>);
 
 Nav.propTypes = {
   goTo: PropTypes.func.isRequired,
 };
 
-class ProfileForm extends React.PureComponent {
-  constructor() {
-    super();
+
+const InputGroupStyled = styled.div`
+  margin-top: 40px;
+`;
+
+const SectionHeaderStyled = styled.div`
+  font-size: 25px;
+  font-weight: bold;
+  text-align: left;
+  color: #222222;
+  padding: 0.5rem 0;
+`;
+
+const SectionSubHeaderStyled = styled.div`
+  font-size: 16px;
+  text-align: left;
+  color: #6b6b6b;
+  padding: 0.5rem 0;
+`;
+
+const LabelInputPairStyled = styled.div`
+  margin-top: 10px;
+`;
+
+const SectionSeparatorStyled = styled.hr`
+  border: none;
+  height: 3px;
+  width: 100%;
+  /* Set the hr color */
+  color: #eaeaea; /* old IE */
+  background-color: #eaeaea; /* Modern Browsers */
+`;
+
+// const StyledRadio = styled(Radio)`
+//   label:before {
+//     /* ! cannot override as important is already set on the styled radio */
+//     /* TODO: try to fix this */
+//     background-color: ${(props) => props.checked ? '#3fb57c !important' : 'inherit'};
+//     border-radius: 500rem;
+//   }
+// `;
+
+const FormContentWrapper = styled(Grid.Column)`
+  border-radius: 5px;
+  background-color: #ffffff;
+  padding: 36px;
+`;
+
+class ProfileForm extends React.Component {
+
+
+  constructor(props) {
+    super(props);
+
+    this.areasObservable = null;
 
     this.state = {
-      user: null,
+      user: this.props.userData,
       avatar: '',
+      areas: [],
     };
+  }
+
+  componentDidMount() {
+    this.areasObservable = observeAreas({
+      queryParameters: {
+        'page[size]': 1000,
+      },
+    }).observable.subscribe((data) => {
+      this.setState({
+        areas: data.data,
+      });
+    });
   }
 
   componentWillReceiveProps(nextProps) {
     const user = nextProps.userData;
 
-    // if the user wasn't loaded already ...
     if (!this.state.user || _.isEmpty(this.state.user)) {
       this.setState({
         user,
@@ -94,12 +160,19 @@ class ProfileForm extends React.PureComponent {
     this.props.avatarUpload(avatarBase64, userId);
   };
 
-  // Input, Textarea
   handleInputChange = (value, name) => {
     const { user } = _.clone(this.state);
 
-    // TODO: add validation (tracking errors in component's state will do)
     user[name] = value;
+    this.setState({
+      user,
+    });
+  };
+
+  handleMultilocInputChange = (value, name) => {
+    const { user } = _.clone(this.state);
+
+    user[name][this.state.user.locale] = value;
     this.setState({
       user,
     });
@@ -109,7 +182,6 @@ class ProfileForm extends React.PureComponent {
   handleSelectChange = (option, name) => {
     const { user } = _.clone(this.state);
 
-    // TODO: add validation (tracking errors in component's state will do)
     user[name] = option.value;
     this.setState({
       user,
@@ -120,359 +192,329 @@ class ProfileForm extends React.PureComponent {
   handleToggleChange = (name) => {
     const { user } = _.clone(this.state);
 
-    // TODO: add validation (tracking errors in component's state will do)
     user[name] = !user[name];
     this.setState({
       user,
     });
   };
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
     const { user } = this.state;
-    const { userData } = this.props;
 
-    const userWithLocale = Object.assign({}, user);
-    userWithLocale.locale = userData.locale;
+    this.props.onFormSubmit(user);
+  }
 
-    this.props.onFormSubmit(userWithLocale);
+  localeOptions = () => {
+    return this.props.locales.map((locale) => ({
+      value: locale,
+      label: appLocalePairs[locale],
+    })).toJS();
+  }
+
+  genderOptions = () => ([
+    {
+      value: 'male',
+      label: this.props.intl.formatMessage({ ...messages.male }),
+    },
+    {
+      value: 'female',
+      label: this.props.intl.formatMessage({ ...messages.female }),
+    },
+  ]);
+
+  domicileOptions = () => {
+    const options = this.state.areas.map((area) => ({
+      value: area.id,
+      label: this.props.tFunc(area.attributes.title_multiloc),
+    }));
+    options.push({
+      value: 'outside',
+      label: this.props.intl.formatMessage({
+        ...messages.outside,
+        values: {
+          name: this.props.tFunc(this.props.organizationName),
+          type: this.props.organizationType,
+        },
+      }),
+    });
+    return options;
+  }
+
+  birthYearOptions = () => {
+    const options = [];
+    for (let i = parseInt(moment().format('YYYY'), 10); i >= 1900; i -= 1) {
+      options.push({
+        value: i,
+        label: i.toString(),
+      });
+    }
+    return options;
+  }
+
+  educationOptions = () => {
+    const options = [];
+    for (let i = 0; i <= 8; i += 1) {
+      options.push({
+        value: i,
+        label: this.props.intl.formatMessage({ ...{ ...messages }[`ISCED11_${i}`] }),
+      });
+    }
+    return options;
   }
 
   render() {
     const {
-      avatarUploadError, userData: user, onLocaleChangeClick, className,
-      processing, storeErrors, locales, intl, tFunc,
+      avatarUploadError, className,
+      processing, storeErrors, intl, tFunc,
     } = this.props;
-    const userLocale = (user
-      ? user.locale
-      : 'en');
-    const localesJS = locales.toJS();
+
+    const user = this.state.user;
 
     const userErrors = storeErrors && generateErrorsObject(storeErrors);
 
-    /*
-     * styled components
-    */
-    const LeftColumnStyled = styled(Grid.Column)`
-      ${media.phone`
-        display: none !important;
-      `}
-    `;
-
-    const RightColumnStyled = styled(Grid.Column)`
-      border-radius: 5px;
-      background-color: #ffffff;
-    `;
-
-    const InputGroupStyled = styled.div`
-      margin-top: 40px;
-    `;
-
-    const SectionHeaderStyled = styled.div`
-      font-size: 25px;
-      font-weight: bold;
-      text-align: left;
-      color: #222222;
-    `;
-
-    const SectionSubHeaderStyled = styled.div`
-      font-size: 16px;
-      text-align: left;
-      color: #6b6b6b;
-    `;
-
-    const LabelInputPairStyled = styled.div`
-      margin-top: 10px;
-    `;
-
-    const SectionSeparatorStyled = styled.hr`
-      border: none;
-      height: 3px;
-      width: 100%;
-      /* Set the hr color */
-      color: #eaeaea; /* old IE */
-      background-color: #eaeaea; /* Modern Browsers */
-    `;
-
-    const StyledRadio = styled(Radio)`
-      label:before {
-        /* ! cannot override as important is already set on the styled radio */
-        /* TODO: try to fix this */
-        background-color: ${(props) => props.checked ? '#3fb57c !important' : 'inherit'};
-        border-radius: 500rem;
-      }
-    `;
-
-    /*
-     * props
-     */
-    const genderOptions = [
-      {
-        value: 'male',
-        label: intl.formatMessage(messages.male),
-      },
-      {
-        value: 'female',
-        label: intl.formatMessage(messages.female),
-      },
-    ];
-
-    const birthYearOptions = [];
-    for (let i = parseInt(moment().format('YYYY'), 10); i >= 1900; i -= 1) {
-      birthYearOptions.push({
-        value: i.toString(),
-        label: i.toString(),
-      });
-    }
-
-    const educationOptions = [];
-    for (let i = 0; i <= 8; i += 1) {
-      educationOptions.push({
-        value: i.toString(),
-        label: intl.formatMessage(messages[`ISCED11_${i}`]),
-      });
-    }
-
-    const areas = [];
-    const areaValue = {};
-    // TODO: areas from selector (object {value-label} format). same for areaValue
-
-    // TODO: fix data not working properly (when we set input, state is overidden and for some reason passed back as props to ProfileForm, ending in inputs resettings their content. e.g. <empty> -> type a -> set state -> empty again [from props])
-    // perhaps error with FormattedMessage blocking everything?!
     return (<div className={className}>
       <Grid>
         <Grid.Row>
-          <LeftColumnStyled width={4}>
+          <Grid.Column width={4} only="computer">
             <Nav goTo={this.goToSection} />
-          </LeftColumnStyled>
-          <RightColumnStyled width={12}>
-            {/* BASICS */}
-            <section ref={(section1) => { this['section-basics'] = section1; }}>
-              <SectionHeaderStyled>
-                <FormattedMessage {...messages.h1} />
-              </SectionHeaderStyled>
-              <SectionSubHeaderStyled>
-                <FormattedMessage {...messages.h1sub} />
-              </SectionSubHeaderStyled>
+          </Grid.Column>
+          <Grid.Column computer={12} mobile={16}>
+            <FormContentWrapper>
+              {/* BASICS */}
+              <section ref={(section1) => { this['section-basics'] = section1; }}>
+                <SectionHeaderStyled>
+                  <FormattedMessage {...messages.h1} />
+                </SectionHeaderStyled>
+                <SectionSubHeaderStyled>
+                  <FormattedMessage {...messages.h1sub} />
+                </SectionSubHeaderStyled>
 
-              {/* TODO: fix avatar not showing up */}
-              {/* TODO: style properly and add icon (+ logic) to trash avatar (i.e. send null) */}
-              {user && user.userId && <Avatar
-                onAvatarUpload={this.handleAvatarUpload}
-                avatarUploadError={avatarUploadError}
-                avatarURL={user.avatar}
-                userId={user.userId}
-              />}
-
-              <InputGroupStyled>
-                <LabelInputPairStyled>
-                  {/*
-                   * TODO: move these recurring blocks to a component with props for re-use
-                   */}
-                  <LabelWithTooltip id="firstName" hasTooltip />
-                  <Input
-                    name="firstName"
-                    onChange={this.handleInputChange}
-                    value={user && user.first_name}
-                    error={userErrors && userErrors.first_name && userErrors.first_name[0]}
-                  />
-                </LabelInputPairStyled>
-                <LabelInputPairStyled>
-                  <LabelWithTooltip id="lastName" hasTooltip />
-                  <Input
-                    name="lastName"
-                    onChange={this.handleInputChange}
-                    value={user && user.last_name}
-                    error={userErrors && userErrors.last_name && userErrors.last_name[0]}
-                  />
-                </LabelInputPairStyled>
-                <LabelInputPairStyled>
-                  <LabelWithTooltip id="email" hasTooltip />
-                  <Input
-                    name="email"
-                    onChange={this.handleInputChange}
-                    value={user && user.email}
-                    error={userErrors && userErrors.email && userErrors.email[0]}
-                  />
-                </LabelInputPairStyled>
-                <LabelInputPairStyled>
-                  <LabelWithTooltip id="password" hasTooltip />
-                  <Input
-                    name="password"
-                    onChange={this.handleInputChange}
-                    value={user && user.password}
-                    error={userErrors && userErrors.password && userErrors.password[0]}
-                  />
-                </LabelInputPairStyled>
-
-                {localesJS && <Select
-                  name="locale"
-                  onChange={onLocaleChangeClick}
-                  value={appLocalePairs.find((l) => l.value === userLocale)}
-                  options={appLocalePairs.filter((locale) => localesJS.find((l) => l === locale.value))}
+                {user && user.userId && <Avatar
+                  onAvatarUpload={this.handleAvatarUpload}
+                  avatarUploadError={avatarUploadError}
+                  avatarURL={user.avatar}
+                  userId={user.userId}
                 />}
-              </InputGroupStyled>
-            </section>
 
-            <SectionSeparatorStyled
-              style={{
-                margin: '60px 0',
-              }}
-            />
+                <InputGroupStyled>
+                  <LabelInputPairStyled>
+                    <LabelWithTooltip id="firstName" />
+                    <Input
+                      key="first_name"
+                      name="first_name"
+                      onChange={this.handleInputChange}
+                      value={user && user.first_name}
+                      error={userErrors && userErrors.first_name && userErrors.first_name[0]}
+                    />
+                  </LabelInputPairStyled>
+                  <LabelInputPairStyled>
+                    <LabelWithTooltip id="lastName" />
+                    <Input
+                      name="last_name"
+                      onChange={this.handleInputChange}
+                      value={user && user.last_name}
+                      error={userErrors && userErrors.last_name && userErrors.last_name[0]}
+                    />
+                  </LabelInputPairStyled>
+                  <LabelInputPairStyled>
+                    <LabelWithTooltip id="email" />
+                    <Input
+                      name="email"
+                      onChange={this.handleInputChange}
+                      value={user && user.email}
+                      error={userErrors && userErrors.email && userErrors.email[0]}
+                    />
+                  </LabelInputPairStyled>
+                  <LabelInputPairStyled>
+                    <LabelWithTooltip id="password" />
+                    <Input
+                      type="password"
+                      name="password"
+                      onChange={this.handleInputChange}
+                      value={user && user.password}
+                      error={userErrors && userErrors.password && userErrors.password[0]}
+                    />
+                  </LabelInputPairStyled>
+                  <LabelInputPairStyled>
+                    <LabelWithTooltip id="language" />
+                    {<Select
+                      name="locale"
+                      onChange={this.handleSelectChange}
+                      value={user.locale}
+                      options={this.localeOptions()}
+                    />}
+                  </LabelInputPairStyled>
+                </InputGroupStyled>
+              </section>
 
-            {/* DETAILS */}
-            <section ref={(section2) => { this['section-details'] = section2; }}>
-              <SectionHeaderStyled>
-                <FormattedMessage {...messages.h2} />
-              </SectionHeaderStyled>
-              <SectionSubHeaderStyled>
-                <FormattedMessage {...messages.h2sub} />
-              </SectionSubHeaderStyled>
+              <SectionSeparatorStyled
+                style={{
+                  margin: '60px 0',
+                }}
+              />
 
-              <InputGroupStyled>
-                <LabelWithTooltip id="gender" hasTooltip />
-                <Select
-                  name="gender"
-                  placeholder={intl.formatMessage(messages.male)}
-                  options={genderOptions}
-                  onChange={this.handleSelectChange}
-                  value={{
-                    value: user.gender,
-                    label: user.gender && intl.formatMessage(messages[user.gender]),
-                  }}
-                  error={userErrors && userErrors.gender[0]}
-                />
+              {/* DETAILS */}
+              <section ref={(section2) => { this['section-details'] = section2; }}>
+                <SectionHeaderStyled>
+                  <FormattedMessage {...messages.h2} />
+                </SectionHeaderStyled>
+                <SectionSubHeaderStyled>
+                  <FormattedMessage {...messages.h2sub} />
+                </SectionSubHeaderStyled>
 
-                <LabelWithTooltip id="bio" hasTooltip />
-                <TextArea
-                  name="bio_multiloc"
-                  onInput={this.handleInputChange}
-                  rows={6}
-                  placeholder={intl.formatMessage(messages.bio_placeholder)}
-                  value={user.bio_multiloc && tFunc(user.bio_multiloc)}
-                  error={userErrors && userErrors.bio_multiloc && userErrors.bio_multiloc[0]}
-                />
+                <InputGroupStyled>
+                  {this.props.genderEnabled &&
+                    <div>
+                      <LabelWithTooltip id="gender" />
+                      <Select
+                        name="gender"
+                        placeholder={intl.formatMessage({ ...messages.male })}
+                        options={this.genderOptions()}
+                        onChange={(value) => this.handleInputChange(value, 'gender')}
+                        value={user.gender}
+                        error={userErrors && userErrors.gender && userErrors.gender[0]}
+                      />
+                    </div>
+                  }
 
-                <LabelWithTooltip id="area" />
-                <Select
-                  name="area_multiloc"
-                  placeholder={intl.formatMessage(messages.area_placeholder)}
-                  options={areas}
-                  onChange={this.handleSelectChange}
-                  value={areaValue}
-                  error={userErrors && userErrors.domicilie && userErrors.domicilie[0]}
-                />
+                  <LabelWithTooltip id="bio" />
+                  <TextArea
+                    name="bio_multiloc"
+                    onInput={this.handleMultilocInputChange}
+                    rows={6}
+                    placeholder={intl.formatMessage({ ...messages.bio_placeholder })}
+                    value={tFunc(user.bio_multiloc)}
+                    error={userErrors && userErrors.bio_multiloc && userErrors.bio_multiloc[0]}
+                  />
 
-                <LabelWithTooltip id="birthdate" />
-                <Select
-                  name="birthdate"
-                  options={birthYearOptions}
-                  onChange={this.handleSelectChange}
-                  value={{
-                    value: user.birthyear,
-                    label: user.birthyear,
-                  }}
-                  error={userErrors && userErrors.birthyear && userErrors.birthyear[0]}
-                />
+                  {this.props.domicileEnabled &&
+                    <div>
+                      <LabelWithTooltip id="domicile" />
+                      <Select
+                        name="domicile"
+                        placeholder={intl.formatMessage({ ...messages.domicile_placeholder })}
+                        options={this.domicileOptions()}
+                        onChange={this.handleSelectChange}
+                        value={user.domicile}
+                        error={userErrors && userErrors.domicile && userErrors.domicile[0]}
+                      />
+                    </div>
+                  }
+                  {this.props.birthyearEnabled &&
+                    <div>
+                      <LabelWithTooltip id="birthdate" />
+                      <Select
+                        name="birthyear"
+                        options={this.birthYearOptions()}
+                        onChange={this.handleSelectChange}
+                        value={user.birthyear}
+                        error={userErrors && userErrors.birthyear && userErrors.birthyear[0]}
+                      />
+                    </div>
+                  }
 
-                <LabelWithTooltip id="education" />
-                <Select
-                  name="education"
-                  placeholder={intl.formatMessage(messages.area_placeholder)}
-                  options={educationOptions}
-                  onChange={this.handleSelectChange}
-                  value={{
-                    value: user.education,
-                    label: user.education && intl.formatMessage(messages[user.education]),
-                  }}
-                  error={userErrors && userErrors.education && userErrors.education[0]}
-                />
-
-              </InputGroupStyled>
-            </section>
-
-            <SectionSeparatorStyled
-              style={{
-                margin: '48px 0 25px 0',
-              }}
-            />
-
-            {/* NOTIFICATIONS */}
-            <section ref={(section3) => { this['section-notifications'] = section3; }}>
-              <SectionHeaderStyled>
-                <FormattedMessage {...messages.h3} />
-              </SectionHeaderStyled>
-              <SectionSubHeaderStyled>
-                <FormattedMessage {...messages.h3sub} />
-              </SectionSubHeaderStyled>
-
-              <InputGroupStyled>
-                <LabelWithTooltip id="notifications_all_email" isBold />
-                <StyledRadio
-                  toggle
-                  checked={this.getToggleValue('notifications_all_email')}
-                  onClick={() => this.handleToggleChange('notifications_all_email')}
-                />
-
-                <LabelWithTooltip id="notifications_idea_post" />
-                <StyledRadio
-                  toggle
-                  checked={this.getToggleValue('notifications_idea_post')}
-                  onClick={() => this.handleToggleChange('notifications_idea_post')}
-                />
-
-                <LabelWithTooltip id="notifications_new_user" />
-                <StyledRadio
-                  toggle
-                  checked={this.getToggleValue('notifications_new_user')}
-                  onClick={() => this.handleToggleChange('notifications_new_user')}
-                />
-
-                <LabelWithTooltip id="notifications_new_comments" />
-                <StyledRadio
-                  toggle
-                  checked={this.getToggleValue('notifications_new_comments')}
-                  onClick={() => this.handleToggleChange('notifications_new_comments')}
-                />
-
-                <LabelWithTooltip id="notifications_all_app" isBold />
-                <StyledRadio
-                  toggle
-                  checked={this.getToggleValue('notifications_all_app')}
-                  onClick={() => this.handleToggleChange('notifications_all_app')}
-                />
-
-                <LabelWithTooltip id="notifications_comment_on_comment" />
-                <StyledRadio
-                  toggle
-                  checked={this.getToggleValue('notifications_comment_on_comment')}
-                  onClick={() => this.handleToggleChange('notifications_comment_on_comment')}
-                />
-
-                <LabelWithTooltip id="notifications_mention" />
-                <StyledRadio
-                  toggle
-                  checked={this.getToggleValue('notifications_mention')}
-                  onClick={() => this.handleToggleChange('notifications_mention')}
-                />
-
-                <LabelWithTooltip id="notifications_idea_comment" />
-                <StyledRadio
-                  toggle
-                  checked={this.getToggleValue('notifications_idea_comment')}
-                  onClick={() => this.handleToggleChange('notifications_idea_comment')}
-                />
+                  {this.props.educationEnabled &&
+                    <div>
+                      <LabelWithTooltip id="education" />
+                      <Select
+                        name="education"
+                        placeholder={intl.formatMessage({ ...messages.education_placeholder })}
+                        options={this.educationOptions()}
+                        onChange={this.handleSelectChange}
+                        value={user.education}
+                        error={userErrors && userErrors.education && userErrors.education[0]}
+                      />
+                    </div>
+                  }
 
 
-              </InputGroupStyled>
+                </InputGroupStyled>
+              </section>
 
+              <SectionSeparatorStyled
+                style={{
+                  margin: '48px 0 25px 0',
+                }}
+              />
+
+              {/* NOTIFICATIONS */}
+              {/* <section ref={(section3) => { this['section-notifications'] = section3; }}>
+                <SectionHeaderStyled>
+                  <FormattedMessage {...messages.h3} />
+                </SectionHeaderStyled>
+                <SectionSubHeaderStyled>
+                  <FormattedMessage {...messages.h3sub} />
+                </SectionSubHeaderStyled>
+
+                 <InputGroupStyled>
+                  <LabelWithTooltip id="notifications_all_email" isBold />
+                  <StyledRadio
+                    toggle
+                    checked={this.getToggleValue('notifications_all_email')}
+                    onClick={() => this.handleToggleChange('notifications_all_email')}
+                  />
+
+                  <LabelWithTooltip id="notifications_idea_post" />
+                  <StyledRadio
+                    toggle
+                    checked={this.getToggleValue('notifications_idea_post')}
+                    onClick={() => this.handleToggleChange('notifications_idea_post')}
+                  />
+
+                  <LabelWithTooltip id="notifications_new_user" />
+                  <StyledRadio
+                    toggle
+                    checked={this.getToggleValue('notifications_new_user')}
+                    onClick={() => this.handleToggleChange('notifications_new_user')}
+                  />
+
+                  <LabelWithTooltip id="notifications_new_comments" />
+                  <StyledRadio
+                    toggle
+                    checked={this.getToggleValue('notifications_new_comments')}
+                    onClick={() => this.handleToggleChange('notifications_new_comments')}
+                  />
+
+                  <LabelWithTooltip id="notifications_all_app" isBold />
+                  <StyledRadio
+                    toggle
+                    checked={this.getToggleValue('notifications_all_app')}
+                    onClick={() => this.handleToggleChange('notifications_all_app')}
+                  />
+
+                  <LabelWithTooltip id="notifications_comment_on_comment" />
+                  <StyledRadio
+                    toggle
+                    checked={this.getToggleValue('notifications_comment_on_comment')}
+                    onClick={() => this.handleToggleChange('notifications_comment_on_comment')}
+                  />
+
+                  <LabelWithTooltip id="notifications_mention" />
+                  <StyledRadio
+                    toggle
+                    checked={this.getToggleValue('notifications_mention')}
+                    onClick={() => this.handleToggleChange('notifications_mention')}
+                  />
+
+                  <LabelWithTooltip id="notifications_idea_comment" />
+                  <StyledRadio
+                    toggle
+                    checked={this.getToggleValue('notifications_idea_comment')}
+                    onClick={() => this.handleToggleChange('notifications_idea_comment')}
+                  />
+
+
+                </InputGroupStyled>
+
+              </section> */}
               <Button
-                text={intl.formatMessage(messages.submit)}
+                text={intl.formatMessage({ ...messages.submit })}
                 onClick={this.handleSubmit}
                 loading={processing}
               />
-            </section>
-          </RightColumnStyled>
+            </FormContentWrapper>
+          </Grid.Column>
         </Grid.Row>
       </Grid>
     </div>);
@@ -483,7 +525,6 @@ ProfileForm.propTypes = {
   className: PropTypes.string,
   onFormSubmit: PropTypes.func.isRequired,
   avatarUpload: PropTypes.func.isRequired,
-  onLocaleChangeClick: PropTypes.func.isRequired,
   userData: PropTypes.object,
   avatarUploadError: PropTypes.bool,
   processing: PropTypes.bool,
@@ -491,10 +532,22 @@ ProfileForm.propTypes = {
   locales: ImmutablePropTypes.list,
   intl: intlShape.isRequired,
   tFunc: PropTypes.func.isRequired,
+  organizationName: ImmutablePropTypes.map,
+  organizationType: PropTypes.string,
+  genderEnabled: PropTypes.bool,
+  domicileEnabled: PropTypes.bool,
+  birthyearEnabled: PropTypes.bool,
+  educationEnabled: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   locales: makeSelectSetting(['core', 'locales']),
+  organizationName: makeSelectSetting(['core', 'organization_name']),
+  organizationType: makeSelectSetting(['core', 'organization_type']),
+  genderEnabled: makeSelectSetting(['demographic_fields', 'gender']),
+  domicileEnabled: makeSelectSetting(['demographic_fields', 'domicile']),
+  birthyearEnabled: makeSelectSetting(['demographic_fields', 'birthyear']),
+  educationEnabled: makeSelectSetting(['demographic_fields', 'education']),
 });
 
 export default injectTFunc(injectIntl(connect(mapStateToProps)(styled(ProfileForm)`

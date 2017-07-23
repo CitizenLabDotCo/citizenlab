@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import WatchSagas from 'containers/WatchSagas/';
 import { preprocess } from 'utils/reactRedux';
 import { bindActionCreators } from 'redux';
+import _ from 'lodash';
 
 import {
   selectProfile,
@@ -70,7 +71,7 @@ export class UsersEditPage extends React.PureComponent { // eslint-disable-line 
       {storeError && <MessageIntl messageId="storeError" intl={intl} error />}
       {stored && <MessageIntl messageId="stored" intl={intl} />}
 
-      {currentUser && <ProfileForm
+      {!_.isEmpty(currentUser) && <ProfileForm
         onLocaleChangeClick={this.props.updateLocale}
         userData={currentUser}
         avatarUpload={onAvatarUpload}

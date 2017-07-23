@@ -6,8 +6,8 @@ import Error from 'components/UI/Error';
 const emptyString = '';
 
 const TextArea = ({ className, onInput, placeholder, value, rows, error, name }) => {
-  const handleOnInput = (val) => {
-    onInput(val, name);
+  const handleOnInput = (event) => {
+    onInput(event.target.value, name);
   };
 
   return (<div>
