@@ -6,8 +6,9 @@ import messages from '../messages';
 import styled from 'styled-components';
 import * as tooltipIcon from '../icons/tooltip_tmp.png';
 
-const LabelStyled = styled.div`
+const LabelStyled = styled.label`
   display: inline-block;
+  font-size: 18px;
   font-weight: ${(props) => props.isBold ? 'bold' : 'normal'};
 `;
 
@@ -38,5 +39,5 @@ LabelWithTooltip.propTypes = {
 };
 
 export default injectIntl(styled(LabelWithTooltip)`
-  // TODO
+  padding: 0.5em 0;
 `);

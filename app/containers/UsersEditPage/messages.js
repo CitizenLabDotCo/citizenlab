@@ -53,33 +53,21 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.firstName',
     defaultMessage: 'First name',
   },
-  firstName_tooltip: {
-    id: 'app.containers.UsersEditPage.firstName_tooltip',
-    defaultMessage: 'Your name',
-  },
   lastName: {
     id: 'app.containers.UsersEditPage.lastName',
     defaultMessage: 'Last name',
-  },
-  lastName_tooltip: {
-    id: 'app.containers.UsersEditPage.lastName_tooltip',
-    defaultMessage: 'Your family name',
   },
   email: {
     id: 'app.containers.UsersEditPage.email',
     defaultMessage: 'E-mail address',
   },
-  email_tooltip: {
-    id: 'app.containers.UsersEditPage.email_tooltip',
-    defaultMessage: 'Your e-mail address to receive notifications',
-  },
   password: {
     id: 'app.containers.UsersEditPage.password',
     defaultMessage: 'Password',
   },
-  password_tooltip: {
-    id: 'app.containers.UsersEditPage.password_tooltip',
-    defaultMessage: 'Your password to log in',
+  language: {
+    id: 'app.containers.UsersEditPage.language',
+    defaultMessage: 'Language',
   },
   /*
    * Details
@@ -96,10 +84,6 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.gender',
     defaultMessage: 'Gender',
   },
-  gender_tooltip: {
-    id: 'app.containers.UsersEditPage.gender_tooltip',
-    defaultMessage: 'Your gender',
-  },
   male: {
     id: 'app.containers.UsersEditPage.male',
     defaultMessage: 'Male',
@@ -112,25 +96,21 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.bio',
     defaultMessage: 'Bio',
   },
-  bio_tooltip: {
-    id: 'app.containers.UsersEditPage.bio_tooltip',
-    defaultMessage: 'A short description of yourself',
-  },
   bio_placeholder: {
     id: 'app.containers.UsersEditPage.bio_placeholder',
     defaultMessage: 'Write a short description of yourself',
   },
-  area: {
-    id: 'app.containers.UsersEditPage.area',
-    defaultMessage: 'Area',
+  domicile: {
+    id: 'app.containers.UsersEditPage.domicile',
+    defaultMessage: 'Domicile',
   },
-  area_placeholder: {
-    id: 'app.containers.UsersEditPage.area_placeholder',
-    defaultMessage: 'Neighbourhood',
+  domicile_placeholder: {
+    id: 'app.containers.UsersEditPage.domicile_placeholder',
+    defaultMessage: 'Domicile',
   },
   outside: {
     id: 'app.containers.UsersEditPage.area_outside',
-    defaultMessage: 'Outside',
+    defaultMessage: '{type, select, city {Outside of {name}}, generic {None of these}}',
   },
   birthdate: {
     id: 'app.containers.UsersEditPage.birthdate',
@@ -138,6 +118,10 @@ export default defineMessages({
   },
   education: {
     id: 'app.containers.UsersEditPage.education',
+    defaultMessage: 'Highest diploma',
+  },
+  education_placeholder: {
+    id: 'app.containers.UsersEditPage.education_placeholder',
     defaultMessage: 'Highest diploma',
   },
   ISCED11_0: {
