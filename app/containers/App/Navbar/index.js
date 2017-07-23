@@ -322,4 +322,7 @@ const mergeProps = (stateP, dispatchP, ownP) => {
 
 export default injectIntl(preprocess(mapStateToProps, { signOutCurrentUser, push }, mergeProps)(styled(Navbar)`
   background-color: ${(props) => props.menuBg};
+  z-index: 999;
+  position: fixed;
+  top: 0;
 `));
