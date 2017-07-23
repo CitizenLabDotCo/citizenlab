@@ -3,6 +3,7 @@
 // See http://blog.mxstbr.com/2016/01/react-apps-with-pages for more information
 // about the code splitting business
 
+import dashboardRoutes from './dashboard/routes';
 import ideasRoutes from './ideas/routes';
 import usersRoutes from './users/routes';
 import pagesRoutes from './pages/routes';
@@ -33,6 +34,7 @@ export default (injectReducer) => ({
 
     importModules.catch(errorLoading);
   },
+  indexRoute: dashboardRoutes(injectReducer),
   childRoutes: [
     ideasRoutes(injectReducer),
     usersRoutes(injectReducer),
