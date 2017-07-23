@@ -1,21 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { createStructuredSelector } from 'reselect';
-import { injectIntl, intlShape } from 'react-intl';
-import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-import { connect } from 'react-redux';
-import { injectTFunc } from 'utils/containers/t/utils';
-import styled from 'styled-components';
+import * as React from 'react';
+import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Select from 'components/UI/Select';
-import _ from 'lodash';
-import { observeAreas } from 'services/areas';
+import { IStream } from 'utils/streams';
+import { observeAreas, IAreas, IAreaData } from 'services/areas';
 import { isValidEmail } from 'utils/validate';
 import { signUp, signIn } from 'services/auth';
+import { IOption } from 'typings';
 import messages from './messages';
+import styledComponents from 'styled-components';
+const styled = styledComponents;
 
 const Container = styled.div`
   background: #f2f2f2;
@@ -48,10 +46,57 @@ const FormElement = styled.div`
   margin-bottom: 44px;
 `;
 
-export class SignUp extends React.PureComponent {
+type Props = {
+  opened: boolean;
+  onSignedUp: () => void;
+  intl: ReactIntl.InjectedIntl;
+  tFunc: Function;
+  locale: string;
+};
+
+type State = {
+  areas: IOption[] | null;
+  years: IOption[];
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  password: string | null;
+  yearOfBirth: IOption | null;
+  gender: IOption | null;
+  area: IOption | null;
+  processing: boolean;
+  firstNameError: string | null;
+  lastNameError: string | null;
+  emailError: string | null;
+  passwordError: string | null;
+  signUpError: string | null;
+};
+
+interface IState {
+  areas?: IOption[] | null;
+  years?: IOption[];
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string | null;
+  password?: string | null;
+  yearOfBirth?: IOption | null;
+  gender?: IOption | null;
+  area?: IOption | null;
+  processing?: boolean;
+  firstNameError?: string | null;
+  lastNameError?: string | null;
+  emailError?: string | null;
+  passwordError?: string | null;
+  signUpError?: string | null;
+}
+
+export default class SignUp extends React.PureComponent<Props, State> {
+  private state$: Rx.Subject<IState>;
+  private areas$: IStream<IAreas>;
+  private subscriptions: Rx.Subscription[];
+
   constructor() {
     super();
-
     this.state = {
       areas: null,
       years: [...Array(118).keys()].map((i) => ({ value: i + 1900, label: `${i + 1900}` })),
@@ -62,25 +107,27 @@ export class SignUp extends React.PureComponent {
       yearOfBirth: null,
       gender: null,
       area: null,
-      processing: null,
+      processing: false,
       firstNameError: null,
       lastNameError: null,
       emailError: null,
       passwordError: null,
       signUpError: null,
     };
+    this.areas$ = observeAreas();
+    this.state$ = new Rx.Subject();
     this.subscriptions = [];
   }
 
   componentDidMount() {
     this.subscriptions = [
-      observeAreas().observable.subscribe(({ data }) => {
-        this.setState({
-          areas: data.map((area) => ({
-            value: area.id,
-            label: this.props.tFunc(area.attributes.title_multiloc),
-          })),
-        });
+      this.state$
+        .startWith(this.state)
+        .scan((prevState, updatedStateProps) => ({ ...prevState, ...updatedStateProps }))
+        .subscribe(state => this.setState(state as State)),
+
+      this.areas$.observable.subscribe((areas) => {
+        this.state$.next({ areas: this.getOptions(areas) });
       }),
     ];
   }
@@ -89,32 +136,41 @@ export class SignUp extends React.PureComponent {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  handleFirstNameOnChange = (firstName) => {
-    this.setState({ firstName, firstNameError: null, signUpError: null });
+  getOptions(list: IAreas) {
+    const { tFunc } = this.props;
+
+    return (list.data as IAreaData[]).map(item => ({
+      value: item.id,
+      label: tFunc(item.attributes.title_multiloc) as string,
+    } as IOption));
   }
 
-  handleLastNameOnChange = (lastName) => {
-    this.setState({ lastName, lastNameError: null, signUpError: null });
+  handleFirstNameOnChange = (firstName: string) => {
+    this.state$.next({ firstName, firstNameError: null, signUpError: null });
   }
 
-  handleEmailOnChange = (email) => {
-    this.setState({ email, emailError: null, signUpError: null });
+  handleLastNameOnChange = (lastName: string) => {
+    this.state$.next({ lastName, lastNameError: null, signUpError: null });
   }
 
-  handlePasswordOnChange = (password) => {
-    this.setState({ password, passwordError: null, signUpError: null });
+  handleEmailOnChange = (email: string) => {
+    this.state$.next({ email, emailError: null, signUpError: null });
   }
 
-  handleYearOfBirthOnChange = (yearOfBirth) => {
-    this.setState({ yearOfBirth });
+  handlePasswordOnChange = (password: string) => {
+    this.state$.next({ password, passwordError: null, signUpError: null });
   }
 
-  handleGenderOnChange = (gender) => {
-    this.setState({ gender });
+  handleYearOfBirthOnChange = (yearOfBirth: IOption) => {
+    this.state$.next({ yearOfBirth });
   }
 
-  handleAreaOnChange = (area) => {
-    this.setState({ area });
+  handleGenderOnChange = (gender: IOption) => {
+    this.state$.next({ gender });
+  }
+
+  handleAreaOnChange = (area: IOption) => {
+    this.state$.next({ area });
   }
 
   handleOnSubmit = async () => {
@@ -123,38 +179,33 @@ export class SignUp extends React.PureComponent {
     const { firstName, lastName, email, password, yearOfBirth, gender, area } = this.state;
 
     if (!firstName || !lastName || !email || !isValidEmail(email) || !password) {
-      if (!firstName) {
-        this.setState({ firstNameError: formatMessage(messages.noFirstNameError) });
-      }
-
-      if (!lastName) {
-        this.setState({ lastNameError: formatMessage(messages.noLastNameError) });
-      }
+      let emailError: string | null = null;
 
       if (!email) {
-        this.setState({ emailError: formatMessage(messages.noEmailError) });
+        emailError = formatMessage(messages.noEmailError);
+      } else if (!isValidEmail(email)) {
+        emailError = formatMessage(messages.noValidEmailError);
       }
 
-      if (!isValidEmail(email)) {
-        this.setState({ emailError: formatMessage(messages.noValidEmailError) });
-      }
-
-      if (!password) {
-        this.setState({ passwordError: formatMessage(messages.noPasswordError) });
-      }
+      this.state$.next({
+        emailError,
+        firstNameError: (!firstName ? formatMessage(messages.noFirstNameError) : null),
+        lastNameError: (!lastName ? formatMessage(messages.noLastNameError) : null),
+        passwordError: (!password ? formatMessage(messages.noPasswordError) : null)
+      });
     } else {
-      const selectedYearOfBirth = (yearOfBirth ? yearOfBirth.value : null);
-      const selectedGender = (gender ? gender.value : null);
-      const selectedAreaId = (area ? area.value : null);
+      const selectedYearOfBirth = (yearOfBirth ? yearOfBirth.value as number : null);
+      const selectedGender = (gender ? gender.value as ('male' | 'female') : null);
+      const selectedAreaId = (area ? area.value as string : null);
 
       try {
-        this.setState({ processing: true });
+        this.state$.next({ processing: true });
         await signUp(firstName, lastName, email, password, selectedGender, selectedYearOfBirth, selectedAreaId);
         await signIn(email, password);
-        this.setState({ processing: false });
+        this.state$.next({ processing: false });
         onSignedUp();
       } catch (error) {
-        this.setState({ processing: false, signUpError: formatMessage(messages.signUpError) });
+        this.state$.next({ processing: false, signUpError: formatMessage(messages.signUpError) });
       }
     }
   }
@@ -191,6 +242,7 @@ export class SignUp extends React.PureComponent {
               <FormElement>
                 <Input
                   id="firstName"
+                  type="text"
                   value={firstName}
                   placeholder={formatMessage(messages.firstNamePlaceholder)}
                   error={firstNameError}
@@ -202,6 +254,7 @@ export class SignUp extends React.PureComponent {
               <FormElement>
                 <Input
                   id="lastName"
+                  type="text"
                   value={lastName}
                   placeholder={formatMessage(messages.lastNamePlaceholder)}
                   error={lastNameError}
@@ -236,8 +289,8 @@ export class SignUp extends React.PureComponent {
               <Label value={formatMessage(messages.yearOfBirthLabel)} htmlFor="yearOfBirth" />
               <FormElement>
                 <Select
-                  clearable
-                  searchable
+                  clearable={true}
+                  searchable={true}
                   value={yearOfBirth}
                   placeholder={formatMessage(messages.yearOfBirthPlaceholder)}
                   options={years}
@@ -248,8 +301,7 @@ export class SignUp extends React.PureComponent {
               <Label value={formatMessage(messages.genderLabel)} htmlFor="gender" />
               <FormElement>
                 <Select
-                  clearable
-                  id="gender"
+                  clearable={true}
                   value={gender}
                   placeholder={formatMessage(messages.genderPlaceholder)}
                   options={[{
@@ -269,8 +321,7 @@ export class SignUp extends React.PureComponent {
               <Label value={formatMessage(messages.areaLabel)} htmlFor="area" />
               <FormElement>
                 <Select
-                  clearable
-                  id="area"
+                  clearable={true}
                   value={area}
                   placeholder={formatMessage(messages.areaPlaceholder)}
                   options={areas}
@@ -295,17 +346,3 @@ export class SignUp extends React.PureComponent {
     );
   }
 }
-
-SignUp.propTypes = {
-  opened: PropTypes.bool.isRequired,
-  onSignedUp: PropTypes.func.isRequired,
-  intl: intlShape,
-  tFunc: PropTypes.func.isRequired,
-  locale: PropTypes.string,
-};
-
-const mapStateToProps = createStructuredSelector({
-  locale: makeSelectLocale(),
-});
-
-export default injectTFunc(injectIntl(connect(mapStateToProps, null)(SignUp)));
