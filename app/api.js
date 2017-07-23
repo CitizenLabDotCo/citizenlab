@@ -146,7 +146,7 @@ export function updateCurrentUser(values, userId) {
   });
 }
 
-export function updateSettings(tenantId, locale, organizationName, accentColorHex) {
+export function updateSettings(tenantId, locale, organizationName, colorMain) {
   return request(`${API_PATH}/tenants/${tenantId}`, {
     tenant: {
       settings: {
@@ -154,7 +154,7 @@ export function updateSettings(tenantId, locale, organizationName, accentColorHe
           organization_name: {
             [locale]: organizationName,
           },
-          style_accent_bg: accentColorHex,
+          color_main: colorMain,
         },
       },
     },
