@@ -60,7 +60,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   ];
   const { goTo } = dispatchProps;
 
-  const value = [queryString.parse(search).sort];
+  const sortParam = queryString.parse(search).sort;
+  const value = [];
+  if (sortParam) value.push(sortParam);
 
   const filterPage = (name, ids) => {
     goTo(`${location}?${mergeQuery(search, name, ids)}`);

@@ -8,7 +8,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import HelmetIntl from 'components/HelmetIntl';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { push } from 'react-router-redux';
 
@@ -59,8 +58,6 @@ IdeasIndex.propTypes = {
   params: PropTypes.object.isRequired,
 };
 
-const actions = { push };
-
-const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
+const mapDispatchToProps = { push };
 
 export default connect(null, mapDispatchToProps)(IdeasIndex);
