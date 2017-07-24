@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { injectIntl, intlShape } from 'react-intl';
-import {EditorState} from 'draft-js';
+import {EditorState, ContentState} from 'draft-js';
 
 // Store
 import { connect } from 'react-redux';
@@ -33,6 +33,7 @@ type Props = {
 type State = {
   project: IProjectData | null,
   uploadedImages: any,
+  editorState: EditorState,
 };
 
 class AdminProjectEditGeneral extends React.Component<Props, State> {
@@ -43,14 +44,19 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
 
     this.state = {
       project: null,
-      uploadedImages: []
+      uploadedImages: [],
+      editorState: EditorState.createEmpty(),
     };
   }
 
   componentDidMount() {
     if (this.props.params.slug) {
       this.subscription = observeProject(this.props.params.slug).observable.subscribe((project) => {
-        this.setState({ project: project.data });
+        const editorContent = ContentState.createFromText(project.data.attributes.description_multiloc[this.props.userLocale])
+
+        this.setState({
+          project: project.data,
+          editorState:  EditorState.createWithContent(editorContent)});
       });
     }
   }
@@ -84,7 +90,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
 
 
   render() {
-    const { project, uploadedImages } = this.state;
+    const { project, uploadedImages, editorState } = this.state;
     const { userLocale } = this.props;
 
     return (
@@ -102,7 +108,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
         <label htmlFor="">Description</label>
         <Editor
           placeholder=""
-          value={EditorState.createWithContent(project.attributes.description_multiloc[userLocale])}
+          value={editorState}
           error=""
           onChange={this.changeDesc}
         />
