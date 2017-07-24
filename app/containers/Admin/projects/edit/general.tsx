@@ -71,13 +71,20 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
 
   }
 
-  changeTitle = (value) => {
+  changeTitle = (value: string): void => {
     const newVal = _.set({}, `project.attributes.title_multiloc.${this.props.userLocale}`, value);
     this.setState(_.merge({}, this.state, newVal));
   }
 
-  changeDesc = (value) => {
-    console.log(value);
+  changeDesc = (editorState: EditorState): void => {
+    const project = this.state.project;
+
+    _.set(project, `attributes.description_multiloc.${this.props.userLocale}`, editorState.getCurrentContent().getPlainText());
+
+    this.setState({
+      editorState,
+      project,
+    });
   }
 
   handleUploadOnAdd = () => {
