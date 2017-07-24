@@ -135,16 +135,15 @@ const StyledMultipleSelect = styled(ReactSelect)`
 
           .Select-value-icon {
             color: #fff;
-            width: auto;
-            height: 100%;
-            font-size: 22px;
+            font-size: 32px;
+            line-height: 32px;
             font-weight: 300;
             border: none;
             border-radius: 0;
             padding: 0px;
-            padding-bottom: 2px;
-            padding-left: 8px;
-            padding-right: 8px;
+            padding-bottom: 1px;
+            padding-left: 10px;
+            padding-right: 5px;
             margin: 0px;
             border: none;
             display: inline-flex;
@@ -215,42 +214,54 @@ const StyledMultipleSelect = styled(ReactSelect)`
   }
 `;
 
-interface IMultipleSelect {
+type Props = {
   value: IOption[] | null;
   placeholder: string;
   options: IOption[] | null;
-  max: number;
+  max?: number;
   autoBlur?: boolean;
-  onChange: (arg: IOption) => void;
-}
-
-const emptyString = [];
-const emptyArray = [];
-
-const MultipleSelect: React.SFC<IMultipleSelect> = ({ value, placeholder, options, max, autoBlur, onChange }) => {
-  const handleOnChange = (newValue) => {
-    onChange((max && newValue && newValue.length > max ? value : newValue));
-  };
-
-  value = (value || emptyArray);
-  options = (options || emptyArray);
-  autoBlur = (_.isBoolean(autoBlur) ? autoBlur : true);
-
-  return (
-    <StyledMultipleSelect
-      multi={true}
-      searchable={true}
-      openOnFocus={true}
-      autoBlur={autoBlur}
-      backspaceRemoves={false}
-      scrollMenuIntoView={false}
-      clearable={false}
-      value={value || emptyArray}
-      placeholder={<span>{placeholder}</span>}
-      options={options || emptyArray}
-      onChange={handleOnChange}
-    />
-  );
+  onChange: (arg: IOption[]) => void;
 };
 
-export default MultipleSelect;
+type State = {};
+
+export default class MultipleSelect extends React.PureComponent<Props, State> {
+  private emptyArray: never[];
+
+  constructor() {
+    super();
+    this.emptyArray = [];
+  }
+
+  handleOnChange = (newValue: IOption[]) => {
+    const { value, max } = this.props;
+    const nextValue = (max && newValue && newValue.length > max ? value : newValue);
+    this.props.onChange((nextValue || this.emptyArray));
+  }
+
+  render() {
+    let { value, placeholder, options, max, autoBlur } = this.props;
+
+    value = (value || this.emptyArray);
+    placeholder = (placeholder || '');
+    options = (options || this.emptyArray);
+    max = (max || undefined);
+    autoBlur = (_.isBoolean(autoBlur) ? autoBlur : true);
+
+    return (
+      <StyledMultipleSelect
+        multi={true}
+        searchable={true}
+        openOnFocus={true}
+        autoBlur={autoBlur}
+        backspaceRemoves={false}
+        scrollMenuIntoView={false}
+        clearable={false}
+        value={value}
+        placeholder={<span>{placeholder}</span>}
+        options={options}
+        onChange={this.handleOnChange}
+      />
+    );
+  }
+}

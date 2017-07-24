@@ -7,7 +7,7 @@ import request from 'utils/request';
 import { v4 as uuid } from 'uuid';
 
 export type pureFn<T> = (arg: T) => T;
-type fetchFn<T> = () => IObservable<T>;
+type fetchFn<T> = () => IStream<T>;
 interface IObject{ [key: string]: any; }
 export type IObserver<T> = Rx.Observer<T | pureFn<T> | Error>;
 export type IObservable<T> = Rx.Observable<T>;
@@ -41,7 +41,7 @@ export interface IStream<T> {
   queryParameters: IObject | null;
   localProperties: IObject | null;
   onEachEmit: pureFn<T> | null;
-  fetch: fetchFn<T> | null;
+  fetch: fetchFn<T>;
   observer: IObserver<T> | null;
   observable: IObservable<T>;
   data: T | null;
@@ -88,41 +88,49 @@ class Streams {
         queryParameters: params.queryParameters,
         localProperties: params.localProperties,
         onEachEmit: params.onEachEmit,
-        fetch: null,
+        fetch: null as any,
         observer: null,
         observable: <any>null,
         data: null,
         dataIds: {},
       };
 
-      const observable: IObservable<T> = Rx.Observable.create((observer: IObserver<T>) => {
+      stream.fetch = () => {
         const { apiEndpoint, bodyData, httpMethod, queryParameters } = stream;
 
+        request(apiEndpoint, bodyData, httpMethod, queryParameters).then((response) => {
+          if (response.data && _.isArray(response.data)) {
+            stream.type = 'array';
+            stream.dataIds = {};
+            response.data.forEach(item => stream.dataIds[item.id] = true);
+          } else if (response.data && _.isObject(response.data) && _.has(response, 'data.id')) {
+            stream.type = 'single';
+            stream.dataIds = { [response.data.id]: true };
+          }
+
+          if (stream && stream.observer) {
+            stream.observer.next(response);
+          } else {
+            console.log('no observer');
+          }
+        }).catch(() => {
+          if (stream && stream.observer) {
+            stream.observer.next(new Error(`promise for api endpoint ${apiEndpoint} did not resolve`));
+          } else {
+            console.log('no observer');
+          }
+        });
+
+        return stream;
+      };
+
+      const observable: IObservable<T> = Rx.Observable.create((observer: IObserver<T>) => {
         stream.observer = observer;
-
-        stream.fetch = () => {
-          request(apiEndpoint, bodyData, httpMethod, queryParameters).then((response) => {
-            if (response.data && _.isArray(response.data)) {
-              stream.type = 'array';
-              stream.dataIds = {};
-              response.data.forEach(item => stream.dataIds[item.id] = true);
-            } else if (response.data && _.isObject(response.data) && _.has(response, 'data.id')) {
-              stream.type = 'single';
-              stream.dataIds = { [response.data.id]: true };
-            }
-
-            observer.next(response);
-          }).catch(() => {
-            observer.next(new Error(`promise for api endpoint ${apiEndpoint} did not resolve`));
-          });
-
-          return observable;
-        };
 
         stream.fetch();
 
         return () => {
-          console.log(`stream for api endpoint ${apiEndpoint} completed`);
+          console.log(`stream for api endpoint ${stream.apiEndpoint} completed`);
           this.list = this.list.filter(item => item.id !== stream.id);
         };
       })

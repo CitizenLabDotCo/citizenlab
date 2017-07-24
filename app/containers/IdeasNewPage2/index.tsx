@@ -1,4 +1,5 @@
 import * as React from 'react';
+import shallowCompare from 'utils/shallowCompare';
 import { media } from 'utils/styleUtils';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -19,15 +20,17 @@ import { ImageFile } from 'react-dropzone';
 import Error from 'components/UI/Error';
 import SignIn from 'containers/SignIn';
 import SignUp from 'containers/SignUp';
-import * as draftToHtml from 'draftjs-to-html';
+import draftToHtml from 'draftjs-to-html';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import { IOption } from 'typings';
 import { IUser } from 'services/users';
+import { addIdea } from 'services/ideas';
+import { addIdeaImage } from 'services/ideaImages';
 import { IStream } from 'utils/streams';
 import { observeTopics, ITopics, ITopicData } from 'services/topics';
 import { observeProjects, IProjects, IProjectData } from 'services/projects';
-import { observeSignedInUser } from 'services/auth';
+import { observeCurrentUser, getCurrentUserOnce } from 'services/auth';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import messages from './messages';
 import styledComponents from 'styled-components';
@@ -37,7 +40,23 @@ const Container = styled.div`
   background: #f2f2f2;
 `;
 
-const FormContainerOuter = styled.div`
+const NewIdea = styled.div`
+  width: 100%;
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+  margib-top: 50px;
+`;
+
+const Title = styled.h2`
+  width: 100%;
+  color: #333;
+  font-size: 36px;
+  font-weight: 500;
+  margin-bottom: 40px;
+`;
+
+const NewIdeaForm = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,24 +66,8 @@ const FormContainerOuter = styled.div`
   padding-bottom: 100px;
 `;
 
-const Title = styled.h2`
-  color: #333;
-  font-size: 36px;
-  font-weight: 500;
-  margin-bottom: 40px;
-`;
-
-const FormContainerInner = styled.div`
-  width: 100%;
-  max-width: 550px;
-`;
-
 const FormElement = styled.div`
   width: 100%;
-  margin-bottom: 44px;
-`;
-
-const EditorWrapper = styled.div`
   margin-bottom: 44px;
 `;
 
@@ -121,6 +124,19 @@ const ButtonBarInner = styled.div`
   }
 `;
 
+const SignInUpWrapper = styled.div`
+  width: 100%;
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+
+  > div {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background: red;
+  }
+`;
+
 interface ExtendedImageFile extends ImageFile {
   base64: string;
 }
@@ -132,7 +148,6 @@ type Props = {
 };
 
 type State = {
-  user: IUser | null;
   topics: IOption[] | null;
   projects: IOption[] | null;
   title: string | null;
@@ -142,13 +157,15 @@ type State = {
   location: any;
   images: ExtendedImageFile[] | null;
   processing: boolean;
+  showIdeaForm: boolean;
+  showSignIn: boolean;
+  showSignUp: boolean;
   titleError: string | null;
   descriptionError: string | null;
   submitError: string | null;
 };
 
 interface IState {
-  user?: IUser | null;
   topics?: IOption[] | null;
   projects?: IOption[] | null;
   title?: string | null;
@@ -158,13 +175,16 @@ interface IState {
   location?: any;
   images?: ExtendedImageFile[] | null;
   processing?: boolean;
+  showIdeaForm?: boolean;
+  showSignIn?: boolean;
+  showSignUp?: boolean;
   titleError?: string | null;
   descriptionError?: string | null;
   submitError?: string | null;
 }
 
 class IdeasNewPage2 extends React.PureComponent<Props, State> {
-  state$: Rx.Subject<IState>;
+  state$: Rx.Subject<IState | ((arg: IState) => IState)>;
   topics$: IStream<ITopics>;
   projects$: IStream<IProjects>;
   user$: IStream<IUser>;
@@ -174,7 +194,6 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   constructor() {
     super();
     this.state = {
-      user: null,
       topics: null,
       projects: null,
       title: null,
@@ -184,6 +203,9 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       location: null,
       images: null,
       processing: false,
+      showIdeaForm: true,
+      showSignIn: false,
+      showSignUp: false,
       titleError: null,
       descriptionError: null,
       submitError: null
@@ -191,7 +213,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     this.state$ = new Rx.Subject();
     this.topics$ = observeTopics();
     this.projects$ = observeProjects();
-    this.user$ = observeSignedInUser();
+    this.user$ = observeCurrentUser();
     this.subscriptions = [];
     this.titleInputElement = null;
   }
@@ -200,17 +222,16 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     this.subscriptions = [
       this.state$
         .startWith(this.state)
-        .scan((prevState, updatedStateProps) => ({ ...prevState, ...updatedStateProps }))
+        .scan((state, current) => ({ ...state, ...(_.isFunction(current) ? current(state) : current) }))
+        .distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState))
         .subscribe(state => this.setState(state as State)),
 
       Rx.Observable.combineLatest(
         this.topics$.observable.distinctUntilChanged(),
         this.projects$.observable.distinctUntilChanged(),
-        this.user$.observable.distinctUntilChanged(),
-        (topics, projects, user) => ({ topics, projects, user }),
-      ).subscribe(({ topics, projects, user }) => {
+        (topics, projects, user) => ({ topics, projects }),
+      ).subscribe(({ topics, projects }) => {
         this.state$.next({
-          user: (!_.isError(user) ? user : null),
           topics: (topics ? this.getOptions(topics) : null),
           projects: (projects ? this.getOptions(projects) : null)
         });
@@ -228,11 +249,9 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   getOptions(list: ITopics | IProjects) {
-    const { tFunc } = this.props;
-
     return (list.data as (ITopicData | IProjectData)[]).map(item => ({
       value: item.id,
-      label: tFunc(item.attributes.title_multiloc) as string,
+      label: this.props.tFunc(item.attributes.title_multiloc) as string,
     } as IOption));
   }
 
@@ -244,44 +263,58 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     });
   }
 
-  async convertToLatLng(location: string) {
+  async convertToGeoJson(location: string) {
     const results = await geocodeByAddress(location);
-    return getLatLng(results[0]);
+    const { lat, lng } = await getLatLng(results[0]);
+    const geoJSON = {
+      type: 'Point',
+      coordinates: [lat, lng]
+    };
+
+    return geoJSON;
   }
 
   handleTitleOnChange = (title: string) => {
-    this.state$.next({ title, titleError: null });
-  }
-
-  handleDescriptionOnChange = (description: EditorState) => {
     this.state$.next({
-      description,
-      descriptionError: (description.getCurrentContent().hasText() ? null : this.state.descriptionError),
+      title,
+      titleError: null
     });
   }
 
-  handleTopicsOnChange = (selectedTopics) => {
+  handleDescriptionOnChange = (description: EditorState) => {
+    this.state$.next((state) => {
+      const descriptionError = (description.getCurrentContent().hasText() ? null : state.descriptionError);
+      return { description, descriptionError };
+    });
+  }
+
+  handleTopicsOnChange = (selectedTopics: IOption[]) => {
     this.state$.next({ selectedTopics });
   }
 
-  handleProjectOnChange = (selectedProject) => {
+  handleProjectOnChange = (selectedProject: IOption) => {
     this.state$.next({ selectedProject });
   }
 
-  handleLocationOnChange = (location) => {
+  handleLocationOnChange = (location: string) => {
     this.state$.next({ location });
   }
 
   handleUploadOnAdd = async (image: ImageFile) => {
     const base64 = await this.getBase64(image) as string;
-    const newImage: ExtendedImageFile = { ...image, base64 };
-    const images: ExtendedImageFile[] = (this.state.images ? [...this.state.images, newImage] : [newImage]);
-    this.state$.next({ images });
+
+    this.state$.next((state) => {
+      const newImage: ExtendedImageFile = { ...image, base64 };
+      const images: ExtendedImageFile[] = (state.images ? [...state.images, newImage] : [newImage]);
+      return { images };
+    });
   }
 
   handleUploadOnRemove = (removedImage) => {
-    const images = _(this.state.images).filter((image) => image.preview !== removedImage.preview).value();
-    this.state$.next({ images });
+    this.state$.next((state) => {
+      const images = _(state.images).filter((image) => image.preview !== removedImage.preview).value();
+      return { images };
+    });
   }
 
   handleSetRef = (element: HTMLInputElement) => {
@@ -291,29 +324,56 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   handleOnSubmit = async () => {
     const { locale } = this.props;
     const { formatMessage } = this.props.intl;
-    const { user, title, description, selectedTopics, selectedProject, location, images } = this.state;
+    const { title, description, selectedTopics, selectedProject, location, images } = this.state;
+    const titleError = (!title ? formatMessage(messages.titleEmptyError) : null);
+    const hasDescriptionError = (!description || !description.getCurrentContent().hasText());
+    const descriptionError = (hasDescriptionError ? formatMessage(messages.descriptionEmptyError) : null);
 
-    if (!title || !description || !description.getCurrentContent().hasText()) {
-      const titleError = (!title ? formatMessage(messages.titleEmptyError) : null);
-      const descriptionError = (!description || !description.getCurrentContent().hasText() 
-                                ? formatMessage(messages.descriptionEmptyError) 
-                                : null);
+    this.state$.next({ titleError, descriptionError });
 
-      this.setState({ titleError, descriptionError });
-    } else {
-      const localTitle = { [locale]: title };
-      const localDescription = { [locale]: draftToHtml(convertToRaw(description.getCurrentContent())) };
-      const latLng = (location ? await this.convertToLatLng(location) : null);
+    if (!titleError && !descriptionError && title) {
+      const ideaTitle = { [locale]: title };
+      const ideaDescription = { [locale]: draftToHtml(convertToRaw(description.getCurrentContent())) };
+      const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
+      const projectId = (selectedProject ? selectedProject.value : null);
+      const locationGeoJSON = (_.isString(location) && !_.isEmpty(location) ? await this.convertToGeoJson(location) : null);
+      const locationDescription = (_.isString(location) && !_.isEmpty(location) ? location : null);
 
-      console.log(user);
-      console.log(localTitle);
-      console.log(localDescription);
-      console.log(selectedTopics);
-      console.log(latLng);
-      console.log(selectedProject);
-      console.log(images);
+      try {
+        this.state$.next({ processing: true });
+        const user = await getCurrentUserOnce();
 
-      // this.props.submitIdea(user.id, localTitle, localDescription, topics, location, project, 'published');
+        if (_.has(user, 'data.id') && _.isString(user.data.id) && !_.isEmpty(user.data.id)) {
+          const userId = user.data.id;
+
+          console.log('userId: ' + userId);
+          console.log('ideaTitle: ' + ideaTitle);
+          console.log(ideaTitle);
+          console.log('ideaDescription:');
+          console.log(ideaDescription);
+          console.log('topicIds:');
+          console.log(topicIds);
+          console.log('projectId:');
+          console.log(projectId);
+          console.log('locationGeoJSON:');
+          console.log(locationGeoJSON);
+          console.log('locationDescription: ' + locationDescription);
+          console.log('images:');
+          console.log(images);
+
+          const idea = await addIdea(userId, 'published', ideaTitle, ideaDescription, topicIds, projectId, locationGeoJSON, locationDescription);
+          await Promise.all(_(images).map((image, index) => addIdeaImage(idea.data.id, image.base64, index)).value());
+          this.state$.next({ processing: false });
+
+          if (!user) {
+            this.state$.next({ showSignIn: true });
+          }
+        }
+      } catch (error) {
+        // submitError
+        console.log(error);
+        this.state$.next({ processing: false });
+      }
     }
   }
 
@@ -328,9 +388,9 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { topics, projects } = this.state;
-    const { formatMessage } = this.props.intl;
     const {
+      topics,
+      projects,
       title,
       titleError,
       description,
@@ -340,126 +400,130 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       selectedProject,
       location,
       images,
+      processing
     } = this.state;
+    const { formatMessage } = this.props.intl;
     const uploadedImages = _(images).map((image) => _.omit(image, 'base64') as ImageFile).value();
     const hasAllRequiredContent = title && description && description.getCurrentContent().hasText();
 
     return (
-      <div>
-        <Container>
-          <FormContainerOuter>
-            <Title>{formatMessage(messages.formTitle)}</Title>
+      <Container>
+        <NewIdea>
+          <Title>{formatMessage(messages.formTitle)}</Title>
 
-            <FormContainerInner>
+          <NewIdeaForm>
+            <FormElement>
               <Label value={formatMessage(messages.titleLabel)} htmlFor="title" />
-              <FormElement>
-                <Input
-                  id="title"
-                  type="text"
-                  value={title}
-                  placeholder={formatMessage(messages.titlePlaceholder)}
-                  error={titleError}
-                  onChange={this.handleTitleOnChange}
-                  setRef={this.handleSetRef}
-                />
-              </FormElement>
+              <Input 
+                id="title"
+                type="text"
+                value={title}
+                placeholder={formatMessage(messages.titlePlaceholder)}
+                error={titleError}
+                onChange={this.handleTitleOnChange}
+                setRef={this.handleSetRef}
+              />
+            </FormElement>
 
+            <FormElement>
               <Label value={formatMessage(messages.descriptionLabel)} htmlFor="editor" />
-              <EditorWrapper>
-                <Editor
-                  id="editor"
-                  value={description}
-                  placeholder={formatMessage(messages.descriptionPlaceholder)}
-                  error={descriptionError}
-                  onChange={this.handleDescriptionOnChange}
-                />
-              </EditorWrapper>
+              <Editor
+                id="editor"
+                value={description}
+                placeholder={formatMessage(messages.descriptionPlaceholder)}
+                error={descriptionError}
+                onChange={this.handleDescriptionOnChange}
+              />
+            </FormElement>
 
+            <FormElement>
               <Label value={formatMessage(messages.topicsLabel)} htmlFor="topics" />
-              <FormElement>
-                <MultipleSelect
-                  value={selectedTopics}
-                  placeholder={formatMessage(messages.topicsPlaceholder)}
-                  options={topics}
-                  max={2}
-                  onChange={this.handleTopicsOnChange}
-                />
-              </FormElement>
+              <MultipleSelect
+                value={selectedTopics}
+                placeholder={formatMessage(messages.topicsPlaceholder)}
+                options={topics}
+                max={2}
+                onChange={this.handleTopicsOnChange}
+              />
+            </FormElement>
 
+            <FormElement>
               <Label value={formatMessage(messages.projectsLabel)} htmlFor="projects" />
-              <FormElement>
-                <Select
-                  value={selectedProject}
-                  placeholder={formatMessage(messages.projectsPlaceholder)}
-                  options={projects}
-                  onChange={this.handleProjectOnChange}
-                />
-              </FormElement>
+              <Select
+                value={selectedProject}
+                placeholder={formatMessage(messages.projectsPlaceholder)}
+                options={projects}
+                onChange={this.handleProjectOnChange}
+              />
+            </FormElement>
 
-              <FormElement>
-                <Label value={formatMessage(messages.locationLabel)} htmlFor="location" />
-                <LocationInput
-                  id="location"
-                  value={location}
-                  placeholder={formatMessage(messages.locationPlaceholder)}
-                  onChange={this.handleLocationOnChange}
-                />
-              </FormElement>
+            <FormElement>
+              <Label value={formatMessage(messages.locationLabel)} htmlFor="location" />
+              <LocationInput
+                id="location"
+                value={location}
+                placeholder={formatMessage(messages.locationPlaceholder)}
+                onChange={this.handleLocationOnChange}
+              />
+            </FormElement>
 
-              <FormElement>
-                <Label value={formatMessage(messages.imageUploadLabel)} />
-                <Upload
-                  intl={this.props.intl}
-                  items={uploadedImages}
-                  accept="image/jpg, image/jpeg, image/png, image/gif"
-                  maxSize={5000000}
-                  maxItems={1}
-                  placeholder={formatMessage(messages.imageUploadPlaceholder)}
-                  onAdd={this.handleUploadOnAdd}
-                  onRemove={this.handleUploadOnRemove}
-                />
-              </FormElement>
-              <MobileButton>
-                <Button
-                  size="2"
-                  loading={false}
-                  text={formatMessage(messages.submit)}
-                  onClick={this.handleOnSubmit}
-                  disabled={!hasAllRequiredContent}
-                />
-                <Error text={submitError} marginTop="0px" />
-              </MobileButton>
-            </FormContainerInner>
-          </FormContainerOuter>
-          <ButtonBar>
-            <ButtonBarInner>
+            <FormElement>
+              <Label value={formatMessage(messages.imageUploadLabel)} />
+              <Upload
+                intl={this.props.intl}
+                items={uploadedImages}
+                accept="image/jpg, image/jpeg, image/png, image/gif"
+                maxSize={5000000}
+                maxItems={1}
+                placeholder={formatMessage(messages.imageUploadPlaceholder)}
+                onAdd={this.handleUploadOnAdd}
+                onRemove={this.handleUploadOnRemove}
+              />
+            </FormElement>
+
+            <MobileButton>
               <Button
                 size="2"
-                loading={false}
+                loading={processing}
                 text={formatMessage(messages.submit)}
                 onClick={this.handleOnSubmit}
                 disabled={!hasAllRequiredContent}
               />
               <Error text={submitError} marginTop="0px" />
-            </ButtonBarInner>
-          </ButtonBar>
-        </Container>
+            </MobileButton>
+          </NewIdeaForm>
+        </NewIdea>
 
-        <SignIn
-          opened={true}
-          onSignedIn={this.handleOnSignedIn}
-          intl={this.props.intl}
-          locale={this.props.locale}
-        />
+        <ButtonBar>
+          <ButtonBarInner>
+            <Button
+              size="2"
+              loading={processing}
+              text={formatMessage(messages.submit)}
+              onClick={this.handleOnSubmit}
+              disabled={!hasAllRequiredContent}
+            />
+            <Error text={submitError} marginTop="0px" />
+          </ButtonBarInner>
+        </ButtonBar>
 
-        <SignUp
-          opened={true}
-          onSignedUp={this.handleOnSignedUp}
-          intl={this.props.intl}
-          tFunc={this.props.tFunc}
-          locale={this.props.locale}
-        />
-      </div>
+        <SignInUpWrapper>
+          <SignIn
+            opened={true}
+            onSignedIn={this.handleOnSignedIn}
+            intl={this.props.intl}
+            locale={this.props.locale}
+          />
+
+          <SignUp
+            opened={true}
+            onSignedUp={this.handleOnSignedUp}
+            intl={this.props.intl}
+            tFunc={this.props.tFunc}
+            locale={this.props.locale}
+          />
+        </SignInUpWrapper>
+      </Container>
     );
   }
 }

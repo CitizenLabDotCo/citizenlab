@@ -121,10 +121,10 @@ const RemoveUploadedItem = styled.div`
 type Props = {
   intl: ReactIntl.InjectedIntl;
   items: Dropzone.ImageFile[];
-  accept: string;
+  accept?: string | null | undefined;
   maxSize: number;
   maxItems: number;
-  placeholder: string;
+  placeholder?: string | null | undefined;
   onAdd: (arg: Dropzone.ImageFile) => void;
   onRemove: (arg: Dropzone.ImageFile) => void;
 };
@@ -183,13 +183,12 @@ export default class Upload extends React.PureComponent<Props, State> {
   }
 
   render() {
-    let { items, accept, maxSize, maxItems, placeholder } = this.props;
+    let { items, accept, placeholder } = this.props;
+    const { maxSize, maxItems } = this.props;
     const { error } = this.state;
 
     items = (items || this.emptyArray);
     accept = (accept || '*');
-    maxSize = (maxSize || 5000000);
-    maxItems = (maxItems || 1);
     placeholder = (placeholder || 'Drop your file here');
 
     return (

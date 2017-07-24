@@ -1,8 +1,8 @@
 import { IRelationship } from 'typings.d';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-
-const apiEndpoint = `${API_PATH}/ideas`;
+import request from 'utils/request';
+import { IOption } from 'typings';
 
 export interface IIdeaData {
   id: string;
@@ -75,12 +75,49 @@ export interface IIdeaLinks {
   last: string;
 }
 
+export interface IIdea {
+  data: IIdeaData;
+  included: IIdeaIncluded[];
+}
+
 export interface IIdeas {
   data: IIdeaData[];
   included: IIdeaIncluded[];
   links: IIdeaLinks;
 }
 
+const apiEndpoint = `${API_PATH}/ideas`;
+
 export function observeIdeas(streamParams: IStreamParams<IIdeas> | null = null) {
   return streams.create<IIdeas>({ apiEndpoint, ...streamParams });
+}
+
+export function addIdea(
+  userId: string,
+  publicationStatus: 'draft' | 'published',
+  title: { [key: string]: string },
+  body: { [key: string]: string },
+  topicIds: string[] | null,
+  projectId: string | null,
+  locationGeoJSON: {} | null,
+  locationDescription: string | null,
+): Promise<IIdea> {
+  const httpMethod = { method: 'POST' };
+  const bodyData = {
+    idea: {
+      project_id: projectId,
+      author_id: userId,
+      publication_status: publicationStatus,
+      title_multiloc: title,
+      body_multiloc: body,
+      topic_ids: topicIds,
+      area_ids: null,
+      location_point_geojson: locationGeoJSON,
+      location_description: locationDescription
+    }
+  };
+
+  return request(`${apiEndpoint}/${userId}`, bodyData, httpMethod, null).catch(() => {
+    throw new Error(`error for addIdea() of service Ideas`);
+  });
 }
