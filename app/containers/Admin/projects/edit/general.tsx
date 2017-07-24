@@ -2,6 +2,8 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
+import { injectIntl, intlShape } from 'react-intl';
+import {EditorState} from 'draft-js';
 
 // Store
 import { connect } from 'react-redux';
@@ -19,6 +21,7 @@ import Upload from 'components/UI/Upload';
 
 // Component typing
 type Props = {
+  intl: ReactIntl.InjectedIntl,
   lang: string,
   params: {
     slug: string | null,
@@ -99,13 +102,14 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
         <label htmlFor="">Description</label>
         <Editor
           placeholder=""
-          value={project ? project.attributes.description_multiloc[userLocale] : ''}
+          value={EditorState.createWithContent(project.attributes.description_multiloc[userLocale])}
           error=""
           onChange={this.changeDesc}
         />
 
         <label>Header image</label>
         <Upload
+          intl={this.props.intl}
           items={uploadedImages}
           onAdd={this.handleUploadOnAdd}
           onRemove={this.handleUploadOnRemove}
