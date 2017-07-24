@@ -43,7 +43,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    shared = [:first_name, :last_name, :email, :password, :avatar, :locale, :gender, :birthyear, :domicile, :education]
+    shared = [:first_name, :last_name, :email, :password, :avatar, :locale, :gender, :birthyear, :domicile, :education, bio_multiloc: [:en, :nl, :fr]]
     if user && user.admin?
       shared + [roles: [:type, :project_id]]
     else
