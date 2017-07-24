@@ -6,32 +6,17 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import styled from 'styled-components';
 
 // components
+import T from 'containers/T';
 import HelmetIntl from 'components/HelmetIntl';
 import IdeaCards from 'containers/IdeasIndexPage/pageView';
+import { observeUser } from 'services/users';
+
 import Avatar from './Avatar';
-import T from 'containers/T';
-import WatchSagas from 'containers/WatchSagas';
-
-import { bindActionCreators } from 'redux';
-import { loadUserRequest } from 'resources/users/actions';
-import { selectResourcesDomain } from '../../utils/resources/selectors';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { LOAD_USER_REQUEST } from 'resources/users/constants';
-import sagas from 'resources/users/sagas';
-
-// store
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-
-import styled from 'styled-components';
-import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-import moment from 'moment';
-
-// intl
 import messages from './messages';
-import { FormattedMessage } from 'react-intl';
 
 const InfoContainerStyled = styled.div`
   width: 100%;
@@ -70,32 +55,41 @@ const BioStyled = styled.div`
   color: #6b6b6b;
 `;
 
-export class UsersShowPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class UsersShowPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+
+  constructor() {
+    super();
+    this.userSubscription = null;
+    this.state = {
+      user: null,
+    };
+  }
+
   componentDidMount() {
-    this.props.loadUserRequest(this.props.params.slug);
+    this.userSubscription = observeUser(this.props.params.slug)
+      .observable
+      .subscribe((response) => {
+        this.setState({ user: response.data.attributes });
+      });
+  }
+
+  componentWillUnmount() {
+    this.userSubscription.unsubscribe();
   }
 
   render() {
-    const { loadingUser, loadUserError, users, params, className, locale } = this.props;
+    const { params, className } = this.props;
 
-    const user = users && users.get(params.slug);
+    const user = this.state.user;
 
-    const attributes = user && user.get('attributes');
-    const lastName = user && attributes.get('last_name');
-    const firstName = user && attributes.get('first_name');
-    const bio = user && attributes.get('bio_multiloc');
-    const createdAt = user && attributes.get('created_at');
-    const avatarURL = user && attributes.getIn(['avatar', 'medium']);
+    if (!user) return null;
 
     return (
       <div className={className}>
-        <WatchSagas sagas={sagas} />
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        {loadingUser && <div><FormattedMessage {...messages.loadingUser} /></div>}
-        {loadUserError && <div><FormattedMessage {...messages.loadUserError} /></div>}
         {user && <div
           style={{
             margin: 'auto',
@@ -104,12 +98,14 @@ export class UsersShowPage extends React.PureComponent { // eslint-disable-line 
           }}
         >
           {/* AVATAR */}
-          <Avatar avatarURL={avatarURL} />
+          <Avatar avatarURL={user.avatar.medium} />
           <InfoContainerStyled>
             {/* USER INFORMATION */}
-            <FullNameStyled>{firstName}&nbsp;{lastName}</FullNameStyled>
-            <JoinedAtStyled><FormattedMessage {...messages.joined} />&nbsp;{moment(createdAt).locale(locale).format('DD/MM/YYYY')}</JoinedAtStyled>
-            <BioStyled>{bio && <T value={bio} />}</BioStyled>
+            <FullNameStyled>{user.first_name}&nbsp;{user.last_name}</FullNameStyled>
+            <JoinedAtStyled>
+              <FormattedMessage {...messages.joined} values={{ date: this.props.intl.formatDate(user.created_at) }} />
+            </JoinedAtStyled>
+            <BioStyled>{user.bio_multiloc && <T value={user.bio_multiloc} />}</BioStyled>
           </InfoContainerStyled>
           {/* USER IDEAS */}
           <IdeaCards
@@ -128,34 +124,20 @@ export class UsersShowPage extends React.PureComponent { // eslint-disable-line 
 UsersShowPage.propTypes = {
   className: PropTypes.string,
   params: PropTypes.object,
-  users: ImmutablePropTypes.map,
-  loadUserRequest: PropTypes.func.isRequired,
-  loadingUser: PropTypes.bool,
-  loadUserError: PropTypes.bool,
-  locale: PropTypes.string.isRequired,
+  intl: intlShape.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  users: selectResourcesDomain('users'),
-  locale: makeSelectLocale(),
-  loadingUser: (state) => state.getIn(['tempState', LOAD_USER_REQUEST, 'loading']),
-  loadUserError: (state) => state.getIn(['tempState', LOAD_USER_REQUEST, 'error']),
-});
-
-const mapDispatchToProps = (dispatch) => bindActionCreators({ loadUserRequest }, dispatch);
-
-
-export default styled(connect(mapStateToProps, mapDispatchToProps)(UsersShowPage))`
+export default injectIntl(styled(UsersShowPage)`
   background-color: #f2f2f2;
   margin-top: -162px;
   padding-top: 162px;
-  
+
   /* override IdeaCards' unwanted styles and elements*/
   .segment {
     width: inherit !important;
-  } 
-  
+  }
+
   .field {
     display: none;
   }
-`;
+`);
