@@ -120,11 +120,11 @@ const RemoveUploadedItem = styled.div`
 
 type Props = {
   intl: ReactIntl.InjectedIntl;
-  items: Dropzone.ImageFile[];
-  accept: string;
-  maxSize: number;
-  maxItems: number;
-  placeholder: string;
+  items?: Dropzone.ImageFile[];
+  accept?: string;
+  maxSize?: number;
+  maxItems?: number;
+  placeholder?: string;
   onAdd: (arg: Dropzone.ImageFile) => void;
   onRemove: (arg: Dropzone.ImageFile) => void;
 };
@@ -135,6 +135,14 @@ type State = {
 
 export default class Upload extends React.PureComponent<Props, State> {
   private emptyArray: never[];
+
+  public static defaultProps: Partial<Props> = {
+    items: [],
+    accept: '*',
+    maxSize: 5000000,
+    maxItems: 1,
+    placeholder: 'Drop your file here',
+  }
 
   constructor() {
     super();
@@ -147,7 +155,7 @@ export default class Upload extends React.PureComponent<Props, State> {
   }
 
   handleOnDrop = (items: Dropzone.ImageFile[]) => {
-    const maxItemsCount = this.props.maxItems;
+    const maxItemsCount = this.props.maxItems || 1;
     const oldItemsCount = _.size(this.props.items);
     const newItemsCount = _.size(items);
     const remainingItemsCount = maxItemsCount - oldItemsCount;
@@ -160,8 +168,9 @@ export default class Upload extends React.PureComponent<Props, State> {
   }
 
   handleOnDropRejected = (items: Dropzone.ImageFile[]) => {
-    const { maxSize, intl } = this.props;
+    const { intl } = this.props;
     const { formatMessage } = intl;
+    const maxSize = this.props.maxSize || 5000000;
 
     if (items.some((item) => item.size > maxSize)) {
       this.setState({ error: formatMessage(messages.errorMaxSizeExceeded, { maxFileSize: maxSize / 1000000 }) });
