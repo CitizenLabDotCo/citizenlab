@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import shallowCompare from 'utils/shallowCompare';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
@@ -12,17 +13,9 @@ import styledComponents from 'styled-components';
 const styled = styledComponents;
 
 const Container = styled.div`
-  background: #f2f2f2;
-`;
-
-const FormContainerOuter = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 40px;
-  padding-bottom: 100px;
 `;
 
 const Title = styled.h2`
@@ -32,7 +25,7 @@ const Title = styled.h2`
   margin-bottom: 40px;
 `;
 
-const FormContainerInner = styled.div`
+const Form = styled.div`
   width: 100%;
   max-width: 550px;
 `;
@@ -89,8 +82,9 @@ export default class SignIn extends React.PureComponent<Props, State> {
     this.subscriptions = [
       this.state$
         .startWith(this.state)
-        .scan((prevState, updatedStateProps) => ({ ...prevState, ...updatedStateProps }))
-        .subscribe(state => this.setState(state as State)),
+        .scan((state, current) => ({ ...state, ...(_.isFunction(current) ? current(state) : current) }))
+        .distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState))
+        .subscribe(state => this.setState(state as State))
     ];
   }
 
@@ -137,46 +131,43 @@ export default class SignIn extends React.PureComponent<Props, State> {
 
     return (
       <Container>
-        <FormContainerOuter>
-          <Title>{formatMessage(messages.signInTitle)}</Title>
-
-          <FormContainerInner>
+        <Title>{formatMessage(messages.signInTitle)}</Title>
+        <Form>
+          <FormElement>
             <Label value={formatMessage(messages.emailLabel)} htmlFor="email" />
-            <FormElement>
-              <Input
-                type="email"
-                id="email"
-                value={email}
-                placeholder={formatMessage(messages.emailPlaceholder)}
-                error={emailError}
-                onChange={this.handleEmailOnChange}
-              />
-            </FormElement>
+            <Input
+              type="email"
+              id="email"
+              value={email}
+              placeholder={formatMessage(messages.emailPlaceholder)}
+              error={emailError}
+              onChange={this.handleEmailOnChange}
+            />
+          </FormElement>
 
+          <FormElement>
             <Label value={formatMessage(messages.passwordLabel)} htmlFor="password" />
-            <FormElement>
-              <Input
-                type="password"
-                id="password"
-                value={password}
-                placeholder={formatMessage(messages.passwordPlaceholder)}
-                error={passwordError}
-                onChange={this.handlePasswordOnChange}
-              />
-            </FormElement>
+            <Input
+              type="password"
+              id="password"
+              value={password}
+              placeholder={formatMessage(messages.passwordPlaceholder)}
+              error={passwordError}
+              onChange={this.handlePasswordOnChange}
+            />
+          </FormElement>
 
-            <FormElement>
-              <Button
-                size="2"
-                loading={processing}
-                text={formatMessage(messages.submit)}
-                onClick={this.handleOnSubmit}
-                disabled={!hasAllRequiredContent}
-              />
-              <Error text={signInError} />
-            </FormElement>
-          </FormContainerInner>
-        </FormContainerOuter>
+          <FormElement>
+            <Button
+              size="2"
+              loading={processing}
+              text={formatMessage(messages.submit)}
+              onClick={this.handleOnSubmit}
+              disabled={!hasAllRequiredContent}
+            />
+            <Error text={signInError} />
+          </FormElement>
+        </Form>
       </Container>
     );
   }

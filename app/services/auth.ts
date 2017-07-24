@@ -6,10 +6,6 @@ import * as _ from 'lodash';
 import request from 'utils/request';
 import streams from 'utils/streams';
 
-export function observeSignedInUser() {
-  return streams.create<IUser>({ apiEndpoint: `${API_PATH}/users/me` });
-}
-
 export function signIn(email: string, password: string) {
   const bodyData = {
     auth: { email, password }
@@ -27,8 +23,7 @@ export function signIn(email: string, password: string) {
     }
 
     return data;
-  })
-  .catch((error) => {
+  }).catch((error) => {
     throw error;
   });
 }
@@ -60,8 +55,19 @@ export function signUp(
 
   return request(`${API_PATH}/users`, bodyData, httpMethod, null).then(() => {
     return { email, password };
-  })
-  .catch((error) => {
+  }).catch((error) => {
+    throw error;
+  });
+}
+
+export function observeCurrentUser() {
+  return streams.create<IUser>({ apiEndpoint: `${API_PATH}/users/me` });
+}
+
+export function getCurrentUserOnce(): Promise<IUser> {
+  return request(`${API_PATH}/users/me`, null, null, null).then((response) => {
+    return response;
+  }).catch((error) => {
     throw error;
   });
 }
