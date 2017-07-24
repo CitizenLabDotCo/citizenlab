@@ -15,9 +15,10 @@ export function ideasXlsxLoaded() {
   };
 }
 
-export function ideasXlsxLoadError() {
+export function ideasXlsxLoadError(error) {
   return {
     type: LOAD_IDEAS_XLSX_ERROR,
+    payload: error,
   };
 }
 
@@ -33,8 +34,9 @@ export function commentsXlsxLoaded() {
   };
 }
 
-export function commentsXlsxLoadError() {
+export function commentsXlsxLoadError(error) {
   return {
     type: LOAD_COMMENTS_XLSX_ERROR,
+    payload: error,
   };
 }
