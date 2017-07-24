@@ -20,7 +20,7 @@ import SearchField from './components/searchField';
 
 // store
 import { preprocess } from 'utils';
-import { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest, resetIdeas } from './actions';
+import { loadTopicsRequest, loadAreasRequest, resetIdeas } from './actions';
 import sagasWatchers from './sagas';
 
 const FiltersArea = styled.div`
@@ -75,8 +75,6 @@ View.propTypes = {
   loadTopicsRequest: PropTypes.func.isRequired,
   loadAreasRequest: PropTypes.func.isRequired,
   location: PropTypes.object,
-  filterIdeas: PropTypes.func.isRequired,
-  loadIdeasRequest: PropTypes.func.isRequired,
   resetIdeas: PropTypes.func.isRequired,
   filter: PropTypes.object,
   withFilters: PropTypes.bool.isRequired,
@@ -87,6 +85,6 @@ View.defaultProps = {
   withFilters: true,
 };
 
-const actions = { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest, resetIdeas };
+const actions = { loadTopicsRequest, loadAreasRequest, resetIdeas };
 
 export default preprocess(null, actions)(View);
