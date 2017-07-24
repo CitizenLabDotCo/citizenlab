@@ -2,9 +2,16 @@
 # yarn lockfile v1
 
 
-"@types/lodash@^4.14.68":
-  version "4.14.70"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.70.tgz#37bda4acfb3bb79143009cc9d00abd559f7dca30"
+"@types/draft-js@^0.10.7":
+  version "0.10.8"
+  resolved "https://registry.yarnpkg.com/@types/draft-js/-/draft-js-0.10.8.tgz#5a81f73c36fe7a3e504fdc57a7af3afc7601cc98"
+  dependencies:
+    "@types/react" "*"
+    immutable "^3.8.1"
+
+"@types/lodash@^4.14.70":
+  version "4.14.71"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.71.tgz#0dc383f78981216ac76e2f2c3afd998e0450e4c1"
 
 "@types/node-uuid@^0.0.28":
   version "0.0.28"
@@ -16,11 +23,29 @@
   version "8.0.14"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.14.tgz#4a19dc6bb61d16c01cbadc7b30ac23518fff176b"
 
+"@types/react-dropzone@^3.13.1":
+  version "3.13.1"
+  resolved "https://registry.yarnpkg.com/@types/react-dropzone/-/react-dropzone-3.13.1.tgz#e9f24d4f3b46536fbe506fc019006c25e5b72f2e"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-intl@^2.3.1":
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/@types/react-intl/-/react-intl-2.3.1.tgz#d036dbe54f6ef29f2a150ed303a84f1693ddf905"
 
-"@types/react@^15.0.38":
+"@types/react-select@^1.0.48":
+  version "1.0.48"
+  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-1.0.48.tgz#5016665a6b1394c2f7ad8dde0bb528b27c891db2"
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-transition-group@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-2.0.2.tgz#8b3b84467dd7233c5151dca9bb8c3247224b56e8"
+  dependencies:
+    "@types/react" "*"
+
+"@types/react@*", "@types/react@^15.0.38":
   version "15.0.38"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.38.tgz#6afea31a9fe66304af474106ba372ddaba449995"
 
@@ -4180,7 +4205,7 @@ imagemin@^5.2.2:
     pify "^2.3.0"
     replace-ext "^1.0.0"
 
-immutable@3.8.1, immutable@^3.7.6:
+immutable@3.8.1, immutable@^3.7.6, immutable@^3.8.1:
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.1.tgz#200807f11ab0f72710ea485542de088075f68cd2"
 
@@ -4949,14 +4974,14 @@ js-tokens@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
-js-yaml@3.6.1, js-yaml@^3.4.3, js-yaml@^3.5.1:
+js-yaml@3.6.1, js-yaml@^3.5.1:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.6.1.tgz#6e5fe67d8b205ce4d22fad05b7781e8dadcc4b30"
   dependencies:
     argparse "^1.0.7"
     esprima "^2.6.0"
 
-js-yaml@^3.7.0:
+js-yaml@^3.4.3, js-yaml@^3.7.0:
   version "3.9.0"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.9.0.tgz#4ffbbf25c2ac963b8299dc74da7e3740de1c18ce"
   dependencies:
@@ -5479,7 +5504,7 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-lodash@4.17.2, lodash@^4.0.1, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.2.1:
+lodash@4.17.2, lodash@^4.0.1, lodash@^4.17.2, lodash@^4.2.0:
   version "4.17.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
 
@@ -5487,7 +5512,7 @@ lodash@^3.10.1, lodash@^3.7.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.0.0, lodash@^4.14.0, lodash@^4.16.4, lodash@^4.17.4, lodash@^4.3.0, lodash@^4.6.1, lodash@~4.17.4:
+lodash@^4.0.0, lodash@^4.14.0, lodash@^4.16.4, lodash@^4.17.4, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.6.1, lodash@~4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -6989,15 +7014,15 @@ react-dom@^15.3.2, react-dom@^15.4.1:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react-draft-wysiwyg@^1.10.0:
-  version "1.10.6"
-  resolved "https://registry.yarnpkg.com/react-draft-wysiwyg/-/react-draft-wysiwyg-1.10.6.tgz#26cc665aea5548dfd22b715993de492084353de3"
+react-draft-wysiwyg@^1.10.6:
+  version "1.10.7"
+  resolved "https://registry.yarnpkg.com/react-draft-wysiwyg/-/react-draft-wysiwyg-1.10.7.tgz#4c9acf9515b125af6b0bfaa22d7b92800d22a418"
   dependencies:
     classnames "^2.2.5"
     draftjs-utils "^0.8.03"
     prop-types "^15.5.10"
 
-react-dropzone@^3.13.2:
+react-dropzone@^3.13.3:
   version "3.13.3"
   resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-3.13.3.tgz#b8bde4b5a12842f85196b45e8cc2959834b81962"
   dependencies:
@@ -7524,7 +7549,7 @@ replace-ext@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/replace-ext/-/replace-ext-1.0.0.tgz#de63128373fcbf7c3ccfa4de5a480c45a67958eb"
 
-request@2, request@^2.79.0, request@^2.81.0:
+request@2, request@^2.55.0, request@^2.79.0, request@^2.81.0:
   version "2.81.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.81.0.tgz#c6928946a0e06c5f8d6f8a9333469ffda46298a0"
   dependencies:
@@ -7551,7 +7576,7 @@ request@2, request@^2.79.0, request@^2.81.0:
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
 
-request@2.75.0, request@^2.55.0:
+request@2.75.0:
   version "2.75.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.75.0.tgz#d2b8268a286da13eaa5d01adf5d18cc90f657d93"
   dependencies:
@@ -8570,7 +8595,7 @@ tryit@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/tryit/-/tryit-1.0.3.tgz#393be730a9446fd1ead6da59a014308f36c289cb"
 
-ts-loader@^2.2.2:
+ts-loader@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-2.3.1.tgz#6edc603393c2775c40ad84e3420007f1c097eab0"
   dependencies:
@@ -8650,7 +8675,7 @@ tsutils@^1.4.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-1.9.1.tgz#b9f9ab44e55af9681831d5f28d0aeeaf5c750cb0"
 
-tsutils@^2.5.0, tsutils@^2.5.1, tsutils@^2.6.1:
+tsutils@^2.5.0, tsutils@^2.5.1, tsutils@^2.7.1:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.7.1.tgz#411a0e9466525a2b2869260a55620d7292155e24"
   dependencies:
@@ -8699,7 +8724,7 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@^2.4.1:
+typescript@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.2.tgz#f8395f85d459276067c988aa41837a8f82870844"
 
