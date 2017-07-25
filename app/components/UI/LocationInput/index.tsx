@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as PlacesAutocomplete from 'react-places-autocomplete';
+import PlacesAutocomplete from 'react-places-autocomplete'; // tslint:disable-line
 import styledComponents from 'styled-components';
 const styled = styledComponents;
 
@@ -52,60 +52,71 @@ const StyledAutocompleteItem = styled.div`
   }
 `;
 
-const emptyString = '';
-
-const LocationInput: React.SFC<ILocationInput> = ({ id, value, placeholder, onChange }) => {
-  const handleOnChange = (address: string) => {
-    onChange(address);
-  };
-
-  const inputProps = {
-    value: (value || emptyString),
-    placeholder: (placeholder || emptyString),
-    onChange: handleOnChange,
-    type: 'search',
-    autoFocus: true,
-  };
-
-  const AutocompleteItem = ({ formattedSuggestion }) => ( // eslint-disable-line
-    <StyledAutocompleteItem className="autocompleteItemInner">
-      <strong>{formattedSuggestion.mainText}</strong>{' '}{formattedSuggestion.secondaryText}
-    </StyledAutocompleteItem>
-  );
-
-  return (
-    <LocationInputWrapper>
-      <PlacesAutocomplete
-        id={id}
-        highlightFirstSuggestion={true}
-        inputProps={inputProps}
-        autocompleteItem={AutocompleteItem}
-        styles={{
-          autocompleteContainer: {
-            overflow: 'hidden',
-            borderRadius: '5px',
-            background: '#fff',
-            zIndex: '100',
-          },
-          autocompleteItem: {
-            padding: '0',
-            margin: '0',
-            backgroundColor: 'transparent',
-          },
-          autocompleteItemActive: {
-            backgroundColor: '#eee',
-          },
-        }}
-      />
-    </LocationInputWrapper>
-  );
-};
-
-interface ILocationInput {
+type Props = {
   id?: string;
   value: string;
   placeholder: string;
   onChange: (arg: string) => void;
-}
+};
 
-export default LocationInput;
+type State = {};
+
+export default class LocationInput extends React.PureComponent<Props, State> {
+  constructor() {
+    super();
+  }
+
+  handleOnChange = (value: string) => {
+    this.props.onChange(value);
+  }
+
+  render() {
+    const { id } = this.props;
+    let { value, placeholder } = this.props;
+
+    value = (value || '');
+    placeholder = (placeholder || '');
+
+    const inputProps = {
+      value,
+      placeholder,
+      onChange: this.handleOnChange,
+      type: 'search',
+      autoFocus: true,
+    };
+    const styles = {
+      autocompleteContainer: {
+        overflow: 'hidden',
+        borderRadius: '5px',
+        background: '#fff',
+        zIndex: '100',
+      },
+      autocompleteItem: {
+        padding: '0',
+        margin: '0',
+        backgroundColor: 'transparent',
+      },
+      autocompleteItemActive: {
+        backgroundColor: '#eee',
+      },
+    };
+
+    const AutocompleteItem = ({ formattedSuggestion }) => (
+      <StyledAutocompleteItem className="autocompleteItemInner">
+        <strong>{formattedSuggestion.mainText}</strong>{' '}{formattedSuggestion.secondaryText}
+      </StyledAutocompleteItem>
+    );
+
+    return (
+      <LocationInputWrapper>
+        <PlacesAutocomplete
+          id={id}
+          highlightFirstSuggestion={true}
+          inputProps={inputProps}
+          autocompleteItem={AutocompleteItem}
+          styles={styles}
+        />
+      </LocationInputWrapper>
+    );
+  }
+}

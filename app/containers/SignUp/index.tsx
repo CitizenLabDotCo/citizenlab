@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import shallowCompare from 'utils/shallowCompare';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
@@ -16,17 +17,9 @@ import styledComponents from 'styled-components';
 const styled = styledComponents;
 
 const Container = styled.div`
-  background: #f2f2f2;
-`;
-
-const FormContainerOuter = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 40px;
-  padding-bottom: 100px;
 `;
 
 const Title = styled.h2`
@@ -36,7 +29,7 @@ const Title = styled.h2`
   margin-bottom: 40px;
 `;
 
-const FormContainerInner = styled.div`
+const Form = styled.div`
   width: 100%;
   max-width: 550px;
 `;
@@ -123,7 +116,8 @@ export default class SignUp extends React.PureComponent<Props, State> {
     this.subscriptions = [
       this.state$
         .startWith(this.state)
-        .scan((prevState, updatedStateProps) => ({ ...prevState, ...updatedStateProps }))
+        .scan((state, current) => ({ ...state, ...(_.isFunction(current) ? current(state) : current) }))
+        .distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState))
         .subscribe(state => this.setState(state as State)),
 
       this.areas$.observable.subscribe((areas) => {
@@ -232,117 +226,112 @@ export default class SignUp extends React.PureComponent<Props, State> {
     const hasRequiredContent = [firstName, lastName, email, password].every((value) => _.isString(value) && !_.isEmpty(value));
 
     return (
-      <div>
-        <Container>
-          <FormContainerOuter>
-            <Title>{formatMessage(messages.signUpTitle)}</Title>
+      <Container>
+        <Title>{formatMessage(messages.signUpTitle)}</Title>
+        <Form>
+          <FormElement>
+            <Label value={formatMessage(messages.firstNameLabel)} htmlFor="firstName" />
+            <Input
+              id="firstName"
+              type="text"
+              value={firstName}
+              placeholder={formatMessage(messages.firstNamePlaceholder)}
+              error={firstNameError}
+              onChange={this.handleFirstNameOnChange}
+            />
+          </FormElement>
 
-            <FormContainerInner>
-              <Label value={formatMessage(messages.firstNameLabel)} htmlFor="firstName" />
-              <FormElement>
-                <Input
-                  id="firstName"
-                  type="text"
-                  value={firstName}
-                  placeholder={formatMessage(messages.firstNamePlaceholder)}
-                  error={firstNameError}
-                  onChange={this.handleFirstNameOnChange}
-                />
-              </FormElement>
+          <FormElement>
+            <Label value={formatMessage(messages.lastNameLabel)} htmlFor="lastName" />
+            <Input
+              id="lastName"
+              type="text"
+              value={lastName}
+              placeholder={formatMessage(messages.lastNamePlaceholder)}
+              error={lastNameError}
+              onChange={this.handleLastNameOnChange}
+            />
+          </FormElement>
 
-              <Label value={formatMessage(messages.lastNameLabel)} htmlFor="lastName" />
-              <FormElement>
-                <Input
-                  id="lastName"
-                  type="text"
-                  value={lastName}
-                  placeholder={formatMessage(messages.lastNamePlaceholder)}
-                  error={lastNameError}
-                  onChange={this.handleLastNameOnChange}
-                />
-              </FormElement>
+          <FormElement>
+            <Label value={formatMessage(messages.emailLabel)} htmlFor="email" />
+            <Input
+              type="email"
+              id="email"
+              value={email}
+              placeholder={formatMessage(messages.emailPlaceholder)}
+              error={emailError}
+              onChange={this.handleEmailOnChange}
+            />
+          </FormElement>
 
-              <Label value={formatMessage(messages.emailLabel)} htmlFor="email" />
-              <FormElement>
-                <Input
-                  type="email"
-                  id="email"
-                  value={email}
-                  placeholder={formatMessage(messages.emailPlaceholder)}
-                  error={emailError}
-                  onChange={this.handleEmailOnChange}
-                />
-              </FormElement>
+          <FormElement>
+            <Label value={formatMessage(messages.passwordLabel)} htmlFor="password" />
+            <Input
+              type="password"
+              id="password"
+              value={password}
+              placeholder={formatMessage(messages.passwordPlaceholder)}
+              error={passwordError}
+              onChange={this.handlePasswordOnChange}
+            />
+          </FormElement>
 
-              <Label value={formatMessage(messages.passwordLabel)} htmlFor="password" />
-              <FormElement>
-                <Input
-                  type="password"
-                  id="password"
-                  value={password}
-                  placeholder={formatMessage(messages.passwordPlaceholder)}
-                  error={passwordError}
-                  onChange={this.handlePasswordOnChange}
-                />
-              </FormElement>
+          <FormElement>
+            <Label value={formatMessage(messages.yearOfBirthLabel)} htmlFor="yearOfBirth" />
+            <Select
+              clearable={true}
+              searchable={true}
+              value={yearOfBirth}
+              placeholder={formatMessage(messages.yearOfBirthPlaceholder)}
+              options={years}
+              onChange={this.handleYearOfBirthOnChange}
+            />
+          </FormElement>
 
-              <Label value={formatMessage(messages.yearOfBirthLabel)} htmlFor="yearOfBirth" />
-              <FormElement>
-                <Select
-                  clearable={true}
-                  searchable={true}
-                  value={yearOfBirth}
-                  placeholder={formatMessage(messages.yearOfBirthPlaceholder)}
-                  options={years}
-                  onChange={this.handleYearOfBirthOnChange}
-                />
-              </FormElement>
+          <FormElement>
+            <Label value={formatMessage(messages.genderLabel)} htmlFor="gender" />
+            <Select
+              clearable={true}
+              value={gender}
+              placeholder={formatMessage(messages.genderPlaceholder)}
+              options={[{
+                value: 'female',
+                label: formatMessage(messages.male),
+              }, {
+                value: 'male',
+                label: formatMessage(messages.female),
+              }, {
+                value: 'unspecified',
+                label: formatMessage(messages.unspecified),
+              }]}
+              onChange={this.handleGenderOnChange}
+            />
+          </FormElement>
 
-              <Label value={formatMessage(messages.genderLabel)} htmlFor="gender" />
-              <FormElement>
-                <Select
-                  clearable={true}
-                  value={gender}
-                  placeholder={formatMessage(messages.genderPlaceholder)}
-                  options={[{
-                    value: 'female',
-                    label: formatMessage(messages.male),
-                  }, {
-                    value: 'male',
-                    label: formatMessage(messages.female),
-                  }, {
-                    value: 'unspecified',
-                    label: formatMessage(messages.unspecified),
-                  }]}
-                  onChange={this.handleGenderOnChange}
-                />
-              </FormElement>
+          <FormElement>
+            <Label value={formatMessage(messages.areaLabel)} htmlFor="area" />
+            <Select
+              clearable={true}
+              value={area}
+              placeholder={formatMessage(messages.areaPlaceholder)}
+              options={areas}
+              onChange={this.handleAreaOnChange}
+            />
+          </FormElement>
 
-              <Label value={formatMessage(messages.areaLabel)} htmlFor="area" />
-              <FormElement>
-                <Select
-                  clearable={true}
-                  value={area}
-                  placeholder={formatMessage(messages.areaPlaceholder)}
-                  options={areas}
-                  onChange={this.handleAreaOnChange}
-                />
-              </FormElement>
-
-              <FormElement>
-                <Button
-                  size="2"
-                  loading={processing}
-                  text={formatMessage(messages.submit)}
-                  onClick={this.handleOnSubmit}
-                  disabled={!hasRequiredContent}
-                />
-                <Error text={signUpError} />
-              </FormElement>
-            </FormContainerInner>
-          </FormContainerOuter>
-        </Container>
-      </div>
+          <FormElement>
+            <Button
+              size="2"
+              loading={processing}
+              text={formatMessage(messages.submit)}
+              onClick={this.handleOnSubmit}
+              disabled={!hasRequiredContent}
+            />
+            <Error text={signUpError} />
+          </FormElement>
+        </Form>
+      </Container>
     );
   }
 }
