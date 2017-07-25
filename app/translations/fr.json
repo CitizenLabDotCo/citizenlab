@@ -87,6 +87,7 @@
   "app.containers.AdminPage.SideBar.users":"",
   "app.containers.AdminUser.Users.Views.all.createButton":"",
   "app.containers.AdminUser.Users.Views.all.deleteButton":"",
+  "app.containers.AdminUser.Users.Views.all.exportUsers":"",
   "app.containers.AdminUser.Users.Views.all.headerIndex":"",
   "app.containers.AdminUser.Users.Views.all.updateButton":"",
   "app.containers.AdminUser.Users.Views.edit.userLoadingError":"",
