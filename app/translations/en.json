@@ -327,7 +327,7 @@
   "app.containers.UsersShowPage.header": "Create new account",
   "app.containers.UsersShowPage.helmetDescription": "Show user profile",
   "app.containers.UsersShowPage.helmetTitle": "User profile page",
-  "app.containers.UsersShowPage.joined": "Joined",
+  "app.containers.UsersShowPage.joined": "Joined at {date}",
   "app.containers.UsersShowPage.loadUserError": "User couldn't be loaded",
   "app.containers.UsersShowPage.loadUserIdeasError": "User's ideas couldn't be loaded",
   "app.containers.UsersShowPage.loadingUser": "Loading...",
