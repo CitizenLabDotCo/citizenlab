@@ -3,7 +3,8 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { injectIntl, intlShape } from 'react-intl';
-import {EditorState, ContentState} from 'draft-js';
+import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
+import draftjsToHtml from 'draftjs-to-html';
 
 // Store
 import { connect } from 'react-redux';
@@ -52,7 +53,9 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
   componentDidMount() {
     if (this.props.params.slug) {
       this.subscription = observeProject(this.props.params.slug).observable.subscribe((project) => {
-        const editorContent = ContentState.createFromText(project.data.attributes.description_multiloc[this.props.userLocale])
+
+        const blocksFromHtml = convertFromHTML(project.data.attributes.description_multiloc[this.props.userLocale]);
+        const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
 
         this.setState({
           project: project.data,
@@ -79,7 +82,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
   changeDesc = (editorState: EditorState): void => {
     const project = this.state.project;
 
-    _.set(project, `attributes.description_multiloc.${this.props.userLocale}`, editorState.getCurrentContent().getPlainText());
+    _.set(project, `attributes.description_multiloc.${this.props.userLocale}`, draftjsToHtml(convertToRaw(editorState.getCurrentContent())));
 
     this.setState({
       editorState,
