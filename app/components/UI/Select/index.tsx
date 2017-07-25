@@ -154,8 +154,8 @@ const StyledSelect = styled(ReactSelect)`
           font-size: 17px;
           font-weight: 400;
 
-          &:hover, 
-          &:focus, 
+          &:hover,
+          &:focus,
           &:active,
           &.is-focused {
             background: #eee;
