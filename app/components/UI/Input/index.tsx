@@ -44,55 +44,57 @@ const InputWrapper = styled.div`
   }
 `;
 
-interface IInput {
-  id?: string;
+type Props = {
+  id?: string | undefined;
+  value?: string | null | undefined;
   type: 'text' | 'email' | 'password';
-  value: string | null;
-  placeholder: string | null;
-  error: string | null;
+  placeholder?: string | null | undefined;
+  error?: string | null | undefined;
   onChange: (arg: string) => void;
-  setRef?: (arg: HTMLInputElement) => void;
-}
+  setRef?: (arg: HTMLInputElement) => void | undefined;
+};
 
-const emptyString = '';
+type State = {};
 
-const Input: React.SFC<IInput> = ({ id, type, value, placeholder, error, onChange, setRef }) => {
-  const hasError = (_.isString(error) && !_.isEmpty(error));
+export default class Input extends React.PureComponent<Props, State> {
+  handleOnChange = (event: React.FormEvent<HTMLInputElement>) => {
+    this.props.onChange(event.currentTarget.value);
+  }
 
-  const handleOnChange = (event: React.FormEvent<HTMLInputElement>) => {
-    onChange(event.currentTarget.value);
-  };
-
-  const handleRef = (element: HTMLInputElement) => {
-    if (_.isFunction(setRef)) {
-      setRef(element);
+  handleRef = (element: HTMLInputElement) => {
+    if (_.isFunction(this.props.setRef)) {
+      this.props.setRef(element);
     }
-  };
+  }
 
-  return (
-    <InputWrapper error={hasError}>
-      { type !== null && 
-        value !== null && 
-        placeholder !== null &&
+  render() {
+    let { value, placeholder, error } = this.props;
+    const { id, type } = this.props;
+    const hasError = (_.isString(error) && !_.isEmpty(error));
+
+    value = (value || '');
+    placeholder = (placeholder || '');
+    error = (error || null);
+
+    return (
+      <InputWrapper error={hasError}>
         <input
           id={id}
           type={type}
           placeholder={placeholder}
-          value={value || emptyString}
-          onChange={handleOnChange}
-          ref={handleRef}
+          value={value}
+          onChange={this.handleOnChange}
+          ref={this.handleRef}
         />
-      }
-      <Error
-        text={error}
-        size="1"
-        marginTop="10px"
-        marginBottom="0px"
-        showIcon={false}
-        showBackground={false}
-      />
-    </InputWrapper>
-  );
-};
-
-export default Input;
+        <Error
+          text={error}
+          size="1"
+          marginTop="10px"
+          marginBottom="0px"
+          showIcon={false}
+          showBackground={false}
+        />
+      </InputWrapper>
+    );
+  }
+}
