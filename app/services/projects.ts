@@ -31,6 +31,18 @@ export interface IProjectData {
   };
 }
 
+export interface IProjectUpdateData {
+  project: {
+    id: string,
+    title_multiloc: {
+      [key: string]: string;
+    },
+    description_multiloc: {
+      [key: string]: string;
+    },
+  };
+}
+
 export interface IProject {
   data: IProjectData;
 }
@@ -45,4 +57,15 @@ export function observeProjects(streamParams: IStreamParams<IProjects> | null = 
 
 export function observeProject(slug, streamParams: IStreamParams<IProject> | null = null) {
   return streams.create<IProject>({ apiEndpoint: `${apiEndpoint}/by_slug/${slug}`, ...streamParams });
+}
+
+export function updateProject(projectData: IProjectUpdateData, streamParams: IStreamParams<IProject> | null = null) {
+  const defaultParams: Partial<IStreamParams<IProject>> = {
+    bodyData: projectData,
+    httpMethod: { method: 'PATCH' },
+  };
+
+  const params = { ...defaultParams, ...streamParams };
+
+  return streams.create<IProject>({ apiEndpoint: `${apiEndpoint}/${projectData.project.id}`, ...params });
 }

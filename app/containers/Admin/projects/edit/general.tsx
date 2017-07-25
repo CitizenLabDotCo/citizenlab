@@ -13,7 +13,7 @@ import { makeSelectSetting } from 'utils/tenant/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 
 // Services
-import { observeProject, IProjectData } from 'services/projects';
+import { observeProject, IProjectData, updateProject } from 'services/projects';
 
 // Components
 import Input from 'components/UI/Input';
@@ -98,6 +98,19 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
     console.log(arguments);
   }
 
+  saveProject = () => {
+    const project = this.state.project;
+    if (project) {
+      updateProject({project: {
+        id: project.id,
+        title_multiloc: project.attributes.title_multiloc,
+        description_multiloc: project.attributes.description_multiloc,
+      }}).observable.subscribe((response) => {
+        console.log(response);
+      });
+    }
+  }
+
 
   render() {
     const { project, uploadedImages, editorState } = this.state;
@@ -131,6 +144,8 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
           onRemove={this.handleUploadOnRemove}
         />
 
+
+        <button onClick={this.saveProject}>Save</button>
       </div>
     );
   }
