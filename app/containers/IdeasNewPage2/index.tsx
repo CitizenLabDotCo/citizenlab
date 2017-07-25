@@ -148,6 +148,7 @@ type Props = {
 };
 
 type State = {
+  storeKey: 'IdeasNewPage2';
   topics: IOption[] | null;
   projects: IOption[] | null;
   title: string | null;
@@ -194,6 +195,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   constructor() {
     super();
     this.state = {
+      storeKey: 'IdeasNewPage2',
       topics: null,
       projects: null,
       title: null,
@@ -224,7 +226,10 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
         .startWith(this.state)
         .scan((state, current) => ({ ...state, ...(_.isFunction(current) ? current(state) : current) }))
         .distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState))
-        .subscribe(state => this.setState(state as State)),
+        .subscribe(state => {
+          // console.log(state);
+          this.setState(state as State);
+        }),
 
       Rx.Observable.combineLatest(
         this.topics$.observable.distinctUntilChanged(),
@@ -364,10 +369,12 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
           const idea = await addIdea(userId, 'published', ideaTitle, ideaDescription, topicIds, projectId, locationGeoJSON, locationDescription);
           await Promise.all(_(images).map((image, index) => addIdeaImage(idea.data.id, image.base64, index)).value());
           this.state$.next({ processing: false });
-
-          if (!user) {
-            this.state$.next({ showSignIn: true });
-          }
+        } else {
+          this.state$.next({
+            showIdeaForm: false,
+            showSignIn: true,
+            showSignUp: false
+          });
         }
       } catch (error) {
         // submitError
