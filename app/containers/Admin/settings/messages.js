@@ -15,4 +15,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.helmetDescription',
     defaultMessage: 'Admin settings page',
   },
+  organizationName: {
+    id: 'app.containers.AdminPage.SettingsPage.organizationName',
+    defaultMessage: '{type, select, generic {Organization} city {City}} name',
+  },
 });

@@ -32,6 +32,6 @@ export default defineMessages({
   },
   joined: {
     id: 'app.containers.UsersShowPage.joined',
-    defaultMessage: 'Joined',
+    defaultMessage: 'Joined on {date}',
   },
 });
