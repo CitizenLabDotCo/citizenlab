@@ -43,7 +43,7 @@ export default defineMessages({
     defaultMessage: 'Loading',
   },
   LoadingError: {
-    id: 'app.containers.Projects.navTimeline',
-    defaultMessage: 'Upps... something whent wrong',
+    id: 'app.containers.Projects.LoadingError',
+    defaultMessage: 'Upps... something went wrong',
   },
 });

@@ -85,9 +85,8 @@ export function* deleteUserWatcher(actionPrefix = '') {
   yield takeLatest(actionPrefix + DELETE_USER_REQUEST, deleteUserSaga);
 }
 
-// export default {
-//   loadUsersWatcher,
-//   loadUserWatcher,
-//   deleteUserWatcher,
-//   wrapWithActionPrefix,
-// };
+export default {
+  loadUsersWatcher,
+  loadUserWatcher,
+  deleteUserWatcher,
+};
