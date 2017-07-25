@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 // components
 import IdeaCard from 'components/IdeaCard';
@@ -48,17 +49,20 @@ const LoadMoreButton = styled.button`
 `;
 
 class IdeasCards extends React.Component {
+
   componentDidMount() {
     this.loadMoreIdeas();
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.nextPageNumber !== this.props.nextPageNumber) this.first = true;
-    if (newProps.isNewSearch) this.props.reset();
+    if (!_.isEqual(newProps.filter, this.props.filter)) {
+      this.props.reset();
+      this.props.loadMoreIdeas(1, newProps.filter);
+    }
   }
 
   loadMoreIdeas = () => {
-    this.props.loadMoreIdeas();
+    this.props.loadMoreIdeas(this.props.nextPageNumber, this.props.filter);
   }
 
   render() {
@@ -77,11 +81,12 @@ class IdeasCards extends React.Component {
 }
 
 IdeasCards.propTypes = {
-  nextPageNumber: PropTypes.any,
-  ideas: PropTypes.any,
-  hasMore: PropTypes.bool,
   loadMoreIdeas: PropTypes.func.isRequired,
+  nextPageNumber: PropTypes.any,
+  hasMore: PropTypes.bool,
+  ideas: PropTypes.any,
   reset: PropTypes.func.isRequired,
+  filter: PropTypes.object.isRequired,
 };
 
 
@@ -89,25 +94,21 @@ const mapStateToProps = createStructuredSelector({
   ideas: selectIdeasIndexPageDomain('ideas'),
   nextPageNumber: selectIdeasIndexPageDomain('nextPageNumber'),
   nextPageSize: selectIdeasIndexPageDomain('nextPageItemCount'),
-  lastSearch: selectIdeasIndexPageDomain('search'),
-  newSearch: (state) => state.getIn(['route', 'locationBeforeTransitions', 'search']),
+  hasMore: selectIdeasIndexPageDomain('hasMore'),
 });
 
 const mergeProps = (state, dispatch, own) => {
-  const { ideas, nextPageNumber, nextPageSize, lastSearch, newSearch } = state;
+  const { ideas, nextPageNumber, nextPageSize, hasMore } = state;
   const { load, reset } = dispatch;
   const { filter, maxNumber } = own;
-  let { hasMore } = own;
-  const isNewSearch = lastSearch !== newSearch && nextPageNumber !== 1;
-  if (hasMore !== false) hasMore = !!(nextPageNumber && (maxNumber || nextPageSize)) || isNewSearch;
 
   return {
+    loadMoreIdeas: (page, fltr) => load(page, maxNumber || nextPageSize, fltr),
     nextPageNumber,
-    loadMoreIdeas: () => load(nextPageNumber, maxNumber || nextPageSize, newSearch, filter),
     hasMore,
     ideas,
-    isNewSearch,
     reset,
+    filter,
   };
 };
 

@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import qs from 'qs';
 
 // components
 import WatchSagas from 'containers/WatchSagas';
@@ -87,4 +88,12 @@ View.defaultProps = {
 
 const actions = { loadTopicsRequest, loadAreasRequest, resetIdeas };
 
-export default preprocess(null, actions)(View);
+const mergeProps = (_, dispatch, own) => {
+  const { location } = own;
+  // We use qs instead of the already available react-router parsed version,
+  // because it handles the arrays nicely
+  const parsedParams = qs.parse(location.search, { ignoreQueryPrefix: true });
+  return { ...dispatch, ...own, filter: parsedParams };
+};
+
+export default preprocess(null, actions, mergeProps)(View);
