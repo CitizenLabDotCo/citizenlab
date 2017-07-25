@@ -44,8 +44,8 @@ const DraftEditorContainer = styled.div`
 
   .rdw-editor-toolbar {
     width: auto;
-    padding: 9px;
-    padding-left: 4px;
+    padding: 8px;
+    padding-left: 6px;
     margin: 0;
     border-radius: 0px;
     border: none;
@@ -71,7 +71,7 @@ const DraftEditorContainer = styled.div`
     }
 
     .rdw-option-wrapper {
-      padding: 14px 10px;
+      padding: 5px 5px;
       margin-right: 3px;
       border: solid 1px transparent;
       border-radius: 3px;
@@ -146,11 +146,11 @@ const DraftEditorContainer = styled.div`
 `;
 
 type Props = {
-  id?: string;
-  value: EditorState;
-  placeholder?: string;
-  error?: string | null;
-  toolbarConfig?: {};
+  id?: string | undefined;
+  value?: EditorState | null | undefined;
+  placeholder?: string | null | undefined;
+  error?: string | null | undefined;
+  toolbarConfig?: {} | null | undefined;
   onChange: (arg: EditorState) => void;
 };
 
@@ -159,9 +159,12 @@ type State = {
 };
 
 export default class Editor extends React.PureComponent<Props, State> {
+  private emptyEditorState: EditorState;
+
   constructor() {
     super();
     this.state = { focussed: false };
+    this.emptyEditorState = EditorState.createEmpty();
   }
 
   handleOnEditorStateChange = (editorState: EditorState) => {
@@ -177,12 +180,12 @@ export default class Editor extends React.PureComponent<Props, State> {
   }
 
   render() {
-    let { placeholder, error, toolbarConfig } = this.props;
-    const { id, value } = this.props;
+    let { value, placeholder, error, toolbarConfig } = this.props;
+    const { id } = this.props;
     const { focussed } = this.state;
     const hasError = (_.isString(error) && !_.isEmpty(error));
-    const editorState = (value || EditorState.createEmpty());
 
+    value = (value || this.emptyEditorState);
     placeholder = (placeholder || '');
     error = (error || null);
     toolbarConfig = (toolbarConfig || {
@@ -200,7 +203,7 @@ export default class Editor extends React.PureComponent<Props, State> {
         <DraftEditorContainer focussed={focussed} error={hasError}>
           <DraftEditor
             id={id}
-            editorState={editorState}
+            editorState={value}
             placeholder={placeholder}
             onEditorStateChange={this.handleOnEditorStateChange}
             toolbar={toolbarConfig}

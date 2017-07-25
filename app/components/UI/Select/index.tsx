@@ -173,41 +173,52 @@ const StyledSelect = styled(ReactSelect)`
   }
 `;
 
-interface ISelect {
-  value: IOption | null;
-  placeholder: string;
+type Props = {
+  value?: IOption | null | undefined;
+  placeholder?: string | null | undefined;
   options: IOption[] | null;
-  autoBlur?: boolean;
-  clearable?: boolean;
-  searchable?: boolean;
+  autoBlur?: boolean | undefined;
+  clearable?: boolean | undefined;
+  searchable?: boolean | undefined;
   onChange: (arg: IOption) => void;
-}
-
-const emptyArray = [];
-
-const Select: React.SFC<ISelect> = ({ value, placeholder, options, autoBlur, clearable, searchable, onChange }) => {
-  const handleOnChange = (newValue: IOption) => {
-    onChange(newValue);
-  };
-
-  options = (options || emptyArray);
-  autoBlur = (_.isBoolean(autoBlur) ? autoBlur : true);
-  clearable = (_.isBoolean(clearable) ? clearable : true);
-  searchable = (_.isBoolean(searchable) ? searchable : false);
-
-  return (
-    <StyledSelect
-      openOnFocus={true}
-      clearable={clearable}
-      searchable={searchable}
-      scrollMenuIntoView={false}
-      autoBlur={autoBlur}
-      value={(value || undefined)}
-      placeholder={placeholder}
-      options={options || emptyArray}
-      onChange={handleOnChange}
-    />
-  );
 };
 
-export default Select;
+type State = {};
+
+export default class Select extends React.PureComponent<Props, State> {
+  private emptyArray: never[];
+
+  constructor() {
+    super();
+    this.emptyArray = [];
+  }
+
+  handleOnChange = (newValue: IOption) => {
+    this.props.onChange(newValue);
+  }
+
+  render() {
+    let { value, placeholder, options, autoBlur, clearable, searchable } = this.props;
+
+    value = (value || undefined);
+    placeholder = (placeholder || '');
+    options = (options || this.emptyArray);
+    autoBlur = (_.isBoolean(autoBlur) ? autoBlur : true);
+    clearable = (_.isBoolean(clearable) ? clearable : true);
+    searchable = (_.isBoolean(searchable) ? searchable : false);
+
+    return (
+      <StyledSelect
+        openOnFocus={true}
+        clearable={clearable}
+        searchable={searchable}
+        scrollMenuIntoView={false}
+        autoBlur={autoBlur}
+        value={value}
+        placeholder={placeholder}
+        options={options}
+        onChange={this.handleOnChange}
+      />
+    );
+  }
+}

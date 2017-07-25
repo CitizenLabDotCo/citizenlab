@@ -2,9 +2,7 @@ import { IRelationship } from 'typings.d';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import request from 'utils/request';
-import * as Rx from 'rxjs/Rx';
-
-const apiEndpoint = `${API_PATH}/ideas`;
+import { IOption } from 'typings';
 
 export interface IIdeaData {
   id: string;
@@ -17,7 +15,7 @@ export interface IIdeaData {
       [key: string]: any;
     };
     author_name: string;
-    publication_status: 'draft' | 'published' | 'closed' | 'spam';
+    publication_status: 'draft' | 'published';
     upvotes_count: number;
     downvotes_count: number;
     comments_count: number;
@@ -77,49 +75,49 @@ export interface IIdeaLinks {
   last: string;
 }
 
+export interface IIdea {
+  data: IIdeaData;
+  included: IIdeaIncluded[];
+}
+
 export interface IIdeas {
   data: IIdeaData[];
   included: IIdeaIncluded[];
   links: IIdeaLinks;
 }
 
-export interface IIdea {
-  data: IIdeaData;
-}
-
-export interface IIdeaUpdate {
-  title_multiloc?: {
-    [key: string]: any;
-  };
-  body_multiloc?: {
-    [key: string]: any;
-  };
-  project_id?: string,
-  author_id?: string,
-  idea_status_id?: string,
-  publication_status?: 'draft' | 'published' | 'closed' | 'spam',
-  topid_ids?: string[],
-  area_ids?: string[],
-  location_point_geojson?: any,
-  location_description?: string,
-}
+const apiEndpoint = `${API_PATH}/ideas`;
 
 export function observeIdeas(streamParams: IStreamParams<IIdeas> | null = null) {
   return streams.create<IIdeas>({ apiEndpoint, ...streamParams });
 }
 
-export function updateIdea(ideaId: string, object: IIdeaUpdate) {
-  const httpMethod = {
-    method: 'PUT'
-  };
-
+export function addIdea(
+  userId: string,
+  publicationStatus: 'draft' | 'published',
+  title: { [key: string]: string },
+  body: { [key: string]: string },
+  topicIds: string[] | null,
+  projectId: string | null,
+  locationGeoJSON: {} | null,
+  locationDescription: string | null,
+): Promise<IIdea> {
+  const httpMethod = { method: 'POST' };
   const bodyData = {
-    idea: object
+    idea: {
+      project_id: projectId,
+      author_id: userId,
+      publication_status: publicationStatus,
+      title_multiloc: title,
+      body_multiloc: body,
+      topic_ids: topicIds,
+      area_ids: null,
+      location_point_geojson: locationGeoJSON,
+      location_description: locationDescription
+    }
   };
 
-  return request(`${apiEndpoint}/${ideaId}`, bodyData, httpMethod, null).then((response: IIdea) => {
-    streams.update(ideaId, response);
-  }).catch(() => {
-    throw new Error(`error for updateUser() of service Users`);
+  return request(`${apiEndpoint}/${userId}`, bodyData, httpMethod, null).catch(() => {
+    throw new Error(`error for addIdea() of service Ideas`);
   });
 }
