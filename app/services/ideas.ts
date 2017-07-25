@@ -1,12 +1,8 @@
+import { IRelationship } from 'typings.d';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-
-const apiEndpoint = `${API_PATH}/ideas`;
-
-interface IRelationship {
-  id: string;
-  type: string;
-}
+import request from 'utils/request';
+import { IOption } from 'typings';
 
 export interface IIdeaData {
   id: string;
@@ -49,13 +45,6 @@ export interface IIdeaData {
       data: null
     }
   };
-  links: {
-    self: string;
-    first: string;
-    prev: string;
-    next: string;
-    last: string;
-  };
 }
 
 export interface IIdeaIncluded {
@@ -70,8 +59,8 @@ export interface IIdeaIncluded {
       small: string;
       medium: string;
       large: string;
-    },
-    roles: any[],
+    };
+    roles: any[];
     bio_multiloc: any;
     created_at: string;
     updated_at: string;
@@ -79,15 +68,56 @@ export interface IIdeaIncluded {
 }
 
 export interface IIdeaLinks {
-  [key: string]: any;
+  self: string;
+  first: string;
+  prev: string;
+  next: string;
+  last: string;
+}
+
+export interface IIdea {
+  data: IIdeaData;
+  included: IIdeaIncluded[];
 }
 
 export interface IIdeas {
   data: IIdeaData[];
   included: IIdeaIncluded[];
-  links: IIdeaLinks[];
+  links: IIdeaLinks;
 }
+
+const apiEndpoint = `${API_PATH}/ideas`;
 
 export function observeIdeas(streamParams: IStreamParams<IIdeas> | null = null) {
   return streams.create<IIdeas>({ apiEndpoint, ...streamParams });
+}
+
+export function addIdea(
+  userId: string,
+  publicationStatus: 'draft' | 'published',
+  title: { [key: string]: string },
+  body: { [key: string]: string },
+  topicIds: string[] | null,
+  projectId: string | null,
+  locationGeoJSON: {} | null,
+  locationDescription: string | null,
+): Promise<IIdea> {
+  const httpMethod = { method: 'POST' };
+  const bodyData = {
+    idea: {
+      project_id: projectId,
+      author_id: userId,
+      publication_status: publicationStatus,
+      title_multiloc: title,
+      body_multiloc: body,
+      topic_ids: topicIds,
+      area_ids: null,
+      location_point_geojson: locationGeoJSON,
+      location_description: locationDescription
+    }
+  };
+
+  return request(`${apiEndpoint}/${userId}`, bodyData, httpMethod, null).catch(() => {
+    throw new Error(`error for addIdea() of service Ideas`);
+  });
 }

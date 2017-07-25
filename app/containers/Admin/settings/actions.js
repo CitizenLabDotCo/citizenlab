@@ -2,13 +2,13 @@ import {
   SAVE_SETTINGS_REQUEST, SAVE_SETTINGS_SUCCESS, SAVE_SETTINGS_ERROR,
 } from './constants';
 
-export function saveSettings(tenantId, locale, organizationName, accentColorHex) {
+export function saveSettings(tenantId, locale, organizationName, colorMain) {
   return {
     type: SAVE_SETTINGS_REQUEST,
     tenantId,
     locale,
     organizationName,
-    accentColorHex,
+    colorMain,
   };
 }
 

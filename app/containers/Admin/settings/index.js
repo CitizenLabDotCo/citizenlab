@@ -4,11 +4,11 @@ import HelmetIntl from 'components/HelmetIntl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { Saga } from 'react-redux-saga';
-import { bindActionCreators } from 'redux';
 import { Form } from 'semantic-ui-react';
 import { createStructuredSelector } from 'reselect';
 import { injectTFunc } from 'containers/T/utils';
 import { ChromePicker } from 'react-color';
+import { FormattedMessage } from 'react-intl';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { makeSelectCurrentTenant } from './selectors';
 import { saveSettings } from './actions';
@@ -33,20 +33,20 @@ class SettingsPage extends React.Component { // eslint-disable-line react/prefer
 
     const { tenant, tFunc } = props;
     const organizationName = tFunc(tenant.getIn(['attributes', 'settings', 'core', 'organization_name']).toJS());
-    const accentColorHex = tenant.getIn(['attributes', 'settings', 'core', 'style_accent_bg']);
-    const accentColorRGB = hexToRgb(accentColorHex);
+    const colorMainHex = tenant.getIn(['attributes', 'settings', 'core', 'color_main']);
+    const colorMainRGB = hexToRgb(colorMainHex);
     const displayColorPicker = false;
 
     this.state = {
       organizationName,
-      accentColorHex,
-      accentColorRGB,
+      colorMainHex,
+      colorMainRGB,
       displayColorPicker,
     };
   }
 
   handleChangeComplete = (color) => {
-    this.setState({ accentColorHex: color.hex });
+    this.setState({ colorMainHex: color.hex });
   };
 
   openColorPicker = (e) => {
@@ -61,8 +61,8 @@ class SettingsPage extends React.Component { // eslint-disable-line react/prefer
 
   colorPicked = (color) => {
     this.setState({
-      accentColorHex: color.hex,
-      accentColorRGB: color.rgb,
+      colorMainHex: color.hex,
+      colorMainRGB: color.rgb,
     });
   };
 
@@ -71,20 +71,22 @@ class SettingsPage extends React.Component { // eslint-disable-line react/prefer
   }
 
   hexChange = (e) => {
-    this.setState({ accentColorHex: e.target.value });
+    this.setState({ colorMainHex: e.target.value });
   }
 
   save = (e) => {
     e.preventDefault();
-    this.props.saveSettings(this.props.tenant.get('id'), this.props.locale, this.state.organizationName, this.state.accentColorHex);
+    this.props.saveSettings(this.props.tenant.get('id'), this.props.locale, this.state.organizationName, this.state.colorMainHex);
   }
 
   render() {
+    const { tenant } = this.props;
+    const settings = tenant.getIn(['attributes', 'settings']);
     const color = {
       width: '37px',
       height: '37px',
       borderRadius: '4px',
-      background: `rgba(${this.state.accentColorRGB.r}, ${this.state.accentColorRGB.g}, ${this.state.accentColorRGB.b}, 1)`,
+      background: `rgba(${this.state.colorMainRGB.r}, ${this.state.colorMainRGB.g}, ${this.state.colorMainRGB.b}, 1)`,
       display: 'inline-block',
       float: 'left',
     };
@@ -105,7 +107,7 @@ class SettingsPage extends React.Component { // eslint-disable-line react/prefer
     const colorPicker = (this.state.displayColorPicker ? (
       <div style={popover}>
         <div style={cover} onClick={this.closeColorPicker} />
-        <ChromePicker disableAlpha color={this.state.accentColorHex} onChange={this.colorPicked} onChangeComplete={this.colorPicked} />
+        <ChromePicker disableAlpha color={this.state.colorMainHex} onChange={this.colorPicked} onChangeComplete={this.colorPicked} />
       </div>
     ) : null);
 
@@ -120,7 +122,7 @@ class SettingsPage extends React.Component { // eslint-disable-line react/prefer
 
         <Form>
           <Form.Field>
-            <label htmlFor="organization_name">First name</label>
+            <label htmlFor="organization_name"><FormattedMessage {...messages.organizationName} values={{ type: settings.getIn(['core', 'organization_type']) }} /></label>
             <input
               id="organization_name"
               placeholder="Organization name"
@@ -130,12 +132,12 @@ class SettingsPage extends React.Component { // eslint-disable-line react/prefer
           </Form.Field>
 
           <Form.Field>
-            <label htmlFor="style_accent_color">Accent color</label>
+            <label htmlFor="color_main">Accent color</label>
             <div style={color} onClick={this.openColorPicker} />
             <input
-              id="style_accent_color"
-              placeholder="Accent color"
-              value={this.state.accentColorHex}
+              id="color_main"
+              placeholder="Main color"
+              value={this.state.colorMainHex}
               onFocus={this.openColorPicker}
               onChange={this.hexChange}
             />
@@ -162,6 +164,8 @@ const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ saveSettings }, dispatch);
+const mapDispatchToProps = {
+  saveSettings,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectTFunc(SettingsPage));
