@@ -47,4 +47,28 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.metaDescription',
     defaultMessage: 'Meta description',
   },
+  titleSignupFields: {
+    id: 'app.containers.AdminPage.SettingsPage.titleSignupFields',
+    defaultMessage: 'Signup fields',
+  },
+  titleBranding: {
+    id: 'app.containers.AdminPage.SettingsPage.titleBranding',
+    defaultMessage: 'Branding',
+  },
+  gender: {
+    id: 'app.containers.AdminPage.SettingsPage.gender',
+    defaultMessage: 'Gender',
+  },
+  domicile: {
+    id: 'app.containers.AdminPage.SettingsPage.domicile',
+    defaultMessage: 'Domicile',
+  },
+  birthyear: {
+    id: 'app.containers.AdminPage.SettingsPage.birthyear',
+    defaultMessage: 'Birthyear',
+  },
+  education: {
+    id: 'app.containers.AdminPage.SettingsPage.education',
+    defaultMessage: 'Education',
+  },
 });
