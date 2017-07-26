@@ -10,9 +10,9 @@ import { getJwt } from 'utils/auth/jwt';
  *
  * @return {object}           The response data
  */
-export default function request(url, data, options, queryParameters) {
+export default function request<T>(url, data, options, queryParameters): Promise<T> {
   const jwt = getJwt();
-  const defaultOptions = {
+  const defaultOptions: { [key: string]: any } = {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -47,8 +47,7 @@ export default function request(url, data, options, queryParameters) {
       }
 
       const error = new Error(response.statusText);
-      error.json = json;
-      throw error;
+      throw { ...error, json };
     });
 }
 

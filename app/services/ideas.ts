@@ -117,7 +117,7 @@ export function addIdea(
     }
   };
 
-  return request(`${apiEndpoint}/${userId}`, bodyData, httpMethod, null).catch(() => {
+  return request<any>(`${apiEndpoint}/${userId}`, bodyData, httpMethod, null).catch(() => {
     throw new Error(`error for addIdea() of service Ideas`);
   });
 }

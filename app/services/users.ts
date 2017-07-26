@@ -24,7 +24,7 @@ export interface IUserData {
     created_at: string;
     updated_at: string;
     email: string;
-    gender: 'male' | 'female';
+    gender: 'male' | 'female' | 'unspecified';
     birthyear: number;
     domicile: string;
     education: string;
@@ -74,7 +74,7 @@ export function updateUser(userId: string, object: IUserUpdate) {
   const httpMethod = { method: 'PUT' };
   const bodyData = { user: object };
 
-  return request(`${apiEndpoint}/${userId}`, bodyData, httpMethod, null).then((userObject) => {
+  return request<IUser>(`${apiEndpoint}/${userId}`, bodyData, httpMethod, null).then((userObject) => {
     streams.update(userId, userObject, true);
   }).catch(() => {
     throw new Error(`error for updateUser() of service Users`);

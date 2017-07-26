@@ -1,16 +1,14 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 import { darken } from 'polished';
 import { ITheme } from 'typings';
 import Spinner from 'components/UI/Spinner';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const ButtonText = styled.div`
   color: #fff;
   font-weight: 400;
 `;
-
-interface IStyledButton extends IButton, ITheme {}
 
 const StyledButton: any = styled.button`
   display: flex;
@@ -19,21 +17,59 @@ const StyledButton: any = styled.button`
   border-radius: 5px;
   position: relative;
   outline: none;
-  background: ${(props: IStyledButton) => props.theme.color.main || '#e0e0e0'};
   transition: background 150ms ease;
 
-  &.disabled {
-    background: #ccc;
-    cursor: not-allowed;
+  &:not(.disabled) {
+    cursor: pointer;
+  }
 
-    > ${ButtonText} {
-      color: #fff;
+  &.disabled {
+    cursor: not-allowed;
+  }
+
+  &.primary.primary {
+    &:not(.disabled) {
+      background: ${(props: any) => props.theme.color.main || '#e0e0e0'};
+
+      ${ButtonText} {
+        color: ${(props: any) => '#fff' || '#000'};
+      }
+
+      &:hover {
+        background: ${(props: any) => darken(0.1, (props.theme.color.main || '#ccc'))};
+      }
+    }
+
+    &.disabled {
+      background: #ccc;
+
+      ${ButtonText} {
+        color: #fff;
+      }
+
+      &:hover {
+        background: green;
+      }
     }
   }
 
-  > ${ButtonText} {
+  &.secondary.secondary {
+    &:not(.disabled) {
+      background: rgb(233, 232, 232);
+    }
+
+    &.disabled {
+      background: #ccc;
+
+      ${ButtonText} {
+        color: #fff;
+      }
+    }
+  }
+
+  ${ButtonText} {
     white-space: nowrap;
-    font-size: ${(props: IStyledButton) => {
+    font-size: ${(props: any) => {
       switch (props.size) {
         case '2':
           return '17px';
@@ -45,7 +81,7 @@ const StyledButton: any = styled.button`
           return '16px';
       }
     }};
-    padding: ${(props: IStyledButton) => {
+    padding: ${(props: any) => {
       switch (props.size) {
         case '2':
           return '9px 15px';
@@ -57,11 +93,7 @@ const StyledButton: any = styled.button`
           return '9px 14px';
       }
     }};
-    opacity: ${(props: IStyledButton) => props.loading ? 0 : 1}
-  }
-
-  &:not(.disabled):hover {
-    background: ${(props: IStyledButton) => darken(0.2, (props.theme.color.main || '#ccc'))};
+    opacity: ${(props: any) => props.loading ? 0 : 1}
   }
 `;
 
@@ -78,34 +110,45 @@ const SpinnerWrapper = styled.div`
   justify-content: center;
 `;
 
-const Button: React.SFC<IButton> = ({ text, size, loading, disabled, onClick, className }) => {
-  const handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
-    if (!disabled) {
-      onClick(event);
-    }
-  };
-
-  return (
-    <StyledButton
-      size={size}
-      loading={loading}
-      onClick={handleOnClick}
-      disabled={disabled}
-      className={`${disabled && 'disabled'} Button ${className}`}
-    >
-      <ButtonText>{text}</ButtonText>
-      {loading && <SpinnerWrapper><Spinner /></SpinnerWrapper>}
-    </StyledButton>
-  );
-};
-
-interface IButton {
+type Props = {
   text: string;
-  size: string;
-  loading: boolean;
-  disabled: boolean;
+  size?: string;
+  style?: 'primary' | 'secondary';
+  loading?: boolean;
+  disabled?: boolean;
   onClick: (arg: React.FormEvent<HTMLButtonElement>) => void;
   className?: string;
-}
+};
 
-export default Button;
+type State = {};
+
+export default class Button extends React.PureComponent<Props, State> {
+  handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
+    if (!this.props.disabled) {
+      this.props.onClick(event);
+    }
+  }
+
+  render() {
+    const { text, className } = this.props;
+    let { size, style, loading, disabled } = this.props;
+
+    size = (size || '2');
+    style = (style || 'primary');
+    loading = (_.isBoolean(loading) ? loading : false);
+    disabled = (_.isBoolean(disabled) ? disabled : false);
+
+    return (
+      <StyledButton
+        size={size}
+        loading={loading}
+        onClick={this.handleOnClick}
+        disabled={disabled}
+        className={`Button ${disabled && 'disabled'} ${style} ${className}`}
+      >
+        <ButtonText>{text}</ButtonText>
+        {loading && <SpinnerWrapper><Spinner /></SpinnerWrapper>}
+      </StyledButton>
+    );
+  }
+}
