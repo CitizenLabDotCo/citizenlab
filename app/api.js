@@ -145,18 +145,9 @@ export function updateCurrentUser(values, userId) {
   });
 }
 
-export function updateSettings(tenantId, locale, organizationName, colorMain) {
+export function updateSettings(tenantId, body) {
   return request(`${API_PATH}/tenants/${tenantId}`, {
-    tenant: {
-      settings: {
-        core: {
-          organization_name: {
-            [locale]: organizationName,
-          },
-          color_main: colorMain,
-        },
-      },
-    },
+    tenant: body,
   }, {
     method: 'PATCH',
   });
