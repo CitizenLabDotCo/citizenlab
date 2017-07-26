@@ -7,7 +7,7 @@ import { mergeJsonApiResources } from '../../utils/resources/actions';
 
 function* getIdeas(action) {
   try {
-    const ideasResponse = yield call(fetchIdeas, null, {
+    const ideasResponse = yield call(fetchIdeas, {
       sort: 'trending',
       'page[number]': action.nextPageNumber,
       'page[size]': action.nextPageItemCount,

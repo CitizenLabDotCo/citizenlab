@@ -11,8 +11,9 @@ import { getPageItemCountFromUrl, getPageNumberFromUrl } from '../../utils/pagin
 
 const initialState = fromJS({
   nextPageNumber: 1,
-  nextPageItemCount: 3,
+  nextPageItemCount: 12,
   search: '',
+  hasMore: false,
   ideas: [],
   topics: {
     nextPageNumber: 1,
@@ -37,7 +38,8 @@ function ideasIndexPageReducer(state = initialState, action) {
       return state
         .update('ideas', (ideas) => (action.nextPageNumber === 1 ? fromJS(ids) : ideas.concat(ids)))
         .set('nextPageNumber', nextPageNumber)
-        .set('nextPageItemCount', nextPageItemCount);
+        .set('nextPageItemCount', nextPageItemCount)
+        .set('hasMore', !!nextPageNumber);
     }
     case RESET_IDEAS: {
       return initialState;

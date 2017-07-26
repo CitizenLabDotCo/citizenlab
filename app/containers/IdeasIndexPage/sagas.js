@@ -19,7 +19,7 @@ export function* getIdeas(action) {
       ...action.filters,
     };
     Object.keys(queryParams).forEach((key) => (!queryParams[key] && (delete queryParams[key])));
-    const ideaResponse = yield call(fetchIdeas, action.search, queryParams);
+    const ideaResponse = yield call(fetchIdeas, queryParams);
     yield put(mergeJsonApiResources(ideaResponse));
     yield put(loadIdeasSuccess(ideaResponse));
   } catch (err) {
