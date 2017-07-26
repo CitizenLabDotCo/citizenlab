@@ -26,11 +26,11 @@ const Card = ({ viewIdea, title, createdAt, upvotesCount, downvotesCount }) => {
 };
 
 Card.propTypes = {
-  viewIdea: PropTypes.func.isRequired,
+  viewIdea: PropTypes.func,
   title: ImPropTypes.map,
-  createdAt: PropTypes.string.isRequired,
-  upvotesCount: PropTypes.number.isRequired,
-  downvotesCount: PropTypes.number.isRequired,
+  createdAt: PropTypes.string,
+  upvotesCount: PropTypes.number,
+  downvotesCount: PropTypes.number,
 };
 
 const mapStateToProps = () => createStructuredSelector({

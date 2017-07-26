@@ -7,12 +7,11 @@ import IdeaCard from 'components/IdeaCard';
 
 import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
+import { mergeJsonApiResources } from 'utils/resources/actions';
 
 // store
 import { preprocess } from 'utils';
-import { createStructuredSelector } from 'reselect';
-import selectIdeasIndexPageDomain from 'containers/IdeasIndexPage/selectors';
-import { loadIdeasRequest, resetIdeas } from 'containers/IdeasIndexPage/actions';
+import { observeIdeas } from 'services/ideas';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -50,30 +49,70 @@ const LoadMoreButton = styled.button`
 
 class IdeasCards extends React.Component {
 
+  constructor() {
+    super();
+    this.ideasSubscription = null;
+    this.state = {
+      ideas: [],
+      currentPage: 1,
+      hasMore: false,
+    };
+  }
+
   componentDidMount() {
-    this.loadMoreIdeas();
+    this.resubscribeIdeas();
   }
 
   componentWillReceiveProps(newProps) {
     if (!_.isEqual(newProps.filter, this.props.filter)) {
-      this.props.reset();
-      this.props.loadMoreIdeas(1, newProps.filter);
+      this.setState({
+        ideas: [],
+        currentPage: 1,
+        hasMore: false,
+      }, this.resubscribeIdeas);
+    }
+  }
+
+  resubscribeIdeas() {
+    this.unsubscribe();
+    this.ideasSubscription = observeIdeas({ queryParameters: {
+      ...this.props.filter,
+      'page[number]': this.state.currentPage,
+    } }).observable.subscribe((response) => {
+      this.setState({
+        ideas: [...this.state.ideas, ...response.data],
+        hasMore: !!response.links.next,
+      });
+      // Quite some child components depend on the redux state being loaded.
+      // We have to find a more matching solution for this, but at the moment
+      // this is the way to make sure they have the data they need.
+      this.props.mergeJsonApiResources(response);
+    });
+  }
+
+  unsubscribe() {
+    if (this.ideasSubscription) {
+      this.ideasSubscription.unsubscribe();
     }
   }
 
   loadMoreIdeas = () => {
-    this.props.loadMoreIdeas(this.props.nextPageNumber, this.props.filter);
+    this.setState({
+      currentPage: this.state.currentPage + 1,
+    }, this.resubscribeIdeas);
   }
 
   render() {
-    const { hasMore, ideas } = this.props;
+    const { ideas, hasMore } = this.state;
     return (
       <IdeasList>
-        {ideas.map((id) => (
-          <IdeaCard key={id} id={id} />
+        {ideas.map((idea) => (
+          <IdeaCard key={idea.id} id={idea.id} />
         ))}
         {hasMore &&
-          <LoadMoreButton onClick={this.loadMoreIdeas}><FormattedMessage {...messages.loadMore} /></LoadMoreButton>
+          <LoadMoreButton onClick={this.loadMoreIdeas}>
+            <FormattedMessage {...messages.loadMore} />
+          </LoadMoreButton>
         }
       </IdeasList>
     );
@@ -81,36 +120,12 @@ class IdeasCards extends React.Component {
 }
 
 IdeasCards.propTypes = {
-  loadMoreIdeas: PropTypes.func.isRequired,
-  nextPageNumber: PropTypes.any,
-  hasMore: PropTypes.bool,
-  ideas: PropTypes.any,
-  reset: PropTypes.func.isRequired,
   filter: PropTypes.object.isRequired,
+  mergeJsonApiResources: PropTypes.func.isRequired,
 };
 
-
-const mapStateToProps = createStructuredSelector({
-  ideas: selectIdeasIndexPageDomain('ideas'),
-  nextPageNumber: selectIdeasIndexPageDomain('nextPageNumber'),
-  nextPageSize: selectIdeasIndexPageDomain('nextPageItemCount'),
-  hasMore: selectIdeasIndexPageDomain('hasMore'),
-});
-
-const mergeProps = (state, dispatch, own) => {
-  const { ideas, nextPageNumber, nextPageSize, hasMore } = state;
-  const { load, reset } = dispatch;
-  const { filter, maxNumber } = own;
-
-  return {
-    loadMoreIdeas: (page, fltr) => load(page, maxNumber || nextPageSize, fltr),
-    nextPageNumber,
-    hasMore,
-    ideas,
-    reset,
-    filter,
-  };
+const mapDispatchToProps = {
+  mergeJsonApiResources,
 };
 
-
-export default preprocess(mapStateToProps, { load: loadIdeasRequest, reset: resetIdeas }, mergeProps)(IdeasCards);
+export default preprocess(null, mapDispatchToProps)(IdeasCards);
