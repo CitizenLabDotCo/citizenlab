@@ -1,8 +1,7 @@
 import * as React from 'react';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import clickOutside from 'utils/containers/clickOutside';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const enterClassName = 'modal-enter';
 const enterActiveClassName = 'modal-enter-active';
@@ -49,7 +48,7 @@ const ModalContainer = styled.div`
       transform: translateY(-100px);
       will-change: opacity, transform;
     }
-  } 
+  }
 
   &.${enterActiveClassName} {
     opacity: 1;

@@ -7,8 +7,7 @@ import Error from 'components/UI/Error';
 import { injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 import * as _ from 'lodash';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const UploadIcon = styled.div`
   height: 40px;

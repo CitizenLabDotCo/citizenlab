@@ -1,7 +1,6 @@
 import * as React from 'react';
-import styledComponents, { keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import * as _ from 'lodash';
-const styled = styledComponents;
 
 const rotate = keyframes`
   0%    { transform: rotate(0deg); }
