@@ -137,6 +137,9 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
         />
 
         <label>Header image</label>
+        {project && project.attributes.header_bg.medium &&
+          <img src={project.attributes.header_bg.medium} alt="" role="presentation" />
+        }
         <Upload
           intl={this.props.intl}
           items={uploadedImages}
