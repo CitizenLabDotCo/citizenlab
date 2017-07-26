@@ -179,6 +179,7 @@ type Props = {
   autoBlur?: boolean | undefined;
   clearable?: boolean | undefined;
   searchable?: boolean | undefined;
+  multi?: boolean | undefined;
   onChange: (arg: IOption) => void;
 };
 
@@ -197,7 +198,7 @@ export default class Select extends React.PureComponent<Props, State> {
   }
 
   render() {
-    let { value, placeholder, options, autoBlur, clearable, searchable } = this.props;
+    let { value, placeholder, options, autoBlur, clearable, searchable, multi } = this.props;
 
     value = (value || undefined);
     placeholder = (placeholder || '');
@@ -205,6 +206,7 @@ export default class Select extends React.PureComponent<Props, State> {
     autoBlur = (_.isBoolean(autoBlur) ? autoBlur : true);
     clearable = (_.isBoolean(clearable) ? clearable : true);
     searchable = (_.isBoolean(searchable) ? searchable : false);
+    multi = (_.isBoolean(multi) ? multi : false);
 
     return (
       <StyledSelect
@@ -217,6 +219,7 @@ export default class Select extends React.PureComponent<Props, State> {
         placeholder={placeholder}
         options={options}
         onChange={this.handleOnChange}
+        multi={multi}
       />
     );
   }

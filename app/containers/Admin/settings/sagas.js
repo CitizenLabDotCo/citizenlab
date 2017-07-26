@@ -7,8 +7,8 @@ import { mergeJsonApiResources } from '../../../utils/resources/actions';
 
 function* postSettings(action) {
   try {
-    const { tenantId, locale, organizationName, colorMain } = action;
-    const response = yield call(updateSettings, tenantId, locale, organizationName, colorMain);
+    const { tenantId, body } = action;
+    const response = yield call(updateSettings, tenantId, body);
     yield put(mergeJsonApiResources(response));
     yield put(saveSettingsSuccess(response));
   } catch (err) {

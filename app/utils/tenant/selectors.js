@@ -21,7 +21,7 @@ const makeSelectCurrentTenant = (...type) => createSelector(
 const makeSelectSetting = (settingPath) => createSelector(
   makeSelectCurrentTenantImm(),
   (immutableTenant) => (
-    immutableTenant.getIn(['attributes', 'settings', ...settingPath])
+    immutableTenant && immutableTenant.getIn(['attributes', 'settings', ...settingPath])
   )
 );
 
