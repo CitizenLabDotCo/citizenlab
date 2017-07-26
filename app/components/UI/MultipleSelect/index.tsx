@@ -2,8 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as ReactSelect from 'react-select';
 import { IOption } from 'typings';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const StyledMultipleSelect = styled(ReactSelect)`
   &.Select--multi {
@@ -195,8 +194,8 @@ const StyledMultipleSelect = styled(ReactSelect)`
           font-size: 17px;
           font-weight: 400;
 
-          &:hover, 
-          &:focus, 
+          &:hover,
+          &:focus,
           &:active,
           &.is-focused {
             background: #eee;

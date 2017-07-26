@@ -33,8 +33,7 @@ import { observeProjects, IProjects, IProjectData } from 'services/projects';
 import { observeCurrentUser, getCurrentUserOnce } from 'services/auth';
 import { makeSelectLocale } from '../LanguageProvider/selectors';
 import messages from './messages';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const Container = styled.div`
   background: #f2f2f2;
@@ -421,7 +420,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
           <NewIdeaForm>
             <FormElement>
               <Label value={formatMessage(messages.titleLabel)} htmlFor="title" />
-              <Input 
+              <Input
                 id="title"
                 type="text"
                 value={title}

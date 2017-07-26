@@ -2,8 +2,7 @@ import * as React from 'react';
 import { media } from 'utils/styleUtils';
 import Error from 'components/UI/Error';
 import * as _ from 'lodash';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 interface IInputWrapper {
   error: boolean;

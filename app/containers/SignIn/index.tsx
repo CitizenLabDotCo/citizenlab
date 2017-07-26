@@ -9,8 +9,7 @@ import Error from 'components/UI/Error';
 import messages from './messages';
 import { signIn } from 'services/auth';
 import { isValidEmail } from 'utils/validate';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;

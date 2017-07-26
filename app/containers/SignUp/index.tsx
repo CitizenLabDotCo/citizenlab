@@ -13,8 +13,7 @@ import { isValidEmail } from 'utils/validate';
 import { signUp, signIn } from 'services/auth';
 import { IOption } from 'typings';
 import messages from './messages';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;

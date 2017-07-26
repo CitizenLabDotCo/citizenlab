@@ -2,8 +2,7 @@ import * as React from 'react';
 import { darken } from 'polished';
 import { ITheme } from 'typings';
 import Spinner from 'components/UI/Spinner';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const ButtonText = styled.div`
   color: #fff;

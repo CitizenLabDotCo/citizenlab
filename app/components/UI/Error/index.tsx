@@ -2,8 +2,7 @@ import * as React from 'react';
 import Icon from 'components/UI/Icon';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import * as _ from 'lodash';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 interface IStyledErrorMessageInner {
   showBackground: boolean;
