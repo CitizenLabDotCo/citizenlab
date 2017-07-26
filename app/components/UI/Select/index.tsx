@@ -81,7 +81,7 @@ const StyledSelect = styled(ReactSelect)`
         align-items: center;
         justify-content: center;
         padding: 0px;
-        padding-bottom: 3px;
+        padding-bottom: 0px;
         margin: 0px;
         position: absolute;
         top: 0;
@@ -95,12 +95,12 @@ const StyledSelect = styled(ReactSelect)`
         }
 
         .Select-clear {
-          font-size: 25px;
+          font-size: 30px;
         }
       }
 
       .Select-multi-value-wrapper {
-        width: calc(100% - 70px);
+        width: calc(100% - 50px);
         height: auto;
         margin: 0px;
         padding: 0px;

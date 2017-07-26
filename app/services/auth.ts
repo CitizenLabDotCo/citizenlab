@@ -15,7 +15,7 @@ export function signIn(email: string, password: string) {
     method: 'POST',
   };
 
-  return request(`${API_PATH}/user_token`, bodyData, httpMethod, null).then((data) => {
+  return request<any>(`${API_PATH}/user_token`, bodyData, httpMethod, null).then((data) => {
     const jwt = getJwt();
 
     if (!jwt && _.has(data, 'jwt')) {
@@ -33,7 +33,7 @@ export function signUp(
   lastName: string,
   email: string,
   password: string,
-  selectedGender: 'male' | 'female' | null = null,
+  selectedGender: 'male' | 'female' | 'unspecified' | null = null,
   selectedYearOfBirth: number | null = null,
   selectedAreaId: string | null = null
 ) {
@@ -64,10 +64,10 @@ export function observeCurrentUser() {
   return streams.create<IUser>({ apiEndpoint: `${API_PATH}/users/me` });
 }
 
-export function getCurrentUserOnce(): Promise<IUser> {
-  return request(`${API_PATH}/users/me`, null, null, null).then((response) => {
-    return response;
+export function getAuthUser(): Promise<IUser | null> {
+  return request(`${API_PATH}/users/me`, null, null, null).then((response: IUser) => {
+    return (response && _.has(response, 'data.id') ? response : null);
   }).catch((error) => {
-    throw error;
+    return null;
   });
 }

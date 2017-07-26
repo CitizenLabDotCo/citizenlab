@@ -124,7 +124,6 @@ export default class Modal extends React.PureComponent<Props, State> {
 
   closeModal = () => {
     document.body.classList.remove('modal-active');
-
     window.removeEventListener('popstate', this.handlePopstateEvent);
 
     if (this.props.parentUrl && this.props.url) {
@@ -135,15 +134,17 @@ export default class Modal extends React.PureComponent<Props, State> {
   }
 
   render() {
-    if (this.props.opened) {
+    const { children, opened, parentUrl, url } = this.props;
+
+    if (opened) {
       window.addEventListener('popstate', this.handlePopstateEvent);
 
       if (!document.body.classList.contains('modal-active')) {
         document.body.classList.add('modal-active');
       }
 
-      if (this.props.parentUrl && this.props.url) {
-        window.history.pushState({ path: this.props.url }, '', this.props.url);
+      if (parentUrl && url) {
+        window.history.pushState({ path: url }, '', url);
       }
 
       return (
@@ -155,7 +156,7 @@ export default class Modal extends React.PureComponent<Props, State> {
           <ModalContainer>
             <ModalContent onClickOutside={this.closeModal}>
               <CloseButton onClick={this.closeModal}>Close</CloseButton>
-              {this.props.children}
+              {children}
             </ModalContent>
           </ModalContainer>
         </CSSTransitionGroup>
