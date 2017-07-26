@@ -47,13 +47,29 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.metaDescription',
     defaultMessage: 'Meta description',
   },
+  titleBasic: {
+    id: 'app.containers.AdminPage.SettingsPage.titleBasic',
+    defaultMessage: 'Basic information',
+  },
+  subTitleBasic: {
+    id: 'app.containers.AdminPage.SettingsPage.subTitleBasic',
+    defaultMessage: 'Fill these out carefully, they define the platforms identity.',
+  },
   titleSignupFields: {
     id: 'app.containers.AdminPage.SettingsPage.titleSignupFields',
     defaultMessage: 'Signup fields',
   },
+  subTitleSignupFields: {
+    id: 'app.containers.AdminPage.SettingsPage.subTitleSignupFields',
+    defaultMessage: 'What questions will be asked to users when signing up?',
+  },
   titleBranding: {
     id: 'app.containers.AdminPage.SettingsPage.titleBranding',
     defaultMessage: 'Branding',
+  },
+  subTitleBranding: {
+    id: 'app.containers.AdminPage.SettingsPage.subTitleBranding',
+    defaultMessage: 'Paint your identity',
   },
   gender: {
     id: 'app.containers.AdminPage.SettingsPage.gender',
@@ -70,5 +86,9 @@ export default defineMessages({
   education: {
     id: 'app.containers.AdminPage.SettingsPage.education',
     defaultMessage: 'Education',
+  },
+  save: {
+    id: 'app.containers.AdminPage.SettingsPage.save',
+    defaultMessage: 'Save',
   },
 });

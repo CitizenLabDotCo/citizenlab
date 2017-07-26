@@ -77,7 +77,7 @@ const SpinnerWrapper = styled.div`
   justify-content: center;
 `;
 
-const Button: React.SFC<IButton> = ({ text, size, loading, disabled, onClick, className }) => {
+const Button: React.SFC<IButton> = ({ text, size, loading, disabled, onClick, className, children }) => {
   const handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
     if (!disabled) {
       onClick(event);
@@ -92,7 +92,7 @@ const Button: React.SFC<IButton> = ({ text, size, loading, disabled, onClick, cl
       disabled={disabled}
       className={`${disabled && 'disabled'} Button ${className}`}
     >
-      <ButtonText>{text}</ButtonText>
+      <ButtonText>{children || text}</ButtonText>
       {loading && <SpinnerWrapper><Spinner /></SpinnerWrapper>}
     </StyledButton>
   );
@@ -105,6 +105,7 @@ interface IButton {
   disabled: boolean;
   onClick: (arg: React.FormEvent<HTMLButtonElement>) => void;
   className?: string;
+  children?: any;
 }
 
 export default Button;

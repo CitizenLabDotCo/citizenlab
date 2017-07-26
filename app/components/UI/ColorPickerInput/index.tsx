@@ -9,8 +9,8 @@ const InputWrapper = styled.div`
 `;
 
 const Color: any = styled.div`
-  width: 37px;
-  height: 37px;
+  width: 50px;
+  height: 50px;
   border-radius: 4px;
   background: ${(props: any) => props.color };
 `;
