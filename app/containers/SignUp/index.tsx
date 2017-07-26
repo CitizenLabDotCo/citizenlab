@@ -8,25 +8,19 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Select from 'components/UI/Select';
 import { IStream } from 'utils/streams';
+import { stateStream, IStateStream } from 'services/state';
 import { observeAreas, IAreas, IAreaData } from 'services/areas';
 import { isValidEmail } from 'utils/validate';
 import { signUp, signIn } from 'services/auth';
 import { IOption } from 'typings';
 import messages from './messages';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const Container = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const Title = styled.h2`
-  color: #444;
-  font-size: 36px;
-  font-weight: 500;
-  margin-bottom: 40px;
 `;
 
 const Form = styled.div`
@@ -40,7 +34,6 @@ const FormElement = styled.div`
 `;
 
 type Props = {
-  opened: boolean;
   onSignedUp: () => void;
   intl: ReactIntl.InjectedIntl;
   tFunc: Function;
@@ -84,9 +77,9 @@ interface IState {
 }
 
 export default class SignUp extends React.PureComponent<Props, State> {
-  private state$: Rx.Subject<IState>;
-  private areas$: IStream<IAreas>;
-  private subscriptions: Rx.Subscription[];
+  state$: IStateStream<IState>;
+  areas$: IStream<IAreas>;
+  subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
@@ -108,26 +101,19 @@ export default class SignUp extends React.PureComponent<Props, State> {
       signUpError: null,
     };
     this.areas$ = observeAreas();
-    this.state$ = new Rx.Subject();
+    this.state$ = stateStream.observe<IState>('SignUp', this.state);
     this.subscriptions = [];
   }
 
   componentDidMount() {
     this.subscriptions = [
-      this.state$
-        .startWith(this.state)
-        .scan((state, current) => ({ ...state, ...(_.isFunction(current) ? current(state) : current) }))
-        .distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState))
-        .subscribe(state => this.setState(state as State)),
-
-      this.areas$.observable.subscribe((areas) => {
-        this.state$.next({ areas: this.getOptions(areas) });
-      }),
+      this.state$.observable.subscribe(state => this.setState(state as State)),
+      this.areas$.observable.subscribe(areas => this.state$.next({ areas: this.getOptions(areas) })),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   getOptions(list: IAreas) {
@@ -172,26 +158,19 @@ export default class SignUp extends React.PureComponent<Props, State> {
     const { formatMessage } = this.props.intl;
     const { firstName, lastName, email, password, yearOfBirth, gender, area } = this.state;
 
-    if (!firstName || !lastName || !email || !isValidEmail(email) || !password) {
-      let emailError: string | null = null;
+    const hasEmailError = (!email || !isValidEmail(email));
+    const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
+    const firstNameError = (!firstName ? formatMessage(messages.noFirstNameError) : null);
+    const lastNameError = (!lastName ? formatMessage(messages.noLastNameError) : null);
+    const passwordError = (!password ? formatMessage(messages.noPasswordError) : null);
+    const hasErrors = [emailError, firstName, lastNameError, passwordError].some(error => error !== null);
+    const selectedYearOfBirth = (yearOfBirth ? yearOfBirth.value : null);
+    const selectedGender = (gender ? gender.value : null);
+    const selectedAreaId = (area ? area.value : null);
 
-      if (!email) {
-        emailError = formatMessage(messages.noEmailError);
-      } else if (!isValidEmail(email)) {
-        emailError = formatMessage(messages.noValidEmailError);
-      }
+    this.state$.next({ emailError, firstNameError, lastNameError, passwordError });
 
-      this.state$.next({
-        emailError,
-        firstNameError: (!firstName ? formatMessage(messages.noFirstNameError) : null),
-        lastNameError: (!lastName ? formatMessage(messages.noLastNameError) : null),
-        passwordError: (!password ? formatMessage(messages.noPasswordError) : null)
-      });
-    } else {
-      const selectedYearOfBirth = (yearOfBirth ? yearOfBirth.value as number : null);
-      const selectedGender = (gender ? gender.value as ('male' | 'female') : null);
-      const selectedAreaId = (area ? area.value as string : null);
-
+    if (!hasErrors && firstName && lastName && email && password) {
       try {
         this.state$.next({ processing: true });
         await signUp(firstName, lastName, email, password, selectedGender, selectedYearOfBirth, selectedAreaId);
@@ -199,7 +178,8 @@ export default class SignUp extends React.PureComponent<Props, State> {
         this.state$.next({ processing: false });
         onSignedUp();
       } catch (error) {
-        this.state$.next({ processing: false, signUpError: formatMessage(messages.signUpError) });
+        const signUpError = formatMessage(messages.signUpError);
+        this.state$.next({ signUpError, processing: false });
       }
     }
   }
@@ -227,7 +207,6 @@ export default class SignUp extends React.PureComponent<Props, State> {
 
     return (
       <Container>
-        <Title>{formatMessage(messages.signUpTitle)}</Title>
         <Form>
           <FormElement>
             <Label value={formatMessage(messages.firstNameLabel)} htmlFor="firstName" />

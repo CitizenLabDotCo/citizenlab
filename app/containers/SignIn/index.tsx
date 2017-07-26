@@ -7,22 +7,16 @@ import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import messages from './messages';
+import { stateStream, IStateStream } from 'services/state';
 import { signIn } from 'services/auth';
 import { isValidEmail } from 'utils/validate';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const Container = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const Title = styled.h2`
-  color: #444;
-  font-size: 36px;
-  font-weight: 500;
-  margin-bottom: 40px;
 `;
 
 const Form = styled.div`
@@ -36,7 +30,6 @@ const FormElement = styled.div`
 `;
 
 type Props = {
-  opened: boolean;
   onSignedIn: () => void;
   intl: ReactIntl.InjectedIntl;
   locale: string;
@@ -61,8 +54,8 @@ interface IState {
 }
 
 export default class SignIn extends React.PureComponent<Props, State> {
-  private state$: Rx.Subject<IState>;
-  private subscriptions: Rx.Subscription[];
+  state$: IStateStream<IState>;
+  subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
@@ -74,18 +67,18 @@ export default class SignIn extends React.PureComponent<Props, State> {
       passwordError: null,
       signInError: null,
     };
-    this.state$ = new Rx.Subject();
+    this.state$ = stateStream.observe<IState>('SignIn', this.state);
     this.subscriptions = [];
   }
 
   componentDidMount() {
     this.subscriptions = [
-      this.state$
-        .startWith(this.state)
-        .scan((state, current) => ({ ...state, ...(_.isFunction(current) ? current(state) : current) }))
-        .distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState))
-        .subscribe(state => this.setState(state as State))
+      this.state$.observable.subscribe(state => this.setState(state as State))
     ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleEmailOnChange = (email) => {
@@ -101,25 +94,21 @@ export default class SignIn extends React.PureComponent<Props, State> {
     const { formatMessage } = this.props.intl;
     const { email, password } = this.state;
 
-    if (!email || !isValidEmail(email) || !password) {
-      let emailError: string | null = null;
-      const passwordError = (!password ? formatMessage(messages.noPasswordError) : null);
+    const hasEmailError = (!email || !isValidEmail(email));
+    const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
+    const passwordError = (!password ? formatMessage(messages.noPasswordError) : null);
 
-      if (!email) {
-        emailError = formatMessage(messages.noEmailError);
-      } else if (!isValidEmail(email)) {
-        emailError = formatMessage(messages.noValidEmailError);
-      }
+    this.state$.next({ emailError, passwordError });
 
-      this.state$.next({ emailError, passwordError });
-    } else {
+    if (!emailError && !passwordError && email && password) {
       try {
         this.state$.next({ processing: true });
         await signIn(email, password);
         this.state$.next({ processing: false });
         onSignedIn();
       } catch (error) {
-        this.state$.next({ processing: false, signInError: formatMessage(messages.signInError) });
+        const signInError = formatMessage(messages.signInError);
+        this.state$.next({ signInError, processing: false });
       }
     }
   }
@@ -131,7 +120,6 @@ export default class SignIn extends React.PureComponent<Props, State> {
 
     return (
       <Container>
-        <Title>{formatMessage(messages.signInTitle)}</Title>
         <Form>
           <FormElement>
             <Label value={formatMessage(messages.emailLabel)} htmlFor="email" />
