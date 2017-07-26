@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // components
-import MultiSelect from 'components/forms/inputs/multiSelect';
+import FilterSelector from 'containers/FilterSelector';
 
 // store
 import { push } from 'react-router-redux';
@@ -18,14 +18,14 @@ import queryString from 'query-string';
 import { injectTFunc } from 'containers/T/utils';
 
 const SelectArea = ({ options, value, filterPage }) => (
-  <div style={{ display: 'inline-block', width: '33%', marginRight: '10px' }}>
-    <MultiSelect
-      name={'areas'}
-      options={options}
-      action={filterPage}
-      value={value}
-    />
-  </div>
+  <FilterSelector
+    title="areas"
+    name="areas"
+    selected={value}
+    values={options}
+    multiple
+    onChange={filterPage}
+  />
 );
 
 SelectArea.propTypes = {

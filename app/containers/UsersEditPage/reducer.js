@@ -37,7 +37,7 @@ export default function usersEditPageReducer(state = usersEditPageInitialState, 
         .set('stored', true);
     case UPDATE_USER_LOCALE:
       return state
-        .set('currentUser', fromJS(state.get('currentUser')).set('locale', action.userLocale));
+        .set('currentUser', fromJS(state.get('currentUser')).set('locale', action.userLocale.value));
     default:
       return state;
   }

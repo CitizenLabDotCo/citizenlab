@@ -11,7 +11,6 @@ import usersEditPageReducer from 'containers/UsersEditPage/reducer';
 import ideasNewPageReducer from 'containers/IdeasNewPage/reducer';
 import searchWidgetReducer from 'containers/SearchWidget/reducer';
 import ideasShowReducer from 'containers/IdeasShow/reducer';
-import ideasIndex from 'containers/IdeasIndexPage/reducer';
 import notificationMenuReducer from 'containers/NotificationMenu/reducer';
 import resourcesReducer from 'utils/resources/reducer';
 import { utilsReducer, tempStateReducer } from 'utils/store/reducer';
@@ -62,7 +61,6 @@ export default function createReducer(asyncReducers) {
     persistedData: persistedDataReducer,
     resources: resourcesReducer,
     ideasShow: ideasShowReducer,
-    ideasIndex,
     profile: usersEditPageReducer,
     submitIdea: ideasNewPageReducer,
     searchWidget: searchWidgetReducer,

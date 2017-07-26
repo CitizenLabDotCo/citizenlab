@@ -31,6 +31,7 @@
     "react-a11y-role-supports-aria-prop": 2,
     "react-a11y-tabindex-no-positive": 2,
     "react-a11y-title": 2,
-    "variable-name": [false, "ban-keywords", "check-format", "allow-leading-underscore"]
+    "variable-name": [false, "ban-keywords", "check-format", "allow-leading-underscore"],
+    "jsx-no-multiline-js": false
   }
 }
