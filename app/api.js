@@ -53,9 +53,8 @@ export function createIdea(values) {
   });
 }
 
-export function fetchIdeas(query, queryParameters) {
-  const railsfriendlyQuery = (query || '').replace(/[[0-9]+]/g, '[]');
-  return request(`${API_PATH}/ideas${railsfriendlyQuery}`, null, null, queryParameters);
+export function fetchIdeas(queryParameters) {
+  return request(`${API_PATH}/ideas`, null, null, queryParameters);
 }
 
 export function fetchTopics(queryParameters) {
@@ -146,7 +145,7 @@ export function updateCurrentUser(values, userId) {
   });
 }
 
-export function updateSettings(tenantId, locale, organizationName, accentColorHex) {
+export function updateSettings(tenantId, locale, organizationName, colorMain) {
   return request(`${API_PATH}/tenants/${tenantId}`, {
     tenant: {
       settings: {
@@ -154,7 +153,7 @@ export function updateSettings(tenantId, locale, organizationName, accentColorHe
           organization_name: {
             [locale]: organizationName,
           },
-          style_accent_bg: accentColorHex,
+          color_main: colorMain,
         },
       },
     },

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const StyledLabel = styled.label`
   color: #666;

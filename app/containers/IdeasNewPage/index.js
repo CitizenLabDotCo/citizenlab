@@ -14,14 +14,12 @@ import WatchSagas from 'containers/WatchSagas';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Dropzone from 'react-dropzone';
 import { EditorState, convertToRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import {
   setTitle, storeAttachment, storeImage, storeImageError, storeAttachmentError,
   publishIdeaRequest, storeSelectedTopics, storeSelectedAreas, invalidForm, storeSelectedProject, resetData,
 } from './actions';
-import IdeaEditorWrapper from './editor/IdeaEditorWrapper';
 // import AttachmentList from './attachments/AttachmentList';
 // import ImageList from './images/ImageList';
 import canPublish from './editor/canPublish';
@@ -38,11 +36,6 @@ import { loadTopicsRequest } from 'resources/topics/actions';
 import { loadAreasRequest } from 'resources/areas/actions';
 import { loadProjectsRequest } from 'resources/projects/actions';
 import sagas from './sagas';
-
-import FormComponent from 'components/forms/formComponent';
-import { Form } from 'semantic-ui-react';
-import RtfEditor from 'components/forms/inputs/rtfEditor';
-import Button from 'components/buttons/loader';
 
 const PageContainer = styled.div`
   background: '#eeeeee';
@@ -108,31 +101,6 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
     this.props.resetData();
   }
 
-  sendIdea(isDraft) {
-    const { content, shortTitleError, longTitleError, title, images, /* attachments, */ user, locale, selectedTopics, selectedAreas, selectedProjects } = this.props;
-    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, /* attachments, */ user && user.id, locale, isDraft, selectedTopics.toJS(), selectedAreas.toJS(), selectedProjects.toJS());
-  }
-
-  saveDraft() {
-    this.sendIdea(true);
-  }
-
-  storeIdea() {
-    this.sendIdea(false);
-  }
-
-  storeTopics(topics) {
-    this.props.storeSelectedTopics(topics);
-  }
-
-  storeAreas(areas) {
-    this.props.storeSelectedAreas(areas);
-  }
-
-  storeProject(project) {
-    this.props.storeSelectedProject(project);
-  }
-
   onDrop = (files) => {
     let formData = null;
 
@@ -163,10 +131,32 @@ export class IdeasNewPage extends React.PureComponent { // eslint-disable-line r
     console.log(rawContent);
   };
 
-  render() {
-    const { editorState } = this.state;
-    const { /* className, storeAttachment: storeAtt, */ storeImage: storeImg, setTitle: setT } = this.props;
+  saveDraft() {
+    this.sendIdea(true);
+  }
 
+  sendIdea(isDraft) {
+    const { content, shortTitleError, longTitleError, title, images, /* attachments, */ user, locale, selectedTopics, selectedAreas, selectedProjects } = this.props;
+    this.props.publishIdeaClick(content, shortTitleError || longTitleError, title, images, /* attachments, */ user && user.id, locale, isDraft, selectedTopics.toJS(), selectedAreas.toJS(), selectedProjects.toJS());
+  }
+
+  storeIdea() {
+    this.sendIdea(false);
+  }
+
+  storeTopics(topics) {
+    this.props.storeSelectedTopics(topics);
+  }
+
+  storeAreas(areas) {
+    this.props.storeSelectedAreas(areas);
+  }
+
+  storeProject(project) {
+    this.props.storeSelectedProject(project);
+  }
+
+  render() {
     return (
       <div>
         <HelmetIntl
@@ -239,7 +229,6 @@ IdeasNewPage.propTypes = {
   // mapDispatch
   publishIdeaClick: PropTypes.func.isRequired,
   // storeAttachment: PropTypes.func.isRequired,
-  storeImage: PropTypes.func.isRequired,
   user: PropTypes.object,
   storeSelectedTopics: PropTypes.func.isRequired,
   storeSelectedAreas: PropTypes.func.isRequired,
@@ -257,7 +246,6 @@ IdeasNewPage.propTypes = {
   selectedTopics: ImmutablePropTypes.list.isRequired,
   selectedAreas: ImmutablePropTypes.list.isRequired,
   selectedProjects: ImmutablePropTypes.list.isRequired,
-  setTitle: PropTypes.func.isRequired,
   loadProjectsRequest: PropTypes.func.isRequired,
   resetData: PropTypes.func.isRequired,
 };

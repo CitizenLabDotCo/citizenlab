@@ -4,8 +4,7 @@ import * as Rx from 'rxjs/Rx';
 import { getPageItemCountFromUrl, getPageNumberFromUrl } from 'utils/paginationUtils';
 import { observeUsers, updateUser, IUsers, IUserData, IUserUpdate } from 'services/users';
 import { IStream } from 'utils/streams';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const Container = styled.div`
   width: 100%;

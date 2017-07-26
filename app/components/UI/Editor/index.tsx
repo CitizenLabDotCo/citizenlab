@@ -4,8 +4,7 @@ import Error from 'components/UI/Error';
 import { EditorState } from 'draft-js';
 import { Editor as DraftEditor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const Container = styled.div``;
 

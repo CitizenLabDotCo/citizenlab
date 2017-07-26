@@ -26,7 +26,7 @@ describe('IdeasIndexPage Saga', () => {
     const it = sagaHelper(getIdeas(action));
 
     it('should have called the correct API', (result) => {
-      expect(result).toEqual(call(fetchIdeas, action.search, {
+      expect(result).toEqual(call(fetchIdeas, {
         'page[number]': action.nextPageNumber,
         'page[size]': action.nextPageItemCount,
         ...action.filters,

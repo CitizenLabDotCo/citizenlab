@@ -415,7 +415,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
 
             <FormElement>
               <Label value={formatMessage(messages.titleLabel)} htmlFor="title" />
-              <Input 
+              <Input
                 id="title"
                 type="text"
                 value={title}
