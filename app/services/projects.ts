@@ -34,6 +34,7 @@ export interface IProjectData {
 export interface IProjectUpdateData {
   project: {
     id: string,
+    header_bg: string | null,
     title_multiloc: {
       [key: string]: string;
     },
@@ -41,6 +42,25 @@ export interface IProjectUpdateData {
       [key: string]: string;
     },
   };
+}
+
+export interface IProjectImageData {
+  id: string;
+  type: string;
+  attributes: {
+    versions: {
+      small: string,
+      medium: string,
+      large: string,
+    },
+    ordering: string | null,
+    created_at: string,
+    updated_at: string,
+  };
+}
+
+export interface IProjectImage {
+  data: IProjectImageData[];
 }
 
 export interface IProject {
@@ -68,4 +88,8 @@ export function updateProject(projectData: IProjectUpdateData, streamParams: ISt
   const params = { ...defaultParams, ...streamParams };
 
   return streams.create<IProject>({ apiEndpoint: `${apiEndpoint}/${projectData.project.id}`, ...params });
+}
+
+export function getProjectImages(projectId: string, streamParams: IStreamParams<IProjectImage> | null = null) {
+  return streams.create<IProjectImage>({ apiEndpoint: `${apiEndpoint}/images`, ...streamParams });
 }
