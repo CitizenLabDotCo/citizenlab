@@ -29,8 +29,8 @@ resource "Tenants" do
     end
 
     let(:id) { Tenant.current.id }
-    let(:logo) { base64_encoded_image("logo.png")}
-    let(:header_bg) { base64_encoded_image("header.jpg")}
+    let(:logo) { base64_encoded_image("logo.png", "image/png")}
+    let(:header_bg) { base64_encoded_image("header.jpg", "image/jpeg")}
     let(:settings) {
       {
         "core" => {
@@ -88,8 +88,8 @@ resource "Tenants" do
     private
 
 
-  def base64_encoded_image filename
-    "data:image/#{filename.split('.').last};base64,#{encode_image_as_base64(filename)}"
+  def base64_encoded_image filename, mime
+    "data:#{mime};base64,#{encode_image_as_base64(filename)}"
   end
 
   def encode_image_as_base64(filename)
