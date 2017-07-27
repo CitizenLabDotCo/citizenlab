@@ -79,4 +79,24 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.helmetTitle',
     defaultMessage: 'Show idea',
   },
+  byAuthor: {
+    id: 'app.containers.IdeasShow.byAuthor',
+    defaultMessage: 'by {firstName} {lastName}',
+  },
+  voteCTA: {
+    id: 'app.containers.IdeasShow.voteCTA',
+    defaultMessage: 'Do you like this idea?',
+  },
+  shareCTA: {
+    id: 'app.containers.IdeasShow.shareCTA',
+    defaultMessage: 'Share this idea',
+  },
+  commentsWithCount: {
+    id: 'app.containers.IdeasShow.commentsWithCount',
+    defaultMessage: 'Comments ({count})',
+  },
+  ideaStatus: {
+    id: 'app.containers.IdeasShow.ideaStatus',
+    defaultMessage: 'Idea status',
+  },
 });
