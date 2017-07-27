@@ -1,6 +1,7 @@
 import { IRelationship } from 'typings.d';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import request from 'utils/request';
 
 const apiEndpoint = `${API_PATH}/projects`;
 
@@ -32,15 +33,13 @@ export interface IProjectData {
 }
 
 export interface IProjectUpdateData {
-  project: {
-    id: string,
-    header_bg: string | null,
-    title_multiloc: {
-      [key: string]: string;
-    },
-    description_multiloc: {
-      [key: string]: string;
-    },
+  id: string;
+  header_bg?: string;
+  title_multiloc: {
+    [key: string]: string;
+  };
+  description_multiloc: {
+    [key: string]: string;
   };
 }
 
@@ -79,17 +78,17 @@ export function observeProject(slug, streamParams: IStreamParams<IProject> | nul
   return streams.create<IProject>({ apiEndpoint: `${apiEndpoint}/by_slug/${slug}`, ...streamParams });
 }
 
-export function updateProject(projectData: IProjectUpdateData, streamParams: IStreamParams<IProject> | null = null) {
-  const defaultParams: Partial<IStreamParams<IProject>> = {
-    bodyData: projectData,
-    httpMethod: { method: 'PATCH' },
-  };
+export function updateProject(projectData: IProjectUpdateData) {
+  const bodyData = { project: projectData };
+  const httpOptions = { method: 'PATCH' };
 
-  const params = { ...defaultParams, ...streamParams };
-
-  return streams.create<IProject>({ apiEndpoint: `${apiEndpoint}/${projectData.project.id}`, ...params });
+  return request(`${apiEndpoint}/${projectData.id}`, bodyData, httpOptions, null).then((projectObject) => {
+    streams.update(projectData.id, projectObject);
+  }).catch((e) => {
+    throw new Error('Error for updateProject() of service Projects');
+  });
 }
 
 export function getProjectImages(projectId: string, streamParams: IStreamParams<IProjectImage> | null = null) {
-  return streams.create<IProjectImage>({ apiEndpoint: `${apiEndpoint}/images`, ...streamParams });
+  return streams.create<IProjectImage>({ apiEndpoint: `${apiEndpoint}/${projectId}/images`, ...streamParams });
 }

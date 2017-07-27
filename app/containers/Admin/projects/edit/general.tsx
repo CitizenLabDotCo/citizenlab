@@ -15,7 +15,7 @@ import { makeSelectSetting } from 'utils/tenant/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 
 // Services
-import { observeProject, IProjectData, updateProject, IProjectImageData, getProjectImages } from 'services/projects';
+import { observeProject, IProjectData, updateProject, IProjectImageData, getProjectImages, IProjectUpdateData } from 'services/projects';
 import { getBase64 } from 'services/image_tools';
 
 // Components
@@ -28,6 +28,10 @@ const FormWrapper = styled.div`
   img {
     max-width: 100%;
   }
+`;
+
+const FieldWrapper = styled.div`
+  margin-bottom: 1em;
 `;
 
 
@@ -43,6 +47,7 @@ type Props = {
 };
 
 type State = {
+  loading: boolean,
   project: IProjectData | null,
   uploadedImages: any,
   uploadedHeader: string | null,
@@ -51,12 +56,13 @@ type State = {
 };
 
 class AdminProjectEditGeneral extends React.Component<Props, State> {
-  subscription: Rx.Subscription[];
+  subscription: Rx.Subscription;
 
   constructor() {
     super();
 
     this.state = {
+      loading: false,
       project: null,
       uploadedImages: [],
       editorState: EditorState.createEmpty(),
@@ -67,28 +73,32 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
 
   componentDidMount() {
     if (this.props.params.slug) {
-      this.subscription.push(observeProject(this.props.params.slug).observable.subscribe((project) => {
-
-        const blocksFromHtml = convertFromHTML(project.data.attributes.description_multiloc[this.props.userLocale]);
+      this.subscription = observeProject(this.props.params.slug).observable
+      .switchMap((project) => {
+        return getProjectImages(project.data.id).observable.map((images) => ({
+          project: project.data,
+          projectImages: images.data,
+        }));
+      })
+      .subscribe(({ project, projectImages }) => {
+        const blocksFromHtml = convertFromHTML(project.attributes.description_multiloc[this.props.userLocale]);
         const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
 
         this.setState({
-          project: project.data,
-          editorState:  EditorState.createWithContent(editorContent)});
-        }
-
-        this.subscription.push(getProjectImages(project.id).observable.subscribe((images) => {
-
-        }))
-      ));
+          project,
+          projectImages,
+          editorState:  EditorState.createWithContent(editorContent),
+          uploadedHeader: null,
+          uploadedImages: [],
+          loading: false,
+        });
+      });
     }
   }
 
   componentWillUnmount() {
     if (this.subscription) {
-      this.subscription.forEach((sub) => {
-        sub.unsubscribe();
-      });
+      this.subscription.unsubscribe();
     }
   }
 
@@ -125,58 +135,78 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
     const projectData = this.state.project;
 
     if (projectData) {
+      this.setState({ loading: true });
+
       const project  = {
         id: projectData.id,
         title_multiloc: projectData.attributes.title_multiloc,
         description_multiloc: projectData.attributes.description_multiloc,
-        header_bg: this.state.uploadedHeader,
-      };
+      } as IProjectUpdateData;
 
-      updateProject({ project }).observable.subscribe((response) => {
-        console.log(response);
-      });
+      if (this.state.uploadedHeader) {
+        project.header_bg = this.state.uploadedHeader;
+      }
+
+      updateProject(project);
     }
   }
 
 
   render() {
-    const { project, uploadedImages, editorState, uploadedHeader } = this.state;
+    const { project, uploadedImages, editorState, uploadedHeader, loading, projectImages } = this.state;
     const { userLocale } = this.props;
 
     return (
       <FormWrapper>
-        <label htmlFor="">Title</label>
-        <Input
-          type="text"
-          placeholder=""
-          value={project ? project.attributes.title_multiloc[userLocale] : ''}
-          error=""
-          onChange={this.changeTitle}
-          setRef={this.setRef}
-        />
-
-        <label htmlFor="">Description</label>
-        <Editor
-          placeholder=""
-          value={editorState}
-          error=""
-          onChange={this.changeDesc}
-        />
-
-        <label>Header image</label>
-        {uploadedHeader &&
-          <img src={uploadedHeader} alt="" role="presentation" />
+        {loading &&
+          <div>Loading…</div>
         }
-        {!uploadedHeader && project && project.attributes.header_bg.medium &&
-          <img src={project.attributes.header_bg.medium} alt="" role="presentation" />
-        }
-        <Upload
-          accept="image/jpg, image/jpeg, image/png, image/gif"
-          intl={this.props.intl}
-          items={uploadedImages}
-          onAdd={this.handleHeaderUpload}
-          onRemove={this.handleUploadOnRemove}
-        />
+
+        <FieldWrapper>
+          <label htmlFor="">Title</label>
+          <Input
+            type="text"
+            placeholder=""
+            value={project ? project.attributes.title_multiloc[userLocale] : ''}
+            error=""
+            onChange={this.changeTitle}
+            setRef={this.setRef}
+          />
+        </FieldWrapper>
+
+        <FieldWrapper>
+          <label htmlFor="">Description</label>
+          <Editor
+            placeholder=""
+            value={editorState}
+            error=""
+            onChange={this.changeDesc}
+          />
+        </FieldWrapper>
+
+        <FieldWrapper>
+          <label>Header image</label>
+          {uploadedHeader &&
+            <img src={uploadedHeader} alt="" role="presentation" />
+          }
+          {!uploadedHeader && project && project.attributes.header_bg.medium &&
+            <img src={project.attributes.header_bg.medium} alt="" role="presentation" />
+          }
+          <Upload
+            accept="image/jpg, image/jpeg, image/png, image/gif"
+            intl={this.props.intl}
+            items={uploadedImages}
+            onAdd={this.handleHeaderUpload}
+            onRemove={this.handleUploadOnRemove}
+          />
+        </FieldWrapper>
+
+        <FieldWrapper>
+          <label>Project Images</label>
+          {projectImages && projectImages.map((image) => (
+            <div key={image.id}><img src={image.attributes.versions.small} alt="" role="presentation"/></div>
+          ))}
+        </FieldWrapper>
 
         <button onClick={this.saveProject}>Save</button>
       </FormWrapper>
