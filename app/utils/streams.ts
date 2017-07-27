@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs/Observable';
-import { observeIdeas } from 'services/ideas';
 import 'whatwg-fetch';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
@@ -98,7 +96,7 @@ class Streams {
       stream.fetch = () => {
         const { apiEndpoint, bodyData, httpMethod, queryParameters } = stream;
 
-        request(apiEndpoint, bodyData, httpMethod, queryParameters).then((response) => {
+        request<any>(apiEndpoint, bodyData, httpMethod, queryParameters).then((response) => {
           if (response.data && _.isArray(response.data)) {
             stream.type = 'array';
             stream.dataIds = {};

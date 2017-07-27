@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  signInTitle: {
-    id: 'app.containers.IdeasNewPage2.signInTitle',
-    defaultMessage: 'Sign in',
-  },
   emailLabel: {
     id: 'app.containers.IdeasNewPage2.emailLabel',
     defaultMessage: 'Email (required)',
