@@ -3,6 +3,7 @@ import { FormattedRelative, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
+import { Link } from 'react-router';
 
 import { preprocess } from 'utils';
 
@@ -26,7 +27,7 @@ const Meta = styled.div`
   padding 0 12px;
 `;
 
-const AuthorName = styled.div`
+const AuthorName = styled(Link)`
   font-weight: bold;
   color: #484848;
   font-size: 16px;
@@ -38,11 +39,11 @@ const Timing = styled.div`
 `;
 
 /* eslint-disable */
-const Author = ({firstName, lastName, avatar, createdAt}) => (
+const Author = ({id, firstName, lastName, avatar, createdAt}) => (
   <AuthorContainer>
     <Avatar src={avatar} />
     <Meta>
-      <AuthorName>
+      <AuthorName to={`/profile/${id}`}>
         <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} />
       </AuthorName>
       <Timing>
@@ -67,11 +68,15 @@ const mergeProps = ({ user }, dispatchProps, ownProps) => {
   const { createdAt } = ownProps;
   if (!user) return {}
   const attributes = user.get('attributes');
+  const id = user.get('id');
+  const slug = attributes.get('slug');
   const firstName = attributes.get('first_name');
   const lastName = attributes.get('last_name');
   const avatar = attributes.getIn(['avatar', 'small'])
 
   return {
+    id,
+    slug,
     avatar,
     firstName,
     lastName,

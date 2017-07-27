@@ -47,7 +47,7 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
       <div>
         <WatchSagas sagas={sagasWatchers} />
         <LoadMessages />
-        <Show location={location} />
+        <Show location={location} id={this.id} />
       </div>
     );
   }
