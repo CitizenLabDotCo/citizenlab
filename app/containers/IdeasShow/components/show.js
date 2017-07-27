@@ -14,7 +14,6 @@ import CommentsLine from './show/CommentsLine';
 import SharingLine from './show/SharingLine';
 import Comments from './comments';
 import T from 'containers/T';
-import ShareButtons from './ShareButtons';
 
 // store
 import { createStructuredSelector } from 'reselect';
@@ -122,8 +121,8 @@ class Show extends React.PureComponent {
               <Votes ideaId={id} voteId={voteId} />
               <Status statusId={statusId} />
               <CommentsLine count={comments_count}/>
-              <SharingLine />
-              <ShareButtons location={location} image={images[0] && images[0].attributes.versions.medium} />
+              <SharingLine location={location} image={images[0] && images[0].attributes.versions.medium} />
+              {/* <ShareButtons location={location} image={images[0] && images[0].attributes.versions.medium} /> */}
             </RightColumn>
           </Content>
         </ContentContainer>
@@ -141,6 +140,7 @@ Show.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   idea: selectIdea,
+  // idea: (state, props) => state.getIn(['resources', 'ideas', props.id]),
   images: makeSelectIdeaImages(),
 });
 

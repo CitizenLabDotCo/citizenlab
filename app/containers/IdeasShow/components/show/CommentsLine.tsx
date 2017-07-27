@@ -43,9 +43,6 @@ export default class CommentsLine extends React.Component<Props> {
           <Text>
             <FormattedMessage {...messages.commentsWithCount} values={{ count }}/>
           </Text>
-          <Icon>
-            T
-          </Icon>
         </TextLine>
         <Separator />
       </Container>
