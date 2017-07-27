@@ -9,11 +9,12 @@ const StyledLabel = styled.label`
   padding-bottom: 6px;
 `;
 
-const Label: React.SFC<ILabel> = ({ value, htmlFor }) => <StyledLabel htmlFor={htmlFor}>{value}</StyledLabel>;
+const Label: React.SFC<ILabel> = ({ value, htmlFor, children }) => <StyledLabel htmlFor={htmlFor}>{children || value}</StyledLabel>;
 
 interface ILabel {
   value: string;
   htmlFor?: string;
+  children?: any,
 }
 
 export default Label;

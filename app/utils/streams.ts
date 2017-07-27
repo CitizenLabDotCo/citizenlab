@@ -70,7 +70,7 @@ class Streams {
         _.isEqual(stream.httpMethod, params.httpMethod) &&
         _.isEqual(stream.queryParameters, params.queryParameters) &&
         _.isEqual(stream.localProperties, params.localProperties) &&
-        _.isEqual(stream.onEachEmit, params.onEachEmit) && 
+        _.isEqual(stream.onEachEmit, params.onEachEmit) &&
         _.isEqual(stream.name, params.name)
       );
     });

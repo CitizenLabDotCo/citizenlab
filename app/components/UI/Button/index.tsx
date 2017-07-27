@@ -112,6 +112,7 @@ const SpinnerWrapper = styled.div`
 
 type Props = {
   text: string;
+  children?: any;
   size?: string;
   style?: 'primary' | 'secondary';
   loading?: boolean;
@@ -131,7 +132,7 @@ export default class Button extends React.PureComponent<Props, State> {
 
   render() {
     const { text, className } = this.props;
-    let { size, style, loading, disabled } = this.props;
+    let { size, style, loading, disabled, children } = this.props;
 
     size = (size || '2');
     style = (style || 'primary');
@@ -146,7 +147,7 @@ export default class Button extends React.PureComponent<Props, State> {
         disabled={disabled}
         className={`Button ${disabled && 'disabled'} ${style} ${className}`}
       >
-        <ButtonText>{text}</ButtonText>
+        <ButtonText>{text || children}</ButtonText>
         {loading && <SpinnerWrapper><Spinner /></SpinnerWrapper>}
       </StyledButton>
     );
