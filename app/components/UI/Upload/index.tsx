@@ -132,7 +132,7 @@ type State = {
   error: string | null;
 };
 
-export default class Upload extends React.PureComponent<Props, State> {
+export class Upload extends React.PureComponent<Props, State> {
   private emptyArray: never[];
 
   constructor() {
@@ -225,3 +225,5 @@ export default class Upload extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default injectIntl(Upload);
