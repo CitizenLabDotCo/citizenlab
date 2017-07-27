@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { fromJS } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { Checkbox } from 'semantic-ui-react';
@@ -8,35 +9,58 @@ import { injectTFunc } from 'containers/T/utils';
 import { FormattedMessage } from 'react-intl';
 import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
+import Upload from 'components/UI/Upload';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
-import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-import { makeSelectCurrentTenant } from '../selectors';
+// import { makeSelectCurrentTenant } from '../selectors';
+import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
 import { saveSettings } from '../actions';
 import messages from '../messages';
 
 
 class SettingsCustomizeTab extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  constructor(props) {
-    super(props);
-    const { tenant } = props;
+  constructor() {
+    super();
     this.state = {
-      tenantAttributes: tenant.get('attributes'),
+      changedAttributes: fromJS({}),
+      temp_logo: [],
+      temp_header_bg: [],
     };
   }
 
   changeAttribute(path, value) {
     this.setState({
-      tenantAttributes: this.state.tenantAttributes.setIn(path, value),
+      changedAttributes: this.state.changedAttributes.setIn(path, value),
+    });
+  }
+
+  changeImage(name, value) {
+    const reader = new FileReader();
+    reader.readAsDataURL(value);
+    reader.onload = () => {
+      this.setState({
+        changedAttributes: this.state.changedAttributes.set(name, reader.result),
+        [`temp_${name}`]: [value],
+      });
+    };
+  }
+
+  removeImage(name) {
+    this.setState({
+      changedAttributes: this.state.changedAttributes.set(name, null),
+      [`temp_${name}`]: [],
     });
   }
 
   save = (e) => {
     e.preventDefault();
-    this.props.saveSettings(this.props.tenant.get('id'), this.state.tenantAttributes.toJS());
+    this.props.saveSettings(this.props.tenant.get('id'), this.state.changedAttributes.toJS());
   }
 
   render() {
-    const settings = this.state.tenantAttributes.get('settings');
+    const updatedTenant = this.props.tenant.update('attributes', (t) => {
+      return t.mergeDeep(this.state.changedAttributes);
+    });
+    const settings = updatedTenant.getIn(['attributes', 'settings']);
     return (
       <div>
 
@@ -57,6 +81,28 @@ class SettingsCustomizeTab extends React.Component { // eslint-disable-line reac
           <ColorPickerInput
             value={settings.getIn(['core', 'color_menu_bg'])}
             onChange={(value) => this.changeAttribute(['settings', 'core', 'color_menu_bg'], value)}
+          />
+        </div>
+
+        <div>
+          <Label><FormattedMessage {...messages.logo} /></Label>
+          <Upload
+            accept="image/*"
+            maxItems={1}
+            items={this.state.temp_logo}
+            onAdd={(value) => this.changeImage('logo', value)}
+            onRemove={() => this.removeImage('logo')}
+          />
+        </div>
+
+        <div>
+          <Label><FormattedMessage {...messages.headerBg} /></Label>
+          <Upload
+            accept="image/*"
+            maxItems={1}
+            items={this.state.temp_header_bg}
+            onAdd={(value) => this.changeImage('header_bg', value)}
+            onRemove={() => this.removeImage('header_bg')}
           />
         </div>
 
@@ -111,13 +157,11 @@ class SettingsCustomizeTab extends React.Component { // eslint-disable-line reac
 
 SettingsCustomizeTab.propTypes = {
   tenant: ImmutablePropTypes.map.isRequired,
-  locale: PropTypes.any,
   saveSettings: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  tenant: makeSelectCurrentTenant(),
-  locale: makeSelectLocale(),
+  tenant: makeSelectCurrentTenantImm(),
 });
 
 const mapDispatchToProps = {

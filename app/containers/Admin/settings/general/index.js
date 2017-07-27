@@ -14,23 +14,22 @@ import TextArea from 'components/UI/TextArea';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { appLocalePairs } from 'i18n.js';
-import { makeSelectCurrentTenant } from '../selectors';
+import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
 import { saveSettings } from '../actions';
 import messages from '../messages';
 
 
 class SettingsGeneralTab extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  constructor(props) {
-    super(props);
-    const { tenant } = props;
+  constructor() {
+    super();
     this.state = {
-      tenantAttributes: tenant.get('attributes'),
+      changedAttributes: fromJS({}),
     };
   }
 
   changeAttribute(path, value) {
     this.setState({
-      tenantAttributes: this.state.tenantAttributes.setIn(path, value),
+      changedAttributes: this.state.changedAttributes.setIn(path, value),
     });
   }
 
@@ -38,13 +37,13 @@ class SettingsGeneralTab extends React.Component { // eslint-disable-line react/
     const locales = value.map((option) => option.value);
     const path = ['settings', 'core', 'locales'];
     this.setState({
-      tenantAttributes: this.state.tenantAttributes.setIn(path, fromJS(locales)),
+      changedAttributes: this.state.changedAttributes.setIn(path, fromJS(locales)),
     });
   }
 
   save = (e) => {
     e.preventDefault();
-    this.props.saveSettings(this.props.tenant.get('id'), this.state.tenantAttributes.toJS());
+    this.props.saveSettings(this.props.tenant.get('id'), this.state.changedAttributes.toJS());
   }
 
   localeOptions = () => {
@@ -62,7 +61,10 @@ class SettingsGeneralTab extends React.Component { // eslint-disable-line react/
   }
 
   render() {
-    const settings = this.state.tenantAttributes.get('settings');
+    const updatedTenant = this.props.tenant.update('attributes', (t) => {
+      return t.mergeDeep(this.state.changedAttributes);
+    });
+    const settings = updatedTenant.getIn(['attributes', 'settings']);
     const localesValue = this.localesToOptions(settings.getIn(['core', 'locales']).toJS());
 
     return (
@@ -123,6 +125,7 @@ class SettingsGeneralTab extends React.Component { // eslint-disable-line react/
           </Label>
           <TextArea
             id="meta_description"
+            rows={5}
             value={settings.getIn(['core', 'meta_description', this.props.locale])}
             onChange={(value) => this.changeAttribute(['settings', 'core', 'meta_description', this.props.locale], value)}
           />
@@ -145,7 +148,7 @@ SettingsGeneralTab.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  tenant: makeSelectCurrentTenant(),
+  tenant: makeSelectCurrentTenantImm(),
   locale: makeSelectLocale(),
 });
 

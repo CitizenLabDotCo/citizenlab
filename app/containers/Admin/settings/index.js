@@ -13,7 +13,6 @@ class SettingsPage extends React.Component { // eslint-disable-line react/prefer
     const tabs = [
       { label: 'General', url: '/admin/settings', active: true },
       { label: 'Customize', url: '/admin/settings/customize', active: false },
-      { label: 'Pages', url: '/admin/settings/pages', active: false },
     ];
 
     return (
