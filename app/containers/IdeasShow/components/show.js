@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 
 import Helmet from 'react-helmet';
 import { injectTFunc } from 'containers/T/utils';
+import styled from 'styled-components';
 
 // components
-import { Comment } from 'semantic-ui-react';
 import ImageCarousel from 'components/ImageCarousel';
-import Author from './common/author';
-import Editor from './common/editor';
+import Author from './show/author';
 import Votes from './show/votes';
+import Status from './show/Status';
+import CommentsLine from './show/CommentsLine';
+import SharingLine from './show/SharingLine';
 import Comments from './comments';
 import T from 'containers/T';
-import Autorize from 'utils/containers/authorize';
 import ShareButtons from './ShareButtons';
 
 // store
@@ -21,7 +22,7 @@ import { preprocess } from 'utils';
 import { makeSelectIdeaImages, selectIdea } from '../selectors';
 
 // intl
-import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import messages from './../messages';
 
 const Carousel = ({ images }) => {
@@ -33,48 +34,100 @@ Carousel.propTypes = {
   images: PropTypes.array.isRequired,
 };
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 30px;
+  padding-right: 30px;
+`;
+
+const Content = styled.div`
+  width: 100%;
+  max-width: 1050px;
+  display: flex;
+`;
+
+const LeftColumn = styled.div`
+  flex-grow: 1;
+  padding: 55px;
+`;
+
+const SeparatorColumn = styled.div`
+  flex: 0 0 3px;
+  background: #eaeaea;
+  margin: 40px 0;
+  border: solid #fafafa 1px;
+`;
+
+const RightColumn = styled.div`
+  flex: 0 0 280px;
+  padding: 40px;
+`;
+
+const IdeaTitle = styled.h1`
+  font-size: 25px;
+  padding-bottom: 1.5em;
+`;
+const IdeaBody = styled.div`
+  font-size: 18px;
+  color: #8f8f8f;
+`;
+
+const VoteCTA = styled.h3`
+  font-size: 20px;
+  font-weight: 400;
+  color: #222222;
+`;
+
 /* eslint-disable */
 class Show extends React.PureComponent {
 
   render() {
     const {
-      id, images, authorId, title_multiloc, body_multiloc, created_at, voteId, /* votes, location, */ tFunc } = this.props;
+      id, images, authorId, title_multiloc, body_multiloc, created_at, voteId, statusId, comments_count, tFunc } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (!title_multiloc) return null;
     return(
-      <div>
+      <Container>
         <Helmet
           title={formatMessage(messages.helmetTitle)}
           meta={[
             { name: 'description', content: tFunc(title_multiloc) },
           ]}
         />
-        <Carousel images={images.map((image) => image.attributes.versions)} />
-        <h2>
-          <T value={title_multiloc} />
-        </h2>
-         <ShareButtons location={location} image={images[0] && images[0].attributes.versions.medium} />
-        <Votes ideaId={id} voteId={voteId} />
-        <Comment.Group style={{ maxWidth: 'none' }}>
-          <Comment>
-            <Comment.Content>
-            <Author authorId={authorId}>
-              {created_at}
-            </Author>
-            <Comment.Text>
-              <T value={body_multiloc} />
-            </Comment.Text>
-            <Autorize action={['comments', 'create']}>
-              <Editor ideaId={id} />
-            </Autorize>
-            </Comment.Content>
-          </Comment>
-        </Comment.Group>
-
-        <Comments />
-        {/*<Info id={id} />*/}
-      </div>
+        <ContentContainer>
+          <Content>
+            <LeftColumn>
+              <Author authorId={authorId} createdAt={created_at} />
+              <IdeaTitle><T value={title_multiloc} /></IdeaTitle>
+              <Carousel images={images.map((image) => image.attributes.versions)} />
+              <IdeaBody>
+                <T value={body_multiloc} />
+              </IdeaBody>
+              <Comments />
+            </LeftColumn>
+            <SeparatorColumn />
+            <RightColumn>
+              <VoteCTA>
+                <FormattedMessage {...messages.voteCTA} />
+              </VoteCTA>
+              <Votes ideaId={id} voteId={voteId} />
+              <Status statusId={statusId} />
+              <CommentsLine count={comments_count}/>
+              <SharingLine />
+              <ShareButtons location={location} image={images[0] && images[0].attributes.versions.medium} />
+            </RightColumn>
+          </Content>
+        </ContentContainer>
+      </Container>
     );
   }
 
@@ -106,6 +159,7 @@ const mergeProps = ({ idea, images }, dispatchProps, { tFunc, location, intl }) 
     downvotes_count,
     title_multiloc,
     upvotes_count,
+    comments_count,
   } = attributes;
   const relationships = idea.get('relationships');
 
@@ -114,18 +168,21 @@ const mergeProps = ({ idea, images }, dispatchProps, { tFunc, location, intl }) 
   const areas = relationships.getIn(['areas','data']).map(getIds);
   const topics = relationships.getIn(['topics','data']).map(getIds);
   const voteId = relationships.getIn(['user_vote','data', 0, 'id']);
+  const statusId = relationships.getIn(['idea_status', 'data', 'id']);
   return {
     id,
     images: images && images.toJS(),
     body_multiloc,
     created_at,
     votes: downvotes_count + upvotes_count,
+    comments_count,
     title_multiloc,
     authorId,
     areas,
     topics,
     location,
     voteId,
+    statusId,
     tFunc,
     intl,
   };
