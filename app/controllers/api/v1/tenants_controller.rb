@@ -8,7 +8,11 @@ class Api::V1::TenantsController < ApplicationController
 
   def update
     updated_settings = Tenant.current.settings.deep_merge(tenant_params[:settings].to_h)
-    if @tenant.update(settings: updated_settings)
+    params = {settings: updated_settings}
+    params[:logo] = tenant_params[:logo] if tenant_params[:logo]
+    params[:header_bg] = tenant_params[:header_bg] if tenant_params[:header_bg]
+
+    if @tenant.update(params)
       render json: @tenant, status: :ok
     else
       render json: {errors: @tenant.errors.details}, status: :unprocessable_entity
