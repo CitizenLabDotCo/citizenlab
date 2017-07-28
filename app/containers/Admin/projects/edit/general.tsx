@@ -39,7 +39,38 @@ const FormWrapper = styled.div`
 `;
 
 const FieldWrapper = styled.div`
-  margin-bottom: 1em;
+  margin-bottom: 2em;
+`;
+
+const ProjectImages = styled.div`
+  display: flex;
+`;
+
+const ImageWrapper = styled.div`
+  margin: .5rem;
+  position: relative;
+
+  &:first-child{
+    margin-left: 0;
+  }
+`;
+
+const DeleteButton = styled.button`
+  background: rgba(0, 0, 0, .5);
+  border-radius: 50%;
+  color: black;
+  right: -.5rem;
+  position: absolute;
+  top: -.5rem;
+  z-index: 1;
+`;
+
+const SaveButton = styled.button`
+  background: #d60065;
+  border-radius: 5px;
+  color: white;
+  font-size: 1.25rem;
+  padding: 1rem 2rem;
 `;
 
 
@@ -236,12 +267,14 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
 
         <FieldWrapper>
           <label>Project Images</label>
-          {projectImages && projectImages.map((image) => (
-            <div key={image.id}>
-              <button onClick={this.deletePicture} data-image-id={image.id}>X</button>
-              <img src={image.attributes.versions.small} alt="" role="presentation"/>
-            </div>
-          ))}
+          <ProjectImages>
+            {projectImages && projectImages.map((image) => (
+              <ImageWrapper key={image.id}>
+                <DeleteButton onClick={this.deletePicture} data-image-id={image.id}>🗑️</DeleteButton>
+                <img src={image.attributes.versions.small} alt="" role="presentation"/>
+              </ImageWrapper>
+            ))}
+          </ProjectImages>
           <Upload
             accept="image/jpg, image/jpeg, image/png, image/gif"
             intl={this.props.intl}
@@ -251,7 +284,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
           />
         </FieldWrapper>
 
-        <button onClick={this.saveProject}>Save</button>
+        <SaveButton onClick={this.saveProject}>Save</SaveButton>
       </FormWrapper>
     );
   }
