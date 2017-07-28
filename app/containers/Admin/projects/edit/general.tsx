@@ -174,7 +174,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
     const { project, projectImages } = this.state;
     const base64 = await getBase64(image) as string;
     if (project && project.id) {
-      uploadProjectImage(project.id, base64).then((response) => {
+      uploadProjectImage(project.id, base64).then((response: any) => {
         projectImages.push(response.data);
 
         this.setState({ projectImages });

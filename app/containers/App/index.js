@@ -25,7 +25,7 @@ import Navbar from './Navbar';
 import messages from './messages';
 import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 // components - authorizations
 import Authorize, { Else } from 'utils/containers/authorize';
 
@@ -38,13 +38,17 @@ import { createStructuredSelector } from 'reselect';
 import authSagas from 'utils/auth/sagas';
 import areasSagas from 'utils/areas/sagas';
 import tenantSaga from 'utils/tenant/sagas';
-import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
+import { makeSelectCurrentTenant, makeSelectSetting } from 'utils/tenant/selectors';
+
 import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { LOAD_CURRENT_USER_REQUEST } from 'utils/auth/constants';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
 
-class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+const Container = styled.div`
+  padding-top: 65px;
+`;
 
+class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
     this.key = 0;
@@ -55,20 +59,20 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
   }
 
   content() {
-    const { currentTenant, location, children, loadUser } = this.props;
+    const { currentTenant, location, children, loadUser, colorMain, colorMenuBg } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (currentTenant) {
       const theme = {
         color: {
-          main: '#ef0071',
-          menuBg: '#fff',
+          main: colorMain || '#ef0071',
+          menuBg: colorMenuBg || '#fff',
         },
       };
 
       return (
         <ThemeProvider theme={theme}>
-          <div>
+          <Container>
             <Helmet
               title={formatMessage(messages.helmetTitle)}
               meta={[
@@ -85,7 +89,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
               withError={false}
             >
               <Authorize action={['routes', 'admin']} resource={location.pathname}>
-                <div style={{ paddingTop: '69px' }}>
+                <div>
                   {children}
                 </div>
                 <Else>
@@ -93,7 +97,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
                 </Else>
               </Authorize>
             </Loader>
-          </div>
+          </Container>
         </ThemeProvider>
       );
     } else { // eslint-disable-line no-else-return
@@ -121,10 +125,14 @@ App.propTypes = {
   location: PropTypes.object,
   loadCurrentTenantRequest: PropTypes.func.isRequired,
   loadUser: PropTypes.func.isRequired,
+  colorMain: PropTypes.string,
+  colorMenuBg: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   currentTenant: makeSelectCurrentTenant(),
+  colorMain: makeSelectSetting(['core', 'color_main']),
+  colorMenuBg: makeSelectSetting(['core', 'color_menu_bg']),
 });
 
 const actions = {

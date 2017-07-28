@@ -6,20 +6,32 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import qs from 'qs';
 
 // components
 import WatchSagas from 'containers/WatchSagas';
 import { Segment } from 'semantic-ui-react';
 import IdeaCards from './components/ideaCards';
 
-import SelectTopic from './components/selectTopics';
-import SelectArea from './components/selectAreas';
-
+import SelectTopics from './components/selectTopics';
+import SelectAreas from './components/selectAreas';
+import SelectSort from './components/selectSort';
+import SearchField from './components/searchField';
 
 // store
 import { preprocess } from 'utils';
-import { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest, resetIdeas } from './actions';
+import { loadTopicsRequest, loadAreasRequest, resetIdeas } from './actions';
 import sagasWatchers from './sagas';
+
+const FiltersArea = styled.div`
+  align-items: center;
+  display: flex;
+  height: 3.5rem;
+  justify-content: flex-end;
+  margin-bottom: 4.5rem;
+  width: 100%;
+`;
 
 class View extends React.Component {
   constructor(props) {
@@ -43,8 +55,12 @@ class View extends React.Component {
       <div>
         <WatchSagas sagas={sagasWatchers} />
         <Segment style={{ width: 1000, marginLeft: 'auto', marginRight: 'auto' }} basic>
-          {withFilters && <SelectArea />}
-          {withFilters && <SelectTopic />}
+          {withFilters && <FiltersArea>
+            <SearchField />
+            <SelectSort />
+            <SelectTopics />
+            <SelectAreas />
+          </FiltersArea>}
           <IdeaCards filter={filter} />
         </Segment>
       </div>
@@ -60,8 +76,6 @@ View.propTypes = {
   loadTopicsRequest: PropTypes.func.isRequired,
   loadAreasRequest: PropTypes.func.isRequired,
   location: PropTypes.object,
-  filterIdeas: PropTypes.func.isRequired,
-  loadIdeasRequest: PropTypes.func.isRequired,
   resetIdeas: PropTypes.func.isRequired,
   filter: PropTypes.object,
   withFilters: PropTypes.bool.isRequired,
@@ -72,6 +86,14 @@ View.defaultProps = {
   withFilters: true,
 };
 
-const actions = { filterIdeas, loadIdeasRequest, loadTopicsRequest, loadAreasRequest, resetIdeas };
+const actions = { loadTopicsRequest, loadAreasRequest, resetIdeas };
 
-export default preprocess(null, actions)(View);
+const mergeProps = (_, dispatch, own) => {
+  const { location } = own;
+  // We use qs instead of the already available react-router parsed version,
+  // because it handles the arrays nicely
+  const parsedParams = qs.parse(location.search, { ignoreQueryPrefix: true });
+  return { ...dispatch, ...own, filter: parsedParams };
+};
+
+export default preprocess(null, actions, mergeProps)(View);

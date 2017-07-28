@@ -1,8 +1,7 @@
 import * as React from 'react';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import clickOutside from 'utils/containers/clickOutside';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const enterClassName = 'modal-enter';
 const enterActiveClassName = 'modal-enter-active';
@@ -49,7 +48,7 @@ const ModalContainer = styled.div`
       transform: translateY(-100px);
       will-change: opacity, transform;
     }
-  } 
+  }
 
   &.${enterActiveClassName} {
     opacity: 1;
@@ -116,6 +115,40 @@ type Props = {
 type State = {};
 
 export default class Modal extends React.PureComponent<Props, State> {
+  componentWillUnmount() {
+    this.onClose();
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (!this.props.opened && nextProps.opened) {
+      this.onOpen();
+    }
+
+    if (this.props.opened && !nextProps.opened) {
+      this.onClose();
+    }
+  }
+
+  onOpen = () => {
+    window.addEventListener('popstate', this.handlePopstateEvent);
+
+    if (!document.body.classList.contains('modal-active')) {
+      document.body.classList.add('modal-active');
+    }
+
+    if (this.props.parentUrl && this.props.url) {
+      window.history.pushState({ path: this.props.url }, '', this.props.url);
+    }
+  }
+
+  onClose = () => {
+    document.body.classList.remove('modal-active');
+    window.removeEventListener('popstate', this.handlePopstateEvent);
+
+    if (this.props.parentUrl && this.props.url) {
+      window.history.pushState({ path: this.props.parentUrl }, '', this.props.parentUrl);
+    }
+  }
 
   handlePopstateEvent = () => {
     if (location.href === this.props.parentUrl) {
@@ -124,51 +157,27 @@ export default class Modal extends React.PureComponent<Props, State> {
   }
 
   closeModal = () => {
-    document.body.classList.remove('modal-active');
-
-    window.removeEventListener('popstate', this.handlePopstateEvent);
-
-    if (this.props.parentUrl && this.props.url) {
-      window.history.pushState({ path: this.props.parentUrl }, '', this.props.parentUrl);
-    }
-
     this.props.close();
   }
 
   render() {
-    if (this.props.opened) {
-      window.addEventListener('popstate', this.handlePopstateEvent);
-
-      if (!document.body.classList.contains('modal-active')) {
-        document.body.classList.add('modal-active');
-      }
-
-      if (this.props.parentUrl && this.props.url) {
-        window.history.pushState({ path: this.props.url }, '', this.props.url);
-      }
-
-      return (
-        <CSSTransitionGroup
-          transitionName="modal"
-          transitionEnterTimeout={400}
-          transitionLeaveTimeout={400}
-        >
-          <ModalContainer>
-            <ModalContent onClickOutside={this.closeModal}>
-              <CloseButton onClick={this.closeModal}>Close</CloseButton>
-              {this.props.children}
-            </ModalContent>
-          </ModalContainer>
-        </CSSTransitionGroup>
-      );
-    }
+    const { children, opened, parentUrl, url } = this.props;
 
     return (
       <CSSTransitionGroup
         transitionName="modal"
         transitionEnterTimeout={400}
         transitionLeaveTimeout={400}
-      />
+      >
+        {opened && 
+          <ModalContainer>
+            <ModalContent onClickOutside={this.closeModal}>
+              <CloseButton onClick={this.closeModal}>Close</CloseButton>
+              {children}
+            </ModalContent>
+          </ModalContainer>
+        }
+      </CSSTransitionGroup>
     );
   }
 }

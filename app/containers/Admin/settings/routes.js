@@ -28,4 +28,37 @@ export default (injectReducer) => ({
 
     importModules.catch(errorLoading);
   },
+  indexRoute: {
+    getComponent(nextState, cb) {
+      const importModules = Promise.all([
+        import('containers/Admin/settings/general'),
+      ]);
+
+      const renderRoute = loadModule(cb);
+
+      importModules.then(([component]) => {
+        renderRoute(component);
+      });
+
+      importModules.catch(errorLoading);
+    },
+  },
+  childRoutes: [
+    {
+      path: 'customize',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Admin/settings/customize'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+  ],
 });

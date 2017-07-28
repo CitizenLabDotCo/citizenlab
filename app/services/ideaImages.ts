@@ -35,12 +35,12 @@ export function observeIdeaImages(ideaId: string, streamParams: IStreamParams<II
   return streams.create<IIdeaImages>({ apiEndpoint, ...streamParams });
 }
 
-export function addIdeaImage(ideaId: string, base64: string, order: number | null = null) {
+export function addIdeaImage(ideaId: string, base64: string, ordering: number | null = null) {
   const apiEndpoint = `${API_PATH}/ideas/${ideaId}/images`;
   const httpMethod = { method: 'POST' };
   const bodyData = {
     image: {
-      order,
+      ordering,
       image: base64,
     }
   };

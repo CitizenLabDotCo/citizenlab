@@ -179,7 +179,7 @@ const NotificationMenuContainer = styled.div`
   position: relative;
 `;
 
-class Navbar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+class Navbar extends React.PureComponent {
   constructor() {
     super();
 

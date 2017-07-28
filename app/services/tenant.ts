@@ -22,6 +22,25 @@ export interface ITenantData {
           [key: string]: string;
         };
         organization_type: string;
+        header_slogan: {
+          [key: string]: string;
+        } | null;
+        meta_title: {
+          [key: string]: string;
+        } | null;
+        meta_description: {
+          [key: string]: string;
+        } | null;
+        color_main: string | null;
+        color_menu_bg: string | null;
+      };
+      demographic_fields: {
+        allowed: boolean;
+        enabled: boolean;
+        gender: boolean;
+        birthyear: boolean;
+        domicile: boolean;
+        education: boolean;
       }
     };
     logo: {

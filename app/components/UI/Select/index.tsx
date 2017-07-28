@@ -2,8 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as ReactSelect from 'react-select';
 import { IOption } from 'typings';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const StyledSelect = styled(ReactSelect)`
   &.Select--single {
@@ -82,7 +81,7 @@ const StyledSelect = styled(ReactSelect)`
         align-items: center;
         justify-content: center;
         padding: 0px;
-        padding-bottom: 3px;
+        padding-bottom: 0px;
         margin: 0px;
         position: absolute;
         top: 0;
@@ -96,12 +95,12 @@ const StyledSelect = styled(ReactSelect)`
         }
 
         .Select-clear {
-          font-size: 25px;
+          font-size: 30px;
         }
       }
 
       .Select-multi-value-wrapper {
-        width: calc(100% - 70px);
+        width: calc(100% - 50px);
         height: auto;
         margin: 0px;
         padding: 0px;
@@ -180,6 +179,7 @@ type Props = {
   autoBlur?: boolean | undefined;
   clearable?: boolean | undefined;
   searchable?: boolean | undefined;
+  multi?: boolean | undefined;
   onChange: (arg: IOption) => void;
 };
 
@@ -198,7 +198,7 @@ export default class Select extends React.PureComponent<Props, State> {
   }
 
   render() {
-    let { value, placeholder, options, autoBlur, clearable, searchable } = this.props;
+    let { value, placeholder, options, autoBlur, clearable, searchable, multi } = this.props;
 
     value = (value || undefined);
     placeholder = (placeholder || '');
@@ -206,6 +206,7 @@ export default class Select extends React.PureComponent<Props, State> {
     autoBlur = (_.isBoolean(autoBlur) ? autoBlur : true);
     clearable = (_.isBoolean(clearable) ? clearable : true);
     searchable = (_.isBoolean(searchable) ? searchable : false);
+    multi = (_.isBoolean(multi) ? multi : false);
 
     return (
       <StyledSelect
@@ -218,6 +219,7 @@ export default class Select extends React.PureComponent<Props, State> {
         placeholder={placeholder}
         options={options}
         onChange={this.handleOnChange}
+        multi={multi}
       />
     );
   }

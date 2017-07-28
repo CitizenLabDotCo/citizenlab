@@ -5,6 +5,18 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage2.formTitle',
     defaultMessage: 'Add your idea',
   },
+  signInTitle: {
+    id: 'app.containers.IdeasNewPage2.signInTitle',
+    defaultMessage: 'Sign in to publish your idea',
+  },
+  signUpTitle: {
+    id: 'app.containers.IdeasNewPage2.signUpTitle',
+    defaultMessage: 'Sign up to publish your idea',
+  },
+  createAnAccount: {
+    id: 'app.containers.IdeasNewPage2.createAnAccount',
+    defaultMessage: 'Create an account',
+  },
   titleLabel: {
     id: 'app.containers.IdeasNewPage2.titleLabel',
     defaultMessage: 'Title (required)',
@@ -59,7 +71,7 @@ export default defineMessages({
   },
   imageUploadPlaceholder: {
     id: 'app.containers.IdeasNewPage2.uploadPlaceholder',
-    defaultMessage: 'Optionally upload an image that represents your idea',
+    defaultMessage: 'Optionally upload an image for your idea',
   },
   submit: {
     id: 'app.containers.IdeasNewPage2.submit',
@@ -68,5 +80,9 @@ export default defineMessages({
   formError: {
     id: 'app.containers.IdeasNewPage2.formError',
     defaultMessage: 'Oops, something went wrong! Errors are highlighted.',
+  },
+  goBack: {
+    id: 'app.containers.IdeasNewPage2.goBack',
+    defaultMessage: 'Idea',
   },
 });

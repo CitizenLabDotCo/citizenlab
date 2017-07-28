@@ -7,7 +7,6 @@ import FilterSelector from 'containers/FilterSelector';
 
 // store
 import { push } from 'react-router-redux';
-import { selectResourcesDomain } from 'utils/resources/selectors';
 import { createStructuredSelector } from 'reselect';
 import { preprocess } from 'utils';
 
@@ -17,48 +16,53 @@ import queryString from 'query-string';
 // translations
 import { injectTFunc } from 'containers/T/utils';
 
-const SelectTopic = ({ options, value, filterPage }) => (
-  <FilterSelector title="topics" name="topics" selected={value} values={options} multiple onChange={filterPage} />
+const SelectSort = ({ options, value, filterPage }) => (
+  <FilterSelector
+    title="Sort"
+    name="sort"
+    selected={value}
+    values={options}
+    onChange={filterPage}
+  />
 );
 
-SelectTopic.propTypes = {
+SelectSort.propTypes = {
   value: PropTypes.array,
   options: PropTypes.array.isRequired,
   filterPage: PropTypes.func,
 };
 
-SelectTopic.defaultProps = {
+SelectSort.defaultProps = {
   options: [],
   filterPage: () => {},
   value: [],
 };
 
 const mapStateToProps = () => createStructuredSelector({
-  topics: (state) => selectResourcesDomain('topics')(state),
   search: (state) => state.getIn(['route', 'locationBeforeTransitions', 'search']),
   location: (state) => state.getIn(['route', 'locationBeforeTransitions', 'pathname']),
 });
 
 const mergeQuery = (search, type, ids) => {
-  const query = queryString.parse(search, { arrayFormat: 'index' });
+  const query = queryString.parse(search);
   query[type] = ids;
-  return queryString.stringify(query, { arrayFormat: 'index' });
+  return queryString.stringify(query);
 };
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { topics, search, location } = stateProps;
-  if (!topics) return {};
+  const { search, location } = stateProps;
 
-  const { tFunc } = ownProps;
-
-  const options = topics.reactMap((element) => {
-    const value = element.get('id');
-    const text = tFunc(element.getIn(['attributes', 'title_multiloc']));
-    return { text, value };
-  });
+  const options = [
+    { text: 'Newest', value: 'new' },
+    { text: 'Oldest', value: '-new' },
+    { text: 'Trending', value: 'trending' },
+    { text: 'Popular', value: 'popular' },
+  ];
   const { goTo } = dispatchProps;
 
-  const value = queryString.parse(search, { arrayFormat: 'index' }).topics;
+  const sortParam = queryString.parse(search).sort;
+  const value = [];
+  if (sortParam) value.push(sortParam);
 
   const filterPage = (name, ids) => {
     goTo(`${location}?${mergeQuery(search, name, ids)}`);
@@ -67,4 +71,4 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   return { options, value, filterPage, ...ownProps };
 };
 
-export default injectTFunc(preprocess(mapStateToProps, { goTo: push }, mergeProps)(SelectTopic));
+export default injectTFunc(preprocess(mapStateToProps, { goTo: push }, mergeProps)(SelectSort));

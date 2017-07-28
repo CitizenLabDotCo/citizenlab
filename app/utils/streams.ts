@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs/Observable';
-import { observeIdeas } from 'services/ideas';
 import 'whatwg-fetch';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
@@ -98,7 +96,7 @@ class Streams {
       stream.fetch = () => {
         const { apiEndpoint, bodyData, httpMethod, queryParameters } = stream;
 
-        request(apiEndpoint, bodyData, httpMethod, queryParameters).then((response) => {
+        request<any>(apiEndpoint, bodyData, httpMethod, queryParameters).then((response) => {
           if (response.data && _.isArray(response.data)) {
             stream.type = 'array';
             stream.dataIds = {};
@@ -184,7 +182,26 @@ class Streams {
         } else if (!refetch && stream.type === 'array') {
           stream.observer.next((item) => ({
             ...item,
-            data: item.data.map((child) => (child.id === dataId ? object.data : child))
+            data: item.data.map(child => child.id === dataId ? object.data : child)
+          }));
+        } else if (_.isFunction(stream.fetch)) {
+          stream.fetch();
+        }
+      } else {
+        console.log('observer is null');
+      }
+    });
+  }
+
+  delete(dataId: string, refetch: boolean = false) {
+    this.list.filter(stream => stream.dataIds[dataId]).forEach((stream) => {
+      if (stream.observer !== null) {
+        if (!refetch && stream.type === 'single') {
+          stream.observer.next(undefined);
+        } else if (!refetch && stream.type === 'array') {
+          stream.observer.next((item) => ({
+            ...item,
+            data: item.data.filter(child => child.id !== dataId)
           }));
         } else if (_.isFunction(stream.fetch)) {
           stream.fetch();
