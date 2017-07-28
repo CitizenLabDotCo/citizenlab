@@ -22,9 +22,43 @@ const PublicResourceLink = styled.a`
 `;
 
 const TabbedNav = styled.nav`
+  background: #fcfcfc;
+  border-radius: 5px 5px 0 0;
+  border-bottom: 2px solid #eaeaea;
+  display: flex;
+  height: 4rem;
+  padding: 0 3rem;
 `;
 
 const Tab = styled.li`
+  border-bottom: 2px solid;
+  border-color: #eaeaea;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: -2px;
+  opacity: .5;
+
+  &:not(:first-child) {
+    margin-left: 2rem;
+  }
+
+  a {
+    color: #101010;
+    line-height: 4rem;
+  }
+
+  &.active,
+  &:hover {
+    opacity: 1;
+    border-color: #d60065;
+  }
+`;
+
+const ChildWrapper = styled.div`
+  background: #fff;
+  margin-bottom: 2rem;
+  padding: 3rem;
 `;
 
 
@@ -85,11 +119,11 @@ export default class TabbedResource extends React.Component<Props, State> {
         {tabs &&
           <TabbedNav>
             {tabs.map((tab) => (
-              <Tab key={tab.url}><a href={tab.url}>{showLabel(tab.label)}</a></Tab>
+              <Tab key={tab.url} className={tab.active ? 'active' : ''}><a href={tab.url}>{showLabel(tab.label)}</a></Tab>
             ))}
           </TabbedNav>
         }
-        {this.props.children}
+        <ChildWrapper>{this.props.children}</ChildWrapper>
       </div>
     );
   }
