@@ -26,6 +26,28 @@ const getIcon = (name: string) => {
         </svg>
       );
     }
+    case 'checkmark': {
+      return (
+        <svg width="19" height="15" viewBox="0 0 19 15">
+          <path d="M6.05 11.467L1.533 6.95 0 8.482l6.05 6.05 13-13L17.517 0z" fill="#FFF" fillRule="evenodd" />
+        </svg>
+      );
+    }
+    case 'dropdown': {
+      return (
+        <svg width="9" height="6" viewBox="0 0 9 6">
+          <path fill="#A6A6A6" fillRule="evenodd" d="M7.939 0L4.5 3.439 1.061 0 0 1.061l4.5 4.5 4.5-4.5z" />
+        </svg>
+      );
+    }
+    case 'arrow-back': {
+      return (
+        <svg height="100%" viewBox="0 0 24 24" >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+        </svg>
+      );
+    }
     default:
       return null;
   }
