@@ -15,7 +15,7 @@ import { makeSelectSetting } from 'utils/tenant/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 
 // Services
-import { observeProject, IProjectData, updateProject, IProjectImageData, getProjectImages, IProjectUpdateData } from 'services/projects';
+import { observeProject, IProjectData, updateProject, IProjectImageData, getProjectImages, IProjectUpdateData, uploadProjectImage } from 'services/projects';
 import { getBase64 } from 'services/image_tools';
 
 // Components
@@ -52,7 +52,7 @@ type State = {
   uploadedImages: any,
   uploadedHeader: string | null,
   editorState: EditorState,
-  projectImages: IProjectImageData[] | null,
+  projectImages: IProjectImageData[],
 };
 
 class AdminProjectEditGeneral extends React.Component<Props, State> {
@@ -67,7 +67,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
       uploadedImages: [],
       editorState: EditorState.createEmpty(),
       uploadedHeader: null,
-      projectImages: null
+      projectImages: []
     };
   }
 
@@ -129,6 +129,28 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
 
   handleUploadOnRemove = () => {
 
+  }
+
+  handleProjectImageUpload = async (image) => {
+    const { project, projectImages } = this.state;
+    const base64 = await getBase64(image) as string;
+    if (project && project.id) {
+      uploadProjectImage(project.id, base64).then((response) => {
+        projectImages.push(response.data);
+
+        this.setState({ projectImages });
+      });
+    }
+  }
+
+  deletePicture = (event) => {
+    const { project } = this.state;
+
+    if (project) {
+      const imageId = event.target.dataset.imageId;
+      const projectId = project.id;
+
+    }
   }
 
   saveProject = () => {
@@ -204,8 +226,18 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
         <FieldWrapper>
           <label>Project Images</label>
           {projectImages && projectImages.map((image) => (
-            <div key={image.id}><img src={image.attributes.versions.small} alt="" role="presentation"/></div>
+            <div key={image.id}>
+              <button onClick={this.deletePicture} data-image-id={image.id}>X</button>
+              <img src={image.attributes.versions.small} alt="" role="presentation"/>
+            </div>
           ))}
+          <Upload
+            accept="image/jpg, image/jpeg, image/png, image/gif"
+            intl={this.props.intl}
+            items={uploadedImages}
+            onAdd={this.handleProjectImageUpload}
+            onRemove={this.handleUploadOnRemove}
+          />
         </FieldWrapper>
 
         <button onClick={this.saveProject}>Save</button>

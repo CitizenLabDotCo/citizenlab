@@ -92,3 +92,16 @@ export function updateProject(projectData: IProjectUpdateData) {
 export function getProjectImages(projectId: string, streamParams: IStreamParams<IProjectImage> | null = null) {
   return streams.create<IProjectImage>({ apiEndpoint: `${apiEndpoint}/${projectId}/images`, ...streamParams });
 }
+
+export function uploadProjectImage(projectId, base64) {
+  const bodyData = { image: { image: base64 } };
+  const httpOptions = { method: 'POST' };
+
+  return request(`${apiEndpoint}/${projectId}/images`, bodyData, httpOptions, null);
+}
+
+export function deleteProjectImage(projectId, imageId) {
+  const httpOptions = { method: 'DELETE' };
+
+  return request(`${apiEndpoint}/${projectId}/images/${imageId}`, {}, httpOptions, null);
+}
