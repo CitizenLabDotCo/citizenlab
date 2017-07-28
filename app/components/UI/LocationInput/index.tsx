@@ -1,5 +1,5 @@
 import * as React from 'react';
-import PlacesAutocomplete from 'react-places-autocomplete'; // tslint:disable-line
+import PlacesAutocomplete from 'react-places-autocomplete';
 import styled from 'styled-components';
 
 const LocationInputWrapper = styled.div`
@@ -81,7 +81,7 @@ export default class LocationInput extends React.PureComponent<Props, State> {
       placeholder,
       onChange: this.handleOnChange,
       type: 'search',
-      autoFocus: true,
+      autoFocus: false,
     };
     const styles = {
       autocompleteContainer: {
@@ -97,7 +97,7 @@ export default class LocationInput extends React.PureComponent<Props, State> {
       },
       autocompleteItemActive: {
         backgroundColor: '#eee',
-      },
+      }
     };
 
     const AutocompleteItem = ({ formattedSuggestion }) => (

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-import shallowCompare from 'utils/shallowCompare';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
@@ -21,12 +20,11 @@ const Container = styled.div`
 
 const Form = styled.div`
   width: 100%;
-  max-width: 550px;
 `;
 
 const FormElement = styled.div`
   width: 100%;
-  margin-bottom: 44px;
+  margin-bottom: 30px;
 `;
 
 type Props = {

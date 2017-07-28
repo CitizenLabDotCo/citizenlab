@@ -5,7 +5,7 @@ import styledComponents from 'styled-components';
 const styled = styledComponents;
 
 // Components
-import Icon from 'components/Icon';
+import Icon from 'components/UI/Icon';
 
 // Styles
 const Overlay = styled.div`
