@@ -9,10 +9,10 @@ import { preprocess } from 'utils';
 
 // import IdeaContent from '../IdeaContent';
 import { selectResourcesDomain } from 'utils/resources/selectors';
-import messages from '../../messages';
 
 const AuthorContainer = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const Avatar = styled.img`
@@ -21,16 +21,12 @@ const Avatar = styled.img`
   border-radius: 50%;
 `;
 
-const Meta = styled.div`
-  flex: 1;
-  flex-direction: column;
-  padding 0 12px;
-`;
-
 const AuthorName = styled(Link)`
   font-weight: bold;
   color: #484848;
   font-size: 16px;
+  flex-grow: 1;
+  padding-left: 12px;
 `;
 
 const Timing = styled.div`
@@ -39,17 +35,15 @@ const Timing = styled.div`
 `;
 
 /* eslint-disable */
-const Author = ({id, firstName, lastName, avatar, createdAt}) => (
+const Author = ({id, firstName, lastName, avatar, createdAt, message}) => (
   <AuthorContainer>
     <Avatar src={avatar} />
-    <Meta>
-      <AuthorName to={`/profile/${id}`}>
-        <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} />
-      </AuthorName>
-      <Timing>
-        <FormattedRelative value={createdAt} />
-      </Timing>
-    </Meta>
+    <AuthorName to={`/profile/${id}`}>
+      <FormattedMessage {...message} values={{ firstName, lastName }} />
+    </AuthorName>
+    <Timing>
+      <FormattedRelative value={createdAt} />
+    </Timing>
   </AuthorContainer>
 );
 
@@ -65,14 +59,14 @@ const mapStateToProps = () => createStructuredSelector({
 });
 
 const mergeProps = ({ user }, dispatchProps, ownProps) => {
-  const { createdAt } = ownProps;
+  const { createdAt, message } = ownProps;
   if (!user) return {}
   const attributes = user.get('attributes');
   const id = user.get('id');
   const slug = attributes.get('slug');
   const firstName = attributes.get('first_name');
   const lastName = attributes.get('last_name');
-  const avatar = attributes.getIn(['avatar', 'small'])
+  const avatar = attributes.getIn(['avatar', 'small']);
 
   return {
     id,
@@ -82,6 +76,7 @@ const mergeProps = ({ user }, dispatchProps, ownProps) => {
     lastName,
     lastName,
     createdAt,
+    message,
   };
 
 };

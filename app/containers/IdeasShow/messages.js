@@ -24,14 +24,14 @@ export default defineMessages({
     defaultMessage: 'Comment the idea!',
   },
 
-  commentRepplyButton: {
-    id: 'app.containers.IdeasShow.commentRepplyButton',
-    defaultMessage: 'Comment the idea!',
+  commentReplyButton: {
+    id: 'app.containers.IdeasShow.commentReplyButton',
+    defaultMessage: 'React',
   },
 
   commentDeleteButton: {
-    id: 'app.containers.IdeasShow.commentRepplyButton',
-    defaultMessage: 'Comment the idea!',
+    id: 'app.containers.IdeasShow.commentDeleteButton',
+    defaultMessage: 'Delete',
   },
 
 
@@ -83,6 +83,14 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.byAuthor',
     defaultMessage: 'by {firstName} {lastName}',
   },
+  authorSaid: {
+    id: 'app.containers.IdeasShow.authorSaid',
+    defaultMessage: '{firstName} said',
+  },
+  authorReacted: {
+    id: 'app.containers.IdeasShow.authorSaid',
+    defaultMessage: '{firstName} reacted',
+  },
   voteCTA: {
     id: 'app.containers.IdeasShow.voteCTA',
     defaultMessage: 'Do you like this idea?',
@@ -98,5 +106,9 @@ export default defineMessages({
   ideaStatus: {
     id: 'app.containers.IdeasShow.ideaStatus',
     defaultMessage: 'Idea status',
+  },
+  commentsTitle: {
+    id: 'app.containers.IdeasShow.commentsTitle',
+    defaultMessage: 'Give your opinion',
   },
 });
