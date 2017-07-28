@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { FormattedMessage } from 'react-intl';
 // components
 import FormComponent from 'components/forms/formComponent';
 import { Form } from 'semantic-ui-react';
 import RtfEditor from 'components/forms/inputs/rtfEditor';
-import Button from 'components/buttons/loader';
+import Button from 'components/UI/Button';
 
 // messages
 import messages from '../../messages';
@@ -28,14 +28,13 @@ class EditorForm extends FormComponent {
       <Form error={error} onSubmit={this.handleSubmit}>
         {/* TODO #later: customize toolbar and set up desired functions (image etc.)
             based on https://github.com/jpuri/react-draft-wysiwyg/blob/master/docs/src/components/Demo/index.js */}
-        <div style={{ border: '1px solid black' }} />
         <RtfEditor name={'comment'} action={this.handleChange} errors={errors.text} label={messages.commentEditorLabel} />
         <Button
-          fluid={true}
           onClick={this.handleClick}
-          message={messages.publishComment}
           loading={loading}
-        />
+        >
+          <FormattedMessage {...messages.publishComment} />
+        </Button>
       </Form>
     );
   }

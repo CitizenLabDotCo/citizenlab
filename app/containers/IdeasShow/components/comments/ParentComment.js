@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Comment } from 'semantic-ui-react';
 import { createStructuredSelector } from 'reselect';
+import styled from 'styled-components';
 
 import { preprocess } from 'utils';
 import { selectResourcesDomain } from 'utils/resources/selectors';
@@ -9,30 +9,48 @@ import T from 'containers/T';
 
 import Authorize from 'utils/containers/authorize';
 
-import MapChildren from './mapChildren';
-
+// import MapChildren from './MapChildren';
+import messages from '../../messages';
+import ChildComment from './ChildComment';
 import Editor from '../common/editor';
-import Author from '../common/author';
+import Author from './Author';
 
-const Show = ({ content, children, createdAt, ideaId, commentId, authorId }) => (
-  <Comment>
-    <Comment.Content>
-      <Author authorId={authorId}>
-        {createdAt}
-      </Author>
-      <Comment.Text>
-        <T value={content} />
-      </Comment.Text>
-      <Authorize action={['comments', 'create']}>
-        <Editor parentId={commentId} ideaId={ideaId} />
-      </Authorize>
 
-    </Comment.Content>
-    <MapChildren nodes={children} />
-  </Comment>
-);
+const CommentContainer = styled.div`
+  border: solid 1px #cdcdcd;
+  border-radius: 3px;
+  padding: 25px;
+  margin-top: 10px;
+`;
 
-Show.propTypes = {
+const CommentBody = styled.div`
+  font-size: 16px;
+  color: #8f8f8f;
+  padding: 15px 0;
+`;
+
+class ParentComment extends React.Component {
+
+  render() {
+    const { content, children, createdAt, ideaId, commentId, authorId } = this.props;
+    return (
+      <div>
+        <Author authorId={authorId} createdAt={createdAt} message={messages.authorSaid} />
+        <CommentContainer>
+          <CommentBody>
+            <T value={content} />
+          </CommentBody>
+        </CommentContainer>
+        {children && children.map(((node) => <ChildComment key={node.id} node={node} />))}
+        <Authorize action={['comments', 'create']}>
+          <Editor parentId={commentId} ideaId={ideaId} />
+        </Authorize>
+      </div>
+    );
+  }
+}
+
+ParentComment.propTypes = {
   content: PropTypes.any,
   children: PropTypes.any,
   createdAt: PropTypes.string,
@@ -66,4 +84,4 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   };
 };
 
-export default preprocess(mapStateToProps, null, mergeProps)(Show);
+export default preprocess(mapStateToProps, null, mergeProps)(ParentComment);

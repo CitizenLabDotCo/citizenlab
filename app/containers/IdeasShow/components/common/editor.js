@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // components
-import { Button } from 'semantic-ui-react';
+import Button from 'components/UI/Button';
 import EditorForm from './editorForm';
-import DeleteButton from './deleteButton';
+// import DeleteButton from './deleteButton';
 import { FormattedMessage } from 'react-intl';
 
 // sagas
@@ -34,13 +34,15 @@ class Editor extends React.PureComponent {
     const { parentId, ideaId } = this.props;
     return (
       <div>
-        <div style={{ height: '50px' }}>
-          <Button style={{ float: 'right' }} onClick={this.toggleEditor}>
-            <FormattedMessage {...messages.commentRepplyButton} />
+        <div style={{ display: 'flex', padding: '12px', paddingRight: '25px' }}>
+          <div style={{ flexGrow: 1 }}></div>
+
+          <Button onClick={this.toggleEditor}>
+            <FormattedMessage {...messages.commentReplyButton} />
           </Button>
-          <DeleteButton commentId={parentId} ideaId={ideaId} >
+          {/* <DeleteButton commentId={parentId} ideaId={ideaId} >
             <FormattedMessage {...messages.commentDeleteButton} />
-          </DeleteButton>
+          </DeleteButton> */}
         </div>
         <div style={{ display }}>
           <EditorForm

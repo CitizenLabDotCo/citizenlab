@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 // components
 import ImageCarousel from 'components/ImageCarousel';
-import Author from './show/author';
+import Author from './show/Author';
 import Votes from './show/votes';
 import Status from './show/Status';
 import CommentsLine from './show/CommentsLine';
@@ -65,6 +65,13 @@ const SeparatorColumn = styled.div`
   border: solid #fafafa 1px;
 `;
 
+const SeparatorRow = styled.div`
+  height: 3px;
+  background: #eaeaea;
+  margin: 40px 0;
+  border: solid #fafafa 1px;
+`;
+
 const RightColumn = styled.div`
   flex: 0 0 280px;
   padding: 40px;
@@ -111,7 +118,8 @@ class Show extends React.PureComponent {
               <IdeaBody>
                 <T value={body_multiloc} />
               </IdeaBody>
-              <Comments />
+              <SeparatorRow />
+              <Comments ideaId={id} />
             </LeftColumn>
             <SeparatorColumn />
             <RightColumn>
@@ -122,7 +130,6 @@ class Show extends React.PureComponent {
               <Status statusId={statusId} />
               <CommentsLine count={comments_count}/>
               <SharingLine location={location} image={images[0] && images[0].attributes.versions.medium} />
-              {/* <ShareButtons location={location} image={images[0] && images[0].attributes.versions.medium} /> */}
             </RightColumn>
           </Content>
         </ContentContainer>
