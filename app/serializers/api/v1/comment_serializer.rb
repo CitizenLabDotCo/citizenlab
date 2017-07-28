@@ -14,7 +14,7 @@ class Api::V1::CommentSerializer < ActiveModel::Serializer
   end
 
   def cached_user_vote
-    @instance_options.dig(:vbci, object.id)
+    @instance_options.dig(:vbci, object.id) || object.votes.where(user_id: scope.id).first
   end
 
 end
