@@ -15,8 +15,16 @@ import { makeSelectSetting } from 'utils/tenant/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 
 // Services
-import { observeProject, IProjectData, updateProject, IProjectImageData, getProjectImages, IProjectUpdateData, uploadProjectImage } from 'services/projects';
 import { getBase64 } from 'services/image_tools';
+import { observeProject,
+  IProjectData,
+  updateProject,
+  IProjectImageData,
+  getProjectImages,
+  IProjectUpdateData,
+  uploadProjectImage,
+  deleteProjectImage,
+} from 'services/projects';
 
 // Components
 import Input from 'components/UI/Input';
@@ -150,6 +158,9 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
       const imageId = event.target.dataset.imageId;
       const projectId = project.id;
 
+      deleteProjectImage(projectId, imageId).then(() => {
+        this.setState({ projectImages: _.reject(this.state.projectImages, { id: imageId }) });
+      });
     }
   }
 
