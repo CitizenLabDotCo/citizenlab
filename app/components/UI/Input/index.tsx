@@ -43,13 +43,14 @@ const InputWrapper = styled.div`
   }
 `;
 
-type Props = {
+export type Props = {
   id?: string | undefined;
   value?: string | null | undefined;
   type: 'text' | 'email' | 'password';
   placeholder?: string | null | undefined;
   error?: string | null | undefined;
   onChange: (arg: string) => void;
+  onFocus?: (arg: any) => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;
 };
 
@@ -83,6 +84,7 @@ export default class Input extends React.PureComponent<Props, State> {
           placeholder={placeholder}
           value={value}
           onChange={this.handleOnChange}
+          onFocus={this.props.onFocus}
           ref={this.handleRef}
         />
         <Error

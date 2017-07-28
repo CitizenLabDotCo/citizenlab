@@ -38,7 +38,8 @@ import { createStructuredSelector } from 'reselect';
 import authSagas from 'utils/auth/sagas';
 import areasSagas from 'utils/areas/sagas';
 import tenantSaga from 'utils/tenant/sagas';
-import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
+import { makeSelectCurrentTenant, makeSelectSetting } from 'utils/tenant/selectors';
+
 import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { LOAD_CURRENT_USER_REQUEST } from 'utils/auth/constants';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
@@ -58,14 +59,14 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
   }
 
   content() {
-    const { currentTenant, location, children, loadUser } = this.props;
+    const { currentTenant, location, children, loadUser, colorMain, colorMenuBg } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (currentTenant) {
       const theme = {
         color: {
-          main: '#ef0071',
-          menuBg: '#fff',
+          main: colorMain || '#ef0071',
+          menuBg: colorMenuBg || '#fff',
         },
       };
 
@@ -124,10 +125,14 @@ App.propTypes = {
   location: PropTypes.object,
   loadCurrentTenantRequest: PropTypes.func.isRequired,
   loadUser: PropTypes.func.isRequired,
+  colorMain: PropTypes.string,
+  colorMenuBg: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   currentTenant: makeSelectCurrentTenant(),
+  colorMain: makeSelectSetting(['core', 'color_main']),
+  colorMenuBg: makeSelectSetting(['core', 'color_menu_bg']),
 });
 
 const actions = {

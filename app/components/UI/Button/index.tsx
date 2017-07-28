@@ -150,6 +150,7 @@ const SpinnerWrapper = styled.div`
 
 type Props = {
   text: string;
+  children?: any;
   size?: string;
   style?: 'primary' | 'secondary';
   icon?: string;
@@ -170,7 +171,7 @@ export default class Button extends React.PureComponent<Props, State> {
 
   render() {
     const { text, className, icon } = this.props;
-    let { size, style, loading, disabled } = this.props;
+    let { size, style, loading, disabled, children } = this.props;
 
     size = (size || '2');
     style = (style || 'primary');
@@ -187,7 +188,7 @@ export default class Button extends React.PureComponent<Props, State> {
       >
         <ButtonContent>
           {icon && <IconWrapper><Icon name={icon} /></IconWrapper>}
-          <ButtonText>{text}</ButtonText>
+          <ButtonText>{text || children}</ButtonText>
           {loading && <SpinnerWrapper><Spinner /></SpinnerWrapper>}
         </ButtonContent>
       </StyledButton>
