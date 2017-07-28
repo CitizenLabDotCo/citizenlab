@@ -1,14 +1,13 @@
 import * as React from 'react';
+import * as Dropzone from 'react-dropzone';
+import * as _ from 'lodash';
 import { media } from 'utils/styleUtils';
 import { darken } from 'polished';
-import * as Dropzone from 'react-dropzone';
 import Icon from 'components/UI/Icon';
 import Error from 'components/UI/Error';
 import { injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
-import * as _ from 'lodash';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 const UploadIcon = styled.div`
   height: 40px;
@@ -32,11 +31,13 @@ const UploadMessage = styled.span`
 
 const StyledDropzone = styled(Dropzone)`
   width: 100%;
-  min-height: 120px;
+  min-height: 174px;
   display: flex;
   flex-wrap: wrap;
   border-radius: 5px;
-  border: dashed 1.5px #999;
+  border-color: #999;
+  border-width: 1.5px;
+  border-style: dashed;
   padding: 20px;
   padding-bottom: 0px;
   cursor: pointer;
@@ -49,6 +50,25 @@ const StyledDropzone = styled(Dropzone)`
 
   &:hover {
     border-color: #000;
+  }
+`;
+
+const StyledDropzoneWrapper: any = styled.div`
+  &:hover,
+  &.dropzoneActive.dropzoneActive {
+    ${StyledDropzone} {
+      border-color: #000;
+    }
+
+    ${UploadIcon} {
+      svg {
+        fill: #000;
+      }
+    }
+
+    ${UploadMessage} {
+      color: #000;
+    }
   }
 `;
 
@@ -110,11 +130,11 @@ const RemoveUploadedItem = styled.div`
   cursor: pointer;
 
   &:hover svg {
-    fill: ${(props) => darken(0.2, (props.theme.color.main || '#000'))};
+    fill: ${props => darken(0.2, (props.theme.color.main || '#000'))};
   }
 
   svg {
-    fill: ${(props) => props.theme.color.main || '#777'};
+    fill: ${props => props.theme.color.main || '#777'};
   }
 `;
 
@@ -127,13 +147,15 @@ type Props = {
   placeholder?: string | null | undefined;
   onAdd: (arg: Dropzone.ImageFile) => void;
   onRemove: (arg: Dropzone.ImageFile) => void;
+  className?: string;
 };
 
 type State = {
-  error: string | null;
+  errorMessage: string | null;
+  dropzoneActive: boolean;
 };
 
-export default class Upload extends React.PureComponent<Props, State> {
+export class Upload extends React.PureComponent<Props, State> {
   private emptyArray: never[];
 
   public static defaultProps: Partial<Props> = {
@@ -147,34 +169,50 @@ export default class Upload extends React.PureComponent<Props, State> {
   constructor() {
     super();
     this.emptyArray = [];
-    this.state = { error: null };
+    this.state = {
+      errorMessage: null,
+      dropzoneActive: false
+    };
   }
 
   componentWillUnmount() {
     _(this.props.items).filter(item => item.preview).forEach(item => this.destroyPreview(item));
   }
 
-  handleOnDrop = (items: Dropzone.ImageFile[]) => {
+  onDrop = (items: Dropzone.ImageFile[]) => {
     const maxItemsCount = this.props.maxItems || 1;
     const oldItemsCount = _.size(this.props.items);
     const newItemsCount = _.size(items);
     const remainingItemsCount = maxItemsCount - oldItemsCount;
 
     if (maxItemsCount && newItemsCount > remainingItemsCount) {
-      items.slice(0, remainingItemsCount).forEach((item) => this.props.onAdd(item));
+      // items.slice(0, remainingItemsCount).forEach(item => this.props.onAdd(item));
+      // console.log('too many items');
+      const errorMessage = this.props.intl.formatMessage(messages.errorMaxItemCountExceeded, { maxItemsCount });
+      this.setState({ errorMessage });
+      setTimeout(() => this.setState({ errorMessage: null, dropzoneActive: false }), 6000);
     } else {
-      items.forEach((item) => this.props.onAdd(item));
+      this.setState({ errorMessage: null, dropzoneActive: false });
+      items.forEach(item => this.props.onAdd(item));
     }
   }
 
-  handleOnDropRejected = (items: Dropzone.ImageFile[]) => {
-    const { intl } = this.props;
-    const { formatMessage } = intl;
+  onDragEnter = () => {
+    this.setState({ dropzoneActive: true });
+  }
+
+  onDragLeave = () => {
+    this.setState({ dropzoneActive: false });
+  }
+
+  onDropRejected = (items: Dropzone.ImageFile[]) => {
+    const { formatMessage } = this.props.intl;
     const maxSize = this.props.maxSize || 5000000;
 
-    if (items.some((item) => item.size > maxSize)) {
-      this.setState({ error: formatMessage(messages.errorMaxSizeExceeded, { maxFileSize: maxSize / 1000000 }) });
-      setTimeout(() => this.setState({ error: null }), 5000);
+    if (items.some(item => item.size > maxSize)) {
+      const errorMessage = formatMessage(messages.errorMaxSizeExceeded, { maxFileSize: maxSize / 1000000 });
+      this.setState({ errorMessage, dropzoneActive: false });
+      setTimeout(() => this.setState({ errorMessage: null }), 6000);
     }
   }
 
@@ -193,8 +231,8 @@ export default class Upload extends React.PureComponent<Props, State> {
 
   render() {
     let { items, accept, placeholder } = this.props;
-    const { maxSize, maxItems } = this.props;
-    const { error } = this.state;
+    const { maxSize, maxItems, className } = this.props;
+    const { errorMessage, dropzoneActive } = this.state;
 
     items = (items || this.emptyArray);
     accept = (accept || '*');
@@ -202,36 +240,40 @@ export default class Upload extends React.PureComponent<Props, State> {
 
     return (
       <div>
-        <StyledDropzone
-          accept={accept}
-          maxSize={maxSize}
-          onDrop={this.handleOnDrop}
-          onDropRejected={this.handleOnDropRejected}
-        >
-          { !items || items.length < 1
-            ? (
-              <UploadMessageContainer>
-                <UploadIcon><Icon name="upload" /></UploadIcon>
-                <UploadMessage>{placeholder}</UploadMessage>
-              </UploadMessageContainer>
-            )
-            : (
-              items.map((item, index) => {
-                const _onClick = (event) => this.removeItem(item, event);
+        <StyledDropzoneWrapper className={dropzoneActive ? `${className} dropzoneActive` : className}>
+          <StyledDropzone
+            accept={accept}
+            maxSize={maxSize}
+            onDrop={this.onDrop}
+            onDragEnter={this.onDragEnter}
+            onDragLeave={this.onDragLeave}
+            onDropRejected={this.onDropRejected}
+          >
+            { !items || items.length < 1
+              ? (
+                <UploadMessageContainer>
+                  <UploadIcon><Icon name="upload" /></UploadIcon>
+                  <UploadMessage>{placeholder}</UploadMessage>
+                </UploadMessageContainer>
+              )
+              : (items.map((item, index) => {
+                  const _onClick = (event) => this.removeItem(item, event);
 
-                return (
-                  <UploadedItem key={index} style={{ backgroundImage: `url(${item.preview})` }}>
-                    <RemoveUploadedItem onClick={_onClick}>
-                      <Icon name="close" />
-                    </RemoveUploadedItem>
-                  </UploadedItem>
-                );
-              })
-            )
-          }
-        </StyledDropzone>
-        <Error text={error} />
+                  return (
+                    <UploadedItem key={index} style={{ backgroundImage: `url(${item.preview})` }}>
+                      <RemoveUploadedItem onClick={_onClick}>
+                        <Icon name="close" />
+                      </RemoveUploadedItem>
+                    </UploadedItem>
+                  );
+                }))
+            }
+          </StyledDropzone>
+        </StyledDropzoneWrapper>
+        <Error text={errorMessage} />
       </div>
     );
   }
 }
+
+export default injectIntl(Upload);

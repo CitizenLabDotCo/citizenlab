@@ -1,5 +1,6 @@
 import 'whatwg-fetch';
 import * as withQuery from 'with-query';
+import qs from 'qs';
 import { getJwt } from 'utils/auth/jwt';
 
 /**
@@ -10,9 +11,9 @@ import { getJwt } from 'utils/auth/jwt';
  *
  * @return {object}           The response data
  */
-export default function request(url, data, options, queryParameters) {
+export default function request<T>(url, data, options, queryParameters): Promise<T> {
   const jwt = getJwt();
-  const defaultOptions = {
+  const defaultOptions: { [key: string]: any } = {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -26,7 +27,8 @@ export default function request(url, data, options, queryParameters) {
     defaultOptions.body = JSON.stringify(data);
   }
 
-  const urlWithParams = (queryParameters ? withQuery(url, queryParameters) : url);
+  const urlParams = qs.stringify(queryParameters, { arrayFormat: 'brackets', addQueryPrefix: true });
+  const urlWithParams = `${url}${urlParams}`;
 
   return fetch(urlWithParams, Object.assign(defaultOptions, options))
     .then((response) => (
@@ -47,8 +49,7 @@ export default function request(url, data, options, queryParameters) {
       }
 
       const error = new Error(response.statusText);
-      error.json = json;
-      throw error;
+      throw { ...error, json };
     });
 }
 

@@ -1,16 +1,30 @@
 import * as React from 'react';
-import { darken } from 'polished';
+import * as _ from 'lodash';
+import { darken, lighten } from 'polished';
 import { ITheme } from 'typings';
 import Spinner from 'components/UI/Spinner';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import Icon from 'components/UI/Icon';
+import styled from 'styled-components';
 
 const ButtonText = styled.div`
   color: #fff;
   font-weight: 400;
 `;
 
-interface IStyledButton extends IButton, ITheme {}
+const IconWrapper = styled.div`
+  height: 22px;
+  margin-right: 10px;
+
+  svg {
+    fill: #000;
+  }
+`;
+
+const ButtonContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const StyledButton: any = styled.button`
   display: flex;
@@ -19,33 +33,78 @@ const StyledButton: any = styled.button`
   border-radius: 5px;
   position: relative;
   outline: none;
-  background: ${(props: IStyledButton) => props.theme.color.main || '#e0e0e0'};
   transition: background 150ms ease;
 
-  &.disabled {
-    background: #ccc;
-    cursor: not-allowed;
+  &:not(.disabled) {
+    cursor: pointer;
+  }
 
-    > ${ButtonText} {
-      color: #fff;
+  &.disabled {
+    cursor: not-allowed;
+  }
+
+  &.primary {
+    &:not(.disabled) {
+      background: ${(props: any) => props.theme.color.main || '#e0e0e0'};
+
+      ${ButtonText} {
+        color: ${(props: any) => '#fff' || '#000'};
+      }
+
+      &{IconWrapper} svg {
+        fill: ${(props: any) => '#fff' || '#000'};
+      }
+
+      &:hover {
+        background: ${(props: any) => darken(0.1, (props.theme.color.main || '#ccc'))};
+      }
+    }
+
+    &.disabled {
+      background: #d0d0d0;
+
+      ${ButtonText} {
+        color: #fff;
+      }
+
+      &{IconWrapper} svg {
+        fill: #fff;
+      }
     }
   }
 
-  > ${ButtonText} {
-    white-space: nowrap;
-    font-size: ${(props: IStyledButton) => {
-      switch (props.size) {
-        case '2':
-          return '17px';
-        case '3':
-          return '18px';
-        case '4':
-          return '19px';
-        default:
-          return '16px';
+  &.secondary {
+    &:not(.disabled) {
+      background: #eae9e9;
+
+      ${ButtonText} {
+        color: #676767;
       }
-    }};
-    padding: ${(props: IStyledButton) => {
+
+      &{IconWrapper} svg {
+        fill: #676767;
+      }
+
+      &:hover {
+        background: ${(props: any) => darken(0.1, '#eae9e9')};
+      }
+    }
+
+    &.disabled {
+      background: #ccc;
+
+      ${ButtonText} {
+        color: #fff;
+      }
+
+      &{IconWrapper} svg {
+        fill: #fff;
+      }
+    }
+  }
+
+  ${ButtonContent} {
+    padding: ${(props: any) => {
       switch (props.size) {
         case '2':
           return '9px 15px';
@@ -57,17 +116,28 @@ const StyledButton: any = styled.button`
           return '9px 14px';
       }
     }};
-    opacity: ${(props: IStyledButton) => props.loading ? 0 : 1}
-  }
 
-  &:not(.disabled):hover {
-    background: ${(props: IStyledButton) => darken(0.2, (props.theme.color.main || '#ccc'))};
+    ${ButtonText} {
+      white-space: nowrap;
+      font-size: ${(props: any) => {
+        switch (props.size) {
+          case '2':
+            return '17px';
+          case '3':
+            return '18px';
+          case '4':
+            return '19px';
+          default:
+            return '16px';
+        }
+      }};
+      opacity: ${(props: any) => props.loading ? 0 : 1}
+    }
   }
 `;
 
 const SpinnerWrapper = styled.div`
   display: inline-block;
-  position: absolute;
   position: absolute;
   top: 0;
   left: 0;
@@ -78,34 +148,50 @@ const SpinnerWrapper = styled.div`
   justify-content: center;
 `;
 
-const Button: React.SFC<IButton> = ({ text, size, loading, disabled, onClick, className }) => {
-  const handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
-    if (!disabled) {
-      onClick(event);
-    }
-  };
-
-  return (
-    <StyledButton
-      size={size}
-      loading={loading}
-      onClick={handleOnClick}
-      disabled={disabled}
-      className={`${disabled && 'disabled'} Button ${className}`}
-    >
-      <ButtonText>{text}</ButtonText>
-      {loading && <SpinnerWrapper><Spinner /></SpinnerWrapper>}
-    </StyledButton>
-  );
-};
-
-interface IButton {
+type Props = {
   text: string;
-  size: string;
-  loading: boolean;
-  disabled: boolean;
+  children?: any;
+  size?: string;
+  style?: 'primary' | 'secondary';
+  icon?: string;
+  loading?: boolean;
+  disabled?: boolean;
   onClick: (arg: React.FormEvent<HTMLButtonElement>) => void;
   className?: string;
-}
+};
 
-export default Button;
+type State = {};
+
+export default class Button extends React.PureComponent<Props, State> {
+  handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
+    if (!this.props.disabled) {
+      this.props.onClick(event);
+    }
+  }
+
+  render() {
+    const { text, className, icon } = this.props;
+    let { size, style, loading, disabled, children } = this.props;
+
+    size = (size || '2');
+    style = (style || 'primary');
+    loading = (_.isBoolean(loading) ? loading : false);
+    disabled = (_.isBoolean(disabled) ? disabled : false);
+
+    return (
+      <StyledButton
+        size={size}
+        loading={loading}
+        onClick={this.handleOnClick}
+        disabled={disabled}
+        className={`Button ${disabled && 'disabled'} ${style} ${className}`}
+      >
+        <ButtonContent>
+          {icon && <IconWrapper><Icon name={icon} /></IconWrapper>}
+          <ButtonText>{text || children}</ButtonText>
+          {loading && <SpinnerWrapper><Spinner /></SpinnerWrapper>}
+        </ButtonContent>
+      </StyledButton>
+    );
+  }
+}

@@ -2,8 +2,7 @@ import * as React from 'react';
 import Icon from 'components/UI/Icon';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import * as _ from 'lodash';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import styled from 'styled-components';
 
 interface IStyledErrorMessageInner {
   showBackground: boolean;
@@ -107,8 +106,8 @@ const StyledErrorMessage: any = styled.div`
     max-height: 100px;
     opacity: 1;
     will-change: opacity;
-    transition: max-height 250ms cubic-bezier(0.19, 1, 0.22, 1),
-                opacity 250ms cubic-bezier(0.19, 1, 0.22, 1);
+    transition: max-height 350ms cubic-bezier(0.19, 1, 0.22, 1),
+                opacity 350ms cubic-bezier(0.19, 1, 0.22, 1);
   }
 
   &.error-leave-active {
@@ -120,14 +119,14 @@ const StyledErrorMessage: any = styled.div`
 
 const Error: React.SFC<IError> = ({ text, size, marginTop, marginBottom, showIcon, showBackground, className }) => {
   const enterTime = 400;
-  const leaveTime = 250;
+  const leaveTime = 350;
   const opened = (_.isString(text) && !_.isEmpty(text));
 
   size = (size || '1');
   marginTop = (marginTop || '10px');
   marginBottom = (marginTop || '0px');
-  showIcon = (showIcon || false);
-  showBackground = (showBackground || false);
+  showIcon = (showIcon || true);
+  showBackground = (showBackground || true);
   className = (className || '');
 
   if (opened) {

@@ -16,12 +16,11 @@ export function ideasLoadingError(errorMessage) {
   };
 }
 
-export function loadIdeasRequest(nextPageNumber = 1, nextPageItemCount = 9, search, filters) {
+export function loadIdeasRequest(nextPageNumber = 1, nextPageItemCount = 9, filters) {
   return {
     type: LOAD_IDEAS_REQUEST,
     nextPageNumber,
     nextPageItemCount,
-    search,
     filters,
   };
 }
