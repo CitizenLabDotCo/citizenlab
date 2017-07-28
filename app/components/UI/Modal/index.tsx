@@ -115,6 +115,40 @@ type Props = {
 type State = {};
 
 export default class Modal extends React.PureComponent<Props, State> {
+  componentWillUnmount() {
+    this.onClose();
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (!this.props.opened && nextProps.opened) {
+      this.onOpen();
+    }
+
+    if (this.props.opened && !nextProps.opened) {
+      this.onClose();
+    }
+  }
+
+  onOpen = () => {
+    window.addEventListener('popstate', this.handlePopstateEvent);
+
+    if (!document.body.classList.contains('modal-active')) {
+      document.body.classList.add('modal-active');
+    }
+
+    if (this.props.parentUrl && this.props.url) {
+      window.history.pushState({ path: this.props.url }, '', this.props.url);
+    }
+  }
+
+  onClose = () => {
+    document.body.classList.remove('modal-active');
+    window.removeEventListener('popstate', this.handlePopstateEvent);
+
+    if (this.props.parentUrl && this.props.url) {
+      window.history.pushState({ path: this.props.parentUrl }, '', this.props.parentUrl);
+    }
+  }
 
   handlePopstateEvent = () => {
     if (location.href === this.props.parentUrl) {
@@ -123,52 +157,27 @@ export default class Modal extends React.PureComponent<Props, State> {
   }
 
   closeModal = () => {
-    document.body.classList.remove('modal-active');
-    window.removeEventListener('popstate', this.handlePopstateEvent);
-
-    if (this.props.parentUrl && this.props.url) {
-      window.history.pushState({ path: this.props.parentUrl }, '', this.props.parentUrl);
-    }
-
     this.props.close();
   }
 
   render() {
     const { children, opened, parentUrl, url } = this.props;
 
-    if (opened) {
-      window.addEventListener('popstate', this.handlePopstateEvent);
-
-      if (!document.body.classList.contains('modal-active')) {
-        document.body.classList.add('modal-active');
-      }
-
-      if (parentUrl && url) {
-        window.history.pushState({ path: url }, '', url);
-      }
-
-      return (
-        <CSSTransitionGroup
-          transitionName="modal"
-          transitionEnterTimeout={400}
-          transitionLeaveTimeout={400}
-        >
+    return (
+      <CSSTransitionGroup
+        transitionName="modal"
+        transitionEnterTimeout={400}
+        transitionLeaveTimeout={400}
+      >
+        {opened && 
           <ModalContainer>
             <ModalContent onClickOutside={this.closeModal}>
               <CloseButton onClick={this.closeModal}>Close</CloseButton>
               {children}
             </ModalContent>
           </ModalContainer>
-        </CSSTransitionGroup>
-      );
-    }
-
-    return (
-      <CSSTransitionGroup
-        transitionName="modal"
-        transitionEnterTimeout={400}
-        transitionLeaveTimeout={400}
-      />
+        }
+      </CSSTransitionGroup>
     );
   }
 }

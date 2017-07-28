@@ -64,10 +64,14 @@ export function observeCurrentUser() {
   return streams.create<IUser>({ apiEndpoint: `${API_PATH}/users/me` });
 }
 
-export function getAuthUser(): Promise<IUser | null> {
+export function getAuthUser(): Promise<IUser> {
   return request(`${API_PATH}/users/me`, null, null, null).then((response: IUser) => {
-    return (response && _.has(response, 'data.id') ? response : null);
+    if (response && _.has(response, 'data.id')) {
+      return response;
+    } else {
+      throw new Error('not authenticated');
+    }
   }).catch((error) => {
-    return null;
+    throw new Error('not authenticated');
   });
 }

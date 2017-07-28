@@ -7,11 +7,15 @@ export default defineMessages({
   },
   signInTitle: {
     id: 'app.containers.IdeasNewPage2.signInTitle',
-    defaultMessage: 'Sign In',
+    defaultMessage: 'Sign in to publish your idea',
   },
   signUpTitle: {
     id: 'app.containers.IdeasNewPage2.signUpTitle',
-    defaultMessage: 'Sign Up',
+    defaultMessage: 'Sign up to publish your idea',
+  },
+  createAnAccount: {
+    id: 'app.containers.IdeasNewPage2.createAnAccount',
+    defaultMessage: 'Create an account',
   },
   titleLabel: {
     id: 'app.containers.IdeasNewPage2.titleLabel',
@@ -79,6 +83,6 @@ export default defineMessages({
   },
   goBack: {
     id: 'app.containers.IdeasNewPage2.goBack',
-    defaultMessage: 'Go back',
+    defaultMessage: 'Idea',
   },
 });
