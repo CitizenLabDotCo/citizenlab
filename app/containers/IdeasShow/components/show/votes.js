@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 // components
 import FormComponent from 'components/forms/formComponent';
-
+import { Form } from 'semantic-ui-react';
 // import IdeaContent from '../IdeaContent';
 
 // store
@@ -19,7 +19,7 @@ const VotesContainer = styled.div`
   justify-content: flex-start;
 `;
 
-const Vote = styled.div`
+const Vote = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -138,20 +138,22 @@ class Votes extends FormComponent {
     const { votesUp, votesDown } = this.props;
     const { mode } = this.props;
     return (
-      <VotesContainer>
-        <VoteUp voted={mode === 'up'}>
-          <ThumbUpIcon height="100%" viewBox="0 0 24 24">
-            <path d="M0 0h24v24H0z" fill="none" /><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z" />
-          </ThumbUpIcon>
-          <VoteCount>{votesUp}</VoteCount>
-        </VoteUp>
-        <VoteDown voted={mode === 'down'}>
-          <ThumbDownIcon height="100%" viewBox="0 0 24 24">
-            <path fill="none" d="M0 0h24v24H0V0z" /><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm1 12c0 .268-.103.518-.287.703L9.827 21.59l-.35-.346c-.084-.086-.137-.2-.145-.32l.02-.205.938-4.517.25-1.203H3c-.535 0-.972-.422-1-.95l.002-.01.05-.493-.052-.05V12c0-.125.022-.24.06-.336l3.024-7.06C5.236 4.238 5.596 4 6 4h9c.552 0 1 .45 1 1v10zM19 3v12h4V3h-4zm3 11h-2V4h2v10z" />
-          </ThumbDownIcon>
-          <VoteCount>{votesDown}</VoteCount>
-        </VoteDown>
-      </VotesContainer>
+      <Form onSubmit={this.handleSubmit}>
+        <VotesContainer>
+          <VoteUp voted={mode === 'up'} onClick={this.handleVote(+1)}>
+            <ThumbUpIcon height="100%" viewBox="0 0 24 24">
+              <path d="M0 0h24v24H0z" fill="none" /><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z" />
+            </ThumbUpIcon>
+            <VoteCount>{votesUp}</VoteCount>
+          </VoteUp>
+          <VoteDown voted={mode === 'down'} onClick={this.handleVote(-1)}>
+            <ThumbDownIcon height="100%" viewBox="0 0 24 24">
+              <path fill="none" d="M0 0h24v24H0V0z" /><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm1 12c0 .268-.103.518-.287.703L9.827 21.59l-.35-.346c-.084-.086-.137-.2-.145-.32l.02-.205.938-4.517.25-1.203H3c-.535 0-.972-.422-1-.95l.002-.01.05-.493-.052-.05V12c0-.125.022-.24.06-.336l3.024-7.06C5.236 4.238 5.596 4 6 4h9c.552 0 1 .45 1 1v10zM19 3v12h4V3h-4zm3 11h-2V4h2v10z" />
+            </ThumbDownIcon>
+            <VoteCount>{votesDown}</VoteCount>
+          </VoteDown>
+        </VotesContainer>
+      </Form>
     );
   }
 }
