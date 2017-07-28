@@ -182,7 +182,26 @@ class Streams {
         } else if (!refetch && stream.type === 'array') {
           stream.observer.next((item) => ({
             ...item,
-            data: item.data.map((child) => (child.id === dataId ? object.data : child))
+            data: item.data.map(child => child.id === dataId ? object.data : child)
+          }));
+        } else if (_.isFunction(stream.fetch)) {
+          stream.fetch();
+        }
+      } else {
+        console.log('observer is null');
+      }
+    });
+  }
+
+  delete(dataId: string, refetch: boolean = false) {
+    this.list.filter(stream => stream.dataIds[dataId]).forEach((stream) => {
+      if (stream.observer !== null) {
+        if (!refetch && stream.type === 'single') {
+          stream.observer.next(undefined);
+        } else if (!refetch && stream.type === 'array') {
+          stream.observer.next((item) => ({
+            ...item,
+            data: item.data.filter(child => child.id !== dataId)
           }));
         } else if (_.isFunction(stream.fetch)) {
           stream.fetch();

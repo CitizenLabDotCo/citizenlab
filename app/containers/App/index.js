@@ -25,7 +25,7 @@ import Navbar from './Navbar';
 import messages from './messages';
 import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 // components - authorizations
 import Authorize, { Else } from 'utils/containers/authorize';
 
@@ -43,8 +43,11 @@ import { loadCurrentUserRequest } from 'utils/auth/actions';
 import { LOAD_CURRENT_USER_REQUEST } from 'utils/auth/constants';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
 
-class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+const Container = styled.div`
+  padding-top: 65px;
+`;
 
+class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
     this.key = 0;
@@ -68,7 +71,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
 
       return (
         <ThemeProvider theme={theme}>
-          <div>
+          <Container>
             <Helmet
               title={formatMessage(messages.helmetTitle)}
               meta={[
@@ -85,7 +88,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
               withError={false}
             >
               <Authorize action={['routes', 'admin']} resource={location.pathname}>
-                <div style={{ paddingTop: '69px' }}>
+                <div>
                   {children}
                 </div>
                 <Else>
@@ -93,7 +96,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
                 </Else>
               </Authorize>
             </Loader>
-          </div>
+          </Container>
         </ThemeProvider>
       );
     } else { // eslint-disable-line no-else-return
