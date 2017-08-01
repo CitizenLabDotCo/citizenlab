@@ -38,7 +38,7 @@ export interface IPhases {
   data: IPhaseData[];
 }
 
-interface IUpdatedPhase {
+export interface IUpdatedPhase {
   project_id?: string;
   title_multiloc?: { [key: string]: string };
   description_multiloc?: { [key: string]: string };
