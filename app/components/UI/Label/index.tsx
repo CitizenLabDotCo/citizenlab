@@ -12,9 +12,9 @@ const StyledLabel = styled.label`
 const Label: React.SFC<ILabel> = ({ value, htmlFor, children }) => <StyledLabel htmlFor={htmlFor}>{children || value}</StyledLabel>;
 
 interface ILabel {
-  value: string;
+  value?: string;
   htmlFor?: string;
-  children?: any,
+  children?: any;
 }
 
 export default Label;
