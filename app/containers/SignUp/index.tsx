@@ -78,34 +78,15 @@ type State = {
   showStep2: boolean;
 };
 
-interface IState {
-  areas?: IOption[] | null;
-  years?: IOption[];
-  firstName?: string | null;
-  lastName?: string | null;
-  email?: string | null;
-  password?: string | null;
-  yearOfBirth?: IOption | null;
-  gender?: IOption | null;
-  area?: IOption | null;
-  processing?: boolean;
-  firstNameError?: string | null;
-  lastNameError?: string | null;
-  emailError?: string | null;
-  passwordError?: string | null;
-  signUpError?: string | null;
-  showStep1?: boolean;
-  showStep2?: boolean;
-}
-
 export default class SignUp extends React.PureComponent<Props, State> {
-  state$: IStateStream<IState>;
+  state$: IStateStream<State>;
   areas$: IStream<IAreas>;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    this.state = {
+    this.areas$ = observeAreas();
+    this.state$ = stateStream.observe<State>('SignUp', {
       areas: null,
       years: [...Array(118).keys()].map((i) => ({ value: i + 1900, label: `${i + 1900}` })),
       firstName: null,
@@ -123,9 +104,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
       signUpError: null,
       showStep1: true,
       showStep2: false
-    };
-    this.areas$ = observeAreas();
-    this.state$ = stateStream.observe<IState>('SignUp', this.state);
+    });
     this.subscriptions = [];
   }
 

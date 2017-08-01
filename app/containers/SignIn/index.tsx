@@ -18,6 +18,13 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const Banner = styled.div`
+  width: 511px;
+  height: 712px;
+  border-radius: 5px;
+  background-color: #fff;
+`;
+
 const Form = styled.div`
   width: 100%;
 `;
@@ -42,30 +49,20 @@ type State = {
   signInError: string | null;
 };
 
-interface IState {
-  email?: string | null;
-  password?: string | null;
-  processing?: boolean;
-  emailError?: string | null;
-  passwordError?: string | null;
-  signInError?: string | null;
-}
-
 export default class SignIn extends React.PureComponent<Props, State> {
-  state$: IStateStream<IState>;
+  state$: IStateStream<State>;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    this.state = {
+    this.state$ = stateStream.observe<State>('SignIn', {
       email: null,
       password: null,
       processing: false,
       emailError: null,
       passwordError: null,
       signInError: null,
-    };
-    this.state$ = stateStream.observe<IState>('SignIn', this.state);
+    });
     this.subscriptions = [];
   }
 
@@ -114,7 +111,7 @@ export default class SignIn extends React.PureComponent<Props, State> {
   render() {
     const { formatMessage } = this.props.intl;
     const { email, password, processing, emailError, passwordError, signInError } = this.state;
-    const hasAllRequiredContent = [email, password].every((value) => _.isString(value) && !_.isEmpty(value));
+    const hasAllRequiredContent = [email, password].every(value => _.isString(value) && !_.isEmpty(value));
 
     return (
       <Container>

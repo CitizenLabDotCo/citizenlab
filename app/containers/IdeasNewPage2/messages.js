@@ -67,11 +67,11 @@ export default defineMessages({
   },
   imageUploadLabel: {
     id: 'app.containers.IdeasNewPage2.imagesLabel',
-    defaultMessage: 'Image (optional, max. 5 Mb)',
+    defaultMessage: 'Image (optional)',
   },
   imageUploadPlaceholder: {
     id: 'app.containers.IdeasNewPage2.uploadPlaceholder',
-    defaultMessage: 'Optionally upload an image for your idea',
+    defaultMessage: 'Optionally upload an image that represents your idea',
   },
   submit: {
     id: 'app.containers.IdeasNewPage2.submit',
@@ -83,6 +83,6 @@ export default defineMessages({
   },
   goBack: {
     id: 'app.containers.IdeasNewPage2.goBack',
-    defaultMessage: 'Idea',
+    defaultMessage: 'My idea',
   },
 });

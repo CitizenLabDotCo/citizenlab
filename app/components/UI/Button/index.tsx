@@ -170,8 +170,8 @@ export default class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { text, className, icon } = this.props;
-    let { size, style, loading, disabled, children } = this.props;
+    const { text, className, icon, children } = this.props;
+    let { size, style, loading, disabled } = this.props;
 
     size = (size || '2');
     style = (style || 'primary');

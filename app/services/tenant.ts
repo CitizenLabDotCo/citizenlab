@@ -60,6 +60,6 @@ export interface ITenant {
   data: ITenantData;
 }
 
-export function observeCurrentTenant(userId: string, streamParams: IStreamParams<ITenant> | null = null) {
+export function observeCurrentTenant(streamParams: IStreamParams<ITenant> | null = null) {
   return streams.create<ITenant>({ apiEndpoint: `${apiEndpoint}/current`, ...streamParams });
 }
