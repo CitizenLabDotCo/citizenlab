@@ -16,14 +16,16 @@ import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 
 // Services
 import { getBase64 } from 'services/image_tools';
-import { observeProject,
-  IProjectData,
-  updateProject,
-  IProjectImageData,
-  getProjectImages,
-  IProjectUpdateData,
-  uploadProjectImage,
+import {
   deleteProjectImage,
+  getProjectImages,
+  INewProjectData,
+  IProjectData,
+  IProjectImageData,
+  IProjectUpdateData,
+  observeProject,
+  updateProject,
+  uploadProjectImage,
 } from 'services/projects';
 
 // Components
@@ -73,6 +75,9 @@ const SaveButton = styled.button`
   padding: 1rem 2rem;
 `;
 
+function isNewProject(project: IProjectData | INewProjectData): project is INewProjectData {
+  return (project as INewProjectData).new !== undefined;
+}
 
 // Component typing
 type Props = {
@@ -87,7 +92,7 @@ type Props = {
 
 type State = {
   loading: boolean,
-  project: IProjectData | null,
+  project: IProjectData | INewProjectData | null,
   uploadedImages: any,
   uploadedHeader: string | null,
   editorState: EditorState,
@@ -132,6 +137,19 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
           loading: false,
         });
       });
+    } else {
+      const project = {
+        new: true,
+        attributes: {
+          title_multiloc: { [this.props.userLocale]: '' },
+          description_multiloc: { [this.props.userLocale]: '' },
+        },
+      };
+
+      this.setState({
+        project,
+        loading: false,
+      });
     }
   }
 
@@ -173,7 +191,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
   handleProjectImageUpload = async (image) => {
     const { project, projectImages } = this.state;
     const base64 = await getBase64(image) as string;
-    if (project && project.id) {
+    if (project && !isNewProject(project)) {
       uploadProjectImage(project.id, base64).then((response: any) => {
         projectImages.push(response.data);
 
@@ -185,7 +203,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
   deletePicture = (event) => {
     const { project } = this.state;
 
-    if (project) {
+    if (project && !isNewProject(project)) {
       const imageId = event.target.dataset.imageId;
       const projectId = project.id;
 
@@ -198,7 +216,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
   saveProject = () => {
     const projectData = this.state.project;
 
-    if (projectData) {
+    if (projectData && !isNewProject(projectData)) {
       this.setState({ loading: true });
 
       const project  = {
@@ -212,9 +230,10 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
       }
 
       updateProject(project);
+    } else {
+      console.log(projectData);
     }
   }
-
 
   render() {
     const { project, uploadedImages, editorState, uploadedHeader, loading, projectImages } = this.state;
