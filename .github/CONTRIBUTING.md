@@ -1,122 +1,68 @@
-# Contributing to react-boilerplate
+## <a name="commit"></a> Git Commit Guidelines
 
-Love react-boilerplate and want to help? Thanks so much, there's something to do for everybody!
+We have very precise rules over how our git commit messages can be formatted.  This leads to **more
+readable messages** that are easy to follow when looking through the **project history**.  But also,
+we use the git commit messages to **generate the AngularJS change log**.
 
-Please take a moment to review this document in order to make the contribution process easy and effective for everyone involved.
+The commit message formatting can be added using a typical git workflow or through the use of a CLI
+wizard ([Commitizen](https://github.com/commitizen/cz-cli)). To use the wizard, run `yarn run commit`
+in your terminal after staging your changes in git.
 
-Following these guidelines helps to communicate that you respect the time of the developers managing and developing this open source project. In return, they should reciprocate that respect in addressing your issue or assessing patches and features.
+### Commit Message Format
+Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
+format that includes a **type**, a **scope** and a **subject**:
 
-## Using the issue tracker
+```
+<type>(<scope>): <subject>
+<BLANK LINE>
+<body>
+<BLANK LINE>
+<footer>
+```
 
-The [issue tracker](https://github.com/react-boilerplate/react-boilerplate/issues) is
-the preferred channel for [bug reports](#bugs), [features requests](#features)
-and [submitting pull requests](#pull-requests).
+The **header** is mandatory and the **scope** of the header is optional.
 
-<a name="bugs"></a>
-## Bug reports
+Any line of the commit message cannot be longer 100 characters! This allows the message to be easier
+to read on GitHub as well as in various git tools.
 
-A bug is a _demonstrable problem_ that is caused by the code in the repository.
-Good bug reports are extremely helpful - thank you!
+### Revert
+If the commit reverts a previous commit, it should begin with `revert: `, followed by the header of the reverted commit.
+In the body it should say: `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
 
-Guidelines for bug reports:
+### Type
+Must be one of the following:
 
-1. **Use the GitHub issue search** &mdash; check if the issue has already been reported.
+* **feat**: A new feature
+* **fix**: A bug fix
+* **docs**: Documentation only changes
+* **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing
+  semi-colons, etc)
+* **refactor**: A code change that neither fixes a bug nor adds a feature
+* **perf**: A code change that improves performance
+* **test**: Adding missing or correcting existing tests
+* **chore**: Changes to the build process or auxiliary tools and libraries such as documentation
+  generation
 
-2. **Check if the issue has been fixed** &mdash; try to reproduce it using the latest `master` or development branch in the repository.
+### Scope
+The scope could be anything specifying place of the commit change. For example `$location`,
+`$browser`, `$compile`, `$rootScope`, `ngHref`, `ngClick`, `ngView`, etc...
 
-3. **Isolate the problem** &mdash; ideally create a [reduced test case](https://css-tricks.com/reduced-test-cases/) and a live example.
+You can use `*` when the change affects more than a single scope.
 
-A good bug report shouldn't leave others needing to chase you up for more information. Please try to be as detailed as possible in your report. What is your environment? What steps will reproduce the issue? What browser(s) and OS
-experience the problem? What would you expect to be the outcome? All these details will help people to fix any potential bugs.
+### Subject
+The subject contains succinct description of the change:
 
-Example:
+* use the imperative, present tense: "change" not "changed" nor "changes"
+* don't capitalize first letter
+* no dot (.) at the end
 
-> Short and descriptive example bug report title
->
-> A summary of the issue and the browser/OS environment in which it occurs. If
-> suitable, include the steps required to reproduce the bug.
->
-> 1. This is the first step
-> 2. This is the second step
-> 3. Further steps, etc.
->
-> `<url>` - a link to the reduced test case
->
-> Any other information you want to share that is relevant to the issue being
-> reported. This might include the lines of code that you have identified as
-> causing the bug, and potential solutions (and your opinions on their
-> merits).
+### Body
+Just as in the **subject**, use the imperative, present tense: "change" not "changed" nor "changes".
+The body should include the motivation for the change and contrast this with previous behavior.
 
+### Footer
+The footer should contain any information about **Breaking Changes** and is also the place to
+[reference GitHub issues that this commit closes][closing-issues].
 
-<a name="features"></a>
-## Feature requests
-
-Feature requests are welcome. But take a moment to find out whether your idea fits with the scope and aims of the project. It's up to *you* to make a strong case to convince the project's developers of the merits of this feature. Please provide as much detail and context as possible.
-
-
-<a name="pull-requests"></a>
-## Pull requests
-
-Good pull requests - patches, improvements, new features - are a fantastic
-help. They should remain focused in scope and avoid containing unrelated
-commits.
-
-**Please ask first** before embarking on any significant pull request (e.g.
-implementing features, refactoring code, porting to a different language),
-otherwise you risk spending a lot of time working on something that the
-project's developers might not want to merge into the project.
-
-Please adhere to the coding conventions used throughout a project (indentation,
-accurate comments, etc.) and any other requirements (such as test coverage).
-
-Since the `master` branch is what people actually use in production, we have a
-`dev` branch that unstable changes get merged into first. Only when we
-consider that stable we merge it into the `master` branch and release the
-changes for real.
-
-Adhering to the following process is the best way to get your work
-included in the project:
-
-1. [Fork](https://help.github.com/articles/fork-a-repo/) the project, clone your fork, and configure the remotes:
-
-   ```bash
-   # Clone your fork of the repo into the current directory
-   git clone https://github.com/<your-username>/react-boilerplate.git
-   # Navigate to the newly cloned directory
-   cd react-boilerplate
-   # Assign the original repo to a remote called "upstream"
-   git remote add upstream https://github.com/react-boilerplate/react-boilerplate.git
-   ```
-
-2. If you cloned a while ago, get the latest changes from upstream:
-
-   ```bash
-   git checkout dev
-   git pull upstream dev
-   ```
-
-3. Create a new topic branch (off the `dev` branch) to contain your feature, change, or fix:
-
-   ```bash
-   git checkout -b <topic-branch-name>
-   ```
-
-4. Commit your changes in logical chunks. Please adhere to these [git commit message guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) or your code is unlikely be merged into the main project. Use Git's [interactive rebase](https://help.github.com/articles/about-git-rebase/) feature to tidy up your commits before making them public.
-
-5. Locally merge (or rebase) the upstream dev branch into your topic branch:
-
-   ```bash
-   git pull [--rebase] upstream dev
-   ```
-
-6. Push your topic branch up to your fork:
-
-   ```bash
-   git push origin <topic-branch-name>
-   ```
-
-7. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/)
-    with a clear title and description.
-
-**IMPORTANT**: By submitting a patch, you agree to allow the project
-owners to license your work under the terms of the [MIT License](https://github.com/react-boilerplate/react-boilerplate/blob/master/LICENSE.md).
+**Breaking Changes** should start with the word `BREAKING CHANGE:` with a space or two newlines.
+The rest of the commit message is then used for this.
