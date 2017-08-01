@@ -3,10 +3,12 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { injectTFunc } from 'utils/containers/t/utils';
-import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
 import styled from 'styled-components';
+
+import messages from '../messages';
 
 // Store
 import { connect } from 'react-redux';
@@ -32,9 +34,10 @@ import {
 import Input from 'components/UI/Input';
 import Editor from 'components/UI/Editor';
 import Upload from 'components/UI/Upload';
+import Button from 'components/UI/Button';
 
 // Style
-const FormWrapper = styled.div`
+const FormWrapper = styled.form`
   img {
     max-width: 100%;
   }
@@ -213,7 +216,9 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
     }
   }
 
-  saveProject = () => {
+  saveProject = (event) => {
+    event.preventDefault();
+
     const projectData = this.state.project;
 
     if (projectData && !isNewProject(projectData)) {
@@ -240,11 +245,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
     const { userLocale } = this.props;
 
     return (
-      <FormWrapper>
-        {loading &&
-          <div>Loading…</div>
-        }
-
+      <FormWrapper onSubmit={this.saveProject}>
         <FieldWrapper>
           <label htmlFor="">Title</label>
           <Input
@@ -303,7 +304,9 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
           />
         </FieldWrapper>
 
-        <SaveButton onClick={this.saveProject}>Save</SaveButton>
+        <Button loading={loading}>
+          <FormattedMessage {...messages.saveProject} />
+        </Button>
       </FormWrapper>
     );
   }
