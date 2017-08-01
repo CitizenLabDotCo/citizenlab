@@ -96,8 +96,12 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
     }
     if (this.state.phase) {
       this.setState({ saving: true });
-      updatePhase(this.state.phase.id, this.state.attributeDiff).then(() => {
+      updatePhase(this.state.phase.id, this.state.attributeDiff)
+      .then(() => {
         this.setState({ saving: false });
+      })
+      .catch((errors) => {
+        // TODO: Update state with errors from the API
       });
     }
   }
