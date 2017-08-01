@@ -12,7 +12,7 @@ type Props = {
 type State = {
 };
 
-export default class AdminProjectEditTimeline extends React.Component {
+export default class AdminProjectTimelineIndex extends React.Component {
   render() {
     return (
       <div>Timeline tab</div>
