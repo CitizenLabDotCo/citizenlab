@@ -96,6 +96,23 @@ export default (injectReducer) => ({
           },
         },
         {
+          path: '/admin/projects/new',
+          name: 'admin projects create new',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/Admin/projects/edit/general'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
           path: '/admin/projects/:slug/events',
           name: 'admin projects edit events',
           getComponent(nextState, cb) {

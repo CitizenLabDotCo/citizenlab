@@ -1,4 +1,4 @@
-import { IRelationship } from 'typings.d';
+import { IRelationship, Multiloc } from 'typings.d';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import request from 'utils/request';
@@ -29,6 +29,15 @@ export interface IProjectData {
     project_images: {
       data: IRelationship[]
     }
+  };
+}
+
+export interface INewProjectData {
+  new: boolean;
+  attributes: {
+    title_multiloc: Multiloc;
+    description_multiloc: Multiloc;
+    header_bg?: any;
   };
 }
 
