@@ -19,6 +19,7 @@ import { injectTFunc } from 'utils/containers/t/utils';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 
 // Component typing
 type Props = {
@@ -117,6 +118,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
             value={this.props.tFunc(phaseAttrs.title_multiloc)}
             onChange={this.createMultilocUpdater('title_multiloc')}
           />
+          <Error text={this.state.errors.title.join(', ')} />
 
           <Button loading={this.state.saving} ><FormattedMessage {...messages.saveLabel} /></Button>
         </form>
