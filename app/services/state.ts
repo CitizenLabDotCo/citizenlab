@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import shallowCompare from 'utils/shallowCompare';
 
 export interface IStateStream<T> {
-  next: (state: T | ((arg: T) => T)) => void;
+  next: (state: Partial<T> | ((state: T) => Partial<T>)) => void;
   observable: Rx.Observable<T>;
 }
 
@@ -19,7 +19,7 @@ class State {
   observe<T>(store: string, initialState?: T): IStateStream<T> {
     if (!this.stream[store]) {
       this.stream[store] = {
-        next: (state: T | ((arg: T) => T)) => { this.behaviorSubject.next({ store, state }); },
+        next: (state: Partial<T> | ((state: T) => Partial<T>)) => { this.behaviorSubject.next({ store, state }); },
         observable: this.behaviorSubject
           .startWith({ store, state: initialState })
           .filter(data => _.has(data, 'store') && data.store === store)
