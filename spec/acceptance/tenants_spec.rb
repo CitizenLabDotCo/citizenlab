@@ -27,6 +27,8 @@ resource "Tenants" do
       parameter :logo, "Base64 encoded logo"
       parameter :header_bg, "Base64 encoded header"
     end
+    ValidationErrorHelper.new.error_fields(self, Tenant)
+
 
     let(:id) { Tenant.current.id }
     let(:logo) { base64_encoded_image("logo.png", "image/png")}
@@ -57,7 +59,7 @@ resource "Tenants" do
           }
         }
       }
-      example "Updating the tenant with unsupported features fails", document: false do
+      example "[error] Updating the tenant with unsupported features fails", document: false do
         do_request
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
@@ -74,7 +76,7 @@ resource "Tenants" do
           }
         }
       }
-      example "Updating the tenant with unsupported settings fails", document: false do
+      example "[error] Updating the tenant with unsupported settings fails", document: false do
         do_request
         expect(response_status).to eq 422
         json_response = json_parse(response_body)

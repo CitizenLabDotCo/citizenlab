@@ -17,7 +17,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def create?
-    record.draft? || user
+    record.draft? || (user && (record.author_id == user.id || user.admin?))
   end
 
   def show?

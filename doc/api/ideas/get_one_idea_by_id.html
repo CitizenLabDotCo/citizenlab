@@ -118,12 +118,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzgsInN1YiI6IjlhOGE4N2MyLTdkNzAtNDIzYi05YTM2LTBhOTA2OWY0MGU5NyJ9.Mv0Tfm60bjLpqx32ZIs5rqzkC_Cd4g_AUwlbd9peWjc
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMTMsInN1YiI6ImNmMzE1YWE5LThmMTUtNDk5YS04MjY0LWMxMmEyZjRhNDM1ZCJ9.JFElpxfBHs83nUhiIKIiggcC0ZVemDmMiMd_3GWIjqw
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas/78148ab1-2a87-4c62-9ecb-8687185da508</pre>
+          <pre class="request route highlight">GET api/v1/ideas/c4561f61-bf35-42fe-aa72-baa184981172</pre>
 
 
 
@@ -131,18 +131,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;00cc3ee967c2c92a53ffca0b6a43c698&quot;
+ETag: W/&quot;57f8b83b6727367bfb4be24c9c631d76&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 2a9feda5-f8d8-463b-8f2e-22f6d5f0cf5f
-X-Runtime: 0.028313
+X-Request-Id: 682aa30b-a10c-4397-a27a-8554b37f5e87
+X-Runtime: 0.038029
 Vary: Origin
-Content-Length: 1553</pre>
+Content-Length: 1654</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;78148ab1-2a87-4c62-9ecb-8687185da508&quot;,
+    &quot;id&quot;: &quot;c4561f61-bf35-42fe-aa72-baa184981172&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -153,16 +153,16 @@ Content-Length: 1553</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Bianka Roberts&quot;,
+      &quot;author_name&quot;: &quot;Rodolfo Bechtelar&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
       &quot;comments_count&quot;: 0,
       &quot;location_point_geojson&quot;: null,
       &quot;location_description&quot;: null,
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:18.623Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:18.623Z&quot;,
-      &quot;published_at&quot;: &quot;2017-07-11T21:37:18.623Z&quot;
+      &quot;created_at&quot;: &quot;2017-08-02T16:01:52.936Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-08-02T16:01:52.936Z&quot;,
+      &quot;published_at&quot;: &quot;2017-08-02T16:01:52.936Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -182,14 +182,20 @@ Content-Length: 1553</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;93943f8d-bf50-44ec-b220-c354a924e524&quot;,
+          &quot;id&quot;: &quot;04745930-2360-4936-ac43-dba20c06bab8&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;6933324a-2cff-40d7-abb4-74c93aa1fabc&quot;,
+          &quot;id&quot;: &quot;98a423ea-a6b6-409a-bc5f-e4f55ac33ddc&quot;,
           &quot;type&quot;: &quot;projects&quot;
+        }
+      },
+      &quot;idea_status&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;05769127-df0a-42bf-850d-9dd1e8d77464&quot;,
+          &quot;type&quot;: &quot;idea_statuses&quot;
         }
       },
       &quot;user_vote&quot;: {
@@ -199,25 +205,25 @@ Content-Length: 1553</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;93943f8d-bf50-44ec-b220-c354a924e524&quot;,
+      &quot;id&quot;: &quot;04745930-2360-4936-ac43-dba20c06bab8&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Bianka&quot;,
-        &quot;last_name&quot;: &quot;Roberts&quot;,
-        &quot;slug&quot;: &quot;bianka-roberts&quot;,
+        &quot;first_name&quot;: &quot;Rodolfo&quot;,
+        &quot;last_name&quot;: &quot;Bechtelar&quot;,
+        &quot;slug&quot;: &quot;rodolfo-bechtelar&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/93943f8d-bf50-44ec-b220-c354a924e524/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/93943f8d-bf50-44ec-b220-c354a924e524/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/93943f8d-bf50-44ec-b220-c354a924e524/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/04745930-2360-4936-ac43-dba20c06bab8/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/04745930-2360-4936-ac43-dba20c06bab8/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/04745930-2360-4936-ac43-dba20c06bab8/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:18.610Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:18.610Z&quot;
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:52.913Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:52.913Z&quot;
       }
     }
   ]

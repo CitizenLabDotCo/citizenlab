@@ -138,6 +138,14 @@ table th, table td {
                 </td>
               </tr>
               <tr>
+                <td>
+                    <span class="name">idea[idea_status_id]</span>
+                </td>
+                <td>
+                  <span class="description">The status of the idea, only allowed for admins</span>
+                </td>
+              </tr>
+              <tr>
                 <td class="required">
                     <span class="name">idea[publication_status]</span>
                 </td>
@@ -196,12 +204,79 @@ table th, table td {
             </tbody>
           </table>
 
+          <h3>Response Fields</h3>
+          <table class="response-fields table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">errors[title_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[body_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[publication_status]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;inclusion&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[author]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[author_name]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[idea_status]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[slug]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;invalid&#39; }</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzksInN1YiI6IjU3YWE1YjI0LWQ1NWUtNDc2YS04MWNhLTU2YmE3NjFlNmI3NyJ9.LvSHWnVoKncKgPZx0aRM1NpErvbAINEidpkmtMmyHj8
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMTQsInN1YiI6ImFjZmVkYTc4LTJhMDAtNDMwNC05MDQ4LWE2NTRjOGY3ZTFjNyJ9.ytqvah44u-8EtyS3abVGDgLzwG0wcEKf0kanvUk3wBY
 Host: example.org
 Cookie: </pre>
 
@@ -210,24 +285,24 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"idea":{"project_id":"4f952d4c-e02f-47e4-8315-1a95a23468c9","author_id":"07a7ce63-b905-4081-ad53-b069ff7fc412","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"},"topic_ids":["df92e759-027c-4867-88f8-dcd7d880ae68","b7cc66a1-5c5f-4674-8472-5d0994b8c732"],"area_ids":["764f1a29-1302-44e2-a850-88f50db55bef","52c80f1e-2bcf-48ab-ba88-5927cabbb4a2"],"location_point_geojson":{"type":"Point","coordinates":[51.11520776293035,3.921154106874878]},"location_description":"Stanley Road 4"}}</pre>
+            <pre class="request body">{"idea":{"project_id":"e43dd776-cabe-4ebb-865e-a1d3b798aea2","publication_status":"published","title_multiloc":{"en":"Plant more trees","nl":"Plant meer bomen"},"body_multiloc":{"en":"\u003cp\u003eIt would improve the air quality!\u003c/p\u003e","nl":"\u003cp\u003eDe luchtkwaliteit zou er gevoelig op vooruitgaan!\u003c/p\u003e"},"topic_ids":["25734dba-8b70-4f90-affe-b7f1fec4be22","d6865abf-8c75-4cae-b96a-61f0fc04a61b"],"area_ids":["8e74f012-3c4c-4d34-9302-ebb12600c076","fdef2a95-54c8-4d0e-b0ae-43e3eec91e12"],"location_point_geojson":{"type":"Point","coordinates":[51.11520776293035,3.921154106874878]},"location_description":"Stanley Road 4"}}</pre>
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;4883dc791074cf6771ef40fedf68a8a4&quot;
+ETag: W/&quot;11b73ab2e2a9b495e8ffe0d785e9a453&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 584bdfe7-3613-4ca2-ba18-b4a0ee8db7cc
-X-Runtime: 0.069568
+X-Request-Id: 435de8fe-a2a9-4747-aac7-e75b3f0a0a59
+X-Runtime: 0.086156
 Vary: Origin
-Content-Length: 3474</pre>
+Content-Length: 3682</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;f87c887d-a182-4f6b-9a0b-c9cd41a706b3&quot;,
+    &quot;id&quot;: &quot;daac9622-e342-4f9a-9f5d-cb5ecabbbf14&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -238,7 +313,7 @@ Content-Length: 3474</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Miller Yost&quot;,
+      &quot;author_name&quot;: &quot;Mariela Klein&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
@@ -251,19 +326,19 @@ Content-Length: 3474</pre>
         ]
       },
       &quot;location_description&quot;: &quot;Stanley Road 4&quot;,
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:19.226Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:19.226Z&quot;,
-      &quot;published_at&quot;: &quot;2017-07-11T21:37:19.226Z&quot;
+      &quot;created_at&quot;: &quot;2017-08-02T16:01:54.411Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-08-02T16:01:54.411Z&quot;,
+      &quot;published_at&quot;: &quot;2017-08-02T16:01:54.411Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
         &quot;data&quot;: [
           {
-            &quot;id&quot;: &quot;df92e759-027c-4867-88f8-dcd7d880ae68&quot;,
+            &quot;id&quot;: &quot;25734dba-8b70-4f90-affe-b7f1fec4be22&quot;,
             &quot;type&quot;: &quot;topics&quot;
           },
           {
-            &quot;id&quot;: &quot;b7cc66a1-5c5f-4674-8472-5d0994b8c732&quot;,
+            &quot;id&quot;: &quot;d6865abf-8c75-4cae-b96a-61f0fc04a61b&quot;,
             &quot;type&quot;: &quot;topics&quot;
           }
         ]
@@ -271,11 +346,11 @@ Content-Length: 3474</pre>
       &quot;areas&quot;: {
         &quot;data&quot;: [
           {
-            &quot;id&quot;: &quot;764f1a29-1302-44e2-a850-88f50db55bef&quot;,
+            &quot;id&quot;: &quot;8e74f012-3c4c-4d34-9302-ebb12600c076&quot;,
             &quot;type&quot;: &quot;areas&quot;
           },
           {
-            &quot;id&quot;: &quot;52c80f1e-2bcf-48ab-ba88-5927cabbb4a2&quot;,
+            &quot;id&quot;: &quot;fdef2a95-54c8-4d0e-b0ae-43e3eec91e12&quot;,
             &quot;type&quot;: &quot;areas&quot;
           }
         ]
@@ -287,14 +362,20 @@ Content-Length: 3474</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;07a7ce63-b905-4081-ad53-b069ff7fc412&quot;,
+          &quot;id&quot;: &quot;acfeda78-2a00-4304-9048-a654c8f7e1c7&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;4f952d4c-e02f-47e4-8315-1a95a23468c9&quot;,
+          &quot;id&quot;: &quot;e43dd776-cabe-4ebb-865e-a1d3b798aea2&quot;,
           &quot;type&quot;: &quot;projects&quot;
+        }
+      },
+      &quot;idea_status&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;62a67892-e1d1-46f6-9509-fa2eb7d7d548&quot;,
+          &quot;type&quot;: &quot;idea_statuses&quot;
         }
       },
       &quot;user_vote&quot;: {
@@ -304,7 +385,7 @@ Content-Length: 3474</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;df92e759-027c-4867-88f8-dcd7d880ae68&quot;,
+      &quot;id&quot;: &quot;25734dba-8b70-4f90-affe-b7f1fec4be22&quot;,
       &quot;type&quot;: &quot;topics&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -319,7 +400,7 @@ Content-Length: 3474</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;b7cc66a1-5c5f-4674-8472-5d0994b8c732&quot;,
+      &quot;id&quot;: &quot;d6865abf-8c75-4cae-b96a-61f0fc04a61b&quot;,
       &quot;type&quot;: &quot;topics&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -334,7 +415,7 @@ Content-Length: 3474</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;764f1a29-1302-44e2-a850-88f50db55bef&quot;,
+      &quot;id&quot;: &quot;8e74f012-3c4c-4d34-9302-ebb12600c076&quot;,
       &quot;type&quot;: &quot;areas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -348,7 +429,7 @@ Content-Length: 3474</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;52c80f1e-2bcf-48ab-ba88-5927cabbb4a2&quot;,
+      &quot;id&quot;: &quot;fdef2a95-54c8-4d0e-b0ae-43e3eec91e12&quot;,
       &quot;type&quot;: &quot;areas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -362,25 +443,30 @@ Content-Length: 3474</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;07a7ce63-b905-4081-ad53-b069ff7fc412&quot;,
+      &quot;id&quot;: &quot;acfeda78-2a00-4304-9048-a654c8f7e1c7&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Miller&quot;,
-        &quot;last_name&quot;: &quot;Yost&quot;,
-        &quot;slug&quot;: &quot;miller-yost&quot;,
+        &quot;first_name&quot;: &quot;Mariela&quot;,
+        &quot;last_name&quot;: &quot;Klein&quot;,
+        &quot;slug&quot;: &quot;mariela-klein&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/07a7ce63-b905-4081-ad53-b069ff7fc412/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/07a7ce63-b905-4081-ad53-b069ff7fc412/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/07a7ce63-b905-4081-ad53-b069ff7fc412/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/acfeda78-2a00-4304-9048-a654c8f7e1c7/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/acfeda78-2a00-4304-9048-a654c8f7e1c7/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/acfeda78-2a00-4304-9048-a654c8f7e1c7/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:19.126Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:19.126Z&quot;
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:54.256Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:54.256Z&quot;,
+        &quot;email&quot;: &quot;christophe.heathcote@lowehilll.name&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
       }
     }
   ]

@@ -148,90 +148,130 @@ table th, table td {
             </tbody>
           </table>
 
+          <h3>Response Fields</h3>
+          <table class="response-fields table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">errors[body_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[author_name]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[author]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzIsInN1YiI6IjU3NjM0OTBkLWQxOTgtNDJkZi04YTY0LTc4YzIxYjA0MTFjYyJ9.iIrlRtpNw_froJkxWuvJ_qAoJ4tWqp6_EKo9aPJeZ9k
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMDIsInN1YiI6IjE2OTg4YTg3LTJkYmMtNGYzZC04YzQzLTYxYWE1NzU3MWY2NyJ9.i5xV6ml5cEQCTDhmMVy1ttiMshYaIOHi5iUDIBLVI88
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/ideas/6c8825f2-31ed-4234-a114-582825402721/comments</pre>
+          <pre class="request route highlight">POST api/v1/ideas/c2c4c75a-473c-40ae-97fd-cd38cbe61fca/comments</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"comment":{"body_multiloc":{"en":"\u003cp\u003eI think this is a very good idea!\u003c/p\u003e","nl":"\u003cp\u003eGeweldig idee!\u003c/p\u003e"},"parent_id":"00129d14-a434-4820-9a12-d9e20f85f8ce"}}</pre>
+            <pre class="request body">{"comment":{"body_multiloc":{"en":"\u003cp\u003eI think this is a very good idea!\u003c/p\u003e","nl":"\u003cp\u003eGeweldig idee!\u003c/p\u003e"},"parent_id":"9c40f7bf-8b01-429a-b154-c4a67cfc101a"}}</pre>
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;6e482bbc96a7221b9c213c79b95164b2&quot;
+ETag: W/&quot;065dfcbcd72ce6ab5199e86ebcad3bdd&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 7a6bf9da-9b0e-46b7-9cb5-0af36f653b4f
-X-Runtime: 0.045549
+X-Request-Id: 597f3b0b-f3fb-4571-9607-0e29d2a05815
+X-Runtime: 0.052332
 Vary: Origin
-Content-Length: 1319</pre>
+Content-Length: 1375</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;7fd6fea5-b543-43b7-9c0f-8e92eb8ac5cc&quot;,
+    &quot;id&quot;: &quot;71dc8df1-600b-4b7b-aa61-ff9416ce42c8&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
         &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
       },
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:12.814Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:12.829Z&quot;
+      &quot;upvotes_count&quot;: 0,
+      &quot;downvotes_count&quot;: 0,
+      &quot;created_at&quot;: &quot;2017-08-02T16:01:42.988Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-08-02T16:01:43.001Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;6c8825f2-31ed-4234-a114-582825402721&quot;,
+          &quot;id&quot;: &quot;c2c4c75a-473c-40ae-97fd-cd38cbe61fca&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;5763490d-d198-42df-8a64-78c21b0411cc&quot;,
+          &quot;id&quot;: &quot;16988a87-2dbc-4f3d-8c43-61aa57571f67&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;parent&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;00129d14-a434-4820-9a12-d9e20f85f8ce&quot;,
+          &quot;id&quot;: &quot;9c40f7bf-8b01-429a-b154-c4a67cfc101a&quot;,
           &quot;type&quot;: &quot;parents&quot;
         }
+      },
+      &quot;user_vote&quot;: {
+        &quot;data&quot;: null
       }
     }
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;5763490d-d198-42df-8a64-78c21b0411cc&quot;,
+      &quot;id&quot;: &quot;16988a87-2dbc-4f3d-8c43-61aa57571f67&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Giovanny&quot;,
-        &quot;last_name&quot;: &quot;Koelpin&quot;,
-        &quot;slug&quot;: &quot;giovanny-koelpin&quot;,
+        &quot;first_name&quot;: &quot;Glenda&quot;,
+        &quot;last_name&quot;: &quot;Barton&quot;,
+        &quot;slug&quot;: &quot;glenda-barton&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/5763490d-d198-42df-8a64-78c21b0411cc/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/5763490d-d198-42df-8a64-78c21b0411cc/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/5763490d-d198-42df-8a64-78c21b0411cc/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/16988a87-2dbc-4f3d-8c43-61aa57571f67/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/16988a87-2dbc-4f3d-8c43-61aa57571f67/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/16988a87-2dbc-4f3d-8c43-61aa57571f67/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:12.725Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:12.725Z&quot;,
-        &quot;email&quot;: &quot;deondre.block@kemmer.name&quot;,
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:42.886Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:42.886Z&quot;,
+        &quot;email&quot;: &quot;josue.koelpin@kutch.org&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

@@ -38,6 +38,8 @@ resource "IdeaImage" do
       parameter :image, "The base64 encoded image", required: true
       parameter :ordering, "An integer that is used to order the images within an idea", required: false
     end
+    ValidationErrorHelper.new.error_fields(self, IdeaImage)
+
 
     let(:idea_id) { @idea.id }
 
@@ -58,6 +60,8 @@ resource "IdeaImage" do
       parameter :image, "The base64 encoded image"
       parameter :ordering, "An integer that is used to order the images within an idea"
     end
+    ValidationErrorHelper.new.error_fields(self, IdeaImage)
+
 
     let(:idea_id) { @idea.id }
     let(:image_id) { IdeaImage.first.id }

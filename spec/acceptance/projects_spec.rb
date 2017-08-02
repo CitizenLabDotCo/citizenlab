@@ -61,8 +61,9 @@ resource "Projects" do
       parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
       parameter :slug, "The unique slug of the project. If not given, it will be auto generated"
       parameter :header_bg, "Base64 encoded header image"
-
     end
+    ValidationErrorHelper.new.error_fields(self, Project)
+
 
     let(:project) { build(:project) }
     let(:title_multiloc) { project.title_multiloc }
@@ -76,6 +77,20 @@ resource "Projects" do
       expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
       expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
     end
+
+    describe do
+
+      let(:slug) { 'this-is-taken' }
+
+      example "[error] Create an invalid project" do
+        create(:project, slug: 'this-is-taken')
+        do_request
+        expect(response_status).to eq 422
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:errors,:slug)).to eq [{:error=>"taken", :value=>"this-is-taken"}]
+      end
+    end
+
   end
 
   patch "api/v1/projects/:id" do
@@ -89,6 +104,8 @@ resource "Projects" do
       parameter :slug, "The unique slug of the project"
       parameter :header_bg, "Base64 encoded header image"
     end
+    ValidationErrorHelper.new.error_fields(self, Project)
+
 
     let(:id) { @project.id }
     let(:title_multiloc) { {"en" => "Changed title" } }

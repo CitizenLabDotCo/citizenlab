@@ -156,17 +156,52 @@ table th, table td {
             </tbody>
           </table>
 
+          <h3>Response Fields</h3>
+          <table class="response-fields table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">errors[title_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[description_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[slug]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;invalid&#39; }</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NDcsInN1YiI6Ijc1NDVjYjk3LThmNzQtNGQ2Zi04MTAxLTM2NzFjZTRmN2IyYiJ9.eeyULzYmbObKb_XdqDvzEPapXUnMW31zO8vUWc5KP8w
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMjUsInN1YiI6ImNjNzhjZjFkLWMyMWEtNDRjMC05N2RkLTdlNDgwYjJhODc1NiJ9.p99_C0ZG8yMveLo0gZTgVUSIj0UD-HtBMnjatBzT4io
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/projects/603578f4-909c-4e02-b4c0-c90af34b4b27</pre>
+          <pre class="request route highlight">PATCH api/v1/projects/c12b0dcd-6d00-46ff-a47d-c533df585386</pre>
 
 
             <h4>Body</h4>
@@ -176,10 +211,10 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;b1684c7adc8696f9100970e8345f585a&quot;
+ETag: W/&quot;312c6facab84c84f44b2c9c9444e7e0b&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 0a51111a-943b-47e5-beb6-f0e4f277c7c8
-X-Runtime: 0.039633
+X-Request-Id: 61a6ea16-6e38-4447-9090-cc17e8553969
+X-Runtime: 0.050261
 Vary: Origin
 Content-Length: 747</pre>
             <h4>Status</h4>
@@ -187,7 +222,7 @@ Content-Length: 747</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;603578f4-909c-4e02-b4c0-c90af34b4b27&quot;,
+    &quot;id&quot;: &quot;c12b0dcd-6d00-46ff-a47d-c533df585386&quot;,
     &quot;type&quot;: &quot;projects&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -198,13 +233,13 @@ Content-Length: 747</pre>
       },
       &quot;slug&quot;: &quot;changed-title&quot;,
       &quot;header_bg&quot;: {
-        &quot;large&quot;: &quot;/uploads/603578f4-909c-4e02-b4c0-c90af34b4b27/project/header_bg/603578f4-909c-4e02-b4c0-c90af34b4b27/large_header_bg.png&quot;,
-        &quot;medium&quot;: &quot;/uploads/603578f4-909c-4e02-b4c0-c90af34b4b27/project/header_bg/603578f4-909c-4e02-b4c0-c90af34b4b27/medium_header_bg.png&quot;,
-        &quot;small&quot;: &quot;/uploads/603578f4-909c-4e02-b4c0-c90af34b4b27/project/header_bg/603578f4-909c-4e02-b4c0-c90af34b4b27/small_header_bg.png&quot;
+        &quot;large&quot;: &quot;/uploads/c12b0dcd-6d00-46ff-a47d-c533df585386/project/header_bg/c12b0dcd-6d00-46ff-a47d-c533df585386/large_header_bg.png&quot;,
+        &quot;medium&quot;: &quot;/uploads/c12b0dcd-6d00-46ff-a47d-c533df585386/project/header_bg/c12b0dcd-6d00-46ff-a47d-c533df585386/medium_header_bg.png&quot;,
+        &quot;small&quot;: &quot;/uploads/c12b0dcd-6d00-46ff-a47d-c533df585386/project/header_bg/c12b0dcd-6d00-46ff-a47d-c533df585386/small_header_bg.png&quot;
       },
       &quot;ideas_count&quot;: 0,
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:27.114Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:27.173Z&quot;
+      &quot;created_at&quot;: &quot;2017-08-02T16:02:05.982Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-08-02T16:02:06.075Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;project_images&quot;: {

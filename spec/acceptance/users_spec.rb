@@ -150,6 +150,8 @@ resource "Users" do
         parameter :education, "An integer from 0 to 8 (inclusive), corresponding to the ISCED 2011 standard"
         parameter :bio_multiloc, "A little text, allowing the user to describe herself. Multiloc and non-html"
       end
+      ValidationErrorHelper.new.error_fields(self, User)
+
 
       let(:first_name) {Faker::Name.first_name}
       let(:last_name) {Faker::Name.last_name}
@@ -172,6 +174,17 @@ resource "Users" do
           expect(json_response.dig(:data, :attributes, :roles)).to be_empty
         end
       end
+
+      describe do
+        let(:password) { "ab" }
+
+        example_request "[error] Create an invalid user" do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :password)).to eq [{:error=>"too_short", :count=>5}]
+        end
+      end
+
     end
 
     put "api/v1/users/:id" do
@@ -189,6 +202,8 @@ resource "Users" do
         parameter :education, "An integer from 0 to 8 (inclusive), corresponding to the ISCED 2011 standard"
         parameter :bio_multiloc, "A little text, allowing the user to describe herself. Multiloc and non-html"
       end
+      ValidationErrorHelper.new.error_fields(self, User)
+
 
       let(:id) { @user.id }
       let(:first_name) { "Edmond" }

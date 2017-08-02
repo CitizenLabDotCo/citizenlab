@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Comment Votes API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Comment Votes API</h1>
+
+      <div class="article">
+        <h2>List votes of a comment</h2>
+        <h3>GET api/v1/comments/:comment_id/votes</h3>
+
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYwOTksInN1YiI6ImNjOTkwYmJiLWRhY2QtNDk1NS04NDUyLTBhMGUyN2ZhNjc1YiJ9.hJRZT0n0KMEuKplR5i21nRBEschJndCmmpVQHP-p47w
+Content-Type: application/json
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/comments/62ae22ae-a150-467a-b50c-1632a41ed789/votes</pre>
+
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;b823ec0b2b6b1a52a4f610e375d22f86&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: a12f4486-947c-4bb7-9500-32e6d3e52d6d
+X-Runtime: 0.093538
+Vary: Origin
+Content-Length: 2032</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;128a8dac-7408-4445-af5d-beb8ced066a5&quot;,
+      &quot;type&quot;: &quot;votes&quot;,
+      &quot;attributes&quot;: {
+        &quot;mode&quot;: &quot;up&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;votable&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;62ae22ae-a150-467a-b50c-1632a41ed789&quot;,
+            &quot;type&quot;: &quot;votables&quot;
+          }
+        },
+        &quot;user&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;0c952610-b410-48c7-bbd9-a2075388817b&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;fa6d1365-193e-4021-8141-048a5f721c4c&quot;,
+      &quot;type&quot;: &quot;votes&quot;,
+      &quot;attributes&quot;: {
+        &quot;mode&quot;: &quot;up&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;votable&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;62ae22ae-a150-467a-b50c-1632a41ed789&quot;,
+            &quot;type&quot;: &quot;votables&quot;
+          }
+        },
+        &quot;user&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;df9df2b1-b21f-4efd-8d51-c0492ea4d993&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        }
+      }
+    }
+  ],
+  &quot;included&quot;: [
+    {
+      &quot;id&quot;: &quot;0c952610-b410-48c7-bbd9-a2075388817b&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Dayton&quot;,
+        &quot;last_name&quot;: &quot;Haag&quot;,
+        &quot;slug&quot;: &quot;dayton-haag&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/0c952610-b410-48c7-bbd9-a2075388817b/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/0c952610-b410-48c7-bbd9-a2075388817b/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/0c952610-b410-48c7-bbd9-a2075388817b/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:39.484Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:39.484Z&quot;,
+        &quot;email&quot;: &quot;nicklaus@simonis.org&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
+      }
+    },
+    {
+      &quot;id&quot;: &quot;df9df2b1-b21f-4efd-8d51-c0492ea4d993&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Adaline&quot;,
+        &quot;last_name&quot;: &quot;Weber&quot;,
+        &quot;slug&quot;: &quot;adaline-weber&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/df9df2b1-b21f-4efd-8d51-c0492ea4d993/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/df9df2b1-b21f-4efd-8d51-c0492ea4d993/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/df9df2b1-b21f-4efd-8d51-c0492ea4d993/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:39.450Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:39.450Z&quot;,
+        &quot;email&quot;: &quot;garth@littlepfannerstill.name&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
+      }
+    }
+  ]
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

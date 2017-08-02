@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Votes API</title>
+    <title>Comment Votes API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,72 +106,43 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Votes API</h1>
+      <h1>Comment Votes API</h1>
 
       <div class="article">
-        <h2>Create a vote to an idea</h2>
-        <h3>POST api/v1/ideas/:idea_id/votes</h3>
+        <h2>Get one vote by id</h2>
+        <h3>GET api/v1/votes/:id</h3>
 
-          <h3>Parameters</h3>
-          <table class="parameters table table-striped table-bordered table-condensed">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                    <span class="name">vote[user_id]</span>
-                </td>
-                <td>
-                  <span class="description">The user id of the user owning the vote. Signed in user by default</span>
-                </td>
-              </tr>
-              <tr>
-                <td class="required">
-                    <span class="name">vote[mode]</span>
-                </td>
-                <td>
-                  <span class="description">one of [up, down]</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NjUsInN1YiI6IjBkM2Y1NzllLTJjMzMtNDIyMi04OTg5LTQ5ZDE0ZGZkZWNhMyJ9.7okf9QJiRauIfwVURrTUL3pfX5nI-vA4-NC9Z-TGUEw
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYwOTksInN1YiI6ImRlMTFiMTdmLTNhYjAtNDNiNi04OWI4LTMxNDY2NDhmZWIwMiJ9.hzPLILCtTup_wRQ5U78IZq_vzn4EFNsWEX0Q0TUe8lU
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/ideas/b3afe15a-3655-4d59-b7a9-a03ebf7107d5/votes</pre>
+          <pre class="request route highlight">GET api/v1/votes/6d60be6f-45c3-49f8-b557-0c04b49148a7</pre>
 
 
-            <h4>Body</h4>
-            <pre class="request body">{"vote":{"mode":"up"}}</pre>
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;d56b859570b7c0dc3b14a32bda62f8ff&quot;
+ETag: W/&quot;0df8c8e31cc166786de9b5764c6eceab&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: ac3d80da-db74-48f1-b915-ee7e38779b2b
-X-Runtime: 0.019457
+X-Request-Id: 95c82b02-5057-4662-b1ce-0479ee25f420
+X-Runtime: 0.027421
 Vary: Origin
-Content-Length: 274</pre>
+Content-Length: 1026</pre>
             <h4>Status</h4>
-            <pre class="response status">201 Created</pre>
+            <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;c5dc793d-2f1d-4d38-b055-ef5497c1df0f&quot;,
+    &quot;id&quot;: &quot;6d60be6f-45c3-49f8-b557-0c04b49148a7&quot;,
     &quot;type&quot;: &quot;votes&quot;,
     &quot;attributes&quot;: {
       &quot;mode&quot;: &quot;up&quot;
@@ -179,18 +150,47 @@ Content-Length: 274</pre>
     &quot;relationships&quot;: {
       &quot;votable&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;b3afe15a-3655-4d59-b7a9-a03ebf7107d5&quot;,
+          &quot;id&quot;: &quot;86ba444a-727c-45a6-bb66-9078312508fa&quot;,
           &quot;type&quot;: &quot;votables&quot;
         }
       },
       &quot;user&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;0d3f579e-2c33-4222-8989-49d14dfdeca3&quot;,
+          &quot;id&quot;: &quot;ad0aee78-f1e0-45df-974c-af5b3d1f40ec&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       }
     }
-  }
+  },
+  &quot;included&quot;: [
+    {
+      &quot;id&quot;: &quot;ad0aee78-f1e0-45df-974c-af5b3d1f40ec&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Xavier&quot;,
+        &quot;last_name&quot;: &quot;Kuhic&quot;,
+        &quot;slug&quot;: &quot;xavier-kuhic&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/ad0aee78-f1e0-45df-974c-af5b3d1f40ec/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/ad0aee78-f1e0-45df-974c-af5b3d1f40ec/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/ad0aee78-f1e0-45df-974c-af5b3d1f40ec/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:39.752Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:39.752Z&quot;,
+        &quot;email&quot;: &quot;kaylah_anderson@cronin.co&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null
+      }
+    }
+  ]
 }</pre>
       </div>
     </div>

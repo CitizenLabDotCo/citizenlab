@@ -17,7 +17,7 @@ class Api::V1::ProjectsController < ::ApplicationController
   def by_slug
     @project = Project.find_by!(slug: params[:slug])
     authorize @project
-    render json: @project 
+    show
   end
 
   def create

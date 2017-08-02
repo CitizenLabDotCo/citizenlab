@@ -139,6 +139,14 @@ table th, table td {
               </tr>
               <tr>
                 <td>
+                    <span class="name">idea[idea_status_id]</span>
+                </td>
+                <td>
+                  <span class="description">The status of the idea, only allowed for admins</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">idea[publication_status]</span>
                 </td>
                 <td>
@@ -196,17 +204,84 @@ table th, table td {
             </tbody>
           </table>
 
+          <h3>Response Fields</h3>
+          <table class="response-fields table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">errors[title_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[body_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[publication_status]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;inclusion&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[author]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[author_name]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[idea_status]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[slug]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;invalid&#39; }</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzksInN1YiI6IjYzOTQ5NmYwLTg2MmEtNGVmYy1iMGQyLWFmM2E3ZDE2NzkxZSJ9.1vXv8hyvI3dKp1uXvpe4dPe2lEH5FtV0eQKVHz1Ad2Y
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMTUsInN1YiI6IjI1M2E3ZGYyLTY4NzMtNGMyZC1iODU1LWU0YWQ5ZjI0OTFmZCJ9.vsBwBepCsxmqQ8SCw77us8j2n9KRz-bWInMbKEfT8_o
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/ideas/92aeee72-54b2-47ba-be5e-b31471ccaa62</pre>
+          <pre class="request route highlight">PATCH api/v1/ideas/0aa144d1-defc-4f8a-93ab-bb6e19fe22b6</pre>
 
 
             <h4>Body</h4>
@@ -216,18 +291,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;8d85a98e14916743d16e697c0f11e297&quot;
+ETag: W/&quot;4199af47fc8fa060f37810d49e460a33&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 18695ef8-4901-4b65-9518-ad100928cb5f
-X-Runtime: 0.050253
+X-Request-Id: e79f2a53-f505-412b-9061-cd36ab3df607
+X-Runtime: 0.062402
 Vary: Origin
-Content-Length: 1720</pre>
+Content-Length: 1794</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;92aeee72-54b2-47ba-be5e-b31471ccaa62&quot;,
+    &quot;id&quot;: &quot;0aa144d1-defc-4f8a-93ab-bb6e19fe22b6&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -238,7 +313,7 @@ Content-Length: 1720</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Lue Hodkiewicz&quot;,
+      &quot;author_name&quot;: &quot;Brant Huels&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
@@ -251,9 +326,9 @@ Content-Length: 1720</pre>
         ]
       },
       &quot;location_description&quot;: &quot;Watkins Road 8&quot;,
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:19.899Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:19.971Z&quot;,
-      &quot;published_at&quot;: &quot;2017-07-11T21:37:19.899Z&quot;
+      &quot;created_at&quot;: &quot;2017-08-02T16:01:55.816Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-08-02T16:01:55.898Z&quot;,
+      &quot;published_at&quot;: &quot;2017-08-02T16:01:55.816Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -273,14 +348,20 @@ Content-Length: 1720</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;639496f0-862a-4efc-b0d2-af3a7d16791e&quot;,
+          &quot;id&quot;: &quot;253a7df2-6873-4c2d-b855-e4ad9f2491fd&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;b2af75f8-0289-4b97-9912-656f4783c24c&quot;,
+          &quot;id&quot;: &quot;a5740892-8af6-4090-a634-bece59e3f934&quot;,
           &quot;type&quot;: &quot;projects&quot;
+        }
+      },
+      &quot;idea_status&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;8267718f-05a9-4be2-bfca-52ac83e7dc9a&quot;,
+          &quot;type&quot;: &quot;idea_statuses&quot;
         }
       },
       &quot;user_vote&quot;: {
@@ -290,26 +371,26 @@ Content-Length: 1720</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;639496f0-862a-4efc-b0d2-af3a7d16791e&quot;,
+      &quot;id&quot;: &quot;253a7df2-6873-4c2d-b855-e4ad9f2491fd&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Lue&quot;,
-        &quot;last_name&quot;: &quot;Hodkiewicz&quot;,
-        &quot;slug&quot;: &quot;lue-hodkiewicz&quot;,
+        &quot;first_name&quot;: &quot;Brant&quot;,
+        &quot;last_name&quot;: &quot;Huels&quot;,
+        &quot;slug&quot;: &quot;brant-huels&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/639496f0-862a-4efc-b0d2-af3a7d16791e/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/639496f0-862a-4efc-b0d2-af3a7d16791e/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/639496f0-862a-4efc-b0d2-af3a7d16791e/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/253a7df2-6873-4c2d-b855-e4ad9f2491fd/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/253a7df2-6873-4c2d-b855-e4ad9f2491fd/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/253a7df2-6873-4c2d-b855-e4ad9f2491fd/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:19.872Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:19.872Z&quot;,
-        &quot;email&quot;: &quot;monte_hermann@blandamurray.io&quot;,
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:55.757Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:55.757Z&quot;,
+        &quot;email&quot;: &quot;prudence@reichel.biz&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

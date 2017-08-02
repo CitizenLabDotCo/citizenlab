@@ -38,6 +38,8 @@ resource "Idea Votes" do
       parameter :user_id, "The user id of the user owning the vote. Signed in user by default", required: false
       parameter :mode, "one of [up, down]", required: true
     end
+    ValidationErrorHelper.new.error_fields(self, Vote)
+
   
     let(:idea_id) { @idea.id }
     let(:mode) { "up" }
@@ -68,7 +70,7 @@ resource "Idea Votes" do
       expect(@idea.reload.downvotes_count).to eq 0
     end
 
-    example "Upvote an idea that you upvoted before" do
+    example "[error] Upvote an idea that you upvoted before" do
       @idea.votes.create(user: @user, mode: 'up')
       do_request
       expect(status).to eq 422
@@ -97,7 +99,7 @@ resource "Idea Votes" do
       expect(@idea.reload.downvotes_count).to eq 1
     end
 
-    example "Downvote an idea that you downvoted before" do
+    example "[error] Downvote an idea that you downvoted before" do
       @idea.votes.create(user: @user, mode: 'down')
       do_request
       expect(status).to eq 422

@@ -155,6 +155,14 @@ table th, table td {
               </tr>
               <tr>
                 <td>
+                    <span class="name">idea_status</span>
+                </td>
+                <td>
+                  <span class="description">Filter by status (idea status id)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">search</span>
                 </td>
                 <td>
@@ -166,7 +174,7 @@ table th, table td {
                     <span class="name">sort</span>
                 </td>
                 <td>
-                  <span class="description">Either &#39;new&#39;, &#39;-new&#39;, &#39;trending&#39;, &#39;-trending&#39;, &#39;popular&#39; or &#39;-popular&#39;</span>
+                  <span class="description">Either &#39;new&#39;, &#39;-new&#39;, &#39;trending&#39;, &#39;-trending&#39;, &#39;popular&#39;, &#39;-popular&#39;, &#39;author_name&#39;, &#39;-author_name&#39;, &#39;upvotes_count&#39;, &#39;-upvotes_count&#39;, &#39;downvotes_count&#39;, &#39;-downvotes_count&#39;, &#39;status&#39;, &#39;-status&#39;</span>
                 </td>
               </tr>
             </tbody>
@@ -177,34 +185,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzUsInN1YiI6IjZkOTgwMWRjLTNlZjItNDQ2ZC05ZjJjLTExNTcyYTJiZWNlZSJ9.IN0jam26qGnKXzhPiwJ3bxqhF5QzQurvfk7PY3tiuxc
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMDcsInN1YiI6Ijg3MWMxYjYzLTcwYzctNDFjNS04ZTNiLTdkOWYyOTA1ZjcyMiJ9.CObFKp2XofAQFpGvk0kMgiOGQXjcfWi0CYXZAg4Ps7E
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=92a4a540-2106-40e5-9eab-163b1b64a3f0&amp;topics[]=e691d942-edca-455a-b84d-799bd7cb5617</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=2ddea71d-2f94-4737-9a36-a96d214056d5&amp;topics[]=416bb621-8c96-4f97-b0ba-a291efa0189f</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;92a4a540-2106-40e5-9eab-163b1b64a3f0&quot;, &quot;e691d942-edca-455a-b84d-799bd7cb5617&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;2ddea71d-2f94-4737-9a36-a96d214056d5&quot;, &quot;416bb621-8c96-4f97-b0ba-a291efa0189f&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;c89e4a58c4bbaadc4306418489466c95&quot;
+ETag: W/&quot;197833774eee2e5540b3cbbacdb760c4&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 4a40d413-bd45-41a0-a1da-c9d865e3b1f5
-X-Runtime: 0.039465
+X-Request-Id: a4527914-9671-4faa-98fa-764a69a65cdd
+X-Runtime: 0.047063
 Vary: Origin
-Content-Length: 1686</pre>
+Content-Length: 1769</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;aea94efc-6c11-48e6-b353-10c100f9c20b&quot;,
+      &quot;id&quot;: &quot;d021f9d5-f738-493c-87bd-fcd7379b12fc&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -215,26 +223,26 @@ Content-Length: 1686</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Juwan Volkman&quot;,
+        &quot;author_name&quot;: &quot;Jasmin Orn&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:14.919Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:14.919Z&quot;,
-        &quot;published_at&quot;: &quot;2017-07-11T21:37:14.919Z&quot;
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:47.648Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:47.648Z&quot;,
+        &quot;published_at&quot;: &quot;2017-08-02T16:01:47.648Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;92a4a540-2106-40e5-9eab-163b1b64a3f0&quot;,
+              &quot;id&quot;: &quot;2ddea71d-2f94-4737-9a36-a96d214056d5&quot;,
               &quot;type&quot;: &quot;topics&quot;
             },
             {
-              &quot;id&quot;: &quot;e691d942-edca-455a-b84d-799bd7cb5617&quot;,
+              &quot;id&quot;: &quot;416bb621-8c96-4f97-b0ba-a291efa0189f&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -251,14 +259,20 @@ Content-Length: 1686</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;91025c00-5d9e-4807-8485-623ef3223de3&quot;,
+            &quot;id&quot;: &quot;d7f2804b-e529-4c64-a1b8-d7afd34b3d4d&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;fe3d9bb0-f4f2-40c2-ac15-53f4ff877ffa&quot;,
+            &quot;id&quot;: &quot;5d1e140f-66f7-456e-a62f-ba61745cee45&quot;,
             &quot;type&quot;: &quot;projects&quot;
+          }
+        },
+        &quot;idea_status&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;a9afc50e-246f-4340-92bb-33798c8ba376&quot;,
+            &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
         &quot;user_vote&quot;: {
@@ -269,25 +283,25 @@ Content-Length: 1686</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;91025c00-5d9e-4807-8485-623ef3223de3&quot;,
+      &quot;id&quot;: &quot;d7f2804b-e529-4c64-a1b8-d7afd34b3d4d&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Juwan&quot;,
-        &quot;last_name&quot;: &quot;Volkman&quot;,
-        &quot;slug&quot;: &quot;juwan-volkman&quot;,
+        &quot;first_name&quot;: &quot;Jasmin&quot;,
+        &quot;last_name&quot;: &quot;Orn&quot;,
+        &quot;slug&quot;: &quot;jasmin-orn&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/91025c00-5d9e-4807-8485-623ef3223de3/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/91025c00-5d9e-4807-8485-623ef3223de3/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/91025c00-5d9e-4807-8485-623ef3223de3/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/d7f2804b-e529-4c64-a1b8-d7afd34b3d4d/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/d7f2804b-e529-4c64-a1b8-d7afd34b3d4d/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/d7f2804b-e529-4c64-a1b8-d7afd34b3d4d/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:14.908Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:14.908Z&quot;
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:47.624Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:47.624Z&quot;
       }
     }
   ],

@@ -12,6 +12,6 @@ module ApiHelper
   end
 end
 
-RSpec.configure do |config|
-  config.include ApiHelper
-end
+# RSpec.configure do |config|
+#   config.include ApiHelper
+# end

@@ -140,17 +140,52 @@ table th, table td {
             </tbody>
           </table>
 
+          <h3>Response Fields</h3>
+          <table class="response-fields table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">errors[project]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[image]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[ordering]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;greater_than&#39; | &#39;greater_than_or_equal_to&#39; | &#39;equal_to&#39; | &#39;less_than&#39; | &#39;less_than_or_equal_to&#39; | &#39;not_a_number&#39; | &#39;not_an_integer&#39; | &#39;odd&#39; | &#39;even&#39; | &#39;other_than&#39; }</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NDYsInN1YiI6ImZlNjY0ZmJiLTJhN2ItNGNhNy1iZjljLTRiYWYxODZiZmUwOCJ9.Q-IbXRZJ-PfcPfbwY9nBE1pDaUWd_oSb9zQsHI2_Jtw
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMjQsInN1YiI6IjQxNTFhZDI5LWQxNTQtNDM0My04YTg0LTc2NzY3MmI1MGUzYSJ9.O0LGO6c7XHWUBNS0bwAFyqOxVP5KbycF2cxBPHhg5w4
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/projects/6f3540ef-1b3c-439a-95e8-dee410ad2b8a/images/55bd7f6a-678f-4ad8-8541-f72d8f6d7ed9</pre>
+          <pre class="request route highlight">PATCH api/v1/projects/72ffc5d6-f654-4397-b874-0af29f0398af/images/0df160a5-71d5-4688-956c-23424529b646</pre>
 
 
             <h4>Body</h4>
@@ -160,10 +195,10 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;0443b020ac815e7b2c35e6ca84d0ea6b&quot;
+ETag: W/&quot;6545a9c228c4b986bea887355a721cf5&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 68867c61-6b21-495b-b70b-e97ba8c159d9
-X-Runtime: 0.034312
+X-Request-Id: 3953e80d-3eb8-422c-bd8c-49c373902d85
+X-Runtime: 0.034016
 Vary: Origin
 Content-Length: 588</pre>
             <h4>Status</h4>
@@ -171,17 +206,17 @@ Content-Length: 588</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;55bd7f6a-678f-4ad8-8541-f72d8f6d7ed9&quot;,
+    &quot;id&quot;: &quot;0df160a5-71d5-4688-956c-23424529b646&quot;,
     &quot;type&quot;: &quot;project_images&quot;,
     &quot;attributes&quot;: {
       &quot;versions&quot;: {
-        &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/55bd7f6a-678f-4ad8-8541-f72d8f6d7ed9/small_image.png&quot;,
-        &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/55bd7f6a-678f-4ad8-8541-f72d8f6d7ed9/medium_image.png&quot;,
-        &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/project_image/image/55bd7f6a-678f-4ad8-8541-f72d8f6d7ed9/large_image.png&quot;
+        &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/project_image/image/0df160a5-71d5-4688-956c-23424529b646/small_image.png&quot;,
+        &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/project_image/image/0df160a5-71d5-4688-956c-23424529b646/medium_image.png&quot;,
+        &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/project_image/image/0df160a5-71d5-4688-956c-23424529b646/large_image.png&quot;
       },
       &quot;ordering&quot;: 2,
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:26.435Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:26.470Z&quot;
+      &quot;created_at&quot;: &quot;2017-08-02T16:02:04.845Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-08-02T16:02:04.898Z&quot;
     }
   }
 }</pre>

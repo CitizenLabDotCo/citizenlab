@@ -221,19 +221,21 @@ resource "Ideas" do
       parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
       parameter :location_description, "A human readable description of the location the idea applies to"
     end
+    ValidationErrorHelper.new.error_fields(self, Idea)
+
+
+    let(:idea) { build(:idea) }
+    let(:project) { create(:project) }
+    let(:project_id) { project.id }
+    let(:publication_status) { 'published' }
+    let(:title_multiloc) { idea.title_multiloc }
+    let(:body_multiloc) { idea.body_multiloc }
+    let(:topic_ids) { create_list(:topic, 2).map(&:id) }
+    let(:area_ids) { create_list(:area, 2).map(&:id) }
+    let(:location_point_geojson) { {type: "Point", coordinates: [51.11520776293035, 3.921154106874878]} }
+    let(:location_description) { "Stanley Road 4" }
 
     describe do
-      let(:idea) { build(:idea) }
-      let(:project) { create(:project) }
-      let(:project_id) { project.id }
-      let(:author_id) { create(:user).id }
-      let(:publication_status) { 'published' }
-      let(:title_multiloc) { idea.title_multiloc }
-      let(:body_multiloc) { idea.body_multiloc }
-      let(:topic_ids) { create_list(:topic, 2).map(&:id) }
-      let(:area_ids) { create_list(:area, 2).map(&:id) }
-      let(:location_point_geojson) { {type: "Point", coordinates: [51.11520776293035, 3.921154106874878]} }
-      let(:location_description) { "Stanley Road 4" }
 
       example_request "Creating a published idea" do
         expect(response_status).to eq 201
@@ -243,6 +245,16 @@ resource "Ideas" do
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
         expect(project.reload.ideas_count).to eq 1
+      end
+    end
+
+    describe do
+      let(:publication_status) { "fake_status" }
+
+      example_request "[error] Creating an invalid idea" do
+        expect(response_status).to eq 422
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:errors, :publication_status)).to eq [{error: 'inclusion', value: 'fake_status'}]
       end
     end
 
@@ -266,6 +278,8 @@ resource "Ideas" do
       parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
       parameter :location_description, "A human readable description of the location the idea applies to"
     end
+    ValidationErrorHelper.new.error_fields(self, Idea)
+
 
     let(:id) { @idea.id }
     let(:topic_ids) { create_list(:topic, 2).map(&:id) }

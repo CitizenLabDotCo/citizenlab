@@ -61,7 +61,7 @@ class Api::V1::UsersController < ::ApplicationController
   def by_slug
     @user = User.find_by!(slug: params[:slug])
     authorize @user
-    render json: @user 
+    show
   end
 
   def create

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Votes API</title>
+    <title>Comment Votes API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,24 +106,24 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Votes API</h1>
+      <h1>Comment Votes API</h1>
 
       <div class="article">
-        <h2>Downvote an idea that you downvoted before</h2>
-        <h3>POST api/v1/ideas/:idea_id/votes/down</h3>
+        <h2>Upvote a comment that doesn&#39;t have your vote yet</h2>
+        <h3>POST api/v1/comments/:comment_id/votes/up</h3>
 
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NjYsInN1YiI6IjRiNTY1YzE2LTIwZDUtNGZiZS04MWVhLWE3NjI5Y2M5ZTQ1MyJ9.SDl8S3kSDZtZZhXfnOr09g6Z0cx8555ptFgHjPIF4VI
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMDAsInN1YiI6ImZkNGJhMWIzLWRhNTgtNDU4Ni1iYzU4LWZjM2EyOGEyNjBlNCJ9.hfNe4vNFxBwNopchVzpB13lHL9OYqLNnulwsSDUJakI
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/ideas/c51d763b-511d-41fb-a32a-7a65f654ce55/votes/down</pre>
+          <pre class="request route highlight">POST api/v1/comments/cb3cb8d4-fbbe-416a-a5e0-1f83f47e3fbb/votes/up</pre>
 
 
 
@@ -131,23 +131,16 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-Cache-Control: no-cache
-X-Request-Id: e7d1dabf-3f52-4f0c-9877-c9c563e8ab0b
-X-Runtime: 0.006948
+ETag: W/&quot;74234e98afe7498fb5daf1f36ac2d78a&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: e11111ed-7728-4d1a-9a18-13a115d301b0
+X-Runtime: 0.023912
 Vary: Origin
-Content-Length: 51</pre>
+Content-Length: 4</pre>
             <h4>Status</h4>
-            <pre class="response status">422 Unprocessable Entity</pre>
+            <pre class="response status">201 Created</pre>
               <h4>Body</h4>
-              <pre class="response body">{
-  &quot;errors&quot;: {
-    &quot;base&quot;: [
-      {
-        &quot;error&quot;: &quot;already_downvoted&quot;
-      }
-    ]
-  }
-}</pre>
+              <pre class="response body">null</pre>
       </div>
     </div>
   </body>

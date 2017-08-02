@@ -20,7 +20,7 @@ class Project < ApplicationRecord
   validates :slug, presence: true, uniqueness: true, format: {with: SlugService.new.regex }
 
   before_validation :generate_slug, on: :create
-  before_validation :sanitize_description_multiloc
+  before_validation :sanitize_description_multiloc, if: :description_multiloc
 
   private
 

@@ -155,6 +155,14 @@ table th, table td {
               </tr>
               <tr>
                 <td>
+                    <span class="name">idea_status</span>
+                </td>
+                <td>
+                  <span class="description">Filter by status (idea status id)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">search</span>
                 </td>
                 <td>
@@ -166,7 +174,7 @@ table th, table td {
                     <span class="name">sort</span>
                 </td>
                 <td>
-                  <span class="description">Either &#39;new&#39;, &#39;-new&#39;, &#39;trending&#39;, &#39;-trending&#39;, &#39;popular&#39; or &#39;-popular&#39;</span>
+                  <span class="description">Either &#39;new&#39;, &#39;-new&#39;, &#39;trending&#39;, &#39;-trending&#39;, &#39;popular&#39;, &#39;-popular&#39;, &#39;author_name&#39;, &#39;-author_name&#39;, &#39;upvotes_count&#39;, &#39;-upvotes_count&#39;, &#39;downvotes_count&#39;, &#39;-downvotes_count&#39;, &#39;status&#39;, &#39;-status&#39;</span>
                 </td>
               </tr>
             </tbody>
@@ -177,7 +185,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzcsInN1YiI6IjEwZmVmNDA4LWZiMDAtNDg3Yi05YzU0LTQ3ZTYwYjU0Nzk2YiJ9.RodmnpeqIRndyq2hQwYKxykYWZRuLmfj7bx-OM9eEFE
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMTEsInN1YiI6ImM0YzJlZjRkLWI5Y2ItNDA0OS1iNzFiLTQ3YzUyNThjZWQ2YSJ9.bkoyclu8lCjK-ivzQhb183MtvmubXvLx2ycXJhQzG0Q
 Host: example.org
 Cookie: </pre>
 
@@ -192,19 +200,19 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;52f0012dc620ac3622199de12db314a0&quot;
+ETag: W/&quot;8bddb9e3f6e3c32a3ebc7f0e0d9cb546&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: b523bf09-c88f-4f25-8546-edb38222e617
-X-Runtime: 0.040637
+X-Request-Id: f70226bd-ecb6-44d9-9436-3fc5fe99f4df
+X-Runtime: 0.049929
 Vary: Origin
-Content-Length: 1546</pre>
+Content-Length: 1641</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;308fcb09-c136-42fd-8e27-3d730e236063&quot;,
+      &quot;id&quot;: &quot;4ad0f7b3-177d-4a06-a2e5-f917526d61ca&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -214,16 +222,16 @@ Content-Length: 1546</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Sophia Cormier&quot;,
+        &quot;author_name&quot;: &quot;Daphnee Labadie&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:17.372Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:17.372Z&quot;,
-        &quot;published_at&quot;: &quot;2017-07-11T21:37:17.372Z&quot;
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:51.255Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:51.255Z&quot;,
+        &quot;published_at&quot;: &quot;2017-08-02T16:01:51.254Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -243,14 +251,20 @@ Content-Length: 1546</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;0c4d156e-7d12-4eb3-b8f6-14abe99ea267&quot;,
+            &quot;id&quot;: &quot;4d5e9700-3882-42d5-964a-6fc058688b65&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;0e84c01e-9d88-4907-8eeb-22335be0d665&quot;,
+            &quot;id&quot;: &quot;8c0385e1-1919-47fb-b8b7-37448f4d09ea&quot;,
             &quot;type&quot;: &quot;projects&quot;
+          }
+        },
+        &quot;idea_status&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;df1b35f7-121a-4911-ae6c-c37de51b8ee2&quot;,
+            &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
         &quot;user_vote&quot;: {
@@ -261,25 +275,25 @@ Content-Length: 1546</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;0c4d156e-7d12-4eb3-b8f6-14abe99ea267&quot;,
+      &quot;id&quot;: &quot;4d5e9700-3882-42d5-964a-6fc058688b65&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Sophia&quot;,
-        &quot;last_name&quot;: &quot;Cormier&quot;,
-        &quot;slug&quot;: &quot;sophia-cormier&quot;,
+        &quot;first_name&quot;: &quot;Daphnee&quot;,
+        &quot;last_name&quot;: &quot;Labadie&quot;,
+        &quot;slug&quot;: &quot;daphnee-labadie&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/0c4d156e-7d12-4eb3-b8f6-14abe99ea267/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/0c4d156e-7d12-4eb3-b8f6-14abe99ea267/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/0c4d156e-7d12-4eb3-b8f6-14abe99ea267/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/4d5e9700-3882-42d5-964a-6fc058688b65/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/4d5e9700-3882-42d5-964a-6fc058688b65/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/4d5e9700-3882-42d5-964a-6fc058688b65/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:17.359Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:17.359Z&quot;
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:51.232Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:51.232Z&quot;
       }
     }
   ],

@@ -20,7 +20,7 @@ class Api::V1::PagesController < ::ApplicationController
   def by_slug
     @page = Page.find_by!(slug: params[:slug])
     authorize @page
-    render json: @page
+    show
   end
 
   def create
