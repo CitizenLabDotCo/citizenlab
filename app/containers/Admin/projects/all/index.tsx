@@ -13,6 +13,9 @@ import t from 'utils/containers/t';
 const T = t;
 import messages from '../messages';
 
+// Components
+import { Link } from 'react-router';
+
 // Styles
 const ProjectsList = styled.ul`
   display: flex;
@@ -109,9 +112,9 @@ class AdminProjectsList extends React.Component<Props, State> {
 
             <h1><T value={project.attributes.title_multiloc} /></h1>
 
-            <a href={`/admin/projects/${project.attributes.slug}/edit`}>
+            <Link to={`/admin/projects/${project.attributes.slug}/edit`}>
               <FormattedMessage {...messages.editProject} />
-            </a>
+            </Link>
           </ProjectCard>
         ))}
       </ProjectsList>
