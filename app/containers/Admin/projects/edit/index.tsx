@@ -7,6 +7,8 @@ import { observeProject, IProjectData } from 'services/projects';
 
 // Components
 import TabbedResource from 'components/admin/TabbedResource';
+import { Link } from 'react-router';
+
 
 // Localisation
 import { FormattedMessage } from 'react-intl';
@@ -84,7 +86,7 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
 
     return(
       <div>
-        <a href="/admin/projects">go back</a>
+        <Link to="/admin/projects">go back</Link>
         <TabbedResource {...tabbedProps}>
           {this.props.children}
         </TabbedResource>
