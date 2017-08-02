@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Votes API</title>
+    <title>Idea Votes API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,7 +106,7 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Votes API</h1>
+      <h1>Idea Votes API</h1>
 
       <div class="article">
         <h2>Get one vote by id</h2>
@@ -117,13 +117,13 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NjUsInN1YiI6IjY0MjE2MTJiLWY2NzctNGU4Ni1iZDgzLTlmZGNkNWZlOWMwNSJ9.Ak9Sq_O35PhIRGvz-yEKIhHmUCbiZ15vxqVebmC2U0g
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMDUsInN1YiI6IjM2YmJiMDM2LWI5YjItNGFlYi04MDhiLTRlNzEzNWEzNjMzMSJ9.NDR80ag-14a9i49n_EzzBw0Q7m2mBMa3Yi3isVG1x3E
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/votes/c8ebf8e9-11da-46b9-82ac-bbfce2b18aaf</pre>
+          <pre class="request route highlight">GET api/v1/votes/6d345c67-a8f0-42a6-a3b9-d76d654c051c</pre>
 
 
 
@@ -131,18 +131,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;b0097767cf31d605bd791444e06d0d87&quot;
+ETag: W/&quot;7f340bb124f470ad9d201c412495b0ec&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 9108dbb1-bdb7-4dd3-ac67-1308ef8ecdd3
-X-Runtime: 0.016826
+X-Request-Id: 6bdea5cf-960b-411a-82ea-c9c9838f6da4
+X-Runtime: 0.020331
 Vary: Origin
-Content-Length: 1034</pre>
+Content-Length: 1024</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;c8ebf8e9-11da-46b9-82ac-bbfce2b18aaf&quot;,
+    &quot;id&quot;: &quot;6d345c67-a8f0-42a6-a3b9-d76d654c051c&quot;,
     &quot;type&quot;: &quot;votes&quot;,
     &quot;attributes&quot;: {
       &quot;mode&quot;: &quot;up&quot;
@@ -150,13 +150,13 @@ Content-Length: 1034</pre>
     &quot;relationships&quot;: {
       &quot;votable&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;ebc56924-cbd6-4bcf-bbe5-762710f998a0&quot;,
+          &quot;id&quot;: &quot;7116f0d0-239a-403f-8913-41d0dcf96eeb&quot;,
           &quot;type&quot;: &quot;votables&quot;
         }
       },
       &quot;user&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;fc1e5db2-e85f-450d-921b-6a63db10ffa3&quot;,
+          &quot;id&quot;: &quot;b87e4481-bc44-4312-bd5b-0532a2e97f0e&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       }
@@ -164,26 +164,26 @@ Content-Length: 1034</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;fc1e5db2-e85f-450d-921b-6a63db10ffa3&quot;,
+      &quot;id&quot;: &quot;b87e4481-bc44-4312-bd5b-0532a2e97f0e&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Dorthy&quot;,
-        &quot;last_name&quot;: &quot;Kreiger&quot;,
-        &quot;slug&quot;: &quot;dorthy-kreiger&quot;,
+        &quot;first_name&quot;: &quot;Aubrey&quot;,
+        &quot;last_name&quot;: &quot;Olson&quot;,
+        &quot;slug&quot;: &quot;aubrey-olson&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/fc1e5db2-e85f-450d-921b-6a63db10ffa3/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/fc1e5db2-e85f-450d-921b-6a63db10ffa3/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/fc1e5db2-e85f-450d-921b-6a63db10ffa3/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/b87e4481-bc44-4312-bd5b-0532a2e97f0e/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/b87e4481-bc44-4312-bd5b-0532a2e97f0e/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/b87e4481-bc44-4312-bd5b-0532a2e97f0e/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:45.221Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:45.221Z&quot;,
-        &quot;email&quot;: &quot;einar_beahan@jacobikuvalis.co&quot;,
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:45.167Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:45.167Z&quot;,
+        &quot;email&quot;: &quot;verna@rennernienow.info&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

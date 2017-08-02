@@ -148,17 +148,52 @@ table th, table td {
             </tbody>
           </table>
 
+          <h3>Response Fields</h3>
+          <table class="response-fields table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">errors[title_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[body_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[slug]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;invalid&#39; }</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NDUsInN1YiI6Ijk2ODkxYjVjLTQ0NTEtNGE5Zi1hNmE1LTcxMGU2ZDVlNWNiOSJ9.JrUsrUsCTOERorqtPJU9oskC_fDU3lW-B8tD8W9z8FA
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMjMsInN1YiI6Ijc4ZTc1MWNmLTliY2QtNGU2Ny1hMjgzLTI4ZjUyMWY3MDFkMSJ9.0wRn4QklW1-bm7_FVtlmOFabeMMWnO7NnkT6Ylh0PEk
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/pages/4a515c2c-0ecc-415e-8da3-86308bed48ea</pre>
+          <pre class="request route highlight">PATCH api/v1/pages/6ef293f3-a7ad-4724-aa77-d73a46ce8c59</pre>
 
 
             <h4>Body</h4>
@@ -168,10 +203,10 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;11442ee40fa402203f042a5c4662a828&quot;
+ETag: W/&quot;d86a2a8beef3e57a9bc0f39278ea817a&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 8d0e08c8-f5b3-4884-9ecf-8a053c9a5454
-X-Runtime: 0.014420
+X-Request-Id: ff84d266-6f5a-483f-b167-c3b0087fb1bc
+X-Runtime: 0.015483
 Vary: Origin
 Content-Length: 265</pre>
             <h4>Status</h4>
@@ -179,7 +214,7 @@ Content-Length: 265</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;4a515c2c-0ecc-415e-8da3-86308bed48ea&quot;,
+    &quot;id&quot;: &quot;6ef293f3-a7ad-4724-aa77-d73a46ce8c59&quot;,
     &quot;type&quot;: &quot;pages&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -189,8 +224,8 @@ Content-Length: 265</pre>
         &quot;en&quot;: &quot;Changed body&quot;
       },
       &quot;slug&quot;: &quot;changed-title&quot;,
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:25.570Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:25.582Z&quot;
+      &quot;created_at&quot;: &quot;2017-08-02T16:02:03.772Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-08-02T16:02:03.786Z&quot;
     }
   }
 }</pre>

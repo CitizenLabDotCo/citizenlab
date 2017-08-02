@@ -156,11 +156,46 @@ table th, table td {
             </tbody>
           </table>
 
+          <h3>Response Fields</h3>
+          <table class="response-fields table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">errors[title_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[description_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[slug]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;invalid&#39; }</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NDYsInN1YiI6IjEwMjg1NDk1LThiOTgtNDg1My1iOGVkLTkwM2QwYTMxN2U5YSJ9.5vfrZRT1wHYmognbFBhcOhmLFUIZgtTa1zR7mEkucEQ
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMjUsInN1YiI6IjllYzEyOTU2LWM2NWUtNGI3Zi1hYmY2LWFiZWNiZTY4Y2QyMyJ9.bNqvapiptV4_0KynDVTdpqFmllLw2yVGjmK44MwYnN8
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
@@ -176,10 +211,10 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;7125de774af501b6cd366c04c4a5c211&quot;
+ETag: W/&quot;0e05eea805ab70b096654c533b22feaa&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: a15814b2-134d-40ad-b831-c8575aa11a05
-X-Runtime: 0.045116
+X-Request-Id: 64474bf9-8fb3-4eae-b131-0215cf1435ad
+X-Runtime: 0.048211
 Vary: Origin
 Content-Length: 1025</pre>
             <h4>Status</h4>
@@ -187,7 +222,7 @@ Content-Length: 1025</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;396da935-c77a-45cf-a511-36ca97ee996a&quot;,
+    &quot;id&quot;: &quot;1207e2dd-00c7-4456-8a7d-bf77ef085b18&quot;,
     &quot;type&quot;: &quot;projects&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -200,13 +235,13 @@ Content-Length: 1025</pre>
       },
       &quot;slug&quot;: &quot;renew-west-parc-5&quot;,
       &quot;header_bg&quot;: {
-        &quot;large&quot;: &quot;/uploads/396da935-c77a-45cf-a511-36ca97ee996a/project/header_bg/396da935-c77a-45cf-a511-36ca97ee996a/large_header_bg.png&quot;,
-        &quot;medium&quot;: &quot;/uploads/396da935-c77a-45cf-a511-36ca97ee996a/project/header_bg/396da935-c77a-45cf-a511-36ca97ee996a/medium_header_bg.png&quot;,
-        &quot;small&quot;: &quot;/uploads/396da935-c77a-45cf-a511-36ca97ee996a/project/header_bg/396da935-c77a-45cf-a511-36ca97ee996a/small_header_bg.png&quot;
+        &quot;large&quot;: &quot;/uploads/1207e2dd-00c7-4456-8a7d-bf77ef085b18/project/header_bg/1207e2dd-00c7-4456-8a7d-bf77ef085b18/large_header_bg.png&quot;,
+        &quot;medium&quot;: &quot;/uploads/1207e2dd-00c7-4456-8a7d-bf77ef085b18/project/header_bg/1207e2dd-00c7-4456-8a7d-bf77ef085b18/medium_header_bg.png&quot;,
+        &quot;small&quot;: &quot;/uploads/1207e2dd-00c7-4456-8a7d-bf77ef085b18/project/header_bg/1207e2dd-00c7-4456-8a7d-bf77ef085b18/small_header_bg.png&quot;
       },
       &quot;ideas_count&quot;: 0,
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:27.021Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:27.021Z&quot;
+      &quot;created_at&quot;: &quot;2017-08-02T16:02:05.742Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-08-02T16:02:05.742Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;project_images&quot;: {

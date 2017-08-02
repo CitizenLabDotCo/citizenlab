@@ -77,16 +77,31 @@ resource "Pages" do
       parameter :body_multiloc, "The content of the page, as a multiloc HTML string", required: true
       parameter :slug, "The unique slug of the page. If not given, it will be auto generated"
     end
+    ValidationErrorHelper.new.error_fields(self, Page)
+
 
     let(:page) { build(:page) }
     let(:title_multiloc) { page.title_multiloc }
     let(:body_multiloc) { page.body_multiloc }
 
-    example_request "Create a page" do
-      expect(response_status).to eq 201
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-      expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
+    describe do
+      example_request "Create a page" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
+      end
+    end
+
+    describe do
+
+      let (:title_multiloc) { {"en" => ""}}
+      
+      example_request "[error] Create an invalid page" do
+        expect(response_status).to eq 422
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:errors,:title_multiloc)).to eq [{error: 'blank'}]
+      end
     end
   end
 
@@ -100,6 +115,8 @@ resource "Pages" do
       parameter :body_multiloc, "The content of the page, as a multiloc HTML string", required: true
       parameter :slug, "The unique slug of the page"
     end
+    ValidationErrorHelper.new.error_fields(self, Page)
+
 
     let(:id) { @page.id }
     let(:title_multiloc) { {"en" => "Changed title" } }

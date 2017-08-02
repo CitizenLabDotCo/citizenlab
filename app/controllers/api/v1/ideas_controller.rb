@@ -82,12 +82,13 @@ class Api::V1::IdeasController < ApplicationController
   def by_slug
     @idea = Idea.find_by!(slug: params[:slug])
     authorize @idea
-    render json: @idea 
+    show
   end
 
   # insert
   def create
     @idea = Idea.new(permitted_attributes(Idea))
+    @idea.author ||= current_user
     authorize @idea
     if @idea.save
       SideFxIdeaService.new.after_create(@idea, current_user)

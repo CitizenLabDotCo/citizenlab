@@ -16,7 +16,8 @@ class Api::V1::ImagesController < ApplicationController
 
   def create
     authorize @container
-    if @image = @container.send("#{container_association}_images").create(image_params)
+    @image = @container.send("#{container_association}_images").create(image_params)
+    if @image.save
       render json: @image, status: :created, serializer: Api::V1::ImageSerializer
     else
       render json: {errors: @image.errors.details}, status: :unprocessable_entity

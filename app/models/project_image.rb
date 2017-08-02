@@ -3,4 +3,5 @@ class ProjectImage < ApplicationRecord
   belongs_to :project
 
   validates :project, :image, presence: true
+  validates :ordering, numericality: { only_integer: true }, allow_nil: true
 end

@@ -122,7 +122,7 @@ Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/comments/e32b4055-ac19-4c24-b3b0-c423f58eaf95</pre>
+          <pre class="request route highlight">GET api/v1/comments/0ceb52d6-b5a6-4b57-8d30-be24932febd3</pre>
 
 
 
@@ -130,37 +130,39 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;8d49900d5452b1832557955f5e7523a2&quot;
+ETag: W/&quot;386d47cbca66da67f2b6383d45390719&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: b65fc7ca-7c5a-460c-bbbb-a7abcee28781
-X-Runtime: 0.015406
+X-Request-Id: c6434915-7cb7-4c8b-8b74-ceeec1e4a71b
+X-Runtime: 0.018196
 Vary: Origin
-Content-Length: 1153</pre>
+Content-Length: 1197</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;e32b4055-ac19-4c24-b3b0-c423f58eaf95&quot;,
+    &quot;id&quot;: &quot;0ceb52d6-b5a6-4b57-8d30-be24932febd3&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
         &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
       },
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:12.270Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:12.270Z&quot;
+      &quot;upvotes_count&quot;: 0,
+      &quot;downvotes_count&quot;: 0,
+      &quot;created_at&quot;: &quot;2017-08-02T16:01:42.101Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-08-02T16:01:42.101Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;47ec8987-968d-4339-980a-5e9013320aec&quot;,
+          &quot;id&quot;: &quot;0946e4be-03c1-46c9-bbd1-eb2fa3a6e19e&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;f5e79133-8557-467a-b9ce-309320a378fd&quot;,
+          &quot;id&quot;: &quot;6c623034-d43e-4938-b9ad-f5cb1c6bb8ed&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
@@ -171,25 +173,25 @@ Content-Length: 1153</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;f5e79133-8557-467a-b9ce-309320a378fd&quot;,
+      &quot;id&quot;: &quot;6c623034-d43e-4938-b9ad-f5cb1c6bb8ed&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Aniyah&quot;,
-        &quot;last_name&quot;: &quot;Jerde&quot;,
-        &quot;slug&quot;: &quot;aniyah-jerde&quot;,
+        &quot;first_name&quot;: &quot;Patricia&quot;,
+        &quot;last_name&quot;: &quot;Hamill&quot;,
+        &quot;slug&quot;: &quot;patricia-hamill&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/f5e79133-8557-467a-b9ce-309320a378fd/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/f5e79133-8557-467a-b9ce-309320a378fd/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/f5e79133-8557-467a-b9ce-309320a378fd/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/6c623034-d43e-4938-b9ad-f5cb1c6bb8ed/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/6c623034-d43e-4938-b9ad-f5cb1c6bb8ed/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/6c623034-d43e-4938-b9ad-f5cb1c6bb8ed/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:12.254Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:12.254Z&quot;
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:42.084Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:42.084Z&quot;
       }
     }
   ]

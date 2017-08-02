@@ -47,6 +47,8 @@ resource "Phases" do
         parameter :start_at, "The start date of the phase", required: true
         parameter :end_at, "The end date of the phase", required: true
       end
+    ValidationErrorHelper.new.error_fields(self, Phase)
+
 
       let(:project_id) { @project.id }
       let(:phase) { build(:phase) }
@@ -63,6 +65,15 @@ resource "Phases" do
         expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
       end
 
+      describe do
+        let (:start_at) { nil }
+        example_request "[error] Create an invalid phase" do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :start_at)).to eq [{error: 'blank'}]
+        end
+      end
+
     end
 
     patch "api/v1/phases/:id" do
@@ -73,6 +84,8 @@ resource "Phases" do
         parameter :start_at, "The start date of the phase"
         parameter :end_at, "The end date of the phase"
       end
+    ValidationErrorHelper.new.error_fields(self, Phase)
+
 
       let(:phase) { create(:phase, project: @project) }
       let(:id) { phase.id }

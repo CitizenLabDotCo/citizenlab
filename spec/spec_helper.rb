@@ -139,5 +139,6 @@ RSpec.configure do |config|
 end
 
 RspecApiDocumentation.configure do |config|
+  # config.format = [:html, :api_blueprint]
   config.request_body_formatter = :json
 end

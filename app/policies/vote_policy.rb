@@ -19,7 +19,7 @@ class VotePolicy < ApplicationPolicy
   end
 
   def create?
-    user
+    (user && (record.user_id == user.id || user.admin?))
   end
 
   def show?

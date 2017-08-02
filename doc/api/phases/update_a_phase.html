@@ -164,17 +164,68 @@ table th, table td {
             </tbody>
           </table>
 
+          <h3>Response Fields</h3>
+          <table class="response-fields table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">errors[project]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[title_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[description_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[start_at]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[end_at]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NDUsInN1YiI6IjY1YzVlZTRlLTUxNzQtNGJiYS04ODNmLTBjMjExYjJhZTBjMCJ9.grSlTqnf2d2h320hqRxaSKRwufPT5pV-xtZF2a8ezL8
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMjQsInN1YiI6IjQ1Nzk0OWU4LTU3ODUtNGY0Yi1hMTE2LTIzNDZmNDRjYTc1MSJ9.eVrVWAWWs-9fyV6aOHZaO8ft8dfJoZ0CI7kHTNCNdt8
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/phases/68917bfc-79a3-48c8-acba-0fe044721f14</pre>
+          <pre class="request route highlight">PATCH api/v1/phases/7f1dd08a-f8cb-447d-ab8f-b095cc29933e</pre>
 
 
             <h4>Body</h4>
@@ -184,10 +235,10 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;50465ed2667d978e481b0b801eacfcd2&quot;
+ETag: W/&quot;269efc3c541cbf1da7d062538e0cbfe5&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 35c9d9a7-91c6-49bd-b0ba-977294a8f123
-X-Runtime: 0.014338
+X-Request-Id: 12cd7174-aff2-4845-8fd7-802b6e0f48e0
+X-Runtime: 0.020176
 Vary: Origin
 Content-Length: 618</pre>
             <h4>Status</h4>
@@ -195,7 +246,7 @@ Content-Length: 618</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;68917bfc-79a3-48c8-acba-0fe044721f14&quot;,
+    &quot;id&quot;: &quot;7f1dd08a-f8cb-447d-ab8f-b095cc29933e&quot;,
     &quot;type&quot;: &quot;phases&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -208,13 +259,13 @@ Content-Length: 618</pre>
       },
       &quot;start_at&quot;: &quot;2017-05-01&quot;,
       &quot;end_at&quot;: &quot;2017-06-30&quot;,
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:25.941Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:25.941Z&quot;
+      &quot;created_at&quot;: &quot;2017-08-02T16:02:04.260Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-08-02T16:02:04.260Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;cfd32512-20d0-4341-b778-24242db81949&quot;,
+          &quot;id&quot;: &quot;7fc5a395-a468-45ca-8b7d-1e47a8dc7183&quot;,
           &quot;type&quot;: &quot;projects&quot;
         }
       }

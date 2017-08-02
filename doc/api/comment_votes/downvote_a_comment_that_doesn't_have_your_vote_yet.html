@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Votes API</title>
+    <title>Comment Votes API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,24 +106,24 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Votes API</h1>
+      <h1>Comment Votes API</h1>
 
       <div class="article">
-        <h2>downvote an idea that you upvoted before</h2>
-        <h3>POST api/v1/ideas/:idea_id/votes/down</h3>
+        <h2>downvote a comment that doesn&#39;t have your vote yet</h2>
+        <h3>POST api/v1/comments/:comment_id/votes/down</h3>
 
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NjYsInN1YiI6IjYzYjI5MmM0LWU4MjMtNDU2NS1iZTZhLTcwM2VlNzQxZTdjNCJ9.Abm7UBT3OcCylCqI5wAI3FWhkolBPIR70R9czl22Pwk
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMDAsInN1YiI6ImUzMjg4MzM0LTI3OGMtNGYyOC04NWYwLTc4M2Q4NGIwNzI3NCJ9.Avc3T2l8n_DD3rX1tAW36RmX97YzOvWUIypoCCjwGc8
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/ideas/955b4650-cc78-4e2f-8576-294e41356f27/votes/down</pre>
+          <pre class="request route highlight">POST api/v1/comments/3bd0f925-3e03-47f6-8f38-c1fd3e183f58/votes/down</pre>
 
 
 
@@ -133,8 +133,8 @@ Cookie: </pre>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
 ETag: W/&quot;74234e98afe7498fb5daf1f36ac2d78a&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 32cdb708-6294-4f85-8a68-b416cee8fd50
-X-Runtime: 0.029452
+X-Request-Id: 6b2a5b90-5e55-45ea-80de-8aec8101c22a
+X-Runtime: 0.014948
 Vary: Origin
 Content-Length: 4</pre>
             <h4>Status</h4>

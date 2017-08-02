@@ -11,6 +11,7 @@ class Comment < ApplicationRecord
 
   validates :body_multiloc, presence: true, multiloc: {presence: true}
   validates :author_name, presence: true
+  validates :author, presence: true, on: :create
 
   before_validation :set_author_name, on: :create
 

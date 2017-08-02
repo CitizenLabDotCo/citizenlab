@@ -220,17 +220,116 @@ table th, table td {
             </tbody>
           </table>
 
+          <h3>Response Fields</h3>
+          <table class="response-fields table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">errors[email]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[slug]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;invalid&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[first_name]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[last_name]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[locale]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;inclusion&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[bio_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[gender]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;inclusion&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[birthyear]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;greater_than&#39; | &#39;greater_than_or_equal_to&#39; | &#39;equal_to&#39; | &#39;less_than&#39; | &#39;less_than_or_equal_to&#39; | &#39;not_a_number&#39; | &#39;not_an_integer&#39; | &#39;odd&#39; | &#39;even&#39; | &#39;other_than&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[domicile]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;inclusion&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[education]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;greater_than&#39; | &#39;greater_than_or_equal_to&#39; | &#39;equal_to&#39; | &#39;less_than&#39; | &#39;less_than_or_equal_to&#39; | &#39;not_a_number&#39; | &#39;not_an_integer&#39; | &#39;odd&#39; | &#39;even&#39; | &#39;other_than&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[password]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;wrong_length&#39; | &#39;too_short&#39; | &#39;too_long&#39; }</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NjQsInN1YiI6IjdhMDUxYjU3LTU5ODktNGFiMy04MTdhLTRjNTEwNTVlYTE1NCJ9.kfWyGCy2DUfntIxSVEABBeMUqMPjxrKA7a8eFcOqFP0
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxNDgsInN1YiI6IjdjNDNiMDlhLTcyMjYtNDNhNS05NDUxLTM0MzhiNWEyYzE5MyJ9.AcZMnZhzNwT_w7eoD58fLeiIrh6hOiq4lu6FhrFGyv4
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PUT api/v1/users/7a051b57-5989-4ab3-817a-4c51055ea154</pre>
+          <pre class="request route highlight">PUT api/v1/users/7c43b09a-7226-43a5-9451-3438b5a2c193</pre>
 
 
             <h4>Body</h4>
@@ -240,37 +339,37 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;f961b03c820a70e1fb1a16ab695d9776&quot;
+ETag: W/&quot;746f572d11b2ef472b3ec1711cb52ce5&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 9934ecf4-530d-47c2-ac31-76f66b235c34
-X-Runtime: 0.020176
+X-Request-Id: cc1204f8-049d-4fbc-b4e3-d56bd9d69759
+X-Runtime: 0.022890
 Vary: Origin
-Content-Length: 756</pre>
+Content-Length: 751</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;7a051b57-5989-4ab3-817a-4c51055ea154&quot;,
+    &quot;id&quot;: &quot;7c43b09a-7226-43a5-9451-3438b5a2c193&quot;,
     &quot;type&quot;: &quot;users&quot;,
     &quot;attributes&quot;: {
       &quot;first_name&quot;: &quot;Edmond&quot;,
-      &quot;last_name&quot;: &quot;Luettgen&quot;,
-      &quot;slug&quot;: &quot;cortney-luettgen&quot;,
+      &quot;last_name&quot;: &quot;Shanahan&quot;,
+      &quot;slug&quot;: &quot;valentina-shanahan&quot;,
       &quot;locale&quot;: &quot;en&quot;,
       &quot;avatar&quot;: {
-        &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/7a051b57-5989-4ab3-817a-4c51055ea154/small_robot.jpg&quot;,
-        &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/7a051b57-5989-4ab3-817a-4c51055ea154/medium_robot.jpg&quot;,
-        &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/7a051b57-5989-4ab3-817a-4c51055ea154/large_robot.jpg&quot;
+        &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/7c43b09a-7226-43a5-9451-3438b5a2c193/small_robot.jpg&quot;,
+        &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/7c43b09a-7226-43a5-9451-3438b5a2c193/medium_robot.jpg&quot;,
+        &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/7c43b09a-7226-43a5-9451-3438b5a2c193/large_robot.jpg&quot;
       },
       &quot;roles&quot;: [
 
       ],
       &quot;bio_multiloc&quot;: {
       },
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:44.628Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:44.769Z&quot;,
-      &quot;email&quot;: &quot;elia_gerhold@bauchgraham.co&quot;,
+      &quot;created_at&quot;: &quot;2017-08-02T16:02:28.062Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-08-02T16:02:28.204Z&quot;,
+      &quot;email&quot;: &quot;delphine@schimmel.co&quot;,
       &quot;gender&quot;: null,
       &quot;birthyear&quot;: null,
       &quot;domicile&quot;: null,

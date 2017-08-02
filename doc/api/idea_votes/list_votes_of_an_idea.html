@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Votes API</title>
+    <title>Idea Votes API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,7 +106,7 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Votes API</h1>
+      <h1>Idea Votes API</h1>
 
       <div class="article">
         <h2>List votes of an idea</h2>
@@ -117,13 +117,13 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NjUsInN1YiI6IjM3N2JiZGM3LTc1NzQtNGNlOS1hMDkyLTA4MjEzZTA2MzE4NSJ9.jIOJpYq_KnmrYYT3-28WI6H2Fmmh8kYJdmffsd_VDHU
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMDQsInN1YiI6IjZhNmJmM2E5LTdmNDMtNDk0NC1hOWU2LWVkYzZhNDBmZDAzNSJ9.gpUJmR2gkFcXugTFW-Z9t7xu_gwXplvCsvmPGZzaai4
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas/1e29c9fa-9722-4e3d-b7af-baec20bbebd7/votes</pre>
+          <pre class="request route highlight">GET api/v1/ideas/f0d15c28-d60b-4db2-ab08-4eebcc71a047/votes</pre>
 
 
 
@@ -131,19 +131,19 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;7cf679582f93bf78eecd74a38fc07f8d&quot;
+ETag: W/&quot;0d44c8fad106507d1bff5dfee3f0f934&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 17cb2f26-a5bd-427f-99b2-bc2bc869ae64
-X-Runtime: 0.028713
+X-Request-Id: a8722167-4bbc-47bd-a84c-439f5705bacb
+X-Runtime: 0.025734
 Vary: Origin
-Content-Length: 2033</pre>
+Content-Length: 2035</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;e0349ac2-b276-4c25-bc59-01cb9efa20f7&quot;,
+      &quot;id&quot;: &quot;b2a7a588-74cf-4c9d-8693-cf95d4f0a40c&quot;,
       &quot;type&quot;: &quot;votes&quot;,
       &quot;attributes&quot;: {
         &quot;mode&quot;: &quot;up&quot;
@@ -151,20 +151,20 @@ Content-Length: 2033</pre>
       &quot;relationships&quot;: {
         &quot;votable&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;1e29c9fa-9722-4e3d-b7af-baec20bbebd7&quot;,
+            &quot;id&quot;: &quot;f0d15c28-d60b-4db2-ab08-4eebcc71a047&quot;,
             &quot;type&quot;: &quot;votables&quot;
           }
         },
         &quot;user&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;907d6be9-cad1-41c2-9a0b-462303a1401b&quot;,
+            &quot;id&quot;: &quot;dd1e5246-8543-4ce3-83b2-e029a2e78c20&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         }
       }
     },
     {
-      &quot;id&quot;: &quot;7f007a71-2263-4991-9dc9-bebaa41451fd&quot;,
+      &quot;id&quot;: &quot;8c737186-f447-4e2a-b667-610df9c0be8e&quot;,
       &quot;type&quot;: &quot;votes&quot;,
       &quot;attributes&quot;: {
         &quot;mode&quot;: &quot;up&quot;
@@ -172,13 +172,13 @@ Content-Length: 2033</pre>
       &quot;relationships&quot;: {
         &quot;votable&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;1e29c9fa-9722-4e3d-b7af-baec20bbebd7&quot;,
+            &quot;id&quot;: &quot;f0d15c28-d60b-4db2-ab08-4eebcc71a047&quot;,
             &quot;type&quot;: &quot;votables&quot;
           }
         },
         &quot;user&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;dcb351e6-e6ff-4128-bfeb-cdfca2becbfc&quot;,
+            &quot;id&quot;: &quot;2dc50088-e9ed-415b-b141-97e1dd6e7a39&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         }
@@ -187,26 +187,26 @@ Content-Length: 2033</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;907d6be9-cad1-41c2-9a0b-462303a1401b&quot;,
+      &quot;id&quot;: &quot;dd1e5246-8543-4ce3-83b2-e029a2e78c20&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Jolie&quot;,
-        &quot;last_name&quot;: &quot;Crooks&quot;,
-        &quot;slug&quot;: &quot;jolie-crooks&quot;,
+        &quot;first_name&quot;: &quot;Derek&quot;,
+        &quot;last_name&quot;: &quot;Tromp&quot;,
+        &quot;slug&quot;: &quot;derek-tromp&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/907d6be9-cad1-41c2-9a0b-462303a1401b/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/907d6be9-cad1-41c2-9a0b-462303a1401b/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/907d6be9-cad1-41c2-9a0b-462303a1401b/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/dd1e5246-8543-4ce3-83b2-e029a2e78c20/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/dd1e5246-8543-4ce3-83b2-e029a2e78c20/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/dd1e5246-8543-4ce3-83b2-e029a2e78c20/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:45.095Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:45.095Z&quot;,
-        &quot;email&quot;: &quot;sydney.erdman@huel.io&quot;,
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:45.019Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:45.019Z&quot;,
+        &quot;email&quot;: &quot;lavinia.lebsack@satterfield.biz&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -214,26 +214,26 @@ Content-Length: 2033</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;dcb351e6-e6ff-4128-bfeb-cdfca2becbfc&quot;,
+      &quot;id&quot;: &quot;2dc50088-e9ed-415b-b141-97e1dd6e7a39&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Greyson&quot;,
-        &quot;last_name&quot;: &quot;Ullrich&quot;,
-        &quot;slug&quot;: &quot;greyson-ullrich&quot;,
+        &quot;first_name&quot;: &quot;Keaton&quot;,
+        &quot;last_name&quot;: &quot;Stanton&quot;,
+        &quot;slug&quot;: &quot;keaton-stanton&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/dcb351e6-e6ff-4128-bfeb-cdfca2becbfc/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/dcb351e6-e6ff-4128-bfeb-cdfca2becbfc/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/dcb351e6-e6ff-4128-bfeb-cdfca2becbfc/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/2dc50088-e9ed-415b-b141-97e1dd6e7a39/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/2dc50088-e9ed-415b-b141-97e1dd6e7a39/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/2dc50088-e9ed-415b-b141-97e1dd6e7a39/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:45.067Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:45.067Z&quot;,
-        &quot;email&quot;: &quot;marlen.schumm@stark.biz&quot;,
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:44.989Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:44.989Z&quot;,
+        &quot;email&quot;: &quot;mohammad@beatty.net&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

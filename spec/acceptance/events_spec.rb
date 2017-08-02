@@ -48,20 +48,39 @@ resource "Events" do
         parameter :start_at, "The start datetime of the event", required: true
         parameter :end_at, "The end datetime of the event", required: true
       end
+      ValidationErrorHelper.new.error_fields(self, Event)
+      response_field :start_at, "Array containing objects with signature {error: 'after_end_at'}", scope: :errors
 
-      let(:project_id) { @project.id }
       let(:event) { build(:event) }
-      let(:title_multiloc) { event.title_multiloc }
-      let(:start_at) { event.start_at }
-      let(:end_at) { event.end_at }
 
-      example_request "Create a event in a project" do
-        expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:start_at)).to eq start_at.iso8601(3)
-        expect(json_response.dig(:data,:attributes,:end_at)).to eq end_at.iso8601(3)
-        expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
+      describe do
+        let(:project_id) { @project.id }
+        let(:title_multiloc) { event.title_multiloc }
+        let(:start_at) { event.start_at }
+        let(:end_at) { event.end_at }
+
+        example_request "Create an event in a project" do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data,:attributes,:start_at)).to eq start_at.iso8601(3)
+          expect(json_response.dig(:data,:attributes,:end_at)).to eq end_at.iso8601(3)
+          expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
+        end
+      end
+
+      describe do
+        let(:project_id) { @project.id }
+        let(:title_multiloc) { {'en' => ""} }
+        let(:start_at) { event.start_at }
+        let(:end_at) { event.start_at - 1.day}
+
+        example_request "[error] Create an invalid event" do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :title_multiloc)).to eq [{error: 'blank'}]
+          expect(json_response.dig(:errors, :start_at)).to eq [{error: 'after_end_at'}]
+        end
       end
 
     end
@@ -75,6 +94,8 @@ resource "Events" do
         parameter :start_at, "The start datetime of the event"
         parameter :end_at, "The end datetime of the event"
       end
+      ValidationErrorHelper.new.error_fields(self, Event)
+
 
       let(:event) { create(:event, project: @project) }
       let(:id) { event.id }

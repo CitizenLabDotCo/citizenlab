@@ -155,6 +155,14 @@ table th, table td {
               </tr>
               <tr>
                 <td>
+                    <span class="name">idea_status</span>
+                </td>
+                <td>
+                  <span class="description">Filter by status (idea status id)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">search</span>
                 </td>
                 <td>
@@ -166,7 +174,7 @@ table th, table td {
                     <span class="name">sort</span>
                 </td>
                 <td>
-                  <span class="description">Either &#39;new&#39;, &#39;-new&#39;, &#39;trending&#39;, &#39;-trending&#39;, &#39;popular&#39; or &#39;-popular&#39;</span>
+                  <span class="description">Either &#39;new&#39;, &#39;-new&#39;, &#39;trending&#39;, &#39;-trending&#39;, &#39;popular&#39;, &#39;-popular&#39;, &#39;author_name&#39;, &#39;-author_name&#39;, &#39;upvotes_count&#39;, &#39;-upvotes_count&#39;, &#39;downvotes_count&#39;, &#39;-downvotes_count&#39;, &#39;status&#39;, &#39;-status&#39;</span>
                 </td>
               </tr>
             </tbody>
@@ -177,34 +185,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzYsInN1YiI6Ijk3MmJhZjhlLWY2MDQtNDRmOS1hM2FkLTIxZDRmZjJjYjI2YiJ9.MF4GkK5xeV_3Cz7HoJ7wrEtl0ydQe90f-lGxd06aczk
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMDksInN1YiI6ImExZTMwZTNhLTBhMjAtNDVmMS05MjA1LWU0M2FmNTA4NzdhZSJ9.9P9j-bYXQztBC6C_r5zVE7ObCb0LSLjxmYaIBt-IR04
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?areas[]=421f42f4-18c9-4084-9860-17efb686d699&amp;areas[]=e2780c58-f8d0-48d5-a6e4-4082be0bed08</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=d11c73af-55b4-479e-b6d8-1a4f37be1c61&amp;areas[]=cbbf50fd-ee58-4eb4-a74a-020ec1bc0557</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">areas: [&quot;421f42f4-18c9-4084-9860-17efb686d699&quot;, &quot;e2780c58-f8d0-48d5-a6e4-4082be0bed08&quot;]</pre>
+            <pre class="request query_parameters highlight">areas: [&quot;d11c73af-55b4-479e-b6d8-1a4f37be1c61&quot;, &quot;cbbf50fd-ee58-4eb4-a74a-020ec1bc0557&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;1dd6d0233e9ea8f2d52f671dc401b11b&quot;
+ETag: W/&quot;9e4bf9597c4357e978aac429760a0cb6&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: bf9865d4-6fd2-4f10-bf99-ed988ab89995
-X-Runtime: 0.037035
+X-Request-Id: af5f34d5-eb9e-48dc-8b4c-f2644193d855
+X-Runtime: 0.048521
 Vary: Origin
-Content-Length: 1699</pre>
+Content-Length: 1773</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;e99eb3ca-b25f-4d7a-bd38-563c38181498&quot;,
+      &quot;id&quot;: &quot;11e00a3b-b9c6-434a-a268-fc1186612a97&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -215,16 +223,16 @@ Content-Length: 1699</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Georgianna Kessler&quot;,
+        &quot;author_name&quot;: &quot;Karlee Ratke&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:15.846Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:15.846Z&quot;,
-        &quot;published_at&quot;: &quot;2017-07-11T21:37:15.846Z&quot;
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:48.836Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:48.836Z&quot;,
+        &quot;published_at&quot;: &quot;2017-08-02T16:01:48.836Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -235,11 +243,11 @@ Content-Length: 1699</pre>
         &quot;areas&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;421f42f4-18c9-4084-9860-17efb686d699&quot;,
+              &quot;id&quot;: &quot;d11c73af-55b4-479e-b6d8-1a4f37be1c61&quot;,
               &quot;type&quot;: &quot;areas&quot;
             },
             {
-              &quot;id&quot;: &quot;e2780c58-f8d0-48d5-a6e4-4082be0bed08&quot;,
+              &quot;id&quot;: &quot;cbbf50fd-ee58-4eb4-a74a-020ec1bc0557&quot;,
               &quot;type&quot;: &quot;areas&quot;
             }
           ]
@@ -251,14 +259,20 @@ Content-Length: 1699</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;465f1b14-2bac-4cbd-9728-1bc778ee3fbd&quot;,
+            &quot;id&quot;: &quot;09d33ef3-4aaf-4867-a9f0-d729d39b52db&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;0d576335-c167-4c13-bff3-c1a8e3356f0a&quot;,
+            &quot;id&quot;: &quot;328dbf40-1122-4d85-8da3-0753d796945e&quot;,
             &quot;type&quot;: &quot;projects&quot;
+          }
+        },
+        &quot;idea_status&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;d23f7136-4b61-4699-91ca-27746c21a5d9&quot;,
+            &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
         &quot;user_vote&quot;: {
@@ -269,25 +283,25 @@ Content-Length: 1699</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;465f1b14-2bac-4cbd-9728-1bc778ee3fbd&quot;,
+      &quot;id&quot;: &quot;09d33ef3-4aaf-4867-a9f0-d729d39b52db&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Georgianna&quot;,
-        &quot;last_name&quot;: &quot;Kessler&quot;,
-        &quot;slug&quot;: &quot;georgianna-kessler&quot;,
+        &quot;first_name&quot;: &quot;Karlee&quot;,
+        &quot;last_name&quot;: &quot;Ratke&quot;,
+        &quot;slug&quot;: &quot;karlee-ratke&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/465f1b14-2bac-4cbd-9728-1bc778ee3fbd/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/465f1b14-2bac-4cbd-9728-1bc778ee3fbd/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/465f1b14-2bac-4cbd-9728-1bc778ee3fbd/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/09d33ef3-4aaf-4867-a9f0-d729d39b52db/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/09d33ef3-4aaf-4867-a9f0-d729d39b52db/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/09d33ef3-4aaf-4867-a9f0-d729d39b52db/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:15.836Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:15.836Z&quot;
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:48.813Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:48.813Z&quot;
       }
     }
   ],

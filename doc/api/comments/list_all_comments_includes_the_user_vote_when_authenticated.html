@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Comments API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Comments API</h1>
+
+      <div class="article">
+        <h2>List all comments includes the user_vote when authenticated</h2>
+        <h3>GET api/v1/ideas/:idea_id/comments</h3>
+
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMDIsInN1YiI6ImI1OWMwNjY2LTk2YzAtNDRmMi05ZTdmLWNhMzU5NmQ3MDMxZSJ9.Tp-ksSilr08rWNh_7UfDs2kehX3BN0Csdf8FSKikrVw
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/ideas/77296527-07a5-4143-82e4-254f851bd841/comments</pre>
+
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;6de599e5fd3e6054c80f218036cf365d&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: deed5781-d174-49dd-ae73-c613afca0cfb
+X-Runtime: 0.065212
+Vary: Origin
+Content-Length: 3956</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;b457ddc9-2b0e-431a-a525-77867436284a&quot;,
+      &quot;type&quot;: &quot;comments&quot;,
+      &quot;attributes&quot;: {
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
+        },
+        &quot;upvotes_count&quot;: 0,
+        &quot;downvotes_count&quot;: 0,
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:42.265Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:42.265Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;idea&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;77296527-07a5-4143-82e4-254f851bd841&quot;,
+            &quot;type&quot;: &quot;ideas&quot;
+          }
+        },
+        &quot;author&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;95b2259b-00c4-4dbb-a268-5b082acd485c&quot;,
+            &quot;type&quot;: &quot;authors&quot;
+          }
+        },
+        &quot;parent&quot;: {
+          &quot;data&quot;: null
+        },
+        &quot;user_vote&quot;: {
+          &quot;data&quot;: null
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;0e14d373-314c-4ee3-9db4-e5f9efadcb20&quot;,
+      &quot;type&quot;: &quot;comments&quot;,
+      &quot;attributes&quot;: {
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
+        },
+        &quot;upvotes_count&quot;: 0,
+        &quot;downvotes_count&quot;: 0,
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:42.300Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:42.300Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;idea&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;77296527-07a5-4143-82e4-254f851bd841&quot;,
+            &quot;type&quot;: &quot;ideas&quot;
+          }
+        },
+        &quot;author&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;8904b84a-0517-4a1b-a5b0-d646a733dba3&quot;,
+            &quot;type&quot;: &quot;authors&quot;
+          }
+        },
+        &quot;parent&quot;: {
+          &quot;data&quot;: null
+        },
+        &quot;user_vote&quot;: {
+          &quot;data&quot;: null
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;bdd2227d-bd8c-464f-bc50-7b747e521c04&quot;,
+      &quot;type&quot;: &quot;comments&quot;,
+      &quot;attributes&quot;: {
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;I think this is a very good idea!&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Geweldig idee!&lt;/p&gt;&quot;
+        },
+        &quot;upvotes_count&quot;: 1,
+        &quot;downvotes_count&quot;: 0,
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:42.362Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:42.362Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;idea&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;77296527-07a5-4143-82e4-254f851bd841&quot;,
+            &quot;type&quot;: &quot;ideas&quot;
+          }
+        },
+        &quot;author&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;ff17b856-4841-479f-a57f-3d7e6af2cec3&quot;,
+            &quot;type&quot;: &quot;authors&quot;
+          }
+        },
+        &quot;parent&quot;: {
+          &quot;data&quot;: null
+        },
+        &quot;user_vote&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;55de5bdc-1779-450f-a414-1e82878c1b78&quot;,
+            &quot;type&quot;: &quot;votes&quot;
+          }
+        }
+      }
+    }
+  ],
+  &quot;included&quot;: [
+    {
+      &quot;id&quot;: &quot;95b2259b-00c4-4dbb-a268-5b082acd485c&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Edna&quot;,
+        &quot;last_name&quot;: &quot;Cummerata&quot;,
+        &quot;slug&quot;: &quot;edna-cummerata&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/95b2259b-00c4-4dbb-a268-5b082acd485c/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/95b2259b-00c4-4dbb-a268-5b082acd485c/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/95b2259b-00c4-4dbb-a268-5b082acd485c/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:42.254Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:42.254Z&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;8904b84a-0517-4a1b-a5b0-d646a733dba3&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Nasir&quot;,
+        &quot;last_name&quot;: &quot;Ankunding&quot;,
+        &quot;slug&quot;: &quot;nasir-ankunding&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/8904b84a-0517-4a1b-a5b0-d646a733dba3/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/8904b84a-0517-4a1b-a5b0-d646a733dba3/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/8904b84a-0517-4a1b-a5b0-d646a733dba3/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:42.290Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:42.290Z&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;ff17b856-4841-479f-a57f-3d7e6af2cec3&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Lorine&quot;,
+        &quot;last_name&quot;: &quot;Wisozk&quot;,
+        &quot;slug&quot;: &quot;lorine-wisozk&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/ff17b856-4841-479f-a57f-3d7e6af2cec3/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/ff17b856-4841-479f-a57f-3d7e6af2cec3/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/ff17b856-4841-479f-a57f-3d7e6af2cec3/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:42.350Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:42.350Z&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;55de5bdc-1779-450f-a414-1e82878c1b78&quot;,
+      &quot;type&quot;: &quot;votes&quot;,
+      &quot;attributes&quot;: {
+        &quot;mode&quot;: &quot;up&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;votable&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;bdd2227d-bd8c-464f-bc50-7b747e521c04&quot;,
+            &quot;type&quot;: &quot;votables&quot;
+          }
+        },
+        &quot;user&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;b59c0666-96c0-44f2-9e7f-ca3596d7031e&quot;,
+            &quot;type&quot;: &quot;users&quot;
+          }
+        }
+      }
+    }
+  ],
+  &quot;links&quot;: {
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

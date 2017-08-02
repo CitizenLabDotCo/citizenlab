@@ -139,6 +139,14 @@ table th, table td {
               </tr>
               <tr>
                 <td>
+                    <span class="name">idea[idea_status_id]</span>
+                </td>
+                <td>
+                  <span class="description">The status of the idea, only allowed for admins</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">idea[publication_status]</span>
                 </td>
                 <td>
@@ -196,38 +204,105 @@ table th, table td {
             </tbody>
           </table>
 
+          <h3>Response Fields</h3>
+          <table class="response-fields table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">errors[title_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[body_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[publication_status]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;inclusion&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[author]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[author_name]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[idea_status]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[slug]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;invalid&#39; }</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzksInN1YiI6ImE2YjIyNTA1LWQ2ZTgtNGFkZC05ZWY4LWM2MDgxNDQ0MjY2YiJ9.SUQ0RlWzpn8FeNFsnyNphbl56oQOS10qZMdzMFtO15k
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMTUsInN1YiI6IjFlZTM3NmViLTg1OGQtNGYxMS05N2NlLTljYTY5Y2IwMzA1NyJ9.NwLN16wsJl18s9Asr9vakIY-uSaxR3sGM9TG-ADNdtU
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/ideas/302a6cd5-c40a-4197-ab45-956e88339b45</pre>
+          <pre class="request route highlight">PATCH api/v1/ideas/53c70f78-8e16-4117-b130-530ef14aa3f3</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"idea":{"title_multiloc":{"en":"Changed title"},"topic_ids":["5176e9f6-6089-4892-9b35-3a0a698db031","4bf06070-aa61-4cce-8d02-a88ab4eee8da"],"area_ids":["466f5aa6-dc37-48b9-bc00-9ebd3c3c46ea","6d909827-8412-48e3-ba8b-10aa0536c511"],"location_point_geojson":{"type":"Point","coordinates":[51.4365635,3.825930459]},"location_description":"Watkins Road 8"}}</pre>
+            <pre class="request body">{"idea":{"title_multiloc":{"en":"Changed title"},"topic_ids":["77e15a79-df11-4c01-ad10-1359da006639","1b5930e9-c4a6-419b-96e2-2b373b3f4c38"],"area_ids":["89bf8049-5beb-4774-8ae4-c10a9314c08b","7101a042-c501-4b3b-bf0a-6fb18967f656"],"location_point_geojson":{"type":"Point","coordinates":[51.4365635,3.825930459]},"location_description":"Watkins Road 8"}}</pre>
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;edd00091a747322cef8a035466efdf0c&quot;
+ETag: W/&quot;44f18f8e0b8d85ff5aa352cd386c4334&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: b6e9c686-2968-4628-b719-d4183fb3c7c3
-X-Runtime: 0.058471
+X-Request-Id: ce06570a-111a-4e42-8ed5-2492ad679211
+X-Runtime: 0.084016
 Vary: Origin
-Content-Length: 3539</pre>
+Content-Length: 3647</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;302a6cd5-c40a-4197-ab45-956e88339b45&quot;,
+    &quot;id&quot;: &quot;53c70f78-8e16-4117-b130-530ef14aa3f3&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -237,7 +312,7 @@ Content-Length: 3539</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Duane Schoen&quot;,
+      &quot;author_name&quot;: &quot;Gaylord Bogisich&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
@@ -250,19 +325,19 @@ Content-Length: 3539</pre>
         ]
       },
       &quot;location_description&quot;: &quot;Watkins Road 8&quot;,
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:19.545Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:19.610Z&quot;,
-      &quot;published_at&quot;: &quot;2017-07-11T21:37:19.545Z&quot;
+      &quot;created_at&quot;: &quot;2017-08-02T16:01:55.299Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-08-02T16:01:55.377Z&quot;,
+      &quot;published_at&quot;: &quot;2017-08-02T16:01:55.299Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
         &quot;data&quot;: [
           {
-            &quot;id&quot;: &quot;5176e9f6-6089-4892-9b35-3a0a698db031&quot;,
+            &quot;id&quot;: &quot;77e15a79-df11-4c01-ad10-1359da006639&quot;,
             &quot;type&quot;: &quot;topics&quot;
           },
           {
-            &quot;id&quot;: &quot;4bf06070-aa61-4cce-8d02-a88ab4eee8da&quot;,
+            &quot;id&quot;: &quot;1b5930e9-c4a6-419b-96e2-2b373b3f4c38&quot;,
             &quot;type&quot;: &quot;topics&quot;
           }
         ]
@@ -270,11 +345,11 @@ Content-Length: 3539</pre>
       &quot;areas&quot;: {
         &quot;data&quot;: [
           {
-            &quot;id&quot;: &quot;466f5aa6-dc37-48b9-bc00-9ebd3c3c46ea&quot;,
+            &quot;id&quot;: &quot;89bf8049-5beb-4774-8ae4-c10a9314c08b&quot;,
             &quot;type&quot;: &quot;areas&quot;
           },
           {
-            &quot;id&quot;: &quot;6d909827-8412-48e3-ba8b-10aa0536c511&quot;,
+            &quot;id&quot;: &quot;7101a042-c501-4b3b-bf0a-6fb18967f656&quot;,
             &quot;type&quot;: &quot;areas&quot;
           }
         ]
@@ -286,14 +361,20 @@ Content-Length: 3539</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;a6b22505-d6e8-4add-9ef8-c6081444266b&quot;,
+          &quot;id&quot;: &quot;1ee376eb-858d-4f11-97ce-9ca69cb03057&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;14a2a022-80be-4db3-a1ba-ed76ab8049d4&quot;,
+          &quot;id&quot;: &quot;1ae06e3e-5e79-4dc7-8785-6cfa2a458574&quot;,
           &quot;type&quot;: &quot;projects&quot;
+        }
+      },
+      &quot;idea_status&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;7581f449-4ab9-4af5-9f28-5995df453e75&quot;,
+          &quot;type&quot;: &quot;idea_statuses&quot;
         }
       },
       &quot;user_vote&quot;: {
@@ -303,7 +384,7 @@ Content-Length: 3539</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;5176e9f6-6089-4892-9b35-3a0a698db031&quot;,
+      &quot;id&quot;: &quot;77e15a79-df11-4c01-ad10-1359da006639&quot;,
       &quot;type&quot;: &quot;topics&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -318,7 +399,7 @@ Content-Length: 3539</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;4bf06070-aa61-4cce-8d02-a88ab4eee8da&quot;,
+      &quot;id&quot;: &quot;1b5930e9-c4a6-419b-96e2-2b373b3f4c38&quot;,
       &quot;type&quot;: &quot;topics&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -333,7 +414,7 @@ Content-Length: 3539</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;466f5aa6-dc37-48b9-bc00-9ebd3c3c46ea&quot;,
+      &quot;id&quot;: &quot;89bf8049-5beb-4774-8ae4-c10a9314c08b&quot;,
       &quot;type&quot;: &quot;areas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -347,7 +428,7 @@ Content-Length: 3539</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;6d909827-8412-48e3-ba8b-10aa0536c511&quot;,
+      &quot;id&quot;: &quot;7101a042-c501-4b3b-bf0a-6fb18967f656&quot;,
       &quot;type&quot;: &quot;areas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -361,26 +442,26 @@ Content-Length: 3539</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;a6b22505-d6e8-4add-9ef8-c6081444266b&quot;,
+      &quot;id&quot;: &quot;1ee376eb-858d-4f11-97ce-9ca69cb03057&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Duane&quot;,
-        &quot;last_name&quot;: &quot;Schoen&quot;,
-        &quot;slug&quot;: &quot;duane-schoen&quot;,
+        &quot;first_name&quot;: &quot;Gaylord&quot;,
+        &quot;last_name&quot;: &quot;Bogisich&quot;,
+        &quot;slug&quot;: &quot;gaylord-bogisich&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/a6b22505-d6e8-4add-9ef8-c6081444266b/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/a6b22505-d6e8-4add-9ef8-c6081444266b/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/user/avatar/a6b22505-d6e8-4add-9ef8-c6081444266b/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/1ee376eb-858d-4f11-97ce-9ca69cb03057/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/1ee376eb-858d-4f11-97ce-9ca69cb03057/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/1ee376eb-858d-4f11-97ce-9ca69cb03057/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-07-11T21:37:19.513Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-07-11T21:37:19.513Z&quot;,
-        &quot;email&quot;: &quot;dannie.oreilly@schmeler.net&quot;,
+        &quot;created_at&quot;: &quot;2017-08-02T16:01:55.257Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-08-02T16:01:55.257Z&quot;,
+        &quot;email&quot;: &quot;stephanie_padberg@grimesvon.net&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

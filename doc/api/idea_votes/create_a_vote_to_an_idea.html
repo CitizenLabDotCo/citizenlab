@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Events API</title>
+    <title>Idea Votes API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Events API</h1>
+      <h1>Idea Votes API</h1>
 
       <div class="article">
-        <h2>Create a event in a project</h2>
-        <h3>POST api/v1/projects/:project_id/events</h3>
+        <h2>Create a vote to an idea</h2>
+        <h3>POST api/v1/ideas/:idea_id/votes</h3>
 
           <h3>Parameters</h3>
           <table class="parameters table table-striped table-bordered table-condensed">
@@ -122,100 +122,106 @@ table th, table td {
             </thead>
             <tbody>
               <tr>
-                <td class="required">
-                    <span class="name">event[title_multiloc]</span>
+                <td>
+                    <span class="name">vote[user_id]</span>
                 </td>
                 <td>
-                  <span class="description">The title of the event in nultiple locales</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                    <span class="name">event[description_multiloc]</span>
-                </td>
-                <td>
-                  <span class="description">The description of the event in multiple languages. Supports basic HTML.</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                    <span class="name">event[location_multiloc]</span>
-                </td>
-                <td>
-                  <span class="description">The location of the event. Textual</span>
+                  <span class="description">The user id of the user owning the vote. Signed in user by default</span>
                 </td>
               </tr>
               <tr>
                 <td class="required">
-                    <span class="name">event[start_at]</span>
+                    <span class="name">vote[mode]</span>
                 </td>
                 <td>
-                  <span class="description">The start datetime of the event</span>
-                </td>
-              </tr>
-              <tr>
-                <td class="required">
-                    <span class="name">event[end_at]</span>
-                </td>
-                <td>
-                  <span class="description">The end datetime of the event</span>
+                  <span class="description">one of [up, down]</span>
                 </td>
               </tr>
             </tbody>
           </table>
 
+          <h3>Response Fields</h3>
+          <table class="response-fields table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">errors[votable]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[mode]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;inclusion&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[user]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzMsInN1YiI6IjRmYTJlNDljLTAzMWEtNDhhYS1iZWNiLTZmNDg0NGYzYzIzOCJ9.yDTH61ytuMW3FMoXtPkkMOTYIxW_TdlJF-0p1x3bvJM
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMDUsInN1YiI6IjQwOWIwNzkxLTliOTctNGMzMS04NDAwLTVmMjk1NjdmY2FjZSJ9.jU0KkmOFs9ZMPDUmJeMrJUWsRPBxfq5I28UKNmK6ork
+Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/projects/7215cfc7-3a6d-4960-81f6-07fd40c62660/events</pre>
+          <pre class="request route highlight">POST api/v1/ideas/51603fd9-a84f-4f80-8f09-c5e39691fd78/votes</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"event":{"title_multiloc":{"en":"Info session","nl":"Info avond"},"start_at":"2017-05-01T20:00:00.000Z","end_at":"2017-05-01T22:00:00.000Z"}}</pre>
+            <pre class="request body">{"vote":{"mode":"up"}}</pre>
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;e14566ca6461ce7866b6d9c38f70dd8b&quot;
+ETag: W/&quot;73e181b35e5a390adc54713f2c50aea1&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 1a364bb4-34f3-4029-a8fa-9f55607b7bb2
-X-Runtime: 0.015263
+X-Request-Id: 28d72706-cf16-41e5-83ee-81f06dddbb1d
+X-Runtime: 0.020496
 Vary: Origin
-Content-Length: 446</pre>
+Content-Length: 274</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;16ca8b4e-8c10-445f-bf67-c9067b3dca32&quot;,
-    &quot;type&quot;: &quot;events&quot;,
+    &quot;id&quot;: &quot;77bc0023-cdb6-4b56-97cf-63177abea52e&quot;,
+    &quot;type&quot;: &quot;votes&quot;,
     &quot;attributes&quot;: {
-      &quot;title_multiloc&quot;: {
-        &quot;en&quot;: &quot;Info session&quot;,
-        &quot;nl&quot;: &quot;Info avond&quot;
-      },
-      &quot;description_multiloc&quot;: {
-      },
-      &quot;location_multiloc&quot;: {
-      },
-      &quot;start_at&quot;: &quot;2017-05-01T20:00:00.000Z&quot;,
-      &quot;end_at&quot;: &quot;2017-05-01T22:00:00.000Z&quot;,
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:13.468Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:13.468Z&quot;
+      &quot;mode&quot;: &quot;up&quot;
     },
     &quot;relationships&quot;: {
-      &quot;project&quot;: {
+      &quot;votable&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;7215cfc7-3a6d-4960-81f6-07fd40c62660&quot;,
-          &quot;type&quot;: &quot;projects&quot;
+          &quot;id&quot;: &quot;51603fd9-a84f-4f80-8f09-c5e39691fd78&quot;,
+          &quot;type&quot;: &quot;votables&quot;
+        }
+      },
+      &quot;user&quot;: {
+        &quot;data&quot;: {
+          &quot;id&quot;: &quot;409b0791-9b97-4c31-8400-5f29567fcace&quot;,
+          &quot;type&quot;: &quot;users&quot;
         }
       }
     }

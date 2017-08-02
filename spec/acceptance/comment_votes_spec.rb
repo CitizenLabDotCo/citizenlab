@@ -38,6 +38,8 @@ resource "Comment Votes" do
       parameter :user_id, "The user id of the user owning the vote. Signed in user by default", required: false
       parameter :mode, "one of [up, down]", required: true
     end
+    ValidationErrorHelper.new.error_fields(self, Vote)
+
   
     let(:comment_id) { @comment.id }
     let(:mode) { "up" }
@@ -68,7 +70,7 @@ resource "Comment Votes" do
       expect(@comment.reload.downvotes_count).to eq 0
     end
 
-    example "Upvote a comment that you upvoted before" do
+    example "[error] Upvote a comment that you upvoted before" do
       @comment.votes.create(user: @user, mode: 'up')
       do_request
       expect(status).to eq 422
@@ -97,7 +99,7 @@ resource "Comment Votes" do
       expect(@comment.reload.downvotes_count).to eq 1
     end
 
-    example "Downvote a comment that you downvoted before" do
+    example "[error] Downvote a comment that you downvoted before" do
       @comment.votes.create(user: @user, mode: 'down')
       do_request
       expect(status).to eq 422

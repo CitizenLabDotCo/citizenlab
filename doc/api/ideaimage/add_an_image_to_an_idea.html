@@ -140,17 +140,44 @@ table th, table td {
             </tbody>
           </table>
 
+          <h3>Response Fields</h3>
+          <table class="response-fields table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">errors[idea]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[image]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; }</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0MzMsInN1YiI6ImEzZDBkN2ZiLWU1MzctNGEyZC05OTM3LTA5NTQ4NTMzNzRiZCJ9.EFZoxiOps-yCvjpZuUE1OZPEoVWIr0Rp9cz0EiQavvY
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMDQsInN1YiI6IjM0Mzk1NmJmLTA3NGUtNDVjYi1iZDhjLTMzMDAwNDljODJlNyJ9.6Oj-5YaE_c0yKdW8Dp0KUxxo0O0jlATzZGxU_onOjU4
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/ideas/b3d99d4f-fcad-4f1f-b421-7460c8414025/images</pre>
+          <pre class="request route highlight">POST api/v1/ideas/e8f896e5-4b25-4aee-83e0-8c55387e6c96/images</pre>
 
 
             <h4>Body</h4>
@@ -160,10 +187,10 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;18ed27c9e0c30583f8de02288fa99626&quot;
+ETag: W/&quot;bfb6498fb2595115825a09bd93d6ff69&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: fa13e018-735f-4191-84b5-d01ae75d07be
-X-Runtime: 0.040952
+X-Request-Id: ebbffb67-41a4-446c-8095-e2083994ea9d
+X-Runtime: 0.049165
 Vary: Origin
 Content-Length: 576</pre>
             <h4>Status</h4>
@@ -171,17 +198,17 @@ Content-Length: 576</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;6318f8f6-6833-425c-a478-2302a52d00ce&quot;,
+    &quot;id&quot;: &quot;7c7b8c00-0139-4902-8ff6-c246b5efc2b6&quot;,
     &quot;type&quot;: &quot;idea_images&quot;,
     &quot;attributes&quot;: {
       &quot;versions&quot;: {
-        &quot;small&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/idea_image/image/6318f8f6-6833-425c-a478-2302a52d00ce/small_image.png&quot;,
-        &quot;medium&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/idea_image/image/6318f8f6-6833-425c-a478-2302a52d00ce/medium_image.png&quot;,
-        &quot;large&quot;: &quot;/uploads/4305b8c7-727c-4682-8bf2-dea8f84160ca/idea_image/image/6318f8f6-6833-425c-a478-2302a52d00ce/large_image.png&quot;
+        &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/idea_image/image/7c7b8c00-0139-4902-8ff6-c246b5efc2b6/small_image.png&quot;,
+        &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/idea_image/image/7c7b8c00-0139-4902-8ff6-c246b5efc2b6/medium_image.png&quot;,
+        &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/idea_image/image/7c7b8c00-0139-4902-8ff6-c246b5efc2b6/large_image.png&quot;
       },
       &quot;ordering&quot;: 1,
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:13.977Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:13.977Z&quot;
+      &quot;created_at&quot;: &quot;2017-08-02T16:01:44.582Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-08-02T16:01:44.582Z&quot;
     }
   }
 }</pre>

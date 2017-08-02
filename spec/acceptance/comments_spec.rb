@@ -71,6 +71,8 @@ resource "Comments" do
         parameter :body_multiloc, "Multi-locale field with the comment body", required: true
         parameter :parent_id, "The id of the comment this comment is a response to", required: false
       end
+      ValidationErrorHelper.new.error_fields(self, Comment)
+
 
       let(:idea_id) { @idea.id }
       let(:comment) { build(:comment) }
@@ -99,6 +101,16 @@ resource "Comments" do
           expect(@idea.reload.comments_count).to eq 3
         end
       end
+
+      describe do
+        let(:body_multiloc) { {"fr" => ""} }
+
+        example_request "[error] Create an invalid comment" do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :body_multiloc)).to eq [{error: 'blank'}]
+        end
+      end
     end
 
     patch "api/v1/comments/:id" do
@@ -107,6 +119,8 @@ resource "Comments" do
         parameter :body_multiloc, "Multi-locale field with the comment body"
         parameter :parent_id, "The id of the comment this comment is a response to"
       end
+      ValidationErrorHelper.new.error_fields(self, Comment)
+
 
       let(:comment) { create(:comment, author: @user, idea: @idea) }
       let(:id) { comment.id }

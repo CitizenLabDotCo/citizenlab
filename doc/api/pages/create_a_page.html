@@ -148,11 +148,46 @@ table th, table td {
             </tbody>
           </table>
 
+          <h3>Response Fields</h3>
+          <table class="response-fields table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">errors[title_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[body_multiloc]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;blank&#39; | &#39;unsupported_locales&#39; }</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">errors[slug]</span>
+                </td>
+                <td>
+                  <span class="description">Array containing objects with signature {error: &#39;invalid&#39; }</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0OTk4OTU0NDUsInN1YiI6IjE4NmI5MjQ1LWExMDgtNGRjZS05NjY5LTQ0ZDQzYjQ3ZjljNCJ9.PnJGqCmhNGpwbH0Y6CX9ogj0OxxxeLwEi09hJtMuRlY
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMjMsInN1YiI6IjNjMDgwNzdkLTEyZTgtNDBlZi1iZDUwLTUwNmI1OTBlMDU2MyJ9.oiz6WUZ8wwHTqfBJv2Hhw9Hq2xtyyjsmNfMhzkw3Ayo
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
@@ -162,37 +197,37 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"page":{"title_multiloc":{"en":"Sint officiis adipisci facilis asperiores amet.","nl":"Temporibus ullam eligendi earum voluptatum sint repellendus occaecati sapiente."},"body_multiloc":{"en":"\u003cp\u003eAt molestiae est veritatis ut. Non voluptas necessitatibus. Ex officia dolor qui. Sed corporis omnis adipisci beatae soluta ea natus.\u003c/p\u003e\u003cp\u003eImpedit rerum aliquid dolor dolorem qui nihil. Voluptatibus qui aut sequi. Corporis ab voluptatum autem laboriosam adipisci. Nemo dicta enim officiis nesciunt aut unde omnis. Dolorum qui nam eum rem numquam sed consectetur.\u003c/p\u003e\u003cp\u003eUllam similique nostrum aliquam sit distinctio. Reprehenderit molestiae minus rerum soluta voluptas ut et. Repellat aut vero cupiditate ad harum qui.\u003c/p\u003e","nl":"\u003cp\u003eDeserunt reiciendis occaecati voluptates est cum ab. Quam modi est blanditiis nihil ipsam deserunt aut. Vel voluptatum ut eligendi. Similique eos debitis odit corporis illum est non. Ut esse porro reiciendis mollitia.\u003c/p\u003e\u003cp\u003ePerspiciatis dolor debitis eum voluptas hic voluptate. Maxime dolore placeat eum enim. Et omnis molestias vel. Quae et minus et itaque.\u003c/p\u003e\u003cp\u003eEligendi ducimus blanditiis quia excepturi quia nulla atque. Delectus accusamus odio. Et sit accusamus quis ea error.\u003c/p\u003e"}}}</pre>
+            <pre class="request body">{"page":{"title_multiloc":{"en":"Officia nisi ut ipsa sit nam nemo.","nl":"Dolor illum doloribus omnis facere dolores qui ratione officiis."},"body_multiloc":{"en":"\u003cp\u003eVoluptates error molestiae consequuntur. At aperiam voluptatibus. Maxime unde incidunt praesentium.\u003c/p\u003e\u003cp\u003eEt et delectus et in. Quod dolore officiis nihil voluptates excepturi molestiae praesentium. Quis perferendis repellat asperiores.\u003c/p\u003e\u003cp\u003eRerum consequatur qui eum qui sint voluptas. Dolor et laborum enim culpa. Autem consectetur amet. Ut dolorum itaque architecto magni ex.\u003c/p\u003e","nl":"\u003cp\u003eAdipisci accusantium odio aut cum ratione. Ea qui excepturi ut. Rem molestiae est et amet velit. Necessitatibus in distinctio non dolorem.\u003c/p\u003e\u003cp\u003eNon sed sed unde facilis qui officiis exercitationem. Cupiditate quia quia sunt et. Veniam a similique fugiat ut et earum dignissimos. Nemo quasi atque quaerat mollitia.\u003c/p\u003e\u003cp\u003eConsequuntur harum quam numquam reiciendis est. Molestiae saepe recusandae harum voluptatem optio qui omnis. Aut quo quidem nam molestiae voluptate. Expedita hic doloribus doloremque nihil est aspernatur eum. Qui recusandae rem pariatur.\u003c/p\u003e"}}}</pre>
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;aaa95dba42d58efb69db2f04fe94f71d&quot;
+ETag: W/&quot;b859217b6a89dacd2e031a6c625cbbf4&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 70a4463e-9355-4e45-bc14-74d3a87f540e
-X-Runtime: 0.015375
+X-Request-Id: 658389bc-5501-4c4d-8cf8-2fc61a84f99d
+X-Runtime: 0.021867
 Vary: Origin
-Content-Length: 1551</pre>
+Content-Length: 1445</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;d71bd99b-3f21-4f0c-b0b4-c7e443e06a21&quot;,
+    &quot;id&quot;: &quot;c4eb327d-11ed-4a46-aeb6-b4b4d1a6ddec&quot;,
     &quot;type&quot;: &quot;pages&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
-        &quot;en&quot;: &quot;Sint officiis adipisci facilis asperiores amet.&quot;,
-        &quot;nl&quot;: &quot;Temporibus ullam eligendi earum voluptatum sint repellendus occaecati sapiente.&quot;
+        &quot;en&quot;: &quot;Officia nisi ut ipsa sit nam nemo.&quot;,
+        &quot;nl&quot;: &quot;Dolor illum doloribus omnis facere dolores qui ratione officiis.&quot;
       },
       &quot;body_multiloc&quot;: {
-        &quot;en&quot;: &quot;&lt;p&gt;At molestiae est veritatis ut. Non voluptas necessitatibus. Ex officia dolor qui. Sed corporis omnis adipisci beatae soluta ea natus.&lt;/p&gt;&lt;p&gt;Impedit rerum aliquid dolor dolorem qui nihil. Voluptatibus qui aut sequi. Corporis ab voluptatum autem laboriosam adipisci. Nemo dicta enim officiis nesciunt aut unde omnis. Dolorum qui nam eum rem numquam sed consectetur.&lt;/p&gt;&lt;p&gt;Ullam similique nostrum aliquam sit distinctio. Reprehenderit molestiae minus rerum soluta voluptas ut et. Repellat aut vero cupiditate ad harum qui.&lt;/p&gt;&quot;,
-        &quot;nl&quot;: &quot;&lt;p&gt;Deserunt reiciendis occaecati voluptates est cum ab. Quam modi est blanditiis nihil ipsam deserunt aut. Vel voluptatum ut eligendi. Similique eos debitis odit corporis illum est non. Ut esse porro reiciendis mollitia.&lt;/p&gt;&lt;p&gt;Perspiciatis dolor debitis eum voluptas hic voluptate. Maxime dolore placeat eum enim. Et omnis molestias vel. Quae et minus et itaque.&lt;/p&gt;&lt;p&gt;Eligendi ducimus blanditiis quia excepturi quia nulla atque. Delectus accusamus odio. Et sit accusamus quis ea error.&lt;/p&gt;&quot;
+        &quot;en&quot;: &quot;&lt;p&gt;Voluptates error molestiae consequuntur. At aperiam voluptatibus. Maxime unde incidunt praesentium.&lt;/p&gt;&lt;p&gt;Et et delectus et in. Quod dolore officiis nihil voluptates excepturi molestiae praesentium. Quis perferendis repellat asperiores.&lt;/p&gt;&lt;p&gt;Rerum consequatur qui eum qui sint voluptas. Dolor et laborum enim culpa. Autem consectetur amet. Ut dolorum itaque architecto magni ex.&lt;/p&gt;&quot;,
+        &quot;nl&quot;: &quot;&lt;p&gt;Adipisci accusantium odio aut cum ratione. Ea qui excepturi ut. Rem molestiae est et amet velit. Necessitatibus in distinctio non dolorem.&lt;/p&gt;&lt;p&gt;Non sed sed unde facilis qui officiis exercitationem. Cupiditate quia quia sunt et. Veniam a similique fugiat ut et earum dignissimos. Nemo quasi atque quaerat mollitia.&lt;/p&gt;&lt;p&gt;Consequuntur harum quam numquam reiciendis est. Molestiae saepe recusandae harum voluptatem optio qui omnis. Aut quo quidem nam molestiae voluptate. Expedita hic doloribus doloremque nihil est aspernatur eum. Qui recusandae rem pariatur.&lt;/p&gt;&quot;
       },
-      &quot;slug&quot;: &quot;sint-officiis-adipisci-facilis-asperiores-amet&quot;,
-      &quot;created_at&quot;: &quot;2017-07-11T21:37:25.478Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-07-11T21:37:25.478Z&quot;
+      &quot;slug&quot;: &quot;officia-nisi-ut-ipsa-sit-nam-nemo&quot;,
+      &quot;created_at&quot;: &quot;2017-08-02T16:02:03.559Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-08-02T16:02:03.559Z&quot;
     }
   }
 }</pre>
