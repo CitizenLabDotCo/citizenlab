@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
-
+import { FormattedMessage } from 'react-intl';
 import { preprocess } from 'utils';
 import { selectResourcesDomain } from 'utils/resources/selectors';
 import T from 'containers/T';
@@ -12,40 +12,72 @@ import Authorize from 'utils/containers/authorize';
 // import MapChildren from './MapChildren';
 import messages from '../../messages';
 import ChildComment from './ChildComment';
-import Editor from '../common/editor';
 import Author from './Author';
+import Button from 'components/UI/Button';
+import EditorForm from './EditorForm';
 
+const ThreadContainer = styled.div`
+  margin-top: 45px;
+`;
 
-const CommentContainer = styled.div`
-  border: solid 1px #cdcdcd;
-  border-radius: 3px;
-  padding: 25px;
-  margin-top: 10px;
+const AuthorContainer = styled.div`
+  padding: 10px 0;
 `;
 
 const CommentBody = styled.div`
   font-size: 16px;
   color: #8f8f8f;
-  padding: 15px 0;
+  padding: 25px;
+  border: solid 1px #cdcdcd;
+  border-radius: 3px;
+`;
+
+const ReactButton = styled(Button)`
+  float: right;
+  margin-top: 20px;
 `;
 
 class ParentComment extends React.Component {
 
+  constructor() {
+    super();
+    this.state = {
+      showForm: false,
+    };
+  }
+
+  toggleForm = () => {
+    this.setState({
+      showForm: true,
+    });
+  }
+
   render() {
     const { content, children, createdAt, ideaId, commentId, authorId } = this.props;
+    const { showForm } = this.state;
     return (
-      <div>
-        <Author authorId={authorId} createdAt={createdAt} message={messages.authorSaid} />
-        <CommentContainer>
-          <CommentBody>
-            <T value={content} />
-          </CommentBody>
-        </CommentContainer>
+      <ThreadContainer>
+        <AuthorContainer>
+          <Author authorId={authorId} createdAt={createdAt} message={messages.authorSaid} />
+        </AuthorContainer>
+        <CommentBody>
+          <T value={content} />
+        </CommentBody>
         {children && children.map(((node) => <ChildComment key={node.id} node={node} />))}
         <Authorize action={['comments', 'create']}>
-          <Editor parentId={commentId} ideaId={ideaId} />
+          {!showForm &&
+            <ReactButton onClick={this.toggleForm}>
+              <FormattedMessage {...messages.commentReplyButton} />
+            </ReactButton>
+          }
+          {showForm &&
+            <EditorForm
+              ideaId={ideaId}
+              parentId={commentId}
+            />
+          }
         </Authorize>
-      </div>
+      </ThreadContainer>
     );
   }
 }

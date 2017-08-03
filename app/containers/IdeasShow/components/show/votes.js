@@ -121,17 +121,6 @@ class Votes extends FormComponent {
       this.saga = createIdeasVoteSagaFork;
     }
   }
-  /* <Form onSubmit={this.handleSubmit}>
-  <Button.Group>
-    <Button basic color="red" onClick={this.handleVote(-1)} disabled={!auth || loading || (mode === 'down')}>
-      <Icon name="thumbs outline down" />
-    </Button>
-    <Button.Or text={votes} />
-    <Button basic color="green" onClick={this.handleVote(+1)} disabled={!auth || loading || (mode === 'up')}>
-      <Icon name="thumbs outline up" />
-    </Button>
-  </Button.Group>
-</Form>*/
 
   render() {
     // const { votesUp, votesDown, auth } = this.props;
