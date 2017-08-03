@@ -26,7 +26,7 @@ export default defineMessages({
 
   commentReplyButton: {
     id: 'app.containers.IdeasShow.commentReplyButton',
-    defaultMessage: 'React',
+    defaultMessage: 'Reply',
   },
 
   commentDeleteButton: {
@@ -57,7 +57,7 @@ export default defineMessages({
   },
   publishComment: {
     id: 'app.containers.IdeasShow.publishComment',
-    defaultMessage: 'Publish',
+    defaultMessage: 'Comment',
   },
   loadMoreComments: {
     id: 'app.containers.IdeasShow.loadMoreComments',
@@ -89,7 +89,7 @@ export default defineMessages({
   },
   authorReacted: {
     id: 'app.containers.IdeasShow.authorSaid',
-    defaultMessage: '{firstName} reacted',
+    defaultMessage: '{firstName} replied',
   },
   voteCTA: {
     id: 'app.containers.IdeasShow.voteCTA',
@@ -110,5 +110,9 @@ export default defineMessages({
   commentsTitle: {
     id: 'app.containers.IdeasShow.commentsTitle',
     defaultMessage: 'Give your opinion',
+  },
+  commentBodyPlaceholder: {
+    id: 'app.containers.IdeasShow.commentBodyPlaceholder',
+    defaultMessage: 'What do you think about this idea?',
   },
 });

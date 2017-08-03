@@ -70,13 +70,11 @@ export function loadCommentsError(error) {
   };
 }
 
-export function publishCommentRequest(ideaId, userId, htmlContents, parentId) {
+export function publishCommentRequest(ideaId, comment) {
   return {
     type: PUBLISH_COMMENT_REQUEST,
     ideaId,
-    userId,
-    htmlContents,
-    parentId,
+    payload: comment,
   };
 }
 

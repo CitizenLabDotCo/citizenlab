@@ -1,13 +1,13 @@
-import { call, put, takeLatest, fork } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { fetchIdea, fetchIdeaVotes, submitIdeaVote, createIdeaComment, fetchIdeaComments, deleteIdeaComment } from 'api';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 
 import {
-  LOAD_IDEA_REQUEST, LOAD_VOTES_REQUEST, VOTE_IDEA_REQUEST, LOAD_COMMENTS_REQUEST, DELETE_COMMENT_REQUEST,
+  LOAD_IDEA_REQUEST, LOAD_VOTES_REQUEST, VOTE_IDEA_REQUEST, LOAD_COMMENTS_REQUEST, DELETE_COMMENT_REQUEST, PUBLISH_COMMENT_REQUEST,
 } from './constants';
 
 import {
-  loadIdeaSuccess, loadIdeaError, loadVotesError, loadVotesSuccess, voteIdeaError, voteIdeaSuccess, loadCommentsSuccess, deleteCommentSuccess, publishCommentSuccess, loadCommentsError } from './actions';
+  loadIdeaSuccess, loadIdeaError, loadVotesError, loadVotesSuccess, voteIdeaError, voteIdeaSuccess, loadCommentsSuccess, deleteCommentSuccess, publishCommentSuccess, loadCommentsError, publishCommentError } from './actions';
 
 export function* loadIdea(action) {
   try {
@@ -51,23 +51,14 @@ export function* loadIdeaComments(action) {
   }
 }
 
-export function* publishCommentFlow({ ideaId, parentId, comment }) {
-  const response = yield call(createIdeaComment, ideaId, comment, parentId);
-  yield put(mergeJsonApiResources(response));
-  yield put(publishCommentSuccess(response));
-}
-
-export function* publishCommentSaga(data, success, error) {
+export function* publishComment({ ideaId, payload }) {
   try {
-    yield call(publishCommentFlow, data);
-    if (success) success();
+    const response = yield call(createIdeaComment, ideaId, payload);
+    yield put(mergeJsonApiResources(response));
+    yield put(publishCommentSuccess(response));
   } catch (e) {
-    if (error) error();
+    yield put(publishCommentError(e));
   }
-}
-
-export function* publishCommentFork(data, success, error) {
-  yield fork(publishCommentSaga, data, success, error);
 }
 
 
@@ -75,6 +66,10 @@ export function* deleteComment(action) {
   const { commentId } = action;
   yield call(deleteIdeaComment, commentId);
   yield put(deleteCommentSuccess(commentId));
+}
+
+function* watchCreateComment() {
+  yield takeLatest(PUBLISH_COMMENT_REQUEST, publishComment);
 }
 
 function* watchLoadIdea() {
@@ -103,4 +98,5 @@ export default {
   watchVoteIdea,
   watchLoadComments,
   watchDeleteComment,
+  watchCreateComment,
 };
