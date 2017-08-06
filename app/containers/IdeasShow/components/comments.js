@@ -14,7 +14,6 @@ import { Icon } from 'semantic-ui-react';
 import ParentComment from './comments/ParentComment';
 import selectIdeasShow, { makeSelectComments } from 'containers/IdeasShow/selectors';
 import EditorForm from './comments/EditorForm';
-import { publishCommentFork } from '../sagas';
 import messages from '../messages';
 
 
@@ -35,14 +34,9 @@ class CommentContainer extends React.Component { // eslint-disable-line react/pr
           <FormattedMessage {...messages.commentsTitle} />
         </Title>
 
-        {/* {storeCommentError && storeCommentError !== '' && <div>
-          {storeCommentError}
-        </div>} */}
-
         <EditorForm
           parentId={null}
           ideaId={ideaId}
-          saga={publishCommentFork}
           onSuccess={this.closeEditor}
         />
         {comments.map((comment) =>
@@ -56,7 +50,6 @@ class CommentContainer extends React.Component { // eslint-disable-line react/pr
 CommentContainer.propTypes = {
   comments: PropTypes.any,
   className: PropTypes.string,
-  storeCommentError: PropTypes.string,
   ideaId: PropTypes.string,
 };
 

@@ -8,7 +8,7 @@ import { fromJS } from 'immutable';
 
 import {
   LOAD_VOTES_SUCCESS, RESET_PAGE_DATA, LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_SUCCESS,
-  LOAD_IDEA_SUCCESS, VOTE_IDEA_SUCCESS, PUBLISH_COMMENT_SUCCESS, DELETE_COMMENT_SUCCESS,
+  LOAD_IDEA_SUCCESS, VOTE_IDEA_SUCCESS, PUBLISH_COMMENT_REQUEST, PUBLISH_COMMENT_SUCCESS, PUBLISH_COMMENT_ERROR, DELETE_COMMENT_SUCCESS,
 } from './constants';
 import { getPageItemCountFromUrl, getPageNumberFromUrl } from '../../utils/paginationUtils';
 
@@ -19,6 +19,7 @@ const initialState = fromJS({
   images: [],
   nextCommentPageNumber: null,
   nextCommentPageItemCount: null,
+  newComment: {},
 });
 
 export default function ideasShowReducer(state = initialState, action) {
@@ -48,10 +49,26 @@ export default function ideasShowReducer(state = initialState, action) {
         .set('nextCommentPageNumber', nextCommentPageNumber)
         .set('nextCommentPageItemCount', nextCommentPageItemCount);
     }
-    case PUBLISH_COMMENT_SUCCESS: {
-      const id = action.payload.data.id;
+    case PUBLISH_COMMENT_REQUEST: {
       return state
-        .update('comments', (comments) => comments.concat(id));
+        .setIn(['newComment', action.payload.parent_id || 'root'], fromJS({
+          formStatus: 'processing',
+          error: null,
+        }));
+    }
+    case PUBLISH_COMMENT_SUCCESS: {
+      return state
+        .setIn(['newComment', action.parentId || 'root'], fromJS({
+          formStatus: 'success',
+          error: null,
+        }));
+    }
+    case PUBLISH_COMMENT_ERROR: {
+      return state
+        .setIn(['newComment', action.parentId || 'root'], fromJS({
+          formStatus: 'error',
+          error: action.error,
+        }));
     }
     case DELETE_COMMENT_SUCCESS: {
       const commentIndex = state.get('comments').findIndex((id) => action.commentId === id);

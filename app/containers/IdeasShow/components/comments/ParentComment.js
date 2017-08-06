@@ -9,7 +9,6 @@ import T from 'containers/T';
 
 import Authorize from 'utils/containers/authorize';
 
-// import MapChildren from './MapChildren';
 import messages from '../../messages';
 import ChildComment from './ChildComment';
 import Author from './Author';
