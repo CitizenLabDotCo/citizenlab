@@ -7,7 +7,7 @@ import {
 } from './constants';
 
 import {
-  loadIdeaSuccess, loadIdeaError, loadVotesError, loadVotesSuccess, voteIdeaError, voteIdeaSuccess, loadCommentsSuccess, deleteCommentSuccess, publishCommentSuccess, loadCommentsError, publishCommentError } from './actions';
+  loadIdeaSuccess, loadIdeaError, loadVotesError, loadVotesSuccess, voteIdeaError, voteIdeaSuccess, loadCommentsSuccess, deleteCommentSuccess, publishCommentSuccess, loadCommentsError, publishCommentError, loadCommentsRequest } from './actions';
 
 export function* loadIdea(action) {
   try {
@@ -55,9 +55,10 @@ export function* publishComment({ ideaId, payload }) {
   try {
     const response = yield call(createIdeaComment, ideaId, payload);
     yield put(mergeJsonApiResources(response));
-    yield put(publishCommentSuccess(response));
+    yield put(publishCommentSuccess(response, payload.parent_id));
+    yield put(loadCommentsRequest(ideaId));
   } catch (e) {
-    yield put(publishCommentError(e));
+    yield put(publishCommentError(e, payload.parent_id));
   }
 }
 

@@ -78,17 +78,19 @@ export function publishCommentRequest(ideaId, comment) {
   };
 }
 
-export function publishCommentSuccess(payload) {
+export function publishCommentSuccess(payload, parentId) {
   return {
     type: PUBLISH_COMMENT_SUCCESS,
     payload,
+    parentId,
   };
 }
 
-export function publishCommentError(error) {
+export function publishCommentError(error, parentId) {
   return {
     type: PUBLISH_COMMENT_ERROR,
     error,
+    parentId,
   };
 }
 

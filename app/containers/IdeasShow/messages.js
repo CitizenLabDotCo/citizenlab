@@ -115,4 +115,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentBodyPlaceholder',
     defaultMessage: 'What do you think about this idea?',
   },
+  commentSuccess: {
+    id: 'app.containers.IdeasShow.commentSuccess',
+    defaultMessage: 'Thanks for contributing!',
+  },
 });

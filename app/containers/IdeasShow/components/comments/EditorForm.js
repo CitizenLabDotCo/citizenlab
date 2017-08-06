@@ -15,6 +15,7 @@ import Editor from 'components/UI/Editor';
 // messages
 import messages from '../../messages';
 import { publishCommentRequest } from '../../actions';
+import selectIdeasShow from '../../selectors';
 
 const SubmitButton = styled(Button)`
   float: right;
@@ -52,26 +53,35 @@ class EditorForm extends React.PureComponent {
 
   /* eslint-disable react/jsx-boolean-value*/
   render() {
-    const { loading } = this.state;
     const { formatMessage } = this.props.intl;
+    const { formStatus, error } = this.props;
+    if (formStatus !== 'success') {
+      return (
+        <form onSubmit={this.handleSubmit}>
+          <Editor
+            id="editor"
+            value={this.state.editorState}
+            placeholder={formatMessage(messages.commentBodyPlaceholder)}
+            onChange={this.handleEditorChange}
+          />
+          {formStatus === 'error' && <div>{error}</div>}
+          <SubmitButton
+            loading={formStatus === 'processing'}
+          >
+            <FormattedMessage {...messages.publishComment} />
+          </SubmitButton>
+          <div style={{ clear: 'both' }}></div>
+        </form>
+      );
+    }
+    // if formStatus === 'success'
     return (
-      <form onSubmit={this.handleSubmit}>
-
-        <Editor
-          id="editor"
-          value={this.state.editorState}
-          placeholder={formatMessage(messages.commentBodyPlaceholder)}
-          onChange={this.handleEditorChange}
-        />
-        <SubmitButton
-          loading={loading}
-        >
-          <FormattedMessage {...messages.publishComment} />
-        </SubmitButton>
-        <div style={{ clear: 'both' }}></div>
-      </form>
+      <div>
+        <FormattedMessage {...messages.commentSuccess} />
+      </div>
     );
   }
+
 }
 
 EditorForm.propTypes = {
@@ -80,14 +90,18 @@ EditorForm.propTypes = {
   intl: intlShape.isRequired,
   publishCommentRequest: PropTypes.func,
   locale: PropTypes.string,
+  formStatus: PropTypes.string, // undefined, 'processing', 'error' or 'success'
+  error: PropTypes.string,
 };
 
 const mapDispatchToProps = {
   publishCommentRequest,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, { parentId }) => ({
   locale: makeSelectLocale()(state),
+  formStatus: selectIdeasShow('newComment', parentId || 'root', 'formStatus')(state),
+  error: selectIdeasShow('newComment', parentId || 'root', 'error')(state),
 });
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EditorForm));
