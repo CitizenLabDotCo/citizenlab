@@ -39,12 +39,15 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
     };
   }
 
+  updateSubscription (slug) {
+    this.subscription = observeProject(slug).observable.subscribe((project) => {
+      this.setState({ project: project.data });
+    });
+  }
+
   componentDidMount() {
     if (this.props.params.slug) {
-
-      this.subscription = observeProject(this.props.params.slug).observable.subscribe((project) => {
-        this.setState({ project: project.data });
-      });
+      this.updateSubscription(this.props.params.slug);
 
       this.tabs = [
         {
@@ -61,6 +64,14 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
           url: this.props.params.slug ? `/admin/projects/${this.props.params.slug}/events` : '',
         },
       ];
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    // Update subscription if the slug changes
+    // This happens when transitioning from New to Edit view after saving a new project
+    if (newProps.params.slug && newProps.params.slug !== this.props.params.slug) {
+      this.updateSubscription(newProps.params.slug);
     }
   }
 
