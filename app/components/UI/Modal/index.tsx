@@ -1,12 +1,8 @@
 import * as React from 'react';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
 import styled from 'styled-components';
-
-const enterClassName = 'modal-enter';
-const enterActiveClassName = 'modal-enter-active';
-const leaveClassName = 'modal-leave';
-const leaveActiveClassName = 'modal-leave-active';
 
 const ModalContent = styled(clickOutside)`
   width: 100%;
@@ -21,7 +17,8 @@ const ModalContent = styled(clickOutside)`
   margin-left: auto;
   margin-right: auto;
   position: relative;
-  transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  -webkit-backface-visibility: hidden;
+  will-change: auto;
 `;
 
 const ModalContainer = styled.div`
@@ -37,49 +34,49 @@ const ModalContainer = styled.div`
   overflow-y: auto;
   background: rgba(0, 0, 0, 0.45);
   -webkit-backface-visibility: hidden;
-  transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: auto;
 
-  &.${enterClassName} {
-    opacity: 0;
+  &.modal-enter {
+    opacity: 0.01;
     will-change: opacity;
 
     ${ModalContent} {
-      opacity: 0;
+      opacity: 0.01;
       transform: translateY(-100px);
       will-change: opacity, transform;
     }
+
+    &.modal-enter-active {
+      opacity: 1;
+      transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+      ${ModalContent} {
+        opacity: 1;
+        transform: translateY(0px);
+        transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
+    }
   }
 
-  &.${enterActiveClassName} {
+  &.modal-exit {
     opacity: 1;
-    will-change: auto;
+    will-change: opacity;
 
     ${ModalContent} {
       opacity: 1;
       transform: translateY(0px);
-      will-change: auto;
-    }
-  }
-
-  &.${leaveClassName} {
-    opacity: 1;
-    will-change: opacity;
-
-    ${ModalContent} {
-      opacity: 1;
-      transform: translateY(0px);
       will-change: opacity, transform;
     }
-  }
 
-  &.${leaveActiveClassName} {
-    opacity: 0;
-    will-change: auto;
+    &.modal-exit-active {
+      opacity: 0.01;
+      transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
 
-    ${ModalContent} {
-      opacity: 0;
-      transform: translateY(-100px);
-      will-change: auto;
+      ${ModalContent} {
+        opacity: 0.01;
+        transform: translateY(-100px);
+        transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
     }
   }
 `;
@@ -120,11 +117,13 @@ export default class Modal extends React.PureComponent<Props, State> {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (!this.props.opened && nextProps.opened) {
+    const { opened } = this.props;
+
+    if (!opened && nextProps.opened) {
       this.onOpen();
     }
 
-    if (this.props.opened && !nextProps.opened) {
+    if (opened && !nextProps.opened) {
       this.onClose();
     }
   }
@@ -163,21 +162,21 @@ export default class Modal extends React.PureComponent<Props, State> {
   render() {
     const { children, opened, parentUrl, url } = this.props;
 
+    const element = opened && (
+      <CSSTransition classNames="modal" timeout={400}>
+        <ModalContainer>
+          <ModalContent onClickOutside={this.closeModal}>
+            <CloseButton onClick={this.closeModal}>Close</CloseButton>
+            {children}
+          </ModalContent>
+        </ModalContainer>
+      </CSSTransition>
+    );
+
     return (
-      <CSSTransitionGroup
-        transitionName="modal"
-        transitionEnterTimeout={400}
-        transitionLeaveTimeout={400}
-      >
-        {opened && 
-          <ModalContainer>
-            <ModalContent onClickOutside={this.closeModal}>
-              <CloseButton onClick={this.closeModal}>Close</CloseButton>
-              {children}
-            </ModalContent>
-          </ModalContainer>
-        }
-      </CSSTransitionGroup>
+      <TransitionGroup>
+        {element}
+      </TransitionGroup>
     );
   }
 }
