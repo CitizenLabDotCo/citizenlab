@@ -32,24 +32,10 @@ export interface IProjectData {
   };
 }
 
-export interface INewProjectData {
-  new: boolean;
-  attributes: {
-    title_multiloc: Multiloc;
-    description_multiloc: Multiloc;
-    header_bg?: any;
-  };
-}
-
-export interface IProjectUpdateData {
-  id: string;
-  header_bg?: string;
-  title_multiloc: {
-    [key: string]: string;
-  };
-  description_multiloc: {
-    [key: string]: string;
-  };
+export interface IProjectAttributes {
+  header_bg?: string | { small: string, medium: string, large: string};
+  title_multiloc?: Multiloc;
+  description_multiloc?: Multiloc;
 }
 
 export interface IProjectImageData {
@@ -87,12 +73,19 @@ export function observeProject(slug, streamParams: IStreamParams<IProject> | nul
   return streams.create<IProject>({ apiEndpoint: `${apiEndpoint}/by_slug/${slug}`, ...streamParams });
 }
 
-export function updateProject(projectData: IProjectUpdateData) {
+export function postProject(projectData: IProjectAttributes) {
+  const bodyData = { project: projectData };
+  const httpOptions = { method: 'POST' };
+
+  return request(`${apiEndpoint}`, bodyData, httpOptions, null);
+}
+
+export function updateProject(projectId, projectData: IProjectAttributes) {
   const bodyData = { project: projectData };
   const httpOptions = { method: 'PATCH' };
 
-  return request(`${apiEndpoint}/${projectData.id}`, bodyData, httpOptions, null).then((projectObject) => {
-    streams.update(projectData.id, projectObject);
+  return request(`${apiEndpoint}/${projectId}`, bodyData, httpOptions, null).then((projectObject) => {
+    streams.update(projectId, projectObject);
   }).catch((e) => {
     throw new Error('Error for updateProject() of service Projects');
   });
