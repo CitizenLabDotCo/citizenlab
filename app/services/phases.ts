@@ -46,6 +46,10 @@ export interface IUpdatedPhase {
   end_at?: string;
 }
 
+export function observePhases(projectId: string, streamParams: IStreamParams<IPhases> | null = null) {
+  return streams.create<IPhases>({ apiEndpoint: `${API_PATH}/projects/${projectId}/phases`, ...streamParams });
+}
+
 export function observePhase(phaseID: string, streamParams: IStreamParams<IPhase> | null = null) {
   return streams.create<IPhase>({ apiEndpoint: `${apiEndpoint}/${phaseID}`, ...streamParams });
 }
