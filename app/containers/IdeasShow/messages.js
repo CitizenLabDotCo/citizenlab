@@ -119,4 +119,12 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentSuccess',
     defaultMessage: 'Thanks for contributing!',
   },
+  signInToComment: {
+    id: 'app.containers.IdeasShow.signInToComment',
+    defaultMessage: 'Please {signInLink} to spread your wisdom.',
+  },
+  signInLinkText: {
+    id: 'app.containers.IdeasShow.signInLinkText',
+    defaultMessage: 'sign in',
+  },
 });

@@ -58,7 +58,7 @@ export const selectIdeaImages = createSelector(
   selectResourcesDomain('idea_images'),
   selectIdea,
   (resourcesImages, idea) => {
-    const images = idea.getIn(['relationships', 'idea_images', 'data']);
+    const images = idea && idea.getIn(['relationships', 'idea_images', 'data']);
     return (images
       ? images.map((imageData) => resourcesImages.get(imageData.get('id')))
       : fromJS([]));

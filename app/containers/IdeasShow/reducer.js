@@ -75,17 +75,8 @@ export default function ideasShowReducer(state = initialState, action) {
       return state.deleteIn(['comments', commentIndex]);
     }
     case RESET_PAGE_DATA:
-      return state
-        .set('idea', null)
-        .set('resetEditorContent', false)
-        .update('votes', () => fromJS([]))
-        .update('comments', () => fromJS([]));
+      return initialState;
     default:
       return state;
   }
 }
-
-    // case SAVE_COMMENT_DRAFT:
-    //   return state
-    //     .set('activeParentId', action.activeParentId)
-    //     .set('commentContent', action.commentContent);

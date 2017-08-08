@@ -4,6 +4,7 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import styled from 'styled-components';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 
@@ -11,6 +12,7 @@ import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 // components
 import Button from 'components/UI/Button';
 import Editor from 'components/UI/Editor';
+import Authorize, { Else } from 'utils/containers/authorize';
 
 // messages
 import messages from '../../messages';
@@ -57,21 +59,31 @@ class EditorForm extends React.PureComponent {
     const { formStatus, error } = this.props;
     if (formStatus !== 'success') {
       return (
-        <form onSubmit={this.handleSubmit}>
-          <Editor
-            id="editor"
-            value={this.state.editorState}
-            placeholder={formatMessage(messages.commentBodyPlaceholder)}
-            onChange={this.handleEditorChange}
-          />
-          {formStatus === 'error' && <div>{error}</div>}
-          <SubmitButton
-            loading={formStatus === 'processing'}
-          >
-            <FormattedMessage {...messages.publishComment} />
-          </SubmitButton>
-          <div style={{ clear: 'both' }}></div>
-        </form>
+        <Authorize action={['comments', 'create']}>
+          <form onSubmit={this.handleSubmit}>
+            <Editor
+              id="editor"
+              value={this.state.editorState}
+              placeholder={formatMessage(messages.commentBodyPlaceholder)}
+              onChange={this.handleEditorChange}
+            />
+            {formStatus === 'error' && <div>{error}</div>}
+            <SubmitButton
+              loading={formStatus === 'processing'}
+            >
+              <FormattedMessage {...messages.publishComment} />
+            </SubmitButton>
+            <div style={{ clear: 'both' }}></div>
+          </form>
+          <Else>
+            <FormattedMessage
+              {...messages.signInToComment}
+              values={{
+                signInLink: <Link to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></Link>,
+              }}
+            />
+          </Else>
+        </Authorize>
       );
     }
     // if formStatus === 'success'
