@@ -3,10 +3,26 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/idea_statuses`;
 
-export interface IIdeaStatus {
-  [key: string]: any;
+export interface IIdeaStatusData {
+  id: string;
+  type: string;
+  attributes: {
+    title_multiloc: {
+      [key: string]: string;
+    };
+    color?: string;
+    code?: string;
+    ordering?: number;
+  };
 }
 
-export function observeIdeaStatuses(streamParams: IStreamParams<IIdeaStatus[]> | null = null) {
-  return streams.create<IIdeaStatus[]>({ apiEndpoint, ...streamParams });
+export interface IIdeaStatuses {
+  data: IIdeaStatusData[];
+}
+export interface IIdeaStatus {
+  data: IIdeaStatusData;
+}
+
+export function observeIdeaStatuses(streamParams: IStreamParams<IIdeaStatuses> | null = null) {
+  return streams.create<IIdeaStatuses>({ apiEndpoint, ...streamParams });
 }

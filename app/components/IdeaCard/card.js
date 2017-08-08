@@ -8,15 +8,14 @@ import View from './card/view';
 // store
 import { preprocess } from 'utils';
 import { createStructuredSelector } from 'reselect';
-import { push } from 'react-router-redux';
 import { selectResourcesDomain } from 'utils/resources/selectors';
 
-const Card = ({ viewIdea, title, createdAt, upvotesCount, downvotesCount }) => {
+const Card = ({ onClick, title, createdAt, upvotesCount, downvotesCount }) => {
   if (!title) return null;
 
   return (
     <View
-      onClick={viewIdea}
+      onClick={onClick}
       title={title}
       createdAt={createdAt}
       upvotesCount={upvotesCount}
@@ -26,11 +25,11 @@ const Card = ({ viewIdea, title, createdAt, upvotesCount, downvotesCount }) => {
 };
 
 Card.propTypes = {
-  viewIdea: PropTypes.func,
   title: ImPropTypes.map,
   createdAt: PropTypes.string,
   upvotesCount: PropTypes.number,
   downvotesCount: PropTypes.number,
+  onClick: PropTypes.func,
 };
 
 const mapStateToProps = () => createStructuredSelector({
@@ -38,8 +37,7 @@ const mapStateToProps = () => createStructuredSelector({
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { id } = ownProps;
-  const { goTo } = dispatchProps;
+  const { onClick } = ownProps;
   const { idea } = stateProps;
   if (!idea) return {};
 
@@ -49,9 +47,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const upvotesCount = attributes.get('upvotes_count');
   const downvotesCount = attributes.get('downvotes_count');
 
-  const viewIdea = () => goTo(`/ideas/${id}`);
   return {
-    viewIdea,
+    onClick,
     title,
     createdAt,
     upvotesCount,
@@ -59,4 +56,4 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   };
 };
 
-export default preprocess(mapStateToProps, { goTo: push }, mergeProps)(Card);
+export default preprocess(mapStateToProps, null, mergeProps)(Card);
