@@ -27,4 +27,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',
     defaultMessage: 'View project',
   },
+  saveProject: {
+    id: 'app.containers.AdminPage.ProjectEdit.saveProject',
+    defaultMessage: 'Save',
+  },
+  addNewProject: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
+    defaultMessage: 'Add a project',
+  },
 });

@@ -7,6 +7,8 @@ import { observeProject, IProjectData } from 'services/projects';
 
 // Components
 import TabbedResource from 'components/admin/TabbedResource';
+import { Link } from 'react-router';
+
 
 // Localisation
 import { FormattedMessage } from 'react-intl';
@@ -27,6 +29,7 @@ type State = {
 
 export default class AdminProjectEdition extends React.Component<Props, State> {
   subscription: Rx.Subscription;
+  tabs: any[];
 
   constructor() {
     super();
@@ -36,11 +39,39 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
     };
   }
 
+  updateSubscription (slug) {
+    this.subscription = observeProject(slug).observable.subscribe((project) => {
+      this.setState({ project: project.data });
+    });
+  }
+
   componentDidMount() {
     if (this.props.params.slug) {
-      this.subscription = observeProject(this.props.params.slug).observable.subscribe((project) => {
-        this.setState({ project: project.data });
-      });
+      this.updateSubscription(this.props.params.slug);
+
+      this.tabs = [
+        {
+          label: 'general',
+          url: this.props.params.slug ? `/admin/projects/${this.props.params.slug}/edit` : '',
+          active: true,
+        },
+        {
+          label: 'timeline',
+          url: this.props.params.slug ? `/admin/projects/${this.props.params.slug}/timeline` : '',
+        },
+        {
+          label: 'events',
+          url: this.props.params.slug ? `/admin/projects/${this.props.params.slug}/events` : '',
+        },
+      ];
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    // Update subscription if the slug changes
+    // This happens when transitioning from New to Edit view after saving a new project
+    if (newProps.params.slug && newProps.params.slug !== this.props.params.slug) {
+      this.updateSubscription(newProps.params.slug);
     }
   }
 
@@ -61,31 +92,15 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
       messages: {
         viewPublicResource: messages.viewPublicProject,
       },
-      tabs: [
-        {
-          label: 'general',
-          url: project ? `/admin/projects/${project.attributes.slug}/edit` : '',
-          active: true,
-        },
-        {
-          label: 'timeline',
-          url: project ? `/admin/projects/${project.attributes.slug}/timeline` : '',
-        },
-        {
-          label: 'events',
-          url: project ? `/admin/projects/${project.attributes.slug}/events` : '',
-        },
-      ],
+      tabs: this.tabs,
     };
 
     return(
       <div>
-        <a href="/admin/projects">go back</a>
-        {project &&
-          <TabbedResource {...tabbedProps}>
-            {this.props.children}
-          </TabbedResource>
-        }
+        <Link to="/admin/projects">go back</Link>
+        <TabbedResource {...tabbedProps}>
+          {this.props.children}
+        </TabbedResource>
       </div>
     );
   }

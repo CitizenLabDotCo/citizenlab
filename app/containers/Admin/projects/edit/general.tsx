@@ -3,10 +3,13 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { injectTFunc } from 'utils/containers/t/utils';
-import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
 import styled from 'styled-components';
+import { withRouter } from 'react-router';
+
+import messages from '../messages';
 
 // Store
 import { connect } from 'react-redux';
@@ -16,23 +19,27 @@ import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 
 // Services
 import { getBase64 } from 'services/image_tools';
-import { observeProject,
-  IProjectData,
-  updateProject,
-  IProjectImageData,
-  getProjectImages,
-  IProjectUpdateData,
-  uploadProjectImage,
+import {
   deleteProjectImage,
+  getProjectImages,
+  IProjectAttributes,
+  IProject,
+  IProjectData,
+  IProjectImageData,
+  observeProject,
+  postProject,
+  updateProject,
+  uploadProjectImage,
 } from 'services/projects';
 
 // Components
 import Input from 'components/UI/Input';
 import Editor from 'components/UI/Editor';
 import Upload from 'components/UI/Upload';
+import Button from 'components/UI/Button';
 
 // Style
-const FormWrapper = styled.div`
+const FormWrapper = styled.form`
   img {
     max-width: 100%;
   }
@@ -40,6 +47,11 @@ const FormWrapper = styled.div`
 
 const FieldWrapper = styled.div`
   margin-bottom: 2em;
+
+  label {
+    display: block;
+    width: 100%;
+  }
 `;
 
 const ProjectImages = styled.div`
@@ -73,7 +85,6 @@ const SaveButton = styled.button`
   padding: 1rem 2rem;
 `;
 
-
 // Component typing
 type Props = {
   intl: ReactIntl.InjectedIntl,
@@ -82,16 +93,18 @@ type Props = {
     slug: string | null,
   },
   userLocale: string,
-  tenantLocales: string[],
+  tFunc: Function,
+  router: any,
 };
 
 type State = {
   loading: boolean,
-  project: IProjectData | null,
+  projectData: IProjectData | { id: null, attributes: {}},
   uploadedImages: any,
   uploadedHeader: string | null,
   editorState: EditorState,
   projectImages: IProjectImageData[],
+  projectAttributesDiff: IProjectAttributes,
 };
 
 class AdminProjectEditGeneral extends React.Component<Props, State> {
@@ -102,36 +115,42 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
 
     this.state = {
       loading: false,
-      project: null,
+      projectData: { id: null, attributes: {} },
       uploadedImages: [],
       editorState: EditorState.createEmpty(),
       uploadedHeader: null,
-      projectImages: []
+      projectImages: [],
+      projectAttributesDiff: {},
     };
+  }
+
+  updateSubscription = (slug) => {
+    this.subscription = observeProject(slug).observable
+    .switchMap((project) => {
+      return getProjectImages(project.data.id).observable.map((images) => ({
+        projectData: project.data,
+        projectImages: images.data,
+      }));
+    })
+    .subscribe(({ projectData, projectImages }) => {
+      const blocksFromHtml = convertFromHTML(projectData.attributes.description_multiloc[this.props.userLocale]);
+      const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
+
+      this.setState({
+        projectData,
+        projectImages,
+        editorState:  EditorState.createWithContent(editorContent),
+        uploadedHeader: null,
+        uploadedImages: [],
+        loading: false,
+        projectAttributesDiff: {},
+      });
+    });
   }
 
   componentDidMount() {
     if (this.props.params.slug) {
-      this.subscription = observeProject(this.props.params.slug).observable
-      .switchMap((project) => {
-        return getProjectImages(project.data.id).observable.map((images) => ({
-          project: project.data,
-          projectImages: images.data,
-        }));
-      })
-      .subscribe(({ project, projectImages }) => {
-        const blocksFromHtml = convertFromHTML(project.attributes.description_multiloc[this.props.userLocale]);
-        const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
-
-        this.setState({
-          project,
-          projectImages,
-          editorState:  EditorState.createWithContent(editorContent),
-          uploadedHeader: null,
-          uploadedImages: [],
-          loading: false,
-        });
-      });
+      this.updateSubscription(this.props.params.slug);
     }
   }
 
@@ -141,29 +160,39 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
     }
   }
 
+  componentWillReceiveProps(newProps) {
+    // Update subscription if the slug changes
+    // This happens when transitioning from New to Edit view after saving a new project
+    if (newProps.params.slug && newProps.params.slug !== this.props.params.slug) {
+      this.updateSubscription(newProps.params.slug);
+    }
+  }
+
   setRef = (element) => {
 
   }
 
   changeTitle = (value: string): void => {
-    const newVal = _.set({}, `project.attributes.title_multiloc.${this.props.userLocale}`, value);
+    const newVal = _.set({}, `projectAttributesDiff.title_multiloc.${this.props.userLocale}`, value);
     this.setState(_.merge({}, this.state, newVal));
   }
 
   changeDesc = (editorState: EditorState): void => {
-    const project = this.state.project;
+    const projectAttrs = { ...this.state.projectData.attributes, ...this.state.projectAttributesDiff } as IProjectAttributes;
 
-    _.set(project, `attributes.description_multiloc.${this.props.userLocale}`, draftjsToHtml(convertToRaw(editorState.getCurrentContent())));
+
+    _.set(projectAttrs, `description_multiloc.${this.props.userLocale}`, draftjsToHtml(convertToRaw(editorState.getCurrentContent())));
 
     this.setState({
       editorState,
-      project,
+      projectAttributesDiff: projectAttrs,
     });
   }
 
   handleHeaderUpload = async (image) => {
+    const attrsDiff = _.cloneDeep(this.state.projectAttributesDiff);
     const base64 = await getBase64(image) as string;
-    this.setState({ uploadedHeader: base64 });
+    this.setState({ uploadedHeader: base64, projectAttributesDiff: { ...attrsDiff, header_bg: base64 } });
   }
 
   handleUploadOnRemove = () => {
@@ -171,10 +200,10 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
   }
 
   handleProjectImageUpload = async (image) => {
-    const { project, projectImages } = this.state;
+    const { projectData, projectImages } = this.state;
     const base64 = await getBase64(image) as string;
-    if (project && project.id) {
-      uploadProjectImage(project.id, base64).then((response: any) => {
+    if (projectData) {
+      uploadProjectImage(projectData.id, base64).then((response: any) => {
         projectImages.push(response.data);
 
         this.setState({ projectImages });
@@ -183,11 +212,11 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
   }
 
   deletePicture = (event) => {
-    const { project } = this.state;
+    const { projectData } = this.state;
 
-    if (project) {
+    if (projectData) {
       const imageId = event.target.dataset.imageId;
-      const projectId = project.id;
+      const projectId = projectData.id;
 
       deleteProjectImage(projectId, imageId).then(() => {
         this.setState({ projectImages: _.reject(this.state.projectImages, { id: imageId }) });
@@ -195,43 +224,36 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
     }
   }
 
-  saveProject = () => {
-    const projectData = this.state.project;
+  saveProject = (event) => {
+    event.preventDefault();
 
-    if (projectData) {
+    const { projectAttributesDiff } = this.state;
+
+    if (!_.isEmpty(projectAttributesDiff) && this.state.projectData.id) {
       this.setState({ loading: true });
-
-      const project  = {
-        id: projectData.id,
-        title_multiloc: projectData.attributes.title_multiloc,
-        description_multiloc: projectData.attributes.description_multiloc,
-      } as IProjectUpdateData;
-
-      if (this.state.uploadedHeader) {
-        project.header_bg = this.state.uploadedHeader;
-      }
-
-      updateProject(project);
+      updateProject(this.state.projectData.id, projectAttributesDiff);
+    } else if (!_.isEmpty(projectAttributesDiff)) {
+      postProject(projectAttributesDiff).then((project: IProject) => {
+        this.props.router.push(`/admin/projects/${project.data.attributes.slug}/edit`);
+      });
     }
   }
 
-
   render() {
-    const { project, uploadedImages, editorState, uploadedHeader, loading, projectImages } = this.state;
-    const { userLocale } = this.props;
+    const { projectData, uploadedImages, editorState, uploadedHeader, loading, projectImages, projectAttributesDiff } = this.state;
+    const { userLocale, tFunc } = this.props;
+
+    const projectAttrs = { ...projectData.attributes, ...projectAttributesDiff } as IProjectAttributes;
 
     return (
-      <FormWrapper>
-        {loading &&
-          <div>Loading…</div>
-        }
-
+      <FormWrapper onSubmit={this.saveProject}>
         <FieldWrapper>
-          <label htmlFor="">Title</label>
+          <label htmlFor="project-title">Title</label>
           <Input
+            id="project-title"
             type="text"
             placeholder=""
-            value={project ? project.attributes.title_multiloc[userLocale] : ''}
+            value={tFunc(projectAttrs.title_multiloc)}
             error=""
             onChange={this.changeTitle}
             setRef={this.setRef}
@@ -239,8 +261,9 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
         </FieldWrapper>
 
         <FieldWrapper>
-          <label htmlFor="">Description</label>
+          <label htmlFor="project-description">Description</label>
           <Editor
+            id="project-description"
             placeholder=""
             value={editorState}
             error=""
@@ -253,8 +276,12 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
           {uploadedHeader &&
             <img src={uploadedHeader} alt="" role="presentation" />
           }
-          {!uploadedHeader && project && project.attributes.header_bg.medium &&
-            <img src={project.attributes.header_bg.medium} alt="" role="presentation" />
+          {!uploadedHeader && projectAttrs && projectAttrs.header_bg &&
+            <img
+              src={typeof projectAttrs.header_bg  === 'string' ? projectAttrs.header_bg : projectAttrs.header_bg.large}
+              alt=""
+              role="presentation"
+            />
           }
           <Upload
             accept="image/jpg, image/jpeg, image/png, image/gif"
@@ -284,7 +311,9 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
           />
         </FieldWrapper>
 
-        <SaveButton onClick={this.saveProject}>Save</SaveButton>
+        <Button loading={loading}>
+          <FormattedMessage {...messages.saveProject} />
+        </Button>
       </FormWrapper>
     );
   }
@@ -292,7 +321,6 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
 
 const mapStateToProps = createStructuredSelector({
   userLocale: makeSelectLocale(),
-  tenantLocales: makeSelectSetting(['core', 'locales']),
 });
 
-export default injectTFunc(injectIntl(connect(mapStateToProps)(AdminProjectEditGeneral)));
+export default injectTFunc(injectIntl(connect(mapStateToProps)(withRouter(AdminProjectEditGeneral))));

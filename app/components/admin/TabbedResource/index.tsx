@@ -11,6 +11,9 @@ const T = t;
 // Global types
 import { Message, Multiloc } from 'typings';
 
+// Components
+import { Link } from 'react-router';
+
 // Styles
 const ResourceHeader = styled.div`
   align-items: center;
@@ -18,7 +21,7 @@ const ResourceHeader = styled.div`
   justify-content: space-between;
 `;
 
-const PublicResourceLink = styled.a`
+const PublicResourceLink = styled(Link as React.StatelessComponent<{to: string}>)`
 `;
 
 const TabbedNav = styled.nav`
@@ -111,7 +114,7 @@ export default class TabbedResource extends React.Component<Props, State> {
         <ResourceHeader>
           <h1>{showLabel(resource.title)}</h1>
           {resource.publicLink &&
-            <PublicResourceLink href={resource.publicLink}>
+            <PublicResourceLink to={resource.publicLink}>
               <FormattedMessage {...messages.viewPublicResource} />
             </PublicResourceLink>
           }
@@ -119,7 +122,7 @@ export default class TabbedResource extends React.Component<Props, State> {
         {tabs &&
           <TabbedNav>
             {tabs.map((tab) => (
-              <Tab key={tab.url} className={tab.active ? 'active' : ''}><a href={tab.url}>{showLabel(tab.label)}</a></Tab>
+              <Tab key={tab.url} className={tab.active ? 'active' : ''}><Link to={tab.url}>{showLabel(tab.label)}</Link></Tab>
             ))}
           </TabbedNav>
         }
