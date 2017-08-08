@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import IdeaCards from 'components/IdeaCards';
 
 // import ActionButton from 'components/buttons/action.js';
-import IdeasBorad from 'containers/IdeasIndexPage/pageView';
+// import IdeasBorad from 'containers/IdeasIndexPage/pageView';
 
 
 const AllIdeas = ({ params }) => (
-  <IdeasBorad filter={{ project: params.projectId }} />
+  <IdeaCards filter={{ project: params.projectId }} />
 );
 
 AllIdeas.propTypes = {

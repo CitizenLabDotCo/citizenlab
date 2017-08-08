@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+// import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import shallowCompare from 'utils/shallowCompare';
 import { media } from 'utils/styleUtils';
 import { connect } from 'react-redux';
@@ -594,7 +594,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
 
     return (
       <div>
-        <CSSTransitionGroup
+        {/* <CSSTransitionGroup
           transitionName="form"
           transitionEnterTimeout={2500}
           transitionLeaveTimeout={2500}
@@ -602,7 +602,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
           {showIdeaForm && ideaForm}
           {showSignInForm && signInForm}
           {showSignUpForm && signUpForm}
-        </CSSTransitionGroup>
+        </CSSTransitionGroup> */}
 
         {showIdeaForm && bottomButtonBar}
       </div>
