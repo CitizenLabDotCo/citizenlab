@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Icon from 'components/UI/Icon';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+// import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import * as _ from 'lodash';
 import styled from 'styled-components';
 
@@ -129,37 +129,39 @@ const Error: React.SFC<IError> = ({ text, size, marginTop, marginBottom, showIco
   showBackground = (showBackground || true);
   className = (className || '');
 
-  if (opened) {
-    return (
-      <CSSTransitionGroup
-        transitionName="error"
-        transitionEnterTimeout={enterTime}
-        transitionLeaveTimeout={leaveTime}
-        className={`Error ${className}`}
-      >
-        <StyledErrorMessage
-          size={size}
-          marginTop={marginTop}
-          marginBottom={marginBottom}
-        >
-          <StyledErrorMessageInner showBackground={showBackground}>
-            {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
-            <ErrorMessageText>
-              {text}
-            </ErrorMessageText>
-          </StyledErrorMessageInner>
-        </StyledErrorMessage>
-      </CSSTransitionGroup>
-    );
-  }
+  return null;
 
-  return (
-    <CSSTransitionGroup
-      transitionName="error"
-      transitionEnterTimeout={enterTime}
-      transitionLeaveTimeout={leaveTime}
-    />
-  );
+//   if (opened) {
+//     return (
+//       <CSSTransitionGroup
+//         transitionName="error"
+//         transitionEnterTimeout={enterTime}
+//         transitionLeaveTimeout={leaveTime}
+//         className={`Error ${className}`}
+//       >
+//         <StyledErrorMessage
+//           size={size}
+//           marginTop={marginTop}
+//           marginBottom={marginBottom}
+//         >
+//           <StyledErrorMessageInner showBackground={showBackground}>
+//             {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
+//             <ErrorMessageText>
+//               {text}
+//             </ErrorMessageText>
+//           </StyledErrorMessageInner>
+//         </StyledErrorMessage>
+//       </CSSTransitionGroup>
+//     );
+//   }
+
+//   return (
+//     <CSSTransitionGroup
+//       transitionName="error"
+//       transitionEnterTimeout={enterTime}
+//       transitionLeaveTimeout={leaveTime}
+//     />
+//   );
 };
 
 interface IError {

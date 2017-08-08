@@ -12,7 +12,7 @@ import styled from 'styled-components';
 // components
 import T from 'containers/T';
 import HelmetIntl from 'components/HelmetIntl';
-import IdeasCards from 'containers/IdeasIndexPage/components/ideaCards';
+import IdeaCards from 'components/IdeaCards';
 import { observeUser } from 'services/users';
 
 import Avatar from './Avatar';
@@ -108,7 +108,7 @@ export class UsersShowPage extends React.Component { // eslint-disable-line reac
             <BioStyled>{user.bio_multiloc && <T value={user.bio_multiloc} />}</BioStyled>
           </InfoContainerStyled>
           {/* USER IDEAS */}
-          <IdeasCards
+          <IdeaCards
             style={{
               width: '80%',
               margin: 'auto',
