@@ -9,9 +9,9 @@ const isImmutable = Iterable.isIterable;
 const findTranslatedTextMutable = (value, userLocale, tenantLocales) => {
   let text = '';
 
-  if (value[userLocale]) {
+  if (value && value[userLocale]) {
     text = value[userLocale];
-  } else {
+  } else if (value) {
     tenantLocales.some((tenantLocale) => {
       if (value[tenantLocale]) {
         text = value[tenantLocale];

@@ -149,14 +149,14 @@ const SpinnerWrapper = styled.div`
 `;
 
 type Props = {
-  text: string;
+  text?: string;
   children?: any;
   size?: string;
   style?: 'primary' | 'secondary';
   icon?: string;
   loading?: boolean;
   disabled?: boolean;
-  onClick: (arg: React.FormEvent<HTMLButtonElement>) => void;
+  onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
   className?: string;
 };
 
@@ -164,14 +164,17 @@ type State = {};
 
 export default class Button extends React.PureComponent<Props, State> {
   handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
+    if (!this.props.onClick) {
+      return;
+    }
     if (!this.props.disabled) {
       this.props.onClick(event);
     }
   }
 
   render() {
-    const { text, className, icon } = this.props;
-    let { size, style, loading, disabled, children } = this.props;
+    const { text, className, icon, children } = this.props;
+    let { size, style, loading, disabled } = this.props;
 
     size = (size || '2');
     style = (style || 'primary');

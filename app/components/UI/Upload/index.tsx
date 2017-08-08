@@ -36,7 +36,7 @@ const StyledDropzone = styled(Dropzone)`
   flex-wrap: wrap;
   border-radius: 5px;
   border-color: #999;
-  border-width: 1.5px; 
+  border-width: 1.5px;
   border-style: dashed;
   padding: 20px;
   padding-bottom: 0px;
@@ -142,8 +142,8 @@ type Props = {
   intl: ReactIntl.InjectedIntl;
   items: Dropzone.ImageFile[];
   accept?: string | null | undefined;
-  maxSize: number;
-  maxItems: number;
+  maxSize?: number;
+  maxItems?: number;
   placeholder?: string | null | undefined;
   onAdd: (arg: Dropzone.ImageFile) => void;
   onRemove: (arg: Dropzone.ImageFile) => void;
@@ -157,6 +157,14 @@ type State = {
 
 export class Upload extends React.PureComponent<Props, State> {
   private emptyArray: never[];
+
+  public static defaultProps: Partial<Props> = {
+    items: [],
+    accept: '*',
+    maxSize: 5000000,
+    maxItems: 1,
+    placeholder: 'Drop your file here',
+  };
 
   constructor() {
     super();
@@ -172,7 +180,7 @@ export class Upload extends React.PureComponent<Props, State> {
   }
 
   onDrop = (items: Dropzone.ImageFile[]) => {
-    const maxItemsCount = this.props.maxItems;
+    const maxItemsCount = this.props.maxItems || 1;
     const oldItemsCount = _.size(this.props.items);
     const newItemsCount = _.size(items);
     const remainingItemsCount = maxItemsCount - oldItemsCount;
@@ -198,8 +206,8 @@ export class Upload extends React.PureComponent<Props, State> {
   }
 
   onDropRejected = (items: Dropzone.ImageFile[]) => {
-    const { maxSize, intl } = this.props;
-    const { formatMessage } = intl;
+    const { formatMessage } = this.props.intl;
+    const maxSize = this.props.maxSize || 5000000;
 
     if (items.some(item => item.size > maxSize)) {
       const errorMessage = formatMessage(messages.errorMaxSizeExceeded, { maxFileSize: maxSize / 1000000 });
