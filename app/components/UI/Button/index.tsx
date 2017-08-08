@@ -164,7 +164,14 @@ type State = {};
 
 export default class Button extends React.PureComponent<Props, State> {
   handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
+<<<<<<< HEAD
     if (!this.props.disabled && this.props.onClick) {
+=======
+    if (!this.props.onClick) {
+      return;
+    }
+    if (!this.props.disabled) {
+>>>>>>> master
       this.props.onClick(event);
     }
   }
