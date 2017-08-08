@@ -3,6 +3,7 @@ import * as React from 'react';
 type Props = {
   children?: any;
   onClickOutside: (arg: any) => void;
+  className?: string;
 };
 
 type State = {};
@@ -37,6 +38,6 @@ export default class ClickOutside extends React.PureComponent<Props, State> {
 
   render() {
     const { children } = this.props;
-    return (<div ref={this.getContainer}>{children}</div>);
+    return (<div ref={this.getContainer} className={this.props.className}>{children}</div>);
   }
 }

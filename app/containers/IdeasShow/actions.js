@@ -70,27 +70,27 @@ export function loadCommentsError(error) {
   };
 }
 
-export function publishCommentRequest(ideaId, userId, htmlContents, parentId) {
+export function publishCommentRequest(ideaId, comment) {
   return {
     type: PUBLISH_COMMENT_REQUEST,
     ideaId,
-    userId,
-    htmlContents,
+    payload: comment,
+  };
+}
+
+export function publishCommentSuccess(payload, parentId) {
+  return {
+    type: PUBLISH_COMMENT_SUCCESS,
+    payload,
     parentId,
   };
 }
 
-export function publishCommentSuccess(payload) {
-  return {
-    type: PUBLISH_COMMENT_SUCCESS,
-    payload,
-  };
-}
-
-export function publishCommentError(error) {
+export function publishCommentError(error, parentId) {
   return {
     type: PUBLISH_COMMENT_ERROR,
     error,
+    parentId,
   };
 }
 

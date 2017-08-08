@@ -7,9 +7,9 @@ const selectIdeasShow = (...types) => (state) => state.getIn(['ideasShow', ...ty
 import { fromJS } from 'immutable';
 
 export const selectIdea = createSelector(
-  selectIdeasShow('idea'),
   selectResourcesDomain('ideas'),
-  (id, ideas) => id && ideas.get(id),
+  (_, props) => props.id,
+  (ideas, id) => id && ideas && ideas.get(id),
 );
 
 export const makeSelectComments = createSelector(
@@ -54,12 +54,15 @@ export const makeSelectOwnVotesTot = (ideaId) => createSelector(
   },
 );
 
-export const makeSelectIdeaImages = () => createSelector(
+export const selectIdeaImages = createSelector(
   selectResourcesDomain('idea_images'),
-  selectIdeasShow('images'),
-  (resourcesImages, ideaImages) => (resourcesImages
-      ? ideaImages.map((id) => resourcesImages.get(id))
-      : fromJS([]))
+  selectIdea,
+  (resourcesImages, idea) => {
+    const images = idea.getIn(['relationships', 'idea_images', 'data']);
+    return (images
+      ? images.map((imageData) => resourcesImages.get(imageData.get('id')))
+      : fromJS([]));
+  },
 );
 
 export default selectIdeasShow;
