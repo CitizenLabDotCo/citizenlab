@@ -15,4 +15,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDashboard.helmetDescription',
     defaultMessage: 'List of projects on the platform',
   },
+  editProject: {
+    id: 'app.containers.AdminPage.ProjectDashboard.editProjectButton',
+    defaultMessage: 'See the Project',
+  },
+  backToList: {
+    id: 'app.containers.AdminPage.ProjectEdit.backToListButton',
+    defaultMessage: 'Go back',
+  },
+  viewPublicProject: {
+    id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',
+    defaultMessage: 'View project',
+  },
+  saveProject: {
+    id: 'app.containers.AdminPage.ProjectEdit.saveProject',
+    defaultMessage: 'Save',
+  },
+  addNewProject: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
+    defaultMessage: 'Add a project',
+  },
 });
