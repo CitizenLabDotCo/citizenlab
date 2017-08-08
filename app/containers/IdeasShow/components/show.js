@@ -16,9 +16,8 @@ import Comments from './comments';
 import T from 'containers/T';
 
 // store
-import { createStructuredSelector } from 'reselect';
 import { preprocess } from 'utils';
-import { makeSelectIdeaImages, selectIdea } from '../selectors';
+import { selectIdeaImages, selectIdea } from '../selectors';
 
 // intl
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
@@ -145,10 +144,9 @@ Show.propTypes = {
   intl: intlShape.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  idea: selectIdea,
-  // idea: (state, props) => state.getIn(['resources', 'ideas', props.id]),
-  images: makeSelectIdeaImages(),
+const mapStateToProps = (state, props) => ({
+  idea: selectIdea(state, props),
+  images: selectIdeaImages(state, props),
 });
 
 /* eslint-disable camelcase*/

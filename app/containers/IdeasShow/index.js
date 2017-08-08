@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 
 // components
 import Show from './components/show';
-import LoadMessages from './components/loadMessages';
 
 // store
 import { preprocess } from 'utils';
@@ -45,7 +44,6 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
     return (
       <div>
         <WatchSagas sagas={sagasWatchers} />
-        <LoadMessages />
         <Show location={location} id={this.id} />
       </div>
     );
