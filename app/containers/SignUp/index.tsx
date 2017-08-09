@@ -1,12 +1,8 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-<<<<<<< HEAD
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
-=======
-// import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
->>>>>>> 071d620c13655cfb58e7fb0d8921d71c428ce3b6
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
@@ -361,21 +357,10 @@ export default class SignUp extends React.PureComponent<Props, State> {
 
     return (
       <Container>
-<<<<<<< HEAD
         <TransitionGroup>
           {step1}
           {step2}
         </TransitionGroup>
-=======
-        {/* <CSSTransitionGroup
-          transitionName="form"
-          transitionEnterTimeout={2500}
-          transitionLeaveTimeout={2500}
-        >
-        {showStep1 && step1}
-        {showStep2 && step2}
-        </CSSTransitionGroup> */}
->>>>>>> 071d620c13655cfb58e7fb0d8921d71c428ce3b6
       </Container>
     );
   }
