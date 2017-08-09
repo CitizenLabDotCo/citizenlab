@@ -3,6 +3,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import styled from 'styled-components';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import messages from './messages';
 
 // Services
 import { observeProject } from 'services/projects';
@@ -39,13 +40,24 @@ const PhasesTable = styled.table`
 `;
 
 const OrderLabel = styled.div`
-  background: gray;
   border-radius: 50%;
   color: white;
   height: 3rem;
   line-height: 3rem;
   text-align: center;
   width: 3rem;
+
+  &.current {
+    background: #32B67A;
+  }
+
+  &.past {
+    background: #E5E5E5;
+  }
+
+  &.future {
+    background: #636363;
+  }
 `;
 
 // Component typing
@@ -84,8 +96,18 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
     });
   }
 
-  phaseTiming = ({ start_at, end_at }) => {
+  phaseTiming = ({ start_at, end_at }): 'past' | 'current' | 'future' => {
+    const start = new Date(start_at);
+    const end = new Date(end_at);
+    const now = new Date();
 
+    if (end < now) {
+      return 'past';
+    } else if (start > now) {
+      return 'future';
+    } else {
+      return 'current';
+    }
   }
 
   render() {
@@ -100,8 +122,8 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
           <PhasesTable>
             <thead>
               <tr>
-                <th>Order</th>
-                <th>Name & Dates</th>
+                <th><FormattedMessage {...messages.orderColumnTitle} /></th>
+                <th><FormattedMessage {...messages.nameColumnTitle} /></th>
                 <th />
                 <th />
               </tr>
@@ -110,14 +132,16 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
               {phases.map((phase, index) => (
                 <tr key={phase.id}>
                   <td>
-                    <OrderLabel>{index + 1}</OrderLabel>
+                    <OrderLabel className={this.phaseTiming({ start_at: phase.attributes.start_at, end_at: phase.attributes.end_at })}>
+                      {index + 1}
+                    </OrderLabel>
                   </td>
                   <td>
                     <h1><T value={phase.attributes.title_multiloc} /></h1>
                     <p>{formatDate(phase.attributes.start_at)} - {formatDate(phase.attributes.end_at)}</p>
                   </td>
-                  <td>Delete</td>
-                  <td><Link to={`/admin/projects/${slug}/timeline/${phase.id}`}>Edit</Link></td>
+                  <td><FormattedMessage {...messages.deletePhaseButton} /></td>
+                  <td><Link to={`/admin/projects/${slug}/timeline/${phase.id}`}><FormattedMessage {...messages.editPhaseButton} /></Link></td>
                 </tr>
               ))}
             </tbody>
