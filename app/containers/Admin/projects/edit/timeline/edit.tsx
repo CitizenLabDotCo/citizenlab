@@ -18,6 +18,7 @@ import { injectTFunc } from 'utils/containers/t/utils';
 // Components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
+import TextArea from 'components/UI/TextArea';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 
@@ -123,6 +124,9 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
             onChange={this.createMultilocUpdater('title_multiloc')}
           />
           <Error text={this.state.errors.title.join(', ')} />
+
+          <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
+          <TextArea name="description" error={this.state.errors.description.join(', ')} onChange={this.createMultilocUpdater('description_multiloc')} />
 
           <Button loading={this.state.saving} ><FormattedMessage {...messages.saveLabel} /></Button>
         </form>
