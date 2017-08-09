@@ -9,6 +9,13 @@ const getIcon = (name: string) => {
         </svg>
       );
     }
+    case 'close2': {
+      return (
+        <svg height="100%" viewBox="0 0 15.414 15.414">
+          <path d="M15.414 2.117L13.297 0l-5.59 5.59L2.117 0 0 2.117l5.59 5.59L0 13.297l2.117 2.117 5.59-5.59 5.59 5.59 2.117-2.117-5.59-5.59"/>
+        </svg>
+      );
+    }
     case 'upload': {
       return (
         <svg height="100%" viewBox="0 0.621 79 53.713">

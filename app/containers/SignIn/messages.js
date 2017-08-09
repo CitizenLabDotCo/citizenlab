@@ -35,6 +35,10 @@ export default defineMessages({
   },
   submit: {
     id: 'app.containers.SignIn.submit',
-    defaultMessage: 'Sign in',
+    defaultMessage: 'Log in',
+  },
+  forgotPassword: {
+    id: 'app.containers.SignIn.forgotPassword',
+    defaultMessage: 'Forgot password?',
   },
 });

@@ -7,7 +7,7 @@ import { v4 as uuid } from 'uuid';
 export type pureFn<T> = (arg: T) => T;
 type fetchFn<T> = () => IStream<T>;
 interface IObject{ [key: string]: any; }
-export type IObserver<T> = Rx.Observer<T | pureFn<T> | Error>;
+export type IObserver<T> = Rx.Observer<T | pureFn<T> | null>;
 export type IObservable<T> = Rx.Observable<T>;
 export interface IStreamParams<T> {
   bodyData?: IObject;
@@ -113,7 +113,8 @@ class Streams {
           }
         }).catch(() => {
           if (stream && stream.observer) {
-            stream.observer.next(new Error(`promise for api endpoint ${apiEndpoint} did not resolve`));
+            console.log(`promise for api endpoint ${apiEndpoint} did not resolve`);
+            stream.observer.next(null);
           } else {
             console.log('no observer');
           }
