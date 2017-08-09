@@ -57,9 +57,9 @@ export type State = {
   success: boolean;
 };
 
-export const namespace = 'ForgotPassword/index';
+export const namespace = 'PasswordReset/index';
 
-export default class ForgotPassword extends React.PureComponent<Props, State> {
+export default class PasswordReset extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
   subscriptions: Rx.Subscription[];
   emailInputElement: HTMLInputElement | null;
