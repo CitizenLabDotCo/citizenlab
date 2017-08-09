@@ -24,14 +24,14 @@ export default defineMessages({
     defaultMessage: 'Comment the idea!',
   },
 
-  commentRepplyButton: {
-    id: 'app.containers.IdeasShow.commentRepplyButton',
-    defaultMessage: 'Comment the idea!',
+  commentReplyButton: {
+    id: 'app.containers.IdeasShow.commentReplyButton',
+    defaultMessage: 'Reply',
   },
 
   commentDeleteButton: {
-    id: 'app.containers.IdeasShow.commentRepplyButton',
-    defaultMessage: 'Comment the idea!',
+    id: 'app.containers.IdeasShow.commentDeleteButton',
+    defaultMessage: 'Delete',
   },
 
 
@@ -57,7 +57,7 @@ export default defineMessages({
   },
   publishComment: {
     id: 'app.containers.IdeasShow.publishComment',
-    defaultMessage: 'Publish',
+    defaultMessage: 'Comment',
   },
   loadMoreComments: {
     id: 'app.containers.IdeasShow.loadMoreComments',
@@ -78,5 +78,53 @@ export default defineMessages({
   helmetTitle: {
     id: 'app.containers.IdeasShow.helmetTitle',
     defaultMessage: 'Show idea',
+  },
+  byAuthor: {
+    id: 'app.containers.IdeasShow.byAuthor',
+    defaultMessage: 'by {firstName} {lastName}',
+  },
+  authorSaid: {
+    id: 'app.containers.IdeasShow.authorSaid',
+    defaultMessage: '{firstName} said',
+  },
+  authorReacted: {
+    id: 'app.containers.IdeasShow.authorSaid',
+    defaultMessage: '{firstName} replied',
+  },
+  voteCTA: {
+    id: 'app.containers.IdeasShow.voteCTA',
+    defaultMessage: 'Do you like this idea?',
+  },
+  shareCTA: {
+    id: 'app.containers.IdeasShow.shareCTA',
+    defaultMessage: 'Share this idea',
+  },
+  commentsWithCount: {
+    id: 'app.containers.IdeasShow.commentsWithCount',
+    defaultMessage: 'Comments ({count})',
+  },
+  ideaStatus: {
+    id: 'app.containers.IdeasShow.ideaStatus',
+    defaultMessage: 'Idea status',
+  },
+  commentsTitle: {
+    id: 'app.containers.IdeasShow.commentsTitle',
+    defaultMessage: 'Give your opinion',
+  },
+  commentBodyPlaceholder: {
+    id: 'app.containers.IdeasShow.commentBodyPlaceholder',
+    defaultMessage: 'What do you think about this idea?',
+  },
+  commentSuccess: {
+    id: 'app.containers.IdeasShow.commentSuccess',
+    defaultMessage: 'Thanks for contributing!',
+  },
+  signInToComment: {
+    id: 'app.containers.IdeasShow.signInToComment',
+    defaultMessage: 'Please {signInLink} to spread your wisdom.',
+  },
+  signInLinkText: {
+    id: 'app.containers.IdeasShow.signInLinkText',
+    defaultMessage: 'sign in',
   },
 });

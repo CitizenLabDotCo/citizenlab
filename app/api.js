@@ -121,12 +121,8 @@ export function fetchIdeaComments(nextCommentPageNumber, nextCommentPageItemCoun
   return request(`${API_PATH}/ideas/${ideaId}/comments`, null, null, queryParameters);
 }
 
-export function createIdeaComment(ideaId, htmlContents, parentId) {
-  const body = {
-    body_multiloc: htmlContents,
-    parent_id: parentId,
-  };
-  return request(`${API_PATH}/ideas/${ideaId}/comments`, { comment: body }, {
+export function createIdeaComment(ideaId, comment) {
+  return request(`${API_PATH}/ideas/${ideaId}/comments`, { comment }, {
     method: 'POST',
   });
 }

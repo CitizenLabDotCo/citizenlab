@@ -32,7 +32,7 @@ export default (injectReducer) => ({
     name: 'admin projects index',
     getComponent(nextState, cb) {
       const importModules = Promise.all([
-        import('containers/Admin/projects/views/all'),
+        import('containers/Admin/projects/all'),
       ]);
 
       const renderRoute = loadModule(cb);
@@ -46,28 +46,11 @@ export default (injectReducer) => ({
   },
   childRoutes: [
     {
-      path: '/admin/projects/create',
-      name: 'admin projects create',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/Admin/projects/views/create'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([component]) => {
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    },
-    {
       path: '/admin/projects/:slug/edit',
-      name: 'adming projects edit',
+      name: 'admin projects single project',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/Admin/projects/views/edit'),
+          import('containers/Admin/projects/edit'),
         ]);
 
         const renderRoute = loadModule(cb);
@@ -78,7 +61,75 @@ export default (injectReducer) => ({
 
         importModules.catch(errorLoading);
       },
-    },
+      indexRoute: {
+        name: 'admin projects single edit',
+        getComponent(nextState, cb) {
+          const importModules = Promise.all([
+            import('containers/Admin/projects/edit/general'),
+          ]);
 
+          const renderRoute = loadModule(cb);
+
+          importModules.then(([component]) => {
+            renderRoute(component);
+          });
+
+          importModules.catch(errorLoading);
+        },
+      },
+      childRoutes: [
+        {
+          path: '/admin/projects/:slug/timeline',
+          name: 'admin projects edit timeline',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/Admin/projects/edit/timeline'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
+          path: '/admin/projects/new',
+          name: 'admin projects create new',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/Admin/projects/edit/general'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
+          path: '/admin/projects/:slug/events',
+          name: 'admin projects edit events',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/Admin/projects/edit/events'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+      ],
+    },
   ],
 });

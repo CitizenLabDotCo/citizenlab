@@ -237,7 +237,7 @@ export default class Editor extends React.PureComponent<Props, State> {
             }}
           />
         </DraftEditorContainer>
-        <Error text={error} />
+        <Error text={error}/>
       </Container>
     );
   }

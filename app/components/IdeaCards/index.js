@@ -6,8 +6,10 @@ import _ from 'lodash';
 import IdeaCard from 'components/IdeaCard';
 
 import { FormattedMessage } from 'react-intl';
-import messages from '../messages';
+import messages from './messages';
 import { mergeJsonApiResources } from 'utils/resources/actions';
+import Modal from 'components/UI/Modal';
+import IdeasShow from 'containers/IdeasShow';
 
 // store
 import { preprocess } from 'utils';
@@ -47,7 +49,7 @@ const LoadMoreButton = styled.button`
   }
 `;
 
-class IdeasCards extends React.Component {
+class IdeaCards extends React.Component {
 
   constructor() {
     super();
@@ -56,6 +58,7 @@ class IdeasCards extends React.Component {
       ideas: [],
       currentPage: 1,
       hasMore: false,
+      modalIdeaId: null,
     };
   }
 
@@ -102,24 +105,49 @@ class IdeasCards extends React.Component {
     }, this.resubscribeIdeas);
   }
 
+  closeModal = () => {
+    this.setState({
+      modalIdeaId: null,
+    });
+  }
+
+  openModal = (id) => {
+    this.setState({
+      modalIdeaId: id,
+    });
+  }
+
   render() {
     const { ideas, hasMore } = this.state;
     return (
-      <IdeasList>
-        {ideas.map((idea) => (
-          <IdeaCard key={idea.id} id={idea.id} />
-        ))}
-        {hasMore &&
-          <LoadMoreButton onClick={this.loadMoreIdeas}>
-            <FormattedMessage {...messages.loadMore} />
-          </LoadMoreButton>
-        }
-      </IdeasList>
+      <div>
+        <IdeasList>
+          {ideas.map((idea) => (
+            <IdeaCard
+              key={idea.id}
+              id={idea.id}
+              onClick={() => this.openModal(idea.id)}
+            />
+          ))}
+          {hasMore &&
+            <LoadMoreButton onClick={this.loadMoreIdeas}>
+              <FormattedMessage {...messages.loadMore} />
+            </LoadMoreButton>
+          }
+        </IdeasList>
+        <Modal
+          opened={!!this.state.modalIdeaId}
+          close={this.closeModal}
+          url={`/ideas/${this.state.modalIdeaId}`}
+        >
+          <IdeasShow location={location} id={this.state.modalIdeaId} />
+        </Modal>
+      </div>
     );
   }
 }
 
-IdeasCards.propTypes = {
+IdeaCards.propTypes = {
   filter: PropTypes.object.isRequired,
   mergeJsonApiResources: PropTypes.func.isRequired,
 };
@@ -128,4 +156,4 @@ const mapDispatchToProps = {
   mergeJsonApiResources,
 };
 
-export default preprocess(null, mapDispatchToProps)(IdeasCards);
+export default preprocess(null, mapDispatchToProps)(IdeaCards);

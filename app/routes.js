@@ -191,27 +191,25 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-      childRoutes: [
-        {
-          path: ':ideaId',
-          name: 'ideasShow',
-          getComponent(nextState, cb) {
-            const importModules = Promise.all([
-              import('containers/IdeasShow/reducer'),
-              import('containers/IdeasShow'),
-            ]);
+    },
+    {
+      path: '/ideas/:ideaId',
+      name: 'ideasShow',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/IdeasShow/reducer'),
+          import('containers/IdeasShow'),
+        ]);
 
-            const renderRoute = loadModule(cb);
+        const renderRoute = loadModule(cb);
 
-            importModules.then(([reducer, component]) => {
-              injectReducer('ideasShow', reducer.default);
-              renderRoute(component);
-            });
+        importModules.then(([reducer, component]) => {
+          injectReducer('ideasShow', reducer.default);
+          renderRoute(component);
+        });
 
-            importModules.catch(errorLoading);
-          },
-        },
-      ],
+        importModules.catch(errorLoading);
+      },
     },
     {
       path: '/profile/:slug',
