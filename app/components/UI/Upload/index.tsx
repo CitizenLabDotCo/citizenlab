@@ -36,7 +36,7 @@ const StyledDropzone = styled(Dropzone)`
   flex-wrap: wrap;
   border-radius: 5px;
   border-color: #999;
-  border-width: 1.5px; 
+  border-width: 1.5px;
   border-style: dashed;
   padding: 20px;
   padding-bottom: 0px;
@@ -162,8 +162,8 @@ type Props = {
   intl: ReactIntl.InjectedIntl;
   items: Dropzone.ImageFile[] | null;
   accept?: string | null | undefined;
-  maxSize: number;
-  maxItems: number;
+  maxSize?: number;
+  maxItems?: number;
   placeholder?: string | null | undefined;
   disablePreview?: boolean;
   destroyPreview?: boolean;
@@ -179,6 +179,14 @@ type State = {
 
 export default class Upload extends React.PureComponent<Props, State> {
   private emptyArray: never[];
+
+  public static defaultProps: Partial<Props> = {
+    items: [],
+    accept: '*',
+    maxSize: 5000000,
+    maxItems: 1,
+    placeholder: 'Drop your file here',
+  };
 
   constructor() {
     super();
@@ -209,12 +217,12 @@ export default class Upload extends React.PureComponent<Props, State> {
     const maxItemsCount = this.props.maxItems;
     const oldItemsCount = _.size(this.props.items);
     const newItemsCount = _.size(items);
-    const remainingItemsCount = maxItemsCount - oldItemsCount;
+    const remainingItemsCount = (maxItemsCount ? maxItemsCount - oldItemsCount : null);
 
     this.setState({ errorMessage: null, dropzoneActive: false });
 
     if (!this.state.disabled) {
-      if (maxItemsCount && newItemsCount > remainingItemsCount) {
+      if (maxItemsCount && remainingItemsCount && newItemsCount > remainingItemsCount) {
         const errorMessage = (maxItemsCount === 1 ? formatMessage(messages.onlyOneImage) : formatMessage(messages.onlyXImages, { maxItemsCount }));
         this.setState({ errorMessage });
         setTimeout(() => this.setState({ errorMessage: null }), 6000);
@@ -237,8 +245,8 @@ export default class Upload extends React.PureComponent<Props, State> {
   }
 
   onDropRejected = (items: Dropzone.ImageFile[]) => {
-    const { maxSize, intl } = this.props;
-    const { formatMessage } = intl;
+    const { formatMessage } = this.props.intl;
+    const maxSize = this.props.maxSize || 5000000;
 
     if (items.some(item => item.size > maxSize)) {
       const errorMessage = formatMessage(messages.errorMaxSizeExceeded, { maxFileSize: maxSize / 1000000 });

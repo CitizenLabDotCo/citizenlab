@@ -20,3 +20,12 @@ interface IOption {
   value: any;
   label: string;
 }
+
+declare interface Message {
+  id: string;
+  defaultMessage: string;
+}
+
+declare interface Multiloc {
+  [key: string]: string;
+}

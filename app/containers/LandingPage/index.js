@@ -345,7 +345,7 @@ class LandingPage extends React.Component {
     this.setState({
       modalOpened: true,
       pageUrl: window.location.href,
-      modalUrl: `${window.location.protocol}//${window.location.host}/idea/${id}#bleh`,
+      modalUrl: `${window.location.protocol}//${window.location.host}/ideas/${id}`,
       selectedIdeaId: id,
     });
   };

@@ -2,11 +2,13 @@ import * as React from 'react';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
+import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
+import messages from './messages';
 
 const ModalContent = styled(clickOutside)`
   width: 100%;
-  max-width: 800px;
+  max-width: 1000px;
   display: flex;
   flex-direction: column;
   padding: 25px;
@@ -81,6 +83,7 @@ const ModalContainer = styled.div`
   }
 `;
 
+
 const CloseButton = styled.div`
   color: #333;
   font-size: 16px;
@@ -104,7 +107,6 @@ const CloseButton = styled.div`
 type Props = {
   children: any;
   opened: boolean;
-  parentUrl?: string;
   url?: string;
   close: () => void;
 };
@@ -112,61 +114,47 @@ type Props = {
 type State = {};
 
 export default class Modal extends React.PureComponent<Props, State> {
+
+  componentWillReceiveProps(nextProps) {
+    // If modal opens
+    if (!this.props.opened && nextProps.opened) {
+      window.addEventListener('popstate', this.handlePopstateEvent);
+      window.history.pushState({ path: nextProps.url }, '', nextProps.url);
+      if (!document.body.classList.contains('modal-active')) {
+        document.body.classList.add('modal-active');
+      }
+    }
+
+    // if modal closes
+    if (this.props.opened && !nextProps.opened) {
+      window.removeEventListener('popstate', this.handlePopstateEvent);
+      document.body.classList.remove('modal-active');
+    }
+  }
+
   componentWillUnmount() {
-    this.onClose();
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    const { opened } = this.props;
-
-    if (!opened && nextProps.opened) {
-      this.onOpen();
-    }
-
-    if (opened && !nextProps.opened) {
-      this.onClose();
-    }
-  }
-
-  onOpen = () => {
-    window.addEventListener('popstate', this.handlePopstateEvent);
-
-    if (!document.body.classList.contains('modal-active')) {
-      document.body.classList.add('modal-active');
-    }
-
-    if (this.props.parentUrl && this.props.url) {
-      window.history.pushState({ path: this.props.url }, '', this.props.url);
-    }
-  }
-
-  onClose = () => {
-    document.body.classList.remove('modal-active');
     window.removeEventListener('popstate', this.handlePopstateEvent);
-
-    if (this.props.parentUrl && this.props.url) {
-      window.history.pushState({ path: this.props.parentUrl }, '', this.props.parentUrl);
-    }
+    document.body.classList.remove('modal-active');
   }
 
   handlePopstateEvent = () => {
-    if (location.href === this.props.parentUrl) {
-      this.closeModal();
-    }
-  }
-
-  closeModal = () => {
     this.props.close();
   }
 
+  closeModal = () => {
+    window.history.back();
+  }
+
   render() {
-    const { children, opened, parentUrl, url } = this.props;
+    const { children, opened, url } = this.props;
 
     const element = opened && (
       <CSSTransition classNames="modal" timeout={400}>
         <ModalContainer>
           <ModalContent onClickOutside={this.closeModal}>
-            <CloseButton onClick={this.closeModal}>Close</CloseButton>
+            <CloseButton onClick={this.closeModal}>
+              <FormattedMessage {...messages.closeButtonLabel} />
+            </CloseButton>
             {children}
           </ModalContent>
         </ModalContainer>

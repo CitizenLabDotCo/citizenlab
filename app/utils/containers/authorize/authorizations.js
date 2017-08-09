@@ -1,15 +1,15 @@
 const userIs = (user, role) => user && user.getIn(['attributes', 'roles']).some((ro) => ro.get('type') === role);
+const signedIn = (user) => !!user;
 
 const authorizations = {
   comments: {
     create: {
-      check: (user) => !!user,
+      check: (user) => signedIn(user),
     },
     delete: (user, resource) => {
       if (!user) return false;
 
-      const isUserAdmin = user && user.getIn(['attributes', 'roles']).some((role) => role.get('type') === 'admin');
-      if (isUserAdmin) return true;
+      if (userId(user, 'admin')) return true;
 
       const authorId = resource && resource.getIn(['relationships', 'author', 'data', 'id']);
       const userId = user && user.get('id');
@@ -30,7 +30,7 @@ const authorizations = {
           return isAdmin;
         } else if (paths[0] === 'register' && paths[1] === 'complete') {
           return !!user;
-        } else if (paths[0] === 'profile') {
+        } else if (paths[0] === 'profile' && paths[1] === 'edit') {
           return !!user;
         }
         return true;

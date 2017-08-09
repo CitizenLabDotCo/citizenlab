@@ -55,6 +55,11 @@ const getIcon = (name: string) => {
         </svg>
       );
     }
+    case 'plus': {
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="51" height="51" viewBox="0 0 51 51"><path d="M0 19.89v11.118h19.631V51h11.634V31.008H51V19.89H31.265V0H19.63v19.89H0z" fill="#d70065"/></svg>
+      );
+    }
     default:
       return null;
   }
