@@ -57,8 +57,6 @@ import '../vendor/carousel-custom.scss';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'semantic-ui-css/semantic.css';
 
-// foundation js
-import 'foundation-sites/dist/js/foundation.min';
 /* eslint-enable import/first */
 
 // Import root routes
@@ -68,6 +66,7 @@ import { loadState } from './persistedData';
 
 
 // ga
+import { watchEvents, watchPageChanges, watchIdentification } from 'utils/analytics/sagas';
 import { createGa } from 'config/ga';
 
 // Observe loading of custom font
@@ -90,6 +89,10 @@ const initialState = fromJS({
 });
 
 export const store = configureStore(initialState, browserHistory);
+
+store.runSaga(watchEvents);
+store.runSaga(watchPageChanges);
+store.runSaga(watchIdentification);
 
 // initialize Ga & Mix Pannel
 // before syncing with browserHistory to guarantee ga is hit at first page load.
