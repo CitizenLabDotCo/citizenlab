@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.titleLabel',
     defaultMessage: 'Title',
   },
+  descriptionLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.descriptionLabel',
+    defaultMessage: 'Title',
+  },
   saveLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.saveLabel',
     defaultMessage: 'Save',
