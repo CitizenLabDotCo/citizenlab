@@ -1,3 +1,4 @@
+import { IIdeaImage } from './ideaImages';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import request from 'utils/request';
@@ -45,7 +46,7 @@ export function addIdeaImage(ideaId: string, base64: string, ordering: number | 
     }
   };
 
-  return request(apiEndpoint, bodyData, httpMethod, null).catch(() => {
+  return request<IIdeaImage>(apiEndpoint, bodyData, httpMethod, null).catch(() => {
     throw new Error(`error for addIdeaImage() of service IdeaImages`);
   });
 }

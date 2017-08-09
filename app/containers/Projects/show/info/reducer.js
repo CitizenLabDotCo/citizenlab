@@ -5,7 +5,7 @@
  */
 
 import { fromJS } from 'immutable';
-import { LOAD_PROJECTS_REQUEST } from 'resources/projects/phases/constants';
+import { LOAD_PROJECTS_REQUEST } from 'resources/projects/constants';
 
 const initialState = fromJS({
   topics: [],

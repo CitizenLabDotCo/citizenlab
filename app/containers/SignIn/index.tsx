@@ -6,6 +6,7 @@ import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import messages from './messages';
+import { FormattedMessage } from 'react-intl';
 import { stateStream, IStateStream } from 'services/state';
 import { signIn } from 'services/auth';
 import { isValidEmail } from 'utils/validate';
@@ -18,20 +19,30 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Banner = styled.div`
-  width: 511px;
-  height: 712px;
-  border-radius: 5px;
-  background-color: #fff;
-`;
-
 const Form = styled.div`
   width: 100%;
 `;
 
 const FormElement = styled.div`
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const ForgotPassword = styled.div`
+  color: #666;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: pointer;
+
+  &:hover {
+    color: #000;
+  }
 `;
 
 type Props = {
@@ -52,6 +63,8 @@ type State = {
 export default class SignIn extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
   subscriptions: Rx.Subscription[];
+  emailInputElement: HTMLInputElement | null;
+  passwordInputElement: HTMLInputElement | null;
 
   constructor() {
     super();
@@ -64,11 +77,13 @@ export default class SignIn extends React.PureComponent<Props, State> {
       signInError: null,
     });
     this.subscriptions = [];
+    this.emailInputElement = null;
+    this.passwordInputElement = null;
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state as State))
+      this.state$.observable.subscribe(state => this.setState(state))
     ];
   }
 
@@ -84,18 +99,29 @@ export default class SignIn extends React.PureComponent<Props, State> {
     this.state$.next({ password, passwordError: null, signInError: null });
   }
 
-  handleOnSubmit = async () => {
-    const { onSignedIn } = this.props;
+  validate(email: string | null, password: string | null) {
     const { formatMessage } = this.props.intl;
-    const { email, password } = this.state;
-
     const hasEmailError = (!email || !isValidEmail(email));
     const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
     const passwordError = (!password ? formatMessage(messages.noPasswordError) : null);
 
     this.state$.next({ emailError, passwordError });
 
-    if (!emailError && !passwordError && email && password) {
+    if (emailError) {
+      this.emailInputElement && this.emailInputElement.focus();
+    } else if (passwordError) {
+      this.passwordInputElement && this.passwordInputElement.focus();
+    }
+
+    return (!emailError && !passwordError);
+  }
+
+  handleOnSubmit = async () => {
+    const { onSignedIn } = this.props;
+    const { formatMessage } = this.props.intl;
+    const { email, password } = this.state;
+
+    if (this.validate(email, password) && email && password) {
       try {
         this.state$.next({ processing: true });
         await signIn(email, password);
@@ -108,10 +134,21 @@ export default class SignIn extends React.PureComponent<Props, State> {
     }
   }
 
+  handleEmailInputSetRef = (element: HTMLInputElement) => {
+    this.emailInputElement = element;
+  }
+
+  handlePasswordInputSetRef = (element) => {
+    this.passwordInputElement = element;
+  }
+
+  handleForgotPasswordOnClick = () => {
+    console.log('forgot password');
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
     const { email, password, processing, emailError, passwordError, signInError } = this.state;
-    const hasAllRequiredContent = [email, password].every(value => _.isString(value) && !_.isEmpty(value));
 
     return (
       <Container>
@@ -125,6 +162,7 @@ export default class SignIn extends React.PureComponent<Props, State> {
               placeholder={formatMessage(messages.emailPlaceholder)}
               error={emailError}
               onChange={this.handleEmailOnChange}
+              setRef={this.handleEmailInputSetRef}
             />
           </FormElement>
 
@@ -137,18 +175,23 @@ export default class SignIn extends React.PureComponent<Props, State> {
               placeholder={formatMessage(messages.passwordPlaceholder)}
               error={passwordError}
               onChange={this.handlePasswordOnChange}
+              setRef={this.handlePasswordInputSetRef}
             />
           </FormElement>
 
           <FormElement>
-            <Button
-              size="2"
-              loading={processing}
-              text={formatMessage(messages.submit)}
-              onClick={this.handleOnSubmit}
-              disabled={!hasAllRequiredContent}
-            />
-            <Error text={signInError} />
+            <ButtonWrapper>
+              <Button
+                size="2"
+                loading={processing}
+                text={formatMessage(messages.submit)}
+                onClick={this.handleOnSubmit}
+              />
+              <ForgotPassword onClick={this.handleForgotPasswordOnClick}>
+                <FormattedMessage {...messages.forgotPassword} />
+              </ForgotPassword>
+            </ButtonWrapper>
+            <Error marginTop="10px" text={signInError} />
           </FormElement>
         </Form>
       </Container>

@@ -43,7 +43,7 @@ const DraftEditorContainer = styled.div`
 
   .rdw-editor-toolbar {
     width: auto;
-    padding: 8px;
+    padding: 7px;
     padding-left: 6px;
     margin: 0;
     border-radius: 0px;
@@ -151,6 +151,7 @@ type Props = {
   error?: string | null | undefined;
   toolbarConfig?: {} | null | undefined;
   onChange: (arg: EditorState) => void;
+  setRef?: (arg: HTMLInputElement) => void | undefined;
 };
 
 type State = {
@@ -178,6 +179,12 @@ export default class Editor extends React.PureComponent<Props, State> {
     this.setState({ focussed: false });
   }
 
+  handleRef = (element: HTMLInputElement) => {
+    if (_.isFunction(this.props.setRef)) {
+      this.props.setRef(element);
+    }
+  }
+
   render() {
     let { value, placeholder, error, toolbarConfig } = this.props;
     const { id } = this.props;
@@ -202,12 +209,14 @@ export default class Editor extends React.PureComponent<Props, State> {
         <DraftEditorContainer focussed={focussed} error={hasError}>
           <DraftEditor
             id={id}
+            spellCheck={true}
             editorState={value}
             placeholder={placeholder}
             onEditorStateChange={this.handleOnEditorStateChange}
             toolbar={toolbarConfig}
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
+            ref={this.handleRef}
             mention={{
               separator: ' ',
               trigger: '@',

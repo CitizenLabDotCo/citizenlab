@@ -16,12 +16,7 @@ export function signIn(email: string, password: string) {
   };
 
   return request<any>(`${API_PATH}/user_token`, bodyData, httpMethod, null).then((data) => {
-    const jwt = getJwt();
-
-    if (!jwt && _.has(data, 'jwt')) {
-      setJwt(data.jwt);
-    }
-
+    data && data.jwt && setJwt(data.jwt);
     return data;
   }).catch((error) => {
     throw error;
@@ -73,5 +68,21 @@ export function getAuthUser(): Promise<IUser> {
     }
   }).catch((error) => {
     throw new Error('not authenticated');
+  });
+}
+
+export function sendPasswordResetMail(email: string) {
+  const bodyData = {
+    user: {
+      email
+    }
+  };
+
+  const httpMethod: IHttpMethod = {
+    method: 'POST'
+  };
+
+  return request(`${API_PATH}/users/reset_password_email`, bodyData, httpMethod, null).catch((error) => {
+    throw error;
   });
 }
