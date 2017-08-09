@@ -5,6 +5,7 @@ import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import PasswordReset from 'containers/PasswordReset';
 import messages from './messages';
 import { FormattedMessage } from 'react-intl';
 import { stateStream, IStateStream } from 'services/state';

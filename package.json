@@ -221,7 +221,7 @@
     "fontfaceobserver": "2.0.7",
     "foundation-sites": "^6.3.0",
     "hellojs": "^1.14.0",
-    "html-to-draftjs": "0.1.0-beta11",
+    "html-to-draftjs": "0.1.0-beta14",
     "immutable": "3.8.1",
     "intl": "1.2.5",
     "invariant": "2.2.2",
