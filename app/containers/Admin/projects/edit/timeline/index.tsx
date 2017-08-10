@@ -13,14 +13,22 @@ import { observePhases, IPhaseData } from 'services/phases';
 import { Link } from 'react-router';
 import T from 'utils/containers/t';
 import Button from 'components/UI/Button';
+import Icon from 'components/UI/Icon';
 
 // Utils
 import subscribedComponent from 'utils/subscriptionsDecorator';
 
 // Styles
-const PhasesTable = styled.table`
-  width: 100%;
+const ListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
+const AddButton = styled(Button)`
+  align-self: flex-end;
+`;
+
+const PhasesTable = styled.table`
   th {
     font-weight: normal;
     text-align: left;
@@ -57,6 +65,39 @@ const OrderLabel = styled.div`
 
   &.future {
     background: #636363;
+  }
+`;
+
+const DeleteButton = styled.button`
+  display: flex;
+  padding: .75rem 1rem;
+
+  svg {
+    flex: 1 0 1rem;
+    margin-right: 1rem;
+  }
+
+  span {
+    display: block;
+    flex: 1 0 auto;
+  }
+`;
+
+const EditButton = styled(Link as React.StatelessComponent<{to: string}>)`
+  background: #e5e5e5;
+  border-radius: 5px;
+  color: #6B6B6B;
+  display: flex;
+  padding: .75rem 1rem;
+
+  svg {
+    flex: 1 0 1rem;
+    margin-right: 1rem;
+  }
+
+  span {
+    display: block;
+    flex: 1 0 auto;
   }
 `;
 
@@ -115,8 +156,8 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
     const { intl: { formatDate }, params: { slug } } = this.props;
 
     return (
-      <div>
-        <Button>Add a Phase</Button>
+      <ListWrapper>
+        <AddButton>Add a Phase</AddButton>
 
         {!loading && phases &&
           <PhasesTable>
@@ -140,14 +181,24 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
                     <h1><T value={phase.attributes.title_multiloc} /></h1>
                     <p>{formatDate(phase.attributes.start_at)} - {formatDate(phase.attributes.end_at)}</p>
                   </td>
-                  <td><FormattedMessage {...messages.deletePhaseButton} /></td>
-                  <td><Link to={`/admin/projects/${slug}/timeline/${phase.id}`}><FormattedMessage {...messages.editPhaseButton} /></Link></td>
+                  <td>
+                    <DeleteButton>
+                      <Icon name="delete" />
+                      <FormattedMessage {...messages.deletePhaseButton} />
+                    </DeleteButton>
+                  </td>
+                  <td>
+                    <EditButton to={`/admin/projects/${slug}/timeline/${phase.id}`}>
+                      <Icon name="edit" />
+                      <FormattedMessage {...messages.editPhaseButton} />
+                    </EditButton>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </PhasesTable>
         }
-      </div>
+      </ListWrapper>
     );
   }
 }
