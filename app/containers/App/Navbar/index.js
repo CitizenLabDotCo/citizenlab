@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { lighten } from 'polished';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
+import { injectTracks } from 'utils/analytics';
 // import SearchWidget from 'containers/SearchWidget';
 import Authorize from 'utils/containers/authorize';
 import { createStructuredSelector } from 'reselect';
@@ -13,6 +14,7 @@ import { makeSelectCurrentUserImmutable } from 'utils/auth/selectors';
 import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
 import ClickOutside from 'utils/containers/clickOutside';
 import messages from './messages';
+import tracks from './tracks';
 import NotificationMenu from 'containers/NotificationMenu';
 import NotificationCount from 'containers/NotificationMenu/components/NotificationCount';
 
@@ -27,6 +29,9 @@ const Container = styled.div`
   position: relative;
   background: ${(props) => !props.secondary ? props.theme.color.menuBg : '#fff'};
   border-bottom: solid 1px #ccc;
+  z-index: 999;
+  position: fixed;
+  top: 0;
 `;
 
 const Left = styled.div`
@@ -202,12 +207,23 @@ class Navbar extends React.PureComponent {
   };
 
   toggleNotificationPanel = () => {
+    if (this.state.notificationPanelOpened) {
+      this.props.trackClickCloseNotifications();
+    } else {
+      this.props.trackClickOpenNotifications();
+    }
+
     this.setState({
       notificationPanelOpened: !this.state.notificationPanelOpened,
     });
   };
 
   closeNotificationPanel = () => {
+    // There seem to be some false closing triggers on initializing,
+    // so we check whether it's actually open
+    if (this.state.notificationPanelOpened) {
+      this.props.trackClickCloseNotifications();
+    }
     this.setState({ notificationPanelOpened: false });
   };
 
@@ -307,6 +323,8 @@ Navbar.propTypes = {
   location: PropTypes.string.isRequired,
   signOut: PropTypes.func.isRequired,
   goTo: PropTypes.func.isRequired,
+  trackClickCloseNotifications: PropTypes.func,
+  trackClickOpenNotifications: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -320,9 +338,14 @@ const mergeProps = (stateP, dispatchP, ownP) => {
   return Object.assign({}, stateP, { signOut, goTo }, ownP);
 };
 
-export default injectIntl(preprocess(mapStateToProps, { signOutCurrentUser, push }, mergeProps)(styled(Navbar)`
-  background-color: ${(props) => props.menuBg};
-  z-index: 999;
-  position: fixed;
-  top: 0;
-`));
+// export default injectIntl(preprocess(mapStateToProps, { signOutCurrentUser, push }, mergeProps)(styled(Navbar)`
+//   background-color: ${(props) => props.menuBg};
+//   z-index: 999;
+//   position: fixed;
+//   top: 0;
+// `));
+
+export default injectTracks({
+  trackClickOpenNotifications: tracks.clickOpenNotifications,
+  trackClickCloseNotifications: tracks.clickCloseNotifications,
+})(injectIntl(preprocess(mapStateToProps, { signOutCurrentUser, push }, mergeProps)(Navbar)));

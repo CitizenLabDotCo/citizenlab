@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
+import { injectTracks } from 'utils/analytics';
+import _ from 'lodash';
 
 
 // components
@@ -16,6 +18,7 @@ import Authorize, { Else } from 'utils/containers/authorize';
 
 // messages
 import messages from '../../messages';
+import tracks from '../../tracks';
 import { publishCommentRequest } from '../../actions';
 import selectIdeasShow from '../../selectors';
 
@@ -33,14 +36,33 @@ class EditorForm extends React.PureComponent {
     };
   }
 
+  trackEditorChange = _.debounce(() => {
+    this.props.typeComment({
+      extra: {
+        ideaId: this.props.ideaId,
+        parentId: this.props.parentId,
+        content: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())),
+      },
+    });
+  }, 2500);
+
   handleEditorChange = (editorState) => {
-    this.setState({ editorState });
+    this.setState({ editorState }, this.trackEditorChange);
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
     const editorContent = convertToRaw(this.state.editorState.getCurrentContent());
     const htmlContent = draftToHtml(editorContent);
+
+    this.props.clickCommentPublish({
+      extra: {
+        ideaId: this.props.ideaId,
+        parentId: this.props.parentId,
+        content: htmlContent,
+      },
+    });
+
     if (htmlContent && htmlContent.trim() !== '<p></p>') {
       const bodyMultiloc = {};
       bodyMultiloc[this.props.locale] = htmlContent;
@@ -104,6 +126,8 @@ EditorForm.propTypes = {
   locale: PropTypes.string,
   formStatus: PropTypes.string, // undefined, 'processing', 'error' or 'success'
   error: PropTypes.string,
+  typeComment: PropTypes.func,
+  clickCommentPublish: PropTypes.func,
 };
 
 const mapDispatchToProps = {
@@ -116,4 +140,7 @@ const mapStateToProps = (state, { parentId }) => ({
   error: selectIdeasShow('newComment', parentId || 'root', 'error')(state),
 });
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(EditorForm));
+export default injectTracks({
+  typeComment: tracks.typeComment,
+  clickCommentPublish: tracks.clickCommentPublish,
+})(injectIntl(connect(mapStateToProps, mapDispatchToProps)(EditorForm)));

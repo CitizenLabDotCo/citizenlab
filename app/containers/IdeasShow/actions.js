@@ -20,14 +20,6 @@ export function loadIdeaSuccess(payload) {
   return {
     type: LOAD_IDEA_SUCCESS,
     payload,
-   /* meta: {
-      tracking: {
-        message: 'Idea loaded!',
-        attributes: {
-          ideaId: payload.data.id,
-        },
-      },
-    }, */
   };
 }
 
@@ -83,6 +75,14 @@ export function publishCommentSuccess(payload, parentId) {
     type: PUBLISH_COMMENT_SUCCESS,
     payload,
     parentId,
+    meta: {
+      track: {
+        name: 'Comment created',
+        properties: {
+          comment: payload.data,
+        },
+      },
+    },
   };
 }
 

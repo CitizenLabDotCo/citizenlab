@@ -22,7 +22,7 @@ export function searchTermStabilized(payload) {
     payload,
     meta: {
       track: {
-        event: 'Admin users searched',
+        name: 'Admin users searched',
         properties: {
           searchString: payload,
         },
@@ -37,7 +37,7 @@ export function pageSelectionChanged(payload) {
     payload,
     meta: {
       track: {
-        event: 'Admin users pagination changed',
+        name: 'Admin users pagination changed',
         properties: {
           page: payload,
         },
@@ -52,7 +52,7 @@ export function sortColumnChanged(payload) {
     payload,
     meta: {
       track: {
-        event: 'Admin users sort column changed',
+        name: 'Admin users sort column changed',
         properties: {
           column: payload,
         },
@@ -72,7 +72,7 @@ export function loadUsersXlsxRequest() {
     type: LOAD_USERS_XLSX_REQUEST,
     meta: {
       track: {
-        event: 'Admin users download xlsx',
+        name: 'Admin users download xlsx clicked',
       },
     },
   };
