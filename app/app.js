@@ -57,8 +57,6 @@ import '../vendor/carousel-custom.scss';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'semantic-ui-css/semantic.css';
 
-// foundation js
-import 'foundation-sites/dist/js/foundation.min';
 /* eslint-enable import/first */
 
 // Import root routes
@@ -68,7 +66,7 @@ import { loadState } from './persistedData';
 
 
 // ga
-import { createGa } from 'config/ga';
+import { watchEvents, watchPageChanges, watchIdentification } from 'utils/analytics/sagas';
 
 // Observe loading of custom font
 const visuelt = new FontFaceObserver('visuelt');
@@ -91,9 +89,12 @@ const initialState = fromJS({
 
 export const store = configureStore(initialState, browserHistory);
 
-// initialize Ga & Mix Pannel
-// before syncing with browserHistory to guarantee ga is hit at first page load.
-createGa(store, getSagaMiddleware());
+// The sagas for analytics tracking need to be mounted here,
+// because they need to be able to watch the very first events
+// like initial route change, authenitcation
+store.runSaga(watchEvents);
+store.runSaga(watchPageChanges);
+store.runSaga(watchIdentification);
 
 // Sync history and store, as the react-router-redux reducer
 // is under the non-default key ("routing"), selectLocationState
