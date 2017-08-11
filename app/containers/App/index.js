@@ -110,6 +110,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
       <div>
         <WatchSagas sagas={authSagas} />
         <WatchSagas sagas={areasSagas} />
+        {/* <WatchSagas sagas={analyticsSagas} /> */}
         <WatchSagas sagas={{ tenantSaga }} />
         {this.content()}
       </div>

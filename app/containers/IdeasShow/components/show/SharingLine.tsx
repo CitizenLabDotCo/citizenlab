@@ -6,8 +6,10 @@ import styled from 'styled-components';
 import { makeSelectSetting } from 'utils/tenant/selectors';
 import { FacebookButton, FacebookCount, TwitterButton, TwitterCount } from 'react-social';
 import { Icon } from 'semantic-ui-react';
+import { injectTracks } from 'utils/analytics';
 
 import messages from '../../messages';
+import tracks from '../../tracks';
 
 
 
@@ -17,7 +19,9 @@ type Props = {
   imageUrl: string;
   location: {
     href: string;
-  }
+  },
+  clickFbShare: () => void,
+  clickTwitterShare: () => void,
 };
 
 const Container = styled.div`
@@ -57,6 +61,7 @@ const Separator = styled.div`
 `
 
 class SharingLine extends React.Component<Props> {
+
   render() {
     const { fbAppId, twAccessToken, imageUrl } = this.props;
     const { href } = this.props.location;
@@ -67,12 +72,12 @@ class SharingLine extends React.Component<Props> {
             <FormattedMessage {...messages.shareCTA}/>
           </Text>
           <IconWrapper className="fb">
-            <FacebookButton url={href} appId={fbAppId} sharer media={imageUrl} >
-              <Icon name="facebook official" />
+            <FacebookButton url={href} appId={fbAppId} sharer media={imageUrl} onClick={this.props.clickFbShare}>
+              <Icon name="facebook official"/>
             </FacebookButton>
           </IconWrapper>
           <IconWrapper className="tw">
-            <TwitterButton url={href} sharer media={imageUrl} >
+            <TwitterButton url={href} sharer media={imageUrl} onClick={this.props.clickTwitterShare}>
               <Icon name="twitter" />
             </TwitterButton>
           </IconWrapper>
@@ -89,10 +94,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 
-const mergeProps = (stateProps, dispatchProps, { location, imageUrl }) => ({
-  ...stateProps,
-  imageUrl,
-  location,
-});
-
-export default preprocess(mapStateToProps, null, mergeProps)(SharingLine);
+export default injectTracks({
+  clickFbShare: tracks.clickFbShare,
+  clickTwitterShare: tracks.clickTwitterShare,
+})(preprocess(mapStateToProps, null)(SharingLine));

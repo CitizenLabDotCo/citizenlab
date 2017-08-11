@@ -8,8 +8,10 @@ import { selectResourcesDomain } from 'utils/resources/selectors';
 import T from 'containers/T';
 
 import Authorize from 'utils/containers/authorize';
+import { injectTracks } from 'utils/analytics';
 
 import messages from '../../messages';
+import tracks from '../../tracks';
 import ChildComment from './ChildComment';
 import Author from './Author';
 import Button from 'components/UI/Button';
@@ -46,6 +48,7 @@ class ParentComment extends React.Component {
   }
 
   toggleForm = () => {
+    this.props.clickReply();
     this.setState({
       showForm: true,
     });
@@ -88,6 +91,7 @@ ParentComment.propTypes = {
   authorId: PropTypes.string,
   ideaId: PropTypes.string,
   commentId: PropTypes.string,
+  clickReply: PropTypes.func,
 };
 
 
@@ -115,4 +119,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   };
 };
 
-export default preprocess(mapStateToProps, null, mergeProps)(ParentComment);
+export default preprocess(mapStateToProps, null, mergeProps)(
+  injectTracks({
+    clickReply: tracks.clickReply,
+  })(ParentComment)
+);

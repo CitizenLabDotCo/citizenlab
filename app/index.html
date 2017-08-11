@@ -10,6 +10,11 @@
     <meta name="mobile-web-app-capable" content="yes">
     <title>CitizenLab v2.0</title>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBANEGjkanbx-Ro6aqbtei3ko0WvqKlkoA&libraries=places" type="text/javascript"></script>
+    <script type="text/javascript">
+      !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="4.0.0";
+      analytics.load("VsvvuYyv10ZcFx6hoO0zLfpAwqBx89nY");
+      }}();
+    </script>
   </head>
   <body>
     <!-- Display a message if JS has been disabled on the browser. -->
@@ -17,7 +22,7 @@
 
     <!-- The app hooks into this div -->
     <div id="app"></div>
-    
+
     <!-- A lot of magic happens in this file. HtmlWebpackPlugin automatically includes all assets (e.g. bundle.js, main.css) with the correct HTML tags, which is why they are missing in this HTML file. Don't add any assets here! (Check out webpackconfig.js if you want to know more) -->
   </body>
 </html>

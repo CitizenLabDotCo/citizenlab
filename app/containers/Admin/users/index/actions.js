@@ -1,5 +1,6 @@
 import {
   SEARCH_TERM_CHANGED,
+  SEARCH_TERM_STABILIZED,
   PAGE_SELECTION_CHANGED,
   SORT_COLUMN_CHANGED,
   INITIAL_LOAD,
@@ -15,10 +16,33 @@ export function searchTermChanged(payload) {
   };
 }
 
+export function searchTermStabilized(payload) {
+  return {
+    type: SEARCH_TERM_STABILIZED,
+    payload,
+    meta: {
+      track: {
+        name: 'Admin users searched',
+        properties: {
+          searchString: payload,
+        },
+      },
+    },
+  };
+}
+
 export function pageSelectionChanged(payload) {
   return {
     type: PAGE_SELECTION_CHANGED,
     payload,
+    meta: {
+      track: {
+        name: 'Admin users pagination changed',
+        properties: {
+          page: payload,
+        },
+      },
+    },
   };
 }
 
@@ -26,6 +50,14 @@ export function sortColumnChanged(payload) {
   return {
     type: SORT_COLUMN_CHANGED,
     payload,
+    meta: {
+      track: {
+        name: 'Admin users sort column changed',
+        properties: {
+          column: payload,
+        },
+      },
+    },
   };
 }
 
@@ -38,6 +70,11 @@ export function initialLoad() {
 export function loadUsersXlsxRequest() {
   return {
     type: LOAD_USERS_XLSX_REQUEST,
+    meta: {
+      track: {
+        name: 'Admin users download xlsx clicked',
+      },
+    },
   };
 }
 

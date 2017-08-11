@@ -9,8 +9,10 @@ import { Form } from 'semantic-ui-react';
 // import IdeaContent from '../IdeaContent';
 
 // store
+import { injectTracks } from 'utils/analytics';
 import { preprocess } from 'utils';
 import { loadIdeaRequest } from '../../actions';
+import tracks from '../../tracks';
 import { loadIdeaSagaFork, deleteIdeasVoteSagaFork, createIdeasVoteSagaFork } from 'resources/ideas/sagas';
 
 
@@ -96,7 +98,19 @@ class Votes extends FormComponent {
   modeToInteger = (mode) => ({ up: 1, down: -1 }[mode] || 0);
   integerToMode = (int) => ({ 1: 'up', '-1': 'down' }[int] || 'delete');
 
+  trackVote = (modifier) => {
+    const extra = {
+      ideaId: this.props.ideaId,
+    };
+    if (modifier > 0) {
+      this.props.clickUpvote({ extra });
+    } else {
+      this.props.clickDownvote({ extra });
+    }
+  }
+
   handleVote = (modifier) => () => {
+    this.trackVote(modifier);
     const newIntMode = this.values.intMode + modifier;
     if (newIntMode <= 1 && newIntMode >= -1) {
       this.setState({ mode: this.integerToMode(this.values.intMode + modifier) }, () => {
@@ -164,5 +178,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 
-export default preprocess(mapStateToProps, { loadIdea: loadIdeaRequest })(Votes);
+export default injectTracks({
+  clickUpvote: tracks.clickUpvote,
+  clickDownvote: tracks.clickDownvote,
+})(preprocess(mapStateToProps, { loadIdea: loadIdeaRequest })(Votes));
 
