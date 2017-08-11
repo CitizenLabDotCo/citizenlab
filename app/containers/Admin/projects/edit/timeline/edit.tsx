@@ -54,7 +54,8 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       phase: null,
       attributeDiff: {},
       errors: {
-        title: []
+        title: [],
+        description: [],
       },
       saving: false,
     };
@@ -126,7 +127,13 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
           <Error text={this.state.errors.title.join(', ')} />
 
           <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
-          <TextArea name="description" error={this.state.errors.description.join(', ')} onChange={this.createMultilocUpdater('description_multiloc')} />
+            <TextArea
+              name="description"
+              error=""
+              onChange={this.createMultilocUpdater('description_multiloc')}
+              value={this.props.tFunc(phaseAttrs.description_multiloc)}
+            />
+           <Error text={this.state.errors.description.join(', ')} />
 
           <Button loading={this.state.saving} ><FormattedMessage {...messages.saveLabel} /></Button>
         </form>

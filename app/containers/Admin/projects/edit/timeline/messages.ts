@@ -7,7 +7,7 @@ export default defineMessages({
   },
   descriptionLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.descriptionLabel',
-    defaultMessage: 'Title',
+    defaultMessage: 'Description',
   },
   saveLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.saveLabel',
