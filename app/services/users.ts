@@ -67,7 +67,8 @@ export function observeUsers(streamParams: IStreamParams<IUsers> | null = null) 
 }
 
 export function observeUser(userId: string, streamParams: IStreamParams<IUser> | null = null) {
-  return streams.create<IUser>({ apiEndpoint: `${apiEndpoint}/${userId}`, ...streamParams });
+  const extendedsStreamParams: IStreamParams<IUser> = { ...streamParams, requestedDataId: userId };
+  return streams.create<IUser>({ apiEndpoint: `${apiEndpoint}/${userId}`, ...extendedsStreamParams });
 }
 
 export function updateUser(userId: string, object: IUserUpdate, refetch = true) {
