@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   title: {
     id: 'app.containers.PasswordReset.title',
-    defaultMessage: 'Forgot your password?',
+    defaultMessage: 'Reset your password',
   },
   emailLabel: {
     id: 'app.containers.PasswordReset.emailLabel',
@@ -23,7 +23,7 @@ export default defineMessages({
   },
   send: {
     id: 'app.containers.PasswordReset.send',
-    defaultMessage: 'Send password recovery mail',
+    defaultMessage: 'Send password reset mail',
   },
   submitError: {
     id: 'app.containers.PasswordReset.submitError',
@@ -31,6 +31,6 @@ export default defineMessages({
   },
   successMessage: {
     id: 'app.containers.PasswordReset.successMessage',
-    defaultMessage: 'A password recovery email successfully sent to the provided email address',
+    defaultMessage: 'Password reset email has been successfully sent',
   },
 });

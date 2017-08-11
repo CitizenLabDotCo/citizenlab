@@ -12,19 +12,12 @@ import { isValidEmail } from 'utils/validate';
 import messages from './messages';
 import styled from 'styled-components';
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+`;
 
 const Form = styled.div`
   width: 100%;
-  max-width: 600px;
-  display: 'flex';
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 100px;
-  padding-right: 30px;
-  padding-left: 30px;
-  margin-left: auto;
-  margin-right: auto;
 `;
 
 const Title = styled.h2`
@@ -33,20 +26,21 @@ const Title = styled.h2`
   font-size: 38px;
   line-height: 44px;
   font-weight: 500;
-  text-align: center;
-  margin-bottom: 40px;
+  text-align: left;
+  margin-top: 50px;
+  margin-bottom: 35px;
 `;
 
 const FormElement = styled.div`
   width: 100%;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 `;
 
 type Props = {
   intl: ReactIntl.InjectedIntl;
   tFunc: Function;
   locale: string;
-  onSubmit: () => void;
+  onExit?: () => void;
 };
 
 export type State = {
@@ -118,6 +112,10 @@ export default class PasswordReset extends React.PureComponent<Props, State> {
         this.state$.next({ success: false, submitError: true });
       });
     }
+  }
+
+  handleOnGoBack = () => {
+    !_.isUndefined(this.props.onExit) && this.props.onExit();
   }
 
   render() {

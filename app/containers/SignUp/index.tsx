@@ -19,16 +19,6 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   width: 100%;
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* align-items: center; */
-`;
-
-const StyledCSSTransition = styled(CSSTransition)`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 
 const Form = styled.div`
@@ -69,7 +59,7 @@ const Form = styled.div`
 
 const FormElement = styled.div`
   width: 100%;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 `;
 
 type Props = {
@@ -102,6 +92,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
   areas$: IStream<IAreas>;
   subscriptions: Rx.Subscription[];
+  firstNameInputElement: HTMLInputElement | null;
 
   constructor() {
     super();
@@ -134,6 +125,10 @@ export default class SignUp extends React.PureComponent<Props, State> {
     ];
   }
 
+  componentDidMount() {
+    this.firstNameInputElement && this.firstNameInputElement.focus();
+  }
+
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
@@ -147,6 +142,10 @@ export default class SignUp extends React.PureComponent<Props, State> {
     }
   
     return null;
+  }
+
+  handleFirstNameInputSetRef = (element: HTMLInputElement) => {
+    this.firstNameInputElement = element;
   }
 
   handleFirstNameOnChange = (firstName: string) => {
@@ -236,7 +235,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
     } = this.state;
     const timeout = 600;
 
-    const step1 = showStep1 && (
+    const step1 = (showStep1 && (
       <CSSTransition classNames="form" timeout={timeout}>
         <Form className="step1">
           <FormElement>
@@ -248,6 +247,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
               placeholder={formatMessage(messages.firstNamePlaceholder)}
               error={firstNameError}
               onChange={this.handleFirstNameOnChange}
+              setRef={this.handleFirstNameInputSetRef}
             />
           </FormElement>
 
@@ -294,9 +294,9 @@ export default class SignUp extends React.PureComponent<Props, State> {
           />
         </Form>
       </CSSTransition>
-    );
+    ));
 
-    const step2 = !showStep1 && (
+    const step2 = (!showStep1 && (
       <CSSTransition classNames="form" timeout={timeout}>
         <Form>
           <FormElement>
@@ -353,7 +353,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
           </FormElement>
         </Form>
       </CSSTransition>
-    );
+    ));
 
     return (
       <Container>

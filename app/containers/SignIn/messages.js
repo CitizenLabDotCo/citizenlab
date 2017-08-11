@@ -3,11 +3,11 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   emailLabel: {
     id: 'app.containers.SignIn.emailLabel',
-    defaultMessage: 'Email (required)',
+    defaultMessage: 'Email',
   },
   emailPlaceholder: {
     id: 'app.containers.SignIn.emailPlaceholder',
-    defaultMessage: 'Enter your email address',
+    defaultMessage: 'Email',
   },
   noEmailError: {
     id: 'app.containers.SignIn.noEmailError',
@@ -19,11 +19,11 @@ export default defineMessages({
   },
   passwordLabel: {
     id: 'app.containers.SignIn.passwordLabel',
-    defaultMessage: 'Password (required)',
+    defaultMessage: 'Password',
   },
   passwordPlaceholder: {
     id: 'app.containers.SignIn.passwordPlaceholder',
-    defaultMessage: 'Enter a password',
+    defaultMessage: 'Password',
   },
   noPasswordError: {
     id: 'app.containers.SignIn.noPasswordError',
