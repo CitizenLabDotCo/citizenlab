@@ -37,4 +37,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseButton',
     defaultMessage: 'Delete',
   },
+  deletePhaseConfirmation: {
+    id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation',
+    defaultMessage: 'Are you sure you wannna delete this phase?',
+  },
 });

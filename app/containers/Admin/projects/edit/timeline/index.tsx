@@ -137,6 +137,15 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
     });
   }
 
+  handleDeleteClick = (event) => {
+    event.preventDefault();
+    const id = event.target.dataset.phaseid;
+
+    if (window.confirm(this.props.intl.formatMessage(messages.deletePhaseConfirmation))) {
+      console.log(`Delete phase ${id}`);
+    }
+  }
+
   phaseTiming = ({ start_at, end_at }): 'past' | 'current' | 'future' => {
     const start = new Date(start_at);
     const end = new Date(end_at);
@@ -182,7 +191,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
                     <p>{formatDate(phase.attributes.start_at)} - {formatDate(phase.attributes.end_at)}</p>
                   </td>
                   <td>
-                    <DeleteButton>
+                    <DeleteButton data-phaseid={phase.id} onClick={this.handleDeleteClick}>
                       <Icon name="delete" />
                       <FormattedMessage {...messages.deletePhaseButton} />
                     </DeleteButton>
