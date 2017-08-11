@@ -114,7 +114,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
 
     return (
       <div>
-        <div>Edit phase</div>
+        <h1>Edit phase</h1>
 
         <form onSubmit={this.handleOnSubmit}>
           <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
@@ -132,6 +132,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
               error=""
               onChange={this.createMultilocUpdater('description_multiloc')}
               value={this.props.tFunc(phaseAttrs.description_multiloc)}
+              rows={3}
             />
            <Error text={this.state.errors.description.join(', ')} />
 
