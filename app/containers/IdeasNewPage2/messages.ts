@@ -83,6 +83,6 @@ export default defineMessages({
   },
   goBack: {
     id: 'app.containers.IdeasNewPage2.goBack',
-    defaultMessage: 'Go back to your idea',
+    defaultMessage: 'Go back',
   },
 });

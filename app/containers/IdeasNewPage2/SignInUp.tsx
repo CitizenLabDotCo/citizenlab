@@ -5,7 +5,9 @@ import { FormattedMessage } from 'react-intl';
 import { stateStream, IStateStream } from 'services/state';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
+import PasswordReset from 'containers/PasswordReset';
 import Button from 'components/UI/Button';
+import Icon from 'components/UI/Icon';
 import SignIn from 'containers/SignIn';
 import SignUp from 'containers/SignUp';
 import { IStream } from 'utils/streams';
@@ -19,7 +21,7 @@ const Container = styled.div`
 
 const PageContainer = styled.div`
   width: 100%;
-  max-width: 1000px;
+  max-width: 980px;
   min-height: calc(100vh - 105px);
   padding-bottom: 60px;
   padding-left: 30px;
@@ -31,11 +33,11 @@ const PageContainer = styled.div`
 `;
 
 const Banner = styled.div`
-	width: 480px;
-	height: 600px;
-	border-radius: 5px;
+	width: 460px;
+	height: 540px;
+	border-radius: 6px;
   background-color: #fff;
-  margin-right: 110px;
+  margin-right: 120px;
   padding: 50px;
   position: relative;
 `;
@@ -51,16 +53,16 @@ const Logo = styled.img`
 
 const Slogan1 = styled.div`
   color: ${props => props.theme.color.main || '#333'};
-  font-size: 32px;
-  line-height: 38px;
+  font-size: 31px;
+  line-height: 36px;
   font-weight: 500;
-  margin-top: 80px;
+  margin-top: 75px;
 `;
 
 const Slogan2 = styled.div`
   color: #f2f2f2;
-  font-size: 135px;
-  line-height: 113px;
+  font-size: 130px;
+  line-height: 105px;
   font-weight: 800;
   position: absolute;
   bottom: 25px;
@@ -70,6 +72,10 @@ const Slogan2 = styled.div`
 
 const Forms = styled.div`
   flex: 1;
+`;
+
+const StyledTransitionGroup = styled(TransitionGroup)`
+  position: relative;
 `;
 
 const FormContainer = styled.div`
@@ -103,27 +109,98 @@ const FormContainer = styled.div`
   }
 `;
 
+const GoBackContainer = styled.div`
+  display: inline-flex;
+  align-items: center;
+  margin-left: -3px;margin-bottom: 30px;
+  cursor: pointer;
+
+  &:hover {
+    svg {
+      fill: #000;
+    }
+
+    span {
+      color: #000;
+    }
+  }
+
+  svg {
+    fill: #999;
+    height: 26px;
+  }
+
+  span {
+    color: #999;
+    font-size: 18px;
+    font-weight: 400;
+    padding-left: 1px;
+  }
+`;
+
 const Form = styled.div`
   width: 100%;
   max-width: 600px;
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* align-items: center; */
-  /* padding-right: 30px; */
-  /* padding-left: 30px; */
-  /* margin-left: auto; */
-  /* margin-right: auto; */
 `;
 
 const Title = styled.h2`
   width: 100%;
   color: #333;
-  font-size: 38px;
-  line-height: 44px;
+  font-size: 36px;
+  line-height: 42px;
   font-weight: 500;
   text-align: left;
-  margin-top: 50px;
   margin-bottom: 35px;
+`;
+
+const Separator = styled.div`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-top: 15px;
+  margin-bottom: 5px;
+`;
+
+const SeparatorLine = styled.div`
+  width: 100%;
+  height: 1px;
+  background: transparent;
+  border-bottom: solid 1px #ccc;
+`;
+
+const SeparatorTextContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+`;
+
+const SeparatorText = styled.div`
+  width: 50px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f2f2f2;
+
+  span {
+    color: #aaa;
+    font-size: 15px;
+  }
+`;
+
+const FooterButton = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
 `;
 
 type Props = {
@@ -135,7 +212,7 @@ type Props = {
 };
 
 type State = {
-  showSignIn: boolean;
+  show: 'signIn' | 'signUp' | 'passwordReset';
   tenant: ITenant | null;
 };
 
@@ -146,7 +223,7 @@ export default class SignInUp extends React.PureComponent<Props, State> {
 
   constructor() {
     super();
-    this.state$ = stateStream.observe<State>('IdeasNewPage2/SignInUp', { showSignIn: true, tenant: null });
+    this.state$ = stateStream.observe<State>('IdeasNewPage2/SignInUp', { show: 'signIn', tenant: null });
     this.tenant$ = observeCurrentTenant();
     this.subscriptions = [];
   }
@@ -167,13 +244,18 @@ export default class SignInUp extends React.PureComponent<Props, State> {
   }
 
   goToSignUpForm = () => {
-    window.scrollTo(0, 0);
-    this.state$.next({ showSignIn: false });
+    // window.scrollTo(0, 0);
+    this.state$.next({ show: 'signUp' });
   }
 
   goToSignInForm = () => {
-    window.scrollTo(0, 0);
-    this.state$.next({ showSignIn: true });
+    // window.scrollTo(0, 0);
+    this.state$.next({ show: 'signIn' });
+  }
+
+  goToPasswordResetForm = () => {
+    // window.scrollTo(0, 0);
+    this.state$.next({ show: 'passwordReset' });
   }
 
   handleOnSignedIn = () => {
@@ -185,61 +267,52 @@ export default class SignInUp extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { showSignIn, tenant } = this.state;
+    const { show, tenant } = this.state;
     const logo = tenant && tenant.data.attributes.logo.large;
     const { formatMessage } = this.props.intl;
     const timeout = 500;
 
-    const signIn = showSignIn && (
+    const signIn = (show === 'signIn' && (
       <CSSTransition classNames="page" timeout={timeout}>
         <FormContainer>
           <Form>
-            <Button
-              size="1"
-              style="secondary"
-              text={formatMessage(messages.goBack)}
-              onClick={this.goBack}
-              icon="arrow-back"
-            />
-
             <Title>{formatMessage(messages.signInTitle)}</Title>
 
             <SignIn
               onSignedIn={this.handleOnSignedIn}
               intl={this.props.intl}
+              tFunc={this.props.tFunc}
               locale={this.props.locale}
+              onForgotPassword={this.goToPasswordResetForm}
             />
 
-            {/*
-            <div>-Or-</div>
+            <Separator>
+              <SeparatorLine />
+              <SeparatorTextContainer>
+                <SeparatorText>
+                  <span>Or</span>
+                </SeparatorText>
+              </SeparatorTextContainer>
+            </Separator>
 
-            <div>
+            <FooterButton>
               <Button
                 size="2"
                 style="secondary"
                 text={formatMessage(messages.createAnAccount)}
+                fullWidth={true}
                 onClick={this.goToSignUpForm}
-                icon="arrow-back"
               />
-            </div>
-            */}
+            </FooterButton>
           </Form>
         </FormContainer>
       </CSSTransition>
-    );
+    ));
 
-    const signUp = !showSignIn && (
+    const signUp = (show === 'signUp' && (
       <CSSTransition classNames="form" timeout={timeout}>
         <FormContainer>
           <Form>
-            <Button
-              size="2"
-              style="secondary"
-              text={formatMessage(messages.goBack)}
-              onClick={this.goBack}
-              icon="arrow-back"
-            />
-
             <Title>{formatMessage(messages.signUpTitle)}</Title>
 
             <SignUp
@@ -251,7 +324,20 @@ export default class SignInUp extends React.PureComponent<Props, State> {
           </Form>
         </FormContainer>
       </CSSTransition>
-    );
+    ));
+
+    const passwordReset = (show === 'passwordReset' && (
+      <CSSTransition classNames="form" timeout={timeout}>
+        <FormContainer>
+          <PasswordReset
+            intl={this.props.intl}
+            tFunc={this.props.tFunc}
+            locale={this.props.locale}
+            onExit={this.goToSignInForm}
+          />
+        </FormContainer>
+      </CSSTransition>
+    ));
 
     return (
       <Container>
@@ -264,10 +350,16 @@ export default class SignInUp extends React.PureComponent<Props, State> {
             </LogoContainer>
           </Banner>
           <Forms>
-            <TransitionGroup>
+            <GoBackContainer onClick={this.goBack}>
+              <Icon name="arrow-back" />
+              <span><FormattedMessage {...messages.goBack} /></span>
+            </GoBackContainer>
+
+            <StyledTransitionGroup>
               {signIn}
               {signUp}
-            </TransitionGroup>
+              {passwordReset}
+            </StyledTransitionGroup>
           </Forms>
         </PageContainer>
       </Container>

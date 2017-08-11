@@ -44,8 +44,8 @@ const Form = styled.div`
 const Title = styled.h2`
   width: 100%;
   color: #333;
-  font-size: 38px;
-  line-height: 44px;
+  font-size: 36px;
+  line-height: 42px;
   font-weight: 500;
   text-align: center;
   margin-bottom: 40px;
@@ -118,7 +118,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
 
-      broadcast.observe(ButtonBarNamespace).subscribe((value) => {
+      broadcast.observe(namespace).subscribe((value) => {
         if (value === 'submit') {
           this.handleOnSubmit();
         }
