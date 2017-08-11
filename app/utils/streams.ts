@@ -113,15 +113,15 @@ class Streams {
         this.streams[streamId].observer = observer;
 
         if (_.isString(requestedDataId) && !_.isUndefined(this.resources[requestedDataId]) && !forceRemoteFetch) {
-          console.log('retrieved local version:');
-          console.log(this.resources[requestedDataId]);
+          // console.log('retrieved local version:');
+          // console.log(this.resources[requestedDataId]);
           (this.streams[streamId].observer as IObserver<any>).next(this.resources[requestedDataId]);
         } else {
           this.streams[streamId].fetch();
         }
 
         return () => {
-          console.log(`stream for api endpoint ${apiEndpoint} completed`);
+          // console.log(`stream for api endpoint ${apiEndpoint} completed`);
           delete this.streams[streamId];
         };
       })
@@ -172,6 +172,8 @@ class Streams {
         }
 
         this.streams[streamId].dataIds = dataIds;
+
+        // console.log(this.resources);
 
         return data;
       })
