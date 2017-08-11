@@ -2,6 +2,7 @@ import * as React from 'react';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
+import { injectTracks, trackPage } from 'utils/analytics';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import messages from './messages';
@@ -109,11 +110,14 @@ type Props = {
   opened: boolean;
   url?: string;
   close: () => void;
+  openModal: () => void,
+  trackOpenModal: ({}) => void,
+  trackCloseModal: ({}) => void,
 };
 
 type State = {};
 
-export default class Modal extends React.PureComponent<Props, State> {
+class Modal extends React.PureComponent<Props, State> {
 
   componentWillReceiveProps(nextProps) {
     // If modal opens
@@ -123,12 +127,18 @@ export default class Modal extends React.PureComponent<Props, State> {
       if (!document.body.classList.contains('modal-active')) {
         document.body.classList.add('modal-active');
       }
+      // Since we bypass the normal history mechanism and take it into our own hands here,
+      // we exceptionally also need to track the page change manually
+      // Don't try this at home!
+      nextProps.url && trackPage(nextProps.url);
+      this.props.trackOpenModal({extra: {url: nextProps.url}});
     }
 
     // if modal closes
     if (this.props.opened && !nextProps.opened) {
       window.removeEventListener('popstate', this.handlePopstateEvent);
       document.body.classList.remove('modal-active');
+      this.props.trackCloseModal({extra: {url: this.props.url}});
     }
   }
 
@@ -168,3 +178,8 @@ export default class Modal extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default injectTracks({
+  trackOpenModal: {name: 'Modal opened'},
+  trackCloseModal: {name: 'Modal closed'},
+})(Modal);
