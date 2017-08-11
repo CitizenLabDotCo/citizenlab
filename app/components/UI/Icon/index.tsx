@@ -9,6 +9,13 @@ const getIcon = (name: string) => {
         </svg>
       );
     }
+    case 'close2': {
+      return (
+        <svg height="100%" viewBox="0 0 15.414 15.414">
+          <path d="M15.414 2.117L13.297 0l-5.59 5.59L2.117 0 0 2.117l5.59 5.59L0 13.297l2.117 2.117 5.59-5.59 5.59 5.59 2.117-2.117-5.59-5.59"/>
+        </svg>
+      );
+    }
     case 'upload': {
       return (
         <svg height="100%" viewBox="0 0.621 79 53.713">
@@ -50,7 +57,9 @@ const getIcon = (name: string) => {
     }
     case 'plus': {
       return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="51" height="51" viewBox="0 0 51 51"><path d="M0 19.89v11.118h19.631V51h11.634V31.008H51V19.89H31.265V0H19.63v19.89H0z" fill="#d70065"/></svg>
+        <svg height="100%" viewBox="0 0 51 51">
+          <path d="M0 19.89v11.118h19.631V51h11.634V31.008H51V19.89H31.265V0H19.63v19.89H0z" fill="#d70065" />
+        </svg>
       );
     }
     default:

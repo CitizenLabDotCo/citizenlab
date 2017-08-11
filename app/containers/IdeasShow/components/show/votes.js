@@ -19,6 +19,7 @@ import { loadIdeaSagaFork, deleteIdeasVoteSagaFork, createIdeasVoteSagaFork } fr
 const VotesContainer = styled.div`
   display: flex;
   justify-content: flex-start;
+  background: red;
 `;
 
 const Vote = styled.button`
@@ -30,6 +31,7 @@ const Vote = styled.button`
   height: 57px;
   background-color: #f2f2f2;
   border-radius: 6px;
+  cursor: pointer;
 
   &:not(:first-child) {
     margin-left: 8px;
@@ -67,8 +69,8 @@ const VoteDown = Vote.extend`
 const ThumbIcon = styled.svg`
   fill: #6b6b6b;
   height: 25px;
-  cursor: pointer;
   margin: 0 5px;
+
   &:hover {
     fill: #000;
   }

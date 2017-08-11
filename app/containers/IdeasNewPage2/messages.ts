@@ -7,7 +7,7 @@ export default defineMessages({
   },
   signInTitle: {
     id: 'app.containers.IdeasNewPage2.signInTitle',
-    defaultMessage: 'Sign in to publish your idea',
+    defaultMessage: 'Log in to publish your idea',
   },
   signUpTitle: {
     id: 'app.containers.IdeasNewPage2.signUpTitle',
@@ -27,7 +27,7 @@ export default defineMessages({
   },
   titleEmptyError: {
     id: 'app.containers.IdeasNewPage2.titleEmptyError',
-    defaultMessage: 'Please provide a title for your idea',
+    defaultMessage: 'Please provide a title',
   },
   descriptionLabel: {
     id: 'app.containers.IdeasNewPage2.descriptionLabel',
@@ -39,7 +39,7 @@ export default defineMessages({
   },
   descriptionEmptyError: {
     id: 'app.containers.IdeasNewPage2.titleEmptyError',
-    defaultMessage: 'Please provide a description for your idea',
+    defaultMessage: 'Please provide a description',
   },
   topicsLabel: {
     id: 'app.containers.IdeasNewPage2.topicsLabel',
@@ -67,22 +67,22 @@ export default defineMessages({
   },
   imageUploadLabel: {
     id: 'app.containers.IdeasNewPage2.imagesLabel',
-    defaultMessage: 'Image (optional, max. 5 Mb)',
+    defaultMessage: 'Image (optional)',
   },
   imageUploadPlaceholder: {
     id: 'app.containers.IdeasNewPage2.uploadPlaceholder',
-    defaultMessage: 'Optionally upload an image for your idea',
+    defaultMessage: 'Optionally upload an image that represents your idea',
   },
   submit: {
     id: 'app.containers.IdeasNewPage2.submit',
     defaultMessage: 'Submit idea',
   },
-  formError: {
-    id: 'app.containers.IdeasNewPage2.formError',
-    defaultMessage: 'Oops, something went wrong! Errors are highlighted.',
+  submitError: {
+    id: 'app.containers.IdeasNewPage2.submitError',
+    defaultMessage: 'Something went wrong. Please try again.',
   },
   goBack: {
     id: 'app.containers.IdeasNewPage2.goBack',
-    defaultMessage: 'Idea',
+    defaultMessage: 'Go back',
   },
 });

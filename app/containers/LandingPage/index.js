@@ -330,7 +330,7 @@ class LandingPage extends React.Component {
 
     this.state = {
       modalOpened: false,
-      pageUrl: null,
+      // pageUrl: null,
       modalUrl: null,
       selectedIdeaId: null,
     };
@@ -344,7 +344,7 @@ class LandingPage extends React.Component {
   openIdea = (id) => () => {
     this.setState({
       modalOpened: true,
-      pageUrl: window.location.href,
+      // pageUrl: window.location.href,
       modalUrl: `${window.location.protocol}//${window.location.host}/ideas/${id}`,
       selectedIdeaId: id,
     });
@@ -357,7 +357,7 @@ class LandingPage extends React.Component {
   closeModal = () => {
     this.setState({
       modalOpened: false,
-      pageUrl: null,
+      // pageUrl: null,
       modalUrl: null,
       selectedIdeaId: null,
     });
@@ -367,6 +367,7 @@ class LandingPage extends React.Component {
     let ideasList = null;
     let projectsList = null;
     const { ideas, loadingIdeas, loadIdeasError, projects, loadingProjects, loadProjectsError, location } = this.props;
+    const { modalOpened, selectedIdeaId } = this.state;
 
     if (loadingIdeas) {
       ideasList = <div>Loading...</div>;
@@ -465,8 +466,12 @@ class LandingPage extends React.Component {
           </Footer>
         </Container>
 
-        <Modal opened={this.state.modalOpened} close={this.closeModal} parentUrl={this.state.pageUrl} url={this.state.modalUrl}>
-          <IdeasShow location={location} id={this.state.selectedIdeaId} />
+        <Modal
+          opened={modalOpened}
+          url={`${window.location.protocol}//${window.location.host}/ideas/${selectedIdeaId}`}
+          close={this.closeModal}
+        >
+          <IdeasShow location={location} id={selectedIdeaId} />
         </Modal>
       </div>
     );

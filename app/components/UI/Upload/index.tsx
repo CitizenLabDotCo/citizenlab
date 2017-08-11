@@ -19,11 +19,11 @@ const UploadIcon = styled.div`
   }
 `;
 
-const UploadMessage = styled.span`
-  max-width: 90%;
+const UploadMessage: any = styled.span`
+  max-width: 80%;
   color: #aaa;
   font-size: 17px;
-  line-height: 20px;
+  line-height: 24px;
   font-weight: 400;
   text-align: center;
   margin-bottom: 5px;
@@ -31,7 +31,7 @@ const UploadMessage = styled.span`
 
 const StyledDropzone = styled(Dropzone)`
   width: 100%;
-  min-height: 174px;
+  min-height: 140px;
   display: flex;
   flex-wrap: wrap;
   border-radius: 5px;
@@ -40,22 +40,25 @@ const StyledDropzone = styled(Dropzone)`
   border-style: dashed;
   padding: 20px;
   padding-bottom: 0px;
-  cursor: pointer;
   position: relative;
   background: #fff;
 
   ${media.smallPhone`
     flex-direction: column;
   `}
-
-  &:hover {
-    border-color: #000;
-  }
 `;
 
 const StyledDropzoneWrapper: any = styled.div`
-  &:hover,
-  &.dropzoneActive.dropzoneActive {
+  &:not(.disabled) ${StyledDropzone} {
+    cursor: pointer;
+  }
+
+  &.disabled ${StyledDropzone} {
+    cursor: default;
+  }
+
+  &:not(.disabled):hover,
+  &:not(.disabled).dropzoneActive {
     ${StyledDropzone} {
       border-color: #000;
     }
@@ -118,44 +121,63 @@ const UploadedItem = styled.div`
 `;
 
 const RemoveUploadedItem = styled.div`
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
-  top: -11px;
-  right: -11px;
+  top: -16px;
+  right: -16px;
   z-index: 1;
-  padding: 2px;
   border-radius: 50%;
   background: #fff;
+`;
+
+const RemoveUploadedItemInner = styled.div`
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #ddd;
   cursor: pointer;
 
-  &:hover svg {
-    fill: ${props => darken(0.2, (props.theme.color.main || '#000'))};
+  &:hover {
+    background: #ccc;
   }
 
   svg {
-    fill: ${props => props.theme.color.main || '#777'};
+    height: 10px;
+    fill: #333;
   }
 `;
 
+export interface ExtendedImageFile extends Dropzone.ImageFile {
+  base64: string;
+}
+
 type Props = {
   intl: ReactIntl.InjectedIntl;
-  items: Dropzone.ImageFile[];
+  items: Dropzone.ImageFile[] | null;
   accept?: string | null | undefined;
   maxSize?: number;
   maxItems?: number;
   placeholder?: string | null | undefined;
+  disablePreview?: boolean;
+  destroyPreview?: boolean;
   onAdd: (arg: Dropzone.ImageFile) => void;
   onRemove: (arg: Dropzone.ImageFile) => void;
-  className?: string;
 };
 
 type State = {
   errorMessage: string | null;
   dropzoneActive: boolean;
+  disabled: boolean;
 };
 
-export class Upload extends React.PureComponent<Props, State> {
+export default class Upload extends React.PureComponent<Props, State> {
   private emptyArray: never[];
 
   public static defaultProps: Partial<Props> = {
@@ -171,34 +193,51 @@ export class Upload extends React.PureComponent<Props, State> {
     this.emptyArray = [];
     this.state = {
       errorMessage: null,
-      dropzoneActive: false
+      dropzoneActive: false,
+      disabled: false
     };
   }
 
   componentWillUnmount() {
-    _(this.props.items).filter(item => item.preview).forEach(item => this.destroyPreview(item));
+    _(this.props.items).forEach(item => this.destroyPreview(item));
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    const { items, maxItems } = this.props;
+
+    if (maxItems && _.size(nextProps.items) >= maxItems) {
+      this.setState({ disabled: true });
+    } else {
+      this.setState({ disabled: false });
+    }
   }
 
   onDrop = (items: Dropzone.ImageFile[]) => {
-    const maxItemsCount = this.props.maxItems || 1;
+    const { formatMessage } = this.props.intl;
+    const maxItemsCount = this.props.maxItems;
     const oldItemsCount = _.size(this.props.items);
     const newItemsCount = _.size(items);
-    const remainingItemsCount = maxItemsCount - oldItemsCount;
+    const remainingItemsCount = (maxItemsCount ? maxItemsCount - oldItemsCount : null);
 
-    if (maxItemsCount && newItemsCount > remainingItemsCount) {
-      // items.slice(0, remainingItemsCount).forEach(item => this.props.onAdd(item));
-      // console.log('too many items');
-      const errorMessage = this.props.intl.formatMessage(messages.errorMaxItemCountExceeded, { maxItemsCount });
-      this.setState({ errorMessage });
-      setTimeout(() => this.setState({ errorMessage: null, dropzoneActive: false }), 6000);
+    this.setState({ errorMessage: null, dropzoneActive: false });
+
+    if (!this.state.disabled) {
+      if (maxItemsCount && remainingItemsCount && newItemsCount > remainingItemsCount) {
+        const errorMessage = (maxItemsCount === 1 ? formatMessage(messages.onlyOneImage) : formatMessage(messages.onlyXImages, { maxItemsCount }));
+        this.setState({ errorMessage });
+        setTimeout(() => this.setState({ errorMessage: null }), 6000);
+      } else {
+        items.forEach(item => this.props.onAdd(item));
+      }
     } else {
-      this.setState({ errorMessage: null, dropzoneActive: false });
-      items.forEach(item => this.props.onAdd(item));
+      const errorMessage = formatMessage(messages.limitReached);
+      this.setState({ errorMessage });
+      setTimeout(() => this.setState({ errorMessage: null }), 6000);
     }
   }
 
   onDragEnter = () => {
-    this.setState({ dropzoneActive: true });
+    this.setState(state => ({ dropzoneActive: (!state.disabled && true) || false }));
   }
 
   onDragLeave = () => {
@@ -224,50 +263,65 @@ export class Upload extends React.PureComponent<Props, State> {
   }
 
   destroyPreview(item: Dropzone.ImageFile) {
-    if (item && item.preview) {
+    if (this.props.destroyPreview && item && item.preview) {
       window.URL.revokeObjectURL(item.preview);
     }
   }
 
   render() {
-    let { items, accept, placeholder } = this.props;
-    const { maxSize, maxItems, className } = this.props;
-    const { errorMessage, dropzoneActive } = this.state;
+    let { items, accept, placeholder, disablePreview } = this.props;
+    const { maxSize, maxItems } = this.props;
+    const { errorMessage, dropzoneActive, disabled } = this.state;
 
     items = (items || this.emptyArray);
     accept = (accept || '*');
     placeholder = (placeholder || 'Drop your file here');
+    disablePreview = (_.isBoolean(disablePreview) ? disablePreview : false);
+
+    const emptyDropzone = (!items || items.length < 1) && (
+      <UploadMessageContainer>
+        <UploadIcon><Icon name="upload" /></UploadIcon>
+        <UploadMessage dangerouslySetInnerHTML={{ __html: placeholder }} />
+      </UploadMessageContainer>
+    );
+
+    const filledDropzone = (items && items.length > 0) && (
+      items.map((item, index) => {
+        const _onClick = (event) => this.removeItem(item, event);
+        return (
+          <UploadedItem key={index} style={{ backgroundImage: `url(${item.preview})` }}>
+            <RemoveUploadedItem onClick={_onClick}>
+              <RemoveUploadedItemInner>
+                {/* <IconWrapper> */}
+                  <Icon name="close2" />
+                {/* </IconWrapper> */}
+              </RemoveUploadedItemInner>
+            </RemoveUploadedItem>
+          </UploadedItem>
+        );
+      })
+    );
 
     return (
       <div>
-        <StyledDropzoneWrapper className={dropzoneActive ? `${className} dropzoneActive` : className}>
+        <StyledDropzoneWrapper 
+          className={`
+            ${dropzoneActive ? 'dropzoneActive' : ''} 
+            ${disabled ? 'disabled' : ''}
+          `}
+        >
           <StyledDropzone
+            disableClick={disabled}
             accept={accept}
             maxSize={maxSize}
+            disablePreview={disablePreview}
             onDrop={this.onDrop}
             onDragEnter={this.onDragEnter}
             onDragLeave={this.onDragLeave}
             onDropRejected={this.onDropRejected}
           >
-            { !items || items.length < 1
-              ? (
-                <UploadMessageContainer>
-                  <UploadIcon><Icon name="upload" /></UploadIcon>
-                  <UploadMessage>{placeholder}</UploadMessage>
-                </UploadMessageContainer>
-              )
-              : (items.map((item, index) => {
-                  const _onClick = (event) => this.removeItem(item, event);
-
-                  return (
-                    <UploadedItem key={index} style={{ backgroundImage: `url(${item.preview})` }}>
-                      <RemoveUploadedItem onClick={_onClick}>
-                        <Icon name="close" />
-                      </RemoveUploadedItem>
-                    </UploadedItem>
-                  );
-                }))
-            }
+            {emptyDropzone}
+            {filledDropzone}
           </StyledDropzone>
         </StyledDropzoneWrapper>
         <Error text={errorMessage} />
@@ -275,5 +329,3 @@ export class Upload extends React.PureComponent<Props, State> {
     );
   }
 }
-
-export default injectIntl(Upload);

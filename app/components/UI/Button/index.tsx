@@ -43,6 +43,11 @@ const StyledButton: any = styled.button`
     cursor: not-allowed;
   }
 
+  &.fullWidth {
+    width: 100%;
+    flex: 1;
+  }
+
   &.primary {
     &:not(.disabled) {
       background: ${(props: any) => props.theme.color.main || '#e0e0e0'};
@@ -75,7 +80,7 @@ const StyledButton: any = styled.button`
 
   &.secondary {
     &:not(.disabled) {
-      background: #eae9e9;
+      background: #e2e1e1;
 
       ${ButtonText} {
         color: #676767;
@@ -107,13 +112,13 @@ const StyledButton: any = styled.button`
     padding: ${(props: any) => {
       switch (props.size) {
         case '2':
-          return '9px 15px';
-        case '3':
-          return '11px 16px';
-        case '4':
-          return '12px 17px';
-        default:
           return '9px 14px';
+        case '3':
+          return '11px 15px';
+        case '4':
+          return '12px 16px';
+        default:
+          return '7px 12px';
       }
     }};
 
@@ -122,11 +127,11 @@ const StyledButton: any = styled.button`
       font-size: ${(props: any) => {
         switch (props.size) {
           case '2':
-            return '17px';
-          case '3':
             return '18px';
+          case '3':
+            return '20px';
           case '4':
-            return '19px';
+            return '22px';
           default:
             return '16px';
         }
@@ -156,6 +161,7 @@ type Props = {
   icon?: string;
   loading?: boolean;
   disabled?: boolean;
+  fullWidth?: boolean;
   onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
   className?: string;
 };
@@ -174,12 +180,13 @@ export default class Button extends React.PureComponent<Props, State> {
 
   render() {
     const { text, className, icon, children } = this.props;
-    let { size, style, loading, disabled } = this.props;
+    let { size, style, loading, disabled, fullWidth } = this.props;
 
     size = (size || '2');
     style = (style || 'primary');
     loading = (_.isBoolean(loading) ? loading : false);
     disabled = (_.isBoolean(disabled) ? disabled : false);
+    fullWidth = (_.isBoolean(fullWidth) ? fullWidth : false);
 
     return (
       <StyledButton
@@ -187,7 +194,7 @@ export default class Button extends React.PureComponent<Props, State> {
         loading={loading}
         onClick={this.handleOnClick}
         disabled={disabled}
-        className={`Button ${disabled && 'disabled'} ${style} ${className}`}
+        className={`Button ${disabled && 'disabled'} ${fullWidth && 'fullWidth'} ${style} ${className}`}
       >
         <ButtonContent>
           {icon && <IconWrapper><Icon name={icon} /></IconWrapper>}
