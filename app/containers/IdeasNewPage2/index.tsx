@@ -258,7 +258,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
 
     try {
       const authUser = await getAuthUser();
-      const idea = await this.postIdeaAndIdeaImage(authUser.data.id);
+      await this.postIdeaAndIdeaImage(authUser.data.id);
       this.setProcessingTo(false);
       browserHistory.push('ideas');
     } catch (error) {

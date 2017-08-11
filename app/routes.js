@@ -139,25 +139,6 @@ export default function createRoutes(store) {
     },
     {
       path: '/ideas/new',
-      name: 'IdeasNewPage',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/IdeasNewPage/reducer'),
-          import('containers/IdeasNewPage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([reducer, component]) => {
-          injectReducer('ideasNewPageReducer', reducer.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    },
-    {
-      path: '/ideas/new2',
       name: 'IdeasNewPage2',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
