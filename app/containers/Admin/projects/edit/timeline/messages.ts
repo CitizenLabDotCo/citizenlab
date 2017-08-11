@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.descriptionLabel',
     defaultMessage: 'Description',
   },
+  datesLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.datesLabel',
+    defaultMessage: 'Dates',
+  },
   saveLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.saveLabel',
     defaultMessage: 'Save',

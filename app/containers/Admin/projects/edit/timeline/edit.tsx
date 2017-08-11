@@ -8,6 +8,7 @@ import { createStructuredSelector } from 'reselect';
 import { makeSelectSetting } from 'utils/tenant/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import messages from './messages';
+import * as moment from 'moment';
 
 // Services
 import { observeProject, IProject, IProjectData } from 'services/projects';
@@ -21,6 +22,8 @@ import Input from 'components/UI/Input';
 import TextArea from 'components/UI/TextArea';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import { DateRangePicker } from 'react-dates';
+import 'react-dates/lib/css/_datepicker.css';
 
 // Component typing
 type Props = {
@@ -32,7 +35,7 @@ type Props = {
   tFunc: Function,
 };
 
-type State = {
+interface State {
   project: IProjectData | null;
   phase: IPhaseData | null;
   attributeDiff: IUpdatedPhase;
@@ -40,7 +43,8 @@ type State = {
     [key: string]: string[]
   };
   saving: boolean;
-};
+  focusedInput: 'START_DATE' | 'END_DATE' | null;
+}
 
 class AdminProjectTimelineEdit extends React.Component<Props, State> {
   project$: IStream<IProject>;
@@ -58,6 +62,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
         description: [],
       },
       saving: false,
+      focusedInput: null,
     };
     console.log(props.params.slug);
     this.project$ = observeProject(props.params.slug);
@@ -89,6 +94,21 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
         attributeDiff: { ...this.state.attributeDiff, [name]: newValue },
       });
     }
+  }
+
+  handleDateUpdate = ({ startDate, endDate }) => {
+    const newAttributesDiff = this.state.attributeDiff;
+    newAttributesDiff.start_at = startDate ? startDate.format('YYYY-MM-DD') : '';
+    newAttributesDiff.end_at = endDate ? endDate.format('YYYY-MM-DD') : '';
+    this.setState({ attributeDiff: newAttributesDiff });
+  }
+
+  handleDateFocusChange = (focusedInput) => {
+    this.setState({ focusedInput });
+  }
+
+  isOutsideRange = (day) => {
+    return false;
   }
 
   handleOnSubmit = (event) => {
@@ -125,6 +145,18 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
             onChange={this.createMultilocUpdater('title_multiloc')}
           />
           <Error text={this.state.errors.title.join(', ')} />
+
+          <Label><FormattedMessage {...messages.datesLabel} /></Label>
+          <DateRangePicker
+            startDate={moment(phaseAttrs.start_at)} // momentPropTypes.momentObj or null,
+            endDate={moment(phaseAttrs.end_at)} // momentPropTypes.momentObj or null,
+            onDatesChange={this.handleDateUpdate} // PropTypes.func.isRequired,
+            focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+            onFocusChange={this.handleDateFocusChange} // PropTypes.func.isRequired,
+            isOutsideRange={this.isOutsideRange}
+            firstDayOfWeek={1}
+            displayFormat="DD/MM/YYYY"
+          />
 
           <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
             <TextArea
