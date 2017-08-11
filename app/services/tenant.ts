@@ -4,7 +4,7 @@ import request from 'utils/request';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 
-const apiEndpoint = `${API_PATH}/tenants/`;
+const apiEndpoint = `${API_PATH}/tenants`;
 
 export interface ITenantData {
   id: string;

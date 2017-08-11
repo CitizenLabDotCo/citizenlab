@@ -5,18 +5,18 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import * as _ from 'lodash';
 import styled from 'styled-components';
 
-interface IStyledErrorMessageInner {
+interface IStyledSuccessMessageInner {
   showBackground: boolean;
 }
 
-interface IStyledErrorMessage {
+interface IStyledSuccessMessage {
   size: string;
   marginTop: string;
   marginBottom: string;
 }
 
-const ErrorMessageText = styled.div`
-  color: #f93e36;
+const SuccessMessageText = styled.div`
+  color: #40af65;
   font-weight: 400;
   line-height: 22px;
 `;
@@ -25,28 +25,27 @@ const IconWrapper = styled.div`
   margin-right: 8px;
 
   svg {
-    fill: #f93e36;
+    fill: #40af65;
   }
 `;
 
-const StyledErrorMessageInner = styled.div`
+const StyledSuccessMessageInner = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   border-radius: 5px;
-  background: rgba(252, 60, 45, 0.1);
-  background: ${(props: IStyledErrorMessageInner) => (props.showBackground ? 'rgba(252, 60, 45, 0.1)' : 'transparent')};
+  background: ${(props: IStyledSuccessMessageInner) => (props.showBackground ? '#3fb789' : 'transparent')};
 `;
 
-const StyledErrorMessage: any = styled.div`
+const StyledSuccessMessage: any = styled.div`
   position: relative;
   overflow: hidden;
   will-change: auto;
 
-  ${StyledErrorMessageInner} {
-    margin-top: ${(props: IStyledErrorMessage) => props.marginTop};
-    margin-bottom: ${(props: IStyledErrorMessage) => props.marginBottom};
-    padding: ${(props: IStyledErrorMessage) => {
+  ${StyledSuccessMessageInner} {
+    margin-top: ${(props: IStyledSuccessMessage) => props.marginTop};
+    margin-bottom: ${(props: IStyledSuccessMessage) => props.marginBottom};
+    padding: ${(props: IStyledSuccessMessage) => {
       switch (props.size) {
         case '2':
           return '11px';
@@ -60,8 +59,8 @@ const StyledErrorMessage: any = styled.div`
     }};
   }
 
-  ${ErrorMessageText} {
-    font-size: ${(props: IStyledErrorMessage) => {
+  ${SuccessMessageText} {
+    font-size: ${(props: IStyledSuccessMessage) => {
       switch (props.size) {
         case '2':
           return '17px';
@@ -76,7 +75,7 @@ const StyledErrorMessage: any = styled.div`
   }
 
   ${IconWrapper} {
-    height: ${(props: IStyledErrorMessage) => {
+    height: ${(props: IStyledSuccessMessage) => {
       switch (props.size) {
         case '2':
           return '23px';
@@ -90,12 +89,12 @@ const StyledErrorMessage: any = styled.div`
     }};
   }
 
-  &.error-enter {
+  &.success-enter {
     max-height: 0px;
     opacity: 0.01;
     will-change: opacity;
 
-    &.error-enter-active {
+    &.success-enter-active {
       max-height: 60px;
       opacity: 1;
       transition: max-height 400ms cubic-bezier(0.165, 0.84, 0.44, 1),
@@ -103,12 +102,12 @@ const StyledErrorMessage: any = styled.div`
     }
   }
 
-  &.error-exit {
+  &.success-exit {
     max-height: 100px;
     opacity: 1;
     will-change: opacity;
 
-    &.error-exit-active {
+    &.success-exit-active {
       max-height: 0px;
       opacity: 0.01;
       transition: max-height 350ms cubic-bezier(0.19, 1, 0.22, 1),
@@ -129,7 +128,7 @@ type Props = {
 
 type State = {};
 
-export default class Error extends React.PureComponent<Props, State> {
+export default class Success extends React.PureComponent<Props, State> {
   render() {
     const { text } = this.props;
     let { size, marginTop, marginBottom, showIcon, showBackground, className } = this.props;
@@ -142,23 +141,23 @@ export default class Error extends React.PureComponent<Props, State> {
     showBackground = (_.isBoolean(showBackground) ? showBackground : true);
     className = (className || '');
 
-    const errorElement = text && (
-      <CSSTransition classNames="error" timeout={timeout}>
-        <StyledErrorMessage size={size} marginTop={marginTop} marginBottom={marginBottom}>
-          <StyledErrorMessageInner showBackground={showBackground}>
-            {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
-            <ErrorMessageText>
+    const successElement = text && (
+      <CSSTransition classNames="success" timeout={timeout}>
+        <StyledSuccessMessage size={size} marginTop={marginTop} marginBottom={marginBottom}>
+          <StyledSuccessMessageInner showBackground={showBackground}>
+            {showIcon && <IconWrapper><Icon name="checkmark" /></IconWrapper>}
+            <SuccessMessageText>
               {text}
-            </ErrorMessageText>
-          </StyledErrorMessageInner>
-        </StyledErrorMessage>
+            </SuccessMessageText>
+          </StyledSuccessMessageInner>
+        </StyledSuccessMessage>
       </CSSTransition>
     );
 
     return (
       <div>
         <TransitionGroup>
-          {errorElement}
+          {successElement}
         </TransitionGroup>
       </div>
     );
