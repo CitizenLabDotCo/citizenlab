@@ -39,7 +39,6 @@ export interface IStream<T> {
   fetch: fetchFn<T>;
   observer: IObserver<T> | null;
   observable: IObservable<T>;
-  // data: T | null;
   dataIds: { [key: string]: true };
 }
 
@@ -114,6 +113,8 @@ class Streams {
         this.streams[streamId].observer = observer;
 
         if (_.isString(requestedDataId) && !_.isUndefined(this.resources[requestedDataId]) && !forceRemoteFetch) {
+          console.log('retrieved local version:');
+          console.log(this.resources[requestedDataId]);
           (this.streams[streamId].observer as IObserver<any>).next(this.resources[requestedDataId]);
         } else {
           this.streams[streamId].fetch();
@@ -170,11 +171,7 @@ class Streams {
           }
         }
 
-        // this.streams[streamId].data = data;
         this.streams[streamId].dataIds = dataIds;
-
-        console.log(this.streams);
-        console.log(this.resources);
 
         return data;
       })

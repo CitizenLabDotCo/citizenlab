@@ -114,7 +114,7 @@ export function addIdea(
   projectId: string | null,
   locationGeoJSON: {} | null,
   locationDescription: string | null,
-): Promise<IIdea> {
+) {
   const httpMethod = { method: 'POST' };
   const bodyData = {
     idea: {
@@ -130,7 +130,7 @@ export function addIdea(
     }
   };
 
-  return request<any>(`${apiEndpoint}/${userId}`, bodyData, httpMethod, null).catch(() => {
+  return request<IIdea>(`${apiEndpoint}`, bodyData, httpMethod, null).catch(() => {
     throw new Error(`error for addIdea() of service Ideas`);
   });
 }

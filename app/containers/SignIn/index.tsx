@@ -8,8 +8,10 @@ import Error from 'components/UI/Error';
 import messages from './messages';
 import { FormattedMessage } from 'react-intl';
 import { stateStream, IStateStream } from 'services/state';
-import { signIn } from 'services/auth';
+import { signIn, getAuthUser } from 'services/auth';
 import { isValidEmail } from 'utils/validate';
+import { connect } from 'react-redux';
+import { LOAD_CURRENT_USER_SUCCESS } from 'utils/auth/constants';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -25,7 +27,7 @@ const Form = styled.div`
 
 const FormElement = styled.div`
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -48,6 +50,7 @@ const ForgotPassword = styled.div`
 `;
 
 type Props = {
+  dispatch?: (arg: any) => any;
   intl: ReactIntl.InjectedIntl;
   tFunc: Function;
   locale: string;
@@ -66,6 +69,7 @@ type State = {
 
 export const namespace = 'SignIn/index';
 
+@connect()
 export default class SignIn extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
   subscriptions: Rx.Subscription[];
@@ -94,6 +98,7 @@ export default class SignIn extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
+    console.log(this.props);
     this.emailInputElement && this.emailInputElement.focus();
   }
 
@@ -134,7 +139,9 @@ export default class SignIn extends React.PureComponent<Props, State> {
     if (this.validate(email, password) && email && password) {
       try {
         this.state$.next({ processing: true });
-        await signIn(email, password);
+        const jwt = await signIn(email, password);
+        const currentUser = await getAuthUser();
+        _.isFunction(this.props.dispatch) && this.props.dispatch({ type: LOAD_CURRENT_USER_SUCCESS, payload: currentUser });
         this.state$.next({ processing: false });
         onSignedIn();
       } catch (error) {

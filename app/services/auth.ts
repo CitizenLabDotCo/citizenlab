@@ -6,6 +6,10 @@ import * as _ from 'lodash';
 import request from 'utils/request';
 import streams from 'utils/streams';
 
+export interface IUserToken {
+  jwt: string;
+}
+
 export function signIn(email: string, password: string) {
   const bodyData = {
     auth: { email, password }
@@ -15,9 +19,9 @@ export function signIn(email: string, password: string) {
     method: 'POST',
   };
 
-  return request<any>(`${API_PATH}/user_token`, bodyData, httpMethod, null).then((data) => {
-    data && data.jwt && setJwt(data.jwt);
-    return data;
+  return request<IUserToken>(`${API_PATH}/user_token`, bodyData, httpMethod, null).then((data) => {
+    data && setJwt(data.jwt);
+    return data.jwt;
   }).catch((error) => {
     throw error;
   });
@@ -59,8 +63,8 @@ export function observeCurrentUser() {
   return streams.create<IUser>({ apiEndpoint: `${API_PATH}/users/me` });
 }
 
-export function getAuthUser(): Promise<IUser> {
-  return request(`${API_PATH}/users/me`, null, null, null).then((response: IUser) => {
+export function getAuthUser() {
+  return request<IUser>(`${API_PATH}/users/me`, null, null, null).then((response: IUser) => {
     if (response && _.has(response, 'data.id')) {
       return response;
     } else {
