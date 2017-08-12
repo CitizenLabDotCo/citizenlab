@@ -18,7 +18,7 @@ import VoteControl from 'components/VoteControl';
 const IdeaContainer = styled.div`
   width: 300px;
   height: 400px;
-  margin-bottom: 20px;
+  margin: 5px 5px 26px 5px;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
@@ -31,15 +31,10 @@ const IdeaContainer = styled.div`
 
   ${media.phone`
     width: 100%;
-    margin-bottom: 20px;
   `}
 
   ${media.tablet`
     width: calc(50% - 10px);
-
-    &:nth-child(even) {
-      margin-left: 20px;
-    }
   `}
 
   &:hover {
@@ -82,6 +77,8 @@ const CommentCount = styled.span`
 
 const IdeaImage = styled.img`
   width: 100%;
+  height: 168px;
+  object-fit:cover;
   border-radius: 5px 5px 0 0;
 `;
 

@@ -29,7 +29,6 @@ const IdeasList = styled.div`
   justify-content: space-between;
   margin-top: 10px !important;
   ${media.tablet`
-    flex-wrap: wrap;
   `}
 
   ${media.phone`
