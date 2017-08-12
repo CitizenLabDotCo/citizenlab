@@ -81,6 +81,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
                 { name: 'description', content: formatMessage(messages.helmetDescription, { tenantName: currentTenant.attributes.name }) },
               ]}
             />
+
             <Navbar currentTenant={currentTenant} location={this.props.location.pathname} />
 
             <Loader
