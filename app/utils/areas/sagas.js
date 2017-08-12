@@ -3,7 +3,7 @@ import { takeLatest } from 'redux-saga';
 import { areasLoaded, loadAreasError } from './actions';
 import { LOAD_AREAS_REQUEST } from './constants';
 import { fetchAreas } from 'api';
-import { mergeJsonApiResources } from '../../utils/resources/actions';
+import { mergeJsonApiResources } from 'utils/resources/actions';
 
 function* getAreas() {
   try {

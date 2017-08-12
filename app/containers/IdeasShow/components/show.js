@@ -8,12 +8,12 @@ import styled from 'styled-components';
 // components
 import ImageCarousel from 'components/ImageCarousel';
 import Author from './show/Author';
-import Votes from './show/votes';
 import Status from './show/Status';
 import CommentsLine from './show/CommentsLine';
 import SharingLine from './show/SharingLine';
 import Comments from './comments';
 import T from 'containers/T';
+import VoteControl from 'components/VoteControl';
 
 // store
 import { preprocess } from 'utils';
@@ -125,7 +125,7 @@ class Show extends React.PureComponent {
               <VoteCTA>
                 <FormattedMessage {...messages.voteCTA} />
               </VoteCTA>
-              <Votes ideaId={id} voteId={voteId} />
+              <VoteControl ideaId={id} size="large" />
               <Status statusId={statusId} />
               <CommentsLine count={comments_count}/>
               <SharingLine location={location} image={images[0] && images[0].attributes.versions.medium} />
