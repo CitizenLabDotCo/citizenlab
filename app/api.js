@@ -167,6 +167,24 @@ export function submitIdeaVote(ideaId, mode) {
   });
 }
 
+export function upvoteIdea(ideaId) {
+  return request(`${API_PATH}/ideas/${ideaId}/votes/up`, {}, {
+    method: 'POST',
+  });
+}
+
+export function downvoteIdea(ideaId) {
+  return request(`${API_PATH}/ideas/${ideaId}/votes/down`, {}, {
+    method: 'POST',
+  });
+}
+
+export function deleteIdeaVote(voteId) {
+  return request(`${API_PATH}/votes/${voteId}`, {}, {
+    method: 'DELETE',
+  });
+}
+
 export function fetchUsersReport(queryParameters) {
   return request(`${API_PATH}/stats/users_by_time`, null, null, queryParameters);
 }

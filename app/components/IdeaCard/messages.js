@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.components.IdeaCard.author',
     defaultMessage: 'Author',
   },
+  byAuthorLink: {
+    id: 'app.components.IdeaCard.byAuthorLink',
+    defaultMessage: 'by {authorLink}',
+  },
 });

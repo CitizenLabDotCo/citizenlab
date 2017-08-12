@@ -1,31 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ImPropTypes from 'react-immutable-proptypes';
+import { FormattedMessage, FormattedRelative } from 'react-intl';
 
 // components
-import { Popup } from 'semantic-ui-react';
 import T from 'containers/T';
-
+import { Link } from 'react-router';
+import Icon from 'components/UI/Icon';
 // style
-import styled from 'styled-components';
-import moment from 'moment';
+import styled, { keyframes } from 'styled-components';
 import { media } from 'utils/styleUtils';
+import placeholder from './placeholder.png';
+
+import messages from '../messages';
+import VoteControl from 'components/VoteControl';
 
 const IdeaContainer = styled.div`
-  width: calc(50% - 10px);
-  height: 220px;
-  padding: 20px;
+  width: 300px;
+  height: 400px;
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  border-radius: 8px;
+  border-radius: 5px;
   background: #fff;
   cursor: pointer;
-  /* border: solid 1px #e0e0e0; */
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transition: all 250ms ease-out;
+  position: relative;
 
   ${media.phone`
     width: 100%;
@@ -41,213 +43,120 @@ const IdeaContainer = styled.div`
   `}
 
   &:hover {
-    /* box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.15); */
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.12), 0 15px 45px 0 rgba(0,0,0,0.12);
-    transform: scale(1.01);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
   }
+`;
+
+const fadeIn = keyframes`
+  0% { display:none ; opacity: 0; }
+  1% { display: flex ; opacity: 0; }
+  100% { display: flex ; opacity: 1; }
+`;
+
+const IdeaHoverBar = styled.div`
+  background: rgba(0,0,0,0.65);
+  height: 60px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 5px 5px 0 0;
+
+  display: none;
+  opacity: 0;
+
+  ${IdeaContainer}:hover & {
+    animation: ${fadeIn} 0.15s ease-in-out;
+    display: flex;
+    opacity: 1;
+  }
+`;
+
+const CommentCount = styled.span`
+  padding-left: 6px;
+`;
+
+const IdeaImage = styled.img`
+  width: 100%;
+  border-radius: 5px 5px 0 0;
 `;
 
 const IdeaContent = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const IdeaTitle = styled.div`
-  color: #444;
-  font-size: 23px;
-  font-weight: 300;
-  line-height: 27px;
-`;
-
-const IdeaMeta = styled.div`
-  color: #999;
-  font-size: 16px;
-  font-weight: 300;
-  margin-top: 12px;
+  flex-grow: 1;
+  padding: 20px;
 `;
 
 const IdeaFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 2px;
+  padding: 20px;
 `;
 
-const VotesContainer = styled.div`
-  display: flex;
+const IdeaTitle = styled.div`
+  color: #222222;
+  font-weight: bold;
+  // Multi-line wrap, adapted from https://codepen.io/martinwolf/pen/qlFdp
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-width: 400px;
+  height: ${(props) => props.lines * props.lineHeight * props.fontSize}px; /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: ${(props) => props.fontSize}px;
+  line-height: ${(props) => props.lineHeight};
+  -webkit-line-clamp: ${(props) => props.lines};
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
-const Vote = styled.div`
-  display: flex;
-  align-items: center;
-
-  &:not(:first-child) {
-    margin-left: 20px;
-  }
-`;
-
-const VoteUp = Vote.extend`
-  &:hover svg {
-    fill: #009900;
-  }
-
-  &:hover div {
-    color: #009900;
-  }
-
-  & svg {
-    fill: ${(props) => props.voted ? '#009900' : '#999'};
-  }
-
-  & div {
-    color: ${(props) => props.voted ? '#009900' : '#999'};
-  }
-`;
-
-const VoteDown = Vote.extend`
-  &:hover svg {
-    fill: #f30000;
-  }
-
-  &:hover div {
-    color: #f30000;
-  }
-`;
-
-const ThumbIcon = styled.svg`
-  fill: #aaa;
-  height: 26px;
-  cursor: pointer;
-  display: inline-block;
-  align-self: flex-end;
-
-  &:hover {
-    fill: #000;
-  }
-`;
-
-const ThumbUpIcon = ThumbIcon.extend``;
-
-const ThumbDownIcon = ThumbIcon.extend``;
-
-const VoteCount = styled.div`
-  color: #aaa;
-  font-weight: 300;
+const IdeaAuthor = styled.div`
+  color: #6B6B6B;
   font-size: 16px;
-  margin-top: 10px;
-  margin-left: 4px;
+  font-weight: 300;
+  margin-top: 12px;
+  a {
+    color: #6B6B6B;
+    &:hover {
+      color: #222222;
+    }
+  }
 `;
-
-// const CommentContainer = styled.div`
-//   display: flex;
-//   position: relative;
-
-//   &:hover svg {
-//     fill: #000;
-//   }
-
-//   &:hover div {
-//     color: #000;
-//   }
-// `;
-
-// const CommentIcon = styled.svg`
-//   fill: #aaa;
-//   height: 30px;
-//   cursor: pointer;
-//   display: inline-block;
-//   align-self: flex-end;
-// `;
-
-// const CommentCountContainer = styled.div`
-//   width: 27px;
-//   height: 22px;
-//   position: absolute;
-//   top: 2px;
-//   left: 2px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// `;
-
-// const CommentCount = styled.div`
-//   color: #aaa;
-//   font-weight: 300;
-//   font-size: 14px;
-//   margin-top: 0px;
-// `;
-
-
-// class VotesContainer extends React.Component {
-//   render() {
-//     const { count } = this.props;
-//     return (
-//       <Popup
-//         trigger={
-//           <CommentContainer>
-//             <CommentIcon height="100%" viewBox="0 0 24 24">
-//               <path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zm-3.283 13.293L18.414 17H4c-.55 0-1-.448-1-1V4c0-.55.45-1 1-1h16c.546 0 .99.45.99 1L21 19.583l-2.293-2.29z" /><path fill="none" d="M0 0h24v24H0V0z" />
-//             </CommentIcon>
-//             <CommentCountContainer>
-//               <CommentCount>{count}</CommentCount>
-//             </CommentCountContainer>
-//           </CommentContainer>
-//         }
-//         content="View comments"
-//         position="bottom center"
-//         size="small"
-//         inverted
-//       />
-//     );
-//   }
-// }
-
-// VotesContainer.propTypes = {
-//   count: PropTypes.number,
-// };
-
-export { VotesContainer };
 
 class View extends React.Component {
+
+  onAuthorClick = (event) => {
+    event.stopPropagation();
+  }
+
   render() {
-    const { onClick, title, createdAt, upvotesCount, downvotesCount } = this.props;
+    const { onClick, title, createdAt, ideaId, commentsCount, imageUrl, authorId, authorName } = this.props;
     return (
       <IdeaContainer onClick={onClick}>
+        <IdeaHoverBar>
+          <FormattedRelative value={createdAt} />
+          <div>
+            <Icon name="comment" />
+            <CommentCount>{commentsCount}</CommentCount>
+          </div>
+        </IdeaHoverBar>
+        <IdeaImage src={imageUrl || placeholder} />
         <IdeaContent>
-          <IdeaTitle><T value={title} /></IdeaTitle>
-          <IdeaMeta>{moment(createdAt).fromNow()}</IdeaMeta>
+          <IdeaTitle lines={2} lineHeight={1.4} fontSize={23}>
+            <T value={title} />
+          </IdeaTitle>
+          <IdeaAuthor>
+            <FormattedMessage
+              {...messages.byAuthorLink}
+              values={{
+                authorLink: <Link onClick={this.onAuthorClick} to={`/profile/${authorId}`}>{authorName}</Link>,
+              }}
+            />
+          </IdeaAuthor>
         </IdeaContent>
         <IdeaFooter>
-          <VotesContainer>
-            <Popup
-              trigger={
-                <VoteUp voted>
-                  <ThumbUpIcon height="100%" viewBox="0 0 24 24">
-                    <path d="M0 0h24v24H0z" fill="none" /><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z" />
-                  </ThumbUpIcon>
-                  <VoteCount>{upvotesCount}</VoteCount>
-                </VoteUp>
-              }
-              content="Retract vote"
-              position="bottom center"
-              size="small"
-              inverted
-            />
-
-            <Popup
-              trigger={
-                <VoteDown>
-                  <ThumbDownIcon height="100%" viewBox="0 0 24 24">
-                    <path fill="none" d="M0 0h24v24H0V0z" /><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm1 12c0 .268-.103.518-.287.703L9.827 21.59l-.35-.346c-.084-.086-.137-.2-.145-.32l.02-.205.938-4.517.25-1.203H3c-.535 0-.972-.422-1-.95l.002-.01.05-.493-.052-.05V12c0-.125.022-.24.06-.336l3.024-7.06C5.236 4.238 5.596 4 6 4h9c.552 0 1 .45 1 1v10zM19 3v12h4V3h-4zm3 11h-2V4h2v10z" />
-                  </ThumbDownIcon>
-                  <VoteCount>{downvotesCount}</VoteCount>
-                </VoteDown>
-              }
-              content="Vote"
-              position="bottom center"
-              size="small"
-              inverted
-            />
-          </VotesContainer>
+          <VoteControl ideaId={ideaId} />
         </IdeaFooter>
       </IdeaContainer>
     );
@@ -258,8 +167,11 @@ View.propTypes = {
   onClick: PropTypes.func.isRequired,
   title: ImPropTypes.map,
   createdAt: PropTypes.string.isRequired,
-  upvotesCount: PropTypes.number.isRequired,
-  downvotesCount: PropTypes.number.isRequired,
+  ideaId: PropTypes.string.isRequired,
+  imageUrl: PropTypes.string,
+  authorId: PropTypes.string,
+  authorName: PropTypes.string.isRequired,
+  commentsCount: PropTypes.number,
 };
 
 export default View;

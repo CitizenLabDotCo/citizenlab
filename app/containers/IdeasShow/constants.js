@@ -9,14 +9,6 @@ export const LOAD_IDEA_REQUEST = 'app/IdeasShow/LOAD_IDEA_REQUEST';
 export const LOAD_IDEA_SUCCESS = 'app/IdeasShow/LOAD_IDEA_SUCCESS';
 export const LOAD_IDEA_ERROR = 'app/IdeasShow/LOAD_IDEA_ERROR';
 
-// voting
-export const LOAD_VOTES_REQUEST = 'app/IdeasShow/LOAD_VOTES_REQUEST';
-export const LOAD_VOTES_SUCCESS = 'app/IdeasShow/LOAD_VOTES_SUCCESS';
-export const LOAD_VOTES_ERROR = 'app/IdeasShow/LOAD_VOTES_SUCCESS';
-
-export const VOTE_IDEA_REQUEST = 'app/IdeasShow/DOWVOTE_IDEA_REQUEST';
-export const VOTE_IDEA_SUCCESS = 'app/IdeasShow/VOTE_IDEA_SUCCESS';
-export const VOTE_IDEA_ERROR = 'app/IdeasShow/VOTE_IDEA_ERROR';
 
 // comments
 // load
