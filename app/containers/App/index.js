@@ -47,6 +47,7 @@ import { loadCurrentTenantRequest } from 'utils/tenant/actions';
 
 const Container = styled.div`
   padding-top: 65px;
+  background-color: #f2f2f2;
 `;
 
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function

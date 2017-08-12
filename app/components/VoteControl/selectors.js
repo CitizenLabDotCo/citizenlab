@@ -15,5 +15,5 @@ export const selectUserVoteId = createSelector(
 export const selectUserVote = createSelector(
   selectResourcesDomain('votes'),
   selectUserVoteId,
-  (resourcesVotes, voteId) => resourcesVotes.get(voteId)
+  (resourcesVotes, voteId) => resourcesVotes && resourcesVotes.get(voteId)
 );
