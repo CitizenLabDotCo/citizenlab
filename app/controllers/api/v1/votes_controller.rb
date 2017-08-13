@@ -91,7 +91,7 @@ class Api::V1::VotesController < ApplicationController
   end
 
   def set_vote
-    @vote = Vote.find_by(id: params[:id])
+    @vote = Vote.find(params[:id])
     authorize @vote
   end
 

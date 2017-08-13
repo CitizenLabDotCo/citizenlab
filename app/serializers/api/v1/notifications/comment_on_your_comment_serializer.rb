@@ -1,9 +1,9 @@
 class Api::V1::Notifications::CommentOnYourCommentSerializer < Api::V1::Notifications::NotificationSerializer
 
-  belongs_to :user, serializer: Api::V1::LiteUserSerializer
-  belongs_to :idea, serializer: Api::V1::LiteIdeaSerializer
-  belongs_to :comment, serializer: Api::V1::LiteCommentSerializer  
-  belongs_to :project, serializer: Api::V1::LiteProjectSerializer
+  belongs_to :user, serializer: Api::V1::UserSerializer
+  belongs_to :idea, serializer: Api::V1::IdeaSerializer
+  belongs_to :comment, serializer: Api::V1::CommentSerializer  
+  belongs_to :project, serializer: Api::V1::ProjectSerializer
 
   attributes :user_first_name, :user_last_name, :user_slug, :idea_title
 
