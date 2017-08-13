@@ -40,6 +40,7 @@ const VotesContainer = styled.div`
 `;
 
 const VoteButton: any = styled.button`
+  cursor: pointer;
   background-color: ${BACKGROUND};
   width: ${props => WIDTH[(props as any).size]}px;
   height: ${props => HEIGHT[(props as any).size]}px;
@@ -88,11 +89,13 @@ type Props = {
 class Votes extends React.PureComponent<Props> {
 
   onClickUpvote = (event) => {
+    event.preventDefault();
     event.stopPropagation();
     this.onClickVote('up');
   }
 
   onClickDownvote = (event) => {
+    event.preventDefault();
     event.stopPropagation();
     this.onClickVote('down');
   }
