@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { fetchIdea, submitIdeaVote, createIdeaComment, fetchIdeaComments, deleteIdeaComment } from 'api';
+import { fetchIdea, fetchIdeaBySlug, submitIdeaVote, createIdeaComment, fetchIdeaComments, deleteIdeaComment } from 'api';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 
 import {
@@ -11,7 +11,12 @@ import {
 
 export function* loadIdea(action) {
   try {
-    const response = yield call(fetchIdea, action.payload);
+    let response;
+    if (action.payload.id) {
+      response = yield call(fetchIdea, action.payload.id);
+    } else if (action.payload.slug) {
+      response = yield call(fetchIdeaBySlug, action.payload.slug);
+    }
     yield put(mergeJsonApiResources(response));
     yield put(loadIdeaSuccess(response));
   } catch (e) {

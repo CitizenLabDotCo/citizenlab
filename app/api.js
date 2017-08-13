@@ -69,6 +69,10 @@ export function fetchIdea(id) {
   return request(`${API_PATH}/ideas/${id}`);
 }
 
+export function fetchIdeaBySlug(slug) {
+  return request(`${API_PATH}/ideas/by_slug/${slug}`);
+}
+
 export function fetchCurrentUser() {
   return request(`${API_PATH}/users/me`);
 }

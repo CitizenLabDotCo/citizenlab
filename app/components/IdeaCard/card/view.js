@@ -137,9 +137,9 @@ class View extends React.Component {
   }
 
   render() {
-    const { title, createdAt, ideaId, commentsCount, imageUrl, authorName } = this.props;
+    const { title, createdAt, ideaId, commentsCount, imageUrl, authorName, slug } = this.props;
     return (
-      <IdeaContainer onClick={this.onCardClick} to={`/ideas/${ideaId}`}>
+      <IdeaContainer onClick={this.onCardClick} to={`/ideas/${slug}`}>
         <IdeaHoverBar>
           <FormattedRelative value={createdAt} />
           <div>
@@ -174,6 +174,7 @@ View.propTypes = {
   title: ImPropTypes.map,
   createdAt: PropTypes.string.isRequired,
   ideaId: PropTypes.string.isRequired,
+  slug: PropTypes.string.isRequired,
   imageUrl: PropTypes.string,
   authorId: PropTypes.string,
   authorName: PropTypes.string.isRequired,

@@ -1,15 +1,18 @@
 import { createSelector } from 'reselect';
 
-import { selectResourcesDomain } from 'utils/resources/selectors';
+import { selectResourcesDomain, makeSelectResourceBySlug } from 'utils/resources/selectors';
 
 const selectIdeasShow = (...types) => (state) => state.getIn(['ideasShow', ...types]);
 import { fromJS } from 'immutable';
 
-export const selectIdea = createSelector(
-  selectResourcesDomain('ideas'),
-  (_, props) => props.id,
-  (ideas, id) => id && ideas && ideas.get(id),
-);
+// export const selectIdea = createSelector(
+//   selectResourcesDomain('ideas'),
+//   selectResourcesDomainBySlug('ideas'),
+//   (_, props) => props.slug,
+//   (ideas, ideaBySlug, slug) => slug && ideas && ideas.get(slug),
+// );
+
+export const selectIdea = makeSelectResourceBySlug('ideas');
 
 export const makeSelectComments = createSelector(
   selectIdeasShow('comments'),

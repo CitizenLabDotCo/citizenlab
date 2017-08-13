@@ -43,6 +43,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 
   const ideaId = idea.get('id');
   const attributes = idea.get('attributes');
+  const slug = attributes.get('slug');
   const title = attributes.get('title_multiloc');
   const createdAt = attributes.get('published_at');
   const authorName = attributes.get('author_name');
@@ -53,6 +54,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 
   return {
     ideaId,
+    slug,
     onClick,
     title,
     createdAt,
