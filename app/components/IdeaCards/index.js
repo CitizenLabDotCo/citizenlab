@@ -45,7 +45,7 @@ class IdeaCards extends React.Component {
       ideas: [],
       currentPage: 1,
       hasMore: false,
-      modalIdeaId: null,
+      modalIdeaSlug: null,
     };
   }
 
@@ -94,13 +94,13 @@ class IdeaCards extends React.Component {
 
   closeModal = () => {
     this.setState({
-      modalIdeaId: null,
+      modalIdeaSlug: null,
     });
   }
 
-  openModal = (id) => {
+  openModal = (slug) => {
     this.setState({
-      modalIdeaId: id,
+      modalIdeaSlug: slug,
     });
   }
 
@@ -114,7 +114,7 @@ class IdeaCards extends React.Component {
             <Box key={idea.id} w={[1, 1 / 2, 1 / 3]} px={10}>
               <IdeaCard
                 id={idea.id}
-                onClick={() => this.openModal(idea.id)}
+                onClick={() => this.openModal(idea.attributes.slug)}
               />
             </Box>
           ))}
@@ -125,11 +125,11 @@ class IdeaCards extends React.Component {
           }
         </IdeasList>
         <Modal
-          opened={!!this.state.modalIdeaId}
+          opened={!!this.state.modalIdeaSlug}
           close={this.closeModal}
-          url={`/ideas/${this.state.modalIdeaId}`}
+          url={`/ideas/${this.state.modalIdeaSlug}`}
         >
-          <IdeasShow location={location} id={this.state.modalIdeaId} />
+          <IdeasShow location={location} slug={this.state.modalIdeaSlug} />
         </Modal>
       </div>
     );

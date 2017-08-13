@@ -12,7 +12,6 @@ import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
 // store
 import { createStructuredSelector } from 'reselect';
 import { preprocess } from 'utils';
-import { push } from 'react-router-redux';
 
 import { selectProject, selectProjectImages } from './selectors';
 import messages from './messages';
@@ -147,7 +146,6 @@ Project.propTypes = {
   project: ImPropTypes.map.isRequired,
   images: ImPropTypes.list,
   tenantLogo: PropTypes.string,
-  goTo: PropTypes.func.isRequired,
 };
 
-export default preprocess(mapStateToProps, { goTo: push })(Project);
+export default preprocess(mapStateToProps)(Project);

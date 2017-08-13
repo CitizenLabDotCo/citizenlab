@@ -174,7 +174,7 @@ export default function createRoutes(store) {
       },
     },
     {
-      path: '/ideas/:ideaId',
+      path: '/ideas/:slug',
       name: 'ideasShow',
       getComponent(nextState, cb) {
         const importModules = Promise.all([

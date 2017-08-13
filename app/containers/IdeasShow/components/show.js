@@ -100,14 +100,13 @@ class Show extends React.PureComponent {
     const { formatMessage } = this.props.intl;
 
     if (!title_multiloc) return null;
-    return(
+
+    return (
       <Container>
-        <Helmet
-          title={formatMessage(messages.helmetTitle)}
-          meta={[
-            { name: 'description', content: tFunc(title_multiloc) },
-          ]}
-        />
+        <Helmet>
+          <title>{tFunc(title_multiloc)}</title>
+          <meta name="description" content={tFunc(body_multiloc)} />
+        </Helmet>
         <ContentContainer>
           <Content>
             <LeftColumn>
@@ -140,6 +139,7 @@ class Show extends React.PureComponent {
 
 Show.propTypes = {
   id: PropTypes.string,
+  slug: PropTypes.string,
   tFunc: PropTypes.func,
   intl: intlShape.isRequired,
 };
