@@ -106,18 +106,19 @@ class IdeaCards extends React.Component {
 
   render() {
     const { ideas, hasMore } = this.state;
+    const { loadMoreEnabled } = this.props;
     return (
       <div>
         <IdeasList wrap>
           {ideas.map((idea) => (
-            <Box key={idea.id} w={[1, 1 / 2, 1 / 3]} px={5}>
+            <Box key={idea.id} w={[1, 1 / 2, 1 / 3]} px={10}>
               <IdeaCard
                 id={idea.id}
                 onClick={() => this.openModal(idea.id)}
               />
             </Box>
           ))}
-          {hasMore &&
+          {loadMoreEnabled && hasMore &&
             <LoadMoreButton onClick={this.loadMoreIdeas}>
               <FormattedMessage {...messages.loadMore} />
             </LoadMoreButton>
@@ -138,6 +139,11 @@ class IdeaCards extends React.Component {
 IdeaCards.propTypes = {
   filter: PropTypes.object.isRequired,
   mergeJsonApiResources: PropTypes.func.isRequired,
+  loadMoreEnabled: PropTypes.bool,
+};
+
+IdeaCards.defaultProps = {
+  loadMoreEnabled: true,
 };
 
 const mapDispatchToProps = {

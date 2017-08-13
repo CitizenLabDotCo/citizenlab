@@ -21,7 +21,7 @@ import messages from './messages';
 const ProjectContainer = styled.div`
   width: 100%;
   display: flex;
-  height: 350px;
+  height: 400px;
   background: #fff;
   border-radius: 5px;
   margin-bottom: 20px;
@@ -38,7 +38,7 @@ const ProjectInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 15px;
+  padding: 30px 40px;
 `;
 
 const InfoHeader = styled.div`
@@ -52,7 +52,7 @@ const HeaderLogo = styled.img`
 
 const HeaderCount = styled.div`
   display: flex;
-  color: ##8F8F8F;
+  color: #8F8F8F;
   font-size: 16px;
   font-weight: 500;
 `;
@@ -60,7 +60,7 @@ const HeaderCount = styled.div`
 const InfoSeparator = styled.div`
   border: 1px solid #EAEAEA;
   height: 1px;
-  margin: 5px 0;
+  margin: 10px 0;
 `;
 
 const InfoText = styled.div`
@@ -71,10 +71,10 @@ const TextTitle = styled.h3`
   color: #222222;
   font-size: 25px;
   font-weight: bold;
-  padding: 15px 0;
+  margin: 15px 0;
 `;
 
-const TextBody = styled.h3`
+const TextBody = styled.div`
   font-size: 16px;
   font-weight: 300;
   color: #6B6B6B;

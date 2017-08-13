@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ImPropTypes from 'react-immutable-proptypes';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import { FormattedMessage, FormattedRelative } from 'react-intl';
 
 // components
@@ -14,7 +16,7 @@ import placeholder from './placeholder.png';
 import messages from '../messages';
 import VoteControl from 'components/VoteControl';
 
-const IdeaContainer = styled.div`
+const IdeaContainer = styled(Link)`
   width: 100%;
   height: 400px;
   margin: 5px 5px 26px 5px;
@@ -56,7 +58,7 @@ const IdeaHoverBar = styled.div`
   opacity: 0;
 
   ${IdeaContainer}:hover & {
-    animation: ${fadeIn} 0.15s ease-in-out;
+    animation: ${fadeIn} 0.15s ease-out;
     display: flex;
     opacity: 1;
   }
@@ -82,7 +84,7 @@ const IdeaFooter = styled.div`
   padding: 20px;
 `;
 
-const IdeaTitle = styled.div`
+const IdeaTitle = styled.h4`
   color: #222222;
   font-weight: bold;
   // Multi-line wrap, adapted from https://codepen.io/martinwolf/pen/qlFdp
@@ -104,24 +106,40 @@ const IdeaAuthor = styled.div`
   font-size: 16px;
   font-weight: 300;
   margin-top: 12px;
-  a {
-    color: #6B6B6B;
-    &:hover {
-      color: #222222;
-    }
+  // a {
+  //   color: #6B6B6B;
+  //   &:hover {
+  //     color: #222222;
+  //   }
+  // }
+`;
+
+// We use <span> instead of Link, because the whole card is already
+// a Link (more important for SEO) and <a> tags can not be nested
+const AuthorLink = styled.span`
+  color: #6B6B6B;
+  &:hover {
+    color: #222222;
   }
 `;
 
 class View extends React.Component {
 
+  onCardClick = (event) => {
+    event.preventDefault();
+    this.props.onClick();
+  }
+
   onAuthorClick = (event) => {
     event.stopPropagation();
+    event.preventDefault();
+    this.props.push(`/profile/${this.props.authorId}`);
   }
 
   render() {
-    const { onClick, title, createdAt, ideaId, commentsCount, imageUrl, authorId, authorName } = this.props;
+    const { title, createdAt, ideaId, commentsCount, imageUrl, authorName } = this.props;
     return (
-      <IdeaContainer onClick={onClick}>
+      <IdeaContainer onClick={this.onCardClick} to={`/ideas/${ideaId}`}>
         <IdeaHoverBar>
           <FormattedRelative value={createdAt} />
           <div>
@@ -138,7 +156,7 @@ class View extends React.Component {
             <FormattedMessage
               {...messages.byAuthorLink}
               values={{
-                authorLink: <Link onClick={this.onAuthorClick} to={`/profile/${authorId}`}>{authorName}</Link>,
+                authorLink: <AuthorLink onClick={this.onAuthorClick}>{authorName}</AuthorLink>,
               }}
             />
           </IdeaAuthor>
@@ -160,6 +178,7 @@ View.propTypes = {
   authorId: PropTypes.string,
   authorName: PropTypes.string.isRequired,
   commentsCount: PropTypes.number,
+  push: PropTypes.func.isRequired,
 };
 
-export default View;
+export default connect(null, { push })(View);
