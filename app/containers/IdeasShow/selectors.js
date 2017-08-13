@@ -5,13 +5,6 @@ import { selectResourcesDomain, makeSelectResourceBySlug } from 'utils/resources
 const selectIdeasShow = (...types) => (state) => state.getIn(['ideasShow', ...types]);
 import { fromJS } from 'immutable';
 
-// export const selectIdea = createSelector(
-//   selectResourcesDomain('ideas'),
-//   selectResourcesDomainBySlug('ideas'),
-//   (_, props) => props.slug,
-//   (ideas, ideaBySlug, slug) => slug && ideas && ideas.get(slug),
-// );
-
 export const selectIdea = makeSelectResourceBySlug('ideas');
 
 export const makeSelectComments = createSelector(

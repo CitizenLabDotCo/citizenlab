@@ -36,10 +36,10 @@ const FiltersArea = styled.div`
 `;
 
 const ContentContainer = styled.section`
-  max-width: 1000px;
+  max-width: 980px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 30px 10px;
 `;
 
 
@@ -88,7 +88,6 @@ IdeasIndex.contextTypes = {
 IdeasIndex.propTypes = {
   loadTopicsRequest: PropTypes.func.isRequired,
   loadAreasRequest: PropTypes.func.isRequired,
-  location: PropTypes.object,
   resetIdeas: PropTypes.func.isRequired,
   filter: PropTypes.object,
   withFilters: PropTypes.bool.isRequired,
