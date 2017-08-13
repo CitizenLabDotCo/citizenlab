@@ -19,7 +19,10 @@ class Api::V1::UserSerializer < ActiveModel::Serializer
   end
 
   def unread_notifications
-    instance_options[:unread_notifications]
+    # TODO Optimize this. The (rails cached, but still) query is executed
+    # everytime the current_user is rendered, except if coming from the /me
+    # endpoint
+    instance_options[:unread_notifications] || (scope && scope.notifications.unread.count)
   end
 
 end
