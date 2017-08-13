@@ -67,6 +67,7 @@ class IdeaCards extends React.Component {
     this.unsubscribe();
     this.ideasSubscription = observeIdeas({ queryParameters: {
       ...this.props.filter,
+      'page[size]': this.props.filter['page[size]'] || 9,
       'page[number]': this.state.currentPage,
     } }).observable.subscribe((response) => {
       this.setState({

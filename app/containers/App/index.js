@@ -120,7 +120,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
         <WatchSagas sagas={areasSagas} />
         <WatchSagas sagas={{ tenantSaga }} />
         <WatchSagas sagas={voteControlSagas} />
-        {currentTenant ? this.content() : <div>Loading</div>}
+        {currentTenant ? this.content() : <div>Loading...</div>}
       </div>
     );
   }
