@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { selectResourcesDomain } from 'utils/resources/selectors';
+import { makeSelectCurrentUser } from 'utils/auth/selectors';
 
 export const selectIdea = createSelector(
   selectResourcesDomain('ideas'),
@@ -9,7 +10,8 @@ export const selectIdea = createSelector(
 
 export const selectUserVoteId = createSelector(
   selectIdea,
-  (idea) => idea && idea.getIn(['relationships', 'user_vote', 'data', 'id'])
+  makeSelectCurrentUser(),
+  (idea, currentUser) => currentUser && idea && idea.getIn(['relationships', 'user_vote', 'data', 'id'])
 );
 
 export const selectUserVote = createSelector(
