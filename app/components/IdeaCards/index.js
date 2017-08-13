@@ -10,30 +10,18 @@ import messages from './messages';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import Modal from 'components/UI/Modal';
 import IdeasShow from 'containers/IdeasShow';
+import { Flex, Box } from 'grid-styled';
 
 // store
 import { preprocess } from 'utils';
 import { observeIdeas } from 'services/ideas';
 
 // style
-import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 
-const IdeasList = styled.div`
-  font-size: 20px;
-  color: #999;
+const IdeasList = styled(Flex)`
   margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 10px !important;
-  ${media.tablet`
-  `}
-
-  ${media.phone`
-    flex-direction: column;
-  `}
 `;
 
 const LoadMoreButton = styled.button`
@@ -120,13 +108,14 @@ class IdeaCards extends React.Component {
     const { ideas, hasMore } = this.state;
     return (
       <div>
-        <IdeasList>
+        <IdeasList wrap>
           {ideas.map((idea) => (
-            <IdeaCard
-              key={idea.id}
-              id={idea.id}
-              onClick={() => this.openModal(idea.id)}
-            />
+            <Box key={idea.id} w={[1, 1 / 2, 1 / 3]} px={5}>
+              <IdeaCard
+                id={idea.id}
+                onClick={() => this.openModal(idea.id)}
+              />
+            </Box>
           ))}
           {hasMore &&
             <LoadMoreButton onClick={this.loadMoreIdeas}>

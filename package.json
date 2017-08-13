@@ -220,6 +220,7 @@
     "file-saver": "^1.3.3",
     "fontfaceobserver": "2.0.7",
     "foundation-sites": "^6.3.0",
+    "grid-styled": "^2.0.0-10",
     "hellojs": "^1.14.0",
     "html-to-draftjs": "0.1.0-beta14",
     "immutable": "3.8.1",

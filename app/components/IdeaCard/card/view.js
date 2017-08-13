@@ -9,14 +9,13 @@ import { Link } from 'react-router';
 import Icon from 'components/UI/Icon';
 // style
 import styled, { keyframes } from 'styled-components';
-import { media } from 'utils/styleUtils';
 import placeholder from './placeholder.png';
 
 import messages from '../messages';
 import VoteControl from 'components/VoteControl';
 
 const IdeaContainer = styled.div`
-  width: 300px;
+  width: 100%;
   height: 400px;
   margin: 5px 5px 26px 5px;
   display: flex;
@@ -28,14 +27,6 @@ const IdeaContainer = styled.div`
   backface-visibility: hidden;
   transition: all 250ms ease-out;
   position: relative;
-
-  ${media.phone`
-    width: 100%;
-  `}
-
-  ${media.tablet`
-    width: calc(50% - 10px);
-  `}
 
   &:hover {
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
