@@ -36,6 +36,7 @@ const Left = styled.div`
 
   > div {
     display: flex;
+    align-items: center;
   }
 `;
 
@@ -80,8 +81,7 @@ const Right = styled.div`
   z-index: 2;
   align-items: center;
 
-  > div {
-    display: flex;
+  > div, > a, > button {
     margin-left: 20px;
   }
 `;
@@ -294,18 +294,19 @@ class Navbar extends React.PureComponent {
           }
 
           {!currentUser &&
-            <div>
-              <Button onClick={this.goTo('/sign-in')}>
-                <ButtonText>
-                  <FormattedMessage {...messages.login} />
-                </ButtonText>
-              </Button>
-              <Button onClick={this.goTo('/register')}>
-                <ButtonText>
-                  <FormattedMessage {...messages.register} />
-                </ButtonText>
-              </Button>
-            </div>
+            <Button onClick={this.goTo('/register')}>
+              <ButtonText>
+                <FormattedMessage {...messages.register} />
+              </ButtonText>
+            </Button>
+          }
+
+          {!currentUser &&
+            <Link to="/sign-in">
+              <ButtonText>
+                <FormattedMessage {...messages.login} />
+              </ButtonText>
+            </Link>
           }
         </Right>
       </Container>
