@@ -2,7 +2,9 @@ import normalize from 'json-api-normalizer';
 import { fromJS } from 'immutable';
 import { MERGE_JSONAPI_RESOURCES } from './constants';
 
-const initialState = fromJS({});
+const initialState = fromJS({
+  bySlug: {},
+});
 function resourcesReducer(state = initialState, action) {
   switch (action.type) {
     case MERGE_JSONAPI_RESOURCES: {
@@ -11,6 +13,10 @@ function resourcesReducer(state = initialState, action) {
       Object.keys(mergeMap).forEach((resource) => {
         Object.keys(mergeMap[resource]).forEach((id) => {
           newState = newState.setIn([resource, id], fromJS(mergeMap[resource][id]));
+          const slug = mergeMap[resource][id].attributes && mergeMap[resource][id].attributes.slug;
+          if (slug) {
+            newState = newState.setIn(['bySlug', resource, slug], id);
+          }
         });
       });
 

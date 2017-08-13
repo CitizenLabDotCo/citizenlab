@@ -13,7 +13,6 @@ import { connect } from 'react-redux';
 
 // components
 import WatchSagas from 'containers/WatchSagas';
-import { Segment } from 'semantic-ui-react';
 import IdeaCards from 'components/IdeaCards';
 
 import SelectTopics from './components/selectTopics';
@@ -34,6 +33,13 @@ const FiltersArea = styled.div`
   justify-content: flex-end;
   margin-bottom: 4.5rem;
   width: 100%;
+`;
+
+const ContentContainer = styled.section`
+  max-width: 980px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 30px 10px;
 `;
 
 
@@ -59,7 +65,7 @@ class IdeasIndex extends React.Component {
           description={messages.helmetDescription}
         />
         <WatchSagas sagas={sagasWatchers} />
-        <Segment style={{ width: 1000, marginLeft: 'auto', marginRight: 'auto' }} basic>
+        <ContentContainer>
           {withFilters && <FiltersArea>
             <SearchField />
             <SelectSort />
@@ -67,7 +73,7 @@ class IdeasIndex extends React.Component {
             <SelectAreas />
           </FiltersArea>}
           <IdeaCards filter={filter} />
-        </Segment>
+        </ContentContainer>
 
       </div>
     );
@@ -82,7 +88,6 @@ IdeasIndex.contextTypes = {
 IdeasIndex.propTypes = {
   loadTopicsRequest: PropTypes.func.isRequired,
   loadAreasRequest: PropTypes.func.isRequired,
-  location: PropTypes.object,
   resetIdeas: PropTypes.func.isRequired,
   filter: PropTypes.object,
   withFilters: PropTypes.bool.isRequired,

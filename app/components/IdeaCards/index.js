@@ -10,31 +10,18 @@ import messages from './messages';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import Modal from 'components/UI/Modal';
 import IdeasShow from 'containers/IdeasShow';
+import { Flex, Box } from 'grid-styled';
 
 // store
 import { preprocess } from 'utils';
 import { observeIdeas } from 'services/ideas';
 
 // style
-import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 
-const IdeasList = styled.div`
-  font-size: 20px;
-  color: #999;
+const IdeasList = styled(Flex)`
   margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 10px !important;
-  ${media.tablet`
-    flex-wrap: wrap;
-  `}
-
-  ${media.phone`
-    flex-direction: column;
-  `}
 `;
 
 const LoadMoreButton = styled.button`
@@ -58,7 +45,7 @@ class IdeaCards extends React.Component {
       ideas: [],
       currentPage: 1,
       hasMore: false,
-      modalIdeaId: null,
+      modalIdeaSlug: null,
     };
   }
 
@@ -80,6 +67,7 @@ class IdeaCards extends React.Component {
     this.unsubscribe();
     this.ideasSubscription = observeIdeas({ queryParameters: {
       ...this.props.filter,
+      'page[size]': this.props.filter['page[size]'] || 9,
       'page[number]': this.state.currentPage,
     } }).observable.subscribe((response) => {
       this.setState({
@@ -107,40 +95,42 @@ class IdeaCards extends React.Component {
 
   closeModal = () => {
     this.setState({
-      modalIdeaId: null,
+      modalIdeaSlug: null,
     });
   }
 
-  openModal = (id) => {
+  openModal = (slug) => {
     this.setState({
-      modalIdeaId: id,
+      modalIdeaSlug: slug,
     });
   }
 
   render() {
     const { ideas, hasMore } = this.state;
+    const { loadMoreEnabled } = this.props;
     return (
       <div>
-        <IdeasList>
+        <IdeasList wrap>
           {ideas.map((idea) => (
-            <IdeaCard
-              key={idea.id}
-              id={idea.id}
-              onClick={() => this.openModal(idea.id)}
-            />
+            <Box key={idea.id} w={[1, 1 / 2, 1 / 3]} px={10}>
+              <IdeaCard
+                id={idea.id}
+                onClick={() => this.openModal(idea.attributes.slug)}
+              />
+            </Box>
           ))}
-          {hasMore &&
+          {loadMoreEnabled && hasMore &&
             <LoadMoreButton onClick={this.loadMoreIdeas}>
               <FormattedMessage {...messages.loadMore} />
             </LoadMoreButton>
           }
         </IdeasList>
         <Modal
-          opened={!!this.state.modalIdeaId}
+          opened={!!this.state.modalIdeaSlug}
           close={this.closeModal}
-          url={`/ideas/${this.state.modalIdeaId}`}
+          url={`/ideas/${this.state.modalIdeaSlug}`}
         >
-          <IdeasShow location={location} id={this.state.modalIdeaId} />
+          <IdeasShow location={location} slug={this.state.modalIdeaSlug} />
         </Modal>
       </div>
     );
@@ -150,6 +140,11 @@ class IdeaCards extends React.Component {
 IdeaCards.propTypes = {
   filter: PropTypes.object.isRequired,
   mergeJsonApiResources: PropTypes.func.isRequired,
+  loadMoreEnabled: PropTypes.bool,
+};
+
+IdeaCards.defaultProps = {
+  loadMoreEnabled: true,
 };
 
 const mapDispatchToProps = {

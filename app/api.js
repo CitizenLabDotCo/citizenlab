@@ -69,6 +69,10 @@ export function fetchIdea(id) {
   return request(`${API_PATH}/ideas/${id}`);
 }
 
+export function fetchIdeaBySlug(slug) {
+  return request(`${API_PATH}/ideas/by_slug/${slug}`);
+}
+
 export function fetchCurrentUser() {
   return request(`${API_PATH}/users/me`);
 }
@@ -164,6 +168,24 @@ export function submitIdeaVote(ideaId, mode) {
 
   return request(`${API_PATH}/ideas/${ideaId}/votes`, body, {
     method: 'POST',
+  });
+}
+
+export function upvoteIdea(ideaId) {
+  return request(`${API_PATH}/ideas/${ideaId}/votes/up`, {}, {
+    method: 'POST',
+  });
+}
+
+export function downvoteIdea(ideaId) {
+  return request(`${API_PATH}/ideas/${ideaId}/votes/down`, {}, {
+    method: 'POST',
+  });
+}
+
+export function deleteIdeaVote(voteId) {
+  return request(`${API_PATH}/votes/${voteId}`, {}, {
+    method: 'DELETE',
   });
 }
 

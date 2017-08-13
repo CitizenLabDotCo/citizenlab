@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { injectTFunc } from 'containers/T/utils';
 import styled from 'styled-components';
 
 // components
 import ImageCarousel from 'components/ImageCarousel';
 import Author from './show/Author';
-import Votes from './show/votes';
 import Status from './show/Status';
 import CommentsLine from './show/CommentsLine';
 import SharingLine from './show/SharingLine';
 import Comments from './comments';
 import T from 'containers/T';
+import VoteControl from 'components/VoteControl';
 
 // store
 import { preprocess } from 'utils';
@@ -100,14 +100,13 @@ class Show extends React.PureComponent {
     const { formatMessage } = this.props.intl;
 
     if (!title_multiloc) return null;
-    return(
+
+    return (
       <Container>
-        <Helmet
-          title={formatMessage(messages.helmetTitle)}
-          meta={[
-            { name: 'description', content: tFunc(title_multiloc) },
-          ]}
-        />
+        <Helmet>
+          <title>{tFunc(title_multiloc)}</title>
+          <meta name="description" content={tFunc(body_multiloc)} />
+        </Helmet>
         <ContentContainer>
           <Content>
             <LeftColumn>
@@ -125,7 +124,7 @@ class Show extends React.PureComponent {
               <VoteCTA>
                 <FormattedMessage {...messages.voteCTA} />
               </VoteCTA>
-              <Votes ideaId={id} voteId={voteId} />
+              <VoteControl ideaId={id} size="large" />
               <Status statusId={statusId} />
               <CommentsLine count={comments_count}/>
               <SharingLine location={location} image={images[0] && images[0].attributes.versions.medium} />
@@ -140,6 +139,7 @@ class Show extends React.PureComponent {
 
 Show.propTypes = {
   id: PropTypes.string,
+  slug: PropTypes.string,
   tFunc: PropTypes.func,
   intl: intlShape.isRequired,
 };

@@ -13,13 +13,13 @@ import { lighten } from 'polished';
 
 import {
   selectLandingPage,
-  makeSelectIdeas,
   makeSelectProjects,
 } from './selectors';
-import { loadIdeas, loadProjects } from './actions';
+import { loadProjects } from './actions';
 import sagas from './sagas';
-import Idea from './components/idea';
-import Project from './components/project';
+import T from 'containers/T';
+import IdeaCards from 'components/IdeaCards';
+import ProjectCard from 'components/ProjectCard';
 import { media } from 'utils/styleUtils';
 
 import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
@@ -37,7 +37,7 @@ const Container = styled.div`
 
 const HeaderContainer = styled.div`
   width: 100%;
-  height: 305px;
+  height: 360px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,10 +45,9 @@ const HeaderContainer = styled.div`
   padding-right: 25px;
   position: relative;
   z-index: 1;
-  margin-top: -70px;
 
   ${media.notPhone`
-    height: 305px;
+    height: 360px;
   `}
 
   ${media.phone`
@@ -79,11 +78,11 @@ const HeaderBackground = styled.div`
 `;
 
 const HeaderTitle = styled.h1`
-  color: #fff;
-  font-size: 46px;
+  font-size: 45px;
   line-height: 50px;
-  font-weight: 500;
+  font-weight: 600;
   text-align: center;
+  color: #FFFFFF;
   margin: 0;
   padding: 0;
   padding-top: 115px;
@@ -113,6 +112,7 @@ const HeaderSubtitle = styled.h2`
   font-size: 30px;
   line-height: 34px;
   font-weight: 100;
+  max-width: 980px;
   text-align: center;
   margin: 0;
   margin-top: 10px;
@@ -136,78 +136,6 @@ const HeaderSubtitle = styled.h2`
   `}
 `;
 
-/*
-const TabBar = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding-left: 30px;
-  padding-right: 30px;
-  background: white;
-  border-bottom: solid 1px #e0e0e0;
-
-  ${media.phone`
-    justify-content: center;
-  `}
-`;
-
-const TabBarInner = styled.div`
-  max-width: 1050px;
-  display: flex;
-
-  ${media.notPhone`
-    width: 100%;
-  `}
-`;
-
-const TabLine = styled.div`
-  height: 4px;
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  background: #00a8e2;
-`;
-
-const Tab = styled.div`
-  font-size: 19px;
-  font-weight: 500;
-  color: ${(props) => props.active ? '#00a8e2' : '#444'};
-  text-transform: uppercase;
-  padding-top: 22px;
-  padding-bottom: 22px;
-  padding-left: 0px;
-  padding-right: 0px;
-  cursor: pointer;
-  position: relative;
-  margin-right: 50px;
-
-  &:hover {
-    color: #00a8e2;
-  }
-
-  & > ${TabLine} {
-    opacity: ${(props) => props.active ? 1 : 0};
-  }
-
-  &:last-child {
-    margin-right: 0px;
-  }
-
-  ${media.phone`
-    font-size: 18px;
-    margin-right: 40px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-  `}
-
-  ${media.smallPhone`
-    font-size: 16px;
-    margin-right: 30px;
-  `}
-`;
-*/
-
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -218,7 +146,7 @@ const ContentContainer = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  max-width: 1050px;
+  max-width: 980px;
 `;
 
 const Section = styled.div`
@@ -244,10 +172,10 @@ const SectionHeader = styled.div`
 
 const SectionTitle = styled.h2`
   flex: 1;
-  color: #555;
-  font-size: 31px;
+  color: #222222;
+  font-size: 35px;
   line-height: 35px;
-  font-weight: 400;
+  font-weight: 500;
   margin: 0;
   margin-right: 20px;
   /* border: solid 1px green; */
@@ -295,19 +223,8 @@ const ViewAllButton = styled(Link)`
   `}
 `;
 
-const SectionContainer = styled.div`
-  font-size: 20px;
-  color: #999;
+const SectionContainer = styled.section`
   margin-top: 10px;
-  display: flex;
-
-  ${media.tablet`
-    flex-wrap: wrap;
-  `}
-
-  ${media.phone`
-    flex-direction: column;
-  `}
 `;
 
 const Footer = styled.div`
@@ -318,10 +235,7 @@ const Footer = styled.div`
   display: inline-block;
   padding-left: 30px;
   padding-right: 30px;
-  margin-top: 60px;
-  margin-bottom: 50px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 60px auto 50px auto;
 `;
 
 class LandingPage extends React.Component {
@@ -337,7 +251,6 @@ class LandingPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.loadIdeas(1, 4);
     this.props.loadProjects(1, 2);
   }
 
@@ -364,20 +277,10 @@ class LandingPage extends React.Component {
   }
 
   render() {
-    let ideasList = null;
     let projectsList = null;
-    const { ideas, loadingIdeas, loadIdeasError, projects, loadingProjects, loadProjectsError, location } = this.props;
-    const { modalOpened, selectedIdeaId } = this.state;
 
-    if (loadingIdeas) {
-      ideasList = <div>Loading...</div>;
-    } else if (loadIdeasError) {
-      ideasList = <div>An error occured</div>;
-    } else if (ideas && ideas.size > 0) {
-      ideasList = ideas.map((idea) => (
-        <Idea key={idea.get('id')} idea={idea.get('attributes')} onClick={this.openIdea(idea.get('id'))}></Idea>
-      ));
-    }
+    const { projects, loadingProjects, loadProjectsError, location } = this.props;
+    const { modalOpened, selectedIdeaId } = this.state;
 
     if (loadingProjects) {
       projectsList = <div>Loading...</div>;
@@ -385,13 +288,15 @@ class LandingPage extends React.Component {
       projectsList = <div>An error occured</div>;
     } else if (projects && projects.size > 0) {
       projectsList = projects.map((project) => (
-        <Project key={project.get('id')} project={project.get('attributes')} onClick={this.openProject(project.get('id'))}></Project>
+        <ProjectCard key={project.get('id')} id={project.get('id')} />
       ));
     }
 
     const { tenant, tFunc } = this.props;
     const tenantName = tenant.getIn(['attributes', 'settings', 'core', 'organization_name']);
     const tenantHeaderBg = tenant.getIn(['attributes', 'header_bg', 'large']);
+    const headerSlogan = tenant.getIn(['attributes', 'settings', 'core', 'header_slogan']);
+
 
     return (
       <div>
@@ -405,19 +310,13 @@ class LandingPage extends React.Component {
               <FormattedMessage {...messages.titleCity} values={{ name: tFunc(tenantName) }} />
             </HeaderTitle>
             <HeaderSubtitle>
-              <FormattedMessage {...messages.SubTitleCity} values={{ name: tFunc(tenantName) }} />
+              {headerSlogan ?
+                <T value={headerSlogan} />
+              :
+                <FormattedMessage {...messages.SubTitleCity} values={{ name: tFunc(tenantName) }} />
+              }
             </HeaderSubtitle>
           </HeaderContainer>
-
-          {/*
-          <TabBar>
-            <TabBarInner>
-              <Tab first active>Overview<TabLine /></Tab>
-              <Tab>Ideas<TabLine /></Tab>
-              <Tab>Projects<TabLine /></Tab>
-            </TabBarInner>
-          </TabBar>
-          */}
 
           <ContentContainer>
             <Content>
@@ -436,7 +335,10 @@ class LandingPage extends React.Component {
                   </ViewAllButton>
                 </SectionHeader>
                 <SectionContainer>
-                  {ideasList}
+                  <IdeaCards
+                    filter={{ sort: 'trending', 'page[size]': 3 }}
+                    loadMoreEnabled={false}
+                  />
                 </SectionContainer>
               </Section>
 
@@ -479,13 +381,9 @@ class LandingPage extends React.Component {
 }
 
 LandingPage.propTypes = {
-  ideas: ImmutablePropTypes.list.isRequired,
-  loadingIdeas: PropTypes.bool,
-  loadIdeasError: PropTypes.bool.isRequired,
   projects: ImmutablePropTypes.list.isRequired,
   loadingProjects: PropTypes.bool,
   loadProjectsError: PropTypes.bool.isRequired,
-  loadIdeas: PropTypes.func.isRequired,
   loadProjects: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
   tFunc: PropTypes.func.isRequired,
@@ -494,22 +392,18 @@ LandingPage.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   pageState: selectLandingPage,
-  ideas: makeSelectIdeas(),
   projects: makeSelectProjects(),
   tenant: makeSelectCurrentTenantImm(),
 });
 
-const actions = { loadIdeas, loadProjects };
+const actions = { loadProjects };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { pageState, ideas, projects, tenant } = stateProps;
+  const { pageState, projects, tenant } = stateProps;
   return {
     tenant,
-    ideas,
-    loadingIdeas: pageState.get('loadingIdeas'),
-    loadIdeasError: pageState.get('loadIdeasError'),
     projects,
     loadingProjects: pageState.get('loadingProjects'),
     loadProjectsError: pageState.get('loadProjectsError'),

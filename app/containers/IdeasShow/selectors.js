@@ -1,16 +1,11 @@
 import { createSelector } from 'reselect';
 
-import { selectResourcesDomain } from 'utils/resources/selectors';
-import { selectAuthDomain } from 'utils/auth/selectors';
+import { selectResourcesDomain, makeSelectResourceBySlug } from 'utils/resources/selectors';
 
 const selectIdeasShow = (...types) => (state) => state.getIn(['ideasShow', ...types]);
 import { fromJS } from 'immutable';
 
-export const selectIdea = createSelector(
-  selectResourcesDomain('ideas'),
-  (_, props) => props.id,
-  (ideas, id) => id && ideas && ideas.get(id),
-);
+export const selectIdea = makeSelectResourceBySlug('ideas');
 
 export const makeSelectComments = createSelector(
   selectIdeasShow('comments'),
@@ -34,25 +29,6 @@ export const arrayToTree = (ids, comments) => {
 
   return roots;
 };
-
-
-export const makeSelectOwnVotesTot = (ideaId) => createSelector(
-  selectAuthDomain('id'),
-  selectResourcesDomain('votes'),
-  (currentUserId, votes) => {
-    if (!votes) return 0;
-    const ownVotes = votes.filter((vote) => {
-      const ownVote = vote.getIn(['relationships', 'user', 'data', 'id']) === currentUserId;
-      const thisIdeaVote = vote.getIn(['relationships', 'votable', 'data', 'id']) === ideaId;
-      return ownVote && thisIdeaVote;
-    });
-    const totVotes = ownVotes.reduce((tot, vote) => {
-      const mode = vote.getIn(['attributes', 'mode']) === 'up' ? 1 : -1;
-      return tot + mode;
-    }, 0);
-    return totVotes;
-  },
-);
 
 export const selectIdeaImages = createSelector(
   selectResourcesDomain('idea_images'),
