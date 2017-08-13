@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const getIcon = (name: string) => {
+const getIcon = (name: string, className: string | undefined) => {
   switch (name) {
     case 'close': {
       return (
@@ -62,15 +62,48 @@ const getIcon = (name: string) => {
         </svg>
       );
     }
+    case 'comment': {
+      return (
+        <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"/>
+          <path d="M0 0h24v24H0z" fill="none"/>
+        </svg>
+      );
+    }
+    case 'upvote': {
+      return (
+        <svg className={className} fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"/>
+        </svg>
+
+      );
+    }
+    case 'downvote': {
+      return(
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/>
+        </svg>
+      );
+    }
+    case 'idea': {
+      return(
+        <svg fill="#000000" height="24" viewBox="0 0 24 24">
+          <defs><path d="M0 0h24v24H0V0z" id="a" /></defs><clipPath id="b"><use overflow="visible" /></clipPath><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z" />
+        </svg>
+      )
+    }
     default:
       return null;
   }
 };
 
-const Icon: React.SFC<IIcon> = ({ name }) => getIcon(name);
+const Icon: React.SFC<IIcon> = ({ name, className }) => getIcon(name, className);
 
 interface IIcon {
   name: string;
+  className?: string;
 }
 
 export default Icon;

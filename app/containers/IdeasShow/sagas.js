@@ -1,32 +1,26 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { fetchIdea, fetchIdeaVotes, submitIdeaVote, createIdeaComment, fetchIdeaComments, deleteIdeaComment } from 'api';
+import { fetchIdea, fetchIdeaBySlug, submitIdeaVote, createIdeaComment, fetchIdeaComments, deleteIdeaComment } from 'api';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 
 import {
-  LOAD_IDEA_REQUEST, LOAD_VOTES_REQUEST, VOTE_IDEA_REQUEST, LOAD_COMMENTS_REQUEST, DELETE_COMMENT_REQUEST, PUBLISH_COMMENT_REQUEST,
+  LOAD_IDEA_REQUEST, LOAD_COMMENTS_REQUEST, DELETE_COMMENT_REQUEST, PUBLISH_COMMENT_REQUEST,
 } from './constants';
 
 import {
-  loadIdeaSuccess, loadIdeaError, loadVotesError, loadVotesSuccess, voteIdeaError, voteIdeaSuccess, loadCommentsSuccess, deleteCommentSuccess, publishCommentSuccess, loadCommentsError, publishCommentError, loadCommentsRequest } from './actions';
+  loadIdeaSuccess, loadIdeaError, voteIdeaError, voteIdeaSuccess, loadCommentsSuccess, deleteCommentSuccess, publishCommentSuccess, loadCommentsError, publishCommentError, loadCommentsRequest } from './actions';
 
 export function* loadIdea(action) {
   try {
-    const response = yield call(fetchIdea, action.payload);
+    let response;
+    if (action.payload.id) {
+      response = yield call(fetchIdea, action.payload.id);
+    } else if (action.payload.slug) {
+      response = yield call(fetchIdeaBySlug, action.payload.slug);
+    }
     yield put(mergeJsonApiResources(response));
     yield put(loadIdeaSuccess(response));
   } catch (e) {
     yield put(loadIdeaError(JSON.stringify(e)));
-  }
-}
-
-export function* getIdeaVotes(action) {
-  try {
-    const { ideaId } = action;
-    const response = yield call(fetchIdeaVotes, ideaId);
-    yield put(mergeJsonApiResources(response));
-    yield put(loadVotesSuccess(response));
-  } catch (e) {
-    yield put(loadVotesError(e));
   }
 }
 
@@ -77,14 +71,6 @@ function* watchLoadIdea() {
   yield takeLatest(LOAD_IDEA_REQUEST, loadIdea);
 }
 
-function* watchLoadIdeaVotes() {
-  yield takeLatest(LOAD_VOTES_REQUEST, getIdeaVotes);
-}
-
-function* watchVoteIdea() {
-  yield takeLatest(VOTE_IDEA_REQUEST, postIdeaVote);
-}
-
 function* watchLoadComments() {
   yield takeLatest(LOAD_COMMENTS_REQUEST, loadIdeaComments);
 }
@@ -95,8 +81,6 @@ function* watchDeleteComment() {
 
 export default {
   watchLoadIdea,
-  watchLoadIdeaVotes,
-  watchVoteIdea,
   watchLoadComments,
   watchDeleteComment,
   watchCreateComment,

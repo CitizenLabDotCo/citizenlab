@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 const ModalContent = styled(clickOutside)`
   width: 100%;
-  max-width: 800px;
+  max-width: 1000px;
   display: flex;
   flex-direction: column;
   padding: 25px;

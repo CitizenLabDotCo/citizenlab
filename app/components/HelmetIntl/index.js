@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { injectIntl, intlShape } from 'react-intl';
 
 export class HelmetIntl extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
