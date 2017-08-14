@@ -22,7 +22,7 @@ import { injectTFunc } from 'utils/containers/t/utils';
 
 // components
 // import { Container } from 'semantic-ui-react';
-import Navbar from './Navbar';
+import Navbar from 'containers/Navbar';
 import messages from './messages';
 import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
