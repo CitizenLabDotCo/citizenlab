@@ -181,7 +181,7 @@ const SectionTitle = styled.h2`
   /* border: solid 1px green; */
 
   ${media.phone`
-    font-size: 32px;
+    font-size: 23px;
     line-height: 36px;
   `}
 `;

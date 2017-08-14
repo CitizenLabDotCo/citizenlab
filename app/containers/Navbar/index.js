@@ -16,6 +16,7 @@ import messages from './messages';
 import tracks from './tracks';
 import NotificationMenu from './components/NotificationMenu';
 import UserMenu from './components/UserMenu';
+import MobileNavigation from './components/MobileNavigation';
 import Icon from 'components/UI/Icon';
 
 const Container = styled.div`
@@ -178,6 +179,7 @@ class Navbar extends React.Component {
     return (
       <ThemeProvider theme={this.navbarTheme}>
         <Container className={className}>
+          <MobileNavigation />
           <Left>
             <Link to="/">
               <Logo height="100%" viewBox="0 0 443.04 205.82" secondary={(location === '/')}>
