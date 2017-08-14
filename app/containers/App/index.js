@@ -12,10 +12,11 @@
  */
 
 import React from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 
 import { injectIntl, intlShape } from 'react-intl';
+import { injectTFunc } from 'utils/containers/t/utils';
 // import { DockableSagaView } from 'redux-saga-devtools';
 // import { sagamonitor } from 'store';
 
@@ -38,6 +39,7 @@ import { createStructuredSelector } from 'reselect';
 import authSagas from 'utils/auth/sagas';
 import areasSagas from 'utils/areas/sagas';
 import tenantSaga from 'utils/tenant/sagas';
+import voteControlSagas from 'components/VoteControl/sagas';
 import { makeSelectCurrentTenant, makeSelectSetting } from 'utils/tenant/selectors';
 
 import { loadCurrentUserRequest } from 'utils/auth/actions';
@@ -46,6 +48,7 @@ import { loadCurrentTenantRequest } from 'utils/tenant/actions';
 
 const Container = styled.div`
   padding-top: 65px;
+  background-color: #f2f2f2;
 `;
 
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -59,59 +62,65 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
   }
 
   content() {
-    const { currentTenant, location, children, loadUser, colorMain, colorMenuBg } = this.props;
+    const { tFunc, currentTenant, location, children, loadUser, colorMain, colorMenuBg, metaTitle, metaDescription } = this.props;
     const { formatMessage } = this.props.intl;
 
-    if (currentTenant) {
-      const theme = {
-        color: {
-          main: colorMain || '#ef0071',
-          menuBg: colorMenuBg || '#fff',
-        },
-      };
+    const finalMetaDescription =
+      (metaTitle && !metaDescription.isEmpty() && tFunc(metaDescription)) ||
+      formatMessage(messages.helmetDescription, { tenantName: currentTenant.attributes.name });
 
-      return (
-        <ThemeProvider theme={theme}>
-          <Container>
-            <Helmet
-              title={formatMessage(messages.helmetTitle)}
-              meta={[
-                { name: 'description', content: formatMessage(messages.helmetDescription, { tenantName: currentTenant.attributes.name }) },
-              ]}
-            />
-            <Navbar currentTenant={currentTenant} location={this.props.location.pathname} />
+    const finalMetaTitle =
+      (metaTitle && !metaTitle.isEmpty() && tFunc(metaTitle)) ||
+      formatMessage(messages.helmetTitle, { tenantName: currentTenant.attributes.name });
 
-            <Loader
-              resourceLoader={loadUser}
-              loadingMessage={messages.currentUserLoadingMessage}
-              errorMessage={messages.currentUserLoadingError}
-              listenenTo={LOAD_CURRENT_USER_REQUEST}
-              withError={false}
-            >
-              <Authorize action={['routes', 'admin']} resource={location.pathname}>
-                <div>
-                  {children}
-                </div>
-                <Else>
-                  <ForbiddenRoute />
-                </Else>
-              </Authorize>
-            </Loader>
-          </Container>
-        </ThemeProvider>
-      );
-    } else { // eslint-disable-line no-else-return
-      return <div>Loading...</div>;
-    }
+
+    const theme = {
+      color: {
+        main: colorMain || '#ef0071',
+        menuBg: colorMenuBg || '#fff',
+      },
+    };
+
+    return (
+      <ThemeProvider theme={theme}>
+        <Container>
+          <Helmet>
+            <title>{finalMetaTitle}</title>
+            <meta name="description" content={finalMetaDescription} />
+          </Helmet>
+
+          <Navbar currentTenant={currentTenant} location={this.props.location.pathname} />
+
+          <Loader
+            resourceLoader={loadUser}
+            loadingMessage={messages.currentUserLoadingMessage}
+            errorMessage={messages.currentUserLoadingError}
+            listenenTo={LOAD_CURRENT_USER_REQUEST}
+            withError={false}
+          >
+            <Authorize action={['routes', 'admin']} resource={location.pathname}>
+              <div>
+                {children}
+              </div>
+              <Else>
+                <ForbiddenRoute />
+              </Else>
+            </Authorize>
+          </Loader>
+        </Container>
+      </ThemeProvider>
+    );
   }
 
   render() {
+    const { currentTenant } = this.props;
     return (
       <div>
         <WatchSagas sagas={authSagas} />
         <WatchSagas sagas={areasSagas} />
         <WatchSagas sagas={{ tenantSaga }} />
-        {this.content()}
+        <WatchSagas sagas={voteControlSagas} />
+        {currentTenant ? this.content() : <div>Loading...</div>}
       </div>
     );
   }
@@ -119,20 +128,24 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
 
 App.propTypes = {
   children: PropTypes.node,
-  dispatch: PropTypes.func,
   currentTenant: PropTypes.object,
   intl: intlShape.isRequired,
+  tFunc: PropTypes.func.isRequired,
   location: PropTypes.object,
   loadCurrentTenantRequest: PropTypes.func.isRequired,
   loadUser: PropTypes.func.isRequired,
   colorMain: PropTypes.string,
   colorMenuBg: PropTypes.string,
+  metaTitle: PropTypes.object,
+  metaDescription: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   currentTenant: makeSelectCurrentTenant(),
   colorMain: makeSelectSetting(['core', 'color_main']),
   colorMenuBg: makeSelectSetting(['core', 'color_menu_bg']),
+  metaTitle: makeSelectSetting(['core', 'meta_title']),
+  metaDescription: makeSelectSetting(['core', 'meta_description']),
 });
 
 const actions = {
@@ -140,4 +153,4 @@ const actions = {
   loadCurrentTenantRequest,
 };
 
-export default injectIntl(preprocess(mapStateToProps, actions)(App));
+export default injectTFunc(injectIntl(preprocess(mapStateToProps, actions)(App)));

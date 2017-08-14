@@ -126,14 +126,15 @@ const StyledMultipleSelect = styled(ReactSelect)`
           border-radius: 5px;
           overflow: hidden;
           cursor: pointer;
-          background: ${(props) => props.theme.color.main || '#777'};
+          /* background: ${(props) => props.theme.color.main || '#777'}; */
+          background: #ddd;
 
           &:last-child {
             margin-right: 0px;
           }
 
           .Select-value-icon {
-            color: #fff;
+            color: #333;
             font-size: 32px;
             line-height: 32px;
             font-weight: 300;
@@ -157,7 +158,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
           }
 
           .Select-value-label {
-            color: #fff;
+            color: #333;
             font-size: 16px;
             font-weight: 400;
             line-height: 34px;

@@ -13,7 +13,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import HelmetIntl from 'components/HelmetIntl';
 import { FormattedMessage } from 'react-intl';
 import WatchSagas from 'utils/containers/watchSagas';
-import ProjectCard from 'components/projects/card';
+import ProjectCard from 'components/ProjectCard';
 import { Segment } from 'semantic-ui-react';
 
 // store

@@ -6,58 +6,106 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import qs from 'qs';
 import HelmetIntl from 'components/HelmetIntl';
 import { connect } from 'react-redux';
 
-import { push } from 'react-router-redux';
+// components
+import WatchSagas from 'containers/WatchSagas';
+import IdeaCards from 'components/IdeaCards';
 
-import OverlayChildren from 'utils/containers/overlayChildren';
+import SelectTopics from './components/selectTopics';
+import SelectAreas from './components/selectAreas';
+import SelectSort from './components/selectSort';
+import SearchField from './components/searchField';
 
-import PageView from './pageView';
-
+// store
+import { loadTopicsRequest, loadAreasRequest, resetIdeas } from './actions';
+import sagasWatchers from './sagas';
 import messages from './messages';
 
-// need to implement Helmet
+
+const FiltersArea = styled.div`
+  align-items: center;
+  display: flex;
+  height: 3.5rem;
+  justify-content: flex-end;
+  margin-bottom: 4.5rem;
+  width: 100%;
+`;
+
+const ContentContainer = styled.section`
+  max-width: 980px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 30px 10px;
+`;
+
+
 class IdeasIndex extends React.Component {
 
-  isMainView = ({ params }) => !params.ideaId;
+  componentDidMount() {
+    this.props.loadTopicsRequest();
+    this.props.loadAreasRequest();
+  }
 
-  backToMainView = () => {
-    const goTo = this.props.push;
-    return () => goTo('/ideas');
-  };
+  componentWillUnmount() {
+    this.props.resetIdeas();
+  }
+
 
   render() {
-    const { children } = this.props;
+    const { filter, withFilters } = this.props;
+
     return (
       <div>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <OverlayChildren
-          component={PageView}
-          isMainView={this.isMainView}
-          handleClose={this.backToMainView}
-          {...this.props}
-        >
-          {children}
-        </OverlayChildren>
+        <WatchSagas sagas={sagasWatchers} />
+        <ContentContainer>
+          {withFilters && <FiltersArea>
+            <SearchField />
+            <SelectSort />
+            <SelectTopics />
+            <SelectAreas />
+          </FiltersArea>}
+          <IdeaCards filter={filter} />
+        </ContentContainer>
+
       </div>
     );
   }
 }
+
 
 IdeasIndex.contextTypes = {
   sagas: PropTypes.func.isRequired,
 };
 
 IdeasIndex.propTypes = {
-  children: PropTypes.element,
-  push: PropTypes.func.isRequired,
-  params: PropTypes.object.isRequired,
+  loadTopicsRequest: PropTypes.func.isRequired,
+  loadAreasRequest: PropTypes.func.isRequired,
+  resetIdeas: PropTypes.func.isRequired,
+  filter: PropTypes.object,
+  withFilters: PropTypes.bool.isRequired,
 };
 
-const mapDispatchToProps = { push };
+IdeasIndex.defaultProps = {
+  location: {},
+  withFilters: true,
+};
 
-export default connect(null, mapDispatchToProps)(IdeasIndex);
+const actions = { loadTopicsRequest, loadAreasRequest, resetIdeas };
+
+const mergeProps = (_, dispatch, own) => {
+  const { location } = own;
+  // We use qs instead of the already available react-router parsed version,
+  // because it handles the arrays nicely
+  const parsedParams = qs.parse(location.search, { ignoreQueryPrefix: true });
+  return { ...dispatch, ...own, filter: parsedParams };
+};
+
+export default connect(null, actions, mergeProps)(IdeasIndex);

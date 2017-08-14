@@ -9,12 +9,20 @@ const StyledLabel = styled.label`
   padding-bottom: 6px;
 `;
 
-const Label: React.SFC<ILabel> = ({ value, htmlFor, children }) => <StyledLabel htmlFor={htmlFor}>{children || value}</StyledLabel>;
-
-interface ILabel {
+type Props = {
   value?: string;
   htmlFor?: string;
   children?: any;
-}
+};
 
-export default Label;
+type State = {};
+
+export default class Label extends React.PureComponent<Props, State> {
+  render() {
+    const { value, htmlFor, children } = this.props;
+
+    return (
+      <StyledLabel htmlFor={htmlFor}>{children || value}</StyledLabel>
+    );
+  }
+}

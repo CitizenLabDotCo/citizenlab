@@ -87,14 +87,9 @@ export default class Input extends React.PureComponent<Props, State> {
           onFocus={this.props.onFocus}
           ref={this.handleRef}
         />
-        <Error
-          text={error}
-          size="1"
-          marginTop="10px"
-          marginBottom="0px"
-          showIcon={false}
-          showBackground={false}
-        />
+        <div>
+          <Error text={error} size="1" />
+        </div>
       </InputWrapper>
     );
   }

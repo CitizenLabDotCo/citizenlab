@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Icon from 'components/UI/Icon';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
 import * as _ from 'lodash';
 import styled from 'styled-components';
 
@@ -40,6 +41,7 @@ const StyledErrorMessageInner = styled.div`
 const StyledErrorMessage: any = styled.div`
   position: relative;
   overflow: hidden;
+  will-change: auto;
 
   ${StyledErrorMessageInner} {
     margin-top: ${(props: IStyledErrorMessage) => props.marginTop};
@@ -90,79 +92,32 @@ const StyledErrorMessage: any = styled.div`
 
   &.error-enter {
     max-height: 0px;
-    opacity: 0;
+    opacity: 0.01;
     will-change: opacity;
-    transition: max-height 400ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                opacity 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+    &.error-enter-active {
+      max-height: 60px;
+      opacity: 1;
+      transition: max-height 400ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                  opacity 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
   }
 
-  &.error-enter-active {
-    max-height: 60px;
-    opacity: 1;
-    will-change: auto;
-  }
-
-  &.error-leave {
+  &.error-exit {
     max-height: 100px;
     opacity: 1;
     will-change: opacity;
-    transition: max-height 350ms cubic-bezier(0.19, 1, 0.22, 1),
-                opacity 350ms cubic-bezier(0.19, 1, 0.22, 1);
-  }
 
-  &.error-leave-active {
-    max-height: 0px;
-    opacity: 0;
-    will-change: auto;
+    &.error-exit-active {
+      max-height: 0px;
+      opacity: 0.01;
+      transition: max-height 350ms cubic-bezier(0.19, 1, 0.22, 1),
+                  opacity 350ms cubic-bezier(0.19, 1, 0.22, 1);
+    }
   }
 `;
 
-const Error: React.SFC<IError> = ({ text, size, marginTop, marginBottom, showIcon, showBackground, className }) => {
-  const enterTime = 400;
-  const leaveTime = 350;
-  const opened = (_.isString(text) && !_.isEmpty(text));
-
-  size = (size || '1');
-  marginTop = (marginTop || '10px');
-  marginBottom = (marginTop || '0px');
-  showIcon = (showIcon || true);
-  showBackground = (showBackground || true);
-  className = (className || '');
-
-  if (opened) {
-    return (
-      <CSSTransitionGroup
-        transitionName="error"
-        transitionEnterTimeout={enterTime}
-        transitionLeaveTimeout={leaveTime}
-        className={`Error ${className}`}
-      >
-        <StyledErrorMessage
-          size={size}
-          marginTop={marginTop}
-          marginBottom={marginBottom}
-        >
-          <StyledErrorMessageInner showBackground={showBackground}>
-            {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
-            <ErrorMessageText>
-              {text}
-            </ErrorMessageText>
-          </StyledErrorMessageInner>
-        </StyledErrorMessage>
-      </CSSTransitionGroup>
-    );
-  }
-
-  return (
-    <CSSTransitionGroup
-      transitionName="error"
-      transitionEnterTimeout={enterTime}
-      transitionLeaveTimeout={leaveTime}
-    />
-  );
-};
-
-interface IError {
+type Props = {
   text: string | null;
   size?: string;
   marginTop?: string;
@@ -170,6 +125,42 @@ interface IError {
   showIcon?: boolean;
   showBackground?: boolean;
   className?: string;
-}
+};
 
-export default Error;
+type State = {};
+
+export default class Error extends React.PureComponent<Props, State> {
+  render() {
+    const { text } = this.props;
+    let { size, marginTop, marginBottom, showIcon, showBackground, className } = this.props;
+    const timeout = 400;
+
+    size = (size || '1');
+    marginTop = (marginTop || '5px');
+    marginBottom = (marginTop || '0px');
+    showIcon = (_.isBoolean(showIcon) ? showIcon : true);
+    showBackground = (_.isBoolean(showBackground) ? showBackground : true);
+    className = (className || '');
+
+    const errorElement = text && (
+      <CSSTransition classNames="error" timeout={timeout}>
+        <StyledErrorMessage size={size} marginTop={marginTop} marginBottom={marginBottom}>
+          <StyledErrorMessageInner showBackground={showBackground}>
+            {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
+            <ErrorMessageText>
+              {text}
+            </ErrorMessageText>
+          </StyledErrorMessageInner>
+        </StyledErrorMessage>
+      </CSSTransition>
+    );
+
+    return (
+      <div>
+        <TransitionGroup>
+          {errorElement}
+        </TransitionGroup>
+      </div>
+    );
+  }
+}
