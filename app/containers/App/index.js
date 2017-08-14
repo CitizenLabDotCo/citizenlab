@@ -62,7 +62,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
   }
 
   content() {
-    const { tFunc, currentTenant, location, children, loadUser, colorMain, colorMenuBg, metaTitle, metaDescription } = this.props;
+    const { tFunc, currentTenant, location, children, loadUser, colorMain, menuStyle, metaTitle, metaDescription } = this.props;
     const { formatMessage } = this.props.intl;
 
     const finalMetaDescription =
@@ -75,10 +75,8 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
 
 
     const theme = {
-      color: {
-        main: colorMain || '#ef0071',
-        menuBg: colorMenuBg || '#fff',
-      },
+      colorMain: colorMain || '#ef0071',
+      menuStyle: menuStyle || 'light',
     };
 
     return (
@@ -135,7 +133,7 @@ App.propTypes = {
   loadCurrentTenantRequest: PropTypes.func.isRequired,
   loadUser: PropTypes.func.isRequired,
   colorMain: PropTypes.string,
-  colorMenuBg: PropTypes.string,
+  menuStyle: PropTypes.string,
   metaTitle: PropTypes.object,
   metaDescription: PropTypes.object,
 };
@@ -143,7 +141,7 @@ App.propTypes = {
 const mapStateToProps = createStructuredSelector({
   currentTenant: makeSelectCurrentTenant(),
   colorMain: makeSelectSetting(['core', 'color_main']),
-  colorMenuBg: makeSelectSetting(['core', 'color_menu_bg']),
+  menuStyle: makeSelectSetting(['core', 'menu_style']),
   metaTitle: makeSelectSetting(['core', 'meta_title']),
   metaDescription: makeSelectSetting(['core', 'meta_description']),
 });
