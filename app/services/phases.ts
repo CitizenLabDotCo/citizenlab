@@ -64,3 +64,9 @@ export function updatePhase(phaseId: string, object: IUpdatedPhase, refetch = tr
     throw new Error(`error for updatePhase() of service Phases`);
   });
 }
+
+export function deletePhase(phaseId: string, httpOptions = {}): Promise<any> {
+  const defaultOptions = { method: 'DELETE' };
+
+  return request(`${apiEndpoint}/${phaseId}`, null, { ...defaultOptions, ...httpOptions }, null);
+}
