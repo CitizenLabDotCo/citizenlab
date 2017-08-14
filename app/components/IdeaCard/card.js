@@ -2,61 +2,67 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImPropTypes from 'react-immutable-proptypes';
 
+
 // components
 import View from './card/view';
 
 // store
 import { preprocess } from 'utils';
 import { createStructuredSelector } from 'reselect';
-import { push } from 'react-router-redux';
-import { selectResourcesDomain } from 'utils/resources/selectors';
+import { selectIdea, selectIdeaImages } from './selectors';
 
-const Card = ({ viewIdea, title, createdAt, upvotesCount, downvotesCount }) => {
-  if (!title) return null;
+const Card = (props) => {
+  if (!props.title) return null;
 
   return (
-    <View
-      onClick={viewIdea}
-      title={title}
-      createdAt={createdAt}
-      upvotesCount={upvotesCount}
-      downvotesCount={downvotesCount}
-    />
+    <View {...props} />
   );
 };
 
 Card.propTypes = {
-  viewIdea: PropTypes.func,
   title: ImPropTypes.map,
   createdAt: PropTypes.string,
   upvotesCount: PropTypes.number,
   downvotesCount: PropTypes.number,
+  onClick: PropTypes.func,
+  imageUrl: PropTypes.string,
+  authorName: PropTypes.string,
+  authorId: PropTypes.string,
+  commentsCount: PropTypes.number,
 };
 
 const mapStateToProps = () => createStructuredSelector({
-  idea: (state, { id }) => selectResourcesDomain('ideas', id)(state),
+  idea: selectIdea,
+  images: selectIdeaImages,
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { id } = ownProps;
-  const { goTo } = dispatchProps;
-  const { idea } = stateProps;
+  const { onClick } = ownProps;
+  const { idea, images } = stateProps;
   if (!idea) return {};
 
+  const ideaId = idea.get('id');
   const attributes = idea.get('attributes');
+  const slug = attributes.get('slug');
   const title = attributes.get('title_multiloc');
   const createdAt = attributes.get('published_at');
-  const upvotesCount = attributes.get('upvotes_count');
-  const downvotesCount = attributes.get('downvotes_count');
+  const authorName = attributes.get('author_name');
+  const authorId = idea.getIn(['relationships', 'author', 'data', 'id']);
+  const firstImage = images.first();
+  const imageUrl = firstImage && firstImage.getIn(['attributes', 'versions', 'medium']);
+  const commentsCount = attributes.get('comments_count');
 
-  const viewIdea = () => goTo(`/ideas/${id}`);
   return {
-    viewIdea,
+    ideaId,
+    slug,
+    onClick,
     title,
     createdAt,
-    upvotesCount,
-    downvotesCount,
+    imageUrl,
+    authorName,
+    authorId,
+    commentsCount,
   };
 };
 
-export default preprocess(mapStateToProps, { goTo: push }, mergeProps)(Card);
+export default preprocess(mapStateToProps, null, mergeProps)(Card);

@@ -1,16 +1,11 @@
 import { createSelector } from 'reselect';
 
-import { selectResourcesDomain } from 'utils/resources/selectors';
-import { selectAuthDomain } from 'utils/auth/selectors';
+import { selectResourcesDomain, makeSelectResourceBySlug } from 'utils/resources/selectors';
 
 const selectIdeasShow = (...types) => (state) => state.getIn(['ideasShow', ...types]);
 import { fromJS } from 'immutable';
 
-export const selectIdea = createSelector(
-  selectIdeasShow('idea'),
-  selectResourcesDomain('ideas'),
-  (id, ideas) => id && ideas.get(id),
-);
+export const selectIdea = makeSelectResourceBySlug('ideas');
 
 export const makeSelectComments = createSelector(
   selectIdeasShow('comments'),
@@ -35,31 +30,15 @@ export const arrayToTree = (ids, comments) => {
   return roots;
 };
 
-
-export const makeSelectOwnVotesTot = (ideaId) => createSelector(
-  selectAuthDomain('id'),
-  selectResourcesDomain('votes'),
-  (currentUserId, votes) => {
-    if (!votes) return 0;
-    const ownVotes = votes.filter((vote) => {
-      const ownVote = vote.getIn(['relationships', 'user', 'data', 'id']) === currentUserId;
-      const thisIdeaVote = vote.getIn(['relationships', 'votable', 'data', 'id']) === ideaId;
-      return ownVote && thisIdeaVote;
-    });
-    const totVotes = ownVotes.reduce((tot, vote) => {
-      const mode = vote.getIn(['attributes', 'mode']) === 'up' ? 1 : -1;
-      return tot + mode;
-    }, 0);
-    return totVotes;
-  },
-);
-
-export const makeSelectIdeaImages = () => createSelector(
+export const selectIdeaImages = createSelector(
   selectResourcesDomain('idea_images'),
-  selectIdeasShow('images'),
-  (resourcesImages, ideaImages) => (resourcesImages
-      ? ideaImages.map((id) => resourcesImages.get(id))
-      : fromJS([]))
+  selectIdea,
+  (resourcesImages, idea) => {
+    const images = idea && idea.getIn(['relationships', 'idea_images', 'data']);
+    return (images
+      ? images.map((imageData) => resourcesImages.get(imageData.get('id')))
+      : fromJS([]));
+  },
 );
 
 export default selectIdeasShow;

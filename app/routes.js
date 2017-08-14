@@ -139,25 +139,6 @@ export default function createRoutes(store) {
     },
     {
       path: '/ideas/new',
-      name: 'IdeasNewPage',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/IdeasNewPage/reducer'),
-          import('containers/IdeasNewPage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([reducer, component]) => {
-          injectReducer('ideasNewPageReducer', reducer.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    },
-    {
-      path: '/ideas/new2',
       name: 'IdeasNewPage2',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
@@ -191,27 +172,25 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-      childRoutes: [
-        {
-          path: ':ideaId',
-          name: 'ideasShow',
-          getComponent(nextState, cb) {
-            const importModules = Promise.all([
-              import('containers/IdeasShow/reducer'),
-              import('containers/IdeasShow'),
-            ]);
+    },
+    {
+      path: '/ideas/:slug',
+      name: 'ideasShow',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/IdeasShow/reducer'),
+          import('containers/IdeasShow'),
+        ]);
 
-            const renderRoute = loadModule(cb);
+        const renderRoute = loadModule(cb);
 
-            importModules.then(([reducer, component]) => {
-              injectReducer('ideasShow', reducer.default);
-              renderRoute(component);
-            });
+        importModules.then(([reducer, component]) => {
+          injectReducer('ideasShow', reducer.default);
+          renderRoute(component);
+        });
 
-            importModules.catch(errorLoading);
-          },
-        },
-      ],
+        importModules.catch(errorLoading);
+      },
     },
     {
       path: '/profile/:slug',

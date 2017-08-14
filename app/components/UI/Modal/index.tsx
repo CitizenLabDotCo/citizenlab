@@ -2,11 +2,12 @@ import * as React from 'react';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
+import { injectTracks, trackPage } from 'utils/analytics';
 import styled from 'styled-components';
 
 const ModalContent = styled(clickOutside)`
   width: 100%;
-  max-width: 800px;
+  max-width: 1000px;
   display: flex;
   flex-direction: column;
   padding: 25px;
@@ -102,55 +103,68 @@ const CloseButton = styled.div`
 `;
 
 type Props = {
-  children: any;
   opened: boolean;
-  parentUrl?: string;
   url?: string;
   close: () => void;
+  trackOpenModal?: any;
+  trackCloseModal?: any;
 };
 
 type State = {};
 
-export default class Modal extends React.PureComponent<Props, State> {
+class Modal extends React.PureComponent<Props, State> {
+  private parentUrl: string;
+
+  constructor() {
+    super();
+    this.parentUrl = window.location.href;
+  }
+
   componentWillUnmount() {
     this.onClose();
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: Props, nextState: State) {
     const { opened } = this.props;
 
     if (!opened && nextProps.opened) {
-      this.onOpen();
+      this.onOpen(nextProps.url);
     }
 
     if (opened && !nextProps.opened) {
-      this.onClose();
+      this.onClose(true);
     }
   }
 
-  onOpen = () => {
+  onOpen = (url: undefined | string) => {
     window.addEventListener('popstate', this.handlePopstateEvent);
 
     if (!document.body.classList.contains('modal-active')) {
       document.body.classList.add('modal-active');
     }
 
-    if (this.props.parentUrl && this.props.url) {
-      window.history.pushState({ path: this.props.url }, '', this.props.url);
+    if (url) {
+      window.history.pushState({ path: url }, '', url);
     }
+
+    this.props.trackOpenModal({ extra: { url } });
   }
 
-  onClose = () => {
+  onClose = (goBack = false) => {
+    const { url } = this.props;
+
     document.body.classList.remove('modal-active');
     window.removeEventListener('popstate', this.handlePopstateEvent);
 
-    if (this.props.parentUrl && this.props.url) {
-      window.history.pushState({ path: this.props.parentUrl }, '', this.props.parentUrl);
+    if (url && goBack) {
+      window.history.pushState({ path: this.parentUrl }, '', this.parentUrl);
     }
+
+    this.props.trackCloseModal({ extra: { url } });
   }
 
   handlePopstateEvent = () => {
-    if (location.href === this.props.parentUrl) {
+    if (location.href === this.parentUrl) {
       this.closeModal();
     }
   }
@@ -160,7 +174,7 @@ export default class Modal extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { children, opened, parentUrl, url } = this.props;
+    const { children, opened } = this.props;
 
     const element = opened && (
       <CSSTransition classNames="modal" timeout={400}>
@@ -180,3 +194,8 @@ export default class Modal extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default injectTracks({
+  trackOpenModal: { name: 'Modal opened' },
+  trackCloseModal: { name: 'Modal closed' },
+})(Modal);

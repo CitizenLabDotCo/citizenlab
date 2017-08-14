@@ -4,7 +4,7 @@ import request from 'utils/request';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 
-const apiEndpoint = `${API_PATH}/tenants/`;
+const apiEndpoint = `${API_PATH}/tenants`;
 
 export interface ITenantData {
   id: string;
@@ -60,6 +60,6 @@ export interface ITenant {
   data: ITenantData;
 }
 
-export function observeCurrentTenant(userId: string, streamParams: IStreamParams<ITenant> | null = null) {
+export function observeCurrentTenant(streamParams: IStreamParams<ITenant> | null = null) {
   return streams.create<ITenant>({ apiEndpoint: `${apiEndpoint}/current`, ...streamParams });
 }

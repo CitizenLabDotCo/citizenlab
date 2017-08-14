@@ -1,10 +1,11 @@
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import shallowCompare from 'utils/shallowCompare';
+import { IObservable } from 'utils/streams';
 
 export interface IStateStream<T> {
-  next: (state: T | ((arg: T) => T)) => void;
-  observable: Rx.Observable<T>;
+  observable: IObservable<T>;
+  next: (state: Partial<T> | ((state: T) => Partial<T>)) => void;
 }
 
 class State {
@@ -16,24 +17,24 @@ class State {
     this.stream = {};
   }
 
-  observe<T>(store: string, initialState?: T): IStateStream<T> {
-    if (!this.stream[store]) {
-      this.stream[store] = {
-        next: (state: T | ((arg: T) => T)) => { this.behaviorSubject.next({ store, state }); },
+  observe<T>(name: string, initialState?: T): IStateStream<T> {
+    if (!this.stream[name]) {
+      this.stream[name] = {
+        next: (state: Partial<T> | ((state: T) => Partial<T>)) => { this.behaviorSubject.next({ name, state }); },
         observable: this.behaviorSubject
-          .startWith({ store, state: initialState })
-          .filter(data => _.has(data, 'store') && data.store === store)
+          .startWith({ name, state: (initialState !== undefined ? initialState : null) })
+          .filter(data => data && data.name && data.name === name)
           .map(data => data.state)
           .scan((oldState, updatedState) => ({ ...oldState, ...(_.isFunction(updatedState) ? updatedState(oldState) : updatedState) }))
           .distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState))
           .publishReplay(1)
           .refCount()
       };
-    } else if (this.stream[store] && initialState !== undefined) {
-      this.behaviorSubject.next({ store, state: initialState });
+    } else if (this.stream[name] && initialState) {
+      this.behaviorSubject.next({ name, state: initialState });
     }
 
-    return this.stream[store];
+    return this.stream[name];
   }
 }
 

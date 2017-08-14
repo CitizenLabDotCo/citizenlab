@@ -22,10 +22,11 @@ const Counter = styled.div`
 `;
 
 // used in Navbar
-const NotificationCount = ({ count, className }) => (<div className={className}>
-  <Image src={notificationBell} />
-  <Counter notZero={count > 0}>{count > 0 ? count : ''}</Counter>
-</div>);
+const NotificationCount = ({ count, className }) => (
+  <div className={className}>
+    <Image src={notificationBell} />
+    <Counter notZero={count > 0}>{count > 0 ? count : ''}</Counter>
+  </div>);
 
 NotificationCount.propTypes = {
   count: PropTypes.number,
@@ -33,9 +34,6 @@ NotificationCount.propTypes = {
 };
 
 export default styled(NotificationCount)`
-  position: absolute;
-  right: 20px;
-  top: 0;
   cursor: pointer;
   width: 20.4px;
   height: 24px;
