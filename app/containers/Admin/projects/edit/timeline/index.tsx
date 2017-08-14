@@ -4,10 +4,11 @@ import * as Rx from 'rxjs/Rx';
 import styled from 'styled-components';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import messages from './messages';
+import * as _ from 'lodash';
 
 // Services
 import { observeProject } from 'services/projects';
-import { observePhases, IPhaseData } from 'services/phases';
+import { observePhases, IPhaseData, deletePhase } from 'services/phases';
 
 // Components
 import { Link } from 'react-router';
@@ -29,6 +30,8 @@ const AddButton = styled(Button)`
 `;
 
 const PhasesTable = styled.table`
+  width: 100%;
+
   th {
     font-weight: normal;
     text-align: left;
@@ -68,37 +71,34 @@ const OrderLabel = styled.div`
   }
 `;
 
+const ListButton = function () {
+  return `
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    padding: .75rem 1rem;
+
+    svg {
+      flex: 0 0 1rem;
+      margin-right: 1rem;
+    }
+
+    span {
+      display: block;
+      flex: 0 0 auto;
+    }
+  `;
+};
+
 const DeleteButton = styled.button`
-  display: flex;
-  padding: .75rem 1rem;
-
-  svg {
-    flex: 1 0 1rem;
-    margin-right: 1rem;
-  }
-
-  span {
-    display: block;
-    flex: 1 0 auto;
-  }
+  ${ListButton()}
 `;
 
 const EditButton = styled(Link as React.StatelessComponent<{to: string}>)`
   background: #e5e5e5;
   border-radius: 5px;
   color: #6B6B6B;
-  display: flex;
-  padding: .75rem 1rem;
-
-  svg {
-    flex: 1 0 1rem;
-    margin-right: 1rem;
-  }
-
-  span {
-    display: block;
-    flex: 1 0 auto;
-  }
+  ${ListButton()}
 `;
 
 // Component typing
@@ -141,7 +141,10 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
     return (event) => {
       event.preventDefault();
       if (window.confirm(this.props.intl.formatMessage(messages.deletePhaseConfirmation))) {
-        console.log(`Delete phase ${phaseId}`);
+        deletePhase(phaseId).
+        then((response) => {
+          this.setState({ phases: _.reject(this.state.phases, { id: phaseId }) });
+        });
       }
     };
   }
@@ -168,7 +171,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
       <ListWrapper>
         <AddButton>Add a Phase</AddButton>
 
-        {!loading && phases &&
+        {!loading && phases.length > 0 &&
           <PhasesTable>
             <thead>
               <tr>
