@@ -62,6 +62,21 @@ const getIcon = (name: string, className: string | undefined) => {
         </svg>
       );
     }
+    case 'plus': {
+      return (
+        <svg height="100%" viewBox="0 0 51 51">
+          <path d="M0 19.89v11.118h19.631V51h11.634V31.008H51V19.89H31.265V0H19.63v19.89H0z" fill="#d70065" />
+        </svg>
+      );
+    }
+    case 'add_circle': {
+      return (
+        <svg className={className} fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+        </svg>
+      );
+    }
     case 'comment': {
       return (
         <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">

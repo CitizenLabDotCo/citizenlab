@@ -50,7 +50,7 @@ const StyledButton: any = styled.button`
 
   &.primary {
     &:not(.disabled) {
-      background: ${(props: any) => props.theme.color.main || '#e0e0e0'};
+      background: ${(props: any) => props.theme.colorMain || '#e0e0e0'};
 
       ${ButtonText} {
         color: ${(props: any) => '#fff' || '#000'};
@@ -61,7 +61,7 @@ const StyledButton: any = styled.button`
       }
 
       &:hover {
-        background: ${(props: any) => darken(0.1, (props.theme.color.main || '#ccc'))};
+        background: ${(props: any) => darken(0.1, (props.theme.colorMain || '#ccc'))};
       }
     }
 

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { push } from 'react-router-redux';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { lighten } from 'polished';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
@@ -17,14 +17,16 @@ import messages from './messages';
 import tracks from './tracks';
 import NotificationMenu from 'containers/NotificationMenu';
 import NotificationCount from 'containers/NotificationMenu/components/NotificationCount';
+import Icon from 'components/UI/Icon';
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 12px 20px;
+  padding: 0 0;
+  height: 80px;
   position: relative;
-  background: ${(props) => !props.secondary ? props.theme.color.menuBg : '#fff'};
+  background: ${(props) => props.theme.colorNavBg};
   z-index: 999;
   position: fixed;
   top: 0;
@@ -40,41 +42,45 @@ const Left = styled.div`
   }
 `;
 
-const MenuItemWrapper = styled.div`
-  opacity: ${(props) => props.active ? '1' : '0.65'};
-`;
-
-const MenuItem = styled(Link)`
-  height: 100%;
-  font-size: 19px;
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-left: 16px;
-  padding-right: 16px;
+const Logo = styled.div`
   cursor: pointer;
-  color: #ffffff !important;
-  transition: all 150ms ease;
+  height: 100%;
+  padding: 0 25px;
+  border-right: 1px solid ${(props) => props.theme.colorNavSubtle};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const MenuItems = styled.div`
   height: 100%;
   display: flex;
-  margin-left: 25px;
-
-  ${MenuItem} {
-    color: ${(props) => !props.secondary ? '#666' : 'rgba(255, 255, 255, 0.5)'};
-
-    &:hover {
-      color: ${(props) => !props.secondary ? props.theme.color.main : '#fff'};
-    }
-
-    &.active {
-      color: ${(props) => !props.secondary ? props.theme.color.main : '#fff'};
-    }
-  }
+  margin-left: 90px;
 `;
+
+const MenuItem = styled(Link)`
+  height: 100%;
+
+  opacity: 0.5;
+  transition: opacity 150ms ease;
+  &.active, &:hover {
+    opacity: 1;
+  }
+
+  color: ${(props) => props.theme.colorNavFg} !important;
+  font-size: 18px;
+  font-weight: 400;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:not(:last-child) {
+    padding-right: 50px;
+  }
+
+
+`;
+
 
 const Right = styled.div`
   display: flex;
@@ -86,21 +92,15 @@ const Right = styled.div`
   }
 `;
 
-const Logo = styled.div`
-  height: 40px;
-  cursor: pointer;
-`;
 
 const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 20px;
-  border-radius: 6px;
-  background: ${(props) => props.theme.color.main};
+  padding: 10px 25px;
+  border-radius: 5px;
+  background: ${(props) => props.theme.colorMain};
   cursor: pointer;
-  transition: all 200ms ease-out;
-  margin-right: 0px;
   transition: all 150ms ease;
 
   &:not(:last-child) {
@@ -108,14 +108,13 @@ const Button = styled.div`
   }
 
   &:hover {
-    background: ${(props) => lighten(0.1, props.theme.color.main)};
+    background: ${(props) => lighten(0.1, props.theme.colorMain)};
   }
 `;
 
-const ButtonIcon = styled.svg`
+const ButtonIcon = styled(Icon)`
   fill: #fff;
-  height: 32px;
-  margin-top: -8px;
+  margin-right: 20px;
 `;
 
 const ButtonText = styled.span`
@@ -179,7 +178,7 @@ const NotificationMenuContainer = styled(ClickOutside)`
   position: relative;
 `;
 
-class Navbar extends React.PureComponent {
+class Navbar extends React.Component {
   constructor() {
     super();
 
@@ -222,94 +221,97 @@ class Navbar extends React.PureComponent {
     this.setState({ notificationPanelOpened: false });
   };
 
+  navbarTheme = (style) => {
+    return {
+      ...style,
+      colorNavBg: style.menuStyle === 'light' ? '#FFFFFF' : '#222222',
+      colorNavSubtle: style.menuStyle === 'light' ? '#EAEAEA' : '#444444',
+      colorNavFg: style.menuStyle === 'light' ? '#000000' : '#FFFFFF',
+    };
+  }
+
   render() {
     const { tenantLogo, currentUser, location, className } = this.props;
     const avatar = (currentUser ? currentUser.getIn(['attributes', 'avatar', 'large']) : null);
 
     return (
-      <Container className={className}>
-        <Left>
-          <Link to="/">
-            <Logo height="100%" viewBox="0 0 443.04 205.82" secondary={(location === '/')}>
-              <img src={tenantLogo} alt="logo"></img>
-            </Logo>
-          </Link>
+      <ThemeProvider theme={this.navbarTheme}>
+        <Container className={className}>
+          <Left>
+            <Link to="/">
+              <Logo height="100%" viewBox="0 0 443.04 205.82" secondary={(location === '/')}>
+                <img src={tenantLogo} alt="logo"></img>
+              </Logo>
+            </Link>
 
-          <MenuItems>
-            <MenuItemWrapper active={this.props.location === '/'}>
-              <MenuItem to="/">
+            <MenuItems>
+              <MenuItem to="/" activeClassName="active">
                 <FormattedMessage {...messages.pageOverview} />
               </MenuItem>
-            </MenuItemWrapper>
-            <MenuItemWrapper active={this.props.location.indexOf('ideas') !== -1}>
-              <MenuItem to="/ideas">
+              <MenuItem to="/ideas" activeClassName="active">
                 <FormattedMessage {...messages.pageIdeas} />
               </MenuItem>
-            </MenuItemWrapper>
-            <MenuItemWrapper active={this.props.location.indexOf('projects') !== -1}>
-              <MenuItem to="/projects">
+              <MenuItem to="/projects" activeClassName="active">
                 <FormattedMessage {...messages.pageProjects} />
               </MenuItem>
-            </MenuItemWrapper>
-          </MenuItems>
-        </Left>
-        <Right>
-          <Button onClick={this.goTo('/ideas/new')}>
-            <ButtonIcon height="100%" viewBox="0 0 24 24">
-              <path fill="none" d="M0 0h24v24H0V0z" /><path d="M6.57 21.64c0 .394.32.716.716.716h2.867c.394 0 .717-.322.717-.717v-.718h-4.3v.717zM8.72 8.02C5.95 8.02 3.7 10.273 3.7 13.04c0 1.704.853 3.202 2.15 4.112v1.62c0 .394.322.716.717.716h4.3c.393 0 .716-.322.716-.717v-1.618c1.298-.91 2.15-2.408 2.15-4.113 0-2.768-2.25-5.02-5.017-5.02zm2.04 7.957l-.608.43v1.648H7.286v-1.648l-.61-.43c-.967-.674-1.54-1.77-1.54-2.938 0-1.98 1.605-3.585 3.583-3.585s3.583 1.605 3.583 3.584c0 1.167-.574 2.263-1.542 2.937zM20.3 7.245h-3.61v3.61h-1.202v-3.61h-3.61V6.042h3.61v-3.61h1.202v3.61h3.61v1.203z" />
-            </ButtonIcon>
-            <ButtonText>
-              <FormattedMessage {...messages.addIdea} />
-            </ButtonText>
-          </Button>
-
-          {currentUser &&
-            <NotificationMenuContainer onClick={this.toggleNotificationPanel} onClickOutside={this.closeNotificationPanel}>
-              <NotificationCount
-                count={currentUser.getIn(['attributes', 'unread_notifications'])}
-              />
-              <NotificationMenu show={this.state.notificationPanelOpened} />
-            </NotificationMenuContainer>
-          }
-
-          {currentUser &&
-            <User onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
-              <UserImage avatar src={avatar}></UserImage>
-              {this.state.dropdownOpened &&
-                <Dropdown>
-                  <Authorize action={['users', 'admin']} >
-                    <DropdownItem onClick={this.goTo('/admin')}>
-                      <FormattedMessage {...messages.admin} />
-                    </DropdownItem>
-                  </Authorize>
-                  <DropdownItem onClick={this.goTo('/profile/edit')}>
-                    <FormattedMessage {...messages.editProfile} />
-                  </DropdownItem>
-                  <DropdownItem onClick={this.props.signOut}>
-                    <FormattedMessage {...messages.signOut} />
-                  </DropdownItem>
-                </Dropdown>
-              }
-            </User>
-          }
-
-          {!currentUser &&
-            <Button onClick={this.goTo('/register')}>
+            </MenuItems>
+          </Left>
+          <Right>
+            <Button onClick={this.goTo('/ideas/new')}>
+              <ButtonIcon name="add_circle" viewBox="0 0 24 24" />
               <ButtonText>
-                <FormattedMessage {...messages.register} />
+                <FormattedMessage {...messages.addIdea} />
               </ButtonText>
             </Button>
-          }
 
-          {!currentUser &&
-            <Link to="/sign-in">
-              <ButtonText>
-                <FormattedMessage {...messages.login} />
-              </ButtonText>
-            </Link>
-          }
-        </Right>
-      </Container>
+            {currentUser &&
+              <NotificationMenuContainer onClick={this.toggleNotificationPanel} onClickOutside={this.closeNotificationPanel}>
+                <NotificationCount
+                  count={currentUser.getIn(['attributes', 'unread_notifications'])}
+                />
+                <NotificationMenu show={this.state.notificationPanelOpened} />
+              </NotificationMenuContainer>
+            }
+
+            {currentUser &&
+              <User onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
+                <UserImage avatar src={avatar}></UserImage>
+                {this.state.dropdownOpened &&
+                  <Dropdown>
+                    <Authorize action={['users', 'admin']} >
+                      <DropdownItem onClick={this.goTo('/admin')}>
+                        <FormattedMessage {...messages.admin} />
+                      </DropdownItem>
+                    </Authorize>
+                    <DropdownItem onClick={this.goTo('/profile/edit')}>
+                      <FormattedMessage {...messages.editProfile} />
+                    </DropdownItem>
+                    <DropdownItem onClick={this.props.signOut}>
+                      <FormattedMessage {...messages.signOut} />
+                    </DropdownItem>
+                  </Dropdown>
+                }
+              </User>
+            }
+
+            {!currentUser &&
+              <Button onClick={this.goTo('/register')}>
+                <ButtonText>
+                  <FormattedMessage {...messages.register} />
+                </ButtonText>
+              </Button>
+            }
+
+            {!currentUser &&
+              <Link to="/sign-in">
+                <ButtonText>
+                  <FormattedMessage {...messages.login} />
+                </ButtonText>
+              </Link>
+            }
+          </Right>
+        </Container>
+      </ThemeProvider>
     );
   }
 }

@@ -52,7 +52,7 @@ const Logo = styled.img`
 `;
 
 const Slogan1 = styled.div`
-  color: ${props => props.theme.color.main || '#333'};
+  color: ${props => props.theme.colorMain || '#333'};
   font-size: 31px;
   line-height: 36px;
   font-weight: 500;
