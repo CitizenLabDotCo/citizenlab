@@ -113,6 +113,23 @@ export default (injectReducer) => ({
           },
         },
         {
+          path: '/admin/projects/:slug/timeline/new',
+          name: 'admin projects timeline create',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/Admin/projects/edit/timeline/edit'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
           path: '/admin/projects/new',
           name: 'admin projects create new',
           getComponent(nextState, cb) {

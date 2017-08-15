@@ -69,9 +69,10 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       focusedInput: null,
       descState: EditorState.createEmpty(),
     };
-    console.log(props.params.slug);
-    this.project$ = observeProject(props.params.slug);
-    this.phase$ = observePhase(props.params.id);
+    if (props.params.slug) {
+      this.project$ = observeProject(props.params.slug);
+      this.phase$ = observePhase(props.params.id);
+    }
     this.subscriptions = [];
   }
 
