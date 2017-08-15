@@ -21,7 +21,6 @@ const Container = styled.div`
   right: 0;
   background: #ffffff;
   box-shadow: 0px -3px 20px rgba(0,0,0,0.25);
-  // box-shadow: 3px 3px 5px 6px #ccc;
 
   padding: 4px 0;
 
@@ -39,15 +38,24 @@ const NavigationItem = styled(Link)`
   justify-content: space-evenly;
   align-items: center;
   cursor: pointer;
+  opacity: 0.6;
+
+  &.active {
+    opacity: 1;
+  }
 `;
 
 const NavigationIcon = styled.img`
-  height: 30px;
+  height: 26px;
 `;
 
 const NavigationLabel = styled.div`
   font-size: 14px;
   color: #000000;
+
+  ${NavigationItem}.active & {
+    font-weight: bold;
+  }
 `;
 
 
@@ -56,25 +64,25 @@ class MobileNavigation extends React.PureComponent {
   render() {
     return (
       <Container>
-        <NavigationItem to="/">
+        <NavigationItem to="/" activeClassName="active">
           <NavigationIcon src={home} />
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageHome} />
           </NavigationLabel>
         </NavigationItem>
-        <NavigationItem to="/ideas">
+        <NavigationItem to="/ideas" activeClassName="active">
           <NavigationIcon src={ideas} />
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageIdeas} />
           </NavigationLabel>
         </NavigationItem>
-        <NavigationItem to="/projects">
+        <NavigationItem to="/projects" activeClassName="active">
           <NavigationIcon src={projects} />
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageProjects} />
           </NavigationLabel>
         </NavigationItem>
-        <NavigationItem to="/profile/edit">
+        <NavigationItem to="/profile/edit" activeClassName="active">
           <NavigationIcon src={profile} />
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageProfile} />
