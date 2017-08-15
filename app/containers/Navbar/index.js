@@ -129,6 +129,16 @@ const ButtonText = styled.span`
   white-space: nowrap;
 `;
 
+const LoginLink = styled.div`
+  font-size: 18px;
+  color: ${(props) => props.theme.colorMain};
+  font-weight: 600;
+
+  &:hover {
+    color: ${(props) => lighten(0.1, props.theme.colorMain)};
+  }
+`;
+
 class Navbar extends React.Component {
   constructor() {
     super();
@@ -224,9 +234,9 @@ class Navbar extends React.Component {
             {!currentUser &&
               <RightItem hideOnPhone>
                 <Link to="/sign-in">
-                  <ButtonText>
+                  <LoginLink>
                     <FormattedMessage {...messages.login} />
-                  </ButtonText>
+                  </LoginLink>
                 </Link>
               </RightItem>
             }
