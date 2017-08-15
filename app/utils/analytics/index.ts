@@ -13,9 +13,16 @@ interface IEvent {
   },
 }
 
+interface IPageChange {
+  name: string,
+  properties?: {
+    [key: string]: any,
+  },
+}
+
 const tenant$ = observeCurrentTenant().observable;
 const events$ = new Rx.Subject<IEvent>();
-const pageChanges$ = new Rx.Subject<string>();
+const pageChanges$ = new Rx.Subject<IPageChange>();
 
 
 Rx.Observable.combineLatest(tenant$, events$)
@@ -27,10 +34,10 @@ Rx.Observable.combineLatest(tenant$, events$)
   });
 
 Rx.Observable.combineLatest(tenant$, pageChanges$)
-  .subscribe(([tenant, pagePath]) => {
-    (<any>window).analytics.track(
-      pagePath,
-      addTenantInfo({}, tenant.data),
+  .subscribe(([tenant, pageChange]) => {
+    (<any>window).analytics.page(
+      pageChange.name,
+      addTenantInfo(pageChange.properties, tenant.data),
     );
   });
 
@@ -44,8 +51,11 @@ export function addTenantInfo(properties, tenant: ITenantData) {
   };
 }
 
-export function trackPage(path) {
-  pageChanges$.next(path);
+export function trackPage(path: string, properties: {} = {}) {
+  pageChanges$.next({
+    name: path,
+    properties,
+  });
 }
 
 /** HOC that allows specifying events as function props to the inner component
