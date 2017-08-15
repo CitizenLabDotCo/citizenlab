@@ -7,17 +7,16 @@ import * as notificationBell from '../assets/notification_bell.svg';
 const Counter = styled.div`
   width: 24px;
   height: 24px;
-  background-color: #d0011b;
-  border: solid 2px #ffffff;
-  border-radius: 10px;
+  background-color: #D0021B;
+  border: solid 2px ${(props) => props.theme.colorNavBg};
+  border-radius: 50%;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   color: #ffffff;
-  padding-top: 2px;
   position: absolute;
-  top: -16px;
-  right: -11px;
+  top: -13px;
+  right: -12px;
   display: ${(props) => props.notZero ? 'block' : 'none'};
 `;
 

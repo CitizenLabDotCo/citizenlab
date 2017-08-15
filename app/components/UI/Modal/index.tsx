@@ -4,6 +4,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
 import { injectTracks, trackPage } from 'utils/analytics';
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const ModalContent = styled(clickOutside)`
   width: 100%;
@@ -20,7 +21,16 @@ const ModalContent = styled(clickOutside)`
   position: relative;
   -webkit-backface-visibility: hidden;
   will-change: auto;
+
+  ${media.phone`
+    border-radius: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+  `}
+
 `;
+
 
 const ModalContainer = styled.div`
   max-height: 100%;
@@ -37,50 +47,35 @@ const ModalContainer = styled.div`
   -webkit-backface-visibility: hidden;
   will-change: auto;
 
-  &.modal-enter {
-    opacity: 0.01;
-    will-change: opacity;
+  ${media.phone`
+    padding: 0px;
+  `}
 
-    ${ModalContent} {
+    &.modal-enter {
       opacity: 0.01;
-      transform: translateY(-100px);
-      will-change: opacity, transform;
-    }
-
-    &.modal-enter-active {
-      opacity: 1;
-      transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
-
-      ${ModalContent} {
-        opacity: 1;
-        transform: translateY(0px);
-        transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
-      }
-    }
-  }
-
-  &.modal-exit {
-    opacity: 1;
-    will-change: opacity;
-
-    ${ModalContent} {
-      opacity: 1;
-      transform: translateY(0px);
-      will-change: opacity, transform;
-    }
-
-    &.modal-exit-active {
-      opacity: 0.01;
-      transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      will-change: opacity;
 
       ${ModalContent} {
         opacity: 0.01;
         transform: translateY(-100px);
+        will-change: opacity, transform;
+      }
+
+      &.modal-enter-active {
+        opacity: 1;
         transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+        ${ModalContent} {
+          opacity: 1;
+          transform: translateY(0px);
+          transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
       }
     }
-  }
+
 `;
+
+
 
 const CloseButton = styled.div`
   color: #333;
@@ -177,7 +172,7 @@ class Modal extends React.PureComponent<Props, State> {
     const { children, opened } = this.props;
 
     const element = opened && (
-      <CSSTransition classNames="modal" timeout={400}>
+      <CSSTransition classNames="modal" timeout={400} exit={false}>
         <ModalContainer>
           <ModalContent onClickOutside={this.closeModal}>
             <CloseButton onClick={this.closeModal}>Close</CloseButton>

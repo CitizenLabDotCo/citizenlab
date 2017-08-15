@@ -181,13 +181,13 @@ const SectionTitle = styled.h2`
   /* border: solid 1px green; */
 
   ${media.phone`
-    font-size: 32px;
+    font-size: 23px;
     line-height: 36px;
   `}
 `;
 
 const ViewAllButtonText = styled.div`
-  color: ${(props) => props.theme.color.main};
+  color: ${(props) => props.theme.colorMain};
   font-size: 18px;
   font-weight: 300;
   line-height: 16px;
@@ -196,7 +196,7 @@ const ViewAllButtonText = styled.div`
 `;
 
 const ViewAllButtonIcon = styled.svg`
-  fill: ${(props) => props.theme.color.main};
+  fill: ${(props) => props.theme.colorMain};
   height: 11px;
   margin-top: -1px;
   cursor: pointer;
@@ -210,11 +210,11 @@ const ViewAllButton = styled(Link)`
 
   &:hover {
     ${ViewAllButtonIcon} {
-      fill: ${(props) => lighten(0.2, props.theme.color.main)};
+      fill: ${(props) => lighten(0.2, props.theme.colorMain)};
     }
 
     ${ViewAllButtonText} {
-      color: ${(props) => lighten(0.2, props.theme.color.main)};
+      color: ${(props) => lighten(0.2, props.theme.colorMain)};
     }
   }
 

@@ -126,7 +126,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
           border-radius: 5px;
           overflow: hidden;
           cursor: pointer;
-          /* background: ${(props) => props.theme.color.main || '#777'}; */
+          /* background: ${(props) => props.theme.colorMain || '#777'}; */
           background: #ddd;
 
           &:last-child {
