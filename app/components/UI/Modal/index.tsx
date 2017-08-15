@@ -5,6 +5,7 @@ import clickOutside from 'utils/containers/clickOutside';
 import { injectTracks, trackPage } from 'utils/analytics';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+import tracks from './tracks';
 
 const ModalContent = styled(clickOutside)`
   width: 100%;
@@ -101,8 +102,9 @@ type Props = {
   opened: boolean;
   url?: string;
   close: () => void;
-  trackOpenModal?: any;
-  trackCloseModal?: any;
+  clickCloseButton?: any;
+  clickOutsideModal?: any;
+  clickBack?: any;
 };
 
 type State = {};
@@ -116,7 +118,8 @@ class Modal extends React.PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    this.onClose();
+    document.body.classList.remove('modal-active');
+    window.removeEventListener('popstate', this.handlePopstateEvent);
   }
 
   componentWillUpdate(nextProps: Props, nextState: State) {
@@ -140,9 +143,11 @@ class Modal extends React.PureComponent<Props, State> {
 
     if (url) {
       window.history.pushState({ path: url }, '', url);
+      // Since we bypass the normal history mechanism and take it into our own hands here,
+      // we exceptionally also need to track the page change manually
+      // Don't try this at home!
+      trackPage(url, { modal: true });
     }
-
-    this.props.trackOpenModal({ extra: { url } });
   }
 
   onClose = (goBack = false) => {
@@ -154,18 +159,27 @@ class Modal extends React.PureComponent<Props, State> {
     if (url && goBack) {
       window.history.pushState({ path: this.parentUrl }, '', this.parentUrl);
     }
-
-    this.props.trackCloseModal({ extra: { url } });
-  }
-
-  handlePopstateEvent = () => {
-    if (location.href === this.parentUrl) {
-      this.closeModal();
-    }
   }
 
   closeModal = () => {
     this.props.close();
+  }
+
+  handlePopstateEvent = () => {
+    if (location.href === this.parentUrl) {
+      this.props.clickBack({extra: {url: this.props.url}});
+      this.closeModal();
+    }
+  }
+
+  clickOutsideModal = () => {
+    this.props.clickOutsideModal({extra: {url: this.props.url}});
+    this.closeModal();
+  }
+
+  clickButton = () => {
+    this.props.clickCloseButton({extra: {url: this.props.url}});
+    this.closeModal();
   }
 
   render() {
@@ -174,8 +188,8 @@ class Modal extends React.PureComponent<Props, State> {
     const element = opened && (
       <CSSTransition classNames="modal" timeout={400} exit={false}>
         <ModalContainer>
-          <ModalContent onClickOutside={this.closeModal}>
-            <CloseButton onClick={this.closeModal}>Close</CloseButton>
+          <ModalContent onClickOutside={this.clickOutsideModal}>
+            <CloseButton onClick={this.clickButton}>Close</CloseButton>
             {children}
           </ModalContent>
         </ModalContainer>
@@ -190,7 +204,4 @@ class Modal extends React.PureComponent<Props, State> {
   }
 }
 
-export default injectTracks({
-  trackOpenModal: { name: 'Modal opened' },
-  trackCloseModal: { name: 'Modal closed' },
-})(Modal);
+export default injectTracks(tracks)(Modal);
