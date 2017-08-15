@@ -2,6 +2,9 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs';
 import { observeCurrentTenant, ITenantData } from 'services/tenant';
+import { watchEvents, watchPageChanges, watchIdentification } from 'utils/analytics/sagas';
+import snippet from '@segment/snippet';
+import { CL_SEGMENT_API_KEY } from 'containers/App/constants';
 
 interface IEvent {
   name: string,
@@ -68,3 +71,16 @@ export const injectTracks = (events: {[key: string]: IEvent}) => (component: Rea
     return React.createElement(component, propsWithEvents);
   }
 };
+
+export const initializeAnalytics = (store) => {
+  // Initialize segments window.analytics object
+  var contents = snippet.min({
+    host: 'cdn.segment.com',
+    apiKey: CL_SEGMENT_API_KEY,
+  });
+  eval(contents);
+
+  store.runSaga(watchEvents);
+  store.runSaga(watchPageChanges);
+  store.runSaga(watchIdentification);
+}
