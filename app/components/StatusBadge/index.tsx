@@ -3,27 +3,17 @@ import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { observeIdeaStatuses, IIdeaStatusData } from 'services/idea_statuses';
 import T from 'containers/T';
-import messages from '../../messages';
 
 type Props = {
   statusId: string,
   color: string,
   statusName: string,
+  className?: string,
 }
 
 type State = {
   ideaStatus: IIdeaStatusData | null;
 }
-
-const Container = styled.div`
-  padding: 50px 0;
-`;
-
-const Title = styled.h4`
-  font-size: 18px;
-  color: #a6a6a6;
-  font-weight: 400;
-`;
 
 const Badge = styled.div`
   color: white;
@@ -56,18 +46,15 @@ export default class Status extends React.Component<Props, State> {
       })
   }
   render() {
-    const { statusId, statusName } = this.props;
+    const { statusId, statusName, className } = this.props;
     const { ideaStatus } = this.state;
 
     const fallbackColor = '#bbbbbb';
 
     return ideaStatus && (
-      <Container>
-        <Title><FormattedMessage {...messages.ideaStatus} /></Title>
-        <Badge color={ideaStatus.attributes.color || fallbackColor} >
-          <T value={ideaStatus.attributes.title_multiloc} />
-        </Badge>
-      </Container>
+      <Badge className={className} color={ideaStatus.attributes.color || fallbackColor} >
+        <T value={ideaStatus.attributes.title_multiloc} />
+      </Badge>
     );
   }
 }

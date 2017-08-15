@@ -84,6 +84,7 @@ type Props = {
   size?: 'small' | 'medium' | 'large',
   vote: (string) => void,
   cancelVote: () => void,
+  className?: string,
 }
 
 class Votes extends React.PureComponent<Props> {
@@ -109,9 +110,9 @@ class Votes extends React.PureComponent<Props> {
   }
 
   render(){
-    const { upvotesCount, downvotesCount, userVoteMode, size } = this.props;
+    const { upvotesCount, downvotesCount, userVoteMode, size, className } = this.props;
     return (
-      <VotesContainer>
+      <VotesContainer className={className}>
         <UpvoteButton size={size} active={userVoteMode === 'up'} onClick={this.onClickUpvote}>
           <VoteIcon name="upvote" />
           <VoteCount>{upvotesCount}</VoteCount>

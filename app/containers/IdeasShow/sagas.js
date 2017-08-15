@@ -16,6 +16,7 @@ export function* loadIdea(action) {
       response = yield call(fetchIdea, action.payload.id);
     } else if (action.payload.slug) {
       response = yield call(fetchIdeaBySlug, action.payload.slug);
+      yield put(loadCommentsRequest(response.data.id));
     }
     yield put(mergeJsonApiResources(response));
     yield put(loadIdeaSuccess(response));

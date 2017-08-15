@@ -115,11 +115,18 @@ const Button = styled.div`
   &:hover {
     background: ${(props) => lighten(0.1, props.theme.colorMain)};
   }
+
+  ${media.phone`
+    padding: 10px;
+  `}
 `;
 
 const ButtonIcon = styled(Icon)`
   fill: #fff;
   margin-right: 20px;
+  ${media.phone`
+    margin-right: 8px;
+  `}
 `;
 
 const ButtonText = styled.span`
