@@ -9,6 +9,8 @@ import { makeSelectSetting } from 'utils/tenant/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import messages from './messages';
 import * as moment from 'moment';
+import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
+import draftjsToHtml from 'draftjs-to-html';
 
 // Services
 import { observeProject, IProject, IProjectData } from 'services/projects';
@@ -20,6 +22,7 @@ import { injectTFunc } from 'utils/containers/t/utils';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import TextArea from 'components/UI/TextArea';
+import Editor from 'components/UI/Editor';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
@@ -44,6 +47,7 @@ interface State {
   };
   saving: boolean;
   focusedInput: 'START_DATE' | 'END_DATE' | null;
+  descState: EditorState;
 }
 
 class AdminProjectTimelineEdit extends React.Component<Props, State> {
@@ -63,6 +67,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       },
       saving: false,
       focusedInput: null,
+      descState: EditorState.createEmpty(),
     };
     console.log(props.params.slug);
     this.project$ = observeProject(props.params.slug);
@@ -77,7 +82,15 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
         this.phase$.observable,
         (project, phase) => ({ project, phase })
       ).subscribe(({ project, phase }) => {
-        this.setState({ project: project.data, phase: phase.data });
+        const blocksFromHtml = convertFromHTML(phase.data.attributes.description_multiloc[this.props.locale]);
+        const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
+
+
+        this.setState({
+          project: project.data,
+          phase: phase.data,
+          descState: EditorState.createWithContent(editorContent)
+        });
       })
     ];
   }
@@ -92,6 +105,18 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       newValue[this.props.locale] = value;
       this.setState({
         attributeDiff: { ...this.state.attributeDiff, [name]: newValue },
+      });
+    }
+  }
+
+  handleDescChange = (newState: EditorState) => {
+    const htmlValue = draftjsToHtml(convertToRaw(newState.getCurrentContent()));
+    if (this.state.phase) {
+      const newValue = this.state.phase && this.state.phase.attributes.description_multiloc;
+      newValue[this.props.locale] = htmlValue;
+      this.setState({
+        attributeDiff: { ...this.state.attributeDiff, description_multiloc: htmlValue },
+        descState: newState,
       });
     }
   }
@@ -159,14 +184,14 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
           />
 
           <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
-            <TextArea
-              name="description"
-              error=""
-              onChange={this.createMultilocUpdater('description_multiloc')}
-              value={this.props.tFunc(phaseAttrs.description_multiloc)}
-              rows={3}
-            />
-           <Error text={this.state.errors.description.join(', ')} />
+          <Editor
+            id="description"
+            placeholder=""
+            value={this.state.descState}
+            error=""
+            onChange={this.handleDescChange}
+          />
+          <Error text={this.state.errors.description.join(', ')} />
 
           <Button loading={this.state.saving} ><FormattedMessage {...messages.saveLabel} /></Button>
         </form>
