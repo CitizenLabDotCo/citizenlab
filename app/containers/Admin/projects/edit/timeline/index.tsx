@@ -25,7 +25,7 @@ const ListWrapper = styled.div`
   flex-direction: column;
 `;
 
-const AddButton = styled(Button)`
+const AddButton = styled(Link as React.StatelessComponent<{to: string}>)`
   align-self: flex-end;
 `;
 
@@ -169,7 +169,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
     return (
       <ListWrapper>
-        <AddButton>Add a Phase</AddButton>
+        <AddButton to={`/admin/projects/${slug}/timeline/new`}>Add a Phase</AddButton>
 
         {!loading && phases.length > 0 &&
           <PhasesTable>
