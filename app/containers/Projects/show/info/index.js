@@ -28,7 +28,7 @@ const IdeaTitleStyled = styled.header`
 `;
 
 const IdeaBodyStyled = styled.div`
-  margin-top: 45px; 
+  margin-top: 45px;
   font-size: 18px;
   line-height: 1.33;
   color: #777777;
@@ -39,7 +39,7 @@ const Right = styled.aside`
 `;
 
 const AddIdeaButtonStyled = styled.button`
-  background-color: ${(props) => props.theme.color.main};
+  background-color: ${(props) => props.theme.colorMain};
   border-radius: 5px;
   width: 100%;
   height: 85px;
@@ -47,11 +47,11 @@ const AddIdeaButtonStyled = styled.button`
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 25px;
-  
+
   > a {
     color: #ffffff !important;
   }
-  
+
   ${media.phone`
     display: none;
   `}
@@ -152,7 +152,7 @@ export default connect(mapStateToProps)(styled(ProjectsInfo)`
   max-width: 900px;
   flex-direction: row;
   justify-content: space-between;
-  
+
   ${media.phone`
     display: block;
   `}

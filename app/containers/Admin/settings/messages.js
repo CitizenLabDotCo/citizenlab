@@ -31,9 +31,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.mainColor',
     defaultMessage: 'Main color',
   },
-  menuBgColor: {
-    id: 'app.containers.AdminPage.SettingsPage.menuBgColor',
-    defaultMessage: 'Menu background color',
+  menuStyle: {
+    id: 'app.containers.AdminPage.SettingsPage.menuStyle',
+    defaultMessage: 'Menu style',
+  },
+  menuStyleLight: {
+    id: 'app.containers.AdminPage.SettingsPage.menuStyleLight',
+    defaultMessage: 'Light',
+  },
+  menuStyleDark: {
+    id: 'app.containers.AdminPage.SettingsPage.menuStyleDark',
+    defaultMessage: 'Dark',
   },
   logo: {
     id: 'app.containers.AdminPage.SettingsPage.logo',

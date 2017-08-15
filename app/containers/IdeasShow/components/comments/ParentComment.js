@@ -18,7 +18,7 @@ import Button from 'components/UI/Button';
 import EditorForm from './EditorForm';
 
 const ThreadContainer = styled.div`
-  margin-top: 45px;
+  margin-top: 25px;
 `;
 
 const AuthorContainer = styled.div`
@@ -34,7 +34,7 @@ const CommentBody = styled.div`
 `;
 
 const ReactButton = styled(Button)`
-  float: right;
+  margin-left: auto;
   margin-top: 20px;
 `;
 
