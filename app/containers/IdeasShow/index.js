@@ -6,9 +6,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 // components
-import Show from './components/show';
+import ShowDesktop from './components/showDesktop';
+import ShowMobile from './components/showMobile';
 
 // store
 import { preprocess } from 'utils';
@@ -16,7 +19,18 @@ import WatchSagas from 'containers/WatchSagas';
 import sagasWatchers from './sagas';
 import { loadCommentsRequest, loadIdeaRequest, resetPageData } from './actions';
 
-// Ideas show does not use helmet at this view is controlled by RouterIndexShow
+const DesktopVersion = styled.div`
+  ${media.phone`
+    display: none;
+  `}
+`;
+
+const MobileVersion = styled.div`
+  ${media.notPhone`
+    display: none;
+  `}
+`;
+
 class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super();
@@ -28,15 +42,15 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
       this.id = props.id;
     }
   }
-
   componentDidMount() {
     if (this.slug) {
       this.props.loadIdeaRequest({ slug: this.slug });
     } else if (this.id) {
       this.props.loadIdeaRequest({ id: this.id });
     }
-
-    this.props.loadCommentsRequest(this.id);
+    if (this.id) {
+      this.props.loadCommentsRequest(this.id);
+    }
   }
 
   componentWillUnmount() {
@@ -49,7 +63,12 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
     return (
       <div>
         <WatchSagas sagas={sagasWatchers} />
-        <Show location={location} id={this.id} slug={this.slug} />
+        <DesktopVersion>
+          <ShowDesktop location={location} id={this.id} slug={this.slug} />
+        </DesktopVersion>
+        <MobileVersion>
+          <ShowMobile location={location} id={this.id} slug={this.slug} />
+        </MobileVersion>
       </div>
     );
   }

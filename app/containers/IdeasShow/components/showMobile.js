@@ -1,15 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Helmet } from 'react-helmet';
 import { injectTFunc } from 'containers/T/utils';
 import styled from 'styled-components';
 
 // components
 import ImageCarousel from 'components/ImageCarousel';
 import Author from './show/Author';
-import Status from './show/Status';
-import CommentsLine from './show/CommentsLine';
+import StatusBadge from 'components/StatusBadge';
 import SharingLine from './show/SharingLine';
 import Comments from './comments';
 import T from 'containers/T';
@@ -20,8 +18,7 @@ import { preprocess } from 'utils';
 import { selectIdeaImages, selectIdea } from '../selectors';
 
 // intl
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
-import messages from './../messages';
+import { injectIntl, intlShape } from 'react-intl';
 
 const Carousel = ({ images }) => {
   if (!images[0]) return null;
@@ -36,6 +33,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 50px;
 `;
 
 const ContentContainer = styled.div`
@@ -50,18 +48,7 @@ const Content = styled.div`
   width: 100%;
   max-width: 1050px;
   display: flex;
-`;
-
-const LeftColumn = styled.div`
-  flex-grow: 1;
-  padding: 55px;
-`;
-
-const SeparatorColumn = styled.div`
-  flex: 0 0 3px;
-  background: #eaeaea;
-  margin: 40px 0;
-  border: solid #fafafa 1px;
+  flex-direction: column;
 `;
 
 const SeparatorRow = styled.div`
@@ -71,28 +58,31 @@ const SeparatorRow = styled.div`
   border: solid #fafafa 1px;
 `;
 
-const RightColumn = styled.div`
-  flex: 0 0 280px;
-  padding: 40px;
-`;
-
 const IdeaTitle = styled.h1`
   font-size: 25px;
-  padding-bottom: 1.5em;
+  margin: 12px 0;
 `;
+
 const IdeaBody = styled.div`
   font-size: 18px;
   color: #8f8f8f;
 `;
 
-const VoteCTA = styled.h3`
-  font-size: 20px;
-  font-weight: 400;
-  color: #222222;
+const StyledAuthor = styled(Author)`
+  margin: 15px 0;
+`;
+const StyledVoteControl = styled(VoteControl)`
+  margin: 15px 0;
 `;
 
+const StyledStatusBadge = styled(StatusBadge)`
+  margin: 15px 0;
+  margin-right: auto;
+`;
+
+
 /* eslint-disable */
-class Show extends React.PureComponent {
+class ShowMobile extends React.PureComponent {
 
   render() {
     const {
@@ -103,32 +93,19 @@ class Show extends React.PureComponent {
 
     return (
       <Container>
-        <Helmet>
-          <title>{tFunc(title_multiloc)}</title>
-          <meta name="description" content={tFunc(body_multiloc)} />
-        </Helmet>
         <ContentContainer>
           <Content>
-            <LeftColumn>
-              <Author authorId={authorId} createdAt={created_at} />
-              <IdeaTitle><T value={title_multiloc} /></IdeaTitle>
-              <Carousel images={images.map((image) => image.attributes.versions)} />
-              <IdeaBody>
-                <T value={body_multiloc} />
-              </IdeaBody>
-              <SeparatorRow />
-              <Comments ideaId={id} />
-            </LeftColumn>
-            <SeparatorColumn />
-            <RightColumn>
-              <VoteCTA>
-                <FormattedMessage {...messages.voteCTA} />
-              </VoteCTA>
-              <VoteControl ideaId={id} size="large" />
-              <Status statusId={statusId} />
-              <CommentsLine count={comments_count}/>
-              <SharingLine location={location} image={images[0] && images[0].attributes.versions.medium} />
-            </RightColumn>
+            <StyledAuthor authorId={authorId} createdAt={created_at} />
+            <StyledVoteControl ideaId={id} size="medium" />
+            <IdeaTitle><T value={title_multiloc} /></IdeaTitle>
+              <StyledStatusBadge statusId={statusId} />
+            {/* <Carousel images={images.map((image) => image.attributes.versions)} /> */}
+            <IdeaBody>
+              <T value={body_multiloc} />
+            </IdeaBody>
+            <SeparatorRow />
+            <SharingLine location={location} image={images[0] && images[0].attributes.versions.medium} />
+            <Comments ideaId={id} />
           </Content>
         </ContentContainer>
       </Container>
@@ -137,7 +114,7 @@ class Show extends React.PureComponent {
 
 }
 
-Show.propTypes = {
+ShowMobile.propTypes = {
   id: PropTypes.string,
   slug: PropTypes.string,
   tFunc: PropTypes.func,
@@ -196,4 +173,4 @@ const mergeProps = ({ idea, images }, dispatchProps, { tFunc, location, intl }) 
 };
 
 
-export default injectIntl(injectTFunc(preprocess(mapStateToProps, null, mergeProps)(Show)));
+export default injectIntl(injectTFunc(preprocess(mapStateToProps, null, mergeProps)(ShowMobile)));
