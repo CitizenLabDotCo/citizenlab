@@ -137,7 +137,7 @@ export function addIdea(
 
 export function updateIdea(ideaId: string, object: IIdeaUpdate, refetch = true) {
   const httpMethod = { method: 'PUT' };
-  const bodyData = { user: object };
+  const bodyData = { idea: object };
 
   return request<IIdea>(`${apiEndpoint}/${ideaId}`, bodyData, httpMethod, null).then((userObject) => {
     streams.update(ideaId, userObject, refetch);
