@@ -96,8 +96,8 @@ export default (injectReducer) => ({
           },
         },
         {
-          path: '/admin/projects/:slug/timeline/:id',
-          name: 'admin projects timeline edit',
+          path: '/admin/projects/:slug/timeline/new',
+          name: 'admin projects timeline create',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
               import('containers/Admin/projects/edit/timeline/edit'),
@@ -113,8 +113,8 @@ export default (injectReducer) => ({
           },
         },
         {
-          path: '/admin/projects/:slug/timeline/new',
-          name: 'admin projects timeline create',
+          path: '/admin/projects/:slug/timeline/:id',
+          name: 'admin projects timeline edit',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
               import('containers/Admin/projects/edit/timeline/edit'),
