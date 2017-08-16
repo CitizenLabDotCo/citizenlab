@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  editPhaseTitle: {
+    id: 'app.containers.AdminPage.ProjectTimeline.editPhaseTitle',
+    defaultMessage: 'Edit Phase',
+  },
+  newPhaseTitle: {
+    id: 'app.containers.AdminPage.ProjectTimeline.newPhaseTitle',
+    defaultMessage: 'New Phase',
+  },
   titleLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.titleLabel',
     defaultMessage: 'Title',

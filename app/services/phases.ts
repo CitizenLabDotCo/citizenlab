@@ -65,6 +65,16 @@ export function updatePhase(phaseId: string, object: IUpdatedPhase, refetch = tr
   });
 }
 
+export function savePhase(projectId: string, object: IUpdatedPhase, refetch = true) {
+  const httpMethod = { method: 'POST' };
+  const bodyData = { phase: object };
+
+  return request<IPhase>(`${API_PATH}/projects/${projectId}/phases`, bodyData, httpMethod, null)
+  .catch((error) => {
+    throw new Error(`error for savePhase() of service Phases`);
+  });
+}
+
 export function deletePhase(phaseId: string, httpOptions = {}): Promise<any> {
   const defaultOptions = { method: 'DELETE' };
 

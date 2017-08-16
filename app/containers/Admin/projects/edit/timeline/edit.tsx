@@ -11,10 +11,11 @@ import messages from './messages';
 import * as moment from 'moment';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
+import { withRouter } from 'react-router';
 
 // Services
 import { observeProject, IProject, IProjectData } from 'services/projects';
-import { observePhase, updatePhase, IPhase, IPhaseData, IUpdatedPhase } from 'services/phases';
+import { observePhase, updatePhase, IPhase, IPhaseData, IUpdatedPhase, savePhase } from 'services/phases';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { injectTFunc } from 'utils/containers/t/utils';
 
@@ -36,6 +37,7 @@ type Props = {
   },
   locale: string,
   tFunc: Function,
+  router: any,
 };
 
 interface State {
@@ -71,29 +73,49 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
     };
     if (props.params.slug) {
       this.project$ = observeProject(props.params.slug);
+    }
+    if (props.params.id) {
       this.phase$ = observePhase(props.params.id);
     }
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
+    let dataLoading;
+    if (this.phase$) {
+      dataLoading = Rx.Observable.combineLatest(
         this.project$.observable,
         this.phase$.observable,
         (project, phase) => ({ project, phase })
-      ).subscribe(({ project, phase }) => {
-        const blocksFromHtml = convertFromHTML(phase.data.attributes.description_multiloc[this.props.locale]);
-        const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
+      );
+    } else {
+      dataLoading = Rx.Observable.combineLatest(
+        this.project$.observable,
+        (project) => ({ project })
+      );
+    }
 
 
-        this.setState({
-          project: project.data,
-          phase: phase.data,
-          descState: EditorState.createWithContent(editorContent)
-        });
-      })
-    ];
+    if (this.project$ || this.phase$) {
+      this.subscriptions = [
+        dataLoading
+        .subscribe(({ project, phase }) => {
+          let descState = EditorState.createEmpty();
+
+          if (phase) {
+            const blocksFromHtml = convertFromHTML(phase.data.attributes.description_multiloc[this.props.locale]);
+            const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
+            descState = EditorState.createWithContent(editorContent);
+          }
+
+          this.setState({
+            descState,
+            project: project ? project.data : null,
+            phase: phase ? phase.data : null,
+          });
+        })
+      ];
+    }
   }
 
   componentWillUnmount() {
@@ -101,8 +123,8 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
   }
 
   createMultilocUpdater = (name: string) => (value: string) => {
-    if (this.state.phase) {
-      const newValue = this.state.phase && this.state.phase.attributes[name];
+    if (this.state.attributeDiff) {
+      const newValue = this.state.attributeDiff && this.state.attributeDiff[name] || {};
       newValue[this.props.locale] = value;
       this.setState({
         attributeDiff: { ...this.state.attributeDiff, [name]: newValue },
@@ -112,11 +134,11 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
 
   handleDescChange = (newState: EditorState) => {
     const htmlValue = draftjsToHtml(convertToRaw(newState.getCurrentContent()));
-    if (this.state.phase) {
-      const newValue = this.state.phase && this.state.phase.attributes.description_multiloc;
+    if (this.state.attributeDiff) {
+      const newValue = this.state.attributeDiff && this.state.attributeDiff.description_multiloc || {};
       newValue[this.props.locale] = htmlValue;
       this.setState({
-        attributeDiff: { ...this.state.attributeDiff, description_multiloc: htmlValue },
+        attributeDiff: { ...this.state.attributeDiff, description_multiloc: newValue },
         descState: newState,
       });
     }
@@ -142,6 +164,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
     if (_.isEmpty(this.state.attributeDiff)) {
       return;
     }
+
     if (this.state.phase) {
       this.setState({ saving: true });
       updatePhase(this.state.phase.id, this.state.attributeDiff)
@@ -151,16 +174,30 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       .catch((errors) => {
         // TODO: Update state with errors from the API
       });
+    } else if (this.state.project) {
+      this.setState({ saving: true });
+      savePhase(this.state.project.id, this.state.attributeDiff)
+      .then((response) => {
+        this.props.router.push(`/admin/projects/${this.props.params.slug}/timeline/${response.data.id}`);
+      })
+      .then(() => {
+        this.setState({ saving: false });
+      });
     }
   }
 
   render() {
-    if (!this.state.phase) return null;
-    const phaseAttrs = { ...this.state.phase.attributes, ...this.state.attributeDiff };
+    const phaseAttrs = this.state.phase
+    ?  { ...this.state.phase.attributes, ...this.state.attributeDiff }
+    : { ...this.state.attributeDiff };
 
     return (
       <div>
-        <h1>Edit phase</h1>
+        <h1>
+          {this.state.phase && <FormattedMessage {...messages.editPhaseTitle} />}
+          {!this.state.phase && <FormattedMessage {...messages.newPhaseTitle} />}
+
+        </h1>
 
         <form onSubmit={this.handleOnSubmit}>
           <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
@@ -205,4 +242,4 @@ const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
 });
 
-export default injectTFunc(injectIntl(connect(mapStateToProps)(AdminProjectTimelineEdit)));
+export default injectTFunc(injectIntl(connect(mapStateToProps)(withRouter(AdminProjectTimelineEdit))));
