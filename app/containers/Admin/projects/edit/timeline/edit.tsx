@@ -29,6 +29,9 @@ import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
+import FieldWrapper from 'components/admin/FieldWrapper';
+
+
 // Component typing
 type Props = {
   params: {
@@ -200,36 +203,42 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
         </h1>
 
         <form onSubmit={this.handleOnSubmit}>
-          <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
-          <Input
-            id="title"
-            type="text"
-            value={this.props.tFunc(phaseAttrs.title_multiloc)}
-            onChange={this.createMultilocUpdater('title_multiloc')}
-          />
-          <Error text={this.state.errors.title.join(', ')} />
+          <FieldWrapper>
+            <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
+            <Input
+              id="title"
+              type="text"
+              value={this.props.tFunc(phaseAttrs.title_multiloc)}
+              onChange={this.createMultilocUpdater('title_multiloc')}
+            />
+            <Error text={this.state.errors.title.join(', ')} />
+          </FieldWrapper>
 
-          <Label><FormattedMessage {...messages.datesLabel} /></Label>
-          <DateRangePicker
-            startDate={moment(phaseAttrs.start_at)} // momentPropTypes.momentObj or null,
-            endDate={moment(phaseAttrs.end_at)} // momentPropTypes.momentObj or null,
-            onDatesChange={this.handleDateUpdate} // PropTypes.func.isRequired,
-            focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-            onFocusChange={this.handleDateFocusChange} // PropTypes.func.isRequired,
-            isOutsideRange={this.isOutsideRange}
-            firstDayOfWeek={1}
-            displayFormat="DD/MM/YYYY"
-          />
+          <FieldWrapper>
+            <Label><FormattedMessage {...messages.datesLabel} /></Label>
+            <DateRangePicker
+              startDate={phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null} // momentPropTypes.momentObj or null,
+              endDate={phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null} // momentPropTypes.momentObj or null,
+              onDatesChange={this.handleDateUpdate} // PropTypes.func.isRequired,
+              focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+              onFocusChange={this.handleDateFocusChange} // PropTypes.func.isRequired,
+              isOutsideRange={this.isOutsideRange}
+              firstDayOfWeek={1}
+              displayFormat="DD/MM/YYYY"
+            />
+          </FieldWrapper>
 
-          <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
-          <Editor
-            id="description"
-            placeholder=""
-            value={this.state.descState}
-            error=""
-            onChange={this.handleDescChange}
-          />
-          <Error text={this.state.errors.description.join(', ')} />
+          <FieldWrapper>
+            <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
+            <Editor
+              id="description"
+              placeholder=""
+              value={this.state.descState}
+              error=""
+              onChange={this.handleDescChange}
+            />
+            <Error text={this.state.errors.description.join(', ')} />
+          </FieldWrapper>
 
           <Button loading={this.state.saving} ><FormattedMessage {...messages.saveLabel} /></Button>
         </form>
