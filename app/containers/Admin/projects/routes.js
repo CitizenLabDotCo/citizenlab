@@ -130,6 +130,57 @@ export default (injectReducer) => ({
           },
         },
         {
+          path: '/admin/projects/:slug/events',
+          name: 'admin projects events',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/Admin/projects/edit/events'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
+          path: '/admin/projects/:slug/events/new',
+          name: 'admin projects events create',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/Admin/projects/edit/events/edit'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
+          path: '/admin/projects/:slug/events/:id',
+          name: 'admin projects events edit',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/Admin/projects/edit/events/edit'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
           path: '/admin/projects/new',
           name: 'admin projects create new',
           getComponent(nextState, cb) {
