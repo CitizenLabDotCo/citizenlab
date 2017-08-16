@@ -15,6 +15,7 @@ import { Link } from 'react-router';
 import T from 'utils/containers/t';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
+import buttonMixin from 'components/admin/StyleMixins/buttonMixin';
 
 // Utils
 import subscribedComponent from 'utils/subscriptionsDecorator';
@@ -26,7 +27,14 @@ const ListWrapper = styled.div`
 `;
 
 const AddButton = styled(Link as React.StatelessComponent<{to: string}>)`
+  ${buttonMixin('#EF0071', '#EF0071')}
+  color: #fff;
   align-self: flex-end;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+  }
 `;
 
 const PhasesTable = styled.table`
@@ -71,34 +79,18 @@ const OrderLabel = styled.div`
   }
 `;
 
-const ListButton = function () {
-  return `
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    padding: .75rem 1rem;
-
-    svg {
-      flex: 0 0 1rem;
-      margin-right: 1rem;
-    }
-
-    span {
-      display: block;
-      flex: 0 0 auto;
-    }
-  `;
-};
-
 const DeleteButton = styled.button`
-  ${ListButton()}
+  ${buttonMixin()}
 `;
 
 const EditButton = styled(Link as React.StatelessComponent<{to: string}>)`
-  background: #e5e5e5;
-  border-radius: 5px;
+  ${buttonMixin('#e5e5e5', '#cccccc')}
   color: #6B6B6B;
-  ${ListButton()}
+
+  &:hover,
+  &:focus: {
+    color: #6B6B6B;
+  }
 `;
 
 // Component typing
