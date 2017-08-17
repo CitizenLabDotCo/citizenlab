@@ -69,6 +69,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       errors: {
         title: [],
         description: [],
+        location: [],
       },
       saving: false,
       focusedInput: null,
@@ -212,6 +213,17 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
               onChange={this.createMultilocUpdater('title_multiloc')}
             />
             <Error text={this.state.errors.title.join(', ')} />
+          </FieldWrapper>
+
+          <FieldWrapper>
+            <Label htmlFor="location"><FormattedMessage {...messages.locationLabel} /></Label>
+            <Input
+              id="location"
+              type="text"
+              value={this.props.tFunc(eventAttrs.location_multiloc)}
+              onChange={this.createMultilocUpdater('location_multiloc')}
+            />
+            <Error text={this.state.errors.location.join(', ')} />
           </FieldWrapper>
 
           <FieldWrapper>
