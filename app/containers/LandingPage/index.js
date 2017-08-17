@@ -60,7 +60,6 @@ const SectionHeader = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   padding-bottom: 15px;
-  /* border: solid 1px purple; */
 
   ${media.phone`
     padding-top: 50px;
