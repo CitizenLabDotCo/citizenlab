@@ -13,6 +13,8 @@ import SharingLine from './show/SharingLine';
 import Comments from './comments';
 import T from 'containers/T';
 import VoteControl from 'components/VoteControl';
+import ContentContainer from 'components/ContentContainer';
+
 
 // store
 import { preprocess } from 'utils';
@@ -30,20 +32,6 @@ const Carousel = ({ images }) => {
 Carousel.propTypes = {
   images: PropTypes.array.isRequired,
 };
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 30px;
-  padding-right: 30px;
-`;
 
 const Content = styled.div`
   width: 100%;
@@ -111,35 +99,33 @@ class ShowDesktop extends React.PureComponent {
     if (!title_multiloc) return null;
 
     return (
-      <Container>
-        <ContentContainer>
-          <Content>
-            <LeftColumn>
-              <Author authorId={authorId} createdAt={created_at} />
-              <IdeaTitle><T value={title_multiloc} /></IdeaTitle>
-              <Carousel images={images.map((image) => image.attributes.versions)} />
-              <IdeaBody>
-                <T value={body_multiloc} />
-              </IdeaBody>
-              <SeparatorRow />
-              <Comments ideaId={id} />
-            </LeftColumn>
-            <SeparatorColumn />
-            <RightColumn>
-              <VoteCTA>
-                <FormattedMessage {...messages.voteCTA} />
-              </VoteCTA>
-              <VoteControl ideaId={id} size="large" />
-              <StatusContainer>
-                <StatusTitle><FormattedMessage {...messages.ideaStatus} /></StatusTitle>
-                <StatusBadge statusId={statusId} />
-              </StatusContainer>
-              <CommentsLine count={comments_count}/>
-              <SharingLine location={location} image={images[0] && images[0].attributes.versions.medium} />
-            </RightColumn>
-          </Content>
-        </ContentContainer>
-      </Container>
+      <ContentContainer>
+        <Content>
+          <LeftColumn>
+            <Author authorId={authorId} createdAt={created_at} />
+            <IdeaTitle><T value={title_multiloc} /></IdeaTitle>
+            <Carousel images={images.map((image) => image.attributes.versions)} />
+            <IdeaBody>
+              <T value={body_multiloc} />
+            </IdeaBody>
+            <SeparatorRow />
+            <Comments ideaId={id} />
+          </LeftColumn>
+          <SeparatorColumn />
+          <RightColumn>
+            <VoteCTA>
+              <FormattedMessage {...messages.voteCTA} />
+            </VoteCTA>
+            <VoteControl ideaId={id} size="large" />
+            <StatusContainer>
+              <StatusTitle><FormattedMessage {...messages.ideaStatus} /></StatusTitle>
+              <StatusBadge statusId={statusId} />
+            </StatusContainer>
+            <CommentsLine count={comments_count}/>
+            <SharingLine location={location} image={images[0] && images[0].attributes.versions.medium} />
+          </RightColumn>
+        </Content>
+      </ContentContainer>
     );
   }
 

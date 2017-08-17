@@ -110,7 +110,7 @@ class IdeaCards extends React.Component {
     const { loadMoreEnabled } = this.props;
     return (
       <div>
-        <IdeasList wrap>
+        <IdeasList wrap mx={-10}>
           {ideas.map((idea) => (
             <Box key={idea.id} w={[1, 1 / 2, 1 / 3]} px={10}>
               <IdeaCard

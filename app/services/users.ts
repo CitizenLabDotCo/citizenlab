@@ -67,8 +67,12 @@ export function observeUsers(streamParams: IStreamParams<IUsers> | null = null) 
 }
 
 export function observeUser(userId: string, streamParams: IStreamParams<IUser> | null = null) {
-  const extendedsStreamParams: IStreamParams<IUser> = { ...streamParams, requestedDataId: userId };
-  return streams.create<IUser>({ apiEndpoint: `${apiEndpoint}/${userId}`, ...extendedsStreamParams });
+  // Commented this out because of a bug: On the first request,
+  // the return object is the response, whereas on subsequent cached
+  // responses it returns the `data` property within the response
+  // const extendedsStreamParams: IStreamParams<IUser> = { ...streamParams, requestedDataId: userId };
+  // return streams.create<IUser>({ apiEndpoint: `${apiEndpoint}/${userId}`, ...extendedsStreamParams });
+  return streams.create<IUser>({ apiEndpoint: `${apiEndpoint}/${userId}`, ...streamParams });
 }
 
 export function updateUser(userId: string, object: IUserUpdate, refetch = true) {

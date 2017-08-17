@@ -57,7 +57,7 @@ const ProjectMenuItems = styled.div`
   display: flex;
   overflow-x: auto;
   margin: 0 auto;
-  max-width: 980px;
+  max-width: ${(props) => props.theme.maxPageWidth}px;
   height: 100%;
 `;
 
