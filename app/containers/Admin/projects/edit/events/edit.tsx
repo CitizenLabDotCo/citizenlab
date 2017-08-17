@@ -198,13 +198,13 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       <div>
         <h1>
           {this.state.event && <FormattedMessage {...messages.editEventTitle} />}
-          {!this.state.event && <FormattedMessage {...messages.editEventTitle} />}
+          {!this.state.event && <FormattedMessage {...messages.createEventTitle} />}
 
         </h1>
 
         <form onSubmit={this.handleOnSubmit}>
           <FieldWrapper>
-            <Label htmlFor="title"><FormattedMessage {...messages.editEventTitle} /></Label>
+            <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
             <Input
               id="title"
               type="text"
@@ -215,7 +215,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
           </FieldWrapper>
 
           <FieldWrapper>
-            <Label><FormattedMessage {...messages.editEventTitle} /></Label>
+            <Label><FormattedMessage {...messages.datesLabel} /></Label>
             <DateRangePicker
               startDate={eventAttrs.start_at ? moment(eventAttrs.start_at) : null} // momentPropTypes.momentObj or null,
               endDate={eventAttrs.end_at ? moment(eventAttrs.end_at) : null} // momentPropTypes.momentObj or null,
@@ -229,7 +229,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
           </FieldWrapper>
 
           <FieldWrapper>
-            <Label htmlFor="description"><FormattedMessage {...messages.editEventTitle} /></Label>
+            <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
             <Editor
               id="description"
               placeholder=""
@@ -240,7 +240,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
             <Error text={this.state.errors.description.join(', ')} />
           </FieldWrapper>
 
-          <Button loading={this.state.saving} ><FormattedMessage {...messages.editEventTitle} /></Button>
+          <Button loading={this.state.saving} ><FormattedMessage {...messages.saveButtonLabel} /></Button>
         </form>
       </div>
     );

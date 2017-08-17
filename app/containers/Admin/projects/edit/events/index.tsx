@@ -132,7 +132,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
   createDeleteClickHandler = (eventId) => {
     return (event) => {
       event.preventDefault();
-      if (window.confirm(this.props.intl.formatMessage(messages.editEventTitle))) {
+      if (window.confirm(this.props.intl.formatMessage(messages.deleteConfirmationModal))) {
         deleteEvent(eventId).
         then((response) => {
           this.setState({ events: _.reject(this.state.events, { id: eventId }) });
@@ -167,8 +167,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
           <EventsTable>
             <thead>
               <tr>
-                <th><FormattedMessage {...messages.editEventTitle} /></th>
-                <th><FormattedMessage {...messages.editEventTitle} /></th>
+                <th><FormattedMessage {...messages.titleColumnHeader} /></th>
                 <th />
                 <th />
               </tr>
@@ -177,24 +176,20 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
               {events.map((event, index) => (
                 <tr key={event.id}>
                   <td>
-                    <OrderLabel className={this.eventTiming({ start_at: event.attributes.start_at, end_at: event.attributes.end_at })}>
-                      {index + 1}
-                    </OrderLabel>
-                  </td>
-                  <td>
                     <h1><T value={event.attributes.title_multiloc} /></h1>
+                    <p><T value={event.attributes.location_multiloc} /></p>
                     <p>{formatDate(event.attributes.start_at)} - {formatDate(event.attributes.end_at)}</p>
                   </td>
                   <td>
                     <DeleteButton onClick={this.createDeleteClickHandler(event.id)}>
                       <Icon name="delete" />
-                      <FormattedMessage {...messages.editEventTitle} />
+                      <FormattedMessage {...messages.deleteButtonLabel} />
                     </DeleteButton>
                   </td>
                   <td>
                     <EditButton to={`/admin/projects/${slug}/events/${event.id}`}>
                       <Icon name="edit" />
-                      <FormattedMessage {...messages.editEventTitle} />
+                      <FormattedMessage {...messages.editButtonLabel} />
                     </EditButton>
                   </td>
                 </tr>
