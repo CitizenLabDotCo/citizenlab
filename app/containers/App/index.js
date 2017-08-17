@@ -27,6 +27,7 @@ import messages from './messages';
 import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import styled, { ThemeProvider } from 'styled-components';
+import { media } from 'utils/styleUtils';
 // components - authorizations
 import Authorize, { Else } from 'utils/containers/authorize';
 
@@ -47,8 +48,11 @@ import { LOAD_CURRENT_USER_REQUEST } from 'utils/auth/constants';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
 
 const Container = styled.div`
-  padding-top: 65px;
-  background-color: #f2f2f2;
+  margin-top: ${(props) => props.theme.menuHeight}px;
+
+  ${media.phone`
+    margin-bottom: ${(props) => props.theme.mobileMenuHeight}px;
+  `}
 `;
 
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -77,6 +81,9 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     const theme = {
       colorMain: colorMain || '#ef0071',
       menuStyle: menuStyle || 'light',
+      menuHeight: 80,
+      mobileMenuHeight: 80,
+      maxPageWidth: 950,
     };
 
     return (
@@ -88,7 +95,6 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
           </Helmet>
 
           <Navbar currentTenant={currentTenant} location={this.props.location.pathname} />
-
           <Loader
             resourceLoader={loadUser}
             loadingMessage={messages.currentUserLoadingMessage}
@@ -118,7 +124,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
         <WatchSagas sagas={areasSagas} />
         <WatchSagas sagas={{ tenantSaga }} />
         <WatchSagas sagas={voteControlSagas} />
-        {currentTenant ? this.content() : <div>Loading...</div>}
+        {currentTenant && this.content()}
       </div>
     );
   }
