@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { preprocess } from 'utils/reactRedux';
-import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectPhases } from './selectors';
 import { loadProjectPhasesRequest } from 'resources/projects/phases/actions';
@@ -20,6 +19,10 @@ const ProjectPhasesStyled = styled.div`
   width: 100%;
   /* TODO: this can be improved by using dots as background with arrow from glyphicons [SUI] or with repeated background of 1x3px */
   border-left: dotted 3px #d7d7d7;
+`;
+
+const Container = styled.div`
+  margin-top: 16px;
 `;
 
 class ProjectsTimeline extends React.PureComponent {
@@ -45,25 +48,27 @@ class ProjectsTimeline extends React.PureComponent {
   render() {
     const { phases, loading, error, locale } = this.props;
 
-    return (<div>
-      <WatchSagas sagas={sagas} />
-      {((phases && phases.length === 0) || !(phases || error)) && <FormattedMessage {...messages.noTimeline} />}
-      {loading && <FormattedMessage {...messages.loading} />}
-      {error && <FormattedMessage {...messages.error} />}
+    return (
+      <Container>
+        <WatchSagas sagas={sagas} />
+        {((phases && phases.length === 0) || !(phases || error)) && <FormattedMessage {...messages.noTimeline} />}
+        {loading && <FormattedMessage {...messages.loading} />}
+        {error && <FormattedMessage {...messages.error} />}
 
-      <ProjectPhasesStyled>
-        {phases && phases.map((phase, index) => (<ProjectPhase
-          ref={(phaseL) => { this[`phase-${phase.id}`] = phaseL; }}
-          key={phase.id}
-          phaseIndex={index + 1}
-          phase={getPhaseType(phase.attributes.start_at, phase.attributes.end_at)}
-          fromTo={parseDate(phase.attributes.start_at, locale)}
-          tillTo={parseDate(phase.attributes.end_at, locale)}
-          titleMultiloc={phase.attributes.title_multiloc}
-          descriptionMultiLoc={phase.attributes.description_multiloc}
-        />))}
-      </ProjectPhasesStyled>
-    </div>);
+        <ProjectPhasesStyled>
+          {phases && phases.map((phase, index) => (<ProjectPhase
+            ref={(phaseL) => { this[`phase-${phase.id}`] = phaseL; }}
+            key={phase.id}
+            phaseIndex={index + 1}
+            phase={getPhaseType(phase.attributes.start_at, phase.attributes.end_at)}
+            fromTo={parseDate(phase.attributes.start_at, locale)}
+            tillTo={parseDate(phase.attributes.end_at, locale)}
+            titleMultiloc={phase.attributes.title_multiloc}
+            descriptionMultiLoc={phase.attributes.description_multiloc}
+          />))}
+        </ProjectPhasesStyled>
+      </Container>
+    );
   }
 }
 
@@ -93,6 +98,6 @@ const mergeProps = ({ phases, locale, loading, error }, { loadProjectPhasesReque
   error,
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ loadProjectPhasesRequest }, dispatch);
+const mapDispatchToProps = { loadProjectPhasesRequest };
 
 export default preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(ProjectsTimeline);

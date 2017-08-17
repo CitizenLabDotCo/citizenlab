@@ -86,12 +86,12 @@ const ProjectPhaseInnerStyled = styled(ProjectPhaseInner)`
 const ProjectPhaseIndexStyled = styled.div`
   width: 41px;
   height: 41px;
-  border-radius: 20px;
+  border-radius: 50%;
   color: #ffffff;
   text-align: center;
   font-weight: bold;
   font-size: 16px;
-  padding-top: 12px;
+  padding-top: 10px;
   background-color: ${(props) => (props.phase === 'current' ? '#32b67a' : 'gray')}
 `;
 

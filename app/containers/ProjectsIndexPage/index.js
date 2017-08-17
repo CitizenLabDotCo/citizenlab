@@ -50,7 +50,7 @@ export class ProjectsList extends React.PureComponent { // eslint-disable-line r
   }
 
   render() {
-    const { className, loadMoreIdeas, hasMore, list } = this.props;
+    const { className, loadMoreProjects, hasMore, list } = this.props;
     return (
       <div className={className}>
         <HelmetIntl
@@ -66,13 +66,13 @@ export class ProjectsList extends React.PureComponent { // eslint-disable-line r
 
           <InfiniteScrollStyled
             element={'div'}
-            loadMore={loadMoreIdeas}
+            loadMore={loadMoreProjects}
             className={'ui stackable cards'}
             initialLoad
             hasMore={hasMore}
             loader={<div className="loader"></div>}
           >
-            {list.map((id) => (
+            {list && list.map((id) => (
               <ProjectCard key={id} id={id} />
             ))}
           </InfiniteScrollStyled>
@@ -86,22 +86,22 @@ ProjectsList.propTypes = {
   list: PropTypes.any,
   className: PropTypes.string,
   hasMore: PropTypes.bool,
-  loadMoreIdeas: PropTypes.func.isRequired,
+  loadMoreProjects: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
 };
 
 
 const mapStateToProps = createStructuredSelector({
-  list: (state) => state.getIn(['projectRes', 'loaded']),
-  nextPageNumber: (state) => state.getIn(['projectRes', 'nextPageNumber']),
-  nextPageItemCount: (state) => state.getIn(['projectRes', 'nextPageItemCount']),
+  list: (state) => state.getIn(['projectsRes', 'loaded']),
+  nextPageNumber: (state) => state.getIn(['projectsRes', 'nextPageNumber']),
+  nextPageItemCount: (state) => state.getIn(['projectsRes', 'nextPageItemCount']),
 });
 
 const mergeProps = (state, dispatch) => {
   const { list, nextPageNumber, nextPageItemCount } = state;
   const { load, reset } = dispatch;
   return {
-    loadMoreIdeas: () => load(nextPageNumber, nextPageItemCount),
+    loadMoreProjects: () => load(nextPageNumber, nextPageItemCount),
     hasMore: !!(nextPageNumber && nextPageItemCount),
     list,
     reset,
