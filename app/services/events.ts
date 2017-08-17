@@ -37,8 +37,9 @@ export interface Events {
 
 export interface UpdatedEvent {
   project_id?: string;
-  title_multiloc?: { [key: string]: string };
-  description_multiloc?: { [key: string]: string };
+  title_multiloc?: Multiloc;
+  description_multiloc?: Multiloc;
+  location_multiloc?: Multiloc;
   start_at?: string;
   end_at?: string;
 }
@@ -53,7 +54,7 @@ export function observeEvent(eventId: string, streamParams: IStreamParams<Event>
 
 export function updateEvent(eventId: string, object: UpdatedEvent, refetch = true) {
   const httpMethod = { method: 'PUT' };
-  const bodyData = { phase: object };
+  const bodyData = { event: object };
 
   return request<Event>(`${apiEndpoint}/${eventId}`, bodyData, httpMethod, null).then((response) => {
     streams.update(eventId, response, refetch);
