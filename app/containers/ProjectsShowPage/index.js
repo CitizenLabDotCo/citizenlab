@@ -7,10 +7,7 @@ import Loader from 'components/loaders';
 import WatchSagas from 'containers/WatchSagas';
 import T from 'containers/T';
 import { Link } from 'react-router';
-
-// style
-import { media } from 'utils/styleUtils';
-// import projectImage from 'assets/img/landingpage/project1.png';
+import ImageHeader, { HeaderTitle, HeaderSubtitle } from 'components/ImageHeader';
 
 // store
 import { preprocess } from 'utils';
@@ -28,54 +25,12 @@ import { makeSelectProjectPages } from './selectors';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 const Container = styled.div`
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
   background: #f2f2f2;
 `;
-
-const HeaderContainer = styled.div`
-  width: 100%;
-  height: 305px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 25px;
-  padding-right: 25px;
-  position: relative;
-  z-index: 1;
-  margin-top: -70px;
-
-  ${media.notPhone`
-    height: 305px;
-  `}
-
-  ${media.phone`
-    min-height: 305px;
-  `}
-`;
-
-const HeaderOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
-const HeaderBackground = styled.div`
-  opacity: 0.65;
-  filter: blur(1px);
-  background-image: url(${(props) => props.projectCover});
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
 
 const Footer = styled.div`
   color: #333;
@@ -90,26 +45,6 @@ const Footer = styled.div`
   margin-left: auto;
   margin-right: auto;
 `;
-
-const ProjectHeaderStyled = styled.div`
-  font-size: 25px;
-  text-align: center;
-  color: #ffffff;
-  width: 100%;
-  display: block;
-  margin-top: 150px;
-`;
-
-const ProjectTitleStyled = styled.div`
-  position: absolute;
-  font-size: 45px;
-  text-align: center;
-  color: #ffffff;
-  width: 100%;
-  display: block;
-  margin-top: 30px;
-`;
-
 
 const ProjectMenu = styled.div`
   background-color: #FFFFFF;
@@ -178,19 +113,14 @@ class ProjectsShowPage extends React.Component {
         <WatchSagas sagas={sagasWatchersPages} />
 
         <Container>
-          <HeaderContainer>
-            <HeaderBackground
-              projectCover={project && project.getIn(['attributes', 'header_bg', 'large'])}
-            />
-            <HeaderOverlay>
-              <ProjectHeaderStyled>
-                <FormattedMessage {...messages.project} />
-              </ProjectHeaderStyled>
-              <ProjectTitleStyled>
-                {project && <T value={project.toJS().attributes.title_multiloc} />}
-              </ProjectTitleStyled>
-            </HeaderOverlay>
-          </HeaderContainer>
+          <ImageHeader image={project && project.getIn(['attributes', 'header_bg', 'large'])}>
+            <HeaderTitle>
+              <FormattedMessage {...messages.project} />
+            </HeaderTitle>
+            <HeaderSubtitle>
+              {project && <T value={project.toJS().attributes.title_multiloc} />}
+            </HeaderSubtitle>
+          </ImageHeader>
 
           <ProjectMenu>
             <ProjectMenuItems>
