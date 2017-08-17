@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.titleLabel',
     defaultMessage: 'Title',
   },
+  locationLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.locationLabel',
+    defaultMessage: 'Location',
+  },
   datesLabel: {
     id: 'app.containers.AdminPage.ProjectEvents.datesLabel',
     defaultMessage: 'Dates',
