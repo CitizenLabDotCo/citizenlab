@@ -4,137 +4,38 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
+import { preprocess } from 'utils';
+import { lighten } from 'polished';
+import { media } from 'utils/styleUtils';
+import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
+import { injectTFunc } from 'utils/containers/t/utils';
+
+
 import WatchSagas from 'containers/WatchSagas';
 import Modal from 'components/UI/Modal';
-import { preprocess } from 'utils';
 import IdeasShow from 'containers/IdeasShow';
 import { Link } from 'react-router';
-import { lighten } from 'polished';
-
-import {
-  selectLandingPage,
-  makeSelectProjects,
-} from './selectors';
-import { loadProjects } from './actions';
-import sagas from './sagas';
 import T from 'containers/T';
+import ImageHeader, { HeaderTitle, HeaderSubtitle } from 'components/ImageHeader';
 import IdeaCards from 'components/IdeaCards';
 import ProjectCard from 'components/ProjectCard';
-import { media } from 'utils/styleUtils';
-
-import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
-
-import { injectTFunc } from 'utils/containers/t/utils';
 import { FormattedMessage } from 'react-intl';
+
+
+import { loadProjects } from './actions';
 import messages from './messages';
+import sagas from './sagas';
+import { selectLandingPage, makeSelectProjects } from './selectors';
+
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   background: #f2f2f2;
+  margin-top: 80px;
 `;
 
-const HeaderContainer = styled.div`
-  width: 100%;
-  height: 360px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 25px;
-  padding-right: 25px;
-  position: relative;
-  z-index: 1;
-
-  ${media.notPhone`
-    height: 360px;
-  `}
-
-  ${media.phone`
-    min-height: 305px;
-  `}
-`;
-
-const HeaderOverlay = styled.div`
-  background-color: #000;
-  opacity: 0.35;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
-const HeaderBackground = styled.div`
-  background-image: url(${(props) => props.src});
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
-const HeaderTitle = styled.h1`
-  font-size: 45px;
-  line-height: 50px;
-  font-weight: 600;
-  text-align: center;
-  color: #FFFFFF;
-  margin: 0;
-  padding: 0;
-  padding-top: 115px;
-  display: flex;
-  z-index: 1;
-
-  ${media.tablet`
-    font-size: 40px;
-    line-height: 48px;
-  `}
-
-  ${media.phone`
-    font-weight: 600;
-    font-size: 34px;
-    line-height: 38px;
-  `}
-
-  ${media.smallPhone`
-    font-weight: 600;
-    font-size: 30px;
-    line-height: 34px;
-  `}
-`;
-
-const HeaderSubtitle = styled.h2`
-  color: #fff;
-  font-size: 30px;
-  line-height: 34px;
-  font-weight: 100;
-  max-width: 980px;
-  text-align: center;
-  margin: 0;
-  margin-top: 10px;
-  padding: 0;
-  opacity: 0.8;
-  z-index: 1;
-
-  ${media.tablet`
-    font-size: 28px;
-    line-height: 32px;
-  `}
-
-  ${media.phone`
-    font-size: 24px;
-    line-height: 28px;
-  `}
-
-  ${media.smallPhone`
-    font-size: 20px;
-    line-height: 24px;
-  `}
-`;
 
 const ContentContainer = styled.div`
   display: flex;
@@ -159,7 +60,6 @@ const SectionHeader = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   padding-bottom: 15px;
-  /* border: solid 1px purple; */
 
   ${media.phone`
     padding-top: 50px;
@@ -303,9 +203,8 @@ class LandingPage extends React.Component {
         <WatchSagas sagas={sagas} />
 
         <Container>
-          <HeaderContainer>
-            <HeaderBackground src={tenantHeaderBg}></HeaderBackground>
-            <HeaderOverlay></HeaderOverlay>
+
+          <ImageHeader image={tenantHeaderBg}>
             <HeaderTitle>
               <FormattedMessage {...messages.titleCity} values={{ name: tFunc(tenantName) }} />
             </HeaderTitle>
@@ -316,7 +215,7 @@ class LandingPage extends React.Component {
                 <FormattedMessage {...messages.SubTitleCity} values={{ name: tFunc(tenantName) }} />
               }
             </HeaderSubtitle>
-          </HeaderContainer>
+          </ImageHeader>
 
           <ContentContainer>
             <Content>
