@@ -184,7 +184,7 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
       this.setState({ saving: true });
       saveEvent(this.state.project.id, this.state.attributeDiff)
       .then((response) => {
-        this.props.router.push(`/admin/projects/${this.props.params.slug}/timeline/${response.data.id}`);
+        this.props.router.push(`/admin/projects/${this.props.params.slug}/events/${response.data.id}`);
       })
       .then(() => {
         this.setState({ saving: false });
