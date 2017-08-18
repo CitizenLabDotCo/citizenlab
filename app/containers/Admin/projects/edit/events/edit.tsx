@@ -151,7 +151,6 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
 
   createDateChangeHandler = (target: 'start_at' | 'end_at') => {
     return (moment) => {
-      console.log(moment.format());
       const newAttributesDiff = this.state.attributeDiff;
       newAttributesDiff[target] = moment ? moment.format() :  '';
       this.setState({ attributeDiff: newAttributesDiff });
