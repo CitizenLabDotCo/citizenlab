@@ -157,7 +157,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
   render() {
     const { events, loading } = this.state;
-    const { intl: { formatDate }, params: { slug } } = this.props;
+    const { intl: { formatDate, formatTime }, params: { slug } } = this.props;
 
     return (
       <ListWrapper>
@@ -178,7 +178,10 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
                   <td>
                     <h1><T value={event.attributes.title_multiloc} /></h1>
                     <p><T value={event.attributes.location_multiloc} /></p>
-                    <p>{formatDate(event.attributes.start_at)} - {formatDate(event.attributes.end_at)}</p>
+                    <p>
+                      {`${formatDate(event.attributes.start_at)} ${formatTime(event.attributes.start_at)}`}
+                      &nbsp;-&nbsp;
+                      {`${formatDate(event.attributes.end_at)} ${formatTime(event.attributes.end_at)}`}</p>
                   </td>
                   <td>
                     <DeleteButton onClick={this.createDeleteClickHandler(event.id)}>
