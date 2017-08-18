@@ -161,7 +161,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
     return (
       <ListWrapper>
-        <AddButton to={`/admin/projects/${slug}/events/new`}>Add a Event</AddButton>
+        <AddButton to={`/admin/projects/${slug}/events/new`}><FormattedMessage {...messages.addEventButton} /></AddButton>
 
         {!loading && events.length > 0 &&
           <EventsTable>

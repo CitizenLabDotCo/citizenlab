@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  addEventButton: {
+    id: 'app.containers.AdminPage.ProjectEvents.addEventButton',
+    defaultMessage: 'Add an event',
+  },
   titleColumnHeader: {
     id: 'app.containers.AdminPage.ProjectEvents.titleColumnHeader',
     defaultMessage: 'Title & dates',
