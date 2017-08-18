@@ -8,6 +8,7 @@
 - Proper rending of menu bar within a project
 - Admin settings are properly rendered within the tab container
 - Lots of small tweaks to rendering on mobile
+- Default sort ideas on trending on the ideas index page
 
 ### Added
 - Admin section in projects to CRUD phases
