@@ -5,6 +5,9 @@ import { getJwt, setJwt } from 'utils/auth/jwt';
 import * as _ from 'lodash';
 import request from 'utils/request';
 import streams from 'utils/streams';
+import { store } from 'app';
+import { loadCurrentUserSuccess } from 'utils/auth/actions';
+import { mergeJsonApiResources } from 'utils/resources/actions';
 
 export interface IUserToken {
   jwt: string;
@@ -32,19 +35,21 @@ export function signUp(
   lastName: string,
   email: string,
   password: string,
+  locale: string,
   selectedGender: 'male' | 'female' | 'unspecified' | null = null,
   selectedYearOfBirth: number | null = null,
   selectedAreaId: string | null = null
 ) {
   const bodyData = {
     user: {
-      firstName,
-      lastName,
+      first_name: firstName,
+      last_name: lastName,
       email,
       password,
-      selectedGender,
-      selectedYearOfBirth,
-      selectedAreaId
+      locale,
+      gender: selectedGender,
+      birthyear: selectedYearOfBirth,
+      domicile: selectedAreaId,
     }
   };
 
@@ -66,6 +71,11 @@ export function observeCurrentUser() {
 export function getAuthUser() {
   return request<IUser>(`${API_PATH}/users/me`, null, null, null).then((response: IUser) => {
     if (response && _.has(response, 'data.id')) {
+
+      // Sync redux state
+      store.dispatch(mergeJsonApiResources(response));
+      store.dispatch(loadCurrentUserSuccess(response));
+
       return response;
     } else {
       throw new Error('not authenticated');

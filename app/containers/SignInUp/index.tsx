@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import { injectIntl, intlShape } from 'react-intl';
+import { injectTFunc } from 'utils/containers/t/utils';
 // import { browserHistory } from 'react-router';
 import { FormattedMessage } from 'react-intl';
 import { stateStream, IStateStream } from 'services/state';
@@ -14,6 +16,7 @@ import { IStream } from 'utils/streams';
 import { observeCurrentTenant, ITenant } from 'services/tenant';
 import messages from './messages';
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   background: #f2f2f2;
@@ -40,6 +43,9 @@ const Banner = styled.div`
   margin-right: 120px;
   padding: 50px;
   position: relative;
+  ${media.phone`
+    display: none;
+  `}
 `;
 
 const LogoContainer = styled.div`
@@ -207,8 +213,11 @@ type Props = {
   intl: ReactIntl.InjectedIntl;
   tFunc: Function;
   locale: string;
-  onGoBack: () => void;
+  onGoBack?: () => void;
   onSignInUpCompleted: () => void;
+  show?: 'signIn' | 'signUp' | 'passwordReset';
+  signInTitleMessage?: {id: string, defaultMessage: string};
+  signUpTitleMessage?: {id: string, defaultMessage: string};
 };
 
 type State = {
@@ -216,14 +225,14 @@ type State = {
   tenant: ITenant | null;
 };
 
-export default class SignInUp extends React.PureComponent<Props, State> {
+class SignInUp extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
   tenant$: IStream<ITenant>;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
-    this.state$ = stateStream.observe<State>('IdeasNewPage2/SignInUp', { show: 'signIn', tenant: null });
+  constructor(props) {
+    super(props);
+    this.state$ = stateStream.observe<State>('IdeasNewPage2/SignInUp', { show: props.show || 'signIn', tenant: null });
     this.tenant$ = observeCurrentTenant();
     this.subscriptions = [];
   }
@@ -240,7 +249,7 @@ export default class SignInUp extends React.PureComponent<Props, State> {
   }
 
   goBack = () => {
-    this.props.onGoBack();
+    this.props.onGoBack && this.props.onGoBack();
   }
 
   goToSignUpForm = () => {
@@ -270,13 +279,14 @@ export default class SignInUp extends React.PureComponent<Props, State> {
     const { show, tenant } = this.state;
     const logo = tenant && tenant.data.attributes.logo.large;
     const { formatMessage } = this.props.intl;
+    const { onGoBack, signInTitleMessage, signUpTitleMessage } = this.props;
     const timeout = 500;
 
     const signIn = (show === 'signIn' && (
       <CSSTransition classNames="page" timeout={timeout}>
         <FormContainer>
           <Form>
-            <Title>{formatMessage(messages.signInTitle)}</Title>
+            <Title>{formatMessage(signInTitleMessage || messages.signInTitle)}</Title>
 
             <SignIn
               onSignedIn={this.handleOnSignedIn}
@@ -290,7 +300,7 @@ export default class SignInUp extends React.PureComponent<Props, State> {
               <SeparatorLine />
               <SeparatorTextContainer>
                 <SeparatorText>
-                  <span>Or</span>
+                  <span><FormattedMessage {...messages.or} /></span>
                 </SeparatorText>
               </SeparatorTextContainer>
             </Separator>
@@ -313,8 +323,7 @@ export default class SignInUp extends React.PureComponent<Props, State> {
       <CSSTransition classNames="form" timeout={timeout}>
         <FormContainer>
           <Form>
-            <Title>{formatMessage(messages.signUpTitle)}</Title>
-
+            <Title>{formatMessage(signUpTitleMessage || messages.signUpTitle)}</Title>
             <SignUp
               onSignedUp={this.handleOnSignedUp}
               intl={this.props.intl}
@@ -345,15 +354,17 @@ export default class SignInUp extends React.PureComponent<Props, State> {
           <Banner>
             <LogoContainer>
               <Logo src={logo as string} />
-              <Slogan1>We need your opinion to create a better city!</Slogan1>
-              <Slogan2>Co-Create</Slogan2>
+              <Slogan1><FormattedMessage {...messages.slogan1} /></Slogan1>
+              <Slogan2><FormattedMessage {...messages.slogan2} /></Slogan2>
             </LogoContainer>
           </Banner>
           <Forms>
-            <GoBackContainer onClick={this.goBack}>
-              <Icon name="arrow-back" />
-              <span><FormattedMessage {...messages.goBack} /></span>
-            </GoBackContainer>
+            {onGoBack &&
+              <GoBackContainer onClick={this.goBack}>
+                <Icon name="arrow-back" />
+                <span><FormattedMessage {...messages.goBack} /></span>
+              </GoBackContainer>
+            }
 
             <StyledTransitionGroup>
               {signIn}
@@ -366,3 +377,5 @@ export default class SignInUp extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default (injectIntl(injectTFunc(SignInUp)) as any);
