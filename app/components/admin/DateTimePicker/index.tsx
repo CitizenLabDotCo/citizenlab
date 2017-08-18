@@ -13,13 +13,17 @@ const Wrapper = styled.div`
 `;
 
 const TimeWrapper = styled.div`
-  border: 1px solid #dbdbdb;
-  display: flex;
   align-items: center;
+  border: 1px solid #dbdbdb;
+  color: #484848;
+  display: flex;
+  font-size: 18px;
   justify-content: space-between;
   margin-left: -1px;
 
   input {
+    font-size: 18px;
+    font-weight: 200;
     text-align: center;
   }
 `;
@@ -36,12 +40,18 @@ interface State {
 
 export default class DateTimePicker extends React.Component<Props, State> {
   constructor (props) {
-    super();
+    super(props);
 
     this.state = {
       focused: false,
       selectedMoment: props.value ? moment(props.value) : moment().second(0),
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value && nextProps.value !== this.props.value) {
+      this.setState({ selectedMoment: moment(nextProps.value) });
+    }
   }
 
   updateDateTime = (newMoment: moment.Moment) => {
