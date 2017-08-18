@@ -12,7 +12,9 @@ import { IStream } from 'utils/streams';
 import { stateStream, IStateStream } from 'services/state';
 import { observeAreas, IAreas, IAreaData } from 'services/areas';
 import { isValidEmail } from 'utils/validate';
-import { signUp, signIn } from 'services/auth';
+import { signUp, signIn, getAuthUser } from 'services/auth';
+import { connect } from 'react-redux';
+import { LOAD_CURRENT_USER_SUCCESS } from 'utils/auth/constants';
 import { IOption } from 'typings';
 import messages from './messages';
 import styled from 'styled-components';
@@ -63,6 +65,7 @@ const FormElement = styled.div`
 `;
 
 type Props = {
+  dispatch?: (arg: any) => any;
   intl: ReactIntl.InjectedIntl;
   tFunc: Function;
   locale: string;
@@ -88,6 +91,7 @@ type State = {
   showStep1: boolean;
 };
 
+@connect()
 export default class SignUp extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
   areas$: IStream<IAreas>;
@@ -140,7 +144,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
         label: this.props.tFunc(item.attributes.title_multiloc) as string,
       } as IOption));
     }
-  
+
     return null;
   }
 
@@ -184,12 +188,12 @@ export default class SignUp extends React.PureComponent<Props, State> {
     const firstNameError = (!firstName ? formatMessage(messages.noFirstNameError) : null);
     const lastNameError = (!lastName ? formatMessage(messages.noLastNameError) : null);
     const passwordError = (!password ? formatMessage(messages.noPasswordError) : null);
-    const hasErrors = [emailError, firstName, lastNameError, passwordError].some(error => error !== null);
+    const hasErrors = [emailError, firstNameError, lastNameError, passwordError].some(error => error !== null);
     this.state$.next({ emailError, firstNameError, lastNameError, passwordError, showStep1: hasErrors });
   }
 
   handleOnSubmit = async () => {
-    const { onSignedUp } = this.props;
+    const { onSignedUp, dispatch } = this.props;
     const { formatMessage } = this.props.intl;
     const { firstName, lastName, email, password, yearOfBirth, gender, area } = this.state;
 
@@ -198,10 +202,13 @@ export default class SignUp extends React.PureComponent<Props, State> {
         const selectedYearOfBirth = (yearOfBirth ? yearOfBirth.value : null);
         const selectedGender = (gender ? gender.value : null);
         const selectedAreaId = (area ? area.value : null);
+        const locale = this.props.locale;
 
         this.state$.next({ processing: true });
-        await signUp(firstName, lastName, email, password, selectedGender, selectedYearOfBirth, selectedAreaId);
+        await signUp(firstName, lastName, email, password, locale, selectedGender, selectedYearOfBirth, selectedAreaId);
         await signIn(email, password);
+        getAuthUser()
+
         this.state$.next({ processing: false });
         onSignedUp();
       } catch (error) {
