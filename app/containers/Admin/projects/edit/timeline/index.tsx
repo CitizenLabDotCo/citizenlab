@@ -161,7 +161,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
     return (
       <ListWrapper>
-        <AddButton to={`/admin/projects/${slug}/timeline/new`}>Add a Phase</AddButton>
+        <AddButton to={`/admin/projects/${slug}/timeline/new`}><FormattedMessage {...messages.addPhaseButton} /></AddButton>
 
         {!loading && phases.length > 0 &&
           <PhasesTable>
