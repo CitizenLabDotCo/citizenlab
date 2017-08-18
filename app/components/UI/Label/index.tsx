@@ -10,7 +10,7 @@ const StyledLabel = styled.label`
 `;
 
 type Props = {
-  value: string;
+  value?: string;
   htmlFor?: string;
   children?: any;
 };
