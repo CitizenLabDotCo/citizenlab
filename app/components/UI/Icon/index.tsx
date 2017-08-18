@@ -85,6 +85,18 @@ const getIcon = (name: string, className: string | undefined) => {
         </svg>
       );
     }
+    case 'delete': {
+      return (
+        <svg viewBox="0 0 15 18" height="100%"><desc>Created using Figma</desc><use xlinkHref="#a" transform="translate(1.29 5.33)"/><use xlinkHref="#b" transform="translate(.16 .06)"/><defs><path id="a" fillRule="evenodd" d="M1.128 12.613c-.623 0-1.128-.5-1.128-1.117V0h12.418v11.496c0 .617-.505 1.117-1.13 1.117H1.128zm9.58-11.505h-1.75v9.296c0 .48.392.868.876.868a.87.87 0 0 0 .873-.868V1.108zm-5.374 0h1.75v9.296c0 .48-.39.868-.875.868a.87.87 0 0 1-.876-.868V1.108zm-1.9 0h-1.75v9.296c0 .48.393.868.876.868a.87.87 0 0 0 .874-.868V1.108z"/><path id="b" d="M13.544 1.195H9.112V.558S9.092 0 8.528 0h-2.42c-.564 0-.545.558-.545.558v.637H1.13c-.624 0-1.13.5-1.13 1.118V4.15h14.673V2.313c0-.617-.506-1.118-1.13-1.118z"/></defs></svg>
+      );
+    }
+    case 'edit': {
+      return (
+        <svg viewBox="0 0 12 12" height="100%">
+          <path id="a" fillRule="evenodd" d="M0 9.3v2.448h2.448L9.67 4.525 7.223 2.077 0 9.3zm11.557-6.66c.255-.256.255-.67 0-.925L10.033.19c-.255-.254-.67-.254-.924 0L7.914 1.386l2.447 2.448 1.195-1.194z"/>
+        </svg>
+      );
+    }
     case 'upvote': {
       return (
         <svg className={className} fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">

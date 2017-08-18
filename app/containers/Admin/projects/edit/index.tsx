@@ -20,6 +20,9 @@ import messages from '../messages';
 type Props = {
   params: {
     slug: string | null,
+  },
+  location: {
+    pathname: string
   }
 };
 
@@ -49,19 +52,23 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
     if (this.props.params.slug) {
       this.updateSubscription(this.props.params.slug);
 
+      const baseTabsUrl = `/admin/projects/${this.props.params.slug}`;
+      const isActive = (url) => {
+        return this.props.location.pathname === url;
+      };
+
       this.tabs = [
         {
           label: 'general',
-          url: this.props.params.slug ? `/admin/projects/${this.props.params.slug}/edit` : '',
-          active: true,
+          url: `${baseTabsUrl}/edit`
         },
         {
           label: 'timeline',
-          url: this.props.params.slug ? `/admin/projects/${this.props.params.slug}/timeline` : '',
+          url: `${baseTabsUrl}/timeline`
         },
         {
           label: 'events',
-          url: this.props.params.slug ? `/admin/projects/${this.props.params.slug}/events` : '',
+          url: `${baseTabsUrl}/events`
         },
       ];
     }
@@ -93,6 +100,7 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
         viewPublicResource: messages.viewPublicProject,
       },
       tabs: this.tabs,
+      location: this.props.location,
     };
 
     return(

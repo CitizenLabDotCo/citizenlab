@@ -37,6 +37,7 @@ import Input from 'components/UI/Input';
 import Editor from 'components/UI/Editor';
 import Upload from 'components/UI/Upload';
 import Button from 'components/UI/Button';
+import FieldWrapper from 'components/admin/FieldWrapper';
 
 // Style
 const FormWrapper = styled.form`
@@ -45,14 +46,6 @@ const FormWrapper = styled.form`
   }
 `;
 
-const FieldWrapper = styled.div`
-  margin-bottom: 2em;
-
-  label {
-    display: block;
-    width: 100%;
-  }
-`;
 
 const ProjectImages = styled.div`
   display: flex;
