@@ -1,25 +1,49 @@
 /*
- * IdeasShow Messages
+ * ProjectsIndexPage Messages
  *
- * This contains all the text for the IdeasShow component.
+ * This contains all the text for the ProjectsIndexPage component.
  */
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  loadingProject: {
-    id: 'app.containers.IdeasShow.loadingProject',
-    defaultMessage: 'Loading project...',
+  header: {
+    id: 'app.containers.Projects.header',
+    defaultMessage: 'Projects',
   },
-  projectNotFound: {
-    id: 'app.containers.IdeasShow.projectNotFound',
-    defaultMessage: 'Ups... it seems that this project has be removed or forgotten!',
-  },
-  helmetTitle: {
-    id: 'app.containers.IdeasShow.helmetTitle',
-    defaultMessage: 'Idea show page',
+  project: {
+    id: 'app.containers.Projects.project',
+    defaultMessage: 'Project',
   },
   helmetDescription: {
-    id: 'app.containers.IdeasShow.helmetDescription',
-    defaultMessage: 'Display an idea',
+    id: 'app.containers.Projects.helmetDescription',
+    defaultMessage: 'Project Show page listing',
+  },
+  helmetTitle: {
+    id: 'app.containers.Projects.helmetDescription',
+    defaultMessage: 'Project Show page listing',
+  },
+  navInfo: {
+    id: 'app.containers.Projects.navInfo',
+    defaultMessage: 'Info',
+  },
+  navIdeas: {
+    id: 'app.containers.Projects.navIdeas',
+    defaultMessage: 'Ideas',
+  },
+  navTimeline: {
+    id: 'app.containers.Projects.navTimeline',
+    defaultMessage: 'Timeline',
+  },
+  navEvents: {
+    id: 'app.containers.Projects.navEvents',
+    defaultMessage: 'Events',
+  },
+  LoadingMessage: {
+    id: 'app.containers.Projects.LoadingMessage',
+    defaultMessage: 'Loading',
+  },
+  LoadingError: {
+    id: 'app.containers.Projects.LoadingError',
+    defaultMessage: 'Upps... something went wrong',
   },
 });

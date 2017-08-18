@@ -1,38 +1,21 @@
-/*
- *
- * IdeasIndexPage
- *
- */
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import HelmetIntl from 'components/HelmetIntl';
-
-// components
 import IdeaCards from 'components/IdeaCards';
+import ContentContainer from 'components/ContentContainer';
 
-// messages
-import messages from 'containers/IdeasIndexPage/messages';
+// import ActionButton from 'components/buttons/action.js';
+// import IdeasBorad from 'containers/IdeasIndexPage/pageView';
 
-// need to implement Helmet
-class ProjectIdeasIndex extends React.Component {
 
-  render() {
-    const { params } = this.props;
-    return (
-      <div>
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
-        />
-        <IdeaCards filter={{ project: params.slug }} />
-      </div>
-    );
-  }
-}
+const AllIdeas = ({ params }) => (
+  <ContentContainer>
+    <IdeaCards filter={{ project: params.projectId }} />
+  </ContentContainer>
+);
 
-ProjectIdeasIndex.propTypes = {
+AllIdeas.propTypes = {
   params: PropTypes.object.isRequired,
 };
 
-export default ProjectIdeasIndex;
+export default AllIdeas;
+

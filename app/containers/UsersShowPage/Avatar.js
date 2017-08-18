@@ -21,8 +21,7 @@ Avatar.propTypes = {
 };
 
 export default styled(Avatar)`
-  position: absolute !important;
-  margin: -82.5px 0 0 calc(40% - 82.5px) !important;
+  margin-bottom: -180px;
   width: 165px;
   height: 165px;
   border: solid 5px #ffffff;

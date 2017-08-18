@@ -6,11 +6,12 @@ import { connect } from 'react-redux';
 import { Checkbox } from 'semantic-ui-react';
 import { createStructuredSelector } from 'reselect';
 import { injectTFunc } from 'containers/T/utils';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import Upload from 'components/UI/Upload';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
+import Select from 'components/UI/Select';
 // import { makeSelectCurrentTenant } from '../selectors';
 import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
 import { saveSettings } from '../actions';
@@ -56,6 +57,17 @@ class SettingsCustomizeTab extends React.Component { // eslint-disable-line reac
     this.props.saveSettings(this.props.tenant.get('id'), this.state.changedAttributes.toJS());
   }
 
+  menuStyleOptions= () => ([
+    {
+      value: 'light',
+      label: this.props.intl.formatMessage(messages.menuStyleLight),
+    },
+    {
+      value: 'dark',
+      label: this.props.intl.formatMessage(messages.menuStyleDark),
+    },
+  ]);
+
   render() {
     const updatedTenant = this.props.tenant.update('attributes', (t) => {
       return t.mergeDeep(this.state.changedAttributes);
@@ -69,6 +81,15 @@ class SettingsCustomizeTab extends React.Component { // eslint-disable-line reac
         <p><FormattedMessage {...messages.subTitleBranding} /></p>
 
         <div>
+          <Label><FormattedMessage {...messages.menuStyle} /></Label>
+          <Select
+            value={settings.getIn(['core', 'menu_style'])}
+            options={this.menuStyleOptions()}
+            onChange={(option) => this.changeAttribute(['settings', 'core', 'menu_style'], option.value)}
+          />
+        </div>
+
+        <div>
           <Label><FormattedMessage {...messages.mainColor} /></Label>
           <ColorPickerInput
             value={settings.getIn(['core', 'color_main'])}
@@ -76,13 +97,6 @@ class SettingsCustomizeTab extends React.Component { // eslint-disable-line reac
           />
         </div>
 
-        <div>
-          <Label><FormattedMessage {...messages.menuBgColor} /></Label>
-          <ColorPickerInput
-            value={settings.getIn(['core', 'color_menu_bg'])}
-            onChange={(value) => this.changeAttribute(['settings', 'core', 'color_menu_bg'], value)}
-          />
-        </div>
 
         <div>
           <Label><FormattedMessage {...messages.logo} /></Label>
@@ -158,6 +172,7 @@ class SettingsCustomizeTab extends React.Component { // eslint-disable-line reac
 SettingsCustomizeTab.propTypes = {
   tenant: ImmutablePropTypes.map.isRequired,
   saveSettings: PropTypes.func.isRequired,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -168,4 +183,4 @@ const mapDispatchToProps = {
   saveSettings,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectTFunc(SettingsCustomizeTab));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(injectTFunc(SettingsCustomizeTab)));

@@ -39,8 +39,8 @@ const Timing = styled.div`
 `;
 
 /* eslint-disable */
-const Author = ({id, firstName, lastName, avatar, createdAt}) => (
-  <AuthorContainer>
+const Author = ({id, firstName, lastName, avatar, createdAt, className}) => (
+  <AuthorContainer className={className}>
     <Avatar src={avatar} />
     <Meta>
       <AuthorName to={`/profile/${id}`}>
@@ -58,6 +58,7 @@ Author.propTypes = {
   last_name: PropTypes.string,
   avatar: PropTypes.string,
   createdAt: PropTypes.any,
+  className: PropTypes.string,
 };
 
 const mapStateToProps = () => createStructuredSelector({
@@ -65,7 +66,6 @@ const mapStateToProps = () => createStructuredSelector({
 });
 
 const mergeProps = ({ user }, dispatchProps, ownProps) => {
-  const { createdAt } = ownProps;
   if (!user) return {}
   const attributes = user.get('attributes');
   const id = user.get('id');
@@ -75,13 +75,13 @@ const mergeProps = ({ user }, dispatchProps, ownProps) => {
   const avatar = attributes.getIn(['avatar', 'small']);
 
   return {
+    ...ownProps,
     id,
     slug,
     avatar,
     firstName,
     lastName,
     lastName,
-    createdAt,
   };
 
 };

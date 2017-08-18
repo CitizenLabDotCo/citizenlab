@@ -57,15 +57,6 @@ export default function createRoutes(store) {
       },
     },
     {
-      path: '/dev/foundation',
-      name: 'foundationDemoPage',
-      getComponent(location, cb) {
-        import('containers/FoundationDemoPage')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    },
-    {
       path: '/sign-in',
       name: 'signInPage',
       getComponent(nextState, cb) {
@@ -178,14 +169,12 @@ export default function createRoutes(store) {
       name: 'ideasShow',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/IdeasShow/reducer'),
-          import('containers/IdeasShow'),
+          import('containers/IdeasShowPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, component]) => {
-          injectReducer('ideasShow', reducer.default);
+        importModules.then(([component]) => {
           renderRoute(component);
         });
 
@@ -216,7 +205,7 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('resources/projects/reducer'),
-          import('containers/Projects'),
+          import('containers/ProjectsIndexPage'),
         ]);
 
         const renderRoute = loadModule(cb);
@@ -228,11 +217,29 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
+    },
+    {
+      path: '/projects/:projectId',
+      name: 'Project page',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/ProjectsShowPage/reducer'),
+          import('containers/ProjectsShowPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+        importModules.then(([reducer, component]) => {
+          injectReducer('projectContainer', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
       indexRoute: {
         name: 'Project page',
         getComponent(nextState, cb) {
           const importModules = Promise.all([
-            import('containers/Projects/index/index.js'),
+            import('containers/ProjectsShowPage/info'),
           ]);
 
           const renderRoute = loadModule(cb);
@@ -246,129 +253,75 @@ export default function createRoutes(store) {
       },
       childRoutes: [
         {
-          path: '/projects/:projectId',
-          name: 'Project page',
+          path: '/projects/:projectId/timeline',
+          name: 'Project timeline page',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
-              import('containers/Projects/show/reducer'),
-              import('containers/Projects/show'),
+              import('containers/ProjectsShowPage/timeline/reducer'),
+              import('containers/ProjectsShowPage/timeline'),
             ]);
 
             const renderRoute = loadModule(cb);
             importModules.then(([reducer, component]) => {
-              injectReducer('projectContainer', reducer.default);
+              injectReducer('projectTimeline', reducer.default);
               renderRoute(component);
             });
 
             importModules.catch(errorLoading);
           },
-          indexRoute: {
-            name: 'Project page',
-            getComponent(nextState, cb) {
-              const importModules = Promise.all([
-                import('containers/Projects/show/info/reducer'),
-                import('containers/Projects/show/info'),
-              ]);
+        },
+        {
+          path: '/projects/:projectId/events',
+          name: 'Project\'s events page',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/ProjectsShowPage/events/reducer'),
+              import('containers/ProjectsShowPage/events'),
+            ]);
 
-              const renderRoute = loadModule(cb);
+            const renderRoute = loadModule(cb);
+            importModules.then(([reducer, component]) => {
+              injectReducer('projectEvents', reducer.default);
+              renderRoute(component);
+            });
 
-              importModules.then(([reducer, component]) => {
-                injectReducer('projectInfo', reducer.default);
-                renderRoute(component);
-              });
-
-              importModules.catch(errorLoading);
-            },
+            importModules.catch(errorLoading);
           },
-          childRoutes: [
-            {
-              path: '/projects/:projectId/timeline',
-              name: 'Project timeline page',
-              getComponent(nextState, cb) {
-                const importModules = Promise.all([
-                  import('containers/Projects/show/timeline/reducer'),
-                  import('containers/Projects/show/timeline'),
-                ]);
+        },
+        {
+          path: '/projects/:projectId/page/:pageId',
+          name: 'Project\'s page',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/PagesShowPage/reducer'),
+              import('containers/ProjectsShowPage/page'),
+            ]);
 
-                const renderRoute = loadModule(cb);
-                importModules.then(([reducer, component]) => {
-                  injectReducer('projectTimeline', reducer.default);
-                  renderRoute(component);
-                });
+            const renderRoute = loadModule(cb);
+            importModules.then(([reducer, component]) => {
+              injectReducer('pagesShowPage', reducer.default);
+              renderRoute(component);
+            });
 
-                importModules.catch(errorLoading);
-              },
-            },
-            {
-              path: '/projects/:projectId/events',
-              name: 'Project\'s events page',
-              getComponent(nextState, cb) {
-                const importModules = Promise.all([
-                  import('containers/Projects/show/events/reducer'),
-                  import('containers/Projects/show/events'),
-                ]);
+            importModules.catch(errorLoading);
+          },
+        },
+        {
+          path: '/projects/:projectId/ideas',
+          name: 'ideas 4 projects page',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/ProjectsShowPage/ideas'),
+            ]);
 
-                const renderRoute = loadModule(cb);
-                importModules.then(([reducer, component]) => {
-                  injectReducer('projectEvents', reducer.default);
-                  renderRoute(component);
-                });
+            const renderRoute = loadModule(cb);
 
-                importModules.catch(errorLoading);
-              },
-            },
-            {
-              path: '/projects/:projectId/page/:pageId',
-              name: 'Project\'s page',
-              getComponent(nextState, cb) {
-                const importModules = Promise.all([
-                  import('containers/PagesShowPage/reducer'),
-                  import('containers/Projects/show/page'),
-                ]);
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
 
-                const renderRoute = loadModule(cb);
-                importModules.then(([reducer, component]) => {
-                  injectReducer('pagesShowPage', reducer.default);
-                  renderRoute(component);
-                });
-
-                importModules.catch(errorLoading);
-              },
-            },
-            {
-              name: 'Project page',
-              getComponent(nextState, cb) {
-                const importModules = Promise.all([
-                  import('containers/Projects/show/info'),
-                ]);
-
-                const renderRoute = loadModule(cb);
-
-                importModules.then(([component]) => {
-                  renderRoute(component);
-                });
-
-                importModules.catch(errorLoading);
-              },
-            },
-            {
-              path: '/projects/:projectId/ideas',
-              name: 'ideas 4 projects page',
-              getComponent(nextState, cb) {
-                const importModules = Promise.all([
-                  import('containers/Projects/show/ideas'),
-                ]);
-
-                const renderRoute = loadModule(cb);
-
-                importModules.then(([component]) => {
-                  renderRoute(component);
-                });
-
-                importModules.catch(errorLoading);
-              },
-            },
-          ],
+            importModules.catch(errorLoading);
+          },
         },
       ],
     },

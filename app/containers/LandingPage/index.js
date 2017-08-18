@@ -4,149 +4,35 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
+import { preprocess } from 'utils';
+import { lighten } from 'polished';
+import { media } from 'utils/styleUtils';
+import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
+import { injectTFunc } from 'utils/containers/t/utils';
+
+
 import WatchSagas from 'containers/WatchSagas';
 import Modal from 'components/UI/Modal';
-import { preprocess } from 'utils';
 import IdeasShow from 'containers/IdeasShow';
 import { Link } from 'react-router';
-import { lighten } from 'polished';
-
-import {
-  selectLandingPage,
-  makeSelectProjects,
-} from './selectors';
-import { loadProjects } from './actions';
-import sagas from './sagas';
 import T from 'containers/T';
+import ImageHeader, { HeaderTitle, HeaderSubtitle } from 'components/ImageHeader';
+import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectCard from 'components/ProjectCard';
-import { media } from 'utils/styleUtils';
-
-import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
-
-import { injectTFunc } from 'utils/containers/t/utils';
 import { FormattedMessage } from 'react-intl';
+
+
+import { loadProjects } from './actions';
 import messages from './messages';
+import sagas from './sagas';
+import { selectLandingPage, makeSelectProjects } from './selectors';
+
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #f2f2f2;
-`;
-
-const HeaderContainer = styled.div`
-  width: 100%;
-  height: 360px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 25px;
-  padding-right: 25px;
-  position: relative;
-  z-index: 1;
-
-  ${media.notPhone`
-    height: 360px;
-  `}
-
-  ${media.phone`
-    min-height: 305px;
-  `}
-`;
-
-const HeaderOverlay = styled.div`
-  background-color: #000;
-  opacity: 0.35;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
-const HeaderBackground = styled.div`
-  background-image: url(${(props) => props.src});
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
-const HeaderTitle = styled.h1`
-  font-size: 45px;
-  line-height: 50px;
-  font-weight: 600;
-  text-align: center;
-  color: #FFFFFF;
-  margin: 0;
-  padding: 0;
-  padding-top: 115px;
-  display: flex;
-  z-index: 1;
-
-  ${media.tablet`
-    font-size: 40px;
-    line-height: 48px;
-  `}
-
-  ${media.phone`
-    font-weight: 600;
-    font-size: 34px;
-    line-height: 38px;
-  `}
-
-  ${media.smallPhone`
-    font-weight: 600;
-    font-size: 30px;
-    line-height: 34px;
-  `}
-`;
-
-const HeaderSubtitle = styled.h2`
-  color: #fff;
-  font-size: 30px;
-  line-height: 34px;
-  font-weight: 100;
-  max-width: 980px;
-  text-align: center;
-  margin: 0;
-  margin-top: 10px;
-  padding: 0;
-  opacity: 0.8;
-  z-index: 1;
-
-  ${media.tablet`
-    font-size: 28px;
-    line-height: 32px;
-  `}
-
-  ${media.phone`
-    font-size: 24px;
-    line-height: 28px;
-  `}
-
-  ${media.smallPhone`
-    font-size: 20px;
-    line-height: 24px;
-  `}
-`;
-
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 30px;
-  padding-right: 30px;
-`;
-
-const Content = styled.div`
-  width: 100%;
-  max-width: 980px;
 `;
 
 const Section = styled.div`
@@ -159,7 +45,6 @@ const SectionHeader = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   padding-bottom: 15px;
-  /* border: solid 1px purple; */
 
   ${media.phone`
     padding-top: 50px;
@@ -181,13 +66,13 @@ const SectionTitle = styled.h2`
   /* border: solid 1px green; */
 
   ${media.phone`
-    font-size: 32px;
+    font-size: 23px;
     line-height: 36px;
   `}
 `;
 
 const ViewAllButtonText = styled.div`
-  color: ${(props) => props.theme.color.main};
+  color: ${(props) => props.theme.colorMain};
   font-size: 18px;
   font-weight: 300;
   line-height: 16px;
@@ -196,7 +81,7 @@ const ViewAllButtonText = styled.div`
 `;
 
 const ViewAllButtonIcon = styled.svg`
-  fill: ${(props) => props.theme.color.main};
+  fill: ${(props) => props.theme.colorMain};
   height: 11px;
   margin-top: -1px;
   cursor: pointer;
@@ -210,11 +95,11 @@ const ViewAllButton = styled(Link)`
 
   &:hover {
     ${ViewAllButtonIcon} {
-      fill: ${(props) => lighten(0.2, props.theme.color.main)};
+      fill: ${(props) => lighten(0.2, props.theme.colorMain)};
     }
 
     ${ViewAllButtonText} {
-      color: ${(props) => lighten(0.2, props.theme.color.main)};
+      color: ${(props) => lighten(0.2, props.theme.colorMain)};
     }
   }
 
@@ -303,9 +188,8 @@ class LandingPage extends React.Component {
         <WatchSagas sagas={sagas} />
 
         <Container>
-          <HeaderContainer>
-            <HeaderBackground src={tenantHeaderBg}></HeaderBackground>
-            <HeaderOverlay></HeaderOverlay>
+
+          <ImageHeader image={tenantHeaderBg}>
             <HeaderTitle>
               <FormattedMessage {...messages.titleCity} values={{ name: tFunc(tenantName) }} />
             </HeaderTitle>
@@ -316,51 +200,49 @@ class LandingPage extends React.Component {
                 <FormattedMessage {...messages.SubTitleCity} values={{ name: tFunc(tenantName) }} />
               }
             </HeaderSubtitle>
-          </HeaderContainer>
+          </ImageHeader>
 
           <ContentContainer>
-            <Content>
-              <Section>
-                <SectionHeader>
-                  <SectionTitle>
-                    <FormattedMessage {...messages.ideasFrom} values={{ name: tFunc(tenantName) }} />
-                  </SectionTitle>
-                  <ViewAllButton to="/ideas">
-                    <ViewAllButtonText>
-                      <FormattedMessage {...messages.viewIdeas} />
-                    </ViewAllButtonText>
-                    <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
-                      <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
-                    </ViewAllButtonIcon>
-                  </ViewAllButton>
-                </SectionHeader>
-                <SectionContainer>
-                  <IdeaCards
-                    filter={{ sort: 'trending', 'page[size]': 3 }}
-                    loadMoreEnabled={false}
-                  />
-                </SectionContainer>
-              </Section>
+            <Section>
+              <SectionHeader>
+                <SectionTitle>
+                  <FormattedMessage {...messages.ideasFrom} values={{ name: tFunc(tenantName) }} />
+                </SectionTitle>
+                <ViewAllButton to="/ideas">
+                  <ViewAllButtonText>
+                    <FormattedMessage {...messages.viewIdeas} />
+                  </ViewAllButtonText>
+                  <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
+                    <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
+                  </ViewAllButtonIcon>
+                </ViewAllButton>
+              </SectionHeader>
+              <SectionContainer>
+                <IdeaCards
+                  filter={{ sort: 'trending', 'page[size]': 3 }}
+                  loadMoreEnabled={false}
+                />
+              </SectionContainer>
+            </Section>
 
-              <Section>
-                <SectionHeader>
-                  <SectionTitle>
-                    <FormattedMessage {...messages.projectsFrom} values={{ name: tFunc(tenantName) }} />
-                  </SectionTitle>
-                  <ViewAllButton to="/projects">
-                    <ViewAllButtonText>
-                      <FormattedMessage {...messages.viewProjects} />
-                    </ViewAllButtonText>
-                    <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
-                      <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
-                    </ViewAllButtonIcon>
-                  </ViewAllButton>
-                </SectionHeader>
-                <SectionContainer>
-                  {projectsList}
-                </SectionContainer>
-              </Section>
-            </Content>
+            <Section>
+              <SectionHeader>
+                <SectionTitle>
+                  <FormattedMessage {...messages.projectsFrom} values={{ name: tFunc(tenantName) }} />
+                </SectionTitle>
+                <ViewAllButton to="/projects">
+                  <ViewAllButtonText>
+                    <FormattedMessage {...messages.viewProjects} />
+                  </ViewAllButtonText>
+                  <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
+                    <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
+                  </ViewAllButtonIcon>
+                </ViewAllButton>
+              </SectionHeader>
+              <SectionContainer>
+                {projectsList}
+              </SectionContainer>
+            </Section>
           </ContentContainer>
 
           <Footer>

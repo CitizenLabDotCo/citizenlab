@@ -11,10 +11,9 @@ import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroller';
 // import IdeaCard from 'components/IdeaCard';
 import HelmetIntl from 'components/HelmetIntl';
-import { FormattedMessage } from 'react-intl';
 import WatchSagas from 'utils/containers/watchSagas';
 import ProjectCard from 'components/ProjectCard';
-import { Segment } from 'semantic-ui-react';
+import ContentContainer from 'components/ContentContainer';
 
 // store
 import { preprocess } from 'utils';
@@ -30,14 +29,12 @@ import messages from './messages';
 const InfiniteScrollStyled = styled(InfiniteScroll)`
   font-size: 20px;
   color: #999;
-  margin-top: 10px;
+  margin-top: 30px !important;
   display: flex;
   justify-content: space-between;
-  margin-top: 10px !important;
   ${media.tablet`
     flex-wrap: wrap;
   `}
-
   ${media.phone`
     flex-direction: column;
   `}
@@ -50,7 +47,7 @@ export class ProjectsList extends React.PureComponent { // eslint-disable-line r
   }
 
   render() {
-    const { className, loadMoreIdeas, hasMore, list } = this.props;
+    const { className, loadMoreProjects, hasMore, list } = this.props;
     return (
       <div className={className}>
         <HelmetIntl
@@ -58,25 +55,21 @@ export class ProjectsList extends React.PureComponent { // eslint-disable-line r
           description={messages.helmetDescription}
         />
         <WatchSagas sagas={sagaWatchers} />
-        <Segment style={{ width: 1000, marginLeft: 'auto', marginRight: 'auto' }} basic>
-
-          <h1>
-            <FormattedMessage {...messages.header} />
-          </h1>
+        <ContentContainer>
 
           <InfiniteScrollStyled
             element={'div'}
-            loadMore={loadMoreIdeas}
+            loadMore={loadMoreProjects}
             className={'ui stackable cards'}
             initialLoad
             hasMore={hasMore}
             loader={<div className="loader"></div>}
           >
-            {list.map((id) => (
+            {list && list.map((id) => (
               <ProjectCard key={id} id={id} />
             ))}
           </InfiniteScrollStyled>
-        </Segment>
+        </ContentContainer>
       </div>
     );
   }
@@ -86,22 +79,22 @@ ProjectsList.propTypes = {
   list: PropTypes.any,
   className: PropTypes.string,
   hasMore: PropTypes.bool,
-  loadMoreIdeas: PropTypes.func.isRequired,
+  loadMoreProjects: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
 };
 
 
 const mapStateToProps = createStructuredSelector({
-  list: (state) => state.getIn(['projectRes', 'loaded']),
-  nextPageNumber: (state) => state.getIn(['projectRes', 'nextPageNumber']),
-  nextPageItemCount: (state) => state.getIn(['projectRes', 'nextPageItemCount']),
+  list: (state) => state.getIn(['projectsRes', 'loaded']),
+  nextPageNumber: (state) => state.getIn(['projectsRes', 'nextPageNumber']),
+  nextPageItemCount: (state) => state.getIn(['projectsRes', 'nextPageItemCount']),
 });
 
 const mergeProps = (state, dispatch) => {
   const { list, nextPageNumber, nextPageItemCount } = state;
   const { load, reset } = dispatch;
   return {
-    loadMoreIdeas: () => load(nextPageNumber, nextPageItemCount),
+    loadMoreProjects: () => load(nextPageNumber, nextPageItemCount),
     hasMore: !!(nextPageNumber && nextPageItemCount),
     list,
     reset,

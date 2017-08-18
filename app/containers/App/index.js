@@ -22,11 +22,12 @@ import { injectTFunc } from 'utils/containers/t/utils';
 
 // components
 // import { Container } from 'semantic-ui-react';
-import Navbar from './Navbar';
+import Navbar from 'containers/Navbar';
 import messages from './messages';
 import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import styled, { ThemeProvider } from 'styled-components';
+import { media } from 'utils/styleUtils';
 // components - authorizations
 import Authorize, { Else } from 'utils/containers/authorize';
 
@@ -47,8 +48,11 @@ import { LOAD_CURRENT_USER_REQUEST } from 'utils/auth/constants';
 import { loadCurrentTenantRequest } from 'utils/tenant/actions';
 
 const Container = styled.div`
-  padding-top: 65px;
-  background-color: #f2f2f2;
+  margin-top: ${(props) => props.theme.menuHeight}px;
+
+  ${media.phone`
+    margin-bottom: ${(props) => props.theme.mobileMenuHeight}px;
+  `}
 `;
 
 class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -62,7 +66,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
   }
 
   content() {
-    const { tFunc, currentTenant, location, children, loadUser, colorMain, colorMenuBg, metaTitle, metaDescription } = this.props;
+    const { tFunc, currentTenant, location, children, loadUser, colorMain, menuStyle, metaTitle, metaDescription } = this.props;
     const { formatMessage } = this.props.intl;
 
     const finalMetaDescription =
@@ -75,10 +79,11 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
 
 
     const theme = {
-      color: {
-        main: colorMain || '#ef0071',
-        menuBg: colorMenuBg || '#fff',
-      },
+      colorMain: colorMain || '#ef0071',
+      menuStyle: menuStyle || 'light',
+      menuHeight: 80,
+      mobileMenuHeight: 80,
+      maxPageWidth: 950,
     };
 
     return (
@@ -90,7 +95,6 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
           </Helmet>
 
           <Navbar currentTenant={currentTenant} location={this.props.location.pathname} />
-
           <Loader
             resourceLoader={loadUser}
             loadingMessage={messages.currentUserLoadingMessage}
@@ -120,7 +124,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
         <WatchSagas sagas={areasSagas} />
         <WatchSagas sagas={{ tenantSaga }} />
         <WatchSagas sagas={voteControlSagas} />
-        {currentTenant ? this.content() : <div>Loading...</div>}
+        {currentTenant && this.content()}
       </div>
     );
   }
@@ -135,7 +139,7 @@ App.propTypes = {
   loadCurrentTenantRequest: PropTypes.func.isRequired,
   loadUser: PropTypes.func.isRequired,
   colorMain: PropTypes.string,
-  colorMenuBg: PropTypes.string,
+  menuStyle: PropTypes.string,
   metaTitle: PropTypes.object,
   metaDescription: PropTypes.object,
 };
@@ -143,7 +147,7 @@ App.propTypes = {
 const mapStateToProps = createStructuredSelector({
   currentTenant: makeSelectCurrentTenant(),
   colorMain: makeSelectSetting(['core', 'color_main']),
-  colorMenuBg: makeSelectSetting(['core', 'color_menu_bg']),
+  menuStyle: makeSelectSetting(['core', 'menu_style']),
   metaTitle: makeSelectSetting(['core', 'meta_title']),
   metaDescription: makeSelectSetting(['core', 'meta_description']),
 });
