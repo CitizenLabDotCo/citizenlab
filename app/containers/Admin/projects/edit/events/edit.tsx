@@ -56,7 +56,7 @@ interface State {
   descState: EditorState;
 }
 
-class AdminProjectTimelineEdit extends React.Component<Props, State> {
+class AdminProjectEventEdit extends React.Component<Props, State> {
   project$: IStream<IProject>;
   event$: IStream<Event>;
   subscriptions: Rx.Subscription[];
@@ -149,11 +149,13 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
     }
   }
 
-  handleDateUpdate = ({ startDate, endDate }) => {
-    const newAttributesDiff = this.state.attributeDiff;
-    newAttributesDiff.start_at = startDate ? startDate.format('YYYY-MM-DD') : '';
-    newAttributesDiff.end_at = endDate ? endDate.format('YYYY-MM-DD') : '';
-    this.setState({ attributeDiff: newAttributesDiff });
+  createDateChangeHandler = (target: 'start_at' | 'end_at') => {
+    return (moment) => {
+      console.log(moment.format());
+      const newAttributesDiff = this.state.attributeDiff;
+      newAttributesDiff[target] = moment ? moment.format() :  '';
+      this.setState({ attributeDiff: newAttributesDiff });
+    };
   }
 
   handleDateFocusChange = (focusedInput) => {
@@ -228,21 +230,13 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
           </FieldWrapper>
 
           <FieldWrapper>
-            <Label><FormattedMessage {...messages.datesLabel} /></Label>
-            <DateRangePicker
-              startDate={eventAttrs.start_at ? moment(eventAttrs.start_at) : null} // momentPropTypes.momentObj or null,
-              endDate={eventAttrs.end_at ? moment(eventAttrs.end_at) : null} // momentPropTypes.momentObj or null,
-              onDatesChange={this.handleDateUpdate} // PropTypes.func.isRequired,
-              focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-              onFocusChange={this.handleDateFocusChange} // PropTypes.func.isRequired,
-              isOutsideRange={this.isOutsideRange}
-              firstDayOfWeek={1}
-              displayFormat="DD/MM/YYYY"
-            />
+            <Label><FormattedMessage {...messages.dateStartLabel} /></Label>
+            <DateTimePicker value={eventAttrs.start_at} onChange={this.createDateChangeHandler('start_at')} />
           </FieldWrapper>
 
           <FieldWrapper>
-            <DateTimePicker dateTime={eventAttrs.start_at} />
+            <Label><FormattedMessage {...messages.datesEndLabel} /></Label>
+            <DateTimePicker value={eventAttrs.end_at} onChange={this.createDateChangeHandler('end_at')} />
           </FieldWrapper>
 
           <FieldWrapper>
@@ -268,4 +262,4 @@ const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
 });
 
-export default injectTFunc(injectIntl(connect(mapStateToProps)(withRouter(AdminProjectTimelineEdit))));
+export default injectTFunc(injectIntl(connect(mapStateToProps)(withRouter(AdminProjectEventEdit))));
