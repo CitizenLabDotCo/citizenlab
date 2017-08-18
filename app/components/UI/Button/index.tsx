@@ -60,8 +60,8 @@ const StyledButton: any = styled.button`
         fill: ${(props: any) => '#fff' || '#000'};
       }
 
-      &:hover {
-        background: ${(props: any) => darken(0.1, (props.theme.colorMain || '#ccc'))};
+      &:hover, &:focus {
+        background: ${(props: any) => darken(0.1, (props.theme.color.main || '#ccc'))};
       }
     }
 
@@ -90,7 +90,7 @@ const StyledButton: any = styled.button`
         fill: #676767;
       }
 
-      &:hover {
+      &:hover, &:focus {
         background: ${(props: any) => darken(0.1, '#eae9e9')};
       }
     }
