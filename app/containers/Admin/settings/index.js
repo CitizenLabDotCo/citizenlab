@@ -11,8 +11,8 @@ class SettingsPage extends React.Component { // eslint-disable-line react/prefer
 
   render() {
     const tabs = [
-      { label: 'General', url: '/admin/settings', active: true },
-      { label: 'Customize', url: '/admin/settings/customize', active: false },
+      { label: 'General', url: '/admin/settings' },
+      { label: 'Customize', url: '/admin/settings/customize' },
     ];
 
     return (
@@ -21,14 +21,15 @@ class SettingsPage extends React.Component { // eslint-disable-line react/prefer
           resource={{ title: 'Settings', publicLink: '/admin/settings' }}
           messages={messages}
           tabs={tabs}
-        />
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
-        />
-        <Saga saga={watchSaveSettings} />
+        >
+          <HelmetIntl
+            title={messages.helmetTitle}
+            description={messages.helmetDescription}
+          />
+          <Saga saga={watchSaveSettings} />
 
-        {this.props.children}
+          {this.props.children}
+        </TabbedResource>
       </div>
     );
   }
