@@ -169,14 +169,12 @@ export default function createRoutes(store) {
       name: 'ideasShow',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/IdeasShow/reducer'),
-          import('containers/IdeasShow'),
+          import('containers/IdeasShowPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, component]) => {
-          injectReducer('ideasShow', reducer.default);
+        importModules.then(([component]) => {
           renderRoute(component);
         });
 

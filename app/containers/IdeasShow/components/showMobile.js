@@ -33,15 +33,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
+  margin: 50px 0px;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
 `;
 
 const Content = styled.div`

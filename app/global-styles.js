@@ -155,11 +155,12 @@ injectGlobal`
   *:after {
     box-sizing: inherit;
   }
-  
+
   html,
   body {
     height: 100%;
     width: 100%;
+    background-color: #f2f2f2 !important;
   }
 
   body:not(.fontLoaded),

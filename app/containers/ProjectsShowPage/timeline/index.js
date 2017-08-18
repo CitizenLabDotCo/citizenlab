@@ -8,6 +8,7 @@ import { loadProjectPhasesRequest } from 'resources/projects/phases/actions';
 import WatchSagas from 'utils/containers/watchSagas';
 import sagas from 'resources/projects/phases/sagas';
 import ProjectPhase from './ProjectPhase';
+import ContentContainer from 'components/ContentContainer';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { LOAD_PROJECT_PHASES_REQUEST } from 'resources/projects/phases/constants';
 import { FormattedMessage } from 'react-intl';
@@ -21,7 +22,7 @@ const ProjectPhasesStyled = styled.div`
   border-left: dotted 3px #d7d7d7;
 `;
 
-const Container = styled.div`
+const StyledContainer = styled(ContentContainer)`
   margin-top: 16px;
 `;
 
@@ -49,7 +50,7 @@ class ProjectsTimeline extends React.PureComponent {
     const { phases, loading, error, locale } = this.props;
 
     return (
-      <Container>
+      <StyledContainer>
         <WatchSagas sagas={sagas} />
         {((phases && phases.length === 0) || !(phases || error)) && <FormattedMessage {...messages.noTimeline} />}
         {loading && <FormattedMessage {...messages.loading} />}
@@ -67,7 +68,7 @@ class ProjectsTimeline extends React.PureComponent {
             descriptionMultiLoc={phase.attributes.description_multiloc}
           />))}
         </ProjectPhasesStyled>
-      </Container>
+      </StyledContainer>
     );
   }
 }

@@ -23,7 +23,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  height: 79px;
+  height: ${(props) => props.theme.menuHeight}px;
   position: relative;
   background: ${(props) => props.theme.colorNavBg};
   border-bottom: 1px solid ${(props) => props.theme.colorNavBottomBorder};
