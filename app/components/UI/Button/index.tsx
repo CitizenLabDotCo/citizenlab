@@ -61,7 +61,7 @@ const StyledButton: any = styled.button`
       }
 
       &:hover, &:focus {
-        background: ${(props: any) => darken(0.1, (props.theme.color.main || '#ccc'))};
+        background: ${(props: any) => darken(0.1, (props.theme.colorMain || '#ccc'))};
       }
     }
 
