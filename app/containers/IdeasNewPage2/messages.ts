@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage2.signUpTitle',
     defaultMessage: 'Sign up to publish your idea',
   },
-  createAnAccount: {
-    id: 'app.containers.IdeasNewPage2.createAnAccount',
-    defaultMessage: 'Create an account',
-  },
   titleLabel: {
     id: 'app.containers.IdeasNewPage2.titleLabel',
     defaultMessage: 'Title (required)',
@@ -80,9 +76,5 @@ export default defineMessages({
   submitError: {
     id: 'app.containers.IdeasNewPage2.submitError',
     defaultMessage: 'Something went wrong. Please try again.',
-  },
-  goBack: {
-    id: 'app.containers.IdeasNewPage2.goBack',
-    defaultMessage: 'Go back',
   },
 });

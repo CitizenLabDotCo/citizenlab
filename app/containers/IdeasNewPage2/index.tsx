@@ -26,7 +26,7 @@ import styled from 'styled-components';
 import messages from './messages';
 import ButtonBar, { namespace as ButtonBarNamespace, State as IButtonBarState } from './ButtonBar';
 import NewIdeaForm, { namespace as NewIdeaFormNamespace, State as INewIdeaFormState } from './NewIdeaForm';
-import SignInUp from './SignInUp';
+import SignInUp from 'containers/SignInUp';
 
 const Container = styled.div`
   background: #f2f2f2;
@@ -184,7 +184,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       (newIdeaFormState) => {
         _(newIdeaFormState.images).forEach(image => image.preview && window.URL.revokeObjectURL(image.preview));
         _(this.subscriptions).forEach(subscription => subscription.unsubscribe());
-      }, 
+      },
       (error) => console.log(error)
     );
   }
@@ -260,7 +260,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       const authUser = await getAuthUser();
       await this.postIdeaAndIdeaImage(authUser.data.id);
       this.setProcessingTo(false);
-      browserHistory.push('ideas');
+      browserHistory.push('/ideas');
     } catch (error) {
       this.setProcessingTo(false);
 
@@ -283,7 +283,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     this.buttonBarState$.next({ submitError });
   }
 
-  handleOnSingInUpGoBack = () => {
+  handleOnSignInUpGoBack = () => {
     this.state$.next({ showIdeaForm: true });
   }
 
@@ -316,11 +316,11 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer>
           <SignInUp
-            intl={intl}
-            tFunc={tFunc}
             locale={locale}
-            onGoBack={this.handleOnSingInUpGoBack}
+            onGoBack={this.handleOnSignInUpGoBack}
             onSignInUpCompleted={this.handleOnSignInUpCompleted}
+            signInTitleMessage={messages.signInTitle}
+            signUpTitleMessage={messages.signUpTitle}
           />
         </PageContainer>
       </CSSTransition>

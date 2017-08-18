@@ -140,8 +140,8 @@ export default class SignIn extends React.PureComponent<Props, State> {
       try {
         this.state$.next({ processing: true });
         const jwt = await signIn(email, password);
-        const currentUser = await getAuthUser();
-        _.isFunction(this.props.dispatch) && this.props.dispatch({ type: LOAD_CURRENT_USER_SUCCESS, payload: currentUser });
+        getAuthUser();
+
         this.state$.next({ processing: false });
         onSignedIn();
       } catch (error) {
