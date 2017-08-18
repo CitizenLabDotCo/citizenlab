@@ -7,6 +7,7 @@ import { createStructuredSelector } from 'reselect';
 import { makeSelectEvents } from './selectors';
 import { loadProjectEventsRequest } from 'resources/projects/events/actions';
 import WatchSagas from 'utils/containers/watchSagas';
+import ContentContainer from 'components/ContentContainer';
 import sagas from 'resources/projects/events/sagas';
 import ProjectEvent from './ProjectEvent';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
@@ -45,7 +46,7 @@ class ProjectsEvents extends React.PureComponent {
   render() {
     const { events, loading, error, locale } = this.props;
 
-    return (<div>
+    return (<ContentContainer>
       <WatchSagas sagas={sagas} />
       {((events && events.length === 0) || !(events || error)) && <FormattedMessage {...messages.noEvents} />}
       {loading && <FormattedMessage {...messages.loading} />}
@@ -66,7 +67,7 @@ class ProjectsEvents extends React.PureComponent {
           locationMultiloc={event.attributes.location_multiloc}
         />))}
       </ProjectEventsStyled>
-    </div>);
+    </ContentContainer>);
   }
 }
 

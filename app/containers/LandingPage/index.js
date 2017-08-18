@@ -17,6 +17,7 @@ import IdeasShow from 'containers/IdeasShow';
 import { Link } from 'react-router';
 import T from 'containers/T';
 import ImageHeader, { HeaderTitle, HeaderSubtitle } from 'components/ImageHeader';
+import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectCard from 'components/ProjectCard';
 import { FormattedMessage } from 'react-intl';
@@ -32,22 +33,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #f2f2f2;
-  margin-top: 80px;
-`;
-
-
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 30px;
-  padding-right: 30px;
-`;
-
-const Content = styled.div`
-  width: 100%;
-  max-width: 980px;
 `;
 
 const Section = styled.div`
@@ -218,48 +203,46 @@ class LandingPage extends React.Component {
           </ImageHeader>
 
           <ContentContainer>
-            <Content>
-              <Section>
-                <SectionHeader>
-                  <SectionTitle>
-                    <FormattedMessage {...messages.ideasFrom} values={{ name: tFunc(tenantName) }} />
-                  </SectionTitle>
-                  <ViewAllButton to="/ideas">
-                    <ViewAllButtonText>
-                      <FormattedMessage {...messages.viewIdeas} />
-                    </ViewAllButtonText>
-                    <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
-                      <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
-                    </ViewAllButtonIcon>
-                  </ViewAllButton>
-                </SectionHeader>
-                <SectionContainer>
-                  <IdeaCards
-                    filter={{ sort: 'trending', 'page[size]': 3 }}
-                    loadMoreEnabled={false}
-                  />
-                </SectionContainer>
-              </Section>
+            <Section>
+              <SectionHeader>
+                <SectionTitle>
+                  <FormattedMessage {...messages.ideasFrom} values={{ name: tFunc(tenantName) }} />
+                </SectionTitle>
+                <ViewAllButton to="/ideas">
+                  <ViewAllButtonText>
+                    <FormattedMessage {...messages.viewIdeas} />
+                  </ViewAllButtonText>
+                  <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
+                    <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
+                  </ViewAllButtonIcon>
+                </ViewAllButton>
+              </SectionHeader>
+              <SectionContainer>
+                <IdeaCards
+                  filter={{ sort: 'trending', 'page[size]': 3 }}
+                  loadMoreEnabled={false}
+                />
+              </SectionContainer>
+            </Section>
 
-              <Section>
-                <SectionHeader>
-                  <SectionTitle>
-                    <FormattedMessage {...messages.projectsFrom} values={{ name: tFunc(tenantName) }} />
-                  </SectionTitle>
-                  <ViewAllButton to="/projects">
-                    <ViewAllButtonText>
-                      <FormattedMessage {...messages.viewProjects} />
-                    </ViewAllButtonText>
-                    <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
-                      <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
-                    </ViewAllButtonIcon>
-                  </ViewAllButton>
-                </SectionHeader>
-                <SectionContainer>
-                  {projectsList}
-                </SectionContainer>
-              </Section>
-            </Content>
+            <Section>
+              <SectionHeader>
+                <SectionTitle>
+                  <FormattedMessage {...messages.projectsFrom} values={{ name: tFunc(tenantName) }} />
+                </SectionTitle>
+                <ViewAllButton to="/projects">
+                  <ViewAllButtonText>
+                    <FormattedMessage {...messages.viewProjects} />
+                  </ViewAllButtonText>
+                  <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
+                    <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
+                  </ViewAllButtonIcon>
+                </ViewAllButton>
+              </SectionHeader>
+              <SectionContainer>
+                {projectsList}
+              </SectionContainer>
+            </Section>
           </ContentContainer>
 
           <Footer>

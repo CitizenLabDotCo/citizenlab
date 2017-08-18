@@ -6,6 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import T from 'containers/T';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
+import ContentContainer from 'components/ContentContainer';
 import messages from './messages';
 import { selectProject, selectProjectImages } from './selectors';
 import { media } from 'utils/styleUtils';
@@ -15,7 +16,6 @@ import { Link } from 'react-router';
 const Container = styled.div`
   margin-top: 75px;
   display: flex;
-  max-width: 980px;
   flex-direction: row;
   justify-content: space-between;
 
@@ -135,39 +135,41 @@ const ProjectsInfo = ({ project, images, className, params }) => {
   const description = project.getIn(['attributes', 'description_multiloc']);
 
   return (
-    <Container className={className}>
-      <Left>
-        <IdeaTitleStyled>
-          <T value={title} />
-        </IdeaTitleStyled>
-        <IdeaBodyStyled>
-          <T value={description} />
-        </IdeaBodyStyled>
-      </Left>
-      <Right>
-        <AddIdeaButtonStyled>
-          <Link to={`/ideas/new/${params.projectId}`}>
-            <FormattedMessage {...messages.addIdea} />
-          </Link>
-        </AddIdeaButtonStyled>
-        <ProjectImages>
-          {images && images.map((image) => (
-            <ProjectImage key={image.get('id')} src={image.getIn(['attributes', 'versions', 'medium'])} />
-          ))}
-        </ProjectImages>
-        {/* <section>
-          <ProjectSideLabel>
-            <FormattedMessage {...messages.topics} />
-          </ProjectSideLabel>
-          <ProjectTopicsStyled>
-            {topics && topics.map((topic) => (<article><ProjectTopicStyled>
-              <ProjectTopicIconStyled src={topic.icon} />
-              <T value={topic.title_multiloc} />
-            </ProjectTopicStyled></article>))}
-          </ProjectTopicsStyled>
-        </section> */}
-      </Right>
-    </Container>
+    <ContentContainer>
+      <Container className={className}>
+        <Left>
+          <IdeaTitleStyled>
+            <T value={title} />
+          </IdeaTitleStyled>
+          <IdeaBodyStyled>
+            <T value={description} />
+          </IdeaBodyStyled>
+        </Left>
+        <Right>
+          <AddIdeaButtonStyled>
+            <Link to={`/ideas/new/${params.projectId}`}>
+              <FormattedMessage {...messages.addIdea} />
+            </Link>
+          </AddIdeaButtonStyled>
+          <ProjectImages>
+            {images && images.map((image) => (
+              <ProjectImage key={image.get('id')} src={image.getIn(['attributes', 'versions', 'medium'])} />
+            ))}
+          </ProjectImages>
+          {/* <section>
+            <ProjectSideLabel>
+              <FormattedMessage {...messages.topics} />
+            </ProjectSideLabel>
+            <ProjectTopicsStyled>
+              {topics && topics.map((topic) => (<article><ProjectTopicStyled>
+                <ProjectTopicIconStyled src={topic.icon} />
+                <T value={topic.title_multiloc} />
+              </ProjectTopicStyled></article>))}
+            </ProjectTopicsStyled>
+          </section> */}
+        </Right>
+      </Container>
+    </ContentContainer>
   );
 };
 

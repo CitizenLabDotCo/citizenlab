@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 
 // components
 import WatchSagas from 'containers/WatchSagas';
+import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 
 import SelectTopics from './components/selectTopics';
@@ -31,17 +32,10 @@ const FiltersArea = styled.div`
   display: flex;
   height: 3.5rem;
   justify-content: flex-end;
-  margin-bottom: 4.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 3.5rem;
   width: 100%;
 `;
-
-const ContentContainer = styled.section`
-  max-width: 980px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 30px 10px;
-`;
-
 
 class IdeasIndex extends React.Component {
 
