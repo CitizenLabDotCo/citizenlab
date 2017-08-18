@@ -30,6 +30,7 @@ import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
 import FieldWrapper from 'components/admin/FieldWrapper';
+import DateTimePicker from 'components/admin/DateTimePicker';
 
 
 // Component typing
@@ -238,6 +239,10 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
               firstDayOfWeek={1}
               displayFormat="DD/MM/YYYY"
             />
+          </FieldWrapper>
+
+          <FieldWrapper>
+            <DateTimePicker dateTime={eventAttrs.start_at} />
           </FieldWrapper>
 
           <FieldWrapper>
