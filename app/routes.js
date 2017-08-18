@@ -148,6 +148,12 @@ export default function createRoutes(store) {
     {
       path: '/ideas',
       name: 'ideasPage',
+      onEnter(nextState, replace, next) {
+        if (nextState.location.search === '') {
+          replace('ideas?sort=trending');
+        }
+        next();
+      },
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/IdeasIndexPage/reducer'),
