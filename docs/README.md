@@ -1,5 +1,28 @@
 # Changelog
 
+## 2017-08-18
+
+### Fixed
+- Changing idea status in admin
+- Signing up
+- Proper rending of menu bar within a project
+- Admin settings are properly rendered within the tab container
+- Lots of small tweaks to rendering on mobile
+
+### Added
+- Admin section in projects to CRUD phases
+- Admin section in projects to CRUD events
+- New navbar on mobile
+- Responsive version of idea show page
+
+### Changed
+- Navbar design updated
+- One single login flow experience instead of 2 separate ones (posting idea/direct)
+- Admins can only specify light/dark for menu color, not the exact color
+
+### Removed
+- Facebook login (Yet to be added to new login flow, will be back soon)
+
 ## 2017-08-13
 
 ### Fixed
