@@ -67,6 +67,9 @@ const ChildWrapper = styled.div`
 
 // Component typing
 type Props = {
+  location?: {
+    pathname: string,
+  },
   resource: {
     title: string | Multiloc,
     publicLink?: string,
@@ -107,7 +110,7 @@ function showLabel(label: string | Multiloc | Message) {
 
 export default class TabbedResource extends React.Component<Props, State> {
   render() {
-    const { resource, messages, tabs } = this.props;
+    const { resource, messages, tabs, location } = this.props;
 
     return (
       <div>
@@ -122,7 +125,7 @@ export default class TabbedResource extends React.Component<Props, State> {
         {tabs &&
           <TabbedNav>
             {tabs.map((tab) => (
-              <Tab key={tab.url} className={tab.active ? 'active' : ''}><Link to={tab.url}>{showLabel(tab.label)}</Link></Tab>
+              <Tab key={tab.url} className={location && location.pathname && location.pathname === tab.url ? 'active' : ''}><Link to={tab.url}>{showLabel(tab.label)}</Link></Tab>
             ))}
           </TabbedNav>
         }
