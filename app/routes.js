@@ -97,7 +97,7 @@ export default function createRoutes(store) {
       name: 'usersNewPage',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/UsersNewPage'),
+          import('containers/RegisterPage'),
         ]);
 
         const renderRoute = loadModule(cb);
