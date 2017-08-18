@@ -8,20 +8,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import styled from 'styled-components';
+import _ from 'lodash';
 
 // components
 import T from 'containers/T';
 import HelmetIntl from 'components/HelmetIntl';
 import IdeaCards from 'components/IdeaCards';
 import { observeUser } from 'services/users';
+import ContentContainer from 'components/ContentContainer';
 
 import Avatar from './Avatar';
 import messages from './messages';
 
+
+const StyledContentContainer = styled(ContentContainer)`
+  margin-top: 100px;
+`;
+
 const InfoContainerStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  margin: auto;
-  min-height: 397.6px;
+  margin-top: 100px;
   padding-bottom: 51.6px;
   border-radius: 5px;
   background-color: #ffffff;
@@ -78,67 +87,42 @@ export class UsersShowPage extends React.Component { // eslint-disable-line reac
   }
 
   render() {
-    const { params, className } = this.props;
+    const { params } = this.props;
 
     const user = this.state.user;
 
     if (!user) return null;
 
     return (
-      <div className={className}>
+      <StyledContentContainer>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        {user && <div
-          style={{
-            margin: 'auto',
-            width: '80%',
-            marginTop: '159px',
-          }}
-        >
-          {/* AVATAR */}
-          <Avatar avatarURL={user.avatar.medium} />
-          <InfoContainerStyled>
-            {/* USER INFORMATION */}
-            <FullNameStyled>{user.first_name}&nbsp;{user.last_name}</FullNameStyled>
-            <JoinedAtStyled>
-              <FormattedMessage {...messages.joined} values={{ date: this.props.intl.formatDate(user.created_at) }} />
-            </JoinedAtStyled>
-            <BioStyled>{user.bio_multiloc && <T value={user.bio_multiloc} />}</BioStyled>
-          </InfoContainerStyled>
-          {/* USER IDEAS */}
-          <IdeaCards
-            style={{
-              width: '80%',
-              margin: 'auto',
-            }}
-            filter={{ author: params.slug }}
-            maxNumber={12}
-          />
-        </div>}
-      </div>
+        {user &&
+          <div>
+            <Avatar avatarURL={user.avatar.medium} />
+            <InfoContainerStyled>
+              <FullNameStyled>{user.first_name}&nbsp;{user.last_name}</FullNameStyled>
+              <JoinedAtStyled>
+                <FormattedMessage {...messages.joined} values={{ date: this.props.intl.formatDate(user.created_at) }} />
+              </JoinedAtStyled>
+              {!_.isEmpty(user.bio_multiloc) && <BioStyled>{user.bio_multiloc && <T value={user.bio_multiloc} />}</BioStyled>}
+            </InfoContainerStyled>
+            <IdeaCards
+              filter={{ author: params.slug }}
+              maxNumber={12}
+            />
+          </div>
+        }
+      </StyledContentContainer>
     );
   }
 }
 
 UsersShowPage.propTypes = {
-  className: PropTypes.string,
   params: PropTypes.object,
   intl: intlShape.isRequired,
 };
 
-export default injectIntl(styled(UsersShowPage)`
-  background-color: #f2f2f2;
-  margin-top: -162px;
-  padding-top: 162px;
-
-  /* override IdeaCards' unwanted styles and elements*/
-  .segment {
-    width: inherit !important;
-  }
-
-  .field {
-    display: none;
-  }
-`);
+export default injectIntl(UsersShowPage);

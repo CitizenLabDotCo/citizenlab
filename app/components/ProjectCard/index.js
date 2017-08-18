@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ImPropTypes from 'react-immutable-proptypes';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 import T from 'containers/T';
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
@@ -24,12 +25,21 @@ const ProjectContainer = styled.div`
   background: #fff;
   border-radius: 5px;
   margin-bottom: 20px;
+
+  ${media.phone`
+    flex-direction: column;
+    height: auto;
+  `}
 `;
 
 const ProjectImage = styled.img`
   height: 100%;
   object-fit: cover;
   border-radius: 5px 0 0 5px;
+
+  ${media.phone`
+    height: 150px;
+  `}
 `;
 
 const ProjectInfo = styled.div`
@@ -38,6 +48,10 @@ const ProjectInfo = styled.div`
   flex-direction: column;
   align-items: stretch;
   padding: 30px 40px;
+
+  ${media.phone`
+    padding: 20px;
+  `}
 `;
 
 const InfoHeader = styled.div`

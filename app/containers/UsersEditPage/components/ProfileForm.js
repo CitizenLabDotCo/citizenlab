@@ -12,6 +12,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { makeSelectSetting } from 'utils/tenant/selectors';
 import { createStructuredSelector } from 'reselect';
+import ContentContainer from 'components/ContentContainer';
 import Input from 'components/UI/Input';
 import Select from 'components/UI/Select';
 import styled from 'styled-components';
@@ -23,6 +24,10 @@ import { injectTFunc } from 'containers/T/utils';
 import { observeAreas } from 'services/areas';
 
 import moment from 'moment';
+
+const StyledContentContainer = styled(ContentContainer)`
+  margin-top: 120px;
+`;
 
 const NavItemStyled = styled.button`
   display: block;
@@ -265,7 +270,7 @@ class ProfileForm extends React.Component {
 
   render() {
     const {
-      avatarUploadError, className,
+      avatarUploadError,
       processing, storeErrors, intl, tFunc,
     } = this.props;
 
@@ -273,256 +278,256 @@ class ProfileForm extends React.Component {
 
     const userErrors = storeErrors && generateErrorsObject(storeErrors);
 
-    return (<div className={className}>
-      <Grid>
-        <Grid.Row>
-          <Grid.Column width={4} only="computer">
-            <Nav goTo={this.goToSection} />
-          </Grid.Column>
-          <Grid.Column computer={12} mobile={16}>
-            <FormContentWrapper>
-              {/* BASICS */}
-              <section ref={(section1) => { this['section-basics'] = section1; }}>
-                <SectionHeaderStyled>
-                  <FormattedMessage {...messages.h1} />
-                </SectionHeaderStyled>
-                <SectionSubHeaderStyled>
-                  <FormattedMessage {...messages.h1sub} />
-                </SectionSubHeaderStyled>
+    return (
+      <StyledContentContainer>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={4} only="computer">
+              <Nav goTo={this.goToSection} />
+            </Grid.Column>
+            <Grid.Column computer={12} mobile={16}>
+              <FormContentWrapper>
+                {/* BASICS */}
+                <section ref={(section1) => { this['section-basics'] = section1; }}>
+                  <SectionHeaderStyled>
+                    <FormattedMessage {...messages.h1} />
+                  </SectionHeaderStyled>
+                  <SectionSubHeaderStyled>
+                    <FormattedMessage {...messages.h1sub} />
+                  </SectionSubHeaderStyled>
 
-                {user && user.userId && <Avatar
-                  onAvatarUpload={this.handleAvatarUpload}
-                  avatarUploadError={avatarUploadError}
-                  avatarURL={user.avatar}
-                  userId={user.userId}
-                />}
+                  {user && user.userId && <Avatar
+                    onAvatarUpload={this.handleAvatarUpload}
+                    avatarUploadError={avatarUploadError}
+                    avatarURL={user.avatar}
+                    userId={user.userId}
+                  />}
 
-                <InputGroupStyled>
-                  <LabelInputPairStyled>
-                    <LabelWithTooltip id="firstName" />
-                    <Input
-                      key="first_name"
-                      name="first_name"
-                      onChange={(value) => this.handleInputChange(value, 'first_name')}
-                      value={user && user.first_name}
-                      error={userErrors && userErrors.first_name && userErrors.first_name[0]}
-                    />
-                  </LabelInputPairStyled>
-                  <LabelInputPairStyled>
-                    <LabelWithTooltip id="lastName" />
-                    <Input
-                      name="last_name"
-                      onChange={(value) => this.handleInputChange(value, 'last_name')}
-                      value={user && user.last_name}
-                      error={userErrors && userErrors.last_name && userErrors.last_name[0]}
-                    />
-                  </LabelInputPairStyled>
-                  <LabelInputPairStyled>
-                    <LabelWithTooltip id="email" />
-                    <Input
-                      name="email"
-                      onChange={(value) => this.handleInputChange(value, 'email')}
-                      value={user && user.email}
-                      error={userErrors && userErrors.email && userErrors.email[0]}
-                    />
-                  </LabelInputPairStyled>
-                  <LabelInputPairStyled>
-                    <LabelWithTooltip id="password" />
-                    <Input
-                      type="password"
-                      name="password"
-                      onChange={(value) => this.handleInputChange(value, 'password')}
-                      value={user && user.password}
-                      error={userErrors && userErrors.password && userErrors.password[0]}
-                    />
-                  </LabelInputPairStyled>
-                  <LabelInputPairStyled>
-                    <LabelWithTooltip id="language" />
-                    {<Select
-                      name="locale"
-                      onChange={(option) => this.handleInputChange(option.value, 'locale')}
-                      value={user.locale}
-                      options={this.localeOptions()}
-                    />}
-                  </LabelInputPairStyled>
-                </InputGroupStyled>
-              </section>
-
-              <SectionSeparatorStyled
-                style={{
-                  margin: '60px 0',
-                }}
-              />
-
-              {/* DETAILS */}
-              <section ref={(section2) => { this['section-details'] = section2; }}>
-                <SectionHeaderStyled>
-                  <FormattedMessage {...messages.h2} />
-                </SectionHeaderStyled>
-                <SectionSubHeaderStyled>
-                  <FormattedMessage {...messages.h2sub} />
-                </SectionSubHeaderStyled>
-
-                <InputGroupStyled>
-                  {this.props.genderEnabled &&
-                    <div>
-                      <LabelWithTooltip id="gender" />
-                      <Select
-                        name="gender"
-                        placeholder={intl.formatMessage({ ...messages.male })}
-                        options={this.genderOptions()}
-                        onChange={(option) => this.handleInputChange(option.value, 'gender')}
-                        value={user.gender}
-                        error={userErrors && userErrors.gender && userErrors.gender[0]}
+                  <InputGroupStyled>
+                    <LabelInputPairStyled>
+                      <LabelWithTooltip id="firstName" />
+                      <Input
+                        key="first_name"
+                        name="first_name"
+                        onChange={(value) => this.handleInputChange(value, 'first_name')}
+                        value={user && user.first_name}
+                        error={userErrors && userErrors.first_name && userErrors.first_name[0]}
                       />
-                    </div>
-                  }
-
-                  <LabelWithTooltip id="bio" />
-                  <TextArea
-                    name="bio_multiloc"
-                    onInput={this.handleMultilocInputChange}
-                    rows={6}
-                    placeholder={intl.formatMessage({ ...messages.bio_placeholder })}
-                    value={tFunc(user.bio_multiloc)}
-                    error={userErrors && userErrors.bio_multiloc && userErrors.bio_multiloc[0]}
-                  />
-
-                  {this.props.domicileEnabled &&
-                    <div>
-                      <LabelWithTooltip id="domicile" />
-                      <Select
-                        name="domicile"
-                        placeholder={intl.formatMessage({ ...messages.domicile_placeholder })}
-                        options={this.domicileOptions()}
-                        onChange={(option) => this.handleInputChange(option.value, 'domicile')}
-                        value={user.domicile}
-                        error={userErrors && userErrors.domicile && userErrors.domicile[0]}
+                    </LabelInputPairStyled>
+                    <LabelInputPairStyled>
+                      <LabelWithTooltip id="lastName" />
+                      <Input
+                        name="last_name"
+                        onChange={(value) => this.handleInputChange(value, 'last_name')}
+                        value={user && user.last_name}
+                        error={userErrors && userErrors.last_name && userErrors.last_name[0]}
                       />
-                    </div>
-                  }
-                  {this.props.birthyearEnabled &&
-                    <div>
-                      <LabelWithTooltip id="birthdate" />
-                      <Select
-                        name="birthyear"
-                        options={this.birthYearOptions()}
-                        onChange={(option) => this.handleInputChange(option.value, 'birthyear')}
-                        value={user.birthyear}
-                        error={userErrors && userErrors.birthyear && userErrors.birthyear[0]}
+                    </LabelInputPairStyled>
+                    <LabelInputPairStyled>
+                      <LabelWithTooltip id="email" />
+                      <Input
+                        name="email"
+                        onChange={(value) => this.handleInputChange(value, 'email')}
+                        value={user && user.email}
+                        error={userErrors && userErrors.email && userErrors.email[0]}
                       />
-                    </div>
-                  }
-
-                  {this.props.educationEnabled &&
-                    <div>
-                      <LabelWithTooltip id="education" />
-                      <Select
-                        name="education"
-                        placeholder={intl.formatMessage({ ...messages.education_placeholder })}
-                        options={this.educationOptions()}
-                        onChange={(option) => this.handleInputChange(option.value, 'education')}
-                        value={user.education}
-                        error={userErrors && userErrors.education && userErrors.education[0]}
+                    </LabelInputPairStyled>
+                    <LabelInputPairStyled>
+                      <LabelWithTooltip id="password" />
+                      <Input
+                        type="password"
+                        name="password"
+                        onChange={(value) => this.handleInputChange(value, 'password')}
+                        value={user && user.password}
+                        error={userErrors && userErrors.password && userErrors.password[0]}
                       />
-                    </div>
-                  }
+                    </LabelInputPairStyled>
+                    <LabelInputPairStyled>
+                      <LabelWithTooltip id="language" />
+                      {<Select
+                        name="locale"
+                        onChange={(option) => this.handleInputChange(option.value, 'locale')}
+                        value={user.locale}
+                        options={this.localeOptions()}
+                      />}
+                    </LabelInputPairStyled>
+                  </InputGroupStyled>
+                </section>
+
+                <SectionSeparatorStyled
+                  style={{
+                    margin: '60px 0',
+                  }}
+                />
+
+                {/* DETAILS */}
+                <section ref={(section2) => { this['section-details'] = section2; }}>
+                  <SectionHeaderStyled>
+                    <FormattedMessage {...messages.h2} />
+                  </SectionHeaderStyled>
+                  <SectionSubHeaderStyled>
+                    <FormattedMessage {...messages.h2sub} />
+                  </SectionSubHeaderStyled>
+
+                  <InputGroupStyled>
+                    {this.props.genderEnabled &&
+                      <div>
+                        <LabelWithTooltip id="gender" />
+                        <Select
+                          name="gender"
+                          placeholder={intl.formatMessage({ ...messages.male })}
+                          options={this.genderOptions()}
+                          onChange={(option) => this.handleInputChange(option.value, 'gender')}
+                          value={user.gender}
+                          error={userErrors && userErrors.gender && userErrors.gender[0]}
+                        />
+                      </div>
+                    }
+
+                    <LabelWithTooltip id="bio" />
+                    <TextArea
+                      name="bio_multiloc"
+                      onInput={this.handleMultilocInputChange}
+                      rows={6}
+                      placeholder={intl.formatMessage({ ...messages.bio_placeholder })}
+                      value={tFunc(user.bio_multiloc)}
+                      error={userErrors && userErrors.bio_multiloc && userErrors.bio_multiloc[0]}
+                    />
+
+                    {this.props.domicileEnabled &&
+                      <div>
+                        <LabelWithTooltip id="domicile" />
+                        <Select
+                          name="domicile"
+                          placeholder={intl.formatMessage({ ...messages.domicile_placeholder })}
+                          options={this.domicileOptions()}
+                          onChange={(option) => this.handleInputChange(option.value, 'domicile')}
+                          value={user.domicile}
+                          error={userErrors && userErrors.domicile && userErrors.domicile[0]}
+                        />
+                      </div>
+                    }
+                    {this.props.birthyearEnabled &&
+                      <div>
+                        <LabelWithTooltip id="birthdate" />
+                        <Select
+                          name="birthyear"
+                          options={this.birthYearOptions()}
+                          onChange={(option) => this.handleInputChange(option.value, 'birthyear')}
+                          value={user.birthyear}
+                          error={userErrors && userErrors.birthyear && userErrors.birthyear[0]}
+                        />
+                      </div>
+                    }
+
+                    {this.props.educationEnabled &&
+                      <div>
+                        <LabelWithTooltip id="education" />
+                        <Select
+                          name="education"
+                          placeholder={intl.formatMessage({ ...messages.education_placeholder })}
+                          options={this.educationOptions()}
+                          onChange={(option) => this.handleInputChange(option.value, 'education')}
+                          value={user.education}
+                          error={userErrors && userErrors.education && userErrors.education[0]}
+                        />
+                      </div>
+                    }
 
 
-                </InputGroupStyled>
-              </section>
+                  </InputGroupStyled>
+                </section>
 
-              <SectionSeparatorStyled
-                style={{
-                  margin: '48px 0 25px 0',
-                }}
-              />
+                <SectionSeparatorStyled
+                  style={{
+                    margin: '48px 0 25px 0',
+                  }}
+                />
 
-              {/* NOTIFICATIONS */}
-              {/* <section ref={(section3) => { this['section-notifications'] = section3; }}>
-                <SectionHeaderStyled>
-                  <FormattedMessage {...messages.h3} />
-                </SectionHeaderStyled>
-                <SectionSubHeaderStyled>
-                  <FormattedMessage {...messages.h3sub} />
-                </SectionSubHeaderStyled>
+                {/* NOTIFICATIONS */}
+                {/* <section ref={(section3) => { this['section-notifications'] = section3; }}>
+                  <SectionHeaderStyled>
+                    <FormattedMessage {...messages.h3} />
+                  </SectionHeaderStyled>
+                  <SectionSubHeaderStyled>
+                    <FormattedMessage {...messages.h3sub} />
+                  </SectionSubHeaderStyled>
 
-                 <InputGroupStyled>
-                  <LabelWithTooltip id="notifications_all_email" isBold />
-                  <StyledRadio
-                    toggle
-                    checked={this.getToggleValue('notifications_all_email')}
-                    onClick={() => this.handleToggleChange('notifications_all_email')}
-                  />
+                  <InputGroupStyled>
+                    <LabelWithTooltip id="notifications_all_email" isBold />
+                    <StyledRadio
+                      toggle
+                      checked={this.getToggleValue('notifications_all_email')}
+                      onClick={() => this.handleToggleChange('notifications_all_email')}
+                    />
 
-                  <LabelWithTooltip id="notifications_idea_post" />
-                  <StyledRadio
-                    toggle
-                    checked={this.getToggleValue('notifications_idea_post')}
-                    onClick={() => this.handleToggleChange('notifications_idea_post')}
-                  />
+                    <LabelWithTooltip id="notifications_idea_post" />
+                    <StyledRadio
+                      toggle
+                      checked={this.getToggleValue('notifications_idea_post')}
+                      onClick={() => this.handleToggleChange('notifications_idea_post')}
+                    />
 
-                  <LabelWithTooltip id="notifications_new_user" />
-                  <StyledRadio
-                    toggle
-                    checked={this.getToggleValue('notifications_new_user')}
-                    onClick={() => this.handleToggleChange('notifications_new_user')}
-                  />
+                    <LabelWithTooltip id="notifications_new_user" />
+                    <StyledRadio
+                      toggle
+                      checked={this.getToggleValue('notifications_new_user')}
+                      onClick={() => this.handleToggleChange('notifications_new_user')}
+                    />
 
-                  <LabelWithTooltip id="notifications_new_comments" />
-                  <StyledRadio
-                    toggle
-                    checked={this.getToggleValue('notifications_new_comments')}
-                    onClick={() => this.handleToggleChange('notifications_new_comments')}
-                  />
+                    <LabelWithTooltip id="notifications_new_comments" />
+                    <StyledRadio
+                      toggle
+                      checked={this.getToggleValue('notifications_new_comments')}
+                      onClick={() => this.handleToggleChange('notifications_new_comments')}
+                    />
 
-                  <LabelWithTooltip id="notifications_all_app" isBold />
-                  <StyledRadio
-                    toggle
-                    checked={this.getToggleValue('notifications_all_app')}
-                    onClick={() => this.handleToggleChange('notifications_all_app')}
-                  />
+                    <LabelWithTooltip id="notifications_all_app" isBold />
+                    <StyledRadio
+                      toggle
+                      checked={this.getToggleValue('notifications_all_app')}
+                      onClick={() => this.handleToggleChange('notifications_all_app')}
+                    />
 
-                  <LabelWithTooltip id="notifications_comment_on_comment" />
-                  <StyledRadio
-                    toggle
-                    checked={this.getToggleValue('notifications_comment_on_comment')}
-                    onClick={() => this.handleToggleChange('notifications_comment_on_comment')}
-                  />
+                    <LabelWithTooltip id="notifications_comment_on_comment" />
+                    <StyledRadio
+                      toggle
+                      checked={this.getToggleValue('notifications_comment_on_comment')}
+                      onClick={() => this.handleToggleChange('notifications_comment_on_comment')}
+                    />
 
-                  <LabelWithTooltip id="notifications_mention" />
-                  <StyledRadio
-                    toggle
-                    checked={this.getToggleValue('notifications_mention')}
-                    onClick={() => this.handleToggleChange('notifications_mention')}
-                  />
+                    <LabelWithTooltip id="notifications_mention" />
+                    <StyledRadio
+                      toggle
+                      checked={this.getToggleValue('notifications_mention')}
+                      onClick={() => this.handleToggleChange('notifications_mention')}
+                    />
 
-                  <LabelWithTooltip id="notifications_idea_comment" />
-                  <StyledRadio
-                    toggle
-                    checked={this.getToggleValue('notifications_idea_comment')}
-                    onClick={() => this.handleToggleChange('notifications_idea_comment')}
-                  />
+                    <LabelWithTooltip id="notifications_idea_comment" />
+                    <StyledRadio
+                      toggle
+                      checked={this.getToggleValue('notifications_idea_comment')}
+                      onClick={() => this.handleToggleChange('notifications_idea_comment')}
+                    />
 
 
-                </InputGroupStyled>
+                  </InputGroupStyled>
 
-              </section> */}
-              <Button
-                text={intl.formatMessage({ ...messages.submit })}
-                onClick={this.handleSubmit}
-                loading={processing}
-              />
-            </FormContentWrapper>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </div>);
+                </section> */}
+                <Button
+                  text={intl.formatMessage({ ...messages.submit })}
+                  onClick={this.handleSubmit}
+                  loading={processing}
+                />
+              </FormContentWrapper>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </StyledContentContainer>);
   }
 }
 
 ProfileForm.propTypes = {
-  className: PropTypes.string,
   onFormSubmit: PropTypes.func.isRequired,
   avatarUpload: PropTypes.func.isRequired,
   userData: PropTypes.object,
@@ -550,7 +555,4 @@ const mapStateToProps = createStructuredSelector({
   educationEnabled: makeSelectSetting(['demographic_fields', 'education']),
 });
 
-export default injectTFunc(injectIntl(connect(mapStateToProps)(styled(ProfileForm)`
-  width: 80%;
-  margin: auto;
-`)));
+export default injectTFunc(injectIntl(connect(mapStateToProps)(ProfileForm)));

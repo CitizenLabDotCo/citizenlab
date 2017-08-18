@@ -64,9 +64,7 @@ import createRoutes from './routes';
 
 import { loadState } from './persistedData';
 
-
-// ga
-import { watchEvents, watchPageChanges, watchIdentification } from 'utils/analytics/sagas';
+import { initializeAnalytics } from 'utils/analytics';
 
 // Observe loading of custom font
 const visuelt = new FontFaceObserver('visuelt');
@@ -92,9 +90,7 @@ export const store = configureStore(initialState, browserHistory);
 // The sagas for analytics tracking need to be mounted here,
 // because they need to be able to watch the very first events
 // like initial route change, authenitcation
-store.runSaga(watchEvents);
-store.runSaga(watchPageChanges);
-store.runSaga(watchIdentification);
+initializeAnalytics(store);
 
 // Sync history and store, as the react-router-redux reducer
 // is under the non-default key ("routing"), selectLocationState
