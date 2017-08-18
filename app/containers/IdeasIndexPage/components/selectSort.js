@@ -53,10 +53,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { search, location } = stateProps;
 
   const options = [
-    { text: 'Newest', value: 'new' },
-    { text: 'Oldest', value: '-new' },
     { text: 'Trending', value: 'trending' },
     { text: 'Popular', value: 'popular' },
+    { text: 'Newest', value: 'new' },
+    { text: 'Oldest', value: '-new' },
   ];
   const { goTo } = dispatchProps;
 
