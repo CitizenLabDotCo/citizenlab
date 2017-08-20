@@ -133,7 +133,7 @@ class View extends React.Component {
   onAuthorClick = (event) => {
     event.stopPropagation();
     event.preventDefault();
-    this.props.push(`/profile/${this.props.authorId}`);
+    this.props.push(`/profile/${this.props.authorSlug}`);
   }
 
   render() {
@@ -177,6 +177,7 @@ View.propTypes = {
   slug: PropTypes.string.isRequired,
   imageUrl: PropTypes.string,
   authorId: PropTypes.string,
+  authorSlug: PropTypes.string,
   authorName: PropTypes.string.isRequired,
   commentsCount: PropTypes.number,
   push: PropTypes.func.isRequired,

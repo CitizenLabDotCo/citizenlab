@@ -6,17 +6,20 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { FormattedMessage, FormattedDate } from 'react-intl';
 import styled from 'styled-components';
 import _ from 'lodash';
-
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { makeSelectResourceBySlug } from 'utils/resources/selectors';
+import { loadUserBySlugRequest } from 'resources/users/actions';
+import { loadUserWatcher } from 'resources/users/sagas';
 // components
 import T from 'containers/T';
 import HelmetIntl from 'components/HelmetIntl';
 import IdeaCards from 'components/IdeaCards';
-import { observeUser } from 'services/users';
 import ContentContainer from 'components/ContentContainer';
-
+import { Saga } from 'react-redux-saga';
 import Avatar from './Avatar';
 import messages from './messages';
 
@@ -66,51 +69,41 @@ const BioStyled = styled.div`
 
 export class UsersShowPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
-  constructor() {
-    super();
-    this.userSubscription = null;
-    this.state = {
-      user: null,
-    };
-  }
-
   componentDidMount() {
-    this.userSubscription = observeUser(this.props.params.slug)
-      .observable
-      .subscribe((response) => {
-        this.setState({ user: response.data.attributes });
-      });
-  }
-
-  componentWillUnmount() {
-    this.userSubscription.unsubscribe();
+    this.props.loadUserBySlugRequest(this.props.params.slug);
   }
 
   render() {
-    const { params } = this.props;
+    const user = this.props.user && this.props.user.toJS();
 
-    const user = this.state.user;
-
-    if (!user) return null;
+    const attributes = user && user.attributes;
 
     return (
       <StyledContentContainer>
+        <Saga saga={loadUserWatcher} />
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        {user &&
+        {attributes &&
           <div>
-            <Avatar avatarURL={user.avatar.medium} />
+            <Avatar avatarURL={attributes.avatar.medium} />
             <InfoContainerStyled>
-              <FullNameStyled>{user.first_name}&nbsp;{user.last_name}</FullNameStyled>
+              <FullNameStyled>{attributes.first_name}&nbsp;{attributes.last_name}</FullNameStyled>
               <JoinedAtStyled>
-                <FormattedMessage {...messages.joined} values={{ date: this.props.intl.formatDate(user.created_at) }} />
+                <FormattedMessage
+                  {...messages.joined}
+                  values={{ date: <FormattedDate value={attributes.created_at} /> }}
+                />
               </JoinedAtStyled>
-              {!_.isEmpty(user.bio_multiloc) && <BioStyled>{user.bio_multiloc && <T value={user.bio_multiloc} />}</BioStyled>}
+              {!_.isEmpty(attributes.bio_multiloc) &&
+                <BioStyled>
+                  {attributes.bio_multiloc && <T value={attributes.bio_multiloc} />}
+                </BioStyled>
+              }
             </InfoContainerStyled>
             <IdeaCards
-              filter={{ author: params.slug }}
+              filter={{ author: user.id }}
               maxNumber={12}
             />
           </div>
@@ -120,9 +113,18 @@ export class UsersShowPage extends React.Component { // eslint-disable-line reac
   }
 }
 
-UsersShowPage.propTypes = {
-  params: PropTypes.object,
-  intl: intlShape.isRequired,
+const mapStateToProps = createStructuredSelector({
+  user: makeSelectResourceBySlug('users', (props) => props.params.slug),
+});
+
+const mapDispatchToProps = {
+  loadUserBySlugRequest,
 };
 
-export default injectIntl(UsersShowPage);
+UsersShowPage.propTypes = {
+  user: PropTypes.object,
+  loadUserBySlugRequest: PropTypes.func,
+  params: PropTypes.object,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UsersShowPage);

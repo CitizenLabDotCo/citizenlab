@@ -35,10 +35,10 @@ const Timing = styled.div`
 `;
 
 /* eslint-disable */
-const Author = ({id, firstName, lastName, avatar, createdAt, message}) => (
+const Author = ({id, slug, firstName, lastName, avatar, createdAt, message}) => (
   <AuthorContainer>
     <Avatar src={avatar} />
-    <AuthorName to={`/profile/${id}`}>
+    <AuthorName to={`/profile/${slug}`}>
       <FormattedMessage {...message} values={{ firstName, lastName }} />
     </AuthorName>
     <Timing>
