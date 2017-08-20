@@ -116,6 +116,10 @@ export function fetchUser(userId) {
   return request(`${API_PATH}/users/${userId}`);
 }
 
+export function fetchUserBySlug(slug) {
+  return request(`${API_PATH}/users/by_slug/${slug}`);
+}
+
 export function fetchIdeaComments(nextCommentPageNumber, nextCommentPageItemCount, ideaId) {
   const queryParameters = {
     'page[number]': nextCommentPageNumber,

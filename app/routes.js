@@ -129,6 +129,23 @@ export default function createRoutes(store) {
       },
     },
     {
+      path: '/profile/:slug',
+      name: 'usersShowPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/UsersShowPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
       path: '/ideas/new',
       name: 'IdeasNewPage2',
       getComponent(nextState, cb) {
@@ -176,23 +193,6 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/IdeasShowPage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([component]) => {
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    },
-    {
-      path: '/profile/:slug',
-      name: 'usersShowPage',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/UsersShowPage'),
         ]);
 
         const renderRoute = loadModule(cb);
