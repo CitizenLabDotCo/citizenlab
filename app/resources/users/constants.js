@@ -9,6 +9,7 @@ export const LOAD_USERS_SUCCESS = 'app/resources/users/LOAD_USERS_SUCCESS';
 export const LOAD_USERS_ERROR = 'app/resources/users/LOAD_USERS_ERROR';
 
 export const LOAD_USER_REQUEST = 'app/resources/users/LOAD_USER_REQUEST';
+export const LOAD_USER_BY_SLUG_REQUEST = 'app/resources/users/LOAD_USER_BY_SLUG_REQUEST';
 export const LOAD_USER_SUCCESS = 'app/resources/users/LOAD_USER_SUCCESS';
 export const LOAD_USER_ERROR = 'app/resources/users/LOAD_USER_ERROR';
 

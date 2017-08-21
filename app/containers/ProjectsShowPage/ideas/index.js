@@ -1,20 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import IdeaCards from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';
 
-// import ActionButton from 'components/buttons/action.js';
-// import IdeasBorad from 'containers/IdeasIndexPage/pageView';
-
-
-const AllIdeas = ({ params }) => (
+const AllIdeas = ({ project }) => (
   <ContentContainer>
-    <IdeaCards filter={{ project: params.projectId }} />
+    <IdeaCards filter={{ project: project && project.get('id') }} />
   </ContentContainer>
 );
 
 AllIdeas.propTypes = {
-  params: PropTypes.object.isRequired,
+  project: ImmutablePropTypes.map,
 };
 
 export default AllIdeas;

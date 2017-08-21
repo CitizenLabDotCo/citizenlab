@@ -2,9 +2,7 @@ import { createSelector } from 'reselect';
 import { fromJS } from 'immutable';
 import { selectResourcesDomain } from 'utils/resources/selectors';
 
-const selectProject = (state, { params }) =>
-  state.getIn(['resources', 'projects', params.projectId]);
-
+const selectProject = (__, props) => props.project;
 
 const makeSelectTopics = () => createSelector(
   selectProject,
@@ -28,7 +26,6 @@ const selectProjectImages = createSelector(
 );
 
 export {
-  selectProject,
   makeSelectTopics,
   selectProjectImages,
 };

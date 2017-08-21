@@ -105,7 +105,7 @@ class Project extends React.Component {
     const { project, tenantLogo, images } = this.props;
     if (!project) return null;
 
-    const projectId = project.get('id');
+    const slug = project.getIn(['attributes', 'slug']);
     const titleMultiloc = project.getIn(['attributes', 'title_multiloc']);
     const descriptionMultiloc = project.getIn(['attributes', 'description_multiloc']);
     const ideasCount = project.getIn(['attributes', 'ideas_count']);
@@ -137,7 +137,7 @@ class Project extends React.Component {
           </InfoText>
 
           <InfoFooter>
-            <Link to={`/projects/${projectId}`}>
+            <Link to={`/projects/${slug}`}>
               <OpenProjectButton>
                 <FormattedMessage {...messages.openProjectButton} />
               </OpenProjectButton>

@@ -9,6 +9,15 @@ export const selectIdea = createSelector(
   (ideas, id) => id && ideas && ideas.get(id),
 );
 
+export const selectAuthor = createSelector(
+  selectResourcesDomain('users'),
+  selectIdea,
+  (resourcesUsers, idea) => {
+    const authorId = idea && idea.getIn(['relationships', 'author', 'data', 'id']);
+    return authorId && resourcesUsers && resourcesUsers.get(authorId);
+  }
+);
+
 export const selectIdeaImages = createSelector(
   selectResourcesDomain('idea_images'),
   selectIdea,
