@@ -28,7 +28,7 @@ const StyledContainer = styled(ContentContainer)`
 
 class ProjectsTimeline extends React.PureComponent {
   componentDidMount() {
-    this.props.loadProjectPhasesRequest(this.props.routeParams.projectId);
+    this.props.loadProjectPhasesRequest();
   }
 
   componentDidUpdate() {
@@ -47,13 +47,12 @@ class ProjectsTimeline extends React.PureComponent {
   }
 
   render() {
-    const { phases, loading, error, locale } = this.props;
-
+    const { error, locale } = this.props;
+    const phases = this.props.phases && this.props.phases.toJS();
     return (
       <StyledContainer>
         <WatchSagas sagas={sagas} />
         {((phases && phases.length === 0) || !(phases || error)) && <FormattedMessage {...messages.noTimeline} />}
-        {loading && <FormattedMessage {...messages.loading} />}
         {error && <FormattedMessage {...messages.error} />}
 
         <ProjectPhasesStyled>
@@ -90,15 +89,8 @@ const mapStateToProps = () => createStructuredSelector({
   error: (state) => state.getIn(['tempState', LOAD_PROJECT_PHASES_REQUEST, 'error']),
 });
 
-const mergeProps = ({ phases, locale, loading, error }, { loadProjectPhasesRequest: lpr }, { routeParams }) => ({
-  routeParams,
-  loadProjectPhasesRequest: lpr,
-  phases: phases && phases.toJS(),
-  locale,
-  loading,
-  error,
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  loadProjectPhasesRequest: () => dispatch(loadProjectPhasesRequest(ownProps.project.get('id'))),
 });
 
-const mapDispatchToProps = { loadProjectPhasesRequest };
-
-export default preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(ProjectsTimeline);
+export default preprocess(mapStateToProps, mapDispatchToProps)(ProjectsTimeline);

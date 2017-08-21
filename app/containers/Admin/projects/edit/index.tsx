@@ -94,7 +94,7 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
     const tabbedProps = {
       resource: {
         title: project ? project.attributes.title_multiloc : '',
-        publicLink: project ? `/projects/${project.id}` : ''
+        publicLink: project ? `/projects/${project.attributes.slug}` : ''
       },
       messages: {
         viewPublicResource: messages.viewPublicProject,

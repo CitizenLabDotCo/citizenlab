@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import ContentContainer from 'components/ContentContainer';
 import messages from './messages';
-import { selectProject, selectProjectImages } from './selectors';
+import { selectProjectImages } from './selectors';
 import { media } from 'utils/styleUtils';
 import { Link } from 'react-router';
 
@@ -174,7 +174,7 @@ const ProjectsInfo = ({ project, images, className, params }) => {
 };
 
 ProjectsInfo.propTypes = {
-  project: ImmutablePropTypes.map,
+  project: ImmutablePropTypes.map.isRequired,
   // topics: ImmutablePropTypes.list,
   images: ImmutablePropTypes.list,
   className: PropTypes.string,
@@ -182,7 +182,6 @@ ProjectsInfo.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  project: selectProject,
   // topics: makeSelectTopics(),
   images: selectProjectImages,
 });

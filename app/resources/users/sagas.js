@@ -1,8 +1,8 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
-import { loadResources, createResource, loadResource, deleteResource, updateResource } from 'api';
+import { loadResources, createResource, deleteResource, updateResource, fetchUser, fetchUserBySlug } from 'api';
 import { mergeJsonApiResources, wrapActionWithPrefix } from 'utils/resources/actions';
 import { loadUsersError, loadUsersSuccess, loadUserSuccess, loadUserError, deleteUserSuccess, createUserSuccess } from './actions';
-import { LOAD_USERS_REQUEST, LOAD_USER_REQUEST, DELETE_USER_REQUEST } from './constants';
+import { LOAD_USERS_REQUEST, LOAD_USER_REQUEST, LOAD_USER_BY_SLUG_REQUEST, DELETE_USER_REQUEST } from './constants';
 
 // Individual exports for testing
 export function* loadUsersSaga(action) {
@@ -21,7 +21,12 @@ export function* loadUsersSaga(action) {
 // Individual exports for testing
 export function* loadUserSaga(action) {
   try {
-    const response = yield call(loadResource, 'user', action.id);
+    let response;
+    if (action.slug) {
+      response = yield call(fetchUserBySlug, action.slug);
+    } else {
+      response = yield call(fetchUser, action.id);
+    }
 
     yield put(mergeJsonApiResources(response));
     yield put(wrapActionWithPrefix(loadUserSuccess, action.actionPrefix)());
@@ -78,7 +83,7 @@ export function* loadUsersWatcher(actionPrefix = '') {
 }
 
 export function* loadUserWatcher(actionPrefix = '') {
-  yield takeLatest(actionPrefix + LOAD_USER_REQUEST, loadUserSaga);
+  yield takeLatest([actionPrefix + LOAD_USER_REQUEST, LOAD_USER_BY_SLUG_REQUEST], loadUserSaga);
 }
 
 export function* deleteUserWatcher(actionPrefix = '') {
