@@ -1,8 +1,8 @@
 import { takeLatest, call, put, fork } from 'redux-saga/effects';
-import { loadResources, createResource, loadResource, deleteResource, updateResource } from 'api';
+import { loadResources, createResource, fetchProject, fetchProjectBySlug, deleteResource, updateResource } from 'api';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import { loadProjectsError, loadProjectsSuccess, loadProjectSuccess, loadProjectError, deleteProjectSuccess, createProjectSuccess } from './actions';
-import { LOAD_PROJECTS_REQUEST, LOAD_PROJECT_REQUEST, DELETE_PROJECT_REQUEST } from './constants';
+import { LOAD_PROJECTS_REQUEST, LOAD_PROJECT_REQUEST, LOAD_PROJECT_BY_SLUG_REQUEST, DELETE_PROJECT_REQUEST } from './constants';
 
 // Individual exports for testing
 export function* loadProjectsSaga(action) {
@@ -26,7 +26,12 @@ export function* loadProjectsSaga(action) {
 // Individual exports for testing
 export function* loadProjectSaga(action) {
   try {
-    const response = yield call(loadResource, 'project', action.id);
+    let response;
+    if (action.id) {
+      response = yield call(fetchProject, action.id);
+    } else {
+      response = yield call(fetchProjectBySlug, action.slug);
+    }
 
     yield put(mergeJsonApiResources(response));
     yield put(loadProjectSuccess());
@@ -89,7 +94,7 @@ function* loadProjectsWatcher() {
 }
 
 function* loadProjectWatcher() {
-  yield takeLatest(LOAD_PROJECT_REQUEST, loadProjectSaga);
+  yield takeLatest([LOAD_PROJECT_REQUEST, LOAD_PROJECT_BY_SLUG_REQUEST], loadProjectSaga);
 }
 
 function* deleteProjectWatcher() {

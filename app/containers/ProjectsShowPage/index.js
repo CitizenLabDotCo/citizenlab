@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 // components
-import Loader from 'components/loaders';
 import WatchSagas from 'containers/WatchSagas';
 import T from 'containers/T';
 import { Link } from 'react-router';
@@ -11,10 +10,10 @@ import ImageHeader, { HeaderTitle, HeaderSubtitle } from 'components/ImageHeader
 
 // store
 import { preprocess } from 'utils';
-import { LOAD_PROJECT_REQUEST } from 'resources/projects/constants';
-import { loadProjectRequest } from 'resources/projects/actions';
+import { loadProjectBySlugRequest } from 'resources/projects/actions';
 import sagasWatchers from 'resources/projects/sagas';
 import sagasWatchersPages from 'resources/projects/pages/sagas';
+import { makeSelectResourceBySlug } from 'utils/resources/selectors';
 
 // message
 import messages from './messages';
@@ -95,18 +94,13 @@ class ProjectsShowPage extends React.Component {
     };
   }
 
-  combinedLoader = () => {
-    const { loadProject, loadProjectPages, params } = this.props;
-    const projectId = params.projectId;
-
-    loadProject(projectId);
-    loadProjectPages(projectId);
+  componentDidMount = () => {
+    this.props.loadProjectBySlug(this.props.params.slug);
   }
 
   render() {
     const { params, pages, project } = this.props;
-    const basePath = `/projects/${params.projectId}`;
-
+    const basePath = `/projects/${params.slug}`;
     return (
       <div>
         <WatchSagas sagas={sagasWatchers} />
@@ -143,16 +137,7 @@ class ProjectsShowPage extends React.Component {
               )}
             </ProjectMenuItems>
           </ProjectMenu>
-          <Loader
-            resourceLoader={this.combinedLoader}
-            loadingMessage={messages.LoadingMessage}
-            errorMessage={messages.LoadingError}
-            listenenTo={LOAD_PROJECT_REQUEST}
-            withError={false}
-          >
-            {/* FROM REACT ROUTER */}
-            {this.props.children}
-          </Loader>
+          {project && React.cloneElement(this.props.children, { project })}
           <Footer>
           </Footer>
         </Container>
@@ -164,7 +149,7 @@ class ProjectsShowPage extends React.Component {
 
 ProjectsShowPage.propTypes = {
   children: PropTypes.any,
-  loadProject: PropTypes.func.isRequired,
+  loadProjectBySlug: PropTypes.func.isRequired,
   loadProjectPages: PropTypes.func.isRequired,
   params: PropTypes.object,
   pages: ImmutablePropTypes.list,
@@ -173,10 +158,10 @@ ProjectsShowPage.propTypes = {
 
 const mapStateToProps = () => createStructuredSelector({
   pages: makeSelectProjectPages(),
-  project: (state, { params }) => state.getIn(['resources', 'projects', params.projectId]),
+  project: makeSelectResourceBySlug('projects', (props) => props.params.slug),
 });
 
 export default preprocess(mapStateToProps, {
-  loadProject: loadProjectRequest,
+  loadProjectBySlug: loadProjectBySlugRequest,
   loadProjectPages: loadProjectPagesRequest,
 })(ProjectsShowPage);

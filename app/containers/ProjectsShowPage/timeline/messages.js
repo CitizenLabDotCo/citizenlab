@@ -22,10 +22,6 @@ export default defineMessages({
     id: 'app.containers.ProjectsTimeline.noTimeline',
     defaultMessage: 'Timeline is not available for this project',
   },
-  loading: {
-    id: 'app.containers.ProjectsTimeline.loading',
-    defaultMessage: 'Loading timeline ...',
-  },
   error: {
     id: 'app.containers.ProjectsTimeline.error',
     defaultMessage: 'Timeline could not be loaded',

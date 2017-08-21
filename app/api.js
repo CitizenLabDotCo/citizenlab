@@ -228,6 +228,10 @@ export function fetchProject(id) {
   return request(`${API_PATH}/projects/${id}`);
 }
 
+export function fetchProjectBySlug(slug) {
+  return request(`${API_PATH}/projects/by_slug/${slug}`);
+}
+
 export function fetchProjectPhases(id) {
   return request(`${API_PATH}/projects/${id}/phases`);
 }

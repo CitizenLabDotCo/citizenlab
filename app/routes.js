@@ -225,7 +225,7 @@ export default function createRoutes(store) {
       },
     },
     {
-      path: '/projects/:projectId',
+      path: '/projects/:slug',
       name: 'Project page',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
@@ -259,7 +259,7 @@ export default function createRoutes(store) {
       },
       childRoutes: [
         {
-          path: '/projects/:projectId/timeline',
+          path: '/projects/:slug/timeline',
           name: 'Project timeline page',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
@@ -277,7 +277,7 @@ export default function createRoutes(store) {
           },
         },
         {
-          path: '/projects/:projectId/events',
+          path: '/projects/:slug/events',
           name: 'Project\'s events page',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
@@ -295,7 +295,7 @@ export default function createRoutes(store) {
           },
         },
         {
-          path: '/projects/:projectId/page/:pageId',
+          path: '/projects/:slug/page/:pageId',
           name: 'Project\'s page',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
@@ -313,7 +313,7 @@ export default function createRoutes(store) {
           },
         },
         {
-          path: '/projects/:projectId/ideas',
+          path: '/projects/:slug/ideas',
           name: 'ideas 4 projects page',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
