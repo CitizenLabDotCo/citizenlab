@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { preprocess } from 'utils/reactRedux';
-import { bindActionCreators } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectEvents } from './selectors';
 import { loadProjectEventsRequest } from 'resources/projects/events/actions';
@@ -25,7 +24,7 @@ const ProjectEventsStyled = styled.div`
 
 class ProjectsEvents extends React.PureComponent {
   componentDidMount() {
-    this.props.loadProjectEventsRequest(this.props.routeParams.projectId);
+    this.props.loadProjectEventsRequest();
   }
 
   componentDidUpdate() {
@@ -44,7 +43,8 @@ class ProjectsEvents extends React.PureComponent {
   }
 
   render() {
-    const { events, loading, error, locale } = this.props;
+    const { loading, error, locale } = this.props;
+    const events = this.props.events && this.props.events.toJS();
 
     return (<ContentContainer>
       <WatchSagas sagas={sagas} />
@@ -73,7 +73,6 @@ class ProjectsEvents extends React.PureComponent {
 
 
 ProjectsEvents.propTypes = {
-  routeParams: PropTypes.object.isRequired,
   loadProjectEventsRequest: PropTypes.func.isRequired,
   events: PropTypes.array,
   locale: PropTypes.string.isRequired,
@@ -88,15 +87,9 @@ const mapStateToProps = () => createStructuredSelector({
   error: (state) => state.getIn(['tempState', LOAD_PROJECT_EVENTS_REQUEST, 'error']),
 });
 
-const mergeProps = ({ events, locale, loading, error }, { loadProjectEventsRequest: lpr }, { routeParams }) => ({
-  routeParams,
-  loadProjectEventsRequest: lpr,
-  events: events && events.toJS(),
-  locale,
-  loading,
-  error,
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  loadProjectEventsRequest: () => dispatch(loadProjectEventsRequest(ownProps.project.get('id'))),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ loadProjectEventsRequest }, dispatch);
 
-export default preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(ProjectsEvents);
+export default preprocess(mapStateToProps, mapDispatchToProps)(ProjectsEvents);
