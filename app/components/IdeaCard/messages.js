@@ -18,4 +18,12 @@ export default defineMessages({
     id: 'app.components.IdeaCard.byAuthorLink',
     defaultMessage: 'by {authorLink}',
   },
+  login: {
+    id: 'app.components.IdeaCard.login',
+    defaultMessage: 'Login',
+  },
+  register: {
+    id: 'app.components.IdeaCard.register',
+    defaultMessage: 'Create an account',
+  },
 });
