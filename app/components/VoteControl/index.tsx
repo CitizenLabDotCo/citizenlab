@@ -85,6 +85,7 @@ type Props = {
   vote: (string) => void,
   cancelVote: () => void,
   className?: string,
+  beforeVote?: (string: 'up' | 'down') => boolean,
 }
 
 class Votes extends React.PureComponent<Props> {
@@ -102,10 +103,12 @@ class Votes extends React.PureComponent<Props> {
   }
 
   onClickVote = (mode) => {
-    if (this.props.userVoteMode === mode){
-      this.props.cancelVote();
-    } else {
-      this.props.vote(mode)
+    if (!this.props.beforeVote || this.props.beforeVote(mode)) {
+      if (this.props.userVoteMode === mode){
+        this.props.cancelVote();
+      } else {
+        this.props.vote(mode)
+      }
     }
   }
 

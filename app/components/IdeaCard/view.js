@@ -9,12 +9,14 @@ import { FormattedMessage, FormattedRelative } from 'react-intl';
 import T from 'containers/T';
 import { Link } from 'react-router';
 import Icon from 'components/UI/Icon';
+import VoteControl from 'components/VoteControl';
+import UnAuthenticated from './components/UnAuthenticated';
+
 // style
 import styled, { keyframes } from 'styled-components';
 import placeholder from './placeholder.png';
 
-import messages from '../messages';
-import VoteControl from 'components/VoteControl';
+import messages from './messages';
 
 const IdeaContainer = styled(Link)`
   width: 100%;
@@ -23,6 +25,7 @@ const IdeaContainer = styled(Link)`
   display: flex;
   flex-direction: column;
   border-radius: 5px;
+  overflow: hidden;
   background: #fff;
   cursor: pointer;
   -webkit-backface-visibility: hidden;
@@ -123,8 +126,15 @@ const AuthorLink = styled.span`
   }
 `;
 
+
 class View extends React.Component {
 
+  constructor() {
+    super();
+    this.state = {
+      showUnauthenticated: false,
+    };
+  }
   onCardClick = (event) => {
     event.preventDefault();
     this.props.onClick();
@@ -136,8 +146,19 @@ class View extends React.Component {
     this.props.push(`/profile/${this.props.authorSlug}`);
   }
 
+  onVoteClick = () => {
+    if (!this.props.isAuthenticated) {
+      this.setState({
+        showUnauthenticated: true,
+      });
+    }
+    return this.props.isAuthenticated;
+  }
+
   render() {
     const { title, createdAt, ideaId, commentsCount, imageUrl, authorName, slug } = this.props;
+    const { showUnauthenticated } = this.state;
+
     return (
       <IdeaContainer onClick={this.onCardClick} to={`/ideas/${slug}`}>
         <IdeaHoverBar>
@@ -161,9 +182,12 @@ class View extends React.Component {
             />
           </IdeaAuthor>
         </IdeaContent>
-        <IdeaFooter>
-          <VoteControl ideaId={ideaId} />
-        </IdeaFooter>
+        {!showUnauthenticated &&
+          <IdeaFooter>
+            <VoteControl ideaId={ideaId} beforeVote={this.onVoteClick} />
+          </IdeaFooter>
+        }
+        {showUnauthenticated && <UnAuthenticated />}
       </IdeaContainer>
     );
   }
@@ -181,6 +205,7 @@ View.propTypes = {
   authorName: PropTypes.string.isRequired,
   commentsCount: PropTypes.number,
   push: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
 export default connect(null, { push })(View);
