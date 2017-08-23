@@ -4,10 +4,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import HelmetIntl from 'components/HelmetIntl';
 import { createStructuredSelector } from 'reselect';
-import { Grid, Icon, Segment, Menu } from 'semantic-ui-react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { bindActionCreators } from 'redux';
 import { preprocess } from 'utils/reactRedux';
+import styled from 'styled-components';
 import WatchSagas from 'containers/WatchSagas';
 import { injectTFunc } from 'containers/T/utils';
 import FormattedMessageSegment from 'components/FormattedMessageSegment';
@@ -21,6 +21,14 @@ import {
 } from './actions';
 import { LineChartWrapper } from './LineChartWrapper';
 import { BarChartWrapper } from './BarChartWrapper';
+import TimeControl from './TimeControl';
+import IntervalControl from './IntervalControl';
+
+const ControlBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
 
 class DashboardPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -34,11 +42,6 @@ class DashboardPage extends React.Component { // eslint-disable-line react/prefe
       startAt,
       endAt,
     };
-
-    // context for bindings
-    this.updateInterval = this.updateInterval.bind(this);
-    this.goToPreviousInterval = this.goToPreviousInterval.bind(this);
-    this.goToFollowingInterval = this.goToFollowingInterval.bind(this);
   }
 
   componentDidMount() {
@@ -71,9 +74,23 @@ class DashboardPage extends React.Component { // eslint-disable-line react/prefe
     };
   }
 
+  changeIntervalIndex = (newIntervalIndex) => {
+    const { interval } = this.state;
+    const { startAt, endAt } = this.getNewBoundaryDates(interval, newIntervalIndex);
+
+    this.setState({
+      startAt,
+      endAt,
+      intervalIndex: newIntervalIndex,
+    });
+
+    this.props.loadUsersReportRequest(startAt, endAt, interval);
+    this.props.loadIdeaTopicsReportRequest(startAt, endAt);
+    this.props.loadIdeaAreasReportRequest(startAt, endAt);
+  }
 
   // day, week, ...
-  updateInterval = (interval) => {
+  changeInterval = (interval) => {
     const startAt = moment().subtract(1, `${interval}s`).toISOString();
     const endAt = moment().toISOString();
 
@@ -88,46 +105,11 @@ class DashboardPage extends React.Component { // eslint-disable-line react/prefe
     this.props.loadUsersReportRequest(startAt, endAt, interval);
   };
 
-  // previous day, week, ...
-  goToPreviousInterval = () => {
-    const { interval, intervalIndex } = this.state;
-
-    const newIntervalIndex = intervalIndex - 1;
-    const { startAt, endAt } = this.getNewBoundaryDates(interval, newIntervalIndex);
-
-    this.setState({
-      startAt,
-      endAt,
-      intervalIndex: newIntervalIndex,
-    });
-
-    this.props.loadUsersReportRequest(startAt, endAt, interval);
-    this.props.loadIdeaTopicsReportRequest(startAt, endAt);
-    this.props.loadIdeaAreasReportRequest(startAt, endAt);
-  };
-
-  // following day, week, ...
-  goToFollowingInterval = () => {
-    const { interval, intervalIndex } = this.state;
-
-    const newIntervalIndex = intervalIndex + 1;
-    const { startAt, endAt } = this.getNewBoundaryDates(interval, newIntervalIndex);
-
-    this.setState({
-      startAt,
-      endAt,
-      intervalIndex: newIntervalIndex,
-    });
-
-    this.props.loadUsersReportRequest(startAt, endAt, interval);
-    this.props.loadIdeaTopicsReportRequest(startAt, endAt);
-    this.props.loadIdeaAreasReportRequest(startAt, endAt);
-  };
 
   render() {
     const { tFunc, newUsers, ideasByTopic, ideasByArea } = this.props;
-    const { formatMessage } = this.props.intl;
-    const { interval } = this.state;
+    // const { formatMessage } = this.props.intl;
+    // const { interval } = this.state;
 
     // refactor data for charts (newUsers.data etc. based on API specs response)
     // name on X axis (Y when version layout), value on Y axis (X when version layout)
@@ -152,64 +134,18 @@ class DashboardPage extends React.Component { // eslint-disable-line react/prefe
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <Grid>
-          <Grid.Row columns={2}>
-            <Grid.Column width={4}>
-              <Segment>
-                {/* Interval */}
-                <span
-                  style={{ cursor: 'pointer' }}
-                  role="presentation"
-                  onClick={this.goToPreviousInterval}
-                >
-                  <Icon name="left chevron" />
-                </span>
-                <FormattedMessage {...messages.interval} />
-                <span
-                  style={{ cursor: 'pointer' }}
-                  role="presentation"
-                  onClick={this.goToFollowingInterval}
-                >
-                  <Icon name="right chevron" />
-                </span>
-              </Segment>
-            </Grid.Column>
-            <Grid.Column width={12}>
-              <Segment inverted>
-                <Menu inverted pointing secondary>
-                  <span
-                    onClick={() => this.updateInterval('day')}
-                    style={{ cursor: 'pointer' }}
-                    role="button"
-                  >
-                    <Menu.Item name={formatMessage(messages.day)} active={interval === 'day'} />
-                  </span>
-                  <span
-                    onClick={() => this.updateInterval('week')}
-                    style={{ cursor: 'pointer' }}
-                    role="presentation"
-                  >
-                    <Menu.Item name={formatMessage(messages.week)} active={interval === 'week'} />
-                  </span>
-                  <span
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => this.updateInterval('month')}
-                    role="presentation"
-                  >
-                    <Menu.Item name={formatMessage(messages.month)} active={interval === 'month'} />
-                  </span>
-                  <span
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => this.updateInterval('year')}
-                    role="presentation"
-                  >
-                    <Menu.Item name={formatMessage(messages.year)} active={interval === 'year'} />
-                  </span>
-                </Menu>
-              </Segment>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+        <ControlBar>
+          <TimeControl
+            value={this.state.intervalIndex}
+            interval={this.state.interval}
+            onChange={this.changeIntervalIndex}
+          />
+          <IntervalControl
+            value={this.state.interval}
+            onChange={this.changeInterval}
+          />
+        </ControlBar>
+
         <div>
           {/* TODO: consider wrapping charts in a Chart component within this container ...
               ... for code reuse */}
