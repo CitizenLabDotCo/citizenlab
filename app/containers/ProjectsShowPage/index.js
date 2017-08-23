@@ -7,6 +7,7 @@ import WatchSagas from 'containers/WatchSagas';
 import T from 'containers/T';
 import { Link } from 'react-router';
 import ImageHeader, { HeaderTitle, HeaderSubtitle } from 'components/ImageHeader';
+import Meta from './meta';
 
 // store
 import { preprocess } from 'utils';
@@ -105,6 +106,8 @@ class ProjectsShowPage extends React.Component {
       <div>
         <WatchSagas sagas={sagasWatchers} />
         <WatchSagas sagas={sagasWatchersPages} />
+
+        {project && <Meta projectId={project.get('id')} location={location} />}
 
         <Container>
           <ImageHeader image={project && project.getIn(['attributes', 'header_bg', 'large'])}>

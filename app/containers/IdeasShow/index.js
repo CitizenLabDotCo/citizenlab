@@ -12,6 +12,7 @@ import { media } from 'utils/styleUtils';
 // components
 import ShowDesktop from './components/showDesktop';
 import ShowMobile from './components/showMobile';
+import Meta from './components/show/Meta';
 
 // store
 import { preprocess } from 'utils';
@@ -32,24 +33,13 @@ const MobileVersion = styled.div`
 `;
 
 class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  constructor(props) {
-    super();
 
-    const { params } = props;
-    if (props.slug || params.slug) {
-      this.slug = props.slug || params.slug;
-    } else if (props.id) {
-      this.id = props.id;
-    }
-  }
   componentDidMount() {
-    if (this.slug) {
-      this.props.loadIdeaRequest({ slug: this.slug });
-    } else if (this.id) {
-      this.props.loadIdeaRequest({ id: this.id });
-    }
-    if (this.id) {
-      this.props.loadCommentsRequest(this.id);
+    if (this.props.slug) {
+      this.props.loadIdeaRequest({ slug: this.props.slug });
+    } else if (this.props.id) {
+      this.props.loadIdeaRequest({ id: this.props.id });
+      this.props.loadCommentsRequest(this.props.id);
     }
   }
 
@@ -62,12 +52,13 @@ class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefe
 
     return (
       <div>
+        <Meta location={location} slug={this.props.slug} />
         <WatchSagas sagas={sagasWatchers} />
         <DesktopVersion>
-          <ShowDesktop location={location} id={this.id} slug={this.slug} />
+          <ShowDesktop location={location} id={this.props.id} slug={this.props.slug} />
         </DesktopVersion>
         <MobileVersion>
-          <ShowMobile location={location} id={this.id} slug={this.slug} />
+          <ShowMobile location={location} id={this.props.id} slug={this.props.slug} />
         </MobileVersion>
       </div>
     );

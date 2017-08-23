@@ -25,15 +25,9 @@ const makeSelectSetting = (settingPath) => createSelector(
   )
 );
 
-const makeSelectStyle = (prop) => createSelector(
-  makeSelectCurrentTenantImm('attributes', 'settings', 'core'),
-  (coreSettings) => coreSettings.get(prop)
-);
-
 export {
   selectTenantDomain,
   makeSelectCurrentTenantImm,
   makeSelectCurrentTenant,
   makeSelectSetting,
-  makeSelectStyle,
 };
