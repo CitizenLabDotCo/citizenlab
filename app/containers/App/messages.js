@@ -16,7 +16,7 @@ export default defineMessages({
   },
   helmetDescription: {
     id: 'app.containers.App.helmetDescription',
-    defaultMessage: 'Citizenlab 2 platform {tenantName}',
+    defaultMessage: 'Citizenlab 2 platform {organizationName}',
   },
   unAuthorizedUser: {
     id: 'app.containers.App.unAuthorizedUser',

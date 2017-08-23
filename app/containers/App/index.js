@@ -12,16 +12,14 @@
  */
 
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 
-import { injectIntl, intlShape } from 'react-intl';
-import { injectTFunc } from 'utils/containers/t/utils';
 // import { DockableSagaView } from 'redux-saga-devtools';
 // import { sagamonitor } from 'store';
 
 // components
 // import { Container } from 'semantic-ui-react';
+import Meta from './Meta';
 import Navbar from 'containers/Navbar';
 import messages from './messages';
 import Loader from 'components/loaders';
@@ -66,16 +64,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
   }
 
   content() {
-    const { tFunc, currentTenant, location, children, loadUser, colorMain, menuStyle, metaTitle, metaDescription } = this.props;
-    const { formatMessage } = this.props.intl;
-
-    const finalMetaDescription =
-      (metaTitle && !metaDescription.isEmpty() && tFunc(metaDescription)) ||
-      formatMessage(messages.helmetDescription, { tenantName: currentTenant.attributes.name });
-
-    const finalMetaTitle =
-      (metaTitle && !metaTitle.isEmpty() && tFunc(metaTitle)) ||
-      formatMessage(messages.helmetTitle, { tenantName: currentTenant.attributes.name });
+    const { currentTenant, location, children, loadUser, colorMain, menuStyle } = this.props;
 
 
     const theme = {
@@ -89,11 +78,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     return (
       <ThemeProvider theme={theme}>
         <Container>
-          <Helmet>
-            <title>{finalMetaTitle}</title>
-            <meta name="description" content={finalMetaDescription} />
-          </Helmet>
-
+          <Meta />
           <Navbar currentTenant={currentTenant} location={this.props.location.pathname} />
           <Loader
             resourceLoader={loadUser}
@@ -133,8 +118,6 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
 App.propTypes = {
   children: PropTypes.node,
   currentTenant: PropTypes.object,
-  intl: intlShape.isRequired,
-  tFunc: PropTypes.func.isRequired,
   location: PropTypes.object,
   loadCurrentTenantRequest: PropTypes.func.isRequired,
   loadUser: PropTypes.func.isRequired,
@@ -157,4 +140,4 @@ const actions = {
   loadCurrentTenantRequest,
 };
 
-export default injectTFunc(injectIntl(preprocess(mapStateToProps, actions)(App)));
+export default preprocess(mapStateToProps, actions)(App);
