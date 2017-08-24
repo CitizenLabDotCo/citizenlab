@@ -123,6 +123,7 @@ const StyledErrorMessage: any = styled.div`
 
 type Props = {
   text?: string | null;
+  fieldName?: string;
   errors?: string[];
   apiErrors?: API.Error[];
   size?: string;
@@ -135,9 +136,14 @@ type Props = {
 
 type State = {};
 
+function findMessage(fieldName, error) {
+  return messages[`${fieldName}_${error}`] || messages[error];
+}
+
+
 export default class Error extends React.PureComponent<Props, State> {
   render() {
-    const { text, errors, apiErrors } = this.props;
+    const { text, errors, apiErrors, fieldName } = this.props;
     let { size, marginTop, marginBottom, showIcon, showBackground, className } = this.props;
     const timeout = 400;
 
@@ -148,7 +154,7 @@ export default class Error extends React.PureComponent<Props, State> {
     showBackground = (_.isBoolean(showBackground) ? showBackground : true);
     className = (className || '');
 
-    const errorElement = text && (
+    const errorElement = (text || errors || apiErrors) && (
       <CSSTransition classNames="error" timeout={timeout}>
         <StyledErrorMessage size={size} marginTop={marginTop} marginBottom={marginBottom}>
           <StyledErrorMessageInner showBackground={showBackground}>
@@ -159,14 +165,14 @@ export default class Error extends React.PureComponent<Props, State> {
               }
 
               {errors && errors.map((error) => (
-                <p>
-                  <FormattedMessage {...messages[error]} />
+                <p key={error}>
+                  <FormattedMessage {...findMessage(fieldName, error)} />
                 </p>
               ))}
 
               {apiErrors && apiErrors.map((error) => (
-                <p>
-                  <FormattedMessage {...messages[error.error]} />
+                <p key={error.error}>
+                  <FormattedMessage {...findMessage(fieldName, error.error)} />
                 </p>
               ))}
             </ErrorMessageText>
