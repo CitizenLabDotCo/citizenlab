@@ -4,6 +4,10 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import * as _ from 'lodash';
 import styled from 'styled-components';
+import { FormattedMessage } from 'react-intl';
+
+import { API } from 'typings.d';
+import messages from './messages';
 
 interface IStyledErrorMessageInner {
   showBackground: boolean;
@@ -118,7 +122,9 @@ const StyledErrorMessage: any = styled.div`
 `;
 
 type Props = {
-  text: string | null;
+  text?: string | null;
+  errors?: string[];
+  apiErrors?: API.Error[];
   size?: string;
   marginTop?: string;
   marginBottom?: string;
@@ -131,7 +137,7 @@ type State = {};
 
 export default class Error extends React.PureComponent<Props, State> {
   render() {
-    const { text } = this.props;
+    const { text, errors, apiErrors } = this.props;
     let { size, marginTop, marginBottom, showIcon, showBackground, className } = this.props;
     const timeout = 400;
 
@@ -148,7 +154,21 @@ export default class Error extends React.PureComponent<Props, State> {
           <StyledErrorMessageInner showBackground={showBackground}>
             {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
             <ErrorMessageText>
-              {text}
+              {text &&
+                <p>{text}</p>
+              }
+
+              {errors && errors.map((error) => (
+                <p>
+                  <FormattedMessage {...messages[error]} />
+                </p>
+              ))}
+
+              {apiErrors && apiErrors.map((error) => (
+                <p>
+                  <FormattedMessage {...messages[error.error]} />
+                </p>
+              ))}
             </ErrorMessageText>
           </StyledErrorMessageInner>
         </StyledErrorMessage>
