@@ -14,7 +14,7 @@ type Props = {
   metaDescription: Object,
   tFunc: Function,
   intl: { formatMessage: Function },
-}
+};
 
 const Meta: React.SFC<Props> = ({ tenant, tFunc, intl }) => {
   const { formatMessage } = intl;
@@ -27,11 +27,11 @@ const Meta: React.SFC<Props> = ({ tenant, tFunc, intl }) => {
     (organizationNameMultiloc  && tFunc(organizationNameMultiloc));
 
   const title =
-    (titleMultiloc && !titleMultiloc.isEmpty() && tFunc(titleMultiloc)) ||
+    (titleMultiloc && titleMultiloc.isEmpty && !titleMultiloc.isEmpty() && tFunc(titleMultiloc)) ||
     formatMessage(messages.helmetTitle, { tenantName: organizationName });
 
   const description =
-    (descriptionMultiloc && !descriptionMultiloc.isEmpty() && tFunc(descriptionMultiloc)) ||
+    (descriptionMultiloc && descriptionMultiloc.isEmpty && !descriptionMultiloc.isEmpty() && tFunc(descriptionMultiloc)) ||
     formatMessage(messages.helmetDescription, { tenantName: organizationName });
 
   const url = `http://${tenant.attributes.host}`;
