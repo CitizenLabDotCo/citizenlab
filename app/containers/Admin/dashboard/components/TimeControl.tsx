@@ -1,11 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { darken } from 'polished';
-import { FormattedMessage } from 'react-intl';
 
-const previousIcon = require('./previousIcon.svg');
-const nextIcon = require('./nextIcon.svg');
-import messages from './messages';
+import messages from '../messages';
+
+const previousIcon = require('../previousIcon.svg');
+const nextIcon = require('../nextIcon.svg');
 
 const Container = styled.div`
   display: flex;
@@ -15,23 +14,16 @@ const Container = styled.div`
 `;
 
 const TimeButton = styled.button`
-  color: #6E6E6E;
-  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.25rem 1rem;
   cursor: pointer;
   outline: none;
   padding: 1rem 1.5rem;
 
-
-  img {
-    padding: 0 1rem;
-  }
-
+  opacity: 0.7;
   &:hover {
-    color: ${darken(0.1, '#6E6E6E')};
+    opacity: 1;
   }
 `;
 
@@ -40,11 +32,21 @@ const Separator = styled.div`
   background-color: #EAEAEA;
 `;
 
+const CurrentTime = styled.div`
+  color: #6E6E6E;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.5rem;
+`;
+
 
 type Props = {
   value: number,
   onChange: (number) => void,
-  interval: 'day' | 'week' | 'month' | 'year',
+  interval: 'week' | 'month' | 'year',
+  currentTime?: any,
 }
 
 class TimeControl extends React.PureComponent<Props> {
@@ -57,26 +59,34 @@ class TimeControl extends React.PureComponent<Props> {
     this.props.onChange(this.props.value + 1);
   }
 
+  currentTime() {
+    const { currentTime } = this.props;
+    if (!currentTime) return;
+
+    switch (this.props.interval) {
+      case 'week':
+        return currentTime.format("w Y");
+      case 'month':
+        return currentTime.format("MMM Y");
+      case 'year':
+        return currentTime.format("Y");
+      default:
+        break;
+    }
+  }
+
   render() {
     return (
       <Container>
         <TimeButton onClick={this.handlePrevious}>
           <img src={previousIcon} />
-          <FormattedMessage
-            {...messages.previousInterval}
-            values={{
-              interval: this.props.interval
-            }}
-          />
         </TimeButton>
         <Separator />
+        <CurrentTime>
+          {this.currentTime()}
+        </CurrentTime>
+        <Separator />
         <TimeButton onClick={this.handleNext}>
-          <FormattedMessage
-            {...messages.nextInterval}
-            values={{
-              interval: this.props.interval
-            }}
-          />
           <img src={nextIcon} />
         </TimeButton>
       </Container>

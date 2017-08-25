@@ -4,7 +4,7 @@ import { darken } from 'polished';
 
 import { FormattedMessage } from 'react-intl';
 
-import messages from './messages';
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;
@@ -47,7 +47,7 @@ export default class IntervalControl extends React.PureComponent<Props> {
 
   render() {
     const { value } = this.props;
-    const intervals = ['day', 'week', 'month', 'year'];
+    const intervals = ['week', 'month', 'year'];
     return (
       <Container>
         {intervals.map((interval) =>

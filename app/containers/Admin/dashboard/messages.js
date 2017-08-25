@@ -18,8 +18,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.usersOverTime',
     defaultMessage: 'Users over time',
   },
-  ideasByTopic: {
-    id: 'app.containers.AdminPage.DashboardPage.ideasByTopic',
+  usersByGenderTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.usersByGenderTitle',
+    defaultMessage: 'Users by gender',
+  },
+  usersByAgeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.usersByAgeTitle',
+    defaultMessage: 'Users by age',
+  },
+  ideasByTimeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.ideasByTimeTitle',
+    defaultMessage: 'Ideas by time',
+  },
+  usersByTimeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.usersByTimeTitle',
+    defaultMessage: 'Users by time',
+  },
+  ideasByTopicTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.ideasByTopicTitle',
     defaultMessage: 'Ideas by topic',
   },
   ideasByArea: {
@@ -71,5 +87,21 @@ export default defineMessages({
       week {week}
       year {year}
     }`,
+  },
+  male: {
+    id: 'app.containers.AdminPage.DashboardPage.male',
+    defaultMessage: 'male',
+  },
+  female: {
+    id: 'app.containers.AdminPage.DashboardPage.female',
+    defaultMessage: 'female',
+  },
+  unspecified: {
+    id: 'app.containers.AdminPage.DashboardPage.unspecified',
+    defaultMessage: 'unspecified',
+  },
+  _blank: {
+    id: 'app.containers.AdminPage.DashboardPage._blank',
+    defaultMessage: 'unknown',
   },
 });
