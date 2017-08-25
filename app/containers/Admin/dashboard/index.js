@@ -3,26 +3,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import HelmetIntl from 'components/HelmetIntl';
-import { createStructuredSelector } from 'reselect';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import { bindActionCreators } from 'redux';
-import { preprocess } from 'utils/reactRedux';
-import styled from 'styled-components';
-import WatchSagas from 'containers/WatchSagas';
+import styled, { ThemeProvider } from 'styled-components';
 import { injectTFunc } from 'containers/T/utils';
-import FormattedMessageSegment from 'components/FormattedMessageSegment';
 import moment from 'moment';
-
-import sagas from './sagas';
 import messages from './messages';
-import { selectAdminDashboard } from './selectors';
-import {
-  loadIdeaAreasReportRequest, loadIdeaTopicsReportRequest, loadUsersReportRequest,
-} from './actions';
-import { LineChartWrapper } from './LineChartWrapper';
-import { BarChartWrapper } from './BarChartWrapper';
-import TimeControl from './TimeControl';
-import IntervalControl from './IntervalControl';
+import { FormattedMessage } from 'react-intl';
+import TimeControl from './components/TimeControl';
+import IntervalControl from './components/IntervalControl';
+import GenderChart from './components/GenderChart';
+import AgeChart from './components/AgeChart';
+import IdeasByTimeChart from './components/IdeasByTimeChart';
+import UsersByTimeChart from './components/UsersByTimeChart';
+import IdeasByTopicChart from './components/IdeasByTopicChart';
+import { Flex, Box } from 'grid-styled';
 
 const ControlBar = styled.div`
   display: flex;
@@ -30,106 +23,62 @@ const ControlBar = styled.div`
   width: 100%;
 `;
 
+const GraphCard = styled.div`
+  background-color: #ffffff;
+  border-radius: 5px;
+  height: ${(props) => props.dynamicHeight ? 'auto' : '350px'};
+  padding: 20px;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+`;
+
+const GraphCardTitle = styled.h3`
+  font-size: 20px;
+  font-weight: 400;
+  align-self: flex-start;
+  padding-bottom: 20px;
+`;
+
 class DashboardPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+
   constructor() {
     super();
-
-    const startAt = moment().subtract(1, 'months').toISOString();
-    const endAt = moment().toISOString();
     this.state = {
       interval: 'month',
-      intervalIndex: -1,
-      startAt,
-      endAt,
+      intervalIndex: 0,
     };
   }
 
-  componentDidMount() {
-    const { startAt, endAt, interval } = this.state;
+  calculateBoundaryDates(interval, intervalIndex) {
+    const startAtMoment = moment().startOf(interval).add(intervalIndex, `${interval}s`);
+    const endAtMoment = moment(startAtMoment).add(1, `${interval}s`);
 
-    this.props.loadUsersReportRequest(startAt, endAt, interval);
-    this.props.loadIdeaTopicsReportRequest(startAt, endAt);
-    this.props.loadIdeaAreasReportRequest(startAt, endAt);
+    return { startAtMoment, endAtMoment };
   }
 
-  getNewBoundaryDates(interval, newIntervalIndex) {
-    let startAt;
-    let endAt;
-
-    // calculate new startAt/endAt
-    if (newIntervalIndex < 0) {
-      startAt = moment().subtract(Math.abs(newIntervalIndex), interval).toISOString();
-      endAt = moment().subtract(Math.abs(newIntervalIndex + 1), interval).toISOString();
-    } else if (newIntervalIndex === 0) {
-      startAt = moment().toISOString();
-      endAt = moment().add(1, interval).toISOString();
-    } else {
-      startAt = moment().add(newIntervalIndex, interval).toISOString();
-      endAt = moment().add(newIntervalIndex + 1, interval).toISOString();
-    }
-
-    return {
-      startAt,
-      endAt,
-    };
-  }
-
-  changeIntervalIndex = (newIntervalIndex) => {
-    const { interval } = this.state;
-    const { startAt, endAt } = this.getNewBoundaryDates(interval, newIntervalIndex);
-
-    this.setState({
-      startAt,
-      endAt,
-      intervalIndex: newIntervalIndex,
-    });
-
-    this.props.loadUsersReportRequest(startAt, endAt, interval);
-    this.props.loadIdeaTopicsReportRequest(startAt, endAt);
-    this.props.loadIdeaAreasReportRequest(startAt, endAt);
-  }
-
-  // day, week, ...
   changeInterval = (interval) => {
-    const startAt = moment().subtract(1, `${interval}s`).toISOString();
-    const endAt = moment().toISOString();
-
-    this.setState({
-      interval,
-      startAt,
-      endAt,
-      intervalIndex: -1,
-    });
-
-    // reload data for charts depending on interval
-    this.props.loadUsersReportRequest(startAt, endAt, interval);
+    this.setState({ interval, intervalIndex: 0 });
   };
 
+  changeIntervalIndex = (intervalIndex) => {
+    this.setState({ intervalIndex });
+  }
+
+  chartTheme = (theme) => ({
+    ...theme,
+    chartStroke: '#01A1B1',
+    chartFill: '#01A1B1',
+    chartLabelColor: '#666666',
+  });
 
   render() {
-    const { tFunc, newUsers, ideasByTopic, ideasByArea } = this.props;
-    // const { formatMessage } = this.props.intl;
-    // const { interval } = this.state;
-
-    // refactor data for charts (newUsers.data etc. based on API specs response)
-    // name on X axis (Y when version layout), value on Y axis (X when version layout)
-    // newUsers etc. are not immutable, but .labels / .values are
-    const newUsersData = newUsers.labels.toJS().map((item, index) => ({
-      label: item,
-      value: newUsers.values.toJS()[index],
-    }));
-    const ideasByTopicData = ideasByTopic.labels.toJS().map((item, index) => ({
-      label: `${tFunc(item)} (${ideasByTopic.values.toJS()[index]})`,
-      value: ideasByTopic.values.toJS()[index],
-    }));
-    const ideasByAreaData = ideasByArea.labels.toJS().map((item, index) => ({
-      label: `${tFunc(item)} (${ideasByArea.values.toJS()[index]})`,
-      value: ideasByArea.values.toJS()[index],
-    }));
+    const { startAtMoment, endAtMoment } = this.calculateBoundaryDates(this.state.interval, this.state.intervalIndex);
+    const startAt = startAtMoment.toISOString();
+    const endAt = endAtMoment.toISOString();
 
     return (
       <div>
-        <WatchSagas sagas={sagas} />
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
@@ -139,86 +88,64 @@ class DashboardPage extends React.Component { // eslint-disable-line react/prefe
             value={this.state.intervalIndex}
             interval={this.state.interval}
             onChange={this.changeIntervalIndex}
+            currentTime={startAtMoment}
           />
           <IntervalControl
             value={this.state.interval}
             onChange={this.changeInterval}
           />
         </ControlBar>
-
-        <div>
-          {/* TODO: consider wrapping charts in a Chart component within this container ...
-              ... for code reuse */}
-          <FormattedMessage {...messages.usersOverTime} />
-          {newUsers.loading && <FormattedMessage {...messages.loading} />}
-          {newUsers.loadError && <FormattedMessageSegment message={messages.loadError} />}
-          {!newUsers.error && newUsersData && <LineChartWrapper data={newUsersData} />}
-        </div>
-        <div>
-          <FormattedMessage {...messages.ideasByTopic} />
-          {ideasByTopic.loading && <FormattedMessageSegment message={messages.loading} />}
-          {ideasByTopic.loadError && <FormattedMessageSegment message={messages.loadError} />}
-          {!ideasByTopic.error && ideasByTopicData && <BarChartWrapper
-            data={ideasByTopicData}
-            layout="vertical"
-          />}
-        </div>
-        <div>
-          <FormattedMessage {...messages.ideasByArea} />
-          {ideasByArea.loading && <FormattedMessageSegment message={messages.loading} />}
-          {ideasByArea.loadError && <FormattedMessageSegment message={messages.loadError} />}
-          {!ideasByArea.error && ideasByAreaData && <BarChartWrapper
-            data={ideasByAreaData}
-            layout="vertical"
-          />}
-        </div>
+        <ThemeProvider theme={this.chartTheme}>
+          <Flex mx={-10} my={20} wrap>
+            <Box width={1 / 3} p={10}>
+              <GraphCard >
+                <GraphCardTitle>
+                  <FormattedMessage {...messages.usersByGenderTitle} />
+                </GraphCardTitle>
+                <GenderChart startAt={startAt} endAt={endAt} />
+              </GraphCard>
+            </Box>
+            <Box width={2 / 3} p={10}>
+              <GraphCard>
+                <GraphCardTitle>
+                  <FormattedMessage {...messages.usersByAgeTitle} />
+                </GraphCardTitle>
+                <AgeChart startAt={startAt} endAt={endAt} />
+              </GraphCard>
+            </Box>
+            <Box width={1 / 2} p={10}>
+              <GraphCard>
+                <GraphCardTitle>
+                  <FormattedMessage {...messages.ideasByTimeTitle} />
+                </GraphCardTitle>
+                <IdeasByTimeChart startAt={startAt} endAt={endAt} interval="day" />
+              </GraphCard>
+            </Box>
+            <Box width={1 / 2} p={10}>
+              <GraphCard>
+                <GraphCardTitle>
+                  <FormattedMessage {...messages.usersByTimeTitle} />
+                </GraphCardTitle>
+                <UsersByTimeChart startAt={startAt} endAt={endAt} interval="day" />
+              </GraphCard>
+            </Box>
+            <Box width={1 / 2} p={10}>
+              <GraphCard dynamicHeight>
+                <GraphCardTitle>
+                  <FormattedMessage {...messages.ideasByTopicTitle} />
+                </GraphCardTitle>
+                <IdeasByTopicChart startAt={startAt} endAt={endAt} />
+              </GraphCard>
+            </Box>
+          </Flex>
+        </ThemeProvider>
       </div>);
   }
 }
 
 DashboardPage.propTypes = {
-  newUsers: PropTypes.object.isRequired,
-  ideasByTopic: PropTypes.object.isRequired,
-  ideasByArea: PropTypes.object.isRequired,
-  loadUsersReportRequest: PropTypes.func.isRequired,
-  loadIdeaTopicsReportRequest: PropTypes.func.isRequired,
-  loadIdeaAreasReportRequest: PropTypes.func.isRequired,
-  intl: intlShape.isRequired,
   tFunc: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  pageState: selectAdminDashboard,
-});
 
-export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  loadUsersReportRequest,
-  loadIdeaTopicsReportRequest,
-  loadIdeaAreasReportRequest,
-}, dispatch);
-
-const mergeProps = ({ pageState, statTopics, statAreas }, dispatchProps, { intl, tFunc }) => ({
-  newUsers: {
-    loading: pageState.getIn(['newUsers', 'loading']),
-    loadError: pageState.getIn(['newUsers', 'loadError']),
-    values: pageState.getIn(['newUsers', 'values']),
-    labels: pageState.getIn(['newUsers', 'labels']),
-  },
-  ideasByTopic: {
-    loading: pageState.getIn(['ideasByTopic', 'loading']),
-    loadError: pageState.getIn(['ideasByTopic', 'loadError']),
-    values: pageState.getIn(['ideasByTopic', 'values']),
-    labels: pageState.getIn(['ideasByTopic', 'labels']),
-  },
-  ideasByArea: {
-    loading: pageState.getIn(['ideasByArea', 'loading']),
-    loadError: pageState.getIn(['ideasByArea', 'loadError']),
-    values: pageState.getIn(['ideasByArea', 'values']),
-    labels: pageState.getIn(['ideasByArea', 'labels']),
-  },
-  intl,
-  tFunc,
-  ...dispatchProps,
-});
-
-export default injectTFunc(injectIntl(preprocess(mapStateToProps, mapDispatchToProps, mergeProps)(DashboardPage)));
+export default injectTFunc((DashboardPage));

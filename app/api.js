@@ -193,6 +193,10 @@ export function deleteIdeaVote(voteId) {
   });
 }
 
+export function fetchUsersByGenderReport(queryParameters) {
+  return request(`${API_PATH}/stats/users_by_gender`, null, null, queryParameters);
+}
+
 export function fetchUsersReport(queryParameters) {
   return request(`${API_PATH}/stats/users_by_time`, null, null, queryParameters);
 }
