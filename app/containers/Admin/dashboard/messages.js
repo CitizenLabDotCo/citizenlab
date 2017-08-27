@@ -28,11 +28,11 @@ export default defineMessages({
   },
   ideasByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.ideasByTimeTitle',
-    defaultMessage: 'Ideas by time',
+    defaultMessage: 'Ideas over time',
   },
   usersByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.usersByTimeTitle',
-    defaultMessage: 'Users by time',
+    defaultMessage: 'Registrations over time',
   },
   ideasByTopicTitle: {
     id: 'app.containers.AdminPage.DashboardPage.ideasByTopicTitle',
@@ -103,5 +103,13 @@ export default defineMessages({
   _blank: {
     id: 'app.containers.AdminPage.DashboardPage._blank',
     defaultMessage: 'unknown',
+  },
+  numberOfRegistrations: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfRegistrations',
+    defaultMessage: '#registrations',
+  },
+  numberOfIdeas: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfIdeas',
+    defaultMessage: '#ideas',
   },
 });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-
+import { injectIntl } from 'react-intl';
 import messages from '../messages';
 
 const previousIcon = require('../previousIcon.svg');
@@ -47,6 +47,7 @@ type Props = {
   onChange: (number) => void,
   interval: 'week' | 'month' | 'year',
   currentTime?: any,
+  intl: any,
 }
 
 class TimeControl extends React.PureComponent<Props> {
@@ -62,14 +63,30 @@ class TimeControl extends React.PureComponent<Props> {
   currentTime() {
     const { currentTime } = this.props;
     if (!currentTime) return;
-
+    const fromTime = currentTime;
+    const toTime = fromTime.clone().add(1, `${this.props.interval}s`);
     switch (this.props.interval) {
       case 'week':
-        return currentTime.format("w Y");
+        const from = this.props.intl.formatDate(fromTime.toDate(), {
+          day: '2-digit',
+          weekday: 'short'
+        });
+        const to = this.props.intl.formatDate(toTime.toDate(), {
+          day: '2-digit',
+          weekday: 'short',
+          year: 'numeric',
+          month: 'short',
+        });
+        return `${from} - ${to}`;
       case 'month':
-        return currentTime.format("MMM Y");
+        return this.props.intl.formatDate(fromTime.toDate(), {
+          month: 'long',
+          year: 'numeric',
+        });
       case 'year':
-        return currentTime.format("Y");
+        return this.props.intl.formatDate(fromTime.toDate(), {
+          year: 'numeric',
+        });
       default:
         break;
     }
@@ -94,4 +111,4 @@ class TimeControl extends React.PureComponent<Props> {
   }
 }
 
-export default TimeControl;
+export default injectIntl(TimeControl);

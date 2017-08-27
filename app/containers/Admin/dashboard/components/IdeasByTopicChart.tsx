@@ -45,11 +45,14 @@ class IdeasByTimeChart extends React.PureComponent<Props, State> {
 
   convertToGraphFormat = (serie) => {
     const { data, topics } = serie;
-    return _.map(data, (count, topicId) => ({
-      name: this.props.tFunc(topics[topicId].title_multiloc),
-      value: count,
-      code: topicId,
-    }));
+    return _.chain(data)
+      .map((count, topicId) => ({
+        name: this.props.tFunc(topics[topicId].title_multiloc),
+        value: count,
+        code: topicId,
+      }))
+      .sortBy('name')
+      .value();
   }
 
   resubscribe(startAt=this.props.startAt, endAt=this.props.endAt) {
@@ -75,10 +78,22 @@ class IdeasByTimeChart extends React.PureComponent<Props, State> {
             dataKey="value"
             name="name"
             fill={this.props.theme.chartFill}
-            label={{ fill: this.props.theme.chartLabelColor, fontSize: 14 }}
+            label={{ fill: this.props.theme.chartLabelColor, fontSize: 12 }}
           />
-          <YAxis dataKey="name" type="category" width={100}/>
-          <XAxis />
+          <YAxis
+            dataKey="name"
+            type="category"
+            width={100}
+            stroke={this.props.theme.chartLabelColor}
+            fontSize={this.props.theme.chartLabelColor}
+            tickLine={false}
+          />
+          <XAxis
+            stroke={this.props.theme.chartLabelColor}
+            fontSize={this.props.theme.chartLabelSize}
+            type="number"
+            tick={{ transform: 'translate(0, 7)' }}
+          />
           <Tooltip isAnimationActive={false} />
 
         </BarChart>
