@@ -29,3 +29,16 @@ declare interface Message {
 declare interface Multiloc {
   [key: string]: string;
 }
+
+declare namespace API {
+  interface Error {
+    error: string;
+    value?: string;
+  }
+
+  interface ErrorResponse {
+    error: {
+      [fieldName: string]: Error[]
+    }
+  }
+}
