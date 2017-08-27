@@ -1,5 +1,20 @@
 # Changelog
 
+## 2017-08-27
+
+### Fixed
+- Changing the logo and background image in admin settings works
+
+### Added
+- Admin dashboard
+- Default topics and idea statuses for newly deployed platforms
+- Proper UX for handling voting without being signed in
+- Meta tags for SEO and social sharing
+- Better error handling in project admin
+
+### Changed
+- Projects and user profile pages now use slugs in the URL
+
 ## 2017-08-18
 
 ### Fixed
