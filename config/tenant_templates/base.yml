@@ -1,0 +1,64 @@
+models:
+  idea_status:
+    - 
+      title_multiloc: statuses.proposed
+      ordering: 100
+      code: proposed
+      color: '#888888'
+    - 
+      title_multiloc: statuses.under_consideration
+      ordering: 200
+      code: under_consideration
+      color: '#29ABD0'
+    - 
+      title_multiloc: statuses.accepted
+      ordering: 300
+      code: accepted
+      color: '#17C37B'
+    - 
+      title_multiloc: statuses.rejected
+      ordering: 400
+      code: rejected
+      color: '#EF3E4A'
+    -
+      title_multiloc: statuses.implemented
+      ordering: 500
+      code: implemented
+      color: '#B5DA23'
+  topic:
+    -
+      title_multiloc: topics.infrastructure
+      description_multiloc: topics.infrastructure_description
+    -
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
+    -
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
+    -
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
+    -
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
+    -
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
+    -
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
+    -
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
+    -
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
+    -
+      title_multiloc: topics.citizenship
+      description_multiloc: topics.citizenship_description
+    -
+      title_multiloc: topics.social
+      description_multiloc: topics.social_description
+    -
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description

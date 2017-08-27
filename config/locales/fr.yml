@@ -5,3 +5,28 @@ fr:
     accepted: accepté
     implemented: mis en oeuvre
     rejected: rejeté
+  topics:
+    infrastructure: Espace public
+    infrastructure_description: Espace public
+    waste: Proprété et déchets
+    waste_description: Proprété et déchets
+    mobility: Mobilité
+    mobility_description: Mobilité
+    technology: Technologie
+    technology_description: Technologie
+    economy: Emploie, economie et commerce 
+    economy_description: Emploie, economie et commerce 
+    nature: Nature et biodiversité
+    nature_description: Nature et biodiversité
+    sustainability: Développement durable
+    sustainability_description: Développement durable
+    housing: Logement
+    housing_description: Logement
+    culture: Art, culture et évenements
+    culture_description: Art, culture et évenements
+    citizenship: Citoyenneté
+    citizenship_description: Citoyenneté
+    social: Inclusion sociale
+    social_description: Inclusion sociale
+    health: Soins et bien-être
+    health_description: Soins et bien-être

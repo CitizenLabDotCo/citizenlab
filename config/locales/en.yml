@@ -36,3 +36,28 @@ en:
     accepted: accepted
     implemented: implemented
     rejected: rejected
+  topics:
+    infrastructure: Squares and streets
+    infrastructure_description: Squares and streets
+    waste: Cleanliness and waste
+    waste_description: Cleanliness and waste
+    mobility: Mobility
+    mobility_description: Mobility
+    technology: Technology
+    technology_description: Technology
+    economy: Work, economy and commerce
+    economy_description: Work, economy and commerce
+    nature: Nature and biodiversity
+    nature_description: Nature and biodiversity
+    sustainability: Sustainable development
+    sustainability_description: Sustainable development
+    housing: Housing
+    housing_description: Housing
+    culture: Arts, culture and events
+    culture_description: Arts, culture and events
+    citizenship: citizenship
+    citizenship_description: citizenship
+    social: Social inclusion
+    social_description: Social inclusion
+    health: Care and welfare
+    health_description: Care and welfare

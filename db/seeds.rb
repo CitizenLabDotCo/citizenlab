@@ -43,7 +43,7 @@ Tenant.create({
       },
       timezone: "Europe/Brussels",
       color_main: Faker::Color.hex_color,
-      color_menu_bg: rand(2) == 0 ? "#000000" : "#ffffff"
+      menu_style: rand(2) == 0 ? "light" : "dark"
     },
     demographic_fields: {
       allowed: true,
@@ -64,8 +64,6 @@ Tenant.create({
 
 
 Apartment::Tenant.switch('localhost') do
-
-  IdeaStatus.create_defaults
 
   User.create({
     first_name: 'Koen',
@@ -91,23 +89,13 @@ Apartment::Tenant.switch('localhost') do
       password: 'testtest',
       locale: ['en','nl'][rand(1)],
       roles: rand(10) == 0 ? [{type: 'admin'}] : [],
-      gender: %w(male female unspecified)[rand(3)]
+      gender: %w(male female unspecified)[rand(4)],
+      birthyear: rand(2) === 0 ? nil : 1927 + rand(90),
+      education: rand(1) === 0 ? nil : rand(9)
     })
   end
 
-
-  12.times do 
-    Topic.create({
-      title_multiloc: {
-        "en": Faker::Lorem.word,
-        "nl": Faker::Lorem.word
-      },
-      description_multiloc: {
-        "en": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-        "nl": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-      }
-    });
-  end
+  TenantTemplateService.new.apply_template('base')
 
   12.times do 
     Area.create({
