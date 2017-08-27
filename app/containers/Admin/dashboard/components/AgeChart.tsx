@@ -85,8 +85,16 @@ class AgeChart extends React.PureComponent<Props, State> {
             label={{ fill: this.props.theme.chartLabelColor, fontSize: 14 }}
           >
           </Bar>
-          <XAxis dataKey="name" padding={{ top: 100}} />
-          <YAxis />
+          <XAxis
+            dataKey="name"
+            stroke={this.props.theme.chartLabelColor}
+            fontSize={this.props.theme.chartLabelSize}
+            tick={{ transform: 'translate(0, 7)' }}
+          />
+          <YAxis
+            stroke={this.props.theme.chartLabelColor}
+            fontSize={this.props.theme.chartLabelSize}
+          />
           <Tooltip isAnimationActive={false} />
 
         </BarChart>

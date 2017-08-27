@@ -17,7 +17,7 @@ type State = {
 type Props = {
   startAt: string,
   endAt: string,
-  interval: string,
+  resolution: string,
   theme: any,
   intl: any,
 }
@@ -40,8 +40,8 @@ class UsersByTimeChart extends React.Component<Props, State> {
   componentWillUpdate(nextProps) {
     if (nextProps.startAt !== this.props.startAt ||
       nextProps.endAt !== this.props.endAt ||
-      nextProps.interval !== this.props.interval) {
-      this.resubscribe(nextProps.startAt, nextProps.endAt, nextProps.interval);
+      nextProps.resolution !== this.props.resolution) {
+      this.resubscribe(nextProps.startAt, nextProps.endAt, nextProps.resolution);
     }
   }
 
@@ -54,19 +54,36 @@ class UsersByTimeChart extends React.Component<Props, State> {
     }));
   }
 
-  resubscribe(startAt=this.props.startAt, endAt=this.props.endAt, interval=this.props.interval) {
+  resubscribe(startAt=this.props.startAt, endAt=this.props.endAt, resolution=this.props.resolution) {
     if (this.serieObservable) this.serieObservable.unsubscribe();
     this.serieObservable = observeUsersByTime({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
-        interval: interval,
+        interval: resolution,
       },
     }).observable.subscribe((serie) => {
       const convertedSerie = this.convertToGraphFormat(serie) as any;
       this.setState({ serie: convertedSerie });
     });
   }
+
+  formatTick = (date) => {
+    const tick = this.props.intl.formatDate(date, {
+      day: this.props.resolution === 'month' ? undefined : '2-digit',
+      month: 'short',
+    });
+    return tick;
+  }
+
+  formatLabel = (date) => {
+    const label = this.props.intl.formatDate(date, {
+      day: this.props.resolution === 'month' ? undefined : '2-digit',
+      month: 'long',
+      year: 'numeric'
+    });
+    return label;
+  };
 
 
   render() {
@@ -76,14 +93,28 @@ class UsersByTimeChart extends React.Component<Props, State> {
           <Area
             type="monotone"
             dataKey="value"
+            name={this.props.intl.formatMessage(messages.numberOfRegistrations)}
             dot={false}
             fill={this.props.theme.chartFill}
             fillOpacity={1}
             stroke={this.props.theme.chartStroke}
           />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip isAnimationActive={false} />
+          <XAxis
+            dataKey="name"
+            interval="preserveStartEnd"
+            stroke={this.props.theme.chartLabelColor}
+            fontSize={this.props.theme.chartLabelSize}
+            tick={{ transform: 'translate(0, 7)' }}
+            tickFormatter={this.formatTick}
+          />
+          <YAxis
+            stroke={this.props.theme.chartLabelColor}
+            fontSize={this.props.theme.chartLabelSize}
+          />
+          <Tooltip
+            isAnimationActive={false}
+            labelFormatter={this.formatLabel}
+          />
 
         </AreaChart>
       </ResponsiveContainer>

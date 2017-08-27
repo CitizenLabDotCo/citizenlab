@@ -69,13 +69,17 @@ class DashboardPage extends React.Component { // eslint-disable-line react/prefe
     ...theme,
     chartStroke: '#01A1B1',
     chartFill: '#01A1B1',
-    chartLabelColor: '#666666',
+    // chartStroke: lighten(0.3, theme.colorMain),
+    // chartFill: lighten(0.3, theme.colorMain),
+    chartLabelColor: '#999999',
+    chartLabelSize: 13,
   });
 
   render() {
     const { startAtMoment, endAtMoment } = this.calculateBoundaryDates(this.state.interval, this.state.intervalIndex);
     const startAt = startAtMoment.toISOString();
     const endAt = endAtMoment.toISOString();
+    const resolution = this.state.interval === 'year' ? 'month' : 'day';
 
     return (
       <div>
@@ -97,7 +101,7 @@ class DashboardPage extends React.Component { // eslint-disable-line react/prefe
         </ControlBar>
         <ThemeProvider theme={this.chartTheme}>
           <Flex mx={-10} my={20} wrap>
-            <Box width={1 / 3} p={10}>
+            <Box width={[1, 1, 1 / 2]} p={10}>
               <GraphCard >
                 <GraphCardTitle>
                   <FormattedMessage {...messages.usersByGenderTitle} />
@@ -105,7 +109,7 @@ class DashboardPage extends React.Component { // eslint-disable-line react/prefe
                 <GenderChart startAt={startAt} endAt={endAt} />
               </GraphCard>
             </Box>
-            <Box width={2 / 3} p={10}>
+            <Box width={[1, 1, 1 / 2]} p={10}>
               <GraphCard>
                 <GraphCardTitle>
                   <FormattedMessage {...messages.usersByAgeTitle} />
@@ -113,23 +117,23 @@ class DashboardPage extends React.Component { // eslint-disable-line react/prefe
                 <AgeChart startAt={startAt} endAt={endAt} />
               </GraphCard>
             </Box>
-            <Box width={1 / 2} p={10}>
-              <GraphCard>
-                <GraphCardTitle>
-                  <FormattedMessage {...messages.ideasByTimeTitle} />
-                </GraphCardTitle>
-                <IdeasByTimeChart startAt={startAt} endAt={endAt} interval="day" />
-              </GraphCard>
-            </Box>
-            <Box width={1 / 2} p={10}>
+            <Box width={1} p={10}>
               <GraphCard>
                 <GraphCardTitle>
                   <FormattedMessage {...messages.usersByTimeTitle} />
                 </GraphCardTitle>
-                <UsersByTimeChart startAt={startAt} endAt={endAt} interval="day" />
+                <UsersByTimeChart startAt={startAt} endAt={endAt} resolution={resolution} />
               </GraphCard>
             </Box>
-            <Box width={1 / 2} p={10}>
+            <Box width={[1, 1, 1 / 2]} p={10}>
+              <GraphCard>
+                <GraphCardTitle>
+                  <FormattedMessage {...messages.ideasByTimeTitle} />
+                </GraphCardTitle>
+                <IdeasByTimeChart startAt={startAt} endAt={endAt} resolution={resolution} />
+              </GraphCard>
+            </Box>
+            <Box width={[1, 1, 1 / 2]} p={10}>
               <GraphCard dynamicHeight>
                 <GraphCardTitle>
                   <FormattedMessage {...messages.ideasByTopicTitle} />
