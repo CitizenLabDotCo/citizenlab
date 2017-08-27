@@ -177,7 +177,7 @@ type State = {
   disabled: boolean;
 };
 
-export default class Upload extends React.PureComponent<Props, State> {
+class Upload extends React.PureComponent<Props, State> {
   private emptyArray: never[];
 
   public static defaultProps: Partial<Props> = {
@@ -304,9 +304,9 @@ export default class Upload extends React.PureComponent<Props, State> {
 
     return (
       <div>
-        <StyledDropzoneWrapper 
+        <StyledDropzoneWrapper
           className={`
-            ${dropzoneActive ? 'dropzoneActive' : ''} 
+            ${dropzoneActive ? 'dropzoneActive' : ''}
             ${disabled ? 'disabled' : ''}
           `}
         >
@@ -329,3 +329,5 @@ export default class Upload extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default injectIntl(Upload);
