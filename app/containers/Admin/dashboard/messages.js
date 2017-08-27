@@ -18,8 +18,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.usersOverTime',
     defaultMessage: 'Users over time',
   },
-  ideasByTopic: {
-    id: 'app.containers.AdminPage.DashboardPage.ideasByTopic',
+  usersByGenderTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.usersByGenderTitle',
+    defaultMessage: 'Users by gender',
+  },
+  usersByAgeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.usersByAgeTitle',
+    defaultMessage: 'Users by age',
+  },
+  ideasByTimeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.ideasByTimeTitle',
+    defaultMessage: 'Ideas over time',
+  },
+  usersByTimeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.usersByTimeTitle',
+    defaultMessage: 'Registrations over time',
+  },
+  ideasByTopicTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.ideasByTopicTitle',
     defaultMessage: 'Ideas by topic',
   },
   ideasByArea: {
@@ -53,5 +69,47 @@ export default defineMessages({
   helmetDescription: {
     id: 'app.containers.AdminPage.DashboardPage.helmetDescription',
     defaultMessage: 'Dashboard for activities on the platform',
+  },
+  previousInterval: {
+    id: 'app.containers.AdminPage.DashboardPage.previousInterval',
+    defaultMessage: `Previous {interval, select,
+      day {day}
+      month {month}
+      week {week}
+      year {year}
+    }`,
+  },
+  nextInterval: {
+    id: 'app.containers.AdminPage.DashboardPage.nextInterval',
+    defaultMessage: `Next {interval, select,
+      day {day}
+      month {month}
+      week {week}
+      year {year}
+    }`,
+  },
+  male: {
+    id: 'app.containers.AdminPage.DashboardPage.male',
+    defaultMessage: 'male',
+  },
+  female: {
+    id: 'app.containers.AdminPage.DashboardPage.female',
+    defaultMessage: 'female',
+  },
+  unspecified: {
+    id: 'app.containers.AdminPage.DashboardPage.unspecified',
+    defaultMessage: 'unspecified',
+  },
+  _blank: {
+    id: 'app.containers.AdminPage.DashboardPage._blank',
+    defaultMessage: 'unknown',
+  },
+  numberOfRegistrations: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfRegistrations',
+    defaultMessage: '#registrations',
+  },
+  numberOfIdeas: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfIdeas',
+    defaultMessage: '#ideas',
   },
 });

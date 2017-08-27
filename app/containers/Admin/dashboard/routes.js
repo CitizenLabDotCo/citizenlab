@@ -10,19 +10,17 @@ const loadModule = (cb) => (componentModule) => {
   cb(null, componentModule.default);
 };
 
-export default (injectReducer) => ({
+export default () => ({
   // path: '/admin/dashboard',
   name: 'Admin dashboard',
   getComponent(nextState, cb) {
     const importModules = Promise.all([
-      import('containers/Admin/dashboard/reducer'),
       import('containers/Admin/dashboard'),
     ]);
 
     const renderRoute = loadModule(cb);
 
-    importModules.then(([reducer, component]) => {
-      injectReducer('adminDashboard', reducer.default);
+    importModules.then(([component]) => {
       renderRoute(component);
     });
 
