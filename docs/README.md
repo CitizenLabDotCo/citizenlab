@@ -4,6 +4,7 @@
 
 ### Fixed
 - Changing the logo and background image in admin settings works
+- Platform works for users with an unsupported OS language
 
 ### Added
 - Admin dashboard
