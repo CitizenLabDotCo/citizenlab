@@ -8,6 +8,7 @@ import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-
 import draftjsToHtml from 'draftjs-to-html';
 import styled from 'styled-components';
 import { withRouter } from 'react-router';
+import { API } from 'typings.d';
 
 import messages from '../messages';
 
@@ -37,6 +38,7 @@ import Input from 'components/UI/Input';
 import Editor from 'components/UI/Editor';
 import Upload from 'components/UI/Upload';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 import FieldWrapper from 'components/admin/FieldWrapper';
 
 // Style
@@ -98,6 +100,9 @@ type State = {
   editorState: EditorState,
   projectImages: IProjectImageData[],
   projectAttributesDiff: IProjectAttributes,
+  errors: {
+    [fieldName: string]: API.Error[]
+  }
 };
 
 class AdminProjectEditGeneral extends React.Component<Props, State> {
@@ -114,6 +119,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
       uploadedHeader: null,
       projectImages: [],
       projectAttributesDiff: {},
+      errors: {},
     };
   }
 
@@ -217,6 +223,10 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
     }
   }
 
+  handleSaveErrors = ({ json: { errors } }) => {
+    this.setState({ errors });
+  }
+
   saveProject = (event) => {
     event.preventDefault();
 
@@ -224,11 +234,14 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
 
     if (!_.isEmpty(projectAttributesDiff) && this.state.projectData.id) {
       this.setState({ loading: true });
-      updateProject(this.state.projectData.id, projectAttributesDiff);
+      updateProject(this.state.projectData.id, projectAttributesDiff)
+      .catch(this.handleSaveErrors);
     } else if (!_.isEmpty(projectAttributesDiff)) {
-      postProject(projectAttributesDiff).then((project: IProject) => {
+      postProject(projectAttributesDiff)
+      .then((project: IProject) => {
         this.props.router.push(`/admin/projects/${project.data.attributes.slug}/edit`);
-      });
+      })
+      .catch(this.handleSaveErrors);
     }
   }
 
@@ -251,6 +264,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
             onChange={this.changeTitle}
             setRef={this.setRef}
           />
+          <Error fieldName="title_multiloc" apiErrors={this.state.errors.title_multiloc} />
         </FieldWrapper>
 
         <FieldWrapper>
@@ -262,6 +276,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
             error=""
             onChange={this.changeDesc}
           />
+          <Error fieldName="description_multiloc" apiErrors={this.state.errors.description_multiloc} />
         </FieldWrapper>
 
         <FieldWrapper>

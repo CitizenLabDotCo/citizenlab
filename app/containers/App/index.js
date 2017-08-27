@@ -78,7 +78,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     return (
       <ThemeProvider theme={theme}>
         <Container>
-          <Meta />
+          <Meta tenant={currentTenant} metaTitle={this.props.metaTitle} metaDescription={this.props.metaDescription} />
           <Navbar currentTenant={currentTenant} location={this.props.location.pathname} />
           <Loader
             resourceLoader={loadUser}
