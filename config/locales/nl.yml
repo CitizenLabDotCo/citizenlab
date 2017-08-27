@@ -5,3 +5,28 @@ nl:
     accepted: aangenomen
     implemented: uitgevoerd
     rejected: afgewezen
+  topics:
+    infrastructure: Straten en pleinen
+    infrastructure_description: Straten en pleinen
+    waste: Netheid en afval
+    waste_description: Netheid en afval
+    mobility: Mobiliteit
+    mobility_description: Mobiliteit
+    technology: Technologie
+    technology_description: Technologie
+    economy: Werk, economie en handel
+    economy_description: Werk, economie en handel
+    nature: Natuur en biodiversiteit
+    nature_description: Natuur en biodiversiteit
+    sustainability: Duurzame ontwikkeling
+    sustainability_description: Duurzame ontwikkeling
+    housing: Wonen
+    housing_description: Wonen
+    culture: Kunst, cultuur en evenementen
+    culture_description: Kunst, cultuur en evenementen
+    citizenship: Burgerschap
+    citizenship_description: Burgerschap
+    social: Sociale inclusie
+    social_description: Sociale inclusie
+    health: Zorg en welzijn
+    health_description: Zorg en welzijn

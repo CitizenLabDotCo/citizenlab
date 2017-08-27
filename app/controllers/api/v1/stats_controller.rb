@@ -10,6 +10,7 @@ class Api::V1::StatsController < ApplicationController
 
   def users_by_gender
     serie = User
+      .where(created_at: params[:start_at]..params[:end_at])
       .group("demographics->'gender'")
       .order("demographics->'gender'")
       .count
@@ -19,6 +20,7 @@ class Api::V1::StatsController < ApplicationController
 
   def users_by_birthyear
     serie = User
+      .where(created_at: params[:start_at]..params[:end_at])
       .group("demographics->'birthyear'")
       .order("demographics->'birthyear'")
       .count
@@ -28,6 +30,7 @@ class Api::V1::StatsController < ApplicationController
 
   def users_by_domicile
     serie = User
+      .where(created_at: params[:start_at]..params[:end_at])
       .group("demographics->'domicile'")
       .order("demographics->'domicile'")
       .count
@@ -38,6 +41,7 @@ class Api::V1::StatsController < ApplicationController
 
   def users_by_education
     serie = User
+      .where(created_at: params[:start_at]..params[:end_at])
       .group("demographics->'education'")
       .order("demographics->'education'")
       .count
@@ -47,6 +51,7 @@ class Api::V1::StatsController < ApplicationController
 
   def ideas_by_topic
     serie = Idea
+      .where(published_at: params[:start_at]..params[:end_at])
       .joins(:ideas_topics)
       .group("ideas_topics.topic_id")
       .order("ideas_topics.topic_id")
@@ -57,6 +62,7 @@ class Api::V1::StatsController < ApplicationController
 
   def ideas_by_area
     serie = Idea
+      .where(published_at: params[:start_at]..params[:end_at])
       .joins(:areas_ideas)
       .group("areas_ideas.area_id")
       .order("areas_ideas.area_id")
