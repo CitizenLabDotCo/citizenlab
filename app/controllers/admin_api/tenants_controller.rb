@@ -14,7 +14,9 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
   def create
     @tenant = Tenant.new(tenant_params)
     if @tenant.save
-      TenantTemplateService.apply_template('base')
+      Apartment::Tenant.switch(@tenant.schema_name) do
+        TenantTemplateService.new.apply_template('base')
+      end
       render json: @tenant, status: :created
     else
       render json: {errors: @tenant.errors.details}, status: :unprocessable_entity

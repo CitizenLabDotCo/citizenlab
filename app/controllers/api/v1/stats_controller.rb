@@ -14,7 +14,7 @@ class Api::V1::StatsController < ApplicationController
       .group("demographics->'gender'")
       .order("demographics->'gender'")
       .count
-    serie['_blank'] = serie.delete nil
+    serie['_blank'] = serie.delete(nil) || 0
     render json: serie
   end
 
@@ -24,7 +24,7 @@ class Api::V1::StatsController < ApplicationController
       .group("demographics->'birthyear'")
       .order("demographics->'birthyear'")
       .count
-    serie['_blank'] = serie.delete nil
+    serie['_blank'] = serie.delete(nil) || 0
     render json: serie
   end
 
@@ -34,7 +34,7 @@ class Api::V1::StatsController < ApplicationController
       .group("demographics->'domicile'")
       .order("demographics->'domicile'")
       .count
-    serie['_blank'] = serie.delete nil
+    serie['_blank'] = serie.delete(nil) || 0
     areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
     render json: {data: serie, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
   end
@@ -45,7 +45,7 @@ class Api::V1::StatsController < ApplicationController
       .group("demographics->'education'")
       .order("demographics->'education'")
       .count
-    serie['_blank'] = serie.delete nil
+    serie['_blank'] = serie.delete(nil) || 0
     render json: serie
   end
 

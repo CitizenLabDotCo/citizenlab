@@ -19,9 +19,6 @@ class Tenant < ApplicationRecord
   before_validation :validate_missing_feature_dependencies
   # before_validation :validate_required_settings
 
-
-  private
-
   def self.current
     find_by!(host: Apartment::Tenant.current.gsub(/_/, "."))
   end
@@ -30,17 +27,23 @@ class Tenant < ApplicationRecord
    self.current.settings.dig(*path)
   end
 
+  def schema_name
+    self.host.gsub(/\./, "_")
+  end
+
+  private
+
   def create_apartment_tenant
-    Apartment::Tenant.create(self.host.gsub(/\./, "_"))
+    Apartment::Tenant.create(self.schema_name)
   end
 
   def delete_apartment_tenant
-    Apartment::Tenant.drop(self.host.gsub(/\./, "_"))
+    Apartment::Tenant.drop(self.schema_name)
   end
 
   def update_tenant_schema
     old_schema = self.host_was
-    new_schema = self.host.gsub(/\./, "_")
+    new_schema = self.schema_name
     ActiveRecord::Base.connection.execute("ALTER SCHEMA #{old_schema} RENAME TO #{new_schema}")
   end
 
