@@ -60,7 +60,7 @@ const SectionTitle = styled.h2`
   color: #222222;
   font-size: 35px;
   line-height: 35px;
-  font-weight: 500;
+  font-weight: 600;
   margin: 0;
   margin-right: 20px;
   /* border: solid 1px green; */
