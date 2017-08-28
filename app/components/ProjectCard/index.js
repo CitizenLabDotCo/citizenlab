@@ -47,7 +47,7 @@ const ProjectInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 30px 40px;
+  padding: 30px 60px;
 
   ${media.phone`
     padding: 20px;
