@@ -20,6 +20,10 @@ export const appLocalePairs = {
   nl: 'Nederlands',
 };
 
+// export const appLocales = appLocalePairs.map((locale) => ({
+//   id: locale,
+// }));
+
 addLocaleData(enLocaleData);
 addLocaleData(frLocaleData);
 addLocaleData(nlLocaleData);

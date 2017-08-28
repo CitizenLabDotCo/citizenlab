@@ -6,6 +6,7 @@
 const fs = require('fs');
 const nodeGlob = require('glob');
 const transform = require('babel-core').transform;
+const _ = require('lodash');
 
 const animateProgress = require('./helpers/progress');
 const addCheckmark = require('./helpers/checkmark');
@@ -21,7 +22,10 @@ require('shelljs/global');
 
 // Glob to match all js files except test files
 const FILES_TO_PARSE = 'app/**/!(*.test).js';
-const locales = i18n.appLocales.map((appLocale) => appLocale.id);
+// const locales = i18n.appLocales.map((appLocale) => appLocale.id);
+// const locales = i18n.appLocalePairs.map((locale, fullName) => locale);
+
+const locales = _.keys(i18n.appLocalePairs);
 
 const newLine = () => process.stdout.write('\n');
 
@@ -80,8 +84,8 @@ for (const locale of locales) {
 }
 
 /* push `react-intl` plugin to the existing plugins that are already configured in `package.json`
-   Example: 
-   ``` 
+   Example:
+   ```
   "babel": {
     "plugins": [
       ["transform-object-rest-spread", { "useBuiltIns": true }]

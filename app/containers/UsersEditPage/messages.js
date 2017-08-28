@@ -109,8 +109,11 @@ export default defineMessages({
     defaultMessage: 'Domicile',
   },
   outside: {
-    id: 'app.containers.UsersEditPage.area_outside',
-    defaultMessage: '{type, select, city {Outside of {name}}, generic {None of these}}',
+    id: 'app.containers.UsersEditPage.outside',
+    defaultMessage: `{organizationType, select,
+      city {Outside of {name}}
+      generic {None of these}
+    }`,
   },
   birthdate: {
     id: 'app.containers.UsersEditPage.birthdate',

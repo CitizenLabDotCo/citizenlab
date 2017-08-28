@@ -88,7 +88,7 @@ export default defineMessages({
     defaultMessage: '{firstName} said',
   },
   authorReacted: {
-    id: 'app.containers.IdeasShow.authorSaid',
+    id: 'app.containers.IdeasShow.authorReacted',
     defaultMessage: '{firstName} replied',
   },
   voteCTA: {
