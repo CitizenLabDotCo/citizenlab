@@ -71,7 +71,7 @@ const HeaderCount = styled.div`
 `;
 
 const InfoSeparator = styled.div`
-  border: 1px solid #EAEAEA;
+  background: #EAEAEA;
   height: 1px;
   margin: 10px 0;
 `;
