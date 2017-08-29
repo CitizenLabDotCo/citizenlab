@@ -7,14 +7,20 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 {{#if wantHeaders}}
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 {{/if}}
 {{#if wantMessages}}
 import { FormattedMessage } from 'react-intl';
 {{/if}}
+{{#if wantSagas}}
+import { Saga } from 'react-redux-saga';
+{{/if}}
 {{#if wantActionsAndReducer}}
 import { createStructuredSelector } from 'reselect';
 import makeSelect{{properCase name}} from './selectors';
+{{/if}}
+{{#if wantSagas}}
+import defaultSaga from './sagas';
 {{/if}}
 {{#if wantMessages}}
 import messages from './messages';
@@ -31,6 +37,9 @@ export class {{ properCase name }} extends React.{{{ component }}} { // eslint-d
             {{curly true}} name: 'description', content: 'Description of {{properCase name}}' {{curly}},
           ]{{curly}}
         />
+      {{/if}}
+      {{#if wantSagas}}
+        <Saga saga={{curly true}}defaultSaga{{curly}} />
       {{/if}}
       {{#if wantMessages}}
         <FormattedMessage {...messages.header} />

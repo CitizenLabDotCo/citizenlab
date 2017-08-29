@@ -6,9 +6,19 @@
 import { combineReducers } from 'redux-immutable';
 import { fromJS } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
-
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
-import { LOADED_CURRENT_TENANT } from 'containers/App/constants';
+import usersEditPageReducer from 'containers/UsersEditPage/reducer';
+import ideasNewPageReducer from 'containers/IdeasNewPage/reducer';
+import searchWidgetReducer from 'containers/SearchWidget/reducer';
+import ideasShowReducer from 'containers/IdeasShow/reducer';
+import notificationMenuReducer from 'containers/Navbar/components/NotificationMenu/reducer';
+import resourcesReducer from 'utils/resources/reducer';
+import { utilsReducer, tempStateReducer } from 'utils/store/reducer';
+
+import authReducer from 'utils/auth/reducer';
+import areasReducer from 'utils/areas/reducer';
+import tenantReducer from 'utils/tenant/reducer';
+import { persistedDataReducer } from './persistedData';
 
 /*
  * routeReducer
@@ -19,9 +29,7 @@ import { LOADED_CURRENT_TENANT } from 'containers/App/constants';
  */
 
 // Initial routing state
-const routeInitialState = fromJS({
-  locationBeforeTransitions: null,
-});
+const routeInitialState = fromJS({ locationBeforeTransitions: null });
 
 /**
  * Merge route into the global application state
@@ -30,35 +38,33 @@ function routeReducer(state = routeInitialState, action) {
   switch (action.type) {
     /* istanbul ignore next */
     case LOCATION_CHANGE:
-      return state.merge({
-        locationBeforeTransitions: action.payload,
-      });
+      return state.set('locationBeforeTransitions', fromJS(action.payload));
     default:
       return state;
   }
 }
 
-const persistedDataInitialState = fromJS({
-  currentTenant: null,
-});
-
-function persistedDataReducer(state = persistedDataInitialState, action) {
-  switch (action.type) {
-    case LOADED_CURRENT_TENANT:
-      return state.set('currentTenant', action.payload);
-    default:
-      return state;
-  }
-}
 
 /**
  * Creates the main reducer with the asynchronously loaded ones
  */
+
 export default function createReducer(asyncReducers) {
   return combineReducers({
+    goBackLink: utilsReducer,
+    tempState: tempStateReducer,
     route: routeReducer,
+    auth: authReducer,
+    areas: areasReducer,
+    tenant: tenantReducer,
     language: languageProviderReducer,
     persistedData: persistedDataReducer,
+    resources: resourcesReducer,
+    ideasShow: ideasShowReducer,
+    profile: usersEditPageReducer,
+    submitIdea: ideasNewPageReducer,
+    searchWidget: searchWidgetReducer,
+    notificationMenu: notificationMenuReducer,
     ...asyncReducers,
   });
 }

@@ -6,11 +6,15 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
+import { createSagaMonitor } from 'redux-saga-devtools';
+
 import _ from 'lodash';
 import createReducer from './reducers';
-import { saveState } from './persistance';
+import { saveState } from './persistedData';
 
-const sagaMiddleware = createSagaMiddleware();
+
+export const sagamonitor = createSagaMonitor();
+export const sagaMiddleware = createSagaMiddleware({ sagaMonitor: sagamonitor });
 
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares
@@ -51,7 +55,6 @@ export default function configureStore(initialState = {}, history) {
       import('./reducers').then((reducerModule) => {
         const createReducers = reducerModule.default;
         const nextReducers = createReducers(store.asyncReducers);
-
         store.replaceReducer(nextReducers);
       });
     });
@@ -59,11 +62,13 @@ export default function configureStore(initialState = {}, history) {
 
   if (process.env.NODE_ENV !== 'test') {
     store.subscribe(_.throttle(() => {
-      saveState({
-        persistedData: store.getState().persistedData,
-      });
+      saveState(store.getState().get('persistedData').toJS());
     }, 1000));
   }
 
   return store;
+}
+
+export function getSagaMiddleware() {
+  return sagaMiddleware;
 }

@@ -8,7 +8,6 @@ export { Reveal } from './src/components/reveal';
 export { FlexVideo } from './src/components/flex-video';
 export { Row, Column } from './src/components/grid';
 export { Block, Inline } from './src/components/element';
-export { Icon } from './src/components/icon';
 export { Label } from './src/components/label';
 export { MediaObject, MediaObjectSection } from './src/components/media-object';
 export { Menu, MenuItem, MenuText } from './src/components/menu';

@@ -1,120 +1,61 @@
-# Documentation
+# Changelog
 
-## Table of Contents
+## 2017-08-27
 
-- [General](general)
-  - [**CLI Commands**](general/commands.md)
-  - [Introduction ](general/introduction.md)
-  - [Tool Configuration](general/files.md)
-  - [Server Configurations](general/server-configs.md)
-  - [Deployment](general/deployment.md) *(currently Heroku specific)*
-  - [FAQ](general/faq.md)
-  - [Gotchas](general/gotchas.md)
-  - [Remove](general/remove.md)
-  - [Extracting components](general/components.md)
-- [Testing](testing)
-  - [Unit Testing](testing/unit-testing.md)
-  - [Component Testing](testing/component-testing.md)
-  - [Remote Testing](testing/remote-testing.md)
-- [CSS](css)
-  - [`styled-components`](css/styled-components.md)
-  - [sanitize.css](css/sanitize.md)
-  - [Using Sass](css/sass.md)
-- [JS](js)
-  - [Redux](js/redux.md)
-  - [ImmutableJS](js/immutablejs.md)
-  - [reselect](js/reselect.md)
-  - [redux-saga](js/redux-saga.md)
-  - [i18n](js/i18n.md)
-  - [routing](js/routing.md)
+### Fixed
+- Changing the logo and background image in admin settings works
+- Platform works for users with an unsupported OS language
 
-## Overview
+### Added
+- Admin dashboard
+- Default topics and idea statuses for newly deployed platforms
+- Proper UX for handling voting without being signed in
+- Meta tags for SEO and social sharing
+- Better error handling in project admin
 
-### Quickstart
+### Changed
+- Projects and user profile pages now use slugs in the URL
 
-1. First, let's kick the tyres by launching the sample _Repospective_ app
-   bundled with this project to demo some of its best features:
+## 2017-08-18
 
-    ```Shell
-    npm run setup && npm start
-    ```
+### Fixed
+- Changing idea status in admin
+- Signing up
+- Proper rending of menu bar within a project
+- Admin settings are properly rendered within the tab container
+- Lots of small tweaks to rendering on mobile
+- Default sort ideas on trending on the ideas index page
 
-1. Open [localhost:3000](http://localhost:3000) to see it in action.
+### Added
+- Admin section in projects to CRUD phases
+- Admin section in projects to CRUD events
+- New navbar on mobile
+- Responsive version of idea show page
 
-    - Add a Github username to see Redux and Redux Sagas in action: effortless
-      async state updates and side effects are now yours :)
-    - Edit the file at `./app/containers/HomePage/index.js` so that the text of
-      the `<Button>` component reads "Features!!!"... Hot Module Reloading gives
-      you a feedback loop with your UI so smooth it's almost conversational!
-    - Click your (newly emphatic) Features button to see React Router in action...
-      Now you can share a direct link to that content privately over your LAN or
-      globally addressable to any device, anywhere. Not bad for a locally-running
-      Single Page App.
+### Changed
+- Navbar design updated
+- One single login flow experience instead of 2 separate ones (posting idea/direct)
+- Admins can only specify light/dark for menu color, not the exact color
 
-1. Time to build your own app: run
+### Removed
+- Facebook login (Yet to be added to new login flow, will be back soon)
 
-    ```shell
-    npm run clean
-    ```
+## 2017-08-13
 
-    ...and use the built-in generators to start your first feature.
+### Fixed
 
-### Development
+* Voting on cards and in an idea page
+* Idea modal loading speed
+* Unread notification counter
 
-Run `npm start` to see your app at `localhost:3000`
+### Added
 
-### Building & Deploying
+* New improved flow for posting an idea
+* Admin interface for projects
+* New design for idea and project cards
+* Consistenly applied modal, with new design, for ideas
+* Segment.io integration, though not all events are tracked yet
 
-1. Run `npm run build`, which will compile all the necessary files to the
-`build` folder.
+### Changed
 
-2. Upload the contents of the `build` folder to your web server's root folder.
-
-### Structure
-
-The [`app/`](../../../tree/master/app) directory contains your entire application code, including CSS,
-JavaScript, HTML and tests.
-
-The rest of the folders and files only exist to make your life easier, and
-should not need to be touched.
-
-*(If they do have to be changed, please [submit an issue](https://github.com/react-boilerplate/react-boilerplate/issues)!)*
-
-### CSS
-
-Utilising [tagged template literals](https://github.com/styled-components/styled-components/blob/master/docs/tagged-template-literals.md)
-(a recent addition to JavaScript) and the [power of CSS](https://github.com/styled-components/styled-components/blob/master/docs/css-we-support.md),
-`styled-components` allows you to write actual CSS code to style your components.
-It also removes the mapping between components and styles – using components as a
-low-level styling construct could not be easier!
-
-See the [CSS documentation](./css/README.md) for more information.
-
-### JS
-
-We bundle all your clientside scripts and chunk them into several files using
-code splitting where possible. We then automatically optimize your code when
-building for production so you don't have to worry about that.
-
-See the [JS documentation](./js/README.md) for more information about the
-JavaScript side of things.
-
-### SEO
-
-We use [react-helmet](https://github.com/nfl/react-helmet) for managing document head tags. Examples on how to
-write head tags can be found [here](https://github.com/nfl/react-helmet#examples).
-
-### Testing
-
-For a thorough explanation of the testing procedure, see the
-[testing documentation](./testing/README.md)!
-
-#### Browser testing
-
-`npm run start:tunnel` makes your locally-running app globally available on the web
-via a temporary URL: great for testing on different devices, client demos, etc!
-
-#### Unit testing
-
-Unit tests live in `test/` directories right next to the components being tested
-and are run with `npm run test`.
+* Idea URls now using slugs for SEO
