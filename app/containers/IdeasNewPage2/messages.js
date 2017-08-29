@@ -34,7 +34,7 @@ export default defineMessages({
     defaultMessage: 'Enter the description of your idea',
   },
   descriptionEmptyError: {
-    id: 'app.containers.IdeasNewPage2.titleEmptyError',
+    id: 'app.containers.IdeasNewPage2.descriptionEmptyError',
     defaultMessage: 'Please provide a description',
   },
   topicsLabel: {
@@ -54,19 +54,19 @@ export default defineMessages({
     defaultMessage: 'Optionally select a project to which your idea belongs',
   },
   locationLabel: {
-    id: 'app.containers.IdeasNewPage2.projectsLabel',
+    id: 'app.containers.IdeasNewPage2.locationLabel',
     defaultMessage: 'Location (optional)',
   },
   locationPlaceholder: {
-    id: 'app.containers.IdeasNewPage2.projectsPlaceholder',
+    id: 'app.containers.IdeasNewPage2.locationPlaceholder',
     defaultMessage: 'Optionally enter a location for your idea',
   },
   imageUploadLabel: {
-    id: 'app.containers.IdeasNewPage2.imagesLabel',
+    id: 'app.containers.IdeasNewPage2.imageUploadLabel',
     defaultMessage: 'Image (optional)',
   },
   imageUploadPlaceholder: {
-    id: 'app.containers.IdeasNewPage2.uploadPlaceholder',
+    id: 'app.containers.IdeasNewPage2.imageUploadPlaceholder',
     defaultMessage: 'Optionally upload an image that represents your idea',
   },
   submit: {
