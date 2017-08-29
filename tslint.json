@@ -1,0 +1,37 @@
+{
+  "extends": ["tslint-config-airbnb", "tslint-react", "tslint-eslint-rules"],
+  "rules": {
+    "import-name": false,
+    "jsx-no-multiline-js": false,
+    "max-line-length": [false],
+    "trailing-comma": [
+      "error",
+      "always-multiline"
+    ],
+    "ter-arrow-parens": [false],
+    "ter-arrow-body-style": [
+      2,
+      "as-needed"
+    ],
+    "ter-indent": [
+      2,
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "react-a11y-anchor": 1,
+    "react-a11y-aria-unsupported-element": 2,
+    "react-a11y-event-has-role": 2,
+    "react-a11y-image-button-has-alt": 2,
+    "react-a11y-img-has-alt": 2,
+    "react-a11y-prop": 2,
+    "react-a11y-role": 2,
+    "react-a11y-role-has-required-aria-props": 2,
+    "react-a11y-role-supports-aria-prop": 2,
+    "react-a11y-tabindex-no-positive": 2,
+    "react-a11y-title": 2,
+    "variable-name": [false, "ban-keywords", "check-format", "allow-leading-underscore"],
+    "jsx-no-multiline-js": false
+  }
+}

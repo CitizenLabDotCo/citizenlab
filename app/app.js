@@ -5,6 +5,9 @@
  * code.
  */
 
+// debug utils
+import { cl } from 'utils/debugUtils'; // eslint-disable-line
+
 // Needed for redux-saga es6 generator support
 import 'babel-polyfill';
 
@@ -14,8 +17,16 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import FontFaceObserver from 'fontfaceobserver';
 import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
+import 'react-select/dist/react-select.css';
+import { fromJS } from 'immutable';
+
+// add reactMap to immutible
+import 'utils/immutablePatch';
+
+import { Sagas } from 'react-redux-saga';
 
 // Import root app
 import App from 'containers/App';
@@ -33,27 +44,53 @@ import '!file-loader?name=[name].[ext]!./manifest.json';
 import 'file-loader?name=[name].[ext]!./.htaccess';
 /* eslint-enable import/no-unresolved, import/extensions */
 
-import configureStore from './store';
+import configureStore, { getSagaMiddleware } from './store';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
 
-// Import CSS reset and Global Styles
 /* eslint-disable import/first */
-import '../vendor/foundation/main.scss';
+// Import CSS reset and Global Styles
+// import '../vendor/foundation/main.scss';
 import './global-styles';
+import '../vendor/carousel-custom.scss';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import 'semantic-ui-css/semantic.css';
+
 /* eslint-enable import/first */
 
 // Import root routes
 import createRoutes from './routes';
 
+import { loadState } from './persistedData';
+
+import { initializeAnalytics } from 'utils/analytics';
+
+// Observe loading of custom font
+const visuelt = new FontFaceObserver('visuelt');
+
+// When custom font is loaded, add a 'fontLoaded' class to the body tag
+visuelt.load().then(() => {
+  document.body.classList.add('fontLoaded');
+}, () => {
+  document.body.classList.remove('fontLoaded');
+});
+
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router
 // Optionally, this could be changed to leverage a created history
 // e.g. `const browserHistory = useRouterHistory(createBrowserHistory)();`
-import { loadState } from './persistance';
-const initialState = loadState();
-const store = configureStore(initialState, browserHistory);
+
+const initialState = fromJS({
+  persistedData: loadState(),
+});
+
+export const store = configureStore(initialState, browserHistory);
+
+// The sagas for analytics tracking need to be mounted here,
+// because they need to be able to watch the very first events
+// like initial route change, authenitcation
+initializeAnalytics(store);
 
 // Sync history and store, as the react-router-redux reducer
 // is under the non-default key ("routing"), selectLocationState
@@ -61,6 +98,7 @@ const store = configureStore(initialState, browserHistory);
 const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: makeSelectLocationState(),
 });
+
 
 // Set up the router, wrapping all Routes in the App component
 const rootRoute = {
@@ -71,17 +109,19 @@ const rootRoute = {
 const render = (messages) => {
   ReactDOM.render(
     <Provider store={store}>
-      <LanguageProvider messages={messages}>
-        <Router
-          history={history}
-          routes={rootRoute}
-          render={
-            // Scroll to top when going to a new page, imitating default browser
-            // behaviour
-            applyRouterMiddleware(useScroll())
-          }
-        />
-      </LanguageProvider>
+      <Sagas middleware={getSagaMiddleware()}>
+        <LanguageProvider messages={messages}>
+          <Router
+            history={history}
+            routes={rootRoute}
+            render={
+              // Scroll to top when going to a new page, imitating default browser
+              // behaviour
+              applyRouterMiddleware(useScroll())
+            }
+          />
+        </LanguageProvider>
+      </Sagas>
     </Provider>,
     document.getElementById('app')
   );

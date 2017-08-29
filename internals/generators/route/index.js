@@ -14,15 +14,6 @@ function reducerExists(comp) {
   }
 }
 
-function sagasExists(comp) {
-  try {
-    fs.accessSync(path.join(__dirname, `../../../app/containers/${comp}/sagas.js`), fs.F_OK);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
 function trimTemplateFile(template) {
   // Loads the template file and trims the whitespace and then returns the content as a string.
   return fs.readFileSync(path.join(__dirname, `./${template}`), 'utf8').replace(/\s*$/, '');
@@ -60,7 +51,6 @@ module.exports = {
   actions: (data) => {
     const actions = [];
     if (reducerExists(data.component)) {
-      data.useSagas = sagasExists(data.component); // eslint-disable-line no-param-reassign
       actions.push({
         type: 'modify',
         path: '../../app/routes.js',
