@@ -27,6 +27,7 @@ import { loadProjects } from './actions';
 import messages from './messages';
 import sagas from './sagas';
 import { selectLandingPage, makeSelectProjects } from './selectors';
+import Footer from './components/footer';
 
 
 const Container = styled.div`
@@ -102,17 +103,6 @@ const ViewAllButton = styled(Link)`
 
 const SectionContainer = styled.section`
   margin-top: 10px;
-`;
-
-const Footer = styled.div`
-  color: #333;
-  font-weight: 400;
-  font-size: 17px;
-  text-align: center;
-  display: inline-block;
-  padding-left: 30px;
-  padding-right: 30px;
-  margin: 60px auto 50px auto;
 `;
 
 class LandingPage extends React.Component {
@@ -231,9 +221,7 @@ class LandingPage extends React.Component {
             </Section>
           </ContentContainer>
 
-          <Footer>
-            <FormattedMessage {...messages.poweredBy} />
-          </Footer>
+          <Footer />
         </Container>
 
         <Modal

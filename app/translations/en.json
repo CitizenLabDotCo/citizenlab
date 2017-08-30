@@ -375,7 +375,7 @@
   "app.containers.completeRegistrationPage.skip": "Skip",
   "app.containers.landing.ideasFrom": "Ideas for {name}",
   "app.containers.landing.loadMore": "Share your ideas for {name} and co-create your city",
-  "app.containers.landing.poweredBy": "Powered by CitizenLab | Geef je feedback over het platform",
+  "app.containers.landing.poweredBy": "Powered by {logo}",
   "app.containers.landing.title": "Co-create {name}",
   "app.containers.landing.topics": "Projects From {name}",
   "app.containers.landing.viewIdeas": "View all Ideas",
