@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 
 // Services
 import { observeProject } from 'services/projects';
-import { observeEvents, EventData, deleteEvent } from 'services/events';
+import { observeEvents, IEventData, deleteEvent } from 'services/events';
 
 // Components
 import { Link } from 'react-router';
@@ -102,7 +102,7 @@ type Props = {
 };
 
 type State = {
-  events: EventData[],
+  events: IEventData[],
   loading: boolean,
 };
 
@@ -133,8 +133,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
     return (event) => {
       event.preventDefault();
       if (window.confirm(this.props.intl.formatMessage(messages.deleteConfirmationModal))) {
-        deleteEvent(eventId).
-        then((response) => {
+        deleteEvent(eventId).then((response) => {
           this.setState({ events: _.reject(this.state.events, { id: eventId }) });
         });
       }

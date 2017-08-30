@@ -108,6 +108,9 @@ class IdeaCards extends React.Component {
   render() {
     const { ideas, hasMore } = this.state;
     const { loadMoreEnabled } = this.props;
+
+    console.log(ideas);
+
     return (
       <div>
         <IdeasList wrap mx={-10}>

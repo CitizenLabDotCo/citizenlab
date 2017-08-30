@@ -13,7 +13,7 @@ import { injectTFunc } from 'utils/containers/t/utils';
 import { stateStream, IStateStream } from 'services/state';
 import { EditorState, convertToRaw } from 'draft-js';
 import { IStream } from 'utils/streams';
-import { IUser } from 'services/users';
+import { observeUsers, observeUser, updateUser, IUser } from 'services/users';
 import { IIdea, addIdea } from 'services/ideas';
 import { addIdeaImage } from 'services/ideaImages';
 import { observeCurrentUser, getAuthUser } from 'services/auth';
@@ -61,8 +61,8 @@ const PageContainer = styled.div`
     &.page-enter-active {
       opacity: 1;
       transform: translateX(0);
-      transition: transform 800ms cubic-bezier(0.19, 1, 0.22, 1),
-                  opacity 800ms cubic-bezier(0.19, 1, 0.22, 1);
+      transition: transform 600ms cubic-bezier(0.19, 1, 0.22, 1),
+                  opacity 600ms cubic-bezier(0.19, 1, 0.22, 1);
     }
   }
 
@@ -73,8 +73,8 @@ const PageContainer = styled.div`
     &.page-exit-active {
       opacity: 0.01;
       transform: translateX(100vw);
-      transition: transform 800ms cubic-bezier(0.19, 1, 0.22, 1),
-                  opacity 800ms cubic-bezier(0.19, 1, 0.22, 1);
+      transition: transform 600ms cubic-bezier(0.19, 1, 0.22, 1),
+                  opacity 600ms cubic-bezier(0.19, 1, 0.22, 1);
 
       ${media.desktop`
         transform: translateX(800px);
@@ -114,7 +114,7 @@ const ButtonBarContainer = styled.div`
 
     &.buttonbar-enter-active {
       transform: translateY(0);
-      transition: transform 800ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 
@@ -124,7 +124,7 @@ const ButtonBarContainer = styled.div`
 
     &.buttonbar-exit-active {
       transform: translateY(64px);
-      transition: transform 800ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 `;
@@ -149,7 +149,8 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
 
   constructor() {
     super();
-    this.newIdeaFormState$ = stateStream.observe<INewIdeaFormState>(NewIdeaFormNamespace, {
+
+    const initialNewIdeaFormState: INewIdeaFormState = {
       topics: null,
       projects: null,
       title: null,
@@ -162,12 +163,21 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       descriptionError: null,
       submitError: false,
       processing: false
-    });
-    this.buttonBarState$ = stateStream.observe<IButtonBarState>(ButtonBarNamespace, {
+    };
+
+    const initialButtonBarState = {
       submitError: false,
       processing: false
-    });
-    this.state$ = stateStream.observe<State>(namespace, { showIdeaForm: true });
+    };
+
+    const initialState = {
+      showIdeaForm: true
+    };
+
+    this.newIdeaFormState$ = stateStream.observe<INewIdeaFormState>(namespace, NewIdeaFormNamespace, initialNewIdeaFormState);
+    this.buttonBarState$ = stateStream.observe<IButtonBarState>(namespace, ButtonBarNamespace, initialButtonBarState);
+    this.state$ = stateStream.observe<State>(namespace, namespace, initialState);
+
     this.subscriptions = [];
   }
 
@@ -177,16 +187,29 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       this.newIdeaFormState$.observable.subscribe(),
       this.state$.observable.subscribe(state => this.setState(state)),
     ];
+
+    observeUsers().observable.subscribe(x => {
+      console.log('observeUsers:');
+      console.log(x);
+    });
+
+    setTimeout(() => {
+      observeUser('f31266b6-4265-41c7-aace-b79fc79ce17f').observable.subscribe(x => {
+        console.log('observeUser:');
+        console.log(x);
+      });
+    }, 5000);
+
+    setTimeout(() => {
+      console.log('update:');
+      updateUser('f31266b6-4265-41c7-aace-b79fc79ce17f', { first_name: 'Blah' });
+    }, 10000);
   }
 
-  componentWillUnmount() {
-    this.newIdeaFormState$.observable.first().subscribe(
-      (newIdeaFormState) => {
-        _(newIdeaFormState.images).forEach(image => image.preview && window.URL.revokeObjectURL(image.preview));
-        _(this.subscriptions).forEach(subscription => subscription.unsubscribe());
-      },
-      (error) => console.log(error)
-    );
+  async componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());    
+    const currentNewIdeaFormState = await this.newIdeaFormState$.getCurrent();
+    _(currentNewIdeaFormState.images).forEach(image => image.preview && window.URL.revokeObjectURL(image.preview));
   }
 
   async convertToGeoJson(location: string) {
@@ -229,25 +252,15 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   async postIdeaAndIdeaImage(currentUserId: string) {
-    return new Promise<IIdea | null>((resolve, reject) => {
-      const onError = () => reject(new Error(`error for postIdeaAndIdeaImage() of component IdeasNewPage2`));
-
-      this.newIdeaFormState$.observable.first().subscribe(
-        async (newIdeaFormState) => {
-          try {
-            const { images } = newIdeaFormState;
-            const idea = await this.postIdea(newIdeaFormState, currentUserId);
-            images && images.length > 0 && await this.postIdeaImage(idea.data.id, images[0]);
-            resolve(idea);
-          } catch (error) {
-            onError();
-          }
-        },
-        (error) => {
-          onError();
-        }
-      );
-    });
+    try {
+      const currentNewIdeaFormState = await this.newIdeaFormState$.getCurrent();
+      const { images } = currentNewIdeaFormState;
+      const idea = await this.postIdea(currentNewIdeaFormState, currentUserId);
+      images && images.length > 0 && await this.postIdeaImage(idea.data.id, images[0]);
+      return idea;
+    } catch (error) {
+      throw 'error';
+    }
   }
 
   handleOnIdeaSubmit = async () => {
@@ -294,7 +307,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   render() {
     const { showIdeaForm } = this.state;
     const { intl, tFunc, locale } = this.props;
-    const timeout = 800;
+    const timeout = 600;
 
     const buttonBar = showIdeaForm && (
       <CSSTransition classNames="buttonbar" timeout={timeout}>

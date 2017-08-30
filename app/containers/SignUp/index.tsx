@@ -91,6 +91,8 @@ type State = {
   showStep1: boolean;
 };
 
+export const namespace = 'SignUp/index';
+
 @connect()
 export default class SignUp extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
@@ -100,8 +102,8 @@ export default class SignUp extends React.PureComponent<Props, State> {
 
   constructor() {
     super();
-    this.areas$ = observeAreas();
-    this.state$ = stateStream.observe<State>('SignUp', {
+
+    const initialState: State = {
       areas: null,
       years: [...Array(118).keys()].map((i) => ({ value: i + 1900, label: `${i + 1900}` })),
       firstName: null,
@@ -118,7 +120,10 @@ export default class SignUp extends React.PureComponent<Props, State> {
       passwordError: null,
       signUpError: null,
       showStep1: true
-    });
+    };
+
+    this.areas$ = observeAreas();
+    this.state$ = stateStream.observe<State>(namespace, namespace, initialState);
     this.subscriptions = [];
   }
 
@@ -206,9 +211,6 @@ export default class SignUp extends React.PureComponent<Props, State> {
 
         this.state$.next({ processing: true });
         await signUp(firstName, lastName, email, password, locale, selectedGender, selectedYearOfBirth, selectedAreaId);
-        await signIn(email, password);
-        getAuthUser()
-
         this.state$.next({ processing: false });
         onSignedUp();
       } catch (error) {

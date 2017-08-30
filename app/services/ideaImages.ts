@@ -38,7 +38,6 @@ export function observeIdeaImages(ideaId: string, streamParams: IStreamParams<II
 
 export function addIdeaImage(ideaId: string, base64: string, ordering: number | null = null) {
   const apiEndpoint = `${API_PATH}/ideas/${ideaId}/images`;
-  const httpMethod = { method: 'POST' };
   const bodyData = {
     image: {
       ordering,
@@ -46,7 +45,5 @@ export function addIdeaImage(ideaId: string, base64: string, ordering: number | 
     }
   };
 
-  return request<IIdeaImage>(apiEndpoint, bodyData, httpMethod, null).catch(() => {
-    throw new Error(`error for addIdeaImage() of service IdeaImages`);
-  });
+  return streams.add<IIdeaImage>(apiEndpoint, bodyData);
 }

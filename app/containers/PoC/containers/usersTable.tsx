@@ -95,7 +95,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     this.subscriptions = [
-      this.state$.distinctUntilChanged().subscribe(state => this.setState(state)),
+      this.state$.subscribe(state => this.setState(state)),
 
       Rx.Observable.combineLatest(
         this.sortBy$.distinctUntilChanged(),

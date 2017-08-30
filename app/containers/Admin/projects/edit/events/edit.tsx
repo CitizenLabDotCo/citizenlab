@@ -15,7 +15,7 @@ import { withRouter } from 'react-router';
 
 // Services
 import { observeProject, IProject, IProjectData } from 'services/projects';
-import { observeEvent, updateEvent, Event, EventData, UpdatedEvent, saveEvent } from 'services/events';
+import { observeEvent, updateEvent, IEvent, IEventData, IUpdatedEventProperties, addEvent } from 'services/events';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { injectTFunc } from 'utils/containers/t/utils';
 
@@ -46,8 +46,8 @@ type Props = {
 
 interface State {
   project: IProjectData | null;
-  event: EventData | null;
-  attributeDiff: UpdatedEvent;
+  event: IEventData | null;
+  attributeDiff: IUpdatedEventProperties;
   errors: {
     [key: string]: string[]
   };
@@ -58,7 +58,7 @@ interface State {
 
 class AdminProjectEventEdit extends React.Component<Props, State> {
   project$: IStream<IProject>;
-  event$: IStream<Event>;
+  event$: IStream<IEvent>;
   subscriptions: Rx.Subscription[];
 
   constructor(props) {
@@ -182,7 +182,7 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
       });
     } else if (this.state.project) {
       this.setState({ saving: true });
-      saveEvent(this.state.project.id, this.state.attributeDiff)
+      addEvent(this.state.project.id, this.state.attributeDiff)
       .then((response) => {
         this.props.router.push(`/admin/projects/${this.props.params.slug}/events/${response.data.id}`);
       })

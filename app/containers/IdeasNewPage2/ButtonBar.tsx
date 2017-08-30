@@ -55,7 +55,7 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
 
   constructor() {
     super();
-    this.state$ = stateStream.observe<State>(namespace);
+    this.state$ = stateStream.observe<State>(namespace, namespace);
     this.subscriptions = [];
   }
 

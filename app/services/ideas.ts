@@ -47,26 +47,6 @@ export interface IIdeaData {
   };
 }
 
-export interface IIdeaIncluded {
-  id: string;
-  type: string;
-  attributes: {
-    first_name: string;
-    last_name: string;
-    slug: string;
-    locale: string;
-    avatar: {
-      small: string;
-      medium: string;
-      large: string;
-    };
-    roles: any[];
-    bio_multiloc: any;
-    created_at: string;
-    updated_at: string;
-  };
-}
-
 export interface IIdeaLinks {
   self: string;
   first: string;
@@ -77,12 +57,10 @@ export interface IIdeaLinks {
 
 export interface IIdea {
   data: IIdeaData;
-  included: IIdeaIncluded[];
 }
 
 export interface IIdeas {
   data: IIdeaData[];
-  included: IIdeaIncluded[];
   links: IIdeaLinks;
 }
 
@@ -115,7 +93,6 @@ export function addIdea(
   locationGeoJSON: {} | null,
   locationDescription: string | null,
 ) {
-  const httpMethod = { method: 'POST' };
   const bodyData = {
     idea: {
       project_id: projectId,
@@ -130,18 +107,9 @@ export function addIdea(
     }
   };
 
-  return request<IIdea>(`${apiEndpoint}`, bodyData, httpMethod, null).catch(() => {
-    throw new Error(`error for addIdea() of service Ideas`);
-  });
+  return streams.add<IIdea>(apiEndpoint, bodyData);
 }
 
-export function updateIdea(ideaId: string, object: IIdeaUpdate, refetch = true) {
-  const httpMethod = { method: 'PUT' };
-  const bodyData = { idea: object };
-
-  return request<IIdea>(`${apiEndpoint}/${ideaId}`, bodyData, httpMethod, null).then((userObject) => {
-    streams.update(ideaId, userObject, refetch);
-  }).catch(() => {
-    throw new Error(`error for updateIdea() of service Ideas`);
-  });
+export function updateIdea(ideaId: string, object: IIdeaUpdate) {
+  return streams.update<IIdea>(`${apiEndpoint}/${ideaId}`, ideaId, { idea: object });
 }

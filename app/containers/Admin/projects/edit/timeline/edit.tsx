@@ -15,7 +15,7 @@ import { withRouter } from 'react-router';
 
 // Services
 import { observeProject, IProject, IProjectData } from 'services/projects';
-import { observePhase, updatePhase, IPhase, IPhaseData, IUpdatedPhase, savePhase } from 'services/phases';
+import { observePhase, updatePhase, IPhase, IPhaseData, IUpdatedPhase, addPhase } from 'services/phases';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { injectTFunc } from 'utils/containers/t/utils';
 
@@ -179,7 +179,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       });
     } else if (this.state.project) {
       this.setState({ saving: true });
-      savePhase(this.state.project.id, this.state.attributeDiff)
+      addPhase(this.state.project.id, this.state.attributeDiff)
       .then((response) => {
         this.props.router.push(`/admin/projects/${this.props.params.slug}/timeline/${response.data.id}`);
       })

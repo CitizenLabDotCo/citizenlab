@@ -1,3 +1,4 @@
+import { IPhase } from 'services/phases';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import request from 'utils/request';
@@ -53,29 +54,16 @@ export function observePhase(phaseID: string, streamParams: IStreamParams<IPhase
   return streams.create<IPhase>({ apiEndpoint: `${apiEndpoint}/${phaseID}`, ...streamParams });
 }
 
-export function updatePhase(phaseId: string, object: IUpdatedPhase, refetch = true) {
-  const httpMethod = { method: 'PUT' };
-  const bodyData = { phase: object };
-
-  return request<IPhase>(`${apiEndpoint}/${phaseId}`, bodyData, httpMethod, null).then((response) => {
-    streams.update(phaseId, response, refetch);
-  }).catch((error) => {
-    throw new Error(`error for updatePhase() of service Phases`);
-  });
+export function updatePhase(phaseId: string, object: IUpdatedPhase) {
+  return streams.update<IPhase>(`${apiEndpoint}/${phaseId}`, phaseId, { phase: object });
 }
 
-export function savePhase(projectId: string, object: IUpdatedPhase, refetch = true) {
-  const httpMethod = { method: 'POST' };
+export function addPhase(projectId: string, object: IUpdatedPhase) {
+  const apiEndpoint = `${API_PATH}/projects/${projectId}/phases`;
   const bodyData = { phase: object };
-
-  return request<IPhase>(`${API_PATH}/projects/${projectId}/phases`, bodyData, httpMethod, null)
-  .catch((error) => {
-    throw new Error(`error for savePhase() of service Phases`);
-  });
+  return streams.add<IPhase>(apiEndpoint, bodyData);
 }
 
-export function deletePhase(phaseId: string, httpOptions = {}): Promise<any> {
-  const defaultOptions = { method: 'DELETE' };
-
-  return request(`${apiEndpoint}/${phaseId}`, null, { ...defaultOptions, ...httpOptions }, null);
+export function deletePhase(phaseId: string, httpOptions = {}) {  
+  return streams.delete(`${apiEndpoint}/${phaseId}`, phaseId);
 }

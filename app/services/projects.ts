@@ -76,19 +76,23 @@ export function observeProject(slug, streamParams: IStreamParams<IProject> | nul
 export function postProject(projectData: IProjectAttributes) {
   const bodyData = { project: projectData };
   const httpOptions = { method: 'POST' };
-
   return request(`${apiEndpoint}`, bodyData, httpOptions, null);
 }
 
 export function updateProject(projectId, projectData: IProjectAttributes) {
+  /*
   const bodyData = { project: projectData };
   const httpOptions = { method: 'PATCH' };
 
-  return request(`${apiEndpoint}/${projectId}`, bodyData, httpOptions, null).then((projectObject) => {
-    streams.update(projectId, projectObject);
+  return request(`${apiEndpoint}/${projectId}`, bodyData, httpOptions, null).then((project) => {
+    streams.update(projectId, project);
+    return project;
   }).catch((e) => {
     throw new Error('Error for updateProject() of service Projects');
   });
+  */
+
+  return streams.update(`${apiEndpoint}/${projectId}`, projectId, { project: projectData });
 }
 
 export function getProjectImages(projectId: string, streamParams: IStreamParams<IProjectImage> | null = null) {
@@ -98,12 +102,10 @@ export function getProjectImages(projectId: string, streamParams: IStreamParams<
 export function uploadProjectImage(projectId, base64) {
   const bodyData = { image: { image: base64 } };
   const httpOptions = { method: 'POST' };
-
   return request(`${apiEndpoint}/${projectId}/images`, bodyData, httpOptions, null);
 }
 
 export function deleteProjectImage(projectId, imageId) {
   const httpOptions = { method: 'DELETE' };
-
   return request(`${apiEndpoint}/${projectId}/images/${imageId}`, {}, httpOptions, null);
 }
