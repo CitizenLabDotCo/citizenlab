@@ -239,7 +239,7 @@ class ProfileForm extends React.Component {
         ...messages.outside,
         values: {
           name: this.props.tFunc(this.props.organizationName),
-          type: this.props.organizationType,
+          organizationType: this.props.organizationType,
         },
       }),
     });
