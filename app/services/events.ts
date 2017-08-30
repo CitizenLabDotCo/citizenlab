@@ -5,7 +5,7 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/events`;
 
-export interface EventData {
+export interface IEventData {
   id: string;
   type: string;
   attributes: {
@@ -27,15 +27,15 @@ export interface EventData {
   };
 }
 
-export interface Event {
-  data: EventData;
+export interface IEvent {
+  data: IEventData;
 }
 
-export interface Events {
-  data: EventData[];
+export interface IEvents {
+  data: IEventData[];
 }
 
-export interface UpdatedEvent {
+export interface IUpdatedEventProperties {
   project_id?: string;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
@@ -44,37 +44,23 @@ export interface UpdatedEvent {
   end_at?: string;
 }
 
-export function observeEvents(projectId: string, streamParams: IStreamParams<Events> | null = null) {
-  return streams.create<Events>({ apiEndpoint: `${API_PATH}/projects/${projectId}/events`, ...streamParams });
+export function observeEvents(projectId: string, streamParams: IStreamParams<IEvents> | null = null) {
+  return streams.create<IEvents>({ apiEndpoint: `${API_PATH}/projects/${projectId}/events`, ...streamParams });
 }
 
-export function observeEvent(eventId: string, streamParams: IStreamParams<Event> | null = null) {
-  return streams.create<Event>({ apiEndpoint: `${apiEndpoint}/${eventId}`, ...streamParams });
+export function observeEvent(eventId: string, streamParams: IStreamParams<IEvent> | null = null) {
+  return streams.create<IEvent>({ apiEndpoint: `${apiEndpoint}/${eventId}`, ...streamParams });
 }
 
-export function updateEvent(eventId: string, object: UpdatedEvent, refetch = true) {
-  const httpMethod = { method: 'PUT' };
-  const bodyData = { event: object };
-
-  return request<Event>(`${apiEndpoint}/${eventId}`, bodyData, httpMethod, null).then((response) => {
-    streams.update(eventId, response, refetch);
-  }).catch((error) => {
-    throw new Error(`error for updateEvent() of service Events`);
-  });
+export function updateEvent(eventId: string, object: IUpdatedEventProperties) {
+  return streams.update<IEvent>(`${apiEndpoint}/${eventId}`, eventId, { event: object });
 }
 
-export function saveEvent(projectId: string, object: UpdatedEvent, refetch = true) {
-  const httpMethod = { method: 'POST' };
-  const bodyData = { event: object };
-
-  return request<Event>(`${API_PATH}/projects/${projectId}/events`, bodyData, httpMethod, null)
-  .catch((error) => {
-    throw new Error(`error for saveEvent() of service Events`);
-  });
+export function addEvent(projectId: string, object: IUpdatedEventProperties) {
+  const apiEndpoint = `${API_PATH}/projects/${projectId}/events`;
+  return streams.add<IEvent>(apiEndpoint, { event: object });
 }
 
-export function deleteEvent(eventId: string, httpOptions = {}): Promise<any> {
-  const defaultOptions = { method: 'DELETE' };
-
-  return request(`${apiEndpoint}/${eventId}`, null, { ...defaultOptions, ...httpOptions }, null);
+export function deleteEvent(eventId: string) {
+  return streams.delete(`${apiEndpoint}/${eventId}`, eventId);
 }

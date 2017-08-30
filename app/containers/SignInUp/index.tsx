@@ -1,9 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { injectTFunc } from 'utils/containers/t/utils';
-// import { browserHistory } from 'react-router';
-import { FormattedMessage } from 'react-intl';
 import { stateStream, IStateStream } from 'services/state';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -225,6 +223,8 @@ type State = {
   tenant: ITenant | null;
 };
 
+export const namespace = 'SignInUp/index';
+
 class SignInUp extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
   tenant$: IStream<ITenant>;
@@ -232,7 +232,8 @@ class SignInUp extends React.PureComponent<Props, State> {
 
   constructor(props) {
     super(props);
-    this.state$ = stateStream.observe<State>('IdeasNewPage2/SignInUp', { show: props.show || 'signIn', tenant: null });
+    const initialState: State = { show: props.show || 'signIn', tenant: null };
+    this.state$ = stateStream.observe<State>(namespace, namespace, initialState);
     this.tenant$ = observeCurrentTenant();
     this.subscriptions = [];
   }

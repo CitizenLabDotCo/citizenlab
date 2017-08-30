@@ -107,9 +107,10 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
 
   constructor() {
     super();
-    this.state$ = stateStream.observe<State>(namespace);
+    this.state$ = stateStream.observe<State>(namespace, namespace);
     this.topics$ = observeTopics();
     this.projects$ = observeProjects();
+    this.subscriptions = [];
     this.titleInputElement = null;
     this.descriptionElement = null;
   }
@@ -118,15 +119,11 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
 
-      broadcast.observe(namespace).subscribe((value) => {
-        if (value === 'submit') {
-          this.handleOnSubmit();
-        }
-      }),
+      broadcast.observe(namespace).filter(value => value === 'submit').subscribe(this.handleOnSubmit),
 
       Rx.Observable.combineLatest(
-        this.topics$.observable.distinctUntilChanged(),
-        this.projects$.observable.distinctUntilChanged(),
+        this.topics$.observable,
+        this.projects$.observable,
         (topics, projects) => ({ topics, projects })
       ).subscribe(({ topics, projects }) => {
         this.state$.next({
@@ -142,7 +139,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    _(this.subscriptions).forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   getOptions = (list: ITopics | IProjects | null) => {
@@ -160,11 +157,10 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
     this.state$.next({ title, titleError: null });
   }
 
-  handleDescriptionOnChange = (description: EditorState) => {
-    this.state$.next((state) => {
-      const descriptionError = (description.getCurrentContent().hasText() ? null : state.descriptionError);
-      return { description, descriptionError };
-    });
+  handleDescriptionOnChange = async (description: EditorState) => {
+    const currentState = await this.state$.getCurrent();
+    const descriptionError = (description.getCurrentContent().hasText() ? null : currentState.descriptionError);
+    this.state$.next({ description, descriptionError });
   }
 
   handleTopicsOnChange = (selectedTopics: IOption[]) => {
@@ -189,21 +185,28 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
   }
 
   handleUploadOnAdd = async (newImage: ImageFile) => {
+    let images: ExtendedImageFile[] | null = null;
+    const currentState = await this.state$.getCurrent();
     const image = newImage as ExtendedImageFile;
     image.preview = this.generateImagePreview(newImage);
 
-    this.state$.next((state) => {
-      const images = (state.images && state.images.length > 0 ? state.images.concat(image) : [image]);
-      return { images };
-    });
+    if (currentState.images && currentState.images.length > 0) {
+      images = currentState.images.concat(image);
+    } else {
+      images = [image];
+    }
+
+    this.state$.next({ images });
   }
 
-  handleUploadOnRemove = (removedImage: ImageFile) => {
-    removedImage.preview && window.URL.revokeObjectURL(removedImage.preview);
+  handleUploadOnRemove = async (removedImage: ImageFile) => {
+    const currentState = await this.state$.getCurrent();
+    const images = _(currentState.images).filter(image => image.preview !== removedImage.preview).value();
+    this.state$.next({ images });
 
-    this.state$.next((state) => ({
-      images: _(state.images).filter(image => image.preview !== removedImage.preview).value()
-    }));
+    if (removedImage.preview) {
+      window.URL.revokeObjectURL(removedImage.preview);
+    }
   }
 
   handleTitleInputSetRef = (element: HTMLInputElement) => {
@@ -223,11 +226,11 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
     this.state$.next({ titleError, descriptionError });
 
     if (titleError) {
-      scrollToComponent(this.titleInputElement, { align:'top', offset: -200, duration: 350 });
-      setTimeout(() => this.titleInputElement && this.titleInputElement.focus(), 350);
+      scrollToComponent(this.titleInputElement, { align:'top', offset: -240, duration: 300 });
+      setTimeout(() => this.titleInputElement && this.titleInputElement.focus(), 300);
     } else if (descriptionError) {
-      scrollToComponent(this.descriptionElement.editor.refs.editor, { align:'top', offset: -180, duration: 350 });
-      setTimeout(() => this.descriptionElement && this.descriptionElement.focusEditor(), 350);
+      scrollToComponent(this.descriptionElement.editor.refs.editor, { align:'top', offset: -200, duration: 300 });
+      setTimeout(() => this.descriptionElement && this.descriptionElement.focusEditor(), 300);
     }
 
     return (!titleError && !descriptionError);

@@ -1,3 +1,4 @@
+import { IStream } from './streams';
 import { injectIntl } from 'react-intl';
 import 'whatwg-fetch';
 import * as Rx from 'rxjs/Rx';
@@ -12,12 +13,9 @@ export type IObserver<T> = Rx.Observer<T | pureFn<T> | null>;
 export type IObservable<T> = Rx.Observable<T>;
 export interface IStreamParams<T> {
   bodyData?: IObject | null;
-  httpMethod?: IObject | null;
   queryParameters?: IObject | null;
   localProperties?: IObject | null;
   onEachEmit?: pureFn<T> | null;
-  requestedDataId?: string | null;
-  forceRemoteFetch?: boolean;
 }
 interface IInputStreamParams<T> extends IStreamParams<T> {
   apiEndpoint: string;
@@ -25,12 +23,9 @@ interface IInputStreamParams<T> extends IStreamParams<T> {
 interface IExtendedStreamParams<T> {
   apiEndpoint: string;
   bodyData: IObject | null;
-  httpMethod: IObject | null;
   queryParameters: IObject | null;
   localProperties: IObject | null;
   onEachEmit: pureFn<T> | null;
-  requestedDataId: string | null;
-  forceRemoteFetch: boolean;
 }
 export interface IStream<T> {
   id: string;
@@ -51,6 +46,13 @@ class Streams {
     this.resources = {};
   }
 
+  /*
+  isUUID(string) {
+    const uuidRegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    return uuidRegExp.test(string);
+  }
+  */
+
   findExistingStreamId(params: IExtendedStreamParams<any>) {
     let existingStreamId: string | null = null;
 
@@ -66,15 +68,27 @@ class Streams {
     return existingStreamId;
   }
 
+  hasQueryStream(streams: { [key: string]: IStream<any>}, apiEndpoint: string) {
+    let hasQueryStream = false;
+
+    _.forOwn(streams, (stream, streamId) => {
+      if (stream.params.apiEndpoint === apiEndpoint && stream.params.queryParameters) {
+        hasQueryStream = true;
+        return false;
+      }
+
+      return true;
+    });
+
+    return hasQueryStream;
+  }
+
   create<T>(inputParams: IInputStreamParams<T>) {
     const params: IExtendedStreamParams<T> = {
       bodyData: null,
-      httpMethod: null,
       queryParameters: null,
       localProperties: null,
       onEachEmit: null,
-      requestedDataId: null,
-      forceRemoteFetch: false,
       ...inputParams
     };
 
@@ -90,39 +104,45 @@ class Streams {
         fetch: null as any,
         observer: null,
         observable: null as any,
-        // data: null,
         dataIds: {},
       };
 
       this.streams[streamId].fetch = () => {
-        const { apiEndpoint, bodyData, httpMethod, queryParameters } = this.streams[streamId].params;
+        const { apiEndpoint, bodyData, queryParameters } = this.streams[streamId].params;
+        const promise = request<any>(apiEndpoint, bodyData, { method: 'GET' }, queryParameters);
 
-        request<any>(apiEndpoint, bodyData, httpMethod, queryParameters).then((response) => {
-          (this.streams[streamId].observer as IObserver<any>).next(response);
-        }).catch(() => {
-          console.log(`promise for api endpoint ${apiEndpoint} did not resolve`);
-          (this.streams[streamId].observer as IObserver<any>).next(null);
-        });
+        Rx.Observable.defer(() => promise).retry(3).subscribe(
+          (response) => {
+            (this.streams[streamId].observer as IObserver<any>).next(response);
+          },
+          (error) => {
+            console.log(`promise for api endpoint ${apiEndpoint} did not resolve`);
+            (this.streams[streamId].observer as IObserver<any>).next(null);
+          }
+        );
 
         return this.streams[streamId];
       };
 
       this.streams[streamId].observable = Rx.Observable.create((observer: IObserver<T>) => {
-        const { apiEndpoint, requestedDataId, forceRemoteFetch } = this.streams[streamId].params;
+        const { apiEndpoint } = this.streams[streamId].params;
+        const lastSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
 
         this.streams[streamId].observer = observer;
 
-        if (_.isString(requestedDataId) && !_.isUndefined(this.resources[requestedDataId]) && !forceRemoteFetch) {
-          // console.log('retrieved local version:');
-          // console.log(this.resources[requestedDataId]);
-          (this.streams[streamId].observer as IObserver<any>).next(this.resources[requestedDataId]);
+        if (!_.isUndefined(this.resources[lastSegment])) {
+          console.log('retrieved local version:');
+          console.log(this.resources[lastSegment]);
+          (this.streams[streamId].observer as IObserver<any>).next(this.resources[lastSegment]);
         } else {
           this.streams[streamId].fetch();
         }
 
         return () => {
-          // console.log(`stream for api endpoint ${apiEndpoint} completed`);
-          delete this.streams[streamId];
+          if (this.streams[streamId].params.queryParameters) {
+            console.log(`delete queryStream with apiEndpoint ${this.streams[streamId].params.apiEndpoint}`);
+            delete this.streams[streamId];
+          }
         };
       })
       .startWith('initial')
@@ -155,25 +175,23 @@ class Streams {
 
           if (_.isArray(innerData)) {
             this.streams[streamId].type = 'arrayOfObjects';
-
-            _(innerData).filter(item => item.id).forEach((item) => {
+            innerData.filter(item => item.id).forEach((item) => {
               dataIds[item.id] = true;
-              this.resources[item.id] = item;
+              this.resources[item.id] = { data: item };
             });
           } else if (_.isObject(innerData) && _.has(innerData, 'id')) {
             this.streams[streamId].type = 'singleObject';
             dataIds[innerData.id] = true;
-            this.resources[innerData.id] = innerData;
+            this.resources[innerData.id] = data;
           }
 
           if (included) {
-            _(included).forEach(item => this.resources[item.id] = item);
+            included.filter(item => item.id).forEach(item => this.resources[item.id] = item);
+            data = _.omit(data, 'included');
           }
         }
 
         this.streams[streamId].dataIds = dataIds;
-
-        // console.log(this.resources);
 
         return data;
       })
@@ -182,48 +200,85 @@ class Streams {
       .publishReplay(1)
       .refCount();
 
-      return this.streams[streamId];
+      return <IStream<T>>this.streams[streamId];
     }
 
-    return this.streams[existingStreamId];
+    return <IStream<T>>this.streams[existingStreamId];
   }
 
-  update(dataId: string, object: any, refetch: boolean = false) {
-    _.forOwn(this.streams, (stream, streamId) => {
-      if (stream.observer !== null) {
-        if (!refetch && stream.type === 'singleObject') {
-          stream.observer.next(object);
-        } else if (!refetch && stream.type === 'arrayOfObjects') {
-          stream.observer.next((item) => ({
-            ...item,
-            data: item.data.map(child => child.id === dataId ? object.data : child)
-          }));
-        } else if (_.isFunction(stream.fetch)) {
-          stream.fetch();
+  async add<T>(apiEndpoint: string, bodyData: object) {
+    try {
+      const addedObject = await request<T>(apiEndpoint, bodyData, { method: 'POST' }, null);
+      const hasQueryStream = this.hasQueryStream(this.streams, apiEndpoint);
+
+      _.forOwn(this.streams, (stream, streamId) => {
+        if (stream.params.apiEndpoint === apiEndpoint) {
+          if (hasQueryStream) {
+            stream.fetch();
+          } else if (stream.observer) {
+            stream.observer.next((emittedValue) => ({
+              ...emittedValue,
+              data: emittedValue.data.push(addedObject)
+            }));
+          }
         }
-      } else {
-        console.log('observer is null');
-      }
-    });
+      });
+
+      return addedObject;
+    } catch (error) {
+      console.log(error);
+      throw `error for add() of Streams for api endpoint ${apiEndpoint}`;
+    }
   }
 
-  delete(dataId: string, refetch: boolean = false) {
-    _.forOwn(this.streams, (stream, streamId) => {
-      if (stream.observer !== null) {
-        if (!refetch && stream.type === 'singleObject') {
+  async update<T>(apiEndpoint: string, dataId: string, bodyData: object) {
+    try {
+      const updatedObject = await request<T>(apiEndpoint, bodyData, { method: 'PATCH' }, null);
+      const hasQueryStream = this.hasQueryStream(this.streams, apiEndpoint);
+
+      _.forOwn(this.streams, (stream, streamId) => {
+        if ((stream.params.apiEndpoint === apiEndpoint && hasQueryStream) || (stream.dataIds[dataId] && stream.type === 'unknown')) {
+          stream.fetch();
+        } else if (stream.dataIds[dataId] && stream.observer && stream.type === 'singleObject') {
+          stream.observer.next(updatedObject);
+        } else if (stream.dataIds[dataId] && stream.observer && stream.type === 'arrayOfObjects') {
+          stream.observer.next((emittedValue) => ({
+            ...emittedValue,
+            data: emittedValue.data.map(child => child.id === dataId ? (updatedObject as any).data : child)
+          }));
+        }
+      });
+
+      return updatedObject;
+    } catch (error) {
+      console.log(error);
+      throw `error for update() of Streams for api endpoint ${apiEndpoint}`;
+    }
+  }
+
+  async delete(apiEndpoint: string, dataId: string) {
+    try {
+      await request(apiEndpoint, null, { method: 'DELETE' }, null);
+      const hasQueryStream = this.hasQueryStream(this.streams, apiEndpoint);
+
+      _.forOwn(this.streams, (stream, streamId) => {
+        if ((stream.params.apiEndpoint === apiEndpoint && hasQueryStream) || (stream.dataIds[dataId] && stream.type === 'unknown')) {
+          stream.fetch();
+        } else if (stream.dataIds[dataId] && stream.observer && stream.type === 'singleObject') {
           stream.observer.next(undefined);
-        } else if (!refetch && stream.type === 'arrayOfObjects') {
-          stream.observer.next((item) => ({
-            ...item,
-            data: item.data.filter(child => child.id !== dataId)
+        } else if (stream.dataIds[dataId] && stream.observer && stream.type === 'arrayOfObjects') {
+          stream.observer.next((emittedValue) => ({
+            ...emittedValue,
+            data: emittedValue.data.filter(child => child.id !== dataId)
           }));
-        } else if (_.isFunction(stream.fetch)) {
-          stream.fetch();
         }
-      } else {
-        console.log('observer is null');
-      }
-    });
+      });
+
+      return true;
+    } catch (error) {
+      console.log(error);
+      throw `error for delete() of Streams for api endpoint ${apiEndpoint}`;
+    }
   }
 }
 

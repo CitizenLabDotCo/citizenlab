@@ -13,7 +13,7 @@ export interface IUserToken {
   jwt: string;
 }
 
-export function signIn(email: string, password: string) {
+export async function signIn(email: string, password: string) {
   const bodyData = {
     auth: { email, password }
   };
@@ -22,15 +22,17 @@ export function signIn(email: string, password: string) {
     method: 'POST',
   };
 
-  return request<IUserToken>(`${API_PATH}/user_token`, bodyData, httpMethod, null).then((data) => {
-    data && setJwt(data.jwt);
-    return data.jwt;
-  }).catch((error) => {
+  try {
+    const { jwt } = await request<IUserToken>(`${API_PATH}/user_token`, bodyData, httpMethod, null);
+    setJwt(jwt);
+    const authenticatedUser = await getAuthUser();
+    return authenticatedUser;
+  } catch (error) {
     throw error;
-  });
+  }
 }
 
-export function signUp(
+export async function signUp(
   firstName: string,
   lastName: string,
   email: string,
@@ -42,11 +44,11 @@ export function signUp(
 ) {
   const bodyData = {
     user: {
-      first_name: firstName,
-      last_name: lastName,
       email,
       password,
       locale,
+      first_name: firstName,
+      last_name: lastName,
       gender: selectedGender,
       birthyear: selectedYearOfBirth,
       domicile: selectedAreaId,
@@ -57,32 +59,39 @@ export function signUp(
     method: 'POST'
   };
 
-  return request(`${API_PATH}/users`, bodyData, httpMethod, null).then(() => {
-    return { email, password };
-  }).catch((error) => {
+  try {
+    await request(`${API_PATH}/users`, bodyData, httpMethod, null);
+    const authenticatedUser = await signIn(email, password);
+    return authenticatedUser;
+  } catch (error) {
     throw error;
-  });
+  }
 }
 
 export function observeCurrentUser() {
   return streams.create<IUser>({ apiEndpoint: `${API_PATH}/users/me` });
 }
 
-export function getAuthUser() {
-  return request<IUser>(`${API_PATH}/users/me`, null, null, null).then((response: IUser) => {
-    if (response && _.has(response, 'data.id')) {
+export async function getAuthUser() {
+  const jwt = getJwt();
 
-      // Sync redux state
-      store.dispatch(mergeJsonApiResources(response));
-      store.dispatch(loadCurrentUserSuccess(response));
+  if (!_.isString(jwt)) {
+    throw new Error('no jwt token set in localstorage');
+  } else {
+    try {
+      const authenticatedUser = await request<IUser>(`${API_PATH}/users/me`, null, null, null);
 
-      return response;
-    } else {
+      if (authenticatedUser && _.has(authenticatedUser, 'data.id')) {
+        store.dispatch(mergeJsonApiResources(authenticatedUser));
+        store.dispatch(loadCurrentUserSuccess(authenticatedUser));
+        return authenticatedUser;
+      } else {
+        throw new Error('not authenticated');
+      }
+    } catch (error) {
       throw new Error('not authenticated');
     }
-  }).catch((error) => {
-    throw new Error('not authenticated');
-  });
+  }
 }
 
 export function sendPasswordResetMail(email: string) {
