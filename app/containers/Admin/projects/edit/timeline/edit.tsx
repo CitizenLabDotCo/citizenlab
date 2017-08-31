@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
 import { withRouter } from 'react-router';
+import { API } from 'typings.d';
 
 // Services
 import { observeProject, IProject, IProjectData } from 'services/projects';
@@ -30,6 +31,7 @@ import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
 import FieldWrapper from 'components/admin/FieldWrapper';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 
 // Component typing
@@ -48,11 +50,12 @@ interface State {
   phase: IPhaseData | null;
   attributeDiff: IUpdatedPhase;
   errors: {
-    [key: string]: string[]
+    [fieldName: string]: API.Error[]
   };
   saving: boolean;
   focusedInput: 'START_DATE' | 'END_DATE' | null;
   descState: EditorState;
+  saved: boolean;
 }
 
 class AdminProjectTimelineEdit extends React.Component<Props, State> {
@@ -66,13 +69,11 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       project: null,
       phase: null,
       attributeDiff: {},
-      errors: {
-        title: [],
-        description: [],
-      },
+      errors: {},
       saving: false,
       focusedInput: null,
       descState: EditorState.createEmpty(),
+      saved: false,
     };
     if (props.params.slug) {
       this.project$ = observeProject(props.params.slug);
@@ -81,6 +82,16 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       this.phase$ = observePhase(props.params.id);
     }
     this.subscriptions = [];
+  }
+
+  getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
+    if (!_.isEmpty(this.state.errors)) {
+      return 'error';
+    }
+    if (this.state.saved && _.isEmpty(this.state.attributeDiff)) {
+      return 'success';
+    }
+    return _.isEmpty(this.state.attributeDiff) ? 'disabled' : 'enabled';
   }
 
   componentDidMount() {
@@ -168,31 +179,33 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       return;
     }
 
+    let savingPromise;
+
     if (this.state.phase) {
-      this.setState({ saving: true });
-      updatePhase(this.state.phase.id, this.state.attributeDiff)
-      .then(() => {
-        this.setState({ saving: false });
-      })
-      .catch((errors) => {
-        // TODO: Update state with errors from the API
-      });
+      savingPromise = updatePhase(this.state.phase.id, this.state.attributeDiff);
     } else if (this.state.project) {
-      this.setState({ saving: true });
-      savePhase(this.state.project.id, this.state.attributeDiff)
+      savingPromise = savePhase(this.state.project.id, this.state.attributeDiff)
       .then((response) => {
         this.props.router.push(`/admin/projects/${this.props.params.slug}/timeline/${response.data.id}`);
-      })
-      .then(() => {
-        this.setState({ saving: false });
       });
     }
+
+    this.setState({ saving: true, saved: false });
+    savingPromise
+    .catch((e) => {
+      this.setState({ saving: false, errors: e.json.errors });
+    })
+    .then(() => {
+      this.setState({ saving: false, saved: true, attributeDiff: {} });
+    });
   }
 
   render() {
     const phaseAttrs = this.state.phase
     ?  { ...this.state.phase.attributes, ...this.state.attributeDiff }
     : { ...this.state.attributeDiff };
+
+    const submitState = this.getSubmitState();
 
     return (
       <div>
@@ -211,7 +224,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
               value={this.props.tFunc(phaseAttrs.title_multiloc)}
               onChange={this.createMultilocUpdater('title_multiloc')}
             />
-            <Error text={this.state.errors.title.join(', ')} />
+            <Error apiErrors={this.state.errors.title_multiloc} />
           </FieldWrapper>
 
           <FieldWrapper>
@@ -237,10 +250,20 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
               error=""
               onChange={this.handleDescChange}
             />
-            <Error text={this.state.errors.description.join(', ')} />
+            <Error apiErrors={this.state.errors.description_multiloc} />
           </FieldWrapper>
 
-          <Button loading={this.state.saving} ><FormattedMessage {...messages.saveLabel} /></Button>
+          <SubmitWrapper
+            loading={this.state.saving}
+            status={submitState}
+            messages={{
+              buttonSave: messages.saveLabel,
+              buttonError: messages.saveErrorLabel,
+              buttonSuccess: messages.saveSuccessLabel,
+              messageError: messages.saveErrorMessage,
+              messageSuccess: messages.saveSuccessMessage,
+            }}
+          />
         </form>
       </div>
     );

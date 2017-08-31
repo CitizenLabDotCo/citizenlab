@@ -270,9 +270,6 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
     const projectAttrs = { ...projectData.attributes, ...projectAttributesDiff } as IProjectAttributes;
 
     const submitState = this.getSubmitState();
-    let style = undefined as 'success' | 'error' | undefined;
-    if (submitState === 'success') {style = 'success';}
-    if (submitState === 'error') {style = 'error';}
 
     return (
       <FormWrapper onSubmit={this.saveProject}>
