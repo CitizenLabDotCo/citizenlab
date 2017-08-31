@@ -40,6 +40,7 @@ import Upload from 'components/UI/Upload';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import FieldWrapper from 'components/admin/FieldWrapper';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // Style
 const FormWrapper = styled.form`
@@ -78,23 +79,6 @@ const SaveButton = styled.button`
   color: white;
   font-size: 1.25rem;
   padding: 1rem 2rem;
-`;
-
-const Message = styled.p`
-  margin-left: 2rem;
-
-  &.error {
-    color: #FC3C2D;
-  }
-
-  &.success {
-    color: #32B67A;
-  }
-`;
-
-const SubmitWrapper = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 // Component typing
@@ -358,31 +342,17 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
           />
         </FieldWrapper>
 
-        <SubmitWrapper>
-          <Button style={style} loading={loading} disabled={submitState === 'disabled'}>
-            {(submitState === 'enabled' || submitState === 'disabled') &&
-              <FormattedMessage {...messages.saveProject} />
-            }
-            {submitState === 'error' &&
-              <FormattedMessage {...messages.saveError} />
-            }
-            {submitState === 'success' &&
-              <FormattedMessage {...messages.saveSuccess} />
-            }
-          </Button>
-
-          {submitState === 'error' &&
-            <Message className="error">
-              <FormattedMessage {...messages.saveErrorMessage}/>
-            </Message>
-          }
-          {submitState === 'success' &&
-            <Message className="success">
-              <FormattedMessage {...messages.saveSuccessMessage}/>
-            </Message>
-          }
-
-        </SubmitWrapper>
+        <SubmitWrapper
+          loading={loading}
+          status={submitState}
+          messages={{
+            buttonSave: messages.saveProject,
+            buttonError: messages.saveError,
+            buttonSuccess: messages.saveSuccess,
+            messageError: messages.saveErrorMessage,
+            messageSuccess: messages.saveSuccessMessage,
+          }}
+        />
       </FormWrapper>
     );
   }
