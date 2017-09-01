@@ -86,8 +86,6 @@ export function updateProject(projectId, projectData: IProjectAttributes) {
 
   return request(`${apiEndpoint}/${projectId}`, bodyData, httpOptions, null).then((projectObject) => {
     streams.update(projectId, projectObject);
-  }).catch((e) => {
-    throw new Error('Error for updateProject() of service Projects');
   });
 }
 
