@@ -73,9 +73,6 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       descState: EditorState.createEmpty(),
       saved: false,
     };
-    if (props.params.id) {
-      this.phase$ = observePhase(props.params.id);
-    }
     this.subscriptions = [];
   }
 
@@ -90,9 +87,10 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    if (this.phase$) {
+    if (this.props.params.id) {
       this.subscriptions = [
-        this.phase$.observable
+        observePhase(this.props.params.id)
+        .observable
         .subscribe((phase) => {
           let descState = EditorState.createEmpty();
 
