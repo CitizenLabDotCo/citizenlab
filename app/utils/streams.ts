@@ -72,7 +72,7 @@ class Streams {
     let hasQueryStream = false;
 
     _.forOwn(streams, (stream, streamId) => {
-      if (stream.params.apiEndpoint === apiEndpoint && stream.params.queryParameters) {
+      if (stream.params.apiEndpoint === apiEndpoint && stream.params.queryParameters && !_.isEmpty(stream.params.queryParameters)) {
         hasQueryStream = true;
         return false;
       }
@@ -139,7 +139,7 @@ class Streams {
         }
 
         return () => {
-          if (this.streams[streamId].params.queryParameters) {
+          if (this.streams[streamId].params.queryParameters  && !_.isEmpty(this.streams[streamId].params.queryParameters)) {
             console.log(`delete queryStream with apiEndpoint ${this.streams[streamId].params.apiEndpoint}`);
             delete this.streams[streamId];
           }

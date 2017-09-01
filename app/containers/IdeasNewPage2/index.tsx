@@ -16,7 +16,7 @@ import { IStream } from 'utils/streams';
 import { observeUsers, observeUser, updateUser, IUser } from 'services/users';
 import { IIdea, addIdea } from 'services/ideas';
 import { addIdeaImage } from 'services/ideaImages';
-import { observeCurrentUser, getAuthUser } from 'services/auth';
+import auth from 'services/auth';
 import draftToHtml from 'draftjs-to-html';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { ImageFile } from 'react-dropzone';
@@ -188,6 +188,9 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       this.state$.observable.subscribe(state => this.setState(state)),
     ];
 
+    /*
+    // TESTING STUFF
+    // --------------
     observeUsers().observable.subscribe(x => {
       console.log('observeUsers:');
       console.log(x);
@@ -204,6 +207,8 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       console.log('update:');
       updateUser('f31266b6-4265-41c7-aace-b79fc79ce17f', { first_name: 'Blah' });
     }, 10000);
+    // --------------
+    */
   }
 
   async componentWillUnmount() {
@@ -270,7 +275,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     this.setProcessingTo(true);
 
     try {
-      const authUser = await getAuthUser();
+      const authUser = await auth.getAuthUserAsync();
       await this.postIdeaAndIdeaImage(authUser.data.id);
       this.setProcessingTo(false);
       browserHistory.push('/ideas');
