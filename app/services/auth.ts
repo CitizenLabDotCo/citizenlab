@@ -1,10 +1,11 @@
+import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
 import { IUser } from 'services/users';
 import { IHttpMethod } from 'typings.d';
 import { API_PATH } from 'containers/App/constants';
-import { getJwt, setJwt } from 'utils/auth/jwt';
-import * as _ from 'lodash';
+import { getJwt, setJwt, removeJwt } from 'utils/auth/jwt';
 import request from 'utils/request';
-import streams from 'utils/streams';
+import streams, { IStreamParams } from 'utils/streams';
 import { store } from 'app';
 import { loadCurrentUserSuccess } from 'utils/auth/actions';
 import { mergeJsonApiResources } from 'utils/resources/actions';
@@ -13,99 +14,119 @@ export interface IUserToken {
   jwt: string;
 }
 
-export async function signIn(email: string, password: string) {
-  const bodyData = {
-    auth: { email, password }
-  };
+class Auth {
+  private authUser$: Rx.BehaviorSubject<IUser | null>;
 
-  const httpMethod: IHttpMethod = {
-    method: 'POST',
-  };
-
-  try {
-    const { jwt } = await request<IUserToken>(`${API_PATH}/user_token`, bodyData, httpMethod, null);
-    setJwt(jwt);
-    const authenticatedUser = await getAuthUser();
-    return authenticatedUser;
-  } catch (error) {
-    throw error;
+  constructor() {
+    this.authUser$ = new Rx.BehaviorSubject(null);
   }
-}
 
-export async function signUp(
-  firstName: string,
-  lastName: string,
-  email: string,
-  password: string,
-  locale: string,
-  selectedGender: 'male' | 'female' | 'unspecified' | null = null,
-  selectedYearOfBirth: number | null = null,
-  selectedAreaId: string | null = null
-) {
-  const bodyData = {
-    user: {
-      email,
-      password,
-      locale,
-      first_name: firstName,
-      last_name: lastName,
-      gender: selectedGender,
-      birthyear: selectedYearOfBirth,
-      domicile: selectedAreaId,
-    }
-  };
-
-  const httpMethod: IHttpMethod = {
-    method: 'POST'
-  };
-
-  try {
-    await request(`${API_PATH}/users`, bodyData, httpMethod, null);
-    const authenticatedUser = await signIn(email, password);
-    return authenticatedUser;
-  } catch (error) {
-    throw error;
+  observeAuthUser() {
+    return this.authUser$.distinctUntilChanged((x, y) => !_.isEqual(x, y)).publishReplay(1).refCount();
   }
-}
 
-export function observeCurrentUser() {
-  return streams.create<IUser>({ apiEndpoint: `${API_PATH}/users/me` });
-}
+  async signIn(email: string, password: string) {
+    const bodyData = {
+      auth: { email, password }
+    };
 
-export async function getAuthUser() {
-  const jwt = getJwt();
+    const httpMethod: IHttpMethod = {
+      method: 'POST',
+    };
 
-  if (!_.isString(jwt)) {
-    throw new Error('no jwt token set in localstorage');
-  } else {
     try {
-      const authenticatedUser = await request<IUser>(`${API_PATH}/users/me`, null, null, null);
+      const { jwt } = await request<IUserToken>(`${API_PATH}/user_token`, bodyData, httpMethod, null);
+      setJwt(jwt);
+      const authenticatedUser = await this.getAuthUserAsync();
+      return authenticatedUser;
+    } catch (error) {
+      this.signOut();
+      throw error;
+    }
+  }
 
-      if (authenticatedUser && _.has(authenticatedUser, 'data.id')) {
-        store.dispatch(mergeJsonApiResources(authenticatedUser));
-        store.dispatch(loadCurrentUserSuccess(authenticatedUser));
-        return authenticatedUser;
-      } else {
+  async signUp(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+    locale: string,
+    selectedGender: 'male' | 'female' | 'unspecified' | null = null,
+    selectedYearOfBirth: number | null = null,
+    selectedAreaId: string | null = null
+  ) {
+    const bodyData = {
+      user: {
+        email,
+        password,
+        locale,
+        first_name: firstName,
+        last_name: lastName,
+        gender: selectedGender,
+        birthyear: selectedYearOfBirth,
+        domicile: selectedAreaId,
+      }
+    };
+
+    const httpMethod: IHttpMethod = {
+      method: 'POST'
+    };
+
+    try {
+      await request(`${API_PATH}/users`, bodyData, httpMethod, null);
+      const authenticatedUser = await this.signIn(email, password);
+      return authenticatedUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  signOut() {
+    removeJwt();
+    this.authUser$.next(null);
+  }
+
+  async getAuthUserAsync() {
+    const jwt = getJwt();
+
+    if (!_.isString(jwt)) {
+      throw new Error('no jwt token set in localstorage');
+    } else {
+      try {
+        const authenticatedUser = await request<IUser>(`${API_PATH}/users/me`, null, null, null);
+
+        if (authenticatedUser && authenticatedUser.data && authenticatedUser.data.id) {
+          store.dispatch(mergeJsonApiResources(authenticatedUser));
+          store.dispatch(loadCurrentUserSuccess(authenticatedUser));
+          this.authUser$.next(authenticatedUser);
+          return authenticatedUser;
+        } else {
+          this.signOut();
+          throw new Error('not authenticated');
+        }
+      } catch {
+        this.signOut();
         throw new Error('not authenticated');
       }
-    } catch (error) {
-      throw new Error('not authenticated');
     }
+  }
+
+  sendPasswordResetMail(email: string) {
+    const bodyData = {
+      user: {
+        email
+      }
+    };
+
+    const httpMethod: IHttpMethod = {
+      method: 'POST'
+    };
+
+    return request(`${API_PATH}/users/reset_password_email`, bodyData, httpMethod, null).catch((error) => {
+      throw error;
+    });
   }
 }
 
-export function sendPasswordResetMail(email: string) {
-  const bodyData = {
-    user: {
-      email
-    }
-  };
-
-  const httpMethod: IHttpMethod = {
-    method: 'POST'
-  };
-
-  return request(`${API_PATH}/users/reset_password_email`, bodyData, httpMethod, null).catch((error) => {
-    throw error;
-  });
-}
+const auth = new Auth();
+export default auth;

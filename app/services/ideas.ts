@@ -15,6 +15,7 @@ export interface IIdeaData {
       [key: string]: any;
     };
     author_name: string;
+    slug: string;
     publication_status: 'draft' | 'published';
     upvotes_count: number;
     downvotes_count: number;
@@ -78,6 +79,10 @@ export interface IIdeaUpdate {
 }
 
 const apiEndpoint = `${API_PATH}/ideas`;
+
+export function observeIdea(ideaId: string, streamParams: IStreamParams<IIdea> | null = null) {
+  return streams.create<IIdea>({ apiEndpoint: `${apiEndpoint}/${ideaId}`, ...streamParams });
+}
 
 export function observeIdeas(streamParams: IStreamParams<IIdeas> | null = null) {
   return streams.create<IIdeas>({ apiEndpoint, ...streamParams });
