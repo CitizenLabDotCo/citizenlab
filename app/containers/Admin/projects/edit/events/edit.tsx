@@ -63,8 +63,8 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
   event$: IStream<Event>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       event: null,
       attributeDiff: {},
@@ -74,9 +74,6 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
       descState: EditorState.createEmpty(),
       saved: false,
     };
-    if (props.params.id) {
-      this.event$ = observeEvent(props.params.id);
-    }
     this.subscriptions = [];
   }
 
@@ -91,19 +88,11 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    let dataLoading;
-    if (this.event$) {
-      dataLoading = Rx.Observable.combineLatest(
-        this.event$.observable,
-        (event) => ({ event })
-      );
-    }
-
-
-    if (this.event$) {
+    if (this.props.params.id) {
       this.subscriptions = [
-        dataLoading
-        .subscribe(({ project, event }) => {
+        observeEvent(this.props.params.id)
+        .observable
+        .subscribe((event) => {
           let descState = EditorState.createEmpty();
 
           if (event) {

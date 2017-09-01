@@ -90,19 +90,10 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    let dataLoading;
-    if (this.phase$) {
-      dataLoading = Rx.Observable.combineLatest(
-        this.phase$.observable,
-        (phase) => ({ phase })
-      );
-    }
-
-
     if (this.phase$) {
       this.subscriptions = [
-        dataLoading
-        .subscribe(({ project, phase }) => {
+        this.phase$.observable
+        .subscribe((phase) => {
           let descState = EditorState.createEmpty();
 
           if (phase) {
