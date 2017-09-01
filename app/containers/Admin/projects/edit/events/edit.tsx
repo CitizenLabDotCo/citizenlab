@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
 import { withRouter } from 'react-router';
+import { API } from 'typings.d';
 
 // Services
 import { observeProject, IProject, IProjectData } from 'services/projects';
@@ -31,6 +32,7 @@ import 'react-dates/lib/css/_datepicker.css';
 
 import FieldWrapper from 'components/admin/FieldWrapper';
 import DateTimePicker from 'components/admin/DateTimePicker';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 
 // Component typing
@@ -42,69 +44,55 @@ type Props = {
   locale: string,
   tFunc: Function,
   router: any,
+  project: IProjectData | null;
 };
 
 interface State {
-  project: IProjectData | null;
   event: EventData | null;
   attributeDiff: UpdatedEvent;
   errors: {
-    [key: string]: string[]
+    [fieldName: string]: API.Error[]
   };
   saving: boolean;
   focusedInput: 'START_DATE' | 'END_DATE' | null;
   descState: EditorState;
+  saved: boolean;
 }
 
 class AdminProjectEventEdit extends React.Component<Props, State> {
-  project$: IStream<IProject>;
   event$: IStream<Event>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      project: null,
       event: null,
       attributeDiff: {},
-      errors: {
-        title: [],
-        description: [],
-        location: [],
-      },
+      errors: {},
       saving: false,
       focusedInput: null,
       descState: EditorState.createEmpty(),
+      saved: false,
     };
-    if (props.params.slug) {
-      this.project$ = observeProject(props.params.slug);
-    }
-    if (props.params.id) {
-      this.event$ = observeEvent(props.params.id);
-    }
     this.subscriptions = [];
   }
 
-  componentDidMount() {
-    let dataLoading;
-    if (this.event$) {
-      dataLoading = Rx.Observable.combineLatest(
-        this.project$.observable,
-        this.event$.observable,
-        (project, event) => ({ project, event })
-      );
-    } else {
-      dataLoading = Rx.Observable.combineLatest(
-        this.project$.observable,
-        (project) => ({ project })
-      );
+  getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
+    if (!_.isEmpty(this.state.errors)) {
+      return 'error';
     }
+    if (this.state.saved && _.isEmpty(this.state.attributeDiff)) {
+      return 'success';
+    }
+    return _.isEmpty(this.state.attributeDiff) ? 'disabled' : 'enabled';
+  }
 
-
-    if (this.project$ || this.event$) {
+  componentDidMount() {
+    if (this.props.params.id) {
       this.subscriptions = [
-        dataLoading
-        .subscribe(({ project, event }) => {
+        observeEvent(this.props.params.id)
+        .observable
+        .subscribe((event) => {
           let descState = EditorState.createEmpty();
 
           if (event) {
@@ -115,7 +103,6 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
 
           this.setState({
             descState,
-            project: project ? project.data : null,
             event: event ? event.data : null,
           });
         })
@@ -171,31 +158,37 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
       return;
     }
 
+    let savingPromise;
+
+
     if (this.state.event) {
+      savingPromise = updateEvent(this.state.event.id, this.state.attributeDiff);
       this.setState({ saving: true });
-      updateEvent(this.state.event.id, this.state.attributeDiff)
-      .then(() => {
-        this.setState({ saving: false });
-      })
-      .catch((errors) => {
-        // TODO: Update state with errors from the API
-      });
-    } else if (this.state.project) {
-      this.setState({ saving: true });
-      saveEvent(this.state.project.id, this.state.attributeDiff)
+
+    } else if (this.props.project) {
+      savingPromise = saveEvent(this.props.project.id, this.state.attributeDiff)
       .then((response) => {
         this.props.router.push(`/admin/projects/${this.props.params.slug}/events/${response.data.id}`);
-      })
-      .then(() => {
-        this.setState({ saving: false });
+        return response;
       });
     }
+
+    this.setState({ saving: true, saved: false });
+    savingPromise
+    .catch((e) => {
+      this.setState({ saving: false, errors: e.json.errors });
+    })
+    .then((response) => {
+      this.setState({ saving: false, saved: true, attributeDiff: {}, event: response.data });
+    });
   }
 
   render() {
     const eventAttrs = this.state.event
     ?  { ...this.state.event.attributes, ...this.state.attributeDiff }
     : { ...this.state.attributeDiff };
+
+    const submitState = this.getSubmitState();
 
     return (
       <div>
@@ -214,7 +207,7 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
               value={this.props.tFunc(eventAttrs.title_multiloc)}
               onChange={this.createMultilocUpdater('title_multiloc')}
             />
-            <Error text={this.state.errors.title.join(', ')} />
+            <Error apiErrors={this.state.errors.title_multiloc} />
           </FieldWrapper>
 
           <FieldWrapper>
@@ -225,7 +218,7 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
               value={this.props.tFunc(eventAttrs.location_multiloc)}
               onChange={this.createMultilocUpdater('location_multiloc')}
             />
-            <Error text={this.state.errors.location.join(', ')} />
+            <Error apiErrors={this.state.errors.location_multiloc} />
           </FieldWrapper>
 
           <FieldWrapper>
@@ -247,11 +240,21 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
               error=""
               onChange={this.handleDescChange}
             />
-            <Error text={this.state.errors.description.join(', ')} />
+            <Error apiErrors={this.state.errors.description_multiloc} />
           </FieldWrapper>
 
-          <Button loading={this.state.saving} ><FormattedMessage {...messages.saveButtonLabel} /></Button>
-        </form>
+          <SubmitWrapper
+            loading={this.state.saving}
+            status={submitState}
+            messages={{
+              buttonSave: messages.saveButtonLabel,
+              buttonError: messages.saveErrorLabel,
+              buttonSuccess: messages.saveSuccessLabel,
+              messageError: messages.saveErrorMessage,
+              messageSuccess: messages.saveSuccessMessage,
+            }}
+          />
+      </form>
       </div>
     );
   }
