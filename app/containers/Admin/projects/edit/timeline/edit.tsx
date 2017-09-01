@@ -43,10 +43,10 @@ type Props = {
   locale: string,
   tFunc: Function,
   router: any,
+  project: IProjectData | null;
 };
 
 interface State {
-  project: IProjectData | null;
   phase: IPhaseData | null;
   attributeDiff: IUpdatedPhase;
   errors: {
@@ -59,14 +59,12 @@ interface State {
 }
 
 class AdminProjectTimelineEdit extends React.Component<Props, State> {
-  project$: IStream<IProject>;
   phase$: IStream<IPhase>;
   subscriptions: Rx.Subscription[];
 
   constructor(props) {
     super(props);
     this.state = {
-      project: null,
       phase: null,
       attributeDiff: {},
       errors: {},
@@ -75,9 +73,6 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       descState: EditorState.createEmpty(),
       saved: false,
     };
-    if (props.params.slug) {
-      this.project$ = observeProject(props.params.slug);
-    }
     if (props.params.id) {
       this.phase$ = observePhase(props.params.id);
     }
@@ -98,19 +93,13 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
     let dataLoading;
     if (this.phase$) {
       dataLoading = Rx.Observable.combineLatest(
-        this.project$.observable,
         this.phase$.observable,
-        (project, phase) => ({ project, phase })
-      );
-    } else {
-      dataLoading = Rx.Observable.combineLatest(
-        this.project$.observable,
-        (project) => ({ project })
+        (phase) => ({ phase })
       );
     }
 
 
-    if (this.project$ || this.phase$) {
+    if (this.phase$) {
       this.subscriptions = [
         dataLoading
         .subscribe(({ project, phase }) => {
@@ -124,7 +113,6 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
 
           this.setState({
             descState,
-            project: project ? project.data : null,
             phase: phase ? phase.data : null,
           });
         })
@@ -183,10 +171,11 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
 
     if (this.state.phase) {
       savingPromise = updatePhase(this.state.phase.id, this.state.attributeDiff);
-    } else if (this.state.project) {
-      savingPromise = savePhase(this.state.project.id, this.state.attributeDiff)
+    } else if (this.props.project) {
+      savingPromise = savePhase(this.props.project.id, this.state.attributeDiff)
       .then((response) => {
         this.props.router.push(`/admin/projects/${this.props.params.slug}/timeline/${response.data.id}`);
+        return response;
       });
     }
 
@@ -195,8 +184,8 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
     .catch((e) => {
       this.setState({ saving: false, errors: e.json.errors });
     })
-    .then(() => {
-      this.setState({ saving: false, saved: true, attributeDiff: {} });
+    .then((response) => {
+      this.setState({ saving: false, saved: true, attributeDiff: {}, phase: response.data });
     });
   }
 

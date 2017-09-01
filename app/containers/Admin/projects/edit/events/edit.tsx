@@ -44,10 +44,10 @@ type Props = {
   locale: string,
   tFunc: Function,
   router: any,
+  project: IProjectData | null;
 };
 
 interface State {
-  project: IProjectData | null;
   event: EventData | null;
   attributeDiff: UpdatedEvent;
   errors: {
@@ -60,14 +60,12 @@ interface State {
 }
 
 class AdminProjectEventEdit extends React.Component<Props, State> {
-  project$: IStream<IProject>;
   event$: IStream<Event>;
   subscriptions: Rx.Subscription[];
 
   constructor(props) {
     super(props);
     this.state = {
-      project: null,
       event: null,
       attributeDiff: {},
       errors: {},
@@ -76,9 +74,6 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
       descState: EditorState.createEmpty(),
       saved: false,
     };
-    if (props.params.slug) {
-      this.project$ = observeProject(props.params.slug);
-    }
     if (props.params.id) {
       this.event$ = observeEvent(props.params.id);
     }
@@ -99,19 +94,13 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
     let dataLoading;
     if (this.event$) {
       dataLoading = Rx.Observable.combineLatest(
-        this.project$.observable,
         this.event$.observable,
-        (project, event) => ({ project, event })
-      );
-    } else {
-      dataLoading = Rx.Observable.combineLatest(
-        this.project$.observable,
-        (project) => ({ project })
+        (event) => ({ event })
       );
     }
 
 
-    if (this.project$ || this.event$) {
+    if (this.event$) {
       this.subscriptions = [
         dataLoading
         .subscribe(({ project, event }) => {
@@ -125,7 +114,6 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
 
           this.setState({
             descState,
-            project: project ? project.data : null,
             event: event ? event.data : null,
           });
         })
@@ -188,10 +176,11 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
       savingPromise = updateEvent(this.state.event.id, this.state.attributeDiff);
       this.setState({ saving: true });
 
-    } else if (this.state.project) {
-      savingPromise = saveEvent(this.state.project.id, this.state.attributeDiff)
+    } else if (this.props.project) {
+      savingPromise = saveEvent(this.props.project.id, this.state.attributeDiff)
       .then((response) => {
         this.props.router.push(`/admin/projects/${this.props.params.slug}/events/${response.data.id}`);
+        return response;
       });
     }
 
@@ -200,8 +189,8 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
     .catch((e) => {
       this.setState({ saving: false, errors: e.json.errors });
     })
-    .then(() => {
-      this.setState({ saving: false, saved: true, attributeDiff: {} });
+    .then((response) => {
+      this.setState({ saving: false, saved: true, attributeDiff: {}, event: response.data });
     });
   }
 
