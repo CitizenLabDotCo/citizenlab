@@ -40,6 +40,7 @@ import Upload from 'components/UI/Upload';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import FieldWrapper from 'components/admin/FieldWrapper';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // Style
 const FormWrapper = styled.form`
@@ -92,18 +93,19 @@ type Props = {
   router: any,
 };
 
-type State = {
-  loading: boolean,
-  projectData: IProjectData | { id: null, attributes: {}},
-  uploadedImages: any,
-  uploadedHeader: string | null,
-  editorState: EditorState,
-  projectImages: IProjectImageData[],
-  projectAttributesDiff: IProjectAttributes,
+interface State {
+  loading: boolean;
+  projectData: IProjectData | { id: null, attributes: {}};
+  uploadedImages: any;
+  uploadedHeader: string | null;
+  editorState: EditorState;
+  projectImages: IProjectImageData[];
+  projectAttributesDiff: IProjectAttributes;
   errors: {
     [fieldName: string]: API.Error[]
-  }
-};
+  };
+  saved: boolean;
+}
 
 class AdminProjectEditGeneral extends React.Component<Props, State> {
   subscription: Rx.Subscription;
@@ -120,7 +122,18 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
       projectImages: [],
       projectAttributesDiff: {},
       errors: {},
+      saved: false,
     };
+  }
+
+  getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
+    if (!_.isEmpty(this.state.errors)) {
+      return 'error';
+    }
+    if (this.state.saved && _.isEmpty(this.state.projectAttributesDiff)) {
+      return 'success';
+    }
+    return _.isEmpty(this.state.projectAttributesDiff) ? 'disabled' : 'enabled';
   }
 
   updateSubscription = (slug) => {
@@ -223,25 +236,30 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
     }
   }
 
-  handleSaveErrors = ({ json: { errors } }) => {
-    this.setState({ errors });
+  handleSaveErrors = (errors) => {
+    console.log(errors);
+    this.setState({ errors: errors.json.errors });
   }
 
   saveProject = (event) => {
     event.preventDefault();
-
     const { projectAttributesDiff } = this.state;
 
     if (!_.isEmpty(projectAttributesDiff) && this.state.projectData.id) {
-      this.setState({ loading: true });
+      this.setState({ loading: true, saved: true });
       updateProject(this.state.projectData.id, projectAttributesDiff)
-      .catch(this.handleSaveErrors);
+      .catch(this.handleSaveErrors)
+      .then(() => {
+        this.setState({ loading: false, saved: true });
+      });
     } else if (!_.isEmpty(projectAttributesDiff)) {
+      this.setState({ loading: true, saved: true });
       postProject(projectAttributesDiff)
+      .catch(this.handleSaveErrors)
       .then((project: IProject) => {
         this.props.router.push(`/admin/projects/${project.data.attributes.slug}/edit`);
-      })
-      .catch(this.handleSaveErrors);
+        this.setState({ loading: false, saved: true });
+      });
     }
   }
 
@@ -250,6 +268,8 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
     const { userLocale, tFunc } = this.props;
 
     const projectAttrs = { ...projectData.attributes, ...projectAttributesDiff } as IProjectAttributes;
+
+    const submitState = this.getSubmitState();
 
     return (
       <FormWrapper onSubmit={this.saveProject}>
@@ -319,9 +339,17 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
           />
         </FieldWrapper>
 
-        <Button loading={loading}>
-          <FormattedMessage {...messages.saveProject} />
-        </Button>
+        <SubmitWrapper
+          loading={loading}
+          status={submitState}
+          messages={{
+            buttonSave: messages.saveProject,
+            buttonError: messages.saveError,
+            buttonSuccess: messages.saveSuccess,
+            messageError: messages.saveErrorMessage,
+            messageSuccess: messages.saveSuccessMessage,
+          }}
+        />
       </FormWrapper>
     );
   }

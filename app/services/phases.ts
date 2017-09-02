@@ -38,7 +38,7 @@ export interface IPhases {
   data: IPhaseData[];
 }
 
-export interface IUpdatedPhase {
+export interface IUpdatedPhaseProperties {
   project_id?: string;
   title_multiloc?: { [key: string]: string };
   description_multiloc?: { [key: string]: string };
@@ -54,11 +54,11 @@ export function observePhase(phaseID: string, streamParams: IStreamParams<IPhase
   return streams.create<IPhase>({ apiEndpoint: `${apiEndpoint}/${phaseID}`, ...streamParams });
 }
 
-export function updatePhase(phaseId: string, object: IUpdatedPhase) {
+export function updatePhase(phaseId: string, object: IUpdatedPhaseProperties) {
   return streams.update<IPhase>(`${apiEndpoint}/${phaseId}`, phaseId, { phase: object });
 }
 
-export function addPhase(projectId: string, object: IUpdatedPhase) {
+export function addPhase(projectId: string, object: IUpdatedPhaseProperties) {
   const apiEndpoint = `${API_PATH}/projects/${projectId}/phases`;
   const bodyData = { phase: object };
   return streams.add<IPhase>(apiEndpoint, bodyData);

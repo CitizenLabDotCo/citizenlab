@@ -100,9 +100,8 @@ export default class UsersTable extends React.PureComponent<Props, State> {
       Rx.Observable.combineLatest(
         this.sortBy$.distinctUntilChanged(),
         this.search$.distinctUntilChanged(),
-        this.pageNumber$,
-        (sortBy, searchValue, pageNumber) => ({ sortBy, searchValue, pageNumber })
-      ).switchMap(({ sortBy, searchValue, pageNumber }) => {
+        this.pageNumber$
+      ).switchMap(([sortBy, searchValue, pageNumber]) => {
         const searchChanged = (searchValue !== this.state.searchValue);
         const sortChanged = (sortBy !== this.state.sortBy);
         pageNumber = (searchChanged || sortChanged ? 1 : pageNumber);

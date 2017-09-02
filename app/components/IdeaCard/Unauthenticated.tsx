@@ -1,14 +1,12 @@
-import React from 'react';
+import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { browserHistory } from 'react-router';
 import { darken } from 'polished';
 import Button from 'components/UI/Button';
 import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 
-import lockImg from './lock.svg';
-import messages from '../../messages';
+const lockImg = require('./img/lock.svg');
 
 // Using this spring interpolation function from https://medium.com/@dtinth/spring-animation-in-css-2039de6e1a03
 // const spring = (t) => -0.5 * (2.71828 ** (-6 * t)) * (-2 * (2.71828 ** (6 * t)) + Math.sin(12 * t) + 2 * Math.cos(12 * t))
@@ -80,33 +78,34 @@ const RegisterLink = styled.span`
   }
 `;
 
-class UnAuthenticated extends React.PureComponent {
+type Props = {};
 
+type State = {};
+
+export const namespace = 'IdeaCard/unauthenticated';
+
+export default class Unauthenticated extends React.PureComponent<Props, State> {
   goToLogin = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    this.props.push('sign-in');
+    browserHistory.push('sign-in');
   }
 
   goToRegister = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    this.props.push('/register');
+    browserHistory.push('/register');
   }
 
-  render = () => (
-    <Container>
-      <Lock><img src={lockImg} alt="locked" /></Lock>
-      <HorizontalContainer>
-        <Button onClick={this.goToLogin}><FormattedMessage {...messages.login} /></Button>
-        <RegisterLink onClick={this.goToRegister}><FormattedMessage {...messages.register} /></RegisterLink>
-      </HorizontalContainer>
-    </Container>
-  );
+  render() {
+    return (
+      <Container>
+        <Lock><img src={lockImg} alt="locked" /></Lock>
+        <HorizontalContainer>
+          <Button onClick={this.goToLogin}><FormattedMessage {...messages.login} /></Button>
+          <RegisterLink onClick={this.goToRegister}><FormattedMessage {...messages.register} /></RegisterLink>
+        </HorizontalContainer>
+      </Container>
+    );
+  }
 }
-
-UnAuthenticated.propTypes = {
-  push: PropTypes.func.isRequired,
-};
-
-export default connect(null, { push })(UnAuthenticated);

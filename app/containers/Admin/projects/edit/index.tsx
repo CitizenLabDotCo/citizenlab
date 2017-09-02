@@ -107,7 +107,7 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
       <div>
         <Link to="/admin/projects">go back</Link>
         <TabbedResource {...tabbedProps}>
-          {this.props.children}
+          {React.cloneElement(this.props.children as React.ReactElement<any>, { project })}
         </TabbedResource>
       </div>
     );

@@ -83,6 +83,10 @@ const ProjectCard = styled.li`
     justify-content: center;
     margin: 0;
     padding: 1rem;
+
+    svg {
+      max-height: 3rem;
+    }
   }
 `;
 

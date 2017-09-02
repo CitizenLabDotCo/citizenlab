@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 import { stateStream, IStateStream } from 'services/state';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import broadcast from 'services/broadcast';
+import eventEmitter from 'utils/eventEmitter';
 import { namespace as newIdeaFormNamespace } from './NewIdeaForm';
 import messages from './messages';
 import styled from 'styled-components';
@@ -70,7 +70,7 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
   }
 
   handleOnSubmit = () => {
-    broadcast.emit(newIdeaFormNamespace, 'submit');
+    eventEmitter.emit(namespace, 'submit');
   }
 
   render() {
