@@ -1,3 +1,5 @@
+declare module '*.png';
+
 export interface IRelationship {
   id: string;
   type: string;

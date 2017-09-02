@@ -18,7 +18,7 @@ import Upload, { ExtendedImageFile } from 'components/UI/Upload';
 import Error from 'components/UI/Error';
 import { IOption } from 'typings';
 import { IStream } from 'utils/streams';
-import broadcast from 'services/broadcast';
+import eventEmitter from 'utils/eventEmitter';
 import { stateStream, IStateStream } from 'services/state';
 import { observeTopics, ITopics, ITopicData } from 'services/topics';
 import { observeProjects, IProjects, IProjectData } from 'services/projects';
@@ -119,13 +119,12 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
 
-      broadcast.observe(namespace).filter(value => value === 'submit').subscribe(this.handleOnSubmit),
+      eventEmitter.observe(ButtonBarNamespace, 'submit').subscribe(this.handleOnSubmit),
 
       Rx.Observable.combineLatest(
         this.topics$.observable,
-        this.projects$.observable,
-        (topics, projects) => ({ topics, projects })
-      ).subscribe(({ topics, projects }) => {
+        this.projects$.observable
+      ).subscribe(([topics, projects]) => {
         this.state$.next({
           topics: this.getOptions(topics),
           projects: this.getOptions(projects)

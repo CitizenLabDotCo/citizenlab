@@ -1,13 +1,14 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-import IdeaCard from 'components/IdeaCard';
+import IdeaCard, { namespace as ideaCardNamespace } from 'components/IdeaCard';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 import Modal from 'components/UI/Modal';
 import IdeasShow from 'containers/IdeasShow';
 import { Flex, Box } from 'grid-styled';
+import eventEmitter from 'utils/eventEmitter';
 import { stateStream, IStateStream } from 'services/state';
 import { IStream } from 'utils/streams';
 import { observeIdeas, IIdeas, IIdeaData } from 'services/ideas';
@@ -29,6 +30,13 @@ const LoadMoreButton = styled.button`
   }
 `;
 
+interface IAccumulator {
+  pageNumber: number;
+  ideas: any[];
+  filter: object;
+  hasMore: boolean;
+}
+
 type Props = {
   filter: { [key: string]: any };
   loadMoreEnabled?: boolean;
@@ -40,7 +48,7 @@ type State = {
   modalIdeaSlug: string | null;
 };
 
-const namespace = 'IdeaCards/index';
+export const namespace = 'IdeaCards/index';
 
 export default class IdeaCards extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
@@ -66,6 +74,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
 
   componentWillMount() {
     const filter = (_.isObject(this.props.filter) && !_.isEmpty(this.props.filter) ? this.props.filter : {});
+
     this.filterChange$ = new Rx.BehaviorSubject(filter);
 
     this.subscriptions = [
@@ -76,11 +85,16 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
         mergeJsonApiResources(state.ideas);
       }),
 
+      eventEmitter.observe(ideaCardNamespace, 'cardClick').subscribe(({ eventValue }) => {
+        const ideaId = eventValue;
+        this.openModal(ideaId);
+      }),
+
       Rx.Observable.combineLatest(
         this.filterChange$,
         this.loadMore$,
         (filter, loadMore) => ({ filter, loadMore })
-      ).mergeScan((acc: any, current) => {
+      ).mergeScan<any, IAccumulator>((acc, current) => {
         const filterChange = !_.isEqual(acc.filter, current.filter) || !current.loadMore;
         const pageNumber = (filterChange ? 1 : acc.pageNumber + 1);
 
@@ -99,7 +113,8 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
       }, {
         ideas: [],
         filter: {},
-        pageNumber: 1
+        pageNumber: 1,
+        hasMore: false
       }, 1).subscribe(({ ideas, hasMore }) => {
         this.state$.next({ ideas, hasMore });
       })
@@ -115,7 +130,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     }
   }
 
-  loadMoreIdeas = async () => {
+  loadMoreIdeas = () => {
     this.loadMore$.next(true);
   }
 
@@ -123,50 +138,42 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     this.state$.next({ modalIdeaSlug: null });
   }
 
-  openModal = (slug) => {
-    this.state$.next({ modalIdeaSlug: slug });
+  openModal = (modalIdeaSlug) => {
+    this.state$.next({ modalIdeaSlug });
   }
 
   render() {
     const { ideas, hasMore } = this.state;
     const { loadMoreEnabled } = this.props;
+    const showLoadmore = (loadMoreEnabled === true && hasMore === true);
 
-    console.log(ideas);
+    const loadMore = (showLoadmore ? (
+      <LoadMoreButton onClick={this.loadMoreIdeas}>
+        <FormattedMessage {...messages.loadMore} />
+      </LoadMoreButton>
+    ) : null);
 
-    const ideasList = ideas && (
+    const ideasList = (ideas ? (
       <IdeasList wrap={true} mx={-10}>
-        {ideas.map((idea) => {
-          const _openModal = () => this.openModal(idea.attributes.slug);
-
-          return (
-            <Box key={idea.id} w={[1, 1 / 2, 1 / 3]} px={10}>
-              <IdeaCard id={idea.id} onClick={_openModal} />
-            </Box>
-          );
-
-        })}
-        {loadMoreEnabled && hasMore &&
-          <LoadMoreButton onClick={this.loadMoreIdeas}>
-            <FormattedMessage {...messages.loadMore} />
-          </LoadMoreButton>
-        }
+        {ideas.map((idea) => (
+          <Box key={idea.id} w={[1, 1 / 2, 1 / 3]} px={10}>
+            <IdeaCard id={idea.id} />
+          </Box>
+        ))}
+        {loadMore}
       </IdeasList>
-    );
+    ) : null);
 
-    const modal = ideas && (
-      <Modal
-        opened={!!this.state.modalIdeaSlug}
-        close={this.closeModal}
-        url={`/ideas/${this.state.modalIdeaSlug}`}
-      >
+    const modal = (ideas ? (
+      <Modal opened={!!this.state.modalIdeaSlug} close={this.closeModal} url={`/ideas/${this.state.modalIdeaSlug}`}>
         <IdeasShow location={location} slug={this.state.modalIdeaSlug} />
       </Modal>
-    );
+    ) : null);
 
     return (
       <div>
         {ideasList}
-        {/* {modal} */}
+        {modal}
       </div>
     );
   }

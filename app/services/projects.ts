@@ -80,18 +80,6 @@ export function postProject(projectData: IProjectAttributes) {
 }
 
 export function updateProject(projectId, projectData: IProjectAttributes) {
-  /*
-  const bodyData = { project: projectData };
-  const httpOptions = { method: 'PATCH' };
-
-  return request(`${apiEndpoint}/${projectId}`, bodyData, httpOptions, null).then((project) => {
-    streams.update(projectId, project);
-    return project;
-  }).catch((e) => {
-    throw new Error('Error for updateProject() of service Projects');
-  });
-  */
-
   return streams.update(`${apiEndpoint}/${projectId}`, projectId, { project: projectData });
 }
 

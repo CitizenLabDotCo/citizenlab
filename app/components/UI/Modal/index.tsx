@@ -29,9 +29,7 @@ const ModalContent = styled(clickOutside)`
     margin-right: 0;
     padding: 0;
   `}
-
 `;
-
 
 const ModalContainer = styled.div`
   max-height: 100%;
@@ -73,10 +71,7 @@ const ModalContainer = styled.div`
         }
       }
     }
-
 `;
-
-
 
 const CloseButton = styled.div`
   color: #333;
@@ -102,9 +97,6 @@ type Props = {
   opened: boolean;
   url?: string;
   close: () => void;
-  clickCloseButton?: any;
-  clickOutsideModal?: any;
-  clickBack?: any;
 };
 
 type State = {};
@@ -167,18 +159,18 @@ class Modal extends React.PureComponent<Props, State> {
 
   handlePopstateEvent = () => {
     if (location.href === this.parentUrl) {
-      this.props.clickBack({extra: {url: this.props.url}});
+      (this.props as any).clickBack({ extra: { url: this.props.url } });
       this.closeModal();
     }
   }
 
   clickOutsideModal = () => {
-    this.props.clickOutsideModal({extra: {url: this.props.url}});
+    (this.props as any).clickOutsideModal({ extra: { url: this.props.url } });
     this.closeModal();
   }
 
   clickButton = () => {
-    this.props.clickCloseButton({extra: {url: this.props.url}});
+    (this.props as any).clickCloseButton({ extra: { url: this.props.url } });
     this.closeModal();
   }
 
@@ -204,4 +196,4 @@ class Modal extends React.PureComponent<Props, State> {
   }
 }
 
-export default injectTracks(tracks)(Modal);
+export default ((injectTracks(tracks)(Modal) as any) as typeof Modal);

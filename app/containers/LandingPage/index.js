@@ -225,24 +225,26 @@ class LandingPage extends React.Component {
               </SectionContainer>
             </Section>
 
-            <Section>
-              <SectionHeader>
-                <SectionTitle>
-                  <FormattedMessage {...messages.projectsFrom} values={{ name: tFunc(tenantName) }} />
-                </SectionTitle>
-                <ViewAllButton to="/projects">
-                  <ViewAllButtonText>
-                    <FormattedMessage {...messages.viewProjects} />
-                  </ViewAllButtonText>
-                  <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
-                    <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
-                  </ViewAllButtonIcon>
-                </ViewAllButton>
-              </SectionHeader>
-              <SectionContainer>
-                {projectsList}
-              </SectionContainer>
-            </Section>
+            {projectsList &&
+              <Section>
+                <SectionHeader>
+                  <SectionTitle>
+                    <FormattedMessage {...messages.projectsFrom} values={{ name: tFunc(tenantName) }} />
+                  </SectionTitle>
+                  <ViewAllButton to="/projects">
+                    <ViewAllButtonText>
+                      <FormattedMessage {...messages.viewProjects} />
+                    </ViewAllButtonText>
+                    <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
+                      <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
+                    </ViewAllButtonIcon>
+                  </ViewAllButton>
+                </SectionHeader>
+                <SectionContainer>
+                  {projectsList}
+                </SectionContainer>
+              </Section>
+            }
           </ContentContainer>
 
           <Footer>
