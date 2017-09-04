@@ -70,24 +70,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.helmetDescription',
     defaultMessage: 'Dashboard for activities on the platform',
   },
-  previousInterval: {
-    id: 'app.containers.AdminPage.DashboardPage.previousInterval',
-    defaultMessage: `Previous {interval, select,
-      day {day}
-      month {month}
-      week {week}
-      year {year}
-    }`,
-  },
-  nextInterval: {
-    id: 'app.containers.AdminPage.DashboardPage.nextInterval',
-    defaultMessage: `Next {interval, select,
-      day {day}
-      month {month}
-      week {week}
-      year {year}
-    }`,
-  },
   male: {
     id: 'app.containers.AdminPage.DashboardPage.male',
     defaultMessage: 'male',
