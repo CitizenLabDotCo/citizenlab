@@ -54,22 +54,22 @@ workflows:
     jobs:
       - install
       - lint_js:
-        requires:
-          - install
+          requires:
+            - install
       - lint_ts:
-        requires:
-          - install
+          requires:
+            - install
       - deploy_demo:
-        requires:
-          - lint_js
-          - lint_ts
-        filters:
-          branches:
-            only: master
+          requires:
+            - lint_js
+            - lint_ts
+          filters:
+            branches:
+              only: master
       - deploy_crowdin:
-        requires:
-          - lint_js
-          - lint_ts
-        filters:
-          branches:
-            only: master
+          requires:
+            - lint_js
+            - lint_ts
+          filters:
+            branches:
+              only: master
