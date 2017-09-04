@@ -57,10 +57,10 @@ workflows:
         requires:
           - install
       - lint_ts:
-        required:
+        requires:
           - install
       - deploy_demo:
-        required:
+        requires:
           - lint_js
           - lint_ts
         filters:
@@ -68,7 +68,7 @@ workflows:
               only:
                 - master
       - deploy_crowdin:
-        required:
+        requires:
           - lint_js
           - lint_ts
         filters:
