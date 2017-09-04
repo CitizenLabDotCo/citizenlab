@@ -22,17 +22,17 @@ const HEIGHT = {
   small: 35,
   medium: 45,
   large: 57,
-}
+};
 const FONT_SIZE = {
   small: 14,
   medium: 18,
   large: 23,
-}
+};
 const GUTTER = {
   small: 3,
   medium: 5,
   large: 8,
-}
+};
 
 const VotesContainer = styled.div`
   display: flex;
@@ -54,7 +54,7 @@ const VoteButton: any = styled.button`
   align-items: center;
   transition: background-color 100ms ease-in-out;
   outline: none;
-`
+`;
 
 const UpvoteButton = VoteButton.extend`
   ${props => props.active && `background: ${GREEN};`}
@@ -86,7 +86,7 @@ type Props = {
   cancelVote: () => void,
   className?: string,
   beforeVote?: (string: 'up' | 'down') => boolean,
-}
+};
 
 class Votes extends React.PureComponent<Props> {
 
@@ -104,15 +104,15 @@ class Votes extends React.PureComponent<Props> {
 
   onClickVote = (mode) => {
     if (!this.props.beforeVote || this.props.beforeVote(mode)) {
-      if (this.props.userVoteMode === mode){
+      if (this.props.userVoteMode === mode) {
         this.props.cancelVote();
       } else {
-        this.props.vote(mode)
+        this.props.vote(mode);
       }
     }
   }
 
-  render(){
+  render() {
     const { upvotesCount, downvotesCount, userVoteMode, size, className } = this.props;
     return (
       <VotesContainer className={className}>
@@ -125,7 +125,7 @@ class Votes extends React.PureComponent<Props> {
           <VoteCount>{downvotesCount}</VoteCount>
         </DownvoteButton>
       </VotesContainer>
-    )
+    );
   }
 }
 
@@ -135,8 +135,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch, { ideaId }) => ({
-  vote: (mode) => dispatch(ideaVoteRequest(ideaId, mode)),
   dispatch,
+  vote: (mode) => dispatch(ideaVoteRequest(ideaId, mode)),
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
@@ -151,6 +151,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     userVoteMode: userVote && userVote.getIn(['attributes', 'mode']),
     size: ownProps.size || 'medium',
   };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Votes);

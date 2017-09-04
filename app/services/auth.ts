@@ -42,11 +42,11 @@ export function signUp(
 ) {
   const bodyData = {
     user: {
-      first_name: firstName,
-      last_name: lastName,
       email,
       password,
       locale,
+      first_name: firstName,
+      last_name: lastName,
       gender: selectedGender,
       birthyear: selectedYearOfBirth,
       domicile: selectedAreaId,
