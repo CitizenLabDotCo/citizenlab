@@ -50,7 +50,7 @@ jobs:
 
 workflows:
   version: 2
-  build:
+  build-and-deploy:
     jobs:
       - install
       - lint_js:
@@ -64,14 +64,12 @@ workflows:
           - lint_js
           - lint_ts
         filters:
-            branches:
-              only:
-                - master
+          branches:
+            only: master
       - deploy_crowdin:
         requires:
           - lint_js
           - lint_ts
         filters:
-            branches:
-              only:
-                - master
+          branches:
+            only: master
