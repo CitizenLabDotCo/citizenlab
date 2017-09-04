@@ -23,16 +23,22 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
   lint_js:
+    docker:
+      - image: joecridge1/node8-awscli-gitlfs-gulp
     working_directory: ~/cl2-front
     steps:
       - run: npm run lint:js --silent
 
   lint_ts:
+    docker:
+      - image: joecridge1/node8-awscli-gitlfs-gulp
     working_directory: ~/cl2-front
     steps:
       - run: npm run lint:ts --silent
 
   deploy_demo:
+    docker:
+      - image: joecridge1/node8-awscli-gitlfs-gulp
     working_directory: ~/cl2-front
     steps:
       - run: npm run build
@@ -41,6 +47,8 @@ jobs:
         command: aws s3 sync build/ s3://cl2-front-staging/ --delete --acl public-read
 
   deploy_crowdin:
+    docker:
+      - image: joecridge1/node8-awscli-gitlfs-gulp
     working_directory: ~/cl2-front
     steps:
       - run: CROWDIN_PLUGIN_ENABLED=true npm run build
