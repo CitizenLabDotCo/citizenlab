@@ -8,7 +8,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   alreadyRegistered: {
     id: 'app.containers.UsersShowPage.alreadyRegistered',
-    defaultMessage: 'Already Registerd?',
+    defaultMessage: 'Already Registered?',
   },
   header: {
     id: 'app.containers.UsersShowPage.header',

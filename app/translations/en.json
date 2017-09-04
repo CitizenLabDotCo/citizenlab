@@ -455,7 +455,7 @@
   "app.containers.UsersPasswordReset.sent": "Success!",
   "app.containers.UsersPasswordReset.submit": "Submit",
   "app.containers.UsersShowPage.ButtonRegister": "Create Account",
-  "app.containers.UsersShowPage.alreadyRegistered": "Already Registerd?",
+  "app.containers.UsersShowPage.alreadyRegistered": "Already Registered?",
   "app.containers.UsersShowPage.forgotPassword": "Forgot your password?",
   "app.containers.UsersShowPage.header": "Create new account",
   "app.containers.UsersShowPage.helmetDescription": "Show user profile",
