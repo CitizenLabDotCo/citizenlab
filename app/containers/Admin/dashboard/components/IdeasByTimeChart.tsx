@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { injectIntl } from 'react-intl';
 import { withTheme } from 'styled-components'
 import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { observeIdeasByTime } from 'services/stats';
+import { ideasByTimeStream } from 'services/stats';
 import messages from '../messages';
 
 
@@ -57,7 +57,7 @@ class IdeasByTimeChart extends React.PureComponent<Props, State> {
   resubscribe(startAt=this.props.startAt, endAt=this.props.endAt, resolution=this.props.resolution) {
     if (this.serieObservable) this.serieObservable.unsubscribe();
 
-    this.serieObservable = observeIdeasByTime({
+    this.serieObservable = ideasByTimeStream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,

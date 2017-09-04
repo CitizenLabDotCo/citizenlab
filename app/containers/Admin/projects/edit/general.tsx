@@ -21,17 +21,19 @@ import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 // Services
 import { getBase64 } from 'services/image_tools';
 import {
-  deleteProjectImage,
-  getProjectImages,
-  IProjectAttributes,
+  IUpdatedProjectProperties,
   IProject,
   IProjectData,
-  IProjectImageData,
-  observeProject,
-  postProject,
+  projectStream,
+  addProject,
   updateProject,
-  uploadProjectImage,
 } from 'services/projects';
+import {
+  IProjectImageData,
+  projectImagesStream,
+  addProjectImage,
+  deleteProjectImage
+} from 'services/projectImages';
 
 // Components
 import Input from 'components/UI/Input';
@@ -48,7 +50,6 @@ const FormWrapper = styled.form`
     max-width: 100%;
   }
 `;
-
 
 const ProjectImages = styled.div`
   display: flex;
@@ -100,14 +101,14 @@ interface State {
   uploadedHeader: string | null;
   editorState: EditorState;
   projectImages: IProjectImageData[];
-  projectAttributesDiff: IProjectAttributes;
+  projectAttributesDiff: IUpdatedProjectProperties;
   errors: {
     [fieldName: string]: API.Error[]
   };
   saved: boolean;
 }
 
-class AdminProjectEditGeneral extends React.Component<Props, State> {
+class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
   subscription: Rx.Subscription;
 
   constructor() {
@@ -137,14 +138,12 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
   }
 
   updateSubscription = (slug) => {
-    this.subscription = observeProject(slug).observable
-    .switchMap((project) => {
-      return getProjectImages(project.data.id).observable.map((images) => ({
+    this.subscription = projectStream(slug).observable.switchMap((project) => {
+      return projectImagesStream(project.data.id).observable.map((images) => ({
         projectData: project.data,
         projectImages: images.data,
       }));
-    })
-    .subscribe(({ projectData, projectImages }) => {
+    }).subscribe(({ projectData, projectImages }) => {
       const blocksFromHtml = convertFromHTML(projectData.attributes.description_multiloc[this.props.userLocale]);
       const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
 
@@ -190,7 +189,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
   }
 
   changeDesc = (editorState: EditorState): void => {
-    const projectAttrs = { ...this.state.projectData.attributes, ...this.state.projectAttributesDiff } as IProjectAttributes;
+    const projectAttrs = { ...this.state.projectData.attributes, ...this.state.projectAttributesDiff } as IUpdatedProjectProperties;
 
 
     _.set(projectAttrs, `description_multiloc.${this.props.userLocale}`, draftjsToHtml(convertToRaw(editorState.getCurrentContent())));
@@ -215,7 +214,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
     const { projectData, projectImages } = this.state;
     const base64 = await getBase64(image) as string;
     if (projectData) {
-      uploadProjectImage(projectData.id, base64).then((response: any) => {
+      addProjectImage(projectData.id, base64).then((response: any) => {
         projectImages.push(response.data);
 
         this.setState({ projectImages });
@@ -254,12 +253,11 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
       });
     } else if (!_.isEmpty(projectAttributesDiff)) {
       this.setState({ loading: true, saved: true });
-      postProject(projectAttributesDiff)
-      .catch(this.handleSaveErrors)
-      .then((project: IProject) => {
+
+      addProject(projectAttributesDiff).then((project: IProject) => {
         this.props.router.push(`/admin/projects/${project.data.attributes.slug}/edit`);
         this.setState({ loading: false, saved: true });
-      });
+      }).catch(this.handleSaveErrors);
     }
   }
 
@@ -267,7 +265,7 @@ class AdminProjectEditGeneral extends React.Component<Props, State> {
     const { projectData, uploadedImages, editorState, uploadedHeader, loading, projectImages, projectAttributesDiff } = this.state;
     const { userLocale, tFunc } = this.props;
 
-    const projectAttrs = { ...projectData.attributes, ...projectAttributesDiff } as IProjectAttributes;
+    const projectAttrs = { ...projectData.attributes, ...projectAttributesDiff } as IUpdatedProjectProperties;
 
     const submitState = this.getSubmitState();
 
@@ -359,4 +357,4 @@ const mapStateToProps = createStructuredSelector({
   userLocale: makeSelectLocale(),
 });
 
-export default injectTFunc(injectIntl(connect(mapStateToProps)(withRouter(AdminProjectEditGeneral))));
+export default ((injectTFunc(injectIntl(connect(mapStateToProps)(withRouter(AdminProjectEditGeneral)))) as any) as typeof AdminProjectEditGeneral);

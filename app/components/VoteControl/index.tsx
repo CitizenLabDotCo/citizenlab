@@ -1,12 +1,16 @@
 import * as React from 'react';
-import styled from 'styled-components';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { darken } from 'polished';
+import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
 import Icon from 'components/UI/Icon';
-
-import { selectIdea, selectUserVote } from './selectors';
-import { ideaVoteRequest, cancelIdeaVoteRequest } from './actions';
+import { darken } from 'polished';
+import { state, IStateStream } from 'services/state';
+import { IStream } from 'utils/streams';
+import styled from 'styled-components';
+import auth from 'services/auth';
+import eventEmitter from 'utils/eventEmitter';
+import { ideaStream, IIdea } from 'services/ideas';
+import { userStream, IUser } from 'services/users';
+import { votesStream, addVote, deleteVote, IIdeaVote, IIdeaVoteData } from 'services/ideaVotes';
 
 const BACKGROUND = '#F8F8F8';
 const FOREGROUND = '#6B6B6B';
@@ -22,17 +26,17 @@ const HEIGHT = {
   small: 35,
   medium: 45,
   large: 57,
-}
+};
 const FONT_SIZE = {
   small: 14,
   medium: 18,
   large: 23,
-}
+};
 const GUTTER = {
   small: 3,
   medium: 5,
   large: 8,
-}
+};
 
 const VotesContainer = styled.div`
   display: flex;
@@ -54,7 +58,7 @@ const VoteButton: any = styled.button`
   align-items: center;
   transition: background-color 100ms ease-in-out;
   outline: none;
-`
+`;
 
 const UpvoteButton = VoteButton.extend`
   ${props => props.active && `background: ${GREEN};`}
@@ -78,17 +82,70 @@ const VoteCount = styled.div`
 `;
 
 type Props = {
-  upvotesCount: number,
-  downvotesCount: number,
-  userVoteMode: 'up' | 'down' | null | undefined,
-  size?: 'small' | 'medium' | 'large',
-  vote: (string) => void,
-  cancelVote: () => void,
-  className?: string,
-  beforeVote?: (string: 'up' | 'down') => boolean,
-}
+  ideaId: string;
+  size?: 'small' | 'medium' | 'large';
+};
 
-class Votes extends React.PureComponent<Props> {
+type State = {
+  authUser: IUser | null,
+  isAuthenticated: boolean;
+  upvotesCount: number;
+  downVotesCount: number;
+  myVote: IIdeaVoteData | null;
+};
+
+export const namespace = 'VoteControl/index';
+
+export default class Votes extends React.PureComponent<Props, State> {
+  state$: IStateStream<State>;
+  subscriptions: Rx.Subscription[];
+
+  componentWillMount() {
+    const { ideaId } = this.props;
+    const instanceNamespace = `${namespace}/${ideaId}`;
+    const initialState: State = {
+      authUser: null,
+      isAuthenticated: false,
+      upvotesCount: 0,
+      downVotesCount: 0,
+      myVote: null
+    };
+
+    const authUser$ = auth.observeAuthUser();
+    const isAuthenticated$ = authUser$.map(authUser => !_.isNull(authUser));
+    const idea$ = ideaStream(ideaId).observable;
+    const votes$ = votesStream(ideaId).observable;
+    const upvotesCount$ = idea$.map(idea => idea.data.attributes.upvotes_count);
+    const downVotesCount$ = idea$.map(idea => idea.data.attributes.downvotes_count);
+    const myVote$ = Rx.Observable.combineLatest(authUser$, votes$).map(([authUser, votes]) => {
+      if (authUser) {
+        const myVote = _(votes.data).find(vote => vote.relationships.user.data.id === authUser.data.id);
+        return (myVote ? myVote : null);
+      }
+
+      return null;
+    });
+
+    this.state$ = state.createStream<State>(instanceNamespace, instanceNamespace, initialState);
+
+    this.subscriptions = [
+      this.state$.observable.subscribe(state => this.setState(state)),
+
+      Rx.Observable.combineLatest(
+        authUser$,
+        isAuthenticated$,
+        upvotesCount$,
+        downVotesCount$,
+        myVote$
+      ).subscribe(([authUser, isAuthenticated, upvotesCount, downVotesCount, myVote]) => {
+        this.state$.next({ authUser, isAuthenticated, upvotesCount, downVotesCount, myVote });
+      })
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
 
   onClickUpvote = (event) => {
     event.preventDefault();
@@ -102,55 +159,40 @@ class Votes extends React.PureComponent<Props> {
     this.onClickVote('down');
   }
 
-  onClickVote = (mode) => {
-    if (!this.props.beforeVote || this.props.beforeVote(mode)) {
-      if (this.props.userVoteMode === mode){
-        this.props.cancelVote();
-      } else {
-        this.props.vote(mode)
+  onClickVote = (voteMode: 'up' | 'down') => {
+    const { ideaId } = this.props;
+    const { authUser, myVote } = this.state;
+
+    if (authUser !== null) {
+      if (myVote === null) {
+        addVote(ideaId, { user_id: authUser.data.id, mode: voteMode });
+      } else if (myVote.attributes.mode === voteMode) {
+        deleteVote(myVote.id);
+      } else if (myVote.attributes.mode !== voteMode) {
+        deleteVote(myVote.id);
+        addVote(ideaId, { user_id: authUser.data.id, mode: voteMode });
       }
+    } else {
+      eventEmitter.emit(namespace, 'unauthenticatedVoteClick', ideaId);
     }
   }
 
-  render(){
-    const { upvotesCount, downvotesCount, userVoteMode, size, className } = this.props;
+  render() {
+    const { size } = this.props;
+    const { isAuthenticated, upvotesCount, downVotesCount, myVote } = this.state;
+    const myVoteMode = (myVote ? myVote.attributes.mode : null);
+
     return (
-      <VotesContainer className={className}>
-        <UpvoteButton size={size} active={userVoteMode === 'up'} onClick={this.onClickUpvote}>
+      <VotesContainer>
+        <UpvoteButton size={size} active={myVoteMode === 'up'} onClick={this.onClickUpvote}>
           <VoteIcon name="upvote" />
           <VoteCount>{upvotesCount}</VoteCount>
         </UpvoteButton>
-        <DownvoteButton size={size} active={userVoteMode === 'down'} onClick={this.onClickDownvote}>
+        <DownvoteButton size={size} active={myVoteMode === 'down'} onClick={this.onClickDownvote}>
           <VoteIcon name="downvote" />
-          <VoteCount>{downvotesCount}</VoteCount>
+          <VoteCount>{downVotesCount}</VoteCount>
         </DownvoteButton>
       </VotesContainer>
-    )
+    );
   }
 }
-
-const mapStateToProps = createStructuredSelector({
-  idea: selectIdea,
-  userVote: selectUserVote,
-});
-
-const mapDispatchToProps = (dispatch, { ideaId }) => ({
-  vote: (mode) => dispatch(ideaVoteRequest(ideaId, mode)),
-  dispatch,
-});
-
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { idea, userVote } = stateProps;
-  const cancelVote = () => dispatchProps.dispatch(cancelIdeaVoteRequest(idea.get('id'), userVote.get('id')));
-  return {
-    ...ownProps,
-    ...dispatchProps,
-    cancelVote,
-    upvotesCount: idea.getIn(['attributes','upvotes_count']),
-    downvotesCount: idea.getIn(['attributes','downvotes_count']),
-    userVoteMode: userVote && userVote.getIn(['attributes', 'mode']),
-    size: ownProps.size || 'medium',
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Votes);

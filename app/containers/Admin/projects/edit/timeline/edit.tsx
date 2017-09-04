@@ -15,8 +15,8 @@ import { withRouter } from 'react-router';
 import { API } from 'typings.d';
 
 // Services
-import { observeProject, IProject, IProjectData } from 'services/projects';
-import { observePhase, updatePhase, addPhase, IPhase, IPhaseData, IUpdatedPhaseProperties } from 'services/phases';
+import { projectStream, IProject, IProjectData } from 'services/projects';
+import { phaseStream, updatePhase, addPhase, IPhase, IPhaseData, IUpdatedPhaseProperties } from 'services/phases';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { injectTFunc } from 'utils/containers/t/utils';
 
@@ -89,7 +89,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
   componentDidMount() {
     if (this.props.params.id) {
       this.subscriptions = [
-        observePhase(this.props.params.id)
+        phaseStream(this.props.params.id)
         .observable
         .subscribe((phase) => {
           let descState = EditorState.createEmpty();

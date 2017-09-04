@@ -2,20 +2,20 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import Icon from 'components/UI/Icon';
-import VoteControl from 'components/VoteControl';
 import Unauthenticated from 'components/IdeaCard/Unauthenticated';
 import { push } from 'react-router-redux';
 import { FormattedMessage, FormattedRelative } from 'react-intl';
 import { Link, browserHistory } from 'react-router';
-import { stateStream, IStateStream } from 'services/state';
+import { state, IStateStream } from 'services/state';
 import { IStream } from 'utils/streams';
 import auth from 'services/auth';
 import eventEmitter from 'utils/eventEmitter';
-import { observeIdea, IIdea } from 'services/ideas';
-import { observeUser, IUser } from 'services/users';
-import { observeIdeaImages, IIdeaImageData } from 'services/ideaImages';
+import { ideaStream, IIdea } from 'services/ideas';
+import { userStream, IUser } from 'services/users';
+import { ideaImagesStream, ideaImageStream, IIdeaImage, IIdeaImageData } from 'services/ideaImages';
 import { observeLocale } from 'services/locale';
 import { namespace as IdeaCardsNamespace } from 'components/IdeaCards';
+import VoteControl, { namespace as voteControlNamespace } from 'components/VoteControl';
 import styled, { keyframes } from 'styled-components';
 import messages from './messages';
 
@@ -134,14 +134,14 @@ const AuthorLink = styled.span`
 `;
 
 type Props = {
-  id: string;
+  ideaId: string;
 };
 
 type State = {
   idea: IIdea | null;
   author: IUser | null;
   isAuthenticated: boolean;
-  image: IIdeaImageData | null;
+  ideaImage: IIdeaImage | null;
   locale: string | null;
   showUnauthenticated: boolean;
   loading: boolean;
@@ -153,37 +153,45 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  componentWillMount() {
+    const { ideaId } = this.props;
+    const instanceNamespace = `${namespace}/${ideaId}`;
     const initialState: State = {
       idea: null,
       author: null,
       isAuthenticated: false,
-      image: null,
+      ideaImage: null,
       locale: null,
       showUnauthenticated: false,
       loading: true
     };
-    this.state$ = stateStream.observe<State>(namespace, namespace, initialState);
-    this.subscriptions = [];
-  }
 
-  componentWillMount() {
-    const ideaId = this.props.id;
+    const locale$ = observeLocale();
+    const isAuthenticated$ = auth.observeAuthUser().map(authUser => !_.isNull(authUser));
+    const idea$ = ideaStream(ideaId).observable.switchMap((idea) => {
+      const ideaImages = idea.data.relationships.idea_images.data;
+      const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
+      const authorId = idea.data.relationships.author.data.id;
+      const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
+      const user$ = userStream(authorId).observable;
+      return Rx.Observable.combineLatest(ideaImage$, user$).map(([ideaImage, author]) => ({ idea, ideaImage, author }));
+    });
+
+    this.state$ = state.createStream<State>(instanceNamespace, instanceNamespace, initialState);
 
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
 
+      eventEmitter.observe(voteControlNamespace, 'unauthenticatedVoteClick')
+        .filter(({ eventValue }) => eventValue === ideaId)
+        .subscribe(() => this.state$.next({ showUnauthenticated: true })),
+
       Rx.Observable.combineLatest(
-        observeLocale(),
-        auth.observeAuthUser().map(authUser => !_.isNull(authUser)),
-        observeIdeaImages(ideaId).observable.map(images => (images ? images.data[0] : null)),
-        observeIdea(ideaId).observable.switchMap((idea) => {
-          const authorId = idea.data.relationships.author.data.id;
-          return observeUser(authorId).observable.map(author => ({ idea, author }));
-        })
-      ).subscribe(([locale, isAuthenticated, image, { idea, author }]) => {
-        this.state$.next({ locale, isAuthenticated, image, idea, author, loading: false });
+        locale$,
+        isAuthenticated$,
+        idea$
+      ).subscribe(([locale, isAuthenticated, { idea, ideaImage, author }]) => {
+        this.state$.next({ locale, isAuthenticated, ideaImage, idea, author, loading: false });
       })
     ];
   }
@@ -193,29 +201,28 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
   }
 
   onCardClick = (event) => {
-    event.preventDefault();
-    eventEmitter.emit(namespace, 'cardClick', this.props.id);
+    const { idea } = this.state;
+
+    if (idea) {
+      event.preventDefault();
+      const ideaSlug = idea.data.attributes.slug;
+      eventEmitter.emit(namespace, 'ideaCardClick', ideaSlug);
+    }
   }
 
   onAuthorClick = (event) => {
-    if (this.state.author) {
+    const { author } = this.state;
+
+    if (author) {
       event.stopPropagation();
       event.preventDefault();
-      browserHistory.push(`/profile/${this.state.author.data.attributes.slug}`);
+      browserHistory.push(`/profile/${author.data.attributes.slug}`);
     }
-  }
-
-  onVoteClick = () => {
-    if (!this.state.isAuthenticated) {
-      this.state$.next({ showUnauthenticated: true });
-    }
-
-    return this.state.isAuthenticated;
   }
 
   render() {
-    const { idea, author, isAuthenticated, image, locale, showUnauthenticated, loading } = this.state;
-    const ideaImageUrl = (image ? image.attributes.versions.small : placeholder);
+    const { idea, author, isAuthenticated, ideaImage, locale, showUnauthenticated, loading } = this.state;
+    const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : placeholder);
     const authorName = (author ? `${author.data.attributes.first_name} ${author.data.attributes.last_name}` : null);
 
     return ((!loading && idea && author && locale) ? (
@@ -243,7 +250,7 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
         </IdeaContent>
         {!showUnauthenticated &&
           <IdeaFooter>
-            <VoteControl ideaId={idea.data.id} beforeVote={this.onVoteClick} />
+            <VoteControl ideaId={idea.data.id} />
           </IdeaFooter>
         }
         {showUnauthenticated && <Unauthenticated />}

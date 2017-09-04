@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { injectIntl } from 'react-intl';
 import { withTheme } from 'styled-components'
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { observeUsersByBirthyear } from 'services/stats';
+import { usersByBirthyearStream } from 'services/stats';
 import messages from '../messages';
 
 
@@ -62,7 +62,7 @@ class AgeChart extends React.PureComponent<Props, State> {
   resubscribe(startAt=this.props.startAt, endAt=this.props.endAt) {
     if (this.serieObservable) this.serieObservable.unsubscribe();
 
-    this.serieObservable = observeUsersByBirthyear({
+    this.serieObservable = usersByBirthyearStream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,

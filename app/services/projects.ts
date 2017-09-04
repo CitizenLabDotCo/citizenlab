@@ -32,29 +32,10 @@ export interface IProjectData {
   };
 }
 
-export interface IProjectAttributes {
+export interface IUpdatedProjectProperties {
   header_bg?: string | { small: string, medium: string, large: string};
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
-}
-
-export interface IProjectImageData {
-  id: string;
-  type: string;
-  attributes: {
-    versions: {
-      small: string,
-      medium: string,
-      large: string,
-    },
-    ordering: string | null,
-    created_at: string,
-    updated_at: string,
-  };
-}
-
-export interface IProjectImage {
-  data: IProjectImageData[];
 }
 
 export interface IProject {
@@ -65,35 +46,19 @@ export interface IProjects {
   data: IProjectData[];
 }
 
-export function observeProjects(streamParams: IStreamParams<IProjects> | null = null) {
-  return streams.create<IProjects>({ apiEndpoint, ...streamParams });
+export function projectsStream(streamParams: IStreamParams<IProjects> | null = null) {
+  return streams.get<IProjects>({ apiEndpoint, ...streamParams });
 }
 
-export function observeProject(slug, streamParams: IStreamParams<IProject> | null = null) {
-  return streams.create<IProject>({ apiEndpoint: `${apiEndpoint}/by_slug/${slug}`, ...streamParams });
+export function projectStream(slug, streamParams: IStreamParams<IProject> | null = null) {
+  return streams.get<IProject>({ apiEndpoint: `${apiEndpoint}/by_slug/${slug}`, ...streamParams });
 }
 
-export function postProject(projectData: IProjectAttributes) {
-  const bodyData = { project: projectData };
-  const httpOptions = { method: 'POST' };
-  return request(`${apiEndpoint}`, bodyData, httpOptions, null);
+export function addProject(projectData: IUpdatedProjectProperties) {
+  return streams.add<IProject>(apiEndpoint, { project: projectData });
 }
 
-export function updateProject(projectId, projectData: IProjectAttributes) {
+export function updateProject(projectId, projectData: IUpdatedProjectProperties) {
   return streams.update(`${apiEndpoint}/${projectId}`, projectId, { project: projectData });
 }
 
-export function getProjectImages(projectId: string, streamParams: IStreamParams<IProjectImage> | null = null) {
-  return streams.create<IProjectImage>({ apiEndpoint: `${apiEndpoint}/${projectId}/images`, ...streamParams });
-}
-
-export function uploadProjectImage(projectId, base64) {
-  const bodyData = { image: { image: base64 } };
-  const httpOptions = { method: 'POST' };
-  return request(`${apiEndpoint}/${projectId}/images`, bodyData, httpOptions, null);
-}
-
-export function deleteProjectImage(projectId, imageId) {
-  const httpOptions = { method: 'DELETE' };
-  return request(`${apiEndpoint}/${projectId}/images/${imageId}`, {}, httpOptions, null);
-}

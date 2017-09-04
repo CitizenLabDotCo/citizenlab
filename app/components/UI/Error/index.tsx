@@ -140,7 +140,6 @@ function findMessage(fieldName, error) {
   return messages[`${fieldName}_${error}`] || messages[error];
 }
 
-
 export default class Error extends React.PureComponent<Props, State> {
   render() {
     const { text, errors, apiErrors, fieldName } = this.props;

@@ -1,8 +1,7 @@
-import { IStream } from './streams';
-import { injectIntl } from 'react-intl';
 import 'whatwg-fetch';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
+import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 import { v4 as uuid } from 'uuid';
 
@@ -14,8 +13,6 @@ export type IObservable<T> = Rx.Observable<T>;
 export interface IStreamParams<T> {
   bodyData?: IObject | null;
   queryParameters?: IObject | null;
-  localProperties?: IObject | null;
-  onEachEmit?: pureFn<T> | null;
 }
 interface IInputStreamParams<T> extends IStreamParams<T> {
   apiEndpoint: string;
@@ -24,8 +21,6 @@ interface IExtendedStreamParams<T> {
   apiEndpoint: string;
   bodyData: IObject | null;
   queryParameters: IObject | null;
-  localProperties: IObject | null;
-  onEachEmit: pureFn<T> | null;
 }
 export interface IStream<T> {
   id: string;
@@ -40,18 +35,18 @@ export interface IStream<T> {
 class Streams {
   public streams: { [key: string]: IStream<any>};
   private resources: { [key: string]: any };
+  private apiEndpointResources: { [key: string]: any };
 
   constructor() {
     this.streams = {};
     this.resources = {};
+    this.apiEndpointResources = {};
   }
 
-  /*
   isUUID(string) {
     const uuidRegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     return uuidRegExp.test(string);
   }
-  */
 
   findExistingStreamId(params: IExtendedStreamParams<any>) {
     let existingStreamId: string | null = null;
@@ -83,12 +78,10 @@ class Streams {
     return hasQueryStream;
   }
 
-  create<T>(inputParams: IInputStreamParams<T>) {
+  get<T>(inputParams: IInputStreamParams<T>) {
     const params: IExtendedStreamParams<T> = {
       bodyData: null,
       queryParameters: null,
-      localProperties: null,
-      onEachEmit: null,
       ...inputParams
     };
 
@@ -113,6 +106,7 @@ class Streams {
 
         Rx.Observable.defer(() => promise).retry(3).subscribe(
           (response) => {
+            console.log(`fetched data for ${apiEndpoint}`);
             (this.streams[streamId].observer as IObserver<any>).next(response);
           },
           (error) => {
@@ -125,7 +119,7 @@ class Streams {
       };
 
       this.streams[streamId].observable = Rx.Observable.create((observer: IObserver<T>) => {
-        const { apiEndpoint } = this.streams[streamId].params;
+        const { apiEndpoint, queryParameters } = this.streams[streamId].params;
         const lastSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
 
         this.streams[streamId].observer = observer;
@@ -134,12 +128,14 @@ class Streams {
           console.log('retrieved local version:');
           console.log(this.resources[lastSegment]);
           (this.streams[streamId].observer as IObserver<any>).next(this.resources[lastSegment]);
+        } else if ((!queryParameters || _.isEmpty(queryParameters)) && !_.isUndefined(this.apiEndpointResources[apiEndpoint])) {
+          (this.streams[streamId].observer as IObserver<any>).next(this.apiEndpointResources[apiEndpoint]);
         } else {
           this.streams[streamId].fetch();
         }
 
         return () => {
-          if (this.streams[streamId].params.queryParameters  && !_.isEmpty(this.streams[streamId].params.queryParameters)) {
+          if (queryParameters && !_.isEmpty(queryParameters)) {
             console.log(`delete queryStream with apiEndpoint ${this.streams[streamId].params.apiEndpoint}`);
             delete this.streams[streamId];
           }
@@ -149,25 +145,9 @@ class Streams {
       .scan((accumulated: T, current: T | pureFn<T>) => {
         let data: any = accumulated;
         const dataIds = {};
-        const { onEachEmit, localProperties } = this.streams[streamId].params;
+        const { apiEndpoint, queryParameters } = this.streams[streamId].params;
 
-        if (_.isFunction(onEachEmit)) {
-          data = onEachEmit(data);
-        }
-
-        if (!_.isFunction(current) && localProperties !== null) {
-          if (_.isArray(current)) {
-            data = <any>current.map((child) => ({ ...child, ...localProperties }));
-          } else if (_.isObject(current)) {
-            data = { ...<any>current, ...localProperties };
-          } else {
-            console.log('current is no Object or Array');
-          }
-        } else if (_.isFunction(current)) {
-          data = current(data);
-        } else {
-          data = current;
-        }
+        data = (_.isFunction(current) ? current(data) : current);
 
         if (_.isObject(data) && !_.isEmpty(data)) {
           const innerData = data.data;
@@ -186,8 +166,16 @@ class Streams {
           }
 
           if (included) {
-            included.filter(item => item.id).forEach(item => this.resources[item.id] = item);
+            included.filter(item => item.id).forEach(item => this.resources[item.id] = { data: item });
             data = _.omit(data, 'included');
+          }
+        }
+
+        if (!queryParameters || _.isEmpty(queryParameters)) {
+          const lastSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
+
+          if (!this.isUUID(lastSegment) && lastSegment !== 'current') {
+            this.apiEndpointResources[apiEndpoint] = data;
           }
         }
 

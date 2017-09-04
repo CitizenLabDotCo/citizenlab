@@ -16,7 +16,6 @@ import selectIdeasShow, { makeSelectComments } from 'containers/IdeasShow/select
 import EditorForm from './comments/EditorForm';
 import messages from '../messages';
 
-
 const Title = styled.h2`
   font-size: 25px;
   font-weight: bold;

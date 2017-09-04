@@ -6,6 +6,7 @@ import IdeasShow from 'containers/IdeasShow';
 
 const BackgroundWrapper = styled.div`
   margin: 50px 0;
+
   ${media.notPhone`
     border-radius: 5px;
     background-color: #ffffff;
@@ -16,7 +17,7 @@ interface Props {
   params: {
     slug: string,
     location: string,
-  },
+  };
 }
 
 const IdeasShowPage: React.SFC<Props> = ({ params }) => (
@@ -25,6 +26,6 @@ const IdeasShowPage: React.SFC<Props> = ({ params }) => (
       <IdeasShow slug={params.slug} location={location}/>
     </BackgroundWrapper>
   </ContentContainer>
-)
+);
 
 export default  IdeasShowPage;

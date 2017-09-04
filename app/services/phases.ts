@@ -1,4 +1,3 @@
-import { IPhase } from 'services/phases';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import request from 'utils/request';
@@ -46,12 +45,12 @@ export interface IUpdatedPhaseProperties {
   end_at?: string;
 }
 
-export function observePhases(projectId: string, streamParams: IStreamParams<IPhases> | null = null) {
-  return streams.create<IPhases>({ apiEndpoint: `${API_PATH}/projects/${projectId}/phases`, ...streamParams });
+export function phasesStream(projectId: string, streamParams: IStreamParams<IPhases> | null = null) {
+  return streams.get<IPhases>({ apiEndpoint: `${API_PATH}/projects/${projectId}/phases`, ...streamParams });
 }
 
-export function observePhase(phaseID: string, streamParams: IStreamParams<IPhase> | null = null) {
-  return streams.create<IPhase>({ apiEndpoint: `${apiEndpoint}/${phaseID}`, ...streamParams });
+export function phaseStream(phaseID: string, streamParams: IStreamParams<IPhase> | null = null) {
+  return streams.get<IPhase>({ apiEndpoint: `${apiEndpoint}/${phaseID}`, ...streamParams });
 }
 
 export function updatePhase(phaseId: string, object: IUpdatedPhaseProperties) {
@@ -59,11 +58,9 @@ export function updatePhase(phaseId: string, object: IUpdatedPhaseProperties) {
 }
 
 export function addPhase(projectId: string, object: IUpdatedPhaseProperties) {
-  const apiEndpoint = `${API_PATH}/projects/${projectId}/phases`;
-  const bodyData = { phase: object };
-  return streams.add<IPhase>(apiEndpoint, bodyData);
+  return streams.add<IPhase>(`${API_PATH}/projects/${projectId}/phases`, { phase: object });
 }
 
-export function deletePhase(phaseId: string, httpOptions = {}) {  
+export function deletePhase(phaseId: string) {  
   return streams.delete(`${apiEndpoint}/${phaseId}`, phaseId);
 }

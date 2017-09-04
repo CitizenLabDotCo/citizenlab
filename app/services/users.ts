@@ -62,12 +62,12 @@ export interface IUserUpdate {
   bio_multiloc?: {};
 }
 
-export function observeUsers(streamParams: IStreamParams<IUsers> | null = null) {
-  return streams.create<IUsers>({ apiEndpoint, ...streamParams });
+export function usersStream(streamParams: IStreamParams<IUsers> | null = null) {
+  return streams.get<IUsers>({ apiEndpoint, ...streamParams });
 }
 
-export function observeUser(userId: string, streamParams: IStreamParams<IUser> | null = null) {
-  return streams.create<IUser>({ apiEndpoint: `${apiEndpoint}/${userId}`, ...streamParams });
+export function userStream(userId: string, streamParams: IStreamParams<IUser> | null = null) {
+  return streams.get<IUser>({ apiEndpoint: `${apiEndpoint}/${userId}`, ...streamParams });
 }
 
 export async function updateUser(userId: string, object: IUserUpdate) {

@@ -19,9 +19,9 @@ import Error from 'components/UI/Error';
 import { IOption } from 'typings';
 import { IStream } from 'utils/streams';
 import eventEmitter from 'utils/eventEmitter';
-import { stateStream, IStateStream } from 'services/state';
-import { observeTopics, ITopics, ITopicData } from 'services/topics';
-import { observeProjects, IProjects, IProjectData } from 'services/projects';
+import { state, IStateStream } from 'services/state';
+import { topicsStream, ITopics, ITopicData } from 'services/topics';
+import { projectsStream, IProjects, IProjectData } from 'services/projects';
 import { namespace as ButtonBarNamespace, State as IButtonBarState } from './ButtonBar';
 import messages from './messages';
 import styled from 'styled-components';
@@ -107,9 +107,9 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
 
   constructor() {
     super();
-    this.state$ = stateStream.observe<State>(namespace, namespace);
-    this.topics$ = observeTopics();
-    this.projects$ = observeProjects();
+    this.state$ = state.createStream<State>(namespace, namespace);
+    this.topics$ = topicsStream();
+    this.projects$ = projectsStream();
     this.subscriptions = [];
     this.titleInputElement = null;
     this.descriptionElement = null;

@@ -44,12 +44,12 @@ export interface IUpdatedEventProperties {
   end_at?: string;
 }
 
-export function observeEvents(projectId: string, streamParams: IStreamParams<IEvents> | null = null) {
-  return streams.create<IEvents>({ apiEndpoint: `${API_PATH}/projects/${projectId}/events`, ...streamParams });
+export function eventsStream(projectId: string, streamParams: IStreamParams<IEvents> | null = null) {
+  return streams.get<IEvents>({ apiEndpoint: `${API_PATH}/projects/${projectId}/events`, ...streamParams });
 }
 
-export function observeEvent(eventId: string, streamParams: IStreamParams<IEvent> | null = null) {
-  return streams.create<IEvent>({ apiEndpoint: `${apiEndpoint}/${eventId}`, ...streamParams });
+export function eventStream(eventId: string, streamParams: IStreamParams<IEvent> | null = null) {
+  return streams.get<IEvent>({ apiEndpoint: `${apiEndpoint}/${eventId}`, ...streamParams });
 }
 
 export function updateEvent(eventId: string, object: IUpdatedEventProperties) {
@@ -57,8 +57,7 @@ export function updateEvent(eventId: string, object: IUpdatedEventProperties) {
 }
 
 export function addEvent(projectId: string, object: IUpdatedEventProperties) {
-  const apiEndpoint = `${API_PATH}/projects/${projectId}/events`;
-  return streams.add<IEvent>(apiEndpoint, { event: object });
+  return streams.add<IEvent>(`${API_PATH}/projects/${projectId}/events`, { event: object });
 }
 
 export function deleteEvent(eventId: string) {

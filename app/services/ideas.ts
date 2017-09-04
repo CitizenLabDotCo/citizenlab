@@ -80,12 +80,12 @@ export interface IIdeaUpdate {
 
 const apiEndpoint = `${API_PATH}/ideas`;
 
-export function observeIdea(ideaId: string, streamParams: IStreamParams<IIdea> | null = null) {
-  return streams.create<IIdea>({ apiEndpoint: `${apiEndpoint}/${ideaId}`, ...streamParams });
+export function ideaStream(ideaId: string, streamParams: IStreamParams<IIdea> | null = null) {
+  return streams.get<IIdea>({ apiEndpoint: `${apiEndpoint}/${ideaId}`, ...streamParams });
 }
 
-export function observeIdeas(streamParams: IStreamParams<IIdeas> | null = null) {
-  return streams.create<IIdeas>({ apiEndpoint, ...streamParams });
+export function ideasStream(streamParams: IStreamParams<IIdeas> | null = null) {
+  return streams.get<IIdeas>({ apiEndpoint, ...streamParams });
 }
 
 export function addIdea(
