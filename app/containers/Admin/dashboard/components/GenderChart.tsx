@@ -2,14 +2,14 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { injectIntl } from 'react-intl';
-import { withTheme } from 'styled-components'
+import { withTheme } from 'styled-components';
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 import { observeUsersByGender } from 'services/stats';
 import messages from '../messages';
 
 
 type State = {
-  serie: Array<{name: string, value: number, code: string}> | null;
+  serie: {name: string, value: number, code: string}[] | null;
 };
 
 type Props = {
@@ -17,14 +17,14 @@ type Props = {
   endAt: string,
   theme: any,
   intl: any,
-}
+};
 
 const colors = {
   male: '#5D99C6 ',
   female: '#C37281 ',
   unspecified: '#B0CDC4 ',
   _blank: '#C0C2CE',
-}
+};
 
 class GenderChart extends React.PureComponent<Props, State> {
 
@@ -50,13 +50,13 @@ class GenderChart extends React.PureComponent<Props, State> {
 
   convertToGraphFormat = (serie: {[key: string]: number}) => {
     return _.map(serie, (value, key) => ({
-      name: this.props.intl.formatMessage(messages[key]),
       value,
+      name: this.props.intl.formatMessage(messages[key]),
       code: key,
     }));
   }
 
-  resubscribe(startAt=this.props.startAt, endAt=this.props.endAt) {
+  resubscribe(startAt= this.props.startAt, endAt= this.props.endAt) {
     if (this.serieObservable) this.serieObservable.unsubscribe();
 
     this.serieObservable = observeUsersByGender({

@@ -11,7 +11,7 @@ import messages from '../messages';
 
 
 type State = {
-  serie: Array<{name: string | number, value: number, code: string}> | null;
+  serie: {name: string | number, value: number, code: string}[] | null;
 };
 
 type Props = {

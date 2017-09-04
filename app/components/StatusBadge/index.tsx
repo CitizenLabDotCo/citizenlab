@@ -9,11 +9,11 @@ type Props = {
   color: string,
   statusName: string,
   className?: string,
-}
+};
 
 type State = {
   ideaStatus: IIdeaStatusData | null;
-}
+};
 
 const Badge = styled.div`
   color: white;
@@ -25,7 +25,7 @@ const Badge = styled.div`
   text-align: center;
   font-weight: 700;
   background-color: ${(props: any) => props.color}
-`
+`;
 
 export default class Status extends React.Component<Props, State> {
 
@@ -33,7 +33,7 @@ export default class Status extends React.Component<Props, State> {
     super();
     this.state = {
       ideaStatus: null,
-    }
+    };
   }
   componentDidMount() {
     observeIdeaStatuses()
@@ -43,7 +43,7 @@ export default class Status extends React.Component<Props, State> {
         this.setState({
           ideaStatus,
         });
-      })
+      });
   }
   render() {
     const { statusId, statusName, className } = this.props;

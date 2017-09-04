@@ -20,18 +20,17 @@
         "SwitchCase": 1
       }
     ],
-    "react-a11y-anchor": 1,
-    "react-a11y-aria-unsupported-element": 2,
+    "react-a11y-anchors": 1,
+    "react-a11y-aria-unsupported-elements": 2,
     "react-a11y-event-has-role": 2,
     "react-a11y-image-button-has-alt": 2,
     "react-a11y-img-has-alt": 2,
-    "react-a11y-prop": 2,
+    "react-a11y-props": 2,
     "react-a11y-role": 2,
     "react-a11y-role-has-required-aria-props": 2,
-    "react-a11y-role-supports-aria-prop": 2,
+    "react-a11y-role-supports-aria-props": 2,
     "react-a11y-tabindex-no-positive": 2,
-    "react-a11y-title": 2,
-    "variable-name": [false, "ban-keywords", "check-format", "allow-leading-underscore"],
-    "jsx-no-multiline-js": false
+    "react-a11y-titles": 2,
+    "variable-name": [false, "ban-keywords", "check-format", "allow-leading-underscore"]
   }
 }

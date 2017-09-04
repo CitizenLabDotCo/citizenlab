@@ -4,56 +4,108 @@
 #
 version: 2
 jobs:
-  build:
+
+  lint_js:
     docker:
-      # specify the version you desire here
       - image: joecridge1/node8-awscli-gitlfs-gulp
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
     working_directory: ~/cl2-front
-
     steps:
       - checkout
-
       # Download and cache dependencies
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
-
       - run: npm install
-
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run lint:js --silent
 
-      # run tests!
-      # - run: npm run test
+  lint_ts:
+    docker:
+      - image: joecridge1/node8-awscli-gitlfs-gulp
+    working_directory: ~/cl2-front
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run lint:ts --silent
 
+  deploy_demo:
+    docker:
+      - image: joecridge1/node8-awscli-gitlfs-gulp
+    working_directory: ~/cl2-front
+    steps:
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run build
-
       - deploy:
-          name: Deploy to S3 if tests pass and branch is Master
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              aws s3 sync build/ s3://cl2-front-staging/ --delete --acl public-read
-            else
-              echo "Not master branch so not deploying"
-            fi
+        name: Deploy to S3 if tests pass and branch is Master
+        command: aws s3 sync build/ s3://cl2-front-staging/ --delete --acl public-read
 
+  deploy_crowdin:
+    docker:
+      - image: joecridge1/node8-awscli-gitlfs-gulp
+    working_directory: ~/cl2-front
+    steps:
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
       - run: CROWDIN_PLUGIN_ENABLED=true npm run build
-
       - deploy :
           name: Deploy translatable version to i18n.stg.citizenlab.co
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              aws s3 sync build/ s3://cl2-front-translations/ --delete --acl public-read
-            else
-              echo "Not master branch so not deploying"
-            fi
+          command: aws s3 sync build/ s3://cl2-front-translations/ --delete --acl public-read
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - lint_js
+      - lint_ts
+      - deploy_demo:
+          requires:
+            - lint_js
+            - lint_ts
+          filters:
+            branches:
+              only: master
+      - deploy_crowdin:
+          requires:
+            - lint_js
+            - lint_ts
+          filters:
+            branches:
+              only: master
