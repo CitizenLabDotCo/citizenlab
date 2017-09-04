@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { injectIntl } from 'react-intl';
-import { withTheme } from 'styled-components'
+import { withTheme } from 'styled-components';
 import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { observeIdeasByTime } from 'services/stats';
 import messages from '../messages';
@@ -20,7 +20,7 @@ type Props = {
   resolution: string,
   theme: any,
   intl: any,
-}
+};
 
 class IdeasByTimeChart extends React.PureComponent<Props, State> {
 
@@ -48,13 +48,13 @@ class IdeasByTimeChart extends React.PureComponent<Props, State> {
   convertToGraphFormat = (serie: {[key: string]: number}) => {
     const currentYear = moment().year();
     return _.map(serie, (value, key) => ({
-      name: key,
       value,
+      name: key,
       code: key,
     }));
   }
 
-  resubscribe(startAt=this.props.startAt, endAt=this.props.endAt, resolution=this.props.resolution) {
+  resubscribe(startAt = this.props.startAt, endAt = this.props.endAt, resolution = this.props.resolution) {
     if (this.serieObservable) this.serieObservable.unsubscribe();
 
     this.serieObservable = observeIdeasByTime({
@@ -84,7 +84,7 @@ class IdeasByTimeChart extends React.PureComponent<Props, State> {
       year: 'numeric'
     });
     return label;
-  };
+  }
 
 
   render() {
