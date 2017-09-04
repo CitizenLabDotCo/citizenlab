@@ -473,7 +473,7 @@
   "app.containers.admin.ideas.all.exportComments": "Export all comments",
   "app.containers.admin.ideas.all.exportIdeas": "Export all ideas",
   "app.containers.admin.ideas.all.header": "Ideas",
-  "app.containers.admin.ideas.all.publication_date": "Published at",
+  "app.containers.admin.ideas.all.publication_date": "Published on",
   "app.containers.admin.ideas.all.status": "Status",
   "app.containers.admin.ideas.all.title": "Title",
   "app.containers.admin.ideas.all.up": "Up",
