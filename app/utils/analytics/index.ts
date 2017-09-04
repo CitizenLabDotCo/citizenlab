@@ -7,17 +7,17 @@ import snippet from '@segment/snippet';
 import { CL_SEGMENT_API_KEY } from 'containers/App/constants';
 
 interface IEvent {
-  name: string,
+  name: string;
   properties?: {
     [key: string]: any,
-  },
+  };
 }
 
 interface IPageChange {
-  name: string,
+  name: string;
   properties?: {
     [key: string]: any,
-  },
+  };
 }
 
 const tenant$ = observeCurrentTenant().observable;
@@ -71,20 +71,20 @@ export const injectTracks = (events: {[key: string]: IEvent}) => (component: Rea
     const eventFunctions = _.mapValues(events, (event) => (
       (extra) => {
         const extraProps = extra && extra.extra;
-        events$.next({name: event.name, properties: {...event.properties, ...extraProps}})
+        events$.next({ name: event.name, properties: { ...event.properties, ...extraProps } });
       }
     ));
     const propsWithEvents = {
       ...eventFunctions,
       ...props,
-    }
+    };
     return React.createElement(component, propsWithEvents);
-  }
+  };
 };
 
 export const initializeAnalytics = (store) => {
   // Initialize segments window.analytics object
-  var contents = snippet.min({
+  let contents = snippet.min({
     host: 'cdn.segment.com',
     apiKey: CL_SEGMENT_API_KEY,
   });
@@ -93,4 +93,4 @@ export const initializeAnalytics = (store) => {
   store.runSaga(watchEvents);
   store.runSaga(watchPageChanges);
   store.runSaga(watchIdentification);
-}
+};

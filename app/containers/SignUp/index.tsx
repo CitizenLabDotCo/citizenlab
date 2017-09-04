@@ -207,7 +207,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
         this.state$.next({ processing: true });
         await signUp(firstName, lastName, email, password, locale, selectedGender, selectedYearOfBirth, selectedAreaId);
         await signIn(email, password);
-        getAuthUser()
+        getAuthUser();
 
         this.state$.next({ processing: false });
         onSignedUp();

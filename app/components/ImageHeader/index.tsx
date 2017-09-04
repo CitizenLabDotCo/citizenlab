@@ -108,7 +108,7 @@ type Props = {
   className?: string,
   image?: string,
   children?: any,
-}
+};
 
 
 export default class ImageHeader extends React.PureComponent<Props> {
@@ -124,4 +124,4 @@ export default class ImageHeader extends React.PureComponent<Props> {
     );
   }
 
-};
+}

@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { injectIntl } from 'react-intl';
-import { withTheme } from 'styled-components'
+import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { injectTFunc } from 'utils/containers/t/utils';
 import { observeIdeasByTopic } from 'services/stats';
@@ -19,7 +19,7 @@ type Props = {
   endAt: string,
   theme: any,
   tFunc: ({}) => string,
-}
+};
 
 class IdeasByTimeChart extends React.PureComponent<Props, State> {
 
@@ -55,7 +55,7 @@ class IdeasByTimeChart extends React.PureComponent<Props, State> {
       .value();
   }
 
-  resubscribe(startAt=this.props.startAt, endAt=this.props.endAt) {
+  resubscribe(startAt= this.props.startAt, endAt= this.props.endAt) {
     if (this.serieObservable) this.serieObservable.unsubscribe();
 
     this.serieObservable = observeIdeasByTopic({
