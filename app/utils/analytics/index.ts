@@ -53,8 +53,8 @@ export function addTenantInfo(properties, tenant: ITenantData) {
 
 export function trackPage(path: string, properties: {} = {}) {
   pageChanges$.next({
-    name: path,
     properties,
+    name: path,
   });
 }
 
@@ -84,11 +84,12 @@ export const injectTracks = (events: {[key: string]: IEvent}) => (component: Rea
 
 export const initializeAnalytics = (store) => {
   // Initialize segments window.analytics object
-  let contents = snippet.min({
+  const contents = snippet.min({
     host: 'cdn.segment.com',
     apiKey: CL_SEGMENT_API_KEY,
   });
-  eval(contents);
+    // tslint:disable-next-line:no-eval
+    eval(contents);
 
   store.runSaga(watchEvents);
   store.runSaga(watchPageChanges);

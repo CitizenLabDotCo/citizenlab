@@ -135,8 +135,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch, { ideaId }) => ({
-  vote: (mode) => dispatch(ideaVoteRequest(ideaId, mode)),
   dispatch,
+  vote: (mode) => dispatch(ideaVoteRequest(ideaId, mode)),
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {

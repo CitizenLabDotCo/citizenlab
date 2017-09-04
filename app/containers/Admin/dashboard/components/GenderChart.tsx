@@ -9,7 +9,7 @@ import messages from '../messages';
 
 
 type State = {
-  serie: Array<{name: string, value: number, code: string}> | null;
+  serie: {name: string, value: number, code: string}[] | null;
 };
 
 type Props = {
@@ -50,8 +50,8 @@ class GenderChart extends React.PureComponent<Props, State> {
 
   convertToGraphFormat = (serie: {[key: string]: number}) => {
     return _.map(serie, (value, key) => ({
-      name: this.props.intl.formatMessage(messages[key]),
       value,
+      name: this.props.intl.formatMessage(messages[key]),
       code: key,
     }));
   }

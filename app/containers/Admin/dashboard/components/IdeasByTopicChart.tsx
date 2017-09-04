@@ -11,7 +11,7 @@ import { observeIdeasByTopic } from 'services/stats';
 
 
 type State = {
-  serie: Array<{name: string | number, value: number, code: string}> | null;
+  serie: {name: string | number, value: number, code: string}[] | null;
 };
 
 type Props = {
