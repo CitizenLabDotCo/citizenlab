@@ -63,8 +63,8 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run build
       - deploy:
-        name: Deploy to S3 if tests pass and branch is Master
-        command: aws s3 sync build/ s3://cl2-front-staging/ --delete --acl public-read
+          name: Deploy to S3 if tests pass and branch is Master
+          command: aws s3 sync build/ s3://cl2-front-staging/ --delete --acl public-read
 
   deploy_crowdin:
     docker:
