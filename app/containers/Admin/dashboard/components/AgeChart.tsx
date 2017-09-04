@@ -11,7 +11,7 @@ import messages from '../messages';
 
 
 type State = {
-  serie: Array<{name: string | number, value: number, code: string}> | null;
+  serie: {name: string | number, value: number, code: string}[] | null;
 };
 
 type Props = {
@@ -49,10 +49,10 @@ class AgeChart extends React.PureComponent<Props, State> {
       .map((value, key) => ({ age: key, count: value }))
       .concat(_.map(_.range(currentYear, currentYear - 90, -10), (a) => ({ age: a.toString(), count: 0 })))
       .groupBy(({ age }) => {
-        return age === '_blank' ? age : (Math.floor((currentYear - parseInt(age)) / 10) * 10);
+        return age === '_blank' ? age : (Math.floor((currentYear - parseInt(age, 10)) / 10) * 10);
       })
       .map((counts, age) => ({
-        name: age === '_blank' ? this.props.intl.formatMessage(messages._blank) : `${age}-${parseInt(age) + 10}`,
+        name: age === '_blank' ? this.props.intl.formatMessage(messages._blank) : `${age}-${parseInt(age, 10) + 10}`,
         value: _.sumBy(counts, 'count'),
         code: age,
       }))
@@ -83,8 +83,7 @@ class AgeChart extends React.PureComponent<Props, State> {
             name="name"
             fill={this.props.theme.chartFill}
             label={{ fill: this.props.theme.chartLabelColor, fontSize: 14 }}
-          >
-          </Bar>
+          />
           <XAxis
             dataKey="name"
             stroke={this.props.theme.chartLabelColor}

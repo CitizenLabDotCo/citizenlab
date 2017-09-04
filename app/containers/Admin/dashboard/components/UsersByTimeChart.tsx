@@ -11,7 +11,7 @@ import messages from '../messages';
 
 
 type State = {
-  serie: Array<{name: string | number, value: number, code: string}> | null;
+  serie: {name: string | number, value: number, code: string}[] | null;
 };
 
 type Props = {
@@ -48,8 +48,8 @@ class UsersByTimeChart extends React.Component<Props, State> {
   convertToGraphFormat = (serie: {[key: string]: number}) => {
     const currentYear = moment().year();
     return _.map(serie, (value, key) => ({
-      name: key,
       value,
+      name: key,
       code: key,
     }));
   }

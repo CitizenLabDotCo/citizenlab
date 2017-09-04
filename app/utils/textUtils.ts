@@ -1,6 +1,5 @@
-export function stripHtml(html: string)
-{
-   let tmp = document.createElement('DIV');
+export function stripHtml(html: string) {
+   const tmp = document.createElement('DIV');
    tmp.innerHTML = html;
    return tmp.textContent || tmp.innerText || '';
 }

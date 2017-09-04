@@ -72,12 +72,12 @@ class SharingLine extends React.Component<Props> {
             <FormattedMessage {...messages.shareCTA}/>
           </Text>
           <IconWrapper className="fb">
-            <FacebookButton url={href} appId={fbAppId} sharer media={imageUrl} onClick={this.props.clickFbShare}>
+            <FacebookButton url={href} appId={fbAppId} sharer={true} media={imageUrl} onClick={this.props.clickFbShare}>
               <Icon name="facebook official"/>
             </FacebookButton>
           </IconWrapper>
           <IconWrapper className="tw">
-            <TwitterButton url={href} sharer media={imageUrl} onClick={this.props.clickTwitterShare}>
+            <TwitterButton url={href} sharer={true} media={imageUrl} onClick={this.props.clickTwitterShare}>
               <Icon name="twitter" />
             </TwitterButton>
           </IconWrapper>

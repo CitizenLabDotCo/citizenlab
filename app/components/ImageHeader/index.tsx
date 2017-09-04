@@ -117,7 +117,7 @@ export default class ImageHeader extends React.PureComponent<Props> {
     const { className, image, children } = this.props;
     return (
       <HeaderContainer>
-        <HeaderBackground src={image}></HeaderBackground>
+        <HeaderBackground src={image} />
         <HeaderOverlay />
         {children}
       </HeaderContainer>

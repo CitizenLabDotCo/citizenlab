@@ -96,7 +96,7 @@ class TimeControl extends React.PureComponent<Props> {
     return (
       <Container>
         <TimeButton onClick={this.handlePrevious}>
-          <img src={previousIcon} />
+          <img src={previousIcon} alt="" role="presentation" />
         </TimeButton>
         <Separator />
         <CurrentTime>
@@ -104,7 +104,7 @@ class TimeControl extends React.PureComponent<Props> {
         </CurrentTime>
         <Separator />
         <TimeButton onClick={this.handleNext}>
-          <img src={nextIcon} />
+          <img src={nextIcon} alt="" role="presentation" />
         </TimeButton>
       </Container>
     );
