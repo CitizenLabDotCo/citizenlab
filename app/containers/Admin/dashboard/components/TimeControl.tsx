@@ -48,7 +48,7 @@ type Props = {
   interval: 'week' | 'month' | 'year',
   currentTime?: any,
   intl: any,
-}
+};
 
 class TimeControl extends React.PureComponent<Props> {
 

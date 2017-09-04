@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { injectIntl } from 'react-intl';
-import { withTheme } from 'styled-components'
+import { withTheme } from 'styled-components';
 import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { observeUsersByTime } from 'services/stats';
 import messages from '../messages';
@@ -20,7 +20,7 @@ type Props = {
   resolution: string,
   theme: any,
   intl: any,
-}
+};
 
 class UsersByTimeChart extends React.Component<Props, State> {
 
@@ -54,7 +54,7 @@ class UsersByTimeChart extends React.Component<Props, State> {
     }));
   }
 
-  resubscribe(startAt=this.props.startAt, endAt=this.props.endAt, resolution=this.props.resolution) {
+  resubscribe(startAt= this.props.startAt, endAt= this.props.endAt, resolution= this.props.resolution) {
     if (this.serieObservable) this.serieObservable.unsubscribe();
     this.serieObservable = observeUsersByTime({
       queryParameters: {
@@ -83,7 +83,7 @@ class UsersByTimeChart extends React.Component<Props, State> {
       year: 'numeric'
     });
     return label;
-  };
+  }
 
 
   render() {

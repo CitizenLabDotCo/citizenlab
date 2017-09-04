@@ -16,7 +16,7 @@ interface Props {
   params: {
     slug: string,
     location: string,
-  },
+  };
 }
 
 const IdeasShowPage: React.SFC<Props> = ({ params }) => (
@@ -25,6 +25,6 @@ const IdeasShowPage: React.SFC<Props> = ({ params }) => (
       <IdeasShow slug={params.slug} location={location}/>
     </BackgroundWrapper>
   </ContentContainer>
-)
+);
 
 export default  IdeasShowPage;

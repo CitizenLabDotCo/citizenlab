@@ -46,12 +46,12 @@ class ColorPickerInput extends React.Component<InputProps, State> {
   openColorPicker = (e) => {
     e.preventDefault();
     this.setState({ displayColorPicker: true });
-  };
+  }
 
   closeColorPicker = (e) => {
     e.preventDefault();
     this.setState({ displayColorPicker: false });
-  };
+  }
 
   changeColor = (colorDescriptor) => {
     this.props.onChange(colorDescriptor.hex);
