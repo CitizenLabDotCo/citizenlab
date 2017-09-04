@@ -93,8 +93,8 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - lint_js:
-      - lint_ts:
+      - lint_js
+      - lint_ts
       - deploy_demo:
           requires:
             - lint_js
