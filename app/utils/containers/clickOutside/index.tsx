@@ -39,6 +39,7 @@ export default class ClickOutside extends React.PureComponent<Props, State> {
 
   render() {
     const { children, className, onClick } = this.props;
+    // tslint:disable-next-line:react-a11y-event-has-role
     return (<div ref={this.getContainer} className={className} onClick={onClick}>{children}</div>);
   }
 }

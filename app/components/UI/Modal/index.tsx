@@ -167,18 +167,18 @@ class Modal extends React.PureComponent<Props, State> {
 
   handlePopstateEvent = () => {
     if (location.href === this.parentUrl) {
-      this.props.clickBack({extra: {url: this.props.url}});
+      this.props.clickBack({ extra: { url: this.props.url } });
       this.closeModal();
     }
   }
 
   clickOutsideModal = () => {
-    this.props.clickOutsideModal({extra: {url: this.props.url}});
+    this.props.clickOutsideModal({ extra: { url: this.props.url } });
     this.closeModal();
   }
 
   clickButton = () => {
-    this.props.clickCloseButton({extra: {url: this.props.url}});
+    this.props.clickCloseButton({ extra: { url: this.props.url } });
     this.closeModal();
   }
 

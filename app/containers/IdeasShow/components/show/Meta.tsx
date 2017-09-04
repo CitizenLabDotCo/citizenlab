@@ -14,7 +14,7 @@ type Props = {
   images: Immutable.List<any>,
   tFunc: ({}) => string,
   location: any,
-}
+};
 
 const Meta: React.SFC<Props> = ({ location, idea, images, tFunc }) => {
 
