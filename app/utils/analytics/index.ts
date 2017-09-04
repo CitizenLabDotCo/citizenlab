@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs';
-import { observeCurrentTenant, ITenantData } from 'services/tenant';
+import { currentTenantStream, ITenantData } from 'services/tenant';
 import { watchEvents, watchPageChanges, watchIdentification } from 'utils/analytics/sagas';
 import snippet from '@segment/snippet';
 import { CL_SEGMENT_API_KEY } from 'containers/App/constants';
@@ -20,7 +20,7 @@ interface IPageChange {
   };
 }
 
-const tenant$ = observeCurrentTenant().observable;
+const tenant$ = currentTenantStream().observable;
 const events$ = new Rx.Subject<IEvent>();
 const pageChanges$ = new Rx.Subject<IPageChange>();
 

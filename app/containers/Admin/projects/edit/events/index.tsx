@@ -7,8 +7,8 @@ import messages from './messages';
 import * as _ from 'lodash';
 
 // Services
-import { observeProject } from 'services/projects';
-import { observeEvents, IEventData, deleteEvent } from 'services/events';
+import { projectStream } from 'services/projects';
+import { eventsStream, IEventData, deleteEvent } from 'services/events';
 
 // Components
 import { Link } from 'react-router';
@@ -120,9 +120,9 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
   componentDidMount () {
     this.setState({ loading: true });
-    this.subscription = observeProject(this.props.params.slug).observable
+    this.subscription = projectStream(this.props.params.slug).observable
     .switchMap((project) => {
-      return observeEvents(project.data.id).observable.map((events) => (events.data));
+      return eventsStream(project.data.id).observable.map((events) => (events.data));
     })
     .subscribe((events) => {
       this.setState({ events, loading: false });

@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import { getPageItemCountFromUrl, getPageNumberFromUrl } from 'utils/paginationUtils';
-import { observeUsers, updateUser, IUsers, IUserData, IUserUpdate } from 'services/users';
+import { usersStream, updateUser, IUsers, IUserData, IUserUpdate } from 'services/users';
 import { IStream } from 'utils/streams';
 import styled from 'styled-components';
 
@@ -106,7 +106,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
         const sortChanged = (sortBy !== this.state.sortBy);
         pageNumber = (searchChanged || sortChanged ? 1 : pageNumber);
 
-        this.users$ = observeUsers({
+        this.users$ = usersStream({
           queryParameters: {
             sort: sortBy,
             'page[number]': pageNumber,

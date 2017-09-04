@@ -23,6 +23,6 @@ export interface IIdeaStatus {
   data: IIdeaStatusData;
 }
 
-export function observeIdeaStatuses(streamParams: IStreamParams<IIdeaStatuses> | null = null) {
-  return streams.create<IIdeaStatuses>({ apiEndpoint, ...streamParams });
+export function ideaStatusesStream(streamParams: IStreamParams<IIdeaStatuses> | null = null) {
+  return streams.get<IIdeaStatuses>({ apiEndpoint, ...streamParams });
 }

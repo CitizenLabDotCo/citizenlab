@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { injectTFunc } from 'utils/containers/t/utils';
-import { stateStream, IStateStream } from 'services/state';
+import { state, IStateStream } from 'services/state';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import PasswordReset from 'containers/PasswordReset';
@@ -11,7 +11,7 @@ import Icon from 'components/UI/Icon';
 import SignIn from 'containers/SignIn';
 import SignUp from 'containers/SignUp';
 import { IStream } from 'utils/streams';
-import { observeCurrentTenant, ITenant } from 'services/tenant';
+import { currentTenantStream, ITenant } from 'services/tenant';
 import messages from './messages';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -233,8 +233,8 @@ class SignInUp extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     const initialState: State = { show: props.show || 'signIn', tenant: null };
-    this.state$ = stateStream.observe<State>(namespace, namespace, initialState);
-    this.tenant$ = observeCurrentTenant();
+    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    this.tenant$ = currentTenantStream();
     this.subscriptions = [];
   }
 

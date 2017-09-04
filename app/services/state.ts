@@ -18,19 +18,19 @@ export interface IStateStream<T> {
 
 class State {
   private behaviorSubject: Rx.BehaviorSubject<any>;
-  private stream: { [key: string]: IInternalStateStream<any> };
+  private stateStream: { [key: string]: IInternalStateStream<any> };
 
   constructor() {
     this.behaviorSubject = new Rx.BehaviorSubject(null);
-    this.stream = {};
+    this.stateStream = {};
   }
 
-  observe<T>(sender: string, receiver: string, initialState?: T): IStateStream<T> {
+  createStream<T>(sender: string, receiver: string, initialState?: T): IStateStream<T> {
 
     const debug = false;
 
-    if (!this.stream[receiver]) {
-      this.stream[receiver] = {
+    if (!this.stateStream[receiver]) {
+      this.stateStream[receiver] = {
         next: (sender: string, receiver: string, stateUpdate: Partial<T> | ((state: T) => Partial<T>)) => {
           this.behaviorSubject.next({ sender, receiver, stateUpdate });
         },
@@ -90,16 +90,17 @@ class State {
           .publishReplay(1)
           .refCount()
       };
-    } else if (this.stream[receiver] && initialState) {
-      console.log(`an initial state was already defined for the state of component with namespace ${receiver}`);
+    } else if (this.stateStream[receiver] && initialState) {
+      // console.log(`an initial state was already defined for the state of component with namespace ${receiver}`);
+      this.stateStream[receiver].next(sender, receiver, initialState);
     }
 
     return {
-      observable: this.stream[receiver].observable,
-      next: (stateUpdate: Partial<T> | ((state: T) => Partial<T>)) => this.stream[receiver].next(sender, receiver, stateUpdate),
-      getCurrent: () => this.stream[receiver].observable.first().toPromise()
+      observable: this.stateStream[receiver].observable,
+      next: (stateUpdate: Partial<T> | ((state: T) => Partial<T>)) => this.stateStream[receiver].next(sender, receiver, stateUpdate),
+      getCurrent: () => this.stateStream[receiver].observable.first().toPromise()
     };
   }
 }
 
-export const stateStream = new State();
+export const state = new State();

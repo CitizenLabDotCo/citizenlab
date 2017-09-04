@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { stateStream, IStateStream } from 'services/state';
+import { state, IStateStream } from 'services/state';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import eventEmitter from 'utils/eventEmitter';
@@ -55,7 +55,7 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
 
   constructor() {
     super();
-    this.state$ = stateStream.observe<State>(namespace, namespace);
+    this.state$ = state.createStream<State>(namespace, namespace);
     this.subscriptions = [];
   }
 

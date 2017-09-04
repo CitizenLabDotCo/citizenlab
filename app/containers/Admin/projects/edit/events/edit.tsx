@@ -15,8 +15,8 @@ import { withRouter } from 'react-router';
 import { API } from 'typings.d';
 
 // Services
-import { observeProject, IProject, IProjectData } from 'services/projects';
-import { observeEvent, updateEvent, addEvent, IEvent, IEventData, IEvents, IUpdatedEventProperties } from 'services/events';
+import { projectStream, IProject, IProjectData } from 'services/projects';
+import { eventStream, updateEvent, addEvent, IEvent, IEventData, IEvents, IUpdatedEventProperties } from 'services/events';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { injectTFunc } from 'utils/containers/t/utils';
 
@@ -90,7 +90,7 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
   componentDidMount() {
     if (this.props.params.id) {
       this.subscriptions = [
-        observeEvent(this.props.params.id).observable.subscribe((event) => {
+        eventStream(this.props.params.id).observable.subscribe((event) => {
           let descState = EditorState.createEmpty();
 
           if (event) {

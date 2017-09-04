@@ -9,8 +9,8 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Select from 'components/UI/Select';
 import { IStream } from 'utils/streams';
-import { stateStream, IStateStream } from 'services/state';
-import { observeAreas, IAreas, IAreaData } from 'services/areas';
+import { state, IStateStream } from 'services/state';
+import { areasStream, IAreas, IAreaData } from 'services/areas';
 import { isValidEmail } from 'utils/validate';
 import auth from 'services/auth';
 import { connect } from 'react-redux';
@@ -122,8 +122,8 @@ export default class SignUp extends React.PureComponent<Props, State> {
       showStep1: true
     };
 
-    this.areas$ = observeAreas();
-    this.state$ = stateStream.observe<State>(namespace, namespace, initialState);
+    this.areas$ = areasStream();
+    this.state$ = state.createStream<State>(namespace, namespace, initialState);
     this.subscriptions = [];
   }
 

@@ -4,15 +4,20 @@ import * as Rx from 'rxjs/Rx';
 import IdeaCard, { namespace as ideaCardNamespace } from 'components/IdeaCard';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import { mergeJsonApiResources } from 'utils/resources/actions';
 import Modal from 'components/UI/Modal';
 import IdeasShow from 'containers/IdeasShow';
 import { Flex, Box } from 'grid-styled';
 import eventEmitter from 'utils/eventEmitter';
-import { stateStream, IStateStream } from 'services/state';
+import { state, IStateStream } from 'services/state';
 import { IStream } from 'utils/streams';
-import { observeIdeas, IIdeas, IIdeaData } from 'services/ideas';
+import { ideasStream, ideaStream, IIdeas, IIdeaData } from 'services/ideas';
+import { userStream, IUser } from 'services/users';
+import { ideaImageStream, ideaImagesStream, IIdeaImage, IIdeaImageData } from 'services/ideaImages';
 import styled from 'styled-components';
+
+// legacy redux
+// import { store } from 'app';
+// import { mergeJsonApiResources } from 'utils/resources/actions';
 
 const IdeasList: any = styled(Flex)`
   margin-top: 10px;
@@ -32,7 +37,7 @@ const LoadMoreButton = styled.button`
 
 interface IAccumulator {
   pageNumber: number;
-  ideas: any[];
+  ideas: IIdeas;
   filter: object;
   hasMore: boolean;
 }
@@ -43,7 +48,7 @@ type Props = {
 };
 
 type State = {
-  ideas: IIdeaData[] | null;
+  ideas: IIdeas | null;
   hasMore: boolean;
   modalIdeaSlug: string | null;
 };
@@ -67,58 +72,70 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
       hasMore: false,
       modalIdeaSlug: null
     };
-    this.state$ = stateStream.observe<State>(namespace, namespace, initialState);
-    this.loadMore$ = new Rx.BehaviorSubject(false);
+    this.state$ = state.createStream<State>(namespace, namespace, initialState);
     this.subscriptions = [];
   }
 
   componentWillMount() {
     const filter = (_.isObject(this.props.filter) && !_.isEmpty(this.props.filter) ? this.props.filter : {});
-
     this.filterChange$ = new Rx.BehaviorSubject(filter);
+    this.loadMore$ = new Rx.BehaviorSubject(false);
 
     this.subscriptions = [
-      this.state$.observable.subscribe((state) => {
-        this.setState(state);
+      this.state$.observable.subscribe(state => this.setState(state)),
 
-        // add ideas to redux store
-        mergeJsonApiResources(state.ideas);
-      }),
-
-      eventEmitter.observe(ideaCardNamespace, 'cardClick').subscribe(({ eventValue }) => {
-        const ideaId = eventValue;
-        this.openModal(ideaId);
+      eventEmitter.observe(ideaCardNamespace, 'ideaCardClick').subscribe(({ eventValue }) => {
+        const ideaSlug = eventValue;
+        this.openModal(ideaSlug);
       }),
 
       Rx.Observable.combineLatest(
         this.filterChange$,
         this.loadMore$,
         (filter, loadMore) => ({ filter, loadMore })
-      ).mergeScan<any, IAccumulator>((acc, current) => {
-        const filterChange = !_.isEqual(acc.filter, current.filter) || !current.loadMore;
+      ).mergeScan<{filter: object, loadMore: boolean}, IAccumulator>((acc, { filter, loadMore }) => {
+        const filterChange = !_.isEqual(acc.filter, filter) || !loadMore;
         const pageNumber = (filterChange ? 1 : acc.pageNumber + 1);
 
-        return observeIdeas({
+        return ideasStream({
           queryParameters: {
             'page[size]': 9,
-            ...current.filter,
+            ...filter,
             'page[number]': pageNumber
           }
-        }).observable.map((ideas) => ({
+        }).observable.switchMap((ideas) => {
+          const observables = ideas.data.map(idea => {
+            const ideaImages = idea.relationships.idea_images.data;
+            const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
+            const ideaImage$ = (ideaImageId ? ideaImageStream(idea.id, ideaImageId).observable : Rx.Observable.of(null));
+            const idea$ = ideaStream(idea.id).observable;
+            const user$ = userStream(idea.relationships.author.data.id).observable;
+            return Rx.Observable.combineLatest(idea$, ideaImage$, user$).map(data => idea);
+          });
+
+          return Rx.Observable.combineLatest(...observables).map(() => ideas);
+        }).map((ideas) => ({
           pageNumber,
-          ideas: (filterChange ? ideas.data : [...acc.ideas, ...ideas.data]),
-          filter: current.filter,
+          filter,
+          ideas: (filterChange ? ideas : { data: [...acc.ideas.data, ...ideas.data] }) as IIdeas,
           hasMore: _.has(ideas, 'links.next')
         }));
       }, {
-        ideas: [],
+        ideas: {} as IIdeas,
         filter: {},
         pageNumber: 1,
         hasMore: false
-      }, 1).subscribe(({ ideas, hasMore }) => {
+      }).subscribe(({ ideas, hasMore }) => {
         this.state$.next({ ideas, hasMore });
+
+        // legacy redux
+        // store.dispatch(mergeJsonApiResources(ideas));
       })
     ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   componentWillReceiveProps(newProps) {
@@ -155,9 +172,9 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
 
     const ideasList = (ideas ? (
       <IdeasList wrap={true} mx={-10}>
-        {ideas.map((idea) => (
+        {ideas.data.map((idea) => (
           <Box key={idea.id} w={[1, 1 / 2, 1 / 3]} px={10}>
-            <IdeaCard id={idea.id} />
+            <IdeaCard ideaId={idea.id} />
           </Box>
         ))}
         {loadMore}

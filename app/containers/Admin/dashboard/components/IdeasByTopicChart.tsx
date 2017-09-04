@@ -6,7 +6,7 @@ import { injectIntl } from 'react-intl';
 import { withTheme } from 'styled-components'
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { injectTFunc } from 'utils/containers/t/utils';
-import { observeIdeasByTopic } from 'services/stats';
+import { ideasByTopicStream } from 'services/stats';
 
 
 
@@ -58,7 +58,7 @@ class IdeasByTimeChart extends React.PureComponent<Props, State> {
   resubscribe(startAt=this.props.startAt, endAt=this.props.endAt) {
     if (this.serieObservable) this.serieObservable.unsubscribe();
 
-    this.serieObservable = observeIdeasByTopic({
+    this.serieObservable = ideasByTopicStream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,

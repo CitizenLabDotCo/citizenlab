@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { injectIntl } from 'react-intl';
 import { withTheme } from 'styled-components'
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
-import { observeUsersByGender } from 'services/stats';
+import { usersByGenderStream } from 'services/stats';
 import messages from '../messages';
 
 
@@ -59,7 +59,7 @@ class GenderChart extends React.PureComponent<Props, State> {
   resubscribe(startAt=this.props.startAt, endAt=this.props.endAt) {
     if (this.serieObservable) this.serieObservable.unsubscribe();
 
-    this.serieObservable = observeUsersByGender({
+    this.serieObservable = usersByGenderStream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,

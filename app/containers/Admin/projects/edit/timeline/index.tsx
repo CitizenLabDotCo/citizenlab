@@ -7,8 +7,8 @@ import messages from './messages';
 import * as _ from 'lodash';
 
 // Services
-import { observeProject } from 'services/projects';
-import { observePhases, IPhaseData, deletePhase } from 'services/phases';
+import { projectStream } from 'services/projects';
+import { phasesStream, IPhaseData, deletePhase } from 'services/phases';
 
 // Components
 import { Link } from 'react-router';
@@ -120,9 +120,9 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
   componentDidMount () {
     this.setState({ loading: true });
-    this.subscription = observeProject(this.props.params.slug).observable
+    this.subscription = projectStream(this.props.params.slug).observable
     .switchMap((project) => {
-      return observePhases(project.data.id).observable.map((phases) => (phases.data));
+      return phasesStream(project.data.id).observable.map((phases) => (phases.data));
     })
     .subscribe((phases) => {
       this.setState({ phases, loading: false });
@@ -133,8 +133,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
     return (event) => {
       event.preventDefault();
       if (window.confirm(this.props.intl.formatMessage(messages.deletePhaseConfirmation))) {
-        deletePhase(phaseId).
-        then((response) => {
+        deletePhase(phaseId).then((response) => {
           this.setState({ phases: _.reject(this.state.phases, { id: phaseId }) });
         });
       }

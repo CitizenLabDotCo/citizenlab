@@ -10,10 +10,10 @@ import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { injectIntl, intlShape } from 'react-intl';
 import { browserHistory } from 'react-router';
 import { injectTFunc } from 'utils/containers/t/utils';
-import { stateStream, IStateStream } from 'services/state';
+import { state, IStateStream } from 'services/state';
 import { EditorState, convertToRaw } from 'draft-js';
 import { IStream } from 'utils/streams';
-import { observeUsers, observeUser, updateUser, IUser } from 'services/users';
+import { usersStream, userStream, updateUser, IUser } from 'services/users';
 import { IIdea, addIdea } from 'services/ideas';
 import { addIdeaImage } from 'services/ideaImages';
 import auth from 'services/auth';
@@ -174,9 +174,9 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       showIdeaForm: true
     };
 
-    this.newIdeaFormState$ = stateStream.observe<INewIdeaFormState>(namespace, NewIdeaFormNamespace, initialNewIdeaFormState);
-    this.buttonBarState$ = stateStream.observe<IButtonBarState>(namespace, ButtonBarNamespace, initialButtonBarState);
-    this.state$ = stateStream.observe<State>(namespace, namespace, initialState);
+    this.newIdeaFormState$ = state.createStream<INewIdeaFormState>(namespace, NewIdeaFormNamespace, initialNewIdeaFormState);
+    this.buttonBarState$ = state.createStream<IButtonBarState>(namespace, ButtonBarNamespace, initialButtonBarState);
+    this.state$ = state.createStream<State>(namespace, namespace, initialState);
 
     this.subscriptions = [];
   }
@@ -360,4 +360,4 @@ const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
 });
 
-export default injectTFunc(injectIntl(connect(mapStateToProps, null)(IdeasNewPage2)));
+export default injectTFunc(injectIntl(connect(mapStateToProps, null)(IdeasNewPage2))) as typeof IdeasNewPage2;

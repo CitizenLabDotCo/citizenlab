@@ -7,7 +7,7 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import messages from './messages';
 import { FormattedMessage } from 'react-intl';
-import { stateStream, IStateStream } from 'services/state';
+import { state, IStateStream } from 'services/state';
 import auth from 'services/auth';
 import { isValidEmail } from 'utils/validate';
 import styled from 'styled-components';
@@ -85,7 +85,7 @@ export default class SignIn extends React.PureComponent<Props, State> {
       signInError: null
     };
 
-    this.state$ = stateStream.observe<State>(namespace, namespace, initialState);
+    this.state$ = state.createStream<State>(namespace, namespace, initialState);
     this.subscriptions = [];
     this.emailInputElement = null;
     this.passwordInputElement = null;

@@ -78,13 +78,7 @@ const RegisterLink = styled.span`
   }
 `;
 
-type Props = {};
-
-type State = {};
-
-export const namespace = 'IdeaCard/unauthenticated';
-
-export default class Unauthenticated extends React.PureComponent<Props, State> {
+export default class Unauthenticated extends React.PureComponent {
   goToLogin = (event) => {
     event.preventDefault();
     event.stopPropagation();

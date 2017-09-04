@@ -7,14 +7,13 @@ import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import Pagination from 'components/admin/Pagination';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
-import { observeIdeas, updateIdea } from 'services/ideas';
-import { observeTopics } from 'services/topics';
-import { observeIdeaStatuses } from 'services/idea_statuses';
-import { observeProjects } from 'services/projects';
+import { ideasStream, updateIdea } from 'services/ideas';
+import { topicsStream } from 'services/topics';
+import { ideaStatusesStream } from 'services/ideaStatuses';
+import { projectsStream } from 'services/projects';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { injectTFunc } from 'utils/containers/t/utils';
 import WatchSagas from 'utils/containers/watchSagas';
-
 
 // import ExportLabel from 'components/admin/ExportLabel';
 import { Table, Input, Menu, Dropdown } from 'semantic-ui-react';
@@ -80,19 +79,19 @@ class AllIdeas extends PureComponent {
   componentDidMount() {
     this.resubscribeIdeas();
 
-    this.topicsObservable = observeTopics().observable.subscribe((data) => {
+    this.topicsObservable = topicsStream().observable.subscribe((data) => {
       this.setState({
         topics: data.data,
       });
     });
 
-    this.projectsObservable = observeProjects().observable.subscribe((data) => {
+    this.projectsObservable = projectsStream().observable.subscribe((data) => {
       this.setState({
         projects: data.data,
       });
     });
 
-    this.ideaStatusesObservable = observeIdeaStatuses().observable.subscribe((data) => {
+    this.ideaStatusesObservable = ideaStatusesStream().observable.subscribe((data) => {
       this.setState({
         ideaStatuses: data.data,
       });
@@ -131,7 +130,7 @@ class AllIdeas extends PureComponent {
       queryParams.idea_status = this.state.selectedIdeaStatus;
     }
 
-    this.ideasObservable = observeIdeas({
+    this.ideasObservable = ideasStream({
       queryParameters: queryParams,
     }).observable.subscribe((data) => {
       const currentPageNumber = getPageNumberFromUrl(data.links.self) || 1;
@@ -354,6 +353,5 @@ const mapDispatchToProps = {
   loadIdeasXlsxRequest,
   loadCommentsXlsxRequest,
 };
-
 
 export default injectTFunc(connect(mapStateToProps, mapDispatchToProps)(AllIdeas));
