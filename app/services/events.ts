@@ -58,8 +58,6 @@ export function updateEvent(eventId: string, object: UpdatedEvent, refetch = tru
 
   return request<Event>(`${apiEndpoint}/${eventId}`, bodyData, httpMethod, null).then((response) => {
     streams.update(eventId, response, refetch);
-  }).catch((error) => {
-    throw new Error(`error for updateEvent() of service Events`);
   });
 }
 
@@ -67,10 +65,7 @@ export function saveEvent(projectId: string, object: UpdatedEvent, refetch = tru
   const httpMethod = { method: 'POST' };
   const bodyData = { event: object };
 
-  return request<Event>(`${API_PATH}/projects/${projectId}/events`, bodyData, httpMethod, null)
-  .catch((error) => {
-    throw new Error(`error for saveEvent() of service Events`);
-  });
+  return request<Event>(`${API_PATH}/projects/${projectId}/events`, bodyData, httpMethod, null);
 }
 
 export function deleteEvent(eventId: string, httpOptions = {}): Promise<any> {

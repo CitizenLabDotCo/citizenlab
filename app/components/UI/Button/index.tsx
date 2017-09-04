@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import { darken, lighten } from 'polished';
+import { darken, lighten, rgba } from 'polished';
 import { ITheme } from 'typings';
 import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
@@ -108,6 +108,30 @@ const StyledButton: any = styled.button`
     }
   }
 
+  &.success {
+    background-color: ${rgba('#32B67A', .15)};
+    color: #32B67A;
+    ${ButtonText} {
+      color: inherit;
+    }
+
+    svg {
+      fill: #32B67A;
+    }
+  }
+
+  &.error {
+    background-color: ${rgba('#FC3C2D', .15)};
+    color: #FC3C2D;
+    ${ButtonText} {
+      color: inherit;
+    }
+
+    svg {
+      fill: #FC3C2D;
+    }
+  }
+
   ${ButtonContent} {
     padding: ${(props: any) => {
       switch (props.size) {
@@ -157,7 +181,7 @@ type Props = {
   text?: string;
   children?: any;
   size?: string;
-  style?: 'primary' | 'secondary';
+  style?: 'primary' | 'secondary' | 'success' | 'error';
   icon?: string;
   loading?: boolean;
   disabled?: boolean;

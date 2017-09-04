@@ -59,8 +59,6 @@ export function updatePhase(phaseId: string, object: IUpdatedPhase, refetch = tr
 
   return request<IPhase>(`${apiEndpoint}/${phaseId}`, bodyData, httpMethod, null).then((response) => {
     streams.update(phaseId, response, refetch);
-  }).catch((error) => {
-    throw new Error(`error for updatePhase() of service Phases`);
   });
 }
 
@@ -68,10 +66,7 @@ export function savePhase(projectId: string, object: IUpdatedPhase, refetch = tr
   const httpMethod = { method: 'POST' };
   const bodyData = { phase: object };
 
-  return request<IPhase>(`${API_PATH}/projects/${projectId}/phases`, bodyData, httpMethod, null)
-  .catch((error) => {
-    throw new Error(`error for savePhase() of service Phases`);
-  });
+  return request<IPhase>(`${API_PATH}/projects/${projectId}/phases`, bodyData, httpMethod, null);
 }
 
 export function deletePhase(phaseId: string, httpOptions = {}): Promise<any> {

@@ -85,7 +85,7 @@ export default defineMessages({
   },
   subTitleBranding: {
     id: 'app.containers.AdminPage.SettingsPage.subTitleBranding',
-    defaultMessage: 'Paint your identity',
+    defaultMessage: 'Establish your visual branding on the platform',
   },
   gender: {
     id: 'app.containers.AdminPage.SettingsPage.gender',

@@ -22,8 +22,6 @@ require('shelljs/global');
 
 // Glob to match all js files except test files
 const FILES_TO_PARSE = 'app/**/!(*.test).js';
-// const locales = i18n.appLocales.map((appLocale) => appLocale.id);
-// const locales = i18n.appLocalePairs.map((locale, fullName) => locale);
 
 const locales = _.keys(i18n.appLocalePairs);
 
