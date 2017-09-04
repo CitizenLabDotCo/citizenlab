@@ -4,7 +4,8 @@
 #
 version: 2
 jobs:
-  install:
+
+  lint_js:
     docker:
       - image: joecridge1/node8-awscli-gitlfs-gulp
     working_directory: ~/cl2-front
@@ -21,12 +22,6 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
-  lint_js:
-    docker:
-      - image: joecridge1/node8-awscli-gitlfs-gulp
-    working_directory: ~/cl2-front
-    steps:
       - run: npm run lint:js --silent
 
   lint_ts:
@@ -34,6 +29,18 @@ jobs:
       - image: joecridge1/node8-awscli-gitlfs-gulp
     working_directory: ~/cl2-front
     steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run lint:ts --silent
 
   deploy_demo:
@@ -41,6 +48,19 @@ jobs:
       - image: joecridge1/node8-awscli-gitlfs-gulp
     working_directory: ~/cl2-front
     steps:
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run build
       - deploy:
         name: Deploy to S3 if tests pass and branch is Master
@@ -51,6 +71,19 @@ jobs:
       - image: joecridge1/node8-awscli-gitlfs-gulp
     working_directory: ~/cl2-front
     steps:
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
       - run: CROWDIN_PLUGIN_ENABLED=true npm run build
       - deploy :
           name: Deploy translatable version to i18n.stg.citizenlab.co
@@ -60,13 +93,8 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - install
       - lint_js:
-          requires:
-            - install
       - lint_ts:
-          requires:
-            - install
       - deploy_demo:
           requires:
             - lint_js
