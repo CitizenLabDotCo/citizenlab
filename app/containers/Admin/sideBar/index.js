@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Image, Menu } from 'semantic-ui-react';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 
 import messages from './messages';
 import styled from 'styled-components';
@@ -14,7 +14,7 @@ import groupsIcon from './icons/groups.svg';
 import projectsIcon from './icons/projects.svg';
 import ideasIcon from './icons/ideas.svg';
 import settingsIcon from './icons/settings.svg';
-import needHelpIcon from './icons/need_help_icon.svg';
+// import needHelpIcon from './icons/need_help_icon.svg';
 
 const MenuStyled = styled(Menu)`
   height: 100%;
@@ -65,39 +65,39 @@ const MenuItemIcon = (icon) => (<Image
   }}
 />);
 
-const NeedHelpBoxStyled = styled.div`
-  height: 110px;
-  width: 209px;
-  position: fixed;
-  bottom: 0;
-  background-color: #464646;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-`;
+// const NeedHelpBoxStyled = styled.div`
+//   height: 110px;
+//   width: 209px;
+//   position: fixed;
+//   bottom: 0;
+//   background-color: #464646;
+//   display:flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
 
-const HelpTextStyled = styled.div`
-  padding-left: 1rem;
-`;
+// const HelpTextStyled = styled.div`
+//   padding-left: 1rem;
+// `;
 
-const HelpImageStyled = styled(Image)`
-  width: 34.6px;
-  height: 37.2px;
-`;
+// const HelpImageStyled = styled(Image)`
+//   width: 34.6px;
+//   height: 37.2px;
+// `;
 
-const NeedHelpLabelStyled = styled.div`
-  font-size: 16px;
-  text-align: left;
-  color: #ffffff;
-`;
+// const NeedHelpLabelStyled = styled.div`
+//   font-size: 16px;
+//   text-align: left;
+//   color: #ffffff;
+// `;
 
-const ReadOurGuide = styled(Link)`
-  font-size: 16px;
-  text-align: left;
-  color: #ffffff !important;
-  font-weight: bold;
-  text-decoration: underline !important;
-`;
+// const ReadOurGuide = styled(Link)`
+//   font-size: 16px;
+//   text-align: left;
+//   color: #ffffff !important;
+//   font-weight: bold;
+//   text-decoration: underline !important;
+// `;
 
 function Sidebar(props) {
   const { formatMessage } = props.intl;
@@ -122,7 +122,7 @@ function Sidebar(props) {
       <MenuItemContainerStyled active={props.location.pathname === '/admin/settings'}>
         <MenuItemStyled icon={MenuItemIcon(settingsIcon)} name={formatMessage({ ...messages.settings })} as={Link} to="/admin/settings" />
       </MenuItemContainerStyled>
-      <NeedHelpBoxStyled>
+      {/* <NeedHelpBoxStyled>
         <HelpImageStyled
           src={needHelpIcon}
         />
@@ -133,7 +133,7 @@ function Sidebar(props) {
             <FormattedMessage {...messages.readGuide} />
           </ReadOurGuide>
         </HelpTextStyled>
-      </NeedHelpBoxStyled>
+      </NeedHelpBoxStyled> */}
     </MenuStyled>
   );
 }

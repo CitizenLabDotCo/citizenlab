@@ -1,5 +1,19 @@
 # Changelog
 
+## 2017-09-01
+
+### Fixed
+- Saving forms in the admin of Projects will now show success or error messages appropriately
+- The link to the guide has been hidden from the admin sidebar until we have a guide to link to
+
+### Added
+- Adding an idea from a project page will pre-fill parts of the new idea form
+- The landing page now prompts user to add an Idea if there are none
+- The landing page will hide the Projects block if there are none
+
+### Changed
+- Under-the-hood optimizations to increase the loading speed of the platform
+
 ## 2017-08-27
 
 ### Fixed

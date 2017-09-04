@@ -28,11 +28,11 @@ const Meta: React.SFC<Props> = ({ tenant, tFunc, intl }) => {
 
   const title =
     (titleMultiloc && titleMultiloc.isEmpty && !titleMultiloc.isEmpty() && tFunc(titleMultiloc)) ||
-    formatMessage(messages.helmetTitle, { tenantName: organizationName });
+    formatMessage(messages.helmetTitle, { organizationName });
 
   const description =
     (descriptionMultiloc && descriptionMultiloc.isEmpty && !descriptionMultiloc.isEmpty() && tFunc(descriptionMultiloc)) ||
-    formatMessage(messages.helmetDescription, { tenantName: organizationName });
+    formatMessage(messages.helmetDescription, { organizationName });
 
   const url = `http://${tenant.attributes.host}`;
 
