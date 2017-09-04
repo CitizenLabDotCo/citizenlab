@@ -199,7 +199,7 @@
   "app.containers.IdeasNewPage.submitting":"Publiceren...",
   "app.containers.IdeasNewPage.submittingComment":"Publiceren...",
   "app.containers.IdeasNewPage.topicsLabel":"onderwerpen",
-  "app.containers.IdeasNewPage.topicsPlaceholder":"Selecteer onderwerpen",
+  "app.containers.IdeasNewPage.topicsPlaceholder":"Selecteer thema's",
   "app.containers.IdeasNewPage2.descriptionEmptyError":"Gelieve een beschrijving te geven",
   "app.containers.IdeasNewPage2.descriptionLabel":"Beschrijving (vereist)",
   "app.containers.IdeasNewPage2.descriptionPlaceholder":"Beschrijf je idee",
