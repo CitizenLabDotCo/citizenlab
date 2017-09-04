@@ -127,7 +127,7 @@
   "app.containers.AdminPage.SettingsPage.organizationName": "{type, select, generic {Organization} city {City}} name",
   "app.containers.AdminPage.SettingsPage.save": "Save",
   "app.containers.AdminPage.SettingsPage.subTitleBasic": "Fill these out carefully, they define the platforms identity.",
-  "app.containers.AdminPage.SettingsPage.subTitleBranding": "Paint your identity",
+  "app.containers.AdminPage.SettingsPage.subTitleBranding": "Establish your visual branding on the platform",
   "app.containers.AdminPage.SettingsPage.subTitleSignupFields": "What questions will be asked to users when signing up?",
   "app.containers.AdminPage.SettingsPage.titleBasic": "Basic information",
   "app.containers.AdminPage.SettingsPage.titleBranding": "Branding",
