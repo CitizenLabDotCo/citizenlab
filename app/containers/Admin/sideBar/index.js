@@ -10,7 +10,7 @@ import styled from 'styled-components';
 // icons
 import dashboardIcon from './icons/dashboard.svg';
 import usersIcon from './icons/users.svg';
-import groupsIcon from './icons/groups.svg';
+// import groupsIcon from './icons/groups.svg';
 import projectsIcon from './icons/projects.svg';
 import ideasIcon from './icons/ideas.svg';
 import settingsIcon from './icons/settings.svg';
@@ -110,9 +110,9 @@ function Sidebar(props) {
       <MenuItemContainerStyled active={props.location.pathname === '/admin/users'}>
         <MenuItemStyled icon={MenuItemIcon(usersIcon)} name={formatMessage({ ...messages.users })} as={Link} to="/admin/users" />
       </MenuItemContainerStyled>
-      <MenuItemContainerStyled active={props.location.pathname === '/admin/groups'}>
+      {/* <MenuItemContainerStyled active={props.location.pathname === '/admin/groups'}>
         <MenuItemStyled icon={MenuItemIcon(groupsIcon)} name={formatMessage({ ...messages.groups })} as={Link} to="/admin/groups" />
-      </MenuItemContainerStyled>
+      </MenuItemContainerStyled> */}
       <MenuItemContainerStyled active={props.location.pathname === '/admin/projects'}>
         <MenuItemStyled icon={MenuItemIcon(projectsIcon)} name={formatMessage({ ...messages.projects })} as={Link} to="/admin/projects" />
       </MenuItemContainerStyled>

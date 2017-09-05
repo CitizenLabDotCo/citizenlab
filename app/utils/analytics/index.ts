@@ -50,7 +50,11 @@ export function addTenantInfo(properties, tenant: ITenantData) {
 export function trackPage(path: string, properties: {} = {}) {
   pageChanges$.next({
     properties,
+<<<<<<< HEAD
     name: path
+=======
+    name: path,
+>>>>>>> 91966f82b9d7491c7a2d76b4de604e781a3e694e
   });
 }
 
@@ -84,6 +88,7 @@ export const initializeAnalytics = (store) => {
     apiKey: CL_SEGMENT_API_KEY,
   });
 
+  // tslint:disable-next-line:no-eval
   eval(contents);
 
   store.runSaga(watchEvents);

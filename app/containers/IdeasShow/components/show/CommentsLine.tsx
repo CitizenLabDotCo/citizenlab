@@ -32,7 +32,7 @@ const Separator = styled.div`
   width: 100%;
   height: 3px;
   margin: 10px 0;
-`
+`;
 
 export default class CommentsLine extends React.Component<Props> {
   render() {
