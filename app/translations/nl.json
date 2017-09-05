@@ -299,7 +299,7 @@
   "app.containers.ProjectsEvents.noEvents":"Geen event beschikbaar voor dit project",
   "app.containers.ProjectsIndexPage.header":"Projecten",
   "app.containers.ProjectsIndexPage.helmetDescription":"Lijst van projecten",
-  "app.containers.ProjectsIndexPage.helmetTitle":"Pagina met lijst van projecten",
+  "app.containers.ProjectsIndexPage.helmetTitle":"Alle projecten",
   "app.containers.ProjectsIndexPage.loadMore":"Laad meer projecten...",
   "app.containers.ProjectsIndexPage.loading":"Bezig met laden...",
   "app.containers.ProjectsTimeline.comingPhase":"Volgende fase",
