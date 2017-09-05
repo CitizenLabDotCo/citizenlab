@@ -37,7 +37,7 @@ const IntervalButton: any = styled.button`
 type Props = {
   value: string,
   onChange: (string) => void,
-}
+};
 
 export default class IntervalControl extends React.PureComponent<Props> {
 

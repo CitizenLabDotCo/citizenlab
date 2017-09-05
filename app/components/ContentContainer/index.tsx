@@ -30,4 +30,9 @@ const ContentContainer: React.SFC<IContentContainer> = ({ children, className })
   </Outer>
 );
 
+interface IContentContainer {
+  children?: any;
+  className?: string;
+}
+
 export default ContentContainer;
