@@ -424,7 +424,7 @@
   "app.containers.UsersEditPage.female":"Féminin",
   "app.containers.UsersEditPage.firstName":"Prénom",
   "app.containers.UsersEditPage.gender":"Sexe",
-  "app.containers.UsersEditPage.h1":"Informations de base",
+  "app.containers.UsersEditPage.h1":"Profil utilisateur",
   "app.containers.UsersEditPage.h1sub":"Modifiez les informations relatives à votre compte",
   "app.containers.UsersEditPage.h2":"Détails du profil",
   "app.containers.UsersEditPage.h2sub":"Toutes ces informations restent privées et nous aident à mieux vous connaître !",
