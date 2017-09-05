@@ -1,19 +1,34 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import { Link } from 'react-router';
+
+//components
 import IdeaCard, { namespace as ideaCardNamespace } from 'components/IdeaCard';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
 import Modal from 'components/UI/Modal';
 import IdeasShow from 'containers/IdeasShow';
-import { Flex, Box } from 'grid-styled';
-import eventEmitter from 'utils/eventEmitter';
+import Icon from 'components/UI/Icon';
+
+// services
 import { state, IStateStream } from 'services/state';
-import { IStream } from 'utils/streams';
 import { ideasStream, ideaStream, IIdeas, IIdeaData } from 'services/ideas';
 import { userStream, IUser } from 'services/users';
 import { ideaImageStream, ideaImagesStream, IIdeaImage, IIdeaImageData } from 'services/ideaImages';
+
+// i18n
+import { FormattedMessage } from 'react-intl';
+import messages from './messages';
+
+// utils
+import eventEmitter from 'utils/eventEmitter';
+
+// style
 import styled from 'styled-components';
+import { Flex, Box } from 'grid-styled';
+import { lighten } from 'polished';
+import ButtonMixin from 'components/admin/StyleMixins/buttonMixin';
+
+
 
 const IdeasList: any = styled(Flex)`
   margin-top: 10px;
@@ -28,6 +43,41 @@ const LoadMoreButton = styled.button`
 
   :hover{
     background: rgba(34, 34, 34, 0.10);
+  }
+`;
+
+const EmptyContainer = styled.div`
+  align-items: center;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  font-size: 1.5em;
+  justify-content: center;
+  margin: 0;
+  min-height: 400px;
+  padding: 2rem;
+
+  a {
+    ${(props) => ButtonMixin(props.theme.colorMain, lighten(0.1, props.theme.colorMain))};
+    margin: 1em;
+    color: white;
+
+    svg {
+      transform: scale(1.5);
+    }
+  }
+
+  .idea-icon {
+    width: 2rem;
+    height: 2rem;
+    transform: scale(2);
+    margin: 0 0 2rem;
+
+    g[fill] {
+      fill: #000;
+    }
   }
 `;
 
@@ -163,6 +213,17 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
       </LoadMoreButton>
     ) : null);
 
+    const empty = ((!ideas || ideas && ideas.data.length === 0) ? (
+      <EmptyContainer>
+        <Icon className="idea-icon" name="idea" />
+        <FormattedMessage {...messages.empty} />
+        <Link to="/ideas/new">
+          <Icon name="add_circle" />
+          <FormattedMessage {...messages.addIdea} />
+        </Link>
+      </EmptyContainer>
+    ) : null);
+
     const ideasList = (ideas ? (
       <IdeasList wrap={true} mx={-10}>
         {ideas.data.map((idea) => (
@@ -182,6 +243,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
 
     return (
       <div>
+        {empty}
         {ideasList}
         {modal}
       </div>
