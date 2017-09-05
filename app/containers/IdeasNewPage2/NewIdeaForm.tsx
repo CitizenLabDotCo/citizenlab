@@ -75,7 +75,6 @@ const MobileButton = styled.div`
 
 type Props = {
   intl: ReactIntl.InjectedIntl;
-  tFunc: Function;
   locale: string;
   onSubmit: () => void;
 };
@@ -145,7 +144,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
     if (list) {
       return (list.data as (ITopicData | IProjectData)[]).map(item => ({
         value: item.id,
-        label: this.props.tFunc(item.attributes.title_multiloc) as string,
+        label: item.attributes.title_multiloc[this.props.locale]
       } as IOption));
     }
 

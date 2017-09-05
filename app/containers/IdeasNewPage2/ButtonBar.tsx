@@ -36,7 +36,6 @@ const ButtonBarInner = styled.div`
 
 type Props = {
   intl: ReactIntl.InjectedIntl;
-  tFunc: Function;
   locale: string;
   onSubmit: () => void;
 };

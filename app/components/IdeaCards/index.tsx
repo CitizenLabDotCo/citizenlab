@@ -15,10 +15,6 @@ import { userStream, IUser } from 'services/users';
 import { ideaImageStream, ideaImagesStream, IIdeaImage, IIdeaImageData } from 'services/ideaImages';
 import styled from 'styled-components';
 
-// legacy redux
-// import { store } from 'app';
-// import { mergeJsonApiResources } from 'utils/resources/actions';
-
 const IdeasList: any = styled(Flex)`
   margin-top: 10px;
 `;
@@ -127,9 +123,6 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
         hasMore: false
       }).subscribe(({ ideas, hasMore }) => {
         this.state$.next({ ideas, hasMore });
-
-        // legacy redux
-        // store.dispatch(mergeJsonApiResources(ideas));
       })
     ];
   }

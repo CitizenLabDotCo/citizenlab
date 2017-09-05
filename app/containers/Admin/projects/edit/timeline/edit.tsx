@@ -11,7 +11,7 @@ import messages from './messages';
 import * as moment from 'moment';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
-import { withRouter } from 'react-router';
+import { browserHistory } from 'react-router';
 import { API } from 'typings.d';
 
 // Services
@@ -42,7 +42,6 @@ type Props = {
   },
   locale: string,
   tFunc: Function,
-  router: any,
   project: IProjectData | null;
 };
 
@@ -162,7 +161,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       savingPromise = updatePhase(this.state.phase.id, this.state.attributeDiff);
     } else if (this.props.project) {
       savingPromise = addPhase(this.props.project.id, this.state.attributeDiff).then((response) => {
-        this.props.router.push(`/admin/projects/${this.props.params.slug}/timeline/${response.data.id}`);
+        browserHistory.push(`/admin/projects/${this.props.params.slug}/timeline/${response.data.id}`);
         return response;
       });
     }
@@ -250,4 +249,4 @@ const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
 });
 
-export default injectTFunc(injectIntl(connect(mapStateToProps)(withRouter(AdminProjectTimelineEdit))));
+export default injectTFunc(injectIntl(connect(mapStateToProps)(AdminProjectTimelineEdit)));

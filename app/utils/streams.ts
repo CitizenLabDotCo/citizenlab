@@ -4,6 +4,8 @@ import * as _ from 'lodash';
 import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 import { v4 as uuid } from 'uuid';
+import { store } from 'app';
+import { mergeJsonApiResources } from 'utils/resources/actions';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn<T> = () => IStream<T>;
@@ -48,34 +50,28 @@ class Streams {
     return uuidRegExp.test(string);
   }
 
+  isQuery(queryParameters: null | object) {
+    return _.isObject(queryParameters) && !_.isEmpty(queryParameters);
+  }
+
   findExistingStreamId(params: IExtendedStreamParams<any>) {
     let existingStreamId: string | null = null;
 
-    _.forOwn(this.streams, (stream, streamId) => {
-      if (_.isEqual(stream.params, params)) {
-        existingStreamId = streamId;
-        return false;
+    _.forOwn(this.streams, (existingStream, streamId) => {
+      if (params.apiEndpoint === existingStream.params.apiEndpoint) {
+        const requestedStreamIsQuery = this.isQuery(params.queryParameters);
+        const existingStreamIsQuery = this.isQuery(existingStream.params.queryParameters);
+
+        if ((requestedStreamIsQuery && existingStreamIsQuery && _.isEqual(params.queryParameters, existingStream.params.queryParameters)) || (!requestedStreamIsQuery && !existingStreamIsQuery)) {
+          existingStreamId = streamId;
+          return false;
+        }
       }
 
       return true;
     });
 
     return existingStreamId;
-  }
-
-  hasQueryStream(streams: { [key: string]: IStream<any>}, apiEndpoint: string) {
-    let hasQueryStream = false;
-
-    _.forOwn(streams, (stream, streamId) => {
-      if (stream.params.apiEndpoint === apiEndpoint && stream.params.queryParameters && !_.isEmpty(stream.params.queryParameters)) {
-        hasQueryStream = true;
-        return false;
-      }
-
-      return true;
-    });
-
-    return hasQueryStream;
   }
 
   get<T>(inputParams: IInputStreamParams<T>) {
@@ -104,9 +100,15 @@ class Streams {
         const { apiEndpoint, bodyData, queryParameters } = this.streams[streamId].params;
         const promise = request<any>(apiEndpoint, bodyData, { method: 'GET' }, queryParameters);
 
-        Rx.Observable.defer(() => promise).retry(3).subscribe(
+        Rx.Observable.defer(() => promise).retry(2).subscribe(
           (response) => {
-            console.log(`fetched data for ${apiEndpoint}`);
+            if (this.isQuery(queryParameters)) {
+              console.log(`fetched data for ${apiEndpoint} with queryParams:`);
+              console.log(queryParameters);
+            } else {
+              console.log(`fetched data for ${apiEndpoint}`);
+            }
+
             (this.streams[streamId].observer as IObserver<any>).next(response);
           },
           (error) => {
@@ -118,75 +120,73 @@ class Streams {
         return this.streams[streamId];
       };
 
-      this.streams[streamId].observable = Rx.Observable.create((observer: IObserver<T>) => {
-        const { apiEndpoint, queryParameters } = this.streams[streamId].params;
-        const lastSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
+      if (this.streams[streamId].observable === null) {
+        this.streams[streamId].observable = Rx.Observable.create((observer: IObserver<T>) => {
+          if (this.streams[streamId].observer === null) {
+            const { apiEndpoint, queryParameters } = this.streams[streamId].params;
+            const lastSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
 
-        this.streams[streamId].observer = observer;
+            this.streams[streamId].observer = observer;
 
-        if (!_.isUndefined(this.resources[lastSegment])) {
-          console.log('retrieved local version:');
-          console.log(this.resources[lastSegment]);
-          (this.streams[streamId].observer as IObserver<any>).next(this.resources[lastSegment]);
-        } else if ((!queryParameters || _.isEmpty(queryParameters)) && !_.isUndefined(this.apiEndpointResources[apiEndpoint])) {
-          (this.streams[streamId].observer as IObserver<any>).next(this.apiEndpointResources[apiEndpoint]);
-        } else {
-          this.streams[streamId].fetch();
-        }
-
-        return () => {
-          if (queryParameters && !_.isEmpty(queryParameters)) {
-            console.log(`delete queryStream with apiEndpoint ${this.streams[streamId].params.apiEndpoint}`);
-            delete this.streams[streamId];
+            if (_.has(this.resources, lastSegment)) {
+              observer.next(this.resources[lastSegment]);
+            } else if (!this.isQuery(queryParameters) && _.has(this.apiEndpointResources, apiEndpoint)) {
+              observer.next(this.apiEndpointResources[apiEndpoint]);
+            } else {
+              this.streams[streamId].fetch();
+            }
           }
-        };
-      })
-      .startWith('initial')
-      .scan((accumulated: T, current: T | pureFn<T>) => {
-        let data: any = accumulated;
-        const dataIds = {};
-        const { apiEndpoint, queryParameters } = this.streams[streamId].params;
+        })
+        .startWith('initial')
+        .scan((accumulated: T, current: T | pureFn<T>) => {
+          let data: any = accumulated;
+          const dataIds = {};
+          const { apiEndpoint, queryParameters } = this.streams[streamId].params;
 
-        data = (_.isFunction(current) ? current(data) : current);
+          data = (_.isFunction(current) ? current(data) : current);
 
-        if (_.isObject(data) && !_.isEmpty(data)) {
-          const innerData = data.data;
-          const included = (data.included ? data.included : null);
+          // add to redux resources store
+          store.dispatch(mergeJsonApiResources(data));
 
-          if (_.isArray(innerData)) {
-            this.streams[streamId].type = 'arrayOfObjects';
-            innerData.filter(item => item.id).forEach((item) => {
-              dataIds[item.id] = true;
-              this.resources[item.id] = { data: item };
-            });
-          } else if (_.isObject(innerData) && _.has(innerData, 'id')) {
-            this.streams[streamId].type = 'singleObject';
-            dataIds[innerData.id] = true;
-            this.resources[innerData.id] = data;
+          if (_.isObject(data) && !_.isEmpty(data)) {
+            const innerData = data.data;
+            const included = (data.included ? data.included : null);
+
+            if (_.isArray(innerData)) {
+              this.streams[streamId].type = 'arrayOfObjects';
+              innerData.filter(item => item.id).forEach((item) => {
+                dataIds[item.id] = true;
+                this.resources[item.id] = { data: item };
+              });
+            } else if (_.isObject(innerData) && _.has(innerData, 'id')) {
+              this.streams[streamId].type = 'singleObject';
+              dataIds[innerData.id] = true;
+              this.resources[innerData.id] = data;
+            }
+
+            if (included) {
+              included.filter(item => item.id).forEach(item => this.resources[item.id] = { data: item });
+              data = _.omit(data, 'included');
+            }
           }
 
-          if (included) {
-            included.filter(item => item.id).forEach(item => this.resources[item.id] = { data: item });
-            data = _.omit(data, 'included');
+          if (!this.isQuery(queryParameters)) {
+            const lastSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
+
+            if (!this.isUUID(lastSegment) && lastSegment !== 'current') {
+              this.apiEndpointResources[apiEndpoint] = data;
+            }
           }
-        }
 
-        if (!queryParameters || _.isEmpty(queryParameters)) {
-          const lastSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
+          this.streams[streamId].dataIds = dataIds;
 
-          if (!this.isUUID(lastSegment) && lastSegment !== 'current') {
-            this.apiEndpointResources[apiEndpoint] = data;
-          }
-        }
-
-        this.streams[streamId].dataIds = dataIds;
-
-        return data;
-      })
-      .filter((data) => data !== 'initial')
-      .distinctUntilChanged()
-      .publishReplay(1)
-      .refCount();
+          return data;
+        })
+        .filter((data) => data !== 'initial')
+        .distinctUntilChanged()
+        .publishReplay(1)
+        .refCount();
+      }
 
       return <IStream<T>>this.streams[streamId];
     }
@@ -197,11 +197,10 @@ class Streams {
   async add<T>(apiEndpoint: string, bodyData: object) {
     try {
       const addedObject = await request<T>(apiEndpoint, bodyData, { method: 'POST' }, null);
-      const hasQueryStream = this.hasQueryStream(this.streams, apiEndpoint);
 
       _.forOwn(this.streams, (stream, streamId) => {
         if (stream.params.apiEndpoint === apiEndpoint) {
-          if (hasQueryStream) {
+          if (this.isQuery(stream.params.queryParameters)) {
             stream.fetch();
           } else if (stream.observer) {
             stream.observer.next((emittedValue) => ({
@@ -222,10 +221,9 @@ class Streams {
   async update<T>(apiEndpoint: string, dataId: string, bodyData: object) {
     try {
       const updatedObject = await request<T>(apiEndpoint, bodyData, { method: 'PATCH' }, null);
-      const hasQueryStream = this.hasQueryStream(this.streams, apiEndpoint);
 
       _.forOwn(this.streams, (stream, streamId) => {
-        if ((stream.params.apiEndpoint === apiEndpoint && hasQueryStream) || (stream.dataIds[dataId] && stream.type === 'unknown')) {
+        if ((stream.params.apiEndpoint === apiEndpoint && this.isQuery(stream.params.queryParameters)) || (stream.dataIds[dataId] && stream.type === 'unknown')) {
           stream.fetch();
         } else if (stream.dataIds[dataId] && stream.observer && stream.type === 'singleObject') {
           stream.observer.next(updatedObject);
@@ -247,10 +245,9 @@ class Streams {
   async delete(apiEndpoint: string, dataId: string) {
     try {
       await request(apiEndpoint, null, { method: 'DELETE' }, null);
-      const hasQueryStream = this.hasQueryStream(this.streams, apiEndpoint);
 
       _.forOwn(this.streams, (stream, streamId) => {
-        if ((stream.params.apiEndpoint === apiEndpoint && hasQueryStream) || (stream.dataIds[dataId] && stream.type === 'unknown')) {
+        if ((stream.params.apiEndpoint === apiEndpoint && this.isQuery(stream.params.queryParameters)) || (stream.dataIds[dataId] && stream.type === 'unknown')) {
           stream.fetch();
         } else if (stream.dataIds[dataId] && stream.observer && stream.type === 'singleObject') {
           stream.observer.next(undefined);
