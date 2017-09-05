@@ -83,7 +83,7 @@ const VoteCount = styled.div`
 
 type Props = {
   ideaId: string;
-  size?: 'small' | 'medium' | 'large';
+  size: 'small' | 'medium' | 'large';
 };
 
 type State = {
@@ -164,13 +164,15 @@ export default class Votes extends React.PureComponent<Props, State> {
     const { authUser, myVote } = this.state;
 
     if (authUser !== null) {
-      if (myVote === null) {
-        addVote(ideaId, { user_id: authUser.data.id, mode: voteMode });
+      const userId = authUser.data.id;
+
+      if (myVote === null || myVote.attributes.mode !== voteMode) {
+        addVote(ideaId, { mode: voteMode });
       } else if (myVote.attributes.mode === voteMode) {
         deleteVote(myVote.id);
       } else if (myVote.attributes.mode !== voteMode) {
         deleteVote(myVote.id);
-        addVote(ideaId, { user_id: authUser.data.id, mode: voteMode });
+        addVote(ideaId, { mode: voteMode });
       }
     } else {
       eventEmitter.emit(namespace, 'unauthenticatedVoteClick', ideaId);

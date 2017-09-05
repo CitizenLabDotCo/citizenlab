@@ -6,7 +6,7 @@ import { preprocess } from 'utils';
 
 const isImmutable = Iterable.isIterable;
 
-const findTranslatedTextMutable = (value, userLocale, tenantLocales) => {
+export const findTranslatedTextMutable = (value, userLocale, tenantLocales) => {
   let text = '';
 
   if (value && value[userLocale]) {

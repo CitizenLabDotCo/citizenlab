@@ -1,24 +1,10 @@
-/**
- *
- * App.react.js
- *
- * This component is the skeleton around the actual pages, and should only
- * contain code that should be seen on all pages. (e.g. navigation bar)
- *
- * NOTE: while this component should technically be a stateless functional
- * component (SFC), hot reloading does not currently support SFCs. If hot
- * reloading is not a necessity for you then you can refactor it and remove
- * the linting exception.
- */
+import * as React from 'react';
 
-import React from 'react';
-import PropTypes from 'prop-types';
-
-// import { DockableSagaView } from 'redux-saga-devtools';
-// import { sagamonitor } from 'store';
+// language
+import { injectTFunc } from 'utils/containers/t/utils';
+import { injectIntl } from 'react-intl';
 
 // components
-// import { Container } from 'semantic-ui-react';
 import Meta from './Meta';
 import Navbar from 'containers/Navbar';
 import messages from './messages';
@@ -26,10 +12,14 @@ import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import styled, { ThemeProvider } from 'styled-components';
 import { media } from 'utils/styleUtils';
-// components - authorizations
-import Authorize, { Else } from 'utils/containers/authorize';
 
-// components - sagas
+// authorizations
+import Authorize, { Else } from 'utils/containers/authorize';
+import { loadCurrentUserRequest } from 'utils/auth/actions';
+import { LOAD_CURRENT_USER_REQUEST } from 'utils/auth/constants';
+import { loadCurrentTenantRequest } from 'utils/tenant/actions';
+
+// sagas
 import WatchSagas from 'containers/WatchSagas';
 
 // store
@@ -40,9 +30,8 @@ import areasSagas from 'utils/areas/sagas';
 import tenantSaga from 'utils/tenant/sagas';
 import { makeSelectCurrentTenant, makeSelectSetting } from 'utils/tenant/selectors';
 
-import { loadCurrentUserRequest } from 'utils/auth/actions';
-import { LOAD_CURRENT_USER_REQUEST } from 'utils/auth/constants';
-import { loadCurrentTenantRequest } from 'utils/tenant/actions';
+// services
+import { ITenantData } from 'services/tenant';
 
 const Container = styled.div`
   margin-top: ${(props) => props.theme.menuHeight}px;
@@ -52,19 +41,29 @@ const Container = styled.div`
   `}
 `;
 
-class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  constructor() {
-    super();
-    this.key = 0;
-  }
+type Props = {
+  children?: any;
+  tFunc: (arg: { [key: string]: string }) => string;
+  intl: ReactIntl.InjectedIntl;
+  currentTenant: ITenantData;
+  location: any;
+  loadCurrentTenantRequest: () => void;
+  loadUser: () => void;
+  colorMain?: string;
+  menuStyle?: string;
+  metaTitle?: object;
+  metaDescription?: object;
+};
 
+type State = {};
+
+class App extends React.PureComponent<Props, State> {
   componentDidMount() {
     this.props.loadCurrentTenantRequest();
   }
 
   content() {
     const { currentTenant, location, children, loadUser, colorMain, menuStyle } = this.props;
-
 
     const theme = {
       colorMain: colorMain || '#ef0071',
@@ -77,8 +76,17 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
     return (
       <ThemeProvider theme={theme}>
         <Container>
-          <Meta tenant={currentTenant} metaTitle={this.props.metaTitle} metaDescription={this.props.metaDescription} />
-          <Navbar currentTenant={currentTenant} location={this.props.location.pathname} />
+          <Meta
+            tenant={currentTenant}
+            intl={this.props.intl}
+            tFunc={this.props.tFunc}
+          />
+
+          <Navbar
+            currentTenant={currentTenant}
+            location={this.props.location.pathname}
+          />
+
           <Loader
             resourceLoader={loadUser}
             loadingMessage={messages.currentUserLoadingMessage}
@@ -102,6 +110,7 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
 
   render() {
     const { currentTenant } = this.props;
+
     return (
       <div>
         <WatchSagas sagas={authSagas} />
@@ -113,18 +122,6 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
   }
 }
 
-App.propTypes = {
-  children: PropTypes.node,
-  currentTenant: PropTypes.object,
-  location: PropTypes.object,
-  loadCurrentTenantRequest: PropTypes.func.isRequired,
-  loadUser: PropTypes.func.isRequired,
-  colorMain: PropTypes.string,
-  menuStyle: PropTypes.string,
-  metaTitle: PropTypes.object,
-  metaDescription: PropTypes.object,
-};
-
 const mapStateToProps = createStructuredSelector({
   currentTenant: makeSelectCurrentTenant(),
   colorMain: makeSelectSetting(['core', 'color_main']),
@@ -134,8 +131,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const actions = {
-  loadUser: loadCurrentUserRequest,
   loadCurrentTenantRequest,
+  loadUser: loadCurrentUserRequest
 };
 
-export default preprocess(mapStateToProps, actions)(App);
+export default (injectIntl(injectTFunc(preprocess(mapStateToProps, actions)(App))) as any) as typeof App;

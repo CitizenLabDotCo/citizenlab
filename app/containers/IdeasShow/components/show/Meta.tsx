@@ -8,13 +8,12 @@ import { selectIdeaImages, selectIdea } from '../../selectors';
 import * as Immutable from 'immutable';
 import { stripHtml } from 'utils/textUtils';
 
-
 type Props = {
   idea: Immutable.Map<string, any>,
   images: Immutable.List<any>,
   tFunc: ({}) => string,
   location: any,
-}
+};
 
 const Meta: React.SFC<Props> = ({ location, idea, images, tFunc }) => {
 

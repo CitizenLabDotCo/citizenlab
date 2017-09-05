@@ -26,7 +26,7 @@ const ListWrapper = styled.div`
   flex-direction: column;
 `;
 
-const AddButton = styled(Link as React.StatelessComponent<{to: string}>)`
+const AddButton = styled(Link)`
   ${buttonMixin('#EF0071', '#EF0071')}
   color: #fff;
   align-self: flex-end;
@@ -83,7 +83,7 @@ const DeleteButton = styled.button`
   ${buttonMixin()}
 `;
 
-const EditButton = styled(Link as React.StatelessComponent<{to: string}>)`
+const EditButton = styled(Link)`
   ${buttonMixin('#e5e5e5', '#cccccc')}
   color: #6B6B6B;
 

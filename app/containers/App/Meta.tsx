@@ -1,57 +1,53 @@
 import * as React from 'react';
+import * as _ from 'lodash';
+
 import { connect } from 'react-redux';
 import { makeSelectCurrentTenant, makeSelectSetting } from 'utils/tenant/selectors';
 import { createStructuredSelector } from 'reselect';
-import { injectTFunc } from 'utils/containers/t/utils';
-import { injectIntl } from 'react-intl';
 import Helmet from 'react-helmet';
+
+// services
+import { ITenantData } from 'services/tenant';
 
 import messages from './messages';
 
 type Props = {
-  tenant: any,
-  metaTitle: Object,
-  metaDescription: Object,
-  tFunc: Function,
-  intl: { formatMessage: Function },
+  tenant: ITenantData;
+  tFunc: (arg: { [key: string]: string }) => string;
+  intl: ReactIntl.InjectedIntl;
 };
 
-const Meta: React.SFC<Props> = ({ tenant, tFunc, intl }) => {
-  const { formatMessage } = intl;
-  const titleMultiloc = tenant.attributes.settings.core.meta_title;
-  const descriptionMultiloc = tenant.attributes.settings.core.meta_description;
-  const organizationNameMultiloc = tenant.attributes.settings.core.organization_name;
-  const image = tenant.attributes.logo.large;
+type State = {};
 
-  const organizationName =
-    (organizationNameMultiloc  && tFunc(organizationNameMultiloc));
+class MetaHeaders extends React.PureComponent<Props, State> {
+  render() {
+    const { intl, tenant, tFunc } = this.props;
+    const { formatMessage } = intl;
+    const titleMultiloc = tenant.attributes.settings.core.meta_title;
+    const descriptionMultiloc = tenant.attributes.settings.core.meta_description;
+    const organizationNameMultiloc = tenant.attributes.settings.core.organization_name;
+    const image = tenant.attributes.logo.large || '';
+    const organizationName = (organizationNameMultiloc && !_.isEmpty(organizationNameMultiloc) ? tFunc(organizationNameMultiloc) : '');
+    const title = ((titleMultiloc && !_.isEmpty(titleMultiloc)) ? tFunc(titleMultiloc) : formatMessage(messages.helmetTitle, { organizationName }));
+    const description = ((descriptionMultiloc && !_.isEmpty(descriptionMultiloc)) ? tFunc(descriptionMultiloc) : formatMessage(messages.helmetDescription, { organizationName }));
+    const url = `http://${tenant.attributes.host}`;
 
-  const title =
-    (titleMultiloc && titleMultiloc.isEmpty && !titleMultiloc.isEmpty() && tFunc(titleMultiloc)) ||
-    formatMessage(messages.helmetTitle, { organizationName });
-
-  const description =
-    (descriptionMultiloc && descriptionMultiloc.isEmpty && !descriptionMultiloc.isEmpty() && tFunc(descriptionMultiloc)) ||
-    formatMessage(messages.helmetDescription, { organizationName });
-
-  const url = `http://${tenant.attributes.host}`;
-
-  return (
-    <Helmet>
-      <title>{title}</title>
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
-      <meta property="og:url" content={url} />
-      <meta name="twitter:card" content="summary_large_image" />
-
-      <meta property="og:site_name" content={organizationName} />
-    </Helmet>
-  );
-};
+    return (
+      <Helmet>
+        <title>{title}</title>
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={image} />
+        <meta property="og:url" content={url} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="og:site_name" content={organizationName} />
+      </Helmet>
+    );
+  }
+}
 
 const mapStateToProps = createStructuredSelector({
   tenant: makeSelectCurrentTenant(),
 });
 
-export default injectIntl(injectTFunc(connect(mapStateToProps)(Meta)));
+export default connect(mapStateToProps)(MetaHeaders) as typeof MetaHeaders;

@@ -21,7 +21,7 @@ const ResourceHeader = styled.div`
   justify-content: space-between;
 `;
 
-const PublicResourceLink = styled(Link as React.StatelessComponent<{to: string}>)`
+const PublicResourceLink = styled(Link)`
 `;
 
 const TabbedNav = styled.nav`

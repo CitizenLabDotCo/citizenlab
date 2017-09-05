@@ -292,6 +292,7 @@
     "@types/react-intl": "^2.3.1",
     "@types/react-scroll": "^1.5.1",
     "@types/react-select": "^1.0.54",
+    "@types/react-router": "^3.x",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-eslint": "7.2.3",

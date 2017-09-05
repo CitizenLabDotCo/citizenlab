@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import Icon from 'components/UI/Icon';
+import T from 'containers/T';
 import Unauthenticated from 'components/IdeaCard/Unauthenticated';
 import { push } from 'react-router-redux';
 import { FormattedMessage, FormattedRelative } from 'react-intl';
@@ -237,7 +238,7 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
         <IdeaImage src={ideaImageUrl} />
         <IdeaContent>
           <IdeaTitle lines={2} lineHeight={1.4} fontSize={23}>
-            {idea.data.attributes.title_multiloc[locale]}
+            <T value={idea.data.attributes.title_multiloc} />
           </IdeaTitle>
           <IdeaAuthor>
             <FormattedMessage
@@ -250,7 +251,7 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
         </IdeaContent>
         {!showUnauthenticated &&
           <IdeaFooter>
-            <VoteControl ideaId={idea.data.id} />
+            <VoteControl ideaId={idea.data.id} size="medium" />
           </IdeaFooter>
         }
         {showUnauthenticated && <Unauthenticated />}

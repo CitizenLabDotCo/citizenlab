@@ -14,6 +14,7 @@ import { state, IStateStream } from 'services/state';
 import { EditorState, convertToRaw } from 'draft-js';
 import { IStream } from 'utils/streams';
 import { usersStream, userStream, updateUser, IUser } from 'services/users';
+import { observeLocale } from 'services/locale';
 import { IIdea, addIdea } from 'services/ideas';
 import { addIdeaImage } from 'services/ideaImages';
 import auth from 'services/auth';
@@ -131,12 +132,11 @@ const ButtonBarContainer = styled.div`
 
 type Props = {
   intl: ReactIntl.InjectedIntl;
-  tFunc: Function;
-  locale: string;
 };
 
 type State = {
   showIdeaForm: boolean;
+  locale: string;
 };
 
 export const namespace = 'IdeasNewPage2/index';
@@ -165,13 +165,14 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       processing: false
     };
 
-    const initialButtonBarState = {
+    const initialButtonBarState: IButtonBarState = {
       submitError: false,
       processing: false
     };
 
-    const initialState = {
-      showIdeaForm: true
+    const initialState: State = {
+      showIdeaForm: true,
+      locale: 'nl'
     };
 
     this.newIdeaFormState$ = state.createStream<INewIdeaFormState>(namespace, NewIdeaFormNamespace, initialNewIdeaFormState);
@@ -182,33 +183,17 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   componentWillMount() {
+    const locale$ = observeLocale();
+
     this.subscriptions = [
       this.buttonBarState$.observable.subscribe(),
       this.newIdeaFormState$.observable.subscribe(),
       this.state$.observable.subscribe(state => this.setState(state)),
+      locale$.subscribe(locale => {
+        this.state$.next({ locale });
+        console.log(locale);
+      })
     ];
-
-    /*
-    // TESTING STUFF
-    // --------------
-    observeUsers().observable.subscribe(x => {
-      console.log('observeUsers:');
-      console.log(x);
-    });
-
-    setTimeout(() => {
-      observeUser('f31266b6-4265-41c7-aace-b79fc79ce17f').observable.subscribe(x => {
-        console.log('observeUser:');
-        console.log(x);
-      });
-    }, 5000);
-
-    setTimeout(() => {
-      console.log('update:');
-      updateUser('f31266b6-4265-41c7-aace-b79fc79ce17f', { first_name: 'Blah' });
-    }, 10000);
-    // --------------
-    */
   }
 
   async componentWillUnmount() {
@@ -236,7 +221,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   async postIdea(newIdeaFormState: INewIdeaFormState, userId: string) {
-    const { locale } = this.props;
+    const { locale } = this.state;
     const { topics, projects, title, description, selectedTopics, selectedProject, location } = newIdeaFormState;
     const ideaTitle = { [locale]: title as string };
     const ideaDescription = { [locale]: draftToHtml(convertToRaw(description.getCurrentContent())) };
@@ -269,7 +254,8 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   handleOnIdeaSubmit = async () => {
-    const { locale, intl } = this.props;
+    const { intl } = this.props;
+    const { locale } = this.state;
 
     this.setSubmitErrorTo(false);
     this.setProcessingTo(true);
@@ -310,27 +296,27 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { showIdeaForm } = this.state;
-    const { intl, tFunc, locale } = this.props;
+    const { showIdeaForm, locale } = this.state;
+    const { intl } = this.props;
     const timeout = 600;
 
-    const buttonBar = showIdeaForm && (
+    const buttonBar = (showIdeaForm && locale) ? (
       <CSSTransition classNames="buttonbar" timeout={timeout}>
         <ButtonBarContainer>
-          <ButtonBar intl={intl} tFunc={tFunc} locale={locale} onSubmit={this.handleOnIdeaSubmit} />
+          <ButtonBar intl={intl} locale={locale} onSubmit={this.handleOnIdeaSubmit} />
         </ButtonBarContainer>
       </CSSTransition>
-    );
+    ) : null;
 
-    const newIdeasForm = showIdeaForm && (
+    const newIdeasForm = (showIdeaForm && locale) ? (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer className="ideaForm">
-          <NewIdeaForm intl={intl} tFunc={tFunc} locale={locale} onSubmit={this.handleOnIdeaSubmit} />
+          <NewIdeaForm intl={intl} locale={locale} onSubmit={this.handleOnIdeaSubmit} />
         </PageContainer>
       </CSSTransition>
-    );
+    ) : null;
 
-    const signInUp = !showIdeaForm && (
+    const signInUp = (!showIdeaForm && locale) ?  (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer>
           <SignInUp
@@ -342,7 +328,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
           />
         </PageContainer>
       </CSSTransition>
-    );
+    ) : null;
 
     return (
       <Container>

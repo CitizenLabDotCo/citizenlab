@@ -7,7 +7,7 @@ import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
 import styled from 'styled-components';
-import { withRouter } from 'react-router';
+import { browserHistory } from 'react-router';
 import { API } from 'typings.d';
 
 import messages from '../messages';
@@ -90,8 +90,7 @@ type Props = {
     slug: string | null,
   },
   userLocale: string,
-  tFunc: Function,
-  router: any,
+  tFunc: Function
 };
 
 interface State {
@@ -255,7 +254,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
       this.setState({ loading: true, saved: true });
 
       addProject(projectAttributesDiff).then((project: IProject) => {
-        this.props.router.push(`/admin/projects/${project.data.attributes.slug}/edit`);
+        browserHistory.push(`/admin/projects/${project.data.attributes.slug}/edit`);
         this.setState({ loading: false, saved: true });
       }).catch(this.handleSaveErrors);
     }
@@ -357,4 +356,4 @@ const mapStateToProps = createStructuredSelector({
   userLocale: makeSelectLocale(),
 });
 
-export default ((injectTFunc(injectIntl(connect(mapStateToProps)(withRouter(AdminProjectEditGeneral)))) as any) as typeof AdminProjectEditGeneral);
+export default ((injectTFunc(injectIntl(connect(mapStateToProps)(AdminProjectEditGeneral))) as any) as typeof AdminProjectEditGeneral);

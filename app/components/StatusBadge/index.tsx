@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import T from 'utils/containers/t';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { state, IStateStream } from 'services/state';
@@ -65,7 +66,7 @@ export default class Status extends React.PureComponent<Props, State> {
 
     return (ideaStatus !== null && locale !== null) ? (
       <Badge className={className} color={ideaStatus.attributes.color || fallbackColor} >
-        {ideaStatus.attributes.title_multiloc[locale]}
+        <T value={ideaStatus.attributes.title_multiloc} />
       </Badge>
     ) : null;
   }

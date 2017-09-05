@@ -31,7 +31,7 @@ export interface IIdeaVote {
 }
 
 export interface INewVoteProperties {
-  user_id: string;
+  user_id?: string;
   mode: 'up' | 'down';
 }
 

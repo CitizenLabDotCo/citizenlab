@@ -11,7 +11,7 @@ import messages from './messages';
 import * as moment from 'moment';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
-import { withRouter } from 'react-router';
+import { browserHistory } from 'react-router';
 import { API } from 'typings.d';
 
 // Services
@@ -43,7 +43,6 @@ type Props = {
   },
   locale: string,
   tFunc: Function,
-  router: any,
   project: IProjectData | null;
 };
 
@@ -164,7 +163,7 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
       this.setState({ saving: true });
     } else if (this.props.project) {
       savingPromise = addEvent(this.props.project.id, this.state.attributeDiff).then((response) => {
-        this.props.router.push(`/admin/projects/${this.props.params.slug}/events/${response.data.id}`);
+        browserHistory.push(`/admin/projects/${this.props.params.slug}/events/${response.data.id}`);
         return response;
       });
     }
@@ -259,4 +258,4 @@ const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
 });
 
-export default injectTFunc(injectIntl(connect(mapStateToProps)(withRouter(AdminProjectEventEdit))));
+export default injectTFunc(injectIntl(connect(mapStateToProps)(AdminProjectEventEdit)));
