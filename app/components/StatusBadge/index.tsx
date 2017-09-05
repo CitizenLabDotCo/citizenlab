@@ -3,25 +3,9 @@ import * as Rx from 'rxjs/Rx';
 import T from 'utils/containers/t';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-<<<<<<< HEAD
 import { state, IStateStream } from 'services/state';
 import { observeLocale } from 'services/locale';
 import { ideaStatusesStream, IIdeaStatusData } from 'services/ideaStatuses';
-=======
-import { observeIdeaStatuses, IIdeaStatusData } from 'services/idea_statuses';
-import T from 'containers/T';
-
-type Props = {
-  statusId: string,
-  color: string,
-  statusName: string,
-  className?: string,
-};
-
-type State = {
-  ideaStatus: IIdeaStatusData | null;
-};
->>>>>>> 91966f82b9d7491c7a2d76b4de604e781a3e694e
 
 const Badge = styled.div`
   color: white;
