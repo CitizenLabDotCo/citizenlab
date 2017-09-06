@@ -7,7 +7,7 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Success from 'components/UI/Success';
 import { state, IStateStream } from 'services/state';
-import auth from 'services/auth';
+import { sendPasswordResetMail } from 'services/auth';
 import { isValidEmail } from 'utils/validate';
 import messages from './messages';
 import styled from 'styled-components';
@@ -105,7 +105,7 @@ export default class PasswordReset extends React.PureComponent<Props, State> {
     const { email } = this.state;
 
     if (this.validate(email) && email) {
-      auth.sendPasswordResetMail(email).then(() => {
+      sendPasswordResetMail(email).then(() => {
         this.state$.next({ success: true });
         setTimeout(() => this.state$.next({ success: false }), 8000);
       }).catch((error) => {

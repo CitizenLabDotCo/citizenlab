@@ -12,7 +12,7 @@ import { Link } from 'react-router';
 
 // Localisation
 import { FormattedMessage } from 'react-intl';
-import t from 'utils/containers/t';
+import t from 'containers/T';
 const T = t;
 import messages from '../messages';
 

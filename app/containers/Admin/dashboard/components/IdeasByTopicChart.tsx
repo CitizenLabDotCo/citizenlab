@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { injectIntl } from 'react-intl';
 import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { injectTFunc } from 'utils/containers/t/utils';
+import { injectTFunc } from 'containers/T/utils';
 import { ideasByTopicStream } from 'services/stats';
 
 

@@ -57,7 +57,6 @@ export function* publishComment({ ideaId, payload }) {
   }
 }
 
-
 export function* deleteComment(action) {
   const { commentId } = action;
   yield call(deleteIdeaComment, commentId);

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
-import { injectTFunc } from 'utils/containers/t/utils';
+import { injectTFunc } from 'containers/T/utils';
 import { state, IStateStream } from 'services/state';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';

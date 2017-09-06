@@ -36,6 +36,7 @@ export interface IStream<T> {
 
 class Streams {
   public streams: { [key: string]: IStream<any>};
+  private streamsIndex: { [key: string]: IStream<any>};
   private resources: { [key: string]: any };
   private apiEndpointResources: { [key: string]: any };
 
@@ -95,6 +96,15 @@ class Streams {
         observable: null as any,
         dataIds: {},
       };
+
+      const { apiEndpoint, queryParameters } = this.streams[streamId].params;
+      if (queryParameters) {
+        const url = apiEndpoint + Object.keys(queryParameters).map((k) => {
+            return encodeURIComponent(k) + '=' + encodeURIComponent(queryParameters[k]);
+        }).join('&');
+
+        console.log(url);
+      }
 
       this.streams[streamId].fetch = () => {
         const { apiEndpoint, bodyData, queryParameters } = this.streams[streamId].params;
@@ -194,7 +204,7 @@ class Streams {
     return <IStream<T>>this.streams[existingStreamId];
   }
 
-  async add<T>(apiEndpoint: string, bodyData: object) {
+  async add<T>(apiEndpoint: string, bodyData: object | null) {
     try {
       const addedObject = await request<T>(apiEndpoint, bodyData, { method: 'POST' }, null);
 

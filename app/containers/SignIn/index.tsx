@@ -8,7 +8,7 @@ import Error from 'components/UI/Error';
 import messages from './messages';
 import { FormattedMessage } from 'react-intl';
 import { state, IStateStream } from 'services/state';
-import auth from 'services/auth';
+import { signIn } from 'services/auth';
 import { isValidEmail } from 'utils/validate';
 import styled from 'styled-components';
 
@@ -138,7 +138,7 @@ export default class SignIn extends React.PureComponent<Props, State> {
     if (email && password && this.validate(email, password)) {
       try {
         this.state$.next({ processing: true });
-        await auth.signIn(email, password);
+        await signIn(email, password);
         this.state$.next({ processing: false });
         onSignedIn();
       } catch (error) {
