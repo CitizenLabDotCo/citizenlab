@@ -28,6 +28,10 @@ class SettingsCustomizeTab extends React.Component { // eslint-disable-line reac
     };
   }
 
+  componentWillMount() {
+    this.uploadPlaceholder = this.props.intl.formatMessage(messages.uploadPlaceholder);
+  }
+
   changeAttribute(path, value) {
     this.setState({
       changedAttributes: this.state.changedAttributes.setIn(path, value),
@@ -106,6 +110,7 @@ class SettingsCustomizeTab extends React.Component { // eslint-disable-line reac
             items={this.state.temp_logo}
             onAdd={(value) => this.changeImage('logo', value)}
             onRemove={() => this.removeImage('logo')}
+            placeholder={this.uploadPlaceholder}
           />
         </div>
 
@@ -117,6 +122,7 @@ class SettingsCustomizeTab extends React.Component { // eslint-disable-line reac
             items={this.state.temp_header_bg}
             onAdd={(value) => this.changeImage('header_bg', value)}
             onRemove={() => this.removeImage('header_bg')}
+            placeholder={this.uploadPlaceholder}
           />
         </div>
 
