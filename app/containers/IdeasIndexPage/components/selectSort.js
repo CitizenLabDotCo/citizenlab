@@ -15,10 +15,12 @@ import queryString from 'query-string';
 
 // translations
 import { injectTFunc } from 'containers/T/utils';
+import { injectIntl } from 'react-intl';
+import messages from '../messages';
 
-const SelectSort = ({ options, value, filterPage }) => (
+const SelectSort = ({ options, value, filterPage, title }) => (
   <FilterSelector
-    title="Sort"
+    title={title}
     name="sort"
     selected={value}
     values={options}
@@ -30,6 +32,7 @@ SelectSort.propTypes = {
   value: PropTypes.array,
   options: PropTypes.array.isRequired,
   filterPage: PropTypes.func,
+  title: PropTypes.string,
 };
 
 SelectSort.defaultProps = {
@@ -53,10 +56,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { search, location } = stateProps;
 
   const options = [
-    { text: 'Trending', value: 'trending' },
-    { text: 'Popular', value: 'popular' },
-    { text: 'Newest', value: 'new' },
-    { text: 'Oldest', value: '-new' },
+    { text: ownProps.intl.formatMessage(messages.trending), value: 'trending' },
+    { text: ownProps.intl.formatMessage(messages.popular), value: 'popular' },
+    { text: ownProps.intl.formatMessage(messages.newest), value: 'new' },
+    { text: ownProps.intl.formatMessage(messages.oldest), value: '-new' },
   ];
   const { goTo } = dispatchProps;
 
@@ -71,4 +74,4 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   return { options, value, filterPage, ...ownProps };
 };
 
-export default injectTFunc(preprocess(mapStateToProps, { goTo: push }, mergeProps)(SelectSort));
+export default injectIntl(injectTFunc(preprocess(mapStateToProps, { goTo: push }, mergeProps)(SelectSort)));

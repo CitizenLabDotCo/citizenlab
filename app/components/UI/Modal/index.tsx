@@ -6,6 +6,8 @@ import { injectTracks, trackPage } from 'utils/analytics';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import tracks from './tracks';
+import messages from './messages';
+import { FormattedMessage } from 'react-intl';
 
 const ModalContent = styled(clickOutside)`
   width: 100%;
@@ -189,7 +191,9 @@ class Modal extends React.PureComponent<Props, State> {
       <CSSTransition classNames="modal" timeout={400} exit={false}>
         <ModalContainer>
           <ModalContent onClickOutside={this.clickOutsideModal}>
-            <CloseButton onClick={this.clickButton}>Close</CloseButton>
+            <CloseButton onClick={this.clickButton}>
+              <FormattedMessage {...messages.closeButtonLabel} />
+            </CloseButton>
             {children}
           </ModalContent>
         </ModalContainer>

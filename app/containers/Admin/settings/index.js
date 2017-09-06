@@ -5,22 +5,29 @@ import { Saga } from 'react-redux-saga';
 import TabbedResource from 'components/admin/TabbedResource';
 import { watchSaveSettings } from './sagas';
 import messages from './messages';
-
+import { injectIntl, intlShape } from 'react-intl';
 
 class SettingsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
-  render() {
-    const tabs = [
-      { label: 'General', url: '/admin/settings' },
-      { label: 'Customize', url: '/admin/settings/customize' },
+  componentWillMount() {
+    this.tabs = [
+      { label: this.props.intl.formatMessage(messages.tabSettings), url: '/admin/settings' },
+      { label: this.props.intl.formatMessage(messages.tabCustomize), url: '/admin/settings/customize' },
     ];
 
+    this.resource = {
+      title: this.props.intl.formatMessage(messages.viewPublicResource),
+    };
+  }
+
+  render() {
     return (
       <div>
         <TabbedResource
-          resource={{ title: 'Settings', publicLink: '/admin/settings' }}
+          resource={this.resource}
           messages={messages}
-          tabs={tabs}
+          tabs={this.tabs}
+          location={this.props.router.location}
         >
           <HelmetIntl
             title={messages.helmetTitle}
@@ -37,6 +44,8 @@ class SettingsPage extends React.Component { // eslint-disable-line react/prefer
 
 SettingsPage.propTypes = {
   children: PropTypes.any,
+  intl: intlShape,
+  router: PropTypes.any,
 };
 
-export default SettingsPage;
+export default injectIntl(SettingsPage);
