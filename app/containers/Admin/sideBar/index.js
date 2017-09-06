@@ -46,12 +46,13 @@ const MenuItemContainerStyled = styled.div`
 `;
 
 const MenuItemStyled = styled(Menu.Item)`
-  color: #ffffff !important;
   background-color: inherit !important;
+  color: #ffffff !important;
   font-size: 17px;
   font-weight: bold;
-  text-align: left;
+  line-height: 1.3 !important;
   margin-left: 20px;
+  text-align: left;
 `;
 
 const MenuItemIcon = (icon) => (<Image
