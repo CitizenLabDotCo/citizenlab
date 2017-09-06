@@ -19,6 +19,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.viewPublicResource',
     defaultMessage: 'Settings',
   },
+  tabSettings: {
+    id: 'app.containers.AdminPage.SettingsPage.tabSettings',
+    defaultMessage: 'Settings',
+  },
+  tabCustomize: {
+    id: 'app.containers.AdminPage.SettingsPage.tabCustomize',
+    defaultMessage: 'Customize',
+  },
   organizationName: {
     id: 'app.containers.AdminPage.SettingsPage.organizationName',
     defaultMessage: '{type, select, generic {Organization} city {City}} name',
