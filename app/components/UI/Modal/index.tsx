@@ -6,6 +6,8 @@ import { injectTracks, trackPage } from 'utils/analytics';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import tracks from './tracks';
+import messages from './messages';
+import { FormattedMessage } from 'react-intl';
 
 const ModalContent = styled(clickOutside)`
   width: 100%;
