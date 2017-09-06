@@ -18,7 +18,7 @@ import { API } from 'typings.d';
 import { projectStream, IProject, IProjectData } from 'services/projects';
 import { phaseStream, updatePhase, addPhase, IPhase, IPhaseData, IUpdatedPhaseProperties } from 'services/phases';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { injectTFunc } from 'utils/containers/t/utils';
+import { injectTFunc } from 'containers/T/utils';
 
 // Components
 import Label from 'components/UI/Label';

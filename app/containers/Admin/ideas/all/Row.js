@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { Table, Icon, Dropdown } from 'semantic-ui-react';
 import { FormattedDate } from 'react-intl';
 import T from 'containers/T';
-import { injectTFunc } from 'utils/containers/t/utils';
+import { injectTFunc } from 'containers/T/utils';
 
 // store
 // import { preprocess } from 'utils';

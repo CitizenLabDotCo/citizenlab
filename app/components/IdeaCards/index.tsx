@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import { Link } from 'react-router';
 
-//components
+// components
 import IdeaCard, { namespace as ideaCardNamespace } from 'components/IdeaCard';
 import Modal from 'components/UI/Modal';
 import IdeasShow from 'containers/IdeasShow';

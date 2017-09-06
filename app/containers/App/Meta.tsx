@@ -1,42 +1,35 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-
-import { connect } from 'react-redux';
-import { makeSelectCurrentTenant, makeSelectSetting } from 'utils/tenant/selectors';
-import { createStructuredSelector } from 'reselect';
 import Helmet from 'react-helmet';
 
 // services
-import { ITenantData } from 'services/tenant';
+import { ITenant } from 'services/tenant';
+import { localeStream } from 'services/locale';
 
+// i18n
 import messages from './messages';
+import i18n from 'utils/i18n';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 type Props = {
-  tenant: ITenantData;
-  tFunc: (arg: { [key: string]: string }) => string;
-  intl: ReactIntl.InjectedIntl;
+  tenant: ITenant;
 };
 
-type State = {};
-
-class MetaHeaders extends React.PureComponent<Props, State> {
+class MetaWrapped extends React.PureComponent<Props & InjectedIntlProps, {}> {
   render() {
-    const { intl, tenant, tFunc } = this.props;
+    const { tenant, intl } = this.props;
     const { formatMessage } = intl;
-    const titleMultiloc = tenant.attributes.settings.core.meta_title;
-    const descriptionMultiloc = tenant.attributes.settings.core.meta_description;
-    const organizationNameMultiloc = tenant.attributes.settings.core.organization_name;
-    const image = tenant.attributes.logo.large || '';
-    const organizationName = (organizationNameMultiloc && !_.isEmpty(organizationNameMultiloc) ? tFunc(organizationNameMultiloc) : '');
-    const title = ((titleMultiloc && !_.isEmpty(titleMultiloc)) ? tFunc(titleMultiloc) : formatMessage(messages.helmetTitle, { organizationName }));
-    const description = ((descriptionMultiloc && !_.isEmpty(descriptionMultiloc)) ? tFunc(descriptionMultiloc) : formatMessage(messages.helmetDescription, { organizationName }));
-    const url = `http://${tenant.attributes.host}`;
+    const image = tenant.data.attributes.logo.large || '';
+    const title = i18n.getLocalized(tenant.data.attributes.settings.core.meta_title);
+    const organizationName = i18n.getLocalized(tenant.data.attributes.settings.core.organization_name);
+    const description = i18n.getLocalized(tenant.data.attributes.settings.core.meta_description);
+    const url = `http://${tenant.data.attributes.host}`;
 
     return (
       <Helmet>
-        <title>{title}</title>
+        <title>{formatMessage(messages.helmetTitle, { organizationName })}</title>
         <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
+        <meta property="og:description" content={formatMessage(messages.helmetDescription, { organizationName })} />
         <meta property="og:image" content={image} />
         <meta property="og:url" content={url} />
         <meta name="twitter:card" content="summary_large_image" />
@@ -46,8 +39,5 @@ class MetaHeaders extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = createStructuredSelector({
-  tenant: makeSelectCurrentTenant(),
-});
-
-export default connect(mapStateToProps)(MetaHeaders) as typeof MetaHeaders;
+const Meta = injectIntl(MetaWrapped);
+export default Meta;

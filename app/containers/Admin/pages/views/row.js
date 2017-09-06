@@ -6,7 +6,7 @@ import { push } from 'react-router-redux';
 // components
 import ActionButton from 'components/buttons/action.js';
 import { Table } from 'semantic-ui-react';
-import T from 'utils/containers/t';
+import T from 'containers/T';
 
 // store
 import { preprocess } from 'utils';

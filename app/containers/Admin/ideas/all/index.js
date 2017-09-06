@@ -12,7 +12,7 @@ import { topicsStream } from 'services/topics';
 import { ideaStatusesStream } from 'services/ideaStatuses';
 import { projectsStream } from 'services/projects';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import { injectTFunc } from 'utils/containers/t/utils';
+import { injectTFunc } from 'containers/T/utils';
 import WatchSagas from 'utils/containers/watchSagas';
 
 // import ExportLabel from 'components/admin/ExportLabel';

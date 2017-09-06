@@ -31,11 +31,7 @@
     "react-a11y-role-has-required-aria-props": 2,
     "react-a11y-role-supports-aria-props": 2,
     "react-a11y-tabindex-no-positive": 2,
-<<<<<<< HEAD
     "react-a11y-title": 2,
-=======
-    "react-a11y-titles": 2,
->>>>>>> 91966f82b9d7491c7a2d76b4de604e781a3e694e
     "variable-name": [false, "ban-keywords", "check-format", "allow-leading-underscore"]
   }
 }

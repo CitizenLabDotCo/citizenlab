@@ -9,15 +9,14 @@ import { createStructuredSelector } from 'reselect';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { injectIntl, intlShape } from 'react-intl';
 import { browserHistory } from 'react-router';
-import { injectTFunc } from 'utils/containers/t/utils';
 import { state, IStateStream } from 'services/state';
 import { EditorState, convertToRaw } from 'draft-js';
 import { IStream } from 'utils/streams';
 import { usersStream, userStream, updateUser, IUser } from 'services/users';
-import { observeLocale } from 'services/locale';
+import { localeStream } from 'services/locale';
 import { IIdea, addIdea } from 'services/ideas';
 import { addIdeaImage } from 'services/ideaImages';
-import auth from 'services/auth';
+import { getAuthUserAsync } from 'services/auth';
 import draftToHtml from 'draftjs-to-html';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { ImageFile } from 'react-dropzone';
@@ -183,16 +182,13 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   componentWillMount() {
-    const locale$ = observeLocale();
+    const locale$ = localeStream().observable;
 
     this.subscriptions = [
       this.buttonBarState$.observable.subscribe(),
       this.newIdeaFormState$.observable.subscribe(),
       this.state$.observable.subscribe(state => this.setState(state)),
-      locale$.subscribe(locale => {
-        this.state$.next({ locale });
-        console.log(locale);
-      })
+      locale$.subscribe(locale => this.state$.next({ locale }))
     ];
   }
 
@@ -261,7 +257,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     this.setProcessingTo(true);
 
     try {
-      const authUser = await auth.getAuthUserAsync();
+      const authUser = await getAuthUserAsync();
       await this.postIdeaAndIdeaImage(authUser.data.id);
       this.setProcessingTo(false);
       browserHistory.push('/ideas');
@@ -342,8 +338,4 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = createStructuredSelector({
-  locale: makeSelectLocale(),
-});
-
-export default injectTFunc(injectIntl(connect(mapStateToProps, null)(IdeasNewPage2))) as typeof IdeasNewPage2;
+export default (injectIntl(IdeasNewPage2) as any) as typeof IdeasNewPage2;

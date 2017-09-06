@@ -1,8 +1,8 @@
+import * as Rx from 'rxjs/Rx';
+import * as _ from 'lodash';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import request from 'utils/request';
-import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
 
 const apiEndpoint = `${API_PATH}/tenants`;
 

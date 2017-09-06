@@ -6,11 +6,11 @@ import { darken } from 'polished';
 import { state, IStateStream } from 'services/state';
 import { IStream } from 'utils/streams';
 import styled from 'styled-components';
-import auth from 'services/auth';
+import { authUserStream } from 'services/auth';
 import eventEmitter from 'utils/eventEmitter';
 import { ideaStream, IIdea } from 'services/ideas';
 import { userStream, IUser } from 'services/users';
-import { votesStream, addVote, deleteVote, IIdeaVote, IIdeaVoteData } from 'services/ideaVotes';
+import { votesStream, vote, IIdeaVote, IIdeaVoteData } from 'services/ideaVotes';
 
 const BACKGROUND = '#F8F8F8';
 const FOREGROUND = '#6B6B6B';
@@ -111,7 +111,7 @@ export default class Votes extends React.PureComponent<Props, State> {
       myVote: null
     };
 
-    const authUser$ = auth.observeAuthUser();
+    const authUser$ = authUserStream().observable;
     const isAuthenticated$ = authUser$.map(authUser => !_.isNull(authUser));
     const idea$ = ideaStream(ideaId).observable;
     const votes$ = votesStream(ideaId).observable;
@@ -165,7 +165,9 @@ export default class Votes extends React.PureComponent<Props, State> {
 
     if (authUser !== null) {
       const userId = authUser.data.id;
+      vote(ideaId, voteMode);
 
+      /*
       if (myVote === null || myVote.attributes.mode !== voteMode) {
         addVote(ideaId, { mode: voteMode });
       } else if (myVote.attributes.mode === voteMode) {
@@ -174,6 +176,7 @@ export default class Votes extends React.PureComponent<Props, State> {
         deleteVote(myVote.id);
         addVote(ideaId, { mode: voteMode });
       }
+      */
     } else {
       eventEmitter.emit(namespace, 'unauthenticatedVoteClick', ideaId);
     }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { injectTFunc } from 'utils/containers/t/utils';
+import { injectTFunc } from 'containers/T/utils';
 import { injectIntl } from 'react-intl';
 import Helmet from 'react-helmet';
 import * as Immutable from 'immutable';

@@ -1,26 +1,40 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-import Icon from 'components/UI/Icon';
-import T from 'containers/T';
-import Unauthenticated from 'components/IdeaCard/Unauthenticated';
+
+// router
 import { push } from 'react-router-redux';
-import { FormattedMessage, FormattedRelative } from 'react-intl';
 import { Link, browserHistory } from 'react-router';
+
+// components
+import Icon from 'components/UI/Icon';
+import Unauthenticated from 'components/IdeaCard/Unauthenticated';
+import { namespace as IdeaCardsNamespace } from 'components/IdeaCards';
+import VoteControl, { namespace as voteControlNamespace } from 'components/VoteControl';
+
+// services
+import { authUserStream } from 'services/auth';
 import { state, IStateStream } from 'services/state';
-import { IStream } from 'utils/streams';
-import auth from 'services/auth';
-import eventEmitter from 'utils/eventEmitter';
+import { localeStream } from 'services/locale';
 import { ideaStream, IIdea } from 'services/ideas';
 import { userStream, IUser } from 'services/users';
 import { ideaImagesStream, ideaImageStream, IIdeaImage, IIdeaImageData } from 'services/ideaImages';
-import { observeLocale } from 'services/locale';
-import { namespace as IdeaCardsNamespace } from 'components/IdeaCards';
-import VoteControl, { namespace as voteControlNamespace } from 'components/VoteControl';
-import styled, { keyframes } from 'styled-components';
+
+// utils
+import T from 'containers/T';
+import eventEmitter from 'utils/eventEmitter';
+
+// i18n
+import { FormattedMessage, FormattedRelative } from 'react-intl';
 import messages from './messages';
 
+// styles
+import styled, { keyframes } from 'styled-components';
+
+// images
 const placeholder = require('./img/placeholder.png');
+
+
 
 const IdeaContainer: any = styled(Link)`
   width: 100%;
@@ -167,8 +181,8 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
       loading: true
     };
 
-    const locale$ = observeLocale();
-    const isAuthenticated$ = auth.observeAuthUser().map(authUser => !_.isNull(authUser));
+    const locale$ = localeStream().observable;
+    const isAuthenticated$ = authUserStream().observable.map(authUser => !_.isNull(authUser));
     const idea$ = ideaStream(ideaId).observable.switchMap((idea) => {
       const ideaImages = idea.data.relationships.idea_images.data;
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);

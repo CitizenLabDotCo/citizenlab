@@ -7,7 +7,7 @@ import { createStructuredSelector } from 'reselect';
 
 import { preprocess } from 'utils';
 
-import { injectTFunc } from 'utils/containers/t/utils';
+import { injectTFunc } from 'containers/T/utils';
 
 import { selectAuthDomain } from 'utils/auth/selectors';
 import { selectResourcesDomain } from 'utils/resources/selectors';

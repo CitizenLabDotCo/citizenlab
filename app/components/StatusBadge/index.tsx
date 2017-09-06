@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import T from 'utils/containers/t';
+import T from 'containers/T';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { state, IStateStream } from 'services/state';
-import { observeLocale } from 'services/locale';
+import { localeStream } from 'services/locale';
 import { ideaStatusesStream, IIdeaStatusData } from 'services/ideaStatuses';
 
 const Badge = styled.div`
@@ -40,7 +40,7 @@ export default class Status extends React.PureComponent<Props, State> {
   componentWillMount() {
     const instanceNamespace = `${namespace}/${this.props.statusId}`;
     const initialState = { locale: null, ideaStatus: null };
-    const locale$ = observeLocale();
+    const locale$ = localeStream().observable;
     const ideaStatuses$ = ideaStatusesStream().observable;
 
     this.state$ = state.createStream<State>(namespace, namespace, initialState);

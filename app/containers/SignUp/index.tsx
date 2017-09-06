@@ -12,7 +12,7 @@ import { IStream } from 'utils/streams';
 import { state, IStateStream } from 'services/state';
 import { areasStream, IAreas, IAreaData } from 'services/areas';
 import { isValidEmail } from 'utils/validate';
-import auth from 'services/auth';
+import { signUp } from 'services/auth';
 import { connect } from 'react-redux';
 import { LOAD_CURRENT_USER_SUCCESS } from 'utils/auth/constants';
 import { IOption } from 'typings';
@@ -210,7 +210,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
         const locale = this.props.locale;
 
         this.state$.next({ processing: true });
-        await auth.signUp(firstName, lastName, email, password, locale, selectedGender, selectedYearOfBirth, selectedAreaId);
+        await signUp(firstName, lastName, email, password, locale, selectedGender, selectedYearOfBirth, selectedAreaId);
         this.state$.next({ processing: false });
         onSignedUp();
       } catch (error) {
