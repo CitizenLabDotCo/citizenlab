@@ -189,7 +189,9 @@ class Modal extends React.PureComponent<Props, State> {
       <CSSTransition classNames="modal" timeout={400} exit={false}>
         <ModalContainer>
           <ModalContent onClickOutside={this.clickOutsideModal}>
-            <CloseButton onClick={this.clickButton}>Close</CloseButton>
+            <CloseButton onClick={this.clickButton}>
+              <FormattedMessage {...messages.closeButtonLabel} />
+            </CloseButton>
             {children}
           </ModalContent>
         </ModalContainer>
