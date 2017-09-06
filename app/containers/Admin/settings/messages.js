@@ -111,6 +111,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.education',
     defaultMessage: 'Education',
   },
+  uploadPlaceholder: {
+    id: 'app.containers.AdminPage.SettingsPage.uploadPlaceholder',
+    defaultMessage: 'Drop your files here',
+  },
   save: {
     id: 'app.containers.AdminPage.SettingsPage.save',
     defaultMessage: 'Save',
