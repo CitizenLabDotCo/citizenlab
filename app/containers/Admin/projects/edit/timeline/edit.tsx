@@ -17,7 +17,7 @@ import { API } from 'typings.d';
 // Services
 import { observeProject, IProject, IProjectData } from 'services/projects';
 import { observePhase, updatePhase, IPhase, IPhaseData, IUpdatedPhase, savePhase } from 'services/phases';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, InjectedIntl } from 'react-intl';
 import { injectTFunc } from 'utils/containers/t/utils';
 
 // Components
@@ -44,6 +44,7 @@ type Props = {
   tFunc: Function,
   router: any,
   project: IProjectData | null;
+  intl: InjectedIntl;
 };
 
 interface State {
@@ -61,6 +62,8 @@ interface State {
 class AdminProjectTimelineEdit extends React.Component<Props, State> {
   phase$: IStream<IPhase>;
   subscriptions: Rx.Subscription[];
+  startDatePlaceholder: string;
+  endDatePlaceholder: string;
 
   constructor(props) {
     super(props);
@@ -84,6 +87,11 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       return 'success';
     }
     return _.isEmpty(this.state.attributeDiff) ? 'disabled' : 'enabled';
+  }
+
+  componentWillMount() {
+    this.startDatePlaceholder = this.props.intl.formatMessage(messages.startDatePlaceholder);
+    this.endDatePlaceholder = this.props.intl.formatMessage(messages.endDatePlaceholder);
   }
 
   componentDidMount() {
@@ -184,6 +192,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
     : { ...this.state.attributeDiff };
 
     const submitState = this.getSubmitState();
+    moment.locale(this.props.locale);
 
     return (
       <div>
@@ -216,6 +225,8 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
               isOutsideRange={this.isOutsideRange}
               firstDayOfWeek={1}
               displayFormat="DD/MM/YYYY"
+              startDatePlaceholderText={this.startDatePlaceholder}
+              endDatePlaceholderText={this.endDatePlaceholder}
             />
           </FieldWrapper>
 

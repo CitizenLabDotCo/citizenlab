@@ -5,6 +5,7 @@ import { createStructuredSelector } from 'reselect';
 import { injectTFunc } from 'utils/containers/t/utils';
 import { injectIntl } from 'react-intl';
 import Helmet from 'react-helmet';
+import * as _ from 'lodash';
 
 import messages from './messages';
 
@@ -27,7 +28,7 @@ const Meta: React.SFC<Props> = ({ tenant, tFunc, intl }) => {
     (organizationNameMultiloc  && tFunc(organizationNameMultiloc));
 
   const title =
-    (titleMultiloc && titleMultiloc.isEmpty && !titleMultiloc.isEmpty() && tFunc(titleMultiloc)) ||
+    (titleMultiloc && !_.isEmpty(titleMultiloc) && tFunc(titleMultiloc)) ||
     formatMessage(messages.helmetTitle, { organizationName });
 
   const description =

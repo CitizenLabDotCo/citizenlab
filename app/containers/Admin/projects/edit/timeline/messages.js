@@ -65,4 +65,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation',
     defaultMessage: 'Are you sure you wannna delete this phase?',
   },
+  startDatePlaceholder: {
+    id: 'app.containers.AdminPage.ProjectTimeline.startDatePlaceholder',
+    defaultMessage: 'Start Date',
+  },
+  endDatePlaceholder: {
+    id: 'app.containers.AdminPage.ProjectTimeline.endDatePlaceholder',
+    defaultMessage: 'End Date',
+  },
 });
