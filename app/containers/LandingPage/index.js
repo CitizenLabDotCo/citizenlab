@@ -198,7 +198,7 @@ class LandingPage extends React.Component {
               </SectionHeader>
               <SectionContainer>
                 <IdeaCards
-                  filter={{ sort: 'trending', 'page[size]': 3 }}
+                  filter={{ sort: 'trending', 'page[size]': 9 }}
                   loadMoreEnabled={false}
                 />
               </SectionContainer>
