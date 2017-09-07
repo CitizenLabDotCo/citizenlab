@@ -14,7 +14,7 @@ const StyledContentContainer = styled(ContentContainer)`
 type Props = {
   locale: string,
   push: (string) => void;
-}
+};
 
 class SignInPage extends React.PureComponent<Props, {}> {
 

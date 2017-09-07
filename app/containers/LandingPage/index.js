@@ -204,21 +204,23 @@ class LandingPage extends React.Component {
               </SectionContainer>
             </Section>
 
-            <Section>
-              <SectionHeader>
-                <SectionTitle>
-                  <FormattedMessage {...messages.projectsFrom} values={{ name: tFunc(tenantName) }} />
-                </SectionTitle>
-                <ViewAllButton to="/projects">
-                  <ViewAllButtonText>
-                    <FormattedMessage {...messages.viewProjects} />
-                  </ViewAllButtonText>
-                </ViewAllButton>
-              </SectionHeader>
-              <SectionContainer>
-                {projectsList}
-              </SectionContainer>
-            </Section>
+            {projectsList &&
+              <Section>
+                <SectionHeader>
+                  <SectionTitle>
+                    <FormattedMessage {...messages.projectsFrom} values={{ name: tFunc(tenantName) }} />
+                  </SectionTitle>
+                  <ViewAllButton to="/projects">
+                    <ViewAllButtonText>
+                      <FormattedMessage {...messages.viewProjects} />
+                    </ViewAllButtonText>
+                  </ViewAllButton>
+                </SectionHeader>
+                <SectionContainer>
+                  {projectsList}
+                </SectionContainer>
+              </Section>
+            }
           </ContentContainer>
 
           <Footer />

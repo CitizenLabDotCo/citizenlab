@@ -46,12 +46,12 @@ class ColorPickerInput extends React.Component<InputProps, State> {
   openColorPicker = (e) => {
     e.preventDefault();
     this.setState({ displayColorPicker: true });
-  };
+  }
 
   closeColorPicker = (e) => {
     e.preventDefault();
     this.setState({ displayColorPicker: false });
-  };
+  }
 
   changeColor = (colorDescriptor) => {
     this.props.onChange(colorDescriptor.hex);
@@ -64,10 +64,11 @@ class ColorPickerInput extends React.Component<InputProps, State> {
           <Popover>
             <Cover onClick={this.closeColorPicker} />
             <ChromePicker
-              disableAlpha
+              disableAlpha={true}
               color={this.props.value}
               onChange={this.changeColor}
-              onChangeComplete={this.changeColor} />
+              onChangeComplete={this.changeColor}
+            />
           </Popover>
         }
         <InputWrapper>

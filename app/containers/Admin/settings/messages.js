@@ -19,6 +19,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.viewPublicResource',
     defaultMessage: 'Settings',
   },
+  tabSettings: {
+    id: 'app.containers.AdminPage.SettingsPage.tabSettings',
+    defaultMessage: 'Settings',
+  },
+  tabCustomize: {
+    id: 'app.containers.AdminPage.SettingsPage.tabCustomize',
+    defaultMessage: 'Customize',
+  },
   organizationName: {
     id: 'app.containers.AdminPage.SettingsPage.organizationName',
     defaultMessage: '{type, select, generic {Organization} city {City}} name',
@@ -85,7 +93,7 @@ export default defineMessages({
   },
   subTitleBranding: {
     id: 'app.containers.AdminPage.SettingsPage.subTitleBranding',
-    defaultMessage: 'Paint your identity',
+    defaultMessage: 'Establish your visual branding on the platform',
   },
   gender: {
     id: 'app.containers.AdminPage.SettingsPage.gender',
@@ -102,6 +110,10 @@ export default defineMessages({
   education: {
     id: 'app.containers.AdminPage.SettingsPage.education',
     defaultMessage: 'Education',
+  },
+  uploadPlaceholder: {
+    id: 'app.containers.AdminPage.SettingsPage.uploadPlaceholder',
+    defaultMessage: 'Drop your files here',
   },
   save: {
     id: 'app.containers.AdminPage.SettingsPage.save',

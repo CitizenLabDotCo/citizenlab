@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Image, Menu } from 'semantic-ui-react';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 
 import messages from './messages';
 import styled from 'styled-components';
@@ -10,11 +10,11 @@ import styled from 'styled-components';
 // icons
 import dashboardIcon from './icons/dashboard.svg';
 import usersIcon from './icons/users.svg';
-import groupsIcon from './icons/groups.svg';
+// import groupsIcon from './icons/groups.svg';
 import projectsIcon from './icons/projects.svg';
 import ideasIcon from './icons/ideas.svg';
 import settingsIcon from './icons/settings.svg';
-import needHelpIcon from './icons/need_help_icon.svg';
+// import needHelpIcon from './icons/need_help_icon.svg';
 
 const MenuStyled = styled(Menu)`
   height: 100%;
@@ -46,12 +46,13 @@ const MenuItemContainerStyled = styled.div`
 `;
 
 const MenuItemStyled = styled(Menu.Item)`
-  color: #ffffff !important;
   background-color: inherit !important;
+  color: #ffffff !important;
   font-size: 17px;
   font-weight: bold;
-  text-align: left;
+  line-height: 1.3 !important;
   margin-left: 20px;
+  text-align: left;
 `;
 
 const MenuItemIcon = (icon) => (<Image
@@ -65,39 +66,39 @@ const MenuItemIcon = (icon) => (<Image
   }}
 />);
 
-const NeedHelpBoxStyled = styled.div`
-  height: 110px;
-  width: 209px;
-  position: fixed;
-  bottom: 0;
-  background-color: #464646;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-`;
+// const NeedHelpBoxStyled = styled.div`
+//   height: 110px;
+//   width: 209px;
+//   position: fixed;
+//   bottom: 0;
+//   background-color: #464646;
+//   display:flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
 
-const HelpTextStyled = styled.div`
-  padding-left: 1rem;
-`;
+// const HelpTextStyled = styled.div`
+//   padding-left: 1rem;
+// `;
 
-const HelpImageStyled = styled(Image)`
-  width: 34.6px;
-  height: 37.2px;
-`;
+// const HelpImageStyled = styled(Image)`
+//   width: 34.6px;
+//   height: 37.2px;
+// `;
 
-const NeedHelpLabelStyled = styled.div`
-  font-size: 16px;
-  text-align: left;
-  color: #ffffff;
-`;
+// const NeedHelpLabelStyled = styled.div`
+//   font-size: 16px;
+//   text-align: left;
+//   color: #ffffff;
+// `;
 
-const ReadOurGuide = styled(Link)`
-  font-size: 16px;
-  text-align: left;
-  color: #ffffff !important;
-  font-weight: bold;
-  text-decoration: underline !important;
-`;
+// const ReadOurGuide = styled(Link)`
+//   font-size: 16px;
+//   text-align: left;
+//   color: #ffffff !important;
+//   font-weight: bold;
+//   text-decoration: underline !important;
+// `;
 
 function Sidebar(props) {
   const { formatMessage } = props.intl;
@@ -105,24 +106,24 @@ function Sidebar(props) {
   return (
     <MenuStyled vertical borderless>
       <MenuItemContainerStyled active={props.location.pathname === '/admin'}>
-        <MenuItemStyled icon={MenuItemIcon(dashboardIcon)} name={formatMessage({ ...messages.dashboard })} as={Link} to="/admin" />
+        <MenuItemStyled icon={MenuItemIcon(dashboardIcon)} name={formatMessage({ ...messages.dashboard })} content={formatMessage({ ...messages.dashboard })} as={Link} to="/admin" />
       </MenuItemContainerStyled>
       <MenuItemContainerStyled active={props.location.pathname === '/admin/users'}>
-        <MenuItemStyled icon={MenuItemIcon(usersIcon)} name={formatMessage({ ...messages.users })} as={Link} to="/admin/users" />
+        <MenuItemStyled icon={MenuItemIcon(usersIcon)} name={formatMessage({ ...messages.users })} content={formatMessage({ ...messages.users })} as={Link} to="/admin/users" />
       </MenuItemContainerStyled>
-      <MenuItemContainerStyled active={props.location.pathname === '/admin/groups'}>
+      {/* <MenuItemContainerStyled active={props.location.pathname === '/admin/groups'}>
         <MenuItemStyled icon={MenuItemIcon(groupsIcon)} name={formatMessage({ ...messages.groups })} as={Link} to="/admin/groups" />
-      </MenuItemContainerStyled>
+      </MenuItemContainerStyled> */}
       <MenuItemContainerStyled active={props.location.pathname === '/admin/projects'}>
-        <MenuItemStyled icon={MenuItemIcon(projectsIcon)} name={formatMessage({ ...messages.projects })} as={Link} to="/admin/projects" />
+        <MenuItemStyled icon={MenuItemIcon(projectsIcon)} name={formatMessage({ ...messages.projects })} content={formatMessage({ ...messages.projects })} as={Link} to="/admin/projects" />
       </MenuItemContainerStyled>
       <MenuItemContainerStyled active={props.location.pathname === '/admin/ideas'}>
-        <MenuItemStyled icon={MenuItemIcon(ideasIcon)} name={formatMessage({ ...messages.ideas })} as={Link} to="/admin/ideas" />
+        <MenuItemStyled icon={MenuItemIcon(ideasIcon)} name={formatMessage({ ...messages.ideas })} content={formatMessage({ ...messages.ideas })} as={Link} to="/admin/ideas" />
       </MenuItemContainerStyled>
       <MenuItemContainerStyled active={props.location.pathname === '/admin/settings'}>
-        <MenuItemStyled icon={MenuItemIcon(settingsIcon)} name={formatMessage({ ...messages.settings })} as={Link} to="/admin/settings" />
+        <MenuItemStyled icon={MenuItemIcon(settingsIcon)} name={formatMessage({ ...messages.settings })} content={formatMessage({ ...messages.settings })} as={Link} to="/admin/settings" />
       </MenuItemContainerStyled>
-      <NeedHelpBoxStyled>
+      {/* <NeedHelpBoxStyled>
         <HelpImageStyled
           src={needHelpIcon}
         />
@@ -133,7 +134,7 @@ function Sidebar(props) {
             <FormattedMessage {...messages.readGuide} />
           </ReadOurGuide>
         </HelpTextStyled>
-      </NeedHelpBoxStyled>
+      </NeedHelpBoxStyled> */}
     </MenuStyled>
   );
 }
