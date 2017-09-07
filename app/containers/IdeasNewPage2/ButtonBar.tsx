@@ -1,11 +1,21 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { state, IStateStream } from 'services/state';
+
+// components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import eventEmitter from 'utils/eventEmitter';
 import { namespace as newIdeaFormNamespace } from './NewIdeaForm';
+
+// services
+import { state, IStateStream } from 'services/state';
+
+// i18n
 import messages from './messages';
+
+// utils
+import eventEmitter from 'utils/eventEmitter';
+
+// style
 import styled from 'styled-components';
 
 const Container = styled.div`

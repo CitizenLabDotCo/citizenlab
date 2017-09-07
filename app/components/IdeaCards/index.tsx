@@ -28,8 +28,6 @@ import { Flex, Box } from 'grid-styled';
 import { lighten } from 'polished';
 import ButtonMixin from 'components/admin/StyleMixins/buttonMixin';
 
-
-
 const IdeasList: any = styled(Flex)`
   margin-top: 10px;
 `;
@@ -124,6 +122,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
 
   componentWillMount() {
     const filter = (_.isObject(this.props.filter) && !_.isEmpty(this.props.filter) ? this.props.filter : {});
+
     this.filterChange$ = new Rx.BehaviorSubject(filter);
     this.loadMore$ = new Rx.BehaviorSubject(false);
 

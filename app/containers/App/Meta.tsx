@@ -15,7 +15,7 @@ type Props = {
   tenant: ITenant;
 };
 
-class MetaWrapped extends React.PureComponent<Props & InjectedIntlProps, {}> {
+class Meta extends React.PureComponent<Props & InjectedIntlProps, {}> {
   render() {
     const { tenant, intl } = this.props;
     const { formatMessage } = intl;
@@ -39,5 +39,4 @@ class MetaWrapped extends React.PureComponent<Props & InjectedIntlProps, {}> {
   }
 }
 
-const Meta = injectIntl(MetaWrapped);
-export default Meta;
+export default injectIntl(Meta);

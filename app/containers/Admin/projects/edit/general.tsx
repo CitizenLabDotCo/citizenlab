@@ -19,7 +19,6 @@ import { makeSelectSetting } from 'utils/tenant/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 
 // Services
-import { getBase64 } from 'services/image_tools';
 import {
   IUpdatedProjectProperties,
   IProject,
@@ -34,6 +33,9 @@ import {
   addProjectImage,
   deleteProjectImage
 } from 'services/projectImages';
+
+// utils
+import { getBase64 } from 'utils/imageTools';
 
 // Components
 import Input from 'components/UI/Input';

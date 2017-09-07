@@ -10,7 +10,7 @@ import { authUserStream } from 'services/auth';
 import eventEmitter from 'utils/eventEmitter';
 import { ideaStream, IIdea } from 'services/ideas';
 import { userStream, IUser } from 'services/users';
-import { votesStream, vote, IIdeaVote, IIdeaVoteData } from 'services/ideaVotes';
+import { votesStream, addVote, deleteVote, IIdeaVote, IIdeaVoteData } from 'services/ideaVotes';
 
 const BACKGROUND = '#F8F8F8';
 const FOREGROUND = '#6B6B6B';
@@ -115,8 +115,8 @@ export default class Votes extends React.PureComponent<Props, State> {
     const isAuthenticated$ = authUser$.map(authUser => !_.isNull(authUser));
     const idea$ = ideaStream(ideaId).observable;
     const votes$ = votesStream(ideaId).observable;
-    const upvotesCount$ = idea$.map(idea => idea.data.attributes.upvotes_count);
-    const downVotesCount$ = idea$.map(idea => idea.data.attributes.downvotes_count);
+    const upvotesCount$ = votes$.map(votes => votes.data.filter(vote => vote.attributes.mode === 'up').length);
+    const downVotesCount$ = votes$.map(votes => votes.data.filter(vote => vote.attributes.mode === 'down').length);
     const myVote$ = Rx.Observable.combineLatest(authUser$, votes$).map(([authUser, votes]) => {
       if (authUser) {
         const myVote = _(votes.data).find(vote => vote.relationships.user.data.id === authUser.data.id);
@@ -159,26 +159,29 @@ export default class Votes extends React.PureComponent<Props, State> {
     this.onClickVote('down');
   }
 
-  onClickVote = (voteMode: 'up' | 'down') => {
-    const { ideaId } = this.props;
-    const { authUser, myVote } = this.state;
+  onClickVote = async (voteMode: 'up' | 'down') => {
+    try {
+      const { authUser, myVote } = this.state;
+      const { ideaId } = this.props;
 
-    if (authUser !== null) {
-      const userId = authUser.data.id;
-      vote(ideaId, voteMode);
+      if (authUser) {
+        if (myVote && myVote.attributes.mode !== voteMode) {
+          await deleteVote(myVote.id);
+          await addVote(ideaId, { user_id: authUser.data.id, mode: voteMode });
+        }
 
-      /*
-      if (myVote === null || myVote.attributes.mode !== voteMode) {
-        addVote(ideaId, { mode: voteMode });
-      } else if (myVote.attributes.mode === voteMode) {
-        deleteVote(myVote.id);
-      } else if (myVote.attributes.mode !== voteMode) {
-        deleteVote(myVote.id);
-        addVote(ideaId, { mode: voteMode });
+        if (myVote && myVote.attributes.mode === voteMode) {
+          await deleteVote(myVote.id);
+        }
+
+        if (!myVote) {
+          await addVote(ideaId, { user_id: authUser.data.id, mode: voteMode });
+        }
+      } else {
+        eventEmitter.emit(namespace, 'unauthenticatedVoteClick', ideaId);
       }
-      */
-    } else {
-      eventEmitter.emit(namespace, 'unauthenticatedVoteClick', ideaId);
+    } catch (error) {
+      console.log(error);
     }
   }
 

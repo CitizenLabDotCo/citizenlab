@@ -1,8 +1,6 @@
-import { IRelationship } from 'typings.d';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import request from 'utils/request';
-import { IOption } from 'typings';
+import { IRelationship } from 'typings';
 
 export interface IIdeaData {
   id: string;

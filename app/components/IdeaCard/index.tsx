@@ -34,8 +34,6 @@ import styled, { keyframes } from 'styled-components';
 // images
 const placeholder = require('./img/placeholder.png');
 
-
-
 const IdeaContainer: any = styled(Link)`
   width: 100%;
   height: 400px;

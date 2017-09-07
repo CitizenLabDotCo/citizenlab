@@ -101,7 +101,7 @@ class ShowDesktop extends React.PureComponent {
         <LeftColumn>
           <Author authorId={authorId} createdAt={created_at} />
           <IdeaTitle><T value={title_multiloc} /></IdeaTitle>
-          <Carousel images={images.map((image) => image.attributes.versions)} />
+          {/* <Carousel images={images.map((image) => image.attributes.versions)} /> */}
           <IdeaBody>
             <T value={body_multiloc} />
           </IdeaBody>
