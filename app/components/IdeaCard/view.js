@@ -21,7 +21,7 @@ import messages from './messages';
 const IdeaContainer = styled(Link)`
   width: 100%;
   height: 400px;
-  margin: 5px 5px 26px 5px;
+  margin: 0 0 26px 0;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
