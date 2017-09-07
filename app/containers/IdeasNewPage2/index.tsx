@@ -4,29 +4,32 @@ import * as Rx from 'rxjs/Rx';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import Transition from 'react-transition-group/Transition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-import { injectIntl, intlShape } from 'react-intl';
 import { browserHistory } from 'react-router';
-import { state, IStateStream } from 'services/state';
 import { EditorState, convertToRaw } from 'draft-js';
-import { IStream } from 'utils/streams';
-import { usersStream, userStream, updateUser, IUser } from 'services/users';
-import { localeStream } from 'services/locale';
-import { IIdea, addIdea } from 'services/ideas';
-import { addIdeaImage } from 'services/ideaImages';
-import { getAuthUserAsync } from 'services/auth';
 import draftToHtml from 'draftjs-to-html';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { ImageFile } from 'react-dropzone';
+
+// components
 import Upload, { ExtendedImageFile } from 'components/UI/Upload';
-import { media } from 'utils/styleUtils';
-import styled from 'styled-components';
-import messages from './messages';
 import ButtonBar, { namespace as ButtonBarNamespace, State as IButtonBarState } from './ButtonBar';
 import NewIdeaForm, { namespace as NewIdeaFormNamespace, State as INewIdeaFormState } from './NewIdeaForm';
 import SignInUp from 'containers/SignInUp';
+
+// services
+import { state, IStateStream } from 'services/state';
+import { localeStream } from 'services/locale';
+import { addIdea } from 'services/ideas';
+import { addIdeaImage } from 'services/ideaImages';
+import { getAuthUserAsync } from 'services/auth';
+
+// i18n
+import { injectIntl, InjectedIntlProps } from 'react-intl';
+import messages from './messages';
+
+// style
+import { media } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 const Container = styled.div`
   background: #f2f2f2;
@@ -129,9 +132,7 @@ const ButtonBarContainer = styled.div`
   }
 `;
 
-type Props = {
-  intl: ReactIntl.InjectedIntl;
-};
+type Props = {};
 
 type State = {
   showIdeaForm: boolean;
@@ -140,7 +141,7 @@ type State = {
 
 export const namespace = 'IdeasNewPage2/index';
 
-class IdeasNewPage2 extends React.PureComponent<Props, State> {
+class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State> {
   newIdeaFormState$: IStateStream<INewIdeaFormState>;
   buttonBarState$: IStateStream<IButtonBarState>;
   state$: IStateStream<State>;
@@ -338,4 +339,4 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 }
 
-export default (injectIntl(IdeasNewPage2) as any) as typeof IdeasNewPage2;
+export default injectIntl(IdeasNewPage2);

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-import { store } from 'app';
 
 // components
 import Meta from './Meta';
@@ -24,8 +23,12 @@ import tenantSaga from 'utils/tenant/sagas';
 
 // services
 import { state, IStateStream } from 'services/state';
-import { authUserStream } from 'services/auth';
+import { authUserStream, signOut } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
+
+// legacy redux stuff 
+import { store } from 'app';
+import {  STORE_JWT, LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
 
 const Container = styled.div`
   margin-top: ${props => props.theme.menuHeight}px;
@@ -57,9 +60,13 @@ export default class App extends React.PureComponent<Props, State> {
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
 
-      authUserStream().observable.subscribe(x => {
-        console.log('auth:');
-        console.log(x);
+      authUserStream().observable.subscribe((authUser) => {
+        if (!authUser) {
+          signOut();
+          store.dispatch({ type: DELETE_CURRENT_USER_LOCAL });
+        } else {
+          store.dispatch({ type: LOAD_CURRENT_USER_SUCCESS, payload: authUser });
+        }
       }),
 
       currentTenantStream().observable.subscribe((currentTenant) => {

@@ -220,28 +220,28 @@ type Props = {
 
 type State = {
   show: 'signIn' | 'signUp' | 'passwordReset';
-  tenant: ITenant | null;
+  currentTenant: ITenant | null;
 };
 
 export const namespace = 'SignInUp/index';
 
 class SignInUp extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
-  tenant$: IStream<ITenant>;
+  currentTenant$: IStream<ITenant>;
   subscriptions: Rx.Subscription[];
 
   constructor(props) {
     super(props);
-    const initialState: State = { show: props.show || 'signIn', tenant: null };
+    const initialState: State = { show: props.show || 'signIn', currentTenant: null };
     this.state$ = state.createStream<State>(namespace, namespace, initialState);
-    this.tenant$ = currentTenantStream();
+    this.currentTenant$ = currentTenantStream();
     this.subscriptions = [];
   }
 
   componentWillMount() {
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
-      this.tenant$.observable.subscribe(tenant => this.state$.next({ tenant }))
+      this.currentTenant$.observable.subscribe(currentTenant => this.state$.next({ currentTenant }))
     ];
   }
 
@@ -277,8 +277,8 @@ class SignInUp extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { show, tenant } = this.state;
-    const logo = tenant && tenant.data.attributes.logo.large;
+    const { show, currentTenant } = this.state;
+    const logo = (currentTenant ? currentTenant.data.attributes.logo.large : null);
     const { formatMessage } = this.props.intl;
     const { onGoBack, signInTitleMessage, signUpTitleMessage } = this.props;
     const timeout = 500;
