@@ -32,10 +32,28 @@ const ProjectContainer = styled.div`
   `}
 `;
 
+const ProjectImageWrapper = styled.div`
+  background: #E5E5E5;
+  flex: 0 0 400px;
+  border-radius: 5px 0 0 5px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .project-placeholder {
+    transform: scale(5);
+
+    path {
+      fill: white;
+    }
+  }
+`;
+
 const ProjectImage = styled.img`
+  border-radius: 5px 0 0 5px;
   height: 100%;
   object-fit: cover;
-  border-radius: 5px 0 0 5px;
 
   ${media.phone`
     height: 150px;
@@ -68,6 +86,10 @@ const HeaderCount = styled.div`
   color: #8F8F8F;
   font-size: 16px;
   font-weight: 500;
+
+  svg {
+    margin-right: .25em;
+  }
 `;
 
 const InfoSeparator = styled.div`
@@ -114,7 +136,10 @@ class Project extends React.Component {
 
     return (
       <ProjectContainer>
-        <ProjectImage src={imageUrl} />
+        <ProjectImageWrapper>
+          <ProjectImage src={imageUrl} />
+          {!imageUrl && <Icon name="idea" className="project-placeholder" />}
+        </ProjectImageWrapper>
         <ProjectInfo>
 
           <InfoHeader>
