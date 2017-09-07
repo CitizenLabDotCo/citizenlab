@@ -36,6 +36,11 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const ProjectsSectionWrapper = styled.div`
+  background: #f9f9f9;
+  width: 100vw;
+`;
+
 const Section = styled.div`
   margin-top: 80px;
   padding-bottom: 30px;
@@ -203,25 +208,29 @@ class LandingPage extends React.Component {
                 />
               </SectionContainer>
             </Section>
-
-            {projectsList &&
-              <Section>
-                <SectionHeader>
-                  <SectionTitle>
-                    <FormattedMessage {...messages.projectsFrom} values={{ name: tFunc(tenantName) }} />
-                  </SectionTitle>
-                  <ViewAllButton to="/projects">
-                    <ViewAllButtonText>
-                      <FormattedMessage {...messages.viewProjects} />
-                    </ViewAllButtonText>
-                  </ViewAllButton>
-                </SectionHeader>
-                <SectionContainer>
-                  {projectsList}
-                </SectionContainer>
-              </Section>
-            }
           </ContentContainer>
+
+          {projectsList &&
+            <ProjectsSectionWrapper>
+              <ContentContainer>
+                <Section>
+                  <SectionHeader>
+                    <SectionTitle>
+                      <FormattedMessage {...messages.projectsFrom} values={{ name: tFunc(tenantName) }} />
+                    </SectionTitle>
+                    <ViewAllButton to="/projects">
+                      <ViewAllButtonText>
+                        <FormattedMessage {...messages.viewProjects} />
+                      </ViewAllButtonText>
+                    </ViewAllButton>
+                  </SectionHeader>
+                  <SectionContainer>
+                    {projectsList}
+                  </SectionContainer>
+                </Section>
+              </ContentContainer>
+            </ProjectsSectionWrapper>
+          }
 
           <Footer />
         </Container>

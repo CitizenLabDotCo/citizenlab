@@ -12,6 +12,7 @@ import { FormattedMessage } from 'react-intl';
 // Styling
 const FooterWrapper = styled.div`
   align-items: center;
+  background: #fff;
   border-top: 1px solid #eaeaea;
   box-sizing: border-box;
   display: flex;
