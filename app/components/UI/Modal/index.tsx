@@ -6,6 +6,8 @@ import { injectTracks, trackPage } from 'utils/analytics';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import tracks from './tracks';
+import messages from './messages';
+import { FormattedMessage } from 'react-intl';
 
 const ModalContent = styled(clickOutside)`
   width: 100%;
@@ -167,18 +169,18 @@ class Modal extends React.PureComponent<Props, State> {
 
   handlePopstateEvent = () => {
     if (location.href === this.parentUrl) {
-      this.props.clickBack({extra: {url: this.props.url}});
+      this.props.clickBack({ extra: { url: this.props.url } });
       this.closeModal();
     }
   }
 
   clickOutsideModal = () => {
-    this.props.clickOutsideModal({extra: {url: this.props.url}});
+    this.props.clickOutsideModal({ extra: { url: this.props.url } });
     this.closeModal();
   }
 
   clickButton = () => {
-    this.props.clickCloseButton({extra: {url: this.props.url}});
+    this.props.clickCloseButton({ extra: { url: this.props.url } });
     this.closeModal();
   }
 
@@ -189,7 +191,9 @@ class Modal extends React.PureComponent<Props, State> {
       <CSSTransition classNames="modal" timeout={400} exit={false}>
         <ModalContainer>
           <ModalContent onClickOutside={this.clickOutsideModal}>
-            <CloseButton onClick={this.clickButton}>Close</CloseButton>
+            <CloseButton onClick={this.clickButton}>
+              <FormattedMessage {...messages.closeButtonLabel} />
+            </CloseButton>
             {children}
           </ModalContent>
         </ModalContainer>

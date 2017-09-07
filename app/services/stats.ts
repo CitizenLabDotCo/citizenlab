@@ -22,14 +22,14 @@ export interface IUsersByTime{
 export interface IIdeasByTopic{
   data: {
     [key: string]: number;
-  },
+  };
   topics: {
     [key: string]: {
       title_multiloc: {
         [key: string]: string,
       }
     }
-  }
+  };
 }
 
 export function observeUsersByGender(streamParams: IStreamParams<IUsersByGender> | null = null) {

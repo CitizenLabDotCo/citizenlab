@@ -17,9 +17,9 @@ import queryString from 'query-string';
 // translations
 import { injectTFunc } from 'containers/T/utils';
 
-const SelectArea = ({ options, value, filterPage }) => (
+const SelectArea = ({ options, value, filterPage, title }) => (
   <FilterSelector
-    title="areas"
+    title={title}
     name="areas"
     selected={value}
     values={options}
@@ -32,6 +32,7 @@ SelectArea.propTypes = {
   value: PropTypes.array,
   options: PropTypes.array.isRequired,
   filterPage: PropTypes.func,
+  title: PropTypes.string,
 };
 
 SelectArea.defaultProps = {

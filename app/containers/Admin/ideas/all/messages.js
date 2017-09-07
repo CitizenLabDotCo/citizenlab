@@ -19,7 +19,7 @@ export default defineMessages({
   },
   publication_date: {
     id: 'app.containers.admin.ideas.all.publication_date',
-    defaultMessage: 'Published at',
+    defaultMessage: 'Published on',
   },
   up: {
     id: 'app.containers.admin.ideas.all.up',
