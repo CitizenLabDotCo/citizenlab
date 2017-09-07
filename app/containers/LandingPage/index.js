@@ -27,12 +27,18 @@ import { loadProjects } from './actions';
 import messages from './messages';
 import sagas from './sagas';
 import { selectLandingPage, makeSelectProjects } from './selectors';
+import Footer from './components/footer';
 
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const ProjectsSectionWrapper = styled.div`
+  background: #f9f9f9;
+  width: 100vw;
 `;
 
 const Section = styled.div`
@@ -60,7 +66,7 @@ const SectionTitle = styled.h2`
   color: #222222;
   font-size: 35px;
   line-height: 35px;
-  font-weight: 500;
+  font-weight: 600;
   margin: 0;
   margin-right: 20px;
   /* border: solid 1px green; */
@@ -72,34 +78,26 @@ const SectionTitle = styled.h2`
 `;
 
 const ViewAllButtonText = styled.div`
-  color: ${(props) => props.theme.colorMain};
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 16px;
-  margin-right: 7px;
-  cursor: pointer;
-`;
-
-const ViewAllButtonIcon = styled.svg`
-  fill: ${(props) => props.theme.colorMain};
-  height: 11px;
-  margin-top: -1px;
-  cursor: pointer;
+  color: #000;
 `;
 
 const ViewAllButton = styled(Link)`
-  display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  color: #cacaca;
   cursor: pointer;
+  display: flex;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 16px;
+  margin-bottom: 8px;
+  margin-right: 7px;
+  text-decoration: underline;
 
   &:hover {
-    ${ViewAllButtonIcon} {
-      fill: ${(props) => lighten(0.2, props.theme.colorMain)};
-    }
+    color: ${lighten(0.1, '#000')};
 
     ${ViewAllButtonText} {
-      color: ${(props) => lighten(0.2, props.theme.colorMain)};
+      color: ${lighten(0.1, '#000')};
     }
   }
 
@@ -110,17 +108,6 @@ const ViewAllButton = styled(Link)`
 
 const SectionContainer = styled.section`
   margin-top: 10px;
-`;
-
-const Footer = styled.div`
-  color: #333;
-  font-weight: 400;
-  font-size: 17px;
-  text-align: center;
-  display: inline-block;
-  padding-left: 30px;
-  padding-right: 30px;
-  margin: 60px auto 50px auto;
 `;
 
 class LandingPage extends React.Component {
@@ -212,44 +199,40 @@ class LandingPage extends React.Component {
                   <ViewAllButtonText>
                     <FormattedMessage {...messages.viewIdeas} />
                   </ViewAllButtonText>
-                  <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
-                    <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
-                  </ViewAllButtonIcon>
                 </ViewAllButton>
               </SectionHeader>
               <SectionContainer>
                 <IdeaCards
-                  filter={{ sort: 'trending', 'page[size]': 3 }}
+                  filter={{ sort: 'trending', 'page[size]': 9 }}
                   loadMoreEnabled={false}
                 />
               </SectionContainer>
             </Section>
-
-            {projectsList &&
-              <Section>
-                <SectionHeader>
-                  <SectionTitle>
-                    <FormattedMessage {...messages.projectsFrom} values={{ name: tFunc(tenantName) }} />
-                  </SectionTitle>
-                  <ViewAllButton to="/projects">
-                    <ViewAllButtonText>
-                      <FormattedMessage {...messages.viewProjects} />
-                    </ViewAllButtonText>
-                    <ViewAllButtonIcon height="100%" viewBox="8.86 6.11 6.279 10.869">
-                      <path d="M15.14 11.545L9.705 6.11l-.845.846 4.298 4.306.282.283-.282.283-4.298 4.307.845.844" />
-                    </ViewAllButtonIcon>
-                  </ViewAllButton>
-                </SectionHeader>
-                <SectionContainer>
-                  {projectsList}
-                </SectionContainer>
-              </Section>
-            }
           </ContentContainer>
 
-          <Footer>
-            <FormattedMessage {...messages.poweredBy} />
-          </Footer>
+          {projectsList &&
+            <ProjectsSectionWrapper>
+              <ContentContainer>
+                <Section>
+                  <SectionHeader>
+                    <SectionTitle>
+                      <FormattedMessage {...messages.projectsFrom} values={{ name: tFunc(tenantName) }} />
+                    </SectionTitle>
+                    <ViewAllButton to="/projects">
+                      <ViewAllButtonText>
+                        <FormattedMessage {...messages.viewProjects} />
+                      </ViewAllButtonText>
+                    </ViewAllButton>
+                  </SectionHeader>
+                  <SectionContainer>
+                    {projectsList}
+                  </SectionContainer>
+                </Section>
+              </ContentContainer>
+            </ProjectsSectionWrapper>
+          }
+
+          <Footer />
         </Container>
 
         <Modal

@@ -32,10 +32,28 @@ const ProjectContainer = styled.div`
   `}
 `;
 
+const ProjectImageWrapper = styled.div`
+  background: #E5E5E5;
+  flex: 0 0 400px;
+  border-radius: 5px 0 0 5px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .project-placeholder {
+    transform: scale(5);
+
+    path {
+      fill: white;
+    }
+  }
+`;
+
 const ProjectImage = styled.img`
+  border-radius: 5px 0 0 5px;
   height: 100%;
   object-fit: cover;
-  border-radius: 5px 0 0 5px;
 
   ${media.phone`
     height: 150px;
@@ -47,7 +65,7 @@ const ProjectInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 30px 40px;
+  padding: 30px 60px;
 
   ${media.phone`
     padding: 20px;
@@ -68,10 +86,14 @@ const HeaderCount = styled.div`
   color: #8F8F8F;
   font-size: 16px;
   font-weight: 500;
+
+  svg {
+    margin-right: .25em;
+  }
 `;
 
 const InfoSeparator = styled.div`
-  border: 1px solid #EAEAEA;
+  background: #EAEAEA;
   height: 1px;
   margin: 10px 0;
 `;
@@ -114,7 +136,10 @@ class Project extends React.Component {
 
     return (
       <ProjectContainer>
-        <ProjectImage src={imageUrl} />
+        <ProjectImageWrapper>
+          <ProjectImage src={imageUrl} />
+          {!imageUrl && <Icon name="idea" className="project-placeholder" />}
+        </ProjectImageWrapper>
         <ProjectInfo>
 
           <InfoHeader>
