@@ -29,11 +29,12 @@ interface IExtendedStreamParams<T> {
 export interface IStream<T> {
   id: string;
   params: IExtendedStreamParams<T>;
+  serializedUrl: string;
+  isQuery: boolean;
   type: 'singleObject' | 'arrayOfObjects' | 'unknown';
   fetch: fetchFn<T>;
-  observer: Rx.Subject<T>;
+  observer: IObserver<T>;
   observable: IObservable<T>;
-  subscription: Rx.Subscription;
   dataIds: { [key: string]: true };
 }
 
@@ -63,7 +64,7 @@ class Streams {
     const { apiEndpoint, queryParameters } = params;
 
     if (this.isQuery(queryParameters)) {
-      return apiEndpoint + Object.keys(queryParameters as object).map((key) => {
+      return apiEndpoint + Object.keys(queryParameters as object).sort().map((key) => {
         return encodeURIComponent(key) + '=' + encodeURIComponent((queryParameters as object)[key]);
       }).join('&');
     }
@@ -71,9 +72,7 @@ class Streams {
     return apiEndpoint;
   }
 
-  findExistingStreamId(params: IExtendedStreamParams<any>) {
-    const serializedUrl = this.getSerializedUrl(params);
-
+  findExistingStreamId(serializedUrl: string) {
     if (this.streamsIndex[serializedUrl]) {
       return this.streamsIndex[serializedUrl];
     }
@@ -83,22 +82,42 @@ class Streams {
 
   get<T>(inputParams: IInputStreamParams<T>) {
     const params: IExtendedStreamParams<T> = { bodyData: null, queryParameters: null, ...inputParams };
-    const existingStreamId = this.findExistingStreamId(params);
+    const serializedUrl = this.getSerializedUrl(params);
+    const existingStreamId = this.findExistingStreamId(serializedUrl);
+
+    // console.log(_.size(this.streams));
 
     if (!existingStreamId) {
       const { apiEndpoint, bodyData, queryParameters } = params;
       const streamId = uuid();
       const lastUrlSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
-      const serializedUrl = this.getSerializedUrl(params);
       const isQuery = this.isQuery(queryParameters);
       const lastUrlSegmentIsId = this.isUUID(lastUrlSegment);
-      const observer = new Rx.Subject<T | null>();
+      const observer: IObserver<T | null> = (null as any);
 
       const fetch = () => {
         const promise = request<any>(apiEndpoint, bodyData, { method: 'GET' }, queryParameters);
 
+        const updateOtherStreams = (updatedValue: any, dataId: string) => {
+          _.forOwn(this.streams, (stream, streamId) => {
+            if (stream.serializedUrl !== serializedUrl) {
+              if (stream.dataIds[dataId] && stream.type === 'singleObject') {
+                stream.observer.next({ data: updatedValue });
+              } else if (stream.dataIds[dataId] && stream.type === 'arrayOfObjects') {
+                stream.observer.next((previous) => ({
+                  ...previous,
+                  data: previous.data.map(child => child.id === dataId ? updatedValue : child)
+                }));
+              }
+            }
+          });
+        };
+
         Rx.Observable.defer(() => promise).retry(2).subscribe(
           (response) => {
+            console.log(`response for ${apiEndpoint}: `);
+            console.log(response);
+
             if (isQuery) {
               console.log(`fetched data for ${apiEndpoint} with queryParams:`);
               console.log(queryParameters);
@@ -106,16 +125,45 @@ class Streams {
               console.log(`fetched data for ${apiEndpoint}`);
             }
 
-            observer.next(response);
+            this.streams[streamId].observer.next(response);
+
+            if (response.data && _.isArray(response.data)) {
+              response.data.filter(item => item.id).forEach((item) => {
+                updateOtherStreams(item, item.id);
+              });
+            } else if (_.has(response, 'data.id')) {
+              updateOtherStreams(response.data, response.data.id);
+            }
           },
           (error) => {
             console.log(`promise for api endpoint ${apiEndpoint} did not resolve`);
-            observer.next(null);
+            this.streams[streamId].observer.next(null);
           }
         );
       };
 
-      const observable = observer.asObservable().startWith('initial' as any).scan((accumulated: T, current: T | pureFn<T>) => {
+      const observable = (Rx.Observable.create((observer: IObserver<T | null>) => {
+        if (!existingStreamId) {
+          this.streams[streamId].observer = observer;
+
+          // push initial data into stream
+          if (_.has(this.resources, lastUrlSegment)) {
+            observer.next(this.resources[lastUrlSegment]);
+          } else if (!isQuery && _.has(this.apiEndpointResources, apiEndpoint)) {
+            observer.next(this.apiEndpointResources[apiEndpoint]);
+          } else {
+            fetch();
+          }
+        }
+
+        return () => {
+          console.log(`stream for api endpoint ${apiEndpoint} completed`);
+          delete this.streams[streamId];
+          delete this.streamsIndex[serializedUrl];
+        };
+      }) as Observable<T | null>)
+      .startWith('initial' as any)
+      .scan((accumulated: T, current: T | pureFn<T>) => {
         let data: any = accumulated;
         const dataIds = {};
 
@@ -153,7 +201,8 @@ class Streams {
       .filter(data => data !== 'initial')
       .distinctUntilChanged()
       .do(data => store.dispatch(mergeJsonApiResources(data)))
-      .publishReplay(1).refCount();
+      .publishReplay(1)
+      .refCount();
 
       this.streamsIndex[serializedUrl] = streamId;
 
@@ -162,20 +211,14 @@ class Streams {
         fetch,
         observer,
         observable,
-        subscription: observable.subscribe(),
+        serializedUrl,
+        isQuery,
         id: streamId,
         type: 'unknown',
         dataIds: {},
       };
 
-      // finally push first data into stream
-      if (_.has(this.resources, lastUrlSegment)) {
-        observer.next(this.resources[lastUrlSegment]);
-      } else if (!isQuery && _.has(this.apiEndpointResources, apiEndpoint)) {
-        observer.next(this.apiEndpointResources[apiEndpoint]);
-      } else {
-        fetch();
-      }
+      this.streams[streamId].observable.subscribe();
 
       return this.streams[streamId] as IStream<T>;
     }
@@ -194,7 +237,7 @@ class Streams {
           if (stream.params.apiEndpoint === apiEndpoint) {
             if (this.isQuery(stream.params.queryParameters)) {
               stream.fetch();
-            } else if (stream.observer) {
+            } else {
               stream.observer.next((previous) => ({
                 ...previous,
                 data: [...previous.data, response['data']]
@@ -216,11 +259,11 @@ class Streams {
       const response = await request<T>(apiEndpoint, bodyData, { method: 'PATCH' }, null);
 
       _.forOwn(this.streams, (stream, streamId) => {
-        if ((stream.params.apiEndpoint === apiEndpoint && this.isQuery(stream.params.queryParameters)) || (stream.dataIds[dataId] && stream.type === 'unknown')) {
+        if ((stream.params.apiEndpoint === apiEndpoint && stream.isQuery) || (stream.dataIds[dataId] && stream.type === 'unknown')) {
           stream.fetch();
-        } else if (stream.dataIds[dataId] && stream.observer && stream.type === 'singleObject') {
+        } else if (stream.dataIds[dataId] && stream.type === 'singleObject') {
           stream.observer.next(response);
-        } else if (stream.dataIds[dataId] && stream.observer && stream.type === 'arrayOfObjects') {
+        } else if (stream.dataIds[dataId] && stream.type === 'arrayOfObjects') {
           stream.observer.next((previous) => ({
             ...previous,
             data: previous.data.map(child => child.id === dataId ? response['data'] : child)
@@ -240,11 +283,11 @@ class Streams {
       await request(apiEndpoint, null, { method: 'DELETE' }, null);
 
       _.forOwn(this.streams, (stream, streamId) => {
-        if ((stream.params.apiEndpoint === apiEndpoint && this.isQuery(stream.params.queryParameters)) || (stream.dataIds[dataId] && stream.type === 'unknown')) {
+        if ((stream.params.apiEndpoint === apiEndpoint && stream.isQuery) || (stream.dataIds[dataId] && stream.type === 'unknown')) {
           stream.fetch();
-        } else if (stream.dataIds[dataId] && stream.observer && stream.type === 'singleObject') {
+        } else if (stream.dataIds[dataId] && stream.type === 'singleObject') {
           stream.observer.next(undefined);
-        } else if (stream.dataIds[dataId] && stream.observer && stream.type === 'arrayOfObjects') {
+        } else if (stream.dataIds[dataId] && stream.type === 'arrayOfObjects') {
           stream.observer.next((previous) => ({
             ...previous,
             data: previous.data.filter(child => child.id !== dataId)
