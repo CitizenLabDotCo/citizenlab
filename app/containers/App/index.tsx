@@ -70,8 +70,6 @@ export default class App extends React.PureComponent<Props, State> {
       }),
 
       currentTenantStream().observable.subscribe((currentTenant) => {
-        console.log('currentTenant:');
-        console.log(currentTenant);
         this.state$.next({ currentTenant });
         store.dispatch(loadCurrentTenantSuccess(currentTenant));
       })

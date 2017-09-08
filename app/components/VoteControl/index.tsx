@@ -111,12 +111,13 @@ export default class Votes extends React.PureComponent<Props, State> {
       myVote: null
     };
 
+    const idea$ = ideaStream(ideaId).observable;
     const authUser$ = authUserStream().observable;
     const isAuthenticated$ = authUser$.map(authUser => !_.isNull(authUser));
-    const idea$ = ideaStream(ideaId).observable;
     const votes$ = votesStream(ideaId).observable;
-    const upvotesCount$ = votes$.map(votes => votes.data.filter(vote => vote.attributes.mode === 'up').length);
-    const downVotesCount$ = votes$.map(votes => votes.data.filter(vote => vote.attributes.mode === 'down').length);
+    const authUserAndVotes$ = authUser$.switchMap(authUser => votes$.map(votes => ({ authUser, votes })));
+    // const upvotesCount$ = votes$.map(votes => votes.data.filter(vote => vote.attributes.mode === 'up').length);
+    // const downVotesCount$ = votes$.map(votes => votes.data.filter(vote => vote.attributes.mode === 'down').length);
     const myVote$ = Rx.Observable.combineLatest(authUser$, votes$).map(([authUser, votes]) => {
       if (authUser) {
         const myVote = _(votes.data).find(vote => vote.relationships.user.data.id === authUser.data.id);
@@ -132,12 +133,19 @@ export default class Votes extends React.PureComponent<Props, State> {
       this.state$.observable.subscribe(state => this.setState(state)),
 
       Rx.Observable.combineLatest(
-        authUser$,
+        idea$,
         isAuthenticated$,
-        upvotesCount$,
-        downVotesCount$,
+        authUserAndVotes$,
         myVote$
-      ).subscribe(([authUser, isAuthenticated, upvotesCount, downVotesCount, myVote]) => {
+      ).subscribe(([idea, isAuthenticated, { authUser, votes }, myVote]) => {
+        let upvotesCount = idea.data.attributes.upvotes_count;
+        let downVotesCount = idea.data.attributes.downvotes_count;
+
+        if (isAuthenticated && votes) {
+          upvotesCount = votes.data.filter(vote => vote.attributes.mode === 'up').length;
+          downVotesCount = votes.data.filter(vote => vote.attributes.mode === 'down').length;
+        }
+
         this.state$.next({ authUser, isAuthenticated, upvotesCount, downVotesCount, myVote });
       })
     ];
@@ -166,12 +174,12 @@ export default class Votes extends React.PureComponent<Props, State> {
 
       if (authUser) {
         if (myVote && myVote.attributes.mode !== voteMode) {
-          await deleteVote(myVote.id);
+          await deleteVote(ideaId, myVote.id);
           await addVote(ideaId, { user_id: authUser.data.id, mode: voteMode });
         }
 
         if (myVote && myVote.attributes.mode === voteMode) {
-          await deleteVote(myVote.id);
+          await deleteVote(ideaId, myVote.id);
         }
 
         if (!myVote) {

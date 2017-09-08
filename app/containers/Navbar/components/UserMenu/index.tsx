@@ -1,21 +1,28 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import * as React from 'react';
+import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
+import { browserHistory } from 'react-router';
 
-import { FormattedMessage } from 'react-intl';
+// components
 import Authorize from 'utils/containers/authorize';
 import ClickOutside from 'utils/containers/clickOutside';
-import adminIcon from './adminIcon.svg';
-import editProfileIcon from './editProfileIcon.svg';
-import signOutIcon from './signOutIcon.svg';
 
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { signOutCurrentUser } from 'utils/auth/actions';
-import { push } from 'react-router-redux';
-import { makeSelectCurrentUserImmutable } from 'utils/auth/selectors';
+// services
+import { state, IStateStream } from 'services/state';
+import { authUserStream, signOut } from 'services/auth';
+import { IUser } from 'services/users';
+
+// style
+import styled from 'styled-components';
+
+// i18n
+import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 
+// images
+const adminIcon = require('./adminIcon.svg');
+const editProfileIcon = require('./editProfileIcon.svg');
+const signOutIcon = require('./signOutIcon.svg');
 
 const MenuContainer = styled(ClickOutside)`
   display: flex;
@@ -25,7 +32,7 @@ const MenuContainer = styled(ClickOutside)`
   cursor: pointer;
 `;
 
-const UserImage = styled.img`
+const UserImage: any = styled.img`
   height: 34px;
   border-radius: 50%;
   opacity: 0.85;
@@ -73,33 +80,57 @@ const MenuIcon = styled.img`
   width: 20px;
 `;
 
-class UserMenu extends React.PureComponent {
+type Props = {};
+
+type State = {
+  authUser: IUser | null;
+  dropdownOpened: boolean;
+};
+
+export const namespace = 'Navbar/components/UserMenu/index';
+
+export default class UserMenu extends React.PureComponent<Props, State> {
+  state$: IStateStream<State>;
+  subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
+    const initialState: State = { authUser: null, dropdownOpened: false };
+    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+  }
 
-    this.state = {
-      dropdownOpened: false,
-    };
+  componentWillMount() {
+    const authUser$ = authUserStream().observable;
+
+    this.subscriptions = [
+      this.state$.observable.subscribe(state => this.setState(state)),
+      authUser$.subscribe(authUser => this.state$.next({ authUser }))
+    ];
   }
 
   toggleDropdown = () => {
-    this.setState((state) => ({ dropdownOpened: !state.dropdownOpened }));
-  };
+    this.state$.next(state => ({ dropdownOpened: !state.dropdownOpened }));
+  }
 
   closeDropdown = () => {
-    this.setState({ dropdownOpened: false });
-  };
+    this.state$.next({ dropdownOpened: false });
+  }
 
   navigateTo = (path) => () => {
-    this.props.push(path);
+    browserHistory.push(path);
+  }
+
+  signOut = () => {
+    signOut();
   }
 
   render() {
-    return (
+    const { authUser, dropdownOpened } = this.state;
+
+    return (authUser ? (
       <MenuContainer onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
-        <UserImage avatar src={this.props.avatar}></UserImage>
-        {this.state.dropdownOpened &&
+        <UserImage avatar={true} src={authUser.data.attributes.avatar.small} />
+        {dropdownOpened &&
           <Dropdown>
             <Authorize action={['users', 'admin']} >
               <DropdownItem onClick={this.navigateTo('/admin')}>
@@ -111,25 +142,13 @@ class UserMenu extends React.PureComponent {
               <FormattedMessage {...messages.editProfile} />
               <MenuIcon src={editProfileIcon} alt="edit profile" />
             </DropdownItem>
-            <DropdownItem onClick={this.props.signOutCurrentUser}>
+            <DropdownItem onClick={this.signOut}>
               <FormattedMessage {...messages.signOut} />
               <MenuIcon src={signOutIcon} alt="sign out" />
             </DropdownItem>
           </Dropdown>
         }
       </MenuContainer>
-    );
+    ) : null);
   }
 }
-
-UserMenu.propTypes = {
-  avatar: PropTypes.string,
-  push: PropTypes.func,
-  signOutCurrentUser: PropTypes.func,
-};
-
-const mapStateToProps = createStructuredSelector({
-  avatar: makeSelectCurrentUserImmutable('attributes', 'avatar', 'small'),
-});
-
-export default connect(mapStateToProps, { push, signOutCurrentUser })(UserMenu);
