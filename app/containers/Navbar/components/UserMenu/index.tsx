@@ -100,12 +100,14 @@ export default class UserMenu extends React.PureComponent<Props, State> {
   }
 
   componentWillMount() {
-    const authUser$ = authUserStream().observable;
-
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
-      authUser$.subscribe(authUser => this.state$.next({ authUser }))
+      authUserStream().observable.subscribe(authUser => this.state$.next({ authUser }))
     ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   toggleDropdown = () => {
