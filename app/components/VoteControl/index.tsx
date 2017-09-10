@@ -56,7 +56,7 @@ const VoteButton: any = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background-color 100ms ease-in-out;
+  transition: background-color 50ms ease-out;
   outline: none;
 `;
 
@@ -90,7 +90,7 @@ type State = {
   authUser: IUser | null,
   isAuthenticated: boolean;
   upvotesCount: number;
-  downVotesCount: number;
+  downvotesCount: number;
   myVote: IIdeaVoteData | null;
 };
 
@@ -107,7 +107,7 @@ export default class Votes extends React.PureComponent<Props, State> {
       authUser: null,
       isAuthenticated: false,
       upvotesCount: 0,
-      downVotesCount: 0,
+      downvotesCount: 0,
       myVote: null
     };
 
@@ -139,14 +139,14 @@ export default class Votes extends React.PureComponent<Props, State> {
         myVote$
       ).subscribe(([idea, isAuthenticated, { authUser, votes }, myVote]) => {
         let upvotesCount = idea.data.attributes.upvotes_count;
-        let downVotesCount = idea.data.attributes.downvotes_count;
+        let downvotesCount = idea.data.attributes.downvotes_count;
 
         if (isAuthenticated && votes) {
           upvotesCount = votes.data.filter(vote => vote.attributes.mode === 'up').length;
-          downVotesCount = votes.data.filter(vote => vote.attributes.mode === 'down').length;
+          downvotesCount = votes.data.filter(vote => vote.attributes.mode === 'down').length;
         }
 
-        this.state$.next({ authUser, isAuthenticated, upvotesCount, downVotesCount, myVote });
+        this.state$.next({ authUser, isAuthenticated, upvotesCount, downvotesCount, myVote });
       })
     ];
   }
@@ -195,7 +195,7 @@ export default class Votes extends React.PureComponent<Props, State> {
 
   render() {
     const { size } = this.props;
-    const { isAuthenticated, upvotesCount, downVotesCount, myVote } = this.state;
+    const { isAuthenticated, upvotesCount, downvotesCount, myVote } = this.state;
     const myVoteMode = (myVote ? myVote.attributes.mode : null);
 
     return (
@@ -206,7 +206,7 @@ export default class Votes extends React.PureComponent<Props, State> {
         </UpvoteButton>
         <DownvoteButton size={size} active={myVoteMode === 'down'} onClick={this.onClickDownvote}>
           <VoteIcon name="downvote" />
-          <VoteCount>{downVotesCount}</VoteCount>
+          <VoteCount>{downvotesCount}</VoteCount>
         </DownvoteButton>
       </VotesContainer>
     );
