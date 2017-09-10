@@ -1,23 +1,32 @@
-import React, { PropTypes } from 'react';
-import { push } from 'react-router-redux';
-import styled, { ThemeProvider, css } from 'styled-components';
-import { lighten } from 'polished';
-import { Link } from 'react-router';
-import { FormattedMessage, injectIntl } from 'react-intl';
-import { injectTracks } from 'utils/analytics';
-// import SearchWidget from 'containers/SearchWidget';
-import { createStructuredSelector } from 'reselect';
-import { preprocess } from 'utils';
-import { makeSelectCurrentUserImmutable } from 'utils/auth/selectors';
-import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
+import * as React from 'react';
+import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
+import { browserHistory, Link } from 'react-router';
 
-import { media } from 'utils/styleUtils';
-import messages from './messages';
-import tracks from './tracks';
+// components
 import NotificationMenu from './components/NotificationMenu';
 import UserMenu from './components/UserMenu';
 import MobileNavigation from './components/MobileNavigation';
 import Icon from 'components/UI/Icon';
+
+// services
+import { state, IStateStream } from 'services/state';
+import { authUserStream, signOut } from 'services/auth';
+import { currentTenantStream, ITenant } from 'services/tenant';
+import { IUser } from 'services/users';
+
+// utils
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
+// i18n
+import { media } from 'utils/styleUtils';
+import { FormattedMessage, injectIntl } from 'react-intl';
+
+// style
+import { lighten } from 'polished';
+import messages from './messages';
+import styled, { ThemeProvider, css } from 'styled-components';
 
 const Container = styled.div`
   width: 100%;
@@ -81,14 +90,13 @@ const NavigationItem = styled(Link)`
   }
 `;
 
-
 const Right = styled.div`
   display: flex;
   z-index: 2;
   align-items: center;
 `;
 
-const RightItem = styled.div`
+const RightItem: any = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -99,7 +107,7 @@ const RightItem = styled.div`
     ${subtleSeparator}
   }
 
-  ${(props) => props.hideOnPhone && media.phone`display: none;`}
+  ${(props: any) => props.hideOnPhone && media.phone`display: none;`}
 `;
 
 const Button = styled.div`
@@ -146,18 +154,54 @@ const LoginLink = styled.div`
   }
 `;
 
-class Navbar extends React.Component {
+interface ITracks {
+  trackClickOpenNotifications: () => void;
+  trackClickCloseNotifications: () => void;
+}
+
+type Props = {};
+
+type State = {
+  authUser: IUser | null;
+  currentTenant: ITenant | null;
+  notificationPanelOpened: boolean;
+};
+
+const namespace = 'NavBar/index';
+
+class Navbar extends React.PureComponent<Props & ITracks, State> {
+  state$: IStateStream<State>;
+  subscriptions: Rx.Subscription[];
+
   constructor() {
     super();
-
-    this.state = {
-      notificationPanelOpened: false,
-    };
+    const initialState: State = { authUser: null, currentTenant: null, notificationPanelOpened: false };
+    this.state$ = state.createStream<State>(namespace, namespace, initialState);
   }
 
-  goTo = (path) => () => {
-    this.props.goTo(path);
-  };
+  componentWillMount() {
+    const authUser$ = authUserStream().observable;
+    const currentTenant$ = currentTenantStream().observable;
+
+    this.subscriptions = [
+      this.state$.observable.subscribe(state => this.setState(state)),
+
+      Rx.Observable.combineLatest(
+        authUser$, 
+        currentTenant$
+      ).subscribe(([authUser, currentTenant]) => {
+        this.state$.next({ authUser, currentTenant });
+      })
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  goToAddIdeaPage = () => {
+    browserHistory.push('/ideas/new');
+  }
 
   toggleNotificationPanel = () => {
     if (this.state.notificationPanelOpened) {
@@ -166,10 +210,10 @@ class Navbar extends React.Component {
       this.props.trackClickOpenNotifications();
     }
 
-    this.setState({
+    this.state$.next({
       notificationPanelOpened: !this.state.notificationPanelOpened,
     });
-  };
+  }
 
   closeNotificationPanel = () => {
     // There seem to be some false closing triggers on initializing,
@@ -177,8 +221,9 @@ class Navbar extends React.Component {
     if (this.state.notificationPanelOpened) {
       this.props.trackClickCloseNotifications();
     }
-    this.setState({ notificationPanelOpened: false });
-  };
+
+    this.state$.next({ notificationPanelOpened: false });
+  }
 
   navbarTheme = (style) => {
     return {
@@ -191,18 +236,21 @@ class Navbar extends React.Component {
   }
 
   render() {
-    const { tenantLogo, currentUser, location, className } = this.props;
+    const { authUser, currentTenant } = this.state;
+    const tenantLogo = (currentTenant ? currentTenant.data.attributes.logo.small : null);
 
     return (
       <ThemeProvider theme={this.navbarTheme}>
-        <Container className={className}>
+        <Container>
           <MobileNavigation />
           <Left>
-            <Link to="/">
-              <Logo height="100%" viewBox="0 0 443.04 205.82" secondary={(location === '/')}>
-                <img src={tenantLogo} alt="logo"></img>
-              </Logo>
-            </Link>
+            {tenantLogo &&
+              <Link to="/">
+                <Logo height="100%">
+                  <img src={tenantLogo} alt="logo" />
+                </Logo>
+              </Link>
+            }
 
             <NavigationItems>
               <NavigationItem to="/" activeClassName="active">
@@ -218,28 +266,28 @@ class Navbar extends React.Component {
           </Left>
           <Right>
             <RightItem>
-              <Button onClick={this.goTo('/ideas/new')}>
-                <ButtonIcon name="add_circle" viewBox="0 0 24 24" />
+              <Button onClick={this.goToAddIdeaPage}>
+                <ButtonIcon name="add_circle" />
                 <ButtonText>
                   <FormattedMessage {...messages.addIdea} />
                 </ButtonText>
               </Button>
             </RightItem>
 
-            {currentUser &&
-              <RightItem hideOnPhone>
+            {authUser &&
+              <RightItem hideOnPhone={true}>
                 <NotificationMenu />
               </RightItem>
             }
 
-            {currentUser &&
-              <RightItem hideOnPhone>
+            {authUser &&
+              <RightItem hideOnPhone={true}>
                 <UserMenu />
               </RightItem>
             }
 
-            {!currentUser &&
-              <RightItem hideOnPhone>
+            {!authUser &&
+              <RightItem hideOnPhone={true}>
                 <Link to="/sign-in">
                   <LoginLink>
                     <FormattedMessage {...messages.login} />
@@ -254,27 +302,7 @@ class Navbar extends React.Component {
   }
 }
 
-Navbar.propTypes = {
-  className: PropTypes.string,
-  currentUser: PropTypes.object,
-  tenantLogo: PropTypes.string,
-  location: PropTypes.string.isRequired,
-  goTo: PropTypes.func.isRequired,
-  trackClickCloseNotifications: PropTypes.func,
-  trackClickOpenNotifications: PropTypes.func,
-};
-
-const mapStateToProps = createStructuredSelector({
-  currentUser: makeSelectCurrentUserImmutable(),
-  tenantLogo: makeSelectCurrentTenantImm('attributes', 'logo', 'small'),
-});
-
-const mergeProps = (stateP, dispatchP, ownP) => {
-  const goTo = dispatchP.push;
-  return Object.assign({}, stateP, { goTo }, ownP);
-};
-
-export default injectTracks({
+export default injectTracks<Props>({
   trackClickOpenNotifications: tracks.clickOpenNotifications,
   trackClickCloseNotifications: tracks.clickCloseNotifications,
-})(injectIntl(preprocess(mapStateToProps, { push }, mergeProps)(Navbar)));
+})(Navbar);

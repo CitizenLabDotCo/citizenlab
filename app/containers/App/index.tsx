@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import { RouterState } from 'react-router';
 
 // components
 import Meta from './Meta';
@@ -46,7 +47,7 @@ type State = {
 
 export const namespace = 'App/index';
 
-export default class App extends React.PureComponent<Props, State> {
+export default class App extends React.PureComponent<Props & RouterState, State> {
   state$: IStateStream<State>;
   subscriptions: Rx.Subscription[];
 
@@ -81,8 +82,7 @@ export default class App extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const children = this.props['children'];
-    const location = this.props['location'];
+    const { location, children } = this.props;
     const { currentTenant } = this.state;
     const theme = {
       colorMain: (currentTenant ? currentTenant.data.attributes.settings.core.color_main : '#ef0071'),
@@ -103,10 +103,7 @@ export default class App extends React.PureComponent<Props, State> {
             <Container>
               <Meta tenant={currentTenant} />
 
-              <Navbar
-                currentTenant={currentTenant}
-                location={location.pathname}
-              />
+              <Navbar />
 
               <Authorize action={['routes', 'admin']} resource={location.pathname}>
                 <div>

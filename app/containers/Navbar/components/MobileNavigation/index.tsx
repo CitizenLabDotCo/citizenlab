@@ -1,16 +1,14 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
-
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-
-import home from './home.svg';
-import ideas from './ideas.svg';
-import projects from './projects.svg';
-import profile from './profile.svg';
-
 import messages from '../../messages';
+
+const home = require('./home.svg');
+const ideas = require('./ideas.svg');
+const projects = require('./projects.svg');
+const profile = require('./profile.svg');
 
 const Container = styled.div`
   position: fixed;
@@ -58,9 +56,7 @@ const NavigationLabel = styled.div`
   }
 `;
 
-
-class MobileNavigation extends React.PureComponent {
-
+export default class MobileNavigation extends React.PureComponent<{}, {}> {
   render() {
     return (
       <Container>
@@ -92,5 +88,3 @@ class MobileNavigation extends React.PureComponent {
     );
   }
 }
-
-export default MobileNavigation;

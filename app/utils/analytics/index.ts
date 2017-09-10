@@ -61,7 +61,7 @@ export function trackPage(path: string, properties: {} = {}) {
    {trackButtonClick: {name: 'Button clicked'}}
   )(SomeComponent);
 */
-export const injectTracks = <T>(events: {[key: string]: IEvent}) => (component: React.ComponentClass) => {
+export const injectTracks = <P>(events: {[key: string]: IEvent}) => (component: React.ComponentClass<P>) => {
   return (props) => {
     const eventFunctions = _.mapValues(events, (event) => (
       (extra) => {
@@ -73,7 +73,8 @@ export const injectTracks = <T>(events: {[key: string]: IEvent}) => (component: 
       ...eventFunctions,
       ...props,
     };
-    return React.createElement(component, propsWithEvents);
+
+    return (React.createElement(component, propsWithEvents));
   };
 };
 
