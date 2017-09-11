@@ -67,8 +67,9 @@ const ProjectMenuItem = styled(Link).attrs({ activeClassName: 'active' })`
   justify-content: center;
   color: #232F45;
   opacity: 0.5;
-  font-size: 16px;
-  border-bottom: 1px solid rgba(0,0,0,0); //Takes the space so the hover doesn't make the text "jump"
+  font-size: 17px;
+  font-weight: 500;
+  border-bottom: 3px solid rgba(0,0,0,0); //Takes the space so the hover doesn't make the text "jump"
   margin: 0 1rem;
   padding: 0 1rem;
 
@@ -79,7 +80,7 @@ const ProjectMenuItem = styled(Link).attrs({ activeClassName: 'active' })`
   &.active, &:hover {
     color: #232F45;
     opacity: 1;
-    border-bottom: 1px solid ${(props) => props.theme.colorMain};
+    border-bottom: 3px solid ${(props) => props.theme.colorMain};
   }
 `;
 
