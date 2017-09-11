@@ -7,7 +7,7 @@ import messages from './messages';
 import * as _ from 'lodash';
 
 // Services
-import { projectStream } from 'services/projects';
+import { projectBySlugStream } from 'services/projects';
 import { eventsStream, IEventData, deleteEvent } from 'services/events';
 
 // Components
@@ -109,9 +109,9 @@ type State = {
 @subscribedComponent
 class AdminProjectTimelineIndex extends React.Component<Props, State> {
   subscription: Rx.Subscription;
+
   constructor () {
     super();
-
     this.state = {
       events: [],
       loading: false,
@@ -120,13 +120,20 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
   componentDidMount () {
     this.setState({ loading: true });
-    this.subscription = projectStream(this.props.params.slug).observable
-    .switchMap((project) => {
-      return eventsStream(project.data.id).observable.map((events) => (events.data));
-    })
-    .subscribe((events) => {
-      this.setState({ events, loading: false });
-    });
+
+    if (_.isString(this.props.params.slug)) {
+      this.subscription = projectBySlugStream(this.props.params.slug).observable.switchMap((project) => {
+        return eventsStream(project.data.id).observable.map((events) => (events.data));
+      }).subscribe((events) => {
+        this.setState({ events, loading: false });
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   createDeleteClickHandler = (eventId) => {

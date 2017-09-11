@@ -37,9 +37,7 @@ export function projectImageStream(projectId: string, imageId: string, streamPar
 }
 
 export function addProjectImage(projectId, base64) {
-  const bodyData = { image: { image: base64 } };
-  const httpOptions = { method: 'POST' };
-  return request(`${apiEndpoint}/${projectId}/images`, bodyData, httpOptions, null);
+  return streams.add<IProjectImage>(`${apiEndpoint}/${projectId}/images`, { image: { image: base64 } });
 }
 
 export function deleteProjectImage(projectId, imageId) {

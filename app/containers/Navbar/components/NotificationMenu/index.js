@@ -184,5 +184,4 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
   markAllNotificationsAsReadRequest,
 }, dispatch);
 
-
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationMenu);
