@@ -179,9 +179,11 @@ export default class Project extends React.PureComponent<Props, State> {
               <TextTitle>
                 <T value={titleMultiloc} />
               </TextTitle>
-              <TextBody>
-                <T value={descriptionMultiloc} />
-              </TextBody>
+              {descriptionMultiloc &&
+                <TextBody>
+                  <T value={descriptionMultiloc} />
+                </TextBody>
+              }
             </InfoText>
   
             <InfoFooter>

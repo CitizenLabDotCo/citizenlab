@@ -90,7 +90,7 @@ class FilterSelector extends React.Component {
 }
 
 FilterSelector.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   name: PropTypes.string.isRequired,
   values: PropTypes.arrayOf(
     PropTypes.shape({
