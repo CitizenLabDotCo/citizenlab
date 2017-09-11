@@ -21,7 +21,7 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import LabelWithTooltip from './LabelWithTooltip';
 import TextArea from 'components/UI/TextArea';
 import { injectTFunc } from 'containers/T/utils';
-import { observeAreas } from 'services/areas';
+import { areasStream } from 'services/areas';
 
 import moment from 'moment';
 
@@ -118,7 +118,7 @@ class ProfileForm extends React.Component {
   }
 
   componentDidMount() {
-    this.areasObservable = observeAreas({
+    this.areasObservable = areasStream({
       queryParameters: {
         'page[size]': 1000,
       },

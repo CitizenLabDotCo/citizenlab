@@ -81,7 +81,6 @@ class IdeasIndex extends React.Component {
   }
 }
 
-
 IdeasIndex.contextTypes = {
   sagas: PropTypes.func.isRequired,
 };

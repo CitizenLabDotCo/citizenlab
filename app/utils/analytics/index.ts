@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs';
-import { observeCurrentTenant, ITenantData } from 'services/tenant';
+import { currentTenantStream, ITenantData } from 'services/tenant';
 import { watchEvents, watchPageChanges, watchIdentification } from 'utils/analytics/sagas';
 import snippet from '@segment/snippet';
 import { CL_SEGMENT_API_KEY } from 'containers/App/constants';
@@ -20,27 +20,23 @@ interface IPageChange {
   };
 }
 
-const tenant$ = observeCurrentTenant().observable;
+const tenant$ = currentTenantStream().observable;
 const events$ = new Rx.Subject<IEvent>();
 const pageChanges$ = new Rx.Subject<IPageChange>();
 
+Rx.Observable.combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
+  (window as any).analytics.track(
+    event.name,
+    addTenantInfo(event.properties, tenant.data),
+  );
+});
 
-Rx.Observable.combineLatest(tenant$, events$)
-  .subscribe(([tenant, event]) => {
-    (<any>window).analytics.track(
-      event.name,
-      addTenantInfo(event.properties, tenant.data),
-    );
-  });
-
-Rx.Observable.combineLatest(tenant$, pageChanges$)
-  .subscribe(([tenant, pageChange]) => {
-    (<any>window).analytics.page(
-      pageChange.name,
-      addTenantInfo(pageChange.properties, tenant.data),
-    );
-  });
-
+Rx.Observable.combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChange]) => {
+  (window as any).analytics.page(
+    pageChange.name,
+    addTenantInfo(pageChange.properties, tenant.data),
+  );
+});
 
 export function addTenantInfo(properties, tenant: ITenantData) {
   return {
@@ -54,7 +50,7 @@ export function addTenantInfo(properties, tenant: ITenantData) {
 export function trackPage(path: string, properties: {} = {}) {
   pageChanges$.next({
     properties,
-    name: path,
+    name: path
   });
 }
 
@@ -65,9 +61,8 @@ export function trackPage(path: string, properties: {} = {}) {
    {trackButtonClick: {name: 'Button clicked'}}
   )(SomeComponent);
 */
-export const injectTracks = (events: {[key: string]: IEvent}) => (component: React.ComponentClass) => {
+export const injectTracks = <P>(events: {[key: string]: IEvent}) => (component: React.ComponentClass<P>) => {
   return (props) => {
-
     const eventFunctions = _.mapValues(events, (event) => (
       (extra) => {
         const extraProps = extra && extra.extra;
@@ -78,7 +73,8 @@ export const injectTracks = (events: {[key: string]: IEvent}) => (component: Rea
       ...eventFunctions,
       ...props,
     };
-    return React.createElement(component, propsWithEvents);
+
+    return (React.createElement(component, propsWithEvents));
   };
 };
 
@@ -88,8 +84,9 @@ export const initializeAnalytics = (store) => {
     host: 'cdn.segment.com',
     apiKey: CL_SEGMENT_API_KEY,
   });
-    // tslint:disable-next-line:no-eval
-    eval(contents);
+
+  // tslint:disable-next-line:no-eval
+  eval(contents);
 
   store.runSaga(watchEvents);
   store.runSaga(watchPageChanges);

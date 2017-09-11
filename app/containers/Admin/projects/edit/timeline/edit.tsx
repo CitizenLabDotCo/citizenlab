@@ -11,14 +11,14 @@ import messages from './messages';
 import * as moment from 'moment';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
-import { withRouter } from 'react-router';
+import { browserHistory } from 'react-router';
 import { API } from 'typings.d';
 
 // Services
-import { observeProject, IProject, IProjectData } from 'services/projects';
-import { observePhase, updatePhase, IPhase, IPhaseData, IUpdatedPhase, savePhase } from 'services/phases';
-import { injectIntl, FormattedMessage, InjectedIntl } from 'react-intl';
-import { injectTFunc } from 'utils/containers/t/utils';
+import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
+import { phaseStream, updatePhase, addPhase, IPhase, IPhaseData, IUpdatedPhaseProperties } from 'services/phases';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectTFunc } from 'containers/T/utils';
 
 // Components
 import Label from 'components/UI/Label';
@@ -42,14 +42,13 @@ type Props = {
   },
   locale: string,
   tFunc: Function,
-  router: any,
   project: IProjectData | null;
-  intl: InjectedIntl;
+  intl: ReactIntl.InjectedIntl;
 };
 
 interface State {
   phase: IPhaseData | null;
-  attributeDiff: IUpdatedPhase;
+  attributeDiff: IUpdatedPhaseProperties;
   errors: {
     [fieldName: string]: API.Error[]
   };
@@ -97,7 +96,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
   componentDidMount() {
     if (this.props.params.id) {
       this.subscriptions = [
-        observePhase(this.props.params.id)
+        phaseStream(this.props.params.id)
         .observable
         .subscribe((phase) => {
           let descState = EditorState.createEmpty();
@@ -169,19 +168,17 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
     if (this.state.phase) {
       savingPromise = updatePhase(this.state.phase.id, this.state.attributeDiff);
     } else if (this.props.project) {
-      savingPromise = savePhase(this.props.project.id, this.state.attributeDiff)
-      .then((response) => {
-        this.props.router.push(`/admin/projects/${this.props.params.slug}/timeline/${response.data.id}`);
+      savingPromise = addPhase(this.props.project.id, this.state.attributeDiff).then((response) => {
+        browserHistory.push(`/admin/projects/${this.props.params.slug}/timeline/${response.data.id}`);
         return response;
       });
     }
 
     this.setState({ saving: true, saved: false });
-    savingPromise
-    .catch((e) => {
+
+    savingPromise.catch((e) => {
       this.setState({ saving: false, errors: e.json.errors });
-    })
-    .then((response) => {
+    }).then((response) => {
       this.setState({ saving: false, saved: true, attributeDiff: {}, phase: response.data });
     });
   }
@@ -263,4 +260,4 @@ const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
 });
 
-export default injectTFunc(injectIntl(connect(mapStateToProps)(withRouter(AdminProjectTimelineEdit))));
+export default injectTFunc(injectIntl(connect(mapStateToProps)(AdminProjectTimelineEdit)));

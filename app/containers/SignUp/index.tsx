@@ -9,10 +9,10 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Select from 'components/UI/Select';
 import { IStream } from 'utils/streams';
-import { stateStream, IStateStream } from 'services/state';
-import { observeAreas, IAreas, IAreaData } from 'services/areas';
+import { state, IStateStream } from 'services/state';
+import { areasStream, IAreas, IAreaData } from 'services/areas';
 import { isValidEmail } from 'utils/validate';
-import { signUp, signIn, getAuthUser } from 'services/auth';
+import { signUp } from 'services/auth';
 import { connect } from 'react-redux';
 import { LOAD_CURRENT_USER_SUCCESS } from 'utils/auth/constants';
 import { IOption } from 'typings';
@@ -91,6 +91,8 @@ type State = {
   showStep1: boolean;
 };
 
+export const namespace = 'SignUp/index';
+
 @connect()
 export default class SignUp extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
@@ -100,8 +102,8 @@ export default class SignUp extends React.PureComponent<Props, State> {
 
   constructor() {
     super();
-    this.areas$ = observeAreas();
-    this.state$ = stateStream.observe<State>('SignUp', {
+
+    const initialState: State = {
       areas: null,
       years: [...Array(118).keys()].map((i) => ({ value: i + 1900, label: `${i + 1900}` })),
       firstName: null,
@@ -118,7 +120,10 @@ export default class SignUp extends React.PureComponent<Props, State> {
       passwordError: null,
       signUpError: null,
       showStep1: true
-    });
+    };
+
+    this.areas$ = areasStream();
+    this.state$ = state.createStream<State>(namespace, namespace, initialState);
     this.subscriptions = [];
   }
 
@@ -206,9 +211,6 @@ export default class SignUp extends React.PureComponent<Props, State> {
 
         this.state$.next({ processing: true });
         await signUp(firstName, lastName, email, password, locale, selectedGender, selectedYearOfBirth, selectedAreaId);
-        await signIn(email, password);
-        getAuthUser();
-
         this.state$.next({ processing: false });
         onSignedUp();
       } catch (error) {

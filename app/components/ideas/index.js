@@ -21,7 +21,7 @@ const IdeasCards = ({ ideas, hasMore, loadMoreIdeas }) => (
     loader={<div className="loader"></div>}
   >
     {ideas.map((id) => (
-      <IdeaCard key={id} id={id} />
+      <IdeaCard key={id} ideaId={id} />
     ))}
   </InfiniteScroll>
 );

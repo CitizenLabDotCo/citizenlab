@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // Services
-import { observeProject, IProjectData } from 'services/projects';
+import { projectBySlugStream, IProjectData } from 'services/projects';
 
 // Components
 import TabbedResource from 'components/admin/TabbedResource';
@@ -12,7 +12,7 @@ import { Link } from 'react-router';
 
 // Localisation
 import { FormattedMessage } from 'react-intl';
-import t from 'utils/containers/t';
+import t from 'containers/T';
 const T = t;
 import messages from '../messages';
 
@@ -30,7 +30,7 @@ type State = {
   project: IProjectData | null,
 };
 
-export default class AdminProjectEdition extends React.Component<Props, State> {
+export default class AdminProjectEdition extends React.PureComponent<Props, State> {
   subscription: Rx.Subscription;
   tabs: any[];
 
@@ -43,7 +43,7 @@ export default class AdminProjectEdition extends React.Component<Props, State> {
   }
 
   updateSubscription (slug) {
-    this.subscription = observeProject(slug).observable.subscribe((project) => {
+    this.subscription = projectBySlugStream(slug).observable.subscribe((project) => {
       this.setState({ project: project.data });
     });
   }

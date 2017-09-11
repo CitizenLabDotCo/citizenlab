@@ -102,10 +102,7 @@ export class UsersShowPage extends React.Component { // eslint-disable-line reac
                 </BioStyled>
               }
             </InfoContainerStyled>
-            <IdeaCards
-              filter={{ author: user.id }}
-              maxNumber={12}
-            />
+            <IdeaCards filter={{ author: user.id }} />
           </div>
         }
       </StyledContentContainer>

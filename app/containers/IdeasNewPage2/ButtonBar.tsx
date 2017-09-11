@@ -1,11 +1,21 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { stateStream, IStateStream } from 'services/state';
+
+// components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import broadcast from 'services/broadcast';
 import { namespace as newIdeaFormNamespace } from './NewIdeaForm';
+
+// services
+import { state, IStateStream } from 'services/state';
+
+// i18n
 import messages from './messages';
+
+// utils
+import eventEmitter from 'utils/eventEmitter';
+
+// style
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -36,7 +46,6 @@ const ButtonBarInner = styled.div`
 
 type Props = {
   intl: ReactIntl.InjectedIntl;
-  tFunc: Function;
   locale: string;
   onSubmit: () => void;
 };
@@ -55,7 +64,7 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
 
   constructor() {
     super();
-    this.state$ = stateStream.observe<State>(namespace);
+    this.state$ = state.createStream<State>(namespace, namespace);
     this.subscriptions = [];
   }
 
@@ -70,7 +79,7 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
   }
 
   handleOnSubmit = () => {
-    broadcast.emit(newIdeaFormNamespace, 'submit');
+    eventEmitter.emit(namespace, 'submit');
   }
 
   render() {

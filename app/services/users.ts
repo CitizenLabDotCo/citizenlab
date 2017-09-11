@@ -62,36 +62,18 @@ export interface IUserUpdate {
   bio_multiloc?: {};
 }
 
-export function observeUsers(streamParams: IStreamParams<IUsers> | null = null) {
-  return streams.create<IUsers>({ apiEndpoint, ...streamParams });
+export function usersStream(streamParams: IStreamParams<IUsers> | null = null) {
+  return streams.get<IUsers>({ apiEndpoint, ...streamParams });
 }
 
-export function observeUser(userId: string, streamParams: IStreamParams<IUser> | null = null) {
-  // Commented this out because of a bug: On the first request,
-  // the return object is the response, whereas on subsequent cached
-  // responses it returns the `data` property within the response
-  // const extendedsStreamParams: IStreamParams<IUser> = { ...streamParams, requestedDataId: userId };
-  // return streams.create<IUser>({ apiEndpoint: `${apiEndpoint}/${userId}`, ...extendedsStreamParams });
-  return streams.create<IUser>({ apiEndpoint: `${apiEndpoint}/${userId}`, ...streamParams });
+export function userStream(userId: string, streamParams: IStreamParams<IUser> | null = null) {
+  return streams.get<IUser>({ apiEndpoint: `${apiEndpoint}/${userId}`, ...streamParams });
 }
 
-export function updateUser(userId: string, object: IUserUpdate, refetch = true) {
-  const httpMethod = { method: 'PUT' };
-  const bodyData = { user: object };
-
-  return request<IUser>(`${apiEndpoint}/${userId}`, bodyData, httpMethod, null).then((userObject) => {
-    streams.update(userId, userObject, refetch);
-  }).catch(() => {
-    throw new Error(`error for updateUser() of service Users`);
-  });
+export async function updateUser(userId: string, object: IUserUpdate) {
+  return streams.update<IUser>(`${apiEndpoint}/${userId}`, userId, { user: object });
 }
 
-export function deleteUser(userId: string, refetch = true) {
-  const httpMethod = { method: 'DELETE' };
-
-  return request<IUser>(`${apiEndpoint}/${userId}`, null, httpMethod, null).then((userObject) => {
-    streams.delete(userId, refetch);
-  }).catch(() => {
-    throw new Error(`error for deleteUser() of service Users`);
-  });
+export async function deleteUser(userId: string) {
+  return streams.delete(`${apiEndpoint}/${userId}`, userId);
 }

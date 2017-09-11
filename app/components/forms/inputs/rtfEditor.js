@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { injectTFunc } from 'utils/containers/t/utils';
+import { injectTFunc } from 'containers/T/utils';
 
 // components
 import { Editor as TextBox } from 'react-draft-wysiwyg';

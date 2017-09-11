@@ -6,6 +6,7 @@ import IdeasShow from 'containers/IdeasShow';
 
 const BackgroundWrapper = styled.div`
   margin: 50px 0;
+
   ${media.notPhone`
     border-radius: 5px;
     background-color: #ffffff;

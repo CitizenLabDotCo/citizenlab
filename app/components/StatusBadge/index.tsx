@@ -1,19 +1,11 @@
 import * as React from 'react';
+import * as Rx from 'rxjs/Rx';
+import T from 'containers/T';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { observeIdeaStatuses, IIdeaStatusData } from 'services/idea_statuses';
-import T from 'containers/T';
-
-type Props = {
-  statusId: string,
-  color: string,
-  statusName: string,
-  className?: string,
-};
-
-type State = {
-  ideaStatus: IIdeaStatusData | null;
-};
+import { state, IStateStream } from 'services/state';
+import { localeStream } from 'services/locale';
+import { ideaStatusesStream, IIdeaStatusData } from 'services/ideaStatuses';
 
 const Badge = styled.div`
   color: white;
@@ -27,34 +19,55 @@ const Badge = styled.div`
   background-color: ${(props: any) => props.color}
 `;
 
-export default class Status extends React.Component<Props, State> {
+type Props = {
+  statusId: string,
+  color: string,
+  statusName: string,
+  className?: string,
+};
 
-  constructor() {
-    super();
-    this.state = {
-      ideaStatus: null,
-    };
+type State = {
+  locale: string | null,
+  ideaStatus: IIdeaStatusData | null;
+};
+
+export const namespace = 'StatusBadge/index';
+
+export default class Status extends React.PureComponent<Props, State> {
+  state$: IStateStream<State>;
+  subscriptions: Rx.Subscription[];
+
+  componentWillMount() {
+    const instanceNamespace = `${namespace}/${this.props.statusId}`;
+    const initialState = { locale: null, ideaStatus: null };
+    const locale$ = localeStream().observable;
+    const ideaStatuses$ = ideaStatusesStream().observable;
+
+    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+
+    this.subscriptions = [
+      this.state$.observable.subscribe(state => this.setState(state)),
+
+      Rx.Observable.combineLatest(locale$, ideaStatuses$).subscribe(([locale, ideaStatuses]) => {
+        const ideaStatus = ideaStatuses.data.filter((item) => item.id === this.props.statusId)[0];
+        this.state$.next({ locale, ideaStatus });
+      })
+    ];
   }
-  componentDidMount() {
-    observeIdeaStatuses()
-      .observable
-      .subscribe((response) => {
-        const ideaStatus = response.data.filter((is) => is.id === this.props.statusId)[0];
-        this.setState({
-          ideaStatus,
-        });
-      });
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
+
   render() {
     const { statusId, statusName, className } = this.props;
-    const { ideaStatus } = this.state;
-
+    const { locale, ideaStatus } = this.state;
     const fallbackColor = '#bbbbbb';
 
-    return ideaStatus && (
+    return (ideaStatus !== null && locale !== null) ? (
       <Badge className={className} color={ideaStatus.attributes.color || fallbackColor} >
         <T value={ideaStatus.attributes.title_multiloc} />
       </Badge>
-    );
+    ) : null;
   }
 }

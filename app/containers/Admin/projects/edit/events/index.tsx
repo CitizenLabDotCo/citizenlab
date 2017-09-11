@@ -7,12 +7,12 @@ import messages from './messages';
 import * as _ from 'lodash';
 
 // Services
-import { observeProject } from 'services/projects';
-import { observeEvents, EventData, deleteEvent } from 'services/events';
+import { projectBySlugStream } from 'services/projects';
+import { eventsStream, IEventData, deleteEvent } from 'services/events';
 
 // Components
 import { Link } from 'react-router';
-import T from 'utils/containers/t';
+import T from 'containers/T';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import buttonMixin from 'components/admin/StyleMixins/buttonMixin';
@@ -26,7 +26,7 @@ const ListWrapper = styled.div`
   flex-direction: column;
 `;
 
-const AddButton = styled(Link as React.StatelessComponent<{to: string}>)`
+const AddButton = styled(Link)`
   ${buttonMixin('#EF0071', '#EF0071')}
   color: #fff;
   align-self: flex-end;
@@ -83,7 +83,7 @@ const DeleteButton = styled.button`
   ${buttonMixin()}
 `;
 
-const EditButton = styled(Link as React.StatelessComponent<{to: string}>)`
+const EditButton = styled(Link)`
   ${buttonMixin('#e5e5e5', '#cccccc')}
   color: #6B6B6B;
 
@@ -102,16 +102,16 @@ type Props = {
 };
 
 type State = {
-  events: EventData[],
+  events: IEventData[],
   loading: boolean,
 };
 
 @subscribedComponent
 class AdminProjectTimelineIndex extends React.Component<Props, State> {
   subscription: Rx.Subscription;
+
   constructor () {
     super();
-
     this.state = {
       events: [],
       loading: false,
@@ -120,21 +120,27 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
   componentDidMount () {
     this.setState({ loading: true });
-    this.subscription = observeProject(this.props.params.slug).observable
-    .switchMap((project) => {
-      return observeEvents(project.data.id).observable.map((events) => (events.data));
-    })
-    .subscribe((events) => {
-      this.setState({ events, loading: false });
-    });
+
+    if (_.isString(this.props.params.slug)) {
+      this.subscription = projectBySlugStream(this.props.params.slug).observable.switchMap((project) => {
+        return eventsStream(project.data.id).observable.map((events) => (events.data));
+      }).subscribe((events) => {
+        this.setState({ events, loading: false });
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   createDeleteClickHandler = (eventId) => {
     return (event) => {
       event.preventDefault();
       if (window.confirm(this.props.intl.formatMessage(messages.deleteConfirmationModal))) {
-        deleteEvent(eventId).
-        then((response) => {
+        deleteEvent(eventId).then((response) => {
           this.setState({ events: _.reject(this.state.events, { id: eventId }) });
         });
       }

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
-import { injectTFunc } from 'utils/containers/t/utils';
-// import { browserHistory } from 'react-router';
-import { stateStream, IStateStream } from 'services/state';
+import { injectTFunc } from 'containers/T/utils';
+import { state, IStateStream } from 'services/state';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import PasswordReset from 'containers/PasswordReset';
@@ -12,7 +11,7 @@ import Icon from 'components/UI/Icon';
 import SignIn from 'containers/SignIn';
 import SignUp from 'containers/SignUp';
 import { IStream } from 'utils/streams';
-import { observeCurrentTenant, ITenant } from 'services/tenant';
+import { currentTenantStream, ITenant } from 'services/tenant';
 import messages from './messages';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -221,25 +220,28 @@ type Props = {
 
 type State = {
   show: 'signIn' | 'signUp' | 'passwordReset';
-  tenant: ITenant | null;
+  currentTenant: ITenant | null;
 };
+
+export const namespace = 'SignInUp/index';
 
 class SignInUp extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
-  tenant$: IStream<ITenant>;
+  currentTenant$: IStream<ITenant>;
   subscriptions: Rx.Subscription[];
 
   constructor(props) {
     super(props);
-    this.state$ = stateStream.observe<State>('IdeasNewPage2/SignInUp', { show: props.show || 'signIn', tenant: null });
-    this.tenant$ = observeCurrentTenant();
+    const initialState: State = { show: props.show || 'signIn', currentTenant: null };
+    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    this.currentTenant$ = currentTenantStream();
     this.subscriptions = [];
   }
 
   componentWillMount() {
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
-      this.tenant$.observable.subscribe(tenant => this.state$.next({ tenant }))
+      this.currentTenant$.observable.subscribe(currentTenant => this.state$.next({ currentTenant }))
     ];
   }
 
@@ -275,8 +277,8 @@ class SignInUp extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { show, tenant } = this.state;
-    const logo = tenant && tenant.data.attributes.logo.large;
+    const { show, currentTenant } = this.state;
+    const logo = (currentTenant ? currentTenant.data.attributes.logo.large : null);
     const { formatMessage } = this.props.intl;
     const { onGoBack, signInTitleMessage, signUpTitleMessage } = this.props;
     const timeout = 500;

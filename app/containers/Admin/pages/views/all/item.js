@@ -4,7 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { push } from 'react-router-redux';
 
 // components
-import T from 'utils/containers/t';
+import T from 'containers/T';
 import ActionButton from 'components/buttons/action.js';
 
 // store

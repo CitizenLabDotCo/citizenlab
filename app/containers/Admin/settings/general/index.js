@@ -131,7 +131,6 @@ class SettingsGeneralTab extends React.Component { // eslint-disable-line react/
           />
         </div>
 
-
         <Button onClick={this.save}>
           <FormattedMessage {...messages.save} />
         </Button>

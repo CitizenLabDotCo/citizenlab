@@ -1,36 +1,42 @@
+import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
 import { IUser } from 'services/users';
 import { IHttpMethod } from 'typings.d';
 import { API_PATH } from 'containers/App/constants';
-import { getJwt, setJwt } from 'utils/auth/jwt';
-import * as _ from 'lodash';
+import { getJwt, setJwt, removeJwt } from 'utils/auth/jwt';
 import request from 'utils/request';
-import streams from 'utils/streams';
+import streams, { IStream } from 'utils/streams';
+
+// legacy redux stuff 
 import { store } from 'app';
-import { loadCurrentUserSuccess } from 'utils/auth/actions';
-import { mergeJsonApiResources } from 'utils/resources/actions';
+import {  STORE_JWT, LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL, } from 'utils/auth/constants';
 
 export interface IUserToken {
   jwt: string;
 }
 
-export function signIn(email: string, password: string) {
-  const bodyData = {
-    auth: { email, password }
-  };
-
-  const httpMethod: IHttpMethod = {
-    method: 'POST',
-  };
-
-  return request<IUserToken>(`${API_PATH}/user_token`, bodyData, httpMethod, null).then((data) => {
-    data && setJwt(data.jwt);
-    return data.jwt;
-  }).catch((error) => {
-    throw error;
-  });
+export function authUserStream() {
+  return streams.get<IUser | null>({ apiEndpoint: `${API_PATH}/users/me` });
 }
 
-export function signUp(
+export async function signIn(email: string, password: string) {
+  try {
+    const bodyData = { auth: { email, password } };
+    const httpMethod: IHttpMethod = { method: 'POST' };
+    const { jwt } = await request<IUserToken>(`${API_PATH}/user_token`, bodyData, httpMethod, null);
+    setJwt(jwt);
+    store.dispatch({ type: STORE_JWT, payload: jwt });
+    const authenticatedUser = await getAuthUserAsync();
+    const authStream = authUserStream();
+    authStream.observer !== null && authStream.observer.next(authenticatedUser);
+    return authenticatedUser;
+  } catch (error) {
+    signOut();
+    throw error;
+  }
+}
+
+export async function signUp(
   firstName: string,
   lastName: string,
   email: string,
@@ -57,46 +63,37 @@ export function signUp(
     method: 'POST'
   };
 
-  return request(`${API_PATH}/users`, bodyData, httpMethod, null).then(() => {
-    return { email, password };
-  }).catch((error) => {
+  try {
+    await request(`${API_PATH}/users`, bodyData, httpMethod, null);
+    const authenticatedUser = await signIn(email, password);
+    return authenticatedUser;
+  } catch (error) {
     throw error;
-  });
+  }
 }
 
-export function observeCurrentUser() {
-  return streams.create<IUser>({ apiEndpoint: `${API_PATH}/users/me` });
+export function signOut() {
+  removeJwt();
+  const authStream = authUserStream();
+  authStream.observer !== null && authStream.observer.next(null);
 }
 
-export function getAuthUser() {
-  return request<IUser>(`${API_PATH}/users/me`, null, null, null).then((response: IUser) => {
-    if (response && _.has(response, 'data.id')) {
-
-      // Sync redux state
-      store.dispatch(mergeJsonApiResources(response));
-      store.dispatch(loadCurrentUserSuccess(response));
-
-      return response;
-    } else {
-      throw new Error('not authenticated');
-    }
-  }).catch((error) => {
+export async function getAuthUserAsync() {
+  try {
+    const authenticatedUser = await request<IUser>(`${API_PATH}/users/me`, null, null, null);
+    return authenticatedUser;
+  } catch {
+    signOut();
     throw new Error('not authenticated');
-  });
+  }
 }
 
-export function sendPasswordResetMail(email: string) {
-  const bodyData = {
-    user: {
-      email
-    }
-  };
-
-  const httpMethod: IHttpMethod = {
-    method: 'POST'
-  };
-
-  return request(`${API_PATH}/users/reset_password_email`, bodyData, httpMethod, null).catch((error) => {
+export async function sendPasswordResetMail(email: string) {
+  try {
+    const bodyData = { user: { email } };
+    const httpMethod: IHttpMethod = { method: 'POST' };
+    const response = await request(`${API_PATH}/users/reset_password_email`, bodyData, httpMethod, null);
+  } catch (error) {
     throw error;
-  });
+  }
 }

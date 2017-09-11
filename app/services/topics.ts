@@ -25,6 +25,6 @@ export interface ITopics {
   data: ITopicData[];
 }
 
-export function observeTopics(streamParams: IStreamParams<ITopics> | null = null) {
-  return streams.create<ITopics>({ apiEndpoint, ...streamParams });
+export function topicsStream(streamParams: IStreamParams<ITopics> | null = null) {
+  return streams.get<ITopics>({ apiEndpoint, ...streamParams });
 }

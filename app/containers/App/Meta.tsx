@@ -1,58 +1,43 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { makeSelectCurrentTenant, makeSelectSetting } from 'utils/tenant/selectors';
-import { createStructuredSelector } from 'reselect';
-import { injectTFunc } from 'utils/containers/t/utils';
-import { injectIntl } from 'react-intl';
+import * as _ from 'lodash';
 import Helmet from 'react-helmet';
 import * as _ from 'lodash';
 
+// services
+import { ITenant } from 'services/tenant';
+import { localeStream } from 'services/locale';
+
+// i18n
 import messages from './messages';
+import i18n from 'utils/i18n';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 type Props = {
-  tenant: any,
-  metaTitle: Object,
-  metaDescription: Object,
-  tFunc: Function,
-  intl: { formatMessage: Function },
+  tenant: ITenant;
 };
 
-const Meta: React.SFC<Props> = ({ tenant, tFunc, intl }) => {
-  const { formatMessage } = intl;
-  const titleMultiloc = tenant.attributes.settings.core.meta_title;
-  const descriptionMultiloc = tenant.attributes.settings.core.meta_description;
-  const organizationNameMultiloc = tenant.attributes.settings.core.organization_name;
-  const image = tenant.attributes.logo.large;
+class Meta extends React.PureComponent<Props & InjectedIntlProps, {}> {
+  render() {
+    const { tenant, intl } = this.props;
+    const { formatMessage } = intl;
+    const image = tenant.data.attributes.logo.large || '';
+    const title = i18n.getLocalized(tenant.data.attributes.settings.core.meta_title);
+    const organizationName = i18n.getLocalized(tenant.data.attributes.settings.core.organization_name);
+    const description = i18n.getLocalized(tenant.data.attributes.settings.core.meta_description);
+    const url = `http://${tenant.data.attributes.host}`;
 
-  const organizationName =
-    (organizationNameMultiloc  && tFunc(organizationNameMultiloc));
+    return (
+      <Helmet>
+        <title>{formatMessage(messages.helmetTitle, { organizationName })}</title>
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={formatMessage(messages.helmetDescription, { organizationName })} />
+        <meta property="og:image" content={image} />
+        <meta property="og:url" content={url} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="og:site_name" content={organizationName} />
+      </Helmet>
+    );
+  }
+}
 
-  const title =
-    (titleMultiloc && !_.isEmpty(titleMultiloc) && tFunc(titleMultiloc)) ||
-    formatMessage(messages.helmetTitle, { organizationName });
-
-  const description =
-    (descriptionMultiloc && descriptionMultiloc.isEmpty && !descriptionMultiloc.isEmpty() && tFunc(descriptionMultiloc)) ||
-    formatMessage(messages.helmetDescription, { organizationName });
-
-  const url = `http://${tenant.attributes.host}`;
-
-  return (
-    <Helmet>
-      <title>{title}</title>
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
-      <meta property="og:url" content={url} />
-      <meta name="twitter:card" content="summary_large_image" />
-
-      <meta property="og:site_name" content={organizationName} />
-    </Helmet>
-  );
-};
-
-const mapStateToProps = createStructuredSelector({
-  tenant: makeSelectCurrentTenant(),
-});
-
-export default injectIntl(injectTFunc(connect(mapStateToProps)(Meta)));
+export default injectIntl(Meta);

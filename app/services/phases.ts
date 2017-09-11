@@ -37,7 +37,7 @@ export interface IPhases {
   data: IPhaseData[];
 }
 
-export interface IUpdatedPhase {
+export interface IUpdatedPhaseProperties {
   project_id?: string;
   title_multiloc?: { [key: string]: string };
   description_multiloc?: { [key: string]: string };
@@ -45,32 +45,22 @@ export interface IUpdatedPhase {
   end_at?: string;
 }
 
-export function observePhases(projectId: string, streamParams: IStreamParams<IPhases> | null = null) {
-  return streams.create<IPhases>({ apiEndpoint: `${API_PATH}/projects/${projectId}/phases`, ...streamParams });
+export function phasesStream(projectId: string, streamParams: IStreamParams<IPhases> | null = null) {
+  return streams.get<IPhases>({ apiEndpoint: `${API_PATH}/projects/${projectId}/phases`, ...streamParams });
 }
 
-export function observePhase(phaseID: string, streamParams: IStreamParams<IPhase> | null = null) {
-  return streams.create<IPhase>({ apiEndpoint: `${apiEndpoint}/${phaseID}`, ...streamParams });
+export function phaseStream(phaseID: string, streamParams: IStreamParams<IPhase> | null = null) {
+  return streams.get<IPhase>({ apiEndpoint: `${apiEndpoint}/${phaseID}`, ...streamParams });
 }
 
-export function updatePhase(phaseId: string, object: IUpdatedPhase, refetch = true) {
-  const httpMethod = { method: 'PUT' };
-  const bodyData = { phase: object };
-
-  return request<IPhase>(`${apiEndpoint}/${phaseId}`, bodyData, httpMethod, null).then((response) => {
-    streams.update(phaseId, response, refetch);
-  });
+export function updatePhase(phaseId: string, object: IUpdatedPhaseProperties) {
+  return streams.update<IPhase>(`${apiEndpoint}/${phaseId}`, phaseId, { phase: object });
 }
 
-export function savePhase(projectId: string, object: IUpdatedPhase, refetch = true) {
-  const httpMethod = { method: 'POST' };
-  const bodyData = { phase: object };
-
-  return request<IPhase>(`${API_PATH}/projects/${projectId}/phases`, bodyData, httpMethod, null);
+export function addPhase(projectId: string, object: IUpdatedPhaseProperties) {
+  return streams.add<IPhase>(`${API_PATH}/projects/${projectId}/phases`, { phase: object });
 }
 
-export function deletePhase(phaseId: string, httpOptions = {}): Promise<any> {
-  const defaultOptions = { method: 'DELETE' };
-
-  return request(`${apiEndpoint}/${phaseId}`, null, { ...defaultOptions, ...httpOptions }, null);
+export function deletePhase(phaseId: string) {  
+  return streams.delete(`${apiEndpoint}/${phaseId}`, phaseId);
 }

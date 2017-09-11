@@ -1,8 +1,6 @@
-import { IRelationship } from 'typings.d';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import request from 'utils/request';
-import { IOption } from 'typings';
+import { IRelationship } from 'typings';
 
 export interface IIdeaData {
   id: string;
@@ -15,6 +13,7 @@ export interface IIdeaData {
       [key: string]: any;
     };
     author_name: string;
+    slug: string;
     publication_status: 'draft' | 'published';
     upvotes_count: number;
     downvotes_count: number;
@@ -47,26 +46,6 @@ export interface IIdeaData {
   };
 }
 
-export interface IIdeaIncluded {
-  id: string;
-  type: string;
-  attributes: {
-    first_name: string;
-    last_name: string;
-    slug: string;
-    locale: string;
-    avatar: {
-      small: string;
-      medium: string;
-      large: string;
-    };
-    roles: any[];
-    bio_multiloc: any;
-    created_at: string;
-    updated_at: string;
-  };
-}
-
 export interface IIdeaLinks {
   self: string;
   first: string;
@@ -77,12 +56,10 @@ export interface IIdeaLinks {
 
 export interface IIdea {
   data: IIdeaData;
-  included: IIdeaIncluded[];
 }
 
 export interface IIdeas {
   data: IIdeaData[];
-  included: IIdeaIncluded[];
   links: IIdeaLinks;
 }
 
@@ -101,8 +78,12 @@ export interface IIdeaUpdate {
 
 const apiEndpoint = `${API_PATH}/ideas`;
 
-export function observeIdeas(streamParams: IStreamParams<IIdeas> | null = null) {
-  return streams.create<IIdeas>({ apiEndpoint, ...streamParams });
+export function ideaStream(ideaId: string, streamParams: IStreamParams<IIdea> | null = null) {
+  return streams.get<IIdea>({ apiEndpoint: `${apiEndpoint}/${ideaId}`, ...streamParams });
+}
+
+export function ideasStream(streamParams: IStreamParams<IIdeas> | null = null) {
+  return streams.get<IIdeas>({ apiEndpoint, ...streamParams });
 }
 
 export function addIdea(
@@ -115,7 +96,6 @@ export function addIdea(
   locationGeoJSON: {} | null,
   locationDescription: string | null,
 ) {
-  const httpMethod = { method: 'POST' };
   const bodyData = {
     idea: {
       project_id: projectId,
@@ -130,18 +110,9 @@ export function addIdea(
     }
   };
 
-  return request<IIdea>(`${apiEndpoint}`, bodyData, httpMethod, null).catch(() => {
-    throw new Error(`error for addIdea() of service Ideas`);
-  });
+  return streams.add<IIdea>(apiEndpoint, bodyData);
 }
 
-export function updateIdea(ideaId: string, object: IIdeaUpdate, refetch = true) {
-  const httpMethod = { method: 'PUT' };
-  const bodyData = { idea: object };
-
-  return request<IIdea>(`${apiEndpoint}/${ideaId}`, bodyData, httpMethod, null).then((userObject) => {
-    streams.update(ideaId, userObject, refetch);
-  }).catch(() => {
-    throw new Error(`error for updateIdea() of service Ideas`);
-  });
+export function updateIdea(ideaId: string, object: IIdeaUpdate) {
+  return streams.update<IIdea>(`${apiEndpoint}/${ideaId}`, ideaId, { idea: object });
 }

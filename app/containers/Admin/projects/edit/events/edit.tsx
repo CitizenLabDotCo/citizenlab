@@ -11,14 +11,14 @@ import messages from './messages';
 import * as moment from 'moment';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
-import { withRouter } from 'react-router';
+import { browserHistory } from 'react-router';
 import { API } from 'typings.d';
 
 // Services
-import { observeProject, IProject, IProjectData } from 'services/projects';
-import { observeEvent, updateEvent, Event, EventData, UpdatedEvent, saveEvent } from 'services/events';
+import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
+import { eventStream, updateEvent, addEvent, IEvent, IEventData, IEvents, IUpdatedEventProperties } from 'services/events';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { injectTFunc } from 'utils/containers/t/utils';
+import { injectTFunc } from 'containers/T/utils';
 
 // Components
 import Label from 'components/UI/Label';
@@ -43,13 +43,12 @@ type Props = {
   },
   locale: string,
   tFunc: Function,
-  router: any,
   project: IProjectData | null;
 };
 
 interface State {
-  event: EventData | null;
-  attributeDiff: UpdatedEvent;
+  event: IEventData | null;
+  attributeDiff: IUpdatedEventProperties;
   errors: {
     [fieldName: string]: API.Error[]
   };
@@ -72,7 +71,7 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
       saving: false,
       focusedInput: null,
       descState: EditorState.createEmpty(),
-      saved: false,
+      saved: false
     };
     this.subscriptions = [];
   }
@@ -90,9 +89,7 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
   componentDidMount() {
     if (this.props.params.id) {
       this.subscriptions = [
-        observeEvent(this.props.params.id)
-        .observable
-        .subscribe((event) => {
+        eventStream(this.props.params.id).observable.subscribe((event) => {
           let descState = EditorState.createEmpty();
 
           if (event) {
@@ -164,21 +161,18 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
     if (this.state.event) {
       savingPromise = updateEvent(this.state.event.id, this.state.attributeDiff);
       this.setState({ saving: true });
-
     } else if (this.props.project) {
-      savingPromise = saveEvent(this.props.project.id, this.state.attributeDiff)
-      .then((response) => {
-        this.props.router.push(`/admin/projects/${this.props.params.slug}/events/${response.data.id}`);
+      savingPromise = addEvent(this.props.project.id, this.state.attributeDiff).then((response) => {
+        browserHistory.push(`/admin/projects/${this.props.params.slug}/events/${response.data.id}`);
         return response;
       });
     }
 
     this.setState({ saving: true, saved: false });
-    savingPromise
-    .catch((e) => {
+
+    savingPromise.catch((e) => {
       this.setState({ saving: false, errors: e.json.errors });
-    })
-    .then((response) => {
+    }).then((response) => {
       this.setState({ saving: false, saved: true, attributeDiff: {}, event: response.data });
     });
   }
@@ -264,4 +258,4 @@ const mapStateToProps = createStructuredSelector({
   locale: makeSelectLocale(),
 });
 
-export default injectTFunc(injectIntl(connect(mapStateToProps)(withRouter(AdminProjectEventEdit))));
+export default injectTFunc(injectIntl(connect(mapStateToProps)(AdminProjectEventEdit)));
