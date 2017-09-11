@@ -36,8 +36,9 @@ const Left = styled.section`
 
 const IdeaTitleStyled = styled.header`
   font-size: 30px;
-  font-weight: bold;
-  color: #000000;
+  font-weight: 600;
+  line-height: 36px;
+  color: #333;
 `;
 
 const IdeaBodyStyled = styled.div`
