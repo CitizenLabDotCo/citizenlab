@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import qs from 'qs';
 import HelmetIntl from 'components/HelmetIntl';
 import { connect } from 'react-redux';
+import { injectIntl, injectedIntl } from 'react-intl';
 
 // components
 import WatchSagas from 'containers/WatchSagas';
@@ -39,6 +40,12 @@ const FiltersArea = styled.div`
 
 class IdeasIndex extends React.Component {
 
+  componentWillMount() {
+    this.areasTitle = this.props.intl.formatMessage(messages.areasTitle);
+    this.topicsTitle = this.props.intl.formatMessage(messages.topicsTitle);
+    this.sortTitle = this.props.intl.formatMessage(messages.sortTitle);
+  }
+
   componentDidMount() {
     this.props.loadTopicsRequest();
     this.props.loadAreasRequest();
@@ -62,9 +69,9 @@ class IdeasIndex extends React.Component {
         <ContentContainer>
           {withFilters && <FiltersArea>
             <SearchField />
-            <SelectSort />
-            <SelectTopics />
-            <SelectAreas />
+            <SelectSort title={this.sortTitle} />
+            <SelectTopics title={this.topicsTitle} />
+            <SelectAreas title={this.areasTitle} />
           </FiltersArea>}
           <IdeaCards filter={filter} />
         </ContentContainer>
@@ -84,6 +91,7 @@ IdeasIndex.propTypes = {
   resetIdeas: PropTypes.func.isRequired,
   filter: PropTypes.object,
   withFilters: PropTypes.bool.isRequired,
+  intl: injectedIntl,
 };
 
 IdeasIndex.defaultProps = {
@@ -101,4 +109,4 @@ const mergeProps = (_, dispatch, own) => {
   return { ...dispatch, ...own, filter: parsedParams };
 };
 
-export default connect(null, actions, mergeProps)(IdeasIndex);
+export default injectIntl(connect(null, actions, mergeProps)(IdeasIndex));

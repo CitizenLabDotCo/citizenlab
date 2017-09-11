@@ -273,7 +273,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     return (
       <FormWrapper onSubmit={this.saveProject}>
         <FieldWrapper>
-          <label htmlFor="project-title">Title</label>
+          <label htmlFor="project-title">
+            <FormattedMessage {...messages.titleLabel} />
+          </label>
           <Input
             id="project-title"
             type="text"
@@ -287,7 +289,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
         </FieldWrapper>
 
         <FieldWrapper>
-          <label htmlFor="project-description">Description</label>
+          <label htmlFor="project-description">
+          <FormattedMessage {...messages.descriptionLabel} />
+          </label>
           <Editor
             id="project-description"
             placeholder=""
@@ -299,7 +303,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
         </FieldWrapper>
 
         <FieldWrapper>
-          <label>Header image</label>
+          <label>
+            <FormattedMessage {...messages.headerImageLabel} />
+          </label>
           {uploadedHeader &&
             <img src={uploadedHeader} alt="" role="presentation" />
           }
@@ -320,7 +326,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
         </FieldWrapper>
 
         <FieldWrapper>
-          <label>Project Images</label>
+          <label>
+            <FormattedMessage {...messages.projectImageLabel} />
+          </label>
           <ProjectImages>
             {projectImages && projectImages.map((image) => (
               <ImageWrapper key={image.id}>

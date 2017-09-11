@@ -40,7 +40,23 @@ export default defineMessages({
   // footer
   poweredBy: {
     id: 'app.containers.landing.poweredBy',
-    defaultMessage: 'Powered by CitizenLab | Geef je feedback over het platform',
+    defaultMessage: 'Powered by {logo}',
+  },
+  termsLink: {
+    id: 'app.containers.landing.termsLink',
+    defaultMessage: 'Terms of use',
+  },
+  privacyLink: {
+    id: 'app.containers.landing.privacyLink',
+    defaultMessage: 'Privacy Policy',
+  },
+  cookiesLink: {
+    id: 'app.containers.landing.cookiesLink',
+    defaultMessage: 'Cookies Policy',
+  },
+  feedbackLink: {
+    id: 'app.containers.landing.feedbackLink',
+    defaultMessage: 'Give your opinion',
   },
 
 });

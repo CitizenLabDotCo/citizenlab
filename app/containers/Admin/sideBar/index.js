@@ -46,12 +46,13 @@ const MenuItemContainerStyled = styled.div`
 `;
 
 const MenuItemStyled = styled(Menu.Item)`
-  color: #ffffff !important;
   background-color: inherit !important;
+  color: #ffffff !important;
   font-size: 17px;
   font-weight: bold;
-  text-align: left;
+  line-height: 1.3 !important;
   margin-left: 20px;
+  text-align: left;
 `;
 
 const MenuItemIcon = (icon) => (<Image
@@ -105,22 +106,22 @@ function Sidebar(props) {
   return (
     <MenuStyled vertical borderless>
       <MenuItemContainerStyled active={props.location.pathname === '/admin'}>
-        <MenuItemStyled icon={MenuItemIcon(dashboardIcon)} name={formatMessage({ ...messages.dashboard })} as={Link} to="/admin" />
+        <MenuItemStyled icon={MenuItemIcon(dashboardIcon)} name={formatMessage({ ...messages.dashboard })} content={formatMessage({ ...messages.dashboard })} as={Link} to="/admin" />
       </MenuItemContainerStyled>
       <MenuItemContainerStyled active={props.location.pathname === '/admin/users'}>
-        <MenuItemStyled icon={MenuItemIcon(usersIcon)} name={formatMessage({ ...messages.users })} as={Link} to="/admin/users" />
+        <MenuItemStyled icon={MenuItemIcon(usersIcon)} name={formatMessage({ ...messages.users })} content={formatMessage({ ...messages.users })} as={Link} to="/admin/users" />
       </MenuItemContainerStyled>
       {/* <MenuItemContainerStyled active={props.location.pathname === '/admin/groups'}>
         <MenuItemStyled icon={MenuItemIcon(groupsIcon)} name={formatMessage({ ...messages.groups })} as={Link} to="/admin/groups" />
       </MenuItemContainerStyled> */}
       <MenuItemContainerStyled active={props.location.pathname === '/admin/projects'}>
-        <MenuItemStyled icon={MenuItemIcon(projectsIcon)} name={formatMessage({ ...messages.projects })} as={Link} to="/admin/projects" />
+        <MenuItemStyled icon={MenuItemIcon(projectsIcon)} name={formatMessage({ ...messages.projects })} content={formatMessage({ ...messages.projects })} as={Link} to="/admin/projects" />
       </MenuItemContainerStyled>
       <MenuItemContainerStyled active={props.location.pathname === '/admin/ideas'}>
-        <MenuItemStyled icon={MenuItemIcon(ideasIcon)} name={formatMessage({ ...messages.ideas })} as={Link} to="/admin/ideas" />
+        <MenuItemStyled icon={MenuItemIcon(ideasIcon)} name={formatMessage({ ...messages.ideas })} content={formatMessage({ ...messages.ideas })} as={Link} to="/admin/ideas" />
       </MenuItemContainerStyled>
       <MenuItemContainerStyled active={props.location.pathname === '/admin/settings'}>
-        <MenuItemStyled icon={MenuItemIcon(settingsIcon)} name={formatMessage({ ...messages.settings })} as={Link} to="/admin/settings" />
+        <MenuItemStyled icon={MenuItemIcon(settingsIcon)} name={formatMessage({ ...messages.settings })} content={formatMessage({ ...messages.settings })} as={Link} to="/admin/settings" />
       </MenuItemContainerStyled>
       {/* <NeedHelpBoxStyled>
         <HelpImageStyled

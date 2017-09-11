@@ -51,4 +51,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
     defaultMessage: 'Add a project',
   },
+  goBack: {
+    id: 'app.containers.AdminPage.ProjectEdit.goBack',
+    defaultMessage: 'go back',
+  },
+  titleLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.titleLabel',
+    defaultMessage: 'Title',
+  },
+  descriptionLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.descriptionLabel',
+    defaultMessage: 'Description',
+  },
+  headerImageLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.headerImageLabel',
+    defaultMessage: 'Header Image',
+  },
+  projectImageLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectImageLabel',
+    defaultMessage: 'Project Images',
+  },
 });

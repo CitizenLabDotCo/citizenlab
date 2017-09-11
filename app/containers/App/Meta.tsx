@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import Helmet from 'react-helmet';
+import * as _ from 'lodash';
 
 // services
 import { ITenant } from 'services/tenant';
