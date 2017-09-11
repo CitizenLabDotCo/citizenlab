@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import qs from 'qs';
 import HelmetIntl from 'components/HelmetIntl';
 import { connect } from 'react-redux';
-import { injectIntl, injectedIntl } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 
 // components
 import WatchSagas from 'containers/WatchSagas';
@@ -55,7 +55,6 @@ class IdeasIndex extends React.Component {
     this.props.resetIdeas();
   }
 
-
   render() {
     const { filter, withFilters } = this.props;
 
@@ -91,7 +90,7 @@ IdeasIndex.propTypes = {
   resetIdeas: PropTypes.func.isRequired,
   filter: PropTypes.object,
   withFilters: PropTypes.bool.isRequired,
-  intl: injectedIntl,
+  intl: intlShape.isRequired,
 };
 
 IdeasIndex.defaultProps = {
