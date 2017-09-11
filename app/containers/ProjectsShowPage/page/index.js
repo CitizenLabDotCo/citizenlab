@@ -16,7 +16,6 @@ class ProjectsPage extends React.PureComponent {
   }
 }
 
-
 ProjectsPage.propTypes = {
   routeParams: PropTypes.object.isRequired,
 };
