@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { injectTFunc } from 'utils/containers/t/utils';
+import { injectTFunc } from 'containers/T/utils';
 import Helmet from 'react-helmet';
 import { IIdeaData } from 'services/ideas';
 import { selectIdeaImages, selectIdea } from '../../selectors';
 import * as Immutable from 'immutable';
 import { stripHtml } from 'utils/textUtils';
-
 
 type Props = {
   idea: Immutable.Map<string, any>,

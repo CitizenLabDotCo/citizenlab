@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { injectIntl } from 'react-intl';
 import { withTheme } from 'styled-components';
 import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { observeUsersByTime } from 'services/stats';
+import { usersByTimeStream } from 'services/stats';
 import messages from '../messages';
 
 
@@ -56,7 +56,7 @@ class UsersByTimeChart extends React.Component<Props, State> {
 
   resubscribe(startAt= this.props.startAt, endAt= this.props.endAt, resolution= this.props.resolution) {
     if (this.serieObservable) this.serieObservable.unsubscribe();
-    this.serieObservable = observeUsersByTime({
+    this.serieObservable = usersByTimeStream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,

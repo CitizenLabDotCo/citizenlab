@@ -4,29 +4,32 @@ import * as Rx from 'rxjs/Rx';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import Transition from 'react-transition-group/Transition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-import { injectIntl, intlShape } from 'react-intl';
 import { browserHistory } from 'react-router';
-import { injectTFunc } from 'utils/containers/t/utils';
-import { stateStream, IStateStream } from 'services/state';
 import { EditorState, convertToRaw } from 'draft-js';
-import { IStream } from 'utils/streams';
-import { IUser } from 'services/users';
-import { IIdea, addIdea } from 'services/ideas';
-import { addIdeaImage } from 'services/ideaImages';
-import { observeCurrentUser, getAuthUser } from 'services/auth';
 import draftToHtml from 'draftjs-to-html';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { ImageFile } from 'react-dropzone';
+
+// components
 import Upload, { ExtendedImageFile } from 'components/UI/Upload';
-import { media } from 'utils/styleUtils';
-import styled from 'styled-components';
-import messages from './messages';
 import ButtonBar, { namespace as ButtonBarNamespace, State as IButtonBarState } from './ButtonBar';
 import NewIdeaForm, { namespace as NewIdeaFormNamespace, State as INewIdeaFormState } from './NewIdeaForm';
 import SignInUp from 'containers/SignInUp';
+
+// services
+import { state, IStateStream } from 'services/state';
+import { localeStream } from 'services/locale';
+import { addIdea } from 'services/ideas';
+import { addIdeaImage } from 'services/ideaImages';
+import { getAuthUserAsync } from 'services/auth';
+
+// i18n
+import { injectIntl, InjectedIntlProps } from 'react-intl';
+import messages from './messages';
+
+// style
+import { media } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 const Container = styled.div`
   background: #f2f2f2;
@@ -61,8 +64,8 @@ const PageContainer = styled.div`
     &.page-enter-active {
       opacity: 1;
       transform: translateX(0);
-      transition: transform 800ms cubic-bezier(0.19, 1, 0.22, 1),
-                  opacity 800ms cubic-bezier(0.19, 1, 0.22, 1);
+      transition: transform 600ms cubic-bezier(0.19, 1, 0.22, 1),
+                  opacity 600ms cubic-bezier(0.19, 1, 0.22, 1);
     }
   }
 
@@ -73,8 +76,8 @@ const PageContainer = styled.div`
     &.page-exit-active {
       opacity: 0.01;
       transform: translateX(100vw);
-      transition: transform 800ms cubic-bezier(0.19, 1, 0.22, 1),
-                  opacity 800ms cubic-bezier(0.19, 1, 0.22, 1);
+      transition: transform 600ms cubic-bezier(0.19, 1, 0.22, 1),
+                  opacity 600ms cubic-bezier(0.19, 1, 0.22, 1);
 
       ${media.desktop`
         transform: translateX(800px);
@@ -114,7 +117,7 @@ const ButtonBarContainer = styled.div`
 
     &.buttonbar-enter-active {
       transform: translateY(0);
-      transition: transform 800ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 
@@ -124,24 +127,21 @@ const ButtonBarContainer = styled.div`
 
     &.buttonbar-exit-active {
       transform: translateY(64px);
-      transition: transform 800ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 `;
 
-type Props = {
-  intl: ReactIntl.InjectedIntl;
-  tFunc: Function;
-  locale: string;
-};
+type Props = {};
 
 type State = {
   showIdeaForm: boolean;
+  locale: string;
 };
 
 export const namespace = 'IdeasNewPage2/index';
 
-class IdeasNewPage2 extends React.PureComponent<Props, State> {
+class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State> {
   newIdeaFormState$: IStateStream<INewIdeaFormState>;
   buttonBarState$: IStateStream<IButtonBarState>;
   state$: IStateStream<State>;
@@ -149,7 +149,8 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
 
   constructor() {
     super();
-    this.newIdeaFormState$ = stateStream.observe<INewIdeaFormState>(NewIdeaFormNamespace, {
+
+    const initialNewIdeaFormState: INewIdeaFormState = {
       topics: null,
       projects: null,
       title: null,
@@ -162,31 +163,40 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       descriptionError: null,
       submitError: false,
       processing: false
-    });
-    this.buttonBarState$ = stateStream.observe<IButtonBarState>(ButtonBarNamespace, {
+    };
+
+    const initialButtonBarState: IButtonBarState = {
       submitError: false,
       processing: false
-    });
-    this.state$ = stateStream.observe<State>(namespace, { showIdeaForm: true });
+    };
+
+    const initialState: State = {
+      showIdeaForm: true,
+      locale: 'nl'
+    };
+
+    this.newIdeaFormState$ = state.createStream<INewIdeaFormState>(namespace, NewIdeaFormNamespace, initialNewIdeaFormState);
+    this.buttonBarState$ = state.createStream<IButtonBarState>(namespace, ButtonBarNamespace, initialButtonBarState);
+    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+
     this.subscriptions = [];
   }
 
   componentWillMount() {
+    const locale$ = localeStream().observable;
+
     this.subscriptions = [
       this.buttonBarState$.observable.subscribe(),
       this.newIdeaFormState$.observable.subscribe(),
       this.state$.observable.subscribe(state => this.setState(state)),
+      locale$.subscribe(locale => this.state$.next({ locale }))
     ];
   }
 
-  componentWillUnmount() {
-    this.newIdeaFormState$.observable.first().subscribe(
-      (newIdeaFormState) => {
-        _(newIdeaFormState.images).forEach(image => image.preview && window.URL.revokeObjectURL(image.preview));
-        _(this.subscriptions).forEach(subscription => subscription.unsubscribe());
-      },
-      (error) => console.log(error)
-    );
+  async componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());    
+    const currentNewIdeaFormState = await this.newIdeaFormState$.getCurrent();
+    _(currentNewIdeaFormState.images).forEach(image => image.preview && window.URL.revokeObjectURL(image.preview));
   }
 
   async convertToGeoJson(location: string) {
@@ -208,7 +218,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   async postIdea(newIdeaFormState: INewIdeaFormState, userId: string) {
-    const { locale } = this.props;
+    const { locale } = this.state;
     const { topics, projects, title, description, selectedTopics, selectedProject, location } = newIdeaFormState;
     const ideaTitle = { [locale]: title as string };
     const ideaDescription = { [locale]: draftToHtml(convertToRaw(description.getCurrentContent())) };
@@ -229,35 +239,26 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   async postIdeaAndIdeaImage(currentUserId: string) {
-    return new Promise<IIdea | null>((resolve, reject) => {
-      const onError = () => reject(new Error(`error for postIdeaAndIdeaImage() of component IdeasNewPage2`));
-
-      this.newIdeaFormState$.observable.first().subscribe(
-        async (newIdeaFormState) => {
-          try {
-            const { images } = newIdeaFormState;
-            const idea = await this.postIdea(newIdeaFormState, currentUserId);
-            images && images.length > 0 && await this.postIdeaImage(idea.data.id, images[0]);
-            resolve(idea);
-          } catch (error) {
-            onError();
-          }
-        },
-        (error) => {
-          onError();
-        }
-      );
-    });
+    try {
+      const currentNewIdeaFormState = await this.newIdeaFormState$.getCurrent();
+      const { images } = currentNewIdeaFormState;
+      const idea = await this.postIdea(currentNewIdeaFormState, currentUserId);
+      images && images.length > 0 && await this.postIdeaImage(idea.data.id, images[0]);
+      return idea;
+    } catch (error) {
+      throw 'error';
+    }
   }
 
   handleOnIdeaSubmit = async () => {
-    const { locale, intl } = this.props;
+    const { intl } = this.props;
+    const { locale } = this.state;
 
     this.setSubmitErrorTo(false);
     this.setProcessingTo(true);
 
     try {
-      const authUser = await getAuthUser();
+      const authUser = await getAuthUserAsync();
       await this.postIdeaAndIdeaImage(authUser.data.id);
       this.setProcessingTo(false);
       browserHistory.push('/ideas');
@@ -292,27 +293,27 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { showIdeaForm } = this.state;
-    const { intl, tFunc, locale } = this.props;
-    const timeout = 800;
+    const { showIdeaForm, locale } = this.state;
+    const { intl } = this.props;
+    const timeout = 600;
 
-    const buttonBar = showIdeaForm && (
+    const buttonBar = (showIdeaForm && locale) ? (
       <CSSTransition classNames="buttonbar" timeout={timeout}>
         <ButtonBarContainer>
-          <ButtonBar intl={intl} tFunc={tFunc} locale={locale} onSubmit={this.handleOnIdeaSubmit} />
+          <ButtonBar intl={intl} locale={locale} onSubmit={this.handleOnIdeaSubmit} />
         </ButtonBarContainer>
       </CSSTransition>
-    );
+    ) : null;
 
-    const newIdeasForm = showIdeaForm && (
+    const newIdeasForm = (showIdeaForm && locale) ? (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer className="ideaForm">
-          <NewIdeaForm intl={intl} tFunc={tFunc} locale={locale} onSubmit={this.handleOnIdeaSubmit} />
+          <NewIdeaForm intl={intl} locale={locale} onSubmit={this.handleOnIdeaSubmit} />
         </PageContainer>
       </CSSTransition>
-    );
+    ) : null;
 
-    const signInUp = !showIdeaForm && (
+    const signInUp = (!showIdeaForm && locale) ?  (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer>
           <SignInUp
@@ -324,7 +325,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
           />
         </PageContainer>
       </CSSTransition>
-    );
+    ) : null;
 
     return (
       <Container>
@@ -338,8 +339,4 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = createStructuredSelector({
-  locale: makeSelectLocale(),
-});
-
-export default injectTFunc(injectIntl(connect(mapStateToProps, null)(IdeasNewPage2)));
+export default injectIntl(IdeasNewPage2);

@@ -12,7 +12,7 @@ import { preprocess } from 'utils';
 import messages from './messages';
 import { resetIdeas } from 'resources/ideas/actions';
 
-class IdeaDashboard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+class IdeaDashboard extends React.PureComponent {
 
   componentWillUnmount() {
     // reset ideas upon page leaving, to avoid double items when going back

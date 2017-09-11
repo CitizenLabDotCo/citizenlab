@@ -6,7 +6,7 @@ import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Success from 'components/UI/Success';
-import { stateStream, IStateStream } from 'services/state';
+import { state, IStateStream } from 'services/state';
 import { sendPasswordResetMail } from 'services/auth';
 import { isValidEmail } from 'utils/validate';
 import messages from './messages';
@@ -60,7 +60,7 @@ export default class PasswordReset extends React.PureComponent<Props, State> {
 
   constructor() {
     super();
-    this.state$ = stateStream.observe<State>(namespace, {
+    this.state$ = state.createStream<State>(namespace, namespace, {
       email: null,
       emailError: false,
       submitError: false,

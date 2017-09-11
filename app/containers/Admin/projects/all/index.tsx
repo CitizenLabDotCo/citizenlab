@@ -5,11 +5,11 @@ import styledComponents from 'styled-components';
 const styled = styledComponents;
 
 // Services
-import { observeProjects, IProjectData } from 'services/projects';
+import { projectsStream, IProjectData } from 'services/projects';
 
 // Localisation
 import { FormattedMessage } from 'react-intl';
-import t from 'utils/containers/t';
+import t from 'containers/T';
 const T = t;
 import messages from '../messages';
 
@@ -111,7 +111,7 @@ class AdminProjectsList extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.subscription = observeProjects().observable.subscribe((projects) => {
+    this.subscription = projectsStream().observable.subscribe((projects) => {
       this.setState({ projects: projects.data });
     });
   }

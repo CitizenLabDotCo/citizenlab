@@ -14,7 +14,6 @@ import Comments from './comments';
 import T from 'containers/T';
 import VoteControl from 'components/VoteControl';
 
-
 // store
 import { preprocess } from 'utils';
 import { selectIdeaImages, selectIdea } from '../selectors';
@@ -102,7 +101,7 @@ class ShowDesktop extends React.PureComponent {
         <LeftColumn>
           <Author authorId={authorId} createdAt={created_at} />
           <IdeaTitle><T value={title_multiloc} /></IdeaTitle>
-          <Carousel images={images.map((image) => image.attributes.versions)} />
+          {/* <Carousel images={images.map((image) => image.attributes.versions)} /> */}
           <IdeaBody>
             <T value={body_multiloc} />
           </IdeaBody>
@@ -125,7 +124,6 @@ class ShowDesktop extends React.PureComponent {
       </Content>
     );
   }
-
 }
 
 ShowDesktop.propTypes = {
@@ -185,6 +183,5 @@ const mergeProps = ({ idea, images }, dispatchProps, { tFunc, location, intl }) 
   };
 
 };
-
 
 export default injectIntl(injectTFunc(preprocess(mapStateToProps, null, mergeProps)(ShowDesktop)));

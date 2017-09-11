@@ -7,11 +7,9 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import messages from './messages';
 import { FormattedMessage } from 'react-intl';
-import { stateStream, IStateStream } from 'services/state';
-import { signIn, getAuthUser } from 'services/auth';
+import { state, IStateStream } from 'services/state';
+import { signIn } from 'services/auth';
 import { isValidEmail } from 'utils/validate';
-import { connect } from 'react-redux';
-import { LOAD_CURRENT_USER_SUCCESS } from 'utils/auth/constants';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -69,7 +67,6 @@ type State = {
 
 export const namespace = 'SignIn/index';
 
-@connect()
 export default class SignIn extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
   subscriptions: Rx.Subscription[];
@@ -78,14 +75,17 @@ export default class SignIn extends React.PureComponent<Props, State> {
 
   constructor() {
     super();
-    this.state$ = stateStream.observe<State>('SignIn', {
+
+    const initialState: State = {
       email: null,
       password: null,
       processing: false,
       emailError: null,
       passwordError: null,
       signInError: null
-    });
+    };
+
+    this.state$ = state.createStream<State>(namespace, namespace, initialState);
     this.subscriptions = [];
     this.emailInputElement = null;
     this.passwordInputElement = null;
@@ -98,7 +98,6 @@ export default class SignIn extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    console.log(this.props);
     this.emailInputElement && this.emailInputElement.focus();
   }
 
@@ -136,12 +135,10 @@ export default class SignIn extends React.PureComponent<Props, State> {
     const { formatMessage } = this.props.intl;
     const { email, password } = this.state;
 
-    if (this.validate(email, password) && email && password) {
+    if (email && password && this.validate(email, password)) {
       try {
         this.state$.next({ processing: true });
-        const jwt = await signIn(email, password);
-        getAuthUser();
-
+        await signIn(email, password);
         this.state$.next({ processing: false });
         onSignedIn();
       } catch (error) {

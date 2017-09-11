@@ -32,22 +32,22 @@ export interface IIdeasByTopic{
   };
 }
 
-export function observeUsersByGender(streamParams: IStreamParams<IUsersByGender> | null = null) {
-  return streams.create<IUsersByGender>({ apiEndpoint: `${apiEndpoint}/users_by_gender`, ...streamParams });
+export function usersByGenderStream(streamParams: IStreamParams<IUsersByGender> | null = null) {
+  return streams.get<IUsersByGender>({ apiEndpoint: `${apiEndpoint}/users_by_gender`, ...streamParams });
 }
 
-export function observeUsersByBirthyear(streamParams: IStreamParams<IUsersByBirthyear> | null = null) {
-  return streams.create<IUsersByBirthyear>({ apiEndpoint: `${apiEndpoint}/users_by_birthyear`, ...streamParams });
+export function usersByBirthyearStream(streamParams: IStreamParams<IUsersByBirthyear> | null = null) {
+  return streams.get<IUsersByBirthyear>({ apiEndpoint: `${apiEndpoint}/users_by_birthyear`, ...streamParams });
 }
 
-export function observeIdeasByTime(streamParams: IStreamParams<IIdeasByTime> | null = null) {
-  return streams.create<IIdeasByTime>({ apiEndpoint: `${apiEndpoint}/ideas_by_time`, ...streamParams });
+export function ideasByTimeStream(streamParams: IStreamParams<IIdeasByTime> | null = null) {
+  return streams.get<IIdeasByTime>({ apiEndpoint: `${apiEndpoint}/ideas_by_time`, ...streamParams });
 }
 
-export function observeUsersByTime(streamParams: IStreamParams<IUsersByTime> | null = null) {
-  return streams.create<IUsersByTime>({ apiEndpoint: `${apiEndpoint}/users_by_time`, ...streamParams });
+export function usersByTimeStream(streamParams: IStreamParams<IUsersByTime> | null = null) {
+  return streams.get<IUsersByTime>({ apiEndpoint: `${apiEndpoint}/users_by_time`, ...streamParams });
 }
 
-export function observeIdeasByTopic(streamParams: IStreamParams<IIdeasByTopic> | null = null) {
-  return streams.create<IIdeasByTopic>({ apiEndpoint: `${apiEndpoint}/ideas_by_topic`, ...streamParams });
+export function ideasByTopicStream(streamParams: IStreamParams<IIdeasByTopic> | null = null) {
+  return streams.get<IIdeasByTopic>({ apiEndpoint: `${apiEndpoint}/ideas_by_topic`, ...streamParams });
 }

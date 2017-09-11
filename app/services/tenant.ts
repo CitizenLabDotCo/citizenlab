@@ -1,8 +1,8 @@
+import * as Rx from 'rxjs/Rx';
+import * as _ from 'lodash';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import request from 'utils/request';
-import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
 
 const apiEndpoint = `${API_PATH}/tenants`;
 
@@ -60,6 +60,6 @@ export interface ITenant {
   data: ITenantData;
 }
 
-export function observeCurrentTenant(streamParams: IStreamParams<ITenant> | null = null) {
-  return streams.create<ITenant>({ apiEndpoint: `${apiEndpoint}/current`, ...streamParams });
+export function currentTenantStream(streamParams: IStreamParams<ITenant> | null = null) {
+  return streams.get<ITenant>({ apiEndpoint: `${apiEndpoint}/current`, ...streamParams });
 }

@@ -1,6 +1,7 @@
 {
   "extends": ["tslint-config-airbnb", "tslint-react", "tslint-eslint-rules"],
   "rules": {
+    "align": [true, "parameters", "statements"],
     "import-name": false,
     "jsx-no-multiline-js": false,
     "max-line-length": [false],
@@ -30,7 +31,7 @@
     "react-a11y-role-has-required-aria-props": 2,
     "react-a11y-role-supports-aria-props": 2,
     "react-a11y-tabindex-no-positive": 2,
-    "react-a11y-titles": 2,
+    "react-a11y-title": 2,
     "variable-name": [false, "ban-keywords", "check-format", "allow-leading-underscore"]
   }
 }

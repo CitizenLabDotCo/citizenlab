@@ -33,6 +33,6 @@ export interface IArea {
   data: IAreaData;
 }
 
-export function observeAreas(streamParams: IStreamParams<IAreas> | null = null) {
-  return streams.create<IAreas>({ apiEndpoint, ...streamParams });
+export function areasStream(streamParams: IStreamParams<IAreas> | null = null) {
+  return streams.get<IAreas>({ apiEndpoint, ...streamParams });
 }

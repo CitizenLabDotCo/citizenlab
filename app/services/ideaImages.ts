@@ -26,19 +26,18 @@ export interface IIdeaImages {
   data: IIdeaImageData[];
 }
 
-export function observeIdeaImage(ideaId: string, imageId: string, streamParams: IStreamParams<IIdeaImages> | null = null) {
+export function ideaImageStream(ideaId: string, imageId: string, streamParams: IStreamParams<IIdeaImage> | null = null) {
   const apiEndpoint = `${API_PATH}/ideas/${ideaId}/images/${imageId}`;
-  return streams.create<IIdeaImages>({ apiEndpoint, ...streamParams });
+  return streams.get<IIdeaImage>({ apiEndpoint, ...streamParams });
 }
 
-export function observeIdeaImages(ideaId: string, streamParams: IStreamParams<IIdeaImages> | null = null) {
+export function ideaImagesStream(ideaId: string, streamParams: IStreamParams<IIdeaImages> | null = null) {
   const apiEndpoint = `${API_PATH}/ideas/${ideaId}/images`;
-  return streams.create<IIdeaImages>({ apiEndpoint, ...streamParams });
+  return streams.get<IIdeaImages>({ apiEndpoint, ...streamParams });
 }
 
 export function addIdeaImage(ideaId: string, base64: string, ordering: number | null = null) {
   const apiEndpoint = `${API_PATH}/ideas/${ideaId}/images`;
-  const httpMethod = { method: 'POST' };
   const bodyData = {
     image: {
       ordering,
@@ -46,7 +45,5 @@ export function addIdeaImage(ideaId: string, base64: string, ordering: number | 
     }
   };
 
-  return request<IIdeaImage>(apiEndpoint, bodyData, httpMethod, null).catch(() => {
-    throw new Error(`error for addIdeaImage() of service IdeaImages`);
-  });
+  return streams.add<IIdeaImage>(apiEndpoint, bodyData);
 }

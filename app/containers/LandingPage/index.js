@@ -8,7 +8,7 @@ import { preprocess } from 'utils';
 import { lighten } from 'polished';
 import { media } from 'utils/styleUtils';
 import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
-import { injectTFunc } from 'utils/containers/t/utils';
+import { injectTFunc } from 'containers/T/utils';
 
 
 import WatchSagas from 'containers/WatchSagas';

@@ -17,6 +17,11 @@ const Inner = styled.div`
   max-width: ${(props) => props.theme.maxPageWidth}px;
 `;
 
+interface IContentContainer {
+  children?: any;
+  className?: string;
+}
+
 const ContentContainer: React.SFC<IContentContainer> = ({ children, className }) => (
   <Outer className={className}>
     <Inner>

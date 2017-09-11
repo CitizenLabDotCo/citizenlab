@@ -110,9 +110,7 @@ type Props = {
   children?: any,
 };
 
-
 export default class ImageHeader extends React.PureComponent<Props> {
-
   render() {
     const { className, image, children } = this.props;
     return (
@@ -123,5 +121,4 @@ export default class ImageHeader extends React.PureComponent<Props> {
       </HeaderContainer>
     );
   }
-
 }

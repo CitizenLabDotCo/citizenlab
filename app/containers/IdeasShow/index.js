@@ -1,9 +1,3 @@
-/*
- *
- * IdeasShow
- *
- */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -32,7 +26,7 @@ const MobileVersion = styled.div`
   `}
 `;
 
-class IdeasShow extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+class IdeasShow extends React.PureComponent {
 
   componentDidMount() {
     if (this.props.slug) {
