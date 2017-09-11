@@ -130,6 +130,7 @@ class Streams {
           },
           (error) => {
             console.log(`promise for stream ${streamId} did not resolve`);
+
             if (this.streams[streamId]) {
               this.streams[streamId].observer.next(null);
             } else {
@@ -308,84 +309,6 @@ class Streams {
       throw `error for delete() of Streams for api endpoint ${apiEndpoint}`;
     }
   }
-
-  /*
-  async add<T>(apiEndpoint: string, bodyData: object | null) {
-    try {
-      const response = await request<T>(apiEndpoint, bodyData, { method: 'POST' }, null);
-
-      _.forOwn(this.streams, (stream, streamId) => {
-        if (stream.params.apiEndpoint === apiEndpoint) {
-          if (stream.isQuery) {
-            stream.fetch();
-          } else {
-            stream.observer.next((previous) => ({
-              ...previous,
-              data: [...previous.data, response['data']]
-            }));
-          }
-        }
-      });
-
-      return response;
-    } catch (error) {
-      console.log(error);
-      throw `error for add() of Streams for api endpoint ${apiEndpoint}`;
-    }
-  }
-
-  async update<T>(apiEndpoint: string, dataId: string, bodyData: object) {
-    try {
-      const response = await request<T>(apiEndpoint, bodyData, { method: 'PATCH' }, null);
-
-      _.forOwn(this.streams, (stream, streamId) => {
-        const streamHasDataId = _.has(stream, `dataIds.${dataId}`);
-
-        if ((stream.params.apiEndpoint === apiEndpoint && stream.isQuery) || (streamHasDataId && stream.type === 'unknown')) {
-          stream.fetch();
-        } else if (streamHasDataId && stream.type === 'singleObject') {
-          stream.observer.next(response);
-        } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
-          stream.observer.next((previous) => ({
-            ...previous,
-            data: previous.data.map(child => child.id === dataId ? response['data'] : child)
-          }));
-        }
-      });
-
-      return response;
-    } catch (error) {
-      console.log(error);
-      throw `error for update() of Streams for api endpoint ${apiEndpoint}`;
-    }
-  }
-
-  async delete(apiEndpoint: string, dataId: string) {
-    try {
-      await request(apiEndpoint, null, { method: 'DELETE' }, null);
-
-      _.forOwn(this.streams, (stream, streamId) => {
-        const streamHasDataId = _.has(stream, `dataIds.${dataId}`);
-
-        if ((stream.params.apiEndpoint === apiEndpoint && stream.isQuery) || (streamHasDataId && stream.type === 'unknown')) {
-          stream.fetch();
-        } else if (streamHasDataId && stream.type === 'singleObject') {
-          stream.observer.next(undefined);
-        } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
-          stream.observer.next((previous) => ({
-            ...previous,
-            data: previous.data.filter(child => child.id !== dataId)
-          }));
-        }
-      });
-
-      return true;
-    } catch (error) {
-      console.log(error);
-      throw `error for delete() of Streams for api endpoint ${apiEndpoint}`;
-    }
-  }
-  */
 }
 
 const streams = new Streams();

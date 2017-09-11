@@ -27,6 +27,7 @@ export interface IIdeaVoteData {
 export interface IIdeaVotes {
   data: IIdeaVoteData[];
 }
+
 export interface IIdeaVote {
   data: IIdeaVoteData;
 }

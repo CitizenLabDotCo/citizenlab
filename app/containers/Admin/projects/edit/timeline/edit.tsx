@@ -15,7 +15,7 @@ import { browserHistory } from 'react-router';
 import { API } from 'typings.d';
 
 // Services
-import { projectStream, IProject, IProjectData } from 'services/projects';
+import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
 import { phaseStream, updatePhase, addPhase, IPhase, IPhaseData, IUpdatedPhaseProperties } from 'services/phases';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { injectTFunc } from 'containers/T/utils';

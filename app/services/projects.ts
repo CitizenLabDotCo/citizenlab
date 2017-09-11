@@ -50,8 +50,12 @@ export function projectsStream(streamParams: IStreamParams<IProjects> | null = n
   return streams.get<IProjects>({ apiEndpoint, ...streamParams });
 }
 
-export function projectStream(slug, streamParams: IStreamParams<IProject> | null = null) {
-  return streams.get<IProject>({ apiEndpoint: `${apiEndpoint}/by_slug/${slug}`, ...streamParams });
+export function projectBySlugStream(projectSlug: string, streamParams: IStreamParams<IProject> | null = null) {
+  return streams.get<IProject>({ apiEndpoint: `${apiEndpoint}/by_slug/${projectSlug}`, ...streamParams });
+}
+
+export function projectByIdStream(projectId: string, streamParams: IStreamParams<IProject> | null = null) {
+  return streams.get<IProject>({ apiEndpoint: `${apiEndpoint}/${projectId}`, ...streamParams });
 }
 
 export function addProject(projectData: IUpdatedProjectProperties) {

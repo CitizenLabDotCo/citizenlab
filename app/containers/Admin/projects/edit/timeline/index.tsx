@@ -7,7 +7,7 @@ import messages from './messages';
 import * as _ from 'lodash';
 
 // Services
-import { projectStream } from 'services/projects';
+import { projectBySlugStream } from 'services/projects';
 import { phasesStream, IPhaseData, deletePhase } from 'services/phases';
 
 // Components
@@ -120,13 +120,20 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
   componentDidMount () {
     this.setState({ loading: true });
-    this.subscription = projectStream(this.props.params.slug).observable
-    .switchMap((project) => {
-      return phasesStream(project.data.id).observable.map((phases) => (phases.data));
-    })
-    .subscribe((phases) => {
-      this.setState({ phases, loading: false });
-    });
+
+    if (_.isString(this.props.params.slug)) {
+      this.subscription = projectBySlugStream(this.props.params.slug).observable.switchMap((project) => {
+        return phasesStream(project.data.id).observable.map((phases) => (phases.data));
+      }).subscribe((phases) => {
+        this.setState({ phases, loading: false });
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   createDeleteClickHandler = (phaseId) => {

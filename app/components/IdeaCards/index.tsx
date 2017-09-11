@@ -227,7 +227,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
       <IdeasList wrap={true} mx={-10}>
         {ideas.data.map((idea) => (
           <Box key={idea.id} w={[1, 1 / 2, 1 / 3]} px={10}>
-            <IdeaCard ideaId={idea.id} />
+            <IdeaCard key={idea.id} ideaId={idea.id} />
           </Box>
         ))}
         {loadMore}

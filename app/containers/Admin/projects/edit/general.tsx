@@ -23,7 +23,7 @@ import {
   IUpdatedProjectProperties,
   IProject,
   IProjectData,
-  projectStream,
+  projectBySlugStream,
   addProject,
   updateProject,
 } from 'services/projects';
@@ -139,7 +139,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
   }
 
   updateSubscription = (slug) => {
-    this.subscription = projectStream(slug).observable.switchMap((project) => {
+    this.subscription = projectBySlugStream(slug).observable.switchMap((project) => {
       return projectImagesStream(project.data.id).observable.map((images) => ({
         projectData: project.data,
         projectImages: images.data,

@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // Services
-import { projectStream, IProjectData } from 'services/projects';
+import { projectBySlugStream, IProjectData } from 'services/projects';
 
 // Components
 import TabbedResource from 'components/admin/TabbedResource';
@@ -43,7 +43,7 @@ export default class AdminProjectEdition extends React.PureComponent<Props, Stat
   }
 
   updateSubscription (slug) {
-    this.subscription = projectStream(slug).observable.subscribe((project) => {
+    this.subscription = projectBySlugStream(slug).observable.subscribe((project) => {
       this.setState({ project: project.data });
     });
   }
