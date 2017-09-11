@@ -9,8 +9,9 @@ import Navbar from 'containers/Navbar';
 import messages from './messages';
 import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import styled, { ThemeProvider } from 'styled-components';
-import { media } from 'utils/styleUtils';
+import Modal from 'components/UI/Modal';
+import IdeasShow from 'containers/IdeasShow';
+import { namespace as ideaCardNamespace } from 'components/IdeaCard';
 
 // authorizations
 import Authorize, { Else } from 'utils/containers/authorize';
@@ -26,6 +27,13 @@ import tenantSaga from 'utils/tenant/sagas';
 import { state, IStateStream } from 'services/state';
 import { authUserStream, signOut } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
+
+// utils
+import eventEmitter from 'utils/eventEmitter';
+
+// style
+import styled, { ThemeProvider } from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 // legacy redux stuff 
 import { store } from 'app';
@@ -43,6 +51,7 @@ type Props = {};
 
 type State = {
   currentTenant: ITenant | null;
+  modalIdeaSlug: string | null;
 };
 
 export const namespace = 'App/index';
@@ -53,13 +62,18 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
   constructor() {
     super();
-    const initialState: State = { currentTenant: null };
+    const initialState: State = { currentTenant: null, modalIdeaSlug: null };
     this.state$ = state.createStream<State>(namespace, namespace, initialState);
   }
 
   componentWillMount() {
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
+
+      eventEmitter.observe(ideaCardNamespace, 'ideaCardClick').subscribe(({ eventValue }) => {
+        const ideaSlug = eventValue;
+        this.openModal(ideaSlug);
+      }),
 
       authUserStream().observable.subscribe((authUser) => {
         if (!authUser) {
@@ -81,9 +95,17 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  openModal = (modalIdeaSlug) => {
+    this.state$.next({ modalIdeaSlug });
+  }
+
+  closeModal = () => {
+    this.state$.next({ modalIdeaSlug: null });
+  }
+
   render() {
     const { location, children } = this.props;
-    const { currentTenant } = this.state;
+    const { currentTenant, modalIdeaSlug } = this.state;
     const theme = {
       colorMain: (currentTenant ? currentTenant.data.attributes.settings.core.color_main : '#ef0071'),
       menuStyle: 'light',
@@ -102,6 +124,10 @@ export default class App extends React.PureComponent<Props & RouterState, State>
           <ThemeProvider theme={theme}>
             <Container>
               <Meta tenant={currentTenant} />
+
+              <Modal opened={!!modalIdeaSlug} close={this.closeModal} url={`/ideas/${modalIdeaSlug}`}>
+                <IdeasShow location={location} slug={modalIdeaSlug} />
+              </Modal>
 
               <Navbar />
 
