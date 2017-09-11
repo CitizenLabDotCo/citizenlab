@@ -15,13 +15,76 @@
       analytics.load("VsvvuYyv10ZcFx6hoO0zLfpAwqBx89nY");
       }}();
     </script> -->
+    <style>
+      html, body{
+        margin: 0;
+        padding: 0;
+      }
+
+      #app {
+        background: #f2f2f2;
+        width: 100vw;
+        height: calc(100vh - 80px);
+      }
+
+      #menu {
+        background: #fff;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        height: 80px;
+        position: fixed;
+        top: 0;
+        width: 100vw;
+      }
+
+      .menuNavPlaceholder {
+        flex: 1;
+      }
+      .menuSectionPlaceholder {
+        flex-basis: 80px;
+      }
+      .menuSectionPlaceholder:not(:last-child) {
+        border-right: 1px solid #ccc;
+      }
+
+      #contentContainer {
+        align-items: center;
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        margin-top: 80px;
+        width: 100%;
+      }
+
+      @keyframes spin {
+        from {transform: rotate(0deg);}
+        to {transform: rotate(359deg);}
+      }
+
+      .loadingSpinner {
+        animation: 1s linear 0s infinite spin;
+        transform-origin: center center;
+      }
+    </style>
   </head>
   <body>
     <!-- Display a message if JS has been disabled on the browser. -->
     <noscript>If you're seeing this message, that means <strong>JavaScript has been disabled on your browser</strong>, please <strong>enable JS</strong> to make this app work.</noscript>
 
     <!-- The app hooks into this div -->
-    <div id="app"></div>
+    <div id="app">
+      <div id="menu">
+        <div class="menuSectionPlaceholder"></div>
+        <div class="menuNavPlaceholder menuSectionPlaceholder"></div>
+        <div class="menuSectionPlaceholder"></div>
+        <div class="menuSectionPlaceholder"></div>
+      </div>
+      <div id="contentContainer">
+        <svg width="5rem" height="5rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-rolling">
+          <circle class="loadingSpinner" cx="50" cy="50" fill="none" stroke="#444" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138" transform="rotate(12 50 50)"></circle>
+        </svg>
+      </div>
+    </div>
 
     <!-- A lot of magic happens in this file. HtmlWebpackPlugin automatically includes all assets (e.g. bundle.js, main.css) with the correct HTML tags, which is why they are missing in this HTML file. Don't add any assets here! (Check out webpackconfig.js if you want to know more) -->
   </body>

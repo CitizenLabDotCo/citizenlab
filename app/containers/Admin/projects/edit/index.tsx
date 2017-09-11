@@ -105,7 +105,9 @@ export default class AdminProjectEdition extends React.PureComponent<Props, Stat
 
     return(
       <div>
-        <Link to="/admin/projects">go back</Link>
+        <Link to="/admin/projects">
+          <FormattedMessage {...messages.goBack} />
+        </Link>
         <TabbedResource {...tabbedProps}>
           {React.cloneElement(this.props.children as React.ReactElement<any>, { project })}
         </TabbedResource>

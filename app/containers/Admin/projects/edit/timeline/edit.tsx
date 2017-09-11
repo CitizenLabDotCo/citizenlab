@@ -43,6 +43,7 @@ type Props = {
   locale: string,
   tFunc: Function,
   project: IProjectData | null;
+  intl: ReactIntl.InjectedIntl;
 };
 
 interface State {
@@ -60,6 +61,8 @@ interface State {
 class AdminProjectTimelineEdit extends React.Component<Props, State> {
   phase$: IStream<IPhase>;
   subscriptions: Rx.Subscription[];
+  startDatePlaceholder: string;
+  endDatePlaceholder: string;
 
   constructor(props) {
     super(props);
@@ -83,6 +86,11 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       return 'success';
     }
     return _.isEmpty(this.state.attributeDiff) ? 'disabled' : 'enabled';
+  }
+
+  componentWillMount() {
+    this.startDatePlaceholder = this.props.intl.formatMessage(messages.startDatePlaceholder);
+    this.endDatePlaceholder = this.props.intl.formatMessage(messages.endDatePlaceholder);
   }
 
   componentDidMount() {
@@ -181,6 +189,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
     : { ...this.state.attributeDiff };
 
     const submitState = this.getSubmitState();
+    moment.locale(this.props.locale);
 
     return (
       <div>
@@ -213,6 +222,8 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
               isOutsideRange={this.isOutsideRange}
               firstDayOfWeek={1}
               displayFormat="DD/MM/YYYY"
+              startDatePlaceholderText={this.startDatePlaceholder}
+              endDatePlaceholderText={this.endDatePlaceholder}
             />
           </FieldWrapper>
 

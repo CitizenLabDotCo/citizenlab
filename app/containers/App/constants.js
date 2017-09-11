@@ -9,7 +9,7 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-export const DEFAULT_LOCALE = process.env.CROWDIN_PLUGIN_ENABLED ? 'ach' : 'en';
+export const DEFAULT_LOCALE = 'en';
 export const API_PATH = (process.env.NODE_ENV === 'development') ? 'http://localhost:4000/api/v1' : '/api/v1';
 export const GOOGLE_MAPS_API_KEY = '***REMOVED***';
 

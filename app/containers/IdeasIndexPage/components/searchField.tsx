@@ -1,8 +1,7 @@
 // Libraries
 import * as React from 'react';
-import styledComponents from 'styled-components';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
-const styled = styledComponents;
 
 // store
 import { push } from 'react-router-redux';
@@ -11,7 +10,9 @@ import { createStructuredSelector } from 'reselect';
 import { preprocess } from 'utils';
 
 // translations
+import { injectIntl, InjectedIntl } from 'react-intl';
 import { injectTFunc } from 'containers/T/utils';
+import messages from '../messages';
 
 // parse search
 import queryString from 'query-string';
@@ -29,16 +30,23 @@ const StyledForm = styled.form`
   }
 `;
 
-type Props = {
-  filterPage: Function,
-  value: string,
-};
+interface Props {
+  filterPage: Function;
+  value: string;
+  intl: InjectedIntl;
+}
 
 type State = {
   value: string,
 };
 
 class SearchField extends React.Component<Props, State> {
+  searchPlaceholder: string;
+
+  componentWillMount() {
+    this.searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
+  }
+
   handleSubmit = (event):void => {
     event.preventDefault();
     const value = event.target.search.value;
@@ -90,4 +98,4 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   return { value, filterPage, ...ownProps };
 };
 
-export default injectTFunc(connect(mapStateToProps, { goTo: push }, mergeProps)(SearchField));
+export default injectIntl(injectTFunc(connect(mapStateToProps, { goTo: push }, mergeProps)(SearchField)));
