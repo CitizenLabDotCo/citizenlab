@@ -17,6 +17,10 @@ import styled from 'styled-components';
 // i18n
 import messages from './messages';
 
+const Container = styled.div`
+  margin-top: 40px;
+`;
+
 type Props = {};
 
 type State = {
@@ -51,10 +55,12 @@ export default class ProjectsList extends React.PureComponent<Props, State> {
       <div>
         <HelmetIntl title={messages.helmetTitle} description={messages.helmetDescription} />
         <ContentContainer>
-          {loading && <h1>Loading...</h1>}
-          {!loading && projects && projects.data.map((project) => (
-            <ProjectCard key={project.id} id={project.id} />
-          ))}
+          <Container>
+            {loading && <h1>Loading...</h1>}
+            {!loading && projects && projects.data.map((project) => (
+              <ProjectCard key={project.id} id={project.id} />
+            ))}
+          </Container>
         </ContentContainer>
       </div>
     );
