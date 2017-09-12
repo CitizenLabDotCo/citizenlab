@@ -1,8 +1,7 @@
 // Libraries
-import React from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import styled from 'styled-components';
+import * as React from 'react';
+import * as _ from 'lodash';
+import styled, { StyledFunction } from 'styled-components';
 
 // Components
 import Title from './components/title';
@@ -20,15 +19,29 @@ const Container = styled(clickOutside)`
   }
 `;
 
-class FilterSelector extends React.Component {
-  constructor() {
-    super();
+interface Props {
+  title: string;
+  name: string;
+  values: { text: string, value: any}[];
+  onChange?: Function;
+  multiple: boolean;
+  selected: any[];
+}
 
-    this.baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
+interface State {
+  deployed: boolean;
+  currentTitle: string;
+}
+
+class FilterSelector extends React.Component<Props, State> {
+  baseID: string = `filter-${Math.floor(Math.random() * 10000000)}`;
+
+  constructor(props) {
+    super(props);
 
     this.state = {
       deployed: false,
-      currentTitle: '',
+      currentTitle: this.getTitle(props.selected, props.values, props.multiple, props.title),
     };
   }
 
@@ -40,7 +53,8 @@ class FilterSelector extends React.Component {
     let newTitle = '';
 
     if (!multiple && selection.length > 0) {
-      newTitle = _.find(values, { value: selection[0] }).text;
+      const selected = _.find(values, { value: selection[0] });
+      newTitle = selected ? selected.text : '';
     } else if (selection.length > 0) {
       newTitle = `${title} (${selection.length})`;
     } else {
@@ -81,26 +95,12 @@ class FilterSelector extends React.Component {
     const { values, multiple, selected } = this.props;
 
     return (
-      <Container tabIndex="0" onClickOutside={this.handleClickOutside}>
+      <Container onClickOutside={this.handleClickOutside}>
         <Title title={currentTitle} deployed={deployed} onClick={this.toggleExpanded} baseID={this.baseID} />
         <ValuesList deployed={deployed} values={values} selected={selected} onChange={this.selectionChange} multiple={multiple} baseID={this.baseID} />
       </Container>
     );
   }
 }
-
-FilterSelector.propTypes = {
-  title: PropTypes.string,
-  name: PropTypes.string.isRequired,
-  values: PropTypes.arrayOf(
-    PropTypes.shape({
-      text: PropTypes.string,
-      value: PropTypes.any,
-    })
-  ),
-  onChange: PropTypes.func,
-  multiple: PropTypes.bool,
-  selected: PropTypes.array,
-};
 
 export default FilterSelector;
