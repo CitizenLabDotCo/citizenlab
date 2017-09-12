@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import qs from 'qs';
 import HelmetIntl from 'components/HelmetIntl';
 import { connect } from 'react-redux';
-import { injectIntl, injectedIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 
 // components
 import WatchSagas from 'containers/WatchSagas';
@@ -91,7 +91,7 @@ IdeasIndex.propTypes = {
   resetIdeas: PropTypes.func.isRequired,
   filter: PropTypes.object,
   withFilters: PropTypes.bool.isRequired,
-  intl: injectedIntl,
+  intl: PropTypes.any,
 };
 
 IdeasIndex.defaultProps = {
