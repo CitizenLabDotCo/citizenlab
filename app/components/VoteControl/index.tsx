@@ -8,7 +8,7 @@ import { IStream } from 'utils/streams';
 import styled from 'styled-components';
 import { authUserStream } from 'services/auth';
 import eventEmitter from 'utils/eventEmitter';
-import { ideaStream, IIdea } from 'services/ideas';
+import { ideaByIdStream, IIdea } from 'services/ideas';
 import { userStream, IUser } from 'services/users';
 import { votesStream, addVote, deleteVote, IIdeaVote, IIdeaVoteData } from 'services/ideaVotes';
 
@@ -111,7 +111,7 @@ export default class Votes extends React.PureComponent<Props, State> {
       myVote: null
     };
 
-    const idea$ = ideaStream(ideaId).observable;
+    const idea$ = ideaByIdStream(ideaId).observable;
     const authUser$ = authUserStream().observable;
     const isAuthenticated$ = authUser$.map(authUser => !_.isNull(authUser));
     const votes$ = votesStream(ideaId).observable;

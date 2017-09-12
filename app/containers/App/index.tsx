@@ -47,11 +47,16 @@ const Container = styled.div`
   `}
 `;
 
+export interface IModalProps {
+  ideaId: string;
+  ideaSlug: string;
+}
+
 type Props = {};
 
 type State = {
   currentTenant: ITenant | null;
-  modalIdeaSlug: string | null;
+  modal: IModalProps | null;
 };
 
 export const namespace = 'App/index';
@@ -62,7 +67,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
   constructor() {
     super();
-    const initialState: State = { currentTenant: null, modalIdeaSlug: null };
+    const initialState: State = { currentTenant: null, modal: null };
     this.state$ = state.createStream<State>(namespace, namespace, initialState);
   }
 
@@ -70,9 +75,9 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
 
-      eventEmitter.observe(ideaCardNamespace, 'ideaCardClick').subscribe(({ eventValue }) => {
-        const ideaSlug = eventValue;
-        this.openModal(ideaSlug);
+      eventEmitter.observe<IModalProps>(ideaCardNamespace, 'ideaCardClick').subscribe(({ eventValue }) => {
+        const { ideaId, ideaSlug } = eventValue;
+        this.openModal({ ideaId, ideaSlug });
       }),
 
       authUserStream().observable.subscribe((authUser) => {
@@ -95,17 +100,19 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  openModal = (modalIdeaSlug) => {
-    this.state$.next({ modalIdeaSlug });
+  openModal = (modal: IModalProps) => {
+    this.state$.next({ modal });
   }
 
   closeModal = () => {
-    this.state$.next({ modalIdeaSlug: null });
+    this.state$.next({ modal: null });
   }
 
   render() {
     const { location, children } = this.props;
-    const { currentTenant, modalIdeaSlug } = this.state;
+    const { currentTenant, modal } = this.state;
+    const modalOpened = !_.isNull(modal);
+    const modalUrl = !_.isNull(modal) ? `/ideas/${modal.ideaSlug}` : undefined;
     const theme = {
       colorMain: (currentTenant ? currentTenant.data.attributes.settings.core.color_main : '#ef0071'),
       menuStyle: 'light',
@@ -125,8 +132,8 @@ export default class App extends React.PureComponent<Props & RouterState, State>
             <Container>
               <Meta tenant={currentTenant} />
 
-              <Modal opened={!!modalIdeaSlug} close={this.closeModal} url={`/ideas/${modalIdeaSlug}`}>
-                <IdeasShow location={location} slug={modalIdeaSlug} />
+              <Modal opened={modalOpened} close={this.closeModal} url={`/ideas/${modalUrl}`}>
+                {modal && <IdeasShow location={location} ideaId={modal.ideaId} />}
               </Modal>
 
               <Navbar />

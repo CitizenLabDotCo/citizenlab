@@ -147,9 +147,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
   state$: IStateStream<State>;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
-
+  componentWillMount() {
     const initialNewIdeaFormState: INewIdeaFormState = {
       topics: null,
       projects: null,
@@ -175,15 +173,11 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
       locale: 'nl'
     };
 
+    const locale$ = localeStream().observable;
+
     this.newIdeaFormState$ = state.createStream<INewIdeaFormState>(namespace, NewIdeaFormNamespace, initialNewIdeaFormState);
     this.buttonBarState$ = state.createStream<IButtonBarState>(namespace, ButtonBarNamespace, initialButtonBarState);
     this.state$ = state.createStream<State>(namespace, namespace, initialState);
-
-    this.subscriptions = [];
-  }
-
-  componentWillMount() {
-    const locale$ = localeStream().observable;
 
     this.subscriptions = [
       this.buttonBarState$.observable.subscribe(),
@@ -194,7 +188,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   async componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());    
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
     const currentNewIdeaFormState = await this.newIdeaFormState$.getCurrent();
     _(currentNewIdeaFormState.images).forEach(image => image.preview && window.URL.revokeObjectURL(image.preview));
   }

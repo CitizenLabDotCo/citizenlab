@@ -1,25 +1,25 @@
 import * as Rx from 'rxjs/Rx';
 
-interface IEventEmitterEvent {
+interface IEventEmitterEvent<T> {
   eventSource: string;
   eventName: string;
-  eventValue: any;
+  eventValue: T;
 }
 
 class EventEmitter {
-  private subject: Rx.Subject<IEventEmitterEvent>;
-  private stream: { [key: string]: Rx.Observable<IEventEmitterEvent> };
+  private subject: Rx.Subject<IEventEmitterEvent<any>>;
+  private stream: { [key: string]: Rx.Observable<IEventEmitterEvent<any>> };
 
   constructor() {
     this.subject = new Rx.Subject();
     this.stream = {};
   }
 
-  emit(eventSource: string, eventName: string, eventValue: any | null = null) {
+  emit<T>(eventSource: string, eventName: string, eventValue: T) {
     this.subject.next({ eventSource, eventName, eventValue });
   }
 
-  observe(eventSource: string, eventName: string) {
+  observe<T>(eventSource: string, eventName: string): Rx.Observable<IEventEmitterEvent<T>> {
     const streamName = `${eventSource}-${eventName}`;
 
     if (!this.stream[streamName]) {
