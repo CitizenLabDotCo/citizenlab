@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
-import { push } from 'react-router-redux';
 import { Link, browserHistory } from 'react-router';
 
 // components
@@ -11,12 +10,13 @@ import Icon from 'components/UI/Icon';
 import Unauthenticated from 'components/IdeaCard/Unauthenticated';
 import { namespace as IdeaCardsNamespace } from 'components/IdeaCards';
 import VoteControl, { namespace as voteControlNamespace } from 'components/VoteControl';
+import { IModalProps } from 'containers/App';
 
 // services
 import { authUserStream } from 'services/auth';
 import { state, IStateStream } from 'services/state';
 import { localeStream } from 'services/locale';
-import { ideaStream, IIdea } from 'services/ideas';
+import { ideaByIdStream, IIdea } from 'services/ideas';
 import { userStream, IUser } from 'services/users';
 import { ideaImagesStream, ideaImageStream, IIdeaImage, IIdeaImageData } from 'services/ideaImages';
 
@@ -178,10 +178,9 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
       showUnauthenticated: false,
       loading: true
     };
-
     const locale$ = localeStream().observable;
     const isAuthenticated$ = authUserStream().observable.map(authUser => !_.isNull(authUser));
-    const idea$ = ideaStream(ideaId).observable.switchMap((idea) => {
+    const idea$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {
       const ideaImages = idea.data.relationships.idea_images.data;
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
       const authorId = idea.data.relationships.author.data.id;
@@ -218,8 +217,9 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
 
     if (idea) {
       event.preventDefault();
+      const ideaId = idea.data.id;
       const ideaSlug = idea.data.attributes.slug;
-      eventEmitter.emit(namespace, 'ideaCardClick', ideaSlug);
+      eventEmitter.emit<IModalProps>(namespace, 'ideaCardClick', { ideaId, ideaSlug });
     }
   }
 

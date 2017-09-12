@@ -5,22 +5,17 @@ import { Link } from 'react-router';
 
 // components
 import IdeaCard, { namespace as ideaCardNamespace } from 'components/IdeaCard';
-// import Modal from 'components/UI/Modal';
-// import IdeasShow from 'containers/IdeasShow';
 import Icon from 'components/UI/Icon';
 
 // services
 import { state, IStateStream } from 'services/state';
-import { ideasStream, ideaStream, IIdeas, IIdeaData } from 'services/ideas';
+import { ideasStream, ideaByIdStream, IIdeas, IIdeaData } from 'services/ideas';
 import { userStream, IUser } from 'services/users';
 import { ideaImageStream, ideaImagesStream, IIdeaImage, IIdeaImageData } from 'services/ideaImages';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-
-// utils
-// import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled from 'styled-components';
@@ -94,7 +89,6 @@ type Props = {
 type State = {
   ideas: IIdeas | null;
   hasMore: boolean;
-  // modalIdeaSlug: string | null;
 };
 
 export const namespace = 'IdeaCards/index';
@@ -109,32 +103,16 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     loadMoreEnabled: true
   };
 
-  constructor() {
-    super();
-    const initialState: State = {
-      ideas: null,
-      hasMore: false,
-      // modalIdeaSlug: null
-    };
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
-    this.subscriptions = [];
-  }
-
   componentWillMount() {
+    const initialState: State = { ideas: null, hasMore: false };
     const filter = (_.isObject(this.props.filter) && !_.isEmpty(this.props.filter) ? this.props.filter : {});
 
+    this.state$ = state.createStream<State>(namespace, namespace, initialState);
     this.filterChange$ = new Rx.BehaviorSubject(filter);
     this.loadMore$ = new Rx.BehaviorSubject(false);
 
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
-
-      /*
-      eventEmitter.observe(ideaCardNamespace, 'ideaCardClick').subscribe(({ eventValue }) => {
-        const ideaSlug = eventValue;
-        this.openModal(ideaSlug);
-      }),
-      */
 
       Rx.Observable.combineLatest(
         this.filterChange$,
@@ -155,7 +133,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
             const ideaImages = idea.relationships.idea_images.data;
             const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
             const ideaImage$ = (ideaImageId ? ideaImageStream(idea.id, ideaImageId).observable : Rx.Observable.of(null));
-            const idea$ = ideaStream(idea.id).observable;
+            const idea$ = ideaByIdStream(idea.id).observable;
             const user$ = userStream(idea.relationships.author.data.id).observable;
             return Rx.Observable.combineLatest(idea$, ideaImage$, user$).map(data => idea);
           });
@@ -195,16 +173,6 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     this.loadMore$.next(true);
   }
 
-  /*
-  closeModal = () => {
-    this.state$.next({ modalIdeaSlug: null });
-  }
-
-  openModal = (modalIdeaSlug) => {
-    this.state$.next({ modalIdeaSlug });
-  }
-  */
-
   render() {
     const { ideas, hasMore } = this.state;
     const { loadMoreEnabled } = this.props;
@@ -237,14 +205,6 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
         {loadMore}
       </IdeasList>
     ) : null);
-
-    /*
-    const modal = (ideas ? (
-      <Modal opened={!!this.state.modalIdeaSlug} close={this.closeModal} url={`/ideas/${this.state.modalIdeaSlug}`}>
-        <IdeasShow location={location} slug={this.state.modalIdeaSlug} />
-      </Modal>
-    ) : null);
-    */
 
     return (
       <div>

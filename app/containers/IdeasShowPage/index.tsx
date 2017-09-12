@@ -1,8 +1,21 @@
 import * as React from 'react';
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
+
+// router
+import { withRouter, RouterState } from 'react-router';
+
+// components
 import ContentContainer from 'components/ContentContainer';
 import IdeasShow from 'containers/IdeasShow';
+
+// services
+import { state, IStateStream } from 'services/state';
+import { ideaBySlugStream, IIdea } from 'services/ideas';
+
+// style
+import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const BackgroundWrapper = styled.div`
   margin: 50px 0;
@@ -13,19 +26,49 @@ const BackgroundWrapper = styled.div`
   `}
 `;
 
-interface Props {
+type Props = {
   params: {
-    slug: string,
-    location: string,
+    slug: string;
   };
+};
+
+type State = {
+  ideaId: string | null;
+};
+
+const namespace = 'IdeasShowPage/index';
+
+class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
+  state$: IStateStream<State>;
+  subscriptions: Rx.Subscription[];
+
+  componentWillMount() {
+    const { slug } = this.props.params;
+    const initialState: State = { ideaId: null };
+    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    this.subscriptions = [
+      ideaBySlugStream(slug).observable
+        .map(idea => idea.data.id)
+        .subscribe(ideaId => this.state$.next({ ideaId }))
+    ];
+  }
+
+  render() {
+    const { location } = this.props;
+    const { ideaId } = this.state;
+
+    if (ideaId !== null) {
+      return (
+        <ContentContainer>
+          <BackgroundWrapper>
+            <IdeasShow location={location} ideaId={ideaId} />
+          </BackgroundWrapper>
+        </ContentContainer>
+      );
+    }
+
+    return null;
+  }
 }
 
-const IdeasShowPage: React.SFC<Props> = ({ params }) => (
-  <ContentContainer>
-    <BackgroundWrapper>
-      <IdeasShow slug={params.slug} location={location}/>
-    </BackgroundWrapper>
-  </ContentContainer>
-);
-
-export default  IdeasShowPage;
+export default withRouter(IdeasShowPage as any);

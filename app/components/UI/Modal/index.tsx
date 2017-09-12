@@ -116,6 +116,12 @@ const CloseButton = styled.div`
   }
 `;
 
+interface ITracks {
+  clickCloseButton: (arg: any) => void;
+  clickOutsideModal: (arg: any) => void;
+  clickBack: (arg: any) => void;
+}
+
 type Props = {
   opened: boolean;
   url?: string;
@@ -124,7 +130,7 @@ type Props = {
 
 type State = {};
 
-class Modal extends React.PureComponent<Props, State> {
+class Modal extends React.PureComponent<Props & ITracks, State> {
   private parentUrl: string;
 
   constructor() {
@@ -182,18 +188,18 @@ class Modal extends React.PureComponent<Props, State> {
 
   handlePopstateEvent = () => {
     if (location.href === this.parentUrl) {
-      (this.props as any).clickBack({ extra: { url: this.props.url } });
+      this.props.clickBack({ extra: { url: this.props.url } });
       this.closeModal();
     }
   }
 
   clickOutsideModal = () => {
-    (this.props as any).clickOutsideModal({ extra: { url: this.props.url } });
+    this.props.clickOutsideModal({ extra: { url: this.props.url } });
     this.closeModal();
   }
 
   clickButton = () => {
-    (this.props as any).clickCloseButton({ extra: { url: this.props.url } });
+    this.props.clickCloseButton({ extra: { url: this.props.url } });
     this.closeModal();
   }
 
@@ -223,4 +229,4 @@ class Modal extends React.PureComponent<Props, State> {
   }
 }
 
-export default ((injectTracks(tracks)(Modal) as any) as typeof Modal);
+export default injectTracks<Props>(tracks)(Modal);
