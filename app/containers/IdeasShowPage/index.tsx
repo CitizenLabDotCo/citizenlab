@@ -45,12 +45,17 @@ class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
   componentWillMount() {
     const { slug } = this.props.params;
     const initialState: State = { ideaId: null };
+
     this.state$ = state.createStream<State>(namespace, namespace, initialState);
+
     this.subscriptions = [
-      ideaBySlugStream(slug).observable
-        .map(idea => idea.data.id)
-        .subscribe(ideaId => this.state$.next({ ideaId }))
+      this.state$.observable.subscribe(state => this.setState(state)),
+      ideaBySlugStream(slug).observable.map(idea => idea.data.id).subscribe(ideaId => this.state$.next({ ideaId }))
     ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {

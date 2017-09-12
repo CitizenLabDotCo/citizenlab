@@ -20,7 +20,6 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-
 const ModalContent = styled(clickOutside)`
   width: 100%;
   max-width: 850px;
@@ -29,7 +28,7 @@ const ModalContent = styled(clickOutside)`
   padding: 25px;
   margin-top: 50px;
   margin-bottom: 80px;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #fff;
   margin-left: auto;
   margin-right: auto;
@@ -46,6 +45,33 @@ const ModalContent = styled(clickOutside)`
   `}
 `;
 
+const CloseIcon = styled(Icon)`
+  height: 20px;
+  fill: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CloseButton = styled.div`
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  cursor: pointer;
+  top: 15px;
+  right: 15px;
+  z-index: 1;
+
+  &:hover {
+    ${CloseIcon} {
+      fill: #ccc;
+    }
+  }
+`;
+
 const ModalContainer = styled.div`
   max-height: 100%;
   padding-left: 30px;
@@ -57,7 +83,7 @@ const ModalContainer = styled.div`
   bottom: -200px;
   left: 0;
   overflow-y: auto;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
   -webkit-backface-visibility: hidden;
   will-change: opacity;
 
@@ -70,7 +96,7 @@ const ModalContainer = styled.div`
 
       ${ModalContent} {
         opacity: 0.01;
-        transform: translateY(-120px);
+        transform: translateY(-40px);
       }
 
       &.modal-enter-active {
@@ -85,35 +111,6 @@ const ModalContainer = styled.div`
         }
       }
     }
-`;
-
-
-const IconWrapper = styled.div`
-  svg {
-    margin-top: -5px;
-    z-index: 2;
-    height: 14px;    
-    fill: #333;
-  }
-`;
-
-const CloseButton = styled.div`
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  border-radius: 50%;
-  background: #e0e0e0;
-  cursor: pointer;
-  top: 20px;
-  right: 20px;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background: #ccc;
-  }
 `;
 
 interface ITracks {
@@ -206,20 +203,18 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   render() {
     const { children, opened } = this.props;
 
-    const element = opened && (
+    const element = (opened ? (
       <CSSTransition classNames="modal" timeout={350} exit={false}>
         <ModalContainer>
+          <CloseButton onClick={this.clickButton}>
+            <CloseIcon name="close2" />
+          </CloseButton>
           <ModalContent onClickOutside={this.clickOutsideModal}>
-            <CloseButton onClick={this.clickButton}>
-              <IconWrapper>
-                <Icon name="close2" />
-              </IconWrapper>
-            </CloseButton>
             {children}
           </ModalContent>
         </ModalContainer>
       </CSSTransition>
-    );
+    ) : null);
 
     return (
       <TransitionGroup>
