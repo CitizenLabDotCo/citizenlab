@@ -130,7 +130,9 @@ export default class SignIn extends React.PureComponent<Props, State> {
     return (!emailError && !passwordError);
   }
 
-  handleOnSubmit = async () => {
+  handleOnSubmit = async (e) => {
+    e.preventDefault();
+
     const { onSignedIn } = this.props;
     const { formatMessage } = this.props.intl;
     const { email, password } = this.state;
@@ -168,7 +170,7 @@ export default class SignIn extends React.PureComponent<Props, State> {
 
     return (
       <Container>
-        <Form>
+        <Form onSubmit={this.handleOnSubmit}>
           <FormElement>
             {/* <Label value={formatMessage(messages.emailLabel)} htmlFor="email" /> */}
             <Input
@@ -201,7 +203,6 @@ export default class SignIn extends React.PureComponent<Props, State> {
                 size="2"
                 loading={processing}
                 text={formatMessage(messages.submit)}
-                onClick={this.handleOnSubmit}
               />
               <ForgotPassword onClick={this.handleForgotPasswordOnClick}>
                 <FormattedMessage {...messages.forgotPassword} />
