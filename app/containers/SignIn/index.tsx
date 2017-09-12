@@ -19,7 +19,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Form = styled.div`
+const Form = styled.form`
   width: 100%;
 `;
 
