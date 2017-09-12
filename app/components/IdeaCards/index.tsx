@@ -5,8 +5,8 @@ import { Link } from 'react-router';
 
 // components
 import IdeaCard, { namespace as ideaCardNamespace } from 'components/IdeaCard';
-import Modal from 'components/UI/Modal';
-import IdeasShow from 'containers/IdeasShow';
+// import Modal from 'components/UI/Modal';
+// import IdeasShow from 'containers/IdeasShow';
 import Icon from 'components/UI/Icon';
 
 // services
@@ -20,7 +20,7 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // utils
-import eventEmitter from 'utils/eventEmitter';
+// import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled from 'styled-components';
@@ -94,7 +94,7 @@ type Props = {
 type State = {
   ideas: IIdeas | null;
   hasMore: boolean;
-  modalIdeaSlug: string | null;
+  // modalIdeaSlug: string | null;
 };
 
 export const namespace = 'IdeaCards/index';
@@ -114,7 +114,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     const initialState: State = {
       ideas: null,
       hasMore: false,
-      modalIdeaSlug: null
+      // modalIdeaSlug: null
     };
     this.state$ = state.createStream<State>(namespace, namespace, initialState);
     this.subscriptions = [];
@@ -129,10 +129,12 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
 
+      /*
       eventEmitter.observe(ideaCardNamespace, 'ideaCardClick').subscribe(({ eventValue }) => {
         const ideaSlug = eventValue;
         this.openModal(ideaSlug);
       }),
+      */
 
       Rx.Observable.combineLatest(
         this.filterChange$,
@@ -193,6 +195,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     this.loadMore$.next(true);
   }
 
+  /*
   closeModal = () => {
     this.state$.next({ modalIdeaSlug: null });
   }
@@ -200,6 +203,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
   openModal = (modalIdeaSlug) => {
     this.state$.next({ modalIdeaSlug });
   }
+  */
 
   render() {
     const { ideas, hasMore } = this.state;
@@ -234,17 +238,18 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
       </IdeasList>
     ) : null);
 
+    /*
     const modal = (ideas ? (
       <Modal opened={!!this.state.modalIdeaSlug} close={this.closeModal} url={`/ideas/${this.state.modalIdeaSlug}`}>
         <IdeasShow location={location} slug={this.state.modalIdeaSlug} />
       </Modal>
     ) : null);
+    */
 
     return (
       <div>
         {empty}
         {ideasList}
-        {modal}
       </div>
     );
   }

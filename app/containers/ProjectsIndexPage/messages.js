@@ -10,10 +10,6 @@ export default defineMessages({
     id: 'app.containers.ProjectsIndexPage.header',
     defaultMessage: 'Projects',
   },
-  loadMore: {
-    id: 'app.containers.ProjectsIndexPage.loadMore',
-    defaultMessage: 'Load more...',
-  },
   loading: {
     id: 'app.containers.ProjectsIndexPage.loading',
     defaultMessage: 'Loading...',
