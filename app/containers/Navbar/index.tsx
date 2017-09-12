@@ -24,7 +24,7 @@ import { media } from 'utils/styleUtils';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 // style
-import { lighten } from 'polished';
+import { lighten, darken } from 'polished';
 import messages from './messages';
 import styled, { ThemeProvider, css } from 'styled-components';
 
@@ -35,10 +35,14 @@ const Container = styled.div`
   height: ${(props) => props.theme.menuHeight}px;
   position: relative;
   background: ${(props) => props.theme.colorNavBg};
+  background: rgba(255, 255, 255, 0.9);
   border-bottom: 1px solid ${(props) => props.theme.colorNavBottomBorder};
   z-index: 999;
   position: fixed;
   top: 0;
+
+  background: none;
+  border: none;
 `;
 
 const Left = styled.div`
@@ -48,12 +52,13 @@ const Left = styled.div`
 
 const subtleSeparator = css`
   border-right: 1px solid ${(props) => props.theme.colorNavSubtle};
+  border: none;
 `;
 
 const Logo = styled.div`
   cursor: pointer;
   height: 100%;
-  padding: 0 25px;
+  padding: 0px 20px;
   ${subtleSeparator}
   display: flex;
   flex-direction: column;
@@ -63,7 +68,8 @@ const Logo = styled.div`
 const NavigationItems = styled.div`
   height: 100%;
   display: flex;
-  margin-left: 90px;
+  margin-left: 35px;
+
   ${media.phone`
     display: none;
   `}
@@ -71,22 +77,22 @@ const NavigationItems = styled.div`
 
 const NavigationItem = styled(Link)`
   height: 100%;
-
-  opacity: 0.5;
+  opacity: 0.4;
   transition: opacity 150ms ease;
-  &.active, &:hover {
-    opacity: 1;
-  }
-
   color: ${(props) => props.theme.colorNavFg} !important;
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 400;
-
   display: flex;
   align-items: center;
   justify-content: center;
+  
   &:not(:last-child) {
     padding-right: 50px;
+  }
+
+  &.active,
+  &:hover {
+    opacity: 1;
   }
 `;
 
@@ -101,7 +107,7 @@ const RightItem: any = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0 34px;
+  padding: 0 25px;
 
   &:not(:last-child) {
     ${subtleSeparator}
@@ -114,14 +120,14 @@ const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 25px;
+  padding: 10px 20px;
   border-radius: 5px;
   background: ${(props) => props.theme.colorMain};
   cursor: pointer;
-  transition: all 150ms ease;
+  transition: background 150ms ease;
 
   &:hover {
-    background: ${(props) => lighten(0.1, props.theme.colorMain)};
+    background: ${(props) => darken(0.1, props.theme.colorMain)};
   }
 
   ${media.phone`

@@ -47,9 +47,9 @@ const HeaderBackground = styled.div`
 `;
 
 export const HeaderTitle = styled.h1`
-  font-size: 45px;
+  font-size: 42px;
   line-height: 50px;
-  font-weight: 600;
+  font-weight: 500;
   text-align: center;
   color: #FFFFFF;
   margin: 0;
@@ -77,8 +77,8 @@ export const HeaderTitle = styled.h1`
 
 export const HeaderSubtitle = styled.h2`
   color: #fff;
-  font-size: 30px;
-  line-height: 34px;
+  font-size: 26px;
+  line-height: 32px;
   font-weight: 100;
   max-width: 980px;
   text-align: center;

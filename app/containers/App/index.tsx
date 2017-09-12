@@ -116,7 +116,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const theme = {
       colorMain: (currentTenant ? currentTenant.data.attributes.settings.core.color_main : '#ef0071'),
       menuStyle: 'light',
-      menuHeight: 80,
+      menuHeight: 70,
       mobileMenuHeight: 80,
       maxPageWidth: 950,
     };
@@ -132,7 +132,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
             <Container>
               <Meta tenant={currentTenant} />
 
-              <Modal opened={modalOpened} close={this.closeModal} url={`/ideas/${modalUrl}`}>
+              <Modal opened={modalOpened} close={this.closeModal} url={modalUrl}>
                 {modal && <IdeasShow location={location} ideaId={modal.ideaId} />}
               </Modal>
 
