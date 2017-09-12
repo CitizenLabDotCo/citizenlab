@@ -36,12 +36,12 @@ interface State {
 class FilterSelector extends React.Component<Props, State> {
   baseID: string = `filter-${Math.floor(Math.random() * 10000000)}`;
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       deployed: false,
-      currentTitle: '',
+      currentTitle: this.getTitle(props.selected, props.values, props.multiple, props.title),
     };
   }
 
