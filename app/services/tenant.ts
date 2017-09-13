@@ -58,9 +58,9 @@ export interface ITenant {
 }
 
 export interface IUpdatedTenantProperties {
-  settings: Partial<ITenantSettings>;
-  logo: string;
-  header_bg: string;
+  settings?: Partial<ITenantSettings>;
+  logo?: string;
+  header_bg?: string;
 }
 
 export function currentTenantStream() {
