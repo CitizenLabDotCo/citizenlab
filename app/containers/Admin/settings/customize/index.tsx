@@ -30,7 +30,8 @@ import { saveSettings } from '../actions';
 // Services
 import {
   currentTenantStream,
-  TenantUpdatedAttributes,
+  updateTenant,
+  IUpdatedTenantProperties,
   ITenantData
 } from 'services/tenant';
 
@@ -42,7 +43,7 @@ interface Props {
 }
 
 interface State {
-  attributesDiff: TenantUpdatedAttributes;
+  attributesDiff: IUpdatedTenantProperties;
   tenant: ITenantData | null;
   loading: boolean;
   errors: {
@@ -121,7 +122,20 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
 
   save = (e) => {
     e.preventDefault();
-    // this.props.saveSettings(this.props.tenant.get('id'), this.state.changedAttributes.toJS());
+
+    const { tenant, attributesDiff } = this.state;
+
+    if (!tenant) {
+      return null;
+    }
+
+    updateTenant(tenant.id, attributesDiff)
+    .then(() => {
+
+    })
+    .catch(() => {
+
+    });
   }
 
   menuStyleOptions = () => ([
