@@ -120,13 +120,13 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
     });
   }
 
-  save = (e) => {
+  save = (e): void => {
     e.preventDefault();
 
     const { tenant, attributesDiff } = this.state;
 
     if (!tenant) {
-      return null;
+      return;
     }
 
     updateTenant(tenant.id, attributesDiff)
