@@ -72,7 +72,6 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
 
   componentDidMount() {
     this.subscription = currentTenantStream().observable.subscribe((response) => {
-      console.log(response);
       this.setState({ tenant: response.data });
     });
   }
@@ -95,6 +94,22 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
         // changedAttributes: this.state.changedAttributes.set(name, reader.result),
         // [`temp_${name}`]: [value],
       });
+    };
+  }
+
+  createToggleChangeHandler = (fieldPath) => {
+    return (event, data?): void => {
+      let newDiff = _.cloneDeep(this.state.attributesDiff);
+      if (data && data.checked !== undefined) {
+        newDiff = _.set(newDiff, fieldPath, data.checked);
+      } else if (event && typeof(event) === 'string') {
+        newDiff = _.set(newDiff, fieldPath, event);
+      } else if (event && event.value) {
+        newDiff = _.set(newDiff, fieldPath, event.value);
+      } else {
+        console.log(arguments);
+      }
+      this.setState({ attributesDiff: newDiff });
     };
   }
 
@@ -123,8 +138,8 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
 
   render() {
     const tenantAttrs = this.state.tenant
-    ? { ...this.state.tenant.attributes, ...this.state.attributesDiff }
-    : { ...this.state.attributesDiff };
+    ? _.merge({}, this.state.tenant.attributes, this.state.attributesDiff)
+    : _.merge({}, this.state.attributesDiff);
 
     return (
       <div>
@@ -138,7 +153,7 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
           <Select
             value={_.get(tenantAttrs, 'settings.core.menu_style', '')}
             options={this.menuStyleOptions()}
-            onChange={console.log}
+            onChange={this.createToggleChangeHandler('settings.core.menu_style')}
           />
         </div>
 
@@ -147,7 +162,7 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
           <ColorPickerInput
             type="text"
             value={_.get(tenantAttrs, 'settings.core.color_main')}
-            onChange={console.log}
+            onChange={this.createToggleChangeHandler('settings.core.color_main')}
           />
         </div>
 
@@ -184,42 +199,19 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
         <p><FormattedMessage {...messages.subTitleSignupFields} /></p>
 
 
-        <div>
-          <Label><FormattedMessage {...messages.gender} /></Label>
-          <Checkbox
-            slider={true}
-            checked={_.get(tenantAttrs, 'settings.demographic_fields.gender')}
-            onChange={console.log}
-          />
-        </div>
-
-        <div>
-          <Label><FormattedMessage {...messages.domicile} /></Label>
-          <Checkbox
-            slider={true}
-            checked={_.get(tenantAttrs, 'settings.demographic_fields.domicile')}
-            onChange={console.log}
-          />
-        </div>
-
-        <div>
-          <Label><FormattedMessage {...messages.birthyear} /></Label>
-          <Checkbox
-            slider={true}
-            checked={_.get(tenantAttrs, 'settings.demographic_fields.birthyear')}
-            onChange={console.log}
-          />
-        </div>
-
-        <div>
-          <Label><FormattedMessage {...messages.education} /></Label>
-          <Checkbox
-            slider={true}
-            checked={_.get(tenantAttrs, 'settings.demographic_fields.education')}
-            onChange={console.log}
-          />
-        </div>
-
+        {['gender', 'domicile', 'birthyear', 'education'].map((fieldName, index) => {
+          const fieldPath = `settings.demographic_fields.${fieldName}`;
+          return (
+            <FieldWrapper key={fieldName}>
+              <Label><FormattedMessage {...messages[fieldName]} /></Label>
+              <Checkbox
+                slider={true}
+                checked={_.get(tenantAttrs, fieldPath)}
+                onChange={this.createToggleChangeHandler(fieldPath)}
+              />
+            </FieldWrapper>
+          );
+        })}
         <Button onClick={this.save}>
           <FormattedMessage {...messages.save} />
         </Button>
