@@ -1,13 +1,8 @@
-import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
-import request from 'utils/request';
+import streams from 'utils/streams';
 import { API, Multiloc } from 'typings';
 
-const apiEndpoint = `${API_PATH}/tenants`;
-
-interface TenantSettings {
+export interface ITenantSettings {
   core: {
     allowed: boolean;
     enabled: boolean;
@@ -37,22 +32,34 @@ export interface ITenantData {
   attributes: {
     name: string;
     host: string;
-    settings: TenantSettings;
-    logo: API.ImageSizes;
-    header_bg: API.ImageSizes;
+    settings: ITenantSettings;
+    logo: {
+      small: string | null;
+      medium: string | null;
+      large: string | null;
+    };
+    header_bg: {
+      large: string | null;
+      medium: string | null;
+      small: string | null;
+    };
   };
-}
-
-export interface TenantUpdatedAttributes {
-  settings?: TenantSettings;
-  logo?: string | API.ImageSizes | null;
-  header_bg?: string | API.ImageSizes | null;
 }
 
 export interface ITenant {
   data: ITenantData;
 }
 
-export function currentTenantStream(streamParams: IStreamParams<ITenant> | null = null) {
-  return streams.get<ITenant>({ apiEndpoint: `${apiEndpoint}/current`, ...streamParams });
+export interface IUpdatedTenantProperties {
+  settings?: Partial<ITenantSettings>;
+  logo?: string;
+  header_bg?: string;
+}
+
+export function currentTenantStream() {
+  return streams.get<ITenant>({ apiEndpoint: `${API_PATH}/tenants/current` });
+}
+
+export function updateTenant(tenantId: string, object: IUpdatedTenantProperties) {
+  return streams.update<ITenant>(`${API_PATH}/tenants/${tenantId}`, tenantId, { tenant: object });
 }
