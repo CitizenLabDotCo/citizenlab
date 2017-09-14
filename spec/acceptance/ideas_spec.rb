@@ -363,7 +363,7 @@ resource "Ideas" do
 
   delete "api/v1/ideas/:id" do
     before do
-      @idea = create(:idea, author: @user, publication_status: 'published')
+      @idea = create(:idea_with_topics, author: @user, publication_status: 'published')
     end
     let(:id) { @idea.id }
     example_request "Delete an idea" do
