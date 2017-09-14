@@ -88,12 +88,11 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
 
   changeImage(name, value) {
     const reader = new FileReader();
+    let newDiff = _.cloneDeep(this.state.attributesDiff);
     reader.readAsDataURL(value);
     reader.onload = () => {
-      this.setState({
-        // changedAttributes: this.state.changedAttributes.set(name, reader.result),
-        // [`temp_${name}`]: [value],
-      });
+      newDiff = _.set(newDiff, name, reader.result);
+      this.setState({ attributesDiff: newDiff });
     };
   }
 
@@ -142,7 +141,7 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
     : _.merge({}, this.state.attributesDiff);
 
     return (
-      <div>
+      <form onSubmit={this.save}>
 
 
         <h1><FormattedMessage {...messages.titleBranding} /></h1>
@@ -212,11 +211,12 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
             </FieldWrapper>
           );
         })}
+
         <Button onClick={this.save}>
           <FormattedMessage {...messages.save} />
         </Button>
 
-      </div>
+      </form>
     );
   }
 }
