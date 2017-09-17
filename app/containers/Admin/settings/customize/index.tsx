@@ -129,12 +129,14 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
       return;
     }
 
+    this.setState({ loading: true, saved: false });
+
     updateTenant(tenant.id, attributesDiff)
     .then(() => {
-
+      this.setState({ saved: true, attributesDiff: {}, loading: false });
     })
-    .catch(() => {
-
+    .catch((e) => {
+      this.setState({ errors: e.json.errors, loading: false });
     });
   }
 
@@ -161,26 +163,26 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
         <h1><FormattedMessage {...messages.titleBranding} /></h1>
         <p><FormattedMessage {...messages.subTitleBranding} /></p>
 
-        <div>
+        <FieldWrapper>
           <Label><FormattedMessage {...messages.menuStyle} /></Label>
           <Select
             value={_.get(tenantAttrs, 'settings.core.menu_style', '')}
             options={this.menuStyleOptions()}
             onChange={this.createToggleChangeHandler('settings.core.menu_style')}
           />
-        </div>
+        </FieldWrapper>
 
-        <div>
+        <FieldWrapper>
           <Label><FormattedMessage {...messages.mainColor} /></Label>
           <ColorPickerInput
             type="text"
             value={_.get(tenantAttrs, 'settings.core.color_main')}
             onChange={this.createToggleChangeHandler('settings.core.color_main')}
           />
-        </div>
+        </FieldWrapper>
 
 
-        <div>
+        <FieldWrapper>
           <Label><FormattedMessage {...messages.logo} /></Label>
           <Upload
             accept="image/*"
@@ -192,9 +194,9 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
             placeholder={this.uploadPlaceholder}
             intl={this.props.intl}
           />
-        </div>
+        </FieldWrapper>
 
-        <div>
+        <FieldWrapper>
           <Label><FormattedMessage {...messages.headerBg} /></Label>
           <Upload
             accept="image/*"
@@ -206,7 +208,7 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
             placeholder={this.uploadPlaceholder}
             intl={this.props.intl}
           />
-        </div>
+        </FieldWrapper>
 
         <h1><FormattedMessage {...messages.titleSignupFields} /></h1>
         <p><FormattedMessage {...messages.subTitleSignupFields} /></p>
@@ -226,9 +228,17 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
           );
         })}
 
-        <Button onClick={this.save}>
-          <FormattedMessage {...messages.save} />
-        </Button>
+        <SubmitWrapper
+          loading={this.state.loading}
+          status={this.getSubmitState()}
+          messages={{
+            buttonSave: messages.save,
+            buttonError: messages.saveError,
+            buttonSuccess: messages.saveSuccess,
+            messageError: messages.saveErrorMessage,
+            messageSuccess: messages.saveSuccessMessage,
+          }}
+        />
 
       </form>
     );
