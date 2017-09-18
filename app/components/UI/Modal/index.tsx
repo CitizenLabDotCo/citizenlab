@@ -36,6 +36,7 @@ const ModalContent = styled(clickOutside)`
   -webkit-backface-visibility: hidden;
   will-change: opacity, transform;
   z-index: 1000;
+  outline: none;
 
   ${media.phone`
     border-radius: 0;

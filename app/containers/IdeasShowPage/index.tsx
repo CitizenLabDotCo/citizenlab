@@ -10,7 +10,6 @@ import ContentContainer from 'components/ContentContainer';
 import IdeasShow from 'containers/IdeasShow';
 
 // services
-import { state, IStateStream } from 'services/state';
 import { ideaBySlugStream, IIdea } from 'services/ideas';
 
 // style
@@ -36,21 +35,24 @@ type State = {
   ideaId: string | null;
 };
 
-const namespace = 'IdeasShowPage/index';
-
 class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
-  state$: IStateStream<State>;
+  state: State;
   subscriptions: Rx.Subscription[];
+
+  constructor() {
+    super();
+    this.state = {
+      ideaId: null
+    };
+    this.subscriptions = [];
+  }
 
   componentWillMount() {
     const { slug } = this.props.params;
-    const initialState: State = { ideaId: null };
-
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    const idea$ = ideaBySlugStream(slug).observable.map(idea => idea.data.id);
 
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-      ideaBySlugStream(slug).observable.map(idea => idea.data.id).subscribe(ideaId => this.state$.next({ ideaId }))
+      idea$.subscribe(ideaId => this.setState({ ideaId }))
     ];
   }
 

@@ -4,7 +4,6 @@ import * as Rx from 'rxjs/Rx';
 import { IntlProvider } from 'react-intl';
 
 // services
-import { state, IStateStream } from 'services/state';
 import { localeStream } from 'services/locale';
 
 type Props = {
@@ -15,22 +14,23 @@ type State = {
   locale: string | null;
 };
 
-export const namespace = 'LanguageProvider/index';
-
 export default class LanguageProvider extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
+  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    const initialState: State = { locale: null };
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    this.state = {
+      locale: null
+    };
+    this.subscriptions = [];
   }
 
   componentWillMount() {
+    const locale$ = localeStream().observable;
+
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-      localeStream().observable.subscribe(locale => this.state$.next({ locale })),
+      locale$.subscribe(locale => this.setState({ locale })),
     ];
   }
 

@@ -1,43 +1,34 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import styled from 'styled-components';
-import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-import { createStructuredSelector } from 'reselect';
-import { push } from 'react-router-redux';
-import SignInUp from 'containers/SignInUp';
+import * as Rx from 'rxjs/Rx';
+
+// router
+import { browserHistory } from 'react-router';
+
+// components
+import SignInUp from 'components/SignInUp';
 import ContentContainer from 'components/ContentContainer';
+
+// style
+import styled from 'styled-components';
 
 const StyledContentContainer = styled(ContentContainer)`
   margin-top: 120px;
 `;
 
-type Props = {
-  locale: string,
-  push: (string) => void;
-};
+type Props = {};
 
-class SignInPage extends React.PureComponent<Props, {}> {
+type State = {};
 
+export default class SignInPage extends React.PureComponent<Props, State> {
   onSuccess = () => {
-    this.props.push('/');
+    browserHistory.push('/');
   }
 
   render() {
-    const { locale } = this.props;
     return (
       <StyledContentContainer>
-        <SignInUp
-          onSignInUpCompleted={this.onSuccess}
-          locale={locale}
-          show="signIn"
-        />
+        <SignInUp onSignInUpCompleted={this.onSuccess} show="signIn" />
       </StyledContentContainer>
     );
   }
 }
-
-const mapStateToProps = createStructuredSelector({
-  locale: makeSelectLocale(),
-});
-
-export default connect(mapStateToProps, { push })(SignInPage);

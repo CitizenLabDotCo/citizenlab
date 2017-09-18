@@ -4,12 +4,12 @@ import * as Rx from 'rxjs/Rx';
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { namespace as newIdeaFormNamespace } from './NewIdeaForm';
 
 // services
-import { state, IStateStream } from 'services/state';
+import { localeStream } from 'services/locale';
 
 // i18n
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -44,33 +44,33 @@ const ButtonBarInner = styled.div`
   }
 `;
 
-type Props = {
-  intl: ReactIntl.InjectedIntl;
-  locale: string;
-  onSubmit: () => void;
-};
+type Props = {};
 
-export type State = {
+type State = {
+  locale: string | null;
   submitError: boolean;
   processing: boolean;
 };
 
-export const namespace = 'IdeasNewPage2/ButtonBar';
-
-export default class ButtonBar extends React.PureComponent<Props, State> {
-  public namespace: string;
-  private state$: IStateStream<State>;
-  private subscriptions: Rx.Subscription[];
+class ButtonBar extends React.PureComponent<Props & InjectedIntlProps, State> {
+  state: State;
+  subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    this.state$ = state.createStream<State>(namespace, namespace);
+    this.state = {
+      locale: null,
+      submitError: false,
+      processing: false
+    };
     this.subscriptions = [];
   }
 
   componentWillMount() {
+    const locale$ = localeStream().observable;
+
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state))
+      locale$.subscribe(locale => this.setState({ locale }))
     ];
   }
 
@@ -102,3 +102,5 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default injectIntl<Props>(ButtonBar);

@@ -6,15 +6,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  // header
   titleCity: {
-    id: 'app.containers.landing.title',
-    description: 'name is the name of a city',
-    defaultMessage: 'Co-create {name}',
+    id: 'app.containers.landing.titleCity',
+    defaultMessage: 'Change {name}',
   },
-  SubTitleCity: {
-    id: 'app.containers.landing.loadMore',
-    description: 'name is the name of a city',
-    defaultMessage: 'Share your ideas for {name} and co-create your city',
+  subtitleCity: {
+    id: 'app.containers.landing.subtitleCity',
+    defaultMessage: 'Post your idea!',
   },
 
   // ideas
@@ -29,7 +28,7 @@ export default defineMessages({
 
   // projects
   projectsFrom: {
-    id: 'app.containers.landing.topics',
+    id: 'app.containers.landing.projectsFrom',
     defaultMessage: 'Projects From {name}',
   },
   viewProjects: {

@@ -30,10 +30,10 @@ const StyledButton: any = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 5px;
+  border-radius: 999em;
   position: relative;
   outline: none;
-  transition: background 150ms ease;
+  transition: background 150ms ease-out;
 
   &:not(.disabled) {
     cursor: pointer;
@@ -61,7 +61,7 @@ const StyledButton: any = styled.button`
       }
 
       &:hover, &:focus {
-        background: ${(props: any) => darken(0.1, (props.theme.colorMain || '#ccc'))};
+        background: ${(props: any) => darken(0.15, (props.theme.colorMain || '#ccc'))};
       }
     }
 
@@ -91,7 +91,7 @@ const StyledButton: any = styled.button`
       }
 
       &:hover, &:focus {
-        background: ${(props: any) => darken(0.1, '#eae9e9')};
+        background: ${(props: any) => darken(0.15, '#eae9e9')};
       }
     }
 
@@ -142,7 +142,7 @@ const StyledButton: any = styled.button`
         case '4':
           return '12px 16px';
         default:
-          return '7px 12px';
+          return '2px 12px';
       }
     }};
 

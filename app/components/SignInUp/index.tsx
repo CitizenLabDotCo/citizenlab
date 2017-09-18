@@ -1,18 +1,28 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
-import { injectTFunc } from 'containers/T/utils';
-import { state, IStateStream } from 'services/state';
+
+// libraries
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
+
+// components
 import PasswordReset from 'containers/PasswordReset';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
-import SignIn from 'containers/SignIn';
-import SignUp from 'containers/SignUp';
-import { IStream } from 'utils/streams';
+import SignIn from 'components/SignIn';
+import SignUp from 'components/SignUp';
+
+// services
 import { currentTenantStream, ITenant } from 'services/tenant';
+
+// utils
+import { IStream } from 'utils/streams';
+
+// i18n
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
+
+// style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
@@ -208,9 +218,6 @@ const FooterButton = styled.div`
 `;
 
 type Props = {
-  intl: ReactIntl.InjectedIntl;
-  tFunc: Function;
-  locale: string;
   onGoBack?: () => void;
   onSignInUpCompleted: () => void;
   show?: 'signIn' | 'signUp' | 'passwordReset';
@@ -223,25 +230,23 @@ type State = {
   currentTenant: ITenant | null;
 };
 
-export const namespace = 'SignInUp/index';
-
-class SignInUp extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
+class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
+  state: State;
   currentTenant$: IStream<ITenant>;
   subscriptions: Rx.Subscription[];
 
   constructor(props) {
     super(props);
-    const initialState: State = { show: props.show || 'signIn', currentTenant: null };
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    this.state = { show: props.show || 'signIn', currentTenant: null };
     this.currentTenant$ = currentTenantStream();
     this.subscriptions = [];
   }
 
   componentWillMount() {
+    const currentTenant$ = currentTenantStream().observable;
+
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-      this.currentTenant$.observable.subscribe(currentTenant => this.state$.next({ currentTenant }))
+      currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))
     ];
   }
 
@@ -255,17 +260,17 @@ class SignInUp extends React.PureComponent<Props, State> {
 
   goToSignUpForm = () => {
     // window.scrollTo(0, 0);
-    this.state$.next({ show: 'signUp' });
+    this.setState({ show: 'signUp' });
   }
 
   goToSignInForm = () => {
     // window.scrollTo(0, 0);
-    this.state$.next({ show: 'signIn' });
+    this.setState({ show: 'signIn' });
   }
 
   goToPasswordResetForm = () => {
     // window.scrollTo(0, 0);
-    this.state$.next({ show: 'passwordReset' });
+    this.setState({ show: 'passwordReset' });
   }
 
   handleOnSignedIn = () => {
@@ -289,13 +294,7 @@ class SignInUp extends React.PureComponent<Props, State> {
           <Form>
             <Title>{formatMessage(signInTitleMessage || messages.signInTitle)}</Title>
 
-            <SignIn
-              onSignedIn={this.handleOnSignedIn}
-              intl={this.props.intl}
-              tFunc={this.props.tFunc}
-              locale={this.props.locale}
-              onForgotPassword={this.goToPasswordResetForm}
-            />
+            <SignIn onSignedIn={this.handleOnSignedIn} onForgotPassword={this.goToPasswordResetForm} />
 
             <Separator>
               <SeparatorLine />
@@ -325,12 +324,7 @@ class SignInUp extends React.PureComponent<Props, State> {
         <FormContainer>
           <Form>
             <Title>{formatMessage(signUpTitleMessage || messages.signUpTitle)}</Title>
-            <SignUp
-              onSignedUp={this.handleOnSignedUp}
-              intl={this.props.intl}
-              tFunc={this.props.tFunc}
-              locale={this.props.locale}
-            />
+            <SignUp onSignedUp={this.handleOnSignedUp} />
           </Form>
         </FormContainer>
       </CSSTransition>
@@ -339,12 +333,7 @@ class SignInUp extends React.PureComponent<Props, State> {
     const passwordReset = (show === 'passwordReset' && (
       <CSSTransition classNames="form" timeout={timeout}>
         <FormContainer>
-          <PasswordReset
-            intl={this.props.intl}
-            tFunc={this.props.tFunc}
-            locale={this.props.locale}
-            onExit={this.goToSignInForm}
-          />
+          <PasswordReset onExit={this.goToSignInForm} />
         </FormContainer>
       </CSSTransition>
     ));
@@ -379,4 +368,4 @@ class SignInUp extends React.PureComponent<Props, State> {
   }
 }
 
-export default (injectIntl(injectTFunc(SignInUp)) as any);
+export default injectIntl<Props>(SignInUp);

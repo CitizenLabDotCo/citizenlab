@@ -14,6 +14,10 @@ export default defineMessages({
     id: 'app.containers.app.navbar.addIdea',
     defaultMessage: 'Add idea',
   },
+  startIdea: {
+    id: 'app.containers.app.navbar.startIdea',
+    defaultMessage: 'Start your idea',
+  },
   login: {
     id: 'app.containers.app.navbar.login',
     defaultMessage: 'Log in',

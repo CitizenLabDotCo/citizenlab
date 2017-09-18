@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Outer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 0 30px;
+
   ${media.phone`
     padding: 0 15px;
   `};

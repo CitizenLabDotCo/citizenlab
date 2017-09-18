@@ -360,9 +360,9 @@
     "shelljs": "0.7.5",
     "sinon": "2.0.0-pre",
     "style-loader": "0.18.2",
-    "ts-loader": "^2.3.6",
+    "ts-loader": "^2.3.7",
     "tslint": "^5.7.0",
-    "tslint-config-airbnb": "^5.2.1",
+    "tslint-config-airbnb": "^5.3.0",
     "tslint-consistent-codestyle": "^1.6.0",
     "tslint-eslint-rules": "^4.1.1",
     "tslint-microsoft-contrib": "^5.0.1",
@@ -370,7 +370,7 @@
     "tsutils": "^2.8.2",
     "typescript": "^2.5.2",
     "url-loader": "0.5.9",
-    "webpack": "3.5.6",
+    "webpack": "3.6.0",
     "webpack-dev-middleware": "1.12.0",
     "webpack-hot-middleware": "2.19.1"
   }

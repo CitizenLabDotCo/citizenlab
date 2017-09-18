@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { createStructuredSelector } from 'reselect';
 import { push } from 'react-router-redux';
-import SignInUp from 'containers/SignInUp';
+import SignInUp from 'components/SignInUp';
 import ContentContainer from 'components/ContentContainer';
 
 const StyledContentContainer = styled(ContentContainer)`
@@ -26,11 +26,7 @@ class RegisterPage extends React.PureComponent<Props, {}> {
     const { locale } = this.props;
     return (
       <StyledContentContainer>
-        <SignInUp
-          onSignInUpCompleted={this.onSuccess}
-          locale={locale}
-          show="signUp"
-        />
+        <SignInUp onSignInUpCompleted={this.onSuccess} show="signUp" />
       </StyledContentContainer>
     );
   }

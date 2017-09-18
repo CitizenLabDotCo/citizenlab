@@ -10,7 +10,6 @@ import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 
 // services
-import { state, IStateStream } from 'services/state';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { projectByIdStream, IProject } from 'services/projects';
 import { projectImagesStream, IProjectImages } from 'services/projectImages';
@@ -27,10 +26,11 @@ import { media } from 'utils/styleUtils';
 const ProjectContainer = styled.div`
   width: 100%;
   display: flex;
-  height: 400px;
-  background: #fff;
+  height: 300px;
   border-radius: 5px;
   margin-bottom: 20px;
+  background: #fafafa;
+  border: solid 1px rgba(0, 0, 0, 0.1);
 
   ${media.phone`
     flex-direction: column;
@@ -62,24 +62,38 @@ const ProjectInfo = styled.div`
 
 const InfoHeader = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
 `;
 
 const HeaderLogo = styled.img`
+  height: 45px;
 `;
 
 const HeaderCount = styled.div`
   display: flex;
-  color: #8F8F8F;
-  font-size: 16px;
-  font-weight: 500;
+  align-items: center;
+`;
+
+const IdeaIcon = styled(Icon)`
+  height: 28px;
+  fill: #333;
+  margin-right: 8px;
+  margin-bottom: 5px;
+`;
+
+const IdeaCount = styled.div`
+  color: #333;
+  font-size: 18px;
+  font-weight: 300;
 `;
 
 const InfoSeparator = styled.div`
-  border: 1px solid #EAEAEA;
   height: 1px;
-  margin: 10px 0;
+  background: #ccc;
+  margin-top: 15px;
+  margin-bottom: 15px;
 `;
 
 const InfoText = styled.div`
@@ -87,16 +101,17 @@ const InfoText = styled.div`
 `;
 
 const TextTitle = styled.h3`
-  color: #222222;
+  color: #333;
   font-size: 25px;
-  font-weight: bold;
+  line-ehight: 30px;
+  font-weight: 400;
   margin: 15px 0;
 `;
 
 const TextBody = styled.div`
   font-size: 16px;
   font-weight: 300;
-  color: #6B6B6B;
+  color: #6b6b6b;
 `;
 
 const InfoFooter = styled.div`
@@ -116,30 +131,33 @@ type State = {
   projectImages: IProjectImages | null;
 };
 
-export const namespace = 'ProjectCard/index';
-
 export default class Project extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
+  state: State;
   subscriptions: Rx.Subscription[];
+
+  constructor() {
+    super();
+    this.state = {
+      currentTenant: null,
+      project: null,
+      projectImages: null
+    };
+    this.subscriptions = [];
+  }
 
   componentWillMount() {
     const { id } = this.props;
     const currentTenant$ = currentTenantStream().observable;
     const project$ = projectByIdStream(id).observable;
     const projectImages$ = projectImagesStream(id).observable;
-    const initialState: State = { currentTenant: null, project: null, projectImages: null };
-    const instanceNamespace = `${namespace}/${id}`;
-    this.state$ = state.createStream<State>(instanceNamespace, instanceNamespace, initialState);
 
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-
       Rx.Observable.combineLatest(
         currentTenant$, 
         project$,
         projectImages$
       ).subscribe(([currentTenant, project, projectImages]) => {
-        this.state$.next({ currentTenant, project, projectImages });
+        this.setState({ currentTenant, project, projectImages });
       })
     ];
   }
@@ -152,7 +170,7 @@ export default class Project extends React.PureComponent<Props, State> {
     const { currentTenant, project, projectImages } = this.state;
 
     if (currentTenant && project) {
-      const tenantLogo = currentTenant.data.attributes.logo.small;
+      const tenantLogo = currentTenant.data.attributes.logo.medium;
       const slug = project.data.attributes.slug;
       const titleMultiloc = project.data.attributes.title_multiloc;
       const descriptionMultiloc = project.data.attributes.description_multiloc;
@@ -168,8 +186,10 @@ export default class Project extends React.PureComponent<Props, State> {
             <InfoHeader>
               {tenantLogo && <HeaderLogo src={tenantLogo} />}
               <HeaderCount>
-                <Icon name="idea" />
-                <FormattedMessage {...messages.xIdeas} values={{ x: ideasCount }} />
+                <IdeaIcon name="idea" />
+                <IdeaCount>
+                  <FormattedMessage {...messages.xIdeas} values={{ x: ideasCount }} />
+                </IdeaCount>
               </HeaderCount>
             </InfoHeader>
   
@@ -186,6 +206,7 @@ export default class Project extends React.PureComponent<Props, State> {
               }
             </InfoText>
   
+            {/*
             <InfoFooter>
               <Link to={`/projects/${slug}`}>
                 <OpenProjectButton>
@@ -193,6 +214,7 @@ export default class Project extends React.PureComponent<Props, State> {
                 </OpenProjectButton>
               </Link>
             </InfoFooter>
+            */}
   
           </ProjectInfo>
         </ProjectContainer>

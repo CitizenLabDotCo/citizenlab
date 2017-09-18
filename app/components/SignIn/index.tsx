@@ -1,15 +1,24 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import messages from './messages';
-import { FormattedMessage } from 'react-intl';
-import { state, IStateStream } from 'services/state';
+
+// services
 import { signIn } from 'services/auth';
+
+// i18n
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import messages from './messages';
+
+// utils
 import { isValidEmail } from 'utils/validate';
+
+// style
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -48,10 +57,6 @@ const ForgotPassword = styled.div`
 `;
 
 type Props = {
-  dispatch?: (arg: any) => any;
-  intl: ReactIntl.InjectedIntl;
-  tFunc: Function;
-  locale: string;
   onSignedIn: () => void;
   onForgotPassword?: () => void
 };
@@ -65,18 +70,14 @@ type State = {
   signInError: string | null;
 };
 
-export const namespace = 'SignIn/index';
-
-export default class SignIn extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
-  subscriptions: Rx.Subscription[];
+class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
+  state: State;
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
   constructor() {
     super();
-
-    const initialState: State = {
+    this.state = {
       email: null,
       password: null,
       processing: false,
@@ -84,33 +85,20 @@ export default class SignIn extends React.PureComponent<Props, State> {
       passwordError: null,
       signInError: null
     };
-
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
-    this.subscriptions = [];
     this.emailInputElement = null;
     this.passwordInputElement = null;
-  }
-
-  componentWillMount() {
-    this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state))
-    ];
   }
 
   componentDidMount() {
     this.emailInputElement && this.emailInputElement.focus();
   }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
   handleEmailOnChange = (email) => {
-    this.state$.next({ email, emailError: null, signInError: null });
+    this.setState({ email, emailError: null, signInError: null });
   }
 
   handlePasswordOnChange = (password) => {
-    this.state$.next({ password, passwordError: null, signInError: null });
+    this.setState({ password, passwordError: null, signInError: null });
   }
 
   validate(email: string | null, password: string | null) {
@@ -119,7 +107,7 @@ export default class SignIn extends React.PureComponent<Props, State> {
     const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
     const passwordError = (!password ? formatMessage(messages.noPasswordError) : null);
 
-    this.state$.next({ emailError, passwordError });
+    this.setState({ emailError, passwordError });
 
     if (emailError) {
       this.emailInputElement && this.emailInputElement.focus();
@@ -130,8 +118,8 @@ export default class SignIn extends React.PureComponent<Props, State> {
     return (!emailError && !passwordError);
   }
 
-  handleOnSubmit = async (e) => {
-    e.preventDefault();
+  handleOnSubmit = async (event: React.FormEvent<any>) => {
+    event.preventDefault();
 
     const { onSignedIn } = this.props;
     const { formatMessage } = this.props.intl;
@@ -139,13 +127,13 @@ export default class SignIn extends React.PureComponent<Props, State> {
 
     if (email && password && this.validate(email, password)) {
       try {
-        this.state$.next({ processing: true });
+        this.setState({ processing: true });
         await signIn(email, password);
-        this.state$.next({ processing: false });
+        this.setState({ processing: false });
         onSignedIn();
       } catch (error) {
         const signInError = formatMessage(messages.signInError);
-        this.state$.next({ signInError, processing: false });
+        this.setState({ signInError, processing: false });
       }
     }
   }
@@ -154,7 +142,7 @@ export default class SignIn extends React.PureComponent<Props, State> {
     this.emailInputElement = element;
   }
 
-  handlePasswordInputSetRef = (element) => {
+  handlePasswordInputSetRef = (element: HTMLInputElement) => {
     this.passwordInputElement = element;
   }
 
@@ -163,7 +151,7 @@ export default class SignIn extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { intl, tFunc, locale } = this.props;
+    const { intl } = this.props;
     const { formatMessage } = this.props.intl;
     const { email, password, processing, emailError, passwordError, signInError } = this.state;
     const timeout = 500;
@@ -215,3 +203,5 @@ export default class SignIn extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default injectIntl<Props>(SignIn);

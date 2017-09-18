@@ -1,16 +1,26 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Success from 'components/UI/Success';
-import { state, IStateStream } from 'services/state';
+
+// services
 import { sendPasswordResetMail } from 'services/auth';
+
+// utils
 import { isValidEmail } from 'utils/validate';
-import messages from './messages';
+
+// i18n
+import { injectIntl, InjectedIntlProps } from 'react-intl';
+
+// style
 import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;
@@ -37,9 +47,6 @@ const FormElement = styled.div`
 `;
 
 type Props = {
-  intl: ReactIntl.InjectedIntl;
-  tFunc: Function;
-  locale: string;
   onExit?: () => void;
 };
 
@@ -51,71 +58,66 @@ export type State = {
   success: boolean;
 };
 
-export const namespace = 'PasswordReset/index';
-
-export default class PasswordReset extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
-  subscriptions: Rx.Subscription[];
+class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State> {
+  state: State;
   emailInputElement: HTMLInputElement | null;
 
   constructor() {
     super();
-    this.state$ = state.createStream<State>(namespace, namespace, {
+    this.state = {
       email: null,
       emailError: false,
       submitError: false,
       processing: false,
       success: false
-    });
-    this.subscriptions = [];
+    };
     this.emailInputElement = null;
   }
 
-  componentWillMount() {
-    this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state))
-    ];
-  }
-
   componentDidMount() {
-    this.emailInputElement && this.emailInputElement.focus();
-  }
-
-  componentWillUnmount() {
-    _(this.subscriptions).forEach(subscription => subscription.unsubscribe());
+    if (this.emailInputElement) {
+      this.emailInputElement.focus();
+    }
   }
 
   validate = (email: string | null) => {
-    const { formatMessage } = this.props.intl;
     const emailError = (!email || !isValidEmail(email));
-    emailError && this.emailInputElement && this.emailInputElement.focus();
-    this.state$.next({ emailError });
+
+    if (emailError && this.emailInputElement) {
+      this.emailInputElement.focus();
+    }
+
+    this.setState({ emailError });
+
     return (!emailError);
   }
 
   handleEmailOnChange = () => {
-    this.state$.next({ emailError: false });
+    this.setState({ emailError: false });
   }
 
   handleEmailInputSetRef = (element: HTMLInputElement) => {
     this.emailInputElement = element;
   }
 
-  handleOnSubmit = () => {
+  handleOnSubmit = async () => {
     const { email } = this.state;
 
     if (this.validate(email) && email) {
-      sendPasswordResetMail(email).then(() => {
-        this.state$.next({ success: true });
-        setTimeout(() => this.state$.next({ success: false }), 8000);
-      }).catch((error) => {
-        this.state$.next({ success: false, submitError: true });
-      });
+      try {
+        await sendPasswordResetMail(email);
+        this.setState({ success: true });
+        setTimeout(() => this.setState({ success: false }), 8000);
+      } catch {
+        this.setState({ success: false, submitError: true });
+      }
     }
   }
 
   handleOnGoBack = () => {
-    !_.isUndefined(this.props.onExit) && this.props.onExit();
+    if (_.has(this.props, 'onExit') && _.isFunction(this.props.onExit)) {
+      this.props.onExit();
+    }
   }
 
   render() {
@@ -158,3 +160,5 @@ export default class PasswordReset extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default injectIntl<Props>(PasswordReset);

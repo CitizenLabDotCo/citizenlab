@@ -20,7 +20,6 @@ import Comments from './comments';
 
 // services
 import { authUserStream } from 'services/auth';
-import { state, IStateStream } from 'services/state';
 import { localeStream } from 'services/locale';
 import { ideaByIdStream, IIdea } from 'services/ideas';
 import { userStream, IUser } from 'services/users';
@@ -129,15 +128,24 @@ type State = {
   loading: boolean;
 };
 
-const namespace = 'IdeasShow/index';
-
 export default class IdeasShow extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
+  state: State;
   subscriptions: Rx.Subscription[];
+
+  constructor() {
+    super();
+    this.state = {
+      locale: null,
+      idea: null,
+      ideaAuthor: null,
+      ideaImage: null,
+      loading: true
+    };
+    this.subscriptions = [];
+  }
 
   componentWillMount() {
     const { ideaId } = this.props;
-    const instanceNamespace = `${namespace}/${ideaId}`;
     const initialState: State = { locale: null, idea: null, ideaAuthor: null, ideaImage: null, loading: true };
     const locale$ = localeStream().observable;
     const idea$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {
@@ -149,13 +157,9 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       return Rx.Observable.combineLatest(ideaImage$, ideaAuthor$).map(([ideaImage, ideaAuthor]) => ({ idea, ideaImage, ideaAuthor }));
     });
 
-    this.state$ = state.createStream<State>(instanceNamespace, instanceNamespace, initialState);
-
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-
       Rx.Observable.combineLatest(locale$, idea$).subscribe(([locale, { idea, ideaImage, ideaAuthor }]) => {
-        this.state$.next({ locale, idea, ideaImage, ideaAuthor, loading: false });
+        this.setState({ locale, idea, ideaImage, ideaAuthor, loading: false });
       })
     ];
   }
@@ -203,7 +207,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
               <VoteCTA>
                 <FormattedMessage {...messages.voteCTA} />
               </VoteCTA>
-              <VoteControl ideaId={idea.data.id} size="large" />
+              <VoteControl ideaId={idea.data.id} />
               <StatusContainer>
                 <StatusTitle><FormattedMessage {...messages.ideaStatus} /></StatusTitle>
                 {/* <StatusBadge statusId={statusId} /> */}

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// libraries
 import { RouterState } from 'react-router';
 
 // components
@@ -11,9 +13,8 @@ import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import Modal from 'components/UI/Modal';
 import IdeasShow from 'containers/IdeasShow';
-import { namespace as ideaCardNamespace } from 'components/IdeaCard';
 
-// authorizations
+// auth
 import Authorize, { Else } from 'utils/containers/authorize';
 import { loadCurrentTenantSuccess } from 'utils/tenant/actions';
 
@@ -24,7 +25,6 @@ import areasSagas from 'utils/areas/sagas';
 import tenantSaga from 'utils/tenant/sagas';
 
 // services
-import { state, IStateStream } from 'services/state';
 import { authUserStream, signOut } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
@@ -59,22 +59,21 @@ type State = {
   modal: IModalProps | null;
 };
 
-export const namespace = 'App/index';
-
 export default class App extends React.PureComponent<Props & RouterState, State> {
-  state$: IStateStream<State>;
+  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    const initialState: State = { currentTenant: null, modal: null };
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    this.state = {
+      currentTenant: null,
+      modal: null
+    };
+    this.subscriptions = [];
   }
 
   componentWillMount() {
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-
       eventEmitter.observe<IModalProps>(ideaCardNamespace, 'ideaCardClick').subscribe(({ eventValue }) => {
         const { ideaId, ideaSlug } = eventValue;
         this.openModal({ ideaId, ideaSlug });
@@ -90,7 +89,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
       }),
 
       currentTenantStream().observable.subscribe((currentTenant) => {
-        this.state$.next({ currentTenant });
+        this.setState({ currentTenant });
         store.dispatch(loadCurrentTenantSuccess(currentTenant));
       })
     ];
@@ -101,11 +100,11 @@ export default class App extends React.PureComponent<Props & RouterState, State>
   }
 
   openModal = (modal: IModalProps) => {
-    this.state$.next({ modal });
+    this.setState({ modal });
   }
 
   closeModal = () => {
-    this.state$.next({ modal: null });
+    this.setState({ modal: null });
   }
 
   render() {
@@ -118,7 +117,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
       menuStyle: 'light',
       menuHeight: 70,
       mobileMenuHeight: 80,
-      maxPageWidth: 950,
+      maxPageWidth: 952,
     };
 
     return (
@@ -130,7 +129,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
         {currentTenant && (
           <ThemeProvider theme={theme}>
             <Container>
-              <Meta tenant={currentTenant} />
+              <Meta />
 
               <Modal opened={modalOpened} close={this.closeModal} url={modalUrl}>
                 {modal && <IdeasShow location={location} ideaId={modal.ideaId} />}

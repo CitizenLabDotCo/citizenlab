@@ -8,7 +8,6 @@ import Authorize from 'utils/containers/authorize';
 import ClickOutside from 'utils/containers/clickOutside';
 
 // services
-import { state, IStateStream } from 'services/state';
 import { authUserStream, signOut } from 'services/auth';
 import { IUser } from 'services/users';
 
@@ -87,22 +86,24 @@ type State = {
   dropdownOpened: boolean;
 };
 
-export const namespace = 'Navbar/components/UserMenu/index';
-
 export default class UserMenu extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
+  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    const initialState: State = { authUser: null, dropdownOpened: false };
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    this.state = {
+      authUser: null,
+      dropdownOpened: false
+    };
+    this.subscriptions = [];
   }
 
   componentWillMount() {
+    const authUser$ = authUserStream().observable;
+
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-      authUserStream().observable.subscribe(authUser => this.state$.next({ authUser }))
+      authUser$.subscribe(authUser => this.setState({ authUser }))
     ];
   }
 
@@ -111,11 +112,11 @@ export default class UserMenu extends React.PureComponent<Props, State> {
   }
 
   toggleDropdown = () => {
-    this.state$.next(state => ({ dropdownOpened: !state.dropdownOpened }));
+    this.setState(state => ({ dropdownOpened: !state.dropdownOpened }));
   }
 
   closeDropdown = () => {
-    this.state$.next({ dropdownOpened: false });
+    this.setState({ dropdownOpened: false });
   }
 
   navigateTo = (path) => () => {

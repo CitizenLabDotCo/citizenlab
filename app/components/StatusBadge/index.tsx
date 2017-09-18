@@ -3,7 +3,6 @@ import * as Rx from 'rxjs/Rx';
 import T from 'containers/T';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { state, IStateStream } from 'services/state';
 import { localeStream } from 'services/locale';
 import { ideaStatusesStream, IIdeaStatusData } from 'services/ideaStatuses';
 
@@ -31,26 +30,27 @@ type State = {
   ideaStatus: IIdeaStatusData | null;
 };
 
-export const namespace = 'StatusBadge/index';
-
 export default class Status extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
+  state: State;
   subscriptions: Rx.Subscription[];
 
+  constructor() {
+    super();
+    this.state = {
+      locale: null,
+      ideaStatus: null
+    };
+    this.subscriptions = [];
+  }
+
   componentWillMount() {
-    const instanceNamespace = `${namespace}/${this.props.statusId}`;
-    const initialState = { locale: null, ideaStatus: null };
     const locale$ = localeStream().observable;
     const ideaStatuses$ = ideaStatusesStream().observable;
 
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
-
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-
       Rx.Observable.combineLatest(locale$, ideaStatuses$).subscribe(([locale, ideaStatuses]) => {
         const ideaStatus = ideaStatuses.data.filter((item) => item.id === this.props.statusId)[0];
-        this.state$.next({ locale, ideaStatus });
+        this.setState({ locale, ideaStatus });
       })
     ];
   }
