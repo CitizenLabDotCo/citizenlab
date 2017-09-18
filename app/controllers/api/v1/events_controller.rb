@@ -42,7 +42,7 @@ class Api::V1::EventsController < ApplicationController
   private
 
   def set_event
-    @event = Event.find_by(id: params[:id])
+    @event = Event.find(params[:id])
     authorize @event
   end
 

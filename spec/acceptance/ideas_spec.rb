@@ -35,6 +35,7 @@ resource "Ideas" do
 
       do_request(topics: [t1.id])
       json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i1.id
     end
 
@@ -270,7 +271,7 @@ resource "Ideas" do
       parameter :project_id, "The idea of the project that hosts the idea", extra: ""
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
       parameter :idea_status_id, "The status of the idea, only allowed for admins"
-      parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES}.join(', ')}"
+      parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES.join(', ')}"
       parameter :title_multiloc, "Multi-locale field with the idea title", extra: "Maximum 100 characters"
       parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
       parameter :topic_ids, "Array of ids of the associated topics"
@@ -349,7 +350,7 @@ resource "Ideas" do
       @idea =  create(:idea, author: @user, publication_status: 'draft')
     end
 
-    parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES}.join(', ')}", required: true, scope: :idea
+    parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :idea
 
     let(:id) { @idea.id }
     let(:publication_status) { 'published' }
