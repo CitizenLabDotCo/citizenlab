@@ -170,6 +170,7 @@ type Props = {
   placeholder?: string | null | undefined;
   disablePreview?: boolean;
   destroyPreview?: boolean;
+  disallowDeletion?: boolean;
   onAdd: (arg: Dropzone.ImageFile) => void;
   onRemove: (arg: Dropzone.ImageFile) => void;
   onRemoveApiImage?: (arg: API.ImageSizes) => void;
@@ -300,14 +301,12 @@ class Upload extends React.PureComponent<Props, State> {
       items.map((item, index) => {
         const _onClick = (event) => this.removeItem(item, event);
         return (
-          <UploadedItem key={index} style={{ backgroundImage: `url(${item.preview})` }}>
-            <RemoveUploadedItem onClick={_onClick}>
+          <UploadedItem key={index} style={{ backgroundImage: `url(${item.preview ? item.preview : item})` }}>
+            {!this.props.disallowDeletion && <RemoveUploadedItem onClick={_onClick}>
               <RemoveUploadedItemInner>
-                {/* <IconWrapper> */}
-                  <Icon name="close2" />
-                {/* </IconWrapper> */}
+                <Icon name="close2" />
               </RemoveUploadedItemInner>
-            </RemoveUploadedItem>
+            </RemoveUploadedItem>}
           </UploadedItem>
         );
       })
@@ -318,11 +317,11 @@ class Upload extends React.PureComponent<Props, State> {
         const _onClick = (event) => this.removeApiImage(image, event);
         return (
           <UploadedItem key={index} style={{ backgroundImage: `url(${image.medium})` }}>
-            <RemoveUploadedItem onClick={_onClick}>
+            {!this.props.disallowDeletion && <RemoveUploadedItem onClick={_onClick}>
               <RemoveUploadedItemInner>
                 <Icon name="close2" />
               </RemoveUploadedItemInner>
-            </RemoveUploadedItem>
+            </RemoveUploadedItem>}
           </UploadedItem>
         );
       })

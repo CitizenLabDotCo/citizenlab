@@ -93,7 +93,7 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        const newDiff = _.merge({}, this.state.attributesDiff, { [name]: reader.result as string } as IUpdatedTenantProperties);
+        const newDiff = _.merge({}, this.state.attributesDiff, { [name]:  reader.result } as IUpdatedTenantProperties);
         this.setState({ attributesDiff: newDiff });
       };
     };
@@ -203,6 +203,7 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
                 onRemoveApiImage={this.createImageRemovalHandler(imageName)}
                 placeholder={this.uploadPlaceholder}
                 intl={this.props.intl}
+                disallowDeletion={true}
               />
             </FieldWrapper>
           );
