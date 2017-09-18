@@ -4,14 +4,12 @@ import * as Rx from 'rxjs/Rx';
 import { Link } from 'react-router';
 
 // components
-import IdeaCard, { namespace as ideaCardNamespace } from 'components/IdeaCard';
+import IdeaCard from 'components/IdeaCard';
 import Icon from 'components/UI/Icon';
+import Spinner from 'components/UI/Spinner';
 
 // services
-import { state, IStateStream } from 'services/state';
-import { ideasStream, ideaByIdStream, IIdeas, IIdeaData } from 'services/ideas';
-import { userStream, IUser } from 'services/users';
-import { ideaImageStream, ideaImagesStream, IIdeaImage, IIdeaImageData } from 'services/ideaImages';
+import { ideasStream, IIdeas } from 'services/ideas';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
@@ -23,8 +21,32 @@ import { Flex, Box } from 'grid-styled';
 import { lighten } from 'polished';
 import ButtonMixin from 'components/admin/StyleMixins/buttonMixin';
 
-const IdeasList: any = styled(Flex)`
-  margin-top: 10px;
+const Container = styled.div`
+  width: 100%;
+`;
+
+const Loading = styled.div`
+  width: 100%;
+  height: 500px;
+  background: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StyledSpinner = styled(Spinner)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: solid 1px red;
+`;
+
+const IdeasList: any = styled.div`
+  margin-left: -10px;
+  margin-right: -10px;
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 const LoadMoreButton = styled.button`
@@ -89,12 +111,11 @@ type Props = {
 type State = {
   ideas: IIdeas | null;
   hasMore: boolean;
+  loading: boolean;
 };
 
-export const namespace = 'IdeaCards/index';
-
 export default class IdeaCards extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
+  state: State;
   filterChange$: Rx.BehaviorSubject<object>;
   loadMore$: Rx.BehaviorSubject<boolean>;
   subscriptions: Rx.Subscription[];
@@ -103,17 +124,23 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     loadMoreEnabled: true
   };
 
+  constructor() {
+    super();
+    this.state = {
+      ideas: null,
+      hasMore: false,
+      loading: true
+    };
+  }
+
   componentWillMount() {
-    const initialState: State = { ideas: null, hasMore: false };
+    const initialState: State = { ideas: null, hasMore: false, loading: true };
     const filter = (_.isObject(this.props.filter) && !_.isEmpty(this.props.filter) ? this.props.filter : {});
 
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
     this.filterChange$ = new Rx.BehaviorSubject(filter);
     this.loadMore$ = new Rx.BehaviorSubject(false);
 
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-
       Rx.Observable.combineLatest(
         this.filterChange$,
         this.loadMore$,
@@ -122,24 +149,15 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
         const filterChange = !_.isEqual(acc.filter, filter) || !loadMore;
         const pageNumber = (filterChange ? 1 : acc.pageNumber + 1);
 
+        this.setState(state => ({ loading: (filterChange ? true : state.loading) }));
+
         return ideasStream({
           queryParameters: {
             'page[size]': 9,
             ...filter,
             'page[number]': pageNumber
           }
-        }).observable.switchMap((ideas) => {
-          const observables = ideas.data.map(idea => {
-            const ideaImages = idea.relationships.idea_images.data;
-            const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
-            const ideaImage$ = (ideaImageId ? ideaImageStream(idea.id, ideaImageId).observable : Rx.Observable.of(null));
-            const idea$ = ideaByIdStream(idea.id).observable;
-            const user$ = userStream(idea.relationships.author.data.id).observable;
-            return Rx.Observable.combineLatest(idea$, ideaImage$, user$).map(data => idea);
-          });
-
-          return Rx.Observable.combineLatest(...observables).map(() => ideas);
-        }).map((ideas) => ({
+        }).observable.map((ideas) => ({
           pageNumber,
           filter,
           ideas: (filterChange ? ideas : { data: [...acc.ideas.data, ...ideas.data] }) as IIdeas,
@@ -151,7 +169,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
         pageNumber: 1,
         hasMore: false
       }).subscribe(({ ideas, hasMore }) => {
-        this.state$.next({ ideas, hasMore });
+        this.setState({ ideas, hasMore, loading: false });
       })
     ];
   }
@@ -174,17 +192,23 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { ideas, hasMore } = this.state;
+    const { ideas, hasMore, loading } = this.state;
     const { loadMoreEnabled } = this.props;
     const showLoadmore = (loadMoreEnabled === true && hasMore === true);
 
-    const loadMore = (showLoadmore ? (
+    const loadingIndicator = (loading ? (
+      <Loading>
+        <StyledSpinner />
+      </Loading>
+    ) : null);
+
+    const loadMore = ((!loading && showLoadmore) ? (
       <LoadMoreButton onClick={this.loadMoreIdeas}>
         <FormattedMessage {...messages.loadMore} />
       </LoadMoreButton>
     ) : null);
 
-    const empty = ((!ideas || ideas && ideas.data.length === 0) ? (
+    const empty = ((!loading && (!ideas || ideas && ideas.data.length === 0)) ? (
       <EmptyContainer>
         <Icon className="idea-icon" name="idea" />
         <FormattedMessage {...messages.empty} />
@@ -195,8 +219,8 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
       </EmptyContainer>
     ) : null);
 
-    const ideasList = (ideas ? (
-      <IdeasList wrap={true} mx={-10}>
+    const ideasList = ((!loading && ideas) ? (
+      <IdeasList>
         {ideas.data.map((idea) => (
           <Box key={idea.id} w={[1, 1 / 2, 1 / 3]} px={10}>
             <IdeaCard key={idea.id} ideaId={idea.id} />
@@ -207,10 +231,11 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     ) : null);
 
     return (
-      <div>
+      <Container>
+        {loadingIndicator}
         {empty}
         {ideasList}
-      </div>
+      </Container>
     );
   }
 }

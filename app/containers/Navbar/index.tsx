@@ -10,7 +10,6 @@ import MobileNavigation from './components/MobileNavigation';
 import Icon from 'components/UI/Icon';
 
 // services
-import { state, IStateStream } from 'services/state';
 import { authUserStream, signOut } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { IUser } from 'services/users';
@@ -28,21 +27,25 @@ import { lighten, darken } from 'polished';
 import messages from './messages';
 import styled, { ThemeProvider, css } from 'styled-components';
 
-const Container = styled.div`
+const Container: any = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   height: ${(props) => props.theme.menuHeight}px;
   position: relative;
-  background: ${(props) => props.theme.colorNavBg};
-  background: rgba(255, 255, 255, 0.9);
-  border-bottom: 1px solid ${(props) => props.theme.colorNavBottomBorder};
+  background: #fff;
+  /* background: rgba(255, 255, 255, 0.95); */
+  border-bottom: 1px solid #fff;
+  /* box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.15); */
   z-index: 999;
   position: fixed;
   top: 0;
+  transition: border-color 200ms ease-out, box-shadow 200ms ease-out;
 
-  background: none;
-  border: none;
+  ${(props: any) => props.scrolled && css`
+    border-color: ${props => props.theme.colorNavBottomBorder};
+    /* box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.15); */
+  `}
 `;
 
 const Left = styled.div`
@@ -50,19 +53,25 @@ const Left = styled.div`
   z-index: 2;
 `;
 
-const subtleSeparator = css`
-  border-right: 1px solid ${(props) => props.theme.colorNavSubtle};
-  border: none;
+const LogoLink = styled(Link)`
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const Logo = styled.div`
   cursor: pointer;
-  height: 100%;
-  padding: 0px 20px;
-  ${subtleSeparator}
+  height: 42px;
+  padding: 0px 15px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
+
+  img {
+    height: 100%;
+  }
 `;
 
 const NavigationItems = styled.div`
@@ -79,15 +88,15 @@ const NavigationItem = styled(Link)`
   height: 100%;
   opacity: 0.4;
   transition: opacity 150ms ease;
-  color: ${(props) => props.theme.colorNavFg} !important;
-  font-size: 19px;
+  color: ${props => props.theme.colorNavFg} !important;
+  font-size: 17px;
   font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   &:not(:last-child) {
-    padding-right: 50px;
+    padding-right: 40px;
   }
 
   &.active,
@@ -107,11 +116,7 @@ const RightItem: any = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0 25px;
-
-  &:not(:last-child) {
-    ${subtleSeparator}
-  }
+  padding: 0;
 
   ${(props: any) => props.hideOnPhone && media.phone`display: none;`}
 `;
@@ -120,14 +125,18 @@ const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 18px;
+  padding-right: 18px;
   border-radius: 5px;
+  border-radius: 999em;
   background: ${(props) => props.theme.colorMain};
   cursor: pointer;
   transition: background 150ms ease;
 
   &:hover {
-    background: ${(props) => darken(0.1, props.theme.colorMain)};
+    background: ${props => darken(0.15, props.theme.colorMain)};
   }
 
   ${media.phone`
@@ -137,7 +146,8 @@ const Button = styled.div`
 
 const ButtonIcon = styled(Icon)`
   fill: #fff;
-  margin-right: 20px;
+  margin-right: 18px;
+
   ${media.phone`
     margin-right: 8px;
   `}
@@ -145,18 +155,21 @@ const ButtonIcon = styled(Icon)`
 
 const ButtonText = styled.span`
   color: #fff;
-  font-weight: 500;
-  font-size: 18px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
   white-space: nowrap;
 `;
 
 const LoginLink = styled.div`
-  font-size: 18px;
   color: ${(props) => props.theme.colorMain};
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 400;
+  padding-left: 32px;
+  padding-right: 32px;
 
   &:hover {
-    color: ${(props) => lighten(0.1, props.theme.colorMain)};
+    color: ${(props) => darken(0.2, props.theme.colorMain)};
   }
 `;
 
@@ -171,18 +184,22 @@ type State = {
   authUser: IUser | null;
   currentTenant: ITenant | null;
   notificationPanelOpened: boolean;
+  scrolled: boolean;
 };
 
-const namespace = 'NavBar/index';
-
 class Navbar extends React.PureComponent<Props & ITracks, State> {
-  state$: IStateStream<State>;
+  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    const initialState: State = { authUser: null, currentTenant: null, notificationPanelOpened: false };
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    this.state = {
+      authUser: null,
+      currentTenant: null,
+      notificationPanelOpened: false,
+      scrolled: false
+    };
+    this.subscriptions = [];
   }
 
   componentWillMount() {
@@ -190,19 +207,32 @@ class Navbar extends React.PureComponent<Props & ITracks, State> {
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-
       Rx.Observable.combineLatest(
         authUser$, 
         currentTenant$
       ).subscribe(([authUser, currentTenant]) => {
-        this.state$.next({ authUser, currentTenant });
+        this.setState({ authUser, currentTenant });
       })
     ];
   }
 
+  componentDidMount() {
+    window.addEventListener('scroll', this.onPageScroll);
+  }
+
   componentWillUnmount() {
+    window.removeEventListener('scroll', this.onPageScroll);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  onPageScroll = (event: UIEvent) => {
+    if (!this.state.scrolled && document.documentElement.scrollTop > 0) {
+      this.setState({ scrolled: true });
+    }
+
+    if (this.state.scrolled && document.documentElement.scrollTop === 0) {
+      this.setState({ scrolled: false });
+    }
   }
 
   goToAddIdeaPage = () => {
@@ -216,7 +246,7 @@ class Navbar extends React.PureComponent<Props & ITracks, State> {
       this.props.trackClickOpenNotifications();
     }
 
-    this.state$.next({
+    this.setState({
       notificationPanelOpened: !this.state.notificationPanelOpened,
     });
   }
@@ -228,34 +258,34 @@ class Navbar extends React.PureComponent<Props & ITracks, State> {
       this.props.trackClickCloseNotifications();
     }
 
-    this.state$.next({ notificationPanelOpened: false });
+    this.setState({ notificationPanelOpened: false });
   }
 
   navbarTheme = (style) => {
     return {
       ...style,
-      colorNavBg: style.menuStyle === 'light' ? '#FFFFFF' : '#222222',
-      colorNavBottomBorder: style.menuStyle === 'light' ? '#EAEAEA' : '#000000',
-      colorNavSubtle: style.menuStyle === 'light' ? '#EAEAEA' : '#444444',
-      colorNavFg: style.menuStyle === 'light' ? '#000000' : '#FFFFFF',
+      colorNavBg: style.menuStyle === 'light' ? '#fff' : '#222',
+      colorNavBottomBorder: style.menuStyle === 'light' ? '#ddd' : '#000',
+      colorNavSubtle: style.menuStyle === 'light' ? '#eaeaea' : '#444',
+      colorNavFg: style.menuStyle === 'light' ? '#000' : '#fff',
     };
   }
 
   render() {
-    const { authUser, currentTenant } = this.state;
-    const tenantLogo = (currentTenant ? currentTenant.data.attributes.logo.small : null);
+    const { authUser, currentTenant, scrolled } = this.state;
+    const tenantLogo = (currentTenant ? currentTenant.data.attributes.logo.medium : null);
 
     return (
       <ThemeProvider theme={this.navbarTheme}>
-        <Container>
+        <Container scrolled={scrolled}>
           <MobileNavigation />
           <Left>
             {tenantLogo &&
-              <Link to="/">
+              <LogoLink to="/">
                 <Logo height="100%">
                   <img src={tenantLogo} alt="logo" />
                 </Logo>
-              </Link>
+              </LogoLink>
             }
 
             <NavigationItems>
@@ -275,7 +305,7 @@ class Navbar extends React.PureComponent<Props & ITracks, State> {
               <Button onClick={this.goToAddIdeaPage}>
                 <ButtonIcon name="add_circle" />
                 <ButtonText>
-                  <FormattedMessage {...messages.addIdea} />
+                  <FormattedMessage {...messages.startIdea} />
                 </ButtonText>
               </Button>
             </RightItem>

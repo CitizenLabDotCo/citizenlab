@@ -26,22 +26,22 @@ export interface IIdeaData {
   };
   relationships: {
     topics: {
-      data: IRelationship[]
+      data: IRelationship[];
     };
     areas: {
-      data: IRelationship[]
+      data: IRelationship[];
     };
     idea_images: {
-      data: IRelationship[]
+      data: IRelationship[];
     };
     author: {
-      data: IRelationship
+      data: IRelationship;
     };
     project: {
-      data: IRelationship
+      data: IRelationship;
     };
     user_vote: {
-      data: null
+      data: IRelationship;
     }
   };
 }

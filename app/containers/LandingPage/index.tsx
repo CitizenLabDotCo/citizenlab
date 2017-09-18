@@ -6,14 +6,13 @@ import * as Rx from 'rxjs/Rx';
 import { Link } from 'react-router';
 
 // components
-import ImageHeader, { HeaderTitle, HeaderSubtitle } from 'components/ImageHeader';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectCards from 'components/ProjectCards';
-import Footer from './components/footer';
+import Icon from 'components/UI/Icon';
+import Footer from './footer';
 
 // services
-import { state, IStateStream } from 'services/state';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
@@ -28,29 +27,124 @@ import styled from 'styled-components';
 import { lighten } from 'polished';
 import { media } from 'utils/styleUtils';
 
-const Container = styled.div`
+const header = require('./header.png');
+
+const Container: any = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: -70px;
+  background: #fff;
+  background-image: url(${(props: any) => props.imageSrc});  
+  background-repeat: no-repeat;
+  background-position: center 0px;
+`;
+
+const Header: any = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+const HeaderLogoWrapper = styled.div`
+  width: 110px;
+  height: 110px;
+  padding: 15px;
+  margin-top: 60px;
+  margin-bottom: 15px;
+  border: solid 2px #eaeaea;
+  border-radius: 5px;
+  background: #fff;
+`;
+
+const HeaderLogo: any = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: url(${(props: any) => props.imageSrc});
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+`;
+
+const HeaderTitle = styled.h1`
+  color: ${props =>  props.theme.colorMain};
+  font-size: 41px;
+  line-height: 45px;
+  font-weight: 500;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  ${media.tablet`
+    font-size: 40px;
+    line-height: 48px;
+  `}
+
+  ${media.phone`
+    font-weight: 600;
+    font-size: 34px;
+    line-height: 38px;
+  `}
+
+  ${media.smallPhone`
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 34px;
+  `}
+`;
+
+const HeaderSubtitle = styled.h2`
+  color: ${props =>  props.theme.colorMain};
+  font-size: 32px;
+  line-height: 38px;
+  font-weight: 100;
+  max-width: 980px;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  margin-top: 10px;
+  opacity: 0.8;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  ${media.tablet`
+    font-size: 28px;
+    line-height: 32px;
+  `}
+
+  ${media.phone`
+    font-size: 24px;
+    line-height: 28px;
+  `}
+
+  ${media.smallPhone`
+    font-size: 20px;
+    line-height: 24px;
+  `}
 `;
 
 const ProjectsSectionWrapper = styled.div`
-  background: #f9f9f9;
   width: 100vw;
+  background: #fff;
 `;
 
 const Section = styled.div`
+  width: 100%;
   margin-top: 80px;
-  padding-bottom: 30px;
+  padding-bottom: 60px;
 `;
 
 const SectionHeader = styled.div`
   display: flex;
+  flex-direction: row;
   align-items: flex-end;
   justify-content: space-between;
-  padding-bottom: 15px;
+  margin-bottom: 35px;
 
+  /*
   ${media.phone`
     padding-top: 50px;
   `}
@@ -58,44 +152,58 @@ const SectionHeader = styled.div`
   ${media.smallPhone`
     flex-wrap: wrap;
   `}
+  */
 `;
 
 const SectionTitle = styled.h2`
-  flex: 1;
-  color: #222222;
-  font-size: 35px;
-  line-height: 35px;
-  font-weight: 600;
+  color: #333;
+  font-size: 30px;
+  line-height: 34px;
+  font-weight: 500;
+  display: flex;
   margin: 0;
-  margin-right: 20px;
+  padding: 0;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 
+  /*
   ${media.phone`
     font-size: 23px;
     line-height: 36px;
   `}
+  */
+`;
+
+const SectionContainer = styled.section`
+  width: 100%;
+  margin-top: 10px;
 `;
 
 const ViewAllButtonText = styled.div`
-  color: #000;
+  margin-right: 10px;
+`;
+
+const ViewAllButtonIcon = styled(Icon)`;
+  height: 10px;
+  fill: #999;
+  margin-top: 3px;
 `;
 
 const ViewAllButton = styled(Link)`
-  align-items: center;
-  color: #cacaca;
+  color: #999;
   cursor: pointer;
   display: flex;
+  align-items: center;
   font-size: 18px;
   font-weight: 300;
-  line-height: 16px;
-  margin-bottom: 8px;
-  margin-right: 7px;
-  text-decoration: underline;
+  line-height: 18px;
+  text-decoration: none;
 
   &:hover {
-    color: ${lighten(0.1, '#000')};
+    color: #000;
 
-    ${ViewAllButtonText} {
-      color: ${lighten(0.1, '#000')};
+    ${ViewAllButtonIcon} {
+      fill: #000;
     }
   }
 
@@ -104,31 +212,27 @@ const ViewAllButton = styled(Link)`
   `}
 `;
 
-type Props = {
-
-};
-
 type State = {
   currentTenant: ITenant | null;
 };
 
-const SectionContainer = styled.section`
-  margin-top: 10px;
-`;
-
-const namespace = 'LandingPage/index';
-
-class LandingPage extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
+export default class LandingPage extends React.PureComponent<{}, State> {
+  state: State;
   subscriptions: Rx.Subscription[];
 
+  constructor() {
+    super();
+    this.state = {
+      currentTenant: null
+    };
+    this.subscriptions = [];
+  }
+
   componentWillMount() {
-    const initialState: State = { currentTenant: null };
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-      currentTenantStream().observable.subscribe(currentTenant => this.state$.next({ currentTenant }))
+      currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))
     ];
   }
 
@@ -139,24 +243,30 @@ class LandingPage extends React.PureComponent<Props, State> {
   render() {
     const { currentTenant } = this.state;
 
-    if (currentTenant) {
+    if (currentTenant !== null) {
       const currentTenantName = i18n.getLocalized(currentTenant.data.attributes.settings.core.organization_name);
-      const currentTenantHeaderBg = currentTenant.data.attributes.header_bg.large as string;
+      const currentTenantLogo = currentTenant.data.attributes.logo.large;
       const currentTenantHeaderSlogan = i18n.getLocalized(currentTenant.data.attributes.settings.core.header_slogan);
-      const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.SubTitleCity} values={{ name: currentTenantName }} />);
+      const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const ideaCardsFilter = { sort: 'trending', 'page[size]': 9 };
+      const projectCardsFilter = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
 
       return (
         <div>
-          <Container>
-            <ImageHeader image={currentTenantHeaderBg}>
+          <Container imageSrc={header}>
+            <Header>
+              {currentTenantLogo && 
+              <HeaderLogoWrapper>
+                <HeaderLogo imageSrc={currentTenantLogo} />
+              </HeaderLogoWrapper>
+              }
               <HeaderTitle>
                 <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }} />
               </HeaderTitle>
               <HeaderSubtitle>
                 {subtitle}
               </HeaderSubtitle>
-            </ImageHeader>
+            </Header>
 
             <ContentContainer>
               <Section>
@@ -168,6 +278,7 @@ class LandingPage extends React.PureComponent<Props, State> {
                     <ViewAllButtonText>
                       <FormattedMessage {...messages.viewIdeas} />
                     </ViewAllButtonText>
+                    <ViewAllButtonIcon name="chevron-right" />
                   </ViewAllButton>
                 </SectionHeader>
                 <SectionContainer>
@@ -187,10 +298,11 @@ class LandingPage extends React.PureComponent<Props, State> {
                       <ViewAllButtonText>
                         <FormattedMessage {...messages.viewProjects} />
                       </ViewAllButtonText>
+                      <ViewAllButtonIcon name="chevron-right" />
                     </ViewAllButton>
                   </SectionHeader>
                   <SectionContainer>
-                    <ProjectCards />
+                    <ProjectCards filter={projectCardsFilter} />
                   </SectionContainer>
                 </Section>
               </ContentContainer>

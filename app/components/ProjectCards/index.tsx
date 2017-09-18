@@ -7,7 +7,6 @@ import ProjectCard from 'components/ProjectCard';
 import ContentContainer from 'components/ContentContainer';
 
 // services
-import { state, IStateStream } from 'services/state';
 import { projectsStream, IProjects, IProject } from 'services/projects';
 
 // style
@@ -17,31 +16,55 @@ const Container = styled.div`
   width: 100%;
 `;
 
-type Props = {};
+type Props = {
+  filter?: { [key: string]: any };
+};
 
 type State = {
   loading: boolean;
   projects: IProjects | null;
 };
 
-const namespace = 'ProjectCards/index';
-
 export default class ProjectCards extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
+  state: State;
+  filterChange$: Rx.BehaviorSubject<object | null>;
   subscriptions: Rx.Subscription[];
 
+  constructor() {
+    super();
+    this.state = {
+      loading: true,
+      projects: null
+    };
+    this.subscriptions = [];
+  }
+
   componentWillMount() {
-    const initialState: State = { loading: true, projects: null };
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    const filter = (!_.isUndefined(this.props.filter) && _.isObject(this.props.filter) && !_.isEmpty(this.props.filter) ? this.props.filter : null);
+
+    this.filterChange$ = new Rx.BehaviorSubject(filter);
 
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-      projectsStream().observable.subscribe((projects) => this.state$.next({ projects, loading: false }))
+      this.filterChange$.switchMap((filter) => {
+        const queryParameters = (filter !== null ? filter : {});
+        return projectsStream({ queryParameters }).observable;
+      }).subscribe((projects) => {
+        this.setState({ projects, loading: false });
+      })
     ];
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  componentWillReceiveProps(newProps) {
+    const oldFilter = this.props.filter;
+    const newFilter = (!_.isUndefined(newProps.filter) && _.isObject(newProps.filter) && !_.isEmpty(newProps.filter) ? newProps.filter : null);
+
+    if (!_.isEqual(oldFilter, newFilter)) {
+      this.filterChange$.next({ filter: newFilter });
+    }
   }
 
   render() {

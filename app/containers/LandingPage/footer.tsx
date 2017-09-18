@@ -1,22 +1,23 @@
-// Libraries
 import * as React from 'react';
+import { Link } from 'react-router';
+
+// components
+import Icon from 'components/UI/Icon';
+
+// i18n
+import { FormattedMessage } from 'react-intl';
+import messages from './messages.js';
+
+// style
 import styled from 'styled-components';
 
-import messages from '../messages.js';
-
-// Components
-import Icon from 'components/UI/Icon';
-import { Link } from 'react-router';
-import { FormattedMessage } from 'react-intl';
-
-// Styling
 const FooterWrapper = styled.div`
+  height: 70px;
   align-items: center;
   background: #fff;
   border-top: 1px solid #eaeaea;
   box-sizing: border-box;
   display: flex;
-  height: 6rem;
   justify-content: space-between;
   padding: 0 3.5rem;
   width: 100vw;
@@ -39,7 +40,7 @@ const PagesNav = styled.nav`
 `;
 
 const CLWrapper = styled.div`
-  color: #A6A6A6;
+  color: #a6a6a6;
   flex: 1;
   text-align: center;
 
@@ -55,26 +56,22 @@ const CLWrapper = styled.div`
 `;
 
 const FeedbackWrapper = styled.div`
-  color: #000;
   flex: 1;
   text-align: right;
+`;
 
-  a {
-    color: inherit;
+const StyledLink = styled(Link)`
+  color: #999 !important;
+  text-decoration: none;
+  padding: 0px 10px;
+
+  &:hover {
+    color: #000 !important;
+    text-decoration: underline;
   }
 `;
 
-
-// Typing
-interface Props {
-
-}
-
-interface State {
-
-}
-
-export default class Footer extends React.Component<Props, State> {
+export default class Footer extends React.PureComponent<{}, {}> {
   render () {
     const logo = <Icon name="logo" />;
 
@@ -82,21 +79,19 @@ export default class Footer extends React.Component<Props, State> {
       <FooterWrapper>
         <PagesNav>
           <li>
-            <Link to="/pages/terms-and-condition">
+            <StyledLink to="/pages/terms-and-condition">
               <FormattedMessage {...messages.termsLink} />
-            </Link>
+            </StyledLink>
           </li>
-          &nbsp;|&nbsp;
           <li>
-            <Link to="/pages/privacy-policy">
+            <StyledLink to="/pages/privacy-policy">
               <FormattedMessage {...messages.privacyLink} />
-            </Link>
+            </StyledLink>
           </li>
-          &nbsp;|&nbsp;
           <li>
-            <Link to="/pages/cookies-policy">
+            <StyledLink to="/pages/cookies-policy">
               <FormattedMessage {...messages.cookiesLink} />
-            </Link>
+            </StyledLink>
           </li>
         </PagesNav>
 

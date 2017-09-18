@@ -1,152 +1,189 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// components
 import Icon from 'components/UI/Icon';
-import { darken } from 'polished';
-import { state, IStateStream } from 'services/state';
-import { IStream } from 'utils/streams';
-import styled from 'styled-components';
+
+// services
 import { authUserStream } from 'services/auth';
-import eventEmitter from 'utils/eventEmitter';
 import { ideaByIdStream, IIdea } from 'services/ideas';
 import { userStream, IUser } from 'services/users';
-import { votesStream, addVote, deleteVote, IIdeaVote, IIdeaVoteData } from 'services/ideaVotes';
+import { voteStream, votesStream, addVote, deleteVote, IIdeaVote, IIdeaVoteData } from 'services/ideaVotes';
 
-const BACKGROUND = '#F8F8F8';
-const FOREGROUND = '#6B6B6B';
-const FOREGROUND_ACTIVE = '#FFFFFF';
-const GREEN = '#32B67A';
-const RED = '#FC3C2D';
-const WIDTH = {
-  small: 50,
-  medium: 80,
-  large: 100,
-};
-const HEIGHT = {
-  small: 35,
-  medium: 45,
-  large: 57,
-};
-const FONT_SIZE = {
-  small: 14,
-  medium: 18,
-  large: 23,
-};
-const GUTTER = {
-  small: 3,
-  medium: 5,
-  large: 8,
-};
+// utils
+import eventEmitter from 'utils/eventEmitter';
 
-const VotesContainer = styled.div`
+// style
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+const green = '#32B67A';
+const red = '#FC3C2D';
+
+const Container = styled.div`
   display: flex;
-  flex-direction: row;
-`;
-
-const VoteButton: any = styled.button`
-  cursor: pointer;
-  background-color: ${BACKGROUND};
-  width: ${props => WIDTH[(props as any).size]}px;
-  height: ${props => HEIGHT[(props as any).size]}px;
-  border-radius: 5px;
-  font-size: ${props => FONT_SIZE[(props as any).size]}px;
-  font-weight: 600;
-  color: ${props => (props as any).active ? FOREGROUND_ACTIVE : FOREGROUND};
-  margin-right: ${props => GUTTER[(props as any).size]}px;
-  display: flex;
-  justify-content: center;
   align-items: center;
-  transition: background-color 50ms ease-out;
-  outline: none;
 `;
 
-const UpvoteButton = VoteButton.extend`
-  ${props => props.active && `background: ${GREEN};`}
-  &:hover {
-    background-color: ${props => darken(0.1, props.active ? GREEN : BACKGROUND)};
-  }
+const Vote: any = styled.div`
+  width: 90px;
+  display: flex;
+  align-items: center;
 `;
 
-const DownvoteButton = VoteButton.extend`
-  ${props => props.active && `background: ${RED};`}
-  &:hover {
-    background-color: ${props => darken(0.1, props.active ? RED : BACKGROUND)};
-  }
+const VoteIconWrapper = styled.div`
+  width: 55px;
+  height: 55px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: solid 1px #e5e5e5;
 `;
 
 const VoteIcon = styled(Icon)`
+  height: 19px;
+  fill: #bdbdbd;
 `;
 
 const VoteCount = styled.div`
-  margin-left: 6px;
+  color: #bdbdbd;
+  font-size: 16px;
+  font-weight: 300;
+  margin-left: 5px;
+`;
+
+const Upvote = Vote.extend`
+  ${VoteIconWrapper} {
+    ${props => props.active && `
+      border-color: ${green};
+      background: ${green};
+    `}
+  }
+
+  ${VoteIcon} {
+    margin-bottom: 5px;
+    ${props => props.active && `fill: #fff;`}
+  }
+
+  &:hover {
+    ${VoteIconWrapper} {
+      ${props => props.active ? `border-color: ${green};` : `border-color: #999`}
+    }
+
+    ${VoteIcon} {
+      ${props => props.active ? `fill: #fff;` : `fill: #999`}
+    }
+  }
+`;
+
+const Downvote = Vote.extend`
+  ${VoteIconWrapper} {
+    ${props => props.active && `
+      border-color: ${red};
+      background: ${red};
+    `}
+  }
+
+  ${VoteIcon} {
+    margin-top: 5px;
+    ${props => props.active && `fill: #fff;`}
+  }
+
+  &:hover {
+    ${VoteIconWrapper} {
+      ${props => props.active ? `border-color: ${red};` : `border-color: #999`}
+    }
+
+    ${VoteIcon} {
+      ${props => props.active ? `fill: #fff;` : `fill: #999`}
+    }
+  }
 `;
 
 type Props = {
   ideaId: string;
-  size: 'small' | 'medium' | 'large';
 };
 
 type State = {
   authUser: IUser | null,
-  isAuthenticated: boolean;
   upvotesCount: number;
   downvotesCount: number;
-  myVote: IIdeaVoteData | null;
+  myVoteId: string | null;
+  myVoteMode: 'up' | 'down' | null;
+  processing: boolean;
 };
 
-export const namespace = 'VoteControl/index';
-
 export default class Votes extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
+  state: State;
+  processing$: Rx.BehaviorSubject<boolean>;
   subscriptions: Rx.Subscription[];
+
+  constructor() {
+    super();
+    this.state = {
+      authUser: null,
+      upvotesCount: 0,
+      downvotesCount: 0,
+      myVoteId: null,
+      myVoteMode: null,
+      processing: false
+    };
+    this.processing$ = new Rx.BehaviorSubject(false);
+    this.subscriptions = [];
+  }
 
   componentWillMount() {
     const { ideaId } = this.props;
-    const instanceNamespace = `${namespace}/${ideaId}`;
-    const initialState: State = {
-      authUser: null,
-      isAuthenticated: false,
-      upvotesCount: 0,
-      downvotesCount: 0,
-      myVote: null
-    };
-
-    const idea$ = ideaByIdStream(ideaId).observable;
     const authUser$ = authUserStream().observable;
-    const isAuthenticated$ = authUser$.map(authUser => !_.isNull(authUser));
-    const votes$ = votesStream(ideaId).observable;
-    const authUserAndVotes$ = authUser$.switchMap(authUser => votes$.map(votes => ({ authUser, votes })));
-    // const upvotesCount$ = votes$.map(votes => votes.data.filter(vote => vote.attributes.mode === 'up').length);
-    // const downVotesCount$ = votes$.map(votes => votes.data.filter(vote => vote.attributes.mode === 'down').length);
-    const myVote$ = Rx.Observable.combineLatest(authUser$, votes$).map(([authUser, votes]) => {
-      if (authUser) {
-        const myVote = _(votes.data).find(vote => vote.relationships.user.data.id === authUser.data.id);
-        return (myVote ? myVote : null);
+    const idea$ = Rx.Observable.combineLatest(
+      ideaByIdStream(ideaId).observable, 
+      this.processing$
+    ).filter(([idea, processing]) => {
+      return processing === false;
+    }).map(([idea, processing]) => {
+      return idea;
+    });
+    const myVote$ = Rx.Observable.combineLatest(authUser$, idea$).switchMap(([authUser, idea]) => {
+      if (authUser && idea && _.has(idea, 'data.relationships.user_vote.data') && idea.data.relationships.user_vote.data !== null) {
+        const voteId = idea.data.relationships.user_vote.data.id;
+
+        return Rx.Observable.combineLatest(
+          voteStream(voteId).observable,
+          this.processing$
+        ).filter(([vote, processing]) => {
+          return processing === false;
+        }).map(([vote, processing]) => {
+          return vote;
+        });
       }
 
-      return null;
+      return Rx.Observable.of(null);
     });
 
-    this.state$ = state.createStream<State>(instanceNamespace, instanceNamespace, initialState);
-
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
+      this.processing$.subscribe((processing) => this.setState({ processing })),
 
-      Rx.Observable.combineLatest(
-        idea$,
-        isAuthenticated$,
-        authUserAndVotes$,
-        myVote$
-      ).subscribe(([idea, isAuthenticated, { authUser, votes }, myVote]) => {
-        let upvotesCount = idea.data.attributes.upvotes_count;
-        let downvotesCount = idea.data.attributes.downvotes_count;
+      idea$.subscribe((idea) => {
+        const upvotesCount = idea.data.attributes.upvotes_count;
+        const downvotesCount = idea.data.attributes.downvotes_count;
+        this.setState({ upvotesCount, downvotesCount });
+      }),
 
-        if (isAuthenticated && votes) {
-          upvotesCount = votes.data.filter(vote => vote.attributes.mode === 'up').length;
-          downvotesCount = votes.data.filter(vote => vote.attributes.mode === 'down').length;
+      authUser$.subscribe(authUser => {
+        console.log('authUser:');
+        console.log(authUser);
+        this.setState({ authUser });
+      }),
+
+      myVote$.subscribe((myVote) => {
+        if (myVote) {
+          this.setState({ myVoteId: myVote.data.id, myVoteMode: myVote.data.attributes.mode });
+        } else {
+          this.setState({ myVoteId: null, myVoteMode: null });
         }
-
-        this.state$.next({ authUser, isAuthenticated, upvotesCount, downvotesCount, myVote });
       })
     ];
   }
@@ -168,47 +205,69 @@ export default class Votes extends React.PureComponent<Props, State> {
   }
 
   onClickVote = async (voteMode: 'up' | 'down') => {
-    try {
-      const { authUser, myVote } = this.state;
-      const { ideaId } = this.props;
+    const { authUser, myVoteId, myVoteMode } = this.state;
+    const { ideaId } = this.props;
 
-      if (authUser) {
-        if (myVote && myVote.attributes.mode !== voteMode) {
-          await deleteVote(ideaId, myVote.id);
+    if (authUser && !this.state.processing) {
+      try {
+        this.processing$.next(true);
+
+        if (myVoteId && myVoteMode && myVoteMode !== voteMode) {
+          this.setState((state) => ({
+            upvotesCount: (voteMode === 'up' ? state.upvotesCount + 1 : state.upvotesCount - 1),
+            downvotesCount: (voteMode === 'down' ? state.downvotesCount + 1 : state.downvotesCount - 1),
+            myVoteMode: voteMode
+          }));
+          await deleteVote(ideaId, myVoteId);
           await addVote(ideaId, { user_id: authUser.data.id, mode: voteMode });
         }
 
-        if (myVote && myVote.attributes.mode === voteMode) {
-          await deleteVote(ideaId, myVote.id);
+        if (myVoteId && myVoteMode && myVoteMode === voteMode) {
+          this.setState((state) => ({
+            upvotesCount: (voteMode === 'up' ? state.upvotesCount - 1 : state.upvotesCount),
+            downvotesCount: (voteMode === 'down' ? state.downvotesCount - 1 : state.downvotesCount),
+            myVoteMode: null
+          }));
+          await deleteVote(ideaId, myVoteId);
         }
 
-        if (!myVote) {
+        if (!myVoteMode) {
+          this.setState((state) => ({
+            upvotesCount: (voteMode === 'up' ? state.upvotesCount + 1 : state.upvotesCount),
+            downvotesCount: (voteMode === 'down' ? state.downvotesCount + 1 : state.downvotesCount),
+            myVoteMode: voteMode
+          }));
           await addVote(ideaId, { user_id: authUser.data.id, mode: voteMode });
         }
-      } else {
-        eventEmitter.emit(namespace, 'unauthenticatedVoteClick', ideaId);
+
+        await ideaByIdStream(ideaId).fetch();
+        this.processing$.next(false);
+      } catch (error) {
+        console.log(error);
+        this.processing$.next(false);
+        await ideaByIdStream(ideaId).fetch();
       }
-    } catch (error) {
-      console.log(error);
+    }
+
+    if (!authUser) {
+      eventEmitter.emit(namespace, 'unauthenticatedVoteClick', ideaId);
     }
   }
 
   render() {
-    const { size } = this.props;
-    const { isAuthenticated, upvotesCount, downvotesCount, myVote } = this.state;
-    const myVoteMode = (myVote ? myVote.attributes.mode : null);
+    const { upvotesCount, downvotesCount, myVoteMode } = this.state;
 
     return (
-      <VotesContainer>
-        <UpvoteButton size={size} active={myVoteMode === 'up'} onClick={this.onClickUpvote}>
-          <VoteIcon name="upvote" />
+      <Container>
+        <Upvote active={myVoteMode === 'up'} onClick={this.onClickUpvote}>
+          <VoteIconWrapper><VoteIcon name="upvote-2" /></VoteIconWrapper>
           <VoteCount>{upvotesCount}</VoteCount>
-        </UpvoteButton>
-        <DownvoteButton size={size} active={myVoteMode === 'down'} onClick={this.onClickDownvote}>
-          <VoteIcon name="downvote" />
+        </Upvote>
+        <Downvote active={myVoteMode === 'down'} onClick={this.onClickDownvote}>
+          <VoteIconWrapper><VoteIcon name="downvote-2" /></VoteIconWrapper>
           <VoteCount>{downvotesCount}</VoteCount>
-        </DownvoteButton>
-      </VotesContainer>
+        </Downvote>
+      </Container>
     );
   }
 }
