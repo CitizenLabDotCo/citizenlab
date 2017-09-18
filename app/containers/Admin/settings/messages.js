@@ -55,8 +55,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.logo',
     defaultMessage: 'Logo',
   },
-  headerBg: {
-    id: 'app.containers.AdminPage.SettingsPage.headerBg',
+  header_bg: {
+    id: 'app.containers.AdminPage.SettingsPage.header_bg',
     defaultMessage: 'Homepage header background',
   },
   headerSlogan: {

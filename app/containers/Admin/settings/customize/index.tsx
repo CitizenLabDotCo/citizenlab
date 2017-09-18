@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import * as Rx from 'rxjs/Rx';
 import { API } from 'typings.d';
 import * as _ from 'lodash';
+import * as Dropzone from 'react-dropzone';
 
 // Components
 import { connect } from 'react-redux';
@@ -87,12 +88,20 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
     return _.isEmpty(this.state.attributesDiff) ? 'disabled' : 'enabled';
   }
 
-  changeImage(name, value) {
-    const reader = new FileReader();
-    let newDiff = _.cloneDeep(this.state.attributesDiff);
-    reader.readAsDataURL(value);
-    reader.onload = () => {
-      newDiff = _.set(newDiff, name, reader.result);
+  createImageUploadHandler = (name: string) => {
+    return (file: Dropzone.ImageFile): void => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const newDiff = _.merge({}, this.state.attributesDiff, { [name]: reader.result as string } as IUpdatedTenantProperties);
+        this.setState({ attributesDiff: newDiff });
+      };
+    };
+  }
+
+  createImageRemovalHandler = (name: string) => {
+    return (): void => {
+      const newDiff = _.merge({}, this.state.attributesDiff, { [name]: null } as IUpdatedTenantProperties);
       this.setState({ attributesDiff: newDiff });
     };
   }
@@ -111,13 +120,6 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
       }
       this.setState({ attributesDiff: newDiff });
     };
-  }
-
-  removeImage(name) {
-    this.setState({
-      // changedAttributes: this.state.changedAttributes.set(name, null),
-      // [`temp_${name}`]: [],
-    });
   }
 
   save = (e): void => {
@@ -182,33 +184,29 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
         </FieldWrapper>
 
 
-        <FieldWrapper>
-          <Label><FormattedMessage {...messages.logo} /></Label>
-          <Upload
-            accept="image/*"
-            maxItems={1}
-            items={[]}
-            apiImages={[_.get(tenantAttrs, 'logo')]}
-            onAdd={console.log}
-            onRemove={console.log}
-            placeholder={this.uploadPlaceholder}
-            intl={this.props.intl}
-          />
-        </FieldWrapper>
+        {['logo', 'header_bg'].map((imageName) => {
+          const uploadedImages = this.state.attributesDiff[imageName] ? [this.state.attributesDiff[imageName]] : [];
+          const apiImages = (this.state.attributesDiff[imageName] === undefined && this.state.tenant && this.state.tenant.attributes[imageName].medium !== null)
+            ? [this.state.tenant.attributes[imageName]]
+            : [];
 
-        <FieldWrapper>
-          <Label><FormattedMessage {...messages.headerBg} /></Label>
-          <Upload
-            accept="image/*"
-            maxItems={1}
-            items={[]}
-            apiImages={[_.get(tenantAttrs, 'header_bg')]}
-            onAdd={console.log}
-            onRemove={console.log}
-            placeholder={this.uploadPlaceholder}
-            intl={this.props.intl}
-          />
-        </FieldWrapper>
+          return (
+            <FieldWrapper key={imageName}>
+              <Label><FormattedMessage {...messages[imageName]} /></Label>
+              <Upload
+                accept="image/*"
+                maxItems={1}
+                items={uploadedImages}
+                apiImages={apiImages}
+                onAdd={this.createImageUploadHandler(imageName)}
+                onRemove={this.createImageRemovalHandler(imageName)}
+                onRemoveApiImage={this.createImageRemovalHandler(imageName)}
+                placeholder={this.uploadPlaceholder}
+                intl={this.props.intl}
+              />
+            </FieldWrapper>
+          );
+        })}
 
         <h1><FormattedMessage {...messages.titleSignupFields} /></h1>
         <p><FormattedMessage {...messages.subTitleSignupFields} /></p>
