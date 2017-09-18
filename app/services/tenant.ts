@@ -1,5 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
+import { API, Multiloc } from 'typings';
 
 export interface ITenantSettings {
   core: {
@@ -7,19 +8,11 @@ export interface ITenantSettings {
     enabled: boolean;
     locales: string[];
     timezone: string;
-    organization_name: {
-      [key: string]: string;
-    };
+    organization_name: Multiloc;
     organization_type: string;
-    header_slogan: {
-      [key: string]: string;
-    } | null;
-    meta_title: {
-      [key: string]: string;
-    } | null;
-    meta_description: {
-      [key: string]: string;
-    } | null;
+    header_slogan: Multiloc | null;
+    meta_title: Multiloc | null;
+    meta_description: Multiloc | null;
     color_main: string | null;
     color_menu_bg: string | null;
   };

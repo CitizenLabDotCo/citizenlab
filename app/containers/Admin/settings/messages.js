@@ -55,8 +55,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.logo',
     defaultMessage: 'Logo',
   },
-  headerBg: {
-    id: 'app.containers.AdminPage.SettingsPage.headerBg',
+  header_bg: {
+    id: 'app.containers.AdminPage.SettingsPage.header_bg',
     defaultMessage: 'Homepage header background',
   },
   headerSlogan: {
@@ -118,5 +118,21 @@ export default defineMessages({
   save: {
     id: 'app.containers.AdminPage.SettingsPage.save',
     defaultMessage: 'Save',
+  },
+  saveError: {
+    id: 'app.containers.AdminPage.SettingsPage.saveError',
+    defaultMessage: 'Error',
+  },
+  saveSuccess: {
+    id: 'app.containers.AdminPage.SettingsPage.saveSuccess',
+    defaultMessage: 'Success!',
+  },
+  saveErrorMessage: {
+    id: 'app.containers.AdminPage.SettingsPage.saveErrorMessage',
+    defaultMessage: 'Something went wrong, please try again later.',
+  },
+  saveSuccessMessage: {
+    id: 'app.containers.AdminPage.SettingsPage.saveSuccessMessage',
+    defaultMessage: 'Your changes have been saved.',
   },
 });
