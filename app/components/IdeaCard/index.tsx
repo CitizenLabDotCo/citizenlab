@@ -29,7 +29,7 @@ import messages from './messages';
 // styles
 import styled, { keyframes } from 'styled-components';
 
-const IdeaContainer: any = styled(Link)`
+const IdeaContainer: any = styled(Link) `
   width: 100%;
   height: 370px;
   margin-bottom: 22px;
@@ -105,7 +105,7 @@ const IdeaImagePlaceholder = styled.div`
   border-bottom: solid 1px #e5e5e5;
 `;
 
-const IdeaImagePlaceholderIcon = styled(Icon)`
+const IdeaImagePlaceholderIcon = styled(Icon) `
   height: 50px;
   fill: #fff;
 `;
@@ -169,6 +169,8 @@ type State = {
   loading: boolean;
 };
 
+export const namespace = 'components/IdeaCard/index';
+
 export default class IdeaCard extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
@@ -199,16 +201,16 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
       const ideaAuthor$ = userStream(idea.data.relationships.author.data.id).observable;
       const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
 
-      return Rx.Observable.combineLatest(idea$, ideaImage$, ideaAuthor$).map(([idea, ideaImage, ideaAuthor]) => {
+      return Rx.Observable.combineLatest(
+        idea$,
+        ideaImage$,
+        ideaAuthor$
+      ).map(([idea, ideaImage, ideaAuthor]) => {
         return { idea, ideaImage, ideaAuthor };
       });
     });
 
     this.subscriptions = [
-      eventEmitter.observe(voteControlNamespace, 'unauthenticatedVoteClick')
-        .filter(({ eventValue }) => eventValue === ideaId)
-        .subscribe(() => this.setState({ showUnauthenticated: true })),
-
       Rx.Observable.combineLatest(
         locale$,
         isAuthenticated$,
@@ -230,7 +232,7 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
       event.preventDefault();
       const ideaId = idea.data.id;
       const ideaSlug = idea.data.attributes.slug;
-      eventEmitter.emit<IModalProps>(namespace, 'ideaCardClick', { ideaId, ideaSlug });
+      eventEmitter.emit<IModalProps>(namespace, 'cardClick', { ideaId, ideaSlug });
     }
   }
 
@@ -242,6 +244,10 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
       event.preventDefault();
       browserHistory.push(`/profile/${ideaAuthor.data.attributes.slug}`);
     }
+  }
+
+  unauthenticatedVoteClick = () => {
+    this.setState({ showUnauthenticated: true });
   }
 
   render() {
@@ -264,7 +270,7 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
           */}
 
           {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
-          {!ideaImageUrl && 
+          {!ideaImageUrl &&
             <IdeaImagePlaceholder>
               <IdeaImagePlaceholderIcon name="idea" />
             </IdeaImagePlaceholder>
@@ -285,7 +291,7 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
           </IdeaContent>
           {!showUnauthenticated &&
             <IdeaFooter>
-              <VoteControl ideaId={idea.data.id} />
+              <VoteControl ideaId={idea.data.id} unauthenticatedVoteClick={this.unauthenticatedVoteClick} />
             </IdeaFooter>
           }
           {showUnauthenticated && <Unauthenticated />}

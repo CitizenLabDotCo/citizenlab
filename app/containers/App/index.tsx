@@ -13,6 +13,7 @@ import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import Modal from 'components/UI/Modal';
 import IdeasShow from 'containers/IdeasShow';
+import { namespace as IdeaCardComponent } from 'components/IdeaCard';
 
 // auth
 import Authorize, { Else } from 'utils/containers/authorize';
@@ -37,7 +38,7 @@ import { media } from 'utils/styleUtils';
 
 // legacy redux stuff 
 import { store } from 'app';
-import {  STORE_JWT, LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
+import { STORE_JWT, LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
 
 const Container = styled.div`
   margin-top: ${props => props.theme.menuHeight}px;
@@ -74,7 +75,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
   componentWillMount() {
     this.subscriptions = [
-      eventEmitter.observe<IModalProps>(ideaCardNamespace, 'ideaCardClick').subscribe(({ eventValue }) => {
+      eventEmitter.observe<IModalProps>(IdeaCardComponent, 'cardClick').subscribe(({ eventValue }) => {
         const { ideaId, ideaSlug } = eventValue;
         this.openModal({ ideaId, ideaSlug });
       }),

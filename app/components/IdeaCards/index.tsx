@@ -34,7 +34,7 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const StyledSpinner = styled(Spinner)`
+const StyledSpinner = styled(Spinner) `
   display: flex;
   align-items: center;
   justify-content: center;
@@ -145,7 +145,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
         this.filterChange$,
         this.loadMore$,
         (filter, loadMore) => ({ filter, loadMore })
-      ).mergeScan<{filter: object, loadMore: boolean}, IAccumulator>((acc, { filter, loadMore }) => {
+      ).mergeScan<{ filter: object, loadMore: boolean }, IAccumulator>((acc, { filter, loadMore }) => {
         const filterChange = !_.isEqual(acc.filter, filter) || !loadMore;
         const pageNumber = (filterChange ? 1 : acc.pageNumber + 1);
 
@@ -164,13 +164,13 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
           hasMore: _.has(ideas, 'links.next')
         }));
       }, {
-        ideas: {} as IIdeas,
-        filter: {},
-        pageNumber: 1,
-        hasMore: false
-      }).subscribe(({ ideas, hasMore }) => {
-        this.setState({ ideas, hasMore, loading: false });
-      })
+          ideas: {} as IIdeas,
+          filter: {},
+          pageNumber: 1,
+          hasMore: false
+        }).subscribe(({ ideas, hasMore }) => {
+          this.setState({ ideas, hasMore, loading: false });
+        })
     ];
   }
 
@@ -194,7 +194,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
   render() {
     const { ideas, hasMore, loading } = this.state;
     const { loadMoreEnabled } = this.props;
-    const showLoadmore = (loadMoreEnabled === true && hasMore === true);
+    const showLoadmore = (loadMoreEnabled && hasMore);
 
     const loadingIndicator = (loading ? (
       <Loading>

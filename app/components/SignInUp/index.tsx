@@ -88,7 +88,7 @@ const Forms = styled.div`
   flex: 1;
 `;
 
-const StyledTransitionGroup = styled(TransitionGroup)`
+const StyledTransitionGroup = styled(TransitionGroup) `
   position: relative;
 `;
 
@@ -221,8 +221,8 @@ type Props = {
   onGoBack?: () => void;
   onSignInUpCompleted: () => void;
   show?: 'signIn' | 'signUp' | 'passwordReset';
-  signInTitleMessage?: {id: string, defaultMessage: string};
-  signUpTitleMessage?: {id: string, defaultMessage: string};
+  signInTitleMessage?: { id: string, defaultMessage: string };
+  signUpTitleMessage?: { id: string, defaultMessage: string };
 };
 
 type State = {
@@ -237,7 +237,10 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   constructor(props) {
     super(props);
-    this.state = { show: props.show || 'signIn', currentTenant: null };
+    this.state = {
+      show: props.show || 'signIn',
+      currentTenant: null
+    };
     this.currentTenant$ = currentTenantStream();
     this.subscriptions = [];
   }
