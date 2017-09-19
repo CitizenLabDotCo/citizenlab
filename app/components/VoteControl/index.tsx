@@ -11,9 +11,6 @@ import { ideaByIdStream, IIdea } from 'services/ideas';
 import { userStream, IUser } from 'services/users';
 import { voteStream, votesStream, addVote, deleteVote, IIdeaVote, IIdeaVoteData } from 'services/ideaVotes';
 
-// utils
-import eventEmitter from 'utils/eventEmitter';
-
 // style
 import { darken } from 'polished';
 import styled from 'styled-components';
@@ -43,7 +40,7 @@ const VoteIconWrapper = styled.div`
   border: solid 1px #e5e5e5;
 `;
 
-const VoteIcon = styled(Icon)`
+const VoteIcon = styled(Icon) `
   height: 19px;
   fill: #bdbdbd;
 `;
@@ -105,6 +102,7 @@ const Downvote = Vote.extend`
 
 type Props = {
   ideaId: string;
+  unauthenticatedVoteClick?: () => void;
 };
 
 type State = {
@@ -139,10 +137,10 @@ export default class Votes extends React.PureComponent<Props, State> {
     const { ideaId } = this.props;
     const authUser$ = authUserStream().observable;
     const idea$ = Rx.Observable.combineLatest(
-      ideaByIdStream(ideaId).observable, 
+      ideaByIdStream(ideaId).observable,
       this.processing$
     ).filter(([idea, processing]) => {
-      return processing === false;
+      return !processing;
     }).map(([idea, processing]) => {
       return idea;
     });
@@ -154,7 +152,7 @@ export default class Votes extends React.PureComponent<Props, State> {
           voteStream(voteId).observable,
           this.processing$
         ).filter(([vote, processing]) => {
-          return processing === false;
+          return !processing;
         }).map(([vote, processing]) => {
           return vote;
         });
@@ -250,7 +248,9 @@ export default class Votes extends React.PureComponent<Props, State> {
     }
 
     if (!authUser) {
-      eventEmitter.emit(namespace, 'unauthenticatedVoteClick', ideaId);
+      if (_.has(this.props, 'unauthenticatedVoteClick') && _.isFunction(this.props.unauthenticatedVoteClick)) {
+        this.props.unauthenticatedVoteClick();
+      }
     }
   }
 

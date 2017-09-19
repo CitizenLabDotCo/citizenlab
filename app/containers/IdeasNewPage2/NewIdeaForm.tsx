@@ -20,20 +20,19 @@ import Editor from 'components/UI/Editor';
 import Button from 'components/UI/Button';
 import Upload, { ExtendedImageFile } from 'components/UI/Upload';
 import Error from 'components/UI/Error';
+import { namespace as ButtonBarNamespace } from './ButtonBar';
 
 // services
-import { localeStream } from 'services/locale';
+import { state, IStateStream } from 'services/state';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectsStream, IProjects, IProjectData } from 'services/projects';
-import { addIdea } from 'services/ideas';
-import { addIdeaImage } from 'services/ideaImages';
-import { authUserStream } from 'services/auth';
-import { IUser } from 'services/users';
 
 // utils
+import { IStream } from 'utils/streams';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
+import i18n from 'utils/i18n';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
@@ -88,11 +87,13 @@ const MobileButton = styled.div`
   `}
 `;
 
-type Props = {};
+type Props = {
+  intl: ReactIntl.InjectedIntl;
+  locale: string;
+  onSubmit: () => void;
+};
 
-type State = {
-  locale: string | null;
-  authUser: IUser | null;
+export type State = {
   topics: IOption[] | null;
   projects: IOption[] | null;
   title: string | null;
@@ -107,53 +108,37 @@ type State = {
   processing: boolean;
 };
 
-class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
+export const namespace = 'IdeasNewPage2/NewIdeaForm';
+
+export default class NewIdeaForm extends React.PureComponent<Props, State> {
+  state$: IStateStream<State>;
+  topics$: IStream<ITopics | null>;
+  projects$: IStream<IProjects | null>;
+  subscriptions: Rx.Subscription[];
   titleInputElement: HTMLInputElement | null;
   descriptionElement: any | null;
-  subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    this.state = {
-      locale: null,
-      authUser: null,
-      topics: null,
-      projects: null,
-      title: null,
-      description: EditorState.createEmpty(),
-      selectedTopics: null,
-      selectedProject: null,
-      location: null,
-      images: null,
-      titleError: null,
-      descriptionError: null,
-      submitError: false,
-      processing: false
-    };
+    this.state$ = state.createStream<State>(namespace, namespace);
+    this.topics$ = topicsStream();
+    this.projects$ = projectsStream();
+    this.subscriptions = [];
     this.titleInputElement = null;
     this.descriptionElement = null;
-    this.subscriptions = [];
   }
 
   componentWillMount() {
-    const locale$ = localeStream().observable;
-    const authUser$ = authUserStream().observable;
-    const topics$ = topicsStream().observable;
-    const projects$ = projectsStream().observable;
-
     this.subscriptions = [
+      this.state$.observable.subscribe(state => this.setState(state)),
+
       eventEmitter.observe(ButtonBarNamespace, 'submit').subscribe(this.handleOnSubmit),
 
       Rx.Observable.combineLatest(
-        locale$,
-        authUser$,
-        topics$,
-        projects$
-      ).subscribe(([locale, authUser, topics, projects]) => {
-        this.setState({
-          locale,
-          authUser,
+        this.topics$.observable,
+        this.projects$.observable
+      ).subscribe(([topics, projects]) => {
+        this.state$.next({
           topics: this.getOptions(topics),
           projects: this.getOptions(projects)
         });
@@ -170,12 +155,10 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   getOptions = (list: ITopics | IProjects | null) => {
-    const { locale }  = this.state ;
-
-    if (list && locale) {
+    if (list) {
       return (list.data as (ITopicData | IProjectData)[]).map(item => ({
         value: item.id,
-        label: item.attributes.title_multiloc[locale]
+        label: item.attributes.title_multiloc[this.props.locale]
       } as IOption));
     }
 
@@ -183,24 +166,25 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleTitleOnChange = (title: string) => {
-    this.setState({ title, titleError: null });
+    this.state$.next({ title, titleError: null });
   }
 
   handleDescriptionOnChange = async (description: EditorState) => {
-    const descriptionError = (description.getCurrentContent().hasText() ? null : this.state.descriptionError);
-    this.setState({ description, descriptionError });
+    const currentState = await this.state$.getCurrent();
+    const descriptionError = (description.getCurrentContent().hasText() ? null : currentState.descriptionError);
+    this.state$.next({ description, descriptionError });
   }
 
   handleTopicsOnChange = (selectedTopics: IOption[]) => {
-    this.setState({ selectedTopics });
+    this.state$.next({ selectedTopics });
   }
 
   handleProjectOnChange = (selectedProject: IOption) => {
-    this.setState({ selectedProject });
+    this.state$.next({ selectedProject });
   }
 
   handleLocationOnChange = (location: string) => {
-    this.setState({ location });
+    this.state$.next({ location });
   }
 
   generateImagePreview(image: ImageFile) {
@@ -212,23 +196,25 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     return undefined;
   }
 
-  handleUploadOnAdd = (newImage: ImageFile) => {
+  handleUploadOnAdd = async (newImage: ImageFile) => {
     let images: ExtendedImageFile[] | null = null;
+    const currentState = await this.state$.getCurrent();
     const image = newImage as ExtendedImageFile;
     image.preview = this.generateImagePreview(newImage);
 
-    if (this.state.images && this.state.images.length > 0) {
-      images = this.state.images.concat(image);
+    if (currentState.images && currentState.images.length > 0) {
+      images = currentState.images.concat(image);
     } else {
       images = [image];
     }
 
-    this.setState({ images });
+    this.state$.next({ images });
   }
 
-  handleUploadOnRemove = (removedImage: ImageFile) => {
-    const images = _(this.state.images).filter(image => image.preview !== removedImage.preview).value();
-    this.setState({ images });
+  handleUploadOnRemove = async (removedImage: ImageFile) => {
+    const currentState = await this.state$.getCurrent();
+    const images = _(currentState.images).filter(image => image.preview !== removedImage.preview).value();
+    this.state$.next({ images });
 
     if (removedImage.preview) {
       window.URL.revokeObjectURL(removedImage.preview);
@@ -249,80 +235,24 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     const hasDescriptionError = (!description || !description.getCurrentContent().hasText());
     const descriptionError = (hasDescriptionError ? formatMessage(messages.descriptionEmptyError) : null);
 
-    this.setState({ titleError, descriptionError });
+    this.state$.next({ titleError, descriptionError });
 
     if (titleError) {
-      scrollToComponent(this.titleInputElement, { align:'top', offset: -240, duration: 300 });
+      scrollToComponent(this.titleInputElement, { align: 'top', offset: -240, duration: 300 });
       setTimeout(() => this.titleInputElement && this.titleInputElement.focus(), 300);
     } else if (descriptionError) {
-      scrollToComponent(this.descriptionElement.editor.refs.editor, { align:'top', offset: -200, duration: 300 });
+      scrollToComponent(this.descriptionElement.editor.refs.editor, { align: 'top', offset: -200, duration: 300 });
       setTimeout(() => this.descriptionElement && this.descriptionElement.focusEditor(), 300);
     }
 
     return (!titleError && !descriptionError);
   }
 
-  async convertToGeoJson(location: string) {
-    const results = await geocodeByAddress(location);
-    const { lat, lng } = await getLatLng(results[0]);
-    return {
-      type: 'Point',
-      coordinates: [lat, lng]
-    };
-  }
-
-  async getBase64(image: ImageFile) {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (event: any) => resolve(event.target.result);
-      reader.onerror = (error) => reject(new Error(`error for getBase64() of component IdeasNewPage2`));
-      reader.readAsDataURL(image);
-    });
-  }
-
-  async postIdea(newIdeaFormState: INewIdeaFormState, userId: string) {
-    const { locale } = this.state;
-
-    if (locale) {
-      const { topics, projects, title, description, selectedTopics, selectedProject, location } = newIdeaFormState;
-      const ideaTitle = { [locale]: title as string };
-      const ideaDescription = { [locale]: draftToHtml(convertToRaw(description.getCurrentContent())) };
-      const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
-      const projectId = (selectedProject ? selectedProject.value : null);
-      const locationGeoJSON = (_.isString(location) && !_.isEmpty(location) ? await this.convertToGeoJson(location) : null);
-      const locationDescription = (_.isString(location) && !_.isEmpty(location) ? location : null);
-      return await addIdea(userId, 'published', ideaTitle, ideaDescription, topicIds, projectId, locationGeoJSON, locationDescription);
-    }
-
-    throw 'locale is not defined';
-  }
-
-  async postIdeaImage(ideaId: string, image: ExtendedImageFile) {
-    try {
-      const base64Image = await this.getBase64(image);
-      return await addIdeaImage(ideaId, base64Image, 0);
-    } catch (error) {
-      return error;
-    }
-  }
-
-  async postIdeaAndIdeaImage(currentUserId: string) {
-    try {
-      const currentNewIdeaFormState = await this.newIdeaFormState$.getCurrent();
-      const { images } = currentNewIdeaFormState;
-      const idea = await this.postIdea(currentNewIdeaFormState, currentUserId);
-      images && images.length > 0 && await this.postIdeaImage(idea.data.id, images[0]);
-      return idea;
-    } catch (error) {
-      throw 'error';
-    }
-  }
-
   handleOnSubmit = () => {
     const { title, description } = this.state;
 
     if (this.validate(title, description)) {
-      // submit
+      this.props.onSubmit();
     }
   }
 
@@ -422,5 +352,3 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     );
   }
 }
-
-export default injectIntl<Props>(IdeaForm);

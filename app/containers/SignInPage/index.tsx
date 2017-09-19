@@ -27,7 +27,7 @@ export default class SignInPage extends React.PureComponent<Props, State> {
   render() {
     return (
       <StyledContentContainer>
-        <SignInUp onSignInUpCompleted={this.onSuccess} show="signIn" />
+        <SignInUp onSignInUpCompleted={this.onSuccess} />
       </StyledContentContainer>
     );
   }

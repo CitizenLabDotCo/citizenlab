@@ -102,7 +102,7 @@ const Avatar = styled.img`
   border-radius: 50%;
 `;
 
-const AuthorName = styled(Link)`
+const AuthorName = styled(Link) `
   font-weight: bold;
   color: #484848;
   font-size: 16px;
@@ -171,7 +171,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
   render() {
     const { locale, idea, ideaImage, ideaAuthor, loading } = this.state;
 
-    if (loading === false && idea !== null && ideaAuthor !== null) {
+    if (!loading && idea !== null && ideaAuthor !== null) {
       const slug = idea.data.attributes.slug;
       const avatar = ideaAuthor.data.attributes.avatar.large;
       const firstName = ideaAuthor.data.attributes.first_name;
