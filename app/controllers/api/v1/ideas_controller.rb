@@ -89,7 +89,16 @@ class Api::V1::IdeasController < ApplicationController
   def create
     @idea = Idea.new(permitted_attributes(Idea))
     @idea.author ||= current_user
+
+    # auto_vote = Vote.new(mode: "up", user: @idea.author)
+    # @idea.votes = [auto_vote]
+    #auto_vote = Vote.create(mode: "up", user: @idea.author, votable_type: 'Idea')
+    #byebug
+
     authorize @idea
+
+    #SideFxCommentService.new.before_create(@idea, auto_vote)
+
     if @idea.save
       SideFxIdeaService.new.after_create(@idea, current_user)
       render json: @idea, status: :created, include: ['author','topics','areas','user_vote','idea_images']
