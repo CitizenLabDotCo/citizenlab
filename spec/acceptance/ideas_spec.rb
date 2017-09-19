@@ -247,6 +247,21 @@ resource "Ideas" do
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
         expect(project.reload.ideas_count).to eq 1
       end
+
+      example "Check for the automatic creation of an upvote by the author when an idea is created" do
+        u = create(:user)
+        i = create(:idea, author: u)
+
+        do_request
+
+        # byebug
+        json_response = json_parse(response_body)
+        expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
+        expect(i.votes.size).to eq 1
+        expect(i.votes[0].mode).to eq "up"
+        expect(i.votes[0].user.id).to eq u.id      
+      end
+
     end
 
     describe do

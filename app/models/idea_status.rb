@@ -15,6 +15,10 @@ class IdeaStatus < ApplicationRecord
         translation = I18n.with_locale(locale){ I18n.t("statuses.#{code}") }
         [locale, translation]
       end.to_h
+      description_multiloc = I18n.available_locales.map do |locale|
+        translation = I18n.with_locale(locale){ I18n.t("statuses.#{code}_description") }
+        [locale, translation]
+      end.to_h
       IdeaStatus.create(
         title_multiloc: title_multiloc,
         ordering: i+1,

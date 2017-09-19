@@ -7,5 +7,9 @@ FactoryGirl.define do
     ordering 2
     code "custom"
     color "#AABBCC"
+    description_multiloc {{
+      "en" => "This idea has been presented to the mayor",
+      "nl" => "Het idee werd voorgesteld aan de burgemeester"
+    }}
   end
 end
