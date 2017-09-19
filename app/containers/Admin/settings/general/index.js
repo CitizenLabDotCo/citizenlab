@@ -97,7 +97,7 @@ class SettingsGeneralTab extends React.Component { // eslint-disable-line react/
           />
         </div>
 
-        <div>
+        {/* <div>
           <Label>
             <FormattedMessage {...messages.headerSlogan} />
           </Label>
@@ -106,7 +106,7 @@ class SettingsGeneralTab extends React.Component { // eslint-disable-line react/
             value={settings.getIn(['core', 'header_slogan', this.props.locale])}
             onChange={(value) => this.changeAttribute(['settings', 'core', 'header_slogan', this.props.locale], value)}
           />
-        </div>
+        </div> */}
 
         <div>
           <Label>
