@@ -170,7 +170,7 @@ export default class SignIn extends React.PureComponent<Props, State> {
 
     return (
       <Container>
-        <Form onSubmit={this.handleOnSubmit}>
+        <Form onSubmit={this.handleOnSubmit} noValidate={true}>
           <FormElement>
             {/* <Label value={formatMessage(messages.emailLabel)} htmlFor="email" /> */}
             <Input
