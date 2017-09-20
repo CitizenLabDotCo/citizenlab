@@ -313,6 +313,19 @@ resource "Ideas" do
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
       end
+
+      example "Check for the automatic creation of an upvote by the author when the publication status of an idea is updated from draft to published" do
+        @idea.update(publication_status: "draft")
+
+        do_request(idea: { publication_status: "published" })
+
+        json_response = json_parse(response_body) 
+        new_idea = Idea.find(json_response.dig(:data, :id))
+        expect(new_idea.votes.size).to eq 1
+        expect(new_idea.votes[0].mode).to eq 'up'
+        expect(new_idea.votes[0].user.id).to eq @user.id
+        expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
+      end
     end
 
     describe do

@@ -90,8 +90,8 @@ class Api::V1::IdeasController < ApplicationController
     @idea = Idea.new(permitted_attributes(Idea))
     @idea.author ||= current_user
 
+    authorize @idea
     ActiveRecord::Base.transaction do
-      authorize @idea ## also in transaction?
       if @idea.save
         SideFxIdeaService.new.after_create(@idea, current_user)
         render json: @idea.reload, status: :created, include: ['author','topics','areas','user_vote','idea_images']
@@ -104,12 +104,14 @@ class Api::V1::IdeasController < ApplicationController
 
   # patch
   def update
-    if @idea.update(permitted_attributes(Idea))
-      SideFxIdeaService.new.after_update(@idea, current_user)
-      render json: @idea, status: :ok, include: ['author','topics','areas','user_vote', 'idea_images']
-    else
-      render json: { errors: @idea.errors.details }, status: :unprocessable_entity
-    end
+    ActiveRecord::Base.transaction do
+      if @idea.update(permitted_attributes(Idea))
+        SideFxIdeaService.new.after_update(@idea, current_user)
+        render json: @idea.reload, status: :ok, include: ['author','topics','areas','user_vote', 'idea_images']
+      else
+        render json: { errors: @idea.errors.details }, status: :unprocessable_entity
+      end
+    end 
   end
 
   # delete
