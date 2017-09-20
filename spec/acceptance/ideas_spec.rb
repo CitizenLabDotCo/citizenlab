@@ -249,17 +249,16 @@ resource "Ideas" do
       end
 
       example "Check for the automatic creation of an upvote by the author when an idea is created" do
-        u = create(:user)
-        i = create(:idea, author: u)
 
         do_request
 
-        # byebug
-        json_response = json_parse(response_body)
+        json_response = json_parse(response_body) 
+        new_idea = Idea.find(json_response.dig(:data, :id))
+        expect(new_idea.votes.size).to eq 1
+        expect(new_idea.votes[0].mode).to eq 'up'
+        expect(new_idea.votes[0].user.id).to eq @user.id
         expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
-        expect(i.votes.size).to eq 1
-        expect(i.votes[0].mode).to eq "up"
-        expect(i.votes[0].user.id).to eq u.id      
+
       end
 
     end
