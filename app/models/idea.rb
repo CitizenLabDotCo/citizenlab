@@ -33,8 +33,6 @@ class Idea < ApplicationRecord
   validates :idea_status, presence: true, unless: :draft?
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
 
-  before_create :build_upvote
-
   before_validation :generate_slug, on: :create
   before_validation :set_author_name, on: :create
   before_validation :set_idea_status, on: :create
@@ -114,11 +112,6 @@ class Idea < ApplicationRecord
 
   def set_published_at
     self.published_at ||= Time.now
-  end
-
-  def build_upvote
-    self.votes.build(mode: "up", user: self.author, votable_type: 'Idea')
-    self.upvotes_count = 1
   end
 
 end

@@ -4,6 +4,7 @@ class SideFxIdeaService
 
   def after_create idea, user
     if idea.published?
+      idea.votes.create!(mode: 'up', user: idea.author)
       LogActivityJob.perform_later(idea, 'published', user, idea.created_at.to_i)
     end
   end

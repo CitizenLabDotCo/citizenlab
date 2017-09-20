@@ -90,20 +90,15 @@ class Api::V1::IdeasController < ApplicationController
     @idea = Idea.new(permitted_attributes(Idea))
     @idea.author ||= current_user
 
-    # auto_vote = Vote.new(mode: "up", user: @idea.author)
-    # @idea.votes = [auto_vote]
-    #auto_vote = Vote.create(mode: "up", user: @idea.author, votable_type: 'Idea')
-    #byebug
+    ActiveRecord::Base.transaction do
+      authorize @idea ## also in transaction?
+      if @idea.save
+        SideFxIdeaService.new.after_create(@idea, current_user)
+        render json: @idea.reload, status: :created, include: ['author','topics','areas','user_vote','idea_images']
+      else
+        render json: { errors: @idea.errors.details }, status: :unprocessable_entity
+      end
 
-    authorize @idea
-
-    #SideFxCommentService.new.before_create(@idea, auto_vote)
-
-    if @idea.save
-      SideFxIdeaService.new.after_create(@idea, current_user)
-      render json: @idea, status: :created, include: ['author','topics','areas','user_vote','idea_images']
-    else
-      render json: { errors: @idea.errors.details }, status: :unprocessable_entity
     end
   end
 
