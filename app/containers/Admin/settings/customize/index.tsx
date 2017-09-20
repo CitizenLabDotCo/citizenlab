@@ -1,7 +1,5 @@
 // Libraries
 import * as React from 'react';
-import { fromJS } from 'immutable';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import * as Rx from 'rxjs/Rx';
 import { API } from 'typings.d';
 import * as _ from 'lodash';
@@ -20,13 +18,8 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // i18n
 import { injectTFunc } from 'containers/T/utils';
-import { FormattedMessage, injectIntl, intlShape, InjectedIntl } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl';
 import messages from '../messages';
-
-// Store
-import { createStructuredSelector } from 'reselect';
-import { makeSelectCurrentTenantImm } from 'utils/tenant/selectors';
-import { saveSettings } from '../actions';
 
 // Services
 import {
