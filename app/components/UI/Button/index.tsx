@@ -301,6 +301,8 @@ const SpinnerWrapper = styled.div`
   justify-content: center;
 `;
 
+const StyledSpinner = styled(Spinner)``;
+
 type Props = {
   text?: string;
   children?: any;
@@ -353,7 +355,7 @@ export default class Button extends React.PureComponent<Props, State> {
         <ButtonContent>
           {icon && <StyledIcon name={icon} />}
           <ButtonText>{text || children}</ButtonText>
-          {loading && <SpinnerWrapper><Spinner /></SpinnerWrapper>}
+          {loading && <SpinnerWrapper><StyledSpinner /></SpinnerWrapper>}
         </ButtonContent>
       </StyledButton>
     );

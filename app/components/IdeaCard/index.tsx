@@ -219,6 +219,7 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const className = this.props['className'];
     const { idea, ideaImage, ideaAuthor, isAuthenticated, locale, showUnauthenticated, loading } = this.state;
 
     if (!loading && idea && ideaAuthor && locale) {
@@ -226,7 +227,7 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
       const authorName = (ideaAuthor ? `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}` : null);
 
       return (
-        <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`}>
+        <IdeaContainer className={className} onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`}>
           {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
           {!ideaImageUrl &&
             <IdeaImagePlaceholder>

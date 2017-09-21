@@ -6,6 +6,7 @@ import * as Rx from 'rxjs/Rx';
 import HelmetIntl from 'components/HelmetIntl';
 import ProjectCards from 'components/ProjectCards';
 import ContentContainer from 'components/ContentContainer';
+import Footer from 'components/Footer';
 
 // style
 import styled from 'styled-components';
@@ -27,6 +28,8 @@ export default class ProjectsIndexPage extends React.PureComponent<{}, {}> {
             <ProjectCards />
           </Container>
         </ContentContainer>
+
+        <Footer />
       </div>
     );
   }

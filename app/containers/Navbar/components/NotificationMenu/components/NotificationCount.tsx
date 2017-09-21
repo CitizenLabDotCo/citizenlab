@@ -10,8 +10,8 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 const Container = styled.div`
-  width: 28px;
-  height: 28px;
+  width: 23px;
+  height: 23px;
   position: relative;
   display: flex;
   align-items: center;
@@ -20,7 +20,7 @@ const Container = styled.div`
 `;
 
 const NotificationIcon = styled(Icon)`
-  height: 28px;
+  height: 23px;
   fill: #84939E;
   transition: all 150ms ease;
 
@@ -30,14 +30,14 @@ const NotificationIcon = styled(Icon)`
 `;
 
 const NewNotificationsIndicator = styled.div`
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   border: solid 2px #fff;
   background: #FF672F;
   position: absolute;
-  top: -3px;
-  right: -3px;
+  top: -4px;
+  right: -4px;
 `;
 
 type Props = {

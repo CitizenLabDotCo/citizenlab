@@ -30,7 +30,7 @@ const FirstLine = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 100px 20px;
+  padding: 110px 20px;
   background: #fff;
   /* border-top: 1px solid #eaeaea; */
 `;

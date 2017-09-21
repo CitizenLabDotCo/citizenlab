@@ -1,6 +1,8 @@
 import * as React from 'react';
-import styled, { keyframes } from 'styled-components';
 import * as _ from 'lodash';
+
+// style
+import styled, { keyframes } from 'styled-components';
 
 const rotate = keyframes`
   0%    { transform: rotate(0deg); }
@@ -24,18 +26,26 @@ const StyledSpinner: any = styled.div`
   border-radius: 50%;
 `;
 
-const Spinner: React.SFC<ISpinner> = ({ size, thickness, color }) => {
-  size = (size || '26px');
-  thickness = (thickness || '3px');
-  color = (color || '#fff');
-
-  return (<StyledSpinner size={size} thickness={thickness} color={color} />);
-};
-
-interface ISpinner {
+type Props = {
   size?: string;
   thickness?: string;
   color?: string;
-}
+};
 
-export default Spinner;
+export default class Spinner extends React.PureComponent<Props, {}> {
+  render() {
+    const className = this.props['className'];
+    let { size, thickness, color } = this.props;
+
+    size = (size || '26px');
+    thickness = (thickness || '3px');
+    color = (color || '#fff');
+
+    console.log(color);
+    console.log('className:' + className);
+
+    return (
+      <StyledSpinner className={className} size={size} thickness={thickness} color={color} />
+    );
+  }
+}

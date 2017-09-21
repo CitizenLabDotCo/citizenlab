@@ -29,13 +29,7 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const StyledSpinner = styled(Spinner) `
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  border: solid 1px red;
-`;
+const StyledSpinner = styled(Spinner) ``;
 
 type Props = {
   filter?: { [key: string]: any };

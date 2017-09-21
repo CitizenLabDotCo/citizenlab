@@ -7,16 +7,17 @@ const Outer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 30px;
+  position: relative;
 
   ${media.phone`
-    padding: 0 15px;
+    padding: 0 30px;
   `};
 `;
 
 const Inner = styled.div`
   width: 100%;
   max-width: ${(props) => props.theme.maxPageWidth}px;
+  z-index: 1;
 `;
 
 interface IContentContainer {
