@@ -118,12 +118,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMTMsInN1YiI6ImNmMzE1YWE5LThmMTUtNDk5YS04MjY0LWMxMmEyZjRhNDM1ZCJ9.JFElpxfBHs83nUhiIKIiggcC0ZVemDmMiMd_3GWIjqw
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA2MDEsInN1YiI6IjkzOTc2MTZiLTA2YjAtNGJlMS05ODI4LTY2NGYyMGVjYzRjMyJ9.Yp9MMWD8zq-OKlsGyZaJis-JI1pf9TMZCGQX7l3rsn8
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas/c4561f61-bf35-42fe-aa72-baa184981172</pre>
+          <pre class="request route highlight">GET api/v1/ideas/fa3acc15-fba6-4869-9b0c-dcd376226685</pre>
 
 
 
@@ -131,18 +131,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;57f8b83b6727367bfb4be24c9c631d76&quot;
+ETag: W/&quot;1291845767bb9d6925f07676689cc904&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 682aa30b-a10c-4397-a27a-8554b37f5e87
-X-Runtime: 0.038029
+X-Request-Id: 4aec423b-2234-41b9-9675-a999fe9a476f
+X-Runtime: 0.032010
 Vary: Origin
-Content-Length: 1654</pre>
+Content-Length: 1684</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;c4561f61-bf35-42fe-aa72-baa184981172&quot;,
+    &quot;id&quot;: &quot;fa3acc15-fba6-4869-9b0c-dcd376226685&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -153,16 +153,17 @@ Content-Length: 1654</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Rodolfo Bechtelar&quot;,
+      &quot;author_name&quot;: &quot;Kobe Smith&quot;,
+      &quot;slug&quot;: &quot;plant-more-trees&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
       &quot;comments_count&quot;: 0,
       &quot;location_point_geojson&quot;: null,
       &quot;location_description&quot;: null,
-      &quot;created_at&quot;: &quot;2017-08-02T16:01:52.936Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-08-02T16:01:52.936Z&quot;,
-      &quot;published_at&quot;: &quot;2017-08-02T16:01:52.936Z&quot;
+      &quot;created_at&quot;: &quot;2017-09-21T11:43:20.875Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-09-21T11:43:20.875Z&quot;,
+      &quot;published_at&quot;: &quot;2017-09-21T11:43:20.875Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -182,19 +183,19 @@ Content-Length: 1654</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;04745930-2360-4936-ac43-dba20c06bab8&quot;,
+          &quot;id&quot;: &quot;d8477c21-29d2-429d-9e35-a6b62dc83983&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;98a423ea-a6b6-409a-bc5f-e4f55ac33ddc&quot;,
+          &quot;id&quot;: &quot;3b4b9a36-9a84-4e4f-8e7f-f9c04511ab6c&quot;,
           &quot;type&quot;: &quot;projects&quot;
         }
       },
       &quot;idea_status&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;05769127-df0a-42bf-850d-9dd1e8d77464&quot;,
+          &quot;id&quot;: &quot;20716f60-543d-4e94-8740-7603a6f8f07d&quot;,
           &quot;type&quot;: &quot;idea_statuses&quot;
         }
       },
@@ -205,25 +206,26 @@ Content-Length: 1654</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;04745930-2360-4936-ac43-dba20c06bab8&quot;,
+      &quot;id&quot;: &quot;d8477c21-29d2-429d-9e35-a6b62dc83983&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Rodolfo&quot;,
-        &quot;last_name&quot;: &quot;Bechtelar&quot;,
-        &quot;slug&quot;: &quot;rodolfo-bechtelar&quot;,
+        &quot;first_name&quot;: &quot;Kobe&quot;,
+        &quot;last_name&quot;: &quot;Smith&quot;,
+        &quot;slug&quot;: &quot;kobe-smith&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/04745930-2360-4936-ac43-dba20c06bab8/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/04745930-2360-4936-ac43-dba20c06bab8/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/04745930-2360-4936-ac43-dba20c06bab8/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/d8477c21-29d2-429d-9e35-a6b62dc83983/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/d8477c21-29d2-429d-9e35-a6b62dc83983/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/d8477c21-29d2-429d-9e35-a6b62dc83983/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-08-02T16:01:52.913Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-08-02T16:01:52.913Z&quot;
+        &quot;created_at&quot;: &quot;2017-09-21T11:43:20.827Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-09-21T11:43:20.827Z&quot;,
+        &quot;unread_notifications&quot;: 0
       }
     }
   ]

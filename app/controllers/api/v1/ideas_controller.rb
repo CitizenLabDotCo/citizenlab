@@ -89,23 +89,29 @@ class Api::V1::IdeasController < ApplicationController
   def create
     @idea = Idea.new(permitted_attributes(Idea))
     @idea.author ||= current_user
+
     authorize @idea
-    if @idea.save
-      SideFxIdeaService.new.after_create(@idea, current_user)
-      render json: @idea, status: :created, include: ['author','topics','areas','user_vote','idea_images']
-    else
-      render json: { errors: @idea.errors.details }, status: :unprocessable_entity
+    ActiveRecord::Base.transaction do
+      if @idea.save
+        SideFxIdeaService.new.after_create(@idea, current_user)
+        render json: @idea.reload, status: :created, include: ['author','topics','areas','user_vote','idea_images']
+      else
+        render json: { errors: @idea.errors.details }, status: :unprocessable_entity
+      end
+
     end
   end
 
   # patch
   def update
-    if @idea.update(permitted_attributes(Idea))
-      SideFxIdeaService.new.after_update(@idea, current_user)
-      render json: @idea, status: :ok, include: ['author','topics','areas','user_vote', 'idea_images']
-    else
-      render json: { errors: @idea.errors.details }, status: :unprocessable_entity
-    end
+    ActiveRecord::Base.transaction do
+      if @idea.update(permitted_attributes(Idea))
+        SideFxIdeaService.new.after_update(@idea, current_user)
+        render json: @idea.reload, status: :ok, include: ['author','topics','areas','user_vote', 'idea_images']
+      else
+        render json: { errors: @idea.errors.details }, status: :unprocessable_entity
+      end
+    end 
   end
 
   # delete

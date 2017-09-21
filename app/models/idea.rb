@@ -33,7 +33,6 @@ class Idea < ApplicationRecord
   validates :idea_status, presence: true, unless: :draft?
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
 
-
   before_validation :generate_slug, on: :create
   before_validation :set_author_name, on: :create
   before_validation :set_idea_status, on: :create
