@@ -173,7 +173,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
           <SecondLine>
             <PagesNav>
               <li>
-                <StyledLink to="/pages/terms-and-condition">
+                <StyledLink to="/pages/terms-and-conditions">
                   <FormattedMessage {...messages.termsLink} />
                 </StyledLink>
               </li>
@@ -185,7 +185,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
               </li>
               <Separator>|</Separator>
               <li>
-                <StyledLink to="/pages/cookies-policy">
+                <StyledLink to="/pages/cookie-policy">
                   <FormattedMessage {...messages.cookiesLink} />
                 </StyledLink>
               </li>

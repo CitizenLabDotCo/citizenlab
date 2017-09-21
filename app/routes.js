@@ -293,13 +293,11 @@ export default function createRoutes(store) {
           name: 'Project\'s page',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
-              import('containers/PagesShowPage/reducer'),
               import('containers/ProjectsShowPage/page'),
             ]);
 
             const renderRoute = loadModule(cb);
-            importModules.then(([reducer, component]) => {
-              injectReducer('pagesShowPage', reducer.default);
+            importModules.then(([component]) => {
               renderRoute(component);
             });
 
@@ -364,18 +362,16 @@ export default function createRoutes(store) {
       },
     },
     {
-      path: '/pages/:id',
+      path: '/pages/:slug',
       name: 'pagesShowPage',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/PagesShowPage/reducer'),
           import('containers/PagesShowPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, component]) => {
-          injectReducer('pagesShowPage', reducer.default);
+        importModules.then(([component]) => {
           renderRoute(component);
         });
 
