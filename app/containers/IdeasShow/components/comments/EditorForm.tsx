@@ -24,8 +24,29 @@ import { connect } from 'react-redux';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { publishCommentRequest } from '../../actions';
 import selectIdeasShow from '../../selectors';
+import { authUserStream } from 'services/auth';
+import { IUserData } from 'services/users';
+
 
 // Styling
+const UserArea = styled.div`
+  align-items: center;
+  display: flex;
+  margin-bottom: .5rem;
+
+  .avatar {
+    border-radius: 50%;
+    height: 2rem;
+    margin-right: 1rem;
+    width: 2rem;
+  }
+
+  .userName {
+    color: #1391A1;
+    font-weight: bold;
+  }
+`;
+
 const CommentEditor = styled(Editor)`
   background: #f8f8f8 !important;
 
@@ -74,6 +95,7 @@ interface Props {
 
 interface State {
   editorState: any;
+  user: IUserData | null;
 }
 
 class EditorForm extends React.PureComponent<Props, State> {
@@ -87,7 +109,16 @@ class EditorForm extends React.PureComponent<Props, State> {
     this.values = { ideaId: props.ideaId, parentId: props.parentId };
     this.state = {
       editorState: null,
+      user: null,
     };
+  }
+
+  componentDidMount () {
+    authUserStream().observable.subscribe((response) => {
+      if (response) {
+        this.setState({ user: response.data });
+      }
+    });
   }
 
   componentWillReceiveProps (newProps: Props) {
@@ -145,10 +176,19 @@ class EditorForm extends React.PureComponent<Props, State> {
   render() {
     const { formatMessage } = this.props.intl;
     const { formStatus, error } = this.props;
+    const { user } = this.state;
 
     return (
       <Authorize action={['comments', 'create']}>
         <form onSubmit={this.handleSubmit}>
+          {user &&
+            <UserArea>
+              <img src={user.attributes.avatar.small} alt={`Avatar: ${user.attributes.first_name} ${user.attributes.last_name}`} className="avatar" />
+              <p className="userName">
+                {user.attributes.first_name} {user.attributes.last_name}
+              </p>
+            </UserArea>
+          }
           <CommentEditor
             id="editor"
             value={this.state.editorState}
