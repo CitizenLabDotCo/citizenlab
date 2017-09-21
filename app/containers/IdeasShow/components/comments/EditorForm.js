@@ -27,6 +27,10 @@ const SubmitButton = styled(Button)`
   margin-top: 20px;
 `;
 
+const SuccessMessage = styled.p`
+  color: #32B67A;
+`;
+
 class EditorForm extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -79,40 +83,40 @@ class EditorForm extends React.PureComponent {
   render() {
     const { formatMessage } = this.props.intl;
     const { formStatus, error } = this.props;
-    if (formStatus !== 'success') {
-      return (
-        <Authorize action={['comments', 'create']}>
-          <form onSubmit={this.handleSubmit}>
-            <Editor
-              id="editor"
-              value={this.state.editorState}
-              placeholder={formatMessage(messages.commentBodyPlaceholder)}
-              onChange={this.handleEditorChange}
-            />
-            {formStatus === 'error' && <div>{error}</div>}
-            <SubmitButton
-              loading={formStatus === 'processing'}
-            >
-              <FormattedMessage {...messages.publishComment} />
-            </SubmitButton>
-            <div style={{ clear: 'both' }}></div>
-          </form>
-          <Else>
-            <FormattedMessage
-              {...messages.signInToComment}
-              values={{
-                signInLink: <Link to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></Link>,
-              }}
-            />
-          </Else>
-        </Authorize>
-      );
-    }
-    // if formStatus === 'success'
+
     return (
-      <div>
-        <FormattedMessage {...messages.commentSuccess} />
-      </div>
+      <Authorize action={['comments', 'create']}>
+        <form onSubmit={this.handleSubmit}>
+          <Editor
+            id="editor"
+            value={this.state.editorState}
+            placeholder={formatMessage(messages.commentBodyPlaceholder)}
+            onChange={this.handleEditorChange}
+          />
+          {formStatus === 'error' && <div>{error}</div>}
+          <SubmitButton
+            loading={formStatus === 'processing'}
+          >
+            <FormattedMessage {...messages.publishComment} />
+          </SubmitButton>
+          <div style={{ clear: 'both' }}></div>
+
+          {formStatus === 'success' &&
+            <SuccessMessage>
+              <FormattedMessage {...messages.commentSuccess} />
+            </SuccessMessage>
+          }
+
+        </form>
+        <Else>
+          <FormattedMessage
+            {...messages.signInToComment}
+            values={{
+              signInLink: <Link to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></Link>,
+            }}
+          />
+        </Else>
+      </Authorize>
     );
   }
 
