@@ -86,5 +86,4 @@ const mergeProps = ({ user }, dispatchProps, ownProps) => {
 
 };
 
-
 export default preprocess(mapStateToProps, null, mergeProps)(Author)
