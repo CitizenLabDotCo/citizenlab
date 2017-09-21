@@ -1,29 +1,32 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+// Libraries
+import * as React from 'react';
+import * as _ from 'lodash';
 import { convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-import styled from 'styled-components';
 import { Link } from 'react-router';
-import { connect } from 'react-redux';
-import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
+import styled from 'styled-components';
+
+// Tracking
 import { injectTracks } from 'utils/analytics';
-import _ from 'lodash';
+import tracks from '../../tracks';
 
+// i18n
+import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl';
+import messages from '../../messages';
 
-// components
+// Components
 import Button from 'components/UI/Button';
 import Editor from 'components/UI/Editor';
 import Authorize, { Else } from 'utils/containers/authorize';
 
-// messages
-import messages from '../../messages';
-import tracks from '../../tracks';
+// Store
+import { connect } from 'react-redux';
+import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { publishCommentRequest } from '../../actions';
 import selectIdeasShow from '../../selectors';
 
+// Styling
 const SubmitButton = styled(Button)`
-  float: right;
   margin-top: 20px;
 `;
 
@@ -31,7 +34,28 @@ const SuccessMessage = styled.p`
   color: #32B67A;
 `;
 
-class EditorForm extends React.PureComponent {
+interface Props {
+  parentId?: string;
+  ideaId: string;
+  intl: InjectedIntl;
+  publishCommentRequest: Function;
+  locale: string;
+  formStatus: 'processing' | 'error' | 'success' | undefined;
+  error: string;
+  typeComment: Function;
+  clickCommentPublish: Function;
+}
+
+interface State {
+  editorState: any;
+}
+
+class EditorForm extends React.PureComponent<Props, State> {
+  values: {
+    ideaId: string;
+    parentId?: string;
+  };
+
   constructor(props) {
     super(props);
     this.values = { ideaId: props.ideaId, parentId: props.parentId };
@@ -52,7 +76,7 @@ class EditorForm extends React.PureComponent {
 
   handleEditorChange = (editorState) => {
     this.setState({ editorState }, this.trackEditorChange);
-  };
+  }
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -99,7 +123,6 @@ class EditorForm extends React.PureComponent {
           >
             <FormattedMessage {...messages.publishComment} />
           </SubmitButton>
-          <div style={{ clear: 'both' }}></div>
 
           {formStatus === 'success' &&
             <SuccessMessage>
@@ -121,18 +144,6 @@ class EditorForm extends React.PureComponent {
   }
 
 }
-
-EditorForm.propTypes = {
-  parentId: PropTypes.string,
-  ideaId: PropTypes.string.isRequired,
-  intl: intlShape.isRequired,
-  publishCommentRequest: PropTypes.func,
-  locale: PropTypes.string,
-  formStatus: PropTypes.string, // undefined, 'processing', 'error' or 'success'
-  error: PropTypes.string,
-  typeComment: PropTypes.func,
-  clickCommentPublish: PropTypes.func,
-};
 
 const mapDispatchToProps = {
   publishCommentRequest,
