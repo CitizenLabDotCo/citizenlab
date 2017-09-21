@@ -67,3 +67,17 @@ models:
     -
       title_multiloc: topics.health
       description_multiloc: topics.health_description
+  page:
+    -
+      title_multiloc: pages.cookie_policy_title
+      body_multiloc: pages.cookie_policy_body
+      slug: cookie-policy
+    -
+      title_multiloc: pages.privacy_policy_title
+      body_multiloc: pages.privacy_policy_body
+      slug: privacy-policy
+    -
+      title_multiloc: pages.terms_and_conditions_title
+      body_multiloc: pages.terms_and_conditions_body
+      slug: terms-and-conditions
+

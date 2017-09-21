@@ -15,7 +15,7 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
     @tenant = Tenant.new(tenant_params)
     if @tenant.save
       Apartment::Tenant.switch(@tenant.schema_name) do
-        TenantTemplateService.new.apply_template('base')
+        TenantTemplateService.new.apply_template(params[:template] || 'base')
       end
       render json: @tenant, status: :created
     else
