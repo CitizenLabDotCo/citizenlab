@@ -20,8 +20,6 @@ const DraftEditorContainer = styled.div`
   border-color: ${(props: IDraftEditorContainer) => {
     if (props.error) {
       return '#fc3c2d';
-    } else if (props.focussed) {
-      return '#333';
     }
 
     return '#ccc';
@@ -29,12 +27,10 @@ const DraftEditorContainer = styled.div`
   background: #fff;
   position: relative;
 
-  &:not(:focus):hover {
+  &:hover {
     border-color: ${(props: IDraftEditorContainer) => {
       if (props.error) {
         return '#fc3c2d';
-      } else if (props.focussed) {
-        return '#000';
       }
 
       return '#999';
@@ -208,6 +204,8 @@ export default class Editor extends React.PureComponent<Props, State> {
       <Container>
         <DraftEditorContainer focussed={focussed} error={hasError}>
           <DraftEditor
+            editorClassName={`draft-editor ${focussed ? 'focus' : ''}`}
+            wrapperClassName={`draft-editor-wrapper`}
             id={id}
             spellCheck={true}
             editorState={value}
