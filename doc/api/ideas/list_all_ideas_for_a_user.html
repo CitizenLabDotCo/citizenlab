@@ -185,34 +185,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMTAsInN1YiI6IjNiOWQyZTZhLTczODQtNDFjNy1iZGI2LTdiM2M4NDFlMWM2MiJ9.Q0dNFyqbI57mpqpsjDNRWDgoS1d17w7ABd7NLRnUD-M
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA1OTUsInN1YiI6ImQ4NmQ3YTY1LTc4OGItNDFjNS1hZTBjLTNmMTUzM2I2NzY5MCJ9.gExJPc8GOFEGldHH9ecyG21esyOTtCVPwazz6QKGj_M
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?author=4b18015d-4e24-4be4-b67d-6baf96069801</pre>
+          <pre class="request route highlight">GET api/v1/ideas?author=8fb20b48-d796-4bd7-8cf9-8207aec5b292</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">author: 4b18015d-4e24-4be4-b67d-6baf96069801</pre>
+            <pre class="request query_parameters highlight">author: 8fb20b48-d796-4bd7-8cf9-8207aec5b292</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;300b1b9592e1690a0e6526ed1bf1a5ac&quot;
+ETag: W/&quot;39dad69af292ea0acef55ca83cef0262&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: e34ceb04-f8ef-4da4-8c3f-ea3327031095
-X-Runtime: 0.042535
+X-Request-Id: 164ecbcb-a341-4815-907a-3d03c3037205
+X-Runtime: 0.036851
 Vary: Origin
-Content-Length: 1655</pre>
+Content-Length: 1705</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;cd7b1579-d12a-4bee-adae-5b0afe7294c2&quot;,
+      &quot;id&quot;: &quot;00c4bdd6-f8ca-4036-81a4-846b7201428d&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -223,16 +223,17 @@ Content-Length: 1655</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Kirsten Feest&quot;,
+        &quot;author_name&quot;: &quot;Deven Beatty&quot;,
+        &quot;slug&quot;: &quot;plant-more-trees-5&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-08-02T16:01:50.800Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-08-02T16:01:50.800Z&quot;,
-        &quot;published_at&quot;: &quot;2017-08-02T16:01:50.800Z&quot;
+        &quot;created_at&quot;: &quot;2017-09-21T11:43:15.961Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-09-21T11:43:15.961Z&quot;,
+        &quot;published_at&quot;: &quot;2017-09-21T11:43:15.960Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -252,19 +253,19 @@ Content-Length: 1655</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;4b18015d-4e24-4be4-b67d-6baf96069801&quot;,
+            &quot;id&quot;: &quot;8fb20b48-d796-4bd7-8cf9-8207aec5b292&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;4a9b68ed-558a-4808-80c6-631b2b6082cf&quot;,
+            &quot;id&quot;: &quot;68e3bd05-1948-42a1-9fc5-5fc776638db6&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;565042b4-2a69-478f-a5eb-d4df3a20477e&quot;,
+            &quot;id&quot;: &quot;9c33c59b-6992-479b-b7ed-87a4d0f20552&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -276,25 +277,26 @@ Content-Length: 1655</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;4b18015d-4e24-4be4-b67d-6baf96069801&quot;,
+      &quot;id&quot;: &quot;8fb20b48-d796-4bd7-8cf9-8207aec5b292&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Kirsten&quot;,
-        &quot;last_name&quot;: &quot;Feest&quot;,
-        &quot;slug&quot;: &quot;kirsten-feest&quot;,
+        &quot;first_name&quot;: &quot;Deven&quot;,
+        &quot;last_name&quot;: &quot;Beatty&quot;,
+        &quot;slug&quot;: &quot;deven-beatty&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/4b18015d-4e24-4be4-b67d-6baf96069801/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/4b18015d-4e24-4be4-b67d-6baf96069801/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/4b18015d-4e24-4be4-b67d-6baf96069801/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/8fb20b48-d796-4bd7-8cf9-8207aec5b292/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/8fb20b48-d796-4bd7-8cf9-8207aec5b292/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/8fb20b48-d796-4bd7-8cf9-8207aec5b292/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-08-02T16:01:50.760Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-08-02T16:01:50.760Z&quot;
+        &quot;created_at&quot;: &quot;2017-09-21T11:43:15.888Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-09-21T11:43:15.888Z&quot;,
+        &quot;unread_notifications&quot;: 0
       }
     }
   ],

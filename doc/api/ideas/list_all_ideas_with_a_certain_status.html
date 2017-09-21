@@ -185,34 +185,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMTAsInN1YiI6ImRjYTMxNWZiLWE5ZGItNDMxMC04ZGY1LTZhNjg5OTQ5NjEwYSJ9.SjvBKnsi8yrVNl550Wbz6l4XpT2PIVoBzEbMuOPJivg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA1OTQsInN1YiI6ImFkN2M4MTRkLTJkYzktNDgzOC04MWM5LWJlYjVlZDk2NGZiZiJ9.Uv8QgpO-6Obkz0g7ksz95XfScMDIanYUdecgYMZYKoo
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?idea_status=c5b97cc7-3aac-4e04-9808-3dffda842638</pre>
+          <pre class="request route highlight">GET api/v1/ideas?idea_status=f132446d-6aae-4c18-93e5-f46a59a04ca6</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">idea_status: c5b97cc7-3aac-4e04-9808-3dffda842638</pre>
+            <pre class="request query_parameters highlight">idea_status: f132446d-6aae-4c18-93e5-f46a59a04ca6</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;c8a583296c6317bb1fae1ff0678d8f3c&quot;
+ETag: W/&quot;afc0a3d0a7833d64ba35a89dbc71bcaf&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: a6e5c3bb-35e9-49f1-bf91-f7a9bfdb7641
-X-Runtime: 0.042413
+X-Request-Id: 19acd302-f237-4db9-a88e-bf58739afd3c
+X-Runtime: 0.037332
 Vary: Origin
-Content-Length: 1655</pre>
+Content-Length: 1696</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;fdff7dd8-09a4-42d6-b222-544a81578f02&quot;,
+      &quot;id&quot;: &quot;f7391632-7c6d-4cf4-9c93-d6d7d7b30360&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -223,16 +223,17 @@ Content-Length: 1655</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Marian Ledner&quot;,
+        &quot;author_name&quot;: &quot;Ola Robel&quot;,
+        &quot;slug&quot;: &quot;plant-more-trees-5&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-08-02T16:01:50.373Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-08-02T16:01:50.373Z&quot;,
-        &quot;published_at&quot;: &quot;2017-08-02T16:01:50.373Z&quot;
+        &quot;created_at&quot;: &quot;2017-09-21T11:43:14.892Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-09-21T11:43:14.892Z&quot;,
+        &quot;published_at&quot;: &quot;2017-09-21T11:43:14.892Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -252,19 +253,19 @@ Content-Length: 1655</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;35c0ceba-6089-474c-be68-7874334e0a1a&quot;,
+            &quot;id&quot;: &quot;a7e87e3c-fbad-4757-a898-3f81f784ac1f&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;3b939c01-ed20-44b0-bc04-9f4ee0a479d5&quot;,
+            &quot;id&quot;: &quot;00279a50-5d36-4db0-a7f6-55b6a53a03a1&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;c5b97cc7-3aac-4e04-9808-3dffda842638&quot;,
+            &quot;id&quot;: &quot;f132446d-6aae-4c18-93e5-f46a59a04ca6&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -276,25 +277,26 @@ Content-Length: 1655</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;35c0ceba-6089-474c-be68-7874334e0a1a&quot;,
+      &quot;id&quot;: &quot;a7e87e3c-fbad-4757-a898-3f81f784ac1f&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Marian&quot;,
-        &quot;last_name&quot;: &quot;Ledner&quot;,
-        &quot;slug&quot;: &quot;marian-ledner&quot;,
+        &quot;first_name&quot;: &quot;Ola&quot;,
+        &quot;last_name&quot;: &quot;Robel&quot;,
+        &quot;slug&quot;: &quot;ola-robel&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/35c0ceba-6089-474c-be68-7874334e0a1a/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/35c0ceba-6089-474c-be68-7874334e0a1a/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/35c0ceba-6089-474c-be68-7874334e0a1a/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/a7e87e3c-fbad-4757-a898-3f81f784ac1f/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/a7e87e3c-fbad-4757-a898-3f81f784ac1f/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/a7e87e3c-fbad-4757-a898-3f81f784ac1f/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-08-02T16:01:50.349Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-08-02T16:01:50.349Z&quot;
+        &quot;created_at&quot;: &quot;2017-09-21T11:43:14.836Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-09-21T11:43:14.836Z&quot;,
+        &quot;unread_notifications&quot;: 0
       }
     }
   ],

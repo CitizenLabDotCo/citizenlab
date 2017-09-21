@@ -185,34 +185,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMDgsInN1YiI6Ijk4NTU0YzM4LTY3NDktNDNjOS04YTdkLWU3ZDk4OTYxZTZmMyJ9.R5tFH18J9UKv5uAjSfOqn9r2ia1oDxJTNTHDVz9MRPY
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA1OTAsInN1YiI6IjRiOGZhMWFhLWJkYmItNDhiYi04NTNjLWQ0YjZkOWMyOTUzOCJ9.n6PfPoxYu_VgUZTBgkgvEcpQtPuShoOPO8lD9f_YQt0
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?areas[]=ea831748-701f-44d6-8520-99429c5c13dc</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=ec40cd37-d096-4599-91ed-6e966b9fbd8d</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">areas: [&quot;ea831748-701f-44d6-8520-99429c5c13dc&quot;]</pre>
+            <pre class="request query_parameters highlight">areas: [&quot;ec40cd37-d096-4599-91ed-6e966b9fbd8d&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;7d7e8dd443a0fe416707c7a76623aca2&quot;
+ETag: W/&quot;f0308ef4746c4c7eab07d83742f783a2&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 4af259bd-cc48-4579-acfa-48003aa1d1e3
-X-Runtime: 0.048754
+X-Request-Id: 12d8da46-5446-416d-942d-cc390031923d
+X-Runtime: 0.088195
 Vary: Origin
-Content-Length: 1724</pre>
+Content-Length: 1772</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;52bc2fa2-f28f-43f5-9389-fe93fd92f7a3&quot;,
+      &quot;id&quot;: &quot;e4dd32d8-728b-46bf-b04e-ccfc5f7eade7&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -223,16 +223,17 @@ Content-Length: 1724</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Armani Rosenbaum&quot;,
+        &quot;author_name&quot;: &quot;Pedro Powlowski&quot;,
+        &quot;slug&quot;: &quot;plant-more-trees&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-08-02T16:01:48.428Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-08-02T16:01:48.428Z&quot;,
-        &quot;published_at&quot;: &quot;2017-08-02T16:01:48.428Z&quot;
+        &quot;created_at&quot;: &quot;2017-09-21T11:43:10.034Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-09-21T11:43:10.034Z&quot;,
+        &quot;published_at&quot;: &quot;2017-09-21T11:43:10.033Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -243,7 +244,7 @@ Content-Length: 1724</pre>
         &quot;areas&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;ea831748-701f-44d6-8520-99429c5c13dc&quot;,
+              &quot;id&quot;: &quot;ec40cd37-d096-4599-91ed-6e966b9fbd8d&quot;,
               &quot;type&quot;: &quot;areas&quot;
             }
           ]
@@ -255,19 +256,19 @@ Content-Length: 1724</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;96f4aec5-0fe3-452a-bb11-9b349bc1cecd&quot;,
+            &quot;id&quot;: &quot;dc03dcbf-2412-4012-a96a-19afb0d4ca9b&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;682e419c-d27b-4469-a19a-8ab9935b4aac&quot;,
+            &quot;id&quot;: &quot;baab123d-8028-470c-aec0-389dfd59c625&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;c17c9b8c-56d8-490a-b853-90044e2472cd&quot;,
+            &quot;id&quot;: &quot;b3c8abd7-b233-482b-82cb-347c1428f506&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -279,25 +280,26 @@ Content-Length: 1724</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;96f4aec5-0fe3-452a-bb11-9b349bc1cecd&quot;,
+      &quot;id&quot;: &quot;dc03dcbf-2412-4012-a96a-19afb0d4ca9b&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Armani&quot;,
-        &quot;last_name&quot;: &quot;Rosenbaum&quot;,
-        &quot;slug&quot;: &quot;armani-rosenbaum&quot;,
+        &quot;first_name&quot;: &quot;Pedro&quot;,
+        &quot;last_name&quot;: &quot;Powlowski&quot;,
+        &quot;slug&quot;: &quot;pedro-powlowski&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/96f4aec5-0fe3-452a-bb11-9b349bc1cecd/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/96f4aec5-0fe3-452a-bb11-9b349bc1cecd/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/96f4aec5-0fe3-452a-bb11-9b349bc1cecd/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/dc03dcbf-2412-4012-a96a-19afb0d4ca9b/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/dc03dcbf-2412-4012-a96a-19afb0d4ca9b/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/dc03dcbf-2412-4012-a96a-19afb0d4ca9b/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-08-02T16:01:48.408Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-08-02T16:01:48.408Z&quot;
+        &quot;created_at&quot;: &quot;2017-09-21T11:43:09.985Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-09-21T11:43:09.985Z&quot;,
+        &quot;unread_notifications&quot;: 0
       }
     }
   ],

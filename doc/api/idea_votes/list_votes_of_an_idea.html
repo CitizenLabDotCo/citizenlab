@@ -117,13 +117,13 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMDQsInN1YiI6IjZhNmJmM2E5LTdmNDMtNDk0NC1hOWU2LWVkYzZhNDBmZDAzNSJ9.gpUJmR2gkFcXugTFW-Z9t7xu_gwXplvCsvmPGZzaai4
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA1ODAsInN1YiI6IjEyMGFlZWY4LTdhOGQtNDgyNS1iNTM3LWM2ZjZmODY5ZDYyNSJ9.mKMhCmRoykhsCfMFOVkXXo2fAF70ehE_eLKC3JJqrQY
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas/f0d15c28-d60b-4db2-ab08-4eebcc71a047/votes</pre>
+          <pre class="request route highlight">GET api/v1/ideas/f91a9f0a-4ffe-4e68-9401-bcf9cca0ccba/votes</pre>
 
 
 
@@ -131,19 +131,19 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;0d44c8fad106507d1bff5dfee3f0f934&quot;
+ETag: W/&quot;6a37d97b08c2a0f4d5a2a920cd287817&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: a8722167-4bbc-47bd-a84c-439f5705bacb
-X-Runtime: 0.025734
+X-Request-Id: 1f13d9fa-8048-4c40-85c8-f0ee1d5045be
+X-Runtime: 0.021827
 Vary: Origin
-Content-Length: 2035</pre>
+Content-Length: 2082</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;b2a7a588-74cf-4c9d-8693-cf95d4f0a40c&quot;,
+      &quot;id&quot;: &quot;085a9ac8-6eb2-4c8e-bd3c-adc42d490f6d&quot;,
       &quot;type&quot;: &quot;votes&quot;,
       &quot;attributes&quot;: {
         &quot;mode&quot;: &quot;up&quot;
@@ -151,20 +151,20 @@ Content-Length: 2035</pre>
       &quot;relationships&quot;: {
         &quot;votable&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;f0d15c28-d60b-4db2-ab08-4eebcc71a047&quot;,
+            &quot;id&quot;: &quot;f91a9f0a-4ffe-4e68-9401-bcf9cca0ccba&quot;,
             &quot;type&quot;: &quot;votables&quot;
           }
         },
         &quot;user&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;dd1e5246-8543-4ce3-83b2-e029a2e78c20&quot;,
+            &quot;id&quot;: &quot;bbfd35a8-d017-427f-af51-50b3c83eec73&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         }
       }
     },
     {
-      &quot;id&quot;: &quot;8c737186-f447-4e2a-b667-610df9c0be8e&quot;,
+      &quot;id&quot;: &quot;415b6805-8e6c-4291-9c4e-67557b00a498&quot;,
       &quot;type&quot;: &quot;votes&quot;,
       &quot;attributes&quot;: {
         &quot;mode&quot;: &quot;up&quot;
@@ -172,13 +172,13 @@ Content-Length: 2035</pre>
       &quot;relationships&quot;: {
         &quot;votable&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;f0d15c28-d60b-4db2-ab08-4eebcc71a047&quot;,
+            &quot;id&quot;: &quot;f91a9f0a-4ffe-4e68-9401-bcf9cca0ccba&quot;,
             &quot;type&quot;: &quot;votables&quot;
           }
         },
         &quot;user&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;2dc50088-e9ed-415b-b141-97e1dd6e7a39&quot;,
+            &quot;id&quot;: &quot;a699c382-1354-466c-873a-574168b3245f&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         }
@@ -187,57 +187,59 @@ Content-Length: 2035</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;dd1e5246-8543-4ce3-83b2-e029a2e78c20&quot;,
+      &quot;id&quot;: &quot;bbfd35a8-d017-427f-af51-50b3c83eec73&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Derek&quot;,
-        &quot;last_name&quot;: &quot;Tromp&quot;,
-        &quot;slug&quot;: &quot;derek-tromp&quot;,
+        &quot;first_name&quot;: &quot;Rodolfo&quot;,
+        &quot;last_name&quot;: &quot;Ryan&quot;,
+        &quot;slug&quot;: &quot;rodolfo-ryan&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/dd1e5246-8543-4ce3-83b2-e029a2e78c20/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/dd1e5246-8543-4ce3-83b2-e029a2e78c20/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/dd1e5246-8543-4ce3-83b2-e029a2e78c20/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/bbfd35a8-d017-427f-af51-50b3c83eec73/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/bbfd35a8-d017-427f-af51-50b3c83eec73/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/bbfd35a8-d017-427f-af51-50b3c83eec73/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-08-02T16:01:45.019Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-08-02T16:01:45.019Z&quot;,
-        &quot;email&quot;: &quot;lavinia.lebsack@satterfield.biz&quot;,
+        &quot;created_at&quot;: &quot;2017-09-21T11:43:00.450Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-09-21T11:43:00.450Z&quot;,
+        &quot;email&quot;: &quot;merlin_bernhard@kub.io&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
-        &quot;education&quot;: null
+        &quot;education&quot;: null,
+        &quot;unread_notifications&quot;: 0
       }
     },
     {
-      &quot;id&quot;: &quot;2dc50088-e9ed-415b-b141-97e1dd6e7a39&quot;,
+      &quot;id&quot;: &quot;a699c382-1354-466c-873a-574168b3245f&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Keaton&quot;,
-        &quot;last_name&quot;: &quot;Stanton&quot;,
-        &quot;slug&quot;: &quot;keaton-stanton&quot;,
+        &quot;first_name&quot;: &quot;Emilia&quot;,
+        &quot;last_name&quot;: &quot;Leuschke&quot;,
+        &quot;slug&quot;: &quot;emilia-leuschke&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/2dc50088-e9ed-415b-b141-97e1dd6e7a39/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/2dc50088-e9ed-415b-b141-97e1dd6e7a39/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/2dc50088-e9ed-415b-b141-97e1dd6e7a39/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/a699c382-1354-466c-873a-574168b3245f/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/a699c382-1354-466c-873a-574168b3245f/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/a699c382-1354-466c-873a-574168b3245f/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-08-02T16:01:44.989Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-08-02T16:01:44.989Z&quot;,
-        &quot;email&quot;: &quot;mohammad@beatty.net&quot;,
+        &quot;created_at&quot;: &quot;2017-09-21T11:43:00.342Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-09-21T11:43:00.342Z&quot;,
+        &quot;email&quot;: &quot;ezekiel@oconnell.info&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
-        &quot;education&quot;: null
+        &quot;education&quot;: null,
+        &quot;unread_notifications&quot;: 0
       }
     }
   ]
