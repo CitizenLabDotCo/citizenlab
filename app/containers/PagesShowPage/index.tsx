@@ -6,23 +6,32 @@
 
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import HelmetIntl from 'components/HelmetIntl';
+import { injectTFunc } from 'containers/T/utils';
+import Helmet from 'react-helmet';
 import T from 'containers/T';
 import { IPageData, pageBySlugStream } from 'services/pages';
 import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
 import styled from 'styled-components';
 
+
+const TextContainer = styled.div`
+  margin: 30px 0;
+  padding: 3rem;
+  background-color: white;
+`;
+
 type Props = {
   params: {
     slug: string;
   }
+  tFunc: ({}) => string;
 }
 
 type State = {
   page: IPageData | null,
 }
-class PagesShowPage extends React.PureComponent<Props, State> { // eslint-disable-line react/prefer-stateless-function
+class PagesShowPage extends React.PureComponent<Props, State> {
   pageObserver: Rx.Subscription | null;
 
   constructor() {
@@ -41,23 +50,26 @@ class PagesShowPage extends React.PureComponent<Props, State> { // eslint-disabl
     });
   }
 
+  componentDidUnmount(){
+    this.pageObserver && this.pageObserver.unsubscribe();
+  }
+
   render() {
     const { page } = this.state;
-    return (
+    const { tFunc } = this.props;
+    return page && (
       <ContentContainer>
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
-        />
-        {page && <div>
-          <div>
-            <h1><T value={page.attributes.title_multiloc} /></h1>
-            <T value={page.attributes.body_multiloc} />
-          </div>
-        </div>}
+
+        <Helmet>
+          <title>{tFunc(page.attributes.title_multiloc)}</title>
+        </Helmet>
+        <TextContainer>
+          <h1><T value={page.attributes.title_multiloc} /></h1>
+          <T value={page.attributes.body_multiloc} />
+        </TextContainer>
       </ContentContainer>
     );
   }
 }
 
-export default PagesShowPage;
+export default injectTFunc(PagesShowPage);
