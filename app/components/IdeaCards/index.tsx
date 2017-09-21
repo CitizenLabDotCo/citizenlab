@@ -27,8 +27,10 @@ const Container = styled.div`
 
 const Loading = styled.div`
   width: 100%;
-  height: 500px;
-  background: red;
+  height: 200px;
+  background: #fff;
+  border-radius: 6px;
+  border: solid 1px #eee;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -198,7 +200,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
 
     const loadingIndicator = (loading ? (
       <Loading>
-        <StyledSpinner />
+        <StyledSpinner size="36px" thickness="4px" color="#666" />
       </Loading>
     ) : null);
 
@@ -213,7 +215,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
         <Icon className="idea-icon" name="idea" />
         <FormattedMessage {...messages.empty} />
         <Link to="/ideas/new">
-          <Icon name="add_circle" />
+          <Icon name="plus-circle" />
           <FormattedMessage {...messages.addIdea} />
         </Link>
       </EmptyContainer>

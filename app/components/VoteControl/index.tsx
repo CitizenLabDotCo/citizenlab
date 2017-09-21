@@ -13,12 +13,26 @@ import { voteStream, votesStream, addVote, deleteVote, IIdeaVote, IIdeaVoteData 
 
 // style
 import { darken } from 'polished';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const green = '#32B67A';
 const red = '#FC3C2D';
 
-const Container = styled.div`
+const vote = keyframes`
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+
+  60% {
+    transform: scale3d(1.15, 1.15, 1.15);
+  }
+
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+`;
+
+const Container: any = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -27,22 +41,28 @@ const Vote: any = styled.div`
   width: 90px;
   display: flex;
   align-items: center;
+
+  &.voteClick {
+    animation: ${vote} 200ms;
+  }
 `;
 
-const VoteIconWrapper = styled.div`
-  width: 55px;
-  height: 55px;
+const VoteIconContainer = styled.div`
+  width: 54px;
+  height: 54px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   border: solid 1px #e5e5e5;
+  transition: all 100ms ease-out;
 `;
 
 const VoteIcon = styled(Icon) `
   height: 19px;
   fill: #bdbdbd;
+  transition: all 100ms ease-out;
 `;
 
 const VoteCount = styled.div`
@@ -50,52 +70,63 @@ const VoteCount = styled.div`
   font-size: 16px;
   font-weight: 300;
   margin-left: 5px;
+  transition: all 100ms ease-out;
 `;
 
 const Upvote = Vote.extend`
-  ${VoteIconWrapper} {
-    ${props => props.active && `
-      border-color: ${green};
-      background: ${green};
-    `}
+  ${VoteIconContainer} {
+    ${props => props.active && `border-color: ${green};`}
   }
 
   ${VoteIcon} {
-    margin-bottom: 5px;
-    ${props => props.active && `fill: #fff;`}
+    margin-bottom: 4px;
+    ${props => props.active && `fill: ${green};`}
+  }
+
+  ${VoteCount} {
+    ${props => props.active && `color: ${green};`}
   }
 
   &:hover {
-    ${VoteIconWrapper} {
-      ${props => props.active ? `border-color: ${green};` : `border-color: #999`}
+    ${VoteIconContainer} {
+      ${props => !props.active && `border-color: #999;`}
     }
 
     ${VoteIcon} {
-      ${props => props.active ? `fill: #fff;` : `fill: #999`}
+      ${props => !props.active && `fill: #777;`}
+    }
+
+    ${VoteCount} {
+      ${props => !props.active && `color: #777;`}
     }
   }
 `;
 
 const Downvote = Vote.extend`
-  ${VoteIconWrapper} {
-    ${props => props.active && `
-      border-color: ${red};
-      background: ${red};
-    `}
+  ${VoteIconContainer} {
+    ${props => props.active && `border-color: ${red};`}
   }
 
   ${VoteIcon} {
     margin-top: 5px;
-    ${props => props.active && `fill: #fff;`}
+    ${props => props.active && `fill: ${red};`}
+  }
+
+  ${VoteCount} {
+    ${props => props.active && `color: ${red};`}
   }
 
   &:hover {
-    ${VoteIconWrapper} {
-      ${props => props.active ? `border-color: ${red};` : `border-color: #999`}
+    ${VoteIconContainer} {
+      ${props => !props.active && `border-color: #999;`}
     }
 
     ${VoteIcon} {
-      ${props => props.active ? `fill: #fff;` : `fill: #999`}
+      ${props => !props.active && `fill: #777;`}
+    }
+
+    ${VoteCount} {
+      ${props => !props.active && `color: #777;`}
     }
   }
 `;
@@ -109,15 +140,18 @@ type State = {
   authUser: IUser | null,
   upvotesCount: number;
   downvotesCount: number;
+  voting: 'up' | 'down' | null;
+  votingAnimation: 'up' | 'down' | null;
   myVoteId: string | null;
   myVoteMode: 'up' | 'down' | null;
-  processing: boolean;
 };
 
 export default class Votes extends React.PureComponent<Props, State> {
   state: State;
-  processing$: Rx.BehaviorSubject<boolean>;
+  voting$: Rx.BehaviorSubject<'up' | 'down' | null>;
   subscriptions: Rx.Subscription[];
+  upvoteElement: HTMLDivElement | null;
+  downvoteElement: HTMLDivElement | null;
 
   constructor() {
     super();
@@ -125,12 +159,15 @@ export default class Votes extends React.PureComponent<Props, State> {
       authUser: null,
       upvotesCount: 0,
       downvotesCount: 0,
+      voting: null,
+      votingAnimation: null,
       myVoteId: null,
-      myVoteMode: null,
-      processing: false
+      myVoteMode: null
     };
-    this.processing$ = new Rx.BehaviorSubject(false);
+    this.voting$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
+    this.upvoteElement = null;
+    this.downvoteElement = null;
   }
 
   componentWillMount() {
@@ -138,10 +175,10 @@ export default class Votes extends React.PureComponent<Props, State> {
     const authUser$ = authUserStream().observable;
     const idea$ = Rx.Observable.combineLatest(
       ideaByIdStream(ideaId).observable,
-      this.processing$
-    ).filter(([idea, processing]) => {
-      return !processing;
-    }).map(([idea, processing]) => {
+      this.voting$
+    ).filter(([idea, voting]) => {
+      return voting === null;
+    }).map(([idea, voting]) => {
       return idea;
     });
     const myVote$ = Rx.Observable.combineLatest(authUser$, idea$).switchMap(([authUser, idea]) => {
@@ -150,10 +187,10 @@ export default class Votes extends React.PureComponent<Props, State> {
 
         return Rx.Observable.combineLatest(
           voteStream(voteId).observable,
-          this.processing$
-        ).filter(([vote, processing]) => {
-          return !processing;
-        }).map(([vote, processing]) => {
+          this.voting$
+        ).filter(([vote, voting]) => {
+          return voting === null;
+        }).map(([vote, voting]) => {
           return vote;
         });
       }
@@ -162,7 +199,12 @@ export default class Votes extends React.PureComponent<Props, State> {
     });
 
     this.subscriptions = [
-      this.processing$.subscribe((processing) => this.setState({ processing })),
+      this.voting$.subscribe((voting) => {
+        this.setState((state) => ({
+          voting,
+          votingAnimation: (voting !== null && state.voting === null ? voting : state.votingAnimation)
+        }));
+      }),
 
       idea$.subscribe((idea) => {
         const upvotesCount = idea.data.attributes.upvotes_count;
@@ -170,11 +212,7 @@ export default class Votes extends React.PureComponent<Props, State> {
         this.setState({ upvotesCount, downvotesCount });
       }),
 
-      authUser$.subscribe(authUser => {
-        console.log('authUser:');
-        console.log(authUser);
-        this.setState({ authUser });
-      }),
+      authUser$.subscribe(authUser => this.setState({ authUser })),
 
       myVote$.subscribe((myVote) => {
         if (myVote) {
@@ -186,9 +224,31 @@ export default class Votes extends React.PureComponent<Props, State> {
     ];
   }
 
+  componentDidMount() {
+    if (this.upvoteElement) {
+      this.upvoteElement.addEventListener('animationend', this.votingAnimationDone);
+    }
+
+    if (this.downvoteElement) {
+      this.downvoteElement.addEventListener('animationend', this.votingAnimationDone);
+    }
+  }
+
   componentWillUnmount() {
+    if (this.upvoteElement) {
+      this.upvoteElement.removeEventListener('animationend', this.votingAnimationDone);
+    }
+
+    if (this.downvoteElement) {
+      this.downvoteElement.removeEventListener('animationend', this.votingAnimationDone);
+    }
+
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
+
+	votingAnimationDone = () => {
+		this.setState({ votingAnimation: null });
+	}
 
   onClickUpvote = (event) => {
     event.preventDefault();
@@ -206,9 +266,9 @@ export default class Votes extends React.PureComponent<Props, State> {
     const { authUser, myVoteId, myVoteMode } = this.state;
     const { ideaId } = this.props;
 
-    if (authUser && !this.state.processing) {
+    if (authUser && this.state.voting === null) {
       try {
-        this.processing$.next(true);
+        this.voting$.next(voteMode);
 
         if (myVoteId && myVoteMode && myVoteMode !== voteMode) {
           this.setState((state) => ({
@@ -239,10 +299,9 @@ export default class Votes extends React.PureComponent<Props, State> {
         }
 
         await ideaByIdStream(ideaId).fetch();
-        this.processing$.next(false);
+        this.voting$.next(null);
       } catch (error) {
-        console.log(error);
-        this.processing$.next(false);
+        this.voting$.next(null);
         await ideaByIdStream(ideaId).fetch();
       }
     }
@@ -254,17 +313,35 @@ export default class Votes extends React.PureComponent<Props, State> {
     }
   }
 
+  setUpvoteRef = (element: HTMLDivElement) => {
+    this.upvoteElement = element;
+  }
+
+  setDownvoteRef = (element: HTMLDivElement) => {
+    this.downvoteElement = element;
+  }
+
   render() {
-    const { upvotesCount, downvotesCount, myVoteMode } = this.state;
+    const { upvotesCount, downvotesCount, myVoteMode, voting, votingAnimation } = this.state;
 
     return (
       <Container>
-        <Upvote active={myVoteMode === 'up'} onClick={this.onClickUpvote}>
-          <VoteIconWrapper><VoteIcon name="upvote-2" /></VoteIconWrapper>
+        <Upvote
+          active={myVoteMode === 'up'}
+          onClick={this.onClickUpvote}
+          innerRef={this.setUpvoteRef}
+          className={votingAnimation === 'up' ? 'voteClick' : ''}
+        >
+          <VoteIconContainer><VoteIcon name="upvote-2" /></VoteIconContainer>
           <VoteCount>{upvotesCount}</VoteCount>
         </Upvote>
-        <Downvote active={myVoteMode === 'down'} onClick={this.onClickDownvote}>
-          <VoteIconWrapper><VoteIcon name="downvote-2" /></VoteIconWrapper>
+        <Downvote
+          active={myVoteMode === 'down'}
+          onClick={this.onClickDownvote}
+          innerRef={this.setDownvoteRef}
+          className={votingAnimation === 'down' ? 'voteClick' : ''}
+        >
+          <VoteIconContainer><VoteIcon name="downvote-2" /></VoteIconContainer>
           <VoteCount>{downvotesCount}</VoteCount>
         </Downvote>
       </Container>

@@ -1,11 +1,14 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// libraries
 import { browserHistory } from 'react-router';
 
 // components
 import Authorize from 'utils/containers/authorize';
 import ClickOutside from 'utils/containers/clickOutside';
+import Icon from 'components/UI/Icon';
 
 // services
 import { authUserStream, signOut } from 'services/auth';
@@ -13,6 +16,7 @@ import { IUser } from 'services/users';
 
 // style
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
@@ -23,12 +27,13 @@ const adminIcon = require('./adminIcon.svg');
 const editProfileIcon = require('./editProfileIcon.svg');
 const signOutIcon = require('./signOutIcon.svg');
 
-const MenuContainer = styled(ClickOutside)`
+const Container = styled(ClickOutside)`
   display: flex;
   border-radius: 50%;
   margin-left: 0px;
   position: relative;
   cursor: pointer;
+  outline: none;
 `;
 
 const UserImage: any = styled.img`
@@ -39,6 +44,16 @@ const UserImage: any = styled.img`
 
   &:hover {
     opacity: 1;
+  }
+`;
+
+const UserIcon = styled(Icon)`
+  height: 28px;
+  fill: #84939E;
+  transition: all 150ms ease;
+
+  &:hover {
+    fill: ${(props) => darken(0.15, '#84939E')};
   }
 `;
 
@@ -131,8 +146,9 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     const { authUser, dropdownOpened } = this.state;
 
     return (authUser ? (
-      <MenuContainer onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
-        <UserImage avatar={true} src={authUser.data.attributes.avatar.small} />
+      <Container onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
+        {/* <UserImage avatar={true} src={authUser.data.attributes.avatar.small} /> */}
+        <UserIcon name="user" />
         {dropdownOpened &&
           <Dropdown>
             <Authorize action={['users', 'admin']} >
@@ -151,7 +167,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
             </DropdownItem>
           </Dropdown>
         }
-      </MenuContainer>
+      </Container>
     ) : null);
   }
 }

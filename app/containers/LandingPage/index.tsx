@@ -3,13 +3,14 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 // components
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectCards from 'components/ProjectCards';
 import Icon from 'components/UI/Icon';
+import Button from 'components/UI/Button';
 import Footer from './footer';
 
 // services
@@ -18,7 +19,7 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 
 // i18n
 import T from 'containers/T';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
 import i18n from 'utils/i18n';
 
@@ -29,14 +30,35 @@ import { media } from 'utils/styleUtils';
 
 const header = require('./header.png');
 
-const Container: any = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   background: #fff;
+  position: relative;
+`;
+
+const BackgroundImage: any = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
   background-image: url(${(props: any) => props.imageSrc});  
   background-repeat: no-repeat;
+  background-size: auto 535px;
   background-position: center 0px;
+`;
+
+const BackgroundColor = styled.div`
+  position: absolute;
+  top: 573px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  background-color: #f8f8f8;
 `;
 
 const Header: any = styled.div`
@@ -44,7 +66,8 @@ const Header: any = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  z-index: 1;
 `;
 
 const HeaderLogoWrapper = styled.div`
@@ -53,9 +76,10 @@ const HeaderLogoWrapper = styled.div`
   padding: 15px;
   margin-top: 60px;
   margin-bottom: 15px;
-  border: solid 2px #eaeaea;
+  border: solid 1px #e0e0e0;
   border-radius: 5px;
   background: #fff;
+  box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.3);
 `;
 
 const HeaderLogo: any = styled.div`
@@ -68,7 +92,7 @@ const HeaderLogo: any = styled.div`
 `;
 
 const HeaderTitle = styled.h1`
-  color: ${props =>  props.theme.colorMain};
+  color: ${props => props.theme.colorMain};
   font-size: 41px;
   line-height: 45px;
   font-weight: 500;
@@ -97,7 +121,7 @@ const HeaderTitle = styled.h1`
 `;
 
 const HeaderSubtitle = styled.h2`
-  color: ${props =>  props.theme.colorMain};
+  color: ${props => props.theme.colorMain};
   font-size: 32px;
   line-height: 38px;
   font-weight: 100;
@@ -126,9 +150,11 @@ const HeaderSubtitle = styled.h2`
   `}
 `;
 
-const ProjectsSectionWrapper = styled.div`
-  width: 100vw;
-  background: #fff;
+const Content = styled.div`
+  width: 100%;
+  max-width: ${(props) => props.theme.maxPageWidth}px;
+  padding-bottom: 80px;
+  z-index: 1;
 `;
 
 const Section = styled.div`
@@ -143,6 +169,7 @@ const SectionHeader = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 35px;
+  /* border: solid 1px red; */
 
   /*
   ${media.phone`
@@ -179,30 +206,35 @@ const SectionContainer = styled.section`
   margin-top: 10px;
 `;
 
-const ViewAllButtonText = styled.div`
-  margin-right: 10px;
+const ExploreText = styled.div`
+  color: #84939E;
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 17px;
+  margin-right: 8px;
+  text-decoration: underline;
+  transition: all 100ms ease-out;
 `;
 
-const ViewAllButtonIcon = styled(Icon)`;
-  height: 10px;
-  fill: #999;
-  margin-top: 3px;
+const ExploreIcon = styled(Icon) `;
+  height: 17px;
+  fill: #84939E;
+  margin-top: 1px;
+  transition: all 100ms ease-out;
 `;
 
-const ViewAllButton = styled(Link)`
-  color: #999;
+const Explore = styled(Link) `
   cursor: pointer;
   display: flex;
   align-items: center;
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 18px;
-  text-decoration: none;
+  margin-bottom: 25px;
 
   &:hover {
-    color: #000;
+    ${ExploreText} {
+      color: #000;
+    }
 
-    ${ViewAllButtonIcon} {
+    ${ExploreIcon} {
       fill: #000;
     }
   }
@@ -212,11 +244,24 @@ const ViewAllButton = styled(Link)`
   `}
 `;
 
+const SectionFooter = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ViewMoreButton = styled(Button) `
+  margin-top: 20px;
+`;
+
+type Props = {};
+
 type State = {
   currentTenant: ITenant | null;
 };
 
-export default class LandingPage extends React.PureComponent<{}, State> {
+class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -240,25 +285,37 @@ export default class LandingPage extends React.PureComponent<{}, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  goToIdeasPage = () => {
+    browserHistory.push('/ideas');
+  }
+
+  goToProjectsPage = () => {
+    browserHistory.push('/projects');
+  }
+
   render() {
     const { currentTenant } = this.state;
+    const { formatMessage } = this.props.intl;
 
     if (currentTenant !== null) {
       const currentTenantName = i18n.getLocalized(currentTenant.data.attributes.settings.core.organization_name);
       const currentTenantLogo = currentTenant.data.attributes.logo.large;
       const currentTenantHeaderSlogan = i18n.getLocalized(currentTenant.data.attributes.settings.core.header_slogan);
       const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
-      const ideaCardsFilter = { sort: 'trending', 'page[size]': 9 };
+      const ideaCardsFilter = { sort: 'trending', 'page[size]': 6 };
       const projectCardsFilter = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
 
       return (
         <div>
-          <Container imageSrc={header}>
+          <Container>
+            <BackgroundImage imageSrc={header} />
+            <BackgroundColor />
+
             <Header>
-              {currentTenantLogo && 
-              <HeaderLogoWrapper>
-                <HeaderLogo imageSrc={currentTenantLogo} />
-              </HeaderLogoWrapper>
+              {currentTenantLogo &&
+                <HeaderLogoWrapper>
+                  <HeaderLogo imageSrc={currentTenantLogo} />
+                </HeaderLogoWrapper>
               }
               <HeaderTitle>
                 <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }} />
@@ -268,45 +325,54 @@ export default class LandingPage extends React.PureComponent<{}, State> {
               </HeaderSubtitle>
             </Header>
 
-            <ContentContainer>
+            <Content>
               <Section>
                 <SectionHeader>
                   <SectionTitle>
                     <FormattedMessage {...messages.ideasFrom} values={{ name: currentTenantName }} />
                   </SectionTitle>
-                  <ViewAllButton to="/ideas">
-                    <ViewAllButtonText>
-                      <FormattedMessage {...messages.viewIdeas} />
-                    </ViewAllButtonText>
-                    <ViewAllButtonIcon name="chevron-right" />
-                  </ViewAllButton>
+                  <Explore to="/ideas">
+                    <ExploreText>
+                      <FormattedMessage {...messages.exploreAllIdeas} />
+                    </ExploreText>
+                    <ExploreIcon name="compass" />
+                  </Explore>
                 </SectionHeader>
                 <SectionContainer>
                   <IdeaCards filter={ideaCardsFilter} loadMoreEnabled={false} />
                 </SectionContainer>
+                <SectionFooter>
+                  <ViewMoreButton
+                    text={formatMessage(messages.exploreAllIdeas)}
+                    style="primary-outlined"
+                    size="2"
+                    icon="compass"
+                    onClick={this.goToIdeasPage}
+                    circularCorners={false}
+                  />
+                </SectionFooter>
               </Section>
-            </ContentContainer>
 
-            <ProjectsSectionWrapper>
-              <ContentContainer>
-                <Section>
-                  <SectionHeader>
-                    <SectionTitle>
-                      <FormattedMessage {...messages.projectsFrom} values={{ name: currentTenantName }} />
-                    </SectionTitle>
-                    <ViewAllButton to="/projects">
-                      <ViewAllButtonText>
-                        <FormattedMessage {...messages.viewProjects} />
-                      </ViewAllButtonText>
-                      <ViewAllButtonIcon name="chevron-right" />
-                    </ViewAllButton>
-                  </SectionHeader>
-                  <SectionContainer>
-                    <ProjectCards filter={projectCardsFilter} />
-                  </SectionContainer>
-                </Section>
-              </ContentContainer>
-            </ProjectsSectionWrapper>
+              <Section>
+                <SectionHeader>
+                  <SectionTitle>
+                    <FormattedMessage {...messages.projectsFrom} values={{ name: currentTenantName }} />
+                  </SectionTitle>
+                </SectionHeader>
+                <SectionContainer>
+                  <ProjectCards filter={projectCardsFilter} />
+                </SectionContainer>
+                <SectionFooter>
+                  <ViewMoreButton
+                    text={formatMessage(messages.viewAllProjects)}
+                    style="primary-outlined"
+                    size="2"
+                    onClick={this.goToProjectsPage}
+                    circularCorners={false}
+                  />
+                </SectionFooter>
+              </Section>
+            </Content>
 
             <Footer />
 
@@ -318,3 +384,5 @@ export default class LandingPage extends React.PureComponent<{}, State> {
     return null;
   }
 }
+
+export default injectIntl<Props>(LandingPage);

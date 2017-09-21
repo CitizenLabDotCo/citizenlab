@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// libraries
 import { browserHistory, Link } from 'react-router';
 
 // components
@@ -8,6 +10,7 @@ import NotificationMenu from './components/NotificationMenu';
 import UserMenu from './components/UserMenu';
 import MobileNavigation from './components/MobileNavigation';
 import Icon from 'components/UI/Icon';
+import Button from 'components/UI/Button';
 
 // services
 import { authUserStream, signOut } from 'services/auth';
@@ -20,11 +23,11 @@ import tracks from './tracks';
 
 // i18n
 import { media } from 'utils/styleUtils';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // style
-import { lighten, darken } from 'polished';
-import messages from './messages';
+import { darken } from 'polished';
 import styled, { ThemeProvider, css } from 'styled-components';
 
 const Container: any = styled.div`
@@ -34,13 +37,11 @@ const Container: any = styled.div`
   height: ${(props) => props.theme.menuHeight}px;
   position: relative;
   background: #fff;
-  /* background: rgba(255, 255, 255, 0.95); */
   border-bottom: 1px solid #fff;
-  /* box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.15); */
   z-index: 999;
   position: fixed;
   top: 0;
-  transition: border-color 200ms ease-out, box-shadow 200ms ease-out;
+  transition: border-color 150ms ease-out;
 
   ${(props: any) => props.scrolled && css`
     border-color: ${props => props.theme.colorNavBottomBorder};
@@ -53,7 +54,7 @@ const Left = styled.div`
   z-index: 2;
 `;
 
-const LogoLink = styled(Link)`
+const LogoLink = styled(Link) `
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -63,7 +64,9 @@ const LogoLink = styled(Link)`
 const Logo = styled.div`
   cursor: pointer;
   height: 42px;
-  padding: 0px 15px;
+  padding: 0px;
+  padding-right: 15px;
+  padding-left: 25px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -84,12 +87,12 @@ const NavigationItems = styled.div`
   `}
 `;
 
-const NavigationItem = styled(Link)`
+const NavigationItem = styled(Link) `
   height: 100%;
   opacity: 0.4;
   transition: opacity 150ms ease;
   color: ${props => props.theme.colorNavFg} !important;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -116,57 +119,23 @@ const RightItem: any = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0;
-
-  ${(props: any) => props.hideOnPhone && media.phone`display: none;`}
-`;
-
-const Button = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
   padding-left: 18px;
   padding-right: 18px;
-  border-radius: 5px;
-  border-radius: 999em;
-  background: ${(props) => props.theme.colorMain};
-  cursor: pointer;
-  transition: background 150ms ease;
+  outline: none;
 
-  &:hover {
-    background: ${props => darken(0.15, props.theme.colorMain)};
+  * {
+    outline: none !important;
   }
 
-  ${media.phone`
-    padding: 10px;
-  `}
-`;
-
-const ButtonIcon = styled(Icon)`
-  fill: #fff;
-  margin-right: 18px;
-
-  ${media.phone`
-    margin-right: 8px;
-  `}
-`;
-
-const ButtonText = styled.span`
-  color: #fff;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 16px;
-  white-space: nowrap;
+  ${(props: any) => props.hideOnPhone && media.phone`display: none;`}
 `;
 
 const LoginLink = styled.div`
   color: ${(props) => props.theme.colorMain};
   font-size: 16px;
   font-weight: 400;
-  padding-left: 32px;
-  padding-right: 32px;
+  padding-left: 15px;
+  padding-right: 15px;
 
   &:hover {
     color: ${(props) => darken(0.2, props.theme.colorMain)};
@@ -187,7 +156,7 @@ type State = {
   scrolled: boolean;
 };
 
-class Navbar extends React.PureComponent<Props & ITracks, State> {
+class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -208,7 +177,7 @@ class Navbar extends React.PureComponent<Props & ITracks, State> {
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        authUser$, 
+        authUser$,
         currentTenant$
       ).subscribe(([authUser, currentTenant]) => {
         this.setState({ authUser, currentTenant });
@@ -272,6 +241,7 @@ class Navbar extends React.PureComponent<Props & ITracks, State> {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const { authUser, currentTenant, scrolled } = this.state;
     const tenantLogo = (currentTenant ? currentTenant.data.attributes.logo.medium : null);
 
@@ -302,12 +272,14 @@ class Navbar extends React.PureComponent<Props & ITracks, State> {
           </Left>
           <Right>
             <RightItem>
-              <Button onClick={this.goToAddIdeaPage}>
-                <ButtonIcon name="add_circle" />
-                <ButtonText>
-                  <FormattedMessage {...messages.startIdea} />
-                </ButtonText>
-              </Button>
+              <Button
+                text={formatMessage(messages.startIdea)}
+                style="primary"
+                size="1"
+                icon="plus-circle"
+                onClick={this.goToAddIdeaPage}
+                circularCorners={true}
+              />
             </RightItem>
 
             {authUser &&
@@ -341,4 +313,4 @@ class Navbar extends React.PureComponent<Props & ITracks, State> {
 export default injectTracks<Props>({
   trackClickOpenNotifications: tracks.clickOpenNotifications,
   trackClickCloseNotifications: tracks.clickCloseNotifications,
-})(Navbar);
+})(injectIntl<Props>(Navbar));

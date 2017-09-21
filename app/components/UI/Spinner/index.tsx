@@ -16,7 +16,7 @@ interface IStyledSpinner {
 const StyledSpinner: any = styled.div`
   width: ${(props: IStyledSpinner) => props.size};
   height: ${(props: IStyledSpinner) => props.size};
-  animation: ${rotate} 700ms infinite linear;
+  animation: ${rotate} 800ms infinite linear;
   border-style: solid;
   border-right-color: transparent !important;
   border-width: ${(props: IStyledSpinner) => props.thickness};
