@@ -248,7 +248,7 @@ resource "Ideas" do
         expect(project.reload.ideas_count).to eq 1
       end
 
-      example "Check for the automatic creation of an upvote by the author when an idea is created" do
+      example "Check for the automatic creation of an upvote by the author when an idea is created", :document => false do
 
         do_request
 
@@ -314,7 +314,7 @@ resource "Ideas" do
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
       end
 
-      example "Check for the automatic creation of an upvote by the author when the publication status of an idea is updated from draft to published" do
+      example "Check for the automatic creation of an upvote by the author when the publication status of an idea is updated from draft to published", :document => false do
         @idea.update(publication_status: "draft")
 
         do_request(idea: { publication_status: "published" })
