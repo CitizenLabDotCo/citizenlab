@@ -113,7 +113,7 @@ class ShowDesktop extends React.PureComponent {
           <VoteCTA>
             <FormattedMessage {...messages.voteCTA} />
           </VoteCTA>
-          <VoteControl ideaId={id} size="large" />
+          <VoteControl ideaId={id} />
           <StatusContainer>
             <StatusTitle><FormattedMessage {...messages.ideaStatus} /></StatusTitle>
             <StatusBadge statusId={statusId} />

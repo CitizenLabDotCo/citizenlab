@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// libraries
 import { RouterState } from 'react-router';
 
 // components
@@ -11,9 +13,9 @@ import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import Modal from 'components/UI/Modal';
 import IdeasShow from 'containers/IdeasShow';
-import { namespace as ideaCardNamespace } from 'components/IdeaCard';
+import { namespace as IdeaCardComponent } from 'components/IdeaCard';
 
-// authorizations
+// auth
 import Authorize, { Else } from 'utils/containers/authorize';
 import { loadCurrentTenantSuccess } from 'utils/tenant/actions';
 
@@ -24,7 +26,6 @@ import areasSagas from 'utils/areas/sagas';
 import tenantSaga from 'utils/tenant/sagas';
 
 // services
-import { state, IStateStream } from 'services/state';
 import { authUserStream, signOut } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
@@ -37,7 +38,7 @@ import { media } from 'utils/styleUtils';
 
 // legacy redux stuff 
 import { store } from 'app';
-import {  STORE_JWT, LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
+import { STORE_JWT, LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
 
 const Container = styled.div`
   margin-top: ${props => props.theme.menuHeight}px;
@@ -47,32 +48,36 @@ const Container = styled.div`
   `}
 `;
 
+export interface IModalProps {
+  ideaId: string;
+  ideaSlug: string;
+}
+
 type Props = {};
 
 type State = {
   currentTenant: ITenant | null;
-  modalIdeaSlug: string | null;
+  modal: IModalProps | null;
 };
 
-export const namespace = 'App/index';
-
 export default class App extends React.PureComponent<Props & RouterState, State> {
-  state$: IStateStream<State>;
+  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    const initialState: State = { currentTenant: null, modalIdeaSlug: null };
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    this.state = {
+      currentTenant: null,
+      modal: null
+    };
+    this.subscriptions = [];
   }
 
   componentWillMount() {
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-
-      eventEmitter.observe(ideaCardNamespace, 'ideaCardClick').subscribe(({ eventValue }) => {
-        const ideaSlug = eventValue;
-        this.openModal(ideaSlug);
+      eventEmitter.observe<IModalProps>(IdeaCardComponent, 'cardClick').subscribe(({ eventValue }) => {
+        const { ideaId, ideaSlug } = eventValue;
+        this.openModal({ ideaId, ideaSlug });
       }),
 
       authUserStream().observable.subscribe((authUser) => {
@@ -85,7 +90,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
       }),
 
       currentTenantStream().observable.subscribe((currentTenant) => {
-        this.state$.next({ currentTenant });
+        this.setState({ currentTenant });
         store.dispatch(loadCurrentTenantSuccess(currentTenant));
       })
     ];
@@ -95,23 +100,25 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  openModal = (modalIdeaSlug) => {
-    this.state$.next({ modalIdeaSlug });
+  openModal = (modal: IModalProps) => {
+    this.setState({ modal });
   }
 
   closeModal = () => {
-    this.state$.next({ modalIdeaSlug: null });
+    this.setState({ modal: null });
   }
 
   render() {
     const { location, children } = this.props;
-    const { currentTenant, modalIdeaSlug } = this.state;
+    const { currentTenant, modal } = this.state;
+    const modalOpened = !_.isNull(modal);
+    const modalUrl = !_.isNull(modal) ? `/ideas/${modal.ideaSlug}` : undefined;
     const theme = {
       colorMain: (currentTenant ? currentTenant.data.attributes.settings.core.color_main : '#ef0071'),
       menuStyle: 'light',
-      menuHeight: 80,
+      menuHeight: 74,
       mobileMenuHeight: 80,
-      maxPageWidth: 950,
+      maxPageWidth: 952,
     };
 
     return (
@@ -123,10 +130,10 @@ export default class App extends React.PureComponent<Props & RouterState, State>
         {currentTenant && (
           <ThemeProvider theme={theme}>
             <Container>
-              <Meta tenant={currentTenant} />
+              <Meta />
 
-              <Modal opened={!!modalIdeaSlug} close={this.closeModal} url={`/ideas/${modalIdeaSlug}`}>
-                <IdeasShow location={location} slug={modalIdeaSlug} />
+              <Modal opened={modalOpened} close={this.closeModal} url={modalUrl}>
+                {modal && <IdeasShow location={location} ideaId={modal.ideaId} />}
               </Modal>
 
               <Navbar />

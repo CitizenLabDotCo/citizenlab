@@ -26,22 +26,22 @@ export interface IIdeaData {
   };
   relationships: {
     topics: {
-      data: IRelationship[]
+      data: IRelationship[];
     };
     areas: {
-      data: IRelationship[]
+      data: IRelationship[];
     };
     idea_images: {
-      data: IRelationship[]
+      data: IRelationship[];
     };
     author: {
-      data: IRelationship
+      data: IRelationship;
     };
     project: {
-      data: IRelationship
+      data: IRelationship;
     };
     user_vote: {
-      data: null
+      data: IRelationship;
     }
   };
 }
@@ -76,14 +76,16 @@ export interface IIdeaUpdate {
   location_description: string;
 }
 
-const apiEndpoint = `${API_PATH}/ideas`;
+export function ideaByIdStream(ideaId: string) {
+  return streams.get<IIdea>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}` });
+}
 
-export function ideaStream(ideaId: string, streamParams: IStreamParams<IIdea> | null = null) {
-  return streams.get<IIdea>({ apiEndpoint: `${apiEndpoint}/${ideaId}`, ...streamParams });
+export function ideaBySlugStream(ideaSlug: string) {
+  return streams.get<IIdea>({ apiEndpoint: `${API_PATH}/ideas/by_slug/${ideaSlug}` });
 }
 
 export function ideasStream(streamParams: IStreamParams<IIdeas> | null = null) {
-  return streams.get<IIdeas>({ apiEndpoint, ...streamParams });
+  return streams.get<IIdeas>({ apiEndpoint: `${API_PATH}/ideas`, ...streamParams });
 }
 
 export function addIdea(
@@ -110,9 +112,9 @@ export function addIdea(
     }
   };
 
-  return streams.add<IIdea>(apiEndpoint, bodyData);
+  return streams.add<IIdea>(`${API_PATH}/ideas/`, bodyData);
 }
 
 export function updateIdea(ideaId: string, object: IIdeaUpdate) {
-  return streams.update<IIdea>(`${apiEndpoint}/${ideaId}`, ideaId, { idea: object });
+  return streams.update<IIdea>(`${API_PATH}/ideas/${ideaId}`, ideaId, { idea: object });
 }
