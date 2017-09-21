@@ -26,6 +26,14 @@ import { publishCommentRequest } from '../../actions';
 import selectIdeasShow from '../../selectors';
 
 // Styling
+const CommentEditor = styled(Editor)`
+  background: #f8f8f8 !important;
+
+  .rdw-editor-toolbar {
+    display: none;
+  }
+`;
+
 const SubmitButton = styled(Button)`
 `;
 
@@ -37,7 +45,19 @@ const SubmitArea = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  margin: -5rem 1px 0 1px;
+  padding: 1rem;
+  position: relative;
+  z-index: 1;
+
+  &.success,
+  &.error {
+    background: linear-gradient(0deg,rgba(255,255,255,.95) 85%, rgba(255,255,255, 0));
+  }
+
+  .message {
+    font-weight: 500;
+  }
 `;
 
 interface Props {
@@ -122,7 +142,7 @@ class EditorForm extends React.PureComponent<Props, State> {
     return (
       <Authorize action={['comments', 'create']}>
         <form onSubmit={this.handleSubmit}>
-          <Editor
+          <CommentEditor
             id="editor"
             value={this.state.editorState}
             placeholder={formatMessage(messages.commentBodyPlaceholder)}
@@ -130,7 +150,7 @@ class EditorForm extends React.PureComponent<Props, State> {
           />
 
           <SubmitArea className={formStatus || ''}>
-            <div>
+            <div className="message">
               {formStatus === 'error' && <div>{error}</div>}
 
               {formStatus === 'success' &&
