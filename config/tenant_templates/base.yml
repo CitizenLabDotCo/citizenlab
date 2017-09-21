@@ -68,7 +68,11 @@ models:
       body_multiloc: pages.cookie_policy_body
       slug: cookie-policy
     -
-      title_multiloc: pages.terms_of_use_title
-      body_multiloc: pages.terms_of_use_body
-      slug: terms-of-use
+      title_multiloc: pages.privacy_policy_title
+      body_multiloc: pages.privacy_policy_body
+      slug: privacy-policy
+    -
+      title_multiloc: pages.terms_and_conditions_title
+      body_multiloc: pages.terms_and_conditions_body
+      slug: terms-and-conditions
 
