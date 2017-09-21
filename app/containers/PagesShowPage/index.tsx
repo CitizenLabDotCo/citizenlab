@@ -26,11 +26,12 @@ type Props = {
     slug: string;
   }
   tFunc: ({}) => string;
-}
+};
 
 type State = {
   page: IPageData | null,
-}
+};
+
 class PagesShowPage extends React.PureComponent<Props, State> {
   pageObserver: Rx.Subscription | null;
 
@@ -50,7 +51,7 @@ class PagesShowPage extends React.PureComponent<Props, State> {
     });
   }
 
-  componentDidUnmount(){
+  componentDidUnmount() {
     this.pageObserver && this.pageObserver.unsubscribe();
   }
 
