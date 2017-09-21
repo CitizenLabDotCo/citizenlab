@@ -27,11 +27,17 @@ import selectIdeasShow from '../../selectors';
 
 // Styling
 const SubmitButton = styled(Button)`
-  margin-top: 20px;
 `;
 
 const SuccessMessage = styled.p`
   color: #32B67A;
+`;
+
+const SubmitArea = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 `;
 
 interface Props {
@@ -80,6 +86,11 @@ class EditorForm extends React.PureComponent<Props, State> {
 
   handleSubmit = (event) => {
     event.preventDefault();
+
+    if (!this.state.editorState) {
+      return;
+    }
+
     const editorContent = convertToRaw(this.state.editorState.getCurrentContent());
     const htmlContent = draftToHtml(editorContent);
 
@@ -117,18 +128,22 @@ class EditorForm extends React.PureComponent<Props, State> {
             placeholder={formatMessage(messages.commentBodyPlaceholder)}
             onChange={this.handleEditorChange}
           />
-          {formStatus === 'error' && <div>{error}</div>}
-          <SubmitButton
-            loading={formStatus === 'processing'}
-          >
-            <FormattedMessage {...messages.publishComment} />
-          </SubmitButton>
 
-          {formStatus === 'success' &&
-            <SuccessMessage>
-              <FormattedMessage {...messages.commentSuccess} />
-            </SuccessMessage>
-          }
+          <SubmitArea className={formStatus || ''}>
+            <div>
+              {formStatus === 'error' && <div>{error}</div>}
+
+              {formStatus === 'success' &&
+                <SuccessMessage>
+                  <FormattedMessage {...messages.commentSuccess} />
+                </SuccessMessage>
+              }
+            </div>
+
+            <SubmitButton loading={formStatus === 'processing'}>
+              <FormattedMessage {...messages.publishComment} />
+            </SubmitButton>
+          </SubmitArea>
 
         </form>
         <Else>
