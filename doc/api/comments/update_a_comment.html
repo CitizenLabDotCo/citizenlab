@@ -188,12 +188,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMDMsInN1YiI6IjVhODYyM2VkLTAyZmMtNDY5NS1iOWJhLTY4MWJiZDhjNDdmNSJ9.Jhc5_xAno29gEzeJGq84YHSrjtG1a74x7_gdFzsIsMs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA1NzUsInN1YiI6ImFmMmY5YjJlLTE1MGEtNGNjOS1hZjJjLTQzMTU2ODI3NjgwNSJ9.-fWIu1TPMNRhvoFO8WQCtVx1r9Mm41VD2aevaJv02Gc
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/comments/70d41fee-8776-4baa-8581-09647cdeb8dd</pre>
+          <pre class="request route highlight">PATCH api/v1/comments/2111b6e5-3acd-4833-96ab-c2bc8e4c9b76</pre>
 
 
             <h4>Body</h4>
@@ -203,18 +203,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;544c0160f9b1f76f355ba5c1c37288a5&quot;
+ETag: W/&quot;a4b9b381296f7f1c3c7fb2165a02c6d8&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: e3949831-ba31-49e5-9a07-1bc7afa096f3
-X-Runtime: 0.028781
+X-Request-Id: 0184891d-52d0-4c98-8467-72652422e61a
+X-Runtime: 0.027155
 Vary: Origin
-Content-Length: 1315</pre>
+Content-Length: 1360</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;70d41fee-8776-4baa-8581-09647cdeb8dd&quot;,
+    &quot;id&quot;: &quot;2111b6e5-3acd-4833-96ab-c2bc8e4c9b76&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
@@ -223,19 +223,19 @@ Content-Length: 1315</pre>
       },
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
-      &quot;created_at&quot;: &quot;2017-08-02T16:01:43.384Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-08-02T16:01:43.384Z&quot;
+      &quot;created_at&quot;: &quot;2017-09-21T11:42:55.715Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-09-21T11:42:55.715Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;98205504-d314-48fd-8aa4-c918364cebc8&quot;,
+          &quot;id&quot;: &quot;c79fa6a2-4527-4562-b702-d4e110efcf06&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;5a8623ed-02fc-4695-b9ba-681bbd8c47f5&quot;,
+          &quot;id&quot;: &quot;af2f9b2e-150a-4cc9-af2c-431568276805&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
@@ -249,30 +249,31 @@ Content-Length: 1315</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;5a8623ed-02fc-4695-b9ba-681bbd8c47f5&quot;,
+      &quot;id&quot;: &quot;af2f9b2e-150a-4cc9-af2c-431568276805&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Noah&quot;,
-        &quot;last_name&quot;: &quot;Bosco&quot;,
-        &quot;slug&quot;: &quot;noah-bosco&quot;,
+        &quot;first_name&quot;: &quot;Broderick&quot;,
+        &quot;last_name&quot;: &quot;Kozey&quot;,
+        &quot;slug&quot;: &quot;broderick-kozey&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/5a8623ed-02fc-4695-b9ba-681bbd8c47f5/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/5a8623ed-02fc-4695-b9ba-681bbd8c47f5/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/5a8623ed-02fc-4695-b9ba-681bbd8c47f5/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/af2f9b2e-150a-4cc9-af2c-431568276805/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/af2f9b2e-150a-4cc9-af2c-431568276805/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/af2f9b2e-150a-4cc9-af2c-431568276805/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-08-02T16:01:43.373Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-08-02T16:01:43.373Z&quot;,
-        &quot;email&quot;: &quot;beryl_morar@kleinkohler.biz&quot;,
+        &quot;created_at&quot;: &quot;2017-09-21T11:42:55.675Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-09-21T11:42:55.675Z&quot;,
+        &quot;email&quot;: &quot;garrett.oberbrunner@wisokybernier.com&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
-        &quot;education&quot;: null
+        &quot;education&quot;: null,
+        &quot;unread_notifications&quot;: 0
       }
     }
   ]

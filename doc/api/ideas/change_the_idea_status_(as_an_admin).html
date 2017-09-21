@@ -150,7 +150,7 @@ table th, table td {
                     <span class="name">idea[publication_status]</span>
                 </td>
                 <td>
-                  <span class="description">Either [&quot;draft&quot;, &quot;published&quot;, &quot;closed&quot;, &quot;spam&quot;].join(&#39;, &#39;)}</span>
+                  <span class="description">Either draft, published, closed, spam</span>
                 </td>
               </tr>
               <tr>
@@ -276,33 +276,33 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMTYsInN1YiI6ImZkNGM4Mzc2LTkyNzYtNDk3OS05Y2MxLWQ1ODMzMjc5YjZhMyJ9.3JIbHSJNbCchOYMiHqgOlgC8BvjLXPlHGdPMuuWprGc
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA2MTEsInN1YiI6IjYzOTBlMjQ0LTE3ODItNGI3Yi1iMjA2LTZhOWJhYzFjZWVmNSJ9.SNsyr9u-AGamiFGWAwKJNJKmSKbjjjs1ljqpRelRaZ0
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/ideas/6d942de3-987e-406f-aa8d-7a23b3abf2b9</pre>
+          <pre class="request route highlight">PATCH api/v1/ideas/04bd2f80-013a-40a7-b588-0e5b49d3681d</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"idea":{"idea_status_id":"ff004078-3a93-48b5-a0fa-1f3c42698f42","topic_ids":["d650afac-9837-4ec7-87c5-5ff866d043b3","5d867a55-4c89-45f3-977c-0cdf3cab1e63"],"area_ids":["0c5a71af-faac-41d9-ae26-182e3574bcd6","8c725f16-eb11-4e67-877c-b0411897b9ed"],"location_point_geojson":{"type":"Point","coordinates":[51.4365635,3.825930459]},"location_description":"Watkins Road 8"}}</pre>
+            <pre class="request body">{"idea":{"idea_status_id":"c03267ec-6516-4b6f-9f84-813f552779c4","topic_ids":["443b8514-8fff-48a2-87c8-f064bcc86a51","6d9618bf-2cb9-42c0-8121-e050814eab1c"],"area_ids":["69d8b6de-80cc-47b7-81bb-da8a205e4e2c","74ad0667-7298-42cd-9c3a-abf2ffe07a39"],"location_point_geojson":{"type":"Point","coordinates":[51.4365635,3.825930459]},"location_description":"Watkins Road 8"}}</pre>
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;29b6ca7f4224c06f5c3d30f2424d0f4a&quot;
+ETag: W/&quot;1713b1c4b240c9f269992b142e6e347e&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 3c52d14e-2f48-468a-b915-8e12aca3e6b3
-X-Runtime: 0.079501
+X-Request-Id: 0e04bd54-df8e-4975-b2b1-e4ad651554ac
+X-Runtime: 0.074301
 Vary: Origin
-Content-Length: 3673</pre>
+Content-Length: 3705</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;6d942de3-987e-406f-aa8d-7a23b3abf2b9&quot;,
+    &quot;id&quot;: &quot;04bd2f80-013a-40a7-b588-0e5b49d3681d&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -313,7 +313,8 @@ Content-Length: 3673</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Eleanora Jakubowski&quot;,
+      &quot;author_name&quot;: &quot;Briana Ferry&quot;,
+      &quot;slug&quot;: &quot;plant-more-trees-5&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
@@ -326,19 +327,19 @@ Content-Length: 3673</pre>
         ]
       },
       &quot;location_description&quot;: &quot;Watkins Road 8&quot;,
-      &quot;created_at&quot;: &quot;2017-08-02T16:01:56.761Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-08-02T16:01:56.871Z&quot;,
-      &quot;published_at&quot;: &quot;2017-08-02T16:01:56.760Z&quot;
+      &quot;created_at&quot;: &quot;2017-09-21T11:43:31.845Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-09-21T11:43:32.022Z&quot;,
+      &quot;published_at&quot;: &quot;2017-09-21T11:43:31.845Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
         &quot;data&quot;: [
           {
-            &quot;id&quot;: &quot;d650afac-9837-4ec7-87c5-5ff866d043b3&quot;,
+            &quot;id&quot;: &quot;443b8514-8fff-48a2-87c8-f064bcc86a51&quot;,
             &quot;type&quot;: &quot;topics&quot;
           },
           {
-            &quot;id&quot;: &quot;5d867a55-4c89-45f3-977c-0cdf3cab1e63&quot;,
+            &quot;id&quot;: &quot;6d9618bf-2cb9-42c0-8121-e050814eab1c&quot;,
             &quot;type&quot;: &quot;topics&quot;
           }
         ]
@@ -346,11 +347,11 @@ Content-Length: 3673</pre>
       &quot;areas&quot;: {
         &quot;data&quot;: [
           {
-            &quot;id&quot;: &quot;0c5a71af-faac-41d9-ae26-182e3574bcd6&quot;,
+            &quot;id&quot;: &quot;69d8b6de-80cc-47b7-81bb-da8a205e4e2c&quot;,
             &quot;type&quot;: &quot;areas&quot;
           },
           {
-            &quot;id&quot;: &quot;8c725f16-eb11-4e67-877c-b0411897b9ed&quot;,
+            &quot;id&quot;: &quot;74ad0667-7298-42cd-9c3a-abf2ffe07a39&quot;,
             &quot;type&quot;: &quot;areas&quot;
           }
         ]
@@ -362,19 +363,19 @@ Content-Length: 3673</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;1aae98c7-9d73-46a4-a011-b88dfade6dbf&quot;,
+          &quot;id&quot;: &quot;399a2ba9-8818-43d1-aef6-a018d1738ff8&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;d6019450-abeb-433b-a57d-59c7b5833cdd&quot;,
+          &quot;id&quot;: &quot;50bb16ab-547f-46c5-92d2-d1f1a624d374&quot;,
           &quot;type&quot;: &quot;projects&quot;
         }
       },
       &quot;idea_status&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;ff004078-3a93-48b5-a0fa-1f3c42698f42&quot;,
+          &quot;id&quot;: &quot;c03267ec-6516-4b6f-9f84-813f552779c4&quot;,
           &quot;type&quot;: &quot;idea_statuses&quot;
         }
       },
@@ -385,7 +386,7 @@ Content-Length: 3673</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;d650afac-9837-4ec7-87c5-5ff866d043b3&quot;,
+      &quot;id&quot;: &quot;443b8514-8fff-48a2-87c8-f064bcc86a51&quot;,
       &quot;type&quot;: &quot;topics&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -400,7 +401,7 @@ Content-Length: 3673</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;5d867a55-4c89-45f3-977c-0cdf3cab1e63&quot;,
+      &quot;id&quot;: &quot;6d9618bf-2cb9-42c0-8121-e050814eab1c&quot;,
       &quot;type&quot;: &quot;topics&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -415,7 +416,7 @@ Content-Length: 3673</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;0c5a71af-faac-41d9-ae26-182e3574bcd6&quot;,
+      &quot;id&quot;: &quot;69d8b6de-80cc-47b7-81bb-da8a205e4e2c&quot;,
       &quot;type&quot;: &quot;areas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -429,7 +430,7 @@ Content-Length: 3673</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;8c725f16-eb11-4e67-877c-b0411897b9ed&quot;,
+      &quot;id&quot;: &quot;74ad0667-7298-42cd-9c3a-abf2ffe07a39&quot;,
       &quot;type&quot;: &quot;areas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -443,30 +444,31 @@ Content-Length: 3673</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;1aae98c7-9d73-46a4-a011-b88dfade6dbf&quot;,
+      &quot;id&quot;: &quot;399a2ba9-8818-43d1-aef6-a018d1738ff8&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Eleanora&quot;,
-        &quot;last_name&quot;: &quot;Jakubowski&quot;,
-        &quot;slug&quot;: &quot;eleanora-jakubowski&quot;,
+        &quot;first_name&quot;: &quot;Briana&quot;,
+        &quot;last_name&quot;: &quot;Ferry&quot;,
+        &quot;slug&quot;: &quot;briana-ferry&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/1aae98c7-9d73-46a4-a011-b88dfade6dbf/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/1aae98c7-9d73-46a4-a011-b88dfade6dbf/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/1aae98c7-9d73-46a4-a011-b88dfade6dbf/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/399a2ba9-8818-43d1-aef6-a018d1738ff8/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/399a2ba9-8818-43d1-aef6-a018d1738ff8/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/399a2ba9-8818-43d1-aef6-a018d1738ff8/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-08-02T16:01:56.719Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-08-02T16:01:56.719Z&quot;,
-        &quot;email&quot;: &quot;reinhold@hartmann.net&quot;,
+        &quot;created_at&quot;: &quot;2017-09-21T11:43:31.781Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-09-21T11:43:31.781Z&quot;,
+        &quot;email&quot;: &quot;evert.kuhn@hoppe.name&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
-        &quot;education&quot;: null
+        &quot;education&quot;: null,
+        &quot;unread_notifications&quot;: 0
       }
     }
   ]
