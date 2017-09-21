@@ -1,10 +1,15 @@
 fr:  
   statuses:
     proposed: soumis
+    proposed_description: This idea has been proposed to the city
     under_consideration: pris en compte
+    under_consideration_description: This idea has been taken into consideration by the city
     accepted: accepté
+    accepted_description: This idea has been accepted and will be implemented by the city
     implemented: mis en oeuvre
+    implemented_description: This idea has been implemented by the city
     rejected: rejeté
+    rejected_description: This idea has been rejected
   topics:
     infrastructure: Espace public
     infrastructure_description: Espace public
