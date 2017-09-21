@@ -82,19 +82,19 @@ export default class Footer extends React.Component<Props, State> {
       <FooterWrapper>
         <PagesNav>
           <li>
-            <Link to="/pages/terms-and-condition">
+            <Link to="/pages/terms-of-use">
               <FormattedMessage {...messages.termsLink} />
             </Link>
           </li>
           &nbsp;|&nbsp;
-          <li>
+          {/* <li>
             <Link to="/pages/privacy-policy">
               <FormattedMessage {...messages.privacyLink} />
             </Link>
           </li>
-          &nbsp;|&nbsp;
+          &nbsp;|&nbsp; */}
           <li>
-            <Link to="/pages/cookies-policy">
+            <Link to="/pages/cookie-policy">
               <FormattedMessage {...messages.cookiesLink} />
             </Link>
           </li>
