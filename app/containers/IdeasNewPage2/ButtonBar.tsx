@@ -79,7 +79,7 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
   }
 
   handleOnSubmit = () => {
-    eventEmitter.emit(namespace, 'submit');
+    eventEmitter.emit(namespace, 'submit', null);
   }
 
   render() {

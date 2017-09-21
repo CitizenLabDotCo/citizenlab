@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// libraries
 import CSSTransition from 'react-transition-group/CSSTransition';
 import Transition from 'react-transition-group/Transition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
@@ -14,7 +16,7 @@ import { ImageFile } from 'react-dropzone';
 import Upload, { ExtendedImageFile } from 'components/UI/Upload';
 import ButtonBar, { namespace as ButtonBarNamespace, State as IButtonBarState } from './ButtonBar';
 import NewIdeaForm, { namespace as NewIdeaFormNamespace, State as INewIdeaFormState } from './NewIdeaForm';
-import SignInUp from 'containers/SignInUp';
+import SignInUp from 'components/SignInUp';
 
 // services
 import { state, IStateStream } from 'services/state';
@@ -194,7 +196,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   async componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());    
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
     const currentNewIdeaFormState = await this.newIdeaFormState$.getCurrent();
     _(currentNewIdeaFormState.images).forEach(image => image.preview && window.URL.revokeObjectURL(image.preview));
   }
@@ -313,11 +315,10 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
       </CSSTransition>
     ) : null;
 
-    const signInUp = (!showIdeaForm && locale) ?  (
+    const signInUp = (!showIdeaForm && locale) ? (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer>
           <SignInUp
-            locale={locale}
             onGoBack={this.handleOnSignInUpGoBack}
             onSignInUpCompleted={this.handleOnSignInUpCompleted}
             signInTitleMessage={messages.signInTitle}

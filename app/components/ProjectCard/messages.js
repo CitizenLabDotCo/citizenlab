@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.components.ProjectCard.xIdeas',
     defaultMessage: '{x, plural, =0 {no ideas} one {# ideas} other {# ideas}}',
   },
+  readMore: {
+    id: 'app.components.ProjectCard.readMore',
+    defaultMessage: 'Read more',
+  },
 });
