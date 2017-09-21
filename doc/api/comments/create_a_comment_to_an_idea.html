@@ -188,12 +188,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMDIsInN1YiI6ImFmY2Y1ODVkLWQ3ZGMtNDdjYi1iMjc1LWQxZTMyNDlhMDY3ZCJ9.OorESdAzaJt_jl9jB2duYTs0wP4pEcsi3E0JPy-wTN4
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA1NzMsInN1YiI6ImIzZTE1OTA3LTMzNzEtNDhlNC04YWNlLWNmNDRhNzZhNjlkNyJ9.o0w0x0bNdOpWvSt5A7ApbLSnAv9Xf2iyYKr2VGJva48
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/ideas/906fa618-904f-4942-8a4d-52457339ac89/comments</pre>
+          <pre class="request route highlight">POST api/v1/ideas/ef830f38-b5e7-4eef-8123-9ac78dcb4ad2/comments</pre>
 
 
             <h4>Body</h4>
@@ -203,18 +203,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;370f78455c99d7929f3cbd0baab7affa&quot;
+ETag: W/&quot;45019486b88b9475be4684ec387de782&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: eebf4f39-096d-4ea8-9fe3-8b6dbb1ea203
-X-Runtime: 0.047962
+X-Request-Id: 1cf32b41-dfaf-4391-9e11-54308caac6f9
+X-Runtime: 0.091552
 Vary: Origin
-Content-Length: 1316</pre>
+Content-Length: 1347</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;c7d1d5b2-0619-44ba-9023-f4d8948a7a8a&quot;,
+    &quot;id&quot;: &quot;c1fe8156-3399-4f03-bd1b-0b6d002646a5&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
@@ -223,19 +223,19 @@ Content-Length: 1316</pre>
       },
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
-      &quot;created_at&quot;: &quot;2017-08-02T16:01:42.703Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-08-02T16:01:42.703Z&quot;
+      &quot;created_at&quot;: &quot;2017-09-21T11:42:53.624Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-09-21T11:42:53.624Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;906fa618-904f-4942-8a4d-52457339ac89&quot;,
+          &quot;id&quot;: &quot;ef830f38-b5e7-4eef-8123-9ac78dcb4ad2&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;afcf585d-d7dc-47cb-b275-d1e3249a067d&quot;,
+          &quot;id&quot;: &quot;b3e15907-3371-48e4-8ace-cf44a76a69d7&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
@@ -249,30 +249,31 @@ Content-Length: 1316</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;afcf585d-d7dc-47cb-b275-d1e3249a067d&quot;,
+      &quot;id&quot;: &quot;b3e15907-3371-48e4-8ace-cf44a76a69d7&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Chaya&quot;,
-        &quot;last_name&quot;: &quot;Prosacco&quot;,
-        &quot;slug&quot;: &quot;chaya-prosacco&quot;,
+        &quot;first_name&quot;: &quot;Kaitlin&quot;,
+        &quot;last_name&quot;: &quot;Windler&quot;,
+        &quot;slug&quot;: &quot;kaitlin-windler&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/afcf585d-d7dc-47cb-b275-d1e3249a067d/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/afcf585d-d7dc-47cb-b275-d1e3249a067d/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/afcf585d-d7dc-47cb-b275-d1e3249a067d/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/b3e15907-3371-48e4-8ace-cf44a76a69d7/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/b3e15907-3371-48e4-8ace-cf44a76a69d7/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/b3e15907-3371-48e4-8ace-cf44a76a69d7/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-08-02T16:01:42.597Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-08-02T16:01:42.597Z&quot;,
-        &quot;email&quot;: &quot;lorna@deckowhuel.com&quot;,
+        &quot;created_at&quot;: &quot;2017-09-21T11:42:53.179Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-09-21T11:42:53.179Z&quot;,
+        &quot;email&quot;: &quot;aurelie.rath@kookeefe.io&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
-        &quot;education&quot;: null
+        &quot;education&quot;: null,
+        &quot;unread_notifications&quot;: 0
       }
     }
   ]
