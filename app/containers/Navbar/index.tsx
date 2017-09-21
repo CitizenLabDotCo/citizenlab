@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// libraries
 import { browserHistory, Link } from 'react-router';
 
 // components
@@ -8,9 +10,9 @@ import NotificationMenu from './components/NotificationMenu';
 import UserMenu from './components/UserMenu';
 import MobileNavigation from './components/MobileNavigation';
 import Icon from 'components/UI/Icon';
+import Button from 'components/UI/Button';
 
 // services
-import { state, IStateStream } from 'services/state';
 import { authUserStream, signOut } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { IUser } from 'services/users';
@@ -21,24 +23,30 @@ import tracks from './tracks';
 
 // i18n
 import { media } from 'utils/styleUtils';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // style
-import { lighten } from 'polished';
-import messages from './messages';
+import { darken } from 'polished';
 import styled, { ThemeProvider, css } from 'styled-components';
 
-const Container = styled.div`
+const Container: any = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   height: ${(props) => props.theme.menuHeight}px;
   position: relative;
-  background: ${(props) => props.theme.colorNavBg};
-  border-bottom: 1px solid ${(props) => props.theme.colorNavBottomBorder};
+  background: #fff;
+  border-bottom: 1px solid #fff;
   z-index: 999;
   position: fixed;
   top: 0;
+  transition: border-color 150ms ease-out;
+
+  ${(props: any) => props.scrolled && css`
+    border-color: ${props => props.theme.colorNavBottomBorder};
+    /* box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.15); */
+  `}
 `;
 
 const Left = styled.div`
@@ -46,47 +54,57 @@ const Left = styled.div`
   z-index: 2;
 `;
 
-const subtleSeparator = css`
-  border-right: 1px solid ${(props) => props.theme.colorNavSubtle};
+const LogoLink = styled(Link) `
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const Logo = styled.div`
   cursor: pointer;
-  height: 100%;
-  padding: 0 25px;
-  ${subtleSeparator}
+  height: 42px;
+  padding: 0px;
+  padding-right: 15px;
+  padding-left: 25px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
+
+  img {
+    height: 100%;
+  }
 `;
 
 const NavigationItems = styled.div`
   height: 100%;
   display: flex;
-  margin-left: 90px;
+  margin-left: 35px;
+
   ${media.phone`
     display: none;
   `}
 `;
 
-const NavigationItem = styled(Link)`
+const NavigationItem = styled(Link) `
   height: 100%;
-
-  opacity: 0.5;
+  opacity: 0.4;
   transition: opacity 150ms ease;
-  &.active, &:hover {
-    opacity: 1;
-  }
-
-  color: ${(props) => props.theme.colorNavFg} !important;
-  font-size: 18px;
+  color: ${props => props.theme.colorNavFg} !important;
+  font-size: 16px;
   font-weight: 400;
-
   display: flex;
   align-items: center;
   justify-content: center;
+
   &:not(:last-child) {
-    padding-right: 50px;
+    padding-right: 40px;
+  }
+
+  &.active,
+  &:hover {
+    opacity: 1;
   }
 `;
 
@@ -101,56 +119,26 @@ const RightItem: any = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0 34px;
+  padding-left: 18px;
+  padding-right: 18px;
+  outline: none;
 
-  &:not(:last-child) {
-    ${subtleSeparator}
+  * {
+    outline: none !important;
   }
 
   ${(props: any) => props.hideOnPhone && media.phone`display: none;`}
 `;
 
-const Button = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 25px;
-  border-radius: 5px;
-  background: ${(props) => props.theme.colorMain};
-  cursor: pointer;
-  transition: all 150ms ease;
-
-  &:hover {
-    background: ${(props) => lighten(0.1, props.theme.colorMain)};
-  }
-
-  ${media.phone`
-    padding: 10px;
-  `}
-`;
-
-const ButtonIcon = styled(Icon)`
-  fill: #fff;
-  margin-right: 20px;
-  ${media.phone`
-    margin-right: 8px;
-  `}
-`;
-
-const ButtonText = styled.span`
-  color: #fff;
-  font-weight: 500;
-  font-size: 18px;
-  white-space: nowrap;
-`;
-
 const LoginLink = styled.div`
-  font-size: 18px;
   color: ${(props) => props.theme.colorMain};
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 400;
+  padding-left: 15px;
+  padding-right: 15px;
 
   &:hover {
-    color: ${(props) => lighten(0.1, props.theme.colorMain)};
+    color: ${(props) => darken(0.2, props.theme.colorMain)};
   }
 `;
 
@@ -165,18 +153,22 @@ type State = {
   authUser: IUser | null;
   currentTenant: ITenant | null;
   notificationPanelOpened: boolean;
+  scrolled: boolean;
 };
 
-const namespace = 'NavBar/index';
-
-class Navbar extends React.PureComponent<Props & ITracks, State> {
-  state$: IStateStream<State>;
+class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps, State> {
+  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    const initialState: State = { authUser: null, currentTenant: null, notificationPanelOpened: false };
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    this.state = {
+      authUser: null,
+      currentTenant: null,
+      notificationPanelOpened: false,
+      scrolled: false
+    };
+    this.subscriptions = [];
   }
 
   componentWillMount() {
@@ -184,19 +176,32 @@ class Navbar extends React.PureComponent<Props & ITracks, State> {
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-
       Rx.Observable.combineLatest(
-        authUser$, 
+        authUser$,
         currentTenant$
       ).subscribe(([authUser, currentTenant]) => {
-        this.state$.next({ authUser, currentTenant });
+        this.setState({ authUser, currentTenant });
       })
     ];
   }
 
+  componentDidMount() {
+    window.addEventListener('scroll', this.onPageScroll);
+  }
+
   componentWillUnmount() {
+    window.removeEventListener('scroll', this.onPageScroll);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  onPageScroll = (event: UIEvent) => {
+    if (!this.state.scrolled && document.documentElement.scrollTop > 0) {
+      this.setState({ scrolled: true });
+    }
+
+    if (this.state.scrolled && document.documentElement.scrollTop === 0) {
+      this.setState({ scrolled: false });
+    }
   }
 
   goToAddIdeaPage = () => {
@@ -210,7 +215,7 @@ class Navbar extends React.PureComponent<Props & ITracks, State> {
       this.props.trackClickOpenNotifications();
     }
 
-    this.state$.next({
+    this.setState({
       notificationPanelOpened: !this.state.notificationPanelOpened,
     });
   }
@@ -222,34 +227,35 @@ class Navbar extends React.PureComponent<Props & ITracks, State> {
       this.props.trackClickCloseNotifications();
     }
 
-    this.state$.next({ notificationPanelOpened: false });
+    this.setState({ notificationPanelOpened: false });
   }
 
   navbarTheme = (style) => {
     return {
       ...style,
-      colorNavBg: style.menuStyle === 'light' ? '#FFFFFF' : '#222222',
-      colorNavBottomBorder: style.menuStyle === 'light' ? '#EAEAEA' : '#000000',
-      colorNavSubtle: style.menuStyle === 'light' ? '#EAEAEA' : '#444444',
-      colorNavFg: style.menuStyle === 'light' ? '#000000' : '#FFFFFF',
+      colorNavBg: style.menuStyle === 'light' ? '#fff' : '#222',
+      colorNavBottomBorder: style.menuStyle === 'light' ? '#ddd' : '#000',
+      colorNavSubtle: style.menuStyle === 'light' ? '#eaeaea' : '#444',
+      colorNavFg: style.menuStyle === 'light' ? '#000' : '#fff',
     };
   }
 
   render() {
-    const { authUser, currentTenant } = this.state;
-    const tenantLogo = (currentTenant ? currentTenant.data.attributes.logo.small : null);
+    const { formatMessage } = this.props.intl;
+    const { authUser, currentTenant, scrolled } = this.state;
+    const tenantLogo = (currentTenant ? currentTenant.data.attributes.logo.medium : null);
 
     return (
       <ThemeProvider theme={this.navbarTheme}>
-        <Container>
+        <Container scrolled={scrolled}>
           <MobileNavigation />
           <Left>
             {tenantLogo &&
-              <Link to="/">
+              <LogoLink to="/">
                 <Logo height="100%">
                   <img src={tenantLogo} alt="logo" />
                 </Logo>
-              </Link>
+              </LogoLink>
             }
 
             <NavigationItems>
@@ -266,12 +272,15 @@ class Navbar extends React.PureComponent<Props & ITracks, State> {
           </Left>
           <Right>
             <RightItem>
-              <Button onClick={this.goToAddIdeaPage}>
-                <ButtonIcon name="add_circle" />
-                <ButtonText>
-                  <FormattedMessage {...messages.addIdea} />
-                </ButtonText>
-              </Button>
+              <Button
+                text={formatMessage(messages.startIdea)}
+                style="primary"
+                size="1"
+                padding="7px 10px"
+                icon="plus-circle"
+                onClick={this.goToAddIdeaPage}
+                circularCorners={true}
+              />
             </RightItem>
 
             {authUser &&
@@ -305,4 +314,4 @@ class Navbar extends React.PureComponent<Props & ITracks, State> {
 export default injectTracks<Props>({
   trackClickOpenNotifications: tracks.clickOpenNotifications,
   trackClickCloseNotifications: tracks.clickCloseNotifications,
-})(Navbar);
+})(injectIntl<Props>(Navbar));

@@ -11,8 +11,6 @@ import { injectTracks } from 'utils/analytics';
 import messages from '../../messages';
 import tracks from '../../tracks';
 
-
-
 type Props = {
   fbAppId: string;
   twAccessToken: string;

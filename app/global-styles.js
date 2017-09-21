@@ -160,7 +160,7 @@ injectGlobal`
   body {
     height: 100%;
     width: 100%;
-    background-color: #f2f2f2 !important;
+    background-color: #fff;
   }
 
   body:not(.fontLoaded),
