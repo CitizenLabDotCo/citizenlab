@@ -33,6 +33,8 @@ const Container = styled(ClickOutside)`
   margin-left: 0px;
   position: relative;
   cursor: pointer;
+  width: 34px;
+  height: 34px;
   outline: none;
 `;
 
