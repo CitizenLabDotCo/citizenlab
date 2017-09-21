@@ -16,6 +16,7 @@ import { injectIntl, intlShape } from 'react-intl';
 import WatchSagas from 'containers/WatchSagas';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
+import Footer from 'components/Footer';
 
 import SelectTopics from './components/selectTopics';
 import SelectAreas from './components/selectAreas';
@@ -27,6 +28,27 @@ import { loadTopicsRequest, loadAreasRequest, resetIdeas } from './actions';
 import sagasWatchers from './sagas';
 import messages from './messages';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  position: relative;
+`;
+
+const BackgroundColor = styled.div`
+  position: absolute;
+  top: 200px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  background-color: #f8f8f8;
+`;
+
+const StyledContentContainer = styled(ContentContainer)`
+  padding-bottom: 80px;
+`;
 
 const FiltersArea = styled.div`
   align-items: center;
@@ -59,13 +81,17 @@ class IdeasIndex extends React.PureComponent {
     const { filter, withFilters } = this.props;
 
     return (
-      <div>
+      <Container>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
+
         <WatchSagas sagas={sagasWatchers} />
-        <ContentContainer>
+
+        <BackgroundColor />
+
+        <StyledContentContainer>
           {withFilters && <FiltersArea>
             <SearchField />
             <SelectSort title={this.sortTitle} />
@@ -73,9 +99,11 @@ class IdeasIndex extends React.PureComponent {
             <SelectAreas title={this.areasTitle} />
           </FiltersArea>}
           <IdeaCards filter={filter} />
-        </ContentContainer>
+        </StyledContentContainer>
 
-      </div>
+        <Footer />
+
+      </Container>
     );
   }
 }

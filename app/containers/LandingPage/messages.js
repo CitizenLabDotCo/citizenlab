@@ -13,7 +13,7 @@ export default defineMessages({
   },
   subtitleCity: {
     id: 'app.containers.landing.subtitleCity',
-    defaultMessage: 'Start your idea!',
+    defaultMessage: 'Start an idea!',
   },
 
   // ideas
@@ -39,35 +39,4 @@ export default defineMessages({
     id: 'app.containers.landing.viewAllProjects',
     defaultMessage: 'View all projects',
   },
-
-  // footer
-  sloganCity: {
-    id: 'app.containers.landing.sloganCity',
-    defaultMessage: 'This website is an initiative from the city of {name}',
-  },
-  sloganOrganization: {
-    id: 'app.containers.landing.sloganOrganization',
-    defaultMessage: 'This website is an initiative from {name}',
-  },
-  poweredBy: {
-    id: 'app.containers.landing.poweredBy',
-    defaultMessage: 'Powered by',
-  },
-  termsLink: {
-    id: 'app.containers.landing.termsLink',
-    defaultMessage: 'Terms of use',
-  },
-  privacyLink: {
-    id: 'app.containers.landing.privacyLink',
-    defaultMessage: 'Privacy Policy',
-  },
-  cookiesLink: {
-    id: 'app.containers.landing.cookiesLink',
-    defaultMessage: 'Cookies Policy',
-  },
-  feedbackLink: {
-    id: 'app.containers.landing.feedbackLink',
-    defaultMessage: 'Give your opinion',
-  },
-
 });

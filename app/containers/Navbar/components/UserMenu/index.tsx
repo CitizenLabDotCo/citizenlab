@@ -36,8 +36,9 @@ const Container = styled(ClickOutside)`
   outline: none;
 `;
 
+/*
 const UserImage: any = styled.img`
-  height: 34px;
+  height: 24px;
   border-radius: 50%;
   opacity: 0.85;
   transition: opacity 200ms ease;
@@ -46,9 +47,10 @@ const UserImage: any = styled.img`
     opacity: 1;
   }
 `;
+*/
 
 const UserIcon = styled(Icon)`
-  height: 28px;
+  height: 24px;
   fill: #84939E;
   transition: all 150ms ease;
 

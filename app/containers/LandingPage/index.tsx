@@ -11,7 +11,7 @@ import IdeaCards from 'components/IdeaCards';
 import ProjectCards from 'components/ProjectCards';
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
-import Footer from './footer';
+import Footer from 'components/Footer';
 
 // services
 import { localeStream } from 'services/locale';
@@ -53,7 +53,7 @@ const BackgroundImage: any = styled.div`
 
 const BackgroundColor = styled.div`
   position: absolute;
-  top: 573px;
+  top: 580px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -150,11 +150,8 @@ const HeaderSubtitle = styled.h2`
   `}
 `;
 
-const Content = styled.div`
-  width: 100%;
-  max-width: ${(props) => props.theme.maxPageWidth}px;
+const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 80px;
-  z-index: 1;
 `;
 
 const Section = styled.div`
@@ -325,7 +322,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
               </HeaderSubtitle>
             </Header>
 
-            <Content>
+            <StyledContentContainer>
               <Section>
                 <SectionHeader>
                   <SectionTitle>
@@ -372,7 +369,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                   />
                 </SectionFooter>
               </Section>
-            </Content>
+            </StyledContentContainer>
 
             <Footer />
 

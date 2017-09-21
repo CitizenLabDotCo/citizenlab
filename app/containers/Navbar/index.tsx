@@ -276,6 +276,7 @@ class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps, St
                 text={formatMessage(messages.startIdea)}
                 style="primary"
                 size="1"
+                padding="7px 10px"
                 icon="plus-circle"
                 onClick={this.goToAddIdeaPage}
                 circularCorners={true}

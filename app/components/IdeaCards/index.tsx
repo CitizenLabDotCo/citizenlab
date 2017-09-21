@@ -7,18 +7,19 @@ import { Link } from 'react-router';
 import IdeaCard from 'components/IdeaCard';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
+import Button from 'components/UI/Button';
 
 // services
 import { ideasStream, IIdeas } from 'services/ideas';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { Flex, Box } from 'grid-styled';
 import { lighten } from 'polished';
+import { media } from 'utils/styleUtils';
 import ButtonMixin from 'components/admin/StyleMixins/buttonMixin';
 
 const Container = styled.div`
@@ -36,13 +37,7 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const StyledSpinner = styled(Spinner) `
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  border: solid 1px red;
-`;
+const StyledSpinner = styled(Spinner) ``;
 
 const IdeasList: any = styled.div`
   margin-left: -10px;
@@ -51,17 +46,30 @@ const IdeasList: any = styled.div`
   flex-wrap: wrap;
 `;
 
-const LoadMoreButton = styled.button`
-  background: rgba(34, 34, 34, 0.05);
-  color: #6b6b6b;
-  flex: 1 0 100%;
-  padding: 1.5rem 0;
-  text-align: center;
+const StyledIdeaCard = styled(IdeaCard)`
+  flex-grow: 0;
+  width: calc(100% * (1/3) - 20px);
+  margin-left: 10px;
+  margin-right: 10px;
 
-  :hover{
-    background: rgba(34, 34, 34, 0.10);
-  }
+  ${media.tablet`
+    width: calc(100% * (1/2) - 20px);
+  `};
+
+  ${media.phone`
+    width: 100%;
+  `};
 `;
+
+const LoadMore = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+`;
+
+const LoadMoreButton = styled(Button)``;
 
 const EmptyContainer = styled.div`
   align-items: center;
@@ -114,9 +122,10 @@ type State = {
   ideas: IIdeas | null;
   hasMore: boolean;
   loading: boolean;
+  loadingMore: boolean;
 };
 
-export default class IdeaCards extends React.PureComponent<Props, State> {
+class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   filterChange$: Rx.BehaviorSubject<object>;
   loadMore$: Rx.BehaviorSubject<boolean>;
@@ -131,12 +140,12 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     this.state = {
       ideas: null,
       hasMore: false,
-      loading: true
+      loading: true,
+      loadingMore: false
     };
   }
 
   componentWillMount() {
-    const initialState: State = { ideas: null, hasMore: false, loading: true };
     const filter = (_.isObject(this.props.filter) && !_.isEmpty(this.props.filter) ? this.props.filter : {});
 
     this.filterChange$ = new Rx.BehaviorSubject(filter);
@@ -151,7 +160,10 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
         const filterChange = !_.isEqual(acc.filter, filter) || !loadMore;
         const pageNumber = (filterChange ? 1 : acc.pageNumber + 1);
 
-        this.setState(state => ({ loading: (filterChange ? true : state.loading) }));
+        this.setState(state => ({
+          loading: (filterChange ? true : false),
+          loadingMore: (!filterChange ? true : false),
+        }));
 
         return ideasStream({
           queryParameters: {
@@ -171,7 +183,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
           pageNumber: 1,
           hasMore: false
         }).subscribe(({ ideas, hasMore }) => {
-          this.setState({ ideas, hasMore, loading: false });
+          this.setState({ ideas, hasMore, loading: false, loadingMore: false });
         })
     ];
   }
@@ -194,9 +206,12 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { ideas, hasMore, loading } = this.state;
+    const { ideas, hasMore, loading, loadingMore } = this.state;
     const { loadMoreEnabled } = this.props;
+    const { formatMessage } = this.props.intl;
     const showLoadmore = (loadMoreEnabled && hasMore);
+
+    console.log(loading);
 
     const loadingIndicator = (loading ? (
       <Loading>
@@ -205,9 +220,16 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     ) : null);
 
     const loadMore = ((!loading && showLoadmore) ? (
-      <LoadMoreButton onClick={this.loadMoreIdeas}>
-        <FormattedMessage {...messages.loadMore} />
-      </LoadMoreButton>
+      <LoadMore>
+        <LoadMoreButton
+          text={formatMessage(messages.loadMore)}
+          loading={loadingMore}
+          style="secondary"
+          size="2"
+          onClick={this.loadMoreIdeas}
+          circularCorners={false}
+        />
+      </LoadMore>
     ) : null);
 
     const empty = ((!loading && (!ideas || ideas && ideas.data.length === 0)) ? (
@@ -224,11 +246,8 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     const ideasList = ((!loading && ideas) ? (
       <IdeasList>
         {ideas.data.map((idea) => (
-          <Box key={idea.id} w={[1, 1 / 2, 1 / 3]} px={10}>
-            <IdeaCard key={idea.id} ideaId={idea.id} />
-          </Box>
+          <StyledIdeaCard key={idea.id} ideaId={idea.id} />
         ))}
-        {loadMore}
       </IdeasList>
     ) : null);
 
@@ -237,7 +256,10 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
         {loadingIndicator}
         {empty}
         {ideasList}
+        {loadMore}
       </Container>
     );
   }
 }
+
+export default injectIntl<Props>(IdeaCards);
