@@ -25,7 +25,7 @@ def create_comment_tree(idea, parent, depth=0)
   end
 end
 
-if Apartment::Tenant.current == 'public'
+if Apartment::Tenant.current == 'public' || 'example_org'
   Tenant.create({
     name: 'local',
     host: 'localhost',
