@@ -32,6 +32,14 @@ const CommentForm = styled.form`
   .rdw-editor-toolbar {
     display: none;
   }
+
+  .draft-editor {
+    background: #f8f8f8;
+
+    &.focus {
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.15);
+    }
+  }
 `;
 
 const UserArea = styled.div`
@@ -50,10 +58,6 @@ const UserArea = styled.div`
     color: #1391A1;
     font-weight: bold;
   }
-`;
-
-const CommentEditor = styled(Editor)`
-  background: #f8f8f8 !important;
 `;
 
 const SubmitButton = styled(Button)`
@@ -190,7 +194,7 @@ class EditorForm extends React.PureComponent<Props, State> {
               </p>
             </UserArea>
           }
-          <CommentEditor
+          <Editor
             id="editor"
             value={this.state.editorState}
             placeholder={formatMessage(messages.commentBodyPlaceholder)}
