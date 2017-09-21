@@ -90,6 +90,13 @@ class EditorForm extends React.PureComponent<Props, State> {
     };
   }
 
+  componentWillReceiveProps (newProps: Props) {
+    // Clean form state upon success
+    if (newProps.formStatus === 'success' && this.props.formStatus !== 'success') {
+      this.setState({ editorState: null });
+    }
+  }
+
   trackEditorChange = _.debounce(() => {
     this.props.typeComment({
       extra: {
