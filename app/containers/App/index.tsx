@@ -116,7 +116,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const theme = {
       colorMain: (currentTenant ? currentTenant.data.attributes.settings.core.color_main : '#ef0071'),
       menuStyle: 'light',
-      menuHeight: 70,
+      menuHeight: 74,
       mobileMenuHeight: 80,
       maxPageWidth: 952,
     };

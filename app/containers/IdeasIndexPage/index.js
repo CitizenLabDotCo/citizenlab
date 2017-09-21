@@ -38,7 +38,7 @@ const FiltersArea = styled.div`
   width: 100%;
 `;
 
-class IdeasIndex extends React.Component {
+class IdeasIndex extends React.PureComponent {
 
   componentWillMount() {
     this.areasTitle = this.props.intl.formatMessage(messages.areasTitle);

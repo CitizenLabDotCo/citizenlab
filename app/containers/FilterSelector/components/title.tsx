@@ -1,21 +1,23 @@
-// Libraries
 import * as React from 'react';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
 
-// Components
+// components
 import Icon from 'components/UI/Icon';
 
-type TitleProps = {
+// style
+import styled from 'styled-components';
+
+type Props = {
   title: string,
   deployed: boolean,
   onClick: Function,
   baseID: string,
 };
 
-class Title extends React.Component<TitleProps> {
+type State = {};
 
-  handleClick = (event): void => {
+class Title extends React.Component<Props, State> {
+
+  handleClick = (event) => {
     this.props.onClick(event);
   }
 
@@ -36,8 +38,7 @@ class Title extends React.Component<TitleProps> {
   }
 }
 
-// Style
-const StyledTitle = styled(Title)`
+const StyledTitle = styled(Title) `
   color: #6b6b6b;
   cursor: pointer;
   font-size: 1.25rem;

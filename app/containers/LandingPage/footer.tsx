@@ -1,29 +1,68 @@
 import * as React from 'react';
+import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
+
+// libraries
 import { Link } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages.js';
+
+// services
+import { currentTenantStream, ITenant } from 'services/tenant';
 
 // style
 import styled from 'styled-components';
 
-const FooterWrapper = styled.div`
-  height: 70px;
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+`;
+
+const FirstLine = styled.div`
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 100px 20px;
+  background: #fff;
+  /* border-top: 1px solid #eaeaea; */
+`;
+
+const TenantLogo = styled.img`
+  height: 50px;
+  margin-bottom: 20px;
+`;
+
+const TenantSlogan = styled.div`
+  width: 100%;
+  max-width: 340px;
+  color: #444;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: center;
+`;
+
+const SecondLine = styled.div`
+  width: 100%;
+  /* height: 62px; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background: #fff;
   border-top: 1px solid #eaeaea;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 3.5rem;
-  width: 100vw;
+  padding: 16px 28px;
 `;
 
 const PagesNav = styled.nav`
+  color: #999;
   flex: 1;
   list-style: none;
   margin: 0;
@@ -33,77 +72,136 @@ const PagesNav = styled.nav`
   li {
     display: inline-block;
   }
-
-  a {
-    color: inherit;
-  }
 `;
 
-const CLWrapper = styled.div`
-  color: #a6a6a6;
-  flex: 1;
-  text-align: center;
-
-  span {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-  }
-
-  svg {
-    margin-left: 1rem;
-  }
-`;
-
-const FeedbackWrapper = styled.div`
-  flex: 1;
-  text-align: right;
-`;
-
-const StyledLink = styled(Link)`
-  color: #999 !important;
+const StyledLink = styled(Link) `
+  color: #999;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 19px;
   text-decoration: none;
-  padding: 0px 10px;
 
   &:hover {
-    color: #000 !important;
-    text-decoration: underline;
+    color: #000;
   }
 `;
 
-export default class Footer extends React.PureComponent<{}, {}> {
-  render () {
-    const logo = <Icon name="logo" />;
+const Separator = styled.span`
+  color: #999;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 19px;
+  padding-left: 20px;
+  padding-right: 20px;
+`;
 
-    return (
-      <FooterWrapper>
-        <PagesNav>
-          <li>
-            <StyledLink to="/pages/terms-and-condition">
-              <FormattedMessage {...messages.termsLink} />
-            </StyledLink>
-          </li>
-          <li>
-            <StyledLink to="/pages/privacy-policy">
-              <FormattedMessage {...messages.privacyLink} />
-            </StyledLink>
-          </li>
-          <li>
-            <StyledLink to="/pages/cookies-policy">
-              <FormattedMessage {...messages.cookiesLink} />
-            </StyledLink>
-          </li>
-        </PagesNav>
+const CitizenLabLogo = styled(Icon) `
+  height: 22px;
+  fill: #999;
+  margin-left: 8px;
+  transition: all 150ms ease-out;
+`;
 
-        <CLWrapper>
-          <FormattedMessage {...messages.poweredBy} values={{ logo }} />
-        </CLWrapper>
+const PoweredBy = styled.a`
+  color: #999;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 19px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
 
-        <FeedbackWrapper>
-          <FormattedMessage {...messages.feedbackLink} />
-        </FeedbackWrapper>
+  &:hover {
+    color: #999;
 
-      </FooterWrapper>
-    );
+    ${CitizenLabLogo} {
+      fill: #555;
+    }
+  }
+`;
+
+type Props = {};
+
+type State = {
+  currentTenant: ITenant | null;
+};
+
+class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
+  state: State;
+  subscriptions: Rx.Subscription[];
+
+  constructor() {
+    super();
+    this.state = {
+      currentTenant: null
+    };
+    this.subscriptions = [];
+  }
+
+  componentWillMount() {
+    const currentTenant$ = currentTenantStream().observable;
+
+    this.subscriptions = [
+      currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  render() {
+    const { currentTenant } = this.state;
+    const { formatMessage } = this.props.intl;
+
+    if (currentTenant) {
+      const currentTenantLogo = currentTenant.data.attributes.logo.medium;
+      const sloganMessage = (currentTenant.data.type === 'city' ? messages.sloganCity : messages.sloganOrganization);
+      const slogan = formatMessage(sloganMessage, { name: currentTenant.data.attributes.name });
+      const poweredBy = formatMessage(messages.poweredBy);
+
+      return (
+        <Container>
+          <FirstLine>
+            {currentTenantLogo && <TenantLogo src={currentTenantLogo} />}
+            <TenantSlogan>{slogan}</TenantSlogan>
+          </FirstLine>
+
+          <SecondLine>
+            <PagesNav>
+              <li>
+                <StyledLink to="/pages/terms-and-condition">
+                  <FormattedMessage {...messages.termsLink} />
+                </StyledLink>
+              </li>
+              <Separator>|</Separator>
+              <li>
+                <StyledLink to="/pages/privacy-policy">
+                  <FormattedMessage {...messages.privacyLink} />
+                </StyledLink>
+              </li>
+              <Separator>|</Separator>
+              <li>
+                <StyledLink to="/pages/cookies-policy">
+                  <FormattedMessage {...messages.cookiesLink} />
+                </StyledLink>
+              </li>
+            </PagesNav>
+
+            <PoweredBy href="https://www.citizenlab.co/">
+              <span>{poweredBy}</span>
+              <CitizenLabLogo name="logo" />
+            </PoweredBy>
+          </SecondLine>
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
+
+export default injectIntl<Props>(Footer);

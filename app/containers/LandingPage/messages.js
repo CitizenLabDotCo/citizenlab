@@ -13,7 +13,7 @@ export default defineMessages({
   },
   subtitleCity: {
     id: 'app.containers.landing.subtitleCity',
-    defaultMessage: 'Post your idea!',
+    defaultMessage: 'Start your idea!',
   },
 
   // ideas
@@ -21,25 +21,37 @@ export default defineMessages({
     id: 'app.containers.landing.ideasFrom',
     defaultMessage: 'Ideas for {name}',
   },
-  viewIdeas: {
-    id: 'app.containers.landing.viewIdeas',
-    defaultMessage: 'View all Ideas',
+  explore: {
+    id: 'app.containers.landing.explore',
+    defaultMessage: 'Explore',
+  },
+  exploreAllIdeas: {
+    id: 'app.containers.landing.exploreAllIdeas',
+    defaultMessage: 'Explore all ideas',
   },
 
   // projects
   projectsFrom: {
     id: 'app.containers.landing.projectsFrom',
-    defaultMessage: 'Projects From {name}',
+    defaultMessage: 'Projects from {name}',
   },
-  viewProjects: {
-    id: 'app.containers.landing.viewProjects',
-    defaultMessage: 'View all Projects',
+  viewAllProjects: {
+    id: 'app.containers.landing.viewAllProjects',
+    defaultMessage: 'View all projects',
   },
 
   // footer
+  sloganCity: {
+    id: 'app.containers.landing.sloganCity',
+    defaultMessage: 'This website is an initiative from the city of {name}',
+  },
+  sloganOrganization: {
+    id: 'app.containers.landing.sloganOrganization',
+    defaultMessage: 'This website is an initiative from {name}',
+  },
   poweredBy: {
     id: 'app.containers.landing.poweredBy',
-    defaultMessage: 'Powered by {logo}',
+    defaultMessage: 'Powered by',
   },
   termsLink: {
     id: 'app.containers.landing.termsLink',

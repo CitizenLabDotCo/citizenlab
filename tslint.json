@@ -7,8 +7,7 @@
   "rules": {
     "align": [
       true,
-      "parameters",
-      "statements"
+      "parameters"
     ],
     "import-name": false,
     "jsx-no-multiline-js": false,

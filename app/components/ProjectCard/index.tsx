@@ -15,111 +15,92 @@ import { projectByIdStream, IProject } from 'services/projects';
 import { projectImagesStream, IProjectImages } from 'services/projectImages';
 
 // i18n
+import i18n from 'utils/i18n';
 import T from 'containers/T';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const ProjectContainer = styled.div`
+const Container = styled.div`
   width: 100%;
-  display: flex;
-  height: 300px;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  background: #fafafa;
-  border: solid 1px rgba(0, 0, 0, 0.1);
-
-  ${media.phone`
-    flex-direction: column;
-    height: auto;
-  `}
-`;
-
-const ProjectImage = styled.img`
-  height: 100%;
-  object-fit: cover;
-  border-radius: 5px 0 0 5px;
-
-  ${media.phone`
-    height: 150px;
-  `}
-`;
-
-const ProjectInfo = styled.div`
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding: 30px 40px;
-
-  ${media.phone`
-    padding: 20px;
-  `}
-`;
-
-const InfoHeader = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 20px;
+  background: #fff;
+  border: solid 1px #e5e5e5;
+  cursor: pointer;
 `;
 
-const HeaderLogo = styled.img`
-  height: 45px;
+const ProjectImage: any = styled.div`
+  flex-basis: 176px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  width: 176px;
+  height: 176px;
+  border-radius: 6px;
+  margin-right: 10px;
+  background-image: url(${(props: any) => props.imageSrc});  
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: center;
+  overflow: hidden;
 `;
 
-const HeaderCount = styled.div`
+const ProjectContent = styled.div`
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-right: 30px;
+  margin-left: 30px;
+`;
+
+const ProjectTitle = styled.h3`
+  color: #333;
+  font-size: 21px;
+  line-height: 24px;
+  font-weight: 500;
+`;
+
+const ProjectDescription = styled.div`
+  color: #84939E;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 20px;
+`;
+
+const ReadMoreWrapper = styled.div`
+  margin-top: 5px;
+`;
+
+const ReadMore = styled.div`
+  color: #84939E;
+  font-size: 15px;
+  font-weight: 400;
+  text-decoration: underline;
+  display: inline-block;
+  cursor: pointer;
+
+  &:hover {
+    color: #000;
+  }
+`;
+
+const ProjectButtonWrapper = styled.div`
+  height: 100%;
   display: flex;
   align-items: center;
+  margin-right: 20px;
 `;
 
-const IdeaIcon = styled(Icon)`
-  height: 28px;
-  fill: #333;
-  margin-right: 8px;
-  margin-bottom: 5px;
-`;
-
-const IdeaCount = styled.div`
-  color: #333;
-  font-size: 18px;
-  font-weight: 300;
-`;
-
-const InfoSeparator = styled.div`
-  height: 1px;
-  background: #ccc;
-  margin-top: 15px;
-  margin-bottom: 15px;
-`;
-
-const InfoText = styled.div`
-  flex-grow: 1;
-`;
-
-const TextTitle = styled.h3`
-  color: #333;
-  font-size: 25px;
-  line-ehight: 30px;
-  font-weight: 400;
-  margin: 15px 0;
-`;
-
-const TextBody = styled.div`
-  font-size: 16px;
-  font-weight: 300;
-  color: #6b6b6b;
-`;
-
-const InfoFooter = styled.div`
-`;
-
-const OpenProjectButton = styled(Button)`
-  width: 100%;
-`;
+const ProjectButton = styled(Button) ``;
 
 type Props = {
   id: string;
@@ -131,7 +112,7 @@ type State = {
   projectImages: IProjectImages | null;
 };
 
-export default class Project extends React.PureComponent<Props, State> {
+class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -153,7 +134,7 @@ export default class Project extends React.PureComponent<Props, State> {
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        currentTenant$, 
+        currentTenant$,
         project$,
         projectImages$
       ).subscribe(([currentTenant, project, projectImages]) => {
@@ -167,60 +148,47 @@ export default class Project extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const { currentTenant, project, projectImages } = this.state;
 
     if (currentTenant && project) {
       const tenantLogo = currentTenant.data.attributes.logo.medium;
       const slug = project.data.attributes.slug;
-      const titleMultiloc = project.data.attributes.title_multiloc;
-      const descriptionMultiloc = project.data.attributes.description_multiloc;
+      const title = i18n.getLocalized(project.data.attributes.title_multiloc);
+      const description = i18n.getLocalized(project.data.attributes.description_multiloc);
       const ideasCount = project.data.attributes.ideas_count;
       const image = (projectImages && projectImages.data.length > 0 ? projectImages.data[0] : null);
       const imageUrl = (image ? image.attributes.versions.medium : null);
 
       return (
-        <ProjectContainer>
-          {imageUrl && <ProjectImage src={imageUrl} />}
-          <ProjectInfo>
-  
-            <InfoHeader>
-              {tenantLogo && <HeaderLogo src={tenantLogo} />}
-              <HeaderCount>
-                <IdeaIcon name="idea" />
-                <IdeaCount>
-                  <FormattedMessage {...messages.xIdeas} values={{ x: ideasCount }} />
-                </IdeaCount>
-              </HeaderCount>
-            </InfoHeader>
-  
-            <InfoSeparator />
-  
-            <InfoText>
-              <TextTitle>
-                <T value={titleMultiloc} />
-              </TextTitle>
-              {descriptionMultiloc &&
-                <TextBody>
-                  <T value={descriptionMultiloc} />
-                </TextBody>
-              }
-            </InfoText>
-  
-            {/*
-            <InfoFooter>
-              <Link to={`/projects/${slug}`}>
-                <OpenProjectButton>
-                  <FormattedMessage {...messages.openProjectButton} />
-                </OpenProjectButton>
-              </Link>
-            </InfoFooter>
-            */}
-  
-          </ProjectInfo>
-        </ProjectContainer>
+        <Container>
+          {imageUrl && <ProjectImage imageSrc={imageUrl} />}
+
+          <ProjectContent>
+            <ProjectTitle>{title}</ProjectTitle>
+            <ProjectDescription>{title}</ProjectDescription>
+            <ReadMoreWrapper>
+              <ReadMore>
+                <FormattedMessage {...messages.readMore} />
+              </ReadMore>
+            </ReadMoreWrapper>
+          </ProjectContent>
+
+          <ProjectButtonWrapper>
+            <ProjectButton
+              text={formatMessage(messages.openProjectButton)}
+              style="primary"
+              size="2"
+              circularCorners={false}
+            />
+          </ProjectButtonWrapper>
+
+        </Container>
       );
     }
 
     return null;
   }
 }
+
+export default injectIntl<Props>(Project);

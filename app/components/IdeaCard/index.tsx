@@ -27,7 +27,7 @@ import { FormattedMessage, FormattedRelative } from 'react-intl';
 import messages from './messages';
 
 // styles
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 const IdeaContainer: any = styled(Link) `
   width: 100%;
@@ -49,38 +49,6 @@ const IdeaContainer: any = styled(Link) `
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.08);
   }
 `;
-
-/*
-const fadeIn = keyframes`
-  0% { display:none ; opacity: 0; }
-  1% { display: flex ; opacity: 0; }
-  100% { display: flex ; opacity: 1; }
-`;
-
-const IdeaHoverBar = styled.div`
-  background: rgba(0,0,0,0.65);
-  height: 60px;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 16px;
-  color: #fff;
-  padding: 20px;
-  border-radius: 5px 5px 0 0;
-
-  display: none;
-  opacity: 0;
-
-  ${IdeaContainer}:hover & {
-    animation: ${fadeIn} 0.15s ease-out;
-    display: flex;
-    opacity: 1;
-    display: none;
-  }
-`;
-*/
 
 const CommentCount = styled.span`
   padding-left: 6px;
@@ -259,16 +227,6 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
 
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`}>
-          {/*
-          <IdeaHoverBar>
-            <FormattedRelative value={idea.data.attributes.created_at} />
-            <div>
-              <Icon name="comment" />
-              <CommentCount>{idea.data.attributes.comments_count}</CommentCount>
-            </div>
-          </IdeaHoverBar>
-          */}
-
           {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
           {!ideaImageUrl &&
             <IdeaImagePlaceholder>
