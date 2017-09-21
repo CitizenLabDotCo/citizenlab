@@ -42,14 +42,12 @@ export default function createRoutes(store) {
       name: 'home',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/LandingPage/reducer'),
           import('containers/LandingPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, component]) => {
-          injectReducer('landingPage', reducer.default);
+        importModules.then(([component]) => {
           renderRoute(component);
         });
 
@@ -61,14 +59,12 @@ export default function createRoutes(store) {
       name: 'signInPage',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/SignInPage/reducer'),
           import('containers/SignInPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, component]) => {
-          injectReducer('signInPage', reducer.default);
+        importModules.then(([component]) => {
           renderRoute(component);
         });
 

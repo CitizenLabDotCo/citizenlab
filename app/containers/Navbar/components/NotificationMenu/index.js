@@ -46,9 +46,10 @@ const DropDown = styled.div`
   border-radius: 5px;
   background-color: #ffffff;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  outline: none;
 `;
 
-export class NotificationMenu extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class NotificationMenu extends React.PureComponent {
   constructor() {
     super();
 

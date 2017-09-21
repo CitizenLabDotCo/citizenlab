@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs/Observable';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { API_PATH } from 'containers/App/constants';

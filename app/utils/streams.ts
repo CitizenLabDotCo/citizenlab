@@ -8,7 +8,7 @@ import { store } from 'app';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 
 export type pureFn<T> = (arg: T) => T;
-type fetchFn<T> = () => void;
+type fetchFn<T> = () => Promise<{}>;
 interface IObject{ [key: string]: any; }
 export type IObserver<T> = Rx.Observer<T | pureFn<T> | null>;
 export type IObservable<T> = Rx.Observable<T>;
@@ -116,28 +116,34 @@ class Streams {
       const observer: IObserver<T | null> = (null as any);
 
       const fetch = () => {
-        const promise = request<any>(apiEndpoint, bodyData, { method: 'GET' }, queryParameters);
+        return new Promise((resolve, reject) => {
+          const promise = request<any>(apiEndpoint, bodyData, { method: 'GET' }, queryParameters);
 
-        Rx.Observable.defer(() => promise).retry(2).subscribe(
-          (response) => {
-            console.log(`fetched data for ${streamId}`);
+          Rx.Observable.defer(() => promise).retry(2).subscribe(
+            (response) => {
+              console.log(`fetched data for ${streamId}`);
 
-            if (this.streams[streamId]) {
-              this.streams[streamId].observer.next(response);
-            } else {
-              console.log(`no stream exists for ${streamId}`);
+              if (this.streams[streamId]) {
+                this.streams[streamId].observer.next(response);
+              } else {
+                console.log(`no stream exists for ${streamId}`);
+              }
+
+              resolve(response);
+            },
+            (error) => {
+              console.log(`promise for stream ${streamId} did not resolve`);
+
+              if (this.streams[streamId]) {
+                this.streams[streamId].observer.next(null);
+              } else {
+                console.log(`no stream exists for ${streamId}`);
+              }
+
+              reject(error);
             }
-          },
-          (error) => {
-            console.log(`promise for stream ${streamId} did not resolve`);
-
-            if (this.streams[streamId]) {
-              this.streams[streamId].observer.next(null);
-            } else {
-              console.log(`no stream exists for ${streamId}`);
-            }
-          }
-        );
+          );
+        });
       };
 
       const observable = (Rx.Observable.create((observer: IObserver<T | null>) => {

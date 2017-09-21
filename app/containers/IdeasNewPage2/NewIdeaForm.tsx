@@ -1,29 +1,43 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// libraries
 import scrollToComponent from 'react-scroll-to-component';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
+import { EditorState, convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { ImageFile } from 'react-dropzone';
-import { media } from 'utils/styleUtils';
+import { IOption } from 'typings';
+
+// components
 import Select from 'components/UI/Select';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
 import Editor from 'components/UI/Editor';
-import { EditorState, convertToRaw } from 'draft-js';
 import Button from 'components/UI/Button';
 import Upload, { ExtendedImageFile } from 'components/UI/Upload';
 import Error from 'components/UI/Error';
-import { IOption } from 'typings';
-import { IStream } from 'utils/streams';
-import eventEmitter from 'utils/eventEmitter';
+import { namespace as ButtonBarNamespace } from './ButtonBar';
+
+// services
 import { state, IStateStream } from 'services/state';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectsStream, IProjects, IProjectData } from 'services/projects';
-import { namespace as ButtonBarNamespace, State as IButtonBarState } from './ButtonBar';
+
+// utils
+import { IStream } from 'utils/streams';
+import eventEmitter from 'utils/eventEmitter';
+
+// i18n
+import i18n from 'utils/i18n';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+
+// style
+import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div``;
@@ -224,10 +238,10 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
     this.state$.next({ titleError, descriptionError });
 
     if (titleError) {
-      scrollToComponent(this.titleInputElement, { align:'top', offset: -240, duration: 300 });
+      scrollToComponent(this.titleInputElement, { align: 'top', offset: -240, duration: 300 });
       setTimeout(() => this.titleInputElement && this.titleInputElement.focus(), 300);
     } else if (descriptionError) {
-      scrollToComponent(this.descriptionElement.editor.refs.editor, { align:'top', offset: -200, duration: 300 });
+      scrollToComponent(this.descriptionElement.editor.refs.editor, { align: 'top', offset: -200, duration: 300 });
       setTimeout(() => this.descriptionElement && this.descriptionElement.focusEditor(), 300);
     }
 
