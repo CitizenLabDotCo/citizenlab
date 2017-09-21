@@ -27,8 +27,13 @@ import selectIdeasShow from '../../selectors';
 import { authUserStream } from 'services/auth';
 import { IUserData } from 'services/users';
 
-
 // Styling
+const CommentForm = styled.form`
+  .rdw-editor-toolbar {
+    display: none;
+  }
+`;
+
 const UserArea = styled.div`
   align-items: center;
   display: flex;
@@ -49,10 +54,6 @@ const UserArea = styled.div`
 
 const CommentEditor = styled(Editor)`
   background: #f8f8f8 !important;
-
-  .rdw-editor-toolbar {
-    display: none;
-  }
 `;
 
 const SubmitButton = styled(Button)`
@@ -180,7 +181,7 @@ class EditorForm extends React.PureComponent<Props, State> {
 
     return (
       <Authorize action={['comments', 'create']}>
-        <form onSubmit={this.handleSubmit}>
+        <CommentForm onSubmit={this.handleSubmit}>
           {user &&
             <UserArea>
               <img src={user.attributes.avatar.small} alt={`Avatar: ${user.attributes.first_name} ${user.attributes.last_name}`} className="avatar" />
@@ -212,7 +213,7 @@ class EditorForm extends React.PureComponent<Props, State> {
             </SubmitButton>
           </SubmitArea>
 
-        </form>
+        </CommentForm>
         <Else>
           <FormattedMessage
             {...messages.signInToComment}
