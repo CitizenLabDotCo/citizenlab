@@ -1,10 +1,15 @@
 nl:
   statuses:
     proposed: voorgesteld
+    proposed_description: This idea has been proposed to the city
     under_consideration: in overweging
+    under_consideration_description: This idea has been taken into consideration by the city
     accepted: aangenomen
+    accepted_description: This idea has been accepted and will be implemented by the city
     implemented: uitgevoerd
+    implemented_description: This idea has been implemented by the city
     rejected: afgewezen
+    rejected_description: This idea has been rejected
   topics:
     infrastructure: Straten en pleinen
     infrastructure_description: Straten en pleinen

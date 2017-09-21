@@ -4,12 +4,14 @@ class SideFxIdeaService
 
   def after_create idea, user
     if idea.published?
+      add_autovote(idea)
       LogActivityJob.perform_later(idea, 'published', user, idea.created_at.to_i)
     end
   end
 
   def after_update idea, user
     if idea.publication_status_previous_change == ['draft','published']
+      add_autovote(idea)
       LogActivityJob.perform_later(idea, 'published', user, idea.updated_at.to_i)
     end
 
@@ -30,6 +32,11 @@ class SideFxIdeaService
   def after_destroy frozen_idea, user
     serialized_idea = clean_time_attributes(frozen_idea.attributes)
     LogActivityJob.perform_later(encode_frozen_resource(frozen_idea), 'deleted', user, Time.now.to_i, payload: {idea: serialized_idea})
+  end
+
+
+  def add_autovote idea
+    idea.votes.create!(mode: 'up', user: idea.author)
   end
 
 end
