@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -147,6 +147,14 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  goToProject = () => {
+    const { project } = this.state;
+
+    if (project) {
+      browserHistory.push(`/projects/${project.data.attributes.slug}`);
+    }
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
     const { currentTenant, project, projectImages } = this.state;
@@ -168,7 +176,7 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
             <ProjectTitle>{title}</ProjectTitle>
             <ProjectDescription>{title}</ProjectDescription>
             <ReadMoreWrapper>
-              <ReadMore>
+              <ReadMore onClick={this.goToProject}>
                 <FormattedMessage {...messages.readMore} />
               </ReadMore>
             </ReadMoreWrapper>
@@ -176,6 +184,7 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
 
           <ProjectButtonWrapper>
             <ProjectButton
+              onClick={this.goToProject}
               text={formatMessage(messages.openProjectButton)}
               style="primary"
               size="2"
