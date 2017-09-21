@@ -124,7 +124,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
           pageCount = (newPageCount || this.state.pageCount);
         }
 
-        this.state$.next({ users, sortBy, pageNumber, searchValue, pageCount });
+        this.setState({ users, sortBy, pageNumber, searchValue, pageCount });
       })
     ];
   }

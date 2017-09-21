@@ -1,19 +1,22 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// libraries
 import { browserHistory } from 'react-router';
 
 // components
 import Authorize from 'utils/containers/authorize';
 import ClickOutside from 'utils/containers/clickOutside';
+import Icon from 'components/UI/Icon';
 
 // services
-import { state, IStateStream } from 'services/state';
 import { authUserStream, signOut } from 'services/auth';
 import { IUser } from 'services/users';
 
 // style
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
@@ -24,7 +27,7 @@ const adminIcon = require('./adminIcon.svg');
 const editProfileIcon = require('./editProfileIcon.svg');
 const signOutIcon = require('./signOutIcon.svg');
 
-const MenuContainer = styled(ClickOutside)`
+const Container = styled(ClickOutside)`
   display: flex;
   border-radius: 50%;
   margin-left: 0px;
@@ -32,16 +35,29 @@ const MenuContainer = styled(ClickOutside)`
   cursor: pointer;
   width: 34px;
   height: 34px;
+  outline: none;
 `;
 
+/*
 const UserImage: any = styled.img`
-  height: 34px;
+  height: 24px;
   border-radius: 50%;
   opacity: 0.85;
   transition: opacity 200ms ease;
 
   &:hover {
     opacity: 1;
+  }
+`;
+*/
+
+const UserIcon = styled(Icon)`
+  height: 24px;
+  fill: #84939E;
+  transition: all 150ms ease;
+
+  &:hover {
+    fill: ${(props) => darken(0.15, '#84939E')};
   }
 `;
 
@@ -89,22 +105,24 @@ type State = {
   dropdownOpened: boolean;
 };
 
-export const namespace = 'Navbar/components/UserMenu/index';
-
 export default class UserMenu extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
+  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    const initialState: State = { authUser: null, dropdownOpened: false };
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    this.state = {
+      authUser: null,
+      dropdownOpened: false
+    };
+    this.subscriptions = [];
   }
 
   componentWillMount() {
+    const authUser$ = authUserStream().observable;
+
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-      authUserStream().observable.subscribe(authUser => this.state$.next({ authUser }))
+      authUser$.subscribe(authUser => this.setState({ authUser }))
     ];
   }
 
@@ -113,11 +131,11 @@ export default class UserMenu extends React.PureComponent<Props, State> {
   }
 
   toggleDropdown = () => {
-    this.state$.next(state => ({ dropdownOpened: !state.dropdownOpened }));
+    this.setState(state => ({ dropdownOpened: !state.dropdownOpened }));
   }
 
   closeDropdown = () => {
-    this.state$.next({ dropdownOpened: false });
+    this.setState({ dropdownOpened: false });
   }
 
   navigateTo = (path) => () => {
@@ -132,8 +150,9 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     const { authUser, dropdownOpened } = this.state;
 
     return (authUser ? (
-      <MenuContainer onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
-        <UserImage avatar={true} src={authUser.data.attributes.avatar.small} />
+      <Container onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
+        {/* <UserImage avatar={true} src={authUser.data.attributes.avatar.small} /> */}
+        <UserIcon name="user" />
         {dropdownOpened &&
           <Dropdown>
             <Authorize action={['users', 'admin']} >
@@ -152,7 +171,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
             </DropdownItem>
           </Dropdown>
         }
-      </MenuContainer>
+      </Container>
     ) : null);
   }
 }

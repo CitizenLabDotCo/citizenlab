@@ -62,7 +62,7 @@ export function trackPage(path: string, properties: {} = {}) {
   )(SomeComponent);
 */
 export const injectTracks = <P>(events: {[key: string]: IEvent}) => (component: React.ComponentClass<P>) => {
-  return (props) => {
+  return (props: P) => {
     const eventFunctions = _.mapValues(events, (event) => (
       (extra) => {
         const extraProps = extra && extra.extra;
@@ -71,10 +71,12 @@ export const injectTracks = <P>(events: {[key: string]: IEvent}) => (component: 
     ));
     const propsWithEvents = {
       ...eventFunctions,
-      ...props,
+      ...props as any,
     };
 
-    return (React.createElement(component, propsWithEvents));
+    const wrappedComponent = React.createElement(component, propsWithEvents);
+
+    return wrappedComponent;
   };
 };
 

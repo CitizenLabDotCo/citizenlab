@@ -1,15 +1,15 @@
-// Libraries
 import * as React from 'react';
 import * as _ from 'lodash';
-import styled, { StyledFunction } from 'styled-components';
 
-// Components
+// components
 import Title from './components/title';
 import ValuesList from './components/valuesList';
 import clickOutside from 'utils/containers/clickOutside';
 
-// Style
-const Container = styled(clickOutside)`
+// style
+import styled from 'styled-components';
+
+const Container = styled(clickOutside) `
   display: inline-block;
   position: relative;
   outline: none;
@@ -22,7 +22,7 @@ const Container = styled(clickOutside)`
 interface Props {
   title: string;
   name: string;
-  values: { text: string, value: any}[];
+  values: { text: string, value: any }[];
   onChange?: Function;
   multiple: boolean;
   selected: any[];
@@ -33,16 +33,17 @@ interface State {
   currentTitle: string;
 }
 
-class FilterSelector extends React.Component<Props, State> {
-  baseID: string = `filter-${Math.floor(Math.random() * 10000000)}`;
+export default class FilterSelector extends React.Component<Props, State> {
+  state: State;
+  baseID: string;
 
   constructor(props) {
     super(props);
-
     this.state = {
       deployed: false,
       currentTitle: this.getTitle(props.selected, props.values, props.multiple, props.title),
     };
+    this.baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,7 +66,7 @@ class FilterSelector extends React.Component<Props, State> {
   }
 
   toggleExpanded = () => {
-    this.setState({ deployed: !this.state.deployed });
+    this.setState(state => ({ deployed: !state.deployed }));
   }
 
   selectionChange = (value) => {
@@ -102,5 +103,3 @@ class FilterSelector extends React.Component<Props, State> {
     );
   }
 }
-
-export default FilterSelector;

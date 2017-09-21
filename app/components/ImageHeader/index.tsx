@@ -25,7 +25,7 @@ const HeaderContainer = styled.div`
 
 const HeaderOverlay = styled.div`
   background-color: #000;
-  opacity: 0.35;
+  opacity: 0.4;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -34,8 +34,8 @@ const HeaderOverlay = styled.div`
 `;
 
 const HeaderBackground = styled.div`
-  opacity: 0.65;
-  filter: blur(1px);
+  opacity: 0.7;
+  /* filter: blur(1px); */
   background-image: url(${(props: any) => props.src});
   background-repeat: no-repeat;
   background-size: cover;
@@ -47,15 +47,18 @@ const HeaderBackground = styled.div`
 `;
 
 export const HeaderTitle = styled.h1`
-  font-size: 45px;
-  line-height: 50px;
-  font-weight: 600;
+  font-size: 42px;
+  line-height: 48px;
+  font-weight: 500;
   text-align: center;
   color: #FFFFFF;
   margin: 0;
+  margin-top: 35px;
   padding: 0;
   display: flex;
   z-index: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 
   ${media.tablet`
     font-size: 40px;
@@ -77,7 +80,7 @@ export const HeaderTitle = styled.h1`
 
 export const HeaderSubtitle = styled.h2`
   color: #fff;
-  font-size: 30px;
+  font-size: 28px;
   line-height: 34px;
   font-weight: 100;
   max-width: 980px;
@@ -85,8 +88,10 @@ export const HeaderSubtitle = styled.h2`
   margin: 0;
   margin-top: 10px;
   padding: 0;
-  opacity: 0.8;
   z-index: 1;
+  opacity: 0.8;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 
   ${media.tablet`
     font-size: 28px;
@@ -110,9 +115,10 @@ type Props = {
   children?: any,
 };
 
-export default class ImageHeader extends React.PureComponent<Props> {
+export default class ImageHeader extends React.PureComponent<Props, {}> {
   render() {
     const { className, image, children } = this.props;
+
     return (
       <HeaderContainer>
         <HeaderBackground src={image} />
