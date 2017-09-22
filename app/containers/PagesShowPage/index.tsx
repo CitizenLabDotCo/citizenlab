@@ -51,7 +51,7 @@ class PagesShowPage extends React.PureComponent<Props, State> {
     });
   }
 
-  componentDidUnmount() {
+  componentWillUnmount() {
     this.pageObserver && this.pageObserver.unsubscribe();
   }
 
