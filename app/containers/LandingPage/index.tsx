@@ -78,10 +78,9 @@ const HeaderLogoWrapper = styled.div`
   padding: 15px;
   margin-top: 60px;
   margin-bottom: 15px;
-  border: solid 1px #e0e0e0;
+  border: solid 2px #eaeaea;
   border-radius: 5px;
   background: #fff;
-  box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.3);
 `;
 
 const HeaderLogo: any = styled.div`
@@ -168,9 +167,7 @@ const SectionHeader = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 35px;
-  /* border: solid 1px red; */
 
-  /*
   ${media.phone`
     padding-top: 50px;
   `}
@@ -178,7 +175,6 @@ const SectionHeader = styled.div`
   ${media.smallPhone`
     flex-wrap: wrap;
   `}
-  */
 `;
 
 const SectionTitle = styled.h2`
@@ -192,12 +188,10 @@ const SectionTitle = styled.h2`
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
-  /*
   ${media.phone`
     font-size: 23px;
     line-height: 36px;
   `}
-  */
 `;
 
 const SectionContainer = styled.section`
@@ -216,7 +210,7 @@ const ExploreText = styled.div`
 `;
 
 const ExploreIcon = styled(Icon) `;
-  height: 17px;
+  height: 19px;
   fill: #84939E;
   margin-top: 1px;
   transition: all 100ms ease-out;
@@ -226,7 +220,7 @@ const Explore = styled(Link) `
   cursor: pointer;
   display: flex;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 3px;
 
   &:hover {
     ${ExploreText} {

@@ -11,6 +11,7 @@ import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import SignIn from 'components/SignIn';
 import SignUp from 'components/SignUp';
+import SignInUpBanner from 'components/SignInUpBanner';
 
 // services
 import { currentTenantStream, ITenant } from 'services/tenant';
@@ -27,61 +28,55 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
-  background: #f2f2f2;
-`;
-
-const PageContainer = styled.div`
   width: 100%;
-  max-width: 980px;
-  min-height: calc(100vh - 105px);
-  padding-bottom: 60px;
-  padding-left: 30px;
-  padding-right: 30px;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
+  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  margin: 0;
+  padding: 0;
   display: flex;
-`;
-
-const Banner = styled.div`
-	width: 460px;
-	height: 540px;
-	border-radius: 6px;
-  background-color: #fff;
-  margin-right: 120px;
-  padding: 50px;
+  flex-direction: row;
+  border-top: solid 1px #ddd;
+  background: #f8f8f8;
+  overflow: hidden;
   position: relative;
-  ${media.phone`
-    display: none;
-  `}
 `;
 
-const LogoContainer = styled.div`
-  height: 60px;
-`;
-
-const Logo = styled.img`
-  width: auto;
+const Section = styled.div`
+  flex: 1;
   height: 100%;
 `;
 
-const Slogan1 = styled.div`
-  color: ${props => props.theme.colorMain || '#333'};
-  font-size: 31px;
-  line-height: 36px;
-  font-weight: 500;
-  margin-top: 75px;
+const Left = Section.extend`
+  width: 50vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  ${media.notDesktop`
+    display: none;
+  `}
+  `;
+
+const Right = Section.extend`
+  width: 100%;
+  overflow-y: scroll;
+
+  ${media.desktop`
+    padding-left: 50vw;
+  `}
 `;
 
-const Slogan2 = styled.div`
-  color: #f2f2f2;
-  font-size: 130px;
-  line-height: 105px;
-  font-weight: 800;
-  position: absolute;
-  bottom: 25px;
-  left: 20px;
-  right: 20px;
+const RightInner = styled.div`
+  width: 100%;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 40px;
+  padding-bottom: 100px;
+  padding-left: 30px;
+  padding-right: 30px;
 `;
 
 const Forms = styled.div`
@@ -93,7 +88,6 @@ const StyledTransitionGroup = styled(TransitionGroup) `
 `;
 
 const FormContainer = styled.div`
-  background: #f2f2f2;
   position: relative;
   -webkit-backface-visibility: hidden;
   will-change: opacity;
@@ -106,7 +100,7 @@ const FormContainer = styled.div`
 
     &.form-enter-active {
       opacity: 1;
-      transition: opacity 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: opacity 10ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 
@@ -118,7 +112,7 @@ const FormContainer = styled.div`
 
     &.form-exit-active {
       opacity: 0.01;
-      transition: opacity 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: opacity 10ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 `;
@@ -126,7 +120,8 @@ const FormContainer = styled.div`
 const GoBackContainer = styled.div`
   display: inline-flex;
   align-items: center;
-  margin-left: -3px;margin-bottom: 30px;
+  margin-left: -3px;
+  margin-bottom: 30px;
   cursor: pointer;
 
   &:hover {
@@ -167,62 +162,9 @@ const Title = styled.h2`
   margin-bottom: 35px;
 `;
 
-const Separator = styled.div`
-  width: 100%;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  position: relative;
-  margin-top: 15px;
-  margin-bottom: 5px;
-`;
-
-const SeparatorLine = styled.div`
-  width: 100%;
-  height: 1px;
-  background: transparent;
-  border-bottom: solid 1px #ccc;
-`;
-
-const SeparatorTextContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-`;
-
-const SeparatorText = styled.div`
-  width: 50px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f2f2f2;
-
-  span {
-    color: #aaa;
-    font-size: 15px;
-  }
-`;
-
-const FooterButton = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding-top: 15px;
-  padding-bottom: 15px;
-`;
-
 type Props = {
   onGoBack?: () => void;
   onSignInUpCompleted: () => void;
-  show?: 'signIn' | 'signUp' | 'passwordReset';
-  signInTitleMessage?: { id: string, defaultMessage: string };
-  signUpTitleMessage?: { id: string, defaultMessage: string };
 };
 
 type State = {
@@ -288,35 +230,19 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { show, currentTenant } = this.state;
     const logo = (currentTenant ? currentTenant.data.attributes.logo.large : null);
     const { formatMessage } = this.props.intl;
-    const { onGoBack, signInTitleMessage, signUpTitleMessage } = this.props;
-    const timeout = 500;
+    const { onGoBack } = this.props;
+    const timeout = 10;
 
     const signIn = (show === 'signIn' && (
       <CSSTransition classNames="page" timeout={timeout}>
         <FormContainer>
           <Form>
-            <Title>{formatMessage(signInTitleMessage || messages.signInTitle)}</Title>
-
-            <SignIn onSignedIn={this.handleOnSignedIn} onForgotPassword={this.goToPasswordResetForm} />
-
-            <Separator>
-              <SeparatorLine />
-              <SeparatorTextContainer>
-                <SeparatorText>
-                  <span><FormattedMessage {...messages.or} /></span>
-                </SeparatorText>
-              </SeparatorTextContainer>
-            </Separator>
-
-            <FooterButton>
-              <Button
-                size="2"
-                style="secondary"
-                text={formatMessage(messages.createAnAccount)}
-                fullWidth={true}
-                onClick={this.goToSignUpForm}
-              />
-            </FooterButton>
+            <Title>{formatMessage(messages.signInTitle)}</Title>
+            <SignIn
+              onSignedIn={this.handleOnSignedIn}
+              onForgotPassword={this.goToPasswordResetForm}
+              goToSignUpForm={this.goToSignUpForm}
+            />
           </Form>
         </FormContainer>
       </CSSTransition>
@@ -326,8 +252,11 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
       <CSSTransition classNames="form" timeout={timeout}>
         <FormContainer>
           <Form>
-            <Title>{formatMessage(signUpTitleMessage || messages.signUpTitle)}</Title>
-            <SignUp onSignedUp={this.handleOnSignedUp} />
+            <Title>{formatMessage(messages.signUpTitle)}</Title>
+            <SignUp
+              onSignedUp={this.handleOnSignedUp}
+              goToSignInForm={this.goToSignInForm}
+            />
           </Form>
         </FormContainer>
       </CSSTransition>
@@ -341,17 +270,27 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
       </CSSTransition>
     ));
 
+    /*
+      <Container>
+        <Left>
+          <SignInUpBanner />
+        </Left>
+        <Right>
+          <RightInner>
+            <Title><FormattedMessage {...messages.title} /></Title>
+            <SignIn onSignedIn={this.onSuccess} goToSignUpForm={this.goToSignUpForm} />
+          </RightInner>
+        </Right>
+      </Container>
+    */
+
     return (
       <Container>
-        <PageContainer>
-          <Banner>
-            <LogoContainer>
-              <Logo src={logo as string} />
-              <Slogan1><FormattedMessage {...messages.slogan1} /></Slogan1>
-              <Slogan2><FormattedMessage {...messages.slogan2} /></Slogan2>
-            </LogoContainer>
-          </Banner>
-          <Forms>
+        <Left>
+          <SignInUpBanner />
+        </Left>
+        <Right>
+          <RightInner>
             {onGoBack &&
               <GoBackContainer onClick={this.goBack}>
                 <Icon name="arrow-back" />
@@ -364,9 +303,9 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
               {signUp}
               {passwordReset}
             </StyledTransitionGroup>
-          </Forms>
-        </PageContainer>
-      </Container>
+          </RightInner>
+          </Right>
+        </Container>
     );
   }
 }

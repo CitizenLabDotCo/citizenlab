@@ -27,17 +27,17 @@ import { LOAD_CURRENT_USER_SUCCESS } from 'utils/auth/constants';
 
 // i18n
 import i18n from 'utils/i18n';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
 
 const Container = styled.div`
-  width: 100%;
+  flex: 1;
 `;
 
-const Form = styled.div`
+const Form = styled.form`
   width: 100%;
   position: relative;
   -webkit-backface-visibility: hidden;
@@ -75,11 +75,62 @@ const Form = styled.div`
 
 const FormElement = styled.div`
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+`;
+
+const Separator = styled.div`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-top: 25px;
+  margin-bottom: 15px;
+`;
+
+const SeparatorLine = styled.div`
+  width: 100%;
+  height: 1px;
+  background: transparent;
+  border-bottom: solid 1px #ccc;
+`;
+
+const SeparatorTextContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+`;
+
+const SeparatorText = styled.div`
+  width: 50px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f8f8;
+
+  span {
+    color: #666;
+    font-size: 16px;
+  }
+`;
+
+const FooterButton = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
 `;
 
 type Props = {
   onSignedUp: () => void;
+  goToSignInForm?: () => void;
 };
 
 type State = {
@@ -109,7 +160,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   constructor() {
     super();
-    const initialState: State = {
+    this.state = {
       locale: null,
       areas: null,
       years: [...Array(118).keys()].map((i) => ({ value: i + 1900, label: `${i + 1900}` })),
@@ -200,7 +251,9 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ area });
   }
 
-  handleOnContinue = () => {
+  handleOnContinue = (event: React.FormEvent<any>) => {
+    event.preventDefault();
+
     const { firstName, lastName, email, password } = this.state;
     const { formatMessage } = this.props.intl;
     const hasEmailError = (!email || !isValidEmail(email));
@@ -213,7 +266,9 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ emailError, firstNameError, lastNameError, passwordError, showStep1: hasErrors });
   }
 
-  handleOnSubmit = async () => {
+  handleOnSubmit = async (event: React.FormEvent<any>) => {
+    event.preventDefault();
+
     const { onSignedUp } = this.props;
     const { formatMessage } = this.props.intl;
     const { locale, firstName, lastName, email, password, yearOfBirth, gender, area } = this.state;
@@ -236,6 +291,15 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
       console.log('error');
     }
   }
+
+  goToSignInForm = (event) => {
+    event.preventDefault();
+
+    if (_.isFunction(this.props.goToSignInForm)) {
+      this.props.goToSignInForm();
+    }
+  }
+
 
   render() {
     const { formatMessage } = this.props.intl;
@@ -261,7 +325,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     const step1 = (showStep1 && (
       <CSSTransition classNames="form" timeout={timeout}>
-        <Form className="step1">
+        <Form onSubmit={this.handleOnContinue} noValidate={true} className="step1">
           <FormElement>
             <Label value={formatMessage(messages.firstNameLabel)} htmlFor="firstName" />
             <Input
@@ -312,9 +376,10 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
           </FormElement>
 
           <Button
-            size="2"
+            size="3"
             text={formatMessage(messages.continue)}
             onClick={this.handleOnContinue}
+            circularCorners={false}
           />
         </Form>
       </CSSTransition>
@@ -322,7 +387,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     const step2 = (!showStep1 && (
       <CSSTransition classNames="form" timeout={timeout}>
-        <Form>
+        <Form onSubmit={this.handleOnSubmit} noValidate={true}>
           <FormElement>
             <Label value={formatMessage(messages.yearOfBirthLabel)} htmlFor="yearOfBirth" />
             <Select
@@ -368,10 +433,11 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
 
           <FormElement>
             <Button
-              size="2"
+              size="3"
               loading={processing}
               text={formatMessage(messages.submit)}
               onClick={this.handleOnSubmit}
+              circularCorners={false}
             />
             <Error text={signUpError} />
           </FormElement>
@@ -385,6 +451,26 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
           {step1}
           {step2}
         </TransitionGroup>
+
+        <Separator>
+          <SeparatorLine />
+          <SeparatorTextContainer>
+            <SeparatorText>
+              <span><FormattedMessage {...messages.or} /></span>
+            </SeparatorText>
+          </SeparatorTextContainer>
+        </Separator>
+
+        <FooterButton>
+          <Button
+            size="3"
+            style="secondary-outlined"
+            text={formatMessage(messages.logIn)}
+            fullWidth={true}
+            onClick={this.goToSignInForm}
+            circularCorners={false}
+          />
+        </FooterButton>
       </Container>
     );
   }

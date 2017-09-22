@@ -16,7 +16,7 @@ import { ImageFile } from 'react-dropzone';
 import Upload, { ExtendedImageFile } from 'components/UI/Upload';
 import ButtonBar, { namespace as ButtonBarNamespace, State as IButtonBarState } from './ButtonBar';
 import NewIdeaForm, { namespace as NewIdeaFormNamespace, State as INewIdeaFormState } from './NewIdeaForm';
-import SignInUp from 'components/SignInUp';
+import SignInUp from './SignInUp';
 
 // services
 import { state, IStateStream } from 'services/state';
@@ -34,15 +34,15 @@ import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  background: #f2f2f2;
+  background: #f8f8f8;
+  border-top: solid 1px #ddd;
 `;
 
 const PageContainer = styled.div`
   width: 100%;
   min-height: calc(100vh - 105px);
-  padding-top: 40px;
   position: relative;
-  background: #f2f2f2;
+  background: #f8f8f8;
   -webkit-backface-visibility: hidden;
   will-change: opacity, transform;
 
@@ -321,8 +321,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
           <SignInUp
             onGoBack={this.handleOnSignInUpGoBack}
             onSignInUpCompleted={this.handleOnSignInUpCompleted}
-            signInTitleMessage={messages.signInTitle}
-            signUpTitleMessage={messages.signUpTitle}
           />
         </PageContainer>
       </CSSTransition>

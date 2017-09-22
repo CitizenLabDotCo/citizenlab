@@ -101,4 +101,12 @@ export default defineMessages({
     id: 'app.containers.SignUp.signUpError',
     defaultMessage: 'Something went wrong. Please try again.',
   },
+  or: {
+    id: 'app.containers.SignUp.or',
+    defaultMessage: 'or',
+  },
+  logIn: {
+    id: 'app.containers.SignUp.logIn',
+    defaultMessage: 'Log in to an existing account',
+  },
 });

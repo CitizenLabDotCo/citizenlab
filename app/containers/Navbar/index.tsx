@@ -45,7 +45,6 @@ const Container: any = styled.div`
 
   ${(props: any) => props.scrolled && css`
     border-color: ${props => props.theme.colorNavBottomBorder};
-    /* box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.15); */
   `}
 `;
 
