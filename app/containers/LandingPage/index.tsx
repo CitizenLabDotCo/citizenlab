@@ -16,6 +16,8 @@ import Footer from 'components/Footer';
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
+import { ideasStream, IIdeas } from 'services/ideas';
+import { projectsStream, IProjects } from 'services/projects';
 
 // i18n
 import T from 'containers/T';
@@ -76,10 +78,9 @@ const HeaderLogoWrapper = styled.div`
   padding: 15px;
   margin-top: 60px;
   margin-bottom: 15px;
-  border: solid 1px #e0e0e0;
+  border: solid 2px #eaeaea;
   border-radius: 5px;
   background: #fff;
-  box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.3);
 `;
 
 const HeaderLogo: any = styled.div`
@@ -166,9 +167,7 @@ const SectionHeader = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 35px;
-  /* border: solid 1px red; */
 
-  /*
   ${media.phone`
     padding-top: 50px;
   `}
@@ -176,7 +175,6 @@ const SectionHeader = styled.div`
   ${media.smallPhone`
     flex-wrap: wrap;
   `}
-  */
 `;
 
 const SectionTitle = styled.h2`
@@ -190,12 +188,10 @@ const SectionTitle = styled.h2`
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
-  /*
   ${media.phone`
     font-size: 23px;
     line-height: 36px;
   `}
-  */
 `;
 
 const SectionContainer = styled.section`
@@ -214,7 +210,7 @@ const ExploreText = styled.div`
 `;
 
 const ExploreIcon = styled(Icon) `;
-  height: 17px;
+  height: 19px;
   fill: #84939E;
   margin-top: 1px;
   transition: all 100ms ease-out;
@@ -224,7 +220,7 @@ const Explore = styled(Link) `
   cursor: pointer;
   display: flex;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 3px;
 
   &:hover {
     ${ExploreText} {
@@ -256,25 +252,43 @@ type Props = {};
 
 type State = {
   currentTenant: ITenant | null;
+  hasIdeas: boolean;
+  hasProjects: boolean;
 };
 
 class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
+  ideasQueryParameters: object;
+  projectsQueryParameters: object;
 
   constructor() {
     super();
     this.state = {
-      currentTenant: null
+      currentTenant: null,
+      hasIdeas: false,
+      hasProjects: false
     };
     this.subscriptions = [];
+    this.ideasQueryParameters = { sort: 'trending', 'page[size]': 6 };
+    this.projectsQueryParameters = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
   }
 
   componentWillMount() {
     const currentTenant$ = currentTenantStream().observable;
+    const ideas$ = ideasStream({ queryParameters: this.ideasQueryParameters }).observable;
+    const projects$ = projectsStream({ queryParameters: this.ideasQueryParameters }).observable;
 
     this.subscriptions = [
-      currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))
+      Rx.Observable.combineLatest(
+        currentTenant$,
+        ideas$,
+        projects$
+      ).subscribe(([currentTenant, ideas, projects]) => this.setState({
+        currentTenant,
+        hasIdeas: (ideas !== null && ideas.data.length > 0),
+        hasProjects: (projects !== null && projects.data.length > 0)
+      }))
     ];
   }
 
@@ -291,7 +305,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   render() {
-    const { currentTenant } = this.state;
+    const { currentTenant, hasIdeas, hasProjects } = this.state;
     const { formatMessage } = this.props.intl;
 
     if (currentTenant !== null) {
@@ -299,8 +313,6 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
       const currentTenantLogo = currentTenant.data.attributes.logo.large;
       const currentTenantHeaderSlogan = i18n.getLocalized(currentTenant.data.attributes.settings.core.header_slogan);
       const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
-      const ideaCardsFilter = { sort: 'trending', 'page[size]': 6 };
-      const projectCardsFilter = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
 
       return (
         <div>
@@ -328,17 +340,20 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                   <SectionTitle>
                     <FormattedMessage {...messages.ideasFrom} values={{ name: currentTenantName }} />
                   </SectionTitle>
+                  {hasIdeas &&
                   <Explore to="/ideas">
                     <ExploreText>
                       <FormattedMessage {...messages.exploreAllIdeas} />
                     </ExploreText>
                     <ExploreIcon name="compass" />
                   </Explore>
+                  }
                 </SectionHeader>
                 <SectionContainer>
-                  <IdeaCards filter={ideaCardsFilter} loadMoreEnabled={false} />
+                  <IdeaCards filter={this.ideasQueryParameters} loadMoreEnabled={false} />
                 </SectionContainer>
                 <SectionFooter>
+                  {hasIdeas &&
                   <ViewMoreButton
                     text={formatMessage(messages.exploreAllIdeas)}
                     style="primary-outlined"
@@ -347,9 +362,11 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                     onClick={this.goToIdeasPage}
                     circularCorners={false}
                   />
+                  }
                 </SectionFooter>
               </Section>
 
+              {hasProjects &&
               <Section>
                 <SectionHeader>
                   <SectionTitle>
@@ -357,7 +374,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                   </SectionTitle>
                 </SectionHeader>
                 <SectionContainer>
-                  <ProjectCards filter={projectCardsFilter} />
+                  <ProjectCards filter={this.projectsQueryParameters} />
                 </SectionContainer>
                 <SectionFooter>
                   <ViewMoreButton
@@ -369,6 +386,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                   />
                 </SectionFooter>
               </Section>
+              }
             </StyledContentContainer>
 
             <Footer />

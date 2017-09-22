@@ -1,7 +1,9 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-import { Link } from 'react-router';
+
+// libraries
+import { Link, browserHistory } from 'react-router';
 
 // components
 import IdeaCard from 'components/IdeaCard';
@@ -37,8 +39,6 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const StyledSpinner = styled(Spinner) ``;
-
 const IdeasList: any = styled.div`
   margin-left: -10px;
   margin-right: -10px;
@@ -69,41 +69,43 @@ const LoadMore = styled.div`
   margin-top: 10px;
 `;
 
-const LoadMoreButton = styled(Button)``;
+const LoadMoreButton = styled(Button)`
+  width: 360px;
+  height: 50px;
+  padding: 0px 0px;
+`;
 
 const EmptyContainer = styled.div`
-  align-items: center;
-  background: #fff;
-  border-radius: 5px;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  font-size: 1.5em;
+  align-items: center;
   justify-content: center;
   margin: 0;
-  min-height: 400px;
-  padding: 2rem;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  border-radius: 5px;
+  border: solid 1px #eee;
+  background: #fff;
+`;
 
-  a {
-    ${(props) => ButtonMixin(props.theme.colorMain, lighten(0.1, props.theme.colorMain))};
-    margin: 1em;
-    color: white;
+const IdeaIcon = styled(Icon)`
+  height: 45px;
+  fill: #999;
+`;
 
-    svg {
-      transform: scale(1.5);
-    }
-  }
+const EmptyMessage = styled.div`
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+`;
 
-  .idea-icon {
-    width: 2rem;
-    height: 2rem;
-    transform: scale(2);
-    margin: 0 0 2rem;
-
-    g[fill] {
-      fill: #000;
-    }
-  }
+const EmptyMessageLine = styled.div`
+  color: #999;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: center;
 `;
 
 interface IAccumulator {
@@ -160,10 +162,10 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
         const filterChange = !_.isEqual(acc.filter, filter) || !loadMore;
         const pageNumber = (filterChange ? 1 : acc.pageNumber + 1);
 
-        this.setState(state => ({
-          loading: (filterChange ? true : false),
-          loadingMore: (!filterChange ? true : false),
-        }));
+        this.setState({
+          loading: (filterChange),
+          loadingMore: (!filterChange),
+        });
 
         return ideasStream({
           queryParameters: {
@@ -205,45 +207,55 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.loadMore$.next(true);
   }
 
+  goToAddIdeaPage = () => {
+    browserHistory.push('/ideas/new');
+  }
+
   render() {
     const { ideas, hasMore, loading, loadingMore } = this.state;
     const { loadMoreEnabled } = this.props;
     const { formatMessage } = this.props.intl;
     const showLoadmore = (loadMoreEnabled && hasMore);
-
-    console.log(loading);
+    const hasIdeas = (ideas !== null && ideas.data.length > 0);
 
     const loadingIndicator = (loading ? (
       <Loading>
-        <StyledSpinner size="36px" thickness="4px" color="#666" />
+        <Spinner size="30px" color="#666" />
       </Loading>
     ) : null);
 
-    const loadMore = ((!loading && showLoadmore) ? (
+    const loadMore = ((!loading && hasIdeas && showLoadmore) ? (
       <LoadMore>
         <LoadMoreButton
           text={formatMessage(messages.loadMore)}
           loading={loadingMore}
           style="secondary"
-          size="2"
+          size="3"
           onClick={this.loadMoreIdeas}
           circularCorners={false}
         />
       </LoadMore>
     ) : null);
 
-    const empty = ((!loading && (!ideas || ideas && ideas.data.length === 0)) ? (
+    const empty = ((!loading && !hasIdeas) ? (
       <EmptyContainer>
-        <Icon className="idea-icon" name="idea" />
-        <FormattedMessage {...messages.empty} />
-        <Link to="/ideas/new">
-          <Icon name="plus-circle" />
-          <FormattedMessage {...messages.addIdea} />
-        </Link>
+        <IdeaIcon name="idea" />
+        <EmptyMessage>
+          <EmptyMessageLine>{formatMessage(messages.noIdea)}</EmptyMessageLine>
+          <EmptyMessageLine>{formatMessage(messages.suggestIdea)}</EmptyMessageLine>
+        </EmptyMessage>
+        <Button
+          text={formatMessage(messages.addIdea)}
+          style="primary"
+          size="2"
+          icon="plus-circle"
+          onClick={this.goToAddIdeaPage}
+          circularCorners={false}
+        />
       </EmptyContainer>
     ) : null);
 
-    const ideasList = ((!loading && ideas) ? (
+    const ideasList = ((!loading && hasIdeas && ideas) ? (
       <IdeasList>
         {ideas.data.map((idea) => (
           <StyledIdeaCard key={idea.id} ideaId={idea.id} />

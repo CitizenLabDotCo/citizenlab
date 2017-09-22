@@ -8,15 +8,18 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   loadMore: {
     id: 'app.components.IdeaCards.loadMore',
-    defaultMessage: 'Load more...',
+    defaultMessage: 'Load more ideas',
   },
   addIdea: {
     id: 'app.components.IdeaCards.addIdea',
-    defaultMessage: 'Add an idea',
+    defaultMessage: 'Add your idea',
   },
-  empty: {
-    id: 'app.components.IdeaCards.empty',
-    defaultMessage: `It looks like there is no idea yet.
-Try suggesting one of yours to change that!`,
+  noIdea: {
+    id: 'app.components.IdeaCards.noIdea',
+    defaultMessage: 'It looks like there are no ideas yet.',
+  },
+  suggestIdea: {
+    id: 'app.components.IdeaCards.suggestIdea',
+    defaultMessage: 'Be the first to add one!',
   },
 });
