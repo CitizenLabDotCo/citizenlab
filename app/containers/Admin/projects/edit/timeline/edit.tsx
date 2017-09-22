@@ -102,7 +102,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
           let descState = EditorState.createEmpty();
 
           if (phase) {
-            const blocksFromHtml = convertFromHTML(phase.data.attributes.description_multiloc[this.props.locale]);
+            const blocksFromHtml = convertFromHTML(_.get(phase, `data.attributes.description_multiloc.${this.props.locale}`, ''));
             const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
             descState = EditorState.createWithContent(editorContent);
           }
