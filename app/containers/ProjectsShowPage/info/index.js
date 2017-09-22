@@ -147,11 +147,13 @@ const ProjectsInfo = ({ project, images, className, params }) => {
           </IdeaBodyStyled>
         </Left>
         <Right>
+          {/*
           <AddIdeaButtonStyled>
             <Link to={`/ideas/new/${params.projectId}`}>
               <FormattedMessage {...messages.addIdea} />
             </Link>
           </AddIdeaButtonStyled>
+          */}
           <ProjectImages>
             {images && images.map((image) => (
               <ProjectImage key={image.get('id')} src={image.getIn(['attributes', 'versions', 'medium'])} />
