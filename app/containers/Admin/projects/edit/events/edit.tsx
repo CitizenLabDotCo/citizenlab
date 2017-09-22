@@ -93,7 +93,7 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
           let descState = EditorState.createEmpty();
 
           if (event) {
-            const blocksFromHtml = convertFromHTML(event.data.attributes.description_multiloc[this.props.locale]);
+            const blocksFromHtml = convertFromHTML(_.get(event, `data.attributes.description_multiloc.${this.props.locale}`, ''));
             const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
             descState = EditorState.createWithContent(editorContent);
           }
