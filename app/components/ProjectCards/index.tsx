@@ -29,8 +29,6 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const StyledSpinner = styled(Spinner) ``;
-
 type Props = {
   filter?: { [key: string]: any };
 };
@@ -94,7 +92,7 @@ export default class ProjectCards extends React.PureComponent<Props, State> {
 
     const loadingIndicator = (loading ? (
       <Loading>
-        <StyledSpinner />
+        <Spinner size="30px" color="#666" />
       </Loading>
     ) : null);
 

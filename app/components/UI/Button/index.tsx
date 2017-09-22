@@ -9,6 +9,8 @@ import styled, { css } from 'styled-components';
 const ButtonText = styled.div`
   color: #fff;
   font-weight: 400;
+  margin: 0;
+  padding: 0;
   white-space: nowrap;
 `;
 
@@ -22,6 +24,8 @@ const ButtonContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0;
+  padding: 0;
   transition: all 120ms ease;
 `;
 
@@ -31,6 +35,8 @@ const StyledButton: any = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0;
+  padding: 0;
   border-radius: ${(props: any) => props.circularCorners ? '999em' : '5px'};
   position: relative;
   outline: none;
@@ -78,15 +84,18 @@ const StyledButton: any = styled.button`
       if (props.size === '2') {
         return css`
           font-size: 17px;
+          line-height: 17px;
         `;
       } else if (props.size === '3') {
         return css`
           font-size: 18px;
+          line-height: 18px;
         `;
       }
 
       return css`
         font-size: 16px;
+        line-height: 16px;
       `;
     }}
   }
@@ -145,11 +154,11 @@ const StyledButton: any = styled.button`
       background: #e8e8e8;
 
       ${ButtonText} {
-        color: #666;
+        color: #444;
       }
 
       ${StyledIcon} {
-        fill: #666;
+        fill: #444;
       }
 
       &:hover,
@@ -157,11 +166,11 @@ const StyledButton: any = styled.button`
         background: #ddd;
 
         ${ButtonText} {
-          color: #333;
+          color: #000;
         }
   
         ${StyledIcon} {
-          fill: #333;
+          fill: #000;
         }
       }
     }
@@ -301,8 +310,6 @@ const SpinnerWrapper = styled.div`
   justify-content: center;
 `;
 
-const StyledSpinner = styled(Spinner)``;
-
 type Props = {
   text?: string;
   children?: any;
@@ -355,7 +362,7 @@ export default class Button extends React.PureComponent<Props, State> {
         <ButtonContent>
           {icon && <StyledIcon name={icon} />}
           <ButtonText>{text || children}</ButtonText>
-          {loading && <SpinnerWrapper><StyledSpinner /></SpinnerWrapper>}
+          {loading && <SpinnerWrapper><Spinner /></SpinnerWrapper>}
         </ButtonContent>
       </StyledButton>
     );

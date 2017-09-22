@@ -124,7 +124,7 @@ const RightItem: any = styled.div`
   outline: none;
 
   * {
-    outline: none !important;
+    outline: none;
   }
 
   ${(props: any) => props.hideOnPhone && media.phone`display: none;`}
@@ -134,8 +134,8 @@ const LoginLink = styled.div`
   color: ${(props) => props.theme.colorMain};
   font-size: 16px;
   font-weight: 400;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 0px;
+  padding-right: 30px;
 
   &:hover {
     color: ${(props) => darken(0.2, props.theme.colorMain)};
@@ -186,22 +186,18 @@ class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps, St
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.onPageScroll);
+    this.subscriptions.push(
+      Rx.Observable.fromEvent(window, 'scroll').sampleTime(10).subscribe(() => {
+        this.setState((state) => {
+          const scrolled = (document.documentElement.scrollTop > 0);
+          return (state.scrolled !== scrolled ? { scrolled } : state);
+        });
+      })
+    );
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.onPageScroll);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  onPageScroll = (event: UIEvent) => {
-    if (!this.state.scrolled && document.documentElement.scrollTop > 0) {
-      this.setState({ scrolled: true });
-    }
-
-    if (this.state.scrolled && document.documentElement.scrollTop === 0) {
-      this.setState({ scrolled: false });
-    }
   }
 
   goToAddIdeaPage = () => {
@@ -276,7 +272,7 @@ class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps, St
                 text={formatMessage(messages.startIdea)}
                 style="primary"
                 size="1"
-                padding="7px 10px"
+                padding="10px 16px"
                 icon="plus-circle"
                 onClick={this.goToAddIdeaPage}
                 circularCorners={true}
