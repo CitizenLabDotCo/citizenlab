@@ -18,6 +18,10 @@ describe MultilocService do
       'en' => 'word'
     }}
 
+    it "returns nil when the provided translations are nil" do
+      expect(service.t(nil)).to be_nil
+    end
+
     it "picks the user locale from the translations when available" do
       expect(service.t(translations, user)).to eq 'word'
     end
