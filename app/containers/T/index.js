@@ -28,9 +28,6 @@ export class T extends React.PureComponent { // eslint-disable-line react/prefer
 
   render() {
     const { value, userLocale, tenantLocales } = this.props;
-    if (!this.props.value) {
-      throw new Error('Must pass a value prop to <T />');
-    }
 
     return (
       <span
