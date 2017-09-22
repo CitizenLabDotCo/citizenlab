@@ -35,7 +35,10 @@ const Container = styled.div`
   margin-bottom: 20px;
   background: #fff;
   border: solid 1px #e5e5e5;
-  cursor: pointer;
+
+  ${media.phone`
+    flex-direction: column;
+  `}
 `;
 
 const ProjectImage: any = styled.div`
@@ -46,11 +49,15 @@ const ProjectImage: any = styled.div`
   height: 176px;
   border-radius: 6px;
   margin-right: 10px;
-  background-image: url(${(props: any) => props.imageSrc});  
+  background-image: url(${(props: any) => props.imageSrc});
   background-repeat: no-repeat;
   background-position: center center;
   background-size: center;
   overflow: hidden;
+  ${media.phone`
+    width: 100%;
+    margin-right: 0px;
+  `}
 `;
 
 const ProjectContent = styled.div`
@@ -60,6 +67,9 @@ const ProjectContent = styled.div`
   flex-direction: column;
   margin-right: 30px;
   margin-left: 30px;
+  ${media.phone`
+    margin: 0.5rem 0;
+  `}
 `;
 
 const ProjectTitle = styled.h3`
@@ -74,10 +84,21 @@ const ProjectDescription = styled.div`
   font-size: 15px;
   font-weight: 300;
   line-height: 20px;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-height: 100px;
+  ${media.phone`
+    display: none;
+  `}
 `;
 
 const ReadMoreWrapper = styled.div`
   margin-top: 5px;
+  ${media.phone`
+    display: none;
+  `}
 `;
 
 const ReadMore = styled.div`
@@ -98,6 +119,9 @@ const ProjectButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-right: 20px;
+  ${media.phone`
+    margin: 0.5rem 0;
+  `}
 `;
 
 const ProjectButton = styled(Button) ``;
@@ -163,7 +187,6 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
       const tenantLogo = currentTenant.data.attributes.logo.medium;
       const slug = project.data.attributes.slug;
       const title = i18n.getLocalized(project.data.attributes.title_multiloc);
-      const description = i18n.getLocalized(project.data.attributes.description_multiloc);
       const ideasCount = project.data.attributes.ideas_count;
       const image = (projectImages && projectImages.data.length > 0 ? projectImages.data[0] : null);
       const imageUrl = (image ? image.attributes.versions.medium : null);
@@ -174,7 +197,7 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
 
           <ProjectContent>
             <ProjectTitle>{title}</ProjectTitle>
-            <ProjectDescription>{title}</ProjectDescription>
+            <ProjectDescription><T value={project.data.attributes.description_multiloc} /></ProjectDescription>
             <ReadMoreWrapper>
               <ReadMore onClick={this.goToProject}>
                 <FormattedMessage {...messages.readMore} />
