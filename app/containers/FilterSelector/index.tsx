@@ -15,7 +15,7 @@ const Container = styled(clickOutside) `
   outline: none;
 
   & + & {
-    margin-left: 2rem;
+    margin-left: .5rem;
   }
 `;
 
