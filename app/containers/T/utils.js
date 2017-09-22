@@ -8,11 +8,11 @@ const isImmutable = Iterable.isIterable;
 const findTranslatedTextMutable = (value, userLocale, tenantLocales) => {
   let text = '';
 
-  if (value[userLocale]) {
+  if (value && value[userLocale]) {
     text = value[userLocale];
   } else {
     tenantLocales.some((tenantLocale) => {
-      if (value[tenantLocale]) {
+      if (value && value[tenantLocale]) {
         text = value[tenantLocale];
         return true;
       }
@@ -25,11 +25,11 @@ const findTranslatedTextMutable = (value, userLocale, tenantLocales) => {
 
 function findTranslatedTextImmutable(value, userLocale, tenantLocales) {
   let text = '';
-  if (value.get(userLocale)) {
+  if (value && value.get(userLocale)) {
     text = value.get(userLocale);
   } else {
     tenantLocales.some((tenantLocale) => {
-      if (value.get(tenantLocale)) {
+      if (value && value.get(tenantLocale)) {
         text = value.get(tenantLocale);
         return true;
       }
