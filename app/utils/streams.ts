@@ -97,8 +97,6 @@ class Streams {
     const streamId = stream.streamId;
     const apiEndpoint = stream.params.apiEndpoint;
 
-    console.log(stream);
-
     if (isQuery) {
       if (!this.streamIdsByApiEndPointWithQuery[apiEndpoint]) {
         this.streamIdsByApiEndPointWithQuery[apiEndpoint] = [streamId];
