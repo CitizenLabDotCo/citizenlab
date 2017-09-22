@@ -24,9 +24,12 @@ const StyledForm = styled.form`
 
   input {
     background: #fff;
+    border: 1px solid #eaeaea;
     border-radius: 5px;
     height: 100%;
     padding: 1rem 1.5rem;
+    max-width: 300px;
+    width: 100%;
   }
 `;
 
