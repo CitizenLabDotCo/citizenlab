@@ -53,11 +53,16 @@ const StyledContentContainer = styled(ContentContainer)`
 const FiltersArea = styled.div`
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
   height: 3.5rem;
   justify-content: flex-end;
   margin-top: 1.5rem;
   margin-bottom: 3.5rem;
   width: 100%;
+
+  @media (min-width: 500px) {
+    flex-wrap: nowrap;
+  }
 `;
 
 class IdeasIndex extends React.PureComponent {
