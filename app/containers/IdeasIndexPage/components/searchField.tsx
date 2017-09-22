@@ -14,19 +14,40 @@ import { injectIntl, InjectedIntl } from 'react-intl';
 import { injectTFunc } from 'containers/T/utils';
 import messages from '../messages';
 
+// Components
+import Icon from 'components/UI/Icon';
+
 // parse search
 import queryString from 'query-string';
 
 // style
 const StyledForm = styled.form`
+  align-items: center;
   align-self: stretch;
-  flex:1;
+  display: flex;
+  flex: 1 1 100%;
 
   input {
     background: #fff;
+    border: 1px solid #eaeaea;
     border-radius: 5px;
-    height: 100%;
     padding: 1rem 1.5rem;
+    width: 100%;
+  }
+
+  .search-icon {
+    fill: #A6A6A6;
+    height: 1.25rem;
+    margin-left: -2.5rem;
+  }
+
+
+  @media (min-width: 500px) {
+    flex-basis: auto;
+
+    input {
+      max-width: 300px;
+    }
   }
 `;
 
@@ -69,6 +90,7 @@ class SearchField extends React.Component<Props, State> {
           onChange={this.handleChange}
           value={value}
         />
+        <Icon name="search" className="search-icon" />
       </StyledForm>
     );
   }
