@@ -111,6 +111,7 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
       } else {
         console.log(arguments);
       }
+
       this.setState({ attributesDiff: newDiff });
     };
   }

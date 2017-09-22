@@ -72,6 +72,23 @@ export default function createRoutes(store) {
       },
     },
     {
+      path: '/sign-up',
+      name: 'signUpPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/SignUpPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
       path: '/register/complete',
       name: 'registrationComplete',
       getComponent(nextState, cb) {

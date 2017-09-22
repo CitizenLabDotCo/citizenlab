@@ -41,10 +41,12 @@ import { store } from 'app';
 import { STORE_JWT, LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
 
 const Container = styled.div`
-  margin-top: ${props => props.theme.menuHeight}px;
+  margin: 0;
+  padding: 0;
+  padding-top: ${props => props.theme.menuHeight}px;
 
   ${media.phone`
-    margin-bottom: ${props => props.theme.mobileMenuHeight}px;
+    padding-bottom: ${props => props.theme.mobileMenuHeight}px;
   `}
 `;
 
