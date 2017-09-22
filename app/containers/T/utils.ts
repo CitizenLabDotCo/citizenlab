@@ -1,18 +1,23 @@
 import { makeSelectSetting } from 'utils/tenant/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-import { Iterable } from 'immutable';
+import { Iterable, List } from 'immutable';
 import { connect } from 'react-redux';
+import { Multiloc } from 'typings';
 
 const isImmutable = Iterable.isIterable;
 
-const findTranslatedTextMutable = (value, userLocale, tenantLocales) => {
+const findTranslatedTextMutable = (value: Multiloc | undefined, userLocale: string, tenantLocales: List<string>): string => {
   let text = '';
+
+  if (!value) {
+    return text;
+  }
 
   if (value[userLocale]) {
     text = value[userLocale];
   } else {
     tenantLocales.some((tenantLocale) => {
-      if (value[tenantLocale]) {
+      if (tenantLocale && value[tenantLocale]) {
         text = value[tenantLocale];
         return true;
       }
@@ -23,14 +28,19 @@ const findTranslatedTextMutable = (value, userLocale, tenantLocales) => {
 };
 
 
-function findTranslatedTextImmutable(value, userLocale, tenantLocales) {
+function findTranslatedTextImmutable(value: Map<string, string>, userLocale: string, tenantLocales: List<string>): string {
   let text = '';
+
+  if (!value) {
+    return text;
+  }
+
   if (value.get(userLocale)) {
-    text = value.get(userLocale);
+    text = value.get(userLocale) || '';
   } else {
     tenantLocales.some((tenantLocale) => {
-      if (value.get(tenantLocale)) {
-        text = value.get(tenantLocale);
+      if (tenantLocale && value.get(tenantLocale)) {
+        text = value.get(tenantLocale) || '';
         return true;
       }
       return false;
@@ -39,12 +49,12 @@ function findTranslatedTextImmutable(value, userLocale, tenantLocales) {
   return text;
 }
 
-export const findTranslatedText = (value, userLocale, tenantLocales) => {
+export const findTranslatedText = (value: Multiloc | Map<string, string> | undefined, userLocale: string, tenantLocales: List<string>) => {
   if (!isImmutable(value)) {
     // console.log(new Error('Attention, Data Provided to the T component should be immutable!'));
-    return findTranslatedTextMutable(value, userLocale, tenantLocales);
+    return findTranslatedTextMutable(value as Multiloc, userLocale, tenantLocales);
   }
-  return findTranslatedTextImmutable(value, userLocale, tenantLocales);
+  return findTranslatedTextImmutable(value as Map<string, string>, userLocale, tenantLocales);
 };
 
 
