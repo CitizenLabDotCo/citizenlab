@@ -17,6 +17,7 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -72,6 +73,10 @@ const PagesNav = styled.nav`
   li {
     display: inline-block;
   }
+  ${media.phone`
+    display: flex;
+    flex-direction: column;
+  `}
 `;
 
 const StyledLink = styled(Link) `
@@ -93,6 +98,9 @@ const Separator = styled.span`
   line-height: 19px;
   padding-left: 20px;
   padding-right: 20px;
+  ${media.phone`
+    display: none;
+  `}
 `;
 
 const CitizenLabLogo = styled(Icon) `
