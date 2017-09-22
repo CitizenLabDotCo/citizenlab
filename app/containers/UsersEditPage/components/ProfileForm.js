@@ -26,6 +26,7 @@ import { areasStream } from 'services/areas';
 import moment from 'moment';
 
 const StyledContentContainer = styled(ContentContainer)`
+  background: #fff;
   margin-top: 120px;
 `;
 
@@ -97,8 +98,7 @@ const SectionSeparatorStyled = styled.hr`
 // `;
 
 const FormContentWrapper = styled(Grid.Column)`
-  border-radius: 5px;
-  background-color: #ffffff;
+  border-left: 1px solid #eaeaea;
   padding: 36px;
 `;
 
