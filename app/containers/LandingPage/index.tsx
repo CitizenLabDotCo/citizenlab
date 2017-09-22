@@ -16,6 +16,8 @@ import Footer from 'components/Footer';
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
+import { ideasStream, IIdeas } from 'services/ideas';
+import { projectsStream, IProjects } from 'services/projects';
 
 // i18n
 import T from 'containers/T';
@@ -256,25 +258,43 @@ type Props = {};
 
 type State = {
   currentTenant: ITenant | null;
+  hasIdeas: boolean;
+  hasProjects: boolean;
 };
 
 class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
+  ideasQueryParameters: object;
+  projectsQueryParameters: object;
 
   constructor() {
     super();
     this.state = {
-      currentTenant: null
+      currentTenant: null,
+      hasIdeas: false,
+      hasProjects: false
     };
     this.subscriptions = [];
+    this.ideasQueryParameters = { sort: 'trending', 'page[size]': 6 };
+    this.projectsQueryParameters = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
   }
 
   componentWillMount() {
     const currentTenant$ = currentTenantStream().observable;
+    const ideas$ = ideasStream({ queryParameters: this.ideasQueryParameters }).observable;
+    const projects$ = projectsStream({ queryParameters: this.ideasQueryParameters }).observable;
 
     this.subscriptions = [
-      currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))
+      Rx.Observable.combineLatest(
+        currentTenant$,
+        ideas$,
+        projects$
+      ).subscribe(([currentTenant, ideas, projects]) => this.setState({
+        currentTenant,
+        hasIdeas: (ideas !== null && ideas.data.length > 0),
+        hasProjects: (projects !== null && projects.data.length > 0)
+      }))
     ];
   }
 
@@ -291,7 +311,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   render() {
-    const { currentTenant } = this.state;
+    const { currentTenant, hasIdeas, hasProjects } = this.state;
     const { formatMessage } = this.props.intl;
 
     if (currentTenant !== null) {
@@ -299,8 +319,6 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
       const currentTenantLogo = currentTenant.data.attributes.logo.large;
       const currentTenantHeaderSlogan = i18n.getLocalized(currentTenant.data.attributes.settings.core.header_slogan);
       const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
-      const ideaCardsFilter = { sort: 'trending', 'page[size]': 6 };
-      const projectCardsFilter = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
 
       return (
         <div>
@@ -328,17 +346,20 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                   <SectionTitle>
                     <FormattedMessage {...messages.ideasFrom} values={{ name: currentTenantName }} />
                   </SectionTitle>
+                  {hasIdeas &&
                   <Explore to="/ideas">
                     <ExploreText>
                       <FormattedMessage {...messages.exploreAllIdeas} />
                     </ExploreText>
                     <ExploreIcon name="compass" />
                   </Explore>
+                  }
                 </SectionHeader>
                 <SectionContainer>
-                  <IdeaCards filter={ideaCardsFilter} loadMoreEnabled={false} />
+                  <IdeaCards filter={this.ideasQueryParameters} loadMoreEnabled={false} />
                 </SectionContainer>
                 <SectionFooter>
+                  {hasIdeas &&
                   <ViewMoreButton
                     text={formatMessage(messages.exploreAllIdeas)}
                     style="primary-outlined"
@@ -347,9 +368,11 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                     onClick={this.goToIdeasPage}
                     circularCorners={false}
                   />
+                  }
                 </SectionFooter>
               </Section>
 
+              {hasProjects &&
               <Section>
                 <SectionHeader>
                   <SectionTitle>
@@ -357,7 +380,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                   </SectionTitle>
                 </SectionHeader>
                 <SectionContainer>
-                  <ProjectCards filter={projectCardsFilter} />
+                  <ProjectCards filter={this.projectsQueryParameters} />
                 </SectionContainer>
                 <SectionFooter>
                   <ViewMoreButton
@@ -369,6 +392,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                   />
                 </SectionFooter>
               </Section>
+              }
             </StyledContentContainer>
 
             <Footer />
