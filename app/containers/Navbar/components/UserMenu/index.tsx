@@ -29,12 +29,9 @@ const signOutIcon = require('./signOutIcon.svg');
 
 const Container = styled(ClickOutside)`
   display: flex;
-  border-radius: 50%;
   margin-left: 0px;
   position: relative;
   cursor: pointer;
-  width: 34px;
-  height: 34px;
   outline: none;
 `;
 

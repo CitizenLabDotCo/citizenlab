@@ -154,11 +154,11 @@ const StyledButton: any = styled.button`
       background: #e8e8e8;
 
       ${ButtonText} {
-        color: #444;
+        color: #555;
       }
 
       ${StyledIcon} {
-        fill: #444;
+        fill: #555;
       }
 
       &:hover,
@@ -166,11 +166,11 @@ const StyledButton: any = styled.button`
         background: #ddd;
 
         ${ButtonText} {
-          color: #000;
+          color: #222;
         }
   
         ${StyledIcon} {
-          fill: #000;
+          fill: #222;
         }
       }
     }
@@ -244,15 +244,14 @@ const StyledButton: any = styled.button`
 
       &:hover,
       &:focus {
-        background: ${(props: any) => darken(0.15, '#eae9e9')};
-        border-color: ${(props: any) => darken(0.15, '#eae9e9')};
+        border-color: #222;
 
         ${ButtonText} {
-          color: #676767;
+          color: #222;
         }
   
         ${StyledIcon} {
-          fill: #676767;
+          fill: #222;
         }
       }
     }

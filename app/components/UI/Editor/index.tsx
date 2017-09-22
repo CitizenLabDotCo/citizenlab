@@ -215,6 +215,7 @@ export default class Editor extends React.PureComponent<Props, State> {
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
             ref={this.handleRef}
+            /*
             mention={{
               separator: ' ',
               trigger: '@',
@@ -233,6 +234,7 @@ export default class Editor extends React.PureComponent<Props, State> {
                 { text: 'honeydew', value: 'honeydew', url: 'honeydew' },
               ],
             }}
+            */
           />
         </DraftEditorContainer>
         <Error text={error}/>

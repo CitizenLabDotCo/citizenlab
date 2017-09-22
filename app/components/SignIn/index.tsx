@@ -22,10 +22,9 @@ import { isValidEmail } from 'utils/validate';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
 `;
 
 const Form = styled.form`
@@ -56,9 +55,61 @@ const ForgotPassword = styled.div`
   }
 `;
 
+const Separator = styled.div`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-top: 25px;
+  margin-bottom: 15px;
+`;
+
+const SeparatorLine = styled.div`
+  width: 100%;
+  height: 1px;
+  background: transparent;
+  border-bottom: solid 1px #ccc;
+`;
+
+const SeparatorTextContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+`;
+
+const SeparatorText = styled.div`
+  width: 50px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f8f8;
+
+  span {
+    color: #666;
+    font-size: 16px;
+  }
+`;
+
+const FooterButton = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+`;
+
+
 type Props = {
   onSignedIn: () => void;
   onForgotPassword?: () => void
+  goToSignUpForm?: () => void;
 };
 
 type State = {
@@ -125,7 +176,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { formatMessage } = this.props.intl;
     const { email, password } = this.state;
 
-    if (email && password && this.validate(email, password)) {
+    if (this.validate(email, password) && email && password) {
       try {
         this.setState({ processing: true });
         await signIn(email, password);
@@ -148,6 +199,14 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   handleForgotPasswordOnClick = () => {
     !_.isUndefined(this.props.onForgotPassword) && this.props.onForgotPassword();
+  }
+
+  goToSignUpForm = (event) => {
+    event.preventDefault();
+
+    if (_.isFunction(this.props.goToSignUpForm)) {
+      this.props.goToSignUpForm();
+    }
   }
 
   render() {
@@ -188,9 +247,11 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
           <FormElement>
             <ButtonWrapper>
               <Button
-                size="2"
+                onClick={this.handleOnSubmit}
+                size="3"
                 loading={processing}
                 text={formatMessage(messages.submit)}
+                circularCorners={false}
               />
               <ForgotPassword onClick={this.handleForgotPasswordOnClick}>
                 <FormattedMessage {...messages.forgotPassword} />
@@ -198,6 +259,26 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
             </ButtonWrapper>
             <Error marginTop="10px" text={signInError} />
           </FormElement>
+
+          <Separator>
+            <SeparatorLine />
+            <SeparatorTextContainer>
+              <SeparatorText>
+                <span><FormattedMessage {...messages.or} /></span>
+              </SeparatorText>
+            </SeparatorTextContainer>
+          </Separator>
+
+          <FooterButton>
+            <Button
+              size="3"
+              style="secondary-outlined"
+              text={formatMessage(messages.createAnAccount)}
+              fullWidth={true}
+              onClick={this.goToSignUpForm}
+              circularCorners={false}
+            />
+          </FooterButton>
         </Form>
       </Container>
     );

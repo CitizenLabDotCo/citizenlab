@@ -5,7 +5,7 @@ import * as Rx from 'rxjs/Rx';
 import { browserHistory } from 'react-router';
 
 // components
-import SignIn from 'components/SignIn';
+import SignUp from 'components/SignUp';
 import SignInUpBanner from 'components/SignInUpBanner';
 
 // i18n
@@ -82,13 +82,13 @@ type Props = {};
 
 type State = {};
 
-export default class SignInPage extends React.PureComponent<Props, State> {
+export default class SignUpPage extends React.PureComponent<Props, State> {
   onSuccess = () => {
     browserHistory.push('/');
   }
 
-  goToSignUpForm = () => {
-    browserHistory.push('/sign-up');
+  goToSignInForm = () => {
+    browserHistory.push('/sign-in');
   }
 
   render() {
@@ -100,7 +100,7 @@ export default class SignInPage extends React.PureComponent<Props, State> {
         <Right>
           <RightInner>
             <Title><FormattedMessage {...messages.title} /></Title>
-            <SignIn onSignedIn={this.onSuccess} goToSignUpForm={this.goToSignUpForm} />
+            <SignUp onSignedUp={this.onSuccess} goToSignInForm={this.goToSignInForm} />
           </RightInner>
         </Right>
       </Container>
