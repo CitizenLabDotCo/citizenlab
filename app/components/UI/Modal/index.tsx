@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { browserHistory } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -149,12 +150,16 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     }
 
     if (opened && !nextProps.opened) {
-      this.onClose(true);
+      this.onClose();
     }
   }
 
   onOpen = (url: undefined | string) => {
     window.addEventListener('popstate', this.handlePopstateEvent);
+
+    browserHistory.listen(() => {
+      this.closeModal();
+    });
 
     if (!document.body.classList.contains('modal-active')) {
       document.body.classList.add('modal-active');
