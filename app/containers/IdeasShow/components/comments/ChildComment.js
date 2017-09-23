@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { preprocess } from 'utils';
 import { selectResourcesDomain } from 'utils/resources/selectors';
-import T from 'containers/T';
+import T from 'components/T';
 
 
 // import MapChildren from './MapChildren';

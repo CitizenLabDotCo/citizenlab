@@ -20,7 +20,7 @@ import scrollToComponent from 'react-scroll-to-component';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import LabelWithTooltip from './LabelWithTooltip';
 import TextArea from 'components/UI/TextArea';
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 import { areasStream } from 'services/areas';
 
 import moment from 'moment';

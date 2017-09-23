@@ -174,7 +174,6 @@ type State = {
 
 class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
-  currentTenant$: IStream<ITenant>;
   subscriptions: Rx.Subscription[];
 
   constructor(props) {
@@ -183,7 +182,6 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
       show: props.show || 'signIn',
       currentTenant: null
     };
-    this.currentTenant$ = currentTenantStream();
     this.subscriptions = [];
   }
 
@@ -269,20 +267,6 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
         </FormContainer>
       </CSSTransition>
     ));
-
-    /*
-      <Container>
-        <Left>
-          <SignInUpBanner />
-        </Left>
-        <Right>
-          <RightInner>
-            <Title><FormattedMessage {...messages.title} /></Title>
-            <SignIn onSignedIn={this.onSuccess} goToSignUpForm={this.goToSignUpForm} />
-          </RightInner>
-        </Right>
-      </Container>
-    */
 
     return (
       <Container>

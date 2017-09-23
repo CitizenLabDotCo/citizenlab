@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
-import T from 'containers/T';
+import T from 'components/T';
 import messages from './messages';
 import { injectIntl, intlShape } from 'react-intl';
 import styled from 'styled-components';

@@ -17,7 +17,7 @@ import FieldWrapper from 'components/admin/FieldWrapper';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // i18n
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl';
 import messages from '../messages';
 

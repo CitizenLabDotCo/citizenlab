@@ -89,40 +89,6 @@ export default function createRoutes(store) {
       },
     },
     {
-      path: '/register/complete',
-      name: 'registrationComplete',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/completeRegistrationPage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([component]) => {
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    },
-    {
-      path: '/register',
-      name: 'usersNewPage',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/RegisterPage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([component]) => {
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    },
-    {
       path: '/profile/edit',
       name: 'usersEditPage',
       getComponent(nextState, cb) {

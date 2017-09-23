@@ -26,7 +26,7 @@ import { userStream, IUser } from 'services/users';
 import { ideaImagesStream, ideaImageStream, IIdeaImage, IIdeaImageData } from 'services/ideaImages';
 
 // i18n
-import T from 'containers/T';
+import T from 'components/T';
 import { injectIntl, intlShape, FormattedMessage, FormattedRelative } from 'react-intl';
 import messages from './messages';
 

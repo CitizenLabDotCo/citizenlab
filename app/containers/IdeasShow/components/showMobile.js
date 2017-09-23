@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 import styled from 'styled-components';
 
 // components
@@ -10,7 +10,7 @@ import Author from './show/Author';
 import StatusBadge from 'components/StatusBadge';
 import SharingLine from './show/SharingLine';
 import Comments from './comments';
-import T from 'containers/T';
+import T from 'components/T';
 import VoteControl from 'components/VoteControl';
 
 // store
