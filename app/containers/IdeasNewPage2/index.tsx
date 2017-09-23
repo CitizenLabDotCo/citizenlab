@@ -338,4 +338,4 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
   }
 }
 
-export default injectIntl(IdeasNewPage2);
+export default injectIntl<Props>(IdeasNewPage2);

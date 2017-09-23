@@ -9,7 +9,7 @@ import { projectsStream, IProjectData } from 'services/projects';
 
 // Localisation
 import { FormattedMessage } from 'react-intl';
-import t from 'containers/T';
+import t from 'components/T';
 const T = t;
 import messages from '../messages';
 

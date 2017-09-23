@@ -19,7 +19,7 @@ import { userStream, IUser } from 'services/users';
 import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
 
 // utils
-import T from 'containers/T';
+import T from 'components/T';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import T from 'containers/T';
+import T from 'components/T';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import ContentContainer from 'components/ContentContainer';

@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import 'whatwg-fetch';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
@@ -64,9 +65,7 @@ class Streams {
     return _.isObject(queryParameters) && !_.isEmpty(queryParameters);
   }
 
-  getSerializedUrl(params: IExtendedStreamParams<any>) {
-    const { apiEndpoint, queryParameters } = params;
-
+  getSerializedUrl(apiEndpoint: string, queryParameters: IObject | null) {
     if (this.isQuery(queryParameters)) {
       return apiEndpoint + Object.keys(queryParameters as object).sort().map((key) => {
         return encodeURIComponent(key) + '=' + encodeURIComponent((queryParameters as object)[key]);
@@ -76,28 +75,24 @@ class Streams {
     return apiEndpoint;
   }
 
-  addStreamIdByDataIdIndex(stream: IStream<any>, dataId: string) {
-    if (!stream.isQueryStream) {
-      if (this.streamIdsByDataIdWithoutQuery[dataId] && !_.some(this.streamIdsByDataIdWithoutQuery[dataId], stream.streamId)) {
-        this.streamIdsByDataIdWithoutQuery[dataId].push(stream.streamId);
-      } else if (!this.streamIdsByDataIdWithoutQuery[dataId]) {
-        this.streamIdsByDataIdWithoutQuery[dataId] = [stream.streamId];
+  addStreamIdByDataIdIndex(streamId: string, isQueryStream: boolean, dataId: string) {
+    if (isQueryStream) {
+      if (this.streamIdsByDataIdWithQuery[dataId] && !_.some(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
+        this.streamIdsByDataIdWithQuery[dataId].push(streamId);
+      } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
+        this.streamIdsByDataIdWithQuery[dataId] = [streamId];
       }
     } else {
-      if (this.streamIdsByDataIdWithQuery[dataId] && !_.some(this.streamIdsByDataIdWithQuery[dataId], stream.streamId)) {
-        this.streamIdsByDataIdWithQuery[dataId].push(stream.streamId);
-      } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
-        this.streamIdsByDataIdWithQuery[dataId] = [stream.streamId];
+      if (this.streamIdsByDataIdWithoutQuery[dataId] && !_.some(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
+        this.streamIdsByDataIdWithoutQuery[dataId].push(streamId);
+      } else if (!this.streamIdsByDataIdWithoutQuery[dataId]) {
+        this.streamIdsByDataIdWithoutQuery[dataId] = [streamId];
       }
     }
   }
 
-  addStreamIdByApiEndpointIndex(stream: IStream<any>) {
-    const isQuery = stream.isQueryStream;
-    const streamId = stream.streamId;
-    const apiEndpoint = stream.params.apiEndpoint;
-
-    if (isQuery) {
+  addStreamIdByApiEndpointIndex(apiEndpoint: string, streamId: string, isQueryStream: boolean) {
+    if (isQueryStream) {
       if (!this.streamIdsByApiEndPointWithQuery[apiEndpoint]) {
         this.streamIdsByApiEndPointWithQuery[apiEndpoint] = [streamId];
       } else {
@@ -114,17 +109,16 @@ class Streams {
 
   get<T>(inputParams: IInputStreamParams<T>) {
     const params: IExtendedStreamParams<T> = { bodyData: null, queryParameters: null, ...inputParams };
-    const streamId = this.getSerializedUrl(params);
+    const apiEndpoint = params.apiEndpoint.replace(/\/$/, '');
+    const queryParameters = params.queryParameters;
+    const streamId = this.getSerializedUrl(apiEndpoint, queryParameters);
 
     if (!_.has(this.streams, streamId)) {
-      let { apiEndpoint } = params;
-      const { bodyData, queryParameters } = params;
+      const { bodyData } = params;
       const lastUrlSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
       const isQueryStream = this.isQuery(queryParameters);
       const isSingleItemStream = (!isQueryStream ? this.isUUID(lastUrlSegment) : false);
       const observer: IObserver<T | null> = (null as any);
-
-      apiEndpoint = apiEndpoint.replace(/\/$/, '');
 
       const fetch = () => {
         return new Promise((resolve, reject) => {
@@ -157,7 +151,7 @@ class Streams {
         });
       };
 
-      const observable = (Rx.Observable.create((observer: IObserver<T | null>) => {
+      const observable = new Observable<T | null>((observer) => {
         const dataId = lastUrlSegment;
         this.streams[streamId].observer = observer;
 
@@ -173,7 +167,7 @@ class Streams {
           console.log(`stream for stream ${streamId} completed`);
           delete this.streams[streamId];
         };
-      }) as Rx.Observable<T | null>)
+      })
       .startWith('initial' as any)
       .scan((accumulated: T, current: T | pureFn<T>) => {
         let data: any = accumulated;
@@ -193,14 +187,14 @@ class Streams {
                 const dataId = item.id;
                 dataIds[dataId] = true;
                 this.resourcesByDataId[dataId] = { data: item };
-                this.addStreamIdByDataIdIndex(this.streams[streamId], dataId);
+                this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
               });
             } else if (_.isObject(innerData) && _.has(innerData, 'id')) {
               const dataId = innerData.id;
               this.streams[streamId].type = 'singleObject';
               dataIds[dataId] = true;
               this.resourcesByDataId[dataId] = { data: innerData };
-              this.addStreamIdByDataIdIndex(this.streams[streamId], dataId);
+              this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
             }
 
             if (_.has(data, 'included')) {
@@ -236,7 +230,7 @@ class Streams {
         dataIds: {},
       };
 
-      this.addStreamIdByApiEndpointIndex(this.streams[streamId]);
+      this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, isQueryStream);
 
       // keep stream hot
       this.streams[streamId].observable.subscribe();
@@ -261,7 +255,6 @@ class Streams {
       });
 
       _(this.streamIdsByApiEndPointWithQuery[apiEndpoint]).forEach((streamId) => {
-        console.log('zolg');
         this.streams[streamId].fetch();
       });
 
@@ -278,14 +271,16 @@ class Streams {
     try {
       const response = await request<T>(apiEndpoint, bodyData, { method: 'PATCH' }, null);
 
-      _(this.streamIdsByDataIdWithoutQuery[dataId]).forEach((streamId) => {
+      _.union(
+        this.streamIdsByDataIdWithoutQuery[dataId],
+        this.streamIdsByDataIdWithQuery[dataId]
+      ).forEach((streamId) => {
         const stream = this.streams[streamId];
         const streamHasDataId = _.has(stream, `dataIds.${dataId}`);
 
         if (streamHasDataId && stream.type === 'singleObject') {
           stream.observer.next(response);
         } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
-          console.log('zolg');
           stream.observer.next((previous) => ({
             ...previous,
             data: previous.data.map(child => child.id === dataId ? response['data'] : child)
@@ -293,14 +288,10 @@ class Streams {
         }
       });
 
-      const streamsToReFetch = _.union(this.streamIdsByApiEndPointWithQuery[apiEndpoint], this.streamIdsByDataIdWithQuery[dataId]);
-      streamsToReFetch.forEach((streamId) => this.streams[streamId].fetch());
-
-      /*
-      _(this.streamIdsByApiEndPointWithQuery[apiEndpoint]).forEach((streamId) => {
-        this.streams[streamId].fetch();
-      });
-      */
+      _.union(
+        this.streamIdsByApiEndPointWithQuery[apiEndpoint], 
+        this.streamIdsByDataIdWithQuery[dataId]
+      ).forEach(streamId => this.streams[streamId].fetch());
 
       return response;
     } catch (error) {
@@ -315,7 +306,10 @@ class Streams {
     try {
       await request(apiEndpoint, null, { method: 'DELETE' }, null);
 
-      _(this.streamIdsByDataIdWithoutQuery[dataId]).forEach((streamId) => {
+      _.union(
+        this.streamIdsByDataIdWithoutQuery[dataId],
+        this.streamIdsByDataIdWithQuery[dataId]
+      ).forEach((streamId) => {
         const stream = this.streams[streamId];
         const streamHasDataId = _.has(stream, `dataIds.${dataId}`);
 
@@ -329,14 +323,10 @@ class Streams {
         }
       });
 
-      const streamsToReFetch = _.union(this.streamIdsByApiEndPointWithQuery[apiEndpoint], this.streamIdsByDataIdWithQuery[dataId]);
-      streamsToReFetch.forEach((streamId) => this.streams[streamId].fetch());
-
-      /*
-      _(this.streamIdsByApiEndPointWithQuery[apiEndpoint]).forEach((streamId) => {
-        this.streams[streamId].fetch();
-      });
-      */
+      _.union(
+        this.streamIdsByApiEndPointWithQuery[apiEndpoint], 
+        this.streamIdsByDataIdWithQuery[dataId]
+      ).forEach(streamId => this.streams[streamId].fetch());
 
       return true;
     } catch (error) {

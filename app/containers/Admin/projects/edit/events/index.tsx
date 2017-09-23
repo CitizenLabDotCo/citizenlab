@@ -12,7 +12,7 @@ import { eventsStream, IEventData, deleteEvent } from 'services/events';
 
 // Components
 import { Link } from 'react-router';
-import T from 'containers/T';
+import T from 'components/T';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import buttonMixin from 'components/admin/StyleMixins/buttonMixin';
