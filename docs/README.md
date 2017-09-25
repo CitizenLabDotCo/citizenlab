@@ -14,9 +14,12 @@
 - Initial loading animation on page load
 - Initial version of the legal pages (T&C, privacy policy, cookie policy)
 - All forms give more detailed error information when something goes wrong
+- Full caching and significant speed improvements for all data resources
 
 ### Changed
-- Restyling of the landing page, idea cards and project cards
+- Refactoring and restyling of the landing page, idea cards and project cards
+- Added separate sign in and sign up components
+- Cleaned up old and unused code
 - The navbar is no longer shown when opening a modal
 - Lots of little tweaks to styling, UX and responsiveness
 
