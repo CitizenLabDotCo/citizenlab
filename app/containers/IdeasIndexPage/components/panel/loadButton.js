@@ -6,7 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'semantic-ui-react';
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 import { loadNextPage } from '../../actions';
 import selectIdeasIndexPageDomain from '../../selectors';
 

@@ -15,7 +15,7 @@ import { makeSelectResourceBySlug } from 'utils/resources/selectors';
 import { loadUserBySlugRequest } from 'resources/users/actions';
 import { loadUserWatcher } from 'resources/users/sagas';
 // components
-import T from 'containers/T';
+import T from 'components/T';
 import HelmetIntl from 'components/HelmetIntl';
 import IdeaCards from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';

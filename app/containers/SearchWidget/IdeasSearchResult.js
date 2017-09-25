@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from '../T';
+import { T } from 'components/T';
 
 // renders one Search.Result (wrapped by IdeasSearchResultWrapper) coming from <Search />
 // We use a custom render as wrapper for T component to: handle multiloc title

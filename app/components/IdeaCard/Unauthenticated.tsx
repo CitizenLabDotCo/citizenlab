@@ -88,7 +88,7 @@ export default class Unauthenticated extends React.PureComponent {
   goToRegister = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    browserHistory.push('/register');
+    browserHistory.push('/sign-up');
   }
 
   render() {

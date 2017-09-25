@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import T from 'containers/T';
+import T from 'components/T';
 import styled from 'styled-components';
 // import { FormattedMessage } from 'react-intl';
 import ContentContainer from 'components/ContentContainer';
@@ -55,24 +55,26 @@ const Right = styled.aside`
   `}
 `;
 
-// const AddIdeaButtonStyled = styled.button`
-//   background-color: ${(props) => props.theme.colorMain};
-//   border-radius: 5px;
-//   width: 100%;
-//   height: 85px;
-//   text-align: center;
-//   font-size: 20px;
-//   font-weight: bold;
-//   margin-bottom: 25px;
+/*
+const AddIdeaButtonStyled = styled.button`
+  background-color: ${(props) => props.theme.colorMain};
+  border-radius: 5px;
+  width: 100%;
+  height: 85px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 25px;
 
-//   > a {
-//     color: #ffffff !important;
-//   }
+  > a {
+    color: #ffffff !important;
+  }
 
-//   ${media.phone`
-//     display: none;
-//   `}
-// `;
+  ${media.phone`
+    display: none;
+  `}
+`;
+*/
 
 const ProjectImages = styled.div`
   display: flex;
@@ -129,6 +131,7 @@ const ProjectImage = styled.img`
 //   height: 23.8px;
 // `;
 
+// const ProjectsInfo = ({ project, images, className, params }) => {
 const ProjectsInfo = ({ project, images, className }) => {
   if (!project) return null;
 
