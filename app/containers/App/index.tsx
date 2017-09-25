@@ -79,9 +79,9 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
   componentWillMount() {
     const authUser$ = authUserStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
-    const topics$ = topicsStream().observable;
-    const projects$ = projectsStream().observable;
+    // const currentTenant$ = currentTenantStream().observable;
+    // const topics$ = topicsStream().observable;
+    // const projects$ = projectsStream().observable;
 
     this.subscriptions = [
       eventEmitter.observe<IModalProps>(IdeaCardComponent, 'cardClick').subscribe(({ eventValue }) => {
@@ -89,6 +89,31 @@ export default class App extends React.PureComponent<Props & RouterState, State>
         this.openModal({ ideaId, ideaSlug });
       }),
 
+      authUser$.switchMap((authUser) => {
+        console.log('zolg');
+
+        if (!authUser) {
+          signOut();
+          store.dispatch({ type: DELETE_CURRENT_USER_LOCAL });
+        } else {
+          store.dispatch({ type: LOAD_CURRENT_USER_SUCCESS, payload: authUser });
+        }
+
+        const currentTenant$ = currentTenantStream().observable;
+        const topics$ = topicsStream().observable;
+        const projects$ = projectsStream().observable;
+
+        return Rx.Observable.combineLatest(
+          topics$,
+          projects$,
+          currentTenant$.do((currentTenant) => {
+            this.setState({ currentTenant });
+            store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: currentTenant });
+          })
+        );
+      }).subscribe()
+
+      /*
       authUser$.subscribe((authUser) => {
         if (!authUser) {
           signOut();
@@ -108,6 +133,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
         topics$,
         projects$
       ).subscribe()
+      */
     ];
   }
 
