@@ -44,7 +44,9 @@
     "test": "cross-env NODE_ENV=test jest --coverage",
     "test:foundation": "NODE_ENV=test mocha --compilers js:babel-core/register --require app/components/Foundation/tests/index.js --recursive app/components/Foundation/tests",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
-    "coveralls": "cat ./coverage/lcov.info | coveralls"
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "e2e-setup": "node_modules/selenium-standalone/bin/selenium-standalone install",
+    "test:e2e": "nightwatch"
   },
   "lint-staged": {
     "*.js": "lint:eslint"
@@ -326,6 +328,7 @@
     "extract-intl": "0.0.4",
     "favicons-webpack-plugin": "0.0.7",
     "file-loader": "0.11.2",
+    "glob": "^7.1.2",
     "html-loader": "0.5.1",
     "html-webpack-plugin": "2.24.1",
     "image-webpack-loader": "^3.3.1",
@@ -337,6 +340,7 @@
     "lint-staged": "3.2.1",
     "mocha": "^3.2.0",
     "ngrok": "2.2.4",
+    "nightwatch": "^0.9.16",
     "node-plop": "0.5.4",
     "node-sass": "^4.5.0",
     "null-loader": "0.1.1",
@@ -351,6 +355,7 @@
     "redux-saga-testing": "^1.0.2",
     "rimraf": "2.5.4",
     "sass-loader": "^6.0.6",
+    "selenium-standalone": "^6.9.0",
     "selenium-webdriver": "^3.1.0",
     "shelljs": "0.7.5",
     "sinon": "2.0.0-pre",
@@ -366,8 +371,8 @@
     "typescript": "^2.5.2",
     "url-loader": "0.5.9",
     "webpack": "3.6.0",
+    "webpack-bundle-analyzer": "2.9.0",
     "webpack-dev-middleware": "1.12.0",
-    "webpack-hot-middleware": "2.19.1",
-    "webpack-bundle-analyzer": "2.9.0"
+    "webpack-hot-middleware": "2.19.1"
   }
 }
