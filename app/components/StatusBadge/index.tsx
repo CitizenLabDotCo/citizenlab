@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import T from 'containers/T';
+import T from 'components/T';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { localeStream } from 'services/locale';

@@ -5,7 +5,7 @@ import * as Rx from 'rxjs/Rx';
 import { API } from 'typings.d';
 
 // i18n
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl';
 import { appLocalePairs } from 'i18n.js';
 import messages from '../messages';

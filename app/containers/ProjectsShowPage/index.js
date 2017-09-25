@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 // components
 import WatchSagas from 'containers/WatchSagas';
-import T from 'containers/T';
+import T from 'components/T';
 import { Link } from 'react-router';
 import ImageHeader, { HeaderTitle, HeaderSubtitle } from 'components/ImageHeader';
 import Meta from './meta';

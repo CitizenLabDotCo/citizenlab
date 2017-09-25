@@ -11,7 +11,7 @@ import { preprocess } from 'utils';
 
 // translations
 import { injectIntl, InjectedIntl } from 'react-intl';
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 import messages from '../messages';
 
 // Components

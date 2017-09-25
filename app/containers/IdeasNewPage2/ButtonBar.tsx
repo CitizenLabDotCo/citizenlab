@@ -58,7 +58,6 @@ export type State = {
 export const namespace = 'IdeasNewPage2/ButtonBar';
 
 export default class ButtonBar extends React.PureComponent<Props, State> {
-  public namespace: string;
   private state$: IStateStream<State>;
   private subscriptions: Rx.Subscription[];
 
