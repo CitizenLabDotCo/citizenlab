@@ -6,6 +6,7 @@ import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 import { v4 as uuid } from 'uuid';
 import { store } from 'app';
+import { authApiEndpoint } from 'services/auth';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 
 export type pureFn<T> = (arg: T) => T;
@@ -39,12 +40,12 @@ export interface IStream<T> {
 
 class Streams {
   public streams: { [key: string]: IStream<any>};
-  private resourcesByDataId: { [key: string]: any };
-  private resourcesByStreamId: { [key: string]: any };
-  private streamIdsByApiEndPointWithQuery: { [key: string]: string[] };
-  private streamIdsByApiEndPointWithoutQuery: { [key: string]: string[] };
-  private streamIdsByDataIdWithoutQuery: { [key: string]: string[] };
-  private streamIdsByDataIdWithQuery: { [key: string]: string[] };
+  public resourcesByDataId: { [key: string]: any };
+  public resourcesByStreamId: { [key: string]: any };
+  public streamIdsByApiEndPointWithQuery: { [key: string]: string[] };
+  public streamIdsByApiEndPointWithoutQuery: { [key: string]: string[] };
+  public streamIdsByDataIdWithoutQuery: { [key: string]: string[] };
+  public streamIdsByDataIdWithQuery: { [key: string]: string[] };
 
   constructor() {
     this.streams = {};
@@ -56,6 +57,26 @@ class Streams {
     this.streamIdsByDataIdWithQuery = {};
   }
 
+  reset() {
+    _.forOwn(this.streams, (value, key) => {
+      console.log(key);
+      console.log(this.streams[key].observable['source']['_refCount']);
+    });
+
+    this.resourcesByDataId = {};
+    this.resourcesByStreamId = {};
+    this.streamIdsByApiEndPointWithQuery = {};
+    this.streamIdsByApiEndPointWithoutQuery = {};
+    this.streamIdsByDataIdWithoutQuery = {};
+    this.streamIdsByDataIdWithQuery = {};
+
+    Object.keys(this.streams)
+      .filter(streamId => streamId !== authApiEndpoint)
+      .forEach(streamId => delete this.streams[streamId]);
+
+    console.log(this.streams);
+  }
+
   isUUID(string) {
     const uuidRegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     return uuidRegExp.test(string);
@@ -63,6 +84,10 @@ class Streams {
 
   isQuery(queryParameters: null | object) {
     return _.isObject(queryParameters) && !_.isEmpty(queryParameters);
+  }
+
+  removeTrailingSlash(apiEndpoint: string) {
+    return apiEndpoint.replace(/\/$/, '');
   }
 
   getSerializedUrl(apiEndpoint: string, queryParameters: IObject | null) {
@@ -109,7 +134,7 @@ class Streams {
 
   get<T>(inputParams: IInputStreamParams<T>) {
     const params: IExtendedStreamParams<T> = { bodyData: null, queryParameters: null, ...inputParams };
-    const apiEndpoint = params.apiEndpoint.replace(/\/$/, '');
+    const apiEndpoint = this.removeTrailingSlash(params.apiEndpoint);
     const queryParameters = params.queryParameters;
     const streamId = this.getSerializedUrl(apiEndpoint, queryParameters);
 
@@ -242,7 +267,7 @@ class Streams {
   }
 
   async add<T>(unsafeApiEndpoint: string, bodyData: object | null) {
-    const apiEndpoint = unsafeApiEndpoint.replace(/\/$/, '');
+    const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
 
     try {
       const response = await request<T>(apiEndpoint, bodyData, { method: 'POST' }, null);
@@ -266,7 +291,7 @@ class Streams {
   }
 
   async update<T>(unsafeApiEndpoint: string, dataId: string, bodyData: object) {
-    const apiEndpoint = unsafeApiEndpoint.replace(/\/$/, '');
+    const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
 
     try {
       const response = await request<T>(apiEndpoint, bodyData, { method: 'PATCH' }, null);
@@ -301,7 +326,7 @@ class Streams {
   }
 
   async delete(unsafeApiEndpoint: string, dataId: string) {
-    const apiEndpoint = unsafeApiEndpoint.replace(/\/$/, '');
+    const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
 
     try {
       await request(apiEndpoint, null, { method: 'DELETE' }, null);
