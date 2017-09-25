@@ -173,6 +173,7 @@ export default class Votes extends React.PureComponent<Props, State> {
   componentWillMount() {
     const { ideaId } = this.props;
     const authUser$ = authUserStream().observable;
+
     const idea$ = Rx.Observable.combineLatest(
       ideaByIdStream(ideaId).observable,
       this.voting$
@@ -181,7 +182,11 @@ export default class Votes extends React.PureComponent<Props, State> {
     }).map(([idea, voting]) => {
       return idea;
     });
-    const myVote$ = Rx.Observable.combineLatest(authUser$, idea$).switchMap(([authUser, idea]) => {
+
+    const myVote$ = Rx.Observable.combineLatest(
+      authUser$,
+      idea$
+    ).switchMap(([authUser, idea]) => {
       if (authUser && idea && _.has(idea, 'data.relationships.user_vote.data') && idea.data.relationships.user_vote.data !== null) {
         const voteId = idea.data.relationships.user_vote.data.id;
 
