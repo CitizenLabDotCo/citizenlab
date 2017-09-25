@@ -14,7 +14,7 @@ import { preprocess } from 'utils';
 import queryString from 'query-string';
 
 // translations
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 import { injectIntl } from 'react-intl';
 import messages from '../messages';
 

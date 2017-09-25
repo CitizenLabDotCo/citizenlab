@@ -84,8 +84,8 @@ const Separator = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  margin-top: 25px;
-  margin-bottom: 15px;
+  margin-top: 40px;
+  margin-bottom: 20px;
 `;
 
 const SeparatorLine = styled.div`
@@ -107,7 +107,7 @@ const SeparatorTextContainer = styled.div`
 `;
 
 const SeparatorText = styled.div`
-  width: 50px;
+  width: 54px;
   height: 30px;
   display: flex;
   align-items: center;
@@ -115,8 +115,8 @@ const SeparatorText = styled.div`
   background: #f8f8f8;
 
   span {
-    color: #666;
-    font-size: 16px;
+    color: #999;
+    font-size: 17px;
   }
 `;
 
@@ -379,7 +379,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
             size="3"
             text={formatMessage(messages.continue)}
             onClick={this.handleOnContinue}
-            circularCorners={false}
+            circularCorners={true}
           />
         </Form>
       </CSSTransition>
@@ -437,7 +437,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
               loading={processing}
               text={formatMessage(messages.submit)}
               onClick={this.handleOnSubmit}
-              circularCorners={false}
+              circularCorners={true}
             />
             <Error text={signUpError} />
           </FormElement>
@@ -468,7 +468,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
             text={formatMessage(messages.logIn)}
             fullWidth={true}
             onClick={this.goToSignInForm}
-            circularCorners={false}
+            circularCorners={true}
           />
         </FooterButton>
       </Container>

@@ -18,7 +18,7 @@ import { API } from 'typings.d';
 import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
 import { eventStream, updateEvent, addEvent, IEvent, IEventData, IEvents, IUpdatedEventProperties } from 'services/events';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 
 // Components
 import Label from 'components/UI/Label';

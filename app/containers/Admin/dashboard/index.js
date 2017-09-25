@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import HelmetIntl from 'components/HelmetIntl';
 import styled, { ThemeProvider } from 'styled-components';
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 import moment from 'moment';
 import messages from './messages';
 import { FormattedMessage } from 'react-intl';

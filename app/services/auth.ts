@@ -6,17 +6,20 @@ import { API_PATH } from 'containers/App/constants';
 import { getJwt, setJwt, removeJwt } from 'utils/auth/jwt';
 import request from 'utils/request';
 import streams, { IStream } from 'utils/streams';
+import { browserHistory } from 'react-router';
 
 // legacy redux stuff 
 import { store } from 'app';
 import {  STORE_JWT, LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL, } from 'utils/auth/constants';
+
+export const authApiEndpoint = `${API_PATH}/users/me`;
 
 export interface IUserToken {
   jwt: string;
 }
 
 export function authUserStream() {
-  return streams.get<IUser | null>({ apiEndpoint: `${API_PATH}/users/me` });
+  return streams.get<IUser | null>({ apiEndpoint: authApiEndpoint });
 }
 
 export async function signIn(email: string, password: string) {
@@ -27,8 +30,8 @@ export async function signIn(email: string, password: string) {
     setJwt(jwt);
     store.dispatch({ type: STORE_JWT, payload: jwt });
     const authenticatedUser = await getAuthUserAsync();
-    const authStream = authUserStream();
-    authStream.observer !== null && authStream.observer.next(authenticatedUser);
+    streams.reset();
+    authUserStream().observer.next(authenticatedUser);
     return authenticatedUser;
   } catch (error) {
     signOut();
@@ -73,14 +76,19 @@ export async function signUp(
 }
 
 export function signOut() {
-  removeJwt();
-  const authStream = authUserStream();
-  authStream.observer !== null && authStream.observer.next(null);
+  const jwt = getJwt();
+
+  if (jwt) {
+    removeJwt();
+    streams.reset();
+    authUserStream().observer.next(null);
+    browserHistory.push('/');
+  }
 }
 
 export async function getAuthUserAsync() {
   try {
-    const authenticatedUser = await request<IUser>(`${API_PATH}/users/me`, null, null, null);
+    const authenticatedUser = await request<IUser>(authApiEndpoint, null, null, null);
     return authenticatedUser;
   } catch {
     signOut();
