@@ -1,5 +1,26 @@
 # Changelog
 
+## 2017-09-22
+
+### Fixed
+- Bug where multiple form inputs didn't accept typed input
+- Issues blocking the login process
+- The success message when commenting no longer blocks you from adding another comment
+- Clicking an internal link from the idea modal didn't work
+- Responsiveness of filters on the ideas page
+- Updating an idea status through the admin failed
+
+### Added
+- Initial loading animation on page load
+- Initial version of the legal pages (T&C, privacy policy, cookie policy)
+- All forms give more detailed error information when something goes wrong
+
+### Changed
+- Restyling of the landing page, idea cards and project cards
+- The navbar is no longer shown when opening a modal
+- Lots of little tweaks to styling, UX and responsiveness
+
+
 ## 2017-09-01
 
 ### Fixed
