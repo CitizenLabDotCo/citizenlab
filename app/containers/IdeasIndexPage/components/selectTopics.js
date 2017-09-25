@@ -18,7 +18,7 @@ import queryString from 'query-string';
 import { injectTFunc } from 'components/T/utils';
 
 const SelectTopic = ({ options, value, filterPage, title }) => (
-  <FilterSelector title={title} name="topics" selected={value} values={options} multiple onChange={filterPage} />
+  <FilterSelector id="filter-topics" title={title} name="topics" selected={value} values={options} multiple onChange={filterPage} />
 );
 
 SelectTopic.propTypes = {

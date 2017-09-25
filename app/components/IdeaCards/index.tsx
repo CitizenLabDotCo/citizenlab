@@ -216,7 +216,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
     const hasIdeas = (ideas !== null && ideas.data.length > 0);
 
     const loadingIndicator = (loading ? (
-      <Loading>
+      <Loading id="ideas-loading">
         <Spinner size="30px" color="#666" />
       </Loading>
     ) : null);
@@ -235,7 +235,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
     ) : null);
 
     const empty = ((!loading && !hasIdeas) ? (
-      <EmptyContainer>
+      <EmptyContainer id="ideas-empty">
         <IdeaIcon name="idea" />
         <EmptyMessage>
           <EmptyMessageLine>{formatMessage(messages.noIdea)}</EmptyMessageLine>
@@ -253,7 +253,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
     ) : null);
 
     const ideasList = ((!loading && hasIdeas && ideas) ? (
-      <IdeasList>
+      <IdeasList id="ideas-list">
         {ideas.data.map((idea) => (
           <StyledIdeaCard key={idea.id} ideaId={idea.id} />
         ))}
@@ -261,7 +261,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
     ) : null);
 
     return (
-      <Container>
+      <Container id="ideas-container">
         {loadingIndicator}
         {empty}
         {ideasList}
