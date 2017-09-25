@@ -5,7 +5,7 @@ const styled = styledComponents;
 
 // Localisation
 import { FormattedMessage } from 'react-intl';
-import T from 'containers/T';
+import T from 'components/T';
 
 // Global types
 import { Message, Multiloc } from 'typings';

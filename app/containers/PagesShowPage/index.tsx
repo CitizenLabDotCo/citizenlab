@@ -6,9 +6,9 @@
 
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 import Helmet from 'react-helmet';
-import T from 'containers/T';
+import T from 'components/T';
 import { IPageData, pageBySlugStream } from 'services/pages';
 import messages from './messages';
 import ContentContainer from 'components/ContentContainer';

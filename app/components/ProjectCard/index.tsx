@@ -16,7 +16,7 @@ import { projectImagesStream, IProjectImages } from 'services/projectImages';
 
 // i18n
 import i18n from 'utils/i18n';
-import T from 'containers/T';
+import T from 'components/T';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
 

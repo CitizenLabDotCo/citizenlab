@@ -162,10 +162,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
         const filterChange = !_.isEqual(acc.filter, filter) || !loadMore;
         const pageNumber = (filterChange ? 1 : acc.pageNumber + 1);
 
-        this.setState({
-          loading: (filterChange),
-          loadingMore: (!filterChange),
-        });
+        this.setState({ loading: (filterChange), loadingMore: (!filterChange) });
 
         return ideasStream({
           queryParameters: {
@@ -215,7 +212,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { ideas, hasMore, loading, loadingMore } = this.state;
     const { loadMoreEnabled } = this.props;
     const { formatMessage } = this.props.intl;
-    const showLoadmore = (loadMoreEnabled && hasMore);
+    const showLoadmore = (!!loadMoreEnabled && hasMore);
     const hasIdeas = (ideas !== null && ideas.data.length > 0);
 
     const loadingIndicator = (loading ? (

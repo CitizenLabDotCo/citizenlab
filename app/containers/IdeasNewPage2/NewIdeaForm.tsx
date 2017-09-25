@@ -113,8 +113,6 @@ export const namespace = 'IdeasNewPage2/NewIdeaForm';
 
 export default class NewIdeaForm extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
-  topics$: IStream<ITopics | null>;
-  projects$: IStream<IProjects | null>;
   subscriptions: Rx.Subscription[];
   titleInputElement: HTMLInputElement | null;
   descriptionElement: any | null;
@@ -122,22 +120,23 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
   constructor() {
     super();
     this.state$ = state.createStream<State>(namespace, namespace);
-    this.topics$ = topicsStream();
-    this.projects$ = projectsStream();
     this.subscriptions = [];
     this.titleInputElement = null;
     this.descriptionElement = null;
   }
 
   componentWillMount() {
+    const topics$ = topicsStream().observable;
+    const projects$ = projectsStream().observable;
+
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
 
       eventEmitter.observe(ButtonBarNamespace, 'submit').subscribe(this.handleOnSubmit),
 
       Rx.Observable.combineLatest(
-        this.topics$.observable,
-        this.projects$.observable
+        topics$,
+        projects$
       ).subscribe(([topics, projects]) => {
         this.state$.next({
           topics: this.getOptions(topics),

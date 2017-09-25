@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
 
 // router
 import { browserHistory } from 'react-router';

@@ -20,7 +20,7 @@ import { ideasStream, IIdeas } from 'services/ideas';
 import { projectsStream, IProjects } from 'services/projects';
 
 // i18n
-import T from 'containers/T';
+import T from 'components/T';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
 import i18n from 'utils/i18n';
