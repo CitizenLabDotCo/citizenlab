@@ -17,7 +17,6 @@ import { namespace as IdeaCardComponent } from 'components/IdeaCard';
 
 // auth
 import Authorize, { Else } from 'utils/containers/authorize';
-import { loadCurrentTenantSuccess } from 'utils/tenant/actions';
 
 // sagas
 import WatchSagas from 'containers/WatchSagas';
@@ -28,6 +27,8 @@ import tenantSaga from 'utils/tenant/sagas';
 // services
 import { authUserStream, signOut } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
+import { topicsStream, ITopics, ITopicData } from 'services/topics';
+import { projectsStream, IProjects, IProjectData } from 'services/projects';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -38,7 +39,8 @@ import { media } from 'utils/styleUtils';
 
 // legacy redux stuff 
 import { store } from 'app';
-import { STORE_JWT, LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
+import { LOAD_CURRENT_TENANT_SUCCESS } from 'utils/tenant/constants';
+import { LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
 
 const Container = styled.div`
   margin: 0;
@@ -76,13 +78,18 @@ export default class App extends React.PureComponent<Props & RouterState, State>
   }
 
   componentWillMount() {
+    const authUser$ = authUserStream().observable;
+    const currentTenant$ = currentTenantStream().observable;
+    const topics$ = topicsStream().observable;
+    const projects$ = projectsStream().observable;
+
     this.subscriptions = [
       eventEmitter.observe<IModalProps>(IdeaCardComponent, 'cardClick').subscribe(({ eventValue }) => {
         const { ideaId, ideaSlug } = eventValue;
         this.openModal({ ideaId, ideaSlug });
       }),
 
-      authUserStream().observable.subscribe((authUser) => {
+      authUser$.subscribe((authUser) => {
         if (!authUser) {
           signOut();
           store.dispatch({ type: DELETE_CURRENT_USER_LOCAL });
@@ -91,10 +98,16 @@ export default class App extends React.PureComponent<Props & RouterState, State>
         }
       }),
 
-      currentTenantStream().observable.subscribe((currentTenant) => {
+      currentTenant$.subscribe((currentTenant) => {
         this.setState({ currentTenant });
-        store.dispatch(loadCurrentTenantSuccess(currentTenant));
-      })
+        store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: currentTenant });
+      }),
+
+      // prefetch
+      Rx.Observable.combineLatest(
+        topics$,
+        projects$
+      ).subscribe()
     ];
   }
 
