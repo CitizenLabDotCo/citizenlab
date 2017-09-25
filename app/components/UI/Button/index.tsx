@@ -10,6 +10,7 @@ const ButtonText = styled.div`
   color: #fff;
   font-weight: 400;
   margin: 0;
+  margin-top: -1px;
   padding: 0;
   white-space: nowrap;
 `;
@@ -63,16 +64,16 @@ const StyledButton: any = styled.button`
         `;
       } else if (props.size === '2') {
         return css`
-          padding: 10px 15px;
+          padding: 10px 22px;
         `;
       } else if (props.size === '3') {
         return css`
-          padding: 12px 16px;
+          padding: 11px 24px;
         `;
       }
 
       return css`
-        padding: 8px 14px;
+        padding: 9px 20px;
       `;
     }}
   }
@@ -84,18 +85,18 @@ const StyledButton: any = styled.button`
       if (props.size === '2') {
         return css`
           font-size: 17px;
-          line-height: 17px;
+          line-height: 21px;
         `;
       } else if (props.size === '3') {
         return css`
           font-size: 18px;
-          line-height: 18px;
+          line-height: 22px;
         `;
       }
 
       return css`
         font-size: 16px;
-        line-height: 16px;
+        line-height: 20px;
       `;
     }}
   }
@@ -130,8 +131,7 @@ const StyledButton: any = styled.button`
         fill: #fff;
       }
 
-      &:hover,
-      &:focus {
+      &:hover {
         background: ${(props: any) => darken(0.15, (props.theme.colorMain || '#ccc'))};
       }
     }
@@ -161,8 +161,7 @@ const StyledButton: any = styled.button`
         fill: #555;
       }
 
-      &:hover,
-      &:focus {
+      &:hover {
         background: #ddd;
 
         ${ButtonText} {
@@ -201,16 +200,15 @@ const StyledButton: any = styled.button`
         fill: ${(props: any) => props.theme.colorMain};
       }
 
-      &:hover,
-      &:focus {
-        background: ${(props: any) => props.theme.colorMain};
+      &:hover {
+        border-color: ${(props: any) => darken(0.2, (props.theme.colorMain))};
 
         ${ButtonText} {
-          color: #fff
+          color: ${(props: any) => darken(0.15, (props.theme.colorMain))};
         }
   
         ${StyledIcon} {
-          fill: #fff
+          fill: ${(props: any) => darken(0.15, (props.theme.colorMain))};
         }
       }
     }
@@ -242,16 +240,15 @@ const StyledButton: any = styled.button`
         fill: #999;
       }
 
-      &:hover,
-      &:focus {
+      &:hover {
         border-color: #222;
 
         ${ButtonText} {
-          color: #222;
+          color: #444;
         }
   
         ${StyledIcon} {
-          fill: #222;
+          fill: #444;
         }
       }
     }

@@ -131,7 +131,6 @@ type State = {
   idea: IIdea | null;
   ideaImage: IIdeaImage | null;
   ideaAuthor: IUser | null;
-  isAuthenticated: boolean;
   locale: string | null;
   showUnauthenticated: boolean;
   loading: boolean;
@@ -149,7 +148,6 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
       idea: null,
       ideaImage: null,
       ideaAuthor: null,
-      isAuthenticated: false,
       locale: null,
       showUnauthenticated: false,
       loading: true
@@ -160,7 +158,6 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
   componentWillMount() {
     const { ideaId } = this.props;
     const locale$ = localeStream().observable;
-    const isAuthenticated$ = authUserStream().observable.map(authUser => !_.isNull(authUser));
     const ideaWithMeta$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {
       const ideaId = idea.data.id;
       const ideaImages = idea.data.relationships.idea_images.data;
@@ -181,10 +178,9 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$,
-        isAuthenticated$,
         ideaWithMeta$
-      ).subscribe(([locale, isAuthenticated, { idea, ideaImage, ideaAuthor }]) => {
-        this.setState({ idea, ideaImage, ideaAuthor, locale, isAuthenticated, loading: false });
+      ).subscribe(([locale, { idea, ideaImage, ideaAuthor }]) => {
+        this.setState({ idea, ideaImage, ideaAuthor, locale, loading: false });
       })
     ];
   }
@@ -220,7 +216,7 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { idea, ideaImage, ideaAuthor, isAuthenticated, locale, showUnauthenticated, loading } = this.state;
+    const { idea, ideaImage, ideaAuthor, locale, showUnauthenticated, loading } = this.state;
 
     if (!loading && idea && ideaAuthor && locale) {
       const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);

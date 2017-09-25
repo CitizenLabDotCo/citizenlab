@@ -147,7 +147,7 @@ export default class Error extends React.PureComponent<Props, State> {
     const timeout = 400;
 
     size = (size || '1');
-    marginTop = (marginTop || '5px');
+    marginTop = (marginTop || '3px');
     marginBottom = (marginTop || '0px');
     showIcon = (_.isBoolean(showIcon) ? showIcon : true);
     showBackground = (_.isBoolean(showBackground) ? showBackground : true);
