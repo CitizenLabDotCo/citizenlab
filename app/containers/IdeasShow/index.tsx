@@ -172,7 +172,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
     const { locale, idea, ideaImage, ideaAuthor, loading } = this.state;
 
     if (!loading && idea !== null && ideaAuthor !== null) {
-      const slug = idea.data.attributes.slug;
+      const ideaSlug = idea.data.attributes.slug;
       const avatar = ideaAuthor.data.attributes.avatar.large;
       const firstName = ideaAuthor.data.attributes.first_name;
       const lastName = ideaAuthor.data.attributes.last_name;
@@ -182,12 +182,12 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
 
       return (
         <div>
-          <Meta location={location} slug={slug} />
+          <Meta location={location} slug={ideaSlug} />
           <Content>
             <LeftColumn>
               <AuthorContainer>
                 <Avatar src={avatar} />
-                <AuthorName to={`/profile/${slug}`}>
+                <AuthorName to={`/profile/${ideaAuthor.data.attributes.slug}`}>
                   <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} />
                 </AuthorName>
                 <Timing>

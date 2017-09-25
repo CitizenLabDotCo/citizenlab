@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 import { browserHistory } from 'react-router';
 
 // components
@@ -33,7 +34,6 @@ const ModalContent = styled(clickOutside)`
   background: #fff;
   margin-left: auto;
   margin-right: auto;
-  position: relative;
   -webkit-backface-visibility: hidden;
   will-change: opacity, transform;
   z-index: 1000;
@@ -61,11 +61,11 @@ const CloseButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: fixed;
+  position: absolute;
   cursor: pointer;
   top: 15px;
   right: 15px;
-  z-index: 1;
+  z-index: 2000;
 
   &:hover {
     ${CloseIcon} {
@@ -130,36 +130,37 @@ type Props = {
 type State = {};
 
 class Modal extends React.PureComponent<Props & ITracks, State> {
-  private parentUrl: string;
+  private unlisten: Function | null;
+  private goBackUrl: string | null;
 
   constructor() {
     super();
-    this.parentUrl = window.location.href;
+    this.unlisten = null;
+    this.goBackUrl = null;
   }
 
   componentWillUnmount() {
-    document.body.classList.remove('modal-active');
-    window.removeEventListener('popstate', this.handlePopstateEvent);
+    this.cleanup();
   }
 
   componentWillUpdate(nextProps: Props, nextState: State) {
     const { opened } = this.props;
 
     if (!opened && nextProps.opened) {
-      this.onOpen(nextProps.url);
+      this.openModal(nextProps.url);
     }
 
     if (opened && !nextProps.opened) {
-      this.onClose();
+      this.cleanup();
     }
   }
 
-  onOpen = (url: undefined | string) => {
+  openModal = (url: undefined | string) => {
+    this.goBackUrl = window.location.href;
+
     window.addEventListener('popstate', this.handlePopstateEvent);
 
-    browserHistory.listen(() => {
-      this.closeModal();
-    });
+    this.unlisten = browserHistory.listen(this.props.close);
 
     if (!document.body.classList.contains('modal-active')) {
       document.body.classList.add('modal-active');
@@ -167,6 +168,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
     if (url) {
       window.history.pushState({ path: url }, '', url);
+
       // Since we bypass the normal history mechanism and take it into our own hands here,
       // we exceptionally also need to track the page change manually
       // Don't try this at home!
@@ -174,36 +176,42 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     }
   }
 
-  onClose = (goBack = false) => {
-    const { url } = this.props;
-
-    document.body.classList.remove('modal-active');
-    window.removeEventListener('popstate', this.handlePopstateEvent);
-
-    if (url && goBack) {
-      window.history.pushState({ path: this.parentUrl }, '', this.parentUrl);
+  manuallyCloseModal = () => {
+    if (this.props.url && this.goBackUrl) {
+      window.history.pushState({ path: this.goBackUrl }, '', this.goBackUrl);
     }
-  }
 
-  closeModal = () => {
     this.props.close();
   }
 
   handlePopstateEvent = () => {
-    if (location.href === this.parentUrl) {
+    if (location.href === this.goBackUrl) {
       this.props.clickBack({ extra: { url: this.props.url } });
-      this.closeModal();
+    }
+
+    this.props.close();
+  }
+
+  cleanup = () => {
+    this.goBackUrl = null;
+    document.body.classList.remove('modal-active');
+    window.removeEventListener('popstate', this.handlePopstateEvent);
+
+    if (_.isFunction(this.unlisten)) {
+      this.unlisten();
     }
   }
 
   clickOutsideModal = () => {
     this.props.clickOutsideModal({ extra: { url: this.props.url } });
-    this.closeModal();
+    this.manuallyCloseModal();
   }
 
-  clickButton = () => {
+  clickCloseButton = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     this.props.clickCloseButton({ extra: { url: this.props.url } });
-    this.closeModal();
+    this.manuallyCloseModal();
   }
 
   render() {
@@ -212,12 +220,12 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     const element = (opened ? (
       <CSSTransition classNames="modal" timeout={350} exit={false}>
         <ModalContainer>
-          <CloseButton onClick={this.clickButton}>
-            <CloseIcon name="close2" />
-          </CloseButton>
           <ModalContent onClickOutside={this.clickOutsideModal}>
             {children}
           </ModalContent>
+          <CloseButton onClick={this.clickCloseButton}>
+            <CloseIcon name="close2" />
+          </CloseButton>
         </ModalContainer>
       </CSSTransition>
     ) : null);

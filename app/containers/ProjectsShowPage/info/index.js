@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import T from 'components/T';
 import styled from 'styled-components';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 import ContentContainer from 'components/ContentContainer';
-import messages from './messages';
+// import messages from './messages';
 import { selectProjectImages } from './selectors';
 import { media } from 'utils/styleUtils';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 
 
 const Container = styled.div`
@@ -55,6 +55,7 @@ const Right = styled.aside`
   `}
 `;
 
+/*
 const AddIdeaButtonStyled = styled.button`
   background-color: ${(props) => props.theme.colorMain};
   border-radius: 5px;
@@ -73,6 +74,7 @@ const AddIdeaButtonStyled = styled.button`
     display: none;
   `}
 `;
+*/
 
 const ProjectImages = styled.div`
   display: flex;
@@ -129,7 +131,8 @@ const ProjectImage = styled.img`
 //   height: 23.8px;
 // `;
 
-const ProjectsInfo = ({ project, images, className, params }) => {
+// const ProjectsInfo = ({ project, images, className, params }) => {
+const ProjectsInfo = ({ project, images, className }) => {
   if (!project) return null;
 
   const title = project.getIn(['attributes', 'title_multiloc']);

@@ -307,44 +307,6 @@ export default function createRoutes(store) {
       ],
     },
     {
-      path: '/sign-in/recover-password',
-      name: 'usersPasswordRecovery',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/UsersPasswordRecovery/reducer'),
-          import('containers/UsersPasswordRecovery'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([reducer, component]) => {
-          injectReducer('usersPasswordRecovery', reducer.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    },
-    {
-      path: '/reset-password',
-      name: 'UsersPasswordReset',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/UsersPasswordReset/reducer'),
-          import('containers/UsersPasswordReset'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([reducer, component]) => {
-          injectReducer('resetUserPassword', reducer.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    },
-    {
       path: '/pages/:slug',
       name: 'pagesShowPage',
       getComponent(nextState, cb) {
