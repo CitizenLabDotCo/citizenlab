@@ -325,7 +325,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     const step1 = (showStep1 && (
       <CSSTransition classNames="form" timeout={timeout}>
-        <Form onSubmit={this.handleOnContinue} noValidate={true} className="step1">
+        <Form id="signup-step1" onSubmit={this.handleOnContinue} noValidate={true} className="step1">
           <FormElement>
             <Label value={formatMessage(messages.firstNameLabel)} htmlFor="firstName" />
             <Input
@@ -387,7 +387,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     const step2 = (!showStep1 && (
       <CSSTransition classNames="form" timeout={timeout}>
-        <Form onSubmit={this.handleOnSubmit} noValidate={true}>
+        <Form id="signup-step2" onSubmit={this.handleOnSubmit} noValidate={true}>
           <FormElement>
             <Label value={formatMessage(messages.yearOfBirthLabel)} htmlFor="yearOfBirth" />
             <Select
