@@ -4,7 +4,7 @@ module.exports = {
     .url('localhost:3000/ideas')
     .waitForElementVisible('#ideas-filters', 5000)
     .waitForElementVisible('#ideas-list', 5000)
-    .waitForElementVisible('.idea-card', 5000)
+    .waitForElementVisible('.idea-card:first-child', 5000)
     .end();
   },
 
