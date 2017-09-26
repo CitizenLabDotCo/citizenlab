@@ -58,11 +58,6 @@ class Streams {
   }
 
   reset() {
-    _.forOwn(this.streams, (value, key) => {
-      console.log(key);
-      console.log(this.streams[key].observable['source']['_refCount']);
-    });
-
     this.resourcesByDataId = {};
     this.resourcesByStreamId = {};
     this.streamIdsByApiEndPointWithQuery = {};
@@ -73,8 +68,6 @@ class Streams {
     Object.keys(this.streams)
       .filter(streamId => streamId !== authApiEndpoint)
       .forEach(streamId => delete this.streams[streamId]);
-
-    console.log(this.streams);
   }
 
   isUUID(string) {
@@ -91,9 +84,9 @@ class Streams {
   }
 
   getSerializedUrl(apiEndpoint: string, queryParameters: IObject | null) {
-    if (this.isQuery(queryParameters)) {
-      return apiEndpoint + Object.keys(queryParameters as object).sort().map((key) => {
-        return encodeURIComponent(key) + '=' + encodeURIComponent((queryParameters as object)[key]);
+    if (this.isQuery(queryParameters) && queryParameters) {
+      return apiEndpoint + Object.keys(queryParameters).sort().map((key) => {
+        return encodeURIComponent(key) + '=' + encodeURIComponent((queryParameters)[key]);
       }).join('&');
     }
 
