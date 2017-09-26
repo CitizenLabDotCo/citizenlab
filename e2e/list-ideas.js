@@ -12,8 +12,10 @@ module.exports = {
     browser
     .url('localhost:3000/ideas')
     .waitForElementVisible('#ideas-list', 5000)
-    .click('#filter-sort')
-    .waitForElementVisible('')
+    .click('.filter-selector-sort button')
+    .waitForElementVisible('.filter-selector-sort ul', 1000)
+    .click('.filter-selector-sort ul li:last-child')
+    .waitForElementVisible('#ideas-list', 5000)
     .end();
   },
 };
