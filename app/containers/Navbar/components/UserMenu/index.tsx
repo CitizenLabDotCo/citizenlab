@@ -147,22 +147,22 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     const { authUser, dropdownOpened } = this.state;
 
     return (authUser ? (
-      <Container onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
+      <Container id="user-menu-container" onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
         {/* <UserImage avatar={true} src={authUser.data.attributes.avatar.small} /> */}
         <UserIcon name="user" />
         {dropdownOpened &&
-          <Dropdown>
+          <Dropdown id="user-menu-dropdown">
             <Authorize action={['users', 'admin']} >
-              <DropdownItem onClick={this.navigateTo('/admin')}>
+              <DropdownItem id="admin-link" onClick={this.navigateTo('/admin')}>
                 <FormattedMessage {...messages.admin} />
                 <MenuIcon src={adminIcon} alt="admin" />
               </DropdownItem>
             </Authorize>
-            <DropdownItem onClick={this.navigateTo('/profile/edit')}>
+            <DropdownItem id="profile-edit-link" onClick={this.navigateTo('/profile/edit')}>
               <FormattedMessage {...messages.editProfile} />
               <MenuIcon src={editProfileIcon} alt="edit profile" />
             </DropdownItem>
-            <DropdownItem onClick={this.signOut}>
+            <DropdownItem id="sign-out-link" onClick={this.signOut}>
               <FormattedMessage {...messages.signOut} />
               <MenuIcon src={signOutIcon} alt="sign out" />
             </DropdownItem>

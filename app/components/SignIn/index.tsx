@@ -217,7 +217,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container>
-        <Form onSubmit={this.handleOnSubmit} noValidate={true}>
+        <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
           <FormElement>
             {/* <Label value={formatMessage(messages.emailLabel)} htmlFor="email" /> */}
             <Input
