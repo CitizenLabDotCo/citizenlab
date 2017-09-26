@@ -45,7 +45,7 @@
     "test:foundation": "NODE_ENV=test mocha --compilers js:babel-core/register --require app/components/Foundation/tests/index.js --recursive app/components/Foundation/tests",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "e2e-setup": "node_modules/selenium-standalone/bin/selenium-standalone install",
+    "e2e-setup": "selenium-standalone install",
     "test:e2e": "nightwatch"
   },
   "lint-staged": {
