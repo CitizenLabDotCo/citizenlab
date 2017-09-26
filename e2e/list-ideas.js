@@ -2,20 +2,20 @@ module.exports = {
   visibleIdeas: (browser) => {
     browser
     .url('localhost:3000/ideas')
-    .waitForElementVisible('#ideas-filters', 5000)
-    .waitForElementVisible('#ideas-list', 5000)
-    .waitForElementVisible('.idea-card:first-child', 5000)
+    .waitForElementVisible('#ideas-filters')
+    .waitForElementVisible('#ideas-list')
+    .waitForElementVisible('.idea-card:first-child')
     .end();
   },
 
   changeOrder: (browser) => {
     browser
     .url('localhost:3000/ideas')
-    .waitForElementVisible('#ideas-list', 5000)
+    .waitForElementVisible('#ideas-list')
     .click('.filter-selector-sort button')
-    .waitForElementVisible('.filter-selector-sort ul', 1000)
+    .waitForElementVisible('.filter-selector-sort ul')
     .click('.filter-selector-sort ul li:last-child')
-    .waitForElementVisible('#ideas-list', 5000)
+    .waitForElementVisible('#ideas-list')
     .end();
   },
 };

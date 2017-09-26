@@ -2,14 +2,14 @@ module.exports = {
   login: (browser) => {
     browser
     .url('localhost:3000/sign-in')
-    .waitForElementVisible('#signin', 5000)
+    .waitForElementVisible('#signin')
     .setValue('#email', 'koen@citizenlab.co')
     .setValue('#password', 'testtest')
     .click('#signin button')
-    .waitForElementVisible('#landing-page', 5000)
+    .waitForElementVisible('#landing-page')
     .click('#user-menu-container')
-    .waitForElementVisible('#user-menu-dropdown', 5000)
-    .waitForElementVisible('#sign-out-link', 5000)
+    .waitForElementVisible('#user-menu-dropdown')
+    .waitForElementVisible('#sign-out-link')
     .end();
   },
 };
