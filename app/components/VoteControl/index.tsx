@@ -325,12 +325,12 @@ export default class Votes extends React.PureComponent<Props, State> {
     const { upvotesCount, downvotesCount, myVoteMode, voting, votingAnimation } = this.state;
 
     return (
-      <Container>
+      <Container className={`vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode}`}>
         <Upvote
           active={myVoteMode === 'up'}
           onClick={this.onClickUpvote}
           innerRef={this.setUpvoteRef}
-          className={votingAnimation === 'up' ? 'voteClick' : ''}
+          className={`upvote ${votingAnimation === 'up' ? 'voteClick' : ''}`}
         >
           <VoteIconContainer><VoteIcon name="upvote-2" /></VoteIconContainer>
           <VoteCount>{upvotesCount}</VoteCount>
@@ -339,7 +339,7 @@ export default class Votes extends React.PureComponent<Props, State> {
           active={myVoteMode === 'down'}
           onClick={this.onClickDownvote}
           innerRef={this.setDownvoteRef}
-          className={votingAnimation === 'down' ? 'voteClick' : ''}
+          className={`downvote ${votingAnimation === 'down' ? 'voteClick' : ''}`}
         >
           <VoteIconContainer><VoteIcon name="downvote-2" /></VoteIconContainer>
           <VoteCount>{downvotesCount}</VoteCount>
