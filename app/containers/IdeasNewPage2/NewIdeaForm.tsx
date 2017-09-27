@@ -263,7 +263,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
 
     return (
       <Container>
-        <Form>
+        <Form id="new-idea-form">
           <Title>{formatMessage(messages.formTitle)}</Title>
 
           <FormElement name="titleInput">

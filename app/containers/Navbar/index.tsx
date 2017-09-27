@@ -268,6 +268,7 @@ class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps, St
           <Right>
             <RightItem>
               <Button
+                className="add-idea-button"
                 text={formatMessage(messages.startIdea)}
                 style="primary"
                 size="1"
