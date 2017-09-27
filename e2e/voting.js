@@ -1,7 +1,5 @@
 module.exports = {
   voting: (browser) => {
-    let ideaUrl;
-
     // Signin first to be able to vote
     const signinPage = browser.page.signin();
 
@@ -14,16 +12,14 @@ module.exports = {
     .url('localhost:3000/ideas?sort=new')
     .waitForElementVisible('.idea-card:first-child')
     .click('.idea-card.not-voted')
-    .url((location) => {
-      ideaUrl = location;
-    })
-    .url(ideaUrl)
+    .waitForElementVisible('#idea-show')
+    .refresh()
     .waitForElementVisible('#idea-show .vote-controls')
-    .click('.upvote')
+    .click('.vote-controls .upvote')
     .waitForElementVisible('.vote-controls.up')
-    .click('.downvote')
+    .click('.vote-controls .downvote')
     .waitForElementVisible('.vote-controls.down')
-    .click('.downvote')
+    .click('.vote-controls .downvote')
     .waitForElementVisible('.vote-controls.neutral')
     .end();
   },
