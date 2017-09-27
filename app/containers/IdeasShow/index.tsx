@@ -34,6 +34,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
+const Container = styled.div``;
 
 const Content = styled.div`
   width: 100%;
@@ -181,7 +182,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       const bodyMultiloc = idea.data.attributes.body_multiloc;
 
       return (
-        <div>
+        <Container>
           <Meta location={location} slug={ideaSlug} />
           <Content>
             <LeftColumn>
@@ -216,7 +217,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
               {/* <SharingLine location={location} image={images[0] && images[0].attributes.versions.medium} /> */}
             </RightColumn>
           </Content>
-        </div>
+        </Container>
       );
     }
 

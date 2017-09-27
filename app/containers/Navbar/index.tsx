@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import { browserHistory, Link } from 'react-router';
+import { withRouter, RouterState, browserHistory, Link } from 'react-router';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
@@ -28,7 +28,7 @@ import messages from './messages';
 
 // style
 import { darken } from 'polished';
-import styled, { ThemeProvider, css } from 'styled-components';
+import styled, { ThemeProvider, css, keyframes } from 'styled-components';
 
 const Container: any = styled.div`
   width: 100%;
@@ -37,11 +37,12 @@ const Container: any = styled.div`
   height: ${(props) => props.theme.menuHeight}px;
   position: relative;
   background: #fff;
-  border-bottom: 1px solid #fff;
   z-index: 999;
   position: fixed;
   top: 0;
   transition: border-color 150ms ease-out;
+  border-bottom: 1px solid;
+  border-color: ${(props: any) => props.hideBorder ? '#fff' : props.theme.colorNavBottomBorder};
 
   ${(props: any) => props.scrolled && css`
     border-color: ${props => props.theme.colorNavBottomBorder};
@@ -129,6 +130,16 @@ const RightItem: any = styled.div`
   ${(props: any) => props.hideOnPhone && media.phone`display: none;`}
 `;
 
+const AddIdeaButton = styled(Button)`
+  /*
+  transform: scale 200ms ease-out;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+  */
+`;
+
 const LoginLink = styled.div`
   color: ${(props) => props.theme.colorMain};
   font-size: 16px;
@@ -155,7 +166,7 @@ type State = {
   scrolled: boolean;
 };
 
-class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps, State> {
+class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps & RouterState, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -236,13 +247,17 @@ class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps, St
   }
 
   render() {
+    const { pathname } = this.props.location;
     const { formatMessage } = this.props.intl;
     const { authUser, currentTenant, scrolled } = this.state;
     const tenantLogo = (currentTenant ? currentTenant.data.attributes.logo.medium : null);
+    const hideBorder = (pathname === '/' || pathname === 'ideas' || pathname === 'projects' || pathname === '/projects');
+
+    console.log(pathname);
 
     return (
       <ThemeProvider theme={this.navbarTheme}>
-        <Container scrolled={scrolled}>
+        <Container scrolled={scrolled} hideBorder={hideBorder}>
           <MobileNavigation />
           <Left>
             {tenantLogo &&
@@ -267,7 +282,7 @@ class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps, St
           </Left>
           <Right>
             <RightItem>
-              <Button
+              <AddIdeaButton
                 text={formatMessage(messages.startIdea)}
                 style="primary"
                 size="1"
@@ -306,7 +321,7 @@ class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps, St
   }
 }
 
-export default injectTracks<Props>({
+export default withRouter(injectTracks<Props>({
   trackClickOpenNotifications: tracks.clickOpenNotifications,
   trackClickCloseNotifications: tracks.clickCloseNotifications,
-})(injectIntl<Props>(Navbar));
+})(injectIntl<Props>(Navbar)));

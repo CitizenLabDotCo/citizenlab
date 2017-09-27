@@ -6,6 +6,7 @@ import * as Rx from 'rxjs/Rx';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { IOption } from 'typings';
+import { Link } from 'react-router';
 
 // components
 import Label from 'components/UI/Label';
@@ -31,43 +32,68 @@ import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // style
+import { darken } from 'polished';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  flex: 1;
+  width: 100%;
 `;
 
 const Form = styled.form`
   width: 100%;
+  height: auto;
+  max-width: 360px;
   position: relative;
   -webkit-backface-visibility: hidden;
   will-change: auto;
 
   &.form-enter {
-    transform: translateX(100vw);
+    opacity: 0.01;
     position: absolute;
-    will-change: transform;
+    will-change: opacity, transform;
 
     &.step1 {
-      transform: translateX(-100vw);
+      transform: translateX(-100px);
+    }
+
+    &.step2 {
+      transform: translateX(100px);
     }
 
     &.form-enter-active {
+      opacity: 1;
       transform: translateX(0);
-      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: opacity 600ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                  transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 
   &.form-exit {
-    transform: translateX(0);
-    will-change: transform;
+    opacity: 1;
+    will-change: opacity, transform;
+
+    &.step1 {
+      height: 447px;
+    }
+
+    &.step2 {
+      height: 340px;
+    }
 
     &.form-exit-active {
-      transform: translateX(100vw);
-      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      opacity: 0.01;
+      transition: opacity 600ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                  transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                  height 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
 
       &.step1 {
-        transform: translateX(-100vw);
+        height: 340px;
+        transform: translateX(-100px);
+      }
+
+      &.step2 {
+        height: 447px;
+        transform: translateX(100px);
       }
     }
   }
@@ -78,14 +104,18 @@ const FormElement = styled.div`
   margin-bottom: 20px;
 `;
 
+const StyledButton = styled(Button)`;
+  margin-top: 0px;
+`;
+
 const Separator = styled.div`
   width: 100%;
   height: 30px;
   display: flex;
   align-items: center;
   position: relative;
-  margin-top: 40px;
-  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 `;
 
 const SeparatorLine = styled.div`
@@ -120,12 +150,32 @@ const SeparatorText = styled.div`
   }
 `;
 
-const FooterButton = styled.div`
+const Footer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  padding-top: 15px;
-  padding-bottom: 15px;
+`;
+
+const FooterText = styled.div`
+  color: #888;
+  font-size: 17px;
+  line-height: 21px;
+  font-weight: 400;
+  margin-top: 0px;
+  margin-bottom: 0px;
+
+  span {
+    margin-right: 5px;
+  }
+`;
+
+const FooterLink = styled.span`
+  color: ${(props) => props.theme.colorMain};
+
+  &:hover {
+    color: ${(props) => darken(0.2, props.theme.colorMain)};
+    cursor: pointer;
+  }
 `;
 
 type Props = {
@@ -300,7 +350,6 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-
   render() {
     const { formatMessage } = this.props.intl;
     const {
@@ -375,19 +424,21 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
             />
           </FormElement>
 
-          <Button
-            size="3"
-            text={formatMessage(messages.continue)}
-            onClick={this.handleOnContinue}
-            circularCorners={true}
-          />
+          <FormElement>
+            <StyledButton
+              size="3"
+              text={formatMessage(messages.continue)}
+              onClick={this.handleOnContinue}
+              circularCorners={true}
+            />
+          </FormElement>
         </Form>
       </CSSTransition>
     ));
 
     const step2 = (!showStep1 && (
       <CSSTransition classNames="form" timeout={timeout}>
-        <Form onSubmit={this.handleOnSubmit} noValidate={true}>
+        <Form onSubmit={this.handleOnSubmit} noValidate={true} className="step2">
           <FormElement>
             <Label value={formatMessage(messages.yearOfBirthLabel)} htmlFor="yearOfBirth" />
             <Select
@@ -432,7 +483,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
           </FormElement>
 
           <FormElement>
-            <Button
+            <StyledButton
               size="3"
               loading={processing}
               text={formatMessage(messages.submit)}
@@ -461,7 +512,13 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
           </SeparatorTextContainer>
         </Separator>
 
-        <FooterButton>
+        <Footer>
+          <FooterText>
+            <span>{formatMessage(messages.alreadyHaveAnAccount)}</span>
+            <FooterLink onClick={this.goToSignInForm}>{formatMessage(messages.logIn)}</FooterLink>
+          </FooterText>
+
+          {/*
           <Button
             size="3"
             style="secondary-outlined"
@@ -470,7 +527,8 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
             onClick={this.goToSignInForm}
             circularCorners={true}
           />
-        </FooterButton>
+          */}
+        </Footer>
       </Container>
     );
   }

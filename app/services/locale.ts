@@ -4,7 +4,6 @@ import { API_PATH } from 'containers/App/constants';
 import { currentTenantStream } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import { store } from 'app';
-
 import { changeLocale } from 'containers/LanguageProvider/actions';
 
 export function localeStream() {
@@ -17,12 +16,8 @@ export function localeStream() {
   ).map(([authUser, currentTenantLocales]) => {
     let locale = 'en';
 
-    if (authUser) {
-      const authUserLocale = authUser.data.attributes.locale;
-
-      if (currentTenantLocales[authUserLocale]) {
-        locale = authUserLocale;
-      }
+    if (authUser && _.isString(authUser.data.attributes.locale) && _.includes(currentTenantLocales, authUser.data.attributes.locale)) {
+      return authUser.data.attributes.locale;
     } else if (currentTenantLocales && currentTenantLocales.length > 0) {
       locale = currentTenantLocales[0];
     }

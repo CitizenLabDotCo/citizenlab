@@ -9,7 +9,7 @@ import { Link, browserHistory } from 'react-router';
 import Icon from 'components/UI/Icon';
 import Unauthenticated from 'components/IdeaCard/Unauthenticated';
 import VoteControl from 'components/VoteControl';
-import { IModalProps } from 'containers/App';
+import { IIdeaCardModalData } from 'containers/App';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -27,9 +27,9 @@ import { FormattedMessage, FormattedRelative } from 'react-intl';
 import messages from './messages';
 
 // styles
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
-const IdeaContainer: any = styled(Link) `
+const IdeaContainer: any = styled.div`
   width: 100%;
   height: 370px;
   margin-bottom: 22px;
@@ -46,7 +46,7 @@ const IdeaContainer: any = styled(Link) `
   border: solid 1px #e5e5e5;
 
   &:hover {
-    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -141,6 +141,7 @@ export const namespace = 'components/IdeaCard/index';
 export default class IdeaCard extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
+  ideaCardElement: HTMLDivElement | null;
 
   constructor() {
     super();
@@ -153,6 +154,7 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
       loading: true
     };
     this.subscriptions = [];
+    this.ideaCardElement = null;
   }
 
   componentWillMount() {
@@ -189,14 +191,40 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  setRef = (element: HTMLDivElement) => {
+    console.log('set ref:');
+    console.log(element);
+    this.ideaCardElement = element;
+  }
+
   onCardClick = (event) => {
     const { idea } = this.state;
 
-    if (idea) {
+    if (this.ideaCardElement) {
+      const boundingRect = this.ideaCardElement.getBoundingClientRect();
+      console.log('width: ' + Math.round(boundingRect.width));
+      console.log('height: ' + Math.round(boundingRect.height));
+      console.log('top: ' + boundingRect.top);
+      console.log('left: ' + boundingRect.left);
+    }
+
+    if (idea && this.ideaCardElement) {
       event.preventDefault();
       const ideaId = idea.data.id;
       const ideaSlug = idea.data.attributes.slug;
-      eventEmitter.emit<IModalProps>(namespace, 'cardClick', { ideaId, ideaSlug });
+      const boundingRect = this.ideaCardElement.getBoundingClientRect();
+      const ideaCardElement = {
+        width: boundingRect.width,
+        height: boundingRect.height,
+        offsetTop: boundingRect.top,
+        offsetBottom: boundingRect.bottom,
+        offsetLeft: boundingRect.left,
+        offsetRight: boundingRect.right
+      };
+
+      eventEmitter.emit<IIdeaCardModalData>(namespace, 'cardClick', { ideaId, ideaSlug, ideaCardElement });
+
+      // browserHistory.push(`ideas/${ideaSlug}`);
     }
   }
 
@@ -223,7 +251,11 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
       const authorName = (ideaAuthor ? `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}` : null);
 
       return (
-        <IdeaContainer className={className} onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`}>
+        <IdeaContainer 
+          onClick={this.onCardClick} 
+          innerRef={this.setRef}
+          className={className}
+        >
           {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
           {!ideaImageUrl &&
             <IdeaImagePlaceholder>

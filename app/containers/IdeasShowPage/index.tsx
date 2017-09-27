@@ -16,13 +16,11 @@ import { ideaBySlugStream, IIdea } from 'services/ideas';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const BackgroundWrapper = styled.div`
-  margin: 50px 0;
-
-  ${media.notPhone`
-    border-radius: 5px;
-    background-color: #ffffff;
-  `}
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  background: #fff;
 `;
 
 type Props = {
@@ -66,11 +64,11 @@ class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
 
     if (ideaId !== null) {
       return (
-        <ContentContainer>
-          <BackgroundWrapper>
-            <IdeasShow location={location} ideaId={ideaId} />
-          </BackgroundWrapper>
-        </ContentContainer>
+        <Container>
+          <ContentContainer>
+              <IdeasShow location={location} ideaId={ideaId} />
+          </ContentContainer>
+        </Container>
       );
     }
 
