@@ -292,7 +292,7 @@ class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps, St
 
             {!authUser &&
               <RightItem hideOnPhone={true}>
-                <Link to="/sign-in">
+                <Link to="/sign-in" id="login-link">
                   <LoginLink>
                     <FormattedMessage {...messages.login} />
                   </LoginLink>
