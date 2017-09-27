@@ -286,7 +286,7 @@ class ProfileForm extends React.Component {
               <Nav goTo={this.goToSection} />
             </Grid.Column>
             <Grid.Column computer={12} mobile={16}>
-              <FormContentWrapper>
+              <FormContentWrapper id="profile-edit-form">
                 {/* BASICS */}
                 <section ref={(section1) => { this['section-basics'] = section1; }}>
                   <SectionHeaderStyled>
@@ -307,6 +307,7 @@ class ProfileForm extends React.Component {
                     <LabelInputPairStyled>
                       <LabelWithTooltip id="firstName" />
                       <Input
+                        id="first_name"
                         key="first_name"
                         name="first_name"
                         onChange={(value) => this.handleInputChange(value, 'first_name')}
@@ -317,6 +318,7 @@ class ProfileForm extends React.Component {
                     <LabelInputPairStyled>
                       <LabelWithTooltip id="lastName" />
                       <Input
+                        id="last_name"
                         name="last_name"
                         onChange={(value) => this.handleInputChange(value, 'last_name')}
                         value={user && user.last_name}
@@ -326,6 +328,7 @@ class ProfileForm extends React.Component {
                     <LabelInputPairStyled>
                       <LabelWithTooltip id="email" />
                       <Input
+                        id="email"
                         name="email"
                         onChange={(value) => this.handleInputChange(value, 'email')}
                         value={user && user.email}
@@ -335,6 +338,7 @@ class ProfileForm extends React.Component {
                     <LabelInputPairStyled>
                       <LabelWithTooltip id="password" />
                       <Input
+                        id="password"
                         type="password"
                         name="password"
                         onChange={(value) => this.handleInputChange(value, 'password')}
