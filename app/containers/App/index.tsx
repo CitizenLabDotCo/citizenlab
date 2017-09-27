@@ -11,7 +11,7 @@ import Navbar from 'containers/Navbar';
 import messages from './messages';
 import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import Modal from 'components/UI/Modal';
+import FullscreenModal from 'components/UI/FullscreenModal';
 import IdeasShow from 'containers/IdeasShow';
 import { namespace as IdeaCardComponent } from 'components/IdeaCard';
 
@@ -52,16 +52,24 @@ const Container = styled.div`
   `}
 `;
 
-export interface IModalProps {
+export interface IIdeaCardModalData {
   ideaId: string;
   ideaSlug: string;
+  ideaCardElement: {
+    width: number;
+    height: number;
+    offsetTop: number;
+    offsetBottom: number;
+    offsetLeft: number;
+    offsetRight: number;
+  };
 }
 
 type Props = {};
 
 type State = {
   currentTenant: ITenant | null;
-  modal: IModalProps | null;
+  modalInfo: IIdeaCardModalData | null;
 };
 
 export default class App extends React.PureComponent<Props & RouterState, State> {
@@ -72,7 +80,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     super();
     this.state = {
       currentTenant: null,
-      modal: null
+      modalInfo: null
     };
     this.subscriptions = [];
   }
@@ -81,9 +89,9 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const authUser$ = authUserStream().observable;
 
     this.subscriptions = [
-      eventEmitter.observe<IModalProps>(IdeaCardComponent, 'cardClick').subscribe(({ eventValue }) => {
-        const { ideaId, ideaSlug } = eventValue;
-        this.openModal({ ideaId, ideaSlug });
+      eventEmitter.observe<IIdeaCardModalData>(IdeaCardComponent, 'cardClick').subscribe(({ eventValue }) => {
+        const { ideaId, ideaSlug, ideaCardElement } = eventValue;
+        this.openModal({ ideaId, ideaSlug, ideaCardElement });
       }),
 
       authUser$.switchMap((authUser) => {
@@ -114,19 +122,19 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  openModal = (modal: IModalProps) => {
-    this.setState({ modal });
+  openModal = (modalInfo: IIdeaCardModalData) => {
+    this.setState({ modalInfo });
   }
 
   closeModal = () => {
-    this.setState({ modal: null });
+    this.setState({ modalInfo: null });
   }
 
   render() {
     const { location, children } = this.props;
-    const { currentTenant, modal } = this.state;
-    const modalOpened = !_.isNull(modal);
-    const modalUrl = !_.isNull(modal) ? `/ideas/${modal.ideaSlug}` : undefined;
+    const { currentTenant, modalInfo } = this.state;
+    const modalOpened = !_.isNull(modalInfo);
+    const modalUrl = !_.isNull(modalInfo) ? `/ideas/${modalInfo.ideaSlug}` : undefined;
     const theme = {
       colorMain: (currentTenant ? currentTenant.data.attributes.settings.core.color_main : '#ef0071'),
       menuStyle: 'light',
@@ -134,6 +142,13 @@ export default class App extends React.PureComponent<Props & RouterState, State>
       mobileMenuHeight: 80,
       maxPageWidth: 952,
     };
+
+    const initialWidth = (modalInfo && modalInfo.ideaCardElement ? modalInfo.ideaCardElement.width : null);
+    const initialHeight = (modalInfo && modalInfo.ideaCardElement ? modalInfo.ideaCardElement.height : null);
+    const initialOffsetTop = (modalInfo && modalInfo.ideaCardElement ? modalInfo.ideaCardElement.offsetTop : null);
+    const initialOffsetBottom = (modalInfo && modalInfo.ideaCardElement ? modalInfo.ideaCardElement.offsetBottom : null);
+    const initialOffsetLeft = (modalInfo && modalInfo.ideaCardElement ? modalInfo.ideaCardElement.offsetLeft : null);
+    const initialOffsetRight = (modalInfo && modalInfo.ideaCardElement ? modalInfo.ideaCardElement.offsetRight : null);
 
     return (
       <div>
@@ -146,9 +161,19 @@ export default class App extends React.PureComponent<Props & RouterState, State>
             <Container>
               <Meta />
 
-              <Modal opened={modalOpened} close={this.closeModal} url={modalUrl}>
-                {modal && <IdeasShow location={location} ideaId={modal.ideaId} />}
-              </Modal>
+              <FullscreenModal 
+                opened={modalOpened} 
+                close={this.closeModal}
+                url={modalUrl}
+                initialWidth={initialWidth}
+                initialHeight={initialHeight}
+                initialOffsetTop={initialOffsetTop}
+                initialOffsetBottom={initialOffsetBottom}
+                initialOffsetLeft={initialOffsetLeft}
+                initialOffsetRight={initialOffsetRight}
+              >
+                {modalInfo && <IdeasShow location={location} ideaId={modalInfo.ideaId} />}
+              </FullscreenModal>
 
               <Navbar />
 

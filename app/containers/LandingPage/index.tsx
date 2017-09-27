@@ -27,10 +27,11 @@ import i18n from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { lighten } from 'polished';
+import { lighten, darken } from 'polished';
 import { media } from 'utils/styleUtils';
 
-const header = require('./header.png');
+// const header = require('./header.png');
+const header = null;
 
 const Container = styled.div`
   display: flex;
@@ -55,7 +56,7 @@ const BackgroundImage: any = styled.div`
 
 const BackgroundColor = styled.div`
   position: absolute;
-  top: 580px;
+  top: 575px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -79,8 +80,9 @@ const HeaderLogoWrapper = styled.div`
   margin-top: 60px;
   margin-bottom: 15px;
   border: solid 2px #eaeaea;
-  border-radius: 5px;
+  border-radius: 6px;
   background: #fff;
+  /* box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15); */
 `;
 
 const HeaderLogo: any = styled.div`
@@ -128,12 +130,21 @@ const HeaderSubtitle = styled.h2`
   font-weight: 100;
   max-width: 980px;
   text-align: center;
+  text-decoration: none;
   padding: 0;
+  padding-bottom: 0px;
   margin: 0;
   margin-top: 10px;
-  opacity: 0.8;
+  cursor: pointer;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  border-bottom: solid 1px ${props => props.theme.colorMain};
+  transition: all 150ms ease-out;
+
+  &:hover {
+    color: ${(props) => darken(0.2, props.theme.colorMain)};
+    border-color: ${(props) => darken(0.2, props.theme.colorMain)};
+  }
 
   ${media.tablet`
     font-size: 28px;
@@ -304,6 +315,10 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
     browserHistory.push('/projects');
   }
 
+  goToAddIdeaPage = () => {
+    browserHistory.push('/ideas/new');
+  }
+
   render() {
     const { currentTenant, hasIdeas, hasProjects } = this.state;
     const { formatMessage } = this.props.intl;
@@ -329,7 +344,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
               <HeaderTitle>
                 <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }} />
               </HeaderTitle>
-              <HeaderSubtitle>
+              <HeaderSubtitle onClick={this.goToAddIdeaPage}>
                 {subtitle}
               </HeaderSubtitle>
             </Header>
@@ -338,7 +353,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
               <Section>
                 <SectionHeader>
                   <SectionTitle>
-                    <FormattedMessage {...messages.ideasFrom} values={{ name: currentTenantName }} />
+                    <FormattedMessage {...messages.trendingIdeas} />
                   </SectionTitle>
                   {hasIdeas &&
                   <Explore to="/ideas">
@@ -356,8 +371,8 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                   {hasIdeas &&
                   <ViewMoreButton
                     text={formatMessage(messages.exploreAllIdeas)}
-                    style="primary-outlined"
-                    size="2"
+                    style="primary"
+                    size="3"
                     icon="compass"
                     onClick={this.goToIdeasPage}
                     circularCorners={false}
@@ -370,17 +385,27 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
               <Section>
                 <SectionHeader>
                   <SectionTitle>
-                    <FormattedMessage {...messages.projectsFrom} values={{ name: currentTenantName }} />
+                    {/* <FormattedMessage {...messages.projectsFrom} values={{ name: currentTenantName }} /> */}
+                    <FormattedMessage {...messages.cityProjects} />
                   </SectionTitle>
+                  {hasProjects &&
+                  <Explore to="/projects">
+                    <ExploreText>
+                      <FormattedMessage {...messages.exploreAllProjects} />
+                    </ExploreText>
+                    <ExploreIcon name="compass" />
+                  </Explore>
+                  }
                 </SectionHeader>
                 <SectionContainer>
                   <ProjectCards filter={this.projectsQueryParameters} />
                 </SectionContainer>
                 <SectionFooter>
                   <ViewMoreButton
-                    text={formatMessage(messages.viewAllProjects)}
-                    style="primary-outlined"
-                    size="2"
+                    text={formatMessage(messages.exploreAllProjects)}
+                    style="primary"
+                    size="3"
+                    icon="compass"
                     onClick={this.goToProjectsPage}
                     circularCorners={false}
                   />

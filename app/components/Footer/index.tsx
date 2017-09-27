@@ -10,6 +10,7 @@ import Icon from 'components/UI/Icon';
 
 // i18n
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import i18n from 'utils/i18n';
 import messages from './messages.js';
 
 // services
@@ -33,7 +34,6 @@ const FirstLine = styled.div`
   justify-content: center;
   padding: 110px 20px;
   background: #fff;
-  /* border-top: 1px solid #eaeaea; */
 `;
 
 const TenantLogo = styled.img`
@@ -47,19 +47,18 @@ const TenantSlogan = styled.div`
   color: #444;
   font-size: 20px;
   font-weight: 400;
-  line-height: 24px;
+  line-height: 28px;
   text-align: center;
 `;
 
 const SecondLine = styled.div`
   width: 100%;
-  /* height: 62px; */
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: #fff;
   border-top: 1px solid #eaeaea;
-  padding: 16px 28px;
+  padding: 18px 28px;
 `;
 
 const PagesNav = styled.nav`
@@ -73,6 +72,7 @@ const PagesNav = styled.nav`
   li {
     display: inline-block;
   }
+
   ${media.phone`
     display: flex;
     flex-direction: column;
@@ -82,7 +82,7 @@ const PagesNav = styled.nav`
 const StyledLink = styled(Link) `
   color: #999;
   font-weight: 300;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 19px;
   text-decoration: none;
 
@@ -94,10 +94,11 @@ const StyledLink = styled(Link) `
 const Separator = styled.span`
   color: #999;
   font-weight: 300;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 19px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+
   ${media.phone`
     display: none;
   `}
@@ -113,7 +114,7 @@ const CitizenLabLogo = styled(Icon) `
 const PoweredBy = styled.a`
   color: #999;
   font-weight: 300;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 19px;
   text-decoration: none;
   display: flex;
@@ -163,11 +164,11 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { currentTenant } = this.state;
-    const { formatMessage, locale } = this.props.intl;
+    const { formatMessage } = this.props.intl;
 
     if (currentTenant) {
       const currentTenantLogo = currentTenant.data.attributes.logo.medium;
-      const currentTenantName = _.get(currentTenant, `data.attributes.settings.core.organization_name.${locale}`) as string;
+      const currentTenantName = i18n.getLocalized(currentTenant.data.attributes.settings.core.organization_name);
       const sloganMessage = (currentTenant.data.type === 'city' ? messages.sloganCity : messages.sloganOrganization);
       const slogan = currentTenantName ? formatMessage(sloganMessage, { name: currentTenantName }) : '';
       const poweredBy = formatMessage(messages.poweredBy);

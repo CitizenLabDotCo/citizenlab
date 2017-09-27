@@ -209,7 +209,7 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
             <ProjectButton
               onClick={this.goToProject}
               text={formatMessage(messages.openProjectButton)}
-              style="primary"
+              style="primary-outlined"
               size="2"
               circularCorners={false}
             />
