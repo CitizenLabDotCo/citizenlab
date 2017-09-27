@@ -5,6 +5,7 @@ const chromeDriverPattern = './node_modules/selenium-standalone/.selenium/chrome
 
 module.exports = {
   src_folders: 'e2e',
+  page_objects_path: 'e2e/pages',
   output_folder: 'e2e/reports',
   selenium: {
     start_process: true,
