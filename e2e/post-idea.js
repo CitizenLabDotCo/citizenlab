@@ -8,16 +8,16 @@ module.exports = {
     .signin('koen@citizenlab.co', 'testtest');
 
     browser
-    .waitForElementVisible('#landing-page')
-    .click('button.add-idea-button')
+    .waitForElementVisible('#e2e-landing-page')
+    .click('.e2e-add-idea-button')
     .waitForElementVisible('#new-idea-form')
     .setValue('#title', title)
     .setValue('.public-DraftEditor-content', 'Lorem ipsum dolor sit amet')
-    .click('button.submit-idea-form')
-    .waitForElementVisible('#ideas-container')
+    .click('.e2e-submit-idea-form')
+    .waitForElementVisible('#e2e-ideas-container')
     .url('localhost:3000/ideas?sort=new')
-    .waitForElementVisible('.idea-card:first-child')
-    .getText('.idea-card:first-child h4', function (result) {
+    .waitForElementVisible('.e2e-idea-card:first-child')
+    .getText('.e2e-idea-card:first-child h4', function (result) {
       this.assert.equal(result.value, title);
     })
     .end();

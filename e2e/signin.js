@@ -7,10 +7,10 @@ module.exports = {
     .signin('koen@citizenlab.co', 'testtest');
 
     browser
-    .waitForElementVisible('#landing-page')
-    .click('#user-menu-container')
-    .waitForElementVisible('#user-menu-dropdown')
-    .waitForElementVisible('#sign-out-link')
+    .waitForElementVisible('#e2e-landing-page')
+    .click('#e2e-user-menu-container')
+    .waitForElementVisible('#e2e-user-menu-dropdown')
+    .waitForElementVisible('#e2e-sign-out-link')
     .end();
   },
 };

@@ -286,7 +286,7 @@ class ProfileForm extends React.Component {
               <Nav goTo={this.goToSection} />
             </Grid.Column>
             <Grid.Column computer={12} mobile={16}>
-              <FormContentWrapper id="profile-edit-form">
+              <FormContentWrapper id="e2e-profile-edit-form">
                 {/* BASICS */}
                 <section ref={(section1) => { this['section-basics'] = section1; }}>
                   <SectionHeaderStyled>

@@ -4,15 +4,15 @@ module.exports = {
 
     browser
     .url('localhost:3000')
-    .waitForElementVisible('.idea-card:first-child')
-    .click('.idea-card:first-child')
-    .waitForElementVisible('#modal-container')
-    .waitForElementVisible('#idea-show')
+    .waitForElementVisible('.e2e-idea-card:first-child')
+    .click('.e2e-idea-card:first-child')
+    .waitForElementVisible('#e2e-modal-container')
+    .waitForElementVisible('#e2e-idea-show')
     .url((location) => {
       ideaUrl = location;
     })
     .url(ideaUrl)
-    .waitForElementVisible('#idea-show')
+    .waitForElementVisible('#e2e-idea-show')
     .end();
   },
 };

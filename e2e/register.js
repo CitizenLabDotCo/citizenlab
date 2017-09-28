@@ -4,15 +4,15 @@ module.exports = {
 
     browser
     .url('localhost:3000/sign-up')
-    .waitForElementVisible('#signup-step1')
+    .waitForElementVisible('#e2e-signup-step1')
     .setValue('#firstName', `Test ${time}`)
     .setValue('#lastName', `Account ${time}`)
     .setValue('#email', `test+${time}@citizenlab.co`)
     .setValue('#password', '123456')
-    .click('#signup-step1 button')
-    .waitForElementVisible('#signup-step2')
-    .click('#signup-step2 button')
-    .waitForElementVisible('#landing-page', 10000)
+    .click('#e2e-signup-step1 button')
+    .waitForElementVisible('#e2e-signup-step2')
+    .click('#e2e-signup-step2 button')
+    .waitForElementVisible('#e2e-landing-page', 10000)
     .end();
   },
 };

@@ -11,19 +11,19 @@ module.exports = {
     .signin('koen@citizenlab.co', 'testtest');
 
     browser
-    .waitForElementVisible('#landing-page')
-    .click('#user-menu-container')
-    .waitForElementVisible('#user-menu-dropdown')
-    .click('#profile-edit-link')
-    .waitForElementVisible('#profile-edit-form')
+    .waitForElementVisible('#e2e-landing-page')
+    .click('#e2e-user-menu-container')
+    .waitForElementVisible('#e2e-user-menu-dropdown')
+    .click('#e2e-profile-edit-link')
+    .waitForElementVisible('#e2e-profile-edit-form')
     .clearValue('#first_name')
     .setValue('#first_name', firstName)
     .clearValue('#last_name')
     .setValue('#last_name', lastName)
-    .click('#profile-edit-form button')
+    .click('#e2e-profile-edit-form button')
     .waitForElementVisible('.ui.message')
     .url('localhost:3000/profile/edit')
-    .waitForElementVisible('#profile-edit-form')
+    .waitForElementVisible('#e2e-profile-edit-form')
     .getValue('input#first_name', function (result) {
       this.assert.equal(result.value, firstName);
     })

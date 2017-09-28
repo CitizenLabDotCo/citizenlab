@@ -215,7 +215,7 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const className = `${this.props['className']} idea-card ${!_.get(this.state, 'idea.data.relationships.user_vote.data', undefined) ? 'not-voted' : 'voted' }`;
+    const className = `${this.props['className']} e2e-idea-card ${!_.get(this.state, 'idea.data.relationships.user_vote.data', undefined) ? 'not-voted' : 'voted' }`;
     const { idea, ideaImage, ideaAuthor, locale, showUnauthenticated, loading } = this.state;
 
     if (!loading && idea && ideaAuthor && locale) {

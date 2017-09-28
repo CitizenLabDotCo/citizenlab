@@ -90,7 +90,7 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
       <Container>
         <ButtonBarInner>
           <Button
-            className="submit-idea-form"
+            className="e2e-submit-idea-form"
             size="2"
             loading={processing}
             text={formatMessage(messages.submit)}

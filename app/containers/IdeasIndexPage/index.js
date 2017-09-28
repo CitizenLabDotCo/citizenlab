@@ -97,7 +97,7 @@ class IdeasIndex extends React.PureComponent {
         <BackgroundColor />
 
         <StyledContentContainer>
-          {withFilters && <FiltersArea id="ideas-filters">
+          {withFilters && <FiltersArea id="e2e-ideas-filters">
             <SearchField />
             <SelectSort title={this.sortTitle} />
             <SelectTopics title={this.topicsTitle} />
