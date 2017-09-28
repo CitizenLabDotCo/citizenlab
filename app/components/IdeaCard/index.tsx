@@ -58,7 +58,7 @@ const IdeaImage: any = styled.div`
   width: 100%;
   height: 135px;
   border-bottom: solid 1px #e5e5e5;
-  background-image: url(${(props: any) => props.src});  
+  background-image: url(${(props: any) => props.src});
   background-repeat: no-repeat;
   background-size: cover;
 `;
@@ -215,7 +215,7 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const className = this.props['className'];
+    const className = `${this.props['className']} e2e-idea-card ${!_.get(this.state, 'idea.data.relationships.user_vote.data', undefined) ? 'not-voted' : 'voted' }`;
     const { idea, ideaImage, ideaAuthor, locale, showUnauthenticated, loading } = this.state;
 
     if (!loading && idea && ideaAuthor && locale) {
