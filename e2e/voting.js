@@ -17,8 +17,10 @@ module.exports = {
     .waitForElementVisible('#idea-show .vote-controls')
     .click('.vote-controls .upvote')
     .waitForElementVisible('.vote-controls.up')
+    .waitForElementVisible('.vote-controls .downvote')
     .click('.vote-controls .downvote')
     .waitForElementVisible('.vote-controls.down')
+    .waitForElementVisible('.vote-controls .downvote')
     .click('.vote-controls .downvote')
     .waitForElementVisible('.vote-controls.neutral')
     .end();
