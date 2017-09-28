@@ -83,7 +83,7 @@ class User < ApplicationRecord
   def generate_avatar
     unless self.avatar?
       hash = Digest::MD5.hexdigest(self.email)
-      self.remote_avatar_url = "https://www.gravatar.com/avatar/#{hash}?d=identicon&size=640"
+      self.remote_avatar_url = "https://www.gravatar.com/avatar/#{hash}?d=404&size=640"
     end
   end
 
