@@ -316,7 +316,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
 
       return (
         <div>
-          <Container id="landing-page">
+          <Container id="e2e-landing-page">
             <BackgroundImage imageSrc={header} />
             <BackgroundColor />
 

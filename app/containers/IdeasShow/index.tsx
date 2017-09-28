@@ -183,7 +183,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       return (
         <div>
           <Meta location={location} slug={ideaSlug} />
-          <Content id="idea-show">
+          <Content id="e2e-idea-show">
             <LeftColumn>
               <AuthorContainer>
                 <Avatar src={avatar} />

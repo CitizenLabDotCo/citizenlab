@@ -253,7 +253,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
     ) : null);
 
     const ideasList = ((!loading && hasIdeas && ideas) ? (
-      <IdeasList id="ideas-list">
+      <IdeasList id="e2e-ideas-list">
         {ideas.data.map((idea) => (
           <StyledIdeaCard key={idea.id} ideaId={idea.id} />
         ))}
@@ -261,7 +261,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
     ) : null);
 
     return (
-      <Container id="ideas-container">
+      <Container id="e2e-ideas-container">
         {loadingIndicator}
         {empty}
         {ideasList}

@@ -8,23 +8,23 @@ module.exports = {
     .signin('koen@citizenlab.co', 'testtest');
 
     browser
-    .waitForElementVisible('#landing-page')
+    .waitForElementVisible('#e2e-landing-page')
     .url('localhost:3000/ideas?sort=new')
-    .waitForElementVisible('.idea-card:first-child')
-    .click('.idea-card.not-voted')
-    .waitForElementVisible('#idea-show')
+    .waitForElementVisible('.e2e-idea-card:first-child')
+    .click('.e2e-idea-card.not-voted')
+    .waitForElementVisible('#e2e-idea-show')
     .refresh()
-    .waitForElementVisible('#idea-show .vote-controls')
-    .click('.vote-controls .upvote')
-    .waitForElementVisible('.vote-controls.up')
-    .waitForElementVisible('.vote-controls .downvote')
-    .pause(100)
-    .click('.vote-controls .downvote')
-    .waitForElementVisible('.vote-controls.down')
-    .waitForElementVisible('.vote-controls .downvote')
-    .pause(100)
-    .click('.vote-controls .downvote')
-    .waitForElementVisible('.vote-controls.neutral')
+    .waitForElementVisible('#e2e-idea-show .e2e-vote-controls')
+    .click('.e2e-vote-controls .upvote')
+    .waitForElementVisible('.e2e-vote-controls.up')
+    .waitForElementVisible('.e2e-vote-controls .downvote')
+    .pause(200)
+    .click('.e2e-vote-controls .downvote')
+    .waitForElementVisible('.e2e-vote-controls.down')
+    .waitForElementVisible('.e2e-vote-controls .downvote')
+    .pause(200)
+    .click('.e2e-vote-controls .downvote')
+    .waitForElementVisible('.e2e-vote-controls.neutral')
     .end();
   },
 };

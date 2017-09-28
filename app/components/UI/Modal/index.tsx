@@ -219,7 +219,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
     const element = (opened ? (
       <CSSTransition classNames="modal" timeout={350} exit={false}>
-        <ModalContainer id="modal-container">
+        <ModalContainer id="e2e-modal-container">
           <ModalContent onClickOutside={this.clickOutsideModal}>
             {children}
           </ModalContent>
