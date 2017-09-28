@@ -9,7 +9,7 @@ class SideFxUserService
   end
 
   def after_create user, current_user
-    UserMailer.welcome(@user).deliver_later
+    # UserMailer.welcome(@user).deliver_later
     LogActivityJob.perform_later(user, 'created', current_user, user.created_at.to_i)
   end
 
