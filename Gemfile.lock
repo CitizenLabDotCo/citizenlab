@@ -286,6 +286,7 @@ GEM
       redis-namespace (>= 1.5.2)
       rufus-scheduler (>= 2.0.24)
       sidekiq (>= 4.2.1)
+    simple_segment (0.2.1)
     simplecov (0.14.1)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
@@ -359,6 +360,7 @@ DEPENDENCIES
   shoulda-matchers (~> 3.1)
   sidekiq (~> 4.2.9)
   sidekiq-cron (~> 0.4.5)
+  simple_segment (~> 0.2.1)
   simplecov
   simplecov-rcov
   spring
