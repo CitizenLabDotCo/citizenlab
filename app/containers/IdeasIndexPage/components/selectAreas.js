@@ -19,6 +19,7 @@ import { injectTFunc } from 'components/T/utils';
 
 const SelectArea = ({ options, value, filterPage, title }) => (
   <FilterSelector
+    id="filter-area"
     title={title}
     name="areas"
     selected={value}
