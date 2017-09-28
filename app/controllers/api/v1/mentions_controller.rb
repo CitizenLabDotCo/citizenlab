@@ -22,7 +22,7 @@ class Api::V1::MentionsController < ApplicationController
     end
 
 
-    render json: @users, each_serializer: Api::V1::LiteUserSerializer
+    render json: @users, each_serializer: Api::V1::External::ExternalUserSerializer
   end
 
   def secure_controller?

@@ -18,6 +18,7 @@ class LogActivityJob < ApplicationJob
     activity.save!
 
     MakeNotificationsJob.perform_later(activity)
+    LogToSegmentJob.perform_later(activity) if Analytics
   end
 
 end
