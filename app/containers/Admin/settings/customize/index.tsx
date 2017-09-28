@@ -160,15 +160,6 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
         <p><FormattedMessage {...messages.subTitleBranding} /></p>
 
         <FieldWrapper>
-          <Label><FormattedMessage {...messages.menuStyle} /></Label>
-          <Select
-            value={_.get(tenantAttrs, 'settings.core.menu_style', '')}
-            options={this.menuStyleOptions()}
-            onChange={this.createToggleChangeHandler('settings.core.menu_style')}
-          />
-        </FieldWrapper>
-
-        <FieldWrapper>
           <Label><FormattedMessage {...messages.mainColor} /></Label>
           <ColorPickerInput
             type="text"
