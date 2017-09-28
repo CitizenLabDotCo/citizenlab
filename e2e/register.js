@@ -12,7 +12,7 @@ module.exports = {
     .click('#signup-step1 button')
     .waitForElementVisible('#signup-step2')
     .click('#signup-step2 button')
-    .waitForElementVisible('#landing-page')
+    .waitForElementVisible('#landing-page', 10000)
     .end();
   },
 };
