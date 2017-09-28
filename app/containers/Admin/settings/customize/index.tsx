@@ -169,7 +169,7 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
         </FieldWrapper>
 
 
-        {['logo', 'header_bg'].map((imageName) => {
+        {['logo'].map((imageName) => {
           const uploadedImages = this.state.attributesDiff[imageName] ? [this.state.attributesDiff[imageName]] : [];
           const apiImages = (this.state.attributesDiff[imageName] === undefined && this.state.tenant && this.state.tenant.attributes[imageName].medium !== null)
             ? [this.state.tenant.attributes[imageName]]
