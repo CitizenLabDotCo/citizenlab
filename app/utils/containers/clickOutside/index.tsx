@@ -5,6 +5,7 @@ type Props = {
   onClickOutside: (arg: any) => void;
   className?: string;
   onClick?: () => void;
+  id?: string;
 };
 
 type State = {};
@@ -40,6 +41,6 @@ export default class ClickOutside extends React.PureComponent<Props, State> {
   render() {
     const { children, className, onClick } = this.props;
     // tslint:disable-next-line:react-a11y-event-has-role
-    return (<div ref={this.getContainer} tabIndex={0} className={className} onClick={onClick}>{children}</div>);
+    return (<div id={this.props.id} ref={this.getContainer} tabIndex={0} className={className} onClick={onClick}>{children}</div>);
   }
 }
