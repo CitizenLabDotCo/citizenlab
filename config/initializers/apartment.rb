@@ -89,11 +89,7 @@ Rails.application.config.middleware.use Apartment::Elevators::Generic, (Proc.new
   if request.path =~ /^\/admin_api\/.*/
     nil
   else
-    if Rails.env.development?
-      "localhost"
-    else
-      request.host.gsub(/\./, "_")
-    end
+    request.host.gsub(/\./, "_")
   end
 end)
 # Rails.application.config.middleware.use RescuedApartmentElevator, Proc.new { |request| puts request.path; request.host.gsub(/\./, "_") }
