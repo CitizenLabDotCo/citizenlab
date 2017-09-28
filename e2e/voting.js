@@ -18,9 +18,11 @@ module.exports = {
     .click('.vote-controls .upvote')
     .waitForElementVisible('.vote-controls.up')
     .waitForElementVisible('.vote-controls .downvote')
+    .pause(100)
     .click('.vote-controls .downvote')
     .waitForElementVisible('.vote-controls.down')
     .waitForElementVisible('.vote-controls .downvote')
+    .pause(100)
     .click('.vote-controls .downvote')
     .waitForElementVisible('.vote-controls.neutral')
     .end();
