@@ -43,7 +43,7 @@ export default defineMessages({
   },
   or: {
     id: 'app.containers.SignIn.or',
-    defaultMessage: 'or',
+    defaultMessage: 'Or',
   },
   createAnAccount: {
     id: 'app.containers.SignIn.createAnAccount',

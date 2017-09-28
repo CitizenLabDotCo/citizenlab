@@ -70,8 +70,8 @@ const LoadMore = styled.div`
 `;
 
 const LoadMoreButton = styled(Button)`
-  width: 360px;
-  height: 50px;
+  width: 300px;
+  height: 52px;
   padding: 0px 0px;
 `;
 
@@ -247,7 +247,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
           size="2"
           icon="plus-circle"
           onClick={this.goToAddIdeaPage}
-          circularCorners={false}
+          circularCorners={true}
         />
       </EmptyContainer>
     ) : null);

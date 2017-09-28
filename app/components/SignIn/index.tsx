@@ -61,8 +61,8 @@ const Separator = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  margin-top: 25px;
-  margin-bottom: 15px;
+  margin-top: 40px;
+  margin-bottom: 20px;
 `;
 
 const SeparatorLine = styled.div`
@@ -84,7 +84,7 @@ const SeparatorTextContainer = styled.div`
 `;
 
 const SeparatorText = styled.div`
-  width: 50px;
+  width: 54px;
   height: 30px;
   display: flex;
   align-items: center;
@@ -92,8 +92,8 @@ const SeparatorText = styled.div`
   background: #f8f8f8;
 
   span {
-    color: #666;
-    font-size: 16px;
+    color: #999;
+    font-size: 17px;
   }
 `;
 
@@ -251,7 +251,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                 size="3"
                 loading={processing}
                 text={formatMessage(messages.submit)}
-                circularCorners={false}
+                circularCorners={true}
               />
               <ForgotPassword onClick={this.handleForgotPasswordOnClick}>
                 <FormattedMessage {...messages.forgotPassword} />
@@ -276,7 +276,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
               text={formatMessage(messages.createAnAccount)}
               fullWidth={true}
               onClick={this.goToSignUpForm}
-              circularCorners={false}
+              circularCorners={true}
             />
           </FooterButton>
         </Form>
