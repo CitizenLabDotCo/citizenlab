@@ -20,6 +20,7 @@ import messages from '../messages';
 
 const SelectSort = ({ options, value, filterPage, title }) => (
   <FilterSelector
+    id="filter-sort"
     title={title}
     name="sort"
     selected={value}
