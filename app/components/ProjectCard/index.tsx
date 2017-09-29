@@ -54,6 +54,24 @@ const ProjectImage: any = styled.div`
   background-position: center center;
   background-size: center;
   overflow: hidden;
+
+  ${media.phone`
+    width: 100%;
+    margin-right: 0px;
+  `}
+`;
+
+const ProjectImagePlaceholder = styled.div`
+  flex-basis: 176px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  width: 176px;
+  height: 176px;
+  border-radius: 6px;
+  margin-right: 10px;
+  background: #cfd6db;
+  overflow: hidden;
+
   ${media.phone`
     width: 100%;
     margin-right: 0px;
@@ -193,7 +211,7 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container>
-          {imageUrl && <ProjectImage imageSrc={imageUrl} />}
+          {imageUrl ? <ProjectImage imageSrc={imageUrl} /> : <ProjectImagePlaceholder />}
 
           <ProjectContent>
             <ProjectTitle>{title}</ProjectTitle>
