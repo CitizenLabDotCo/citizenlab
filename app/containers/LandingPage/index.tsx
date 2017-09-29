@@ -48,7 +48,7 @@ const BackgroundImage: any = styled.div`
   left: 0;
   right: 0;
   z-index: 0;
-  background-image: url(${(props: any) => props.imageSrc});  
+  background-image: url(${(props: any) => props.imageSrc});
   background-repeat: no-repeat;
   background-size: auto 535px;
   background-position: center 0px;
@@ -330,7 +330,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
 
       return (
         <div>
-          <Container>
+          <Container id="e2e-landing-page">
             <BackgroundImage imageSrc={header} />
             <BackgroundColor />
 

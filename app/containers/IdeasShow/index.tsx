@@ -246,7 +246,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       return (
         <Container>
           <Meta location={location} slug={ideaSlug} />
-          <IdeaContainer>
+          <IdeaContainer id="e2e-idea-show">
             <Header>
               <IdeaTitle>
                 <T value={titleMultiloc} />

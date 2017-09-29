@@ -91,6 +91,7 @@ module.exports = (options) => ({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         CROWDIN_PLUGIN_ENABLED: !!process.env.CROWDIN_PLUGIN_ENABLED,
+        SEGMENT_API_KEY: JSON.stringify(process.env.SEGMENT_API_KEY),
       },
     }),
     new webpack.NamedModulesPlugin(),

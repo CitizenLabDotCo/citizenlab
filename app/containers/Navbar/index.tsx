@@ -273,6 +273,7 @@ class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps & R
           <Right>
             <RightItem>
               <AddIdeaButton
+                className="e2e-add-idea-button"
                 text={formatMessage(messages.startIdea)}
                 style="primary"
                 size="1"
@@ -297,7 +298,7 @@ class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps & R
 
             {!authUser &&
               <RightItem hideOnPhone={true}>
-                <Link to="/sign-in">
+                <Link to="/sign-in" id="e2e-login-link">
                   <LoginLink>
                     <FormattedMessage {...messages.login} />
                   </LoginLink>
