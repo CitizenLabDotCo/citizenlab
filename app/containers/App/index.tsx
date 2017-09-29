@@ -104,7 +104,6 @@ export default class App extends React.PureComponent<Props & RouterState, State>
         const topics$ = topicsStream().observable;
         const projects$ = projectsStream().observable;
         const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
-          console.log(currentTenant);
           this.setState({ currentTenant });
           store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: currentTenant });
         });
