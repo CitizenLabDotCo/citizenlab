@@ -458,10 +458,10 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
               value={gender}
               placeholder={formatMessage(messages.genderPlaceholder)}
               options={[{
-                value: 'female',
+                value: 'male',
                 label: formatMessage(messages.male),
               }, {
-                value: 'male',
+                value: 'female',
                 label: formatMessage(messages.female),
               }, {
                 value: 'unspecified',
