@@ -81,7 +81,7 @@ export default defineMessages({
   },
   byAuthor: {
     id: 'app.containers.IdeasShow.byAuthor',
-    defaultMessage: 'by {firstName, lastName}',
+    defaultMessage: 'by {firstName} {lastName}',
   },
   authorSaid: {
     id: 'app.containers.IdeasShow.authorSaid',
