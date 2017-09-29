@@ -81,7 +81,7 @@ export default defineMessages({
   },
   byAuthor: {
     id: 'app.containers.IdeasShow.byAuthor',
-    defaultMessage: 'by {firstName} {lastName}',
+    defaultMessage: 'by {firstName, lastName}',
   },
   authorSaid: {
     id: 'app.containers.IdeasShow.authorSaid',
@@ -91,13 +91,17 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.authorReacted',
     defaultMessage: '{firstName} replied',
   },
-  voteCTA: {
-    id: 'app.containers.IdeasShow.voteCTA',
-    defaultMessage: 'Do you like this idea?',
-  },
   shareCTA: {
     id: 'app.containers.IdeasShow.shareCTA',
     defaultMessage: 'Share this idea',
+  },
+  shareOnFacebook: {
+    id: 'app.containers.IdeasShow.shareOnFacebook',
+    defaultMessage: 'Share on Facebook',
+  },
+  shareOnTwitter: {
+    id: 'app.containers.IdeasShow.shareOnTwitter',
+    defaultMessage: 'Share on Twitter',
   },
   commentsWithCount: {
     id: 'app.containers.IdeasShow.commentsWithCount',

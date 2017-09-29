@@ -130,15 +130,7 @@ const RightItem: any = styled.div`
   ${(props: any) => props.hideOnPhone && media.phone`display: none;`}
 `;
 
-const AddIdeaButton = styled(Button)`
-  /*
-  transform: scale 200ms ease-out;
-
-  &:hover {
-    transform: scale(1.02);
-  }
-  */
-`;
+const AddIdeaButton = styled(Button)``;
 
 const LoginLink = styled.div`
   color: ${(props) => props.theme.colorMain};
@@ -148,7 +140,7 @@ const LoginLink = styled.div`
   padding-right: 30px;
 
   &:hover {
-    color: ${(props) => darken(0.2, props.theme.colorMain)};
+    color: ${(props) => darken(0.15, props.theme.colorMain)};
   }
 `;
 
@@ -253,8 +245,6 @@ class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps & R
     const tenantLogo = (currentTenant ? currentTenant.data.attributes.logo.medium : null);
     const hideBorder = (pathname === '/' || pathname === 'ideas' || pathname === 'projects' || pathname === '/projects');
 
-    console.log(pathname);
-
     return (
       <ThemeProvider theme={this.navbarTheme}>
         <Container scrolled={scrolled} hideBorder={hideBorder}>
@@ -262,7 +252,7 @@ class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps & R
           <Left>
             {tenantLogo &&
               <LogoLink to="/">
-                <Logo height="100%">
+                <Logo>
                   <img src={tenantLogo} alt="logo" />
                 </Logo>
               </LogoLink>

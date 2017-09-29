@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
+
+// libraries
 import { browserHistory } from 'react-router';
 
 // components
@@ -21,18 +23,15 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const backgroundTimeout = 100;
+const backgroundTimeout = 150;
 const backgroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
-const foregroundTimeout = 500;
-// const foregroundEasing = `cubic-bezier(1, 0, 0, 1)`;
-// const foregroundEasing = `cubic-bezier(0.165, 0.84, 0.44, 1)`;
-// const foregroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
-const foregroundEasing = `cubic-bezier(0.23, 1, 0.32, 1)`;
+const foregroundTimeout = 450;
+const foregroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
-const contentTimeout = 600;
+const contentTimeout = 1150;
 const contentEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
-const contentDelay = 300;
+const contentDelay = 0;
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -45,7 +44,7 @@ const ModalBackground = styled.div`
   outline: none;
   overflow: hidden;
   z-index: 2000;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.3);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   will-change: opacity;
@@ -61,6 +60,8 @@ const ModalBackground = styled.div`
 `;
 
 const ModalForeground: any = styled.div`
+  width: 100%;
+  height: 100%;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -73,20 +74,17 @@ const ModalForeground: any = styled.div`
   flex-direction: column;
   outline: none;
   overflow: hidden;
+  border-radius: 0px;
   background: #fff;
   z-index: 3000;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  will-change: opacity, transform;
 
   &.foreground-enter {
-    width: ${(props: any) => props.initialWidth + 'px' || 'auto'};
-    height: ${(props: any) => props.initialHeight + 'px' || 'auto'};
-    top: ${(props: any) => props.initialOffsetTop + 'px' || 0};
-    bottom: ${(props: any) => props.initialOffsetBottom + 'px' || 0};
-    left: ${(props: any) => props.initialOffsetLeft + 'px' || 0};
-    right: ${(props: any) => props.initialOffsetRight + 'px' || 0};
-    border-radius: 6px;
-    /* box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1); */
+    opacity: 0;
+    transform-origin: bottom center;
+    transform: translateY(0px) scale(0.9);
 
     &.foreground-enter-active {
       width: 100%;
@@ -96,6 +94,8 @@ const ModalForeground: any = styled.div`
       left: 0;
       right: 0;
       border-radius: 0px;
+      opacity: 1;
+      transform: translateY(0px) scale(1);
       transition: all ${foregroundTimeout}ms ${foregroundEasing};
     }
   }
@@ -103,16 +103,46 @@ const ModalForeground: any = styled.div`
 
 const ModalContentInner = styled.div`
   width: 100vw;
-  height: 100vw;
-  display: flex;
-  justify-content: center;
+  height: 100%;
+  overflow: hidden;
   overflow-y: auto;
-  position: relative;
-  background: transparent;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 60px;
   z-index: 5000;
+`;
+
+const ModalContentInnerInner = styled.div`
+  position: relative;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   will-change: opacity, transform;
+`;
+
+const CloseIcon = styled(Icon)`
+  height: 22px;
+  fill: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const CloseButton = styled.div`
+  height: 45px;
+  width: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  cursor: pointer;
+  top: 20px;
+  right: 30px;
+  z-index: 6000;
+  will-change: opacity;
+
+  &:hover ${CloseIcon} {
+    fill: #000;
+  }
 `;
 
 const ModalContent = styled.div`
@@ -128,45 +158,27 @@ const ModalContent = styled.div`
   background: transparent;
   z-index: 4000;
 
-  &.content-enter ${ModalContentInner} {
-    opacity: 0.01;
-    /* transform: translateY(-50px); */
+  &.content-enter {
+    ${ModalContentInnerInner} {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    ${CloseButton} {
+      opacity: 0;
+    }
   }
 
-  &.content-enter.content-enter-active ${ModalContentInner} {
-    opacity: 1;
-    transform: translateY(0);
-    transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
-  }
-`;
+  &.content-enter.content-enter-active {
+    ${ModalContentInnerInner}  {
+      opacity: 1;
+      transform: translateY(0px);
+      transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
+    }
 
-const CloseIcon = styled(Icon)`
-  height: 18px;
-  fill: #666;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const CloseButton = styled.div`
-  height: 35px;
-  width: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  cursor: pointer;
-  top: 15px;
-  right: 15px;
-  z-index: 2000;
-  border-radius: 50%;
-  border: solid 1px #e5e5e5;
-
-  &:hover {
-    border-color: #333;
-
-    ${CloseIcon} {
-      fill: #333;
+    ${CloseButton} {
+      opacity: 1;
+      transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
     }
   }
 `;
@@ -181,28 +193,16 @@ type Props = {
   opened: boolean;
   close: () => void;
   url?: string;
-  initialWidth?: number | null | undefined;
-  initialHeight?: number | null | undefined;
-  initialOffsetTop?: number | null | undefined;
-  initialOffsetBottom?: number | null | undefined;
-  initialOffsetLeft?: number | null | undefined;
-  initialOffsetRight?: number | null | undefined;
 };
 
-type State = {
-  showModalContent: boolean
-};
+type State = {};
 
 class Modal extends React.PureComponent<Props & ITracks, State> {
-  state: State;
   private unlisten: Function | null;
   private goBackUrl: string | null;
 
   constructor() {
     super();
-    this.state = {
-      showModalContent: false
-    };
     this.unlisten = null;
     this.goBackUrl = null;
   }
@@ -216,7 +216,6 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
     if (!opened && nextProps.opened) {
       this.openModal(nextProps.url);
-      setTimeout(() => this.setState({ showModalContent: true }), foregroundTimeout);
     }
 
     if (opened && !nextProps.opened) {
@@ -265,7 +264,6 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     this.goBackUrl = null;
     document.body.classList.remove('modal-active');
     window.removeEventListener('popstate', this.handlePopstateEvent);
-    this.setState({ showModalContent: false });
 
     if (_.isFunction(this.unlisten)) {
       this.unlisten();
@@ -285,35 +283,17 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   }
 
   render() {
-    const { 
-      children, 
-      opened, 
-      initialWidth, 
-      initialHeight, 
-      initialOffsetTop, 
-      initialOffsetBottom, 
-      initialOffsetLeft, 
-      initialOffsetRight 
-    } = this.props;
-
-    const { showModalContent } = this.state;
+    const { children, opened } = this.props;
 
     const modalBackground = (opened ? (
       <CSSTransition classNames="background" timeout={backgroundTimeout} exit={false}>
-        <ModalBackground /> 
+        <ModalBackground />
       </CSSTransition>
     ) : null);
 
     const modalForeground = (opened ? (
       <CSSTransition classNames="foreground" timeout={foregroundTimeout} exit={false}>
-        <ModalForeground
-          initialWidth={initialWidth}
-          initialHeight={initialHeight}
-          initialOffsetTop={initialOffsetTop}
-          initialOffsetBottom={initialOffsetBottom}
-          initialOffsetLeft={initialOffsetLeft}
-          initialOffsetRight={initialOffsetRight}
-        />
+        <ModalForeground />
       </CSSTransition>
     ) : null);
 
@@ -321,23 +301,23 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       <CSSTransition classNames="content" timeout={contentTimeout} exit={false}>
         <ModalContent>
           <ModalContentInner>
-            {children}
-            <CloseButton onClick={this.clickCloseButton}>
-              <CloseIcon name="close2" />
-            </CloseButton>
+            <ModalContentInnerInner>
+              {children}
+            </ModalContentInnerInner>
           </ModalContentInner>
+          <CloseButton onClick={this.clickCloseButton}>
+            <CloseIcon name="close3" />
+          </CloseButton>
         </ModalContent>
       </CSSTransition>
     ) : null);
 
     return (
-      <div>
-        <TransitionGroup>
-          {modalBackground}
-          {modalForeground}
-          {modalContent}
-        </TransitionGroup>
-      </div>
+      <TransitionGroup>
+        {modalBackground}
+        {modalForeground}
+        {modalContent}
+      </TransitionGroup>
     );
   }
 }

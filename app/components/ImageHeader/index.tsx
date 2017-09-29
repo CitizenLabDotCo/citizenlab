@@ -33,9 +33,8 @@ const HeaderOverlay = styled.div`
   right: 0;
 `;
 
-const HeaderBackground = styled.div`
+const HeaderBackground: any = styled.div`
   opacity: 0.7;
-  /* filter: blur(1px); */
   background-image: url(${(props: any) => props.src});
   background-repeat: no-repeat;
   background-size: cover;

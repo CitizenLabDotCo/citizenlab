@@ -23,6 +23,13 @@ const getIcon = (name: string, className: string | undefined) => {
         </svg>
       );
     }
+    case 'close3': {
+      return (
+        <svg className={className} height="100%" viewBox="0.424 0.424 13.152 13.152">
+          <path d="M7.986 7l.212-.212 5.378-5.378-.986-.986-5.378 5.378L7 6.014l-.212-.212L1.41.424l-.986.986 5.378 5.378.212.212-.212.212L.424 12.59l.986.986 5.378-5.378L7 7.986l.212.212 5.378 5.378.986-.986-5.378-5.378"/>
+        </svg>
+      );
+    }
     case 'upload': {
       return (
         <svg className={className} height="100%" viewBox="0 0.621 79 53.713">

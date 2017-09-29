@@ -55,7 +55,7 @@ const ForgotPassword = styled.div`
   cursor: pointer;
 
   &:hover {
-    color: ${(props) => darken(0.2, props.theme.colorMain)};
+    color: ${(props) => darken(0.15, props.theme.colorMain)};
   }
 `;
 
@@ -124,7 +124,7 @@ const FooterLink = styled.span`
   color: ${(props) => props.theme.colorMain};
 
   &:hover {
-    color: ${(props) => darken(0.2, props.theme.colorMain)};
+    color: ${(props) => darken(0.15, props.theme.colorMain)};
     cursor: pointer;
   }
 `;

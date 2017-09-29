@@ -62,9 +62,9 @@ const OptionText = styled.span`
   flex: 1;
 `;
 
-const Checkmark = styled.span`
-  background: ${(props) => props.selected ? '#32b67a' : '#fff'};
-  border-color: ${(props) => props.selected ? '#32b67a' : '#a6a6a6'};
+const Checkmark: any = styled.span`
+  background: ${(props: any) => props.selected ? '#32b67a' : '#fff'};
+  border-color: ${(props: any) => props.selected ? '#32b67a' : '#a6a6a6'};
   border-radius: 3px;
   border-style: solid;
   border-width: 1px;

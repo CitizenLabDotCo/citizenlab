@@ -138,12 +138,11 @@ const HeaderSubtitle = styled.h2`
   cursor: pointer;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  border-bottom: solid 1px ${props => props.theme.colorMain};
+  border-bottom: solid 1px transparent;
   transition: all 150ms ease-out;
 
   &:hover {
-    color: ${(props) => darken(0.2, props.theme.colorMain)};
-    border-color: ${(props) => darken(0.2, props.theme.colorMain)};
+    border-bottom: solid 1px ${props => props.theme.colorMain};    
   }
 
   ${media.tablet`

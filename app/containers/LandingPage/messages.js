@@ -40,7 +40,7 @@ export default defineMessages({
     defaultMessage: 'Projects from {name}',
   },
   cityProjects: {
-    id: 'app.containers.landing.projectsFrom',
+    id: 'app.containers.landing.cityProjects',
     defaultMessage: 'City projects',
   },
   exploreAllProjects: {

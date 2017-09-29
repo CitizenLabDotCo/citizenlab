@@ -1,56 +1,53 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import T from 'components/T';
-import { FormattedMessage } from 'react-intl';
-import styled from 'styled-components';
-import { localeStream } from 'services/locale';
-import { ideaStatusesStream, IIdeaStatusData } from 'services/ideaStatuses';
 
-const Badge = styled.div`
-  color: white;
-  font-size: 13px;
-  border-radius: 3px;
-  padding: 3px 8px;
+// services
+import { ideaStatusStream, IIdeaStatus } from 'services/ideaStatuses';
+
+// i18n
+import T from 'components/T';
+
+// style
+import styled from 'styled-components';
+
+const Container = styled.div`
+  color: #fff;
+  font-size: 12px;
+  border-radius: 5px;
+  padding: 6px 12px;
   display: inline-block;
   text-transform: uppercase;
   text-align: center;
-  font-weight: 700;
+  font-weight: 500;
   background-color: ${(props: any) => props.color}
 `;
 
 type Props = {
-  statusId: string,
-  color: string,
-  statusName: string,
-  className?: string,
+  statusId: string;
 };
 
 type State = {
-  locale: string | null,
-  ideaStatus: IIdeaStatusData | null;
+  ideaStatus: IIdeaStatus | null;
 };
 
-export default class Status extends React.PureComponent<Props, State> {
+export default class StatusBadge extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
     this.state = {
-      locale: null,
       ideaStatus: null
     };
     this.subscriptions = [];
   }
 
   componentWillMount() {
-    const locale$ = localeStream().observable;
-    const ideaStatuses$ = ideaStatusesStream().observable;
+    const ideaStatus$ = ideaStatusStream(this.props.statusId).observable;
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(locale$, ideaStatuses$).subscribe(([locale, ideaStatuses]) => {
-        const ideaStatus = ideaStatuses.data.filter((item) => item.id === this.props.statusId)[0];
-        this.setState({ locale, ideaStatus });
+      ideaStatus$.subscribe((ideaStatus) => {
+        this.setState({ ideaStatus });
       })
     ];
   }
@@ -60,14 +57,18 @@ export default class Status extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { statusId, statusName, className } = this.props;
-    const { locale, ideaStatus } = this.state;
-    const fallbackColor = '#bbbbbb';
+    const { ideaStatus } = this.state;
+    const className = this.props['className'];
+    const color = (ideaStatus ? ideaStatus.data.attributes.color : '#bbb');
 
-    return (ideaStatus !== null && locale !== null) ? (
-      <Badge className={className} color={ideaStatus.attributes.color || fallbackColor} >
-        <T value={ideaStatus.attributes.title_multiloc} />
-      </Badge>
-    ) : null;
+    if (ideaStatus !== null) {
+      return (
+        <Container className={className} color={color} >
+          <T value={ideaStatus.data.attributes.title_multiloc} />
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
