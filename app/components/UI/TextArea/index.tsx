@@ -45,6 +45,7 @@ export default styled(TextArea)`
   border-radius: 5px;
   background-color: #ffffff;
   border: solid 1px #a6a6a6;
+  font-size: 1.25rem;
   padding: 10px;
   resize: none;
 `;
