@@ -15,12 +15,6 @@ import Sharing from './components/show/Sharing';
 import CommentsLine from './components/show/CommentsLine';
 import Comments from './components/comments';
 
-/*
-import ImageCarousel from 'components/ImageCarousel';
-import Author from './show/Author';
-import Comments from './comments';
-*/
-
 // services
 import { localeStream } from 'services/locale';
 import { ideaByIdStream, IIdea } from 'services/ideas';
