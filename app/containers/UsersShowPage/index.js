@@ -34,7 +34,7 @@ const InfoContainerStyled = styled.div`
   align-items: center;
   width: 100%;
   margin-top: 100px;
-  padding-bottom: 51.6px;
+  padding-bottom: 25px;
   border-radius: 5px;
   background-color: #ffffff;
 `;
@@ -57,9 +57,8 @@ const JoinedAtStyled = styled.div`
 `;
 
 const BioStyled = styled.div`
-  width: 551px;
+  max-width: 600px;
   margin: 23px auto;
-  min-height: 165px;
   font-size: 20px;
   font-weight: 300;
   line-height: 1.25;
