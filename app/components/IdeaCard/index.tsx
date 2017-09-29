@@ -9,7 +9,7 @@ import { Link, browserHistory } from 'react-router';
 import Icon from 'components/UI/Icon';
 import Unauthenticated from 'components/IdeaCard/Unauthenticated';
 import VoteControl from 'components/VoteControl';
-import { IModalProps } from 'containers/App';
+import { IModalInfo } from 'containers/App';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -27,9 +27,9 @@ import { FormattedMessage, FormattedRelative } from 'react-intl';
 import messages from './messages';
 
 // styles
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
-const IdeaContainer: any = styled(Link) `
+const IdeaContainer: any = styled.div`
   width: 100%;
   height: 370px;
   margin-bottom: 22px;
@@ -43,10 +43,11 @@ const IdeaContainer: any = styled(Link) `
   backface-visibility: hidden;
   transition: all 150ms ease-out;
   position: relative;
-  border: solid 1px #e5e5e5;
+  border: solid 1px #e8e8e8;
+  transition: box-shadow 400ms cubic-bezier(0.19, 1, 0.22, 1);
 
   &:hover {
-    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.12);
   }
 `;
 
@@ -57,8 +58,8 @@ const CommentCount = styled.span`
 const IdeaImage: any = styled.div`
   width: 100%;
   height: 135px;
-  border-bottom: solid 1px #e5e5e5;
-  background-image: url(${(props: any) => props.src});
+  border-bottom: solid 1px #e8e8e8;
+  background-image: url(${(props: any) => props.src});  
   background-repeat: no-repeat;
   background-size: cover;
 `;
@@ -70,7 +71,7 @@ const IdeaImagePlaceholder = styled.div`
   align-items: center;
   justify-content: center;
   background: #cfd6db;
-  border-bottom: solid 1px #e5e5e5;
+  border-bottom: solid 1px #e8e8e8;
 `;
 
 const IdeaImagePlaceholderIcon = styled(Icon) `
@@ -164,7 +165,10 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
       const idea$ = ideaByIdStream(ideaId).observable;
       const ideaAuthor$ = userStream(idea.data.relationships.author.data.id).observable;
-      const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
+      const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.do((ideaImage) => {
+        // preload image
+        new Image().src = ideaImage.data.attributes.versions.large;
+      }) : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
         idea$,
@@ -194,9 +198,12 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
 
     if (idea) {
       event.preventDefault();
-      const ideaId = idea.data.id;
-      const ideaSlug = idea.data.attributes.slug;
-      eventEmitter.emit<IModalProps>(namespace, 'cardClick', { ideaId, ideaSlug });
+
+      eventEmitter.emit<IModalInfo>(namespace, 'cardClick', { 
+        type: 'idea',
+        id: idea.data.id,
+        url: `/ideas/${idea.data.attributes.slug}`
+       });
     }
   }
 
@@ -223,7 +230,7 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
       const authorName = (ideaAuthor ? `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}` : null);
 
       return (
-        <IdeaContainer className={className} onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`}>
+        <IdeaContainer onClick={this.onCardClick}  className={className}>
           {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
           {!ideaImageUrl &&
             <IdeaImagePlaceholder>

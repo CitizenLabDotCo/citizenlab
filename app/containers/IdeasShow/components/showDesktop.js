@@ -9,7 +9,7 @@ import ImageCarousel from 'components/ImageCarousel';
 import Author from './show/Author';
 import StatusBadge from 'components/StatusBadge';
 import CommentsLine from './show/CommentsLine';
-import SharingLine from './show/SharingLine';
+import SharingLine from './show/Sharing';
 import Comments from './comments';
 import T from 'components/T';
 import VoteControl from 'components/VoteControl';

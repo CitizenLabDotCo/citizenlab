@@ -24,6 +24,12 @@ export interface ITenantSettings {
     domicile: boolean;
     education: boolean;
   };
+  facebook_login?: {
+    allowed: boolean;
+    app_id: string;
+    app_secret: string;
+    enabled: boolean;
+  };
 }
 
 export interface ITenantData {

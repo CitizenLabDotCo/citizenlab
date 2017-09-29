@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.landing.ideasFrom',
     defaultMessage: 'Ideas for {name}',
   },
+  trendingIdeas: {
+    id: 'app.containers.landing.trendingIdeas',
+    defaultMessage: 'Trending ideas',
+  },
   explore: {
     id: 'app.containers.landing.explore',
     defaultMessage: 'Explore',
@@ -35,8 +39,12 @@ export default defineMessages({
     id: 'app.containers.landing.projectsFrom',
     defaultMessage: 'Projects from {name}',
   },
-  viewAllProjects: {
-    id: 'app.containers.landing.viewAllProjects',
-    defaultMessage: 'View all projects',
+  cityProjects: {
+    id: 'app.containers.landing.cityProjects',
+    defaultMessage: 'City projects',
+  },
+  exploreAllProjects: {
+    id: 'app.containers.landing.exploreAllProjects',
+    defaultMessage: 'Explore all projects',
   },
 });

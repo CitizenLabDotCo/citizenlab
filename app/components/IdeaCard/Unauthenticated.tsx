@@ -3,10 +3,9 @@ import styled, { keyframes } from 'styled-components';
 import { browserHistory } from 'react-router';
 import { darken } from 'polished';
 import Button from 'components/UI/Button';
+import Icon from 'components/UI/Icon';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-
-const lockImg = require('./img/lock.svg');
 
 // Using this spring interpolation function from https://medium.com/@dtinth/spring-animation-in-css-2039de6e1a03
 // const spring = (t) => -0.5 * (2.71828 ** (-6 * t)) * (-2 * (2.71828 ** (6 * t)) + Math.sin(12 * t) + 2 * Math.cos(12 * t))
@@ -41,40 +40,47 @@ const doubleBounce = keyframes`
 `;
 
 const Container = styled.div`
-  background-color: #F8F8F8;
+  background-color: #fff;
   position: relative;
   animation: ${doubleBounce} 450ms linear;
   transform-origin: bottom;
+  border-top: solid 1px #e5e5e5;
 `;
 
-const Lock = styled.div`
+const LockIconWrapper = styled.div`
   position: absolute;
-  top: -17px;
-  right: 33px;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  background-color: #ffffff;
+  top: -18px;
+  right: 25px;
+  width: 40px;
+  height: 40px;
   display:flex;
   justify-content: center;
   align-items: center;
+  background-color: #fff;
+  border-radius: 50%;
+  border: solid 1px #e5e5e5;
+`;
+
+const LockIcon = styled(Icon)`
+  height: 20px;
+  fill: #333;
 `;
 
 const HorizontalContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 18px 0;
+  padding: 22px 0;
 `;
 
 const RegisterLink = styled.span`
   color: ${(props) => props.theme.colorMain};
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
 
   &:hover {
-    color: ${(props) => darken(0.1, props.theme.colorMain)};
+    color: ${(props) => darken(0.15, props.theme.colorMain)};
   }
 `;
 
@@ -94,7 +100,9 @@ export default class Unauthenticated extends React.PureComponent {
   render() {
     return (
       <Container>
-        <Lock><img src={lockImg} alt="locked" /></Lock>
+        <LockIconWrapper>
+          <LockIcon name="lock-outlined" />
+        </LockIconWrapper>
         <HorizontalContainer>
           <Button onClick={this.goToLogin}><FormattedMessage {...messages.login} /></Button>
           <RegisterLink onClick={this.goToRegister}><FormattedMessage {...messages.register} /></RegisterLink>

@@ -41,7 +41,7 @@ const Title = styled.h2`
   margin-bottom: 35px;
 `;
 
-const FormElement = styled.div`
+const FormElement: any = styled.div`
   width: 100%;
   margin-bottom: 25px;
 `;

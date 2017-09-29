@@ -40,6 +40,9 @@ export interface IIdeaData {
     project: {
       data: IRelationship;
     };
+    idea_status?: {
+      data: IRelationship;
+    },
     user_vote: {
       data: IRelationship;
     }
