@@ -70,9 +70,11 @@ const LoadMore = styled.div`
 `;
 
 const LoadMoreButton = styled(Button)`
-  width: 300px;
+  /*
+  width: 304px;
   height: 52px;
   padding: 0px 0px;
+  */
 `;
 
 const EmptyContainer = styled.div`
@@ -226,7 +228,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
         <LoadMoreButton
           text={formatMessage(messages.loadMore)}
           loading={loadingMore}
-          style="secondary"
+          style="primary"
           size="3"
           onClick={this.loadMoreIdeas}
           circularCorners={false}

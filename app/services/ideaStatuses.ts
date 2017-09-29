@@ -1,8 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
-const apiEndpoint = `${API_PATH}/idea_statuses`;
-
 export interface IIdeaStatusData {
   id: string;
   type: string;
@@ -10,9 +8,12 @@ export interface IIdeaStatusData {
     title_multiloc: {
       [key: string]: string;
     };
-    color?: string;
-    code?: string;
-    ordering?: number;
+    color: string;
+    code: string;
+    ordering: number;
+    description_multiloc: {
+      [key: string]: string;
+    }
   };
 }
 
@@ -23,6 +24,10 @@ export interface IIdeaStatus {
   data: IIdeaStatusData;
 }
 
-export function ideaStatusesStream(streamParams: IStreamParams<IIdeaStatuses> | null = null) {
-  return streams.get<IIdeaStatuses>({ apiEndpoint, ...streamParams });
+export function ideaStatusStream(ideaId: string) {
+  return streams.get<IIdeaStatus>({ apiEndpoint: `${API_PATH}/idea_statuses/${ideaId}` });
+}
+
+export function ideaStatusesStream() {
+  return streams.get<IIdeaStatuses>({ apiEndpoint: `${API_PATH}/idea_statuses` });
 }

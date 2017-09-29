@@ -2,6 +2,9 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
+// libraries
+import { Link } from 'react-router';
+
 // components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
@@ -19,6 +22,7 @@ import messages from './messages';
 import { isValidEmail } from 'utils/validate';
 
 // style
+import { darken } from 'polished';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -44,14 +48,14 @@ const ButtonWrapper = styled.div`
 `;
 
 const ForgotPassword = styled.div`
-  color: #999;
+  color: ${(props) => props.theme.colorMain};
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
   cursor: pointer;
 
   &:hover {
-    color: #000;
+    color: ${(props) => darken(0.15, props.theme.colorMain)};
   }
 `;
 
@@ -61,7 +65,7 @@ const Separator = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  margin-top: 40px;
+  margin-top: 30px;
   margin-bottom: 20px;
 `;
 
@@ -97,14 +101,33 @@ const SeparatorText = styled.div`
   }
 `;
 
-const FooterButton = styled.div`
+const Footer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  padding-top: 15px;
-  padding-bottom: 15px;
 `;
 
+const FooterText = styled.div`
+  color: #888;
+  font-size: 17px;
+  line-height: 21px;
+  font-weight: 400;
+  margin-top: 0px;
+  margin-bottom: 0px;
+
+  span {
+    margin-right: 5px;
+  }
+`;
+
+const FooterLink = styled.span`
+  color: ${(props) => props.theme.colorMain};
+
+  &:hover {
+    color: ${(props) => darken(0.15, props.theme.colorMain)};
+    cursor: pointer;
+  }
+`;
 
 type Props = {
   onSignedIn: () => void;
@@ -269,7 +292,13 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
             </SeparatorTextContainer>
           </Separator>
 
-          <FooterButton>
+          <Footer>
+            <FooterText>
+              <span>{formatMessage(messages.noAccount)}</span>
+              <FooterLink onClick={this.goToSignUpForm}>{formatMessage(messages.signUp)}</FooterLink>
+            </FooterText>
+
+            {/*
             <Button
               size="3"
               style="secondary-outlined"
@@ -278,7 +307,8 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
               onClick={this.goToSignUpForm}
               circularCorners={true}
             />
-          </FooterButton>
+            */}
+          </Footer>
         </Form>
       </Container>
     );

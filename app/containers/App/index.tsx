@@ -11,7 +11,7 @@ import Navbar from 'containers/Navbar';
 import messages from './messages';
 import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import Modal from 'components/UI/Modal';
+import FullscreenModal from 'components/UI/FullscreenModal';
 import IdeasShow from 'containers/IdeasShow';
 import { namespace as IdeaCardComponent } from 'components/IdeaCard';
 
@@ -52,16 +52,20 @@ const Container = styled.div`
   `}
 `;
 
-export interface IModalProps {
-  ideaId: string;
-  ideaSlug: string;
+export interface IModalInfo {
+  type: string;
+  id: string;
+  url?: string | undefined;
 }
 
 type Props = {};
 
 type State = {
   currentTenant: ITenant | null;
-  modal: IModalProps | null;
+  modalOpened: boolean;
+  modalType: string | null;
+  modalId: string | null;
+  modalUrl: string | undefined;
 };
 
 export default class App extends React.PureComponent<Props & RouterState, State> {
@@ -72,7 +76,10 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     super();
     this.state = {
       currentTenant: null,
-      modal: null
+      modalOpened: false,
+      modalType: null,
+      modalId: null,
+      modalUrl: undefined
     };
     this.subscriptions = [];
   }
@@ -81,9 +88,9 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const authUser$ = authUserStream().observable;
 
     this.subscriptions = [
-      eventEmitter.observe<IModalProps>(IdeaCardComponent, 'cardClick').subscribe(({ eventValue }) => {
-        const { ideaId, ideaSlug } = eventValue;
-        this.openModal({ ideaId, ideaSlug });
+      eventEmitter.observe<IModalInfo>(IdeaCardComponent, 'cardClick').subscribe(({ eventValue }) => {
+        const { type, id, url } = eventValue;
+        this.openModal(type, id, url);
       }),
 
       authUser$.switchMap((authUser) => {
@@ -97,6 +104,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
         const topics$ = topicsStream().observable;
         const projects$ = projectsStream().observable;
         const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
+          console.log(currentTenant);
           this.setState({ currentTenant });
           store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: currentTenant });
         });
@@ -114,19 +122,17 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  openModal = (modal: IModalProps) => {
-    this.setState({ modal });
+  openModal = (type: string, id: string, url: string | undefined) => {
+    this.setState({ modalOpened: true, modalType: type, modalId: id, modalUrl: url });
   }
 
   closeModal = () => {
-    this.setState({ modal: null });
+    this.setState({ modalOpened: false, modalType: null, modalId: null, modalUrl: undefined });
   }
 
   render() {
     const { location, children } = this.props;
-    const { currentTenant, modal } = this.state;
-    const modalOpened = !_.isNull(modal);
-    const modalUrl = !_.isNull(modal) ? `/ideas/${modal.ideaSlug}` : undefined;
+    const { currentTenant, modalOpened, modalType, modalId, modalUrl } = this.state;
     const theme = {
       colorMain: (currentTenant ? currentTenant.data.attributes.settings.core.color_main : '#ef0071'),
       menuStyle: 'light',
@@ -146,9 +152,9 @@ export default class App extends React.PureComponent<Props & RouterState, State>
             <Container>
               <Meta />
 
-              <Modal opened={modalOpened} close={this.closeModal} url={modalUrl}>
-                {modal && <IdeasShow location={location} ideaId={modal.ideaId} />}
-              </Modal>
+              <FullscreenModal opened={modalOpened} close={this.closeModal} url={modalUrl}>
+                {modalOpened && modalType === 'idea' && modalId && <IdeasShow location={location} ideaId={modalId} />}
+              </FullscreenModal>
 
               <Navbar />
 

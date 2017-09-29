@@ -23,6 +23,13 @@ const getIcon = (name: string, className: string | undefined) => {
         </svg>
       );
     }
+    case 'close3': {
+      return (
+        <svg className={className} height="100%" viewBox="0.424 0.424 13.152 13.152">
+          <path d="M7.986 7l.212-.212 5.378-5.378-.986-.986-5.378 5.378L7 6.014l-.212-.212L1.41.424l-.986.986 5.378 5.378.212.212-.212.212L.424 12.59l.986.986 5.378-5.378L7 7.986l.212.212 5.378 5.378.986-.986-5.378-5.378"/>
+        </svg>
+      );
+    }
     case 'upload': {
       return (
         <svg className={className} height="100%" viewBox="0 0.621 79 53.713">
@@ -187,6 +194,14 @@ const getIcon = (name: string, className: string | undefined) => {
       return (
         <svg className={className} height="100%" viewBox="0 0 19 19">
           <path id="a" d="M13.58 11.95h-.864l-.3-.3c1.065-1.232 1.706-2.834 1.706-4.59 0-3.9-3.16-7.06-7.06-7.06C3.16 0 0 3.16 0 7.06c0 3.9 3.16 7.062 7.06 7.062 1.756 0 3.358-.64 4.59-1.7l.3.3v.857L17.38 19 19 17.38l-5.42-5.43zm-6.52 0c-2.698 0-4.887-2.19-4.887-4.89 0-2.698 2.19-4.887 4.888-4.887 2.7 0 4.89 2.19 4.89 4.888 0 2.7-2.19 4.89-4.89 4.89z"/>
+        </svg>
+      );
+    }
+    case 'lock-outlined': {
+      return (
+        <svg className={className} height="100%" viewBox="4 1 16 21">
+          <path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
+          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2H8.9V6zM18 20H6V10h12v10z"/>
         </svg>
       );
     }

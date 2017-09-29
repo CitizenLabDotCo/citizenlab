@@ -23,8 +23,8 @@ const vote = keyframes`
     transform: scale3d(1, 1, 1);
   }
 
-  60% {
-    transform: scale3d(1.15, 1.15, 1.15);
+  50% {
+    transform: scale3d(1.18, 1.18, 1.18);
   }
 
   to {
@@ -37,50 +37,54 @@ const Container: any = styled.div`
   align-items: center;
 `;
 
-const Vote: any = styled.div`
-  width: 90px;
-  display: flex;
-  align-items: center;
-
-  &.voteClick {
-    animation: ${vote} 200ms;
-  }
-`;
-
 const VoteIconContainer = styled.div`
-  width: 54px;
-  height: 54px;
+  width: 53px;
+  height: 53px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: solid 1px #e5e5e5;
+  border: solid 1px #e0e0e0;
   transition: all 100ms ease-out;
+
+  &:hover {
+    /* transform: scale(1.04); */
+  }
 `;
 
 const VoteIcon = styled(Icon) `
   height: 19px;
-  fill: #bdbdbd;
+  fill: #84939d;
   transition: all 100ms ease-out;
 `;
 
 const VoteCount = styled.div`
-  color: #bdbdbd;
+  color: #84939d;
   font-size: 16px;
   font-weight: 300;
-  margin-left: 5px;
+  margin-left: 6px;
   transition: all 100ms ease-out;
+`;
+
+const Vote: any = styled.div`
+  width: 90px;
+  display: flex;
+  align-items: center;
+
+  &.voteClick ${VoteIconContainer} {
+    animation: ${vote} 250ms;
+  }
 `;
 
 const Upvote = Vote.extend`
   ${VoteIconContainer} {
-    ${props => props.active && `border-color: ${green};`}
+    ${props => props.active && `border-color: ${green}; background: ${green};`}
   }
 
   ${VoteIcon} {
     margin-bottom: 4px;
-    ${props => props.active && `fill: ${green};`}
+    ${props => props.active && `fill: #fff;`}
   }
 
   ${VoteCount} {
@@ -89,27 +93,27 @@ const Upvote = Vote.extend`
 
   &:hover {
     ${VoteIconContainer} {
-      ${props => !props.active && `border-color: #999;`}
+      ${props => !props.active && `border-color: ${green};`}
     }
 
     ${VoteIcon} {
-      ${props => !props.active && `fill: #777;`}
+      ${props => !props.active && `fill: ${green};`}
     }
 
     ${VoteCount} {
-      ${props => !props.active && `color: #777;`}
+      ${props => !props.active && `color: ${green};`}
     }
   }
 `;
 
 const Downvote = Vote.extend`
   ${VoteIconContainer} {
-    ${props => props.active && `border-color: ${red};`}
+    ${props => props.active && `border-color: ${red}; background: ${red};`}
   }
 
   ${VoteIcon} {
     margin-top: 5px;
-    ${props => props.active && `fill: ${red};`}
+    ${props => props.active && `fill: #fff;`}
   }
 
   ${VoteCount} {
@@ -118,15 +122,15 @@ const Downvote = Vote.extend`
 
   &:hover {
     ${VoteIconContainer} {
-      ${props => !props.active && `border-color: #999;`}
+      ${props => !props.active && `border-color: ${red};`}
     }
 
     ${VoteIcon} {
-      ${props => !props.active && `fill: #777;`}
+      ${props => !props.active && `fill: ${red};`}
     }
 
     ${VoteCount} {
-      ${props => !props.active && `color: #777;`}
+      ${props => !props.active && `color: ${red};`}
     }
   }
 `;

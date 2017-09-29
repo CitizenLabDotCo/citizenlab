@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   firstNameLabel: {
     id: 'app.containers.SignUp.firstNameLabel',
-    defaultMessage: 'First name (required)',
+    defaultMessage: 'First name',
   },
   firstNamePlaceholder: {
     id: 'app.containers.SignUp.firstNamePlaceholder',
@@ -15,7 +15,7 @@ export default defineMessages({
   },
   lastNameLabel: {
     id: 'app.containers.SignUp.lastNameLabel',
-    defaultMessage: 'Last name (required)',
+    defaultMessage: 'Last name',
   },
   lastNamePlaceholder: {
     id: 'app.containers.SignUp.lastNamePlaceholder',
@@ -27,7 +27,7 @@ export default defineMessages({
   },
   emailLabel: {
     id: 'app.containers.SignUp.emailLabel',
-    defaultMessage: 'Email (required)',
+    defaultMessage: 'Email',
   },
   emailPlaceholder: {
     id: 'app.containers.SignUp.emailPlaceholder',
@@ -43,7 +43,7 @@ export default defineMessages({
   },
   passwordLabel: {
     id: 'app.containers.SignUp.passwordLabel',
-    defaultMessage: 'Password (required)',
+    defaultMessage: 'Password',
   },
   passwordPlaceholder: {
     id: 'app.containers.SignUp.passwordPlaceholder',
@@ -105,8 +105,12 @@ export default defineMessages({
     id: 'app.containers.SignUp.or',
     defaultMessage: 'Or',
   },
+  alreadyHaveAnAccount: {
+    id: 'app.containers.SignUp.alreadyHaveAnAccount',
+    defaultMessage: 'Already have an account?',
+  },
   logIn: {
     id: 'app.containers.SignUp.logIn',
-    defaultMessage: 'Log in to an existing account',
+    defaultMessage: 'Log in',
   },
 });

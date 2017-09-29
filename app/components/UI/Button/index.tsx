@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import { darken, lighten, rgba } from 'polished';
+import { darken, rgba } from 'polished';
 import { ITheme } from 'typings';
 import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
@@ -201,7 +201,7 @@ const StyledButton: any = styled.button`
       }
 
       &:hover {
-        border-color: ${(props: any) => darken(0.2, (props.theme.colorMain))};
+        border-color: ${(props: any) => darken(0.15, (props.theme.colorMain))};
 
         ${ButtonText} {
           color: ${(props: any) => darken(0.15, (props.theme.colorMain))};
@@ -281,7 +281,7 @@ const StyledButton: any = styled.button`
   }
 
   &.error {
-    background-color: ${rgba('#FC3C2D', .15)};
+    background-color: ${rgba('#FC3C2D', 0.15)};
     color: #FC3C2D;
 
     ${ButtonText} {
