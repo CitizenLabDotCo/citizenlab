@@ -160,15 +160,6 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
         <p><FormattedMessage {...messages.subTitleBranding} /></p>
 
         <FieldWrapper>
-          <Label><FormattedMessage {...messages.menuStyle} /></Label>
-          <Select
-            value={_.get(tenantAttrs, 'settings.core.menu_style', '')}
-            options={this.menuStyleOptions()}
-            onChange={this.createToggleChangeHandler('settings.core.menu_style')}
-          />
-        </FieldWrapper>
-
-        <FieldWrapper>
           <Label><FormattedMessage {...messages.mainColor} /></Label>
           <ColorPickerInput
             type="text"
@@ -178,7 +169,7 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
         </FieldWrapper>
 
 
-        {['logo', 'header_bg'].map((imageName) => {
+        {['logo'].map((imageName) => {
           const uploadedImages = this.state.attributesDiff[imageName] ? [this.state.attributesDiff[imageName]] : [];
           const apiImages = (this.state.attributesDiff[imageName] === undefined && this.state.tenant && this.state.tenant.attributes[imageName].medium !== null)
             ? [this.state.tenant.attributes[imageName]]
