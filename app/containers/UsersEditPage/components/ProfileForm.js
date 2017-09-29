@@ -27,7 +27,6 @@ import moment from 'moment';
 
 const StyledContentContainer = styled(ContentContainer)`
   background: #fff;
-  margin-top: 120px;
 `;
 
 const NavItemStyled = styled.button`
@@ -236,12 +235,12 @@ class ProfileForm extends React.Component {
     options.push({
       value: 'outside',
       label: this.props.intl.formatMessage({
-        ...messages.outside,
-        values: {
+        ...messages.outside },
+        {
           name: this.props.tFunc(this.props.organizationName),
           organizationType: this.props.organizationType,
-        },
-      }),
+        }
+      ),
     });
     return options;
   }
@@ -335,6 +334,15 @@ class ProfileForm extends React.Component {
                         error={userErrors && userErrors.email && userErrors.email[0]}
                       />
                     </LabelInputPairStyled>
+                    <LabelWithTooltip id="bio" />
+                    <TextArea
+                      name="bio_multiloc"
+                      onInput={this.handleMultilocInputChange}
+                      rows={6}
+                      placeholder={intl.formatMessage({ ...messages.bio_placeholder })}
+                      value={tFunc(user.bio_multiloc)}
+                      error={userErrors && userErrors.bio_multiloc && userErrors.bio_multiloc[0]}
+                    />
                     <LabelInputPairStyled>
                       <LabelWithTooltip id="password" />
                       <Input
@@ -388,15 +396,6 @@ class ProfileForm extends React.Component {
                       </div>
                     }
 
-                    <LabelWithTooltip id="bio" />
-                    <TextArea
-                      name="bio_multiloc"
-                      onInput={this.handleMultilocInputChange}
-                      rows={6}
-                      placeholder={intl.formatMessage({ ...messages.bio_placeholder })}
-                      value={tFunc(user.bio_multiloc)}
-                      error={userErrors && userErrors.bio_multiloc && userErrors.bio_multiloc[0]}
-                    />
 
                     {this.props.domicileEnabled &&
                       <div>
