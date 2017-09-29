@@ -38,14 +38,14 @@ const Container: any = styled.div`
 `;
 
 const VoteIconContainer = styled.div`
-  width: 54px;
-  height: 54px;
+  width: 53px;
+  height: 53px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: solid 1px #e5e5e5;
+  border: solid 1px #e0e0e0;
   transition: all 100ms ease-out;
 
   &:hover {
@@ -55,12 +55,12 @@ const VoteIconContainer = styled.div`
 
 const VoteIcon = styled(Icon) `
   height: 19px;
-  fill: #bdbdbd;
+  fill: #84939d;
   transition: all 100ms ease-out;
 `;
 
 const VoteCount = styled.div`
-  color: #bdbdbd;
+  color: #84939d;
   font-size: 16px;
   font-weight: 300;
   margin-left: 6px;
@@ -93,15 +93,15 @@ const Upvote = Vote.extend`
 
   &:hover {
     ${VoteIconContainer} {
-      ${props => !props.active && `border-color: #999;`}
+      ${props => !props.active && `border-color: ${green};`}
     }
 
     ${VoteIcon} {
-      ${props => !props.active && `fill: #777;`}
+      ${props => !props.active && `fill: ${green};`}
     }
 
     ${VoteCount} {
-      ${props => !props.active && `color: #777;`}
+      ${props => !props.active && `color: ${green};`}
     }
   }
 `;
@@ -122,15 +122,15 @@ const Downvote = Vote.extend`
 
   &:hover {
     ${VoteIconContainer} {
-      ${props => !props.active && `border-color: #999;`}
+      ${props => !props.active && `border-color: ${red};`}
     }
 
     ${VoteIcon} {
-      ${props => !props.active && `fill: #777;`}
+      ${props => !props.active && `fill: ${red};`}
     }
 
     ${VoteCount} {
-      ${props => !props.active && `color: #777;`}
+      ${props => !props.active && `color: ${red};`}
     }
   }
 `;

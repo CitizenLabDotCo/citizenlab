@@ -52,24 +52,20 @@ const Container = styled.div`
   `}
 `;
 
-export interface IIdeaCardModalData {
-  ideaId: string;
-  ideaSlug: string;
-  ideaCardElement: {
-    width: number;
-    height: number;
-    offsetTop: number;
-    offsetBottom: number;
-    offsetLeft: number;
-    offsetRight: number;
-  };
+export interface IModalInfo {
+  type: string;
+  id: string;
+  url?: string | undefined;
 }
 
 type Props = {};
 
 type State = {
   currentTenant: ITenant | null;
-  modalInfo: IIdeaCardModalData | null;
+  modalOpened: boolean;
+  modalType: string | null;
+  modalId: string | null;
+  modalUrl: string | undefined;
 };
 
 export default class App extends React.PureComponent<Props & RouterState, State> {
@@ -80,7 +76,10 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     super();
     this.state = {
       currentTenant: null,
-      modalInfo: null
+      modalOpened: false,
+      modalType: null,
+      modalId: null,
+      modalUrl: undefined
     };
     this.subscriptions = [];
   }
@@ -89,9 +88,9 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const authUser$ = authUserStream().observable;
 
     this.subscriptions = [
-      eventEmitter.observe<IIdeaCardModalData>(IdeaCardComponent, 'cardClick').subscribe(({ eventValue }) => {
-        const { ideaId, ideaSlug, ideaCardElement } = eventValue;
-        this.openModal({ ideaId, ideaSlug, ideaCardElement });
+      eventEmitter.observe<IModalInfo>(IdeaCardComponent, 'cardClick').subscribe(({ eventValue }) => {
+        const { type, id, url } = eventValue;
+        this.openModal(type, id, url);
       }),
 
       authUser$.switchMap((authUser) => {
@@ -105,6 +104,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
         const topics$ = topicsStream().observable;
         const projects$ = projectsStream().observable;
         const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
+          console.log(currentTenant);
           this.setState({ currentTenant });
           store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: currentTenant });
         });
@@ -122,19 +122,17 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  openModal = (modalInfo: IIdeaCardModalData) => {
-    this.setState({ modalInfo });
+  openModal = (type: string, id: string, url: string | undefined) => {
+    this.setState({ modalOpened: true, modalType: type, modalId: id, modalUrl: url });
   }
 
   closeModal = () => {
-    this.setState({ modalInfo: null });
+    this.setState({ modalOpened: false, modalType: null, modalId: null, modalUrl: undefined });
   }
 
   render() {
     const { location, children } = this.props;
-    const { currentTenant, modalInfo } = this.state;
-    const modalOpened = !_.isNull(modalInfo);
-    const modalUrl = !_.isNull(modalInfo) ? `/ideas/${modalInfo.ideaSlug}` : undefined;
+    const { currentTenant, modalOpened, modalType, modalId, modalUrl } = this.state;
     const theme = {
       colorMain: (currentTenant ? currentTenant.data.attributes.settings.core.color_main : '#ef0071'),
       menuStyle: 'light',
@@ -142,13 +140,6 @@ export default class App extends React.PureComponent<Props & RouterState, State>
       mobileMenuHeight: 80,
       maxPageWidth: 952,
     };
-
-    const initialWidth = (modalInfo && modalInfo.ideaCardElement ? modalInfo.ideaCardElement.width : null);
-    const initialHeight = (modalInfo && modalInfo.ideaCardElement ? modalInfo.ideaCardElement.height : null);
-    const initialOffsetTop = (modalInfo && modalInfo.ideaCardElement ? modalInfo.ideaCardElement.offsetTop : null);
-    const initialOffsetBottom = (modalInfo && modalInfo.ideaCardElement ? modalInfo.ideaCardElement.offsetBottom : null);
-    const initialOffsetLeft = (modalInfo && modalInfo.ideaCardElement ? modalInfo.ideaCardElement.offsetLeft : null);
-    const initialOffsetRight = (modalInfo && modalInfo.ideaCardElement ? modalInfo.ideaCardElement.offsetRight : null);
 
     return (
       <div>
@@ -161,18 +152,8 @@ export default class App extends React.PureComponent<Props & RouterState, State>
             <Container>
               <Meta />
 
-              <FullscreenModal 
-                opened={modalOpened} 
-                close={this.closeModal}
-                url={modalUrl}
-                initialWidth={initialWidth}
-                initialHeight={initialHeight}
-                initialOffsetTop={initialOffsetTop}
-                initialOffsetBottom={initialOffsetBottom}
-                initialOffsetLeft={initialOffsetLeft}
-                initialOffsetRight={initialOffsetRight}
-              >
-                {modalInfo && <IdeasShow location={location} ideaId={modalInfo.ideaId} />}
+              <FullscreenModal opened={modalOpened} close={this.closeModal} url={modalUrl}>
+                {modalOpened && modalType === 'idea' && modalId && <IdeasShow location={location} ideaId={modalId} />}
               </FullscreenModal>
 
               <Navbar />

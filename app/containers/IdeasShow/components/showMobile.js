@@ -80,7 +80,6 @@ const StyledStatusBadge = styled(StatusBadge)`
   margin-right: auto;
 `;
 
-
 /* eslint-disable */
 class ShowMobile extends React.PureComponent {
 
