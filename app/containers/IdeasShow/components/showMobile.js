@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import ImageCarousel from 'components/ImageCarousel';
 import Author from './show/Author';
 import StatusBadge from 'components/StatusBadge';
-import SharingLine from './show/SharingLine';
+import SharingLine from './show/Sharing';
 import Comments from './comments';
 import T from 'components/T';
 import VoteControl from 'components/VoteControl';
