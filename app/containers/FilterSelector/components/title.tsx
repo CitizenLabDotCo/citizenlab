@@ -5,6 +5,7 @@ import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
+
 const StyledButton = styled.button`
   align-items: center;
   color: #6b6b6b;
@@ -27,7 +28,6 @@ const StyledButton = styled.button`
   }
 `;
 
-
 type Props = {
   title: string,
   deployed: boolean,
@@ -37,8 +37,7 @@ type Props = {
 
 type State = {};
 
-class Title extends React.Component<Props, State> {
-
+export default class Title extends React.PureComponent<Props, State> {
   handleClick = (event) => {
     this.props.onClick(event);
   }
@@ -59,5 +58,3 @@ class Title extends React.Component<Props, State> {
     );
   }
 }
-
-export default Title;

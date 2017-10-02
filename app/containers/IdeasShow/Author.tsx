@@ -11,7 +11,7 @@ import { userStream, IUser } from 'services/users';
 
 // i18n
 import { FormattedRelative, FormattedMessage } from 'react-intl';
-import messages from '../../messages';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';

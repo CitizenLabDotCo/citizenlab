@@ -7,13 +7,13 @@ import { Link, browserHistory } from 'react-router';
 import { Location } from 'history';
 
 // components
-import Meta from './components/show/Meta';
 import VoteControl from 'components/VoteControl';
 import Avatar from 'components/Avatar';
 import StatusBadge from 'components/StatusBadge';
-import Sharing from './components/show/Sharing';
-import CommentsLine from './components/show/CommentsLine';
-import Comments from './components/comments';
+import Comments from './comments';
+import Sharing from './Sharing';
+import CommentsLine from './CommentsLine';
+import IdeaMeta from './IdeaMeta';
 
 // services
 import { localeStream } from 'services/locale';
@@ -239,7 +239,8 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container>
-          <Meta location={location} slug={ideaSlug} />
+          <IdeaMeta ideaId={idea.data.id} />
+
           <IdeaContainer id="e2e-idea-show">
             <Header>
               <IdeaTitle>

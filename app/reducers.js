@@ -9,7 +9,6 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import usersEditPageReducer from 'containers/UsersEditPage/reducer';
 import searchWidgetReducer from 'containers/SearchWidget/reducer';
-import ideasShowReducer from 'containers/IdeasShow/reducer';
 import notificationMenuReducer from 'containers/Navbar/components/NotificationMenu/reducer';
 import resourcesReducer from 'utils/resources/reducer';
 import { utilsReducer, tempStateReducer } from 'utils/store/reducer';
@@ -59,7 +58,6 @@ export default function createReducer(asyncReducers) {
     language: languageProviderReducer,
     persistedData: persistedDataReducer,
     resources: resourcesReducer,
-    ideasShow: ideasShowReducer,
     profile: usersEditPageReducer,
     searchWidget: searchWidgetReducer,
     notificationMenu: notificationMenuReducer,

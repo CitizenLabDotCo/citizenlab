@@ -15,7 +15,6 @@ import { projectByIdStream, IProject } from 'services/projects';
 import { projectImagesStream, IProjectImages } from 'services/projectImages';
 
 // i18n
-import i18n from 'utils/i18n';
 import T from 'components/T';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
@@ -204,7 +203,7 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
     if (currentTenant && project) {
       const tenantLogo = currentTenant.data.attributes.logo.medium;
       const slug = project.data.attributes.slug;
-      const title = i18n.getLocalized(project.data.attributes.title_multiloc);
+      const titleMultiloc = project.data.attributes.title_multiloc;
       const ideasCount = project.data.attributes.ideas_count;
       const image = (projectImages && projectImages.data.length > 0 ? projectImages.data[0] : null);
       const imageUrl = (image ? image.attributes.versions.medium : null);
@@ -214,7 +213,7 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
           {imageUrl ? <ProjectImage imageSrc={imageUrl} /> : <ProjectImagePlaceholder />}
 
           <ProjectContent>
-            <ProjectTitle>{title}</ProjectTitle>
+            <ProjectTitle><T value={titleMultiloc} /></ProjectTitle>
             <ProjectDescription><T value={project.data.attributes.description_multiloc} /></ProjectDescription>
             <ReadMoreWrapper>
               <ReadMore onClick={this.goToProject}>

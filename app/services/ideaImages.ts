@@ -26,9 +26,9 @@ export interface IIdeaImages {
   data: IIdeaImageData[];
 }
 
-export function ideaImageStream(ideaId: string, imageId: string, streamParams: IStreamParams<IIdeaImage> | null = null) {
+export function ideaImageStream(ideaId: string, imageId: string) {
   const apiEndpoint = `${API_PATH}/ideas/${ideaId}/images/${imageId}`;
-  return streams.get<IIdeaImage>({ apiEndpoint, ...streamParams });
+  return streams.get<IIdeaImage>({ apiEndpoint });
 }
 
 export function ideaImagesStream(ideaId: string, streamParams: IStreamParams<IIdeaImages> | null = null) {
