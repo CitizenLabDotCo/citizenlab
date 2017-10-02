@@ -59,9 +59,9 @@ class Idea < ApplicationRecord
     direction ||= :desc
     order(<<~EOS
       (
-        (upvotes_count - downvotes_count)
+        power(GREATEST(((upvotes_count - downvotes_count) + 10), 0.5), 0.3)
         /
-        power(ABS(EXTRACT(epoch FROM (NOW() - published_at))/3600) , 1.1)
+        ABS(EXTRACT(epoch FROM (NOW() - published_at))/3600)
       ) #{direction}
     EOS
     )
@@ -91,8 +91,8 @@ class Idea < ApplicationRecord
   end
 
   def trending_score
-    score /
-    ((Time.now - published_at).abs / 3600)**1.1
+    [score+10,0.5].max**0.3 /
+    ((Time.now - published_at).abs / 3600)
   end
 
   def generate_slug
