@@ -99,8 +99,6 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       const createdAt = comment.data.attributes.created_at;
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
 
-      console.log(comment);
-
       return (
         <ThreadContainer>
 
