@@ -17,7 +17,7 @@
     ],
     "object-literal-key-quotes": [
       true, 
-      "consistent"
+      "as-needed"
     ],
     "trailing-comma": [
       "error",
