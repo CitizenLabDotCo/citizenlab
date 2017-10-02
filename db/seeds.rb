@@ -25,6 +25,14 @@ def create_comment_tree(idea, parent, depth=0)
   end
 end
 
+def create_for_some_locales
+  translations = {}
+  show_en = (rand(6) == 0)
+  translations["en"] = yield if show_en
+  translations["nl"] = yield if rand(6) == 0 || !show_en
+  translations
+end
+
 if Apartment::Tenant.current == 'public' || 'example_org'
   Tenant.create({
     name: 'local',
@@ -159,18 +167,9 @@ if Apartment::Tenant.current == 'localhost'
     rand(5).times do
       start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
       project.events.create({
-        title_multiloc: {
-          "en": Faker::Lorem.sentence,
-          "nl": Faker::Lorem.sentence
-        },
-        description_multiloc: {
-          "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-          "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-        },
-        location_multiloc: {
-          "en" => Faker::Address.street_address,
-          "nl" => Faker::Address.street_address
-        },
+        title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
+        description_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
+        location_multiloc: create_for_some_locales{Faker::Address.street_address},
         start_at: start_at,
         end_at: start_at + rand(12).hours
       })
@@ -183,14 +182,8 @@ if Apartment::Tenant.current == 'localhost'
 
   30.times do 
     idea = Idea.create({
-      "title_multiloc": {
-        "en": Faker::Lorem.sentence,
-        "nl": Faker::Lorem.sentence
-      },
-      body_multiloc: {
-        "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-        "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-      },
+      title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
+      body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
       idea_status: IdeaStatus.offset(rand(IdeaStatus.count)).first,
       topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
       areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
@@ -219,14 +212,8 @@ if Apartment::Tenant.current == 'localhost'
 
   8.times do 
     Page.create({
-      title_multiloc: {
-        "en" => Faker::Lorem.sentence,
-        "nl" => Faker::Lorem.sentence
-      },
-      body_multiloc: {
-        "en": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-        "nl": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-      },
+      title_multiloc:create_for_some_locales{Faker::Lorem.sentence},
+      body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
       project: rand(1) == 1 ? Project.offset(rand(Project.count)).first : nil,
     })
   end
