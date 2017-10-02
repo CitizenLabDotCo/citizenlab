@@ -203,8 +203,8 @@ class EditorForm extends React.PureComponent<Props & InjectedIntlProps & Tracks,
     const { formatMessage } = this.props.intl;
     const { authUser, processing, errorMessage, success } = this.state;
     const submitAreaClassNames = classNames({
-      'error': _.isString(errorMessage),
-      'success': (success === true)
+      error: _.isString(errorMessage),
+      success: (success === true)
     });
 
     return (
