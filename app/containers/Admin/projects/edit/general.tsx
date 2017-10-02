@@ -239,7 +239,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
   }
 
   handleSaveErrors = (errors) => {
-    console.log(errors);
     this.setState({ errors: errors.json.errors });
   }
 

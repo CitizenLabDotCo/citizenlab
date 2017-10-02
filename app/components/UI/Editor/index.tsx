@@ -147,6 +147,8 @@ type Props = {
   error?: string | null | undefined;
   toolbarConfig?: {} | null | undefined;
   onChange: (arg: EditorState) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;
 };
 
@@ -169,14 +171,22 @@ export default class Editor extends React.PureComponent<Props, State> {
 
   handleOnFocus = () => {
     this.setState({ focussed: true });
+    
+    if (this.props.onFocus) {
+      this.props.onFocus();
+    }
   }
 
   handleOnBlur = () => {
     this.setState({ focussed: false });
+
+    if (this.props.onBlur) {
+      this.props.onBlur();
+    }
   }
 
   handleRef = (element: HTMLInputElement) => {
-    if (_.isFunction(this.props.setRef)) {
+    if (this.props.setRef) {
       this.props.setRef(element);
     }
   }

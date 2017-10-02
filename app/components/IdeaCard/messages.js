@@ -14,9 +14,9 @@ export default defineMessages({
     id: 'app.components.IdeaCard.author',
     defaultMessage: 'Author',
   },
-  byAuthorLink: {
-    id: 'app.components.IdeaCard.byAuthorLink',
-    defaultMessage: 'by {authorLink}',
+  byAuthorName: {
+    id: 'app.components.IdeaCard.byAuthorName',
+    defaultMessage: 'by {authorName}',
   },
   login: {
     id: 'app.components.IdeaCard.login',

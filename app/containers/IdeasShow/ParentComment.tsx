@@ -15,11 +15,11 @@ import { commentsForIdeaStream, commentStream, IComments, IComment } from 'servi
 // i18n
 import { FormattedMessage } from 'react-intl';
 import T from 'components/T';
-import messages from '../../messages';
+import messages from './messages';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
-import tracks from '../../tracks';
+import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
@@ -98,6 +98,8 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       const authorId = comment.data.relationships.author.data.id;
       const createdAt = comment.data.attributes.created_at;
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
+
+      console.log(comment);
 
       return (
         <ThreadContainer>

@@ -13,11 +13,11 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 
 // i18n
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-import messages from '../../messages';
+import messages from './messages';
 
 // analytics
 import { injectTracks, trackPage } from 'utils/analytics';
-import tracks from '../../tracks';
+import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
