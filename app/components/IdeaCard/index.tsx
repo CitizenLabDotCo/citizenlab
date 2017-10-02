@@ -23,11 +23,33 @@ import T from 'components/T';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
-import { FormattedMessage, FormattedRelative } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative } from 'react-intl';
 import messages from './messages';
 
 // styles
 import styled, { keyframes } from 'styled-components';
+
+const IdeaImage: any = styled.div`
+  width: 100%;
+  height: 135px;
+  border-bottom: solid 1px #e8e8e8;
+  background-image: url(${(props: any) => props.src});  
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 1;
+  /* transition: all 200ms ease-out; */
+`;
+
+const IdeaImagePlaceholder = styled.div`
+  width: 100%;
+  height: 135px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #cfd6db;
+  border-bottom: solid 1px #e8e8e8;
+  /* transition: all 200ms ease-out; */
+`;
 
 const IdeaContainer: any = styled.div`
   width: 100%;
@@ -41,37 +63,35 @@ const IdeaContainer: any = styled.div`
   cursor: pointer;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  transition: all 150ms ease-out;
+  transition: all 150ms cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
-  border: solid 1px #e8e8e8;
-  transition: box-shadow 400ms cubic-bezier(0.19, 1, 0.22, 1);
+  border: solid 1px #e6e6e6;
+  will-change: box-shadow;
+  /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); */
+  /* transition: box-shadow 400ms cubic-bezier(0.19, 1, 0.22, 1); */
 
   &:hover {
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.12);
+    /* transform: scale(1.015); */
+    box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1); */
+    /* border: solid 1px #ccc; */
+
+    /*
+    ${IdeaImage} {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+
+    ${IdeaImagePlaceholder} {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+    */
   }
 `;
 
 const CommentCount = styled.span`
   padding-left: 6px;
-`;
-
-const IdeaImage: any = styled.div`
-  width: 100%;
-  height: 135px;
-  border-bottom: solid 1px #e8e8e8;
-  background-image: url(${(props: any) => props.src});  
-  background-repeat: no-repeat;
-  background-size: cover;
-`;
-
-const IdeaImagePlaceholder = styled.div`
-  width: 100%;
-  height: 135px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #cfd6db;
-  border-bottom: solid 1px #e8e8e8;
 `;
 
 const IdeaImagePlaceholderIcon = styled(Icon) `
@@ -107,9 +127,9 @@ const IdeaTitle: any = styled.h4`
 `;
 
 const IdeaAuthor = styled.div`
-  color: #999;
+  color: #84939d;
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 400;
   margin-top: 12px;
 `;
 
@@ -139,7 +159,7 @@ type State = {
 
 export const namespace = 'components/IdeaCard/index';
 
-export default class IdeaCard extends React.PureComponent<Props, State> {
+class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -222,41 +242,44 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const { formatMessage, formatRelative } = this.props.intl;
     const className = `${this.props['className']} e2e-idea-card ${!_.get(this.state, 'idea.data.relationships.user_vote.data', undefined) ? 'not-voted' : 'voted' }`;
     const { idea, ideaImage, ideaAuthor, locale, showUnauthenticated, loading } = this.state;
 
     if (!loading && idea && ideaAuthor && locale) {
       const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
-      const authorName = (ideaAuthor ? `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}` : null);
+      const authorName = `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
+      const createdAt = formatRelative(idea.data.attributes.created_at);
+      const byAuthor = formatMessage(messages.byAuthorName, { authorName });
 
       return (
         <IdeaContainer onClick={this.onCardClick}  className={className}>
+
           {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
+
           {!ideaImageUrl &&
             <IdeaImagePlaceholder>
               <IdeaImagePlaceholderIcon name="idea" />
             </IdeaImagePlaceholder>
           }
+
           <IdeaContent>
             <IdeaTitle>
               <T value={idea.data.attributes.title_multiloc} />
             </IdeaTitle>
             <IdeaAuthor>
-              <FormattedRelative value={idea.data.attributes.created_at} />&nbsp;
-              <FormattedMessage
-                {...messages.byAuthorLink}
-                values={{
-                  authorLink: <AuthorLink onClick={this.onAuthorClick}>{authorName}</AuthorLink>,
-                }}
-              />
+              {createdAt} {byAuthor}
             </IdeaAuthor>
           </IdeaContent>
+
           {!showUnauthenticated &&
             <IdeaFooter>
               <VoteControl ideaId={idea.data.id} unauthenticatedVoteClick={this.unauthenticatedVoteClick} />
             </IdeaFooter>
           }
+
           {showUnauthenticated && <Unauthenticated />}
+
         </IdeaContainer>
       );
     }
@@ -264,3 +287,5 @@ export default class IdeaCard extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+export default injectIntl<Props>(IdeaCard);

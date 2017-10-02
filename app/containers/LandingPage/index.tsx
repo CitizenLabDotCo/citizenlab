@@ -61,6 +61,7 @@ const BackgroundColor = styled.div`
   left: 0;
   right: 0;
   z-index: 0;
+  background-color: #fff;
   background-color: #f8f8f8;
 `;
 

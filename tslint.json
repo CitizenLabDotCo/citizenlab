@@ -15,6 +15,10 @@
     "max-line-length": [
       false
     ],
+    "object-literal-key-quotes": [
+      true, 
+      "consistent"
+    ],
     "trailing-comma": [
       "error",
       "always-multiline"

@@ -39,8 +39,14 @@ class Internationalization {
         });
       }
 
-      if (text === '' && multiLoc['en']) {
-        text = multiLoc['en'];
+      if (text === '') {
+        if (multiLoc['en']) {
+          text = multiLoc['en'];
+        } else if (multiLoc['nl']) {
+          text = multiLoc['nl'];
+        } else if (multiLoc['fr']) {
+          text = multiLoc['fr'];
+        }
       }
     }
 

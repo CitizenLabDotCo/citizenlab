@@ -40,12 +40,13 @@ const Container: any = styled.div`
   z-index: 999;
   position: fixed;
   top: 0;
-  transition: border-color 150ms ease-out;
-  border-bottom: 1px solid;
-  border-color: ${(props: any) => props.hideBorder ? '#fff' : props.theme.colorNavBottomBorder};
+  transition: all 150ms ease-out;
+  /* border-bottom: 1px solid; */
+  /* border-color: ${(props: any) => props.hideBorder ? '#fff' : props.theme.colorNavBottomBorder}; */
 
   ${(props: any) => props.scrolled && css`
-    border-color: ${props => props.theme.colorNavBottomBorder};
+    /* border-color: ${props => props.theme.colorNavBottomBorder}; */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   `}
 `;
 

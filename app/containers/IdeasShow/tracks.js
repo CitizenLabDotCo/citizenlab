@@ -21,8 +21,8 @@ export default {
   clickReply: {
     name: 'Comment reply clicked',
   },
-  typeComment: {
-    name: 'Comment typed',
+  focusNewCommentTextbox: {
+    name: 'Add a comment editor focussed',
   },
   clickCommentPublish: {
     name: 'Comment publish clicked',

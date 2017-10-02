@@ -3,21 +3,39 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
-import ParentComment from './comments/ParentComment';
-import EditorForm from './comments/EditorForm';
+import ParentComment from './ParentComment';
+import EditorForm from './EditorForm';
 import Icon from 'components/UI/Icon';
+
+// animations
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 // services
 import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
 
-const Container = styled.div``;
+const animationDuration = 500;
+const animationEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
+
+const Container = styled.div`
+  will-change: opacity;
+
+  &.background-enter {
+    opacity: 0;
+
+    &.background-enter-active {
+      opacity: 1;
+      transition: opacity ${animationDuration}ms ${animationEasing};
+    }
+  }
+`;
 
 const Title = styled.h2`
   font-size: 25px;
@@ -60,7 +78,7 @@ export default class Comments extends React.PureComponent<Props, State> {
         }
 
         return Rx.Observable.of(null);
-      }).delay(1000).subscribe((comments) => {
+      }).delay(800).subscribe((comments) => {
         this.setState({ comments, loading: false });
       })
     ];
@@ -74,6 +92,7 @@ export default class Comments extends React.PureComponent<Props, State> {
     const className = this.props['className'];
     const { ideaId } = this.props;
     const { comments, loading } = this.state;
+    let commentsContainer: JSX.Element | null = null;
 
     if (!loading) {
       let commentsList: JSX.Element[] | null = null;
@@ -82,20 +101,26 @@ export default class Comments extends React.PureComponent<Props, State> {
         commentsList = comments.data.map(comment => (<ParentComment key={comment.id} commentId={comment.id} />));
       }
 
-      return (
-        <Container className={className}>
-          <Title>
-            <Icon name="comment outline" />
-            <FormattedMessage {...messages.commentsTitle} />
-          </Title>
+      commentsContainer = (
+        <CSSTransition classNames="comments" timeout={animationDuration} exit={false}>
+          <Container className={className}>
+            <Title>
+              <Icon name="comment outline" />
+              <FormattedMessage {...messages.commentsTitle} />
+            </Title>
 
-          <EditorForm ideaId={ideaId} />
+            <EditorForm ideaId={ideaId} />
 
-          {commentsList}
-        </Container>
+            {commentsList}
+          </Container>
+        </CSSTransition>
       );
     }
 
-    return null;
+    return (
+      <TransitionGroup>
+        {commentsContainer}
+      </TransitionGroup>
+    );
   }
 }
