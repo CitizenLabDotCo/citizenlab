@@ -8,6 +8,20 @@
 // debug utils
 import { cl } from 'utils/debugUtils'; // eslint-disable-line
 
+// Sentry error tracking
+if (process.env.NODE_ENV !== 'development') {
+  if (window.Raven) {
+    window.Raven.config('https://7cc28cd69e544a9f9c1a5295cb359fb1@sentry.io/224810', {
+      environment: process.env.NODE_ENV,
+    }).install();
+
+    window.onunhandledrejection = (evt) => {
+      window.Raven.captureException(evt.reason);
+    };
+  }
+}
+
+
 // Needed for redux-saga es6 generator support
 import 'babel-polyfill';
 
@@ -154,6 +168,6 @@ if (!window.Intl) {
 // Install ServiceWorker and AppCache in the end since
 // it's not most important operation and if main code fails,
 // we do not want it installed
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'development') {
   require('offline-plugin/runtime').install(); // eslint-disable-line global-require
 }
