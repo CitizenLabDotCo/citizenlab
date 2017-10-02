@@ -1,11 +1,7 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import messages from '../../messages';
-
-type Props = {
-  count: number;
-};
+import messages from './messages';
 
 const Container = styled.div`
   padding: 10px 0;
@@ -34,9 +30,16 @@ const Separator = styled.div`
   margin: 10px 0;
 `;
 
-export default class CommentsLine extends React.Component<Props> {
+type Props = {
+  count: number;
+};
+
+type State = {};
+
+export default class CommentsLine extends React.PureComponent<Props, State> {
   render() {
     const count = this.props.count.toString();
+
     return (
       <Container>
         <TextLine>
@@ -49,4 +52,3 @@ export default class CommentsLine extends React.Component<Props> {
     );
   }
 }
-

@@ -33,7 +33,7 @@ interface State {
   currentTitle: string;
 }
 
-export default class FilterSelector extends React.Component<Props, State> {
+export default class FilterSelector extends React.PureComponent<Props, State> {
   state: State;
   baseID: string;
 

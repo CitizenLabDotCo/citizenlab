@@ -26,12 +26,12 @@ import { media } from 'utils/styleUtils';
 const backgroundTimeout = 150;
 const backgroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
-const foregroundTimeout = 450;
+const foregroundTimeout = 400;
 const foregroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
-const contentTimeout = 1150;
+const contentTimeout = 1100;
 const contentEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
-const contentDelay = 0;
+const contentDelay = 100;
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -44,7 +44,7 @@ const ModalBackground = styled.div`
   outline: none;
   overflow: hidden;
   z-index: 2000;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   will-change: opacity;
@@ -53,7 +53,7 @@ const ModalBackground = styled.div`
     opacity: 0;
 
     &.background-enter-active {
-      opacity: 1;
+      opacity: 0;
       transition: opacity ${backgroundTimeout}ms ${backgroundEasing};
     }
   }
@@ -83,8 +83,8 @@ const ModalForeground: any = styled.div`
 
   &.foreground-enter {
     opacity: 0;
-    transform-origin: bottom center;
-    transform: translateY(0px) scale(0.9);
+    transform-origin: center center;
+    transform: translateY(0px) scale(1);
 
     &.foreground-enter-active {
       width: 100%;
@@ -105,7 +105,7 @@ const ModalContentInner = styled.div`
   width: 100vw;
   height: 100%;
   overflow: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   padding-top: 60px;
   z-index: 5000;
@@ -161,7 +161,7 @@ const ModalContent = styled.div`
   &.content-enter {
     ${ModalContentInnerInner} {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(30px);
     }
 
     ${CloseButton} {

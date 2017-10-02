@@ -86,7 +86,7 @@ type Value = {
   value: any,
 };
 
-type valuesListProps = {
+type Props = {
   values: Value[]
   onChange: Function,
   selected: any[],
@@ -95,14 +95,15 @@ type valuesListProps = {
   baseID: string,
 };
 
-type valuesListState = {
+type State = {
   currentFocus: number
 };
 
-class ValuesList extends React.Component<valuesListProps, valuesListState> {
+export default class ValuesList extends React.PureComponent<Props, State> {
+  state: State;
+
   constructor() {
     super();
-
     this.state = {
       currentFocus: 0,
     };
@@ -114,7 +115,9 @@ class ValuesList extends React.Component<valuesListProps, valuesListState> {
 
   updateFocus = (newIndex: number): void => {
     this.setState({ currentFocus: newIndex });
+
     const focusedElement = document.getElementById(`${this.props.baseID}-${newIndex}`);
+
     if (focusedElement) {
       focusedElement.scrollIntoView();
     }
@@ -205,5 +208,3 @@ class ValuesList extends React.Component<valuesListProps, valuesListState> {
     );
   }
 }
-
-export default ValuesList;

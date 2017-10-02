@@ -18,23 +18,18 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentEditorHeader',
     defaultMessage: 'Comment the idea!',
   },
-
   commentEditorLabel: {
     id: 'app.containers.IdeasShow.commentEditorLabel',
     defaultMessage: 'Comment the idea!',
   },
-
   commentReplyButton: {
     id: 'app.containers.IdeasShow.commentReplyButton',
     defaultMessage: 'Reply',
   },
-
   commentDeleteButton: {
     id: 'app.containers.IdeasShow.commentDeleteButton',
     defaultMessage: 'Delete',
   },
-
-
   loadingIdea: {
     id: 'app.containers.IdeasShow.loadingIdea',
     defaultMessage: 'Loading idea...',
@@ -50,6 +45,10 @@ export default defineMessages({
   emptyCommentError: {
     id: 'app.containers.IdeasShow.emptyCommentError',
     defaultMessage: 'The comment can\'t be empty',
+  },
+  addCommentError: {
+    id: 'app.containers.IdeasShow.addCommentError',
+    defaultMessage: 'Something went wrong. Please try again.',
   },
   submittingComment: {
     id: 'app.containers.IdeasShow.submittingComment',
