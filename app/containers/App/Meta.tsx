@@ -59,7 +59,7 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Helmet>
-          <title>{formatMessage(messages.helmetTitle, { organizationName })}</title>
+          <title>{formatMessage(messages.helmetTitle)}</title>
           <meta property="og:title" content={title} />
           <meta property="og:description" content={formatMessage(messages.helmetDescription, { organizationName })} />
           <meta property="og:image" content={image} />
