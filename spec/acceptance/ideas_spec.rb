@@ -20,6 +20,7 @@ resource "Ideas" do
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
     parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status'", required: false
+    parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
 
     example_request "List only all published ideas by default" do
       expect(status).to eq(200)
