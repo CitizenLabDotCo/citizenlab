@@ -100,13 +100,13 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
 
       return (
-        <ThreadContainer>
+        <ThreadContainer className="e2e-comment-thread">
 
           <AuthorContainer>
             <Author authorId={authorId} createdAt={createdAt} />
           </AuthorContainer>
 
-          <CommentBody>
+          <CommentBody className="e2e-comment-body">
             <T value={commentBodyMultiloc} />
           </CommentBody>
 

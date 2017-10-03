@@ -83,7 +83,7 @@ export default class Comments extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const className = this.props['className'];
+    const className = `${this.props['className']} e2e-comments`;
     const { ideaId } = this.props;
     const { comments, loading } = this.state;
 

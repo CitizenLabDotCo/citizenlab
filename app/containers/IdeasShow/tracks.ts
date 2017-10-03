@@ -1,4 +1,3 @@
-
 export default {
   clickFbShare: {
     name: 'Idea share clicked',
