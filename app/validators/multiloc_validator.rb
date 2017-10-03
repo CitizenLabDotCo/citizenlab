@@ -5,7 +5,7 @@ class MultilocValidator < ActiveModel::EachValidator
     if (options[:presence] && !value.kind_of?(Hash)) || (!options[:presence] && !(value.kind_of?(Hash) || value.nil?))
       record.errors[attribute] << (options[:message] || "is not a translation hash")
     elsif !value.nil?
-      locales = Tenant.settings 'core', 'locales'
+      locales = I18n.available_locales.map(&:to_s)
       if !(value.keys - locales).empty?
         record.errors.add(attribute, :unsupported_locales, 
           message: (options[:message] || "contains unsupported locales #{(value.keys - locales)}"))
