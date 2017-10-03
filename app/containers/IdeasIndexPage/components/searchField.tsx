@@ -16,36 +16,36 @@ import messages from '../messages';
 
 // Components
 import Icon from 'components/UI/Icon';
+import Input from 'components/UI/Input';
 
 // parse search
 import queryString from 'query-string';
 
-// style
+const SearchIcon: any = styled(Icon)`
+  fill: #84939E;
+  height: 21px;
+  margin-left: -36px;
+  cursor: pointer;
+  z-index: 2;
+
+  &:hover {
+    fill: #000;
+  }
+`;
+
+const SearchInput = styled(Input)``;
+
 const StyledForm = styled.form`
+  flex: 1 1 100%;
+  display: flex;
   align-items: center;
   align-self: stretch;
-  display: flex;
-  flex: 1 1 100%;
-
-  input {
-    background: #fff;
-    border: 1px solid #eaeaea;
-    border-radius: 5px;
-    padding: 1rem 1.5rem;
-    width: 100%;
-  }
-
-  .search-icon {
-    fill: #A6A6A6;
-    height: 1.25rem;
-    margin-left: -2.5rem;
-  }
-
 
   @media (min-width: 500px) {
     flex-basis: auto;
 
-    input {
+    ${SearchInput} {
+      width: 100%;
       max-width: 300px;
     }
   }
@@ -83,14 +83,13 @@ class SearchField extends React.Component<Props, State> {
 
     return (
       <StyledForm onSubmit={this.handleSubmit}>
-        <input
-          name="search"
+        <SearchInput
           type="text"
           placeholder="Search"
           onChange={this.handleChange}
           value={value}
         />
-        <Icon name="search" className="search-icon" />
+        <SearchIcon name="search" className="search-icon" onClick={this.handleSubmit} />
       </StyledForm>
     );
   }

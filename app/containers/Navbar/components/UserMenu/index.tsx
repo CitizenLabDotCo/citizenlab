@@ -35,19 +35,6 @@ const Container = styled(ClickOutside)`
   outline: none;
 `;
 
-/*
-const UserImage: any = styled.img`
-  height: 24px;
-  border-radius: 50%;
-  opacity: 0.85;
-  transition: opacity 200ms ease;
-
-  &:hover {
-    opacity: 1;
-  }
-`;
-*/
-
 const UserIcon = styled(Icon)`
   height: 24px;
   fill: #84939E;
@@ -67,15 +54,15 @@ const Dropdown = styled.div`
   right: -5px;
   z-index: 1;
   padding: 8px;
-  background: #FFFFFF;
-  border: 1px solid #EAEAEA;
+  background: #fff;
+  border: 1px solid #eaeaea;
   box-sizing: border-box;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 `;
 
 const DropdownItem = styled.div`
-  color: #888888;
+  color: #888;
   font-size: 18px;
   font-family: Proxima Nova;
   font-weight: 400;
@@ -83,7 +70,7 @@ const DropdownItem = styled.div`
   background: #fff;
 
   &:hover {
-    background: #F9F9F9;
+    background: #f9f9f9;
     color: #393939;
   }
 

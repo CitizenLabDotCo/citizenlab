@@ -17,7 +17,7 @@ export function localeStream() {
     let locale = 'en';
 
     if (authUser && _.isString(authUser.data.attributes.locale) && _.includes(currentTenantLocales, authUser.data.attributes.locale)) {
-      return authUser.data.attributes.locale;
+      locale = authUser.data.attributes.locale;
     } else if (currentTenantLocales && currentTenantLocales.length > 0) {
       locale = currentTenantLocales[0];
     }

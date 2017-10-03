@@ -23,7 +23,7 @@ import T from 'components/T';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
-import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // styles
@@ -37,7 +37,6 @@ const IdeaImage: any = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   opacity: 1;
-  /* transition: all 200ms ease-out; */
 `;
 
 const IdeaImagePlaceholder = styled.div`
@@ -48,13 +47,12 @@ const IdeaImagePlaceholder = styled.div`
   justify-content: center;
   background: #cfd6db;
   border-bottom: solid 1px #e8e8e8;
-  /* transition: all 200ms ease-out; */
 `;
 
 const IdeaContainer: any = styled.div`
   width: 100%;
   height: 370px;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
   display: flex;
   flex-direction: column;
   border-radius: 6px;
@@ -63,30 +61,14 @@ const IdeaContainer: any = styled.div`
   cursor: pointer;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  transition: all 150ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 250ms cubic-bezier(0.19, 1, 0.22, 1);
   position: relative;
+  will-change: transform, box-shadow;
   border: solid 1px #e6e6e6;
-  will-change: box-shadow;
   /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); */
-  /* transition: box-shadow 400ms cubic-bezier(0.19, 1, 0.22, 1); */
 
   &:hover {
-    /* transform: scale(1.015); */
-    box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.1);
-    /* box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1); */
-    /* border: solid 1px #ccc; */
-
-    /*
-    ${IdeaImage} {
-      opacity: 1;
-      transform: scale(1.06);
-    }
-
-    ${IdeaImagePlaceholder} {
-      opacity: 1;
-      transform: scale(1.06);
-    }
-    */
+    box-shadow: 0 1px 24px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -106,6 +88,7 @@ const IdeaContent = styled.div`
 
 const IdeaFooter = styled.div`
   padding: 20px;
+  padding-bottom: 22px;
 `;
 
 const IdeaTitle: any = styled.h4`

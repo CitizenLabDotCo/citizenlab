@@ -24,14 +24,17 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const backgroundTimeout = 150;
-const backgroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
+const backgroundEasing = `ease`;
+const backgroundDelay = 0;
 
-const foregroundTimeout = 400;
+const foregroundTimeout = 200;
 const foregroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
+const foregroundDelay = 0;
 
-const contentTimeout = 1100;
-const contentEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
-const contentDelay = 100;
+const contentTimeout = 600;
+const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
+const contentDelay = 300;
+const contentTranslate = '20px';
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -54,7 +57,7 @@ const ModalBackground = styled.div`
 
     &.background-enter-active {
       opacity: 0;
-      transition: opacity ${backgroundTimeout}ms ${backgroundEasing};
+      transition: opacity ${backgroundTimeout}ms ${backgroundEasing} ${backgroundDelay}ms;
     }
   }
 `;
@@ -79,12 +82,11 @@ const ModalForeground: any = styled.div`
   z-index: 3000;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  will-change: opacity, transform;
+  will-change: opacity;
 
   &.foreground-enter {
     opacity: 0;
-    transform-origin: center center;
-    transform: translateY(0px) scale(1);
+    /* transform: translateY(0px); */
 
     &.foreground-enter-active {
       width: 100%;
@@ -95,8 +97,8 @@ const ModalForeground: any = styled.div`
       right: 0;
       border-radius: 0px;
       opacity: 1;
-      transform: translateY(0px) scale(1);
-      transition: all ${foregroundTimeout}ms ${foregroundEasing};
+      /* transform: translateY(0px); */
+      transition: all ${foregroundTimeout}ms ${foregroundEasing} ${foregroundDelay}ms;
     }
   }
 `;
@@ -161,23 +163,25 @@ const ModalContent = styled.div`
   &.content-enter {
     ${ModalContentInnerInner} {
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(${contentTranslate});
     }
 
     ${CloseButton} {
       opacity: 0;
+      transform: translateY(${contentTranslate});
     }
   }
 
   &.content-enter.content-enter-active {
     ${ModalContentInnerInner}  {
       opacity: 1;
-      transform: translateY(0px);
+      transform: translateY(0);
       transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
     }
 
     ${CloseButton} {
       opacity: 1;
+      transform: translateY(0);
       transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
     }
   }
@@ -285,11 +289,13 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   render() {
     const { children, opened } = this.props;
 
+    /*
     const modalBackground = (opened ? (
       <CSSTransition classNames="background" timeout={backgroundTimeout} exit={false}>
         <ModalBackground />
       </CSSTransition>
     ) : null);
+    */
 
     const modalForeground = (opened ? (
       <CSSTransition classNames="foreground" timeout={foregroundTimeout} exit={false}>
@@ -314,7 +320,6 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
     return (
       <TransitionGroup>
-        {modalBackground}
         {modalForeground}
         {modalContent}
       </TransitionGroup>

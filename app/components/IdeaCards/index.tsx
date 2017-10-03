@@ -40,20 +40,20 @@ const Loading = styled.div`
 `;
 
 const IdeasList: any = styled.div`
-  margin-left: -10px;
-  margin-right: -10px;
+  margin-left: -13px;
+  margin-right: -13px;
   display: flex;
   flex-wrap: wrap;
 `;
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
-  width: calc(100% * (1/3) - 20px);
-  margin-left: 10px;
-  margin-right: 10px;
+  width: calc(100% * (1/3) - 26px);
+  margin-left: 13px;
+  margin-right: 13px;
 
   ${media.tablet`
-    width: calc(100% * (1/2) - 20px);
+    width: calc(100% * (1/2) - 26px);
   `};
 
   ${media.phone`
@@ -69,13 +69,7 @@ const LoadMore = styled.div`
   margin-top: 10px;
 `;
 
-const LoadMoreButton = styled(Button)`
-  /*
-  width: 304px;
-  height: 52px;
-  padding: 0px 0px;
-  */
-`;
+const LoadMoreButton = styled(Button)``;
 
 const EmptyContainer = styled.div`
   display: flex;

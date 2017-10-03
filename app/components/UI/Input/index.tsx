@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { media } from 'utils/styleUtils';
-import Error from 'components/UI/Error';
 import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
+
+// components
+import Error from 'components/UI/Error';
+
+// style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
-interface IInputWrapper {
-  error: boolean;
-}
-
-const InputWrapper = styled.div`
+const Container: any = styled.div`
   position: relative;
 
   input {
@@ -20,7 +21,7 @@ const InputWrapper = styled.div`
     padding: 12px;
     border-radius: 5px;
     border: solid 1px;
-    border-color: ${(props: IInputWrapper) => props.error ? '#fc3c2d' : '#ccc'};
+    border-color: ${(props: any) => props.error ? '#fc3c2d' : '#ccc'};
     background: #fff;
     outline: none;
 
@@ -29,17 +30,17 @@ const InputWrapper = styled.div`
       opacity: 1;
     }
 
-    ${media.notPhone`
-      padding-right: ${props => props.error && '40px'};
-    `}
-
     &:not(:focus):hover {
-      border-color: ${props => props.error ? '#fc3c2d' : '#999'};
+      border-color: ${(props: any) => props.error ? '#fc3c2d' : '#999'};
     }
 
     &:focus {
-      border-color: ${props => props.error ? '#fc3c2d' : '#000'};
+      border-color: ${(props: any) => props.error ? '#fc3c2d' : '#000'};
     }
+
+    ${media.notPhone`
+      padding-right: ${props => props.error && '40px'};
+    `}
   }
 `;
 
@@ -69,6 +70,7 @@ export default class Input extends React.PureComponent<Props, State> {
 
   render() {
     let { value, placeholder, error } = this.props;
+    const className = this.props['className'];
     const { id, type } = this.props;
     const hasError = (_.isString(error) && !_.isEmpty(error));
 
@@ -77,7 +79,7 @@ export default class Input extends React.PureComponent<Props, State> {
     error = (error || null);
 
     return (
-      <InputWrapper error={hasError}>
+      <Container error={hasError} className={className}>
         <input
           id={id}
           type={type}
@@ -90,7 +92,7 @@ export default class Input extends React.PureComponent<Props, State> {
         <div>
           <Error text={error} size="1" />
         </div>
-      </InputWrapper>
+      </Container>
     );
   }
 }

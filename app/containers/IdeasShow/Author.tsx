@@ -2,42 +2,63 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
+// router
+import { Link, browserHistory } from 'react-router';
+
 // components
-import { Link } from 'react-router';
 import Avatar from 'components/Avatar';
 
 // services
 import { userByIdStream, IUser } from 'services/users';
 
 // i18n
-import { FormattedRelative, FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative } from 'react-intl';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 const AuthorContainer = styled.div`
   display: flex;
   align-items: center;
+  margin: 0;
+  padding: 0;
 `;
 
 const AuthorAvatar = styled(Avatar)`
-  flex: 0 0 30px;
-  height: 30px;
-  width: 30px;
+  width: 34px;
+  height: 34px;
+  margin-right: 12px;
+  margin-top: -1px;
 `;
 
-const AuthorName = styled(Link)`
-  font-weight: bold;
-  color: #484848;
-  font-size: 16px;
-  flex-grow: 1;
-  padding-left: 12px;
+const AuthorMeta = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
-const Timing = styled.div`
-  font-size: 14px;
-  color: #a9a9a9;
+const AuthorName = styled(Link) `
+  color: #333;
+  color: ${(props) => props.theme.colorMain};
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 300;
+  text-decoration: none;
+  margin-bottom: 1px;
+
+  &:hover {
+    color: #000;
+    color: ${(props) => darken(0.15, props.theme.colorMain)};
+    text-decoration: underline;
+  }
+`;
+
+const TimeAgo = styled.div`
+  color: #999;
+  font-size: 13px;
+  line-height: 17px;
+  font-weight: 300;
 `;
 
 type Props = {
@@ -49,7 +70,7 @@ type State = {
   author: IUser | null;
 };
 
-export default class Author extends React.PureComponent<Props, State> {
+class Author extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -74,8 +95,18 @@ export default class Author extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  goToUserProfile = () => {
+    const { author } = this.state;
+
+    if (author) {
+      browserHistory.push(`/profile/${author.data.attributes.slug}`);
+    }
+  }
+
   render() {
+    const className = this.props['className'];
     const { authorId, createdAt } = this.props;
+    const { formatRelative } = this.props.intl;
     const { author } = this.state;
 
     if (author) {
@@ -85,16 +116,17 @@ export default class Author extends React.PureComponent<Props, State> {
       const lastName = author.data.attributes.last_name;
 
       return (
-        <AuthorContainer>
-          <AuthorAvatar userId={authorId} size="medium" />
-
-          <AuthorName to={`/profile/${slug}`}>
-            <FormattedMessage {...messages.authorSaid} values={{ firstName }} />
-          </AuthorName>
-
-          <Timing>
-            <FormattedRelative value={createdAt} />
-          </Timing>
+        <AuthorContainer className={className}>
+          <AuthorAvatar userId={authorId} size="medium" onClick={this.goToUserProfile} />
+          <AuthorMeta>
+            <AuthorName to={`/profile/${author.data.attributes.slug}`}>
+              {/* <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} /> */}
+              {firstName} {lastName}
+            </AuthorName>
+            <TimeAgo>
+              <FormattedRelative value={createdAt} />
+            </TimeAgo>
+          </AuthorMeta>
         </AuthorContainer>
       );
     }
@@ -102,3 +134,5 @@ export default class Author extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+export default injectIntl<Props>(Author);

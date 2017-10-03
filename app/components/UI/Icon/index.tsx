@@ -49,15 +49,15 @@ const getIcon = (name: string, className: string | undefined) => {
     }
     case 'checkmark': {
       return (
-        <svg className={className} width="19" height="15" viewBox="0 0 19 15">
-          <path d="M6.05 11.467L1.533 6.95 0 8.482l6.05 6.05 13-13L17.517 0z" fill="#FFF" fillRule="evenodd" />
+        <svg className={className} height="100%" viewBox="0 0 19 15">
+          <path d="M6.05 11.467L1.533 6.95 0 8.482l6.05 6.05 13-13L17.517 0z" fillRule="evenodd" />
         </svg>
       );
     }
     case 'dropdown': {
       return (
-        <svg className={className} width="9" height="6" viewBox="0 0 9 6">
-          <path fill="#A6A6A6" fillRule="evenodd" d="M7.939 0L4.5 3.439 1.061 0 0 1.061l4.5 4.5 4.5-4.5z" />
+        <svg className={className} height="100%" viewBox="0 0 9 6">
+          <path fillRule="evenodd" d="M7.939 0L4.5 3.439 1.061 0 0 1.061l4.5 4.5 4.5-4.5z" />
         </svg>
       );
     }

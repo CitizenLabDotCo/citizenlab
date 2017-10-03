@@ -25,21 +25,15 @@ const animationDuration = 500;
 const animationEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
 const Container = styled.div`
-  will-change: opacity;
-
-  &.background-enter {
-    opacity: 0;
-
-    &.background-enter-active {
-      opacity: 1;
-      transition: opacity ${animationDuration}ms ${animationEasing};
-    }
-  }
+  margin-bottom: 100px;
 `;
 
 const Title = styled.h2`
+  color: #444;
   font-size: 25px;
-  font-weight: bold;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
   margin-bottom: 30px;
 `;
 
@@ -78,7 +72,7 @@ export default class Comments extends React.PureComponent<Props, State> {
         }
 
         return Rx.Observable.of(null);
-      }).delay(800).subscribe((comments) => {
+      }).subscribe((comments) => {
         this.setState({ comments, loading: false });
       })
     ];
@@ -92,7 +86,6 @@ export default class Comments extends React.PureComponent<Props, State> {
     const className = this.props['className'];
     const { ideaId } = this.props;
     const { comments, loading } = this.state;
-    let commentsContainer: JSX.Element | null = null;
 
     if (!loading) {
       let commentsList: JSX.Element[] | null = null;
@@ -101,26 +94,20 @@ export default class Comments extends React.PureComponent<Props, State> {
         commentsList = comments.data.map(comment => (<ParentComment key={comment.id} commentId={comment.id} />));
       }
 
-      commentsContainer = (
-        <CSSTransition classNames="comments" timeout={animationDuration} exit={false}>
-          <Container className={className}>
-            <Title>
-              <Icon name="comment outline" />
-              <FormattedMessage {...messages.commentsTitle} />
-            </Title>
+      return (
+        <Container className={className}>
+          <Title>
+            <Icon name="comment outline" />
+            <FormattedMessage {...messages.commentsTitle} />
+          </Title>
 
-            <EditorForm ideaId={ideaId} />
+          <EditorForm ideaId={ideaId} />
 
-            {commentsList}
-          </Container>
-        </CSSTransition>
+          {commentsList}
+        </Container>
       );
     }
 
-    return (
-      <TransitionGroup>
-        {commentsContainer}
-      </TransitionGroup>
-    );
+    return null;
   }
 }
