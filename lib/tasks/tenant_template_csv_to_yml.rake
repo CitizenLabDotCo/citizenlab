@@ -1,12 +1,13 @@
 require 'csv'
 require 'yaml'
 require 'securerandom'
+require 'redcarpet'
 
 ### rake tenant_template:csv_to_yml['tmp'] ###
 
 
 namespace :tenant_template do
-  desc "TODO"
+  desc "Converts tenant templates from csv files to a yml file, working in the specified folder"
   task :csv_to_yml, [:path] => [:environment] do |t, args|
   	locale = 'en' # TODO acquire locale from template settings
     yml_base = YAML.load_file('config/tenant_templates/base.yml')
@@ -55,7 +56,7 @@ namespace :tenant_template do
   			  			   'first_name'       => csv_user['First Name'],
   						     'last_name'        => csv_user['Last Name'],
   						     'locale'           => locale,
-  						     'bio_multiloc'     => csv_user['Biography (Optional)'],
+  						     'bio_multiloc'     => {locale => md_to_html(csv_user['Biography (Optional)'])},
   						     'gender'           => csv_user['Gender'],
   						     'birthyear'	      => rand(10) === 0 ? nil : 1927 + rand(90),
   						     'domicile'         => rand(10) === 0 ? nil : generate_domicile(),
@@ -71,7 +72,7 @@ namespace :tenant_template do
   def convert_projects(csv_projects, locale, projects_hash, topics_hash)
   	csv_projects.map{|csv_project| 
   		yml_project = {	'title_multiloc'       => {locale => csv_project['Title']},
-  						        'description_multiloc' => {locale => csv_project['Description']},
+  						        'description_multiloc' => {locale => md_to_html(csv_project['Description'])},
   						        'project_images_urls'  => csv_project['Image URL'] && [csv_project['Image URL']],
   						        'header_bg_image_url'  => csv_project['Background Image URL'],
   						        'topics'               => generate_topics()
@@ -84,7 +85,7 @@ namespace :tenant_template do
   def convert_ideas(csv_ideas, locale, ideas_hash, users_hash, projects_hash, topics_hash, idea_statuses_hash, yml_votes)
   	csv_ideas.map{|csv_idea| 
   		yml_idea = { 'title_multiloc'     => {locale => csv_idea['Title']},
-  					       'body_multiloc'      => {locale => csv_idea['Body']},
+  					       'body_multiloc'      => {locale => md_to_html(csv_idea['Body'])},
   				         'author'             => users_hash[csv_idea['Author ID']],
   				         'project'            => users_hash[csv_idea['Project ID']],
   				         'topics'             => [ csv_idea['Topic 1 (Optional)'],
@@ -93,7 +94,7 @@ namespace :tenant_template do
   				         'areas'              => [], # TODO
   				         'upvotes'            => Integer(csv_idea['Upvotes']),
   				         'downvotes'          => Integer(csv_idea['Downvotes']),
-  				         'idea_status_code'   => idea_statuses_hash[[ 'proposed', 'under_consideration', 
+  				         'idea_status'        => idea_statuses_hash[[ 'proposed', 'under_consideration', 
                                                                 'accepted', 'implemented', 
                                                                 'rejected', 'custom' ].shuffle.first],
   				         'idea_images_urls'   => csv_idea['Image URL'] && [csv_idea['Image URL']],
@@ -107,7 +108,7 @@ namespace :tenant_template do
 
   def convert_comments(csv_comments, locale, comments_hash, ideas_hash, users_hash)
   	csv_comments.map{|csv_comment| 
-  		yml_comment = {	'body_multiloc' => {locale => csv_comment['Body']},
+  		yml_comment = {	'body_multiloc' => {locale => md_to_html(csv_comment['Body'])},
   			              'author'        => users_hash[csv_comment['Author ID']],
                       'idea'          => ideas_hash[csv_comment['Idea ID']],
                       'parent_id'     => comments_hash[csv_comment['Comment ID (Optional)']] || ideas_hash[csv_comment['Idea ID']]
@@ -120,7 +121,7 @@ namespace :tenant_template do
   def convert_events(csv_events, locale, projects_hash)
   	csv_events.map{|csv_event| 
   		{	'title_multiloc'       => {locale => csv_event['Title']},
-        'description_multiloc' => {locale => csv_event['Description']},
+        'description_multiloc' => {locale => md_to_html(csv_event['Description'])},
         'location_multiloc'    => {locale => csv_event['Location']},
   			'project'              => projects_hash[csv_event['Project ID']]
   		}}
@@ -130,7 +131,7 @@ namespace :tenant_template do
     start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
   	csv_phases.map{|csv_phase| 
   		{	'title_multiloc'       => {locale => csv_phase['Title']},
-  			'description_multiloc' => {locale => csv_phase['Description']},
+  			'description_multiloc' => {locale => md_to_html(csv_phase['Description'])},
         'project'              => projects_hash[csv_phase['Project ID']],
         'start_at'             => start_at,
         'end_at'               => (start_at += rand(120).days)
@@ -169,6 +170,10 @@ namespace :tenant_template do
   def zip_min(l1, l2)
     len = [l1.size,l2.size].min
     l1.take(len).zip l2.take(len)
+  end
+
+  def md_to_html(md)
+    md && Redcarpet::Markdown.new(Redcarpet::Render::HTML.new).render(md)
   end
 
 end
