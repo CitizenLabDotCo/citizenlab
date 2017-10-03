@@ -123,10 +123,16 @@ class SettingsGeneralTab extends React.Component<Props, State> {
 
   render() {
     const lang = this.props.intl.locale;
+    const updatedLocales = _.get(this.state.attributesDiff, 'settings.core.locales');
 
-    const tenantAttrs = this.state.tenant
+    let tenantAttrs = this.state.tenant
     ? _.merge({}, this.state.tenant.attributes, this.state.attributesDiff)
     : _.merge({}, this.state.attributesDiff);
+
+    // Prevent merging the arrays of locales
+    if (updatedLocales) {
+      tenantAttrs = _.set(tenantAttrs, 'settings.core.locales', updatedLocales);
+    }
 
     return (
       <form onSubmit={this.save}>
