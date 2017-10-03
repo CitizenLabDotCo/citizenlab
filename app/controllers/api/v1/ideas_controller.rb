@@ -18,6 +18,11 @@ class Api::V1::IdeasController < ApplicationController
     @ideas = @ideas.where(author_id: params[:author]) if params[:author].present?
     @ideas = @ideas.where(idea_status_id: params[:idea_status]) if params[:idea_status].present?
     @ideas = @ideas.search_by_all(params[:search]) if params[:search].present?
+    if params[:publication_status].present?
+      @ideas = @ideas.where(publication_status: params[:publication_status])
+    else
+      @ideas = @ideas.where(publication_status: 'published')
+    end
 
 
     @ideas = case params[:sort]
