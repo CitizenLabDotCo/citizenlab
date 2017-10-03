@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // services
-import i18n from 'utils/i18n';
+import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
@@ -14,8 +14,6 @@ type Props = {
 type State = {
   locale: string | null;
   currentTenantLocales: string[] | null;
-  loading: boolean;
-  date: number | null;
 };
 
 export default class T extends React.PureComponent<Props, State> {
@@ -26,23 +24,21 @@ export default class T extends React.PureComponent<Props, State> {
     super();
     this.state = {
       locale: null,
-      currentTenantLocales: null,
-      loading: true,
-      date: null
+      currentTenantLocales: null
     };
     this.subscriptions = [];
   }
 
   componentWillMount() {
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => (currentTenant ? currentTenant.data.attributes.settings.core.locales : null));
+    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$,
         currentTenantLocales$
       ).subscribe(([locale, currentTenantLocales]) => {
-        this.setState({ locale, currentTenantLocales, loading: false, date: Date.now() });
+        this.setState({ locale, currentTenantLocales });
       })
     ];
   }
@@ -52,11 +48,11 @@ export default class T extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { loading } = this.state;
+    const { locale, currentTenantLocales } = this.state;
 
-    if (!loading) {
+    if (locale && currentTenantLocales) {
       const { value } = this.props;
-      const localizedText = i18n.getLocalized(value);
+      const localizedText = getLocalized(value, locale, currentTenantLocales);
 
       return (
         <span dangerouslySetInnerHTML={{ __html: localizedText }} />

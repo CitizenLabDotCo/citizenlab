@@ -32,7 +32,7 @@ import { IStream } from 'utils/streams';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
-import i18n from 'utils/i18n';
+import { getLocalized } from 'utils/i18n';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 

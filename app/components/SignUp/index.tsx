@@ -21,13 +21,14 @@ import { isValidEmail } from 'utils/validate';
 // services
 import { areasStream, IAreas, IAreaData } from 'services/areas';
 import { localeStream } from 'services/locale';
+import { currentTenantStream, ITenant } from 'services/tenant';
 import { signUp } from 'services/auth';
 
 // legacy redux
 import { LOAD_CURRENT_USER_SUCCESS } from 'utils/auth/constants';
 
 // i18n
-import i18n from 'utils/i18n';
+import { getLocalized } from 'utils/i18n';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
 
@@ -185,6 +186,7 @@ type Props = {
 
 type State = {
   locale: string | null;
+  currentTenant: ITenant | null;
   areas: IOption[] | null;
   years: IOption[];
   firstName: string | null;
@@ -212,6 +214,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     super();
     this.state = {
       locale: null,
+      currentTenant: null,
       areas: null,
       years: [...Array(118).keys()].map((i) => ({ value: i + 1900, label: `${i + 1900}` })),
       firstName: null,
@@ -235,16 +238,19 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   componentWillMount() {
     const locale$ = localeStream().observable;
+    const currentTenant$ = currentTenantStream().observable;
     const areas$ = areasStream().observable;
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$,
+        currentTenant$,
         areas$
-      ).subscribe(([locale, areas]) => {
+      ).subscribe(([locale, currentTenant, areas]) => {
         this.setState({
           locale,
-          areas: this.getOptions(areas)
+          currentTenant,
+          areas: this.getOptions(areas, locale, currentTenant)
         });
       })
     ];
@@ -258,11 +264,13 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getOptions(list: IAreas | null) {
-    if (list) {
+  getOptions(list: IAreas, locale: string, currentTenant: ITenant) {
+    if (list && locale && currentTenant) {
+      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
+
       return (list.data as IAreaData[]).map(item => ({
         value: item.id,
-        label: i18n.getLocalized(item.attributes.title_multiloc),
+        label: getLocalized(item.attributes.title_multiloc, locale, currentTenantLocales),
       } as IOption));
     }
 

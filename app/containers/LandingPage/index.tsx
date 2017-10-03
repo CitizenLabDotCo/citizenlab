@@ -23,7 +23,7 @@ import { projectsStream, IProjects } from 'services/projects';
 import T from 'components/T';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
-import i18n from 'utils/i18n';
+import { getLocalized } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
@@ -262,6 +262,7 @@ const ViewMoreButton = styled(Button) `
 type Props = {};
 
 type State = {
+  locale: string | null;
   currentTenant: ITenant | null;
   hasIdeas: boolean;
   hasProjects: boolean;
@@ -276,6 +277,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
   constructor() {
     super();
     this.state = {
+      locale: null,
       currentTenant: null,
       hasIdeas: false,
       hasProjects: false
@@ -286,16 +288,19 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   componentWillMount() {
+    const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const ideas$ = ideasStream({ queryParameters: this.ideasQueryParameters }).observable;
     const projects$ = projectsStream({ queryParameters: this.ideasQueryParameters }).observable;
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
+        locale$,
         currentTenant$,
         ideas$,
         projects$
-      ).subscribe(([currentTenant, ideas, projects]) => this.setState({
+      ).subscribe(([locale, currentTenant, ideas, projects]) => this.setState({
+        locale,
         currentTenant,
         hasIdeas: (ideas !== null && ideas.data.length > 0),
         hasProjects: (projects !== null && projects.data.length > 0)
@@ -320,13 +325,16 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   render() {
-    const { currentTenant, hasIdeas, hasProjects } = this.state;
+    const { locale, currentTenant, hasIdeas, hasProjects } = this.state;
     const { formatMessage } = this.props.intl;
 
-    if (currentTenant !== null) {
-      const currentTenantName = i18n.getLocalized(currentTenant.data.attributes.settings.core.organization_name);
+    if (locale && currentTenant) {
+      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
+      const organizationNameMultiLoc = currentTenant.data.attributes.settings.core.organization_name;
+      const headerSloganMultiLoc = currentTenant.data.attributes.settings.core.header_slogan;
+      const currentTenantName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
       const currentTenantLogo = currentTenant.data.attributes.logo.large;
-      const currentTenantHeaderSlogan = i18n.getLocalized(currentTenant.data.attributes.settings.core.header_slogan);
+      const currentTenantHeaderSlogan = getLocalized(headerSloganMultiLoc, locale, currentTenantLocales);
       const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
 
       return (

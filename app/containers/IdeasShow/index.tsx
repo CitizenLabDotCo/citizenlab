@@ -18,7 +18,7 @@ import IdeaMeta from './IdeaMeta';
 // services
 import { localeStream } from 'services/locale';
 import { ideaByIdStream, IIdea } from 'services/ideas';
-import { userStream, IUser } from 'services/users';
+import { userByIdStream, IUser } from 'services/users';
 import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
 import { ideaStatusesStream } from 'services/ideaStatuses';
 
@@ -194,7 +194,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
       const ideaAuthorId = idea.data.relationships.author.data.id;
       const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
-      const ideaAuthor$ = userStream(ideaAuthorId).observable;
+      const ideaAuthor$ = userByIdStream(ideaAuthorId).observable;
       return Rx.Observable.combineLatest(ideaImage$, ideaAuthor$).map(([ideaImage, ideaAuthor]) => ({ idea, ideaImage, ideaAuthor }));
     });
 
