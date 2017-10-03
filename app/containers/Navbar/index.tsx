@@ -214,9 +214,7 @@ class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps & R
       this.props.trackClickOpenNotifications();
     }
 
-    this.setState({
-      notificationPanelOpened: !this.state.notificationPanelOpened,
-    });
+    this.setState(state => ({ notificationPanelOpened: !state.notificationPanelOpened }));
   }
 
   closeNotificationPanel = () => {

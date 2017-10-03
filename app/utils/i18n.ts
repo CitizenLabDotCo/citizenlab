@@ -1,58 +1,32 @@
-import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
-import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { Multiloc } from 'typings';
 
-class Internationalization {
-  locale: string | null;
-  currentTenantLocales: string[] | null;
-  subscriptions: Rx.Subscription[];
+export function getLocalized(multiloc: Multiloc | null, locale: string, currentTenantLocales: string[]) {
+  let text: string = '';
 
-  constructor() {
-    this.locale = null;
-    this.currentTenantLocales = null;
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        localeStream().observable,
-        currentTenantStream().observable
-      ).subscribe(([locale, currentTenant]) => {
-        this.locale = locale;
-        this.currentTenantLocales = (currentTenant ? currentTenant.data.attributes.settings.core.locales : null);
-      })
-    ];
-  }
-
-  getLocalized(multiLoc: { [key: string]: string } | null) {
-    let text: string = '';
-
-    if (multiLoc !== null && _.isObject(multiLoc) && !_.isEmpty(multiLoc)) {
-      if (this.locale && multiLoc[this.locale]) {
-        text = multiLoc[this.locale];
-      } else if (this.currentTenantLocales && this.currentTenantLocales.length > 0) {
-        this.currentTenantLocales.forEach((currentTenantLocale) => {
-          if (multiLoc[currentTenantLocale]) {
-            text = multiLoc[currentTenantLocale];
-            return false;
-          }
-
-          return true;
-        });
-      }
-
-      if (text === '') {
-        if (multiLoc['en']) {
-          text = multiLoc['en'];
-        } else if (multiLoc['nl']) {
-          text = multiLoc['nl'];
-        } else if (multiLoc['fr']) {
-          text = multiLoc['fr'];
+  if (multiloc) {
+    if (multiloc[locale]) {
+      text = multiloc[locale];
+    } else if (currentTenantLocales && currentTenantLocales.length > 0) {
+      currentTenantLocales.forEach((currentTenantLocale) => {
+        if (multiloc[currentTenantLocale]) {
+          text = multiloc[currentTenantLocale];
+          return false;
         }
-      }
+
+        return true;
+      });
     }
 
-    return text;
+    if (text === '') {
+      if (multiloc['en']) {
+        text = multiloc['en'];
+      } else if (multiloc['nl']) {
+        text = multiloc['nl'];
+      } else if (multiloc['fr']) {
+        text = multiloc['fr'];
+      }
+    }
   }
-}
 
-const i18n = new Internationalization();
-export default i18n;
+  return text;
+}

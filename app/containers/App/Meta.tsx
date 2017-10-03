@@ -11,12 +11,13 @@ import { localeStream } from 'services/locale';
 
 // i18n
 import messages from './messages';
-import i18n from 'utils/i18n';
+import { getLocalized } from 'utils/i18n';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 type Props = {};
 
 type State = {
+  locale: string | null,
   currentTenant: ITenant | null;
 };
 
@@ -28,6 +29,7 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
   constructor() {
     super();
     this.state = {
+      locale: null,
       currentTenant: null
     };
     this.subscriptions = [];
@@ -35,10 +37,16 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentWillMount() {
+    const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))
+      Rx.Observable.combineLatest(
+        locale$,
+        currentTenant$
+      ).subscribe(([locale, currentTenant]) => {
+        this.setState({ locale, currentTenant });
+      })
     ];
   }
 
@@ -47,21 +55,25 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { currentTenant } = this.state;
+    const { locale, currentTenant } = this.state;
 
-    if (currentTenant) {
+    if (locale && currentTenant) {
       const { formatMessage } = this.props.intl;
+      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const image = currentTenant.data.attributes.logo.large || '';
-      const title = i18n.getLocalized(currentTenant.data.attributes.settings.core.meta_title);
-      const organizationName = i18n.getLocalized(currentTenant.data.attributes.settings.core.organization_name);
-      const description = i18n.getLocalized(currentTenant.data.attributes.settings.core.meta_description);
+      const metaTitleMultiLoc = currentTenant.data.attributes.settings.core.meta_title;
+      const organizationNameMultiLoc = currentTenant.data.attributes.settings.core.organization_name;
+      const metaDescriptionMultiLoc = currentTenant.data.attributes.settings.core.meta_description;
+      const metaTitle = getLocalized(metaTitleMultiLoc, locale, currentTenantLocales);
+      const organizationName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
+      const metaDescription = getLocalized(metaDescriptionMultiLoc, locale, currentTenantLocales);
       const url = `http://${currentTenant.data.attributes.host}`;
 
       return (
         <Helmet>
           <title>{formatMessage(messages.helmetTitle)}</title>
-          <meta property="og:title" content={title} />
-          <meta property="og:description" content={formatMessage(messages.helmetDescription, { organizationName })} />
+          <meta property="og:title" content={metaTitle} />
+          <meta property="og:description" content={metaDescription} />
           <meta property="og:image" content={image} />
           <meta property="og:url" content={url} />
           <meta name="twitter:card" content="summary_large_image" />
