@@ -6,7 +6,7 @@ module.exports = {
     .url('localhost:3000')
     .waitForElementVisible('.e2e-idea-card:first-child')
     .click('.e2e-idea-card:first-child')
-    .waitForElementVisible('#e2e-modal-container')
+    .waitForElementVisible('.e2e-modal-content')
     .waitForElementVisible('#e2e-idea-show')
     .url((location) => {
       ideaUrl = location;
