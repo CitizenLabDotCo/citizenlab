@@ -83,7 +83,8 @@ const HeaderLogoWrapper = styled.div`
   border: solid 2px #eaeaea;
   border-radius: 6px;
   background: #fff;
-  /* box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15); */
+  border: solid 2px #eaeaea;
+  /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); */
 `;
 
 const HeaderLogo: any = styled.div`
