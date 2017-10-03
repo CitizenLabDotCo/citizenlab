@@ -209,7 +209,7 @@ class EditorForm extends React.PureComponent<Props & InjectedIntlProps & Tracks,
 
     return (
       <Authorize action={['comments', 'create']}>
-        <CommentForm onSubmit={this.handleSubmit}>
+        <CommentForm onSubmit={this.handleSubmit} className="e2e-comment-form">
           {authUser &&
             <UserArea>
               <UserAvatar userId={authUser.data.id} size="medium" />
@@ -229,16 +229,16 @@ class EditorForm extends React.PureComponent<Props & InjectedIntlProps & Tracks,
 
           <SubmitArea className={submitAreaClassNames}>
             <div className="message">
-              {errorMessage && <div>{errorMessage}</div>}
+              {errorMessage && <div className="e2e-error-message">{errorMessage}</div>}
 
               {success &&
-                <SuccessMessage>
+                <SuccessMessage className="e2e-success-message">
                   <FormattedMessage {...messages.commentSuccess} />
                 </SuccessMessage>
               }
             </div>
 
-            <SubmitButton loading={processing}>
+            <SubmitButton className="e2e-submit-comment" loading={processing}>
               <FormattedMessage {...messages.publishComment} />
             </SubmitButton>
           </SubmitArea>
