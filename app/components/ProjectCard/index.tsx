@@ -204,6 +204,7 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
       const tenantLogo = currentTenant.data.attributes.logo.medium;
       const slug = project.data.attributes.slug;
       const titleMultiloc = project.data.attributes.title_multiloc;
+      const descriptionMultiloc = project.data.attributes.description_multiloc;
       const ideasCount = project.data.attributes.ideas_count;
       const image = (projectImages && projectImages.data.length > 0 ? projectImages.data[0] : null);
       const imageUrl = (image ? image.attributes.versions.medium : null);
@@ -214,7 +215,7 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
 
           <ProjectContent>
             <ProjectTitle><T value={titleMultiloc} /></ProjectTitle>
-            <ProjectDescription><T value={project.data.attributes.description_multiloc} /></ProjectDescription>
+            <ProjectDescription><T value={descriptionMultiloc} /></ProjectDescription>
             <ReadMoreWrapper>
               <ReadMore onClick={this.goToProject}>
                 <FormattedMessage {...messages.readMore} />

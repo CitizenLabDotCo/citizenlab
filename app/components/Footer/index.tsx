@@ -10,10 +10,11 @@ import Icon from 'components/UI/Icon';
 
 // i18n
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-import i18n from 'utils/i18n';
+import { getLocalized } from 'utils/i18n';
 import messages from './messages.js';
 
 // services
+import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
 // style
@@ -135,6 +136,7 @@ const PoweredBy = styled.a`
 type Props = {};
 
 type State = {
+  locale: string | null;
   currentTenant: ITenant | null;
 };
 
@@ -145,12 +147,14 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   constructor() {
     super();
     this.state = {
+      locale: null,
       currentTenant: null
     };
     this.subscriptions = [];
   }
 
   componentWillMount() {
+    const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
@@ -163,12 +167,14 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { currentTenant } = this.state;
+    const { locale, currentTenant } = this.state;
     const { formatMessage } = this.props.intl;
 
-    if (currentTenant) {
+    if (locale && currentTenant) {
+      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const currentTenantLogo = currentTenant.data.attributes.logo.medium;
-      const currentTenantName = i18n.getLocalized(currentTenant.data.attributes.settings.core.organization_name);
+      const organizationNameMulitiLoc = currentTenant.data.attributes.settings.core.organization_name;
+      const currentTenantName = getLocalized(organizationNameMulitiLoc, locale, currentTenantLocales);
       const sloganMessage = (currentTenant.data.type === 'city' ? messages.sloganCity : messages.sloganOrganization);
       const slogan = currentTenantName ? formatMessage(sloganMessage, { name: currentTenantName }) : '';
       const poweredBy = formatMessage(messages.poweredBy);

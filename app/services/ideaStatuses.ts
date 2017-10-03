@@ -20,6 +20,7 @@ export interface IIdeaStatusData {
 export interface IIdeaStatuses {
   data: IIdeaStatusData[];
 }
+
 export interface IIdeaStatus {
   data: IIdeaStatusData;
 }
