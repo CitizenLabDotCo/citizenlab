@@ -12,10 +12,13 @@ import styled from 'styled-components';
 const Container = styled(clickOutside) `
   display: inline-block;
   position: relative;
-  outline: none;
 
-  & + & {
-    margin-left: .5rem;
+  &:not(:last-child) {
+    margin-right: 40px;
+  }
+
+  * {
+    outline: none;
   }
 `;
 

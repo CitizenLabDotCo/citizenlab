@@ -82,7 +82,7 @@ export default class IdeaMeta extends React.PureComponent<Props, State> {
 
       return (
         <Helmet>
-          <title>{ideaDescription}</title>
+          <title>{ideaTitle}</title>
           <meta property="og:title" content={ideaTitle} />
           <meta property="og:description" content={stripHtml(ideaDescription)} />
           {ideaImage && <meta property="og:image" content={ideaImage} />}
