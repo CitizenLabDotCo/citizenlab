@@ -258,6 +258,6 @@ class EditorForm extends React.PureComponent<Props & InjectedIntlProps & Tracks,
 }
 
 export default injectTracks<Props>({
-  focusEditor: tracks.focusEditor,
+  focusEditor: tracks.focusNewCommentTextbox,
   clickCommentPublish: tracks.clickCommentPublish,
 })(injectIntl<Props>(EditorForm));
