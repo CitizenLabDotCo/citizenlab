@@ -3,16 +3,17 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
-import { Link, browserHistory } from 'react-router';
+import { Link } from 'react-router';
 import { Location } from 'history';
 
 // components
 import VoteControl from 'components/VoteControl';
 import Avatar from 'components/Avatar';
 import StatusBadge from 'components/StatusBadge';
-import Comments from './comments';
+import Comments from './Comments';
 import Sharing from './Sharing';
 import CommentsLine from './CommentsLine';
+import Author from './Author';
 import IdeaMeta from './IdeaMeta';
 
 // services
@@ -21,10 +22,11 @@ import { ideaByIdStream, IIdea } from 'services/ideas';
 import { userByIdStream, IUser } from 'services/users';
 import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
 import { ideaStatusesStream } from 'services/ideaStatuses';
+import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
 
 // i18n
 import T from 'components/T';
-import { injectIntl, intlShape, InjectedIntlProps, FormattedMessage, FormattedRelative } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -35,7 +37,7 @@ const Container = styled.div``;
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 850px;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -44,24 +46,21 @@ const IdeaContainer = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  max-width: 580px;
-  margin-bottom: 40px;
+  max-width: 560px;
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: flex-start;
 `;
 
 const IdeaTitle = styled.h1`
   color: #444;
-  font-size: 30px;
+  font-size: 34px;
   font-weight: 500;
-  line-height: 36px;
+  line-height: 42px;
+  margin: 0;
+  padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-`;
-
-const Timing = styled.div`
-  color: #84939d;
-  font-size: 16px;
-  font-weight: 400;
-  margin-top: 5px;
 `;
 
 const Content = styled.div`
@@ -81,49 +80,30 @@ const IdeaImage = styled.img`
   margin: 0;
   padding: 0;
   margin-bottom: 30px;
+  border: solid 1px #e6e6e6;
 `;
 
-const AuthorContainer = styled.div`
-  font-size: 16px;
-  line-height: 19px;
-  display: flex;
-  align-items: center;
-  margin-top: 0px;
-  margin-bottom: 30px;
-`;
-
-const AuthorAvatar = styled(Avatar)`
-  width: 30px;
-  height: 30px;
-  margin-right: 8px;
-`;
-
-const AuthorName = styled(Link) `
-  color: #84939d;
-  font-weight: 400;
-  text-decoration: none;
-
-  &:hover {
-    color: #000;
-    text-decoration: underline;
-  }
+const StyledAuthor = styled(Author)`
+  margin-bottom: 25px;
 `;
 
 const IdeaBody = styled.div`
-  color: #474747;
-  font-size: 18px;
-  line-height: 24px;
-  font-weight: 400;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  color: #444;
+  font-size: 19px;
+  line-height: 26px;
+  font-weight: 300;
+
+  p {
+    margin-bottom: 30px;
+  }
 `;
 
 const SeparatorColumn = styled.div`
   flex: 0 0 1px;
   margin: 0;
-  margin-left: 45px;
-  margin-right: 45px;
-  background: #e0e0e0;
+  margin-left: 40px;
+  margin-right: 40px;
+  background: #e6e6e6;
 `;
 
 const SeparatorRow = styled.div`
@@ -197,12 +177,14 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       const ideaAuthor$ = userByIdStream(ideaAuthorId).observable;
       return Rx.Observable.combineLatest(ideaImage$, ideaAuthor$).map(([ideaImage, ideaAuthor]) => ({ idea, ideaImage, ideaAuthor }));
     });
+    const comments$ = commentsForIdeaStream(ideaId).observable;
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$, 
-        idea$
-      ).subscribe(([locale, { idea, ideaImage, ideaAuthor }]) => {
+        idea$,
+        comments$
+      ).subscribe(([locale, { idea, ideaImage, ideaAuthor }, comments]) => {
         this.setState({ locale, idea, ideaImage, ideaAuthor, loading: false });
       })
     ];
@@ -210,14 +192,6 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  goToUserProfile = () => {
-    const { ideaAuthor } = this.state;
-
-    if (ideaAuthor) {
-      browserHistory.push(`/profile/${ideaAuthor.data.attributes.slug}`);
-    }
   }
 
   render() {
@@ -230,7 +204,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       const avatar = ideaAuthor.data.attributes.avatar.large;
       const firstName = ideaAuthor.data.attributes.first_name;
       const lastName = ideaAuthor.data.attributes.last_name;
-      const createdAt = formatRelative(idea.data.attributes.created_at);
+      const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
       const bodyMultiloc = idea.data.attributes.body_multiloc;
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
@@ -246,21 +220,13 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
               <IdeaTitle>
                 <T value={titleMultiloc} />
               </IdeaTitle>
-              <Timing>
-                {createdAt}
-              </Timing>
             </Header>
 
             <Content>
               <LeftColumn>
                 {ideaImageLarge ? <IdeaImage src={ideaImageLarge} /> : null}
 
-                <AuthorContainer>
-                  <AuthorAvatar userId={authorId} size="medium" onClick={this.goToUserProfile} />
-                  <AuthorName to={`/profile/${ideaAuthor.data.attributes.slug}`}>
-                    <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} />
-                  </AuthorName>
-                </AuthorContainer>
+                <StyledAuthor authorId={authorId} createdAt={createdAt} />
 
                 <IdeaBody>
                   <T value={bodyMultiloc} />

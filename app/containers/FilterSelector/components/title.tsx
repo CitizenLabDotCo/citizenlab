@@ -6,24 +6,35 @@ import Icon from 'components/UI/Icon';
 // style
 import styled from 'styled-components';
 
+const DropdownIcon = styled(Icon)`
+  height: 7px;
+  fill: #84939E;
+  margin-left: 5px;
+  margin-top: 3px;
+  transition: transform 100ms ease-out;
+`;
+
 const StyledButton = styled.button`
-  align-items: center;
-  color: #6b6b6b;
+  color: #84939E;
   cursor: pointer;
+  font-size: 18px;
+  font-weight: 300;
   display: flex;
-  font-size: 1.25rem;
+  align-items: center;
   justify-content: space-between;
-  padding: .5rem;
+  padding: 0px;
   position: relative;
   z-index: 15;
 
-  svg {
-    margin-left: .2em;
-    transform: rotate(0)};
-    transition: all .2s ease-in-out;
+  &:hover {
+    color: #000;
+
+    ${DropdownIcon} {
+      fill: #000;
+    }
   }
 
-  &.deployed svg{
+  &.deployed ${DropdownIcon} {
     transform: rotate(180deg);
   }
 `;
@@ -53,7 +64,7 @@ export default class Title extends React.PureComponent<Props, State> {
         className={deployed ? 'deployed' : ''}
       >
         {title}
-        <Icon name="dropdown" />
+        <DropdownIcon name="dropdown" />
       </StyledButton>
     );
   }

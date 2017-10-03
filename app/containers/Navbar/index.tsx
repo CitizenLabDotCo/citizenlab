@@ -42,11 +42,12 @@ const Container: any = styled.div`
   top: 0;
   transition: all 150ms ease-out;
   /* border-bottom: 1px solid; */
-  /* border-color: ${(props: any) => props.hideBorder ? '#fff' : props.theme.colorNavBottomBorder}; */
+  box-shadow: ${(props: any) => props.hideBorder ? 'none' : '0 1px 3px rgba(0, 0, 0, 0.12)'};
 
   ${(props: any) => props.scrolled && css`
     /* border-color: ${props => props.theme.colorNavBottomBorder}; */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   `}
 `;
 
@@ -113,6 +114,7 @@ const Right = styled.div`
   display: flex;
   z-index: 2;
   align-items: center;
+  margin-right: 5px;
 `;
 
 const RightItem: any = styled.div`
@@ -123,6 +125,10 @@ const RightItem: any = styled.div`
   padding-left: 18px;
   padding-right: 18px;
   outline: none;
+
+  &.notification {
+    padding-left: 10px;
+  }
 
   * {
     outline: none;
@@ -145,12 +151,12 @@ const LoginLink = styled.div`
   }
 `;
 
-interface ITracks {
+type Props = {};
+
+type Tracks = {
   trackClickOpenNotifications: () => void;
   trackClickCloseNotifications: () => void;
-}
-
-type Props = {};
+};
 
 type State = {
   authUser: IUser | null;
@@ -159,7 +165,7 @@ type State = {
   scrolled: boolean;
 };
 
-class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps & RouterState, State> {
+class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & RouterState, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -284,7 +290,7 @@ class Navbar extends React.PureComponent<Props & ITracks & InjectedIntlProps & R
             </RightItem>
 
             {authUser &&
-              <RightItem hideOnPhone={true}>
+              <RightItem hideOnPhone={true} className="notification">
                 <NotificationMenu />
               </RightItem>
             }

@@ -33,7 +33,8 @@ const Container = styled.div`
   padding: 10px;
   margin-bottom: 20px;
   background: #fff;
-  border: solid 1px #e5e5e5;
+  border: solid 1px #e6e6e6;
+  /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); */
 
   ${media.phone`
     flex-direction: column;

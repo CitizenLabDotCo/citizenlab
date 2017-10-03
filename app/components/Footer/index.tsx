@@ -158,7 +158,10 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))
+      Rx.Observable.combineLatest(
+        locale$,
+        currentTenant$
+      ).subscribe(([locale, currentTenant]) => this.setState({ locale, currentTenant }))
     ];
   }
 

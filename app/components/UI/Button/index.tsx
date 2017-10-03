@@ -68,7 +68,11 @@ const StyledButton: any = styled.button`
         `;
       } else if (props.size === '3') {
         return css`
-          padding: 11px 24px;
+          padding: 12px 26px;
+        `;
+      } else if (props.size === '4') {
+        return css`
+          padding: 14px 28px;
         `;
       }
 
@@ -92,6 +96,11 @@ const StyledButton: any = styled.button`
           font-size: 18px;
           line-height: 22px;
         `;
+      } else if (props.size === '4') {
+        return css`
+          font-size: 18px;
+          line-height: 22px;
+        `;
       }
 
       return css`
@@ -110,6 +119,10 @@ const StyledButton: any = styled.button`
       } else if (props.size === '3') {
         return css`
           height: 22px;
+        `;
+      } else if (props.size === '4') {
+        return css`
+          height: 24px;
         `;
       }
 
@@ -151,7 +164,7 @@ const StyledButton: any = styled.button`
 
   &.secondary {
     &:not(.disabled) {
-      background: #e8e8e8;
+      background: #e4e4e4;
 
       ${ButtonText} {
         color: #555;
@@ -309,7 +322,7 @@ const SpinnerWrapper = styled.div`
 type Props = {
   text?: string;
   children?: any;
-  size?: '1' | '2' | '3';
+  size?: '1' | '2' | '3' | '4';
   style?: 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error';
   width?: string | undefined;
   height?: string | undefined;
