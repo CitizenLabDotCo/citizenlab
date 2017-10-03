@@ -10,9 +10,10 @@ namespace :tenant_template do
   task :csv_to_yml, [:path] => [:environment] do |t, args|
   	locale = 'en' # TODO acquire locale from template settings
 
+  	ref_obj = { 'test' => 'tast' }
   	yml_users = convert_users(read_csv('Users', args), locale)
   	yml_ideas = convert_ideas(read_csv('Ideas', args), locale)
-  	yml_models = {'models' => {'user' => yml_users, 'idea' => yml_ideas}}
+  	yml_models = {'models' => {'ref' => ref_obj, 'user' => yml_users, 'idea' => yml_ideas}, 'reref' => ref_obj}
 
   	File.open("#{args[:path]}/tenant_template.yml", 'w') {|f| f.write yml_models.to_yaml }
   end
