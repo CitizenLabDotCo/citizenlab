@@ -25,7 +25,8 @@ namespace :tenant_template do
     yml_idea_statuses.each{ |s| idea_statuses_hash[s['code']] = s }
   	yml_projects      = convert_projects(read_csv('Projects', args), locale, projects_hash, topics_hash)
   	yml_votes         = []
-  	yml_ideas         = convert_ideas(read_csv('Ideas', args), locale, ideas_hash, users_hash, projects_hash, topics_hash, idea_statuses_hash, yml_votes)
+  	yml_ideas         = convert_ideas(read_csv('Ideas', args), locale, ideas_hash, users_hash, 
+                                      projects_hash, topics_hash, idea_statuses_hash, yml_votes)
   	yml_comments      = convert_comments(read_csv('Comments', args), locale, comments_hash, ideas_hash, users_hash)
   	yml_events        = convert_events(read_csv('Events', args), locale, projects_hash)
   	yml_phases        = convert_phases(read_csv('Phases', args), locale, projects_hash)
@@ -106,22 +107,33 @@ namespace :tenant_template do
 
   def convert_comments(csv_comments, locale, comments_hash, ideas_hash, users_hash)
   	csv_comments.map{|csv_comment| 
-  		{	'title_multiloc' => 42,
-  			'author' => 42
-  		}}
+  		yml_comment = {	'body_multiloc' => {locale => csv_comment['Body']},
+  			              'author'        => users_hash[csv_comment['Author ID']],
+                      'idea'          => ideas_hash[csv_comment['Idea ID']],
+                      'parent_id'     => comments_hash[csv_comment['Comment ID (Optional)']] || ideas_hash[csv_comment['Idea ID']]
+  		              }
+      comments_hash[csv_comment['ID']] = yml_comment
+      yml_comment 
+    }
   end
 
   def convert_events(csv_events, locale, projects_hash)
   	csv_events.map{|csv_event| 
-  		{	'title_multiloc' => 42,
-  			'author' => 42
+  		{	'title_multiloc'       => {locale => csv_event['Title']},
+        'description_multiloc' => {locale => csv_event['Description']},
+        'location_multiloc'    => {locale => csv_event['Location']},
+  			'project'              => projects_hash[csv_event['Project ID']]
   		}}
   end
 
   def convert_phases(csv_phases, locale, projects_hash)
+    start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
   	csv_phases.map{|csv_phase| 
-  		{	'title_multiloc' => 42,
-  			'author' => 42
+  		{	'title_multiloc'       => {locale => csv_phase['Title']},
+  			'description_multiloc' => {locale => csv_phase['Description']},
+        'project'              => projects_hash[csv_phase['Project ID']],
+        'start_at'             => start_at,
+        'end_at'               => (start_at += rand(120).days)
   		}}
   end
 
