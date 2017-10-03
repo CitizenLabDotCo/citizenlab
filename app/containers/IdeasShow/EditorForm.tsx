@@ -262,7 +262,55 @@ class EditorForm extends React.PureComponent<Props & InjectedIntlProps & Tracks,
   }
 }
 
+/*
+      <Authorize action={['comments', 'create']}>
+        <CommentForm onSubmit={this.handleSubmit} className="e2e-comment-form">
+          {authUser &&
+            <UserArea>
+              <UserAvatar userId={authUser.data.id} size="medium" />
+              <UserName>
+                {authUser.data.attributes.first_name} {authUser.data.attributes.last_name}
+              </UserName>
+            </UserArea>
+          }
+
+          <Editor
+            id="editor"
+            value={this.state.editorState}
+            placeholder={formatMessage(messages.commentBodyPlaceholder)}
+            onChange={this.handleEditorOnChange}
+            onFocus={this.handleEditorOnFocus}
+          />
+
+          <SubmitArea className={submitAreaClassNames}>
+            <div className="message">
+              {errorMessage && <div className="e2e-error-message">{errorMessage}</div>}
+
+              {success &&
+                <SuccessMessage className="e2e-success-message">
+                  <FormattedMessage {...messages.commentSuccess} />
+                </SuccessMessage>
+              }
+            </div>
+
+            <SubmitButton className="e2e-submit-comment" loading={processing}>
+              <FormattedMessage {...messages.publishComment} />
+            </SubmitButton>
+          </SubmitArea>
+
+        </CommentForm>
+        <Else>
+          <FormattedMessage
+            {...messages.signInToComment}
+            values={{
+              signInLink: <Link to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></Link>,
+            }}
+          />
+        </Else>
+      </Authorize>
+*/
+
 export default injectTracks<Props>({
-  focusEditor: tracks.focusEditor,
+  focusEditor: tracks.focusNewCommentTextbox,
   clickCommentPublish: tracks.clickCommentPublish,
 })(injectIntl<Props>(EditorForm));
