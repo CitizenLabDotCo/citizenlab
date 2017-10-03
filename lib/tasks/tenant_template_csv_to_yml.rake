@@ -9,25 +9,35 @@ namespace :tenant_template do
   desc "TODO"
   task :csv_to_yml, [:path] => [:environment] do |t, args|
   	locale = 'en' # TODO acquire locale from template settings
+    yml_base = YAML.load_file('config/tenant_templates/base.yml')
 
-  	users_hash = {}
-  	projects_hash = {}
-  	ideas_hash = {}
-  	comments_hash = {}
-  	yml_users    = convert_users(read_csv('Users', args), locale, users_hash)
-  	yml_projects = convert_projects(read_csv('Projects', args), locale, projects_hash)
-  	yml_votes    = []
-  	yml_ideas    = convert_ideas(read_csv('Ideas', args), locale, ideas_hash, users_hash, projects_hash, yml_votes)
-  	yml_comments = convert_comments(read_csv('Comments', args), locale, comments_hash, ideas_hash, users_hash)
-  	yml_events   = convert_events(read_csv('Events', args), locale, projects_hash)
-  	yml_phases   = convert_phases(read_csv('Phases', args), locale, projects_hash)
-  	yml_models   = { 'models' => { 'user'    => yml_users, 
-  								                 'project' => yml_projects,  
-  								                 'idea'    => yml_ideas, 
-  								                 'votes'   => yml_votes,
-  		                             'comment' => yml_comments, 
-  		                             'event'   => yml_events, 
-  		                             'phase'   => yml_phases } }
+  	users_hash           = {}
+    topics_hash          = {}
+    idea_statuses_hash   = {}
+  	projects_hash        = {}
+  	ideas_hash           = {}
+  	comments_hash        = {}
+
+  	yml_users         = convert_users(read_csv('Users', args), locale, users_hash)
+    yml_topics        = yml_base['models']['topic']
+    yml_topics.each{ |t| topics_hash[t['title_multiloc'].split('.').last] = t }
+    yml_idea_statuses = yml_base['models']['idea_status']
+    yml_idea_statuses.each{ |s| idea_statuses_hash[s['code']] = s }
+  	yml_projects      = convert_projects(read_csv('Projects', args), locale, projects_hash, topics_hash)
+  	yml_votes         = []
+  	yml_ideas         = convert_ideas(read_csv('Ideas', args), locale, ideas_hash, users_hash, projects_hash, topics_hash, idea_statuses_hash, yml_votes)
+  	yml_comments      = convert_comments(read_csv('Comments', args), locale, comments_hash, ideas_hash, users_hash)
+  	yml_events        = convert_events(read_csv('Events', args), locale, projects_hash)
+  	yml_phases        = convert_phases(read_csv('Phases', args), locale, projects_hash)
+  	yml_models        = { 'models' => { 'user'          => yml_users, 
+                                        'topic'         => yml_topics,
+                                        'idea_status'   => yml_idea_statuses,
+  								                      'project'       => yml_projects,  
+  								                      'idea'          => yml_ideas, 
+  								                      'votes'         => yml_votes,
+  		                                  'comment'       => yml_comments, 
+  		                                  'event'         => yml_events, 
+  		                                  'phase'         => yml_phases } }
 
   	File.open("#{args[:path]}/tenant_template.yml", 'w') {|f| f.write yml_models.to_yaml }
   end
@@ -57,7 +67,7 @@ namespace :tenant_template do
   	}
   end
 
-  def convert_projects(csv_projects, locale, projects_hash)
+  def convert_projects(csv_projects, locale, projects_hash, topics_hash)
   	csv_projects.map{|csv_project| 
   		yml_project = {	'title_multiloc'       => {locale => csv_project['Title']},
   						        'description_multiloc' => {locale => csv_project['Description']},
@@ -70,17 +80,21 @@ namespace :tenant_template do
   	}
   end
 
-  def convert_ideas(csv_ideas, locale, ideas_hash, users_hash, projects_hash, yml_votes)
+  def convert_ideas(csv_ideas, locale, ideas_hash, users_hash, projects_hash, topics_hash, idea_statuses_hash, yml_votes)
   	csv_ideas.map{|csv_idea| 
   		yml_idea = { 'title_multiloc'     => {locale => csv_idea['Title']},
   					       'body_multiloc'      => {locale => csv_idea['Body']},
   				         'author'             => users_hash[csv_idea['Author ID']],
   				         'project'            => users_hash[csv_idea['Project ID']],
-  				         'topics'             => [csv_idea['Topic 1 (Optional)'],csv_idea['Topic 2 (Optional)']].select{|x| x && (x != '/')},
+  				         'topics'             => [ csv_idea['Topic 1 (Optional)'],
+                                             csv_idea['Topic 2 (Optional)'] ].select { |t| t && (t != '/') && topics_hash[t] }
+                                                                             .map { |t| topics_hash[t] },
   				         'areas'              => [], # TODO
   				         'upvotes'            => Integer(csv_idea['Upvotes']),
   				         'downvotes'          => Integer(csv_idea['Downvotes']),
-  				         'idea_status_code'   => ['proposed', 'under_consideration', 'accepted', 'implemented', 'rejected', 'custom'].shuffle.first,
+  				         'idea_status_code'   => idea_statuses_hash[[ 'proposed', 'under_consideration', 
+                                                                'accepted', 'implemented', 
+                                                                'rejected', 'custom' ].shuffle.first],
   				         'idea_images_urls'   => csv_idea['Image URL'] && [csv_idea['Image URL']],
   				         'publication_status' => 'published'
   				       }
