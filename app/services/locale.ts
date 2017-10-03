@@ -16,7 +16,9 @@ export function localeStream() {
   ).map(([authUser, currentTenantLocales]) => {
     let locale = 'en';
 
-    if (authUser && _.isString(authUser.data.attributes.locale) && _.includes(currentTenantLocales, authUser.data.attributes.locale)) {
+    if (process.env.CROWDIN_PLUGIN_ENABLED) {
+      locale = 'ach';
+    } else if (authUser && _.isString(authUser.data.attributes.locale) && _.includes(currentTenantLocales, authUser.data.attributes.locale)) {
       return authUser.data.attributes.locale;
     } else if (currentTenantLocales && currentTenantLocales.length > 0) {
       locale = currentTenantLocales[0];
