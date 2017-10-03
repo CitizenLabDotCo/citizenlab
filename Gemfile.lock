@@ -233,6 +233,7 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.8)
       ffi (>= 0.5.0)
+    redcarpet (3.4.0)
     redis (3.3.3)
     redis-namespace (1.5.3)
       redis (~> 3.0, >= 3.0.4)
@@ -352,6 +353,7 @@ DEPENDENCIES
   pundit (~> 1.1.0)
   rack-cors
   rails (~> 5.1.2)
+  redcarpet
   rest-client
   rgeo-geojson
   rspec-rails
@@ -368,4 +370,4 @@ DEPENDENCIES
   tzinfo-data
 
 BUNDLED WITH
-   1.14.6
+   1.15.4
