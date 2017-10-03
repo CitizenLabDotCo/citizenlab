@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 import Avatar from 'components/Avatar';
 
 // services
-import { userStream, IUser } from 'services/users';
+import { userByIdStream, IUser } from 'services/users';
 
 // i18n
 import { FormattedRelative, FormattedMessage } from 'react-intl';
@@ -63,7 +63,7 @@ export default class Author extends React.PureComponent<Props, State> {
 
   componentWillMount() {
     const { authorId } = this.props;
-    const author$ = userStream(authorId).observable;
+    const author$ = userByIdStream(authorId).observable;
 
     this.subscriptions = [
       author$.subscribe(author => this.setState({ author }))

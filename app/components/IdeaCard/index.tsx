@@ -15,7 +15,7 @@ import { IModalInfo } from 'containers/App';
 import { authUserStream } from 'services/auth';
 import { localeStream } from 'services/locale';
 import { ideaByIdStream, IIdea } from 'services/ideas';
-import { userStream, IUser } from 'services/users';
+import { userByIdStream, IUser } from 'services/users';
 import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
 
 // utils
@@ -184,7 +184,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
       const ideaImages = idea.data.relationships.idea_images.data;
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
       const idea$ = ideaByIdStream(ideaId).observable;
-      const ideaAuthor$ = userStream(idea.data.relationships.author.data.id).observable;
+      const ideaAuthor$ = userByIdStream(idea.data.relationships.author.data.id).observable;
       const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.do((ideaImage) => {
         // preload image
         new Image().src = ideaImage.data.attributes.versions.large;

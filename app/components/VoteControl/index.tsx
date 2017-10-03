@@ -8,7 +8,7 @@ import Icon from 'components/UI/Icon';
 // services
 import { authUserStream } from 'services/auth';
 import { ideaByIdStream, IIdea } from 'services/ideas';
-import { userStream, IUser } from 'services/users';
+import { userByIdStream, IUser } from 'services/users';
 import { voteStream, votesStream, addVote, deleteVote, IIdeaVote, IIdeaVoteData } from 'services/ideaVotes';
 
 // style

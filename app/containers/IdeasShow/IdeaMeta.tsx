@@ -6,11 +6,13 @@ import * as Rx from 'rxjs/Rx';
 import Helmet from 'react-helmet';
 
 // services
+import { currentTenantStream, ITenant } from 'services/tenant';
+import { localeStream } from 'services/locale';
 import { ideaByIdStream, IIdea } from 'services/ideas';
 import { ideaImagesStream, IIdeaImages } from 'services/ideaImages';
 
 // i18n
-import i18n from 'utils/i18n';
+import { getLocalized } from 'utils/i18n';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
@@ -20,6 +22,8 @@ type Props = {
 };
 
 type State = {
+  locale: string | null;
+  currentTenant: ITenant | null;
   idea: IIdea | null;
   ideaImages: IIdeaImages | null;
 };
@@ -31,6 +35,8 @@ export default class IdeaMeta extends React.PureComponent<Props, State> {
   constructor() {
     super();
     this.state = {
+      locale: null,
+      currentTenant: null,
       idea: null,
       ideaImages: null
     };
@@ -38,15 +44,21 @@ export default class IdeaMeta extends React.PureComponent<Props, State> {
 
   componentWillMount () {
     const { ideaId } = this.props;
+    const locale$ = localeStream().observable;
+    const currentTenant$ = currentTenantStream().observable;
     const idea$ = ideaByIdStream(ideaId).observable;
     const ideaImages$ = ideaImagesStream(ideaId).observable;
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
+        locale$,
+        currentTenant$,
         idea$,
         ideaImages$
-      ).subscribe(([idea, ideaImages]) => {
+      ).subscribe(([locale, currentTenant, idea, ideaImages]) => {
         this.setState({
+          locale,
+          currentTenant,
           idea,
           ideaImages
         });
@@ -59,11 +71,12 @@ export default class IdeaMeta extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { idea, ideaImages } = this.state;
+    const { locale, currentTenant, idea, ideaImages } = this.state;
 
-    if (idea) {
-      const ideaTitle = i18n.getLocalized(idea.data.attributes.title_multiloc);
-      const ideaDescription = i18n.getLocalized(idea.data.attributes.body_multiloc);
+    if (locale && currentTenant && idea) {
+      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
+      const ideaTitle = getLocalized(idea.data.attributes.title_multiloc, locale, currentTenantLocales);
+      const ideaDescription = getLocalized(idea.data.attributes.body_multiloc, locale, currentTenantLocales);
       const ideaImage = (ideaImages && ideaImages.data.length > 0 ? ideaImages.data[0].attributes.versions.large : null);
       const ideaUrl = window.location.href;
 

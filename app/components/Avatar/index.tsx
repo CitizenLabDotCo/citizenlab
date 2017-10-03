@@ -6,7 +6,7 @@ import * as Rx from 'rxjs/Rx';
 import Icon from 'components/UI/Icon';
 
 // services
-import { userStream } from 'services/users';
+import { userByIdStream } from 'services/users';
 
 // styles
 import { darken } from 'polished';
@@ -46,7 +46,7 @@ const Container: any = styled.div`
 
 type Props = {
   userId: string;
-  size: 'small' | 'medium' | 'high';
+  size: 'small' | 'medium' | 'large';
   onClick?: () => void;
 };
 
@@ -67,7 +67,7 @@ export default class Avatar extends React.PureComponent<Props, State> {
   }
 
   componentWillMount() {
-    const user$ = userStream(this.props.userId).observable;
+    const user$ = userByIdStream(this.props.userId).observable;
 
     this.subscriptions = [
       user$.subscribe((user) => {
@@ -90,12 +90,11 @@ export default class Avatar extends React.PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
     const { avatarSrc } = this.state;
-    const avatar = (avatarSrc ? <AvatarImage src={avatarSrc} /> : <AvatarIcon name="user" />);
     const isClickable = (this.props.onClick && _.isFunction(this.props.onClick));
 
     return (
       <Container className={className} isClickable={isClickable} onClick={this.handleOnClick}>
-        {avatar}
+        {avatarSrc ? <AvatarImage src={avatarSrc} /> : <AvatarIcon name="user" />}
       </Container>
     );
   }
