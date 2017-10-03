@@ -286,19 +286,19 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     const { children, opened } = this.props;
 
     const modalBackground = (opened ? (
-      <CSSTransition classNames="background" timeout={backgroundTimeout} exit={false}>
+      <CSSTransition className="background" timeout={backgroundTimeout} exit={false}>
         <ModalBackground />
       </CSSTransition>
     ) : null);
 
     const modalForeground = (opened ? (
-      <CSSTransition classNames="foreground" timeout={foregroundTimeout} exit={false}>
+      <CSSTransition className="foreground" timeout={foregroundTimeout} exit={false}>
         <ModalForeground />
       </CSSTransition>
     ) : null);
 
     const modalContent = (opened ? (
-      <CSSTransition classNames="content" timeout={contentTimeout} exit={false}>
+      <CSSTransition className="e2e-modal-content" timeout={contentTimeout} exit={false}>
         <ModalContent>
           <ModalContentInner>
             <ModalContentInnerInner>
