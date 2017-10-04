@@ -50,10 +50,11 @@ const ModalBackground = styled.div`
   background: rgba(0, 0, 0, 0.4);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  will-change: opacity;
+  will-change: auto;
 
   &.background-enter {
     opacity: 0;
+    will-change: opacity;
 
     &.background-enter-active {
       opacity: 0;
@@ -82,11 +83,11 @@ const ModalForeground: any = styled.div`
   z-index: 3000;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  will-change: opacity;
+  will-change: auto;
 
   &.foreground-enter {
     opacity: 0;
-    /* transform: translateY(0px); */
+    will-change: opacity;
 
     &.foreground-enter-active {
       width: 100%;
@@ -97,7 +98,6 @@ const ModalForeground: any = styled.div`
       right: 0;
       border-radius: 0px;
       opacity: 1;
-      /* transform: translateY(0px); */
       transition: all ${foregroundTimeout}ms ${foregroundEasing} ${foregroundDelay}ms;
     }
   }
@@ -117,7 +117,7 @@ const ModalContentInnerInner = styled.div`
   position: relative;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  will-change: opacity, transform;
+  will-change: auto;
 `;
 
 const CloseIcon = styled(Icon)`
@@ -140,7 +140,7 @@ const CloseButton = styled.div`
   top: 20px;
   right: 30px;
   z-index: 6000;
-  will-change: opacity;
+  will-change: auto;
 
   &:hover ${CloseIcon} {
     fill: #000;
@@ -164,11 +164,13 @@ const ModalContent = styled.div`
     ${ModalContentInnerInner} {
       opacity: 0;
       transform: translateY(${contentTranslate});
+      will-change: opacity, transform;
     }
 
     ${CloseButton} {
       opacity: 0;
       transform: translateY(${contentTranslate});
+      will-change: opacity, transform;
     }
   }
 
