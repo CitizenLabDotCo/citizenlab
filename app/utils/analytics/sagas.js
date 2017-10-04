@@ -40,6 +40,7 @@ function* trackIdentification(action) {
       avatar: user.attributes.avatar.large,
       birthday: user.attributes.birtyyear,
       gender: user.attributes.gender,
+      locale: user.attributes.locale,
     }, tenant),
   );
 }
