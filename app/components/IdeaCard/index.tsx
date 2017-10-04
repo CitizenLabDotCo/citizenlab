@@ -63,9 +63,7 @@ const IdeaContainer: any = styled.div`
   backface-visibility: hidden;
   transition: all 250ms cubic-bezier(0.19, 1, 0.22, 1);
   position: relative;
-  will-change: transform, box-shadow;
   border: solid 1px #e6e6e6;
-  /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); */
 
   &:hover {
     box-shadow: 0 1px 24px rgba(0, 0, 0, 0.1);
