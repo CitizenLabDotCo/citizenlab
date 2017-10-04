@@ -23,10 +23,6 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const backgroundTimeout = 150;
-const backgroundEasing = `ease`;
-const backgroundDelay = 0;
-
 const foregroundTimeout = 200;
 const foregroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 const foregroundDelay = 0;
@@ -35,33 +31,6 @@ const contentTimeout = 600;
 const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
 const contentDelay = 300;
 const contentTranslate = '20px';
-
-const ModalBackground = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 0;
-  margin: 0;
-  outline: none;
-  overflow: hidden;
-  z-index: 2000;
-  background: rgba(0, 0, 0, 0.4);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  will-change: auto;
-
-  &.background-enter {
-    opacity: 0;
-    will-change: opacity;
-
-    &.background-enter-active {
-      opacity: 0;
-      transition: opacity ${backgroundTimeout}ms ${backgroundEasing} ${backgroundDelay}ms;
-    }
-  }
-`;
 
 const ModalForeground: any = styled.div`
   width: 100%;
@@ -291,23 +260,15 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   render() {
     const { children, opened } = this.props;
 
-    /*
-    const modalBackground = (opened ? (
-      <CSSTransition className="background" timeout={backgroundTimeout} exit={false}>
-        <ModalBackground />
-      </CSSTransition>
-    ) : null);
-    */
-
     const modalForeground = (opened ? (
-      <CSSTransition className="foreground" timeout={foregroundTimeout} exit={false}>
+      <CSSTransition classNames="foreground" timeout={foregroundTimeout} exit={false}>
         <ModalForeground />
       </CSSTransition>
     ) : null);
 
     const modalContent = (opened ? (
-      <CSSTransition className="e2e-modal-content" timeout={contentTimeout} exit={false}>
-        <ModalContent>
+      <CSSTransition classNames="content" timeout={contentTimeout} exit={false}>
+        <ModalContent className="e2e-modal-content">
           <ModalContentInner>
             <ModalContentInnerInner>
               {children}
