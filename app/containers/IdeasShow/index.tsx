@@ -10,7 +10,7 @@ import { Location } from 'history';
 import VoteControl from 'components/VoteControl';
 import Avatar from 'components/Avatar';
 import StatusBadge from 'components/StatusBadge';
-import Comments from './Comments';
+import Comments from './CommentsContainer';
 import Sharing from './Sharing';
 import CommentsLine from './CommentsLine';
 import Author from './Author';

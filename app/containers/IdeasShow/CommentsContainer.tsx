@@ -46,7 +46,7 @@ type State = {
   loading: boolean;
 };
 
-export default class Comments extends React.PureComponent<Props, State> {
+export default class CommentsContainer extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
