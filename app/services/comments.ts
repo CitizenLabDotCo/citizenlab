@@ -1,4 +1,3 @@
-import { IComment } from './comments';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
