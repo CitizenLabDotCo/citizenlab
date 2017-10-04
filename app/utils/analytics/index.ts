@@ -44,6 +44,7 @@ export function addTenantInfo(properties, tenant: ITenantData) {
     tenantId: tenant && tenant.id,
     tenantName: tenant && tenant.attributes.name,
     tenantHost: tenant && tenant.attributes.host,
+    tenantOrganizationType: tenant && tenant.attributes.settings.core.organization_type,
   };
 }
 
