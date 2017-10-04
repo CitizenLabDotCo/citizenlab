@@ -50,7 +50,7 @@ namespace :tenant_template do
   end
 
 
-  def convert_users(csv_users, locale, users_hash) # locale?, slug?
+  def convert_users(csv_users, locale, users_hash)
   	csv_users.map{|csv_user| 
   		yml_user = { 'email'            => csv_user['Email'], 
   			  			   'first_name'       => csv_user['First Name'],
