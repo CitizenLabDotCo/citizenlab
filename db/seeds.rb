@@ -44,7 +44,7 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         allowed: true,
         enabled: true,
         locales: ['en','nl'],
-        organization_type: 'city',
+        organization_type: 'medium_city',
         organization_name: {
           "en" => Faker::Address.city,
           "nl" => Faker::Address.city,
@@ -71,6 +71,12 @@ if Apartment::Tenant.current == 'public' || 'example_org'
     }
   })
 end
+
+tenant_template = TenantTemplateService.new.available_templates
+tenant_template = tenant_template.find{|t| t == Apartment::Tenant.current}
+
+TenantTemplateService.new.apply_template('base') if tenant_template
+
 
 
 if Apartment::Tenant.current == 'localhost'
