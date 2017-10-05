@@ -10,7 +10,7 @@
  */
 
 export const DEFAULT_LOCALE = 'en';
-export const API_PATH = (process.env.NODE_ENV === 'development') ? 'http://localhost:4000/api/v1' : '/api/v1';
+export const API_PATH = (process.env.NODE_ENV === 'development') ? `http://${window.location.hostname}:4000/api/v1` : '/api/v1';
 export const GOOGLE_MAPS_API_KEY = 'AIzaSyDRtFe1KRBnGfDy_ijw6yCYsYnEkQRl9Cw';
 
 export const LOADED_CURRENT_TENANT = 'app/App/LOADED_CURRENT_TENANT';
