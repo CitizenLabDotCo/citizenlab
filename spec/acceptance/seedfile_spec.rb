@@ -9,7 +9,7 @@ describe "seedfile" do
   it "generates a valid tenant and user" do
     expect(Tenant.count).to be(1)
     load Rails.root.join("db","seeds.rb")
-    expect(Tenant.count).to be(2)
+    expect(Tenant.count).to be(3)
     Apartment::Tenant.switch('localhost') do
       load Rails.root.join("db","seeds.rb")
       expect(User.count).to be 8
@@ -25,6 +25,18 @@ describe "seedfile" do
       expect(Page.count).to be 11 # 8 generated + 3 legal pages by the template
       expect(Notification.count).to be > 0
       expect(IdeaStatus.count).to be > 0
+    end
+    Apartment::Tenant.switch('empty_localhost') do
+      load Rails.root.join("db","seeds.rb")
+      expect(User.count).to be 1
+      expect(Topic.count).to be > 0
+      expect(IdeaStatus.count).to be > 0
+      expect(Area.count).to be 0
+      expect(Project.count).to be 0
+      expect(Phase.count).to be 0
+      expect(Event.count).to be 0
+      expect(Idea.count).to be 0
+      expect(Comment.count).to be 0
     end
   end
 
