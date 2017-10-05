@@ -1,7 +1,7 @@
 ---
 models:
   user:
-  - &4
+  - &5
     email: arry@citizenlab.co
     first_name: Arry
     last_name: Snow
@@ -9,10 +9,10 @@ models:
     bio_multiloc:
       en: 
     gender: male
-    birthyear: 1938
+    birthyear: 1974
     domicile: outside
-    education: 5
-    password: 4q8GDMf1PhQ
+    education: 
+    password: 5oaIqe41Zxs
     remote_avatar_url: http://i0.kym-cdn.com/entries/icons/original/000/000/091/TrollFace.jpg
   - &2
     email: princesslea@gmail.com
@@ -22,9 +22,9 @@ models:
     bio_multiloc:
       en: 
     gender: female
-    birthyear: 1929
+    birthyear: 1945
     domicile: outside
-    education: 1
+    education: 7
     password: helpmeOB1
     remote_avatar_url: http://images2.fanpop.com/image/photos/9300000/leia-princess-leia-organa-solo-skywalker-9301321-576-1010.jpg
   topic:
@@ -57,7 +57,7 @@ models:
   - title_multiloc: statuses.proposed
     ordering: 100
     code: proposed
-    color: "#888888"
+    color: "#84939E"
     description_multiloc: statuses.proposed_description
   - &3
     title_multiloc: statuses.under_consideration
@@ -96,7 +96,7 @@ models:
   - remote_image_url: http://static.tvtropes.org/pmwiki/pub/images/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a.png
     project_ref: *1
   idea:
-  - &5
+  - &4
     title_multiloc:
       en: More Bicycle Racks
     body_multiloc:
@@ -108,13 +108,13 @@ models:
     publication_status: published
   vote:
   - mode: up
-    user_ref: *4
-    votable_ref: *5
-  - mode: up
     user_ref: *2
-    votable_ref: *5
+    votable_ref: *4
+  - mode: up
+    user_ref: *5
+    votable_ref: *4
   ideas_topic:
-  - idea_ref: *5
+  - idea_ref: *4
     topic_ref: *6
   idea_image: []
   comment:
@@ -122,18 +122,18 @@ models:
     body_multiloc:
       en: "<p>Great idea, we stand behind you!</p>\n"
     author_ref: *2
-    idea_ref: *5
+    idea_ref: *4
     parent_ref: 
   - body_multiloc:
       en: "<p>I&#39;ve never seen you riding a bicycle...</p>\n"
-    author_ref: *4
-    idea_ref: *5
+    author_ref: *5
+    idea_ref: *4
     parent_ref: *7
   - body_multiloc:
       en: "<p>Why stop there? The city also lacks stables. There should at least be
         one near the river.</p>\n"
-    author_ref: *4
-    idea_ref: *5
+    author_ref: *5
+    idea_ref: *4
     parent_ref: 
   event:
   - title_multiloc:
@@ -146,6 +146,8 @@ models:
     location_multiloc:
       en: Many different pubs, we start from the central place.
     project_ref: *1
+    start_at: 2017-08-11
+    end_at: 2017-08-12
   phase:
   - title_multiloc:
       en: Cyclist Invasion
@@ -153,20 +155,20 @@ models:
       en: "<p>The first phase consists of increasing the amount of cyclists in the
         city.</p>\n"
     project_ref: *1
-    start_at: 2017-01-07
-    end_at: 2017-01-18
+    start_at: 2018-08-08
+    end_at: 2018-10-21
   - title_multiloc:
       en: Autocar Expelsion
     description_multiloc:
       en: "<p>Next, we will hunt away cars and trucks from the inner city. Only busses
         are welcome!</p>\n"
     project_ref: *1
-    start_at: 2017-01-18
-    end_at: 2017-01-22
+    start_at: 2018-10-21
+    end_at: 2018-12-08
   - title_multiloc:
       en: Breathe Fresh Air
     description_multiloc:
       en: "<p>Finally, we can enjoy breathing fresh, clean air.</p>\n"
     project_ref: *1
-    start_at: 2017-01-22
-    end_at: 2017-04-09
+    start_at: 2018-12-08
+    end_at: 2018-12-30
