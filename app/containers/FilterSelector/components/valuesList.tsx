@@ -42,7 +42,7 @@ const Overlay = styled.div`
 const ListWrapper = styled.ul`
   list-style: none;
   margin: 0;
-  max-height: 10em;
+  max-height: 15rem;
   overflow-y: auto;
   padding: 0;
 `;
