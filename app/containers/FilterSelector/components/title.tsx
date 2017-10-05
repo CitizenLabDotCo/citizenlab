@@ -17,7 +17,7 @@ const DropdownIcon = styled(Icon)`
 const StyledButton = styled.button`
   color: #84939E;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 300;
   display: flex;
   align-items: center;
