@@ -26,8 +26,10 @@ namespace :tenant_template do
     yml_idea_statuses.each{ |s| idea_statuses_hash[s['code']] = s }
   	yml_projects      = convert_projects(read_csv('Projects', args), locale, projects_hash, topics_hash)
   	yml_votes         = []
+    yml_ideas_topics  = []
   	yml_ideas         = convert_ideas(read_csv('Ideas', args), locale, ideas_hash, users_hash, 
-                                      projects_hash, topics_hash, idea_statuses_hash, yml_votes)
+                                      projects_hash, topics_hash, idea_statuses_hash, yml_votes,
+                                      yml_ideas_topics)
   	yml_comments      = convert_comments(read_csv('Comments', args), locale, comments_hash, ideas_hash, users_hash)
   	yml_events        = convert_events(read_csv('Events', args), locale, projects_hash)
   	yml_phases        = convert_phases(read_csv('Phases', args), locale, projects_hash)
@@ -36,7 +38,8 @@ namespace :tenant_template do
                                         'idea_status'   => yml_idea_statuses,
   								                      'project'       => yml_projects,  
   								                      'idea'          => yml_ideas, 
-  								                      'votes'         => yml_votes,
+  								                      'vote'          => yml_votes,
+                                        'ideas_topic'   => yml_ideas_topics,
   		                                  'comment'       => yml_comments, 
   		                                  'event'         => yml_events, 
   		                                  'phase'         => yml_phases } }
@@ -73,34 +76,32 @@ namespace :tenant_template do
   	csv_projects.map{|csv_project| 
   		yml_project = {	'title_multiloc'       => {locale => csv_project['Title']},
   						        'description_multiloc' => {locale => md_to_html(csv_project['Description'])},
-  						        'project_images_urls'  => csv_project['Image URL'] && [csv_project['Image URL']],
-  						        'header_bg_image_url'  => csv_project['Background Image URL'],
-  						        'topics'               => generate_topics()
+  						        'project_images_images_urls'  => csv_project['Image URL'] && [csv_project['Image URL']],
+  						        'header_bg_image_url'  => csv_project['Background Image URL']
   					        }
+      # TODO associate project topics
   		projects_hash[csv_project['ID']] = yml_project
   		yml_project
   	}
   end
 
-  def convert_ideas(csv_ideas, locale, ideas_hash, users_hash, projects_hash, topics_hash, idea_statuses_hash, yml_votes)
+  def convert_ideas(csv_ideas, locale, 
+                    ideas_hash, users_hash, projects_hash, topics_hash, idea_statuses_hash, 
+                    yml_votes, yml_ideas_topics)
   	csv_ideas.map{|csv_idea| 
   		yml_idea = { 'title_multiloc'     => {locale => csv_idea['Title']},
   					       'body_multiloc'      => {locale => md_to_html(csv_idea['Body'])},
-  				         'author'             => users_hash[csv_idea['Author ID']],
-  				         'project'            => users_hash[csv_idea['Project ID']],
-  				         'topics'             => [ csv_idea['Topic 1 (Optional)'],
-                                             csv_idea['Topic 2 (Optional)'] ].select { |t| t && (t != '/') && topics_hash[t] }
-                                                                             .map { |t| topics_hash[t] },
+  				         'author_ref'         => users_hash[csv_idea['Author ID']],
+  				         'project_ref'        => projects_hash[csv_idea['Project ID']],
   				         'areas'              => [], # TODO
-  				         'upvotes'            => Integer(csv_idea['Upvotes']),
-  				         'downvotes'          => Integer(csv_idea['Downvotes']),
-  				         'idea_status'        => idea_statuses_hash[[ 'proposed', 'under_consideration', 
+  				         'idea_status_ref'    => idea_statuses_hash[[ 'proposed', 'under_consideration', 
                                                                 'accepted', 'implemented', 
-                                                                'rejected', 'custom' ].shuffle.first],
-  				         'idea_images_urls'   => csv_idea['Image URL'] && [csv_idea['Image URL']],
+                                                                'rejected' ].shuffle.first],
+  				         'idea_images_images_urls'   => csv_idea['Image URL'] && [csv_idea['Image URL']],
   				         'publication_status' => 'published'
   				       }
-  		generate_and_add_votes(yml_idea, yml_votes, users_hash)
+  		generate_and_add_votes(csv_idea, yml_idea, yml_votes, users_hash)
+      add_ideas_topics(csv_idea, yml_idea, topics_hash, yml_ideas_topics)
   		ideas_hash[csv_idea['ID']] = yml_idea
   		yml_idea
   	}
@@ -109,9 +110,9 @@ namespace :tenant_template do
   def convert_comments(csv_comments, locale, comments_hash, ideas_hash, users_hash)
   	csv_comments.map{|csv_comment| 
   		yml_comment = {	'body_multiloc' => {locale => md_to_html(csv_comment['Body'])},
-  			              'author'        => users_hash[csv_comment['Author ID']],
-                      'idea'          => ideas_hash[csv_comment['Idea ID']],
-                      'parent_id'     => comments_hash[csv_comment['Comment ID (Optional)']] || ideas_hash[csv_comment['Idea ID']]
+  			              'author_ref'    => users_hash[csv_comment['Author ID']],
+                      'idea_ref'      => ideas_hash[csv_comment['Idea ID']],
+                      'parent_ref'    => comments_hash[csv_comment['Comment ID (Optional)']]
   		              }
       comments_hash[csv_comment['ID']] = yml_comment
       yml_comment 
@@ -123,7 +124,7 @@ namespace :tenant_template do
   		{	'title_multiloc'       => {locale => csv_event['Title']},
         'description_multiloc' => {locale => md_to_html(csv_event['Description'])},
         'location_multiloc'    => {locale => csv_event['Location']},
-  			'project'              => projects_hash[csv_event['Project ID']]
+  			'project_ref'          => projects_hash[csv_event['Project ID']]
   		}}
   end
 
@@ -132,7 +133,7 @@ namespace :tenant_template do
   	csv_phases.map{|csv_phase| 
   		{	'title_multiloc'       => {locale => csv_phase['Title']},
   			'description_multiloc' => {locale => md_to_html(csv_phase['Description'])},
-        'project'              => projects_hash[csv_phase['Project ID']],
+        'project_ref'          => projects_hash[csv_phase['Project ID']],
         'start_at'             => start_at,
         'end_at'               => (start_at += rand(120).days)
   		}}
@@ -148,22 +149,23 @@ namespace :tenant_template do
   	'outside'
   end
 
-  def generate_topics()
-  	# TODO
-  	[]
-  end
-
-  def generate_and_add_votes(yml_idea, yml_votes, users_hash)
+  def generate_and_add_votes(csv_idea, yml_idea, yml_votes, users_hash)
   	shuffled_users = users_hash.values.shuffle
-  	vote_modes = Array.new(yml_idea['upvotes'], 'up') + Array.new(yml_idea['downvotes'], 'down')
+  	vote_modes = Array.new(Integer(csv_idea['Upvotes']), 'up') + Array.new(Integer(csv_idea['Downvotes']), 'down')
     new_votes = zip_min(vote_modes, shuffled_users).map {|z|  
       mode = z[0]
       user = z[1]
-      { 'mode'    => mode,
-        'user'    => user,
-        'votable' => yml_idea }}
+      { 'mode'        => mode,
+        'user_ref'    => user,
+        'votable_ref' => yml_idea }}
     yml_votes.concat new_votes
-    yml_idea['votes'] = new_votes
+  end
+
+  def add_ideas_topics(csv_idea, yml_idea, topics_hash, yml_ideas_topics)
+    yml_ideas_topics.concat [ csv_idea['Topic 1 (Optional)'],
+                              csv_idea['Topic 2 (Optional)'] ].select { |t| t && (t != '/') && topics_hash[t] }
+                                                              .map { |t| { 'idea_ref'  => yml_idea,
+                                                                           'topic_ref' => topics_hash[t] }}
   end
 
 
