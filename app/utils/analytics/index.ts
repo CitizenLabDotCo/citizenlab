@@ -13,6 +13,13 @@ interface IEvent {
   };
 }
 
+interface IIdentification {
+  userId: string;
+  properties?: {
+    [key: string]: any,
+  };
+}
+
 interface IPageChange {
   name: string;
   properties?: {
@@ -22,6 +29,7 @@ interface IPageChange {
 
 const tenant$ = currentTenantStream().observable;
 const events$ = new Rx.Subject<IEvent>();
+const identifications$ = new Rx.Subject<IIdentification>();
 const pageChanges$ = new Rx.Subject<IPageChange>();
 
 Rx.Observable.combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
@@ -37,6 +45,14 @@ Rx.Observable.combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChang
     addTenantInfo(pageChange.properties, tenant.data),
   );
 });
+
+Rx.Observable.combineLatest(tenant$, identifications$).subscribe(([tenant, identification]) => {
+  (window as any).analytics.identify(
+    identification.userId,
+    addTenantInfo(identification.properties, tenant.data),
+  );
+});
+
 
 export function addTenantInfo(properties, tenant: ITenantData) {
   return {
@@ -55,6 +71,20 @@ export function trackPage(path: string, properties: {} = {}) {
   });
 }
 
+export function trackIdentification(userId: string, properties: {} = {}) {
+  identifications$.next({
+    userId,
+    properties,
+  });
+}
+
+export function trackEvent(eventName: string, properties: {} = {}) {
+  events$.next({
+    name: eventName,
+    properties,
+  });
+}
+
 /** HOC that allows specifying events as function props to the inner component
  e.g.:
  const SomeComponent = ({ buttonClicked }) => <button onClick={buttonClicked} />);
@@ -67,7 +97,7 @@ export const injectTracks = <P>(events: {[key: string]: IEvent}) => (component: 
     const eventFunctions = _.mapValues(events, (event) => (
       (extra) => {
         const extraProps = extra && extra.extra;
-        events$.next({ name: event.name, properties: { ...event.properties, ...extraProps } });
+        trackEvent(event.name, { ...event.properties, ...extraProps });
       }
     ));
     const propsWithEvents = {
