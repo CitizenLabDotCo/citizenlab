@@ -17,7 +17,7 @@ const Overlay = styled.div`
   padding: 10px;
   position: absolute;
   top: 2rem;
-  left: 0;
+  right: -22px;
   z-index: 10;
 
   &.deployed {
@@ -35,7 +35,7 @@ const Overlay = styled.div`
     display: block;
     position:absolute;
     top: -2rem;
-    left: 1rem;
+    right: 1rem;
   }
 `;
 
@@ -78,6 +78,7 @@ const Checkmark: any = styled.span`
 
   svg {
     transform: scale(.8);
+    display: ${(props: any) => props.selected ? 'block' : 'none'};
   }
 `;
 
