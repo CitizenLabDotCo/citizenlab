@@ -13,6 +13,7 @@ import { IPageData, pageBySlugStream } from 'services/pages';
 import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
 import styled from 'styled-components';
+import NotFound from 'containers/NotFoundPage';
 
 
 const TextContainer = styled.div`
@@ -45,9 +46,11 @@ class PagesShowPage extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     this.pageObserver = pageBySlugStream(this.props.params.slug).observable.subscribe((response) => {
-      this.setState({
-        page: response.data,
-      });
+      if (response) {
+        this.setState({
+          page: response.data,
+        });
+      }
     });
   }
 
@@ -58,9 +61,13 @@ class PagesShowPage extends React.PureComponent<Props, State> {
   render() {
     const { page } = this.state;
     const { tFunc } = this.props;
+
+    if (!page) {
+      return <NotFound />;
+    }
+
     return page && (
       <ContentContainer>
-
         <Helmet>
           <title>{tFunc(page.attributes.title_multiloc)}</title>
         </Helmet>
