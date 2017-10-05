@@ -80,8 +80,8 @@ export function trackIdentification(userId: string, properties: {} = {}) {
 
 export function trackEvent(eventName: string, properties: {} = {}) {
   events$.next({
-    name: eventName,
     properties,
+    name: eventName,
   });
 }
 
