@@ -5,7 +5,8 @@ resource "Ideas" do
 
   before do
     header "Content-Type", "application/json"
-    @ideas = create_list(:idea, 5)
+    # @ideas = create_list(:idea, 5, publication_status: ['published','draft','published','published','spam']) #draft published closed spam
+    @ideas = ['published','draft','published','published','spam','published','published'].map { |ps|  create(:idea, publication_status: ps)}
     @user = create(:user)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
     header 'Authorization', "Bearer #{token}"
@@ -19,11 +20,20 @@ resource "Ideas" do
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
     parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status'", required: false
+    parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
 
-    example_request "List all ideas" do
+    example_request "List only all published ideas by default" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
+      expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).to all(eq 'published')
+    end
+
+    example "List all ideas which have draft set as publication status" do
+      do_request(publication_status: 'draft')
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response.dig(:data,0,:attributes,:publication_status)).to eq 'draft'
     end
 
     example "List all ideas with a topic" do
