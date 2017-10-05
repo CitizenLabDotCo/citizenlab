@@ -10,7 +10,7 @@ FactoryGirl.define do
         "core" => {
           "enabled" => true,
           "allowed" => true,
-          "organization_type" => "city",
+          "organization_type" => "medium_city",
           "organization_name" => {
             "en" => Faker::Address.city,
             "nl" => Faker::Address.city,
@@ -31,7 +31,7 @@ FactoryGirl.define do
         "core" => {
           "allowed" => true,
           "enabled" => true,
-          "organization_type" => "city",
+          "organization_type" => "medium_city",
           "organization_name" => {
             "en" => "Liege",
             "nl" => "Luik",
