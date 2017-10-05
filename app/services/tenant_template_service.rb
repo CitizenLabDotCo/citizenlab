@@ -26,8 +26,7 @@ class TenantTemplateService
               [locale, translation]
             end.to_h
             model.send("#{field_name}=", multiloc_value)
-          elsif (field_name =~ /_ref$/)
-            puts field_name
+          elsif field_name.end_with? '_ref'
             model.send("#{field_name.chomp '_ref'}=", obj_to_inst[field_value])
           # elsif (field_name =~ /_image_url$/)
           #   model.send("#{field_name.chomp '_image_url'}=", nil) # TODO
