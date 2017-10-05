@@ -40,7 +40,9 @@ class LogToSegmentJob < ApplicationJob
       trackingMessage[:properties][:tenantId] = tenant.id
       trackingMessage[:properties][:tenantName] = tenant.name
       trackingMessage[:properties][:tenantHost] = tenant.host
-    rescue e
+      trackingMessage[:properties][:tenantOrganizationType] = Tenant.settings('core', 'organization_type')
+    rescue  ActiveRecord::RecordNotFound => e
+      # Tenant can't be found, so we don't add anything
     end
 
     Analytics.track(trackingMessage)
