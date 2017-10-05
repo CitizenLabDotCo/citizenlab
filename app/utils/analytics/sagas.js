@@ -1,47 +1,42 @@
-import { call, select } from 'redux-saga/effects';
+import { call } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
-import { makeSelectCurrentTenant } from 'utils/tenant/selectors';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { LOAD_CURRENT_USER_SUCCESS } from 'utils/auth/constants';
 import { UPDATE_CURRENT_USER_SUCCESS } from 'containers/UsersEditPage/constants';
-import { addTenantInfo } from './';
+import { trackIdentification, trackPage, trackEvent } from './';
 
-const selectCurrentTenant = makeSelectCurrentTenant();
 
 function* trackAction(action) {
-  const tenant = yield select(selectCurrentTenant);
   yield call(
-    window.analytics.track,
+    trackEvent,
     action.meta.track.name,
-    addTenantInfo(action.meta.track.properties, tenant),
+    action.meta.track.properties,
   );
 }
 
 function* trackPageChange(action) {
-  const tenant = yield select(selectCurrentTenant);
   yield call(
-    window.analytics.page,
+    trackPage,
     action.payload.pathname,
-    addTenantInfo({}, tenant),
+    {},
   );
 }
 
-function* trackIdentification(action) {
-  const tenant = yield select(selectCurrentTenant);
+function* trackIdentifications(action) {
   const user = action.payload.data;
   yield call(
-    window.analytics.identify,
+    trackIdentification,
     user.id,
-    addTenantInfo({
+    {
       email: user.attributes.email,
       firstName: user.attributes.first_name,
       lastName: user.attributes.last_name,
       createdAt: user.attributes.created_at,
       avatar: user.attributes.avatar.large,
-      birthday: user.attributes.birtyyear,
+      birthday: user.attributes.birthyear,
       gender: user.attributes.gender,
       locale: user.attributes.locale,
-    }, tenant),
+    }
   );
 }
 
@@ -58,5 +53,5 @@ export function* watchPageChanges() {
 }
 
 export function* watchIdentification() {
-  yield takeLatest([LOAD_CURRENT_USER_SUCCESS, UPDATE_CURRENT_USER_SUCCESS], trackIdentification);
+  yield takeLatest([LOAD_CURRENT_USER_SUCCESS, UPDATE_CURRENT_USER_SUCCESS], trackIdentifications);
 }
