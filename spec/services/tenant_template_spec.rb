@@ -16,19 +16,21 @@ describe TenantTemplateService do
 
   describe "apply_template" do
 
-    it "Successfully applies the base template" do  
-      tenant = service.apply_template('base') # doen voor elke yml in deze dir
-      ### Overbodig
-      expect(IdeaStatus.count).to be 5
-      expect(Topic.count).to be 12
-      expect(Page.count).to be 3
-      ###
+    it "Successfully applies all templates (residing in config/tenant_templates)" do  
+      service.available_templates.map do |template|
+        service.apply_template template
+      end
     end
 
     it "Successfully applies the base template" do # deze wel uitwerken omdat deze omzetting test
       tenant = service.apply_template('spec/services/tenant_template.yml', is_path=true)
       expect(IdeaStatus.count).to be 5
       expect(Topic.count).to be 12
+      expect(User.count).to be 2
+      lea = User.find_by(email: 'princesslea@gmail.com')
+      expect(lea).to be_present
+      expect(lea.last_name).to eq('Skywalker')
+
       expect(Project.count).to be 1
     end
   end

@@ -1,7 +1,7 @@
 ---
 models:
   user:
-  - &5
+  - &4
     email: arry@citizenlab.co
     first_name: Arry
     last_name: Snow
@@ -9,12 +9,12 @@ models:
     bio_multiloc:
       en: 
     gender: male
-    birthyear: 1968
+    birthyear: 1938
     domicile: outside
-    education: 
-    password: mCekYoxkoRE
-    avatar_image_url: http://i0.kym-cdn.com/entries/icons/original/000/000/091/TrollFace.jpg
-  - &1
+    education: 5
+    password: 4q8GDMf1PhQ
+    remote_avatar_url: http://i0.kym-cdn.com/entries/icons/original/000/000/091/TrollFace.jpg
+  - &2
     email: princesslea@gmail.com
     first_name: Lea
     last_name: Skywalker
@@ -22,11 +22,11 @@ models:
     bio_multiloc:
       en: 
     gender: female
-    birthyear: 1946
+    birthyear: 1929
     domicile: outside
     education: 1
     password: helpmeOB1
-    avatar_image_url: http://images2.fanpop.com/image/photos/9300000/leia-princess-leia-organa-solo-skywalker-9301321-576-1010.jpg
+    remote_avatar_url: http://images2.fanpop.com/image/photos/9300000/leia-princess-leia-organa-solo-skywalker-9301321-576-1010.jpg
   topic:
   - title_multiloc: topics.infrastructure
     description_multiloc: topics.infrastructure_description
@@ -81,7 +81,7 @@ models:
     color: "#B5DA23"
     description_multiloc: statuses.implemented_description
   project:
-  - &2
+  - &1
     title_multiloc:
       en: Reducing Air Pollution in the City
     description_multiloc:
@@ -91,48 +91,49 @@ models:
         <p>You can support this innitiative by proposing your ideas on how to tackle this issue.</p>
 
         <p><em>Let&#39;s do this!</em></p>
-    project_images_images_urls:
-    - http://static.tvtropes.org/pmwiki/pub/images/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a.png
-    header_bg_image_url: 
+    remote_header_bg_url: 
+  project_image:
+  - remote_image_url: http://static.tvtropes.org/pmwiki/pub/images/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a.png
+    project_ref: *1
   idea:
-  - &4
+  - &5
     title_multiloc:
       en: More Bicycle Racks
     body_multiloc:
       en: "<p>Title says it all.</p>\n"
-    author_ref: *1
-    project_ref: *2
+    author_ref: *2
+    project_ref: *1
     areas: []
     idea_status_ref: *3
-    idea_images_images_urls: 
     publication_status: published
   vote:
   - mode: up
-    user_ref: *1
-    votable_ref: *4
+    user_ref: *4
+    votable_ref: *5
   - mode: up
-    user_ref: *5
-    votable_ref: *4
+    user_ref: *2
+    votable_ref: *5
   ideas_topic:
-  - idea_ref: *4
+  - idea_ref: *5
     topic_ref: *6
+  idea_image: []
   comment:
   - &7
     body_multiloc:
       en: "<p>Great idea, we stand behind you!</p>\n"
-    author_ref: *1
-    idea_ref: *4
+    author_ref: *2
+    idea_ref: *5
     parent_ref: 
   - body_multiloc:
       en: "<p>I&#39;ve never seen you riding a bicycle...</p>\n"
-    author_ref: *5
-    idea_ref: *4
+    author_ref: *4
+    idea_ref: *5
     parent_ref: *7
   - body_multiloc:
       en: "<p>Why stop there? The city also lacks stables. There should at least be
         one near the river.</p>\n"
-    author_ref: *5
-    idea_ref: *4
+    author_ref: *4
+    idea_ref: *5
     parent_ref: 
   event:
   - title_multiloc:
@@ -144,28 +145,28 @@ models:
         <p>No animals allowed.</p>
     location_multiloc:
       en: Many different pubs, we start from the central place.
-    project_ref: *2
+    project_ref: *1
   phase:
   - title_multiloc:
       en: Cyclist Invasion
     description_multiloc:
       en: "<p>The first phase consists of increasing the amount of cyclists in the
         city.</p>\n"
-    project_ref: *2
-    start_at: 2017-02-18
-    end_at: 2017-03-10
+    project_ref: *1
+    start_at: 2017-01-07
+    end_at: 2017-01-18
   - title_multiloc:
       en: Autocar Expelsion
     description_multiloc:
       en: "<p>Next, we will hunt away cars and trucks from the inner city. Only busses
         are welcome!</p>\n"
-    project_ref: *2
-    start_at: 2017-03-10
-    end_at: 2017-04-20
+    project_ref: *1
+    start_at: 2017-01-18
+    end_at: 2017-01-22
   - title_multiloc:
       en: Breathe Fresh Air
     description_multiloc:
       en: "<p>Finally, we can enjoy breathing fresh, clean air.</p>\n"
-    project_ref: *2
-    start_at: 2017-04-20
-    end_at: 2017-06-04
+    project_ref: *1
+    start_at: 2017-01-22
+    end_at: 2017-04-09
