@@ -84,6 +84,7 @@ Rails.application.routes.draw do
   namespace :admin_api, :defaults => {:format => :json} do
     resources :tenants do
       get :settings_schema, on: :collection
+      get :templates, on: :collection
     end
   end
 
