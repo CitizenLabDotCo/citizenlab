@@ -4,7 +4,7 @@ models:
       title_multiloc: statuses.proposed
       ordering: 100
       code: proposed
-      color: '#888888'
+      color: '#84939E'
       description_multiloc: statuses.proposed_description
     - 
       title_multiloc: statuses.under_consideration
