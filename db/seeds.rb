@@ -81,7 +81,7 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         allowed: true,
         enabled: true,
         locales: ['en','nl'],
-        organization_type: 'city',
+        organization_type: 'medium_city',
         organization_name: {
           "en" => Faker::Address.city,
           "nl" => Faker::Address.city,
