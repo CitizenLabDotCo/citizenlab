@@ -178,8 +178,8 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
       const currentTenantLogo = currentTenant.data.attributes.logo.medium;
       const organizationNameMulitiLoc = currentTenant.data.attributes.settings.core.organization_name;
       const currentTenantName = getLocalized(organizationNameMulitiLoc, locale, currentTenantLocales);
-      const sloganMessage = (currentTenant.data.type === 'city' ? messages.sloganCity : messages.sloganOrganization);
-      const slogan = currentTenantName ? formatMessage(sloganMessage, { name: currentTenantName }) : '';
+      const organizationType = currentTenant.data.attributes.settings.core.organization_type;
+      const slogan = currentTenantName ? formatMessage(messages.slogan, { name: currentTenantName, type: organizationType }) : '';
       const poweredBy = formatMessage(messages.poweredBy);
 
       return (
