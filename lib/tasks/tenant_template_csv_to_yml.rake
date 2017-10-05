@@ -127,10 +127,13 @@ namespace :tenant_template do
 
   def convert_events(csv_events, locale, projects_hash)
   	csv_events.map{|csv_event| 
+      start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
   		{	'title_multiloc'       => {locale => csv_event['Title']},
         'description_multiloc' => {locale => md_to_html(csv_event['Description'])},
         'location_multiloc'    => {locale => csv_event['Location']},
-  			'project_ref'          => projects_hash[csv_event['Project ID']]
+  			'project_ref'          => projects_hash[csv_event['Project ID']],
+        'start_at'             => start_at,
+        'end_at'               => start_at + 1.days
   		}}
   end
 
