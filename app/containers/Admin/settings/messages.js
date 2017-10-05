@@ -29,7 +29,7 @@ export default defineMessages({
   },
   organizationName: {
     id: 'app.containers.AdminPage.SettingsPage.organizationName',
-    defaultMessage: '{type, select, generic {Organization} city {City}} name',
+    defaultMessage: '{type, select, generic {Organization} other {City}} name',
   },
   languages: {
     id: 'app.containers.AdminPage.SettingsPage.languages',
