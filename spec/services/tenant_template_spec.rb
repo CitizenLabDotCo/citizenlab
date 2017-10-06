@@ -17,7 +17,7 @@ describe TenantTemplateService do
   describe "apply_template" do
     it "Successfully applies all templates (residing in config/tenant_templates)" do  
       service.available_templates.map do |template|
-        # TODO clear template first
+        # TODO clear tenant first
         service.apply_template template
       end
     end
