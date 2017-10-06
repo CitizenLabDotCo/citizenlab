@@ -1,21 +1,64 @@
 module.exports = {
   visibleIdeas: (browser) => {
+    const ideasPage = browser.page.ideas();
+
+    ideasPage
+    .navigate();
+
     browser
-    .url('localhost:3000/ideas')
-    .waitForElementVisible('#e2e-ideas-filters')
-    .waitForElementVisible('#e2e-ideas-list')
     .waitForElementVisible('.e2e-idea-card:first-child')
     .end();
   },
 
   changeOrder: (browser) => {
+    const ideasPage = browser.page.ideas();
+
+    ideasPage
+    .navigate();
+
     browser
-    .url('localhost:3000/ideas')
     .waitForElementVisible('#e2e-ideas-list')
     .click('.e2e-filter-selector-sort button')
     .waitForElementVisible('.e2e-filter-selector-sort ul')
     .click('.e2e-filter-selector-sort ul li:last-child')
     .waitForElementVisible('#e2e-ideas-list')
+    .end();
+  },
+
+  searchText: (browser) => {
+    const ideasPage = browser.page.ideas();
+
+    ideasPage
+    .navigate()
+    .searchText('test query string');
+
+    browser
+    .assert.urlContains(`search=${encodeURIComponent('test query string')}`)
+    .end();
+  },
+
+  searchSpecificIdea: (browser) => {
+    const title = `test idea ${new Date().getTime()}`;
+    const content = `Test Content ${new Date().getTime()}`;
+
+    const signinPage = browser.page.signin();
+    const newIdeaPage = browser.page.newIdea();
+    const ideasPage = browser.page.ideas();
+
+    signinPage
+    .navigate()
+    .signin('koen@citizenlab.co', 'testtest');
+
+    newIdeaPage
+    .navigate()
+    .postIdea(title, content);
+
+    ideasPage
+    .navigate()
+    .searchText(content)
+    .waitForElementVisible('@firstIdea');
+
+    browser
     .end();
   },
 };
