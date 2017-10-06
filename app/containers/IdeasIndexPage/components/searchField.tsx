@@ -68,14 +68,14 @@ class SearchField extends React.Component<Props, State> {
     this.searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
   }
 
-  handleSubmit = (event):void => {
+  handleSubmit = (event): void => {
     event.preventDefault();
-    const value = event.target.search.value;
+    const { value } = this.state;
     this.props.filterPage('search', [value]);
   }
 
-  handleChange = (event):void => {
-    this.setState({ value: event.target.value });
+  handleChange = (value): void => {
+    this.setState({ value });
   }
 
   render() {
