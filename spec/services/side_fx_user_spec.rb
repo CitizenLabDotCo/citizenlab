@@ -13,7 +13,14 @@ describe SideFxUserService do
       expect(u.admin?).to be true
     end
 
-    it "doesn't make second and later users admin" do
+    it "makes second and later users admin when the first user is not an admin" do
+      u = build(:user)
+      service.before_create(u, current_user)
+      expect(u.admin?).to be true
+    end
+
+    it "doesn't make second and later users admin when the first user is an admin" do
+      create(:user, roles: [{type: 'admin'}, {type: 'project_moderator', project_id: '42'}])
       u = build(:user)
       service.before_create(u, current_user)
       expect(u.admin?).to be false
