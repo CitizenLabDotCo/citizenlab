@@ -32,7 +32,6 @@ class TenantTemplateService
             model.send("#{field_name}=", field_value)
           end
         end
-
         model.save!
         obj_to_inst[attributes] = model
       end
