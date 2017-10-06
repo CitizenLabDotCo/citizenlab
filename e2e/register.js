@@ -10,9 +10,13 @@ module.exports = {
     .setValue('#email', `test+${time}@citizenlab.co`)
     .setValue('#password', '123456')
     .click('#e2e-signup-step1 button')
-    .waitForElementVisible('#e2e-signup-step2')
+    .waitForElementVisible('#e2e-signup-step2 button')
+    .pause(500)
     .click('#e2e-signup-step2 button')
     .waitForElementVisible('#e2e-landing-page', 10000)
+    .click('#e2e-user-menu-container')
+    .waitForElementVisible('#e2e-user-menu-dropdown')
+    .waitForElementVisible('#e2e-sign-out-link')
     .end();
   },
 };

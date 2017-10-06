@@ -13,7 +13,7 @@
   "app.components.IdeaTag.header":"This is the IdeaTag component !",
   "app.components.ImageCarousel.header":"This is the ImageCarousel component !",
   "app.components.Modal.closeButtonLabel":"Close",
-  "app.components.NotFoundPage.header":"This is NotFoundPage component!",
+  "app.components.NotFoundPage.header":"Page not found!",
   "app.components.ProjectCard.openProjectButton":"Discover this project",
   "app.components.ProjectCard.readMore":"Read more",
   "app.components.ProjectCard.xIdeas":"{x, plural, =0 {no ideas} one {# ideas} other {# ideas}}",

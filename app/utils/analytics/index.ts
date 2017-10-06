@@ -13,6 +13,13 @@ interface IEvent {
   };
 }
 
+interface IIdentification {
+  userId: string;
+  properties?: {
+    [key: string]: any,
+  };
+}
+
 interface IPageChange {
   name: string;
   properties?: {
@@ -22,6 +29,7 @@ interface IPageChange {
 
 const tenant$ = currentTenantStream().observable;
 const events$ = new Rx.Subject<IEvent>();
+const identifications$ = new Rx.Subject<IIdentification>();
 const pageChanges$ = new Rx.Subject<IPageChange>();
 
 Rx.Observable.combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
@@ -38,12 +46,21 @@ Rx.Observable.combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChang
   );
 });
 
+Rx.Observable.combineLatest(tenant$, identifications$).subscribe(([tenant, identification]) => {
+  (window as any).analytics.identify(
+    identification.userId,
+    addTenantInfo(identification.properties, tenant.data),
+  );
+});
+
+
 export function addTenantInfo(properties, tenant: ITenantData) {
   return {
     ...properties,
     tenantId: tenant && tenant.id,
     tenantName: tenant && tenant.attributes.name,
     tenantHost: tenant && tenant.attributes.host,
+    tenantOrganizationType: tenant && tenant.attributes.settings.core.organization_type,
   };
 }
 
@@ -51,6 +68,20 @@ export function trackPage(path: string, properties: {} = {}) {
   pageChanges$.next({
     properties,
     name: path
+  });
+}
+
+export function trackIdentification(userId: string, properties: {} = {}) {
+  identifications$.next({
+    userId,
+    properties,
+  });
+}
+
+export function trackEvent(eventName: string, properties: {} = {}) {
+  events$.next({
+    properties,
+    name: eventName,
   });
 }
 
@@ -66,7 +97,7 @@ export const injectTracks = <P>(events: {[key: string]: IEvent}) => (component: 
     const eventFunctions = _.mapValues(events, (event) => (
       (extra) => {
         const extraProps = extra && extra.extra;
-        events$.next({ name: event.name, properties: { ...event.properties, ...extraProps } });
+        trackEvent(event.name, { ...event.properties, ...extraProps });
       }
     ));
     const propsWithEvents = {
