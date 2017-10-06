@@ -37,11 +37,19 @@ const Container = styled.div``;
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 800px;
+  max-width: 840px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 80px;
+  padding-left: 20px;
+  padding-right: 20px;
   display: flex;
   flex-direction: column;
+
+  ${media.smallerThanMinTablet`
+    padding-left: 0px;
+    padding-right: 0px;
+  `}
 `;
 
 const Header = styled.div`
@@ -50,6 +58,10 @@ const Header = styled.div`
   margin-bottom: 50px;
   display: flex;
   justify-content: flex-start;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 30px;
+  `}
 `;
 
 const IdeaTitle = styled.h1`
@@ -61,11 +73,20 @@ const IdeaTitle = styled.h1`
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  ${media.smallerThanMaxTablet`
+    font-size: 28px;
+    line-height: 34px;
+  `}
 `;
 
 const Content = styled.div`
   width: 100%;
   display: flex;
+
+  ${media.smallerThanMaxTablet`
+    flex-direction: column;
+  `}
 `;
 
 const LeftColumn = styled.div`
@@ -80,7 +101,7 @@ const IdeaImage = styled.img`
   margin: 0;
   padding: 0;
   margin-bottom: 30px;
-  border: solid 1px #e6e6e6;
+  border: solid 1px #e4e4e4;
 `;
 
 const StyledAuthor = styled(Author)`
@@ -88,13 +109,13 @@ const StyledAuthor = styled(Author)`
 `;
 
 const IdeaBody = styled.div`
-  color: #444;
-  font-size: 19px;
-  line-height: 26px;
-  font-weight: 300;
+  color: #474747;
+  font-size: 18px;
+  line-height: 30px;
+  font-weight: 400;
 
   p {
-    margin-bottom: 30px;
+    margin-bottom: 32px;
   }
 `;
 
@@ -103,20 +124,43 @@ const SeparatorColumn = styled.div`
   margin: 0;
   margin-left: 40px;
   margin-right: 40px;
-  background: #e6e6e6;
+  background: #e4e4e4;
+  /* background: #fff; */
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const SeparatorRow = styled.div`
-  height: 3px;
-  background: #eaeaea;
-  margin: 40px 0;
-  border: solid #fafafa 1px;
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  margin-top: 40px;
+  margin-bottom: 25px;
+  background: #e4e4e4;
+  background: #fff;
 `;
 
 const RightColumn = styled.div`
-  flex: 0 0 210px;
+  flex: 0 0 200px;
   margin: 0;
   padding: 0;
+`;
+
+const RightColumnDesktop = RightColumn.extend`
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
+`;
+
+const RightColumnMobile = RightColumn.extend`
+  flex: 1;
+  display: none;
+
+  ${media.smallerThanMaxTablet`
+    display: block;
+  `}
 `;
 
 const StatusContainer = styled.div`
@@ -234,12 +278,27 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
                 <SeparatorRow />
 
+                <RightColumnMobile>
+                  <VoteControl ideaId={idea.data.id} />
+
+                  {statusId &&
+                    <StatusContainer>
+                      <StatusTitle><FormattedMessage {...messages.ideaStatus} /></StatusTitle>
+                      <StatusBadge statusId={statusId} />
+                    </StatusContainer>
+                  }
+
+                  <StyledSharing imageUrl={ideaImageMedium} />
+
+                  {/* <CommentsLine count={idea.data.attributes.comments_count}/> */}
+                </RightColumnMobile>
+
                 <Comments ideaId={idea.data.id} />
               </LeftColumn>
 
               <SeparatorColumn />
 
-              <RightColumn>
+              <RightColumnDesktop>
                 <VoteControl ideaId={idea.data.id} />
 
                 {statusId &&
@@ -252,7 +311,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                 <StyledSharing imageUrl={ideaImageMedium} />
 
                 {/* <CommentsLine count={idea.data.attributes.comments_count}/> */}
-              </RightColumn>
+              </RightColumnDesktop>
             </Content>
           </IdeaContainer>
         </Container>

@@ -11,7 +11,7 @@ export const media = {
       ${css(...args)}
     }
   `,
-  notPhone: (...args) => css`
+  biggerThanPhone: (...args) => css`
     @media (min-width: 481px) {
       ${css(...args)}
     }
@@ -21,12 +21,22 @@ export const media = {
       ${css(...args)}
     }
   `,
+  smallerThanMinTablet: (...args) => css`
+    @media (max-width: 481px) {
+      ${css(...args)}
+    }
+  `,
+  smallerThanMaxTablet: (...args) => css`
+  @media (max-width: 767px) {
+    ${css(...args)}
+  }
+`,
   desktop: (...args) => css`
     @media (min-width: 768px) {
       ${css(...args)}
     }
   `,
-  notDesktop: (...args) => css`
+  smallerThanDesktop: (...args) => css`
     @media (max-width: 768px) {
       ${css(...args)}
     }

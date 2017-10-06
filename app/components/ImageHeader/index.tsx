@@ -14,7 +14,7 @@ const HeaderContainer = styled.div`
   position: relative;
   z-index: 1;
 
-  ${media.notPhone`
+  ${media.biggerThanPhone`
     height: 360px;
   `}
 
