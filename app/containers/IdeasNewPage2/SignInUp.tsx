@@ -54,7 +54,7 @@ const Left = Section.extend`
   overflow: hidden;
   pointer-events: none;
 
-  ${media.notDesktop`
+  ${media.smallerThanDesktop`
     display: none;
   `}
   `;

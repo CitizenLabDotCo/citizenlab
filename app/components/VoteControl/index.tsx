@@ -63,7 +63,7 @@ const VoteCount = styled.div`
   color: #84939d;
   font-size: 16px;
   font-weight: 300;
-  margin-left: 6px;
+  margin-left: 4px;
   transition: all 100ms ease-out;
 `;
 

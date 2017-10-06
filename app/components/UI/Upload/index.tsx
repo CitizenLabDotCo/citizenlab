@@ -99,7 +99,7 @@ const UploadedItem = styled.div`
   background-size: cover;
   background-position: center center;
 
-  ${media.notPhone`
+  ${media.biggerThanPhone`
     width: calc(33% - 13px);
     height: 130px;
 

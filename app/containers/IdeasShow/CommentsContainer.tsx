@@ -4,12 +4,8 @@ import * as Rx from 'rxjs/Rx';
 
 // components
 import ParentComment from './ParentComment';
-import EditorForm from './EditorForm';
+import ParentCommentForm from './ParentCommentForm';
 import Icon from 'components/UI/Icon';
-
-// animations
-import TransitionGroup from 'react-transition-group/TransitionGroup';
-import CSSTransition from 'react-transition-group/CSSTransition';
 
 // services
 import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
@@ -25,7 +21,7 @@ const animationDuration = 500;
 const animationEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
 const Container = styled.div`
-  margin-bottom: 100px;
+  margin-bottom: 0px;
 `;
 
 const Title = styled.h2`
@@ -37,13 +33,28 @@ const Title = styled.h2`
   margin-bottom: 30px;
 `;
 
+const ParentCommentsContainer = styled.div`
+  margin-top: 50px;
+`;
+
+/*
+const ParentCommentSeparator = styled.div`
+  width: 100%;
+  height: 1px;
+  background: #e4e4e4;
+  margin-top: 60px;
+  margin-bottom: 60px;
+`;
+*/
+
 type Props = {
   ideaId: string;
 };
 
 type State = {
-  comments: IComments | null;
+  parentComments: IComments | null;
   loading: boolean;
+  newCommentId: string | null;
 };
 
 export default class CommentsContainer extends React.PureComponent<Props, State> {
@@ -53,27 +64,57 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
   constructor() {
     super();
     this.state = {
-      comments: null,
-      loading: true
+      parentComments: null,
+      loading: true,
+      newCommentId: null
     };
     this.subscriptions = [];
   }
 
   componentWillMount() {
     const { ideaId } = this.props;
-    const comments$ = commentsForIdeaStream(ideaId).observable;
+    const parentComments$ = commentsForIdeaStream(ideaId).observable.switchMap((comments) => {
+      if (comments && comments.data && comments.data.length > 0) {
+        const parentComments: IComments = {
+          data: comments.data.filter(comment => comment.relationships.parent.data === null)
+        };
+
+        if (parentComments.data.length > 0) {
+          return Rx.Observable.combineLatest(
+            comments.data.map(comments => commentStream(comments.id).observable)
+          ).map(() => parentComments);
+        } else {
+          return Rx.Observable.combineLatest(
+            comments.data.map(comments => commentStream(comments.id).observable)
+          ).map(() => null);
+        }
+      }
+
+      return Rx.Observable.of(null);
+    });
 
     this.subscriptions = [
-      comments$.switchMap((comments) => {
-        if (comments && comments.data && comments.data.length > 0) {
-          return Rx.Observable.combineLatest(
-            comments.data.map(comment => commentStream(comment.id).observable)
-          ).map(() => comments);
+      parentComments$.subscribe((parentComments) => {
+        let sortedParentComments: IComments | null = null;
+        let newCommentId: string | null = null;
+
+        if (parentComments && parentComments.data && parentComments.data.length > 0) {
+          sortedParentComments = {
+            ...parentComments,
+            data: parentComments.data.reverse()
+          };
         }
 
-        return Rx.Observable.of(null);
-      }).subscribe((comments) => {
-        this.setState({ comments, loading: false });
+        if (this.state.parentComments === null && sortedParentComments !== null && sortedParentComments.data.length === 1 
+          || this.state.parentComments !== null && sortedParentComments !== null && this.state.parentComments.data.length === sortedParentComments.data.length - 1) {
+            newCommentId = sortedParentComments.data[0].id;
+        }
+
+        this.setState({
+          newCommentId,
+          parentComments: sortedParentComments,
+          loading: false
+        });
       })
     ];
   }
@@ -85,13 +126,20 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
   render() {
     const className = `${this.props['className']} e2e-comments`;
     const { ideaId } = this.props;
-    const { comments, loading } = this.state;
+    const { parentComments, loading, newCommentId } = this.state;
 
     if (!loading) {
-      let commentsList: JSX.Element[] | null = null;
+      let parentCommentsList: JSX.Element[] | null = null;
 
-      if (comments && comments.data && comments.data.length > 0) {
-        commentsList = comments.data.map(comment => (<ParentComment key={comment.id} commentId={comment.id} />));
+      if (parentComments && parentComments.data && parentComments.data.length > 0) {
+        parentCommentsList = parentComments.data.map((comment) => (
+          <ParentComment
+            key={comment.id}
+            ideaId={ideaId}
+            commentId={comment.id}
+            animate={newCommentId === comment.id ? true : undefined}
+          />
+        ));
       }
 
       return (
@@ -101,9 +149,11 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
             <FormattedMessage {...messages.commentsTitle} />
           </Title>
 
-          <EditorForm ideaId={ideaId} />
+          <ParentCommentForm ideaId={ideaId} />
 
-          {commentsList}
+          <ParentCommentsContainer>
+            {parentCommentsList}
+          </ParentCommentsContainer>
         </Container>
       );
     }

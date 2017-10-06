@@ -19,7 +19,7 @@ const AvatarImage = styled.img`
 
 const AvatarIcon = styled(Icon)`
   height: 100%;
-  fill: #84949e;
+  fill: #999;
   transition: all 100ms ease-out;
 
   ${(props: any) => props.isClickable && css`
@@ -39,7 +39,7 @@ const Container: any = styled.div`
 
   ${(props: any) => props.isClickable && css`
     &:hover ${AvatarIcon} {
-      fill: ${(props) => darken(0.15, '#84939E')};
+      fill: ${(props) => darken(0.15, '#999')};
     }`
   }
 `;
