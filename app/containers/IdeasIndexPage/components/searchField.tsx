@@ -21,12 +21,18 @@ import Input from 'components/UI/Input';
 // parse search
 import queryString from 'query-string';
 
+const SearchButton = styled.button`
+  background: none;
+  border: none;
+  margin: 0 0 0 -36px;
+  padding: 0;
+  z-index: 2;
+`;
+
 const SearchIcon: any = styled(Icon)`
   fill: #84939E;
   height: 21px;
-  margin-left: -36px;
   cursor: pointer;
-  z-index: 2;
 
   &:hover {
     fill: #000;
@@ -88,8 +94,11 @@ class SearchField extends React.Component<Props, State> {
           placeholder="Search"
           onChange={this.handleChange}
           value={value}
+          id="e2e-ideas-search"
         />
-        <SearchIcon name="search" className="search-icon" onClick={this.handleSubmit} />
+        <SearchButton className="e2e-ideas-search-button">
+          <SearchIcon name="search" className="search-icon" />
+        </SearchButton>
       </StyledForm>
     );
   }
