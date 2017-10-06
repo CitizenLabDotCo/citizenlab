@@ -6,6 +6,13 @@ const commands = {
     .click('@searchButton')
     .waitForElementVisible('@ideasContainer');
   },
+
+  seeOldest() {
+    this.api
+    .url('localhost:3000/ideas?sort=-new');
+
+    return this.waitForElementVisible('@firstIdea', 10000);
+  },
 };
 
 module.exports = {
