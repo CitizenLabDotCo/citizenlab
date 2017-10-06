@@ -83,7 +83,7 @@ const MobileButton = styled.div`
     flex: 1;
   }
 
-  ${media.notPhone`
+  ${media.biggerThanPhone`
     display: none;
   `}
 `;

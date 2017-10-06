@@ -30,7 +30,7 @@ const InputWrapper = styled.div`
       opacity: 1;
     }
 
-    ${media.notPhone`
+    ${media.biggerThanPhone`
       padding-right: ${(props: IInputWrapper) => props.error && '40px'};
     `}
 

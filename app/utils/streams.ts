@@ -163,7 +163,7 @@ class Streams {
                 console.log(`no stream exists for ${streamId}`);
               }
 
-              reject(error);
+              reject();
             }
           );
         });

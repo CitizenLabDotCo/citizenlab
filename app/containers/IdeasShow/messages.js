@@ -56,7 +56,7 @@ export default defineMessages({
   },
   publishComment: {
     id: 'app.containers.IdeasShow.publishComment',
-    defaultMessage: 'Comment',
+    defaultMessage: 'Post comment',
   },
   loadMoreComments: {
     id: 'app.containers.IdeasShow.loadMoreComments',
@@ -78,17 +78,17 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.helmetTitle',
     defaultMessage: 'Show idea',
   },
-  byAuthor: {
-    id: 'app.containers.IdeasShow.byAuthor',
-    defaultMessage: 'by {firstName} {lastName}',
+  author: {
+    id: 'app.containers.IdeasShow.author',
+    defaultMessage: '{authorNameComponent}',
   },
-  authorSaid: {
-    id: 'app.containers.IdeasShow.authorSaid',
-    defaultMessage: '{firstName} said',
+  parentCommentAuthor: {
+    id: 'app.containers.IdeasShow.parentCommentAuthor',
+    defaultMessage: '{authorNameComponent} said',
   },
-  authorReacted: {
-    id: 'app.containers.IdeasShow.authorReacted',
-    defaultMessage: '{firstName} replied',
+  childCommentAuthor: {
+    id: 'app.containers.IdeasShow.childCommentAuthor',
+    defaultMessage: '{authorNameComponent} replied',
   },
   shareCTA: {
     id: 'app.containers.IdeasShow.shareCTA',
@@ -117,6 +117,10 @@ export default defineMessages({
   commentBodyPlaceholder: {
     id: 'app.containers.IdeasShow.commentBodyPlaceholder',
     defaultMessage: 'What do you think about this idea?',
+  },
+  childCommentBodyPlaceholder: {
+    id: 'app.containers.IdeasShow.childCommentBodyPlaceholder',
+    defaultMessage: 'Write a reply...',
   },
   commentSuccess: {
     id: 'app.containers.IdeasShow.commentSuccess',

@@ -38,7 +38,7 @@ const Container: any = styled.div`
       border-color: ${(props: any) => props.error ? '#fc3c2d' : '#000'};
     }
 
-    ${media.notPhone`
+    ${media.biggerThanPhone`
       padding-right: ${props => props.error && '40px'};
     `}
   }
