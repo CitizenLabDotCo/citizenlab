@@ -488,7 +488,7 @@
   "app.containers.footer.feedbackLink":"Donnez votre opinion",
   "app.containers.footer.poweredBy":"Généré par",
   "app.containers.footer.privacyLink":"Politique de confidentialité",
-  "app.containers.footer.slogan":"{type, select, generic {This website is an initiative from {name}} other {This website is an initiative from the city of {name}}}",
+  "app.containers.footer.slogan":"{type, select, generic {Ce site est une initiative de {name}} other {Ce site est une initiative de la ville de {name}}}",
   "app.containers.footer.termsLink":"Charte de conduite",
   "app.containers.landing.cityProjects":"Projets de la commune",
   "app.containers.landing.explore":"Explorer",
