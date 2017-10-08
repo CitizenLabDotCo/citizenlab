@@ -121,3 +121,7 @@ export function addIdea(
 export function updateIdea(ideaId: string, object: IIdeaUpdate) {
   return streams.update<IIdea>(`${API_PATH}/ideas/${ideaId}`, ideaId, { idea: object });
 }
+
+export function deleteIdea(ideaId: string) {
+  return streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId);
+}
