@@ -25,11 +25,9 @@ import { makeSelectProjectPages } from './selectors';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 const Container = styled.div`
-  margin-top: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #f2f2f2;
 `;
 
 const Footer = styled.div`

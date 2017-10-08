@@ -1,32 +1,22 @@
 import { Multiloc } from 'typings';
+import { Map } from 'immutable';
+import * as _ from 'lodash';
 
-export function getLocalized(multiloc: Multiloc | null, locale: string, currentTenantLocales: string[]) {
-  let text: string = '';
+function isImmutable(multiloc: Multiloc | Map<String, String> | null): multiloc is Map<String, String> {
+  return typeof (<Multiloc>multiloc).toJS !== 'undefined';
+}
 
-  if (multiloc) {
-    if (multiloc[locale]) {
-      text = multiloc[locale];
-    } else if (currentTenantLocales && currentTenantLocales.length > 0) {
-      currentTenantLocales.forEach((currentTenantLocale) => {
-        if (multiloc[currentTenantLocale]) {
-          text = multiloc[currentTenantLocale];
-          return false;
-        }
-
-        return true;
-      });
-    }
-
-    if (text === '') {
-      if (multiloc['en']) {
-        text = multiloc['en'];
-      } else if (multiloc['nl']) {
-        text = multiloc['nl'];
-      } else if (multiloc['fr']) {
-        text = multiloc['fr'];
-      }
-    }
+export function getLocalized(multiloc: Multiloc | Map<String, String> | null, locale: string, currentTenantLocales: string[]) : string {
+  let multilocObject : Multiloc = {};
+  if (!multiloc) {
+    return '';
   }
-
-  return text;
+  if (isImmutable(multiloc)) {
+    multilocObject = multiloc.toJS() as Multiloc;
+  } else {
+    multilocObject = multiloc;
+  }
+  const candidateLocales: string[] = [locale, ...currentTenantLocales, ...(_.keys(multilocObject) || [])];
+  const winnerLocale = candidateLocales.find((locale) => !!multilocObject[locale]);
+  return (winnerLocale && multilocObject[winnerLocale]) || '';
 }
