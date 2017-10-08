@@ -488,7 +488,7 @@
   "app.containers.footer.feedbackLink":"Deel je mening",
   "app.containers.footer.poweredBy":"Powered by",
   "app.containers.footer.privacyLink":"Privacybeleid",
-  "app.containers.footer.slogan":"{type, select, generic {This website is an initiative from {name}} other {This website is an initiative from the city of {name}}}",
+  "app.containers.footer.slogan":"{type, select, generic {Deze website is een initiatief van {name}} other {Deze website is een initiatief van {name}}}",
   "app.containers.footer.termsLink":"Gebruikersvoorwaarden",
   "app.containers.landing.cityProjects":"Projecten",
   "app.containers.landing.explore":"Verkennen",
