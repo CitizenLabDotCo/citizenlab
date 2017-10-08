@@ -74,7 +74,7 @@ class ProjectsEvents extends React.PureComponent {
 
 ProjectsEvents.propTypes = {
   loadProjectEventsRequest: PropTypes.func.isRequired,
-  events: PropTypes.array,
+  events: PropTypes.object,
   locale: PropTypes.string.isRequired,
   loading: PropTypes.bool,
   error: PropTypes.bool,
