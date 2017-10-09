@@ -13,9 +13,11 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
 
   def create
     @tenant = Tenant.new(tenant_params)
+    SideFxTenantService.new.before_create(@tenant, nil)
     if @tenant.save
+      SideFxTenantService.new.after_create(@tenant, nil)
       Apartment::Tenant.switch(@tenant.schema_name) do
-        TenantTemplateService.new.apply_template('base')
+        TenantTemplateService.new.apply_template(params[:template] || 'base')
       end
       render json: @tenant, status: :created
     else
@@ -25,7 +27,9 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
 
   def update
     updated_settings = @tenant.settings.deep_merge(tenant_params[:settings].to_h)
+    SideFxTenantService.new.before_update(@tenant, nil)
     if @tenant.update(tenant_params)
+      SideFxTenantService.new.after_create(@tenant, nil)
       render json: @tenant, status: :ok
     else
       render json: {errors: @tenant.errors.details}, status: :unprocessable_entity
