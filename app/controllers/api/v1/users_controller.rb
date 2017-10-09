@@ -67,6 +67,9 @@ class Api::V1::UsersController < ::ApplicationController
   def create
     @user = User.new(permitted_attributes(User))
     authorize @user
+
+    SideFxUserService.new.before_create(@user, current_user)
+
     if @user.save
       SideFxUserService.new.after_create(@user, current_user)
       render json: @user, status: :created

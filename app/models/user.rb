@@ -63,6 +63,10 @@ class User < ApplicationRecord
   def project_moderator? project_id
     !!self.roles.find{|r| r["type"] == "project_moderator" && r["project_id"] == project_id}
   end
+
+  def add_role type, options={}
+    self.roles << {"type" => type}.merge(options)
+  end
   
   def has_services?
     self.services.present?
@@ -79,7 +83,7 @@ class User < ApplicationRecord
   def generate_avatar
     unless self.avatar?
       hash = Digest::MD5.hexdigest(self.email)
-      self.remote_avatar_url = "https://www.gravatar.com/avatar/#{hash}?d=identicon&size=640"
+      self.remote_avatar_url = "https://www.gravatar.com/avatar/#{hash}?d=404&size=640"
     end
   end
 
