@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as _ from 'lodash';
+import { browserHistory } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -20,7 +22,6 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-
 const ModalContent = styled(clickOutside)`
   width: 100%;
   max-width: 850px;
@@ -29,14 +30,14 @@ const ModalContent = styled(clickOutside)`
   padding: 25px;
   margin-top: 50px;
   margin-bottom: 80px;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #fff;
   margin-left: auto;
   margin-right: auto;
-  position: relative;
   -webkit-backface-visibility: hidden;
   will-change: opacity, transform;
   z-index: 1000;
+  outline: none;
 
   ${media.phone`
     border-radius: 0;
@@ -44,6 +45,33 @@ const ModalContent = styled(clickOutside)`
     margin-right: 0;
     padding: 0;
   `}
+`;
+
+const CloseIcon = styled(Icon)`
+  height: 20px;
+  fill: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CloseButton = styled.div`
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  cursor: pointer;
+  top: 15px;
+  right: 15px;
+  z-index: 2000;
+
+  &:hover {
+    ${CloseIcon} {
+      fill: #ccc;
+    }
+  }
 `;
 
 const ModalContainer = styled.div`
@@ -57,7 +85,7 @@ const ModalContainer = styled.div`
   bottom: -200px;
   left: 0;
   overflow-y: auto;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
   -webkit-backface-visibility: hidden;
   will-change: opacity;
 
@@ -70,7 +98,7 @@ const ModalContainer = styled.div`
 
       ${ModalContent} {
         opacity: 0.01;
-        transform: translateY(-120px);
+        transform: translateY(-40px);
       }
 
       &.modal-enter-active {
@@ -87,34 +115,11 @@ const ModalContainer = styled.div`
     }
 `;
 
-
-const IconWrapper = styled.div`
-  svg {
-    margin-top: -5px;
-    z-index: 2;
-    height: 14px;    
-    fill: #333;
-  }
-`;
-
-const CloseButton = styled.div`
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  border-radius: 50%;
-  background: #e0e0e0;
-  cursor: pointer;
-  top: 20px;
-  right: 20px;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background: #ccc;
-  }
-`;
+interface ITracks {
+  clickCloseButton: (arg: any) => void;
+  clickOutsideModal: (arg: any) => void;
+  clickBack: (arg: any) => void;
+}
 
 type Props = {
   opened: boolean;
@@ -124,33 +129,38 @@ type Props = {
 
 type State = {};
 
-class Modal extends React.PureComponent<Props, State> {
-  private parentUrl: string;
+class Modal extends React.PureComponent<Props & ITracks, State> {
+  private unlisten: Function | null;
+  private goBackUrl: string | null;
 
   constructor() {
     super();
-    this.parentUrl = window.location.href;
+    this.unlisten = null;
+    this.goBackUrl = null;
   }
 
   componentWillUnmount() {
-    document.body.classList.remove('modal-active');
-    window.removeEventListener('popstate', this.handlePopstateEvent);
+    this.cleanup();
   }
 
   componentWillUpdate(nextProps: Props, nextState: State) {
     const { opened } = this.props;
 
     if (!opened && nextProps.opened) {
-      this.onOpen(nextProps.url);
+      this.openModal(nextProps.url);
     }
 
     if (opened && !nextProps.opened) {
-      this.onClose(true);
+      this.cleanup();
     }
   }
 
-  onOpen = (url: undefined | string) => {
+  openModal = (url: undefined | string) => {
+    this.goBackUrl = window.location.href;
+
     window.addEventListener('popstate', this.handlePopstateEvent);
+
+    this.unlisten = browserHistory.listen(this.props.close);
 
     if (!document.body.classList.contains('modal-active')) {
       document.body.classList.add('modal-active');
@@ -158,6 +168,7 @@ class Modal extends React.PureComponent<Props, State> {
 
     if (url) {
       window.history.pushState({ path: url }, '', url);
+
       // Since we bypass the normal history mechanism and take it into our own hands here,
       // we exceptionally also need to track the page change manually
       // Don't try this at home!
@@ -165,55 +176,59 @@ class Modal extends React.PureComponent<Props, State> {
     }
   }
 
-  onClose = (goBack = false) => {
-    const { url } = this.props;
-
-    document.body.classList.remove('modal-active');
-    window.removeEventListener('popstate', this.handlePopstateEvent);
-
-    if (url && goBack) {
-      window.history.pushState({ path: this.parentUrl }, '', this.parentUrl);
+  manuallyCloseModal = () => {
+    if (this.props.url && this.goBackUrl) {
+      window.history.pushState({ path: this.goBackUrl }, '', this.goBackUrl);
     }
-  }
 
-  closeModal = () => {
     this.props.close();
   }
 
   handlePopstateEvent = () => {
-    if (location.href === this.parentUrl) {
-      (this.props as any).clickBack({ extra: { url: this.props.url } });
-      this.closeModal();
+    if (location.href === this.goBackUrl) {
+      this.props.clickBack({ extra: { url: this.props.url } });
+    }
+
+    this.props.close();
+  }
+
+  cleanup = () => {
+    this.goBackUrl = null;
+    document.body.classList.remove('modal-active');
+    window.removeEventListener('popstate', this.handlePopstateEvent);
+
+    if (_.isFunction(this.unlisten)) {
+      this.unlisten();
     }
   }
 
   clickOutsideModal = () => {
-    (this.props as any).clickOutsideModal({ extra: { url: this.props.url } });
-    this.closeModal();
+    this.props.clickOutsideModal({ extra: { url: this.props.url } });
+    this.manuallyCloseModal();
   }
 
-  clickButton = () => {
-    (this.props as any).clickCloseButton({ extra: { url: this.props.url } });
-    this.closeModal();
+  clickCloseButton = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.props.clickCloseButton({ extra: { url: this.props.url } });
+    this.manuallyCloseModal();
   }
 
   render() {
     const { children, opened } = this.props;
 
-    const element = opened && (
+    const element = (opened ? (
       <CSSTransition classNames="modal" timeout={350} exit={false}>
-        <ModalContainer>
+        <ModalContainer id="e2e-modal-container">
           <ModalContent onClickOutside={this.clickOutsideModal}>
-            <CloseButton onClick={this.clickButton}>
-              <IconWrapper>
-                <Icon name="close2" />
-              </IconWrapper>
-            </CloseButton>
             {children}
           </ModalContent>
+          <CloseButton onClick={this.clickCloseButton}>
+            <CloseIcon name="close2" />
+          </CloseButton>
         </ModalContainer>
       </CSSTransition>
-    );
+    ) : null);
 
     return (
       <TransitionGroup>
@@ -223,4 +238,4 @@ class Modal extends React.PureComponent<Props, State> {
   }
 }
 
-export default ((injectTracks(tracks)(Modal) as any) as typeof Modal);
+export default injectTracks<Props>(tracks)(Modal);

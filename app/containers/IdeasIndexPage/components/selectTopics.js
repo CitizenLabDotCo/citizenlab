@@ -15,10 +15,10 @@ import { preprocess } from 'utils';
 import queryString from 'query-string';
 
 // translations
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 
 const SelectTopic = ({ options, value, filterPage, title }) => (
-  <FilterSelector title={title} name="topics" selected={value} values={options} multiple onChange={filterPage} />
+  <FilterSelector id="filter-topics" title={title} name="topics" selected={value} values={options} multiple onChange={filterPage} />
 );
 
 SelectTopic.propTypes = {

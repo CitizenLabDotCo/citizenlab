@@ -14,12 +14,13 @@ import { preprocess } from 'utils';
 import queryString from 'query-string';
 
 // translations
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 import { injectIntl } from 'react-intl';
 import messages from '../messages';
 
 const SelectSort = ({ options, value, filterPage, title }) => (
   <FilterSelector
+    id="filter-sort"
     title={title}
     name="sort"
     selected={value}

@@ -1,50 +1,138 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
+
+// components
 import Error from 'components/UI/Error';
+import TextareaAutosize from 'react-autosize-textarea';
 
-const emptyString = '';
+// style
+import styled, { css } from 'styled-components';
 
-interface Props {
-  className?: string;
+const Container: any = styled.div`
+  position: relative;
+
+  .textarea {
+    width: 100%;
+    color: #333;
+    font-size: 17px;
+    line-height: 24px;
+    font-weight: 400;
+    padding: 12px;
+    resize: none;
+    outline: none;
+    position: relative;
+    border-radius: 5px;
+    border: solid 1px #ccc;
+    background: #fff;
+  
+    &::placeholder {
+      color: #aaa;
+      opacity: 1;
+    }
+  
+    &:not(:focus):hover {
+      border-color: #999;
+    }
+  
+    &:focus {
+      border-color: #000;
+    }
+
+    &.error {
+      border-color: #fc3c2d !important;
+
+      &:hover,
+      &:focus {
+        border-color: #fc3c2d !important;
+      }
+    }
+  }
+`;
+
+const TextAreaContainer = styled.div`
+  position: relative;
+`;
+
+type Props = {
   name: string;
-  onInput?: Function;
-  onChange?: Function;
-  placeholder?: string;
-  value?: string;
-  rows?: number;
-  error: string | null;
-}
-
-const TextArea = ({ className, onInput, onChange, placeholder, value, rows, error, name }: Props) => {
-  const handleOnInput = (event) => {
-    if (onInput) onInput(event.target.value, name);
-  };
-
-  const handleOnChange = (event) => {
-    if (onChange) onChange(event.target.value, name);
-  };
-
-
-  return (
-    <div>
-      <textarea
-        className={className}
-        rows={rows || 1}
-        placeholder={placeholder}
-        value={value || emptyString}
-        onInput={handleOnInput}
-        onChange={handleOnChange}
-      />
-      <Error text={error} />
-    </div>
-  );
+  value: string;
+  placeholder?: string | undefined;
+  rows?: number | undefined;
+  error?: string | null | undefined;
+  onChange?: Function | undefined;
+  onFocus?: Function | undefined;
+  onBlur?: Function | undefined;
 };
 
-export default styled(TextArea)`
-  width: 100%;
-  border-radius: 5px;
-  background-color: #ffffff;
-  border: solid 1px #a6a6a6;
-  padding: 10px;
-  resize: none;
-`;
+type State = {};
+
+export default class TextArea extends React.PureComponent<Props, State> {
+  textareaElement: HTMLTextAreaElement | null = null;
+
+  constructor() {
+    super();
+    this.textareaElement = null;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.error && nextProps.error !== this.props.error && this.textareaElement !== null) {
+      setTimeout(() => {
+        if (this.textareaElement) {
+          this.textareaElement.focus();
+        }
+      }, 50);
+    }
+  }
+
+  setRef = (element) => {
+    this.textareaElement = element;
+  }
+
+  handleOnChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
+    if (this.props.onChange && _.isFunction(this.props.onChange)) {
+      this.props.onChange(event.currentTarget.value);
+    }
+  }
+
+  handleOnFocus = () => {
+    if (this.props.onFocus) {
+      this.props.onFocus();
+    }
+  }
+
+  handleOnBlur = () => {
+    if (this.props.onBlur) {
+      this.props.onBlur();
+    }
+  }
+
+  render() {
+    let { rows } = this.props;
+    const { name, placeholder, value, error, children } = this.props;
+    const hasError = (_.isString(error) && !_.isEmpty(error));
+    const className = this.props['className'];
+
+    rows = (rows || 5);
+
+    return (
+      <Container className={className} hasError={hasError}>
+        <TextAreaContainer>
+          <TextareaAutosize
+            className={`textarea ${hasError ? 'error' : ''}`}
+            name={name || ''}
+            rows={rows}
+            value={value}
+            placeholder={placeholder}
+            onChange={this.handleOnChange}
+            onFocus={this.handleOnFocus}
+            onBlur={this.handleOnBlur}
+            innerRef={this.setRef}
+          />
+          {children}
+        </TextAreaContainer>
+        <Error text={error} />
+      </Container>
+    );
+  }
+}

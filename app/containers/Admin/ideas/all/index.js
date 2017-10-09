@@ -7,12 +7,12 @@ import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import Pagination from 'components/admin/Pagination';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
-import { ideasStream, updateIdea } from 'services/ideas';
+import { ideasStream, updateIdea, deleteIdea } from 'services/ideas';
 import { topicsStream } from 'services/topics';
 import { ideaStatusesStream } from 'services/ideaStatuses';
 import { projectsStream } from 'services/projects';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 import WatchSagas from 'utils/containers/watchSagas';
 
 // import ExportLabel from 'components/admin/ExportLabel';
@@ -192,6 +192,10 @@ class AllIdeas extends PureComponent {
     );
   }
 
+  handleDeleteIdea = (idea) => {
+    deleteIdea(idea.id);
+  }
+
   topicOptions = () => {
     return this.state.topics.map((topic) => ({
       value: topic.id,
@@ -302,6 +306,9 @@ class AllIdeas extends PureComponent {
                     <FormattedMessage {...messages.status} />
                   </SortableTableHeader>
                 </Table.HeaderCell>
+                <Table.HeaderCell width={1}>
+                  <FormattedMessage {...messages.delete} />
+                </Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -311,12 +318,13 @@ class AllIdeas extends PureComponent {
                   key={idea.id}
                   idea={idea}
                   onIdeaStatusChange={(status) => this.handleIdeaStatusChange(idea, status)}
+                  onDeleteIdea={() => this.handleDeleteIdea(idea)}
                 />
               )}
             </Table.Body>
             <Table.Footer fullWidth>
               <Table.Row>
-                <Table.HeaderCell colSpan="6">
+                <Table.HeaderCell colSpan="7">
                   <Pagination
                     currentPage={currentPageNumber}
                     totalPages={lastPageNumber}

@@ -2,7 +2,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
@@ -139,13 +139,15 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
   }
 
   updateSubscription = (slug) => {
+    const { userLocale } = this.props;
+
     this.subscription = projectBySlugStream(slug).observable.switchMap((project) => {
       return projectImagesStream(project.data.id).observable.map((images) => ({
         projectData: project.data,
         projectImages: images.data,
       }));
     }).subscribe(({ projectData, projectImages }) => {
-      const blocksFromHtml = convertFromHTML(projectData.attributes.description_multiloc[this.props.userLocale]);
+      const blocksFromHtml = convertFromHTML(_.get(projectData, `attributes.description_multiloc.${userLocale}`, ''));
       const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
 
       this.setState({
@@ -237,7 +239,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
   }
 
   handleSaveErrors = (errors) => {
-    console.log(errors);
     this.setState({ errors: errors.json.errors });
   }
 

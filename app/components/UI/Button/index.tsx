@@ -1,39 +1,47 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import { darken, lighten, rgba } from 'polished';
+import { darken, rgba } from 'polished';
 import { ITheme } from 'typings';
 import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const ButtonText = styled.div`
   color: #fff;
   font-weight: 400;
+  margin: 0;
+  margin-top: -1px;
+  padding: 0;
+  white-space: nowrap;
 `;
 
-const IconWrapper = styled.div`
-  height: 22px;
-  margin-right: 10px;
-
-  svg {
-    fill: #000;
-  }
+const StyledIcon = styled(Icon) `
+  fill: #fff;
+  margin-right: 14px;
+  transition: all 120ms ease;
 `;
 
 const ButtonContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0;
+  padding: 0;
+  transition: all 120ms ease;
 `;
 
 const StyledButton: any = styled.button`
+  width: ${(props: any) => props.width || 'auto'};
+  height: ${(props: any) => props.height || 'auto'};
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 5px;
+  margin: 0;
+  padding: 0;
+  border-radius: ${(props: any) => props.circularCorners ? '999em' : '5px'};
   position: relative;
   outline: none;
-  transition: background 150ms ease;
+  transition: all 120ms ease;
 
   &:not(.disabled) {
     cursor: pointer;
@@ -48,20 +56,96 @@ const StyledButton: any = styled.button`
     flex: 1;
   }
 
+  ${ButtonContent} {
+    ${(props: any) => {
+      if (props.padding) {
+        return css`
+          padding: ${props.padding};
+        `;
+      } else if (props.size === '2') {
+        return css`
+          padding: 10px 22px;
+        `;
+      } else if (props.size === '3') {
+        return css`
+          padding: 12px 26px;
+        `;
+      } else if (props.size === '4') {
+        return css`
+          padding: 14px 28px;
+        `;
+      }
+
+      return css`
+        padding: 9px 20px;
+      `;
+    }}
+  }
+
+  ${ButtonText} {
+    opacity: ${(props: any) => props.loading ? 0 : 1};
+
+    ${(props: any) => {
+      if (props.size === '2') {
+        return css`
+          font-size: 17px;
+          line-height: 21px;
+        `;
+      } else if (props.size === '3') {
+        return css`
+          font-size: 18px;
+          line-height: 22px;
+        `;
+      } else if (props.size === '4') {
+        return css`
+          font-size: 18px;
+          line-height: 22px;
+        `;
+      }
+
+      return css`
+        font-size: 16px;
+        line-height: 20px;
+      `;
+    }}
+  }
+
+  ${StyledIcon} {
+    ${(props: any) => {
+      if (props.size === '2') {
+        return css`
+          height: 20px;
+        `;
+      } else if (props.size === '3') {
+        return css`
+          height: 22px;
+        `;
+      } else if (props.size === '4') {
+        return css`
+          height: 24px;
+        `;
+      }
+
+      return css`
+        height: 18px;
+      `;
+    }}
+  }
+
   &.primary {
     &:not(.disabled) {
       background: ${(props: any) => props.theme.colorMain || '#e0e0e0'};
 
       ${ButtonText} {
-        color: ${(props: any) => '#fff' || '#000'};
+        color: #fff;
       }
 
-      &{IconWrapper} svg {
-        fill: ${(props: any) => '#fff' || '#000'};
+      ${StyledIcon} {
+        fill: #fff;
       }
 
-      &:hover, &:focus {
-        background: ${(props: any) => darken(0.1, (props.theme.colorMain || '#ccc'))};
+      &:hover {
+        background: ${(props: any) => darken(0.15, (props.theme.colorMain || '#ccc'))};
       }
     }
 
@@ -72,7 +156,7 @@ const StyledButton: any = styled.button`
         color: #fff;
       }
 
-      &{IconWrapper} svg {
+      ${StyledIcon} {
         fill: #fff;
       }
     }
@@ -80,18 +164,26 @@ const StyledButton: any = styled.button`
 
   &.secondary {
     &:not(.disabled) {
-      background: #e2e1e1;
+      background: #e4e4e4;
 
       ${ButtonText} {
-        color: #676767;
+        color: #555;
       }
 
-      &{IconWrapper} svg {
-        fill: #676767;
+      ${StyledIcon} {
+        fill: #555;
       }
 
-      &:hover, &:focus {
-        background: ${(props: any) => darken(0.1, '#eae9e9')};
+      &:hover {
+        background: #ddd;
+
+        ${ButtonText} {
+          color: #222;
+        }
+  
+        ${StyledIcon} {
+          fill: #222;
+        }
       }
     }
 
@@ -102,65 +194,115 @@ const StyledButton: any = styled.button`
         color: #fff;
       }
 
-      &{IconWrapper} svg {
+      ${StyledIcon} {
         fill: #fff;
       }
     }
   }
 
+  &.primary-outlined {
+    &:not(.disabled) {
+      background: transparent;
+      border: solid 1px ${(props: any) => props.theme.colorMain};
+
+      ${ButtonText} {
+        color: ${(props: any) => props.theme.colorMain};
+      }
+
+      ${StyledIcon} {
+        fill: ${(props: any) => props.theme.colorMain};
+      }
+
+      &:hover {
+        border-color: ${(props: any) => darken(0.15, (props.theme.colorMain))};
+
+        ${ButtonText} {
+          color: ${(props: any) => darken(0.15, (props.theme.colorMain))};
+        }
+  
+        ${StyledIcon} {
+          fill: ${(props: any) => darken(0.15, (props.theme.colorMain))};
+        }
+      }
+    }
+
+    &.disabled {
+      background: transparent;
+      border: solid 1px #ccc;
+
+      ${ButtonText} {
+        color: #ccc;
+      }
+
+      ${StyledIcon} {
+        fill: #ccc;
+      }
+    }
+  }
+
+  &.secondary-outlined {
+    &:not(.disabled) {
+      background: transparent;
+      border: solid 1px #999;
+
+      ${ButtonText} {
+        color: #999;
+      }
+
+      ${StyledIcon} {
+        fill: #999;
+      }
+
+      &:hover {
+        border-color: #222;
+
+        ${ButtonText} {
+          color: #444;
+        }
+  
+        ${StyledIcon} {
+          fill: #444;
+        }
+      }
+    }
+
+    &.disabled {
+      background: transparent;
+      border: solid 1px #ccc;
+
+      ${ButtonText} {
+        color: #ccc;
+      }
+
+      ${StyledIcon} {
+        fill: #ccc;
+      }
+    }
+  }
+
   &.success {
-    background-color: ${rgba('#32B67A', .15)};
+    background-color: ${rgba('#32B67A', 0.15)};
     color: #32B67A;
+
     ${ButtonText} {
       color: inherit;
     }
 
-    svg {
+    ${StyledIcon} {
       fill: #32B67A;
     }
   }
 
   &.error {
-    background-color: ${rgba('#FC3C2D', .15)};
+    background-color: ${rgba('#FC3C2D', 0.15)};
     color: #FC3C2D;
+
     ${ButtonText} {
       color: inherit;
     }
 
-    svg {
+    ${StyledIcon} {
       fill: #FC3C2D;
-    }
-  }
-
-  ${ButtonContent} {
-    padding: ${(props: any) => {
-      switch (props.size) {
-        case '2':
-          return '9px 14px';
-        case '3':
-          return '11px 15px';
-        case '4':
-          return '12px 16px';
-        default:
-          return '7px 12px';
-      }
-    }};
-
-    ${ButtonText} {
-      white-space: nowrap;
-      font-size: ${(props: any) => {
-        switch (props.size) {
-          case '2':
-            return '18px';
-          case '3':
-            return '20px';
-          case '4':
-            return '22px';
-          default:
-            return '16px';
-        }
-      }};
-      opacity: ${(props: any) => props.loading ? 0 : 1}
     }
   }
 `;
@@ -180,48 +322,54 @@ const SpinnerWrapper = styled.div`
 type Props = {
   text?: string;
   children?: any;
-  size?: string;
-  style?: 'primary' | 'secondary' | 'success' | 'error';
+  size?: '1' | '2' | '3' | '4';
+  style?: 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error';
+  width?: string | undefined;
+  height?: string | undefined;
+  padding?: string | undefined;
   icon?: string;
   loading?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
   onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
   className?: string;
+  circularCorners?: boolean;
 };
 
 type State = {};
 
 export default class Button extends React.PureComponent<Props, State> {
   handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
-    if (!this.props.onClick) {
-      return;
-    }
-    if (!this.props.disabled) {
+    if (_.has(this.props, 'onClick') && _.isFunction(this.props.onClick) && !this.props.disabled) {
       this.props.onClick(event);
     }
   }
 
   render() {
-    const { text, className, icon, children } = this.props;
-    let { size, style, loading, disabled, fullWidth } = this.props;
+    const { text, width, height, padding, className, icon, children } = this.props;
+    let { size, style, loading, disabled, fullWidth, circularCorners } = this.props;
 
-    size = (size || '2');
+    size = (size || '1');
     style = (style || 'primary');
     loading = (_.isBoolean(loading) ? loading : false);
     disabled = (_.isBoolean(disabled) ? disabled : false);
     fullWidth = (_.isBoolean(fullWidth) ? fullWidth : false);
+    circularCorners = (_.isBoolean(circularCorners) ? circularCorners : true);
 
     return (
       <StyledButton
         size={size}
+        width={width}
+        height={height}
+        padding={padding}
         loading={loading}
         onClick={this.handleOnClick}
         disabled={disabled}
+        circularCorners={circularCorners}
         className={`Button ${disabled && 'disabled'} ${fullWidth && 'fullWidth'} ${style} ${className}`}
       >
         <ButtonContent>
-          {icon && <IconWrapper><Icon name={icon} /></IconWrapper>}
+          {icon && <StyledIcon name={icon} />}
           <ButtonText>{text || children}</ButtonText>
           {loading && <SpinnerWrapper><Spinner /></SpinnerWrapper>}
         </ButtonContent>

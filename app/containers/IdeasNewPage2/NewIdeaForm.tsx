@@ -1,29 +1,43 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// libraries
 import scrollToComponent from 'react-scroll-to-component';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
+import { EditorState, convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { ImageFile } from 'react-dropzone';
-import { media } from 'utils/styleUtils';
+import { IOption } from 'typings';
+
+// components
 import Select from 'components/UI/Select';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
 import Editor from 'components/UI/Editor';
-import { EditorState, convertToRaw } from 'draft-js';
 import Button from 'components/UI/Button';
 import Upload, { ExtendedImageFile } from 'components/UI/Upload';
 import Error from 'components/UI/Error';
-import { IOption } from 'typings';
-import { IStream } from 'utils/streams';
-import eventEmitter from 'utils/eventEmitter';
+import { namespace as ButtonBarNamespace } from './ButtonBar';
+
+// services
 import { state, IStateStream } from 'services/state';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectsStream, IProjects, IProjectData } from 'services/projects';
-import { namespace as ButtonBarNamespace, State as IButtonBarState } from './ButtonBar';
+
+// utils
+import { IStream } from 'utils/streams';
+import eventEmitter from 'utils/eventEmitter';
+
+// i18n
+import { getLocalized } from 'utils/i18n';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+
+// style
+import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div``;
@@ -48,10 +62,11 @@ const Title = styled.h2`
   line-height: 42px;
   font-weight: 500;
   text-align: center;
+  padding-top: 40px;
   margin-bottom: 40px;
 `;
 
-const FormElement = styled.div`
+const FormElement: any = styled.div`
   width: 100%;
   margin-bottom: 40px;
 `;
@@ -68,7 +83,7 @@ const MobileButton = styled.div`
     flex: 1;
   }
 
-  ${media.notPhone`
+  ${media.biggerThanPhone`
     display: none;
   `}
 `;
@@ -98,8 +113,6 @@ export const namespace = 'IdeasNewPage2/NewIdeaForm';
 
 export default class NewIdeaForm extends React.PureComponent<Props, State> {
   state$: IStateStream<State>;
-  topics$: IStream<ITopics | null>;
-  projects$: IStream<IProjects | null>;
   subscriptions: Rx.Subscription[];
   titleInputElement: HTMLInputElement | null;
   descriptionElement: any | null;
@@ -107,22 +120,23 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
   constructor() {
     super();
     this.state$ = state.createStream<State>(namespace, namespace);
-    this.topics$ = topicsStream();
-    this.projects$ = projectsStream();
     this.subscriptions = [];
     this.titleInputElement = null;
     this.descriptionElement = null;
   }
 
   componentWillMount() {
+    const topics$ = topicsStream().observable;
+    const projects$ = projectsStream().observable;
+
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
 
       eventEmitter.observe(ButtonBarNamespace, 'submit').subscribe(this.handleOnSubmit),
 
       Rx.Observable.combineLatest(
-        this.topics$.observable,
-        this.projects$.observable
+        topics$,
+        projects$
       ).subscribe(([topics, projects]) => {
         this.state$.next({
           topics: this.getOptions(topics),
@@ -224,10 +238,10 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
     this.state$.next({ titleError, descriptionError });
 
     if (titleError) {
-      scrollToComponent(this.titleInputElement, { align:'top', offset: -240, duration: 300 });
+      scrollToComponent(this.titleInputElement, { align: 'top', offset: -240, duration: 300 });
       setTimeout(() => this.titleInputElement && this.titleInputElement.focus(), 300);
     } else if (descriptionError) {
-      scrollToComponent(this.descriptionElement.editor.refs.editor, { align:'top', offset: -200, duration: 300 });
+      scrollToComponent(this.descriptionElement.editor.refs.editor, { align: 'top', offset: -200, duration: 300 });
       setTimeout(() => this.descriptionElement && this.descriptionElement.focusEditor(), 300);
     }
 
@@ -249,7 +263,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
 
     return (
       <Container>
-        <Form>
+        <Form id="new-idea-form">
           <Title>{formatMessage(messages.formTitle)}</Title>
 
           <FormElement name="titleInput">

@@ -1,19 +1,22 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// libraries
 import { browserHistory } from 'react-router';
 
 // components
 import Authorize from 'utils/containers/authorize';
 import ClickOutside from 'utils/containers/clickOutside';
+import Icon from 'components/UI/Icon';
 
 // services
-import { state, IStateStream } from 'services/state';
 import { authUserStream, signOut } from 'services/auth';
 import { IUser } from 'services/users';
 
 // style
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
@@ -24,22 +27,21 @@ const adminIcon = require('./adminIcon.svg');
 const editProfileIcon = require('./editProfileIcon.svg');
 const signOutIcon = require('./signOutIcon.svg');
 
-const MenuContainer = styled(ClickOutside)`
+const Container = styled(ClickOutside)`
   display: flex;
-  border-radius: 50%;
   margin-left: 0px;
   position: relative;
   cursor: pointer;
+  outline: none;
 `;
 
-const UserImage: any = styled.img`
-  height: 34px;
-  border-radius: 50%;
-  opacity: 0.85;
-  transition: opacity 200ms ease;
+const UserIcon = styled(Icon)`
+  height: 24px;
+  fill: #84939E;
+  transition: all 150ms ease;
 
   &:hover {
-    opacity: 1;
+    fill: ${(props) => darken(0.15, '#84939E')};
   }
 `;
 
@@ -52,15 +54,15 @@ const Dropdown = styled.div`
   right: -5px;
   z-index: 1;
   padding: 8px;
-  background: #FFFFFF;
-  border: 1px solid #EAEAEA;
+  background: #fff;
+  border: 1px solid #eaeaea;
   box-sizing: border-box;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 `;
 
 const DropdownItem = styled.div`
-  color: #888888;
+  color: #888;
   font-size: 18px;
   font-family: Proxima Nova;
   font-weight: 400;
@@ -68,7 +70,7 @@ const DropdownItem = styled.div`
   background: #fff;
 
   &:hover {
-    background: #F9F9F9;
+    background: #f9f9f9;
     color: #393939;
   }
 
@@ -87,22 +89,24 @@ type State = {
   dropdownOpened: boolean;
 };
 
-export const namespace = 'Navbar/components/UserMenu/index';
-
 export default class UserMenu extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
+  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    const initialState: State = { authUser: null, dropdownOpened: false };
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    this.state = {
+      authUser: null,
+      dropdownOpened: false
+    };
+    this.subscriptions = [];
   }
 
   componentWillMount() {
+    const authUser$ = authUserStream().observable;
+
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
-      authUserStream().observable.subscribe(authUser => this.state$.next({ authUser }))
+      authUser$.subscribe(authUser => this.setState({ authUser }))
     ];
   }
 
@@ -111,11 +115,11 @@ export default class UserMenu extends React.PureComponent<Props, State> {
   }
 
   toggleDropdown = () => {
-    this.state$.next(state => ({ dropdownOpened: !state.dropdownOpened }));
+    this.setState(state => ({ dropdownOpened: !state.dropdownOpened }));
   }
 
   closeDropdown = () => {
-    this.state$.next({ dropdownOpened: false });
+    this.setState({ dropdownOpened: false });
   }
 
   navigateTo = (path) => () => {
@@ -130,27 +134,28 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     const { authUser, dropdownOpened } = this.state;
 
     return (authUser ? (
-      <MenuContainer onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
-        <UserImage avatar={true} src={authUser.data.attributes.avatar.small} />
+      <Container id="e2e-user-menu-container" onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
+        {/* <UserImage avatar={true} src={authUser.data.attributes.avatar.small} /> */}
+        <UserIcon name="user" />
         {dropdownOpened &&
-          <Dropdown>
+          <Dropdown id="e2e-user-menu-dropdown">
             <Authorize action={['users', 'admin']} >
-              <DropdownItem onClick={this.navigateTo('/admin')}>
+              <DropdownItem id="admin-link" onClick={this.navigateTo('/admin')}>
                 <FormattedMessage {...messages.admin} />
                 <MenuIcon src={adminIcon} alt="admin" />
               </DropdownItem>
             </Authorize>
-            <DropdownItem onClick={this.navigateTo('/profile/edit')}>
+            <DropdownItem id="e2e-profile-edit-link" onClick={this.navigateTo('/profile/edit')}>
               <FormattedMessage {...messages.editProfile} />
               <MenuIcon src={editProfileIcon} alt="edit profile" />
             </DropdownItem>
-            <DropdownItem onClick={this.signOut}>
+            <DropdownItem id="e2e-sign-out-link" onClick={this.signOut}>
               <FormattedMessage {...messages.signOut} />
               <MenuIcon src={signOutIcon} alt="sign out" />
             </DropdownItem>
           </Dropdown>
         }
-      </MenuContainer>
+      </Container>
     ) : null);
   }
 }

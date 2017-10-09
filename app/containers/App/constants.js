@@ -10,11 +10,11 @@
  */
 
 export const DEFAULT_LOCALE = 'en';
-export const API_PATH = (process.env.NODE_ENV === 'development') ? 'http://localhost:4000/api/v1' : '/api/v1';
+export const API_PATH = (process.env.NODE_ENV === 'development') ? `http://${window.location.hostname}:4000/api/v1` : '/api/v1';
 export const GOOGLE_MAPS_API_KEY = 'AIzaSyDRtFe1KRBnGfDy_ijw6yCYsYnEkQRl9Cw';
 
 export const LOADED_CURRENT_TENANT = 'app/App/LOADED_CURRENT_TENANT';
 export const LOAD_CURRENT_USER = 'app/App/LOAD_CURRENT_USER';
 export const CL_GA_TRACKING_ID = 'UA-65562281-44';
 export const CL_GA_TRACKER_NAME = 'CitizenLab2';
-export const CL_SEGMENT_API_KEY = 'VsvvuYyv10ZcFx6hoO0zLfpAwqBx89nY';
+export const CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz1zRFRGhAofBlg';

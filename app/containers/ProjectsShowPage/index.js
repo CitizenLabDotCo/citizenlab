@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 // components
 import WatchSagas from 'containers/WatchSagas';
-import T from 'containers/T';
+import T from 'components/T';
 import { Link } from 'react-router';
 import ImageHeader, { HeaderTitle, HeaderSubtitle } from 'components/ImageHeader';
 import Meta from './meta';
@@ -25,11 +25,9 @@ import { makeSelectProjectPages } from './selectors';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 const Container = styled.div`
-  margin-top: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #f2f2f2;
 `;
 
 const Footer = styled.div`

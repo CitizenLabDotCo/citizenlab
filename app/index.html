@@ -1,91 +1,69 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- The first thing in any HTML file should be the charset -->
-    <meta charset="utf-8">
-    <!-- Make the page mobile compatible -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Allow installing the app to the homescreen -->
-    <link rel="manifest" href="/manifest.json">
-    <meta name="mobile-web-app-capable" content="yes">
-    <title>Loading...</title>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBANEGjkanbx-Ro6aqbtei3ko0WvqKlkoA&libraries=places" type="text/javascript"></script>
-    <!-- <script type="text/javascript">
-      !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="4.0.0";
-      analytics.load("VsvvuYyv10ZcFx6hoO0zLfpAwqBx89nY");
-      }}();
-    </script> -->
-    <style>
-      html, body{
-        margin: 0;
-        padding: 0;
-      }
 
-      #app {
-        background: #f2f2f2;
-        width: 100vw;
-        height: calc(100vh - 80px);
-      }
+<head>
+  <!-- The first thing in any HTML file should be the charset -->
+  <meta charset="utf-8">
+  <!-- Make the page mobile compatible -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Allow installing the app to the homescreen -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js" crossorigin="anonymous"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBANEGjkanbx-Ro6aqbtei3ko0WvqKlkoA&libraries=places"
+    type="text/javascript"></script>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
 
-      #menu {
-        background: #fff;
-        border-bottom: 1px solid #ccc;
-        display: flex;
-        height: 80px;
-        position: fixed;
-        top: 0;
-        width: 100vw;
-      }
+    #app {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
 
-      .menuNavPlaceholder {
-        flex: 1;
-      }
-      .menuSectionPlaceholder {
-        flex-basis: 80px;
-      }
-      .menuSectionPlaceholder:not(:last-child) {
-        border-right: 1px solid #ccc;
-      }
+    .app-loading-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+    }
 
-      #contentContainer {
-        align-items: center;
-        display: flex;
-        height: 100%;
-        justify-content: center;
-        margin-top: 80px;
-        width: 100%;
-      }
+    .app-loading-spinner {
+      width: 26px;
+      height: 26px;
+      animation: spin 800ms infinite linear;
+      border-style: solid;
+      border-right-color: transparent !important;
+      border-width: 3px;
+      border-color: #666;
+      border-radius: 50%;
+    }
 
-      @keyframes spin {
-        from {transform: rotate(0deg);}
-        to {transform: rotate(359deg);}
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
       }
-
-      .loadingSpinner {
-        animation: 1s linear 0s infinite spin;
-        transform-origin: center center;
+      100% {
+        transform: rotate(360deg);
       }
-    </style>
-  </head>
-  <body>
-    <!-- Display a message if JS has been disabled on the browser. -->
-    <noscript>If you're seeing this message, that means <strong>JavaScript has been disabled on your browser</strong>, please <strong>enable JS</strong> to make this app work.</noscript>
+    }
+  </style>
+</head>
 
-    <!-- The app hooks into this div -->
-    <div id="app">
-      <div id="menu">
-        <div class="menuSectionPlaceholder"></div>
-        <div class="menuNavPlaceholder menuSectionPlaceholder"></div>
-        <div class="menuSectionPlaceholder"></div>
-        <div class="menuSectionPlaceholder"></div>
-      </div>
-      <div id="contentContainer">
-        <svg width="5rem" height="5rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-rolling">
-          <circle class="loadingSpinner" cx="50" cy="50" fill="none" stroke="#444" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138" transform="rotate(12 50 50)"></circle>
-        </svg>
-      </div>
+<body>
+  <div id="app">
+    <div class="app-loading-container">
+      <div class="app-loading-spinner"></div>
     </div>
+  </div>
+</body>
 
-    <!-- A lot of magic happens in this file. HtmlWebpackPlugin automatically includes all assets (e.g. bundle.js, main.css) with the correct HTML tags, which is why they are missing in this HTML file. Don't add any assets here! (Check out webpackconfig.js if you want to know more) -->
-  </body>
 </html>

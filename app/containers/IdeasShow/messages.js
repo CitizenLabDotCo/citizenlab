@@ -18,23 +18,18 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentEditorHeader',
     defaultMessage: 'Comment the idea!',
   },
-
   commentEditorLabel: {
     id: 'app.containers.IdeasShow.commentEditorLabel',
     defaultMessage: 'Comment the idea!',
   },
-
   commentReplyButton: {
     id: 'app.containers.IdeasShow.commentReplyButton',
     defaultMessage: 'Reply',
   },
-
   commentDeleteButton: {
     id: 'app.containers.IdeasShow.commentDeleteButton',
     defaultMessage: 'Delete',
   },
-
-
   loadingIdea: {
     id: 'app.containers.IdeasShow.loadingIdea',
     defaultMessage: 'Loading idea...',
@@ -51,13 +46,17 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.emptyCommentError',
     defaultMessage: 'The comment can\'t be empty',
   },
+  addCommentError: {
+    id: 'app.containers.IdeasShow.addCommentError',
+    defaultMessage: 'Something went wrong. Please try again.',
+  },
   submittingComment: {
     id: 'app.containers.IdeasShow.submittingComment',
     defaultMessage: 'Publishing...',
   },
   publishComment: {
     id: 'app.containers.IdeasShow.publishComment',
-    defaultMessage: 'Comment',
+    defaultMessage: 'Post comment',
   },
   loadMoreComments: {
     id: 'app.containers.IdeasShow.loadMoreComments',
@@ -79,25 +78,29 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.helmetTitle',
     defaultMessage: 'Show idea',
   },
-  byAuthor: {
-    id: 'app.containers.IdeasShow.byAuthor',
-    defaultMessage: 'by {firstName} {lastName}',
+  author: {
+    id: 'app.containers.IdeasShow.author',
+    defaultMessage: '{authorNameComponent}',
   },
-  authorSaid: {
-    id: 'app.containers.IdeasShow.authorSaid',
-    defaultMessage: '{firstName} said',
+  parentCommentAuthor: {
+    id: 'app.containers.IdeasShow.parentCommentAuthor',
+    defaultMessage: '{authorNameComponent} said',
   },
-  authorReacted: {
-    id: 'app.containers.IdeasShow.authorReacted',
-    defaultMessage: '{firstName} replied',
-  },
-  voteCTA: {
-    id: 'app.containers.IdeasShow.voteCTA',
-    defaultMessage: 'Do you like this idea?',
+  childCommentAuthor: {
+    id: 'app.containers.IdeasShow.childCommentAuthor',
+    defaultMessage: '{authorNameComponent} replied',
   },
   shareCTA: {
     id: 'app.containers.IdeasShow.shareCTA',
     defaultMessage: 'Share this idea',
+  },
+  shareOnFacebook: {
+    id: 'app.containers.IdeasShow.shareOnFacebook',
+    defaultMessage: 'Share on Facebook',
+  },
+  shareOnTwitter: {
+    id: 'app.containers.IdeasShow.shareOnTwitter',
+    defaultMessage: 'Share on Twitter',
   },
   commentsWithCount: {
     id: 'app.containers.IdeasShow.commentsWithCount',
@@ -114,6 +117,10 @@ export default defineMessages({
   commentBodyPlaceholder: {
     id: 'app.containers.IdeasShow.commentBodyPlaceholder',
     defaultMessage: 'What do you think about this idea?',
+  },
+  childCommentBodyPlaceholder: {
+    id: 'app.containers.IdeasShow.childCommentBodyPlaceholder',
+    defaultMessage: 'Write a reply...',
   },
   commentSuccess: {
     id: 'app.containers.IdeasShow.commentSuccess',

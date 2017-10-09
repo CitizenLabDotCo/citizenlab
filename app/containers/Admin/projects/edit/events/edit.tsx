@@ -18,7 +18,7 @@ import { API } from 'typings.d';
 import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
 import { eventStream, updateEvent, addEvent, IEvent, IEventData, IEvents, IUpdatedEventProperties } from 'services/events';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 
 // Components
 import Label from 'components/UI/Label';
@@ -93,7 +93,7 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
           let descState = EditorState.createEmpty();
 
           if (event) {
-            const blocksFromHtml = convertFromHTML(event.data.attributes.description_multiloc[this.props.locale]);
+            const blocksFromHtml = convertFromHTML(_.get(event, `data.attributes.description_multiloc.${this.props.locale}`, ''));
             const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
             descState = EditorState.createWithContent(editorContent);
           }

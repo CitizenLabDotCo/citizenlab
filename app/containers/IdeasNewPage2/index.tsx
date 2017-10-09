@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// libraries
 import CSSTransition from 'react-transition-group/CSSTransition';
 import Transition from 'react-transition-group/Transition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
@@ -14,7 +16,7 @@ import { ImageFile } from 'react-dropzone';
 import Upload, { ExtendedImageFile } from 'components/UI/Upload';
 import ButtonBar, { namespace as ButtonBarNamespace, State as IButtonBarState } from './ButtonBar';
 import NewIdeaForm, { namespace as NewIdeaFormNamespace, State as INewIdeaFormState } from './NewIdeaForm';
-import SignInUp from 'containers/SignInUp';
+import SignInUp from './SignInUp';
 
 // services
 import { state, IStateStream } from 'services/state';
@@ -32,15 +34,15 @@ import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  background: #f2f2f2;
+  background: #f8f8f8;
+  /* border-top: solid 1px #ddd; */
 `;
 
 const PageContainer = styled.div`
   width: 100%;
   min-height: calc(100vh - 105px);
-  padding-top: 40px;
   position: relative;
-  background: #f2f2f2;
+  background: #f8f8f8;
   -webkit-backface-visibility: hidden;
   will-change: opacity, transform;
 
@@ -103,7 +105,8 @@ const ButtonBarContainer = styled.div`
   left: 0;
   right: 0;
   background: #fff;
-  box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.12);
+  /* box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.12); */
+  border-top: solid 1px #ddd;
   -webkit-backface-visibility: hidden;
   will-change: auto;
 
@@ -194,7 +197,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   async componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());    
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
     const currentNewIdeaFormState = await this.newIdeaFormState$.getCurrent();
     _(currentNewIdeaFormState.images).forEach(image => image.preview && window.URL.revokeObjectURL(image.preview));
   }
@@ -313,15 +316,12 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
       </CSSTransition>
     ) : null;
 
-    const signInUp = (!showIdeaForm && locale) ?  (
+    const signInUp = (!showIdeaForm && locale) ? (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer>
           <SignInUp
-            locale={locale}
             onGoBack={this.handleOnSignInUpGoBack}
             onSignInUpCompleted={this.handleOnSignInUpCompleted}
-            signInTitleMessage={messages.signInTitle}
-            signUpTitleMessage={messages.signUpTitle}
           />
         </PageContainer>
       </CSSTransition>
@@ -339,4 +339,4 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
   }
 }
 
-export default injectIntl(IdeasNewPage2);
+export default injectIntl<Props>(IdeasNewPage2);

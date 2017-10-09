@@ -9,7 +9,7 @@ import { push } from 'react-router-redux';
 
 import queryString from 'query-string';
 
-import T from 'containers/T';
+import T from 'components/T';
 
 const FilterElement = ({ title, id, filterPage }) => (
   <Menu.Item name={id} onClick={filterPage} >

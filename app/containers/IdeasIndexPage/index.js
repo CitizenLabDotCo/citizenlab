@@ -16,9 +16,9 @@ import { injectIntl, intlShape } from 'react-intl';
 import WatchSagas from 'containers/WatchSagas';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
+import Footer from 'components/Footer';
 
 import SelectTopics from './components/selectTopics';
-import SelectAreas from './components/selectAreas';
 import SelectSort from './components/selectSort';
 import SearchField from './components/searchField';
 
@@ -27,18 +27,44 @@ import { loadTopicsRequest, loadAreasRequest, resetIdeas } from './actions';
 import sagasWatchers from './sagas';
 import messages from './messages';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  position: relative;
+`;
+
+const BackgroundColor = styled.div`
+  position: absolute;
+  top: 200px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  background-color: #f8f8f8;
+`;
+
+const StyledContentContainer = styled(ContentContainer)`
+  padding-bottom: 80px;
+`;
 
 const FiltersArea = styled.div`
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
   height: 3.5rem;
   justify-content: flex-end;
   margin-top: 1.5rem;
   margin-bottom: 3.5rem;
   width: 100%;
+
+  @media (min-width: 500px) {
+    flex-wrap: nowrap;
+  }
 `;
 
-class IdeasIndex extends React.Component {
+class IdeasIndex extends React.PureComponent {
 
   componentWillMount() {
     this.areasTitle = this.props.intl.formatMessage(messages.areasTitle);
@@ -59,23 +85,28 @@ class IdeasIndex extends React.Component {
     const { filter, withFilters } = this.props;
 
     return (
-      <div>
+      <Container>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
+
         <WatchSagas sagas={sagasWatchers} />
-        <ContentContainer>
-          {withFilters && <FiltersArea>
+
+        <BackgroundColor />
+
+        <StyledContentContainer>
+          {withFilters && <FiltersArea id="e2e-ideas-filters">
             <SearchField />
             <SelectSort title={this.sortTitle} />
             <SelectTopics title={this.topicsTitle} />
-            <SelectAreas title={this.areasTitle} />
           </FiltersArea>}
-          <IdeaCards filter={filter} />
-        </ContentContainer>
+          <IdeaCards id="ideas-cards" filter={filter} />
+        </StyledContentContainer>
 
-      </div>
+        <Footer />
+
+      </Container>
     );
   }
 }

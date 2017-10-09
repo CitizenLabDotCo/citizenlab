@@ -6,15 +6,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  // header
   titleCity: {
-    id: 'app.containers.landing.title',
-    description: 'name is the name of a city',
-    defaultMessage: 'Co-create {name}',
+    id: 'app.containers.landing.titleCity',
+    defaultMessage: 'Change {name}',
   },
-  SubTitleCity: {
-    id: 'app.containers.landing.loadMore',
-    description: 'name is the name of a city',
-    defaultMessage: 'Share your ideas for {name} and co-create your city',
+  subtitleCity: {
+    id: 'app.containers.landing.subtitleCity',
+    defaultMessage: 'Start an idea!',
   },
 
   // ideas
@@ -22,41 +21,30 @@ export default defineMessages({
     id: 'app.containers.landing.ideasFrom',
     defaultMessage: 'Ideas for {name}',
   },
-  viewIdeas: {
-    id: 'app.containers.landing.viewIdeas',
-    defaultMessage: 'View all Ideas',
+  trendingIdeas: {
+    id: 'app.containers.landing.trendingIdeas',
+    defaultMessage: 'Trending ideas',
+  },
+  explore: {
+    id: 'app.containers.landing.explore',
+    defaultMessage: 'Explore',
+  },
+  exploreAllIdeas: {
+    id: 'app.containers.landing.exploreAllIdeas',
+    defaultMessage: 'Explore all ideas',
   },
 
   // projects
   projectsFrom: {
-    id: 'app.containers.landing.topics',
-    defaultMessage: 'Projects From {name}',
+    id: 'app.containers.landing.projectsFrom',
+    defaultMessage: 'Projects from {name}',
   },
-  viewProjects: {
-    id: 'app.containers.landing.viewProjects',
-    defaultMessage: 'View all Projects',
+  cityProjects: {
+    id: 'app.containers.landing.cityProjects',
+    defaultMessage: 'City projects',
   },
-
-  // footer
-  poweredBy: {
-    id: 'app.containers.landing.poweredBy',
-    defaultMessage: 'Powered by {logo}',
+  exploreAllProjects: {
+    id: 'app.containers.landing.exploreAllProjects',
+    defaultMessage: 'Explore all projects',
   },
-  termsLink: {
-    id: 'app.containers.landing.termsLink',
-    defaultMessage: 'Terms of use',
-  },
-  privacyLink: {
-    id: 'app.containers.landing.privacyLink',
-    defaultMessage: 'Privacy Policy',
-  },
-  cookiesLink: {
-    id: 'app.containers.landing.cookiesLink',
-    defaultMessage: 'Cookies Policy',
-  },
-  feedbackLink: {
-    id: 'app.containers.landing.feedbackLink',
-    defaultMessage: 'Give your opinion',
-  },
-
 });
