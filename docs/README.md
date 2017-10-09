@@ -10,10 +10,12 @@
 - Fixed bug where adding an idea failed because of a wrongly stored user language
 - Fixed bug where removing a language in the admin settings fails
 - Graphical glitches on the project pages
+
 ### Added
 - End-to-end test coverage for the happy flow of most of the citizen-facing app interaction
 - Automated browser error logging to be proactive on bugs
 - An idea can be removed through the admin
+
 ### Changed
 - The modal that shows an idea is now fullscreen and has a new animation
 - New design for the idea show page
