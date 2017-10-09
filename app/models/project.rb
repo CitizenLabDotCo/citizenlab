@@ -22,6 +22,14 @@ class Project < ApplicationRecord
   before_validation :generate_slug, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
 
+
+  scope :with_all_areas, (Proc.new do |area_ids|
+    uniq_area_ids = area_ids.uniq
+    joins(:areas_projects)
+    .where(areas_projects: {area_id: uniq_area_ids})
+    .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
+  end)
+
   private
 
   def generate_slug
