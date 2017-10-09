@@ -34,6 +34,8 @@ import {
   deleteProjectImage
 } from 'services/projectImages';
 
+import { areasStream, IAreaData } from 'services/areas';
+
 // utils
 import { getBase64 } from 'utils/imageTools';
 
@@ -107,10 +109,11 @@ interface State {
     [fieldName: string]: API.Error[]
   };
   saved: boolean;
+  areas: IAreaData[];
 }
 
 class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
-  subscription: Rx.Subscription;
+  subscriptions: Rx.Subscription[] = [];
 
   constructor() {
     super();
@@ -125,6 +128,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
       projectAttributesDiff: {},
       errors: {},
       saved: false,
+      areas: [],
     };
   }
 
@@ -141,7 +145,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
   updateSubscription = (slug) => {
     const { userLocale } = this.props;
 
-    this.subscription = projectBySlugStream(slug).observable.switchMap((project) => {
+    this.subscriptions[0] = projectBySlugStream(slug).observable.switchMap((project) => {
       return projectImagesStream(project.data.id).observable.map((images) => ({
         projectData: project.data,
         projectImages: images.data,
@@ -166,11 +170,17 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     if (this.props.params.slug) {
       this.updateSubscription(this.props.params.slug);
     }
+
+    this.subscriptions[1] = areasStream().observable.subscribe((response) => {
+      this.setState({ areas: response.data });
+    });
   }
 
   componentWillUnmount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.subscriptions) {
+      this.subscriptions.forEach((sub) => {
+        sub.unsubscribe();
+      });
     }
   }
 
@@ -301,6 +311,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
             onChange={this.changeDesc}
           />
           <Error fieldName="description_multiloc" apiErrors={this.state.errors.description_multiloc} />
+        </FieldWrapper>
+
+        <FieldWrapper>
+          <label htmlFor="project-area">
+            <FormattedMessage {...messages.areasLabel} />
+          </label>
         </FieldWrapper>
 
         <FieldWrapper>
