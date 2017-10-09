@@ -48,6 +48,12 @@ const ProjectCard = styled.li`
     }
   }
 
+  @media (min-width: 1650px) {
+    & {
+      max-width: calc(25% - 2rem);
+    }
+  }
+
   img {
     max-width: 100%;
   }
