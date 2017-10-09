@@ -108,6 +108,9 @@ jobs:
       - deploy :
           name: Deploy production version to benelux cluster
           command: aws s3 sync build/ s3://cl2-front-production-benelux/ --delete --acl public-read
+      - invalidate_cdn:
+          name: Invalidate the static assets on the CDN
+          command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths *
 
 workflows:
   version: 2
