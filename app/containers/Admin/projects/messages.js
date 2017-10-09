@@ -63,6 +63,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.descriptionLabel',
     defaultMessage: 'Description',
   },
+  areasLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.areasLabel',
+    defaultMessage: 'Areas',
+  },
   headerImageLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.headerImageLabel',
     defaultMessage: 'Header Image',
