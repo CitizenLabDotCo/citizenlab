@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Image, Grid } from 'semantic-ui-react';
-import T from 'containers/T';
+import T from 'components/T';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import * as locationIcon from './assets/location_icon.png';

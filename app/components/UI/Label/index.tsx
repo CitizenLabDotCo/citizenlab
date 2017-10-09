@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 const StyledLabel = styled.label`
   color: #666;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   display: flex;
-  padding-bottom: 6px;
+  padding-bottom: 5px;
 `;
 
 type Props = {

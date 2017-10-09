@@ -20,13 +20,13 @@ import scrollToComponent from 'react-scroll-to-component';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import LabelWithTooltip from './LabelWithTooltip';
 import TextArea from 'components/UI/TextArea';
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 import { areasStream } from 'services/areas';
 
 import moment from 'moment';
 
 const StyledContentContainer = styled(ContentContainer)`
-  margin-top: 120px;
+  background: #fff;
 `;
 
 const NavItemStyled = styled.button`
@@ -97,8 +97,7 @@ const SectionSeparatorStyled = styled.hr`
 // `;
 
 const FormContentWrapper = styled(Grid.Column)`
-  border-radius: 5px;
-  background-color: #ffffff;
+  border-left: 1px solid #eaeaea;
   padding: 36px;
 `;
 
@@ -236,12 +235,12 @@ class ProfileForm extends React.Component {
     options.push({
       value: 'outside',
       label: this.props.intl.formatMessage({
-        ...messages.outside,
-        values: {
+        ...messages.outside },
+        {
           name: this.props.tFunc(this.props.organizationName),
           organizationType: this.props.organizationType,
-        },
-      }),
+        }
+      ),
     });
     return options;
   }
@@ -286,7 +285,7 @@ class ProfileForm extends React.Component {
               <Nav goTo={this.goToSection} />
             </Grid.Column>
             <Grid.Column computer={12} mobile={16}>
-              <FormContentWrapper>
+              <FormContentWrapper id="e2e-profile-edit-form">
                 {/* BASICS */}
                 <section ref={(section1) => { this['section-basics'] = section1; }}>
                   <SectionHeaderStyled>
@@ -307,6 +306,7 @@ class ProfileForm extends React.Component {
                     <LabelInputPairStyled>
                       <LabelWithTooltip id="firstName" />
                       <Input
+                        id="first_name"
                         key="first_name"
                         name="first_name"
                         onChange={(value) => this.handleInputChange(value, 'first_name')}
@@ -317,6 +317,7 @@ class ProfileForm extends React.Component {
                     <LabelInputPairStyled>
                       <LabelWithTooltip id="lastName" />
                       <Input
+                        id="last_name"
                         name="last_name"
                         onChange={(value) => this.handleInputChange(value, 'last_name')}
                         value={user && user.last_name}
@@ -326,15 +327,26 @@ class ProfileForm extends React.Component {
                     <LabelInputPairStyled>
                       <LabelWithTooltip id="email" />
                       <Input
+                        id="email"
                         name="email"
                         onChange={(value) => this.handleInputChange(value, 'email')}
                         value={user && user.email}
                         error={userErrors && userErrors.email && userErrors.email[0]}
                       />
                     </LabelInputPairStyled>
+                    <LabelWithTooltip id="bio" />
+                    <TextArea
+                      name="bio_multiloc"
+                      onInput={this.handleMultilocInputChange}
+                      rows={6}
+                      placeholder={intl.formatMessage({ ...messages.bio_placeholder })}
+                      value={tFunc(user.bio_multiloc)}
+                      error={userErrors && userErrors.bio_multiloc && userErrors.bio_multiloc[0]}
+                    />
                     <LabelInputPairStyled>
                       <LabelWithTooltip id="password" />
                       <Input
+                        id="password"
                         type="password"
                         name="password"
                         onChange={(value) => this.handleInputChange(value, 'password')}
@@ -384,15 +396,6 @@ class ProfileForm extends React.Component {
                       </div>
                     }
 
-                    <LabelWithTooltip id="bio" />
-                    <TextArea
-                      name="bio_multiloc"
-                      onInput={this.handleMultilocInputChange}
-                      rows={6}
-                      placeholder={intl.formatMessage({ ...messages.bio_placeholder })}
-                      value={tFunc(user.bio_multiloc)}
-                      error={userErrors && userErrors.bio_multiloc && userErrors.bio_multiloc[0]}
-                    />
 
                     {this.props.domicileEnabled &&
                       <div>

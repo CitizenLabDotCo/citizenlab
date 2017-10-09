@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 
 // components
 // import ActionButton from 'components/buttons/action.js';
-import { Table, Icon, Dropdown } from 'semantic-ui-react';
-import { FormattedDate } from 'react-intl';
-import T from 'containers/T';
-import { injectTFunc } from 'containers/T/utils';
+import { Table, Icon, Dropdown, Popup, Button } from 'semantic-ui-react';
+import { FormattedDate, FormattedMessage } from 'react-intl';
+import T from 'components/T';
+import { injectTFunc } from 'components/T/utils';
+import messages from '../messages';
 
 // store
 // import { preprocess } from 'utils';
@@ -28,7 +29,7 @@ const StyledRow = styled.tr`
 
 class Row extends PureComponent {
 
-  handleIdeaStatusChangeee = (event, data) => {
+  handleIdeaStatusChange = (event, data) => {
     this.props.onIdeaStatusChange(data.value);
   }
 
@@ -40,7 +41,7 @@ class Row extends PureComponent {
   }
 
   render() {
-    const { idea } = this.props;
+    const { idea, onDeleteIdea } = this.props;
     const attrs = idea.attributes;
     return (
       <Table.Row as={StyledRow}>
@@ -64,8 +65,15 @@ class Row extends PureComponent {
             fluid
             selection
             options={this.ideaStatusOptions()}
-            onChange={this.handleIdeaStatusChangeee}
+            onChange={this.handleIdeaStatusChange}
             value={idea.relationships.idea_status.data.id}
+          />
+        </Table.Cell>
+        <Table.Cell>
+          <Popup
+            trigger={<Button icon="trash" onClick={onDeleteIdea} />}
+            content={<FormattedMessage {...messages.delete} />}
+            position="right center"
           />
         </Table.Cell>
       </Table.Row>
@@ -78,6 +86,7 @@ Row.propTypes = {
   ideaStatuses: PropTypes.array,
   onIdeaStatusChange: PropTypes.func,
   tFunc: PropTypes.func.isRequired,
+  onDeleteIdea: PropTypes.func.isRequired,
 };
 
 export default injectTFunc(Row);

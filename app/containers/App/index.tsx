@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// libraries
 import { RouterState } from 'react-router';
 
 // components
@@ -9,13 +11,12 @@ import Navbar from 'containers/Navbar';
 import messages from './messages';
 import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import Modal from 'components/UI/Modal';
+import FullscreenModal from 'components/UI/FullscreenModal';
 import IdeasShow from 'containers/IdeasShow';
-import { namespace as ideaCardNamespace } from 'components/IdeaCard';
+import { namespace as IdeaCardComponent } from 'components/IdeaCard';
 
-// authorizations
+// auth
 import Authorize, { Else } from 'utils/containers/authorize';
-import { loadCurrentTenantSuccess } from 'utils/tenant/actions';
 
 // sagas
 import WatchSagas from 'containers/WatchSagas';
@@ -24,9 +25,10 @@ import areasSagas from 'utils/areas/sagas';
 import tenantSaga from 'utils/tenant/sagas';
 
 // services
-import { state, IStateStream } from 'services/state';
 import { authUserStream, signOut } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
+import { topicsStream, ITopics, ITopicData } from 'services/topics';
+import { projectsStream, IProjects, IProjectData } from 'services/projects';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -37,57 +39,81 @@ import { media } from 'utils/styleUtils';
 
 // legacy redux stuff 
 import { store } from 'app';
-import {  STORE_JWT, LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
+import { LOAD_CURRENT_TENANT_SUCCESS } from 'utils/tenant/constants';
+import { LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
 
 const Container = styled.div`
-  margin-top: ${props => props.theme.menuHeight}px;
+  margin: 0;
+  padding: 0;
+  padding-top: ${props => props.theme.menuHeight}px;
 
   ${media.phone`
-    margin-bottom: ${props => props.theme.mobileMenuHeight}px;
+    padding-bottom: ${props => props.theme.mobileMenuHeight}px;
   `}
 `;
+
+export interface IModalInfo {
+  type: string;
+  id: string;
+  url?: string | undefined;
+}
 
 type Props = {};
 
 type State = {
   currentTenant: ITenant | null;
-  modalIdeaSlug: string | null;
+  modalOpened: boolean;
+  modalType: string | null;
+  modalId: string | null;
+  modalUrl: string | undefined;
 };
 
-export const namespace = 'App/index';
-
 export default class App extends React.PureComponent<Props & RouterState, State> {
-  state$: IStateStream<State>;
+  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    const initialState: State = { currentTenant: null, modalIdeaSlug: null };
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+    this.state = {
+      currentTenant: null,
+      modalOpened: false,
+      modalType: null,
+      modalId: null,
+      modalUrl: undefined
+    };
+    this.subscriptions = [];
   }
 
   componentWillMount() {
-    this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
+    const authUser$ = authUserStream().observable;
 
-      eventEmitter.observe(ideaCardNamespace, 'ideaCardClick').subscribe(({ eventValue }) => {
-        const ideaSlug = eventValue;
-        this.openModal(ideaSlug);
+    this.subscriptions = [
+      eventEmitter.observe<IModalInfo>(IdeaCardComponent, 'cardClick').subscribe(({ eventValue }) => {
+        const { type, id, url } = eventValue;
+        this.openModal(type, id, url);
       }),
 
-      authUserStream().observable.subscribe((authUser) => {
+      authUser$.switchMap((authUser) => {
         if (!authUser) {
           signOut();
           store.dispatch({ type: DELETE_CURRENT_USER_LOCAL });
         } else {
           store.dispatch({ type: LOAD_CURRENT_USER_SUCCESS, payload: authUser });
         }
-      }),
 
-      currentTenantStream().observable.subscribe((currentTenant) => {
-        this.state$.next({ currentTenant });
-        store.dispatch(loadCurrentTenantSuccess(currentTenant));
-      })
+        const topics$ = topicsStream().observable;
+        const projects$ = projectsStream().observable;
+        const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
+          this.setState({ currentTenant });
+          store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: currentTenant });
+        });
+
+        return Rx.Observable.combineLatest(
+          topics$,
+          projects$,
+          currentTenant$
+        );
+      }).subscribe()
     ];
   }
 
@@ -95,23 +121,23 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  openModal = (modalIdeaSlug) => {
-    this.state$.next({ modalIdeaSlug });
+  openModal = (type: string, id: string, url: string | undefined) => {
+    this.setState({ modalOpened: true, modalType: type, modalId: id, modalUrl: url });
   }
 
   closeModal = () => {
-    this.state$.next({ modalIdeaSlug: null });
+    this.setState({ modalOpened: false, modalType: null, modalId: null, modalUrl: undefined });
   }
 
   render() {
     const { location, children } = this.props;
-    const { currentTenant, modalIdeaSlug } = this.state;
+    const { currentTenant, modalOpened, modalType, modalId, modalUrl } = this.state;
     const theme = {
       colorMain: (currentTenant ? currentTenant.data.attributes.settings.core.color_main : '#ef0071'),
       menuStyle: 'light',
-      menuHeight: 80,
+      menuHeight: 74,
       mobileMenuHeight: 80,
-      maxPageWidth: 950,
+      maxPageWidth: 952,
     };
 
     return (
@@ -123,11 +149,11 @@ export default class App extends React.PureComponent<Props & RouterState, State>
         {currentTenant && (
           <ThemeProvider theme={theme}>
             <Container>
-              <Meta tenant={currentTenant} />
+              <Meta />
 
-              <Modal opened={!!modalIdeaSlug} close={this.closeModal} url={`/ideas/${modalIdeaSlug}`}>
-                <IdeasShow location={location} slug={modalIdeaSlug} />
-              </Modal>
+              <FullscreenModal opened={modalOpened} close={this.closeModal} url={modalUrl}>
+                {modalOpened && modalType === 'idea' && modalId && <IdeasShow location={location} ideaId={modalId} />}
+              </FullscreenModal>
 
               <Navbar />
 

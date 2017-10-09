@@ -66,8 +66,12 @@ export function usersStream(streamParams: IStreamParams<IUsers> | null = null) {
   return streams.get<IUsers>({ apiEndpoint, ...streamParams });
 }
 
-export function userStream(userId: string, streamParams: IStreamParams<IUser> | null = null) {
-  return streams.get<IUser>({ apiEndpoint: `${apiEndpoint}/${userId}`, ...streamParams });
+export function userByIdStream(userId: string) {
+  return streams.get<IUser>({ apiEndpoint: `${apiEndpoint}/${userId}` });
+}
+
+export function userBySlugStream(userSlug: string) {
+  return streams.get<IUser>({ apiEndpoint: `${apiEndpoint}/by_slug/${userSlug}` });
 }
 
 export async function updateUser(userId: string, object: IUserUpdate) {

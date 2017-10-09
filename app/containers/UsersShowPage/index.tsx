@@ -1,0 +1,161 @@
+import * as React from 'react';
+import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
+
+// components
+import HelmetIntl from 'components/HelmetIntl';
+import IdeaCards from 'components/IdeaCards';
+import ContentContainer from 'components/ContentContainer';
+import Avatar from 'components/Avatar';
+
+// services
+import { userBySlugStream, IUser } from 'services/users';
+
+// i18n
+import { FormattedMessage, FormattedDate } from 'react-intl';
+import T from 'components/T';
+import messages from './messages';
+
+// style
+import styled from 'styled-components';
+
+const StyledContentContainer = styled(ContentContainer)`
+  margin-top: 0px;
+  margin-bottom: 100px;
+`;
+
+const UserAvatar = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+`;
+
+const StyledAvatar = styled(Avatar)`
+  width: 160px;
+  height: 160px;
+  border: solid 5px #fff;
+`;
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 0px;
+  padding-bottom: 40px;
+  border-radius: 5px;
+  background-color: #fff;
+`;
+
+const FullName = styled.div`
+  width: 100%;
+  padding-top: 0px;
+  font-size: 29px;
+  font-weight: 500;
+  text-align: center;
+  color: #333;
+`;
+
+const JoinedAt = styled.div`
+  width: 100%;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  color: #7e7e7e;
+`;
+
+const Bio = styled.div`
+  max-width: 600px;
+  margin: 23px auto;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.25;
+  text-align: center;
+  color: #6b6b6b;
+`;
+
+const UserIdeas = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+type Props = {};
+
+type Params = {
+  params: {
+    slug: string;
+  }
+};
+
+type State = {
+  user: IUser | null;
+};
+
+export default class UsersShowPage extends React.PureComponent<Props & Params, State> {
+  state: State;
+  subscriptions: Rx.Subscription[];
+
+  constructor() {
+    super();
+    this.state = {
+      user: null
+    };
+    this.subscriptions = [];
+  }
+
+  componentWillMount() {
+    const { slug } = this.props.params;
+    const user$ = userBySlugStream(slug).observable;
+
+    this.subscriptions = [
+      user$.subscribe(user => this.setState({ user }))
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  render() {
+    const { user } = this.state;
+
+    if (user) {
+      return (
+        <StyledContentContainer>
+
+          <HelmetIntl title={messages.helmetTitle} description={messages.helmetDescription} />
+
+          <UserAvatar>
+            <StyledAvatar userId={user.data.id} size="large" />
+          </UserAvatar>
+
+          <UserInfo>
+            <FullName>{user.data.attributes.first_name} {user.data.attributes.last_name}</FullName>
+            <JoinedAt>
+              <FormattedMessage
+                {...messages.joined}
+                values={{ date: <FormattedDate value={user.data.attributes.created_at} /> }}
+              />
+            </JoinedAt>
+            {!_.isEmpty(user.data.attributes.bio_multiloc) &&
+              <Bio>
+                {user.data.attributes.bio_multiloc && <T value={user.data.attributes.bio_multiloc} />}
+              </Bio>
+            }
+          </UserInfo>
+
+          <UserIdeas>
+            <IdeaCards filter={{ author: user.data.id }} />
+          </UserIdeas>
+
+        </StyledContentContainer>
+      );
+    }
+
+    return null;
+  }
+}

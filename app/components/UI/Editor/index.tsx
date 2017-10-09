@@ -20,8 +20,6 @@ const DraftEditorContainer = styled.div`
   border-color: ${(props: IDraftEditorContainer) => {
     if (props.error) {
       return '#fc3c2d';
-    } else if (props.focussed) {
-      return '#333';
     }
 
     return '#ccc';
@@ -29,12 +27,10 @@ const DraftEditorContainer = styled.div`
   background: #fff;
   position: relative;
 
-  &:not(:focus):hover {
+  &:hover {
     border-color: ${(props: IDraftEditorContainer) => {
       if (props.error) {
         return '#fc3c2d';
-      } else if (props.focussed) {
-        return '#000';
       }
 
       return '#999';
@@ -151,6 +147,8 @@ type Props = {
   error?: string | null | undefined;
   toolbarConfig?: {} | null | undefined;
   onChange: (arg: EditorState) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;
 };
 
@@ -173,14 +171,22 @@ export default class Editor extends React.PureComponent<Props, State> {
 
   handleOnFocus = () => {
     this.setState({ focussed: true });
+    
+    if (this.props.onFocus) {
+      this.props.onFocus();
+    }
   }
 
   handleOnBlur = () => {
     this.setState({ focussed: false });
+
+    if (this.props.onBlur) {
+      this.props.onBlur();
+    }
   }
 
   handleRef = (element: HTMLInputElement) => {
-    if (_.isFunction(this.props.setRef)) {
+    if (this.props.setRef) {
       this.props.setRef(element);
     }
   }
@@ -208,6 +214,8 @@ export default class Editor extends React.PureComponent<Props, State> {
       <Container>
         <DraftEditorContainer focussed={focussed} error={hasError}>
           <DraftEditor
+            editorClassName={`draft-editor ${focussed ? 'focus' : ''}`}
+            wrapperClassName={`draft-editor-wrapper`}
             id={id}
             spellCheck={true}
             editorState={value}
@@ -217,6 +225,7 @@ export default class Editor extends React.PureComponent<Props, State> {
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
             ref={this.handleRef}
+            /*
             mention={{
               separator: ' ',
               trigger: '@',
@@ -235,6 +244,7 @@ export default class Editor extends React.PureComponent<Props, State> {
                 { text: 'honeydew', value: 'honeydew', url: 'honeydew' },
               ],
             }}
+            */
           />
         </DraftEditorContainer>
         <Error text={error}/>

@@ -1,5 +1,52 @@
 # Changelog
 
+## 2017-10-09
+
+### Fixed
+- The male/female gender selection is no longer reversed after registration
+- On firefox, the initial loading animation is properly scaled
+- After signing in, the state of the vote buttons on idea cards is now correct for the current user
+- Fixed bug were some text would disappear, because it was not available in the current language
+- Fixed bug where adding an idea failed because of a wrongly stored user language
+- Fixed bug where removing a language in the admin settings fails
+- Graphical glitches on the project pages
+
+### Added
+- End-to-end test coverage for the happy flow of most of the citizen-facing app interaction
+- Automated browser error logging to be proactive on bugs
+- An idea can be removed through the admin
+
+### Changed
+- The modal that shows an idea is now fullscreen and has a new animation
+- New design for the idea show page
+- New design for the comments, with animation and better error handling
+- The "Trending" sorting algorithm has changed to be more balanced and give new ideas a better chance
+- Slightly improved design of the page that shows the user profile
+
+## 2017-09-22
+
+### Fixed
+- Bug where multiple form inputs didn't accept typed input
+- Issues blocking the login process
+- The success message when commenting no longer blocks you from adding another comment
+- Clicking an internal link from the idea modal didn't work
+- Responsiveness of filters on the ideas page
+- Updating an idea status through the admin failed
+
+### Added
+- Initial loading animation on page load
+- Initial version of the legal pages (T&C, privacy policy, cookie policy)
+- All forms give more detailed error information when something goes wrong
+- Full caching and significant speed improvements for all data resources
+
+### Changed
+- Refactoring and restyling of the landing page, idea cards and project cards
+- Added separate sign in and sign up components
+- Cleaned up old and unused code
+- The navbar is no longer shown when opening a modal
+- Lots of little tweaks to styling, UX and responsiveness
+
+
 ## 2017-09-01
 
 ### Fixed

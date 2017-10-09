@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { ideaStream } from 'services/ideas';
+import { ideaByIdStream } from 'services/ideas';
 
 export interface IIdeaVoteData {
   id: string;
@@ -45,14 +45,10 @@ export function votesStream(ideaId: string, streamParams: IStreamParams<IIdeaVot
   return streams.get<IIdeaVotes>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/votes`, ...streamParams });
 }
 
-export async function addVote(ideaId: string, object: INewVoteProperties) {
-  const response = await streams.add<IIdeaVote>(`${API_PATH}/ideas/${ideaId}/votes`, { vote: object });
-  ideaStream(ideaId).fetch();
-  return response;
+export function addVote(ideaId: string, object: INewVoteProperties) {
+  return streams.add<IIdeaVote>(`${API_PATH}/ideas/${ideaId}/votes`, { vote: object });
 }
 
-export async function deleteVote(ideaId, voteId: string) {
-  const response = await streams.delete(`${API_PATH}/votes/${voteId}`, voteId);
-  ideaStream(ideaId).fetch();
-  return response;
+export function deleteVote(ideaId, voteId: string) {
+  return streams.delete(`${API_PATH}/votes/${voteId}`, voteId);
 }

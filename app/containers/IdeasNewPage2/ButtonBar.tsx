@@ -58,7 +58,6 @@ export type State = {
 export const namespace = 'IdeasNewPage2/ButtonBar';
 
 export default class ButtonBar extends React.PureComponent<Props, State> {
-  public namespace: string;
   private state$: IStateStream<State>;
   private subscriptions: Rx.Subscription[];
 
@@ -79,7 +78,7 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
   }
 
   handleOnSubmit = () => {
-    eventEmitter.emit(namespace, 'submit');
+    eventEmitter.emit(namespace, 'submit', null);
   }
 
   render() {
@@ -91,6 +90,7 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
       <Container>
         <ButtonBarInner>
           <Button
+            className="e2e-submit-idea-form"
             size="2"
             loading={processing}
             text={formatMessage(messages.submit)}

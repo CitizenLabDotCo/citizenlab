@@ -1,52 +1,22 @@
-import * as Rx from 'rxjs/Rx';
+import { Multiloc } from 'typings';
+import { Map } from 'immutable';
 import * as _ from 'lodash';
-import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
 
-class Internationalization {
-  locale: string | null;
-  currentTenantLocales: string[] | null;
-  subscriptions: Rx.Subscription[];
-
-  constructor() {
-    this.locale = null;
-    this.currentTenantLocales = null;
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        localeStream().observable,
-        currentTenantStream().observable
-      ).subscribe(([locale, currentTenant]) => {
-        this.locale = locale;
-        this.currentTenantLocales = (currentTenant ? currentTenant.data.attributes.settings.core.locales : null);
-      })
-    ];
-  }
-
-  getLocalized(multiLoc: { [key: string]: string } | null) {
-    let text: string = '';
-
-    if (multiLoc !== null && _.isObject(multiLoc) && !_.isEmpty(multiLoc)) {
-      if (this.locale && multiLoc[this.locale]) {
-        text = multiLoc[this.locale];
-      } else if (this.currentTenantLocales && this.currentTenantLocales.length > 0) {
-        this.currentTenantLocales.forEach((currentTenantLocale) => {
-          if (multiLoc[currentTenantLocale]) {
-            text = multiLoc[currentTenantLocale];
-            return false;
-          }
-
-          return true;
-        });
-      }
-
-      if (text === '' && multiLoc['en']) {
-        text = multiLoc['en'];
-      }
-    }
-
-    return text;
-  }
+function isImmutable(multiloc: Multiloc | Map<String, String> | null): multiloc is Map<String, String> {
+  return typeof (<Multiloc>multiloc).toJS !== 'undefined';
 }
 
-const i18n = new Internationalization();
-export default i18n;
+export function getLocalized(multiloc: Multiloc | Map<String, String> | null, locale: string, currentTenantLocales: string[]) : string {
+  let multilocObject : Multiloc = {};
+  if (!multiloc) {
+    return '';
+  }
+  if (isImmutable(multiloc)) {
+    multilocObject = multiloc.toJS() as Multiloc;
+  } else {
+    multilocObject = multiloc;
+  }
+  const candidateLocales: string[] = [locale, ...currentTenantLocales, ...(_.keys(multilocObject) || [])];
+  const winnerLocale = candidateLocales.find((locale) => !!multilocObject[locale]);
+  return (winnerLocale && multilocObject[winnerLocale]) || '';
+}

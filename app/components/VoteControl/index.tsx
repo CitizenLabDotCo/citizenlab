@@ -1,159 +1,263 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// components
 import Icon from 'components/UI/Icon';
-import { darken } from 'polished';
-import { state, IStateStream } from 'services/state';
-import { IStream } from 'utils/streams';
-import styled from 'styled-components';
+
+// services
 import { authUserStream } from 'services/auth';
-import eventEmitter from 'utils/eventEmitter';
-import { ideaStream, IIdea } from 'services/ideas';
-import { userStream, IUser } from 'services/users';
-import { votesStream, addVote, deleteVote, IIdeaVote, IIdeaVoteData } from 'services/ideaVotes';
+import { ideaByIdStream, IIdea } from 'services/ideas';
+import { userByIdStream, IUser } from 'services/users';
+import { voteStream, votesStream, addVote, deleteVote, IIdeaVote, IIdeaVoteData } from 'services/ideaVotes';
 
-const BACKGROUND = '#F8F8F8';
-const FOREGROUND = '#6B6B6B';
-const FOREGROUND_ACTIVE = '#FFFFFF';
-const GREEN = '#32B67A';
-const RED = '#FC3C2D';
-const WIDTH = {
-  small: 50,
-  medium: 80,
-  large: 100,
-};
-const HEIGHT = {
-  small: 35,
-  medium: 45,
-  large: 57,
-};
-const FONT_SIZE = {
-  small: 14,
-  medium: 18,
-  large: 23,
-};
-const GUTTER = {
-  small: 3,
-  medium: 5,
-  large: 8,
-};
+// style
+import { darken } from 'polished';
+import styled, { keyframes } from 'styled-components';
 
-const VotesContainer = styled.div`
-  display: flex;
-  flex-direction: row;
+const green = '#32B67A';
+const red = '#FC3C2D';
+
+const vote = keyframes`
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+
+  50% {
+    transform: scale3d(1.18, 1.18, 1.18);
+  }
+
+  to {
+    transform: scale3d(1, 1, 1);
+  }
 `;
 
-const VoteButton: any = styled.button`
-  cursor: pointer;
-  background-color: ${BACKGROUND};
-  width: ${props => WIDTH[(props as any).size]}px;
-  height: ${props => HEIGHT[(props as any).size]}px;
-  border-radius: 5px;
-  font-size: ${props => FONT_SIZE[(props as any).size]}px;
-  font-weight: 600;
-  color: ${props => (props as any).active ? FOREGROUND_ACTIVE : FOREGROUND};
-  margin-right: ${props => GUTTER[(props as any).size]}px;
+const Container: any = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  transition: background-color 50ms ease-out;
-  outline: none;
 `;
 
-const UpvoteButton = VoteButton.extend`
-  ${props => props.active && `background: ${GREEN};`}
+const VoteIconContainer = styled.div`
+  width: 53px;
+  height: 53px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: solid 1px #e0e0e0;
+  transition: all 100ms ease-out;
+
   &:hover {
-    background-color: ${props => darken(0.1, props.active ? GREEN : BACKGROUND)};
+    /* transform: scale(1.04); */
   }
 `;
 
-const DownvoteButton = VoteButton.extend`
-  ${props => props.active && `background: ${RED};`}
-  &:hover {
-    background-color: ${props => darken(0.1, props.active ? RED : BACKGROUND)};
-  }
-`;
-
-const VoteIcon = styled(Icon)`
+const VoteIcon = styled(Icon) `
+  height: 19px;
+  fill: #84939d;
+  transition: all 100ms ease-out;
 `;
 
 const VoteCount = styled.div`
-  margin-left: 6px;
+  color: #84939d;
+  font-size: 16px;
+  font-weight: 300;
+  margin-left: 4px;
+  transition: all 100ms ease-out;
+`;
+
+const Vote: any = styled.div`
+  width: 90px;
+  display: flex;
+  align-items: center;
+
+  &.voteClick ${VoteIconContainer} {
+    animation: ${vote} 250ms;
+  }
+`;
+
+const Upvote = Vote.extend`
+  ${VoteIconContainer} {
+    ${props => props.active && `border-color: ${green}; background: ${green};`}
+  }
+
+  ${VoteIcon} {
+    margin-bottom: 4px;
+    ${props => props.active && `fill: #fff;`}
+  }
+
+  ${VoteCount} {
+    ${props => props.active && `color: ${green};`}
+  }
+
+  &:hover {
+    ${VoteIconContainer} {
+      ${props => !props.active && `border-color: ${green};`}
+    }
+
+    ${VoteIcon} {
+      ${props => !props.active && `fill: ${green};`}
+    }
+
+    ${VoteCount} {
+      ${props => !props.active && `color: ${green};`}
+    }
+  }
+`;
+
+const Downvote = Vote.extend`
+  ${VoteIconContainer} {
+    ${props => props.active && `border-color: ${red}; background: ${red};`}
+  }
+
+  ${VoteIcon} {
+    margin-top: 5px;
+    ${props => props.active && `fill: #fff;`}
+  }
+
+  ${VoteCount} {
+    ${props => props.active && `color: ${red};`}
+  }
+
+  &:hover {
+    ${VoteIconContainer} {
+      ${props => !props.active && `border-color: ${red};`}
+    }
+
+    ${VoteIcon} {
+      ${props => !props.active && `fill: ${red};`}
+    }
+
+    ${VoteCount} {
+      ${props => !props.active && `color: ${red};`}
+    }
+  }
 `;
 
 type Props = {
   ideaId: string;
-  size: 'small' | 'medium' | 'large';
+  unauthenticatedVoteClick?: () => void;
 };
 
 type State = {
   authUser: IUser | null,
-  isAuthenticated: boolean;
   upvotesCount: number;
   downvotesCount: number;
-  myVote: IIdeaVoteData | null;
+  voting: 'up' | 'down' | null;
+  votingAnimation: 'up' | 'down' | null;
+  myVoteId: string | null;
+  myVoteMode: 'up' | 'down' | null;
 };
 
-export const namespace = 'VoteControl/index';
-
 export default class Votes extends React.PureComponent<Props, State> {
-  state$: IStateStream<State>;
+  state: State;
+  voting$: Rx.BehaviorSubject<'up' | 'down' | null>;
   subscriptions: Rx.Subscription[];
+  upvoteElement: HTMLDivElement | null;
+  downvoteElement: HTMLDivElement | null;
+
+  constructor() {
+    super();
+    this.state = {
+      authUser: null,
+      upvotesCount: 0,
+      downvotesCount: 0,
+      voting: null,
+      votingAnimation: null,
+      myVoteId: null,
+      myVoteMode: null
+    };
+    this.voting$ = new Rx.BehaviorSubject(null);
+    this.subscriptions = [];
+    this.upvoteElement = null;
+    this.downvoteElement = null;
+  }
 
   componentWillMount() {
     const { ideaId } = this.props;
-    const instanceNamespace = `${namespace}/${ideaId}`;
-    const initialState: State = {
-      authUser: null,
-      isAuthenticated: false,
-      upvotesCount: 0,
-      downvotesCount: 0,
-      myVote: null
-    };
-
-    const idea$ = ideaStream(ideaId).observable;
     const authUser$ = authUserStream().observable;
-    const isAuthenticated$ = authUser$.map(authUser => !_.isNull(authUser));
-    const votes$ = votesStream(ideaId).observable;
-    const authUserAndVotes$ = authUser$.switchMap(authUser => votes$.map(votes => ({ authUser, votes })));
-    // const upvotesCount$ = votes$.map(votes => votes.data.filter(vote => vote.attributes.mode === 'up').length);
-    // const downVotesCount$ = votes$.map(votes => votes.data.filter(vote => vote.attributes.mode === 'down').length);
-    const myVote$ = Rx.Observable.combineLatest(authUser$, votes$).map(([authUser, votes]) => {
-      if (authUser) {
-        const myVote = _(votes.data).find(vote => vote.relationships.user.data.id === authUser.data.id);
-        return (myVote ? myVote : null);
-      }
 
-      return null;
+    const idea$ = Rx.Observable.combineLatest(
+      ideaByIdStream(ideaId).observable,
+      this.voting$
+    ).filter(([idea, voting]) => {
+      return voting === null;
+    }).map(([idea, voting]) => {
+      return idea;
     });
 
-    this.state$ = state.createStream<State>(instanceNamespace, instanceNamespace, initialState);
+    const myVote$ = Rx.Observable.combineLatest(
+      authUser$,
+      idea$
+    ).switchMap(([authUser, idea]) => {
+      if (authUser && idea && _.has(idea, 'data.relationships.user_vote.data') && idea.data.relationships.user_vote.data !== null) {
+        const voteId = idea.data.relationships.user_vote.data.id;
+
+        return Rx.Observable.combineLatest(
+          voteStream(voteId).observable,
+          this.voting$
+        ).filter(([vote, voting]) => {
+          return voting === null;
+        }).map(([vote, voting]) => {
+          return vote;
+        });
+      }
+
+      return Rx.Observable.of(null);
+    });
 
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state)),
+      this.voting$.subscribe((voting) => {
+        this.setState((state) => ({
+          voting,
+          votingAnimation: (voting !== null && state.voting === null ? voting : state.votingAnimation)
+        }));
+      }),
 
-      Rx.Observable.combineLatest(
-        idea$,
-        isAuthenticated$,
-        authUserAndVotes$,
-        myVote$
-      ).subscribe(([idea, isAuthenticated, { authUser, votes }, myVote]) => {
-        let upvotesCount = idea.data.attributes.upvotes_count;
-        let downvotesCount = idea.data.attributes.downvotes_count;
+      idea$.subscribe((idea) => {
+        const upvotesCount = idea.data.attributes.upvotes_count;
+        const downvotesCount = idea.data.attributes.downvotes_count;
+        this.setState({ upvotesCount, downvotesCount });
+      }),
 
-        if (isAuthenticated && votes) {
-          upvotesCount = votes.data.filter(vote => vote.attributes.mode === 'up').length;
-          downvotesCount = votes.data.filter(vote => vote.attributes.mode === 'down').length;
+      authUser$.subscribe(authUser => this.setState({ authUser })),
+
+      myVote$.subscribe((myVote) => {
+        if (myVote) {
+          this.setState({ myVoteId: myVote.data.id, myVoteMode: myVote.data.attributes.mode });
+        } else {
+          this.setState({ myVoteId: null, myVoteMode: null });
         }
-
-        this.state$.next({ authUser, isAuthenticated, upvotesCount, downvotesCount, myVote });
       })
     ];
   }
 
+  componentDidMount() {
+    if (this.upvoteElement) {
+      this.upvoteElement.addEventListener('animationend', this.votingAnimationDone);
+    }
+
+    if (this.downvoteElement) {
+      this.downvoteElement.addEventListener('animationend', this.votingAnimationDone);
+    }
+  }
+
   componentWillUnmount() {
+    if (this.upvoteElement) {
+      this.upvoteElement.removeEventListener('animationend', this.votingAnimationDone);
+    }
+
+    if (this.downvoteElement) {
+      this.downvoteElement.removeEventListener('animationend', this.votingAnimationDone);
+    }
+
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
+
+	votingAnimationDone = () => {
+		this.setState({ votingAnimation: null });
+	}
 
   onClickUpvote = (event) => {
     event.preventDefault();
@@ -168,47 +272,88 @@ export default class Votes extends React.PureComponent<Props, State> {
   }
 
   onClickVote = async (voteMode: 'up' | 'down') => {
-    try {
-      const { authUser, myVote } = this.state;
-      const { ideaId } = this.props;
+    const { authUser, myVoteId, myVoteMode } = this.state;
+    const { ideaId } = this.props;
 
-      if (authUser) {
-        if (myVote && myVote.attributes.mode !== voteMode) {
-          await deleteVote(ideaId, myVote.id);
+    if (authUser && this.state.voting === null) {
+      try {
+        this.voting$.next(voteMode);
+
+        if (myVoteId && myVoteMode && myVoteMode !== voteMode) {
+          this.setState((state) => ({
+            upvotesCount: (voteMode === 'up' ? state.upvotesCount + 1 : state.upvotesCount - 1),
+            downvotesCount: (voteMode === 'down' ? state.downvotesCount + 1 : state.downvotesCount - 1),
+            myVoteMode: voteMode
+          }));
+          await deleteVote(ideaId, myVoteId);
           await addVote(ideaId, { user_id: authUser.data.id, mode: voteMode });
         }
 
-        if (myVote && myVote.attributes.mode === voteMode) {
-          await deleteVote(ideaId, myVote.id);
+        if (myVoteId && myVoteMode && myVoteMode === voteMode) {
+          this.setState((state) => ({
+            upvotesCount: (voteMode === 'up' ? state.upvotesCount - 1 : state.upvotesCount),
+            downvotesCount: (voteMode === 'down' ? state.downvotesCount - 1 : state.downvotesCount),
+            myVoteMode: null
+          }));
+          await deleteVote(ideaId, myVoteId);
         }
 
-        if (!myVote) {
+        if (!myVoteMode) {
+          this.setState((state) => ({
+            upvotesCount: (voteMode === 'up' ? state.upvotesCount + 1 : state.upvotesCount),
+            downvotesCount: (voteMode === 'down' ? state.downvotesCount + 1 : state.downvotesCount),
+            myVoteMode: voteMode
+          }));
           await addVote(ideaId, { user_id: authUser.data.id, mode: voteMode });
         }
-      } else {
-        eventEmitter.emit(namespace, 'unauthenticatedVoteClick', ideaId);
+
+        await ideaByIdStream(ideaId).fetch();
+        this.voting$.next(null);
+      } catch (error) {
+        this.voting$.next(null);
+        await ideaByIdStream(ideaId).fetch();
       }
-    } catch (error) {
-      console.log(error);
+    }
+
+    if (!authUser) {
+      if (_.has(this.props, 'unauthenticatedVoteClick') && _.isFunction(this.props.unauthenticatedVoteClick)) {
+        this.props.unauthenticatedVoteClick();
+      }
     }
   }
 
+  setUpvoteRef = (element: HTMLDivElement) => {
+    this.upvoteElement = element;
+  }
+
+  setDownvoteRef = (element: HTMLDivElement) => {
+    this.downvoteElement = element;
+  }
+
   render() {
-    const { size } = this.props;
-    const { isAuthenticated, upvotesCount, downvotesCount, myVote } = this.state;
-    const myVoteMode = (myVote ? myVote.attributes.mode : null);
+    const { upvotesCount, downvotesCount, myVoteMode, voting, votingAnimation } = this.state;
 
     return (
-      <VotesContainer>
-        <UpvoteButton size={size} active={myVoteMode === 'up'} onClick={this.onClickUpvote}>
-          <VoteIcon name="upvote" />
+      <Container className={`e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode}`}>
+        <Upvote
+          active={myVoteMode === 'up'}
+          onClick={this.onClickUpvote}
+          innerRef={this.setUpvoteRef}
+          className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'}`}
+        >
+          <VoteIconContainer><VoteIcon name="upvote-2" /></VoteIconContainer>
           <VoteCount>{upvotesCount}</VoteCount>
-        </UpvoteButton>
-        <DownvoteButton size={size} active={myVoteMode === 'down'} onClick={this.onClickDownvote}>
-          <VoteIcon name="downvote" />
+        </Upvote>
+        <Downvote
+          active={myVoteMode === 'down'}
+          onClick={this.onClickDownvote}
+          innerRef={this.setDownvoteRef}
+          className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'}`}
+        >
+          <VoteIconContainer><VoteIcon name="downvote-2" /></VoteIconContainer>
           <VoteCount>{downvotesCount}</VoteCount>
-        </DownvoteButton>
-      </VotesContainer>
+        </Downvote>
+      </Container>
     );
   }
 }

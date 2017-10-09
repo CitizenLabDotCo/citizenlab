@@ -54,14 +54,14 @@ const Pages = styled.div`
   }
 `;
 
-const PageNumber = styled.div`
-  color: ${props => props.selected ? '#fff' : '#333'};
+const PageNumber: any = styled.div`
+  color: ${(props: any) => props.selected ? '#fff' : '#333'};
   background: #eee;
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 5px;
   cursor: pointer;
-  background: ${props => props.selected ? '#333' : '#eee'};
+  background: ${(props: any) => props.selected ? '#333' : '#eee'};
 `;
 
 type Props = {};
@@ -124,7 +124,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
           pageCount = (newPageCount || this.state.pageCount);
         }
 
-        this.state$.next({ users, sortBy, pageNumber, searchValue, pageCount });
+        this.setState({ users, sortBy, pageNumber, searchValue, pageCount });
       })
     ];
   }

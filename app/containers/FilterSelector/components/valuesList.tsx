@@ -17,7 +17,7 @@ const Overlay = styled.div`
   padding: 10px;
   position: absolute;
   top: 2rem;
-  left: 0;
+  right: -22px;
   z-index: 10;
 
   &.deployed {
@@ -35,14 +35,14 @@ const Overlay = styled.div`
     display: block;
     position:absolute;
     top: -2rem;
-    left: 1rem;
+    right: 1rem;
   }
 `;
 
 const ListWrapper = styled.ul`
   list-style: none;
   margin: 0;
-  max-height: 10em;
+  max-height: 15rem;
   overflow-y: auto;
   padding: 0;
 `;
@@ -62,9 +62,9 @@ const OptionText = styled.span`
   flex: 1;
 `;
 
-const Checkmark = styled.span`
-  background: ${(props) => props.selected ? '#32b67a' : '#fff'};
-  border-color: ${(props) => props.selected ? '#32b67a' : '#a6a6a6'};
+const Checkmark: any = styled.span`
+  background: ${(props: any) => props.selected ? '#32b67a' : '#fff'};
+  border-color: ${(props: any) => props.selected ? '#32b67a' : '#a6a6a6'};
   border-radius: 3px;
   border-style: solid;
   border-width: 1px;
@@ -78,6 +78,7 @@ const Checkmark = styled.span`
 
   svg {
     transform: scale(.8);
+    display: ${(props: any) => props.selected ? 'block' : 'none'};
   }
 `;
 
@@ -86,7 +87,7 @@ type Value = {
   value: any,
 };
 
-type valuesListProps = {
+type Props = {
   values: Value[]
   onChange: Function,
   selected: any[],
@@ -95,14 +96,15 @@ type valuesListProps = {
   baseID: string,
 };
 
-type valuesListState = {
+type State = {
   currentFocus: number
 };
 
-class ValuesList extends React.Component<valuesListProps, valuesListState> {
+export default class ValuesList extends React.PureComponent<Props, State> {
+  state: State;
+
   constructor() {
     super();
-
     this.state = {
       currentFocus: 0,
     };
@@ -114,7 +116,9 @@ class ValuesList extends React.Component<valuesListProps, valuesListState> {
 
   updateFocus = (newIndex: number): void => {
     this.setState({ currentFocus: newIndex });
+
     const focusedElement = document.getElementById(`${this.props.baseID}-${newIndex}`);
+
     if (focusedElement) {
       focusedElement.scrollIntoView();
     }
@@ -205,5 +209,3 @@ class ValuesList extends React.Component<valuesListProps, valuesListState> {
     );
   }
 }
-
-export default ValuesList;

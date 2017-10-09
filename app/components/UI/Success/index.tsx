@@ -1,8 +1,12 @@
 import * as React from 'react';
+import * as _ from 'lodash';
+
+// components
 import Icon from 'components/UI/Icon';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import * as _ from 'lodash';
+
+// style
 import styled from 'styled-components';
 
 interface IStyledSuccessMessageInner {
@@ -14,6 +18,8 @@ interface IStyledSuccessMessage {
   marginTop: string;
   marginBottom: string;
 }
+
+const Container = styled.div``;
 
 const SuccessMessageText = styled.div`
   color: #40af65;
@@ -34,7 +40,7 @@ const StyledSuccessMessageInner = styled.div`
   display: flex;
   align-items: center;
   border-radius: 5px;
-  background: ${(props: IStyledSuccessMessageInner) => (props.showBackground ? '#3fb789' : 'transparent')};
+  background: ${(props: IStyledSuccessMessageInner) => (props.showBackground ? '#ecf7ef' : 'transparent')};
 `;
 
 const StyledSuccessMessage: any = styled.div`
@@ -123,15 +129,15 @@ type Props = {
   marginBottom?: string;
   showIcon?: boolean;
   showBackground?: boolean;
-  className?: string;
 };
 
 type State = {};
 
 export default class Success extends React.PureComponent<Props, State> {
   render() {
+    const className = this.props['className'];
     const { text } = this.props;
-    let { size, marginTop, marginBottom, showIcon, showBackground, className } = this.props;
+    let { size, marginTop, marginBottom, showIcon, showBackground } = this.props;
     const timeout = 400;
 
     size = (size || '1');
@@ -139,9 +145,8 @@ export default class Success extends React.PureComponent<Props, State> {
     marginBottom = (marginTop || '0px');
     showIcon = (_.isBoolean(showIcon) ? showIcon : true);
     showBackground = (_.isBoolean(showBackground) ? showBackground : true);
-    className = (className || '');
 
-    const successElement = text && (
+    const successElement = (text ? (
       <CSSTransition classNames="success" timeout={timeout}>
         <StyledSuccessMessage size={size} marginTop={marginTop} marginBottom={marginBottom}>
           <StyledSuccessMessageInner showBackground={showBackground}>
@@ -152,14 +157,14 @@ export default class Success extends React.PureComponent<Props, State> {
           </StyledSuccessMessageInner>
         </StyledSuccessMessage>
       </CSSTransition>
-    );
+    ) : null);
 
     return (
-      <div>
+      <Container className={className}>
         <TransitionGroup>
           {successElement}
         </TransitionGroup>
-      </div>
+      </Container>
     );
   }
 }

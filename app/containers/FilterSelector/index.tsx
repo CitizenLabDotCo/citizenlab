@@ -1,28 +1,31 @@
-// Libraries
 import * as React from 'react';
 import * as _ from 'lodash';
-import styled, { StyledFunction } from 'styled-components';
 
-// Components
+// components
 import Title from './components/title';
 import ValuesList from './components/valuesList';
 import clickOutside from 'utils/containers/clickOutside';
 
-// Style
-const Container = styled(clickOutside)`
+// style
+import styled from 'styled-components';
+
+const Container = styled(clickOutside) `
   display: inline-block;
   position: relative;
-  outline: none;
 
-  & + & {
-    margin-left: 2rem;
+  &:not(:last-child) {
+    margin-right: 40px;
+  }
+
+  * {
+    outline: none;
   }
 `;
 
 interface Props {
   title: string;
   name: string;
-  values: { text: string, value: any}[];
+  values: { text: string, value: any }[];
   onChange?: Function;
   multiple: boolean;
   selected: any[];
@@ -33,16 +36,17 @@ interface State {
   currentTitle: string;
 }
 
-class FilterSelector extends React.Component<Props, State> {
-  baseID: string = `filter-${Math.floor(Math.random() * 10000000)}`;
+export default class FilterSelector extends React.PureComponent<Props, State> {
+  state: State;
+  baseID: string;
 
   constructor(props) {
     super(props);
-
     this.state = {
       deployed: false,
       currentTitle: this.getTitle(props.selected, props.values, props.multiple, props.title),
     };
+    this.baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,7 +69,7 @@ class FilterSelector extends React.Component<Props, State> {
   }
 
   toggleExpanded = () => {
-    this.setState({ deployed: !this.state.deployed });
+    this.setState(state => ({ deployed: !state.deployed }));
   }
 
   selectionChange = (value) => {
@@ -95,12 +99,10 @@ class FilterSelector extends React.Component<Props, State> {
     const { values, multiple, selected } = this.props;
 
     return (
-      <Container onClickOutside={this.handleClickOutside}>
+      <Container onClickOutside={this.handleClickOutside} className={`e2e-filter-selector-${this.props.name}`}>
         <Title title={currentTitle} deployed={deployed} onClick={this.toggleExpanded} baseID={this.baseID} />
         <ValuesList deployed={deployed} values={values} selected={selected} onChange={this.selectionChange} multiple={multiple} baseID={this.baseID} />
       </Container>
     );
   }
 }
-
-export default FilterSelector;

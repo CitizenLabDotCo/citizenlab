@@ -1,21 +1,55 @@
-// Libraries
 import * as React from 'react';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
 
-// Components
+// components
 import Icon from 'components/UI/Icon';
 
-type TitleProps = {
+// style
+import styled from 'styled-components';
+
+const DropdownIcon = styled(Icon)`
+  height: 7px;
+  fill: #84939E;
+  margin-left: 5px;
+  margin-top: 3px;
+  transition: transform 100ms ease-out;
+`;
+
+const StyledButton = styled.button`
+  color: #84939E;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px;
+  position: relative;
+  z-index: 15;
+
+  &:hover {
+    color: #000;
+
+    ${DropdownIcon} {
+      fill: #000;
+    }
+  }
+
+  &.deployed ${DropdownIcon} {
+    transform: rotate(180deg);
+  }
+`;
+
+type Props = {
   title: string,
   deployed: boolean,
   onClick: Function,
   baseID: string,
 };
 
-class Title extends React.Component<TitleProps> {
+type State = {};
 
-  handleClick = (event): void => {
+export default class Title extends React.PureComponent<Props, State> {
+  handleClick = (event) => {
     this.props.onClick(event);
   }
 
@@ -23,36 +57,15 @@ class Title extends React.Component<TitleProps> {
     const { title, onClick, deployed, baseID } = this.props;
 
     return (
-      <button
+      <StyledButton
         onClick={this.handleClick}
         aria-expanded={deployed}
         id={`${baseID}-label`}
         className={deployed ? 'deployed' : ''}
       >
         {title}
-        <Icon name="dropdown" />
-      </button>
+        <DropdownIcon name="dropdown" />
+      </StyledButton>
     );
   }
 }
-
-// Style
-const StyledTitle = styled(Title)`
-  color: #6b6b6b;
-  cursor: pointer;
-  font-size: 1.25rem;
-  position: relative;
-  z-index: 15;
-
-  svg {
-    margin-left: .5em;
-    transform: rotate(0)};
-    transition: all .2s ease-in-out;
-  }
-
-  &.deployed svg{
-    transform: rotate(180deg);
-  }
-`;
-
-export default StyledTitle;

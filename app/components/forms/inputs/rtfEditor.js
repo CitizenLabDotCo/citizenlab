@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 
 // components
 import { Editor as TextBox } from 'react-draft-wysiwyg';
@@ -61,7 +61,6 @@ class RtfEditor extends React.Component {
     const { errors } = this.props;
     const { label } = this.text;
     const { showError } = this.state;
-    // if (Object.keys(errors).length !== 0) console.log(errors);
     const error = errors && messages[toCammelCase(errors.slice(-1)[0])];
 
     return (

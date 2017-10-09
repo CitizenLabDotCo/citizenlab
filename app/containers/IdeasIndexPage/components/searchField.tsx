@@ -11,22 +11,49 @@ import { preprocess } from 'utils';
 
 // translations
 import { injectIntl, InjectedIntl } from 'react-intl';
-import { injectTFunc } from 'containers/T/utils';
+import { injectTFunc } from 'components/T/utils';
 import messages from '../messages';
+
+// Components
+import Icon from 'components/UI/Icon';
+import Input from 'components/UI/Input';
 
 // parse search
 import queryString from 'query-string';
 
-// style
-const StyledForm = styled.form`
-  align-self: stretch;
-  flex:1;
+const SearchButton = styled.button`
+  background: none;
+  border: none;
+  margin: 0 0 0 -36px;
+  padding: 0;
+  z-index: 2;
+`;
 
-  input {
-    background: #fff;
-    border-radius: 5px;
-    height: 100%;
-    padding: 1rem 1.5rem;
+const SearchIcon: any = styled(Icon)`
+  fill: #84939E;
+  height: 21px;
+  cursor: pointer;
+
+  &:hover {
+    fill: #000;
+  }
+`;
+
+const SearchInput = styled(Input)``;
+
+const StyledForm = styled.form`
+  flex: 1 1 100%;
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+
+  @media (min-width: 500px) {
+    flex-basis: auto;
+
+    ${SearchInput} {
+      width: 100%;
+      max-width: 300px;
+    }
   }
 `;
 
@@ -47,14 +74,14 @@ class SearchField extends React.Component<Props, State> {
     this.searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
   }
 
-  handleSubmit = (event):void => {
+  handleSubmit = (event): void => {
     event.preventDefault();
-    const value = event.target.search.value;
+    const { value } = this.state;
     this.props.filterPage('search', [value]);
   }
 
-  handleChange = (event):void => {
-    this.setState({ value: event.target.value });
+  handleChange = (value): void => {
+    this.setState({ value });
   }
 
   render() {
@@ -62,13 +89,16 @@ class SearchField extends React.Component<Props, State> {
 
     return (
       <StyledForm onSubmit={this.handleSubmit}>
-        <input
-          name="search"
+        <SearchInput
           type="text"
           placeholder="Search"
           onChange={this.handleChange}
           value={value}
+          id="e2e-ideas-search"
         />
+        <SearchButton className="e2e-ideas-search-button">
+          <SearchIcon name="search" className="search-icon" />
+        </SearchButton>
       </StyledForm>
     );
   }

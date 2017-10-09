@@ -77,4 +77,12 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage2.submitError',
     defaultMessage: 'Something went wrong. Please try again.',
   },
+  or: {
+    id: 'app.containers.IdeasNewPage2.or',
+    defaultMessage: 'Or',
+  },
+  goBack: {
+    id: 'app.containers.IdeasNewPage2.goBack',
+    defaultMessage: 'Go back',
+  },
 });
