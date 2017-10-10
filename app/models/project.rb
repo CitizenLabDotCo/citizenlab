@@ -30,6 +30,13 @@ class Project < ApplicationRecord
     .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
   end)
 
+  scope :with_all_topics, (Proc.new do |topic_ids|
+    uniq_topic_ids = topic_ids.uniq
+    joins(:projects_topics)
+    .where(projects_topics: {topic_id: uniq_topic_ids})
+    .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
+  end)
+
   private
 
   def generate_slug

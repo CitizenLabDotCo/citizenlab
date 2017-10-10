@@ -109,6 +109,8 @@ class Api::V1::IdeasController < ApplicationController
 
   # patch
   def update
+    params[:idea][:area_ids] ||= [] if params[:idea].has_key?(:area_ids)
+    params[:idea][:topic_ids] ||= [] if params[:idea].has_key?(:topic_ids)
     ActiveRecord::Base.transaction do
       if @idea.update(permitted_attributes(Idea))
         SideFxIdeaService.new.after_update(@idea, current_user)

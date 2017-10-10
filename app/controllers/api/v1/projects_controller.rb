@@ -9,6 +9,7 @@ class Api::V1::ProjectsController < ::ApplicationController
       .per(params.dig(:page, :size))
 
     @projects = @projects.with_all_areas(params[:areas]) if params[:areas].present?
+    @projects = @projects.with_all_topics(params[:topics]) if params[:topics].present?
 
     render json: @projects, include: ['project_images']
   end
@@ -34,6 +35,8 @@ class Api::V1::ProjectsController < ::ApplicationController
   end
 
   def update
+    params[:project][:area_ids] ||= [] if params[:project].has_key?(:area_ids)
+    params[:project][:topic_ids] ||= [] if params[:project].has_key?(:topic_ids)
     if @project.update(project_params)
       render json: @project, status: :ok
     else
@@ -58,7 +61,8 @@ class Api::V1::ProjectsController < ::ApplicationController
       :header_bg,
       title_multiloc: I18n.available_locales, 
       description_multiloc: I18n.available_locales,
-      area_ids: []
+      area_ids: [],
+      topic_ids: []
     )
   end
 
