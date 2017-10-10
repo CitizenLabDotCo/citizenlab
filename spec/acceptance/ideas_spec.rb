@@ -5,7 +5,8 @@ resource "Ideas" do
 
   before do
     header "Content-Type", "application/json"
-    @ideas = create_list(:idea, 5)
+    # @ideas = create_list(:idea, 5, publication_status: ['published','draft','published','published','spam']) #draft published closed spam
+    @ideas = ['published','draft','published','published','spam','published','published'].map { |ps|  create(:idea, publication_status: ps)}
     @user = create(:user)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
     header 'Authorization', "Bearer #{token}"
@@ -19,11 +20,20 @@ resource "Ideas" do
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
     parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status'", required: false
+    parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
 
-    example_request "List all ideas" do
+    example_request "List only all published ideas by default" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
+      expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).to all(eq 'published')
+    end
+
+    example "List all ideas which have draft set as publication status" do
+      do_request(publication_status: 'draft')
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response.dig(:data,0,:attributes,:publication_status)).to eq 'draft'
     end
 
     example "List all ideas with a topic" do
@@ -247,6 +257,20 @@ resource "Ideas" do
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
         expect(project.reload.ideas_count).to eq 1
       end
+
+      example "Check for the automatic creation of an upvote by the author when an idea is created", :document => false do
+
+        do_request
+
+        json_response = json_parse(response_body) 
+        new_idea = Idea.find(json_response.dig(:data, :id))
+        expect(new_idea.votes.size).to eq 1
+        expect(new_idea.votes[0].mode).to eq 'up'
+        expect(new_idea.votes[0].user.id).to eq @user.id
+        expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
+
+      end
+
     end
 
     describe do
@@ -298,6 +322,19 @@ resource "Ideas" do
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
+      end
+
+      example "Check for the automatic creation of an upvote by the author when the publication status of an idea is updated from draft to published", :document => false do
+        @idea.update(publication_status: "draft")
+
+        do_request(idea: { publication_status: "published" })
+
+        json_response = json_parse(response_body) 
+        new_idea = Idea.find(json_response.dig(:data, :id))
+        expect(new_idea.votes.size).to eq 1
+        expect(new_idea.votes[0].mode).to eq 'up'
+        expect(new_idea.votes[0].user.id).to eq @user.id
+        expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
       end
     end
 

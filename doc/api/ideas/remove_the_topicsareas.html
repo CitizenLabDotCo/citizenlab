@@ -150,7 +150,7 @@ table th, table td {
                     <span class="name">idea[publication_status]</span>
                 </td>
                 <td>
-                  <span class="description">Either [&quot;draft&quot;, &quot;published&quot;, &quot;closed&quot;, &quot;spam&quot;].join(&#39;, &#39;)}</span>
+                  <span class="description">Either draft, published, closed, spam</span>
                 </td>
               </tr>
               <tr>
@@ -276,12 +276,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDE3NzYxMTUsInN1YiI6IjI1M2E3ZGYyLTY4NzMtNGMyZC1iODU1LWU0YWQ5ZjI0OTFmZCJ9.vsBwBepCsxmqQ8SCw77us8j2n9KRz-bWInMbKEfT8_o
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA2MDksInN1YiI6IjI3ZDdlMmMxLTg2OTYtNGUyYy1iZWQxLThkNWVkZWQ4YTYwZiJ9.KvgwZpVT85hIfe00bI2OMC95YcFMjcq6byGbjN9DqTM
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/ideas/0aa144d1-defc-4f8a-93ab-bb6e19fe22b6</pre>
+          <pre class="request route highlight">PATCH api/v1/ideas/23afadee-d54a-40a0-97d5-0aa76b5e8f35</pre>
 
 
             <h4>Body</h4>
@@ -291,18 +291,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;4199af47fc8fa060f37810d49e460a33&quot;
+ETag: W/&quot;fc4693bd4e3fe827d6ac832adfce0f18&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: e79f2a53-f505-412b-9061-cd36ab3df607
-X-Runtime: 0.062402
+X-Request-Id: 4785cab7-2060-4fca-864b-0128f731c3bd
+X-Runtime: 0.068010
 Vary: Origin
-Content-Length: 1794</pre>
+Content-Length: 1860</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;0aa144d1-defc-4f8a-93ab-bb6e19fe22b6&quot;,
+    &quot;id&quot;: &quot;23afadee-d54a-40a0-97d5-0aa76b5e8f35&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -313,7 +313,8 @@ Content-Length: 1794</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Brant Huels&quot;,
+      &quot;author_name&quot;: &quot;Bertha D&#39;Amore&quot;,
+      &quot;slug&quot;: &quot;plant-more-trees-5&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
@@ -326,9 +327,9 @@ Content-Length: 1794</pre>
         ]
       },
       &quot;location_description&quot;: &quot;Watkins Road 8&quot;,
-      &quot;created_at&quot;: &quot;2017-08-02T16:01:55.816Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-08-02T16:01:55.898Z&quot;,
-      &quot;published_at&quot;: &quot;2017-08-02T16:01:55.816Z&quot;
+      &quot;created_at&quot;: &quot;2017-09-21T11:43:29.857Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-09-21T11:43:29.930Z&quot;,
+      &quot;published_at&quot;: &quot;2017-09-21T11:43:29.856Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -348,19 +349,19 @@ Content-Length: 1794</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;253a7df2-6873-4c2d-b855-e4ad9f2491fd&quot;,
+          &quot;id&quot;: &quot;27d7e2c1-8696-4e2c-bed1-8d5eded8a60f&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;a5740892-8af6-4090-a634-bece59e3f934&quot;,
+          &quot;id&quot;: &quot;cd572b51-91de-4cec-834a-b5775166054c&quot;,
           &quot;type&quot;: &quot;projects&quot;
         }
       },
       &quot;idea_status&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;8267718f-05a9-4be2-bfca-52ac83e7dc9a&quot;,
+          &quot;id&quot;: &quot;1e48c1b6-4ded-4106-91ec-e87a2e6c0c07&quot;,
           &quot;type&quot;: &quot;idea_statuses&quot;
         }
       },
@@ -371,30 +372,31 @@ Content-Length: 1794</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;253a7df2-6873-4c2d-b855-e4ad9f2491fd&quot;,
+      &quot;id&quot;: &quot;27d7e2c1-8696-4e2c-bed1-8d5eded8a60f&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Brant&quot;,
-        &quot;last_name&quot;: &quot;Huels&quot;,
-        &quot;slug&quot;: &quot;brant-huels&quot;,
+        &quot;first_name&quot;: &quot;Bertha&quot;,
+        &quot;last_name&quot;: &quot;D&#39;Amore&quot;,
+        &quot;slug&quot;: &quot;bertha-d-amore&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/253a7df2-6873-4c2d-b855-e4ad9f2491fd/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/253a7df2-6873-4c2d-b855-e4ad9f2491fd/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/79758313-18eb-4d16-a975-a1a557fb84b3/user/avatar/253a7df2-6873-4c2d-b855-e4ad9f2491fd/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/27d7e2c1-8696-4e2c-bed1-8d5eded8a60f/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/27d7e2c1-8696-4e2c-bed1-8d5eded8a60f/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/27d7e2c1-8696-4e2c-bed1-8d5eded8a60f/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-08-02T16:01:55.757Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-08-02T16:01:55.757Z&quot;,
-        &quot;email&quot;: &quot;prudence@reichel.biz&quot;,
+        &quot;created_at&quot;: &quot;2017-09-21T11:43:29.789Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-09-21T11:43:29.789Z&quot;,
+        &quot;email&quot;: &quot;colten.ferry@hackett.org&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
-        &quot;education&quot;: null
+        &quot;education&quot;: null,
+        &quot;unread_notifications&quot;: 0
       }
     }
   ]

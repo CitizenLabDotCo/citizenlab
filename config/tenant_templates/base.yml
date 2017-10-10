@@ -4,27 +4,32 @@ models:
       title_multiloc: statuses.proposed
       ordering: 100
       code: proposed
-      color: '#888888'
+      color: '#84939E'
+      description_multiloc: statuses.proposed_description
     - 
       title_multiloc: statuses.under_consideration
       ordering: 200
       code: under_consideration
       color: '#29ABD0'
+      description_multiloc: statuses.under_consideration_description
     - 
       title_multiloc: statuses.accepted
       ordering: 300
       code: accepted
       color: '#17C37B'
+      description_multiloc: statuses.accepted_description
     - 
       title_multiloc: statuses.rejected
       ordering: 400
       code: rejected
       color: '#EF3E4A'
+      description_multiloc: statuses.rejected_description
     -
       title_multiloc: statuses.implemented
       ordering: 500
       code: implemented
       color: '#B5DA23'
+      description_multiloc: statuses.implemented_description
   topic:
     -
       title_multiloc: topics.infrastructure
@@ -62,3 +67,17 @@ models:
     -
       title_multiloc: topics.health
       description_multiloc: topics.health_description
+  page:
+    -
+      title_multiloc: pages.cookie_policy_title
+      body_multiloc: pages.cookie_policy_body
+      slug: cookie-policy
+    -
+      title_multiloc: pages.privacy_policy_title
+      body_multiloc: pages.privacy_policy_body
+      slug: privacy-policy
+    -
+      title_multiloc: pages.terms_and_conditions_title
+      body_multiloc: pages.terms_and_conditions_body
+      slug: terms-and-conditions
+

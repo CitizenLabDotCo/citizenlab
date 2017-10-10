@@ -2,8 +2,14 @@ class SideFxUserService
 
   include SideFxHelper
 
+  def before_create user, current_user
+    if User.count == 0
+      user.add_role 'admin'
+    end
+  end
+
   def after_create user, current_user
-    UserMailer.welcome(@user).deliver_later
+    # UserMailer.welcome(@user).deliver_later
     LogActivityJob.perform_later(user, 'created', current_user, user.created_at.to_i)
   end
 
