@@ -3,6 +3,7 @@ class Api::V1::ProjectSerializer < ActiveModel::Serializer
 
   has_many :project_images, serializer: Api::V1::ImageSerializer
   has_many :areas
+  has_many :topics
   
   def header_bg
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
