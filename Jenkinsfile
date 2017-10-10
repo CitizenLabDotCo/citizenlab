@@ -32,20 +32,21 @@ pipeline {
         script {
           sh 'rm -rf public/uploads/*'
           docker.withRegistry("https://index.docker.io/v1/",'docker-hub-credentials') {
-            def image = docker.build('citizenlabdotco/cl2-back:production-benelux')
-            image.push('production-benelux')
+            def image = docker.build('citizenlabdotco/cl2-back:latest')
+            image.push('latest')
           }
         }
       }
     }
-    stage('Deploy to Benelux production cluster') {
+    stage('Deploy to staging') {
       steps {
         sshagent (credentials: ['local-ssh-user']) {
-          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.124.157 "docker pull citizenlabdotco/cl2-back:production-benelux && docker run --env-file cl2-deployment/.env-production-benelux citizenlabdotco/cl2-back:production-benelux rake db:migrate"'
-          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.124.157 "cd cl2-deployment && docker stack deploy --compose-file docker-compose-production-benelux.yml cl2-prd-bnlx-stack --with-registry-auth"'
+          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.157.143.6 "docker pull citizenlabdotco/cl2-back:latest && docker run --env-file cl2-deployment/.env-staging citizenlabdotco/cl2-back:latest rake db:migrate"'
+          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.157.143.6 "cd cl2-deployment && docker stack deploy --compose-file docker-compose-staging.yml cl2-back-stg --with-registry-auth"'
         }
       }
     }
+  }
   }
   post {
     always {
@@ -54,7 +55,7 @@ pipeline {
       cleanWs()
     }
     success {
-      slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} deplyed to benelux production cluster!\nMore info at ${env.BUILD_URL}"
+      slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} passed all tests!\nMore info at ${env.BUILD_URL}"
     }
     failure {
       slackSend color: '#e93b1c', message: ":boom: FAILURE: ${env.JOB_NAME} build #${env.BUILD_NUMBER} failed\nSee what went wrong at ${env.BUILD_URL}"
