@@ -125,8 +125,14 @@ RSpec.describe User, type: :model do
 
   describe "avatar" do
 
-    it "is automatically generated when it's not specified" do
+    it "is blank generated when it's not specified" do
       user = build(:user, avatar: nil)
+      user.save
+      expect(user.avatar).to be_blank
+    end
+
+    it "is retrieved when the user has a gravatar for his email address" do
+      user = build(:user, email: 'sebastien+withgravatar@citizenlab.co')
       user.save
       expect(user.avatar).to be_present
     end

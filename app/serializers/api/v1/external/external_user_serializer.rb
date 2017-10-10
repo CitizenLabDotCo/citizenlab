@@ -1,4 +1,4 @@
-class Api::V1::LiteUserSerializer < ActiveModel::Serializer
+class Api::V1::External::ExternalUserSerializer < ActiveModel::Serializer
 
   attributes :id, :first_name, :last_name, :slug, :avatar
 

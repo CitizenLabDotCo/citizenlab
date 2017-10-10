@@ -20,6 +20,7 @@ describe TenantTemplateService do
       tenant = service.apply_template('base')
       expect(IdeaStatus.count).to be 5
       expect(Topic.count).to be 12
+      expect(Page.count).to be 3
     end
   end
 
