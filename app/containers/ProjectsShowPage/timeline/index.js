@@ -76,7 +76,7 @@ class ProjectsTimeline extends React.PureComponent {
 ProjectsTimeline.propTypes = {
   routeParams: PropTypes.object.isRequired,
   loadProjectPhasesRequest: PropTypes.func.isRequired,
-  phases: PropTypes.array,
+  phases: PropTypes.object,
   locale: PropTypes.string.isRequired,
   loading: PropTypes.bool,
   error: PropTypes.bool,
