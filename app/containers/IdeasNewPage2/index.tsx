@@ -166,8 +166,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
       titleError: null,
       descriptionError: null,
       submitError: false,
-      processing: false,
-      loading: true
+      processing: false
     };
 
     const initialButtonBarState: IButtonBarState = {
