@@ -10,6 +10,15 @@ class Group < ApplicationRecord
   before_validation :generate_slug, on: :create
 
 
+  def add_member user
+    self.users << user
+  end
+
+  def remove_member user
+    self.users.delete user
+  end
+
+
   private
 
   def generate_slug
