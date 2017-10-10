@@ -21,12 +21,15 @@ export interface IProjectData {
       medium: string | null;
       small: string | null;
     };
-    ideas_count: 0,
+    ideas_count: 0;
     created_at: string;
     updated_at: string;
   };
   relationships: {
     project_images: {
+      data: IRelationship[]
+    }
+    areas: {
       data: IRelationship[]
     }
   };
@@ -36,6 +39,7 @@ export interface IUpdatedProjectProperties {
   header_bg?: string | { small: string, medium: string, large: string};
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
+  area_ids?: string[];
 }
 
 export interface IProject {
