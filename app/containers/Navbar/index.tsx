@@ -41,13 +41,10 @@ const Container: any = styled.div`
   position: fixed;
   top: 0;
   transition: all 150ms ease-out;
-  /* border-bottom: 1px solid; */
-  box-shadow: ${(props: any) => props.hideBorder ? 'none' : '0 1px 3px rgba(0, 0, 0, 0.12)'};
+  box-shadow: ${(props: any) => props.hideBorder ? 'none' : '0px 1px 4px rgba(0, 0, 0, 0.12)'};
 
   ${(props: any) => props.scrolled && css`
-    /* border-color: ${props => props.theme.colorNavBottomBorder}; */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.12);
   `}
 `;
 

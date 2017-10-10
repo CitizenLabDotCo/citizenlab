@@ -10,6 +10,7 @@ import { namespace as newIdeaFormNamespace } from './NewIdeaForm';
 import { state, IStateStream } from 'services/state';
 
 // i18n
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -45,8 +46,6 @@ const ButtonBarInner = styled.div`
 `;
 
 type Props = {
-  intl: ReactIntl.InjectedIntl;
-  locale: string;
   onSubmit: () => void;
 };
 
@@ -57,7 +56,7 @@ export type State = {
 
 export const namespace = 'IdeasNewPage2/ButtonBar';
 
-export default class ButtonBar extends React.PureComponent<Props, State> {
+class ButtonBar extends React.PureComponent<Props & InjectedIntlProps, State> {
   private state$: IStateStream<State>;
   private subscriptions: Rx.Subscription[];
 
@@ -102,3 +101,5 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default injectIntl<Props>(ButtonBar);

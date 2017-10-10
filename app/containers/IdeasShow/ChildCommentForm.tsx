@@ -31,7 +31,6 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 const Container = styled.div`
-  margin-top: 0px;
   margin-bottom: 0px;
 `;
 
@@ -62,31 +61,29 @@ const StyledTextArea = styled(TextArea)`
   .textarea {
     color: #666;
     font-size: 16px;
-    line-height: 24px;
+    line-height: 26px;
     padding: 12px 30px;
     padding-right: 100px;
     border-color: #e4e4e4;
-    background: #fcfcfc;
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
-    box-shadow: inset 0 0 2px rgba(0, 0, 0, .1);
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
 
-    &:not(:focus):hover {
-      border-color: #ccc;
+    &:hover {
+      border-color: #333;
     }
 
     &:focus {
-      border-color: #bbb;
-      background: #fcfcfc;
-      box-shadow: inset 0 0 2px rgba(0, 0, 0, .3);
+      border-color: #333;
+      box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     }
   }
 `;
 
 const SubmitButton = styled(Button)`
   position: absolute;
-  bottom: 12px;
-  right: 12px;
+  bottom: 14px;
+  right: 10px;
   z-index: 2;
 `;
 
@@ -108,8 +105,6 @@ type State = {
   locale: string | null;
   authUser: IUser | null;
   inputValue: string;
-  focussed: boolean;
-  hasText: boolean;
   processing: boolean;
   errorMessage: string | null;
 };
@@ -124,8 +119,6 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
       locale: null,
       authUser: null,
       inputValue: '',
-      focussed: false,
-      hasText: false,
       processing: false,
       errorMessage: null
     };
@@ -155,14 +148,11 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
   handleTextareaOnChange = (inputValue) => {
     this.setState({
       inputValue,
-      hasText: (inputValue && !_.isEmpty(inputValue)),
       errorMessage: null
     });
   }
 
   handleEditorOnFocus = () => {
-    this.setState({ focussed: true });
-
     this.props.focusEditor({
       extra: {
         ideaId: this.props.ideaId,
@@ -171,18 +161,12 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
     });
   }
 
-  handleEditorOnBlur = () => {
-    this.setState({ focussed: false });
-  }
-
   handleSubmit = async (event) => {
     const { ideaId, parentId } = this.props;
     const { formatMessage } = this.props.intl;
     const { locale, authUser, inputValue } = this.state;
 
     event.preventDefault();
-
-    console.log('bleh');
 
     if (locale && authUser && _.isString(inputValue) && _.trim(inputValue) !== '') {
       this.props.clickCommentPublish({
@@ -200,7 +184,6 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
 
         this.setState({ 
           inputValue: '',
-          hasText: false,
           processing: false
         });
       } catch (error) {
@@ -212,74 +195,56 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
         throw error;
       }
     } else if (locale && authUser && (!inputValue || inputValue === '')) {
-      console.log('zolg');
       this.setState({
         errorMessage: formatMessage(messages.emptyCommentError),
-        focussed: true,
         processing: false
       });
     } else {
-      console.log('wurps');
       this.setState({
         errorMessage: formatMessage(messages.addCommentError),
-        focussed: true,
         processing: false
       });
     }
   }
 
   render() {
-    const children = this.props['children'];
-    const { formatMessage } = this.props.intl;
-    const { authUser, inputValue, focussed, hasText, processing, errorMessage } = this.state;
-    const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
-    const submitAreaClassNames = classNames({
-      error: _.isString(errorMessage)
-    });
+    const { authUser } = this.state;
 
-    const signUp = (!authUser ? (
-      <SignInMessage>
-        <FormattedMessage
-          {...messages.signInToComment}
-          values={{
-            signInLink: <Link to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></Link>,
-          }}
-        />
-      </SignInMessage>
-    ) : null);
+    if (authUser) {
+      const { formatMessage } = this.props.intl;
+      const { inputValue, processing, errorMessage } = this.state;
+      const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
+      const submitAreaClassNames = classNames({
+        error: _.isString(errorMessage)
+      });
 
-    const comment = (authUser ? (
-      <CommentContainer>
-        <StyledTextArea
-          name="comment"
-          placeholder={placeholder}
-          rows={1}
-          value={inputValue}
-          error={errorMessage}
-          onChange={this.handleTextareaOnChange}
-          onFocus={this.handleEditorOnFocus}
-          onBlur={this.handleEditorOnBlur}
-        >
-          <SubmitButton
-            className="e2e-submit-comment"
-            loading={processing}
-            circularCorners={false}
-            onClick={this.handleSubmit}
-            size="1"
-            padding="8px 16px"
+      return (
+        <CommentContainer>
+          <StyledTextArea
+            name="comment"
+            placeholder={placeholder}
+            rows={1}
+            value={inputValue}
+            error={errorMessage}
+            onChange={this.handleTextareaOnChange}
+            onFocus={this.handleEditorOnFocus}
           >
-            <FormattedMessage {...messages.commentReplyButton} />
-          </SubmitButton>
-        </StyledTextArea>
-      </CommentContainer>
-    ) : null);
+            <SubmitButton
+              className="e2e-submit-comment"
+              loading={processing}
+              circularCorners={false}
+              onClick={this.handleSubmit}
+              size="1"
+              padding="6px 12px"
+            >
+              <FormattedMessage {...messages.commentReplyButton} />
+            </SubmitButton>
+          </StyledTextArea>
+        </CommentContainer>
+      );
+    }
 
-    return (
-      <Container>
-        {signUp}
-        {comment}
-      </Container>
-    );
+    return null;
   }
 }
 

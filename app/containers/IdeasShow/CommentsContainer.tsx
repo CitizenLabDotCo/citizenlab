@@ -21,31 +21,22 @@ const animationDuration = 500;
 const animationEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
 const Container = styled.div`
-  margin-bottom: 0px;
+  padding: 0;
+  margin: 0;
 `;
 
 const Title = styled.h2`
   color: #444;
-  font-size: 25px;
+  font-size: 28px;
   font-weight: 400;
   margin: 0;
   padding: 0;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 `;
 
 const ParentCommentsContainer = styled.div`
   margin-top: 50px;
 `;
-
-/*
-const ParentCommentSeparator = styled.div`
-  width: 100%;
-  height: 1px;
-  background: #e4e4e4;
-  margin-top: 60px;
-  margin-bottom: 60px;
-`;
-*/
 
 type Props = {
   ideaId: string;
@@ -151,9 +142,11 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
 
           <ParentCommentForm ideaId={ideaId} />
 
-          <ParentCommentsContainer>
-            {parentCommentsList}
-          </ParentCommentsContainer>
+          {parentCommentsList !== null && 
+            <ParentCommentsContainer>
+              {parentCommentsList}
+            </ParentCommentsContainer>
+          }
         </Container>
       );
     }

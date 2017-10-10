@@ -319,7 +319,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
           }
           <Upload
             accept="image/jpg, image/jpeg, image/png, image/gif"
-            intl={this.props.intl}
             items={uploadedImages}
             onAdd={this.handleHeaderUpload}
             onRemove={this.handleUploadOnRemove}
@@ -340,7 +339,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
           </ProjectImages>
           <Upload
             accept="image/jpg, image/jpeg, image/png, image/gif"
-            intl={this.props.intl}
             items={uploadedImages}
             onAdd={this.handleProjectImageUpload}
             onRemove={this.handleUploadOnRemove}

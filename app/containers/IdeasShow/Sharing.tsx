@@ -6,7 +6,7 @@ import * as Rx from 'rxjs/Rx';
 import { FacebookButton, FacebookCount, TwitterButton, TwitterCount } from 'react-social';
 
 // components
-import { Icon } from 'semantic-ui-react';
+import Icon from 'components/UI/Icon';
 
 // services
 import { currentTenantStream, ITenant } from 'services/tenant';
@@ -21,67 +21,96 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
+import { lighten, darken } from 'polished';
 
-const Container = styled.div`
-  padding: 10px 0px;
-  display: flex;
-  flex-direction: column;
-`;
+const facebookColor = '#3b5998';
+const facebookBgColor = '#ebeef4';
+
+const twitterColor = '#1ea4f2';
+const twitterBgColor = '#e8f6fe';
 
 const IconWrapper = styled.div`
-  width: 24px;
-  height: 24px;
-  font-size: 24px;
+  width: 30px;
+  margin: 0;
+  padding: 0;
+  border: none;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 5px;
+  justify-content: flex-start;
+
+  svg {
+    width: 18px;
+    transition: all 100ms ease-out;
+  }
 `;
 
 const Text = styled.div`
-  color: #84939d;
-  font-size: 16px;
-  font-weight: 400;
-  transition: all 120ms ease-out;
+  font-size: 15px;
+  font-weight: 300;
+  white-space: nowrap;
+  transition: all 100ms ease-out;
 `;
 
-const Line = styled.div`
+const Container = styled.div`
   display: flex;
-  align-items: center;
-  cursor: pointer;
-  margin-bottom: 18px;
+  flex-direction: column;
 
-  &.facebook {
-    ${IconWrapper} {
-      color: #4D6695;
+  * {
+    outline: none;
+  }
+
+  .sharingButton {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 100ms ease-out;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 20px;
+
+    &.twitter {
+      ${Text} {
+        color: ${lighten(0.1, twitterColor)};
+        color: #84939E;
+      }
+
+      ${IconWrapper} svg {
+        fill: ${lighten(0.1, twitterColor)};
+        fill: #84939E;
+      }
+
+      &:hover {
+        ${Text} {
+          color: ${twitterColor};
+        }
+  
+        ${IconWrapper} svg {
+          fill: ${twitterColor};
+        }
+      }
     }
 
-    &:hover {
+    &.facebook {
       ${Text} {
-        color: #4D6695;
+        color: ${lighten(0.1, facebookColor)};
+        color: #84939E;
+      }
+
+      ${IconWrapper} svg {
+        fill: ${lighten(0.1, facebookColor)};
+        fill: #84939E;
+      }
+
+      &:hover {
+        ${Text} {
+          color: ${facebookColor};
+        }
+  
+        ${IconWrapper} svg {
+          fill: ${facebookColor};
+        }
       }
     }
   }
-
-  &.twitter
-    ${IconWrapper} {
-      color: #26A0F2;
-    }
-
-    &:hover {
-      ${Text} {
-        color: #26A0F2;
-      }
-    }
-  }
-`;
-
-const Separator = styled.div`
-  border: solid #fafafa 1px;
-  background: #eaeaea;
-  width: 100%;
-  height: 3px;
-  margin: 10px 0;
 `;
 
 interface ITracks {
@@ -136,26 +165,35 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps, S
       const facebookText = formatMessage(messages.shareOnFacebook);
       const twitterText = formatMessage(messages.shareOnTwitter);
 
-      const facebook = ((facebookSettings && facebookAppId) ? (
-        <Line className="facebook">
+      const facebook = (facebookAppId ? (
+        <FacebookButton
+          className="sharingButton facebook"
+          url={href}
+          appId={facebookAppId}
+          sharer={true}
+          media={imageUrl}
+          onClick={clickFbShare}
+        >
           <IconWrapper>
-            <FacebookButton url={href} appId={facebookAppId} sharer={true} media={imageUrl} onClick={clickFbShare}>
-              <Icon name="facebook official" />
-            </FacebookButton>
+            <Icon name="facebook" />
           </IconWrapper>
           <Text>{facebookText}</Text>
-        </Line>
+        </FacebookButton>
       ) : null);
 
       const twitter = (
-        <Line className="twitter">
+        <TwitterButton
+          className="sharingButton twitter"
+          url={href}
+          sharer={true}
+          media={imageUrl}
+          onClick={clickTwitterShare}
+        >
           <IconWrapper>
-            <TwitterButton url={href} sharer={true} media={imageUrl} onClick={clickTwitterShare}>
-              <Icon name="twitter" />
-            </TwitterButton>
+            <Icon name="twitter" />
           </IconWrapper>
           <Text>{twitterText}</Text>
-        </Line>
+        </TwitterButton>
       );
 
       return (
