@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import { browserHistory } from 'react-router';
 import { API } from 'typings.d';
 
+// i18n
+import { getLocalized } from 'utils/i18n';
 import messages from '../messages';
 
 // Store
@@ -45,6 +47,8 @@ import Editor from 'components/UI/Editor';
 import Upload from 'components/UI/Upload';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import Radio from 'components/UI/Radio';
+import Select from 'components/UI/Select';
 import FieldWrapper from 'components/admin/FieldWrapper';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
@@ -110,6 +114,7 @@ interface State {
   };
   saved: boolean;
   areas: IAreaData[];
+  areaType: 'all' | 'selection';
 }
 
 class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
@@ -129,6 +134,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
       errors: {},
       saved: false,
       areas: [],
+      areaType: 'all',
     };
   }
 
@@ -248,6 +254,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     }
   }
 
+  handleAreaTypeChange = (value) => {
+    this.setState({ areaType: value });
+  }
+
   handleSaveErrors = (errors) => {
     this.setState({ errors: errors.json.errors });
   }
@@ -317,6 +327,14 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
           <label htmlFor="project-area">
             <FormattedMessage {...messages.areasLabel} />
           </label>
+          <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="all" name="areas" id="areas-all" label="All" />
+          <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="selection" name="areas" id="areas-selection" label="Selection" />
+
+          <Select
+            options={this.state.areas.map((area) => (
+              { value: area.id, label: getLocalized(area.attributes.title_multiloc) }
+            ))}
+          />
         </FieldWrapper>
 
         <FieldWrapper>
