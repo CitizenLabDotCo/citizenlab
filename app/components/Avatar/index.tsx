@@ -12,9 +12,31 @@ import { userByIdStream } from 'services/users';
 import { darken } from 'polished';
 import styled, { css } from 'styled-components';
 
+const AvatarImageContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const AvatarImage = styled.img`
   height: 100%;
   border-radius: 50%;
+  z-index: 2;
+`;
+
+const AvatarImageBackground = styled.div`
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  left: -1px;
+  right: -1px;
+  z-index: 1;
+  border-radius: 50%;
+  background: #e4e4e4;
+  transition: all 100ms ease-out;
 `;
 
 const AvatarIcon = styled(Icon)`
@@ -40,6 +62,10 @@ const Container: any = styled.div`
   ${(props: any) => props.isClickable && css`
     &:hover ${AvatarIcon} {
       fill: ${(props) => darken(0.15, '#999')};
+    }
+
+    &:hover ${AvatarImageBackground} {
+      background: #ccc;
     }`
   }
 `;
@@ -94,7 +120,14 @@ export default class Avatar extends React.PureComponent<Props, State> {
 
     return (
       <Container className={className} isClickable={isClickable} onClick={this.handleOnClick}>
-        {avatarSrc ? <AvatarImage src={avatarSrc} /> : <AvatarIcon name="user" />}
+        {avatarSrc ? (
+          <AvatarImageContainer>
+            <AvatarImageBackground />
+            <AvatarImage src={avatarSrc} />
+          </AvatarImageContainer> 
+        ) : (
+          <AvatarIcon name="user" />
+        )}
       </Container>
     );
   }

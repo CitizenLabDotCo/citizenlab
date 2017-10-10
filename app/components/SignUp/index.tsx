@@ -345,8 +345,6 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
         const signUpError = formatMessage(messages.signUpError);
         this.setState({ signUpError, processing: false });
       }
-    } else {
-      console.log('error');
     }
   }
 
