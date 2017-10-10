@@ -51,7 +51,6 @@ function findTranslatedTextImmutable(value: Map<string, string>, userLocale: str
 
 export const findTranslatedText = (value: Multiloc | Map<string, string> | undefined, userLocale: string, tenantLocales: List<string>) => {
   if (!isImmutable(value)) {
-    // console.log(new Error('Attention, Data Provided to the T component should be immutable!'));
     return findTranslatedTextMutable(value as Multiloc, userLocale, tenantLocales);
   }
   return findTranslatedTextImmutable(value as Map<string, string>, userLocale, tenantLocales);
