@@ -354,9 +354,6 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
     const element = document.querySelector('.ideaCommentForm');
 
     if (element) {
-      // scrollToComponent(element, { align: 'top', offset: -240, duration: 300 });
-      // window.scrollTop($parentDiv.scrollTop() + $innerListItem.position().top);
-
       const textarea = element.querySelector('textarea');
 
       if (textarea) {

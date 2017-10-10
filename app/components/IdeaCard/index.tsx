@@ -175,12 +175,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
       const idea$ = ideaByIdStream(ideaId).observable;
       const ideaAuthor$ = userByIdStream(idea.data.relationships.author.data.id).observable;
-      // const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
-      const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.do((ideaImage) => {
-        // preload image
-        const img = new Image();
-        img.src = ideaImage.data.attributes.versions.large;
-      }) : Rx.Observable.of(null));
+      const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
         idea$,
