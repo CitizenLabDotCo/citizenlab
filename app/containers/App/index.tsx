@@ -112,8 +112,9 @@ export default class App extends React.PureComponent<Props & RouterState, State>
           locale$,
           currentTenant$
         );
-      }).subscribe(),
+      }).subscribe()
 
+      /*
       authUser$.delay(1000).switchMap((authUser) => {
         const topics$ = topicsStream().observable;
         const projects$ = projectsStream().observable;
@@ -122,7 +123,8 @@ export default class App extends React.PureComponent<Props & RouterState, State>
           topics$,
           projects$,
         );
-      }).subscribe()
+      }).subscribe(x => console.log(x))
+      */
     ];
   }
 
