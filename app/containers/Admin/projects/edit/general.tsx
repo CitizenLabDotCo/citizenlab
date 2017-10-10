@@ -35,8 +35,9 @@ import {
   addProjectImage,
   deleteProjectImage
 } from 'services/projectImages';
-
 import { areasStream, IAreaData } from 'services/areas';
+import { localeStream } from 'services/locale';
+import { currentTenantStream, ITenant } from 'services/tenant';
 
 // utils
 import { getBase64 } from 'utils/imageTools';
@@ -115,6 +116,8 @@ interface State {
   saved: boolean;
   areas: IAreaData[];
   areaType: 'all' | 'selection';
+  locale: string | null;
+  currentTenant: ITenant | null;
 }
 
 class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
@@ -135,6 +138,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
       saved: false,
       areas: [],
       areaType: 'all',
+      locale: null,
+      currentTenant: null
     };
   }
 
@@ -180,6 +185,11 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     this.subscriptions[1] = areasStream().observable.subscribe((response) => {
       this.setState({ areas: response.data });
     });
+
+    this.subscriptions.push(Rx.Observable.combineLatest(
+      localeStream().observable,
+      currentTenantStream().observable,
+    ).subscribe(([locale, currentTenant]) => this.setState({ locale, currentTenant })));
   }
 
   componentWillUnmount() {
@@ -286,10 +296,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
   render() {
     const { projectData, uploadedImages, editorState, uploadedHeader, loading, projectImages, projectAttributesDiff } = this.state;
     const { userLocale, tFunc } = this.props;
-
     const projectAttrs = { ...projectData.attributes, ...projectAttributesDiff } as IUpdatedProjectProperties;
-
     const submitState = this.getSubmitState();
+    const locale = _.get(this.state, 'locale', '');
+    const tenantsLocale = _.get(this.state, 'currentTenant.data.attributes.settings.core.locales', []);
 
     return (
       <FormWrapper onSubmit={this.saveProject}>
@@ -332,8 +342,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
 
           <Select
             options={this.state.areas.map((area) => (
-              { value: area.id, label: getLocalized(area.attributes.title_multiloc) }
+              {
+                value: area.id,
+                label: getLocalized(area.attributes.title_multiloc, locale, tenantsLocale)
+              }
             ))}
+            onChange={console.log}
           />
         </FieldWrapper>
 
