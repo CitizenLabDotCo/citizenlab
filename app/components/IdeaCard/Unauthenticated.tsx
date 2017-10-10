@@ -7,9 +7,6 @@ import Icon from 'components/UI/Icon';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-// Using this spring interpolation function from https://medium.com/@dtinth/spring-animation-in-css-2039de6e1a03
-// const spring = (t) => -0.5 * (2.71828 ** (-6 * t)) * (-2 * (2.71828 ** (6 * t)) + Math.sin(12 * t) + 2 * Math.cos(12 * t))
-// for (let i=0; i<100; i+=5) { console.log(`${i}% { transform: scale(1,${spring(i/100.0)}); }`) }
 const doubleBounce = keyframes`
   0% {
     transform: scale(1, 0);

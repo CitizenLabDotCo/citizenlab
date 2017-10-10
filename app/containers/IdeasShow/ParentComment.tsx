@@ -33,7 +33,7 @@ import styled, { css } from 'styled-components';
 const timeout = 550;
 
 const Container = styled.div`
-  margin-top: 20px;
+  margin-top: 30px;
   -webkit-backface-visibility: hidden;
   will-change: auto;
 
@@ -77,7 +77,12 @@ const CommentBody = styled.div`
   font-weight: 400;
   margin-bottom: 5px;
 
-  p {
+  span, p {
+    white-space: pre-wrap;
+    word-break: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;     
     margin-bottom: 25px;
   }
 `;
@@ -163,8 +168,6 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
     const { commentId, animate } = this.props;
     const { authUser, comment, childCommentIds, showForm } = this.state;
 
-    console.log('animate: ' + animate);
-
     if (comment) {
       const ideaId = comment.data.relationships.idea.data.id;
       const authorId = comment.data.relationships.author.data.id;
@@ -207,9 +210,6 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
         returnValue = parentComment;
       }
     }
-
-    console.log('returnValue:');
-    console.log(returnValue);
 
     return (
       <TransitionGroup>

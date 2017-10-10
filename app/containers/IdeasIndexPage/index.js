@@ -87,6 +87,7 @@ class IdeasIndex extends React.PureComponent {
 
     return (
       <Container>
+
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}

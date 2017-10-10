@@ -25,18 +25,19 @@ const Container: any = styled.div`
     border-radius: 5px;
     border: solid 1px #ccc;
     background: #fff;
+    overflow: hidden;
   
     &::placeholder {
       color: #aaa;
       opacity: 1;
     }
   
-    &:not(:focus):hover {
-      border-color: #999;
+    &:hover {
+      border-color: #333;
     }
   
     &:focus {
-      border-color: #000;
+      border-color: #333;
     }
 
     &.error {

@@ -78,6 +78,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.helmetTitle',
     defaultMessage: 'Show idea',
   },
+  byAuthor: {
+    id: 'app.containers.IdeasShow.byAuthor',
+    defaultMessage: 'by {firstName} {lastName}',
+  },
   author: {
     id: 'app.containers.IdeasShow.author',
     defaultMessage: '{authorNameComponent}',

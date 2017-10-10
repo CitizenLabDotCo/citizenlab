@@ -25,12 +25,11 @@ import { media } from 'utils/styleUtils';
 
 const foregroundTimeout = 200;
 const foregroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
-const foregroundDelay = 0;
 
-const contentTimeout = 600;
+const contentTimeout = 700;
 const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
-const contentDelay = 300;
-const contentTranslate = '20px';
+const contentDelay = 350;
+const contentTranslate = '25px';
 
 const ModalForeground: any = styled.div`
   width: 100%;
@@ -52,23 +51,16 @@ const ModalForeground: any = styled.div`
   z-index: 3000;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  will-change: auto;
+  transform: translate3d(0, 0, 0);
+  will-change: opacity;
 
   &.foreground-enter {
     opacity: 0;
-    will-change: opacity;
+  }
 
-    &.foreground-enter-active {
-      width: 100%;
-      height: 100%;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      border-radius: 0px;
-      opacity: 1;
-      transition: all ${foregroundTimeout}ms ${foregroundEasing} ${foregroundDelay}ms;
-    }
+  &.foreground-enter.foreground-enter-active {
+    opacity: 1;
+    transition: all ${foregroundTimeout}ms ${foregroundEasing};
   }
 `;
 
@@ -78,7 +70,6 @@ const ModalContentInner = styled.div`
   overflow: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-  padding-top: 60px;
   z-index: 5000;
 `;
 
@@ -86,21 +77,23 @@ const ModalContentInnerInner = styled.div`
   position: relative;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  will-change: auto;
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
 `;
 
 const CloseIcon = styled(Icon)`
-  height: 22px;
+  height: 15px;
   fill: #999;
+  fill: #666;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  transition: fill 100ms ease-out;
 `;
 
 const CloseButton = styled.div`
-  height: 45px;
-  width: 45px;
+  height: 41px;
+  width: 41px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,11 +101,17 @@ const CloseButton = styled.div`
   cursor: pointer;
   top: 20px;
   right: 30px;
-  z-index: 6000;
-  will-change: auto;
+  border-radius: 50%;
+  border: solid 1px #e0e0e0;
+  z-index: 15000;
+  transition: border-color 100ms ease-out;
 
-  &:hover ${CloseIcon} {
-    fill: #000;
+  &:hover {
+    border-color: #000;
+
+    ${CloseIcon} {
+      fill: #000;
+    }
   }
 `;
 
@@ -133,24 +132,15 @@ const ModalContent = styled.div`
     ${ModalContentInnerInner} {
       opacity: 0;
       transform: translateY(${contentTranslate});
-      will-change: opacity, transform;
-    }
 
-    ${CloseButton} {
-      opacity: 0;
-      transform: translateY(${contentTranslate});
-      will-change: opacity, transform;
+      ${media.smallerThanMaxTablet`
+        padding-top: 20px;
+      `}
     }
   }
 
   &.content-enter.content-enter-active {
     ${ModalContentInnerInner}  {
-      opacity: 1;
-      transform: translateY(0);
-      transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
-    }
-
-    ${CloseButton} {
       opacity: 1;
       transform: translateY(0);
       transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
@@ -260,31 +250,42 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   render() {
     const { children, opened } = this.props;
 
-    const modalForeground = (opened ? (
-      <CSSTransition classNames="foreground" timeout={foregroundTimeout} exit={false}>
-        <ModalForeground />
-      </CSSTransition>
-    ) : null);
-
-    const modalContent = (opened ? (
-      <CSSTransition classNames="content" timeout={contentTimeout} exit={false}>
-        <ModalContent className="e2e-modal-content">
-          <ModalContentInner>
-            <ModalContentInnerInner>
-              {children}
-            </ModalContentInnerInner>
-          </ModalContentInner>
-          <CloseButton onClick={this.clickCloseButton}>
-            <CloseIcon name="close3" />
-          </CloseButton>
-        </ModalContent>
-      </CSSTransition>
-    ) : null);
-
     return (
       <TransitionGroup>
-        {modalForeground}
-        {modalContent}
+        {opened &&
+          <CSSTransition
+            classNames="foreground"
+            key={1}
+            timeout={foregroundTimeout}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            exit={false}
+          >
+            <ModalForeground />
+          </CSSTransition>
+        }
+
+        {opened && 
+          <CSSTransition
+            classNames="content"
+            key={2}
+            timeout={contentTimeout + contentDelay}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            exit={false}
+          >
+            <ModalContent>
+              <ModalContentInner>
+                <ModalContentInnerInner>
+                  {children}
+                </ModalContentInnerInner>
+              </ModalContentInner>
+              <CloseButton onClick={this.clickCloseButton}>
+                <CloseIcon name="close3" />
+              </CloseButton>
+            </ModalContent>
+          </CSSTransition>
+        }
       </TransitionGroup>
     );
   }

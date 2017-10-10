@@ -126,7 +126,7 @@ class Author extends React.PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <AuthorContainer className={className}>
-          <AuthorAvatar userId={authorId} size="medium" onClick={this.goToUserProfile} />
+          <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />
           <AuthorMeta>
             <AuthorNameContainer>
               <FormattedMessage 
