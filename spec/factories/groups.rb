@@ -1,5 +1,8 @@
 FactoryGirl.define do
   factory :group do
-    name "MyString"
+    title_multiloc {{
+      "en" => "Martians",
+      "nl" => "Marsmannen"
+    }}
   end
 end
