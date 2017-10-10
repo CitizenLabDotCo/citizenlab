@@ -47,7 +47,6 @@ pipeline {
       }
     }
   }
-  }
   post {
     always {
       junit 'spec/reports/**/*.xml'
