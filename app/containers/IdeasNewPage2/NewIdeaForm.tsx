@@ -107,7 +107,6 @@ export type State = {
   descriptionError: string | null;
   submitError: boolean;
   processing: boolean;
-  loading: boolean;
 };
 
 export const namespace = 'IdeasNewPage2/NewIdeaForm';
@@ -136,16 +135,23 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
 
       eventEmitter.observe(ButtonBarNamespace, 'submit').subscribe(this.handleOnSubmit),
 
+      locale$.subscribe(locale => this.state$.next({ locale })),
+
       Rx.Observable.combineLatest(
         locale$,
         topics$,
-        projects$
-      ).subscribe(([locale, topics, projects]) => {
+      ).subscribe(([locale, topics]) => {
         this.state$.next({
-          locale,
           topics: this.getOptions(topics, locale),
+        });
+      }),
+
+      Rx.Observable.combineLatest(
+        locale$,
+        projects$,
+      ).subscribe(([locale, projects]) => {
+        this.state$.next({
           projects: this.getOptions(projects, locale),
-          loading: false
         });
       })
     ];
@@ -262,9 +268,9 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   render() {
-    const { loading } = this.state;
+    const { locale } = this.state;
 
-    if (!loading) {
+    if (locale) {
       const { formatMessage } = this.props.intl;
       const { topics, projects, title, description, selectedTopics, selectedProject, location, images, titleError, descriptionError, submitError, processing } = this.state;
       const submitErrorMessage = (submitError ? formatMessage(messages.submitError) : null);
