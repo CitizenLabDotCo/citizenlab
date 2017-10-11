@@ -1,5 +1,7 @@
 class Api::V1::GroupsController < ApplicationController
 
+  before_action :set_group, only: [:show, :update, :destroy]
+
   def index
     @groups = policy_scope(Group)
       .page(params.dig(:page, :number))
@@ -8,8 +10,7 @@ class Api::V1::GroupsController < ApplicationController
   end
 
   def show
-  	authorize @group
-    render json: @group, serializer: Api::V1::GroupSerializer # also include?
+    render json: @group, serializer: Api::V1::GroupSerializer
   end
 
   def by_slug
@@ -31,7 +32,6 @@ class Api::V1::GroupsController < ApplicationController
 
   # patch
   def update
-  	authorize @group # ?? (added by me)
     if @group.update(permitted_attributes(Group))
       render json: @group.reload, status: :ok
     else
@@ -41,13 +41,17 @@ class Api::V1::GroupsController < ApplicationController
 
   # delete
   def destroy
-  	authorize @group # ?? (added by me)
     group = @group.destroy
     if group.destroyed?
       head :ok
     else
       head 500
     end
+  end
+
+  def set_group
+    @group = Group.find params[:id]
+    authorize @group
   end
 
 end
