@@ -8,7 +8,7 @@ import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-
 import draftjsToHtml from 'draftjs-to-html';
 import styled from 'styled-components';
 import { browserHistory } from 'react-router';
-import { API, IOption } from 'typings.d';
+import { API, IOption, IRelationship } from 'typings.d';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -104,7 +104,7 @@ type Props = {
 
 interface State {
   loading: boolean;
-  projectData: IProjectData | { id: null, attributes: {}};
+  projectData: IProjectData | { id: null, attributes: {}, relationships: { areas: {data} }};
   uploadedImages: any;
   uploadedHeader: string | null;
   editorState: EditorState;
@@ -129,7 +129,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
 
     this.state = {
       loading: false,
-      projectData: { id: null, attributes: {} },
+      projectData: { id: null, attributes: {}, relationships: { areas: { data: [] } } },
       uploadedImages: [],
       editorState: EditorState.createEmpty(),
       uploadedHeader: null,
@@ -175,6 +175,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
         uploadedImages: [],
         loading: false,
         projectAttributesDiff: {},
+        areaType: projectData.relationships.areas.data.length > 0 ? 'selection' : 'all',
       });
     });
   }
@@ -327,6 +328,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     const { projectData, uploadedImages, editorState, uploadedHeader, loading, projectImages, projectAttributesDiff } = this.state;
     const { userLocale, tFunc } = this.props;
     const projectAttrs = { ...projectData.attributes, ...projectAttributesDiff } as IUpdatedProjectProperties;
+    projectAttrs.area_ids = projectAttrs.area_ids || projectData.relationships.areas.data.map((area) => (area.id));
+
     const submitState = this.getSubmitState();
     const areasValues = projectAttrs.area_ids ? projectAttrs.area_ids.map((id) => {
       const option = _.find(this.state.areasOptions, { value: id });
