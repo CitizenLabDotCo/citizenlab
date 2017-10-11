@@ -187,7 +187,6 @@ class SettingsCustomizeTab extends React.Component<Props, State> {
                 onRemove={this.createImageRemovalHandler(imageName)}
                 onRemoveApiImage={this.createImageRemovalHandler(imageName)}
                 placeholder={this.uploadPlaceholder}
-                intl={this.props.intl}
                 disallowDeletion={true}
               />
             </FieldWrapper>

@@ -5,7 +5,7 @@ import { media } from 'utils/styleUtils';
 import { darken } from 'polished';
 import Icon from 'components/UI/Icon';
 import Error from 'components/UI/Error';
-import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import styled from 'styled-components';
 import { API } from 'typings.d';
@@ -161,7 +161,6 @@ export interface ExtendedImageFile extends Dropzone.ImageFile {
 }
 
 type Props = {
-  intl: ReactIntl.InjectedIntl;
   items: Dropzone.ImageFile[] | null;
   apiImages?: API.ImageSizes[];
   accept?: string | null | undefined;
@@ -182,7 +181,7 @@ type State = {
   disabled: boolean;
 };
 
-class Upload extends React.PureComponent<Props, State> {
+class Upload extends React.PureComponent<Props & InjectedIntlProps, State> {
   private emptyArray: never[];
 
   public static defaultProps: Partial<Props> = {

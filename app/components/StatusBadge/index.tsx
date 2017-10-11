@@ -14,7 +14,7 @@ const Container = styled.div`
   color: #fff;
   font-size: 12px;
   border-radius: 5px;
-  padding: 5px 14px;
+  padding: 4px 12px;
   display: inline-block;
   text-transform: uppercase;
   text-align: center;
