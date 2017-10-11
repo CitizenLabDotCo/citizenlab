@@ -8,7 +8,7 @@ import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-
 import draftjsToHtml from 'draftjs-to-html';
 import styled from 'styled-components';
 import { browserHistory } from 'react-router';
-import { API } from 'typings.d';
+import { API, IOption } from 'typings.d';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -49,7 +49,7 @@ import Upload from 'components/UI/Upload';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
-import Select from 'components/UI/Select';
+import MultipleSelect from 'components/UI/MultipleSelect';
 import FieldWrapper from 'components/admin/FieldWrapper';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
@@ -118,6 +118,7 @@ interface State {
   areaType: 'all' | 'selection';
   locale: string | null;
   currentTenant: ITenant | null;
+  areasOptions: IOption[];
 }
 
 class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
@@ -139,7 +140,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
       areas: [],
       areaType: 'all',
       locale: null,
-      currentTenant: null
+      currentTenant: null,
+      areasOptions: [],
     };
   }
 
@@ -153,7 +155,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     return _.isEmpty(this.state.projectAttributesDiff) ? 'disabled' : 'enabled';
   }
 
-  updateSubscription = (slug) => {
+  updateProjectSubscription = (slug) => {
     const { userLocale } = this.props;
 
     this.subscriptions[0] = projectBySlugStream(slug).observable.switchMap((project) => {
@@ -179,17 +181,28 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     if (this.props.params.slug) {
-      this.updateSubscription(this.props.params.slug);
+      this.updateProjectSubscription(this.props.params.slug);
     }
 
-    this.subscriptions[1] = areasStream().observable.subscribe((response) => {
-      this.setState({ areas: response.data });
-    });
+    this.subscriptions.push(
+      Rx.Observable.combineLatest(
+        localeStream().observable,
+        currentTenantStream().observable,
+        areasStream().observable,
+      )
+      .subscribe(([locale, currentTenant, areas]) => {
+        this.setState({
+          locale,
+          currentTenant,
+          areas: areas.data,
+          areasOptions: areas.data.map((area) => ({
+            value: area.id,
+            label: getLocalized(area.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)
+          }))
+        });
+      })
+    );
 
-    this.subscriptions.push(Rx.Observable.combineLatest(
-      localeStream().observable,
-      currentTenantStream().observable,
-    ).subscribe(([locale, currentTenant]) => this.setState({ locale, currentTenant })));
   }
 
   componentWillUnmount() {
@@ -204,7 +217,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     // Update subscription if the slug changes
     // This happens when transitioning from New to Edit view after saving a new project
     if (newProps.params.slug && newProps.params.slug !== this.props.params.slug) {
-      this.updateSubscription(newProps.params.slug);
+      this.updateProjectSubscription(newProps.params.slug);
     }
   }
 
@@ -268,6 +281,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     this.setState({ areaType: value });
   }
 
+  handleAreaSelectionChange = (values: IOption[]) => {
+    this.setState({ projectAttributesDiff: { area_ids: values.map((value) => (value.value)) } });
+  }
+
   handleSaveErrors = (errors) => {
     this.setState({ errors: errors.json.errors });
   }
@@ -298,8 +315,14 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     const { userLocale, tFunc } = this.props;
     const projectAttrs = { ...projectData.attributes, ...projectAttributesDiff } as IUpdatedProjectProperties;
     const submitState = this.getSubmitState();
-    const locale = _.get(this.state, 'locale', '');
-    const tenantsLocale = _.get(this.state, 'currentTenant.data.attributes.settings.core.locales', []);
+    const areasValues = projectAttrs.area_ids ? projectAttrs.area_ids.map((id) => {
+      const option = _.find(this.state.areasOptions, { value: id });
+      if (option) {
+        return option;
+      } else {
+        return;
+      }
+    }) : null;
 
     return (
       <FormWrapper onSubmit={this.saveProject}>
@@ -340,14 +363,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
           <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="all" name="areas" id="areas-all" label="All" />
           <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="selection" name="areas" id="areas-selection" label="Selection" />
 
-          <Select
-            options={this.state.areas.map((area) => (
-              {
-                value: area.id,
-                label: getLocalized(area.attributes.title_multiloc, locale, tenantsLocale)
-              }
-            ))}
-            onChange={console.log}
+          <MultipleSelect
+            options={this.state.areasOptions}
+            value={_.compact(areasValues)}
+            onChange={this.handleAreaSelectionChange}
+            placeholder=""
+            disabled={this.state.areaType !== 'selection'}
           />
         </FieldWrapper>
 
