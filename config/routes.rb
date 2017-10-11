@@ -58,6 +58,10 @@ Rails.application.routes.draw do
         post 'mark_all_read', on: :collection
       end
 
+      resources :groups do
+        get 'by_slug/:slug', on: :collection, to: 'groups#by_slug'
+      end
+
       scope 'stats', controller: 'stats' do
         get 'users_by_time'
         get 'users_by_gender'

@@ -1,5 +1,10 @@
 class Api::V1::GroupsController < ApplicationController
 
+  def index
+  	@groups = policy_scope(Group).all
+  	render json: @groups
+  end
+
   def show
   	authorize @group
     render json: @group, serializer: Api::V1::GroupSerializer # also include?

@@ -281,4 +281,12 @@ if Apartment::Tenant.current == 'localhost'
     })
   end
 
+  3.times do
+    Group.create({
+      title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
+      projects: Project.all.shuffle.take(rand(Project.count)),
+      users: User.all.shuffle.take(rand(User.count))
+    })
+  end
+
 end
