@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 20171010114644) do
   create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc"
     t.string "slug"
+    t.integer "memberships_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_groups_on_slug"
