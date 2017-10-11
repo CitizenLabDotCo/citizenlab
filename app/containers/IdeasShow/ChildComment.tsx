@@ -27,8 +27,7 @@ const CommentContainer = styled.div`
   padding: 30px;
   border: none;
   border-top: solid 1px #e4e4e4;
-  background: #fff;
-  background: #fafafa;
+  background: #f8f8f8;
 `;
 
 const AuthorContainer = styled.div`
@@ -87,7 +86,6 @@ const CommentBody = styled.div`
 
   span, p {
     white-space: pre-wrap;
-    /* word-wrap: break-word; */
     word-break: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -161,7 +159,7 @@ export default class ChildComment extends React.PureComponent<Props, State> {
         <CommentContainer className={className}>
 
           <AuthorContainer>
-            <AuthorAvatar userId={authorId} size="medium" onClick={this.goToUserProfile} />
+            <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />
             <AuthorMeta>
               <AuthorNameContainer>
                 <FormattedMessage 

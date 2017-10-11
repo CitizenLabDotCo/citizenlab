@@ -19,7 +19,6 @@ import IdeaCards from 'components/IdeaCards';
 import Footer from 'components/Footer';
 
 import SelectTopics from './components/selectTopics';
-import SelectAreas from './components/selectAreas';
 import SelectSort from './components/selectSort';
 import SearchField from './components/searchField';
 
@@ -87,6 +86,7 @@ class IdeasIndex extends React.PureComponent {
 
     return (
       <Container>
+
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
@@ -101,7 +101,6 @@ class IdeasIndex extends React.PureComponent {
             <SearchField />
             <SelectSort title={this.sortTitle} />
             <SelectTopics title={this.topicsTitle} />
-            <SelectAreas title={this.areasTitle} />
           </FiltersArea>}
           <IdeaCards id="ideas-cards" filter={filter} />
         </StyledContentContainer>

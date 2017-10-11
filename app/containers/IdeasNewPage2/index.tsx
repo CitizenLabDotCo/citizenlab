@@ -154,6 +154,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     super();
 
     const initialNewIdeaFormState: INewIdeaFormState = {
+      locale: null,
       topics: null,
       projects: null,
       title: null,
@@ -303,7 +304,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     const buttonBar = (showIdeaForm && locale) ? (
       <CSSTransition classNames="buttonbar" timeout={timeout}>
         <ButtonBarContainer>
-          <ButtonBar intl={intl} locale={locale} onSubmit={this.handleOnIdeaSubmit} />
+          <ButtonBar onSubmit={this.handleOnIdeaSubmit} />
         </ButtonBarContainer>
       </CSSTransition>
     ) : null;
@@ -311,7 +312,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     const newIdeasForm = (showIdeaForm && locale) ? (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer className="ideaForm">
-          <NewIdeaForm intl={intl} locale={locale} onSubmit={this.handleOnIdeaSubmit} />
+          <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} />
         </PageContainer>
       </CSSTransition>
     ) : null;

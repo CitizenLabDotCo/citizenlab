@@ -25,6 +25,7 @@ import areasSagas from 'utils/areas/sagas';
 import tenantSaga from 'utils/tenant/sagas';
 
 // services
+import { localeStream } from 'services/locale';
 import { authUserStream, signOut } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
@@ -94,6 +95,12 @@ export default class App extends React.PureComponent<Props & RouterState, State>
       }),
 
       authUser$.switchMap((authUser) => {
+        const locale$ = localeStream().observable;
+        const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
+          this.setState({ currentTenant });
+          store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: currentTenant });
+        });
+
         if (!authUser) {
           signOut();
           store.dispatch({ type: DELETE_CURRENT_USER_LOCAL });
@@ -101,19 +108,23 @@ export default class App extends React.PureComponent<Props & RouterState, State>
           store.dispatch({ type: LOAD_CURRENT_USER_SUCCESS, payload: authUser });
         }
 
+        return Rx.Observable.combineLatest(
+          locale$,
+          currentTenant$
+        );
+      }).subscribe()
+
+      /*
+      authUser$.delay(1000).switchMap((authUser) => {
         const topics$ = topicsStream().observable;
         const projects$ = projectsStream().observable;
-        const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
-          this.setState({ currentTenant });
-          store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: currentTenant });
-        });
 
         return Rx.Observable.combineLatest(
           topics$,
           projects$,
-          currentTenant$
         );
-      }).subscribe()
+      }).subscribe(x => console.log(x))
+      */
     ];
   }
 

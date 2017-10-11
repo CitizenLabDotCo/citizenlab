@@ -7,7 +7,7 @@ jobs:
 
   lint_js:
     docker:
-      - image: joecridge1/node8-awscli-gitlfs-gulp
+      - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: ~/cl2-front
     steps:
       - checkout
@@ -26,7 +26,7 @@ jobs:
 
   lint_ts:
     docker:
-      - image: joecridge1/node8-awscli-gitlfs-gulp
+      - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: ~/cl2-front
     steps:
       - checkout
@@ -45,7 +45,7 @@ jobs:
 
   deploy_demo:
     docker:
-      - image: joecridge1/node8-awscli-gitlfs-gulp
+      - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: ~/cl2-front
     steps:
       - checkout
@@ -67,7 +67,7 @@ jobs:
 
   deploy_crowdin:
     docker:
-      - image: joecridge1/node8-awscli-gitlfs-gulp
+      - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: ~/cl2-front
     steps:
       - checkout
@@ -89,7 +89,7 @@ jobs:
 
   deploy_production:
     docker:
-      - image: joecridge1/node8-awscli-gitlfs-gulp
+      - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: ~/cl2-front
     steps:
       - checkout
@@ -108,6 +108,9 @@ jobs:
       - deploy :
           name: Deploy production version to benelux cluster
           command: aws s3 sync build/ s3://cl2-front-production-benelux/ --delete --acl public-read
+      - deploy:
+          name: Invalidate the static assets on the CDN
+          command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths '/*'
 
 workflows:
   version: 2

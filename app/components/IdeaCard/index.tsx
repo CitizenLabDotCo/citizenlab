@@ -29,14 +29,21 @@ import messages from './messages';
 // styles
 import styled, { keyframes } from 'styled-components';
 
-const IdeaImage: any = styled.div`
+const IdeaImage: any = styled.img`
   width: 100%;
   height: 135px;
+  object-fit: cover;
+  /*
   border-bottom: solid 1px #e8e8e8;
   background-image: url(${(props: any) => props.src});  
   background-repeat: no-repeat;
   background-size: cover;
   opacity: 1;
+  */
+`;
+
+const IdeaImageLarge = styled.img`
+  display: none;
 `;
 
 const IdeaImagePlaceholder = styled.div`
@@ -61,9 +68,11 @@ const IdeaContainer: any = styled.div`
   cursor: pointer;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  transition: all 250ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: box-shadow 250ms cubic-bezier(0.19, 1, 0.22, 1);
+  transform: translate3d(0, 0, 0);
   position: relative;
   border: solid 1px #e6e6e6;
+  will-change: box-shadow;
 
   &:hover {
     box-shadow: 0 1px 24px rgba(0, 0, 0, 0.1);
@@ -166,10 +175,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
       const idea$ = ideaByIdStream(ideaId).observable;
       const ideaAuthor$ = userByIdStream(idea.data.relationships.author.data.id).observable;
-      const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.do((ideaImage) => {
-        // preload image
-        new Image().src = ideaImage.data.attributes.versions.large;
-      }) : Rx.Observable.of(null));
+      const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
         idea$,
@@ -192,6 +198,17 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  loadImage = (imagePath) => {
+    const observable = new Rx.Observable((observer) => {
+      const img = new Image();
+      img.src = imagePath;
+      img.onload = () => observer.next(img);
+      img.onerror = (err) => observer.error(err);
+    });
+
+    return observable;
   }
 
   onCardClick = (event) => {
@@ -229,6 +246,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     if (!loading && idea && ideaAuthor && locale) {
       const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
+      const ideaImageLargeUrl = (ideaImage ? ideaImage.data.attributes.versions.large : null);
       const authorName = `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
       const createdAt = formatRelative(idea.data.attributes.created_at);
       const byAuthor = formatMessage(messages.byAuthorName, { authorName });
@@ -237,6 +255,8 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
         <IdeaContainer onClick={this.onCardClick}  className={className}>
 
           {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
+
+          {ideaImageLargeUrl && <IdeaImageLarge src={ideaImageLargeUrl} />}
 
           {!ideaImageUrl &&
             <IdeaImagePlaceholder>

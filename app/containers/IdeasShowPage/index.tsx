@@ -6,22 +6,10 @@ import * as Rx from 'rxjs/Rx';
 import { withRouter, RouterState } from 'react-router';
 
 // components
-import ContentContainer from 'components/ContentContainer';
 import IdeasShow from 'containers/IdeasShow';
 
 // services
 import { ideaBySlugStream, IIdea } from 'services/ideas';
-
-// style
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
-
-const Container = styled.div`
-  width: 100%;
-  background: #fff;
-  padding-top: 60px;
-  padding-bottom: 60px;
-`;
 
 type Props = {
   params: {
@@ -63,13 +51,7 @@ class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
     const { ideaId } = this.state;
 
     if (ideaId !== null) {
-      return (
-        <Container>
-          <ContentContainer>
-              <IdeasShow location={location} ideaId={ideaId} />
-          </ContentContainer>
-        </Container>
-      );
+      return <IdeasShow location={location} ideaId={ideaId} />;
     }
 
     return null;

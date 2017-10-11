@@ -9,6 +9,7 @@ import { browserHistory } from 'react-router';
 import Authorize from 'utils/containers/authorize';
 import ClickOutside from 'utils/containers/clickOutside';
 import Icon from 'components/UI/Icon';
+import Avatar from 'components/Avatar';
 
 // services
 import { authUserStream, signOut } from 'services/auth';
@@ -35,7 +36,13 @@ const Container = styled(ClickOutside)`
   outline: none;
 `;
 
+const StyledAvatar = styled(Avatar)`
+  width: 24px;
+  height: 24px;
+`;
+
 const UserIcon = styled(Icon)`
+  width: 24px;
   height: 24px;
   fill: #84939E;
   transition: all 150ms ease;
@@ -130,32 +137,49 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     signOut();
   }
 
+  goToUserProfile = () => {
+    const { authUser } = this.state;
+
+    if (authUser) {
+      browserHistory.push(`/profile/${authUser.data.attributes.slug}`);
+    }
+  }
+
   render() {
     const { authUser, dropdownOpened } = this.state;
 
-    return (authUser ? (
-      <Container id="e2e-user-menu-container" onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
-        {/* <UserImage avatar={true} src={authUser.data.attributes.avatar.small} /> */}
-        <UserIcon name="user" />
-        {dropdownOpened &&
-          <Dropdown id="e2e-user-menu-dropdown">
-            <Authorize action={['users', 'admin']} >
-              <DropdownItem id="admin-link" onClick={this.navigateTo('/admin')}>
-                <FormattedMessage {...messages.admin} />
-                <MenuIcon src={adminIcon} alt="admin" />
+    if (authUser) {
+      const avatar = authUser.data.attributes.avatar;
+      const userId = authUser.data.id;
+
+      return (
+        <Container id="e2e-user-menu-container" onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
+
+          {avatar ? <StyledAvatar userId={userId} size="small" onClick={this.goToUserProfile} /> : <UserIcon name="user" />}
+
+          {dropdownOpened &&
+            <Dropdown id="e2e-user-menu-dropdown">
+              <Authorize action={['users', 'admin']} >
+                <DropdownItem id="admin-link" onClick={this.navigateTo('/admin')}>
+                  <FormattedMessage {...messages.admin} />
+                  <MenuIcon src={adminIcon} alt="admin" />
+                </DropdownItem>
+              </Authorize>
+              <DropdownItem id="e2e-profile-edit-link" onClick={this.navigateTo('/profile/edit')}>
+                <FormattedMessage {...messages.editProfile} />
+                <MenuIcon src={editProfileIcon} alt="edit profile" />
               </DropdownItem>
-            </Authorize>
-            <DropdownItem id="e2e-profile-edit-link" onClick={this.navigateTo('/profile/edit')}>
-              <FormattedMessage {...messages.editProfile} />
-              <MenuIcon src={editProfileIcon} alt="edit profile" />
-            </DropdownItem>
-            <DropdownItem id="e2e-sign-out-link" onClick={this.signOut}>
-              <FormattedMessage {...messages.signOut} />
-              <MenuIcon src={signOutIcon} alt="sign out" />
-            </DropdownItem>
-          </Dropdown>
-        }
-      </Container>
-    ) : null);
+              <DropdownItem id="e2e-sign-out-link" onClick={this.signOut}>
+                <FormattedMessage {...messages.signOut} />
+                <MenuIcon src={signOutIcon} alt="sign out" />
+              </DropdownItem>
+            </Dropdown>
+          }
+
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
