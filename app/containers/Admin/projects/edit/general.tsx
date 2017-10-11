@@ -278,11 +278,24 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
   }
 
   handleAreaTypeChange = (value) => {
-    this.setState({ areaType: value });
+    const newState = { areaType: value } as State;
+
+    // Clear the array of areas ids if you select "all areas"
+    if (value === 'all') {
+      const newDiff = _.cloneDeep(this.state.projectAttributesDiff);
+      newDiff.area_ids = [];
+
+      newState.projectAttributesDiff = newDiff;
+    }
+
+    this.setState(newState);
   }
 
   handleAreaSelectionChange = (values: IOption[]) => {
-    this.setState({ projectAttributesDiff: { area_ids: values.map((value) => (value.value)) } });
+    const newDiff = _.cloneDeep(this.state.projectAttributesDiff);
+    newDiff.area_ids = values.map((value) => (value.value));
+
+    this.setState({ projectAttributesDiff: newDiff });
   }
 
   handleSaveErrors = (errors) => {
