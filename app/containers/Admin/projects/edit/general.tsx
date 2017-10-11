@@ -376,8 +376,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
           <label htmlFor="project-area">
             <FormattedMessage {...messages.areasLabel} />
           </label>
-          <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="all" name="areas" id="areas-all" label="All" />
-          <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="selection" name="areas" id="areas-selection" label="Selection" />
+          <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="all" name="areas" id="areas-all" label={tFunc(messages.areasAllLabel)} />
+          <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="selection" name="areas" id="areas-selection" label={tFunc(messages.areasSelectionLabel)} />
 
           <MultipleSelect
             options={this.state.areasOptions}
