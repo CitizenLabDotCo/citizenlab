@@ -70,6 +70,10 @@ export default class AdminProjectEdition extends React.PureComponent<Props, Stat
           label: 'events',
           url: `${baseTabsUrl}/events`
         },
+        {
+          label: 'permissions',
+          url: `${baseTabsUrl}/permissions`
+        },
       ];
     }
   }
