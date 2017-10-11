@@ -1,7 +1,9 @@
 class Api::V1::GroupsController < ApplicationController
 
   def index
-  	@groups = policy_scope(Group).all
+    @groups = policy_scope(Group)
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
   	render json: @groups
   end
 

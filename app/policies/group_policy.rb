@@ -8,7 +8,11 @@ class GroupPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.all ## user&.admin?
+      if user&.admin?
+        scope.all
+      else
+        scope.none # ???
+      end
     end
   end
 
@@ -34,9 +38,7 @@ class GroupPolicy < ApplicationPolicy
 
   def permitted_attributes
     if user&.admin?
-      [ title_multiloc: [:en, :nl, :fr],
-        user_ids: [], # membership ids?
-        project_ids: []
+      [ title_multiloc: I18n.available_locales
       ]
     else
       []
