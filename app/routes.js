@@ -144,22 +144,13 @@ export default function createRoutes(store) {
     {
       path: '/ideas',
       name: 'ideasPage',
-      onEnter(nextState, replace, next) {
-        if (nextState.location.search === '') {
-          replace('ideas?sort=trending');
-        }
-        next();
-      },
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/IdeasIndexPage/reducer'),
           import('containers/IdeasIndexPage'),
-
         ]);
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, component]) => {
-          injectReducer('ideasIndexPage', reducer.default);
+        importModules.then(([component]) => {
           renderRoute(component);
         });
 

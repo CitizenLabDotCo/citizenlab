@@ -33,6 +33,8 @@ const IdeaImage: any = styled.img`
   width: 100%;
   height: 135px;
   object-fit: cover;
+  overflow: hidden;
+
   /*
   border-bottom: solid 1px #e8e8e8;
   background-image: url(${(props: any) => props.src});  
@@ -93,11 +95,6 @@ const IdeaContent = styled.div`
   padding: 20px;
 `;
 
-const IdeaFooter = styled.div`
-  padding: 20px;
-  padding-bottom: 22px;
-`;
-
 const IdeaTitle: any = styled.h4`
   color: #333;
   display: block;
@@ -106,12 +103,16 @@ const IdeaTitle: any = styled.h4`
   max-height: 60px;
   margin: 0;
   font-size: 22px;
-  line-height: 26px;
   font-weight: 500;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-height: 26px;
+  max-height: 78px;
+
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 `;
@@ -132,6 +133,12 @@ const AuthorLink = styled.span`
     color: #333;
     text-decoration: underline;
   }
+`;
+
+const StyledVoteControl = styled(VoteControl)`
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
 `;
 
 type Props = {
@@ -274,9 +281,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
           </IdeaContent>
 
           {!showUnauthenticated &&
-            <IdeaFooter>
-              <VoteControl ideaId={idea.data.id} unauthenticatedVoteClick={this.unauthenticatedVoteClick} />
-            </IdeaFooter>
+            <StyledVoteControl ideaId={idea.data.id} unauthenticatedVoteClick={this.unauthenticatedVoteClick} />
           }
 
           {showUnauthenticated && <Unauthenticated />}
