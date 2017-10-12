@@ -11,7 +11,7 @@ class GroupPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       else
-        scope.none # ???
+        scope.none
       end
     end
   end

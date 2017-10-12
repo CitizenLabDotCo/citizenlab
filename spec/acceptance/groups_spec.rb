@@ -37,5 +37,53 @@ resource "Groups" do
         expect(json_response.dig(:data, :id)).to eq @groups.first.id
       end
     end
+
+    post "api/v1/groups" do
+      with_options scope: :group do
+        parameter :title_multiloc, "The title of the group in multiple locales", required: true
+      end
+      ValidationErrorHelper.new.error_fields(self, Group)
+
+      let(:group) { build(:group) }
+
+      describe do
+        let(:title_multiloc) { group.title_multiloc }
+
+        example_request "Create a group" do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        end
+      end
+    end
+
+    patch "api/v1/groups/:id" do
+      with_options scope: :group do
+        parameter :title_multiloc, "The title of the group in multiple locales"
+      end
+      ValidationErrorHelper.new.error_fields(self, Group)
+
+
+      let(:group) { create(:group) }
+      let(:id) { group.id }
+      let(:title_multiloc) { build(:group).title_multiloc }
+
+      example_request "Update a group" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+      end
+    end
+
+
+    delete "api/v1/groups/:id" do
+      let(:group) { create(:group) }
+      let(:id) { group.id }
+      example_request "Delete a group" do
+        expect(response_status).to eq 200
+        expect{Group.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
   end
 end 
