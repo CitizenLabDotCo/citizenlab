@@ -4,8 +4,7 @@ import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
-import { injectTFunc } from 'components/T/utils';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
@@ -18,21 +17,20 @@ import styled from 'styled-components';
 
 // Typing
 interface Props {
-  tFunc: Function;
 }
 
 interface State {
 
 }
 
-class ProjectPermissions extends React.Component<Props, State> {
+class ProjectPermissions extends React.Component<Props & InjectedIntlProps, State> {
 
   handlePermissionTypeChange = (value) => {
     console.log(value);
   }
 
   render() {
-    const { tFunc } = this.props;
+    const { formatMessage } = this.props.intl;
 
     return (
       <div>
@@ -47,7 +45,7 @@ class ProjectPermissions extends React.Component<Props, State> {
             onChange={this.handlePermissionTypeChange}
             currentValue=""
             name="permissionsType"
-            label={tFunc(messages.permissionsEveryoneLabel)}
+            label={formatMessage(messages.permissionsEveryoneLabel)}
             value="all"
             id="permissions-all"
           />
@@ -55,7 +53,7 @@ class ProjectPermissions extends React.Component<Props, State> {
             onChange={this.handlePermissionTypeChange}
             currentValue=""
             name="permissionsType"
-            label={tFunc(messages.permissionsSelectionLabel)}
+            label={formatMessage(messages.permissionsSelectionLabel)}
             value="selection"
             id="permissions-selection"
           />
@@ -65,4 +63,4 @@ class ProjectPermissions extends React.Component<Props, State> {
   }
 }
 
-export default injectTFunc(ProjectPermissions);
+export default injectIntl(ProjectPermissions);
