@@ -1,7 +1,7 @@
-import { IIdeaImage } from './ideaImages';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import request from 'utils/request';
+import { ideasStream, ideaByIdStream } from 'services/ideas';
 
 export interface IIdeaImageData {
   id: string;
@@ -36,7 +36,7 @@ export function ideaImagesStream(ideaId: string, streamParams: IStreamParams<IId
   return streams.get<IIdeaImages>({ apiEndpoint, ...streamParams });
 }
 
-export function addIdeaImage(ideaId: string, base64: string, ordering: number | null = null) {
+export async function addIdeaImage(ideaId: string, base64: string, ordering: number | null = null) {
   const apiEndpoint = `${API_PATH}/ideas/${ideaId}/images`;
   const bodyData = {
     image: {
@@ -45,5 +45,7 @@ export function addIdeaImage(ideaId: string, base64: string, ordering: number | 
     }
   };
 
-  return streams.add<IIdeaImage>(apiEndpoint, bodyData);
+  const ideaImage = await streams.add<IIdeaImage>(apiEndpoint, bodyData);
+  await ideaByIdStream(ideaId).fetch();
+  return ideaImage;
 }
