@@ -82,7 +82,7 @@ const ModalContentInnerInner = styled.div`
 `;
 
 const CloseIcon = styled(Icon)`
-  height: 15px;
+  height: 12px;
   fill: #999;
   fill: #666;
   display: flex;
@@ -92,8 +92,8 @@ const CloseIcon = styled(Icon)`
 `;
 
 const CloseButton = styled.div`
-  height: 41px;
-  width: 41px;
+  height: 52px;
+  width: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -281,7 +281,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
                 </ModalContentInnerInner>
               </ModalContentInner>
               <CloseButton onClick={this.clickCloseButton}>
-                <CloseIcon name="close3" />
+                <CloseIcon name="close4" />
               </CloseButton>
             </ModalContent>
           </CSSTransition>

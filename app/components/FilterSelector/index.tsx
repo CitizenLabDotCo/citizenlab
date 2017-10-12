@@ -2,14 +2,14 @@ import * as React from 'react';
 import * as _ from 'lodash';
 
 // components
-import Title from './components/title';
-import ValuesList from './components/valuesList';
+import Title from './title';
+import ValuesList from './valuesList';
 import clickOutside from 'utils/containers/clickOutside';
 
 // style
 import styled from 'styled-components';
 
-const Container = styled(clickOutside) `
+const Container = styled(clickOutside)`
   display: inline-block;
   position: relative;
 
@@ -26,9 +26,9 @@ interface Props {
   title: string;
   name: string;
   values: { text: string, value: any }[];
-  onChange?: Function;
+  onChange?: (value: any) => void;
   multiple: boolean;
-  selected: any[];
+  selected: string[];
 }
 
 interface State {
@@ -72,8 +72,12 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
     this.setState(state => ({ deployed: !state.deployed }));
   }
 
+  closeExpanded = () => {
+    this.setState({ deployed: false });
+  }
+
   selectionChange = (value) => {
-    let newSelection = _.clone(this.props.selected);
+    let newSelection = _.cloneDeep(this.props.selected);
 
     if (!this.props.multiple) {
       newSelection = [value];
@@ -84,7 +88,11 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
     }
 
     if (this.props.onChange) {
-      this.props.onChange(this.props.name, newSelection);
+      this.props.onChange(newSelection);
+    }
+
+    if (!this.props.multiple) {
+      this.closeExpanded();
     }
   }
 

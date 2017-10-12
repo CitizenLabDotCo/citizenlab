@@ -44,9 +44,11 @@ const IconWrapper = styled.div`
 `;
 
 const Text = styled.div`
+  max-width: 200px;
   font-size: 15px;
+  line-height: 19px;
+  text-align: left;
   font-weight: 300;
-  white-space: nowrap;
   transition: all 100ms ease-out;
 `;
 

@@ -113,7 +113,7 @@ interface IAccumulator {
 
 type Props = {
   filter: { [key: string]: any };
-  loadMoreEnabled?: boolean;
+  loadMoreEnabled?: boolean | undefined;
 };
 
 type State = {
@@ -235,7 +235,6 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
         <IdeaIcon name="idea" />
         <EmptyMessage>
           <EmptyMessageLine>{formatMessage(messages.noIdea)}</EmptyMessageLine>
-          <EmptyMessageLine>{formatMessage(messages.suggestIdea)}</EmptyMessageLine>
         </EmptyMessage>
         <Button
           text={formatMessage(messages.addIdea)}
