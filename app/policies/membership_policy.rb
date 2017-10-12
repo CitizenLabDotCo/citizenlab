@@ -28,8 +28,4 @@ class MembershipPolicy < ApplicationPolicy
     user && user.admin?
   end
 
-  def permitted_attributes
-    []
-  end
-
 end

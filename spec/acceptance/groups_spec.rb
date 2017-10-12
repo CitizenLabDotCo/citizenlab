@@ -75,7 +75,6 @@ resource "Groups" do
       end
     end
 
-
     delete "api/v1/groups/:id" do
       let(:group) { create(:group) }
       let(:id) { group.id }
