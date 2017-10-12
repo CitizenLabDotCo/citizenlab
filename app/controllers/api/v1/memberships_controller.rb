@@ -8,7 +8,7 @@ class Api::V1::MembershipsController < ApplicationController
       .includes(:user)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-  	render json: @memberships
+  	render json: @memberships, include: ['user']
   end
 
   def show
@@ -17,10 +17,11 @@ class Api::V1::MembershipsController < ApplicationController
 
   # insert
   def create
-    @membership = Membership.new(permitted_attributes(Membership))
+    @membership = Membership.new(membership_params)
+    @membership.group_id = params[:group_id]
     authorize @membership
     if @membership.save
-      render json: @membership.reload, status: :created
+      render json: @membership.reload, include: ['user'], status: :created
     else
       render json: { errors: @membership.errors.details }, status: :unprocessable_entity
     end
@@ -39,6 +40,13 @@ class Api::V1::MembershipsController < ApplicationController
   def set_membership
     @membership = Membership.find params[:id]
     authorize @membership
+  end
+
+  def membership_params
+    params.require(:membership).permit(
+      # :group_id,
+      :user_id
+    )
   end
 
 end
