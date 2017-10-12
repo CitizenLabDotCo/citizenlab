@@ -44,7 +44,6 @@ class Api::V1::MembershipsController < ApplicationController
 
   def membership_params
     params.require(:membership).permit(
-      # :group_id,
       :user_id
     )
   end
