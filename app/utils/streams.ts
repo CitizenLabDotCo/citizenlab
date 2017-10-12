@@ -30,6 +30,7 @@ export interface IStream<T> {
   params: IExtendedStreamParams<T>;
   streamId: string;
   isQueryStream: boolean;
+  isSearchQuery: boolean;
   isSingleItemStream: boolean;
   type: 'singleObject' | 'arrayOfObjects' | 'unknown';
   fetch: fetchFn<T>;
@@ -67,7 +68,40 @@ class Streams {
 
     Object.keys(this.streams)
       .filter(streamId => streamId !== authApiEndpoint)
-      .forEach(streamId => delete this.streams[streamId]);
+      .forEach((streamId) => {
+        const apiEndpoint = this.streams[streamId].params.apiEndpoint;
+        this.deleteStream(streamId, apiEndpoint);
+      });
+  }
+
+  deleteStream(streamId: string, apiEndpoint: string) {
+    if (_(this.streamIdsByApiEndPointWithQuery[apiEndpoint]).some(value => value === streamId)) {
+      this.streamIdsByApiEndPointWithQuery[apiEndpoint] = this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
+        return value !== streamId;
+      });            
+    }
+
+    if (_(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]).some(value => value === streamId)) {
+      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter((value) => {
+        return value !== streamId;
+      });            
+    }
+
+    Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
+      if (_(this.streamIdsByDataIdWithQuery[dataId]).some(value => value === streamId)) {
+        this.streamIdsByDataIdWithQuery[dataId] =  this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
+          return value !== streamId;
+        });
+      }
+
+      if (_(this.streamIdsByDataIdWithoutQuery[dataId]).some(value => value === streamId)) {
+        this.streamIdsByDataIdWithoutQuery[dataId] = this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
+          return value !== streamId;
+        });
+      }
+    });
+
+    delete this.streams[streamId];
   }
 
   isUUID(string) {
@@ -94,15 +128,15 @@ class Streams {
   }
 
   addStreamIdByDataIdIndex(streamId: string, isQueryStream: boolean, isSearchQuery: boolean, dataId: string) {
-    if (isQueryStream) {
-      if (!isSearchQuery) {
-        if (this.streamIdsByDataIdWithQuery[dataId] && !_.some(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
-          this.streamIdsByDataIdWithQuery[dataId].push(streamId);
-        } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
-          this.streamIdsByDataIdWithQuery[dataId] = [streamId];
-        }
+    if (isQueryStream && !isSearchQuery) {
+      if (this.streamIdsByDataIdWithQuery[dataId] && !_.some(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
+        this.streamIdsByDataIdWithQuery[dataId].push(streamId);
+      } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
+        this.streamIdsByDataIdWithQuery[dataId] = [streamId];
       }
-    } else {
+    }
+
+    if (!isQueryStream) {
       if (this.streamIdsByDataIdWithoutQuery[dataId] && !_.some(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
         this.streamIdsByDataIdWithoutQuery[dataId].push(streamId);
       } else if (!this.streamIdsByDataIdWithoutQuery[dataId]) {
@@ -112,15 +146,15 @@ class Streams {
   }
 
   addStreamIdByApiEndpointIndex(apiEndpoint: string, streamId: string, isQueryStream: boolean, isSearchQuery: boolean) {
-    if (isQueryStream) {
-      // if (!isSearchQuery) {
-        if (!this.streamIdsByApiEndPointWithQuery[apiEndpoint]) {
-          this.streamIdsByApiEndPointWithQuery[apiEndpoint] = [streamId];
-        } else {
-          this.streamIdsByApiEndPointWithQuery[apiEndpoint].push(streamId);
-        }
-      // }
-    } else {
+    if (isQueryStream && !isSearchQuery) {
+      if (!this.streamIdsByApiEndPointWithQuery[apiEndpoint]) {
+        this.streamIdsByApiEndPointWithQuery[apiEndpoint] = [streamId];
+      } else {
+        this.streamIdsByApiEndPointWithQuery[apiEndpoint].push(streamId);
+      }
+    }
+
+    if (!isQueryStream) {
       if (!this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]) {
         this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = [streamId];
       } else {
@@ -139,7 +173,7 @@ class Streams {
       const { bodyData } = params;
       const lastUrlSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
       const isQueryStream = this.isQuery(queryParameters);
-      const isSearchQuery = ((isQueryStream && queryParameters) ? (_.isString(queryParameters['search']) && !_.isEmpty(queryParameters['search'])) : false);
+      const isSearchQuery = (isQueryStream && _.has(queryParameters as any, 'search'));
       const isSingleItemStream = (!isQueryStream ? this.isUUID(lastUrlSegment) : false);
       const observer: IObserver<T | null> = (null as any);
 
@@ -188,35 +222,7 @@ class Streams {
 
         return () => {
           console.log(`stream for stream ${streamId} completed`);
-
-          if (this.streamIdsByApiEndPointWithQuery[apiEndpoint] && this.streamIdsByApiEndPointWithQuery[apiEndpoint].length > 0) {
-            this.streamIdsByApiEndPointWithQuery[apiEndpoint] = this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter(value => value !== streamId);            
-          }
-
-          if (this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] && this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].length > 0) {
-            this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter(value => value !== streamId);            
-          }
-
-          _(this.streams[streamId].dataIds).forOwn((_, dataId) => {
-            if (this.streamIdsByDataIdWithQuery[dataId] && this.streamIdsByDataIdWithQuery[dataId].length > 0) {
-              this.streamIdsByDataIdWithQuery[dataId] =  this.streamIdsByDataIdWithQuery[dataId].filter(value => value !== streamId);
-            }
-
-            if (this.streamIdsByDataIdWithoutQuery[dataId] && this.streamIdsByDataIdWithoutQuery[dataId].length > 0) {
-              this.streamIdsByDataIdWithoutQuery[dataId] = this.streamIdsByDataIdWithoutQuery[dataId].filter(value => value !== streamId);
-            }
-
-            if (this.streamIdsByDataIdWithQuery[dataId] && 
-                this.streamIdsByDataIdWithQuery[dataId].length === 0 && 
-                this.streamIdsByDataIdWithoutQuery[dataId] && 
-                this.streamIdsByDataIdWithoutQuery[dataId].length === 0
-            ) {
-              delete this.resourcesByDataId[dataId];
-            }
-          });
-
-          delete this.streams[streamId];
-          delete this.resourcesByStreamId[streamId];
+          this.deleteStream(streamId, apiEndpoint);
         };
       })
       .startWith('initial' as any)
@@ -276,6 +282,7 @@ class Streams {
         observable,
         streamId,
         isQueryStream,
+        isSearchQuery,
         isSingleItemStream,
         type: 'unknown',
         dataIds: {}

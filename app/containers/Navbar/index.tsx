@@ -267,8 +267,9 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
 
     return (
       <ThemeProvider theme={this.navbarTheme}>
+        <div>
+        <MobileNavigation />
         <Container scrolled={scrolled} alwaysShowBorder={alwaysShowBorder}>
-          <MobileNavigation />
           <Left>
             {tenantLogo &&
               <LogoLink to="/">
@@ -327,6 +328,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
             }
           </Right>
         </Container>
+        </div>
       </ThemeProvider>
     );
   }
