@@ -251,7 +251,7 @@
   "app.containers.IdeasShow.shareCTA":"Share this idea",
   "app.containers.IdeasShow.shareOnFacebook":"Share on Facebook",
   "app.containers.IdeasShow.shareOnTwitter":"Share on Twitter",
-  "app.containers.IdeasShow.signInLinkText":"sign in",
+  "app.containers.IdeasShow.signInLinkText":"log in",
   "app.containers.IdeasShow.signInToComment":"Please {signInLink} to spread your wisdom.",
   "app.containers.IdeasShow.submittingComment":"Publishing...",
   "app.containers.NotificationMenu.clearAll":"Clear all",
