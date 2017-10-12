@@ -11,20 +11,21 @@ const DropdownIcon = styled(Icon)`
   fill: #84939E;
   margin-left: 5px;
   margin-top: 3px;
-  transition: transform 100ms ease-out;
+  transition: all 100ms ease-out;
 `;
 
 const StyledButton = styled.button`
   color: #84939E;
   cursor: pointer;
-  font-size: 16px;
-  font-weight: 300;
+  font-size: 18px;
+  font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0px;
   position: relative;
   z-index: 15;
+  transition: all 100ms ease-out;
 
   &:hover {
     color: #000;
@@ -34,9 +35,11 @@ const StyledButton = styled.button`
     }
   }
 
+  /*
   &.deployed ${DropdownIcon} {
     transform: rotate(180deg);
   }
+  */
 `;
 
 type Props = {

@@ -4,6 +4,7 @@ import * as Rx from 'rxjs/Rx';
 
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
+import * as bowser from 'bowser';
 
 // router
 import { Link, browserHistory } from 'react-router';
@@ -34,7 +35,7 @@ import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative } fr
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
@@ -170,11 +171,7 @@ const SeparatorColumn = styled.div`
   margin-left: 35px;
   margin-right: 35px;
   background: #e4e4e4;
-
-  position: -webkit-sticky;
-  position: sticky;
-  top: 100px;
-  align-self: flex-start;
+  background: #fff;
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -196,11 +193,12 @@ const RightColumn = styled.div`
   padding: 0;
 `;
 
-const RightColumnDesktop = RightColumn.extend`
-  position: -webkit-sticky;
-  position: sticky;
-  top: 100px;
-  align-self: flex-start;
+const RightColumnDesktop: any = RightColumn.extend`
+  &.notSafari {
+    position: sticky;
+    top: 100px;
+    align-self: flex-start;
+  }
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -286,6 +284,7 @@ type State = {
   idea: IIdea | null;
   ideaAuthor: IUser | null;
   ideaImage: IIdeaImage | null;
+  ideaComments: IComments | null;
   loading: boolean;
 };
 
@@ -300,6 +299,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       idea: null,
       ideaAuthor: null,
       ideaImage: null,
+      ideaComments: null,
       loading: true
     };
     this.subscriptions = [];
@@ -307,8 +307,9 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   componentWillMount() {
     const { ideaId } = this.props;
-    const initialState: State = { locale: null, idea: null, ideaAuthor: null, ideaImage: null, loading: true };
+    const initialState: State = { locale: null, idea: null, ideaAuthor: null, ideaImage: null, ideaComments: null, loading: true };
     const locale$ = localeStream().observable;
+    const comments$ = commentsForIdeaStream(ideaId).observable;
     const idea$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {
       const ideaImages = idea.data.relationships.idea_images.data;
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
@@ -317,22 +318,23 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
       const ideaAuthor$ = userByIdStream(ideaAuthorId).observable;
       const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Rx.Observable.of(null));
+
       return Rx.Observable.combineLatest(
         ideaImage$, 
         ideaAuthor$, 
         ideaStatus$
       ).map(([ideaImage, ideaAuthor]) => ({ idea, ideaImage, ideaAuthor }));
     });
-    const comments$ = commentsForIdeaStream(ideaId).observable;
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$, 
-        idea$,
-        comments$
-      ).subscribe(([locale, { idea, ideaImage, ideaAuthor }, comments]) => {
+        idea$
+      ).subscribe(([locale, { idea, ideaImage, ideaAuthor }]) => {
         this.setState({ locale, idea, ideaImage, ideaAuthor, loading: false });
-      })
+      }),
+
+      comments$.subscribe(ideaComments => this.setState({ ideaComments }))
     ];
   }
 
@@ -365,13 +367,11 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { locale, idea, ideaImage, ideaAuthor, loading } = this.state;
+    const { locale, idea, ideaImage, ideaAuthor, ideaComments, loading } = this.state;
     const { formatRelative } = this.props.intl;
 
     if (!loading && idea !== null && ideaAuthor !== null) {
-      const ideaSlug = idea.data.attributes.slug;
       const authorId = ideaAuthor.data.id;
-      const avatar = ideaAuthor.data.attributes.avatar.large;
       const firstName = ideaAuthor.data.attributes.first_name;
       const lastName = ideaAuthor.data.attributes.last_name;
       const createdAt = idea.data.attributes.created_at;
@@ -380,7 +380,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageLarge = (ideaImage ? ideaImage.data.attributes.versions.large : null);
       const ideaImageMedium = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
-      const ideaCommentsCount = idea.data.attributes.comments_count;
+      const isSafari = bowser.safari;
 
       const rightColumnContent = (
         <div>
@@ -445,12 +445,12 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                   {rightColumnContent}
                 </RightColumnMobile>
 
-                <Comments ideaId={idea.data.id} />
+                {ideaComments && <Comments ideaId={idea.data.id} />}
               </LeftColumn>
 
               <SeparatorColumn />
 
-              <RightColumnDesktop>
+              <RightColumnDesktop className={!isSafari ? 'notSafari' : ''}>
                 {rightColumnContent}
               </RightColumnDesktop>
             </Content>

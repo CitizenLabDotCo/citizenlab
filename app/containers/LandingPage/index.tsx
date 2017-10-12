@@ -365,61 +365,59 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                     <FormattedMessage {...messages.trendingIdeas} />
                   </SectionTitle>
                   {hasIdeas &&
-                  <Explore to="/ideas">
-                    <ExploreText>
-                      <FormattedMessage {...messages.exploreAllIdeas} />
-                    </ExploreText>
-                    <ExploreIcon name="compass" />
-                  </Explore>
+                    <Explore to="/ideas">
+                      <ExploreText>
+                        <FormattedMessage {...messages.exploreAllIdeas} />
+                      </ExploreText>
+                      <ExploreIcon name="compass" />
+                    </Explore>
                   }
                 </SectionHeader>
                 <SectionContainer>
                   <IdeaCards filter={this.ideasQueryParameters} loadMoreEnabled={false} />
                 </SectionContainer>
-                <SectionFooter>
-                  {hasIdeas &&
-                  <ViewMoreButton
-                    text={formatMessage(messages.exploreAllIdeas)}
-                    style="primary"
-                    size="3"
-                    icon="compass"
-                    onClick={this.goToIdeasPage}
-                    circularCorners={false}
-                  />
-                  }
-                </SectionFooter>
+                {hasIdeas &&
+                  <SectionFooter>
+                    <ViewMoreButton
+                      text={formatMessage(messages.exploreAllIdeas)}
+                      style="primary"
+                      size="3"
+                      icon="compass"
+                      onClick={this.goToIdeasPage}
+                      circularCorners={false}
+                    />
+                  </SectionFooter>
+                }
               </Section>
 
               {hasProjects &&
-              <Section>
-                <SectionHeader>
-                  <SectionTitle>
-                    {/* <FormattedMessage {...messages.projectsFrom} values={{ name: currentTenantName }} /> */}
-                    <FormattedMessage {...messages.cityProjects} />
-                  </SectionTitle>
-                  {hasProjects &&
-                  <Explore to="/projects">
-                    <ExploreText>
-                      <FormattedMessage {...messages.exploreAllProjects} />
-                    </ExploreText>
-                    <ExploreIcon name="compass" />
-                  </Explore>
-                  }
-                </SectionHeader>
-                <SectionContainer>
-                  <ProjectCards filter={this.projectsQueryParameters} />
-                </SectionContainer>
-                <SectionFooter>
-                  <ViewMoreButton
-                    text={formatMessage(messages.exploreAllProjects)}
-                    style="primary"
-                    size="3"
-                    icon="compass"
-                    onClick={this.goToProjectsPage}
-                    circularCorners={false}
-                  />
-                </SectionFooter>
-              </Section>
+                <Section>
+                  <SectionHeader>
+                    <SectionTitle>
+                      {/* <FormattedMessage {...messages.projectsFrom} values={{ name: currentTenantName }} /> */}
+                      <FormattedMessage {...messages.cityProjects} />
+                    </SectionTitle>
+                    <Explore to="/projects">
+                      <ExploreText>
+                        <FormattedMessage {...messages.exploreAllProjects} />
+                      </ExploreText>
+                      <ExploreIcon name="compass" />
+                    </Explore>
+                  </SectionHeader>
+                  <SectionContainer>
+                    <ProjectCards filter={this.projectsQueryParameters} />
+                  </SectionContainer>
+                  <SectionFooter>
+                    <ViewMoreButton
+                      text={formatMessage(messages.exploreAllProjects)}
+                      style="primary"
+                      size="3"
+                      icon="compass"
+                      onClick={this.goToProjectsPage}
+                      circularCorners={false}
+                    />
+                  </SectionFooter>
+                </Section>
               }
             </StyledContentContainer>
 

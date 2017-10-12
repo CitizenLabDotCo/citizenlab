@@ -15,6 +15,10 @@ import Avatar from 'components/Avatar';
 import { authUserStream, signOut } from 'services/auth';
 import { IUser } from 'services/users';
 
+// animation
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import CSSTransition from 'react-transition-group/CSSTransition';
+
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
@@ -28,65 +32,134 @@ const adminIcon = require('./adminIcon.svg');
 const editProfileIcon = require('./editProfileIcon.svg');
 const signOutIcon = require('./signOutIcon.svg');
 
+const timeout = 200;
+const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
+
 const Container = styled(ClickOutside)`
   display: flex;
   margin-left: 0px;
   position: relative;
   cursor: pointer;
   outline: none;
+
+  * {
+    user-select: none;
+  }
 `;
 
 const StyledAvatar = styled(Avatar)`
-  width: 24px;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+
+  &:hover svg {
+    fill: ${(props) => darken(0.2, '#84939E')};
+  }
+`;
+
+const IconWrapper = styled.div`
+  width: 26px;
   height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const UserIcon = styled(Icon)`
-  width: 24px;
-  height: 24px;
+  height: 100%;
   fill: #84939E;
   transition: all 150ms ease;
 
   &:hover {
-    fill: ${(props) => darken(0.15, '#84939E')};
+    fill: ${(props) => darken(0.2, '#84939E')};
   }
 `;
 
 const Dropdown = styled.div`
-  min-width: 210px;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 50px;
-  right: -5px;
+  top: 42px;
+  right: -10px;
   z-index: 1;
   padding: 8px;
   background: #fff;
-  border: 1px solid #eaeaea;
+  padding: 6px;
+  border-radius: 5px;
   box-sizing: border-box;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.12);
+  border: solid 1px #e0e0e0;
+  will-change: opacity, transform;
+  transform-origin: right top;
+
+  ::before,
+  ::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+
+  ::after {
+    top: -20px;
+    right: 11px;
+    border-color: transparent transparent #fff transparent;
+    border-width: 10px;
+  }
+
+  ::before {
+    top: -22px;
+    right: 10px;
+    border-color: transparent transparent #e0e0e0 transparent;
+    border-width: 11px;
+  }
+
+  &.dropdown-enter {
+    opacity: 0;
+    transform: scale(0.9);
+
+    &.dropdown-enter-active {
+      opacity: 1;
+      transform: scale(1);
+      transition: all ${timeout}ms ${easing};
+    }
+  }
+`;
+
+const DropdownIcon = styled(Icon)`
+  height: 20px;
 `;
 
 const DropdownItem = styled.div`
-  color: #888;
-  font-size: 18px;
-  font-family: Proxima Nova;
+  color: #84939E;
+  font-size: 17px;
   font-weight: 400;
-  padding: 12px 15px 12px 25px;
+  padding: 10px 15px;
   background: #fff;
+  border-radius: 5px;
+  transition: all 100ms ease-out;
+  display: flex;
+  align-items: center;
+
+  svg {
+    fill: #84939E;
+    transition: all 100ms ease-out;
+  }
 
   &:hover {
-    background: #f9f9f9;
-    color: #393939;
+    background: #f2f2f2;
+    color: #000;
+
+    svg {
+      fill: #000;
+    }
   }
 
   display: flex;
   justify-content: space-between;
-`;
-
-const MenuIcon = styled.img`
-  width: 20px;
 `;
 
 type Props = {};
@@ -147,35 +220,54 @@ export default class UserMenu extends React.PureComponent<Props, State> {
 
   render() {
     const { authUser, dropdownOpened } = this.state;
+    const avatar = (authUser ? authUser.data.attributes.avatar : null);
+    const userId = (authUser ? authUser.data.id : null);
 
-    if (authUser) {
-      const avatar = authUser.data.attributes.avatar;
-      const userId = authUser.data.id;
-
+    if (authUser && userId) {
       return (
         <Container id="e2e-user-menu-container" onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
-
-          {avatar ? <StyledAvatar userId={userId} size="small" onClick={this.goToUserProfile} /> : <UserIcon name="user" />}
-
-          {dropdownOpened &&
-            <Dropdown id="e2e-user-menu-dropdown">
-              <Authorize action={['users', 'admin']} >
-                <DropdownItem id="admin-link" onClick={this.navigateTo('/admin')}>
-                  <FormattedMessage {...messages.admin} />
-                  <MenuIcon src={adminIcon} alt="admin" />
-                </DropdownItem>
-              </Authorize>
-              <DropdownItem id="e2e-profile-edit-link" onClick={this.navigateTo('/profile/edit')}>
-                <FormattedMessage {...messages.editProfile} />
-                <MenuIcon src={editProfileIcon} alt="edit profile" />
-              </DropdownItem>
-              <DropdownItem id="e2e-sign-out-link" onClick={this.signOut}>
-                <FormattedMessage {...messages.signOut} />
-                <MenuIcon src={signOutIcon} alt="sign out" />
-              </DropdownItem>
-            </Dropdown>
-          }
-
+          {avatar ? <StyledAvatar userId={userId} size="small" /> : <UserIcon name="user" />}
+          <TransitionGroup>
+            {dropdownOpened &&
+              <CSSTransition
+                classNames="dropdown"
+                key={1}
+                timeout={timeout}
+                mountOnEnter={true}
+                unmountOnExit={true}
+                exit={false}
+              >
+                <Dropdown id="e2e-user-menu-dropdown">
+                  <Authorize action={['users', 'admin']} >
+                    <DropdownItem id="admin-link" onClick={this.navigateTo('/admin')}>
+                      <FormattedMessage {...messages.admin} />
+                      <IconWrapper>
+                        <DropdownIcon name="admin" />
+                      </IconWrapper>
+                    </DropdownItem>
+                  </Authorize>
+                  <DropdownItem id="e2e-profile-profile-link" onClick={this.navigateTo(`/profile/${userId}`)}>
+                    <FormattedMessage {...messages.profilePage} />
+                    <IconWrapper>
+                      <DropdownIcon name="user" />
+                    </IconWrapper>
+                  </DropdownItem>
+                  <DropdownItem id="e2e-profile-edit-link" onClick={this.navigateTo('/profile/edit')}>
+                    <FormattedMessage {...messages.editProfile} />
+                    <IconWrapper>
+                      <DropdownIcon name="settings" />
+                    </IconWrapper>
+                  </DropdownItem>
+                  <DropdownItem id="e2e-sign-out-link" onClick={this.signOut}>
+                    <FormattedMessage {...messages.signOut} />
+                    <IconWrapper>
+                      <DropdownIcon name="power" />
+                    </IconWrapper>
+                  </DropdownItem>
+                </Dropdown>
+              </CSSTransition>
+            }
+          </TransitionGroup>
         </Container>
       );
     }
