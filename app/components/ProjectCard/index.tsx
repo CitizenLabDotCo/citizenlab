@@ -154,7 +154,7 @@ type State = {
   projectImage: IProjectImage | null;
 };
 
-class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
+class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -247,4 +247,4 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(Project);
+export default injectIntl<Props>(ProjectCard);

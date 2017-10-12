@@ -32,7 +32,7 @@ const SearchIcon = styled(Icon)`
   }
 `;
 
-const SearchInput = styled(Input)``;
+const StyledInput = styled(Input)``;
 
 const StyledForm = styled.form`
   flex: 1 1 100%;
@@ -43,7 +43,7 @@ const StyledForm = styled.form`
   @media (min-width: 500px) {
     flex-basis: auto;
 
-    ${SearchInput} {
+    ${StyledInput} {
       width: 100%;
       max-width: 300px;
     }
@@ -57,7 +57,7 @@ interface Props {
 
 type State = {};
 
-class SearchField extends React.PureComponent<Props & InjectedIntlProps, State> {
+class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> {
   handleOnChange = (value: string) => {
     this.props.onChange(value);
   }
@@ -68,7 +68,7 @@ class SearchField extends React.PureComponent<Props & InjectedIntlProps, State> 
 
     return (
       <StyledForm>
-        <SearchInput
+        <StyledInput
           id="e2e-ideas-search"
           value={value}
           type="text"
@@ -83,4 +83,4 @@ class SearchField extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 }
 
-export default injectIntl<Props>(SearchField);
+export default injectIntl<Props>(SearchInput);

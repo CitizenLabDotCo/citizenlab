@@ -5,7 +5,7 @@ import * as Rx from 'rxjs/Rx';
 // components
 import SelectTopics from './SelectTopics';
 import SelectSort from './SelectSort';
-import SearchField from './SearchField';
+import SearchInput from 'components/UI/SearchInput';
 import HelmetIntl from 'components/HelmetIntl';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
@@ -140,7 +140,7 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
 
         <StyledContentContainer>
           <FiltersArea id="e2e-ideas-filters">
-            <SearchField value={search} onChange={this.handleSearchOnChange} />
+            <SearchInput value={search} onChange={this.handleSearchOnChange} />
             <SelectSort onChange={this.handleSortOnChange} />
             <SelectTopics onChange={this.handleTopicsOnChange} />
           </FiltersArea>
