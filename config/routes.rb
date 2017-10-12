@@ -59,6 +59,7 @@ Rails.application.routes.draw do
       end
 
       resources :groups do
+        resources :memberships, shallow: true, except: [:update]
         get 'by_slug/:slug', on: :collection, to: 'groups#by_slug'
       end
 

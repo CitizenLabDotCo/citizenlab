@@ -1,4 +1,4 @@
-class GroupPolicy < ApplicationPolicy
+class MembershipPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -24,25 +24,12 @@ class GroupPolicy < ApplicationPolicy
     user && user.admin?
   end
 
-  def by_slug?
-    show?
-  end
-
-  def update?
-    user && user.admin?
-  end
-
   def destroy?
     user && user.admin?
   end
 
   def permitted_attributes
-    if user&.admin?
-      [ title_multiloc: I18n.available_locales
-      ]
-    else
-      []
-    end
+    []
   end
 
 end
