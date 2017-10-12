@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 20171010114644) do
   create_table "groups_projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "group_id"
     t.uuid "project_id"
+    t.index ["group_id", "project_id"], name: "index_groups_projects_on_group_id_and_project_id", unique: true
     t.index ["group_id"], name: "index_groups_projects_on_group_id"
     t.index ["project_id"], name: "index_groups_projects_on_project_id"
   end
@@ -165,6 +166,7 @@ ActiveRecord::Schema.define(version: 20171010114644) do
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "group_id"
     t.uuid "user_id"
+    t.index ["group_id", "user_id"], name: "index_memberships_on_group_id_and_user_id", unique: true
     t.index ["group_id"], name: "index_memberships_on_group_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
