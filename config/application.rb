@@ -40,5 +40,7 @@ module Cl2Back
     config.active_job.queue_adapter = :sidekiq
 
     config.autoload_paths << "#{Rails.root}/lib"
+
+    config.action_dispatch.perform_deep_munge = false
   end
 end

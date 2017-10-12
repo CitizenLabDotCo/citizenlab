@@ -184,6 +184,7 @@ GEM
     nio4r (2.1.0)
     nokogiri (1.8.0)
       mini_portile2 (~> 2.2.0)
+    okcomputer (1.17.0)
     pg (0.20.0)
     pg_search (2.0.1)
       activerecord (>= 4.2)
@@ -346,6 +347,7 @@ DEPENDENCIES
   liquid (~> 4.0)
   listen (>= 3.0.5, < 3.2)
   mini_magick
+  okcomputer
   pg (~> 0.18)
   pg_search (~> 2.0.1)
   premailer-rails (~> 1.9.6)
