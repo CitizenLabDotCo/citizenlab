@@ -3,6 +3,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import styledComponents from 'styled-components';
 const styled = styledComponents;
+import { darken } from 'polished';
 
 // Services
 import { projectsStream, IProjectData } from 'services/projects';
@@ -48,6 +49,12 @@ const ProjectCard = styled.li`
     }
   }
 
+  @media (min-width: 1650px) {
+    & {
+      max-width: calc(25% - 2rem);
+    }
+  }
+
   img {
     max-width: 100%;
   }
@@ -61,7 +68,7 @@ const ProjectCard = styled.li`
   }
 
   a {
-    background-color: #d70066;
+    background-color: ${(props: any) => props.theme.colorMain || '#e0e0e0'};
     border-radius: 5px;
     color: white;
     display: block;
@@ -69,13 +76,17 @@ const ProjectCard = styled.li`
     margin: 0 1rem 1rem;
     text-align: center;
     text-decoration: none;
+
+    &:hover {
+      background: ${(props: any) => darken(0.15, (props.theme.colorMain || '#ccc'))};
+    }
   }
 
   &.new-project a {
     align-items: center;
     background: none;
     border: 1px dashed #d4d4d4;
-    color: #d70066;
+    color: ${(props: any) => props.theme.colorMain || '#e0e0e0'};
     display: flex;
     flex-direction: column;
     font-size: 1.5rem;
@@ -84,8 +95,20 @@ const ProjectCard = styled.li`
     margin: 0;
     padding: 1rem;
 
+    &:hover {
+      color: ${(props: any) => darken(0.15, (props.theme.colorMain || '#ccc'))};
+
+      path {
+        fill: ${(props: any) => darken(0.15, (props.theme.colorMain || '#ccc'))};
+      }
+    }
+
     svg {
       max-height: 3rem;
+    }
+
+    path {
+      fill: ${(props: any) => props.theme.colorMain || '#e0e0e0'};
     }
   }
 `;
