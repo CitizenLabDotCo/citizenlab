@@ -141,6 +141,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
       loading: true,
       loadingMore: false
     };
+    this.subscriptions = [];
   }
 
   componentWillMount() {
@@ -173,13 +174,13 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
           hasMore: _.has(ideas, 'links.next')
         }));
       }, {
-          ideas: {} as IIdeas,
-          filter: {},
-          pageNumber: 1,
-          hasMore: false
-        }).subscribe(({ ideas, hasMore }) => {
-          this.setState({ ideas, hasMore, loading: false, loadingMore: false });
-        })
+        ideas: {} as IIdeas,
+        filter: {},
+        pageNumber: 1,
+        hasMore: false
+      }).subscribe(({ ideas, hasMore }) => {
+        this.setState({ ideas, hasMore, loading: false, loadingMore: false });
+      })
     ];
   }
 
