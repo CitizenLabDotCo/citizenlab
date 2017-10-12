@@ -24,7 +24,7 @@ class Api::V1::GroupsController < ApplicationController
     @group = Group.new(permitted_attributes(Group))
     authorize @group
     if @group.save
-      render json: @group.reload, status: :created # also include?
+      render json: @group.reload, status: :created
     else
       render json: { errors: @group.errors.details }, status: :unprocessable_entity
     end
