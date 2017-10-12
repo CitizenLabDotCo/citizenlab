@@ -59,8 +59,13 @@ export default class ProjectCards extends React.PureComponent<Props, State> {
 
     this.subscriptions = [
       this.filterChange$.switchMap((filter) => {
-        const queryParameters = (filter !== null ? filter : {});
-        return projectsStream({ queryParameters }).observable;
+        const queryParameters = (_.isObject(filter) && !_.isEmpty(filter) ? filter : null);
+
+        if (queryParameters) {
+          return projectsStream({ queryParameters }).observable;
+        }
+
+        return projectsStream().observable;
       }).switchMap((projects) => {
         if (projects && projects.data && projects.data.length > 0) {
           const observables = projects.data.map(project => projectImagesStream(project.id).observable);

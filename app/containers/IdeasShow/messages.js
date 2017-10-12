@@ -136,6 +136,6 @@ export default defineMessages({
   },
   signInLinkText: {
     id: 'app.containers.IdeasShow.signInLinkText',
-    defaultMessage: 'sign in',
+    defaultMessage: 'log in',
   },
 });

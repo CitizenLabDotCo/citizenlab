@@ -45,10 +45,11 @@ const SignInMessage = styled.div`
 
 const StyledLink = styled(Link)`
   color: #1391A1;
-  text-decoration: none;
+  text-decoration: underline;
   transition: all 100ms ease-out;
 
   &:hover {
+    color: ${darken(0.15, '#1391A1')};
     text-decoration: underline;
   }
 `;

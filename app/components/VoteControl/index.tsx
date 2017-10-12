@@ -332,10 +332,11 @@ export default class Votes extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const className = this.props['className'];
     const { upvotesCount, downvotesCount, myVoteMode, voting, votingAnimation } = this.state;
 
     return (
-      <Container className={`e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode}`}>
+      <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode}`}>
         <Upvote
           active={myVoteMode === 'up'}
           onClick={this.onClickUpvote}

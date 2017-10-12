@@ -25,7 +25,7 @@ const NotificationIcon = styled(Icon)`
   transition: all 150ms ease;
 
   &:hover {
-    fill: ${(props) => darken(0.15, '#84939E')};
+    fill: ${(props) => darken(0.2, '#84939E')};
   }
 `;
 
