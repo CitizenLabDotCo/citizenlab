@@ -251,7 +251,7 @@
   "app.containers.IdeasShow.shareCTA":"Partagez cette idée",
   "app.containers.IdeasShow.shareOnFacebook":"Partager sur Facebook",
   "app.containers.IdeasShow.shareOnTwitter":"Partager sur Twitter",
-  "app.containers.IdeasShow.signInLinkText":"connecter",
+  "app.containers.IdeasShow.signInLinkText":"log in",
   "app.containers.IdeasShow.signInToComment":"Veuillez vous {signInLink} pour partager votre sagesse.",
   "app.containers.IdeasShow.submittingComment":"Publication...",
   "app.containers.NotificationMenu.clearAll":"Effacer toutes les notifications",
