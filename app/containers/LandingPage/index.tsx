@@ -405,7 +405,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                     </Explore>
                   </SectionHeader>
                   <SectionContainer>
-                    <ProjectCards filter={this.projectsQueryParameters} />
+                    <ProjectCards filter={this.projectsQueryParameters} loadMoreEnabled={false} />
                   </SectionContainer>
                   <SectionFooter>
                     <ViewMoreButton

@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'app.containers.ProjectsIndexPage.helmetDescription',
     defaultMessage: 'Project listing',
   },
+  areasTitle: {
+    id: 'app.containers.ProjectsIndexPage.areasTitle',
+    defaultMessage: 'Areas',
+  },
 });
