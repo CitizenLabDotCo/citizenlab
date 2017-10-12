@@ -86,7 +86,7 @@ end
 #   request.host.split('.').first
 # }
 Rails.application.config.middleware.use Apartment::Elevators::Generic, (Proc.new do |request|
-  if request.path =~ /^\/admin_api\/.*/
+  if request.path =~ /^\/admin_api\/.*/ || request.path =~ /^\/okcomputer.*/
     nil
   else
     request.host.gsub(/\./, "_")
