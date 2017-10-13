@@ -13,14 +13,14 @@ import messages from './messages';
 class GroupsDashboard extends React.PureComponent {
   render() {
     return (
-      <div>
-      <HelmetIntl
-        title={messages.helmetTitle}
-        description={messages.helmetDescription}
-      />
-      {this.props.children}
-    </div>
-  );
+      <div id="e2e-groups-admin-dashboard">
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
+        />
+        {this.props.children}
+      </div>
+    );
   }
 }
 
