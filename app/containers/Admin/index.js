@@ -14,6 +14,7 @@ const LeftColumn = styled.div`
 
 const RightColumn = styled.div`
   width: calc(100% - 210px);
+  height: calc(100vh - 74px);
   margin-left: 210px;
   display: inline-block;
   background-color: #f2f2f2;
