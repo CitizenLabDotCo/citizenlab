@@ -11,6 +11,10 @@ resource "Projects" do
   end
 
   get "api/v1/projects" do
+
+    parameter :topics, 'Filter by topics (AND)', required: false
+    parameter :areas, 'Filter by areas (AND)', required: false
+
     example_request "List all projects" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -50,6 +54,34 @@ resource "Projects" do
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq p1.id
     end
+
+    example "List all projects with a topic" do
+      t1 = create(:topic)
+
+      p1 = @projects.first
+      p1.topics << t1
+      p1.save
+
+      do_request(topics: [t1.id])
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq p1.id
+    end
+
+    example "List all projects with all given topics" do
+      t1 = create(:topic)
+      t2 = create(:topic)
+
+      p1 = @projects.first
+      p1.topics = [t1, t2]
+      p1.save
+
+      do_request(topics: [t1.id, t2.id])
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq p1.id
+    end
+
   end
 
   get "api/v1/projects/:id" do
@@ -87,6 +119,7 @@ resource "Projects" do
       parameter :slug, "The unique slug of the project. If not given, it will be auto generated"
       parameter :header_bg, "Base64 encoded header image"
       parameter :area_ids, "Array of ids of the associated areas"
+      parameter :topic_ids, "Array of ids of the associated topics"
     end
     ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -151,6 +184,12 @@ resource "Projects" do
       expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq "Changed body"
       expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
       expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+    end
+
+    example "Clearing all areas", document: false do
+      do_request(project: {area_ids: []})
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data,:relationships,:areas,:data).size).to eq 0
     end
   end
 
