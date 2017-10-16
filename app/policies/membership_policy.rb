@@ -28,4 +28,8 @@ class MembershipPolicy < ApplicationPolicy
     user && user.admin?
   end
 
+  def users_search?
+    user && user.admin?
+  end
+
 end

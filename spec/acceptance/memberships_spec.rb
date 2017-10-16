@@ -4,13 +4,13 @@ require 'rspec_api_documentation/dsl'
 resource "Memberships" do
   before do
     header "Content-Type", "application/json"
-    @group = create(:group)
-    @users = create_list(:user, 5)
-    @memberships = @users.map { |u| create(:membership, group: @group, user: u) }
   end
 
-  context "when authenticated" do
+  context "CRUD memberships" do
     before do
+      @group = create(:group)
+      @users = create_list(:user, 5)
+      @memberships = @users.map { |u| create(:membership, group: @group, user: u) }
       @admin = create(:admin)
       token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
       header 'Authorization', "Bearer #{token}"
@@ -66,6 +66,45 @@ resource "Memberships" do
         expect(response_status).to eq 200
         expect{Membership.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
+    end
+  end
+
+  context "Users search" do
+    before do
+      @admin = create(:admin, first_name: 'Freddy', last_name: 'Smith', email: 'superadmin@gmail.com')
+      token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+      header 'Authorization', "Bearer #{token}"
+    end
+
+    get "api/v1/groups/:group_id/memberships/users_search" do
+
+      # with_options scope: :page do
+        # parameter :number, "Page number"
+        # parameter :size, "Number of members per page"
+      # end
+
+      parameter :query, "The query used for searching users", required: true
+
+      let(:g1) { create(:group) }
+      let(:group_id) { g1.id }
+      let(:g2) { create(:group) }
+      let(:query) { 'jo' }
+      let!(:u1) { create(:user, first_name: 'Freddy', last_name: 'Smith', email: 'bojo@brexit.com', groups: [g1]) }
+      let!(:u2) { create(:user, first_name: 'Jon', last_name: 'Smith', email: 'freddy1@gmail.com', groups: [g2]) }
+      let!(:u3) { create(:user, first_name: 'Jonny', last_name: 'Trejo', email: 'freddy2@gmail.com', groups: []) }
+      let!(:u4) { create(:user, first_name: 'Freddy', last_name: 'Trejo', email: 'freddy3@gmail.com', groups: [g1, g2]) }
+      let!(:u5) { create(:user, first_name: 'Freddy', last_name: 'Smith', email: 'freddy4@gmail.com', groups: [g1]) }
+      example_request "Search for users and whether or not they are member of the group" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to be >= 4
+        expect(json_response[:data].select{ |d| d[:id] == u1.id }.first.dig(:attributes, :is_member)).to be true
+        expect(json_response[:data].select{ |d| d[:id] == u2.id }.first.dig(:attributes, :is_member)).to be false
+        expect(json_response[:data].select{ |d| d[:id] == u3.id }.first.dig(:attributes, :is_member)).to be false
+        expect(json_response[:data].select{ |d| d[:id] == u4.id }.first.dig(:attributes, :is_member)).to be true
+        expect(json_response[:data].select{ |d| d[:id] == u5.id }.empty?).to be true
+      end
+    
     end
 
   end
