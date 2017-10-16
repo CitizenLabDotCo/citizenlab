@@ -5,9 +5,10 @@ import * as Rx from 'rxjs/Rx';
 // i18n
 import { FormattedMessage } from 'react-intl';
 import T from 'components/T';
-import messages from '../messages';
+import messages from './messages';
 
 // Components
+import Button from 'components/UI/Button';
 import PageWrapper from 'components/admin/PageWrapper';
 import GroupList from './GroupList';
 
@@ -17,6 +18,10 @@ import styled from 'styled-components';
 const PageTitle = styled.h1`
   font-size: 2.5rem;
   margin-bottom: 3rem;
+`;
+
+const ButtonWrapper = styled.div`
+  margin-bottom: 2rem;
 `;
 
 // Typing
@@ -38,7 +43,9 @@ class GroupsList extends React.Component {
           <FormattedMessage {...messages.listTitle} />
         </PageTitle>
         <PageWrapper>
-          Add Groups
+          <ButtonWrapper>
+            <Button><FormattedMessage {...messages.addGroupButton} /></Button>
+          </ButtonWrapper>
           <GroupList />
         </PageWrapper>
       </div>

@@ -18,6 +18,39 @@ import Button from 'components/UI/Button';
 // Style
 import styled from 'styled-components';
 
+const ListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const ListItem = styled.div`
+  align-items: center;
+  border-top: 1px solid #EAEAEA;
+  display: flex;
+  justify-content: space-between;
+
+  > * {
+    margin: 2rem 1rem;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  > .expand {
+    flex: 1;
+  }
+
+  &:last-child {
+    border-bottom: 1px solid #EAEAEA;
+  }
+`;
+
 // Typings
 interface Props {
 }
@@ -102,23 +135,21 @@ class GroupsList extends React.Component<Props, State> {
 
 
     return (
-      <table className="e2e-groups-list">
-        <tbody>
+      <ListWrapper className="e2e-groups-list">
           {groups.map((group) => (
-            <tr key={group.id}>
-              <td>{this.getAvatars(group)}</td>
-              <td>{getLocalized(group.attributes.title_multiloc, locale, tenantLocales)}</td>
-              <td><FormattedMessage {...messages.members} values={{ count: group.attributes.memberships_count }} /></td>
-              <td>
-                <Button><FormattedMessage {...messages.deleteButtonLabel} /></Button>
-              </td>
-              <td>
-                <Button><FormattedMessage {...messages.editButtonLabel} /></Button>
-              </td>
-            </tr>
+            <ListItem key={group.id}>
+              <span>{this.getAvatars(group)}</span>
+              <p className="expand">
+                {getLocalized(group.attributes.title_multiloc, locale, tenantLocales)}
+              </p>
+              <p className="expand">
+                <FormattedMessage {...messages.members} values={{ count: group.attributes.memberships_count }} />
+              </p>
+              <Button style="secondary-outlined"><FormattedMessage {...messages.deleteButtonLabel} /></Button>
+              <Button style="secondary"><FormattedMessage {...messages.editButtonLabel} /></Button>
+            </ListItem>
           ))}
-        </tbody>
-      </table>
+    </ListWrapper>
     );
   }
 }
