@@ -45,6 +45,12 @@ class GroupsList extends React.Component<Props, State> {
     this.subscriptions = [];
   }
 
+  getAvatars = (group: IGroupData) => {
+    return (
+      <img role="presentation" alt="" />
+    );
+  }
+
   updateLocales = () => {
     return Rx.Observable.combineLatest(
       localeStream().observable,
@@ -80,13 +86,17 @@ class GroupsList extends React.Component<Props, State> {
 
     if (loading) {
       return (
-        <p>Loading</p>
+        <p>
+          <FormattedMessage {...messages.loadingMessage} />
+        </p>
       );
     }
 
-    if (groups.length === 0 && !loading) {
+    if (groups.length === 0) {
       return (
-        <p>Empty space</p>
+        <p>
+          <FormattedMessage {...messages.emptyListMessage} />
+        </p>
       );
     }
 
@@ -96,11 +106,15 @@ class GroupsList extends React.Component<Props, State> {
         <tbody>
           {groups.map((group) => (
             <tr key={group.id}>
-              <td></td>
+              <td>{this.getAvatars(group)}</td>
               <td>{getLocalized(group.attributes.title_multiloc, locale, tenantLocales)}</td>
               <td><FormattedMessage {...messages.members} values={{ count: group.attributes.memberships_count }} /></td>
-              <td><Button /></td>
-              <td><Button /></td>
+              <td>
+                <Button><FormattedMessage {...messages.deleteButtonLabel} /></Button>
+              </td>
+              <td>
+                <Button><FormattedMessage {...messages.editButtonLabel} /></Button>
+              </td>
             </tr>
           ))}
         </tbody>
