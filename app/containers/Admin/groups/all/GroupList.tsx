@@ -14,19 +14,36 @@ import messages from './messages';
 
 // Components
 import Button from 'components/UI/Button';
+import Icon from 'components/UI/Icon';
 
 // Style
 import styled from 'styled-components';
+
+const EmptyStateMessage = styled.p`
+  background: rgba(1, 161, 177, 0.07);
+  border-radius: 5px;
+  color: #01A1B1;
+  display: flex;
+  align-items: center;
+  font-size: 1.15rem;
+  padding: 1.5rem;
+
+  svg {
+    height: 1em;
+    margin-right: 2rem;
+  }
+`;
 
 const ListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-top: -2rem;
 `;
 
 const ListItem = styled.div`
   align-items: center;
-  border-top: 1px solid #EAEAEA;
+  border-bottom: 1px solid #EAEAEA;
   display: flex;
   justify-content: space-between;
 
@@ -44,10 +61,6 @@ const ListItem = styled.div`
 
   > .expand {
     flex: 1;
-  }
-
-  &:last-child {
-    border-bottom: 1px solid #EAEAEA;
   }
 `;
 
@@ -134,9 +147,10 @@ class GroupsList extends React.Component<Props, State> {
 
     if (groups.length === 0) {
       return (
-        <p>
+        <EmptyStateMessage>
+          <Icon name="warning" />
           <FormattedMessage {...messages.emptyListMessage} />
-        </p>
+        </EmptyStateMessage>
       );
     }
 
