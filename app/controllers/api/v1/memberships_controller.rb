@@ -1,6 +1,7 @@
 class Api::V1::MembershipsController < ApplicationController
 
   before_action :set_membership, only: [:show, :destroy]
+  skip_after_action :verify_authorized, only: [:users_search]
 
   def index
     @memberships = policy_scope(Membership)
@@ -36,6 +37,18 @@ class Api::V1::MembershipsController < ApplicationController
       head 500
     end
   end
+
+  def users_search
+    authorize Membership
+    @users = policy_scope(User) #.all
+      .where("first_name || ' ' || last_name || ' ' || email ILIKE (?)",
+             "%#{params[:query]}%") #.limit(5) # TODO use pagination instead
+      .includes(:memberships)
+      # .left_outer_joins(:memberships)
+      # .where('memberships.group_id' => params[:group_id])
+    render :json => @users, :each_serializer => Api::V1::MemberSerializer, :group_id => params[:group_id]
+  end
+
 
   def set_membership
     @membership = Membership.find params[:id]
