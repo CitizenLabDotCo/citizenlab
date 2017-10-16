@@ -11,12 +11,11 @@ import T from 'components/T';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  width: 100%;
   color: #fff;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 16px;
   border-radius: 5px;
-  padding: 8px 12px;
+  padding: 6px 12px;
   display: inline-block;
   text-transform: uppercase;
   text-align: center;

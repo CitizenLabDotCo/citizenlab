@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import Button from 'components/UI/Button';
 import TextArea from 'components/UI/TextArea';
 import Error from 'components/UI/Error';
+import Icon from 'components/Ui/Icon';
 import Author from './Author';
 
 // tracking
@@ -80,11 +81,33 @@ const StyledTextArea = styled(TextArea)`
   }
 `;
 
-const SubmitButton = styled(Button)`
+const SendIcon = styled(Icon)`
+  height: 22px;
+  z-index: 3;
+  transition: all 100ms ease-out;
+`;
+
+const SendIconWrapper: any = styled.div`
+  width: 30px;
+  height: 30px;
   position: absolute;
-  bottom: 14px;
-  right: 10px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 15px;
+  right: 15px;
   z-index: 2;
+  cursor: ${(props: any) => props.disabled ? 'auto' : 'pointer'};
+
+  ${SendIcon} {
+    fill: ${(props: any) => props.disabled ? '#ccc' : props.theme.colorMain };
+  }
+
+  &:hover ${SendIcon} {
+    fill: ${(props: any) => props.disabled ? '#ccc' : darken(0.15, props.theme.colorMain) };
+  }
 `;
 
 const SuccessMessage = styled.p`
@@ -105,8 +128,10 @@ type State = {
   locale: string | null;
   authUser: IUser | null;
   inputValue: string;
+  focussed: boolean;
   processing: boolean;
   errorMessage: string | null;
+  canSubmit: boolean;
 };
 
 class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & Tracks, State> {
@@ -119,8 +144,10 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
       locale: null,
       authUser: null,
       inputValue: '',
+      focussed: false,
       processing: false,
-      errorMessage: null
+      errorMessage: null,
+      canSubmit: false
     };
   }
 
@@ -146,64 +173,75 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
   }
 
   handleTextareaOnChange = (inputValue) => {
-    this.setState({
+    this.setState((state) => ({
       inputValue,
-      errorMessage: null
-    });
+      errorMessage: null,
+      canSubmit: (state.focussed && _.trim(inputValue) !== '' ? true : false)
+    }));
   }
 
-  handleEditorOnFocus = () => {
+  handleTextareaOnFocus = () => {
     this.props.focusEditor({
       extra: {
         ideaId: this.props.ideaId,
         parentId: this.props.parentId
       },
     });
+
+    this.setState({ focussed: true });
+  }
+
+  handleTextareaOnBlur = () => {
+    this.setState({ focussed: false });
   }
 
   handleSubmit = async (event) => {
     const { ideaId, parentId } = this.props;
     const { formatMessage } = this.props.intl;
-    const { locale, authUser, inputValue } = this.state;
+    const { locale, authUser, inputValue, canSubmit } = this.state;
 
     event.preventDefault();
 
-    if (locale && authUser && _.isString(inputValue) && _.trim(inputValue) !== '') {
-      this.props.clickCommentPublish({
-        extra: {
-          ideaId,
-          parentId,
-          content: inputValue,
-        },
-      });
+    if (canSubmit) {
+      this.setState({ canSubmit: false });
 
-      try {
-        this.setState({ processing: true });
+      if (locale && authUser && _.isString(inputValue) && _.trim(inputValue) !== '') {
+        this.props.clickCommentPublish({
+          extra: {
+            ideaId,
+            parentId,
+            content: inputValue,
+          },
+        });
 
-        await addCommentToComment(ideaId, authUser.data.id, parentId, { [locale]: inputValue });
+        try {
+          this.setState({ processing: true });
 
-        this.setState({ 
-          inputValue: '',
+          await addCommentToComment(ideaId, authUser.data.id, parentId, { [locale]: inputValue });
+
+          this.setState({ 
+            inputValue: '',
+            processing: false
+          });
+        } catch (error) {
+          this.setState({
+            errorMessage: formatMessage(messages.addCommentError),
+            processing: false
+          });
+
+          throw error;
+        }
+      } else if (locale && authUser && (!inputValue || inputValue === '')) {
+        this.setState({
+          errorMessage: formatMessage(messages.emptyCommentError),
           processing: false
         });
-      } catch (error) {
+      } else {
         this.setState({
           errorMessage: formatMessage(messages.addCommentError),
           processing: false
         });
-
-        throw error;
       }
-    } else if (locale && authUser && (!inputValue || inputValue === '')) {
-      this.setState({
-        errorMessage: formatMessage(messages.emptyCommentError),
-        processing: false
-      });
-    } else {
-      this.setState({
-        errorMessage: formatMessage(messages.addCommentError),
-        processing: false
-      });
     }
   }
 
@@ -212,7 +250,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
 
     if (authUser) {
       const { formatMessage } = this.props.intl;
-      const { inputValue, processing, errorMessage } = this.state;
+      const { inputValue, canSubmit, processing, errorMessage } = this.state;
       const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
       const submitAreaClassNames = classNames({
         error: _.isString(errorMessage)
@@ -227,8 +265,10 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
             value={inputValue}
             error={errorMessage}
             onChange={this.handleTextareaOnChange}
-            onFocus={this.handleEditorOnFocus}
+            onFocus={this.handleTextareaOnFocus}
+            onBlur={this.handleTextareaOnBlur}
           >
+            {/*
             <SubmitButton
               className="e2e-submit-comment"
               loading={processing}
@@ -239,6 +279,11 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
             >
               <FormattedMessage {...messages.commentReplyButton} />
             </SubmitButton>
+            */}
+
+            <SendIconWrapper onClick={this.handleSubmit} disabled={!canSubmit}>
+              <SendIcon name="send" />
+            </SendIconWrapper>
           </StyledTextArea>
         </CommentContainer>
       );
