@@ -4,6 +4,7 @@ import { darken, rgba } from 'polished';
 import { ITheme } from 'typings';
 import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
+import { Link } from 'react-router';
 import styled, { css } from 'styled-components';
 
 const ButtonText = styled.div`
@@ -15,7 +16,7 @@ const ButtonText = styled.div`
   white-space: nowrap;
 `;
 
-const StyledIcon = styled(Icon) `
+const StyledIcon = styled(Icon)`
   fill: #fff;
   margin-right: 14px;
   transition: all 120ms ease;
@@ -30,15 +31,42 @@ const ButtonContent = styled.div`
   transition: all 120ms ease;
 `;
 
-const StyledButton: any = styled.button`
-  width: ${(props: any) => props.width || 'auto'};
-  height: ${(props: any) => props.height || 'auto'};
+const getPadding = (size) => {
+  switch (size) {
+    case '2':
+      return `10px 22px`;
+    case '3':
+      return `12px 26px`;
+    case '4':
+      return `14px 28px`;
+    default:
+      return `9px 20px`;
+  }
+};
+
+const getIconHeight = (size) => {
+  switch (size) {
+    case '2':
+      return `20px`;
+    case '3':
+      return `22px`;
+    case '4':
+      return `24px`;
+    default:
+      return `18px`;
+  }
+};
+
+const buttonStyles = (props) => `
+  width: ${props.width || 'auto'};
+  height: ${props.height || 'auto'};
   display: flex;
+  font-size: 1.25rem;
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 0;
-  border-radius: ${(props: any) => props.circularCorners ? '999em' : '5px'};
+  padding: ${getPadding(props.size)};
+  border-radius: ${props.circularCorners ? '999em' : '5px'};
   position: relative;
   outline: none;
   transition: all 120ms ease;
@@ -56,107 +84,41 @@ const StyledButton: any = styled.button`
     flex: 1;
   }
 
-  ${ButtonContent} {
-    ${(props: any) => {
-      if (props.padding) {
-        return css`
-          padding: ${props.padding};
-        `;
-      } else if (props.size === '2') {
-        return css`
-          padding: 10px 22px;
-        `;
-      } else if (props.size === '3') {
-        return css`
-          padding: 12px 26px;
-        `;
-      } else if (props.size === '4') {
-        return css`
-          padding: 14px 28px;
-        `;
-      }
-
-      return css`
-        padding: 9px 20px;
-      `;
-    }}
-  }
-
-  ${ButtonText} {
+  .button-text {
     opacity: ${(props: any) => props.loading ? 0 : 1};
-
-    ${(props: any) => {
-      if (props.size === '2') {
-        return css`
-          font-size: 17px;
-          line-height: 21px;
-        `;
-      } else if (props.size === '3') {
-        return css`
-          font-size: 18px;
-          line-height: 22px;
-        `;
-      } else if (props.size === '4') {
-        return css`
-          font-size: 18px;
-          line-height: 22px;
-        `;
-      }
-
-      return css`
-        font-size: 16px;
-        line-height: 20px;
-      `;
-    }}
+    font-size: 16px;
+    line-height: 20px;
   }
 
-  ${StyledIcon} {
-    ${(props: any) => {
-      if (props.size === '2') {
-        return css`
-          height: 20px;
-        `;
-      } else if (props.size === '3') {
-        return css`
-          height: 22px;
-        `;
-      } else if (props.size === '4') {
-        return css`
-          height: 24px;
-        `;
-      }
-
-      return css`
-        height: 18px;
-      `;
-    }}
+  .button-icon {
+    height: ${getIconHeight(props.size)};
   }
 
   &.primary {
     &:not(.disabled) {
-      background: ${(props: any) => props.theme.colorMain || '#e0e0e0'};
+      background: ${props.theme.colorMain || '#e0e0e0'};
 
-      ${ButtonText} {
+      .button-text {
         color: #fff;
       }
 
-      ${StyledIcon} {
+      .button-icon {
         fill: #fff;
       }
 
       &:hover {
-        background: ${(props: any) => darken(0.15, (props.theme.colorMain || '#ccc'))};
+        background: ${darken(0.15, (props.theme.colorMain || '#ccc'))};
       }
     }
 
     &.disabled {
       background: #d0d0d0;
 
-      ${ButtonText} {
+      .button-text {
         color: #fff;
       }
 
-      ${StyledIcon} {
+      .button-icon {
         fill: #fff;
       }
     }
@@ -166,22 +128,22 @@ const StyledButton: any = styled.button`
     &:not(.disabled) {
       background: #e4e4e4;
 
-      ${ButtonText} {
+      .button-text {
         color: #555;
       }
 
-      ${StyledIcon} {
+      .button-icon {
         fill: #555;
       }
 
       &:hover {
         background: #ddd;
 
-        ${ButtonText} {
+        .button-text {
           color: #222;
         }
-  
-        ${StyledIcon} {
+
+        .button-icon {
           fill: #222;
         }
       }
@@ -190,11 +152,11 @@ const StyledButton: any = styled.button`
     &.disabled {
       background: #ccc;
 
-      ${ButtonText} {
+      .button-text {
         color: #fff;
       }
 
-      ${StyledIcon} {
+      .button-icon {
         fill: #fff;
       }
     }
@@ -203,25 +165,25 @@ const StyledButton: any = styled.button`
   &.primary-outlined {
     &:not(.disabled) {
       background: transparent;
-      border: solid 1px ${(props: any) => props.theme.colorMain};
+      border: solid 1px ${props.theme.colorMain};
 
-      ${ButtonText} {
-        color: ${(props: any) => props.theme.colorMain};
+      .button-text {
+        color: ${props.theme.colorMain};
       }
 
-      ${StyledIcon} {
-        fill: ${(props: any) => props.theme.colorMain};
+      .button-icon {
+        fill: ${props.theme.colorMain};
       }
 
       &:hover {
-        border-color: ${(props: any) => darken(0.15, (props.theme.colorMain))};
+        border-color: ${darken(0.15, (props.theme.colorMain))};
 
-        ${ButtonText} {
-          color: ${(props: any) => darken(0.15, (props.theme.colorMain))};
+        .button-text {
+          color: ${darken(0.15, (props.theme.colorMain))};
         }
-  
-        ${StyledIcon} {
-          fill: ${(props: any) => darken(0.15, (props.theme.colorMain))};
+
+        .button-icon {
+          fill: ${darken(0.15, (props.theme.colorMain))};
         }
       }
     }
@@ -230,11 +192,11 @@ const StyledButton: any = styled.button`
       background: transparent;
       border: solid 1px #ccc;
 
-      ${ButtonText} {
+      .button-text {
         color: #ccc;
       }
 
-      ${StyledIcon} {
+      .button-icon {
         fill: #ccc;
       }
     }
@@ -245,22 +207,22 @@ const StyledButton: any = styled.button`
       background: transparent;
       border: solid 1px #999;
 
-      ${ButtonText} {
+      .button-text {
         color: #999;
       }
 
-      ${StyledIcon} {
+      .button-icon {
         fill: #999;
       }
 
       &:hover {
         border-color: #222;
 
-        ${ButtonText} {
+        .button-text {
           color: #444;
         }
-  
-        ${StyledIcon} {
+
+        .button-icon {
           fill: #444;
         }
       }
@@ -270,11 +232,11 @@ const StyledButton: any = styled.button`
       background: transparent;
       border: solid 1px #ccc;
 
-      ${ButtonText} {
+      .button-text {
         color: #ccc;
       }
 
-      ${StyledIcon} {
+      .button-icon {
         fill: #ccc;
       }
     }
@@ -284,11 +246,11 @@ const StyledButton: any = styled.button`
     background-color: ${rgba('#32B67A', 0.15)};
     color: #32B67A;
 
-    ${ButtonText} {
+    .button-text {
       color: inherit;
     }
 
-    ${StyledIcon} {
+    .button-icon {
       fill: #32B67A;
     }
   }
@@ -297,14 +259,22 @@ const StyledButton: any = styled.button`
     background-color: ${rgba('#FC3C2D', 0.15)};
     color: #FC3C2D;
 
-    ${ButtonText} {
+    .button-text {
       color: inherit;
     }
 
-    ${StyledIcon} {
+    .button-icon {
       fill: #FC3C2D;
     }
   }
+`;
+
+const StyledButton: any = styled.button`
+  ${buttonStyles}
+`;
+
+const StyledLink: any = styled(Link)`
+  ${buttonStyles}
 `;
 
 const SpinnerWrapper = styled.div`
@@ -334,6 +304,7 @@ type Props = {
   onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
   className?: string;
   circularCorners?: boolean;
+  linkTo?: string;
 };
 
 type State = {};
@@ -346,7 +317,7 @@ export default class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { text, width, height, padding, className, icon, children } = this.props;
+    const { text, width, height, padding, className, icon, children, linkTo } = this.props;
     let { size, style, loading, disabled, fullWidth, circularCorners } = this.props;
 
     size = (size || '1');
@@ -356,8 +327,11 @@ export default class Button extends React.PureComponent<Props, State> {
     fullWidth = (_.isBoolean(fullWidth) ? fullWidth : false);
     circularCorners = (_.isBoolean(circularCorners) ? circularCorners : true);
 
+    const StyledComponent = linkTo ? StyledLink : StyledButton;
+
     return (
-      <StyledButton
+      <StyledComponent
+        to={linkTo}
         size={size}
         width={width}
         height={height}
@@ -366,14 +340,14 @@ export default class Button extends React.PureComponent<Props, State> {
         onClick={this.handleOnClick}
         disabled={disabled}
         circularCorners={circularCorners}
-        className={`Button ${disabled && 'disabled'} ${fullWidth && 'fullWidth'} ${style} ${className}`}
+        className={`Button ${disabled ? 'disabled' : ''} ${fullWidth ? 'fullWidth' : ''} ${style} ${className ? className : ''}`}
       >
-        <ButtonContent>
-          {icon && <StyledIcon name={icon} />}
-          <ButtonText>{text || children}</ButtonText>
+        <ButtonContent className="button-content">
+          {icon && <StyledIcon className="button-icon" name={icon} />}
+          <ButtonText className="button-text">{text || children}</ButtonText>
           {loading && <SpinnerWrapper><Spinner /></SpinnerWrapper>}
         </ButtonContent>
-      </StyledButton>
+      </StyledComponent>
     );
   }
 }
