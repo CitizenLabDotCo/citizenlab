@@ -18,10 +18,6 @@ const Text = styled.div`
   flex-grow: 1;
 `;
 
-const Icon = styled.div`
-  flex: 0 0 20px;
-`;
-
 const Separator = styled.div`
   border: solid #fafafa 1px;
   background: #eaeaea;

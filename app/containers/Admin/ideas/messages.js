@@ -15,4 +15,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.IdeaDashboard.helmetDescription',
     defaultMessage: 'Idea list in admin backoffice',
   },
+  delete: {
+    id: 'app.containers.AdminPage.IdeaDashboard.delete',
+    defaultMessage: 'Delete',
+  },
 });

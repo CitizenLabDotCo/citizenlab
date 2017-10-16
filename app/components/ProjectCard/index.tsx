@@ -12,7 +12,7 @@ import Button from 'components/UI/Button';
 // services
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { projectByIdStream, IProject } from 'services/projects';
-import { projectImagesStream, IProjectImages } from 'services/projectImages';
+import { projectImageStream, IProjectImage } from 'services/projectImages';
 
 // i18n
 import T from 'components/T';
@@ -151,10 +151,10 @@ type Props = {
 type State = {
   currentTenant: ITenant | null;
   project: IProject | null;
-  projectImages: IProjectImages | null;
+  projectImage: IProjectImage | null;
 };
 
-class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
+class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -163,7 +163,7 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.state = {
       currentTenant: null,
       project: null,
-      projectImages: null
+      projectImage: null
     };
     this.subscriptions = [];
   }
@@ -171,16 +171,22 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
   componentWillMount() {
     const { id } = this.props;
     const currentTenant$ = currentTenantStream().observable;
-    const project$ = projectByIdStream(id).observable;
-    const projectImages$ = projectImagesStream(id).observable;
+    const project$ = projectByIdStream(id).observable.switchMap((project) => {
+      const projectImages = project.data.relationships.project_images.data;
+
+      if (projectImages && projectImages.length > 0) {
+        return projectImageStream(project.data.id, projectImages[0].id).observable.map(projectImage => ({ project, projectImage }));
+      }
+
+      return Rx.Observable.of(null).map(() => ({ project, projectImage: null }));
+    });
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
         currentTenant$,
-        project$,
-        projectImages$
-      ).subscribe(([currentTenant, project, projectImages]) => {
-        this.setState({ currentTenant, project, projectImages });
+        project$
+      ).subscribe(([currentTenant, { project, projectImage }]) => {
+        this.setState({ currentTenant, project, projectImage });
       })
     ];
   }
@@ -199,7 +205,7 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { currentTenant, project, projectImages } = this.state;
+    const { currentTenant, project, projectImage } = this.state;
 
     if (currentTenant && project) {
       const tenantLogo = currentTenant.data.attributes.logo.medium;
@@ -207,8 +213,7 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
       const titleMultiloc = project.data.attributes.title_multiloc;
       const descriptionMultiloc = project.data.attributes.description_multiloc;
       const ideasCount = project.data.attributes.ideas_count;
-      const image = (projectImages && projectImages.data.length > 0 ? projectImages.data[0] : null);
-      const imageUrl = (image ? image.attributes.versions.medium : null);
+      const imageUrl = (projectImage ? projectImage.data.attributes.versions.medium : null);
 
       return (
         <Container>
@@ -242,4 +247,4 @@ class Project extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(Project);
+export default injectIntl<Props>(ProjectCard);

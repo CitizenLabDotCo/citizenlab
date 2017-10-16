@@ -201,7 +201,7 @@ export default class Editor extends React.PureComponent<Props, State> {
     placeholder = (placeholder || '');
     error = (error || null);
     toolbarConfig = (toolbarConfig || {
-      options: ['inline', 'list', 'link', 'emoji'],
+      options: ['inline', 'list', 'link'],
       inline: {
         options: ['bold', 'italic'],
       },

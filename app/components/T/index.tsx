@@ -6,9 +6,10 @@ import * as Rx from 'rxjs/Rx';
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
+import { Map } from 'immutable';
 
 type Props = {
-  value: { [key: string]: string }
+  value: { [key: string]: string } | Map<string,string>
 };
 
 type State = {

@@ -29,14 +29,23 @@ import messages from './messages';
 // styles
 import styled, { keyframes } from 'styled-components';
 
-const IdeaImage: any = styled.div`
+const IdeaImage: any = styled.img`
   width: 100%;
   height: 135px;
+  object-fit: cover;
+  overflow: hidden;
+
+  /*
   border-bottom: solid 1px #e8e8e8;
   background-image: url(${(props: any) => props.src});  
   background-repeat: no-repeat;
   background-size: cover;
   opacity: 1;
+  */
+`;
+
+const IdeaImageLarge = styled.img`
+  display: none;
 `;
 
 const IdeaImagePlaceholder = styled.div`
@@ -61,9 +70,11 @@ const IdeaContainer: any = styled.div`
   cursor: pointer;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  transition: all 250ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: box-shadow 250ms cubic-bezier(0.19, 1, 0.22, 1);
+  transform: translate3d(0, 0, 0);
   position: relative;
   border: solid 1px #e6e6e6;
+  will-change: box-shadow;
 
   &:hover {
     box-shadow: 0 1px 24px rgba(0, 0, 0, 0.1);
@@ -84,11 +95,6 @@ const IdeaContent = styled.div`
   padding: 20px;
 `;
 
-const IdeaFooter = styled.div`
-  padding: 20px;
-  padding-bottom: 22px;
-`;
-
 const IdeaTitle: any = styled.h4`
   color: #333;
   display: block;
@@ -97,12 +103,16 @@ const IdeaTitle: any = styled.h4`
   max-height: 60px;
   margin: 0;
   font-size: 22px;
-  line-height: 26px;
   font-weight: 500;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-height: 26px;
+  max-height: 78px;
+
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 `;
@@ -123,6 +133,12 @@ const AuthorLink = styled.span`
     color: #333;
     text-decoration: underline;
   }
+`;
+
+const StyledVoteControl = styled(VoteControl)`
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
 `;
 
 type Props = {
@@ -166,10 +182,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
       const idea$ = ideaByIdStream(ideaId).observable;
       const ideaAuthor$ = userByIdStream(idea.data.relationships.author.data.id).observable;
-      const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.do((ideaImage) => {
-        // preload image
-        new Image().src = ideaImage.data.attributes.versions.large;
-      }) : Rx.Observable.of(null));
+      const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
         idea$,
@@ -192,6 +205,17 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  loadImage = (imagePath) => {
+    const observable = new Rx.Observable((observer) => {
+      const img = new Image();
+      img.src = imagePath;
+      img.onload = () => observer.next(img);
+      img.onerror = (err) => observer.error(err);
+    });
+
+    return observable;
   }
 
   onCardClick = (event) => {
@@ -229,6 +253,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     if (!loading && idea && ideaAuthor && locale) {
       const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
+      const ideaImageLargeUrl = (ideaImage ? ideaImage.data.attributes.versions.large : null);
       const authorName = `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
       const createdAt = formatRelative(idea.data.attributes.created_at);
       const byAuthor = formatMessage(messages.byAuthorName, { authorName });
@@ -237,6 +262,8 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
         <IdeaContainer onClick={this.onCardClick}  className={className}>
 
           {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
+
+          {ideaImageLargeUrl && <IdeaImageLarge src={ideaImageLargeUrl} />}
 
           {!ideaImageUrl &&
             <IdeaImagePlaceholder>
@@ -254,9 +281,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
           </IdeaContent>
 
           {!showUnauthenticated &&
-            <IdeaFooter>
-              <VoteControl ideaId={idea.data.id} unauthenticatedVoteClick={this.unauthenticatedVoteClick} />
-            </IdeaFooter>
+            <StyledVoteControl ideaId={idea.data.id} unauthenticatedVoteClick={this.unauthenticatedVoteClick} />
           }
 
           {showUnauthenticated && <Unauthenticated />}

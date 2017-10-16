@@ -29,7 +29,7 @@ const Left = styled.section`
   ${media.phone`
     margin-bottom: 20px;
   `}
-  ${media.notPhone`
+  ${media.biggerThanPhone`
     padding-right: 30px;
   `}
 `;

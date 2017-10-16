@@ -27,10 +27,10 @@ const AuthorContainer = styled.div`
 `;
 
 const AuthorAvatar = styled(Avatar)`
-  width: 34px;
-  height: 34px;
-  margin-right: 12px;
-  margin-top: -1px;
+  width: 31px;
+  height: 31px;
+  margin-right: 8px;
+  margin-top: 0px;
 `;
 
 const AuthorMeta = styled.div`
@@ -38,18 +38,21 @@ const AuthorMeta = styled.div`
   flex-direction: column;
 `;
 
-const AuthorName = styled(Link) `
+const AuthorNameContainer = styled.div `
   color: #333;
-  color: ${(props) => props.theme.colorMain};
-  font-size: 15px;
+  font-size: 16px;
   line-height: 19px;
-  font-weight: 300;
+  font-weight: 400;
   text-decoration: none;
-  margin-bottom: 1px;
+`;
+
+const AuthorName = styled(Link)`
+  color: #1391A1;
+  text-decoration: none;
+  cursor: pointer;
 
   &:hover {
-    color: #000;
-    color: ${(props) => darken(0.15, props.theme.colorMain)};
+    color: ${(props) => darken(0.15, '#1391A1')};
     text-decoration: underline;
   }
 `;
@@ -59,11 +62,13 @@ const TimeAgo = styled.div`
   font-size: 13px;
   line-height: 17px;
   font-weight: 300;
+  margin-top: 1px;
 `;
 
 type Props = {
   authorId: string;
-  createdAt: string;
+  createdAt?: string | undefined;
+  message?: string | undefined;
 };
 
 type State = {
@@ -105,9 +110,13 @@ class Author extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const className = this.props['className'];
+    const children = this.props['children'];
+    let { message } = this.props;
     const { authorId, createdAt } = this.props;
     const { formatRelative } = this.props.intl;
     const { author } = this.state;
+
+    message = (message ? message : 'author');
 
     if (author) {
       const avatar = author.data.attributes.avatar.medium;
@@ -117,15 +126,21 @@ class Author extends React.PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <AuthorContainer className={className}>
-          <AuthorAvatar userId={authorId} size="medium" onClick={this.goToUserProfile} />
+          <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />
           <AuthorMeta>
-            <AuthorName to={`/profile/${author.data.attributes.slug}`}>
-              {/* <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} /> */}
-              {firstName} {lastName}
-            </AuthorName>
-            <TimeAgo>
-              <FormattedRelative value={createdAt} />
-            </TimeAgo>
+            <AuthorNameContainer>
+              <FormattedMessage 
+                {...messages[`${message}`]} 
+                values={{
+                  authorNameComponent: <AuthorName to={`/profile/${author.data.attributes.slug}`}>{firstName} {lastName}</AuthorName>
+                }}
+              />
+            </AuthorNameContainer>
+            {createdAt &&
+              <TimeAgo>
+                <FormattedRelative value={createdAt} />
+              </TimeAgo>
+            }
           </AuthorMeta>
         </AuthorContainer>
       );

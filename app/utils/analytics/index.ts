@@ -33,26 +33,31 @@ const identifications$ = new Rx.Subject<IIdentification>();
 const pageChanges$ = new Rx.Subject<IPageChange>();
 
 Rx.Observable.combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
-  (window as any).analytics.track(
-    event.name,
-    addTenantInfo(event.properties, tenant.data),
-  );
+  if (window && window['analytics']) {
+    window['analytics'].track(
+      event.name,
+      addTenantInfo(event.properties, tenant.data),
+    );
+  }
 });
 
 Rx.Observable.combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChange]) => {
-  (window as any).analytics.page(
-    pageChange.name,
-    addTenantInfo(pageChange.properties, tenant.data),
-  );
+  if (window && window['analytics']) {
+    window['analytics'].page(
+      pageChange.name,
+      addTenantInfo(pageChange.properties, tenant.data),
+    );
+  }
 });
 
 Rx.Observable.combineLatest(tenant$, identifications$).subscribe(([tenant, identification]) => {
-  (window as any).analytics.identify(
-    identification.userId,
-    addTenantInfo(identification.properties, tenant.data),
-  );
+  if (window && window['analytics']) {
+    window['analytics'].identify(
+      identification.userId,
+      addTenantInfo(identification.properties, tenant.data),
+    );
+  }
 });
-
 
 export function addTenantInfo(properties, tenant: ITenantData) {
   return {
@@ -85,13 +90,6 @@ export function trackEvent(eventName: string, properties: {} = {}) {
   });
 }
 
-/** HOC that allows specifying events as function props to the inner component
- e.g.:
- const SomeComponent = ({ buttonClicked }) => <button onClick={buttonClicked} />);
- const TrackedComponent = injectTracks(
-   {trackButtonClick: {name: 'Button clicked'}}
-  )(SomeComponent);
-*/
 export const injectTracks = <P>(events: {[key: string]: IEvent}) => (component: React.ComponentClass<P>) => {
   return (props: P) => {
     const eventFunctions = _.mapValues(events, (event) => (
