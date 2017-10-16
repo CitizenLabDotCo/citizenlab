@@ -4,39 +4,55 @@ import * as Rx from 'rxjs/Rx';
 
 // components
 import Error from 'components/UI/Error';
+import TextareaAutosize from 'react-autosize-textarea';
 
 // style
-import styled from 'styled-components';
-
-const StyledTextarea: any = styled.textarea`
-  width: 100%;
-  color: #333;
-  font-size: 18px;
-  line-height: 22px;
-  font-weight: 400;
-  padding: 10px;
-  resize: none;
-  outline: none;
-  border-radius: 5px;
-  border: solid 1px #ccc;
-  background: #fff;
-`;
+import styled, { css } from 'styled-components';
 
 const Container: any = styled.div`
   position: relative;
 
-  ${StyledTextarea}::placeholder {
-    color: #aaa;
-    opacity: 1;
-  }
+  .textarea {
+    width: 100%;
+    color: #333;
+    font-size: 17px;
+    line-height: 24px;
+    font-weight: 400;
+    padding: 12px;
+    resize: none;
+    outline: none;
+    position: relative;
+    border-radius: 5px;
+    border: solid 1px #ccc;
+    background: #fff;
+    overflow: hidden;
+  
+    &::placeholder {
+      color: #aaa;
+      opacity: 1;
+    }
+  
+    &:hover {
+      border-color: #333;
+    }
+  
+    &:focus {
+      border-color: #333;
+    }
 
-  ${StyledTextarea}:not(:focus):hover {
-    border-color: ${(props: any) => props.hasError ? '#fc3c2d' : '#999'};
-  }
+    &.error {
+      border-color: #fc3c2d !important;
 
-  ${StyledTextarea}:focus {
-    border-color: ${(props: any) => props.hasError ? '#fc3c2d' : '#000'};
+      &:hover,
+      &:focus {
+        border-color: #fc3c2d !important;
+      }
+    }
   }
+`;
+
+const TextAreaContainer = styled.div`
+  position: relative;
 `;
 
 type Props = {
@@ -46,31 +62,76 @@ type Props = {
   rows?: number | undefined;
   error?: string | null | undefined;
   onChange?: Function | undefined;
+  onFocus?: Function | undefined;
+  onBlur?: Function | undefined;
 };
 
 type State = {};
 
 export default class TextArea extends React.PureComponent<Props, State> {
+  textareaElement: HTMLTextAreaElement | null = null;
+
+  constructor() {
+    super();
+    this.textareaElement = null;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.error && nextProps.error !== this.props.error && this.textareaElement !== null) {
+      setTimeout(() => {
+        if (this.textareaElement) {
+          this.textareaElement.focus();
+        }
+      }, 50);
+    }
+  }
+
+  setRef = (element) => {
+    this.textareaElement = element;
+  }
+
   handleOnChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
     if (this.props.onChange && _.isFunction(this.props.onChange)) {
       this.props.onChange(event.currentTarget.value);
     }
   }
 
+  handleOnFocus = () => {
+    if (this.props.onFocus) {
+      this.props.onFocus();
+    }
+  }
+
+  handleOnBlur = () => {
+    if (this.props.onBlur) {
+      this.props.onBlur();
+    }
+  }
+
   render() {
-    const className = this.props['className'];
-    const { name, rows, placeholder, value, error } = this.props;
+    let { rows } = this.props;
+    const { name, placeholder, value, error, children } = this.props;
     const hasError = (_.isString(error) && !_.isEmpty(error));
+    const className = this.props['className'];
+
+    rows = (rows || 5);
 
     return (
       <Container className={className} hasError={hasError}>
-        <StyledTextarea 
-          name={name || ''}
-          rows={5}
-          value={value}
-          placeholder={placeholder}
-          onChange={this.handleOnChange}
-        />
+        <TextAreaContainer>
+          <TextareaAutosize
+            className={`textarea ${hasError ? 'error' : ''}`}
+            name={name || ''}
+            rows={rows}
+            value={value}
+            placeholder={placeholder}
+            onChange={this.handleOnChange}
+            onFocus={this.handleOnFocus}
+            onBlur={this.handleOnBlur}
+            innerRef={this.setRef}
+          />
+          {children}
+        </TextAreaContainer>
         <Error text={error} />
       </Container>
     );

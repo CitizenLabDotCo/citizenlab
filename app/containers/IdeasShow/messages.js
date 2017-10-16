@@ -56,7 +56,7 @@ export default defineMessages({
   },
   publishComment: {
     id: 'app.containers.IdeasShow.publishComment',
-    defaultMessage: 'Comment',
+    defaultMessage: 'Post comment',
   },
   loadMoreComments: {
     id: 'app.containers.IdeasShow.loadMoreComments',
@@ -82,13 +82,17 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.byAuthor',
     defaultMessage: 'by {firstName} {lastName}',
   },
-  authorSaid: {
-    id: 'app.containers.IdeasShow.authorSaid',
-    defaultMessage: '{firstName} said',
+  author: {
+    id: 'app.containers.IdeasShow.author',
+    defaultMessage: '{authorNameComponent}',
   },
-  authorReacted: {
-    id: 'app.containers.IdeasShow.authorReacted',
-    defaultMessage: '{firstName} replied',
+  parentCommentAuthor: {
+    id: 'app.containers.IdeasShow.parentCommentAuthor',
+    defaultMessage: '{authorNameComponent} said',
+  },
+  childCommentAuthor: {
+    id: 'app.containers.IdeasShow.childCommentAuthor',
+    defaultMessage: '{authorNameComponent} replied',
   },
   shareCTA: {
     id: 'app.containers.IdeasShow.shareCTA',
@@ -118,6 +122,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentBodyPlaceholder',
     defaultMessage: 'What do you think about this idea?',
   },
+  childCommentBodyPlaceholder: {
+    id: 'app.containers.IdeasShow.childCommentBodyPlaceholder',
+    defaultMessage: 'Write a reply...',
+  },
   commentSuccess: {
     id: 'app.containers.IdeasShow.commentSuccess',
     defaultMessage: 'Thanks for contributing!',
@@ -128,6 +136,6 @@ export default defineMessages({
   },
   signInLinkText: {
     id: 'app.containers.IdeasShow.signInLinkText',
-    defaultMessage: 'sign in',
+    defaultMessage: 'log in',
   },
 });

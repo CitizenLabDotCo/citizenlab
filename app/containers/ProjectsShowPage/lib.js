@@ -2,7 +2,9 @@ import moment from 'moment';
 
 export const getCurrentPhaseId = (items) => {
   if (!items) return -1;
-  const p = items.filter((item) => getPhaseType(item.attributes.start_at, item.attributes.end_at) === 'current')[0];
+  const p = items.filter((item) => {
+    return getPhaseType(item.getIn(['attributes', 'start_at']), item.getIn(['attributes', 'end_at'])) === 'current';
+  })[0];
 
   return p && p.id;
 };
@@ -27,7 +29,7 @@ export const getEventType = getPhaseType;
 
 export const getComingEventId = (items) => {
   if (!items) return -1;
-  const p = items.filter((item) => getEventType(item.attributes.start_at, item.attributes.end_at) === 'current' || getEventType(item.attributes.start_at, item.attributes.end_at) === 'coming')[0];
+  const p = items.filter((item) => getEventType(item.getIn(['attributes', 'start_at']), item.getIn(['attributes', 'end_at'])) === 'current' || getEventType(item.getIn(['attributes', 'start_at']), item.getIn(['attributes', 'end_at'])) === 'coming')[0];
 
   return p && p.id;
 };

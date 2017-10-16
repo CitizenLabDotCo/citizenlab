@@ -30,6 +30,7 @@ export interface IStream<T> {
   params: IExtendedStreamParams<T>;
   streamId: string;
   isQueryStream: boolean;
+  isSearchQuery: boolean;
   isSingleItemStream: boolean;
   type: 'singleObject' | 'arrayOfObjects' | 'unknown';
   fetch: fetchFn<T>;
@@ -67,7 +68,40 @@ class Streams {
 
     Object.keys(this.streams)
       .filter(streamId => streamId !== authApiEndpoint)
-      .forEach(streamId => delete this.streams[streamId]);
+      .forEach((streamId) => {
+        const apiEndpoint = this.streams[streamId].params.apiEndpoint;
+        this.deleteStream(streamId, apiEndpoint);
+      });
+  }
+
+  deleteStream(streamId: string, apiEndpoint: string) {
+    if (_(this.streamIdsByApiEndPointWithQuery[apiEndpoint]).some(value => value === streamId)) {
+      this.streamIdsByApiEndPointWithQuery[apiEndpoint] = this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
+        return value !== streamId;
+      });            
+    }
+
+    if (_(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]).some(value => value === streamId)) {
+      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter((value) => {
+        return value !== streamId;
+      });            
+    }
+
+    Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
+      if (_(this.streamIdsByDataIdWithQuery[dataId]).some(value => value === streamId)) {
+        this.streamIdsByDataIdWithQuery[dataId] =  this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
+          return value !== streamId;
+        });
+      }
+
+      if (_(this.streamIdsByDataIdWithoutQuery[dataId]).some(value => value === streamId)) {
+        this.streamIdsByDataIdWithoutQuery[dataId] = this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
+          return value !== streamId;
+        });
+      }
+    });
+
+    delete this.streams[streamId];
   }
 
   isUUID(string) {
@@ -93,14 +127,16 @@ class Streams {
     return apiEndpoint;
   }
 
-  addStreamIdByDataIdIndex(streamId: string, isQueryStream: boolean, dataId: string) {
-    if (isQueryStream) {
+  addStreamIdByDataIdIndex(streamId: string, isQueryStream: boolean, isSearchQuery: boolean, dataId: string) {
+    if (isQueryStream && !isSearchQuery) {
       if (this.streamIdsByDataIdWithQuery[dataId] && !_.some(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
         this.streamIdsByDataIdWithQuery[dataId].push(streamId);
       } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
         this.streamIdsByDataIdWithQuery[dataId] = [streamId];
       }
-    } else {
+    }
+
+    if (!isQueryStream) {
       if (this.streamIdsByDataIdWithoutQuery[dataId] && !_.some(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
         this.streamIdsByDataIdWithoutQuery[dataId].push(streamId);
       } else if (!this.streamIdsByDataIdWithoutQuery[dataId]) {
@@ -109,14 +145,16 @@ class Streams {
     }
   }
 
-  addStreamIdByApiEndpointIndex(apiEndpoint: string, streamId: string, isQueryStream: boolean) {
-    if (isQueryStream) {
+  addStreamIdByApiEndpointIndex(apiEndpoint: string, streamId: string, isQueryStream: boolean, isSearchQuery: boolean) {
+    if (isQueryStream && !isSearchQuery) {
       if (!this.streamIdsByApiEndPointWithQuery[apiEndpoint]) {
         this.streamIdsByApiEndPointWithQuery[apiEndpoint] = [streamId];
       } else {
         this.streamIdsByApiEndPointWithQuery[apiEndpoint].push(streamId);
       }
-    } else {
+    }
+
+    if (!isQueryStream) {
       if (!this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]) {
         this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = [streamId];
       } else {
@@ -135,6 +173,7 @@ class Streams {
       const { bodyData } = params;
       const lastUrlSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
       const isQueryStream = this.isQuery(queryParameters);
+      const isSearchQuery = (isQueryStream && _.has(queryParameters as any, 'search'));
       const isSingleItemStream = (!isQueryStream ? this.isUUID(lastUrlSegment) : false);
       const observer: IObserver<T | null> = (null as any);
 
@@ -163,7 +202,7 @@ class Streams {
                 console.log(`no stream exists for ${streamId}`);
               }
 
-              reject(error);
+              reject();
             }
           );
         });
@@ -183,7 +222,7 @@ class Streams {
 
         return () => {
           console.log(`stream for stream ${streamId} completed`);
-          delete this.streams[streamId];
+          this.deleteStream(streamId, apiEndpoint);
         };
       })
       .startWith('initial' as any)
@@ -205,14 +244,14 @@ class Streams {
                 const dataId = item.id;
                 dataIds[dataId] = true;
                 this.resourcesByDataId[dataId] = { data: item };
-                this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
+                this.addStreamIdByDataIdIndex(streamId, isQueryStream, isSearchQuery, dataId);
               });
             } else if (_.isObject(innerData) && _.has(innerData, 'id')) {
               const dataId = innerData.id;
               this.streams[streamId].type = 'singleObject';
               dataIds[dataId] = true;
               this.resourcesByDataId[dataId] = { data: innerData };
-              this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
+              this.addStreamIdByDataIdIndex(streamId, isQueryStream, isSearchQuery, dataId);
             }
 
             if (_.has(data, 'included')) {
@@ -243,15 +282,18 @@ class Streams {
         observable,
         streamId,
         isQueryStream,
+        isSearchQuery,
         isSingleItemStream,
         type: 'unknown',
-        dataIds: {},
+        dataIds: {}
       };
 
-      this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, isQueryStream);
+      this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, isQueryStream, isSearchQuery);
 
-      // keep stream hot
-      this.streams[streamId].observable.subscribe();
+      if (!isSearchQuery) {
+        // keep stream hot
+        this.streams[streamId].observable.subscribe();
+      }
 
       return this.streams[streamId] as IStream<T>;
     }

@@ -155,7 +155,7 @@ export default class Error extends React.PureComponent<Props, State> {
 
     const errorElement = (text || errors || apiErrors) && (
       <CSSTransition classNames="error" timeout={timeout}>
-        <StyledErrorMessage size={size} marginTop={marginTop} marginBottom={marginBottom}>
+        <StyledErrorMessage className="e2e-error-message" size={size} marginTop={marginTop} marginBottom={marginBottom}>
           <StyledErrorMessageInner showBackground={showBackground}>
             {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
             <ErrorMessageText>

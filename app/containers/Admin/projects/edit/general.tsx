@@ -8,8 +8,10 @@ import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-
 import draftjsToHtml from 'draftjs-to-html';
 import styled from 'styled-components';
 import { browserHistory } from 'react-router';
-import { API } from 'typings.d';
+import { API, IOption, IRelationship } from 'typings.d';
 
+// i18n
+import { getLocalized } from 'utils/i18n';
 import messages from '../messages';
 
 // Store
@@ -33,6 +35,9 @@ import {
   addProjectImage,
   deleteProjectImage
 } from 'services/projectImages';
+import { areasStream, IAreaData } from 'services/areas';
+import { localeStream } from 'services/locale';
+import { currentTenantStream, ITenant } from 'services/tenant';
 
 // utils
 import { getBase64 } from 'utils/imageTools';
@@ -43,6 +48,8 @@ import Editor from 'components/UI/Editor';
 import Upload from 'components/UI/Upload';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import Radio from 'components/UI/Radio';
+import MultipleSelect from 'components/UI/MultipleSelect';
 import FieldWrapper from 'components/admin/FieldWrapper';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
@@ -97,7 +104,7 @@ type Props = {
 
 interface State {
   loading: boolean;
-  projectData: IProjectData | { id: null, attributes: {}};
+  projectData: IProjectData | { id: null, attributes: {}, relationships: { areas: {data} }};
   uploadedImages: any;
   uploadedHeader: string | null;
   editorState: EditorState;
@@ -107,17 +114,22 @@ interface State {
     [fieldName: string]: API.Error[]
   };
   saved: boolean;
+  areas: IAreaData[];
+  areaType: 'all' | 'selection';
+  locale: string | null;
+  currentTenant: ITenant | null;
+  areasOptions: IOption[];
 }
 
 class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
-  subscription: Rx.Subscription;
+  subscriptions: Rx.Subscription[] = [];
 
   constructor() {
     super();
 
     this.state = {
       loading: false,
-      projectData: { id: null, attributes: {} },
+      projectData: { id: null, attributes: {}, relationships: { areas: { data: [] } } },
       uploadedImages: [],
       editorState: EditorState.createEmpty(),
       uploadedHeader: null,
@@ -125,6 +137,11 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
       projectAttributesDiff: {},
       errors: {},
       saved: false,
+      areas: [],
+      areaType: 'all',
+      locale: null,
+      currentTenant: null,
+      areasOptions: [],
     };
   }
 
@@ -138,10 +155,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     return _.isEmpty(this.state.projectAttributesDiff) ? 'disabled' : 'enabled';
   }
 
-  updateSubscription = (slug) => {
+  updateProjectSubscription = (slug) => {
     const { userLocale } = this.props;
 
-    this.subscription = projectBySlugStream(slug).observable.switchMap((project) => {
+    this.subscriptions[0] = projectBySlugStream(slug).observable.switchMap((project) => {
       return projectImagesStream(project.data.id).observable.map((images) => ({
         projectData: project.data,
         projectImages: images.data,
@@ -158,19 +175,42 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
         uploadedImages: [],
         loading: false,
         projectAttributesDiff: {},
+        areaType: projectData.relationships.areas.data.length > 0 ? 'selection' : 'all',
       });
     });
   }
 
   componentDidMount() {
     if (this.props.params.slug) {
-      this.updateSubscription(this.props.params.slug);
+      this.updateProjectSubscription(this.props.params.slug);
     }
+
+    this.subscriptions.push(
+      Rx.Observable.combineLatest(
+        localeStream().observable,
+        currentTenantStream().observable,
+        areasStream().observable,
+      )
+      .subscribe(([locale, currentTenant, areas]) => {
+        this.setState({
+          locale,
+          currentTenant,
+          areas: areas.data,
+          areasOptions: areas.data.map((area) => ({
+            value: area.id,
+            label: getLocalized(area.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)
+          }))
+        });
+      })
+    );
+
   }
 
   componentWillUnmount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.subscriptions) {
+      this.subscriptions.forEach((sub) => {
+        sub.unsubscribe();
+      });
     }
   }
 
@@ -178,7 +218,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     // Update subscription if the slug changes
     // This happens when transitioning from New to Edit view after saving a new project
     if (newProps.params.slug && newProps.params.slug !== this.props.params.slug) {
-      this.updateSubscription(newProps.params.slug);
+      this.updateProjectSubscription(newProps.params.slug);
     }
   }
 
@@ -238,6 +278,27 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     }
   }
 
+  handleAreaTypeChange = (value) => {
+    const newState = { areaType: value } as State;
+
+    // Clear the array of areas ids if you select "all areas"
+    if (value === 'all') {
+      const newDiff = _.cloneDeep(this.state.projectAttributesDiff);
+      newDiff.area_ids = [];
+
+      newState.projectAttributesDiff = newDiff;
+    }
+
+    this.setState(newState);
+  }
+
+  handleAreaSelectionChange = (values: IOption[]) => {
+    const newDiff = _.cloneDeep(this.state.projectAttributesDiff);
+    newDiff.area_ids = values.map((value) => (value.value));
+
+    this.setState({ projectAttributesDiff: newDiff });
+  }
+
   handleSaveErrors = (errors) => {
     this.setState({ errors: errors.json.errors });
   }
@@ -265,11 +326,19 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
 
   render() {
     const { projectData, uploadedImages, editorState, uploadedHeader, loading, projectImages, projectAttributesDiff } = this.state;
-    const { userLocale, tFunc } = this.props;
-
+    const { userLocale, tFunc, intl: { formatMessage } } = this.props;
     const projectAttrs = { ...projectData.attributes, ...projectAttributesDiff } as IUpdatedProjectProperties;
+    projectAttrs.area_ids = projectAttrs.area_ids || projectData.relationships.areas.data.map((area) => (area.id));
 
     const submitState = this.getSubmitState();
+    const areasValues = projectAttrs.area_ids ? projectAttrs.area_ids.map((id) => {
+      const option = _.find(this.state.areasOptions, { value: id });
+      if (option) {
+        return option;
+      } else {
+        return;
+      }
+    }) : null;
 
     return (
       <FormWrapper onSubmit={this.saveProject}>
@@ -304,6 +373,22 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
         </FieldWrapper>
 
         <FieldWrapper>
+          <label htmlFor="project-area">
+            <FormattedMessage {...messages.areasLabel} />
+          </label>
+          <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="all" name="areas" id="areas-all" label={formatMessage(messages.areasAllLabel)} />
+          <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="selection" name="areas" id="areas-selection" label={formatMessage(messages.areasSelectionLabel)} />
+
+          <MultipleSelect
+            options={this.state.areasOptions}
+            value={_.compact(areasValues)}
+            onChange={this.handleAreaSelectionChange}
+            placeholder=""
+            disabled={this.state.areaType !== 'selection'}
+          />
+        </FieldWrapper>
+
+        <FieldWrapper>
           <label>
             <FormattedMessage {...messages.headerImageLabel} />
           </label>
@@ -319,7 +404,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
           }
           <Upload
             accept="image/jpg, image/jpeg, image/png, image/gif"
-            intl={this.props.intl}
             items={uploadedImages}
             onAdd={this.handleHeaderUpload}
             onRemove={this.handleUploadOnRemove}
@@ -340,7 +424,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
           </ProjectImages>
           <Upload
             accept="image/jpg, image/jpeg, image/png, image/gif"
-            intl={this.props.intl}
             items={uploadedImages}
             onAdd={this.handleProjectImageUpload}
             onRemove={this.handleUploadOnRemove}

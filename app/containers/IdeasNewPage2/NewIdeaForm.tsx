@@ -24,6 +24,7 @@ import { namespace as ButtonBarNamespace } from './ButtonBar';
 
 // services
 import { state, IStateStream } from 'services/state';
+import { localeStream } from 'services/locale';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectsStream, IProjects, IProjectData } from 'services/projects';
 
@@ -83,18 +84,17 @@ const MobileButton = styled.div`
     flex: 1;
   }
 
-  ${media.notPhone`
+  ${media.biggerThanPhone`
     display: none;
   `}
 `;
 
 type Props = {
-  intl: ReactIntl.InjectedIntl;
-  locale: string;
   onSubmit: () => void;
 };
 
 export type State = {
+  locale: string | null;
   topics: IOption[] | null;
   projects: IOption[] | null;
   title: string | null;
@@ -111,7 +111,7 @@ export type State = {
 
 export const namespace = 'IdeasNewPage2/NewIdeaForm';
 
-export default class NewIdeaForm extends React.PureComponent<Props, State> {
+class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   state$: IStateStream<State>;
   subscriptions: Rx.Subscription[];
   titleInputElement: HTMLInputElement | null;
@@ -126,23 +126,32 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
   }
 
   componentWillMount() {
+    const locale$ = localeStream().observable;
     const topics$ = topicsStream().observable;
     const projects$ = projectsStream().observable;
 
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
 
-      eventEmitter.observe(ButtonBarNamespace, 'submit').subscribe(this.handleOnSubmit),
+      Rx.Observable.combineLatest(
+        locale$,
+        topics$,
+      ).subscribe(([locale, topics]) => {
+        this.state$.next({
+          topics: this.getOptions(topics, locale),
+        });
+      }),
 
       Rx.Observable.combineLatest(
-        topics$,
-        projects$
-      ).subscribe(([topics, projects]) => {
+        locale$,
+        projects$,
+      ).subscribe(([locale, projects]) => {
         this.state$.next({
-          topics: this.getOptions(topics),
-          projects: this.getOptions(projects)
+          projects: this.getOptions(projects, locale),
         });
-      })
+      }),
+
+      eventEmitter.observe(ButtonBarNamespace, 'submit').subscribe(this.handleOnSubmit),
     ];
   }
 
@@ -154,11 +163,11 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getOptions = (list: ITopics | IProjects | null) => {
-    if (list) {
+  getOptions = (list: ITopics | IProjects | null, locale: string | null) => {
+    if (list && locale) {
       return (list.data as (ITopicData | IProjectData)[]).map(item => ({
         value: item.id,
-        label: item.attributes.title_multiloc[this.props.locale]
+        label: item.attributes.title_multiloc[locale]
       } as IOption));
     }
 
@@ -325,7 +334,6 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
           <FormElement>
             <Label value={formatMessage(messages.imageUploadLabel)} />
             <Upload
-              intl={this.props.intl}
               items={images}
               accept="image/jpg, image/jpeg, image/png, image/gif"
               maxSize={5000000}
@@ -352,3 +360,5 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default injectIntl<Props>(NewIdeaForm);
