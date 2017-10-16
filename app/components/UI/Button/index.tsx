@@ -57,6 +57,18 @@ const getIconHeight = (size) => {
   }
 };
 
+const setFillColor = (color) => {
+  return `
+    .button-text {
+      color: ${color};
+    }
+
+    .button-icon {
+      fill: ${color};
+    }
+  `;
+};
+
 const buttonStyles = (props) => `
   width: ${props.width || 'auto'};
   height: ${props.height || 'auto'};
@@ -96,69 +108,37 @@ const buttonStyles = (props) => `
 
   &.primary {
     &:not(.disabled) {
+      ${setFillColor('#fff')}
       background: ${props.theme.colorMain || '#e0e0e0'};
 
-      .button-text {
-        color: #fff;
-      }
 
-      .button-icon {
-        fill: #fff;
-      }
-
-      &:hover {
+      &:hover,
+      &:focus {
         background: ${darken(0.15, (props.theme.colorMain || '#ccc'))};
       }
     }
 
     &.disabled {
       background: #d0d0d0;
-
-      .button-text {
-        color: #fff;
-      }
-
-      .button-icon {
-        fill: #fff;
-      }
+      ${setFillColor('#fff')}
     }
   }
 
   &.secondary {
     &:not(.disabled) {
       background: #e4e4e4;
+      ${setFillColor('#555')}
 
-      .button-text {
-        color: #555;
-      }
-
-      .button-icon {
-        fill: #555;
-      }
-
-      &:hover {
+      &:hover,
+      &:focus {
         background: #ddd;
-
-        .button-text {
-          color: #222;
-        }
-
-        .button-icon {
-          fill: #222;
-        }
+        ${setFillColor('#222')}
       }
     }
 
     &.disabled {
       background: #ccc;
-
-      .button-text {
-        color: #fff;
-      }
-
-      .button-icon {
-        fill: #fff;
-      }
+      ${setFillColor('#fff')}
     }
   }
 
@@ -166,39 +146,19 @@ const buttonStyles = (props) => `
     &:not(.disabled) {
       background: transparent;
       border: solid 1px ${props.theme.colorMain};
+      ${setFillColor(props.theme.colorMain)}
 
-      .button-text {
-        color: ${props.theme.colorMain};
-      }
-
-      .button-icon {
-        fill: ${props.theme.colorMain};
-      }
-
-      &:hover {
+      &:hover,
+      &:focus {
         border-color: ${darken(0.15, (props.theme.colorMain))};
-
-        .button-text {
-          color: ${darken(0.15, (props.theme.colorMain))};
-        }
-
-        .button-icon {
-          fill: ${darken(0.15, (props.theme.colorMain))};
-        }
+        ${setFillColor(darken(0.15, (props.theme.colorMain)))}
       }
     }
 
     &.disabled {
       background: transparent;
       border: solid 1px #ccc;
-
-      .button-text {
-        color: #ccc;
-      }
-
-      .button-icon {
-        fill: #ccc;
-      }
+      ${setFillColor('#ccc')}
     }
   }
 
@@ -206,66 +166,31 @@ const buttonStyles = (props) => `
     &:not(.disabled) {
       background: transparent;
       border: solid 1px #999;
+      ${setFillColor('#999')}
 
-      .button-text {
-        color: #999;
-      }
-
-      .button-icon {
-        fill: #999;
-      }
-
-      &:hover {
+      &:hover,
+      &:focus {
         border-color: #222;
-
-        .button-text {
-          color: #444;
-        }
-
-        .button-icon {
-          fill: #444;
-        }
+        ${setFillColor('#444')}
       }
     }
 
     &.disabled {
       background: transparent;
       border: solid 1px #ccc;
-
-      .button-text {
-        color: #ccc;
-      }
-
-      .button-icon {
-        fill: #ccc;
-      }
+      ${setFillColor('#ccc')}
     }
   }
 
   &.success {
     background-color: ${rgba('#32B67A', 0.15)};
-    color: #32B67A;
-
-    .button-text {
-      color: inherit;
-    }
-
-    .button-icon {
-      fill: #32B67A;
-    }
+    ${setFillColor('#32B67A')}
   }
 
   &.error {
     background-color: ${rgba('#FC3C2D', 0.15)};
     color: #FC3C2D;
-
-    .button-text {
-      color: inherit;
-    }
-
-    .button-icon {
-      fill: #FC3C2D;
-    }
+    ${setFillColor('#FC3C2D')}
   }
 `;
 
