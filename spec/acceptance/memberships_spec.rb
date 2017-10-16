@@ -78,10 +78,10 @@ resource "Memberships" do
 
     get "api/v1/groups/:group_id/memberships/users_search" do
 
-      # with_options scope: :page do
-        # parameter :number, "Page number"
-        # parameter :size, "Number of members per page"
-      # end
+      with_options scope: :page do
+        parameter :number, "Page number"
+        parameter :size, "Number of members per page"
+      end
 
       parameter :query, "The query used for searching users", required: true
 
