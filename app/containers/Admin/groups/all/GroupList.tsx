@@ -79,6 +79,7 @@ class GroupsList extends React.Component<Props, State> {
   }
 
   getAvatars = (group: IGroupData) => {
+
     return (
       <img role="presentation" alt="" />
     );
@@ -112,6 +113,12 @@ class GroupsList extends React.Component<Props, State> {
 
   componentDidMount() {
     this.subscriptions.push(this.updateLocales(), this.updateGroups());
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
   }
 
   render() {
