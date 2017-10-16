@@ -73,6 +73,10 @@ class User < ApplicationRecord
   def has_services?
     self.services.present?
   end
+
+  def member_of? group_id
+    !self.memberships.select{ |m| m.group_id == group_id }.empty?
+  end
   
   private
 
