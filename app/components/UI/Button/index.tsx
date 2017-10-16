@@ -31,7 +31,7 @@ const ButtonContent = styled.div`
   transition: all 120ms ease;
 `;
 
-const getPadding = (size) => {
+function getPadding(size) {
   switch (size) {
     case '2':
       return `10px 22px`;
@@ -42,9 +42,9 @@ const getPadding = (size) => {
     default:
       return `9px 20px`;
   }
-};
+}
 
-const getIconHeight = (size) => {
+function getIconHeight(size) {
   switch (size) {
     case '2':
       return `20px`;
@@ -55,9 +55,9 @@ const getIconHeight = (size) => {
     default:
       return `18px`;
   }
-};
+}
 
-const setFillColor = (color) => {
+function setFillColor(color) {
   return `
     .button-text {
       color: ${color};
@@ -67,7 +67,7 @@ const setFillColor = (color) => {
       fill: ${color};
     }
   `;
-};
+}
 
 const buttonStyles = (props) => `
   width: ${props.width || 'auto'};
@@ -218,7 +218,7 @@ type Props = {
   text?: string;
   children?: any;
   size?: '1' | '2' | '3' | '4';
-  style?: 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error';
+  style?: 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text';
   width?: string | undefined;
   height?: string | undefined;
   padding?: string | undefined;
