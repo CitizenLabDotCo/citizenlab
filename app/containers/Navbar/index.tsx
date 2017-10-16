@@ -263,7 +263,11 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
     const { formatMessage } = this.props.intl;
     const { authUser, currentTenant, scrolled } = this.state;
     const tenantLogo = (currentTenant ? currentTenant.data.attributes.logo.medium : null);
-    const alwaysShowBorder = (pathname.startsWith('/ideas/'));
+    const alwaysShowBorder = (pathname.startsWith('/ideas/') 
+                              || pathname === 'sign-in'
+                              || pathname === '/sign-in' 
+                              || pathname === 'sign-up' 
+                              || pathname === '/sign-up');
 
     return (
       <ThemeProvider theme={this.navbarTheme}>

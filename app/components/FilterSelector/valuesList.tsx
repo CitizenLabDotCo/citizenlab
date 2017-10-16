@@ -17,7 +17,7 @@ const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
 const Overlay = styled.div`
   min-width: 180px;
-  border-radius: 5px;
+  border-radius: 4px;
   background-color: #fff;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
   border: solid 1px #e0e0e0;
@@ -74,7 +74,7 @@ const Overlay = styled.div`
 const ListWrapper = styled.ul`
   list-style: none;
   margin: 0;
-  max-height: 320px;
+  max-height: 325px;
   overflow-y: auto;
   padding: 0;
 `;
@@ -90,19 +90,20 @@ const CheckmarkIcon = styled(Icon)`
 `;
 
 const Checkmark: any = styled.span`
-  width: 23px;
-  height: 23px;
+  width: 22px;
+  height: 22px;
   color: #fff;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: solid 1px #a6a6a6;
+  border: solid 1px #aaa;
   border-radius: 3px;
   background: #fff;
   background: ${(props: any) => props.selected ? '#32b67a' : '#fff'};
-  border-color: ${(props: any) => props.selected ? '#32b67a' : '#84939E'};
+  border-color: ${(props: any) => props.selected ? '#32b67a' : '#aaa'};
+  box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.15);
   margin-left: 10px;
 `;
 
@@ -127,11 +128,11 @@ const StyledOption: any = styled.li`
 
   &.focused,
   &:hover {
-    color: #000;
-    background: #f2f2f2;
+    color: #222;
+    background: #f9f9f9;
 
     ${Checkmark} {
-      border-color: ${(props: any) => props.selected ? '#32b67a' : '#000'};
+      border-color: ${(props: any) => props.selected ? '#32b67a' : '#333'};
     }
   }
 `;

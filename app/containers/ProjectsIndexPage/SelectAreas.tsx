@@ -16,6 +16,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 type Props = {
+  selectedAreas: string[];
   onChange: (value: any) => void;
 };
 
@@ -23,7 +24,6 @@ type State = {
   currentTenant: ITenant | null;
   locale: string | null;
   areas: IAreas | null;
-  selectedAreas: string[];
 };
 
 class SelectAreas extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -35,8 +35,7 @@ class SelectAreas extends React.PureComponent<Props & InjectedIntlProps, State> 
     this.state = {
       currentTenant: null,
       locale: null,
-      areas: null,
-      selectedAreas: []
+      areas: null
     };
   }
 
@@ -51,7 +50,11 @@ class SelectAreas extends React.PureComponent<Props & InjectedIntlProps, State> 
         locale$,
         areas$
       ).subscribe(([currentTenant, locale, areas]) => {
-        this.setState({ currentTenant, locale, areas });
+        this.setState({
+          currentTenant,
+          locale,
+          areas
+        });
       })
     ];
   }
@@ -60,13 +63,21 @@ class SelectAreas extends React.PureComponent<Props & InjectedIntlProps, State> 
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleOnChange = (selectedAreas) => {
-    this.setState({ selectedAreas });
-    this.props.onChange(selectedAreas);
+  handleOnChange = (selectedAreas: string[]) => {
+    let areas: string[] = [];
+    
+    if (_.isString(selectedAreas)) {
+      areas = [selectedAreas];
+    } else if (_.isArray(selectedAreas) && !_.isEmpty(selectedAreas)) {
+      areas = selectedAreas;
+    }
+
+    this.props.onChange(areas);
   }
 
   render() {
-    const { currentTenant, locale, areas, selectedAreas } = this.state;
+    const { currentTenant, locale, areas } = this.state;
+    const { selectedAreas } =  this.props;
     const { formatMessage } = this.props.intl;
     let options: any = [];
 
