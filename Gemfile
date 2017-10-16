@@ -81,3 +81,4 @@ gem 'rgeo-geojson'
 
 gem 'activerecord-postgis-adapter', '~> 5.0'
 gem 'simple_segment', '~> 0.2.1'
+gem 'okcomputer'
