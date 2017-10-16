@@ -145,8 +145,12 @@ class GroupsList extends React.Component<Props, State> {
               <p className="expand">
                 <FormattedMessage {...messages.members} values={{ count: group.attributes.memberships_count }} />
               </p>
-              <Button style="secondary-outlined"><FormattedMessage {...messages.deleteButtonLabel} /></Button>
-              <Button style="secondary"><FormattedMessage {...messages.editButtonLabel} /></Button>
+              <Button style="text" icon="delete">
+                <FormattedMessage {...messages.deleteButtonLabel} />
+              </Button>
+              <Button linkTo={`/admin/groups/${group.id}`} style="secondary" icon="edit">
+                <FormattedMessage {...messages.editButtonLabel} />
+              </Button>
             </ListItem>
           ))}
     </ListWrapper>
