@@ -182,6 +182,18 @@ const buttonStyles = (props) => `
     }
   }
 
+  &.text {
+    border: none;
+    background: none;
+
+    ${setFillColor('#84939E')}
+
+    &:hover,
+    &:focus {
+      ${setFillColor(darken(0.25, '#84939E'))}
+    }
+  }
+
   &.success {
     background-color: ${rgba('#32B67A', 0.15)};
     ${setFillColor('#32B67A')}
