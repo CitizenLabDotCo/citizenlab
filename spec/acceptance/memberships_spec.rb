@@ -89,11 +89,11 @@ resource "Memberships" do
       let(:group_id) { g1.id }
       let(:g2) { create(:group) }
       let(:query) { 'jo' }
-      let!(:u1) { create(:user, first_name: 'Freddy', last_name: 'Smith', email: 'bojo@brexit.com', groups: [g1]) }
-      let!(:u2) { create(:user, first_name: 'Jon', last_name: 'Smith', email: 'freddy1@gmail.com', groups: [g2]) }
-      let!(:u3) { create(:user, first_name: 'Jonny', last_name: 'Trejo', email: 'freddy2@gmail.com', groups: []) }
-      let!(:u4) { create(:user, first_name: 'Freddy', last_name: 'Trejo', email: 'freddy3@gmail.com', groups: [g1, g2]) }
-      let!(:u5) { create(:user, first_name: 'Freddy', last_name: 'Smith', email: 'freddy4@gmail.com', groups: [g1]) }
+      let!(:u1) { create(:user, first_name: 'Freddy', last_name: 'Smith', email: 'jofreddy@jojo.com', groups: [g1]) }
+      let!(:u2) { create(:user, first_name: 'Jon', last_name: 'Smith', email: 'freddy1@zmail.com', groups: [g2]) }
+      let!(:u3) { create(:user, first_name: 'Jonny', last_name: 'Johnson', email: 'freddy2@zmail.com', groups: []) }
+      let!(:u4) { create(:user, first_name: 'Freddy', last_name: 'Johnson', email: 'freddy3@zmail.com', groups: [g1, g2]) }
+      let!(:u5) { create(:user, first_name: 'Freddy', last_name: 'Smith', email: 'freddy4@zmail.com', groups: [g1]) }
       example_request "Search for users and whether or not they are member of the group" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
