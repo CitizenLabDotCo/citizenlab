@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import Button from 'components/UI/Button';
 import TextArea from 'components/UI/TextArea';
 import Error from 'components/UI/Error';
-import Icon from 'components/Ui/Icon';
+import Icon from 'components/UI/Icon';
 import Author from './Author';
 
 // tracking
