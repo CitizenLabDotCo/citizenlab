@@ -41,11 +41,17 @@ class Api::V1::MembershipsController < ApplicationController
   def users_search
     authorize Membership
     @users = policy_scope(User)
-      .where("first_name || ' ' || last_name || ' ' || email ILIKE (?)",
-             "%#{params[:query]}%")
+      .search_by_infix(params[:query]) # .where("first_name || ' ' || last_name || ' ' || email ILIKE (?)", "%#{params[:query]}%")
       .includes(:memberships)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
+
+    @users += policy_scope(User)
+        .where("first_name || ' ' || last_name || ' ' || email ILIKE (?)", "%#{params[:query]}%")
+        .where.not(id: @users.map(&:id))
+        .includes(:memberships)
+        .page(params.dig(:page, :number))
+        .per(params.dig(:page, :size))
       # .left_outer_joins(:memberships)
       # .where('memberships.group_id' => params[:group_id])
     render :json => @users, :each_serializer => Api::V1::MemberSerializer, :group_id => params[:group_id]
