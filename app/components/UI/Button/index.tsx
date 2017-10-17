@@ -126,12 +126,13 @@ const buttonStyles = (props) => `
 
   &.secondary {
     &:not(.disabled) {
-      background: #e4e4e4;
-      ${setFillColor('#555')}
+      border-color: #EAEAEA;
+      background: #F8F8F8;
+      ${setFillColor('#84939E')}
 
       &:hover,
       &:focus {
-        background: #ddd;
+        background: #F9F9F9;
         ${setFillColor('#222')}
       }
     }
@@ -190,7 +191,7 @@ const buttonStyles = (props) => `
 
     &:hover,
     &:focus {
-      ${setFillColor(darken(0.25, '#84939E'))}
+      ${setFillColor('#004949')}
     }
   }
 
@@ -203,6 +204,16 @@ const buttonStyles = (props) => `
     background-color: ${rgba('#FC3C2D', 0.15)};
     color: #FC3C2D;
     ${setFillColor('#FC3C2D')}
+  }
+
+  &.cl-blue {
+    background-color: #01A1B1;
+    ${setFillColor('white')}
+
+    &:hover,
+    &:focus {
+      background-color: ${darken(0.15, '#01A1B1')};
+    }
   }
 `;
 
@@ -230,7 +241,7 @@ type Props = {
   text?: string;
   children?: any;
   size?: '1' | '2' | '3' | '4';
-  style?: 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text';
+  style?: 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text' | 'cl-blue';
   width?: string | undefined;
   height?: string | undefined;
   padding?: string | undefined;

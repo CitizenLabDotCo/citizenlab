@@ -166,17 +166,17 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
       <ListWrapper className="e2e-groups-list">
         {groups.map((group) => (
           <ListItem key={group.id}>
-            <span><GroupAvatar groupId={group.id} /></span>
+            <GroupAvatar groupId={group.id} />
             <p className="expand">
               {getLocalized(group.attributes.title_multiloc, locale, tenantLocales)}
             </p>
             <p className="expand">
               <FormattedMessage {...messages.members} values={{ count: group.attributes.memberships_count }} />
             </p>
-            <Button onClick={this.createDeleteGroupHandler(group.id)} style="text" icon="delete">
+            <Button onClick={this.createDeleteGroupHandler(group.id)} style="text" circularCorners={false} icon="delete">
               <FormattedMessage {...messages.deleteButtonLabel} />
             </Button>
-            <Button linkTo={`/admin/groups/edit/${group.id}`} style="secondary" icon="edit">
+            <Button linkTo={`/admin/groups/edit/${group.id}`} style="secondary" circularCorners={false} icon="edit">
               <FormattedMessage {...messages.editButtonLabel} />
             </Button>
           </ListItem>
