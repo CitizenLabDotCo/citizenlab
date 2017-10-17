@@ -31,6 +31,11 @@ export const media = {
     ${css(...args)}
   }
 `,
+  biggerThanMaxTablet: (...args) => css`
+    @media (min-width: 767px) {
+      ${css(...args)}
+    }
+  `,
   desktop: (...args) => css`
     @media (min-width: 768px) {
       ${css(...args)}

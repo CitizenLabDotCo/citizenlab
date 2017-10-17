@@ -78,6 +78,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.helmetTitle',
     defaultMessage: 'Show idea',
   },
+  byAuthor: {
+    id: 'app.containers.IdeasShow.byAuthor',
+    defaultMessage: 'by {firstName} {lastName}',
+  },
   author: {
     id: 'app.containers.IdeasShow.author',
     defaultMessage: '{authorNameComponent}',
@@ -132,6 +136,14 @@ export default defineMessages({
   },
   signInLinkText: {
     id: 'app.containers.IdeasShow.signInLinkText',
-    defaultMessage: 'sign in',
+    defaultMessage: 'log in',
+  },
+  login: {
+    id: 'app.components.IdeasShow.login',
+    defaultMessage: 'Login',
+  },
+  register: {
+    id: 'app.components.IdeasShow.register',
+    defaultMessage: 'Create an account',
   },
 });

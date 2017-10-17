@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import Button from 'components/UI/Button';
 import TextArea from 'components/UI/TextArea';
 import Error from 'components/UI/Error';
+import Icon from 'components/UI/Icon';
 import Author from './Author';
 
 // tracking
@@ -31,7 +32,6 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 const Container = styled.div`
-  margin-top: 0px;
   margin-bottom: 0px;
 `;
 
@@ -62,32 +62,52 @@ const StyledTextArea = styled(TextArea)`
   .textarea {
     color: #666;
     font-size: 16px;
-    line-height: 24px;
+    line-height: 26px;
     padding: 12px 30px;
     padding-right: 100px;
     border-color: #e4e4e4;
-    background: #fcfcfc;
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
-    box-shadow: inset 0 0 2px rgba(0, 0, 0, .1);
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
 
-    &:not(:focus):hover {
-      border-color: #ccc;
+    &:hover {
+      border-color: #333;
     }
 
     &:focus {
-      border-color: #bbb;
-      background: #fcfcfc;
-      box-shadow: inset 0 0 2px rgba(0, 0, 0, .3);
+      border-color: #333;
+      box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     }
   }
 `;
 
-const SubmitButton = styled(Button)`
+const SendIcon = styled(Icon)`
+  height: 22px;
+  z-index: 3;
+  transition: all 100ms ease-out;
+`;
+
+const SendIconWrapper: any = styled.div`
+  width: 30px;
+  height: 30px;
   position: absolute;
-  bottom: 12px;
-  right: 12px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 15px;
+  right: 15px;
   z-index: 2;
+  cursor: ${(props: any) => props.disabled ? 'auto' : 'pointer'};
+
+  ${SendIcon} {
+    fill: ${(props: any) => props.disabled ? '#ccc' : props.theme.colorMain };
+  }
+
+  &:hover ${SendIcon} {
+    fill: ${(props: any) => props.disabled ? '#ccc' : darken(0.15, props.theme.colorMain) };
+  }
 `;
 
 const SuccessMessage = styled.p`
@@ -109,9 +129,9 @@ type State = {
   authUser: IUser | null;
   inputValue: string;
   focussed: boolean;
-  hasText: boolean;
   processing: boolean;
   errorMessage: string | null;
+  canSubmit: boolean;
 };
 
 class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & Tracks, State> {
@@ -125,9 +145,9 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
       authUser: null,
       inputValue: '',
       focussed: false,
-      hasText: false,
       processing: false,
-      errorMessage: null
+      errorMessage: null,
+      canSubmit: false
     };
   }
 
@@ -153,133 +173,123 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
   }
 
   handleTextareaOnChange = (inputValue) => {
-    this.setState({
+    this.setState((state) => ({
       inputValue,
-      hasText: (inputValue && !_.isEmpty(inputValue)),
-      errorMessage: null
-    });
+      errorMessage: null,
+      canSubmit: (state.focussed && _.trim(inputValue) !== '' ? true : false)
+    }));
   }
 
-  handleEditorOnFocus = () => {
-    this.setState({ focussed: true });
-
+  handleTextareaOnFocus = () => {
     this.props.focusEditor({
       extra: {
         ideaId: this.props.ideaId,
         parentId: this.props.parentId
       },
     });
+
+    this.setState({ focussed: true });
   }
 
-  handleEditorOnBlur = () => {
+  handleTextareaOnBlur = () => {
     this.setState({ focussed: false });
   }
 
   handleSubmit = async (event) => {
     const { ideaId, parentId } = this.props;
     const { formatMessage } = this.props.intl;
-    const { locale, authUser, inputValue } = this.state;
+    const { locale, authUser, inputValue, canSubmit } = this.state;
 
     event.preventDefault();
 
-    console.log('bleh');
+    if (canSubmit) {
+      this.setState({ canSubmit: false });
 
-    if (locale && authUser && _.isString(inputValue) && _.trim(inputValue) !== '') {
-      this.props.clickCommentPublish({
-        extra: {
-          ideaId,
-          parentId,
-          content: inputValue,
-        },
-      });
+      if (locale && authUser && _.isString(inputValue) && _.trim(inputValue) !== '') {
+        this.props.clickCommentPublish({
+          extra: {
+            ideaId,
+            parentId,
+            content: inputValue,
+          },
+        });
 
-      try {
-        this.setState({ processing: true });
+        try {
+          this.setState({ processing: true });
 
-        await addCommentToComment(ideaId, authUser.data.id, parentId, { [locale]: inputValue });
+          await addCommentToComment(ideaId, authUser.data.id, parentId, { [locale]: inputValue });
 
-        this.setState({ 
-          inputValue: '',
-          hasText: false,
+          this.setState({ 
+            inputValue: '',
+            processing: false
+          });
+        } catch (error) {
+          this.setState({
+            errorMessage: formatMessage(messages.addCommentError),
+            processing: false
+          });
+
+          throw error;
+        }
+      } else if (locale && authUser && (!inputValue || inputValue === '')) {
+        this.setState({
+          errorMessage: formatMessage(messages.emptyCommentError),
           processing: false
         });
-      } catch (error) {
+      } else {
         this.setState({
           errorMessage: formatMessage(messages.addCommentError),
           processing: false
         });
-
-        throw error;
       }
-    } else if (locale && authUser && (!inputValue || inputValue === '')) {
-      console.log('zolg');
-      this.setState({
-        errorMessage: formatMessage(messages.emptyCommentError),
-        focussed: true,
-        processing: false
-      });
-    } else {
-      console.log('wurps');
-      this.setState({
-        errorMessage: formatMessage(messages.addCommentError),
-        focussed: true,
-        processing: false
-      });
     }
   }
 
   render() {
-    const children = this.props['children'];
-    const { formatMessage } = this.props.intl;
-    const { authUser, inputValue, focussed, hasText, processing, errorMessage } = this.state;
-    const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
-    const submitAreaClassNames = classNames({
-      error: _.isString(errorMessage)
-    });
+    const { authUser } = this.state;
 
-    const signUp = (!authUser ? (
-      <SignInMessage>
-        <FormattedMessage
-          {...messages.signInToComment}
-          values={{
-            signInLink: <Link to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></Link>,
-          }}
-        />
-      </SignInMessage>
-    ) : null);
+    if (authUser) {
+      const { formatMessage } = this.props.intl;
+      const { inputValue, canSubmit, processing, errorMessage } = this.state;
+      const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
+      const submitAreaClassNames = classNames({
+        error: _.isString(errorMessage)
+      });
 
-    const comment = (authUser ? (
-      <CommentContainer>
-        <StyledTextArea
-          name="comment"
-          placeholder={placeholder}
-          rows={1}
-          value={inputValue}
-          error={errorMessage}
-          onChange={this.handleTextareaOnChange}
-          onFocus={this.handleEditorOnFocus}
-          onBlur={this.handleEditorOnBlur}
-        >
-          <SubmitButton
-            className="e2e-submit-comment"
-            loading={processing}
-            circularCorners={false}
-            onClick={this.handleSubmit}
-            size="1"
-            padding="8px 16px"
+      return (
+        <CommentContainer>
+          <StyledTextArea
+            name="comment"
+            placeholder={placeholder}
+            rows={1}
+            value={inputValue}
+            error={errorMessage}
+            onChange={this.handleTextareaOnChange}
+            onFocus={this.handleTextareaOnFocus}
+            onBlur={this.handleTextareaOnBlur}
           >
-            <FormattedMessage {...messages.commentReplyButton} />
-          </SubmitButton>
-        </StyledTextArea>
-      </CommentContainer>
-    ) : null);
+            {/*
+            <SubmitButton
+              className="e2e-submit-comment"
+              loading={processing}
+              circularCorners={false}
+              onClick={this.handleSubmit}
+              size="1"
+              padding="6px 12px"
+            >
+              <FormattedMessage {...messages.commentReplyButton} />
+            </SubmitButton>
+            */}
 
-    return (
-      <Container>
-        {signUp}
-        {comment}
-      </Container>
-    );
+            <SendIconWrapper onClick={this.handleSubmit} disabled={!canSubmit}>
+              <SendIcon name="send" />
+            </SendIconWrapper>
+          </StyledTextArea>
+        </CommentContainer>
+      );
+    }
+
+    return null;
   }
 }
 

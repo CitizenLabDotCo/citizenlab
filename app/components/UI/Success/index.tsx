@@ -148,7 +148,7 @@ export default class Success extends React.PureComponent<Props, State> {
 
     const successElement = (text ? (
       <CSSTransition classNames="success" timeout={timeout}>
-        <StyledSuccessMessage size={size} marginTop={marginTop} marginBottom={marginBottom}>
+        <StyledSuccessMessage className="e2e-success-message" size={size} marginTop={marginTop} marginBottom={marginBottom}>
           <StyledSuccessMessageInner showBackground={showBackground}>
             {showIcon && <IconWrapper><Icon name="checkmark" /></IconWrapper>}
             <SuccessMessageText>

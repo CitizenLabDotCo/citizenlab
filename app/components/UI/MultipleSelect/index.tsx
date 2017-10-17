@@ -221,6 +221,7 @@ type Props = {
   max?: number;
   autoBlur?: boolean;
   onChange: (arg: IOption[]) => void;
+  disabled?: boolean;
 };
 
 type State = {};
@@ -261,6 +262,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
         placeholder={<span>{placeholder}</span>}
         options={options}
         onChange={this.handleOnChange}
+        disabled={this.props.disabled}
       />
     );
   }

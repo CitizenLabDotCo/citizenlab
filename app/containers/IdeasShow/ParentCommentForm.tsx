@@ -31,7 +31,8 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 const Container = styled.div`
-  margin-bottom: 10px;
+  padding: 0;
+  margin: 0;
 `;
 
 const CommentContainer = styled.div``;
@@ -40,23 +41,21 @@ const SignInMessage = styled.div`
   color: #333;
   font-size: 18px;
   font-weight: 300;
+`;
 
-  a {
-    color: ${(props) => props.theme.colorMain};
-    color: #1391A1;
+const StyledLink = styled(Link)`
+  color: #1391A1;
+  text-decoration: underline;
+  transition: all 100ms ease-out;
+
+  &:hover {
+    color: ${darken(0.15, '#1391A1')};
     text-decoration: underline;
-    transition: all 100ms ease-out;
-
-    &:hover {
-      color: ${(props) => darken(0.15, props.theme.colorMain)};
-      color: ${(props) => darken(0.15, '#1391A1')};
-      text-decoration: underline;
-    }
   }
 `;
 
 const StyledAuthor = styled(Author)`
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 `;
 
 const StyledTextArea = styled(TextArea)`
@@ -83,13 +82,9 @@ const StyledTextArea = styled(TextArea)`
 
 const SubmitButton = styled(Button)`
   position: absolute;
-  bottom: 20px;
+  bottom: 24px;
   right: 20px;
   z-index: 2;
-`;
-
-const SuccessMessage = styled.p`
-  color: #32B67A;
 `;
 
 type Props = {
@@ -202,27 +197,23 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
   }
 
   render() {
-    const children = this.props['children'];
     const { formatMessage } = this.props.intl;
     const { authUser, inputValue, processing, errorMessage } = this.state;
     const placeholder = formatMessage(messages.commentBodyPlaceholder);
-    const submitAreaClassNames = classNames({
-      error: _.isString(errorMessage)
-    });
 
     const signUp = (!authUser ? (
-      <SignInMessage>
+      <SignInMessage className="ideaCommentForm">
         <FormattedMessage
           {...messages.signInToComment}
           values={{
-            signInLink: <Link to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></Link>,
+            signInLink: <StyledLink to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></StyledLink>,
           }}
         />
       </SignInMessage>
     ) : null);
 
-    const comment = (authUser ? (
-      <CommentContainer>
+    const commentForm = (authUser ? (
+      <CommentContainer className="e2e-comment-form ideaCommentForm">
         <StyledAuthor authorId={authUser.data.id} />
 
         <StyledTextArea
@@ -248,59 +239,11 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
     return (
       <Container>
         {signUp}
-        {comment}
+        {commentForm}
       </Container>
     );
   }
 }
-
-/*
-<Authorize action={['comments', 'create']}>
-  <CommentForm onSubmit={this.handleSubmit} className="e2e-comment-form">
-    {authUser &&
-      <UserArea>
-        <UserAvatar userId={authUser.data.id} size="medium" />
-        <UserName>
-          {authUser.data.attributes.first_name} {authUser.data.attributes.last_name}
-        </UserName>
-      </UserArea>
-    }
-
-    <Editor
-      id="editor"
-      value={this.state.editorState}
-      placeholder={formatMessage(messages.commentBodyPlaceholder)}
-      onChange={this.handleEditorOnChange}
-      onFocus={this.handleEditorOnFocus}
-    />
-
-    <SubmitArea className={submitAreaClassNames}>
-      <div className="message">
-        {errorMessage && <div className="e2e-error-message">{errorMessage}</div>}
-
-        {success &&
-          <SuccessMessage className="e2e-success-message">
-            <FormattedMessage {...messages.commentSuccess} />
-          </SuccessMessage>
-        }
-      </div>
-
-      <SubmitButton className="e2e-submit-comment" loading={processing}>
-        <FormattedMessage {...messages.publishComment} />
-      </SubmitButton>
-    </SubmitArea>
-
-  </CommentForm>
-  <Else>
-    <FormattedMessage
-      {...messages.signInToComment}
-      values={{
-        signInLink: <Link to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></Link>,
-      }}
-    />
-  </Else>
-</Authorize>
-*/
 
 export default injectTracks<Props>({
   focusEditor: tracks.focusNewCommentTextbox,
