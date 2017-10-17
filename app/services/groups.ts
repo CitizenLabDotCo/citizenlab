@@ -12,6 +12,10 @@ export interface IGroupData {
   };
 }
 
+export interface GroupDiff {
+  title_multiloc?: Multiloc;
+}
+
 export interface IGroups {
   data: IGroupData[];
 }
@@ -40,6 +44,10 @@ export function listGroups(streamParams: IStreamParams<IGroups> | null = null) {
 
 export function listMembership(groupId: string, streamParams: IStreamParams<MembershipsResponse> | null = null) {
   return streams.get<MembershipsResponse>({ apiEndpoint: `${API_PATH}/groups/${groupId}/memberships`, ...streamParams });
+}
+
+export function addGroup(object: GroupDiff) {
+  return streams.add<IGroups>(`${API_PATH}/groups`, { group: object });
 }
 
 export function deleteGroup(groupId: string) {
