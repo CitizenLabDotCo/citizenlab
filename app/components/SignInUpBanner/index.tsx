@@ -75,7 +75,7 @@ export default class SignInUpBanner extends React.PureComponent<Props, State> {
     return (
       <Container>
         <LogoContainer>
-          {currentTenantLogo && <Logo src={currentTenantLogo} />}
+          {/* currentTenantLogo && <Logo src={currentTenantLogo} /> */}
           <Slogan><FormattedMessage {...messages.slogan} /></Slogan>
         </LogoContainer>
       </Container>

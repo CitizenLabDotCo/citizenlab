@@ -63,12 +63,11 @@ const VoteCount = styled.div`
   color: #84939d;
   font-size: 16px;
   font-weight: 300;
-  margin-left: 4px;
+  margin-left: 5px;
   transition: all 100ms ease-out;
 `;
 
 const Vote: any = styled.div`
-  width: 90px;
   display: flex;
   align-items: center;
 
@@ -78,6 +77,8 @@ const Vote: any = styled.div`
 `;
 
 const Upvote = Vote.extend`
+  width: 86px;
+
   ${VoteIconContainer} {
     ${props => props.active && `border-color: ${green}; background: ${green};`}
   }
@@ -331,10 +332,11 @@ export default class Votes extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const className = this.props['className'];
     const { upvotesCount, downvotesCount, myVoteMode, voting, votingAnimation } = this.state;
 
     return (
-      <Container className={`e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode}`}>
+      <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode}`}>
         <Upvote
           active={myVoteMode === 'up'}
           onClick={this.onClickUpvote}

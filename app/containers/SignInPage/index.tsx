@@ -22,7 +22,7 @@ const Container = styled.div`
   padding: 0;
   display: flex;
   flex-direction: row;
-  border-top: solid 1px #ddd;
+  /* border-top: solid 1px #ddd; */
   background: #f8f8f8;
   overflow: hidden;
   position: relative;

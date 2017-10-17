@@ -7,7 +7,7 @@ import Icon from 'components/UI/Icon';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-const doubleBounce = keyframes`
+const enterAnimation = keyframes`
   0% {
     transform: scale(1, 0);
     opacity: 0;
@@ -39,16 +39,20 @@ const doubleBounce = keyframes`
 const Container = styled.div`
   background-color: #fff;
   position: relative;
-  animation: ${doubleBounce} 450ms linear;
-  transform-origin: bottom;
-  border-top: solid 1px #e5e5e5;
+  border-radius: 5px;
+  border: solid 1px #e5e5e5;
+  margin-top: 0px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background: #f8f8f8;
+  animation: ${enterAnimation} 450ms linear;
+  transform-origin: center center;
 `;
 
 const LockIconWrapper = styled.div`
-  position: absolute;
-  top: -18px;
-  right: 25px;
   width: 40px;
   height: 40px;
   display:flex;
@@ -58,6 +62,7 @@ const LockIconWrapper = styled.div`
   border-radius: 50%;
   border: solid 1px #e5e5e5;
   background: #fff;
+  margin-bottom: 15px;
 `;
 
 const LockIcon = styled(Icon)`
@@ -67,16 +72,30 @@ const LockIcon = styled(Icon)`
 
 const HorizontalContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-around;
-  padding: 22px 0;
+  justify-content: center;
+`;
+
+const StyledButton = styled(Button)`
+  margin-bottom: 8px;
+`;
+
+const Seperator = styled.div`
+  color: #999;
+  font-size: 14px;
+  font-weight: 300;
 `;
 
 const RegisterLink = styled.span`
   color: ${(props) => props.theme.colorMain};
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
+  line-height: 18px;
+  text-align: center;
   cursor: pointer;
+  margin-top: 8px;
+  margin-bottom: 8px;
 
   &:hover {
     color: ${(props) => darken(0.15, props.theme.colorMain)};
@@ -103,7 +122,8 @@ export default class Unauthenticated extends React.PureComponent {
           <LockIcon name="lock-outlined" />
         </LockIconWrapper>
         <HorizontalContainer>
-          <Button onClick={this.goToLogin}><FormattedMessage {...messages.login} /></Button>
+          <StyledButton onClick={this.goToLogin}><FormattedMessage {...messages.login} /></StyledButton>
+          <Seperator>or</Seperator>
           <RegisterLink onClick={this.goToRegister}><FormattedMessage {...messages.register} /></RegisterLink>
         </HorizontalContainer>
       </Container>

@@ -17,7 +17,7 @@ const Container: any = styled.div`
     color: #333;
     font-size: 17px;
     line-height: 24px;
-    font-weight: 400;
+    font-weight: 300;
     padding: 12px;
     resize: none;
     outline: none;
@@ -25,18 +25,19 @@ const Container: any = styled.div`
     border-radius: 5px;
     border: solid 1px #ccc;
     background: #fff;
+    overflow: hidden;
   
     &::placeholder {
       color: #aaa;
       opacity: 1;
     }
   
-    &:not(:focus):hover {
-      border-color: #999;
+    &:hover {
+      border-color: #333;
     }
   
     &:focus {
-      border-color: #000;
+      border-color: #333;
     }
 
     &.error {

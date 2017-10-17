@@ -345,8 +345,6 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
         const signUpError = formatMessage(messages.signUpError);
         this.setState({ signUpError, processing: false });
       }
-    } else {
-      console.log('error');
     }
   }
 
@@ -434,7 +432,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
 
           <FormElement>
             <StyledButton
-              size="3"
+              size="2"
               text={formatMessage(messages.continue)}
               onClick={this.handleOnContinue}
               circularCorners={true}
@@ -492,7 +490,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
 
           <FormElement>
             <StyledButton
-              size="3"
+              size="2"
               loading={processing}
               text={formatMessage(messages.submit)}
               onClick={this.handleOnSubmit}
@@ -528,7 +526,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
 
           {/*
           <Button
-            size="3"
+            size="2"
             style="secondary-outlined"
             text={formatMessage(messages.logIn)}
             fullWidth={true}

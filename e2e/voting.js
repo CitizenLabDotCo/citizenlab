@@ -1,31 +1,26 @@
 module.exports = {
   voting: (browser) => {
-    // Signin first to be able to vote
-    const signinPage = browser.page.signin();
-
-    signinPage
+    // sign in first to be able to vote
+    browser.page.signin()
     .navigate()
     .signin('koen@citizenlab.co', 'testtest');
 
-    const ideasPage = browser.page.ideas();
+    // navigate to /ideas page
+    browser.page.ideas()
+    .navigate()
+    .seeNewest();
 
-    ideasPage
-    .seeOldest();
-
+    // vote
     browser
-    .click('.e2e-idea-card.not-voted')
-    .waitForElementVisible('#e2e-idea-show')
-    .refresh()
-    .waitForElementVisible('#e2e-idea-show .e2e-vote-controls')
-    .click('.e2e-vote-controls .upvote')
-    .waitForElementVisible('.e2e-vote-controls.up')
-    .waitForElementVisible('.e2e-vote-controls .downvote')
-    .pause(500)
-    .click('.e2e-vote-controls .downvote')
+    .waitForElementVisible('#e2e-ideas-list')
+    .click('#e2e-ideas-list:first-child .e2e-idea-card .downvote')
+    .pause(1000)
     .waitForElementVisible('.e2e-vote-controls.down')
-    .waitForElementVisible('.e2e-vote-controls .downvote')
-    .pause(500)
-    .click('.e2e-vote-controls .downvote')
+    .click('#e2e-ideas-list:first-child .e2e-idea-card .upvote')
+    .pause(1000)
+    .waitForElementVisible('.e2e-vote-controls.up')
+    .click('#e2e-ideas-list:first-child .e2e-idea-card .upvote')
+    .pause(1000)
     .waitForElementVisible('.e2e-vote-controls.neutral')
     .end();
   },
