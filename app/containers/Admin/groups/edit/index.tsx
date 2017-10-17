@@ -10,12 +10,23 @@ import messages from '../messages';
 // Style
 import styled from 'styled-components';
 
-class GroupsEdit extends React.Component {
+// Typing
+interface Props {
+  params: {
+    groupId: string;
+  };
+}
+
+interface State {
+
+}
+
+class GroupsEdit extends React.Component<Props, State> {
 
   render() {
     return (
       <h1>
-        <FormattedMessage {...messages.editTitle} />
+        <FormattedMessage {...messages.editTitle} /> - GroupdID: {this.props.params.groupId}
       </h1>
     );
   }

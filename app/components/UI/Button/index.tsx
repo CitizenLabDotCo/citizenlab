@@ -72,7 +72,7 @@ function setFillColor(color) {
 const buttonStyles = (props) => `
   width: ${props.width || 'auto'};
   height: ${props.height || 'auto'};
-  display: flex;
+  display: ${!props.width ? 'inline-flex' : 'flex'};
   font-size: 1.25rem;
   align-items: center;
   justify-content: center;
