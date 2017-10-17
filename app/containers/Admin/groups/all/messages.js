@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.list.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
+  groupDeletionConfirmation: {
+    id: 'app.containers.AdminPage.groups.list.groupDeletionConfirmation',
+    defaultMessage: 'Are you sure you want to delete this group?',
+  },
   editButtonLabel: {
     id: 'app.containers.AdminPage.groups.list.editButtonLabel',
     defaultMessage: 'Edit',

@@ -3,12 +3,12 @@ import * as React from 'react';
 import * as Rx from 'rxjs';
 
 // Services
-import { listGroups, IGroupData } from 'services/groups';
+import { listGroups, deleteGroup, IGroupData } from 'services/groups';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
@@ -67,6 +67,7 @@ const ListItem = styled.div`
 
 // Typings
 interface Props {
+
 }
 
 interface State {
@@ -76,7 +77,7 @@ interface State {
   loading: boolean;
 }
 
-class GroupsListTable extends React.Component<Props, State> {
+class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
 
   constructor() {
@@ -90,6 +91,16 @@ class GroupsListTable extends React.Component<Props, State> {
     };
 
     this.subscriptions = [];
+  }
+
+    componentDidMount() {
+    this.subscriptions.push(this.updateLocales(), this.updateGroups());
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
   }
 
   updateLocales = () => {
@@ -118,14 +129,16 @@ class GroupsListTable extends React.Component<Props, State> {
     });
   }
 
-  componentDidMount() {
-    this.subscriptions.push(this.updateLocales(), this.updateGroups());
-  }
+  createDeleteGroupHandler = (groupId) => {
+    const deletionMessage = this.props.intl.formatMessage(messages.groupDeletionConfirmation);
 
-  componentWillUnmount() {
-    this.subscriptions.forEach((sub) => {
-      sub.unsubscribe();
-    });
+    return (event) => {
+      event.preventDefault();
+
+      if (window.confirm(deletionMessage)) {
+        deleteGroup(groupId);
+      }
+    };
   }
 
   render() {
@@ -151,26 +164,26 @@ class GroupsListTable extends React.Component<Props, State> {
 
     return (
       <ListWrapper className="e2e-groups-list">
-          {groups.map((group) => (
-            <ListItem key={group.id}>
-              <span><GroupAvatar groupId={group.id} /></span>
-              <p className="expand">
-                {getLocalized(group.attributes.title_multiloc, locale, tenantLocales)}
-              </p>
-              <p className="expand">
-                <FormattedMessage {...messages.members} values={{ count: group.attributes.memberships_count }} />
-              </p>
-              <Button style="text" icon="delete">
-                <FormattedMessage {...messages.deleteButtonLabel} />
-              </Button>
-              <Button linkTo={`/admin/groups/edit/${group.id}`} style="secondary" icon="edit">
-                <FormattedMessage {...messages.editButtonLabel} />
-              </Button>
-            </ListItem>
-          ))}
-    </ListWrapper>
+        {groups.map((group) => (
+          <ListItem key={group.id}>
+            <span><GroupAvatar groupId={group.id} /></span>
+            <p className="expand">
+              {getLocalized(group.attributes.title_multiloc, locale, tenantLocales)}
+            </p>
+            <p className="expand">
+              <FormattedMessage {...messages.members} values={{ count: group.attributes.memberships_count }} />
+            </p>
+            <Button onClick={this.createDeleteGroupHandler(group.id)} style="text" icon="delete">
+              <FormattedMessage {...messages.deleteButtonLabel} />
+            </Button>
+            <Button linkTo={`/admin/groups/edit/${group.id}`} style="secondary" icon="edit">
+              <FormattedMessage {...messages.editButtonLabel} />
+            </Button>
+          </ListItem>
+        ))}
+      </ListWrapper>
     );
   }
 }
 
-export default GroupsListTable;
+export default injectIntl<Props>(GroupsListTable);

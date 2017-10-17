@@ -41,3 +41,7 @@ export function listGroups(streamParams: IStreamParams<IGroups> | null = null) {
 export function listMembership(groupId: string, streamParams: IStreamParams<MembershipsResponse> | null = null) {
   return streams.get<MembershipsResponse>({ apiEndpoint: `${API_PATH}/groups/${groupId}/memberships`, ...streamParams });
 }
+
+export function deleteGroup(groupId: string) {
+  return streams.delete(`${API_PATH}/groups/${groupId}`, groupId);
+}
