@@ -2,6 +2,10 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
+// libraries
+import queryString from 'query-string';
+import { withRouter, RouterState, browserHistory, Link } from 'react-router';
+
 // components
 import SelectAreas from './SelectAreas';
 import HelmetIntl from 'components/HelmetIntl';
@@ -36,84 +40,108 @@ const BackgroundColor = styled.div`
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
+  padding-top: 30px;
   padding-bottom: 80px;
   z-index: 2;
 `;
 
 const FiltersArea = styled.div`
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  height: 3.5rem;
-  justify-content: flex-end;
-  margin-top: 1.5rem;
-  margin-bottom: 3.5rem;
   width: 100%;
-
-  @media (min-width: 500px) {
-    flex-wrap: nowrap;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 40px;
 `;
 
 type Props = {};
 
 type State = {
-  search: string;
-  filter: object;
+  filter: {
+    areas?: string[];
+  };
 };
 
 class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
-  search$: Rx.BehaviorSubject<string>;
-  areas$: Rx.BehaviorSubject<string[]>;
+  areas$: Rx.Subject<string[]>;
   subscriptions: Rx.Subscription[];
+  unlisten: Function | null;
 
   constructor() {
     super();
-    this.state = {
-      search: '',
-      filter: {}
-    };
-    this.search$ = new Rx.BehaviorSubject('');
-    this.areas$ = new Rx.BehaviorSubject([]);
+
+    const query = browserHistory.getCurrentLocation().query;
+    let filter = {};
+
+    if (_.has(query, 'areas') && _.isString(query.areas)) {
+      filter = {
+        areas: [query.areas]
+      };
+    }
+
+    this.state = { filter };
+
+    this.areas$ = new Rx.Subject();
   }
 
   componentWillMount() {
     this.subscriptions = [
-      Rx.Observable.combineLatest(
-        this.search$.distinctUntilChanged().do(search => this.setState({ search })).debounceTime(400),
-        this.areas$
-      ).subscribe(([search, areas]) => {
-        const filter = {};
-
-        if (_.isString(search) && !_.isEmpty(search)) {
-          filter['search'] = search;
-        }
-
-        if (_.isArray(areas) && !_.isEmpty(areas)) {
-          filter['areas'] = areas;
-        }
-
-        this.setState({ filter });
+      this.areas$.subscribe((areas) => {
+        this.setState((state) => ({
+          filter: {
+            ...state.filter,
+            areas
+          }
+        }));
       })
     ];
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if (!_.isEqual(this.state.filter, nextState.filter)) {
+      browserHistory.push({
+        pathname: '/projects',
+        query: nextState.filter
+      });
+    }
+  }
+
+  componentDidMount() {
+    this.unlisten = browserHistory.listen((location) => {
+      if (location.pathname === '/projects') {
+        const filter = _.cloneDeep(location.query);
+        this.setState(state => ({ filter: !_.isEqual(filter, state.filter) ? filter : state.filter }));
+      }
+    });
+  }
+
   componentWillUnmount() {
+    if (this.unlisten !== null) {
+      this.unlisten();
+    }
+
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleSearchOnChange = (value) => {
-    this.search$.next(value);
-  }
-
-  handleAreasOnChange = (values) => {
+  handleAreasOnChange = (values: string[]) => {
     this.areas$.next(values);
   }
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { search, filter } = this.state;
+    const { filter } = this.state;
+    let selectedAreas: string[] = [];
+
+    if (_.has(filter, 'areas') && _.isString(filter.areas) && !_.isEmpty(filter.areas)) {
+      selectedAreas = [filter.areas];
+    } else if (_.has(filter, 'areas') && _.isArray(filter.areas) && !_.isEmpty(filter.areas)) {
+      selectedAreas = filter.areas;
+    }
+
+    console.log('filter:');
+    console.log(filter);
+    console.log('selectedAreas:');
+    console.log(selectedAreas);
 
     return (
       <Container>
@@ -127,8 +155,7 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
 
         <StyledContentContainer>
           <FiltersArea id="e2e-ideas-filters">
-            {/* <SearchInput value={search} onChange={this.handleSearchOnChange} /> */}
-            <SelectAreas onChange={this.handleAreasOnChange} />
+            <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
           </FiltersArea>
           <ProjectCards filter={filter} />
         </StyledContentContainer>

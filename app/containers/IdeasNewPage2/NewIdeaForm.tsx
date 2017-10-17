@@ -348,6 +348,7 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
 
           <MobileButton>
             <Button
+              className="e2e-submit-idea-form"
               size="2"
               loading={processing}
               text={formatMessage(messages.submit)}

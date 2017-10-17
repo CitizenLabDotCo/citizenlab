@@ -16,6 +16,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 type Props = {
+  id?: string | undefined;
   onChange: (value: any) => void;
 };
 

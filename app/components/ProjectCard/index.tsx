@@ -34,6 +34,7 @@ const Container = styled.div`
   margin-bottom: 20px;
   background: #fff;
   border: solid 1px #e6e6e6;
+  cursor: pointer;
   /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); */
 
   ${media.phone`
@@ -216,7 +217,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
       const imageUrl = (projectImage ? projectImage.data.attributes.versions.medium : null);
 
       return (
-        <Container>
+        <Container onClick={this.goToProject}>
           {imageUrl ? <ProjectImage imageSrc={imageUrl} /> : <ProjectImagePlaceholder />}
 
           <ProjectContent>
