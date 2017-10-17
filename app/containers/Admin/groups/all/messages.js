@@ -33,4 +33,32 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.list.editButtonLabel',
     defaultMessage: 'Edit',
   },
+  groupTitleLabel: {
+    id: 'app.containers.AdminPage.groups.list.groupTitleLabel',
+    defaultMessage: 'Group name',
+  },
+  creationFormTitle: {
+    id: 'app.containers.AdminPage.groups.create.creationFormTitle',
+    defaultMessage: 'Create a new group',
+  },
+  buttonSave: {
+    id: 'app.containers.AdminPage.groups.create.buttonSave',
+    defaultMessage: 'Save',
+  },
+  buttonError: {
+    id: 'app.containers.AdminPage.groups.create.buttonError',
+    defaultMessage: 'Error',
+  },
+  buttonSuccess: {
+    id: 'app.containers.AdminPage.groups.create.buttonSuccess',
+    defaultMessage: 'Success',
+  },
+  messageSuccess: {
+    id: 'app.containers.AdminPage.groups.create.messageSuccess',
+    defaultMessage: 'Your group has been created',
+  },
+  messageError: {
+    id: 'app.containers.AdminPage.groups.create.messageError',
+    defaultMessage: 'There was an error creating your group',
+  },
 });
