@@ -30,7 +30,7 @@ export interface Membership {
   };
 }
 
-export interface GroupsResponse {
+export interface MembershipsResponse {
   data: Membership[];
 }
 
@@ -38,6 +38,6 @@ export function listGroups(streamParams: IStreamParams<IGroups> | null = null) {
   return streams.get<IGroups>({ apiEndpoint: `${API_PATH}/groups`, ...streamParams });
 }
 
-export function listMembership(groupId: string, streamParams: IStreamParams<GroupsResponse> | null = null) {
-  return streams.get<GroupsResponse>({ apiEndpoint: `${API_PATH}/groups/${groupId}/memberships`, ...streamParams });
+export function listMembership(groupId: string, streamParams: IStreamParams<MembershipsResponse> | null = null) {
+  return streams.get<MembershipsResponse>({ apiEndpoint: `${API_PATH}/groups/${groupId}/memberships`, ...streamParams });
 }

@@ -15,6 +15,7 @@ import messages from './messages';
 // Components
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
+import GroupAvatar from './GroupAvatar';
 
 // Style
 import styled from 'styled-components';
@@ -91,13 +92,6 @@ class GroupsListTable extends React.Component<Props, State> {
     this.subscriptions = [];
   }
 
-  getAvatars = (group: IGroupData) => {
-
-    return (
-      <img role="presentation" alt="" />
-    );
-  }
-
   updateLocales = () => {
     return Rx.Observable.combineLatest(
       localeStream().observable,
@@ -159,7 +153,7 @@ class GroupsListTable extends React.Component<Props, State> {
       <ListWrapper className="e2e-groups-list">
           {groups.map((group) => (
             <ListItem key={group.id}>
-              <span>{this.getAvatars(group)}</span>
+              <span><GroupAvatar groupId={group.id} /></span>
               <p className="expand">
                 {getLocalized(group.attributes.title_multiloc, locale, tenantLocales)}
               </p>
