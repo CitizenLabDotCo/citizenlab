@@ -14,23 +14,24 @@ import styled from 'styled-components';
 
 const GroupAvatarWrapper = styled.div`
   position: relative;
-  height: 4rem;
-  width: 4rem;
+  height: 3rem;
+  width: 3rem;
 `;
 
+const avatarSize = 70;
 const StyledAvatar = styled(Avatar)`
   background: white;
   border-radius: 50%;
-  border: 2px solid white;
+  border: 3px solid white;
   box-sizing: border-box;
-  height: calc(70%);
+  height: calc(${avatarSize}%);
   position: absolute;
-  width: calc(70%);
+  width: calc(${avatarSize}%);
 
   &:nth-child(1) {
     z-index: 3;
     top: 0;
-    left: calc(50% - 35%);
+    left: calc(50% - (${avatarSize}%/2));
   }
 
   &:nth-child(2) {
