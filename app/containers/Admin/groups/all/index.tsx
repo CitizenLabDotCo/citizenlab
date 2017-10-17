@@ -63,7 +63,7 @@ class GroupsList extends React.Component<Props, State> {
         <PageWrapper>
 
           <ButtonWrapper>
-            <Button onClick={this.openCreationModal}><FormattedMessage {...messages.addGroupButton} /></Button>
+            <Button icon="plus-circle" onClick={this.openCreationModal}><FormattedMessage {...messages.addGroupButton} /></Button>
           </ButtonWrapper>
 
           <GroupListTable />
