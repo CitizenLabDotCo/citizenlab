@@ -113,18 +113,6 @@ export default class App extends React.PureComponent<Props & RouterState, State>
           currentTenant$
         );
       }).subscribe()
-
-      /*
-      authUser$.delay(1000).switchMap((authUser) => {
-        const topics$ = topicsStream().observable;
-        const projects$ = projectsStream().observable;
-
-        return Rx.Observable.combineLatest(
-          topics$,
-          projects$,
-        );
-      }).subscribe(x => console.log(x))
-      */
     ];
   }
 

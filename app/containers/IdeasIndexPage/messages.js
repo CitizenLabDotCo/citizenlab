@@ -34,14 +34,6 @@ export default defineMessages({
     id: 'app.containers.IdeasIndexPage.helmetDescription',
     defaultMessage: 'List of ideas on the platform',
   },
-  searchPlaceholder: {
-    id: 'app.containers.IdeasIndexPage.searchPlaceholder',
-    defaultMessage: 'Search',
-  },
-  areasTitle: {
-    id: 'app.containers.IdeasIndexPage.areasTitle',
-    defaultMessage: 'Areas',
-  },
   topicsTitle: {
     id: 'app.containers.IdeasIndexPage.topicsTitle',
     defaultMessage: 'Topics',

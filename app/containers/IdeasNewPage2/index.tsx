@@ -35,7 +35,6 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   background: #f8f8f8;
-  /* border-top: solid 1px #ddd; */
 `;
 
 const PageContainer = styled.div`
@@ -105,7 +104,6 @@ const ButtonBarContainer = styled.div`
   left: 0;
   right: 0;
   background: #fff;
-  /* box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.12); */
   border-top: solid 1px #ddd;
   -webkit-backface-visibility: hidden;
   will-change: auto;
@@ -255,9 +253,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   handleOnIdeaSubmit = async () => {
-    const { intl } = this.props;
-    const { locale } = this.state;
-
     this.setSubmitErrorTo(false);
     this.setProcessingTo(true);
 

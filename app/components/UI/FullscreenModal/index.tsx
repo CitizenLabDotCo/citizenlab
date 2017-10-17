@@ -82,7 +82,7 @@ const ModalContentInnerInner = styled.div`
 `;
 
 const CloseIcon = styled(Icon)`
-  height: 15px;
+  height: 12px;
   fill: #999;
   fill: #666;
   display: flex;
@@ -92,8 +92,8 @@ const CloseIcon = styled(Icon)`
 `;
 
 const CloseButton = styled.div`
-  height: 41px;
-  width: 41px;
+  height: 52px;
+  width: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -115,7 +115,7 @@ const CloseButton = styled.div`
   }
 `;
 
-const ModalContent = styled.div`
+const ModalContent: any = styled.div`
   position: fixed;
   top: 0;
   bottom: 0;
@@ -165,11 +165,17 @@ type State = {};
 class Modal extends React.PureComponent<Props & ITracks, State> {
   private unlisten: Function | null;
   private goBackUrl: string | null;
+  private keydownEventListener: any;
 
   constructor() {
     super();
     this.unlisten = null;
     this.goBackUrl = null;
+  }
+
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.onEscKeyPressed, true);
   }
 
   componentWillUnmount() {
@@ -207,6 +213,22 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       // Don't try this at home!
       trackPage(url, { modal: true });
     }
+  }
+
+  onEscKeyPressed = (event) => {
+    if (event.defaultPrevented) {
+      return;
+    }
+
+    switch (event.key) {
+      case 'Escape':
+        this.manuallyCloseModal();
+        break;
+      default:
+        return;
+    }
+
+    event.preventDefault();
   }
 
   manuallyCloseModal = () => {
@@ -274,14 +296,14 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
             unmountOnExit={true}
             exit={false}
           >
-            <ModalContent>
+            <ModalContent id="e2e-fullscreenmodal-content">
               <ModalContentInner>
                 <ModalContentInnerInner>
                   {children}
                 </ModalContentInnerInner>
               </ModalContentInner>
               <CloseButton onClick={this.clickCloseButton}>
-                <CloseIcon name="close3" />
+                <CloseIcon name="close4" />
               </CloseButton>
             </ModalContent>
           </CSSTransition>

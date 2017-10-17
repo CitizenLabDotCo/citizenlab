@@ -93,7 +93,10 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   handleEmailOnChange = (value) => {
-    this.setState({ emailError: false, email: value });
+    this.setState({
+      emailError: false,
+      email: value
+    });
   }
 
   handleEmailInputSetRef = (element: HTMLInputElement) => {

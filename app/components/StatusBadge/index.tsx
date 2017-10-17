@@ -13,8 +13,9 @@ import styled from 'styled-components';
 const Container = styled.div`
   color: #fff;
   font-size: 12px;
+  line-height: 16px;
   border-radius: 5px;
-  padding: 4px 12px;
+  padding: 6px 12px;
   display: inline-block;
   text-transform: uppercase;
   text-align: center;
@@ -43,12 +44,11 @@ export default class StatusBadge extends React.PureComponent<Props, State> {
   }
 
   componentWillMount() {
-    const ideaStatus$ = ideaStatusStream(this.props.statusId).observable;
+    const { statusId } = this.props;
+    const ideaStatus$ = ideaStatusStream(statusId).observable;
 
     this.subscriptions = [
-      ideaStatus$.subscribe((ideaStatus) => {
-        this.setState({ ideaStatus });
-      })
+      ideaStatus$.subscribe(ideaStatus => this.setState({ ideaStatus }))
     ];
   }
 
@@ -58,10 +58,11 @@ export default class StatusBadge extends React.PureComponent<Props, State> {
 
   render() {
     const { ideaStatus } = this.state;
-    const className = this.props['className'];
-    const color = (ideaStatus ? ideaStatus.data.attributes.color : '#bbb');
 
     if (ideaStatus !== null) {
+      const className = this.props['className'];
+      const color = (ideaStatus ? ideaStatus.data.attributes.color : '#bbb');
+
       return (
         <Container className={className} color={color} >
           <T value={ideaStatus.data.attributes.title_multiloc} />

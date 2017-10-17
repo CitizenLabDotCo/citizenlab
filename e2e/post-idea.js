@@ -14,9 +14,9 @@ module.exports = {
     .postIdea(title, 'Lorem ipsum dolor sit amet');
 
     browser
-    .url('localhost:3000/ideas?sort=new')
-    .waitForElementVisible('.e2e-idea-card:first-child')
-    .getText('.e2e-idea-card:first-child h4', function (result) {
+    .url('localhost:3000/ideas')
+    .waitForElementVisible('#e2e-ideas-list:first-child')
+    .getText('#e2e-ideas-list:first-child h4', function (result) {
       this.assert.equal(result.value, title);
     })
     .end();

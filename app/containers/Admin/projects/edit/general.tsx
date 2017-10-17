@@ -259,7 +259,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     if (projectData) {
       addProjectImage(projectData.id, base64).then((response: any) => {
         projectImages.push(response.data);
-
         this.setState({ projectImages });
       });
     }
@@ -326,7 +325,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
 
   render() {
     const { projectData, uploadedImages, editorState, uploadedHeader, loading, projectImages, projectAttributesDiff } = this.state;
-    const { userLocale, tFunc } = this.props;
+    const { userLocale, tFunc, intl: { formatMessage } } = this.props;
     const projectAttrs = { ...projectData.attributes, ...projectAttributesDiff } as IUpdatedProjectProperties;
     projectAttrs.area_ids = projectAttrs.area_ids || projectData.relationships.areas.data.map((area) => (area.id));
 
@@ -376,8 +375,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
           <label htmlFor="project-area">
             <FormattedMessage {...messages.areasLabel} />
           </label>
-          <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="all" name="areas" id="areas-all" label={tFunc(messages.areasAllLabel)} />
-          <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="selection" name="areas" id="areas-selection" label={tFunc(messages.areasSelectionLabel)} />
+          <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="all" name="areas" id="areas-all" label={formatMessage(messages.areasAllLabel)} />
+          <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="selection" name="areas" id="areas-selection" label={formatMessage(messages.areasSelectionLabel)} />
 
           <MultipleSelect
             options={this.state.areasOptions}

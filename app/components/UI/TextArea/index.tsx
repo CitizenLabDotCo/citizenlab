@@ -17,7 +17,7 @@ const Container: any = styled.div`
     color: #333;
     font-size: 17px;
     line-height: 24px;
-    font-weight: 400;
+    font-weight: 300;
     padding: 12px;
     resize: none;
     outline: none;
