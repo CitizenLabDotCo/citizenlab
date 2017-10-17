@@ -9,8 +9,9 @@ import messages from './messages';
 
 // Components
 import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
 import PageWrapper from 'components/admin/PageWrapper';
-import GroupList from './GroupList';
+import GroupListTable from './GroupListTable';
 
 // Style
 import styled from 'styled-components';
@@ -31,24 +32,45 @@ interface Props {
 }
 
 interface State {
+  creationModalVisible: boolean;
 }
 
-class GroupsList extends React.Component {
+class GroupsList extends React.Component<Props, State> {
   constructor () {
     super();
+
+    this.state = {
+      creationModalVisible: false,
+    };
+  }
+
+  openCreationModal = () => {
+    this.setState({ creationModalVisible: true });
+  }
+
+  closeCreationModal = () => {
+    this.setState({ creationModalVisible: false });
   }
 
   render() {
+    const { creationModalVisible } = this.state;
+
     return (
       <div>
         <PageTitle>
           <FormattedMessage {...messages.listTitle} />
         </PageTitle>
         <PageWrapper>
+
           <ButtonWrapper>
-            <Button><FormattedMessage {...messages.addGroupButton} /></Button>
+            <Button onClick={this.openCreationModal}><FormattedMessage {...messages.addGroupButton} /></Button>
           </ButtonWrapper>
-          <GroupList />
+
+          <GroupListTable />
+
+          <Modal opened={creationModalVisible} close={this.closeCreationModal}>
+            <p>Creation</p>
+          </Modal>
         </PageWrapper>
       </div>
     );

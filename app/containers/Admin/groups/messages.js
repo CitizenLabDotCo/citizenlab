@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Groups.editTitle',
     defaultMessage: 'Editing a group',
   },
+  addGroupTitle: {
+    id: 'app.containers.AdminPage.Groups.addGroupTitle',
+    defaultMessage: 'Create a new group',
+  },
 });

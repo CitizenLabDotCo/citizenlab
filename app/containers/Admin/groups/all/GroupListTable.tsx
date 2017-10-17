@@ -75,7 +75,7 @@ interface State {
   loading: boolean;
 }
 
-class GroupsList extends React.Component<Props, State> {
+class GroupsListTable extends React.Component<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor() {
@@ -169,7 +169,7 @@ class GroupsList extends React.Component<Props, State> {
               <Button style="text" icon="delete">
                 <FormattedMessage {...messages.deleteButtonLabel} />
               </Button>
-              <Button linkTo={`/admin/groups/${group.id}`} style="secondary" icon="edit">
+              <Button linkTo={`/admin/groups/edit/${group.id}`} style="secondary" icon="edit">
                 <FormattedMessage {...messages.editButtonLabel} />
               </Button>
             </ListItem>
@@ -179,4 +179,4 @@ class GroupsList extends React.Component<Props, State> {
   }
 }
 
-export default GroupsList;
+export default GroupsListTable;

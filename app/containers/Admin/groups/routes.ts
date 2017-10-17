@@ -17,7 +17,7 @@ export default () => ({
   },
   childRoutes: [
     {
-      path: '/admin/groups/:slug/edit',
+      path: '/admin/groups/edit/:groupId',
       name: 'admin groups single group',
       component: GroupEdit,
     },
