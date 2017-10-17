@@ -98,9 +98,28 @@ export async function getAuthUserAsync() {
 
 export async function sendPasswordResetMail(email: string) {
   try {
-    const bodyData = { user: { email } };
+    const bodyData = {
+      user: {
+        email
+      }
+    };
     const httpMethod: IHttpMethod = { method: 'POST' };
     const response = await request(`${API_PATH}/users/reset_password_email`, bodyData, httpMethod, null);
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function resetPassword(password: string, token: string) {
+  try {
+  const bodyData = {
+    user: {
+      password,
+      token
+    }
+  };
+    const httpMethod: IHttpMethod = { method: 'POST' };
+    const response = await request(`${API_PATH}/users/reset_password`, bodyData, httpMethod, null);
   } catch (error) {
     throw error;
   }
