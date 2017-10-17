@@ -12,18 +12,16 @@ const profile = require('./profile.svg');
 
 const Container = styled.div`
   position: fixed;
-
   height: ${(props) => props.theme.mobileMenuHeight}px;
   bottom: 0;
   left: 0;
   right: 0;
-  background: #ffffff;
+  background: #fff;
   box-shadow: 0px -3px 20px rgba(0,0,0,0.25);
-
   padding: 4px 0;
-
   display: flex;
   justify-content: space-around;
+  z-index: 10000;
 
   ${media.biggerThanPhone`
     display: none;

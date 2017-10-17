@@ -41,10 +41,16 @@ const Container: any = styled.div`
   position: fixed;
   top: 0;
   transition: all 150ms ease-out;
-  box-shadow: ${(props: any) => props.hideBorder ? 'none' : '0px 1px 4px rgba(0, 0, 0, 0.12)'};
+  border-bottom: solid 1px #fff;
+  box-shadow: ${(props: any) => props.alwaysShowBorder ? '0px 1px 3px rgba(0, 0, 0, 0.12)' : '0px 1px 3px rgba(0, 0, 0, 0)'};
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  will-change: box-shadow;
 
   ${(props: any) => props.scrolled && css`
-    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.12);
+    border-bottom: solid 1px #fff;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
   `}
 `;
 
@@ -192,10 +198,22 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
   }
 
   componentDidMount() {
+    const getScrollTop = () => {
+      if (!_.isUndefined(pageYOffset)) {
+        return pageYOffset;
+      } else {
+        const B = document.body;
+        let D = document.documentElement;
+        D = (D.clientHeight) ? D : B;
+        return D.scrollTop;
+      }
+    };
+
     this.subscriptions.push(
-      Rx.Observable.fromEvent(window, 'scroll').sampleTime(10).subscribe(() => {
+      Rx.Observable.fromEvent(window, 'scroll').sampleTime(20).subscribe(() => {
         this.setState((state) => {
-          const scrolled = (document.documentElement.scrollTop > 0);
+          const scrollTop = getScrollTop();
+          const scrolled = (scrollTop > 0);
           return (state.scrolled !== scrolled ? { scrolled } : state);
         });
       })
@@ -245,12 +263,17 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
     const { formatMessage } = this.props.intl;
     const { authUser, currentTenant, scrolled } = this.state;
     const tenantLogo = (currentTenant ? currentTenant.data.attributes.logo.medium : null);
-    const hideBorder = (pathname === '/' || pathname === 'ideas' || pathname === 'projects' || pathname === '/projects');
+    const alwaysShowBorder = (pathname.startsWith('/ideas/') 
+                              || pathname === 'sign-in'
+                              || pathname === '/sign-in' 
+                              || pathname === 'sign-up' 
+                              || pathname === '/sign-up');
 
     return (
       <ThemeProvider theme={this.navbarTheme}>
-        <Container scrolled={scrolled} hideBorder={hideBorder}>
-          <MobileNavigation />
+        <div>
+        <MobileNavigation />
+        <Container scrolled={scrolled} alwaysShowBorder={alwaysShowBorder}>
           <Left>
             {tenantLogo &&
               <LogoLink to="/">
@@ -309,6 +332,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
             }
           </Right>
         </Container>
+        </div>
       </ThemeProvider>
     );
   }

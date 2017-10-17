@@ -7,11 +7,14 @@ const commands = {
     .waitForElementVisible('@ideasContainer');
   },
 
-  seeOldest() {
-    this.api
-    .url('localhost:3000/ideas?sort=-new');
-
-    return this.waitForElementVisible('@firstIdea', 10000);
+  seeNewest() {
+    return this
+    .waitForElementVisible('@ideasList')
+    .waitForElementVisible('@sortFilter')
+    .click('#e2e-ideas-sort-filter button')
+    .waitForElementVisible('.e2e-filter-selector-dropdown-list')
+    .click('.e2e-filter-selector-dropdown-list li:nth-child(3)')
+    .waitForElementVisible('@firstIdea', 10000);
   },
 };
 
@@ -19,7 +22,8 @@ module.exports = {
   url: 'localhost:3000/ideas',
   elements: {
     filters: { selector: '#e2e-ideas-filters' },
-    firstIdea: { selector: '.e2e-idea-card:first-child' },
+    sortFilter: { selector: '#e2e-ideas-sort-filter' },
+    firstIdea: { selector: '#e2e-ideas-list:first-child' },
     ideasContainer: { selector: '#e2e-ideas-container' },
     ideasList: { selector: '#e2e-ideas-list' },
     searchButton: { selector: '.e2e-ideas-search-button' },

@@ -133,10 +133,6 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
     this.subscriptions = [
       this.state$.observable.subscribe(state => this.setState(state)),
 
-      eventEmitter.observe(ButtonBarNamespace, 'submit').subscribe(this.handleOnSubmit),
-
-      locale$.subscribe(locale => this.state$.next({ locale })),
-
       Rx.Observable.combineLatest(
         locale$,
         topics$,
@@ -153,7 +149,9 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
         this.state$.next({
           projects: this.getOptions(projects, locale),
         });
-      })
+      }),
+
+      eventEmitter.observe(ButtonBarNamespace, 'submit').subscribe(this.handleOnSubmit),
     ];
   }
 
@@ -268,104 +266,99 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   render() {
-    const { locale } = this.state;
+    const { formatMessage } = this.props.intl;
+    const { topics, projects, title, description, selectedTopics, selectedProject, location, images, titleError, descriptionError, submitError, processing } = this.state;
+    const submitErrorMessage = (submitError ? formatMessage(messages.submitError) : null);
 
-    if (locale) {
-      const { formatMessage } = this.props.intl;
-      const { topics, projects, title, description, selectedTopics, selectedProject, location, images, titleError, descriptionError, submitError, processing } = this.state;
-      const submitErrorMessage = (submitError ? formatMessage(messages.submitError) : null);
+    return (
+      <Container>
+        <Form id="new-idea-form">
+          <Title>{formatMessage(messages.formTitle)}</Title>
 
-      return (
-        <Container>
-          <Form id="new-idea-form">
-            <Title>{formatMessage(messages.formTitle)}</Title>
+          <FormElement name="titleInput">
+            <Label value={formatMessage(messages.titleLabel)} htmlFor="title" />
+            <Input
+              id="title"
+              type="text"
+              value={title}
+              placeholder={formatMessage(messages.titlePlaceholder)}
+              error={titleError}
+              onChange={this.handleTitleOnChange}
+              setRef={this.handleTitleInputSetRef}
+            />
+          </FormElement>
 
-            <FormElement name="titleInput">
-              <Label value={formatMessage(messages.titleLabel)} htmlFor="title" />
-              <Input
-                id="title"
-                type="text"
-                value={title}
-                placeholder={formatMessage(messages.titlePlaceholder)}
-                error={titleError}
-                onChange={this.handleTitleOnChange}
-                setRef={this.handleTitleInputSetRef}
-              />
-            </FormElement>
+          <FormElement name="descriptionInput">
+            <Label value={formatMessage(messages.descriptionLabel)} htmlFor="editor" />
+            <Editor
+              id="editor"
+              value={description}
+              placeholder={formatMessage(messages.descriptionPlaceholder)}
+              error={descriptionError}
+              onChange={this.handleDescriptionOnChange}
+              setRef={this.handleDescriptionInputSetRef}
+            />
+          </FormElement>
 
-            <FormElement name="descriptionInput">
-              <Label value={formatMessage(messages.descriptionLabel)} htmlFor="editor" />
-              <Editor
-                id="editor"
-                value={description}
-                placeholder={formatMessage(messages.descriptionPlaceholder)}
-                error={descriptionError}
-                onChange={this.handleDescriptionOnChange}
-                setRef={this.handleDescriptionInputSetRef}
-              />
-            </FormElement>
+          <FormElement>
+            <Label value={formatMessage(messages.topicsLabel)} htmlFor="topics" />
+            <MultipleSelect
+              value={selectedTopics}
+              placeholder={formatMessage(messages.topicsPlaceholder)}
+              options={topics}
+              max={2}
+              onChange={this.handleTopicsOnChange}
+            />
+          </FormElement>
 
-            <FormElement>
-              <Label value={formatMessage(messages.topicsLabel)} htmlFor="topics" />
-              <MultipleSelect
-                value={selectedTopics}
-                placeholder={formatMessage(messages.topicsPlaceholder)}
-                options={topics}
-                max={2}
-                onChange={this.handleTopicsOnChange}
-              />
-            </FormElement>
+          <FormElement>
+            <Label value={formatMessage(messages.projectsLabel)} htmlFor="projects" />
+            <Select
+              value={selectedProject}
+              placeholder={formatMessage(messages.projectsPlaceholder)}
+              options={projects}
+              onChange={this.handleProjectOnChange}
+            />
+          </FormElement>
 
-            <FormElement>
-              <Label value={formatMessage(messages.projectsLabel)} htmlFor="projects" />
-              <Select
-                value={selectedProject}
-                placeholder={formatMessage(messages.projectsPlaceholder)}
-                options={projects}
-                onChange={this.handleProjectOnChange}
-              />
-            </FormElement>
+          <FormElement>
+            <Label value={formatMessage(messages.locationLabel)} htmlFor="location" />
+            <LocationInput
+              id="location"
+              value={location}
+              placeholder={formatMessage(messages.locationPlaceholder)}
+              onChange={this.handleLocationOnChange}
+            />
+          </FormElement>
 
-            <FormElement>
-              <Label value={formatMessage(messages.locationLabel)} htmlFor="location" />
-              <LocationInput
-                id="location"
-                value={location}
-                placeholder={formatMessage(messages.locationPlaceholder)}
-                onChange={this.handleLocationOnChange}
-              />
-            </FormElement>
+          <FormElement>
+            <Label value={formatMessage(messages.imageUploadLabel)} />
+            <Upload
+              items={images}
+              accept="image/jpg, image/jpeg, image/png, image/gif"
+              maxSize={5000000}
+              maxItems={1}
+              placeholder={formatMessage(messages.imageUploadPlaceholder)}
+              disablePreview={true}
+              destroyPreview={false}
+              onAdd={this.handleUploadOnAdd}
+              onRemove={this.handleUploadOnRemove}
+            />
+          </FormElement>
 
-            <FormElement>
-              <Label value={formatMessage(messages.imageUploadLabel)} />
-              <Upload
-                items={images}
-                accept="image/jpg, image/jpeg, image/png, image/gif"
-                maxSize={5000000}
-                maxItems={1}
-                placeholder={formatMessage(messages.imageUploadPlaceholder)}
-                disablePreview={true}
-                destroyPreview={false}
-                onAdd={this.handleUploadOnAdd}
-                onRemove={this.handleUploadOnRemove}
-              />
-            </FormElement>
-
-            <MobileButton>
-              <Button
-                size="2"
-                loading={processing}
-                text={formatMessage(messages.submit)}
-                onClick={this.handleOnSubmit}
-              />
-              <Error text={submitErrorMessage} marginTop="0px" />
-            </MobileButton>
-          </Form>
-        </Container>
-      );
-    }
-
-    return null;
+          <MobileButton>
+            <Button
+              className="e2e-submit-idea-form"
+              size="2"
+              loading={processing}
+              text={formatMessage(messages.submit)}
+              onClick={this.handleOnSubmit}
+            />
+            <Error text={submitErrorMessage} marginTop="0px" />
+          </MobileButton>
+        </Form>
+      </Container>
+    );
   }
 }
 

@@ -38,7 +38,9 @@ interface State {
   selectedMoment: moment.Moment;
 }
 
-export default class DateTimePicker extends React.Component<Props, State> {
+export default class DateTimePicker extends React.PureComponent<Props, State> {
+  state: State;
+
   constructor (props) {
     super(props);
 
