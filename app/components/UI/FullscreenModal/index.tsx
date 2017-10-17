@@ -115,7 +115,7 @@ const CloseButton = styled.div`
   }
 `;
 
-const ModalContent = styled.div`
+const ModalContent: any = styled.div`
   position: fixed;
   top: 0;
   bottom: 0;
@@ -296,7 +296,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
             unmountOnExit={true}
             exit={false}
           >
-            <ModalContent>
+            <ModalContent id="e2e-fullscreenmodal-content">
               <ModalContentInner>
                 <ModalContentInnerInner>
                   {children}

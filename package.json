@@ -287,7 +287,7 @@
     "@types/draft-js": "^0.10.15",
     "@types/lodash": "^4.14.77",
     "@types/node-uuid": "^0.0.28",
-    "@types/react": "^16.0.10",
+    "@types/react": "^16.0.13",
     "@types/react-dropzone": "^4.1.0",
     "@types/react-intl": "^2.3.2",
     "@types/react-router": "^3.x",
@@ -375,6 +375,6 @@
     "webpack": "3.7.1",
     "webpack-bundle-analyzer": "2.9.0",
     "webpack-dev-middleware": "1.12.0",
-    "webpack-hot-middleware": "2.19.1"
+    "webpack-hot-middleware": "2.20.0"
   }
 }

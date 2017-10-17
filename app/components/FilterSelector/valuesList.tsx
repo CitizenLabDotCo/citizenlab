@@ -143,6 +143,7 @@ type Value = {
 };
 
 type Props = {
+  title: string;
   values: Value[];
   onChange: Function;
   selected: any[];
@@ -252,8 +253,11 @@ export default class ValuesList extends React.PureComponent<Props, State> {
   }
 
   render() {
+    let { title } = this.props;
     const { values, multiple, deployed, baseID } = this.props;
     const { currentFocus } = this.state;
+
+    title = title.toLocaleLowerCase();
 
     const dropdown = ((deployed) ? (
       <CSSTransition
@@ -270,6 +274,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
             role="listbox"
             tabIndex={0}
             innerRef={this.setRef}
+            className="e2e-filter-selector-dropdown-list"
             aria-labelledby={`${baseID}-label`}
             aria-multiselectable={multiple}
             aria-activedescendant={`${baseID}-${currentFocus}`}
@@ -277,6 +282,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
             {values && values.map((entry, index) => {
               const clickHandler = this.handleOnClick(entry, index);
               const selected = this.isSelected(entry.value);
+              const focussed = currentFocus === index ? 'focused' : '';
 
               return (
                 <StyledOption
@@ -286,7 +292,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
                   selected={selected}
                   key={entry.value}
                   onClick={this.handleOnClick(entry, index)}
-                  className={currentFocus === index ? 'focused' : ''}
+                  className={`e2e-filter-selector-dropdown-listitem-${title} ${focussed}`}
                 >
                   <OptionText>{entry.text}</OptionText>
                   {multiple && 

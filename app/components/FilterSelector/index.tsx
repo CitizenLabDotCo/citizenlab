@@ -23,6 +23,7 @@ const Container = styled(clickOutside)`
 `;
 
 interface Props {
+  id?: string | undefined;
   title: string;
   name: string;
   values: {
@@ -107,12 +108,29 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
 
   render() {
     const { deployed, currentTitle } = this.state;
-    const { values, multiple, selected } = this.props;
+    const { id, values, multiple, selected } = this.props;
 
     return (
-      <Container onClickOutside={this.handleClickOutside} className={`e2e-filter-selector-${this.props.name}`}>
-        <Title title={currentTitle} deployed={deployed} onClick={this.toggleExpanded} baseID={this.baseID} />
-        <ValuesList deployed={deployed} values={values} selected={selected} onChange={this.selectionChange} multiple={multiple} baseID={this.baseID} />
+      <Container
+        id={id}
+        onClickOutside={this.handleClickOutside}
+        className={`e2e-filter-selector-${this.props.name}`}
+      >
+        <Title
+          title={currentTitle}
+          deployed={deployed}
+          onClick={this.toggleExpanded}
+          baseID={this.baseID}
+        />
+        <ValuesList
+          title={currentTitle}
+          deployed={deployed}
+          values={values}
+          selected={selected}
+          onChange={this.selectionChange}
+          multiple={multiple}
+          baseID={this.baseID}
+        />
       </Container>
     );
   }

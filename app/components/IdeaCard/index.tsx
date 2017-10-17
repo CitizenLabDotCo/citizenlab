@@ -121,6 +121,7 @@ const IdeaAuthor = styled.div`
   color: #84939d;
   font-size: 14px;
   font-weight: 300;
+  line-height: 20px;
   margin-top: 12px;
 `;
 
@@ -248,7 +249,6 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { formatMessage, formatRelative } = this.props.intl;
-    const className = `${this.props['className']} e2e-idea-card ${!_.get(this.state, 'idea.data.relationships.user_vote.data', undefined) ? 'not-voted' : 'voted' }`;
     const { idea, ideaImage, ideaAuthor, locale, showUnauthenticated, loading } = this.state;
 
     if (!loading && idea && ideaAuthor && locale) {
@@ -257,6 +257,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
       const authorName = `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
       const createdAt = formatRelative(idea.data.attributes.created_at);
       const byAuthor = formatMessage(messages.byAuthorName, { authorName });
+      const className = `${this.props['className']} e2e-idea-card ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }`;
 
       return (
         <IdeaContainer onClick={this.onCardClick}  className={className}>

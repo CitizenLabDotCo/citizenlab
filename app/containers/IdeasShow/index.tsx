@@ -45,7 +45,7 @@ const Container = styled.div``;
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 820px;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 80px;
@@ -99,7 +99,7 @@ const Content = styled.div`
 `;
 
 const LeftColumn = styled.div`
-  /* flex-grow: 1; */
+  flex-grow: 1;
   margin: 0;
   padding: 0;
 `;
