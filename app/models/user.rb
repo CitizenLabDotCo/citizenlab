@@ -7,6 +7,9 @@ class User < ApplicationRecord
   pg_search_scope :search_by_all, 
     :against => [:first_name, :last_name, :email], 
     :using => { :tsearch => {:prefix => true} }
+  pg_search_scope :search_by_infix, 
+    :against => [[:first_name, 'A'], [:last_name, 'C'], [:email, 'B']], 
+    :using => { :tsearch => {:prefix => true} }
 
 
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
