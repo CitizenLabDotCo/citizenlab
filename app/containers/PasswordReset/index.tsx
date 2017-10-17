@@ -11,6 +11,8 @@ import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Success from 'components/UI/Success';
+import { Helmet } from 'react-helmet';
+import ContentContainer from 'components/ContentContainer';
 
 // services
 import { resetPassword } from 'services/auth';
@@ -24,27 +26,43 @@ import messages from './messages';
 
 const Container = styled.div`
   width: 100%;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  background: #f8f8f8;
 `;
 
-const Form = styled.div`
-  width: 100%;
-`;
+const StyledContentContainer = styled(ContentContainer)``;
 
 const Title = styled.h2`
   width: 100%;
   color: #333;
-  font-size: 38px;
-  line-height: 44px;
+  font-size: 36px;
+  line-height: 42px;
   font-weight: 500;
-  text-align: left;
-  margin-top: 50px;
-  margin-bottom: 35px;
+  text-align: center;
+  padding: 0;
+  padding-top: 60px;
+  margin: 0;
+  margin-bottom: 50px;
 `;
 
-const FormElement: any = styled.div`
-  width: 100%;
-  margin-bottom: 25px;
+const StyledInput = styled(Input)``;
+
+const StyledButton = styled(Button)`
+  margin-top: 20px;
+  margin-bottom: 10px;
 `;
+
+const Form = styled.form`
+  width: 100%;
+  max-width: 380px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+`;
+
 
 type Props = {};
 
@@ -120,7 +138,7 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
       try {
         this.setState({ processing: true });
         await resetPassword(password, token);
-        this.setState({ processing: false, success: true });
+        this.setState({ password: null, processing: false, success: true });
         setTimeout(() => this.setState({ success: false }), 8000);
       } catch {
         this.setState({ processing: false, success: false, submitError: true });
@@ -131,6 +149,9 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
   render() {
     const { formatMessage } = this.props.intl;
     const { password, passwordError, submitError, processing, success } = this.state;
+    const helmetTitle = formatMessage(messages.helmetTitle);
+    const helmetDescription = formatMessage(messages.helmetDescription);
+    const title = formatMessage(messages.title);
     const passwordPlaceholder = formatMessage(messages.passwordPlaceholder);
     const updatePassword = formatMessage(messages.updatePassword);
     const successMessage = (success ? formatMessage(messages.successMessage) : null);
@@ -144,13 +165,22 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
 
     return (
       <Container>
-        <Form>
-          <Title>{formatMessage(messages.title)}</Title>
+        <Helmet
+          title={helmetTitle}
+          meta={[
+            { name: 'description', content: helmetDescription },
+          ]}
+        />
 
+        <StyledContentContainer>
+          <Title>{title}</Title>
+
+          <Form>
             <Input
               type="password"
               id="password"
               value={password}
+              error={errorMessage}
               placeholder={passwordPlaceholder}
               onChange={this.handlePasswordOnChange}
               setRef={this.handlePasswordInputSetRef}
@@ -163,10 +193,9 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
               onClick={this.handleOnSubmit}
             />
 
-            <Error text={errorMessage} />
-
             <Success text={successMessage} />
-        </Form>
+          </Form>
+        </StyledContentContainer>
       </Container>
     );
   }

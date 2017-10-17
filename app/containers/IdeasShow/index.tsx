@@ -256,7 +256,7 @@ const IconWrapper = styled.div`
 const GiveOpinionText = styled.div`
   color: #84939E;
   font-size: 15px;
-  font-weight: 300;
+  font-weight: 400;
   white-space: nowrap;
   transition: all 100ms ease-out;
 `;
