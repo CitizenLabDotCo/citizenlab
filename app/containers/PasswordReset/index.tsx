@@ -2,6 +2,9 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
+// router
+import { browserHistory } from 'react-router';
+
 // components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
@@ -10,10 +13,7 @@ import Error from 'components/UI/Error';
 import Success from 'components/UI/Success';
 
 // services
-import { sendPasswordResetMail } from 'services/auth';
-
-// utils
-import { isValidEmail } from 'utils/validate';
+import { resetPassword } from 'services/auth';
 
 // i18n
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -46,13 +46,12 @@ const FormElement: any = styled.div`
   margin-bottom: 25px;
 `;
 
-type Props = {
-  onExit?: () => void;
-};
+type Props = {};
 
-export type State = {
-  email: string | null;
-  emailError: boolean;
+type State = {
+  token: string | null;
+  password: string | null;
+  passwordError: boolean;
   submitError: boolean;
   processing: boolean;
   success: boolean;
@@ -60,104 +59,113 @@ export type State = {
 
 class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
-  emailInputElement: HTMLInputElement | null;
+  passwordInputElement: HTMLInputElement | null;
 
   constructor() {
     super();
+
+    const query = browserHistory.getCurrentLocation().query;
+    const token = (query.token ? query.token : null);
+
     this.state = {
-      email: null,
-      emailError: false,
+      token,
+      password: null,
+      passwordError: false,
       submitError: false,
       processing: false,
       success: false
     };
-    this.emailInputElement = null;
+
+    this.passwordInputElement = null;
   }
 
   componentDidMount() {
-    if (this.emailInputElement) {
-      this.emailInputElement.focus();
+    const { token } = this.state;
+
+    if (!_.isString(token)) {
+      browserHistory.push('/');
+    } else if (this.passwordInputElement) {
+      this.passwordInputElement.focus();
     }
   }
 
-  validate = (email: string | null) => {
-    const emailError = (!email || !isValidEmail(email));
+  validate = (password: string | null) => {
+    const passwordError = (!password || password.length < 8);
 
-    if (emailError && this.emailInputElement) {
-      this.emailInputElement.focus();
+    if (passwordError && this.passwordInputElement) {
+      this.passwordInputElement.focus();
     }
 
-    this.setState({ emailError });
+    this.setState({ passwordError });
 
-    return (!emailError);
+    return (!passwordError);
   }
 
-  handleEmailOnChange = (value) => {
+  handlePasswordOnChange = (value) => {
     this.setState({
-      emailError: false,
-      email: value
+      passwordError: false,
+      submitError: false,
+      password: value
     });
   }
 
-  handleEmailInputSetRef = (element: HTMLInputElement) => {
-    this.emailInputElement = element;
+  handlePasswordInputSetRef = (element: HTMLInputElement) => {
+    this.passwordInputElement = element;
   }
 
   handleOnSubmit = async () => {
-    const { email } = this.state;
+    const { password, token } = this.state;
 
-    if (this.validate(email) && email) {
+    if (this.validate(password) && password && token) {
       try {
-        await sendPasswordResetMail(email);
-        this.setState({ success: true });
+        this.setState({ processing: true });
+        await resetPassword(password, token);
+        this.setState({ processing: false, success: true });
         setTimeout(() => this.setState({ success: false }), 8000);
       } catch {
-        this.setState({ success: false, submitError: true });
+        this.setState({ processing: false, success: false, submitError: true });
       }
-    }
-  }
-
-  handleOnGoBack = () => {
-    if (_.has(this.props, 'onExit') && _.isFunction(this.props.onExit)) {
-      this.props.onExit();
     }
   }
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { email, emailError, submitError, processing, success } = this.state;
-    const emailErrorMessage = (emailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
-    const submitErrorMessage = (submitError ? formatMessage(messages.submitError) : null);
+    const { password, passwordError, submitError, processing, success } = this.state;
+    const passwordPlaceholder = formatMessage(messages.passwordPlaceholder);
+    const updatePassword = formatMessage(messages.updatePassword);
     const successMessage = (success ? formatMessage(messages.successMessage) : null);
+    let errorMessage: string | null = null;
+
+    if (passwordError) {
+      errorMessage = formatMessage(messages.passwordError);
+    } else if (submitError) {
+      errorMessage = formatMessage(messages.submitError);
+    }
 
     return (
       <Container>
         <Form>
           <Title>{formatMessage(messages.title)}</Title>
 
-          <FormElement name="titleInput">
-            <Label value={formatMessage(messages.emailLabel)} htmlFor="email" />
             <Input
-              id="email"
-              type="text"
-              value={email}
-              placeholder={formatMessage(messages.emailPlaceholder)}
-              error={emailErrorMessage}
-              onChange={this.handleEmailOnChange}
-              setRef={this.handleEmailInputSetRef}
+              type="password"
+              id="password"
+              value={password}
+              placeholder={passwordPlaceholder}
+              onChange={this.handlePasswordOnChange}
+              setRef={this.handlePasswordInputSetRef}
             />
-          </FormElement>
 
-          <FormElement>
             <Button
               size="2"
               loading={processing}
-              text={formatMessage(messages.send)}
+              text={updatePassword}
               onClick={this.handleOnSubmit}
             />
-            <Error text={submitErrorMessage} />
+
+            <Error text={errorMessage} />
+
             <Success text={successMessage} />
-          </FormElement>
         </Form>
       </Container>
     );

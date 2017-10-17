@@ -5,25 +5,13 @@ export default defineMessages({
     id: 'app.containers.PasswordReset.title',
     defaultMessage: 'Reset your password',
   },
-  emailLabel: {
-    id: 'app.containers.PasswordReset.emailLabel',
-    defaultMessage: 'Email (required)',
+  passwordPlaceholder: {
+    id: 'app.containers.PasswordReset.passwordPlaceholder',
+    defaultMessage: 'New password',
   },
-  emailPlaceholder: {
-    id: 'app.containers.PasswordReset.emailPlaceholder',
-    defaultMessage: 'Enter your email address',
-  },
-  noEmailError: {
-    id: 'app.containers.PasswordReset.noEmailError',
-    defaultMessage: 'Please enter your email address',
-  },
-  noValidEmailError: {
-    id: 'app.containers.PasswordReset.noValidEmailError',
-    defaultMessage: 'Please enter a valid email address',
-  },
-  send: {
-    id: 'app.containers.PasswordReset.send',
-    defaultMessage: 'Send password reset mail',
+  passwordError: {
+    id: 'app.containers.PasswordReset.passwordError',
+    defaultMessage: 'Your password must contain at least 8 characters',
   },
   submitError: {
     id: 'app.containers.PasswordReset.submitError',
@@ -31,6 +19,10 @@ export default defineMessages({
   },
   successMessage: {
     id: 'app.containers.PasswordReset.successMessage',
-    defaultMessage: 'Password reset email has been successfully sent',
+    defaultMessage: 'Your password has been successfully updated',
+  },
+  updatePassword: {
+    id: 'app.containers.PasswordReset.successMessage',
+    defaultMessage: 'Update password',
   },
 });
