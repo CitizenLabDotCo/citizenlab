@@ -14,12 +14,14 @@ import { Location } from 'history';
 import VoteControl from 'components/VoteControl';
 import Avatar from 'components/Avatar';
 import StatusBadge from 'components/StatusBadge';
+import Error from 'components/UI/Error';
 import Icon from 'components/UI/Icon';
 import Comments from './CommentsContainer';
 import Sharing from './Sharing';
 import CommentsLine from './CommentsLine';
 import Author from './Author';
 import IdeaMeta from './IdeaMeta';
+import Unauthenticated from './Unauthenticated';
 
 // services
 import { localeStream } from 'services/locale';
@@ -43,7 +45,7 @@ const Container = styled.div``;
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 820px;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 80px;
@@ -97,7 +99,7 @@ const Content = styled.div`
 `;
 
 const LeftColumn = styled.div`
-  /* flex-grow: 1; */
+  flex-grow: 1;
   margin: 0;
   padding: 0;
 `;
@@ -214,6 +216,10 @@ const RightColumnMobile = RightColumn.extend`
   `}
 `;
 
+const StyledError = `
+
+`;
+
 const StatusContainer = styled.div`
   margin-top: 35px;
 `;
@@ -286,6 +292,7 @@ type State = {
   ideaImage: IIdeaImage | null;
   ideaComments: IComments | null;
   loading: boolean;
+  unauthenticatedError: boolean;
 };
 
 class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -300,14 +307,14 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       ideaAuthor: null,
       ideaImage: null,
       ideaComments: null,
-      loading: true
+      loading: true,
+      unauthenticatedError: false
     };
     this.subscriptions = [];
   }
 
   componentWillMount() {
     const { ideaId } = this.props;
-    const initialState: State = { locale: null, idea: null, ideaAuthor: null, ideaImage: null, ideaComments: null, loading: true };
     const locale$ = localeStream().observable;
     const comments$ = commentsForIdeaStream(ideaId).observable;
     const idea$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {
@@ -350,6 +357,10 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  unauthenticatedVoteClick = () => {
+    this.setState({ unauthenticatedError: true });
+  }
+
   scrollToCommentForm = (event) => {
     event.preventDefault();
 
@@ -367,7 +378,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { locale, idea, ideaImage, ideaAuthor, ideaComments, loading } = this.state;
+    const { locale, idea, ideaImage, ideaAuthor, ideaComments, loading, unauthenticatedError } = this.state;
     const { formatRelative } = this.props.intl;
 
     if (!loading && idea !== null && ideaAuthor !== null) {
@@ -384,7 +395,11 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
       const rightColumnContent = (
         <div>
-          <VoteControl ideaId={idea.data.id} />
+          {!unauthenticatedError && <VoteControl ideaId={idea.data.id} unauthenticatedVoteClick={this.unauthenticatedVoteClick} />}
+
+          {/* <Error marginTop="10px" text={unauthenticatedError} /> */}
+
+          {unauthenticatedError && <Unauthenticated />}
 
           {statusId &&
             <StatusContainer>

@@ -271,7 +271,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
             <ButtonWrapper>
               <Button
                 onClick={this.handleOnSubmit}
-                size="3"
+                size="2"
                 loading={processing}
                 text={formatMessage(messages.submit)}
                 circularCorners={true}
@@ -300,7 +300,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
 
             {/*
             <Button
-              size="3"
+              size="2"
               style="secondary-outlined"
               text={formatMessage(messages.createAnAccount)}
               fullWidth={true}

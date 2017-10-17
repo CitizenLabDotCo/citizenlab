@@ -115,7 +115,7 @@ const CloseButton = styled.div`
   }
 `;
 
-const ModalContent = styled.div`
+const ModalContent: any = styled.div`
   position: fixed;
   top: 0;
   bottom: 0;
@@ -165,11 +165,17 @@ type State = {};
 class Modal extends React.PureComponent<Props & ITracks, State> {
   private unlisten: Function | null;
   private goBackUrl: string | null;
+  private keydownEventListener: any;
 
   constructor() {
     super();
     this.unlisten = null;
     this.goBackUrl = null;
+  }
+
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.onEscKeyPressed, true);
   }
 
   componentWillUnmount() {
@@ -207,6 +213,22 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       // Don't try this at home!
       trackPage(url, { modal: true });
     }
+  }
+
+  onEscKeyPressed = (event) => {
+    if (event.defaultPrevented) {
+      return;
+    }
+
+    switch (event.key) {
+      case 'Escape':
+        this.manuallyCloseModal();
+        break;
+      default:
+        return;
+    }
+
+    event.preventDefault();
   }
 
   manuallyCloseModal = () => {
@@ -274,7 +296,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
             unmountOnExit={true}
             exit={false}
           >
-            <ModalContent>
+            <ModalContent id="e2e-fullscreenmodal-content">
               <ModalContentInner>
                 <ModalContentInnerInner>
                   {children}
