@@ -315,6 +315,42 @@ export default function createRoutes(store) {
       },
     },
     {
+      path: '/password-recovery',
+      name: 'passwordRecovery',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/PasswordRecovery'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    /*
+    {
+      path: '/ideas/:slug',
+      name: 'ideasShow',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/IdeasShowPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    */
+    {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

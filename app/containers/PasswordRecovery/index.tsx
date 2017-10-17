@@ -8,6 +8,8 @@ import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Success from 'components/UI/Success';
+import { Helmet } from 'react-helmet';
+import ContentContainer from 'components/ContentContainer';
 
 // services
 import { sendPasswordResetMail } from 'services/auth';
@@ -24,21 +26,52 @@ import messages from './messages';
 
 const Container = styled.div`
   width: 100%;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  background: #f8f8f8;
 `;
 
-const Form = styled.div`
-  width: 100%;
-`;
+const StyledContentContainer = styled(ContentContainer)``;
 
 const Title = styled.h2`
   width: 100%;
   color: #333;
-  font-size: 38px;
-  line-height: 44px;
+  font-size: 36px;
+  line-height: 40px;
   font-weight: 500;
-  text-align: left;
-  margin-top: 50px;
-  margin-bottom: 35px;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  padding-top: 60px;
+  margin-bottom: 15px;
+`;
+
+const Subtitle = styled.h4`
+  color: #444;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 300;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 50px;
+`;
+
+const StyledInput = styled(Input)``;
+
+const StyledButton = styled(Button)`
+  margin-top: 20px;
+  margin-bottom: 10px;
+`;
+
+const Form = styled.form`
+  width: 100%;
+  max-width: 380px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
 `;
 
 type Props = {};
@@ -97,14 +130,16 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
     this.emailInputElement = element;
   }
 
-  handleOnSubmit = async () => {
+  handleOnSubmit = async (event) => {
     const { email } = this.state;
+
+    event.preventDefault();
 
     if (this.validate(email) && email) {
       try {
         this.setState({ processing: true });
         await sendPasswordResetMail(email);
-        this.setState({ success: true });
+        this.setState({ email: null, processing: false, success: true });
         setTimeout(() => this.setState({ processing: false, success: false }), 8000);
       } catch {
         this.setState({ processing: false, success: false, submitError: true });
@@ -117,6 +152,10 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
   render() {
     const { formatMessage } = this.props.intl;
     const { email, emailError, submitError, processing, success } = this.state;
+    const helmetTitle = formatMessage(messages.helmetTitle);
+    const helmetDescription = formatMessage(messages.helmetDescription);
+    const title = formatMessage(messages.title);
+    const subtitle = formatMessage(messages.subtitle);
     const emailPlaceholder = formatMessage(messages.emailPlaceholder);
     const resetPassword = formatMessage(messages.resetPassword);
     const successMessage = (success ? formatMessage(messages.successMessage) : null);
@@ -130,31 +169,42 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
 
     return (
       <Container>
-        <Form>
-          <Title>{formatMessage(messages.title)}</Title>
+        <Helmet
+          title={helmetTitle}
+          meta={[
+            { name: 'description', content: helmetDescription },
+          ]}
+        />
 
-          <Input
-            id="email"
-            type="text"
-            value={email}
-            placeholder={emailPlaceholder}
-            onChange={this.handleEmailOnChange}
-            setRef={this.handleEmailInputSetRef}
-          />
+        <StyledContentContainer>
+          <Title>{title}</Title>
 
-          <Button
-            size="2"
-            loading={processing}
-            text={resetPassword}
-            onClick={this.handleOnSubmit}
-          />
+          <Subtitle>{subtitle}</Subtitle>
 
-          <Error text={errorMessage} />
-          {/* <Error fieldName="title_multiloc" apiErrors={this.state.errors.title_multiloc} /> */}
+          <Form onSubmit={this.handleOnSubmit}>
+            <StyledInput
+              id="email"
+              type="text"
+              value={email}
+              error={errorMessage}
+              placeholder={emailPlaceholder}
+              onChange={this.handleEmailOnChange}
+              setRef={this.handleEmailInputSetRef}
+            />
 
-          <Success text={successMessage} />
+            {/* <Error fieldName="title_multiloc" apiErrors={this.state.errors.title_multiloc} /> */}
 
-        </Form>
+            <StyledButton
+              size="2"
+              loading={processing}
+              text={resetPassword}
+              onClick={this.handleOnSubmit}
+              circularCorners={false}
+            />
+
+            <Success text={successMessage} />
+          </Form>
+        </StyledContentContainer>
       </Container>
     );
   }

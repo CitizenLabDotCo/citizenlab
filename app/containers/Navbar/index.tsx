@@ -267,7 +267,9 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
                               || pathname === 'sign-in'
                               || pathname === '/sign-in' 
                               || pathname === 'sign-up' 
-                              || pathname === '/sign-up');
+                              || pathname === '/sign-up'
+                              || pathname === 'password-recovery'
+                              || pathname === '/password-recovery');
 
     return (
       <ThemeProvider theme={this.navbarTheme}>

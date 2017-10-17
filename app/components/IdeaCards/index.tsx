@@ -163,7 +163,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
 
         return ideasStream({
           queryParameters: {
-            'page[size]': 9,
+            'page[size]': 15,
             ...filter,
             'page[number]': pageNumber
           }

@@ -48,8 +48,9 @@ const Text = styled.div`
   font-size: 15px;
   line-height: 19px;
   text-align: left;
-  font-weight: 300;
+  font-weight: 400;
   transition: all 100ms ease-out;
+  white-space: nowrap;
 `;
 
 const Container = styled.div`
