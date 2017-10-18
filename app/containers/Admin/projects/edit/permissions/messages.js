@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.permissionsSelectionLabel',
     defaultMessage: 'Selection',
   },
+  noSelectedGroupsMessage: {
+    id: 'app.containers.AdminPage.groups.list.emptyListMessage',
+    defaultMessage: 'You don’t have any group of users yet.',
+  },
 });

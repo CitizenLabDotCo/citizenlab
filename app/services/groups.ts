@@ -20,7 +20,6 @@ export interface IGroups {
   data: IGroupData[];
 }
 
-
 export interface Membership {
   id: string;
   type: 'memberships';
