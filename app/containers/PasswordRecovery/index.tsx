@@ -30,7 +30,9 @@ const Container = styled.div`
   background: #f8f8f8;
 `;
 
-const StyledContentContainer = styled(ContentContainer)``;
+const StyledContentContainer = styled(ContentContainer)`
+  padding-bottom: 100px;
+`;
 
 const Title = styled.h2`
   width: 100%;
@@ -82,6 +84,7 @@ type State = {
   submitError: boolean;
   processing: boolean;
   success: boolean;
+  successEmail: string | null;
 };
 
 class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -95,7 +98,8 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
       emailError: false,
       submitError: false,
       processing: false,
-      success: false
+      success: false,
+      successEmail: null
     };
     this.emailInputElement = null;
   }
@@ -137,10 +141,10 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
 
     if (this.validate(email) && email) {
       try {
-        this.setState({ processing: true });
+        this.setState({ processing: true, success: false });
         await sendPasswordResetMail(email);
-        this.setState({ email: null, processing: false, success: true });
-        setTimeout(() => this.setState({ processing: false, success: false }), 8000);
+        this.setState({ email: null, processing: false, success: true, successEmail: email });
+        /* setTimeout(() => this.setState({ success: false }), 8000); */
       } catch {
         this.setState({ processing: false, success: false, submitError: true });
       }
@@ -151,14 +155,14 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { email, emailError, submitError, processing, success } = this.state;
+    const { email, emailError, submitError, processing, success, successEmail } = this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
     const helmetDescription = formatMessage(messages.helmetDescription);
     const title = formatMessage(messages.title);
     const subtitle = formatMessage(messages.subtitle);
     const emailPlaceholder = formatMessage(messages.emailPlaceholder);
     const resetPassword = formatMessage(messages.resetPassword);
-    const successMessage = (success ? formatMessage(messages.successMessage) : null);
+    const successMessage = (success ? formatMessage(messages.successMessage, { email: `${successEmail}` }) : null);
     let errorMessage: string | null = null;
 
     if (emailError) {

@@ -160,7 +160,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps, S
 
     if (currentTenant) {
       const className = this.props['className'];
-      const {  imageUrl, clickFbShare, clickTwitterShare } = this.props;
+      const { imageUrl, clickFbShare, clickTwitterShare } = this.props;
       const { formatMessage } = this.props.intl;
       const facebookSettings = (currentTenant && currentTenant.data.attributes.settings.facebook_login ? currentTenant.data.attributes.settings.facebook_login : null);
       const facebookAppId = (facebookSettings ? facebookSettings.app_id : null);

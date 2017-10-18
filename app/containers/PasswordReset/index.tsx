@@ -30,18 +30,20 @@ const Container = styled.div`
   background: #f8f8f8;
 `;
 
-const StyledContentContainer = styled(ContentContainer)``;
+const StyledContentContainer = styled(ContentContainer)`
+  padding-bottom: 100px;
+`;
 
 const Title = styled.h2`
   width: 100%;
   color: #333;
   font-size: 36px;
-  line-height: 42px;
+  line-height: 40px;
   font-weight: 500;
   text-align: center;
+  margin: 0;
   padding: 0;
   padding-top: 60px;
-  margin: 0;
   margin-bottom: 50px;
 `;
 
@@ -63,7 +65,6 @@ const Form = styled.form`
   flex-direction: column;
 `;
 
-
 type Props = {};
 
 type State = {
@@ -84,6 +85,7 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
 
     const query = browserHistory.getCurrentLocation().query;
     const token = (query.token ? query.token : null);
+    console.log(token);
 
     this.state = {
       token,
@@ -108,7 +110,7 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   validate = (password: string | null) => {
-    const passwordError = (!password || password.length < 8);
+    const passwordError = (!password || password.length < 1);
 
     if (passwordError && this.passwordInputElement) {
       this.passwordInputElement.focus();
@@ -131,16 +133,18 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
     this.passwordInputElement = element;
   }
 
-  handleOnSubmit = async () => {
+  handleOnSubmit = async (event) => {
     const { password, token } = this.state;
+
+    event.preventDefault();
 
     if (this.validate(password) && password && token) {
       try {
-        this.setState({ processing: true });
+        this.setState({ processing: true, success: false });
         await resetPassword(password, token);
         this.setState({ password: null, processing: false, success: true });
-        setTimeout(() => this.setState({ success: false }), 8000);
-      } catch {
+        /* setTimeout(() => this.setState({ success: false }), 8000); */
+      } catch (error) {
         this.setState({ processing: false, success: false, submitError: true });
       }
     }
@@ -175,8 +179,8 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
         <StyledContentContainer>
           <Title>{title}</Title>
 
-          <Form>
-            <Input
+          <Form onSubmit={this.handleOnSubmit}>
+            <StyledInput
               type="password"
               id="password"
               value={password}
@@ -186,11 +190,12 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
               setRef={this.handlePasswordInputSetRef}
             />
 
-            <Button
+            <StyledButton
               size="2"
               loading={processing}
               text={updatePassword}
               onClick={this.handleOnSubmit}
+              circularCorners={false}
             />
 
             <Success text={successMessage} />
