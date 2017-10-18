@@ -6,23 +6,13 @@ require 'rake/testtask'
 # require 'tasks/rails'
 
 
-def capture_stdout
-  s = StringIO.new
-  oldstdout = $stdout
-  $stdout = s
-  yield
-  s.string
-ensure
-  $stdout = oldstdout
-end
-
-
 RSpec.describe "Rake Migrate" do
   context "from_cl1 task" do
     it "can be invoked" do
       Rails.application.load_tasks
       Rake.application.rake_require '../../lib/tasks/migrate'
-      results = capture_stdout {Rake.application['migrate:from_cl1'].invoke}
+      results = Rake.application['migrate:from_cl1'].invoke
+      byebug
     end
   end
 end

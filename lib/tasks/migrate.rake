@@ -1,5 +1,8 @@
 require 'mongo'
 
+# require "rails"
+
+@log = []
 
 namespace :migrate do
   desc "Migrating Data from a CL1 Platform to a CL2 Tenant"
@@ -10,9 +13,15 @@ namespace :migrate do
   	# client.login(uri.credentials)
 
     client = connect # Mongo::Client.new(['127.0.0.1:27017'])
+    users_hash = {}
   	client['users'].find.each do |u|
-  		migrate_user u
+  		migrate_user(u, users_hash)
   	end
+
+    if !@log.empty?
+      puts 'Migrated with errors!'
+      @log.each(&method(:puts))
+    end
   end
 
 
@@ -25,8 +34,41 @@ namespace :migrate do
   end
 
 
-  def migrate_user u
-    puts 'im alive!'
+  def migrate_user u, users_hash
+    # one big transaction
+    d = {}
+    # email
+    if u['telescope']['email'] || u['registered_emails'] || u['emails']
+      d[:email] = u['telescope']['email'] || (u['registered_emails'] || u['emails']).first['address']
+    else
+      return
+    end
+    # first_name and last_name
+    if u['username'] ###
+      name_pts = u['username'].split
+      if name_pts.size < 2
+        name_pts = u['username'].split '_'
+      end
+      if name_pts.size >= 2
+        d[:first_name] = name_pts.first
+        d[:last_name] = name_pts.drop(1).join ' '
+      else
+        d[:first_name] = u['username']
+        d[:last_name] = 'Unknown' ###
+      end
+    else
+      return
+    end
+    # password
+    d[:password] = 'testtest' ###
+    # locale
+    d[:locale] = u['telescope']['locale'] || Tenant.current.settings.dig('core', 'locales').first
+
+    begin
+      users_hash[u['_id']] = User.create!(d).id
+    rescue Exception => e
+      @log.concat [e]
+    end
   end
 
 end
