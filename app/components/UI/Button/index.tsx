@@ -97,13 +97,14 @@ const buttonStyles = (props) => `
   }
 
   .button-text {
-    opacity: ${(props: any) => props.loading ? 0 : 1};
+    opacity: ${props.loading ? 0 : 1};
     font-size: 16px;
     line-height: 20px;
   }
 
   .button-icon {
     height: ${getIconHeight(props.size)};
+    opacity: ${props.loading ? 0 : 1};
   }
 
   &.primary {
@@ -214,7 +215,13 @@ const buttonStyles = (props) => `
     &:focus {
       background-color: ${darken(0.15, '#01A1B1')};
     }
+
+    &.disabled {
+      background: #d0d0d0;
+      ${setFillColor('#fff')}
+    }
   }
+
 `;
 
 const StyledButton: any = styled.button`
@@ -237,11 +244,13 @@ const SpinnerWrapper = styled.div`
   justify-content: center;
 `;
 
+export type ButtonStyles = 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text' | 'cl-blue';
+
 type Props = {
   text?: string;
   children?: any;
   size?: '1' | '2' | '3' | '4';
-  style?: 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text' | 'cl-blue';
+  style?: ButtonStyles;
   width?: string | undefined;
   height?: string | undefined;
   padding?: string | undefined;

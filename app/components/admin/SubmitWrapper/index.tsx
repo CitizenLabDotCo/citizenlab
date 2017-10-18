@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 // Components
 import { FormattedMessage } from 'react-intl';
-import Button from 'components/UI/Button';
+import Button, { ButtonStyles } from 'components/UI/Button';
 
 const Wrapper = styled.div`
   display: flex;
@@ -35,11 +35,12 @@ interface Props {
     messageError: any,
   };
   onClick?: {(event): void};
+  style?: ButtonStyles;
 }
 
 export default class SubmitWrapper extends React.Component<Props> {
   render () {
-    let style = undefined as 'success' | 'error' | undefined;
+    let style = this.props.style || 'cl-blue';
     if (this.props.status === 'success') {style = 'success';}
     if (this.props.status === 'error') {style = 'error';}
 
