@@ -97,13 +97,14 @@ const buttonStyles = (props) => `
   }
 
   .button-text {
-    opacity: ${(props: any) => props.loading ? 0 : 1};
+    opacity: ${props.loading ? 0 : 1};
     font-size: 16px;
     line-height: 20px;
   }
 
   .button-icon {
     height: ${getIconHeight(props.size)};
+    opacity: ${props.loading ? 0 : 1};
   }
 
   &.primary {
