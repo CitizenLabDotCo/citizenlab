@@ -30,7 +30,7 @@ export default defineMessages({
     defaultMessage: 'Your password has been successfully updated',
   },
   updatePassword: {
-    id: 'app.containers.PasswordReset.successMessage',
-    defaultMessage: 'Update password',
+    id: 'app.containers.PasswordReset.updatePassword',
+    defaultMessage: 'Confirm new password',
   },
 });

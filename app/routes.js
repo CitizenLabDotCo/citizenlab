@@ -331,13 +331,12 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     },
-    /*
     {
-      path: '/ideas/:slug',
-      name: 'ideasShow',
+      path: '/reset-password',
+      name: 'passwordReset',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/IdeasShowPage'),
+          import('containers/PasswordReset'),
         ]);
 
         const renderRoute = loadModule(cb);
@@ -349,7 +348,6 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     },
-    */
     {
       path: '*',
       name: 'notfound',
