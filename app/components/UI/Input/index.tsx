@@ -13,6 +13,7 @@ const Container: any = styled.div`
   position: relative;
 
   input {
+    box-shadow: inset 0px 2px 3px rgba(0, 0, 0, 0.15);
     width: 100%;
     color: #333;
     font-size: 17px;
@@ -30,12 +31,9 @@ const Container: any = styled.div`
       opacity: 1;
     }
 
-    &:not(:focus):hover {
-      border-color: ${(props: any) => props.error ? '#fc3c2d' : '#999'};
-    }
-
+    &:hover,
     &:focus {
-      border-color: ${(props: any) => props.error ? '#fc3c2d' : '#000'};
+      border-color: ${(props: any) => props.error ? '#fc3c2d' : '#999'};
     }
 
     ${media.biggerThanPhone`
