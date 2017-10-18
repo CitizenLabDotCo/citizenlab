@@ -52,6 +52,11 @@ const Container: any = styled.div`
     border-bottom: solid 1px #fff;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
   `}
+
+  * {
+    user-select: none;
+    outline: none;
+  }
 `;
 
 const Left = styled.div`

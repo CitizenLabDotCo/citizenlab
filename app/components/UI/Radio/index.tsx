@@ -58,7 +58,7 @@ export default class Radio extends React.Component<Props> {
   }
 
   render() {
-    const checked = this.props.value === this.props.currentValue;
+    const checked = (this.props.value === this.props.currentValue);
 
     return (
       <Wrapper htmlFor={this.props.id}>
