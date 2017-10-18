@@ -17,7 +17,7 @@ const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
 const Overlay = styled.div`
   min-width: 180px;
-  border-radius: 5px;
+  border-radius: 4px;
   background-color: #fff;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
   border: solid 1px #e0e0e0;
@@ -74,7 +74,7 @@ const Overlay = styled.div`
 const ListWrapper = styled.ul`
   list-style: none;
   margin: 0;
-  max-height: 320px;
+  max-height: 325px;
   overflow-y: auto;
   padding: 0;
 `;
@@ -90,25 +90,26 @@ const CheckmarkIcon = styled(Icon)`
 `;
 
 const Checkmark: any = styled.span`
-  width: 23px;
-  height: 23px;
+  width: 22px;
+  height: 22px;
   color: #fff;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: solid 1px #a6a6a6;
+  border: solid 1px #aaa;
   border-radius: 3px;
   background: #fff;
   background: ${(props: any) => props.selected ? '#32b67a' : '#fff'};
-  border-color: ${(props: any) => props.selected ? '#32b67a' : '#84939E'};
+  border-color: ${(props: any) => props.selected ? '#32b67a' : '#aaa'};
+  box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.15);
   margin-left: 10px;
 `;
 
 const StyledOption: any = styled.li`
   color: #84939E;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   padding: 10px 15px;
   background: #fff;
@@ -127,11 +128,11 @@ const StyledOption: any = styled.li`
 
   &.focused,
   &:hover {
-    color: #000;
-    background: #f2f2f2;
+    color: #222;
+    background: #f8f8f8;
 
     ${Checkmark} {
-      border-color: ${(props: any) => props.selected ? '#32b67a' : '#000'};
+      border-color: ${(props: any) => props.selected ? '#32b67a' : '#333'};
     }
   }
 `;
@@ -142,6 +143,7 @@ type Value = {
 };
 
 type Props = {
+  title: string;
   values: Value[];
   onChange: Function;
   selected: any[];
@@ -251,8 +253,11 @@ export default class ValuesList extends React.PureComponent<Props, State> {
   }
 
   render() {
+    let { title } = this.props;
     const { values, multiple, deployed, baseID } = this.props;
     const { currentFocus } = this.state;
+
+    title = title.toLocaleLowerCase();
 
     const dropdown = ((deployed) ? (
       <CSSTransition
@@ -269,6 +274,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
             role="listbox"
             tabIndex={0}
             innerRef={this.setRef}
+            className="e2e-filter-selector-dropdown-list"
             aria-labelledby={`${baseID}-label`}
             aria-multiselectable={multiple}
             aria-activedescendant={`${baseID}-${currentFocus}`}
@@ -276,6 +282,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
             {values && values.map((entry, index) => {
               const clickHandler = this.handleOnClick(entry, index);
               const selected = this.isSelected(entry.value);
+              const focussed = currentFocus === index ? 'focused' : '';
 
               return (
                 <StyledOption
@@ -285,7 +292,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
                   selected={selected}
                   key={entry.value}
                   onClick={this.handleOnClick(entry, index)}
-                  className={currentFocus === index ? 'focused' : ''}
+                  className={`e2e-filter-selector-dropdown-listitem-${title} ${focussed}`}
                 >
                   <OptionText>{entry.text}</OptionText>
                   {multiple && 

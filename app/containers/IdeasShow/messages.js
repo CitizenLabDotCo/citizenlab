@@ -138,4 +138,12 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.signInLinkText',
     defaultMessage: 'log in',
   },
+  login: {
+    id: 'app.components.IdeasShow.login',
+    defaultMessage: 'Login',
+  },
+  register: {
+    id: 'app.components.IdeasShow.register',
+    defaultMessage: 'Create an account',
+  },
 });

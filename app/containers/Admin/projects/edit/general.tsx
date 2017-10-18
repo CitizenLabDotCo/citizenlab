@@ -259,7 +259,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     if (projectData) {
       addProjectImage(projectData.id, base64).then((response: any) => {
         projectImages.push(response.data);
-
         this.setState({ projectImages });
       });
     }

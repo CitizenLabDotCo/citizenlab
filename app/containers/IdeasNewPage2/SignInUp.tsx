@@ -6,7 +6,6 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // components
-import PasswordReset from 'containers/PasswordReset';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import SignIn from 'components/SignIn';
@@ -87,35 +86,7 @@ const StyledTransitionGroup = styled(TransitionGroup) `
   position: relative;
 `;
 
-const FormContainer = styled.div`
-  position: relative;
-  -webkit-backface-visibility: hidden;
-  will-change: opacity;
-
-  &.form-enter {
-    position: absolute;
-    top: 0;
-    z-index: 2;
-    opacity: 0.01;
-
-    &.form-enter-active {
-      opacity: 1;
-      transition: opacity 10ms cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-  }
-
-  &.form-exit {
-    position: absolute;
-    top: 0;
-    z-index: 2;
-    opacity: 1;
-
-    &.form-exit-active {
-      opacity: 0.01;
-      transition: opacity 10ms cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-  }
-`;
+const FormContainer = styled.div``;
 
 const GoBackContainer = styled.div`
   display: inline-flex;
@@ -168,7 +139,7 @@ type Props = {
 };
 
 type State = {
-  show: 'signIn' | 'signUp' | 'passwordReset';
+  show: 'signIn' | 'signUp';
   currentTenant: ITenant | null;
 };
 
@@ -211,11 +182,6 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ show: 'signIn' });
   }
 
-  goToPasswordResetForm = () => {
-    // window.scrollTo(0, 0);
-    this.setState({ show: 'passwordReset' });
-  }
-
   handleOnSignedIn = () => {
     this.props.onSignInUpCompleted();
   }
@@ -231,42 +197,29 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { onGoBack } = this.props;
     const timeout = 10;
 
-    const signIn = (show === 'signIn' && (
-      <CSSTransition classNames="page" timeout={timeout}>
-        <FormContainer>
-          <Form>
-            <Title>{formatMessage(messages.signInTitle)}</Title>
-            <SignIn
-              onSignedIn={this.handleOnSignedIn}
-              onForgotPassword={this.goToPasswordResetForm}
-              goToSignUpForm={this.goToSignUpForm}
-            />
-          </Form>
-        </FormContainer>
-      </CSSTransition>
-    ));
+    const signIn = (show === 'signIn' ? (
+      <FormContainer>
+        <Form>
+          <Title>{formatMessage(messages.signInTitle)}</Title>
+          <SignIn
+            onSignedIn={this.handleOnSignedIn}
+            goToSignUpForm={this.goToSignUpForm}
+          />
+        </Form>
+      </FormContainer>
+    ) : null);
 
-    const signUp = (show === 'signUp' && (
-      <CSSTransition classNames="form" timeout={timeout}>
-        <FormContainer>
-          <Form>
-            <Title>{formatMessage(messages.signUpTitle)}</Title>
-            <SignUp
-              onSignedUp={this.handleOnSignedUp}
-              goToSignInForm={this.goToSignInForm}
-            />
-          </Form>
-        </FormContainer>
-      </CSSTransition>
-    ));
-
-    const passwordReset = (show === 'passwordReset' && (
-      <CSSTransition classNames="form" timeout={timeout}>
-        <FormContainer>
-          <PasswordReset onExit={this.goToSignInForm} />
-        </FormContainer>
-      </CSSTransition>
-    ));
+    const signUp = (show === 'signUp' ? (
+      <FormContainer>
+        <Form>
+          <Title>{formatMessage(messages.signUpTitle)}</Title>
+          <SignUp
+            onSignedUp={this.handleOnSignedUp}
+            goToSignInForm={this.goToSignInForm}
+          />
+        </Form>
+      </FormContainer>
+    ) : null);
 
     return (
       <Container>
@@ -281,12 +234,8 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
                 <span><FormattedMessage {...messages.goBack} /></span>
               </GoBackContainer>
             }
-
-            <StyledTransitionGroup>
-              {signIn}
-              {signUp}
-              {passwordReset}
-            </StyledTransitionGroup>
+            {signIn}
+            {signUp}
           </RightInner>
           </Right>
         </Container>

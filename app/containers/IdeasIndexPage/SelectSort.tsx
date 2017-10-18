@@ -10,6 +10,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 type Props = {
+  id?: string | undefined;
   onChange: (value: any) => void;
 };
 
@@ -44,6 +45,7 @@ class SelectSort extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <FilterSelector
+        id="e2e-ideas-sort-filter"
         title={formatMessage(messages.sortTitle)}
         name="sort"
         selected={selectedValue}

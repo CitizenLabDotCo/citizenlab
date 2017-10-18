@@ -63,7 +63,6 @@ const AuthorName = styled(Link)`
   cursor: pointer;
 
   &:hover {
-    color: ${(props) => darken(0.15, '#1391A1')};
     text-decoration: underline;
   }
 `;

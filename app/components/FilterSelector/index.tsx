@@ -23,9 +23,13 @@ const Container = styled(clickOutside)`
 `;
 
 interface Props {
+  id?: string | undefined;
   title: string;
   name: string;
-  values: { text: string, value: any }[];
+  values: {
+    text: string,
+    value: any
+  }[];
   onChange?: (value: any) => void;
   multiple: boolean;
   selected: string[];
@@ -56,10 +60,10 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
   getTitle = (selection, values = this.props.values, multiple = this.props.multiple, title = this.props.title) => {
     let newTitle = '';
 
-    if (!multiple && selection.length > 0) {
+    if (!multiple && _.isArray(selection) && !_.isEmpty(selection)) {
       const selected = _.find(values, { value: selection[0] });
       newTitle = selected ? selected.text : '';
-    } else if (selection.length > 0) {
+    } else if (_.isArray(selection) && !_.isEmpty(selection)) {
       newTitle = `${title} (${selection.length})`;
     } else {
       newTitle = title;
@@ -104,12 +108,29 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
 
   render() {
     const { deployed, currentTitle } = this.state;
-    const { values, multiple, selected } = this.props;
+    const { id, values, multiple, selected } = this.props;
 
     return (
-      <Container onClickOutside={this.handleClickOutside} className={`e2e-filter-selector-${this.props.name}`}>
-        <Title title={currentTitle} deployed={deployed} onClick={this.toggleExpanded} baseID={this.baseID} />
-        <ValuesList deployed={deployed} values={values} selected={selected} onChange={this.selectionChange} multiple={multiple} baseID={this.baseID} />
+      <Container
+        id={id}
+        onClickOutside={this.handleClickOutside}
+        className={`e2e-filter-selector-${this.props.name}`}
+      >
+        <Title
+          title={currentTitle}
+          deployed={deployed}
+          onClick={this.toggleExpanded}
+          baseID={this.baseID}
+        />
+        <ValuesList
+          title={currentTitle}
+          deployed={deployed}
+          values={values}
+          selected={selected}
+          onChange={this.selectionChange}
+          multiple={multiple}
+          baseID={this.baseID}
+        />
       </Container>
     );
   }

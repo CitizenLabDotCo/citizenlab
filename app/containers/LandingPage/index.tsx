@@ -191,8 +191,8 @@ const SectionHeader = styled.div`
 
 const SectionTitle = styled.h2`
   color: #333;
-  font-size: 30px;
-  line-height: 34px;
+  font-size: 28px;
+  line-height: 32px;
   font-weight: 500;
   display: flex;
   margin: 0;
