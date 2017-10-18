@@ -10,11 +10,9 @@ namespace :migrate do
   	# client.login(uri.credentials)
 
     client = connect # Mongo::Client.new(['127.0.0.1:27017'])
-  	cnt = 0
   	client['users'].find.each do |u|
-  		cnt += 1
+  		migrate_user u
   	end
-  	puts cnt
   end
 
 
@@ -24,6 +22,11 @@ namespace :migrate do
     else
       Mongo::Client.new 'mongodb://docker.for.mac.localhost:27017/schiedam'
     end
+  end
+
+
+  def migrate_user u
+    puts 'im alive!'
   end
 
 end
