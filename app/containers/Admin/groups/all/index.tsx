@@ -28,11 +28,6 @@ const ButtonWrapper = styled.div`
   padding-bottom: 2rem;
 `;
 
-const StyledModalContent = styled(GroupAdditionForm)`
-  padding: 2rem;
-`;
-
-
 // Typing
 interface Props {
 }
@@ -75,7 +70,7 @@ class GroupsList extends React.Component<Props, State> {
           <GroupListTable />
 
           <Modal opened={creationModalVisible} close={this.closeCreationModal}>
-            <StyledModalContent onSaveSuccess={this.closeCreationModal} />
+            <GroupAdditionForm onSaveSuccess={this.closeCreationModal} />
           </Modal>
         </PageWrapper>
       </div>

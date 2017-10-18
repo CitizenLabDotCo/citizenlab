@@ -21,6 +21,17 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 // Style
 import styled from 'styled-components';
 
+const FormWrapper = styled.form`
+  max-width: 380px;
+`;
+
+const StyledSubmitWrapper = styled.div`
+  border-top: 1px solid #EAEAEA;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+  margin: 0 -25px -25px;
+  padding: 1rem 3rem;
+`;
+
 // Typing
 import { API } from 'typings';
 interface Props {
@@ -109,8 +120,8 @@ class GroupAdditionForm extends React.Component<Props, State> {
 
     return (
       <div>
-        <h1>Add a group</h1>
-        <form action="" onSubmit={this.handleFormSubmit}>
+        <h1><FormattedMessage {...messages.creationFormTitle} /></h1>
+        <FormWrapper onSubmit={this.handleFormSubmit}>
           <FieldWrapper>
             <label htmlFor="">
               <FormattedMessage {...messages.groupTitleLabel} />
@@ -122,12 +133,16 @@ class GroupAdditionForm extends React.Component<Props, State> {
             />
           </FieldWrapper>
 
+        </FormWrapper>
+
+        <StyledSubmitWrapper>
           <SubmitWrapper
             status={submitState}
             loading={saving}
             messages={messages}
+            onClick={this.handleFormSubmit}
           />
-        </form>
+        </StyledSubmitWrapper>
       </div>
     );
   }

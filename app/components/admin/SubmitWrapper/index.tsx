@@ -34,6 +34,7 @@ interface Props {
     messageSuccess: any,
     messageError: any,
   };
+  onClick?: {(event): void};
 }
 
 export default class SubmitWrapper extends React.Component<Props> {
@@ -45,7 +46,7 @@ export default class SubmitWrapper extends React.Component<Props> {
 
     return (
       <Wrapper>
-        <Button style={style} loading={this.props.loading} disabled={this.props.status === 'disabled'}>
+        <Button style={style} loading={this.props.loading} disabled={this.props.status === 'disabled'} onClick={this.props.onClick}>
           {(this.props.status === 'enabled' || this.props.status === 'disabled') &&
             <FormattedMessage {...this.props.messages.buttonSave} />
           }
