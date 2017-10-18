@@ -315,6 +315,40 @@ export default function createRoutes(store) {
       },
     },
     {
+      path: '/password-recovery',
+      name: 'passwordRecovery',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/PasswordRecovery'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
+      path: '/reset-password',
+      name: 'passwordReset',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/PasswordReset'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

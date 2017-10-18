@@ -109,7 +109,7 @@ const Checkmark: any = styled.span`
 
 const StyledOption: any = styled.li`
   color: #84939E;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   padding: 10px 15px;
   background: #fff;
@@ -129,7 +129,7 @@ const StyledOption: any = styled.li`
   &.focused,
   &:hover {
     color: #222;
-    background: #f9f9f9;
+    background: #f8f8f8;
 
     ${Checkmark} {
       border-color: ${(props: any) => props.selected ? '#32b67a' : '#333'};
