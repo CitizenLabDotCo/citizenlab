@@ -48,8 +48,9 @@ const Text = styled.div`
   font-size: 15px;
   line-height: 19px;
   text-align: left;
-  font-weight: 300;
+  font-weight: 400;
   transition: all 100ms ease-out;
+  white-space: nowrap;
 `;
 
 const Container = styled.div`
@@ -159,7 +160,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps, S
 
     if (currentTenant) {
       const className = this.props['className'];
-      const {  imageUrl, clickFbShare, clickTwitterShare } = this.props;
+      const { imageUrl, clickFbShare, clickTwitterShare } = this.props;
       const { formatMessage } = this.props.intl;
       const facebookSettings = (currentTenant && currentTenant.data.attributes.settings.facebook_login ? currentTenant.data.attributes.settings.facebook_login : null);
       const facebookAppId = (facebookSettings ? facebookSettings.app_id : null);
