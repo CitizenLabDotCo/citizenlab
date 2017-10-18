@@ -44,8 +44,8 @@ namespace :migrate do
       return
     end
     # first_name and last_name
-    if u['username'] ###
-      name_pts = u['username'].split
+    if u.dig('profile', 'name') || u['username'] ###
+      name_pts = (u.dig('profile', 'name') || u['username']).split
       if name_pts.size < 2
         name_pts = u['username'].split '_'
       end
@@ -63,11 +63,34 @@ namespace :migrate do
     d[:password] = 'testtest' ###
     # locale
     d[:locale] = u['telescope']['locale'] || Tenant.current.settings.dig('core', 'locales').first
-
+    # admin
+    if u['isAdmin']
+      d[:roles] = [{type: 'admin'}]
+    end
+    # slug
+    if u.dig('telescope', 'slug')
+      d[:slug] = u.dig('telescope', 'slug')
+    end
+    # gender
+    if u.dig('telescope', 'gender')
+      d[:gender] = u.dig('telescope', 'gender')
+    end
+    # domicile
+    if u.dig('telescope', 'domicile')
+      d[:domicile] = u.dig('telescope', 'domicile')
+    end
+    # birthyear
+    if u.dig('telescope', 'birthyear')
+      d[:birthyear] = u.dig('telescope', 'birthyear')
+    end
+    # education
+    if u.dig('telescope', 'education')
+      d[:education] = u.dig('telescope', 'education')
+    end
     begin
       users_hash[u['_id']] = User.create!(d).id
     rescue Exception => e
-      @log.concat [e]
+      @log.concat [e.message+' '+d.to_s]
     end
   end
 
