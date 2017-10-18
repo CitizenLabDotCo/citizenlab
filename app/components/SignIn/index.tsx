@@ -47,11 +47,12 @@ const ButtonWrapper = styled.div`
   padding-top: 10px;
 `;
 
-const ForgotPassword = styled.div`
+const ForgotPassword = styled(Link)`
   color: ${(props) => props.theme.colorMain};
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
+  text-decoration: none;
   cursor: pointer;
 
   &:hover {
@@ -131,7 +132,6 @@ const FooterLink = styled.span`
 
 type Props = {
   onSignedIn: () => void;
-  onForgotPassword?: () => void
   goToSignUpForm?: () => void;
 };
 
@@ -220,10 +220,6 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.passwordInputElement = element;
   }
 
-  handleForgotPasswordOnClick = () => {
-    !_.isUndefined(this.props.onForgotPassword) && this.props.onForgotPassword();
-  }
-
   goToSignUpForm = (event) => {
     event.preventDefault();
 
@@ -271,12 +267,12 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
             <ButtonWrapper>
               <Button
                 onClick={this.handleOnSubmit}
-                size="3"
+                size="2"
                 loading={processing}
                 text={formatMessage(messages.submit)}
                 circularCorners={true}
               />
-              <ForgotPassword onClick={this.handleForgotPasswordOnClick}>
+              <ForgotPassword to="/password-recovery">
                 <FormattedMessage {...messages.forgotPassword} />
               </ForgotPassword>
             </ButtonWrapper>
@@ -300,7 +296,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
 
             {/*
             <Button
-              size="3"
+              size="2"
               style="secondary-outlined"
               text={formatMessage(messages.createAnAccount)}
               fullWidth={true}

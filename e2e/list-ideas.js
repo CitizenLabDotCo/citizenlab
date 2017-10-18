@@ -6,7 +6,7 @@ module.exports = {
     .navigate();
 
     browser
-    .waitForElementVisible('.e2e-idea-card:first-child')
+    .waitForElementVisible('#e2e-ideas-container')
     .end();
   },
 
@@ -17,14 +17,15 @@ module.exports = {
     .navigate();
 
     browser
-    .waitForElementVisible('#e2e-ideas-list')
+    .waitForElementVisible('#e2e-ideas-container')
     .click('.e2e-filter-selector-sort button')
     .waitForElementVisible('.e2e-filter-selector-sort ul')
     .click('.e2e-filter-selector-sort ul li:last-child')
-    .waitForElementVisible('#e2e-ideas-list')
+    .waitForElementVisible('#e2e-ideas-container')
     .end();
   },
 
+  /*
   searchText: (browser) => {
     const ideasPage = browser.page.ideas();
 
@@ -36,6 +37,7 @@ module.exports = {
     .assert.urlContains(`search=${encodeURIComponent('test query string')}`)
     .end();
   },
+  */
 
   searchSpecificIdea: (browser) => {
     const title = `test idea ${new Date().getTime()}`;

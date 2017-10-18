@@ -49,7 +49,6 @@ const StyledLink = styled(Link)`
   transition: all 100ms ease-out;
 
   &:hover {
-    color: ${darken(0.15, '#1391A1')};
     text-decoration: underline;
   }
 `;
@@ -200,6 +199,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
     const { formatMessage } = this.props.intl;
     const { authUser, inputValue, processing, errorMessage } = this.state;
     const placeholder = formatMessage(messages.commentBodyPlaceholder);
+    const commentButtonDisabled = (!inputValue || inputValue === '');
 
     const signUp = (!authUser ? (
       <SignInMessage className="ideaCommentForm">
@@ -229,6 +229,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
             loading={processing}
             circularCorners={false}
             onClick={this.handleSubmit}
+            disabled={commentButtonDisabled}
           >
             <FormattedMessage {...messages.publishComment} />
           </SubmitButton>

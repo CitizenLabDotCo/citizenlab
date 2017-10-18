@@ -258,6 +258,13 @@ const getIcon = (name: string, className: string | undefined) => {
         </svg>
       );
     }
+    case 'send': {
+      return (
+        <svg className={className} height="100%" viewBox="4 6 42 36">
+          <path d="M4.02 6L4 20l30 4-30 4 .02 14L46 24"/>
+        </svg>
+      );
+    }
     default:
       return null;
   }
