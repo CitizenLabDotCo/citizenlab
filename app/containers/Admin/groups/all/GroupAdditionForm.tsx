@@ -127,6 +127,7 @@ class GroupAdditionForm extends React.Component<Props, State> {
               <FormattedMessage {...messages.groupTitleLabel} />
             </label>
             <Input
+              autoFocus={true}
               type="text"
               onChange={this.titleChangeHandler}
               value={groupAttrs.title_multiloc ? groupAttrs.title_multiloc[locale] : ''}

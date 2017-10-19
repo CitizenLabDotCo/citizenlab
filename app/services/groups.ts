@@ -19,6 +19,9 @@ export interface GroupDiff {
 export interface IGroups {
   data: IGroupData[];
 }
+export interface IGroup {
+  data: IGroupData;
+}
 
 export interface Membership {
   id: string;
@@ -41,8 +44,8 @@ export function listGroups(streamParams: IStreamParams<IGroups> | null = null) {
   return streams.get<IGroups>({ apiEndpoint: `${API_PATH}/groups`, ...streamParams });
 }
 
-export function listMembership(groupId: string, streamParams: IStreamParams<MembershipsResponse> | null = null) {
-  return streams.get<MembershipsResponse>({ apiEndpoint: `${API_PATH}/groups/${groupId}/memberships`, ...streamParams });
+export function getGroup(groupId: string, streamParams: IStreamParams<IGroup> | null = null) {
+  return streams.get<IGroup>({ apiEndpoint: `${API_PATH}/groups/${groupId}`, ...streamParams });
 }
 
 export function addGroup(object: GroupDiff) {
@@ -52,3 +55,15 @@ export function addGroup(object: GroupDiff) {
 export function deleteGroup(groupId: string) {
   return streams.delete(`${API_PATH}/groups/${groupId}`, groupId);
 }
+
+export function listMembership(groupId: string, streamParams: IStreamParams<MembershipsResponse> | null = null) {
+  return streams.get<MembershipsResponse>({ apiEndpoint: `${API_PATH}/groups/${groupId}/memberships`, ...streamParams });
+}
+
+export async function deleteMembership(membershipId: string) {
+  const deletion = await streams.delete(`${API_PATH}/memberships/${membershipId}`, membershipId);
+  // Update the list of groups to get the right number of members when going back to the list
+  await listGroups().fetch();
+  return deletion;
+}
+

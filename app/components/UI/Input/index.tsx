@@ -52,6 +52,7 @@ export type Props = {
   onChange: (arg: string) => void;
   onFocus?: (arg: React.FormEvent<HTMLInputElement>) => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;
+  autoFocus?: boolean;
 };
 
 type State = {};
@@ -87,6 +88,7 @@ export default class Input extends React.PureComponent<Props, State> {
           onChange={this.handleOnChange}
           onFocus={this.props.onFocus}
           ref={this.handleRef}
+          autoFocus={this.props.autoFocus}
         />
         <div>
           <Error text={error} size="1" />

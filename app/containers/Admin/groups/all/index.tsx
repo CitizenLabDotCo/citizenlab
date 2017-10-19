@@ -24,7 +24,7 @@ const PageTitle = styled.h1`
 
 const ButtonWrapper = styled.div`
   border-bottom: 1px solid #EAEAEA;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
   padding-bottom: 2rem;
 `;
 
