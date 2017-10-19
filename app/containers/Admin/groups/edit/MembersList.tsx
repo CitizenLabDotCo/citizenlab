@@ -18,6 +18,7 @@ import messages from './messages';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import Avatar from 'components/Avatar';
+import { List, Row } from 'components/admin/ResourceList';
 
 // Style
 import styled from 'styled-components';
@@ -34,35 +35,6 @@ const EmptyStateMessage = styled.p`
   svg {
     height: 1em;
     margin-right: 2rem;
-  }
-`;
-
-const ListWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-
-const ListItem = styled.div`
-  align-items: center;
-  border-bottom: 1px solid ${props => props.theme.colors.separation};
-  display: flex;
-  justify-content: space-between;
-
-  > * {
-    margin: 1rem;
-
-    &:first-child {
-      margin-left: 0;
-    }
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-
-  > .expand {
-    flex: 1;
   }
 `;
 
@@ -188,9 +160,9 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
     }
 
     return (
-      <ListWrapper>
+      <List>
         {users.map(({ user, membershipId }) => (
-          <ListItem key={user.id}>
+          <Row key={user.id}>
             <StyledAvatar userId={user.id} size="small" />
             <div className="expand">
               {`${user.attributes.first_name} ${user.attributes.last_name}`}
@@ -206,9 +178,9 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
             >
               <FormattedMessage {...messages.deleteLabel} />
             </Button>
-          </ListItem>
+          </Row>
         ))}
-      </ListWrapper>
+      </List>
     );
   }
 }
