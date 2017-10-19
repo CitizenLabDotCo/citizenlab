@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import ReactSelect from 'react-select';
+import { AsyncCreatable as ReactSelect } from 'react-select';
 import { IOption } from 'typings';
 import styled from 'styled-components';
 
@@ -217,7 +217,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
 type Props = {
   value: IOption[] | null;
   placeholder: string;
-  options: IOption[] | null;
+  asyncOptions: (arg: any) => Promise<IOption[]> | null;
   max?: number;
   autoBlur?: boolean;
   onChange: (arg: IOption[]) => void;
@@ -226,7 +226,7 @@ type Props = {
 
 type State = {};
 
-export default class MultipleSelect extends React.PureComponent<Props, State> {
+export default class AsyncMultipleSelect extends React.PureComponent<Props, State> {
   private emptyArray: never[];
 
   constructor() {
@@ -241,11 +241,11 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
   }
 
   render() {
-    let { value, placeholder, options, max, autoBlur } = this.props;
+    let { value, placeholder, asyncOptions, max, autoBlur } = this.props;
 
     value = (value || this.emptyArray);
     placeholder = (placeholder || '');
-    options = (options || this.emptyArray);
+    asyncOptions = (asyncOptions || undefined);
     max = (max || undefined);
     autoBlur = (_.isBoolean(autoBlur) ? autoBlur : false);
 
@@ -259,8 +259,8 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
         scrollMenuIntoView={false}
         clearable={false}
         value={value}
-        placeholder={<span>{placeholder}</span>}
-        options={options}
+        placeholder={placeholder}
+        loadOptions={this.props.asyncOptions}
         onChange={this.handleOnChange}
         disabled={this.props.disabled}
       />

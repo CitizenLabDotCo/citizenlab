@@ -50,7 +50,7 @@ export type Props = {
   placeholder?: string | null | undefined;
   error?: string | null | undefined;
   onChange: (arg: string) => void;
-  onFocus?: (arg: any) => void;
+  onFocus?: (arg: React.FormEvent<HTMLInputElement>) => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;
 };
 

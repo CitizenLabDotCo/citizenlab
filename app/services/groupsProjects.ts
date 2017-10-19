@@ -22,7 +22,7 @@ export function groupsProjectsByIdStream(groupsProjectsId: string) {
 }
 
 export function groupsProjectsByProjectIdStream(projectId: string) {
-  return streams.get<IGroupsProjects>({ apiEndpoint: `${API_PATH}projects/${projectId}/groups_projects` });
+  return streams.get<IGroupsProjects>({ apiEndpoint: `${API_PATH}/projects/${projectId}/groups_projects` });
 }
 
 export function addGroupProject(projectId: string, groupId: string) {
@@ -32,5 +32,6 @@ export function addGroupProject(projectId: string, groupId: string) {
     }
   };
 
-  return streams.add<IGroupsProjects>(`${API_PATH}projects/${projectId}/groups_projects`, bodyData);
+  return streams.add<IGroupsProjects>(`${API_PATH}/projects/${projectId}/groups_projects`, bodyData);
 }
+// {"groups_project":{"group_id":"0eb4456f-54af-48fa-9f33-63424b76500b"}}
