@@ -13,6 +13,9 @@ namespace :migrate do
   	# client.login(uri.credentials)
 
     client = connect # Mongo::Client.new(['127.0.0.1:27017'])
+    client['neighbourhoods'].find.each do |n|
+      migrate_area n
+    end
     users_hash = {}
   	client['users'].find.each do |u|
   		migrate_user(u, users_hash)
@@ -21,6 +24,9 @@ namespace :migrate do
     if !@log.empty?
       puts 'Migrated with errors!'
       @log.each(&method(:puts))
+      puts "There were #{@log.size} migration errors."
+    else
+      puts 'Migration succeeded!'
     end
   end
 
@@ -34,6 +40,14 @@ namespace :migrate do
   end
 
 
+  def migrate_area n
+    begin
+      Area.create!(title_multiloc: n['name_i18n'], description_multiloc: n['description_i18n'])
+    rescue Exception => e
+      @log.concat [e.message+' '+d.to_s]
+    end
+  end
+
   def migrate_user u, users_hash
     # one big transaction
     d = {}
@@ -41,10 +55,14 @@ namespace :migrate do
     if u['telescope']['email'] || u['registered_emails'] || u['emails']
       d[:email] = u['telescope']['email'] || (u['registered_emails'] || u['emails']).first['address']
     else
+      @log.concat ["Couldn't find an email for user #{u.to_s}"]
       return
     end
     # first_name and last_name
-    if u.dig('profile', 'name') || u['username'] ###
+    if u.dig('services', 'facebook', 'first_name') && u.dig('services', 'facebook', 'last_name')
+      d[:first_name] = u.dig('services', 'facebook', 'first_name')
+      d[:last_name] = u.dig('services', 'facebook', 'last_name')
+    elsif u.dig('profile', 'name') || u['username'] ###
       name_pts = (u.dig('profile', 'name') || u['username']).split
       if name_pts.size < 2
         name_pts = u['username'].split '_'
@@ -57,6 +75,7 @@ namespace :migrate do
         d[:last_name] = 'Unknown' ###
       end
     else
+      @log.concat ["Couldn't find a name for user #{u.to_s}"]
       return
     end
     # password
@@ -67,17 +86,22 @@ namespace :migrate do
     if u['isAdmin']
       d[:roles] = [{type: 'admin'}]
     end
-    # slug
-    if u.dig('telescope', 'slug')
-      d[:slug] = u.dig('telescope', 'slug')
-    end
     # gender
     if u.dig('telescope', 'gender')
       d[:gender] = u.dig('telescope', 'gender')
     end
     # domicile
     if u.dig('telescope', 'domicile')
-      d[:domicile] = u.dig('telescope', 'domicile')
+      if u.dig('telescope', 'domicile') == 'extern'
+        d[:domicile] = 'outside'
+      else
+        area = Area.all.select { |a| a.title_multiloc.values.include? u.dig('telescope', 'domicile') }.first
+        if area
+          d[:domicile] = area.id
+        else
+          @log.concat ["Couldn't find the area #{u.dig('telescope', 'domicile')}"]
+        end
+      end
     end
     # birthyear
     if u.dig('telescope', 'birthyear')
@@ -87,8 +111,19 @@ namespace :migrate do
     if u.dig('telescope', 'education')
       d[:education] = u.dig('telescope', 'education')
     end
+    # image
+    if u.dig('profile', 'image')
+      d[:avatar] = u.dig('profile', 'image')
+    end
     begin
-      users_hash[u['_id']] = User.create!(d).id
+      record = User.new d
+      # slug
+      if u.dig('telescope', 'slug')
+        record.slug = SlugService.new.generate_slug(record,u.dig('telescope', 'slug'))
+        d[:slug] = record.slug # for inclusion in logging
+      end
+      record.save!
+      users_hash[u['_id']] = record.id
     rescue Exception => e
       @log.concat [e.message+' '+d.to_s]
     end
