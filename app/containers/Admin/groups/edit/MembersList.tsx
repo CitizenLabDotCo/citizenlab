@@ -1,9 +1,10 @@
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs';
+import * as _ from 'lodash';
 
 // Services
-import { listMembership, Membership } from 'services/groups';
+import { listMembership, deleteMembership, Membership } from 'services/groups';
 import { userByIdStream, IUserData } from 'services/users';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
@@ -49,7 +50,7 @@ const ListItem = styled.div`
   justify-content: space-between;
 
   > * {
-    margin: 2rem 1rem;
+    margin: 1rem;
 
     &:first-child {
       margin-left: 0;
@@ -76,13 +77,13 @@ interface Props {
 }
 
 interface State {
-  users: IUserData[];
+  users: {user: IUserData, membershipId: string}[];
   locale: string;
   tenantLocales: string[];
   loading: boolean;
 }
 
-class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> {
+class MembersListTable extends React.Component<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
 
   constructor() {
@@ -98,7 +99,7 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
     this.subscriptions = [];
   }
 
-    componentDidMount() {
+  componentDidMount() {
     this.subscriptions.push(this.updateLocales(), this.updateMembers());
   }
 
@@ -128,25 +129,42 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
       loading: true,
     });
 
-    return listMembership(this.props.groupId).observable.first()
+    return listMembership(this.props.groupId).observable
     .switchMap((response) => {
       if (response.data.length === 0) {
         throw NO_MEMBERS;
       }
-      return response.data.map((membership) => membership.relationships.user.data.id);
+      return response.data.map((membership) => ({ userId: membership.relationships.user.data.id, membershipId: membership.id }));
     })
-    .switchMap((userId) => {
-      return userByIdStream(userId).observable;
+    .switchMap(({ userId, membershipId }) => {
+      return userByIdStream(userId).observable.map((user) => ({
+        user,
+        membershipId,
+      }));
     })
-    .subscribe((user) => {
+    .subscribe(({ user, membershipId }) => {
       const { users } = this.state;
-      users.push(user.data);
+      users.push({ membershipId, user: user.data });
       this.setState({ users, loading: false });
     }, (error) => {
       if (error === NO_MEMBERS) {
         this.setState({ users: [], loading: false });
       }
     });
+  }
+
+  createDeleteHandler = (membershipId) => {
+    const message = this.props.intl.formatMessage(messages.deleteConfirmMessage);
+    return (e): void => {
+      if (window.confirm(message)) {
+        deleteMembership(membershipId)
+        .then(() => {
+          let { users } = this.state;
+          users = _.reject(users, { membershipId });
+          this.setState({ users });
+        });
+      }
+    };
   }
 
   render() {
@@ -169,10 +187,9 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
       );
     }
 
-
     return (
       <ListWrapper>
-        {users.map((user) => (
+        {users.map(({ user, membershipId }) => (
           <ListItem key={user.id}>
             <StyledAvatar userId={user.id} size="small" />
             <div className="expand">
@@ -181,6 +198,14 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
             <div className="expand">
               {user.attributes.email}
             </div>
+            <Button
+              onClick={this.createDeleteHandler(membershipId)}
+              style="text"
+              circularCorners={false}
+              icon="delete"
+            >
+              <FormattedMessage {...messages.deleteLabel} />
+            </Button>
           </ListItem>
         ))}
       </ListWrapper>
@@ -188,4 +213,4 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
   }
 }
 
-export default injectIntl<Props>(GroupsListTable);
+export default injectIntl<Props>(MembersListTable);
