@@ -115,7 +115,7 @@ const buttonStyles = (props) => `
 
       &:hover,
       &:focus {
-        background: ${darken(0.15, (props.theme.colorMain || '#ccc'))};
+        background: ${darken(0.12, (props.theme.colorMain || '#ccc'))};
       }
     }
 
@@ -152,8 +152,8 @@ const buttonStyles = (props) => `
 
       &:hover,
       &:focus {
-        border-color: ${darken(0.15, (props.theme.colorMain))};
-        ${setFillColor(darken(0.15, (props.theme.colorMain)))}
+        border-color: ${darken(0.12, (props.theme.colorMain))};
+        ${setFillColor(darken(0.12, (props.theme.colorMain)))}
       }
     }
 
@@ -213,7 +213,7 @@ const buttonStyles = (props) => `
 
     &:hover,
     &:focus {
-      background-color: ${darken(0.15, '#01A1B1')};
+      background-color: ${darken(0.12, '#01A1B1')};
     }
 
     &.disabled {
