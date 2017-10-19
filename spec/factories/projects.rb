@@ -30,5 +30,18 @@ FactoryGirl.define do
         end
       end
     end
+
+    factory :private_project do
+      transient do
+        user nil
+      end
+      after(:create) do |project, evaluator|
+        group = create(:group)
+        project.groups << group
+        if evaluator&.user
+          group.users << evaluator&.user
+        end
+      end
+    end
   end
 end
