@@ -11,6 +11,7 @@ import messages from './messages';
 // Components
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
+import Modal from 'components/UI/Modal';
 import GroupAvatar from 'containers/Admin/groups/all/GroupAvatar';
 
 // Services
@@ -18,17 +19,17 @@ import { groupsProjectsByProjectIdStream, IGroupsProjects } from 'services/group
 
 // Style
 import styled from 'styled-components';
+import { transparentize } from 'polished';
 
 const EmptyStateMessage = styled.p`
-  background: rgba(1, 161, 177, 0.07);
-  border-radius: 5px;
-  color: #01A1B1;
+  font-size: 1.15rem;
   display: flex;
   align-items: center;
-  font-size: 1.15rem;
   padding: 1.5rem;
+  border-radius: 5px;
 
-  background: color: ${props => props.theme.colorMain || '#333'};
+  color: ${props => props.theme.colors.clBlue};
+  background: ${props => transparentize(0.93, props.theme.colors.clBlue)};
 `;
 
 const StyledIcon = styled(Icon)`
@@ -77,16 +78,18 @@ interface Props {
 
 interface State {
   groupsProjects: IGroupsProjects | null;
+  showAddGroupModal: boolean;
 }
 
-class ProjectGroups extends React.PureComponent<Props & InjectedIntlProps, State> {
+class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
     this.state = {
-      groupsProjects: null
+      groupsProjects: null,
+      showAddGroupModal: false
     };
     this.subscriptions = [];
   }
@@ -107,6 +110,55 @@ class ProjectGroups extends React.PureComponent<Props & InjectedIntlProps, State
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
+
+  handleOnAddGroupClick = (event) => {
+    event.preventDefault();
+    this.setState({ showAddGroupModal: true });
+  }
+
+  closeAddGroupModal = () => {
+    this.setState({ showAddGroupModal: false });
+  }
+
+  render() {
+    const { formatMessage } = this.props.intl;
+    const { groupsProjects, showAddGroupModal } = this.state;
+
+    const noGroups = (!groupsProjects ? (
+      <EmptyStateMessage>
+        <StyledIcon name="warning" />
+        <FormattedHTMLMessage {...messages.noSelectedGroupsMessage} />
+      </EmptyStateMessage>
+    ) : null);
+
+    const groupsList = (groupsProjects ? (
+      <span>GroupsList</span>
+    ) : null);
+
+    return (
+      <Container>
+        <Button
+          text={formatMessage(messages.addGroup)}
+          style="cl-blue"
+          size="2"
+          icon="plus-circle"
+          onClick={this.handleOnAddGroupClick}
+          circularCorners={false}
+        />
+
+        {noGroups}
+        {groupsList}
+
+        <Modal opened={showAddGroupModal} close={this.closeAddGroupModal}>
+          <GroupAdditionForm onSaveSuccess={this.closeCreationModal} />
+        </Modal>
+      </Container>
+    );
+  }
+}
+
+export default injectIntl<Props>(ProjectGroupsList);
+
 
   /*
   const ListWrapper = styled.div`
@@ -159,29 +211,3 @@ class ProjectGroups extends React.PureComponent<Props & InjectedIntlProps, State
     ))}
   </ListWrapper>
   */
-
-  render() {
-    const { formatMessage } = this.props.intl;
-    const { groupsProjects } = this.state;
-
-    const noGroups = (!groupsProjects ? (
-      <EmptyStateMessage>
-        <StyledIcon name="warning" />
-        <FormattedHTMLMessage {...messages.noSelectedGroupsMessage} />
-      </EmptyStateMessage>
-    ) : null);
-
-    const groupsList = (!groupsProjects ? (
-      <span>GroupsList</span>
-    ) : null);
-
-    return (
-      <Container>
-        {noGroups}
-        {groupsList}
-      </Container>
-    );
-  }
-}
-
-export default injectIntl<Props>(ProjectGroups);

@@ -22,7 +22,11 @@ export default defineMessages({
     defaultMessage: 'Selection',
   },
   noSelectedGroupsMessage: {
-    id: 'app.containers.AdminPage.groups.list.emptyListMessage',
-    defaultMessage: 'You don’t have any group of users yet.',
+    id: 'app.containers.AdminPage.groups.permissions.noSelectedGroupsMessage',
+    defaultMessage: 'You don’t have <strong>any group</strong> of users yet.',
+  },
+  addGroup: {
+    id: 'app.containers.AdminPage.groups.permissions.addGroup',
+    defaultMessage: 'Add a group',
   },
 });

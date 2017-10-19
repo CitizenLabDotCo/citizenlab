@@ -11,6 +11,7 @@ import messages from './messages';
 // Components
 import Radio from 'components/UI/Radio';
 import FieldWrapper from 'components/admin/FieldWrapper';
+import ProjectGroupsList from './ProjectGroupsList';
 
 // Services
 import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
@@ -27,6 +28,7 @@ interface Props {
 }
 
 interface State {
+  projectId: string | null;
   currentValue: 'all' | 'selection' | null;
 }
 
@@ -37,6 +39,7 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
   constructor() {
     super();
     this.state = {
+      projectId: null,
       currentValue: null
     };
     this.subscriptions = [];
@@ -52,7 +55,10 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
           const groupsProjects$ = groupsProjectsByProjectIdStream(project.data.id).observable;
           return groupsProjects$.map(groupsProjects => ({ project, groupsProjects }));
         }).subscribe(({ project, groupsProjects }) => {
-          this.setState({ currentValue: (groupsProjects ? 'selection' : 'all') });
+          this.setState({
+            projectId: project.data.id,
+            currentValue: (groupsProjects ? 'selection' : 'all')
+          });
         })
       ];
     }
@@ -68,7 +74,11 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { currentValue } = this.state;
+    const { projectId, currentValue } = this.state;
+
+    const groups = (currentValue === 'selection' && projectId ? (
+      <ProjectGroupsList projectId={projectId} />
+    ) : null);
 
     if (currentValue) {
       return (
@@ -97,6 +107,8 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
               id="permissions-selection"
             />
           </FieldWrapper>
+
+          {groups}
         </div>
       );
     }

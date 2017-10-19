@@ -24,3 +24,13 @@ export function groupsProjectsByIdStream(groupsProjectsId: string) {
 export function groupsProjectsByProjectIdStream(projectId: string) {
   return streams.get<IGroupsProjects>({ apiEndpoint: `${API_PATH}projects/${projectId}/groups_projects` });
 }
+
+export function addGroupProject(projectId: string, groupId: string) {
+  const bodyData = {
+    groups_project:{
+      group_id: groupId
+    }
+  };
+
+  return streams.add<IGroupsProjects>(`${API_PATH}projects/${projectId}/groups_projects`, bodyData);
+}
