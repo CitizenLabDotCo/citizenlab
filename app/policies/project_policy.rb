@@ -11,7 +11,8 @@ class ProjectPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       else
-        scope.left_outer_joins(groups: :memberships)
+        scope
+          .left_outer_joins(groups: :memberships)
           .where("memberships.user_id = ? OR groups_projects.group_id IS NULL", user&.id)
       end
     end
