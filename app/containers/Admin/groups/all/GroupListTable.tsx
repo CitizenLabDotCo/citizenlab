@@ -16,52 +16,25 @@ import messages from './messages';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import GroupAvatar from './GroupAvatar';
+import { List, Row } from 'components/admin/ResourceList';
 
 // Style
 import styled from 'styled-components';
+import { rgba } from 'polished';
 
 const EmptyStateMessage = styled.p`
-  background: rgba(1, 161, 177, 0.07);
-  border-radius: 5px;
-  color: #01A1B1;
-  display: flex;
   align-items: center;
+  background: ${props => rgba(props.theme.colors.clBlue, .07)};
+  border-radius: 5px;
+  color: ${props => props.theme.colors.clBlue};
+  display: flex;
   font-size: 1.15rem;
+  margin-top: 2rem;
   padding: 1.5rem;
 
   svg {
     height: 1em;
     margin-right: 2rem;
-  }
-`;
-
-const ListWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-top: -2rem;
-`;
-
-const ListItem = styled.div`
-  align-items: center;
-  border-bottom: 1px solid #EAEAEA;
-  display: flex;
-  justify-content: space-between;
-
-  > * {
-    margin: 2rem 1rem;
-
-    &:first-child {
-      margin-left: 0;
-    }
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-
-  > .expand {
-    flex: 1;
   }
 `;
 
@@ -143,6 +116,7 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
 
   render() {
     const { groups, locale, tenantLocales, loading } = this.state;
+    const animationTimeout = 400;
 
     if (loading) {
       return (
@@ -163,9 +137,9 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
 
 
     return (
-      <ListWrapper className="e2e-groups-list">
+      <List>
         {groups.map((group) => (
-          <ListItem key={group.id}>
+          <Row key={group.id}>
             <GroupAvatar groupId={group.id} />
             <p className="expand">
               {getLocalized(group.attributes.title_multiloc, locale, tenantLocales)}
@@ -179,9 +153,9 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
             <Button linkTo={`/admin/groups/edit/${group.id}`} style="secondary" circularCorners={false} icon="edit">
               <FormattedMessage {...messages.editButtonLabel} />
             </Button>
-          </ListItem>
+          </Row>
         ))}
-      </ListWrapper>
+      </List>
     );
   }
 }
