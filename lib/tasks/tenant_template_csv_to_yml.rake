@@ -166,7 +166,7 @@ namespace :tenant_template do
 
   def generate_and_add_votes(csv_idea, yml_idea, yml_votes, users_hash)
   	shuffled_users = users_hash.values.shuffle
-  	vote_modes = Array.new(Integer(csv_idea['Upvotes']), 'up') + Array.new(Integer(csv_idea['Downvotes']), 'down')
+  	vote_modes = Array.new(Integer(csv_idea['Upvotes'] || 0), 'up') + Array.new(Integer(csv_idea['Downvotes'] || 0), 'down')
     new_votes = zip_min(vote_modes, shuffled_users).map {|z|  
       mode = z[0]
       user = z[1]
