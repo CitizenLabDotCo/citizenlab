@@ -29,4 +29,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.addGroup',
     defaultMessage: 'Add a group',
   },
+  groupsMultipleSelectPlaceholder: {
+    id: 'app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder',
+    defaultMessage: 'Add a group',
+  },
 });

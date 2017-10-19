@@ -11,24 +11,29 @@ import messages from './messages';
 // Components
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
-import Modal from 'components/UI/Modal';
+import MultipleSelect from 'components/UI/MultipleSelect';
 import GroupAvatar from 'containers/Admin/groups/all/GroupAvatar';
 
 // Services
-import { groupsProjectsByProjectIdStream, IGroupsProjects } from 'services/groupsProjects';
+import { localeStream } from 'services/locale';
+import { currentTenantStream, ITenant } from 'services/tenant';
+import { listGroups, IGroups } from 'services/groups';
+import { addGroupProject, groupsProjectsByProjectIdStream, IGroupsProjects } from 'services/groupsProjects';
 
 // Style
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 
+// Typings
+import { IOption } from 'typings';
+
 const EmptyStateMessage = styled.p`
+  color: ${props => props.theme.colors.clBlue};
   font-size: 1.15rem;
   display: flex;
   align-items: center;
   padding: 1.5rem;
   border-radius: 5px;
-
-  color: ${props => props.theme.colors.clBlue};
   background: ${props => transparentize(0.93, props.theme.colors.clBlue)};
 `;
 
@@ -41,34 +46,8 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const ListWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-top: -2rem;
-`;
-
-const ListItem = styled.div`
-  align-items: center;
-  border-bottom: 1px solid #EAEAEA;
-  display: flex;
-  justify-content: space-between;
-
-  > * {
-    margin: 2rem 1rem;
-
-    &:first-child {
-      margin-left: 0;
-    }
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-
-  > .expand {
-    flex: 1;
-  }
+const SelectGroupsContainer = styled.div`
+  flex-direction: row;
 `;
 
 // Typing
@@ -77,8 +56,12 @@ interface Props {
 }
 
 interface State {
+  locale: string | null;
+  currentTenant: ITenant | null;
+  groups: IOption[] | null;
   groupsProjects: IGroupsProjects | null;
-  showAddGroupModal: boolean;
+  selectedGroups: IOption[] | null;
+  loading: boolean;
 }
 
 class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -88,21 +71,43 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
   constructor() {
     super();
     this.state = {
+      locale: null,
+      currentTenant: null,
+      groups: null,
       groupsProjects: null,
-      showAddGroupModal: false
+      selectedGroups: null,
+      loading: true
     };
     this.subscriptions = [];
   }
 
   componentWillMount() {
     const { projectId } = this.props;
+    const locale$ = localeStream().observable;
+    const currentTenant$ = currentTenantStream().observable;
+    const groups$ = listGroups().observable;
     const groupsProjects$ = groupsProjectsByProjectIdStream(projectId).observable;
 
     this.subscriptions = [
-      groupsProjects$.subscribe((groupsProjects) => {
+      Rx.Observable.combineLatest(
+        locale$,
+        currentTenant$,
+        groups$,
+        groupsProjects$
+      ).subscribe(([locale, currentTenant, groups, groupsProjects]) => {
+        console.log('groups:');
+        console.log(groups);
         console.log('groupsProjects:');
         console.log(groupsProjects);
-        this.setState({ groupsProjects });
+        console.log('groups:');
+        console.log(this.getOptions(groups, locale, currentTenant.data.attributes.settings.core.locales));
+
+        this.setState({ 
+          locale,
+          currentTenant,
+          groupsProjects,
+          groups: this.getOptions(groups, locale, currentTenant.data.attributes.settings.core.locales),
+          loading: false });
       })
     ];
   }
@@ -111,18 +116,42 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleOnAddGroupClick = (event) => {
-    event.preventDefault();
-    this.setState({ showAddGroupModal: true });
+  handleGroupsOnChange = (selectedGroups: IOption[]) => {
+    this.setState({ selectedGroups  });
   }
 
-  closeAddGroupModal = () => {
-    this.setState({ showAddGroupModal: false });
+  handleOnAddGroupClick = async () => {
+    const { projectId } = this.props;
+    const { selectedGroups } = this.state;
+
+    if (selectedGroups && selectedGroups.length > 0) {
+      const promises = selectedGroups.map(selectedGroup => addGroupProject(projectId, selectedGroup.value));
+
+      try {
+        await Promise.all(promises);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  getOptions = (groups: IGroups | null, locale: string, currentTenantLocales: string[]) => {
+    if (groups && groups.data && groups.data.length > 0) {
+      const options: IOption[] = groups.data.map((group) => ({
+        value: group.id,
+        label: getLocalized(group.attributes.title_multiloc, locale, currentTenantLocales)
+      }));
+
+      return options;
+    }
+
+    return null;
   }
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { groupsProjects, showAddGroupModal } = this.state;
+    const { locale, currentTenant, groups, groupsProjects, selectedGroups } = this.state;
+    const groupsMultipleSelectPlaceholder = formatMessage(messages.groupsMultipleSelectPlaceholder);
 
     const noGroups = (!groupsProjects ? (
       <EmptyStateMessage>
@@ -131,12 +160,15 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
       </EmptyStateMessage>
     ) : null);
 
-    const groupsList = (groupsProjects ? (
-      <span>GroupsList</span>
-    ) : null);
+    const selectGroups = ((!!locale && !!currentTenant) ? (
+      <SelectGroupsContainer>
+        <MultipleSelect
+          options={groups}
+          value={selectedGroups}
+          onChange={this.handleGroupsOnChange}
+          placeholder={groupsMultipleSelectPlaceholder}
+        />
 
-    return (
-      <Container>
         <Button
           text={formatMessage(messages.addGroup)}
           style="cl-blue"
@@ -145,69 +177,21 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
           onClick={this.handleOnAddGroupClick}
           circularCorners={false}
         />
+      </SelectGroupsContainer>
+    ) : null);
 
+    const groupsList = (groupsProjects ? (
+      <span>GroupsList</span>
+    ) : null);
+
+    return (
+      <Container>
         {noGroups}
+        {selectGroups}
         {groupsList}
-
-        <Modal opened={showAddGroupModal} close={this.closeAddGroupModal}>
-          <GroupAdditionForm onSaveSuccess={this.closeCreationModal} />
-        </Modal>
       </Container>
     );
   }
 }
 
 export default injectIntl<Props>(ProjectGroupsList);
-
-
-  /*
-  const ListWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-top: -2rem;
-  `;
-
-  const ListItem = styled.div`
-    align-items: center;
-    border-bottom: 1px solid #EAEAEA;
-    display: flex;
-    justify-content: space-between;
-
-    > * {
-      margin: 2rem 1rem;
-
-      &:first-child {
-        margin-left: 0;
-      }
-
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-
-    > .expand {
-      flex: 1;
-    }
-  `;
-
-  <ListWrapper className="e2e-groups-list">
-    {groups.map((group) => (
-      <ListItem key={group.id}>
-        <GroupAvatar groupId={group.id} />
-        <p className="expand">
-          {getLocalized(group.attributes.title_multiloc, locale, tenantLocales)}
-        </p>
-        <p className="expand">
-          <FormattedMessage {...messages.members} values={{ count: group.attributes.memberships_count }} />
-        </p>
-        <Button onClick={this.createDeleteGroupHandler(group.id)} style="text" circularCorners={false} icon="delete">
-          <FormattedMessage {...messages.deleteButtonLabel} />
-        </Button>
-        <Button linkTo={`/admin/groups/edit/${group.id}`} style="secondary" circularCorners={false} icon="edit">
-          <FormattedMessage {...messages.editButtonLabel} />
-        </Button>
-      </ListItem>
-    ))}
-  </ListWrapper>
-  */
