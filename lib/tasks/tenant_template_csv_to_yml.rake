@@ -160,7 +160,7 @@ namespace :tenant_template do
 
   def add_project_images(csv_project, yml_project, yml_project_images)
     yml_project_images.concat [csv_project['Image URL']].select { |i| i }
-                                                        .map { |i| { 'remote_image_url' => i,
+                                                        .map { |i| { 'remote_image_url' => i.strip,
                                                                      'project_ref'      => yml_project } }
   end
 
@@ -185,7 +185,7 @@ namespace :tenant_template do
 
   def add_idea_images(csv_idea, yml_idea, yml_idea_images)
     yml_idea_images.concat [csv_idea['Image URL']].select { |i| i }
-                                                  .map { |i| { 'remote_image_url' => i,
+                                                  .map { |i| { 'remote_image_url' => i.strip,
                                                                'idea_ref'         => yml_idea } }
   end
 
