@@ -15,6 +15,7 @@ import localize, { injectedLocalized } from 'utils/localize';
 import Icon from 'components/UI/Icon';
 import PageWrapper from 'components/admin/PageWrapper';
 import MembersList from './MembersList';
+import MembersAdd from './MembersAdd';
 import { Link } from 'react-router';
 
 // Style
@@ -85,7 +86,7 @@ class GroupsEdit extends React.Component<Props & injectedLocalized, State> {
             {this.props.localize(this.state.group.attributes.title_multiloc)}
           </PageTitle>
           <PageWrapper>
-            <p>Search</p>
+            <MembersAdd />
             <MembersList groupId={this.props.params.groupId} />
           </PageWrapper>
         </div>
