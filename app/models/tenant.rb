@@ -42,9 +42,9 @@ class Tenant < ApplicationRecord
   end
 
   def update_tenant_schema
-    old_schema = self.host_was
+    old_schema = self.saved_change_to_host.first.gsub(/\./, "_")
     new_schema = self.schema_name
-    ActiveRecord::Base.connection.execute("ALTER SCHEMA #{old_schema} RENAME TO #{new_schema}")
+    ActiveRecord::Base.connection.execute("ALTER SCHEMA \"#{old_schema}\" RENAME TO \"#{new_schema}\"")
   end
 
   def validate_missing_feature_dependencies
