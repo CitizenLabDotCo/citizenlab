@@ -31,6 +31,10 @@ namespace :migrate do
     client['projects'].find.each do |p|
       migrate_project(p, projects_hash, areas_hash, topics_hash)
     end
+    ideas_hash = {}
+    client['posts'].find.each do |p|
+      migrate_ideas(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
+    end
 
     if !@log.empty?
       puts 'Migrated with errors!'
@@ -186,7 +190,68 @@ namespace :migrate do
         d[:slug] = record.slug # for inclusion in logging
       end
       record.save!
-      projects_hash[p['_id']] = record.id
+      projects_hash[p['_id']] = record
+    rescue Exception => e
+      @log.concat [e.message+' '+d.to_s]
+    end
+  end
+
+  def migrate_ideas(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
+    d = {}
+    # only migrate published ideas
+    if (p['status'] || -1) == 2
+      d[:publication_status] = 'published'
+    else
+      return
+    end
+    # title
+    if p.dig('title_i18n')
+      d[:title_multiloc] = p.dig('title_i18n')
+    else
+      @log.concat ["Couldn't find a title for idea #{p.to_s}"]
+      return
+    end
+    # description
+    if p.dig('body_i18n')
+      d[:body_multiloc] = p.dig('body_i18n')
+    else
+      @log.concat ["Couldn't find a body for idea #{p.to_s}"]
+      return
+    end
+    # author
+    if p.dig('userId')
+      d[:author] = users_hash[p.dig('userId')]
+    else
+      @log.concat ["Couldn't find the author for idea #{p.to_s}"]
+      return
+    end
+    # TODO idea status mapping
+    d[:idea_status] IdeaStatus.proposed
+    # image
+    if p.dig('images')
+      d[:idea_images] = p.dig('images').map {|i| IdeaImage.new(image: i.dig('original'))}
+    end
+    # project
+    if p.dig('projectId')
+      d[:project] = projects_hash[p.dig('projectId')]
+    end
+    # areas
+    if p.dig('neighbourhoods')
+      d[:areas] = p.dig('neighbourhoods').map { |nid| areas_hash[nid] }
+    end
+    # topics
+    if p.dig('categories')
+      d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }
+    end
+    begin
+      record = Idea.new d
+      # slug
+      if p['slug']
+        record.slug = SlugService.new.generate_slug(record,p['slug'])
+        d[:slug] = record.slug # for inclusion in logging
+      end
+      record.save!
+      ideas_hash[p['_id']] = record.id
     rescue Exception => e
       @log.concat [e.message+' '+d.to_s]
     end
