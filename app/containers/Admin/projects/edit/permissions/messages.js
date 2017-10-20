@@ -27,11 +27,11 @@ export default defineMessages({
   },
   addGroup: {
     id: 'app.containers.AdminPage.groups.permissions.addGroup',
-    defaultMessage: 'Add a group',
+    defaultMessage: 'Add group(s)',
   },
   groupsMultipleSelectPlaceholder: {
     id: 'app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder',
-    defaultMessage: 'Add a group',
+    defaultMessage: 'Select group(s)',
   },
   members: {
     id: 'app.containers.AdminPage.groups.permissions.members',
@@ -47,6 +47,6 @@ export default defineMessages({
   },
   groupDeletionConfirmation: {
     id: 'app.containers.AdminPage.groups.permissions.groupDeletionConfirmation',
-    defaultMessage: 'Are you sure you want to delete this group?',
+    defaultMessage: 'Are you sure you want to remove this group from the project?',
   },
 });

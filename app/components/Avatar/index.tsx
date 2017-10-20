@@ -58,6 +58,7 @@ const Container: any = styled.div`
   align-items: center;
   justify-content: Center;
   cursor: ${(props: any) => props.isClickable ? 'pointer' : 'auto'};
+  border: solid 1px green;
 
   ${(props: any) => props.isClickable && css`
     &:hover ${AvatarIcon} {
@@ -108,7 +109,7 @@ export default class Avatar extends React.PureComponent<Props, State> {
   }
 
   handleOnClick = (event) => {
-    if (this.props.onClick && _.isFunction(this.props.onClick)) {
+    if (this.props.onClick) {
       this.props.onClick();
     }
   }

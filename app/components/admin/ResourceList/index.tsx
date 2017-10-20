@@ -12,13 +12,18 @@ const StyledList = styled.div`
   width: 100%;
 `;
 
+const timeout = 200;
+
 const StyledRow = styled.div`
-  align-items: center;
-  border-bottom: 1px solid #EAEAEA;
-  display: flex;
-  justify-content: space-between;
-  transition: max-height 400ms cubic-bezier(0.165, 0.84, 0.44, 1),
-  opacity 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  border-bottom: 1px solid #eaeaea;
+  transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  &:first-child {
+    border-top: 1px solid #eaeaea;
+  }
 
   > * {
     margin: 1rem;
@@ -38,21 +43,21 @@ const StyledRow = styled.div`
 
   &.list-item-enter {
     max-height: 0px;
-    opacity: 0.01;
+    opacity: 0;
 
     &.list-item-enter-active {
-      max-height: 60px;
+      max-height: 80px;
       opacity: 1;
     }
   }
 
   &.list-item-exit {
-    max-height: 100px;
+    max-height: 80px;
     opacity: 1;
 
     &.list-item-exit-active {
       max-height: 0px;
-      opacity: 0.01;
+      opacity: 0;
     }
   }
 `;
@@ -66,8 +71,8 @@ export const List = ({ children, ...props }) => (
 );
 
 export const Row = ({ children, ...props }) => (
-  <CSSTransition classNames="list-item" timeout={400} {...props}>
-    <StyledRow className="e2e-admin-list-row">
+  <CSSTransition classNames="list-item" timeout={timeout} {...props}>
+    <StyledRow className={`e2e-admin-list-row ${props['className']}`}>
       {children}
     </StyledRow>
   </CSSTransition>

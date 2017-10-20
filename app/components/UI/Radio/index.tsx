@@ -3,22 +3,23 @@ import styled from 'styled-components';
 
 const Wrapper = styled.label`
   display: flex !important;
+  flex-direction: row;
   align-items: center;
   margin-bottom: .5rem;
 `;
 
 const CustomRadio = styled.div`
-  background: #fff;
-  border-radius: 50%;
-  border: 1px solid #A6A6A6;
-  box-shadow: inset 0px 2px 3px rgba(0, 0, 0, 0.15);
+  width: 20px;
+  height: 20px;
   content: '';
   cursor: pointer;
   display: inline-block;
-  height: 1.5em;
-  margin-right: 1.5rem;
+  margin-right: 10px;
   position: relative;
-  width: 1.5em;
+  background: #fff;
+  border-radius: 50%;
+  border: 1px solid #a6a6a6;
+  box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.15);
 
   ::after {
     background: #49B47D;
@@ -36,6 +37,17 @@ const CustomRadio = styled.div`
   &.checked::after{
     opacity: 1;
   }
+
+  &:not(.checked):hover {
+    border-color: #333;
+  }
+`;
+
+const Text = styled.div`
+  color: #333;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
 `;
 
 const HiddenInput = styled.input`
@@ -72,7 +84,7 @@ export default class Radio extends React.Component<Props> {
           onChange={this.handleChange}
         />
         <CustomRadio className={`${checked ? 'checked' : ''}`} />
-        {this.props.label}
+        <Text className="text">{this.props.label}</Text>
       </Wrapper>
     );
   }

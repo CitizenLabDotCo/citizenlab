@@ -133,7 +133,7 @@ const buttonStyles = (props) => `
 
       &:hover,
       &:focus {
-        background: #F9F9F9;
+        background: #eee;
         ${setFillColor('#222')}
       }
     }

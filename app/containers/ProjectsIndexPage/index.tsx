@@ -138,11 +138,6 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
       selectedAreas = filter.areas;
     }
 
-    console.log('filter:');
-    console.log(filter);
-    console.log('selectedAreas:');
-    console.log(selectedAreas);
-
     return (
       <Container>
 

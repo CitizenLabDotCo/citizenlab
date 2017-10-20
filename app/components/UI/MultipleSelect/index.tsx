@@ -241,6 +241,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const className = this.props['className'];
     let { value, placeholder, options, max, autoBlur } = this.props;
 
     value = (value || this.emptyArray);
@@ -251,6 +252,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
 
     return (
       <StyledMultipleSelect
+        className={className}
         multi={true}
         searchable={true}
         openOnFocus={false}
