@@ -33,4 +33,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder',
     defaultMessage: 'Add a group',
   },
+  members: {
+    id: 'app.containers.AdminPage.groups.permissions.members',
+    defaultMessage: '{count, plural, =0 {No members} one {one member} other {{count} members}}',
+  },
+  deleteButtonLabel: {
+    id: 'app.containers.AdminPage.groups.permissions.deleteButtonLabel',
+    defaultMessage: 'Delete',
+  },
+  editButtonLabel: {
+    id: 'app.containers.AdminPage.groups.permissions.editButtonLabel',
+    defaultMessage: 'Edit',
+  },
+  groupDeletionConfirmation: {
+    id: 'app.containers.AdminPage.groups.permissions.groupDeletionConfirmation',
+    defaultMessage: 'Are you sure you want to delete this group?',
+  },
 });
