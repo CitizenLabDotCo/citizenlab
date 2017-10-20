@@ -271,7 +271,11 @@ class Streams {
       })
       .filter(data => data !== 'initial')
       .distinctUntilChanged()
-      .do(data => store.dispatch(mergeJsonApiResources(data)))
+      .do((data) => {
+        if (!apiEndpoint.endsWith('memberships/users_search')) {
+          store.dispatch(mergeJsonApiResources(data));
+        }
+      })
       .publishReplay(1)
       .refCount();
 

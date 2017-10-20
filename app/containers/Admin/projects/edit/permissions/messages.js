@@ -35,7 +35,7 @@ export default defineMessages({
   },
   members: {
     id: 'app.containers.AdminPage.groups.permissions.members',
-    defaultMessage: '{count, plural, =0 {No members} one {one member} other {{count} members}}',
+    defaultMessage: '{count, plural, =0 {No members} one {1 member} other {{count} members}}',
   },
   deleteButtonLabel: {
     id: 'app.containers.AdminPage.groups.permissions.deleteButtonLabel',

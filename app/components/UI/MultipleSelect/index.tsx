@@ -5,6 +5,8 @@ import { IOption } from 'typings';
 import styled from 'styled-components';
 
 const StyledMultipleSelect = styled(ReactSelect)`
+  max-width: calc(100% - 30px);
+
   &.Select--multi {
     margin: 0;
     padding: 0;
@@ -43,7 +45,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
     }
 
     .Select-control {
-      width: 100%;
+      width: calc(100% + 30px);
       height: auto;
       margin: 0px;
       padding: 5px;
@@ -75,7 +77,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
       }
 
       .Select-multi-value-wrapper {
-        width: calc(100% - 30px);
+        width: calc(100%);
         height: auto;
         margin: 0px;
         padding: 0px;
@@ -178,6 +180,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
     }
 
     .Select-menu-outer {
+      width: calc(100% + 30px);
       max-height: 214px;
       border-color: #000;
       border-top: solid 1px #ccc;

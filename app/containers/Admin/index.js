@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 const AdminContainerStyled = styled(Grid.Column)`
   max-width: 1200px;
-  padding: 45px 51px 0 51px !important;
+  padding: 45px 51px !important;
 `;
 
 const LeftColumn = styled.div`
