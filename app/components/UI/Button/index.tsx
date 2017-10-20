@@ -284,7 +284,8 @@ export default class Button extends React.PureComponent<Props, State> {
     fullWidth = (_.isBoolean(fullWidth) ? fullWidth : false);
     circularCorners = (_.isBoolean(circularCorners) ? circularCorners : true);
 
-    const StyledComponent = linkTo ? StyledLink : StyledButton;
+    const StyledLinkWithOmittedProperties = ({ padding, loading, circularCorners, ...rest }) => <StyledLink {...rest} />;
+    const StyledComponent = linkTo ? StyledLinkWithOmittedProperties : StyledButton;
 
     return (
       <StyledComponent
