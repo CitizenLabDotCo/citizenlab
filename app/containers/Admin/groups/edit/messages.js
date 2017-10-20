@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.group.edit.goBack',
     defaultMessage: 'Go back',
   },
+  addUser: {
+    id: 'app.containers.AdminPage.group.edit.addUser',
+    defaultMessage: 'Add user(s)',
+  },
 });
