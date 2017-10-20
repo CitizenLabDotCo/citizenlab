@@ -12,14 +12,25 @@ namespace :migrate do
   	# client = Mongo::Client.new(uri.servers, uri.options)
   	# client.login(uri.credentials)
 
-    client = connect # Mongo::Client.new(['127.0.0.1:27017'])
+    client = connect true # Mongo::Client.new(['127.0.0.1:27017'])
+    areas_hash = {}
     client['neighbourhoods'].find.each do |n|
-      migrate_area n
+      migrate_area n, areas_hash
     end
     users_hash = {}
   	client['users'].find.each do |u|
   		migrate_user(u, users_hash)
   	end
+    topics_hash = {}
+    client['categories'].find.each do |c|
+      migrate_topic(c, topics_hash)
+    end
+    # TODO events
+    # TODO phases
+    projects_hash = {}
+    client['projects'].find.each do |p|
+      migrate_project(p, projects_hash, areas_hash, topics_hash)
+    end
 
     if !@log.empty?
       puts 'Migrated with errors!'
@@ -33,18 +44,18 @@ namespace :migrate do
 
   def connect address=nil
     if address
-      Mongo::Client.new 'mongodb://docker.for.mac.localhost:27017/schiedam'
+      Mongo::Client.new('mongodb://lamppost.14.mongolayer.com:10323/demo', auth_mech: :mongodb_cr, user: 'citizenlab', password: 'jhshEVweHWULVCA9x2nLuWL8')
     else
       Mongo::Client.new 'mongodb://docker.for.mac.localhost:27017/schiedam'
     end
   end
 
 
-  def migrate_area n
+  def migrate_area n, areas_hash
     begin
-      Area.create!(title_multiloc: n['name_i18n'], description_multiloc: n['description_i18n'])
+      areas_hash[n['_id']] = Area.create!(title_multiloc: n['name_i18n'], description_multiloc: n['description_i18n'])
     rescue Exception => e
-      @log.concat [e.message+' '+d.to_s]
+      @log.concat [e.message]
     end
   end
 
@@ -53,7 +64,9 @@ namespace :migrate do
     d = {}
     # email
     if u['telescope']['email'] || u['registered_emails'] || u['emails']
-      d[:email] = u['telescope']['email'] || (u['registered_emails'] || u['emails']).first['address']
+      d[:email] = u['telescope']['email'] || (u['registered_emails'] || u['emails'])&.first['address']
+    elsif u.dig('services', 'facebook', 'email')
+      d[:email] = u.dig('services', 'facebook', 'email')
     else
       @log.concat ["Couldn't find an email for user #{u.to_s}"]
       return
@@ -123,7 +136,57 @@ namespace :migrate do
         d[:slug] = record.slug # for inclusion in logging
       end
       record.save!
-      users_hash[u['_id']] = record.id
+      users_hash[u['_id']] = record
+    rescue Exception => e
+      @log.concat [e.message+' '+d.to_s]
+    end
+  end
+
+  def migrate_topic c, topics_hash
+    begin
+      topics_hash[c['_id']] = Topic.create!(title_multiloc: c['name_i18n'], description_multiloc: c['description_i18n'])
+    rescue Exception => e
+      @log.concat [e.message+' '+c.to_s]
+    end
+  end
+
+  def migrate_project(p, projects_hash, areas_hash, topics_hash)
+    d = {}
+    # title
+    if p.dig('title_i18n')
+      d[:title_multiloc] = p.dig('title_i18n')
+    else
+      @log.concat ["Couldn't find a title for project #{p.to_s}"]
+      return
+    end
+    # description
+    if p.dig('description_i18n')
+      d[:description_multiloc] = p.dig('description_i18n')
+    else
+      @log.concat ["Couldn't find a description for project #{p.to_s}"]
+      return
+    end
+    # image
+    if p.dig('images')&.first&.dig('original')
+      d[:header_bg] = p.dig('images').first.dig('original')
+    end
+    # areas
+    if p.dig('neighbourhoods')
+      d[:areas] = p.dig('neighbourhoods').map { |nid| areas_hash[nid] }
+    end
+    # topics
+    if p.dig('categories')
+      d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }
+    end
+    begin
+      record = Project.new d
+      # slug
+      if p['slug']
+        record.slug = SlugService.new.generate_slug(record,p['slug'])
+        d[:slug] = record.slug # for inclusion in logging
+      end
+      record.save!
+      projects_hash[p['_id']] = record.id
     rescue Exception => e
       @log.concat [e.message+' '+d.to_s]
     end
