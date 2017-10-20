@@ -86,7 +86,7 @@ class GroupsEdit extends React.Component<Props & injectedLocalized, State> {
             {this.props.localize(this.state.group.attributes.title_multiloc)}
           </PageTitle>
           <PageWrapper>
-            <MembersAdd />
+            <MembersAdd groupId={this.props.params.groupId} />
             <MembersList groupId={this.props.params.groupId} />
           </PageWrapper>
         </div>

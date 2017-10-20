@@ -2,6 +2,9 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
+// Services
+import { findMembership } from 'services/groups';
+
 // i18n
 import { FormattedMessage } from 'react-intl';
 import T from 'components/T';
@@ -10,6 +13,7 @@ import localize, { injectedLocalized } from 'utils/localize';
 
 // Components
 import Button from 'components/UI/Button';
+import AsyncMultipleSelect from 'components/UI/AsyncMultipleSelect';
 
 // Style
 import styled from 'styled-components';
@@ -21,9 +25,16 @@ const AddUserRow = styled.div`
 `;
 
 // Typing
-interface Props {}
+import { IOption } from 'typings';
 
-interface State {}
+interface Props {
+  groupId: string;
+}
+
+interface State {
+  selectVisible: boolean;
+  selection: IOption[];
+}
 
 class MembersAdd extends React.Component<Props & injectedLocalized, State> {
   subscriptions: Rx.Subscription[];
@@ -31,7 +42,10 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
   constructor () {
     super();
 
-    this.state = {};
+    this.state = {
+      selectVisible: false,
+      selection: [],
+    };
 
     this.subscriptions = [];
   }
@@ -46,12 +60,46 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
     this.subscriptions.forEach((sub) => { sub.unsubscribe(); });
   }
 
+  toggleSelectVisible = () => {
+    this.setState({ selectVisible: !this.state.selectVisible });
+  }
+
+  getOptions = async (args) => {
+    return findMembership(this.props.groupId).observable
+    .map((users) => {
+      return users.data.map((user) => {
+        return {
+          value: user.id,
+          label: `${user.attributes.first_name} ${user.attributes.last_name}`
+        };
+      });
+    })
+    .toPromise();
+  }
+
+  handleChange = (value): void => {
+    console.log(value);
+    const { selection } = this.state;
+    selection.push(value);
+    this.setState({ selection });
+  }
+
   render() {
     return (
       <AddUserRow>
-        <Button icon="plus-circle" style="text">
-          <FormattedMessage {...messages.addUser} />
-        </Button>
+        {!this.state.selectVisible &&
+          <Button onClick={this.toggleSelectVisible} icon="plus-circle" style="text">
+            <FormattedMessage {...messages.addUser} />
+          </Button>
+        }
+        {this.state.selectVisible &&
+          <AsyncMultipleSelect
+            value={this.state.selection}
+            placeholder=""
+            asyncOptions={this.getOptions}
+            onChange={this.handleChange}
+          />
+        }
       </AddUserRow>
     );
   }
