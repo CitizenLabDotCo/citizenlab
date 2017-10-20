@@ -21,12 +21,22 @@ resource "GroupsProjects" do
         parameter :number, "Page number"
         parameter :size, "Number of groups-projects per page"
       end
+      parameter :sort, "Either 'new', '-new'", required: false
 
       let(:project_id) { @project.id }
       example_request "List all groups-projects of a project" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
+      end
+
+      example "List all groups_projects sorted by new" do
+        gp1 = create(:groups_project, project: @project, group: create(:group))
+
+        do_request(sort: "new")
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data][0][:id]).to eq gp1.id
       end
     
     end
