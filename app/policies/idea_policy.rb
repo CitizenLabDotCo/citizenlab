@@ -8,7 +8,13 @@ class IdeaPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.all
+      if user&.admin?
+        scope.all
+      else
+        scope
+          .left_outer_joins(project: {groups: :memberships})
+          .where("memberships.user_id = ? OR projects.id IS NULL OR groups_projects.group_id IS NULL", user&.id)
+      end
     end
   end
 
@@ -21,7 +27,9 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    user&.admin? ||
+    record.project_id.blank? ||
+    ProjectPolicy.new(user, record.project).show?
   end
 
   def by_slug?

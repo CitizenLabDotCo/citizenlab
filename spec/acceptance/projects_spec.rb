@@ -117,7 +117,7 @@ resource "Projects" do
       parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
       parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
       parameter :slug, "The unique slug of the project. If not given, it will be auto generated"
-      parameter :header_bg, "Base64 encoded header image"
+      # parameter :header_bg, "Base64 encoded header image"
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :topic_ids, "Array of ids of the associated topics"
     end
@@ -174,7 +174,7 @@ resource "Projects" do
     let(:title_multiloc) { {"en" => "Changed title" } }
     let(:description_multiloc) { {"en" => "Changed body" } }
     let(:slug) { "changed-title" }
-    let(:header_bg) { encode_image_as_base64("header.jpg")}
+    # let(:header_bg) { encode_image_as_base64("header.jpg")}
     let(:area_ids) { create_list(:area, 2).map(&:id) }
 
 
