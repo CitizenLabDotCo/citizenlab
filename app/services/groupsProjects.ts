@@ -1,4 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
+// import { projectByIdStream } from 'services/projects';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
@@ -7,14 +8,17 @@ export interface IGroupsProjectsData {
   type: 'groups_projects';
   relationships: {
     group: {
-      data: string;
-      type: 'groups';
+      data: {
+        id: string;
+        type: 'groups';
+      };
+      type: 'groups_projects';
     }
   };
 }
 
 export interface IGroupsProjects {
-  data: IGroupsProjectsData;
+  data: IGroupsProjectsData[];
 }
 
 export function groupsProjectsByIdStream(groupsProjectsId: string) {
@@ -25,13 +29,14 @@ export function groupsProjectsByProjectIdStream(projectId: string) {
   return streams.get<IGroupsProjects>({ apiEndpoint: `${API_PATH}/projects/${projectId}/groups_projects` });
 }
 
-export function addGroupProject(projectId: string, groupId: string) {
+export async function addGroupProject(projectId: string, groupId: string) {
   const bodyData = {
     groups_project:{
       group_id: groupId
     }
   };
 
-  return streams.add<IGroupsProjects>(`${API_PATH}/projects/${projectId}/groups_projects`, bodyData);
+  const response = streams.add<IGroupsProjects>(`${API_PATH}/projects/${projectId}/groups_projects`, bodyData);
+  // await projectByIdStream(projectId).fetch();
+  return response;
 }
-// {"groups_project":{"group_id":"0eb4456f-54af-48fa-9f33-63424b76500b"}}

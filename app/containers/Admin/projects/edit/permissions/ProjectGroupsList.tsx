@@ -13,11 +13,13 @@ import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import GroupAvatar from 'containers/Admin/groups/all/GroupAvatar';
+import { List, Row } from 'components/admin/ResourceList';
 
 // Services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { listGroups, IGroups } from 'services/groups';
+import { projectByIdStream, IProject } from 'services/projects';
+import { listGroups, deleteGroup, IGroups, IGroupData } from 'services/groups';
 import { addGroupProject, groupsProjectsByProjectIdStream, IGroupsProjects } from 'services/groupsProjects';
 
 // Style
@@ -58,7 +60,8 @@ interface Props {
 interface State {
   locale: string | null;
   currentTenant: ITenant | null;
-  groups: IOption[] | null;
+  groups: IGroups | null;
+  groupsOptions: IOption[] | null;
   groupsProjects: IGroupsProjects | null;
   selectedGroups: IOption[] | null;
   loading: boolean;
@@ -74,6 +77,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
       locale: null,
       currentTenant: null,
       groups: null,
+      groupsOptions: null,
       groupsProjects: null,
       selectedGroups: null,
       loading: true
@@ -85,6 +89,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     const { projectId } = this.props;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
+    const project$ = projectByIdStream(projectId).observable;
     const groups$ = listGroups().observable;
     const groupsProjects$ = groupsProjectsByProjectIdStream(projectId).observable;
 
@@ -95,19 +100,14 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
         groups$,
         groupsProjects$
       ).subscribe(([locale, currentTenant, groups, groupsProjects]) => {
-        console.log('groups:');
-        console.log(groups);
-        console.log('groupsProjects:');
-        console.log(groupsProjects);
-        console.log('groups:');
-        console.log(this.getOptions(groups, locale, currentTenant.data.attributes.settings.core.locales));
-
         this.setState({ 
           locale,
           currentTenant,
           groupsProjects,
-          groups: this.getOptions(groups, locale, currentTenant.data.attributes.settings.core.locales),
-          loading: false });
+          groups,
+          groupsOptions: this.getOptions(groups, groupsProjects, locale, currentTenant.data.attributes.settings.core.locales),
+          loading: false
+        });
       })
     ];
   }
@@ -135,23 +135,36 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     }
   }
 
-  getOptions = (groups: IGroups | null, locale: string, currentTenantLocales: string[]) => {
-    if (groups && groups.data && groups.data.length > 0) {
-      const options: IOption[] = groups.data.map((group) => ({
+  getOptions = (groups: IGroups | null, groupsProjects: IGroupsProjects, locale: string, currentTenantLocales: string[]) => {
+    if (groupsProjects && groups) {
+      return groups.data.filter((group) => {
+        return !groupsProjects.data.some(groupProject => groupProject.relationships.group.data.id === group.id);
+      }).map((group) => ({
         value: group.id,
         label: getLocalized(group.attributes.title_multiloc, locale, currentTenantLocales)
       }));
-
-      return options;
     }
 
     return null;
   }
 
+  createDeleteGroupHandler = (groupId) => {
+    const deletionMessage = this.props.intl.formatMessage(messages.groupDeletionConfirmation);
+
+    return (event) => {
+      event.preventDefault();
+
+      if (window.confirm(deletionMessage)) {
+        deleteGroup(groupId);
+      }
+    };
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
-    const { locale, currentTenant, groups, groupsProjects, selectedGroups } = this.state;
+    const { locale, currentTenant, groups, groupsOptions, groupsProjects, selectedGroups } = this.state;
     const groupsMultipleSelectPlaceholder = formatMessage(messages.groupsMultipleSelectPlaceholder);
+    let groupsList: JSX.Element | null = null;
 
     const noGroups = (!groupsProjects ? (
       <EmptyStateMessage>
@@ -163,7 +176,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     const selectGroups = ((!!locale && !!currentTenant) ? (
       <SelectGroupsContainer>
         <MultipleSelect
-          options={groups}
+          options={groupsOptions}
           value={selectedGroups}
           onChange={this.handleGroupsOnChange}
           placeholder={groupsMultipleSelectPlaceholder}
@@ -180,14 +193,40 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
       </SelectGroupsContainer>
     ) : null);
 
-    const groupsList = (groupsProjects ? (
-      <span>GroupsList</span>
-    ) : null);
+    if (locale && currentTenant && groups && groupsProjects) {
+      const projectGroups: IGroups = {
+        data: groupsProjects.data.map((groupProject) => {
+          return groups.data.find(group => group.id === groupProject.relationships.group.data.id) as IGroupData;
+        })
+      };
+
+      groupsList = (
+        <List>
+          {projectGroups.data.map((group) => (
+            <Row key={group.id}>
+              <GroupAvatar groupId={group.id} />
+              <p className="expand">
+                {getLocalized(group.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)}
+              </p>
+              <p className="expand">
+                <FormattedMessage {...messages.members} values={{ count: group.attributes.memberships_count }} />
+              </p>
+              <Button onClick={this.createDeleteGroupHandler(group.id)} style="text" circularCorners={false} icon="delete">
+                <FormattedMessage {...messages.deleteButtonLabel} />
+              </Button>
+              <Button linkTo={`/admin/groups/edit/${group.id}`} style="secondary" circularCorners={false} icon="edit">
+                <FormattedMessage {...messages.editButtonLabel} />
+              </Button>
+            </Row>
+          ))}
+        </List>
+      );
+    }
 
     return (
       <Container>
-        {noGroups}
         {selectGroups}
+        {noGroups}
         {groupsList}
       </Container>
     );
