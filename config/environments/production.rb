@@ -89,4 +89,8 @@ Rails.application.configure do
     :authentication => :login,
     :enable_starttls_auto => true
   }
+
+  Raven.configure do |config|
+    config.dsn = 'https://a2819797a1614558a2485f85ba70b152:c76baf7f978a4e748dd2253346f97a90@sentry.io/233005'
+  end
 end
