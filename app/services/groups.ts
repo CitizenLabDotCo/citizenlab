@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship, Multiloc } from 'typings';
+import { IRelationship, Multiloc, API } from 'typings';
 
 export interface IGroupData {
   id: string;
@@ -36,6 +36,19 @@ export interface Membership {
   };
 }
 
+export interface FoundUser {
+  id: string;
+  type: 'users';
+  attributes: {
+    first_name: string;
+    last_name: string;
+    slug: string;
+    avatar: API.ImageSizes;
+    is_member: boolean;
+    email: string;
+  };
+}
+
 export interface MembershipsResponse {
   data: Membership[];
 }
@@ -58,6 +71,10 @@ export function deleteGroup(groupId: string) {
 
 export function listMembership(groupId: string, streamParams: IStreamParams<MembershipsResponse> | null = null) {
   return streams.get<MembershipsResponse>({ apiEndpoint: `${API_PATH}/groups/${groupId}/memberships`, ...streamParams });
+}
+
+export function findMembership(groupId: string, streamParams: IStreamParams<{data: FoundUser[]}> | null = null) {
+  return streams.get<{data: FoundUser[]}>({ apiEndpoint: `${API_PATH}/groups/${groupId}/memberships/users_search`, ...streamParams });
 }
 
 export async function deleteMembership(membershipId: string) {
