@@ -1,5 +1,5 @@
 class Api::V1::GroupsProjectSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :created_at
 
   belongs_to :group
 end

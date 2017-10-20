@@ -8,6 +8,18 @@ class Api::V1::GroupsProjectsController < ApplicationController
       .includes(:group)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
+
+    @groups_projects = case params[:sort]
+      when "new"
+        @groups_projects.order_new
+      when "-new"
+        @groups_projects.order_new(:asc)
+      when nil
+        @groups_projects
+      else
+        raise "Unsupported sort method"
+    end
+
   	render json: @groups_projects, include: ['group']
   end
 
