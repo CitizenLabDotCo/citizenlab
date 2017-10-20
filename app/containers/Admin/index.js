@@ -15,7 +15,9 @@ const LeftColumn = styled.div`
 
 const RightColumn = styled.div`
   width: calc(100% - 210px);
-  height: calc(100vh - 74px);
+  /* height: calc(100vh - 74px); */
+  height: 100%;
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   margin-left: 210px;
   display: inline-block;
   background-color: #f2f2f2;

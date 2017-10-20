@@ -20,6 +20,46 @@ import { groupsProjectsByProjectIdStream, IGroupsProjects } from 'services/group
 // Style
 import styled from 'styled-components';
 
+const Title = styled.h1`
+  color: #333;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 32px;
+  margin: 0;
+  margin-bottom: 30px;
+  padding: 0;
+`;
+
+const Description = styled.div`
+  color: #333;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  margin-bottom: 30px;
+`;
+
+const StyledFieldWrapper = styled(FieldWrapper)``;
+
+const StyledLabel = styled.label`
+  color: #333;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  margin-bottom: 15px;
+`;
+
+const StyledRadio = styled(Radio)`
+  margin-bottom: 5px;
+
+  .text {
+    color: #333;
+    color: red;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22px;
+  }
+`;
+
 // Typing
 interface Props {
   params: {
@@ -83,14 +123,19 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
     if (currentValue) {
       return (
         <div>
-          <h1><FormattedMessage {...messages.permissionsTitle} /></h1>
-          <p><FormattedMessage {...messages.permissionsSubtitle} /></p>
+          <Title>
+            <FormattedMessage {...messages.permissionsTitle} />
+          </Title>
 
-          <FieldWrapper>
-            <label htmlFor="permissions-type">
+          <Description>
+            <FormattedMessage {...messages.permissionsSubtitle} />
+          </Description>
+
+          <StyledFieldWrapper>
+            <StyledLabel htmlFor="permissions-type">
               <FormattedMessage {...messages.permissionTypeLabel} />
-            </label>
-            <Radio
+            </StyledLabel>
+            <StyledRadio
               onChange={this.handlePermissionTypeChange}
               currentValue={currentValue}
               name="permissionsType"
@@ -98,7 +143,7 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
               value="all"
               id="permissions-all"
             />
-            <Radio
+            <StyledRadio
               onChange={this.handlePermissionTypeChange}
               currentValue={currentValue}
               name="permissionsType"
@@ -106,7 +151,7 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
               value="selection"
               id="permissions-selection"
             />
-          </FieldWrapper>
+          </StyledFieldWrapper>
 
           {groups}
         </div>
