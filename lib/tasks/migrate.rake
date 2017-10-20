@@ -11,7 +11,7 @@ namespace :migrate do
   	# uri = Mongo::URI.new("mongodb://citizenlab:jhshEVweHWULVCA9x2nLuWL8@lamppost.15.mongolayer.com:10300,lamppost.14.mongolayer.com:10323/demo?replicaSet=set-56285eff675db1d28f0012d1")
   	# client = Mongo::Client.new(uri.servers, uri.options)
   	# client.login(uri.credentials)
-
+    TenantTemplateService.new.apply_template 'base'
     client = connect true # Mongo::Client.new(['127.0.0.1:27017'])
     areas_hash = {}
     client['neighbourhoods'].find.each do |n|
@@ -22,9 +22,9 @@ namespace :migrate do
   		migrate_user(u, users_hash)
   	end
     topics_hash = {}
-    client['categories'].find.each do |c|
-      migrate_topic(c, topics_hash)
-    end
+    # client['categories'].find.each do |c|
+    #   migrate_topic(c, topics_hash)
+    # end
     # TODO events
     # TODO phases
     projects_hash = {}
@@ -35,7 +35,7 @@ namespace :migrate do
     client['posts'].find.each do |p|
       migrate_ideas(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
     end
-
+    byebug
     if !@log.empty?
       puts 'Migrated with errors!'
       @log.each(&method(:puts))
@@ -96,7 +96,7 @@ namespace :migrate do
       return
     end
     # password
-    d[:password] = 'testtest' ###
+    d[:password] = 'testtest' ### TODO
     # locale
     d[:locale] = u['telescope']['locale'] || Tenant.current.settings.dig('core', 'locales').first
     # admin
@@ -172,16 +172,16 @@ namespace :migrate do
     end
     # image
     if p.dig('images')&.first&.dig('original')
-      d[:header_bg] = p.dig('images').first.dig('original')
+      d[:remote_header_bg_url] = p.dig('images').first.dig('original')
     end
     # areas
     if p.dig('neighbourhoods')
       d[:areas] = p.dig('neighbourhoods').map { |nid| areas_hash[nid] }
     end
     # topics
-    if p.dig('categories')
-      d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }
-    end
+    # if p.dig('categories')
+    #   d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }
+    # end
     begin
       record = Project.new d
       # slug
@@ -226,11 +226,7 @@ namespace :migrate do
       return
     end
     # TODO idea status mapping
-    d[:idea_status] IdeaStatus.proposed
-    # image
-    if p.dig('images')
-      d[:idea_images] = p.dig('images').map {|i| IdeaImage.new(image: i.dig('original'))}
-    end
+    d[:idea_status] = IdeaStatus.find_by!(code: 'proposed')
     # project
     if p.dig('projectId')
       d[:project] = projects_hash[p.dig('projectId')]
@@ -239,10 +235,19 @@ namespace :migrate do
     if p.dig('neighbourhoods')
       d[:areas] = p.dig('neighbourhoods').map { |nid| areas_hash[nid] }
     end
-    # topics
-    if p.dig('categories')
-      d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }
+    # votes
+    votes_d = []
+    if p['upvoters']
+      votes_d.concat p['upvoters'].map{ |u| {mode: 'up', user: users_hash[u]} }
     end
+    if p['downvoters']
+      votes_d.concat p['downvoters'].map{ |u| {mode: 'down', user: users_hash[u]} }
+    end
+    votes_d.select!{ |v| v[:user] }
+    # topics
+    # if p.dig('categories')
+    #   d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }
+    # end
     begin
       record = Idea.new d
       # slug
@@ -251,6 +256,12 @@ namespace :migrate do
         d[:slug] = record.slug # for inclusion in logging
       end
       record.save!
+      # images
+      if p.dig('images')
+        p.dig('images').each { |i| IdeaImage.create!(remote_image_url: i.dig('original'), idea: record) }
+      end
+      # votes
+      votes_d.each { |v| v[:votable] = record; Vote.create!(v) }
       ideas_hash[p['_id']] = record.id
     rescue Exception => e
       @log.concat [e.message+' '+d.to_s]
