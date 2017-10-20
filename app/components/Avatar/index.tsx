@@ -58,7 +58,6 @@ const Container: any = styled.div`
   align-items: center;
   justify-content: Center;
   cursor: ${(props: any) => props.isClickable ? 'pointer' : 'auto'};
-  border: solid 1px green;
 
   ${(props: any) => props.isClickable && css`
     &:hover ${AvatarIcon} {
