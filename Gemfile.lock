@@ -276,6 +276,8 @@ GEM
     rubyzip (1.1.7)
     rufus-scheduler (3.4.0)
       et-orbi (~> 1.0)
+    sentry-raven (2.7.1)
+      faraday (>= 0.7.6, < 1.0)
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
     sidekiq (4.2.10)
@@ -359,6 +361,7 @@ DEPENDENCIES
   rspec-rails
   rspec_api_documentation
   rubyzip (~> 1.1.0)
+  sentry-raven
   shoulda-matchers (~> 3.1)
   sidekiq (~> 4.2.9)
   sidekiq-cron (~> 0.4.5)
