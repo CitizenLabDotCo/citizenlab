@@ -5,6 +5,7 @@ class Api::V1::ProjectsController < ::ApplicationController
   def index
     @projects = policy_scope(Project)
       .includes(:project_images)
+      .order(created_at: :desc)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
