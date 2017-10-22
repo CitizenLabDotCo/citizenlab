@@ -177,6 +177,14 @@ table th, table td {
                   <span class="description">Either &#39;new&#39;, &#39;-new&#39;, &#39;trending&#39;, &#39;-trending&#39;, &#39;popular&#39;, &#39;-popular&#39;, &#39;author_name&#39;, &#39;-author_name&#39;, &#39;upvotes_count&#39;, &#39;-upvotes_count&#39;, &#39;downvotes_count&#39;, &#39;-downvotes_count&#39;, &#39;status&#39;, &#39;-status&#39;</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">publication_status</span>
+                </td>
+                <td>
+                  <span class="description">Return only ideas with the specified publication status; returns all pusblished ideas by default</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -185,34 +193,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA1ODcsInN1YiI6ImQ1OTlhZWMzLWVhYWItNDQzZi1hODBlLWY4ZTEzYjJiM2E3ZiJ9.Tb64WgFJaxPQQEosHteZ_rEijswE3t7BEISiN2U0Fbo
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI4OTAsInN1YiI6IjA2NDRjNjdmLTUxZmQtNGU0NS1iMWRhLTQ1MjcyMGM1ZDVmYiJ9.KrZTsyAz0cGHOPphokNehLwQy3oQkEg40f-sfOElDgc
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?topics[]=2c6649f9-a175-448b-aa55-5afc435e50f7</pre>
+          <pre class="request route highlight">GET api/v1/ideas?topics[]=608dd495-63dd-4557-b632-003b5d24fd7e</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;2c6649f9-a175-448b-aa55-5afc435e50f7&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;608dd495-63dd-4557-b632-003b5d24fd7e&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;a5cc1bd5d88f64e20d0a16131016c020&quot;
+ETag: W/&quot;979d9934a027f3b166cded6c47c122bc&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: aa63f418-fa85-4a4c-b14e-157cc3ee538f
-X-Runtime: 0.088559
+X-Request-Id: 374046d0-06de-496e-94fe-5a6794f698e1
+X-Runtime: 0.048648
 Vary: Origin
-Content-Length: 1773</pre>
+Content-Length: 1764</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;36d5008f-108b-424c-a496-e8d4d5ae718e&quot;,
+      &quot;id&quot;: &quot;a72a71e4-fcdb-4677-b080-c405ecdc4429&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -223,7 +231,7 @@ Content-Length: 1773</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Johnson Hermann&quot;,
+        &quot;author_name&quot;: &quot;Lennie Jones&quot;,
         &quot;slug&quot;: &quot;plant-more-trees&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
@@ -231,15 +239,15 @@ Content-Length: 1773</pre>
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-09-21T11:43:07.186Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:43:07.186Z&quot;,
-        &quot;published_at&quot;: &quot;2017-09-21T11:43:07.186Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T15:34:50.505Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:34:50.505Z&quot;,
+        &quot;published_at&quot;: &quot;2017-10-22T15:34:50.505Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;2c6649f9-a175-448b-aa55-5afc435e50f7&quot;,
+              &quot;id&quot;: &quot;608dd495-63dd-4557-b632-003b5d24fd7e&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]
@@ -256,19 +264,19 @@ Content-Length: 1773</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;6b72353b-880e-47fb-abbd-efe2f35067f1&quot;,
+            &quot;id&quot;: &quot;f055ce6e-5c40-4ad7-a101-89429997a5d7&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;901c2b7b-91f0-4ef4-9e23-7bd4c1f6779a&quot;,
+            &quot;id&quot;: &quot;65ddc1bb-807d-41bc-85e8-fb57b27a759a&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;0745ed65-d9ca-4cd8-bf40-39e85af1ff5e&quot;,
+            &quot;id&quot;: &quot;cdaea7bd-2736-47a9-a030-143e9b289e53&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -280,25 +288,25 @@ Content-Length: 1773</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;6b72353b-880e-47fb-abbd-efe2f35067f1&quot;,
+      &quot;id&quot;: &quot;f055ce6e-5c40-4ad7-a101-89429997a5d7&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Johnson&quot;,
-        &quot;last_name&quot;: &quot;Hermann&quot;,
-        &quot;slug&quot;: &quot;johnson-hermann&quot;,
+        &quot;first_name&quot;: &quot;Lennie&quot;,
+        &quot;last_name&quot;: &quot;Jones&quot;,
+        &quot;slug&quot;: &quot;lennie-jones&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/6b72353b-880e-47fb-abbd-efe2f35067f1/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/6b72353b-880e-47fb-abbd-efe2f35067f1/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/6b72353b-880e-47fb-abbd-efe2f35067f1/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/f055ce6e-5c40-4ad7-a101-89429997a5d7/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/f055ce6e-5c40-4ad7-a101-89429997a5d7/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/f055ce6e-5c40-4ad7-a101-89429997a5d7/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-09-21T11:43:07.137Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:43:07.137Z&quot;,
+        &quot;created_at&quot;: &quot;2017-10-22T15:34:50.484Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:34:50.484Z&quot;,
         &quot;unread_notifications&quot;: 0
       }
     }

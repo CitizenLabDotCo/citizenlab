@@ -188,12 +188,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA1NzMsInN1YiI6ImIzZTE1OTA3LTMzNzEtNDhlNC04YWNlLWNmNDRhNzZhNjlkNyJ9.o0w0x0bNdOpWvSt5A7ApbLSnAv9Xf2iyYKr2VGJva48
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI4ODUsInN1YiI6IjNiZWQ1NDY4LWJmYTEtNDg0Mi1hNzBhLWFkZDM4ZDlhZjY5YiJ9.g8n7wKLGBghKKVYzQ7JOD0BWTwUGPOaEOki-ZTdzwI8
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST api/v1/ideas/ef830f38-b5e7-4eef-8123-9ac78dcb4ad2/comments</pre>
+          <pre class="request route highlight">POST api/v1/ideas/3687418f-060a-4658-a4ef-ea19874e0ac0/comments</pre>
 
 
             <h4>Body</h4>
@@ -203,18 +203,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;45019486b88b9475be4684ec387de782&quot;
+ETag: W/&quot;831f6db7313c24b75c5492b9c52d40bb&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 1cf32b41-dfaf-4391-9e11-54308caac6f9
-X-Runtime: 0.091552
+X-Request-Id: ab18ce53-9a89-46dc-ab31-de4bba0ed1cc
+X-Runtime: 0.048171
 Vary: Origin
-Content-Length: 1347</pre>
+Content-Length: 1352</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;c1fe8156-3399-4f03-bd1b-0b6d002646a5&quot;,
+    &quot;id&quot;: &quot;ea160fec-99db-43f8-897a-0beef8f0380e&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
@@ -223,19 +223,19 @@ Content-Length: 1347</pre>
       },
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
-      &quot;created_at&quot;: &quot;2017-09-21T11:42:53.624Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-09-21T11:42:53.624Z&quot;
+      &quot;created_at&quot;: &quot;2017-10-22T15:34:45.473Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-10-22T15:34:45.473Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;ef830f38-b5e7-4eef-8123-9ac78dcb4ad2&quot;,
+          &quot;id&quot;: &quot;3687418f-060a-4658-a4ef-ea19874e0ac0&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;b3e15907-3371-48e4-8ace-cf44a76a69d7&quot;,
+          &quot;id&quot;: &quot;3bed5468-bfa1-4842-a70a-add38d9af69b&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
@@ -249,26 +249,26 @@ Content-Length: 1347</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;b3e15907-3371-48e4-8ace-cf44a76a69d7&quot;,
+      &quot;id&quot;: &quot;3bed5468-bfa1-4842-a70a-add38d9af69b&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Kaitlin&quot;,
-        &quot;last_name&quot;: &quot;Windler&quot;,
-        &quot;slug&quot;: &quot;kaitlin-windler&quot;,
+        &quot;first_name&quot;: &quot;Sylvia&quot;,
+        &quot;last_name&quot;: &quot;Schultz&quot;,
+        &quot;slug&quot;: &quot;sylvia-schultz&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/b3e15907-3371-48e4-8ace-cf44a76a69d7/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/b3e15907-3371-48e4-8ace-cf44a76a69d7/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/b3e15907-3371-48e4-8ace-cf44a76a69d7/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/3bed5468-bfa1-4842-a70a-add38d9af69b/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/3bed5468-bfa1-4842-a70a-add38d9af69b/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/3bed5468-bfa1-4842-a70a-add38d9af69b/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-09-21T11:42:53.179Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:42:53.179Z&quot;,
-        &quot;email&quot;: &quot;aurelie.rath@kookeefe.io&quot;,
+        &quot;created_at&quot;: &quot;2017-10-22T15:34:45.358Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:34:45.358Z&quot;,
+        &quot;email&quot;: &quot;earl.abernathy@kleinweimann.com&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

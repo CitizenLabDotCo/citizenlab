@@ -21,11 +21,20 @@ resource "Tenants" do
   patch "api/v1/tenants/:id" do
 
     with_options scope: :tenant do   
-      parameter :settings, "The changes to the\
-      settings object. This will me merged with the existing settings. Arrays\
-      will not be merged, but override their values", extra: ""
       parameter :logo, "Base64 encoded logo"
       parameter :header_bg, "Base64 encoded header"
+      parameter :settings, "The changes to the\
+      settings object. This will me merged with the existing settings. Arrays\
+      will not be merged, but override their values.", extra: ""
+      Tenant::SETTINGS_JSON_SCHEMA["properties"].each do |feature, feature_descriptor|
+        parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:tenant, :settings, feature]
+        parameter :enabled, "Is #{feature} enabled", scope: ['settings', feature]
+        feature_descriptor["properties"].each do |setting, setting_descriptor|
+          unless ["enabled", "allowed"].include?(setting)
+            parameter setting, "#{setting_descriptor["description"]}. Type: #{setting_descriptor["type"]}", scope: [:tenant, :settings, feature]
+          end
+        end
+      end
     end
     ValidationErrorHelper.new.error_fields(self, Tenant)
 

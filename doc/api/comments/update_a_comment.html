@@ -188,12 +188,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA1NzUsInN1YiI6ImFmMmY5YjJlLTE1MGEtNGNjOS1hZjJjLTQzMTU2ODI3NjgwNSJ9.-fWIu1TPMNRhvoFO8WQCtVx1r9Mm41VD2aevaJv02Gc
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI4ODYsInN1YiI6IjkxMzFkNDIwLTQxMjctNGE2MC1hNzM3LWM3NDFjMDEwNTk2ZSJ9.VjlUf4lcOA_756z7SpHanbvgZwmq7eB5K01LnybLkTY
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/comments/2111b6e5-3acd-4833-96ab-c2bc8e4c9b76</pre>
+          <pre class="request route highlight">PATCH api/v1/comments/6bd408ec-51d4-4093-a5e2-79f481a79d8f</pre>
 
 
             <h4>Body</h4>
@@ -203,18 +203,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;a4b9b381296f7f1c3c7fb2165a02c6d8&quot;
+ETag: W/&quot;150e4b9e9f65149971e899ea5ddd821c&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 0184891d-52d0-4c98-8467-72652422e61a
-X-Runtime: 0.027155
+X-Request-Id: b9e2f6a8-492c-4211-94d2-3f2eea964a9c
+X-Runtime: 0.029673
 Vary: Origin
-Content-Length: 1360</pre>
+Content-Length: 1348</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;2111b6e5-3acd-4833-96ab-c2bc8e4c9b76&quot;,
+    &quot;id&quot;: &quot;6bd408ec-51d4-4093-a5e2-79f481a79d8f&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
@@ -223,19 +223,19 @@ Content-Length: 1360</pre>
       },
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
-      &quot;created_at&quot;: &quot;2017-09-21T11:42:55.715Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-09-21T11:42:55.715Z&quot;
+      &quot;created_at&quot;: &quot;2017-10-22T15:34:46.127Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-10-22T15:34:46.127Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;c79fa6a2-4527-4562-b702-d4e110efcf06&quot;,
+          &quot;id&quot;: &quot;aa55d079-cb94-4cf4-803f-889e306fa769&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;af2f9b2e-150a-4cc9-af2c-431568276805&quot;,
+          &quot;id&quot;: &quot;9131d420-4127-4a60-a737-c741c010596e&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
@@ -249,26 +249,26 @@ Content-Length: 1360</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;af2f9b2e-150a-4cc9-af2c-431568276805&quot;,
+      &quot;id&quot;: &quot;9131d420-4127-4a60-a737-c741c010596e&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Broderick&quot;,
-        &quot;last_name&quot;: &quot;Kozey&quot;,
-        &quot;slug&quot;: &quot;broderick-kozey&quot;,
+        &quot;first_name&quot;: &quot;Ruthe&quot;,
+        &quot;last_name&quot;: &quot;Powlowski&quot;,
+        &quot;slug&quot;: &quot;ruthe-powlowski&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/af2f9b2e-150a-4cc9-af2c-431568276805/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/af2f9b2e-150a-4cc9-af2c-431568276805/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/af2f9b2e-150a-4cc9-af2c-431568276805/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/9131d420-4127-4a60-a737-c741c010596e/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/9131d420-4127-4a60-a737-c741c010596e/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/9131d420-4127-4a60-a737-c741c010596e/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-09-21T11:42:55.675Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:42:55.675Z&quot;,
-        &quot;email&quot;: &quot;garrett.oberbrunner@wisokybernier.com&quot;,
+        &quot;created_at&quot;: &quot;2017-10-22T15:34:46.112Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:34:46.112Z&quot;,
+        &quot;email&quot;: &quot;estrella@ruelzboncak.info&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

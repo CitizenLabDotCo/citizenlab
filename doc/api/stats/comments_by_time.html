@@ -152,17 +152,17 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA2NTcsInN1YiI6ImEyMjdkOGRlLTBlODQtNGI5YS05NWNiLTdlOGNjYzBlNGI1ZCJ9.uQhTY2ojqNNK_3rF32SpwEI6leQIWAwrVzHzSSQIyFg
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI5MzIsInN1YiI6ImQxYTQ5MDM4LWNiN2YtNGMyMi1hNGQwLTVjYWRiODJiZTE0OSJ9.NRgBbZL7xlRChAlBNQQUqssK5xrsEu5jsKwYPueWenU
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/stats/comments_by_time?start_at=2017-09-01+00%3A00%3A00+%2B0200&amp;end_at=2017-09-30+23%3A59%3A59+%2B0200&amp;interval=day</pre>
+          <pre class="request route highlight">GET api/v1/stats/comments_by_time?start_at=2017-10-01+00%3A00%3A00+%2B0200&amp;end_at=2017-10-31+23%3A59%3A59+%2B0100&amp;interval=day</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">start_at: 2017-09-01 00:00:00 +0200
-end_at: 2017-09-30 23:59:59 +0200
+            <pre class="request query_parameters highlight">start_at: 2017-10-01 00:00:00 +0200
+end_at: 2017-10-31 23:59:59 +0100
 interval: day</pre>
 
 
@@ -170,46 +170,47 @@ interval: day</pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;fa225baeb31b135446651078afc7b324&quot;
+ETag: W/&quot;d07a6a614a5a927569f5ebc121b34d33&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 4bc5e5c9-4e3a-4ad3-ae80-add65a0d8142
-X-Runtime: 0.017370
+X-Request-Id: 9216da91-cb7b-4be8-af36-23b2dcaec20f
+X-Runtime: 0.020111
 Vary: Origin
-Content-Length: 451</pre>
+Content-Length: 466</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;2017-09-01&quot;: 0,
-  &quot;2017-09-02&quot;: 0,
-  &quot;2017-09-03&quot;: 0,
-  &quot;2017-09-04&quot;: 0,
-  &quot;2017-09-05&quot;: 0,
-  &quot;2017-09-06&quot;: 0,
-  &quot;2017-09-07&quot;: 0,
-  &quot;2017-09-08&quot;: 0,
-  &quot;2017-09-09&quot;: 0,
-  &quot;2017-09-10&quot;: 0,
-  &quot;2017-09-11&quot;: 0,
-  &quot;2017-09-12&quot;: 0,
-  &quot;2017-09-13&quot;: 0,
-  &quot;2017-09-14&quot;: 0,
-  &quot;2017-09-15&quot;: 0,
-  &quot;2017-09-16&quot;: 0,
-  &quot;2017-09-17&quot;: 0,
-  &quot;2017-09-18&quot;: 0,
-  &quot;2017-09-19&quot;: 0,
-  &quot;2017-09-20&quot;: 0,
-  &quot;2017-09-21&quot;: 0,
-  &quot;2017-09-22&quot;: 0,
-  &quot;2017-09-23&quot;: 0,
-  &quot;2017-09-24&quot;: 0,
-  &quot;2017-09-25&quot;: 0,
-  &quot;2017-09-26&quot;: 0,
-  &quot;2017-09-27&quot;: 0,
-  &quot;2017-09-28&quot;: 0,
-  &quot;2017-09-29&quot;: 0,
-  &quot;2017-09-30&quot;: 0
+  &quot;2017-10-01&quot;: 0,
+  &quot;2017-10-02&quot;: 0,
+  &quot;2017-10-03&quot;: 0,
+  &quot;2017-10-04&quot;: 0,
+  &quot;2017-10-05&quot;: 0,
+  &quot;2017-10-06&quot;: 0,
+  &quot;2017-10-07&quot;: 0,
+  &quot;2017-10-08&quot;: 0,
+  &quot;2017-10-09&quot;: 0,
+  &quot;2017-10-10&quot;: 0,
+  &quot;2017-10-11&quot;: 0,
+  &quot;2017-10-12&quot;: 0,
+  &quot;2017-10-13&quot;: 0,
+  &quot;2017-10-14&quot;: 0,
+  &quot;2017-10-15&quot;: 0,
+  &quot;2017-10-16&quot;: 0,
+  &quot;2017-10-17&quot;: 0,
+  &quot;2017-10-18&quot;: 0,
+  &quot;2017-10-19&quot;: 0,
+  &quot;2017-10-20&quot;: 0,
+  &quot;2017-10-21&quot;: 0,
+  &quot;2017-10-22&quot;: 0,
+  &quot;2017-10-23&quot;: 0,
+  &quot;2017-10-24&quot;: 0,
+  &quot;2017-10-25&quot;: 0,
+  &quot;2017-10-26&quot;: 0,
+  &quot;2017-10-27&quot;: 0,
+  &quot;2017-10-28&quot;: 0,
+  &quot;2017-10-29&quot;: 0,
+  &quot;2017-10-30&quot;: 0,
+  &quot;2017-10-31&quot;: 0
 }</pre>
       </div>
     </div>
