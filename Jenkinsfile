@@ -26,7 +26,7 @@ pipeline {
         sh 'cp -r doc/api/* /var/www/apidocs'
       }
     }
-    stage('Push docker image') {
+    stage('Push docker image tagged latest') {
       when { branch 'master' }
       steps {
         echo 'Building containers'
@@ -48,7 +48,7 @@ pipeline {
         }
       }
     }
-    stage('Push docker image') {
+    stage('Push docker image tagged production-benelux') {
       when { branch 'production' }
       steps {
         echo 'Building containers'
