@@ -65,7 +65,7 @@ pipeline {
       when { branch 'production' }
       steps {
         sshagent (credentials: ['local-ssh-user']) {
-          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.124.157 "docker pull citizenlabdotco/cl2-back:production-benelux && docker run --env-file cl2-deployment/.env-production-benelux citizenlabdotco/cl2-back:production-benelux rake db:migrate"'
+          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.124.157 "docker pull citizenlabdotco/cl2-back:production-benelux && docker run --env-file cl2-deployment/.env-production-benelux citizenlabdotco/cl2-back:production-benelux rake db:migrate cl2back:clean_tenant_settings"'
           sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.124.157 "cd cl2-deployment && docker stack deploy --compose-file docker-compose-production-benelux.yml cl2-prd-bnlx-stack --with-registry-auth"'
         }
       }
