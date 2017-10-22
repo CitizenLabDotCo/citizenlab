@@ -117,13 +117,13 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA1NjIsInN1YiI6ImYwOTNkNmJjLWQ5MTEtNDZlNS04ODFkLTU0MWJkZjJhNGI4MyJ9.FNOEQL2sgzCMZ7A0IyZQ0WqaDXL28hH7WQO5JFHxWwc
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI4ODIsInN1YiI6IjQ5MTIzYWFiLTQ5ZjMtNDkxNi04MWUzLTg5MWEwMjJjZmMyMCJ9.Z6-XBWTkA3PiDqkOXSg-OoItoKTgLS4Gi-8Tdp39tFQ
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/votes/b29e799d-d583-4d6c-bf4b-691982c932d7</pre>
+          <pre class="request route highlight">GET api/v1/votes/731ded04-b146-4761-ac88-7b1f5227f77b</pre>
 
 
 
@@ -131,18 +131,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;26f535ed6bb2b411b5c3e5d32ad86ff1&quot;
+ETag: W/&quot;97e93084cdc56e1be3011ad4c78f8e7e&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: e071f661-3a07-4b23-b2de-c66bebf458a5
-X-Runtime: 0.022994
+X-Request-Id: 5351aa18-bf7e-422e-ad7d-39a4699d7b44
+X-Runtime: 0.027256
 Vary: Origin
-Content-Length: 1040</pre>
+Content-Length: 1057</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;b29e799d-d583-4d6c-bf4b-691982c932d7&quot;,
+    &quot;id&quot;: &quot;731ded04-b146-4761-ac88-7b1f5227f77b&quot;,
     &quot;type&quot;: &quot;votes&quot;,
     &quot;attributes&quot;: {
       &quot;mode&quot;: &quot;up&quot;
@@ -150,13 +150,13 @@ Content-Length: 1040</pre>
     &quot;relationships&quot;: {
       &quot;votable&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;f702dede-9528-4d69-900c-3ca05345b1b0&quot;,
+          &quot;id&quot;: &quot;50e70dc7-fc0e-4e2e-ab21-72ab45110604&quot;,
           &quot;type&quot;: &quot;votables&quot;
         }
       },
       &quot;user&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;1859aee4-51ef-4517-9619-c0ef887ad78b&quot;,
+          &quot;id&quot;: &quot;00b86e60-64cf-4e7d-b757-f3031bde7a5e&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       }
@@ -164,26 +164,26 @@ Content-Length: 1040</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;1859aee4-51ef-4517-9619-c0ef887ad78b&quot;,
+      &quot;id&quot;: &quot;00b86e60-64cf-4e7d-b757-f3031bde7a5e&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Keira&quot;,
-        &quot;last_name&quot;: &quot;Will&quot;,
-        &quot;slug&quot;: &quot;keira-will&quot;,
+        &quot;first_name&quot;: &quot;Mitchell&quot;,
+        &quot;last_name&quot;: &quot;Marvin&quot;,
+        &quot;slug&quot;: &quot;mitchell-marvin&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/1859aee4-51ef-4517-9619-c0ef887ad78b/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/1859aee4-51ef-4517-9619-c0ef887ad78b/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/1859aee4-51ef-4517-9619-c0ef887ad78b/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/00b86e60-64cf-4e7d-b757-f3031bde7a5e/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/00b86e60-64cf-4e7d-b757-f3031bde7a5e/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/00b86e60-64cf-4e7d-b757-f3031bde7a5e/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-09-21T11:42:42.897Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:42:42.897Z&quot;,
-        &quot;email&quot;: &quot;josue@gleason.info&quot;,
+        &quot;created_at&quot;: &quot;2017-10-22T15:34:42.653Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:34:42.653Z&quot;,
+        &quot;email&quot;: &quot;jensen@schulistfeest.name&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

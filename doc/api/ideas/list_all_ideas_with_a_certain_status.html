@@ -177,6 +177,14 @@ table th, table td {
                   <span class="description">Either &#39;new&#39;, &#39;-new&#39;, &#39;trending&#39;, &#39;-trending&#39;, &#39;popular&#39;, &#39;-popular&#39;, &#39;author_name&#39;, &#39;-author_name&#39;, &#39;upvotes_count&#39;, &#39;-upvotes_count&#39;, &#39;downvotes_count&#39;, &#39;-downvotes_count&#39;, &#39;status&#39;, &#39;-status&#39;</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">publication_status</span>
+                </td>
+                <td>
+                  <span class="description">Return only ideas with the specified publication status; returns all pusblished ideas by default</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -185,34 +193,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA1OTQsInN1YiI6ImFkN2M4MTRkLTJkYzktNDgzOC04MWM5LWJlYjVlZDk2NGZiZiJ9.Uv8QgpO-6Obkz0g7ksz95XfScMDIanYUdecgYMZYKoo
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI4OTQsInN1YiI6IjJjZjc2ZmQ0LTRjMTctNGE3OC1hMmYxLWU5MzI4YTBhNGE4YiJ9.sB1BTt6MQeIAvTi7fjn-HZQpUqOFPDCoflrBt9smbdA
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?idea_status=f132446d-6aae-4c18-93e5-f46a59a04ca6</pre>
+          <pre class="request route highlight">GET api/v1/ideas?idea_status=5d8a9cb5-99f3-4166-9133-955d22dcb4b0</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">idea_status: f132446d-6aae-4c18-93e5-f46a59a04ca6</pre>
+            <pre class="request query_parameters highlight">idea_status: 5d8a9cb5-99f3-4166-9133-955d22dcb4b0</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;afc0a3d0a7833d64ba35a89dbc71bcaf&quot;
+ETag: W/&quot;66b4945b4a24b430df3ed5b097eebfa6&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 19acd302-f237-4db9-a88e-bf58739afd3c
-X-Runtime: 0.037332
+X-Request-Id: 945aba49-380f-4d5a-8dbf-d022eb58b611
+X-Runtime: 0.044453
 Vary: Origin
-Content-Length: 1696</pre>
+Content-Length: 1723</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;f7391632-7c6d-4cf4-9c93-d6d7d7b30360&quot;,
+      &quot;id&quot;: &quot;504279c5-c148-4f00-8ae8-e43a5f0d8447&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -223,17 +231,17 @@ Content-Length: 1696</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Ola Robel&quot;,
-        &quot;slug&quot;: &quot;plant-more-trees-5&quot;,
+        &quot;author_name&quot;: &quot;Matilde Cartwright&quot;,
+        &quot;slug&quot;: &quot;plant-more-trees-7&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-09-21T11:43:14.892Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:43:14.892Z&quot;,
-        &quot;published_at&quot;: &quot;2017-09-21T11:43:14.892Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T15:34:54.518Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:34:54.518Z&quot;,
+        &quot;published_at&quot;: &quot;2017-10-22T15:34:54.518Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -253,19 +261,19 @@ Content-Length: 1696</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;a7e87e3c-fbad-4757-a898-3f81f784ac1f&quot;,
+            &quot;id&quot;: &quot;3d763561-3c72-459d-98d2-629779f728bd&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;00279a50-5d36-4db0-a7f6-55b6a53a03a1&quot;,
+            &quot;id&quot;: &quot;53c3c8f9-865b-4449-bd45-78794a6721e0&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;f132446d-6aae-4c18-93e5-f46a59a04ca6&quot;,
+            &quot;id&quot;: &quot;5d8a9cb5-99f3-4166-9133-955d22dcb4b0&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -277,25 +285,25 @@ Content-Length: 1696</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;a7e87e3c-fbad-4757-a898-3f81f784ac1f&quot;,
+      &quot;id&quot;: &quot;3d763561-3c72-459d-98d2-629779f728bd&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Ola&quot;,
-        &quot;last_name&quot;: &quot;Robel&quot;,
-        &quot;slug&quot;: &quot;ola-robel&quot;,
+        &quot;first_name&quot;: &quot;Matilde&quot;,
+        &quot;last_name&quot;: &quot;Cartwright&quot;,
+        &quot;slug&quot;: &quot;matilde-cartwright&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/a7e87e3c-fbad-4757-a898-3f81f784ac1f/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/a7e87e3c-fbad-4757-a898-3f81f784ac1f/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/a7e87e3c-fbad-4757-a898-3f81f784ac1f/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/3d763561-3c72-459d-98d2-629779f728bd/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/3d763561-3c72-459d-98d2-629779f728bd/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/3d763561-3c72-459d-98d2-629779f728bd/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-09-21T11:43:14.836Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:43:14.836Z&quot;,
+        &quot;created_at&quot;: &quot;2017-10-22T15:34:54.488Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:34:54.488Z&quot;,
         &quot;unread_notifications&quot;: 0
       }
     }

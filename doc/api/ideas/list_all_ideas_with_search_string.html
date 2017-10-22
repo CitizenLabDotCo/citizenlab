@@ -177,6 +177,14 @@ table th, table td {
                   <span class="description">Either &#39;new&#39;, &#39;-new&#39;, &#39;trending&#39;, &#39;-trending&#39;, &#39;popular&#39;, &#39;-popular&#39;, &#39;author_name&#39;, &#39;-author_name&#39;, &#39;upvotes_count&#39;, &#39;-upvotes_count&#39;, &#39;downvotes_count&#39;, &#39;-downvotes_count&#39;, &#39;status&#39;, &#39;-status&#39;</span>
                 </td>
               </tr>
+              <tr>
+                <td>
+                    <span class="name">publication_status</span>
+                </td>
+                <td>
+                  <span class="description">Return only ideas with the specified publication status; returns all pusblished ideas by default</span>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -185,7 +193,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA1OTYsInN1YiI6IjViMzcwZmNjLWNhMDktNGFkZC05NTYxLTdhZWRkYzljZTA3ZSJ9.50kim98b_TEuFYG2q7cUOmVWA1xTTbuWlek1QiKV0xE
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI4OTUsInN1YiI6ImVkMDUyYWUwLWFlNzEtNGZkMC1iNzBhLTMzYTEyYzQ1YjM4NyJ9.a58Y6zLYqX5nplhQ75HvXXJJf6ZAw2Kz6lifxbnoPr0
 Host: example.org
 Cookie: </pre>
 
@@ -200,19 +208,19 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;a32c01f90d2b6b609309a1cf639ec3e5&quot;
+ETag: W/&quot;cacb01448323a3402a98772ad2f6d6ea&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: e4c3d8f6-3b08-4b8b-9938-e969669acd20
-X-Runtime: 0.057153
+X-Request-Id: 0489ef50-1aa7-4388-a1f7-ea14c80116d2
+X-Runtime: 0.058682
 Vary: Origin
-Content-Length: 1702</pre>
+Content-Length: 1681</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;459d1813-2c02-4ed6-a1ba-3a94aad1ab5f&quot;,
+      &quot;id&quot;: &quot;aaf71fe0-659d-41b4-9e68-ef73061fe7b2&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -222,7 +230,7 @@ Content-Length: 1702</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Lempi Stoltenberg&quot;,
+        &quot;author_name&quot;: &quot;Tess Smith&quot;,
         &quot;slug&quot;: &quot;this-idea-is-uniqque&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
@@ -230,9 +238,9 @@ Content-Length: 1702</pre>
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-09-21T11:43:17.236Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:43:17.236Z&quot;,
-        &quot;published_at&quot;: &quot;2017-09-21T11:43:17.235Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T15:34:55.636Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:34:55.636Z&quot;,
+        &quot;published_at&quot;: &quot;2017-10-22T15:34:55.636Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -252,19 +260,19 @@ Content-Length: 1702</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;eb847c4f-c2c2-41ee-8292-0fa2c4220a74&quot;,
+            &quot;id&quot;: &quot;bc203a87-d7a4-46cd-9cd8-64797d3564cc&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;48ac8ffd-0711-4daa-ade3-3e0b04f23df1&quot;,
+            &quot;id&quot;: &quot;8b9d2d5d-4043-482c-b659-17925dc2aa4c&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;71bf0e46-639e-4f64-9c88-12c0b57f13e3&quot;,
+            &quot;id&quot;: &quot;2232b3de-e646-498f-afc5-289943ce9463&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -276,25 +284,25 @@ Content-Length: 1702</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;eb847c4f-c2c2-41ee-8292-0fa2c4220a74&quot;,
+      &quot;id&quot;: &quot;bc203a87-d7a4-46cd-9cd8-64797d3564cc&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Lempi&quot;,
-        &quot;last_name&quot;: &quot;Stoltenberg&quot;,
-        &quot;slug&quot;: &quot;lempi-stoltenberg&quot;,
+        &quot;first_name&quot;: &quot;Tess&quot;,
+        &quot;last_name&quot;: &quot;Smith&quot;,
+        &quot;slug&quot;: &quot;tess-smith&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/eb847c4f-c2c2-41ee-8292-0fa2c4220a74/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/eb847c4f-c2c2-41ee-8292-0fa2c4220a74/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/eb847c4f-c2c2-41ee-8292-0fa2c4220a74/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/bc203a87-d7a4-46cd-9cd8-64797d3564cc/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/bc203a87-d7a4-46cd-9cd8-64797d3564cc/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/bc203a87-d7a4-46cd-9cd8-64797d3564cc/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-09-21T11:43:17.184Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:43:17.184Z&quot;,
+        &quot;created_at&quot;: &quot;2017-10-22T15:34:55.616Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:34:55.616Z&quot;,
         &quot;unread_notifications&quot;: 0
       }
     }
