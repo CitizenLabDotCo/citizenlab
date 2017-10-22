@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Phases API</title>
+    <title>Projects API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Phases API</h1>
+      <h1>Projects API</h1>
 
       <div class="article">
-        <h2>List phases of a project</h2>
-        <h3>GET api/v1/projects/:project_id/phases</h3>
+        <h2>List all projects with an area</h2>
+        <h3>GET api/v1/projects</h3>
 
           <h3>Parameters</h3>
           <table class="parameters table table-striped table-bordered table-condensed">
@@ -123,18 +123,18 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
-                    <span class="name">page[number]</span>
+                    <span class="name">topics</span>
                 </td>
                 <td>
-                  <span class="description">Page number</span>
+                  <span class="description">Filter by topics (AND)</span>
                 </td>
               </tr>
               <tr>
                 <td>
-                    <span class="name">page[size]</span>
+                    <span class="name">areas</span>
                 </td>
                 <td>
-                  <span class="description">Number of phases per page</span>
+                  <span class="description">Filter by areas (AND)</span>
                 </td>
               </tr>
             </tbody>
@@ -144,79 +144,73 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Content-Type: application/json
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI5MTIsInN1YiI6ImViMGZkNjE5LTIyZWItNDI4Zi1iOTE2LWU5MTJhZjFlYzdiYyJ9.xyEWW2LnWmbT6PJXju8ye9Yw5E-qjkvFFzH4QGVzStU
+Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/projects/d991503a-7042-4911-adc0-aaef86c2df59/phases</pre>
+          <pre class="request route highlight">GET api/v1/projects?areas[]=b6812a47-bb7d-4e38-a6aa-ed69fd4f6565</pre>
 
+            <h4>Query Parameters</h4>
+            <pre class="request query_parameters highlight">areas: [&quot;b6812a47-bb7d-4e38-a6aa-ed69fd4f6565&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;850fa14621a8e7579892201bea131391&quot;
+ETag: W/&quot;437cfa74bf742f683571df8b791a7fa5&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 9209d1fd-ffd5-4475-ba68-aa04cda12ebe
-X-Runtime: 0.021621
+X-Request-Id: 1ee68973-ab3c-4ce6-bb48-a412ede4353f
+X-Runtime: 0.027938
 Vary: Origin
-Content-Length: 1241</pre>
+Content-Length: 782</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;9d7ed630-9ef7-4060-99c5-a584816c752a&quot;,
-      &quot;type&quot;: &quot;phases&quot;,
+      &quot;id&quot;: &quot;2012fc8c-06df-41ac-8dbf-94f7d6a863fb&quot;,
+      &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
-          &quot;en&quot;: &quot;Idea phase&quot;,
-          &quot;nl&quot;: &quot;Ideeën fase&quot;
+          &quot;en&quot;: &quot;Renew West Parc&quot;,
+          &quot;nl&quot;: &quot;Westpark vernieuwen&quot;
         },
         &quot;description_multiloc&quot;: {
-          &quot;en&quot;: &quot;&lt;p&gt;In this phase we gather ideas. Don&#39;t be shy, there are no stupid ideas!&lt;/p&gt;&quot;,
-          &quot;nl&quot;: &quot;&lt;p&gt;In deze fase verzamelen we ideeën. Wees niet verlegen, er zijn geen domme ideeën!&lt;/p&gt;&quot;
+          &quot;en&quot;: &quot;&lt;p&gt;Let&#39;s renew the parc at the city border and make it an enjoyable place for young and old.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.&lt;/p&gt;&quot;
         },
-        &quot;start_at&quot;: &quot;2017-05-01&quot;,
-        &quot;end_at&quot;: &quot;2017-06-30&quot;,
-        &quot;created_at&quot;: &quot;2017-10-22T15:35:11.146Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:35:11.146Z&quot;
+        &quot;slug&quot;: &quot;renew-west-parc&quot;,
+        &quot;header_bg&quot;: {
+          &quot;large&quot;: null,
+          &quot;medium&quot;: null,
+          &quot;small&quot;: null
+        },
+        &quot;ideas_count&quot;: 0,
+        &quot;created_at&quot;: &quot;2017-10-22T15:35:12.508Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:35:12.508Z&quot;
       },
       &quot;relationships&quot;: {
-        &quot;project&quot;: {
-          &quot;data&quot;: {
-            &quot;id&quot;: &quot;d991503a-7042-4911-adc0-aaef86c2df59&quot;,
-            &quot;type&quot;: &quot;projects&quot;
-          }
-        }
-      }
-    },
-    {
-      &quot;id&quot;: &quot;fc1e7c65-4609-4f6f-b56e-96488b7e5619&quot;,
-      &quot;type&quot;: &quot;phases&quot;,
-      &quot;attributes&quot;: {
-        &quot;title_multiloc&quot;: {
-          &quot;en&quot;: &quot;Idea phase&quot;,
-          &quot;nl&quot;: &quot;Ideeën fase&quot;
+        &quot;project_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
         },
-        &quot;description_multiloc&quot;: {
-          &quot;en&quot;: &quot;&lt;p&gt;In this phase we gather ideas. Don&#39;t be shy, there are no stupid ideas!&lt;/p&gt;&quot;,
-          &quot;nl&quot;: &quot;&lt;p&gt;In deze fase verzamelen we ideeën. Wees niet verlegen, er zijn geen domme ideeën!&lt;/p&gt;&quot;
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+            {
+              &quot;id&quot;: &quot;b6812a47-bb7d-4e38-a6aa-ed69fd4f6565&quot;,
+              &quot;type&quot;: &quot;areas&quot;
+            }
+          ]
         },
-        &quot;start_at&quot;: &quot;2017-05-01&quot;,
-        &quot;end_at&quot;: &quot;2017-06-30&quot;,
-        &quot;created_at&quot;: &quot;2017-10-22T15:35:11.151Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:35:11.151Z&quot;
-      },
-      &quot;relationships&quot;: {
-        &quot;project&quot;: {
-          &quot;data&quot;: {
-            &quot;id&quot;: &quot;d991503a-7042-4911-adc0-aaef86c2df59&quot;,
-            &quot;type&quot;: &quot;projects&quot;
-          }
+        &quot;topics&quot;: {
+          &quot;data&quot;: [
+
+          ]
         }
       }
     }

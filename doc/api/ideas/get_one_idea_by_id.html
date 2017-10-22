@@ -118,12 +118,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA2MDEsInN1YiI6IjkzOTc2MTZiLTA2YjAtNGJlMS05ODI4LTY2NGYyMGVjYzRjMyJ9.Yp9MMWD8zq-OKlsGyZaJis-JI1pf9TMZCGQX7l3rsn8
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI4OTgsInN1YiI6ImYzNDgzODU1LTQ0MjktNGYwMC1iZTMzLWJlZTgxNGMzMTQ4NyJ9.DvoK_FdKmAYm_emx88KxQ70Aiak6CSvMWmXOVsp7saM
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas/fa3acc15-fba6-4869-9b0c-dcd376226685</pre>
+          <pre class="request route highlight">GET api/v1/ideas/7c358645-b1ce-459c-9c2a-baeb2bc18bce</pre>
 
 
 
@@ -131,18 +131,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;1291845767bb9d6925f07676689cc904&quot;
+ETag: W/&quot;8af6d6f39d4dcd269a00982c5b46ca57&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 4aec423b-2234-41b9-9675-a999fe9a476f
-X-Runtime: 0.032010
+X-Request-Id: 688cea59-faaf-45a1-a044-dd40dbaaf646
+X-Runtime: 0.042895
 Vary: Origin
-Content-Length: 1684</pre>
+Content-Length: 1690</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;fa3acc15-fba6-4869-9b0c-dcd376226685&quot;,
+    &quot;id&quot;: &quot;7c358645-b1ce-459c-9c2a-baeb2bc18bce&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -153,7 +153,7 @@ Content-Length: 1684</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Kobe Smith&quot;,
+      &quot;author_name&quot;: &quot;Emma Labadie&quot;,
       &quot;slug&quot;: &quot;plant-more-trees&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;upvotes_count&quot;: 0,
@@ -161,9 +161,9 @@ Content-Length: 1684</pre>
       &quot;comments_count&quot;: 0,
       &quot;location_point_geojson&quot;: null,
       &quot;location_description&quot;: null,
-      &quot;created_at&quot;: &quot;2017-09-21T11:43:20.875Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-09-21T11:43:20.875Z&quot;,
-      &quot;published_at&quot;: &quot;2017-09-21T11:43:20.875Z&quot;
+      &quot;created_at&quot;: &quot;2017-10-22T15:34:57.630Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-10-22T15:34:57.630Z&quot;,
+      &quot;published_at&quot;: &quot;2017-10-22T15:34:57.630Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -183,19 +183,19 @@ Content-Length: 1684</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;d8477c21-29d2-429d-9e35-a6b62dc83983&quot;,
+          &quot;id&quot;: &quot;03fc5072-aae4-4bd4-a365-1a7348659238&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;3b4b9a36-9a84-4e4f-8e7f-f9c04511ab6c&quot;,
+          &quot;id&quot;: &quot;606704ea-6691-47cd-9a8b-787758f0eab4&quot;,
           &quot;type&quot;: &quot;projects&quot;
         }
       },
       &quot;idea_status&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;20716f60-543d-4e94-8740-7603a6f8f07d&quot;,
+          &quot;id&quot;: &quot;af7e0a86-5c3a-46a5-96e8-0a113b979865&quot;,
           &quot;type&quot;: &quot;idea_statuses&quot;
         }
       },
@@ -206,25 +206,25 @@ Content-Length: 1684</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;d8477c21-29d2-429d-9e35-a6b62dc83983&quot;,
+      &quot;id&quot;: &quot;03fc5072-aae4-4bd4-a365-1a7348659238&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Kobe&quot;,
-        &quot;last_name&quot;: &quot;Smith&quot;,
-        &quot;slug&quot;: &quot;kobe-smith&quot;,
+        &quot;first_name&quot;: &quot;Emma&quot;,
+        &quot;last_name&quot;: &quot;Labadie&quot;,
+        &quot;slug&quot;: &quot;emma-labadie&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/d8477c21-29d2-429d-9e35-a6b62dc83983/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/d8477c21-29d2-429d-9e35-a6b62dc83983/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/2e9e5851-f19c-4144-be8c-b2132a93af08/user/avatar/d8477c21-29d2-429d-9e35-a6b62dc83983/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/03fc5072-aae4-4bd4-a365-1a7348659238/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/03fc5072-aae4-4bd4-a365-1a7348659238/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/03fc5072-aae4-4bd4-a365-1a7348659238/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-09-21T11:43:20.827Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:43:20.827Z&quot;,
+        &quot;created_at&quot;: &quot;2017-10-22T15:34:57.611Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:34:57.611Z&quot;,
         &quot;unread_notifications&quot;: 0
       }
     }

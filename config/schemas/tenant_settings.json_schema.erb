@@ -8,390 +8,200 @@
     {
       "core": {
         "type": "object",
-            "description": "The core of the system. Container for general settings. Always enabled",
-            "required-settings": ["organization_type", "timezone","locales"],
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true},
-              "organization_type": {
-                "type": "string",
-                "enum": ["small_city", "medium_city", "large_city", "generic"]
-              },
-              "timezone": {
-                "type": "string",
-                "default": "Europe/Brussels",
-                "enum": [<%= TZInfo::Timezone.all_identifiers.map{|tz| ['"',tz,'"'].join}.join(",") %>]
-              },
-              "locales": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "enum": [<%= I18n.available_locales.map{|l| "\"#{l}\""}.join(",") %>]
-                },
-                "uniqueItems": true
-              },
-              "organization_name": { 
-                "$ref": "#/definitions/multiloc_string" 
-              },
-              "header_slogan": { 
-                "$ref": "#/definitions/multiloc_string" 
-              },
-              "meta_title": { 
-                "$ref": "#/definitions/multiloc_string" 
-              },
-              "meta_description": { 
-                "$ref": "#/definitions/multiloc_string" 
-              },
-              "color_main": {
-                "type": "string",
-                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-              },
-              "menu_style": {
-                "type": "string",
-                "enum": ["light", "dark"]
-              }
-            }
+        "description": "The core of the system. Container for general settings. Always enabled",
+        "required-settings": ["organization_type", "timezone", "locales", "color_main"],
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "organization_type": {
+            "description": "For a city: <40k small, >40k medium, >120k large. Otherwise: generic",
+            "type": "string",
+            "enum": ["small_city", "medium_city", "large_city", "generic"],
+            "default": "medium_city"
+          },
+          "timezone": {
+            "type": "string",
+            "default": "Europe/Brussels",
+            "enum": [<%= TZInfo::Timezone.all_identifiers.map{|tz| ['"',tz,'"'].join}.join(",") %>]
+          },
+          "locales": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [<%= I18n.available_locales.map{|l| "\"#{l}\""}.join(",") %>]
+            },
+            "uniqueItems": true,
+            "minItems": 1,
+            "default": "en"
+          },
+          "organization_name": {
+            "description": "The name of the city or organization, used throughout the platform",
+            "$ref": "#/definitions/multiloc_string" 
+          },
+          "header_title": {
+            "description": "The main title shown on the homepage",
+            "$ref": "#/definitions/multiloc_string" 
+          },
+          "header_slogan": {
+            "description": "The subtitle shown on the homepage",
+            "$ref": "#/definitions/multiloc_string" 
+          },
+          "meta_title": {
+            "description": "The title of the homepage, shown on the browser tab and in search engine results",
+            "$ref": "#/definitions/multiloc_string" 
+          },
+          "meta_description": {
+            "description": "The description of the platform shown on links on social media",
+            "$ref": "#/definitions/multiloc_string" 
+          },
+          "color_main": {
+            "description": "The main brand color as a hexadecimal value including the anchor character",
+            "type": "string",
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "default": "#335533"
+          }
+        }
       },
 
       "demographic_fields": {
         "type": "object",
-          "description": "Asking user demographic information in a second signup step",
-          "additionalProperties": false,
-          "required": ["allowed", "enabled"],
-          "properties": {
-            "allowed": { "type": "boolean", "default": true},
-            "enabled": { "type": "boolean", "default": true},
-            "gender": {"type": "boolean", "default": true},
-            "domicile": {"type": "boolean", "default": true},
-            "birthyear": {"type": "boolean", "default": true},
-            "education": {"type": "boolean", "default": true}
-          }
-      },
-      "topics": {
-        "type": "object",
-            "description":	"Topics can be shown",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "map": {
-        "type": "object",
-            "description":	"Displaying a map where all ideas are plotted on",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "areas": {
-        "type": "object",
-            "description":	"Allow geographical areas(neighbourhoods, cities ...) to be defined",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
+        "description": "Asking user demographic information in a second signup step",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "gender": {"type": "boolean", "default": true},
+          "domicile": {"type": "boolean", "default": true},
+          "birthyear": {"type": "boolean", "default": true},
+          "education": {"type": "boolean", "default": true}
+        }
       },
 
       "pages": {
         "type": "object",
-            "description":	"Allow custom pages to be made, and potentially be added to the navigation",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
+        "description":	"Allow custom pages to be made, and potentially be added to the navigation",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
       },
 
       "facebook_login": {
         "type": "object",
-            "description":	"Allow signing in and registering through a facebook account",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "required-settings": ["app_id"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true},
-              "app_id": {
-                "type": "string"
-              },
-              "app_secret": {
-                "type": "string",
-                "private": true
-              }
-            }
-      },
-
-      "twitter_login": {
-        "type": "object",
-            "description":	"Allow signing in and registering through twitter",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "comments": {
-        "type": "object",
-            "description":	"Allow comments to be posted on ideas",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "comments_votes": {
-        "type": "object",
-            "description":	"Allow users to vote on comments",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "comments_mentions": {
-        "type": "object",
-            "description":	"@user (twitter style) mentions generate notifications",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "notifications": {
-        "type": "object",
-            "description":	"",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "ideas_votes": {
-        "type": "object",
-            "description":	"Votes can be placed on an idea",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "ideas_images": {
-        "type": "object",
-            "description":	"ideas can contain image(s)",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "ideas_location": {
-        "type": "object",
-            "description":	"Allows location",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "ideas_attachments": {
-        "type": "object",
-            "description":	"Allow attachments",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
+        "description":	"Allow signing in and registering through a facebook account",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["app_id"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "app_id": {
+            "type": "string"
+          },
+          "app_secret": {
+            "type": "string",
+            "private": true
+          }
+        }
       },
 
       "projects": {
         "type": "object",
-            "description":	"",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
+        "description":	"",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
       },
 
       "projects_phases": {
         "type": "object",
-            "description":	"",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
+        "description":	"",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
       },
 
       "projects_pages": {
         "type": "object",
-            "description":	"",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
+        "description":	"",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
       },
 
       "projects_events": {
         "type": "object",
-            "description":	"",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
+        "description":	"",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
       },
 
       "projects_info": {
         "type": "object",
-            "description":	"",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "projects_map": {
-        "type": "object",
-            "description":	"",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "projects_perimeter": {
-        "type": "object",
-            "description":	"",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "multi_locales": {
-        "type": "object",
-            "description":	"",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "email_digest_user": {
-        "type": "object",
-            "description":	"",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
-      },
-
-      "email_digest_admin": {
-        "type": "object",
-            "description":	"",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
+        "description":	"",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
       },
 
       "excel_export": {
         "type": "object",
-            "description":	"",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true}
-            }
+        "description":	"",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
       },
-
-      "mixpanel_tracking": {
+      "groups": {
         "type": "object",
-            "description":  "Allows the app interactions of the users to be tracked by mixpanel",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "required-settings": ["project_token"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true},
-              "project_token": {
-                "type": "string"
-              }
-            }
+        "description":  "Assemble users in groups",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
       },
-
-      "ga_tracking": {
+      "private_projects": {
         "type": "object",
-            "description": "Allows the app interactions of the users to be tracked by Google Analytics",
-            "additionalProperties": false,
-            "required": ["allowed", "enabled"],
-            "required-settings": ["tracking_id"],
-            "properties": {
-              "allowed": { "type": "boolean", "default": true},
-              "enabled": { "type": "boolean", "default": true},
-              "tracking_id": {
-                "type": "string"
-              }
-            }
+        "description":  "Make projects visible to certain groups only",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
       }
-
     },
   "dependencies": {
-    "comments_votes": ["comments"],
-    "comments_mentions": ["notifications"],
-    "projects_map": ["projects"],
     "projects_info": ["projects"],
-    "projects_perimeter": ["projects"],
     "projects_pages": ["projects"],
     "projects_events": ["projects"],
-    "projects_phases": ["projects"]
+    "projects_phases": ["projects"],
+    "private_projects": ["groups"]
   },
   "definitions": {
     "multiloc_string": {
