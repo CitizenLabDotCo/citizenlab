@@ -193,25 +193,25 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI4OTQsInN1YiI6IjJjZjc2ZmQ0LTRjMTctNGE3OC1hMmYxLWU5MzI4YTBhNGE4YiJ9.sB1BTt6MQeIAvTi7fjn-HZQpUqOFPDCoflrBt9smbdA
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MjcsInN1YiI6ImQ1ZTAzMzY3LWU2MTUtNGMzMS1iMjY0LWVjYjhkNzJhYTI1OSJ9.hPnS4HXSoxVC16vksXl2EhoOBIjXGkKXqL1zMLC19ng
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?idea_status=5d8a9cb5-99f3-4166-9133-955d22dcb4b0</pre>
+          <pre class="request route highlight">GET api/v1/ideas?idea_status=8ce44685-8062-4f23-aa22-a97ed297eb4f</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">idea_status: 5d8a9cb5-99f3-4166-9133-955d22dcb4b0</pre>
+            <pre class="request query_parameters highlight">idea_status: 8ce44685-8062-4f23-aa22-a97ed297eb4f</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;66b4945b4a24b430df3ed5b097eebfa6&quot;
+ETag: W/&quot;e8df8ca201a1b4cbc1572cd72eabf972&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 945aba49-380f-4d5a-8dbf-d022eb58b611
-X-Runtime: 0.044453
+X-Request-Id: 2c78c6cb-4c2a-4d57-8b3d-dc534197de2b
+X-Runtime: 0.037947
 Vary: Origin
 Content-Length: 1723</pre>
             <h4>Status</h4>
@@ -220,7 +220,7 @@ Content-Length: 1723</pre>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;504279c5-c148-4f00-8ae8-e43a5f0d8447&quot;,
+      &quot;id&quot;: &quot;84f6c095-f4f2-4d43-989f-18e0fe6bf918&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -231,7 +231,7 @@ Content-Length: 1723</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Matilde Cartwright&quot;,
+        &quot;author_name&quot;: &quot;Giovanna Schneider&quot;,
         &quot;slug&quot;: &quot;plant-more-trees-7&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
@@ -239,9 +239,9 @@ Content-Length: 1723</pre>
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-10-22T15:34:54.518Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:34:54.518Z&quot;,
-        &quot;published_at&quot;: &quot;2017-10-22T15:34:54.518Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T18:33:47.501Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T18:33:47.501Z&quot;,
+        &quot;published_at&quot;: &quot;2017-10-22T18:33:47.501Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -261,19 +261,19 @@ Content-Length: 1723</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;3d763561-3c72-459d-98d2-629779f728bd&quot;,
+            &quot;id&quot;: &quot;53957597-5a57-4402-b54f-e0b3f1543edd&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;53c3c8f9-865b-4449-bd45-78794a6721e0&quot;,
+            &quot;id&quot;: &quot;8c7aaa49-e88d-4dc6-916c-27b57c81971d&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;5d8a9cb5-99f3-4166-9133-955d22dcb4b0&quot;,
+            &quot;id&quot;: &quot;8ce44685-8062-4f23-aa22-a97ed297eb4f&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -285,25 +285,25 @@ Content-Length: 1723</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;3d763561-3c72-459d-98d2-629779f728bd&quot;,
+      &quot;id&quot;: &quot;53957597-5a57-4402-b54f-e0b3f1543edd&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Matilde&quot;,
-        &quot;last_name&quot;: &quot;Cartwright&quot;,
-        &quot;slug&quot;: &quot;matilde-cartwright&quot;,
+        &quot;first_name&quot;: &quot;Giovanna&quot;,
+        &quot;last_name&quot;: &quot;Schneider&quot;,
+        &quot;slug&quot;: &quot;giovanna-schneider&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/3d763561-3c72-459d-98d2-629779f728bd/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/3d763561-3c72-459d-98d2-629779f728bd/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/3d763561-3c72-459d-98d2-629779f728bd/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/53957597-5a57-4402-b54f-e0b3f1543edd/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/53957597-5a57-4402-b54f-e0b3f1543edd/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/53957597-5a57-4402-b54f-e0b3f1543edd/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T15:34:54.488Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:34:54.488Z&quot;,
+        &quot;created_at&quot;: &quot;2017-10-22T18:33:47.485Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T18:33:47.485Z&quot;,
         &quot;unread_notifications&quot;: 0
       }
     }

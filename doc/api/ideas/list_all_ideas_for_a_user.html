@@ -193,34 +193,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI4OTUsInN1YiI6ImUzNTMxMDI2LTYyMzYtNGM2OS05MmYwLWY3YTY4ODBmNzZlZCJ9.D_gXJtGxLxXIO988m4D_D8xEYy6fYKT_BuxrLDF-1VE
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MjcsInN1YiI6IjgzOGU1MDNlLWIxNjktNDVmMi04M2YwLWZjNmYzYjMwMmI2YiJ9.7s1CDhwLXRFXwOwhs7QVbd8k7TY1FTAM5MTT49VAKa8
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?author=73beb8b6-7fdf-4a4c-8c3c-e77cf695a90a</pre>
+          <pre class="request route highlight">GET api/v1/ideas?author=8de02bb3-2d1c-43aa-a4ab-0a70ef2e08f9</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">author: 73beb8b6-7fdf-4a4c-8c3c-e77cf695a90a</pre>
+            <pre class="request query_parameters highlight">author: 8de02bb3-2d1c-43aa-a4ab-0a70ef2e08f9</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;6754a6ae48260a2fe306a1c01c42f573&quot;
+ETag: W/&quot;8f8433f5015fa1fe4fcdbdaf92c64b1e&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 1ca6f089-c4a6-49de-936f-cb25b3971a5c
-X-Runtime: 0.042698
+X-Request-Id: 5ea2c7d2-a051-4c57-96bf-30b827235d02
+X-Runtime: 0.040381
 Vary: Origin
-Content-Length: 1720</pre>
+Content-Length: 1699</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;50c885d1-862d-42bb-a089-52513dcfe35e&quot;,
+      &quot;id&quot;: &quot;718478cf-7306-4478-a6ce-9240864b405e&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -231,7 +231,7 @@ Content-Length: 1720</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Cyril Oberbrunner&quot;,
+        &quot;author_name&quot;: &quot;Ward Hintz&quot;,
         &quot;slug&quot;: &quot;plant-more-trees-7&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
@@ -239,9 +239,9 @@ Content-Length: 1720</pre>
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-10-22T15:34:55.070Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:34:55.070Z&quot;,
-        &quot;published_at&quot;: &quot;2017-10-22T15:34:55.069Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T18:33:47.978Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T18:33:47.978Z&quot;,
+        &quot;published_at&quot;: &quot;2017-10-22T18:33:47.978Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -261,19 +261,19 @@ Content-Length: 1720</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;73beb8b6-7fdf-4a4c-8c3c-e77cf695a90a&quot;,
+            &quot;id&quot;: &quot;8de02bb3-2d1c-43aa-a4ab-0a70ef2e08f9&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;ca079c83-8859-46f7-b553-a144fe8e7ff8&quot;,
+            &quot;id&quot;: &quot;d9b6a6d7-1204-4a6b-b8ea-7c2e0f687f39&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;e5490b56-9a52-4c57-a775-5e4a1ddf2c4c&quot;,
+            &quot;id&quot;: &quot;17262a30-bef4-4897-97b5-8a7c6c6eaf9e&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -285,25 +285,25 @@ Content-Length: 1720</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;73beb8b6-7fdf-4a4c-8c3c-e77cf695a90a&quot;,
+      &quot;id&quot;: &quot;8de02bb3-2d1c-43aa-a4ab-0a70ef2e08f9&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Cyril&quot;,
-        &quot;last_name&quot;: &quot;Oberbrunner&quot;,
-        &quot;slug&quot;: &quot;cyril-oberbrunner&quot;,
+        &quot;first_name&quot;: &quot;Ward&quot;,
+        &quot;last_name&quot;: &quot;Hintz&quot;,
+        &quot;slug&quot;: &quot;ward-hintz&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/73beb8b6-7fdf-4a4c-8c3c-e77cf695a90a/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/73beb8b6-7fdf-4a4c-8c3c-e77cf695a90a/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/73beb8b6-7fdf-4a4c-8c3c-e77cf695a90a/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8de02bb3-2d1c-43aa-a4ab-0a70ef2e08f9/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8de02bb3-2d1c-43aa-a4ab-0a70ef2e08f9/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8de02bb3-2d1c-43aa-a4ab-0a70ef2e08f9/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T15:34:55.023Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:34:55.023Z&quot;,
+        &quot;created_at&quot;: &quot;2017-10-22T18:33:47.935Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T18:33:47.935Z&quot;,
         &quot;unread_notifications&quot;: 0
       }
     }

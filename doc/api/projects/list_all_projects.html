@@ -111,6 +111,9 @@ table th, table td {
       <div class="article">
         <h2>List all projects</h2>
         <h3>GET api/v1/projects</h3>
+          <p class="explanation">
+            Sorted by descending created_at
+          </p>
 
           <h3>Parameters</h3>
           <table class="parameters table table-striped table-bordered table-condensed">
@@ -144,7 +147,7 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI5MTIsInN1YiI6IjQ0OTNmNWVlLTRkYWUtNGMzMC1hNThjLTc1MzdiN2QxZmYxNCJ9.s3_HdDa4IKlrPznJHLWz1O7AroKNI6G4rNvcyH_bVe8
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2NDIsInN1YiI6IjU5ZjI5NWU3LTljOTctNGFmYy1iYTRiLTZhZGU3YmIzN2YwMSJ9.NeLsmOMTBekSuRGm29I6onuFTuMD-fBK9wffSbiScrI
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
@@ -158,10 +161,10 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;8577806b20bd15c79cd46abad99f0bb8&quot;
+ETag: W/&quot;c64273c07fc13ea7fb34622a2305dc4a&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: b37f414c-3192-4e20-83be-a0dba9c5759b
-X-Runtime: 0.076999
+X-Request-Id: aeb29f1f-bb81-4166-adb8-527cabf68ab6
+X-Runtime: 0.075680
 Vary: Origin
 Content-Length: 3534</pre>
             <h4>Status</h4>
@@ -170,167 +173,7 @@ Content-Length: 3534</pre>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;c87483e6-e177-4281-ac1a-da685bef113a&quot;,
-      &quot;type&quot;: &quot;projects&quot;,
-      &quot;attributes&quot;: {
-        &quot;title_multiloc&quot;: {
-          &quot;en&quot;: &quot;Renew West Parc&quot;,
-          &quot;nl&quot;: &quot;Westpark vernieuwen&quot;
-        },
-        &quot;description_multiloc&quot;: {
-          &quot;en&quot;: &quot;&lt;p&gt;Let&#39;s renew the parc at the city border and make it an enjoyable place for young and old.&lt;/p&gt;&quot;,
-          &quot;nl&quot;: &quot;&lt;p&gt;Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.&lt;/p&gt;&quot;
-        },
-        &quot;slug&quot;: &quot;renew-west-parc&quot;,
-        &quot;header_bg&quot;: {
-          &quot;large&quot;: null,
-          &quot;medium&quot;: null,
-          &quot;small&quot;: null
-        },
-        &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-10-22T15:35:12.206Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:35:12.206Z&quot;
-      },
-      &quot;relationships&quot;: {
-        &quot;project_images&quot;: {
-          &quot;data&quot;: [
-
-          ]
-        },
-        &quot;areas&quot;: {
-          &quot;data&quot;: [
-
-          ]
-        },
-        &quot;topics&quot;: {
-          &quot;data&quot;: [
-
-          ]
-        }
-      }
-    },
-    {
-      &quot;id&quot;: &quot;dfe0b74a-17a7-43e1-9090-d83dbe0beebe&quot;,
-      &quot;type&quot;: &quot;projects&quot;,
-      &quot;attributes&quot;: {
-        &quot;title_multiloc&quot;: {
-          &quot;en&quot;: &quot;Renew West Parc&quot;,
-          &quot;nl&quot;: &quot;Westpark vernieuwen&quot;
-        },
-        &quot;description_multiloc&quot;: {
-          &quot;en&quot;: &quot;&lt;p&gt;Let&#39;s renew the parc at the city border and make it an enjoyable place for young and old.&lt;/p&gt;&quot;,
-          &quot;nl&quot;: &quot;&lt;p&gt;Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.&lt;/p&gt;&quot;
-        },
-        &quot;slug&quot;: &quot;renew-west-parc-1&quot;,
-        &quot;header_bg&quot;: {
-          &quot;large&quot;: null,
-          &quot;medium&quot;: null,
-          &quot;small&quot;: null
-        },
-        &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-10-22T15:35:12.214Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:35:12.214Z&quot;
-      },
-      &quot;relationships&quot;: {
-        &quot;project_images&quot;: {
-          &quot;data&quot;: [
-
-          ]
-        },
-        &quot;areas&quot;: {
-          &quot;data&quot;: [
-
-          ]
-        },
-        &quot;topics&quot;: {
-          &quot;data&quot;: [
-
-          ]
-        }
-      }
-    },
-    {
-      &quot;id&quot;: &quot;27e3856b-6ed9-4c11-b9c5-108649e93a94&quot;,
-      &quot;type&quot;: &quot;projects&quot;,
-      &quot;attributes&quot;: {
-        &quot;title_multiloc&quot;: {
-          &quot;en&quot;: &quot;Renew West Parc&quot;,
-          &quot;nl&quot;: &quot;Westpark vernieuwen&quot;
-        },
-        &quot;description_multiloc&quot;: {
-          &quot;en&quot;: &quot;&lt;p&gt;Let&#39;s renew the parc at the city border and make it an enjoyable place for young and old.&lt;/p&gt;&quot;,
-          &quot;nl&quot;: &quot;&lt;p&gt;Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.&lt;/p&gt;&quot;
-        },
-        &quot;slug&quot;: &quot;renew-west-parc-2&quot;,
-        &quot;header_bg&quot;: {
-          &quot;large&quot;: null,
-          &quot;medium&quot;: null,
-          &quot;small&quot;: null
-        },
-        &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-10-22T15:35:12.230Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:35:12.230Z&quot;
-      },
-      &quot;relationships&quot;: {
-        &quot;project_images&quot;: {
-          &quot;data&quot;: [
-
-          ]
-        },
-        &quot;areas&quot;: {
-          &quot;data&quot;: [
-
-          ]
-        },
-        &quot;topics&quot;: {
-          &quot;data&quot;: [
-
-          ]
-        }
-      }
-    },
-    {
-      &quot;id&quot;: &quot;7e05c74e-e521-4331-835a-e7f09e53d923&quot;,
-      &quot;type&quot;: &quot;projects&quot;,
-      &quot;attributes&quot;: {
-        &quot;title_multiloc&quot;: {
-          &quot;en&quot;: &quot;Renew West Parc&quot;,
-          &quot;nl&quot;: &quot;Westpark vernieuwen&quot;
-        },
-        &quot;description_multiloc&quot;: {
-          &quot;en&quot;: &quot;&lt;p&gt;Let&#39;s renew the parc at the city border and make it an enjoyable place for young and old.&lt;/p&gt;&quot;,
-          &quot;nl&quot;: &quot;&lt;p&gt;Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.&lt;/p&gt;&quot;
-        },
-        &quot;slug&quot;: &quot;renew-west-parc-3&quot;,
-        &quot;header_bg&quot;: {
-          &quot;large&quot;: null,
-          &quot;medium&quot;: null,
-          &quot;small&quot;: null
-        },
-        &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-10-22T15:35:12.247Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:35:12.247Z&quot;
-      },
-      &quot;relationships&quot;: {
-        &quot;project_images&quot;: {
-          &quot;data&quot;: [
-
-          ]
-        },
-        &quot;areas&quot;: {
-          &quot;data&quot;: [
-
-          ]
-        },
-        &quot;topics&quot;: {
-          &quot;data&quot;: [
-
-          ]
-        }
-      }
-    },
-    {
-      &quot;id&quot;: &quot;34a018ae-0638-4bcc-9f8f-2ca580136dec&quot;,
+      &quot;id&quot;: &quot;f9d60c24-3cad-4f7a-82cb-fbf2b58211d2&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -348,8 +191,168 @@ Content-Length: 3534</pre>
           &quot;small&quot;: null
         },
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-10-22T15:35:12.259Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:35:12.259Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T18:34:02.861Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T18:34:02.861Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;project_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;topics&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;84432d0b-97d6-40c5-a0eb-b272b589bad5&quot;,
+      &quot;type&quot;: &quot;projects&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Renew West Parc&quot;,
+          &quot;nl&quot;: &quot;Westpark vernieuwen&quot;
+        },
+        &quot;description_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;Let&#39;s renew the parc at the city border and make it an enjoyable place for young and old.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.&lt;/p&gt;&quot;
+        },
+        &quot;slug&quot;: &quot;renew-west-parc-3&quot;,
+        &quot;header_bg&quot;: {
+          &quot;large&quot;: null,
+          &quot;medium&quot;: null,
+          &quot;small&quot;: null
+        },
+        &quot;ideas_count&quot;: 0,
+        &quot;created_at&quot;: &quot;2017-10-22T18:34:02.852Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T18:34:02.852Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;project_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;topics&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;951be999-85d7-4964-a70a-f3369d7367b7&quot;,
+      &quot;type&quot;: &quot;projects&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Renew West Parc&quot;,
+          &quot;nl&quot;: &quot;Westpark vernieuwen&quot;
+        },
+        &quot;description_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;Let&#39;s renew the parc at the city border and make it an enjoyable place for young and old.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.&lt;/p&gt;&quot;
+        },
+        &quot;slug&quot;: &quot;renew-west-parc-2&quot;,
+        &quot;header_bg&quot;: {
+          &quot;large&quot;: null,
+          &quot;medium&quot;: null,
+          &quot;small&quot;: null
+        },
+        &quot;ideas_count&quot;: 0,
+        &quot;created_at&quot;: &quot;2017-10-22T18:34:02.842Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T18:34:02.842Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;project_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;topics&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;89f37068-1bda-4c2a-9918-c3f433ea8288&quot;,
+      &quot;type&quot;: &quot;projects&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Renew West Parc&quot;,
+          &quot;nl&quot;: &quot;Westpark vernieuwen&quot;
+        },
+        &quot;description_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;Let&#39;s renew the parc at the city border and make it an enjoyable place for young and old.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.&lt;/p&gt;&quot;
+        },
+        &quot;slug&quot;: &quot;renew-west-parc-1&quot;,
+        &quot;header_bg&quot;: {
+          &quot;large&quot;: null,
+          &quot;medium&quot;: null,
+          &quot;small&quot;: null
+        },
+        &quot;ideas_count&quot;: 0,
+        &quot;created_at&quot;: &quot;2017-10-22T18:34:02.832Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T18:34:02.832Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;project_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;topics&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;20d83e14-e6c7-4f7e-b160-efd57155d440&quot;,
+      &quot;type&quot;: &quot;projects&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Renew West Parc&quot;,
+          &quot;nl&quot;: &quot;Westpark vernieuwen&quot;
+        },
+        &quot;description_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;Let&#39;s renew the parc at the city border and make it an enjoyable place for young and old.&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.&lt;/p&gt;&quot;
+        },
+        &quot;slug&quot;: &quot;renew-west-parc&quot;,
+        &quot;header_bg&quot;: {
+          &quot;large&quot;: null,
+          &quot;medium&quot;: null,
+          &quot;small&quot;: null
+        },
+        &quot;ideas_count&quot;: 0,
+        &quot;created_at&quot;: &quot;2017-10-22T18:34:02.820Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T18:34:02.820Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
