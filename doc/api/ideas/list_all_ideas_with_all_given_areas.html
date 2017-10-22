@@ -193,34 +193,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI4OTIsInN1YiI6IjA0YzJkOTllLTE1NmYtNDdkNC1iNTMzLTA4MGZlNWEwYjk2MyJ9.ARFVWcfdJmmft5OYus4Hpn8Fj4faLZWD2xWlW1Z7gBY
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MjYsInN1YiI6ImY4ZjQwMzc5LWI3MzktNGZjMS04Y2ZiLTFmMTEzYjUzYmI4NCJ9._UUwfGuIaxuhHjNeDKuBBskJ3R-V995jQVzt1-lTboo
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?areas[]=9bef753c-8016-46c6-92f3-75d47b8f7cff&amp;areas[]=d7f8fd5e-3e0d-4a25-9ad0-6466e90dcf7a</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=fe15b208-598d-4317-9e66-29960a18473d&amp;areas[]=17ad2fbf-60c8-4f71-ae30-ed6b5d6ada2c</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">areas: [&quot;9bef753c-8016-46c6-92f3-75d47b8f7cff&quot;, &quot;d7f8fd5e-3e0d-4a25-9ad0-6466e90dcf7a&quot;]</pre>
+            <pre class="request query_parameters highlight">areas: [&quot;fe15b208-598d-4317-9e66-29960a18473d&quot;, &quot;17ad2fbf-60c8-4f71-ae30-ed6b5d6ada2c&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;c41d4a82e905612aa47082d4645506f5&quot;
+ETag: W/&quot;ab961d3ae87dc1d4d6bf909626b16c41&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: cc7d85f4-c0f7-4232-b47d-9d9054ab2550
-X-Runtime: 0.050221
+X-Request-Id: ee49b617-9207-4a62-88da-ee31f826df0f
+X-Runtime: 0.057158
 Vary: Origin
-Content-Length: 1824</pre>
+Content-Length: 1830</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;0828a194-9dc3-45d2-9162-9bb2098c6463&quot;,
+      &quot;id&quot;: &quot;a084e379-bb1c-4aa3-825e-430531b8958a&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -231,7 +231,7 @@ Content-Length: 1824</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Doris Brekke&quot;,
+        &quot;author_name&quot;: &quot;Laury Thompson&quot;,
         &quot;slug&quot;: &quot;plant-more-trees&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
@@ -239,9 +239,9 @@ Content-Length: 1824</pre>
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-10-22T15:34:52.559Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:34:52.559Z&quot;,
-        &quot;published_at&quot;: &quot;2017-10-22T15:34:52.559Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T18:33:45.796Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T18:33:45.796Z&quot;,
+        &quot;published_at&quot;: &quot;2017-10-22T18:33:45.795Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -252,11 +252,11 @@ Content-Length: 1824</pre>
         &quot;areas&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;9bef753c-8016-46c6-92f3-75d47b8f7cff&quot;,
+              &quot;id&quot;: &quot;fe15b208-598d-4317-9e66-29960a18473d&quot;,
               &quot;type&quot;: &quot;areas&quot;
             },
             {
-              &quot;id&quot;: &quot;d7f8fd5e-3e0d-4a25-9ad0-6466e90dcf7a&quot;,
+              &quot;id&quot;: &quot;17ad2fbf-60c8-4f71-ae30-ed6b5d6ada2c&quot;,
               &quot;type&quot;: &quot;areas&quot;
             }
           ]
@@ -268,19 +268,19 @@ Content-Length: 1824</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;8c8e72fc-24b5-4a93-a673-4a8c6a65a684&quot;,
+            &quot;id&quot;: &quot;6b4fea00-0622-4cda-8d20-533f4006da4c&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;93ed2ca1-e67b-47ad-8d59-9c1673afe232&quot;,
+            &quot;id&quot;: &quot;e6dea1ce-b7e5-477a-8380-f171180adf04&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;2076af5d-d7d0-4bd9-927f-e3c26cc3d2e6&quot;,
+            &quot;id&quot;: &quot;94ad8340-1a58-42b8-a896-6a72498e3d68&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -292,25 +292,25 @@ Content-Length: 1824</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;8c8e72fc-24b5-4a93-a673-4a8c6a65a684&quot;,
+      &quot;id&quot;: &quot;6b4fea00-0622-4cda-8d20-533f4006da4c&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Doris&quot;,
-        &quot;last_name&quot;: &quot;Brekke&quot;,
-        &quot;slug&quot;: &quot;doris-brekke&quot;,
+        &quot;first_name&quot;: &quot;Laury&quot;,
+        &quot;last_name&quot;: &quot;Thompson&quot;,
+        &quot;slug&quot;: &quot;laury-thompson&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/8c8e72fc-24b5-4a93-a673-4a8c6a65a684/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/8c8e72fc-24b5-4a93-a673-4a8c6a65a684/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/8c8e72fc-24b5-4a93-a673-4a8c6a65a684/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/6b4fea00-0622-4cda-8d20-533f4006da4c/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/6b4fea00-0622-4cda-8d20-533f4006da4c/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/6b4fea00-0622-4cda-8d20-533f4006da4c/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T15:34:52.541Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:34:52.541Z&quot;,
+        &quot;created_at&quot;: &quot;2017-10-22T18:33:45.775Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T18:33:45.775Z&quot;,
         &quot;unread_notifications&quot;: 0
       }
     }
