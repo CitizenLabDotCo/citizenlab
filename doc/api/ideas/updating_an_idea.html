@@ -276,33 +276,33 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI5MDEsInN1YiI6ImM4Zjk0NjhhLTlmYjUtNDMwZC1hOTdhLWMyZDg2MmM0N2Y4MCJ9.fwKtc7YEqgPdhIHZ3uDFDOVMG46Q8i59aniOV6Ze2p0
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MzMsInN1YiI6IjBkMDRkZTllLTY1YjktNGI3OS04ODE4LTRmOTRhOWE0YTFlNCJ9.I92aj4WwFepXoJjzwNYPacFsHxJ-iIDGD28i3xhWO4Q
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/ideas/80da108e-9f9d-41d9-9a9c-fa484b7fd479</pre>
+          <pre class="request route highlight">PATCH api/v1/ideas/f2340d7a-b1c6-4966-b21d-d0d4cbffaf07</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"idea":{"title_multiloc":{"en":"Changed title"},"topic_ids":["166a3388-4508-4ce4-8ffe-291fdc4b9099","797a95ab-6fb5-4c07-aad7-cf691f32e6cd"],"area_ids":["4fbee8f4-f69e-4623-81d7-b7bf9393ebf0","c6970ec1-6df0-48bf-8272-a14645c8e604"],"location_point_geojson":{"type":"Point","coordinates":[51.4365635,3.825930459]},"location_description":"Watkins Road 8"}}</pre>
+            <pre class="request body">{"idea":{"title_multiloc":{"en":"Changed title"},"topic_ids":["09ff20d8-fb59-41db-85c9-714947e9cebc","0e0bd94f-48f0-438a-8f42-639e4f1f2e6e"],"area_ids":["ae633951-bfbe-4240-b9f2-94c0a031fb3b","5670d60f-96b2-48a1-827c-0349ea8af036"],"location_point_geojson":{"type":"Point","coordinates":[51.4365635,3.825930459]},"location_description":"Watkins Road 8"}}</pre>
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;daefddf7fcab7860dce2c74e6152166d&quot;
+ETag: W/&quot;fae464d3f7ad5f5d7a5b03af9a12aea8&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 3a2bedfc-6e01-48a7-a747-1b9a4dd3b8b3
-X-Runtime: 0.094716
+X-Request-Id: bb5d96c8-17b3-41fb-bebd-254a0a428caf
+X-Runtime: 0.088670
 Vary: Origin
-Content-Length: 3672</pre>
+Content-Length: 3681</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;80da108e-9f9d-41d9-9a9c-fa484b7fd479&quot;,
+    &quot;id&quot;: &quot;f2340d7a-b1c6-4966-b21d-d0d4cbffaf07&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -312,7 +312,7 @@ Content-Length: 3672</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Nola Pfeffer&quot;,
+      &quot;author_name&quot;: &quot;Ruben Klocko&quot;,
       &quot;slug&quot;: &quot;plant-more-trees-7&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;upvotes_count&quot;: 0,
@@ -326,19 +326,19 @@ Content-Length: 3672</pre>
         ]
       },
       &quot;location_description&quot;: &quot;Watkins Road 8&quot;,
-      &quot;created_at&quot;: &quot;2017-10-22T15:35:01.438Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-10-22T15:35:01.499Z&quot;,
-      &quot;published_at&quot;: &quot;2017-10-22T15:35:01.438Z&quot;
+      &quot;created_at&quot;: &quot;2017-10-22T18:33:53.514Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-10-22T18:33:53.577Z&quot;,
+      &quot;published_at&quot;: &quot;2017-10-22T18:33:53.514Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
         &quot;data&quot;: [
           {
-            &quot;id&quot;: &quot;166a3388-4508-4ce4-8ffe-291fdc4b9099&quot;,
+            &quot;id&quot;: &quot;09ff20d8-fb59-41db-85c9-714947e9cebc&quot;,
             &quot;type&quot;: &quot;topics&quot;
           },
           {
-            &quot;id&quot;: &quot;797a95ab-6fb5-4c07-aad7-cf691f32e6cd&quot;,
+            &quot;id&quot;: &quot;0e0bd94f-48f0-438a-8f42-639e4f1f2e6e&quot;,
             &quot;type&quot;: &quot;topics&quot;
           }
         ]
@@ -346,11 +346,11 @@ Content-Length: 3672</pre>
       &quot;areas&quot;: {
         &quot;data&quot;: [
           {
-            &quot;id&quot;: &quot;4fbee8f4-f69e-4623-81d7-b7bf9393ebf0&quot;,
+            &quot;id&quot;: &quot;ae633951-bfbe-4240-b9f2-94c0a031fb3b&quot;,
             &quot;type&quot;: &quot;areas&quot;
           },
           {
-            &quot;id&quot;: &quot;c6970ec1-6df0-48bf-8272-a14645c8e604&quot;,
+            &quot;id&quot;: &quot;5670d60f-96b2-48a1-827c-0349ea8af036&quot;,
             &quot;type&quot;: &quot;areas&quot;
           }
         ]
@@ -362,19 +362,19 @@ Content-Length: 3672</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;c8f9468a-9fb5-430d-a97a-c2d862c47f80&quot;,
+          &quot;id&quot;: &quot;0d04de9e-65b9-4b79-8818-4f94a9a4a1e4&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;af5083c0-35c5-4212-b013-fbd2c0255cc4&quot;,
+          &quot;id&quot;: &quot;0720ae3c-0146-4f1d-b419-70224577ebbb&quot;,
           &quot;type&quot;: &quot;projects&quot;
         }
       },
       &quot;idea_status&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;c1dd1644-e39e-4b51-9465-b2b76abbeb3b&quot;,
+          &quot;id&quot;: &quot;1641c082-4e27-4f91-b97b-a622772dc300&quot;,
           &quot;type&quot;: &quot;idea_statuses&quot;
         }
       },
@@ -385,7 +385,7 @@ Content-Length: 3672</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;166a3388-4508-4ce4-8ffe-291fdc4b9099&quot;,
+      &quot;id&quot;: &quot;09ff20d8-fb59-41db-85c9-714947e9cebc&quot;,
       &quot;type&quot;: &quot;topics&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -400,7 +400,7 @@ Content-Length: 3672</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;797a95ab-6fb5-4c07-aad7-cf691f32e6cd&quot;,
+      &quot;id&quot;: &quot;0e0bd94f-48f0-438a-8f42-639e4f1f2e6e&quot;,
       &quot;type&quot;: &quot;topics&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -415,7 +415,7 @@ Content-Length: 3672</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;4fbee8f4-f69e-4623-81d7-b7bf9393ebf0&quot;,
+      &quot;id&quot;: &quot;ae633951-bfbe-4240-b9f2-94c0a031fb3b&quot;,
       &quot;type&quot;: &quot;areas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -429,7 +429,7 @@ Content-Length: 3672</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;c6970ec1-6df0-48bf-8272-a14645c8e604&quot;,
+      &quot;id&quot;: &quot;5670d60f-96b2-48a1-827c-0349ea8af036&quot;,
       &quot;type&quot;: &quot;areas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -443,26 +443,26 @@ Content-Length: 3672</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;c8f9468a-9fb5-430d-a97a-c2d862c47f80&quot;,
+      &quot;id&quot;: &quot;0d04de9e-65b9-4b79-8818-4f94a9a4a1e4&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Nola&quot;,
-        &quot;last_name&quot;: &quot;Pfeffer&quot;,
-        &quot;slug&quot;: &quot;nola-pfeffer&quot;,
+        &quot;first_name&quot;: &quot;Ruben&quot;,
+        &quot;last_name&quot;: &quot;Klocko&quot;,
+        &quot;slug&quot;: &quot;ruben-klocko&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/c8f9468a-9fb5-430d-a97a-c2d862c47f80/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/c8f9468a-9fb5-430d-a97a-c2d862c47f80/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/c8f9468a-9fb5-430d-a97a-c2d862c47f80/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/0d04de9e-65b9-4b79-8818-4f94a9a4a1e4/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/0d04de9e-65b9-4b79-8818-4f94a9a4a1e4/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/0d04de9e-65b9-4b79-8818-4f94a9a4a1e4/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T15:35:01.386Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:35:01.386Z&quot;,
-        &quot;email&quot;: &quot;jalon@west.name&quot;,
+        &quot;created_at&quot;: &quot;2017-10-22T18:33:53.481Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T18:33:53.481Z&quot;,
+        &quot;email&quot;: &quot;kelly@cummingsmonahan.io&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
