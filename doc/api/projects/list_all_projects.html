@@ -112,12 +112,39 @@ table th, table td {
         <h2>List all projects</h2>
         <h3>GET api/v1/projects</h3>
 
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">topics</span>
+                </td>
+                <td>
+                  <span class="description">Filter by topics (AND)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">areas</span>
+                </td>
+                <td>
+                  <span class="description">Filter by areas (AND)</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA2MzUsInN1YiI6IjZkNTUzYzIxLTQyZDEtNGZjMi04MGM0LWU2ZWRhYzI0ODMwMiJ9.tuTJbhhl32wj89tP6n2Dtf3_t2VCKjndGWezv6FSINw
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI5MTIsInN1YiI6IjQ0OTNmNWVlLTRkYWUtNGMzMC1hNThjLTc1MzdiN2QxZmYxNCJ9.s3_HdDa4IKlrPznJHLWz1O7AroKNI6G4rNvcyH_bVe8
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
@@ -131,19 +158,19 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;4f91d96027524a16cc185ffe5b51bda8&quot;
+ETag: W/&quot;8577806b20bd15c79cd46abad99f0bb8&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: b496b2bc-23d4-44dc-b294-6c34d49c7fc0
-X-Runtime: 0.059055
+X-Request-Id: b37f414c-3192-4e20-83be-a0dba9c5759b
+X-Runtime: 0.076999
 Vary: Origin
-Content-Length: 3329</pre>
+Content-Length: 3534</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;4deb265f-556a-4f4a-b902-e4b5ccbd187b&quot;,
+      &quot;id&quot;: &quot;c87483e6-e177-4281-ac1a-da685bef113a&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -161,11 +188,21 @@ Content-Length: 3329</pre>
           &quot;small&quot;: null
         },
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-09-21T11:43:55.126Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:43:55.126Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T15:35:12.206Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:35:12.206Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;topics&quot;: {
           &quot;data&quot;: [
 
           ]
@@ -173,7 +210,7 @@ Content-Length: 3329</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;011627c5-a3cd-436d-bb27-b7da57987645&quot;,
+      &quot;id&quot;: &quot;dfe0b74a-17a7-43e1-9090-d83dbe0beebe&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -191,11 +228,21 @@ Content-Length: 3329</pre>
           &quot;small&quot;: null
         },
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-09-21T11:43:55.136Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:43:55.136Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T15:35:12.214Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:35:12.214Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;topics&quot;: {
           &quot;data&quot;: [
 
           ]
@@ -203,7 +250,7 @@ Content-Length: 3329</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;e7598314-7f02-4957-89c8-5e54ee4bfaf2&quot;,
+      &quot;id&quot;: &quot;27e3856b-6ed9-4c11-b9c5-108649e93a94&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -221,11 +268,21 @@ Content-Length: 3329</pre>
           &quot;small&quot;: null
         },
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-09-21T11:43:55.146Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:43:55.146Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T15:35:12.230Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:35:12.230Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;topics&quot;: {
           &quot;data&quot;: [
 
           ]
@@ -233,7 +290,7 @@ Content-Length: 3329</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;d77f827a-5759-492d-a643-5fdb6887d27a&quot;,
+      &quot;id&quot;: &quot;7e05c74e-e521-4331-835a-e7f09e53d923&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -251,11 +308,21 @@ Content-Length: 3329</pre>
           &quot;small&quot;: null
         },
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-09-21T11:43:55.159Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:43:55.159Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T15:35:12.247Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:35:12.247Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;topics&quot;: {
           &quot;data&quot;: [
 
           ]
@@ -263,7 +330,7 @@ Content-Length: 3329</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;94298499-4bad-453f-a79a-580989959a8d&quot;,
+      &quot;id&quot;: &quot;34a018ae-0638-4bcc-9f8f-2ca580136dec&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -281,11 +348,21 @@ Content-Length: 3329</pre>
           &quot;small&quot;: null
         },
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-09-21T11:43:55.173Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:43:55.173Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T15:35:12.259Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:35:12.259Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;topics&quot;: {
           &quot;data&quot;: [
 
           ]

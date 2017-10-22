@@ -109,7 +109,7 @@ table th, table td {
       <h1>Ideas API</h1>
 
       <div class="article">
-        <h2>List all ideas in a project</h2>
+        <h2>List all ideas which have draft set as publication status</h2>
         <h3>GET api/v1/ideas</h3>
 
           <h3>Parameters</h3>
@@ -193,34 +193,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI4OTMsInN1YiI6ImJlMWE2ZTIyLTZmNWEtNGJiMS1iZWY3LWI4Nzk3YmMzYTZlNSJ9.69-dJJ6Xj41yP9EHfSHv3P7kaGvrMEDa9-xxBImVF0E
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI4OTAsInN1YiI6IjIxOTBjMTRkLTE1MTItNGIxNi05ZGNkLTI1ODY4MzYzYjZjZCJ9.7VqFG_Va898GqUQmIufCqQqCQGacdQrvcm99LKyY70c
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?project=c072850b-4f3c-4cd9-8c06-3e751eccdcde</pre>
+          <pre class="request route highlight">GET api/v1/ideas?publication_status=draft</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">project: c072850b-4f3c-4cd9-8c06-3e751eccdcde</pre>
+            <pre class="request query_parameters highlight">publication_status: draft</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;c08f5c033c360515331b721f2470cf01&quot;
+ETag: W/&quot;9a20284a9139026c66ef1313a0d116fd&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 66559655-8d13-437a-b811-066ad26100bf
-X-Runtime: 0.043513
+X-Request-Id: eb386ad6-bc26-4e21-9e43-38e7c42c2007
+X-Runtime: 0.042937
 Vary: Origin
-Content-Length: 1705</pre>
+Content-Length: 1679</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;b9e8cd7d-98d4-4b6f-ac4c-b19ba2a8b01b&quot;,
+      &quot;id&quot;: &quot;544c3053-7246-4f06-8f05-86ce1572d54d&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -231,17 +231,17 @@ Content-Length: 1705</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Vance Little&quot;,
-        &quot;slug&quot;: &quot;plant-more-trees-7&quot;,
-        &quot;publication_status&quot;: &quot;published&quot;,
+        &quot;author_name&quot;: &quot;Raven Becker&quot;,
+        &quot;slug&quot;: &quot;plant-more-trees-1&quot;,
+        &quot;publication_status&quot;: &quot;draft&quot;,
         &quot;upvotes_count&quot;: 0,
         &quot;downvotes_count&quot;: 0,
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-10-22T15:34:53.988Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:34:53.988Z&quot;,
-        &quot;published_at&quot;: &quot;2017-10-22T15:34:53.987Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T15:34:50.082Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:34:50.082Z&quot;,
+        &quot;published_at&quot;: null
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -261,19 +261,19 @@ Content-Length: 1705</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;b88b8ba9-9635-4ab0-9625-66f493919583&quot;,
+            &quot;id&quot;: &quot;9b237581-2483-40b2-bcbb-98750224de30&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;c072850b-4f3c-4cd9-8c06-3e751eccdcde&quot;,
+            &quot;id&quot;: &quot;3b9a1cfd-bd9e-403f-be43-c35029ede859&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;2799ce05-a046-4c41-af1e-dc3879512e09&quot;,
+            &quot;id&quot;: &quot;545df144-3be2-44ef-b889-11543013d06b&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -285,25 +285,25 @@ Content-Length: 1705</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;b88b8ba9-9635-4ab0-9625-66f493919583&quot;,
+      &quot;id&quot;: &quot;9b237581-2483-40b2-bcbb-98750224de30&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Vance&quot;,
-        &quot;last_name&quot;: &quot;Little&quot;,
-        &quot;slug&quot;: &quot;vance-little&quot;,
+        &quot;first_name&quot;: &quot;Raven&quot;,
+        &quot;last_name&quot;: &quot;Becker&quot;,
+        &quot;slug&quot;: &quot;raven-becker&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/b88b8ba9-9635-4ab0-9625-66f493919583/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/b88b8ba9-9635-4ab0-9625-66f493919583/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/b88b8ba9-9635-4ab0-9625-66f493919583/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/9b237581-2483-40b2-bcbb-98750224de30/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/9b237581-2483-40b2-bcbb-98750224de30/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/8af50515-abac-4ca3-9548-a02eb20c9a3b/user/avatar/9b237581-2483-40b2-bcbb-98750224de30/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T15:34:53.958Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T15:34:53.958Z&quot;,
+        &quot;created_at&quot;: &quot;2017-10-22T15:34:50.061Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:34:50.061Z&quot;,
         &quot;unread_notifications&quot;: 0
       }
     }

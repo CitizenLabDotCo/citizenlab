@@ -112,12 +112,39 @@ table th, table td {
         <h2>Get all projects on the second page with fixed page size</h2>
         <h3>GET api/v1/projects</h3>
 
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">topics</span>
+                </td>
+                <td>
+                  <span class="description">Filter by topics (AND)</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">areas</span>
+                </td>
+                <td>
+                  <span class="description">Filter by areas (AND)</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDYwODA2MzUsInN1YiI6IjYxZjhiZjk2LTdjN2ItNGNlYi1hYzRmLTBjNTY4NGUzZTFkNyJ9.ImLd-XMYJj88BV4Xz3q4Lb03nV0TqiNMD6IBFEbKUV4
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3NzI5MTIsInN1YiI6ImI3NDdjODIzLTcyMGItNDkyYy1hOTU3LWQ4NTgwYTk5OTEzNyJ9.m-pveYxsAD39oXfsRvcYf4u4E58waZppMsz1sryq_os
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
@@ -133,19 +160,19 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;b0d76ddc51053e1b2ab93e770e856b5c&quot;
+ETag: W/&quot;0463c29083b35f060f7b75ff5efc8f3c&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 2e023435-b7c9-4fd9-b06e-715b3865cbcf
-X-Runtime: 0.016198
+X-Request-Id: 1ca456dc-cc32-4dff-a9e6-649a206e5203
+X-Runtime: 0.033180
 Vary: Origin
-Content-Length: 1770</pre>
+Content-Length: 1852</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;eaf1ad3c-4c0f-4c37-8bdf-592bc0e2a365&quot;,
+      &quot;id&quot;: &quot;14b4b7c9-a60a-4d4e-9740-492de565e839&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -163,11 +190,21 @@ Content-Length: 1770</pre>
           &quot;small&quot;: null
         },
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-09-21T11:43:55.384Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:43:55.384Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T15:35:12.398Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:35:12.398Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;topics&quot;: {
           &quot;data&quot;: [
 
           ]
@@ -175,7 +212,7 @@ Content-Length: 1770</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;bc33d462-77e3-432b-a51f-af4a48ca1fc5&quot;,
+      &quot;id&quot;: &quot;39a16444-c17e-4aea-9235-e07f6d9ffcca&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -193,11 +230,21 @@ Content-Length: 1770</pre>
           &quot;small&quot;: null
         },
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-09-21T11:43:55.393Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-09-21T11:43:55.393Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-22T15:35:12.412Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-22T15:35:12.412Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;topics&quot;: {
           &quot;data&quot;: [
 
           ]
