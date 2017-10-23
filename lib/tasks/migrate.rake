@@ -12,8 +12,13 @@ namespace :migrate do
   	# uri = Mongo::URI.new("mongodb://citizenlab:jhshEVweHWULVCA9x2nLuWL8@lamppost.15.mongolayer.com:10300,lamppost.14.mongolayer.com:10323/demo?replicaSet=set-56285eff675db1d28f0012d1")
   	# client = Mongo::Client.new(uri.servers, uri.options)
   	# client.login(uri.credentials)
+    platform = 'beograd'
+    host = "#{platform}.localhost"
+    Tenant.where(host: host)&.first&.destroy
+    client = connect(platform: platform, password: '5nghbqbtkag0000000000')
+    create_tenant(platform, host, client['settings'].find.first)
     TenantTemplateService.new.apply_template 'base'
-    client = connect false # Mongo::Client.new(['127.0.0.1:27017'])
+    
     areas_hash = {}
     client['neighbourhoods'].find.each do |n|
       migrate_area n, areas_hash
@@ -51,12 +56,52 @@ namespace :migrate do
   end
 
 
-  def connect address=nil
-    if address
-      Mongo::Client.new('mongodb://lamppost.14.mongolayer.com:10323/demo', auth_mech: :mongodb_cr, user: 'citizenlab', password: 'jhshEVweHWULVCA9x2nLuWL8')
+  def connect(platform: nil, password: nil)
+    if platform && password
+      # Mongo::Client.new('mongodb://lamppost.14.mongolayer.com:10323/demo', auth_mech: :mongodb_cr, user: 'citizenlab', password: 'jhshEVweHWULVCA9x2nLuWL8')
+      Mongo::Client.new "mongodb://citizenlab:#{password}@lamppost.14.mongolayer.com:10323/#{platform}"
     else
       Mongo::Client.new 'mongodb://docker.for.mac.localhost:27017/schiedam'
     end
+  end
+
+
+  def create_tenant(platform, host, s)
+    Tenant.create({
+    name: platform,
+    host: host,
+    remote_logo_url: s['logoUrl'],
+    remote_header_bg_url: s['bannerImage'],
+    settings: {
+      core: {
+        allowed: true,
+        enabled: true,
+        locales: s['languages'],
+        organization_type: 'generic', ## TODO
+        organization_name: {
+          "en" => Faker::Address.city,
+          "nl" => Faker::Address.city,
+          "fr" => Faker::Address.city
+        },
+        timezone: "Europe/Brussels", ## TODO
+        color_main: Faker::Color.hex_color
+      },
+      demographic_fields: {
+        allowed: true,
+        enabled: true,
+        gender: true,
+        domicile: true,
+        birthyear: true,
+        education: true,
+      },
+      facebook_login: {
+        allowed: true,
+        enabled: true,
+        app_id: '307796929633098',
+        app_secret: '28082a4c201d7cee136dbe35236e44cb'
+      }
+    }
+  })
   end
 
 
