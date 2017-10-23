@@ -69,7 +69,7 @@ interface Props {
 
 interface State {
   projectId: string | null;
-  currentValue: 'all' | 'selection' | null;
+  currentValue: 'all' | 'administrators' | 'selection' | null;
 }
 
 class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -142,6 +142,14 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
               label={formatMessage(messages.permissionsEveryoneLabel)}
               value="all"
               id="permissions-all"
+            />
+            <StyledRadio
+              onChange={this.handlePermissionTypeChange}
+              currentValue={currentValue}
+              name="permissionsType"
+              label={formatMessage(messages.permissionsAdministrators)}
+              value="administrators"
+              id="permissions-administrators"
             />
             <StyledRadio
               onChange={this.handlePermissionTypeChange}

@@ -272,6 +272,7 @@ class Streams {
       .filter(data => data !== 'initial')
       .distinctUntilChanged()
       .do((data) => {
+        // quick and dirty fix, needs proper solution
         if (!apiEndpoint.endsWith('memberships/users_search')) {
           store.dispatch(mergeJsonApiResources(data));
         }
