@@ -59,6 +59,7 @@ class Api::V1::ProjectsController < ::ApplicationController
     params.require(:project).permit(
       :slug, 
       :header_bg,
+      :visible_to,
       title_multiloc: I18n.available_locales, 
       description_multiloc: I18n.available_locales,
       area_ids: [],

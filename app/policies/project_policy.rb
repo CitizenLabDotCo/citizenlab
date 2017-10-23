@@ -13,7 +13,8 @@ class ProjectPolicy < ApplicationPolicy
       else
         scope
           .left_outer_joins(groups: :memberships)
-          .where("memberships.user_id = ? OR groups_projects.group_id IS NULL", user&.id)
+          .where("projects.visible_to = 'public' OR \
+            (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
       end
     end
   end
@@ -28,8 +29,8 @@ class ProjectPolicy < ApplicationPolicy
 
   def show?
     user&.admin? ||
-    record.groups_projects.empty? || 
-    record.groups.includes(:memberships).flat_map(&:memberships).any?{|m| m.user_id == user.id}
+    record.visible_to == 'public' || 
+    record.visible_to == 'groups' && record.groups.includes(:memberships).flat_map(&:memberships).any?{|m| m.user_id == user.id}
   end
 
   def by_slug?

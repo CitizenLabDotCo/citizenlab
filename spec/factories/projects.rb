@@ -31,7 +31,12 @@ FactoryGirl.define do
       end
     end
 
-    factory :private_project do
+    factory :private_admins_project do
+      visible_to :admins
+    end
+
+    factory :private_groups_project do
+      visible_to 'groups'
       transient do
         user nil
       end
