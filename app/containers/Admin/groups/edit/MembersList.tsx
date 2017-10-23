@@ -112,6 +112,7 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
       }));
     })
     .switchMap((usersArray) => {
+      // Empty users array means we can immediately resolve with an empty users list
       if (usersArray.length === 0) {
         return Rx.Observable.of([]);
       }
