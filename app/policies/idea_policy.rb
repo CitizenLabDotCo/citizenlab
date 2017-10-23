@@ -13,7 +13,9 @@ class IdeaPolicy < ApplicationPolicy
       else
         scope
           .left_outer_joins(project: {groups: :memberships})
-          .where("memberships.user_id = ? OR projects.id IS NULL OR groups_projects.group_id IS NULL", user&.id)
+          .where("projects.id IS NULL OR \
+            projects.visible_to = 'public' OR \
+            (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
       end
     end
   end
