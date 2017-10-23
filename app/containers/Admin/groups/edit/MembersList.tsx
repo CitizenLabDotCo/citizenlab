@@ -54,7 +54,7 @@ interface Props {
 }
 
 interface State {
-  users: {user: IUserData, membershipId: string}[];
+  users: {user: IUserData, membershipId: string}[];
   locale: string;
   tenantLocales: string[];
   loading: boolean;
@@ -100,33 +100,35 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
   }
 
   updateMembers = () => {
-    const NO_MEMBERS = 'No Members';
-
     this.setState({
       loading: true,
     });
 
     return listMembership(this.props.groupId).observable
-    .switchMap((response) => {
-      if (response.data.length === 0) {
-        throw NO_MEMBERS;
-      }
-      return response.data.map((membership) => ({ userId: membership.relationships.user.data.id, membershipId: membership.id }));
-    })
-    .switchMap(({ userId, membershipId }) => {
-      return userByIdStream(userId).observable.map((user) => ({
-        user,
-        membershipId,
+    .map((response) => {
+      return response.data.map((membership) => ({
+        userId: membership.relationships.user.data.id,
+        membershipId: membership.id
       }));
     })
-    .subscribe(({ user, membershipId }) => {
-      const { users } = this.state;
-      users.push({ membershipId, user: user.data });
-      this.setState({ users, loading: false });
-    }, (error) => {
-      if (error === NO_MEMBERS) {
-        this.setState({ users: [], loading: false });
+    .switchMap((usersArray) => {
+      if (usersArray.length === 0) {
+        return Rx.Observable.of([]);
       }
+
+      // Build an array of observables for each user
+      const userRequests = usersArray.map(({ userId, membershipId }) =>
+        userByIdStream(userId).observable.first().map((user) => ({
+          membershipId,
+          user: user.data,
+        }))
+      );
+
+      // forkJoin will wait for each observable to complete and return with the array of results
+      return Rx.Observable.forkJoin(userRequests);
+    })
+    .subscribe((users) => {
+      this.setState({ users, loading: false });
     });
   }
 
@@ -134,12 +136,7 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
     const message = this.props.intl.formatMessage(messages.deleteConfirmMessage);
     return (e): void => {
       if (window.confirm(message)) {
-        deleteMembership(membershipId)
-        .then(() => {
-          let { users } = this.state;
-          users = _.reject(users, { membershipId });
-          this.setState({ users });
-        });
+        deleteMembership(membershipId);
       }
     };
   }
