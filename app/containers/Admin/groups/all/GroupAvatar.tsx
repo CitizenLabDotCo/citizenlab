@@ -82,7 +82,7 @@ export default class GroupAvatar extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const memberships$ = listMembership(this.props.groupId).observable;
+    const memberships$ = listMembership(this.props.groupId, { queryParameters: { page: { size: 3, number: 1 } } }).observable;
 
     this.subscriptions = [
       memberships$.switchMap((memberships) => {
@@ -119,6 +119,6 @@ export default class GroupAvatar extends React.PureComponent<Props, State> {
       );
     }
 
-    return null;
+    return <GroupAvatarWrapper />;
   }
 }
