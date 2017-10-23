@@ -84,3 +84,8 @@ export async function deleteMembership(membershipId: string) {
   return deletion;
 }
 
+export async function addMembership(group_id: string, user_id: string) {
+  const add = await streams.add(`${API_PATH}/groups/${group_id}/memberships`, { membership: { user_id } });
+  await listGroups().fetch();
+  return add;
+}
