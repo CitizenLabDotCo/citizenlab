@@ -43,6 +43,11 @@ const StyledAvatar = styled(Avatar)`
   height: 2rem;
 `;
 
+const StyledList = styled(List)`
+  position: relative;
+  z-index: 0;
+`;
+
 // Typings
 interface Props {
   groupId: string;
@@ -160,7 +165,7 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
     }
 
     return (
-      <List>
+      <StyledList>
         {users.map(({ user, membershipId }) => (
           <Row key={user.id}>
             <StyledAvatar userId={user.id} size="small" />
@@ -180,7 +185,7 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
             </Button>
           </Row>
         ))}
-      </List>
+      </StyledList>
     );
   }
 }

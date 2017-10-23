@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // Services
-import { findMembership } from 'services/groups';
+import { findMembership, addMembership, FoundUser } from 'services/groups';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
@@ -13,7 +13,9 @@ import localize, { injectedLocalized } from 'utils/localize';
 
 // Components
 import Button from 'components/UI/Button';
-import AsyncMultipleSelect from 'components/UI/AsyncMultipleSelect';
+import Icon from 'components/UI/Icon';
+import ReactSelect from 'react-select';
+import Avatar from 'components/Avatar';
 
 // Style
 import styled from 'styled-components';
@@ -22,6 +24,46 @@ const AddUserRow = styled.div`
   padding: 1rem 0;
   border-bottom: 1px solid ${props => props.theme.colors.separation};
   border-top: 1px solid ${props => props.theme.colors.separation};
+`;
+
+const StyledOption = styled.div`
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &.disabled {
+    color: ${props => props.theme.colors.mediumGrey};
+
+    .email {
+      color: inherit;
+    }
+  }
+`;
+
+const StyledAvatar = styled(Avatar)`
+  flex: 0;
+  height: 1rem;
+  margin-right: 1rem;
+`;
+
+const OptionName = styled.div`
+  flex: 1;
+  margin: 0;
+
+  p {
+    margin: 0;
+  }
+
+  .email {
+    color: ${props => props.theme.colors.label};
+  }
+`;
+
+const OptionIcon = styled(Icon)`
+  height: 1rem;
+  fill: ${props => props.theme.colors.clBlue};
+  margin-left: 1rem;
 `;
 
 // Typing
@@ -33,11 +75,13 @@ interface Props {
 
 interface State {
   selectVisible: boolean;
-  selection: IOption[];
+  selection: (IOption & {email: string})[];
+  loading: boolean;
 }
 
 class MembersAdd extends React.Component<Props & injectedLocalized, State> {
   subscriptions: Rx.Subscription[];
+  input$: Rx.Subject<string>;
 
   constructor () {
     super();
@@ -45,14 +89,26 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
     this.state = {
       selectVisible: false,
       selection: [],
+      loading: false,
     };
 
     this.subscriptions = [];
+    this.input$ = new Rx.Subject<string>();
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.subscriptions.push(
-
+      this.input$
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .switchMap(inputValue => {
+        this.setState({ loading: true });
+        return findMembership(this.props.groupId, { queryParameters: { query: inputValue } }).observable;
+      })
+      .subscribe((usersResponse) => {
+        const options = this.getOptions(usersResponse.data);
+        this.setState({ selection: options, loading: false });
+      })
     );
   }
 
@@ -64,24 +120,43 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
     this.setState({ selectVisible: !this.state.selectVisible });
   }
 
-  getOptions = async (args) => {
-    return findMembership(this.props.groupId).observable
-    .map((users) => {
-      return users.data.map((user) => {
-        return {
-          value: user.id,
-          label: `${user.attributes.first_name} ${user.attributes.last_name}`
-        };
-      });
-    })
-    .toPromise();
+  handleSearchChange = (inputValue) => {
+    // Broadcast change in the the stream for request handling
+    this.input$.next(inputValue);
+    // Return new value for the component
+    return inputValue;
   }
 
-  handleChange = (value): void => {
-    console.log(value);
-    const { selection } = this.state;
-    selection.push(value);
-    this.setState({ selection });
+  handleSelection = (selection: IOption) => {
+    if (selection && selection.value) {
+      addMembership(this.props.groupId, selection.value);
+    }
+  }
+
+  getOptions = (users: FoundUser[]) => {
+    return users.map((user) => {
+      return {
+        value: user.id,
+        label: `${user.attributes.first_name} ${user.attributes.last_name}`,
+        email: `${user.attributes.email}`,
+        disabled: user.attributes.is_member,
+      };
+    });
+  }
+
+  renderOption = (option) => {
+    return (
+      <StyledOption className={option.disabled ? 'disabled' : ''}>
+        <StyledAvatar size="small" userId={option.value} />
+        <OptionName>
+          <p>{option.label}</p>
+          <p className="email">{option.email}</p>
+        </OptionName>
+        {!option.disabled &&
+          <OptionIcon name="plus-circle" />
+        }
+      </StyledOption>
+    );
   }
 
   render() {
@@ -93,12 +168,18 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
           </Button>
         }
         {this.state.selectVisible &&
-          <AsyncMultipleSelect
-            value={this.state.selection}
-            placeholder=""
-            asyncOptions={this.getOptions}
-            onChange={this.handleChange}
-          />
+          <div>
+            <ReactSelect
+              autofocus={true}
+              name="search-user"
+              value={{}}
+              isLoading={this.state.loading}
+              options={this.state.selection}
+              onInputChange={this.handleSearchChange}
+              onChange={this.handleSelection}
+              optionRenderer={this.renderOption}
+            />
+          </div>
         }
       </AddUserRow>
     );
