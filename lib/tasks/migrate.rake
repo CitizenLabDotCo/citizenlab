@@ -12,7 +12,7 @@ namespace :migrate do
   	# client = Mongo::Client.new(uri.servers, uri.options)
   	# client.login(uri.credentials)
     TenantTemplateService.new.apply_template 'base'
-    client = connect true # Mongo::Client.new(['127.0.0.1:27017'])
+    client = connect false # Mongo::Client.new(['127.0.0.1:27017'])
     areas_hash = {}
     client['neighbourhoods'].find.each do |n|
       migrate_area n, areas_hash
@@ -34,6 +34,10 @@ namespace :migrate do
     ideas_hash = {}
     client['posts'].find.each do |p|
       migrate_ideas(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
+    end
+    comments_hash = {}
+    client['comments'].find.each do |c|
+      migrate_comments(c, comments_hash, users_hash, ideas_hash)
     end
     byebug
     if !@log.empty?
@@ -262,7 +266,54 @@ namespace :migrate do
       end
       # votes
       votes_d.each { |v| v[:votable] = record; Vote.create!(v) }
-      ideas_hash[p['_id']] = record.id
+      ideas_hash[p['_id']] = record
+    rescue Exception => e
+      @log.concat [e.message+' '+d.to_s]
+    end
+  end
+
+  def migrate_comments(c, comments_hash, users_hash, ideas_hash)
+    d = {}
+    # body
+    if c.dig('htmlBody_i18n')
+      d[:body_multiloc] = c.dig('htmlBody_i18n')
+    else
+      @log.concat ["Couldn't find the body for comment #{c.to_s}"]
+      return
+    end
+    # author
+    if c.dig('userId') && users_hash[c.dig('userId')]
+      d[:author] = users_hash[c.dig('userId')]
+    else
+      @log.concat ["Couldn't find the author for comment #{c.to_s}"]
+      return
+    end
+    # idea
+    if c.dig('postId') && ideas_hash[c.dig('postId')]
+      d[:idea] = ideas_hash[c.dig('postId')]
+    else
+      @log.concat ["Couldn't find the idea for comment #{c.to_s}"]
+      return
+    end
+    # parent
+    if c.dig('parentCommentId') && comments_hash[c.dig('parentCommentId')]
+      d[:parent] = comments_hash[c.dig('parentCommentId')]
+    end
+    # votes
+    votes_d = []
+    if c['upvoters']
+      votes_d.concat c['upvoters'].map{ |u| {mode: 'up', user: users_hash[u]} }
+    end
+    if c['downvoters']
+      votes_d.concat c['downvoters'].map{ |u| {mode: 'down', user: users_hash[u]} }
+    end
+    votes_d.select!{ |v| v[:user] }
+    begin
+      record = Comment.new d
+      record.save!
+      # votes
+      votes_d.each { |v| v[:votable] = record; Vote.create!(v) }
+      comments_hash[c['_id']] = record
     rescue Exception => e
       @log.concat [e.message+' '+d.to_s]
     end
