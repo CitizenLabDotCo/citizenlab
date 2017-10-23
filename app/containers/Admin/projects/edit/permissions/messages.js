@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.permissionsEveryoneLabel',
     defaultMessage: 'Everyone',
   },
+  permissionsAdministrators: {
+    id: 'app.containers.admin.project.permissions.permissionsAdministrators',
+    defaultMessage: 'Administrators',
+  },
   permissionsSelectionLabel: {
     id: 'app.containers.admin.project.permissions.permissionsSelectionLabel',
     defaultMessage: 'Selection',
