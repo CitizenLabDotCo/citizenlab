@@ -1,4 +1,5 @@
 require 'mongo'
+require 'redcarpet'
 
 # require "rails"
 
@@ -36,10 +37,10 @@ namespace :migrate do
       migrate_ideas(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
     end
     comments_hash = {}
-    client['comments'].find.each do |c|
+    # process comments by order of creation such that the parents can always be found
+    client['comments'].find.map { |x| x }.sort { |c1,c2| c1.dig('createdAt') <=> c2.dig('createdAt') }.each do |c|
       migrate_comments(c, comments_hash, users_hash, ideas_hash)
     end
-    byebug
     if !@log.empty?
       puts 'Migrated with errors!'
       @log.each(&method(:puts))
@@ -216,8 +217,8 @@ namespace :migrate do
       return
     end
     # description
-    if p.dig('body_i18n')
-      d[:body_multiloc] = p.dig('body_i18n')
+    if p.dig('htmlBody_i18n') || p.dig('body_i18n')
+      d[:body_multiloc] = p.dig('htmlBody_i18n') || md_to_html(p.dig('body_i18n'))
     else
       @log.concat ["Couldn't find a body for idea #{p.to_s}"]
       return
@@ -262,7 +263,13 @@ namespace :migrate do
       record.save!
       # images
       if p.dig('images')
-        p.dig('images').each { |i| IdeaImage.create!(remote_image_url: i.dig('original'), idea: record) }
+        p.dig('images').each do |i|
+          begin
+            IdeaImage.create!(remote_image_url: i.dig('original'), idea: record)
+          rescue Exception => e
+            @log.concat [e.message+' '+p.to_s]
+          end
+        end
       end
       # votes
       votes_d.each { |v| v[:votable] = record; Vote.create!(v) }
@@ -289,15 +296,19 @@ namespace :migrate do
       return
     end
     # idea
-    if c.dig('postId') && ideas_hash[c.dig('postId')]
+    if c.dig('postId') && ideas_hash[c.dig('postId')] 
       d[:idea] = ideas_hash[c.dig('postId')]
     else
       @log.concat ["Couldn't find the idea for comment #{c.to_s}"]
       return
     end
     # parent
-    if c.dig('parentCommentId') && comments_hash[c.dig('parentCommentId')]
-      d[:parent] = comments_hash[c.dig('parentCommentId')]
+    if c.dig('parentCommentId')
+      if comments_hash[c.dig('parentCommentId')]
+        d[:parent] = comments_hash[c.dig('parentCommentId')]
+      else # Comments on lost comments are retained on the top level
+        @log.concat ["Comment on lost comment is now a top level comment, for comment #{c.to_s}"]
+      end
     end
     # votes
     votes_d = []
@@ -317,6 +328,11 @@ namespace :migrate do
     rescue Exception => e
       @log.concat [e.message+' '+d.to_s]
     end
+  end
+
+
+  def md_to_html(md)
+    md && Redcarpet::Markdown.new(Redcarpet::Render::HTML.new).render(md)
   end
 
 end
