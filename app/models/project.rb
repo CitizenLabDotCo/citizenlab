@@ -16,12 +16,15 @@ class Project < ApplicationRecord
   has_many :groups_projects, dependent: :destroy
   has_many :groups, through: :groups_projects
 
+  VISIBLE_TOS = %w(public groups admins)
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
   validates :slug, presence: true, uniqueness: true, format: {with: SlugService.new.regex }
+  validates :visible_to, presence: true, inclusion: {in: VISIBLE_TOS}
 
   before_validation :generate_slug, on: :create
+  before_validation :set_visible_to, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
 
 
@@ -50,5 +53,9 @@ class Project < ApplicationRecord
     self.description_multiloc = self.description_multiloc.map do |locale, description|
       [locale, @@sanitizer.sanitize(description, tags: %w(p b u i strong a), attributes: %w(href))]
     end.to_h
+  end
+
+  def set_visible_to
+    self.visible_to ||= 'public'
   end
 end

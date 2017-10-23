@@ -117,9 +117,10 @@ resource "Projects" do
       parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
       parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
       parameter :slug, "The unique slug of the project. If not given, it will be auto generated"
-      # parameter :header_bg, "Base64 encoded header image"
+      parameter :header_bg, "Base64 encoded header image"
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :topic_ids, "Array of ids of the associated topics"
+      parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public."
     end
     ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -129,6 +130,7 @@ resource "Projects" do
     let(:description_multiloc) { project.description_multiloc }
     let(:header_bg) { encode_image_as_base64("header.jpg")}
     let(:area_ids) { create_list(:area, 2).map(&:id) }
+    let(:visible_to) { 'admins' }
 
 
     example_request "Create a project" do
@@ -137,7 +139,7 @@ resource "Projects" do
       expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
       expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
       expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
-
+      expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
     end
 
     describe do
@@ -166,6 +168,8 @@ resource "Projects" do
       parameter :slug, "The unique slug of the project"
       parameter :header_bg, "Base64 encoded header image"
       parameter :area_ids, "Array of ids of the associated areas"
+      parameter :topic_ids, "Array of ids of the associated topics"
+      parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public."
     end
     ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -174,8 +178,9 @@ resource "Projects" do
     let(:title_multiloc) { {"en" => "Changed title" } }
     let(:description_multiloc) { {"en" => "Changed body" } }
     let(:slug) { "changed-title" }
-    # let(:header_bg) { encode_image_as_base64("header.jpg")}
+    let(:header_bg) { encode_image_as_base64("header.jpg")}
     let(:area_ids) { create_list(:area, 2).map(&:id) }
+    let(:visible_to) { 'groups' }
 
 
     example_request "Updating the project" do
@@ -184,6 +189,7 @@ resource "Projects" do
       expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq "Changed body"
       expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
       expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+      expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
     end
 
     example "Clearing all areas", document: false do
