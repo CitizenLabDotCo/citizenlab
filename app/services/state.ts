@@ -55,10 +55,11 @@ class State {
           .filter(data => data && data.receiver && data.receiver === receiver)
           .scan((oldData, newData) => {
             const oldState = oldData.state;
-            const stateUpdate = newData.stateUpdate;
+            const stateUpdate: Partial<T> | ((state: T) => Partial<T>) = newData.stateUpdate;
+            const updatedStateProperties = _.isFunction(stateUpdate) ? stateUpdate(oldState) : stateUpdate;
             const newState = {
               ...oldState,
-              ...(_.isFunction(stateUpdate) ? stateUpdate(oldState) : stateUpdate)
+              ...updatedStateProperties as object
             };
 
             return {
