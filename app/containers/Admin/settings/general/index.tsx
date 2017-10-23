@@ -43,7 +43,8 @@ interface State {
   };
 }
 
-class SettingsGeneralTab extends React.Component<Props, State> {
+class SettingsGeneralTab extends React.PureComponent<Props, State> {
+  state: State;
   subscription: Rx.Subscription;
 
   constructor() {

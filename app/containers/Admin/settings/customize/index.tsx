@@ -46,7 +46,8 @@ interface State {
   saved: boolean;
 }
 
-class SettingsCustomizeTab extends React.Component<Props, State> {
+class SettingsCustomizeTab extends React.PureComponent<Props, State> {
+  state: State;
   uploadPlaceholder: string;
   subscription: Rx.Subscription;
 

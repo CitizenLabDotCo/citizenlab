@@ -1,53 +1,52 @@
-// Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
-import { IStream } from 'utils/streams';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { makeSelectSetting } from 'utils/tenant/selectors';
-import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-import messages from './messages';
+import { Multiloc, API } from 'typings.d';
+
+// libraries
 import * as moment from 'moment';
+import { browserHistory } from 'react-router';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
-import { browserHistory } from 'react-router';
-import { API } from 'typings.d';
 
-// Services
-import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
-import { eventStream, updateEvent, addEvent, IEvent, IEventData, IEvents, IUpdatedEventProperties } from 'services/events';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import { injectTFunc } from 'components/T/utils';
-
-// Components
+// components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import TextArea from 'components/UI/TextArea';
 import Editor from 'components/UI/Editor';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { DateRangePicker } from 'react-dates';
-import 'react-dates/lib/css/_datepicker.css';
-
 import FieldWrapper from 'components/admin/FieldWrapper';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
+// utils
+import { IStream } from 'utils/streams';
 
-// Component typing
+// i18n
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { getLocalized } from 'utils/i18n';
+import messages from './messages';
+
+// services
+import { localeStream } from 'services/locale';
+import { currentTenantStream, ITenant } from 'services/tenant';
+import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
+import { eventStream, updateEvent, addEvent, IEvent, IEventData, IEvents, IUpdatedEventProperties } from 'services/events';
+
 type Props = {
   params: {
     id: string | null,
     slug: string | null,
   },
   locale: string,
-  tFunc: Function,
   project: IProjectData | null;
 };
 
 interface State {
-  event: IEventData | null;
+  locale: string | null;
+  currentTenant: ITenant | null;
+  event: IEvent | null;
   attributeDiff: IUpdatedEventProperties;
   errors: {
     [fieldName: string]: API.Error[]
@@ -58,13 +57,15 @@ interface State {
   saved: boolean;
 }
 
-class AdminProjectEventEdit extends React.Component<Props, State> {
-  event$: IStream<Event>;
+class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProps, State> {
+  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
     this.state = {
+      locale: null,
+      currentTenant: null,
       event: null,
       attributeDiff: {},
       errors: {},
@@ -76,39 +77,42 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
     this.subscriptions = [];
   }
 
-  getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
-    if (!_.isEmpty(this.state.errors)) {
-      return 'error';
-    }
-    if (this.state.saved && _.isEmpty(this.state.attributeDiff)) {
-      return 'success';
-    }
-    return _.isEmpty(this.state.attributeDiff) ? 'disabled' : 'enabled';
-  }
+  componentWillMount() {
+    const locale$ = localeStream().observable;
+    const currentTenant$ = currentTenantStream().observable;
+    const event$ = (this.props.params.id ? eventStream(this.props.params.id).observable : Rx.Observable.of(null));
 
-  componentDidMount() {
-    if (this.props.params.id) {
-      this.subscriptions = [
-        eventStream(this.props.params.id).observable.subscribe((event) => {
-          let descState = EditorState.createEmpty();
+    this.subscriptions = [
+      Rx.Observable.combineLatest(
+        locale$,
+        currentTenant$,
+        event$
+      ).subscribe(([locale, currentTenant, event]) => {
+        let descState = EditorState.createEmpty();
 
-          if (event) {
-            const blocksFromHtml = convertFromHTML(_.get(event, `data.attributes.description_multiloc.${this.props.locale}`, ''));
-            const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
-            descState = EditorState.createWithContent(editorContent);
-          }
+        if (event) {
+          const blocksFromHtml = convertFromHTML(_.get(event, `data.attributes.description_multiloc.${this.props.locale}`, ''));
+          const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
+          descState = EditorState.createWithContent(editorContent);
+        }
 
-          this.setState({
-            descState,
-            event: event ? event.data : null,
-          });
-        })
-      ];
-    }
+        this.setState({ locale, currentTenant, event, descState });
+      })
+    ];
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
+    if (!_.isEmpty(this.state.errors)) {
+      return 'error';
+    } else if (this.state.saved && _.isEmpty(this.state.attributeDiff)) {
+      return 'success';
+    }
+
+    return _.isEmpty(this.state.attributeDiff) ? 'disabled' : 'enabled';
   }
 
   createMultilocUpdater = (name: string) => (value: string) => {
@@ -157,9 +161,8 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
 
     let savingPromise;
 
-
     if (this.state.event) {
-      savingPromise = updateEvent(this.state.event.id, this.state.attributeDiff);
+      savingPromise = updateEvent(this.state.event.data.id, this.state.attributeDiff);
       this.setState({ saving: true });
     } else if (this.props.project) {
       savingPromise = addEvent(this.props.project.id, this.state.attributeDiff).then((response) => {
@@ -178,84 +181,83 @@ class AdminProjectEventEdit extends React.Component<Props, State> {
   }
 
   render() {
-    const eventAttrs = this.state.event
-    ?  { ...this.state.event.attributes, ...this.state.attributeDiff }
-    : { ...this.state.attributeDiff };
-
+    const { locale, currentTenant } = this.state;
+    const eventAttrs = this.state.event ?  { ...this.state.event.data.attributes, ...this.state.attributeDiff } : { ...this.state.attributeDiff };
     const submitState = this.getSubmitState();
 
-    return (
-      <div>
-        <h1>
-          {this.state.event && <FormattedMessage {...messages.editEventTitle} />}
-          {!this.state.event && <FormattedMessage {...messages.createEventTitle} />}
+    if (locale && currentTenant) {
+      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 
-        </h1>
+      return (
+        <div>
+          <h1>
+            {this.state.event && <FormattedMessage {...messages.editEventTitle} />}
+            {!this.state.event && <FormattedMessage {...messages.createEventTitle} />}
+          </h1>
 
-        <form onSubmit={this.handleOnSubmit}>
-          <FieldWrapper>
-            <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
-            <Input
-              id="title"
-              type="text"
-              value={this.props.tFunc(eventAttrs.title_multiloc)}
-              onChange={this.createMultilocUpdater('title_multiloc')}
+          <form onSubmit={this.handleOnSubmit}>
+            <FieldWrapper>
+              <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
+              <Input
+                id="title"
+                type="text"
+                value={getLocalized(eventAttrs.title_multiloc as Multiloc, locale, currentTenantLocales)}
+                onChange={this.createMultilocUpdater('title_multiloc')}
+              />
+              <Error apiErrors={this.state.errors.title_multiloc} />
+            </FieldWrapper>
+
+            <FieldWrapper>
+              <Label htmlFor="location"><FormattedMessage {...messages.locationLabel} /></Label>
+              <Input
+                id="location"
+                type="text"
+                value={getLocalized(eventAttrs.location_multiloc as Multiloc, locale, currentTenantLocales)}
+                onChange={this.createMultilocUpdater('location_multiloc')}
+              />
+              <Error apiErrors={this.state.errors.location_multiloc} />
+            </FieldWrapper>
+
+            <FieldWrapper>
+              <Label><FormattedMessage {...messages.dateStartLabel} /></Label>
+              <DateTimePicker value={eventAttrs.start_at} onChange={this.createDateChangeHandler('start_at')} />
+            </FieldWrapper>
+
+            <FieldWrapper>
+              <Label><FormattedMessage {...messages.datesEndLabel} /></Label>
+              <DateTimePicker value={eventAttrs.end_at} onChange={this.createDateChangeHandler('end_at')} />
+            </FieldWrapper>
+
+            <FieldWrapper>
+              <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
+              <Editor
+                id="description"
+                placeholder=""
+                value={this.state.descState}
+                error=""
+                onChange={this.handleDescChange}
+              />
+              <Error apiErrors={this.state.errors.description_multiloc} />
+            </FieldWrapper>
+
+            <SubmitWrapper
+              loading={this.state.saving}
+              status={submitState}
+              messages={{
+                buttonSave: messages.saveButtonLabel,
+                buttonError: messages.saveErrorLabel,
+                buttonSuccess: messages.saveSuccessLabel,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
             />
-            <Error apiErrors={this.state.errors.title_multiloc} />
-          </FieldWrapper>
+        </form>
+        </div>
+      );
+    }
 
-          <FieldWrapper>
-            <Label htmlFor="location"><FormattedMessage {...messages.locationLabel} /></Label>
-            <Input
-              id="location"
-              type="text"
-              value={this.props.tFunc(eventAttrs.location_multiloc)}
-              onChange={this.createMultilocUpdater('location_multiloc')}
-            />
-            <Error apiErrors={this.state.errors.location_multiloc} />
-          </FieldWrapper>
-
-          <FieldWrapper>
-            <Label><FormattedMessage {...messages.dateStartLabel} /></Label>
-            <DateTimePicker value={eventAttrs.start_at} onChange={this.createDateChangeHandler('start_at')} />
-          </FieldWrapper>
-
-          <FieldWrapper>
-            <Label><FormattedMessage {...messages.datesEndLabel} /></Label>
-            <DateTimePicker value={eventAttrs.end_at} onChange={this.createDateChangeHandler('end_at')} />
-          </FieldWrapper>
-
-          <FieldWrapper>
-            <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
-            <Editor
-              id="description"
-              placeholder=""
-              value={this.state.descState}
-              error=""
-              onChange={this.handleDescChange}
-            />
-            <Error apiErrors={this.state.errors.description_multiloc} />
-          </FieldWrapper>
-
-          <SubmitWrapper
-            loading={this.state.saving}
-            status={submitState}
-            messages={{
-              buttonSave: messages.saveButtonLabel,
-              buttonError: messages.saveErrorLabel,
-              buttonSuccess: messages.saveSuccessLabel,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
-            }}
-          />
-      </form>
-      </div>
-    );
+    return null;
   }
 }
 
-const mapStateToProps = createStructuredSelector({
-  locale: makeSelectLocale(),
-});
-
-export default injectTFunc(injectIntl(connect(mapStateToProps)(AdminProjectEventEdit)));
+export default injectIntl<Props>(AdminProjectEventEdit);

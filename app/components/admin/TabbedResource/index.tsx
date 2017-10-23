@@ -1,59 +1,82 @@
-// Libraries
 import * as React from 'react';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
 
-// Localisation
+// style
+import styled from 'styled-components';
+
+// localisation
 import { FormattedMessage } from 'react-intl';
 import T from 'components/T';
 
-// Global types
+// typings
 import { Message, Multiloc } from 'typings';
 
-// Components
+// components
 import { Link } from 'react-router';
 
-// Styles
 const ResourceHeader = styled.div`
-  align-items: center;
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
+  margin-bottom: 30px;
 `;
 
-const PublicResourceLink = styled(Link)`
+const Title = styled.h1`
+  color: #333;
+  font-size: 35px;
+  line-height: 35px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 `;
+
+const PublicResourceLink = styled(Link)``;
 
 const TabbedNav = styled.nav`
   background: #fcfcfc;
   border-radius: 5px 5px 0 0;
-  border-bottom: 2px solid #eaeaea;
+  padding-left: 44px;
   display: flex;
-  height: 4rem;
-  padding: 0 3rem;
+  border-bottom: 1px solid #eaeaea;
 `;
 
 const Tab = styled.li`
-  border-bottom: 2px solid;
-  border-color: #eaeaea;
+  list-style: none;
+  cursor: pointer;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-bottom: -2px;
-  opacity: .5;
+  margin-bottom: -1px;
 
-  &:not(:first-child) {
-    margin-left: 2rem;
+  &:not(:last-child) {
+    margin-right: 50px;
   }
 
   a {
-    color: #101010;
-    line-height: 4rem;
+    color: #999;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22px;
+    text-transform: capitalize;
+    padding: 0;
+    padding-top: 20px;
+    padding-bottom: 18px;
+    border-bottom: 2px solid transparent;
+    transition: all 100ms ease-out;
   }
 
-  &.active,
-  &:hover {
-    opacity: 1;
+  &:hover a {
+    color: #333;
+  }
+
+  &.active a {
+    color: #333;
     border-color: #d60065;
+  }
+
+  &:not(.active):hover a {
+    border-color: transparent;
   }
 `;
 
@@ -63,8 +86,6 @@ const ChildWrapper = styled.div`
   padding: 3rem;
 `;
 
-
-// Component typing
 type Props = {
   location?: {
     pathname: string,
@@ -96,7 +117,7 @@ function isMultiloc(entry: any): entry is Multiloc {
 }
 
 function showLabel(label: string | Multiloc | Message) {
-  if (typeof(label) === 'string') {
+  if (_.isString(label)) {
     return label;
   } else if (isMessage(label)) {
     return <FormattedMessage {...label} />;
@@ -107,14 +128,15 @@ function showLabel(label: string | Multiloc | Message) {
   }
 }
 
-export default class TabbedResource extends React.Component<Props, State> {
+export default class TabbedResource extends React.PureComponent<Props, State> {
   render() {
     const { resource, messages, tabs, location } = this.props;
 
     return (
       <div>
         <ResourceHeader>
-          <h1>{showLabel(resource.title)}</h1>
+          <Title>{showLabel(resource.title)}</Title>
+
           {resource.publicLink &&
             <PublicResourceLink to={resource.publicLink}>
               <FormattedMessage {...messages.viewPublicResource} />
@@ -124,7 +146,9 @@ export default class TabbedResource extends React.Component<Props, State> {
         {tabs &&
           <TabbedNav>
             {tabs.map((tab) => (
-              <Tab key={tab.url} className={location && location.pathname && location.pathname === tab.url ? 'active' : ''}><Link to={tab.url}>{showLabel(tab.label)}</Link></Tab>
+              <Tab key={tab.url} className={location && location.pathname && location.pathname === tab.url ? 'active' : ''}>
+                <Link to={tab.url}>{showLabel(tab.label)}</Link>
+              </Tab>
             ))}
           </TabbedNav>
         }

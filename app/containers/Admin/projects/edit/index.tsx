@@ -31,6 +31,7 @@ type State = {
 };
 
 export default class AdminProjectEdition extends React.PureComponent<Props, State> {
+  state: State;
   subscription: Rx.Subscription;
   tabs: any[];
 
@@ -40,6 +41,8 @@ export default class AdminProjectEdition extends React.PureComponent<Props, Stat
     this.state = {
       project: null,
     };
+
+    this.tabs = [];
   }
 
   updateSubscription (slug) {
