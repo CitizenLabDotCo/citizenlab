@@ -110,21 +110,45 @@ class Streams {
   }
 
   isQuery(queryParameters: null | object) {
-    return _.isObject(queryParameters) && !_.isEmpty(queryParameters);
+    if (queryParameters !== null && _.isObject(queryParameters) && !_.isEmpty(queryParameters)) {
+      return Object.keys(queryParameters).filter((key) => {
+        return queryParameters[key] !== '' && !_.isNull(queryParameters[key]) && !_.isUndefined(queryParameters[key]) && Object.keys(queryParameters[key]).length > 0;
+      }).length > 0;
+    }
+
+    return false;
+  }
+
+  isSearchQuery(queryParameters: object | null, isQueryStream: boolean) {
+    if (isQueryStream && queryParameters !== null) {
+      return _.has(queryParameters, 'search') && _.isString(queryParameters['search']) && queryParameters['search'] !== '';
+    }
+
+    return false;
+  }
+
+  isSingleItemStream(lastUrlSegment: string, isQueryStream: boolean) {
+    if (!isQueryStream) {
+      return this.isUUID(lastUrlSegment);
+    }
+
+    return false;
   }
 
   removeTrailingSlash(apiEndpoint: string) {
     return apiEndpoint.replace(/\/$/, '');
   }
 
-  getSerializedUrl(apiEndpoint: string, queryParameters: IObject | null) {
-    if (this.isQuery(queryParameters) && queryParameters) {
-      return apiEndpoint + Object.keys(queryParameters).sort().map((key) => {
+  getSerializedUrl(apiEndpoint: string, isQueryStream: boolean, queryParameters: IObject | null) {
+    let serializedUrl = apiEndpoint;
+
+    if (queryParameters !== null && isQueryStream) {
+      serializedUrl =  apiEndpoint + '?' + Object.keys(queryParameters).filter(key => queryParameters[key] !== '').sort().map((key) => {
         return encodeURIComponent(key) + '=' + encodeURIComponent((queryParameters)[key]);
       }).join('&');
     }
 
-    return apiEndpoint;
+    return serializedUrl;
   }
 
   addStreamIdByDataIdIndex(streamId: string, isQueryStream: boolean, isSearchQuery: boolean, dataId: string) {
@@ -167,14 +191,14 @@ class Streams {
     const params: IExtendedStreamParams<T> = { bodyData: null, queryParameters: null, ...inputParams };
     const apiEndpoint = this.removeTrailingSlash(params.apiEndpoint);
     const queryParameters = params.queryParameters;
-    const streamId = this.getSerializedUrl(apiEndpoint, queryParameters);
+    const isQueryStream = this.isQuery(queryParameters);
+    const streamId = this.getSerializedUrl(apiEndpoint, isQueryStream, queryParameters);
 
     if (!_.has(this.streams, streamId)) {
       const { bodyData } = params;
       const lastUrlSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
-      const isQueryStream = this.isQuery(queryParameters);
-      const isSearchQuery = (isQueryStream && _.has(queryParameters as any, 'search'));
-      const isSingleItemStream = (!isQueryStream ? this.isUUID(lastUrlSegment) : false);
+      const isSearchQuery = this.isSearchQuery(queryParameters, isQueryStream);
+      const isSingleItemStream = this.isSingleItemStream(lastUrlSegment, isQueryStream);
       const observer: IObserver<T | null> = (null as any);
 
       const fetch = () => {
@@ -319,6 +343,14 @@ class Streams {
         }));
       });
 
+      /*
+      _(this.streams).forOwn((value, streamId) => {
+        if (streamId.startsWith(apiEndpoint) && streamId !== apiEndpoint) {
+          this.streams[streamId].fetch();
+        }
+      });
+      */
+
       _(this.streamIdsByApiEndPointWithQuery[apiEndpoint]).forEach((streamId) => {
         this.streams[streamId].fetch();
       });
@@ -352,6 +384,14 @@ class Streams {
           }));
         }
       });
+
+      /*
+      _(this.streams).forOwn((value, streamId) => {
+        if (streamId.startsWith(apiEndpoint) && streamId !== apiEndpoint) {
+          this.streams[streamId].fetch();
+        }
+      });
+      */
 
       _.union(
         this.streamIdsByApiEndPointWithQuery[apiEndpoint], 
@@ -387,6 +427,14 @@ class Streams {
           }));
         }
       });
+
+      /*
+      _(this.streams).forOwn((value, streamId) => {
+        if (streamId.startsWith(apiEndpoint) && streamId !== apiEndpoint) {
+          this.streams[streamId].fetch();
+        }
+      });
+      */
 
       _.union(
         this.streamIdsByApiEndPointWithQuery[apiEndpoint], 

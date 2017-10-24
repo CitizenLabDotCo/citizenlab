@@ -133,16 +133,17 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
     });
   }
 
-  createDeleteHandler = (membershipId) => {
+  createDeleteHandler = (membershipId: string, groupId: string) => {
     const message = this.props.intl.formatMessage(messages.deleteConfirmMessage);
     return (e): void => {
       if (window.confirm(message)) {
-        deleteMembership(membershipId);
+        deleteMembership(membershipId, groupId);
       }
     };
   }
 
   render() {
+    const { groupId } = this.props;
     const { users, locale, tenantLocales, loading } = this.state;
 
     if (loading) {
@@ -174,7 +175,7 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
               {user.attributes.email}
             </div>
             <Button
-              onClick={this.createDeleteHandler(membershipId)}
+              onClick={this.createDeleteHandler(membershipId, groupId)}
               style="text"
               circularCorners={false}
               icon="delete"
