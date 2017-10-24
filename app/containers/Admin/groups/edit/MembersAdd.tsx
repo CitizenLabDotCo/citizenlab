@@ -115,9 +115,8 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
         this.setState({ loading: true });
         return findMembership(this.props.groupId, {
           queryParameters: {
-            query: inputValue
-          },
-          cacheStream: false
+            search: inputValue
+          }
         }).observable;
       })
       .subscribe((usersResponse) => {
