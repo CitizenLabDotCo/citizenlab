@@ -358,20 +358,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
         </FieldWrapper>
 
         <FieldWrapper>
-          <label htmlFor="project-description">
-          <FormattedMessage {...messages.descriptionLabel} />
-          </label>
-          <Editor
-            id="project-description"
-            placeholder=""
-            value={editorState}
-            error=""
-            onChange={this.changeDesc}
-          />
-          <Error fieldName="description_multiloc" apiErrors={this.state.errors.description_multiloc} />
-        </FieldWrapper>
-
-        <FieldWrapper>
           <label htmlFor="project-area">
             <FormattedMessage {...messages.areasLabel} />
           </label>
