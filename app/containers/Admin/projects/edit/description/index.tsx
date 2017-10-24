@@ -11,7 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // Services
-import { projectBySlugStream,  IProjectData, IUpdatedProjectProperties } from 'services/projects';
+import { projectBySlugStream, updateProject,  IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 
@@ -123,13 +123,28 @@ class ProjectDescription extends React.Component<Props, State> {
     });
   }
 
-  saveProject = () => {
+  handleSaveErrors = (errors) => {
+    this.setState({ errors: errors.json.errors });
+  }
 
+  saveProject = (event) => {
+    event.preventDefault();
+    const { diff, data } = this.state;
+
+    if (!_.isEmpty(diff) && data.id) {
+      this.setState({ loading: true, saved: true });
+      updateProject(data.id, diff)
+      .catch(this.handleSaveErrors)
+      .then(() => {
+        this.setState({ loading: false, saved: true });
+      });
+    }
   }
 
   render () {
-    const { data, diff, editorState } = this.state;
+    const { data, diff, editorState, loading } = this.state;
     const projectAttrs = { ...data.attributes, ...diff } as IUpdatedProjectProperties;
+    const submitState = this.getSubmitState();
 
     return (
       <FormWrapper onSubmit={this.saveProject}>
@@ -147,6 +162,17 @@ class ProjectDescription extends React.Component<Props, State> {
           <Error fieldName="description_multiloc" apiErrors={this.state.errors.description_multiloc} />
         </FieldWrapper>
 
+        <SubmitWrapper
+          loading={loading}
+          status={submitState}
+          messages={{
+            buttonSave: messages.saveButtonLabel,
+            buttonError: messages.saveErrorLabel,
+            buttonSuccess: messages.saveSuccessLabel,
+            messageError: messages.saveErrorMessage,
+            messageSuccess: messages.saveSuccessMessage,
+          }}
+        />
       </FormWrapper>
     );
   }
