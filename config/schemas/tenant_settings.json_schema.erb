@@ -38,15 +38,23 @@
           },
           "organization_name": {
             "description": "The name of the city or organization, used throughout the platform",
-            "$ref": "#/definitions/multiloc_string" 
+            "$ref": "#/definitions/multiloc_string"
           },
           "header_title": {
-            "description": "The main title shown on the homepage",
-            "$ref": "#/definitions/multiloc_string" 
+            "description": "The main title shown on the homepage (max 35 characters)",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 35}" }.join(",") %>
+            }
           },
           "header_slogan": {
-            "description": "The subtitle shown on the homepage",
-            "$ref": "#/definitions/multiloc_string" 
+            "description": "The subtitle shown on the homepage (max 90 characters)",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 90}" }.join(",") %>
+            } 
           },
           "meta_title": {
             "description": "The title of the homepage, shown on the browser tab and in search engine results",
@@ -61,6 +69,12 @@
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
             "default": "#335533"
+          },
+          "color_header_overlay": {
+            "description": "The color as a hexadecimal value that is transparently overlaid on the homepage header",
+            "type": "string",
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "default": "#000000"
           }
         }
       },
