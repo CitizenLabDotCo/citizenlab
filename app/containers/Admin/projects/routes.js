@@ -79,6 +79,23 @@ export default (injectReducer) => ({
       },
       childRoutes: [
         {
+          path: '/admin/projects/:slug/description',
+          name: 'admin projects description',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/Admin/projects/edit/description'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
           path: '/admin/projects/:slug/timeline',
           name: 'admin projects timeline',
           getComponent(nextState, cb) {

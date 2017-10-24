@@ -63,6 +63,10 @@ export default class AdminProjectEdition extends React.PureComponent<Props, Stat
           url: `${baseTabsUrl}/edit`
         },
         {
+          label: 'description',
+          url: `${baseTabsUrl}/description`
+        },
+        {
           label: 'timeline',
           url: `${baseTabsUrl}/timeline`
         },
