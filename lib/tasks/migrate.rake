@@ -13,10 +13,12 @@ namespace :migrate do
   	# client = Mongo::Client.new(uri.servers, uri.options)
   	# client.login(uri.credentials)
     platform = 'beograd'
+    password = '5nghbqbtkag0000000000'
     host = "#{platform}.localhost"
     Tenant.where(host: host)&.first&.destroy
-    client = connect(platform: platform, password: '5nghbqbtkag0000000000')
-    create_tenant(platform, host, client['settings'].find.first)
+    client = connect(platform: platform, password: password)
+    create_tenant(platform, host, client['settings'].find.first, client['meteor_accounts_loginServiceConfiguration'])
+    Apartment::Tenant.switch("#{platform}_localhost")
     TenantTemplateService.new.apply_template 'base'
     
     areas_hash = {}
@@ -53,6 +55,7 @@ namespace :migrate do
     else
       puts 'Migration succeeded!'
     end
+    byebug
   end
 
 
@@ -66,42 +69,39 @@ namespace :migrate do
   end
 
 
-  def create_tenant(platform, host, s)
+  def create_tenant(platform, host, s, m)
+    fb_login = m.find({ service: 'facebook' }).first
     Tenant.create({
-    name: platform,
-    host: host,
-    remote_logo_url: s['logoUrl'],
-    remote_header_bg_url: s['bannerImage'],
-    settings: {
-      core: {
-        allowed: true,
-        enabled: true,
-        locales: s['languages'],
-        organization_type: 'generic', ## TODO
-        organization_name: {
-          "en" => Faker::Address.city,
-          "nl" => Faker::Address.city,
-          "fr" => Faker::Address.city
+      name: platform,
+      host: host,
+      remote_logo_url: s['logoUrl'],
+      remote_header_bg_url: s['bannerImage'],
+      settings: {
+        core: {
+          allowed: true,
+          enabled: true,
+          locales: s['languages'],
+          organization_type: 'generic', ## TODO
+          organization_name: s['title_i18n'],
+          timezone: "Europe/Brussels", ## TODO
+          color_main: s['accentColor']
         },
-        timezone: "Europe/Brussels", ## TODO
-        color_main: Faker::Color.hex_color
-      },
-      demographic_fields: {
-        allowed: true,
-        enabled: true,
-        gender: true,
-        domicile: true,
-        birthyear: true,
-        education: true,
-      },
-      facebook_login: {
-        allowed: true,
-        enabled: true,
-        app_id: '307796929633098',
-        app_secret: '28082a4c201d7cee136dbe35236e44cb'
+        demographic_fields: {
+          allowed: true,
+          enabled: true,
+          gender: true,
+          domicile: true,
+          birthyear: true,
+          education: true,
+        },
+        facebook_login: {
+          allowed: true,
+          enabled: true,
+          app_id: fb_login['appId'],
+          app_secret: fb_login['secret']
+        }
       }
-    }
-  })
+    })
   end
 
 
