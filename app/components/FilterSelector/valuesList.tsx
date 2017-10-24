@@ -109,7 +109,7 @@ const Checkmark: any = styled.span`
 
 const StyledOption: any = styled.li`
   color: #84939E;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   padding: 10px 15px;
   background: #fff;
@@ -129,7 +129,7 @@ const StyledOption: any = styled.li`
   &.focused,
   &:hover {
     color: #222;
-    background: #f4f4f4;
+    background: #f8f8f8;
 
     ${Checkmark} {
       border-color: ${(props: any) => props.selected ? props.theme.colors.success : '#333'};
@@ -295,7 +295,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
                   className={`e2e-filter-selector-dropdown-listitem-${title} ${focussed}`}
                 >
                   <OptionText>{entry.text}</OptionText>
-                  {multiple && 
+                  {multiple &&
                     <Checkmark selected={selected}>
                       {selected &&
                         <CheckmarkIcon name="checkmark" />

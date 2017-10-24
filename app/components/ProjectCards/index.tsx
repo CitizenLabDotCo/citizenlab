@@ -146,6 +146,7 @@ class ProjectCards extends React.PureComponent<Props & InjectedIntlProps, State>
         return projectsStream({
           queryParameters: {
             'page[size]': 25,
+            sort: 'new',
             ...filter,
             'page[number]': pageNumber
           }

@@ -269,10 +269,13 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
     const { authUser, currentTenant, scrolled } = this.state;
     const tenantLogo = (currentTenant ? currentTenant.data.attributes.logo.medium : null);
     const alwaysShowBorder = (pathname.startsWith('/ideas/') 
+                              || pathname.startsWith('/reset-password')
                               || pathname === 'sign-in'
                               || pathname === '/sign-in' 
                               || pathname === 'sign-up' 
-                              || pathname === '/sign-up');
+                              || pathname === '/sign-up'
+                              || pathname === 'password-recovery'
+                              || pathname === '/password-recovery');
 
     return (
       <ThemeProvider theme={this.navbarTheme}>
