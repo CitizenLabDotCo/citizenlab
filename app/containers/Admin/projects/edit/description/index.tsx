@@ -159,6 +159,22 @@ class ProjectDescription extends React.Component<Props, State> {
             value={editorState}
             error=""
             onChange={this.changeDesc}
+            toolbarConfig={{
+              options: ['inline', 'list', 'link', 'blockType'],
+              inline: {
+                options: ['bold', 'italic'],
+              },
+              list: {
+                options: ['unordered', 'ordered'],
+              },
+              blockType: {
+                inDropdown: false,
+                options: ['Normal', 'H1'],
+                className: undefined,
+                component: undefined,
+                dropdownClassName: undefined,
+              }
+            }}
           />
           <Error fieldName="description_multiloc" apiErrors={this.state.errors.description_multiloc} />
         </FieldWrapper>
