@@ -83,4 +83,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.projectImageLabel',
     defaultMessage: 'Project Images',
   },
+  generalTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.generalTab',
+    defaultMessage: 'General',
+  },
+  descriptionTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.descriptionTab',
+    defaultMessage: 'Description',
+  },
+  phasesTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.phasesTab',
+    defaultMessage: 'Timeline',
+  },
+  eventsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.eventsTab',
+    defaultMessage: 'Events',
+  },
 });
