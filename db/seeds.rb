@@ -166,7 +166,7 @@ if Apartment::Tenant.current == 'localhost'
     })
   end
 
-  TenantTemplateService.new.apply_template('base')
+  TenantTemplateService.new.apply_template('base') #####
 
   12.times do 
     Area.create({
