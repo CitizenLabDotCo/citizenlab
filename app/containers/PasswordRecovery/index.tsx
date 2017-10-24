@@ -2,9 +2,6 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
-// router
-import { browserHistory } from 'react-router';
-
 // components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
@@ -15,7 +12,10 @@ import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 
 // services
-import { resetPassword } from 'services/auth';
+import { sendPasswordResetMail } from 'services/auth';
+
+// utils
+import { isValidEmail } from 'utils/validate';
 
 // i18n
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -44,6 +44,17 @@ const Title = styled.h2`
   margin: 0;
   padding: 0;
   padding-top: 60px;
+  margin-bottom: 15px;
+`;
+
+const Subtitle = styled.h4`
+  color: #444;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 300;
+  text-align: center;
+  margin: 0;
+  padding: 0;
   margin-bottom: 50px;
 `;
 
@@ -68,101 +79,94 @@ const Form = styled.form`
 type Props = {};
 
 type State = {
-  token: string | null;
-  password: string | null;
-  passwordError: boolean;
+  email: string | null;
+  emailError: boolean;
   submitError: boolean;
   processing: boolean;
   success: boolean;
+  successEmail: string | null;
 };
 
-class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State> {
+class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
-  passwordInputElement: HTMLInputElement | null;
+  emailInputElement: HTMLInputElement | null;
 
   constructor() {
     super();
-
-    const query = browserHistory.getCurrentLocation().query;
-    const token = (query.token ? query.token : null);
-    console.log(token);
-
     this.state = {
-      token,
-      password: null,
-      passwordError: false,
+      email: null,
+      emailError: false,
       submitError: false,
       processing: false,
-      success: false
+      success: false,
+      successEmail: null
     };
-
-    this.passwordInputElement = null;
+    this.emailInputElement = null;
   }
 
   componentDidMount() {
-    const { token } = this.state;
-
-    if (!_.isString(token)) {
-      browserHistory.push('/');
-    } else if (this.passwordInputElement) {
-      this.passwordInputElement.focus();
+    if (this.emailInputElement) {
+      this.emailInputElement.focus();
     }
   }
 
-  validate = (password: string | null) => {
-    const passwordError = (!password || password.length < 8);
+  validate = (email: string | null) => {
+    const emailError = (!email || !isValidEmail(email));
 
-    if (passwordError && this.passwordInputElement) {
-      this.passwordInputElement.focus();
+    if (emailError && this.emailInputElement) {
+      this.emailInputElement.focus();
     }
 
-    this.setState({ passwordError });
+    this.setState({ emailError });
 
-    return (!passwordError);
+    return (!emailError);
   }
 
-  handlePasswordOnChange = (value) => {
+  handleEmailOnChange = (value) => {
     this.setState({
-      passwordError: false,
+      emailError: false,
       submitError: false,
-      password: value
+      email: value
     });
   }
 
-  handlePasswordInputSetRef = (element: HTMLInputElement) => {
-    this.passwordInputElement = element;
+  handleEmailInputSetRef = (element: HTMLInputElement) => {
+    this.emailInputElement = element;
   }
 
   handleOnSubmit = async (event) => {
-    const { password, token } = this.state;
+    const { email } = this.state;
 
     event.preventDefault();
 
-    if (this.validate(password) && password && token) {
+    if (this.validate(email) && email) {
       try {
         this.setState({ processing: true, success: false });
-        await resetPassword(password, token);
-        this.setState({ password: null, processing: false, success: true });
+        await sendPasswordResetMail(email);
+        this.setState({ email: null, processing: false, success: true, successEmail: email });
         /* setTimeout(() => this.setState({ success: false }), 8000); */
-      } catch (error) {
+      } catch {
         this.setState({ processing: false, success: false, submitError: true });
       }
+    } else {
+      this.setState({ emailError: true });
     }
   }
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { password, passwordError, submitError, processing, success } = this.state;
+    const { email, emailError, submitError, processing, success, successEmail } = this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
     const helmetDescription = formatMessage(messages.helmetDescription);
     const title = formatMessage(messages.title);
-    const passwordPlaceholder = formatMessage(messages.passwordPlaceholder);
-    const updatePassword = formatMessage(messages.updatePassword);
-    const successMessage = (success ? formatMessage(messages.successMessage) : null);
+    const subtitle = formatMessage(messages.subtitle);
+    const emailPlaceholder = formatMessage(messages.emailPlaceholder);
+    const resetPassword = formatMessage(messages.resetPassword);
+    const successMessage = (success ? formatMessage(messages.successMessage, { email: `${successEmail}` }) : null);
     let errorMessage: string | null = null;
 
-    if (passwordError) {
-      errorMessage = formatMessage(messages.passwordError);
+    if (emailError) {
+      errorMessage = formatMessage(messages.emailError);
     } else if (submitError) {
       errorMessage = formatMessage(messages.submitError);
     }
@@ -179,21 +183,25 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
         <StyledContentContainer>
           <Title>{title}</Title>
 
+          <Subtitle>{subtitle}</Subtitle>
+
           <Form onSubmit={this.handleOnSubmit}>
             <StyledInput
-              type="password"
-              id="password"
-              value={password}
+              id="email"
+              type="text"
+              value={email}
               error={errorMessage}
-              placeholder={passwordPlaceholder}
-              onChange={this.handlePasswordOnChange}
-              setRef={this.handlePasswordInputSetRef}
+              placeholder={emailPlaceholder}
+              onChange={this.handleEmailOnChange}
+              setRef={this.handleEmailInputSetRef}
             />
+
+            {/* <Error fieldName="title_multiloc" apiErrors={this.state.errors.title_multiloc} /> */}
 
             <StyledButton
               size="2"
               loading={processing}
-              text={updatePassword}
+              text={resetPassword}
               onClick={this.handleOnSubmit}
               circularCorners={false}
             />
@@ -206,4 +214,4 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
   }
 }
 
-export default injectIntl<Props>(PasswordReset);
+export default injectIntl<Props>(PasswordRecovery);

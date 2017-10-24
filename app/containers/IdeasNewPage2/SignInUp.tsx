@@ -139,7 +139,7 @@ type Props = {
 };
 
 type State = {
-  show: 'signIn' | 'signUp' | 'passwordReset';
+  show: 'signIn' | 'signUp';
   currentTenant: ITenant | null;
 };
 
@@ -182,11 +182,6 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ show: 'signIn' });
   }
 
-  goToPasswordResetForm = () => {
-    // window.scrollTo(0, 0);
-    this.setState({ show: 'passwordReset' });
-  }
-
   handleOnSignedIn = () => {
     this.props.onSignInUpCompleted();
   }
@@ -202,20 +197,19 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { onGoBack } = this.props;
     const timeout = 10;
 
-    const signIn = (show === 'signIn' && (
+    const signIn = (show === 'signIn' ? (
       <FormContainer>
         <Form>
           <Title>{formatMessage(messages.signInTitle)}</Title>
           <SignIn
             onSignedIn={this.handleOnSignedIn}
-            onForgotPassword={this.goToPasswordResetForm}
             goToSignUpForm={this.goToSignUpForm}
           />
         </Form>
       </FormContainer>
-    ));
+    ) : null);
 
-    const signUp = (show === 'signUp' && (
+    const signUp = (show === 'signUp' ? (
       <FormContainer>
         <Form>
           <Title>{formatMessage(messages.signUpTitle)}</Title>
@@ -225,7 +219,7 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
           />
         </Form>
       </FormContainer>
-    ));
+    ) : null);
 
     return (
       <Container>
