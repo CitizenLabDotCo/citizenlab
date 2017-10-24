@@ -43,6 +43,25 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run lint:ts --silent
 
+  build:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: ~/cl2-front
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run build
+
   deploy_demo:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -118,10 +137,12 @@ workflows:
     jobs:
       - lint_js
       - lint_ts
+      - build
       - deploy_demo:
           requires:
             - lint_js
             - lint_ts
+            - build
           filters:
             branches:
               only: master
@@ -129,6 +150,7 @@ workflows:
           requires:
             - lint_js
             - lint_ts
+            - build
           filters:
             branches:
               only: master
@@ -136,6 +158,7 @@ workflows:
           requires:
             - lint_js
             - lint_ts
+            - build
           filters:
             branches:
               only: production
