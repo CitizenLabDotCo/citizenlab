@@ -83,12 +83,12 @@ resource "Memberships" do
         parameter :size, "Number of members per page"
       end
 
-      parameter :query, "The query used for searching users", required: true
+      parameter :search, "The query used for searching users", required: true
 
       let(:g1) { create(:group) }
       let(:group_id) { g1.id }
       let(:g2) { create(:group) }
-      let(:query) { 'jo' }
+      let(:search) { 'jo' }
       let!(:u1) { create(:user, first_name: 'Freddy', last_name: 'Smith', email: 'jofreddy@jojo.com', groups: [g1]) }
       let!(:u2) { create(:user, first_name: 'Jon', last_name: 'Smith', email: 'freddy1@zmail.com', groups: [g2]) }
       let!(:u3) { create(:user, first_name: 'Jonny', last_name: 'Johnson', email: 'freddy2@zmail.com', groups: []) }
