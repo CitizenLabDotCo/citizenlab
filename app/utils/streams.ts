@@ -160,42 +160,38 @@ class Streams {
     return serializedUrl;
   }
 
-  addStreamIdByDataIdIndex(streamId: string, isQueryStream: boolean, cacheStream: boolean, dataId: string) {
-    if (cacheStream) {
-      if (isQueryStream) {
-        if (this.streamIdsByDataIdWithQuery[dataId] && !_.some(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
-          this.streamIdsByDataIdWithQuery[dataId].push(streamId);
-        } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
-          this.streamIdsByDataIdWithQuery[dataId] = [streamId];
-        }
+  addStreamIdByDataIdIndex(streamId: string, isQueryStream: boolean, dataId: string) {
+    if (isQueryStream) {
+      if (this.streamIdsByDataIdWithQuery[dataId] && !_.some(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
+        this.streamIdsByDataIdWithQuery[dataId].push(streamId);
+      } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
+        this.streamIdsByDataIdWithQuery[dataId] = [streamId];
       }
+    }
 
-      if (!isQueryStream) {
-        if (this.streamIdsByDataIdWithoutQuery[dataId] && !_.some(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
-          this.streamIdsByDataIdWithoutQuery[dataId].push(streamId);
-        } else if (!this.streamIdsByDataIdWithoutQuery[dataId]) {
-          this.streamIdsByDataIdWithoutQuery[dataId] = [streamId];
-        }
+    if (!isQueryStream) {
+      if (this.streamIdsByDataIdWithoutQuery[dataId] && !_.some(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
+        this.streamIdsByDataIdWithoutQuery[dataId].push(streamId);
+      } else if (!this.streamIdsByDataIdWithoutQuery[dataId]) {
+        this.streamIdsByDataIdWithoutQuery[dataId] = [streamId];
       }
     }
   }
 
-  addStreamIdByApiEndpointIndex(apiEndpoint: string, streamId: string, isQueryStream: boolean, cacheStream: boolean) {
-    if (cacheStream) {
-      if (isQueryStream) {
-        if (!this.streamIdsByApiEndPointWithQuery[apiEndpoint]) {
-          this.streamIdsByApiEndPointWithQuery[apiEndpoint] = [streamId];
-        } else {
-          this.streamIdsByApiEndPointWithQuery[apiEndpoint].push(streamId);
-        }
+  addStreamIdByApiEndpointIndex(apiEndpoint: string, streamId: string, isQueryStream: boolean) {
+    if (isQueryStream) {
+      if (!this.streamIdsByApiEndPointWithQuery[apiEndpoint]) {
+        this.streamIdsByApiEndPointWithQuery[apiEndpoint] = [streamId];
+      } else {
+        this.streamIdsByApiEndPointWithQuery[apiEndpoint].push(streamId);
       }
+    }
 
-      if (!isQueryStream) {
-        if (!this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]) {
-          this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = [streamId];
-        } else {
-          this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].push(streamId);
-        }
+    if (!isQueryStream) {
+      if (!this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]) {
+        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = [streamId];
+      } else {
+        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].push(streamId);
       }
     }
   }
@@ -282,14 +278,14 @@ class Streams {
                 const dataId = item.id;
                 dataIds[dataId] = true;
                 this.resourcesByDataId[dataId] = { data: item };
-                this.addStreamIdByDataIdIndex(streamId, isQueryStream, cacheStream, dataId);
+                this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
               });
             } else if (_.isObject(innerData) && _.has(innerData, 'id')) {
               const dataId = innerData.id;
               this.streams[streamId].type = 'singleObject';
               dataIds[dataId] = true;
               this.resourcesByDataId[dataId] = { data: innerData };
-              this.addStreamIdByDataIdIndex(streamId, isQueryStream, cacheStream, dataId);
+              this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
             }
 
             if (_.has(data, 'included')) {
@@ -332,7 +328,7 @@ class Streams {
         dataIds: {}
       };
 
-      this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, isQueryStream, cacheStream);
+      this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, isQueryStream);
 
       if (cacheStream) {
         // keep stream hot
