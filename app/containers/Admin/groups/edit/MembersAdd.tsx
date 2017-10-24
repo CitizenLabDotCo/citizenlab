@@ -113,7 +113,12 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
       .debounceTime(300)
       .switchMap(inputValue => {
         this.setState({ loading: true });
-        return findMembership(this.props.groupId, { queryParameters: { query: inputValue } }).observable;
+        return findMembership(this.props.groupId, {
+          queryParameters: {
+            query: inputValue
+          },
+          cacheStream: false
+        }).observable;
       })
       .subscribe((usersResponse) => {
         const options = this.getOptions(usersResponse.data);
