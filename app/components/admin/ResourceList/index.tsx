@@ -15,6 +15,10 @@ const StyledList = styled.div`
 const timeout = 200;
 
 const StyledRow = styled.div`
+  color: #444;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
