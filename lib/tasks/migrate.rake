@@ -8,54 +8,55 @@ require 'redcarpet'
 namespace :migrate do
   desc "Migrating Data from a CL1 Platform to a CL2 Tenant"
   task from_cl1: :environment do
-  	## NOTE: it is assumed that the desired tenant is already created and been switched 
-  	# uri = Mongo::URI.new("mongodb://citizenlab:jhshEVweHWULVCA9x2nLuWL8@lamppost.15.mongolayer.com:10300,lamppost.14.mongolayer.com:10323/demo?replicaSet=set-56285eff675db1d28f0012d1")
-  	# client = Mongo::Client.new(uri.servers, uri.options)
-  	# client.login(uri.credentials)
     platform = 'beograd'
     password = '5nghbqbtkag0000000000'
+
     host = "#{platform}.localhost"
     Tenant.where(host: host)&.first&.destroy
     client = connect(platform: platform, password: password)
     create_tenant(platform, host, client['settings'].find.first, client['meteor_accounts_loginServiceConfiguration'])
-    Apartment::Tenant.switch("#{platform}_localhost")
-    TenantTemplateService.new.apply_template 'base'
+    Apartment::Tenant.switch("#{platform}_localhost") do
+      TenantTemplateService.new.apply_template 'base'
     
-    areas_hash = {}
-    client['neighbourhoods'].find.each do |n|
-      migrate_area n, areas_hash
+      areas_hash = {}
+      client['neighbourhoods'].find.each do |n|
+        migrate_area n, areas_hash
+      end
+      users_hash = {}
+  	  client['users'].find.each do |u|
+  		  migrate_user(u, users_hash)
+  	  end
+      topics_hash = {}
+      # client['categories'].find.each do |c|
+      #   migrate_topic(c, topics_hash)
+      # end
+      # TODO events
+      # TODO phases
+      projects_hash = {}
+      client['projects'].find.each do |p|
+        migrate_project(p, projects_hash, areas_hash, topics_hash)
+      end
+      ideas_hash = {}
+      client['posts'].find.each do |p|
+        migrate_ideas(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
+      end
+      comments_hash = {}
+      # process comments by order of creation such that the parents can always be found
+      client['comments'].find.map { |x| x }.sort { |c1,c2| c1.dig('createdAt') <=> c2.dig('createdAt') }.each do |c|
+        migrate_comments(c, comments_hash, users_hash, ideas_hash)
+      end
+      pages_hash = {}
+      client['pages'].find.each do |p|
+        migrate_pages(p, pages_hash)
+      end
+      if !@log.empty?
+        puts 'Migrated with errors!'
+        @log.each(&method(:puts))
+        puts "There were #{@log.size} migration errors."
+      else
+        puts 'Migration succeeded!'
+      end
     end
-    users_hash = {}
-  	client['users'].find.each do |u|
-  		migrate_user(u, users_hash)
-  	end
-    topics_hash = {}
-    # client['categories'].find.each do |c|
-    #   migrate_topic(c, topics_hash)
-    # end
-    # TODO events
-    # TODO phases
-    projects_hash = {}
-    client['projects'].find.each do |p|
-      migrate_project(p, projects_hash, areas_hash, topics_hash)
-    end
-    ideas_hash = {}
-    client['posts'].find.each do |p|
-      migrate_ideas(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
-    end
-    comments_hash = {}
-    # process comments by order of creation such that the parents can always be found
-    client['comments'].find.map { |x| x }.sort { |c1,c2| c1.dig('createdAt') <=> c2.dig('createdAt') }.each do |c|
-      migrate_comments(c, comments_hash, users_hash, ideas_hash)
-    end
-    if !@log.empty?
-      puts 'Migrated with errors!'
-      @log.each(&method(:puts))
-      puts "There were #{@log.size} migration errors."
-    else
-      puts 'Migration succeeded!'
-    end
-    byebug
   end
 
 
@@ -83,6 +84,10 @@ namespace :migrate do
           locales: s['languages'],
           organization_type: 'generic', ## TODO
           organization_name: s['title_i18n'],
+          header_title: s['tagline_i18n'],
+          header_slogan: s['description_i18n'],
+          meta_title: s['tagline_i18n'],
+          meta_description: s['description_i18n'],
           timezone: "Europe/Brussels", ## TODO
           color_main: s['accentColor']
         },
@@ -134,6 +139,9 @@ namespace :migrate do
       if name_pts.size < 2
         name_pts = u['username'].split '_'
       end
+      if name_pts.size < 2
+        name_pts = u['username'].split '.'
+      end
       if name_pts.size >= 2
         d[:first_name] = name_pts.first
         d[:last_name] = name_pts.drop(1).join ' '
@@ -182,6 +190,10 @@ namespace :migrate do
     if u.dig('profile', 'image')
       d[:avatar] = u.dig('profile', 'image')
     end
+    # timestamps
+    if u['createdAt']
+      d[:created_at] = u['createdAt']
+    end
     begin
       record = User.new d
       # slug
@@ -221,9 +233,9 @@ namespace :migrate do
       return
     end
     # image
-    if p.dig('images')&.first&.dig('original')
-      d[:remote_header_bg_url] = p.dig('images').first.dig('original')
-    end
+    # if p.dig('images')&.first&.dig('original')
+    #   d[:remote_header_bg_url] = p.dig('images').first.dig('original')
+    # end
     # areas
     if p.dig('neighbourhoods')
       d[:areas] = p.dig('neighbourhoods').map { |nid| areas_hash[nid] }
@@ -232,6 +244,10 @@ namespace :migrate do
     # if p.dig('categories')
     #   d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }
     # end
+    # timestamps
+    if p['createdAt']
+      d[:created_at] = p['createdAt']
+    end
     begin
       record = Project.new d
       # slug
@@ -240,6 +256,16 @@ namespace :migrate do
         d[:slug] = record.slug # for inclusion in logging
       end
       record.save!
+      # images
+      if p.dig('images')
+        p.dig('images').each do |i|
+          begin
+            ProjectImage.create!(remote_image_url: i.dig('original'), project: record)
+          rescue Exception => e
+            @log.concat [e.message+' '+p.to_s]
+          end
+        end
+      end
       projects_hash[p['_id']] = record
     rescue Exception => e
       @log.concat [e.message+' '+d.to_s]
@@ -298,6 +324,14 @@ namespace :migrate do
     # if p.dig('categories')
     #   d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }
     # end
+    # timestamps
+    if p['createdAt']
+      d[:created_at] = p['createdAt']
+      d[:published_at] = p['createdAt']
+    end
+    if p['postedAt']
+      d[:published_at] = p['postedAt']
+    end
     begin
       record = Idea.new d
       # slug
@@ -364,12 +398,46 @@ namespace :migrate do
       votes_d.concat c['downvoters'].map{ |u| {mode: 'down', user: users_hash[u]} }
     end
     votes_d.select!{ |v| v[:user] }
+    # timestamps
+    if c['createdAt']
+      d[:created_at] = c['createdAt']
+    end
     begin
       record = Comment.new d
       record.save!
       # votes
       votes_d.each { |v| v[:votable] = record; Vote.create!(v) }
       comments_hash[c['_id']] = record
+    rescue Exception => e
+      @log.concat [e.message+' '+d.to_s]
+    end
+  end
+
+  def migrate_pages(p, pages_hash)
+    d = {}
+    # title
+    if p.dig('title_i18n')
+      d[:title_multiloc] = p.dig('title_i18n')
+    else
+      @log.concat ["Couldn't find a title for page #{p.to_s}"]
+      return
+    end
+    # body
+    if p.dig('content_i18n')
+      d[:body_multiloc] = p.dig('content_i18n')
+    else
+      @log.concat ["Couldn't find a body for page #{p.to_s}"]
+      return
+    end
+    begin
+      record = Page.new d
+      # slug
+      if p['slug']
+        record.slug = SlugService.new.generate_slug(record,p['slug'])
+        d[:slug] = record.slug # for inclusion in logging
+      end
+      record.save!
+      pages_hash[p['_id']] = record
     rescue Exception => e
       @log.concat [e.message+' '+d.to_s]
     end
