@@ -41,7 +41,7 @@ class Api::V1::MembershipsController < ApplicationController
   def users_search
     authorize Membership
     @users = policy_scope(User)
-      .search_by_all(params[:query])
+      .search_by_all(params[:search])
       .includes(:memberships)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
