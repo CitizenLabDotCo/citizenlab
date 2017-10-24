@@ -78,16 +78,9 @@ export function findMembership(groupId: string, streamParams: IStreamParams<{dat
 }
 
 export async function deleteMembership(membershipId: string, groupId: string) {
-  const deletion = await streams.delete(`${API_PATH}/memberships/${membershipId}`, membershipId);
-  // Update the list of groups to get the right number of members when going back to the list
-  // await listGroups().fetch();
-  await listMembership(groupId).fetch();
-  return deletion;
+  return streams.delete(`${API_PATH}/memberships/${membershipId}`, membershipId);
 }
 
 export async function addMembership(groupId: string, user_id: string) {
-  const add = await streams.add(`${API_PATH}/groups/${groupId}/memberships`, { membership: { user_id } });
-  // await listGroups().fetch();
-  await listMembership(groupId).fetch();
-  return add;
+  return streams.add(`${API_PATH}/groups/${groupId}/memberships`, { membership: { user_id } });
 }

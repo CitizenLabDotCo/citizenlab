@@ -17,12 +17,14 @@ export type IObservable<T> = Rx.Observable<T>;
 export interface IStreamParams<T> {
   bodyData?: IObject | null;
   queryParameters?: IObject | null;
+  cacheStream?: boolean;
 }
 interface IInputStreamParams<T> extends IStreamParams<T> {
   apiEndpoint: string;
 }
 interface IExtendedStreamParams<T> {
   apiEndpoint: string;
+  cacheStream?: boolean;
   bodyData: IObject | null;
   queryParameters: IObject | null;
 }
@@ -32,6 +34,7 @@ export interface IStream<T> {
   isQueryStream: boolean;
   isSearchQuery: boolean;
   isSingleItemStream: boolean;
+  cacheStream?: boolean;
   type: 'singleObject' | 'arrayOfObjects' | 'unknown';
   fetch: fetchFn<T>;
   observer: IObserver<T>;
@@ -139,50 +142,60 @@ class Streams {
     return apiEndpoint.replace(/\/$/, '');
   }
 
-  getSerializedUrl(apiEndpoint: string, isQueryStream: boolean, queryParameters: IObject | null) {
+  getSerializedUrl(apiEndpoint: string, isQueryStream: boolean, queryParameters: IObject | null, cacheStream: boolean) {
     let serializedUrl = apiEndpoint;
 
     if (queryParameters !== null && isQueryStream) {
       serializedUrl =  apiEndpoint + '?' + Object.keys(queryParameters).filter(key => queryParameters[key] !== '').sort().map((key) => {
         return encodeURIComponent(key) + '=' + encodeURIComponent((queryParameters)[key]);
       }).join('&');
+
+      if (!cacheStream) {
+        serializedUrl += '&cache_stream=false';
+      }
+    } else if (!cacheStream) {
+      serializedUrl += '?cache_stream=false';
     }
 
     return serializedUrl;
   }
 
-  addStreamIdByDataIdIndex(streamId: string, isQueryStream: boolean, isSearchQuery: boolean, dataId: string) {
-    if (isQueryStream && !isSearchQuery) {
-      if (this.streamIdsByDataIdWithQuery[dataId] && !_.some(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
-        this.streamIdsByDataIdWithQuery[dataId].push(streamId);
-      } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
-        this.streamIdsByDataIdWithQuery[dataId] = [streamId];
+  addStreamIdByDataIdIndex(streamId: string, isQueryStream: boolean, cacheStream: boolean, dataId: string) {
+    if (cacheStream) {
+      if (isQueryStream) {
+        if (this.streamIdsByDataIdWithQuery[dataId] && !_.some(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
+          this.streamIdsByDataIdWithQuery[dataId].push(streamId);
+        } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
+          this.streamIdsByDataIdWithQuery[dataId] = [streamId];
+        }
       }
-    }
 
-    if (!isQueryStream) {
-      if (this.streamIdsByDataIdWithoutQuery[dataId] && !_.some(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
-        this.streamIdsByDataIdWithoutQuery[dataId].push(streamId);
-      } else if (!this.streamIdsByDataIdWithoutQuery[dataId]) {
-        this.streamIdsByDataIdWithoutQuery[dataId] = [streamId];
+      if (!isQueryStream) {
+        if (this.streamIdsByDataIdWithoutQuery[dataId] && !_.some(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
+          this.streamIdsByDataIdWithoutQuery[dataId].push(streamId);
+        } else if (!this.streamIdsByDataIdWithoutQuery[dataId]) {
+          this.streamIdsByDataIdWithoutQuery[dataId] = [streamId];
+        }
       }
     }
   }
 
-  addStreamIdByApiEndpointIndex(apiEndpoint: string, streamId: string, isQueryStream: boolean, isSearchQuery: boolean) {
-    if (isQueryStream && !isSearchQuery) {
-      if (!this.streamIdsByApiEndPointWithQuery[apiEndpoint]) {
-        this.streamIdsByApiEndPointWithQuery[apiEndpoint] = [streamId];
-      } else {
-        this.streamIdsByApiEndPointWithQuery[apiEndpoint].push(streamId);
+  addStreamIdByApiEndpointIndex(apiEndpoint: string, streamId: string, isQueryStream: boolean, cacheStream: boolean) {
+    if (cacheStream) {
+      if (isQueryStream) {
+        if (!this.streamIdsByApiEndPointWithQuery[apiEndpoint]) {
+          this.streamIdsByApiEndPointWithQuery[apiEndpoint] = [streamId];
+        } else {
+          this.streamIdsByApiEndPointWithQuery[apiEndpoint].push(streamId);
+        }
       }
-    }
 
-    if (!isQueryStream) {
-      if (!this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]) {
-        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = [streamId];
-      } else {
-        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].push(streamId);
+      if (!isQueryStream) {
+        if (!this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]) {
+          this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = [streamId];
+        } else {
+          this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].push(streamId);
+        }
       }
     }
   }
@@ -192,12 +205,13 @@ class Streams {
     const apiEndpoint = this.removeTrailingSlash(params.apiEndpoint);
     const queryParameters = params.queryParameters;
     const isQueryStream = this.isQuery(queryParameters);
-    const streamId = this.getSerializedUrl(apiEndpoint, isQueryStream, queryParameters);
+    const isSearchQuery = this.isSearchQuery(queryParameters, isQueryStream);
+    const cacheStream = ((isSearchQuery || inputParams.cacheStream === false) ? false : true);
+    const streamId = this.getSerializedUrl(apiEndpoint, isQueryStream, queryParameters, cacheStream);
 
     if (!_.has(this.streams, streamId)) {
       const { bodyData } = params;
       const lastUrlSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
-      const isSearchQuery = this.isSearchQuery(queryParameters, isQueryStream);
       const isSingleItemStream = this.isSingleItemStream(lastUrlSegment, isQueryStream);
       const observer: IObserver<T | null> = (null as any);
 
@@ -236,9 +250,9 @@ class Streams {
         const dataId = lastUrlSegment;
         this.streams[streamId].observer = observer;
 
-        if (isSingleItemStream && _.has(this.resourcesByDataId, dataId)) {
+        if (cacheStream && isSingleItemStream && _.has(this.resourcesByDataId, dataId)) {
           observer.next(this.resourcesByDataId[dataId]);
-        } else if (_.has(this.resourcesByStreamId, streamId)) {
+        } else if (cacheStream && _.has(this.resourcesByStreamId, streamId)) {
           observer.next(this.resourcesByStreamId[streamId]);
         } else {
           fetch();
@@ -268,14 +282,14 @@ class Streams {
                 const dataId = item.id;
                 dataIds[dataId] = true;
                 this.resourcesByDataId[dataId] = { data: item };
-                this.addStreamIdByDataIdIndex(streamId, isQueryStream, isSearchQuery, dataId);
+                this.addStreamIdByDataIdIndex(streamId, isQueryStream, cacheStream, dataId);
               });
             } else if (_.isObject(innerData) && _.has(innerData, 'id')) {
               const dataId = innerData.id;
               this.streams[streamId].type = 'singleObject';
               dataIds[dataId] = true;
               this.resourcesByDataId[dataId] = { data: innerData };
-              this.addStreamIdByDataIdIndex(streamId, isQueryStream, isSearchQuery, dataId);
+              this.addStreamIdByDataIdIndex(streamId, isQueryStream, cacheStream, dataId);
             }
 
             if (_.has(data, 'included')) {
@@ -313,13 +327,14 @@ class Streams {
         isQueryStream,
         isSearchQuery,
         isSingleItemStream,
+        cacheStream,
         type: 'unknown',
         dataIds: {}
       };
 
-      this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, isQueryStream, isSearchQuery);
+      this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, isQueryStream, cacheStream);
 
-      if (!isSearchQuery) {
+      if (cacheStream) {
         // keep stream hot
         this.streams[streamId].observable.subscribe();
       }
@@ -337,19 +352,17 @@ class Streams {
       const response = await request<T>(apiEndpoint, bodyData, { method: 'POST' }, null);
 
       _(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]).forEach((streamId) => {
-        this.streams[streamId].observer.next((previous) => ({
-          ...previous,
-          data: [...previous.data, response['data']]
-        }));
-      });
+        const stream = this.streams[streamId];
 
-      /*
-      _(this.streams).forOwn((value, streamId) => {
-        if (streamId.startsWith(apiEndpoint) && streamId !== apiEndpoint) {
-          this.streams[streamId].fetch();
+        if (!stream.cacheStream) {
+          stream.fetch();
+        } else {
+          stream.observer.next((previous) => ({
+            ...previous,
+            data: [...previous.data, response['data']]
+          }));
         }
       });
-      */
 
       _(this.streamIdsByApiEndPointWithQuery[apiEndpoint]).forEach((streamId) => {
         this.streams[streamId].fetch();
@@ -375,7 +388,9 @@ class Streams {
         const stream = this.streams[streamId];
         const streamHasDataId = _.has(stream, `dataIds.${dataId}`);
 
-        if (streamHasDataId && stream.type === 'singleObject') {
+        if (!stream.cacheStream) {
+          stream.fetch();
+        } else if (streamHasDataId && stream.type === 'singleObject') {
           stream.observer.next(response);
         } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
           stream.observer.next((previous) => ({
@@ -385,18 +400,12 @@ class Streams {
         }
       });
 
-      /*
-      _(this.streams).forOwn((value, streamId) => {
-        if (streamId.startsWith(apiEndpoint) && streamId !== apiEndpoint) {
-          this.streams[streamId].fetch();
-        }
-      });
-      */
-
       _.union(
         this.streamIdsByApiEndPointWithQuery[apiEndpoint], 
         this.streamIdsByDataIdWithQuery[dataId]
-      ).forEach(streamId => this.streams[streamId].fetch());
+      ).forEach((streamId) => {
+        this.streams[streamId].fetch();
+      });
 
       return response;
     } catch (error) {
@@ -418,7 +427,9 @@ class Streams {
         const stream = this.streams[streamId];
         const streamHasDataId = _.has(stream, `dataIds.${dataId}`);
 
-        if (streamHasDataId && stream.type === 'singleObject') {
+        if (!stream.cacheStream) {
+          stream.fetch();
+        } else if (streamHasDataId && stream.type === 'singleObject') {
           stream.observer.next(undefined);
         } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
           stream.observer.next((previous) => ({
@@ -428,18 +439,12 @@ class Streams {
         }
       });
 
-      /*
-      _(this.streams).forOwn((value, streamId) => {
-        if (streamId.startsWith(apiEndpoint) && streamId !== apiEndpoint) {
-          this.streams[streamId].fetch();
-        }
-      });
-      */
-
       _.union(
         this.streamIdsByApiEndPointWithQuery[apiEndpoint], 
         this.streamIdsByDataIdWithQuery[dataId]
-      ).forEach(streamId => this.streams[streamId].fetch());
+      ).forEach((streamId) => {
+        this.streams[streamId].fetch();
+      });
 
       return true;
     } catch (error) {
