@@ -20,10 +20,18 @@ import Avatar from 'components/Avatar';
 // Style
 import styled from 'styled-components';
 
+const AddUserButton = styled(Button)`
+  padding-left: 0;
+`;
+
 const AddUserRow = styled.div`
   padding: 1rem 0;
   border-bottom: 1px solid ${props => props.theme.colors.separation};
   border-top: 1px solid ${props => props.theme.colors.separation};
+`;
+
+const StyledSelect = styled(ReactSelect)`
+  max-width: 300px;
 `;
 
 const StyledOption = styled.div`
@@ -31,6 +39,7 @@ const StyledOption = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: 100%;
 
   &.disabled {
     color: ${props => props.theme.colors.mediumGrey};
@@ -50,6 +59,7 @@ const StyledAvatar = styled(Avatar)`
 const OptionName = styled.div`
   flex: 1;
   margin: 0;
+  overflow: hidden;
 
   p {
     margin: 0;
@@ -61,6 +71,7 @@ const OptionName = styled.div`
 `;
 
 const OptionIcon = styled(Icon)`
+  flex: 0 0 1rem;
   height: 1rem;
   fill: ${props => props.theme.colors.clBlue};
   margin-left: 1rem;
@@ -162,13 +173,13 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
     return (
       <AddUserRow>
         {!this.state.selectVisible &&
-          <Button onClick={this.toggleSelectVisible} icon="plus-circle" style="text">
+          <AddUserButton onClick={this.toggleSelectVisible} icon="plus-circle" style="text">
             <FormattedMessage {...messages.addUser} />
-          </Button>
+          </AddUserButton>
         }
         {this.state.selectVisible &&
           <div>
-            <ReactSelect
+            <StyledSelect
               autofocus={true}
               name="search-user"
               value={{}}
