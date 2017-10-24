@@ -11,7 +11,7 @@ import { Link } from 'react-router';
 
 
 // Localisation
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import t from 'components/T';
 const T = t;
 import messages from '../messages';
@@ -30,7 +30,7 @@ type State = {
   project: IProjectData | null,
 };
 
-export default class AdminProjectEdition extends React.PureComponent<Props, State> {
+class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Rx.Subscription;
   tabs: any[];
 
@@ -59,19 +59,19 @@ export default class AdminProjectEdition extends React.PureComponent<Props, Stat
 
       this.tabs = [
         {
-          label: 'general',
+          label: this.props.intl.formatMessage(messages.generalTab),
           url: `${baseTabsUrl}/edit`
         },
         {
-          label: 'description',
+          label: this.props.intl.formatMessage(messages.descriptionTab),
           url: `${baseTabsUrl}/description`
         },
         {
-          label: 'timeline',
+          label: this.props.intl.formatMessage(messages.phasesTab),
           url: `${baseTabsUrl}/timeline`
         },
         {
-          label: 'events',
+          label: this.props.intl.formatMessage(messages.eventsTab),
           url: `${baseTabsUrl}/events`
         },
       ];
@@ -119,3 +119,5 @@ export default class AdminProjectEdition extends React.PureComponent<Props, Stat
     );
   }
 }
+
+export default injectIntl(AdminProjectEdition);
