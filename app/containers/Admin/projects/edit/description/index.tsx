@@ -87,6 +87,7 @@ class ProjectDescription extends React.Component<Props, State> {
           const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
 
           this.setState({
+            locale,
             data: response.data,
             loading: false,
             diff: {},
