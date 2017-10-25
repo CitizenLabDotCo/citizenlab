@@ -35,6 +35,10 @@ fr:
     social_description: Inclusion sociale
     health: Soins et bien-être
     health_description: Soins et bien-être
+    sport: Sports
+    sport_description: Sports
+    education: Enseignement et jeunesse
+    education_description: Enseignement et jeunesse
   pages:
     terms_and_conditions_title: Gebruiksvoorwaarden
     terms_and_conditions_body: >

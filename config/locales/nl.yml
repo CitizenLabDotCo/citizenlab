@@ -35,6 +35,10 @@ nl:
     social_description: Sociale inclusie
     health: Zorg en welzijn
     health_description: Zorg en welzijn
+    sport: Sport
+    sport_description: Sport
+    education: Onderwijs en Jeugd
+    education_description: Onderwijs en Jeugd
   pages:
     terms_and_conditions_title: Gebruiksvoorwaarden
     terms_and_conditions_body: >
