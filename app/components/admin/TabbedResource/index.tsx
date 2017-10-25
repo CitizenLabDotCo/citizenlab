@@ -126,8 +126,8 @@ export default class TabbedResource extends React.Component<Props, State> {
         {tabs &&
           <TabbedNav>
             {tabs.map((tab) => (
-              <FeatureFlag name={tab.feature}>
-                <Tab key={tab.url} className={location && location.pathname && location.pathname === tab.url ? 'active' : ''}>
+              <FeatureFlag key={tab.url} name={tab.feature}>
+                <Tab className={location && location.pathname && location.pathname === tab.url ? 'active' : ''}>
                   <Link to={tab.url}>{showLabel(tab.label)}</Link>
                 </Tab>
               </FeatureFlag>
