@@ -17,7 +17,8 @@ FactoryGirl.define do
             "fr" => Faker::Address.city
           },
           "timezone" => "Europe/Brussels",
-          "locales" => ["en","nl","fr"]
+          "locales" => ["en","nl","fr"],
+          "color_main" => "#335533"
         }
       }
     }
@@ -38,7 +39,8 @@ FactoryGirl.define do
             "fr" => "Liege"
           },
           "locales" => ["en","fr","nl"],
-          "timezone": "Europe/Brussels"
+          "timezone" => "Europe/Brussels",
+          "color_main" => "#335533"
         }
       }
     }

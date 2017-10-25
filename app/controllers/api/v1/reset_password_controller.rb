@@ -20,7 +20,7 @@
           render json: {errors: @user.errors.details}, status: :unprocessable_entity
         end
       else
-        head :unauthorized
+        render json: {errors: {token: [{error: "invalid", value: reset_password_params[:token]}]}}, status: :unauthorized
       end
     end
 

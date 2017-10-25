@@ -11,11 +11,11 @@ resource "Projects" do
   end
 
   get "api/v1/projects" do
-
     parameter :topics, 'Filter by topics (AND)', required: false
     parameter :areas, 'Filter by areas (AND)', required: false
 
     example_request "List all projects" do
+      explanation "Sorted by descending created_at"
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
