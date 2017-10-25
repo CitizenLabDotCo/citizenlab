@@ -11,6 +11,14 @@ namespace :migrate do
     platform = 'beograd'
     password = '5nghbqbtkag0000000000'
 
+    topics_mapping = { 'Socijalna zaštita'   => 'social',
+                       'Ekonomija'           => 'economy',
+                       'Zdravstvena zaštita' => 'health',
+                       'Kultura'             => 'culture',
+                       'Verski praznici'     => 'culture',
+                       'Poljoprivreda'       => 'economy',
+                       'Energetika'          => 'economy' }
+
     host = "#{platform}.localhost"
     Tenant.where(host: host)&.first&.destroy
     client = connect(platform: platform, password: password)
@@ -18,6 +26,11 @@ namespace :migrate do
     Apartment::Tenant.switch("#{platform}_localhost") do
       TenantTemplateService.new.apply_template 'base'
     
+      topics_code_hash =  create_topics_code_hash
+      topics_hash = {}
+      client['categories'].find.each do |c|
+        map_topic(c, topics_hash)
+      end
       areas_hash = {}
       client['neighbourhoods'].find.each do |n|
         migrate_area n, areas_hash
@@ -26,10 +39,6 @@ namespace :migrate do
   	  client['users'].find.each do |u|
   		  migrate_user(u, users_hash)
   	  end
-      topics_hash = {}
-      # client['categories'].find.each do |c|
-      #   migrate_topic(c, topics_hash)
-      # end
       # TODO events
       # TODO phases
       projects_hash = {}
@@ -70,6 +79,13 @@ namespace :migrate do
   end
 
 
+  def create_topics_code_hash
+    topics_code_hash = {}
+    YAML.load_file(Rails.root.join('config', 'locales', "en.yml"))
+        .dig('en', 'topics')
+  end
+
+
   def create_tenant(platform, host, s, m)
     fb_login = m.find({ service: 'facebook' }).first
     Tenant.create({
@@ -107,6 +123,12 @@ namespace :migrate do
         }
       }
     })
+  end
+
+
+  def map_topic c, topics_hash
+    topic_codes = c['name_i18n'].values.map{ |t| topics_mapping[t] }.select{|t| t}
+    topics_hash[c['_id']] = 
   end
 
 
@@ -238,10 +260,10 @@ namespace :migrate do
       @log.concat ["Couldn't find a description for project #{p.to_s}"]
       return
     end
-    # image
-    # if p.dig('images')&.first&.dig('original')
-    #   d[:remote_header_bg_url] = p.dig('images').first.dig('original')
-    # end
+    # header bg image
+    if p.dig('images')&.first&.dig('original')
+      d[:remote_header_bg_url] = p.dig('images').first.dig('original')
+    end
     # areas
     if p.dig('neighbourhoods')
       d[:areas] = p.dig('neighbourhoods').map { |nid| areas_hash[nid] }
