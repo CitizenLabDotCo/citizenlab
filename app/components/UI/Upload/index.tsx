@@ -281,12 +281,13 @@ class Upload extends React.PureComponent<Props & InjectedIntlProps, State> {
   render() {
     let { items, apiImages, accept, placeholder, disablePreview } = this.props;
     const { maxSize, maxItems } = this.props;
+    const { formatMessage } = this.props.intl;
     const { errorMessage, dropzoneActive, disabled } = this.state;
 
     items = (_.compact(items) || this.emptyArray);
     apiImages = (_.compact(apiImages) || this.emptyArray);
     accept = (accept || '*');
-    placeholder = (placeholder || 'Drop your file here');
+    placeholder = (placeholder || formatMessage(messages.dropYourFileHere));
     disablePreview = (_.isBoolean(disablePreview) ? disablePreview : false);
 
     const emptyDropzone = (_.isEmpty(items) && _.isEmpty(apiImages)) && (
@@ -355,4 +356,4 @@ class Upload extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl(Upload);
+export default injectIntl<Props>(Upload);

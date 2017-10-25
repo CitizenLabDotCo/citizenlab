@@ -31,6 +31,7 @@ import { projectsStream, IProjects, IProjectData } from 'services/projects';
 // utils
 import { IStream } from 'utils/streams';
 import eventEmitter from 'utils/eventEmitter';
+import { generateImagePreview } from 'utils/imageTools';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -196,20 +197,11 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
     this.state$.next({ location });
   }
 
-  generateImagePreview(image: ImageFile) {
-    if (image.type && (image.type === 'image/jpeg' || image.type === 'image/jpg' || image.type === 'image/png' || image.type === 'image/gif')) {
-      const blob = new Blob([image], { type: image.type });
-      return window.URL.createObjectURL(blob);
-    }
-
-    return undefined;
-  }
-
   handleUploadOnAdd = async (newImage: ImageFile) => {
     let images: ExtendedImageFile[] | null = null;
     const currentState = await this.state$.getCurrent();
     const image = newImage as ExtendedImageFile;
-    image.preview = this.generateImagePreview(newImage);
+    image.preview = generateImagePreview(newImage);
 
     if (currentState.images && currentState.images.length > 0) {
       images = currentState.images.concat(image);
