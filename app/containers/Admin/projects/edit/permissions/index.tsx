@@ -112,11 +112,7 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
           this.setState((state) => {
             const oldGroupsProjects = (state.loading ? groupsProjects : state.oldGroupsProjects);
             const newGroupsProjects = groupsProjects;
-            let status = state.status;
-
-            if (state.visibleTo === 'groups' && !_.isEqual(oldGroupsProjects, newGroupsProjects)) {
-              status = 'enabled';
-            }
+            const status = (state.visibleTo === 'groups' && newGroupsProjects !== oldGroupsProjects ? 'enabled' : state.status);
 
             return {
               project,
@@ -133,30 +129,47 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
 
   async componentWillUnmount() {
     const { project, visibleTo, oldGroupsProjects, newGroupsProjects } = this.state;
+    
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
 
     if (project) {
       const oldVisibleTo = project.data.attributes.visible_to;
       const newVisibleTo = visibleTo;
-      const promises: Promise<any>[] = [];
+      let promises: Promise<any>[] = [];
 
       if (oldVisibleTo !== 'groups' && newVisibleTo === 'groups' && newGroupsProjects && newGroupsProjects.data.length > 0) {
-        promises.concat(newGroupsProjects.data.map(groupsProject => deleteGroupProject(groupsProject.id)));
+        promises = [
+          ...promises,
+          ...newGroupsProjects.data.map(groupsProject => deleteGroupProject(groupsProject.id))
+        ];
       }
 
-      if (oldVisibleTo === 'groups' && newVisibleTo === 'groups' && !_.isEqual(oldGroupsProjects, newGroupsProjects)) {
-        if (newGroupsProjects && newGroupsProjects.data && newGroupsProjects.data.length) {
-          promises.concat(newGroupsProjects.data.map(groupsProject => deleteGroupProject(groupsProject.id)));
-        }
+      if (oldVisibleTo === 'groups' && newVisibleTo === 'groups') {
+        let oldGroupsProjectIds: string[] = [];
+        let newGroupsProjectsIds: string[] = [];
 
         if (oldGroupsProjects && oldGroupsProjects.data && oldGroupsProjects.data.length) {
-          promises.concat(oldGroupsProjects.data.map(groupsProject => addGroupProject(project.data.id, groupsProject.relationships.group.data.id)));
+          oldGroupsProjectIds = oldGroupsProjects.data.map(groupsProject => groupsProject.id);
         }
+
+        if (newGroupsProjects && newGroupsProjects.data && newGroupsProjects.data.length) {
+          newGroupsProjectsIds = newGroupsProjects.data.map(groupsProject => groupsProject.id);
+        }
+
+        const groupsProjectIdsToRemove = _.difference(newGroupsProjectsIds, oldGroupsProjectIds);
+        const groupsProjectIdsToAdd = _.difference(oldGroupsProjectIds, newGroupsProjectsIds);
+
+        promises = [
+          ...promises,
+          ...groupsProjectIdsToRemove.map(groupsProjectId => deleteGroupProject(groupsProjectId)),
+          ...groupsProjectIdsToAdd.map(groupsProjectId => addGroupProject(project.data.id, groupsProjectId))
+        ];
       }
 
-      await Promise.all(promises);
+      if (promises && promises.length > 0) {
+        await Promise.all(promises);
+      }
     }
-
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   saveChanges = async () => {
@@ -168,18 +181,21 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
 
       if (newVisibleTo !== oldVisibleTo) {
         try {
-          this.setState({ saving: true });
+          let promises: Promise<any>[] = [updateProject(project.data.id, { visible_to: visibleTo })];
 
           if (newVisibleTo !== 'groups' && oldVisibleTo === 'groups') {
             const groupsProjects = await groupsProjectsByProjectIdStream(project.data.id).observable.first().toPromise();
 
             if (groupsProjects && groupsProjects.data && groupsProjects.data.length > 0) {
-              await Promise.all(groupsProjects.data.map(groupsProject => deleteGroupProject(groupsProject.id)));
+              promises = [
+                ...promises,
+                ...groupsProjects.data.map(groupsProject => deleteGroupProject(groupsProject.id))
+              ];
             }
           }
 
-          await updateProject(project.data.id, { visible_to: visibleTo });
-
+          this.setState({ saving: true });
+          await Promise.all(promises);
           this.setState({ saving: false, status: 'success' });
         } catch (error) {
           this.setState({ saving: false, status: 'error' });
