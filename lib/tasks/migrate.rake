@@ -154,7 +154,13 @@ namespace :migrate do
       return
     end
     # password
-    d[:password] = 'testtest' ### TODO
+    if d.dig('services', 'password', 'bcrypt')
+      d[:password] = d.dig('services', 'password', 'bcrypt')
+    else
+      d[:services] = { "facebook" => {
+                         "updated_at" => Time.now
+                       }}
+    end
     # locale
     d[:locale] = u['telescope']['locale'] || Tenant.current.settings.dig('core', 'locales').first
     # admin
