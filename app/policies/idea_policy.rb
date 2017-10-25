@@ -52,8 +52,8 @@ class IdeaPolicy < ApplicationPolicy
       :author_id,
       :location_description,
       location_point_geojson: [:type, coordinates: []],
-      title_multiloc: [:en, :nl, :fr],
-      body_multiloc: [:en, :nl, :fr],
+      title_multiloc: I18n.available_locales,
+      body_multiloc: I18n.available_locales,
       topic_ids: [],
       area_ids: []
     ]

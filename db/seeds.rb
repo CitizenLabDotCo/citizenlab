@@ -34,7 +34,7 @@ def create_for_some_locales
 end
 
 if Apartment::Tenant.current == 'public' || 'example_org'
-  Tenant.create({
+  t = Tenant.create({
     name: 'local',
     host: 'localhost',
     logo: Rails.root.join("spec/fixtures/logo.png").open,
@@ -52,7 +52,6 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         },
         timezone: "Europe/Brussels",
         color_main: Faker::Color.hex_color,
-        menu_style: rand(2) == 0 ? "light" : "dark"
       },
       demographic_fields: {
         allowed: true,
@@ -89,7 +88,6 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         },
         timezone: "Europe/Brussels",
         color_main: Faker::Color.hex_color,
-        menu_style: rand(2) == 0 ? "light" : "dark"
       },
       demographic_fields: {
         allowed: true,
@@ -168,7 +166,7 @@ if Apartment::Tenant.current == 'localhost'
     })
   end
 
-  TenantTemplateService.new.apply_template('base')
+  TenantTemplateService.new.apply_template('base') #####
 
   12.times do 
     Area.create({

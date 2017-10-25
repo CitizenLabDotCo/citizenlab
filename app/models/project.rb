@@ -51,7 +51,7 @@ class Project < ApplicationRecord
 
   def sanitize_description_multiloc
     self.description_multiloc = self.description_multiloc.map do |locale, description|
-      [locale, @@sanitizer.sanitize(description, tags: %w(p b u i strong a), attributes: %w(href))]
+      [locale, @@sanitizer.sanitize(description, tags: %w(p b u i strong a h1 h2 h3 h4 h5 h6), attributes: %w(href))]
     end.to_h
   end
 
