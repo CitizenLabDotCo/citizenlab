@@ -92,6 +92,10 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.female',
     defaultMessage: 'Female',
   },
+  unspecified: {
+    id: 'app.containers.UsersEditPage.unspecified',
+    defaultMessage: 'Unspecified',
+  },
   bio: {
     id: 'app.containers.UsersEditPage.bio',
     defaultMessage: 'Bio',
