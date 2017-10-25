@@ -67,6 +67,12 @@ models:
     -
       title_multiloc: topics.health
       description_multiloc: topics.health_description
+    -
+      title_multiloc: topics.sport
+      description_multiloc: topics.sport_description
+    -
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
   page:
     -
       title_multiloc: pages.cookie_policy_title
