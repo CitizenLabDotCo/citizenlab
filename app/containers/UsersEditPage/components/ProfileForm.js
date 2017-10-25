@@ -225,6 +225,10 @@ class ProfileForm extends React.Component {
       value: 'female',
       label: this.props.intl.formatMessage({ ...messages.female }),
     },
+    {
+      value: 'unspecified',
+      label: this.props.intl.formatMessage({ ...messages.unspecified }),
+    },
   ]);
 
   domicileOptions = () => {
