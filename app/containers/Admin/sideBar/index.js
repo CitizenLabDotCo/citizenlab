@@ -7,6 +7,8 @@ import { injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 import styled from 'styled-components';
 
+import FeatureFlag from 'components/FeatureFlag';
+
 // icons
 import dashboardIcon from './icons/dashboard.svg';
 import usersIcon from './icons/users.svg';
@@ -111,9 +113,11 @@ function Sidebar(props) {
       <MenuItemContainerStyled active={props.location.pathname === '/admin/users'}>
         <MenuItemStyled icon={MenuItemIcon(usersIcon)} name={formatMessage({ ...messages.users })} content={formatMessage({ ...messages.users })} as={Link} to="/admin/users" />
       </MenuItemContainerStyled>
-      <MenuItemContainerStyled active={props.location.pathname === '/admin/groups'}>
-        <MenuItemStyled icon={MenuItemIcon(groupsIcon)} name={formatMessage({ ...messages.groups })} content={formatMessage({ ...messages.groups })} as={Link} to="/admin/groups" />
-      </MenuItemContainerStyled>
+      <FeatureFlag name="groups">
+        <MenuItemContainerStyled active={props.location.pathname === '/admin/groups'}>
+          <MenuItemStyled icon={MenuItemIcon(groupsIcon)} name={formatMessage({ ...messages.groups })} content={formatMessage({ ...messages.groups })} as={Link} to="/admin/groups" />
+        </MenuItemContainerStyled>
+      </FeatureFlag>
       <MenuItemContainerStyled active={props.location.pathname === '/admin/projects'}>
         <MenuItemStyled icon={MenuItemIcon(projectsIcon)} name={formatMessage({ ...messages.projects })} content={formatMessage({ ...messages.projects })} as={Link} to="/admin/projects" />
       </MenuItemContainerStyled>
