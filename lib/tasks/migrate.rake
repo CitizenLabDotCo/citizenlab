@@ -18,9 +18,16 @@ namespace :migrate do
                        'Komunalne usluge'        => 'citizenship',
                        'Ljudska prava'           => 'social',
                        'Ekonomija'               => 'economy',
-                       'Zdravstvena zaštita'     => 'health',
+                       'Turizam'                 => 'culture',
+                       'Sport'                   => 'sport',
                        'Kultura'                 => 'culture',
+                       'Saobraćaj'               => 'mobility',
+                       'Ekologija'               => 'nature',
+                       'Bezbednost'              => 'infrastructure',
                        'Verski praznici'         => 'culture',
+                       'Informisanje'            => 'citizenship',
+                       'Lokalna samouprava'      => 'citizenship',
+                       'Urbanizam'               => 'citizenship',
                        'Poljoprivreda'           => 'economy',
                        'Energetika'              => 'economy' }
 
