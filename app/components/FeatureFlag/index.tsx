@@ -7,7 +7,7 @@ import { currentTenantStream, ITenantData } from 'services/tenant';
 
 
 interface Props {
-  name: string;
+  name?: string;
 }
 
 interface State {
@@ -42,14 +42,22 @@ export default class FeatureFlag extends React.Component<Props, State> {
   isAllowed = () => {
     const { tenant } = this.state;
     const { name } = this.props;
-    return tenant && tenant.attributes.settings[name] && tenant.attributes.settings[name].allowed && tenant.attributes.settings[name].enabled;
+
+    return (!name ||
+      (
+        tenant &&
+        tenant.attributes.settings[name] &&
+        tenant.attributes.settings[name].allowed &&
+        tenant.attributes.settings[name].enabled
+      )
+    );
   }
 
   render() {
-    return (
-      <div>
-        {this.isAllowed() && this.props.children}
-      </div>
-    );
+    if (this.props.children && this.isAllowed()) {
+      return React.Children.only(this.props.children);
+    } else {
+      return null;
+    }
   }
 }
