@@ -25,6 +25,9 @@ import { addIdea } from 'services/ideas';
 import { addIdeaImage } from 'services/ideaImages';
 import { getAuthUserAsync } from 'services/auth';
 
+// utils
+import { getBase64 } from 'utils/imageTools';
+
 // i18n
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
@@ -210,15 +213,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     };
   }
 
-  async getBase64(image: ImageFile) {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (event: any) => resolve(event.target.result);
-      reader.onerror = (error) => reject(new Error(`error for getBase64() of component IdeasNewPage2`));
-      reader.readAsDataURL(image);
-    });
-  }
-
   async postIdea(newIdeaFormState: INewIdeaFormState, userId: string) {
     const { locale } = this.state;
     const { topics, projects, title, description, selectedTopics, selectedProject, location } = newIdeaFormState;
@@ -233,7 +227,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
 
   async postIdeaImage(ideaId: string, image: ExtendedImageFile) {
     try {
-      const base64Image = await this.getBase64(image);
+      const base64Image = await getBase64(image);
       return await addIdeaImage(ideaId, base64Image, 0);
     } catch (error) {
       return error;

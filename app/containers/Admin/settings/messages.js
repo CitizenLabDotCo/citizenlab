@@ -115,6 +115,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.uploadPlaceholder',
     defaultMessage: 'Drop your files here',
   },
+  noLogo: {
+    id: 'app.containers.AdminPage.SettingsPage.noLogo',
+    defaultMessage: 'Please upload a logo',
+  },
   save: {
     id: 'app.containers.AdminPage.SettingsPage.save',
     defaultMessage: 'Save',
