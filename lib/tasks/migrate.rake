@@ -11,13 +11,18 @@ namespace :migrate do
     platform = 'beograd'
     password = '5nghbqbtkag0000000000'
 
-    topics_mapping = { 'Socijalna zaštita'   => 'social',
-                       'Ekonomija'           => 'economy',
-                       'Zdravstvena zaštita' => 'health',
-                       'Kultura'             => 'culture',
-                       'Verski praznici'     => 'culture',
-                       'Poljoprivreda'       => 'economy',
-                       'Energetika'          => 'economy' }
+    topics_mapping = { 'Pitanja odbornicima DJB' => 'citizenship',
+                       'Obrazovanje'             => 'education',
+                       'Socijalna zaštita'       => 'health',
+                       'Zdravstvena zaštita '    => 'health',
+                       'Komunalne usluge'        => 'citizenship',
+                       'Ljudska prava'           => 'social',
+                       'Ekonomija'               => 'economy',
+                       'Zdravstvena zaštita'     => 'health',
+                       'Kultura'                 => 'culture',
+                       'Verski praznici'         => 'culture',
+                       'Poljoprivreda'           => 'economy',
+                       'Energetika'              => 'economy' }
 
     host = "#{platform}.localhost"
     Tenant.where(host: host)&.first&.destroy
@@ -29,7 +34,7 @@ namespace :migrate do
       topics_code_hash =  create_topics_code_hash
       topics_hash = {}
       client['categories'].find.each do |c|
-        map_topic(c, topics_hash)
+        map_topic(c, topics_hash, topics_mapping, topics_code_hash)
       end
       areas_hash = {}
       client['neighbourhoods'].find.each do |n|
@@ -82,7 +87,12 @@ namespace :migrate do
   def create_topics_code_hash
     topics_code_hash = {}
     YAML.load_file(Rails.root.join('config', 'locales', "en.yml"))
-        .dig('en', 'topics')
+        .dig('en', 'topics').each do |code, title|
+          unless code.end_with? '_description'
+            topics_code_hash[code] = Topic.where({ title_multiloc: { en: title } }).first
+          end
+        end
+    topics_code_hash
   end
 
 
@@ -126,9 +136,11 @@ namespace :migrate do
   end
 
 
-  def map_topic c, topics_hash
+  def map_topic c, topics_hash, topics_mapping, topics_code_hash
     topic_codes = c['name_i18n'].values.map{ |t| topics_mapping[t] }.select{|t| t}
-    topics_hash[c['_id']] = 
+    unless topic_codes.empty?
+      topics_hash[c['_id']] = topics_code_hash[topic_codes.first]
+    end
   end
 
 
@@ -269,9 +281,9 @@ namespace :migrate do
       d[:areas] = p.dig('neighbourhoods').map { |nid| areas_hash[nid] }
     end
     # topics
-    # if p.dig('categories')
-    #   d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }
-    # end
+    if p.dig('categories')
+      d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }.select{|t| t}.uniq{|t| t.id}
+    end
     # timestamps
     if p['createdAt']
       d[:created_at] = p['createdAt']
@@ -349,9 +361,9 @@ namespace :migrate do
     end
     votes_d.select!{ |v| v[:user] }
     # topics
-    # if p.dig('categories')
-    #   d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }
-    # end
+    if p.dig('categories')
+      d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }.select{|t| t}.uniq{|t| t.id}
+    end
     # timestamps
     if p['createdAt']
       d[:created_at] = p['createdAt']
@@ -372,7 +384,9 @@ namespace :migrate do
       if p.dig('images')
         p.dig('images').each do |i|
           begin
-            IdeaImage.create!(remote_image_url: i.dig('original'), idea: record)
+            if i.dig('original')
+              IdeaImage.create!(remote_image_url: i.dig('original'), idea: record)
+            end
           rescue Exception => e
             @log.concat [e.message+' '+p.to_s]
           end

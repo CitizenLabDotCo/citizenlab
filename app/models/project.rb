@@ -17,7 +17,7 @@ class Project < ApplicationRecord
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
-  validates :slug, presence: true, uniqueness: true, format: {with: SlugService.new.regex }
+  validates :slug, presence: true, uniqueness: true, format: {with: SlugService.new.regex}
 
   before_validation :generate_slug, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
