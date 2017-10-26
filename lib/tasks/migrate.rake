@@ -83,7 +83,9 @@ namespace :migrate do
   def connect(platform: nil, password: nil)
     if platform && password
       # Mongo::Client.new('mongodb://lamppost.14.mongolayer.com:10323/demo', auth_mech: :mongodb_cr, user: 'citizenlab', password: 'jhshEVweHWULVCA9x2nLuWL8')
-      Mongo::Client.new "mongodb://citizenlab:#{password}@lamppost.14.mongolayer.com:10323/#{platform}"
+      # Mongo::Client.new "mongodb://citizenlab:#{password}@lamppost.14.mongolayer.com:10323/#{platform}"
+
+      Mongo::Client.new("mongodb://lamppost.14.mongolayer.com:10323/#{platform}", auth_mech: :mongodb_cr, user: 'citizenlab', password: password)
     else
       Mongo::Client.new 'mongodb://docker.for.mac.localhost:27017/schiedam'
     end
@@ -194,8 +196,8 @@ namespace :migrate do
       return
     end
     # password
-    if d.dig('services', 'password', 'bcrypt')
-      d[:password] = d.dig('services', 'password', 'bcrypt')
+    if u.dig('services', 'password', 'bcrypt')
+      d[:password_digest] = u.dig('services', 'password', 'bcrypt')
     else
       d[:services] = { "facebook" => {
                          "updated_at" => Time.now
@@ -325,7 +327,6 @@ namespace :migrate do
   end
 
   def migrate_event(e, project)
-    byebug
     d = {}
     # project
     d[:project] = project
