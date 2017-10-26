@@ -71,6 +71,10 @@ class User < ApplicationRecord
   def has_services?
     self.services.present?
   end
+
+  def authenticate(unencrypted_password)
+    original_authenticate(unencrypted_password) || cl1_authenticate(unencrypted_password) && self
+  end
   
   private
 
@@ -85,6 +89,14 @@ class User < ApplicationRecord
       hash = Digest::MD5.hexdigest(self.email)
       self.remote_avatar_url = "https://www.gravatar.com/avatar/#{hash}?d=404&size=640"
     end
+  end
+
+  def original_authenticate(unencrypted_password)
+    BCrypt::Password.new(password_digest).is_password?(unencrypted_password)
+  end
+
+  def cl1_authenticate(unencrypted_password)
+    original_authenticate(::Digest::SHA256.hexdigest(unencrypted_password))
   end
 
 end
