@@ -11,6 +11,26 @@ namespace :migrate do
     platform = 'beograd'
     password = '5nghbqbtkag0000000000'
 
+    topics_mapping = { 'Pitanja odbornicima DJB' => 'citizenship',
+                       'Obrazovanje'             => 'education',
+                       'Socijalna zaštita'       => 'health',
+                       'Zdravstvena zaštita '    => 'health',
+                       'Komunalne usluge'        => 'citizenship',
+                       'Ljudska prava'           => 'social',
+                       'Ekonomija'               => 'economy',
+                       'Turizam'                 => 'culture',
+                       'Sport'                   => 'sport',
+                       'Kultura'                 => 'culture',
+                       'Saobraćaj'               => 'mobility',
+                       'Ekologija'               => 'nature',
+                       'Bezbednost'              => 'infrastructure',
+                       'Verski praznici'         => 'culture',
+                       'Informisanje'            => 'citizenship',
+                       'Lokalna samouprava'      => 'citizenship',
+                       'Urbanizam'               => 'citizenship',
+                       'Poljoprivreda'           => 'economy',
+                       'Energetika'              => 'economy' }
+
     host = "#{platform}.localhost"
     Tenant.where(host: host)&.first&.destroy
     client = connect(platform: platform, password: password)
@@ -18,6 +38,11 @@ namespace :migrate do
     Apartment::Tenant.switch("#{platform}_localhost") do
       TenantTemplateService.new.apply_template 'base'
     
+      topics_code_hash =  create_topics_code_hash
+      topics_hash = {}
+      client['categories'].find.each do |c|
+        map_topic(c, topics_hash, topics_mapping, topics_code_hash)
+      end
       areas_hash = {}
       client['neighbourhoods'].find.each do |n|
         migrate_area n, areas_hash
@@ -26,11 +51,6 @@ namespace :migrate do
   	  client['users'].find.each do |u|
   		  migrate_user(u, users_hash)
   	  end
-      topics_hash = {}
-      # client['categories'].find.each do |c|
-      #   migrate_topic(c, topics_hash)
-      # end
-      # TODO events
       # TODO phases
       projects_hash = {}
       client['projects'].find.each do |p|
@@ -38,16 +58,16 @@ namespace :migrate do
       end
       ideas_hash = {}
       client['posts'].find.each do |p|
-        migrate_ideas(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
+        migrate_idea(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
       end
       comments_hash = {}
       # process comments by order of creation such that the parents can always be found
       client['comments'].find.map { |x| x }.sort { |c1,c2| c1.dig('createdAt') <=> c2.dig('createdAt') }.each do |c|
-        migrate_comments(c, comments_hash, users_hash, ideas_hash)
+        migrate_comment(c, comments_hash, users_hash, ideas_hash)
       end
       pages_hash = {}
       client['pages'].find.each do |p|
-        migrate_pages(p, pages_hash)
+        migrate_page(p, pages_hash)
       end
       if !@log.empty?
         puts 'Migrated with errors!'
@@ -63,10 +83,24 @@ namespace :migrate do
   def connect(platform: nil, password: nil)
     if platform && password
       # Mongo::Client.new('mongodb://lamppost.14.mongolayer.com:10323/demo', auth_mech: :mongodb_cr, user: 'citizenlab', password: 'jhshEVweHWULVCA9x2nLuWL8')
-      Mongo::Client.new "mongodb://citizenlab:#{password}@lamppost.14.mongolayer.com:10323/#{platform}"
+      # Mongo::Client.new "mongodb://citizenlab:#{password}@lamppost.14.mongolayer.com:10323/#{platform}"
+
+      Mongo::Client.new("mongodb://lamppost.14.mongolayer.com:10323/#{platform}", auth_mech: :mongodb_cr, user: 'citizenlab', password: password)
     else
       Mongo::Client.new 'mongodb://docker.for.mac.localhost:27017/schiedam'
     end
+  end
+
+
+  def create_topics_code_hash
+    topics_code_hash = {}
+    YAML.load_file(Rails.root.join('config', 'locales', "en.yml"))
+        .dig('en', 'topics').each do |code, title|
+          unless code.end_with? '_description'
+            topics_code_hash[code] = Topic.where({ title_multiloc: { en: title } }).first
+          end
+        end
+    topics_code_hash
   end
 
 
@@ -107,6 +141,14 @@ namespace :migrate do
         }
       }
     })
+  end
+
+
+  def map_topic c, topics_hash, topics_mapping, topics_code_hash
+    topic_codes = c['name_i18n'].values.map{ |t| topics_mapping[t] }.select{|t| t}
+    unless topic_codes.empty?
+      topics_hash[c['_id']] = topics_code_hash[topic_codes.first]
+    end
   end
 
 
@@ -154,7 +196,13 @@ namespace :migrate do
       return
     end
     # password
-    d[:password] = 'testtest' ### TODO
+    if u.dig('services', 'password', 'bcrypt')
+      d[:password_digest] = u.dig('services', 'password', 'bcrypt')
+    else
+      d[:services] = { "facebook" => {
+                         "updated_at" => Time.now
+                       }}
+    end
     # locale
     d[:locale] = u['telescope']['locale'] || Tenant.current.settings.dig('core', 'locales').first
     # admin
@@ -232,18 +280,18 @@ namespace :migrate do
       @log.concat ["Couldn't find a description for project #{p.to_s}"]
       return
     end
-    # image
-    # if p.dig('images')&.first&.dig('original')
-    #   d[:remote_header_bg_url] = p.dig('images').first.dig('original')
-    # end
+    # header bg image
+    if p.dig('images')&.first&.dig('original')
+      d[:remote_header_bg_url] = p.dig('images').first.dig('original')
+    end
     # areas
     if p.dig('neighbourhoods')
       d[:areas] = p.dig('neighbourhoods').map { |nid| areas_hash[nid] }
     end
     # topics
-    # if p.dig('categories')
-    #   d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }
-    # end
+    if p.dig('categories')
+      d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }.select{|t| t}.uniq{|t| t.id}
+    end
     # timestamps
     if p['createdAt']
       d[:created_at] = p['createdAt']
@@ -266,13 +314,53 @@ namespace :migrate do
           end
         end
       end
+      # events
+      if p.dig('timeline', 'events')
+        p.dig('timeline', 'events').each do |e|
+          migrate_event(e, record)
+        end
+      end
       projects_hash[p['_id']] = record
     rescue Exception => e
       @log.concat [e.message+' '+d.to_s]
     end
   end
 
-  def migrate_ideas(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
+  def migrate_event(e, project)
+    d = {}
+    # project
+    d[:project] = project
+    # title
+    if e.dig('title_i18n')
+      d[:title_multiloc] = e.dig('title_i18n')
+    else
+      @log.concat ["Couldn't find the title for event #{e.to_s}"]
+      return
+    end
+    # description
+    if e.dig('description_i18n')
+      d[:description_multiloc] = e.dig('description_i18n')
+    end
+    # location
+    if e.dig('location')
+      d[:location_multiloc] = Hash[d[:title_multiloc].map{|k,_| [k,e.dig('location')] } ]
+    end
+    # start
+    if e['startAt']
+      d[:start_at] = e['startAt']
+    end
+    # end
+    if e['endAt']
+      d[:end_at] = e['endAt']
+    end
+    begin
+      Event.create! d
+    rescue Exception => e
+      @log.concat [e.message]
+    end
+  end
+
+  def migrate_idea(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
     d = {}
     # only migrate published ideas
     if (p['status'] || -1) == 2
@@ -321,9 +409,9 @@ namespace :migrate do
     end
     votes_d.select!{ |v| v[:user] }
     # topics
-    # if p.dig('categories')
-    #   d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }
-    # end
+    if p.dig('categories')
+      d[:topics] = p.dig('categories').map { |cid| topics_hash[cid] }.select{|t| t}.uniq{|t| t.id}
+    end
     # timestamps
     if p['createdAt']
       d[:created_at] = p['createdAt']
@@ -344,7 +432,9 @@ namespace :migrate do
       if p.dig('images')
         p.dig('images').each do |i|
           begin
-            IdeaImage.create!(remote_image_url: i.dig('original'), idea: record)
+            if i.dig('original')
+              IdeaImage.create!(remote_image_url: i.dig('original'), idea: record)
+            end
           rescue Exception => e
             @log.concat [e.message+' '+p.to_s]
           end
@@ -358,7 +448,7 @@ namespace :migrate do
     end
   end
 
-  def migrate_comments(c, comments_hash, users_hash, ideas_hash)
+  def migrate_comment(c, comments_hash, users_hash, ideas_hash)
     d = {}
     # body
     if c.dig('htmlBody_i18n')
@@ -413,7 +503,7 @@ namespace :migrate do
     end
   end
 
-  def migrate_pages(p, pages_hash)
+  def migrate_page(p, pages_hash)
     d = {}
     # title
     if p.dig('title_i18n')
