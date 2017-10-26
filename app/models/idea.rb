@@ -45,11 +45,21 @@ class Idea < ApplicationRecord
     .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
   end)
 
+  scope :with_some_topics, (Proc.new do |topic_ids|
+    joins(:ideas_topics)
+      .where(ideas_topics: {topic_id: topic_ids})
+  end)
+
   scope :with_all_areas, (Proc.new do |area_ids|
     uniq_area_ids = area_ids.uniq
     joins(:areas_ideas)
     .where(areas_ideas: {area_id: uniq_area_ids})
     .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
+  end)
+
+  scope :with_some_areas, (Proc.new do |area_ids|
+    joins(:areas_ideas)
+      .where(areas_ideas: {area_id: area_ids})
   end)
 
   scope :order_new, -> (direction=:desc) {order(published_at: direction)}
