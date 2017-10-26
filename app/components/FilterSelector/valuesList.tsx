@@ -101,8 +101,8 @@ const Checkmark: any = styled.span`
   border: solid 1px #aaa;
   border-radius: 3px;
   background: #fff;
-  background: ${(props: any) => props.selected ? '#32b67a' : '#fff'};
-  border-color: ${(props: any) => props.selected ? '#32b67a' : '#aaa'};
+  background: ${(props: any) => props.selected ? props.theme.colors.success : '#fff'};
+  border-color: ${(props: any) => props.selected ? props.theme.colors.success : '#aaa'};
   box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.15);
   margin-left: 10px;
 `;
@@ -132,7 +132,7 @@ const StyledOption: any = styled.li`
     background: #f8f8f8;
 
     ${Checkmark} {
-      border-color: ${(props: any) => props.selected ? '#32b67a' : '#333'};
+      border-color: ${(props: any) => props.selected ? props.theme.colors.success : '#333'};
     }
   }
 `;
@@ -295,7 +295,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
                   className={`e2e-filter-selector-dropdown-listitem-${title} ${focussed}`}
                 >
                   <OptionText>{entry.text}</OptionText>
-                  {multiple && 
+                  {multiple &&
                     <Checkmark selected={selected}>
                       {selected &&
                         <CheckmarkIcon name="checkmark" />

@@ -60,15 +60,20 @@ export default class AdminProjectEdition extends React.PureComponent<Props, Stat
       this.tabs = [
         {
           label: 'general',
-          url: `${baseTabsUrl}/edit`
+          url: `${baseTabsUrl}/edit`,
         },
         {
           label: 'timeline',
-          url: `${baseTabsUrl}/timeline`
+          url: `${baseTabsUrl}/timeline`,
         },
         {
           label: 'events',
-          url: `${baseTabsUrl}/events`
+          url: `${baseTabsUrl}/events`,
+        },
+        {
+          label: 'permissions',
+          url: `${baseTabsUrl}/permissions`,
+          feature: 'private_projects',
         },
       ];
     }

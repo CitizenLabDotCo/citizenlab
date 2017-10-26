@@ -1,12 +1,10 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import ReactSelect from 'react-select';
+import { AsyncCreatable as ReactSelect } from 'react-select';
 import { IOption } from 'typings';
 import styled from 'styled-components';
 
 const StyledMultipleSelect = styled(ReactSelect)`
-  max-width: calc(100% - 30px);
-
   &.Select--multi {
     margin: 0;
     padding: 0;
@@ -45,7 +43,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
     }
 
     .Select-control {
-      width: calc(100% + 30px);
+      width: 100%;
       height: auto;
       margin: 0px;
       padding: 5px;
@@ -77,7 +75,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
       }
 
       .Select-multi-value-wrapper {
-        width: calc(100%);
+        width: calc(100% - 30px);
         height: auto;
         margin: 0px;
         padding: 0px;
@@ -180,7 +178,6 @@ const StyledMultipleSelect = styled(ReactSelect)`
     }
 
     .Select-menu-outer {
-      width: calc(100% + 30px);
       max-height: 214px;
       border-color: #000;
       border-top: solid 1px #ccc;
@@ -220,7 +217,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
 type Props = {
   value: IOption[] | null;
   placeholder: string;
-  options: IOption[] | null;
+  asyncOptions: (arg: any) => Promise<IOption[]> | null;
   max?: number;
   autoBlur?: boolean;
   onChange: (arg: IOption[]) => void;
@@ -229,7 +226,7 @@ type Props = {
 
 type State = {};
 
-export default class MultipleSelect extends React.PureComponent<Props, State> {
+export default class AsyncMultipleSelect extends React.PureComponent<Props, State> {
   private emptyArray: never[];
 
   constructor() {
@@ -244,18 +241,16 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const className = this.props['className'];
-    let { value, placeholder, options, max, autoBlur } = this.props;
+    let { value, placeholder, asyncOptions, max, autoBlur } = this.props;
 
     value = (value || this.emptyArray);
     placeholder = (placeholder || '');
-    options = (options || this.emptyArray);
+    asyncOptions = (asyncOptions || undefined);
     max = (max || undefined);
     autoBlur = (_.isBoolean(autoBlur) ? autoBlur : false);
 
     return (
       <StyledMultipleSelect
-        className={className}
         multi={true}
         searchable={true}
         openOnFocus={false}
@@ -264,8 +259,8 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
         scrollMenuIntoView={false}
         clearable={false}
         value={value}
-        placeholder={<span>{placeholder}</span>}
-        options={options}
+        placeholder={placeholder}
+        loadOptions={this.props.asyncOptions}
         onChange={this.handleOnChange}
         disabled={this.props.disabled}
       />
