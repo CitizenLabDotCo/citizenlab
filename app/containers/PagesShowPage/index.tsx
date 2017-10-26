@@ -14,12 +14,20 @@ import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
 import styled from 'styled-components';
 import NotFound from 'containers/NotFoundPage';
-
+import Spinner from 'components/UI/Spinner';
 
 const TextContainer = styled.div`
   margin: 30px 0;
   padding: 3rem;
   background-color: white;
+`;
+
+const SpinnerContainer = styled.div`
+  margin: 30px 0;
+  padding: 3rem;
+  background-color: white;
+  display: flex;
+  justify-content: center;
 `;
 
 type Props = {
@@ -31,6 +39,7 @@ type Props = {
 
 type State = {
   page: IPageData | null,
+  loading: boolean;
 };
 
 class PagesShowPage extends React.PureComponent<Props, State> {
@@ -41,6 +50,7 @@ class PagesShowPage extends React.PureComponent<Props, State> {
     this.pageObserver = null;
     this.state = {
       page: null,
+      loading: true,
     };
   }
 
@@ -49,6 +59,7 @@ class PagesShowPage extends React.PureComponent<Props, State> {
       if (response) {
         this.setState({
           page: response.data,
+          loading: false,
         });
       }
     });
@@ -59,8 +70,18 @@ class PagesShowPage extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { page } = this.state;
+    const { page, loading } = this.state;
     const { tFunc } = this.props;
+
+    if (loading) {
+      return (
+        <ContentContainer>
+          <SpinnerContainer>
+            <Spinner color="#84939E" />
+          </SpinnerContainer>
+        </ContentContainer>
+      );
+    }
 
     if (!page) {
       return <NotFound />;
