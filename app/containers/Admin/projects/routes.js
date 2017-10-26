@@ -214,6 +214,23 @@ export default (injectReducer) => ({
             importModules.catch(errorLoading);
           },
         },
+        {
+          path: '/admin/projects/:slug/permissions',
+          name: 'admin projects edit permissions',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/Admin/projects/edit/permissions'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
       ],
     },
   ],
