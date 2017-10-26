@@ -309,7 +309,7 @@
   "app.containers.PagesShowPage.helmetDescription": "Geeft pagina gecreëerd door admin weer",
   "app.containers.PagesShowPage.helmetTitle": "Toon pagina's",
   "app.containers.PagesShowPage.loading": "Pagina laden...",
-  "app.containers.PasswordRecovery.emailError": "Please enter a valid e-mail address",
+  "app.containers.PasswordRecovery.emailError": "Gelieve een geldig e-mailadres in te vullen",
   "app.containers.PasswordRecovery.emailPlaceholder": "My email address",
   "app.containers.PasswordRecovery.helmetDescription": "Wijzig je wachtwoord pagina",
   "app.containers.PasswordRecovery.helmetTitle": "Wijzig je wachtwoord",
