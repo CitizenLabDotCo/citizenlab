@@ -136,13 +136,15 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
             membership_count: group.attributes.memberships_count
           };
         }).reverse().value();
+        const groupsOptions = this.getOptions(groups, groupsProjects, locale, currentTenantLocales);
+        const loading = false;
 
         this.setState({ 
           locale,
           currentTenantLocales,
           projectGroups,
-          groupsOptions: this.getOptions(groups, groupsProjects, locale, currentTenant.data.attributes.settings.core.locales),
-          loading: false
+          groupsOptions,
+          loading
         });
       })
     ];
