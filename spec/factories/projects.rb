@@ -30,5 +30,23 @@ FactoryGirl.define do
         end
       end
     end
+
+    factory :private_admins_project do
+      visible_to :admins
+    end
+
+    factory :private_groups_project do
+      visible_to 'groups'
+      transient do
+        user nil
+      end
+      after(:create) do |project, evaluator|
+        group = create(:group)
+        project.groups << group
+        if evaluator&.user
+          group.users << evaluator&.user
+        end
+      end
+    end
   end
 end

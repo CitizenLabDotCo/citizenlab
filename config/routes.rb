@@ -50,12 +50,20 @@ Rails.application.routes.draw do
         resources :phases, shallow: true
         resources :events, shallow: true
         resources :images, defaults: {container_class: Project, image_class: ProjectImage}
+        resources :groups_projects, shallow: true, except: [:update]
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
       end
 
       resources :notifications, only: [:index, :show] do
         post 'mark_read', on: :member
         post 'mark_all_read', on: :collection
+      end
+
+      resources :groups do
+        resources :memberships, shallow: true, except: [:update] do
+          get :users_search, on: :collection
+        end
+        get 'by_slug/:slug', on: :collection, to: 'groups#by_slug'
       end
 
       scope 'stats', controller: 'stats' do
