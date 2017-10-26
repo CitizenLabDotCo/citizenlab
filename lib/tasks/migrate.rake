@@ -51,7 +51,6 @@ namespace :migrate do
   	  client['users'].find.each do |u|
   		  migrate_user(u, users_hash)
   	  end
-      # TODO events
       # TODO phases
       projects_hash = {}
       client['projects'].find.each do |p|
@@ -59,16 +58,16 @@ namespace :migrate do
       end
       ideas_hash = {}
       client['posts'].find.each do |p|
-        migrate_ideas(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
+        migrate_idea(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
       end
       comments_hash = {}
       # process comments by order of creation such that the parents can always be found
       client['comments'].find.map { |x| x }.sort { |c1,c2| c1.dig('createdAt') <=> c2.dig('createdAt') }.each do |c|
-        migrate_comments(c, comments_hash, users_hash, ideas_hash)
+        migrate_comment(c, comments_hash, users_hash, ideas_hash)
       end
       pages_hash = {}
       client['pages'].find.each do |p|
-        migrate_pages(p, pages_hash)
+        migrate_page(p, pages_hash)
       end
       if !@log.empty?
         puts 'Migrated with errors!'
@@ -313,13 +312,54 @@ namespace :migrate do
           end
         end
       end
+      # events
+      if p.dig('timeline', 'events')
+        p.dig('timeline', 'events').each do |e|
+          migrate_event(e, record)
+        end
+      end
       projects_hash[p['_id']] = record
     rescue Exception => e
       @log.concat [e.message+' '+d.to_s]
     end
   end
 
-  def migrate_ideas(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
+  def migrate_event(e, project)
+    byebug
+    d = {}
+    # project
+    d[:project] = project
+    # title
+    if e.dig('title_i18n')
+      d[:title_multiloc] = e.dig('title_i18n')
+    else
+      @log.concat ["Couldn't find the title for event #{e.to_s}"]
+      return
+    end
+    # description
+    if e.dig('description_i18n')
+      d[:description_multiloc] = e.dig('description_i18n')
+    end
+    # location
+    if e.dig('location')
+      d[:location_multiloc] = Hash[d[:title_multiloc].map{|k,_| [k,e.dig('location')] } ]
+    end
+    # start
+    if e['startAt']
+      d[:start_at] = e['startAt']
+    end
+    # end
+    if e['endAt']
+      d[:end_at] = e['endAt']
+    end
+    begin
+      Event.create! d
+    rescue Exception => e
+      @log.concat [e.message]
+    end
+  end
+
+  def migrate_idea(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
     d = {}
     # only migrate published ideas
     if (p['status'] || -1) == 2
@@ -407,7 +447,7 @@ namespace :migrate do
     end
   end
 
-  def migrate_comments(c, comments_hash, users_hash, ideas_hash)
+  def migrate_comment(c, comments_hash, users_hash, ideas_hash)
     d = {}
     # body
     if c.dig('htmlBody_i18n')
@@ -462,7 +502,7 @@ namespace :migrate do
     end
   end
 
-  def migrate_pages(p, pages_hash)
+  def migrate_page(p, pages_hash)
     d = {}
     # title
     if p.dig('title_i18n')
