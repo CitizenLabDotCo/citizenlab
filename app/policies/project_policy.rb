@@ -10,11 +10,14 @@ class ProjectPolicy < ApplicationPolicy
     def resolve
       if user&.admin?
         scope.all
-      else
+      elsif user
         scope
           .left_outer_joins(groups: :memberships)
           .where("projects.visible_to = 'public' OR \
             (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
+      else
+        scope
+          .where(visible_to: 'public')
       end
     end
   end

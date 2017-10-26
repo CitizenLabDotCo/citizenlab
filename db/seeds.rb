@@ -66,6 +66,14 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         enabled: true,
         app_id: '307796929633098',
         app_secret: '28082a4c201d7cee136dbe35236e44cb'
+      },
+      groups: {
+        enabled: true,
+        allowed:true
+      },
+      private_projects: {
+        enabled: true,
+        allowed: true
       }
     }
   })
@@ -102,6 +110,14 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         enabled: true,
         app_id: '307796929633098',
         app_secret: '28082a4c201d7cee136dbe35236e44cb'
+      },
+      groups: {
+        enabled: true,
+        allowed:true
+      },
+      private_projects: {
+        enabled: true,
+        allowed: true
       }
     }
   })
