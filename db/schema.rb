@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171022182428) do
+ActiveRecord::Schema.define(version: 20171023192224) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,6 +94,25 @@ ActiveRecord::Schema.define(version: 20171022182428) do
     t.index ["project_id"], name: "index_events_on_project_id"
   end
 
+  create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "title_multiloc"
+    t.string "slug"
+    t.integer "memberships_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_groups_on_slug"
+  end
+
+  create_table "groups_projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "group_id"
+    t.uuid "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id", "project_id"], name: "index_groups_projects_on_group_id_and_project_id", unique: true
+    t.index ["group_id"], name: "index_groups_projects_on_group_id"
+    t.index ["project_id"], name: "index_groups_projects_on_project_id"
+  end
+
   create_table "idea_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "idea_id"
     t.string "image"
@@ -144,6 +163,16 @@ ActiveRecord::Schema.define(version: 20171022182428) do
     t.index ["idea_id", "topic_id"], name: "index_ideas_topics_on_idea_id_and_topic_id", unique: true
     t.index ["idea_id"], name: "index_ideas_topics_on_idea_id"
     t.index ["topic_id"], name: "index_ideas_topics_on_topic_id"
+  end
+
+  create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "group_id"
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id", "user_id"], name: "index_memberships_on_group_id_and_user_id", unique: true
+    t.index ["group_id"], name: "index_memberships_on_group_id"
+    t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
   create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -200,6 +229,7 @@ ActiveRecord::Schema.define(version: 20171022182428) do
     t.datetime "updated_at", null: false
     t.string "header_bg"
     t.integer "ideas_count", default: 0, null: false
+    t.string "visible_to", default: "public", null: false
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -269,12 +299,16 @@ ActiveRecord::Schema.define(version: 20171022182428) do
   add_foreign_key "comments", "ideas"
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "events", "projects"
+  add_foreign_key "groups_projects", "groups"
+  add_foreign_key "groups_projects", "projects"
   add_foreign_key "idea_images", "ideas"
   add_foreign_key "ideas", "idea_statuses"
   add_foreign_key "ideas", "projects"
   add_foreign_key "ideas", "users", column: "author_id"
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
+  add_foreign_key "memberships", "groups"
+  add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "pages", "projects"
   add_foreign_key "phases", "projects"

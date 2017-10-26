@@ -8,11 +8,12 @@ class User < ApplicationRecord
     :against => [:first_name, :last_name, :email], 
     :using => { :tsearch => {:prefix => true} }
 
-
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :votes, dependent: :nullify
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
+  has_many :memberships, dependent: :destroy
+  has_many :groups, through: :memberships
 
   store_accessor :demographics, :gender, :birthyear, :domicile, :education
 
@@ -70,6 +71,10 @@ class User < ApplicationRecord
   
   def has_services?
     self.services.present?
+  end
+
+  def member_of? group_id
+    !self.memberships.select{ |m| m.group_id == group_id }.empty?
   end
   
   private

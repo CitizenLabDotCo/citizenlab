@@ -22,6 +22,10 @@ class Api::V1::IdeaSerializer < ActiveModel::Serializer
   end
 
   def cached_user_vote
-    @instance_options.dig(:vbii, object.id) || object.votes.where(user_id: scope.id).first
+    if @instance_options[:vbii]
+      @instance_options.dig(:vbii, object.id)
+    else
+       object.votes.where(user_id: scope.id).first
+     end
   end
 end
