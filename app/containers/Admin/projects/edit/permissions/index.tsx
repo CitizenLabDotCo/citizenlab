@@ -60,14 +60,13 @@ const StyledRadio = styled(Radio)`
   }
 `;
 
-// Typing
-interface Props {
+type Props  = {
   params: {
-    slug: string | null,
+    slug: string | null
   };
-}
+};
 
-interface State {
+type State  = {
   project: IProject | null;
   oldGroupsProjects: IGroupsProjects | null;
   newGroupsProjects: IGroupsProjects | null;
@@ -75,7 +74,7 @@ interface State {
   loading: boolean;
   saving: boolean;
   status: 'disabled' | 'enabled' | 'error' | 'success';
-}
+};
 
 class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
@@ -113,13 +112,14 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
             const oldGroupsProjects = (state.loading ? groupsProjects : state.oldGroupsProjects);
             const newGroupsProjects = groupsProjects;
             const status = (state.visibleTo === 'groups' && newGroupsProjects !== oldGroupsProjects ? 'enabled' : state.status);
+            const loading = false;
 
             return {
               project,
               oldGroupsProjects,
               newGroupsProjects,
               status,
-              loading: false
+              loading
             };
           });
         })
@@ -201,16 +201,10 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
           this.setState({ saving: false, status: 'error' });
         }
       } else if (newVisibleTo === 'groups' && oldVisibleTo === 'groups') {
-        this.setState({
-          oldGroupsProjects: newGroupsProjects,
-          saving: true
-        });
+        this.setState({ oldGroupsProjects: newGroupsProjects, saving: true });
 
         setTimeout(() => {
-          this.setState({
-            saving: false,
-            status: 'success'
-          });
+          this.setState({ saving: false, status: 'success' });
         }, 600);
       }
     }
