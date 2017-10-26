@@ -6,15 +6,15 @@ resource "Ideas" do
   before do
     header "Content-Type", "application/json"
     # @ideas = create_list(:idea, 5, publication_status: ['published','draft','published','published','spam']) #draft published closed spam
-    @ideas = ['published','draft','published','published','spam','published','published'].map { |ps|  create(:idea, publication_status: ps)}
+    @ideas = ['published','published','draft','published','spam','published','published'].map { |ps|  create(:idea, publication_status: ps)}
     @user = create(:user)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
     header 'Authorization', "Bearer #{token}"
   end
 
   get "api/v1/ideas" do
-    parameter :topics, 'Filter by topics (AND)', required: false
-    parameter :areas, 'Filter by areas (AND)', required: false
+    parameter :topics, 'Filter by topics (OR)', required: false
+    parameter :areas, 'Filter by areas (OR)', required: false
     parameter :project, 'Filter by project', required: false
     parameter :author, 'Filter by author (user id)', required: false
     parameter :idea_status, 'Filter by status (idea status id)', required: false
@@ -49,32 +49,23 @@ resource "Ideas" do
       expect(json_response[:data][0][:id]).to eq i1.id
     end
 
-    example "List all ideas with all given topics" do
+    example "List all ideas which match one of the given topics" do
       t1 = create(:topic)
       t2 = create(:topic)
 
-      i1 = @ideas.first
-      i1.topics = [t1, t2]
+      i1 = @ideas[0]
+      i1.topics = [t1]
       i1.save
+      i2 = @ideas[1]
+      i2.topics = [t2]
+      i2.save
 
       do_request(topics: [t1.id, t2.id])
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 1
-      expect(json_response[:data][0][:id]).to eq i1.id
+      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].map{|h| h[:id]}).to match [i1.id, i2.id]
     end
 
-    example "List no ideas when not all given topics are there", document: false do
-      t1 = create(:topic)
-      t2 = create(:topic)
-
-      i1 = @ideas.first
-      i1.topics << t1
-      i1.save
-
-      do_request(topics: [t1.id, t2.id])
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 0
-    end
 
     example "List all ideas with an area" do
       a1 = create(:area)
@@ -88,32 +79,23 @@ resource "Ideas" do
       expect(json_response[:data][0][:id]).to eq i1.id
     end
 
-    example "List all ideas with all given areas" do
+    example "List all ideas which match one of the given areas" do
       a1 = create(:area)
       a2 = create(:area)
 
       i1 = @ideas.first
-      i1.areas = [a1, a2]
+      i1.areas = [a1]
       i1.save
+      i2 = @ideas.second
+      i2.areas = [a2]
+      i2.save
 
       do_request(areas: [a1.id, a2.id])
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 1
-      expect(json_response[:data][0][:id]).to eq i1.id
+      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].map{|h| h[:id]}).to match [i1.id, i2.id]
     end
 
-    example "List no ideas when not all given areas are there", document: false do
-      a1 = create(:area)
-      a2 = create(:area)
-
-      i1 = @ideas.first
-      i1.areas << a1
-      i1.save
-
-      do_request(areas: [a1.id, a2.id])
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 0
-    end
 
     example "List all ideas in a project" do
       l = create(:project)
