@@ -30,7 +30,7 @@ export default defineMessages({
     defaultMessage: 'Password reset email successfully send to {email}',
   },
   emailError: {
-    id: 'app.containers.PasswordRecovery.submitError',
+    id: 'app.containers.PasswordRecovery.emailError',
     defaultMessage: 'Please enter a valid e-mail address',
   },
   submitError: {
