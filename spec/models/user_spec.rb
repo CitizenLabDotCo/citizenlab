@@ -19,7 +19,7 @@ RSpec.describe User, type: :model do
   end
 
   describe "user password authentication" do
-    it "should be compatibru with meteor encryption" do
+    it "should be compatible with meteor encryption" do
       u = build(:user)
       u.first_name = "Sebi"
       u.last_name = "Hoorens"
