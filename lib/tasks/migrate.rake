@@ -8,33 +8,16 @@ require 'redcarpet'
 namespace :migrate do
   desc "Migrating Data from a CL1 Platform to a CL2 Tenant"
   task from_cl1: :environment do
-    platform = 'beograd'
-    password = '5nghbqbtkag0000000000'
-
-    topics_mapping = { 'Pitanja odbornicima DJB' => 'citizenship',
-                       'Obrazovanje'             => 'education',
-                       'Socijalna zaštita'       => 'health',
-                       'Zdravstvena zaštita '    => 'health',
-                       'Komunalne usluge'        => 'citizenship',
-                       'Ljudska prava'           => 'social',
-                       'Ekonomija'               => 'economy',
-                       'Turizam'                 => 'culture',
-                       'Sport'                   => 'sport',
-                       'Kultura'                 => 'culture',
-                       'Saobraćaj'               => 'mobility',
-                       'Ekologija'               => 'nature',
-                       'Bezbednost'              => 'infrastructure',
-                       'Verski praznici'         => 'culture',
-                       'Informisanje'            => 'citizenship',
-                       'Lokalna samouprava'      => 'citizenship',
-                       'Urbanizam'               => 'citizenship',
-                       'Poljoprivreda'           => 'economy',
-                       'Energetika'              => 'economy' }
+    url = "https://api.myjson.com/bins/fehjv"
+    migration_settings = JSON.load(open(url))
+    platform = migration_settings['platform']
+    password = migration_settings['password']
+    topics_mapping = migration_settings['topics_mapping']
 
     host = "#{platform}.localhost"
     Tenant.where(host: host)&.first&.destroy
     client = connect(platform: platform, password: password)
-    create_tenant(platform, host, client['settings'].find.first, client['meteor_accounts_loginServiceConfiguration'])
+    create_tenant(platform, host, client['settings'].find.first, client['meteor_accounts_loginServiceConfiguration'], migration_settings)
     Apartment::Tenant.switch("#{platform}_localhost") do
       TenantTemplateService.new.apply_template 'base'
     
@@ -62,7 +45,7 @@ namespace :migrate do
       projects_hash = {}
       phases_hash = {}
       client['projects'].find.each do |p|
-        migrate_project(p, projects_hash, areas_hash, topics_hash, phases_hash, groups_hash)
+        migrate_project(p, projects_hash, areas_hash, topics_hash, phases_hash, groups_hash, superadmin_id)
       end
       ideas_hash = {}
       client['posts'].find.each do |p|
@@ -112,7 +95,7 @@ namespace :migrate do
   end
 
 
-  def create_tenant(platform, host, s, m)
+  def create_tenant(platform, host, s, m, migration_settings)
     fb_login = m.find({ service: 'facebook' }).first
     Tenant.create({
       name: platform,
@@ -124,13 +107,13 @@ namespace :migrate do
           allowed: true,
           enabled: true,
           locales: s['languages'],
-          organization_type: 'generic', ## TODO
+          organization_type: migration_settings['organization_type'],
           organization_name: s['title_i18n'],
           header_title: s['tagline_i18n'],
           header_slogan: s['description_i18n'],
           meta_title: s['tagline_i18n'],
           meta_description: s['description_i18n'],
-          timezone: "Europe/Brussels", ## TODO
+          timezone: migration_settings['timezone'],
           color_main: s['accentColor']
         },
         demographic_fields: {
@@ -294,7 +277,7 @@ namespace :migrate do
     end
   end
 
-  def migrate_project(p, projects_hash, areas_hash, topics_hash, phases_hash, groups_hash)
+  def migrate_project(p, projects_hash, areas_hash, topics_hash, phases_hash, groups_hash, superadmin_id)
     d = {}
     # title
     if p.dig('title_i18n')
@@ -327,13 +310,12 @@ namespace :migrate do
       d[:created_at] = p['createdAt']
     end
     # permissions
-    if p['permissions']
-      groups = p['permissions'].values.map{|g| groups_hash[g]}.select{|g| g}
-      if groups.empty?
+    if p['permissions'] && !p['permissions'].blank?
+      if p['permissions'].values.include? superadmin_id
         d[:visible_to] = 'admins'
       else
         d[:visible_to] = 'groups'
-        d[:groups] = groups
+        d[:groups] = p['permissions'].values.map{|g| groups_hash[g]}.select{|g| g}
       end
     else
       d[:visible_to] = 'public'
