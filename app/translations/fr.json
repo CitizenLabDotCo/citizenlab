@@ -481,7 +481,7 @@
   "app.containers.UsersEditPage.notifications_mention": "Quelqu'un vous a mentionné",
   "app.containers.UsersEditPage.notifications_new_comments": "Nouveaux commentaires",
   "app.containers.UsersEditPage.notifications_new_user": "Inscription d'un nouvel utilisateur",
-  "app.containers.UsersEditPage.outside": "{organizationType, select, city {Outside of {name}} generic {None of these}}",
+  "app.containers.UsersEditPage.outside": "{organizationType, select, city {A l'extérieur de {name}} generic {Aucun}}",
   "app.containers.UsersEditPage.password": "Mot de passe",
   "app.containers.UsersEditPage.processing": "Envoi...",
   "app.containers.UsersEditPage.storeError": "Le profil mis à jour ne peut être sauvegardé",
