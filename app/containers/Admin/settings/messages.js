@@ -95,6 +95,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.subTitleBranding',
     defaultMessage: 'Establish your visual branding on the platform',
   },
+  titleLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.titleLabel',
+    defaultMessage: 'Title {locale}:',
+  },
+  subtitleLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.titleLabel',
+    defaultMessage: 'Subtitle {locale}:',
+  },
   gender: {
     id: 'app.containers.AdminPage.SettingsPage.gender',
     defaultMessage: 'Gender',
@@ -118,6 +126,10 @@ export default defineMessages({
   noLogo: {
     id: 'app.containers.AdminPage.SettingsPage.noLogo',
     defaultMessage: 'Please upload a logo',
+  },
+  noHeader: {
+    id: 'app.containers.AdminPage.SettingsPage.noHeader',
+    defaultMessage: 'Please upload a header image',
   },
   save: {
     id: 'app.containers.AdminPage.SettingsPage.save',

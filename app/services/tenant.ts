@@ -15,6 +15,7 @@ export interface ITenantSettings {
     timezone: string;
     organization_name: Multiloc;
     organization_type: 'small_city' | 'medium_city' | 'large_city' | 'generic';
+    header_title: Multiloc | null;
     header_slogan: Multiloc | null;
     meta_title: Multiloc | null;
     meta_description: Multiloc | null;

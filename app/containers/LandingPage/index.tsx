@@ -67,11 +67,35 @@ const BackgroundColor = styled.div`
 
 const Header: any = styled.div`
   width: 100%;
+  height: 400px;
+  margin-bottom: 10px;
+  z-index: 1;
+  position: relative;
+
+  background-image: url(${(props: any) => props.src ? props.src : ''});  
+  background-repeat: no-repeat;
+  background-size: cover;
+`;
+
+const HeaderOverlay = styled.div`
+  background: #000;
+  opacity: 0.4;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+`;
+
+const HeaderContent = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10px;
-  z-index: 1;
+  position: absolute;
+  z-index: 2;
 `;
 
 const HeaderLogoWrapper = styled.div`
@@ -332,10 +356,14 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const organizationNameMultiLoc = currentTenant.data.attributes.settings.core.organization_name;
+      const headerTitleMultiLoc = currentTenant.data.attributes.settings.core.header_title;
       const headerSloganMultiLoc = currentTenant.data.attributes.settings.core.header_slogan;
       const currentTenantName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
       const currentTenantLogo = currentTenant.data.attributes.logo.large;
+      const currentTenantHeader = currentTenant.data.attributes.header_bg ? currentTenant.data.attributes.header_bg.large : null;
+      const currentTenantHeaderTitle = getLocalized(headerTitleMultiLoc, locale, currentTenantLocales);
       const currentTenantHeaderSlogan = getLocalized(headerSloganMultiLoc, locale, currentTenantLocales);
+      const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }} />);
       const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
 
       return (
@@ -344,18 +372,22 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
             <BackgroundImage imageSrc={header} />
             <BackgroundColor />
 
-            <Header>
-              {currentTenantLogo &&
-                <HeaderLogoWrapper>
-                  <HeaderLogo imageSrc={currentTenantLogo} />
-                </HeaderLogoWrapper>
-              }
-              <HeaderTitle>
-                <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }} />
-              </HeaderTitle>
-              <HeaderSubtitle onClick={this.goToAddIdeaPage}>
-                {subtitle}
-              </HeaderSubtitle>
+            <Header src={currentTenantHeader}>
+              {currentTenantHeader && <HeaderOverlay />}
+
+              <HeaderContent>
+                {currentTenantLogo &&
+                  <HeaderLogoWrapper>
+                    <HeaderLogo imageSrc={currentTenantLogo} />
+                  </HeaderLogoWrapper>
+                }
+                <HeaderTitle>
+                  {title}
+                </HeaderTitle>
+                <HeaderSubtitle onClick={this.goToAddIdeaPage}>
+                  {subtitle}
+                </HeaderSubtitle>
+              </HeaderContent>
             </Header>
 
             <StyledContentContainer>
