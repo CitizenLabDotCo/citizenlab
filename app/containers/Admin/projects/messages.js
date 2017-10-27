@@ -99,4 +99,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.eventsTab',
     defaultMessage: 'Events',
   },
+  permissionsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.permissionsTab',
+    defaultMessage: 'Permissions',
+  },
 });
