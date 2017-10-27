@@ -61,9 +61,9 @@ type Props = {
   placeholder?: string | undefined;
   rows?: number | undefined;
   error?: string | null | undefined;
-  onChange?: Function | undefined;
-  onFocus?: Function | undefined;
-  onBlur?: Function | undefined;
+  onChange?: (arg: string) => void | undefined;
+  onFocus?: () => void | undefined;
+  onBlur?: () => void | undefined;
 };
 
 type State = {};

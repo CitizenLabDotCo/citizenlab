@@ -58,7 +58,7 @@ class State {
             const stateUpdate = newData.stateUpdate;
             const newState = {
               ...oldState,
-              ...(_.isFunction(stateUpdate) ? stateUpdate(oldState) : stateUpdate)
+              ...(_.isFunction(stateUpdate) ? (stateUpdate as Function)(oldState) : stateUpdate)
             };
 
             return {

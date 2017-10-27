@@ -169,6 +169,7 @@ type Props = {
   maxItems?: number;
   placeholder?: string | null | undefined;
   disallowDeletion?: boolean;
+  errorMessage?: string | null;
   onAdd: (arg: Dropzone.ImageFile) => void;
   onRemove: (arg: Dropzone.ImageFile) => void;
 };
@@ -245,6 +246,14 @@ class Upload extends React.PureComponent<Props & InjectedIntlProps, State> {
 
         this.setState({ items });
       }
+    }
+
+    if (nextProps.errorMessage && nextProps.errorMessage !== this.props.errorMessage) {
+      this.setState({ errorMessage: nextProps.errorMessage });
+    }
+
+    if (!nextProps.errorMessage && this.props.errorMessage) {
+      this.setState({ errorMessage: null });
     }
   }
 
@@ -334,9 +343,9 @@ class Upload extends React.PureComponent<Props & InjectedIntlProps, State> {
         const _onClick = (event) => this.removeItem(item, event);
 
         return (
-          <UploadedItem key={index} style={{ backgroundImage: `url(${item.preview ? item.preview : ''})` }}>
+          <UploadedItem key={index}>
             <StyledImage src={item.preview} />
-            {!this.props.disallowDeletion && <RemoveUploadedItem onClick={_onClick}>
+              {!this.props.disallowDeletion && <RemoveUploadedItem onClick={_onClick}>
               <RemoveUploadedItemInner>
                 <Icon name="close2" />
               </RemoveUploadedItemInner>

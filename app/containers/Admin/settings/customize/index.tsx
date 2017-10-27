@@ -14,6 +14,7 @@ import Error from 'components/UI/Error';
 import Upload from 'components/UI/Upload';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
 import Select from 'components/UI/Select';
+import Input from 'components/UI/Input';
 import FieldWrapper from 'components/admin/FieldWrapper';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
@@ -25,6 +26,7 @@ import { FormattedMessage, injectIntl, InjectedIntlProps, InjectedIntl } from 'r
 import messages from '../messages';
 
 // services
+import { localeStream } from 'services/locale';
 import {
   currentTenantStream,
   updateTenant,
@@ -39,7 +41,7 @@ import { API } from 'typings.d';
 interface IAttributesDiff {
   settings?: Partial<ITenantSettings>;
   logo?: ImageFile | undefined;
-  header_bg?: string;
+  header_bg?: ImageFile | undefined;
 }
 
 type Props  = {
@@ -49,13 +51,16 @@ type Props  = {
 };
 
 type State  = {
+  locale: string | null;
   attributesDiff: IAttributesDiff;
   currentTenant: ITenant | null;
   logo: File[] | ImageFile[] | null;
+  header_bg: File[] | ImageFile[] | null;
   loading: boolean;
   errors: { [fieldName: string]: API.Error[] };
   saved: boolean;
   logoError: string | null;
+  headerError: string | null;
 };
 
 class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -65,37 +70,58 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   constructor() {
     super();
     this.state = {
+      locale: null,
       attributesDiff: {},
       currentTenant: null,
       logo: null,
+      header_bg: null,
       loading: false,
       errors: {},
       saved: false,
-      logoError: null
+      logoError: null,
+      headerError: null
     };
     this.subscriptions = [];
   }
 
   componentWillMount() {
+    const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
+      locale$.subscribe(locale => this.setState({ locale })),
+
       currentTenant$.switchMap((currentTenant) => {
-        return imageUrlToFileObservable(_.get(currentTenant, 'data.attributes.logo.large')).map((currentTenantLogo) => ({
+        return Rx.Observable.combineLatest(
+          imageUrlToFileObservable(_.get(currentTenant, 'data.attributes.logo.large')),
+          imageUrlToFileObservable(_.get(currentTenant, 'data.attributes.header_bg.large')),
+        ).map(([currentTenantLogo, currentTenantHeaderBg]) => ({
           currentTenant,
-          currentTenantLogo
+          currentTenantLogo,
+          currentTenantHeaderBg
         }));
-      }).subscribe(({ currentTenant, currentTenantLogo }) => {
+      }).subscribe(({ currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
+
+        console.log('currentTenant:');
+        console.log(currentTenant);
+
         this.setState((state) => {
           let logo: File[] | ImageFile[] | null = null;
+          let header_bg: File[] | ImageFile[] | null = null;
 
           if (currentTenantLogo !== null && !_.has(state.attributesDiff, 'logo')) {
             logo = [currentTenantLogo];
           } else if (_.has(state.attributesDiff, 'logo')) {
-            logo = (state.attributesDiff.logo ? [state.attributesDiff.logo] : null);
+            logo = (state.attributesDiff.logo && state.attributesDiff.logo !== null ? [state.attributesDiff.logo] : null);
           }
 
-          return { currentTenant, logo };
+          if (currentTenantHeaderBg !== null && !_.has(state.attributesDiff, 'header_bg')) {
+            header_bg = [currentTenantHeaderBg];
+          } else if (_.has(state.attributesDiff, 'header_bg')) {
+            header_bg = (state.attributesDiff.header_bg && state.attributesDiff.header_bg !== null ? [state.attributesDiff.header_bg] : null);
+          }
+
+          return { currentTenant, logo, header_bg };
         });
       })
     ];
@@ -117,7 +143,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     return 'enabled';
   }
 
-  handleUploadOnAdd = (name: string) => async (newImage: ImageFile) => {
+  handleUploadOnAdd = (name: 'logo' | 'header_bg') => (newImage: ImageFile) => {
     this.setState((state: State) => ({
       attributesDiff: {
         ...state.attributesDiff,
@@ -127,7 +153,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     }));
   }
 
-  handleUploadOnRemove = (name: string) => (image: ImageFile) => {
+  handleUploadOnRemove = (name: 'logo' | 'header_bg') => (image: ImageFile) => {
     this.setState((state: State) => ({
       attributesDiff: {
         ...state.attributesDiff,
@@ -135,6 +161,20 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
       },
       [name]: null
     }));
+  }
+
+  handleTitleOnChange = (locale: string) => (title: string) => {
+    const { attributesDiff } = this.state;
+    let newAttributesDiff = _.cloneDeep(attributesDiff);
+    newAttributesDiff = _.set(newAttributesDiff, `settings.core.header_title.${locale}`, title);
+    this.setState({ attributesDiff: newAttributesDiff });
+  }
+
+  handleSubtitleOnChange = (locale: string) => (subtitle: string) => {
+    const { attributesDiff } = this.state;
+    let newAttributesDiff = _.cloneDeep(attributesDiff);
+    newAttributesDiff = _.set(newAttributesDiff, `settings.core.header_slogan.${locale}`, subtitle);
+    this.setState({ attributesDiff: newAttributesDiff });
   }
 
   createToggleChangeHandler = (fieldPath) => {
@@ -154,35 +194,47 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     };
   }
 
+  validate = (currentTenant: ITenant, attributesDiff: IAttributesDiff) => {
+    const { formatMessage } = this.props.intl;
+
+    const hasRemoteLogo = _.has(currentTenant, 'data.attributes.logo.large');
+    const localLogoIsNotSet = !_.has(attributesDiff, 'logo');
+    const localLogoIsNull = !localLogoIsNotSet && attributesDiff.logo === null;
+    const logoError = (!localLogoIsNull || (hasRemoteLogo && localLogoIsNotSet) ? null : formatMessage(messages.noLogo));
+
+    const hasRemoteHeader = _.has(currentTenant, 'data.attributes.header_bg.large');
+    const localHeaderIsNotSet = !_.has(attributesDiff, 'header_bg');
+    const localHeaderIsNull = !localHeaderIsNotSet && attributesDiff.header_bg === null;
+    const headerError = (!localHeaderIsNull || (hasRemoteHeader && localHeaderIsNotSet) ? null : formatMessage(messages.noHeader));
+
+    this.setState({ logoError, headerError });
+
+    return (!logoError && !headerError);
+  }
+
   save = async (event) => {
     event.preventDefault();
 
-    const { formatMessage } = this.props.intl;
     const { currentTenant, attributesDiff } = this.state;
 
-    // first reset any error messages
-    this.setState({ logoError: null });
-
-    if (_.has(attributesDiff, 'logo') && attributesDiff.logo === null) {
-      this.setState({ logoError: formatMessage(messages.noLogo) });
-    } else if (currentTenant) {
-      const { attributesDiff } = this.state;
-
+    if (currentTenant && this.validate(currentTenant, attributesDiff)) {
       this.setState({ loading: true, saved: false });
 
       try {
-        let updatedTenantProperties: IUpdatedTenantProperties = attributesDiff as IUpdatedTenantProperties;
+        const updatedTenantProperties: IUpdatedTenantProperties = _.cloneDeep(attributesDiff as IUpdatedTenantProperties);
 
-        if (attributesDiff.logo && attributesDiff.logo) {
-          const base64Logo = await getBase64(attributesDiff.logo);
-
-          updatedTenantProperties = {
-            ...attributesDiff,
-            logo: base64Logo
-          };
+        if (_.has(attributesDiff, 'logo') && attributesDiff.logo !== null && attributesDiff.logo !== undefined) {
+          updatedTenantProperties.logo = await getBase64(attributesDiff.logo);
         }
 
-        const updatedTenant = await updateTenant(currentTenant.data.id, updatedTenantProperties);
+        if (_.has(attributesDiff, 'header_bg') && attributesDiff.header_bg !== null && attributesDiff.header_bg !== undefined) {
+          updatedTenantProperties.header_bg = await getBase64(attributesDiff.header_bg);
+        }
+
+        console.log('updatedTenantProperties:');
+        console.log(updatedTenantProperties);
+
+        await updateTenant(currentTenant.data.id, updatedTenantProperties);
 
         this.setState({ loading: false, saved: true, attributesDiff: {} });
       } catch (error) {
@@ -203,11 +255,12 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   ])
 
   render() {
-    const { currentTenant } = this.state;
+    const { locale, currentTenant } = this.state;
 
-    if (currentTenant) {
+    if (locale && currentTenant) {
+      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const { formatMessage } = this.props.intl;
-      const { logo, attributesDiff, logoError } = this.state;
+      const { logo, header_bg, attributesDiff, logoError, headerError } = this.state;
       const tenantAttrs = _.merge(_.cloneDeep(currentTenant.data.attributes), attributesDiff);
 
       return (
@@ -228,15 +281,55 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
           <FieldWrapper key={'logo'}>
             <Label><FormattedMessage {...messages['logo']} /></Label>
             <Upload
-              accept="image/*"
+              accept="image/jpg, image/jpeg, image/png, image/gif"
               maxItems={1}
               items={logo}
               onAdd={this.handleUploadOnAdd('logo')}
               onRemove={this.handleUploadOnRemove('logo')}
               placeholder={formatMessage(messages.uploadPlaceholder)}
               disallowDeletion={false}
+              errorMessage={logoError}
             />
-            <Error text={logoError} />
+          </FieldWrapper>
+
+          <FieldWrapper key={'header_bg'}>
+            <Label><FormattedMessage {...messages['header_bg']} /></Label>
+            <Upload
+              accept="image/jpg, image/jpeg, image/png, image/gif"
+              maxItems={1}
+              items={header_bg}
+              onAdd={this.handleUploadOnAdd('header_bg')}
+              onRemove={this.handleUploadOnRemove('header_bg')}
+              placeholder={formatMessage(messages.uploadPlaceholder)}
+              disallowDeletion={false}
+              errorMessage={headerError}
+            />
+          </FieldWrapper>
+
+          <FieldWrapper key={'title'}>
+            {currentTenantLocales.map((currentTenantLocale, index) => (
+              <div key={index}>
+                <Label><FormattedMessage {...messages.titleLabel} values={{ locale: currentTenantLocale.toUpperCase() }} /></Label>
+                <Input
+                  type="text"
+                  value={_.get(tenantAttrs, `settings.core.header_title.${currentTenantLocale}`)}
+                  onChange={this.handleTitleOnChange(currentTenantLocale)}
+                />
+              </div>
+            ))}
+          </FieldWrapper>
+
+          <FieldWrapper key={'subtitle'}>
+            {currentTenantLocales.map((currentTenantLocale, index) => (
+              <div key={index}>
+                <Label><FormattedMessage {...messages.subtitleLabel} values={{ locale: currentTenantLocale.toUpperCase() }} /></Label>
+                <Input
+                  type="text"
+                  value={_.get(tenantAttrs, `settings.core.header_slogan.${currentTenantLocale}`)}
+                  onChange={this.handleSubtitleOnChange(currentTenantLocale)}
+                />
+              </div>
+            ))}
           </FieldWrapper>
 
           <h1><FormattedMessage {...messages.titleSignupFields} /></h1>
