@@ -138,18 +138,15 @@ workflows:
       - lint_js:
         filters:
           branches:
-            ignore:
-              - 'crowdin_master'
+            ignore: crowdin_master
       - lint_ts:
         filters:
           branches:
-            ignore:
-              - 'crowdin_master'
+            ignore: crowdin_master
       - build:
         filters:
           branches:
-            ignore:
-              - 'crowdin_master'
+            ignore: crowdin_master
       - deploy_demo:
           requires:
             - lint_js
