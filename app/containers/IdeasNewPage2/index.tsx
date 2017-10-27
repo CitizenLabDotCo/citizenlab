@@ -13,7 +13,7 @@ import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { ImageFile } from 'react-dropzone';
 
 // components
-import Upload, { ExtendedImageFile } from 'components/UI/Upload';
+import Upload from 'components/UI/Upload';
 import ButtonBar, { namespace as ButtonBarNamespace, State as IButtonBarState } from './ButtonBar';
 import NewIdeaForm, { namespace as NewIdeaFormNamespace, State as INewIdeaFormState } from './NewIdeaForm';
 import SignInUp from './SignInUp';
@@ -200,8 +200,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
 
   async componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-    const currentNewIdeaFormState = await this.newIdeaFormState$.getCurrent();
-    _(currentNewIdeaFormState.images).forEach(image => image.preview && window.URL.revokeObjectURL(image.preview));
   }
 
   async convertToGeoJson(location: string) {
@@ -225,7 +223,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     return await addIdea(userId, 'published', ideaTitle, ideaDescription, topicIds, projectId, locationGeoJSON, locationDescription);
   }
 
-  async postIdeaImage(ideaId: string, image: ExtendedImageFile) {
+  async postIdeaImage(ideaId: string, image: ImageFile) {
     try {
       const base64Image = await getBase64(image);
       return await addIdeaImage(ideaId, base64Image, 0);

@@ -18,7 +18,7 @@ import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
 import Editor from 'components/UI/Editor';
 import Button from 'components/UI/Button';
-import Upload, { ExtendedImageFile } from 'components/UI/Upload';
+import Upload from 'components/UI/Upload';
 import Error from 'components/UI/Error';
 import { namespace as ButtonBarNamespace } from './ButtonBar';
 
@@ -31,7 +31,6 @@ import { projectsStream, IProjects, IProjectData } from 'services/projects';
 // utils
 import { IStream } from 'utils/streams';
 import eventEmitter from 'utils/eventEmitter';
-import { generateImagePreview } from 'utils/imageTools';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -103,7 +102,7 @@ export type State = {
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
   location: any;
-  images: ExtendedImageFile[] | null;
+  images: ImageFile[] | null;
   titleError: string | null;
   descriptionError: string | null;
   submitError: boolean;
@@ -198,15 +197,13 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   handleUploadOnAdd = async (newImage: ImageFile) => {
-    let images: ExtendedImageFile[] | null = null;
+    let images: ImageFile[] | null = null;
     const currentState = await this.state$.getCurrent();
-    const image = newImage as ExtendedImageFile;
-    image.preview = generateImagePreview(newImage);
 
     if (currentState.images && currentState.images.length > 0) {
-      images = currentState.images.concat(image);
+      images = currentState.images.concat(newImage);
     } else {
-      images = [image];
+      images = [newImage];
     }
 
     this.state$.next({ images });
@@ -214,12 +211,8 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
 
   handleUploadOnRemove = async (removedImage: ImageFile) => {
     const currentState = await this.state$.getCurrent();
-    const images = _(currentState.images).filter(image => image.preview !== removedImage.preview).value();
+    const images = _(currentState.images).filter(image => image.name !== removedImage.name).value();
     this.state$.next({ images });
-
-    if (removedImage.preview) {
-      window.URL.revokeObjectURL(removedImage.preview);
-    }
   }
 
   handleTitleInputSetRef = (element: HTMLInputElement) => {
@@ -331,8 +324,6 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
               maxSize={5000000}
               maxItems={1}
               placeholder={formatMessage(messages.imageUploadPlaceholder)}
-              disablePreview={true}
-              destroyPreview={false}
               onAdd={this.handleUploadOnAdd}
               onRemove={this.handleUploadOnRemove}
             />

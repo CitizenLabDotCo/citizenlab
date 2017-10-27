@@ -66,6 +66,8 @@ export function currentTenantStream() {
   return streams.get<ITenant>({ apiEndpoint: `${API_PATH}/tenants/current` });
 }
 
-export function updateTenant(tenantId: string, object: IUpdatedTenantProperties) {
-  return streams.update<ITenant>(`${API_PATH}/tenants/${tenantId}`, tenantId, { tenant: object });
+export async function updateTenant(tenantId: string, object: IUpdatedTenantProperties) {
+  const tenant = await streams.update<ITenant>(`${API_PATH}/tenants/${tenantId}`, tenantId, { tenant: object });
+  await currentTenantStream().fetch();
+  return tenant;
 }

@@ -11,14 +11,14 @@ import { Checkbox } from 'semantic-ui-react';
 import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import Upload, { ExtendedImageFile } from 'components/UI/Upload';
+import Upload from 'components/UI/Upload';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
 import Select from 'components/UI/Select';
 import FieldWrapper from 'components/admin/FieldWrapper';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // utils
-import { getBase64 } from 'utils/imageTools';
+import { getBase64, imageUrlToFileObservable } from 'utils/imageTools';
 
 // i18n
 import { FormattedMessage, injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
@@ -29,88 +29,111 @@ import {
   currentTenantStream,
   updateTenant,
   IUpdatedTenantProperties,
-  ITenantData
+  ITenant,
+  ITenantSettings
 } from 'services/tenant';
 
 // typings
 import { API } from 'typings.d';
 
-interface Props {
+interface IAttributesDiff {
+  settings?: Partial<ITenantSettings>;
+  logo?: ImageFile | undefined;
+  header_bg?: string;
+}
+
+type Props  = {
   intl: InjectedIntl;
   lang: string;
   tFunc: Function;
-}
+};
 
-interface State {
-  attributesDiff: IUpdatedTenantProperties;
-  tenant: ITenantData | null;
+type State  = {
+  attributesDiff: IAttributesDiff;
+  currentTenant: ITenant | null;
+  logo: File[] | ImageFile[] | null;
   loading: boolean;
   errors: { [fieldName: string]: API.Error[] };
   saved: boolean;
-  localLogo: ImageFile[] | null;
   logoError: string | null;
-}
+};
 
-class SettingsCustomizeTab extends React.Component<Props & InjectedIntlProps, State> {
+class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
-  uploadPlaceholder: string;
-  subscription: Rx.Subscription;
+  subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
     this.state = {
       attributesDiff: {},
-      tenant: null,
+      currentTenant: null,
+      logo: null,
       loading: false,
       errors: {},
       saved: false,
-      localLogo: null,
       logoError: null
     };
+    this.subscriptions = [];
   }
 
   componentWillMount() {
-    this.uploadPlaceholder = this.props.intl.formatMessage(messages.uploadPlaceholder);
+    const currentTenant$ = currentTenantStream().observable;
+
+    this.subscriptions = [
+      currentTenant$.switchMap((currentTenant) => {
+        return imageUrlToFileObservable(_.get(currentTenant, 'data.attributes.logo.large')).map((currentTenantLogo) => ({
+          currentTenant,
+          currentTenantLogo
+        }));
+      }).subscribe(({ currentTenant, currentTenantLogo }) => {
+        this.setState((state) => {
+          let logo: File[] | ImageFile[] | null = null;
+
+          if (currentTenantLogo !== null && !_.has(state.attributesDiff, 'logo')) {
+            logo = [currentTenantLogo];
+          } else if (_.has(state.attributesDiff, 'logo')) {
+            logo = (state.attributesDiff.logo ? [state.attributesDiff.logo] : null);
+          }
+
+          return { currentTenant, logo };
+        });
+      })
+    ];
   }
 
-  componentDidMount() {
-    this.subscription = currentTenantStream().observable.subscribe((response) => {
-      this.setState({ tenant: response.data });
-    });
+  componentWillUnmount() {
+    this.subscriptions.forEach(subsription => subsription.unsubscribe());
   }
 
   getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
     if (!_.isEmpty(this.state.errors)) {
       return 'error';
-    }
-
-    if (this.state.saved && _.isEmpty(this.state.attributesDiff)) {
+    } else if (this.state.saved && _.isEmpty(this.state.attributesDiff)) {
       return 'success';
+    } else if (!this.state.saved && _.isEmpty(this.state.attributesDiff)) {
+      return 'disabled';
     }
 
-    return _.isEmpty(this.state.attributesDiff) ? 'disabled' : 'enabled';
+    return 'enabled';
   }
 
   handleUploadOnAdd = (name: string) => async (newImage: ImageFile) => {
-    const base64Image = await getBase64(newImage);
-
     this.setState((state: State) => ({
-      attributesDiff: { ...state.attributesDiff, [name]: base64Image },
-      localLogo: (name === 'logo' ? [newImage] : state.localLogo)
+      attributesDiff: {
+        ...state.attributesDiff,
+        [name]: newImage
+      },
+      [name]: [newImage]
     }));
   }
 
   handleUploadOnRemove = (name: string) => (image: ImageFile) => {
     this.setState((state: State) => ({
-      attributesDiff: { ...state.attributesDiff, [name]: null },
-      localLogo: (name === 'logo' ? null : state.localLogo)
-    }));
-  }
-
-  handleUploadOnRemoveApiImage = (name: string) => (image: API.ImageSizes) => {
-    this.setState((state: State) => ({
-      attributesDiff: { ...state.attributesDiff, [name]: null },
-      localLogo: (name === 'logo' ? null : state.localLogo)
+      attributesDiff: {
+        ...state.attributesDiff,
+        [name]: null
+      },
+      [name]: null
     }));
   }
 
@@ -135,23 +158,33 @@ class SettingsCustomizeTab extends React.Component<Props & InjectedIntlProps, St
     event.preventDefault();
 
     const { formatMessage } = this.props.intl;
-    const { tenant, attributesDiff } = this.state;
+    const { currentTenant, attributesDiff } = this.state;
 
     // first reset any error messages
     this.setState({ logoError: null });
 
-    if (attributesDiff.logo === null) {
+    if (_.has(attributesDiff, 'logo') && attributesDiff.logo === null) {
       this.setState({ logoError: formatMessage(messages.noLogo) });
-    } else if (tenant) {
+    } else if (currentTenant) {
       const { attributesDiff } = this.state;
 
       this.setState({ loading: true, saved: false });
 
       try {
-        console.log('updateTenant with:');
-        console.log(attributesDiff);
-        await updateTenant(tenant.id, attributesDiff);
-        this.setState({ loading: false, saved: true, localLogo: null, attributesDiff: {} });
+        let updatedTenantProperties: IUpdatedTenantProperties = attributesDiff as IUpdatedTenantProperties;
+
+        if (attributesDiff.logo && attributesDiff.logo) {
+          const base64Logo = await getBase64(attributesDiff.logo);
+
+          updatedTenantProperties = {
+            ...attributesDiff,
+            logo: base64Logo
+          };
+        }
+
+        const updatedTenant = await updateTenant(currentTenant.data.id, updatedTenantProperties);
+
+        this.setState({ loading: false, saved: true, attributesDiff: {} });
       } catch (error) {
         this.setState({ loading: false, errors: error.json.errors });
       }
@@ -170,16 +203,12 @@ class SettingsCustomizeTab extends React.Component<Props & InjectedIntlProps, St
   ])
 
   render() {
-    const { tenant, attributesDiff, localLogo, logoError } = this.state;
+    const { currentTenant } = this.state;
 
-    if (tenant) {
-      const tenantAttrs = _.merge(tenant.attributes, attributesDiff);
-      const apiLogo = (!_.has(attributesDiff, 'logo') ? [tenant.attributes.logo] : undefined);
-
-      console.log('tenant:');
-      console.log(tenant);
-      console.log('tenantAttrs:');
-      console.log(tenantAttrs);
+    if (currentTenant) {
+      const { formatMessage } = this.props.intl;
+      const { logo, attributesDiff, logoError } = this.state;
+      const tenantAttrs = _.merge(_.cloneDeep(currentTenant.data.attributes), attributesDiff);
 
       return (
         <form onSubmit={this.save}>
@@ -201,12 +230,10 @@ class SettingsCustomizeTab extends React.Component<Props & InjectedIntlProps, St
             <Upload
               accept="image/*"
               maxItems={1}
-              items={localLogo}
-              apiImages={apiLogo}
+              items={logo}
               onAdd={this.handleUploadOnAdd('logo')}
               onRemove={this.handleUploadOnRemove('logo')}
-              onRemoveApiImage={this.handleUploadOnRemoveApiImage('logo')}
-              placeholder={this.uploadPlaceholder}
+              placeholder={formatMessage(messages.uploadPlaceholder)}
               disallowDeletion={false}
             />
             <Error text={logoError} />

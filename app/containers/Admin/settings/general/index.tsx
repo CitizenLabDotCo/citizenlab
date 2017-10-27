@@ -1,16 +1,16 @@
-// Libraries
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+
+// typings
 import { API } from 'typings.d';
 
 // i18n
-import { injectTFunc } from 'components/T/utils';
 import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl';
 import { appLocalePairs } from 'i18n.js';
 import messages from '../messages';
 
-// Components
+// components
 import Input from 'components/UI/Input';
 import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
@@ -19,7 +19,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import FieldWrapper from 'components/admin/FieldWrapper';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
-// Services
+// services
 import {
   currentTenantStream,
   updateTenant,
@@ -27,7 +27,6 @@ import {
   ITenantData
 } from 'services/tenant';
 
-// Typing
 interface Props {
   intl: InjectedIntl;
   tFunc: Function;
@@ -43,7 +42,7 @@ interface State {
   };
 }
 
-class SettingsGeneralTab extends React.Component<Props, State> {
+class SettingsGeneralTab extends React.PureComponent<Props, State> {
   subscription: Rx.Subscription;
 
   constructor() {
@@ -206,4 +205,4 @@ class SettingsGeneralTab extends React.Component<Props, State> {
   }
 }
 
-export default injectIntl(injectTFunc(SettingsGeneralTab));
+export default injectIntl<Props>(SettingsGeneralTab);
