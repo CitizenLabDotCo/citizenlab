@@ -32,6 +32,8 @@ services:
       - '.:/cl2_back'
     env_file:
       - '.env'
+    tty: true
+    stdin_open: true
 
   sidekiq:
     depends_on:
@@ -44,6 +46,8 @@ services:
       - '.:/cl2_back'
     env_file:
       - '.env'
+    tty: true
+    stdin_open: true
 
   # cable:
   #   depends_on:
