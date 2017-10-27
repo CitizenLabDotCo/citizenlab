@@ -79,6 +79,23 @@ export default (injectReducer) => ({
       },
       childRoutes: [
         {
+          path: '/admin/projects/:slug/description',
+          name: 'admin projects description',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/Admin/projects/edit/description'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
           path: '/admin/projects/:slug/timeline',
           name: 'admin projects timeline',
           getComponent(nextState, cb) {
@@ -203,6 +220,23 @@ export default (injectReducer) => ({
           getComponent(nextState, cb) {
             const importModules = Promise.all([
               import('containers/Admin/projects/edit/events'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
+          path: '/admin/projects/:slug/permissions',
+          name: 'admin projects edit permissions',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/Admin/projects/edit/permissions'),
             ]);
 
             const renderRoute = loadModule(cb);

@@ -2,6 +2,11 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { API, Multiloc } from 'typings';
 
+interface TenantFeature {
+  allowed: boolean;
+  enabled: boolean;
+}
+
 export interface ITenantSettings {
   core: {
     allowed: boolean;
@@ -30,6 +35,15 @@ export interface ITenantSettings {
     app_secret: string;
     enabled: boolean;
   };
+  pages?: TenantFeature;
+  groups?: TenantFeature;
+  projects?: TenantFeature;
+  projects_phases?: TenantFeature;
+  projects_pages?: TenantFeature;
+  projects_events?: TenantFeature;
+  projects_info?: TenantFeature;
+  excel_export?: TenantFeature;
+  private_projects?: TenantFeature;
 }
 
 export interface ITenantData {

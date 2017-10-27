@@ -47,3 +47,22 @@ export const media = {
     }
   `,
 };
+
+export const colors = {
+  clBlue: '#01A1B1',
+  text: '#222',
+  darkClGreen: '#004949',
+  success: '#32B67A',
+  error: '#FC3C2D',
+  label: '#84939E',
+  mediumGrey: '#BDBDBD',
+  separation: '#EAEAEA',
+  background: '#F8F8F8',
+  adminBackground: '#F0F3F4',
+  clBlueDarkest: '#02282D',
+  clBlueDarker: '#0A5159',
+  clBlueDark: '#147985',
+  clBlueLightest: '#BEE7EB',
+  clBlueLighter: '#80CFD8',
+  clBlueLight: '#40B8C5',
+};
