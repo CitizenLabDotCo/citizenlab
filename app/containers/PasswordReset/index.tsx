@@ -110,7 +110,7 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   validate = (password: string | null) => {
-    const passwordError = (!password || password.length < 1);
+    const passwordError = (!password || password.length < 8);
 
     if (passwordError && this.passwordInputElement) {
       this.passwordInputElement.focus();
