@@ -101,10 +101,6 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
           currentTenantHeaderBg
         }));
       }).subscribe(({ currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
-
-        console.log('currentTenant:');
-        console.log(currentTenant);
-
         this.setState((state) => {
           let logo: File[] | ImageFile[] | null = null;
           let header_bg: File[] | ImageFile[] | null = null;
@@ -230,9 +226,6 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
         if (_.has(attributesDiff, 'header_bg') && attributesDiff.header_bg !== null && attributesDiff.header_bg !== undefined) {
           updatedTenantProperties.header_bg = await getBase64(attributesDiff.header_bg);
         }
-
-        console.log('updatedTenantProperties:');
-        console.log(updatedTenantProperties);
 
         await updateTenant(currentTenant.data.id, updatedTenantProperties);
 
