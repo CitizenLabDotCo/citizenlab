@@ -21,7 +21,9 @@ const Container: any = styled.div`
     padding: 12px;
     border-radius: 5px;
     border: solid 1px;
-    border-color: ${(props: any) => props.error ? '#fc3c2d' : '#ccc'};
+    border-color: ${(props: any) => props.error ? props.theme.colors.error : '#ccc'};
+    /* box-shadow: inset 0px 2px 3px rgba(0, 0, 0, 0.15); */
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     background: #fff;
     outline: none;
 
@@ -30,12 +32,9 @@ const Container: any = styled.div`
       opacity: 1;
     }
 
-    &:not(:focus):hover {
-      border-color: ${(props: any) => props.error ? '#fc3c2d' : '#999'};
-    }
-
+    &:hover,
     &:focus {
-      border-color: ${(props: any) => props.error ? '#fc3c2d' : '#000'};
+      border-color: ${(props: any) => props.error ? props.theme.colors.error : '#999'};
     }
 
     ${media.biggerThanPhone`
@@ -51,8 +50,9 @@ export type Props = {
   placeholder?: string | null | undefined;
   error?: string | null | undefined;
   onChange: (arg: string) => void;
-  onFocus?: (arg: any) => void;
+  onFocus?: (arg: React.FormEvent<HTMLInputElement>) => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;
+  autoFocus?: boolean;
 };
 
 type State = {};
@@ -88,6 +88,7 @@ export default class Input extends React.PureComponent<Props, State> {
           onChange={this.handleOnChange}
           onFocus={this.props.onFocus}
           ref={this.handleRef}
+          autoFocus={this.props.autoFocus}
         />
         <div>
           <Error text={error} size="1" />

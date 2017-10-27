@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import * as ReactSelect from 'react-select';
+import ReactSelect from 'react-select';
 import { IOption } from 'typings';
 import styled from 'styled-components';
 
@@ -210,7 +210,7 @@ export default class Select extends React.PureComponent<Props, State> {
 
     return (
       <StyledSelect
-        openOnFocus={true}
+        openOnFocus={false}
         clearable={clearable}
         searchable={searchable}
         scrollMenuIntoView={false}

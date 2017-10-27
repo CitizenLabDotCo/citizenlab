@@ -5,7 +5,8 @@ import Sidebar from './sideBar/';
 import styled from 'styled-components';
 
 const AdminContainerStyled = styled(Grid.Column)`
-  padding: 45px 51px 0 51px !important;
+  max-width: 1200px;
+  padding: 45px 51px !important;
 `;
 
 const LeftColumn = styled.div`
@@ -14,6 +15,9 @@ const LeftColumn = styled.div`
 
 const RightColumn = styled.div`
   width: calc(100% - 210px);
+  /* height: calc(100vh - 74px); */
+  height: 100%;
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   margin-left: 210px;
   display: inline-block;
   background-color: #f2f2f2;
