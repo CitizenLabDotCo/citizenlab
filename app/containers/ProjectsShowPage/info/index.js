@@ -34,13 +34,6 @@ const Left = styled.section`
   `}
 `;
 
-const IdeaTitleStyled = styled.header`
-  font-size: 30px;
-  font-weight: 600;
-  line-height: 36px;
-  color: #333;
-`;
-
 const IdeaBodyStyled = styled.div`
   margin-top: 45px;
   font-size: 18px;
@@ -135,16 +128,12 @@ const ProjectImage = styled.img`
 const ProjectsInfo = ({ project, images, className }) => {
   if (!project) return null;
 
-  const title = project.getIn(['attributes', 'title_multiloc']);
   const description = project.getIn(['attributes', 'description_multiloc']);
 
   return (
     <ContentContainer>
       <Container className={className}>
         <Left>
-          <IdeaTitleStyled>
-            <T value={title} />
-          </IdeaTitleStyled>
           <IdeaBodyStyled>
             <T value={description} />
           </IdeaBodyStyled>

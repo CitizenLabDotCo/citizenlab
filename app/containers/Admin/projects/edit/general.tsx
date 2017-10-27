@@ -4,8 +4,6 @@ import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { injectTFunc } from 'components/T/utils';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
-import draftjsToHtml from 'draftjs-to-html';
 import styled from 'styled-components';
 import { browserHistory } from 'react-router';
 import { API, IOption, IRelationship } from 'typings.d';
@@ -44,7 +42,6 @@ import { getBase64 } from 'utils/imageTools';
 
 // Components
 import Input from 'components/UI/Input';
-import Editor from 'components/UI/Editor';
 import Upload from 'components/UI/Upload';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -107,7 +104,6 @@ interface State {
   projectData: IProjectData | { id: null, attributes: {}, relationships: { areas: {data} }};
   uploadedImages: any;
   uploadedHeader: string | null;
-  editorState: EditorState;
   projectImages: IProjectImageData[];
   projectAttributesDiff: IUpdatedProjectProperties;
   errors: {
@@ -131,7 +127,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
       loading: false,
       projectData: { id: null, attributes: {}, relationships: { areas: { data: [] } } },
       uploadedImages: [],
-      editorState: EditorState.createEmpty(),
       uploadedHeader: null,
       projectImages: [],
       projectAttributesDiff: {},
@@ -164,13 +159,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
         projectImages: images.data,
       }));
     }).subscribe(({ projectData, projectImages }) => {
-      const blocksFromHtml = convertFromHTML(_.get(projectData, `attributes.description_multiloc.${userLocale}`, ''));
-      const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
-
       this.setState({
         projectData,
         projectImages,
-        editorState:  EditorState.createWithContent(editorContent),
         uploadedHeader: null,
         uploadedImages: [],
         loading: false,
@@ -229,18 +220,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
   changeTitle = (value: string): void => {
     const newVal = _.set({}, `projectAttributesDiff.title_multiloc.${this.props.userLocale}`, value);
     this.setState(_.merge({}, this.state, newVal));
-  }
-
-  changeDesc = (editorState: EditorState): void => {
-    const projectAttrs = { ...this.state.projectData.attributes, ...this.state.projectAttributesDiff } as IUpdatedProjectProperties;
-
-
-    _.set(projectAttrs, `description_multiloc.${this.props.userLocale}`, draftjsToHtml(convertToRaw(editorState.getCurrentContent())));
-
-    this.setState({
-      editorState,
-      projectAttributesDiff: projectAttrs,
-    });
   }
 
   handleHeaderUpload = async (image) => {
@@ -324,7 +303,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { projectData, uploadedImages, editorState, uploadedHeader, loading, projectImages, projectAttributesDiff } = this.state;
+    const { projectData, uploadedImages, uploadedHeader, loading, projectImages, projectAttributesDiff } = this.state;
     const { userLocale, tFunc, intl: { formatMessage } } = this.props;
     const projectAttrs = { ...projectData.attributes, ...projectAttributesDiff } as IUpdatedProjectProperties;
     projectAttrs.area_ids = projectAttrs.area_ids || projectData.relationships.areas.data.map((area) => (area.id));
@@ -355,20 +334,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
             setRef={this.setRef}
           />
           <Error fieldName="title_multiloc" apiErrors={this.state.errors.title_multiloc} />
-        </FieldWrapper>
-
-        <FieldWrapper>
-          <label htmlFor="project-description">
-          <FormattedMessage {...messages.descriptionLabel} />
-          </label>
-          <Editor
-            id="project-description"
-            placeholder=""
-            value={editorState}
-            error=""
-            onChange={this.changeDesc}
-          />
-          <Error fieldName="description_multiloc" apiErrors={this.state.errors.description_multiloc} />
         </FieldWrapper>
 
         <FieldWrapper>
