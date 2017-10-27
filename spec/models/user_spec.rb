@@ -19,13 +19,27 @@ RSpec.describe User, type: :model do
   end
 
   describe "user password authentication" do
-    it "should be compatibru with meteor encryption" do
+    it "should be compatible with meteor encryption" do
       u = build(:user)
       u.first_name = "Sebi"
       u.last_name = "Hoorens"
       u.email = 'sebastien@citizenlab.co'
       u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
       u.save
+      expect(!!u.authenticate('supersecret')).to eq(true)
+      expect(!!u.authenticate('totallywrong')).to eq(false)
+    end
+
+    it "should replace the CL1 hash by the CL2 hash" do
+      u = build(:user)
+      u.first_name = "Sebi"
+      u.last_name = "Hoorens"
+      u.email = 'sebastien@citizenlab.co'
+      u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
+      u.save
+      expect(!!u.authenticate('supersecret')).to eq(true)
+      expect(u.password_digest).not_to eq('$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK')
+      expect(!!BCrypt::Password.new(u.password_digest).is_password?('supersecret')).to eq(true)
       expect(!!u.authenticate('supersecret')).to eq(true)
       expect(!!u.authenticate('totallywrong')).to eq(false)
     end

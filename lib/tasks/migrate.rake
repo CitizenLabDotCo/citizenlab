@@ -47,14 +47,22 @@ namespace :migrate do
       client['neighbourhoods'].find.each do |n|
         migrate_area n, areas_hash
       end
+      superadmin_id = nil
+      groups_hash = {}
+      client['groups'].find.each do |g|
+        was_superadmin = migrate_group g, groups_hash
+        if was_superadmin
+          superadmin_id = was_superadmin
+        end
+      end
       users_hash = {}
   	  client['users'].find.each do |u|
-  		  migrate_user(u, users_hash)
+  		  migrate_user(u, users_hash, groups_hash, superadmin_id)
   	  end
       # TODO phases
       projects_hash = {}
       client['projects'].find.each do |p|
-        migrate_project(p, projects_hash, areas_hash, topics_hash)
+        migrate_project(p, projects_hash, areas_hash, topics_hash, groups_hash)
       end
       ideas_hash = {}
       client['posts'].find.each do |p|
@@ -82,10 +90,10 @@ namespace :migrate do
 
   def connect(platform: nil, password: nil)
     if platform && password
-      # Mongo::Client.new('mongodb://lamppost.14.mongolayer.com:10323/demo', auth_mech: :mongodb_cr, user: 'citizenlab', password: 'jhshEVweHWULVCA9x2nLuWL8')
+      Mongo::Client.new('mongodb://lamppost.14.mongolayer.com:10323/demo', auth_mech: :mongodb_cr, user: 'citizenlab', password: 'jhshEVweHWULVCA9x2nLuWL8')
       # Mongo::Client.new "mongodb://citizenlab:#{password}@lamppost.14.mongolayer.com:10323/#{platform}"
 
-      Mongo::Client.new("mongodb://lamppost.14.mongolayer.com:10323/#{platform}", auth_mech: :mongodb_cr, user: 'citizenlab', password: password)
+      # Mongo::Client.new("mongodb://lamppost.14.mongolayer.com:10323/#{platform}", auth_mech: :mongodb_cr, user: 'citizenlab', password: password)
     else
       Mongo::Client.new 'mongodb://docker.for.mac.localhost:27017/schiedam'
     end
@@ -160,7 +168,19 @@ namespace :migrate do
     end
   end
 
-  def migrate_user u, users_hash
+  def migrate_group g, groups_hash
+    if g['builtInId'] == 'superadmin'
+      return g['_id']
+    end
+    begin
+      groups_hash[g['_id']] = Group.create!(title_multiloc: g['name_i18n'])
+    rescue Exception => e
+      @log.concat [e.message]
+    end
+    false
+  end
+
+  def migrate_user u, users_hash, groups_hash, superadmin_id
     # one big transaction
     d = {}
     # email
@@ -208,6 +228,16 @@ namespace :migrate do
     # admin
     if u['isAdmin']
       d[:roles] = [{type: 'admin'}]
+    end
+    # groups (and admin)
+    if u['groups']
+      if u['groups'].include? superadmin_id
+        d[:roles] = [{type: 'admin'}]
+      end
+      groups = u['groups'].map{|g| groups_hash[g]}.select{|g| g}
+      if groups
+        d[:groups] = groups
+      end
     end
     # gender
     if u.dig('telescope', 'gender')
@@ -264,7 +294,7 @@ namespace :migrate do
     end
   end
 
-  def migrate_project(p, projects_hash, areas_hash, topics_hash)
+  def migrate_project(p, projects_hash, areas_hash, topics_hash, groups_hash)
     d = {}
     # title
     if p.dig('title_i18n')
@@ -295,6 +325,18 @@ namespace :migrate do
     # timestamps
     if p['createdAt']
       d[:created_at] = p['createdAt']
+    end
+    # permissions
+    if p['permissions']
+      groups = p['permissions'].values.map{|g| groups_hash[g]}.select{|g| g}
+      if groups.empty?
+        d[:visible_to] = 'admins'
+      else
+        d[:visible_to] = 'groups'
+        d[:groups] = groups
+      end
+    else
+      d[:visible_to] = 'public'
     end
     begin
       record = Project.new d
