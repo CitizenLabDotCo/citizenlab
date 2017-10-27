@@ -74,7 +74,12 @@ class User < ApplicationRecord
   end
 
   def authenticate(unencrypted_password)
-    original_authenticate(unencrypted_password) || cl1_authenticate(unencrypted_password) && self
+    if cl1_authenticate(unencrypted_password)
+      self.password_digest = BCrypt::Password.create(unencrypted_password)
+      self
+    else
+      original_authenticate(unencrypted_password) && self
+    end
   end
 
   def member_of? group_id
