@@ -59,10 +59,10 @@ namespace :migrate do
   	  client['users'].find.each do |u|
   		  migrate_user(u, users_hash, groups_hash, superadmin_id)
   	  end
-      # TODO phases
       projects_hash = {}
+      phases_hash = {}
       client['projects'].find.each do |p|
-        migrate_project(p, projects_hash, areas_hash, topics_hash, groups_hash)
+        migrate_project(p, projects_hash, areas_hash, topics_hash, phases_hash, groups_hash)
       end
       ideas_hash = {}
       client['posts'].find.each do |p|
@@ -90,10 +90,10 @@ namespace :migrate do
 
   def connect(platform: nil, password: nil)
     if platform && password
-      Mongo::Client.new('mongodb://lamppost.14.mongolayer.com:10323/demo', auth_mech: :mongodb_cr, user: 'citizenlab', password: 'jhshEVweHWULVCA9x2nLuWL8')
+      # Mongo::Client.new('mongodb://lamppost.14.mongolayer.com:10323/demo', auth_mech: :mongodb_cr, user: 'citizenlab', password: 'jhshEVweHWULVCA9x2nLuWL8')
       # Mongo::Client.new "mongodb://citizenlab:#{password}@lamppost.14.mongolayer.com:10323/#{platform}"
 
-      # Mongo::Client.new("mongodb://lamppost.14.mongolayer.com:10323/#{platform}", auth_mech: :mongodb_cr, user: 'citizenlab', password: password)
+      Mongo::Client.new("mongodb://lamppost.14.mongolayer.com:10323/#{platform}", auth_mech: :mongodb_cr, user: 'citizenlab', password: password)
     else
       Mongo::Client.new 'mongodb://docker.for.mac.localhost:27017/schiedam'
     end
@@ -294,7 +294,7 @@ namespace :migrate do
     end
   end
 
-  def migrate_project(p, projects_hash, areas_hash, topics_hash, groups_hash)
+  def migrate_project(p, projects_hash, areas_hash, topics_hash, phases_hash, groups_hash)
     d = {}
     # title
     if p.dig('title_i18n')
@@ -362,6 +362,12 @@ namespace :migrate do
           migrate_event(e, record)
         end
       end
+      # phases
+      if p.dig('timeline', 'phases')
+        p.dig('timeline', 'phases').each do |p|
+          migrate_phase(p, record, phases_hash)
+        end
+      end
       projects_hash[p['_id']] = record
     rescue Exception => e
       @log.concat [e.message+' '+d.to_s]
@@ -397,6 +403,42 @@ namespace :migrate do
     end
     begin
       Event.create! d
+    rescue Exception => e
+      @log.concat [e.message]
+    end
+  end
+
+  def migrate_phase(p, project, phases_hash)
+    d = {}
+    # project
+    d[:project] = project
+    # title
+    if p.dig('title_i18n')
+      d[:title_multiloc] = p.dig('title_i18n')
+    else
+      @log.concat ["Couldn't find the title for phase #{p.to_s}"]
+      return
+    end
+    # description
+    if p.dig('description_i18n')
+      d[:description_multiloc] = p.dig('description_i18n')
+    end
+    # start
+    if p['startAt']
+      d[:start_at] = p['startAt']
+    else
+      @log.concat ["Couldn't find the start date for phase #{p.to_s}"]
+      return
+    end
+    # end
+    if p['endAt']
+      d[:end_at] = p['endAt']
+    else
+      @log.concat ["Couldn't find the end date for phase #{p.to_s}"]
+      return
+    end
+    begin
+      phases_hash[p['_id']] = Phase.create! d
     rescue Exception => e
       @log.concat [e.message]
     end
