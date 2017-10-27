@@ -12,6 +12,8 @@ import styled from 'styled-components';
 const Container = styled(clickOutside)`
   display: inline-block;
   position: relative;
+  outline: none;
+  user-select: none;
 
   &:not(:last-child) {
     margin-right: 40px;
@@ -19,6 +21,7 @@ const Container = styled(clickOutside)`
 
   * {
     outline: none;
+    user-select: none;
   }
 `;
 

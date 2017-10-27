@@ -36,7 +36,6 @@ class ProjectDashboard extends React.PureComponent { // eslint-disable-line reac
   }
 }
 
-
 ProjectDashboard.propTypes = {
   resetProjects: PropTypes.func.isRequired,
   children: PropTypes.element,
