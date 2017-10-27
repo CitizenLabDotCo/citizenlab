@@ -1,10 +1,12 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import * as ReactSelect from 'react-select';
+import ReactSelect from 'react-select';
 import { IOption } from 'typings';
 import styled from 'styled-components';
 
 const StyledMultipleSelect = styled(ReactSelect)`
+  max-width: calc(100% - 30px);
+
   &.Select--multi {
     margin: 0;
     padding: 0;
@@ -43,7 +45,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
     }
 
     .Select-control {
-      width: 100%;
+      width: calc(100% + 30px);
       height: auto;
       margin: 0px;
       padding: 5px;
@@ -75,7 +77,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
       }
 
       .Select-multi-value-wrapper {
-        width: calc(100% - 30px);
+        width: calc(100%);
         height: auto;
         margin: 0px;
         padding: 0px;
@@ -127,7 +129,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
           overflow: hidden;
           cursor: pointer;
           /* background: ${(props) => props.theme.colorMain || '#777'}; */
-          background: #ddd;
+          background: #e0e0e0;
 
           &:last-child {
             margin-right: 0px;
@@ -150,7 +152,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
             align-items: center;
             justify-content: center;
             background: transparent;
-            opacity: 0.8;
+            opacity: 0.7;
 
             &:hover {
               opacity: 1;
@@ -178,6 +180,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
     }
 
     .Select-menu-outer {
+      width: calc(100% + 30px);
       max-height: 214px;
       border-color: #000;
       border-top: solid 1px #ccc;
@@ -241,19 +244,21 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const className = this.props['className'];
     let { value, placeholder, options, max, autoBlur } = this.props;
 
     value = (value || this.emptyArray);
     placeholder = (placeholder || '');
     options = (options || this.emptyArray);
     max = (max || undefined);
-    autoBlur = (_.isBoolean(autoBlur) ? autoBlur : true);
+    autoBlur = (_.isBoolean(autoBlur) ? autoBlur : false);
 
     return (
       <StyledMultipleSelect
+        className={className}
         multi={true}
         searchable={true}
-        openOnFocus={true}
+        openOnFocus={false}
         autoBlur={autoBlur}
         backspaceRemoves={false}
         scrollMenuIntoView={false}

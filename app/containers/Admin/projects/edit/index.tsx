@@ -60,19 +60,20 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
       this.tabs = [
         {
           label: this.props.intl.formatMessage(messages.generalTab),
-          url: `${baseTabsUrl}/edit`
+          url: `${baseTabsUrl}/edit`,
         },
         {
           label: this.props.intl.formatMessage(messages.descriptionTab),
-          url: `${baseTabsUrl}/description`
+          url: `${baseTabsUrl}/description`,
         },
         {
           label: this.props.intl.formatMessage(messages.phasesTab),
-          url: `${baseTabsUrl}/timeline`
+          url: `${baseTabsUrl}/timeline`,
         },
         {
           label: this.props.intl.formatMessage(messages.eventsTab),
-          url: `${baseTabsUrl}/events`
+          url: `${baseTabsUrl}/events`,
+          feature: 'private_projects',
         },
       ];
     }

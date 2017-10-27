@@ -145,12 +145,12 @@ const DropdownItem = styled.div`
   align-items: center;
 
   svg {
-    fill: #84939E;
+    fill: ${props => props.theme.colors.label};
     transition: all 100ms ease-out;
   }
 
   &:hover {
-    background: #f2f2f2;
+    background: #f4f4f4;
     color: #000;
 
     svg {
