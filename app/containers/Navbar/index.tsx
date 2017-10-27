@@ -94,14 +94,13 @@ const NavigationItems = styled.div`
 
 const NavigationItem = styled(Link) `
   height: 100%;
-  opacity: 0.4;
-  transition: opacity 150ms ease;
-  color: ${props => props.theme.colorNavFg} !important;
+  color: #999;
   font-size: 16px;
   font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 100ms ease;
 
   &:not(:last-child) {
     padding-right: 40px;
@@ -109,7 +108,7 @@ const NavigationItem = styled(Link) `
 
   &.active,
   &:hover {
-    opacity: 1;
+    color: #000;
   }
 `;
 
@@ -164,6 +163,7 @@ type Tracks = {
 type State = {
   authUser: IUser | null;
   currentTenant: ITenant | null;
+  currentTenantLogo: string | null;
   notificationPanelOpened: boolean;
   scrolled: boolean;
 };
@@ -177,6 +177,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
     this.state = {
       authUser: null,
       currentTenant: null,
+      currentTenantLogo: null,
       notificationPanelOpened: false,
       scrolled: false
     };
@@ -192,7 +193,11 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
         authUser$,
         currentTenant$
       ).subscribe(([authUser, currentTenant]) => {
-        this.setState({ authUser, currentTenant });
+        this.setState({
+          authUser,
+          currentTenant,
+          currentTenantLogo: (currentTenant ? currentTenant.data.attributes.logo.medium + '?' + Date.now() : null)
+        });
       })
     ];
   }
@@ -248,21 +253,10 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
     this.setState({ notificationPanelOpened: false });
   }
 
-  navbarTheme = (style) => {
-    return {
-      ...style,
-      colorNavBg: style.menuStyle === 'light' ? '#fff' : '#222',
-      colorNavBottomBorder: style.menuStyle === 'light' ? '#ddd' : '#000',
-      colorNavSubtle: style.menuStyle === 'light' ? '#eaeaea' : '#444',
-      colorNavFg: style.menuStyle === 'light' ? '#000' : '#fff',
-    };
-  }
-
   render() {
     const { pathname } = this.props.location;
     const { formatMessage } = this.props.intl;
-    const { authUser, currentTenant, scrolled } = this.state;
-    const tenantLogo = (currentTenant ? currentTenant.data.attributes.logo.medium : null);
+    const { authUser, currentTenant, currentTenantLogo, scrolled } = this.state;
     const alwaysShowBorder = (pathname.startsWith('/ideas/') 
                               || pathname.startsWith('/reset-password')
                               || pathname === 'sign-in'
@@ -273,15 +267,14 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
                               || pathname === '/password-recovery');
 
     return (
-      <ThemeProvider theme={this.navbarTheme}>
-        <div>
+      <div>
         <MobileNavigation />
         <Container scrolled={scrolled} alwaysShowBorder={alwaysShowBorder}>
           <Left>
-            {tenantLogo &&
+            {currentTenantLogo &&
               <LogoLink to="/">
                 <Logo>
-                  <img src={tenantLogo} alt="logo" />
+                  <img src={currentTenantLogo} alt="logo" />
                 </Logo>
               </LogoLink>
             }
@@ -335,8 +328,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
             }
           </Right>
         </Container>
-        </div>
-      </ThemeProvider>
+      </div>
     );
   }
 }

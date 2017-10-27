@@ -74,6 +74,31 @@ class Streams {
       });
   }
 
+  deepFreeze<T>(object: T): T {
+    let frozenObject = object;
+
+    if (frozenObject) {
+      let property;
+      let propertyKey;
+
+      frozenObject = Object.freeze(object);
+
+      for (propertyKey in frozenObject) {
+        if (frozenObject.hasOwnProperty(propertyKey)) {
+          property = frozenObject[propertyKey];
+
+          if (((typeof property !== 'object') || !(property instanceof Object)) || Object.isFrozen(property)) {
+            continue;
+          }
+
+          this.deepFreeze(property);
+        }
+      }
+    }
+
+    return frozenObject;
+  }
+
   deleteStream(streamId: string, apiEndpoint: string) {
     if (_(this.streamIdsByApiEndPointWithQuery[apiEndpoint]).some(value => value === streamId)) {
       this.streamIdsByApiEndPointWithQuery[apiEndpoint] = this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
@@ -243,14 +268,14 @@ class Streams {
               innerData.filter(item => _.has(item, 'id')).forEach((item) => {
                 const dataId = item.id;
                 dataIds[dataId] = true;
-                this.resourcesByDataId[dataId] = { data: item };
+                this.resourcesByDataId[dataId] = this.deepFreeze({ data: item });
                 this.addStreamIdByDataIdIndex(streamId, isQueryStream, isSearchQuery, dataId);
               });
             } else if (_.isObject(innerData) && _.has(innerData, 'id')) {
               const dataId = innerData.id;
               this.streams[streamId].type = 'singleObject';
               dataIds[dataId] = true;
-              this.resourcesByDataId[dataId] = { data: innerData };
+              this.resourcesByDataId[dataId] = this.deepFreeze({ data: innerData });
               this.addStreamIdByDataIdIndex(streamId, isQueryStream, isSearchQuery, dataId);
             }
 
@@ -266,6 +291,10 @@ class Streams {
         }
 
         this.streams[streamId].dataIds = dataIds;
+
+        if (!Object.isFrozen(data)) {
+          data = this.deepFreeze(data);
+        }
 
         return data;
       })
@@ -308,10 +337,10 @@ class Streams {
       const response = await request<T>(apiEndpoint, bodyData, { method: 'POST' }, null);
 
       _(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]).forEach((streamId) => {
-        this.streams[streamId].observer.next((previous) => ({
+        this.streams[streamId].observer.next((previous) => (this.deepFreeze({
           ...previous,
           data: [...previous.data, response['data']]
-        }));
+        })));
       });
 
       _(this.streamIdsByApiEndPointWithQuery[apiEndpoint]).forEach((streamId) => {
@@ -341,10 +370,10 @@ class Streams {
         if (streamHasDataId && stream.type === 'singleObject') {
           stream.observer.next(response);
         } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
-          stream.observer.next((previous) => ({
+          stream.observer.next((previous) => (this.deepFreeze({
             ...previous,
             data: previous.data.map(child => child.id === dataId ? response['data'] : child)
-          }));
+          })));
         }
       });
 
@@ -376,10 +405,10 @@ class Streams {
         if (streamHasDataId && stream.type === 'singleObject') {
           stream.observer.next(undefined);
         } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
-          stream.observer.next((previous) => ({
+          stream.observer.next((previous) => (this.deepFreeze({
             ...previous,
             data: previous.data.filter(child => child.id !== dataId)
-          }));
+          })));
         }
       });
 
