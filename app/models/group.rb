@@ -23,6 +23,6 @@ class Group < ApplicationRecord
 
   def generate_slug
     slug_service = SlugService.new
-    self.slug ||= slug_service.generate_slug self, self.title_multiloc.values.first # don't know if this should be unique?
+    self.slug ||= slug_service.generate_slug self, self.title_multiloc.values.first
   end
 end
