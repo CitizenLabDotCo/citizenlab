@@ -35,13 +35,14 @@ const Container: any = styled.div`
   display: flex;
   justify-content: space-between;
   height: ${(props) => props.theme.menuHeight}px;
-  position: relative;
-  background: #fff;
   z-index: 999;
   position: fixed;
   top: 0;
+  background: #fff;
+  /* background: transparent; */
   transition: all 150ms ease-out;
   border-bottom: solid 1px #fff;
+  /* border-bottom: solid 1px transparent; */
   box-shadow: ${(props: any) => props.alwaysShowBorder ? '0px 1px 3px rgba(0, 0, 0, 0.12)' : '0px 1px 3px rgba(0, 0, 0, 0)'};
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -49,6 +50,7 @@ const Container: any = styled.div`
   will-change: box-shadow;
 
   ${(props: any) => props.scrolled && css`
+    background: #fff;
     border-bottom: solid 1px #fff;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
   `}
