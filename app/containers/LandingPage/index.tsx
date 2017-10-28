@@ -33,25 +33,12 @@ import { media } from 'utils/styleUtils';
 // const header = require('./header.png');
 const header = null;
 
-const Container = styled.div`
+const Container: any = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #fff;
+  background: ${(props: any) => props.hasHeader ? '#f8f8f8' : '#fff'};
   position: relative;
-`;
-
-const BackgroundImage: any = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 0;
-  background-image: url(${(props: any) => props.imageSrc});
-  background-repeat: no-repeat;
-  background-size: auto 535px;
-  background-position: center 0px;
 `;
 
 const BackgroundColor = styled.div`
@@ -61,25 +48,27 @@ const BackgroundColor = styled.div`
   left: 0;
   right: 0;
   z-index: 0;
-  background-color: #fff;
   background-color: #f8f8f8;
 `;
 
 const Header: any = styled.div`
   width: 100%;
-  height: 400px;
+  height: 500px;
+  margin-top: 0px;
   margin-bottom: 10px;
   z-index: 1;
   position: relative;
-
   background-image: url(${(props: any) => props.src ? props.src : ''});  
   background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
 `;
 
 const HeaderOverlay = styled.div`
   background: #000;
-  opacity: 0.4;
+  /* background: ${(props: any) => props.theme.colorMain}; */
+  opacity: 0.6;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -94,6 +83,7 @@ const HeaderContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   position: absolute;
   z-index: 2;
 `;
@@ -102,7 +92,8 @@ const HeaderLogoWrapper = styled.div`
   width: 110px;
   height: 110px;
   padding: 15px;
-  margin-top: 60px;
+  /* margin-top: 120px; */
+  margin-top: 0px;
   margin-bottom: 15px;
   border: solid 2px #eaeaea;
   border-radius: 6px;
@@ -120,10 +111,10 @@ const HeaderLogo: any = styled.div`
   background-size: contain;
 `;
 
-const HeaderTitle = styled.h1`
-  color: ${props => props.theme.colorMain};
-  font-size: 41px;
-  line-height: 45px;
+const HeaderTitle: any = styled.h1`
+  color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
+  font-size: 45px;
+  line-height: 50px;
   font-weight: 500;
   text-align: center;
   margin: 0;
@@ -149,9 +140,9 @@ const HeaderTitle = styled.h1`
   `}
 `;
 
-const HeaderSubtitle = styled.h2`
-  color: ${props => props.theme.colorMain};
-  font-size: 32px;
+const HeaderSubtitle: any = styled.h2`
+  color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
+  font-size: 34px;
   line-height: 38px;
   font-weight: 100;
   max-width: 980px;
@@ -168,7 +159,7 @@ const HeaderSubtitle = styled.h2`
   transition: all 150ms ease-out;
 
   &:hover {
-    border-bottom: solid 1px ${props => props.theme.colorMain};    
+    border-bottom: solid 1px ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};    
   }
 
   ${media.tablet`
@@ -365,12 +356,12 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
       const currentTenantHeaderSlogan = getLocalized(headerSloganMultiLoc, locale, currentTenantLocales);
       const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }} />);
       const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
+      const hasHeaderImage = (currentTenantHeader !== null);
 
       return (
         <div>
-          <Container id="e2e-landing-page">
-            <BackgroundImage imageSrc={header} />
-            <BackgroundColor />
+          <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
+            {!currentTenantHeader && <BackgroundColor />}
 
             <Header src={currentTenantHeader}>
               {currentTenantHeader && <HeaderOverlay />}
@@ -381,10 +372,10 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                     <HeaderLogo imageSrc={currentTenantLogo} />
                   </HeaderLogoWrapper>
                 }
-                <HeaderTitle>
+                <HeaderTitle hasHeader={hasHeaderImage}>
                   {title}
                 </HeaderTitle>
-                <HeaderSubtitle onClick={this.goToAddIdeaPage}>
+                <HeaderSubtitle hasHeader={hasHeaderImage} onClick={this.goToAddIdeaPage}>
                   {subtitle}
                 </HeaderSubtitle>
               </HeaderContent>
