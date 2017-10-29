@@ -43,6 +43,19 @@ class Tenant < ApplicationRecord
     self.settings = ss.add_missing_features(self.settings, SETTINGS_JSON_SCHEMA)
     self.settings = ss.add_missing_settings(self.settings, SETTINGS_JSON_SCHEMA)
   end
+
+  def has_feature f
+    settings.dig(f, 'allowed') && settings.dig(f, 'enabled')
+  end
+
+  def closest_locale_to locale
+    locales = settings.dig('core', 'locales')
+    if locales && locales.include?(locale.to_s)
+      locale
+    else
+      locales.first
+    end
+  end
   
   private
 

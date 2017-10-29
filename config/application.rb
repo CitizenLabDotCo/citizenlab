@@ -42,5 +42,10 @@ module Cl2Back
     config.autoload_paths << "#{Rails.root}/lib"
 
     config.action_dispatch.perform_deep_munge = false
+
+    config.session_store :cookie_store, key: '_interslice_session'
+    config.middleware.use ActionDispatch::Cookies # Required for all session management
+    config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
+    
   end
 end
