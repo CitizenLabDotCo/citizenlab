@@ -67,6 +67,12 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         app_id: '307796929633098',
         app_secret: '28082a4c201d7cee136dbe35236e44cb'
       },
+      google_login: {
+        allowed: true,
+        enabled: true,
+        client_id: '692484441813-98clbuerpm01bonc06htv95mec0pu1d3.apps.googleusercontent.com',
+        client_secret: 'ueqXBAfEy7j7D_2Ge8d16a6v'
+      },
       groups: {
         enabled: true,
         allowed:true
