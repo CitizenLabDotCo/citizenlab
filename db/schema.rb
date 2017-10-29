@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171026133657) do
+ActiveRecord::Schema.define(version: 20171029143741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -165,6 +165,16 @@ ActiveRecord::Schema.define(version: 20171026133657) do
     t.index ["topic_id"], name: "index_ideas_topics_on_topic_id"
   end
 
+  create_table "identities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "provider"
+    t.string "uid"
+    t.jsonb "auth_hash", default: {}
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_identities_on_user_id"
+  end
+
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "group_id"
     t.uuid "user_id"
@@ -275,14 +285,6 @@ ActiveRecord::Schema.define(version: 20171026133657) do
     t.string "last_name"
     t.string "locale"
     t.jsonb "bio_multiloc", default: {}
-    t.string "encrypted_password", default: "", null: false
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string "current_sign_in_ip"
-    t.string "last_sign_in_ip"
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
@@ -315,6 +317,7 @@ ActiveRecord::Schema.define(version: 20171026133657) do
   add_foreign_key "ideas", "users", column: "author_id"
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
+  add_foreign_key "identities", "users"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "users", column: "recipient_id"
