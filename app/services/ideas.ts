@@ -18,7 +18,10 @@ export interface IIdeaData {
     upvotes_count: number;
     downvotes_count: number;
     comments_count: number;
-    location_point_geojson: string;
+    location_point_geojson: {
+      type: 'Point';
+      coordinates: number[];
+    };
     location_description: string;
     created_at: string;
     updated_at: string;
@@ -75,7 +78,10 @@ export interface IIdeaUpdate {
   body_multiloc: { [key: string]: string; };
   topic_ids: string[];
   area_ids: string[];
-  location_point_geojson: string;
+  location_point_geojson: {
+    type: 'Point';
+    coordinates: number[];
+  };
   location_description: string;
 }
 
