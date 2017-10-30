@@ -15,6 +15,7 @@ export interface ITenantSettings {
     timezone: string;
     organization_name: Multiloc;
     organization_type: 'small_city' | 'medium_city' | 'large_city' | 'generic';
+    header_title: Multiloc | null;
     header_slogan: Multiloc | null;
     meta_title: Multiloc | null;
     meta_description: Multiloc | null;
@@ -80,6 +81,8 @@ export function currentTenantStream() {
   return streams.get<ITenant>({ apiEndpoint: `${API_PATH}/tenants/current` });
 }
 
-export function updateTenant(tenantId: string, object: IUpdatedTenantProperties) {
-  return streams.update<ITenant>(`${API_PATH}/tenants/${tenantId}`, tenantId, { tenant: object });
+export async function updateTenant(tenantId: string, object: IUpdatedTenantProperties) {
+  const tenant = await streams.update<ITenant>(`${API_PATH}/tenants/${tenantId}`, tenantId, { tenant: object });
+  await currentTenantStream().fetch();
+  return tenant;
 }

@@ -160,7 +160,7 @@
   "app.containers.AdminPage.SettingsPage.education": "Education",
   "app.containers.AdminPage.SettingsPage.gender": "Gender",
   "app.containers.AdminPage.SettingsPage.headerSlogan": "Header slogan",
-  "app.containers.AdminPage.SettingsPage.header_bg": "Homepage header background",
+  "app.containers.AdminPage.SettingsPage.header_bg": "Header image",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Admin settings page",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Admin settings page",
   "app.containers.AdminPage.SettingsPage.languages": "Languages",

@@ -13,7 +13,7 @@ import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { ImageFile } from 'react-dropzone';
 
 // components
-import Upload, { ExtendedImageFile } from 'components/UI/Upload';
+import Upload from 'components/UI/Upload';
 import ButtonBar, { namespace as ButtonBarNamespace, State as IButtonBarState } from './ButtonBar';
 import NewIdeaForm, { namespace as NewIdeaFormNamespace, State as INewIdeaFormState } from './NewIdeaForm';
 import SignInUp from './SignInUp';
@@ -24,6 +24,9 @@ import { localeStream } from 'services/locale';
 import { addIdea } from 'services/ideas';
 import { addIdeaImage } from 'services/ideaImages';
 import { getAuthUserAsync } from 'services/auth';
+
+// utils
+import { getBase64 } from 'utils/imageTools';
 
 // i18n
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -197,8 +200,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
 
   async componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-    const currentNewIdeaFormState = await this.newIdeaFormState$.getCurrent();
-    _(currentNewIdeaFormState.images).forEach(image => image.preview && window.URL.revokeObjectURL(image.preview));
   }
 
   async convertToGeoJson(location: string) {
@@ -208,15 +209,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
       type: 'Point',
       coordinates: [lat, lng]
     };
-  }
-
-  async getBase64(image: ImageFile) {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (event: any) => resolve(event.target.result);
-      reader.onerror = (error) => reject(new Error(`error for getBase64() of component IdeasNewPage2`));
-      reader.readAsDataURL(image);
-    });
   }
 
   async postIdea(newIdeaFormState: INewIdeaFormState, userId: string) {
@@ -231,9 +223,9 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     return await addIdea(userId, 'published', ideaTitle, ideaDescription, topicIds, projectId, locationGeoJSON, locationDescription);
   }
 
-  async postIdeaImage(ideaId: string, image: ExtendedImageFile) {
+  async postIdeaImage(ideaId: string, image: ImageFile) {
     try {
-      const base64Image = await this.getBase64(image);
+      const base64Image = await getBase64(image);
       return await addIdeaImage(ideaId, base64Image, 0);
     } catch (error) {
       return error;
