@@ -20,9 +20,10 @@ type State = {};
 export default class Label extends React.PureComponent<Props, State> {
   render() {
     const { value, htmlFor, children } = this.props;
+    const className = this.props['className'];
 
     return (
-      <StyledLabel htmlFor={htmlFor}>{children || value}</StyledLabel>
+      <StyledLabel className={className} htmlFor={htmlFor}>{children || value}</StyledLabel>
     );
   }
 }

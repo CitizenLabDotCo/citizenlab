@@ -14,6 +14,7 @@ import { Message, Multiloc } from 'typings';
 
 // components
 import { Link } from 'react-router';
+import FeatureFlag from 'components/FeatureFlag';
 
 const ResourceHeader = styled.div`
   display: flex;
@@ -100,7 +101,8 @@ type Props = {
   tabs?: {
     label: string | Message,
     url: string,
-    active?: boolean
+    active?: boolean,
+    feature?: string,
   }[],
 };
 
@@ -146,9 +148,11 @@ export default class TabbedResource extends React.PureComponent<Props, State> {
         {tabs &&
           <TabbedNav>
             {tabs.map((tab) => (
-              <Tab key={tab.url} className={location && location.pathname && location.pathname === tab.url ? 'active' : ''}>
-                <Link to={tab.url}>{showLabel(tab.label)}</Link>
-              </Tab>
+              <FeatureFlag key={tab.url} name={tab.feature}>
+                <Tab className={location && location.pathname && location.pathname === tab.url ? 'active' : ''}>
+                  <Link to={tab.url}>{showLabel(tab.label)}</Link>
+                </Tab>
+              </FeatureFlag>
             ))}
           </TabbedNav>
         }

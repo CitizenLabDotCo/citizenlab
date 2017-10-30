@@ -236,6 +236,16 @@ const getIcon = (name: string, className: string | undefined) => {
         </svg>
       );
     }
+    case 'warning': {
+      return (
+        <svg className={className} viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+          <use xlinkHref="#a" fill="#01A1B1"/>
+          <defs>
+            <path id="a" d="M0 17.273h20L10 0 0 17.273zm10.91-2.727H9.09v-1.82h1.82v1.82zm0-3.637H9.09V7.272h1.82v3.636z"/>
+          </defs>
+        </svg>
+      );
+    }
     case 'power': {
       return (
         <svg className={className} height="100%" viewBox="0 0 36 36">

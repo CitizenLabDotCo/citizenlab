@@ -24,7 +24,7 @@ const vote = keyframes`
   }
 
   50% {
-    transform: scale3d(1.18, 1.18, 1.18);
+    transform: scale3d(1.2, 1.2, 1.2);
   }
 
   to {
@@ -35,6 +35,10 @@ const vote = keyframes`
 const Container: any = styled.div`
   display: flex;
   align-items: center;
+
+  * {
+    user-select: none;
+  }
 `;
 
 const VoteIconContainer = styled.div`
@@ -47,10 +51,6 @@ const VoteIconContainer = styled.div`
   border-radius: 50%;
   border: solid 1px #e0e0e0;
   transition: all 100ms ease-out;
-
-  &:hover {
-    /* transform: scale(1.04); */
-  }
 `;
 
 const VoteIcon = styled(Icon) `
