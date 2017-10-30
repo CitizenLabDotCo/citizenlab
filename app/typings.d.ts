@@ -21,6 +21,7 @@ export interface ITheme {
 interface IOption {
   value: any;
   label: string;
+  disabled?: boolean;
 }
 
 declare interface Message {
