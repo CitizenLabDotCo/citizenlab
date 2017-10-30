@@ -73,6 +73,10 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
         {
           label: this.props.intl.formatMessage(messages.eventsTab),
           url: `${baseTabsUrl}/events`,
+        },
+        {
+          label: this.props.intl.formatMessage(messages.permissionsTab),
+          url: `${baseTabsUrl}/permissions`,
           feature: 'private_projects',
         },
       ];
