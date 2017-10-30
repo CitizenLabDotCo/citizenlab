@@ -40,6 +40,8 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
     this.state = {
       project: null,
     };
+
+    this.tabs = [];
   }
 
   updateSubscription (slug) {

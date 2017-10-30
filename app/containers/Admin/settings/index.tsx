@@ -52,7 +52,6 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & Route
             title={messages.helmetTitle}
             description={messages.helmetDescription}
           />
-
           {this.props.children}
         </TabbedResource>
       </div>
