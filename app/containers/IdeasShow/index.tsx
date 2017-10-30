@@ -22,6 +22,7 @@ import CommentsLine from './CommentsLine';
 import Author from './Author';
 import IdeaMeta from './IdeaMeta';
 import Unauthenticated from './Unauthenticated';
+import IdeaMap from './IdeaMap';
 
 // services
 import { localeStream } from 'services/locale';
@@ -327,15 +328,15 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
-        ideaImage$, 
-        ideaAuthor$, 
+        ideaImage$,
+        ideaAuthor$,
         ideaStatus$
       ).map(([ideaImage, ideaAuthor]) => ({ idea, ideaImage, ideaAuthor }));
     });
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        locale$, 
+        locale$,
         idea$
       ).subscribe(([locale, { idea, ideaImage, ideaAuthor }]) => {
         this.setState({ locale, idea, ideaImage, ideaAuthor, loading: false });
@@ -392,6 +393,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       const ideaImageLarge = (ideaImage ? ideaImage.data.attributes.versions.large : null);
       const ideaImageMedium = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
       const isSafari = bowser.safari;
+      const ideaLocation = idea.data.attributes.location_point_geojson || null;
 
       const rightColumnContent = (
         <div>
@@ -435,6 +437,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
             <Content>
               <LeftColumn>
                 {ideaImageLarge ? <IdeaImage src={ideaImageLarge} /> : null}
+                {ideaLocation ? <IdeaMap location={ideaLocation} visible={true} /> : null}
 
                 <AuthorContainer>
                   <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />
