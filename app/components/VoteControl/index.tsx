@@ -35,6 +35,10 @@ const vote = keyframes`
 const Container: any = styled.div`
   display: flex;
   align-items: center;
+
+  * {
+    user-select: none;
+  }
 `;
 
 const VoteIconContainer = styled.div`
