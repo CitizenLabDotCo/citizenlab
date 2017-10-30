@@ -53,7 +53,7 @@ const ProjectImage: any = styled.div`
   background-image: url(${(props: any) => props.imageSrc});
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: center;
+  background-size: cover;
   overflow: hidden;
 
   ${media.phone`

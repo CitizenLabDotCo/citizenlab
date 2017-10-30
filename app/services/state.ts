@@ -59,7 +59,7 @@ class State {
             const updatedStateProperties = _.isFunction(stateUpdate) ? stateUpdate(oldState) : stateUpdate;
             const newState = {
               ...oldState,
-              ...updatedStateProperties as object
+              ...(_.isFunction(stateUpdate) ? (stateUpdate as Function)(oldState) : stateUpdate)
             };
 
             return {

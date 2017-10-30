@@ -2,64 +2,56 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
+// typings
+import { Multiloc } from 'typings';
+
 // router
-import { browserHistory } from 'react-router';
+import { withRouter, RouterState } from 'react-router';
+import { Location } from 'history';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
 
 // i18n
-import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-
-interface ITab {
-  label: string;
-  url: string;
-}
-
-interface IResources {
-  title: string;
-}
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 type Props = {};
 
 type State = {};
 
-class SettingsPage extends React.PureComponent<Props & InjectedIntlProps, State> {
-  tabs: ITab[];
-  resources: IResources;
+class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & RouterState, State> {
+  state: State;
+  tabs: { label: string, url: string }[];
+  resource: { title: string | Multiloc };
 
   componentWillMount() {
     const { formatMessage } = this.props.intl;
 
     this.tabs = [
       { label: formatMessage(messages.tabSettings), url: '/admin/settings' },
-      { label: formatMessage(messages.tabCustomize), url: '/admin/settings/customize' },
+      { label: formatMessage(messages.tabCustomize), url: '/admin/settings/customize' }
     ];
 
-    this.resources = {
+    this.resource = {
       title: formatMessage(messages.viewPublicResource)
     };
   }
 
   render() {
-    const location = browserHistory.getCurrentLocation();
-
     return (
       <div>
         <TabbedResource
-          resource={this.resources}
+          resource={this.resource}
           messages={messages}
           tabs={this.tabs}
-          location={location}
+          location={this.props.location}
         >
           <HelmetIntl
             title={messages.helmetTitle}
             description={messages.helmetDescription}
           />
-
-          {/* <Saga saga={watchSaveSettings} /> */}
 
           {this.props.children}
         </TabbedResource>
@@ -68,4 +60,4 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps, State>
   }
 }
 
-export default injectIntl<Props>(SettingsPage);
+export default withRouter(injectIntl<Props>(SettingsPage) as any);
