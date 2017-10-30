@@ -123,10 +123,26 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of ideas per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">topics</span>
                 </td>
                 <td>
-                  <span class="description">Filter by topics (AND)</span>
+                  <span class="description">Filter by topics (OR)</span>
                 </td>
               </tr>
               <tr>
@@ -134,7 +150,7 @@ table th, table td {
                     <span class="name">areas</span>
                 </td>
                 <td>
-                  <span class="description">Filter by areas (AND)</span>
+                  <span class="description">Filter by areas (OR)</span>
                 </td>
               </tr>
               <tr>
@@ -193,34 +209,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MjYsInN1YiI6IjVmYjhiMDIzLWEwM2QtNGE3NS1iODY5LTExM2YyMGYyMWI5YiJ9.txjSqn_F__HFm0Eb3EekrlZ_kE8QJmjoAtCDlUouPkI
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQyMDksInN1YiI6Ijc1NzU2MGYyLWEzMjMtNDk0NC1hNTM5LTE5MTkzZjI2ZjY4YSJ9.L7FnYeiFLUpBwDrmZhnPx13wAS0HuTdVsD3c_uYqr0Q
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?project=d779c148-1926-4210-b207-c629d00bb414</pre>
+          <pre class="request route highlight">GET api/v1/ideas?project=209ec53c-fa0e-482b-9ca5-155206f4727f</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">project: d779c148-1926-4210-b207-c629d00bb414</pre>
+            <pre class="request query_parameters highlight">project: 209ec53c-fa0e-482b-9ca5-155206f4727f</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;62b200df76d2f668c77191eac8ce7408&quot;
+ETag: W/&quot;b1f42cf9b52f5a349ffccacb400e7c8e&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 467d1e0a-c746-4bc8-812c-54f491850065
-X-Runtime: 0.046018
+X-Request-Id: 76b8a332-a30d-4ddb-b7a7-ab096bfaecf9
+X-Runtime: 0.034243
 Vary: Origin
-Content-Length: 1717</pre>
+Content-Length: 1720</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;3b6e7a3e-8cac-4cec-9c65-ae8ab435d363&quot;,
+      &quot;id&quot;: &quot;d767f0d2-e90d-4c4a-af6b-2a1b54d3311a&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -231,7 +247,7 @@ Content-Length: 1717</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Travon Daugherty&quot;,
+        &quot;author_name&quot;: &quot;Providenci Renner&quot;,
         &quot;slug&quot;: &quot;plant-more-trees-7&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
@@ -239,9 +255,9 @@ Content-Length: 1717</pre>
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:47.038Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:47.038Z&quot;,
-        &quot;published_at&quot;: &quot;2017-10-22T18:33:47.038Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-30T12:50:09.680Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:50:09.680Z&quot;,
+        &quot;published_at&quot;: &quot;2017-10-30T12:50:09.680Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -261,19 +277,19 @@ Content-Length: 1717</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;32e26abb-211d-40af-9837-ba88620df7f4&quot;,
+            &quot;id&quot;: &quot;414d3a1f-a2b9-4126-b1ec-16a829630903&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;d779c148-1926-4210-b207-c629d00bb414&quot;,
+            &quot;id&quot;: &quot;209ec53c-fa0e-482b-9ca5-155206f4727f&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;f0e2d2c2-665e-4be0-8cf4-f5ee11816ad5&quot;,
+            &quot;id&quot;: &quot;dcfba289-7566-4732-ae4b-c894586e9ab9&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -285,25 +301,25 @@ Content-Length: 1717</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;32e26abb-211d-40af-9837-ba88620df7f4&quot;,
+      &quot;id&quot;: &quot;414d3a1f-a2b9-4126-b1ec-16a829630903&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Travon&quot;,
-        &quot;last_name&quot;: &quot;Daugherty&quot;,
-        &quot;slug&quot;: &quot;travon-daugherty&quot;,
+        &quot;first_name&quot;: &quot;Providenci&quot;,
+        &quot;last_name&quot;: &quot;Renner&quot;,
+        &quot;slug&quot;: &quot;providenci-renner&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/32e26abb-211d-40af-9837-ba88620df7f4/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/32e26abb-211d-40af-9837-ba88620df7f4/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/32e26abb-211d-40af-9837-ba88620df7f4/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/414d3a1f-a2b9-4126-b1ec-16a829630903/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/414d3a1f-a2b9-4126-b1ec-16a829630903/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/414d3a1f-a2b9-4126-b1ec-16a829630903/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:47.008Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:47.008Z&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:50:09.624Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:50:09.624Z&quot;,
         &quot;unread_notifications&quot;: 0
       }
     }

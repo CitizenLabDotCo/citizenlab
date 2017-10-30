@@ -276,33 +276,33 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MzUsInN1YiI6Ijc5OTJjZGQzLWE5Y2UtNGJmMy04ZDY4LTc1ZWQ1NmU1ODk5OCJ9.uq5F-2CTGYwS1OrSmk_QgCxl3_0TDfNCiw_HM8e45s8
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQyMzMsInN1YiI6ImNhMjkzNWU2LWZkYjAtNGUyNi1hZTgzLTYxMWZjNmEwZDlmOSJ9.g6igGw7Jyehy8_A7MGPLiyJtUyyFTiep0zAIybuxYrQ
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/ideas/ef59caf6-841f-4226-acd4-632b4bdb32b1</pre>
+          <pre class="request route highlight">PATCH api/v1/ideas/e908c7ba-9949-45fa-8792-6ec951dc2551</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"idea":{"idea_status_id":"c90812ff-5100-4aa7-ae02-e36e27d241de","topic_ids":["15c436b0-9365-4cda-a892-45a97ee1b586","d0864040-aa94-4762-aeae-dd3e51099d28"],"area_ids":["dfcbaee1-c8d8-4152-ab5d-eeb0a92edd78","e91c442b-57b7-4b97-ad28-86b4b04daf44"],"location_point_geojson":{"type":"Point","coordinates":[51.4365635,3.825930459]},"location_description":"Watkins Road 8"}}</pre>
+            <pre class="request body">{"idea":{"idea_status_id":"83bfb61b-4dd4-458b-9dd8-b6b24aea5f3f","topic_ids":["5b5bb131-ed43-41ff-8342-4705ed53065d","f08f745c-5415-4183-9124-a5976924a2e3"],"area_ids":["5f44923d-3f1d-4d65-82c1-037ba35909d7","9fab456d-0b1c-43ee-9798-ad290bef207d"],"location_point_geojson":{"type":"Point","coordinates":[51.4365635,3.825930459]},"location_description":"Watkins Road 8"}}</pre>
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;d34f5967ed4aa73a9456a873fc32ea87&quot;
+ETag: W/&quot;1026944f6d8ce3f6f4fa3c2ff53a9442&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: a79d8c00-55b5-4134-998c-9f51ff3eed61
-X-Runtime: 0.093849
+X-Request-Id: ac532daa-a039-46e7-b044-f1118d792552
+X-Runtime: 0.071475
 Vary: Origin
-Content-Length: 3690</pre>
+Content-Length: 3722</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;ef59caf6-841f-4226-acd4-632b4bdb32b1&quot;,
+    &quot;id&quot;: &quot;e908c7ba-9949-45fa-8792-6ec951dc2551&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -313,7 +313,7 @@ Content-Length: 3690</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Joy Terry&quot;,
+      &quot;author_name&quot;: &quot;Emiliano Flatley&quot;,
       &quot;slug&quot;: &quot;plant-more-trees-7&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;upvotes_count&quot;: 0,
@@ -327,19 +327,19 @@ Content-Length: 3690</pre>
         ]
       },
       &quot;location_description&quot;: &quot;Watkins Road 8&quot;,
-      &quot;created_at&quot;: &quot;2017-10-22T18:33:55.645Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-10-22T18:33:55.725Z&quot;,
-      &quot;published_at&quot;: &quot;2017-10-22T18:33:55.645Z&quot;
+      &quot;created_at&quot;: &quot;2017-10-30T12:50:33.494Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-10-30T12:50:33.697Z&quot;,
+      &quot;published_at&quot;: &quot;2017-10-30T12:50:33.494Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
         &quot;data&quot;: [
           {
-            &quot;id&quot;: &quot;15c436b0-9365-4cda-a892-45a97ee1b586&quot;,
+            &quot;id&quot;: &quot;5b5bb131-ed43-41ff-8342-4705ed53065d&quot;,
             &quot;type&quot;: &quot;topics&quot;
           },
           {
-            &quot;id&quot;: &quot;d0864040-aa94-4762-aeae-dd3e51099d28&quot;,
+            &quot;id&quot;: &quot;f08f745c-5415-4183-9124-a5976924a2e3&quot;,
             &quot;type&quot;: &quot;topics&quot;
           }
         ]
@@ -347,11 +347,11 @@ Content-Length: 3690</pre>
       &quot;areas&quot;: {
         &quot;data&quot;: [
           {
-            &quot;id&quot;: &quot;dfcbaee1-c8d8-4152-ab5d-eeb0a92edd78&quot;,
+            &quot;id&quot;: &quot;5f44923d-3f1d-4d65-82c1-037ba35909d7&quot;,
             &quot;type&quot;: &quot;areas&quot;
           },
           {
-            &quot;id&quot;: &quot;e91c442b-57b7-4b97-ad28-86b4b04daf44&quot;,
+            &quot;id&quot;: &quot;9fab456d-0b1c-43ee-9798-ad290bef207d&quot;,
             &quot;type&quot;: &quot;areas&quot;
           }
         ]
@@ -363,19 +363,19 @@ Content-Length: 3690</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;bf1a305e-0ee5-4ee1-98e3-c6e31dac6752&quot;,
+          &quot;id&quot;: &quot;a9cfe2ac-98b2-4571-a823-94a31f5fa60c&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;9d1ed2b7-da31-4bfd-a81c-d49f8559a0ef&quot;,
+          &quot;id&quot;: &quot;989c55f1-b8da-4d5d-bafc-bf02c4aec8f8&quot;,
           &quot;type&quot;: &quot;projects&quot;
         }
       },
       &quot;idea_status&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;c90812ff-5100-4aa7-ae02-e36e27d241de&quot;,
+          &quot;id&quot;: &quot;83bfb61b-4dd4-458b-9dd8-b6b24aea5f3f&quot;,
           &quot;type&quot;: &quot;idea_statuses&quot;
         }
       },
@@ -386,7 +386,7 @@ Content-Length: 3690</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;15c436b0-9365-4cda-a892-45a97ee1b586&quot;,
+      &quot;id&quot;: &quot;5b5bb131-ed43-41ff-8342-4705ed53065d&quot;,
       &quot;type&quot;: &quot;topics&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -401,7 +401,7 @@ Content-Length: 3690</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;d0864040-aa94-4762-aeae-dd3e51099d28&quot;,
+      &quot;id&quot;: &quot;f08f745c-5415-4183-9124-a5976924a2e3&quot;,
       &quot;type&quot;: &quot;topics&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -416,7 +416,7 @@ Content-Length: 3690</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;dfcbaee1-c8d8-4152-ab5d-eeb0a92edd78&quot;,
+      &quot;id&quot;: &quot;5f44923d-3f1d-4d65-82c1-037ba35909d7&quot;,
       &quot;type&quot;: &quot;areas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -430,7 +430,7 @@ Content-Length: 3690</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;e91c442b-57b7-4b97-ad28-86b4b04daf44&quot;,
+      &quot;id&quot;: &quot;9fab456d-0b1c-43ee-9798-ad290bef207d&quot;,
       &quot;type&quot;: &quot;areas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -444,26 +444,26 @@ Content-Length: 3690</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;bf1a305e-0ee5-4ee1-98e3-c6e31dac6752&quot;,
+      &quot;id&quot;: &quot;a9cfe2ac-98b2-4571-a823-94a31f5fa60c&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Joy&quot;,
-        &quot;last_name&quot;: &quot;Terry&quot;,
-        &quot;slug&quot;: &quot;joy-terry&quot;,
+        &quot;first_name&quot;: &quot;Emiliano&quot;,
+        &quot;last_name&quot;: &quot;Flatley&quot;,
+        &quot;slug&quot;: &quot;emiliano-flatley&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/bf1a305e-0ee5-4ee1-98e3-c6e31dac6752/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/bf1a305e-0ee5-4ee1-98e3-c6e31dac6752/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/bf1a305e-0ee5-4ee1-98e3-c6e31dac6752/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/a9cfe2ac-98b2-4571-a823-94a31f5fa60c/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/a9cfe2ac-98b2-4571-a823-94a31f5fa60c/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/a9cfe2ac-98b2-4571-a823-94a31f5fa60c/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:55.611Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:55.611Z&quot;,
-        &quot;email&quot;: &quot;angela@frami.io&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:50:33.408Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:50:33.408Z&quot;,
+        &quot;email&quot;: &quot;laney.stoltenberg@west.com&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

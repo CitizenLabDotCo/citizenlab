@@ -117,13 +117,13 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MTYsInN1YiI6IjM4MWVhMTFjLWRiN2MtNGE3NS1hYzdiLTZhMDhlOGQ3OTkxMCJ9.hnYHhfc7bo1eCQ3g0ZNgBY2LyyKQtBErIH5vPzzEBBE
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQxNzMsInN1YiI6ImNkYzc0MmRiLWFhYWYtNGVjOS1iNjU4LTg3NTIxY2E3NzUwMiJ9.mi_NJ8Ist36iaq5gKtriNTPZdmtoE1j-qQz2hgtLr3s
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/comments/ca91bff1-f13f-4a00-994b-95fda93e3b6f/votes</pre>
+          <pre class="request route highlight">GET api/v1/comments/c3bc73a8-114f-4b45-8741-5120caf55e6e/votes</pre>
 
 
 
@@ -131,19 +131,19 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;9f839c2b81c316f0042d9c7faac2b3c8&quot;
+ETag: W/&quot;194d11893f8d3c0cede943aaac808ad8&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 5d837be6-bf81-465f-b4d6-d16049df06c2
-X-Runtime: 0.096208
+X-Request-Id: bf3d48c8-106f-4319-9fce-c229fb79ee32
+X-Runtime: 0.242521
 Vary: Origin
-Content-Length: 2090</pre>
+Content-Length: 2079</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;7c106fdd-4267-420c-a5b2-8427fae8b014&quot;,
+      &quot;id&quot;: &quot;9e51ef2a-fe15-4cad-9ea2-86e077d34c22&quot;,
       &quot;type&quot;: &quot;votes&quot;,
       &quot;attributes&quot;: {
         &quot;mode&quot;: &quot;up&quot;
@@ -151,20 +151,20 @@ Content-Length: 2090</pre>
       &quot;relationships&quot;: {
         &quot;votable&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;ca91bff1-f13f-4a00-994b-95fda93e3b6f&quot;,
+            &quot;id&quot;: &quot;c3bc73a8-114f-4b45-8741-5120caf55e6e&quot;,
             &quot;type&quot;: &quot;votables&quot;
           }
         },
         &quot;user&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;139cf767-eb45-47d9-ad97-4e61ec82c553&quot;,
+            &quot;id&quot;: &quot;f4efb0e9-dc6c-4aef-805f-cab811b27c79&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         }
       }
     },
     {
-      &quot;id&quot;: &quot;f2175443-1a18-46f4-b39c-43c57fd6191c&quot;,
+      &quot;id&quot;: &quot;b34d9d4a-68c3-4797-b31b-0876c29d2370&quot;,
       &quot;type&quot;: &quot;votes&quot;,
       &quot;attributes&quot;: {
         &quot;mode&quot;: &quot;up&quot;
@@ -172,13 +172,13 @@ Content-Length: 2090</pre>
       &quot;relationships&quot;: {
         &quot;votable&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;ca91bff1-f13f-4a00-994b-95fda93e3b6f&quot;,
+            &quot;id&quot;: &quot;c3bc73a8-114f-4b45-8741-5120caf55e6e&quot;,
             &quot;type&quot;: &quot;votables&quot;
           }
         },
         &quot;user&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;d10d37dd-0d37-4913-8b66-545c3cfe75da&quot;,
+            &quot;id&quot;: &quot;d1131b28-b16a-4af6-b720-fced1294bcdc&quot;,
             &quot;type&quot;: &quot;users&quot;
           }
         }
@@ -187,26 +187,26 @@ Content-Length: 2090</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;139cf767-eb45-47d9-ad97-4e61ec82c553&quot;,
+      &quot;id&quot;: &quot;f4efb0e9-dc6c-4aef-805f-cab811b27c79&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Alena&quot;,
-        &quot;last_name&quot;: &quot;Dickinson&quot;,
-        &quot;slug&quot;: &quot;alena-dickinson&quot;,
+        &quot;first_name&quot;: &quot;Loyce&quot;,
+        &quot;last_name&quot;: &quot;Quitzon&quot;,
+        &quot;slug&quot;: &quot;loyce-quitzon&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/139cf767-eb45-47d9-ad97-4e61ec82c553/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/139cf767-eb45-47d9-ad97-4e61ec82c553/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/139cf767-eb45-47d9-ad97-4e61ec82c553/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/f4efb0e9-dc6c-4aef-805f-cab811b27c79/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/f4efb0e9-dc6c-4aef-805f-cab811b27c79/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/f4efb0e9-dc6c-4aef-805f-cab811b27c79/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:36.705Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:36.705Z&quot;,
-        &quot;email&quot;: &quot;thurman.white@reichert.co&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:49:34.424Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:49:34.424Z&quot;,
+        &quot;email&quot;: &quot;braulio.deckow@koepp.io&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -215,26 +215,26 @@ Content-Length: 2090</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;d10d37dd-0d37-4913-8b66-545c3cfe75da&quot;,
+      &quot;id&quot;: &quot;d1131b28-b16a-4af6-b720-fced1294bcdc&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Julio&quot;,
-        &quot;last_name&quot;: &quot;Zboncak&quot;,
-        &quot;slug&quot;: &quot;julio-zboncak&quot;,
+        &quot;first_name&quot;: &quot;Micah&quot;,
+        &quot;last_name&quot;: &quot;Koss&quot;,
+        &quot;slug&quot;: &quot;micah-koss&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d10d37dd-0d37-4913-8b66-545c3cfe75da/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d10d37dd-0d37-4913-8b66-545c3cfe75da/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d10d37dd-0d37-4913-8b66-545c3cfe75da/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/d1131b28-b16a-4af6-b720-fced1294bcdc/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/d1131b28-b16a-4af6-b720-fced1294bcdc/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/d1131b28-b16a-4af6-b720-fced1294bcdc/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:36.657Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:36.657Z&quot;,
-        &quot;email&quot;: &quot;alice.luettgen@renner.io&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:49:34.277Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:49:34.277Z&quot;,
+        &quot;email&quot;: &quot;kian@kohlerlangworth.name&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

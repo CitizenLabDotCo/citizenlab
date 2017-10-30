@@ -198,7 +198,7 @@ table th, table td {
                     <span class="name">tenant[settings][core][header_title]</span>
                 </td>
                 <td>
-                  <span class="description">The main title shown on the homepage. Type: </span>
+                  <span class="description">The main title shown on the homepage (max 35 characters). Type: object</span>
                 </td>
               </tr>
               <tr>
@@ -206,7 +206,7 @@ table th, table td {
                     <span class="name">tenant[settings][core][header_slogan]</span>
                 </td>
                 <td>
-                  <span class="description">The subtitle shown on the homepage. Type: </span>
+                  <span class="description">The subtitle shown on the homepage (max 90 characters). Type: object</span>
                 </td>
               </tr>
               <tr>
@@ -231,6 +231,14 @@ table th, table td {
                 </td>
                 <td>
                   <span class="description">The main brand color as a hexadecimal value including the anchor character. Type: string</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">tenant[settings][core][color_header_overlay]</span>
+                </td>
+                <td>
+                  <span class="description">The color as a hexadecimal value that is transparently overlaid on the homepage header. Type: string</span>
                 </td>
               </tr>
               <tr>
@@ -499,13 +507,13 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2NjAsInN1YiI6Ijk3NjRjZTZjLTg1ZmMtNDMyYS05OWJjLWUzNmMzYWZlMThhMiJ9.HC2u54Bh-Hm05xq-9QWOAZ1RA54I93S1W-oWV3KJyQk
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQzMDMsInN1YiI6IjdlNTMzMDJmLTM0MmYtNDA0Ny04NDczLTg4MGNmZjEwNWNmMSJ9.JTpxhDdzgAW4HDazVgifxNIGCZ8MUkld_cXFOm6uxvo
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/tenants/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd</pre>
+          <pre class="request route highlight">PATCH api/v1/tenants/613bfddf-05e6-45e4-8efd-167c2d8b4283</pre>
 
 
             <h4>Body</h4>
@@ -515,10 +523,10 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;a1deb32dd49dc29580c359bda65bd8f9&quot;
+ETag: W/&quot;2321df8777125d16f9a8ec50fe85eda7&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 8cf6831d-8a4a-46e4-9708-560893684509
-X-Runtime: 0.047356
+X-Request-Id: 1a9e3648-2be8-4e49-ad17-77b695e4fa25
+X-Runtime: 0.432214
 Vary: Origin
 Content-Length: 1143</pre>
             <h4>Status</h4>
@@ -526,7 +534,7 @@ Content-Length: 1143</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;d6ba3cc0-5dfb-42dd-9274-f2e092e640fd&quot;,
+    &quot;id&quot;: &quot;613bfddf-05e6-45e4-8efd-167c2d8b4283&quot;,
     &quot;type&quot;: &quot;tenants&quot;,
     &quot;attributes&quot;: {
       &quot;name&quot;: &quot;test-tenant&quot;,
@@ -551,14 +559,14 @@ Content-Length: 1143</pre>
         }
       },
       &quot;logo&quot;: {
-        &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/tenant/logo/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/small_logo.png&quot;,
-        &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/tenant/logo/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/medium_logo.png&quot;,
-        &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/tenant/logo/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/large_logo.png&quot;
+        &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/tenant/logo/613bfddf-05e6-45e4-8efd-167c2d8b4283/small_logo.png&quot;,
+        &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/tenant/logo/613bfddf-05e6-45e4-8efd-167c2d8b4283/medium_logo.png&quot;,
+        &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/tenant/logo/613bfddf-05e6-45e4-8efd-167c2d8b4283/large_logo.png&quot;
       },
       &quot;header_bg&quot;: {
-        &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/tenant/header_bg/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/large_header_bg.jpeg&quot;,
-        &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/tenant/header_bg/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/medium_header_bg.jpeg&quot;,
-        &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/tenant/header_bg/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/small_header_bg.jpeg&quot;
+        &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/tenant/header_bg/613bfddf-05e6-45e4-8efd-167c2d8b4283/large_header_bg.jpeg&quot;,
+        &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/tenant/header_bg/613bfddf-05e6-45e4-8efd-167c2d8b4283/medium_header_bg.jpeg&quot;,
+        &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/tenant/header_bg/613bfddf-05e6-45e4-8efd-167c2d8b4283/small_header_bg.jpeg&quot;
       }
     }
   }

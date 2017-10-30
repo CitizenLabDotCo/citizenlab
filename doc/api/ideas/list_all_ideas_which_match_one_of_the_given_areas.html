@@ -109,7 +109,7 @@ table th, table td {
       <h1>Ideas API</h1>
 
       <div class="article">
-        <h2>List all ideas with all given areas</h2>
+        <h2>List all ideas which match one of the given areas</h2>
         <h3>GET api/v1/ideas</h3>
 
           <h3>Parameters</h3>
@@ -123,10 +123,26 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of ideas per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">topics</span>
                 </td>
                 <td>
-                  <span class="description">Filter by topics (AND)</span>
+                  <span class="description">Filter by topics (OR)</span>
                 </td>
               </tr>
               <tr>
@@ -134,7 +150,7 @@ table th, table td {
                     <span class="name">areas</span>
                 </td>
                 <td>
-                  <span class="description">Filter by areas (AND)</span>
+                  <span class="description">Filter by areas (OR)</span>
                 </td>
               </tr>
               <tr>
@@ -193,34 +209,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MjYsInN1YiI6ImY4ZjQwMzc5LWI3MzktNGZjMS04Y2ZiLTFmMTEzYjUzYmI4NCJ9._UUwfGuIaxuhHjNeDKuBBskJ3R-V995jQVzt1-lTboo
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQyMDgsInN1YiI6ImYzNjdkOGVjLTZkZDgtNDU3Zi04Y2NkLTYxZjg0YzMxMzU1MiJ9.N5zzEXUjhxpjmi_anNJ4O0GkFLqkPGQEpvSmcWmk9mc
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?areas[]=fe15b208-598d-4317-9e66-29960a18473d&amp;areas[]=17ad2fbf-60c8-4f71-ae30-ed6b5d6ada2c</pre>
+          <pre class="request route highlight">GET api/v1/ideas?areas[]=6b9bb679-50fb-443e-86b5-db2ffdda6f48&amp;areas[]=5d597122-da0d-446e-a2ff-937eeb613bec</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">areas: [&quot;fe15b208-598d-4317-9e66-29960a18473d&quot;, &quot;17ad2fbf-60c8-4f71-ae30-ed6b5d6ada2c&quot;]</pre>
+            <pre class="request query_parameters highlight">areas: [&quot;6b9bb679-50fb-443e-86b5-db2ffdda6f48&quot;, &quot;5d597122-da0d-446e-a2ff-937eeb613bec&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;ab961d3ae87dc1d4d6bf909626b16c41&quot;
+ETag: W/&quot;2cb4ddda3dd419e337f75c17e2dea376&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: ee49b617-9207-4a62-88da-ee31f826df0f
-X-Runtime: 0.057158
+X-Request-Id: 051f7084-d2b8-4439-8db9-6e8c68b07ee6
+X-Runtime: 0.051237
 Vary: Origin
-Content-Length: 1830</pre>
+Content-Length: 3497</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;a084e379-bb1c-4aa3-825e-430531b8958a&quot;,
+      &quot;id&quot;: &quot;113fd304-9725-4ad0-a2c5-e9663ae0f7fd&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -231,7 +247,7 @@ Content-Length: 1830</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Laury Thompson&quot;,
+        &quot;author_name&quot;: &quot;Jeremie Ernser&quot;,
         &quot;slug&quot;: &quot;plant-more-trees&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
@@ -239,9 +255,9 @@ Content-Length: 1830</pre>
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:45.796Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:45.796Z&quot;,
-        &quot;published_at&quot;: &quot;2017-10-22T18:33:45.795Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-30T12:50:07.030Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:50:07.030Z&quot;,
+        &quot;published_at&quot;: &quot;2017-10-30T12:50:07.029Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -252,11 +268,7 @@ Content-Length: 1830</pre>
         &quot;areas&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;fe15b208-598d-4317-9e66-29960a18473d&quot;,
-              &quot;type&quot;: &quot;areas&quot;
-            },
-            {
-              &quot;id&quot;: &quot;17ad2fbf-60c8-4f71-ae30-ed6b5d6ada2c&quot;,
+              &quot;id&quot;: &quot;6b9bb679-50fb-443e-86b5-db2ffdda6f48&quot;,
               &quot;type&quot;: &quot;areas&quot;
             }
           ]
@@ -268,19 +280,85 @@ Content-Length: 1830</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;6b4fea00-0622-4cda-8d20-533f4006da4c&quot;,
+            &quot;id&quot;: &quot;619da500-5ade-44c8-ab3b-546a744b5e8d&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;e6dea1ce-b7e5-477a-8380-f171180adf04&quot;,
+            &quot;id&quot;: &quot;77f1a9ef-c30b-471c-a43a-3babf7b4b0c8&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;94ad8340-1a58-42b8-a896-6a72498e3d68&quot;,
+            &quot;id&quot;: &quot;f421a00d-4192-4310-81ff-d58069dc66e6&quot;,
+            &quot;type&quot;: &quot;idea_statuses&quot;
+          }
+        },
+        &quot;user_vote&quot;: {
+          &quot;data&quot;: null
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;68056cf2-c617-48ab-aa5b-0f911cf50706&quot;,
+      &quot;type&quot;: &quot;ideas&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Plant more trees&quot;,
+          &quot;nl&quot;: &quot;Plant meer bomen&quot;
+        },
+        &quot;body_multiloc&quot;: {
+          &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
+          &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
+        },
+        &quot;author_name&quot;: &quot;Felix Berge&quot;,
+        &quot;slug&quot;: &quot;plant-more-trees-1&quot;,
+        &quot;publication_status&quot;: &quot;published&quot;,
+        &quot;upvotes_count&quot;: 0,
+        &quot;downvotes_count&quot;: 0,
+        &quot;comments_count&quot;: 0,
+        &quot;location_point_geojson&quot;: null,
+        &quot;location_description&quot;: null,
+        &quot;created_at&quot;: &quot;2017-10-30T12:50:07.183Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:50:07.183Z&quot;,
+        &quot;published_at&quot;: &quot;2017-10-30T12:50:07.182Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;topics&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;areas&quot;: {
+          &quot;data&quot;: [
+            {
+              &quot;id&quot;: &quot;5d597122-da0d-446e-a2ff-937eeb613bec&quot;,
+              &quot;type&quot;: &quot;areas&quot;
+            }
+          ]
+        },
+        &quot;idea_images&quot;: {
+          &quot;data&quot;: [
+
+          ]
+        },
+        &quot;author&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;3f7e73d3-ff69-4b90-a1e7-029e93c15cf2&quot;,
+            &quot;type&quot;: &quot;authors&quot;
+          }
+        },
+        &quot;project&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;33e81037-c939-4eaa-a737-4cb1003919bd&quot;,
+            &quot;type&quot;: &quot;projects&quot;
+          }
+        },
+        &quot;idea_status&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;535b04d8-dc62-4ee1-9375-6452391d0228&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -292,25 +370,48 @@ Content-Length: 1830</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;6b4fea00-0622-4cda-8d20-533f4006da4c&quot;,
+      &quot;id&quot;: &quot;619da500-5ade-44c8-ab3b-546a744b5e8d&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Laury&quot;,
-        &quot;last_name&quot;: &quot;Thompson&quot;,
-        &quot;slug&quot;: &quot;laury-thompson&quot;,
+        &quot;first_name&quot;: &quot;Jeremie&quot;,
+        &quot;last_name&quot;: &quot;Ernser&quot;,
+        &quot;slug&quot;: &quot;jeremie-ernser&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/6b4fea00-0622-4cda-8d20-533f4006da4c/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/6b4fea00-0622-4cda-8d20-533f4006da4c/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/6b4fea00-0622-4cda-8d20-533f4006da4c/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/619da500-5ade-44c8-ab3b-546a744b5e8d/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/619da500-5ade-44c8-ab3b-546a744b5e8d/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/619da500-5ade-44c8-ab3b-546a744b5e8d/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:45.775Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:45.775Z&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:50:06.974Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:50:06.974Z&quot;,
+        &quot;unread_notifications&quot;: 0
+      }
+    },
+    {
+      &quot;id&quot;: &quot;3f7e73d3-ff69-4b90-a1e7-029e93c15cf2&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Felix&quot;,
+        &quot;last_name&quot;: &quot;Berge&quot;,
+        &quot;slug&quot;: &quot;felix-berge&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/3f7e73d3-ff69-4b90-a1e7-029e93c15cf2/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/3f7e73d3-ff69-4b90-a1e7-029e93c15cf2/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/3f7e73d3-ff69-4b90-a1e7-029e93c15cf2/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-10-30T12:50:07.133Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:50:07.133Z&quot;,
         &quot;unread_notifications&quot;: 0
       }
     }

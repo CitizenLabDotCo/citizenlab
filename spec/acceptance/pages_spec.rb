@@ -11,7 +11,10 @@ resource "Pages" do
   end
 
   get "api/v1/pages" do
-
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of pages (data model pages) per page"
+    end
     parameter :project, "The id of a project, if you want the pages for that project only"
 
     example_request "List all pages" do

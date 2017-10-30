@@ -123,6 +123,22 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of projects per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">topics</span>
                 </td>
                 <td>
@@ -144,35 +160,35 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2NDMsInN1YiI6IjE1MzIzMDRmLWU5NzUtNGZlNC05ZWJlLTFlZTNkMzYzYTFlYyJ9.v2D_NFjdzj9lVwwNE-1DD-pveke7WhJwUQ4kwZicEUM
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQyNjMsInN1YiI6IjA2Zjk4YjNlLWE0OTEtNDMwOC1iOGM4LTBkNWY2ZTY2NGY1ZSJ9.bcq5ewk1TMM1f5tL1Cjq3WqPCJ1rbPKbYFmwR6LsNQg
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/projects?topics[]=e52a0b2c-c800-4d90-87c0-874c208ac5b1</pre>
+          <pre class="request route highlight">GET api/v1/projects?topics[]=e50747a9-b722-4f78-b785-26f59ca4fa03</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;e52a0b2c-c800-4d90-87c0-874c208ac5b1&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;e50747a9-b722-4f78-b785-26f59ca4fa03&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;17eed4144f69086a299b4a7f93a5bdf9&quot;
+ETag: W/&quot;265bd2f4ed7134a3f7ce5b52a1a4c61d&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 13cd1864-4e19-4863-8322-680ff6ac2a88
-X-Runtime: 0.020127
+X-Request-Id: 1614b1fc-f588-4356-8802-9af8bb9bd882
+X-Runtime: 0.043503
 Vary: Origin
-Content-Length: 783</pre>
+Content-Length: 805</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;541d9d2f-e00b-4f58-95e0-a35c48b227a9&quot;,
+      &quot;id&quot;: &quot;33fb0fc5-7820-4d67-951d-3484ef42c09e&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -189,9 +205,10 @@ Content-Length: 783</pre>
           &quot;medium&quot;: null,
           &quot;small&quot;: null
         },
+        &quot;visible_to&quot;: &quot;public&quot;,
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:03.322Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:03.322Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:03.625Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:03.625Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
@@ -207,7 +224,7 @@ Content-Length: 783</pre>
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;e52a0b2c-c800-4d90-87c0-874c208ac5b1&quot;,
+              &quot;id&quot;: &quot;e50747a9-b722-4f78-b785-26f59ca4fa03&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]

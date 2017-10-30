@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GroupsProjects API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>GroupsProjects API</h1>
+
+      <div class="article">
+        <h2>List all groups_projects sorted by new</h2>
+        <h3>GET api/v1/projects/:project_id/groups_projects</h3>
+
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of groups-projects per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">sort</span>
+                </td>
+                <td>
+                  <span class="description">Either &#39;new&#39;, &#39;-new&#39;</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQxODgsInN1YiI6IjVmNjlhMmQ4LTFkNDMtNDM4NC1hNDA3LWZmNWMxMjIzZmU2ZCJ9.5K5jL36NNxLa6Mj0Kol6c_O59MoV_unkcBD0pqCAEfE
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/projects/fe436930-18fa-4ebc-87f9-817f0bac48ff/groups_projects?sort=new</pre>
+
+            <h4>Query Parameters</h4>
+            <pre class="request query_parameters highlight">sort: new</pre>
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;2768bcfd26044c2d33f92408892cfb60&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: e9b796c6-1569-4e7f-bf82-df51d73cdf6c
+X-Runtime: 0.015524
+Vary: Origin
+Content-Length: 2007</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;50791080-5607-4887-a923-7868d1ada862&quot;,
+      &quot;type&quot;: &quot;groups_projects&quot;,
+      &quot;attributes&quot;: {
+        &quot;created_at&quot;: &quot;2017-10-30T12:49:48.476Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;group&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;937230b8-5005-48e3-88af-a4ac518aeffb&quot;,
+            &quot;type&quot;: &quot;groups&quot;
+          }
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;3f469d42-ec68-4921-a083-65e9df85c40b&quot;,
+      &quot;type&quot;: &quot;groups_projects&quot;,
+      &quot;attributes&quot;: {
+        &quot;created_at&quot;: &quot;2017-10-30T12:49:48.345Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;group&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;8acf23f7-78d2-412e-a0bf-8da96e269262&quot;,
+            &quot;type&quot;: &quot;groups&quot;
+          }
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;df649132-d8f8-4429-8292-bbfa0b39eb56&quot;,
+      &quot;type&quot;: &quot;groups_projects&quot;,
+      &quot;attributes&quot;: {
+        &quot;created_at&quot;: &quot;2017-10-30T12:49:48.342Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;group&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;657c864a-78cc-45b8-8490-c9338530b2e0&quot;,
+            &quot;type&quot;: &quot;groups&quot;
+          }
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;20bc67e8-43b3-46b4-8502-742812940604&quot;,
+      &quot;type&quot;: &quot;groups_projects&quot;,
+      &quot;attributes&quot;: {
+        &quot;created_at&quot;: &quot;2017-10-30T12:49:48.339Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;group&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;4fca4861-d3bf-4e91-a7b5-441fd7b56600&quot;,
+            &quot;type&quot;: &quot;groups&quot;
+          }
+        }
+      }
+    },
+    {
+      &quot;id&quot;: &quot;038619f1-6ed8-498a-8893-6587f9c46398&quot;,
+      &quot;type&quot;: &quot;groups_projects&quot;,
+      &quot;attributes&quot;: {
+        &quot;created_at&quot;: &quot;2017-10-30T12:49:48.336Z&quot;
+      },
+      &quot;relationships&quot;: {
+        &quot;group&quot;: {
+          &quot;data&quot;: {
+            &quot;id&quot;: &quot;a7742231-ecf8-4d5d-a182-bf5f85f49fc4&quot;,
+            &quot;type&quot;: &quot;groups&quot;
+          }
+        }
+      }
+    }
+  ],
+  &quot;included&quot;: [
+    {
+      &quot;id&quot;: &quot;937230b8-5005-48e3-88af-a4ac518aeffb&quot;,
+      &quot;type&quot;: &quot;groups&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Martians&quot;,
+          &quot;nl&quot;: &quot;Marsmannen&quot;
+        },
+        &quot;slug&quot;: &quot;martians-4&quot;,
+        &quot;memberships_count&quot;: 0
+      }
+    },
+    {
+      &quot;id&quot;: &quot;8acf23f7-78d2-412e-a0bf-8da96e269262&quot;,
+      &quot;type&quot;: &quot;groups&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Martians&quot;,
+          &quot;nl&quot;: &quot;Marsmannen&quot;
+        },
+        &quot;slug&quot;: &quot;martians-3&quot;,
+        &quot;memberships_count&quot;: 0
+      }
+    },
+    {
+      &quot;id&quot;: &quot;657c864a-78cc-45b8-8490-c9338530b2e0&quot;,
+      &quot;type&quot;: &quot;groups&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Martians&quot;,
+          &quot;nl&quot;: &quot;Marsmannen&quot;
+        },
+        &quot;slug&quot;: &quot;martians-2&quot;,
+        &quot;memberships_count&quot;: 0
+      }
+    },
+    {
+      &quot;id&quot;: &quot;4fca4861-d3bf-4e91-a7b5-441fd7b56600&quot;,
+      &quot;type&quot;: &quot;groups&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Martians&quot;,
+          &quot;nl&quot;: &quot;Marsmannen&quot;
+        },
+        &quot;slug&quot;: &quot;martians-1&quot;,
+        &quot;memberships_count&quot;: 0
+      }
+    },
+    {
+      &quot;id&quot;: &quot;a7742231-ecf8-4d5d-a182-bf5f85f49fc4&quot;,
+      &quot;type&quot;: &quot;groups&quot;,
+      &quot;attributes&quot;: {
+        &quot;title_multiloc&quot;: {
+          &quot;en&quot;: &quot;Martians&quot;,
+          &quot;nl&quot;: &quot;Marsmannen&quot;
+        },
+        &quot;slug&quot;: &quot;martians&quot;,
+        &quot;memberships_count&quot;: 0
+      }
+    }
+  ],
+  &quot;links&quot;: {
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>

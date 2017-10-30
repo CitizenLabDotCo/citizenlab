@@ -126,6 +126,22 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of projects per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">topics</span>
                 </td>
                 <td>
@@ -147,7 +163,7 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2NDIsInN1YiI6IjU5ZjI5NWU3LTljOTctNGFmYy1iYTRiLTZhZGU3YmIzN2YwMSJ9.NeLsmOMTBekSuRGm29I6onuFTuMD-fBK9wffSbiScrI
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQyNjIsInN1YiI6IjNmZTY0NDE0LTgxNzktNDVlOC05NGFmLWNhZWUwYTBmYTliOSJ9.UQ9gl8hkpyoByAVzR_z_Dp2TF0MxewAG0aQAIPLwqyo
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
@@ -161,19 +177,19 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;c64273c07fc13ea7fb34622a2305dc4a&quot;
+ETag: W/&quot;c33e3d13eede9769e17f3e8d7f4de2db&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: aeb29f1f-bb81-4166-adb8-527cabf68ab6
-X-Runtime: 0.075680
+X-Request-Id: c8930c11-085e-4ac1-ba23-2362c4472a3a
+X-Runtime: 0.179519
 Vary: Origin
-Content-Length: 3534</pre>
+Content-Length: 3644</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;f9d60c24-3cad-4f7a-82cb-fbf2b58211d2&quot;,
+      &quot;id&quot;: &quot;f37fa6f6-58d0-460f-8555-10d92f53f370&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -190,9 +206,10 @@ Content-Length: 3534</pre>
           &quot;medium&quot;: null,
           &quot;small&quot;: null
         },
+        &quot;visible_to&quot;: &quot;public&quot;,
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:02.861Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:02.861Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:02.648Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:02.648Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
@@ -213,7 +230,7 @@ Content-Length: 3534</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;84432d0b-97d6-40c5-a0eb-b272b589bad5&quot;,
+      &quot;id&quot;: &quot;731244e4-9d5d-4d99-ae95-127f8cce57e4&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -230,9 +247,10 @@ Content-Length: 3534</pre>
           &quot;medium&quot;: null,
           &quot;small&quot;: null
         },
+        &quot;visible_to&quot;: &quot;public&quot;,
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:02.852Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:02.852Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:02.637Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:02.637Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
@@ -253,7 +271,7 @@ Content-Length: 3534</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;951be999-85d7-4964-a70a-f3369d7367b7&quot;,
+      &quot;id&quot;: &quot;415bc62c-d9fe-4757-8ee7-8e8c59cc49e5&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -270,9 +288,10 @@ Content-Length: 3534</pre>
           &quot;medium&quot;: null,
           &quot;small&quot;: null
         },
+        &quot;visible_to&quot;: &quot;public&quot;,
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:02.842Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:02.842Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:02.628Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:02.628Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
@@ -293,7 +312,7 @@ Content-Length: 3534</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;89f37068-1bda-4c2a-9918-c3f433ea8288&quot;,
+      &quot;id&quot;: &quot;3ee9c78f-b933-4114-840e-9246bddef5e8&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -310,9 +329,10 @@ Content-Length: 3534</pre>
           &quot;medium&quot;: null,
           &quot;small&quot;: null
         },
+        &quot;visible_to&quot;: &quot;public&quot;,
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:02.832Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:02.832Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:02.619Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:02.619Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
@@ -333,7 +353,7 @@ Content-Length: 3534</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;20d83e14-e6c7-4f7e-b160-efd57155d440&quot;,
+      &quot;id&quot;: &quot;a937731d-6d51-43a1-a236-6b04b895c5e1&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -350,9 +370,10 @@ Content-Length: 3534</pre>
           &quot;medium&quot;: null,
           &quot;small&quot;: null
         },
+        &quot;visible_to&quot;: &quot;public&quot;,
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:02.820Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:02.820Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:02.611Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:02.611Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
