@@ -56,7 +56,8 @@ class User < ApplicationRecord
       last_name: auth.info['last_name'],
       email: auth.info['email'],
       remote_avatar_url: auth.info['image'],
-      locale: Tenant.current.closest_locale_to(auth.extra.raw_info.locale)
+      locale: Tenant.current.closest_locale_to(auth.extra.raw_info.locale),
+      gender: auth.extra.raw_info.gender
     )
   end
 
