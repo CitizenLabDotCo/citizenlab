@@ -139,6 +139,7 @@ const ProjectsInfo = ({ project, images, className }) => {
           </IdeaBodyStyled>
         </Left>
         <Right>
+
           {/*
           <AddIdeaButtonStyled>
             <Link to={`/ideas/new/${params.projectId}`}>
@@ -146,12 +147,15 @@ const ProjectsInfo = ({ project, images, className }) => {
             </Link>
           </AddIdeaButtonStyled>
           */}
+
           <ProjectImages>
-            {images && images.map((image) => (
+            {images && images.filter((image) => image).map((image) => (
               <ProjectImage key={image.get('id')} src={image.getIn(['attributes', 'versions', 'medium'])} />
             ))}
           </ProjectImages>
-          {/* <section>
+
+          {/*
+          <section>
             <ProjectSideLabel>
               <FormattedMessage {...messages.topics} />
             </ProjectSideLabel>
@@ -161,7 +165,9 @@ const ProjectsInfo = ({ project, images, className }) => {
                 <T value={topic.title_multiloc} />
               </ProjectTopicStyled></article>))}
             </ProjectTopicsStyled>
-          </section> */}
+          </section>
+          */}
+
         </Right>
       </Container>
     </ContentContainer>

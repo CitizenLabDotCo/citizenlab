@@ -61,8 +61,8 @@ class GroupsList extends React.Component<Props, State> {
         <PageTitle>
           <FormattedMessage {...messages.listTitle} />
         </PageTitle>
-        <PageWrapper>
 
+        <PageWrapper>
           <ButtonWrapper>
             <Button style="cl-blue" circularCorners={false} icon="plus-circle" onClick={this.openCreationModal}><FormattedMessage {...messages.addGroupButton} /></Button>
           </ButtonWrapper>

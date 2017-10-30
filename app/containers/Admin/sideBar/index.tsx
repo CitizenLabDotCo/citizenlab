@@ -8,7 +8,7 @@ import { Location } from 'history';
 
 // components
 import Icon from 'components/UI/Icon';
-// import { Image, Menu } from 'semantic-ui-react';
+import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -18,19 +18,27 @@ import messages from './messages';
 import styled, { css } from 'styled-components';
 
 const Menu = styled.div`
+  width: 240px;
   height: 100%;
-  width: 100%;
   position: fixed;
   z-index: 1;
-  margin-top: -69px;
+  margin-top: 0px;
   background: #3b3b3b;
-  padding-top: 30px;
-  border-radius: 0 !important;
+  padding-top: 35px;
+`;
+
+const IconWrapper = styled.div`
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const StyledIcon = styled(Icon)`
-  height: 15px;
+  height: 20px;
   fill: #fff;
+  opacity: 0.5;
 `;
 
 const Text = styled.div`
@@ -39,65 +47,38 @@ const Text = styled.div`
   font-weight: 400;
   line-height: 22px;
   margin-left: 20px;
+  opacity: 0.5;
 `;
 
 const MenuItem: any = styled(Link)`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding-left: 12px;
   background: transparent;
 
   &:hover {
-    background: #232323;
-
     ${StyledIcon} {
-      fill: #fff;
+      opacity: 1;
     };
 
     ${Text} {
-      color: #fff;
+      opacity: 1;
     };
   }
 
   ${(props: any) => props.active && css`
-    background: #232323;
+    background: #222;
 
     ${StyledIcon} {
-      fill: #fff;
+      opacity: 1;
     };
 
     ${Text} {
-      color: #fff;
+      opacity: 1;
     };
   `}
-
-  /*
-  ::before,
-  ::after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-  }
-
-  ::after {
-    top: -20px;
-    right: 20px;
-    border-color: transparent transparent #fff transparent;
-    border-width: 10px;
-  }
-
-  > a:after {
-    width: 12px;
-    height: 12px;
-    transform: rotate(-315deg);
-    background-color: #f2f2f2;
-    content: '';
-    position: relative;
-    margin-top: -15px;
-    display: ${(props: any) => props.active ? 'block' : 'none'};
-    margin-left: calc(100% + 16px)
-  }
-  */
 `;
 
 type Props = {};
@@ -139,32 +120,34 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps, State> {
       <Menu>
 
         <MenuItem active={pathname === '/admin'} to="/admin">
-          <StyledIcon name="analytics" />
+          <IconWrapper><StyledIcon name="analytics" /></IconWrapper>
           <Text>{formatMessage({ ...messages.dashboard })}</Text>
         </MenuItem>
 
         <MenuItem active={pathname === '/admin/users'} to="/admin/users">
-          <StyledIcon name="people" />
+          <IconWrapper><StyledIcon name="people" /></IconWrapper>
           <Text>{formatMessage({ ...messages.users })}</Text>
         </MenuItem>
 
-        <MenuItem active={pathname === '/admin/groups'} to="/admin/groups">
-          <StyledIcon name="groups" />
-          <Text>{formatMessage({ ...messages.groups })}</Text>
-        </MenuItem>
+        <FeatureFlag name="groups">
+          <MenuItem active={pathname === '/admin/groups'} to="/admin/groups">
+            <IconWrapper><StyledIcon name="groups" /></IconWrapper>
+            <Text>{formatMessage({ ...messages.groups })}</Text>
+          </MenuItem>
+        </FeatureFlag>
 
         <MenuItem active={pathname === '/admin/projects'} to="/admin/projects">
-          <StyledIcon name="project" />
+          <IconWrapper><StyledIcon name="project" /></IconWrapper>
           <Text>{formatMessage({ ...messages.projects })}</Text>
         </MenuItem>
 
         <MenuItem active={pathname === '/admin/ideas'} to="/admin/ideas">
-          <StyledIcon name="idea" />
+          <IconWrapper><StyledIcon name="idea" /></IconWrapper>
           <Text>{formatMessage({ ...messages.ideas })}</Text>
         </MenuItem>
 
         <MenuItem active={pathname === '/admin/settings'} to="/admin/settings">
-          <StyledIcon name="settings" />
+          <IconWrapper><StyledIcon name="settings" /></IconWrapper>
           <Text>{formatMessage({ ...messages.settings })}</Text>
         </MenuItem>
 

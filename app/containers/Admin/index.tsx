@@ -8,14 +8,19 @@ import Sidebar from './sideBar/';
 // style
 import styled from 'styled-components';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+`;
+
 const LeftColumn = styled.div`
-  width: 260px;
+  flex: 0 0 240px;
 `;
 
 const RightColumn = styled.div`
-  width: calc(100% - 210px);
-  margin-left: 210px;
-  display: inline-block;
+  flex: 1;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   background-color: #f2f2f2;
 `;
 
@@ -32,10 +37,10 @@ type State = {};
 export default class AdminPage extends React.PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
-    const children = this.props['children'];
+    const { children } = this.props;
 
     return (
-      <div className={className}>
+      <Container className={className}>
         <LeftColumn>
           {<Sidebar {...this.props} />}
         </LeftColumn>
@@ -44,7 +49,7 @@ export default class AdminPage extends React.PureComponent<Props, State> {
             {children}
           </AdminContainerStyled>
         </RightColumn>
-      </div>
+      </Container>
     );
   }
 }
