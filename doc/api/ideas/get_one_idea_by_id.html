@@ -118,12 +118,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MzAsInN1YiI6ImM5YzJlM2Q4LTRiZmItNDZiMi05YTY4LTQ3ZmEwNmExMTAwNiJ9.UV0LA8A7czZOmxVRYrIPaUJ3kOUSZdIjygQwnRxhTl8
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQyMjAsInN1YiI6ImZhOWFhMWUyLTkxNmItNGJlOS1hY2I1LTk3YmE3MTM1NjlkZSJ9.tje9_NveKAgmHMmxGBn6Hf6eli9psBN2H2yIjzi7O10
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas/83966a62-ff46-416f-8d96-4029a2c28306</pre>
+          <pre class="request route highlight">GET api/v1/ideas/ceddbb43-dd0b-4f58-9d2d-16df60333909</pre>
 
 
 
@@ -131,18 +131,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;9b65895b1cc6af7f68947b4687381619&quot;
+ETag: W/&quot;aaec6624c9dacb376205eecde9c4b084&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 6c177fa9-da7d-4fb7-9b9e-19bdf6f66151
-X-Runtime: 0.033894
+X-Request-Id: 72cf62b5-c26b-445f-be5e-3d2ddc6ae11a
+X-Runtime: 0.034227
 Vary: Origin
-Content-Length: 1699</pre>
+Content-Length: 1690</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;83966a62-ff46-416f-8d96-4029a2c28306&quot;,
+    &quot;id&quot;: &quot;ceddbb43-dd0b-4f58-9d2d-16df60333909&quot;,
     &quot;type&quot;: &quot;ideas&quot;,
     &quot;attributes&quot;: {
       &quot;title_multiloc&quot;: {
@@ -153,7 +153,7 @@ Content-Length: 1699</pre>
         &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
         &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
       },
-      &quot;author_name&quot;: &quot;Edwardo Goldner&quot;,
+      &quot;author_name&quot;: &quot;Jaydon Yundt&quot;,
       &quot;slug&quot;: &quot;plant-more-trees&quot;,
       &quot;publication_status&quot;: &quot;published&quot;,
       &quot;upvotes_count&quot;: 0,
@@ -161,9 +161,9 @@ Content-Length: 1699</pre>
       &quot;comments_count&quot;: 0,
       &quot;location_point_geojson&quot;: null,
       &quot;location_description&quot;: null,
-      &quot;created_at&quot;: &quot;2017-10-22T18:33:50.239Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-10-22T18:33:50.239Z&quot;,
-      &quot;published_at&quot;: &quot;2017-10-22T18:33:50.239Z&quot;
+      &quot;created_at&quot;: &quot;2017-10-30T12:50:19.180Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-10-30T12:50:19.180Z&quot;,
+      &quot;published_at&quot;: &quot;2017-10-30T12:50:19.180Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;topics&quot;: {
@@ -183,19 +183,19 @@ Content-Length: 1699</pre>
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;e2c04a9e-c954-4e86-9b0b-838893167a5e&quot;,
+          &quot;id&quot;: &quot;f4a918fc-e5c3-4255-a6a3-f499fc754448&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
       &quot;project&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;485b339b-014a-4c25-b64d-238c19528f7a&quot;,
+          &quot;id&quot;: &quot;2b7074b4-b87f-4f6f-b9f8-3e2a235b8944&quot;,
           &quot;type&quot;: &quot;projects&quot;
         }
       },
       &quot;idea_status&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;bed58d1d-1c5f-4a2a-8ce8-44de0c6e103b&quot;,
+          &quot;id&quot;: &quot;d56d31fd-6ed1-4abe-bf99-b0fce8778c29&quot;,
           &quot;type&quot;: &quot;idea_statuses&quot;
         }
       },
@@ -206,25 +206,25 @@ Content-Length: 1699</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;e2c04a9e-c954-4e86-9b0b-838893167a5e&quot;,
+      &quot;id&quot;: &quot;f4a918fc-e5c3-4255-a6a3-f499fc754448&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Edwardo&quot;,
-        &quot;last_name&quot;: &quot;Goldner&quot;,
-        &quot;slug&quot;: &quot;edwardo-goldner&quot;,
+        &quot;first_name&quot;: &quot;Jaydon&quot;,
+        &quot;last_name&quot;: &quot;Yundt&quot;,
+        &quot;slug&quot;: &quot;jaydon-yundt&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/e2c04a9e-c954-4e86-9b0b-838893167a5e/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/e2c04a9e-c954-4e86-9b0b-838893167a5e/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/e2c04a9e-c954-4e86-9b0b-838893167a5e/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/f4a918fc-e5c3-4255-a6a3-f499fc754448/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/f4a918fc-e5c3-4255-a6a3-f499fc754448/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/f4a918fc-e5c3-4255-a6a3-f499fc754448/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:50.224Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:50.224Z&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:50:19.133Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:50:19.133Z&quot;,
         &quot;unread_notifications&quot;: 0
       }
     }

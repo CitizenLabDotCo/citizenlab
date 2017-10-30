@@ -123,6 +123,22 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of projects per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">topics</span>
                 </td>
                 <td>
@@ -144,7 +160,7 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2NDMsInN1YiI6IjE4ODNiYTg4LTgzYzctNGI0My1hMDZkLWQ3Y2QzYWFkNmM2OSJ9.XgkDd2BnVD8UP9N4fUzNdymieNYGqWZlWA0jpiT2lQM
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQyNjMsInN1YiI6IjU5MWMwYTliLTY0NGMtNGJiYi04MWZjLThjNWZlMjJjNTg1NiJ9.glRRpj9Rt0AEOdhCLPuplFDARGkUlrA4Rq3fI5nSol8
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
@@ -160,19 +176,19 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;36b7be610fdf0de19db7235bbc79b329&quot;
+ETag: W/&quot;5efcc6e35daf9815eddaefe7d4496b03&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 86525779-7109-48c0-b489-617e3f85b326
-X-Runtime: 0.029315
+X-Request-Id: 96300fad-1c9a-478b-a154-147ff2b54c1d
+X-Runtime: 0.028651
 Vary: Origin
-Content-Length: 1852</pre>
+Content-Length: 1896</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;5aa340ea-b883-47d7-bf53-e5bcd227d6a8&quot;,
+      &quot;id&quot;: &quot;c559a038-b1fd-47bb-89c6-79396f79860f&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -189,9 +205,10 @@ Content-Length: 1852</pre>
           &quot;medium&quot;: null,
           &quot;small&quot;: null
         },
+        &quot;visible_to&quot;: &quot;public&quot;,
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:02.998Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:02.998Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:02.975Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:02.975Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
@@ -212,7 +229,7 @@ Content-Length: 1852</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;a4690f42-6c79-42b2-8e46-cf7425073c74&quot;,
+      &quot;id&quot;: &quot;34ef0c93-7fc2-4c70-ab57-3750e0e33e2d&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -229,9 +246,10 @@ Content-Length: 1852</pre>
           &quot;medium&quot;: null,
           &quot;small&quot;: null
         },
+        &quot;visible_to&quot;: &quot;public&quot;,
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:02.987Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:02.987Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:02.966Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:02.966Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {

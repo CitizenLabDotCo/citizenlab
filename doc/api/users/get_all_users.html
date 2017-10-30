@@ -123,6 +123,22 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of users per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">search</span>
                 </td>
                 <td>
@@ -145,7 +161,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2NjEsInN1YiI6IjU2MjQwMWVmLTZhMzQtNGM2NS1hNDI2LTgwZmI2YmRkZjUwNCJ9.GxRWRDnC8KTCwABkAbCKUrbPxYHvNtGE9oxnF7S0tI0
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQzMDUsInN1YiI6IjU0NWIyYjA3LTQwYWMtNDg2Ny1hZGQ2LTlmODU5NTU5YzQyOSJ9.Ukz3s2mG7Uk1AJ8gfAZ0DgzgooaDH_gBrpf5w-jxMRg
 Host: example.org
 Cookie: </pre>
 
@@ -158,38 +174,38 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;c106d5183912611c46b5fff89a00aae0&quot;
+ETag: W/&quot;35d216ea90980b8a9067961cc9502b6a&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 37d8ac07-c2ab-4434-b438-5252244b9b6b
-X-Runtime: 0.041882
+X-Request-Id: 708bb581-07db-4e6d-b34c-25b4c7372588
+X-Runtime: 0.046440
 Vary: Origin
-Content-Length: 4661</pre>
+Content-Length: 4631</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;4c312ead-2db6-4d29-aa52-f67134c21b50&quot;,
+      &quot;id&quot;: &quot;1df2e106-11f8-4f19-a61d-88c8c8b2a518&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Chloe&quot;,
-        &quot;last_name&quot;: &quot;Price&quot;,
-        &quot;slug&quot;: &quot;chloe-price&quot;,
+        &quot;first_name&quot;: &quot;Devan&quot;,
+        &quot;last_name&quot;: &quot;Dicki&quot;,
+        &quot;slug&quot;: &quot;devan-dicki&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/4c312ead-2db6-4d29-aa52-f67134c21b50/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/4c312ead-2db6-4d29-aa52-f67134c21b50/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/4c312ead-2db6-4d29-aa52-f67134c21b50/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/1df2e106-11f8-4f19-a61d-88c8c8b2a518/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/1df2e106-11f8-4f19-a61d-88c8c8b2a518/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/1df2e106-11f8-4f19-a61d-88c8c8b2a518/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:21.111Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:21.111Z&quot;,
-        &quot;email&quot;: &quot;scarlett_brakus@brownfeest.org&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:44.789Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:44.789Z&quot;,
+        &quot;email&quot;: &quot;roselyn_hagenes@considine.net&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -198,26 +214,26 @@ Content-Length: 4661</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;8702b253-b7a0-4b46-997c-8e7be3d8bf47&quot;,
+      &quot;id&quot;: &quot;0d996c59-b5f5-40c2-9c56-e046fe4ffa1c&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Adolph&quot;,
-        &quot;last_name&quot;: &quot;Braun&quot;,
-        &quot;slug&quot;: &quot;adolph-braun&quot;,
+        &quot;first_name&quot;: &quot;Francesco&quot;,
+        &quot;last_name&quot;: &quot;Funk&quot;,
+        &quot;slug&quot;: &quot;francesco-funk&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8702b253-b7a0-4b46-997c-8e7be3d8bf47/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8702b253-b7a0-4b46-997c-8e7be3d8bf47/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8702b253-b7a0-4b46-997c-8e7be3d8bf47/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/0d996c59-b5f5-40c2-9c56-e046fe4ffa1c/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/0d996c59-b5f5-40c2-9c56-e046fe4ffa1c/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/0d996c59-b5f5-40c2-9c56-e046fe4ffa1c/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:21.134Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:21.134Z&quot;,
-        &quot;email&quot;: &quot;maximus.veum@wolforn.co&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:44.934Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:44.934Z&quot;,
+        &quot;email&quot;: &quot;edd_blick@auer.net&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -226,26 +242,26 @@ Content-Length: 4661</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;d07b22de-f012-46f1-b778-f7e58b12ca5d&quot;,
+      &quot;id&quot;: &quot;0220a1b1-5212-4aef-abaf-760503375376&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Delmer&quot;,
-        &quot;last_name&quot;: &quot;Schmeler&quot;,
-        &quot;slug&quot;: &quot;delmer-schmeler&quot;,
+        &quot;first_name&quot;: &quot;Cassandre&quot;,
+        &quot;last_name&quot;: &quot;Willms&quot;,
+        &quot;slug&quot;: &quot;cassandre-willms&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d07b22de-f012-46f1-b778-f7e58b12ca5d/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d07b22de-f012-46f1-b778-f7e58b12ca5d/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d07b22de-f012-46f1-b778-f7e58b12ca5d/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/0220a1b1-5212-4aef-abaf-760503375376/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/0220a1b1-5212-4aef-abaf-760503375376/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/0220a1b1-5212-4aef-abaf-760503375376/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:21.158Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:21.158Z&quot;,
-        &quot;email&quot;: &quot;brad.heller@gottlieb.net&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:45.075Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:45.075Z&quot;,
+        &quot;email&quot;: &quot;bruce@koepp.com&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -254,26 +270,26 @@ Content-Length: 4661</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;2074c669-357a-40f2-803c-0ecb58053945&quot;,
+      &quot;id&quot;: &quot;ff02a269-24ce-4d71-844b-8c4047780897&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Anissa&quot;,
-        &quot;last_name&quot;: &quot;DuBuque&quot;,
-        &quot;slug&quot;: &quot;anissa-dubuque&quot;,
+        &quot;first_name&quot;: &quot;Dell&quot;,
+        &quot;last_name&quot;: &quot;Zemlak&quot;,
+        &quot;slug&quot;: &quot;dell-zemlak&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/2074c669-357a-40f2-803c-0ecb58053945/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/2074c669-357a-40f2-803c-0ecb58053945/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/2074c669-357a-40f2-803c-0ecb58053945/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/ff02a269-24ce-4d71-844b-8c4047780897/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/ff02a269-24ce-4d71-844b-8c4047780897/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/ff02a269-24ce-4d71-844b-8c4047780897/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:21.182Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:21.182Z&quot;,
-        &quot;email&quot;: &quot;josiane.marquardt@nitzschemante.io&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:45.213Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:45.213Z&quot;,
+        &quot;email&quot;: &quot;adelbert_pfannerstill@prohaska.org&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -282,26 +298,26 @@ Content-Length: 4661</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;7fffbc9c-e3f1-452c-943f-300f26fbf7a3&quot;,
+      &quot;id&quot;: &quot;8df59254-c593-471f-8d4f-a54c251ddc9a&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Annamarie&quot;,
-        &quot;last_name&quot;: &quot;Blick&quot;,
-        &quot;slug&quot;: &quot;annamarie-blick&quot;,
+        &quot;first_name&quot;: &quot;Eriberto&quot;,
+        &quot;last_name&quot;: &quot;Emmerich&quot;,
+        &quot;slug&quot;: &quot;eriberto-emmerich&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/7fffbc9c-e3f1-452c-943f-300f26fbf7a3/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/7fffbc9c-e3f1-452c-943f-300f26fbf7a3/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/7fffbc9c-e3f1-452c-943f-300f26fbf7a3/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/8df59254-c593-471f-8d4f-a54c251ddc9a/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/8df59254-c593-471f-8d4f-a54c251ddc9a/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/8df59254-c593-471f-8d4f-a54c251ddc9a/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:21.202Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:21.202Z&quot;,
-        &quot;email&quot;: &quot;heaven_rohan@daniel.com&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:45.348Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:45.348Z&quot;,
+        &quot;email&quot;: &quot;geovany@funk.com&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -310,17 +326,17 @@ Content-Length: 4661</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;562401ef-6a34-4c65-a426-80fb6bddf504&quot;,
+      &quot;id&quot;: &quot;545b2b07-40ac-4867-add6-9f859559c429&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Margarett&quot;,
-        &quot;last_name&quot;: &quot;Lubowitz&quot;,
-        &quot;slug&quot;: &quot;margarett-lubowitz&quot;,
+        &quot;first_name&quot;: &quot;Madyson&quot;,
+        &quot;last_name&quot;: &quot;Homenick&quot;,
+        &quot;slug&quot;: &quot;madyson-homenick&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/562401ef-6a34-4c65-a426-80fb6bddf504/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/562401ef-6a34-4c65-a426-80fb6bddf504/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/562401ef-6a34-4c65-a426-80fb6bddf504/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/545b2b07-40ac-4867-add6-9f859559c429/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/545b2b07-40ac-4867-add6-9f859559c429/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/545b2b07-40ac-4867-add6-9f859559c429/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
           {
@@ -329,9 +345,9 @@ Content-Length: 4661</pre>
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:21.093Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:21.218Z&quot;,
-        &quot;email&quot;: &quot;wilton.littel@beattyhirthe.org&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:44.679Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:45.426Z&quot;,
+        &quot;email&quot;: &quot;rosa@mertzhegmann.info&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

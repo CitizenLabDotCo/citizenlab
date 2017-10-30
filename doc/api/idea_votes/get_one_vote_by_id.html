@@ -117,13 +117,13 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MjEsInN1YiI6IjUyODk1ODM0LWYwODUtNDQ3YS1hYmUwLTc0NmFkMGE5ZTc2NiJ9.4PGKaZJHXrekMThtX_9DEJjDmZ2rIDOTwaQk-8zaIQw
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQxOTQsInN1YiI6IjVhMjJiNjI5LTEzYTUtNDI2ZC05OTE3LThkYjhjMWNlN2RjNCJ9.JDEjZYcsA2oGqQk2v2E-_joZulzh6YV0HJ2Lr7SrWuQ
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/votes/54aa441c-ff79-48e9-a7c3-5ffa77dec3f3</pre>
+          <pre class="request route highlight">GET api/v1/votes/b8df9a3c-f6d7-4491-83e7-211572ab0da8</pre>
 
 
 
@@ -131,18 +131,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;8cf486b78f5ebe34ac1707afd0c34c53&quot;
+ETag: W/&quot;79fe5f7e946cec26e9bc0d8406222e25&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: bb5fdf0c-f94f-427d-bc77-cd8c5830c884
-X-Runtime: 0.021229
+X-Request-Id: aef61192-baf8-4350-814d-f8a359c44063
+X-Runtime: 0.017283
 Vary: Origin
-Content-Length: 1045</pre>
+Content-Length: 1057</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;54aa441c-ff79-48e9-a7c3-5ffa77dec3f3&quot;,
+    &quot;id&quot;: &quot;b8df9a3c-f6d7-4491-83e7-211572ab0da8&quot;,
     &quot;type&quot;: &quot;votes&quot;,
     &quot;attributes&quot;: {
       &quot;mode&quot;: &quot;up&quot;
@@ -150,13 +150,13 @@ Content-Length: 1045</pre>
     &quot;relationships&quot;: {
       &quot;votable&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;26650b80-847c-4204-b370-089c74273e63&quot;,
+          &quot;id&quot;: &quot;91bc7c0d-8d6b-42c7-a826-96959d038851&quot;,
           &quot;type&quot;: &quot;votables&quot;
         }
       },
       &quot;user&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;8a165662-766e-4216-9d19-c0fc00426322&quot;,
+          &quot;id&quot;: &quot;38012032-0d90-4c01-b473-ad0e253c6563&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       }
@@ -164,26 +164,26 @@ Content-Length: 1045</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;8a165662-766e-4216-9d19-c0fc00426322&quot;,
+      &quot;id&quot;: &quot;38012032-0d90-4c01-b473-ad0e253c6563&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Frieda&quot;,
-        &quot;last_name&quot;: &quot;Lebsack&quot;,
-        &quot;slug&quot;: &quot;frieda-lebsack&quot;,
+        &quot;first_name&quot;: &quot;Paula&quot;,
+        &quot;last_name&quot;: &quot;Satterfield&quot;,
+        &quot;slug&quot;: &quot;paula-satterfield&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8a165662-766e-4216-9d19-c0fc00426322/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8a165662-766e-4216-9d19-c0fc00426322/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8a165662-766e-4216-9d19-c0fc00426322/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/38012032-0d90-4c01-b473-ad0e253c6563/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/38012032-0d90-4c01-b473-ad0e253c6563/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/38012032-0d90-4c01-b473-ad0e253c6563/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:41.725Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:41.725Z&quot;,
-        &quot;email&quot;: &quot;manley@metz.org&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:49:54.604Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:49:54.604Z&quot;,
+        &quot;email&quot;: &quot;fidel@mclaughlin.name&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

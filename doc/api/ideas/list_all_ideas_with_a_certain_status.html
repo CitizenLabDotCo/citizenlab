@@ -123,10 +123,26 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of ideas per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">topics</span>
                 </td>
                 <td>
-                  <span class="description">Filter by topics (AND)</span>
+                  <span class="description">Filter by topics (OR)</span>
                 </td>
               </tr>
               <tr>
@@ -134,7 +150,7 @@ table th, table td {
                     <span class="name">areas</span>
                 </td>
                 <td>
-                  <span class="description">Filter by areas (AND)</span>
+                  <span class="description">Filter by areas (OR)</span>
                 </td>
               </tr>
               <tr>
@@ -193,34 +209,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MjcsInN1YiI6ImQ1ZTAzMzY3LWU2MTUtNGMzMS1iMjY0LWVjYjhkNzJhYTI1OSJ9.hPnS4HXSoxVC16vksXl2EhoOBIjXGkKXqL1zMLC19ng
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQyMTEsInN1YiI6ImM5MDMzNmUzLTdjYTgtNDQ0Yy1hY2YwLTFhMWU3OTBiOGFkZSJ9.HZOHCQyUQdrcXaC1MoJ_aJ3mlrLb21it2rhqK3aU8ok
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?idea_status=8ce44685-8062-4f23-aa22-a97ed297eb4f</pre>
+          <pre class="request route highlight">GET api/v1/ideas?idea_status=d3eaddc4-2b85-4649-bc8b-8d811517c5f5</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">idea_status: 8ce44685-8062-4f23-aa22-a97ed297eb4f</pre>
+            <pre class="request query_parameters highlight">idea_status: d3eaddc4-2b85-4649-bc8b-8d811517c5f5</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;e8df8ca201a1b4cbc1572cd72eabf972&quot;
+ETag: W/&quot;1260d2a22dce51f629ec21f195136c65&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 2c78c6cb-4c2a-4d57-8b3d-dc534197de2b
-X-Runtime: 0.037947
+X-Request-Id: 2ddb0e72-0b69-44bd-b62d-d13c694d7730
+X-Runtime: 0.037871
 Vary: Origin
-Content-Length: 1723</pre>
+Content-Length: 1717</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;84f6c095-f4f2-4d43-989f-18e0fe6bf918&quot;,
+      &quot;id&quot;: &quot;0bb74e3f-53b7-4103-a94d-14809285ad72&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -231,7 +247,7 @@ Content-Length: 1723</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Giovanna Schneider&quot;,
+        &quot;author_name&quot;: &quot;Kendrick McGlynn&quot;,
         &quot;slug&quot;: &quot;plant-more-trees-7&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
@@ -239,9 +255,9 @@ Content-Length: 1723</pre>
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:47.501Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:47.501Z&quot;,
-        &quot;published_at&quot;: &quot;2017-10-22T18:33:47.501Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-30T12:50:11.184Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:50:11.184Z&quot;,
+        &quot;published_at&quot;: &quot;2017-10-30T12:50:11.184Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -261,19 +277,19 @@ Content-Length: 1723</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;53957597-5a57-4402-b54f-e0b3f1543edd&quot;,
+            &quot;id&quot;: &quot;cab9c777-efff-447e-a920-45af8d4d0de3&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;8c7aaa49-e88d-4dc6-916c-27b57c81971d&quot;,
+            &quot;id&quot;: &quot;702d6be8-be63-49d4-81e9-004094aa6906&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;8ce44685-8062-4f23-aa22-a97ed297eb4f&quot;,
+            &quot;id&quot;: &quot;d3eaddc4-2b85-4649-bc8b-8d811517c5f5&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -285,25 +301,25 @@ Content-Length: 1723</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;53957597-5a57-4402-b54f-e0b3f1543edd&quot;,
+      &quot;id&quot;: &quot;cab9c777-efff-447e-a920-45af8d4d0de3&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Giovanna&quot;,
-        &quot;last_name&quot;: &quot;Schneider&quot;,
-        &quot;slug&quot;: &quot;giovanna-schneider&quot;,
+        &quot;first_name&quot;: &quot;Kendrick&quot;,
+        &quot;last_name&quot;: &quot;McGlynn&quot;,
+        &quot;slug&quot;: &quot;kendrick-mcglynn&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/53957597-5a57-4402-b54f-e0b3f1543edd/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/53957597-5a57-4402-b54f-e0b3f1543edd/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/53957597-5a57-4402-b54f-e0b3f1543edd/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/cab9c777-efff-447e-a920-45af8d4d0de3/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/cab9c777-efff-447e-a920-45af8d4d0de3/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/cab9c777-efff-447e-a920-45af8d4d0de3/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:47.485Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:47.485Z&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:50:11.131Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:50:11.131Z&quot;,
         &quot;unread_notifications&quot;: 0
       }
     }

@@ -11,6 +11,10 @@ resource "Projects" do
   end
 
   get "api/v1/projects" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of projects per page"
+    end
     parameter :topics, 'Filter by topics (AND)', required: false
     parameter :areas, 'Filter by areas (AND)', required: false
 

@@ -188,12 +188,12 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MjAsInN1YiI6IjJhMDI2ZDQ4LTA0OWQtNDEwZC1iODgxLWUwZmYwMTdjM2UzMSJ9.IIjN_CFodyZfUOXPBlV_Cbo4ACGNd1Ybk-zn8-sFF94
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQxODYsInN1YiI6IjY0YzJjZWI1LWY0MjUtNDMxOC05OTYzLWI0ODY3N2RiMjk5NiJ9.Jow82REY_4vW6uSiKwPIRozRotvA8cnjN-AAxW4MpNg
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">PATCH api/v1/comments/58315d55-b6fe-4587-8ebe-05449ed90903</pre>
+          <pre class="request route highlight">PATCH api/v1/comments/86dd2c31-ec3e-4c72-af33-0469f9366e96</pre>
 
 
             <h4>Body</h4>
@@ -203,18 +203,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;74bc764e6c215f28f1e493a653b39482&quot;
+ETag: W/&quot;fe798e8d94a2043f80a565998a5897f6&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 9d3ed45f-dfef-497d-a560-427f1115983c
-X-Runtime: 0.026584
+X-Request-Id: d6b4f008-7ceb-4ae6-bb49-3633d26a6fd3
+X-Runtime: 0.025422
 Vary: Origin
-Content-Length: 1339</pre>
+Content-Length: 1334</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;58315d55-b6fe-4587-8ebe-05449ed90903&quot;,
+    &quot;id&quot;: &quot;86dd2c31-ec3e-4c72-af33-0469f9366e96&quot;,
     &quot;type&quot;: &quot;comments&quot;,
     &quot;attributes&quot;: {
       &quot;body_multiloc&quot;: {
@@ -223,19 +223,19 @@ Content-Length: 1339</pre>
       },
       &quot;upvotes_count&quot;: 0,
       &quot;downvotes_count&quot;: 0,
-      &quot;created_at&quot;: &quot;2017-10-22T18:33:40.185Z&quot;,
-      &quot;updated_at&quot;: &quot;2017-10-22T18:33:40.185Z&quot;
+      &quot;created_at&quot;: &quot;2017-10-30T12:49:46.278Z&quot;,
+      &quot;updated_at&quot;: &quot;2017-10-30T12:49:46.278Z&quot;
     },
     &quot;relationships&quot;: {
       &quot;idea&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;18ef1f91-054e-4cd2-a054-c4ee9e7f8387&quot;,
+          &quot;id&quot;: &quot;88da501a-8865-4705-a129-00c807b6464d&quot;,
           &quot;type&quot;: &quot;ideas&quot;
         }
       },
       &quot;author&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;2a026d48-049d-410d-b881-e0ff017c3e31&quot;,
+          &quot;id&quot;: &quot;64c2ceb5-f425-4318-9963-b48677db2996&quot;,
           &quot;type&quot;: &quot;authors&quot;
         }
       },
@@ -249,26 +249,26 @@ Content-Length: 1339</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;2a026d48-049d-410d-b881-e0ff017c3e31&quot;,
+      &quot;id&quot;: &quot;64c2ceb5-f425-4318-9963-b48677db2996&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Ardith&quot;,
-        &quot;last_name&quot;: &quot;Ondricka&quot;,
-        &quot;slug&quot;: &quot;ardith-ondricka&quot;,
+        &quot;first_name&quot;: &quot;Dillon&quot;,
+        &quot;last_name&quot;: &quot;Lakin&quot;,
+        &quot;slug&quot;: &quot;dillon-lakin&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/2a026d48-049d-410d-b881-e0ff017c3e31/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/2a026d48-049d-410d-b881-e0ff017c3e31/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/2a026d48-049d-410d-b881-e0ff017c3e31/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/64c2ceb5-f425-4318-9963-b48677db2996/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/64c2ceb5-f425-4318-9963-b48677db2996/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/64c2ceb5-f425-4318-9963-b48677db2996/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:40.167Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:40.167Z&quot;,
-        &quot;email&quot;: &quot;erick@schoen.org&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:49:46.236Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:49:46.236Z&quot;,
+        &quot;email&quot;: &quot;bernie@kulas.info&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

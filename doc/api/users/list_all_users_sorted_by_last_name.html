@@ -123,6 +123,22 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of users per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">search</span>
                 </td>
                 <td>
@@ -145,7 +161,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2NjEsInN1YiI6IjVkYmRjYjQ4LWQ5ZDMtNGJiZi1hMmUwLTY5NjVmNzQzNzM2ZCJ9.LX7xey7iADNPzF2qMrvneMnt9rL0ngWy4Pbii_buY1I
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQzMDgsInN1YiI6ImQ5NDM2NmViLWZmNDUtNDQwMy04ZjdlLWJhNWMzYmJiZjk0ZiJ9.TPfusncDG2RmeT0bkXM_H5v9ckvojKuGyV0yrrrtMCQ
 Host: example.org
 Cookie: </pre>
 
@@ -160,38 +176,38 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;e3ee6b5b3b9371d4563aa237e0a462b8&quot;
+ETag: W/&quot;58a2b771fc4612a87fe2b52f2972258c&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: fdd5ba3a-e251-45c5-9655-0ee0f36331ea
-X-Runtime: 0.048067
+X-Request-Id: b26a2c22-ebe7-4fcb-9654-a71cf2727c6f
+X-Runtime: 0.048778
 Vary: Origin
-Content-Length: 4622</pre>
+Content-Length: 4640</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;c33717f0-6454-4943-82d1-9c55d2ebf693&quot;,
+      &quot;id&quot;: &quot;90411a39-6e48-4e0b-898e-87a091bf2836&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Doris&quot;,
-        &quot;last_name&quot;: &quot;Buckridge&quot;,
-        &quot;slug&quot;: &quot;doris-buckridge&quot;,
+        &quot;first_name&quot;: &quot;Alana&quot;,
+        &quot;last_name&quot;: &quot;Beier&quot;,
+        &quot;slug&quot;: &quot;alana-beier&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/c33717f0-6454-4943-82d1-9c55d2ebf693/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/c33717f0-6454-4943-82d1-9c55d2ebf693/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/c33717f0-6454-4943-82d1-9c55d2ebf693/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/90411a39-6e48-4e0b-898e-87a091bf2836/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/90411a39-6e48-4e0b-898e-87a091bf2836/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/90411a39-6e48-4e0b-898e-87a091bf2836/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:21.744Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:21.744Z&quot;,
-        &quot;email&quot;: &quot;eddie.feil@wolf.io&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:48.386Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:48.386Z&quot;,
+        &quot;email&quot;: &quot;paolo@kshlerin.biz&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -200,26 +216,26 @@ Content-Length: 4622</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;2c9b9f10-0d1a-4ae3-889f-5fc6bfcf0c80&quot;,
+      &quot;id&quot;: &quot;5b4d89ff-c4da-4c81-bd10-365e898c8cc6&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Isabelle&quot;,
-        &quot;last_name&quot;: &quot;Funk&quot;,
-        &quot;slug&quot;: &quot;isabelle-funk&quot;,
+        &quot;first_name&quot;: &quot;Haylie&quot;,
+        &quot;last_name&quot;: &quot;Cormier&quot;,
+        &quot;slug&quot;: &quot;haylie-cormier&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/2c9b9f10-0d1a-4ae3-889f-5fc6bfcf0c80/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/2c9b9f10-0d1a-4ae3-889f-5fc6bfcf0c80/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/2c9b9f10-0d1a-4ae3-889f-5fc6bfcf0c80/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/5b4d89ff-c4da-4c81-bd10-365e898c8cc6/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/5b4d89ff-c4da-4c81-bd10-365e898c8cc6/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/5b4d89ff-c4da-4c81-bd10-365e898c8cc6/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:21.656Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:21.656Z&quot;,
-        &quot;email&quot;: &quot;eldora@bergstrom.io&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:47.965Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:47.965Z&quot;,
+        &quot;email&quot;: &quot;roselyn@larkinherman.biz&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -228,73 +244,17 @@ Content-Length: 4622</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;3da86f11-d5fa-4f14-bc3d-191c950a319d&quot;,
+      &quot;id&quot;: &quot;d94366eb-ff45-4403-8f7e-ba5c3bbbf94f&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Teagan&quot;,
-        &quot;last_name&quot;: &quot;Larson&quot;,
-        &quot;slug&quot;: &quot;teagan-larson&quot;,
+        &quot;first_name&quot;: &quot;Forest&quot;,
+        &quot;last_name&quot;: &quot;Kilback&quot;,
+        &quot;slug&quot;: &quot;forest-kilback&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/3da86f11-d5fa-4f14-bc3d-191c950a319d/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/3da86f11-d5fa-4f14-bc3d-191c950a319d/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/3da86f11-d5fa-4f14-bc3d-191c950a319d/large_robot.jpg&quot;
-        },
-        &quot;roles&quot;: [
-
-        ],
-        &quot;bio_multiloc&quot;: {
-        },
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:21.725Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:21.725Z&quot;,
-        &quot;email&quot;: &quot;theresia_connelly@beahan.info&quot;,
-        &quot;gender&quot;: null,
-        &quot;birthyear&quot;: null,
-        &quot;domicile&quot;: null,
-        &quot;education&quot;: null,
-        &quot;unread_notifications&quot;: 0
-      }
-    },
-    {
-      &quot;id&quot;: &quot;d6714909-25b9-4d1b-b7b3-15a1b155b74a&quot;,
-      &quot;type&quot;: &quot;users&quot;,
-      &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Nya&quot;,
-        &quot;last_name&quot;: &quot;Leuschke&quot;,
-        &quot;slug&quot;: &quot;nya-leuschke&quot;,
-        &quot;locale&quot;: &quot;en&quot;,
-        &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d6714909-25b9-4d1b-b7b3-15a1b155b74a/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d6714909-25b9-4d1b-b7b3-15a1b155b74a/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d6714909-25b9-4d1b-b7b3-15a1b155b74a/large_robot.jpg&quot;
-        },
-        &quot;roles&quot;: [
-
-        ],
-        &quot;bio_multiloc&quot;: {
-        },
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:21.700Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:21.700Z&quot;,
-        &quot;email&quot;: &quot;harold.reinger@mayert.name&quot;,
-        &quot;gender&quot;: null,
-        &quot;birthyear&quot;: null,
-        &quot;domicile&quot;: null,
-        &quot;education&quot;: null,
-        &quot;unread_notifications&quot;: 0
-      }
-    },
-    {
-      &quot;id&quot;: &quot;5dbdcb48-d9d3-4bbf-a2e0-6965f743736d&quot;,
-      &quot;type&quot;: &quot;users&quot;,
-      &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Gage&quot;,
-        &quot;last_name&quot;: &quot;Little&quot;,
-        &quot;slug&quot;: &quot;gage-little&quot;,
-        &quot;locale&quot;: &quot;en&quot;,
-        &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/5dbdcb48-d9d3-4bbf-a2e0-6965f743736d/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/5dbdcb48-d9d3-4bbf-a2e0-6965f743736d/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/5dbdcb48-d9d3-4bbf-a2e0-6965f743736d/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/d94366eb-ff45-4403-8f7e-ba5c3bbbf94f/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/d94366eb-ff45-4403-8f7e-ba5c3bbbf94f/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/d94366eb-ff45-4403-8f7e-ba5c3bbbf94f/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
           {
@@ -303,9 +263,9 @@ Content-Length: 4622</pre>
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:21.640Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:21.761Z&quot;,
-        &quot;email&quot;: &quot;bud.konopelski@koch.org&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:47.682Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:48.445Z&quot;,
+        &quot;email&quot;: &quot;brandyn@rosenbaumwhite.org&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -314,26 +274,82 @@ Content-Length: 4622</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;8bfee321-e358-4b30-8e1f-e4d2c81478d2&quot;,
+      &quot;id&quot;: &quot;5adbd7a7-4679-4d1c-942a-8664e29fc3d7&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Terrill&quot;,
-        &quot;last_name&quot;: &quot;Waelchi&quot;,
-        &quot;slug&quot;: &quot;terrill-waelchi&quot;,
+        &quot;first_name&quot;: &quot;Timothy&quot;,
+        &quot;last_name&quot;: &quot;Kuvalis&quot;,
+        &quot;slug&quot;: &quot;timothy-kuvalis&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8bfee321-e358-4b30-8e1f-e4d2c81478d2/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8bfee321-e358-4b30-8e1f-e4d2c81478d2/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8bfee321-e358-4b30-8e1f-e4d2c81478d2/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/5adbd7a7-4679-4d1c-942a-8664e29fc3d7/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/5adbd7a7-4679-4d1c-942a-8664e29fc3d7/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/5adbd7a7-4679-4d1c-942a-8664e29fc3d7/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:21.679Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:21.679Z&quot;,
-        &quot;email&quot;: &quot;delilah@lowekunde.info&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:48.103Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:48.103Z&quot;,
+        &quot;email&quot;: &quot;alexane@doyle.com&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null,
+        &quot;unread_notifications&quot;: 0
+      }
+    },
+    {
+      &quot;id&quot;: &quot;18acf6f7-01b3-49c5-b6f0-74068e282100&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Cordell&quot;,
+        &quot;last_name&quot;: &quot;Macejkovic&quot;,
+        &quot;slug&quot;: &quot;cordell-macejkovic&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/18acf6f7-01b3-49c5-b6f0-74068e282100/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/18acf6f7-01b3-49c5-b6f0-74068e282100/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/18acf6f7-01b3-49c5-b6f0-74068e282100/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:48.246Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:48.246Z&quot;,
+        &quot;email&quot;: &quot;kimberly_bahringer@hills.name&quot;,
+        &quot;gender&quot;: null,
+        &quot;birthyear&quot;: null,
+        &quot;domicile&quot;: null,
+        &quot;education&quot;: null,
+        &quot;unread_notifications&quot;: 0
+      }
+    },
+    {
+      &quot;id&quot;: &quot;7f05e3bf-ea28-40d5-be62-eb8d269120b6&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Sid&quot;,
+        &quot;last_name&quot;: &quot;Waelchi&quot;,
+        &quot;slug&quot;: &quot;sid-waelchi&quot;,
+        &quot;locale&quot;: &quot;en&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/7f05e3bf-ea28-40d5-be62-eb8d269120b6/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/7f05e3bf-ea28-40d5-be62-eb8d269120b6/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/7f05e3bf-ea28-40d5-be62-eb8d269120b6/large_robot.jpg&quot;
+        },
+        &quot;roles&quot;: [
+
+        ],
+        &quot;bio_multiloc&quot;: {
+        },
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:47.825Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:47.825Z&quot;,
+        &quot;email&quot;: &quot;alexandrea_daugherty@wuckert.name&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

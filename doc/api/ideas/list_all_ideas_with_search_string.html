@@ -123,10 +123,26 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of ideas per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">topics</span>
                 </td>
                 <td>
-                  <span class="description">Filter by topics (AND)</span>
+                  <span class="description">Filter by topics (OR)</span>
                 </td>
               </tr>
               <tr>
@@ -134,7 +150,7 @@ table th, table td {
                     <span class="name">areas</span>
                 </td>
                 <td>
-                  <span class="description">Filter by areas (AND)</span>
+                  <span class="description">Filter by areas (OR)</span>
                 </td>
               </tr>
               <tr>
@@ -193,7 +209,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MjgsInN1YiI6IjgzYjkxZDc3LWUyYmUtNGUzZC1hYzFiLTJjNTY4MTgwZjcyMiJ9.SfYW3hJXnRY00zkVQgEVI-ZwAhEp1QZLvinFYGUX-0w
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQyMTQsInN1YiI6ImY4ZjZmYWM3LTliNzMtNGYyNS1iNzFmLWEzYmE5NjkwNTFkZSJ9.2S9Cn410lFKVAofF0t4DbNnDYZP96HLexCWJgFfKi6g
 Host: example.org
 Cookie: </pre>
 
@@ -208,19 +224,19 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;7f0a22fcf420dc5ad214aa8d2942967b&quot;
+ETag: W/&quot;95fb1e533ca5bd865f890ffbcf5cdab2&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: b013fddc-4303-490e-a566-d65f31c42d84
-X-Runtime: 0.047783
+X-Request-Id: ea78221e-3ab6-4d70-8891-a607736477eb
+X-Runtime: 0.057581
 Vary: Origin
-Content-Length: 1696</pre>
+Content-Length: 1684</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;538de606-acbd-4db3-a3eb-0cb2c5d6d325&quot;,
+      &quot;id&quot;: &quot;021e08c5-58c1-4df9-b59f-e5b6ffd927cd&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -230,7 +246,7 @@ Content-Length: 1696</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Zachery Corkery&quot;,
+        &quot;author_name&quot;: &quot;Myra Kohler&quot;,
         &quot;slug&quot;: &quot;this-idea-is-uniqque&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
@@ -238,9 +254,9 @@ Content-Length: 1696</pre>
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:48.466Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:48.466Z&quot;,
-        &quot;published_at&quot;: &quot;2017-10-22T18:33:48.466Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-30T12:50:14.349Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:50:14.349Z&quot;,
+        &quot;published_at&quot;: &quot;2017-10-30T12:50:14.349Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -260,19 +276,19 @@ Content-Length: 1696</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;d80aa54e-dda3-436c-aed4-de0a154497e2&quot;,
+            &quot;id&quot;: &quot;fa611314-f3bc-4999-b539-25ef11c1ec39&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;f22480bb-ad6c-459c-a3f0-b01379f3cc39&quot;,
+            &quot;id&quot;: &quot;191ca854-5d72-4385-80a7-e8872e5e356b&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;085830c2-ce98-4ad8-b4be-1b6dd5e5ce4f&quot;,
+            &quot;id&quot;: &quot;43088a49-fc1a-4e89-bb11-53dbf8781914&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -284,25 +300,25 @@ Content-Length: 1696</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;d80aa54e-dda3-436c-aed4-de0a154497e2&quot;,
+      &quot;id&quot;: &quot;fa611314-f3bc-4999-b539-25ef11c1ec39&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Zachery&quot;,
-        &quot;last_name&quot;: &quot;Corkery&quot;,
-        &quot;slug&quot;: &quot;zachery-corkery&quot;,
+        &quot;first_name&quot;: &quot;Myra&quot;,
+        &quot;last_name&quot;: &quot;Kohler&quot;,
+        &quot;slug&quot;: &quot;myra-kohler&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d80aa54e-dda3-436c-aed4-de0a154497e2/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d80aa54e-dda3-436c-aed4-de0a154497e2/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d80aa54e-dda3-436c-aed4-de0a154497e2/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/fa611314-f3bc-4999-b539-25ef11c1ec39/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/fa611314-f3bc-4999-b539-25ef11c1ec39/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/fa611314-f3bc-4999-b539-25ef11c1ec39/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:48.446Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:48.446Z&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:50:14.294Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:50:14.294Z&quot;,
         &quot;unread_notifications&quot;: 0
       }
     }

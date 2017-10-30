@@ -117,13 +117,13 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MTYsInN1YiI6IjMxOWMxMGY4LWZjNjYtNGFkOC1hY2JiLWIxZWEwYWY3YTlkNCJ9.AR_JLXXEfOvbtHOpZ_LM6hwqZElbX0y1oUxuKWMfpWM
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQxNzQsInN1YiI6IjZjNTMxZDFiLWM2ZmYtNDdjNC1hZjkxLWIwYjkyNmQzODRkOCJ9.Qv6PzeYN7nHDeMrxHgM7uw1Q0Bn3JB_hMsMI4ffbDqQ
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/votes/662baf14-0920-4829-9435-2c69912db0e4</pre>
+          <pre class="request route highlight">GET api/v1/votes/6db6973c-417a-474e-8018-dc218708fc58</pre>
 
 
 
@@ -131,18 +131,18 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;61bbc36e3ed40204ac068b72dad81309&quot;
+ETag: W/&quot;b04c0848a2acb96e38fe00da0ab9d4df&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 18e80cec-8028-42e5-b032-beadaf50a514
-X-Runtime: 0.030146
+X-Request-Id: e7bc9163-6e7f-4747-983a-4f599cd50362
+X-Runtime: 0.018638
 Vary: Origin
-Content-Length: 1051</pre>
+Content-Length: 1044</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: {
-    &quot;id&quot;: &quot;662baf14-0920-4829-9435-2c69912db0e4&quot;,
+    &quot;id&quot;: &quot;6db6973c-417a-474e-8018-dc218708fc58&quot;,
     &quot;type&quot;: &quot;votes&quot;,
     &quot;attributes&quot;: {
       &quot;mode&quot;: &quot;up&quot;
@@ -150,13 +150,13 @@ Content-Length: 1051</pre>
     &quot;relationships&quot;: {
       &quot;votable&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;1aa4cec6-1140-4670-b85e-8c7def155c17&quot;,
+          &quot;id&quot;: &quot;742b01fc-8e07-4d21-a90f-96d1714d4f06&quot;,
           &quot;type&quot;: &quot;votables&quot;
         }
       },
       &quot;user&quot;: {
         &quot;data&quot;: {
-          &quot;id&quot;: &quot;69631b0b-1f58-400d-a953-98c57c2ca2fa&quot;,
+          &quot;id&quot;: &quot;9ab5fc9a-fa26-416c-93af-1ee48521fe4e&quot;,
           &quot;type&quot;: &quot;users&quot;
         }
       }
@@ -164,26 +164,26 @@ Content-Length: 1051</pre>
   },
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;69631b0b-1f58-400d-a953-98c57c2ca2fa&quot;,
+      &quot;id&quot;: &quot;9ab5fc9a-fa26-416c-93af-1ee48521fe4e&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Zelma&quot;,
-        &quot;last_name&quot;: &quot;Hand&quot;,
-        &quot;slug&quot;: &quot;zelma-hand&quot;,
+        &quot;first_name&quot;: &quot;Easton&quot;,
+        &quot;last_name&quot;: &quot;Willms&quot;,
+        &quot;slug&quot;: &quot;easton-willms&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/69631b0b-1f58-400d-a953-98c57c2ca2fa/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/69631b0b-1f58-400d-a953-98c57c2ca2fa/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/69631b0b-1f58-400d-a953-98c57c2ca2fa/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/9ab5fc9a-fa26-416c-93af-1ee48521fe4e/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/9ab5fc9a-fa26-416c-93af-1ee48521fe4e/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/9ab5fc9a-fa26-416c-93af-1ee48521fe4e/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:36.990Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:36.990Z&quot;,
-        &quot;email&quot;: &quot;jaylon_senger@hillsharvey.biz&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:49:35.204Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:49:35.204Z&quot;,
+        &quot;email&quot;: &quot;titus@murphy.com&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

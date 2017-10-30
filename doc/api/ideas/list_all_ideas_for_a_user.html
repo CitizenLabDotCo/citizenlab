@@ -123,10 +123,26 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of ideas per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">topics</span>
                 </td>
                 <td>
-                  <span class="description">Filter by topics (AND)</span>
+                  <span class="description">Filter by topics (OR)</span>
                 </td>
               </tr>
               <tr>
@@ -134,7 +150,7 @@ table th, table td {
                     <span class="name">areas</span>
                 </td>
                 <td>
-                  <span class="description">Filter by areas (AND)</span>
+                  <span class="description">Filter by areas (OR)</span>
                 </td>
               </tr>
               <tr>
@@ -193,34 +209,34 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2MjcsInN1YiI6IjgzOGU1MDNlLWIxNjktNDVmMi04M2YwLWZjNmYzYjMwMmI2YiJ9.7s1CDhwLXRFXwOwhs7QVbd8k7TY1FTAM5MTT49VAKa8
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQyMTIsInN1YiI6ImJhNGZiODk2LTYwYzctNGE5Zi04YzQzLTA2YTE5ZjMxMjkzZiJ9.oNdLmQyGGuyTcPlXaqGbRhaAgSbFZIJn3AtVTYuloKY
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/ideas?author=8de02bb3-2d1c-43aa-a4ab-0a70ef2e08f9</pre>
+          <pre class="request route highlight">GET api/v1/ideas?author=ba6fff5a-0dbd-4bb4-9864-5fa1a20629f3</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">author: 8de02bb3-2d1c-43aa-a4ab-0a70ef2e08f9</pre>
+            <pre class="request query_parameters highlight">author: ba6fff5a-0dbd-4bb4-9864-5fa1a20629f3</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;8f8433f5015fa1fe4fcdbdaf92c64b1e&quot;
+ETag: W/&quot;5fba437bed21f45764e9cc3e1e17c598&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 5ea2c7d2-a051-4c57-96bf-30b827235d02
-X-Runtime: 0.040381
+X-Request-Id: 953ebdbc-934f-4891-8dce-bafe0ecd1abf
+X-Runtime: 0.032307
 Vary: Origin
-Content-Length: 1699</pre>
+Content-Length: 1714</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;718478cf-7306-4478-a6ce-9240864b405e&quot;,
+      &quot;id&quot;: &quot;b5ed6422-d89b-43dd-ad76-731ddd514c63&quot;,
       &quot;type&quot;: &quot;ideas&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -231,7 +247,7 @@ Content-Length: 1699</pre>
           &quot;en&quot;: &quot;&lt;p&gt;It would improve the air quality!&lt;/p&gt;&quot;,
           &quot;nl&quot;: &quot;&lt;p&gt;De luchtkwaliteit zou er gevoelig op vooruitgaan!&lt;/p&gt;&quot;
         },
-        &quot;author_name&quot;: &quot;Ward Hintz&quot;,
+        &quot;author_name&quot;: &quot;Alford Medhurst&quot;,
         &quot;slug&quot;: &quot;plant-more-trees-7&quot;,
         &quot;publication_status&quot;: &quot;published&quot;,
         &quot;upvotes_count&quot;: 0,
@@ -239,9 +255,9 @@ Content-Length: 1699</pre>
         &quot;comments_count&quot;: 0,
         &quot;location_point_geojson&quot;: null,
         &quot;location_description&quot;: null,
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:47.978Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:47.978Z&quot;,
-        &quot;published_at&quot;: &quot;2017-10-22T18:33:47.978Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-30T12:50:12.722Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:50:12.722Z&quot;,
+        &quot;published_at&quot;: &quot;2017-10-30T12:50:12.721Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;topics&quot;: {
@@ -261,19 +277,19 @@ Content-Length: 1699</pre>
         },
         &quot;author&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;8de02bb3-2d1c-43aa-a4ab-0a70ef2e08f9&quot;,
+            &quot;id&quot;: &quot;ba6fff5a-0dbd-4bb4-9864-5fa1a20629f3&quot;,
             &quot;type&quot;: &quot;authors&quot;
           }
         },
         &quot;project&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;d9b6a6d7-1204-4a6b-b8ea-7c2e0f687f39&quot;,
+            &quot;id&quot;: &quot;b678bfaf-d3c8-4e84-ad0c-50211f3c600a&quot;,
             &quot;type&quot;: &quot;projects&quot;
           }
         },
         &quot;idea_status&quot;: {
           &quot;data&quot;: {
-            &quot;id&quot;: &quot;17262a30-bef4-4897-97b5-8a7c6c6eaf9e&quot;,
+            &quot;id&quot;: &quot;d8044e40-0b6e-4fcb-8c89-f1140ad52bbc&quot;,
             &quot;type&quot;: &quot;idea_statuses&quot;
           }
         },
@@ -285,25 +301,25 @@ Content-Length: 1699</pre>
   ],
   &quot;included&quot;: [
     {
-      &quot;id&quot;: &quot;8de02bb3-2d1c-43aa-a4ab-0a70ef2e08f9&quot;,
+      &quot;id&quot;: &quot;ba6fff5a-0dbd-4bb4-9864-5fa1a20629f3&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Ward&quot;,
-        &quot;last_name&quot;: &quot;Hintz&quot;,
-        &quot;slug&quot;: &quot;ward-hintz&quot;,
+        &quot;first_name&quot;: &quot;Alford&quot;,
+        &quot;last_name&quot;: &quot;Medhurst&quot;,
+        &quot;slug&quot;: &quot;alford-medhurst&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8de02bb3-2d1c-43aa-a4ab-0a70ef2e08f9/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8de02bb3-2d1c-43aa-a4ab-0a70ef2e08f9/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/8de02bb3-2d1c-43aa-a4ab-0a70ef2e08f9/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/ba6fff5a-0dbd-4bb4-9864-5fa1a20629f3/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/ba6fff5a-0dbd-4bb4-9864-5fa1a20629f3/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/ba6fff5a-0dbd-4bb4-9864-5fa1a20629f3/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:33:47.935Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:33:47.935Z&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:50:12.647Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:50:12.647Z&quot;,
         &quot;unread_notifications&quot;: 0
       }
     }

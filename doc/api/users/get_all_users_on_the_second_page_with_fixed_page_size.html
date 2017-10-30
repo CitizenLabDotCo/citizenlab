@@ -123,6 +123,22 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of users per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">search</span>
                 </td>
                 <td>
@@ -145,7 +161,7 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2NjEsInN1YiI6ImM5ZjRjZDkyLTkzNzctNGE5OC1iMzk2LWIzN2M4ZGI2MGEwNyJ9.jN0SeR8xw6WMaV2r-isDmvDPnweyhCsoVyxLBXmDe8E
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQzMDYsInN1YiI6IjlhMDJhYzJhLTU2ZTEtNDgyMC1hYjY0LWU2YzRjNTM3OTY5MCJ9.vwZQR_-KHqiac0pGU9Vxcu2wWx_8J4RomP2oPPJPxDU
 Host: example.org
 Cookie: </pre>
 
@@ -160,38 +176,38 @@ Cookie: </pre>
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;f30feb1a898d94bda1410acf208a6dea&quot;
+ETag: W/&quot;0b5d888a60d74fc94af660a6bd0131a8&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 4cabe99d-6d84-4b65-b576-80094fb1f9d3
-X-Runtime: 0.021877
+X-Request-Id: e05a25dc-3530-46bd-94c9-b5c6a0591125
+X-Runtime: 0.024710
 Vary: Origin
-Content-Length: 1948</pre>
+Content-Length: 1976</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;d4218971-acd6-4d5a-bb74-9bbf5e2ac642&quot;,
+      &quot;id&quot;: &quot;984a3de7-b0e4-4fc4-a93f-39e0c843494d&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Lottie&quot;,
-        &quot;last_name&quot;: &quot;Gutkowski&quot;,
-        &quot;slug&quot;: &quot;lottie-gutkowski&quot;,
+        &quot;first_name&quot;: &quot;Beryl&quot;,
+        &quot;last_name&quot;: &quot;Langworth&quot;,
+        &quot;slug&quot;: &quot;beryl-langworth&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d4218971-acd6-4d5a-bb74-9bbf5e2ac642/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d4218971-acd6-4d5a-bb74-9bbf5e2ac642/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/d4218971-acd6-4d5a-bb74-9bbf5e2ac642/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/984a3de7-b0e4-4fc4-a93f-39e0c843494d/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/984a3de7-b0e4-4fc4-a93f-39e0c843494d/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/984a3de7-b0e4-4fc4-a93f-39e0c843494d/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:21.343Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:21.343Z&quot;,
-        &quot;email&quot;: &quot;ona@metzadams.io&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:46.027Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:46.027Z&quot;,
+        &quot;email&quot;: &quot;noelia.reynolds@kuhn.biz&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,
@@ -200,26 +216,26 @@ Content-Length: 1948</pre>
       }
     },
     {
-      &quot;id&quot;: &quot;b85886f3-ac91-4f41-b8f3-50ca43056553&quot;,
+      &quot;id&quot;: &quot;8b418114-e50d-459b-9554-9370d6941d4b&quot;,
       &quot;type&quot;: &quot;users&quot;,
       &quot;attributes&quot;: {
-        &quot;first_name&quot;: &quot;Lola&quot;,
-        &quot;last_name&quot;: &quot;Brown&quot;,
-        &quot;slug&quot;: &quot;lola-brown&quot;,
+        &quot;first_name&quot;: &quot;Patsy&quot;,
+        &quot;last_name&quot;: &quot;McDermott&quot;,
+        &quot;slug&quot;: &quot;patsy-mcdermott&quot;,
         &quot;locale&quot;: &quot;en&quot;,
         &quot;avatar&quot;: {
-          &quot;small&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/b85886f3-ac91-4f41-b8f3-50ca43056553/small_robot.jpg&quot;,
-          &quot;medium&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/b85886f3-ac91-4f41-b8f3-50ca43056553/medium_robot.jpg&quot;,
-          &quot;large&quot;: &quot;/uploads/d6ba3cc0-5dfb-42dd-9274-f2e092e640fd/user/avatar/b85886f3-ac91-4f41-b8f3-50ca43056553/large_robot.jpg&quot;
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/8b418114-e50d-459b-9554-9370d6941d4b/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/8b418114-e50d-459b-9554-9370d6941d4b/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/8b418114-e50d-459b-9554-9370d6941d4b/large_robot.jpg&quot;
         },
         &quot;roles&quot;: [
 
         ],
         &quot;bio_multiloc&quot;: {
         },
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:21.366Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:21.366Z&quot;,
-        &quot;email&quot;: &quot;dereck@shields.name&quot;,
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:46.172Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:46.172Z&quot;,
+        &quot;email&quot;: &quot;daniela.bogan@lubowitzhintz.com&quot;,
         &quot;gender&quot;: null,
         &quot;birthyear&quot;: null,
         &quot;domicile&quot;: null,

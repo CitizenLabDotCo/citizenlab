@@ -17,8 +17,8 @@ resource "Notifications" do
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of notifications per page"
-      parameter :only_unread, "Add this parameter if you only want to receive unread notifications"
     end
+    parameter :only_unread, "Add this parameter if you only want to receive unread notifications"
     
     example_request "List all notifications" do
       expect(status).to eq(200)

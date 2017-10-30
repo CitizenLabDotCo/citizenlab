@@ -123,6 +123,22 @@ table th, table td {
             <tbody>
               <tr>
                 <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of projects per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
                     <span class="name">topics</span>
                 </td>
                 <td>
@@ -144,35 +160,35 @@ table th, table td {
           <h3>Request</h3>
 
             <h4>Headers</h4>
-            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDg3ODM2NDMsInN1YiI6IjZiYTQ3ZWJiLWJjMjItNDVkYy04NjM0LTEwMWU1MzNlYjljOSJ9.yHOCAr88VFV-dLkXwgXbrWgpEe35h30gyGwCN1F2RPU
+            <pre class="request headers">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQyNjQsInN1YiI6ImQzNzdjNDgyLTgxY2UtNGRiNy05OGY2LTRlZWQ1NjZjNDYxYSJ9.9wg_uyXndB0yZBsqrckxhUHeWqY3jZkv1Ei3uXNSmSo
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET api/v1/projects?topics[]=f32b7b7f-bd80-450e-be86-b63988bfc773&amp;topics[]=da802754-0fc6-408f-b2e2-7a4d680e56e0</pre>
+          <pre class="request route highlight">GET api/v1/projects?topics[]=7541a8f7-ba25-4f7e-a939-0425bd238c71&amp;topics[]=8d7c7106-891f-455e-b86f-4f3c6a1061b4</pre>
 
             <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">topics: [&quot;f32b7b7f-bd80-450e-be86-b63988bfc773&quot;, &quot;da802754-0fc6-408f-b2e2-7a4d680e56e0&quot;]</pre>
+            <pre class="request query_parameters highlight">topics: [&quot;7541a8f7-ba25-4f7e-a939-0425bd238c71&quot;, &quot;8d7c7106-891f-455e-b86f-4f3c6a1061b4&quot;]</pre>
 
 
 
             <h3>Response</h3>
               <h4>Headers</h4>
               <pre class="response headers">Content-Type: application/json; charset=utf-8
-ETag: W/&quot;bf2927b5bf605c090b0f21165221b5fd&quot;
+ETag: W/&quot;3994bcd2d16f4bb354f93c752dfa5137&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: dcfdcaa5-8a73-49a4-90b8-9d714cb660ad
-X-Runtime: 0.024114
+X-Request-Id: 4bc5d981-cb64-4459-ada5-07b4406d08fa
+X-Runtime: 0.018971
 Vary: Origin
-Content-Length: 845</pre>
+Content-Length: 867</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
   &quot;data&quot;: [
     {
-      &quot;id&quot;: &quot;2df0f0be-5e30-4e62-b9b6-b64767f3d8d0&quot;,
+      &quot;id&quot;: &quot;fdd479dc-f5d8-499f-be83-74ab80fb605e&quot;,
       &quot;type&quot;: &quot;projects&quot;,
       &quot;attributes&quot;: {
         &quot;title_multiloc&quot;: {
@@ -189,9 +205,10 @@ Content-Length: 845</pre>
           &quot;medium&quot;: null,
           &quot;small&quot;: null
         },
+        &quot;visible_to&quot;: &quot;public&quot;,
         &quot;ideas_count&quot;: 0,
-        &quot;created_at&quot;: &quot;2017-10-22T18:34:03.447Z&quot;,
-        &quot;updated_at&quot;: &quot;2017-10-22T18:34:03.447Z&quot;
+        &quot;created_at&quot;: &quot;2017-10-30T12:51:03.865Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-10-30T12:51:03.865Z&quot;
       },
       &quot;relationships&quot;: {
         &quot;project_images&quot;: {
@@ -207,11 +224,11 @@ Content-Length: 845</pre>
         &quot;topics&quot;: {
           &quot;data&quot;: [
             {
-              &quot;id&quot;: &quot;f32b7b7f-bd80-450e-be86-b63988bfc773&quot;,
+              &quot;id&quot;: &quot;7541a8f7-ba25-4f7e-a939-0425bd238c71&quot;,
               &quot;type&quot;: &quot;topics&quot;
             },
             {
-              &quot;id&quot;: &quot;da802754-0fc6-408f-b2e2-7a4d680e56e0&quot;,
+              &quot;id&quot;: &quot;8d7c7106-891f-455e-b86f-4f3c6a1061b4&quot;,
               &quot;type&quot;: &quot;topics&quot;
             }
           ]

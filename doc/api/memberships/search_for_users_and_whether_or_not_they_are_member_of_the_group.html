@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Memberships API</title>
+    <meta charset="utf-8">
+    <style>
+      
+body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #404040;
+}
+
+.container {
+  width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+pre {
+  background-color: #f5f5f5;
+  display: block;
+  padding: 8.5px;
+  margin: 0 0 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+td.required .name:after {
+  float: right;
+  content: "required";
+  font-weight: normal;
+  color: #F08080;
+}
+
+a{
+  color: #0069d6;
+  text-decoration: none;
+  line-height: inherit;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #404040;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 36px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 36px;
+}
+h3{
+  font-size: 18px;
+  line-height: 36px;
+}
+h4 {
+  font-size: 16px;
+  line-height: 36px;
+}
+
+table{
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 13px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+table th+th, table td+td {
+  border-left: 1px solid #ddd;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 18px;
+  text-align: left;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Memberships API</h1>
+
+      <div class="article">
+        <h2>Search for users and whether or not they are member of the group</h2>
+        <h3>GET api/v1/groups/:group_id/memberships/users_search</h3>
+
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">page[number]</span>
+                </td>
+                <td>
+                  <span class="description">Page number</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">page[size]</span>
+                </td>
+                <td>
+                  <span class="description">Number of members per page</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="required">
+                    <span class="name">search</span>
+                </td>
+                <td>
+                  <span class="description">The query used for searching users</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <h3>Request</h3>
+
+            <h4>Headers</h4>
+            <pre class="request headers">Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MDk0NTQyNDAsInN1YiI6IjI1N2UxZmE0LTMxNWUtNGYxYi1iMjg3LTE3NDVlNWE3MDgwMyJ9.lGABCEq2C-dDBbscgoIaLMoSQIQiw7Vu8cZP8jO6PQc
+Host: example.org
+Cookie: </pre>
+
+          <h4>Route</h4>
+          <pre class="request route highlight">GET api/v1/groups/91ac1db7-21bd-4c6e-adeb-08385a1bc819/memberships/users_search?search=jo</pre>
+
+            <h4>Query Parameters</h4>
+            <pre class="request query_parameters highlight">search: jo</pre>
+
+
+
+            <h3>Response</h3>
+              <h4>Headers</h4>
+              <pre class="response headers">Content-Type: application/json; charset=utf-8
+ETag: W/&quot;a7472667f37a86282b2fbae8833842c0&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 436f5b10-698d-46ca-9f16-5baccf8fcff0
+X-Runtime: 0.044015
+Vary: Origin
+Content-Length: 2269</pre>
+            <h4>Status</h4>
+            <pre class="response status">200 OK</pre>
+              <h4>Body</h4>
+              <pre class="response body">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;35fd8355-e729-4243-8e6a-93ca69f0b8f1&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Jonny&quot;,
+        &quot;last_name&quot;: &quot;Johnson&quot;,
+        &quot;slug&quot;: &quot;jonny-johnson&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/35fd8355-e729-4243-8e6a-93ca69f0b8f1/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/35fd8355-e729-4243-8e6a-93ca69f0b8f1/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/35fd8355-e729-4243-8e6a-93ca69f0b8f1/large_robot.jpg&quot;
+        },
+        &quot;is_member&quot;: false,
+        &quot;email&quot;: &quot;freddy2@zmail.com&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;4cca8c96-a423-4f07-9e93-70d7e62fb31d&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Freddy&quot;,
+        &quot;last_name&quot;: &quot;Smith&quot;,
+        &quot;slug&quot;: &quot;freddy-smith-1&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/4cca8c96-a423-4f07-9e93-70d7e62fb31d/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/4cca8c96-a423-4f07-9e93-70d7e62fb31d/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/4cca8c96-a423-4f07-9e93-70d7e62fb31d/large_robot.jpg&quot;
+        },
+        &quot;is_member&quot;: true,
+        &quot;email&quot;: &quot;jofreddy@jojo.com&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;7dcb2a43-1424-4797-a280-44302a040535&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Jon&quot;,
+        &quot;last_name&quot;: &quot;Smith&quot;,
+        &quot;slug&quot;: &quot;jon-smith&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/7dcb2a43-1424-4797-a280-44302a040535/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/7dcb2a43-1424-4797-a280-44302a040535/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/7dcb2a43-1424-4797-a280-44302a040535/large_robot.jpg&quot;
+        },
+        &quot;is_member&quot;: false,
+        &quot;email&quot;: &quot;freddy1@zmail.com&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;bde07af3-35b0-4b3b-8078-139814af9af2&quot;,
+      &quot;type&quot;: &quot;users&quot;,
+      &quot;attributes&quot;: {
+        &quot;first_name&quot;: &quot;Freddy&quot;,
+        &quot;last_name&quot;: &quot;Johnson&quot;,
+        &quot;slug&quot;: &quot;freddy-johnson&quot;,
+        &quot;avatar&quot;: {
+          &quot;small&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/bde07af3-35b0-4b3b-8078-139814af9af2/small_robot.jpg&quot;,
+          &quot;medium&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/bde07af3-35b0-4b3b-8078-139814af9af2/medium_robot.jpg&quot;,
+          &quot;large&quot;: &quot;/uploads/613bfddf-05e6-45e4-8efd-167c2d8b4283/user/avatar/bde07af3-35b0-4b3b-8078-139814af9af2/large_robot.jpg&quot;
+        },
+        &quot;is_member&quot;: true,
+        &quot;email&quot;: &quot;freddy3@zmail.com&quot;
+      }
+    }
+  ],
+  &quot;links&quot;: {
+  }
+}</pre>
+      </div>
+    </div>
+  </body>
+</html>
