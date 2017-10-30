@@ -42,7 +42,7 @@ const Container = styled.div`
   animation: ${doubleBounce} 450ms linear;
   transform-origin: bottom;
   border-top: solid 1px #e5e5e5;
-  background: #f8f8f8;
+  background: #fff;
 `;
 
 const LockIconWrapper = styled.div`

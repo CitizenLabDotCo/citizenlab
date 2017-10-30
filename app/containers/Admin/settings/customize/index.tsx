@@ -16,7 +16,11 @@ import ColorPickerInput from 'components/UI/ColorPickerInput';
 import Select from 'components/UI/Select';
 import Input from 'components/UI/Input';
 import FieldWrapper from 'components/admin/FieldWrapper';
+import { Section, SectionHeader, SectionTitle, SectionDescription, SectionContent } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+
+// style
+import styled from 'styled-components';
 
 // utils
 import { getBase64, imageUrlToFileObservable } from 'utils/imageTools';
@@ -37,6 +41,21 @@ import {
 
 // typings
 import { API } from 'typings.d';
+
+const StyledLabel = styled(Label)`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const CharCount = styled.div`
+  color: #333;
+  font-size: 15px;
+  font-weight: 400;
+
+  &.error {
+    color: red;
+  }
+`;
 
 interface IAttributesDiff {
   settings?: Partial<ITenantSettings>;
@@ -61,6 +80,8 @@ type State  = {
   saved: boolean;
   logoError: string | null;
   headerError: string | null;
+  titleError: { [key: string]: string | null };
+  subtitleError: { [key: string]: string | null };
 };
 
 class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -79,7 +100,9 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
       errors: {},
       saved: false,
       logoError: null,
-      headerError: null
+      headerError: null,
+      titleError: {},
+      subtitleError: {}
     };
     this.subscriptions = [];
   }
@@ -102,6 +125,9 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
         }));
       }).subscribe(({ currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
         this.setState((state) => {
+          const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
+          const titleCharCount = {};
+          const subtitleCharCount = {};
           let logo: File[] | ImageFile[] | null = null;
           let header_bg: File[] | ImageFile[] | null = null;
 
@@ -117,7 +143,14 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
             header_bg = (state.attributesDiff.header_bg && state.attributesDiff.header_bg !== null ? [state.attributesDiff.header_bg] : null);
           }
 
-          return { currentTenant, logo, header_bg };
+          if (currentTenant && currentTenantLocales && currentTenantLocales.length > 0) {
+            currentTenantLocales.forEach((currentTenantLocale) => {
+              titleCharCount[currentTenantLocale] = _.size(_.get(currentTenant, `data.attributes.settings.core.header_title.${currentTenantLocale}`));
+              subtitleCharCount[currentTenantLocale] = _.size(_.get(currentTenant, `data.attributes.settings.core.header_slogan.${currentTenantLocale}`));
+            });
+          }
+
+          return { currentTenant, logo, header_bg, titleCharCount, subtitleCharCount };
         });
       })
     ];
@@ -160,17 +193,34 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   }
 
   handleTitleOnChange = (locale: string) => (title: string) => {
+    const { formatMessage } = this.props.intl;
     const { attributesDiff } = this.state;
+    const titleError = { ...this.state.titleError, [locale]: null };
     let newAttributesDiff = _.cloneDeep(attributesDiff);
     newAttributesDiff = _.set(newAttributesDiff, `settings.core.header_title.${locale}`, title);
-    this.setState({ attributesDiff: newAttributesDiff });
+
+    this.setState((state) => ({
+      attributesDiff: newAttributesDiff,
+      titleError: {
+        ...state.titleError,
+        [locale]: _.size(_.trim(title)) > 35 ? formatMessage(messages.titleMaxCharError) : null
+      }
+    }));
   }
 
   handleSubtitleOnChange = (locale: string) => (subtitle: string) => {
+    const { formatMessage } = this.props.intl;
     const { attributesDiff } = this.state;
     let newAttributesDiff = _.cloneDeep(attributesDiff);
     newAttributesDiff = _.set(newAttributesDiff, `settings.core.header_slogan.${locale}`, subtitle);
-    this.setState({ attributesDiff: newAttributesDiff });
+
+    this.setState((state) => ({
+      attributesDiff: newAttributesDiff,
+      subtitleError: {
+        ...state.subtitleError,
+        [locale]: _.size(_.trim(subtitle)) > 90 ? formatMessage(messages.subtitleMaxCharError) : null
+      }
+    }));
   }
 
   createToggleChangeHandler = (fieldPath) => {
@@ -203,9 +253,12 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     const localHeaderIsNull = !localHeaderIsNotSet && attributesDiff.header_bg === null;
     const headerError = (!localHeaderIsNull || (hasRemoteHeader && localHeaderIsNotSet) ? null : formatMessage(messages.noHeader));
 
+    const hasTitleError = !_.isEmpty(_.omitBy(this.state.titleError, _.isEmpty));
+    const hasSubtitleError = !_.isEmpty(_.omitBy(this.state.subtitleError, _.isEmpty));
+
     this.setState({ logoError, headerError });
 
-    return (!logoError && !headerError);
+    return (!logoError && !headerError && !hasTitleError && !hasSubtitleError);
   }
 
   save = async (event) => {
@@ -248,10 +301,11 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   ])
 
   render() {
-    const { locale, currentTenant } = this.state;
+    const { locale, currentTenant, titleError, subtitleError } = this.state;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
+      const hasMultipleTenantLocales = (currentTenant.data.attributes.settings.core.locales.length > 1);
       const { formatMessage } = this.props.intl;
       const { logo, header_bg, attributesDiff, logoError, headerError } = this.state;
       const tenantAttrs = _.merge(_.cloneDeep(currentTenant.data.attributes), attributesDiff);
@@ -259,88 +313,152 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
       return (
         <form onSubmit={this.save}>
 
-          <h1><FormattedMessage {...messages.titleBranding} /></h1>
-          <p><FormattedMessage {...messages.subTitleBranding} /></p>
+          <Section key={'branding'}>
+            <SectionHeader>
+              <SectionTitle>
+                <FormattedMessage {...messages.titleBranding} />
+              </SectionTitle>
 
-          <FieldWrapper>
-            <Label><FormattedMessage {...messages.mainColor} /></Label>
-            <ColorPickerInput
-              type="text"
-              value={_.get(tenantAttrs, 'settings.core.color_main')}
-              onChange={this.createToggleChangeHandler('settings.core.color_main')}
-            />
-          </FieldWrapper>
+              <SectionDescription>
+                <FormattedMessage {...messages.subTitleBranding} />
+              </SectionDescription>
+            </SectionHeader>
 
-          <FieldWrapper key={'logo'}>
-            <Label><FormattedMessage {...messages['logo']} /></Label>
-            <Upload
-              accept="image/jpg, image/jpeg, image/png, image/gif"
-              maxItems={1}
-              items={logo}
-              onAdd={this.handleUploadOnAdd('logo')}
-              onRemove={this.handleUploadOnRemove('logo')}
-              placeholder={formatMessage(messages.uploadPlaceholder)}
-              disallowDeletion={false}
-              errorMessage={logoError}
-            />
-          </FieldWrapper>
-
-          <FieldWrapper key={'header_bg'}>
-            <Label><FormattedMessage {...messages['header_bg']} /></Label>
-            <Upload
-              accept="image/jpg, image/jpeg, image/png, image/gif"
-              maxItems={1}
-              items={header_bg}
-              onAdd={this.handleUploadOnAdd('header_bg')}
-              onRemove={this.handleUploadOnRemove('header_bg')}
-              placeholder={formatMessage(messages.uploadPlaceholder)}
-              disallowDeletion={false}
-              errorMessage={headerError}
-            />
-          </FieldWrapper>
-
-          <FieldWrapper key={'title'}>
-            {currentTenantLocales.map((currentTenantLocale, index) => (
-              <div key={index}>
-                <Label><FormattedMessage {...messages.titleLabel} values={{ locale: currentTenantLocale.toUpperCase() }} /></Label>
-                <Input
+            <SectionContent>
+              <FieldWrapper>
+                <Label>
+                  <FormattedMessage {...messages.mainColor} />
+                </Label>
+                <ColorPickerInput
                   type="text"
-                  value={_.get(tenantAttrs, `settings.core.header_title.${currentTenantLocale}`)}
-                  onChange={this.handleTitleOnChange(currentTenantLocale)}
-                />
-              </div>
-            ))}
-          </FieldWrapper>
-
-          <FieldWrapper key={'subtitle'}>
-            {currentTenantLocales.map((currentTenantLocale, index) => (
-              <div key={index}>
-                <Label><FormattedMessage {...messages.subtitleLabel} values={{ locale: currentTenantLocale.toUpperCase() }} /></Label>
-                <Input
-                  type="text"
-                  value={_.get(tenantAttrs, `settings.core.header_slogan.${currentTenantLocale}`)}
-                  onChange={this.handleSubtitleOnChange(currentTenantLocale)}
-                />
-              </div>
-            ))}
-          </FieldWrapper>
-
-          <h1><FormattedMessage {...messages.titleSignupFields} /></h1>
-          <p><FormattedMessage {...messages.subTitleSignupFields} /></p>
-
-          {['gender', 'domicile', 'birthyear', 'education'].map((fieldName, index) => {
-            const fieldPath = `settings.demographic_fields.${fieldName}`;
-            return (
-              <FieldWrapper key={fieldName}>
-                <Label><FormattedMessage {...messages[fieldName]} /></Label>
-                <Checkbox
-                  slider={true}
-                  checked={_.get(tenantAttrs, fieldPath)}
-                  onChange={this.createToggleChangeHandler(fieldPath)}
+                  value={_.get(tenantAttrs, 'settings.core.color_main')}
+                  onChange={this.createToggleChangeHandler('settings.core.color_main')}
                 />
               </FieldWrapper>
-            );
-          })}
+
+              <FieldWrapper key={'logo'}>
+                <Label><FormattedMessage {...messages['logo']} /></Label>
+                <Upload
+                  accept="image/jpg, image/jpeg, image/png, image/gif"
+                  maxItems={1}
+                  items={logo}
+                  onAdd={this.handleUploadOnAdd('logo')}
+                  onRemove={this.handleUploadOnRemove('logo')}
+                  placeholder={formatMessage(messages.uploadPlaceholder)}
+                  disallowDeletion={false}
+                  errorMessage={logoError}
+                />
+              </FieldWrapper>
+            </SectionContent>
+          </Section>
+
+          <Section key={'header'}>
+            <SectionHeader>
+              <SectionTitle>
+                <FormattedMessage {...messages.header} />
+              </SectionTitle>
+
+              <SectionDescription>
+                <FormattedMessage {...messages.headerDescription} />
+              </SectionDescription>
+            </SectionHeader>
+
+            <SectionContent>
+              <FieldWrapper key={'header_bg'}>
+                <Label>
+                  <FormattedMessage {...messages['header_bg']} />
+                </Label>
+                <Upload
+                  accept="image/jpg, image/jpeg, image/png, image/gif"
+                  maxItems={1}
+                  items={header_bg}
+                  onAdd={this.handleUploadOnAdd('header_bg')}
+                  onRemove={this.handleUploadOnRemove('header_bg')}
+                  placeholder={formatMessage(messages.uploadPlaceholder)}
+                  disallowDeletion={false}
+                  errorMessage={headerError}
+                />
+              </FieldWrapper>
+
+              {currentTenantLocales.map((currentTenantLocale, index) => {
+                const capitalizedTenantLocale = (hasMultipleTenantLocales ? currentTenantLocale.toUpperCase() : '');
+                const titleSize = _.size(_.get(tenantAttrs, `settings.core.header_title.${currentTenantLocale}`));
+
+                return (
+                  <FieldWrapper key={index}>
+                    <StyledLabel>
+                      <FormattedMessage 
+                        {...messages.titleLabel} 
+                        values={{ locale: capitalizedTenantLocale }}
+                      />
+                      <CharCount className={titleError[currentTenantLocale] ? 'error' : ''}>
+                        {titleSize}/35
+                      </CharCount>
+                    </StyledLabel>
+                    <Input
+                      type="text"
+                      value={_.get(tenantAttrs, `settings.core.header_title.${currentTenantLocale}`)}
+                      onChange={this.handleTitleOnChange(currentTenantLocale)}
+                      error={titleError[currentTenantLocale]}
+                    />
+                  </FieldWrapper>
+                );
+              })}
+
+              {currentTenantLocales.map((currentTenantLocale, index) => {
+                const capitalizedTenantLocale = (hasMultipleTenantLocales ? currentTenantLocale.toUpperCase() : '');
+                const subtitleSize = _.size(_.get(tenantAttrs, `settings.core.header_slogan.${currentTenantLocale}`));
+
+                return (
+                  <FieldWrapper key={index}>
+                    <StyledLabel>
+                      <FormattedMessage 
+                        {...messages.subtitleLabel} 
+                        values={{ locale: capitalizedTenantLocale }} 
+                      />
+                      <CharCount className={subtitleError[currentTenantLocale] ? 'error' : ''}>
+                        {subtitleSize}/90
+                      </CharCount>
+                    </StyledLabel>
+                    <Input
+                      type="text"
+                      value={_.get(tenantAttrs, `settings.core.header_slogan.${currentTenantLocale}`)}
+                      onChange={this.handleSubtitleOnChange(currentTenantLocale)}
+                      error={subtitleError[currentTenantLocale]}
+                    />
+                  </FieldWrapper>
+                );
+              })}
+            </SectionContent>
+          </Section>
+
+          <Section key={'signup_fields'}>
+            <SectionHeader>
+              <SectionTitle>
+                <FormattedMessage {...messages.titleSignupFields} />
+              </SectionTitle>
+
+              <SectionDescription>
+                <FormattedMessage {...messages.subTitleSignupFields} />
+              </SectionDescription>
+            </SectionHeader>
+
+            <SectionContent>
+              {['gender', 'domicile', 'birthyear', 'education'].map((fieldName, index) => {
+                const fieldPath = `settings.demographic_fields.${fieldName}`;
+                return (
+                  <FieldWrapper key={fieldName}>
+                    <Label><FormattedMessage {...messages[fieldName]} /></Label>
+                    <Checkbox
+                      slider={true}
+                      checked={_.get(tenantAttrs, fieldPath)}
+                      onChange={this.createToggleChangeHandler(fieldPath)}
+                    />
+                  </FieldWrapper>
+                );
+              })}
+            </SectionContent>
+          </Section>
 
           <SubmitWrapper
             loading={this.state.loading}
