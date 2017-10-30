@@ -26,12 +26,10 @@ const ResourceHeader = styled.div`
 const Title = styled.h1`
   color: #333;
   font-size: 35px;
-  line-height: 35px;
-  font-weight: 500;
+  line-height: 40px;
+  font-weight: 600;
   margin: 0;
   padding: 0;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
 `;
 
 const PublicResourceLink = styled(Link)``;
@@ -56,14 +54,14 @@ const Tab = styled.li`
 
   a {
     color: #999;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 400;
-    line-height: 22px;
+    line-height: 21px;
     text-transform: capitalize;
     padding: 0;
-    padding-top: 20px;
-    padding-bottom: 18px;
-    border-bottom: 2px solid transparent;
+    padding-top: 18px;
+    padding-bottom: 16px;
+    border-bottom: 3px solid transparent;
     transition: all 100ms ease-out;
   }
 

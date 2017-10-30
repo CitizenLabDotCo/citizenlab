@@ -266,6 +266,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
     const { authUser, currentTenant, currentTenantLogo, scrolled } = this.state;
     const alwaysShowBorder = (pathname.startsWith('/ideas/') 
                               || pathname.startsWith('/reset-password')
+                              || pathname.startsWith('/admin')
                               || pathname === 'sign-in'
                               || pathname === '/sign-in' 
                               || pathname === 'sign-up' 

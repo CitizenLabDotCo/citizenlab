@@ -1,9 +1,3 @@
-/*
- * AdminUser.UserDashboard Messages
- *
- * This contains all the text for the AdminUser.UserDashboard component.
- */
-
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
