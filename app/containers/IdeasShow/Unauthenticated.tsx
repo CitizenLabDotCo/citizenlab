@@ -47,7 +47,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #f8f8f8;
+  background: #fff;
   animation: ${enterAnimation} 450ms linear;
   transform-origin: center center;
 `;

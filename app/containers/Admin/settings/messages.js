@@ -55,9 +55,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.logo',
     defaultMessage: 'Logo',
   },
+  header: {
+    id: 'app.containers.AdminPage.SettingsPage.header',
+    defaultMessage: 'Homepage header',
+  },
+  headerDescription: {
+    id: 'app.containers.AdminPage.SettingsPage.headerDescription',
+    defaultMessage: 'Customize the header image and copy being shown on the homepage',
+  },
   header_bg: {
     id: 'app.containers.AdminPage.SettingsPage.header_bg',
-    defaultMessage: 'Homepage header background',
+    defaultMessage: 'Header image',
   },
   headerSlogan: {
     id: 'app.containers.AdminPage.SettingsPage.headerSlogan',
@@ -97,11 +105,19 @@ export default defineMessages({
   },
   titleLabel: {
     id: 'app.containers.AdminPage.SettingsPage.titleLabel',
-    defaultMessage: 'Title {locale}:',
+    defaultMessage: 'Header title {locale}',
+  },
+  titleMaxCharError: {
+    id: 'app.containers.AdminPage.SettingsPage.titleMaxCharError',
+    defaultMessage: 'The provided title exceeds the maximum allowed character limit of 35',
   },
   subtitleLabel: {
     id: 'app.containers.AdminPage.SettingsPage.titleLabel',
-    defaultMessage: 'Subtitle {locale}:',
+    defaultMessage: 'Header subtitle {locale}',
+  },
+  subtitleMaxCharError: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleMaxCharError',
+    defaultMessage: 'The provided subtitle exceeds the maximum allowed character limit of 90',
   },
   gender: {
     id: 'app.containers.AdminPage.SettingsPage.gender',
