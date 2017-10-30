@@ -56,6 +56,11 @@ class Tenant < ApplicationRecord
       locales.first
     end
   end
+
+  def public_settings
+    ss = SettingsService.new
+    ss.remove_private_settings(self.settings, SETTINGS_JSON_SCHEMA)
+  end
   
   private
 

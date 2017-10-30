@@ -8,4 +8,8 @@ class Api::V1::TenantSerializer < ActiveModel::Serializer
   def header_bg
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
   end
+
+  def settings
+    object.public_settings
+  end
 end
