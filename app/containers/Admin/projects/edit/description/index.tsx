@@ -98,7 +98,6 @@ class ProjectDescription extends React.Component<Props, State> {
     }
   }
 
-
   componentWillUnmount() {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
@@ -114,13 +113,12 @@ class ProjectDescription extends React.Component<Props, State> {
   }
 
   changeDesc = (editorState: EditorState): void => {
-    const projectAttrs = { ...this.state.data.attributes, ...this.state.diff } as IUpdatedProjectProperties;
-
-    _.set(projectAttrs, `description_multiloc.${this.state.locale}`, draftjsToHtml(convertToRaw(editorState.getCurrentContent())));
+    const { diff } = this.state;
+    _.set(diff, `description_multiloc.${this.state.locale}`, draftjsToHtml(convertToRaw(editorState.getCurrentContent())));
 
     this.setState({
       editorState,
-      diff: projectAttrs,
+      diff,
     });
   }
 
