@@ -49,6 +49,10 @@ class User < ApplicationRecord
     .order("ro->>'type' #{direction}")
   }
 
+  scope :admin, -> { 
+    where("roles @> '[{\"type\":\"admin\"}]'")
+  }
+
   def avatar_blank?
     avatar.file.nil?
   end
