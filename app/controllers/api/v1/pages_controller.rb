@@ -3,18 +3,19 @@ class Api::V1::PagesController < ::ApplicationController
   before_action :set_page, only: [:show, :update, :destroy]
 
   def index
-    @pages = policy_scope(Page).includes(:linked_pages)
+    @pages = policy_scope(Page).includes(:page_links)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
     @pages = @pages.where(project_id: params[:project]) if params[:project].present?
 
-    render json: @pages, include: ['linked_pages']
+    render json: @pages, include: ['page_links']
   end
 
 
   def show
-    render json: @page, include: ['linked_pages']
+    byebug
+    render json: @page, include: ['page_links']
   end
 
   def by_slug
@@ -27,7 +28,7 @@ class Api::V1::PagesController < ::ApplicationController
     @page = Page.new(page_params)
     authorize @page
     if @page.save
-      render json: @page, status: :created, include: ['linked_pages']
+      render json: @page, status: :created, include: ['page_links']
     else
       render json: {errors: @page.errors.details}, status: :unprocessable_entity
     end
@@ -35,7 +36,7 @@ class Api::V1::PagesController < ::ApplicationController
 
   def update
     if @page.update(page_params)
-      render json: @page, status: :ok, include: ['linked_pages']
+      render json: @page, status: :ok, include: ['page_links']
     else
       render json: {errors: @page.errors.details}, status: :unprocessable_entity
     end

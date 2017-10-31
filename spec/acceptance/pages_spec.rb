@@ -14,10 +14,15 @@ resource "Pages" do
 
     parameter :project, "The id of a project, if you want the pages for that project only"
 
-    example_request "List all pages" do
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 5
+    describe do
+      before do
+        @pages.drop(1).each_with_index{|p,i| create(:page_link, linking_page: @pages.first, linked_page: p, ordering: i+1)}
+      end
+      example_request "List all pages" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 5
+      end
     end
 
 
@@ -54,11 +59,15 @@ resource "Pages" do
 
     describe do
       before do
-        # @pages.drop(1).each_with_index{|p,i| create(:page_link, linking_page: @pages.first, linked_page: p, order: i+1)}
+        @pages.drop(1).each_with_index{|p,i| create(:page_link, linking_page: @pages.first, linked_page: p, ordering: i+1)}
       end
       example_request "Get linked pages of a linking page", document: false do 
         expect(status).to eq 200
         json_response = json_parse(response_body)
+        byebug
+        expect(json_response.dig(:data, :relationships, :page_links, :data).size).to eq (@pages.size - 1) # links to all other pages
+        expect(json_response.dig(:data, :relationships, :page_links, :data).first[:ordering]).to be_present
+        expect(json_response.dig(:data, :relationships, :page_links, :data).first[:linked_page_title_multiloc]).to be_present
         byebug
       end
     end

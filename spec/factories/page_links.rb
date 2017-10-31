@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :page_link do
-    linking_page
-    linked_page
-    order 1
+    linking_page '' ### couldn't make it mandatory...
+    linked_page ''  ### couldn't make it mandatory...
+    ordering 1
   end
 end
