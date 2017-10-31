@@ -93,9 +93,15 @@ const HeaderContent = styled.div`
   padding-right: 30px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   z-index: 2;
+
+  ${media.smallerThanMinTablet`
+    justify-content: center;
+  `}
 `;
 
+/*
 const HeaderLogoWrapper = styled.div`
   width: 110px;
   height: 110px;
@@ -116,6 +122,7 @@ const HeaderLogo: any = styled.div`
   background-position: center center;
   background-size: contain;
 `;
+*/
 
 const HeaderTitle: any = styled.h1`
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
@@ -129,14 +136,13 @@ const HeaderTitle: any = styled.h1`
   overflow-wrap: normal;
   margin: 0;
   padding: 0;
-  padding-top: 130px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   ${media.smallerThanMinTablet`
     font-size: 38px;
     line-height: 44px;
-    padding-top: 90px;
+    padding: 0;
   `}
 `;
 
@@ -164,7 +170,7 @@ const HeaderSubtitle: any = styled.h2`
   border-bottom: solid 1px transparent;
   transition: all 150ms ease-out;
 
-  ${media.phone`
+  ${media.smallerThanMinTablet`
     font-size: 20px;
     line-height: 26px;
   `}
@@ -179,10 +185,8 @@ const Section = styled.div`
   margin-top: 80px;
   padding-bottom: 60px;
 
-  ${media.phone`
-    &.ideas {
-      margin-top: 0px;
-    }
+  ${media.smallerThanMinTablet`
+    margin-top: 60px;
   `}
 `;
 
@@ -192,14 +196,6 @@ const SectionHeader = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 35px;
-
-  ${media.phone`
-    padding-top: 50px;
-  `}
-
-  ${media.smallPhone`
-    flex-wrap: wrap;
-  `}
 `;
 
 const SectionTitle = styled.h2`
@@ -212,11 +208,6 @@ const SectionTitle = styled.h2`
   padding: 0;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-
-  ${media.phone`
-    font-size: 23px;
-    line-height: 36px;
-  `}
 `;
 
 const SectionContainer = styled.section`
@@ -245,7 +236,7 @@ const Explore = styled(Link) `
   cursor: pointer;
   display: flex;
   align-items: center;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 
   &:hover {
     ${ExploreText} {
@@ -257,8 +248,8 @@ const Explore = styled(Link) `
     }
   }
 
-  ${media.phone`
-    margin-top: 10px;
+  ${media.smallerThanMinTablet`
+    display: none;
   `}
 `;
 

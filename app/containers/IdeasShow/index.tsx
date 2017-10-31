@@ -216,9 +216,9 @@ const RightColumnDesktop: any = RightColumn.extend`
 const RightColumnMobile = RightColumn.extend`
   flex: 1;
   margin: 0;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   padding: 0;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
   border-bottom: solid 1px #e4e4e4;
   display: none;
 
