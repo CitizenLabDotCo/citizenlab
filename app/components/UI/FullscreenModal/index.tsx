@@ -120,10 +120,22 @@ const GoBackButton = styled.div`
   margin-right: 10px;
   cursor: pointer;
   border-radius: 50%;
-  border: solid 1px #e0e0e0;
+  border: solid 1px #ddd;
   z-index: 15000;
   transition: border-color 100ms ease-out;
   transition: fill 100ms ease-out;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+
+  &:hover {
+    border-color: #000;
+
+    ${GoBackIcon} {
+      fill: #000;
+    }
+  }
 `;
 
 const GoBackLabel = styled.div`
@@ -140,27 +152,11 @@ const GoBackButtonWrapper = styled.div`
   position: absolute;
   top: 10px;
   left: 30px;
-  cursor: pointer;
   display: none;
 
   ${media.smallerThanMaxTablet`
     display: flex;
   `}
-
-  &:hover {
-    ${GoBackButton} {
-      color: #000;
-      border-color: #000;
-
-      ${GoBackIcon} {
-        fill: #000;
-      }
-    }
-
-    ${GoBackLabel} {
-      color: #000;
-    }
-  }
 `;
 
 const CloseIcon = styled(Icon)`
@@ -389,8 +385,8 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
 
               <TopBar />
 
-              <GoBackButtonWrapper onClick={this.clickCloseButton}>
-                <GoBackButton>
+              <GoBackButtonWrapper>
+                <GoBackButton onClick={this.clickCloseButton}>
                   <GoBackIcon name="arrow-back" />
                 </GoBackButton>
                 <GoBackLabel>{formatMessage(messages.goBack)}</GoBackLabel>
