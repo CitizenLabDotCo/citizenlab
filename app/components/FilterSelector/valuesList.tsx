@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 
 // components
 import Icon from 'components/UI/Icon';
+import Checkbox from 'components/UI/Checkbox';
 
 // animation
 import TransitionGroup from 'react-transition-group/TransitionGroup';
@@ -79,34 +80,6 @@ const ListWrapper = styled.ul`
   padding: 0;
 `;
 
-const OptionText = styled.span`
-  flex: 1;
-  white-space: nowrap;
-`;
-
-const CheckmarkIcon = styled(Icon)`
-  fill: #fff;
-  height: 11px;
-`;
-
-const Checkmark: any = styled.span`
-  width: 22px;
-  height: 22px;
-  color: #fff;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border: solid 1px #aaa;
-  border-radius: 3px;
-  background: #fff;
-  background: ${(props: any) => props.selected ? props.theme.colors.success : '#fff'};
-  border-color: ${(props: any) => props.selected ? props.theme.colors.success : '#aaa'};
-  box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.15);
-  margin-left: 10px;
-`;
-
 const StyledOption: any = styled.li`
   color: #84939E;
   font-size: 16px;
@@ -130,11 +103,13 @@ const StyledOption: any = styled.li`
   &:hover {
     color: #222;
     background: #f8f8f8;
-
-    ${Checkmark} {
-      border-color: ${(props: any) => props.selected ? props.theme.colors.success : '#333'};
-    }
   }
+`;
+
+const OptionText = styled.span`
+  flex: 1;
+  white-space: nowrap;
+  margin-right: 10px;
 `;
 
 type Value = {
@@ -281,26 +256,23 @@ export default class ValuesList extends React.PureComponent<Props, State> {
           >
             {values && values.map((entry, index) => {
               const clickHandler = this.handleOnClick(entry, index);
-              const selected = this.isSelected(entry.value);
+              const checked = this.isSelected(entry.value);
               const focussed = currentFocus === index ? 'focused' : '';
 
               return (
                 <StyledOption
                   id={`${baseID}-${index}`}
                   role="option"
-                  aria-selected={selected}
-                  selected={selected}
+                  aria-selected={checked}
+                  selected={checked}
                   key={entry.value}
                   onClick={this.handleOnClick(entry, index)}
                   className={`e2e-filter-selector-dropdown-listitem-${title} ${focussed}`}
                 >
                   <OptionText>{entry.text}</OptionText>
+
                   {multiple &&
-                    <Checkmark selected={selected}>
-                      {selected &&
-                        <CheckmarkIcon name="checkmark" />
-                      }
-                    </Checkmark>
+                    <Checkbox size="22px" checked={checked} toggle={this.handleOnClick(entry, index)} />
                   }
                 </StyledOption>
               );

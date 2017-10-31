@@ -12,7 +12,7 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // analytics
@@ -66,11 +66,16 @@ const ModalForeground: any = styled.div`
 
 const ModalContentInner = styled.div`
   width: 100vw;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   z-index: 5000;
+
+  ${media.smallerThanMaxTablet`
+    height: calc(100vh - 150px);
+    margin-top: 70px;
+  `}
 `;
 
 const ModalContentInnerInner = styled.div`
@@ -79,6 +84,83 @@ const ModalContentInnerInner = styled.div`
   backface-visibility: hidden;
   transform: translate3d(0, 0, 0);
   will-change: transform, opacity;
+`;
+
+const TopBar = styled.div`
+  height: 70px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  z-index: 14999;
+  display: none;
+
+  ${media.smallerThanMaxTablet`
+    display: block;
+  `}
+`;
+
+const GoBackIcon = styled(Icon)`
+  height: 24px;
+  fill: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: fill 100ms ease-out;
+`;
+
+const GoBackButton = styled.div`
+  height: 46px;
+  width: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  border: solid 1px #e0e0e0;
+  z-index: 15000;
+  transition: border-color 100ms ease-out;
+  transition: fill 100ms ease-out;
+`;
+
+const GoBackLabel = styled.div`
+  color: #666;
+  font-size: 16px;
+  font-weight: 400;
+  z-index: 15000;
+  transition: fill 100ms ease-out;
+`;
+
+const GoBackButtonWrapper = styled.div`
+  height: 48px;
+  align-items: center;
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  cursor: pointer;
+  display: none;
+
+  ${media.smallerThanMaxTablet`
+    display: flex;
+  `}
+
+  &:hover {
+    ${GoBackButton} {
+      color: #000;
+      border-color: #000;
+
+      ${GoBackIcon} {
+        fill: #000;
+      }
+    }
+
+    ${GoBackLabel} {
+      color: #000;
+    }
+  }
 `;
 
 const CloseIcon = styled(Icon)`
@@ -99,7 +181,7 @@ const CloseButton = styled.div`
   justify-content: center;
   position: absolute;
   cursor: pointer;
-  top: 20px;
+  top: 15px;
   right: 30px;
   border-radius: 50%;
   border: solid 1px #e0e0e0;
@@ -113,6 +195,10 @@ const CloseButton = styled.div`
       fill: #000;
     }
   }
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const ModalContent: any = styled.div`
@@ -132,10 +218,6 @@ const ModalContent: any = styled.div`
     ${ModalContentInnerInner} {
       opacity: 0;
       transform: translateY(${contentTranslate});
-
-      ${media.smallerThanMaxTablet`
-        padding-top: 20px;
-      `}
     }
   }
 
@@ -162,7 +244,7 @@ type Props = {
 
 type State = {};
 
-class Modal extends React.PureComponent<Props & ITracks, State> {
+class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, State> {
   private unlisten: Function | null;
   private goBackUrl: string | null;
   private keydownEventListener: any;
@@ -271,6 +353,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
   render() {
     const { children, opened } = this.props;
+    const { formatMessage } = this.props.intl;
 
     return (
       <TransitionGroup>
@@ -297,14 +380,26 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
             exit={false}
           >
             <ModalContent id="e2e-fullscreenmodal-content">
+
               <ModalContentInner>
                 <ModalContentInnerInner>
                   {children}
                 </ModalContentInnerInner>
               </ModalContentInner>
+
+              <TopBar />
+
+              <GoBackButtonWrapper onClick={this.clickCloseButton}>
+                <GoBackButton>
+                  <GoBackIcon name="arrow-back" />
+                </GoBackButton>
+                <GoBackLabel>{formatMessage(messages.goBack)}</GoBackLabel>
+              </GoBackButtonWrapper>
+
               <CloseButton onClick={this.clickCloseButton}>
                 <CloseIcon name="close4" />
               </CloseButton>
+
             </ModalContent>
           </CSSTransition>
         }
@@ -313,4 +408,4 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   }
 }
 
-export default injectTracks<Props>(tracks)(Modal);
+export default injectTracks<Props>(tracks)(injectIntl<Props>(Modal));
