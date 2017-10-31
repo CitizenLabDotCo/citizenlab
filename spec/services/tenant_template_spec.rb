@@ -36,7 +36,6 @@ describe TenantTemplateService do
               },
               timezone: "Europe/Brussels",
               color_main: Faker::Color.hex_color,
-              menu_style: rand(2) == 0 ? "light" : "dark"
             },
             demographic_fields: {
               allowed: true,
@@ -51,8 +50,16 @@ describe TenantTemplateService do
               enabled: true,
               app_id: '307796929633098',
               app_secret: '28082a4c201d7cee136dbe35236e44cb'
+            },
+            groups: {
+              enabled: true,
+              allowed:true
+            },
+            private_projects: {
+              enabled: true,
+              allowed: true
             }
-           }
+          }
          })
         Apartment::Tenant.switch("#{name}_localhost") do
           service.apply_template template
