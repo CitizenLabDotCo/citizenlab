@@ -34,7 +34,7 @@ def create_for_some_locales
 end
 
 if Apartment::Tenant.current == 'public' || 'example_org'
-  Tenant.create({
+  t = Tenant.create({
     name: 'local',
     host: 'localhost',
     logo: Rails.root.join("spec/fixtures/logo.png").open,
@@ -52,7 +52,6 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         },
         timezone: "Europe/Brussels",
         color_main: Faker::Color.hex_color,
-        menu_style: rand(2) == 0 ? "light" : "dark"
       },
       demographic_fields: {
         allowed: true,
@@ -67,6 +66,14 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         enabled: true,
         app_id: '307796929633098',
         app_secret: '28082a4c201d7cee136dbe35236e44cb'
+      },
+      groups: {
+        enabled: true,
+        allowed:true
+      },
+      private_projects: {
+        enabled: true,
+        allowed: true
       }
     }
   })
@@ -89,7 +96,6 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         },
         timezone: "Europe/Brussels",
         color_main: Faker::Color.hex_color,
-        menu_style: rand(2) == 0 ? "light" : "dark"
       },
       demographic_fields: {
         allowed: true,
@@ -104,6 +110,14 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         enabled: true,
         app_id: '307796929633098',
         app_secret: '28082a4c201d7cee136dbe35236e44cb'
+      },
+      groups: {
+        enabled: true,
+        allowed:true
+      },
+      private_projects: {
+        enabled: true,
+        allowed: true
       }
     }
   })
@@ -168,7 +182,7 @@ if Apartment::Tenant.current == 'localhost'
     })
   end
 
-  TenantTemplateService.new.apply_template('base')
+  TenantTemplateService.new.apply_template('base') #####
 
   12.times do 
     Area.create({
@@ -278,6 +292,14 @@ if Apartment::Tenant.current == 'localhost'
       title_multiloc:create_for_some_locales{Faker::Lorem.sentence},
       body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
       project: rand(1) == 1 ? Project.offset(rand(Project.count)).first : nil,
+    })
+  end
+
+  3.times do
+    Group.create({
+      title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
+      projects: Project.all.shuffle.take(rand(Project.count)),
+      users: User.all.shuffle.take(rand(User.count))
     })
   end
 

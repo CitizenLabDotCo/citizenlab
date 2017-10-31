@@ -10,7 +10,8 @@ class SideFxUserService
 
   def after_create user, current_user
     # UserMailer.welcome(@user).deliver_later
-    LogActivityJob.perform_later(user, 'created', current_user, user.created_at.to_i)
+    IdentifyToSegmentJob.perform_later(user)
+    LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i)
   end
 
   def after_update user, current_user
