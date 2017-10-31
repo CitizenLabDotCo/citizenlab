@@ -51,6 +51,17 @@ resource "Pages" do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @pages.first.id
     end
+
+    describe do
+      before do
+        # @pages.drop(1).each_with_index{|p,i| create(:page_link, linking_page: @pages.first, linked_page: p, order: i+1)}
+      end
+      example_request "Get linked pages of a linking page", document: false do 
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        byebug
+      end
+    end
   end
 
   get "api/v1/pages/by_slug/:slug" do
