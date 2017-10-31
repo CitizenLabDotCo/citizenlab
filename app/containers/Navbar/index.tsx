@@ -32,27 +32,27 @@ import styled, { ThemeProvider, css, keyframes } from 'styled-components';
 
 const Container: any = styled.div`
   width: 100%;
+  height: ${(props) => props.theme.menuHeight}px;
   display: flex;
   justify-content: space-between;
-  height: ${(props) => props.theme.menuHeight}px;
   z-index: 999;
   position: fixed;
   top: 0;
   background: #fff;
-  /* background: transparent; */
-  transition: all 150ms ease-out;
   border-bottom: solid 1px #fff;
-  /* border-bottom: solid 1px transparent; */
-  box-shadow: ${(props: any) => props.alwaysShowBorder ? '0px 1px 3px rgba(0, 0, 0, 0.12)' : '0px 1px 3px rgba(0, 0, 0, 0)'};
+  box-shadow: ${(props: any) => props.alwaysShowBorder ? '0px 1px 3px rgba(0, 0, 0, 0.13)' : '0px 1px 3px rgba(0, 0, 0, 0)'};
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transform: translate3d(0, 0, 0);
+  transition: all 150ms ease-out;
   will-change: box-shadow;
 
   ${(props: any) => props.scrolled && css`
-    background: #fff;
-    border-bottom: solid 1px #fff;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.13);
+  `}
+
+  ${media.smallerThanMinTablet`
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.13);
   `}
 
   * {
@@ -78,7 +78,7 @@ const Logo = styled.div`
   height: 42px;
   padding: 0px;
   padding-right: 15px;
-  padding-left: 25px;
+  padding-left: 30px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -94,7 +94,7 @@ const NavigationItems = styled.div`
   display: flex;
   margin-left: 35px;
 
-  ${media.phone`
+  ${media.smallerThanMaxTablet`
     display: none;
   `}
 `;
@@ -123,7 +123,7 @@ const Right = styled.div`
   display: flex;
   z-index: 2;
   align-items: center;
-  margin-right: 5px;
+  margin-right: 10px;
 `;
 
 const RightItem: any = styled.div`

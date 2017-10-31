@@ -63,6 +63,10 @@ const Header: any = styled.div`
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+
+  ${media.smallerThanMinTablet`
+    height: 300px;
+  `}
 `;
 
 const HeaderOverlay = styled.div`
@@ -132,6 +136,7 @@ const HeaderTitle: any = styled.h1`
   ${media.smallerThanMinTablet`
     font-size: 38px;
     line-height: 44px;
+    padding-top: 90px;
   `}
 `;
 
