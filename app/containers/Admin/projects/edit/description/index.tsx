@@ -83,15 +83,20 @@ class ProjectDescription extends React.Component<Props, State> {
           currentTenantStream().observable,
         )
         .subscribe(([response, locale, currentTenant]) => {
-          const blocksFromHtml = convertFromHTML(response.data.attributes.description_multiloc[locale]);
-          const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
+          let editorState = this.state.editorState;
+
+          if (response.data.attributes.description_multiloc) {
+            const blocksFromHtml = convertFromHTML(response.data.attributes.description_multiloc[locale]);
+            const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
+            editorState = EditorState.createWithContent(editorContent);
+          }
 
           this.setState({
             locale,
+            editorState,
             data: response.data,
             loading: false,
             diff: {},
-            editorState: EditorState.createWithContent(editorContent),
           });
         })
       );
