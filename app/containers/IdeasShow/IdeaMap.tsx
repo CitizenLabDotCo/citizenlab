@@ -1,25 +1,15 @@
 // Libraries
 import * as React from 'react';
-import Leaflet from 'leaflet';
 
 // Components
 import Map from 'components/Map';
 
 // styling
-import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
 
-const MapWrapper = styled.div`
-  height: 300px;
-
-  .leaflet-container {
-    height: 100%;
-  }
+const StyledMap = styled(Map)`
+  height: 265px;
 `;
-
-const customIcon = Leaflet.icon({
-  iconUrl: ''
-});
 
 // Typing
 interface Props {
@@ -44,7 +34,7 @@ export default class IdeaMap extends React.Component<Props, State> {
     const { coordinates } = this.props.location;
 
     return (
-      <Map center={coordinates} points={[coordinates]} />
+      <StyledMap center={coordinates} points={[coordinates]} />
     );
   }
 }
