@@ -20,7 +20,7 @@ export interface IIdeaData {
     comments_count: number;
     location_point_geojson: {
       type: 'Point';
-      coordinates: number[];
+      coordinates: [number, number];
     };
     location_description: string;
     created_at: string;
@@ -80,7 +80,7 @@ export interface IIdeaUpdate {
   area_ids: string[];
   location_point_geojson: {
     type: 'Point';
-    coordinates: number[];
+    coordinates: [number, number];
   };
   location_description: string;
 }

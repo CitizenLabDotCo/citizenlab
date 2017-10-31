@@ -1,14 +1,31 @@
 // Libraries
 import * as React from 'react';
+import Leaflet from 'leaflet';
 
 // Components
-import { Map, Marker, TileLayer } from 'react-leaflet';
+import Map from 'components/Map';
+
+// styling
+import 'leaflet/dist/leaflet.css';
+import styled from 'styled-components';
+
+const MapWrapper = styled.div`
+  height: 300px;
+
+  .leaflet-container {
+    height: 100%;
+  }
+`;
+
+const customIcon = Leaflet.icon({
+  iconUrl: ''
+});
 
 // Typing
 interface Props {
   location: {
     type: 'Point';
-    coordinates: number[];
+    coordinates: [number, number];
   };
   visible: boolean;
 }
@@ -27,13 +44,7 @@ export default class IdeaMap extends React.Component<Props, State> {
     const { coordinates } = this.props.location;
 
     return (
-      <Map center={coordinates} zoom={13}>
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution=""
-        />
-        <Marker position={coordinates} />
-      </Map>
+      <Map center={coordinates} points={[coordinates]} />
     );
   }
 }
