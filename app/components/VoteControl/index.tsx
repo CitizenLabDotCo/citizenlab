@@ -24,7 +24,7 @@ const vote = keyframes`
   }
 
   50% {
-    transform: scale3d(1.2, 1.2, 1.2);
+    transform: scale3d(1.25, 1.25, 1.25);
   }
 
   to {
@@ -72,7 +72,7 @@ const Vote: any = styled.div`
   align-items: center;
 
   &.voteClick ${VoteIconContainer} {
-    animation: ${vote} 250ms;
+    animation: ${vote} 230ms;
   }
 `;
 
