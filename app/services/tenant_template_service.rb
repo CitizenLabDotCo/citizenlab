@@ -32,14 +32,7 @@ class TenantTemplateService
             model.send("#{field_name}=", field_value)
           end
         end
-        begin
-          model.save!
-        rescue Exception => e
-          if e.message != 'Validation failed: Code has already been taken' # for testing where base template was already used
-            puts e.message
-            byebug
-          end
-        end
+        model.save!
         obj_to_inst[attributes] = model
       end
     end

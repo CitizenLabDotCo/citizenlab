@@ -17,8 +17,46 @@ describe TenantTemplateService do
   describe "apply_template" do
     it "Successfully applies all templates (residing in config/tenant_templates)" do  
       service.available_templates.map do |template|
-        # TODO clear tenant first
-        service.apply_template template
+        name = template.split('_').join('')
+        Tenant.create!({
+          name: name,
+          host: "#{name}.localhost",
+          logo: Rails.root.join("spec/fixtures/logo.png").open,
+          header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
+          settings: {
+            core: {
+              allowed: true,
+              enabled: true,
+              locales: ['en','nl'],
+              organization_type: 'medium_city',
+              organization_name: {
+                "en" => Faker::Address.city,
+                "nl" => Faker::Address.city,
+                "fr" => Faker::Address.city
+              },
+              timezone: "Europe/Brussels",
+              color_main: Faker::Color.hex_color,
+              menu_style: rand(2) == 0 ? "light" : "dark"
+            },
+            demographic_fields: {
+              allowed: true,
+              enabled: true,
+              gender: true,
+              domicile: true,
+              birthyear: true,
+              education: true,
+            },
+            facebook_login: {
+              allowed: true,
+              enabled: true,
+              app_id: '307796929633098',
+              app_secret: '28082a4c201d7cee136dbe35236e44cb'
+            }
+           }
+         })
+        Apartment::Tenant.switch("#{name}_localhost") do
+          service.apply_template template
+        end
       end
     end
 
