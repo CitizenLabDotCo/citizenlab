@@ -1,5 +1,29 @@
 # Changelog
 
+## 2017-10-31
+
+### Fixed
+
+- Various copy added to the translation system
+- Fixed bug where image was not shown after posting an idea
+- Loading behaviour of the information pages
+- Fixed bug where the app no longer worked after visiting some projects
+### Added
+- Added groups to the admin
+- Added permissions to projects
+- Social sharing of ideas on twitter and (if configured for the platform) facebook
+- Projects can be linked to certain areas in the admin
+- Projects can be filtered by area on the projects page
+- Backend events are logged to segment
+
+### Changed
+- Improved the styling of the filters 
+- Project description in the admin has its own tab
+- Restored the landing page header with an image and configurable text 
+- Improved responsiveness for idea show page
+- Maximum allowed password length has increased to 72 characters
+- Newest projects are list first
+
 ## 2017-10-09
 
 ### Fixed
