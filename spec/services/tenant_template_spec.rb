@@ -63,6 +63,7 @@ describe TenantTemplateService do
     it "Successfully generates and applies tenant templates (those acquired from spreadsheets)" do
       tenant = service.apply_template('spec/services/tenant_template.yml', is_path=true)
       expect(IdeaStatus.count).to be 5
+      expect(Topic.count).to be 14
       expect(Topic.count).to be 12
       expect(User.count).to be 2
       lea = User.find_by(email: 'princesslea@gmail.com')

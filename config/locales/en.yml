@@ -29,12 +29,16 @@ en:
     housing_description: Housing
     culture: Arts, culture and events
     culture_description: Arts, culture and events
-    citizenship: citizenship
-    citizenship_description: citizenship
+    citizenship: Citizenship
+    citizenship_description: Citizenship
     social: Social inclusion
     social_description: Social inclusion
     health: Care and welfare
     health_description: Care and welfare
+    sport: Sport
+    sport_description: Sport
+    education: Education and youth
+    education_description: Education and youth
   pages:
     terms_and_conditions_title: Gebruiksvoorwaarden
     terms_and_conditions_body: >

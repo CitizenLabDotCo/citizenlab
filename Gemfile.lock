@@ -68,6 +68,7 @@ GEM
       nokogiri (>= 1.4.1)
       rubyzip (~> 1.1.7)
     bcrypt (3.1.11)
+    bson (4.2.2)
     builder (3.2.3)
     byebug (9.0.6)
     carrierwave (1.1.0)
@@ -177,6 +178,8 @@ GEM
     mini_magick (4.7.0)
     mini_portile2 (2.2.0)
     minitest (5.10.3)
+    mongo (2.4.3)
+      bson (>= 4.2.1, < 5.0.0)
     multi_json (1.12.1)
     multipart-post (2.0.0)
     mustache (1.0.5)
@@ -277,6 +280,8 @@ GEM
     rubyzip (1.1.7)
     rufus-scheduler (3.4.0)
       et-orbi (~> 1.0)
+    sentry-raven (2.7.1)
+      faraday (>= 0.7.6, < 1.0)
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
     sidekiq (4.2.10)
@@ -347,6 +352,7 @@ DEPENDENCIES
   liquid (~> 4.0)
   listen (>= 3.0.5, < 3.2)
   mini_magick
+  mongo (~> 2.4)
   okcomputer
   pg (~> 0.18)
   pg_search (~> 2.0.1)
@@ -361,6 +367,7 @@ DEPENDENCIES
   rspec-rails
   rspec_api_documentation
   rubyzip (~> 1.1.0)
+  sentry-raven
   shoulda-matchers (~> 3.1)
   sidekiq (~> 4.2.9)
   sidekiq-cron (~> 0.4.5)

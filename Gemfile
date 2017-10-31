@@ -45,6 +45,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'redcarpet'
+  gem 'mongo', '~> 2.4'
 end
 
 group :test do
@@ -83,3 +84,4 @@ gem 'rgeo-geojson'
 gem 'activerecord-postgis-adapter', '~> 5.0'
 gem 'simple_segment', '~> 0.2.1'
 gem 'okcomputer'
+gem 'sentry-raven'
