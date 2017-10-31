@@ -61,6 +61,24 @@ class Tenant < ApplicationRecord
     ss = SettingsService.new
     ss.remove_private_settings(self.settings, SETTINGS_JSON_SCHEMA)
   end
+
+  def base_frontend_uri
+    if Rails.env.development?
+      "http://localhost:3000"
+    else
+      transport = request.ssl? ? 'https' : 'http'
+      "#{transport}://#{self.host}"
+    end
+  end
+
+  def base_backend_uri
+    if Rails.env.development?
+      "http://localhost:4000"
+    else
+      transport = request.ssl? ? 'https' : 'http'
+      "#{transport}://#{self.host}"
+    end
+  end
   
   private
 

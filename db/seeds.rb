@@ -73,6 +73,13 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         client_id: '692484441813-98clbuerpm01bonc06htv95mec0pu1d3.apps.googleusercontent.com',
         client_secret: 'ueqXBAfEy7j7D_2Ge8d16a6v'
       },
+      # mydigipass_login: {
+      #   allowed: true,
+      #   enabled: true,
+      #   client_id: 'a76piarjfjbvwnukobjdzz07d',
+      #   client_secret: '65xg35xpa84p14cgntyg0279k',
+      #   require_eid: false
+      # },
       groups: {
         enabled: true,
         allowed:true
