@@ -309,11 +309,11 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ area });
   }
 
-  handleOnContinue = (event: React.FormEvent<any>) => {
+  handleOnContinue = async (event: React.FormEvent<any>) => {
     event.preventDefault();
 
-    const { firstName, lastName, email, password } = this.state;
     const { formatMessage } = this.props.intl;
+    const { firstName, lastName, email, password } = this.state;
     const hasEmailError = (!email || !isValidEmail(email));
     const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
     const firstNameError = (!firstName ? formatMessage(messages.noFirstNameError) : null);
@@ -321,10 +321,20 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     const passwordError = (!password ? formatMessage(messages.noPasswordError) : null);
     const hasErrors = [emailError, firstNameError, lastNameError, passwordError].some(error => error !== null);
 
-    this.setState({ emailError, firstNameError, lastNameError, passwordError, showStep1: hasErrors });
+    this.setState({ emailError, firstNameError, lastNameError, passwordError });
+
+    if (!hasErrors && firstName && lastName && email && password) {
+      this.setState({ processing: true });
+      const response = await signUp(firstName, lastName, email, password);
+      this.setState({ processing: false });
+
+      console.log('response:');
+      console.log(response);
+    }
   }
 
   handleOnSubmit = async (event: React.FormEvent<any>) => {
+    /*
     event.preventDefault();
 
     const { onSignedUp } = this.props;
@@ -346,6 +356,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
         this.setState({ signUpError, processing: false });
       }
     }
+    */
   }
 
   goToSignInForm = (event) => {
@@ -433,6 +444,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
           <FormElement>
             <StyledButton
               size="2"
+              loading={processing}
               text={formatMessage(messages.continue)}
               onClick={this.handleOnContinue}
               circularCorners={true}
