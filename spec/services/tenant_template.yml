@@ -53,6 +53,10 @@ models:
     description_multiloc: topics.social_description
   - title_multiloc: topics.health
     description_multiloc: topics.health_description
+  - title_multiloc: topics.sport
+    description_multiloc: topics.sport_description
+  - title_multiloc: topics.education
+    description_multiloc: topics.education_description
   idea_status:
   - title_multiloc: statuses.proposed
     ordering: 100
