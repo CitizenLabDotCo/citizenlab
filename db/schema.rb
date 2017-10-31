@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171026133657) do
+ActiveRecord::Schema.define(version: 20171031131310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -188,6 +188,12 @@ ActiveRecord::Schema.define(version: 20171026133657) do
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
+  end
+
+  create_table "page_links", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "linking_page_id", null: false
+    t.integer "linked_page_id", null: false
+    t.integer "order"
   end
 
   create_table "pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
