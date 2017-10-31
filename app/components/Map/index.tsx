@@ -20,8 +20,8 @@ const MapWrapper = styled.div`
 
 const customIcon = Leaflet.icon({
   iconUrl: icon,
-  iconSize: [23, 33],
-  iconAnchor: [11, 33],
+  iconSize: [29, 41],
+  iconAnchor: [14, 41],
 });
 
 // Typing
