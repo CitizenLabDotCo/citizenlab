@@ -210,22 +210,10 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
   }
 
   componentDidMount() {
-    const getScrollTop = () => {
-      if (!_.isUndefined(pageYOffset)) {
-        return pageYOffset;
-      } else {
-        const B = document.body;
-        let D = document.documentElement;
-        D = (D.clientHeight) ? D : B;
-        return D.scrollTop;
-      }
-    };
-
     this.subscriptions.push(
-      Rx.Observable.fromEvent(window, 'scroll').sampleTime(20).subscribe(() => {
+      Rx.Observable.fromEvent(window, 'scroll').sampleTime(20).subscribe((bleh) => {
         this.setState((state) => {
-          const scrollTop = getScrollTop();
-          const scrolled = (scrollTop > 0);
+          const scrolled = (window.scrollY > 0);
           return (state.scrolled !== scrolled ? { scrolled } : state);
         });
       })

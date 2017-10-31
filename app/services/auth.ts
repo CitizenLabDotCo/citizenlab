@@ -43,22 +43,22 @@ export async function signUp(
   firstName: string,
   lastName: string,
   email: string,
-  password: string,
-  locale: string,
-  selectedGender: 'male' | 'female' | 'unspecified' | null = null,
-  selectedYearOfBirth: number | null = null,
-  selectedAreaId: string | null = null
+  password: string
+  // locale: string,
+  // selectedGender: 'male' | 'female' | 'unspecified' | null = null,
+  // selectedYearOfBirth: number | null = null,
+  // selectedAreaId: string | null = null
 ) {
   const bodyData = {
     user: {
       email,
       password,
-      locale,
       first_name: firstName,
-      last_name: lastName,
-      gender: selectedGender,
-      birthyear: selectedYearOfBirth,
-      domicile: selectedAreaId,
+      last_name: lastName
+      // locale,
+      // gender: selectedGender,
+      // birthyear: selectedYearOfBirth,
+      // domicile: selectedAreaId,
     }
   };
 
