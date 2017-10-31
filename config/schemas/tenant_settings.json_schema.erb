@@ -154,12 +154,31 @@
         }
       },
 
-      "twitter_login": {
+      "google_login": {
+        "type": "object",
+        "description":  "Allow signing in and registering through a google account",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["client_id", "client_secret"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "client_id": {
+            "type": "string"
+          },
+          "client_secret": {
+            "type": "string",
+            "private": true
+          }
+        }
+      },
+
+      /* "twitter_login": {
         "type": "object",
         "description":  "Allow signing in and registering through a twitter account",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["api_key", "api_secret"],
+        "required-settings": ["client_id", "client_secret"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
@@ -171,7 +190,32 @@
             "private": true
           }
         }
-      },
+      }, */
+
+
+      /* "mydigipass_login": {
+        "type": "object",
+        "description":  "Allow signing in and registering through a mydigipass account. Requires Belgian eID.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["client_id", "client_secret"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "client_id": {
+            "type": "string"
+          },
+          "client_secret": {
+            "type": "string",
+            "private": true
+          },
+          "require_eid": {
+            "description": "Force the use of eID for profile information",
+            "type": "boolean",
+            "default": true
+          }
+        }
+      }, */
 
       "projects": {
         "type": "object",

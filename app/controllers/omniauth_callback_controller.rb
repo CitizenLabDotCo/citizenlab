@@ -17,17 +17,25 @@ class OmniauthCallbackController < ApplicationController
     if @user
       @identity.update(user: @user) unless @identity.user
       set_auth_cookie
-      redirect_to base_url
+      redirect_to base_frontend_uri
     else
       @user = User.build_with_omniauth(auth)
       SideFxUserService.new.before_create(@user, nil)
       @user.identities << @identity
-      @user.save!
-      SideFxUserService.new.after_create(@user, nil)
-      set_auth_cookie
-      redirect_to "#{base_url}/complete-signup"
+      begin
+        @user.save!
+        SideFxUserService.new.after_create(@user, nil)
+        set_auth_cookie
+        redirect_to "#{base_frontend_uri}/complete-signup"
+      rescue ActiveRecord::RecordInvalid => e
+        redirect_to "#{base_frontend_uri}/authentication-error"
+      end
     end
 
+  end
+
+  def failure
+    redirect_to "#{base_frontend_uri}/authentication-error"
   end
 
 
@@ -35,13 +43,8 @@ class OmniauthCallbackController < ApplicationController
     false
   end
 
-  def base_url
-    if Rails.env.development?
-      "http://localhost:3000"
-    else
-      transport = request.ssl? ? 'https' : 'http'
-      "#{transport}://#{Tenant.current.host}"
-    end
+  def base_frontend_uri
+    Tenant.current.base_frontend_uri
   end
 
   def auth_token entity
