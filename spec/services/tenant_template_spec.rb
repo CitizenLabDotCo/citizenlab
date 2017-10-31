@@ -71,7 +71,6 @@ describe TenantTemplateService do
       tenant = service.apply_template('spec/services/tenant_template.yml', is_path=true)
       expect(IdeaStatus.count).to be 5
       expect(Topic.count).to be 14
-      expect(Topic.count).to be 12
       expect(User.count).to be 2
       lea = User.find_by(email: 'princesslea@gmail.com')
       expect(lea).to be_present
