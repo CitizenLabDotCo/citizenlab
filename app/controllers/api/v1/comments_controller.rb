@@ -88,7 +88,7 @@ class Api::V1::CommentsController < ApplicationController
     params.require(:comment).permit(
       :parent_id,
       :author_id,
-      body_multiloc: [:en, :nl, :fr]
+      body_multiloc: I18n.available_locales
     )
   end
 

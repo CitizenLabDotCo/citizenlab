@@ -8,7 +8,17 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.all       
+      if user&.admin?
+        scope.all
+      elsif user
+        scope
+          .left_outer_joins(groups: :memberships)
+          .where("projects.visible_to = 'public' OR \
+            (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
+      else
+        scope
+          .where(visible_to: 'public')
+      end
     end
   end
 
@@ -21,7 +31,9 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    user&.admin? ||
+    record.visible_to == 'public' || 
+    record.visible_to == 'groups' && record.groups.includes(:memberships).flat_map(&:memberships).any?{|m| m.user_id == user.id}
   end
 
   def by_slug?
@@ -29,7 +41,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def update?
-    user && (user.admin? || user.project_moderator?(record.project_id))
+    user && (user.admin? || user.project_moderator?(record.id))
   end
 
   def destroy?
