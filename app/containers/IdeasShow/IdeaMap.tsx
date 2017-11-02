@@ -17,7 +17,6 @@ interface Props {
     type: 'Point';
     coordinates: [number, number];
   };
-  visible: boolean;
 }
 
 interface State {
