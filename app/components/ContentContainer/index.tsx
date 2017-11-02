@@ -23,17 +23,14 @@ interface IContentContainer {
   className?: string;
 }
 
-const ContentContainer: React.SFC<IContentContainer> = ({ children, className }) => (
-  <Outer className={className}>
-    <Inner>
-      {children}
-    </Inner>
-  </Outer>
-);
-
-interface IContentContainer {
-  children?: any;
-  className?: string;
-}
+const ContentContainer: React.SFC<IContentContainer> = ({ children, className }) => {
+  return (
+    <Outer className={className}>
+      <Inner>
+        {children}
+      </Inner>
+    </Outer>
+  );
+};
 
 export default ContentContainer;
