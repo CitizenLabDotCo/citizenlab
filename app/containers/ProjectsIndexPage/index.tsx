@@ -9,7 +9,6 @@ import { withRouter, RouterState, browserHistory, Link } from 'react-router';
 // components
 import SelectAreas from './SelectAreas';
 import HelmetIntl from 'components/HelmetIntl';
-import SearchInput from 'components/UI/SearchInput';
 import ContentContainer from 'components/ContentContainer';
 import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
@@ -137,11 +136,6 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
     } else if (_.has(filter, 'areas') && _.isArray(filter.areas) && !_.isEmpty(filter.areas)) {
       selectedAreas = filter.areas;
     }
-
-    console.log('filter:');
-    console.log(filter);
-    console.log('selectedAreas:');
-    console.log(selectedAreas);
 
     return (
       <Container>

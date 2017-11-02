@@ -14,6 +14,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.ideaVoteSubmitError',
     defaultMessage: 'Voting failed',
   },
+  voteOnThisIdea: {
+    id: 'app.containers.IdeasShow.voteOnThisIdea',
+    defaultMessage: 'Vote on this idea',
+  },
   commentEditorHeader: {
     id: 'app.containers.IdeasShow.commentEditorHeader',
     defaultMessage: 'Comment the idea!',

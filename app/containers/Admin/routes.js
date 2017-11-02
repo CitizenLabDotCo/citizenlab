@@ -9,6 +9,7 @@ import usersRoutes from './users/routes';
 import pagesRoutes from './pages/routes';
 import areasRoutes from './areas/routes';
 import projectsRoutes from './projects/routes';
+import groupsRoutes from './groups/routes';
 import settingsRoutes from './settings/routes';
 
 const errorLoading = (err) => {
@@ -42,6 +43,7 @@ export default (injectReducer) => ({
     projectsRoutes(injectReducer),
     areasRoutes(injectReducer),
     pagesRoutes(injectReducer),
-    settingsRoutes(injectReducer),
+    settingsRoutes(),
+    groupsRoutes(injectReducer),
   ],
 });

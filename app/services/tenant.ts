@@ -2,6 +2,11 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { API, Multiloc } from 'typings';
 
+interface TenantFeature {
+  allowed: boolean;
+  enabled: boolean;
+}
+
 export interface ITenantSettings {
   core: {
     allowed: boolean;
@@ -10,6 +15,7 @@ export interface ITenantSettings {
     timezone: string;
     organization_name: Multiloc;
     organization_type: 'small_city' | 'medium_city' | 'large_city' | 'generic';
+    header_title: Multiloc | null;
     header_slogan: Multiloc | null;
     meta_title: Multiloc | null;
     meta_description: Multiloc | null;
@@ -30,6 +36,15 @@ export interface ITenantSettings {
     app_secret: string;
     enabled: boolean;
   };
+  pages?: TenantFeature;
+  groups?: TenantFeature;
+  projects?: TenantFeature;
+  projects_phases?: TenantFeature;
+  projects_pages?: TenantFeature;
+  projects_events?: TenantFeature;
+  projects_info?: TenantFeature;
+  excel_export?: TenantFeature;
+  private_projects?: TenantFeature;
 }
 
 export interface ITenantData {
@@ -66,6 +81,8 @@ export function currentTenantStream() {
   return streams.get<ITenant>({ apiEndpoint: `${API_PATH}/tenants/current` });
 }
 
-export function updateTenant(tenantId: string, object: IUpdatedTenantProperties) {
-  return streams.update<ITenant>(`${API_PATH}/tenants/${tenantId}`, tenantId, { tenant: object });
+export async function updateTenant(tenantId: string, object: IUpdatedTenantProperties) {
+  const tenant = await streams.update<ITenant>(`${API_PATH}/tenants/${tenantId}`, tenantId, { tenant: object });
+  await currentTenantStream().fetch();
+  return tenant;
 }

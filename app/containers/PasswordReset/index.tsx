@@ -2,18 +2,20 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
+// router
+import { browserHistory } from 'react-router';
+
 // components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Success from 'components/UI/Success';
+import { Helmet } from 'react-helmet';
+import ContentContainer from 'components/ContentContainer';
 
 // services
-import { sendPasswordResetMail } from 'services/auth';
-
-// utils
-import { isValidEmail } from 'utils/validate';
+import { resetPassword } from 'services/auth';
 
 // i18n
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -24,35 +26,51 @@ import messages from './messages';
 
 const Container = styled.div`
   width: 100%;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  background: #f8f8f8;
 `;
 
-const Form = styled.div`
-  width: 100%;
+const StyledContentContainer = styled(ContentContainer)`
+  padding-bottom: 100px;
 `;
 
 const Title = styled.h2`
   width: 100%;
   color: #333;
-  font-size: 38px;
-  line-height: 44px;
+  font-size: 36px;
+  line-height: 40px;
   font-weight: 500;
-  text-align: left;
-  margin-top: 50px;
-  margin-bottom: 35px;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  padding-top: 60px;
+  margin-bottom: 50px;
 `;
 
-const FormElement: any = styled.div`
+const StyledInput = styled(Input)``;
+
+const StyledButton = styled(Button)`
+  margin-top: 20px;
+  margin-bottom: 10px;
+`;
+
+const Form = styled.form`
   width: 100%;
-  margin-bottom: 25px;
+  max-width: 380px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
 `;
 
-type Props = {
-  onExit?: () => void;
-};
+type Props = {};
 
-export type State = {
-  email: string | null;
-  emailError: boolean;
+type State = {
+  token: string | null;
+  password: string | null;
+  passwordError: boolean;
   submitError: boolean;
   processing: boolean;
   success: boolean;
@@ -60,105 +78,129 @@ export type State = {
 
 class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
-  emailInputElement: HTMLInputElement | null;
+  passwordInputElement: HTMLInputElement | null;
 
   constructor() {
     super();
+
+    const query = browserHistory.getCurrentLocation().query;
+    const token = (query.token ? query.token : null);
+    console.log(token);
+
     this.state = {
-      email: null,
-      emailError: false,
+      token,
+      password: null,
+      passwordError: false,
       submitError: false,
       processing: false,
       success: false
     };
-    this.emailInputElement = null;
+
+    this.passwordInputElement = null;
   }
 
   componentDidMount() {
-    if (this.emailInputElement) {
-      this.emailInputElement.focus();
+    const { token } = this.state;
+
+    if (!_.isString(token)) {
+      browserHistory.push('/');
+    } else if (this.passwordInputElement) {
+      this.passwordInputElement.focus();
     }
   }
 
-  validate = (email: string | null) => {
-    const emailError = (!email || !isValidEmail(email));
+  validate = (password: string | null) => {
+    const passwordError = (!password || password.length < 8);
 
-    if (emailError && this.emailInputElement) {
-      this.emailInputElement.focus();
+    if (passwordError && this.passwordInputElement) {
+      this.passwordInputElement.focus();
     }
 
-    this.setState({ emailError });
+    this.setState({ passwordError });
 
-    return (!emailError);
+    return (!passwordError);
   }
 
-  handleEmailOnChange = (value) => {
+  handlePasswordOnChange = (value) => {
     this.setState({
-      emailError: false,
-      email: value
+      passwordError: false,
+      submitError: false,
+      password: value
     });
   }
 
-  handleEmailInputSetRef = (element: HTMLInputElement) => {
-    this.emailInputElement = element;
+  handlePasswordInputSetRef = (element: HTMLInputElement) => {
+    this.passwordInputElement = element;
   }
 
-  handleOnSubmit = async () => {
-    const { email } = this.state;
+  handleOnSubmit = async (event) => {
+    const { password, token } = this.state;
 
-    if (this.validate(email) && email) {
+    event.preventDefault();
+
+    if (this.validate(password) && password && token) {
       try {
-        await sendPasswordResetMail(email);
-        this.setState({ success: true });
-        setTimeout(() => this.setState({ success: false }), 8000);
-      } catch {
-        this.setState({ success: false, submitError: true });
+        this.setState({ processing: true, success: false });
+        await resetPassword(password, token);
+        this.setState({ password: null, processing: false, success: true });
+        /* setTimeout(() => this.setState({ success: false }), 8000); */
+      } catch (error) {
+        this.setState({ processing: false, success: false, submitError: true });
       }
-    }
-  }
-
-  handleOnGoBack = () => {
-    if (_.has(this.props, 'onExit') && _.isFunction(this.props.onExit)) {
-      this.props.onExit();
     }
   }
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { email, emailError, submitError, processing, success } = this.state;
-    const emailErrorMessage = (emailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
-    const submitErrorMessage = (submitError ? formatMessage(messages.submitError) : null);
+    const { password, passwordError, submitError, processing, success } = this.state;
+    const helmetTitle = formatMessage(messages.helmetTitle);
+    const helmetDescription = formatMessage(messages.helmetDescription);
+    const title = formatMessage(messages.title);
+    const passwordPlaceholder = formatMessage(messages.passwordPlaceholder);
+    const updatePassword = formatMessage(messages.updatePassword);
     const successMessage = (success ? formatMessage(messages.successMessage) : null);
+    let errorMessage: string | null = null;
+
+    if (passwordError) {
+      errorMessage = formatMessage(messages.passwordError);
+    } else if (submitError) {
+      errorMessage = formatMessage(messages.submitError);
+    }
 
     return (
       <Container>
-        <Form>
-          <Title>{formatMessage(messages.title)}</Title>
+        <Helmet
+          title={helmetTitle}
+          meta={[
+            { name: 'description', content: helmetDescription },
+          ]}
+        />
 
-          <FormElement name="titleInput">
-            <Label value={formatMessage(messages.emailLabel)} htmlFor="email" />
-            <Input
-              id="email"
-              type="text"
-              value={email}
-              placeholder={formatMessage(messages.emailPlaceholder)}
-              error={emailErrorMessage}
-              onChange={this.handleEmailOnChange}
-              setRef={this.handleEmailInputSetRef}
+        <StyledContentContainer>
+          <Title>{title}</Title>
+
+          <Form onSubmit={this.handleOnSubmit}>
+            <StyledInput
+              type="password"
+              id="password"
+              value={password}
+              error={errorMessage}
+              placeholder={passwordPlaceholder}
+              onChange={this.handlePasswordOnChange}
+              setRef={this.handlePasswordInputSetRef}
             />
-          </FormElement>
 
-          <FormElement>
-            <Button
+            <StyledButton
               size="2"
               loading={processing}
-              text={formatMessage(messages.send)}
+              text={updatePassword}
               onClick={this.handleOnSubmit}
+              circularCorners={false}
             />
-            <Error text={submitErrorMessage} />
+
             <Success text={successMessage} />
-          </FormElement>
-        </Form>
+          </Form>
+        </StyledContentContainer>
       </Container>
     );
   }

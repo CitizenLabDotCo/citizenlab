@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.components.Upload.limitReached',
     defaultMessage: 'Coud not add image(s). The maximum number of allowed images has been reached.',
   },
+  dropYourFileHere: {
+    id: 'app.components.Upload.dropYourFileHere',
+    defaultMessage: 'Drop your file here',
+  },
 });
