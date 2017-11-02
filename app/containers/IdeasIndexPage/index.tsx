@@ -47,8 +47,8 @@ const FiltersArea = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-top: 1.5rem;
-  margin-bottom: 3.5rem;
+  margin-top: 30px;
+  margin-bottom: 35px;
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;

@@ -70,6 +70,10 @@ const VoteCount = styled.div`
 const Vote: any = styled.div`
   display: flex;
   align-items: center;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 
   &.voteClick ${VoteIconContainer} {
     animation: ${vote} 250ms;
