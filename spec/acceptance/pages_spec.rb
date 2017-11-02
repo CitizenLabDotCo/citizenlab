@@ -64,11 +64,9 @@ resource "Pages" do
       example_request "Get linked pages of a linking page", document: false do 
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        byebug
-        expect(json_response.dig(:data, :relationships, :page_links, :data).size).to eq (@pages.size - 1) # links to all other pages
-        expect(json_response.dig(:data, :relationships, :page_links, :data).first[:ordering]).to be_present
-        expect(json_response.dig(:data, :relationships, :page_links, :data).first[:linked_page_title_multiloc]).to be_present
-        byebug
+        expect(json_response.dig(:included).size).to eq (@pages.size - 1) # links to all other pages
+        expect(json_response.dig(:included).first.dig(:attributes, :ordering)).to be_present
+        expect(json_response.dig(:included).first.dig(:attributes, :linked_page_title_multiloc)).to be_present
       end
     end
   end
