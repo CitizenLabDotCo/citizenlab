@@ -9,12 +9,12 @@ import styled from 'styled-components';
 const NotificationWrapperStyled = styled.div`
   &:hover {
     background-color: #f9f9f9;
-   
+
     // show 'clear notification' button on hover
     div > button.clear-notification {
       display: block !important;
     }
-    
+
     opacity: ${(props) => props.isRead ? '0.5' : 'inherit'};
   }
 `;
@@ -57,7 +57,6 @@ class Notifications extends React.PureComponent {
       return (<span role="button" onClick={(evt) => evt.stopPropagation()}>
         {notifications
         .toJS()
-        .sort((n1, n2) => n2.attributes.read_at !== n1.attributes.read_at)
         .map((notification) => <span key={notification.id}>
           {classRef.getNotificationComponent(notification, locale)}
         </span>)}
