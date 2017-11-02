@@ -28,7 +28,6 @@ import sagas from 'resources/notifications/sagas';
 import { selectLanguage } from 'containers/LanguageProvider/selectors';
 import Notifications from './components/Notifications';
 import InfiniteScroll from 'react-infinite-scroller';
-import ClearNotificationsFooter from './components/ClearNotificationsFooter';
 import { makeSelectCurrentUserImmutable } from 'utils/auth/selectors';
 
 
@@ -38,7 +37,7 @@ const NotificationMenuContainer = styled(ClickOutside)`
 
 const DropDown = styled.div`
   position: absolute;
-  height: 387px;
+  height: 350px;
   display: ${(props) => props.show ? 'block' : 'none'};
   width: 384.9px;
   top: 39px;
@@ -59,8 +58,6 @@ export class NotificationMenu extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { nextPageNumber, nextPageItemCount } = this.props;
-    this.props.loadNotificationsRequest(nextPageNumber, nextPageItemCount);
   }
 
   clearNotifications = () => {
@@ -75,10 +72,18 @@ export class NotificationMenu extends React.PureComponent {
 
   toggleNotificationPanel = () => {
     // if (this.state.panelOpened) {
-    //   this.props.trackClickCloseNotifications();
-    // } else {
-    //   this.props.trackClickOpenNotifications();
-    // }
+      //   this.props.trackClickCloseNotifications();
+      // } else {
+        //   this.props.trackClickOpenNotifications();
+        // }
+    if (!this.state.panelOpened) {
+      const { nextPageNumber, nextPageItemCount } = this.props;
+      this.props.loadNotificationsRequest(nextPageNumber, nextPageItemCount);
+    }
+
+    if (this.state.panelOpened) {
+      this.props.markAllNotificationsAsReadRequest();
+    }
 
     this.setState({
       panelOpened: !this.state.panelOpened,
@@ -88,9 +93,10 @@ export class NotificationMenu extends React.PureComponent {
   closeNotificationPanel = () => {
     // There seem to be some false closing triggers on initializing,
     // so we check whether it's actually open
-    // if (this.state.panelOpened) {
-    //   this.props.trackClickCloseNotifications();
-    // }
+    if (this.state.panelOpened) {
+      // this.props.trackClickCloseNotifications();
+      this.props.markAllNotificationsAsReadRequest();
+    }
     this.setState({ panelOpened: false });
   };
 
@@ -147,7 +153,7 @@ export class NotificationMenu extends React.PureComponent {
               </InfiniteScroll>
             </div>
           }
-          <ClearNotificationsFooter onClick={this.props.markAllNotificationsAsReadRequest} />
+          {/* <ClearNotificationsFooter onClick={this.props.markAllNotificationsAsReadRequest} /> */}
         </DropDown>
       </NotificationMenuContainer>
     );
@@ -163,7 +169,6 @@ NotificationMenu.propTypes = {
   nextPageItemCount: PropTypes.number,
   error: PropTypes.bool,
   loading: PropTypes.bool,
-  className: PropTypes.string,
   locale: ImmutablePropTypes.map,
   unreadCount: PropTypes.number,
 };
