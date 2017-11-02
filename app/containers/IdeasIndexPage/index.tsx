@@ -17,6 +17,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -41,18 +42,55 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const FiltersArea = styled.div`
-  align-items: center;
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  height: 3.5rem;
-  justify-content: flex-end;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   margin-top: 1.5rem;
   margin-bottom: 3.5rem;
-  width: 100%;
 
-  @media (min-width: 500px) {
-    flex-wrap: nowrap;
-  }
+  ${media.smallerThanMaxTablet`
+    flex-direction: column;
+    align-items: left;
+    justify-content: flex-start;
+    margin: 0;
+  `}
+`;
+
+const FilterArea = styled.div`
+  height: 60px;
+  display: flex;
+  align-items: center;
+
+  ${media.smallerThanMaxTablet`
+    width: 100%;
+    justify-content: center;
+  `}
+`;
+
+const SearchFilterArea = FilterArea.extend`
+  ${media.smallerThanMaxTablet`
+    order: 2;
+    margin-bottom: 20px;
+  `}
+`;
+
+const SelectFilterArea = FilterArea.extend`
+  ${media.smallerThanMaxTablet`
+    order: 1;
+    justify-content: flex-end;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  `}
+`;
+
+const StyledSearchInput = styled(SearchInput)`
+  width: 300px;
+
+  ${media.smallerThanMaxTablet`
+    width: 100%;
+  `}
 `;
 
 type Props = {};
@@ -140,9 +178,14 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
 
         <StyledContentContainer>
           <FiltersArea id="e2e-ideas-filters">
-            <SearchInput value={search} onChange={this.handleSearchOnChange} />
-            <SelectSort onChange={this.handleSortOnChange} />
-            <SelectTopics onChange={this.handleTopicsOnChange} />
+            <SearchFilterArea>
+              <StyledSearchInput value={search} onChange={this.handleSearchOnChange} />
+            </SearchFilterArea>
+
+            <SelectFilterArea>
+              <SelectSort onChange={this.handleSortOnChange} />
+              <SelectTopics onChange={this.handleTopicsOnChange} />
+            </SelectFilterArea>
           </FiltersArea>
           <IdeaCards filter={filter} />
         </StyledContentContainer>

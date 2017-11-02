@@ -43,7 +43,7 @@ export default (injectReducer) => ({
     projectsRoutes(injectReducer),
     areasRoutes(injectReducer),
     pagesRoutes(injectReducer),
-    settingsRoutes(injectReducer),
+    settingsRoutes(),
     groupsRoutes(injectReducer),
   ],
 });

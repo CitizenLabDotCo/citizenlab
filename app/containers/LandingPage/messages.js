@@ -9,7 +9,7 @@ export default defineMessages({
   // header
   titleCity: {
     id: 'app.containers.landing.titleCity',
-    defaultMessage: 'Change {name}',
+    defaultMessage: 'Change the future of {name}',
   },
   subtitleCity: {
     id: 'app.containers.landing.subtitleCity',

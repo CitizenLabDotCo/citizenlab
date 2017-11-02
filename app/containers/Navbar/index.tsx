@@ -32,25 +32,27 @@ import styled, { ThemeProvider, css, keyframes } from 'styled-components';
 
 const Container: any = styled.div`
   width: 100%;
+  height: ${(props) => props.theme.menuHeight}px;
   display: flex;
   justify-content: space-between;
-  height: ${(props) => props.theme.menuHeight}px;
-  position: relative;
-  background: #fff;
   z-index: 999;
   position: fixed;
   top: 0;
-  transition: all 150ms ease-out;
+  background: #fff;
   border-bottom: solid 1px #fff;
-  box-shadow: ${(props: any) => props.alwaysShowBorder ? '0px 1px 3px rgba(0, 0, 0, 0.12)' : '0px 1px 3px rgba(0, 0, 0, 0)'};
+  box-shadow: ${(props: any) => props.alwaysShowBorder ? '0px 1px 3px rgba(0, 0, 0, 0.13)' : '0px 1px 3px rgba(0, 0, 0, 0)'};
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transform: translate3d(0, 0, 0);
+  transition: all 150ms ease-out;
   will-change: box-shadow;
 
   ${(props: any) => props.scrolled && css`
-    border-bottom: solid 1px #fff;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.13);
+  `}
+
+  ${media.smallerThanMinTablet`
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.13);
   `}
 
   * {
@@ -76,7 +78,7 @@ const Logo = styled.div`
   height: 42px;
   padding: 0px;
   padding-right: 15px;
-  padding-left: 25px;
+  padding-left: 30px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -92,21 +94,20 @@ const NavigationItems = styled.div`
   display: flex;
   margin-left: 35px;
 
-  ${media.phone`
+  ${media.smallerThanMaxTablet`
     display: none;
   `}
 `;
 
 const NavigationItem = styled(Link) `
   height: 100%;
-  opacity: 0.4;
-  transition: opacity 150ms ease;
-  color: ${props => props.theme.colorNavFg} !important;
+  color: #999;
   font-size: 16px;
   font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 100ms ease;
 
   &:not(:last-child) {
     padding-right: 40px;
@@ -114,7 +115,7 @@ const NavigationItem = styled(Link) `
 
   &.active,
   &:hover {
-    opacity: 1;
+    color: #000;
   }
 `;
 
@@ -122,7 +123,7 @@ const Right = styled.div`
   display: flex;
   z-index: 2;
   align-items: center;
-  margin-right: 5px;
+  margin-right: 10px;
 `;
 
 const RightItem: any = styled.div`
@@ -169,6 +170,7 @@ type Tracks = {
 type State = {
   authUser: IUser | null;
   currentTenant: ITenant | null;
+  currentTenantLogo: string | null;
   notificationPanelOpened: boolean;
   scrolled: boolean;
 };
@@ -182,6 +184,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
     this.state = {
       authUser: null,
       currentTenant: null,
+      currentTenantLogo: null,
       notificationPanelOpened: false,
       scrolled: false
     };
@@ -197,7 +200,11 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
         authUser$,
         currentTenant$
       ).subscribe(([authUser, currentTenant]) => {
-        this.setState({ authUser, currentTenant });
+        this.setState({
+          authUser,
+          currentTenant,
+          currentTenantLogo: (currentTenant ? currentTenant.data.attributes.logo.medium + '?' + Date.now() : null)
+        });
       })
     ];
   }
@@ -253,23 +260,13 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
     this.setState({ notificationPanelOpened: false });
   }
 
-  navbarTheme = (style) => {
-    return {
-      ...style,
-      colorNavBg: style.menuStyle === 'light' ? '#fff' : '#222',
-      colorNavBottomBorder: style.menuStyle === 'light' ? '#ddd' : '#000',
-      colorNavSubtle: style.menuStyle === 'light' ? '#eaeaea' : '#444',
-      colorNavFg: style.menuStyle === 'light' ? '#000' : '#fff',
-    };
-  }
-
   render() {
     const { pathname } = this.props.location;
     const { formatMessage } = this.props.intl;
-    const { authUser, currentTenant, scrolled } = this.state;
-    const tenantLogo = (currentTenant ? currentTenant.data.attributes.logo.medium : null);
+    const { authUser, currentTenant, currentTenantLogo, scrolled } = this.state;
     const alwaysShowBorder = (pathname.startsWith('/ideas/') 
                               || pathname.startsWith('/reset-password')
+                              || pathname.startsWith('/admin')
                               || pathname === 'sign-in'
                               || pathname === '/sign-in' 
                               || pathname === 'sign-up' 
@@ -278,15 +275,14 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
                               || pathname === '/password-recovery');
 
     return (
-      <ThemeProvider theme={this.navbarTheme}>
-        <div>
+      <div>
         <MobileNavigation />
         <Container scrolled={scrolled} alwaysShowBorder={alwaysShowBorder}>
           <Left>
-            {tenantLogo &&
+            {currentTenantLogo &&
               <LogoLink to="/">
                 <Logo>
-                  <img src={tenantLogo} alt="logo" />
+                  <img src={currentTenantLogo} alt="logo" />
                 </Logo>
               </LogoLink>
             }
@@ -340,8 +336,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
             }
           </Right>
         </Container>
-        </div>
-      </ThemeProvider>
+      </div>
     );
   }
 }

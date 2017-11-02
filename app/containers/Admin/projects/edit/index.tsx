@@ -32,7 +32,6 @@ type State = {
 
 class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Rx.Subscription;
-  tabs: any[];
 
   constructor() {
     super();
@@ -51,13 +50,27 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
   componentDidMount() {
     if (this.props.params.slug) {
       this.updateSubscription(this.props.params.slug);
+    }
+  }
 
+  componentWillReceiveProps(newProps) {
+    // Update subscription if the slug changes
+    // This happens when transitioning from New to Edit view after saving a new project
+    if (newProps.params.slug && newProps.params.slug !== this.props.params.slug) {
+      this.updateSubscription(newProps.params.slug);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  getTabs = () => {
+    if (this.props.params.slug) {
       const baseTabsUrl = `/admin/projects/${this.props.params.slug}`;
-      const isActive = (url) => {
-        return this.props.location.pathname === url;
-      };
-
-      this.tabs = [
+      return [
         {
           label: this.props.intl.formatMessage(messages.generalTab),
           url: `${baseTabsUrl}/edit`,
@@ -81,20 +94,8 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
         },
       ];
     }
-  }
 
-  componentWillReceiveProps(newProps) {
-    // Update subscription if the slug changes
-    // This happens when transitioning from New to Edit view after saving a new project
-    if (newProps.params.slug && newProps.params.slug !== this.props.params.slug) {
-      this.updateSubscription(newProps.params.slug);
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    return [];
   }
 
   render() {
@@ -108,7 +109,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
       messages: {
         viewPublicResource: messages.viewPublicProject,
       },
-      tabs: this.tabs,
+      tabs: this.getTabs(),
       location: this.props.location,
     };
 

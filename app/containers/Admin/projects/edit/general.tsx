@@ -343,13 +343,15 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
           <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="all" name="areas" id="areas-all" label={formatMessage(messages.areasAllLabel)} />
           <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="selection" name="areas" id="areas-selection" label={formatMessage(messages.areasSelectionLabel)} />
 
-          <MultipleSelect
-            options={this.state.areasOptions}
-            value={_.compact(areasValues)}
-            onChange={this.handleAreaSelectionChange}
-            placeholder=""
-            disabled={this.state.areaType !== 'selection'}
-          />
+          {this.state.areaType === 'selection' &&
+            <MultipleSelect
+              options={this.state.areasOptions}
+              value={_.compact(areasValues)}
+              onChange={this.handleAreaSelectionChange}
+              placeholder=""
+              disabled={this.state.areaType !== 'selection'}
+            />
+          }
         </FieldWrapper>
 
         <FieldWrapper>

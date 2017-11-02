@@ -24,7 +24,7 @@ const Container = styled.div`
   justify-content: space-around;
   z-index: 10000;
 
-  ${media.biggerThanPhone`
+  ${media.biggerThanMaxTablet`
     display: none;
   `}
 `;
