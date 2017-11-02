@@ -83,21 +83,25 @@ class ProjectDescription extends React.Component<Props, State> {
           currentTenantStream().observable,
         )
         .subscribe(([response, locale, currentTenant]) => {
-          const blocksFromHtml = convertFromHTML(response.data.attributes.description_multiloc[locale]);
-          const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
+          let editorState = this.state.editorState;
+
+          if (response.data.attributes.description_multiloc) {
+            const blocksFromHtml = convertFromHTML(response.data.attributes.description_multiloc[locale] || '');
+            const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
+            editorState = EditorState.createWithContent(editorContent);
+          }
 
           this.setState({
             locale,
+            editorState,
             data: response.data,
             loading: false,
             diff: {},
-            editorState: EditorState.createWithContent(editorContent),
           });
         })
       );
     }
   }
-
 
   componentWillUnmount() {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
@@ -114,13 +118,12 @@ class ProjectDescription extends React.Component<Props, State> {
   }
 
   changeDesc = (editorState: EditorState): void => {
-    const projectAttrs = { ...this.state.data.attributes, ...this.state.diff } as IUpdatedProjectProperties;
-
-    _.set(projectAttrs, `description_multiloc.${this.state.locale}`, draftjsToHtml(convertToRaw(editorState.getCurrentContent())));
+    const { diff } = this.state;
+    _.set(diff, `description_multiloc.${this.state.locale}`, draftjsToHtml(convertToRaw(editorState.getCurrentContent())));
 
     this.setState({
       editorState,
-      diff: projectAttrs,
+      diff,
     });
   }
 

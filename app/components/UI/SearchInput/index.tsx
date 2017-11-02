@@ -14,6 +14,16 @@ import Input from 'components/UI/Input';
 // style
 import styled from 'styled-components';
 
+const Container = styled.form`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  margin: 0;
+  padding: 0;
+  position: relative;
+`;
+
 const SearchButton = styled.button`
   background: none;
   border: none;
@@ -32,22 +42,8 @@ const SearchIcon = styled(Icon)`
   }
 `;
 
-const StyledInput = styled(Input)``;
-
-const StyledForm = styled.form`
-  flex: 1 1 100%;
-  display: flex;
-  align-items: center;
-  align-self: stretch;
-
-  @media (min-width: 500px) {
-    flex-basis: auto;
-
-    ${StyledInput} {
-      width: 100%;
-      max-width: 300px;
-    }
-  }
+const StyledInput = styled(Input)`
+  width: 100%;
 `;
 
 interface Props {
@@ -63,11 +59,12 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   render() {
+    const className = this.props['className'];
     const { value } = this.props;
     const { formatMessage } = this.props.intl;
 
     return (
-      <StyledForm>
+      <Container className={className}>
         <StyledInput
           id="e2e-ideas-search"
           value={value}
@@ -78,7 +75,7 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
         <SearchButton className="e2e-ideas-search-button" >
           <SearchIcon name="search" className="search-icon" />
         </SearchButton>
-      </StyledForm>
+      </Container>
     );
   }
 }

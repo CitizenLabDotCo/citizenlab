@@ -47,24 +47,25 @@ const Container = styled.div``;
 const IdeaContainer = styled.div`
   width: 100%;
   max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 80px;
-  padding-top: 80px;
-  padding-left: 20px;
-  padding-right: 20px;
   display: flex;
   flex-direction: column;
+  margin: 0;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  padding-top: 80px;
+  padding-bottom: 60px;
+  padding-left: 30px;
+  padding-right: 30px;
 
-  ${media.smallerThanMinTablet`
-    padding-left: 0px;
-    padding-right: 0px;
+  ${media.smallerThanMaxTablet`
+    padding-top: 20px;
   `}
 `;
 
 const Header = styled.div`
   width: 100%;
-  max-width: 540px;
+  max-width: 520px;
   margin-bottom: 45px;
   display: flex;
   justify-content: flex-start;
@@ -171,8 +172,8 @@ const SeparatorColumn = styled.div`
   flex-grow: 0;
   flex-basis: 1px;
   margin: 0;
-  margin-left: 35px;
-  margin-right: 35px;
+  margin-left: 30px;
+  margin-right: 30px;
   background: #e4e4e4;
   background: #fff;
 
@@ -188,6 +189,11 @@ const SeparatorRow = styled.div`
   margin-top: 40px;
   margin-bottom: 30px;
   background: #e4e4e4;
+
+  ${media.smallerThanMaxTablet`
+    margin-top: 25px;
+    margin-bottom: 25px;
+  `}
 `;
 
 const RightColumn = styled.div`
@@ -210,6 +216,11 @@ const RightColumnDesktop: any = RightColumn.extend`
 
 const RightColumnMobile = RightColumn.extend`
   flex: 1;
+  margin: 0;
+  margin-bottom: 20px;
+  padding: 0;
+  padding-bottom: 5px;
+  border-bottom: solid 1px #e4e4e4;
   display: none;
 
   ${media.smallerThanMaxTablet`
@@ -217,8 +228,21 @@ const RightColumnMobile = RightColumn.extend`
   `}
 `;
 
-const StyledError = `
+const MetaContent = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
+const VoteLabel = styled.div`
+  color: #84939E;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 12px;
+  display: none;
+
+  ${media.smallerThanMaxTablet`
+    display: block;
+  `}
 `;
 
 const StatusContainer = styled.div`
@@ -232,6 +256,11 @@ const StatusTitle = styled.h4`
   margin: 0;
   margin-bottom: 8px;
   padding: 0;
+`;
+
+const SharingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledSharing: any = styled(Sharing)`
@@ -279,6 +308,10 @@ const GiveOpinion = styled.div`
       color: #333;
     }
   }
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 type Props = {
@@ -380,7 +413,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { locale, idea, ideaImage, ideaAuthor, ideaComments, loading, unauthenticatedError } = this.state;
-    const { formatRelative } = this.props.intl;
+    const { formatMessage, formatRelative } = this.props.intl;
 
     if (!loading && idea !== null && ideaAuthor !== null) {
       const authorId = ideaAuthor.data.id;
@@ -395,11 +428,13 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       const isSafari = bowser.safari;
       const ideaLocation = idea.data.attributes.location_point_geojson || null;
 
-      const rightColumnContent = (
-        <div>
-          {!unauthenticatedError && <VoteControl ideaId={idea.data.id} unauthenticatedVoteClick={this.unauthenticatedVoteClick} />}
+      const ideaMetaContent = (
+        <MetaContent>
+          <VoteLabel>{formatMessage(messages.voteOnThisIdea)}</VoteLabel>
 
-          {/* <Error marginTop="10px" text={unauthenticatedError} /> */}
+          {!unauthenticatedError && 
+            <VoteControl ideaId={idea.data.id} unauthenticatedVoteClick={this.unauthenticatedVoteClick} />
+          }
 
           {unauthenticatedError && <Unauthenticated />}
 
@@ -410,17 +445,19 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
             </StatusContainer>
           }
 
-          <StyledSharing imageUrl={ideaImageMedium} />
+          <SharingWrapper>
+            <StyledSharing imageUrl={ideaImageMedium} />
 
-          <GiveOpinion onClick={this.scrollToCommentForm}>
-            <IconWrapper>
-              <Icon name="comments" />
-            </IconWrapper>
-            <GiveOpinionText>
-              <FormattedMessage {...messages.commentsTitle} />
-            </GiveOpinionText>
-          </GiveOpinion>
-        </div>
+            <GiveOpinion onClick={this.scrollToCommentForm}>
+              <IconWrapper>
+                <Icon name="comments" />
+              </IconWrapper>
+              <GiveOpinionText>
+                <FormattedMessage {...messages.commentsTitle} />
+              </GiveOpinionText>
+            </GiveOpinion>
+          </SharingWrapper>
+        </MetaContent>
       );
 
       return (
@@ -460,7 +497,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                 <SeparatorRow />
 
                 <RightColumnMobile>
-                  {rightColumnContent}
+                  {ideaMetaContent}
                 </RightColumnMobile>
 
                 {ideaComments && <Comments ideaId={idea.data.id} />}
@@ -469,7 +506,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
               <SeparatorColumn />
 
               <RightColumnDesktop className={!isSafari ? 'notSafari' : ''}>
-                {rightColumnContent}
+                {ideaMetaContent}
               </RightColumnDesktop>
             </Content>
           </IdeaContainer>

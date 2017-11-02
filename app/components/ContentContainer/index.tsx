@@ -8,10 +8,8 @@ const Outer = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
-
-  ${media.phone`
-    padding: 0 30px;
-  `};
+  padding-left: 30px;
+  padding-right: 30px;
 `;
 
 const Inner = styled.div`

@@ -9,7 +9,6 @@ import { withRouter, RouterState, browserHistory, Link } from 'react-router';
 // components
 import SelectAreas from './SelectAreas';
 import HelmetIntl from 'components/HelmetIntl';
-import SearchInput from 'components/UI/SearchInput';
 import ContentContainer from 'components/ContentContainer';
 import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';

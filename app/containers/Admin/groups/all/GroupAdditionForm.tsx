@@ -109,7 +109,6 @@ class GroupAdditionForm extends React.Component<Props, State> {
     })
     .catch((e) => {
       this.setState({ saving: false, saved: false });
-      console.log(e);
     });
   }
 

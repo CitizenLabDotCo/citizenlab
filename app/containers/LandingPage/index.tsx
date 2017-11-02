@@ -33,25 +33,12 @@ import { media } from 'utils/styleUtils';
 // const header = require('./header.png');
 const header = null;
 
-const Container = styled.div`
+const Container: any = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #fff;
+  background: ${(props: any) => props.hasHeader ? '#f8f8f8' : '#fff'};
   position: relative;
-`;
-
-const BackgroundImage: any = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 0;
-  background-image: url(${(props: any) => props.imageSrc});
-  background-repeat: no-repeat;
-  background-size: auto 535px;
-  background-position: center 0px;
 `;
 
 const BackgroundColor = styled.div`
@@ -61,30 +48,64 @@ const BackgroundColor = styled.div`
   left: 0;
   right: 0;
   z-index: 0;
-  background-color: #fff;
   background-color: #f8f8f8;
 `;
 
 const Header: any = styled.div`
   width: 100%;
+  height: 400px;
+  margin: 0;
+  padding: 0;
+  z-index: 1;
+  position: relative;
+  background-image: url(${(props: any) => props.src ? props.src : ''});  
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+
+  ${media.smallerThanMinTablet`
+    height: 300px;
+  `}
+`;
+
+const HeaderOverlay = styled.div`
+  background: #000;
+  /* background: ${(props: any) => props.theme.colorMain}; */
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+`;
+
+const HeaderContent = styled.div`
+  width: 100%;
+  max-width: ${(props) => props.theme.maxPageWidth + 60}px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  padding-left: 30px;
+  padding-right: 30px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-bottom: 10px;
-  z-index: 1;
+  z-index: 2;
 `;
 
 const HeaderLogoWrapper = styled.div`
   width: 110px;
   height: 110px;
   padding: 15px;
-  margin-top: 60px;
+  margin-top: -20px;
   margin-bottom: 15px;
   border: solid 2px #eaeaea;
   border-radius: 6px;
   background: #fff;
   border: solid 2px #eaeaea;
-  /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); */
 `;
 
 const HeaderLogo: any = styled.div`
@@ -96,70 +117,56 @@ const HeaderLogo: any = styled.div`
   background-size: contain;
 `;
 
-const HeaderTitle = styled.h1`
-  color: ${props => props.theme.colorMain};
-  font-size: 41px;
-  line-height: 45px;
-  font-weight: 500;
-  text-align: center;
+const HeaderTitle: any = styled.h1`
+  color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
+  font-size: 55px;
+  line-height: 60px;
+  font-weight: 600;
+  text-align: left;
+  white-space: normal;
+  word-break: normal;
+  word-wrap: normal;
+  overflow-wrap: normal;
   margin: 0;
   padding: 0;
+  padding-top: 130px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  ${media.tablet`
-    font-size: 40px;
-    line-height: 48px;
-  `}
-
-  ${media.phone`
-    font-weight: 600;
-    font-size: 34px;
-    line-height: 38px;
-  `}
-
-  ${media.smallPhone`
-    font-weight: 600;
-    font-size: 30px;
-    line-height: 34px;
+  ${media.smallerThanMinTablet`
+    font-size: 38px;
+    line-height: 44px;
+    padding-top: 90px;
   `}
 `;
 
-const HeaderSubtitle = styled.h2`
-  color: ${props => props.theme.colorMain};
-  font-size: 32px;
-  line-height: 38px;
+const HeaderSubtitle: any = styled.h2`
+  width: 100%;
+  max-width: 560px;
+  color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
+  font-size: 22px;
+  line-height: 26px;
   font-weight: 100;
+  white-space: normal;
+  word-break: normal;
+  word-wrap: normal;
+  overflow-wrap: normal;
+  hyphens: auto;
   max-width: 980px;
-  text-align: center;
+  text-align: left;
   text-decoration: none;
   padding: 0;
   padding-bottom: 0px;
   margin: 0;
-  margin-top: 10px;
-  cursor: pointer;
+  margin-top: 20px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   border-bottom: solid 1px transparent;
   transition: all 150ms ease-out;
 
-  &:hover {
-    border-bottom: solid 1px ${props => props.theme.colorMain};    
-  }
-
-  ${media.tablet`
-    font-size: 28px;
-    line-height: 32px;
-  `}
-
   ${media.phone`
-    font-size: 24px;
-    line-height: 28px;
-  `}
-
-  ${media.smallPhone`
     font-size: 20px;
-    line-height: 24px;
+    line-height: 26px;
   `}
 `;
 
@@ -171,6 +178,12 @@ const Section = styled.div`
   width: 100%;
   margin-top: 80px;
   padding-bottom: 60px;
+
+  ${media.phone`
+    &.ideas {
+      margin-top: 0px;
+    }
+  `}
 `;
 
 const SectionHeader = styled.div`
@@ -265,6 +278,7 @@ type Props = {};
 type State = {
   locale: string | null;
   currentTenant: ITenant | null;
+  currentTenantHeader: string | null;
   hasIdeas: boolean;
   hasProjects: boolean;
 };
@@ -280,6 +294,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
     this.state = {
       locale: null,
       currentTenant: null,
+      currentTenantHeader: null,
       hasIdeas: false,
       hasProjects: false
     };
@@ -303,6 +318,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
       ).subscribe(([locale, currentTenant, ideas, projects]) => this.setState({
         locale,
         currentTenant,
+        currentTenantHeader: (currentTenant.data.attributes.header_bg ? `${currentTenant.data.attributes.header_bg.large}?v=${Date.now()}` : null),        
         hasIdeas: (ideas !== null && ideas.data.length > 0),
         hasProjects: (projects !== null && projects.data.length > 0)
       }))
@@ -326,40 +342,49 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   render() {
-    const { locale, currentTenant, hasIdeas, hasProjects } = this.state;
+    const { locale, currentTenant, currentTenantHeader, hasIdeas, hasProjects } = this.state;
     const { formatMessage } = this.props.intl;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const organizationNameMultiLoc = currentTenant.data.attributes.settings.core.organization_name;
+      const headerTitleMultiLoc = currentTenant.data.attributes.settings.core.header_title;
       const headerSloganMultiLoc = currentTenant.data.attributes.settings.core.header_slogan;
       const currentTenantName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
       const currentTenantLogo = currentTenant.data.attributes.logo.large;
-      const currentTenantHeaderSlogan = getLocalized(headerSloganMultiLoc, locale, currentTenantLocales);
+      const currentTenantHeaderTitle = (headerTitleMultiLoc && headerTitleMultiLoc[locale]);
+      const currentTenantHeaderSlogan = (headerSloganMultiLoc && headerSloganMultiLoc[locale]);
+      const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }} />);
       const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
+      const hasHeaderImage = (currentTenantHeader !== null);
 
       return (
         <div>
-          <Container id="e2e-landing-page">
-            <BackgroundImage imageSrc={header} />
-            <BackgroundColor />
+          <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
+            {!currentTenantHeader && <BackgroundColor />}
 
-            <Header>
-              {currentTenantLogo &&
-                <HeaderLogoWrapper>
-                  <HeaderLogo imageSrc={currentTenantLogo} />
-                </HeaderLogoWrapper>
-              }
-              <HeaderTitle>
-                <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }} />
-              </HeaderTitle>
-              <HeaderSubtitle onClick={this.goToAddIdeaPage}>
-                {subtitle}
-              </HeaderSubtitle>
+            <Header src={currentTenantHeader}>
+              {currentTenantHeader && <HeaderOverlay />}
+
+              <HeaderContent>
+                {/*
+                {currentTenantLogo &&
+                  <HeaderLogoWrapper>
+                    <HeaderLogo imageSrc={currentTenantLogo} />
+                  </HeaderLogoWrapper>
+                }
+                */}
+                <HeaderTitle hasHeader={hasHeaderImage}>
+                  {title}
+                </HeaderTitle>
+                <HeaderSubtitle hasHeader={hasHeaderImage}>
+                  {subtitle}
+                </HeaderSubtitle>
+              </HeaderContent>
             </Header>
 
             <StyledContentContainer>
-              <Section>
+              <Section className="ideas">
                 <SectionHeader>
                   <SectionTitle>
                     <FormattedMessage {...messages.trendingIdeas} />
