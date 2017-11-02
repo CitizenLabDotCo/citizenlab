@@ -26,9 +26,10 @@ const Container = styled.div`
 `;
 
 const Title = styled.h2`
-  color: #444;
-  font-size: 28px;
-  font-weight: 400;
+  color: #333;
+  font-size: 26px;
+  line-height: 30px;
+  font-weight: 500;
   margin: 0;
   padding: 0;
   margin-bottom: 35px;
