@@ -123,7 +123,7 @@ const Right = styled.div`
   display: flex;
   z-index: 2;
   align-items: center;
-  margin-right: 10px;
+  padding-right: 30px;
 `;
 
 const RightItem: any = styled.div`
@@ -135,6 +135,10 @@ const RightItem: any = styled.div`
   padding-right: 18px;
   outline: none;
 
+  &:last-child {
+    padding-right: 0px;
+  }
+
   &.notification {
     padding-left: 10px;
   }
@@ -143,7 +147,15 @@ const RightItem: any = styled.div`
     outline: none;
   }
 
-  ${(props: any) => props.hideOnPhone && media.phone`display: none;`}
+  ${media.phone`
+    &.addIdea {
+      padding: 0px;
+    }
+  `}
+
+  ${(props: any) => props.hideOnPhone && media.phone`
+    display: none;
+  `}
 `;
 
 const AddIdeaButton = styled(Button)``;
@@ -152,8 +164,7 @@ const LoginLink = styled.div`
   color: ${(props) => props.theme.colorMain};
   font-size: 16px;
   font-weight: 400;
-  padding-left: 0px;
-  padding-right: 30px;
+  padding: 0;
 
   &:hover {
     color: ${(props) => darken(0.15, props.theme.colorMain)};
@@ -210,22 +221,10 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
   }
 
   componentDidMount() {
-    const getScrollTop = () => {
-      if (!_.isUndefined(pageYOffset)) {
-        return pageYOffset;
-      } else {
-        const B = document.body;
-        let D = document.documentElement;
-        D = (D.clientHeight) ? D : B;
-        return D.scrollTop;
-      }
-    };
-
     this.subscriptions.push(
-      Rx.Observable.fromEvent(window, 'scroll').sampleTime(20).subscribe(() => {
+      Rx.Observable.fromEvent(document, 'scroll').sampleTime(20).subscribe(() => {
         this.setState((state) => {
-          const scrollTop = getScrollTop();
-          const scrolled = (scrollTop > 0);
+          const scrolled = (window.scrollY > 0);
           return (state.scrolled !== scrolled ? { scrolled } : state);
         });
       })
@@ -300,7 +299,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
             </NavigationItems>
           </Left>
           <Right>
-            <RightItem>
+            <RightItem className="addIdea">
               <AddIdeaButton
                 className="e2e-add-idea-button"
                 text={formatMessage(messages.startIdea)}

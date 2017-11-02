@@ -219,7 +219,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
         <StyledTextArea
           name="comment"
           placeholder={placeholder}
-          rows={3}
+          rows={4}
           value={inputValue}
           error={errorMessage}
           onChange={this.handleTextareaOnChange}
