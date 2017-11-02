@@ -4,14 +4,17 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
 
   def index
     @tenants = Tenant.all
+    @tenants = @tenants.where("name LIKE ?", params[:search] + '%') if params[:search]
     render json: @tenants
   end
 
   def show
     render json: @tenant
+
   end
 
   def create
+
     @tenant = Tenant.new(tenant_params)
     SideFxTenantService.new.before_create(@tenant, nil)
     if @tenant.save
@@ -38,6 +41,10 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
 
   def settings_schema
     render json: Tenant::SETTINGS_JSON_SCHEMA
+  end
+
+  def templates
+    render json: TenantTemplateService.new.available_templates
   end
 
   private

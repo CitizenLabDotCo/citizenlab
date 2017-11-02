@@ -8,11 +8,12 @@ class User < ApplicationRecord
     :against => [:first_name, :last_name, :email], 
     :using => { :tsearch => {:prefix => true} }
 
-
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :votes, dependent: :nullify
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
+  has_many :memberships, dependent: :destroy
+  has_many :groups, through: :memberships
 
   store_accessor :demographics, :gender, :birthyear, :domicile, :education
 
@@ -30,7 +31,7 @@ class User < ApplicationRecord
   # Follows ISCED2011 scale
   validates :education, numericality: {only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8}, allow_nil: true
 
-  validates :password, length: { in: 5..20 }, allow_nil: true
+  validates :password, length: { in: 5..72 }, allow_nil: true
   validate do |record|
     record.errors.add(:password, :blank) unless record.password_digest.present? or record.has_services?
   end
@@ -46,6 +47,10 @@ class User < ApplicationRecord
     subquery = User.select("jsonb_array_elements(roles) as ro, id")
     joins("LEFT OUTER JOIN (#{subquery.to_sql}) as r ON users.id = r.id")
     .order("ro->>'type' #{direction}")
+  }
+
+  scope :admin, -> { 
+    where("roles @> '[{\"type\":\"admin\"}]'")
   }
 
   def avatar_blank?
@@ -71,6 +76,19 @@ class User < ApplicationRecord
   def has_services?
     self.services.present?
   end
+
+  def authenticate(unencrypted_password)
+    if cl1_authenticate(unencrypted_password)
+      self.password_digest = BCrypt::Password.create(unencrypted_password)
+      self
+    else
+      original_authenticate(unencrypted_password) && self
+    end
+  end
+
+  def member_of? group_id
+    !self.memberships.select{ |m| m.group_id == group_id }.empty?
+  end
   
   private
 
@@ -85,6 +103,14 @@ class User < ApplicationRecord
       hash = Digest::MD5.hexdigest(self.email)
       self.remote_avatar_url = "https://www.gravatar.com/avatar/#{hash}?d=404&size=640"
     end
+  end
+
+  def original_authenticate(unencrypted_password)
+    BCrypt::Password.new(password_digest).is_password?(unencrypted_password)
+  end
+
+  def cl1_authenticate(unencrypted_password)
+    original_authenticate(::Digest::SHA256.hexdigest(unencrypted_password))
   end
 
 end

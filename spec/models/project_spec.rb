@@ -29,9 +29,9 @@ RSpec.describe Project, type: :model do
 
     it "sanitizes script tags in the description" do
       project = create(:project, description_multiloc: {
-        "en" => "<p>Test</p><script>This should be removed!</script>"
+        "en" => "<p>Test</p><script>This should be removed!</script><h1>Title</h1>"
       })
-      expect(project.description_multiloc).to eq({"en" => "<p>Test</p>This should be removed!"})
+      expect(project.description_multiloc).to eq({"en" => "<p>Test</p>This should be removed!<h1>Title</h1>"})
     end
     
   end
@@ -48,5 +48,13 @@ RSpec.describe Project, type: :model do
       expect{ project.valid? }.to change{ project.errors[:slug] }
     end
 
+  end
+
+  describe "visible_to" do
+
+    it "gets set to 'public' when not specified on create" do
+      project = create(:project, visible_to: nil)
+      expect(project.visible_to).to eq 'public'
+    end
   end
 end

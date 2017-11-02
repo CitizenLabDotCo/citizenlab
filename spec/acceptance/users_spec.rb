@@ -168,6 +168,7 @@ resource "Users" do
       describe "Creating an admin user" do
         let(:roles) { [{type: 'admin'}] }
         example "creates a user, but not an admin", document: false do
+          create(:admin) # there must be at least on admin, otherwise the next user will automatically be made an admin
           do_request
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
