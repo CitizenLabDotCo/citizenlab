@@ -14,7 +14,6 @@ class Api::V1::PagesController < ::ApplicationController
 
 
   def show
-    byebug
     render json: @page, include: ['page_links']
   end
 
