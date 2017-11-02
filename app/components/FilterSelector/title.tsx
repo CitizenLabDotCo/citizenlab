@@ -6,6 +6,14 @@ import Icon from 'components/UI/Icon';
 // style
 import styled from 'styled-components';
 
+const Text = styled.span`
+  color: #84939E;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  transition: all 100ms ease-out;
+`;
+
 const DropdownIcon = styled(Icon)`
   height: 7px;
   fill: #84939E;
@@ -15,31 +23,26 @@ const DropdownIcon = styled(Icon)`
 `;
 
 const StyledButton = styled.button`
-  color: #84939E;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0px;
+  padding: 0;
+  margin: 0;
   position: relative;
-  z-index: 15;
-  transition: all 100ms ease-out;
 
-  &:hover {
-    color: #000;
+  &:hover,
+  &.deployed {
+    ${Text} {
+      color: #000;
+    }
 
     ${DropdownIcon} {
       fill: #000;
     }
   }
-
-  /*
-  &.deployed ${DropdownIcon} {
-    transform: rotate(180deg);
-  }
-  */
 `;
 
 type Props = {
@@ -66,7 +69,7 @@ export default class Title extends React.PureComponent<Props, State> {
         id={`${baseID}-label`}
         className={deployed ? 'deployed' : ''}
       >
-        {title}
+        <Text>{title}</Text>
         <DropdownIcon name="dropdown" />
       </StyledButton>
     );

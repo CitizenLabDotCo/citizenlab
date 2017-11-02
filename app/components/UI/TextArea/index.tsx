@@ -17,7 +17,7 @@ const Container: any = styled.div`
     color: #333;
     font-size: 17px;
     line-height: 24px;
-    font-weight: 300;
+    font-weight: 400;
     padding: 12px;
     resize: none;
     outline: none;
@@ -61,9 +61,9 @@ type Props = {
   placeholder?: string | undefined;
   rows?: number | undefined;
   error?: string | null | undefined;
-  onChange?: Function | undefined;
-  onFocus?: Function | undefined;
-  onBlur?: Function | undefined;
+  onChange?: (arg: string) => void | undefined;
+  onFocus?: () => void | undefined;
+  onBlur?: () => void | undefined;
 };
 
 type State = {};

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "",
-    "module": "es6",
+    "module": "esnext",
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

@@ -36,9 +36,9 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
-// legacy redux stuff 
+// legacy redux stuff
 import { store } from 'app';
 import { LOAD_CURRENT_TENANT_SUCCESS } from 'utils/tenant/constants';
 import { LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
@@ -132,6 +132,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const { location, children } = this.props;
     const { currentTenant, modalOpened, modalType, modalId, modalUrl } = this.state;
     const theme = {
+      colors,
       colorMain: (currentTenant ? currentTenant.data.attributes.settings.core.color_main : '#ef0071'),
       menuStyle: 'light',
       menuHeight: 74,

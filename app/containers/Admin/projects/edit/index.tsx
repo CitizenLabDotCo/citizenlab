@@ -11,7 +11,7 @@ import { Link } from 'react-router';
 
 
 // Localisation
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import t from 'components/T';
 const T = t;
 import messages from '../messages';
@@ -30,9 +30,8 @@ type State = {
   project: IProjectData | null,
 };
 
-export default class AdminProjectEdition extends React.PureComponent<Props, State> {
+class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Rx.Subscription;
-  tabs: any[];
 
   constructor() {
     super();
@@ -51,26 +50,6 @@ export default class AdminProjectEdition extends React.PureComponent<Props, Stat
   componentDidMount() {
     if (this.props.params.slug) {
       this.updateSubscription(this.props.params.slug);
-
-      const baseTabsUrl = `/admin/projects/${this.props.params.slug}`;
-      const isActive = (url) => {
-        return this.props.location.pathname === url;
-      };
-
-      this.tabs = [
-        {
-          label: 'general',
-          url: `${baseTabsUrl}/edit`
-        },
-        {
-          label: 'timeline',
-          url: `${baseTabsUrl}/timeline`
-        },
-        {
-          label: 'events',
-          url: `${baseTabsUrl}/events`
-        },
-      ];
     }
   }
 
@@ -88,6 +67,37 @@ export default class AdminProjectEdition extends React.PureComponent<Props, Stat
     }
   }
 
+  getTabs = () => {
+    if (this.props.params.slug) {
+      const baseTabsUrl = `/admin/projects/${this.props.params.slug}`;
+      return [
+        {
+          label: this.props.intl.formatMessage(messages.generalTab),
+          url: `${baseTabsUrl}/edit`,
+        },
+        {
+          label: this.props.intl.formatMessage(messages.descriptionTab),
+          url: `${baseTabsUrl}/description`,
+        },
+        {
+          label: this.props.intl.formatMessage(messages.phasesTab),
+          url: `${baseTabsUrl}/timeline`,
+        },
+        {
+          label: this.props.intl.formatMessage(messages.eventsTab),
+          url: `${baseTabsUrl}/events`,
+        },
+        {
+          label: this.props.intl.formatMessage(messages.permissionsTab),
+          url: `${baseTabsUrl}/permissions`,
+          feature: 'private_projects',
+        },
+      ];
+    }
+
+    return [];
+  }
+
   render() {
     const { project } = this.state;
 
@@ -99,7 +109,7 @@ export default class AdminProjectEdition extends React.PureComponent<Props, Stat
       messages: {
         viewPublicResource: messages.viewPublicProject,
       },
-      tabs: this.tabs,
+      tabs: this.getTabs(),
       location: this.props.location,
     };
 
@@ -115,3 +125,5 @@ export default class AdminProjectEdition extends React.PureComponent<Props, Stat
     );
   }
 }
+
+export default injectIntl(AdminProjectEdition);

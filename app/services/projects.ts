@@ -1,3 +1,4 @@
+import { IProject } from './projects';
 import { IRelationship, Multiloc } from 'typings.d';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
@@ -24,6 +25,7 @@ export interface IProjectData {
     ideas_count: 0;
     created_at: string;
     updated_at: string;
+    visible_to: 'public' | 'groups' | 'admins';
   };
   relationships: {
     project_images: {
@@ -40,6 +42,7 @@ export interface IUpdatedProjectProperties {
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   area_ids?: string[];
+  visible_to?: 'public' | 'groups' | 'admins';
 }
 
 export interface IProject {
@@ -67,6 +70,5 @@ export function addProject(projectData: IUpdatedProjectProperties) {
 }
 
 export function updateProject(projectId, projectData: IUpdatedProjectProperties) {
-  return streams.update(`${apiEndpoint}/${projectId}`, projectId, { project: projectData });
+  return streams.update<IProject>(`${apiEndpoint}/${projectId}`, projectId, { project: projectData });
 }
-

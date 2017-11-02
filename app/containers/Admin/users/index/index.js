@@ -29,7 +29,7 @@ import { searchTermChanged, pageSelectionChanged, sortColumnChanged, initialLoad
 import localSagas from './sagas';
 
 const TableContainer = styled.div`
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: 5px;
   padding: 30px;
   bottom: 0px;
@@ -39,17 +39,19 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 0px;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 30px;
 `;
 
 const HeaderTitle = styled.h1`
-  font-family: CircularStd;
+  color: #333;
   font-size: 35px;
-  font-weight: bold;
+  line-height: 40px;
+  font-weight: 600;
   margin: 0;
-  color: #101010;
+  padding: 0;
 `;
-
 
 class AllUsers extends React.Component {
 

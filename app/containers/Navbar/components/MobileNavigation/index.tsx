@@ -17,13 +17,14 @@ const Container = styled.div`
   left: 0;
   right: 0;
   background: #fff;
-  box-shadow: 0px -3px 20px rgba(0,0,0,0.25);
+  /* box-shadow: 0px -3px 20px rgba(0,0,0,0.25); */
+  box-shadow: 0px -1px 3px rgba(0, 0, 0, 0.12);
   padding: 4px 0;
   display: flex;
   justify-content: space-around;
   z-index: 10000;
 
-  ${media.biggerThanPhone`
+  ${media.biggerThanMaxTablet`
     display: none;
   `}
 `;

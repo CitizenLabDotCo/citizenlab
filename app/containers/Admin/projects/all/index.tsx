@@ -1,25 +1,24 @@
-// Libraries
 import * as React from 'react';
+import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-import styledComponents from 'styled-components';
-const styled = styledComponents;
+
+// style
+import styled from 'styled-components';
 import { darken } from 'polished';
 
-// Services
+// services
 import { projectsStream, IProjectData } from 'services/projects';
 
-// Localisation
+// localisation
 import { FormattedMessage } from 'react-intl';
-import t from 'components/T';
-const T = t;
+import T from 'components/T';
 import messages from '../messages';
 
-// Components
+// components
 import { Link } from 'react-router';
 import Icon from 'components/UI/Icon';
 const headerBG = require('assets/img/gray-header.png');
 
-// Styles
 const ProjectsList = styled.ul`
   display: flex;
   flex-wrap: wrap;
@@ -122,7 +121,7 @@ type State = {
   projects: IProjectData[] | null
 };
 
-class AdminProjectsList extends React.Component<Props, State> {
+class AdminProjectsList extends React.PureComponent<Props, State> {
   subscription: Rx.Subscription;
 
   constructor () {
