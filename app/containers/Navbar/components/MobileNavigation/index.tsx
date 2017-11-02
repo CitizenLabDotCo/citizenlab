@@ -57,6 +57,10 @@ const NavigationItem = styled(Link)`
   cursor: pointer;
   margin-top: 10px;
   margin-bottom: 10px;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 
   &.active {
     ${NavigationIcon} {
