@@ -34,14 +34,6 @@ const IdeaImage: any = styled.img`
   height: 135px;
   object-fit: cover;
   overflow: hidden;
-
-  /*
-  border-bottom: solid 1px #e8e8e8;
-  background-image: url(${(props: any) => props.src});  
-  background-repeat: no-repeat;
-  background-size: cover;
-  opacity: 1;
-  */
 `;
 
 const IdeaImageLarge = styled.img`
@@ -55,30 +47,6 @@ const IdeaImagePlaceholder = styled.div`
   align-items: center;
   justify-content: center;
   background: #cfd6db;
-  border-bottom: solid 1px #e8e8e8;
-`;
-
-const IdeaContainer: any = styled.div`
-  width: 100%;
-  height: 370px;
-  margin-bottom: 24px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 6px;
-  overflow: hidden;
-  background: #fff;
-  cursor: pointer;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transition: box-shadow 250ms cubic-bezier(0.19, 1, 0.22, 1);
-  transform: translate3d(0, 0, 0);
-  position: relative;
-  border: solid 1px #e6e6e6;
-  will-change: box-shadow;
-
-  &:hover {
-    box-shadow: 0 1px 24px rgba(0, 0, 0, 0.1);
-  }
 `;
 
 const CommentCount = styled.span`
@@ -104,7 +72,6 @@ const IdeaTitle: any = styled.h4`
   margin: 0;
   font-size: 22px;
   font-weight: 500;
-
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -112,7 +79,6 @@ const IdeaTitle: any = styled.h4`
   -webkit-line-clamp: 3;
   line-height: 26px;
   max-height: 78px;
-
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 `;
@@ -125,9 +91,7 @@ const IdeaAuthor = styled.div`
   margin-top: 12px;
 `;
 
-// We use <span> instead of Link, because the whole card is already
-// a Link (more important for SEO) and <a> tags can not be nested
-const AuthorLink = styled.span`
+const AuthorLink = styled.div`
   color: #333;
 
   &:hover {
@@ -140,6 +104,30 @@ const StyledVoteControl = styled(VoteControl)`
   position: absolute;
   bottom: 20px;
   left: 20px;
+`;
+
+const IdeaContainer: any = styled(Link)`
+  width: 100%;
+  height: 370px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+  border: solid 1px #e4e4e4;
+  /* -webkit-backface-visibility: hidden; */
+  /* backface-visibility: hidden; */
+  /* transition: box-shadow 300ms cubic-bezier(0.19, 1, 0.22, 1); */
+  /* transform: translate3d(0, 0, 0); */
+  /* will-change: box-shadow; */
+
+  &:hover {
+    border-color: #bbb;
+    /* box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15); */
+  }
 `;
 
 type Props = {
@@ -220,11 +208,11 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   onCardClick = (event) => {
+    event.preventDefault();
+
     const { idea } = this.state;
 
     if (idea) {
-      event.preventDefault();
-
       eventEmitter.emit<IModalInfo>(namespace, 'cardClick', { 
         type: 'idea',
         id: idea.data.id,
@@ -260,7 +248,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
       const className = `${this.props['className']} e2e-idea-card ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }`;
 
       return (
-        <IdeaContainer onClick={this.onCardClick}  className={className}>
+        <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`} className={className}>
 
           {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
 
