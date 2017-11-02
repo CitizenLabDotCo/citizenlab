@@ -126,7 +126,7 @@ const IdeaImage = styled.div`
   margin: 0;
   padding: 0;
   width: 100%;
-  transition: all .2s ease-out;
+  transition: all .1s ease-out;
 
   &.hidden {
     height: 0;
@@ -149,6 +149,15 @@ const AuthorAndAdressWrapper = styled.div`
   ${AuthorContainer} {
     flex: 1;
   }
+`;
+
+const LocationButton = styled(Button)`
+  padding-right: 0;
+`;
+
+const StyledPositionIcon = styled(Icon)`
+  height: 1em;
+  margin-left: .5em;
 `;
 
 const AuthorAvatar = styled(Avatar)`
@@ -528,9 +537,20 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                     </AuthorMeta>
                   </AuthorContainer>
 
-                  {ideaAdress && <Button style="text" onClick={this.handleMapToggle}>
-                    {ideaAdress}
-                  </Button>}
+                  {ideaAdress && <LocationButton style="text" onClick={this.handleMapToggle}>
+                    {(this.state.showMap && ideaImageLarge) &&
+                      <span>
+                        <FormattedMessage {...messages.closeMap} />
+                        <StyledPositionIcon name="close" />
+                      </span>
+                    }
+                    {(!this.state.showMap || !ideaImageLarge) &&
+                      <span>
+                        {ideaAdress}
+                        <StyledPositionIcon name="position" />
+                      </span>
+                    }
+                  </LocationButton>}
                 </AuthorAndAdressWrapper>
 
                 <IdeaBody>

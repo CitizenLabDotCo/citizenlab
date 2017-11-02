@@ -305,6 +305,13 @@ const getIcon = (name: string, className: string | undefined) => {
         </svg>
       );
     }
+    case 'position': {
+      return (
+        <svg className={className} xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="0 0 14 20">
+          <path id="a" d="M7 0C3.135 0 0 3.135 0 7c0 5.25 7 13 7 13s7-7.75 7-13c0-3.865-3.135-7-7-7zm0 9.5C5.62 9.5 4.5 8.38 4.5 7S5.62 4.5 7 4.5 9.5 5.62 9.5 7 8.38 9.5 7 9.5z"/>
+        </svg>
+      );
+    }
     default:
       return null;
   }
