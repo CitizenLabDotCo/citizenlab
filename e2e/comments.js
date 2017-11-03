@@ -30,7 +30,7 @@ module.exports = {
     .waitForElementVisible('#e2e-idea-show')
     .refresh()
     .waitForElementVisible('.e2e-comments')
-    .setValue('.textarea', `Test Comment ${time}`)
+    .setValue('.e2e-comment-form .textarea', `Test Comment ${time}`)
     .click('.e2e-submit-comment')
     // .waitForElementVisible('.e2e-comment-form .e2e-success-message')
     .pause(1000)
