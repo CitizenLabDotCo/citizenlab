@@ -13,7 +13,7 @@ module.exports = {
     .waitForElementVisible('#e2e-signup-step2 button')
     .pause(500)
     .click('#e2e-signup-step2 button')
-    .waitForElementVisible('#e2e-landing-page', 10000)
+    .waitForElementVisible('#e2e-landing-page')
     .click('#e2e-user-menu-container')
     .waitForElementVisible('#e2e-user-menu-dropdown')
     .waitForElementVisible('#e2e-sign-out-link')
