@@ -1,5 +1,5 @@
 module Notifications
-  class CommentOnYourComment < ::Notification
+  class CommentOnYourComment < Notification
     
     belongs_to :user
     belongs_to :comment
