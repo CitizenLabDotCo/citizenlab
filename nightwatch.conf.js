@@ -19,8 +19,9 @@ module.exports = {
   test_settings: {
     default: {
       globals: {
-        waitForConditionTimeout: 5000,
+        waitForConditionTimeout: 15000,
       },
+      detailed_output: false,
       launch_url: 'http://localhost:3000',
       selenium_port: 4444,
       selenium_host: 'localhost',
@@ -32,4 +33,5 @@ module.exports = {
       },
     },
   },
+  test_workers: true,
 };
