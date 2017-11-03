@@ -13,7 +13,7 @@ module.exports = {
     .click('#e2e-ideas-list:first-child')
     .waitForElementVisible('#e2e-idea-show')
     .refresh()
-    .waitForElementVisible('.e2e-comments', 10000)
+    .waitForElementVisible('.e2e-comments')
     .end();
   },
 
@@ -29,12 +29,13 @@ module.exports = {
     .click('#e2e-ideas-list:first-child')
     .waitForElementVisible('#e2e-idea-show')
     .refresh()
-    .waitForElementVisible('.e2e-comments', 10000)
+    .waitForElementVisible('.e2e-comments')
     .setValue('.textarea', `Test Comment ${time}`)
     .click('.e2e-submit-comment')
     // .waitForElementVisible('.e2e-comment-form .e2e-success-message')
     .pause(1000)
-    .assert.containsText('.e2e-comment-thread:last-child .e2e-comment-body', `Test Comment ${time}`)
+    .waitForElementVisible('.e2e-comments-container > *:last-child')
+    .assert.containsText('.e2e-comments-container > *:last-child .e2e-comment-body', `Test Comment ${time}`)
     .end();
   },
 };
