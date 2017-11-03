@@ -195,7 +195,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
             {!this.state.event && <FormattedMessage {...messages.createEventTitle} />}
           </h1>
 
-          <form onSubmit={this.handleOnSubmit}>
+          <form className="e2e-project-event-edit" onSubmit={this.handleOnSubmit}>
             <FieldWrapper>
               <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
               <Input
