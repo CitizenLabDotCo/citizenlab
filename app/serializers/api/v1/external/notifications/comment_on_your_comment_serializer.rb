@@ -1,25 +1,23 @@
 class Api::V1::External::Notifications::CommentOnYourCommentSerializer < Api::V1::External::Notifications::NotificationSerializer
-  class CustomCommentSerializer < ActiveModel::Serializer
-    attributes :id, :body_multiloc, :upvotes_count, :downvotes_count
-    belongs_to :author, serializer: Api::V1::External::Notifications::NotificationSerializer::CustomUserSerializer
-  end
-  class CustomIdeaSerializer < ActiveModel::Serializer
-    attributes :id, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count
-  end
-  class CustomImageSerializer < ActiveModel::Serializer
-    attributes :id, :versions, :ordering
-
-    def versions
-      object.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
-    end
-  end
-
+  belongs_to :user, serializer: CustomUserSerializer
   belongs_to :comment, serializer: CustomCommentSerializer
+  belongs_to :comment_author, serializer: CustomUserSerializer
   belongs_to :idea, serializer: CustomIdeaSerializer
+  belongs_to :idea_author, serializer: CustomUserSerializer
   has_many :idea_images, serializer: CustomImageSerializer
+  belongs_to :project, serializer: CustomProjectSerializer
+  has_many :project_images, serializer: CustomImageSerializer
 
-  def idea_images
-    object.idea&.idea_images
+  belongs_to :parent_comment, serializer: CustomCommentSerializer
+  belongs_to :parent_comment_author, serializer: CustomUserSerializer
+
+
+  def parent_comment
+  	object.comment&.parent
+  end
+
+  def parent_comment_author
+  	object.comment&.parent&.author
   end
 
 end
