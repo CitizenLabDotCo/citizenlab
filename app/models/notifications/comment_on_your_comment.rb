@@ -15,7 +15,7 @@ module Notifications
     def self.make_notifications_on activity
       child_comment = activity.item
       parent_comment = child_comment&.parent
-      return unless parent_comment
+      return [] unless parent_comment
 
       child_comment_id = child_comment&.id
       idea = parent_comment&.idea
@@ -25,13 +25,15 @@ module Notifications
       project_id = idea&.project_id
 
       if child_comment_id && idea_id && parent_comment_author_id && child_comment_author_id
-        self.create(
-          recipient_id: parent_comment_author_id,
-          user_id: child_comment_author_id,
-          idea_id: idea_id,
-          comment_id: child_comment_id,
-          project_id: project_id
-        )
+        [self.create(
+           recipient_id: parent_comment_author_id,
+           user_id: child_comment_author_id,
+           idea_id: idea_id,
+           comment_id: child_comment_id,
+           project_id: project_id
+         )]
+      else
+        []
       end
     end
 

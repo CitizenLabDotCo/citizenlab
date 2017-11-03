@@ -24,13 +24,15 @@ module Notifications
       project_id = idea&.project_id
 
       if comment_id && idea_id && idea_author_id && comment_author_id
-        self.create(
-          recipient_id: idea_author_id,
-          user_id: comment_author_id,
-          idea_id: idea_id,
-          comment_id: comment_id,
-          project_id: project_id
-        )
+        [self.create(
+           recipient_id: idea_author_id,
+           user_id: comment_author_id,
+           idea_id: idea_id,
+           comment_id: comment_id,
+           project_id: project_id
+         )]
+      else
+        []
       end
     end
 
