@@ -103,7 +103,6 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
   }
 
   componentWillUnmount() {
-    debugger;
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
