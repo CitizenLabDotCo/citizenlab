@@ -1,5 +1,7 @@
 const time = new Date().getTime();
 
+const LATEST_COMMENT = '.e2e-comments-container > *:first-child';
+
 module.exports = {
   seeComments: (browser) => {
     const signinPage = browser.page.signin();
@@ -31,11 +33,10 @@ module.exports = {
     .refresh()
     .waitForElementVisible('.e2e-comments')
     .setValue('.e2e-comment-form .textarea', `Test Comment ${time}`)
-    .click('.e2e-submit-comment')
-    // .waitForElementVisible('.e2e-comment-form .e2e-success-message')
+    .click('.e2e-comment-form .e2e-submit-comment')
     .pause(1000)
-    .waitForElementVisible('.e2e-comments-container > *:last-child')
-    .assert.containsText('.e2e-comments-container > *:last-child .e2e-comment-body', `Test Comment ${time}`)
+    .waitForElementVisible(LATEST_COMMENT)
+    .assert.containsText(`${LATEST_COMMENT} .e2e-comment-body`, `Test Comment ${time}`)
     .end();
   },
 };
