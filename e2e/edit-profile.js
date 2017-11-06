@@ -1,9 +1,9 @@
 const time = new Date().getTime();
+const firstName = `first name ${time}`;
+const lastName = `last name ${time}`;
 
 module.exports = {
   editProfile: (browser) => {
-    const firstName = `first name ${time}`;
-    const lastName = `last name ${time}`;
     const signinPage = browser.page.signin();
 
     signinPage
