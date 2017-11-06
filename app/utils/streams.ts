@@ -106,13 +106,13 @@ class Streams {
     if (_(this.streamIdsByApiEndPointWithQuery[apiEndpoint]).some(value => value === streamId)) {
       this.streamIdsByApiEndPointWithQuery[apiEndpoint] = this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
         return value !== streamId;
-      });            
+      });
     }
 
     if (_(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]).some(value => value === streamId)) {
       this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter((value) => {
         return value !== streamId;
-      });            
+      });
     }
 
     Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
@@ -395,7 +395,9 @@ class Streams {
 
       return response;
     } catch (error) {
-      console.log(error);
+      if (error.json && error.json.errors) {
+        return Promise.reject(error);
+      }
       throw `error for add() of Streams for api endpoint ${apiEndpoint}`;
     }
   }
@@ -426,7 +428,7 @@ class Streams {
       });
 
       _.union(
-        this.streamIdsByApiEndPointWithQuery[apiEndpoint], 
+        this.streamIdsByApiEndPointWithQuery[apiEndpoint],
         this.streamIdsByDataIdWithQuery[dataId]
       ).forEach((streamId) => {
         this.streams[streamId].fetch();
@@ -434,7 +436,9 @@ class Streams {
 
       return response;
     } catch (error) {
-      console.log(error);
+      if (error.json && error.json.errors) {
+        return Promise.reject(error);
+      }
       throw `error for update() of Streams for api endpoint ${apiEndpoint}`;
     }
   }
@@ -465,7 +469,7 @@ class Streams {
       });
 
       _.union(
-        this.streamIdsByApiEndPointWithQuery[apiEndpoint], 
+        this.streamIdsByApiEndPointWithQuery[apiEndpoint],
         this.streamIdsByDataIdWithQuery[dataId]
       ).forEach((streamId) => {
         this.streams[streamId].fetch();
@@ -473,7 +477,9 @@ class Streams {
 
       return true;
     } catch (error) {
-      console.log(error);
+      if (error.json && error.json.errors) {
+        return Promise.reject(error);
+      }
       throw `error for delete() of Streams for api endpoint ${apiEndpoint}`;
     }
   }
