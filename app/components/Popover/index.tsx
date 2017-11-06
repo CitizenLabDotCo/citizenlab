@@ -71,10 +71,11 @@ type Props = {
   className?: string,
   open: boolean,
   onCloseRequest?: () => void,
+  id?: string,
 };
 
 
-export default class Dropdown extends React.PureComponent<Props> {
+export default class Popover extends React.PureComponent<Props> {
 
   clickOutside = (event) => {
     event.stopPropagation();
@@ -96,7 +97,7 @@ export default class Dropdown extends React.PureComponent<Props> {
           unmountOnExit={true}
           exit={false}
         >
-          <Container onClickOutside={this.clickOutside} className={this.props.className}>
+          <Container onClickOutside={this.clickOutside} className={this.props.className} id={this.props.id}>
             {this.props.children}
           </Container>
         </CSSTransition>
