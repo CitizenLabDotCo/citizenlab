@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { injectTracks } from 'utils/analytics';
 
 import NotificationCount from './components/NotificationCount';
-import Dropdown from 'components/Dropdown';
+import Popover from 'components/Popover';
 import Notification from './components/Notification';
 import Spinner from 'components/UI/Spinner';
 import { FormattedMessage } from 'react-intl';
@@ -24,7 +24,7 @@ const Container = styled.div`
   position: relative;
 `;
 
-const StyledDropdown = styled(Dropdown)`
+const StyledPopover = styled(Popover)`
   width: 370px;
   max-height: 400px;
   overflow-y: auto;
@@ -57,7 +57,7 @@ interface ITracks {
 }
 
 type State = {
-  dropdownOpen: boolean,
+  PopoverOpen: boolean,
   unreadCount?: number,
   notifications: INotificationData[] | null;
   hasMore: boolean;
@@ -70,7 +70,7 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
     super();
     this.state = {
       unreadCount: 0,
-      dropdownOpen: false,
+      PopoverOpen: false,
       notifications: null,
       hasMore: true,
     };
@@ -111,19 +111,19 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
   )
 
   onClickIcon = () => {
-    if (this.state.dropdownOpen)
-      this.closeDropdown();
+    if (this.state.PopoverOpen)
+      this.closePopover();
     else
-      this.openDropdown();
+      this.openPopover();
   }
 
-  openDropdown = () => {
-    this.setState({ dropdownOpen: true });
+  openPopover = () => {
+    this.setState({ PopoverOpen: true });
     this.props.clickOpenNotifications();
   }
 
-  closeDropdown = () => {
-    this.setState({ dropdownOpen: false });
+  closePopover = () => {
+    this.setState({ PopoverOpen: false });
     markAllAsRead();
     this.props.clickCloseNotifications();
   }
@@ -136,9 +136,9 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
           count={this.state.unreadCount}
           onClick={this.onClickIcon}
         />
-        <StyledDropdown
-          open={this.state.dropdownOpen}
-          onCloseRequest={this.closeDropdown}
+        <StyledPopover
+          open={this.state.PopoverOpen}
+          onCloseRequest={this.closePopover}
         >
           <InfiniteScroll
             pageStart={0}
@@ -163,7 +163,7 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
               </EmptyStateContainer>
             }
           </InfiniteScroll>
-        </StyledDropdown>
+        </StyledPopover>
       </Container>
     );
   }
