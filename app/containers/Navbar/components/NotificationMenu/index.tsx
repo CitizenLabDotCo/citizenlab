@@ -54,7 +54,7 @@ type Props = {
 interface ITracks {
   clickOpenNotifications: () => void;
   clickCloseNotifications: () => void;
-};
+}
 
 type State = {
   dropdownOpen: boolean,
