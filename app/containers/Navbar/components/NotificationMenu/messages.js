@@ -26,4 +26,16 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.noNotifications',
     defaultMessage: 'You don\'t have any notifications yet',
   },
+  userCommentedOnYourIdea: {
+    id: 'app.containers.NotificationMenu.userCommentedOnYourIdea',
+    defaultMessage: '{name} commented on your idea',
+  },
+  userReactedToYourComment: {
+    id: 'app.containers.NotificationMenu.userReactedToYourComment',
+    defaultMessage: '{name} reacted to your comment',
+  },
+  mentionInComment: {
+    id: 'app.containers.NotificationMenu.mentionInComment',
+    defaultMessage: '{name} mentioned you in a comment',
+  },
 });
