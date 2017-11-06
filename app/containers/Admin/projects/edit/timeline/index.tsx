@@ -167,10 +167,10 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
     return (
       <ListWrapper>
-        <AddButton to={`/admin/projects/${slug}/timeline/new`}><FormattedMessage {...messages.addPhaseButton} /></AddButton>
+        <AddButton className="e2e-add-phase-button" to={`/admin/projects/${slug}/timeline/new`}><FormattedMessage {...messages.addPhaseButton} /></AddButton>
 
         {!loading && phases.length > 0 &&
-          <PhasesTable>
+          <PhasesTable className="e2e-phases-table">
             <thead>
               <tr>
                 <th><FormattedMessage {...messages.orderColumnTitle} /></th>
@@ -181,7 +181,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
             </thead>
             <tbody>
               {phases.map((phase, index) => (
-                <tr key={phase.id}>
+                <tr className="e2e-phase-line" id={`e2e-phase_${phase.id}`} key={phase.id}>
                   <td>
                     <OrderLabel className={this.phaseTiming({ start_at: phase.attributes.start_at, end_at: phase.attributes.end_at })}>
                       {index + 1}

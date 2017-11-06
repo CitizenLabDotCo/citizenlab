@@ -1,4 +1,10 @@
 const commands = {
+  openLastProject() {
+    return this
+    .waitForElementVisible('.e2e-project-card')
+    .click('.e2e-project-card:last-child a')
+    .waitForElementVisible('@generalForm');
+  },
 };
 
 module.exports = {
@@ -15,6 +21,7 @@ module.exports = {
     phasesTab: { selector: '.e2e-resource-tabs li:nth-child(3)' },
     eventsTab: { selector: '.e2e-resource-tabs li:nth-child(4)' },
     permissionsTab: { selector: '.e2e-resource-tabs li:nth-child(5)' },
+    addPhaseButton: { selector: '.e2e-add-phase-button' },
   },
   commands: [commands],
 };
