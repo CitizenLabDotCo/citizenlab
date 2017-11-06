@@ -192,13 +192,13 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
                     <p>{formatDate(phase.attributes.start_at)} - {formatDate(phase.attributes.end_at)}</p>
                   </td>
                   <td>
-                    <DeleteButton onClick={this.createDeleteClickHandler(phase.id)}>
+                    <DeleteButton className="e2e-delete-phase" onClick={this.createDeleteClickHandler(phase.id)}>
                       <Icon name="delete" />
                       <FormattedMessage {...messages.deletePhaseButton} />
                     </DeleteButton>
                   </td>
                   <td>
-                    <EditButton to={`/admin/projects/${slug}/timeline/${phase.id}`}>
+                    <EditButton className="e2e-edit-phase" to={`/admin/projects/${slug}/timeline/${phase.id}`}>
                       <Icon name="edit" />
                       <FormattedMessage {...messages.editPhaseButton} />
                     </EditButton>
