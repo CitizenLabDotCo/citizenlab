@@ -32,7 +32,7 @@ class User < ApplicationRecord
   # Follows ISCED2011 scale
   validates :education, numericality: {only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8}, allow_nil: true
 
-  validates :password, length: { in: 5..20 }, allow_nil: true
+  validates :password, length: { in: 5..72 }, allow_nil: true
   validate do |record|
     record.errors.add(:password, :blank) unless record.password_digest.present? or record.identities.any?
   end
@@ -50,6 +50,10 @@ class User < ApplicationRecord
     .order("ro->>'type' #{direction}")
   }
 
+  scope :admin, -> { 
+    where("roles @> '[{\"type\":\"admin\"}]'")
+  }
+  
   def self.build_with_omniauth(auth)
     extra_user_attrs = SingleSignOnService.new.profile_to_user_attrs(auth.provider, auth)
     new({
