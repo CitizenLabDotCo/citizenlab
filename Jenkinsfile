@@ -33,8 +33,8 @@ pipeline {
         script {
           sh 'rm -rf public/uploads/*'
           docker.withRegistry("https://index.docker.io/v1/",'docker-hub-credentials') {
-            def image = docker.build('citizenlabdotco/cl2-back:latest')
-            image.push('latest')
+            def image = docker.build('citizenlabdotco/cl2-back:production-benelux')
+            image.push('production-benelux')
           }
         }
       }
@@ -79,7 +79,7 @@ pipeline {
       cleanWs()
     }
     success {
-      slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} passed all tests!\nMore info at ${env.BUILD_URL}"
+      slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} deplyed to benelux production cluster!\nMore info at ${env.BUILD_URL}"
     }
     failure {
       slackSend color: '#e93b1c', message: ":boom: FAILURE: ${env.JOB_NAME} build #${env.BUILD_NUMBER} failed\nSee what went wrong at ${env.BUILD_URL}"

@@ -43,6 +43,10 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
     render json: Tenant::SETTINGS_JSON_SCHEMA
   end
 
+  def templates
+    render json: TenantTemplateService.new.available_templates
+  end
+
   private
 
   def secure_controller?
