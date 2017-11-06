@@ -1,5 +1,5 @@
 import * as React from 'react';
-import PlacesAutocomplete from 'react-places-autocomplete';
+import PlacesAutocomplete, { geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
 
 const LocationInputWrapper = styled.div`
@@ -69,6 +69,15 @@ export default class LocationInput extends React.PureComponent<Props, State> {
     this.props.onChange(value);
   }
 
+  handleSelect = async (adress: string, placeId: string) => {
+    this.props.onChange(adress);
+    return geocodeByPlaceId(placeId)
+    .then((results) => {
+      console.log(results[0].geometry.location.lat(), results[0].geometry.location.lng());
+      return results;
+    });
+  }
+
   render() {
     const { id } = this.props;
     let { value, placeholder } = this.props;
@@ -114,6 +123,7 @@ export default class LocationInput extends React.PureComponent<Props, State> {
           inputProps={inputProps}
           autocompleteItem={AutocompleteItem}
           styles={styles}
+          onSelect={this.handleSelect}
         />
       </LocationInputWrapper>
     );

@@ -22,6 +22,8 @@ import CommentsLine from './CommentsLine';
 import Author from './Author';
 import IdeaMeta from './IdeaMeta';
 import Unauthenticated from './Unauthenticated';
+import IdeaMap from './IdeaMap';
+import Button from 'components/UI/Button';
 
 // services
 import { localeStream } from 'services/locale';
@@ -103,21 +105,57 @@ const LeftColumn = styled.div`
   padding: 0;
 `;
 
-const IdeaImage = styled.img`
-  width: 100%;
+const ImageAndMapWrapper = styled.div`
   border-radius: 8px;
+  border: 1px solid ${props => props.theme.colors.separation};
+  height: 265px;
+  margin-bottom: 1.5rem;
+  margin: 0 0 1.5rem;
+  overflow: hidden;
+  padding: 0;
+  width: 100%;
+`;
+
+const IdeaImage = styled.div`
+  background-image: ${(props: any) => `url("${props['data-img']}")`};
+  background-position: center;
+  background-size: cover;
+  height: 265px;
   margin: 0;
   padding: 0;
-  margin-bottom: 20px;
-  border: solid 1px #eee;
+  width: 100%;
+  transition: all .1s ease-out;
+
+  &.hidden {
+    height: 0;
+  }
 `;
 
 const AuthorContainer = styled.div`
   display: flex;
   align-items: center;
   margin: 0;
-  margin-bottom: 30px;
   padding: 0;
+`;
+
+const AuthorAndAdressWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+
+  ${AuthorContainer} {
+    flex: 1;
+  }
+`;
+
+const LocationButton = styled(Button)`
+  padding-right: 0;
+`;
+
+const StyledPositionIcon = styled(Icon)`
+  height: 1em;
+  margin-left: .5em;
 `;
 
 const AuthorAvatar = styled(Avatar)`
@@ -323,6 +361,7 @@ type State = {
   ideaComments: IComments | null;
   loading: boolean;
   unauthenticatedError: boolean;
+  showMap: boolean;
 };
 
 class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -338,7 +377,8 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       ideaImage: null,
       ideaComments: null,
       loading: true,
-      unauthenticatedError: false
+      unauthenticatedError: false,
+      showMap: false,
     };
     this.subscriptions = [];
   }
@@ -357,15 +397,15 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
-        ideaImage$, 
-        ideaAuthor$, 
+        ideaImage$,
+        ideaAuthor$,
         ideaStatus$
       ).map(([ideaImage, ideaAuthor]) => ({ idea, ideaImage, ideaAuthor }));
     });
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        locale$, 
+        locale$,
         idea$
       ).subscribe(([locale, { idea, ideaImage, ideaAuthor }]) => {
         this.setState({ locale, idea, ideaImage, ideaAuthor, loading: false });
@@ -407,6 +447,10 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  handleMapToggle = () => {
+    this.setState({ showMap: !this.state.showMap });
+  }
+
   render() {
     const { locale, idea, ideaImage, ideaAuthor, ideaComments, loading, unauthenticatedError } = this.state;
     const { formatMessage, formatRelative } = this.props.intl;
@@ -422,12 +466,14 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       const ideaImageLarge = (ideaImage ? ideaImage.data.attributes.versions.large : null);
       const ideaImageMedium = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
       const isSafari = bowser.safari;
+      const ideaLocation = idea.data.attributes.location_point_geojson || null;
+      const ideaAdress = idea.data.attributes.location_description || null;
 
       const ideaMetaContent = (
         <MetaContent>
           <VoteLabel>{formatMessage(messages.voteOnThisIdea)}</VoteLabel>
 
-          {!unauthenticatedError && 
+          {!unauthenticatedError &&
             <VoteControl ideaId={idea.data.id} unauthenticatedVoteClick={this.unauthenticatedVoteClick} />
           }
 
@@ -468,21 +514,41 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <LeftColumn>
-                {ideaImageLarge ? <IdeaImage src={ideaImageLarge} /> : null}
+                <ImageAndMapWrapper>
+                  {ideaImageLarge ? <IdeaImage className={`${this.state.showMap ? 'hidden' : ''}`} data-img={ideaImageLarge} /> : null}
+                  {ideaLocation ? <IdeaMap location={ideaLocation} /> : null}
+                </ImageAndMapWrapper>
 
-                <AuthorContainer>
-                  <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />
-                  <AuthorMeta>
-                    <AuthorName to={`/profile/${ideaAuthor.data.attributes.slug}`}>
-                      <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} />
-                    </AuthorName>
-                    {createdAt &&
-                      <TimeAgo>
-                        <FormattedRelative value={createdAt} />
-                      </TimeAgo>
+                <AuthorAndAdressWrapper>
+                  <AuthorContainer>
+                    <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />
+                    <AuthorMeta>
+                      <AuthorName to={`/profile/${ideaAuthor.data.attributes.slug}`}>
+                        <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} />
+                      </AuthorName>
+                      {createdAt &&
+                        <TimeAgo>
+                          <FormattedRelative value={createdAt} />
+                        </TimeAgo>
+                      }
+                    </AuthorMeta>
+                  </AuthorContainer>
+
+                  {ideaAdress && <LocationButton style="text" onClick={this.handleMapToggle}>
+                    {(this.state.showMap && ideaImageLarge) &&
+                      <span>
+                        <FormattedMessage {...messages.closeMap} />
+                        <StyledPositionIcon name="close" />
+                      </span>
                     }
-                  </AuthorMeta>
-                </AuthorContainer>
+                    {(!this.state.showMap || !ideaImageLarge) &&
+                      <span>
+                        {ideaAdress}
+                        <StyledPositionIcon name="position" />
+                      </span>
+                    }
+                  </LocationButton>}
+                </AuthorAndAdressWrapper>
 
                 <IdeaBody>
                   <T value={bodyMultiloc} />
