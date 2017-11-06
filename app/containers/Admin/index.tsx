@@ -27,6 +27,7 @@ const RightColumn = styled.div`
 const AdminContainerStyled = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 1200px;
   padding: 45px 51px 0px 51px;
 `;
 
