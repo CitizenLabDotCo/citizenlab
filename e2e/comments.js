@@ -3,6 +3,7 @@ const time = new Date().getTime();
 const LATEST_COMMENT = '.e2e-comments-container > *:first-child';
 
 module.exports = {
+  '@tags': ['citizen', 'ideas', 'comments'],
   seeComments: (browser) => {
     const signinPage = browser.page.signin();
 

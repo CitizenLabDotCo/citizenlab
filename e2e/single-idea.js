@@ -1,4 +1,5 @@
 module.exports = {
+  '@tags': ['citizen', 'ideas'],
   modalIdea: (browser) => {
     let ideaUrl;
 
