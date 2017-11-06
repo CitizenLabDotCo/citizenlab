@@ -1,4 +1,9 @@
 const glob = require('glob');
+const argv = require('yargs').argv;
+
+// Allows the user to select the amount of workers that should be used for parallel running
+// `npm run test:e2e -- --workers [number]` or `npm run test:e2e -- -w [number]`
+const workers = argv.w || argv.workers || 'auto';
 
 const seleniumServerPattern = './node_modules/selenium-standalone/.selenium/selenium-server/*-server.jar';
 const chromeDriverPattern = './node_modules/selenium-standalone/.selenium/chromedriver/*-chromedriver';
@@ -33,5 +38,8 @@ module.exports = {
       },
     },
   },
-  test_workers: true,
+  test_workers: {
+    workers,
+    enabled: true,
+  },
 };
