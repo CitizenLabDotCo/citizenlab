@@ -15,7 +15,7 @@ import { Link } from 'react-router';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
-import buttonMixin from 'components/admin/StyleMixins/buttonMixin';
+import { List, Row, HeadRow } from 'components/admin/ResourceList';
 
 // Utils
 import subscribedComponent from 'utils/subscriptionsDecorator';
@@ -26,70 +26,14 @@ const ListWrapper = styled.div`
   flex-direction: column;
 `;
 
-const AddButton = styled(Link)`
-  ${buttonMixin('#EF0071', '#EF0071')}
-  color: #fff;
+const AddButton = styled(Button)`
   align-self: flex-end;
-
-  &:hover,
-  &:focus {
-    color: #fff;
-  }
 `;
 
-const EventsTable = styled.table`
-  width: 100%;
-
-  th {
-    font-weight: normal;
-    text-align: left;
-    padding: .5rem;
-  }
-
-  td {
-    border-bottom: 1px solid #eaeaea;
-    border-top: 1px solid #eaeaea;
-    padding: 2rem .5rem;
-  }
-
+const InfoCell = styled.div`
   h1 {
     font-weight: normal;
     margin-bottom: 0;
-  }
-`;
-
-const OrderLabel = styled.div`
-  border-radius: 50%;
-  color: white;
-  height: 3rem;
-  line-height: 3rem;
-  text-align: center;
-  width: 3rem;
-
-  &.current {
-    background: #32B67A;
-  }
-
-  &.past {
-    background: #E5E5E5;
-  }
-
-  &.future {
-    background: #636363;
-  }
-`;
-
-const DeleteButton = styled.button`
-  ${buttonMixin()}
-`;
-
-const EditButton = styled(Link)`
-  ${buttonMixin('#e5e5e5', '#cccccc')}
-  color: #6B6B6B;
-
-  &:hover,
-  &:focus: {
-    color: #6B6B6B;
   }
 `;
 
@@ -167,44 +111,34 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
     return (
       <ListWrapper>
-        <AddButton to={`/admin/projects/${slug}/events/new`}><FormattedMessage {...messages.addEventButton} /></AddButton>
+        <AddButton style="cl-blue" linkTo={`/admin/projects/${slug}/events/new`}>
+          <FormattedMessage {...messages.addEventButton} />
+        </AddButton>
 
         {!loading && events.length > 0 &&
-          <EventsTable>
-            <thead>
-              <tr>
-                <th><FormattedMessage {...messages.titleColumnHeader} /></th>
-                <th />
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {events.map((event, index) => (
-                <tr key={event.id}>
-                  <td>
-                    <h1><T value={event.attributes.title_multiloc} /></h1>
-                    <p><T value={event.attributes.location_multiloc} /></p>
-                    <p>
-                      {`${formatDate(event.attributes.start_at)} ${formatTime(event.attributes.start_at)}`}
-                      &nbsp;-&nbsp;
-                      {`${formatDate(event.attributes.end_at)} ${formatTime(event.attributes.end_at)}`}</p>
-                  </td>
-                  <td>
-                    <DeleteButton onClick={this.createDeleteClickHandler(event.id)}>
-                      <Icon name="delete" />
-                      <FormattedMessage {...messages.deleteButtonLabel} />
-                    </DeleteButton>
-                  </td>
-                  <td>
-                    <EditButton to={`/admin/projects/${slug}/events/${event.id}`}>
-                      <Icon name="edit" />
-                      <FormattedMessage {...messages.editButtonLabel} />
-                    </EditButton>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </EventsTable>
+          <List>
+            <HeadRow>
+              <div className="expand"><FormattedMessage {...messages.titleColumnHeader} /></div>
+            </HeadRow>
+            {events.map((event, index) => (
+              <Row key={event.id}>
+                <InfoCell className="expand">
+                  <h1><T value={event.attributes.title_multiloc} /></h1>
+                  <p><T value={event.attributes.location_multiloc} /></p>
+                  <p>
+                    {`${formatDate(event.attributes.start_at)} ${formatTime(event.attributes.start_at)}`}
+                    &nbsp;-&nbsp;
+                    {`${formatDate(event.attributes.end_at)} ${formatTime(event.attributes.end_at)}`}</p>
+                </InfoCell>
+                <Button style="text" icon="delete" onClick={this.createDeleteClickHandler(event.id)}>
+                  <FormattedMessage {...messages.deleteButtonLabel} />
+                </Button>
+                <Button style="secondary" icon="edit" linkTo={`/admin/projects/${slug}/events/${event.id}`}>
+                  <FormattedMessage {...messages.editButtonLabel} />
+                </Button>
+              </Row>
+            ))}
+          </List>
         }
       </ListWrapper>
     );
