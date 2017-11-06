@@ -106,13 +106,13 @@ class Streams {
     if (_(this.streamIdsByApiEndPointWithQuery[apiEndpoint]).some(value => value === streamId)) {
       this.streamIdsByApiEndPointWithQuery[apiEndpoint] = this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
         return value !== streamId;
-      });            
+      });
     }
 
     if (_(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]).some(value => value === streamId)) {
       this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter((value) => {
         return value !== streamId;
-      });            
+      });
     }
 
     Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
@@ -140,7 +140,7 @@ class Streams {
   isQuery(queryParameters: null | object) {
     if (queryParameters !== null && _.isObject(queryParameters) && !_.isEmpty(queryParameters)) {
       return Object.keys(queryParameters).filter((key) => {
-        return queryParameters[key] !== '' && !_.isNull(queryParameters[key]) && !_.isUndefined(queryParameters[key]) && Object.keys(queryParameters[key]).length > 0;
+        return queryParameters[key] !== '' && !_.isNull(queryParameters[key]) && !_.isUndefined(queryParameters[key]);// && Object.keys(queryParameters[key]).length > 0;
       }).length > 0;
     }
 
@@ -426,7 +426,7 @@ class Streams {
       });
 
       _.union(
-        this.streamIdsByApiEndPointWithQuery[apiEndpoint], 
+        this.streamIdsByApiEndPointWithQuery[apiEndpoint],
         this.streamIdsByDataIdWithQuery[dataId]
       ).forEach((streamId) => {
         this.streams[streamId].fetch();
@@ -465,7 +465,7 @@ class Streams {
       });
 
       _.union(
-        this.streamIdsByApiEndPointWithQuery[apiEndpoint], 
+        this.streamIdsByApiEndPointWithQuery[apiEndpoint],
         this.streamIdsByDataIdWithQuery[dataId]
       ).forEach((streamId) => {
         this.streams[streamId].fetch();
