@@ -17,6 +17,7 @@ class Api::V1::External::Notifications::NotificationSerializer < ActiveModel::Se
 
   class CustomIdeaSerializer < ActiveModel::Serializer
     attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count
+    has_many :topics
   end
 
   class CustomImageSerializer < ActiveModel::Serializer
@@ -46,6 +47,10 @@ class Api::V1::External::Notifications::NotificationSerializer < ActiveModel::Se
 
   def idea_images
     object.idea&.idea_images
+  end
+
+  def idea_topics
+  	object.idea&.topics
   end
 
   def project_images
