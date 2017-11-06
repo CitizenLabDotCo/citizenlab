@@ -52,7 +52,7 @@ const IdeaContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding: 0;
-  padding-top: 80px;
+  padding-top: 60px;
   padding-bottom: 60px;
   padding-left: 30px;
   padding-right: 30px;
@@ -76,13 +76,11 @@ const Header = styled.div`
 
 const IdeaTitle = styled.h1`
   color: #444;
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 500;
   line-height: 42px;
   margin: 0;
   padding: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 
   ${media.smallerThanMaxTablet`
     font-size: 28px;
@@ -137,8 +135,8 @@ const AuthorMeta = styled.div`
 const AuthorName = styled(Link) `
   color: #333;
   font-size: 16px;
-  line-height: 19px;
-  font-weight: 300;
+  line-height: 20px;
+  font-weight: 400;
   text-decoration: none;
 
   &:hover {
@@ -173,8 +171,7 @@ const SeparatorColumn = styled.div`
   margin: 0;
   margin-left: 30px;
   margin-right: 30px;
-  background: #e4e4e4;
-  background: #fff;
+  background: transparent;
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -185,7 +182,7 @@ const SeparatorRow = styled.div`
   width: 100%;
   height: 1px;
   margin: 0;
-  margin-top: 40px;
+  margin-top: 45px;
   margin-bottom: 30px;
   background: #e4e4e4;
 
@@ -216,9 +213,9 @@ const RightColumnDesktop: any = RightColumn.extend`
 const RightColumnMobile = RightColumn.extend`
   flex: 1;
   margin: 0;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   padding: 0;
-  padding-bottom: 5px;
+  padding-bottom: 15px;
   border-bottom: solid 1px #e4e4e4;
   display: none;
 

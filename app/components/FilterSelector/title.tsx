@@ -18,20 +18,19 @@ const DropdownIcon = styled(Icon)`
   height: 7px;
   fill: #84939E;
   margin-left: 5px;
-  margin-top: 3px;
   transition: all 100ms ease-out;
 `;
 
-const StyledButton = styled.button`
+const Container = styled.div`
+  height: 20px;
   cursor: pointer;
-  font-size: 16px;
-  font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0;
   margin: 0;
   position: relative;
+  outline: none;
 
   &:hover,
   &.deployed {
@@ -63,7 +62,7 @@ export default class Title extends React.PureComponent<Props, State> {
     const { title, onClick, deployed, baseID } = this.props;
 
     return (
-      <StyledButton
+      <Container
         onClick={this.handleClick}
         aria-expanded={deployed}
         id={`${baseID}-label`}
@@ -71,7 +70,7 @@ export default class Title extends React.PureComponent<Props, State> {
       >
         <Text>{title}</Text>
         <DropdownIcon name="dropdown" />
-      </StyledButton>
+      </Container>
     );
   }
 }
