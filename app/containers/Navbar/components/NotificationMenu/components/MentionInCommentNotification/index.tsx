@@ -45,6 +45,10 @@ export default class MentionInCommentNotification extends React.PureComponent<Pr
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  onClickUserName = (event) => {
+    event.stopPropagation();
+  }
+
   render() {
     const { notification } = this.props;
     const { ideaSlug } = this.state;
@@ -62,7 +66,7 @@ export default class MentionInCommentNotification extends React.PureComponent<Pr
             name:
               <Link
                 to={`/profile/${notification.attributes.user_slug}`}
-                onClick={(event) => event.stopPropagation()}
+                onClick={this.onClickUserName}
               >
                 {notification.attributes.user_first_name}
               </Link>,
