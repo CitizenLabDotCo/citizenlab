@@ -1,4 +1,5 @@
 module.exports = {
+  '@tags': ['citizen', 'auth', 'register'],
   register: (browser) => {
     const time = new Date().getTime();
 

@@ -3,6 +3,7 @@ const firstName = `first name ${time}`;
 const lastName = `last name ${time}`;
 
 module.exports = {
+  '@tags': ['citizen', 'profile'],
   editProfile: (browser) => {
     const signinPage = browser.page.signin();
 

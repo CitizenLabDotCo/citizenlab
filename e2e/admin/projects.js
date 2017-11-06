@@ -1,6 +1,7 @@
 const time = new Date().getTime();
 
 module.exports = {
+  '@tags': ['city', 'projects'],
   projectsList: (browser) => {
     const signinPage = browser.page.signin();
     const adminProjectsPage = browser.page.adminProjects();
