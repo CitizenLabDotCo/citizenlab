@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101102506) do
+ActiveRecord::Schema.define(version: 20171106212610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -165,6 +165,16 @@ ActiveRecord::Schema.define(version: 20171101102506) do
     t.index ["topic_id"], name: "index_ideas_topics_on_topic_id"
   end
 
+  create_table "identities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "provider"
+    t.string "uid"
+    t.jsonb "auth_hash", default: {}
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_identities_on_user_id"
+  end
+
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "group_id"
     t.uuid "user_id"
@@ -264,7 +274,6 @@ ActiveRecord::Schema.define(version: 20171101102506) do
     t.string "email"
     t.string "password_digest"
     t.string "slug"
-    t.jsonb "services", default: {}
     t.jsonb "demographics", default: {}
     t.jsonb "roles", default: []
     t.string "reset_password_token"
@@ -307,6 +316,7 @@ ActiveRecord::Schema.define(version: 20171101102506) do
   add_foreign_key "ideas", "users", column: "author_id"
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
+  add_foreign_key "identities", "users"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "users", column: "recipient_id"
