@@ -52,11 +52,11 @@ const StyledIdeaCard = styled(IdeaCard)`
   margin-left: 13px;
   margin-right: 13px;
 
-  ${media.tablet`
+  ${media.smallerThanMaxTablet`
     width: calc(100% * (1/2) - 26px);
   `};
 
-  ${media.phone`
+  ${media.smallerThanMinTablet`
     width: 100%;
   `};
 `;

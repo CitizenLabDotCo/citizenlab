@@ -27,11 +27,6 @@ import { darken } from 'polished';
 import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 
-// images
-const adminIcon = require('./adminIcon.svg');
-const editProfileIcon = require('./editProfileIcon.svg');
-const signOutIcon = require('./signOutIcon.svg');
-
 const timeout = 200;
 const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
@@ -131,6 +126,8 @@ const Dropdown = styled.div`
 
 const DropdownIcon = styled(Icon)`
   height: 20px;
+  fill: ${props => props.theme.colors.label};
+  transition: all 80ms ease-out;
 `;
 
 const DropdownItem = styled.div`
@@ -140,26 +137,19 @@ const DropdownItem = styled.div`
   padding: 10px 15px;
   background: #fff;
   border-radius: 5px;
-  transition: all 100ms ease-out;
+  transition: all 80ms ease-out;
   display: flex;
   align-items: center;
-
-  svg {
-    fill: ${props => props.theme.colors.label};
-    transition: all 100ms ease-out;
-  }
+  justify-content: space-between;
 
   &:hover {
-    background: #f4f4f4;
     color: #000;
+    background: #f2f2f2;
 
-    svg {
+    ${DropdownIcon} {
       fill: #000;
     }
   }
-
-  display: flex;
-  justify-content: space-between;
 `;
 
 type Props = {};

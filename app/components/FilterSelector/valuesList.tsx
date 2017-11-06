@@ -94,6 +94,7 @@ const StyledOption: any = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: all 80ms ease-out;
 
   &:last {
     margin-bottom: 0px;
@@ -101,8 +102,8 @@ const StyledOption: any = styled.li`
 
   &.focused,
   &:hover {
-    color: #222;
-    background: #f8f8f8;
+    color: #000;
+    background: #f2f2f2;
   }
 `;
 

@@ -26,6 +26,7 @@ const Container: any = styled.div`
     border: solid 1px #ccc;
     background: #fff;
     overflow: hidden;
+    -webkit-appearance: none;
   
     &::placeholder {
       color: #aaa;

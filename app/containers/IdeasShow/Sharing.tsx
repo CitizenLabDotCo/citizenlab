@@ -68,7 +68,7 @@ const Container = styled.div`
     transition: all 100ms ease-out;
     margin: 0;
     padding: 0;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 
     &.twitter {
       ${Text} {

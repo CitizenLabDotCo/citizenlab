@@ -18,10 +18,17 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const StyledContentContainer = styled(ContentContainer)`
-  margin-top: 0px;
-  margin-bottom: 100px;
+  padding-top: 40px;
+  padding-bottom: 100px;
+  background: #f8f8f8;
+
+  ${media.phone`
+    padding-top: 0px;
+    background: #f8f8f8;
+  `}
 `;
 
 const UserAvatar = styled.div`
@@ -35,7 +42,6 @@ const UserAvatar = styled.div`
 const StyledAvatar = styled(Avatar)`
   width: 160px;
   height: 160px;
-  border: solid 5px #fff;
 `;
 
 const UserInfo = styled.div`
@@ -46,7 +52,6 @@ const UserInfo = styled.div`
   margin-top: 0px;
   padding-bottom: 40px;
   border-radius: 5px;
-  background-color: #fff;
 `;
 
 const FullName = styled.div`
@@ -124,6 +129,10 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
     const { user } = this.state;
 
     if (user) {
+      // const userCreatedAt = 
+
+      console.log(user.data.attributes.created_at);
+
       return (
         <StyledContentContainer>
 
@@ -138,7 +147,14 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
             <JoinedAt>
               <FormattedMessage
                 {...messages.joined}
-                values={{ date: <FormattedDate value={user.data.attributes.created_at} /> }}
+                values={{
+                  date: <FormattedDate 
+                          value={user.data.attributes.created_at}
+                          year="numeric"
+                          month="long"
+                          day="numeric"
+                  />
+                }}
               />
             </JoinedAt>
             {!_.isEmpty(user.data.attributes.bio_multiloc) &&

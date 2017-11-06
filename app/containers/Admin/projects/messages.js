@@ -17,7 +17,7 @@ export default defineMessages({
   },
   editProject: {
     id: 'app.containers.AdminPage.ProjectDashboard.editProjectButton',
-    defaultMessage: 'See the Project',
+    defaultMessage: 'See this project',
   },
   backToList: {
     id: 'app.containers.AdminPage.ProjectEdit.backToListButton',

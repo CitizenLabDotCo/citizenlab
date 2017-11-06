@@ -35,10 +35,11 @@ const Container = styled.div`
   background: #fff;
   border: solid 1px #e6e6e6;
   cursor: pointer;
-  /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); */
 
-  ${media.phone`
+  ${media.smallerThanMaxTablet`
     flex-direction: column;
+    align-items: left;
+    padding: 20px;
   `}
 `;
 
@@ -56,9 +57,9 @@ const ProjectImage: any = styled.div`
   background-size: cover;
   overflow: hidden;
 
-  ${media.phone`
+  ${media.smallerThanMaxTablet`
     width: 100%;
-    margin-right: 0px;
+    margin: 0;
   `}
 `;
 
@@ -73,9 +74,9 @@ const ProjectImagePlaceholder = styled.div`
   background: #cfd6db;
   overflow: hidden;
 
-  ${media.phone`
+  ${media.smallerThanMaxTablet`
     width: 100%;
-    margin-right: 0px;
+    margin: 0;
   `}
 `;
 
@@ -86,16 +87,35 @@ const ProjectContent = styled.div`
   flex-direction: column;
   margin-right: 30px;
   margin-left: 30px;
+
+  ${media.smallerThanMaxTablet`
+    margin: 0;
+  `}
+
   ${media.phone`
-    margin: 0.5rem 0;
+    width: 100%;
+    margin: 0;
+    align-items: center;
   `}
 `;
 
 const ProjectTitle = styled.h3`
   color: #333;
   font-size: 21px;
-  line-height: 24px;
+  line-height: 25px;
   font-weight: 500;
+  margin: 0;
+  padding: 0;
+
+  ${media.smallerThanMaxTablet`
+    padding-top: 20px;
+  `}
+
+  ${media.phone`
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  `}
 `;
 
 const ProjectDescription = styled.div`
@@ -103,19 +123,26 @@ const ProjectDescription = styled.div`
   font-size: 15px;
   font-weight: 300;
   line-height: 20px;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  text-overflow: ellipsis;
+  margin-top: 10px;
+
+  /* see https://stackoverflow.com/questions/3922739/limit-text-length-to-n-lines-using-css */
   overflow: hidden;
-  max-height: 100px;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-height: 20px;
+  max-height: 60px;
+
   ${media.phone`
     display: none;
   `}
 `;
 
 const ReadMoreWrapper = styled.div`
-  margin-top: 5px;
-  ${media.phone`
+  margin-top: 10px;
+  
+  ${media.smallerThanMaxTablet`
     display: none;
   `}
 `;
@@ -134,12 +161,18 @@ const ReadMore = styled.div`
 `;
 
 const ProjectButtonWrapper = styled.div`
-  height: 100%;
   display: flex;
   align-items: center;
   margin-right: 20px;
+
+  ${media.smallerThanMaxTablet`
+    width: 100%;
+    margin-top: 20px;
+  `}
+
   ${media.phone`
-    margin: 0.5rem 0;
+    align-items: center;
+    justify-content: center;
   `}
 `;
 
