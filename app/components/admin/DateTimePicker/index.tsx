@@ -56,6 +56,11 @@ export default class DateTimePicker extends React.PureComponent<Props, State> {
     }
   }
 
+  componentDidMount() {
+    // Update the parent component value, useful when initializing a new picker
+    this.updateDateTime(this.state.selectedMoment);
+  }
+
   updateDateTime = (newMoment: moment.Moment) => {
     if (this.props.onChange) {
       this.props.onChange(newMoment);
