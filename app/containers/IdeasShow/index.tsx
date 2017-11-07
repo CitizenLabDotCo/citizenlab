@@ -109,8 +109,8 @@ const ImageAndMapWrapper = styled.div`
   border-radius: 8px;
   border: 1px solid ${props => props.theme.colors.separation};
   height: 265px;
-  margin-bottom: 1.5rem;
-  margin: 0 0 1.5rem;
+  margin-bottom: 24px;
+  margin: 0 0 24px;
   overflow: hidden;
   padding: 0;
   width: 100%;
@@ -142,7 +142,7 @@ const AuthorAndAdressWrapper = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 2rem;
+  margin-bottom: 24px;
 
   ${AuthorContainer} {
     flex: 1;
@@ -181,6 +181,11 @@ const AuthorName = styled(Link) `
     color: #333;
     text-decoration: underline;
   }
+
+  ${media.smallerThanMaxTablet`
+    font-size: 14px;
+    line-height: 18px;
+  `}
 `;
 
 const TimeAgo = styled.div`
@@ -189,6 +194,10 @@ const TimeAgo = styled.div`
   line-height: 17px;
   font-weight: 300;
   margin-top: 2px;
+
+  ${media.smallerThanMaxTablet`
+    margin-top: 0px;
+  `}
 `;
 
 const IdeaBody = styled.div`
@@ -463,8 +472,8 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       const titleMultiloc = idea.data.attributes.title_multiloc;
       const bodyMultiloc = idea.data.attributes.body_multiloc;
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
-      const ideaImageLarge = (ideaImage ? ideaImage.data.attributes.versions.large : null);
-      const ideaImageMedium = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
+      const ideaImageLarge = (ideaImage && _.has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
+      const ideaImageMedium = (ideaImage && _.has(ideaImage, 'data.attributes.versions.medium') ? ideaImage.data.attributes.versions.medium : null);
       const isSafari = bowser.safari;
       const ideaLocation = idea.data.attributes.location_point_geojson || null;
       const ideaAdress = idea.data.attributes.location_description || null;

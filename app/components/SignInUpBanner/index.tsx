@@ -32,9 +32,9 @@ const Slogan = styled.div`
   width: 100%;
   max-width: 500px;
   color: ${props => props.theme.colorMain || '#333'};
-  font-size: 40px;
-  line-height: 50px;
-  font-weight: 400;
+  font-size: 34px;
+  line-height: 42px;
+  font-weight: 600;
   margin-top: 55px;
 `;
 

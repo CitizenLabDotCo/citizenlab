@@ -60,8 +60,6 @@ function getIconHeight(size) {
 }
 
 function setFillColor(color) {
-  console.log(color);
-
   return `
     ${ButtonText} {
       color: ${color};

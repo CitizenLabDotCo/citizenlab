@@ -54,6 +54,7 @@ const Container = styled.div`
 const CommentContainer: any = styled.div`
   border: solid 1px #e4e4e4;
   border-radius: 6px;
+  background: #fff;
 
   ${(props: any) => props.withReplyBox && css`
     border-bottom: none;

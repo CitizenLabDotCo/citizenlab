@@ -186,7 +186,7 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.props.onSignInUpCompleted();
   }
 
-  handleOnSignedUp = () => {
+  handleOnSignUpCompleted = () => {
     this.props.onSignInUpCompleted();
   }
 
@@ -213,10 +213,7 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
       <FormContainer>
         <Form>
           <Title>{formatMessage(messages.signUpTitle)}</Title>
-          <SignUp
-            onSignedUp={this.handleOnSignedUp}
-            goToSignInForm={this.goToSignInForm}
-          />
+          <SignUp onSignUpCompleted={this.handleOnSignUpCompleted} />
         </Form>
       </FormContainer>
     ) : null);

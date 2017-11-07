@@ -32,7 +32,7 @@ import { getLocalized } from 'utils/i18n';
 import styled from 'styled-components';
 import { lighten, darken } from 'polished';
 import { media } from 'utils/styleUtils';
-import Rellax from 'rellax';
+// import Rellax from 'rellax';
 
 const Container: any = styled.div`
   display: flex;
@@ -366,17 +366,19 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
     browserHistory.push('/ideas/new');
   }
 
+  /*
   setHeaderImageRef = (element: HTMLDivElement) => {
     if (element && !this.headerImageRellax && !bowser.safari) {
-      this.headerImageRellax = new Rellax(`.${element.className.split(' ')[0]}`, { speed: -7, round: true });
+      this.headerImageRellax = new Rellax(`.${element.className.split(' ')[0]}`, { speed: -4 });
     }
   }
 
   setHeaderContentRef = (element: HTMLDivElement) => {
     if (element && !this.headerContentRellax && !bowser.safari) {
-      this.headerContentRellax = new Rellax(`.${element.className.split(' ')[0]}`, { speed: -2, round: true });
+      this.headerContentRellax = new Rellax(`.${element.className.split(' ')[0]}`, { speed: -2 });
     }
   }
+  */
 
   render() {
     const { locale, currentTenant, currentTenantHeader, hasIdeas, hasProjects } = this.state;
@@ -404,13 +406,13 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
 
             <Header>
               {currentTenantHeader && 
-                <HeaderImage innerRef={this.setHeaderImageRef}>
+                <HeaderImage>
                   <HeaderImageBackground src={currentTenantHeader} />
                   <HeaderImageOverlay />
                 </HeaderImage>
               }
 
-              <HeaderContent innerRef={this.setHeaderContentRef}>
+              <HeaderContent>
                 {/*
                 {currentTenantLogo &&
                   <HeaderLogoWrapper>

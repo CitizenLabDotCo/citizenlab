@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'app.containers.SignUp.noPasswordError',
     defaultMessage: 'Please enter a password',
   },
+  noValidPasswordError: {
+    id: 'app.containers.SignUp.noValidPasswordError',
+    defaultMessage: 'The password must be at least 8 characters long',
+  },
   yearOfBirthLabel: {
     id: 'app.containers.SignUp.yearOfBirthLabel',
     defaultMessage: 'Year of birth (optional)',
@@ -81,6 +85,18 @@ export default defineMessages({
     id: 'app.containers.SignUp.unspecified',
     defaultMessage: 'Unspecified',
   },
+  localeLabel: {
+    id: 'app.containers.SignUp.localeLabel',
+    defaultMessage: 'Language',
+  },
+  localePlaceholder: {
+    id: 'app.containers.SignUp.localePlaceholder',
+    defaultMessage: 'Select your language',
+  },
+  noValidLocaleError: {
+    id: 'app.containers.SignUp.noValidLocaleError',
+    defaultMessage: 'Language not supported',
+  },
   areaLabel: {
     id: 'app.containers.SignUp.areaLabel',
     defaultMessage: 'Area (optional)',
@@ -97,8 +113,8 @@ export default defineMessages({
     id: 'app.containers.SignUp.submit',
     defaultMessage: 'Sign up',
   },
-  signUpError: {
-    id: 'app.containers.SignUp.signUpError',
+  unknownError: {
+    id: 'app.containers.SignUp.unknownError',
     defaultMessage: 'Something went wrong. Please try again.',
   },
   or: {

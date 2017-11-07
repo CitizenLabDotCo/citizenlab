@@ -56,6 +56,7 @@ export interface IUserUpdate {
   locale?: string;
   avatar?: string;
   roles?: any[];
+  birthyear?: number;
   gender?: string;
   domicile?: string;
   education?: number;
