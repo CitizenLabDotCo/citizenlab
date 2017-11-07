@@ -1,9 +1,10 @@
 const time = new Date().getTime();
+const firstName = `first name ${time}`;
+const lastName = `last name ${time}`;
 
 module.exports = {
+  '@tags': ['citizen', 'profile'],
   editProfile: (browser) => {
-    const firstName = `first name ${time}`;
-    const lastName = `last name ${time}`;
     const signinPage = browser.page.signin();
 
     signinPage

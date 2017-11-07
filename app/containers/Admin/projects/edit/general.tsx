@@ -319,7 +319,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
     }) : null;
 
     return (
-      <FormWrapper onSubmit={this.saveProject}>
+      <FormWrapper className="e2e-project-general-form" onSubmit={this.saveProject}>
         <FieldWrapper>
           <label htmlFor="project-title">
             <FormattedMessage {...messages.titleLabel} />

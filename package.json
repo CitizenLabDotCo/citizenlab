@@ -286,6 +286,7 @@
     "with-query": "^1.0.2"
   },
   "devDependencies": {
+    "@types/bowser": "^1.0.30",
     "@types/draft-js": "^0.10.16",
     "@types/lodash": "^4.14.80",
     "@types/node-uuid": "^0.0.28",
@@ -295,7 +296,6 @@
     "@types/react-router": "^3.x",
     "@types/react-scroll": "^1.5.1",
     "@types/react-select": "^1.0.59",
-    "@types/bowser": "^1.0.30",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-eslint": "8.0.1",
@@ -329,8 +329,8 @@
     "eslint-plugin-redux-saga": "^0.3.0",
     "eslint-watch": "^3.0.1",
     "eventsource-polyfill": "0.9.6",
-    "express": "4.16.2",
     "exports-loader": "0.6.4",
+    "express": "4.16.2",
     "extract-intl": "2.0.0",
     "favicons-webpack-plugin": "0.0.7",
     "file-loader": "0.11.2",
@@ -377,6 +377,7 @@
     "webpack": "3.8.1",
     "webpack-bundle-analyzer": "2.9.0",
     "webpack-dev-middleware": "1.12.0",
-    "webpack-hot-middleware": "2.20.0"
+    "webpack-hot-middleware": "2.20.0",
+    "yargs": "^10.0.3"
   }
 }
