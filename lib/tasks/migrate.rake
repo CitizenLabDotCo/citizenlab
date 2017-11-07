@@ -8,11 +8,12 @@ require 'redcarpet'
 namespace :migrate do
   desc "Migrating Data from a CL1 Platform to a CL2 Tenant"
   task from_cl1: :environment do
-    url = "https://api.myjson.com/bins/fehjv"
+    url = "https://api.myjson.com/bins/anxyv"
     migration_settings = JSON.load(open(url))
     platform = migration_settings['platform']
     password = migration_settings['password']
-    topics_mapping = migration_settings['topics_mapping']
+    topics_mapping = migration_settings['topics_mapping'] || {}
+    idea_statuses_mapping = migration_settings['idea_statuses_mapping'] || {}
 
     host = "#{platform}.localhost"
     Tenant.where(host: host)&.first&.destroy
@@ -46,6 +47,10 @@ namespace :migrate do
       phases_hash = {}
       client['projects'].find.each do |p|
         migrate_project(p, projects_hash, areas_hash, topics_hash, phases_hash, groups_hash, superadmin_id)
+      end
+      idea_statuses_hash = {}
+      phases_hash.each do |id, phase|
+        idea_statuses_hash[id] = map_idea_status(phase, idea_statuses_mapping)
       end
       ideas_hash = {}
       client['posts'].find.each do |p|
@@ -97,7 +102,7 @@ namespace :migrate do
 
   def create_tenant(platform, host, s, m, migration_settings)
     fb_login = m.find({ service: 'facebook' }).first
-    Tenant.create({
+    Tenant.create!({
       name: platform,
       host: host,
       remote_logo_url: s['logoUrl'],
@@ -426,7 +431,17 @@ namespace :migrate do
     end
   end
 
-  def migrate_idea(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
+  def map_idea_status(p, idea_statuses_mapping)
+    code = 'proposed'
+    p.title_multiloc.values.each do |t|
+      if idea_statuses_mapping[t]
+        code = idea_statuses_mapping[t]
+      end
+    end
+    IdeaStatus.find_by!(code: code)
+  end
+
+  def migrate_idea(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash, idea_statuses_hash)
     d = {}
     # only migrate published ideas
     if (p['status'] || -1) == 2
@@ -455,8 +470,11 @@ namespace :migrate do
       @log.concat ["Couldn't find the author for idea #{p.to_s}"]
       return
     end
-    # TODO idea status mapping
-    d[:idea_status] = IdeaStatus.find_by!(code: 'proposed')
+    # idea status
+    if p.dig('phases')&.last
+      d[:idea_status] = idea_statuses_hash[ p.dig('phases').last['_id']]
+    end
+    IdeaStatus.find_by!(code: 'proposed')
     # project
     if p.dig('projectId')
       d[:project] = projects_hash[p.dig('projectId')]
