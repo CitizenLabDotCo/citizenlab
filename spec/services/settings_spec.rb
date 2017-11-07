@@ -172,4 +172,36 @@ describe SettingsService do
     end
   end
 
+  describe "remove_private_settings" do
+    let(:schema) {{
+      "type" => "object",
+      "properties" => {
+        "a" => {
+          "type" => "object",
+          "properties" => {
+            "setting1" => {"type" => "boolean"},
+            "setting2" => {"type" => "string", "private" => true}
+          }
+        }
+      }
+    }}
+
+    it "leaves non-private schema settings alone" do
+      settings = {
+        "a" => {"settings1" => true}
+      }
+      expect(ss.remove_private_settings(settings, schema)).to eq settings
+    end
+
+    it "removes private settings" do
+      settings = {
+        "a" => {"settings1" => true, "setting2" => "something"}
+      }
+      expected_settings = {
+        "a" => {"settings1" => true }
+      }
+      expect(ss.remove_private_settings(settings, schema)).to eq expected_settings
+    end
+  end
+
 end
