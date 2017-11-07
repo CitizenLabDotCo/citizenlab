@@ -19,15 +19,16 @@ export interface IUserData {
       medium: string;
       large: string;
     },
-    roles: any[],
+    roles?: any[],
     bio_multiloc: {},
     created_at: string;
     updated_at: string;
-    email: string;
-    gender: 'male' | 'female' | 'unspecified';
-    birthyear: number;
-    domicile: string;
-    education: string;
+    email?: string;
+    gender?: 'male' | 'female' | 'unspecified';
+    birthyear?: number;
+    domicile?: string;
+    education?: string;
+    unread_notifications?: number;
   };
 }
 

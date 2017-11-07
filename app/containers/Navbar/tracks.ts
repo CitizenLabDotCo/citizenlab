@@ -5,4 +5,7 @@ export default {
   clickCloseNotifications: {
     name: 'Notification menu closed',
   },
+  clickNotification: {
+    name: 'Notification clicked',
+  },
 };
