@@ -76,4 +76,18 @@ RSpec.describe Tenant, type: :model do
     end
   end
 
+  describe "closest_locale_to" do
+    let(:tenant) { build(:tenant, host: 'something-else-than-the-default-test-tenant') }
+
+    it "returns the locale itself if it's present" do
+      tenant.settings['core']['locales'] = ['en', 'nl']
+      expect(tenant.closest_locale_to('nl')).to eq 'nl'
+    end
+
+    it "returns the first tenant locale when it's not present" do
+      tenant.settings['core']['locales'] = ['en', 'nl']
+      expect(tenant.closest_locale_to('de')).to eq 'en'
+    end
+  end
+
 end

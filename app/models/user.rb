@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :memberships, dependent: :destroy
   has_many :groups, through: :memberships
+  has_many :identities, dependent: :destroy
 
   store_accessor :demographics, :gender, :birthyear, :domicile, :education
 
@@ -33,7 +34,7 @@ class User < ApplicationRecord
 
   validates :password, length: { in: 5..72 }, allow_nil: true
   validate do |record|
-    record.errors.add(:password, :blank) unless record.password_digest.present? or record.has_services?
+    record.errors.add(:password, :blank) unless record.password_digest.present? or record.identities.any?
   end
 
   ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
@@ -52,6 +53,16 @@ class User < ApplicationRecord
   scope :admin, -> { 
     where("roles @> '[{\"type\":\"admin\"}]'")
   }
+  
+  def self.build_with_omniauth(auth)
+    extra_user_attrs = SingleSignOnService.new.profile_to_user_attrs(auth.provider, auth)
+    new({
+      first_name: auth.info['first_name'],
+      last_name: auth.info['last_name'],
+      email: auth.info['email'],
+      remote_avatar_url: auth.info['image'],
+    }.merge(extra_user_attrs))
+  end
 
   def avatar_blank?
     avatar.file.nil?
@@ -71,10 +82,6 @@ class User < ApplicationRecord
 
   def add_role type, options={}
     self.roles << {"type" => type}.merge(options)
-  end
-  
-  def has_services?
-    self.services.present?
   end
 
   def authenticate(unencrypted_password)
