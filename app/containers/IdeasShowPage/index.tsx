@@ -16,7 +16,7 @@ import styled, { css } from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
-  background: #f8f8f8;
+  background: #fff;
   margin-top: -20px;
 
   ${media.smallerThanMaxTablet`

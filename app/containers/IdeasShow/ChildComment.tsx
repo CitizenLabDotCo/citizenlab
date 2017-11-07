@@ -27,7 +27,7 @@ const CommentContainer = styled.div`
   padding: 30px;
   border: none;
   border-top: solid 1px #e4e4e4;
-  background: #f8f8f8;
+  background: #f6f6f6;
 `;
 
 const AuthorContainer = styled.div`

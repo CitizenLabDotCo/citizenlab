@@ -115,6 +115,7 @@ const ProjectTitle = styled.h3`
     flex: 1;
     display: flex;
     justify-content: center;
+    text-align: center;
   `}
 `;
 

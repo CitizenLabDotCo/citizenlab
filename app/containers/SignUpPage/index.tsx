@@ -86,12 +86,8 @@ type Props = {};
 type State = {};
 
 export default class SignUpPage extends React.PureComponent<Props, State> {
-  onSuccess = () => {
+  onSignUpCompleted = () => {
     browserHistory.push('/');
-  }
-
-  goToSignInForm = () => {
-    browserHistory.push('/sign-in');
   }
 
   render() {
@@ -103,7 +99,7 @@ export default class SignUpPage extends React.PureComponent<Props, State> {
         <Right>
           <RightInner>
             <Title><FormattedMessage {...messages.title} /></Title>
-            <SignUp onSignedUp={this.onSuccess} goToSignInForm={this.goToSignInForm} />
+            <SignUp onSignUpCompleted={this.onSignUpCompleted} />
           </RightInner>
         </Right>
       </Container>
