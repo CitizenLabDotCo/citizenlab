@@ -54,7 +54,7 @@ namespace :migrate do
       end
       ideas_hash = {}
       client['posts'].find.each do |p|
-        migrate_idea(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash)
+        migrate_idea(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash, idea_statuses_hash)
       end
       comments_hash = {}
       # process comments by order of creation such that the parents can always be found
@@ -113,11 +113,11 @@ namespace :migrate do
           enabled: true,
           locales: s['languages'],
           organization_type: migration_settings['organization_type'],
-          organization_name: s['title_i18n'],
-          header_title: s['tagline_i18n'],
-          header_slogan: s['description_i18n'],
-          meta_title: s['tagline_i18n'],
-          meta_description: s['description_i18n'],
+          organization_name: s['title_i18n']&.select{|k,v| s['languages'].include? k} || {},
+          header_title: s['tagline_i18n']&.select{|k,v| s['languages'].include? k} || {},
+          header_slogan: s['description_i18n']&.select{|k,v| s['languages'].include? k} || {},
+          meta_title: s['tagline_i18n']&.select{|k,v| s['languages'].include? k} || {},
+          meta_description: s['description_i18n']&.select{|k,v| s['languages'].include? k} || {},
           timezone: migration_settings['timezone'],
           color_main: s['accentColor']
         },
@@ -206,10 +206,11 @@ namespace :migrate do
     # password
     if u.dig('services', 'password', 'bcrypt')
       d[:password_digest] = u.dig('services', 'password', 'bcrypt')
-    else
-      d[:services] = { "facebook" => {
-                         "updated_at" => Time.now
-                       }}
+    elsif u.dig('services', 'facebook', 'id')
+      d[:identities] = [Identity.create!(uid: u.dig('services', 'facebook', 'id'), provider: 'facebook')]
+    else 
+      @log.concat ["Couldn't find a password for user #{u.to_s}"]
+      return
     end
     # locale
     d[:locale] = u['telescope']['locale'] || Tenant.current.settings.dig('core', 'locales').first
