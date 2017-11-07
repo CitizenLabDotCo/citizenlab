@@ -26,6 +26,7 @@ import { IStream } from 'utils/streams';
 // i18n
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { getLocalized } from 'utils/i18n';
+import localize, { injectedLocalized } from 'utils/localize';
 import messages from './messages';
 
 // services
@@ -39,7 +40,6 @@ type Props = {
     id: string | null,
     slug: string | null,
   },
-  locale: string,
   project: IProjectData | null;
 };
 
@@ -57,7 +57,7 @@ interface State {
   saved: boolean;
 }
 
-class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProps, State> {
+class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProps & injectedLocalized, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -91,7 +91,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
         let descState = EditorState.createEmpty();
 
         if (event) {
-          const blocksFromHtml = convertFromHTML(_.get(event, `data.attributes.description_multiloc.${this.props.locale}`, ''));
+          const blocksFromHtml = convertFromHTML(_.get(event, `data.attributes.description_multiloc.${locale}`, ''));
           const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
           descState = EditorState.createWithContent(editorContent);
         }
@@ -163,7 +163,6 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
 
     if (this.state.event) {
       savingPromise = updateEvent(this.state.event.data.id, this.state.attributeDiff);
-      this.setState({ saving: true });
     } else if (this.props.project) {
       savingPromise = addEvent(this.props.project.id, this.state.attributeDiff).then((response) => {
         browserHistory.push(`/admin/projects/${this.props.params.slug}/events/${response.data.id}`);
@@ -173,10 +172,12 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
 
     this.setState({ saving: true, saved: false });
 
-    savingPromise.catch((e) => {
+    savingPromise
+    .then((response: IEvent) => {
+      this.setState({ saving: false, saved: true, attributeDiff: {}, event: response, errors: {} });
+    })
+    .catch((e) => {
       this.setState({ saving: false, errors: e.json.errors });
-    }).then((response) => {
-      this.setState({ saving: false, saved: true, attributeDiff: {}, event: response.data });
     });
   }
 
@@ -221,11 +222,13 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
             <FieldWrapper>
               <Label><FormattedMessage {...messages.dateStartLabel} /></Label>
               <DateTimePicker value={eventAttrs.start_at} onChange={this.createDateChangeHandler('start_at')} />
+              <Error apiErrors={this.state.errors.start_at} />
             </FieldWrapper>
 
             <FieldWrapper>
               <Label><FormattedMessage {...messages.datesEndLabel} /></Label>
               <DateTimePicker value={eventAttrs.end_at} onChange={this.createDateChangeHandler('end_at')} />
+              <Error apiErrors={this.state.errors.end_at} />
             </FieldWrapper>
 
             <FieldWrapper>
@@ -260,4 +263,4 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
   }
 }
 
-export default injectIntl<Props>(AdminProjectEventEdit);
+export default injectIntl<Props>(localize(AdminProjectEventEdit));
