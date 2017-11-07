@@ -42,6 +42,7 @@ const NewNotificationsIndicator = styled.div`
 
 type Props = {
   count?: number;
+  onClick?: () => void;
 };
 
 type State = {};
@@ -51,7 +52,7 @@ export default class NotificationCount extends React.PureComponent<Props, State>
     const { count } = this.props;
 
     return (
-      <Container>
+      <Container onClick={this.props.onClick}>
         <NotificationIcon name="notification" />
         {(_.isNumber(count) && count > 0) ? <NewNotificationsIndicator /> : null}
       </Container>
