@@ -7,8 +7,6 @@ class OmniauthCallbackController < ApplicationController
     auth = request.env['omniauth.auth']
     omniauth_params = request.env['omniauth.params']
 
-    byebug
-
     @identity = Identity.find_with_omniauth(auth)
 
     if @identity.nil?
