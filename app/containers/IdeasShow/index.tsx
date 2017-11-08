@@ -515,10 +515,12 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <LeftColumn>
-                <ImageAndMapWrapper>
-                  {ideaImageLarge ? <IdeaImage className={`${this.state.showMap ? 'hidden' : ''}`} data-img={ideaImageLarge} /> : null}
-                  {ideaLocation ? <IdeaMap location={ideaLocation} /> : null}
-                </ImageAndMapWrapper>
+                {(ideaImageLarge || ideaLocation) && 
+                  <ImageAndMapWrapper>
+                    {ideaImageLarge ? <IdeaImage className={`${this.state.showMap ? 'hidden' : ''}`} data-img={ideaImageLarge} /> : null}
+                    {ideaLocation ? <IdeaMap location={ideaLocation} /> : null}
+                  </ImageAndMapWrapper>
+                }
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>

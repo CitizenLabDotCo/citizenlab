@@ -1,4 +1,5 @@
 module.exports = {
+  '@tags': ['citizen', 'ideas'],
   postIdea: (browser) => {
     const title = `test idea ${new Date().getTime()}`;
 
