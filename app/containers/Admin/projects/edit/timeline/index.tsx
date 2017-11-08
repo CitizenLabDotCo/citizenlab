@@ -18,7 +18,7 @@ import Icon from 'components/UI/Icon';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 
 // Utils
-import subscribedComponent from 'utils/subscriptionsDecorator';
+import unsubscribe from 'utils/unsubscribe';
 
 // Styles
 const ListWrapper = styled.div`
@@ -77,7 +77,6 @@ type State = {
   loading: boolean,
 };
 
-@subscribedComponent
 class AdminProjectTimelineIndex extends React.Component<Props, State> {
   subscription: Rx.Subscription;
   constructor () {
@@ -102,9 +101,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    unsubscribe(this.subscription);
   }
 
   createDeleteClickHandler = (phaseId) => {
