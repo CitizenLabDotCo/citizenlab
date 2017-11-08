@@ -29,10 +29,9 @@ import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 
 // style
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { lighten, darken } from 'polished';
 import { media } from 'utils/styleUtils';
-// import Rellax from 'rellax';
 
 const Container: any = styled.div`
   display: flex;
@@ -41,18 +40,6 @@ const Container: any = styled.div`
   background: ${(props: any) => props.hasHeader ? '#f8f8f8' : '#fff'};
   position: relative;
 `;
-
-/*
-const BackgroundColor = styled.div`
-  position: absolute;
-  top: 575px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 0;
-  background-color: #f8f8f8;
-`;
-*/
 
 const Header = styled.div`
   width: 100vw;
@@ -84,6 +71,7 @@ const HeaderImageBackground: any = styled.div`
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+  background-image: url(${(props: any) => props.src});
 `;
 
 const HeaderImageOverlay = styled.div`
@@ -113,29 +101,6 @@ const HeaderContent = styled.div`
   justify-content: center;
   z-index: 2;
 `;
-
-/*
-const HeaderLogoWrapper = styled.div`
-  width: 110px;
-  height: 110px;
-  padding: 15px;
-  margin-top: -20px;
-  margin-bottom: 15px;
-  border: solid 2px #eaeaea;
-  border-radius: 6px;
-  background: #fff;
-  border: solid 2px #eaeaea;
-`;
-
-const HeaderLogo: any = styled.div`
-  width: 100%;
-  height: 100%;
-  background-image: url(${(props: any) => props.imageSrc});
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain;
-`;
-*/
 
 const HeaderTitle: any = styled.h1`
   width: 100%;
@@ -301,8 +266,6 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
   subscriptions: Rx.Subscription[];
   ideasQueryParameters: object;
   projectsQueryParameters: object;
-  headerImageRellax: any;
-  headerContentRellax: any;
 
   constructor() {
     super();
@@ -316,8 +279,6 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
     this.subscriptions = [];
     this.ideasQueryParameters = { sort: 'trending', 'page[size]': 6 };
     this.projectsQueryParameters = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
-    this.headerImageRellax = null;
-    this.headerContentRellax = null;
   }
 
   componentWillMount() {
@@ -335,7 +296,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
       ).subscribe(([locale, currentTenant, ideas, projects]) => this.setState({
         locale,
         currentTenant,
-        currentTenantHeader: (currentTenant.data.attributes.header_bg ? `${currentTenant.data.attributes.header_bg.large}?v=${Date.now()}` : null),        
+        currentTenantHeader: (currentTenant.data.attributes.header_bg ? currentTenant.data.attributes.header_bg.large : null),        
         hasIdeas: (ideas !== null && ideas.data.length > 0),
         hasProjects: (projects !== null && projects.data.length > 0)
       }))
@@ -343,14 +304,6 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   componentWillUnmount() {
-    if (this.headerImageRellax !== null) {
-      this.headerImageRellax.destroy();
-    }
-
-    if (this.headerContentRellax !== null) {
-      this.headerContentRellax.destroy();
-    }
-
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
@@ -365,20 +318,6 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
   goToAddIdeaPage = () => {
     browserHistory.push('/ideas/new');
   }
-
-  /*
-  setHeaderImageRef = (element: HTMLDivElement) => {
-    if (element && !this.headerImageRellax && !bowser.safari) {
-      this.headerImageRellax = new Rellax(`.${element.className.split(' ')[0]}`, { speed: -4 });
-    }
-  }
-
-  setHeaderContentRef = (element: HTMLDivElement) => {
-    if (element && !this.headerContentRellax && !bowser.safari) {
-      this.headerContentRellax = new Rellax(`.${element.className.split(' ')[0]}`, { speed: -2 });
-    }
-  }
-  */
 
   render() {
     const { locale, currentTenant, currentTenantHeader, hasIdeas, hasProjects } = this.state;
@@ -400,26 +339,14 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
       return (
         <div>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
-            {/*
-            {!currentTenantHeader && <BackgroundColor />}
-            */}
 
             <Header>
-              {currentTenantHeader && 
-                <HeaderImage>
-                  <HeaderImageBackground src={currentTenantHeader} />
-                  <HeaderImageOverlay />
-                </HeaderImage>
-              }
+              <HeaderImage>
+                <HeaderImageBackground src={currentTenantHeader} />
+                <HeaderImageOverlay />
+              </HeaderImage>
 
               <HeaderContent>
-                {/*
-                {currentTenantLogo &&
-                  <HeaderLogoWrapper>
-                    <HeaderLogo imageSrc={currentTenantLogo} />
-                  </HeaderLogoWrapper>
-                }
-                */}
                 <HeaderTitle hasHeader={hasHeaderImage}>
                   {title}
                 </HeaderTitle>
