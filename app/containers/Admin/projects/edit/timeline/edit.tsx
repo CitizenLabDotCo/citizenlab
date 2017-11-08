@@ -13,6 +13,9 @@ import { API } from 'typings.d';
 import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
 import { phaseStream, updatePhase, addPhase, IPhase, IPhaseData, IUpdatedPhaseProperties } from 'services/phases';
 
+// Utils
+import getSubmitState from 'utils/getSubmitState';
+
 // Components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
@@ -73,16 +76,6 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
       saved: false,
     };
     this.subscriptions = [];
-  }
-
-  getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
-    if (this.state.errors && !_.isEmpty(this.state.errors)) {
-      return 'error';
-    }
-    if (this.state.saved && _.isEmpty(this.state.attributeDiff)) {
-      return 'success';
-    }
-    return _.isEmpty(this.state.attributeDiff) ? 'disabled' : 'enabled';
   }
 
   componentWillMount() {
@@ -187,7 +180,8 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
     ?  { ...this.state.phase.attributes, ...this.state.attributeDiff }
     : { ...this.state.attributeDiff };
 
-    const submitState = this.getSubmitState();
+    const { errors, saved } = this.state;
+    const submitState = getSubmitState({ errors, saved, diff: this.state.attributeDiff });
     moment.locale(this.props.locale);
 
     return (

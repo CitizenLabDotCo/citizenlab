@@ -22,6 +22,8 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // utils
 import { IStream } from 'utils/streams';
+import unsubscribe from 'utils/unsubscribe';
+import getSubmitState from 'utils/getSubmitState';
 
 // i18n
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
@@ -102,17 +104,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
-    if (!_.isEmpty(this.state.errors)) {
-      return 'error';
-    } else if (this.state.saved && _.isEmpty(this.state.attributeDiff)) {
-      return 'success';
-    }
-
-    return _.isEmpty(this.state.attributeDiff) ? 'disabled' : 'enabled';
+    unsubscribe(this.subscriptions);
   }
 
   createMultilocUpdater = (name: string) => (value: string) => {
@@ -182,9 +174,9 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
   }
 
   render() {
-    const { locale, currentTenant } = this.state;
+    const { locale, currentTenant, errors, saved } = this.state;
     const eventAttrs = this.state.event ?  { ...this.state.event.data.attributes, ...this.state.attributeDiff } : { ...this.state.attributeDiff };
-    const submitState = this.getSubmitState();
+    const submitState = getSubmitState({ errors, saved, diff: this.state.attributeDiff });
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -205,7 +197,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
                 value={getLocalized(eventAttrs.title_multiloc as Multiloc, locale, currentTenantLocales)}
                 onChange={this.createMultilocUpdater('title_multiloc')}
               />
-              <Error apiErrors={this.state.errors.title_multiloc} />
+              <Error apiErrors={errors.title_multiloc} />
             </FieldWrapper>
 
             <FieldWrapper>
@@ -216,19 +208,19 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
                 value={getLocalized(eventAttrs.location_multiloc as Multiloc, locale, currentTenantLocales)}
                 onChange={this.createMultilocUpdater('location_multiloc')}
               />
-              <Error apiErrors={this.state.errors.location_multiloc} />
+              <Error apiErrors={errors.location_multiloc} />
             </FieldWrapper>
 
             <FieldWrapper>
               <Label><FormattedMessage {...messages.dateStartLabel} /></Label>
               <DateTimePicker value={eventAttrs.start_at} onChange={this.createDateChangeHandler('start_at')} />
-              <Error apiErrors={this.state.errors.start_at} />
+              <Error apiErrors={errors.start_at} />
             </FieldWrapper>
 
             <FieldWrapper>
               <Label><FormattedMessage {...messages.datesEndLabel} /></Label>
               <DateTimePicker value={eventAttrs.end_at} onChange={this.createDateChangeHandler('end_at')} />
-              <Error apiErrors={this.state.errors.end_at} />
+              <Error apiErrors={errors.end_at} />
             </FieldWrapper>
 
             <FieldWrapper>
@@ -240,7 +232,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
                 error=""
                 onChange={this.handleDescChange}
               />
-              <Error apiErrors={this.state.errors.description_multiloc} />
+              <Error apiErrors={errors.description_multiloc} />
             </FieldWrapper>
 
             <SubmitWrapper
