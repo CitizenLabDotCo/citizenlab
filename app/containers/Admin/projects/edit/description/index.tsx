@@ -144,7 +144,7 @@ class ProjectDescription extends React.Component<Props, State> {
     const submitState = getSubmitState({ errors, saved, diff });
 
     return (
-      <FormWrapper onSubmit={this.saveProject}>
+      <FormWrapper className="e2e-project-description-form" onSubmit={this.saveProject}>
         <FieldWrapper>
           <label htmlFor="project-description">
             <FormattedMessage {...messages.descriptionLabel} />

@@ -134,7 +134,7 @@ export default class TabbedResource extends React.PureComponent<Props, State> {
 
     return (
       <div>
-        <ResourceHeader>
+        <ResourceHeader className="e2e-resource-header">
           <Title>{showLabel(resource.title)}</Title>
 
           {resource.publicLink &&
@@ -144,7 +144,7 @@ export default class TabbedResource extends React.PureComponent<Props, State> {
           }
         </ResourceHeader>
         {tabs &&
-          <TabbedNav>
+          <TabbedNav className="e2e-resource-tabs">
             {tabs.map((tab) => (
               <FeatureFlag key={tab.url} name={tab.feature}>
                 <Tab className={location && location.pathname && location.pathname === tab.url ? 'active' : ''}>

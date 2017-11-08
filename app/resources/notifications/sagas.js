@@ -1,6 +1,7 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { fetchNotifications, markNotificationRead, markAllNotificationsRead } from 'api';
 import { mergeJsonApiResources } from 'utils/resources/actions';
+import { loadCurrentUserRequest } from 'utils/auth/actions';
 import {
   LOAD_NOTIFICATIONS_REQUEST, MARK_ALL_NOTIFICATIONS_READ_REQUEST, MARK_NOTIFICATION_READ_REQUEST,
 } from './constants';
@@ -43,6 +44,7 @@ export function* markAllNotificationsAsRead() {
 
     yield put(mergeJsonApiResources(response));
     yield put(markAllNotificationsAsReadSuccess(response));
+    yield put(loadCurrentUserRequest());
   } catch (e) {
     yield put(markAllNotificationsAsReadError(e.json.errors));
   }

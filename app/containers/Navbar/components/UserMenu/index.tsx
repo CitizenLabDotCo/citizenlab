@@ -7,17 +7,13 @@ import { browserHistory } from 'react-router';
 
 // components
 import Authorize from 'utils/containers/authorize';
-import ClickOutside from 'utils/containers/clickOutside';
 import Icon from 'components/UI/Icon';
 import Avatar from 'components/Avatar';
+import Popover from 'components/Popover';
 
 // services
 import { authUserStream, signOut } from 'services/auth';
 import { IUser } from 'services/users';
-
-// animation
-import TransitionGroup from 'react-transition-group/TransitionGroup';
-import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
@@ -32,10 +28,8 @@ const adminIcon = require('./adminIcon.svg');
 const editProfileIcon = require('./editProfileIcon.svg');
 const signOutIcon = require('./signOutIcon.svg');
 
-const timeout = 200;
-const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
-const Container = styled(ClickOutside)`
+const Container = styled.div`
   display: flex;
   margin-left: 0px;
   position: relative;
@@ -75,65 +69,16 @@ const UserIcon = styled(Icon)`
   }
 `;
 
-const Dropdown = styled.div`
-  min-width: 200px;
+const StyledPopover = styled(Popover)`
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 42px;
-  right: -10px;
-  z-index: 1;
-  padding: 8px;
-  background: #fff;
-  padding: 6px;
-  border-radius: 5px;
-  box-sizing: border-box;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.12);
-  border: solid 1px #e0e0e0;
-  will-change: opacity, transform;
-  transform-origin: right top;
-
-  ::before,
-  ::after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-  }
-
-  ::after {
-    top: -20px;
-    right: 11px;
-    border-color: transparent transparent #fff transparent;
-    border-width: 10px;
-  }
-
-  ::before {
-    top: -22px;
-    right: 10px;
-    border-color: transparent transparent #e0e0e0 transparent;
-    border-width: 11px;
-  }
-
-  &.dropdown-enter {
-    opacity: 0;
-    transform: scale(0.9);
-
-    &.dropdown-enter-active {
-      opacity: 1;
-      transform: scale(1);
-      transition: all ${timeout}ms ${easing};
-    }
-  }
 `;
 
-const DropdownIcon = styled(Icon)`
+const PopoverIcon = styled(Icon)`
   height: 20px;
 `;
 
-const DropdownItem = styled.div`
+const PopoverItem = styled.div`
   color: #84939E;
   font-size: 17px;
   font-weight: 400;
@@ -166,7 +111,7 @@ type Props = {};
 
 type State = {
   authUser: IUser | null;
-  dropdownOpened: boolean;
+  PopoverOpened: boolean;
 };
 
 export default class UserMenu extends React.PureComponent<Props, State> {
@@ -177,7 +122,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     super();
     this.state = {
       authUser: null,
-      dropdownOpened: false
+      PopoverOpened: false
     };
     this.subscriptions = [];
   }
@@ -194,12 +139,12 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  toggleDropdown = () => {
-    this.setState(state => ({ dropdownOpened: !state.dropdownOpened }));
+  togglePopover = () => {
+    this.setState(state => ({ PopoverOpened: !state.PopoverOpened }));
   }
 
-  closeDropdown = () => {
-    this.setState({ dropdownOpened: false });
+  closePopover = () => {
+    this.setState({ PopoverOpened: false });
   }
 
   navigateTo = (path) => () => {
@@ -218,56 +163,49 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     }
   }
 
+  // {/* id="e2e-user-menu-Popover" */}
+
   render() {
-    const { authUser, dropdownOpened } = this.state;
+    const { authUser, PopoverOpened } = this.state;
     const avatar = (authUser ? authUser.data.attributes.avatar : null);
     const userId = (authUser ? authUser.data.id : null);
 
     if (authUser && userId) {
       return (
-        <Container id="e2e-user-menu-container" onClick={this.toggleDropdown} onClickOutside={this.closeDropdown}>
+        <Container id="e2e-user-menu-container" onClick={this.togglePopover}>
           {avatar ? <StyledAvatar userId={userId} size="small" /> : <UserIcon name="user" />}
-          <TransitionGroup>
-            {dropdownOpened &&
-              <CSSTransition
-                classNames="dropdown"
-                key={1}
-                timeout={timeout}
-                mountOnEnter={true}
-                unmountOnExit={true}
-                exit={false}
-              >
-                <Dropdown id="e2e-user-menu-dropdown">
-                  <Authorize action={['users', 'admin']} >
-                    <DropdownItem id="admin-link" onClick={this.navigateTo('/admin')}>
-                      <FormattedMessage {...messages.admin} />
-                      <IconWrapper>
-                        <DropdownIcon name="admin" />
-                      </IconWrapper>
-                    </DropdownItem>
-                  </Authorize>
-                  <DropdownItem id="e2e-profile-profile-link" onClick={this.navigateTo(`/profile/${userId}`)}>
-                    <FormattedMessage {...messages.profilePage} />
-                    <IconWrapper>
-                      <DropdownIcon name="user" />
-                    </IconWrapper>
-                  </DropdownItem>
-                  <DropdownItem id="e2e-profile-edit-link" onClick={this.navigateTo('/profile/edit')}>
-                    <FormattedMessage {...messages.editProfile} />
-                    <IconWrapper>
-                      <DropdownIcon name="settings" />
-                    </IconWrapper>
-                  </DropdownItem>
-                  <DropdownItem id="e2e-sign-out-link" onClick={this.signOut}>
-                    <FormattedMessage {...messages.signOut} />
-                    <IconWrapper>
-                      <DropdownIcon name="power" />
-                    </IconWrapper>
-                  </DropdownItem>
-                </Dropdown>
-              </CSSTransition>
-            }
-          </TransitionGroup>
+            <StyledPopover
+              id="e2e-user-menu-Popover"
+              open={PopoverOpened}
+              onCloseRequest={this.closePopover}
+            >
+              <Authorize action={['users', 'admin']} >
+                <PopoverItem id="admin-link" onClick={this.navigateTo('/admin')}>
+                  <FormattedMessage {...messages.admin} />
+                  <IconWrapper>
+                    <PopoverIcon name="admin" />
+                  </IconWrapper>
+                </PopoverItem>
+              </Authorize>
+              <PopoverItem id="e2e-profile-profile-link" onClick={this.navigateTo(`/profile/${userId}`)}>
+                <FormattedMessage {...messages.profilePage} />
+                <IconWrapper>
+                  <PopoverIcon name="user" />
+                </IconWrapper>
+              </PopoverItem>
+              <PopoverItem id="e2e-profile-edit-link" onClick={this.navigateTo('/profile/edit')}>
+                <FormattedMessage {...messages.editProfile} />
+                <IconWrapper>
+                  <PopoverIcon name="settings" />
+                </IconWrapper>
+              </PopoverItem>
+              <PopoverItem id="e2e-sign-out-link" onClick={this.signOut}>
+                <FormattedMessage {...messages.signOut} />
+                <IconWrapper>
+                  <PopoverIcon name="power" />
+                </IconWrapper>
+              </PopoverItem>
+            </StyledPopover>
         </Container>
       );
     }

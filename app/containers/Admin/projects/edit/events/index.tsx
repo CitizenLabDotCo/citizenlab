@@ -107,7 +107,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
     const { intl: { formatDate, formatTime }, params: { slug } } = this.props;
 
     return (
-      <ListWrapper>
+      <ListWrapper className="e2e-projects-events">
         <AddButton style="cl-blue" linkTo={`/admin/projects/${slug}/events/new`}>
           <FormattedMessage {...messages.addEventButton} />
         </AddButton>

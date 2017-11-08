@@ -146,15 +146,15 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
     const { projects } = this.state;
 
     return (
-      <ProjectsList>
-        <ProjectCard className="new-project">
+      <ProjectsList className="e2e-projects-list">
+        <ProjectCard className="new-project e2e-new-project">
           <Link to="/admin/projects/new">
             <Icon name="plus" />
             <FormattedMessage {...messages.addNewProject} />
           </Link>
         </ProjectCard>
         {projects && projects.map((project) => (
-          <ProjectCard key={project.id}>
+          <ProjectCard key={project.id} className="e2e-project-card">
             {project.attributes.header_bg.small &&
               <img src={project.attributes.header_bg.small} alt="" role="presentation" />
               || <img className="no-img" src={headerBG} alt="" role="presentation" />

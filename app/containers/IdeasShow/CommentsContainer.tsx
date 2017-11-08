@@ -143,8 +143,8 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
 
           <ParentCommentForm ideaId={ideaId} />
 
-          {parentCommentsList !== null && 
-            <ParentCommentsContainer>
+          {parentCommentsList !== null &&
+            <ParentCommentsContainer className="e2e-comments-container">
               {parentCommentsList}
             </ParentCommentsContainer>
           }

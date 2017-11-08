@@ -1,4 +1,5 @@
 module.exports = {
+  '@tags': ['citizen', 'ideas'],
   visibleIdeas: (browser) => {
     const ideasPage = browser.page.ideas();
 

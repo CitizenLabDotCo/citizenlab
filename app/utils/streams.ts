@@ -140,7 +140,7 @@ class Streams {
   isQuery(queryParameters: null | object) {
     if (queryParameters !== null && _.isObject(queryParameters) && !_.isEmpty(queryParameters)) {
       return Object.keys(queryParameters).filter((key) => {
-        return queryParameters[key] !== '' && !_.isNull(queryParameters[key]) && !_.isUndefined(queryParameters[key]) && Object.keys(queryParameters[key]).length > 0;
+        return queryParameters[key] !== '' && !_.isNull(queryParameters[key]) && !_.isUndefined(queryParameters[key]);// && Object.keys(queryParameters[key]).length > 0;
       }).length > 0;
     }
 
