@@ -15,10 +15,10 @@ import { Link } from 'react-router';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
-import buttonMixin from 'components/admin/StyleMixins/buttonMixin';
+import { List, Row, HeadRow } from 'components/admin/ResourceList';
 
 // Utils
-import subscribedComponent from 'utils/subscriptionsDecorator';
+import unsubscribe from 'utils/unsubscribe';
 
 // Styles
 const ListWrapper = styled.div`
@@ -26,36 +26,13 @@ const ListWrapper = styled.div`
   flex-direction: column;
 `;
 
-const AddButton = styled(Link)`
-  ${buttonMixin('#EF0071', '#EF0071')}
-  color: #fff;
+const AddButton = styled(Button)`
   align-self: flex-end;
-
-  &:hover,
-  &:focus {
-    color: #fff;
-  }
+  flex-grow: 0;
 `;
 
-const PhasesTable = styled.table`
-  width: 100%;
-
-  th {
-    font-weight: normal;
-    text-align: left;
-    padding: .5rem;
-  }
-
-  td {
-    border-bottom: 1px solid #eaeaea;
-    border-top: 1px solid #eaeaea;
-    padding: 2rem .5rem;
-  }
-
-  h1 {
-    font-weight: normal;
-    margin-bottom: 0;
-  }
+const OrderHeader = styled.div`
+  flex: 0 0 3rem;
 `;
 
 const OrderLabel = styled.div`
@@ -65,6 +42,7 @@ const OrderLabel = styled.div`
   line-height: 3rem;
   text-align: center;
   width: 3rem;
+  flex: 0 0 3rem;
 
   &.current {
     background: #32B67A;
@@ -79,17 +57,10 @@ const OrderLabel = styled.div`
   }
 `;
 
-const DeleteButton = styled.button`
-  ${buttonMixin()}
-`;
-
-const EditButton = styled(Link)`
-  ${buttonMixin('#e5e5e5', '#cccccc')}
-  color: #6B6B6B;
-
-  &:hover,
-  &:focus: {
-    color: #6B6B6B;
+const InfoCell = styled.div`
+  h1 {
+    font-weight: normal;
+    margin-bottom: 0;
   }
 `;
 
@@ -106,7 +77,6 @@ type State = {
   loading: boolean,
 };
 
-@subscribedComponent
 class AdminProjectTimelineIndex extends React.Component<Props, State> {
   subscription: Rx.Subscription;
   constructor () {
@@ -131,9 +101,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    unsubscribe(this.subscription);
   }
 
   createDeleteClickHandler = (phaseId) => {
@@ -167,46 +135,34 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
     return (
       <ListWrapper>
-        <AddButton className="e2e-add-phase-button" to={`/admin/projects/${slug}/timeline/new`}><FormattedMessage {...messages.addPhaseButton} /></AddButton>
+        <AddButton className="e2e-add-phase-button" style="cl-blue" circularCorners={false} linkTo={`/admin/projects/${slug}/timeline/new`}>
+          <FormattedMessage {...messages.addPhaseButton} />
+        </AddButton>
 
         {!loading && phases.length > 0 &&
-          <PhasesTable className="e2e-phases-table">
-            <thead>
-              <tr>
-                <th><FormattedMessage {...messages.orderColumnTitle} /></th>
-                <th><FormattedMessage {...messages.nameColumnTitle} /></th>
-                <th />
-                <th />
-              </tr>
-            </thead>
-            <tbody>
+          <List className="e2e-phases-table">
+            <HeadRow>
+              <OrderHeader><FormattedMessage {...messages.orderColumnTitle} /></OrderHeader>
+              <div className="expand"><FormattedMessage {...messages.nameColumnTitle} /></div>
+            </HeadRow>
               {phases.map((phase, index) => (
-                <tr className="e2e-phase-line" id={`e2e-phase_${phase.id}`} key={phase.id}>
-                  <td>
-                    <OrderLabel className={this.phaseTiming({ start_at: phase.attributes.start_at, end_at: phase.attributes.end_at })}>
-                      {index + 1}
-                    </OrderLabel>
-                  </td>
-                  <td>
-                    <h1><T value={phase.attributes.title_multiloc} /></h1>
-                    <p>{formatDate(phase.attributes.start_at)} - {formatDate(phase.attributes.end_at)}</p>
-                  </td>
-                  <td>
-                    <DeleteButton className="e2e-delete-phase" onClick={this.createDeleteClickHandler(phase.id)}>
-                      <Icon name="delete" />
-                      <FormattedMessage {...messages.deletePhaseButton} />
-                    </DeleteButton>
-                  </td>
-                  <td>
-                    <EditButton className="e2e-edit-phase" to={`/admin/projects/${slug}/timeline/${phase.id}`}>
-                      <Icon name="edit" />
-                      <FormattedMessage {...messages.editPhaseButton} />
-                    </EditButton>
-                  </td>
-                </tr>
+                <Row className="e2e-phase-line" id={`e2e-phase_${phase.id}`} key={phase.id}>
+                  <OrderLabel className={this.phaseTiming({ start_at: phase.attributes.start_at, end_at: phase.attributes.end_at })}>
+                    {index + 1}
+                  </OrderLabel>
+                <InfoCell className="expand">
+                  <h1><T value={phase.attributes.title_multiloc} /></h1>
+                  <p>{formatDate(phase.attributes.start_at)} - {formatDate(phase.attributes.end_at)}</p>
+                </InfoCell>
+                  <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
+                    <FormattedMessage {...messages.deletePhaseButton} />
+                  </Button>
+                  <Button className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${slug}/timeline/${phase.id}`}>
+                    <FormattedMessage {...messages.editPhaseButton} />
+                  </Button>
+                </Row>
               ))}
-            </tbody>
-          </PhasesTable>
+          </List>
         }
       </ListWrapper>
     );
