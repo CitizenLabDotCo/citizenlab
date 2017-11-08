@@ -39,6 +39,7 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 
 // utils
 import { getBase64 } from 'utils/imageTools';
+import getSubmitState from 'utils/getSubmitState';
 
 // Components
 import Input from 'components/UI/Input';
@@ -138,16 +139,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
       currentTenant: null,
       areasOptions: [],
     };
-  }
-
-  getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
-    if (!_.isEmpty(this.state.errors)) {
-      return 'error';
-    }
-    if (this.state.saved && _.isEmpty(this.state.projectAttributesDiff)) {
-      return 'success';
-    }
-    return _.isEmpty(this.state.projectAttributesDiff) ? 'disabled' : 'enabled';
   }
 
   updateProjectSubscription = (slug) => {
@@ -299,12 +290,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { projectData, uploadedImages, uploadedHeader, loading, projectImages, projectAttributesDiff } = this.state;
+    const { errors, saved, projectData, uploadedImages, uploadedHeader, loading, projectImages, projectAttributesDiff } = this.state;
     const { userLocale, tFunc, intl: { formatMessage } } = this.props;
     const projectAttrs = { ...projectData.attributes, ...projectAttributesDiff } as IUpdatedProjectProperties;
     projectAttrs.area_ids = projectAttrs.area_ids || projectData.relationships.areas.data.map((area) => (area.id));
 
-    const submitState = this.getSubmitState();
+    const submitState = getSubmitState({ errors, saved, diff: projectAttributesDiff });
     const areasValues = projectAttrs.area_ids ? projectAttrs.area_ids.map((id) => {
       const option = this.state.areasOptions.find(areaOption => areaOption.value === id);
 

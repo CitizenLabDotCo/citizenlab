@@ -395,7 +395,9 @@ class Streams {
 
       return response;
     } catch (error) {
-      console.log(error);
+      if (error.json && error.json.errors) {
+        return Promise.reject(error);
+      }
       throw `error for add() of Streams for api endpoint ${apiEndpoint}`;
     }
   }
@@ -434,7 +436,9 @@ class Streams {
 
       return response;
     } catch (error) {
-      console.log(error);
+      if (error.json && error.json.errors) {
+        return Promise.reject(error);
+      }
       throw `error for update() of Streams for api endpoint ${apiEndpoint}`;
     }
   }
@@ -473,7 +477,9 @@ class Streams {
 
       return true;
     } catch (error) {
-      console.log(error);
+      if (error.json && error.json.errors) {
+        return Promise.reject(error);
+      }
       throw `error for delete() of Streams for api endpoint ${apiEndpoint}`;
     }
   }

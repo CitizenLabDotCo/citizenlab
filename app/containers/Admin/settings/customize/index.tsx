@@ -23,6 +23,7 @@ import styled from 'styled-components';
 
 // utils
 import { getBase64, imageUrlToFileObservable } from 'utils/imageTools';
+import getSubmitState from 'utils/getSubmitState';
 
 // i18n
 import { FormattedMessage, injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
@@ -153,18 +154,6 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     this.subscriptions.forEach(subsription => subsription.unsubscribe());
   }
 
-  getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
-    if (!_.isEmpty(this.state.errors)) {
-      return 'error';
-    } else if (this.state.saved && _.isEmpty(this.state.attributesDiff)) {
-      return 'success';
-    } else if (!this.state.saved && _.isEmpty(this.state.attributesDiff)) {
-      return 'disabled';
-    }
-
-    return 'enabled';
-  }
-
   handleUploadOnAdd = (name: 'logo' | 'header_bg') => (newImage: ImageFile) => {
     this.setState((state: State) => ({
       attributesDiff: {
@@ -289,7 +278,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   ])
 
   render() {
-    const { locale, currentTenant, titleError, subtitleError } = this.state;
+    const { locale, currentTenant, titleError, subtitleError, errors, saved, attributesDiff } = this.state;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -375,8 +364,8 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                 return (
                   <FieldWrapper key={index}>
                     <StyledLabel>
-                      <FormattedMessage 
-                        {...messages.titleLabel} 
+                      <FormattedMessage
+                        {...messages.titleLabel}
                         values={{ locale: capitalizedTenantLocale }}
                       />
                       <CharCount className={titleError[currentTenantLocale] ? 'error' : ''}>
@@ -400,9 +389,9 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                 return (
                   <FieldWrapper key={index}>
                     <StyledLabel>
-                      <FormattedMessage 
-                        {...messages.subtitleLabel} 
-                        values={{ locale: capitalizedTenantLocale }} 
+                      <FormattedMessage
+                        {...messages.subtitleLabel}
+                        values={{ locale: capitalizedTenantLocale }}
                       />
                       <CharCount className={subtitleError[currentTenantLocale] ? 'error' : ''}>
                         {subtitleSize}/90
@@ -452,7 +441,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
 
           <SubmitWrapper
             loading={this.state.loading}
-            status={this.getSubmitState()}
+            status={getSubmitState({ errors, saved, diff: attributesDiff })}
             messages={{
               buttonSave: messages.save,
               buttonError: messages.saveError,
