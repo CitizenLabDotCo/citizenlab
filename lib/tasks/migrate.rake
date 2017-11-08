@@ -108,11 +108,12 @@ namespace :migrate do
 
 
   def create_topics_code_hash
+    locale = Tenant.current.settings.dig('core', 'locales').first
     topics_code_hash = {}
-    YAML.load_file(Rails.root.join('config', 'locales', "en.yml"))
-        .dig('en', 'topics').each do |code, title|
+    YAML.load_file(Rails.root.join('config', 'locales', "#{locale}.yml"))
+        .dig(locale, 'topics').each do |code, title|
           unless code.end_with? '_description'
-            topics_code_hash[code] = Topic.where({ title_multiloc: { en: title } }).first
+            topics_code_hash[code] = Topic.where({ title_multiloc: { locale => title } }).first
           end
         end
     topics_code_hash
@@ -170,7 +171,7 @@ namespace :migrate do
   def migrate_area n, areas_hash, locales_mapping
     begin
       areas_hash[n['_id']] = Area.create!(title_multiloc: map_multiloc(n['name_i18n'], locales_mapping), 
-                                          description_multiloc: map_multiloc(n['description_i18n'], locales_mapping))
+                                          description_multiloc: map_multiloc((n['description_i18n'] || {}), locales_mapping))
     rescue Exception => e
       @log.concat [e.message]
     end
@@ -342,7 +343,7 @@ namespace :migrate do
         d[:visible_to] = 'admins'
       else
         d[:visible_to] = 'groups'
-        d[:groups] = p['permissions'].values.map{|g| groups_hash[g]}.select{|g| g}
+        d[:groups] = p['permissions'].values.flatten.map{|g| groups_hash[g]}.select{|g| g}
       end
     else
       d[:visible_to] = 'public'
@@ -486,7 +487,7 @@ namespace :migrate do
       return
     end
     # author
-    if p.dig('userId')
+    if p.dig('userId') && users_hash[p.dig('userId')]
       d[:author] = users_hash[p.dig('userId')]
     else
       @log.concat ["Couldn't find the author for idea #{p.to_s}"]
