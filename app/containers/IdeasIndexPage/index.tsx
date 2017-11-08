@@ -169,11 +169,6 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
     return (
       <Container>
 
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
-        />
-
         <BackgroundColor />
 
         <StyledContentContainer>

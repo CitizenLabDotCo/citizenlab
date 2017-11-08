@@ -71,11 +71,7 @@ export default class LocationInput extends React.PureComponent<Props, State> {
 
   handleSelect = async (adress: string, placeId: string) => {
     this.props.onChange(adress);
-    return geocodeByPlaceId(placeId)
-    .then((results) => {
-      console.log(results[0].geometry.location.lat(), results[0].geometry.location.lng());
-      return results;
-    });
+    return geocodeByPlaceId(placeId).then(results => results);
   }
 
   render() {

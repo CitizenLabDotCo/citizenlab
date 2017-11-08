@@ -285,26 +285,30 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
             />
           </FormElement>
 
-          <FormElement>
-            <Label value={formatMessage(messages.topicsLabel)} htmlFor="topics" />
-            <MultipleSelect
-              value={selectedTopics}
-              placeholder={formatMessage(messages.topicsPlaceholder)}
-              options={topics}
-              max={2}
-              onChange={this.handleTopicsOnChange}
-            />
-          </FormElement>
+          {topics && topics.length > 0 &&
+            <FormElement>
+              <Label value={formatMessage(messages.topicsLabel)} htmlFor="topics" />
+              <MultipleSelect
+                value={selectedTopics}
+                placeholder={formatMessage(messages.topicsPlaceholder)}
+                options={topics}
+                max={2}
+                onChange={this.handleTopicsOnChange}
+              />
+            </FormElement>
+          }
 
-          <FormElement>
-            <Label value={formatMessage(messages.projectsLabel)} htmlFor="projects" />
-            <Select
-              value={selectedProject}
-              placeholder={formatMessage(messages.projectsPlaceholder)}
-              options={projects}
-              onChange={this.handleProjectOnChange}
-            />
-          </FormElement>
+          {projects && projects.length > 0 &&
+            <FormElement>
+              <Label value={formatMessage(messages.projectsLabel)} htmlFor="projects" />
+              <Select
+                value={selectedProject}
+                placeholder={formatMessage(messages.projectsPlaceholder)}
+                options={projects}
+                onChange={this.handleProjectOnChange}
+              />
+            </FormElement>
+          }
 
           <FormElement>
             <Label value={formatMessage(messages.locationLabel)} htmlFor="location" />

@@ -12,6 +12,9 @@ import Step1 from './Step1';
 import Step2 from './Step2';
 import Footer from './Footer';
 
+// services
+import { currentTenantStream, ITenant } from 'services/tenant';
+
 // i18n
 import { getLocalized } from 'utils/i18n';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
@@ -94,20 +97,46 @@ type Props = {
 
 type State = {
   showStep1: boolean;
+  hasStep2: boolean;
+  currentTenant: ITenant | null;
 };
 
 class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
+  subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
     this.state = {
-      showStep1: true
+      showStep1: true,
+      hasStep2: true,
+      currentTenant: null
     };
+    this.subscriptions = [];
+  }
+
+  componentWillMount() {
+    const currentTenant$ = currentTenantStream().observable;
+    this.subscriptions = [
+      currentTenant$.subscribe((currentTenant) => {
+        const { birthyear, domicile, education, gender } = currentTenant.data.attributes.settings.demographic_fields;
+        const hasStep2 = [birthyear, domicile, education, gender].some(value => value === true);
+        console.log('hasStep2: ' + hasStep2);
+        this.setState({ currentTenant, hasStep2 });
+      })
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleStep1Completed = () => {
-    this.setState({ showStep1: false });
+    if (this.state.hasStep2) {
+      this.setState({ showStep1: false });
+    } else {
+      this.props.onSignUpCompleted();
+    }
   }
 
   handleStep2Completed = () => {
@@ -119,24 +148,24 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { showStep1 } = this.state;
+    const { showStep1, hasStep2 } = this.state;
     const timeout = 600;
 
-    const step1 = (showStep1 && (
+    const step1 = (showStep1 ? (
       <CSSTransition classNames="form" timeout={timeout}>
         <Form className="step1">
           <Step1 onCompleted={this.handleStep1Completed} />
         </Form>
       </CSSTransition>
-    ));
+    ) : null);
 
-    const step2 = (!showStep1 && (
+    const step2 = ((!showStep1 && hasStep2) ? (
       <CSSTransition classNames="form" timeout={timeout}>
         <Form className="step2">
           <Step2 onCompleted={this.handleStep2Completed} />
         </Form>
       </CSSTransition>
-    ));
+    ) : null);
 
     return (
       <Container>

@@ -47,7 +47,7 @@ export default class SubmitWrapper extends React.Component<Props> {
 
     return (
       <Wrapper>
-        <Button style={style} loading={this.props.loading} disabled={this.props.status === 'disabled'} onClick={this.props.onClick}>
+        <Button className="e2e-submit-wrapper-button" style={style} loading={this.props.loading} disabled={this.props.status === 'disabled'} onClick={this.props.onClick}>
           {(this.props.status === 'enabled' || this.props.status === 'disabled') &&
             <FormattedMessage {...this.props.messages.buttonSave} />
           }

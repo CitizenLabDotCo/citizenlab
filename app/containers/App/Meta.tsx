@@ -12,7 +12,7 @@ import { localeStream } from 'services/locale';
 // i18n
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 
 type Props = {};
 
@@ -64,14 +64,25 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
       const metaTitleMultiLoc = currentTenant.data.attributes.settings.core.meta_title;
       const organizationNameMultiLoc = currentTenant.data.attributes.settings.core.organization_name;
       const metaDescriptionMultiLoc = currentTenant.data.attributes.settings.core.meta_description;
-      const metaTitle = getLocalized(metaTitleMultiLoc, locale, currentTenantLocales);
+      let metaTitle = getLocalized(metaTitleMultiLoc, locale, currentTenantLocales);
       const organizationName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
-      const metaDescription = getLocalized(metaDescriptionMultiLoc, locale, currentTenantLocales);
+      let metaDescription = getLocalized(metaDescriptionMultiLoc, locale, currentTenantLocales);
       const url = `http://${currentTenant.data.attributes.host}`;
+
+      const currentTenantName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
+      const headerTitleMultiLoc = currentTenant.data.attributes.settings.core.header_title;
+      const headerSloganMultiLoc = currentTenant.data.attributes.settings.core.header_slogan;
+      const currentTenantHeaderTitle = (headerTitleMultiLoc && headerTitleMultiLoc[locale]);
+      const currentTenantHeaderSlogan = (headerSloganMultiLoc && headerSloganMultiLoc[locale]);
+      const helmetTitle = (currentTenantHeaderTitle ? currentTenantHeaderTitle : formatMessage(messages.helmetTitle, { name: currentTenantName }));
+      const helmetDescription = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : formatMessage(messages.helmetDescription));
+
+      metaTitle = (metaTitle || helmetTitle);
+      metaDescription = (metaDescription || helmetDescription);
 
       return (
         <Helmet>
-          <title>{formatMessage(messages.helmetTitle)}</title>
+          <title>{metaTitle}</title>
           <meta property="og:title" content={metaTitle} />
           <meta property="og:description" content={metaDescription} />
           <meta property="og:image" content={image} />

@@ -179,11 +179,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         await signUp(firstName, lastName, email, password, locale);
         this.setState({ processing: false });
         this.props.onCompleted();
-
       } catch (errors) {
-        console.log('error:');
-        console.log(errors);
-
         this.setState({
           processing: false,
           apiErrors: errors

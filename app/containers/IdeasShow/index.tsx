@@ -230,12 +230,14 @@ const SeparatorRow = styled.div`
   height: 1px;
   margin: 0;
   margin-top: 45px;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
   background: #e4e4e4;
+  background: #fff;
 
   ${media.smallerThanMaxTablet`
     margin-top: 25px;
     margin-bottom: 25px;
+    background: #e4e4e4;
   `}
 `;
 
@@ -523,10 +525,12 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <LeftColumn>
-                <ImageAndMapWrapper>
-                  {ideaImageLarge ? <IdeaImage className={`${this.state.showMap ? 'hidden' : ''}`} data-img={ideaImageLarge} /> : null}
-                  {ideaLocation ? <IdeaMap location={ideaLocation} /> : null}
-                </ImageAndMapWrapper>
+                {(ideaImageLarge || ideaLocation) && 
+                  <ImageAndMapWrapper>
+                    {ideaImageLarge ? <IdeaImage className={`${this.state.showMap ? 'hidden' : ''}`} data-img={ideaImageLarge} /> : null}
+                    {ideaLocation ? <IdeaMap location={ideaLocation} /> : null}
+                  </ImageAndMapWrapper>
+                }
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>

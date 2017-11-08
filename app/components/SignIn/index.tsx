@@ -38,6 +38,30 @@ const Form = styled.form`
 const FormElement = styled.div`
   width: 100%;
   margin-bottom: 15px;
+  position: relative;
+`;
+
+const PasswordInput = styled(Input)`
+  input {
+    padding-right: 100px;
+  }
+`;
+
+const ForgotPassword = styled(Link)`
+  color: ${props => props.theme.colors.label};
+  color: #999;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 300;
+  text-decoration: none;
+  cursor: pointer;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+
+  &:hover {
+    color: #000;
+  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -47,7 +71,7 @@ const ButtonWrapper = styled.div`
   padding-top: 10px;
 `;
 
-const ForgotPassword = styled(Link)`
+const CreateAnAccount = styled(Link)`
   color: ${(props) => props.theme.colorMain};
   font-size: 16px;
   line-height: 20px;
@@ -62,44 +86,11 @@ const ForgotPassword = styled(Link)`
 
 const Separator = styled.div`
   width: 100%;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  position: relative;
-  margin-top: 30px;
-  margin-bottom: 20px;
-`;
-
-const SeparatorLine = styled.div`
-  width: 100%;
   height: 1px;
   background: transparent;
   border-bottom: solid 1px #ccc;
-`;
-
-const SeparatorTextContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-`;
-
-const SeparatorText = styled.div`
-  width: 54px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f8f8f8;
-
-  span {
-    color: #999;
-    font-size: 17px;
-  }
+  margin-top: 30px;
+  margin-bottom: 20px;
 `;
 
 const Footer = styled.div`
@@ -110,14 +101,14 @@ const Footer = styled.div`
 
 const FooterText = styled.div`
   color: #888;
-  font-size: 17px;
-  line-height: 21px;
+  font-size: 16px;
+  line-height: 20px;
   font-weight: 400;
-  margin-top: 0px;
+  margin-top: 5px;
   margin-bottom: 0px;
 
   span {
-    margin-right: 5px;
+    margin-right: 7px;
   }
 `;
 
@@ -127,6 +118,25 @@ const FooterLink = styled.span`
   &:hover {
     color: ${(props) => darken(0.15, props.theme.colorMain)};
     cursor: pointer;
+  }
+`;
+
+const SocialLogin = styled(Button)`
+  .Button {
+    background: #fff !important;
+    border: solid 1px #eaeaea !important;
+  }
+`;
+
+const GoogleLogin = SocialLogin.extend`
+  .Button {
+    color: #518EF8 !important;
+  }
+`;
+
+const FacebookLogin = SocialLogin.extend`
+  .Button {
+    color: #4B6696 !important;
   }
 `;
 
@@ -252,7 +262,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
 
           <FormElement>
             {/* <Label value={formatMessage(messages.passwordLabel)} htmlFor="password" /> */}
-            <Input
+            <PasswordInput
               type="password"
               id="password"
               value={password}
@@ -261,6 +271,9 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
               onChange={this.handlePasswordOnChange}
               setRef={this.handlePasswordInputSetRef}
             />
+            <ForgotPassword to="/password-recovery">
+              <FormattedMessage {...messages.forgotPassword} />
+            </ForgotPassword>
           </FormElement>
 
           <FormElement>
@@ -272,38 +285,33 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                 text={formatMessage(messages.submit)}
                 circularCorners={true}
               />
-              <ForgotPassword to="/password-recovery">
-                <FormattedMessage {...messages.forgotPassword} />
-              </ForgotPassword>
+
+              <CreateAnAccount to="/sign-up">
+                <FormattedMessage {...messages.createAnAccount} />
+              </CreateAnAccount>
             </ButtonWrapper>
             <Error marginTop="10px" text={signInError} />
           </FormElement>
 
-          <Separator>
-            <SeparatorLine />
-            <SeparatorTextContainer>
-              <SeparatorText>
-                <span><FormattedMessage {...messages.or} /></span>
-              </SeparatorText>
-            </SeparatorTextContainer>
-          </Separator>
+          <Separator />
 
           <Footer>
-            <FooterText>
-              <span>{formatMessage(messages.noAccount)}</span>
-              <FooterLink onClick={this.goToSignUpForm}>{formatMessage(messages.signUp)}</FooterLink>
-            </FooterText>
-
-            {/*
-            <Button
-              size="2"
-              style="secondary-outlined"
-              text={formatMessage(messages.createAnAccount)}
-              fullWidth={true}
-              onClick={this.goToSignUpForm}
+            <GoogleLogin
+              text="Google"
+              style="primary"
+              size="1"
+              icon="google-colored"
+              linkTo="/ideas/new"
               circularCorners={true}
             />
-            */}
+            <FacebookLogin
+              text="Facebook"
+              style="primary"
+              size="1"
+              icon="facebook-blue"
+              linkTo="/ideas/new"
+              circularCorners={true}
+            />
           </Footer>
         </Form>
       </Container>

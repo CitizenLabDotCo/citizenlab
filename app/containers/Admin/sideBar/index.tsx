@@ -50,14 +50,24 @@ const Text = styled.div`
   opacity: 0.5;
 `;
 
-const MenuItem: any = styled(Link)`
+const MenuLink = styled(Link)`
+  flex: 1;
+  height: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
   padding-left: 12px;
-  background: transparent;
+`;
+
+const MenuItem: any = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 0;
   margin-bottom: 10px;
+  cursor: pointer;
 
   &:hover {
     ${StyledIcon} {
@@ -120,36 +130,48 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps, State> {
     return (
       <Menu>
 
-        <MenuItem active={pathname === '/admin'} to="/admin">
-          <IconWrapper><StyledIcon name="analytics" /></IconWrapper>
-          <Text>{formatMessage({ ...messages.dashboard })}</Text>
+        <MenuItem active={pathname === '/admin'}>
+          <MenuLink to="/admin">
+            <IconWrapper><StyledIcon name="analytics" /></IconWrapper>
+            <Text>{formatMessage({ ...messages.dashboard })}</Text>
+          </MenuLink>
         </MenuItem>
 
-        <MenuItem active={pathname.startsWith('/admin/users')} to="/admin/users">
-          <IconWrapper><StyledIcon name="people" /></IconWrapper>
-          <Text>{formatMessage({ ...messages.users })}</Text>
+        <MenuItem active={pathname.startsWith('/admin/users')}>
+          <MenuLink to="/admin/users">
+            <IconWrapper><StyledIcon name="people" /></IconWrapper>
+            <Text>{formatMessage({ ...messages.users })}</Text>
+          </MenuLink>
         </MenuItem>
-
+        
         <FeatureFlag name="groups">
-          <MenuItem active={pathname.startsWith('/admin/groups')} to="/admin/groups">
-            <IconWrapper><StyledIcon name="groups" /></IconWrapper>
-            <Text>{formatMessage({ ...messages.groups })}</Text>
+          <MenuItem active={pathname.startsWith('/admin/groups')}>
+            <MenuLink to="/admin/groups">
+              <IconWrapper><StyledIcon name="groups" /></IconWrapper>
+              <Text>{formatMessage({ ...messages.groups })}</Text>
+            </MenuLink>
           </MenuItem>
         </FeatureFlag>
 
-        <MenuItem active={pathname.startsWith('/admin/projects')} to="/admin/projects">
-          <IconWrapper><StyledIcon name="project" /></IconWrapper>
-          <Text>{formatMessage({ ...messages.projects })}</Text>
+        <MenuItem active={pathname.startsWith('/admin/projects')}>
+          <MenuLink to="/admin/projects">
+            <IconWrapper><StyledIcon name="project" /></IconWrapper>
+            <Text>{formatMessage({ ...messages.projects })}</Text>
+          </MenuLink>
         </MenuItem>
 
-        <MenuItem active={pathname.startsWith('/admin/ideas')} to="/admin/ideas">
-          <IconWrapper><StyledIcon name="idea" /></IconWrapper>
-          <Text>{formatMessage({ ...messages.ideas })}</Text>
+        <MenuItem active={pathname.startsWith('/admin/ideas')}>
+          <MenuLink to="/admin/ideas">
+            <IconWrapper><StyledIcon name="idea" /></IconWrapper>
+            <Text>{formatMessage({ ...messages.ideas })}</Text>
+          </MenuLink>
         </MenuItem>
 
-        <MenuItem active={pathname.startsWith('/admin/settings')} to="/admin/settings">
-          <IconWrapper><StyledIcon name="settings" /></IconWrapper>
-          <Text>{formatMessage({ ...messages.settings })}</Text>
+        <MenuItem active={pathname.startsWith('/admin/settings')}>
+          <MenuLink to="/admin/settings">
+            <IconWrapper><StyledIcon name="settings" /></IconWrapper>
+            <Text>{formatMessage({ ...messages.settings })}</Text>
+          </MenuLink>
         </MenuItem>
 
       </Menu>
