@@ -310,7 +310,6 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
                 text={formatMessage(messages.startIdea)}
                 style="primary"
                 size="1"
-                padding="10px 16px"
                 icon="plus-circle"
                 linkTo="/ideas/new"
                 circularCorners={true}
