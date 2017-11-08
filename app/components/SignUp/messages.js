@@ -59,7 +59,7 @@ export default defineMessages({
   },
   yearOfBirthLabel: {
     id: 'app.containers.SignUp.yearOfBirthLabel',
-    defaultMessage: 'Year of birth (optional)',
+    defaultMessage: 'Year of birth',
   },
   yearOfBirthPlaceholder: {
     id: 'app.containers.SignUp.yearOfBirthPlaceholder',
@@ -67,7 +67,7 @@ export default defineMessages({
   },
   genderLabel: {
     id: 'app.containers.SignUp.genderLabel',
-    defaultMessage: 'Gender (optional)',
+    defaultMessage: 'Gender',
   },
   genderPlaceholder: {
     id: 'app.containers.SignUp.genderPlaceholder',
@@ -99,7 +99,7 @@ export default defineMessages({
   },
   areaLabel: {
     id: 'app.containers.SignUp.areaLabel',
-    defaultMessage: 'Area (optional)',
+    defaultMessage: 'Area',
   },
   areaPlaceholder: {
     id: 'app.containers.SignUp.areaPlaceholder',
@@ -111,7 +111,11 @@ export default defineMessages({
   },
   submit: {
     id: 'app.containers.SignUp.submit',
-    defaultMessage: 'Sign up',
+    defaultMessage: 'Complete your profile',
+  },
+  skip: {
+    id: 'app.containers.SignUp.skip',
+    defaultMessage: 'Skip this step',
   },
   unknownError: {
     id: 'app.containers.SignUp.unknownError',

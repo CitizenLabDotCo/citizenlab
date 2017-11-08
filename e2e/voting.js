@@ -1,4 +1,5 @@
 module.exports = {
+  '@tags': ['citizen', 'ideas', 'voting'],
   voting: (browser) => {
     // sign in first to be able to vote
     browser.page.signin()

@@ -27,12 +27,12 @@ const Container = styled.div`
 
 const Title = styled.h2`
   color: #333;
-  font-size: 26px;
-  line-height: 30px;
+  font-size: 24px;
+  line-height: 38px;
   font-weight: 500;
   margin: 0;
   padding: 0;
-  margin-bottom: 35px;
+  margin-bottom: 20px;
 `;
 
 const ParentCommentsContainer = styled.div`
@@ -143,8 +143,8 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
 
           <ParentCommentForm ideaId={ideaId} />
 
-          {parentCommentsList !== null && 
-            <ParentCommentsContainer>
+          {parentCommentsList !== null &&
+            <ParentCommentsContainer className="e2e-comments-container">
               {parentCommentsList}
             </ParentCommentsContainer>
           }

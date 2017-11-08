@@ -332,14 +332,13 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
       const currentTenantLogo = currentTenant.data.attributes.logo.large;
       const currentTenantHeaderTitle = (headerTitleMultiLoc && headerTitleMultiLoc[locale]);
       const currentTenantHeaderSlogan = (headerSloganMultiLoc && headerSloganMultiLoc[locale]);
-      const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }} />);
-      const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
+      const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : formatMessage(messages.titleCity, { name: currentTenantName }));
+      const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : formatMessage(messages.subtitleCity));
       const hasHeaderImage = (currentTenantHeader !== null);
 
       return (
         <div>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
-
             <Header>
               <HeaderImage>
                 <HeaderImageBackground src={currentTenantHeader} />
@@ -423,9 +422,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
               </StyledContentContainer>
 
               <Footer />
-
             </Content>
-
           </Container>
         </div>
       );

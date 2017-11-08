@@ -39,7 +39,7 @@ export default defineMessages({
   },
   forgotPassword: {
     id: 'app.containers.SignIn.forgotPassword',
-    defaultMessage: 'Forgot password?',
+    defaultMessage: 'Forgot?',
   },
   or: {
     id: 'app.containers.SignIn.or',
@@ -52,5 +52,9 @@ export default defineMessages({
   signUp: {
     id: 'app.containers.SignIn.signUp',
     defaultMessage: 'Sign up',
+  },
+  createAnAccount: {
+    id: 'app.containers.SignIn.createAnAccount',
+    defaultMessage: 'Create an account',
   },
 });

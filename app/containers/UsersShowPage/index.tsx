@@ -129,14 +129,8 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
     const { user } = this.state;
 
     if (user) {
-      // const userCreatedAt = 
-
-      console.log(user.data.attributes.created_at);
-
       return (
         <StyledContentContainer>
-
-          <HelmetIntl title={messages.helmetTitle} description={messages.helmetDescription} />
 
           <UserAvatar>
             <StyledAvatar userId={user.data.id} size="large" />

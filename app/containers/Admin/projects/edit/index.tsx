@@ -115,7 +115,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
 
     return(
       <div>
-        <Link to="/admin/projects">
+        <Link className="e2e-projects-list-link" to="/admin/projects">
           <FormattedMessage {...messages.goBack} />
         </Link>
         <TabbedResource {...tabbedProps}>

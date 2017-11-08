@@ -6,12 +6,11 @@ import * as _ from 'lodash';
 import { ImageFile } from 'react-dropzone';
 
 // components
-import { connect } from 'react-redux';
-import { Checkbox } from 'semantic-ui-react';
 import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Upload from 'components/UI/Upload';
+import Toggle from 'components/UI/Toggle';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
 import Select from 'components/UI/Select';
 import Input from 'components/UI/Input';
@@ -31,13 +30,7 @@ import messages from '../messages';
 
 // services
 import { localeStream } from 'services/locale';
-import {
-  currentTenantStream,
-  updateTenant,
-  IUpdatedTenantProperties,
-  ITenant,
-  ITenantSettings
-} from 'services/tenant';
+import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, ITenantSettings } from 'services/tenant';
 
 // typings
 import { API } from 'typings.d';
@@ -223,21 +216,16 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     }));
   }
 
-  createToggleChangeHandler = (fieldPath) => {
-    return (event, data?): void => {
-      let newDiff = _.cloneDeep(this.state.attributesDiff);
-      if (data && data.checked !== undefined) {
-        newDiff = _.set(newDiff, fieldPath, data.checked);
-      } else if (event && typeof(event) === 'string') {
-        newDiff = _.set(newDiff, fieldPath, event);
-      } else if (event && event.value) {
-        newDiff = _.set(newDiff, fieldPath, event.value);
-      } else {
-        console.log(arguments);
-      }
+  handleColorPickerOnChange = (color: string) => {
+    let newDiff = _.cloneDeep(this.state.attributesDiff);
+    newDiff = _.set(newDiff, 'settings.core.color_main', color);
+    this.setState({ attributesDiff: newDiff });
+  }
 
-      this.setState({ attributesDiff: newDiff });
-    };
+  handleOnToggle = (fieldPath: string, checked: boolean) => () => {
+    let newDiff = _.cloneDeep(this.state.attributesDiff);
+    newDiff = _.set(newDiff, fieldPath, !checked);
+    this.setState({ attributesDiff: newDiff });
   }
 
   validate = (currentTenant: ITenant, attributesDiff: IAttributesDiff) => {
@@ -332,7 +320,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                 <ColorPickerInput
                   type="text"
                   value={_.get(tenantAttrs, 'settings.core.color_main')}
-                  onChange={this.createToggleChangeHandler('settings.core.color_main')}
+                  onChange={this.handleColorPickerOnChange}
                 />
               </FieldWrapper>
 
@@ -444,15 +432,17 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
             </SectionHeader>
 
             <SectionContent>
-              {['gender', 'domicile', 'birthyear', 'education'].map((fieldName, index) => {
+              {['gender', 'domicile', 'birthyear'].map((fieldName, index) => {
                 const fieldPath = `settings.demographic_fields.${fieldName}`;
+                const checked = _.get(tenantAttrs, fieldPath) as boolean;
+
                 return (
                   <FieldWrapper key={fieldName}>
                     <Label><FormattedMessage {...messages[fieldName]} /></Label>
-                    <Checkbox
-                      slider={true}
-                      checked={_.get(tenantAttrs, fieldPath)}
-                      onChange={this.createToggleChangeHandler(fieldPath)}
+                    <Toggle
+                      checked={checked}
+                      disabled={false}
+                      onToggle={this.handleOnToggle(fieldPath, checked)}
                     />
                   </FieldWrapper>
                 );

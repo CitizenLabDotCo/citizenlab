@@ -158,9 +158,9 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
     const { projects } = this.state;
 
     return (
-      <ProjectsList>
+      <ProjectsList className="e2e-projects-list">
 
-        <AddProjectCard className="new-project">
+        <AddProjectCard className="new-project e2e-new-project">
           <AddProjectLink to="/admin/projects/new">
             <AddProjectIcon name="plus" />
             <AddProjectText>
@@ -173,7 +173,7 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
           const projectImage = (_.has(project, 'attributes.header_bg.medium') ? project.attributes.header_bg.medium : headerBG);
 
           return (
-            <ProjectCard key={project.id}>
+            <ProjectCard key={project.id} className="e2e-project-card">
 
               <ProjectImage src={projectImage} alt="" role="presentation" />
 

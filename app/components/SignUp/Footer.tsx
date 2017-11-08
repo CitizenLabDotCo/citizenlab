@@ -16,44 +16,11 @@ const Container = styled.div`
 
 const Separator = styled.div`
   width: 100%;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  position: relative;
-  margin-top: 20px;
-  margin-bottom: 10px;
-`;
-
-const SeparatorLine = styled.div`
-  width: 100%;
   height: 1px;
   background: transparent;
   border-bottom: solid 1px #ccc;
-`;
-
-const SeparatorTextContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-`;
-
-const SeparatorText = styled.div`
-  width: 54px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f8f8f8;
-
-  span {
-    color: #999;
-    font-size: 17px;
-  }
+  margin-top: 30px;
+  margin-bottom: 20px;
 `;
 
 const FooterContent = styled.div`
@@ -62,21 +29,11 @@ const FooterContent = styled.div`
   justify-content: center;
 `;
 
-const FooterText = styled.div`
-  color: #888;
-  font-size: 17px;
-  line-height: 21px;
-  font-weight: 400;
-  margin-top: 0px;
-  margin-bottom: 0px;
-
-  span {
-    margin-right: 5px;
-  }
-`;
-
 const FooterLink = styled.span`
   color: ${(props) => props.theme.colorMain};
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
 
   &:hover {
     color: ${(props) => darken(0.15, props.theme.colorMain)};
@@ -100,20 +57,10 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container>
-        <Separator>
-          <SeparatorLine />
-          <SeparatorTextContainer>
-            <SeparatorText>
-              <span><FormattedMessage {...messages.or} /></span>
-            </SeparatorText>
-          </SeparatorTextContainer>
-        </Separator>
+        <Separator />
 
         <FooterContent>
-          <FooterText>
-            <span>{formatMessage(messages.alreadyHaveAnAccount)}</span>
-            <FooterLink onClick={this.handleOnClick}>{formatMessage(messages.logIn)}</FooterLink>
-          </FooterText>
+          <FooterLink onClick={this.handleOnClick}>{formatMessage(messages.alreadyHaveAnAccount)}</FooterLink>
         </FooterContent>
       </Container>
     );

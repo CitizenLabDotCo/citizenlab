@@ -21,7 +21,7 @@ import { updateUser, IUser } from 'services/users';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -39,6 +39,25 @@ const FormElement = styled.div`
   margin-bottom: 20px;
 `;
 
+const ButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const SkipButton = styled.div`
+  color: #999;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  cursor: pointer;
+
+  &:hover {
+    color: #000;
+  }
+`;
+
 type Props = {
   onCompleted: () => void;
 };
@@ -49,9 +68,9 @@ type State = {
   currentTenant: ITenant | null;
   areas: IOption[] | null;
   years: IOption[];
-  yearOfBirth: IOption | null;
-  gender: IOption | null;
-  area: IOption | null;
+  selectedYearOfBirth: IOption | null;
+  selectedGender: IOption | null;
+  selectedArea: IOption | null;
   loading: boolean;
   processing: boolean;
   unknownError: string | null;
@@ -70,9 +89,9 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
       currentTenant: null,
       areas: null,
       years: [...Array(118).keys()].map((i) => ({ value: i + 1900, label: `${i + 1900}` })),
-      yearOfBirth: null,
-      gender: null,
-      area: null,
+      selectedYearOfBirth: null,
+      selectedGender: null,
+      selectedArea: null,
       loading: true,
       processing: false,
       unknownError: null,
@@ -122,23 +141,23 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     return null;
   }
 
-  handleYearOfBirthOnChange = (yearOfBirth: IOption) => {
-    this.setState({ yearOfBirth });
+  handleYearOfBirthOnChange = (selectedYearOfBirth: IOption) => {
+    this.setState({ selectedYearOfBirth });
   }
 
-  handleGenderOnChange = (gender: IOption) => {
-    this.setState({ gender });
+  handleGenderOnChange = (selectedGender: IOption) => {
+    this.setState({ selectedGender });
   }
 
-  handleAreaOnChange = (area: IOption) => {
-    this.setState({ area });
+  handleAreaOnChange = (selectedArea: IOption) => {
+    this.setState({ selectedArea });
   }
 
   handleOnSubmit = async (event: React.FormEvent<any>) => {
     event.preventDefault();
 
     const { formatMessage } = this.props.intl;
-    const { authUser, yearOfBirth, gender, area } = this.state;
+    const { authUser, selectedYearOfBirth, selectedGender, selectedArea } = this.state;
 
     if (authUser) {
       try {
@@ -148,9 +167,9 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
         });
 
         const updatedUserProps = _.omitBy({
-          birthyear: (yearOfBirth ? parseInt(yearOfBirth.value, 10) : undefined),
-          gender: (gender ? gender.value : undefined),
-          domicile: (area ? area.value : undefined)
+          birthyear: (selectedYearOfBirth ? parseInt(selectedYearOfBirth.value, 10) : undefined),
+          gender: (selectedGender ? selectedGender.value : undefined),
+          domicile: (selectedArea ? selectedArea.value : undefined)
         }, _.isEmpty);
 
         if (updatedUserProps && !_.isEmpty(updatedUserProps)) {
@@ -169,68 +188,84 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  skipStep = () => {
+    this.props.onCompleted();
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
-    const { authUser, areas, years, yearOfBirth, gender, area, loading, processing, unknownError } = this.state;
+    const { authUser, currentTenant, areas, years, selectedYearOfBirth, selectedGender, selectedArea, loading, processing, unknownError } = this.state;
 
     if (!loading && authUser === null) {
       browserHistory.push('/');
     }
 
-    if (!loading && authUser !== null) {
+    if (!loading && authUser && currentTenant) {
+      const { birthyear, domicile, education, gender } = currentTenant.data.attributes.settings.demographic_fields;
+
       return (
         <Form id="e2e-signup-step2" onSubmit={this.handleOnSubmit} noValidate={true}>
-          <FormElement>
-            <Label value={formatMessage(messages.yearOfBirthLabel)} htmlFor="yearOfBirth" />
-            <Select
-              clearable={true}
-              searchable={true}
-              value={yearOfBirth}
-              placeholder={formatMessage(messages.yearOfBirthPlaceholder)}
-              options={years}
-              onChange={this.handleYearOfBirthOnChange}
-            />
-          </FormElement>
+
+          {birthyear &&
+            <FormElement>
+              <Label value={formatMessage(messages.yearOfBirthLabel)} htmlFor="yearOfBirth" />
+              <Select
+                clearable={true}
+                searchable={true}
+                value={selectedYearOfBirth}
+                placeholder={formatMessage(messages.yearOfBirthPlaceholder)}
+                options={years}
+                onChange={this.handleYearOfBirthOnChange}
+              />
+            </FormElement>
+          }
+
+          {gender &&
+            <FormElement>
+              <Label value={formatMessage(messages.genderLabel)} htmlFor="gender" />
+              <Select
+                clearable={true}
+                value={selectedGender}
+                placeholder={formatMessage(messages.genderPlaceholder)}
+                options={[{
+                  value: 'male',
+                  label: formatMessage(messages.male),
+                }, {
+                  value: 'female',
+                  label: formatMessage(messages.female),
+                }, {
+                  value: 'unspecified',
+                  label: formatMessage(messages.unspecified),
+                }]}
+                onChange={this.handleGenderOnChange}
+              />
+            </FormElement>
+          }
+
+          {domicile &&
+            <FormElement>
+              <Label value={formatMessage(messages.areaLabel)} htmlFor="area" />
+              <Select
+                clearable={true}
+                value={selectedArea}
+                placeholder={formatMessage(messages.areaPlaceholder)}
+                options={areas}
+                onChange={this.handleAreaOnChange}
+              />
+            </FormElement>
+          }
 
           <FormElement>
-            <Label value={formatMessage(messages.genderLabel)} htmlFor="gender" />
-            <Select
-              clearable={true}
-              value={gender}
-              placeholder={formatMessage(messages.genderPlaceholder)}
-              options={[{
-                value: 'male',
-                label: formatMessage(messages.male),
-              }, {
-                value: 'female',
-                label: formatMessage(messages.female),
-              }, {
-                value: 'unspecified',
-                label: formatMessage(messages.unspecified),
-              }]}
-              onChange={this.handleGenderOnChange}
-            />
-          </FormElement>
-
-          <FormElement>
-            <Label value={formatMessage(messages.areaLabel)} htmlFor="area" />
-            <Select
-              clearable={true}
-              value={area}
-              placeholder={formatMessage(messages.areaPlaceholder)}
-              options={areas}
-              onChange={this.handleAreaOnChange}
-            />
-          </FormElement>
-
-          <FormElement>
-            <Button
-              size="2"
-              loading={processing}
-              text={formatMessage(messages.submit)}
-              onClick={this.handleOnSubmit}
-              circularCorners={true}
-            />
+            <ButtonWrapper>
+              <Button
+                size="2"
+                loading={processing}
+                text={formatMessage(messages.submit)}
+                onClick={this.handleOnSubmit}
+                circularCorners={true}
+              />
+              <SkipButton onClick={this.skipStep}>{formatMessage(messages.skip)}</SkipButton>
+            </ButtonWrapper>
             <Error text={unknownError} />
           </FormElement>
         </Form>
