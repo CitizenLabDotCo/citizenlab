@@ -7,19 +7,19 @@ require 'redcarpet'
 
 namespace :migrate do
   desc "Migrating Data from a CL1 Platform to a CL2 Tenant"
-  task from_cl1: :environment do
-    url = "https://api.myjson.com/bins/anxyv"
+  task :from_cl1, [:json_url] => [:environment] do |t, args|
+    url = args[:json_url] # "https://api.myjson.com/bins/anxyv"
     migration_settings = JSON.load(open(url))
     platform = migration_settings['platform']
     password = migration_settings['password']
     topics_mapping = migration_settings['topics_mapping'] || {}
     idea_statuses_mapping = migration_settings['idea_statuses_mapping'] || {}
 
-    host = "#{platform}.localhost"
+    host = migration_settings['host']
     Tenant.where(host: host)&.first&.destroy
     client = connect(platform: platform, password: password)
     create_tenant(platform, host, client['settings'].find.first, client['meteor_accounts_loginServiceConfiguration'], migration_settings)
-    Apartment::Tenant.switch("#{platform}_localhost") do
+    Apartment::Tenant.switch(host.gsub '.', '_') do
       TenantTemplateService.new.apply_template 'base'
     
       topics_code_hash =  create_topics_code_hash
