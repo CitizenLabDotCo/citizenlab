@@ -3,11 +3,6 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { IStream } from 'utils/streams';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { makeSelectSetting } from 'utils/tenant/selectors';
-import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-import messages from './messages';
 import * as moment from 'moment';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
@@ -17,8 +12,9 @@ import { API } from 'typings.d';
 // Services
 import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
 import { phaseStream, updatePhase, addPhase, IPhase, IPhaseData, IUpdatedPhaseProperties } from 'services/phases';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import { injectTFunc } from 'components/T/utils';
+
+// Utils
+import getSubmitState from 'utils/getSubmitState';
 
 // Components
 import Label from 'components/UI/Label';
@@ -29,9 +25,14 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
-
 import FieldWrapper from 'components/admin/FieldWrapper';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+
+// i18n
+import localize, { injectedLocalized } from 'utils/localize';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectTFunc } from 'components/T/utils';
+import messages from './messages';
 
 
 // Component typing
@@ -40,7 +41,6 @@ type Props = {
     id: string | null,
     slug: string | null,
   },
-  locale: string,
   tFunc: Function,
   project: IProjectData | null;
   intl: ReactIntl.InjectedIntl;
@@ -51,14 +51,14 @@ interface State {
   attributeDiff: IUpdatedPhaseProperties;
   errors: {
     [fieldName: string]: API.Error[]
-  };
+  } | null;
   saving: boolean;
   focusedInput: 'START_DATE' | 'END_DATE' | null;
   descState: EditorState;
   saved: boolean;
 }
 
-class AdminProjectTimelineEdit extends React.Component<Props, State> {
+class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized, State> {
   phase$: IStream<IPhase>;
   subscriptions: Rx.Subscription[];
   startDatePlaceholder: string;
@@ -69,23 +69,13 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
     this.state = {
       phase: null,
       attributeDiff: {},
-      errors: {},
+      errors: null,
       saving: false,
       focusedInput: null,
       descState: EditorState.createEmpty(),
       saved: false,
     };
     this.subscriptions = [];
-  }
-
-  getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
-    if (!_.isEmpty(this.state.errors)) {
-      return 'error';
-    }
-    if (this.state.saved && _.isEmpty(this.state.attributeDiff)) {
-      return 'success';
-    }
-    return _.isEmpty(this.state.attributeDiff) ? 'disabled' : 'enabled';
   }
 
   componentWillMount() {
@@ -176,10 +166,12 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
 
     this.setState({ saving: true, saved: false });
 
-    savingPromise.catch((e) => {
+    savingPromise
+    .then((response) => {
+      this.setState({ saving: false, saved: true, attributeDiff: {}, phase: response.data, errors: null });
+    })
+    .catch((e) => {
       this.setState({ saving: false, errors: e.json.errors });
-    }).then((response) => {
-      this.setState({ saving: false, saved: true, attributeDiff: {}, phase: response.data });
     });
   }
 
@@ -188,7 +180,8 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
     ?  { ...this.state.phase.attributes, ...this.state.attributeDiff }
     : { ...this.state.attributeDiff };
 
-    const submitState = this.getSubmitState();
+    const { errors, saved } = this.state;
+    const submitState = getSubmitState({ errors, saved, diff: this.state.attributeDiff });
     moment.locale(this.props.locale);
 
     return (
@@ -208,7 +201,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
               value={this.props.tFunc(phaseAttrs.title_multiloc)}
               onChange={this.createMultilocUpdater('title_multiloc')}
             />
-            <Error apiErrors={this.state.errors.title_multiloc} />
+            <Error apiErrors={this.state.errors && this.state.errors.title_multiloc} />
           </FieldWrapper>
 
           <FieldWrapper>
@@ -225,6 +218,8 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
               startDatePlaceholderText={this.startDatePlaceholder}
               endDatePlaceholderText={this.endDatePlaceholder}
             />
+            <Error apiErrors={this.state.errors && this.state.errors.start_at} />
+            <Error apiErrors={this.state.errors && this.state.errors.end_at} />
           </FieldWrapper>
 
           <FieldWrapper>
@@ -236,7 +231,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
               error=""
               onChange={this.handleDescChange}
             />
-            <Error apiErrors={this.state.errors.description_multiloc} />
+            <Error apiErrors={this.state.errors && this.state.errors.description_multiloc} />
           </FieldWrapper>
 
           <SubmitWrapper
@@ -256,8 +251,4 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = createStructuredSelector({
-  locale: makeSelectLocale(),
-});
-
-export default injectTFunc(injectIntl(connect(mapStateToProps)(AdminProjectTimelineEdit)));
+export default injectTFunc(injectIntl(localize(AdminProjectTimelineEdit)));

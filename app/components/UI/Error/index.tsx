@@ -125,7 +125,7 @@ type Props = {
   text?: string | null;
   fieldName?: string | undefined;
   errors?: string[];
-  apiErrors?: API.Error[];
+  apiErrors?: API.Error[] | null;
   size?: string;
   marginTop?: string;
   marginBottom?: string;
