@@ -5,6 +5,7 @@ class OmniauthCallbackController < ApplicationController
 
   def create
     auth = request.env['omniauth.auth']
+    omniauth_params = request.env['omniauth.params']
 
     @identity = Identity.find_with_omniauth(auth)
 
@@ -17,7 +18,7 @@ class OmniauthCallbackController < ApplicationController
     if @user
       @identity.update(user: @user) unless @identity.user
       set_auth_cookie
-      redirect_to base_frontend_uri
+      redirect_to(add_uri_params(base_frontend_uri, omniauth_params))
     else
       @user = User.build_with_omniauth(auth)
       SideFxUserService.new.before_create(@user, nil)
@@ -26,16 +27,19 @@ class OmniauthCallbackController < ApplicationController
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
         set_auth_cookie
-        redirect_to "#{base_frontend_uri}/complete-signup"
+        redirect_to(add_uri_params("#{base_frontend_uri}/complete-signup", omniauth_params))
+
       rescue ActiveRecord::RecordInvalid => e
-        redirect_to "#{base_frontend_uri}/authentication-error"
+        redirect_to(add_uri_params("#{base_frontend_uri}/authentication-error", omniauth_params))
       end
     end
 
   end
 
   def failure
-    redirect_to "#{base_frontend_uri}/authentication-error"
+    omniauth_params = request.env['omniauth.params']
+
+    redirect_to(add_uri_params("#{base_frontend_uri}/authentication-error", omniauth_params))
   end
 
 
@@ -45,6 +49,16 @@ class OmniauthCallbackController < ApplicationController
 
   def base_frontend_uri
     Tenant.current.base_frontend_uri
+  end
+
+  def add_uri_params uri, params={}
+    uri =  URI.parse(uri)
+    new_query_ar = URI.decode_www_form(String(uri.query))
+    params.each do |key, value|
+      new_query_ar << [key, value]
+    end
+    uri.query = URI.encode_www_form(new_query_ar)
+    uri.to_s
   end
 
   def auth_token entity
@@ -62,5 +76,6 @@ class OmniauthCallbackController < ApplicationController
       expires: 1.month.from_now
     }
   end
+
 
 end
