@@ -16,8 +16,12 @@ class Api::V1::External::Notifications::NotificationSerializer < ActiveModel::Se
   end
 
   class CustomIdeaSerializer < ActiveModel::Serializer
-    attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count
+    attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count, :url
     has_many :topics
+
+    def url
+    "#{Tenant.current.host}/ideas/#{object.slug}"
+  end
   end
 
   class CustomImageSerializer < ActiveModel::Serializer
@@ -51,10 +55,6 @@ class Api::V1::External::Notifications::NotificationSerializer < ActiveModel::Se
 
   def idea_topics
   	object.idea&.topics
-  end
-
-  def idea_url
-    "#{Tenant.current.host}/ideas/#{object.idea&.slug}"
   end
 
   def project_images
