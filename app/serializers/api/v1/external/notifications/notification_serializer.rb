@@ -20,8 +20,8 @@ class Api::V1::External::Notifications::NotificationSerializer < ActiveModel::Se
     has_many :topics
 
     def url
-    "#{Tenant.current.host}/ideas/#{object.slug}"
-  end
+      "#{Tenant.current.base_frontend_uri}/ideas/#{object.slug}"
+    end
   end
 
   class CustomImageSerializer < ActiveModel::Serializer
