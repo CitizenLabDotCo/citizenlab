@@ -2,6 +2,9 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
+// libraries
+import { Link } from 'react-router';
+
 // components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
@@ -21,6 +24,7 @@ import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 // style
+import { darken } from 'polished';
 import styled from 'styled-components';
 
 // typings
@@ -35,8 +39,29 @@ const FormElement = styled.div`
   margin-bottom: 20px;
 `;
 
+const ButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+`;
+
+const AlreadyHaveAnAccount = styled(Link)`
+  color: ${(props) => props.theme.colorMain};
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: ${(props) => darken(0.15, props.theme.colorMain)};
+  }
+`;
+
 type Props = {
-  onCompleted: () => void;
+  onCompleted: (userId: string) => void;
 };
 
 type State = {
@@ -176,9 +201,9 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
           unknownError: null
         });
 
-        await signUp(firstName, lastName, email, password, locale);
+        const user = await signUp(firstName, lastName, email, password, locale);
         this.setState({ processing: false });
-        this.props.onCompleted();
+        this.props.onCompleted(user.data.id);
       } catch (errors) {
         this.setState({
           processing: false,
@@ -275,13 +300,18 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         </FormElement>
 
         <FormElement>
-          <Button
-            size="2"
-            loading={processing}
-            text={formatMessage(messages.continue)}
-            onClick={this.handleOnSubmit}
-            circularCorners={true}
-          />
+          <ButtonWrapper>
+            <Button
+              size="2"
+              loading={processing}
+              text={formatMessage(messages.signUp)}
+              onClick={this.handleOnSubmit}
+              circularCorners={true}
+            />
+            <AlreadyHaveAnAccount to="/sign-in">
+              <FormattedMessage {...messages.alreadyHaveAnAccount} />
+            </AlreadyHaveAnAccount>
+          </ButtonWrapper>
         </FormElement>
 
         <Error text={unknownApiError} />

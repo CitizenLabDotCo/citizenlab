@@ -11,6 +11,8 @@ const StyledButton = styled.button``;
 
 const StyledLink = styled(Link)``;
 
+const StyledA = styled.a``;
+
 const ButtonText = styled.div`
   font-weight: 400;
   margin: 0;
@@ -73,7 +75,8 @@ function setFillColor(color) {
 
 const Container: any = styled.div`
   ${StyledButton},
-  ${StyledLink} {
+  ${StyledLink},
+  ${StyledA} {
     width: ${(props: any) => props.width || 'auto'};
     height: ${(props: any) => props.height || 'auto'};
     display: ${(props: any) => !props.width ? 'inline-flex' : 'flex'};
@@ -290,15 +293,15 @@ export default class Button extends React.PureComponent<Props, State> {
       </ButtonContent>
     );
 
-    const button = (linkTo ? (
-      <StyledLink to={linkTo} className={buttonClassnames}>
-        {childContent}
-      </StyledLink>
-    ) : (
-      <StyledButton className={buttonClassnames}>
-        {childContent}
-      </StyledButton>
-    ));
+    let button = <StyledButton className={buttonClassnames}>{childContent}</StyledButton>;
+
+    if (linkTo) {
+      if (linkTo.startsWith('http://') || linkTo.startsWith('https://')) {
+        button = <StyledA href={linkTo} className={buttonClassnames}>{childContent}</StyledA>;
+      } else {
+        button = <StyledLink to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>;
+      }
+    }
 
     return (
       <Container

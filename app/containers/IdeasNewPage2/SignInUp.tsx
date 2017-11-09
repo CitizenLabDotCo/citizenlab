@@ -35,8 +35,13 @@ const Container = styled.div`
   flex-direction: row;
   border-top: solid 1px #ddd;
   background: #f8f8f8;
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
+
+  ${media.smallerThanMaxTablet`
+    overflow: auto;
+    height: auto;
+  `}
 `;
 
 const Section = styled.div`
@@ -53,17 +58,20 @@ const Left = Section.extend`
   overflow: hidden;
   pointer-events: none;
 
-  ${media.smallerThanDesktop`
+  ${media.smallerThanMaxTablet`
     display: none;
   `}
-  `;
+`;
 
 const Right = Section.extend`
   width: 100%;
-  overflow-y: scroll;
+  padding-left: 50vw;
+  overflow: hidden;
+  overflow-y: auto;
 
-  ${media.desktop`
-    padding-left: 50vw;
+  ${media.smallerThanMaxTablet`
+    padding: 0;
+    overflow: auto;
   `}
 `;
 
@@ -76,6 +84,10 @@ const RightInner = styled.div`
   padding-bottom: 100px;
   padding-left: 30px;
   padding-right: 30px;
+
+  ${media.smallerThanMaxTablet`
+    padding-bottom: 130px;
+  `}
 `;
 
 const Forms = styled.div`
@@ -135,7 +147,7 @@ const Title = styled.h2`
 
 type Props = {
   onGoBack?: () => void;
-  onSignInUpCompleted: () => void;
+  onSignInUpCompleted: (userId: string) => void;
 };
 
 type State = {
@@ -173,21 +185,19 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   goToSignUpForm = () => {
-    // window.scrollTo(0, 0);
     this.setState({ show: 'signUp' });
   }
 
   goToSignInForm = () => {
-    // window.scrollTo(0, 0);
     this.setState({ show: 'signIn' });
   }
 
-  handleOnSignedIn = () => {
-    this.props.onSignInUpCompleted();
+  handleOnSignedIn = (userId: string) => {
+    this.props.onSignInUpCompleted(userId);
   }
 
-  handleOnSignUpCompleted = () => {
-    this.props.onSignInUpCompleted();
+  handleOnSignUpCompleted = (userId: string) => {
+    this.props.onSignInUpCompleted(userId);
   }
 
   render() {
@@ -234,8 +244,8 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
             {signIn}
             {signUp}
           </RightInner>
-          </Right>
-        </Container>
+        </Right>
+      </Container>
     );
   }
 }

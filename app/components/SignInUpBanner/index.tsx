@@ -30,52 +30,23 @@ const Logo = styled.img`
 
 const Slogan = styled.div`
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
   color: ${props => props.theme.colorMain || '#333'};
   font-size: 34px;
-  line-height: 42px;
+  line-height: 44px;
   font-weight: 600;
   margin-top: 55px;
 `;
 
 type Props = {};
 
-type State = {
-  currentTenant: ITenant | null;
-};
+type State = {};
 
 export default class SignInUpBanner extends React.PureComponent<Props, State> {
-  state: State;
-  subscriptions: Rx.Subscription[];
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentTenant: null
-    };
-    this.subscriptions = [];
-  }
-
-  componentWillMount() {
-    const currentTenant$ = currentTenantStream().observable;
-
-    this.subscriptions = [
-      currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
   render() {
-    const { currentTenant } = this.state;
-    const currentTenantLogo = (currentTenant && currentTenant.data.attributes.logo ? currentTenant.data.attributes.logo.large : null);
-
     return (
       <Container>
         <LogoContainer>
-          {/* currentTenantLogo && <Logo src={currentTenantLogo} /> */}
           <Slogan><FormattedMessage {...messages.slogan} /></Slogan>
         </LogoContainer>
       </Container>

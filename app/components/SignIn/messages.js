@@ -57,4 +57,8 @@ export default defineMessages({
     id: 'app.containers.SignIn.createAnAccount',
     defaultMessage: 'Create an account',
   },
+  orLogInWith: {
+    id: 'app.containers.SignIn.orLogInWith',
+    defaultMessage: 'Or log in with',
+  },
 });

@@ -268,16 +268,19 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
     const { pathname } = this.props.location;
     const { formatMessage } = this.props.intl;
     const { authUser, currentTenant, currentTenantLogo, scrolled } = this.state;
-    const alwaysShowBorder = (pathname.startsWith('/ideas/') 
-                              || pathname.startsWith('/reset-password')
-                              || pathname.startsWith('/admin')
-                              || pathname.startsWith('/profile')
-                              || pathname === 'sign-in'
-                              || pathname === '/sign-in' 
-                              || pathname === 'sign-up' 
-                              || pathname === '/sign-up'
-                              || pathname === 'password-recovery'
-                              || pathname === '/password-recovery');
+    const alwaysShowBorder = [
+      'ideas/', 
+      'admin', 
+      'profile', 
+      'complete-signup', 
+      'sign-in', 
+      'sign-up', 
+      'password-recovery', 
+      'reset-password',
+      'authentication-error'
+    ].some((urlSegment) => {
+      return pathname.startsWith('/' + urlSegment);
+    });
 
     return (
       <div>

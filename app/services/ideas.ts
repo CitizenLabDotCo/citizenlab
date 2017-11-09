@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
@@ -70,19 +71,19 @@ export interface IIdeas {
 }
 
 export interface IIdeaUpdate {
-  project_id?: string;
-  author_id?: string;
-  idea_status_id?: string;
-  publication_status?: 'draft' | 'published' | 'closed' | 'spam';
-  title_multiloc: { [key: string]: string; };
-  body_multiloc: { [key: string]: string; };
-  topic_ids: string[];
-  area_ids: string[];
-  location_point_geojson: {
-    type: 'Point';
-    coordinates: [number, number];
-  };
-  location_description: string;
+  project_id?: string | undefined | null;
+  author_id?: string | undefined | null;
+  idea_status_id?: string | undefined | null;
+  publication_status?: 'draft' | 'published' | 'closed' | 'spam' | undefined | null;
+  title_multiloc?: { [key: string]: string; } | undefined | null;
+  body_multiloc?: { [key: string]: string; } | undefined | null;
+  topic_ids?: string[] | undefined | null;
+  area_ids?: string[] | undefined | null;
+  location_point_geojson?: {
+    type: string;
+    coordinates: number[];
+  } | undefined | null;
+  location_description?: string | undefined | null;
 }
 
 export function ideaByIdStream(ideaId: string) {
@@ -97,20 +98,18 @@ export function ideasStream(streamParams: IStreamParams<IIdeas> | null = null) {
   return streams.get<IIdeas>({ apiEndpoint: `${API_PATH}/ideas`, ...streamParams });
 }
 
-export function addIdea(
-  userId: string,
-  publicationStatus: 'draft' | 'published',
+export function addDraftIdea(
+  publicationStatus: 'draft',
   title: { [key: string]: string },
   body: { [key: string]: string },
   topicIds: string[] | null,
   projectId: string | null,
   locationGeoJSON: {} | null,
-  locationDescription: string | null,
+  locationDescription: string | null
 ) {
   const bodyData = {
     idea: {
       project_id: projectId,
-      author_id: userId,
       publication_status: publicationStatus,
       title_multiloc: title,
       body_multiloc: body,

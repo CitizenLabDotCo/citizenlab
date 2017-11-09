@@ -17,6 +17,7 @@ import Input from 'components/UI/Input';
 import FieldWrapper from 'components/admin/FieldWrapper';
 import { Section, SectionHeader, SectionTitle, SectionDescription, SectionContent } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import FeatureFlag from 'components/FeatureFlag';
 
 // style
 import styled from 'styled-components';
@@ -420,23 +421,25 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
               </SectionDescription>
             </SectionHeader>
 
-            <SectionContent>
-              {['gender', 'domicile', 'birthyear'].map((fieldName, index) => {
-                const fieldPath = `settings.demographic_fields.${fieldName}`;
-                const checked = _.get(tenantAttrs, fieldPath) as boolean;
+            <FeatureFlag name="demographic_fields">
+              <SectionContent>
+                {['gender', 'domicile', 'birthyear'].map((fieldName, index) => {
+                  const fieldPath = `settings.demographic_fields.${fieldName}`;
+                  const checked = _.get(tenantAttrs, fieldPath) as boolean;
 
-                return (
-                  <FieldWrapper key={fieldName}>
-                    <Label><FormattedMessage {...messages[fieldName]} /></Label>
-                    <Toggle
-                      checked={checked}
-                      disabled={false}
-                      onToggle={this.handleOnToggle(fieldPath, checked)}
-                    />
-                  </FieldWrapper>
-                );
-              })}
-            </SectionContent>
+                  return (
+                    <FieldWrapper key={fieldName}>
+                      <Label><FormattedMessage {...messages[fieldName]} /></Label>
+                      <Toggle
+                        checked={checked}
+                        disabled={false}
+                        onToggle={this.handleOnToggle(fieldPath, checked)}
+                      />
+                    </FieldWrapper>
+                  );
+                })}
+              </SectionContent>
+            </FeatureFlag>
           </Section>
 
           <SubmitWrapper
