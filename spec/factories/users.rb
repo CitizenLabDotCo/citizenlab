@@ -6,7 +6,6 @@ FactoryGirl.define do
     last_name { Faker::Name.last_name }
     email { Faker::Internet.email }
     password_digest "testtest"
-    services {}
     demographics {}
     roles []
     locale "en"
