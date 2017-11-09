@@ -1,3 +1,14 @@
+PATH
+  remote: engines/public_api
+  specs:
+    public_api (0.1.0)
+      active_model_serializers (~> 0.10.0)
+      apartment (~> 1.2.0)
+      kaminari (~> 1.0.1)
+      knock (~> 2.1.1)
+      pundit (~> 1.1.0)
+      rails (~> 5.1.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -384,6 +395,7 @@ DEPENDENCIES
   pg (~> 0.18)
   pg_search (~> 2.0.1)
   premailer-rails (~> 1.9.6)
+  public_api!
   puma (~> 3.7)
   pundit (~> 1.1.0)
   rack-cors
