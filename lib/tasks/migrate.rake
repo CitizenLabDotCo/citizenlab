@@ -25,8 +25,10 @@ namespace :migrate do
     
       topics_code_hash = create_topics_code_hash
       topics_hash = {}
-      client['categories'].find.each do |c|
-        map_topic c, topics_hash, topics_mapping, topics_code_hash
+      if client['categories']
+        client['categories'].find.each do |c|
+          map_topic c, topics_hash, topics_mapping, topics_code_hash
+        end
       end
       areas_hash = {}
       client['neighbourhoods'].find.each do |n|
@@ -122,40 +124,43 @@ namespace :migrate do
 
   def create_tenant platform, host, s, m, migration_settings, locales_mapping
     fb_login = m.find({ service: 'facebook' }).first
-    Tenant.create!({
-      name: platform,
-      host: host,
-      remote_logo_url: s['logoUrl'],
-      remote_header_bg_url: s['bannerImage'],
-      settings: {
-        core: {
-          allowed: true,
-          enabled: true,
-          locales: s['languages'].map{|l| locales_mapping[l]}.select{|l| l},
-          organization_type: migration_settings['organization_type'],
-          organization_name: map_multiloc(s['title_i18n'] || {}, locales_mapping),
-          header_title: map_multiloc(s['tagline_i18n'] || {}, locales_mapping),
-          header_slogan: multiloc_maxlen(map_multiloc(s['description_i18n'] || {}, locales_mapping), 90),
-          meta_title: map_multiloc(s['tagline_i18n'] || {}, locales_mapping),
-          meta_description: map_multiloc(s['description_i18n']|| {}, locales_mapping),
-          timezone: migration_settings['timezone'],
-          color_main: s['accentColor']
-        },
-        demographic_fields: {
-          allowed: true,
-          enabled: true,
-          gender: true,
-          domicile: true,
-          birthyear: true,
-          education: true,
-        },
-        facebook_login: {
+    d = {
+      core: {
+        allowed: true,
+        enabled: true,
+        locales: (s['languages'] || [s['language']]).map{|l| locales_mapping[l]}.select{|l| l},
+        organization_type: migration_settings['organization_type'],
+        organization_name: map_multiloc(s['title_i18n'] || {}, locales_mapping),
+        header_title: map_multiloc(s['tagline_i18n'] || {}, locales_mapping),
+        header_slogan: multiloc_maxlen(map_multiloc(s['description_i18n'] || {}, locales_mapping), 90),
+        meta_title: map_multiloc(s['tagline_i18n'] || {}, locales_mapping),
+        meta_description: map_multiloc(s['description_i18n']|| {}, locales_mapping),
+        timezone: migration_settings['timezone'],
+        color_main: s['accentColor']
+      },
+      demographic_fields: {
+        allowed: true,
+        enabled: true,
+        gender: true,
+        domicile: true,
+        birthyear: true,
+        education: true,
+      }
+    }
+    if fb_login['appId'] && fb_login['secret']
+      d[:facebook_login] = {
           allowed: true,
           enabled: true,
           app_id: fb_login['appId'],
           app_secret: fb_login['secret']
         }
-      }
+    end
+    Tenant.create!({
+      name: platform,
+      host: host,
+      remote_logo_url: s['logoUrl'],
+      remote_header_bg_url: s['bannerImage'],
+      settings: d
     })
   end
 
