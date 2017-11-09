@@ -53,6 +53,10 @@ class Api::V1::External::Notifications::NotificationSerializer < ActiveModel::Se
   	object.idea&.topics
   end
 
+  def idea_url
+    "#{Tenant.current.host}/ideas/#{object.idea&.slug}"
+  end
+
   def project_images
   	object.project&.project_images
   end
