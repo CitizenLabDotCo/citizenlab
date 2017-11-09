@@ -98,4 +98,7 @@ Rails.application.routes.draw do
   get '/auth/failure', to: 'omniauth_callback#failure'
 
 
+  mount PublicApi::Engine => "/public_api", as: 'public_api'
+
+
 end
