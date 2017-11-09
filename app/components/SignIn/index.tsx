@@ -10,9 +10,12 @@ import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import Icon from 'components/UI/Icon';
+import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { signIn } from 'services/auth';
+import { currentTenantStream, ITenant } from 'services/tenant';
 
 // i18n
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
@@ -20,6 +23,7 @@ import messages from './messages';
 
 // utils
 import { isValidEmail } from 'utils/validate';
+import { AUTH_PATH } from 'containers/App/constants';
 
 // style
 import { darken } from 'polished';
@@ -65,6 +69,7 @@ const ForgotPassword = styled(Link)`
 `;
 
 const ButtonWrapper = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -96,56 +101,57 @@ const Separator = styled.div`
 const Footer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
 `;
 
-const FooterText = styled.div`
-  color: #888;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 400;
-  margin-top: 5px;
-  margin-bottom: 0px;
-
-  span {
-    margin-right: 7px;
-  }
-`;
-
-const FooterLink = styled.span`
-  color: ${(props) => props.theme.colorMain};
-
-  &:hover {
-    color: ${(props) => darken(0.15, props.theme.colorMain)};
-    cursor: pointer;
-  }
-`;
-
-const SocialLogin = styled(Button)`
+const SocialLoginButton = styled(Button)`
   .Button {
     background: #fff !important;
     border: solid 1px #eaeaea !important;
   }
+
+  &:hover {
+    .Button {
+      border-color: #ccc !important;
+    }
+  }
 `;
 
-const GoogleLogin = SocialLogin.extend`
+const GoogleLogin = SocialLoginButton.extend`
+  margin-right: 15px;
+
   .Button {
     color: #518EF8 !important;
   }
 `;
 
-const FacebookLogin = SocialLogin.extend`
+const FacebookLogin = SocialLoginButton.extend`
   .Button {
     color: #4B6696 !important;
   }
 `;
 
+const SocialLoginText = styled.div`
+  color: ${(props) => props.theme.colors.label};
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 20px;
+  margin-left: 4px;
+  margin-bottom: 20px;
+`;
+
+const SocialLoginButtons = styled.div`
+  width: 100%;
+  display: flex;
+`;
+
 type Props = {
-  onSignedIn: () => void;
+  onSignedIn: (userId: string) => void;
   goToSignUpForm?: () => void;
 };
 
 type State = {
+  currentTenant: ITenant | null;
   email: string | null;
   password: string | null;
   processing: boolean;
@@ -156,12 +162,14 @@ type State = {
 
 class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
+  subscriptions: Rx.Subscription[];
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
   constructor() {
     super();
     this.state = {
+      currentTenant: null,
       email: null,
       password: null,
       processing: false,
@@ -169,12 +177,25 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
       passwordError: null,
       signInError: null
     };
+    this.subscriptions = [];
     this.emailInputElement = null;
     this.passwordInputElement = null;
   }
 
+  componentWillMount() {
+    const currentTenant$ = currentTenantStream().observable;
+
+    this.subscriptions = [
+      currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))
+    ];
+  }
+
   componentDidMount() {
     this.emailInputElement && this.emailInputElement.focus();
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleEmailOnChange = (email) => {
@@ -212,9 +233,9 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     if (this.validate(email, password) && email && password) {
       try {
         this.setState({ processing: true });
-        await signIn(email, password);
+        const user = await signIn(email, password);
         this.setState({ processing: false });
-        onSignedIn();
+        onSignedIn(user.data.id);
       } catch (error) {
         const signInError = formatMessage(messages.signInError);
         this.setState({ signInError, processing: false });
@@ -241,8 +262,11 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { intl } = this.props;
     const { formatMessage } = this.props.intl;
-    const { email, password, processing, emailError, passwordError, signInError } = this.state;
-    const timeout = 500;
+    const { currentTenant, email, password, processing, emailError, passwordError, signInError } = this.state;
+    const googleLoginEnabled = !!_.get(currentTenant, `data.attributes.settings.google_login.enabled`);
+    const facebookLoginEnabled = !!_.get(currentTenant, `data.attributes.settings.facebook_login.enabled`);
+    const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
+    const timeout = 500; 
 
     return (
       <Container>
@@ -293,26 +317,39 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
             <Error marginTop="10px" text={signInError} />
           </FormElement>
 
-          <Separator />
+          {showSocialLogin &&
+            <div>
+              <Separator />
 
-          <Footer>
-            <GoogleLogin
-              text="Google"
-              style="primary"
-              size="1"
-              icon="google-colored"
-              linkTo="/ideas/new"
-              circularCorners={true}
-            />
-            <FacebookLogin
-              text="Facebook"
-              style="primary"
-              size="1"
-              icon="facebook-blue"
-              linkTo="/ideas/new"
-              circularCorners={true}
-            />
-          </Footer>
+              <Footer>
+                <SocialLoginText>
+                  {formatMessage(messages.orLogInWith)}
+                </SocialLoginText>
+                <SocialLoginButtons>
+                  <FeatureFlag name="google_login">
+                    <GoogleLogin
+                      text="Google"
+                      style="primary"
+                      size="1"
+                      icon="google-colored"
+                      linkTo={`${AUTH_PATH}/google`}
+                      circularCorners={true}
+                    />
+                  </FeatureFlag>
+                  <FeatureFlag name="facebook_login">
+                    <FacebookLogin
+                      text="Facebook"
+                      style="primary"
+                      size="1"
+                      icon="facebook-blue"
+                      linkTo={`${AUTH_PATH}/facebook`}
+                      circularCorners={true}
+                    />
+                  </FeatureFlag>
+                </SocialLoginButtons>
+              </Footer>
+            </div>
+          }
         </Form>
       </Container>
     );

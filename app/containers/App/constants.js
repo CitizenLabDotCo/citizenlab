@@ -10,6 +10,7 @@
  */
 
 export const DEFAULT_LOCALE = 'en';
+export const AUTH_PATH = (process.env.NODE_ENV === 'development') ? `http://${window.location.hostname}:4000/auth` : '/auth';
 export const API_PATH = (process.env.NODE_ENV === 'development') ? `http://${window.location.hostname}:4000/api/v1` : '/api/v1';
 export const GOOGLE_MAPS_API_KEY = '***REMOVED***';
 

@@ -63,7 +63,7 @@ export default defineMessages({
   },
   yearOfBirthPlaceholder: {
     id: 'app.containers.SignUp.yearOfBirthPlaceholder',
-    defaultMessage: 'Optionally select your year of birth',
+    defaultMessage: 'Select your year of birth',
   },
   genderLabel: {
     id: 'app.containers.SignUp.genderLabel',
@@ -71,7 +71,7 @@ export default defineMessages({
   },
   genderPlaceholder: {
     id: 'app.containers.SignUp.genderPlaceholder',
-    defaultMessage: 'Optionally select your gender',
+    defaultMessage: 'Select your gender',
   },
   male: {
     id: 'app.containers.SignUp.male',
@@ -103,11 +103,15 @@ export default defineMessages({
   },
   areaPlaceholder: {
     id: 'app.containers.SignUp.areaPlaceholder',
-    defaultMessage: 'Optionally select your area',
+    defaultMessage: 'Select the area you live in',
   },
   continue: {
     id: 'app.containers.SignUp.continue',
     defaultMessage: 'Continue',
+  },
+  signUp: {
+    id: 'app.containers.SignUp.signUp',
+    defaultMessage: 'Sign up',
   },
   submit: {
     id: 'app.containers.SignUp.submit',
@@ -121,9 +125,9 @@ export default defineMessages({
     id: 'app.containers.SignUp.unknownError',
     defaultMessage: 'Something went wrong. Please try again.',
   },
-  or: {
-    id: 'app.containers.SignUp.or',
-    defaultMessage: 'Or',
+  orSignUpWith: {
+    id: 'app.containers.SignUp.orSignUpWith',
+    defaultMessage: 'Or sign up with',
   },
   alreadyHaveAnAccount: {
     id: 'app.containers.SignUp.alreadyHaveAnAccount',

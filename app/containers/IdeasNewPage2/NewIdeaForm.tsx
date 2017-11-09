@@ -54,6 +54,10 @@ const Form = styled.div`
   padding-left: 30px;
   margin-left: auto;
   margin-right: auto;
+
+  ${media.smallerThanMaxTablet`
+    padding-bottom: 130px;
+  `}
 `;
 
 const Title = styled.h2`
@@ -74,7 +78,7 @@ const FormElement: any = styled.div`
 
 const MobileButton = styled.div`
   width: 100%;
-  display: flex;
+  display: none;
 
   .Button {
     margin-right: 10px;
@@ -84,8 +88,8 @@ const MobileButton = styled.div`
     flex: 1;
   }
 
-  ${media.biggerThanPhone`
-    display: none;
+  ${media.smallerThanMaxTablet`
+    display: flex;
   `}
 `;
 

@@ -103,8 +103,17 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
   componentWillMount() {
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
     const areas$ = areasStream().observable;
+    const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
+      const { birthyear, domicile, gender } = currentTenant.data.attributes.settings.demographic_fields;
+      const demographicFieldsEnabled = _.get(currentTenant, `data.attributes.settings.demographic_fields.enabled`);
+      const hasOneOrMoreActiveDemographicFields = [birthyear, domicile, gender].some(value => value === true);
+
+      if (!demographicFieldsEnabled || !hasOneOrMoreActiveDemographicFields) {
+        // exit step2
+        this.props.onCompleted();
+      }
+    });
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -201,7 +210,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
 
     if (!loading && authUser && currentTenant) {
-      const { birthyear, domicile, education, gender } = currentTenant.data.attributes.settings.demographic_fields;
+      const { birthyear, domicile, gender } = currentTenant.data.attributes.settings.demographic_fields;
 
       return (
         <Form id="e2e-signup-step2" onSubmit={this.handleOnSubmit} noValidate={true}>

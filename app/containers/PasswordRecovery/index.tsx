@@ -200,6 +200,7 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
 
             <StyledButton
               size="2"
+              width="100%"
               loading={processing}
               text={resetPassword}
               onClick={this.handleOnSubmit}

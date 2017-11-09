@@ -92,13 +92,14 @@ const Form = styled.div`
 `;
 
 type Props = {
-  onSignUpCompleted: () => void;
+  onSignUpCompleted: (userId: string) => void;
 };
 
 type State = {
-  showStep1: boolean;
-  hasStep2: boolean;
+  visibleStep: 'step1' | 'step2'
+  hasSecondStep: boolean;
   currentTenant: ITenant | null;
+  userId: string | null;
 };
 
 class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -108,39 +109,48 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
   constructor() {
     super();
     this.state = {
-      showStep1: true,
-      hasStep2: true,
-      currentTenant: null
+      visibleStep: 'step1',
+      hasSecondStep: true,
+      currentTenant: null,
+      userId: null
     };
     this.subscriptions = [];
   }
 
   componentWillMount() {
-    const currentTenant$ = currentTenantStream().observable;
-    this.subscriptions = [
-      currentTenant$.subscribe((currentTenant) => {
-        const { birthyear, domicile, education, gender } = currentTenant.data.attributes.settings.demographic_fields;
-        const hasStep2 = [birthyear, domicile, education, gender].some(value => value === true);
-        console.log('hasStep2: ' + hasStep2);
-        this.setState({ currentTenant, hasStep2 });
-      })
-    ];
+    const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
+      const { birthyear, domicile, gender } = currentTenant.data.attributes.settings.demographic_fields;
+      const demographicFieldsEnabled = _.get(currentTenant, `data.attributes.settings.demographic_fields.enabled`);
+      const hasOneOrMoreActiveDemographicFields = [birthyear, domicile, gender].some(value => value === true);
+
+      if (!demographicFieldsEnabled || !hasOneOrMoreActiveDemographicFields) {
+        this.setState(({ hasSecondStep: false }));
+      }
+    });
+
+    this.subscriptions = [currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))];
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleStep1Completed = () => {
-    if (this.state.hasStep2) {
-      this.setState({ showStep1: false });
+  handleStep1Completed = (userId: string) => {
+    this.setState({ userId });
+
+    if (this.state.hasSecondStep) {
+      this.setState({ visibleStep: 'step2' });
     } else {
-      this.props.onSignUpCompleted();
+      this.props.onSignUpCompleted(userId);
     }
   }
 
   handleStep2Completed = () => {
-    this.props.onSignUpCompleted();
+    const { userId } = this.state;
+
+    if (userId) {
+      this.props.onSignUpCompleted(userId);
+    }
   }
 
   goToSignIn = () => {
@@ -148,10 +158,10 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { showStep1, hasStep2 } = this.state;
+    const { visibleStep } = this.state;
     const timeout = 600;
 
-    const step1 = (showStep1 ? (
+    const step1 = (visibleStep === 'step1' ? (
       <CSSTransition classNames="form" timeout={timeout}>
         <Form className="step1">
           <Step1 onCompleted={this.handleStep1Completed} />
@@ -159,7 +169,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
       </CSSTransition>
     ) : null);
 
-    const step2 = ((!showStep1 && hasStep2) ? (
+    const step2 = (visibleStep === 'step2' ? (
       <CSSTransition classNames="form" timeout={timeout}>
         <Form className="step2">
           <Step2 onCompleted={this.handleStep2Completed} />

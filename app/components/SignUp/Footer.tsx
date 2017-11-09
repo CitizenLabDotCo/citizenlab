@@ -2,9 +2,19 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
+// components
+import Button from 'components/UI/Button';
+import FeatureFlag from 'components/FeatureFlag';
+
+// services
+import { currentTenantStream, ITenant } from 'services/tenant';
+
 // i18n
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import messages from './messages';
+
+// utils
+import { AUTH_PATH } from 'containers/App/constants';
 
 // style
 import { darken } from 'polished';
@@ -26,44 +36,129 @@ const Separator = styled.div`
 const FooterContent = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
 `;
 
-const FooterLink = styled.span`
-  color: ${(props) => props.theme.colorMain};
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 400;
+const SocialSignInButton = styled(Button)`
+  .Button {
+    background: #fff !important;
+    border: solid 1px #eaeaea !important;
+  }
 
   &:hover {
-    color: ${(props) => darken(0.15, props.theme.colorMain)};
-    cursor: pointer;
+    .Button {
+      border-color: #ccc !important;
+    }
   }
+`;
+
+const GoogleLogin = SocialSignInButton.extend`
+  margin-right: 15px;
+
+  .Button {
+    color: #518EF8 !important;
+  }
+`;
+
+const FacebookLogin = SocialSignInButton.extend`
+  .Button {
+    color: #4B6696 !important;
+  }
+`;
+
+const SocialSignInText = styled.div`
+  color: ${(props) => props.theme.colors.label};
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 20px;
+  margin-left: 4px;
+  margin-bottom: 20px;
+`;
+
+const SocialSignInButtons = styled.div`
+  width: 100%;
+  display: flex;
 `;
 
 type Props = {
   goToSignIn: () => void;
 };
 
-type State = {};
+type State = {
+  currentTenant: ITenant | null;
+};
 
 class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
+  subscriptions: Rx.Subscription[];
+
+  constructor() {
+    super();
+    this.state = {
+      currentTenant: null
+    };
+    this.subscriptions = [];
+  }
+
+  componentWillMount() {
+    const currentTenant$ = currentTenantStream().observable;
+
+    this.subscriptions = [
+      currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   handleOnClick = () => {
     this.props.goToSignIn();
   }
 
   render() {
+    const { currentTenant } = this.state;
     const { formatMessage } = this.props.intl;
+    const googleLoginEnabled = !!_.get(currentTenant, `data.attributes.settings.google_login.enabled`);
+    const facebookLoginEnabled = !!_.get(currentTenant, `data.attributes.settings.facebook_login.enabled`);
+    const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
 
-    return (
-      <Container>
-        <Separator />
+    if (showSocialLogin) {
+      return (
+        <Container>
+          <Separator />
 
-        <FooterContent>
-          <FooterLink onClick={this.handleOnClick}>{formatMessage(messages.alreadyHaveAnAccount)}</FooterLink>
-        </FooterContent>
-      </Container>
-    );
+          <FooterContent>
+            <SocialSignInText>
+              {formatMessage(messages.orSignUpWith)}
+            </SocialSignInText>
+            <SocialSignInButtons>
+              <FeatureFlag name="google_login">
+                <GoogleLogin
+                  text="Google"
+                  style="primary"
+                  size="1"
+                  icon="google-colored"
+                  linkTo={`${AUTH_PATH}/google`}
+                  circularCorners={true}
+                />
+              </FeatureFlag>
+              <FeatureFlag name="facebook_login">
+                <FacebookLogin
+                  text="Facebook"
+                  style="primary"
+                  size="1"
+                  icon="facebook-blue"
+                  linkTo={`${AUTH_PATH}/facebook`}
+                  circularCorners={true}
+                />
+              </FeatureFlag>
+            </SocialSignInButtons>
+          </FooterContent>
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 

@@ -21,7 +21,7 @@ import SignInUp from './SignInUp';
 // services
 import { state, IStateStream } from 'services/state';
 import { localeStream } from 'services/locale';
-import { addIdea } from 'services/ideas';
+import { addDraftIdea, updateIdea } from 'services/ideas';
 import { addIdeaImage } from 'services/ideaImages';
 import { getAuthUserAsync } from 'services/auth';
 
@@ -53,14 +53,14 @@ const PageContainer = styled.div`
     opacity: 0.01;
     transform: translateX(100vw);
 
-    ${media.desktop`
+    ${media.biggerThanMaxTablet`
       transform: translateX(800px);
     `}
 
     &.ideaForm {
       transform: translateX(-100vw);
 
-      ${media.desktop`
+      ${media.biggerThanMaxTablet`
         transform: translateX(-800px);
       `}
     }
@@ -83,14 +83,14 @@ const PageContainer = styled.div`
       transition: transform 600ms cubic-bezier(0.19, 1, 0.22, 1),
                   opacity 600ms cubic-bezier(0.19, 1, 0.22, 1);
 
-      ${media.desktop`
+      ${media.biggerThanMaxTablet`
         transform: translateX(800px);
       `}
 
       &.ideaForm {
         transform: translateX(-100vw);
 
-        ${media.desktop`
+        ${media.biggerThanMaxTablet`
           transform: translateX(-800px);
         `}
       }
@@ -111,7 +111,7 @@ const ButtonBarContainer = styled.div`
   -webkit-backface-visibility: hidden;
   will-change: auto;
 
-  ${media.phone`
+  ${media.smallerThanMaxTablet`
     display: none;
   `}
 
@@ -140,15 +140,16 @@ type Props = {};
 
 type State = {
   showIdeaForm: boolean;
-  locale: string;
+  locale: string | null;
+  ideaId: string | null;
 };
 
 export const namespace = 'IdeasNewPage2/index';
 
 class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State> {
+  state: State;
   newIdeaFormState$: IStateStream<INewIdeaFormState>;
   buttonBarState$: IStateStream<IButtonBarState>;
-  state$: IStateStream<State>;
   subscriptions: Rx.Subscription[];
 
   constructor() {
@@ -175,14 +176,14 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
       processing: false
     };
 
-    const initialState: State = {
-      showIdeaForm: true,
-      locale: 'nl'
-    };
-
     this.newIdeaFormState$ = state.createStream<INewIdeaFormState>(namespace, NewIdeaFormNamespace, initialNewIdeaFormState);
     this.buttonBarState$ = state.createStream<IButtonBarState>(namespace, ButtonBarNamespace, initialButtonBarState);
-    this.state$ = state.createStream<State>(namespace, namespace, initialState);
+
+    this.state = {
+      showIdeaForm: true,
+      locale: null,
+      ideaId: null
+    };
 
     this.subscriptions = [];
   }
@@ -193,8 +194,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     this.subscriptions = [
       this.buttonBarState$.observable.subscribe(),
       this.newIdeaFormState$.observable.subscribe(),
-      this.state$.observable.subscribe(state => this.setState(state)),
-      locale$.subscribe(locale => this.state$.next({ locale }))
+      locale$.subscribe(locale => this.setState({ locale }))
     ];
   }
 
@@ -207,20 +207,32 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     const { lat, lng } = await getLatLng(results[0]);
     return {
       type: 'Point',
-      coordinates: [lat, lng]
+      coordinates: [lat as number, lng as number]
     };
   }
 
-  async postIdea(newIdeaFormState: INewIdeaFormState, userId: string) {
-    const { locale } = this.state;
+  async postDraftIdea(locale: string, newIdeaFormState: INewIdeaFormState) {
+    const { ideaId } = this.state;
     const { topics, projects, title, description, selectedTopics, selectedProject, location } = newIdeaFormState;
     const ideaTitle = { [locale]: title as string };
     const ideaDescription = { [locale]: draftToHtml(convertToRaw(description.getCurrentContent())) };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
-    const projectId = (selectedProject ? selectedProject.value : null);
+    const projectId = (selectedProject ? selectedProject.value as string : null);
     const locationGeoJSON = (_.isString(location) && !_.isEmpty(location) ? await this.convertToGeoJson(location) : null);
     const locationDescription = (_.isString(location) && !_.isEmpty(location) ? location : null);
-    return await addIdea(userId, 'published', ideaTitle, ideaDescription, topicIds, projectId, locationGeoJSON, locationDescription);
+    
+    if (!ideaId) {
+      return await addDraftIdea('draft', ideaTitle, ideaDescription, topicIds, projectId, locationGeoJSON, locationDescription);
+    } else {
+      return await updateIdea(ideaId, {
+        title_multiloc: ideaTitle,
+        body_multiloc: ideaDescription,
+        topic_ids: topicIds,
+        project_id: projectId,
+        location_point_geojson: locationGeoJSON,
+        location_description: locationDescription
+      });
+    }
   }
 
   async postIdeaImage(ideaId: string, image: ImageFile) {
@@ -232,11 +244,11 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     }
   }
 
-  async postIdeaAndIdeaImage(currentUserId: string) {
+  async postDraftIdeaAndIdeaImage(locale: string) {
     try {
       const currentNewIdeaFormState = await this.newIdeaFormState$.getCurrent();
       const { images } = currentNewIdeaFormState;
-      const idea = await this.postIdea(currentNewIdeaFormState, currentUserId);
+      const idea = await this.postDraftIdea(locale, currentNewIdeaFormState);
       images && images.length > 0 && await this.postIdeaImage(idea.data.id, images[0]);
       return idea;
     } catch (error) {
@@ -244,21 +256,22 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     }
   }
 
-  handleOnIdeaSubmit = async () => {
+  handleOnIdeaSubmit = (locale: string) => async () => {
     this.setSubmitErrorTo(false);
     this.setProcessingTo(true);
 
     try {
       const authUser = await getAuthUserAsync();
-      await this.postIdeaAndIdeaImage(authUser.data.id);
+      const idea = await this.postDraftIdeaAndIdeaImage(locale);
+      this.setState({ ideaId: idea.data.id });
       this.setProcessingTo(false);
-      browserHistory.push('/ideas');
+      // browserHistory.push('/ideas');
     } catch (error) {
       this.setProcessingTo(false);
 
       if (_.isError(error) && error.message === 'not authenticated') {
         window.scrollTo(0, 0);
-        this.state$.next({ showIdeaForm: false });
+        this.setState({ showIdeaForm: false });
       } else {
         this.setSubmitErrorTo(true);
       }
@@ -276,11 +289,16 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   handleOnSignInUpGoBack = () => {
-    this.state$.next({ showIdeaForm: true });
+    this.setState({ showIdeaForm: true });
   }
 
-  handleOnSignInUpCompleted = () => {
-    this.handleOnIdeaSubmit();
+  handleOnSignInUpCompleted = async (userId: string) => {
+    const { ideaId } = this.state;
+
+    if (ideaId) {
+      await updateIdea(ideaId, { author_id: userId, publication_status: 'published' });
+      browserHistory.push('/ideas');
+    }
   }
 
   render() {
@@ -291,7 +309,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     const buttonBar = (showIdeaForm && locale) ? (
       <CSSTransition classNames="buttonbar" timeout={timeout}>
         <ButtonBarContainer>
-          <ButtonBar onSubmit={this.handleOnIdeaSubmit} />
+          <ButtonBar onSubmit={this.handleOnIdeaSubmit(locale)} />
         </ButtonBarContainer>
       </CSSTransition>
     ) : null;
@@ -299,7 +317,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     const newIdeasForm = (showIdeaForm && locale) ? (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer className="ideaForm">
-          <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} />
+          <NewIdeaForm onSubmit={this.handleOnIdeaSubmit(locale)} />
         </PageContainer>
       </CSSTransition>
     ) : null;
