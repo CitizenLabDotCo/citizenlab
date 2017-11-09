@@ -11,6 +11,8 @@ module Notifications
     validates :idea_id, presence: true
 
     ACTIVITY_TRIGGERS = {'Comment' => {'created' => true}}
+    EVENT_NAME = 'Comment on your comment'
+
 
     def self.make_notifications_on activity
       child_comment = activity.item
@@ -36,7 +38,6 @@ module Notifications
         []
       end
     end
-
 
   end
 end

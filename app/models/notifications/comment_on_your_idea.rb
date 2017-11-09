@@ -12,6 +12,8 @@ module Notifications
 
 
     ACTIVITY_TRIGGERS = {'Comment' => {'created' => true}}
+    EVENT_NAME = 'Comment on your idea'
+    
 
     def self.make_notifications_on activity
       comment = activity.item
