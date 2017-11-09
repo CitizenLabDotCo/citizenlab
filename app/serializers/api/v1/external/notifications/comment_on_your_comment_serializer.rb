@@ -1,6 +1,4 @@
 class Api::V1::External::Notifications::CommentOnYourCommentSerializer < Api::V1::External::Notifications::NotificationSerializer
-  attributes :idea_url
-
   belongs_to :user, serializer: CustomUserSerializer
   belongs_to :comment, serializer: CustomCommentSerializer
   belongs_to :comment_author, serializer: CustomUserSerializer
