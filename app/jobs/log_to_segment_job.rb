@@ -31,7 +31,7 @@ class LogToSegmentJob < ApplicationJob
         })
         item_content = serialization.serializable_hash
         if activity.item_type.split('::').first == 'Notifications'
-          trackingMessage[:event] = "Notification #{activity.action}"
+          # trackingMessage[:event] = "Notification #{activity.action}"
           item_content = item_content.flatten.second
         end
         trackingMessage[:properties][:item_content] = item_content
