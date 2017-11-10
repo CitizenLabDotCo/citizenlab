@@ -54,5 +54,21 @@ export default () => ({
         importModules.catch(errorLoading);
       },
     },
+    {
+      path: 'pages',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Admin/settings/pages'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
   ],
 });
