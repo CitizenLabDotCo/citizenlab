@@ -1,4 +1,4 @@
-FROM ruby:2.4-slim
+FROM ruby:2.4.2-slim
 
 # Docker images can start off with nothing, but it's extremely
 # common to pull in from a base image. In our case we're pulling
@@ -20,7 +20,7 @@ MAINTAINER Koen Gremmelprez <koen@citizenlab.co>
 # images. It's not necessary but it's a good habit.
 
 RUN apt-get update && apt-get install -qq -y --no-install-recommends \
-      build-essential nodejs libpq-dev file imagemagick curl
+      build-essential nodejs libpq-dev file imagemagick curl git
 # Ensure that our apt package list is updated and install a few
 # packages to ensure that we can compile assets (nodejs) and
 # communicate with PostgreSQL (libpq-dev).

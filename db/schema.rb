@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171106212610) do
+ActiveRecord::Schema.define(version: 20171109172144) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -251,6 +251,15 @@ ActiveRecord::Schema.define(version: 20171106212610) do
     t.index ["topic_id"], name: "index_projects_topics_on_topic_id"
   end
 
+  create_table "public_api_api_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "secret"
+    t.uuid "tenant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_public_api_api_tokens_on_tenant_id"
+  end
+
   create_table "tenants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "host"
@@ -325,5 +334,6 @@ ActiveRecord::Schema.define(version: 20171106212610) do
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
+  add_foreign_key "public_api_api_tokens", "tenants"
   add_foreign_key "votes", "users"
 end

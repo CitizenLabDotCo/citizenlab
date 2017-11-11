@@ -1,4 +1,3 @@
-
 module PublicApi
 
   class V1::IdeasController < PublicApiController
