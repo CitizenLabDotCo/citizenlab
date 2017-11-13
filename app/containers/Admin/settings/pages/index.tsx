@@ -15,7 +15,7 @@ export default class AdminSettingsPages extends React.Component<Props, State> {
 
   slugs = [
     'informations',
-    'terms-of-use',
+    'terms-and-conditions',
     'privacy-policy',
     'cookies-policy',
   ];

@@ -1,7 +1,7 @@
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import { get } from 'lodash';
+import { get, includes } from 'lodash';
 
 // Services
 import { pageBySlugStream, createPage, updatePage, IPageData, PageUpdate } from 'services/pages';
@@ -59,7 +59,6 @@ const EditionForm = styled.form`
   }
 `;
 
-
 interface Props {
   slug: string;
 }
@@ -80,6 +79,7 @@ interface State {
 
 export default class PageEditor extends React.Component<Props, State> {
   subs: Rx.Subscription[] = [];
+  legalPages = ['terms-and-conditions', 'privacy-policy', 'cookies-policy'];
 
   constructor(props) {
     super();
@@ -162,7 +162,16 @@ export default class PageEditor extends React.Component<Props, State> {
     if (this.state.page && this.state.page.id) {
       savePromise = updatePage(this.state.page.id, this.state.diff);
     } else {
-      savePromise = createPage({ ...this.state.diff, slug: this.props.slug });
+      const pageData = { ...this.state.diff, slug: this.props.slug };
+
+      // Prevents errors when creating a new page with a hardcoded legal slug
+      if (includes(this.legalPages, this.props.slug)) {
+        pageData.title_multiloc = {
+          [this.state.locale]: this.props.slug
+        };
+      }
+
+      savePromise = createPage(pageData);
     }
 
     savePromise
@@ -197,15 +206,18 @@ export default class PageEditor extends React.Component<Props, State> {
 
         <EditionForm onSubmit={this.handleSave} className={deployed ? 'deployed' : ''} >
 
-          <FieldWrapper>
-            <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
-            <Input
-              type="text"
-              value={pageAttrs.title_multiloc ? pageAttrs.title_multiloc[locale] : ''}
-              onChange={this.createMultilocUpdater('title_multiloc')}
-            />
-            <Error apiErrors={errors && errors.title_multiloc} />
-          </FieldWrapper>
+          {/* Do not show the title input for the legal pages */}
+          {!includes(this.legalPages, slug) &&
+            <FieldWrapper>
+              <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
+              <Input
+                type="text"
+                value={pageAttrs.title_multiloc ? pageAttrs.title_multiloc[locale] : ''}
+                onChange={this.createMultilocUpdater('title_multiloc')}
+              />
+              <Error apiErrors={errors && errors.title_multiloc} />
+            </FieldWrapper>
+          }
           <FieldWrapper>
             <Editor
               onChange={this.handleTextChange}
