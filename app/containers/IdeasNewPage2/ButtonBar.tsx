@@ -1,13 +1,14 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { namespace as newIdeaFormNamespace } from './NewIdeaForm';
 
 // services
-import { state, IStateStream } from 'services/state';
+import { localState, ILocalStateService } from 'services/localState';
+import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // i18n
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -45,30 +46,36 @@ const ButtonBarInner = styled.div`
   }
 `;
 
-type Props = {
+interface Props {
   onSubmit: () => void;
-};
+}
 
-export type State = {
+interface GlobalState {
   submitError: boolean;
   processing: boolean;
-};
+}
 
-export const namespace = 'IdeasNewPage2/ButtonBar';
+interface State extends GlobalState {}
 
 class ButtonBar extends React.PureComponent<Props & InjectedIntlProps, State> {
-  private state$: IStateStream<State>;
-  private subscriptions: Rx.Subscription[];
+  globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
+  subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    this.state$ = state.createStream<State>(namespace, namespace);
+    this.state = null as any;
+    this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage');
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  async componentWillMount() {
+    const globalState$ = this.globalState.observable;
+
     this.subscriptions = [
-      this.state$.observable.subscribe(state => this.setState(state))
+      globalState$.subscribe(({ submitError, processing }) => {
+        const newState: State = { submitError, processing };
+        this.setState(newState);
+      })
     ];
   }
 
@@ -77,10 +84,12 @@ class ButtonBar extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleOnSubmit = () => {
-    eventEmitter.emit(namespace, 'submit', null);
+    eventEmitter.emit('IdeasNewPage', 'submit', null);
   }
 
   render() {
+    if (!this.state) { return null; }
+
     const { formatMessage } = this.props.intl;
     const { processing, submitError } = this.state;
     const submitErrorMessage = (submitError ? formatMessage(messages.submitError) : null);

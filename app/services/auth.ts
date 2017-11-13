@@ -86,7 +86,7 @@ export async function getAuthUserAsync() {
     return authenticatedUser;
   } catch {
     signOut();
-    throw new Error('not authenticated');
+    throw new Error('not_authenticated');
   }
 }
 

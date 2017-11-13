@@ -98,17 +98,19 @@ export function ideasStream(streamParams: IStreamParams<IIdeas> | null = null) {
   return streams.get<IIdeas>({ apiEndpoint: `${API_PATH}/ideas`, ...streamParams });
 }
 
-export function addDraftIdea(
-  publicationStatus: 'draft',
+export function addIdea(
+  authorId: string | null,
+  publicationStatus: 'draft' | 'published',
   title: { [key: string]: string },
   body: { [key: string]: string },
   topicIds: string[] | null,
   projectId: string | null,
   locationGeoJSON: {} | null,
-  locationDescription: string | null
+  locationDescription: string | null,
 ) {
   const bodyData = {
     idea: {
+      author_id: authorId,
       project_id: projectId,
       publication_status: publicationStatus,
       title_multiloc: title,

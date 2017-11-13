@@ -36,6 +36,10 @@ export function ideaImagesStream(ideaId: string, streamParams: IStreamParams<IId
   return streams.get<IIdeaImages>({ apiEndpoint, ...streamParams });
 }
 
+export function deleteIdeaImage(ideaId: string, imageId: string) {
+  return streams.delete(`${API_PATH}/ideas/${ideaId}/images`, imageId);
+}
+
 export async function addIdeaImage(ideaId: string, base64: string, ordering: number | null = null) {
   const apiEndpoint = `${API_PATH}/ideas/${ideaId}/images`;
   const bodyData = {
