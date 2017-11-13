@@ -17,6 +17,7 @@ Rails.application.routes.draw do
           post :down, on: :collection
         end
         resources :images, defaults: {container_class: Idea, image_class: IdeaImage}
+        resources :files, defaults: {container_class: Idea, image_class: IdeaFile}
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
       end
