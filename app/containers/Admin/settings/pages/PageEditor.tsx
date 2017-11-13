@@ -15,6 +15,7 @@ import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Error from 'components/UI/Error';
 import FieldWrapper from 'components/admin/FieldWrapper';
+import Icon from 'components/UI/Icon';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
@@ -39,6 +40,13 @@ const Toggle = styled(Button)`
   justify-content: flex-start;
   padding: 1rem 0;
   width: 100%;
+`;
+
+const DeployIcon = styled(Icon)`
+  transform: rotate(${(props: {deployed: boolean}) => props.deployed ? '180deg' : '0deg'});
+  height: .5em;
+  margin-right: 1rem;
+  transition: all .5s;
 `;
 
 const EditionForm = styled.form`
@@ -182,7 +190,10 @@ export default class PageEditor extends React.Component<Props, State> {
 
     return (
       <EditorWrapper className={`e2e-page-editor editor-${slug}`}>
-        <Toggle style="text" onClick={this.toggleDeploy}>{slug}</Toggle>
+        <Toggle style="text" onClick={this.toggleDeploy}>
+          <DeployIcon name="dropdown" deployed={deployed} />
+          {slug}
+        </Toggle>
 
         <EditionForm onSubmit={this.handleSave} className={deployed ? 'deployed' : ''} >
 
