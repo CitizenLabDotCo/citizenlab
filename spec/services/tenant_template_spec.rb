@@ -27,7 +27,7 @@ describe TenantTemplateService do
             core: {
               allowed: true,
               enabled: true,
-              locales: ['en','nl'],
+              locales: ['en','nl', 'fr'],
               organization_type: 'medium_city',
               organization_name: {
                 "en" => Faker::Address.city,
