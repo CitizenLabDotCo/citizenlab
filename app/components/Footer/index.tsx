@@ -204,8 +204,14 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
               </li>
               <Separator>|</Separator>
               <li>
-                <StyledLink to="/pages/cookie-policy">
+                <StyledLink to="/pages/cookies-policy">
                   <FormattedMessage {...messages.cookiesLink} />
+                </StyledLink>
+              </li>
+              <Separator>|</Separator>
+              <li>
+                <StyledLink to="/pages/informations">
+                  <FormattedMessage {...messages.informationsLink} />
                 </StyledLink>
               </li>
             </PagesNav>

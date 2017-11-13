@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.footer.cookiesLink',
     defaultMessage: 'Cookies Policy',
   },
+  informationsLink: {
+    id: 'app.containers.footer.informationsLink',
+    defaultMessage: 'About',
+  },
   feedbackLink: {
     id: 'app.containers.footer.feedbackLink',
     defaultMessage: 'Give your opinion',
