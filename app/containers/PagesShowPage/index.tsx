@@ -6,11 +6,16 @@
 
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import { includes } from 'lodash';
+
 import { injectTFunc } from 'components/T/utils';
 import Helmet from 'react-helmet';
 import T from 'components/T';
 import { IPageData, pageBySlugStream } from 'services/pages';
+
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+
 import ContentContainer from 'components/ContentContainer';
 import styled from 'styled-components';
 import NotFound from 'containers/NotFoundPage';
@@ -42,8 +47,9 @@ type State = {
   loading: boolean;
 };
 
-class PagesShowPage extends React.PureComponent<Props, State> {
+class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State> {
   pageObserver: Rx.Subscription | null;
+  legalPages = ['terms-and-conditions', 'privacy-policy', 'cookies-policy'];
 
   constructor() {
     super();
@@ -90,10 +96,20 @@ class PagesShowPage extends React.PureComponent<Props, State> {
     return page && (
       <ContentContainer>
         <Helmet>
-          <title>{tFunc(page.attributes.title_multiloc)}</title>
+          <title>
+          {includes(this.legalPages, this.props.params.slug)
+            ? this.props.intl.formatMessage(messages[this.props.params.slug])
+            : tFunc(page.attributes.title_multiloc)
+          }
+          </title>
         </Helmet>
         <TextContainer>
-          <h1><T value={page.attributes.title_multiloc} /></h1>
+          <h1>
+            {includes(this.legalPages, this.props.params.slug)
+              ? <FormattedMessage {...messages[this.props.params.slug]} />
+              : <T value={page.attributes.title_multiloc} />
+            }
+          </h1>
           <T value={page.attributes.body_multiloc} />
         </TextContainer>
       </ContentContainer>
@@ -101,4 +117,4 @@ class PagesShowPage extends React.PureComponent<Props, State> {
   }
 }
 
-export default injectTFunc(PagesShowPage);
+export default injectIntl(injectTFunc(PagesShowPage));

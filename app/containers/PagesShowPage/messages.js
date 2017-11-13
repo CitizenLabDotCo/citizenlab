@@ -22,4 +22,16 @@ export default defineMessages({
     id: 'app.containers.PagesShowPage.helmetDescription',
     defaultMessage: 'Displays page created by admin',
   },
+  'terms-and-conditions': {
+    id: 'app.containers.PagesShowPage.hardcodedTitle.terms-and-conditions',
+    defaultMessage: 'Terms and Conditions',
+  },
+  'privacy-policy': {
+    id: 'app.containers.PagesShowPage.hardcodedTitle.privacy-policy',
+    defaultMessage: 'Privacy Policy',
+  },
+  'cookies-policy': {
+    id: 'app.containers.PagesShowPage.hardcodedTitle.cookies-policy',
+    defaultMessage: 'Cookies Policy',
+  },
 });
