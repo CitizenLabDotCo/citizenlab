@@ -67,7 +67,7 @@ export default class Title extends React.PureComponent<Props, State> {
         onClick={this.handleClick}
         aria-expanded={deployed}
         id={`${baseID}-label`}
-        className={deployed ? 'deployed' : ''}
+        className={`e2e-filter-selector-button ${deployed ? 'deployed' : ''}`}
       >
         <Text>{title}</Text>
         <DropdownIcon name="dropdown" />
