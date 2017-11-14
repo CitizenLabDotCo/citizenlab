@@ -12,6 +12,7 @@ import { injectTFunc } from 'components/T/utils';
 import Helmet from 'react-helmet';
 import T from 'components/T';
 import { IPageData, pageBySlugStream } from 'services/pages';
+import { PageLink, getPageLink } from 'services/pageLink';
 
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
@@ -82,6 +83,7 @@ type Props = {
 type State = {
   page: IPageData | null,
   loading: boolean;
+  pageLinks: {data: PageLink}[];
 };
 
 class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -94,14 +96,26 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
     this.state = {
       page: null,
       loading: true,
+      pageLinks: [],
     };
   }
 
   componentDidMount() {
-    this.pageObserver = pageBySlugStream(this.props.params.slug).observable.subscribe((response) => {
-      if (response) {
+    this.pageObserver = pageBySlugStream(this.props.params.slug).observable
+    .switchMap((pageResponse) => {
+      const linksRequests = pageResponse.data.relationships.page_links.data.map(link => {
+        return getPageLink(link.id).observable.first();
+      });
+      return Rx.Observable.combineLatest(linksRequests)
+      .map((pageLinks) => {
+        return { pageLinks, pageResponse };
+      });
+    })
+    .subscribe(({ pageLinks, pageResponse }) => {
+      if (pageResponse) {
         this.setState({
-          page: response.data,
+          pageLinks,
+          page: pageResponse.data,
           loading: false,
         });
       }
@@ -113,7 +127,7 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   render() {
-    const { page, loading } = this.state;
+    const { page, loading, pageLinks } = this.state;
     const { tFunc } = this.props;
 
     if (loading) {
@@ -151,21 +165,15 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
             <T value={page.attributes.body_multiloc} />
           </TextContainer>
         </ContentContainer>
-        {includes(this.legalPages, this.props.params.slug) &&
+        {pageLinks && pageLinks.length > 0 &&
           <PagesNavWrapper>
             <PagesNav>
-              <StyledLink to="/pages/terms-and-conditions">
-                <FormattedMessage {...messages.termsLink} />
-                <LinkIcon name="chevron-right" />
-              </StyledLink>
-              <StyledLink to="/pages/privacy-policy">
-                <FormattedMessage {...messages.privacyLink} />
-                <LinkIcon name="chevron-right" />
-              </StyledLink>
-              <StyledLink to="/pages/cookies-policy">
-                <FormattedMessage {...messages.cookiesLink} />
-                <LinkIcon name="chevron-right" />
-              </StyledLink>
+              {pageLinks.map((link) => (
+                <StyledLink to={`pages/${link.data.attributes.linked_page_slug}`} key={link.data.id}>
+                  <T value={link.data.attributes.linked_page_title_multiloc} />
+                  <LinkIcon name="chevron-right" />
+                </StyledLink>
+              ))}
             </PagesNav>
           </PagesNavWrapper>
         }
