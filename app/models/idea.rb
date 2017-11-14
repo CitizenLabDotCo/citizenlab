@@ -34,7 +34,7 @@ class Idea < ApplicationRecord
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
 
   before_validation :generate_slug, on: :create
-  before_validation :set_author_name, on: :create
+  before_validation :set_author_name
   before_validation :set_idea_status, on: :create
   after_validation :set_published_at, if: ->(idea){ idea.published? && idea.publication_status_changed? }
 
@@ -113,7 +113,7 @@ class Idea < ApplicationRecord
   end
 
   def set_author_name
-    self.author_name = self.author.display_name if self.author
+    self.author_name ||= self.author.display_name if self.author
   end
 
   def set_idea_status
