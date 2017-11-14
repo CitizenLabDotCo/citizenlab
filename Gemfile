@@ -75,7 +75,6 @@ gem "pg_search", "~> 2.0.1"
 gem "counter_culture", "~> 1.0"
 gem "liquid", "~> 4.0"
 gem "premailer-rails", "~> 1.9.6"
-gem "koala", "~> 3.0"
 gem 'groupdate', "~> 3.2.0"
 gem 'rubyzip', '~> 1.1.0'
 gem 'axlsx', '2.1.0.pre'
@@ -85,3 +84,8 @@ gem 'activerecord-postgis-adapter', '~> 5.0'
 gem 'simple_segment', '~> 0.2.1'
 gem 'okcomputer'
 gem 'sentry-raven'
+gem 'omniauth', '~> 1.7.1'
+gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-twitter'
+# gem 'omniauth-mydigipass', github: 'vasco-data-security/omniauth-mydigipass', branch: 'oauth-eid-specification'
