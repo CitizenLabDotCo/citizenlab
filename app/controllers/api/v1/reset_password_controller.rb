@@ -7,7 +7,7 @@
       @user = User.find_by!(email: params[:user][:email])
       token = ResetPasswordService.new.generate_reset_password_token @user
       @user.update(reset_password_token: token)
-      UserMailer.reset_password(@user, token).deliver_later
+      ResetPasswordService.new.log_password_reset_to_segment(@user, token)
       head :accepted
     end
 
