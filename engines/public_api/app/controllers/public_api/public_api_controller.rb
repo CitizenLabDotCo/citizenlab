@@ -3,7 +3,7 @@ module PublicApi
     include Knock::Authenticable
     include Pundit
 
-    before_action :authenticate_api_token
+    before_action :authenticate_api_client
     before_action :check_api_token
 
     def set_locale
@@ -18,15 +18,15 @@ module PublicApi
       end
 
       def pundit_user
-        current_api_token
+        current_publicapi_apiclient
       end
 
-      def authenticate_api_token
-        authenticate_for ApiToken
+      def authenticate_api_client
+        authenticate_for ApiClient
       end
 
       def check_api_token
-        unless current_publicapi_apitoken
+        unless current_publicapi_apiclient
           head :unauthorized
         end
       end

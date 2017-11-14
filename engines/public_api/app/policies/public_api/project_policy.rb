@@ -1,5 +1,5 @@
 module PublicApi
-  class IdeaPolicy < PublicApiPolicy
+  class ProjectPolicy < PublicApiPolicy
 
     class Scope
       attr_reader :api_client, :scope
@@ -11,15 +11,14 @@ module PublicApi
 
       def resolve
         # We base this on the same scope as a non-authenticated user
-        ::IdeaPolicy::Scope.new(nil, scope).resolve
-          .published
+        ::ProjectPolicy::Scope.new(nil, scope).resolve
       end
     end
 
 
     def show?
       # We base this on the same rules a non-authenticated user
-      ::IdeaPolicy.new(nil, record).show? && record.published?
+      ::ProjectPolicy.new(nil, record).show?
     end
 
   end
