@@ -65,6 +65,7 @@ type State = {
 
 class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
   subscriptions: Rx.Subscription[];
+  dropdownElement: HTMLElement | null;
 
   constructor() {
     super();
@@ -74,6 +75,8 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
       notifications: null,
       hasMore: true,
     };
+    this.subscriptions = [];
+    this.dropdownElement = null;
   }
 
   componentWillMount() {
@@ -103,6 +106,10 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
   }
 
   componentWillUnmount() {
+    if (this.dropdownElement) {
+      this.dropdownElement.removeEventListener('wheel', this.scrolling, false);
+    }
+
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
@@ -128,6 +135,24 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
     this.props.clickCloseNotifications();
   }
 
+  handleSetRef = (element) => {
+    if (element) {
+      this.dropdownElement = element;
+
+      if (this.dropdownElement) {
+        this.dropdownElement.addEventListener('wheel', this.scrolling, false);
+      }
+    }
+  }
+
+  scrolling = (event: WheelEvent) => {
+    if (this.dropdownElement) {
+      const deltaY = (event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY);
+      this.dropdownElement.scrollTop += deltaY;
+      event.preventDefault();
+    }
+  }
+
   render() {
     const { notifications, hasMore } = this.state;
     return (
@@ -139,6 +164,7 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
         <StyledPopover
           open={this.state.PopoverOpen}
           onCloseRequest={this.closePopover}
+          setRef={this.handleSetRef}
         >
           <InfiniteScroll
             pageStart={0}

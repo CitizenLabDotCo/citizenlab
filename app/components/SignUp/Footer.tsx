@@ -8,6 +8,7 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { currentTenantStream, ITenant } from 'services/tenant';
+import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // i18n
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
@@ -86,6 +87,7 @@ type Props = {
 
 type State = {
   currentTenant: ITenant | null;
+  socialLoginUrlParameter: string;
 };
 
 class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -94,16 +96,22 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   constructor() {
     super();
     this.state = {
-      currentTenant: null
+      currentTenant: null,
+      socialLoginUrlParameter: ''
     };
     this.subscriptions = [];
   }
 
   componentWillMount() {
+    const globalState$ = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage').observable;
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))
+      currentTenant$.subscribe(currentTenant => this.setState({ currentTenant })),
+
+      globalState$.subscribe((globalState) => {
+        this.setState({ socialLoginUrlParameter: (globalState && globalState.ideaId ? `?idea_to_publish=${globalState.ideaId}` : '') });
+      })
     ];
   }
 
@@ -116,7 +124,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { currentTenant } = this.state;
+    const { currentTenant, socialLoginUrlParameter } = this.state;
     const { formatMessage } = this.props.intl;
     const googleLoginEnabled = !!_.get(currentTenant, `data.attributes.settings.google_login.enabled`);
     const facebookLoginEnabled = !!_.get(currentTenant, `data.attributes.settings.facebook_login.enabled`);
@@ -138,7 +146,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                   style="primary"
                   size="1"
                   icon="google-colored"
-                  linkTo={`${AUTH_PATH}/google`}
+                  linkTo={`${AUTH_PATH}/google${socialLoginUrlParameter}`}
                   circularCorners={true}
                 />
               </FeatureFlag>
@@ -148,7 +156,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                   style="primary"
                   size="1"
                   icon="facebook-blue"
-                  linkTo={`${AUTH_PATH}/facebook`}
+                  linkTo={`${AUTH_PATH}/facebook${socialLoginUrlParameter}`}
                   circularCorners={true}
                 />
               </FeatureFlag>

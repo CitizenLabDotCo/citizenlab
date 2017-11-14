@@ -10,19 +10,20 @@ const Text = styled.span`
   color: #84939E;
   font-size: 16px;
   font-weight: 400;
-  line-height: 20px;
+  line-height: 24px;
   transition: all 100ms ease-out;
 `;
 
 const DropdownIcon = styled(Icon)`
-  height: 7px;
+  height: 6px;
   fill: #84939E;
   margin-left: 5px;
+  margin-top: 2px;
   transition: all 100ms ease-out;
 `;
 
 const Container = styled.div`
-  height: 20px;
+  height: 24px;
   cursor: pointer;
   display: flex;
   align-items: center;

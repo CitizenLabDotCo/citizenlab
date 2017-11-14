@@ -35,7 +35,7 @@ interface IStateInput {
   updatedStateProperties: object;
 }
 
-export interface IStream<T> {
+interface IStream<T> {
   observer: Rx.Observer<T>;
   observable: Rx.Observable<T>;
 }
@@ -76,10 +76,12 @@ class GlobalState {
     .distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState))
     .publishReplay(1)
     .refCount();
+
+    // keep stream hot
+    this.stream.observable.subscribe();
   }
 
   init<T>(propertyName: keyof State, initialState?: T): IGlobalStateService<T> {
-
     const observable: Rx.Observable<T> = this.stream.observable
       .map(state => state[propertyName])
       .filter(filteredState => _.isObject(filteredState) && !_.isEmpty(filteredState))

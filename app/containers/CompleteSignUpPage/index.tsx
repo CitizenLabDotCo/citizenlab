@@ -8,9 +8,12 @@ import { browserHistory } from 'react-router';
 // components
 import Step2 from 'components/SignUp/Step2';
 import SignInUpBanner from 'components/SignInUpBanner';
+import { landingPageIdeasQuery } from 'containers/LandingPage';
 
 // services
+import { authUserStream } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
+import { ideaByIdStream, ideasStream, updateIdea, IIdeas } from 'services/ideas';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
@@ -105,23 +108,39 @@ export default class CompleteSignUpPage extends React.PureComponent<Props, State
   }
 
   componentWillMount() {
-    const currentTenant$ = currentTenantStream().observable;
-
     const query = browserHistory.getCurrentLocation().query;
-    // _.has(query, 'areas')
+    const authUser$ = authUserStream().observable;
+    const currentTenant$ = currentTenantStream().observable;
+    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Rx.Observable.of(null));
 
     this.subscriptions = [
-      currentTenant$.subscribe((currentTenant) => {
+      Rx.Observable.combineLatest(
+        authUser$,
+        currentTenant$,
+      ).subscribe(([authUser, currentTenant]) => {
         const { birthyear, domicile, gender } = currentTenant.data.attributes.settings.demographic_fields;
         const demographicFieldsEnabled = _.get(currentTenant, `data.attributes.settings.demographic_fields.enabled`);
         const hasOneOrMoreActiveDemographicFields = [birthyear, domicile, gender].some(value => value === true);
-  
+
         if (!demographicFieldsEnabled || !hasOneOrMoreActiveDemographicFields) {
           // exit
           this.handleOnCompleted();
         } else {
           this.setState({ loading: false });
         }
+      }),
+
+      Rx.Observable.combineLatest(
+        authUser$,
+        ideaToPublish$
+      ).subscribe(async ([authUser, ideaToPublish]) => {
+        if (authUser && ideaToPublish && ideaToPublish.data.attributes.publication_status === 'draft') {
+          await updateIdea(ideaToPublish.data.id, { author_id: authUser.data.id, publication_status: 'published' });
+          ideasStream({ queryParameters: landingPageIdeasQuery }).fetch();
+        }
+
+        // remove idea parameter from the url
+        window.history.replaceState(null, '', window.location.pathname);
       })
     ];
   }

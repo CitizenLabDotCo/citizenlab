@@ -63,7 +63,6 @@ class ButtonBar extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   constructor() {
     super();
-    this.state = null as any;
     this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage');
     this.subscriptions = [];
   }

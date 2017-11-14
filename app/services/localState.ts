@@ -10,7 +10,6 @@ export interface ILocalStateService<T> {
 }
 
 export function localState<T>(initialState: T): ILocalStateService<T> {
-
   const service: ILocalStateService<T> = {
     observer: null as any,
     observable: null as any,

@@ -72,8 +72,8 @@ type Props = {
   open: boolean,
   onCloseRequest?: () => void,
   id?: string,
+  setRef?: (arg: HTMLElement) => void;
 };
-
 
 export default class Popover extends React.PureComponent<Props> {
 
@@ -82,6 +82,12 @@ export default class Popover extends React.PureComponent<Props> {
     event.preventDefault();
     if (this.props.onCloseRequest) {
       this.props.onCloseRequest();
+    }
+  }
+
+  handleSetRef = (element: HTMLElement) => {
+    if (this.props.setRef) {
+      this.props.setRef(element);
     }
   }
 
@@ -97,7 +103,12 @@ export default class Popover extends React.PureComponent<Props> {
           unmountOnExit={true}
           exit={false}
         >
-          <Container onClickOutside={this.clickOutside} className={this.props.className} id={this.props.id}>
+          <Container
+            onClickOutside={this.clickOutside}
+            className={this.props.className}
+            id={this.props.id}
+            setRef={this.handleSetRef}
+          >
             {this.props.children}
           </Container>
         </CSSTransition>

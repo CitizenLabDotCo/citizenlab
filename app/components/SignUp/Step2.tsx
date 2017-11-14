@@ -110,7 +110,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
       const hasOneOrMoreActiveDemographicFields = [birthyear, domicile, gender].some(value => value === true);
 
       if (!demographicFieldsEnabled || !hasOneOrMoreActiveDemographicFields) {
-        // exit step2
+        // no fields are configured to be visible
         this.props.onCompleted();
       }
     });
@@ -122,13 +122,18 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
         currentTenant$,
         areas$
       ).subscribe(([authUser, locale, currentTenant, areas]) => {
-        this.setState({
-          authUser,
-          locale,
-          currentTenant,
-          areas: this.getOptions(areas, locale, currentTenant),
-          loading: false
-        });
+        if (!authUser) {
+          // redirect to landingpage when user is not logged in
+          browserHistory.push('/');
+        } else {
+          this.setState({
+            authUser,
+            locale,
+            currentTenant,
+            areas: this.getOptions(areas, locale, currentTenant),
+            loading: false
+          });
+        }
       })
     ];
   }
@@ -197,17 +202,14 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  skipStep = () => {
+  skipStep = (event: React.FormEvent<any>) => {
+    event.preventDefault();
     this.props.onCompleted();
   }
 
   render() {
     const { formatMessage } = this.props.intl;
     const { authUser, currentTenant, areas, years, selectedYearOfBirth, selectedGender, selectedArea, loading, processing, unknownError } = this.state;
-
-    if (!loading && authUser === null) {
-      browserHistory.push('/');
-    }
 
     if (!loading && authUser && currentTenant) {
       const { birthyear, domicile, gender } = currentTenant.data.attributes.settings.demographic_fields;
