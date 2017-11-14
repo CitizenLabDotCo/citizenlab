@@ -26,29 +26,29 @@ namespace :migrate do
       topics_code_hash = create_topics_code_hash
       topics_hash = {}
       if client['categories']
-        client['categories'].find.each do |c|
+        client['categories'].find.no_cursor_timeout.each do |c|
           map_topic c, topics_hash, topics_mapping, topics_code_hash
         end
       end
       areas_hash = {}
-      client['neighbourhoods'].find.each do |n|
+      client['neighbourhoods'].find.no_cursor_timeout.each do |n|
         migrate_area n, areas_hash, locales_mapping
       end
       superadmin_id = nil
       groups_hash = {}
-      client['groups'].find.each do |g|
+      client['groups'].find.no_cursor_timeout.each do |g|
         was_superadmin = migrate_group g, groups_hash, locales_mapping
         if was_superadmin
           superadmin_id = was_superadmin
         end
       end
       users_hash = {}
-  	  client['users'].find.each do |u|
+  	  client['users'].find.no_cursor_timeout.each do |u|
   		  migrate_user u, users_hash, groups_hash, superadmin_id, locales_mapping
   	  end
       projects_hash = {}
       phases_hash = {}
-      client['projects'].find.each do |p|
+      client['projects'].find.no_cursor_timeout.each do |p|
         migrate_project p, projects_hash, areas_hash, topics_hash, phases_hash, groups_hash, superadmin_id, locales_mapping
       end
       idea_statuses_hash = {}
@@ -56,16 +56,16 @@ namespace :migrate do
         idea_statuses_hash[id] = map_idea_status phase, idea_statuses_mapping
       end
       ideas_hash = {}
-      client['posts'].find.each do |p|
+      client['posts'].find.no_cursor_timeout.each do |p|
         migrate_idea p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash, idea_statuses_hash, locales_mapping
       end
       comments_hash = {}
       # process comments by order of creation such that the parents can always be found
-      client['comments'].find.map { |x| x }.sort { |c1,c2| c1.dig('createdAt') <=> c2.dig('createdAt') }.each do |c|
+      client['comments'].find.no_cursor_timeout.map { |x| x }.sort { |c1,c2| c1.dig('createdAt') <=> c2.dig('createdAt') }.each do |c|
         migrate_comment c, comments_hash, users_hash, ideas_hash, locales_mapping
       end
       pages_hash = {}
-      client['pages'].find.each do |p|
+      client['pages'].find.no_cursor_timeout.each do |p|
         migrate_page p, pages_hash, locales_mapping
       end
       if !@log.empty?
@@ -198,8 +198,8 @@ namespace :migrate do
     # one big transaction
     d = {}
     # email
-    if u['telescope']['email'] || u['registered_emails'] || u['emails']
-      d[:email] = u['telescope']['email'] || (u['registered_emails'] || u['emails'])&.first['address']
+    if u.dig('telescope', 'email') || u['registered_emails'] || u['emails']
+      d[:email] = u.dig('telescope', 'email') || (u['registered_emails'] || u['emails'])&.first['address']
     elsif u.dig('services', 'facebook', 'email')
       d[:email] = u.dig('services', 'facebook', 'email')
     else
@@ -239,7 +239,7 @@ namespace :migrate do
       return
     end
     # locale
-    d[:locale] = locales_mapping[u['telescope']['locale']] || Tenant.current.settings.dig('core', 'locales').first
+    d[:locale] = locales_mapping[u.dig('telescope', 'locale')] || Tenant.current.settings.dig('core', 'locales').first
     # admin
     if u['isAdmin']
       d[:roles] = [{type: 'admin'}]
