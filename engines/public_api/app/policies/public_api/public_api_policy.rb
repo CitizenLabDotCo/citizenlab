@@ -1,9 +1,9 @@
 module PublicApi
   class PublicApiPolicy
-    attr_reader :api_token, :record
+    attr_reader :api_client, :record
 
-    def initialize(api_token, record)
-      @api_token = api_token
+    def initialize(api_client, record)
+      @api_client = api_client
       @record = record
     end
 

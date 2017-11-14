@@ -2,11 +2,14 @@ module PublicApi
 
   class V1::IdeasController < PublicApiController
 
+    before_action :set_idea, only: [:show]
+
     def index
-      @ideas = Idea
+      @ideas = PublicApi::IdeaPolicy::Scope.new(current_publicapi_apiclient, Idea).resolve
+      @ideas = @ideas
         .published
-        .page(params.dig(:page, :number))
-        .per(params.dig(:page, :size))
+        .page(params.dig(:page_number))
+        .per(params.dig(:page_size))
         .includes(:idea_images, :project, :idea_status)
         .order_trending
 
@@ -18,10 +21,14 @@ module PublicApi
     end
 
     def show
-      @idea = Idea.find(params[:id])
       render json: @idea, 
         serializer: V1::IdeaSerializer,
         adapter: :json
+    end
+
+    def set_idea
+      @idea = Idea.find(params[:id])
+      authorize PolicyWrappedIdea.new(@idea)
     end
 
     def meta_properties relation

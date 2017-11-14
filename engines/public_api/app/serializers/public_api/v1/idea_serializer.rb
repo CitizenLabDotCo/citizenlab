@@ -15,10 +15,6 @@ class PublicApi::V1::IdeaSerializer < ActiveModel::Serializer
     :project_title,
     :status
 
-  def location_point_geojson
-    RGeo::GeoJSON.encode(object.location_point)
-  end
-
   def title
     @@multiloc_service.t(object.title_multiloc)
   end
