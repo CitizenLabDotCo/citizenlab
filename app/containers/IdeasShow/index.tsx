@@ -515,7 +515,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <LeftColumn>
-                {(ideaImageLarge || ideaLocation) && 
+                {(ideaImageLarge || ideaLocation) &&
                   <ImageAndMapWrapper>
                     {ideaImageLarge ? <IdeaImage className={`${this.state.showMap ? 'hidden' : ''}`} data-img={ideaImageLarge} /> : null}
                     {ideaLocation ? <IdeaMap location={ideaLocation} /> : null}
@@ -537,7 +537,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                     </AuthorMeta>
                   </AuthorContainer>
 
-                  {ideaAdress && <LocationButton style="text" onClick={this.handleMapToggle}>
+                  {ideaLocation && <LocationButton style="text" onClick={this.handleMapToggle}>
                     {(this.state.showMap && ideaImageLarge) &&
                       <span>
                         <FormattedMessage {...messages.closeMap} />
