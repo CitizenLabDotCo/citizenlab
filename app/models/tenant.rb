@@ -66,7 +66,7 @@ class Tenant < ApplicationRecord
     if Rails.env.development? || Rails.env.test?
       "http://localhost:3000"
     else
-      transport = request.ssl? ? 'https' : 'http'
+      transport = 'https' # request.ssl? ? 'https' : 'http'
       "#{transport}://#{self.host}"
     end
   end
@@ -75,7 +75,7 @@ class Tenant < ApplicationRecord
     if Rails.env.development? || Rails.env.test?
       "http://localhost:4000"
     else
-      transport = request.ssl? ? 'https' : 'http'
+      transport = 'https' # request.ssl? ? 'https' : 'http'
       "#{transport}://#{self.host}"
     end
   end
