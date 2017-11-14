@@ -161,7 +161,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
         <Container id="e2e-user-menu-container">
           {avatar ? <StyledAvatar userId={userId} size="small" onClick={this.togglePopover} /> : <UserIcon name="user" />}
             <StyledPopover
-              id="e2e-user-menu-Popover"
+              id="e2e-user-menu-dropdown"
               open={PopoverOpened}
               onCloseRequest={this.closePopover}
             >

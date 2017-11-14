@@ -105,30 +105,12 @@ const LeftColumn = styled.div`
   padding: 0;
 `;
 
-const ImageAndMapWrapper = styled.div`
+const IdeaImage = styled.img`
   border-radius: 8px;
-  border: 1px solid ${props => props.theme.colors.separation};
-  height: 265px;
-  margin-bottom: 24px;
-  margin: 0 0 24px;
-  overflow: hidden;
+  border: 1px solid ${props => props.theme.colors.separation};
+  margin: 0 0 2rem;
   padding: 0;
   width: 100%;
-`;
-
-const IdeaImage = styled.div`
-  background-image: ${(props: any) => `url("${props['data-img']}")`};
-  background-position: center;
-  background-size: cover;
-  height: 265px;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  transition: all .1s ease-out;
-
-  &.hidden {
-    height: 0;
-  }
 `;
 
 const AuthorContainer = styled.div`
@@ -140,12 +122,18 @@ const AuthorContainer = styled.div`
 
 const AuthorAndAdressWrapper = styled.div`
   align-items: center;
+  align-items: flex-start;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 24px;
+  flex-direction: column;
+  margin-bottom: 2rem;
 
   ${AuthorContainer} {
     flex: 1;
+  }
+
+  @media (min-width: 450px) {
+    flex-direction: row;
+    justify-content: space-between;
   }
 `;
 
@@ -156,6 +144,21 @@ const LocationButton = styled(Button)`
 const StyledPositionIcon = styled(Icon)`
   height: 1em;
   margin-left: .5em;
+`;
+
+const MapWrapper = styled.div`
+  border-radius: 8px;
+  border: 1px solid ${props => props.theme.colors.separation};
+  height: 265px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+  transition: all .3s ease-out;
+
+  &.hidden {
+    height: 0;
+    border-color: transparent;
+    margin-bottom: 0;
+  }
 `;
 
 const AuthorAvatar = styled(Avatar)`
@@ -525,12 +528,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <LeftColumn>
-                {(ideaImageLarge || ideaLocation) &&
-                  <ImageAndMapWrapper>
-                    {ideaImageLarge ? <IdeaImage className={`${this.state.showMap ? 'hidden' : ''}`} data-img={ideaImageLarge} /> : null}
-                    {ideaLocation ? <IdeaMap location={ideaLocation} /> : null}
-                  </ImageAndMapWrapper>
-                }
+                {ideaImageLarge ? <IdeaImage src={ideaImageLarge} /> : null}
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>
@@ -548,13 +546,13 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                   </AuthorContainer>
 
                   {ideaLocation && <LocationButton style="text" onClick={this.handleMapToggle}>
-                    {(this.state.showMap && ideaImageLarge) &&
+                    {(this.state.showMap) &&
                       <span>
                         <FormattedMessage {...messages.closeMap} />
                         <StyledPositionIcon name="close" />
                       </span>
                     }
-                    {(!this.state.showMap || !ideaImageLarge) &&
+                    {(!this.state.showMap) &&
                       <span>
                         {ideaAdress}
                         <StyledPositionIcon name="position" />
@@ -562,6 +560,10 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                     }
                   </LocationButton>}
                 </AuthorAndAdressWrapper>
+
+                {ideaLocation ? <MapWrapper className={`${this.state.showMap ? '' : 'hidden'}`}>
+                  <IdeaMap location={ideaLocation} />
+                </MapWrapper> : null}
 
                 <IdeaBody>
                   <T value={bodyMultiloc} />
