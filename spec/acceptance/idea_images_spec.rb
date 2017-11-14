@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource "IdeaFile" do
+resource "IdeaImage" do
 
   before do
     header "Content-Type", "application/json"
@@ -9,47 +9,47 @@ resource "IdeaFile" do
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
     header 'Authorization', "Bearer #{token}"
     @idea = create(:idea, author: @user)
-    create_list(:idea_file, 2, idea: @idea)
+    create_list(:idea_image, 2, idea: @idea)
   end
 
-  get "api/v1/ideas/:idea_id/files" do
+  get "api/v1/ideas/:idea_id/images" do
     
     let(:idea_id) { @idea.id }
-    example_request "List all file attachments of an idea" do
+    example_request "List all images of an idea" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
   end
 
-  get "api/v1/ideas/:idea_id/files/:file_id" do
+  get "api/v1/ideas/:idea_id/images/:image_id" do
     
     let(:idea_id) { @idea.id }
-    let(:file_id) { IdeaFile.first.id }
-    example_request "Get one file attachment of an idea" do
+    let(:image_id) { IdeaImage.first.id }
+    example_request "Get one image of an idea" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:file)).to be_present
+      expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
     end
   end
 
-  post "api/v1/ideas/:idea_id/files" do
-    with_options scope: :file do
-      parameter :file, "The base64 encoded file", required: true
-      parameter :ordering, "An integer that is used to order the files within an idea", required: false
+  post "api/v1/ideas/:idea_id/images" do
+    with_options scope: :image do
+      parameter :image, "The base64 encoded image", required: true
+      parameter :ordering, "An integer that is used to order the images within an idea", required: false
     end
-    ValidationErrorHelper.new.error_fields(self, IdeaFile)
+    ValidationErrorHelper.new.error_fields(self, IdeaImage)
 
 
     let(:idea_id) { @idea.id }
 
-    let(:file) { encode_file_as_base64("afvalkalender.pdf") }
+    let(:image) { encode_image_as_base64("image13.png") }
     let(:ordering) { 1 }
 
-    example_request "Add an file to an idea" do
+    example_request "Add an image to an idea" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:file)).to be_present
+      expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
     end
 
