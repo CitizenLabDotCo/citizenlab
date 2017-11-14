@@ -17,9 +17,10 @@ import Button from 'components/UI/Button';
 import Footer from 'components/Footer';
 
 // services
+import { authUserStream } from 'services/auth';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { ideasStream, IIdeas } from 'services/ideas';
+import { ideaByIdStream, ideasStream, updateIdea, IIdeas } from 'services/ideas';
 import { projectsStream, IProjects } from 'services/projects';
 
 // i18n
@@ -32,6 +33,10 @@ import { getLocalized } from 'utils/i18n';
 import styled, { css } from 'styled-components';
 import { lighten, darken } from 'polished';
 import { media } from 'utils/styleUtils';
+
+// typings
+import { IUser } from 'services/users';
+import { setTimeout } from 'timers';
 
 const Container: any = styled.div`
   display: flex;
@@ -212,7 +217,7 @@ const ExploreText = styled.div`
   transition: all 100ms ease-out;
 `;
 
-const ExploreIcon = styled(Icon) `;
+const ExploreIcon = styled(Icon) `
   height: 19px;
   fill: #84939E;
   margin-top: 1px;
@@ -261,11 +266,12 @@ type State = {
   hasProjects: boolean;
 };
 
+export const landingPageIdeasQuery = { sort: 'trending', 'page[number]': 1, 'page[size]': 6 };
+export const landingPageProjectsQuery = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
+
 class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
-  ideasQueryParameters: object;
-  projectsQueryParameters: object;
 
   constructor() {
     super();
@@ -277,15 +283,16 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
       hasProjects: false
     };
     this.subscriptions = [];
-    this.ideasQueryParameters = { sort: 'trending', 'page[size]': 6 };
-    this.projectsQueryParameters = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
   }
 
   componentWillMount() {
+    const query = browserHistory.getCurrentLocation().query;
+    const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
-    const ideas$ = ideasStream({ queryParameters: this.ideasQueryParameters }).observable;
-    const projects$ = projectsStream({ queryParameters: this.ideasQueryParameters }).observable;
+    const ideas$ = ideasStream({ queryParameters: landingPageIdeasQuery }).observable;
+    const projects$ = projectsStream({ queryParameters: landingPageProjectsQuery }).observable;
+    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Rx.Observable.of(null));
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -293,13 +300,29 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
         currentTenant$,
         ideas$,
         projects$
-      ).subscribe(([locale, currentTenant, ideas, projects]) => this.setState({
-        locale,
-        currentTenant,
-        currentTenantHeader: (currentTenant.data.attributes.header_bg ? currentTenant.data.attributes.header_bg.large : null),        
-        hasIdeas: (ideas !== null && ideas.data.length > 0),
-        hasProjects: (projects !== null && projects.data.length > 0)
-      }))
+      ).subscribe(([locale, currentTenant, ideas, projects]) => {
+        this.setState({
+          locale,
+          currentTenant,
+          currentTenantHeader: (currentTenant.data.attributes.header_bg ? currentTenant.data.attributes.header_bg.large : null),        
+          hasIdeas: (ideas !== null && ideas.data.length > 0),
+          hasProjects: (projects !== null && projects.data.length > 0)
+        });
+      }),
+
+      // if sent back to landingpage after socail login
+      Rx.Observable.combineLatest(
+        authUser$,
+        ideaToPublish$
+      ).subscribe(async ([authUser, ideaToPublish]) => {
+        if (authUser && ideaToPublish && ideaToPublish.data.attributes.publication_status === 'draft') {
+          await updateIdea(ideaToPublish.data.id, { author_id: authUser.data.id, publication_status: 'published' });
+          ideasStream({ queryParameters: landingPageIdeasQuery }).fetch();
+        }
+
+        // remove idea parameter from url
+        window.history.replaceState(null, '', window.location.pathname);
+      })
     ];
   }
 
@@ -373,7 +396,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                     }
                   </SectionHeader>
                   <SectionContainer>
-                    <IdeaCards filter={this.ideasQueryParameters} loadMoreEnabled={false} />
+                    <IdeaCards filter={landingPageIdeasQuery} loadMoreEnabled={false} />
                   </SectionContainer>
                   {hasIdeas &&
                     <SectionFooter>
@@ -405,7 +428,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                       </Explore>
                     </SectionHeader>
                     <SectionContainer>
-                      <ProjectCards filter={this.projectsQueryParameters} loadMoreEnabled={false} />
+                      <ProjectCards filter={landingPageProjectsQuery} loadMoreEnabled={false} />
                     </SectionContainer>
                     <SectionFooter>
                       <ViewMoreButton

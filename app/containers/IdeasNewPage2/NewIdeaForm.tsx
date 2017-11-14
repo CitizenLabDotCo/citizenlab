@@ -126,7 +126,6 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
 
   constructor() {
     super();
-    this.state = null as any;
     this.localState = localState<LocalState>({ topics: null, projects: null });
     this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage');
     this.subscriptions = [];

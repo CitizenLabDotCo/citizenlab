@@ -127,7 +127,7 @@ const IdeaContainer: any = styled(Link)`
   will-change: box-shadow;
 
   &:hover {
-    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   }
 `;
 

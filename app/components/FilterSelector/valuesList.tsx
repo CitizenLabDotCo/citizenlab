@@ -134,7 +134,7 @@ type State = {
 
 export default class ValuesList extends React.PureComponent<Props, State> {
   state: State;
-  dropdownElement: any;
+  dropdownElement: HTMLElement | null;
 
   constructor() {
     super();
@@ -146,20 +146,25 @@ export default class ValuesList extends React.PureComponent<Props, State> {
 
   componentWillUnmount() {
     if (this.dropdownElement) {
-      (this.dropdownElement as any).addEventListener('wheel', this.scrolling, false);
+      this.dropdownElement.removeEventListener('wheel', this.scrolling, false);
     }
   }
 
   scrolling = (event: WheelEvent) => {
-    const deltaY = (event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY);
-    (this.dropdownElement as any).scrollTop += deltaY;
-    event.preventDefault();
+    if (this.dropdownElement) {
+      const deltaY = (event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY);
+      this.dropdownElement.scrollTop += deltaY;
+      event.preventDefault();
+    }
   }
 
   setRef = (element) => {
     if (element) {
       this.dropdownElement = element;
-      this.dropdownElement.addEventListener('wheel', this.scrolling, false);
+
+      if (this.dropdownElement) {
+        this.dropdownElement.addEventListener('wheel', this.scrolling, false);
+      }
     }
   }
 

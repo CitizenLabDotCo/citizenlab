@@ -21,7 +21,7 @@ import SignInUp from './SignInUp';
 // services
 import { localeStream } from 'services/locale';
 import { addIdea, updateIdea } from 'services/ideas';
-import { addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
+import { addIdeaImage, deleteIdeaImage, IIdeaImage } from 'services/ideaImages';
 import { getAuthUserAsync } from 'services/auth';
 import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
@@ -152,18 +152,19 @@ interface GlobalState {}
 interface State extends LocalState, GlobalState {}
 
 class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State> {
+  initialLocalState: LocalState;
+  initialGlobalState: IIdeasNewPageGlobalState;
   localState: ILocalStateService<LocalState>;
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
   constructor() {
     super();
-    this.state = null as any;
-    this.localState = localState<LocalState>({
+    this.initialLocalState = {
       showIdeaForm: true,
       locale: null
-    });
-    this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage', {
+    };
+    this.initialGlobalState = {
       title: null,
       description: EditorState.createEmpty(),
       selectedTopics: null,
@@ -177,7 +178,9 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
       ideaId: null,
       imageId: null,
       imageChanged: false
-    });
+    };
+    this.localState = localState<LocalState>(this.initialLocalState);
+    this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage', this.initialGlobalState);
     this.subscriptions = [];
   }
 
@@ -195,6 +198,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   componentWillUnmount() {
+    // clean up global state before unmounting
+    this.globalState.set(this.initialGlobalState);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
@@ -207,10 +212,11 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     };
   }
 
-  async postIdea(locale: string, ideasNewPageState: IIdeasNewPageGlobalState, publicationStatus: 'draft' | 'published', authorId: string | null = null) {
-    const { title, description, selectedTopics, selectedProject, location, ideaId } = ideasNewPageState;
-    const ideaTitle = { [locale]: title as string };
-    const ideaDescription = { [locale]: draftToHtml(convertToRaw(description.getCurrentContent())) };
+  async postIdea(publicationStatus: 'draft' | 'published', authorId: string | null = null) {
+    const { locale } = await this.localState.get();
+    const { title, description, selectedTopics, selectedProject, location, ideaId } = await this.globalState.get();
+    const ideaTitle = { [locale as string]: title as string };
+    const ideaDescription = { [locale as string]: draftToHtml(convertToRaw(description.getCurrentContent())) };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = (selectedProject ? selectedProject.value as string : null);
     const locationGeoJSON = (_.isString(location) && !_.isEmpty(location) ? await this.convertToGeoJson(location) : null);
@@ -218,7 +224,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
 
     if (ideaId) {
       return await updateIdea(ideaId, {
-        author_id: authorId,
+        // author_id: authorId,
+        // publication_status: publicationStatus,
         title_multiloc: ideaTitle,
         body_multiloc: ideaDescription,
         topic_ids: topicIds,
@@ -240,7 +247,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     );
   }
 
-  async postIdeaImage(ideaId: string, image: ImageFile) {
+  async postIdeaImage(ideaId: string, image: ImageFile): Promise<IIdeaImage> {
     try {
       const base64Image = await getBase64(image);
       return await addIdeaImage(ideaId, base64Image, 0);
@@ -249,26 +256,29 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     }
   }
 
-  async postIdeaAndIdeaImage(locale: string, publicationStatus: 'draft' | 'published', authorId: string | null = null) {
+  async postIdeaAndIdeaImage(publicationStatus: 'draft' | 'published', authorId: string | null = null) {
     try {
-      const promises: Promise<any>[] = [];
-      const globalState = await this.globalState.get();
-      const { images, imageId, imageChanged } = globalState;
-      const idea = await this.postIdea(locale, globalState, publicationStatus);
+      let ideaImage: IIdeaImage | null = null;
+      const { images, imageId, imageChanged } = await this.globalState.get();
 
+      const idea = await this.postIdea(publicationStatus, authorId);
+
+      // check if an image was previously saved and changed afterwards
+      // if so, delete the old image from the server first before uplaoding the new one
       if (imageId && imageChanged) {
-        promises.push(deleteIdeaImage(idea.data.id, imageId));
+        await deleteIdeaImage(idea.data.id, imageId);
       }
 
+      // upload the newly dropped image to the server
       if (images && images.length > 0 && imageChanged) {
-        promises.push(this.postIdeaImage(idea.data.id, images[0]));
+        ideaImage = await this.postIdeaImage(idea.data.id, images[0]);
       }
 
-      if (promises && promises.length > 0) {
-        const response = await Promise.all(promises);
-      }
-
-      this.globalState.set({ ideaId: idea.data.id, imageChanged: false });
+      this.globalState.set({
+        ideaId: idea.data.id,
+        imageId: (ideaImage ? ideaImage.data.id : null),
+        imageChanged: false
+      });
 
       return idea;
     } catch (error) {
@@ -276,25 +286,25 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     }
   }
 
-  handleOnIdeaSubmit = (locale: string) => async () => {
+  handleOnIdeaSubmit = async () => {
     this.globalState.set({ submitError: false, processing: true });
 
     try {
       const authUser = await getAuthUserAsync();
-      const idea = await this.postIdeaAndIdeaImage(locale, 'published', authUser.data.id);
+      const idea = await this.postIdeaAndIdeaImage('published', authUser.data.id);
       browserHistory.push('/ideas');
     } catch (error) {
       if (_.isError(error) && error.message === 'not_authenticated') {
         try {
-          const idea = await this.postIdeaAndIdeaImage(locale, 'draft');
+          const idea = await this.postIdeaAndIdeaImage('draft');
           this.globalState.set({ processing: false });
           this.localState.set({ showIdeaForm: false });
           window.scrollTo(0, 0);
         } catch (error) {
-          this.globalState.set({ submitError: true });
+          this.globalState.set({ processing: false, submitError: true });
         }
       } else {
-        this.globalState.set({ submitError: true });
+        this.globalState.set({ processing: false, submitError: true });
       }
     }
   }
@@ -322,7 +332,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     const buttonBar = (showIdeaForm && locale) ? (
       <CSSTransition classNames="buttonbar" timeout={timeout}>
         <ButtonBarContainer>
-          <ButtonBar onSubmit={this.handleOnIdeaSubmit(locale)} />
+          <ButtonBar onSubmit={this.handleOnIdeaSubmit} />
         </ButtonBarContainer>
       </CSSTransition>
     ) : null;
@@ -330,7 +340,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     const newIdeasForm = (showIdeaForm && locale) ? (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer className="ideaForm">
-          <NewIdeaForm onSubmit={this.handleOnIdeaSubmit(locale)} />
+          <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} />
         </PageContainer>
       </CSSTransition>
     ) : null;

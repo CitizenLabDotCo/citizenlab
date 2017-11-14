@@ -151,8 +151,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     }
   }
 
-  // {/* id="e2e-user-menu-Popover" */}
-
   render() {
     const { authUser, PopoverOpened } = this.state;
     const avatar = (authUser ? authUser.data.attributes.avatar : null);
@@ -160,8 +158,8 @@ export default class UserMenu extends React.PureComponent<Props, State> {
 
     if (authUser && userId) {
       return (
-        <Container id="e2e-user-menu-container" onClick={this.togglePopover}>
-          {avatar ? <StyledAvatar userId={userId} size="small" /> : <UserIcon name="user" />}
+        <Container id="e2e-user-menu-container">
+          {avatar ? <StyledAvatar userId={userId} size="small" onClick={this.togglePopover} /> : <UserIcon name="user" />}
             <StyledPopover
               id="e2e-user-menu-Popover"
               open={PopoverOpened}

@@ -37,7 +37,7 @@ export function ideaImagesStream(ideaId: string, streamParams: IStreamParams<IId
 }
 
 export function deleteIdeaImage(ideaId: string, imageId: string) {
-  return streams.delete(`${API_PATH}/ideas/${ideaId}/images`, imageId);
+  return streams.delete(`${API_PATH}/ideas/${ideaId}/images/${imageId}`, imageId);
 }
 
 export async function addIdeaImage(ideaId: string, base64: string, ordering: number | null = null) {
