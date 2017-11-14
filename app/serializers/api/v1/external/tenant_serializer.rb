@@ -1,4 +1,4 @@
-class Api::V1::External::ExternalTenantSerializer < ActiveModel::Serializer
+class Api::V1::External::TenantSerializer < ActiveModel::Serializer
   attributes :id, :name, :host, :settings, :logo, :header_bg
 
   def logo
