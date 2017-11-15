@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { includes, remove } from 'lodash';
+import { includes, without } from 'lodash';
 
 import { injectTFunc } from 'components/T/utils';
 import Helmet from 'react-helmet';
@@ -87,8 +87,8 @@ type State = {
 };
 
 class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State> {
-  pageObserver: Rx.Subscription | null;
-  legalPages = remove(LEGAL_PAGES, slug => slug !== 'information');
+  pageObserver: Rx.Subscription | null = null;
+  legalPages = without(LEGAL_PAGES, 'information');
 
   constructor() {
     super();
