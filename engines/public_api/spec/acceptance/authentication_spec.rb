@@ -9,26 +9,31 @@ resource "Authentication" do
 
   explanation "Authenticate with your `client_id` and `client_password` to retrieve a JWT token. You will need to send the JWT token you got back along with every request to the API, as part of the `Authorization` header. The JWT token expires after 24h, so make sure to re-authenticate."
 
-  route "public_api/v1/authenticate", "Authentication" do
+  route "/public_api/v1/authenticate", "Authentication" do
 
-    post "public_api/v1/authenticate" do
+    post "Authenticate" do
 
+      
       before do
         @api_token = PublicApi::ApiClient.create
       end
 
-      # with_options scope: :auth do
-        # parameter :client_id, "The client ID you obtained to access this API", required: true, type: 'string', scope: 'auth'
+      with_options scope: :auth do
+        attribute :client_id, "The client ID you obtained to access this API", required: true, type: 'string', scope: 'auth'
         attribute :client_secret, "The client secret you obtained to access this API", required: true, type: 'string', scope: 'auth'
-      # end
+      end
 
       let(:client_id) { @api_token.id }
       let(:client_secret) { @api_token.secret }
 
-      example_request "Authentication example" do
-        # expect(status).to eq 201
-        # json_response = json_parse(response_body)
-        # expect(json_response[:jwt]).to be_present
+      example "Authentication example" do
+        do_request(auth: {
+          client_id: client_id,
+          client_secret: @api_token.secret
+        })
+        expect(status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response[:jwt]).to be_present
       end
 
     end

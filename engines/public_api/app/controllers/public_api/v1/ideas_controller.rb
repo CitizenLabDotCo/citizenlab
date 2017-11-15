@@ -9,7 +9,7 @@ module PublicApi
       @ideas = @ideas
         .published
         .page(params.dig(:page_number))
-        .per(params.dig(:page_size))
+        .per([params.dig(:page_size)&.to_i || 12, 24].min)
         .includes(:idea_images, :project, :idea_status)
         .order_trending
 
