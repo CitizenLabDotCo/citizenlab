@@ -18,7 +18,7 @@ module.exports = {
     .url('localhost:3000')
     .pause(500)
     .waitForElementVisible('#e2e-ideas-list:first-child')
-    .getText('#e2e-ideas-list:first-child h4 span', function(result) {
+    .getText('#e2e-ideas-list:first-child h4 span', function (result) {
       this.assert.equal(result.value, title);
     });
 
@@ -26,7 +26,7 @@ module.exports = {
     .url('localhost:3000/ideas')
     .pause(500)
     .waitForElementVisible('#e2e-ideas-list:first-child')
-    .getText('#e2e-ideas-list:first-child h4 span', function(result) {
+    .getText('#e2e-ideas-list:first-child h4 span', function (result) {
       this.assert.equal(result.value, title);
     })
     .end();
