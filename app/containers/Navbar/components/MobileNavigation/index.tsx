@@ -96,7 +96,7 @@ export default class MobileNavigation extends React.PureComponent<{}, {}> {
 
         <NavigationItem to="/projects" activeClassName="active">
           <NavigationIconWrapper>
-            <NavigationIcon name="project2" />
+            <NavigationIcon name="project" />
           </NavigationIconWrapper>
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageProjects} />

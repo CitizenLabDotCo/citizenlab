@@ -14,8 +14,8 @@ type State = {};
 export default class ClickOutside extends React.PureComponent<Props, State> {
   private container: any;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.container = null;
   }
 

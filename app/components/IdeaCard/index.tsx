@@ -48,7 +48,7 @@ const IdeaImagePlaceholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #cfd6db;
+  background: ${props => props.theme.colors.placeholderBg};
 `;
 
 const CommentCount = styled.span`
@@ -150,8 +150,8 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       idea: null,
       ideaImage: null,

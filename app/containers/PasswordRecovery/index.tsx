@@ -91,8 +91,8 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
   state: State;
   emailInputElement: HTMLInputElement | null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       email: null,
       emailError: false,

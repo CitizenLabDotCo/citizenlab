@@ -241,8 +241,8 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
   private goBackUrl: string | null;
   private keydownEventListener: any;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.unlisten = null;
     this.goBackUrl = null;
   }

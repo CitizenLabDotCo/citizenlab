@@ -69,15 +69,23 @@ const ProjectImagePlaceholder = styled.div`
   flex-grow: 0;
   width: 176px;
   height: 176px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 6px;
   margin-right: 10px;
-  background: #cfd6db;
+  background: ${props => props.theme.colors.placeholderBg};
   overflow: hidden;
 
   ${media.smallerThanMaxTablet`
     width: 100%;
     margin: 0;
   `}
+`;
+
+const ProjectImagePlaceholderIcon = styled(Icon) `
+  height: 45px;
+  fill: #fff;
 `;
 
 const ProjectContent = styled.div`
@@ -193,8 +201,8 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       currentTenant: null,
       project: null,
@@ -252,7 +260,13 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
 
       return (
         <Container onClick={this.goToProject}>
-          {imageUrl ? <ProjectImage imageSrc={imageUrl} /> : <ProjectImagePlaceholder />}
+          {imageUrl && <ProjectImage imageSrc={imageUrl} />}
+
+          {!imageUrl &&
+            <ProjectImagePlaceholder>
+              <ProjectImagePlaceholderIcon name="project" />
+            </ProjectImagePlaceholder>
+          }
 
           <ProjectContent>
             <ProjectTitle><T value={titleMultiloc} /></ProjectTitle>

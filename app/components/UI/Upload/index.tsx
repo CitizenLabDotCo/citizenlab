@@ -192,8 +192,8 @@ class Upload extends React.PureComponent<Props & InjectedIntlProps, State> {
     placeholder: 'Drop your file here',
   };
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.emptyArray = [];
     this.state = {
       items: [],

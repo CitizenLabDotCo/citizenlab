@@ -133,8 +133,8 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps, S
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       currentTenant: null
     };

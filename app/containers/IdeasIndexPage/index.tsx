@@ -107,8 +107,8 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
   topics$: Rx.BehaviorSubject<string[]>;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       search: '',
       filter: {

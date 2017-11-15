@@ -111,8 +111,8 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       authUser: null,
       comment: null,

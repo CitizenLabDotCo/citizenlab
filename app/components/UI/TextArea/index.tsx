@@ -72,8 +72,8 @@ type State = {};
 export default class TextArea extends React.PureComponent<Props, State> {
   textareaElement: HTMLTextAreaElement | null = null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.textareaElement = null;
   }
 

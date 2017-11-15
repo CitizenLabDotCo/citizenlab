@@ -159,10 +159,10 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor(props) {
-    super(props);
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
-      show: props.show || 'signIn',
+      show: 'signIn',
       currentTenant: null
     };
     this.subscriptions = [];

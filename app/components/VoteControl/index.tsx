@@ -151,15 +151,15 @@ type State = {
   myVoteMode: 'up' | 'down' | null;
 };
 
-export default class Votes extends React.PureComponent<Props, State> {
+export default class VoteControl extends React.PureComponent<Props, State> {
   state: State;
   voting$: Rx.BehaviorSubject<'up' | 'down' | null>;
   subscriptions: Rx.Subscription[];
   upvoteElement: HTMLDivElement | null;
   downvoteElement: HTMLDivElement | null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       authUser: null,
       upvotesCount: 0,

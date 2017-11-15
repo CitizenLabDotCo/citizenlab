@@ -102,8 +102,8 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   unlisten: Function | null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       location: browserHistory.getCurrentLocation()
     };

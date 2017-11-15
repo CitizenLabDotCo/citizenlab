@@ -93,8 +93,8 @@ type State = {
 class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       currentTenant: null,
       socialLoginUrlParameter: ''
