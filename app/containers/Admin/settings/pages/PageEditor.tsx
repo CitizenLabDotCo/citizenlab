@@ -1,7 +1,7 @@
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import { get, includes, remove } from 'lodash';
+import { get, includes, without } from 'lodash';
 
 // Services
 import { pageBySlugStream, createPage, updatePage, IPageData, PageUpdate, LEGAL_PAGES } from 'services/pages';
@@ -79,7 +79,7 @@ interface State {
 
 export default class PageEditor extends React.Component<Props, State> {
   subs: Rx.Subscription[] = [];
-  legalPages = remove(LEGAL_PAGES, slug => slug !== 'information');
+  legalPages = without(LEGAL_PAGES, 'information');
 
   constructor(props) {
     super();
