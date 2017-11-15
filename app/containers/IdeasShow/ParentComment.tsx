@@ -33,13 +33,13 @@ import styled, { css } from 'styled-components';
 const timeout = 550;
 
 const Container = styled.div`
-  margin-top: 30px;
+  margin-top: 20px;
   -webkit-backface-visibility: hidden;
   will-change: auto;
 
   &.comment-enter {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translateY(-20px);
     will-change: opacity, transform;
 
     &.comment-enter-active {
@@ -54,6 +54,7 @@ const Container = styled.div`
 const CommentContainer: any = styled.div`
   border: solid 1px #e4e4e4;
   border-radius: 6px;
+  background: #fff;
 
   ${(props: any) => props.withReplyBox && css`
     border-bottom: none;
@@ -110,8 +111,8 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       authUser: null,
       comment: null,

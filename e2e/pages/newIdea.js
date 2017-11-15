@@ -5,7 +5,7 @@ const newIdeaCommands = {
     .setValue('@title', title)
     .setValue('@content', content)
     .click('@submit')
-    .waitForElementVisible('#e2e-ideas-container');
+    .waitForElementVisible('#e2e-ideas-list');
   },
 };
 

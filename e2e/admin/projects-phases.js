@@ -32,7 +32,7 @@ module.exports = {
 
     // Check for phase presence in the list
     .click('@phasesTab')
-    .assert.containsText('.e2e-phases-table', title);
+    .assert.containsText('.e2e-phases-table .e2e-phase-line.last .e2e-phase-title span', title);
 
     browser.end();
   },
@@ -52,11 +52,11 @@ module.exports = {
     .openLastProject()
     .waitForElementVisible('@phasesTab')
     .click('@phasesTab')
-    .waitForElementVisible('.e2e-phases-table')
-    .getAttribute('.e2e-phase-line:first-child', 'id', (result) => {
+    .waitForElementVisible('.e2e-phase-line')
+    .getAttribute('.e2e-phase-line', 'id', (result) => {
       phaseLineId = result.value;
     })
-    .click('.e2e-phase-line:first-child .e2e-delete-phase');
+    .click('.e2e-phase-line .e2e-delete-phase');
 
     browser
     .acceptAlert()

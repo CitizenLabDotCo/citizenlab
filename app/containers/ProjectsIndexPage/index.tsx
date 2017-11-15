@@ -85,8 +85,8 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
   unlisten: Function | null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     const query = browserHistory.getCurrentLocation().query;
     let filter = {};
@@ -158,11 +158,6 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container>
-
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
-        />
 
         <BackgroundColor />
 

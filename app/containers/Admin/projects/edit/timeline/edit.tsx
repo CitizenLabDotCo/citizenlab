@@ -64,8 +64,8 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
   startDatePlaceholder: string;
   endDatePlaceholder: string;
 
-  constructor(props) {
-    super(props);
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       phase: null,
       attributeDiff: {},

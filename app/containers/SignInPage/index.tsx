@@ -17,15 +17,20 @@ import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  height: 100%;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - ${props => props.theme.mobileMenuHeight}px);
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: row;
-  /* border-top: solid 1px #ddd; */
   background: #f8f8f8;
-  overflow: hidden;
   position: relative;
+
+  ${media.biggerThanMaxTablet`
+    overflow: hidden;
+    height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+    min-height: auto;
+  `}
 `;
 
 const Section = styled.div`
@@ -41,18 +46,20 @@ const Left = Section.extend`
   bottom: 0;
   overflow: hidden;
   pointer-events: none;
+  display: none;
 
-  ${media.smallerThanDesktop`
-    display: none;
+  ${media.biggerThanMaxTablet`
+    display: block;
   `}
 `;
 
 const Right = Section.extend`
   width: 100%;
-  overflow-y: scroll;
-
-  ${media.desktop`
+  
+  ${media.biggerThanMaxTablet`
     padding-left: 50vw;
+    overflow: hidden;
+    overflow-y: auto;
   `}
 `;
 
@@ -62,7 +69,7 @@ const RightInner = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding-top: 40px;
-  padding-bottom: 100px;
+  padding-bottom: 150px;
   padding-left: 30px;
   padding-right: 30px;
 `;

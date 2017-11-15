@@ -81,8 +81,8 @@ export default class PageEditor extends React.Component<Props, State> {
   subs: Rx.Subscription[] = [];
   legalPages = without(LEGAL_PAGES, 'information');
 
-  constructor(props) {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     this.state = {
       page: null,

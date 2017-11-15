@@ -90,8 +90,8 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
   pageObserver: Rx.Subscription | null = null;
   legalPages = without(LEGAL_PAGES, 'information');
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       page: null,
       loading: true,

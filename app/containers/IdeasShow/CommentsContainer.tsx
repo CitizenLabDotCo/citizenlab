@@ -27,16 +27,16 @@ const Container = styled.div`
 
 const Title = styled.h2`
   color: #333;
-  font-size: 26px;
-  line-height: 30px;
+  font-size: 24px;
+  line-height: 38px;
   font-weight: 500;
   margin: 0;
   padding: 0;
-  margin-bottom: 35px;
+  margin-bottom: 20px;
 `;
 
 const ParentCommentsContainer = styled.div`
-  margin-top: 50px;
+  margin-top: 30px;
 `;
 
 type Props = {
@@ -53,8 +53,8 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       parentComments: null,
       loading: true,

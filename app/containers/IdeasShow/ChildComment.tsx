@@ -27,7 +27,7 @@ const CommentContainer = styled.div`
   padding: 30px;
   border: none;
   border-top: solid 1px #e4e4e4;
-  background: #f8f8f8;
+  background: #f6f6f6;
 `;
 
 const AuthorContainer = styled.div`
@@ -106,8 +106,8 @@ export default class ChildComment extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       comment: null,
       author: null

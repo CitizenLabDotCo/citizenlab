@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import { getPageItemCountFromUrl, getPageNumberFromUrl } from 'utils/paginationUtils';
 import { usersStream, updateUser, IUsers, IUserData, IUserUpdate } from 'services/users';
-import { IStream } from 'utils/streams';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -75,19 +74,20 @@ type State = {
 };
 
 export default class UsersTable extends React.PureComponent<Props, State> {
-  private usersStream: any;
-  private users$: IStream<IUsers> | null;
-  private state$: Rx.Subject<State>;
-  private search$: Rx.BehaviorSubject<string>;
-  private sortBy$: Rx.BehaviorSubject<string>;
-  private pageNumber$: Rx.BehaviorSubject<number>;
-  private subscriptions: Rx.Subscription[];
+  search$: Rx.BehaviorSubject<string>;
+  sortBy$: Rx.BehaviorSubject<string>;
+  pageNumber$: Rx.BehaviorSubject<number>;
+  subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
-    this.state = { users: null, sortBy: 'last_name', pageNumber: 1, pageCount: 0, searchValue: '' };
-    this.users$ = null;
-    this.state$ = new Rx.Subject();
+  constructor(props: Props) {
+    super(props as any);
+    this.state = {
+      users: null,
+      sortBy: 'last_name',
+      pageNumber: 1,
+      pageCount: 0,
+      searchValue: ''
+    };
     this.search$ = new Rx.BehaviorSubject(this.state.searchValue);
     this.sortBy$ = new Rx.BehaviorSubject(this.state.sortBy);
     this.pageNumber$ = new Rx.BehaviorSubject(this.state.pageNumber);
@@ -95,8 +95,6 @@ export default class UsersTable extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     this.subscriptions = [
-      this.state$.subscribe(state => this.setState(state)),
-
       Rx.Observable.combineLatest(
         this.sortBy$.distinctUntilChanged(),
         this.search$.distinctUntilChanged(),
@@ -106,7 +104,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
         const sortChanged = (sortBy !== this.state.sortBy);
         pageNumber = (searchChanged || sortChanged ? 1 : pageNumber);
 
-        this.users$ = usersStream({
+        const users$ = usersStream({
           queryParameters: {
             sort: sortBy,
             'page[number]': pageNumber,
@@ -115,7 +113,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
           }
         });
 
-        return this.users$.observable.map((users) => ({ users, sortBy, pageNumber, searchValue }));
+        return users$.observable.map((users) => ({ users, sortBy, pageNumber, searchValue }));
       }).subscribe(({ users, sortBy, pageNumber, searchValue }) => {
         let pageCount: number | null = null;
 
@@ -170,7 +168,6 @@ export default class UsersTable extends React.PureComponent<Props, State> {
 
   render () {
     const { users, pageNumber, pageCount, searchValue } = this.state;
-    // const sortBy = this.state.sortBy.replace(/^-/, '');
 
     return (
       <Container>
@@ -195,7 +192,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
           </thead>
 
           <tbody>
-            { users && users.data.map((user) => (
+            {users && users.data.map((user) => (
               <tr key={user.id}>
                 <td>{user.attributes.first_name}</td>
                 <td>{user.attributes.last_name}</td>
@@ -203,7 +200,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
                 <td>{user.attributes.created_at}</td>
                 <td><button onClick={this.update(user.id)} >update</button></td>
               </tr>
-            )) }
+            ))}
           </tbody>
         </StyledTable>
       </Container>

@@ -124,10 +124,6 @@ const GoBackButton = styled.div`
   z-index: 15000;
   transition: border-color 100ms ease-out;
   transition: fill 100ms ease-out;
-  user-select: none;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
 
   &:hover {
     border-color: #000;
@@ -235,7 +231,7 @@ interface ITracks {
 type Props = {
   opened: boolean;
   close: () => void;
-  url?: string;
+  url: string | null;
 };
 
 type State = {};
@@ -245,8 +241,8 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
   private goBackUrl: string | null;
   private keydownEventListener: any;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.unlisten = null;
     this.goBackUrl = null;
   }
@@ -272,7 +268,7 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
     }
   }
 
-  openModal = (url: undefined | string) => {
+  openModal = (url: string| null) => {
     this.goBackUrl = window.location.href;
 
     window.addEventListener('popstate', this.handlePopstateEvent);

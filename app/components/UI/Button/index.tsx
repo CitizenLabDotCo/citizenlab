@@ -7,8 +7,13 @@ import Icon from 'components/UI/Icon';
 import { Link } from 'react-router';
 import styled, { css } from 'styled-components';
 
+const StyledButton = styled.button``;
+
+const StyledLink = styled(Link)``;
+
+const StyledA = styled.a``;
+
 const ButtonText = styled.div`
-  color: #fff;
   font-weight: 400;
   margin: 0;
   margin-top: -1px;
@@ -17,7 +22,6 @@ const ButtonText = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  fill: #fff;
   margin-right: 14px;
   transition: all 120ms ease;
 `;
@@ -59,177 +63,170 @@ function getIconHeight(size) {
 
 function setFillColor(color) {
   return `
-    .button-text {
+    ${ButtonText} {
       color: ${color};
     }
 
-    .button-icon {
+    ${StyledIcon} {
       fill: ${color};
     }
   `;
 }
 
-const buttonStyles = (props) => `
-  width: ${props.width || 'auto'};
-  height: ${props.height || 'auto'};
-  display: ${!props.width ? 'inline-flex' : 'flex'};
-  font-size: 1.25rem;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: ${getPadding(props.size)};
-  border-radius: ${props.circularCorners ? '999em' : '5px'};
-  position: relative;
-  outline: none;
-  transition: all 120ms ease;
+const Container: any = styled.div`
+  ${StyledButton},
+  ${StyledLink},
+  ${StyledA} {
+    width: ${(props: any) => props.width || 'auto'};
+    height: ${(props: any) => props.height || 'auto'};
+    display: ${(props: any) => !props.width ? 'inline-flex' : 'flex'};
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: ${(props: any) => getPadding(props.size)};
+    border-radius: ${(props: any) => props.circularCorners ? '999em' : '5px'};
+    position: relative;
+    outline: none;
+    transition: all 120ms ease;
 
-  &:not(.disabled) {
-    cursor: pointer;
-  }
-
-  &.disabled {
-    cursor: not-allowed;
-  }
-
-  &.fullWidth {
-    width: 100%;
-    flex: 1;
-  }
-
-  .button-text {
-    opacity: ${props.loading ? 0 : 1};
-    font-size: 16px;
-    line-height: 20px;
-  }
-
-  .button-icon {
-    height: ${getIconHeight(props.size)};
-    opacity: ${props.loading ? 0 : 1};
-  }
-
-  &.primary {
     &:not(.disabled) {
-      ${setFillColor('#fff')}
-      background: ${props.theme.colorMain || '#e0e0e0'};
-
-
-      &:hover,
-      &:focus {
-        background: ${darken(0.12, (props.theme.colorMain || '#ccc'))};
-      }
+      cursor: pointer;
     }
 
     &.disabled {
-      background: #d0d0d0;
-      ${setFillColor('#fff')}
+      cursor: not-allowed;
     }
-  }
 
-  &.secondary {
-    &:not(.disabled) {
-      border-color: #EAEAEA;
-      background: #F8F8F8;
+    &.fullWidth {
+      width: 100%;
+      flex: 1;
+    }
+
+    ${ButtonText} {
+      opacity: ${(props: any) => props.loading ? 0 : 1};
+      font-size: 16px;
+      line-height: 20px;
+    }
+
+    ${StyledIcon} {
+      height: ${(props: any) => getIconHeight(props.size)};
+      opacity: ${(props: any) => props.loading ? 0 : 1};
+    }
+
+    &.primary {
+      &:not(.disabled) {
+        ${setFillColor('#fff')}
+        background: ${(props: any) => props.theme.colorMain || '#e0e0e0'};
+
+        &:hover,
+        &:focus {
+          background: ${(props: any) => darken(0.12, (props.theme.colorMain || '#ccc'))};
+        }
+      }
+
+      &.disabled {
+        background: #d0d0d0;
+        ${setFillColor('#fff')}
+      }
+    }
+
+    &.secondary {
+      &:not(.disabled) {
+        border-color: #EAEAEA;
+        background: #F8F8F8;
+        ${setFillColor('#84939E')}
+
+        &:hover,
+        &:focus {
+          background: #eee;
+          ${setFillColor('#222')}
+        }
+      }
+
+      &.disabled {
+        background: #ccc;
+        ${setFillColor('#fff')}
+      }
+    }
+
+    &.primary-outlined {
+      &:not(.disabled) {
+        background: transparent;
+        border: solid 1px ${(props: any) => props.theme.colorMain};
+        ${(props: any) => setFillColor(props.theme.colorMain)}
+
+        &:hover,
+        &:focus {
+          border-color: ${(props: any) => darken(0.12, (props.theme.colorMain))};
+          ${(props: any) => setFillColor(darken(0.12, (props.theme.colorMain)))}
+        }
+      }
+
+      &.disabled {
+        background: transparent;
+        border: solid 1px #ccc;
+        ${setFillColor('#ccc')}
+      }
+    }
+
+    &.secondary-outlined {
+      &:not(.disabled) {
+        background: transparent;
+        border: solid 1px #999;
+        ${setFillColor('#999')}
+
+        &:hover,
+        &:focus {
+          border-color: #222;
+          ${setFillColor('#444')}
+        }
+      }
+
+      &.disabled {
+        background: transparent;
+        border: solid 1px #ccc;
+        ${setFillColor('#ccc')}
+      }
+    }
+
+    &.text {
+      border: none;
+      background: none;
+
       ${setFillColor('#84939E')}
 
       &:hover,
       &:focus {
-        background: #eee;
-        ${setFillColor('#222')}
+        ${setFillColor('#004949')}
       }
     }
 
-    &.disabled {
-      background: #ccc;
-      ${setFillColor('#fff')}
+    &.success {
+      background-color: ${rgba('#32B67A', 0.15)};
+      ${setFillColor('#32B67A')}
     }
-  }
 
-  &.primary-outlined {
-    &:not(.disabled) {
-      background: transparent;
-      border: solid 1px ${props.theme.colorMain};
-      ${setFillColor(props.theme.colorMain)}
+    &.error {
+      background-color: ${rgba('#FC3C2D', 0.15)};
+      color: #FC3C2D;
+      ${setFillColor('#FC3C2D')}
+    }
+
+    &.cl-blue {
+      background-color: #01A1B1;
+      ${setFillColor('white')}
 
       &:hover,
       &:focus {
-        border-color: ${darken(0.12, (props.theme.colorMain))};
-        ${setFillColor(darken(0.12, (props.theme.colorMain)))}
+        background-color: ${darken(0.12, '#01A1B1')};
+      }
+
+      &.disabled {
+        background: #d0d0d0;
+        ${setFillColor('#fff')}
       }
     }
-
-    &.disabled {
-      background: transparent;
-      border: solid 1px #ccc;
-      ${setFillColor('#ccc')}
-    }
   }
-
-  &.secondary-outlined {
-    &:not(.disabled) {
-      background: transparent;
-      border: solid 1px #999;
-      ${setFillColor('#999')}
-
-      &:hover,
-      &:focus {
-        border-color: #222;
-        ${setFillColor('#444')}
-      }
-    }
-
-    &.disabled {
-      background: transparent;
-      border: solid 1px #ccc;
-      ${setFillColor('#ccc')}
-    }
-  }
-
-  &.text {
-    border: none;
-    background: none;
-
-    ${setFillColor('#84939E')}
-
-    &:hover,
-    &:focus {
-      ${setFillColor('#004949')}
-    }
-  }
-
-  &.success {
-    background-color: ${rgba('#32B67A', 0.15)};
-    ${setFillColor('#32B67A')}
-  }
-
-  &.error {
-    background-color: ${rgba('#FC3C2D', 0.15)};
-    color: #FC3C2D;
-    ${setFillColor('#FC3C2D')}
-  }
-
-  &.cl-blue {
-    background-color: #01A1B1;
-    ${setFillColor('white')}
-
-    &:hover,
-    &:focus {
-      background-color: ${darken(0.12, '#01A1B1')};
-    }
-
-    &.disabled {
-      background: #d0d0d0;
-      ${setFillColor('#fff')}
-    }
-  }
-
-`;
-
-const StyledButton: any = styled.button`
-  ${buttonStyles}
-`;
-
-const StyledLink: any = styled(Link)`
-  ${buttonStyles}
 `;
 
 const SpinnerWrapper = styled.div`
@@ -262,34 +259,55 @@ type Props = {
   className?: string;
   circularCorners?: boolean;
   linkTo?: string;
+  id?: string;
 };
 
 type State = {};
 
 export default class Button extends React.PureComponent<Props, State> {
   handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
-    if (_.has(this.props, 'onClick') && _.isFunction(this.props.onClick) && !this.props.disabled) {
+    if (this.props.onClick && !this.props.disabled) {
+      event.preventDefault();
       this.props.onClick(event);
     }
   }
 
   render() {
-    const { text, width, height, padding, className, icon, children, linkTo } = this.props;
-    let { size, style, loading, disabled, fullWidth, circularCorners } = this.props;
+    const { text, width, height, padding, icon, children, linkTo } = this.props;
+    let { id, size, style, loading, disabled, fullWidth, circularCorners, className } = this.props;
 
+    id = (id || '');
     size = (size || '1');
     style = (style || 'primary');
     loading = (_.isBoolean(loading) ? loading : false);
     disabled = (_.isBoolean(disabled) ? disabled : false);
     fullWidth = (_.isBoolean(fullWidth) ? fullWidth : false);
     circularCorners = (_.isBoolean(circularCorners) ? circularCorners : true);
+    className = `${className ? className : ''}`;
 
-    const StyledLinkWithOmittedProperties = ({ padding, loading, circularCorners, ...rest }) => <StyledLink {...rest} />;
-    const StyledComponent = linkTo ? StyledLinkWithOmittedProperties : StyledButton;
+    const buttonClassnames = `Button ${disabled ? 'disabled' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
+
+    const childContent = (
+      <ButtonContent>
+        {icon && <StyledIcon name={icon} />}
+        <ButtonText>{text || children}</ButtonText>
+        {loading && <SpinnerWrapper><Spinner /></SpinnerWrapper>}
+      </ButtonContent>
+    );
+
+    let button = <StyledButton className={buttonClassnames}>{childContent}</StyledButton>;
+
+    if (linkTo) {
+      if (linkTo.startsWith('http://') || linkTo.startsWith('https://')) {
+        button = <StyledA href={linkTo} className={buttonClassnames}>{childContent}</StyledA>;
+      } else {
+        button = <StyledLink to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>;
+      }
+    }
 
     return (
-      <StyledComponent
-        to={linkTo}
+      <Container
+        id={id}
         size={size}
         width={width}
         height={height}
@@ -298,14 +316,10 @@ export default class Button extends React.PureComponent<Props, State> {
         onClick={this.handleOnClick}
         disabled={disabled}
         circularCorners={circularCorners}
-        className={`Button ${disabled ? 'disabled' : ''} ${fullWidth ? 'fullWidth' : ''} ${style} ${className ? className : ''}`}
+        className={className}
       >
-        <ButtonContent className="button-content">
-          {icon && <StyledIcon className="button-icon" name={icon} />}
-          <ButtonText className="button-text">{text || children}</ButtonText>
-          {loading && <SpinnerWrapper><Spinner /></SpinnerWrapper>}
-        </ButtonContent>
-      </StyledComponent>
+        {button}
+      </Container>
     );
   }
 }
