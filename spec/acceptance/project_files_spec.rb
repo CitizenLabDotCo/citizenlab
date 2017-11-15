@@ -42,15 +42,24 @@ resource "ProjectFile" do
 
 
     let(:project_id) { @project.id }
-
-    let(:file) { encode_file_as_base64("afvalkalender.pdf") }
     let(:ordering) { 1 }
+    let(:file) { encode_file_as_base64("afvalkalender.pdf") }
 
     example_request "Add a file attachment to a project" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
+    end
+
+    describe do
+      let(:file) { encode_image_as_base64("image14.png") }
+
+      example_request "[error] Add an unsupported file extension as attachment to a project" do
+        expect(response_status).to eq 422
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:errors,:file)).to include({:error=>"extension_whitelist_error"})
+      end
     end
 
   end
@@ -93,6 +102,10 @@ resource "ProjectFile" do
 
   def encode_file_as_base64 filename
     "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
+  end
+
+  def encode_image_as_base64 filename
+    "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
   end
 
 end
