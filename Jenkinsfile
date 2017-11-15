@@ -11,7 +11,7 @@ pipeline {
         sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rake db:create db:migrate'
       }
     }
-    stage('Test') {
+    stage('Test main app') {
       steps {
         echo 'testing rspec'
         sh 'docker-compose run --user "$(id -u):$(id -g)" --rm web bundle exec rake spec'
@@ -23,9 +23,21 @@ pipeline {
                 [metric: "CODE_COVERAGE", healthy: 75, unhealthy: 50, unstable: 30]
             ]
         ])
-        sh 'cp -r doc/api/* /var/www/apidocs'
+        withAWS(credentials: 'aws') {
+          s3Upload(file:'doc/api', bucket:'developers.citizenlab.co', path:'frontweb_api/${env.BRANCH_NAME}')
+        }
       }
     }
+
+    stage('Test public API') {
+      steps {
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm web bundle exec rake public_api:docs:generate'
+        withAWS(credentials: 'aws') {
+          s3Upload(file: 'doc/public_api', bucket:'developers.citizenlab.co', path:'public_api/')
+        }
+      }
+    }
+
     stage('Push docker image tagged latest') {
       when { branch 'master' }
       steps {
@@ -45,7 +57,7 @@ pipeline {
         sshagent (credentials: ['local-ssh-user']) {
           sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.157.143.6 "docker pull citizenlabdotco/cl2-back:latest && docker run --env-file cl2-deployment/.env-staging citizenlabdotco/cl2-back:latest rake db:migrate cl2back:clean_tenant_settings"'
           sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.157.143.6 "cd cl2-deployment && docker stack deploy --compose-file docker-compose-staging.yml cl2-back-stg --with-registry-auth"'
-          slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} deplyed to staging cluster!\nMore info at ${env.BUILD_URL}"
+          slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} deployed to staging cluster!\nMore info at ${env.BUILD_URL}"
         }
       }
     }
