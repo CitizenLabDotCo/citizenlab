@@ -208,6 +208,14 @@ ActiveRecord::Schema.define(version: 20171113100102) do
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
   end
 
+  create_table "page_links", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "linking_page_id", null: false
+    t.uuid "linked_page_id", null: false
+    t.integer "ordering"
+    t.index ["linked_page_id"], name: "index_page_links_on_linked_page_id"
+    t.index ["linking_page_id"], name: "index_page_links_on_linking_page_id"
+  end
+
   create_table "pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.jsonb "body_multiloc", default: {}
@@ -329,6 +337,8 @@ ActiveRecord::Schema.define(version: 20171113100102) do
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "users", column: "recipient_id"
+  add_foreign_key "page_links", "pages", column: "linked_page_id"
+  add_foreign_key "page_links", "pages", column: "linking_page_id"
   add_foreign_key "pages", "projects"
   add_foreign_key "phases", "projects"
   add_foreign_key "project_images", "projects"
