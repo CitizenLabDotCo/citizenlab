@@ -263,12 +263,12 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
     const { pathname } = this.props.location;
     const { formatMessage } = this.props.intl;
     const { authUser, currentTenant, currentTenantLogo, scrolled } = this.state;
-    const alwaysShowBorder = (pathname.startsWith('/ideas/') 
+    const alwaysShowBorder = (pathname.startsWith('/ideas/')
                               || pathname.startsWith('/reset-password')
                               || pathname.startsWith('/admin')
                               || pathname === 'sign-in'
-                              || pathname === '/sign-in' 
-                              || pathname === 'sign-up' 
+                              || pathname === '/sign-in'
+                              || pathname === 'sign-up'
                               || pathname === '/sign-up'
                               || pathname === 'password-recovery'
                               || pathname === '/password-recovery');
@@ -295,6 +295,9 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
               </NavigationItem>
               <NavigationItem to="/projects" activeClassName="active">
                 <FormattedMessage {...messages.pageProjects} />
+              </NavigationItem>
+              <NavigationItem to="pages/information" activeClassName="active">
+                <FormattedMessage {...messages.pageInformation} />
               </NavigationItem>
             </NavigationItems>
           </Left>
