@@ -25,4 +25,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesEdition.messageError',
     defaultMessage: 'There was an error saving your page',
   },
+  information: {
+    id: 'app.containers.AdminPage.PagesEdition.information',
+    defaultMessage: 'Information',
+  },
+  'terms-and-conditions': {
+    id: 'app.containers.AdminPage.PagesEdition.terms-and-conditions',
+    defaultMessage: 'Terms and Conditions',
+  },
+  'privacy-policy': {
+    id: 'app.containers.AdminPage.PagesEdition.privacy-policy',
+    defaultMessage: 'Privacy Policy',
+  },
+  'cookie-policy': {
+    id: 'app.containers.AdminPage.PagesEdition.cookie-policy',
+    defaultMessage: 'Cookies Policy',
+  },
 });
