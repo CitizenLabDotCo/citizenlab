@@ -131,6 +131,10 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
           page: pageResponse.data,
           loading: false,
         });
+      } else {
+        this.setState({
+          loading: false,
+        });
       }
     });
   }
