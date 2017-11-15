@@ -103,9 +103,22 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
   componentDidMount() {
     this.pageObserver = pageBySlugStream(this.props.params.slug).observable
     .switchMap((pageResponse) => {
+
+      // Page not found
+      if (!pageResponse) {
+        return Rx.Observable.of({ pageResponse: { data: null }, pageLinks: [] });
+      }
+
+      // Page has no links
+      if (pageResponse.data.relationships.page_links.data.length === 0) {
+        return Rx.Observable.of({ pageResponse, pageLinks: [] });
+      }
+
+      // Page with links
       const linksRequests = pageResponse.data.relationships.page_links.data.map(link => {
         return getPageLink(link.id).observable.first();
       });
+
       return Rx.Observable.combineLatest(linksRequests)
       .map((pageLinks) => {
         return { pageLinks, pageResponse };
