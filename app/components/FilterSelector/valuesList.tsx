@@ -136,8 +136,8 @@ export default class ValuesList extends React.PureComponent<Props, State> {
   state: State;
   dropdownElement: HTMLElement | null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       currentFocus: 0
     };

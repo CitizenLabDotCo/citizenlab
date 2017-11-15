@@ -179,8 +179,8 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       location: browserHistory.getCurrentLocation(),
       currentTenant: null,

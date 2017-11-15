@@ -79,8 +79,8 @@ export default class UsersTable extends React.PureComponent<Props, State> {
   pageNumber$: Rx.BehaviorSubject<number>;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       users: null,
       sortBy: 'last_name',

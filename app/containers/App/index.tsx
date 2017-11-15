@@ -74,8 +74,8 @@ export default class App extends React.PureComponent<Props & RouterState, State>
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       currentTenant: null,
       modalOpened: false,

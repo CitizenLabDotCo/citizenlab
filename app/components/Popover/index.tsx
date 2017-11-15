@@ -93,27 +93,27 @@ export default class Popover extends React.PureComponent<Props> {
 
   render() {
     return (
-    <TransitionGroup>
-      {this.props.open &&
-        <CSSTransition
-          classNames="dropdown"
-          key={1}
-          timeout={timeout}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          exit={false}
-        >
-          <Container
-            onClickOutside={this.clickOutside}
-            className={this.props.className}
-            id={this.props.id}
-            setRef={this.handleSetRef}
+      <TransitionGroup>
+        {this.props.open &&
+          <CSSTransition
+            classNames="dropdown"
+            key={1}
+            timeout={timeout}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            exit={false}
           >
-            {this.props.children}
-          </Container>
-        </CSSTransition>
-      }
-    </TransitionGroup>
+            <Container
+              onClickOutside={this.clickOutside}
+              className={this.props.className}
+              id={this.props.id}
+              setRef={this.handleSetRef}
+            >
+              {this.props.children}
+            </Container>
+          </CSSTransition>
+        }
+      </TransitionGroup>
     );
   }
 }

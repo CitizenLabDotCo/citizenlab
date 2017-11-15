@@ -106,8 +106,8 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       visibleStep: 'step1',
       hasSecondStep: true,

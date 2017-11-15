@@ -259,6 +259,7 @@ type Props = {
   className?: string;
   circularCorners?: boolean;
   linkTo?: string;
+  id?: string;
 };
 
 type State = {};
@@ -273,8 +274,9 @@ export default class Button extends React.PureComponent<Props, State> {
 
   render() {
     const { text, width, height, padding, icon, children, linkTo } = this.props;
-    let { size, style, loading, disabled, fullWidth, circularCorners, className } = this.props;
+    let { id, size, style, loading, disabled, fullWidth, circularCorners, className } = this.props;
 
+    id = (id || '');
     size = (size || '1');
     style = (style || 'primary');
     loading = (_.isBoolean(loading) ? loading : false);
@@ -305,6 +307,7 @@ export default class Button extends React.PureComponent<Props, State> {
 
     return (
       <Container
+        id={id}
         size={size}
         width={width}
         height={height}

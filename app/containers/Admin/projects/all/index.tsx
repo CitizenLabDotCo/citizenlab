@@ -20,8 +20,6 @@ import { Link } from 'react-router';
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 
-const headerBG = require('assets/img/gray-header.png');
-
 const ProjectsList = styled.ul`
   display: flex;
   flex-wrap: wrap;
@@ -33,6 +31,21 @@ const ProjectImage = styled.img`
   height: 100px;
   border-radius: 5px;
   object-fit: cover;
+`;
+
+const ProjectImagePlaceholder = styled.div`
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background: ${props => props.theme.colors.placeholderBg};
+`;
+
+const ProjectImagePlaceholderIcon = styled(Icon) `
+  height: 50px;
+  fill: #fff;
 `;
 
 const ButtonWrapper = styled.div`
@@ -51,8 +64,7 @@ const ProjectTitle = styled.h1`
   justify-content: center;
   color: #333;
   font-size: 18px;
-  line-height: 22px;
-  font-weight: 500;
+  font-weight: 400;
   text-align: center;
   margin: 0;
   margin-left: 5px;
@@ -99,8 +111,8 @@ const AddProjectIcon = styled(Icon)`
 
 const AddProjectText = styled.div`
   color: #999;
-  font-size: 20px;
-  line-height: 24px;
+  font-size: 18px;
+  line-height: 23px;
   font-weight: 400;
   text-align: center;
   margin-top: 15px;
@@ -138,8 +150,8 @@ type State = {
 export default class AdminProjectsList extends React.PureComponent<Props, State> {
   subscription: Rx.Subscription;
 
-  constructor () {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       projects: null,
     };
@@ -162,7 +174,7 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
 
         <AddProjectCard className="new-project e2e-new-project">
           <AddProjectLink to="/admin/projects/new">
-            <AddProjectIcon name="plus" />
+            <AddProjectIcon name="plus-circle" />
             <AddProjectText>
               <FormattedMessage {...messages.addNewProject} />
             </AddProjectText>
@@ -170,12 +182,18 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
         </AddProjectCard>
 
         {projects && projects.data && projects.data.map((project) => {
-          const projectImage = (_.has(project, 'attributes.header_bg.medium') ? project.attributes.header_bg.medium : headerBG);
+          const projectImage = (_.has(project, 'attributes.header_bg.medium') ? project.attributes.header_bg.medium : null);
 
           return (
             <ProjectCard key={project.id} className="e2e-project-card">
 
-              <ProjectImage src={projectImage} alt="" role="presentation" />
+              {projectImage && <ProjectImage src={projectImage} alt="" role="presentation" />}
+
+              {!projectImage && 
+                <ProjectImagePlaceholder>
+                  <ProjectImagePlaceholderIcon name="project" />
+                </ProjectImagePlaceholder>
+              }
 
               <ProjectTitle>
                 <T value={project.attributes.title_multiloc} />

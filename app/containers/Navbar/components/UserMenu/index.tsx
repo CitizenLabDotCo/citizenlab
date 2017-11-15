@@ -106,8 +106,8 @@ export default class UserMenu extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       authUser: null,
       PopoverOpened: false
@@ -136,6 +136,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
   }
 
   navigateTo = (path) => () => {
+    this.closePopover();
     browserHistory.push(path);
   }
 

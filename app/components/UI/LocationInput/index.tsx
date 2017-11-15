@@ -61,8 +61,8 @@ type Props = {
 type State = {};
 
 export default class LocationInput extends React.PureComponent<Props, State> {
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
   }
 
   handleOnChange = (value: string) => {

@@ -48,8 +48,8 @@ interface State {
 class SettingsGeneralTab extends React.PureComponent<Props, State> {
   subscription: Rx.Subscription;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       attributesDiff: {},
       tenant: null,

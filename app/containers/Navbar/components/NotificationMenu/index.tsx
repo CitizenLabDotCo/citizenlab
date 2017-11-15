@@ -67,8 +67,8 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
   subscriptions: Rx.Subscription[];
   dropdownElement: HTMLElement | null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       unreadCount: 0,
       PopoverOpen: false,

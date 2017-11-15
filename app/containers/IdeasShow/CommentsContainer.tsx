@@ -53,8 +53,8 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       parentComments: null,
       loading: true,

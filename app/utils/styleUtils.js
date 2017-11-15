@@ -55,4 +55,5 @@ export const colors = {
   clBlueLightest: '#BEE7EB',
   clBlueLighter: '#80CFD8',
   clBlueLight: '#40B8C5',
+  placeholderBg: '#cfd6db',
 };

@@ -115,8 +115,8 @@ class ProjectCards extends React.PureComponent<Props & InjectedIntlProps, State>
     loadMoreEnabled: true
   };
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       projects: null,
       hasMore: false,

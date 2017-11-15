@@ -104,8 +104,8 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       user: null
     };

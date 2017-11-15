@@ -185,8 +185,8 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       authUser: null,
       currentTenant: null,

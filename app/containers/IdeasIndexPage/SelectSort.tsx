@@ -21,8 +21,8 @@ type State = {
 class SelectSort extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       selectedValue: ['trending']
     };

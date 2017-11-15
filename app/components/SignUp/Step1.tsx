@@ -86,8 +86,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
   firstNameInputElement: HTMLInputElement | null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       locale: null,
       currentTenant: null,
@@ -302,6 +302,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         <FormElement>
           <ButtonWrapper>
             <Button
+              id="e2e-signup-step1-button"
               size="2"
               loading={processing}
               text={formatMessage(messages.signUp)}

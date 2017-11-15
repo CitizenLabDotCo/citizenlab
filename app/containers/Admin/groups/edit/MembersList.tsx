@@ -63,8 +63,8 @@ interface State {
 class MembersListTable extends React.Component<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     this.state = {
       users: [],

@@ -18,7 +18,6 @@ import Error from 'components/UI/Error';
 import Icon from 'components/UI/Icon';
 import Comments from './CommentsContainer';
 import Sharing from './Sharing';
-import CommentsLine from './CommentsLine';
 import Author from './Author';
 import IdeaMeta from './IdeaMeta';
 import Unauthenticated from './Unauthenticated';
@@ -382,8 +381,8 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       locale: null,
       idea: null,

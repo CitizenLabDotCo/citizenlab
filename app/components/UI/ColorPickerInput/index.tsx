@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Input, { Props as InputProps } from 'components/UI/Input';
+import Input, { Props } from 'components/UI/Input';
 import { ChromePicker } from 'react-color';
 
 const InputWrapper = styled.div`
@@ -32,12 +32,10 @@ type State = {
   displayColorPicker: boolean,
 };
 
+class ColorPickerInput extends React.Component<Props, State> {
 
-class ColorPickerInput extends React.Component<InputProps, State> {
-
-  constructor(props) {
-    super(props);
-
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       displayColorPicker: false,
     };

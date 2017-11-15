@@ -52,8 +52,8 @@ interface State {
 class GroupsEdit extends React.Component<Props & injectedLocalized, State> {
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     this.state = {
       group: null

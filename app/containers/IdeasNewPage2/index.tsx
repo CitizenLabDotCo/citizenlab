@@ -158,8 +158,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.initialLocalState = {
       showIdeaForm: true,
       locale: null

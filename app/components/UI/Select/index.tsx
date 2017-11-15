@@ -188,8 +188,8 @@ type State = {};
 export default class Select extends React.PureComponent<Props, State> {
   private emptyArray: never[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.emptyArray = [];
   }
 

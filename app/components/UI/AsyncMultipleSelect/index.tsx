@@ -229,8 +229,8 @@ type State = {};
 export default class AsyncMultipleSelect extends React.PureComponent<Props, State> {
   private emptyArray: never[];
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.emptyArray = [];
   }
 

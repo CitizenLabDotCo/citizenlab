@@ -10,7 +10,7 @@ const commands = {
     return this
     .waitForElementVisible('@ideasList')
     .waitForElementVisible('@sortFilter')
-    .click('#e2e-ideas-sort-filter button')
+    .click('#e2e-ideas-sort-filter .e2e-filter-selector-button')
     .waitForElementVisible('.e2e-filter-selector-dropdown-list')
     .click('.e2e-filter-selector-dropdown-list li:nth-child(3)')
     .waitForElementVisible('@firstIdea', 10000);

@@ -133,8 +133,8 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
     loadMoreEnabled: true
   };
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       ideas: null,
       hasMore: false,

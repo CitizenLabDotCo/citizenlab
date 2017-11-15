@@ -79,8 +79,8 @@ type State = {
 
 class AdminProjectTimelineIndex extends React.Component<Props, State> {
   subscription: Rx.Subscription;
-  constructor () {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     this.state = {
       phases: [],
@@ -140,28 +140,28 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
         </AddButton>
 
         {!loading && phases.length > 0 &&
-          <List className="e2e-phases-table">
+          <List className={`e2e-phases-table`}>
             <HeadRow>
               <OrderHeader><FormattedMessage {...messages.orderColumnTitle} /></OrderHeader>
               <div className="expand"><FormattedMessage {...messages.nameColumnTitle} /></div>
             </HeadRow>
-              {phases.map((phase, index) => (
-                <Row className="e2e-phase-line" id={`e2e-phase_${phase.id}`} key={phase.id}>
-                  <OrderLabel className={this.phaseTiming({ start_at: phase.attributes.start_at, end_at: phase.attributes.end_at })}>
-                    {index + 1}
-                  </OrderLabel>
+            {phases.map((phase, index) => (
+              <Row className={`e2e-phase-line ${phases.length === index + 1 ? 'last' : ''}`} id={`e2e-phase_${phase.id}`} key={phase.id}>
+                <OrderLabel className={this.phaseTiming({ start_at: phase.attributes.start_at, end_at: phase.attributes.end_at })}>
+                  {index + 1}
+                </OrderLabel>
                 <InfoCell className="expand">
-                  <h1><T value={phase.attributes.title_multiloc} /></h1>
+                  <h1 className="e2e-phase-title"><T value={phase.attributes.title_multiloc} /></h1>
                   <p>{formatDate(phase.attributes.start_at)} - {formatDate(phase.attributes.end_at)}</p>
                 </InfoCell>
-                  <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
-                    <FormattedMessage {...messages.deletePhaseButton} />
-                  </Button>
-                  <Button className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${slug}/timeline/${phase.id}`}>
-                    <FormattedMessage {...messages.editPhaseButton} />
-                  </Button>
-                </Row>
-              ))}
+                <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
+                  <FormattedMessage {...messages.deletePhaseButton} />
+                </Button>
+                <Button className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${slug}/timeline/${phase.id}`}>
+                  <FormattedMessage {...messages.editPhaseButton} />
+                </Button>
+              </Row>
+            ))}
           </List>
         }
       </ListWrapper>
