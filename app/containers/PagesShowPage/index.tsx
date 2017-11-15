@@ -166,18 +166,12 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
         <ContentContainer>
           <Helmet>
             <title>
-            {includes(this.legalPages, this.props.params.slug)
-              ? this.props.intl.formatMessage(messages[this.props.params.slug])
-              : tFunc(page.attributes.title_multiloc)
-            }
+              {tFunc(page.attributes.title_multiloc)}
             </title>
           </Helmet>
           <TextContainer>
             <h1>
-              {includes(this.legalPages, this.props.params.slug)
-                ? <FormattedMessage {...messages[this.props.params.slug]} />
-                : <T value={page.attributes.title_multiloc} />
-              }
+              {tFunc(page.attributes.title_multiloc)}
             </h1>
             <T value={page.attributes.body_multiloc} />
           </TextContainer>
