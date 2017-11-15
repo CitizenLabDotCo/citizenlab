@@ -1,10 +1,10 @@
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import { get, includes } from 'lodash';
+import { get, includes, remove } from 'lodash';
 
 // Services
-import { pageBySlugStream, createPage, updatePage, IPageData, PageUpdate } from 'services/pages';
+import { pageBySlugStream, createPage, updatePage, IPageData, PageUpdate, LEGAL_PAGES } from 'services/pages';
 import { localeStream } from 'services/locale';
 
 // Components
@@ -79,7 +79,7 @@ interface State {
 
 export default class PageEditor extends React.Component<Props, State> {
   subs: Rx.Subscription[] = [];
-  legalPages = ['terms-and-conditions', 'privacy-policy', 'cookies-policy'];
+  legalPages = remove(LEGAL_PAGES, slug => slug !== 'information');
 
   constructor(props) {
     super();
@@ -201,7 +201,10 @@ export default class PageEditor extends React.Component<Props, State> {
       <EditorWrapper className={`e2e-page-editor editor-${slug}`}>
         <Toggle style="text" onClick={this.toggleDeploy}>
           <DeployIcon name="dropdown" deployed={deployed} />
-          {slug}
+          {messages[slug]
+            ? <FormattedMessage {...messages[slug]} />
+            : slug
+          }
         </Toggle>
 
         <EditionForm onSubmit={this.handleSave} className={deployed ? 'deployed' : ''} >

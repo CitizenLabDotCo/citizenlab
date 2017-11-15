@@ -6,12 +6,12 @@
 
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { includes } from 'lodash';
+import { includes, remove } from 'lodash';
 
 import { injectTFunc } from 'components/T/utils';
 import Helmet from 'react-helmet';
 import T from 'components/T';
-import { IPageData, pageBySlugStream } from 'services/pages';
+import { IPageData, pageBySlugStream, LEGAL_PAGES } from 'services/pages';
 import { PageLink, getPageLink } from 'services/pageLink';
 
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
@@ -88,7 +88,7 @@ type State = {
 
 class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State> {
   pageObserver: Rx.Subscription | null;
-  legalPages = ['terms-and-conditions', 'privacy-policy', 'cookies-policy'];
+  legalPages = remove(LEGAL_PAGES, slug => slug !== 'information');
 
   constructor() {
     super();
