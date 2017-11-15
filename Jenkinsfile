@@ -8,7 +8,8 @@ pipeline {
         sh 'docker-compose up -d postgres redis'
         sleep 10
         echo 'Setting up database'
-        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rake db:create db:migrate'
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rake db:create'
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rake db:migrate'
       }
     }
     stage('Test main app') {
@@ -24,7 +25,7 @@ pipeline {
             ]
         ])
         withAWS(credentials: 'aws') {
-          s3Upload(file:'doc/api', bucket:'developers.citizenlab.co', path: "frontweb_api/${env.BRANCH_NAME}")
+          s3Upload(file:'doc/api', bucket:'developers.citizenlab.co', path: "frontweb_api/${env.BRANCH_NAME}", acl:'PublicRead')
         }
       }
     }
@@ -33,7 +34,7 @@ pipeline {
       steps {
         sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rake public_api:docs:generate'
         withAWS(credentials: 'aws') {
-          s3Upload(file: 'doc/public_api', bucket:'developers.citizenlab.co', path: "public_api/")
+          s3Upload(file: 'doc/public_api', bucket:'developers.citizenlab.co', path: "public_api/", acl:'PublicRead')
         }
       }
     }
