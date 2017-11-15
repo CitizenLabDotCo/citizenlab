@@ -7,63 +7,66 @@ require 'redcarpet'
 
 namespace :migrate do
   desc "Migrating Data from a CL1 Platform to a CL2 Tenant"
-  task from_cl1: :environment do
-    url = "https://api.myjson.com/bins/anxyv"
+  task :from_cl1, [:json_url] => [:environment] do |t, args|
+    url = args[:json_url] # "https://api.myjson.com/bins/anxyv"
     migration_settings = JSON.load(open(url))
     platform = migration_settings['platform']
     password = migration_settings['password']
+    locales_mapping = migration_settings['locales_mapping'] || { 'en' => 'en', 'nl' => 'nl', 'fr' => 'fr' } 
     topics_mapping = migration_settings['topics_mapping'] || {}
     idea_statuses_mapping = migration_settings['idea_statuses_mapping'] || {}
 
-    host = "#{platform}.localhost"
+    host = migration_settings['host']
     Tenant.where(host: host)&.first&.destroy
     client = connect(platform: platform, password: password)
-    create_tenant(platform, host, client['settings'].find.first, client['meteor_accounts_loginServiceConfiguration'], migration_settings)
-    Apartment::Tenant.switch("#{platform}_localhost") do
+    create_tenant(platform, host, client['settings'].find.first, client['meteor_accounts_loginServiceConfiguration'], migration_settings, locales_mapping)
+    Apartment::Tenant.switch(host.gsub '.', '_') do
       TenantTemplateService.new.apply_template 'base'
     
-      topics_code_hash =  create_topics_code_hash
+      topics_code_hash = create_topics_code_hash
       topics_hash = {}
-      client['categories'].find.each do |c|
-        map_topic(c, topics_hash, topics_mapping, topics_code_hash)
+      if client['categories']
+        client['categories'].find.no_cursor_timeout.each do |c|
+          map_topic c, topics_hash, topics_mapping, topics_code_hash
+        end
       end
       areas_hash = {}
-      client['neighbourhoods'].find.each do |n|
-        migrate_area n, areas_hash
+      client['neighbourhoods'].find.no_cursor_timeout.each do |n|
+        migrate_area n, areas_hash, locales_mapping
       end
       superadmin_id = nil
       groups_hash = {}
-      client['groups'].find.each do |g|
-        was_superadmin = migrate_group g, groups_hash
+      client['groups'].find.no_cursor_timeout.each do |g|
+        was_superadmin = migrate_group g, groups_hash, locales_mapping
         if was_superadmin
           superadmin_id = was_superadmin
         end
       end
       users_hash = {}
-  	  client['users'].find.each do |u|
-  		  migrate_user(u, users_hash, groups_hash, superadmin_id)
+  	  client['users'].find.no_cursor_timeout.each do |u|
+  		  migrate_user u, users_hash, groups_hash, superadmin_id, locales_mapping
   	  end
       projects_hash = {}
       phases_hash = {}
-      client['projects'].find.each do |p|
-        migrate_project(p, projects_hash, areas_hash, topics_hash, phases_hash, groups_hash, superadmin_id)
+      client['projects'].find.no_cursor_timeout.each do |p|
+        migrate_project p, projects_hash, areas_hash, topics_hash, phases_hash, groups_hash, superadmin_id, locales_mapping
       end
       idea_statuses_hash = {}
       phases_hash.each do |id, phase|
-        idea_statuses_hash[id] = map_idea_status(phase, idea_statuses_mapping)
+        idea_statuses_hash[id] = map_idea_status phase, idea_statuses_mapping
       end
       ideas_hash = {}
-      client['posts'].find.each do |p|
-        migrate_idea(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash, idea_statuses_hash)
+      client['posts'].find.no_cursor_timeout.each do |p|
+        migrate_idea p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash, idea_statuses_hash, locales_mapping
       end
       comments_hash = {}
       # process comments by order of creation such that the parents can always be found
-      client['comments'].find.map { |x| x }.sort { |c1,c2| c1.dig('createdAt') <=> c2.dig('createdAt') }.each do |c|
-        migrate_comment(c, comments_hash, users_hash, ideas_hash)
+      client['comments'].find.no_cursor_timeout.map { |x| x }.sort { |c1,c2| c1.dig('createdAt') <=> c2.dig('createdAt') }.each do |c|
+        migrate_comment c, comments_hash, users_hash, ideas_hash, locales_mapping
       end
       pages_hash = {}
-      client['pages'].find.each do |p|
-        migrate_page(p, pages_hash)
+      client['pages'].find.no_cursor_timeout.each do |p|
+        migrate_page p, pages_hash, locales_mapping
       end
       if !@log.empty?
         puts 'Migrated with errors!'
@@ -78,9 +81,6 @@ namespace :migrate do
 
   def connect(platform: nil, password: nil)
     if platform && password
-      # Mongo::Client.new('mongodb://lamppost.14.mongolayer.com:10323/demo', auth_mech: :mongodb_cr, user: 'citizenlab', password: 'jhshEVweHWULVCA9x2nLuWL8')
-      # Mongo::Client.new "mongodb://citizenlab:#{password}@lamppost.14.mongolayer.com:10323/#{platform}"
-
       Mongo::Client.new("mongodb://lamppost.14.mongolayer.com:10323/#{platform}", auth_mech: :mongodb_cr, user: 'citizenlab', password: password)
     else
       Mongo::Client.new 'mongodb://docker.for.mac.localhost:27017/schiedam'
@@ -88,54 +88,79 @@ namespace :migrate do
   end
 
 
+  def map_multiloc(old_multiloc, locales_mapping)
+    new_multiloc = {}
+    old_multiloc.each do |old_lang, content|
+      new_lang = locales_mapping[old_lang]
+      if new_lang
+        new_multiloc[new_lang] = content
+      end
+    end
+    new_multiloc
+  end
+
+  def multiloc_maxlen(multiloc, maxlen)
+    multiloc.each do |l, str|
+      if str.size >= maxlen
+        return {}
+      end
+    end
+    multiloc
+  end
+
+
   def create_topics_code_hash
+    locale = Tenant.current.settings.dig('core', 'locales').first
     topics_code_hash = {}
-    YAML.load_file(Rails.root.join('config', 'locales', "en.yml"))
-        .dig('en', 'topics').each do |code, title|
+    YAML.load_file(Rails.root.join('config', 'locales', "#{locale}.yml"))
+        .dig(locale, 'topics').each do |code, title|
           unless code.end_with? '_description'
-            topics_code_hash[code] = Topic.where({ title_multiloc: { en: title } }).first
+            topics_code_hash[code] = Topic.where({ title_multiloc: { locale => title } }).first
           end
         end
     topics_code_hash
   end
 
 
-  def create_tenant(platform, host, s, m, migration_settings)
+  def create_tenant platform, host, s, m, migration_settings, locales_mapping
     fb_login = m.find({ service: 'facebook' }).first
-    Tenant.create!({
-      name: platform,
-      host: host,
-      remote_logo_url: s['logoUrl'],
-      remote_header_bg_url: s['bannerImage'],
-      settings: {
-        core: {
-          allowed: true,
-          enabled: true,
-          locales: s['languages'],
-          organization_type: migration_settings['organization_type'],
-          organization_name: s['title_i18n']&.select{|k,v| s['languages'].include? k} || {},
-          header_title: s['tagline_i18n']&.select{|k,v| s['languages'].include? k} || {},
-          header_slogan: s['description_i18n']&.select{|k,v| s['languages'].include? k} || {},
-          meta_title: s['tagline_i18n']&.select{|k,v| s['languages'].include? k} || {},
-          meta_description: s['description_i18n']&.select{|k,v| s['languages'].include? k} || {},
-          timezone: migration_settings['timezone'],
-          color_main: s['accentColor']
-        },
-        demographic_fields: {
-          allowed: true,
-          enabled: true,
-          gender: true,
-          domicile: true,
-          birthyear: true,
-          education: true,
-        },
-        facebook_login: {
+    d = {
+      core: {
+        allowed: true,
+        enabled: true,
+        locales: (s['languages'] || [s['language']]).map{|l| locales_mapping[l]}.select{|l| l},
+        organization_type: migration_settings['organization_type'],
+        organization_name: map_multiloc(s['title_i18n'] || {}, locales_mapping),
+        header_title: map_multiloc(s['tagline_i18n'] || {}, locales_mapping),
+        header_slogan: multiloc_maxlen(map_multiloc(s['description_i18n'] || {}, locales_mapping), 90),
+        meta_title: map_multiloc(s['tagline_i18n'] || {}, locales_mapping),
+        meta_description: map_multiloc(s['description_i18n']|| {}, locales_mapping),
+        timezone: migration_settings['timezone'],
+        color_main: s['accentColor']
+      },
+      demographic_fields: {
+        allowed: true,
+        enabled: true,
+        gender: true,
+        domicile: true,
+        birthyear: true,
+        education: true,
+      }
+    }
+    if fb_login['appId'] && fb_login['secret']
+      d[:facebook_login] = {
           allowed: true,
           enabled: true,
           app_id: fb_login['appId'],
           app_secret: fb_login['secret']
         }
-      }
+    end
+    Tenant.create!({
+      name: platform,
+      host: host,
+      remote_logo_url: s['logoUrl'],
+      remote_header_bg_url: s['bannerImage'],
+      settings: d
     })
   end
 
@@ -148,32 +173,33 @@ namespace :migrate do
   end
 
 
-  def migrate_area n, areas_hash
+  def migrate_area n, areas_hash, locales_mapping
     begin
-      areas_hash[n['_id']] = Area.create!(title_multiloc: n['name_i18n'], description_multiloc: n['description_i18n'])
+      areas_hash[n['_id']] = Area.create!(title_multiloc: map_multiloc(n['name_i18n'], locales_mapping), 
+                                          description_multiloc: map_multiloc((n['description_i18n'] || {}), locales_mapping))
     rescue Exception => e
       @log.concat [e.message]
     end
   end
 
-  def migrate_group g, groups_hash
+  def migrate_group g, groups_hash, locales_mapping
     if g['builtInId'] == 'superadmin'
       return g['_id']
     end
     begin
-      groups_hash[g['_id']] = Group.create!(title_multiloc: g['name_i18n'])
+      groups_hash[g['_id']] = Group.create!(title_multiloc: map_multiloc(g['name_i18n'], locales_mapping))
     rescue Exception => e
       @log.concat [e.message]
     end
     false
   end
 
-  def migrate_user u, users_hash, groups_hash, superadmin_id
+  def migrate_user u, users_hash, groups_hash, superadmin_id, locales_mapping
     # one big transaction
     d = {}
     # email
-    if u['telescope']['email'] || u['registered_emails'] || u['emails']
-      d[:email] = u['telescope']['email'] || (u['registered_emails'] || u['emails'])&.first['address']
+    if u.dig('telescope', 'email') || u['registered_emails'] || u['emails']
+      d[:email] = u.dig('telescope', 'email') || (u['registered_emails'] || u['emails'])&.first['address']
     elsif u.dig('services', 'facebook', 'email')
       d[:email] = u.dig('services', 'facebook', 'email')
     else
@@ -213,7 +239,7 @@ namespace :migrate do
       return
     end
     # locale
-    d[:locale] = u['telescope']['locale'] || Tenant.current.settings.dig('core', 'locales').first
+    d[:locale] = locales_mapping[u.dig('telescope', 'locale')] || Tenant.current.settings.dig('core', 'locales').first
     # admin
     if u['isAdmin']
       d[:roles] = [{type: 'admin'}]
@@ -275,26 +301,27 @@ namespace :migrate do
     end
   end
 
-  def migrate_topic c, topics_hash
-    begin
-      topics_hash[c['_id']] = Topic.create!(title_multiloc: c['name_i18n'], description_multiloc: c['description_i18n'])
-    rescue Exception => e
-      @log.concat [e.message+' '+c.to_s]
-    end
-  end
+  # def migrate_topic c, topics_hash, locales_mapping
+  #   begin
+  #     topics_hash[c['_id']] = Topic.create!(title_multiloc: map_multiloc(c['name_i18n'], locales_mapping), 
+  #                                           description_multiloc: map_multiloc(c['description_i18n'], locales_mapping)
+  #   rescue Exception => e
+  #     @log.concat [e.message+' '+c.to_s]
+  #   end
+  # end
 
-  def migrate_project(p, projects_hash, areas_hash, topics_hash, phases_hash, groups_hash, superadmin_id)
+  def migrate_project p, projects_hash, areas_hash, topics_hash, phases_hash, groups_hash, superadmin_id, locales_mapping
     d = {}
     # title
     if p.dig('title_i18n')
-      d[:title_multiloc] = p.dig('title_i18n')
+      d[:title_multiloc] = map_multiloc(p.dig('title_i18n'), locales_mapping)
     else
       @log.concat ["Couldn't find a title for project #{p.to_s}"]
       return
     end
     # description
     if p.dig('description_i18n')
-      d[:description_multiloc] = p.dig('description_i18n')
+      d[:description_multiloc] = map_multiloc(p.dig('description_i18n'), locales_mapping)
     else
       @log.concat ["Couldn't find a description for project #{p.to_s}"]
       return
@@ -321,7 +348,7 @@ namespace :migrate do
         d[:visible_to] = 'admins'
       else
         d[:visible_to] = 'groups'
-        d[:groups] = p['permissions'].values.map{|g| groups_hash[g]}.select{|g| g}
+        d[:groups] = p['permissions'].values.flatten.map{|g| groups_hash[g]}.select{|g| g}
       end
     else
       d[:visible_to] = 'public'
@@ -347,13 +374,13 @@ namespace :migrate do
       # events
       if p.dig('timeline', 'events')
         p.dig('timeline', 'events').each do |e|
-          migrate_event(e, record)
+          migrate_event(e, record, locales_mapping)
         end
       end
       # phases
       if p.dig('timeline', 'phases')
         p.dig('timeline', 'phases').each do |p|
-          migrate_phase(p, record, phases_hash)
+          migrate_phase(p, record, phases_hash, locales_mapping)
         end
       end
       projects_hash[p['_id']] = record
@@ -362,20 +389,20 @@ namespace :migrate do
     end
   end
 
-  def migrate_event(e, project)
+  def migrate_event e, project, locales_mapping
     d = {}
     # project
     d[:project] = project
     # title
     if e.dig('title_i18n')
-      d[:title_multiloc] = e.dig('title_i18n')
+      d[:title_multiloc] = map_multiloc(e.dig('title_i18n'), locales_mapping)
     else
       @log.concat ["Couldn't find the title for event #{e.to_s}"]
       return
     end
     # description
     if e.dig('description_i18n')
-      d[:description_multiloc] = e.dig('description_i18n')
+      d[:description_multiloc] = map_multiloc(e.dig('description_i18n'), locales_mapping)
     end
     # location
     if e.dig('location')
@@ -396,20 +423,20 @@ namespace :migrate do
     end
   end
 
-  def migrate_phase(p, project, phases_hash)
+  def migrate_phase p, project, phases_hash, locales_mapping
     d = {}
     # project
     d[:project] = project
     # title
     if p.dig('title_i18n')
-      d[:title_multiloc] = p.dig('title_i18n')
+      d[:title_multiloc] = map_multiloc(p.dig('title_i18n'), locales_mapping)
     else
       @log.concat ["Couldn't find the title for phase #{p.to_s}"]
       return
     end
     # description
     if p.dig('description_i18n')
-      d[:description_multiloc] = p.dig('description_i18n')
+      d[:description_multiloc] = map_multiloc(p.dig('description_i18n'), locales_mapping)
     end
     # start
     if p['startAt']
@@ -432,7 +459,7 @@ namespace :migrate do
     end
   end
 
-  def map_idea_status(p, idea_statuses_mapping)
+  def map_idea_status p, idea_statuses_mapping
     code = 'proposed'
     p.title_multiloc.values.each do |t|
       if idea_statuses_mapping[t]
@@ -442,7 +469,7 @@ namespace :migrate do
     IdeaStatus.find_by!(code: code)
   end
 
-  def migrate_idea(p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash, idea_statuses_hash)
+  def migrate_idea p, ideas_hash, users_hash, projects_hash, areas_hash, topics_hash, idea_statuses_hash, locales_mapping
     d = {}
     # only migrate published ideas
     if (p['status'] || -1) == 2
@@ -452,20 +479,20 @@ namespace :migrate do
     end
     # title
     if p.dig('title_i18n')
-      d[:title_multiloc] = p.dig('title_i18n')
+      d[:title_multiloc] = map_multiloc(p.dig('title_i18n'), locales_mapping)
     else
       @log.concat ["Couldn't find a title for idea #{p.to_s}"]
       return
     end
     # description
     if p.dig('htmlBody_i18n') || p.dig('body_i18n')
-      d[:body_multiloc] = p.dig('htmlBody_i18n') || md_to_html(p.dig('body_i18n'))
+      d[:body_multiloc] = map_multiloc(p.dig('htmlBody_i18n') || md_to_html(p.dig('body_i18n')), locales_mapping)
     else
       @log.concat ["Couldn't find a body for idea #{p.to_s}"]
       return
     end
     # author
-    if p.dig('userId')
+    if p.dig('userId') && users_hash[p.dig('userId')]
       d[:author] = users_hash[p.dig('userId')]
     else
       @log.concat ["Couldn't find the author for idea #{p.to_s}"]
@@ -533,11 +560,11 @@ namespace :migrate do
     end
   end
 
-  def migrate_comment(c, comments_hash, users_hash, ideas_hash)
+  def migrate_comment c, comments_hash, users_hash, ideas_hash, locales_mapping
     d = {}
     # body
     if c.dig('htmlBody_i18n')
-      d[:body_multiloc] = c.dig('htmlBody_i18n')
+      d[:body_multiloc] = map_multiloc(c.dig('htmlBody_i18n'), locales_mapping)
     else
       @log.concat ["Couldn't find the body for comment #{c.to_s}"]
       return
@@ -588,18 +615,18 @@ namespace :migrate do
     end
   end
 
-  def migrate_page(p, pages_hash)
+  def migrate_page p, pages_hash, locales_mapping
     d = {}
     # title
     if p.dig('title_i18n')
-      d[:title_multiloc] = p.dig('title_i18n')
+      d[:title_multiloc] = map_multiloc(p.dig('title_i18n'), locales_mapping)
     else
       @log.concat ["Couldn't find a title for page #{p.to_s}"]
       return
     end
     # body
     if p.dig('content_i18n')
-      d[:body_multiloc] = p.dig('content_i18n')
+      d[:body_multiloc] = map_multiloc(p.dig('content_i18n'), locales_mapping)
     else
       @log.concat ["Couldn't find a body for page #{p.to_s}"]
       return
