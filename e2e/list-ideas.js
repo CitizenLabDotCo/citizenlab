@@ -19,10 +19,10 @@ module.exports = {
 
     browser
     .waitForElementVisible('#e2e-ideas-container')
-    .click('.e2e-filter-selector-sort button')
-    .waitForElementVisible('.e2e-filter-selector-sort ul')
-    .click('.e2e-filter-selector-sort ul li:last-child')
-    .waitForElementVisible('#e2e-ideas-container')
+    .click('#e2e-ideas-sort-filter .e2e-filter-selector-button')
+    .waitForElementVisible('.e2e-filter-selector-dropdown-list')
+    .click('.e2e-filter-selector-dropdown-list li:last-child')
+    .waitForElementVisible('#e2e-ideas-list')
     .end();
   },
 

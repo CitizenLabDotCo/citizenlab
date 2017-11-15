@@ -400,7 +400,6 @@ class ProfileForm extends React.Component {
                       </div>
                     }
 
-
                     {this.props.domicileEnabled &&
                       <div>
                         <LabelWithTooltip id="domicile" />
@@ -521,7 +520,9 @@ class ProfileForm extends React.Component {
                   </InputGroupStyled>
 
                 </section> */}
+
                 <Button
+                  id="e2e-profile-edit-form-button"
                   text={intl.formatMessage({ ...messages.submit })}
                   onClick={this.handleSubmit}
                   loading={processing}

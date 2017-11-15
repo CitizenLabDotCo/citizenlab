@@ -10,6 +10,7 @@
     "noImplicitReturns": true,
     "noImplicitThis": false,
     "strictNullChecks": true,
+    "strictFunctionTypes": false,
     "mapRoot": "./",
     "noImplicitAny": false,
     "moduleResolution": "node",
@@ -17,7 +18,10 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "target": "es6",
-    "allowJs": true
+    "allowJs": true,
+    "plugins": [{
+      "name": "typescript-styled-plugin"
+    }]
   },
   "include": [
       "**/*"

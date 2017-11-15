@@ -1,8 +1,3 @@
-/*
- * ProjectsIndexPage Messages
- *
- * This contains all the text for the ProjectsIndexPage component.
- */
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
@@ -13,14 +8,6 @@ export default defineMessages({
   loading: {
     id: 'app.containers.ProjectsIndexPage.loading',
     defaultMessage: 'Loading...',
-  },
-  helmetTitle: {
-    id: 'app.containers.ProjectsIndexPage.helmetTitle',
-    defaultMessage: 'Project listing page',
-  },
-  helmetDescription: {
-    id: 'app.containers.ProjectsIndexPage.helmetDescription',
-    defaultMessage: 'Project listing',
   },
   areasTitle: {
     id: 'app.containers.ProjectsIndexPage.areasTitle',

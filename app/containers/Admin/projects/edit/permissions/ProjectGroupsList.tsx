@@ -97,8 +97,8 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       locale: null,
       currentTenantLocales: null,

@@ -40,8 +40,10 @@ declare namespace API {
   }
 
   interface ErrorResponse {
-    error: {
-      [fieldName: string]: Error[]
+    json: {
+      errors: {
+        [fieldName: string]: Error[]
+      }
     }
   }
 

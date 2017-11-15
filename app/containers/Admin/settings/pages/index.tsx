@@ -17,8 +17,8 @@ export default class AdminSettingsPages extends React.Component<Props, State> {
 
   slugs = LEGAL_PAGES;
 
-  constructor () {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     this.state = {};
   }

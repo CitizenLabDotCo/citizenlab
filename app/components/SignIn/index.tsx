@@ -3,16 +3,21 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import { Link } from 'react-router';
+import { browserHistory, Link } from 'react-router';
+import { Location } from 'history';
 
 // components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import Icon from 'components/UI/Icon';
+import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { signIn } from 'services/auth';
+import { currentTenantStream, ITenant } from 'services/tenant';
+import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // i18n
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
@@ -20,10 +25,11 @@ import messages from './messages';
 
 // utils
 import { isValidEmail } from 'utils/validate';
+import { AUTH_PATH } from 'containers/App/constants';
 
 // style
 import { darken } from 'polished';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const Container = styled.div`
   flex: 1;
@@ -38,16 +44,41 @@ const Form = styled.form`
 const FormElement = styled.div`
   width: 100%;
   margin-bottom: 15px;
+  position: relative;
+`;
+
+const PasswordInput = styled(Input)`
+  input {
+    padding-right: 100px;
+  }
+`;
+
+const ForgotPassword = styled(Link)`
+  color: ${props => props.theme.colors.label};
+  color: #999;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 300;
+  text-decoration: none;
+  cursor: pointer;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+
+  &:hover {
+    color: #000;
+  }
 `;
 
 const ButtonWrapper = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-top: 10px;
 `;
 
-const ForgotPassword = styled(Link)`
+const CreateAnAccountStyle = css`
   color: ${(props) => props.theme.colorMain};
   font-size: 16px;
   line-height: 20px;
@@ -60,111 +91,134 @@ const ForgotPassword = styled(Link)`
   }
 `;
 
-const Separator = styled.div`
-  width: 100%;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  position: relative;
-  margin-top: 30px;
-  margin-bottom: 20px;
+const CreateAnAccountDiv = styled.div`
+  ${CreateAnAccountStyle}
 `;
 
-const SeparatorLine = styled.div`
+const CreateAnAccountLink = styled(Link)`
+  ${CreateAnAccountStyle}
+`;
+
+const Separator = styled.div`
   width: 100%;
   height: 1px;
   background: transparent;
   border-bottom: solid 1px #ccc;
-`;
-
-const SeparatorTextContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-`;
-
-const SeparatorText = styled.div`
-  width: 54px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f8f8f8;
-
-  span {
-    color: #999;
-    font-size: 17px;
-  }
+  margin-top: 30px;
+  margin-bottom: 20px;
 `;
 
 const Footer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
 `;
 
-const FooterText = styled.div`
-  color: #888;
-  font-size: 17px;
-  line-height: 21px;
-  font-weight: 400;
-  margin-top: 0px;
-  margin-bottom: 0px;
-
-  span {
-    margin-right: 5px;
+const SocialLoginButton = styled(Button)`
+  .Button {
+    background: #fff !important;
+    border: solid 1px #eaeaea !important;
   }
-`;
-
-const FooterLink = styled.span`
-  color: ${(props) => props.theme.colorMain};
 
   &:hover {
-    color: ${(props) => darken(0.15, props.theme.colorMain)};
-    cursor: pointer;
+    .Button {
+      border-color: #ccc !important;
+    }
   }
+`;
+
+const GoogleLogin = SocialLoginButton.extend`
+  margin-right: 15px;
+
+  .Button {
+    color: #518EF8 !important;
+  }
+`;
+
+const FacebookLogin = SocialLoginButton.extend`
+  .Button {
+    color: #4B6696 !important;
+  }
+`;
+
+const SocialLoginText = styled.div`
+  color: ${(props) => props.theme.colors.label};
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 20px;
+  margin-left: 4px;
+  margin-bottom: 20px;
+`;
+
+const SocialLoginButtons = styled.div`
+  width: 100%;
+  display: flex;
 `;
 
 type Props = {
-  onSignedIn: () => void;
+  onSignedIn: (userId: string) => void;
   goToSignUpForm?: () => void;
 };
 
 type State = {
+  location: Location | null;
+  currentTenant: ITenant | null;
   email: string | null;
   password: string | null;
   processing: boolean;
   emailError: string | null;
   passwordError: string | null;
   signInError: string | null;
+  socialLoginUrlParameter: string;
+  loading: boolean;
 };
 
 class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
+  subscriptions: Rx.Subscription[];
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
+      location: browserHistory.getCurrentLocation(),
+      currentTenant: null,
       email: null,
       password: null,
       processing: false,
       emailError: null,
       passwordError: null,
-      signInError: null
+      signInError: null,
+      socialLoginUrlParameter: '',
+      loading: true
     };
+    this.subscriptions = [];
     this.emailInputElement = null;
     this.passwordInputElement = null;
   }
 
+  componentWillMount() {
+    const globalState$ = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage').observable;
+    const currentTenant$ = currentTenantStream().observable;
+
+    this.subscriptions = [
+      currentTenant$.subscribe((currentTenant) => {
+        this.setState({ currentTenant, loading: false });
+      }),
+
+      globalState$.subscribe((globalState) => {
+        this.setState({ socialLoginUrlParameter: (globalState && globalState.ideaId ? `?idea_to_publish=${globalState.ideaId}` : '') });
+      })
+    ];
+  }
+
   componentDidMount() {
     this.emailInputElement && this.emailInputElement.focus();
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleEmailOnChange = (email) => {
@@ -202,9 +256,9 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     if (this.validate(email, password) && email && password) {
       try {
         this.setState({ processing: true });
-        await signIn(email, password);
+        const user = await signIn(email, password);
         this.setState({ processing: false });
-        onSignedIn();
+        onSignedIn(user.data.id);
       } catch (error) {
         const signInError = formatMessage(messages.signInError);
         this.setState({ signInError, processing: false });
@@ -231,83 +285,109 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { intl } = this.props;
     const { formatMessage } = this.props.intl;
-    const { email, password, processing, emailError, passwordError, signInError } = this.state;
+    const { location, currentTenant, email, password, processing, emailError, passwordError, signInError, socialLoginUrlParameter, loading } = this.state;
+    const googleLoginEnabled = !!_.get(currentTenant, `data.attributes.settings.google_login.enabled`);
+    const facebookLoginEnabled = !!_.get(currentTenant, `data.attributes.settings.facebook_login.enabled`);
+    const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
     const timeout = 500;
 
-    return (
-      <Container>
-        <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
-          <FormElement>
-            {/* <Label value={formatMessage(messages.emailLabel)} htmlFor="email" /> */}
-            <Input
-              type="email"
-              id="email"
-              value={email}
-              placeholder={formatMessage(messages.emailPlaceholder)}
-              error={emailError}
-              onChange={this.handleEmailOnChange}
-              setRef={this.handleEmailInputSetRef}
-            />
-          </FormElement>
+    const createAccount = ((location && location.pathname === '/ideas/new') ? (
+      <CreateAnAccountDiv onClick={this.goToSignUpForm}>
+        <FormattedMessage {...messages.createAnAccount} />
+      </CreateAnAccountDiv>
+    ) : (
+      <CreateAnAccountLink to="/sign-up">
+        <FormattedMessage {...messages.createAnAccount} />
+      </CreateAnAccountLink>
+    ));
 
-          <FormElement>
-            {/* <Label value={formatMessage(messages.passwordLabel)} htmlFor="password" /> */}
-            <Input
-              type="password"
-              id="password"
-              value={password}
-              placeholder={formatMessage(messages.passwordPlaceholder)}
-              error={passwordError}
-              onChange={this.handlePasswordOnChange}
-              setRef={this.handlePasswordInputSetRef}
-            />
-          </FormElement>
+    if (!loading) {
+      return (
+        <Container>
+          <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
+            <FormElement>
+              {/* <Label value={formatMessage(messages.emailLabel)} htmlFor="email" /> */}
+              <Input
+                type="email"
+                id="email"
+                value={email}
+                placeholder={formatMessage(messages.emailPlaceholder)}
+                error={emailError}
+                onChange={this.handleEmailOnChange}
+                setRef={this.handleEmailInputSetRef}
+              />
+            </FormElement>
 
-          <FormElement>
-            <ButtonWrapper>
-              <Button
-                onClick={this.handleOnSubmit}
-                size="2"
-                loading={processing}
-                text={formatMessage(messages.submit)}
-                circularCorners={true}
+            <FormElement>
+              {/* <Label value={formatMessage(messages.passwordLabel)} htmlFor="password" /> */}
+              <PasswordInput
+                type="password"
+                id="password"
+                value={password}
+                placeholder={formatMessage(messages.passwordPlaceholder)}
+                error={passwordError}
+                onChange={this.handlePasswordOnChange}
+                setRef={this.handlePasswordInputSetRef}
               />
               <ForgotPassword to="/password-recovery">
                 <FormattedMessage {...messages.forgotPassword} />
               </ForgotPassword>
-            </ButtonWrapper>
-            <Error marginTop="10px" text={signInError} />
-          </FormElement>
+            </FormElement>
 
-          <Separator>
-            <SeparatorLine />
-            <SeparatorTextContainer>
-              <SeparatorText>
-                <span><FormattedMessage {...messages.or} /></span>
-              </SeparatorText>
-            </SeparatorTextContainer>
-          </Separator>
+            <FormElement>
+              <ButtonWrapper>
+                <Button
+                  onClick={this.handleOnSubmit}
+                  size="2"
+                  loading={processing}
+                  text={formatMessage(messages.submit)}
+                  circularCorners={true}
+                />
 
-          <Footer>
-            <FooterText>
-              <span>{formatMessage(messages.noAccount)}</span>
-              <FooterLink onClick={this.goToSignUpForm}>{formatMessage(messages.signUp)}</FooterLink>
-            </FooterText>
+                {createAccount}
+              </ButtonWrapper>
+              <Error marginTop="10px" text={signInError} />
+            </FormElement>
 
-            {/*
-            <Button
-              size="2"
-              style="secondary-outlined"
-              text={formatMessage(messages.createAnAccount)}
-              fullWidth={true}
-              onClick={this.goToSignUpForm}
-              circularCorners={true}
-            />
-            */}
-          </Footer>
-        </Form>
-      </Container>
-    );
+            {showSocialLogin &&
+              <div>
+                <Separator />
+
+                <Footer>
+                  <SocialLoginText>
+                    {formatMessage(messages.orLogInWith)}
+                  </SocialLoginText>
+                  <SocialLoginButtons>
+                    <FeatureFlag name="google_login">
+                      <GoogleLogin
+                        text="Google"
+                        style="primary"
+                        size="1"
+                        icon="google-colored"
+                        linkTo={`${AUTH_PATH}/google${socialLoginUrlParameter}`}
+                        circularCorners={true}
+                      />
+                    </FeatureFlag>
+                    <FeatureFlag name="facebook_login">
+                      <FacebookLogin
+                        text="Facebook"
+                        style="primary"
+                        size="1"
+                        icon="facebook-blue"
+                        linkTo={`${AUTH_PATH}/facebook${socialLoginUrlParameter}`}
+                        circularCorners={true}
+                      />
+                    </FeatureFlag>
+                  </SocialLoginButtons>
+                </Footer>
+              </div>
+            }
+          </Form>
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 
