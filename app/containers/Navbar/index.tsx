@@ -296,7 +296,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
               <NavigationItem to="/projects" activeClassName="active">
                 <FormattedMessage {...messages.pageProjects} />
               </NavigationItem>
-              <NavigationItem to="pages/information" activeClassName="active">
+              <NavigationItem to="/pages/information" activeClassName="active">
                 <FormattedMessage {...messages.pageInformation} />
               </NavigationItem>
             </NavigationItems>
