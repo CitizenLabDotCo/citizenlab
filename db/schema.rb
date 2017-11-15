@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171113100102) do
+ActiveRecord::Schema.define(version: 20171115092024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -238,6 +238,15 @@ ActiveRecord::Schema.define(version: 20171113100102) do
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
+  create_table "project_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_id"
+    t.string "file"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_files_on_project_id"
+  end
+
   create_table "project_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.string "image"
@@ -341,6 +350,7 @@ ActiveRecord::Schema.define(version: 20171113100102) do
   add_foreign_key "page_links", "pages", column: "linking_page_id"
   add_foreign_key "pages", "projects"
   add_foreign_key "phases", "projects"
+  add_foreign_key "project_files", "projects"
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
