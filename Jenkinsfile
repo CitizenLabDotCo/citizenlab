@@ -24,16 +24,16 @@ pipeline {
             ]
         ])
         withAWS(credentials: 'aws') {
-          s3Upload(file:'doc/api', bucket:'developers.citizenlab.co', path:'frontweb_api/${env.BRANCH_NAME}')
+          s3Upload(file:'doc/api', bucket:'developers.citizenlab.co', path: "frontweb_api/${env.BRANCH_NAME}")
         }
       }
     }
 
     stage('Test public API') {
       steps {
-        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm web bundle exec rake public_api:docs:generate'
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rake public_api:docs:generate'
         withAWS(credentials: 'aws') {
-          s3Upload(file: 'doc/public_api', bucket:'developers.citizenlab.co', path:'public_api/')
+          s3Upload(file: 'doc/public_api', bucket:'developers.citizenlab.co', path: "public_api/")
         }
       }
     }
@@ -41,7 +41,6 @@ pipeline {
     stage('Push docker image tagged latest') {
       when { branch 'master' }
       steps {
-        echo 'Building containers'
         script {
           sh 'rm -rf public/uploads/*'
           docker.withRegistry("https://index.docker.io/v1/",'docker-hub-credentials') {
