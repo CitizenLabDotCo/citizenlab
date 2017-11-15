@@ -53,8 +53,8 @@ type State = {
 class AdminProjectTimelineIndex extends React.Component<Props, State> {
   subscription: Rx.Subscription;
 
-  constructor () {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       events: [],
       loading: false,

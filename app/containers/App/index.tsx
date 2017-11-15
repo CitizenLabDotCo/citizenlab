@@ -7,13 +7,14 @@ import { RouterState } from 'react-router';
 
 // components
 import Meta from './Meta';
-import Navbar from 'containers/Navbar';
+import Navbar, { namespace as navbarComponentNamespace } from 'containers/Navbar';
 import messages from './messages';
 import Loader from 'components/loaders';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import IdeasShow from 'containers/IdeasShow';
-import { namespace as IdeaCardComponent } from 'components/IdeaCard';
+import IdeasNewPage2 from 'containers/IdeasNewPage2';
+import { namespace as IdeaCardComponentNamespace } from 'components/IdeaCard';
 
 // auth
 import Authorize, { Else } from 'utils/containers/authorize';
@@ -55,8 +56,8 @@ const Container = styled.div`
 
 export interface IModalInfo {
   type: string;
-  id: string;
-  url?: string | undefined;
+  id: string | null;
+  url: string | null;
 }
 
 type Props = {};
@@ -66,21 +67,21 @@ type State = {
   modalOpened: boolean;
   modalType: string | null;
   modalId: string | null;
-  modalUrl: string | undefined;
+  modalUrl: string | null;
 };
 
 export default class App extends React.PureComponent<Props & RouterState, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       currentTenant: null,
       modalOpened: false,
       modalType: null,
       modalId: null,
-      modalUrl: undefined
+      modalUrl: null
     };
     this.subscriptions = [];
   }
@@ -89,7 +90,10 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const authUser$ = authUserStream().observable;
 
     this.subscriptions = [
-      eventEmitter.observe<IModalInfo>(IdeaCardComponent, 'cardClick').subscribe(({ eventValue }) => {
+      Rx.Observable.merge(
+        eventEmitter.observe<IModalInfo>(IdeaCardComponentNamespace, 'cardClick'),
+        eventEmitter.observe<IModalInfo>(navbarComponentNamespace, 'goToAddIdeaPage')
+      ).subscribe(({ eventValue }) => {
         const { type, id, url } = eventValue;
         this.openModal(type, id, url);
       }),
@@ -120,12 +124,12 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  openModal = (type: string, id: string, url: string | undefined) => {
+  openModal = (type: string, id: string | null, url: string | null) => {
     this.setState({ modalOpened: true, modalType: type, modalId: id, modalUrl: url });
   }
 
   closeModal = () => {
-    this.setState({ modalOpened: false, modalType: null, modalId: null, modalUrl: undefined });
+    this.setState({ modalOpened: false, modalType: null, modalId: null, modalUrl: null });
   }
 
   render() {
@@ -153,6 +157,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
               <FullscreenModal opened={modalOpened} close={this.closeModal} url={modalUrl}>
                 {modalOpened && modalType === 'idea' && modalId && <IdeasShow location={location} ideaId={modalId} />}
+                {modalOpened && modalType === 'add-idea' && <IdeasNewPage2 />}
               </FullscreenModal>
 
               <Navbar />

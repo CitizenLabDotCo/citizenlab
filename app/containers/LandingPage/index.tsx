@@ -17,9 +17,10 @@ import Button from 'components/UI/Button';
 import Footer from 'components/Footer';
 
 // services
+import { authUserStream } from 'services/auth';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { ideasStream, IIdeas } from 'services/ideas';
+import { ideaByIdStream, ideasStream, updateIdea, IIdeas } from 'services/ideas';
 import { projectsStream, IProjects } from 'services/projects';
 
 // i18n
@@ -29,10 +30,13 @@ import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 
 // style
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { lighten, darken } from 'polished';
 import { media } from 'utils/styleUtils';
-import Rellax from 'rellax';
+
+// typings
+import { IUser } from 'services/users';
+import { setTimeout } from 'timers';
 
 const Container: any = styled.div`
   display: flex;
@@ -41,18 +45,6 @@ const Container: any = styled.div`
   background: ${(props: any) => props.hasHeader ? '#f8f8f8' : '#fff'};
   position: relative;
 `;
-
-/*
-const BackgroundColor = styled.div`
-  position: absolute;
-  top: 575px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 0;
-  background-color: #f8f8f8;
-`;
-*/
 
 const Header = styled.div`
   width: 100vw;
@@ -84,6 +76,7 @@ const HeaderImageBackground: any = styled.div`
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+  background-image: url(${(props: any) => props.src});
 `;
 
 const HeaderImageOverlay = styled.div`
@@ -113,29 +106,6 @@ const HeaderContent = styled.div`
   justify-content: center;
   z-index: 2;
 `;
-
-/*
-const HeaderLogoWrapper = styled.div`
-  width: 110px;
-  height: 110px;
-  padding: 15px;
-  margin-top: -20px;
-  margin-bottom: 15px;
-  border: solid 2px #eaeaea;
-  border-radius: 6px;
-  background: #fff;
-  border: solid 2px #eaeaea;
-`;
-
-const HeaderLogo: any = styled.div`
-  width: 100%;
-  height: 100%;
-  background-image: url(${(props: any) => props.imageSrc});
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain;
-`;
-*/
 
 const HeaderTitle: any = styled.h1`
   width: 100%;
@@ -247,7 +217,7 @@ const ExploreText = styled.div`
   transition: all 100ms ease-out;
 `;
 
-const ExploreIcon = styled(Icon) `;
+const ExploreIcon = styled(Icon) `
   height: 19px;
   fill: #84939E;
   margin-top: 1px;
@@ -296,16 +266,15 @@ type State = {
   hasProjects: boolean;
 };
 
+export const landingPageIdeasQuery = { sort: 'trending', 'page[number]': 1, 'page[size]': 6 };
+export const landingPageProjectsQuery = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
+
 class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
-  ideasQueryParameters: object;
-  projectsQueryParameters: object;
-  headerImageRellax: any;
-  headerContentRellax: any;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       locale: null,
       currentTenant: null,
@@ -314,17 +283,16 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
       hasProjects: false
     };
     this.subscriptions = [];
-    this.ideasQueryParameters = { sort: 'trending', 'page[size]': 6 };
-    this.projectsQueryParameters = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
-    this.headerImageRellax = null;
-    this.headerContentRellax = null;
   }
 
   componentWillMount() {
+    const query = browserHistory.getCurrentLocation().query;
+    const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
-    const ideas$ = ideasStream({ queryParameters: this.ideasQueryParameters }).observable;
-    const projects$ = projectsStream({ queryParameters: this.ideasQueryParameters }).observable;
+    const ideas$ = ideasStream({ queryParameters: landingPageIdeasQuery }).observable;
+    const projects$ = projectsStream({ queryParameters: landingPageProjectsQuery }).observable;
+    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Rx.Observable.of(null));
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -332,25 +300,33 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
         currentTenant$,
         ideas$,
         projects$
-      ).subscribe(([locale, currentTenant, ideas, projects]) => this.setState({
-        locale,
-        currentTenant,
-        currentTenantHeader: (currentTenant.data.attributes.header_bg ? `${currentTenant.data.attributes.header_bg.large}?v=${Date.now()}` : null),        
-        hasIdeas: (ideas !== null && ideas.data.length > 0),
-        hasProjects: (projects !== null && projects.data.length > 0)
-      }))
+      ).subscribe(([locale, currentTenant, ideas, projects]) => {
+        this.setState({
+          locale,
+          currentTenant,
+          currentTenantHeader: (currentTenant.data.attributes.header_bg ? currentTenant.data.attributes.header_bg.large : null),        
+          hasIdeas: (ideas !== null && ideas.data.length > 0),
+          hasProjects: (projects !== null && projects.data.length > 0)
+        });
+      }),
+
+      // if sent back to landingpage after socail login
+      Rx.Observable.combineLatest(
+        authUser$,
+        ideaToPublish$
+      ).subscribe(async ([authUser, ideaToPublish]) => {
+        if (authUser && ideaToPublish && ideaToPublish.data.attributes.publication_status === 'draft') {
+          await updateIdea(ideaToPublish.data.id, { author_id: authUser.data.id, publication_status: 'published' });
+          ideasStream({ queryParameters: landingPageIdeasQuery }).fetch();
+        }
+
+        // remove idea parameter from url
+        window.history.replaceState(null, '', window.location.pathname);
+      })
     ];
   }
 
   componentWillUnmount() {
-    if (this.headerImageRellax !== null) {
-      this.headerImageRellax.destroy();
-    }
-
-    if (this.headerContentRellax !== null) {
-      this.headerContentRellax.destroy();
-    }
-
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
@@ -366,18 +342,6 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
     browserHistory.push('/ideas/new');
   }
 
-  setHeaderImageRef = (element: HTMLDivElement) => {
-    if (element && !this.headerImageRellax && !bowser.safari) {
-      this.headerImageRellax = new Rellax(`.${element.className.split(' ')[0]}`, { speed: -7, round: true });
-    }
-  }
-
-  setHeaderContentRef = (element: HTMLDivElement) => {
-    if (element && !this.headerContentRellax && !bowser.safari) {
-      this.headerContentRellax = new Rellax(`.${element.className.split(' ')[0]}`, { speed: -2, round: true });
-    }
-  }
-
   render() {
     const { locale, currentTenant, currentTenantHeader, hasIdeas, hasProjects } = this.state;
     const { formatMessage } = this.props.intl;
@@ -391,33 +355,20 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
       const currentTenantLogo = currentTenant.data.attributes.logo.large;
       const currentTenantHeaderTitle = (headerTitleMultiLoc && headerTitleMultiLoc[locale]);
       const currentTenantHeaderSlogan = (headerSloganMultiLoc && headerSloganMultiLoc[locale]);
-      const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }} />);
-      const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
+      const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : formatMessage(messages.titleCity, { name: currentTenantName }));
+      const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : formatMessage(messages.subtitleCity));
       const hasHeaderImage = (currentTenantHeader !== null);
 
       return (
         <div>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
-            {/*
-            {!currentTenantHeader && <BackgroundColor />}
-            */}
-
             <Header>
-              {currentTenantHeader && 
-                <HeaderImage innerRef={this.setHeaderImageRef}>
-                  <HeaderImageBackground src={currentTenantHeader} />
-                  <HeaderImageOverlay />
-                </HeaderImage>
-              }
+              <HeaderImage>
+                <HeaderImageBackground src={currentTenantHeader} />
+                <HeaderImageOverlay />
+              </HeaderImage>
 
-              <HeaderContent innerRef={this.setHeaderContentRef}>
-                {/*
-                {currentTenantLogo &&
-                  <HeaderLogoWrapper>
-                    <HeaderLogo imageSrc={currentTenantLogo} />
-                  </HeaderLogoWrapper>
-                }
-                */}
+              <HeaderContent>
                 <HeaderTitle hasHeader={hasHeaderImage}>
                   {title}
                 </HeaderTitle>
@@ -432,7 +383,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                 <Section className="ideas">
                   <SectionHeader>
                     <SectionTitle>
-                      <SectionIcon name="idea" className="idea" />
+                      {/* <SectionIcon name="idea" className="idea" /> */}
                       <FormattedMessage {...messages.trendingIdeas} />
                     </SectionTitle>
                     {hasIdeas &&
@@ -445,7 +396,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                     }
                   </SectionHeader>
                   <SectionContainer>
-                    <IdeaCards filter={this.ideasQueryParameters} loadMoreEnabled={false} />
+                    <IdeaCards filter={landingPageIdeasQuery} loadMoreEnabled={false} />
                   </SectionContainer>
                   {hasIdeas &&
                     <SectionFooter>
@@ -465,7 +416,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                   <Section>
                     <SectionHeader>
                       <SectionTitle>
-                        <SectionIcon name="project2" className="project" />
+                        {/* <SectionIcon name="project2" className="project" /> */}
                         {/* <FormattedMessage {...messages.projectsFrom} values={{ name: currentTenantName }} /> */}
                         <FormattedMessage {...messages.cityProjects} />
                       </SectionTitle>
@@ -477,7 +428,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                       </Explore>
                     </SectionHeader>
                     <SectionContainer>
-                      <ProjectCards filter={this.projectsQueryParameters} loadMoreEnabled={false} />
+                      <ProjectCards filter={landingPageProjectsQuery} loadMoreEnabled={false} />
                     </SectionContainer>
                     <SectionFooter>
                       <ViewMoreButton
@@ -494,9 +445,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
               </StyledContentContainer>
 
               <Footer />
-
             </Content>
-
           </Container>
         </div>
       );

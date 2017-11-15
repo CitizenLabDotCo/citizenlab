@@ -138,8 +138,8 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       locale: null,
       authUser: null,

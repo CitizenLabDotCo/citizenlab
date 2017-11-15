@@ -21,7 +21,7 @@ module.exports = {
     .setValue('#first_name', firstName)
     .clearValue('#last_name')
     .setValue('#last_name', lastName)
-    .click('#e2e-profile-edit-form button')
+    .click('#e2e-profile-edit-form-button')
     .waitForElementVisible('.ui.message')
     .url('localhost:3000/profile/edit')
     .waitForElementVisible('#e2e-profile-edit-form')

@@ -29,6 +29,7 @@ const IconContainer = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
+  height: 17px;
   opacity: ${(props) => (props as any).isRead ? '0.35' : '1'};
 ` as any;
 
