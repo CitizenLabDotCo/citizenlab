@@ -180,7 +180,7 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
           <PagesNavWrapper>
             <PagesNav>
               {pageLinks.map((link) => (
-                <StyledLink to={`pages/${link.data.attributes.linked_page_slug}`} key={link.data.id}>
+                <StyledLink to={`/pages/${link.data.attributes.linked_page_slug}`} key={link.data.id}>
                   <T value={link.data.attributes.linked_page_title_multiloc} />
                   <LinkIcon name="chevron-right" />
                 </StyledLink>
