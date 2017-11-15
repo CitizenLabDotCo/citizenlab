@@ -25,10 +25,10 @@ module.exports = {
     .waitForElementVisible('.ui.message')
     .url('localhost:3000/profile/edit')
     .waitForElementVisible('#e2e-profile-edit-form')
-    .getValue('input#first_name', function(result) {
+    .getValue('input#first_name', function (result) {
       this.assert.equal(result.value, firstName);
     })
-    .getValue('input#last_name', function(result) {
+    .getValue('input#last_name', function (result) {
       this.assert.equal(result.value, lastName);
     })
     .end();
