@@ -80,12 +80,11 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
   state: State;
   passwordInputElement: HTMLInputElement | null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     const query = browserHistory.getCurrentLocation().query;
     const token = (query.token ? query.token : null);
-    console.log(token);
 
     this.state = {
       token,

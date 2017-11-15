@@ -63,8 +63,8 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       locale: null,
       currentTenant: null,

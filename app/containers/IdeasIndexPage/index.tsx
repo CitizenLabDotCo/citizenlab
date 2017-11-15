@@ -107,8 +107,8 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
   topics$: Rx.BehaviorSubject<string[]>;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       search: '',
       filter: {
@@ -168,11 +168,6 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container>
-
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
-        />
 
         <BackgroundColor />
 

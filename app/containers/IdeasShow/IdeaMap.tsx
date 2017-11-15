@@ -24,7 +24,7 @@ interface State {
 
 export default class IdeaMap extends React.Component<Props, State> {
   constructor(props: Props) {
-    super();
+    super(props as any);
 
     this.state = {};
   }

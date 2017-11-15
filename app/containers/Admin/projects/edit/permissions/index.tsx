@@ -80,8 +80,8 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       project: null,
       oldGroupsProjects: null,

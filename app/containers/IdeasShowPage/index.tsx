@@ -11,6 +11,19 @@ import IdeasShow from 'containers/IdeasShow';
 // services
 import { ideaBySlugStream, IIdea } from 'services/ideas';
 
+// style
+import styled, { css } from 'styled-components';
+import { media } from 'utils/styleUtils';
+
+const Container = styled.div`
+  background: #fff;
+  margin-top: -20px;
+
+  ${media.smallerThanMaxTablet`
+    margin-top: 0px;
+  `}
+`;
+
 type Props = {
   params: {
     slug: string;
@@ -25,8 +38,8 @@ class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       ideaId: null
     };
@@ -51,7 +64,11 @@ class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
     const { ideaId } = this.state;
 
     if (ideaId !== null) {
-      return <IdeasShow location={location} ideaId={ideaId} />;
+      return (
+        <Container>
+          <IdeasShow location={location} ideaId={ideaId} />
+        </Container>
+      );
     }
 
     return null;

@@ -121,8 +121,8 @@ interface State {
 class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[] = [];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     this.state = {
       loading: false,
@@ -189,11 +189,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    if (this.subscriptions) {
-      this.subscriptions.forEach((sub) => {
-        sub.unsubscribe();
-      });
-    }
+    _(this.subscriptions).forEach(subscription => subscription.unsubscribe());
   }
 
   componentWillReceiveProps(newProps) {
@@ -301,12 +297,13 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
 
     const submitState = getSubmitState({ errors, saved, diff: projectAttributesDiff });
     const areasValues = projectAttrs.area_ids ? projectAttrs.area_ids.map((id) => {
-      const option = _.find(this.state.areasOptions, { value: id });
+      const option = this.state.areasOptions.find(areaOption => areaOption.value === id);
+
       if (option) {
         return option;
-      } else {
-        return;
       }
+
+      return null;
     }) : null;
 
     return (

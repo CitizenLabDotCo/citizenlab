@@ -1,7 +1,5 @@
 const time = new Date().getTime();
 
-const LATEST_COMMENT = '.e2e-comments-container > *:first-child';
-
 module.exports = {
   '@tags': ['citizen', 'ideas', 'comments'],
   seeComments: (browser) => {
@@ -36,8 +34,8 @@ module.exports = {
     .setValue('.e2e-comment-form .textarea', `Test Comment ${time}`)
     .click('.e2e-comment-form .e2e-submit-comment')
     .pause(1000)
-    .waitForElementVisible(LATEST_COMMENT)
-    .assert.containsText(`${LATEST_COMMENT} .e2e-comment-body`, `Test Comment ${time}`)
+    .waitForElementVisible('.e2e-comment-thread')
+    .assert.containsText(`.e2e-comment-body`, `Test Comment ${time}`)
     .end();
   },
 };

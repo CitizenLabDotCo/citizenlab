@@ -53,21 +53,25 @@ export default defineMessages({
     id: 'app.containers.SignUp.noPasswordError',
     defaultMessage: 'Please enter a password',
   },
+  noValidPasswordError: {
+    id: 'app.containers.SignUp.noValidPasswordError',
+    defaultMessage: 'The password must be at least 8 characters long',
+  },
   yearOfBirthLabel: {
     id: 'app.containers.SignUp.yearOfBirthLabel',
-    defaultMessage: 'Year of birth (optional)',
+    defaultMessage: 'Year of birth',
   },
   yearOfBirthPlaceholder: {
     id: 'app.containers.SignUp.yearOfBirthPlaceholder',
-    defaultMessage: 'Optionally select your year of birth',
+    defaultMessage: 'Select your year of birth',
   },
   genderLabel: {
     id: 'app.containers.SignUp.genderLabel',
-    defaultMessage: 'Gender (optional)',
+    defaultMessage: 'Gender',
   },
   genderPlaceholder: {
     id: 'app.containers.SignUp.genderPlaceholder',
-    defaultMessage: 'Optionally select your gender',
+    defaultMessage: 'Select your gender',
   },
   male: {
     id: 'app.containers.SignUp.male',
@@ -81,29 +85,49 @@ export default defineMessages({
     id: 'app.containers.SignUp.unspecified',
     defaultMessage: 'Unspecified',
   },
+  localeLabel: {
+    id: 'app.containers.SignUp.localeLabel',
+    defaultMessage: 'Language',
+  },
+  localePlaceholder: {
+    id: 'app.containers.SignUp.localePlaceholder',
+    defaultMessage: 'Select your language',
+  },
+  noValidLocaleError: {
+    id: 'app.containers.SignUp.noValidLocaleError',
+    defaultMessage: 'Language not supported',
+  },
   areaLabel: {
     id: 'app.containers.SignUp.areaLabel',
-    defaultMessage: 'Area (optional)',
+    defaultMessage: 'Area',
   },
   areaPlaceholder: {
     id: 'app.containers.SignUp.areaPlaceholder',
-    defaultMessage: 'Optionally select your area',
+    defaultMessage: 'Select the area you live in',
   },
   continue: {
     id: 'app.containers.SignUp.continue',
     defaultMessage: 'Continue',
   },
-  submit: {
-    id: 'app.containers.SignUp.submit',
+  signUp: {
+    id: 'app.containers.SignUp.signUp',
     defaultMessage: 'Sign up',
   },
-  signUpError: {
-    id: 'app.containers.SignUp.signUpError',
+  submit: {
+    id: 'app.containers.SignUp.submit',
+    defaultMessage: 'Complete your profile',
+  },
+  skip: {
+    id: 'app.containers.SignUp.skip',
+    defaultMessage: 'Skip this step',
+  },
+  unknownError: {
+    id: 'app.containers.SignUp.unknownError',
     defaultMessage: 'Something went wrong. Please try again.',
   },
-  or: {
-    id: 'app.containers.SignUp.or',
-    defaultMessage: 'Or',
+  orSignUpWith: {
+    id: 'app.containers.SignUp.orSignUpWith',
+    defaultMessage: 'Or sign up with',
   },
   alreadyHaveAnAccount: {
     id: 'app.containers.SignUp.alreadyHaveAnAccount',

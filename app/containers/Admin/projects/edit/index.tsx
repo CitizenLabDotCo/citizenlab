@@ -33,8 +33,8 @@ type State = {
 class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Rx.Subscription;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     this.state = {
       project: null,
