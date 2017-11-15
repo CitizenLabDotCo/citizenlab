@@ -92,7 +92,6 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
 
   constructor() {
     super();
-    this.pageObserver = null;
     this.state = {
       page: null,
       loading: true,
@@ -101,7 +100,24 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   componentDidMount() {
-    this.pageObserver = pageBySlugStream(this.props.params.slug).observable
+    this.pageObserver = this.getPageStream(this.props.params.slug);
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.params.slug !== this.props.params.slug) {
+      if (this.pageObserver) {
+        this.pageObserver.unsubscribe();
+      }
+      this.pageObserver = this.getPageStream(newProps.params.slug);
+    }
+  }
+
+  componentWillUnmount() {
+    this.pageObserver && this.pageObserver.unsubscribe();
+  }
+
+  getPageStream = (slug) => {
+    return pageBySlugStream(slug).observable
     .switchMap((pageResponse) => {
 
       // Page not found
@@ -137,10 +153,6 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
         });
       }
     });
-  }
-
-  componentWillUnmount() {
-    this.pageObserver && this.pageObserver.unsubscribe();
   }
 
   render() {
