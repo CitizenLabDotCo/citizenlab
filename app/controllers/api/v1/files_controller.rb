@@ -19,7 +19,7 @@ class Api::V1::FilesController < ApplicationController
     if @file.save
       render json: @file, status: :created, serializer: Api::V1::FileSerializer
     else
-      render json: {errors: transform_errors_details(@file.errors.details)}, status: :unprocessable_entity
+      render json: {errors: transform_errors_details!(@file.errors.details)}, status: :unprocessable_entity
     end
   end
 
@@ -27,7 +27,7 @@ class Api::V1::FilesController < ApplicationController
     if @file.update(file_params)
       render json: @file, status: :ok, serializer: Api::V1::FileSerializer
     else
-      render json: {errors: transform_errors_details(@file.errors.details)}, status: :unprocessable_entity
+      render json: {errors: transform_errors_details!(@file.errors.details)}, status: :unprocessable_entity
     end
   end
 
@@ -42,9 +42,10 @@ class Api::V1::FilesController < ApplicationController
 
   private
 
-  def transform_errors_details error_details
+  def transform_errors_details! error_details
     # carrierwave does not return the error code symbols by default
-    {file: error_details[:file]&.uniq{|e| e[:error]}}
+    error_details[:file] = error_details[:file]&.uniq{|e| e[:error]}
+    error_details
   end
 
   def secure_controller?
