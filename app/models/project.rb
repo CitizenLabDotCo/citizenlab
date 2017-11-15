@@ -13,6 +13,7 @@ class Project < ApplicationRecord
   has_many :events, dependent: :destroy
   has_many :pages, dependent: :destroy
   has_many :project_images, dependent: :destroy
+  has_many :project_files, dependent: :destroy
   has_many :groups_projects, dependent: :destroy
   has_many :groups, through: :groups_projects
 
