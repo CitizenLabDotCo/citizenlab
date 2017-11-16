@@ -43,7 +43,7 @@ resource "ProjectFile" do
 
     let(:project_id) { @project.id }
     let(:ordering) { 1 }
-    let(:file) { encode_file_as_base64("afvalkalender.pdf") }
+    let(:file) { encode_pdf_file_as_base64("afvalkalender.pdf") }
 
     example_request "Add a file attachment to a project" do
       expect(response_status).to eq 201
@@ -53,12 +53,12 @@ resource "ProjectFile" do
     end
 
     describe do
-      let(:file) { encode_image_as_base64("image14.png") }
+      let(:file) { encode_exe_file_as_base64("keylogger.exe") } # don't worry, it's not really a keylogger ;-)
 
       example_request "[error] Add an unsupported file extension as attachment to a project" do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
-        expect(json_response.dig(:errors,:file)).to include({:error=>"extension_whitelist_error"})
+        expect(json_response.dig(:errors,:file)).to include({:error=>"extension_blacklist_error"})
       end
     end
 
@@ -75,7 +75,7 @@ resource "ProjectFile" do
     let(:project_id) { @project.id }
     let(:file_id) { ProjectFile.first.id }
 
-    let(:file) { encode_file_as_base64("afvalkalender.pdf") }
+    let(:file) { encode_pdf_file_as_base64("afvalkalender.pdf") }
     let(:ordering) { 2 }
 
     example_request "Edit a file attachment for a project" do
@@ -100,8 +100,12 @@ resource "ProjectFile" do
 
   private
 
-  def encode_file_as_base64 filename
+  def encode_pdf_file_as_base64 filename
     "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
+  end
+
+  def encode_exe_file_as_base64 filename
+    "data:application/octet-stream;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
   end
 
   def encode_image_as_base64 filename
