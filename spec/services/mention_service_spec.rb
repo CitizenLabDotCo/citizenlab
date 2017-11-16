@@ -48,9 +48,10 @@ describe MentionService do
       result = service.add_span_around(
         "<p>This is a html text with a mention to @koen-gremmelprez</p>", 
         "@koen-gremmelprez", 
-        "3e089a81-5000-4ce5-8cd4-75b5754213b0"
+        "3e089a81-5000-4ce5-8cd4-75b5754213b0",
+        "koen-gremmelprez"
       )
-      expect(result).to eq "<p>This is a html text with a mention to <span class=\"cl-mention-user\" data-user-id=\"3e089a81-5000-4ce5-8cd4-75b5754213b0\">@koen-gremmelprez</span></p>"
+      expect(result).to eq "<p>This is a html text with a mention to <span class=\"cl-mention-user\" data-user-id=\"3e089a81-5000-4ce5-8cd4-75b5754213b0\" data-user-slug=\"koen-gremmelprez\">@koen-gremmelprez</span></p>"
     end
   end
 
@@ -59,10 +60,10 @@ describe MentionService do
     before do
       @u1 = create(:user)
       @u1_mention = service.user_to_mention(@u1)
-      @u1_mention_expanded = service.add_span_around @u1_mention, @u1_mention, @u1.id
+      @u1_mention_expanded = service.add_span_around @u1_mention, @u1_mention, @u1.id, @u1.slug
       @u2 = create(:user)
       @u2_mention = service.user_to_mention(@u2)
-      @u2_mention_expanded = service.add_span_around @u2_mention, @u2_mention, @u2.id
+      @u2_mention_expanded = service.add_span_around @u2_mention, @u2_mention, @u2.id, @u2.slug
 
     end
 
@@ -74,7 +75,7 @@ describe MentionService do
 
     it "processes a single mention as it should" do
       result = service.process_mentions(@u1_mention)
-      expect(result).to eq ["<span class=\"cl-mention-user\" data-user-id=\"#{@u1.id}\">#{@u1_mention}</span>", [@u1.id]]
+      expect(result).to eq ["<span class=\"cl-mention-user\" data-user-id=\"#{@u1.id}\" data-user-slug=\"#{@u1.slug}\">#{@u1_mention}</span>", [@u1.id]]
     end
 
     it "processes multiple mentions as it should" do
