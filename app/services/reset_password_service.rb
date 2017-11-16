@@ -23,4 +23,9 @@ class ResetPasswordService
   def secret
     Rails.application.secrets.secret_key_base
   end
+
+  def log_password_reset_to_segment user, token
+    LogActivityJob.perform_later(user, 'requested password reset', user, Time.now.to_i, payload: {url: "#{Tenant.current.base_frontend_uri}/reset-password?token=#{token}", user_email: user.email})
+  end
+
 end

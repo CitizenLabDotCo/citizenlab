@@ -25,8 +25,6 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
-      post 'social_login' => 'social_login#create'
-      post 'social_registration' => 'social_registration#create'
 
       resources :users do
         get :me, on: :collection
@@ -50,12 +48,20 @@ Rails.application.routes.draw do
         resources :phases, shallow: true
         resources :events, shallow: true
         resources :images, defaults: {container_class: Project, image_class: ProjectImage}
+        resources :groups_projects, shallow: true, except: [:update]
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
       end
 
       resources :notifications, only: [:index, :show] do
         post 'mark_read', on: :member
         post 'mark_all_read', on: :collection
+      end
+
+      resources :groups do
+        resources :memberships, shallow: true, except: [:update] do
+          get :users_search, on: :collection
+        end
+        get 'by_slug/:slug', on: :collection, to: 'groups#by_slug'
       end
 
       scope 'stats', controller: 'stats' do
@@ -84,9 +90,12 @@ Rails.application.routes.draw do
   namespace :admin_api, :defaults => {:format => :json} do
     resources :tenants do
       get :settings_schema, on: :collection
+      get :templates, on: :collection
     end
   end
 
+  get '/auth/:provider/callback', to: 'omniauth_callback#create'
+  get '/auth/failure', to: 'omniauth_callback#failure'
 
 
 end

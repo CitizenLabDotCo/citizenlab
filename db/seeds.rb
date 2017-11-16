@@ -25,8 +25,16 @@ def create_comment_tree(idea, parent, depth=0)
   end
 end
 
-if Apartment::Tenant.current == 'public'
-  Tenant.create({
+def create_for_some_locales
+  translations = {}
+  show_en = (rand(6) == 0)
+  translations["en"] = yield if show_en
+  translations["nl"] = yield if rand(6) == 0 || !show_en
+  translations
+end
+
+if Apartment::Tenant.current == 'public' || 'example_org'
+  t = Tenant.create({
     name: 'local',
     host: 'localhost',
     logo: Rails.root.join("spec/fixtures/logo.png").open,
@@ -36,7 +44,7 @@ if Apartment::Tenant.current == 'public'
         allowed: true,
         enabled: true,
         locales: ['en','nl'],
-        organization_type: 'city',
+        organization_type: 'medium_city',
         organization_name: {
           "en" => Faker::Address.city,
           "nl" => Faker::Address.city,
@@ -44,7 +52,6 @@ if Apartment::Tenant.current == 'public'
         },
         timezone: "Europe/Brussels",
         color_main: Faker::Color.hex_color,
-        menu_style: rand(2) == 0 ? "light" : "dark"
       },
       demographic_fields: {
         allowed: true,
@@ -59,10 +66,101 @@ if Apartment::Tenant.current == 'public'
         enabled: true,
         app_id: '307796929633098',
         app_secret: '28082a4c201d7cee136dbe35236e44cb'
+      },
+      google_login: {
+        allowed: true,
+        enabled: true,
+        client_id: '692484441813-98clbuerpm01bonc06htv95mec0pu1d3.apps.googleusercontent.com',
+        client_secret: 'ueqXBAfEy7j7D_2Ge8d16a6v'
+      },
+      # mydigipass_login: {
+      #   allowed: true,
+      #   enabled: true,
+      #   client_id: 'a76piarjfjbvwnukobjdzz07d',
+      #   client_secret: '65xg35xpa84p14cgntyg0279k',
+      #   require_eid: false
+      # },
+      groups: {
+        enabled: true,
+        allowed:true
+      },
+      private_projects: {
+        enabled: true,
+        allowed: true
+      }
+    }
+  })
+
+  Tenant.create({
+    name: 'empty',
+    host: 'empty.localhost',
+    logo: Rails.root.join("spec/fixtures/logo.png").open,
+    header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
+    settings: {
+      core: {
+        allowed: true,
+        enabled: true,
+        locales: ['en','nl'],
+        organization_type: 'medium_city',
+        organization_name: {
+          "en" => Faker::Address.city,
+          "nl" => Faker::Address.city,
+          "fr" => Faker::Address.city
+        },
+        timezone: "Europe/Brussels",
+        color_main: Faker::Color.hex_color,
+      },
+      demographic_fields: {
+        allowed: true,
+        enabled: true,
+        gender: true,
+        domicile: true,
+        birthyear: true,
+        education: true,
+      },
+      facebook_login: {
+        allowed: true,
+        enabled: true,
+        app_id: '307796929633098',
+        app_secret: '28082a4c201d7cee136dbe35236e44cb'
+      },
+      groups: {
+        enabled: true,
+        allowed:true
+      },
+      private_projects: {
+        enabled: true,
+        allowed: true
       }
     }
   })
 end
+
+
+if Apartment::Tenant.current == 'empty_localhost'
+  User.create({
+    first_name: 'Koen',
+    last_name: 'Gremmelprez',
+    email: 'koen@citizenlab.co',
+    password: 'testtest',
+    locale: 'en',
+    roles: [
+      {type: "admin"},
+    ],
+    gender: "male",
+    domicile: 'outside',
+    birthyear: 1987,
+    education: 7
+  })
+
+  TenantTemplateService.new.apply_template('base')
+end
+
+tenant_template = TenantTemplateService.new.available_templates
+tenant_template = tenant_template.find{|t| t == Apartment::Tenant.current}
+
+TenantTemplateService.new.apply_template('base') if tenant_template
+
 
 
 if Apartment::Tenant.current == 'localhost'
@@ -97,7 +195,7 @@ if Apartment::Tenant.current == 'localhost'
     })
   end
 
-  TenantTemplateService.new.apply_template('base')
+  TenantTemplateService.new.apply_template('base') #####
 
   12.times do 
     Area.create({
@@ -159,18 +257,9 @@ if Apartment::Tenant.current == 'localhost'
     rand(5).times do
       start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
       project.events.create({
-        title_multiloc: {
-          "en": Faker::Lorem.sentence,
-          "nl": Faker::Lorem.sentence
-        },
-        description_multiloc: {
-          "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-          "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-        },
-        location_multiloc: {
-          "en" => Faker::Address.street_address,
-          "nl" => Faker::Address.street_address
-        },
+        title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
+        description_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
+        location_multiloc: create_for_some_locales{Faker::Address.street_address},
         start_at: start_at,
         end_at: start_at + rand(12).hours
       })
@@ -183,14 +272,8 @@ if Apartment::Tenant.current == 'localhost'
 
   30.times do 
     idea = Idea.create({
-      "title_multiloc": {
-        "en": Faker::Lorem.sentence,
-        "nl": Faker::Lorem.sentence
-      },
-      body_multiloc: {
-        "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-        "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-      },
+      title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
+      body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
       idea_status: IdeaStatus.offset(rand(IdeaStatus.count)).first,
       topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
       areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
@@ -219,15 +302,17 @@ if Apartment::Tenant.current == 'localhost'
 
   8.times do 
     Page.create({
-      title_multiloc: {
-        "en" => Faker::Lorem.sentence,
-        "nl" => Faker::Lorem.sentence
-      },
-      body_multiloc: {
-        "en": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-        "nl": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-      },
+      title_multiloc:create_for_some_locales{Faker::Lorem.sentence},
+      body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
       project: rand(1) == 1 ? Project.offset(rand(Project.count)).first : nil,
+    })
+  end
+
+  3.times do
+    Group.create({
+      title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
+      projects: Project.all.shuffle.take(rand(Project.count)),
+      users: User.all.shuffle.take(rand(User.count))
     })
   end
 

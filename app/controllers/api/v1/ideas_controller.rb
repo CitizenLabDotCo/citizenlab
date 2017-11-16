@@ -12,12 +12,17 @@ class Api::V1::IdeasController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    @ideas = @ideas.with_all_topics(params[:topics]) if params[:topics].present?
-    @ideas = @ideas.with_all_areas(params[:areas]) if params[:areas].present?
+    @ideas = @ideas.with_some_topics(params[:topics]) if params[:topics].present?
+    @ideas = @ideas.with_some_areas(params[:areas]) if params[:areas].present?
     @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
     @ideas = @ideas.where(author_id: params[:author]) if params[:author].present?
     @ideas = @ideas.where(idea_status_id: params[:idea_status]) if params[:idea_status].present?
     @ideas = @ideas.search_by_all(params[:search]) if params[:search].present?
+    if params[:publication_status].present?
+      @ideas = @ideas.where(publication_status: params[:publication_status])
+    else
+      @ideas = @ideas.where(publication_status: 'published')
+    end
 
 
     @ideas = case params[:sort]
@@ -55,8 +60,10 @@ class Api::V1::IdeasController < ApplicationController
         raise "Unsupported sort method"
     end
 
+    @idea_ids = @ideas.map(&:id)
+
     if current_user
-      votes = Vote.where(user: current_user, votable: @ideas.all)
+      votes = Vote.where(user: current_user, votable_id: @idea_ids, votable_type: 'Idea')
       votes_by_idea_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
       render json: @ideas, include: ['author', 'user_vote', 'idea_images'], vbii: votes_by_idea_id
     else
@@ -104,6 +111,8 @@ class Api::V1::IdeasController < ApplicationController
 
   # patch
   def update
+    params[:idea][:area_ids] ||= [] if params[:idea].has_key?(:area_ids)
+    params[:idea][:topic_ids] ||= [] if params[:idea].has_key?(:topic_ids)
     ActiveRecord::Base.transaction do
       if @idea.update(permitted_attributes(Idea))
         SideFxIdeaService.new.after_update(@idea, current_user)

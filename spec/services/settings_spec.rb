@@ -44,6 +44,54 @@ describe SettingsService do
 
   end
 
+  describe "add_missing_settings" do
+    let(:schema) {{
+      "properties" => {
+        "feature1" => {
+          "required-settings" => ["setting1", "setting2"],
+          "properties" => {
+            "setting1" => {
+              "type" => "string",
+              "default" => "default_value_setting_1"
+            },
+            "setting2" => {
+              "type" => "boolean",
+              "default" => true
+            },
+            "setting3" => {
+              "type" => "string"
+            }
+          }
+        }
+      }
+
+    }}
+
+    it "adds required settings with a default" do
+      settings = {
+        "feature1" => {}
+      }
+      expected_settings = {
+        "feature1" => {
+          "setting1" => "default_value_setting_1",
+          "setting2" => true
+        }
+      }
+      expect(ss.add_missing_settings(settings, schema)).to eq expected_settings
+    end
+
+    it "doesn't change existing settings" do
+      settings = {
+        "feature1" => {
+          "setting1" => "non-default",
+          "setting2" => false,
+          "setting3" => "somevalue"
+        }
+      }
+      expect(ss.add_missing_settings(settings, schema)).to eq settings
+    end
+  end
+
   describe "missing_dependencies" do
     it "is empty on an empty settings" do
       expect(ss.missing_dependencies({}, schema1)).to be_empty
@@ -74,14 +122,86 @@ describe SettingsService do
     end
   end
 
-  # describe "missing_required_settings" do
-  #   it "is empty on an empty settings" do
-  #     expect(ss.missing_required_settings({}, schema2)).to be_empty
-  #   end
+  describe "remove_additional_features" do
+    it "leaves schema features alone" do
+      settings = {
+        "a" => {},
+        "b" => {"allowed" => false, "enabled" => true}
+      }
+      expect(ss.remove_additional_features(settings, schema1)).to eq settings
+    end
 
-  #   it "is empty on a schema that specifies no required_settings" do
-  #     expect(ss.missing_required_settings())
-  #   end
-  # end
+    it "removes features not in the schema" do
+      settings = {
+        "a" => {"allowed" => false, "enabled" => true},
+        "d" => {"allowed" => true, "enabled" => true}
+      }
+      expect(ss.remove_additional_features(settings, schema1)).to eq settings.except("d")
+    end
+  end
+
+  describe "remove_additional_settings" do
+    let(:schema) {{
+      "type" => "object",
+      "properties" => {
+        "a" => {
+          "type" => "object",
+          "properties" => {
+            "setting1" => {"type" => "boolean"},
+            "setting2" => {"type" => "string"}
+          }
+        }
+      }
+    }}
+
+    it "leaves schema settings alone" do
+      settings = {
+        "a" => {"settings1" => true, "setting2" => "yes"}
+      }
+      expect(ss.remove_additional_settings(settings, schema)).to eq settings
+    end
+
+    it "removes settings not in the schema" do
+      settings = {
+        "a" => {"setting1" => true, "setting2" => "yes", "setting3" => "not in there"}
+      }
+      expected_settings = {
+        "a" => {"setting1" => true, "setting2" => "yes"}
+      }
+      expect(ss.remove_additional_settings(settings, schema)).to eq expected_settings
+    end
+  end
+
+  describe "remove_private_settings" do
+    let(:schema) {{
+      "type" => "object",
+      "properties" => {
+        "a" => {
+          "type" => "object",
+          "properties" => {
+            "setting1" => {"type" => "boolean"},
+            "setting2" => {"type" => "string", "private" => true}
+          }
+        }
+      }
+    }}
+
+    it "leaves non-private schema settings alone" do
+      settings = {
+        "a" => {"settings1" => true}
+      }
+      expect(ss.remove_private_settings(settings, schema)).to eq settings
+    end
+
+    it "removes private settings" do
+      settings = {
+        "a" => {"settings1" => true, "setting2" => "something"}
+      }
+      expected_settings = {
+        "a" => {"settings1" => true }
+      }
+      expect(ss.remove_private_settings(settings, schema)).to eq expected_settings
+    end
+  end
 
 end

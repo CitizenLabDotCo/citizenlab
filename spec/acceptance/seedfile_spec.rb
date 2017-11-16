@@ -7,10 +7,11 @@ describe "seedfile" do
   #the schema created by apartment for the seedfile tenant. It's not getting
   #deleted after the tests
   it "generates a valid tenant and user" do
-    require Rails.root.join("db","seeds.rb")
-    expect(Tenant.count).to be(2)
-    # 2 and not 1, because the test tenant generated for all tests is also there
+    expect(Tenant.count).to be(1)
+    load Rails.root.join("db","seeds.rb")
+    expect(Tenant.count).to be(3)
     Apartment::Tenant.switch('localhost') do
+      load Rails.root.join("db","seeds.rb")
       expect(User.count).to be 8
       expect(Topic.count).to be > 0
       expect(Area.count).to be > 0
@@ -21,9 +22,23 @@ describe "seedfile" do
       expect(IdeaImage.count).to be > 0
       expect(ProjectImage.count).to be > 0
       expect(Comment.count).to be > 0
-      expect(Page.count).to be 8
+      expect(Page.count).to be 12 # 8 generated + 4 legal pages by the template
       expect(Notification.count).to be > 0
       expect(IdeaStatus.count).to be > 0
+      expect(Group.count).to be > 0
+    end
+    Apartment::Tenant.switch('empty_localhost') do
+      load Rails.root.join("db","seeds.rb")
+      expect(User.count).to be 1
+      expect(Topic.count).to be > 0
+      expect(IdeaStatus.count).to be > 0
+      expect(Area.count).to be 0
+      expect(Project.count).to be 0
+      expect(Phase.count).to be 0
+      expect(Event.count).to be 0
+      expect(Idea.count).to be 0
+      expect(Comment.count).to be 0
+      expect(Group.count).to be 0
     end
   end
 

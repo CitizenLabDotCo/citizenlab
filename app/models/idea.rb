@@ -34,7 +34,7 @@ class Idea < ApplicationRecord
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
 
   before_validation :generate_slug, on: :create
-  before_validation :set_author_name, on: :create
+  before_validation :set_author_name
   before_validation :set_idea_status, on: :create
   after_validation :set_published_at, if: ->(idea){ idea.published? && idea.publication_status_changed? }
 
@@ -45,11 +45,21 @@ class Idea < ApplicationRecord
     .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
   end)
 
+  scope :with_some_topics, (Proc.new do |topic_ids|
+    joins(:ideas_topics)
+      .where(ideas_topics: {topic_id: topic_ids})
+  end)
+
   scope :with_all_areas, (Proc.new do |area_ids|
     uniq_area_ids = area_ids.uniq
     joins(:areas_ideas)
     .where(areas_ideas: {area_id: uniq_area_ids})
     .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
+  end)
+
+  scope :with_some_areas, (Proc.new do |area_ids|
+    joins(:areas_ideas)
+      .where(areas_ideas: {area_id: area_ids})
   end)
 
   scope :order_new, -> (direction=:desc) {order(published_at: direction)}
@@ -59,9 +69,9 @@ class Idea < ApplicationRecord
     direction ||= :desc
     order(<<~EOS
       (
-        (upvotes_count - downvotes_count)
+        power(GREATEST(((upvotes_count - downvotes_count) + 10), 0.5), 0.3)
         /
-        power(ABS(EXTRACT(epoch FROM (NOW() - published_at))/3600) , 1.1)
+        ABS(EXTRACT(epoch FROM (NOW() - published_at))/3600)
       ) #{direction}
     EOS
     )
@@ -91,8 +101,8 @@ class Idea < ApplicationRecord
   end
 
   def trending_score
-    score /
-    ((Time.now - published_at).abs / 3600)**1.1
+    [score+10,0.5].max**0.3 /
+    ((Time.now - published_at).abs / 3600)
   end
 
   def generate_slug
@@ -103,7 +113,7 @@ class Idea < ApplicationRecord
   end
 
   def set_author_name
-    self.author_name = self.author.display_name if self.author
+    self.author_name ||= self.author.display_name if self.author
   end
 
   def set_idea_status

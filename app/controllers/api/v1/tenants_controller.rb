@@ -11,8 +11,9 @@ class Api::V1::TenantsController < ApplicationController
     params = {settings: updated_settings}
     params[:logo] = tenant_params[:logo] if tenant_params[:logo]
     params[:header_bg] = tenant_params[:header_bg] if tenant_params[:header_bg]
-
+    SideFxTenantService.new.before_update @tenant, current_user
     if @tenant.update(params)
+      SideFxTenantService.new.after_update @tenant, current_user
       render json: @tenant, status: :ok
     else
       render json: {errors: @tenant.errors.details}, status: :unprocessable_entity

@@ -19,9 +19,9 @@ resource "Users" do
       let (:email) { @user.email }
       example_request "Trigger email with password reset link" do
         expect(status).to eq 202
-        expect {
-          UserMailer.reset_password.deliver_later
-        }.to have_enqueued_job.on_queue('mailers')
+        # expect {
+        #   UserMailer.reset_password.deliver_later
+        # }.to have_enqueued_job.on_queue('mailers')
       end
     end
 
@@ -36,6 +36,8 @@ resource "Users" do
         parameter :password, "The new password", required: true
       end
 
+      response_field :token, "Array containing objects with signature {error: 'invalid'}", scope: :errors
+
       let(:password) { "new_password" }
       let(:token) { @user.reload.reset_password_token }
 
@@ -44,6 +46,13 @@ resource "Users" do
         expect(status).to eq 200
         expect(@user.reload.reset_password_token).to be_nil
         expect(@user.authenticate(password)).to be_truthy
+      end
+
+      example "[error] Reset password using invalid token" do
+        do_request(user: {password: password, token: 'abcabcabc'})
+        expect(status).to be 401
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:errors, :token)).to eq [{error: 'invalid', value: 'abcabcabc'}]
       end
     end
 
