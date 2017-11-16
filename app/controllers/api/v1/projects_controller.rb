@@ -5,8 +5,13 @@ class Api::V1::ProjectsController < ::ApplicationController
   def index
     @projects = policy_scope(Project)
       .includes(:project_images)
+      .order(created_at: :desc)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
+
+    @projects = @projects.with_all_areas(params[:areas]) if params[:areas].present?
+    @projects = @projects.with_all_topics(params[:topics]) if params[:topics].present?
+
     render json: @projects, include: ['project_images']
   end
 
@@ -31,6 +36,8 @@ class Api::V1::ProjectsController < ::ApplicationController
   end
 
   def update
+    params[:project][:area_ids] ||= [] if params[:project].has_key?(:area_ids)
+    params[:project][:topic_ids] ||= [] if params[:project].has_key?(:topic_ids)
     if @project.update(project_params)
       render json: @project, status: :ok
     else
@@ -53,8 +60,11 @@ class Api::V1::ProjectsController < ::ApplicationController
     params.require(:project).permit(
       :slug, 
       :header_bg,
+      :visible_to,
       title_multiloc: I18n.available_locales, 
-      description_multiloc: I18n.available_locales
+      description_multiloc: I18n.available_locales,
+      area_ids: [],
+      topic_ids: []
     )
   end
 

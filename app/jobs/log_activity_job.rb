@@ -6,6 +6,8 @@ class LogActivityJob < ApplicationJob
     activity = if item.kind_of? String
       claz, id = decode_frozen_resource(item)
       Activity.new(item_type: claz.name, item_id: id)
+    elsif item.kind_of? Notification
+      Activity.new(item: item, item_type: item.type) # .split('::').last)
     else
       Activity.new(item: item)
     end
@@ -18,6 +20,7 @@ class LogActivityJob < ApplicationJob
     activity.save!
 
     MakeNotificationsJob.perform_later(activity)
+    LogToSegmentJob.perform_later(activity) if Analytics
   end
 
 end

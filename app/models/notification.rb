@@ -4,6 +4,7 @@ class Notification < ApplicationRecord
 
   scope :unread,  -> {where(read_at: nil)}
 
+
   def self.classes_for activity
     self.descendants.select do |notification_class|
       notification_class::ACTIVITY_TRIGGERS.dig(activity.item_type, activity.action)

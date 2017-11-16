@@ -18,6 +18,33 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "user password authentication" do
+    it "should be compatible with meteor encryption" do
+      u = build(:user)
+      u.first_name = "Sebi"
+      u.last_name = "Hoorens"
+      u.email = 'sebastien@citizenlab.co'
+      u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
+      u.save
+      expect(!!u.authenticate('supersecret')).to eq(true)
+      expect(!!u.authenticate('totallywrong')).to eq(false)
+    end
+
+    it "should replace the CL1 hash by the CL2 hash" do
+      u = build(:user)
+      u.first_name = "Sebi"
+      u.last_name = "Hoorens"
+      u.email = 'sebastien@citizenlab.co'
+      u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
+      u.save
+      expect(!!u.authenticate('supersecret')).to eq(true)
+      expect(u.password_digest).not_to eq('$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK')
+      expect(!!BCrypt::Password.new(u.password_digest).is_password?('supersecret')).to eq(true)
+      expect(!!u.authenticate('supersecret')).to eq(true)
+      expect(!!u.authenticate('totallywrong')).to eq(false)
+    end
+  end
+
   describe "roles" do
 
     it "is valid without roles" do
@@ -125,8 +152,14 @@ RSpec.describe User, type: :model do
 
   describe "avatar" do
 
-    it "is automatically generated when it's not specified" do
+    it "is blank generated when it's not specified" do
       user = build(:user, avatar: nil)
+      user.save
+      expect(user.avatar).to be_blank
+    end
+
+    it "is retrieved when the user has a gravatar for his email address" do
+      user = build(:user, email: 'sebastien+withgravatar@citizenlab.co')
       user.save
       expect(user.avatar).to be_present
     end
@@ -216,5 +249,27 @@ RSpec.describe User, type: :model do
     end
 
   end
+
+  describe "build_with_omniauth" do
+    it "creates a new user" do
+      auth = OpenStruct.new({
+        provider: 'someprovider',
+        info: {
+          first_name: 'Jos',
+          last_name: 'Jossens',
+          email: 'jos@josnet.com',
+          image: 'http://www.josnet.com/my-picture'
+        }
+      })
+
+      ssos = instance_double("SingleSignOnService")
+      expect(SingleSignOnService).to receive(:new).and_return(ssos)
+      expect(ssos).to receive(:profile_to_user_attrs).with('someprovider', auth).and_return({})
+      expect(User).to receive(:new)
+      User.build_with_omniauth(auth)
+    end
+  end
+
+
 
 end

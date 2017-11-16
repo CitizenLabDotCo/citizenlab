@@ -44,6 +44,8 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'redcarpet'
+  gem 'mongo', '~> 2.4'
 end
 
 group :test do
@@ -73,10 +75,17 @@ gem "pg_search", "~> 2.0.1"
 gem "counter_culture", "~> 1.0"
 gem "liquid", "~> 4.0"
 gem "premailer-rails", "~> 1.9.6"
-gem "koala", "~> 3.0"
 gem 'groupdate', "~> 3.2.0"
 gem 'rubyzip', '~> 1.1.0'
 gem 'axlsx', '2.1.0.pre'
 gem 'rgeo-geojson'
 
 gem 'activerecord-postgis-adapter', '~> 5.0'
+gem 'simple_segment', '~> 0.2.1'
+gem 'okcomputer'
+gem 'sentry-raven'
+gem 'omniauth', '~> 1.7.1'
+gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-twitter'
+# gem 'omniauth-mydigipass', github: 'vasco-data-security/omniauth-mydigipass', branch: 'oauth-eid-specification'
