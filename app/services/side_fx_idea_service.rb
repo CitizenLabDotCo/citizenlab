@@ -11,7 +11,8 @@ class SideFxIdeaService
 
   def after_update idea, user
     if idea.publication_status_previous_change == ['draft','published']
-      add_autovote(idea)
+      add_autovote idea
+      log_activity_jobs_after_create idea, user
       LogActivityJob.perform_later(idea, 'published', user, idea.updated_at.to_i)
     end
 

@@ -1,7 +1,7 @@
 class Api::V1::External::Notifications::NotificationSerializer < ActiveModel::Serializer
 
   class CustomUserSerializer < ActiveModel::Serializer
-    attributes :id, :slug, :first_name, :last_name, :avatar
+    attributes :id, :slug, :first_name, :last_name, :avatar, :locale
     def avatar
       object.avatar && object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
     end
