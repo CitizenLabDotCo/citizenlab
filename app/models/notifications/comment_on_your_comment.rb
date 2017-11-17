@@ -26,7 +26,7 @@ module Notifications
       child_comment_author_id = child_comment&.author_id
       project_id = idea&.project_id
 
-      if child_comment_id && idea_id && parent_comment_author_id && child_comment_author_id
+      if child_comment_id && idea_id && parent_comment_author_id && child_comment_author_id && (parent_comment_author_id != child_comment_author_id)
         [self.create(
            recipient_id: parent_comment_author_id,
            user_id: child_comment_author_id,
