@@ -8,7 +8,10 @@ class Api::V1::External::Notifications::NotificationSerializer < ActiveModel::Se
   end
 
   class CustomProjectSerializer < ActiveModel::Serializer
-    attributes :id, :slug, :title_multiloc, :description_multiloc, :created_at
+    attributes :id, :slug, :title_multiloc, :description_multiloc, :url, :created_at
+    def url
+      "#{Tenant.current.base_frontend_uri}/projects/#{object.slug}"
+    end
   end
 
   class CustomCommentSerializer < ActiveModel::Serializer
