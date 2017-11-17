@@ -20,7 +20,7 @@ class Api::V1::ImagesController < ApplicationController
     if @image.save
       render json: @image, status: :created, serializer: Api::V1::ImageSerializer
     else
-      render json: {errors: @image.errors.details}, status: :unprocessable_entity
+      render json: {errors: transform_errors_details!(@image.errors.details)}, status: :unprocessable_entity
     end
   end
 
@@ -28,7 +28,7 @@ class Api::V1::ImagesController < ApplicationController
     if @image.update(image_params)
       render json: @image, status: :ok, serializer: Api::V1::ImageSerializer
     else
-      render json: {errors: @image.errors.details}, status: :unprocessable_entity
+      render json: {errors: transform_errors_details!(@image.errors.details)}, status: :unprocessable_entity
     end
   end
 
@@ -67,5 +67,11 @@ class Api::V1::ImagesController < ApplicationController
 
   def container_association
     params['container_class'].name.downcase
+  end
+
+  def transform_errors_details! error_details
+    # carrierwave does not return the error code symbols by default
+    error_details[:image] = error_details[:image]&.uniq{|e| e[:error]}
+    error_details
   end
 end
