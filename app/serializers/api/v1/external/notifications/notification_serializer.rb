@@ -8,17 +8,21 @@ class Api::V1::External::Notifications::NotificationSerializer < ActiveModel::Se
   end
 
   class CustomProjectSerializer < ActiveModel::Serializer
-    attributes :id, :slug, :title_multiloc, :description_multiloc, :url, :created_at
+    attributes :id, :slug, :title_multiloc, :description_multiloc, :url, :created_at, :header_bg
     def url
-      "#{Tenant.current.base_frontend_uri}/projects/#{object.slug}"
+      FrontendService.new.model_to_url object
+    end
+
+    def header_bg
+      object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
     end
   end
 
   class CustomCommentSerializer < ActiveModel::Serializer
     attributes :id, :body_multiloc, :upvotes_count, :downvotes_count, :url, :created_at
 
-    def url ### TODO this should become the comment URL as soos as this is supported
-      "#{Tenant.current.base_frontend_uri}/ideas/#{object.idea.slug}"
+    def url
+      FrontendService.new.model_to_url object
     end
   end
 
@@ -27,7 +31,7 @@ class Api::V1::External::Notifications::NotificationSerializer < ActiveModel::Se
     has_many :topics
 
     def url
-      "#{Tenant.current.base_frontend_uri}/ideas/#{object.slug}"
+      FrontendService.new.model_to_url object
     end
   end
 
