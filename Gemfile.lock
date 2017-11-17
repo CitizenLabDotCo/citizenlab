@@ -78,7 +78,6 @@ GEM
     carrierwave-base64 (2.5.0)
       carrierwave (>= 0.8.0)
       mime-types (~> 3.0)
-    carrierwave-i18n (0.2.0)
     case_transform (0.2)
       activesupport
     ci_reporter (2.0.0)
@@ -364,7 +363,6 @@ DEPENDENCIES
   byebug
   carrierwave (~> 1.1.0)
   carrierwave-base64 (~> 2.5)
-  carrierwave-i18n
   ci_reporter_rspec
   counter_culture (~> 1.0)
   database_cleaner
