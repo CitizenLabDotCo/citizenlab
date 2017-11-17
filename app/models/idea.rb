@@ -22,7 +22,7 @@ class Idea < ApplicationRecord
   has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
   belongs_to :idea_status
   has_many :activities, as: :item
-  has_many :idea_images, dependent: :destroy
+  has_many :idea_images, dependent: :destroy, order: :ordering
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
   validates :title_multiloc, presence: true, multiloc: {presence: true}
