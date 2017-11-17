@@ -8,15 +8,19 @@ class Api::V1::External::Notifications::NotificationSerializer < ActiveModel::Se
   end
 
   class CustomProjectSerializer < ActiveModel::Serializer
-    attributes :id, :slug, :title_multiloc, :description_multiloc
+    attributes :id, :slug, :title_multiloc, :description_multiloc, :created_at
   end
 
   class CustomCommentSerializer < ActiveModel::Serializer
-    attributes :id, :body_multiloc, :upvotes_count, :downvotes_count
+    attributes :id, :body_multiloc, :upvotes_count, :downvotes_count, :url, :created_at
+
+    def url ### TODO this should become the comment URL as soos as this is supported
+      "#{Tenant.current.base_frontend_uri}/ideas/#{object.idea.slug}"
+    end
   end
 
   class CustomIdeaSerializer < ActiveModel::Serializer
-    attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count, :url
+    attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count, :url, :created_at
     has_many :topics
 
     def url
