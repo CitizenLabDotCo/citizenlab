@@ -224,6 +224,7 @@ namespace :migrate do
       else
         d[:first_name] = u['username']
         d[:last_name] = 'Unknown' ###
+        @log.concat ["Couldn't determine a last name for user #{u.to_s}"]
       end
     else
       @log.concat ["Couldn't find a name for user #{u.to_s}"]
@@ -322,9 +323,6 @@ namespace :migrate do
     # description
     if p.dig('description_i18n')
       d[:description_multiloc] = map_multiloc(p.dig('description_i18n'), locales_mapping)
-    else
-      @log.concat ["Couldn't find a description for project #{p.to_s}"]
-      return
     end
     # header bg image
     if p.dig('images')&.first&.dig('original')
