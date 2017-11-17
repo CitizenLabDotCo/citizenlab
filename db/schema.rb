@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171106212610) do
+ActiveRecord::Schema.define(version: 20171117114456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -189,13 +189,14 @@ ActiveRecord::Schema.define(version: 20171106212610) do
     t.string "type"
     t.datetime "read_at"
     t.uuid "recipient_id"
-    t.string "user_id"
     t.string "idea_id"
     t.string "comment_id"
     t.string "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "initiating_user_id", null: false
     t.index ["created_at"], name: "index_notifications_on_created_at"
+    t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
   end
@@ -327,6 +328,7 @@ ActiveRecord::Schema.define(version: 20171106212610) do
   add_foreign_key "identities", "users"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
+  add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "page_links", "pages", column: "linked_page_id"
   add_foreign_key "page_links", "pages", column: "linking_page_id"
