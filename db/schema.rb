@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171106212610) do
+ActiveRecord::Schema.define(version: 20171115092024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,15 @@ ActiveRecord::Schema.define(version: 20171106212610) do
     t.index ["project_id"], name: "index_groups_projects_on_project_id"
   end
 
+  create_table "idea_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "idea_id"
+    t.string "file"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idea_id"], name: "index_idea_files_on_idea_id"
+  end
+
   create_table "idea_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "idea_id"
     t.string "image"
@@ -140,7 +149,6 @@ ActiveRecord::Schema.define(version: 20171106212610) do
     t.uuid "project_id"
     t.uuid "author_id"
     t.string "author_name"
-    t.jsonb "files"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "upvotes_count", default: 0, null: false
@@ -228,6 +236,15 @@ ActiveRecord::Schema.define(version: 20171106212610) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
+  end
+
+  create_table "project_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_id"
+    t.string "file"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_files_on_project_id"
   end
 
   create_table "project_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -318,6 +335,7 @@ ActiveRecord::Schema.define(version: 20171106212610) do
   add_foreign_key "events", "projects"
   add_foreign_key "groups_projects", "groups"
   add_foreign_key "groups_projects", "projects"
+  add_foreign_key "idea_files", "ideas"
   add_foreign_key "idea_images", "ideas"
   add_foreign_key "ideas", "idea_statuses"
   add_foreign_key "ideas", "projects"
@@ -332,6 +350,7 @@ ActiveRecord::Schema.define(version: 20171106212610) do
   add_foreign_key "page_links", "pages", column: "linking_page_id"
   add_foreign_key "pages", "projects"
   add_foreign_key "phases", "projects"
+  add_foreign_key "project_files", "projects"
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
