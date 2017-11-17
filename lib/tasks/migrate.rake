@@ -145,6 +145,14 @@ namespace :migrate do
         domicile: true,
         birthyear: true,
         education: true,
+      },
+      groups: {
+        enabled: true,
+        allowed:true
+      },
+      private_projects: {
+        enabled: true,
+        allowed: true
       }
     }
     if fb_login['appId'] && fb_login['secret']
