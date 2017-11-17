@@ -17,6 +17,7 @@ Rails.application.routes.draw do
           post :down, on: :collection
         end
         resources :images, defaults: {container_class: Idea, image_class: IdeaImage}
+        resources :files, defaults: {container_class: Idea, file_class: IdeaFile}
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
       end
@@ -48,6 +49,7 @@ Rails.application.routes.draw do
         resources :phases, shallow: true
         resources :events, shallow: true
         resources :images, defaults: {container_class: Project, image_class: ProjectImage}
+        resources :files, defaults: {container_class: Project, file_class: ProjectFile}
         resources :groups_projects, shallow: true, except: [:update]
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
       end
