@@ -35,11 +35,17 @@ class ProjectFileUploader < CarrierWave::Uploader::Base
   #   process resize_to_fit: [50, 50]
   # end
 
+
+
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   # def extension_whitelist
-  #   %w(jpg jpeg gif png)
+  #   %w(pdf doc docx xls xlsx ppt pptx txt mp3 mp4 mkv)
   # end
+
+  def extension_blacklist
+    %w(app asp bas bat bin cer chm cmd cnt com cpl crt csh der dmg exe fxp gadget hlp hpj hta inf ins isp its jar js jse ksh lnk mau msc msh msh1 msh2 mshxml msh1xml msh2xml msi msp mst osd pcd pif pl plg prf prg reg scf scr sct shb shs ps1 ps1xml ps2 ps2xml psc1 psc2 vb vbp vbs vsmacros vsw ws wsc wsf wsh xbap xnk)
+  end
 
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
