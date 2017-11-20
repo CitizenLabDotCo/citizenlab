@@ -13,7 +13,7 @@ class MakeNotificationsJob < ApplicationJob
         if !notification.id
           byebug
         end
-      	LogActivityJob.set(wait: 10.seconds).perform_later(notification, 'created', activity.user, notification.created_at.to_i)
+      	LogActivityJob.set(wait: 10.seconds).perform_later(notification, 'created', notification.recipient, notification.created_at.to_i)
       end
     end
   end
