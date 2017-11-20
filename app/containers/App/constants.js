@@ -9,7 +9,7 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-const API_HOST = process.env.API_HOST || window.location.hostname;
+const API_HOST = process.env.API_HOST || (typeof window === "undefined" ? '' : window.location.hostname);
 const API_PORT = process.env.API_PORT || 4000;
 
 export const DEFAULT_LOCALE = 'en';
