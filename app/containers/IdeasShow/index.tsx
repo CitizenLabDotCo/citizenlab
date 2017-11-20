@@ -372,8 +372,9 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
     this.state = {
       locale: null,
       idea: null,
@@ -544,7 +545,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                     }
                     {(!this.state.showMap) &&
                       <span>
-                        {ideaAdress}
+                        <FormattedMessage {...messages.openMap} />
                         <StyledPositionIcon name="position" />
                       </span>
                     }
