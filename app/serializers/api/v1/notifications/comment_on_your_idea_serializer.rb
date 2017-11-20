@@ -7,16 +7,20 @@ class Api::V1::Notifications::CommentOnYourIdeaSerializer < Api::V1::Notificatio
 
   attributes :user_first_name, :user_last_name, :user_slug, :idea_title
 
+  def user
+    object.recipient
+  end
+
   def user_first_name
-    object.user&.first_name
+    object.recipient&.first_name
   end
 
   def user_last_name
-    object.user&.last_name
+    object.recipient&.last_name
   end
 
   def user_slug
-    object.user&.slug
+    object.recipient&.slug
   end
 
   def idea_title
