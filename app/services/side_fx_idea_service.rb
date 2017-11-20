@@ -5,15 +5,14 @@ class SideFxIdeaService
   def after_create idea, user
     if idea.published?
       add_autovote idea
-      log_activity_jobs_after_create idea, user
+      log_activity_jobs_after_published idea, user
     end
   end
 
   def after_update idea, user
     if idea.publication_status_previous_change == ['draft','published']
       add_autovote idea
-      log_activity_jobs_after_create idea, user
-      LogActivityJob.perform_later(idea, 'published', user, idea.updated_at.to_i)
+      log_activity_jobs_after_published idea, user
     end
 
     if idea.idea_status_id_previously_changed?
@@ -46,21 +45,9 @@ class SideFxIdeaService
     (user.ideas.size == 1) && (user.ideas.first.id == idea.id)
   end
 
-  def log_activity_jobs_after_create idea, user
+  def log_activity_jobs_after_published idea, user
     LogActivityJob.perform_later(idea, 'published', user, idea.created_at.to_i)
-    if first_user_idea? idea, user
-      idea_serializer = "Api::V1::IdeaSerializer".constantize
-      idea_serialization = ActiveModelSerializers::SerializableResource.new(idea, {
-        serializer: idea_serializer,
-        adapter: :json
-      })
-      idea_image_serializer = "Api::V1::ImageSerializer".constantize
-      idea_images_serializations = idea.idea_images.map{|i| ActiveModelSerializers::SerializableResource.new(i, {serializer: idea_image_serializer, adapter: :json})}
-      LogActivityJob.perform_later(user, 'published first idea', user, idea.created_at.to_i,
-        payload: { url: "#{Tenant.current.base_frontend_uri}/ideas/#{idea.slug}", user_email: user.email, 
-                   idea: JSON.parse(idea_serialization.to_json).flatten.second,
-                   idea_images: idea_images_serializations.map{ |iis| JSON.parse(iis.to_json).flatten.second } })
-    end
+    LogActivityJob.perform_later(idea, 'first published by user', user, idea.created_at.to_i)
   end
 
 end
