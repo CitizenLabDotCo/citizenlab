@@ -5,7 +5,7 @@ FactoryGirl.define do
   end
 
   factory :comment_on_your_comment, parent: :notification, class: 'Notifications::CommentOnYourComment' do
-    user
+    recipient
     comment
     idea
   end
