@@ -87,6 +87,13 @@ describe TenantTemplateService do
       expect(Event.count).to be 1
       expect(Phase.count).to be 3
     end
+
+    it "Applies the base template if the requested template was not found" do
+      tenant = service.apply_template('a_tenant_template_name_that_doesnt_exist')
+      expect(IdeaStatus.count).to be > 0
+      expect(Topic.count).to be > 0
+      expect(Page.count).to be > 0
+    end
   end
 
 end
