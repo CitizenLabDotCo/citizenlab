@@ -62,6 +62,8 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run extract-intl
       - run: git add app/translations/*.json
+      - run: git config --global user.email "koen@citizenlab.co"
+      - run: git config --global user.name "CircleCI"
       - run: git commit -m "[skip ci] Translations updated by CI (extract-intl)"
       - add_ssh_keys
       - run: git push origin $CIRCLE_BRANCH
