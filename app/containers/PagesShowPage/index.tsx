@@ -178,12 +178,12 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
         <ContentContainer>
           <Helmet>
             <title>
-              {tFunc(page.attributes.title_multiloc)}
+              <T value={page.attributes.title_multiloc} />
             </title>
           </Helmet>
           <TextContainer>
             <h1>
-              {tFunc(page.attributes.title_multiloc)}
+              <T value={page.attributes.title_multiloc} />
             </h1>
             <T value={page.attributes.body_multiloc} />
           </TextContainer>
