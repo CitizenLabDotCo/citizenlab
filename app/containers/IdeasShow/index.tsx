@@ -403,10 +403,10 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
     const idea$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {
       const ideaImages = idea.data.relationships.idea_images.data;
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
-      const ideaAuthorId = idea.data.relationships.author.data.id;
+      const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
       const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
       const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
-      const ideaAuthor$ = userByIdStream(ideaAuthorId).observable;
+      const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : Rx.Observable.of(null);
       const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
