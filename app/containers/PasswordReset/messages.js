@@ -2,11 +2,11 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   helmetTitle: {
-    id: 'app.containers.PasswordRecovery.helmetTitle',
+    id: 'app.containers.PasswordReset.helmetTitle',
     defaultMessage: `Reset your password`,
   },
   helmetDescription: {
-    id: 'app.containers.PasswordRecovery.helmetDescription',
+    id: 'app.containers.PasswordReset.helmetDescription',
     defaultMessage: `Reset your password page`,
   },
   title: {
