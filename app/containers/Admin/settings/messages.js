@@ -116,7 +116,7 @@ export default defineMessages({
     defaultMessage: 'The provided title exceeds the maximum allowed character limit of 35',
   },
   subtitleLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.titleLabel',
+    id: 'app.containers.AdminPage.SettingsPage.subtitleLabel',
     defaultMessage: 'Header subtitle {locale}',
   },
   subtitleMaxCharError: {
