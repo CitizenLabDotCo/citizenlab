@@ -39,6 +39,6 @@ export default defineMessages({
   },
   'cookie-policy': {
     id: 'app.containers.AdminPage.PagesEdition.cookie-policy',
-    defaultMessage: 'Cookies Policy',
+    defaultMessage: 'Cookie Policy',
   },
 });

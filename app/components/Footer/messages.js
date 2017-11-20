@@ -27,6 +27,6 @@ export default defineMessages({
   },
   'cookie-policy': {
     id: 'app.containers.footer.cookies-policy',
-    defaultMessage: 'Cookies Policy',
+    defaultMessage: 'Cookie Policy',
   },
 });
