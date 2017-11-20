@@ -8,6 +8,9 @@ class TenantTemplateService
   end
 
   def apply_template template_name, is_path=false
+    if !is_path && !(available_templates.include? template_name)
+      template_name = 'base'
+    end
     throw "Unknown template '#{template_name}'" unless is_path || (available_templates.include? template_name)
 
     file = is_path ? template_name : Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")
