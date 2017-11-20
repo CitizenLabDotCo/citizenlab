@@ -59,8 +59,8 @@ interface State {
 class ProjectDescription extends React.Component<Props, State> {
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     this.state = {
       loading: false,

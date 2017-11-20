@@ -159,8 +159,8 @@ type State = {
 export default class Editor extends React.PureComponent<Props, State> {
   private emptyEditorState: EditorState;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = { focussed: false };
     this.emptyEditorState = EditorState.createEmpty();
   }

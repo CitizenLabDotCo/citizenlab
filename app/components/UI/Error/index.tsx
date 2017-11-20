@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 
-import { API } from 'typings.d';
+import { API, Message } from 'typings.d';
 import messages from './messages';
 
 interface IStyledErrorMessageInner {
@@ -123,7 +123,7 @@ const StyledErrorMessage: any = styled.div`
 
 type Props = {
   text?: string | null;
-  fieldName?: string;
+  fieldName?: string | undefined;
   errors?: string[];
   apiErrors?: API.Error[] | null;
   size?: string;
@@ -136,15 +136,21 @@ type Props = {
 
 type State = {};
 
-function findMessage(fieldName, error) {
-  return messages[`${fieldName}_${error}`] || messages[error];
+function findMessage(fieldName: string | undefined, error: string) {
+  if (fieldName && messages[`${fieldName}_${error}`]) {
+    return messages[`${fieldName}_${error}`] as Message;
+  } else if (messages[error]) {
+    return messages[error] as Message;
+  }
+
+  return null;
 }
 
 export default class Error extends React.PureComponent<Props, State> {
   render() {
     const { text, errors, apiErrors, fieldName } = this.props;
+    const timeout = { enter: 400, exit: 350 };
     let { size, marginTop, marginBottom, showIcon, showBackground, className } = this.props;
-    const timeout = 400;
 
     size = (size || '1');
     marginTop = (marginTop || '3px');
@@ -154,7 +160,13 @@ export default class Error extends React.PureComponent<Props, State> {
     className = (className || '');
 
     const errorElement = (text || errors || apiErrors) && (
-      <CSSTransition classNames="error" timeout={timeout}>
+      <CSSTransition
+        classNames="error"
+        timeout={timeout}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        exit={true}
+      >
         <StyledErrorMessage className="e2e-error-message" size={size} marginTop={marginTop} marginBottom={marginBottom}>
           <StyledErrorMessageInner showBackground={showBackground}>
             {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
@@ -163,17 +175,33 @@ export default class Error extends React.PureComponent<Props, State> {
                 <p>{text}</p>
               }
 
-              {errors && errors.map((error) => (
-                <p key={error}>
-                  <FormattedMessage {...findMessage(fieldName, error)} />
-                </p>
-              ))}
+              {errors && errors.map((error) => {
+                const errorMessage = findMessage(fieldName, error);
 
-              {apiErrors && apiErrors.map((error) => (
-                <p key={error.error}>
-                  <FormattedMessage {...findMessage(fieldName, error.error)} />
-                </p>
-              ))}
+                if (errorMessage) {
+                  return (
+                    <p key={error}>
+                      <FormattedMessage {...errorMessage} />
+                    </p>
+                  );
+                }
+
+                return null;
+              })}
+
+              {apiErrors && apiErrors.map((error) => {
+                const errorMessage = findMessage(fieldName, error.error);
+
+                if (errorMessage) {
+                  return (
+                    <p key={error.error}>
+                      <FormattedMessage {...errorMessage} />
+                    </p>
+                  );
+                }
+
+                return null;
+              })}
             </ErrorMessageText>
           </StyledErrorMessageInner>
         </StyledErrorMessage>

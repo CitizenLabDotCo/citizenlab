@@ -9,7 +9,6 @@ import { Link, browserHistory } from 'react-router';
 import Icon from 'components/UI/Icon';
 import Unauthenticated from 'components/IdeaCard/Unauthenticated';
 import VoteControl from 'components/VoteControl';
-import { IModalInfo } from 'containers/App';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -29,6 +28,9 @@ import messages from './messages';
 // styles
 import styled, { keyframes } from 'styled-components';
 
+// typings
+import { IModalInfo } from 'containers/App';
+
 const IdeaImage: any = styled.img`
   width: 100%;
   height: 135px;
@@ -46,7 +48,7 @@ const IdeaImagePlaceholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #cfd6db;
+  background: ${props => props.theme.colors.placeholderBg};
 `;
 
 const CommentCount = styled.span`
@@ -118,15 +120,14 @@ const IdeaContainer: any = styled(Link)`
   cursor: pointer;
   position: relative;
   border: solid 1px #e4e4e4;
-  /* -webkit-backface-visibility: hidden; */
-  /* backface-visibility: hidden; */
-  /* transition: box-shadow 300ms cubic-bezier(0.19, 1, 0.22, 1); */
-  /* transform: translate3d(0, 0, 0); */
-  /* will-change: box-shadow; */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transition: box-shadow 300ms cubic-bezier(0.19, 1, 0.22, 1);
+  transform: translate3d(0, 0, 0);
+  will-change: box-shadow;
 
   &:hover {
-    border-color: #bbb;
-    /* box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15); */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -149,8 +150,8 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       idea: null,
       ideaImage: null,
@@ -194,17 +195,6 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  loadImage = (imagePath) => {
-    const observable = new Rx.Observable((observer) => {
-      const img = new Image();
-      img.src = imagePath;
-      img.onload = () => observer.next(img);
-      img.onerror = (err) => observer.error(err);
-    });
-
-    return observable;
   }
 
   onCardClick = (event) => {

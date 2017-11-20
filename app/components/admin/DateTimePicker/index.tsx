@@ -42,7 +42,7 @@ export default class DateTimePicker extends React.PureComponent<Props, State> {
   state: State;
 
   constructor (props) {
-    super(props);
+    super(props as any);
 
     this.state = {
       focused: false,

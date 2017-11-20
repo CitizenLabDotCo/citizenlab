@@ -20,8 +20,8 @@ export default class AdminSettingsPages extends React.Component<Props, State> {
     'cookies-policy',
   ];
 
-  constructor () {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     this.state = {};
   }

@@ -91,8 +91,8 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
   state: State;
   emailInputElement: HTMLInputElement | null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       email: null,
       emailError: false,
@@ -200,6 +200,7 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
 
             <StyledButton
               size="2"
+              width="100%"
               loading={processing}
               text={resetPassword}
               onClick={this.handleOnSubmit}

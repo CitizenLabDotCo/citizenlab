@@ -37,8 +37,8 @@ interface State {
 }
 
 class GroupsList extends React.Component<Props, State> {
-  constructor () {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     this.state = {
       creationModalVisible: false,

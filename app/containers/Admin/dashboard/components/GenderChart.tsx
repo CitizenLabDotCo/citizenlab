@@ -30,8 +30,8 @@ class GenderChart extends React.PureComponent<Props, State> {
 
   serieObservable: Rx.Subscription;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       serie: null,
     };

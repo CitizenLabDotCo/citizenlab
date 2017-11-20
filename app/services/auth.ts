@@ -44,10 +44,7 @@ export async function signUp(
   lastName: string,
   email: string,
   password: string,
-  locale: string,
-  selectedGender: 'male' | 'female' | 'unspecified' | null = null,
-  selectedYearOfBirth: number | null = null,
-  selectedAreaId: string | null = null
+  locale: string
 ) {
   const bodyData = {
     user: {
@@ -55,10 +52,7 @@ export async function signUp(
       password,
       locale,
       first_name: firstName,
-      last_name: lastName,
-      gender: selectedGender,
-      birthyear: selectedYearOfBirth,
-      domicile: selectedAreaId,
+      last_name: lastName
     }
   };
 
@@ -92,7 +86,7 @@ export async function getAuthUserAsync() {
     return authenticatedUser;
   } catch {
     signOut();
-    throw new Error('not authenticated');
+    throw new Error('not_authenticated');
   }
 }
 

@@ -18,7 +18,6 @@ import Error from 'components/UI/Error';
 import Icon from 'components/UI/Icon';
 import Comments from './CommentsContainer';
 import Sharing from './Sharing';
-import CommentsLine from './CommentsLine';
 import Author from './Author';
 import IdeaMeta from './IdeaMeta';
 import Unauthenticated from './Unauthenticated';
@@ -127,7 +126,7 @@ const AuthorAndAdressWrapper = styled.div`
   flex-direction: column;
   margin-bottom: 2rem;
 
-  ${AuthorContainer} {
+  > * {
     flex: 1;
   }
 
@@ -176,14 +175,19 @@ const AuthorMeta = styled.div`
 const AuthorName = styled(Link) `
   color: #333;
   font-size: 16px;
-  line-height: 19px;
-  font-weight: 300;
+  line-height: 20px;
+  font-weight: 400;
   text-decoration: none;
 
   &:hover {
     color: #333;
     text-decoration: underline;
   }
+
+  ${media.smallerThanMaxTablet`
+    font-size: 14px;
+    line-height: 18px;
+  `}
 `;
 
 const TimeAgo = styled.div`
@@ -192,6 +196,10 @@ const TimeAgo = styled.div`
   line-height: 17px;
   font-weight: 300;
   margin-top: 2px;
+
+  ${media.smallerThanMaxTablet`
+    margin-top: 0px;
+  `}
 `;
 
 const IdeaBody = styled.div`
@@ -212,8 +220,7 @@ const SeparatorColumn = styled.div`
   margin: 0;
   margin-left: 30px;
   margin-right: 30px;
-  background: #e4e4e4;
-  background: #fff;
+  background: transparent;
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -224,13 +231,15 @@ const SeparatorRow = styled.div`
   width: 100%;
   height: 1px;
   margin: 0;
-  margin-top: 40px;
-  margin-bottom: 30px;
+  margin-top: 45px;
+  margin-bottom: 35px;
   background: #e4e4e4;
+  background: #fff;
 
   ${media.smallerThanMaxTablet`
     margin-top: 25px;
     margin-bottom: 25px;
+    background: #e4e4e4;
   `}
 `;
 
@@ -257,7 +266,7 @@ const RightColumnMobile = RightColumn.extend`
   margin: 0;
   margin-bottom: 25px;
   padding: 0;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
   border-bottom: solid 1px #e4e4e4;
   display: none;
 
@@ -372,9 +381,8 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor(props) {
-    super(props);
-
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       locale: null,
       idea: null,
@@ -468,8 +476,8 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       const titleMultiloc = idea.data.attributes.title_multiloc;
       const bodyMultiloc = idea.data.attributes.body_multiloc;
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
-      const ideaImageLarge = (ideaImage ? ideaImage.data.attributes.versions.large : null);
-      const ideaImageMedium = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
+      const ideaImageLarge = (ideaImage && _.has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
+      const ideaImageMedium = (ideaImage && _.has(ideaImage, 'data.attributes.versions.medium') ? ideaImage.data.attributes.versions.medium : null);
       const isSafari = bowser.safari;
       const ideaLocation = idea.data.attributes.location_point_geojson || null;
       const ideaAdress = idea.data.attributes.location_description || null;

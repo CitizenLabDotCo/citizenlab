@@ -31,8 +31,8 @@ function localize<PassedProps>(ComposedComponent) {
   return class Localized extends React.Component<Props & PassedProps, State>{
     subscriptions: Rx.Subscription[];
 
-    constructor() {
-      super();
+    constructor(props: Props) {
+      super(props as any);
 
       this.state = {
         locale: '',
