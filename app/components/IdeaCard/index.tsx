@@ -171,7 +171,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
       const ideaImages = idea.data.relationships.idea_images.data;
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
       const idea$ = ideaByIdStream(ideaId).observable;
-      const ideaAuthor$ = userByIdStream(idea.data.relationships.author.data.id).observable;
+      const ideaAuthor$ = idea.data.relationships.author.data ? userByIdStream(idea.data.relationships.author.data.id).observable : Rx.Observable.of(null);
       const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
@@ -203,7 +203,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { idea } = this.state;
 
     if (idea) {
-      eventEmitter.emit<IModalInfo>(namespace, 'cardClick', { 
+      eventEmitter.emit<IModalInfo>(namespace, 'cardClick', {
         type: 'idea',
         id: idea.data.id,
         url: `/ideas/${idea.data.attributes.slug}`
