@@ -16,6 +16,7 @@ class User < ApplicationRecord
   has_many :groups, through: :memberships
   has_many :identities, dependent: :destroy
   has_many :spam_reports, dependent: :destroy
+  has_many :activities, dependent: :nullify
 
   store_accessor :demographics, :gender, :birthyear, :domicile, :education
 

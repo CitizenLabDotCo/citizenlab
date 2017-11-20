@@ -77,7 +77,7 @@ models:
     - &1
       title_multiloc: pages.infopage_title
       body_multiloc: pages.infopage_body
-      slug: info-page
+      slug: information
     - &2
       title_multiloc: pages.cookie_policy_title
       body_multiloc: pages.cookie_policy_body
