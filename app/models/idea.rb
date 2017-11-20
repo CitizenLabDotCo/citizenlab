@@ -23,6 +23,7 @@ class Idea < ApplicationRecord
   has_many :activities, as: :item
   has_many :idea_images, dependent: :destroy
   has_many :idea_files, dependent: :destroy
+  has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport'
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
   validates :title_multiloc, presence: true, multiloc: {presence: true}
