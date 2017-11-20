@@ -81,12 +81,12 @@ const ProjectTitle = styled.h1`
 `;
 
 const ProjectCard = styled.li`
-  width: 270px;
-  height: 260px;
+  width: 260px;
+  height: 250px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin: 13px;
+  margin: 10px;
   padding: 15px;
   overflow: hidden;
   border-radius: 5px;

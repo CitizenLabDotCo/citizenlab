@@ -63,7 +63,7 @@ interface Props {
   label: string;
 }
 
-export default class Radio extends React.Component<Props> {
+export default class Radio extends React.PureComponent<Props> {
 
   handleChange = (event): void => {
     this.props.onChange(this.props.value);

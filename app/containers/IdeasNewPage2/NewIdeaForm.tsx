@@ -7,8 +7,7 @@ import scrollToComponent from 'react-scroll-to-component';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
-import { ImageFile } from 'react-dropzone';
-import { IOption } from 'typings';
+import * as bowser from 'bowser';
 
 // components
 import Select from 'components/UI/Select';
@@ -37,6 +36,10 @@ import { getLocalized } from 'utils/i18n';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
+// typings
+import { ImageFile } from 'react-dropzone';
+import { IOption } from 'typings';
+
 // style
 import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
@@ -56,7 +59,7 @@ const Form = styled.div`
   margin-right: auto;
 
   ${media.smallerThanMaxTablet`
-    padding-bottom: 130px;
+    padding-bottom: 80px;
   `}
 `;
 
@@ -136,13 +139,20 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
   componentWillMount() {
     const localState$ = this.localState.observable;
     const globalState$ = this.globalState.observable;
-    const state$: Rx.Observable<State> = Rx.Observable.combineLatest(localState$, globalState$).map(([localState, globalState]) => ({ ...localState, ...globalState }));
     const locale$ = localeStream().observable;
     const topics$ = topicsStream().observable;
     const projects$ = projectsStream().observable;
 
     this.subscriptions = [
-      state$.subscribe(({ 
+      Rx.Observable.combineLatest(
+        localState$, 
+        globalState$
+      ).map(([localState, globalState]) => {
+        return {
+          ...localState,
+          ...globalState
+        };
+      }).subscribe(({ 
         topics,
         projects,
         title,
@@ -197,7 +207,9 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   componentDidMount() {
-    this.titleInputElement && this.titleInputElement.focus();
+    if (!bowser.mobile && this.titleInputElement !== null) {
+      setTimeout(() => (this.titleInputElement as HTMLInputElement).focus(), 50);
+    }
   }
 
   componentWillUnmount() {

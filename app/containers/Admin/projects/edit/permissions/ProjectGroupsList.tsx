@@ -11,6 +11,7 @@ import messages from './messages';
 // Components
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
+import Warning from 'components/UI/Warning';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import GroupAvatar from 'containers/Admin/groups/all/GroupAvatar';
 import { List, Row } from 'components/admin/ResourceList';
@@ -40,7 +41,7 @@ const EmptyStateMessage = styled.p`
 `;
 
 const StyledIcon = styled(Icon)`
-  height: 1em;
+  height: 20px;
   margin-right: 2rem;
 `;
 
@@ -204,11 +205,17 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     const { locale, currentTenantLocales, groupsOptions, projectGroups, selectedGroups, loading } = this.state;
     const groupsMultipleSelectPlaceholder = formatMessage(messages.groupsMultipleSelectPlaceholder);
 
+    /*
     const noGroups = ((!loading && (!projectGroups || projectGroups.length === 0)) ? (
       <EmptyStateMessage>
         <StyledIcon name="warning" />
         <FormattedHTMLMessage {...messages.noSelectedGroupsMessage} />
       </EmptyStateMessage>
+    ) : null);
+    */
+
+    const noGroups = ((!loading && (!projectGroups || projectGroups.length === 0)) ? (
+      <Warning text={<FormattedHTMLMessage {...messages.noSelectedGroupsMessage} />} />
     ) : null);
 
     const selectGroups = (!loading ? (

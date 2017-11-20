@@ -13,7 +13,8 @@ import { voteStream, votesStream, addVote, deleteVote, IIdeaVote, IIdeaVoteData 
 
 // style
 import { darken } from 'polished';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const green = '#32B67A';
 const red = '#FC3C2D';
@@ -41,7 +42,7 @@ const Container: any = styled.div`
   }
 `;
 
-const VoteIconContainer = styled.div`
+const VoteIconContainer: any = styled.div`
   width: 53px;
   height: 53px;
   cursor: pointer;
@@ -51,19 +52,29 @@ const VoteIconContainer = styled.div`
   border-radius: 50%;
   border: solid 1px #e0e0e0;
   transition: all 100ms ease-out;
+
+  ${(props: any) => props.size === 'small' ? css`
+    width: 46px;
+    height: 46px;
+  ` : css``}
 `;
 
-const VoteIcon = styled(Icon) `
+const VoteIcon: any = styled(Icon) `
   height: 19px;
   fill: #84939d;
   transition: all 100ms ease-out;
+
+  ${(props: any) => props.size === 'small' ? css`
+    height: 16px;
+  ` : css``}
 `;
 
 const VoteCount = styled.div`
+  min-width: 20px;
   color: #84939d;
   font-size: 16px;
   font-weight: 300;
-  margin-left: 5px;
+  margin-left: 6px;
   transition: all 100ms ease-out;
 `;
 
@@ -77,7 +88,15 @@ const Vote: any = styled.div`
 `;
 
 const Upvote = Vote.extend`
-  width: 86px;
+  margin-right: 12px;
+
+  ${(props: any) => props.size === 'small' ? css`
+    margin-right: 8px;
+
+    ${media.smallPhone`
+      margin-right: 4px;
+    `}
+  ` : css``}
 
   ${VoteIconContainer} {
     ${props => props.active && `border-color: ${green}; background: ${green};`}
@@ -139,6 +158,7 @@ const Downvote = Vote.extend`
 type Props = {
   ideaId: string;
   unauthenticatedVoteClick?: () => void;
+  size: 'small' | 'normal';
 };
 
 type State = {
@@ -333,6 +353,7 @@ export default class VoteControl extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
+    const { size } = this.props;
     const { upvotesCount, downvotesCount, myVoteMode, voting, votingAnimation } = this.state;
 
     return (
@@ -342,8 +363,11 @@ export default class VoteControl extends React.PureComponent<Props, State> {
           onClick={this.onClickUpvote}
           innerRef={this.setUpvoteRef}
           className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'}`}
+          size={size}
         >
-          <VoteIconContainer><VoteIcon name="upvote-2" /></VoteIconContainer>
+          <VoteIconContainer size={size}>
+            <VoteIcon name="upvote-2" size={size} />
+          </VoteIconContainer>
           <VoteCount>{upvotesCount}</VoteCount>
         </Upvote>
         <Downvote
@@ -351,8 +375,11 @@ export default class VoteControl extends React.PureComponent<Props, State> {
           onClick={this.onClickDownvote}
           innerRef={this.setDownvoteRef}
           className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'}`}
+          size={size}
         >
-          <VoteIconContainer><VoteIcon name="downvote-2" /></VoteIconContainer>
+          <VoteIconContainer size={size}>
+            <VoteIcon name="downvote-2" size={size} />
+          </VoteIconContainer>
           <VoteCount>{downvotesCount}</VoteCount>
         </Downvote>
       </Container>

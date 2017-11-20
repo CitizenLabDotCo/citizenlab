@@ -160,7 +160,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
 
   constructor(props: Props) {
     super(props as any);
-    this.initialLocalState = {
+    const initialLocalState = {
       showIdeaForm: true,
       locale: null
     };
@@ -179,7 +179,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
       imageId: null,
       imageChanged: false
     };
-    this.localState = localState<LocalState>(this.initialLocalState);
+    this.localState = localState<LocalState>(initialLocalState);
     this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage', this.initialGlobalState);
     this.subscriptions = [];
   }
@@ -198,7 +198,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   componentWillUnmount() {
-    // clean up global state before unmounting
+    // reset global state before unmounting
     this.globalState.set(this.initialGlobalState);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }

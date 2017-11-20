@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
 
 // libraries
 import { browserHistory } from 'react-router';
@@ -20,7 +21,7 @@ import { injectTracks, trackPage } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const foregroundTimeout = 200;
@@ -73,37 +74,59 @@ const ModalContentInner = styled.div`
   z-index: 5000;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - 150px);
-    margin-top: 70px;
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px);
+    margin-top: 0px;
+    padding-top: 60px;
   `}
 `;
 
 const ModalContentInnerInner = styled.div`
-  position: relative;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transform: translate3d(0, 0, 0);
   will-change: transform, opacity;
+
+  ${media.smallerThanMaxTablet`
+    padding-top: 20px;
+  `}
 `;
 
-const TopBar = styled.div`
-  height: 70px;
+const TopBar: any = styled.div`
+  height: 90px;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
+  z-index: 20000;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  will-change: height, transform, opacity;
   background: #fff;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
-  z-index: 14999;
-  display: none;
+  transition: height 250ms ease-out;
 
-  ${media.smallerThanMaxTablet`
-    display: block;
+  ${(props: any) => props.scrolled && css`
+    height: 66px;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  `}
+
+  ${media.biggerThanMaxTablet`
+    display: none;
   `}
 `;
 
+const TopBarInner = styled.div`
+  height: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const GoBackIcon = styled(Icon)`
-  height: 24px;
+  height: 22px;
   fill: #666;
   display: flex;
   align-items: center;
@@ -117,13 +140,14 @@ const GoBackButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 10px;
+  margin-right: 6px;
+  margin-left: -2px;
   cursor: pointer;
   border-radius: 50%;
-  border: solid 1px #ddd;
+  border: solid 1px #e0e0e0;
+  background: #fff;
   z-index: 15000;
-  transition: border-color 100ms ease-out;
-  transition: fill 100ms ease-out;
+  transition: all 100ms ease-out;
 
   &:hover {
     border-color: #000;
@@ -136,23 +160,28 @@ const GoBackButton = styled.div`
 
 const GoBackLabel = styled.div`
   color: #666;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
   z-index: 15000;
   transition: fill 100ms ease-out;
+
+  ${media.smallPhone`
+    display: none;
+  `}
 `;
 
 const GoBackButtonWrapper = styled.div`
   height: 48px;
   align-items: center;
-  position: absolute;
-  top: 10px;
-  left: 30px;
   display: none;
 
   ${media.smallerThanMaxTablet`
     display: flex;
   `}
+`;
+
+const HeaderChildWrapper = styled.div`
+  display: inline-block;
 `;
 
 const CloseIcon = styled(Icon)`
@@ -207,14 +236,16 @@ const ModalContent: any = styled.div`
   z-index: 4000;
 
   &.content-enter {
-    ${ModalContentInnerInner} {
+    ${ModalContentInnerInner},
+    ${TopBar} {
       opacity: 0;
       transform: translateY(${contentTranslate});
     }
   }
 
   &.content-enter.content-enter-active {
-    ${ModalContentInnerInner}  {
+    ${ModalContentInnerInner},
+    ${TopBar} {
       opacity: 1;
       transform: translateY(0);
       transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
@@ -232,24 +263,27 @@ type Props = {
   opened: boolean;
   close: () => void;
   url: string | null;
+  headerChild?: JSX.Element | undefined;
 };
 
-type State = {};
+type State = {
+  scrolled: boolean;
+};
 
 class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, State> {
-  private unlisten: Function | null;
-  private goBackUrl: string | null;
-  private keydownEventListener: any;
+  unlisten: Function | null;
+  goBackUrl: string | null;
+  keydownEventListener: any;
+  subscription: Rx.Subscription | null;
 
   constructor(props: Props) {
     super(props as any);
+    this.state = {
+      scrolled: false
+    };
     this.unlisten = null;
     this.goBackUrl = null;
-  }
-
-
-  componentDidMount() {
-    window.addEventListener('keydown', this.onEscKeyPressed, true);
+    this.subscription = null;
   }
 
   componentWillUnmount() {
@@ -270,9 +304,8 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
 
   openModal = (url: string| null) => {
     this.goBackUrl = window.location.href;
-
     window.addEventListener('popstate', this.handlePopstateEvent);
-
+    window.addEventListener('keydown', this.onEscKeyPressed, true);
     this.unlisten = browserHistory.listen(this.props.close);
 
     if (!document.body.classList.contains('modal-active')) {
@@ -286,6 +319,17 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
       // we exceptionally also need to track the page change manually
       // Don't try this at home!
       trackPage(url, { modal: true });
+    }
+  }
+
+  setRef = (modalContentInnerElement: HTMLDivElement) => {
+    if (modalContentInnerElement && !this.subscription) {
+      this.subscription = Rx.Observable.fromEvent(modalContentInnerElement, 'scroll', { passive: true }).sampleTime(10).subscribe((bleh) => {
+        this.setState((state) => {
+          const scrolled = (modalContentInnerElement.scrollTop > 0);
+          return (state.scrolled !== scrolled ? { scrolled } : state);
+        });
+      });
     }
   }
 
@@ -325,6 +369,15 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
     this.goBackUrl = null;
     document.body.classList.remove('modal-active');
     window.removeEventListener('popstate', this.handlePopstateEvent);
+    window.removeEventListener('keydown', this.onEscKeyPressed, true);
+
+    // reset state
+    this.setState({ scrolled: false });
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
 
     if (_.isFunction(this.unlisten)) {
       this.unlisten();
@@ -344,8 +397,11 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
   }
 
   render() {
-    const { children, opened } = this.props;
+    const { scrolled } = this.state;
+    const { children, opened, headerChild } = this.props;
     const { formatMessage } = this.props.intl;
+
+    console.log(children);
 
     return (
       <TransitionGroup>
@@ -373,20 +429,23 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
           >
             <ModalContent id="e2e-fullscreenmodal-content">
 
-              <ModalContentInner>
+              <ModalContentInner innerRef={this.setRef}>
                 <ModalContentInnerInner>
                   {children}
                 </ModalContentInnerInner>
               </ModalContentInner>
 
-              <TopBar />
-
-              <GoBackButtonWrapper>
-                <GoBackButton onClick={this.clickCloseButton}>
-                  <GoBackIcon name="arrow-back" />
-                </GoBackButton>
-                <GoBackLabel>{formatMessage(messages.goBack)}</GoBackLabel>
-              </GoBackButtonWrapper>
+              <TopBar scrolled={scrolled}>
+                <TopBarInner>
+                  <GoBackButtonWrapper>
+                    <GoBackButton onClick={this.clickCloseButton}>
+                      <GoBackIcon name="arrow-back" />
+                    </GoBackButton>
+                    <GoBackLabel>{formatMessage(messages.goBack)}</GoBackLabel>
+                  </GoBackButtonWrapper>
+                  {headerChild && <HeaderChildWrapper>{headerChild}</HeaderChildWrapper>}
+                </TopBarInner>
+              </TopBar>
 
               <CloseButton onClick={this.clickCloseButton}>
                 <CloseIcon name="close4" />

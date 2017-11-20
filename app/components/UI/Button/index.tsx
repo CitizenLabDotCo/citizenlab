@@ -23,7 +23,6 @@ const ButtonText = styled.div`
 
 const StyledIcon = styled(Icon)`
   margin-right: 14px;
-  transition: all 120ms ease;
 `;
 
 const ButtonContent = styled.div`
@@ -32,7 +31,6 @@ const ButtonContent = styled.div`
   justify-content: center;
   margin: 0;
   padding: 0;
-  transition: all 120ms ease;
 `;
 
 function getPadding(size) {
@@ -87,7 +85,7 @@ const Container: any = styled.div`
     border-radius: ${(props: any) => props.circularCorners ? '999em' : '5px'};
     position: relative;
     outline: none;
-    transition: all 120ms ease;
+    transition: all 120ms ease-out;
 
     &:not(.disabled) {
       cursor: pointer;

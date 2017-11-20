@@ -88,7 +88,7 @@ const CommentBody = styled.div`
     word-break: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    hyphens: auto;      
+    hyphens: auto;
     margin-bottom: 25px;
   }
 `;

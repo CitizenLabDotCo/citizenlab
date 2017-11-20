@@ -52,7 +52,7 @@ const StyledIdeaCard = styled(IdeaCard)`
   margin-left: 13px;
   margin-right: 13px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanDesktop`
     width: calc(100% * (1/2) - 26px);
   `};
 
