@@ -9,8 +9,12 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
+const API_HOST = process.env.API_HOST || window.location.hostname;
+const API_PORT = process.env.API_PORT || 4000;
+
 export const DEFAULT_LOCALE = 'en';
-export const API_PATH = (process.env.NODE_ENV === 'development') ? `http://${window.location.hostname}:4000/api/v1` : '/api/v1';
+export const AUTH_PATH = (process.env.NODE_ENV === 'development') ? `http://${API_HOST}:${API_PORT}/auth` : '/auth';
+export const API_PATH = (process.env.NODE_ENV === 'development') ? `http://${API_HOST}:${API_PORT}/api/v1` : '/api/v1';
 export const GOOGLE_MAPS_API_KEY = '***REMOVED***';
 
 export const LOADED_CURRENT_TENANT = 'app/App/LOADED_CURRENT_TENANT';

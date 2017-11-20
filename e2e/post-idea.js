@@ -15,9 +15,18 @@ module.exports = {
     .postIdea(title, 'Lorem ipsum dolor sit amet');
 
     browser
-    .url('localhost:3000/ideas')
+    .url('localhost:3000')
+    .pause(500)
     .waitForElementVisible('#e2e-ideas-list:first-child')
-    .getText('#e2e-ideas-list:first-child h4', function (result) {
+    .getText('#e2e-ideas-list:first-child h4 span', function (result) {
+      this.assert.equal(result.value, title);
+    });
+
+    browser
+    .url('localhost:3000/ideas')
+    .pause(500)
+    .waitForElementVisible('#e2e-ideas-list:first-child')
+    .getText('#e2e-ideas-list:first-child h4 span', function (result) {
       this.assert.equal(result.value, title);
     })
     .end();

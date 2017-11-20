@@ -22,14 +22,6 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.loadUserIdeasError',
     defaultMessage: 'User\'s ideas couldn\'t be loaded',
   },
-  helmetTitle: {
-    id: 'app.containers.UsersShowPage.helmetTitle',
-    defaultMessage: 'User profile page',
-  },
-  helmetDescription: {
-    id: 'app.containers.UsersShowPage.helmetDescription',
-    defaultMessage: 'Show user profile',
-  },
   joined: {
     id: 'app.containers.UsersShowPage.joined',
     defaultMessage: 'Joined on {date}',

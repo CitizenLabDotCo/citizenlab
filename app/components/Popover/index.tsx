@@ -72,8 +72,8 @@ type Props = {
   open: boolean,
   onCloseRequest?: () => void,
   id?: string,
+  setRef?: (arg: HTMLElement) => void;
 };
-
 
 export default class Popover extends React.PureComponent<Props> {
 
@@ -85,24 +85,35 @@ export default class Popover extends React.PureComponent<Props> {
     }
   }
 
+  handleSetRef = (element: HTMLElement) => {
+    if (this.props.setRef) {
+      this.props.setRef(element);
+    }
+  }
+
   render() {
     return (
-    <TransitionGroup>
-      {this.props.open &&
-        <CSSTransition
-          classNames="dropdown"
-          key={1}
-          timeout={timeout}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          exit={false}
-        >
-          <Container onClickOutside={this.clickOutside} className={this.props.className} id={this.props.id}>
-            {this.props.children}
-          </Container>
-        </CSSTransition>
-      }
-    </TransitionGroup>
+      <TransitionGroup>
+        {this.props.open &&
+          <CSSTransition
+            classNames="dropdown"
+            key={1}
+            timeout={timeout}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            exit={false}
+          >
+            <Container
+              onClickOutside={this.clickOutside}
+              className={this.props.className}
+              id={this.props.id}
+              setRef={this.handleSetRef}
+            >
+              {this.props.children}
+            </Container>
+          </CSSTransition>
+        }
+      </TransitionGroup>
     );
   }
 }

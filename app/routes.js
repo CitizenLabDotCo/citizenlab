@@ -89,6 +89,40 @@ export default function createRoutes(store) {
       },
     },
     {
+      path: '/complete-signup',
+      name: 'completeSignUpPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/CompleteSignUpPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
+      path: '/authentication-error',
+      name: 'completeSignUpPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/CompleteSignUpPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
       path: '/profile/edit',
       name: 'usersEditPage',
       getComponent(nextState, cb) {

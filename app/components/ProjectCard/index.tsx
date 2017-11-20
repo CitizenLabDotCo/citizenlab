@@ -35,11 +35,6 @@ const Container = styled.div`
   background: #fff;
   border: solid 1px #e6e6e6;
   cursor: pointer;
-  /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); */
-
-  &:hover {
-    border-color: #bbb;
-  }
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
@@ -74,15 +69,23 @@ const ProjectImagePlaceholder = styled.div`
   flex-grow: 0;
   width: 176px;
   height: 176px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 6px;
   margin-right: 10px;
-  background: #cfd6db;
+  background: ${props => props.theme.colors.placeholderBg};
   overflow: hidden;
 
   ${media.smallerThanMaxTablet`
     width: 100%;
     margin: 0;
   `}
+`;
+
+const ProjectImagePlaceholderIcon = styled(Icon) `
+  height: 45px;
+  fill: #fff;
 `;
 
 const ProjectContent = styled.div`
@@ -98,6 +101,8 @@ const ProjectContent = styled.div`
   `}
 
   ${media.phone`
+    width: 100%;
+    margin: 0;
     align-items: center;
   `}
 `;
@@ -112,6 +117,13 @@ const ProjectTitle = styled.h3`
 
   ${media.smallerThanMaxTablet`
     padding-top: 20px;
+  `}
+
+  ${media.phone`
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    text-align: center;
   `}
 `;
 
@@ -131,12 +143,8 @@ const ProjectDescription = styled.div`
   line-height: 20px;
   max-height: 60px;
 
-  ${media.smallerThanMaxTablet`
-    padding-top: 10px;
-  `}
-
   ${media.phone`
-    text-align: center;
+    display: none;
   `}
 `;
 
@@ -162,18 +170,16 @@ const ReadMore = styled.div`
 `;
 
 const ProjectButtonWrapper = styled.div`
-  height: 100%;
   display: flex;
   align-items: center;
   margin-right: 20px;
 
   ${media.smallerThanMaxTablet`
-    margin: 0;
-    margin-top: 25px;
+    width: 100%;
+    margin-top: 20px;
   `}
 
   ${media.phone`
-    width: 100%;
     align-items: center;
     justify-content: center;
   `}
@@ -195,8 +201,8 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       currentTenant: null,
       project: null,
@@ -254,7 +260,13 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
 
       return (
         <Container onClick={this.goToProject}>
-          {imageUrl ? <ProjectImage imageSrc={imageUrl} /> : <ProjectImagePlaceholder />}
+          {imageUrl && <ProjectImage imageSrc={imageUrl} />}
+
+          {!imageUrl &&
+            <ProjectImagePlaceholder>
+              <ProjectImagePlaceholderIcon name="project" />
+            </ProjectImagePlaceholder>
+          }
 
           <ProjectContent>
             <ProjectTitle><T value={titleMultiloc} /></ProjectTitle>

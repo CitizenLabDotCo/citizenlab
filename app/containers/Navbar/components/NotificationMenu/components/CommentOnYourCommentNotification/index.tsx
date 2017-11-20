@@ -22,8 +22,8 @@ type State = {
 export default class CommentOnYourCommentNotification extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       ideaSlug: undefined,
     };

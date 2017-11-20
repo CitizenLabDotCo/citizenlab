@@ -47,8 +47,8 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
   state: State;
   baseID: string;
 
-  constructor(props) {
-    super(props);
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       deployed: false,
       currentTitle: this.getTitle(props.selected, props.values, props.multiple, props.title),

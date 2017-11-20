@@ -39,6 +39,7 @@ const NavigationIcon = styled(Icon)`
 
 const NavigationLabel = styled.div`
   width: 100%;
+  height: 18px;
   color: #999;
   font-size: 14px;
   font-weight: 300;
@@ -57,10 +58,6 @@ const NavigationItem = styled(Link)`
   cursor: pointer;
   margin-top: 10px;
   margin-bottom: 10px;
-  user-select: none;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
 
   &.active {
     ${NavigationIcon} {
@@ -69,7 +66,7 @@ const NavigationItem = styled(Link)`
 
     ${NavigationLabel} {
       color: #000;
-      font-weight: 600;
+      font-weight: 500;
     }
   }
 `;
@@ -99,7 +96,7 @@ export default class MobileNavigation extends React.PureComponent<{}, {}> {
 
         <NavigationItem to="/projects" activeClassName="active">
           <NavigationIconWrapper>
-            <NavigationIcon name="project2" />
+            <NavigationIcon name="project" />
           </NavigationIconWrapper>
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageProjects} />

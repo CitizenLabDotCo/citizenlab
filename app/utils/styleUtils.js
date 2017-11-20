@@ -7,7 +7,7 @@ export const media = {
     }
   `,
   phone: (...args) => css`
-    @media (max-width: 480px) {
+    @media (max-width: 481px) {
       ${css(...args)}
     }
   `,
@@ -27,22 +27,12 @@ export const media = {
     }
   `,
   smallerThanMaxTablet: (...args) => css`
-  @media (max-width: 767px) {
-    ${css(...args)}
-  }
-`,
+    @media (max-width: 767px) {
+      ${css(...args)}
+    }
+  `,
   biggerThanMaxTablet: (...args) => css`
     @media (min-width: 767px) {
-      ${css(...args)}
-    }
-  `,
-  desktop: (...args) => css`
-    @media (min-width: 768px) {
-      ${css(...args)}
-    }
-  `,
-  smallerThanDesktop: (...args) => css`
-    @media (max-width: 768px) {
       ${css(...args)}
     }
   `,
@@ -65,4 +55,5 @@ export const colors = {
   clBlueLightest: '#BEE7EB',
   clBlueLighter: '#80CFD8',
   clBlueLight: '#40B8C5',
+  placeholderBg: '#cfd6db',
 };

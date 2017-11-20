@@ -23,11 +23,8 @@ import { darken } from 'polished';
 import { FormattedMessage } from 'react-intl';
 import messages from '../../messages';
 
-// images
-const adminIcon = require('./adminIcon.svg');
-const editProfileIcon = require('./editProfileIcon.svg');
-const signOutIcon = require('./signOutIcon.svg');
-
+const timeout = 200;
+const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
 const Container = styled.div`
   display: flex;
@@ -45,10 +42,6 @@ const StyledAvatar = styled(Avatar)`
   width: 25px;
   height: 25px;
   cursor: pointer;
-
-  &:hover svg {
-    fill: ${(props) => darken(0.2, '#84939E')};
-  }
 `;
 
 const IconWrapper = styled.div`
@@ -61,11 +54,11 @@ const IconWrapper = styled.div`
 
 const UserIcon = styled(Icon)`
   height: 100%;
-  fill: #84939E;
+  fill: ${props => props.theme.colors.label};
   transition: all 150ms ease;
 
   &:hover {
-    fill: ${(props) => darken(0.2, '#84939E')};
+    fill: ${(props) => darken(0.15, props.theme.colors.label)};
   }
 `;
 
@@ -76,35 +69,30 @@ const StyledPopover = styled(Popover)`
 
 const PopoverIcon = styled(Icon)`
   height: 20px;
+  fill: ${props => props.theme.colors.label};
+  transition: all 80ms ease-out;
 `;
 
 const PopoverItem = styled.div`
-  color: #84939E;
+  color: ${props => props.theme.colors.label};
   font-size: 17px;
   font-weight: 400;
   padding: 10px 15px;
   background: #fff;
   border-radius: 5px;
-  transition: all 100ms ease-out;
+  transition: all 80ms ease-out;
   display: flex;
   align-items: center;
-
-  svg {
-    fill: ${props => props.theme.colors.label};
-    transition: all 100ms ease-out;
-  }
+  justify-content: space-between;
 
   &:hover {
-    background: #f4f4f4;
     color: #000;
+    background: #f2f2f2;
 
-    svg {
+    ${PopoverIcon} {
       fill: #000;
     }
   }
-
-  display: flex;
-  justify-content: space-between;
 `;
 
 type Props = {};
@@ -118,8 +106,8 @@ export default class UserMenu extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       authUser: null,
       PopoverOpened: false
@@ -148,6 +136,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
   }
 
   navigateTo = (path) => () => {
+    this.closePopover();
     browserHistory.push(path);
   }
 
@@ -163,8 +152,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     }
   }
 
-  // {/* id="e2e-user-menu-Popover" */}
-
   render() {
     const { authUser, PopoverOpened } = this.state;
     const avatar = (authUser ? authUser.data.attributes.avatar : null);
@@ -172,10 +159,10 @@ export default class UserMenu extends React.PureComponent<Props, State> {
 
     if (authUser && userId) {
       return (
-        <Container id="e2e-user-menu-container" onClick={this.togglePopover}>
-          {avatar ? <StyledAvatar userId={userId} size="small" /> : <UserIcon name="user" />}
+        <Container id="e2e-user-menu-container">
+          {avatar ? <StyledAvatar userId={userId} size="small" onClick={this.togglePopover} /> : <UserIcon name="user" />}
             <StyledPopover
-              id="e2e-user-menu-Popover"
+              id="e2e-user-menu-dropdown"
               open={PopoverOpened}
               onCloseRequest={this.closePopover}
             >

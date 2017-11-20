@@ -70,10 +70,6 @@ const VoteCount = styled.div`
 const Vote: any = styled.div`
   display: flex;
   align-items: center;
-  user-select: none;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
 
   &.voteClick ${VoteIconContainer} {
     animation: ${vote} 250ms;
@@ -155,15 +151,15 @@ type State = {
   myVoteMode: 'up' | 'down' | null;
 };
 
-export default class Votes extends React.PureComponent<Props, State> {
+export default class VoteControl extends React.PureComponent<Props, State> {
   state: State;
   voting$: Rx.BehaviorSubject<'up' | 'down' | null>;
   subscriptions: Rx.Subscription[];
   upvoteElement: HTMLDivElement | null;
   downvoteElement: HTMLDivElement | null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       authUser: null,
       upvotesCount: 0,
