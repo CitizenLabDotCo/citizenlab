@@ -24,7 +24,6 @@
   "app.components.ProjectCards.loadMore": "crwdns17099:0crwdne17099:0",
   "app.components.ProjectCards.noProjects": "crwdns17100:0crwdne17100:0",
   "app.components.SearchInput.searchPlaceholder": "crwdns17101:0crwdne17101:0",
-  "app.components.TopicSelect.header": "crwdns15570:0crwdne15570:0",
   "app.components.UI.Select.noResults": "crwdns15571:0crwdne15571:0",
   "app.components.Upload.dropYourFileHere": "",
   "app.components.Upload.errorMaxSizeExceeded": "crwdns16202:0{maxFileSize}crwdne16202:0",

@@ -24,7 +24,6 @@
   "app.components.ProjectCards.loadMore": "Charger plus de projets",
   "app.components.ProjectCards.noProjects": "Aucun projet n'a été trouvé",
   "app.components.SearchInput.searchPlaceholder": "Rechercher",
-  "app.components.TopicSelect.header": "Ceci est le component TopicSelect !",
   "app.components.UI.Select.noResults": "Aucune option disponible",
   "app.components.Upload.dropYourFileHere": "",
   "app.components.Upload.errorMaxSizeExceeded": "Un ou plusieurs fichiers a dépassé la limite de téléchargement de {maxFileSize} Mb",
