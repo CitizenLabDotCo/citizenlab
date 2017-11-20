@@ -223,7 +223,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Êtes-vous sûr de que vouloir supprimer ce groupe du projet ?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Choisir les groupes",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Aucun membre} one {un membre} other {{count} membres}}",
-  "app.containers.AdminPage.groups.permissions.noSelectedGroupsMessage": "Vous n'avez <strong>aucun groupe</strong> d'utilisateurs pour le moment.",
+  "app.containers.AdminPage.groups.permissions.noSelectedGroupsMessage": "Choisissez un ou plusieurs groupes pouvant accéder à ce projet.",
   "app.containers.AdminUser.Users.Views.all.createButton": "Nouvel utilisateur",
   "app.containers.AdminUser.Users.Views.all.deleteButton": "Supprimer",
   "app.containers.AdminUser.Users.Views.all.exportUsers": "Exporter tous les utilisateurs",
