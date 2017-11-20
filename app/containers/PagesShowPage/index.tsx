@@ -87,7 +87,8 @@ type State = {
 };
 
 class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State> {
-  pageObserver: Rx.Subscription | null = null;
+  sub: Rx.Subscription | null = null;
+  slug$: Rx.BehaviorSubject<string> = new Rx.BehaviorSubject('');
   legalPages = without(LEGAL_PAGES, 'information');
 
   constructor(props: Props) {
@@ -99,46 +100,40 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
     };
   }
 
-  componentDidMount() {
-    this.pageObserver = this.getPageStream(this.props.params.slug);
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.params.slug !== this.props.params.slug) {
-      if (this.pageObserver) {
-        this.pageObserver.unsubscribe();
+  componentWillMount() {
+    this.sub = this.slug$
+    .switchMap((slug) => {
+      if (slug) {
+        this.setState({ loading: true });
+        return pageBySlugStream(slug).observable;
+      } else {
+        return Rx.Observable.of(null);
       }
-      this.pageObserver = this.getPageStream(newProps.params.slug);
-    }
-  }
-
-  componentWillUnmount() {
-    this.pageObserver && this.pageObserver.unsubscribe();
-  }
-
-  getPageStream = (slug) => {
-    return pageBySlugStream(slug).observable
+    })
     .switchMap((pageResponse) => {
+      try {
+        // Page not found
+        if (!pageResponse) {
+          return Rx.Observable.of({ pageResponse: { data: null }, pageLinks: [] });
+        }
 
-      // Page not found
-      if (!pageResponse) {
-        return Rx.Observable.of({ pageResponse: { data: null }, pageLinks: [] });
+        // Page has no links
+        if (pageResponse.data.relationships.page_links.data.length === 0) {
+          return Rx.Observable.of({ pageResponse, pageLinks: [] });
+        }
+
+        // Page with links
+        const linksRequests = pageResponse.data.relationships.page_links.data.map(link => {
+          return getPageLink(link.id).observable.first();
+        });
+
+        return Rx.Observable.combineLatest(linksRequests)
+        .map((pageLinks) => {
+          return { pageLinks, pageResponse };
+        });
+      } catch (e) {
+        return Rx.Observable.of({ pageResponse: null, pageLinks: null });
       }
-
-      // Page has no links
-      if (pageResponse.data.relationships.page_links.data.length === 0) {
-        return Rx.Observable.of({ pageResponse, pageLinks: [] });
-      }
-
-      // Page with links
-      const linksRequests = pageResponse.data.relationships.page_links.data.map(link => {
-        return getPageLink(link.id).observable.first();
-      });
-
-      return Rx.Observable.combineLatest(linksRequests)
-      .map((pageLinks) => {
-        return { pageLinks, pageResponse };
-      });
     })
     .subscribe(({ pageLinks, pageResponse }) => {
       if (pageResponse) {
@@ -150,9 +145,25 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
       } else {
         this.setState({
           loading: false,
+          page: null,
+          pageLinks: [],
         });
       }
     });
+  }
+
+  componentDidMount() {
+    this.slug$.next(this.props.params.slug);
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.params.slug !== this.props.params.slug) {
+      this.slug$.next(newProps.params.slug);
+    }
+  }
+
+  componentWillUnmount() {
+    this.sub && this.sub.unsubscribe();
   }
 
   render() {
@@ -169,16 +180,17 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
       );
     }
 
-    if (!page) {
+    if (page === null) {
       return <NotFound />;
     }
 
-    return page && (
+    return (
       <div>
         <ContentContainer>
           <Helmet>
             <title>
-              <T value={page.attributes.title_multiloc} />
+              {/* tFunc is used here because <title> doesn't accept any dom node, only a plain string */}
+              {tFunc(page.attributes.title_multiloc)}
             </title>
           </Helmet>
           <TextContainer>
