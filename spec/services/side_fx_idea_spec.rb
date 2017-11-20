@@ -30,7 +30,7 @@ describe SideFxIdeaService do
       idea = create(:idea)
       idea.update(title_multiloc: {'en': 'changed'})
       expect {service.after_update(idea, user)}.
-        to have_enqueued_job(LogActivityJob).with(idea, 'changed_title', user, idea.updated_at.to_i)
+        to have_enqueued_job(LogActivityJob).with(idea, 'changed_title', user, idea.updated_at.to_i).at_least(1).times
     end
 
     it "logs a 'changed_body' action job when the body has changed" do
