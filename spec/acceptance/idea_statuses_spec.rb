@@ -8,7 +8,7 @@ resource "IdeaStatuses" do
     @statuses = create_list(:idea_status, 3)
   end
 
-  get "api/v1/idea_statuses" do
+  get "web_api/v1/idea_statuses" do
     example_request "List the available idea statuses for the tenant" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -17,7 +17,7 @@ resource "IdeaStatuses" do
     end
   end
 
-  get "api/v1/idea_statuses/:id" do
+  get "web_api/v1/idea_statuses/:id" do
     let(:id) { @statuses.first.id }
 
     example_request "Get metadata of one idea status" do

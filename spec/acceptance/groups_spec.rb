@@ -14,7 +14,7 @@ resource "Groups" do
       header 'Authorization', "Bearer #{token}"
     end
 
-    get "api/v1/groups" do
+    get "web_api/v1/groups" do
       with_options scope: :page do
         parameter :number, "Page number"
         parameter :size, "Number of groups per page"
@@ -28,7 +28,7 @@ resource "Groups" do
     
     end
 
-    get "api/v1/groups/:id" do
+    get "web_api/v1/groups/:id" do
       let(:id) { @groups.first.id }
 
       example_request "Get one group by id" do
@@ -38,7 +38,7 @@ resource "Groups" do
       end
     end
 
-    post "api/v1/groups" do
+    post "web_api/v1/groups" do
       with_options scope: :group do
         parameter :title_multiloc, "The title of the group in multiple locales", required: true
       end
@@ -57,7 +57,7 @@ resource "Groups" do
       end
     end
 
-    patch "api/v1/groups/:id" do
+    patch "web_api/v1/groups/:id" do
       with_options scope: :group do
         parameter :title_multiloc, "The title of the group in multiple locales"
       end
@@ -75,7 +75,7 @@ resource "Groups" do
       end
     end
 
-    delete "api/v1/groups/:id" do
+    delete "web_api/v1/groups/:id" do
       let(:group) { create(:group) }
       let(:id) { group.id }
       example_request "Delete a group" do

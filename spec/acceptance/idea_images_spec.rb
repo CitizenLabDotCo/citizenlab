@@ -12,7 +12,7 @@ resource "IdeaImage" do
     create_list(:idea_image, 2, idea: @idea)
   end
 
-  get "api/v1/ideas/:idea_id/images" do
+  get "web_api/v1/ideas/:idea_id/images" do
     
     let(:idea_id) { @idea.id }
     example_request "List all images of an idea" do
@@ -22,7 +22,7 @@ resource "IdeaImage" do
     end
   end
 
-  get "api/v1/ideas/:idea_id/images/:image_id" do
+  get "web_api/v1/ideas/:idea_id/images/:image_id" do
     
     let(:idea_id) { @idea.id }
     let(:image_id) { IdeaImage.first.id }
@@ -33,7 +33,7 @@ resource "IdeaImage" do
     end
   end
 
-  post "api/v1/ideas/:idea_id/images" do
+  post "web_api/v1/ideas/:idea_id/images" do
     with_options scope: :image do
       parameter :image, "The base64 encoded image", required: true
       parameter :ordering, "An integer that is used to order the images within an idea", required: false
@@ -55,7 +55,7 @@ resource "IdeaImage" do
 
   end
 
-  patch "api/v1/ideas/:idea_id/images/:image_id" do
+  patch "web_api/v1/ideas/:idea_id/images/:image_id" do
     with_options scope: :image do
       parameter :image, "The base64 encoded image"
       parameter :ordering, "An integer that is used to order the images within an idea"
@@ -78,7 +78,7 @@ resource "IdeaImage" do
 
   end
 
-  delete "api/v1/ideas/:idea_id/images/:image_id" do
+  delete "web_api/v1/ideas/:idea_id/images/:image_id" do
 
     let(:idea_id) { @idea.id }
     let(:image_id) { IdeaImage.first.id }
