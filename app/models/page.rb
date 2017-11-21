@@ -4,7 +4,7 @@ class Page < ApplicationRecord
 
   belongs_to :project, optional: true
 
-  has_many :page_links, foreign_key: :linking_page_id, dependent: :destroy
+  has_many :page_links, -> { order(:ordering) }, foreign_key: :linking_page_id, dependent: :destroy
   has_many :linked_pages, through: :page_links, source: :linked_page
 
   validates :title_multiloc, :body_multiloc, presence: true, multiloc: {presence: true}
