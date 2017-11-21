@@ -1,5 +1,5 @@
 class WebApi::V1::External::Notifications::MentionInCommentSerializer < WebApi::V1::External::Notifications::NotificationSerializer
-  belongs_to :user, serializer: CustomUserSerializer
+  belongs_to :initiating_user, serializer: CustomUserSerializer
   belongs_to :comment, serializer: CustomCommentSerializer
   belongs_to :comment_author, serializer: CustomUserSerializer
   belongs_to :idea, serializer: CustomIdeaSerializer

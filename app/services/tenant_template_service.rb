@@ -8,6 +8,9 @@ class TenantTemplateService
   end
 
   def apply_template template_name, is_path=false
+    if !is_path && !(available_templates.include? template_name)
+      template_name = 'base'
+    end
     throw "Unknown template '#{template_name}'" unless is_path || (available_templates.include? template_name)
 
     file = is_path ? template_name : Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")
@@ -32,7 +35,14 @@ class TenantTemplateService
             model.send("#{field_name}=", field_value)
           end
         end
-        model.save!
+        begin 
+          model.save!
+        rescue Exception => e
+          if e.message == "Validation failed: Avatar could not download file: 404 Not Found"
+            # e.message = e.message + ": #{model.email} + #{template_name}" ### doesn't work
+          end
+          raise e
+        end
         obj_to_inst[attributes] = model
       end
     end

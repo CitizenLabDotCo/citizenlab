@@ -1,26 +1,37 @@
 class WebApi::V1::External::Notifications::NotificationSerializer < ActiveModel::Serializer
 
   class CustomUserSerializer < ActiveModel::Serializer
-    attributes :id, :slug, :first_name, :last_name, :avatar
+    attributes :id, :slug, :first_name, :last_name, :avatar, :locale
     def avatar
       object.avatar && object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
     end
   end
 
   class CustomProjectSerializer < ActiveModel::Serializer
-    attributes :id, :slug, :title_multiloc, :description_multiloc
+    attributes :id, :slug, :title_multiloc, :description_multiloc, :url, :created_at, :header_bg
+    def url
+      FrontendService.new.model_to_url object
+    end
+
+    def header_bg
+      object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+    end
   end
 
   class CustomCommentSerializer < ActiveModel::Serializer
-    attributes :id, :body_multiloc, :upvotes_count, :downvotes_count
+    attributes :id, :body_multiloc, :upvotes_count, :downvotes_count, :url, :created_at
+
+    def url
+      FrontendService.new.model_to_url object
+    end
   end
 
   class CustomIdeaSerializer < ActiveModel::Serializer
-    attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count, :url
+    attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count, :url, :created_at
     has_many :topics
 
     def url
-      "#{Tenant.current.base_frontend_uri}/ideas/#{object.slug}"
+      FrontendService.new.model_to_url object
     end
   end
 

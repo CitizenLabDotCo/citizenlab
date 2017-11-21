@@ -64,6 +64,16 @@ resource "ProjectImage" do
       end
     end
 
+    describe do
+      let(:image) { encode_file_as_base64("afvalkalender.pdf") }
+
+      example_request "[error] Add an invalid image type to a project" do
+        expect(response_status).to eq 422
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:errors,:image)).to include({:error=>"extension_whitelist_error"})
+      end
+    end
+
   end
 
   patch "web_api/v1/projects/:project_id/images/:image_id" do
@@ -104,6 +114,10 @@ resource "ProjectImage" do
 
   def encode_image_as_base64 filename
     "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
+  end
+
+  def encode_file_as_base64 filename
+    "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
   end
 
 end

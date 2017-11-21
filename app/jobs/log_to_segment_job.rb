@@ -31,7 +31,7 @@ class LogToSegmentJob < ApplicationJob
         })
         item_content = serialization.serializable_hash
         if activity.item.kind_of? Notification
-          trackingMessage[:event] = "#{activity.item.class::EVENT_NAME} notification"
+          trackingMessage[:event] = "Notification for #{activity.item.class::EVENT_NAME} created"
           item_content = item_content.flatten.second
         end
         trackingMessage[:properties][:item_content] = item_content
