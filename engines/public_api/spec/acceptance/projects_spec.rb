@@ -12,7 +12,7 @@ resource "Projects" do
 
   explanation "Projects are participation scopes defined by the city. They define a context and set time and input expectations towards the citizens, stimulating them to engage in a the scoped debate. Citizens can post ideas in projects."
 
-  route "/public_api/v1/projects", "Projects: Listing projects" do
+  route "/api/v1/projects", "Projects: Listing projects" do
 
 
     get "Retrieve a listing of projects" do
@@ -40,7 +40,7 @@ resource "Projects" do
   end
 
 
-  route "/public_api/v1/projects/:id", "Projects: Retrieve one project" do
+  route "/api/v1/projects/:id", "Projects: Retrieve one project" do
 
     get "Retrieve one project" do
       let(:id) {@projects.first.id}

@@ -12,7 +12,7 @@ resource "Ideas" do
 
   explanation "Ideas are written inputs created by citizens. The endpoint returns ideas in the a descending 'trending' order, which means that the most relevant ideas at the moment of request will come out on top."
 
-  route "/public_api/v1/ideas", "Ideas: Listing ideas" do
+  route "/api/v1/ideas", "Ideas: Listing ideas" do
 
 
     get "Retrieve a listing of ideas" do
@@ -40,7 +40,7 @@ resource "Ideas" do
   end
 
 
-  route "/public_api/v1/ideas/:idea_id", "Ideas: Retrieve one idea" do
+  route "/api/v1/ideas/:idea_id", "Ideas: Retrieve one idea" do
 
     parameter :idea_id, "The unique ID indentifying the idea", type: 'string', required: true
 
