@@ -365,5 +365,6 @@ ActiveRecord::Schema.define(version: 20171117114456) do
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
+  add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "votes", "users"
 end
