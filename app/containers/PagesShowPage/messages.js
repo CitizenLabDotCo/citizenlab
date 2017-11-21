@@ -22,28 +22,4 @@ export default defineMessages({
     id: 'app.containers.PagesShowPage.helmetDescription',
     defaultMessage: 'Displays page created by admin',
   },
-  termsLink: {
-    id: 'app.containers.PagesShowPage.termsLink',
-    defaultMessage: 'Terms & Conditions',
-  },
-  privacyLink: {
-    id: 'app.containers.PagesShowPage.privacyLink',
-    defaultMessage: 'Privacy Policy',
-  },
-  cookiesLink: {
-    id: 'app.containers.PagesShowPage.cookiesLink',
-    defaultMessage: 'Cookies Policy',
-  },
-  'terms-and-conditions': {
-    id: 'app.containers.PagesShowPage.hardcodedTitle.terms-and-conditions',
-    defaultMessage: 'Terms and Conditions',
-  },
-  'privacy-policy': {
-    id: 'app.containers.PagesShowPage.hardcodedTitle.privacy-policy',
-    defaultMessage: 'Privacy Policy',
-  },
-  'cookies-policy': {
-    id: 'app.containers.PagesShowPage.hardcodedTitle.cookies-policy',
-    defaultMessage: 'Cookies Policy',
-  },
 });
