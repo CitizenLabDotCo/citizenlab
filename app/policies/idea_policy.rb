@@ -32,6 +32,10 @@ class IdeaPolicy < ApplicationPolicy
     show?
   end
 
+  def files_index?
+    show?
+  end
+
   def create?
     record.draft? || (user && (record.author_id == user.id || user.admin?))
   end

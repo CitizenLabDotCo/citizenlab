@@ -1,7 +1,4 @@
 class WebApi::V1::IdeasController < ApplicationController
-  UnsupportedImageError = Class.new(StandardError)
-
-  rescue_from UnsupportedImageError, with: :send_unsupported_image_error
 
   before_action :set_idea, only: [:show, :update, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx]
