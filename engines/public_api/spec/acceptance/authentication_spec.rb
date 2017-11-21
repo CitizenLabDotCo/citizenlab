@@ -9,7 +9,7 @@ resource "Authentication" do
 
   explanation "Authenticate with your `client_id` and `client_secret` to retrieve a JWT token. You will need to send the JWT token you got back along with every request to the API, as part of the `Authorization` header. The JWT token expires after 24h, so make sure to re-authenticate."
 
-  route "/public_api/v1/authenticate", "Authentication" do
+  route "/api/v1/authenticate", "Authentication" do
 
     post "Authenticate" do
 
