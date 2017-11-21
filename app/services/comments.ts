@@ -20,7 +20,7 @@ export interface ICommentData {
       data: IRelationship;
     };
     author: {
-      data: IRelationship;
+      data: IRelationship | null;
     };
     parent: {
       data: IRelationship;
