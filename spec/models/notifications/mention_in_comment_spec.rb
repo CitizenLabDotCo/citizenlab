@@ -12,7 +12,7 @@ RSpec.describe Notifications::MentionInComment, type: :model do
       notification = Notification.first
       expect(notification).to have_attributes(
         recipient_id: user.id,
-        user_id: comment.author_id,
+        initiating_user_id: comment.author_id,
         idea_id: comment.idea_id,
         comment_id: comment.id,
         project_id: comment.idea.project_id
