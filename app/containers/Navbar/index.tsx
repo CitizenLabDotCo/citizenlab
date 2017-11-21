@@ -234,7 +234,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
   goToAddIdeaPage = (event) => {
     event.preventDefault();
 
-    eventEmitter.emit<IModalInfo>(namespace, 'goToAddIdeaPage', { 
+    eventEmitter.emit<IModalInfo>(namespace, 'goToAddIdeaPage', {
       type: 'add-idea',
       id: null,
       url: `/ideas/new`
@@ -269,13 +269,13 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
     const { formatMessage } = this.props.intl;
     const { authUser, currentTenant, currentTenantLogo, scrolled } = this.state;
     const alwaysShowBorder = [
-      'ideas/', 
-      'admin', 
-      'profile', 
-      'complete-signup', 
-      'sign-in', 
-      'sign-up', 
-      'password-recovery', 
+      'ideas/',
+      'admin',
+      'profile',
+      'complete-signup',
+      'sign-in',
+      'sign-up',
+      'password-recovery',
       'reset-password',
       'authentication-error'
     ].some((urlSegment) => {
@@ -302,6 +302,9 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
               </NavigationItem>
               <NavigationItem to="/projects" activeClassName="active">
                 <FormattedMessage {...messages.pageProjects} />
+              </NavigationItem>
+              <NavigationItem to="/pages/information" activeClassName="active">
+                <FormattedMessage {...messages.pageInformation} />
               </NavigationItem>
             </NavigationItems>
           </Left>
