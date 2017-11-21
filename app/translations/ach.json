@@ -311,6 +311,7 @@
   "app.containers.IdeasShow.loadingComments": "crwdns15790:0crwdne15790:0",
   "app.containers.IdeasShow.loadingIdea": "crwdns15791:0crwdne15791:0",
   "app.containers.IdeasShow.oneSecond": "crwdns15792:0crwdne15792:0",
+  "app.containers.IdeasShow.openMap": "",
   "app.containers.IdeasShow.parentCommentAuthor": "crwdns17070:0{authorNameComponent}crwdne17070:0",
   "app.containers.IdeasShow.placeholderComment": "crwdns15793:0crwdne15793:0",
   "app.containers.IdeasShow.publishComment": "crwdns17071:0crwdne17071:0",
