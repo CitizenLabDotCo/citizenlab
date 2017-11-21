@@ -34,7 +34,7 @@ import { commentsForIdeaStream, commentStream, IComments, IComment } from 'servi
 
 // i18n
 import T from 'components/T';
-import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative, FormattedHTMLMessage } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -213,6 +213,10 @@ const AuthorName = styled(Link) `
     font-size: 14px;
     line-height: 18px;
   `}
+
+  .deleted-user {
+    font-style: italic;
+  }
 `;
 
 const TimeAgo = styled.div`
@@ -428,10 +432,10 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
     const idea$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {
       const ideaImages = idea.data.relationships.idea_images.data;
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
-      const ideaAuthorId = idea.data.relationships.author.data.id;
+      const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
       const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
       const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
-      const ideaAuthor$ = userByIdStream(ideaAuthorId).observable;
+      const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : Rx.Observable.of(null);
       const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
@@ -493,10 +497,10 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { locale, idea, ideaImage, ideaAuthor, ideaComments, loading, unauthenticatedError } = this.state;
     const { formatMessage, formatRelative } = this.props.intl;
 
-    if (!loading && idea !== null && ideaAuthor !== null) {
-      const authorId = ideaAuthor.data.id;
-      const firstName = ideaAuthor.data.attributes.first_name;
-      const lastName = ideaAuthor.data.attributes.last_name;
+    if (!loading && idea !== null) {
+      const authorId = ideaAuthor ? ideaAuthor.data.id : null;
+      const firstName = ideaAuthor ? ideaAuthor.data.attributes.first_name : null;
+      const lastName = ideaAuthor ? ideaAuthor.data.attributes.last_name : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
       const bodyMultiloc = idea.data.attributes.body_multiloc;
@@ -556,10 +560,13 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>
-                    <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />
+                    <AuthorAvatar userId={authorId} size="small" onClick={authorId ? this.goToUserProfile : () => {}} />
                     <AuthorMeta>
-                      <AuthorName to={`/profile/${ideaAuthor.data.attributes.slug}`}>
-                        <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} />
+                      <AuthorName to={ideaAuthor ?  `/profile/${ideaAuthor.data.attributes.slug}` :  ''}>
+                        {(ideaAuthor && firstName && lastName)
+                          ? <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} />
+                          : <span dangerouslySetInnerHTML={{ __html: formatMessage(messages.byDeletedAuthor, { deletedUser: `<span class="deleted-user">${formatMessage(messages.deletedUser)}</span>` }) }} />
+                        }
                       </AuthorName>
                       {createdAt &&
                         <TimeAgo>
