@@ -27,10 +27,10 @@ class OmniauthCallbackController < ApplicationController
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
         set_auth_cookie
-        redirect_to(add_uri_params("#{base_frontend_uri}/complete-signup", omniauth_params))
+        redirect_to(add_uri_params(FrontendService.new.signon_success_url, omniauth_params))
 
       rescue ActiveRecord::RecordInvalid => e
-        redirect_to(add_uri_params("#{base_frontend_uri}/authentication-error", omniauth_params))
+        redirect_to(add_uri_params(FrontendService.new.signon_failure_url, omniauth_params))
       end
     end
 
@@ -39,16 +39,12 @@ class OmniauthCallbackController < ApplicationController
   def failure
     omniauth_params = request.env['omniauth.params']
 
-    redirect_to(add_uri_params("#{base_frontend_uri}/authentication-error", omniauth_params))
+    redirect_to(add_uri_params(FrontendService.new.signon_failure_url, omniauth_params))
   end
 
 
   def secure_controller?
     false
-  end
-
-  def base_frontend_uri
-    Tenant.current.base_frontend_uri
   end
 
   def add_uri_params uri, params={}
