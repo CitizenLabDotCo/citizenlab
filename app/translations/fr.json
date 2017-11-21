@@ -312,6 +312,7 @@
   "app.containers.IdeasShow.loadingComments": "Charger les commentaires...",
   "app.containers.IdeasShow.loadingIdea": "Chargement des idées...",
   "app.containers.IdeasShow.oneSecond": "Juste un instant...",
+  "app.containers.IdeasShow.openMap": "",
   "app.containers.IdeasShow.parentCommentAuthor": "{authorNameComponent} a dit",
   "app.containers.IdeasShow.placeholderComment": "Faites-nous part de vos impressions !",
   "app.containers.IdeasShow.publishComment": "Postez un commentaire",

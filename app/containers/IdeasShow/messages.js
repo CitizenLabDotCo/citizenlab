@@ -14,6 +14,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.closeMap',
     defaultMessage: 'Close Map',
   },
+  openMap: {
+    id: 'app.containers.IdeasShow.openMap',
+    defaultMessage: 'Show the idea on a map',
+  },
   ideaVoteSubmitError: {
     id: 'app.containers.IdeasShow.ideaVoteSubmitError',
     defaultMessage: 'Voting failed',
