@@ -39,7 +39,7 @@ export interface IIdeaData {
       data: IRelationship[];
     };
     author: {
-      data: IRelationship;
+      data: IRelationship | null;
     };
     project: {
       data: IRelationship;
