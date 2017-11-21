@@ -214,7 +214,7 @@ namespace :migrate do
     else
       @log.concat ["Couldn't find an email for user #{u.to_s}"]
       username = u.dig('profile', 'name') || u['username'] || u['_id']
-      d[:email] = "hello+#{username}@citizenlab.co"
+      d[:email] = "hello+#{username}@citizenlab.co".delete ' '
     end
     # handle duplicate emails
     duplicate_user = User.find_by(email: d[:email])
@@ -241,6 +241,14 @@ namespace :migrate do
       else
         email_names = d[:email].split('@').first.split('.')
         if email_names.size >= 2
+          d[:first_name] = email_names.first
+          d[:last_name] = email_names.drop(1).join ' '
+        elsif d[:email].split('@').first.split('_').size >= 2
+          email_names = d[:email].split('@').first.split('_')
+          d[:first_name] = email_names.first
+          d[:last_name] = email_names.drop(1).join ' '
+        elsif d[:email].split('@').first.split('-').size >= 2
+          email_names = d[:email].split('@').first.split('-')
           d[:first_name] = email_names.first
           d[:last_name] = email_names.drop(1).join ' '
         else
