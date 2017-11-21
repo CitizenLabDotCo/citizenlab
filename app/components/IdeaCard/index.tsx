@@ -91,6 +91,10 @@ const IdeaAuthor = styled.div`
   font-weight: 300;
   line-height: 20px;
   margin-top: 12px;
+
+  .deleted-user {
+    font-style: italic;
+  }
 `;
 
 const AuthorLink = styled.div`
@@ -226,15 +230,15 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { formatMessage, formatRelative } = this.props.intl;
+    const { formatMessage, formatHTMLMessage, formatRelative } = this.props.intl;
     const { idea, ideaImage, ideaAuthor, locale, showUnauthenticated, loading } = this.state;
 
-    if (!loading && idea && ideaAuthor && locale) {
+    if (!loading && idea && locale) {
       const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
       const ideaImageLargeUrl = (ideaImage ? ideaImage.data.attributes.versions.large : null);
-      const authorName = `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
+      const authorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
       const createdAt = formatRelative(idea.data.attributes.created_at);
-      const byAuthor = formatMessage(messages.byAuthorName, { authorName });
+      const byAuthor = authorName ? formatMessage(messages.byAuthorName, { authorName }) : formatMessage(messages.byDeletedUser, { deletedUser: `<span class="deleted-user">${formatMessage(messages.deletedUser)}</span>` });
       const className = `${this.props['className']} e2e-idea-card ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }`;
 
       return (
@@ -255,7 +259,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
               <T value={idea.data.attributes.title_multiloc} />
             </IdeaTitle>
             <IdeaAuthor>
-              {createdAt} {byAuthor}
+              {createdAt} <span dangerouslySetInnerHTML={{ __html: byAuthor }} />
             </IdeaAuthor>
           </IdeaContent>
 
