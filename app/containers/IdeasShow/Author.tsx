@@ -12,7 +12,7 @@ import Avatar from 'components/Avatar';
 import { userByIdStream, IUser } from 'services/users';
 
 // i18n
-import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative, FormattedDate } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -56,6 +56,10 @@ const AuthorName = styled(Link)`
   }
 `;
 
+const DeletedUser = styled.span`
+  font-style: italic;
+`;
+
 const TimeAgo = styled.div`
   color: #999;
   font-size: 13px;
@@ -65,7 +69,7 @@ const TimeAgo = styled.div`
 `;
 
 type Props = {
-  authorId: string;
+  authorId: string | null;
   createdAt?: string | undefined;
   message?: string | undefined;
 };
@@ -88,11 +92,13 @@ class Author extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   componentWillMount() {
     const { authorId } = this.props;
-    const author$ = userByIdStream(authorId).observable;
+    if (authorId) {
+      const author$ = userByIdStream(authorId).observable;
 
-    this.subscriptions = [
-      author$.subscribe(author => this.setState({ author }))
-    ];
+      this.subscriptions = [
+        author$.subscribe(author => this.setState({ author }))
+      ];
+    }
   }
 
   componentWillUnmount() {
@@ -117,35 +123,43 @@ class Author extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     message = (message ? message : 'author');
 
-    if (author) {
-      const avatar = author.data.attributes.avatar.medium;
-      const slug = author.data.attributes.slug;
-      const firstName = author.data.attributes.first_name;
-      const lastName = author.data.attributes.last_name;
+    const avatar = author ?  author.data.attributes.avatar.medium : null;
+    const slug = author ?  author.data.attributes.slug : null;
+    const firstName = author ?  author.data.attributes.first_name : null;
+    const lastName = author ?  author.data.attributes.last_name : null;
 
-      return (
-        <AuthorContainer className={className}>
-          <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />
-          <AuthorMeta>
-            <AuthorNameContainer>
-              <FormattedMessage 
-                {...messages[`${message}`]} 
-                values={{
-                  authorNameComponent: <AuthorName to={`/profile/${author.data.attributes.slug}`}>{firstName} {lastName}</AuthorName>
-                }}
-              />
-            </AuthorNameContainer>
-            {createdAt &&
-              <TimeAgo>
-                <FormattedRelative value={createdAt} />
-              </TimeAgo>
-            }
-          </AuthorMeta>
-        </AuthorContainer>
+    let authorNameComponent;
+
+    if (author && firstName && lastName) {
+      authorNameComponent = (
+        <AuthorName to={`/profile/${author.data.attributes.slug}`}>
+          {`${firstName} ${lastName}`}
+        </AuthorName>
+      );
+    } else {
+      authorNameComponent = (
+        <DeletedUser><FormattedMessage {...messages.deletedUser} /></DeletedUser>
       );
     }
 
-    return null;
+    return (
+      <AuthorContainer className={className}>
+        <AuthorAvatar userId={authorId} size="small" onClick={author ? this.goToUserProfile : () => {}} />
+        <AuthorMeta>
+          <AuthorNameContainer>
+            <FormattedMessage
+              {...messages[`${message}`]}
+              values={{ authorNameComponent }}
+            />
+          </AuthorNameContainer>
+          {createdAt &&
+            <TimeAgo>
+              <FormattedRelative value={createdAt} />
+            </TimeAgo>
+          }
+        </AuthorMeta>
+      </AuthorContainer>
+    );
   }
 }
 

@@ -83,7 +83,7 @@ const CommentBody = styled.div`
     word-break: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    hyphens: auto;     
+    hyphens: auto;
     margin-bottom: 25px;
   }
 `;
@@ -171,7 +171,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
 
     if (comment) {
       const ideaId = comment.data.relationships.idea.data.id;
-      const authorId = comment.data.relationships.author.data.id;
+      const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
       const createdAt = comment.data.attributes.created_at;
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
       const isLoggedIn = !_.isNull(authUser);
