@@ -132,7 +132,7 @@ namespace :migrate do
         locales: (s['languages'] || [s['language']]).map{|l| locales_mapping[l]}.select{|l| l},
         organization_type: migration_settings['organization_type'],
         organization_name: map_multiloc(s['title_i18n'] || {}, locales_mapping),
-        header_title: map_multiloc(s['tagline_i18n'] || {}, locales_mapping),
+        header_title: multiloc_maxlen(map_multiloc(s['tagline_i18n'] || {}, locales_mapping), 35),
         header_slogan: multiloc_maxlen(map_multiloc(s['description_i18n'] || {}, locales_mapping), 90),
         meta_title: map_multiloc(s['tagline_i18n'] || {}, locales_mapping),
         meta_description: map_multiloc(s['description_i18n']|| {}, locales_mapping),
@@ -168,7 +168,7 @@ namespace :migrate do
       name: platform,
       host: host,
       remote_logo_url: s['logoUrl'],
-      remote_header_bg_url: s['bannerImage'],
+      remote_header_bg_url: migration_settings['tenant_bg'] || s['bannerImage'],
       settings: d
     })
   end
