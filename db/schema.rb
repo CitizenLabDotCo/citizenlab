@@ -202,7 +202,7 @@ ActiveRecord::Schema.define(version: 20171117114456) do
     t.string "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "initiating_user_id", null: false
+    t.uuid "initiating_user_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
