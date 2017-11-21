@@ -48,7 +48,7 @@ class SideFxIdeaService
   def log_activity_jobs_after_create idea, user
     LogActivityJob.perform_later(idea, 'published', user, idea.created_at.to_i)
     if first_user_idea? idea, user
-      serializer = "Api::V1::IdeaSerializer".constantize
+      serializer = "WebApi::V1::IdeaSerializer".constantize
       serialization = ActiveModelSerializers::SerializableResource.new(idea, {
         serializer: serializer,
         adapter: :json

@@ -9,7 +9,7 @@ resource "Tenants" do
     header "Content-Type", "application/json"
   end
 
-  get "api/v1/tenants/current" do
+  get "web_api/v1/tenants/current" do
     example_request "Get the current tenant" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
@@ -18,7 +18,7 @@ resource "Tenants" do
   end
 
 
-  patch "api/v1/tenants/:id" do
+  patch "web_api/v1/tenants/:id" do
 
     with_options scope: :tenant do   
       parameter :logo, "Base64 encoded logo"

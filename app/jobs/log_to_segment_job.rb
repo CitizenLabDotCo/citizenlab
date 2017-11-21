@@ -24,7 +24,7 @@ class LogToSegmentJob < ApplicationJob
 
     if activity.item
       begin
-        serializer = "Api::V1::External::#{activity.item_type}Serializer".constantize
+        serializer = "WebApi::V1::External::#{activity.item_type}Serializer".constantize
         serialization = ActiveModelSerializers::SerializableResource.new(activity.item, {
           serializer: serializer,
           adapter: :json

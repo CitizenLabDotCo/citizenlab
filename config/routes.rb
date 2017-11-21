@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  namespace :api, :defaults => {:format => :json} do
+  namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
 
       get 'comments/as_xlsx' => 'comments#index_xlsx'
@@ -99,6 +99,7 @@ Rails.application.routes.draw do
 
 
   mount PublicApi::Engine => "/public_api", as: 'public_api'
+  # mount PublicApi::Engine => "/api", as: 'public_api'
 
 
 end

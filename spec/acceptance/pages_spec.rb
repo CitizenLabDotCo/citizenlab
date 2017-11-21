@@ -10,7 +10,7 @@ resource "Pages" do
     header "Content-Type", "application/json"
   end
 
-  get "api/v1/pages" do
+  get "web_api/v1/pages" do
 
     parameter :project, "The id of a project, if you want the pages for that project only"
 
@@ -39,7 +39,7 @@ resource "Pages" do
   end
 
 
-  get "api/v1/pages" do
+  get "web_api/v1/pages" do
     example "Get all pages on the second page with fixed page size" do
       do_request({"page[number]" => 2, "page[size]" => 2})
       expect(status).to eq 200
@@ -48,7 +48,7 @@ resource "Pages" do
     end
   end
 
-  get "api/v1/pages/:id" do
+  get "web_api/v1/pages/:id" do
     let(:id) {@pages.first.id}
 
     example_request "Get a page by id" do
@@ -71,7 +71,7 @@ resource "Pages" do
     end
   end
 
-  get "api/v1/pages/by_slug/:slug" do
+  get "web_api/v1/pages/by_slug/:slug" do
     let(:slug) {@pages.first.slug}
 
     example_request "Get a page by slug" do
@@ -89,7 +89,7 @@ resource "Pages" do
     end
   end
 
-  post "api/v1/pages" do
+  post "web_api/v1/pages" do
     with_options scope: :page do
       parameter :title_multiloc, "The title of the page, as a multiloc string", required: true
       parameter :body_multiloc, "The content of the page, as a multiloc HTML string", required: true
@@ -123,7 +123,7 @@ resource "Pages" do
     end
   end
 
-  patch "api/v1/pages/:id" do
+  patch "web_api/v1/pages/:id" do
     before do 
       @page = create(:page)
     end
@@ -149,7 +149,7 @@ resource "Pages" do
   end
 
 
-  delete "api/v1/pages/:id" do
+  delete "web_api/v1/pages/:id" do
     let(:page) { create(:page) }
     let(:id) { page.id }
     example_request "Delete a page" do

@@ -16,7 +16,7 @@ resource "GroupsProjects" do
       header 'Authorization', "Bearer #{token}"
     end
 
-    get "api/v1/projects/:project_id/groups_projects" do
+    get "web_api/v1/projects/:project_id/groups_projects" do
       with_options scope: :page do
         parameter :number, "Page number"
         parameter :size, "Number of groups-projects per page"
@@ -41,7 +41,7 @@ resource "GroupsProjects" do
     
     end
 
-    get "api/v1/groups_projects/:id" do
+    get "web_api/v1/groups_projects/:id" do
       let(:id) { @groups_projects.first.id }
 
       example_request "Get one groups-project by id" do
@@ -51,7 +51,7 @@ resource "GroupsProjects" do
       end
     end
 
-    post "api/v1/projects/:project_id/groups_projects" do
+    post "web_api/v1/projects/:project_id/groups_projects" do
       with_options scope: :groups_project do
         parameter :group_id, "The group id of the groups-project.", required: true
       end
@@ -71,7 +71,7 @@ resource "GroupsProjects" do
       end
     end
 
-    delete "api/v1/groups_projects/:id" do
+    delete "web_api/v1/groups_projects/:id" do
       let(:groups_project) { create(:groups_project) }
       let(:id) { groups_project.id }
       example_request "Delete a groups-project" do
