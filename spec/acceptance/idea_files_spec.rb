@@ -12,7 +12,7 @@ resource "IdeaFile" do
     create_list(:idea_file, 2, idea: @idea)
   end
 
-  get "api/v1/ideas/:idea_id/files" do
+  get "web_api/v1/ideas/:idea_id/files" do
     
     let(:idea_id) { @idea.id }
     example_request "List all file attachments of an idea" do
@@ -22,7 +22,7 @@ resource "IdeaFile" do
     end
   end
 
-  get "api/v1/ideas/:idea_id/files/:file_id" do
+  get "web_api/v1/ideas/:idea_id/files/:file_id" do
     
     let(:idea_id) { @idea.id }
     let(:file_id) { IdeaFile.first.id }
@@ -33,7 +33,7 @@ resource "IdeaFile" do
     end
   end
 
-  post "api/v1/ideas/:idea_id/files" do
+  post "web_api/v1/ideas/:idea_id/files" do
     with_options scope: :file do
       parameter :file, "The base64 encoded file", required: true
       parameter :ordering, "An integer that is used to order the files within an idea", required: false
@@ -55,7 +55,7 @@ resource "IdeaFile" do
 
   end
 
-  patch "api/v1/ideas/:idea_id/files/:file_id" do
+  patch "web_api/v1/ideas/:idea_id/files/:file_id" do
     with_options scope: :file do
       parameter :file, "The base64 encoded file"
       parameter :ordering, "An integer that is used to order the file attachments within an idea"
@@ -78,7 +78,7 @@ resource "IdeaFile" do
 
   end
 
-  delete "api/v1/ideas/:idea_id/files/:file_id" do
+  delete "web_api/v1/ideas/:idea_id/files/:file_id" do
 
     let(:idea_id) { @idea.id }
     let(:file_id) { IdeaFile.first.id }

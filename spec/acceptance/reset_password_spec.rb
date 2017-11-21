@@ -11,7 +11,7 @@ resource "Users" do
   context "when not authenticated" do
 
 
-    post "api/v1/users/reset_password_email" do
+    post "web_api/v1/users/reset_password_email" do
       with_options scope: :user do
         parameter :email, "The email of the user for whom the password should be reset", required: true
       end
@@ -25,7 +25,7 @@ resource "Users" do
       end
     end
 
-    post "api/v1/users/reset_password" do
+    post "web_api/v1/users/reset_password" do
 
       before do
         @user.update(reset_password_token: ResetPasswordService.new.generate_reset_password_token(@user))

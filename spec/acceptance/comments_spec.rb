@@ -9,7 +9,7 @@ resource "Comments" do
     @comments = create_list(:comment, 2, idea: @idea)
   end
 
-  get "api/v1/ideas/:idea_id/comments" do
+  get "web_api/v1/ideas/:idea_id/comments" do
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of comments per page"
@@ -24,7 +24,7 @@ resource "Comments" do
 
   end
 
-  get "api/v1/comments/as_xlsx" do
+  get "web_api/v1/comments/as_xlsx" do
     parameter :project, 'Filter by project', required: false
 
     example_request "XLSX export" do
@@ -33,7 +33,7 @@ resource "Comments" do
   end
 
 
-  get "api/v1/comments/:id" do
+  get "web_api/v1/comments/:id" do
     let(:id) { @comments.first.id }
 
     example_request "Get one comment by id" do
@@ -50,7 +50,7 @@ resource "Comments" do
       header 'Authorization', "Bearer #{token}"
     end
 
-    get "api/v1/ideas/:idea_id/comments" do
+    get "web_api/v1/ideas/:idea_id/comments" do
 
       let(:idea_id) { @idea.id }
 
@@ -65,7 +65,7 @@ resource "Comments" do
       end
     end
 
-    post "api/v1/ideas/:idea_id/comments" do
+    post "web_api/v1/ideas/:idea_id/comments" do
       with_options scope: :comment do
         parameter :author_id, "The user id of the user owning the comment. Signed in user by default", required: false
         parameter :body_multiloc, "Multi-locale field with the comment body", required: true
@@ -113,7 +113,7 @@ resource "Comments" do
       end
     end
 
-    patch "api/v1/comments/:id" do
+    patch "web_api/v1/comments/:id" do
       with_options scope: :comment do
         parameter :author_id, "The user id of the user owning the comment. Signed in user by default"
         parameter :body_multiloc, "Multi-locale field with the comment body"
@@ -135,7 +135,7 @@ resource "Comments" do
     end
 
 
-    delete "api/v1/comments/:id" do
+    delete "web_api/v1/comments/:id" do
       let(:comment) { create(:comment, author: @user, idea: @idea) }
       let(:id) { comment.id }
       example_request "Delete a comment" do

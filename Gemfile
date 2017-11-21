@@ -57,7 +57,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "pundit", "~> 1.1.0"
 gem "active_model_serializers", "~> 0.10.0"
-gem "knock", "~> 2.1.1"
+gem "knock", "~> 2.1.1", github: 'ngty/knock', ref: '97fb32f59b2027c808964b875be2fff22400da1d'
 gem "sidekiq", "~> 4.2.9"
 gem "sidekiq-cron", "~> 0.4.5"
 gem "apartment", "~> 1.2.0"
@@ -89,3 +89,5 @@ gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 # gem 'omniauth-mydigipass', github: 'vasco-data-security/omniauth-mydigipass', branch: 'oauth-eid-specification'
+
+gem 'public_api', path: 'engines/public_api'
