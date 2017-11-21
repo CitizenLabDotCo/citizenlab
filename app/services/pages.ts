@@ -5,6 +5,13 @@ import request from 'utils/request';
 
 const apiEndpoint = `${API_PATH}/pages`;
 
+export const LEGAL_PAGES = [
+  'information',
+  'terms-and-conditions',
+  'privacy-policy',
+  'cookie-policy'
+];
+
 export interface IPageData {
   id: string;
   type: string;
