@@ -6,12 +6,12 @@
 
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { includes } from 'lodash';
+import { includes, without } from 'lodash';
 
 import { injectTFunc } from 'components/T/utils';
 import Helmet from 'react-helmet';
 import T from 'components/T';
-import { IPageData, pageBySlugStream } from 'services/pages';
+import { IPageData, pageBySlugStream, LEGAL_PAGES } from 'services/pages';
 import { PageLink, getPageLink } from 'services/pageLink';
 
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
@@ -87,12 +87,12 @@ type State = {
 };
 
 class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State> {
-  pageObserver: Rx.Subscription | null;
-  legalPages = ['terms-and-conditions', 'privacy-policy', 'cookies-policy'];
+  sub: Rx.Subscription | null = null;
+  slug$: Rx.BehaviorSubject<string> = new Rx.BehaviorSubject('');
+  legalPages = without(LEGAL_PAGES, 'information');
 
   constructor(props: Props) {
     super(props as any);
-    this.pageObserver = null;
     this.state = {
       page: null,
       loading: true,
@@ -100,16 +100,40 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
     };
   }
 
-  componentDidMount() {
-    this.pageObserver = pageBySlugStream(this.props.params.slug).observable
+  componentWillMount() {
+    this.sub = this.slug$
+    .switchMap((slug) => {
+      if (slug) {
+        this.setState({ loading: true });
+        return pageBySlugStream(slug).observable;
+      } else {
+        return Rx.Observable.of(null);
+      }
+    })
     .switchMap((pageResponse) => {
-      const linksRequests = pageResponse.data.relationships.page_links.data.map(link => {
-        return getPageLink(link.id).observable.first();
-      });
-      return Rx.Observable.combineLatest(linksRequests)
-      .map((pageLinks) => {
-        return { pageLinks, pageResponse };
-      });
+      try {
+        // Page not found
+        if (!pageResponse) {
+          return Rx.Observable.of({ pageResponse: { data: null }, pageLinks: [] });
+        }
+
+        // Page has no links
+        if (pageResponse.data.relationships.page_links.data.length === 0) {
+          return Rx.Observable.of({ pageResponse, pageLinks: [] });
+        }
+
+        // Page with links
+        const linksRequests = pageResponse.data.relationships.page_links.data.map(link => {
+          return getPageLink(link.id).observable.first();
+        });
+
+        return Rx.Observable.combineLatest(linksRequests)
+        .map((pageLinks) => {
+          return { pageLinks, pageResponse };
+        });
+      } catch (e) {
+        return Rx.Observable.of({ pageResponse: null, pageLinks: null });
+      }
     })
     .subscribe(({ pageLinks, pageResponse }) => {
       if (pageResponse) {
@@ -118,12 +142,28 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
           page: pageResponse.data,
           loading: false,
         });
+      } else {
+        this.setState({
+          loading: false,
+          page: null,
+          pageLinks: [],
+        });
       }
     });
   }
 
+  componentDidMount() {
+    this.slug$.next(this.props.params.slug);
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.params.slug !== this.props.params.slug) {
+      this.slug$.next(newProps.params.slug);
+    }
+  }
+
   componentWillUnmount() {
-    this.pageObserver && this.pageObserver.unsubscribe();
+    this.sub && this.sub.unsubscribe();
   }
 
   render() {
@@ -140,27 +180,22 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
       );
     }
 
-    if (!page) {
+    if (page === null) {
       return <NotFound />;
     }
 
-    return page && (
+    return (
       <div>
         <ContentContainer>
           <Helmet>
             <title>
-            {includes(this.legalPages, this.props.params.slug)
-              ? this.props.intl.formatMessage(messages[this.props.params.slug])
-              : tFunc(page.attributes.title_multiloc)
-            }
+              {/* tFunc is used here because <title> doesn't accept any dom node, only a plain string */}
+              {tFunc(page.attributes.title_multiloc)}
             </title>
           </Helmet>
           <TextContainer>
             <h1>
-              {includes(this.legalPages, this.props.params.slug)
-                ? <FormattedMessage {...messages[this.props.params.slug]} />
-                : <T value={page.attributes.title_multiloc} />
-              }
+              <T value={page.attributes.title_multiloc} />
             </h1>
             <T value={page.attributes.body_multiloc} />
           </TextContainer>
@@ -169,7 +204,7 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
           <PagesNavWrapper>
             <PagesNav>
               {pageLinks.map((link) => (
-                <StyledLink to={`pages/${link.data.attributes.linked_page_slug}`} key={link.data.id}>
+                <StyledLink to={`/pages/${link.data.attributes.linked_page_slug}`} key={link.data.id}>
                   <T value={link.data.attributes.linked_page_title_multiloc} />
                   <LinkIcon name="chevron-right" />
                 </StyledLink>
