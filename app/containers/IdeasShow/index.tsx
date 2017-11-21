@@ -102,6 +102,7 @@ const LeftColumn = styled.div`
   flex-grow: 1;
   margin: 0;
   padding: 0;
+  min-width: 0;
 `;
 
 const IdeaImage = styled.img`
@@ -126,8 +127,9 @@ const AuthorAndAdressWrapper = styled.div`
   flex-direction: column;
   margin-bottom: 2rem;
 
-  ${AuthorContainer} {
+  > * {
     flex: 1;
+    min-width: 0;
   }
 
   @media (min-width: 450px) {
@@ -138,6 +140,11 @@ const AuthorAndAdressWrapper = styled.div`
 
 const LocationButton = styled(Button)`
   padding-right: 0;
+  text-align: right;
+
+  button {
+    padding-right: 0 !important;
+  }
 `;
 
 const StyledPositionIcon = styled(Icon)`
@@ -150,6 +157,7 @@ const MapWrapper = styled.div`
   border: 1px solid ${props => props.theme.colors.separation};
   height: 265px;
   margin-bottom: 2rem;
+  position: relative;
   overflow: hidden;
   transition: all .3s ease-out;
 
@@ -158,6 +166,18 @@ const MapWrapper = styled.div`
     border-color: transparent;
     margin-bottom: 0;
   }
+`;
+
+const AddressWrapper = styled.p`
+  background: rgba(255, 255, 255, .7);
+  border-top: 1px solid #EAEAEA;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  padding: .5rem;
+  position: absolute;
+  right: 0;
+  z-index: 999;
 `;
 
 const AuthorAvatar = styled(Avatar)`
@@ -170,14 +190,19 @@ const AuthorAvatar = styled(Avatar)`
 const AuthorMeta = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 0 0 calc(100% - 39px);
+  min-width: 0;
 `;
 
 const AuthorName = styled(Link) `
   color: #333;
   font-size: 16px;
-  line-height: 20px;
   font-weight: 400;
+  line-height: 20px;
+  overflow: hidden;
   text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   &:hover {
     color: #333;
@@ -560,7 +585,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                     }
                     {(!this.state.showMap) &&
                       <span>
-                        {ideaAdress}
+                        <FormattedMessage {...messages.openMap} />
                         <StyledPositionIcon name="position" />
                       </span>
                     }
@@ -568,6 +593,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                 </AuthorAndAdressWrapper>
 
                 {ideaLocation ? <MapWrapper className={`${this.state.showMap ? '' : 'hidden'}`}>
+                  {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
                   <IdeaMap location={ideaLocation} />
                 </MapWrapper> : null}
 
