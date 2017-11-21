@@ -1,5 +1,6 @@
 require 'mongo'
 require 'redcarpet'
+require 'securerandom'
 
 # require "rails"
 
@@ -212,6 +213,14 @@ namespace :migrate do
       d[:email] = u.dig('services', 'facebook', 'email')
     else
       @log.concat ["Couldn't find an email for user #{u.to_s}"]
+      username = u.dig('profile', 'name') || u['username'] || u['_id']
+      d[:email] = "hello+#{username}@citizenlab.co"
+    end
+    # handle duplicate emails
+    duplicate_user = User.find_by(email: d[:email])
+    if duplicate_user
+      @log.concat ["Duplicate email for user #{u.to_s}"]
+      users_hash[u['_id']] = duplicate_user
       return
     end
     # first_name and last_name
@@ -230,12 +239,18 @@ namespace :migrate do
         d[:first_name] = name_pts.first
         d[:last_name] = name_pts.drop(1).join ' '
       else
-        d[:first_name] = u['username']
-        d[:last_name] = 'Unknown' ###
-        @log.concat ["Couldn't determine a last name for user #{u.to_s}"]
+        email_names = d[:email].split('@').first.split('.')
+        if email_names.size >= 2
+          d[:first_name] = email_names.first
+          d[:last_name] = email_names.drop(1).join ' '
+        else
+          d[:first_name] = u['username']
+          d[:last_name] = 'Unknown' ###
+          @log.concat ["Couldn't determine a last name for user #{u.to_s}"]
+        end
       end
     else
-      @log.concat ["Couldn't find a name for user #{u.to_s}"]
+      @log.concat ["FATAL: Couldn't find a name for user #{u.to_s}"]
       return
     end
     # password
@@ -245,7 +260,7 @@ namespace :migrate do
       d[:identities] = [Identity.create!(uid: u.dig('services', 'facebook', 'id'), provider: 'facebook')]
     else 
       @log.concat ["Couldn't find a password for user #{u.to_s}"]
-      return
+      d[:password] = SecureRandom.urlsafe_base64 32
     end
     # locale
     d[:locale] = locales_mapping[u.dig('telescope', 'locale')] || Tenant.current.settings.dig('core', 'locales').first
@@ -325,7 +340,7 @@ namespace :migrate do
     if p.dig('title_i18n')
       d[:title_multiloc] = map_multiloc(p.dig('title_i18n'), locales_mapping)
     else
-      @log.concat ["Couldn't find a title for project #{p.to_s}"]
+      @log.concat ["FATAL: Couldn't find a title for project #{p.to_s}"]
       return
     end
     # description
@@ -403,7 +418,7 @@ namespace :migrate do
     if e.dig('title_i18n')
       d[:title_multiloc] = map_multiloc(e.dig('title_i18n'), locales_mapping)
     else
-      @log.concat ["Couldn't find the title for event #{e.to_s}"]
+      @log.concat ["FATAL: Couldn't find the title for event #{e.to_s}"]
       return
     end
     # description
@@ -437,7 +452,7 @@ namespace :migrate do
     if p.dig('title_i18n')
       d[:title_multiloc] = map_multiloc(p.dig('title_i18n'), locales_mapping)
     else
-      @log.concat ["Couldn't find the title for phase #{p.to_s}"]
+      @log.concat ["FATAL: Couldn't find the title for phase #{p.to_s}"]
       return
     end
     # description
@@ -449,14 +464,14 @@ namespace :migrate do
       d[:start_at] = p['startAt']
     else
       @log.concat ["Couldn't find the start date for phase #{p.to_s}"]
-      return
+      d[:start_at] = Faker::Date.between(1.year.ago, 1.year.from_now)
     end
     # end
     if p['endAt']
       d[:end_at] = p['endAt']
     else
       @log.concat ["Couldn't find the end date for phase #{p.to_s}"]
-      return
+      d[:end_at] = d[:start_at] + rand(12).hours
     end
     begin
       phases_hash[p['_id']] = Phase.create! d
@@ -487,7 +502,7 @@ namespace :migrate do
     if p.dig('title_i18n')
       d[:title_multiloc] = map_multiloc(p.dig('title_i18n'), locales_mapping)
     else
-      @log.concat ["Couldn't find a title for idea #{p.to_s}"]
+      @log.concat ["FATAL: Couldn't find a title for idea #{p.to_s}"]
       return
     end
     # description
@@ -495,13 +510,13 @@ namespace :migrate do
       d[:body_multiloc] = map_multiloc(p.dig('htmlBody_i18n') || md_to_html(p.dig('body_i18n')), locales_mapping)
     else
       @log.concat ["Couldn't find a body for idea #{p.to_s}"]
-      return
+      d[:body_multiloc] = d[:title_multiloc]
     end
     # author
     if p.dig('userId') && users_hash[p.dig('userId')]
       d[:author] = users_hash[p.dig('userId')]
     else
-      @log.concat ["Couldn't find the author for idea #{p.to_s}"]
+      @log.concat ["FATAL: Couldn't find the author for idea #{p.to_s}"]
       return
     end
     # idea status
@@ -572,21 +587,21 @@ namespace :migrate do
     if c.dig('htmlBody_i18n')
       d[:body_multiloc] = map_multiloc(c.dig('htmlBody_i18n'), locales_mapping)
     else
-      @log.concat ["Couldn't find the body for comment #{c.to_s}"]
+      @log.concat ["FATAL: Couldn't find the body for comment #{c.to_s}"]
       return
     end
     # author
     if c.dig('userId') && users_hash[c.dig('userId')]
       d[:author] = users_hash[c.dig('userId')]
     else
-      @log.concat ["Couldn't find the author for comment #{c.to_s}"]
+      @log.concat ["FATAL: Couldn't find the author for comment #{c.to_s}"]
       return
     end
     # idea
     if c.dig('postId') && ideas_hash[c.dig('postId')] 
       d[:idea] = ideas_hash[c.dig('postId')]
     else
-      @log.concat ["Couldn't find the idea for comment #{c.to_s}"]
+      @log.concat ["FATAL: Couldn't find the idea for comment #{c.to_s}"]
       return
     end
     # parent
@@ -627,7 +642,7 @@ namespace :migrate do
     if p.dig('title_i18n')
       d[:title_multiloc] = map_multiloc(p.dig('title_i18n'), locales_mapping)
     else
-      @log.concat ["Couldn't find a title for page #{p.to_s}"]
+      @log.concat ["FATAL: Couldn't find a title for page #{p.to_s}"]
       return
     end
     # body
@@ -635,7 +650,7 @@ namespace :migrate do
       d[:body_multiloc] = map_multiloc(p.dig('content_i18n'), locales_mapping)
     else
       @log.concat ["Couldn't find a body for page #{p.to_s}"]
-      return
+      d[:body_multiloc] = d[:title_multiloc]
     end
     begin
       record = Page.new d
