@@ -12,7 +12,7 @@ resource "Mentions" do
   end
 
 
-  get "api/v1/mentions/users" do
+  get "web_api/v1/mentions/users" do
     explanation "Returns the 5 best matches"
 
     parameter :mention, "The (partial) search string for the mention (without the @)", required: true

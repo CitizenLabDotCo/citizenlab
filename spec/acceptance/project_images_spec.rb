@@ -12,7 +12,7 @@ resource "ProjectImage" do
     create_list(:project_image, 2, project: @project)
   end
 
-  get "api/v1/projects/:project_id/images" do
+  get "web_api/v1/projects/:project_id/images" do
     
     let(:project_id) { @project.id }
     example_request "List all images of a project" do
@@ -22,7 +22,7 @@ resource "ProjectImage" do
     end
   end
 
-  get "api/v1/projects/:project_id/images/:image_id" do
+  get "web_api/v1/projects/:project_id/images/:image_id" do
     
     let(:project_id) { @project.id }
     let(:image_id) { ProjectImage.first.id }
@@ -33,7 +33,7 @@ resource "ProjectImage" do
     end
   end
 
-  post "api/v1/projects/:project_id/images" do
+  post "web_api/v1/projects/:project_id/images" do
     with_options scope: :image do
       parameter :image, "The base64 encoded image", required: true
       parameter :ordering, "An integer that is used to order the images within a project", required: false
@@ -66,7 +66,7 @@ resource "ProjectImage" do
 
   end
 
-  patch "api/v1/projects/:project_id/images/:image_id" do
+  patch "web_api/v1/projects/:project_id/images/:image_id" do
     with_options scope: :image do
       parameter :image, "The base64 encoded image"
       parameter :ordering, "An integer that is used to order the images within a project"
@@ -89,7 +89,7 @@ resource "ProjectImage" do
 
   end
 
-  delete "api/v1/projects/:project_id/images/:image_id" do
+  delete "web_api/v1/projects/:project_id/images/:image_id" do
 
     let(:project_id) { @project.id }
     let(:image_id) { ProjectImage.first.id }

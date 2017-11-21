@@ -6,7 +6,7 @@ resource "Areas" do
     @areas = create_list(:area, 5)
   end
 
-  get "api/v1/areas" do
+  get "web_api/v1/areas" do
     example_request "List all areas" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -14,7 +14,7 @@ resource "Areas" do
     end
   end
 
-  get "api/v1/areas/:id" do
+  get "web_api/v1/areas/:id" do
     let(:id) {@areas.first.id}
 
     example_request "Get one area by id" do

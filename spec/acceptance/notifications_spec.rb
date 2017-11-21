@@ -12,7 +12,7 @@ resource "Notifications" do
     header 'Authorization', "Bearer #{token}"
   end
 
-  get "api/v1/notifications" do
+  get "web_api/v1/notifications" do
     explanation "Notifications are sorted by descending creation date"
     with_options scope: :page do
       parameter :number, "Page number"
@@ -33,7 +33,7 @@ resource "Notifications" do
     end
   end
 
-  get "api/v1/notifications/:id" do
+  get "web_api/v1/notifications/:id" do
     let(:id) { Notification.first.id }
 
     example_request "Get one notification by id" do
@@ -44,7 +44,7 @@ resource "Notifications" do
   end
 
 
-  post "api/v1/notifications/mark_all_read" do
+  post "web_api/v1/notifications/mark_all_read" do
 
     example_request "Mark all notifications as read" do
       explanation "Returns all the notifications that have been changed"
@@ -56,7 +56,7 @@ resource "Notifications" do
 
   end
 
-  post "api/v1/notifications/:id/mark_read" do
+  post "web_api/v1/notifications/:id/mark_read" do
     let(:notification) { Notification.where(read_at: nil).first}
     let(:id) { notification.id}
 
