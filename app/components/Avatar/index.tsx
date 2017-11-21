@@ -71,7 +71,7 @@ const Container: any = styled.div`
 `;
 
 type Props = {
-  userId: string;
+  userId: string | null;
   size: 'small' | 'medium' | 'large';
   onClick?: () => void;
 };
@@ -93,14 +93,15 @@ export default class Avatar extends React.PureComponent<Props, State> {
   }
 
   componentWillMount() {
-    const user$ = userByIdStream(this.props.userId).observable;
-
-    this.subscriptions = [
-      user$.subscribe((user) => {
-        const avatarSrc = (user ? user.data.attributes.avatar[this.props.size] : null);
-        this.setState({ avatarSrc });
-      })
-    ];
+    if (this.props.userId) {
+      const user$ = userByIdStream(this.props.userId).observable;
+      this.subscriptions = [
+        user$.subscribe((user) => {
+          const avatarSrc = (user ? user.data.attributes.avatar[this.props.size] : null);
+          this.setState({ avatarSrc });
+        })
+      ];
+    }
   }
 
   componentWillUnmount() {
@@ -124,7 +125,7 @@ export default class Avatar extends React.PureComponent<Props, State> {
           <AvatarImageContainer>
             <AvatarImageBackground />
             <AvatarImage src={avatarSrc} />
-          </AvatarImageContainer> 
+          </AvatarImageContainer>
         ) : (
           <AvatarIcon name="user" />
         )}
