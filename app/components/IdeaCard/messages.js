@@ -18,6 +18,14 @@ export default defineMessages({
     id: 'app.components.IdeaCard.byAuthorName',
     defaultMessage: 'by {authorName}',
   },
+  byDeletedUser: {
+    id: 'app.components.IdeaCard.byDeletedUser',
+    defaultMessage: 'by {deletedUser}',
+  },
+  deletedUser: {
+    id: 'app.components.IdeaCard.deletedUser',
+    defaultMessage: 'deleted user',
+  },
   login: {
     id: 'app.components.IdeaCard.login',
     defaultMessage: 'Login',
