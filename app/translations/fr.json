@@ -365,7 +365,7 @@
   "app.containers.Projects.info.topics": "Thèmes",
   "app.containers.Projects.navEvents": "Événements",
   "app.containers.Projects.navIdeas": "Idées",
-  "app.containers.Projects.navInfo": "Info",
+  "app.containers.Projects.navInfo": "A propos",
   "app.containers.Projects.navTimeline": "Ligne de temps",
   "app.containers.Projects.project": "Projet",
   "app.containers.ProjectsEvents.error": "Les événements n'ont pas pu être chargés",
