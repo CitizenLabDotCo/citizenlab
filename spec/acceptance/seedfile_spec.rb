@@ -22,7 +22,7 @@ describe "seedfile" do
       expect(IdeaImage.count).to be > 0
       expect(ProjectImage.count).to be > 0
       expect(Comment.count).to be > 0
-      expect(Page.count).to be 11 # 8 generated + 3 legal pages by the template
+      expect(Page.count).to be 12 # 8 generated + 4 legal pages by the template
       expect(Notification.count).to be > 0
       expect(IdeaStatus.count).to be > 0
       expect(Group.count).to be > 0

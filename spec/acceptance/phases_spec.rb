@@ -9,7 +9,7 @@ resource "Phases" do
     @phases = create_list(:phase, 2, project: @project)
   end
 
-  get "api/v1/projects/:project_id/phases" do
+  get "web_api/v1/projects/:project_id/phases" do
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of phases per page"
@@ -23,7 +23,7 @@ resource "Phases" do
     end
   end
 
-  get "api/v1/phases/:id" do
+  get "web_api/v1/phases/:id" do
     let(:id) { @phases.first.id }
 
     example_request "Get one phase by id" do
@@ -40,7 +40,7 @@ resource "Phases" do
       header 'Authorization', "Bearer #{token}"
     end
 
-    post "api/v1/projects/:project_id/phases" do
+    post "web_api/v1/projects/:project_id/phases" do
       with_options scope: :phase do
         parameter :title_multiloc, "The title of the phase in nultiple locales", required: true
         parameter :description_multiloc, "The description of the phase in multiple languages. Supports basic HTML.", required: false
@@ -76,7 +76,7 @@ resource "Phases" do
 
     end
 
-    patch "api/v1/phases/:id" do
+    patch "web_api/v1/phases/:id" do
       with_options scope: :phase do
         parameter :project_id, "The id of the project this phase belongs to"
         parameter :title_multiloc, "The title of the phase in nultiple locales"
@@ -99,7 +99,7 @@ resource "Phases" do
     end
 
 
-    delete "api/v1/phases/:id" do
+    delete "web_api/v1/phases/:id" do
       let(:phase) { create(:phase, project: @project) }
       let(:id) { phase.id }
       example_request "Delete a phase" do

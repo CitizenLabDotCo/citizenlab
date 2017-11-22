@@ -4,15 +4,15 @@ class SideFxIdeaService
 
   def after_create idea, user
     if idea.published?
-      add_autovote(idea)
-      LogActivityJob.perform_later(idea, 'published', user, idea.created_at.to_i)
+      add_autovote idea
+      log_activity_jobs_after_published idea, user
     end
   end
 
   def after_update idea, user
     if idea.publication_status_previous_change == ['draft','published']
-      add_autovote(idea)
-      LogActivityJob.perform_later(idea, 'published', user, idea.updated_at.to_i)
+      add_autovote idea
+      log_activity_jobs_after_published idea, user
     end
 
     if idea.idea_status_id_previously_changed?
@@ -38,6 +38,16 @@ class SideFxIdeaService
 
   def add_autovote idea
     idea.votes.create!(mode: 'up', user: idea.author)
+    idea.reload
+  end
+
+  def first_user_idea? idea, user
+    (user.ideas.size == 1) && (user.ideas.first.id == idea.id)
+  end
+
+  def log_activity_jobs_after_published idea, user
+    LogActivityJob.perform_later(idea, 'published', user, idea.created_at.to_i)
+    LogActivityJob.perform_later(idea, 'first published by user', user, idea.created_at.to_i)
   end
 
 end

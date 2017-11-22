@@ -3,13 +3,13 @@ require 'yaml'
 require 'securerandom'
 require 'redcarpet'
 
-### rake tenant_template:csv_to_yml['tmp'] ###
+### rake tenant_template:csv_to_yml['tmp','fr'] ###
 
 
 namespace :tenant_template do
   desc "Converts tenant templates from csv files to a yml file, working in the specified folder"
-  task :csv_to_yml, [:path] => [:environment] do |t, args|
-  	locale = 'en' # TODO acquire locale from template settings
+  task :csv_to_yml, [:path,:locale] => [:environment] do |t, args|
+  	locale = args[:locale]
     yml_base = YAML.load_file('config/tenant_templates/base.yml')
 
   	users_hash           = {}

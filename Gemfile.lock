@@ -1,3 +1,24 @@
+GIT
+  remote: https://github.com/ngty/knock.git
+  revision: 97fb32f59b2027c808964b875be2fff22400da1d
+  ref: 97fb32f59b2027c808964b875be2fff22400da1d
+  specs:
+    knock (2.1.1)
+      bcrypt (~> 3.1)
+      jwt (~> 1.5)
+      rails (>= 4.2)
+
+PATH
+  remote: engines/public_api
+  specs:
+    public_api (0.1.0)
+      active_model_serializers (~> 0.10.0)
+      apartment (~> 1.2.0)
+      kaminari (~> 1.0.1)
+      knock (~> 2.1.1)
+      pundit (~> 1.1.0)
+      rails (~> 5.1.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -155,10 +176,6 @@ GEM
       activerecord
       kaminari-core (= 1.0.1)
     kaminari-core (1.0.1)
-    knock (2.1.1)
-      bcrypt (~> 3.1)
-      jwt (~> 1.5)
-      rails (>= 4.2)
     liquid (4.0.0)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -371,7 +388,7 @@ DEPENDENCIES
   fog-aws
   groupdate (~> 3.2.0)
   kaminari (~> 1.0.1)
-  knock (~> 2.1.1)
+  knock (~> 2.1.1)!
   liquid (~> 4.0)
   listen (>= 3.0.5, < 3.2)
   mini_magick
@@ -384,6 +401,7 @@ DEPENDENCIES
   pg (~> 0.18)
   pg_search (~> 2.0.1)
   premailer-rails (~> 1.9.6)
+  public_api!
   puma (~> 3.7)
   pundit (~> 1.1.0)
   rack-cors
@@ -406,4 +424,4 @@ DEPENDENCIES
   tzinfo-data
 
 BUNDLED WITH
-   1.15.4
+   1.16.0
