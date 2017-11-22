@@ -27,6 +27,9 @@ import {
   ITenantData
 } from 'services/tenant';
 
+// Utils
+import getSubmitState from 'utils/getSubmitState';
+
 interface Props {
   intl: InjectedIntl;
   tFunc: Function;
@@ -45,8 +48,8 @@ interface State {
 class SettingsGeneralTab extends React.PureComponent<Props, State> {
   subscription: Rx.Subscription;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       attributesDiff: {},
       tenant: null,
@@ -60,16 +63,6 @@ class SettingsGeneralTab extends React.PureComponent<Props, State> {
     this.subscription = currentTenantStream().observable.subscribe((response) => {
       this.setState({ tenant: response.data });
     });
-  }
-
-  getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
-    if (!_.isEmpty(this.state.errors)) {
-      return 'error';
-    }
-    if (this.state.saved && _.isEmpty(this.state.attributesDiff)) {
-      return 'success';
-    }
-    return _.isEmpty(this.state.attributesDiff) ? 'disabled' : 'enabled';
   }
 
   createChangeHandler = (fieldPath: string) => {
@@ -121,6 +114,7 @@ class SettingsGeneralTab extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const { errors, saved, attributesDiff } = this.state;
     const lang = this.props.intl.locale;
     const updatedLocales = _.get(this.state.attributesDiff, 'settings.core.locales');
 
@@ -190,7 +184,7 @@ class SettingsGeneralTab extends React.PureComponent<Props, State> {
 
         <SubmitWrapper
           loading={this.state.loading}
-          status={this.getSubmitState()}
+          status={getSubmitState({ errors, saved, diff: attributesDiff })}
           messages={{
             buttonSave: messages.save,
             buttonError: messages.saveError,

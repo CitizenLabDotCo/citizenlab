@@ -1,4 +1,5 @@
 module.exports = {
+  '@tags': ['citizen', 'auth', 'signout'],
   logout: (browser) => {
     const signinPage = browser.page.signin();
 

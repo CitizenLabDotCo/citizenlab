@@ -107,8 +107,8 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       locale: null,
       authUser: null,
@@ -219,7 +219,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
         <StyledTextArea
           name="comment"
           placeholder={placeholder}
-          rows={3}
+          rows={4}
           value={inputValue}
           error={errorMessage}
           onChange={this.handleTextareaOnChange}

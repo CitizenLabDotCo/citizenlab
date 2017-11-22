@@ -12,6 +12,9 @@ import messages from './messages';
 import { addGroup, GroupDiff } from 'services/groups';
 import { localeStream } from 'services/locale';
 
+// Utils
+import getSubmitState from 'utils/getSubmitState';
+
 // Components
 import Button from 'components/UI/Button';
 import Input from 'components/UI/Input';
@@ -51,8 +54,8 @@ interface State {
 class GroupAdditionForm extends React.Component<Props, State> {
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     this.state = {
       diff: {},
@@ -77,16 +80,6 @@ class GroupAdditionForm extends React.Component<Props, State> {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
-  }
-
-  getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
-    if (!_.isEmpty(this.state.errors)) {
-      return 'error';
-    }
-    if (this.state.saved && _.isEmpty(this.state.diff)) {
-      return 'success';
-    }
-    return _.isEmpty(this.state.diff) ? 'disabled' : 'enabled';
   }
 
   titleChangeHandler = (value) => {
@@ -114,8 +107,8 @@ class GroupAdditionForm extends React.Component<Props, State> {
 
   render() {
     const groupAttrs = { ...this.state.diff };
-    const { locale, saving } = this.state;
-    const submitState = this.getSubmitState();
+    const { locale, saving, errors, saved, diff } = this.state;
+    const submitState = getSubmitState({ errors, saved, diff });
 
     return (
       <div>

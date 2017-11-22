@@ -26,6 +26,7 @@ const Container: any = styled.div`
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     background: #fff;
     outline: none;
+    -webkit-appearance: none;
 
     &::placeholder {
       color: #aaa;

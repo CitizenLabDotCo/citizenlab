@@ -94,8 +94,8 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
   subscriptions: Rx.Subscription[];
   input$: Rx.Subject<string>;
 
-  constructor () {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     this.state = {
       selectVisible: false,

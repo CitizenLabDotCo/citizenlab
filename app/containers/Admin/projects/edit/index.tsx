@@ -33,8 +33,8 @@ type State = {
 class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Rx.Subscription;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     this.state = {
       project: null,
@@ -115,7 +115,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
 
     return(
       <div>
-        <Link to="/admin/projects">
+        <Link className="e2e-projects-list-link" to="/admin/projects">
           <FormattedMessage {...messages.goBack} />
         </Link>
         <TabbedResource {...tabbedProps}>

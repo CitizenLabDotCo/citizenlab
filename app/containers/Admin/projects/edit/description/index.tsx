@@ -15,6 +15,9 @@ import { projectBySlugStream, updateProject,  IProjectData, IUpdatedProjectPro
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 
+// Utils
+import getSubmitState from 'utils/getSubmitState';
+
 // Components
 import FieldWrapper from 'components/admin/FieldWrapper';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -56,8 +59,8 @@ interface State {
 class ProjectDescription extends React.Component<Props, State> {
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     this.state = {
       loading: false,
@@ -107,16 +110,6 @@ class ProjectDescription extends React.Component<Props, State> {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
-    if (!_.isEmpty(this.state.errors)) {
-      return 'error';
-    }
-    if (this.state.saved && _.isEmpty(this.state.diff)) {
-      return 'success';
-    }
-    return _.isEmpty(this.state.diff) ? 'disabled' : 'enabled';
-  }
-
   changeDesc = (editorState: EditorState): void => {
     const { diff } = this.state;
     _.set(diff, `description_multiloc.${this.state.locale}`, draftjsToHtml(convertToRaw(editorState.getCurrentContent())));
@@ -146,12 +139,12 @@ class ProjectDescription extends React.Component<Props, State> {
   }
 
   render () {
-    const { data, diff, editorState, loading } = this.state;
+    const { data, diff, editorState, loading, saved, errors } = this.state;
     const projectAttrs = { ...data.attributes, ...diff } as IUpdatedProjectProperties;
-    const submitState = this.getSubmitState();
+    const submitState = getSubmitState({ errors, saved, diff });
 
     return (
-      <FormWrapper onSubmit={this.saveProject}>
+      <FormWrapper className="e2e-project-description-form" onSubmit={this.saveProject}>
         <FieldWrapper>
           <label htmlFor="project-description">
             <FormattedMessage {...messages.descriptionLabel} />

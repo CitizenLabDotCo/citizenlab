@@ -1,6 +1,7 @@
 const time = new Date().getTime();
 
 module.exports = {
+  '@tags': ['citizen', 'ideas', 'comments'],
   seeComments: (browser) => {
     const signinPage = browser.page.signin();
 
@@ -13,7 +14,7 @@ module.exports = {
     .click('#e2e-ideas-list:first-child')
     .waitForElementVisible('#e2e-idea-show')
     .refresh()
-    .waitForElementVisible('.e2e-comments', 10000)
+    .waitForElementVisible('.e2e-comments')
     .end();
   },
 
@@ -29,12 +30,12 @@ module.exports = {
     .click('#e2e-ideas-list:first-child')
     .waitForElementVisible('#e2e-idea-show')
     .refresh()
-    .waitForElementVisible('.e2e-comments', 10000)
-    .setValue('.textarea', `Test Comment ${time}`)
-    .click('.e2e-submit-comment')
-    // .waitForElementVisible('.e2e-comment-form .e2e-success-message')
+    .waitForElementVisible('.e2e-comments')
+    .setValue('.e2e-comment-form .textarea', `Test Comment ${time}`)
+    .click('.e2e-comment-form .e2e-submit-comment')
     .pause(1000)
-    .assert.containsText('.e2e-comment-thread:last-child .e2e-comment-body', `Test Comment ${time}`)
+    .waitForElementVisible('.e2e-comment-thread')
+    .assert.containsText(`.e2e-comment-body`, `Test Comment ${time}`)
     .end();
   },
 };

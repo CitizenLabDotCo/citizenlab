@@ -12,15 +12,15 @@ export default defineMessages({
   },
   helmetTitle: {
     id: 'app.containers.App.helmetTitle',
-    defaultMessage: 'Home page',
+    defaultMessage: 'Change the future of {name}',
   },
   helmetDescription: {
     id: 'app.containers.App.helmetDescription',
-    defaultMessage: 'Citizenlab 2 platform {organizationName}',
+    defaultMessage: 'Start an idea!',
   },
   unAuthorizedUser: {
     id: 'app.containers.App.unAuthorizedUser',
-    defaultMessage: 'Ups; it looks like you wandered to the wrong page...',
+    defaultMessage: 'Oops, it looks like you wandered to the wrong page...',
   },
   currentUserLoadingMessage: {
     id: 'app.containers.App.currentUserLoadingMessage',
@@ -28,6 +28,6 @@ export default defineMessages({
   },
   currentUserLoadingError: {
     id: 'app.containers.App.currentUserLoadingError',
-    defaultMessage: 'Ups; something went terrybly wrong. kill the developer!',
+    defaultMessage: 'Oops, something went terrybly wrong. kill the developer!',
   },
 });

@@ -5,9 +5,10 @@ import * as Rx from 'rxjs/Rx';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
+import { media } from 'utils/styleUtils';
 
 // services
-import { projectsStream, IProjectData } from 'services/projects';
+import { projectsStream, IProjects } from 'services/projects';
 
 // localisation
 import { FormattedMessage } from 'react-intl';
@@ -17,7 +18,7 @@ import messages from '../messages';
 // components
 import { Link } from 'react-router';
 import Icon from 'components/UI/Icon';
-const headerBG = require('assets/img/gray-header.png');
+import Button from 'components/UI/Button';
 
 const ProjectsList = styled.ul`
   display: flex;
@@ -25,117 +26,140 @@ const ProjectsList = styled.ul`
   list-style: none;
 `;
 
-const ProjectCard = styled.li`
-  background: white;
+const ProjectImage = styled.img`
+  width: 100%;
+  height: 100px;
   border-radius: 5px;
+  object-fit: cover;
+`;
+
+const ProjectImagePlaceholder = styled.div`
+  width: 100%;
+  height: 100px;
   display: flex;
-  flex: 1 0 300px;
-  flex-direction: column;
-  justify-content: flex-end;
-  margin: 1rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background: ${props => props.theme.colors.placeholderBg};
+`;
+
+const ProjectImagePlaceholderIcon = styled(Icon) `
+  height: 50px;
+  fill: #fff;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+`;
+
+const GoToProjectButton = styled(Button)``;
+
+const ProjectTitle = styled.h1`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  margin: 0;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 0;
+
   overflow: hidden;
-  max-width: calc(100% - 2rem);
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 23px;
+  max-height: 46px;
+`;
 
-  @media (min-width: 850px) {
-    & {
-      max-width: calc(50% - 2rem);
-    }
-  }
+const ProjectCard = styled.li`
+  width: 270px;
+  height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 13px;
+  padding: 15px;
+  overflow: hidden;
+  border-radius: 5px;
+  border: solid 1px #e4e4e4;
+  background: white;
+`;
 
-  @media (min-width: 1150px) {
-    & {
-      max-width: calc(33% - 2rem);
-    }
-  }
+const AddProjectLink = styled(Link)`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
-  @media (min-width: 1650px) {
-    & {
-      max-width: calc(25% - 2rem);
-    }
-  }
+const AddProjectIcon = styled(Icon)`
+  height: 30px;
+  fill: #999;
+  transition: all 100ms ease-out;
+`;
 
-  img {
-    max-width: 100%;
-  }
+const AddProjectText = styled.div`
+  color: #999;
+  font-size: 18px;
+  line-height: 23px;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 15px;
+  transition: all 100ms ease-out;
+`;
 
-  h1 {
-    flex: 1;
-    font-size: 1.5rem;
-    font-weight: normal;
-    margin: 1.5rem;
-    text-align: center;
-  }
+const AddProjectCard = ProjectCard.extend`
+  cursor: pointer;
+  padding: 0;
+  border-color: #999;
+  border-width: 1.5px;
+  border-style: dashed;
+  background: transparent;
+  transition: all 100ms ease-out;
 
-  a {
-    background-color: ${(props: any) => props.theme.colorMain || '#e0e0e0'};
-    border-radius: 5px;
-    color: white;
-    display: block;
-    line-height: 3rem;
-    margin: 0 1rem 1rem;
-    text-align: center;
-    text-decoration: none;
+  &:hover {
+    border-color: #000;
 
-    &:hover {
-      background: ${(props: any) => darken(0.15, (props.theme.colorMain || '#ccc'))};
-    }
-  }
-
-  &.new-project a {
-    align-items: center;
-    background: none;
-    border: 1px dashed #d4d4d4;
-    color: ${(props: any) => props.theme.colorMain || '#e0e0e0'};
-    display: flex;
-    flex-direction: column;
-    font-size: 1.5rem;
-    height: 100%;
-    justify-content: center;
-    margin: 0;
-    padding: 1rem;
-
-    &:hover {
-      color: ${(props: any) => darken(0.15, (props.theme.colorMain || '#ccc'))};
-
-      path {
-        fill: ${(props: any) => darken(0.15, (props.theme.colorMain || '#ccc'))};
-      }
+    ${AddProjectIcon} {
+      fill: #000;
     }
 
-    svg {
-      max-height: 3rem;
-    }
-
-    path {
-      fill: ${(props: any) => props.theme.colorMain || '#e0e0e0'};
+    ${AddProjectText} {
+      color: #000;
     }
   }
 `;
 
-// Component typing
-type Props = {
-  projects: IProjectData[]
-};
+type Props = {};
 
 type State = {
-  projects: IProjectData[] | null
+  projects: IProjects | null
 };
 
-class AdminProjectsList extends React.PureComponent<Props, State> {
+export default class AdminProjectsList extends React.PureComponent<Props, State> {
   subscription: Rx.Subscription;
 
-  constructor () {
-    super();
-
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       projects: null,
     };
   }
 
   componentDidMount() {
-    this.subscription = projectsStream().observable.subscribe((projects) => {
-      this.setState({ projects: projects.data });
-    });
+    const projects$ = projectsStream().observable;
+    this.subscription = projects$.subscribe((projects) => this.setState({ projects }));
   }
 
   componentWillUnmount() {
@@ -146,30 +170,50 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
     const { projects } = this.state;
 
     return (
-      <ProjectsList>
-        <ProjectCard className="new-project">
-          <Link to="/admin/projects/new">
-            <Icon name="plus" />
-            <FormattedMessage {...messages.addNewProject} />
-          </Link>
-        </ProjectCard>
-        {projects && projects.map((project) => (
-          <ProjectCard key={project.id}>
-            {project.attributes.header_bg.small &&
-              <img src={project.attributes.header_bg.small} alt="" role="presentation" />
-              || <img className="no-img" src={headerBG} alt="" role="presentation" />
-            }
+      <ProjectsList className="e2e-projects-list">
 
-            <h1><T value={project.attributes.title_multiloc} /></h1>
+        <AddProjectCard className="new-project e2e-new-project">
+          <AddProjectLink to="/admin/projects/new">
+            <AddProjectIcon name="plus-circle" />
+            <AddProjectText>
+              <FormattedMessage {...messages.addNewProject} />
+            </AddProjectText>
+          </AddProjectLink>
+        </AddProjectCard>
 
-            <Link to={`/admin/projects/${project.attributes.slug}/edit`}>
-              <FormattedMessage {...messages.editProject} />
-            </Link>
-          </ProjectCard>
-        ))}
+        {projects && projects.data && projects.data.map((project) => {
+          const projectImage = (_.has(project, 'attributes.header_bg.medium') ? project.attributes.header_bg.medium : null);
+
+          return (
+            <ProjectCard key={project.id} className="e2e-project-card">
+
+              {projectImage && <ProjectImage src={projectImage} alt="" role="presentation" />}
+
+              {!projectImage && 
+                <ProjectImagePlaceholder>
+                  <ProjectImagePlaceholderIcon name="project" />
+                </ProjectImagePlaceholder>
+              }
+
+              <ProjectTitle>
+                <T value={project.attributes.title_multiloc} />
+              </ProjectTitle>
+
+              <ButtonWrapper>
+                <GoToProjectButton 
+                  style="primary-outlined" 
+                  linkTo={`/admin/projects/${project.attributes.slug}/edit`}
+                  circularCorners={false}
+                >
+                  <FormattedMessage {...messages.editProject} />
+                </GoToProjectButton>
+              </ButtonWrapper>
+
+            </ProjectCard>
+          );
+        })}
+
       </ProjectsList>
     );
   }
 }
-
-export default AdminProjectsList;

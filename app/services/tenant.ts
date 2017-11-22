@@ -36,6 +36,11 @@ export interface ITenantSettings {
     app_secret: string;
     enabled: boolean;
   };
+  google_login?: {
+    allowed: boolean;
+    client_id: string;
+    enabled: boolean;
+  };
   pages?: TenantFeature;
   groups?: TenantFeature;
   projects?: TenantFeature;

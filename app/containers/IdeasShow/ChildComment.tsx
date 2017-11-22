@@ -27,7 +27,7 @@ const CommentContainer = styled.div`
   padding: 30px;
   border: none;
   border-top: solid 1px #e4e4e4;
-  background: #f8f8f8;
+  background: #f6f6f6;
 `;
 
 const AuthorContainer = styled.div`
@@ -88,7 +88,7 @@ const CommentBody = styled.div`
     word-break: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    hyphens: auto;      
+    hyphens: auto;
     margin-bottom: 25px;
   }
 `;
@@ -106,8 +106,8 @@ export default class ChildComment extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       comment: null,
       author: null
@@ -121,7 +121,10 @@ export default class ChildComment extends React.PureComponent<Props, State> {
 
     this.subscriptions = [
       comment$.switchMap((comment) => {
-        const authorId = comment.data.relationships.author.data.id;
+        const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
+        if (!authorId) {
+          return Rx.Observable.of({ comment, author: null });
+        }
         const author$ = userByIdStream(authorId).observable;
         return author$.map(author => ({ comment, author }));
       }).subscribe(({ comment, author }) => this.setState({ comment, author }))
@@ -146,7 +149,7 @@ export default class ChildComment extends React.PureComponent<Props, State> {
     if (comment && author) {
       const className = this.props['className'];
       const ideaId = comment.data.relationships.idea.data.id;
-      const authorId = comment.data.relationships.author.data.id;
+      const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
       const createdAt = comment.data.attributes.created_at;
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
       const avatar = author.data.attributes.avatar.medium;
@@ -161,8 +164,8 @@ export default class ChildComment extends React.PureComponent<Props, State> {
             <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />
             <AuthorMeta>
               <AuthorNameContainer>
-                <FormattedMessage 
-                  {...messages.childCommentAuthor} 
+                <FormattedMessage
+                  {...messages.childCommentAuthor}
                   values={{
                     authorNameComponent: <AuthorName to={`/profile/${author.data.attributes.slug}`}>{firstName} {lastName}</AuthorName>
                   }}
