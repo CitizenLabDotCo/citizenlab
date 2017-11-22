@@ -384,7 +384,7 @@
   "app.containers.SignIn.createAnAccount": "Créez un compte",
   "app.containers.SignIn.emailLabel": "Adresse e-mail",
   "app.containers.SignIn.emailPlaceholder": "Adresse e-mail",
-  "app.containers.SignIn.forgotPassword": "Vous avez oublié votre mot de passe ?",
+  "app.containers.SignIn.forgotPassword": "Oublié ?",
   "app.containers.SignIn.noAccount": "Vous n’avez pas encore de compte ?",
   "app.containers.SignIn.noEmailError": "Veuillez entrer votre adresse e-mail",
   "app.containers.SignIn.noPasswordError": "Veuillez entrer un mot de passe",
