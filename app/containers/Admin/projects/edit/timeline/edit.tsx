@@ -147,7 +147,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
     return false;
   }
 
-  handleOnSubmit = (event) => {
+  handleOnSubmit = (event): void => {
     event.preventDefault();
     if (_.isEmpty(this.state.attributeDiff)) {
       return;
@@ -171,7 +171,16 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
       this.setState({ saving: false, saved: true, attributeDiff: {}, phase: response.data, errors: null });
     })
     .catch((e) => {
-      this.setState({ saving: false, errors: e.json.errors });
+      try {
+        let errors = null;
+        if (e && e.json && e.json.errors) {
+          errors = e.json.errors;
+        }
+
+        this.setState({ errors, saving: false, saved: false });
+      } catch (e) {
+        this.setState({ saving: false, saved: false });
+      }
     });
   }
 

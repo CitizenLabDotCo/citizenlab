@@ -39,7 +39,7 @@ export default class CLMap extends React.Component<Props> {
     return (
       <MapWrapper className={this.props.className}>
         <Map center={this.props.center} zoom={this.props.zoom || 13}>
-          <TileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {this.props.points && this.props.points.map((point =>
             <Marker position={point} key={`${point[0]}.${point[1]}`} icon={customIcon} />
           ))}
