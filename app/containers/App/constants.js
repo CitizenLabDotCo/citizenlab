@@ -14,7 +14,7 @@ const API_PORT = process.env.API_PORT || 4000;
 
 export const DEFAULT_LOCALE = 'en';
 export const AUTH_PATH = (process.env.NODE_ENV === 'development') ? `http://${API_HOST}:${API_PORT}/auth` : '/auth';
-export const API_PATH = (process.env.NODE_ENV === 'development') ? `http://${API_HOST}:${API_PORT}/api/v1` : '/api/v1';
+export const API_PATH = (process.env.NODE_ENV === 'development') ? `http://${API_HOST}:${API_PORT}/web_api/v1` : '/web_api/v1';
 export const GOOGLE_MAPS_API_KEY = '***REMOVED***';
 
 export const LOADED_CURRENT_TENANT = 'app/App/LOADED_CURRENT_TENANT';
