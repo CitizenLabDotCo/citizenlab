@@ -188,7 +188,7 @@
   "app.containers.AdminPage.SettingsPage.subTitleBasic": "Vul deze zorgvuldig in, ze bepalen de identiteit van het platform.",
   "app.containers.AdminPage.SettingsPage.subTitleBranding": "Bevestig de visuele identiteit van het platform",
   "app.containers.AdminPage.SettingsPage.subTitleSignupFields": "Welke vragen wil je je gebruikers stellen bij de registratie?",
-  "app.containers.AdminPage.SettingsPage.subtitleLabel": "Sous-titre {locale}",
+  "app.containers.AdminPage.SettingsPage.subtitleLabel": "Ondertitel {locale}",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "De ondertitel overschrijdt het maximaal aantal toegestane 90 karakters",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Aanpassen",
   "app.containers.AdminPage.SettingsPage.tabPages": "Pagina's",
