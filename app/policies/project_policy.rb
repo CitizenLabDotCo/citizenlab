@@ -30,6 +30,10 @@ class ProjectPolicy < ApplicationPolicy
     show?
   end
 
+  def files_index?
+    show?
+  end
+
   def show?
     user&.admin? ||
     record.visible_to == 'public' || 
