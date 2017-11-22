@@ -46,7 +46,7 @@ const AvatarIcon = styled(Icon)`
 
   ${(props: any) => props.isClickable && css`
     &:hover {
-      fill: ${(props) => darken(0.15, props.theme.colors.label)};
+      fill: ${(props) => darken(0.2, props.theme.colors.label)};
     }`
   }
 `;
@@ -61,7 +61,7 @@ const Container: any = styled.div`
 
   ${(props: any) => props.isClickable && css`
     &:hover ${AvatarIcon} {
-      fill: ${(props) => darken(0.15, '#999')};
+      fill: ${(props) => darken(0.2, props.theme.colors.label)};
     }
 
     &:hover ${AvatarImageBackground} {
@@ -71,7 +71,7 @@ const Container: any = styled.div`
 `;
 
 type Props = {
-  userId: string;
+  userId: string | null;
   size: 'small' | 'medium' | 'large';
   onClick?: () => void;
 };
@@ -84,8 +84,8 @@ export default class Avatar extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       avatarSrc: null
     };
@@ -93,14 +93,15 @@ export default class Avatar extends React.PureComponent<Props, State> {
   }
 
   componentWillMount() {
-    const user$ = userByIdStream(this.props.userId).observable;
-
-    this.subscriptions = [
-      user$.subscribe((user) => {
-        const avatarSrc = (user ? user.data.attributes.avatar[this.props.size] : null);
-        this.setState({ avatarSrc });
-      })
-    ];
+    if (this.props.userId) {
+      const user$ = userByIdStream(this.props.userId).observable;
+      this.subscriptions = [
+        user$.subscribe((user) => {
+          const avatarSrc = (user ? user.data.attributes.avatar[this.props.size] : null);
+          this.setState({ avatarSrc });
+        })
+      ];
+    }
   }
 
   componentWillUnmount() {
@@ -124,7 +125,7 @@ export default class Avatar extends React.PureComponent<Props, State> {
           <AvatarImageContainer>
             <AvatarImageBackground />
             <AvatarImage src={avatarSrc} />
-          </AvatarImageContainer> 
+          </AvatarImageContainer>
         ) : (
           <AvatarIcon name="user" />
         )}

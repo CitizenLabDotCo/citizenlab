@@ -16,6 +16,8 @@ export interface injectedLocalized {
   localize: {
     (multiloc: Multiloc): string;
   };
+  locale: string;
+  tenantLocales: string[];
 }
 
 interface Props {}
@@ -29,8 +31,8 @@ function localize<PassedProps>(ComposedComponent) {
   return class Localized extends React.Component<Props & PassedProps, State>{
     subscriptions: Rx.Subscription[];
 
-    constructor() {
-      super();
+    constructor(props: Props) {
+      super(props as any);
 
       this.state = {
         locale: '',
@@ -66,7 +68,7 @@ function localize<PassedProps>(ComposedComponent) {
     }
 
     render() {
-      return <ComposedComponent localize={this.localize} {...this.props} />;
+      return <ComposedComponent localize={this.localize} locale={this.state.locale} tenantLocales={this.state.tenantLocales} {...this.props} />;
     }
   };
 }

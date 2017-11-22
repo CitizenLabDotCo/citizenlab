@@ -6,24 +6,25 @@ import * as _ from 'lodash';
 import { ImageFile } from 'react-dropzone';
 
 // components
-import { connect } from 'react-redux';
-import { Checkbox } from 'semantic-ui-react';
 import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Upload from 'components/UI/Upload';
+import Toggle from 'components/UI/Toggle';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
 import Select from 'components/UI/Select';
 import Input from 'components/UI/Input';
 import FieldWrapper from 'components/admin/FieldWrapper';
 import { Section, SectionHeader, SectionTitle, SectionDescription, SectionContent } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import FeatureFlag from 'components/FeatureFlag';
 
 // style
 import styled from 'styled-components';
 
 // utils
 import { getBase64, imageUrlToFileObservable } from 'utils/imageTools';
+import getSubmitState from 'utils/getSubmitState';
 
 // i18n
 import { FormattedMessage, injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
@@ -31,13 +32,7 @@ import messages from '../messages';
 
 // services
 import { localeStream } from 'services/locale';
-import {
-  currentTenantStream,
-  updateTenant,
-  IUpdatedTenantProperties,
-  ITenant,
-  ITenantSettings
-} from 'services/tenant';
+import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, ITenantSettings } from 'services/tenant';
 
 // typings
 import { API } from 'typings.d';
@@ -88,8 +83,8 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       locale: null,
       attributesDiff: {},
@@ -160,18 +155,6 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     this.subscriptions.forEach(subsription => subsription.unsubscribe());
   }
 
-  getSubmitState = (): 'disabled' | 'enabled' | 'error' | 'success' => {
-    if (!_.isEmpty(this.state.errors)) {
-      return 'error';
-    } else if (this.state.saved && _.isEmpty(this.state.attributesDiff)) {
-      return 'success';
-    } else if (!this.state.saved && _.isEmpty(this.state.attributesDiff)) {
-      return 'disabled';
-    }
-
-    return 'enabled';
-  }
-
   handleUploadOnAdd = (name: 'logo' | 'header_bg') => (newImage: ImageFile) => {
     this.setState((state: State) => ({
       attributesDiff: {
@@ -223,21 +206,16 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     }));
   }
 
-  createToggleChangeHandler = (fieldPath) => {
-    return (event, data?): void => {
-      let newDiff = _.cloneDeep(this.state.attributesDiff);
-      if (data && data.checked !== undefined) {
-        newDiff = _.set(newDiff, fieldPath, data.checked);
-      } else if (event && typeof(event) === 'string') {
-        newDiff = _.set(newDiff, fieldPath, event);
-      } else if (event && event.value) {
-        newDiff = _.set(newDiff, fieldPath, event.value);
-      } else {
-        console.log(arguments);
-      }
+  handleColorPickerOnChange = (color: string) => {
+    let newDiff = _.cloneDeep(this.state.attributesDiff);
+    newDiff = _.set(newDiff, 'settings.core.color_main', color);
+    this.setState({ attributesDiff: newDiff });
+  }
 
-      this.setState({ attributesDiff: newDiff });
-    };
+  handleOnToggle = (fieldPath: string, checked: boolean) => () => {
+    let newDiff = _.cloneDeep(this.state.attributesDiff);
+    newDiff = _.set(newDiff, fieldPath, !checked);
+    this.setState({ attributesDiff: newDiff });
   }
 
   validate = (currentTenant: ITenant, attributesDiff: IAttributesDiff) => {
@@ -301,7 +279,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   ])
 
   render() {
-    const { locale, currentTenant, titleError, subtitleError } = this.state;
+    const { locale, currentTenant, titleError, subtitleError, errors, saved, attributesDiff } = this.state;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -332,7 +310,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                 <ColorPickerInput
                   type="text"
                   value={_.get(tenantAttrs, 'settings.core.color_main')}
-                  onChange={this.createToggleChangeHandler('settings.core.color_main')}
+                  onChange={this.handleColorPickerOnChange}
                 />
               </FieldWrapper>
 
@@ -387,8 +365,8 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                 return (
                   <FieldWrapper key={index}>
                     <StyledLabel>
-                      <FormattedMessage 
-                        {...messages.titleLabel} 
+                      <FormattedMessage
+                        {...messages.titleLabel}
                         values={{ locale: capitalizedTenantLocale }}
                       />
                       <CharCount className={titleError[currentTenantLocale] ? 'error' : ''}>
@@ -412,9 +390,9 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                 return (
                   <FieldWrapper key={index}>
                     <StyledLabel>
-                      <FormattedMessage 
-                        {...messages.subtitleLabel} 
-                        values={{ locale: capitalizedTenantLocale }} 
+                      <FormattedMessage
+                        {...messages.subtitleLabel}
+                        values={{ locale: capitalizedTenantLocale }}
                       />
                       <CharCount className={subtitleError[currentTenantLocale] ? 'error' : ''}>
                         {subtitleSize}/90
@@ -443,26 +421,30 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
               </SectionDescription>
             </SectionHeader>
 
-            <SectionContent>
-              {['gender', 'domicile', 'birthyear', 'education'].map((fieldName, index) => {
-                const fieldPath = `settings.demographic_fields.${fieldName}`;
-                return (
-                  <FieldWrapper key={fieldName}>
-                    <Label><FormattedMessage {...messages[fieldName]} /></Label>
-                    <Checkbox
-                      slider={true}
-                      checked={_.get(tenantAttrs, fieldPath)}
-                      onChange={this.createToggleChangeHandler(fieldPath)}
-                    />
-                  </FieldWrapper>
-                );
-              })}
-            </SectionContent>
+            <FeatureFlag name="demographic_fields">
+              <SectionContent>
+                {['gender', 'domicile', 'birthyear'].map((fieldName, index) => {
+                  const fieldPath = `settings.demographic_fields.${fieldName}`;
+                  const checked = _.get(tenantAttrs, fieldPath) as boolean;
+
+                  return (
+                    <FieldWrapper key={fieldName}>
+                      <Label><FormattedMessage {...messages[fieldName]} /></Label>
+                      <Toggle
+                        checked={checked}
+                        disabled={false}
+                        onToggle={this.handleOnToggle(fieldPath, checked)}
+                      />
+                    </FieldWrapper>
+                  );
+                })}
+              </SectionContent>
+            </FeatureFlag>
           </Section>
 
           <SubmitWrapper
             loading={this.state.loading}
-            status={this.getSubmitState()}
+            status={getSubmitState({ errors, saved, diff: attributesDiff })}
             messages={{
               buttonSave: messages.save,
               buttonError: messages.saveError,

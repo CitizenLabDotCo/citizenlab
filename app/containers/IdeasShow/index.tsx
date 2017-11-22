@@ -18,10 +18,11 @@ import Error from 'components/UI/Error';
 import Icon from 'components/UI/Icon';
 import Comments from './CommentsContainer';
 import Sharing from './Sharing';
-import CommentsLine from './CommentsLine';
 import Author from './Author';
 import IdeaMeta from './IdeaMeta';
 import Unauthenticated from './Unauthenticated';
+import IdeaMap from './IdeaMap';
+import Button from 'components/UI/Button';
 
 // services
 import { localeStream } from 'services/locale';
@@ -33,7 +34,7 @@ import { commentsForIdeaStream, commentStream, IComments, IComment } from 'servi
 
 // i18n
 import T from 'components/T';
-import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative, FormattedHTMLMessage } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -52,7 +53,7 @@ const IdeaContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding: 0;
-  padding-top: 80px;
+  padding-top: 60px;
   padding-bottom: 60px;
   padding-left: 30px;
   padding-right: 30px;
@@ -76,13 +77,11 @@ const Header = styled.div`
 
 const IdeaTitle = styled.h1`
   color: #444;
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 500;
   line-height: 42px;
   margin: 0;
   padding: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 
   ${media.smallerThanMaxTablet`
     font-size: 28px;
@@ -103,23 +102,82 @@ const LeftColumn = styled.div`
   flex-grow: 1;
   margin: 0;
   padding: 0;
+  min-width: 0;
 `;
 
 const IdeaImage = styled.img`
-  width: 100%;
   border-radius: 8px;
-  margin: 0;
+  border: 1px solid ${props => props.theme.colors.separation};
+  margin: 0 0 2rem;
   padding: 0;
-  margin-bottom: 20px;
-  border: solid 1px #eee;
+  width: 100%;
 `;
 
 const AuthorContainer = styled.div`
   display: flex;
   align-items: center;
   margin: 0;
-  margin-bottom: 30px;
   padding: 0;
+`;
+
+const AuthorAndAdressWrapper = styled.div`
+  align-items: center;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+
+  > * {
+    flex: 1;
+    min-width: 0;
+  }
+
+  @media (min-width: 450px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+`;
+
+const LocationButton = styled(Button)`
+  padding-right: 0;
+  text-align: right;
+
+  button {
+    padding-right: 0 !important;
+  }
+`;
+
+const StyledPositionIcon = styled(Icon)`
+  height: 1em;
+  margin-left: .5em;
+`;
+
+const MapWrapper = styled.div`
+  border-radius: 8px;
+  border: 1px solid ${props => props.theme.colors.separation};
+  height: 265px;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: all .3s ease-out;
+
+  &.hidden {
+    height: 0;
+    border-color: transparent;
+    margin-bottom: 0;
+  }
+`;
+
+const AddressWrapper = styled.p`
+  background: rgba(255, 255, 255, .7);
+  border-top: 1px solid #EAEAEA;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  padding: .5rem;
+  position: absolute;
+  right: 0;
+  z-index: 999;
 `;
 
 const AuthorAvatar = styled(Avatar)`
@@ -132,18 +190,32 @@ const AuthorAvatar = styled(Avatar)`
 const AuthorMeta = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 0 0 calc(100% - 39px);
+  min-width: 0;
 `;
 
 const AuthorName = styled(Link) `
   color: #333;
   font-size: 16px;
-  line-height: 19px;
-  font-weight: 300;
+  font-weight: 400;
+  line-height: 20px;
+  overflow: hidden;
   text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   &:hover {
     color: #333;
     text-decoration: underline;
+  }
+
+  ${media.smallerThanMaxTablet`
+    font-size: 14px;
+    line-height: 18px;
+  `}
+
+  .deleted-user {
+    font-style: italic;
   }
 `;
 
@@ -153,6 +225,10 @@ const TimeAgo = styled.div`
   line-height: 17px;
   font-weight: 300;
   margin-top: 2px;
+
+  ${media.smallerThanMaxTablet`
+    margin-top: 0px;
+  `}
 `;
 
 const IdeaBody = styled.div`
@@ -173,8 +249,7 @@ const SeparatorColumn = styled.div`
   margin: 0;
   margin-left: 30px;
   margin-right: 30px;
-  background: #e4e4e4;
-  background: #fff;
+  background: transparent;
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -185,13 +260,15 @@ const SeparatorRow = styled.div`
   width: 100%;
   height: 1px;
   margin: 0;
-  margin-top: 40px;
-  margin-bottom: 30px;
+  margin-top: 45px;
+  margin-bottom: 35px;
   background: #e4e4e4;
+  background: #fff;
 
   ${media.smallerThanMaxTablet`
     margin-top: 25px;
     margin-bottom: 25px;
+    background: #e4e4e4;
   `}
 `;
 
@@ -216,9 +293,9 @@ const RightColumnDesktop: any = RightColumn.extend`
 const RightColumnMobile = RightColumn.extend`
   flex: 1;
   margin: 0;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   padding: 0;
-  padding-bottom: 5px;
+  padding-bottom: 15px;
   border-bottom: solid 1px #e4e4e4;
   display: none;
 
@@ -326,14 +403,15 @@ type State = {
   ideaComments: IComments | null;
   loading: boolean;
   unauthenticatedError: boolean;
+  showMap: boolean;
 };
 
 class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       locale: null,
       idea: null,
@@ -341,7 +419,8 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       ideaImage: null,
       ideaComments: null,
       loading: true,
-      unauthenticatedError: false
+      unauthenticatedError: false,
+      showMap: false,
     };
     this.subscriptions = [];
   }
@@ -353,22 +432,22 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
     const idea$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {
       const ideaImages = idea.data.relationships.idea_images.data;
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
-      const ideaAuthorId = idea.data.relationships.author.data.id;
+      const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
       const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
       const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
-      const ideaAuthor$ = userByIdStream(ideaAuthorId).observable;
+      const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : Rx.Observable.of(null);
       const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
-        ideaImage$, 
-        ideaAuthor$, 
+        ideaImage$,
+        ideaAuthor$,
         ideaStatus$
       ).map(([ideaImage, ideaAuthor]) => ({ idea, ideaImage, ideaAuthor }));
     });
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        locale$, 
+        locale$,
         idea$
       ).subscribe(([locale, { idea, ideaImage, ideaAuthor }]) => {
         this.setState({ locale, idea, ideaImage, ideaAuthor, loading: false });
@@ -410,27 +489,33 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  handleMapToggle = () => {
+    this.setState({ showMap: !this.state.showMap });
+  }
+
   render() {
     const { locale, idea, ideaImage, ideaAuthor, ideaComments, loading, unauthenticatedError } = this.state;
     const { formatMessage, formatRelative } = this.props.intl;
 
-    if (!loading && idea !== null && ideaAuthor !== null) {
-      const authorId = ideaAuthor.data.id;
-      const firstName = ideaAuthor.data.attributes.first_name;
-      const lastName = ideaAuthor.data.attributes.last_name;
+    if (!loading && idea !== null) {
+      const authorId = ideaAuthor ? ideaAuthor.data.id : null;
+      const firstName = ideaAuthor ? ideaAuthor.data.attributes.first_name : null;
+      const lastName = ideaAuthor ? ideaAuthor.data.attributes.last_name : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
       const bodyMultiloc = idea.data.attributes.body_multiloc;
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
-      const ideaImageLarge = (ideaImage ? ideaImage.data.attributes.versions.large : null);
-      const ideaImageMedium = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
+      const ideaImageLarge = (ideaImage && _.has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
+      const ideaImageMedium = (ideaImage && _.has(ideaImage, 'data.attributes.versions.medium') ? ideaImage.data.attributes.versions.medium : null);
       const isSafari = bowser.safari;
+      const ideaLocation = idea.data.attributes.location_point_geojson || null;
+      const ideaAdress = idea.data.attributes.location_description || null;
 
       const ideaMetaContent = (
         <MetaContent>
           <VoteLabel>{formatMessage(messages.voteOnThisIdea)}</VoteLabel>
 
-          {!unauthenticatedError && 
+          {!unauthenticatedError &&
             <VoteControl ideaId={idea.data.id} unauthenticatedVoteClick={this.unauthenticatedVoteClick} />
           }
 
@@ -473,19 +558,44 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
               <LeftColumn>
                 {ideaImageLarge ? <IdeaImage src={ideaImageLarge} /> : null}
 
-                <AuthorContainer>
-                  <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />
-                  <AuthorMeta>
-                    <AuthorName to={`/profile/${ideaAuthor.data.attributes.slug}`}>
-                      <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} />
-                    </AuthorName>
-                    {createdAt &&
-                      <TimeAgo>
-                        <FormattedRelative value={createdAt} />
-                      </TimeAgo>
+                <AuthorAndAdressWrapper>
+                  <AuthorContainer>
+                    <AuthorAvatar userId={authorId} size="small" onClick={authorId ? this.goToUserProfile : () => {}} />
+                    <AuthorMeta>
+                      <AuthorName to={ideaAuthor ?  `/profile/${ideaAuthor.data.attributes.slug}` :  ''}>
+                        {(ideaAuthor && firstName && lastName)
+                          ? <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} />
+                          : <span dangerouslySetInnerHTML={{ __html: formatMessage(messages.byDeletedAuthor, { deletedUser: `<span class="deleted-user">${formatMessage(messages.deletedUser)}</span>` }) }} />
+                        }
+                      </AuthorName>
+                      {createdAt &&
+                        <TimeAgo>
+                          <FormattedRelative value={createdAt} />
+                        </TimeAgo>
+                      }
+                    </AuthorMeta>
+                  </AuthorContainer>
+
+                  {ideaLocation && <LocationButton style="text" onClick={this.handleMapToggle}>
+                    {(this.state.showMap) &&
+                      <span>
+                        <FormattedMessage {...messages.closeMap} />
+                        <StyledPositionIcon name="close" />
+                      </span>
                     }
-                  </AuthorMeta>
-                </AuthorContainer>
+                    {(!this.state.showMap) &&
+                      <span>
+                        <FormattedMessage {...messages.openMap} />
+                        <StyledPositionIcon name="position" />
+                      </span>
+                    }
+                  </LocationButton>}
+                </AuthorAndAdressWrapper>
+
+                {ideaLocation ? <MapWrapper className={`${this.state.showMap ? '' : 'hidden'}`}>
+                  {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
+                  <IdeaMap location={ideaLocation} />
+                </MapWrapper> : null}
 
                 <IdeaBody>
                   <T value={bodyMultiloc} />

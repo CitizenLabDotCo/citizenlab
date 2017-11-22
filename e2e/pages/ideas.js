@@ -3,7 +3,6 @@ const commands = {
     return this
     .waitForElementVisible('@searchInput')
     .setValue('@searchInput', text)
-    .click('@searchButton')
     .waitForElementVisible('@ideasContainer');
   },
 
@@ -11,7 +10,7 @@ const commands = {
     return this
     .waitForElementVisible('@ideasList')
     .waitForElementVisible('@sortFilter')
-    .click('#e2e-ideas-sort-filter button')
+    .click('#e2e-ideas-sort-filter .e2e-filter-selector-button')
     .waitForElementVisible('.e2e-filter-selector-dropdown-list')
     .click('.e2e-filter-selector-dropdown-list li:nth-child(3)')
     .waitForElementVisible('@firstIdea', 10000);
@@ -26,7 +25,6 @@ module.exports = {
     firstIdea: { selector: '#e2e-ideas-list:first-child' },
     ideasContainer: { selector: '#e2e-ideas-container' },
     ideasList: { selector: '#e2e-ideas-list' },
-    searchButton: { selector: '.e2e-ideas-search-button' },
     searchInput: { selector: '#e2e-ideas-search' },
   },
   commands: [commands],

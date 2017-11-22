@@ -27,6 +27,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabCustomize',
     defaultMessage: 'Customize',
   },
+  tabPages: {
+    id: 'app.containers.AdminPage.SettingsPage.tabPages',
+    defaultMessage: 'Pages',
+  },
   organizationName: {
     id: 'app.containers.AdminPage.SettingsPage.organizationName',
     defaultMessage: '{type, select, generic {Organization} other {City}} name',
@@ -112,7 +116,7 @@ export default defineMessages({
     defaultMessage: 'The provided title exceeds the maximum allowed character limit of 35',
   },
   subtitleLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.titleLabel',
+    id: 'app.containers.AdminPage.SettingsPage.subtitleLabel',
     defaultMessage: 'Header subtitle {locale}',
   },
   subtitleMaxCharError: {

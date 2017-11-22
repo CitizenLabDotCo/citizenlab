@@ -31,7 +31,8 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & Route
 
     this.tabs = [
       { label: formatMessage(messages.tabSettings), url: '/admin/settings' },
-      { label: formatMessage(messages.tabCustomize), url: '/admin/settings/customize' }
+      { label: formatMessage(messages.tabCustomize), url: '/admin/settings/customize' },
+      { label: formatMessage(messages.tabPages), url: '/admin/settings/pages' },
     ];
 
     this.resource = {

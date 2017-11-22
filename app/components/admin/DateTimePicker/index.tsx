@@ -42,7 +42,7 @@ export default class DateTimePicker extends React.PureComponent<Props, State> {
   state: State;
 
   constructor (props) {
-    super(props);
+    super(props as any);
 
     this.state = {
       focused: false,
@@ -54,6 +54,11 @@ export default class DateTimePicker extends React.PureComponent<Props, State> {
     if (nextProps.value && nextProps.value !== this.props.value) {
       this.setState({ selectedMoment: moment(nextProps.value) });
     }
+  }
+
+  componentDidMount() {
+    // Update the parent component value, useful when initializing a new picker
+    this.updateDateTime(this.state.selectedMoment);
   }
 
   updateDateTime = (newMoment: moment.Moment) => {

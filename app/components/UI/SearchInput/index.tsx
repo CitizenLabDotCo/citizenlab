@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as _ from 'lodash';
+import * as Rx from 'rxjs/Rx';
 
 // libraries
 import queryString from 'query-string';
@@ -24,26 +26,40 @@ const Container = styled.form`
   position: relative;
 `;
 
-const SearchButton = styled.button`
-  background: none;
-  border: none;
-  margin: 0 0 0 -36px;
-  padding: 0;
-  z-index: 2;
-`;
+const StyledInput = styled(Input)`
+  width: 100%;
 
-const SearchIcon = styled(Icon)`
-  fill: #84939E;
-  height: 21px;
-  cursor: pointer;
-
-  &:hover {
-    fill: #000;
+  input {
+    width: 100%;
+    padding-right: 45px;
   }
 `;
 
-const StyledInput = styled(Input)`
-  width: 100%;
+const StyledIcon = styled(Icon)`
+  fill: #84939E;
+  height: 100%;
+`;
+
+const IconWrapper = styled.div`
+  width: 21px;
+  height: 21px;
+  margin: 0 0 0 -36px;
+  margin-top: -1px;
+  z-index: 2;
+
+  &.clear {
+    cursor: pointer;
+
+    ${StyledIcon} {
+      height: 13px;
+    }
+
+    &:hover {
+      ${StyledIcon} {
+        fill: #000;
+      }
+    }
+  }
 `;
 
 interface Props {
@@ -58,10 +74,22 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
     this.props.onChange(value);
   }
 
+  handleOnClick = (event) => {
+    event.preventDefault();
+
+    const { value } = this.props;
+
+    if (_.isString(value) && !_.isEmpty(value)) {
+      this.props.onChange('');
+    }
+  }
+
   render() {
     const className = this.props['className'];
     const { value } = this.props;
     const { formatMessage } = this.props.intl;
+    const iconName = (_.isString(value) && !_.isEmpty(value) ? 'close2' : 'search');
+    const canClear = (_.isString(value) && !_.isEmpty(value));
 
     return (
       <Container className={className}>
@@ -72,9 +100,9 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
           placeholder={formatMessage(messages.searchPlaceholder)}
           onChange={this.handleOnChange}
         />
-        <SearchButton className="e2e-ideas-search-button" >
-          <SearchIcon name="search" className="search-icon" />
-        </SearchButton>
+          <IconWrapper onClick={this.handleOnClick} className={canClear ? 'clear' : ''}>
+            <StyledIcon name={iconName} />
+          </IconWrapper>
       </Container>
     );
   }

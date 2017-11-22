@@ -16,6 +16,7 @@ import messages from './messages.js';
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
+import { LEGAL_PAGES } from 'services/pages';
 
 // style
 import styled from 'styled-components';
@@ -144,8 +145,8 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       locale: null,
       currentTenant: null
@@ -191,23 +192,18 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
 
           <SecondLine>
             <PagesNav>
-              <li>
-                <StyledLink to="/pages/terms-and-conditions">
-                  <FormattedMessage {...messages.termsLink} />
-                </StyledLink>
-              </li>
-              <Separator>|</Separator>
-              <li>
-                <StyledLink to="/pages/privacy-policy">
-                  <FormattedMessage {...messages.privacyLink} />
-                </StyledLink>
-              </li>
-              <Separator>|</Separator>
-              <li>
-                <StyledLink to="/pages/cookie-policy">
-                  <FormattedMessage {...messages.cookiesLink} />
-                </StyledLink>
-              </li>
+              {LEGAL_PAGES.map((slug, index) => (
+                <span key={slug}>
+                  {index !== 0  &&
+                    <Separator>|</Separator>
+                  }
+                  <li>
+                    <StyledLink to={`/pages/${slug}`}>
+                      <FormattedMessage {...messages[slug]} />
+                    </StyledLink>
+                  </li>
+                </span>
+              ))}
             </PagesNav>
 
             <PoweredBy href="https://www.citizenlab.co/">

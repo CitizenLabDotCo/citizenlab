@@ -5,7 +5,7 @@
 version: 2
 jobs:
 
-  lint_js:
+  lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: ~/cl2-front
@@ -23,8 +23,9 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run lint:js --silent
+      - run: npm run lint:ts --silent
 
-  lint_ts:
+  extract_intl:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: ~/cl2-front
@@ -41,7 +42,15 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm run lint:ts --silent
+      - run: npm run extract-intl
+      - run: git add app/translations/*.json
+      - run: git config --global user.email "hello@citizenlab.co"
+      - run: git config --global user.name "CircleCI"
+      - add_ssh_keys:
+          fingerprints:
+            - "54:03:ca:0f:4e:7a:fc:fa:6e:30:ef:80:2e:da:02:c4"
+      - run: git diff --quiet && git diff --staged --quiet || git commit -m "Translations updated by CI (extract-intl)"
+      - run: git push origin $CIRCLE_BRANCH
 
   build:
     docker:
@@ -135,38 +144,42 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - lint_js:
-          filters:
-            branches:
-              ignore: crowdin_master
-      - lint_ts:
+      - lint:
           filters:
             branches:
               ignore: crowdin_master
       - build:
+          requires:
+            - lint
           filters:
             branches:
               ignore: crowdin_master
+      - extract_intl:
+          requires:
+            - lint
+            - build
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - master
       - deploy_demo:
           requires:
-            - lint_js
-            - lint_ts
+            - lint
             - build
           filters:
             branches:
               only: master
       - deploy_crowdin:
           requires:
-            - lint_js
-            - lint_ts
+            - lint
             - build
           filters:
             branches:
               only: master
       - deploy_production:
           requires:
-            - lint_js
-            - lint_ts
+            - lint
             - build
           filters:
             branches:

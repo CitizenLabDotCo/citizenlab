@@ -19,6 +19,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -39,17 +40,35 @@ const BackgroundColor = styled.div`
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  padding-top: 30px;
   padding-bottom: 80px;
-  z-index: 2;
 `;
 
 const FiltersArea = styled.div`
   width: 100%;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  margin-bottom: 40px;
+  margin-top: 30px;
+  margin-bottom: 35px;
+
+  ${media.smallerThanMaxTablet`
+    flex-direction: column;
+    align-items: left;
+    justify-content: flex-start;
+    margin: 0;
+  `}
+`;
+
+const FilterArea = styled.div`
+  height: 60px;
+  display: flex;
+  align-items: center;
+
+  ${media.smallerThanMaxTablet`
+    width: 100%;
+    justify-content: flex-end;
+  `}
 `;
 
 type Props = {};
@@ -66,8 +85,8 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
   unlisten: Function | null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
 
     const query = browserHistory.getCurrentLocation().query;
     let filter = {};
@@ -140,16 +159,13 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
     return (
       <Container>
 
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
-        />
-
         <BackgroundColor />
 
         <StyledContentContainer>
           <FiltersArea id="e2e-ideas-filters">
-            <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
+            <FilterArea>
+              <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
+            </FilterArea>
           </FiltersArea>
           <ProjectCards filter={filter} />
         </StyledContentContainer>

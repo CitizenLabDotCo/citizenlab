@@ -64,6 +64,10 @@ const StyledRow = styled.div`
       opacity: 0;
     }
   }
+
+  &.e2e-admin-list-head-row {
+    border-top: 0;
+  }
 `;
 
 export const List = ({ children, ...props }) => (
@@ -80,4 +84,10 @@ export const Row = ({ children, ...props }) => (
       {children}
     </StyledRow>
   </CSSTransition>
+);
+
+export const HeadRow = ({ children, ...props }) => (
+  <StyledRow className={`e2e-admin-list-head-row ${props['className']}`}>
+    {children}
+  </StyledRow>
 );

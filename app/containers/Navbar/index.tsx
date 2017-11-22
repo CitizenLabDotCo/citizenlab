@@ -18,6 +18,7 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { IUser } from 'services/users';
 
 // utils
+import eventEmitter from 'utils/eventEmitter';
 import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
@@ -30,6 +31,9 @@ import messages from './messages';
 import { darken } from 'polished';
 import styled, { ThemeProvider, css, keyframes } from 'styled-components';
 
+// typings
+import { IModalInfo } from 'containers/App';
+
 const Container: any = styled.div`
   width: 100%;
   height: ${(props) => props.theme.menuHeight}px;
@@ -39,7 +43,6 @@ const Container: any = styled.div`
   position: fixed;
   top: 0;
   background: #fff;
-  border-bottom: solid 1px #fff;
   box-shadow: ${(props: any) => props.alwaysShowBorder ? '0px 1px 3px rgba(0, 0, 0, 0.13)' : '0px 1px 3px rgba(0, 0, 0, 0)'};
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -73,20 +76,12 @@ const LogoLink = styled(Link) `
   align-items: center;
 `;
 
-const Logo = styled.div`
-  cursor: pointer;
+const Logo = styled.img`
   height: 42px;
   padding: 0px;
   padding-right: 15px;
   padding-left: 30px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-
-  img {
-    height: 100%;
-  }
+  cursor: pointer;
 `;
 
 const NavigationItems = styled.div`
@@ -123,7 +118,7 @@ const Right = styled.div`
   display: flex;
   z-index: 2;
   align-items: center;
-  margin-right: 10px;
+  padding-right: 30px;
 `;
 
 const RightItem: any = styled.div`
@@ -135,6 +130,10 @@ const RightItem: any = styled.div`
   padding-right: 18px;
   outline: none;
 
+  &:last-child {
+    padding-right: 0px;
+  }
+
   &.notification {
     padding-left: 10px;
   }
@@ -143,17 +142,22 @@ const RightItem: any = styled.div`
     outline: none;
   }
 
-  ${(props: any) => props.hideOnPhone && media.phone`display: none;`}
-`;
+  ${media.phone`
+    &.addIdea {
+      padding: 0px;
+    }
+  `}
 
-const AddIdeaButton = styled(Button)``;
+  ${(props: any) => props.hideOnPhone && media.phone`
+    display: none;
+  `}
+`;
 
 const LoginLink = styled.div`
   color: ${(props) => props.theme.colorMain};
   font-size: 16px;
   font-weight: 400;
-  padding-left: 0px;
-  padding-right: 30px;
+  padding: 0;
 
   &:hover {
     color: ${(props) => darken(0.15, props.theme.colorMain)};
@@ -175,12 +179,14 @@ type State = {
   scrolled: boolean;
 };
 
+export const namespace = 'containers/Navbar/index';
+
 class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & RouterState, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       authUser: null,
       currentTenant: null,
@@ -210,22 +216,10 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
   }
 
   componentDidMount() {
-    const getScrollTop = () => {
-      if (!_.isUndefined(pageYOffset)) {
-        return pageYOffset;
-      } else {
-        const B = document.body;
-        let D = document.documentElement;
-        D = (D.clientHeight) ? D : B;
-        return D.scrollTop;
-      }
-    };
-
     this.subscriptions.push(
-      Rx.Observable.fromEvent(window, 'scroll').sampleTime(20).subscribe(() => {
+      Rx.Observable.fromEvent(window, 'scroll').sampleTime(20).subscribe((bleh) => {
         this.setState((state) => {
-          const scrollTop = getScrollTop();
-          const scrolled = (scrollTop > 0);
+          const scrolled = (window.scrollY > 0);
           return (state.scrolled !== scrolled ? { scrolled } : state);
         });
       })
@@ -236,9 +230,19 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  goToAddIdeaPage = () => {
-    browserHistory.push('/ideas/new');
+  /*
+  goToAddIdeaPage = (event) => {
+    event.preventDefault();
+
+    eventEmitter.emit<IModalInfo>(namespace, 'goToAddIdeaPage', {
+      type: 'add-idea',
+      id: null,
+      url: `/ideas/new`
+    });
+
+    // browserHistory.push('/ideas/new');
   }
+  */
 
   toggleNotificationPanel = () => {
     if (this.state.notificationPanelOpened) {
@@ -264,15 +268,19 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
     const { pathname } = this.props.location;
     const { formatMessage } = this.props.intl;
     const { authUser, currentTenant, currentTenantLogo, scrolled } = this.state;
-    const alwaysShowBorder = (pathname.startsWith('/ideas/') 
-                              || pathname.startsWith('/reset-password')
-                              || pathname.startsWith('/admin')
-                              || pathname === 'sign-in'
-                              || pathname === '/sign-in' 
-                              || pathname === 'sign-up' 
-                              || pathname === '/sign-up'
-                              || pathname === 'password-recovery'
-                              || pathname === '/password-recovery');
+    const alwaysShowBorder = [
+      'ideas/',
+      'admin',
+      'profile',
+      'complete-signup',
+      'sign-in',
+      'sign-up',
+      'password-recovery',
+      'reset-password',
+      'authentication-error'
+    ].some((urlSegment) => {
+      return pathname.startsWith('/' + urlSegment);
+    });
 
     return (
       <div>
@@ -281,9 +289,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
           <Left>
             {currentTenantLogo &&
               <LogoLink to="/">
-                <Logo>
-                  <img src={currentTenantLogo} alt="logo" />
-                </Logo>
+                <Logo src={currentTenantLogo} alt="logo" />
               </LogoLink>
             }
 
@@ -297,18 +303,21 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
               <NavigationItem to="/projects" activeClassName="active">
                 <FormattedMessage {...messages.pageProjects} />
               </NavigationItem>
+              <NavigationItem to="/pages/information" activeClassName="active">
+                <FormattedMessage {...messages.pageInformation} />
+              </NavigationItem>
             </NavigationItems>
           </Left>
+
           <Right>
-            <RightItem>
-              <AddIdeaButton
+            <RightItem className="addIdea">
+              <Button
                 className="e2e-add-idea-button"
                 text={formatMessage(messages.startIdea)}
                 style="primary"
                 size="1"
-                padding="10px 16px"
                 icon="plus-circle"
-                onClick={this.goToAddIdeaPage}
+                linkTo="/ideas/new"
                 circularCorners={true}
               />
             </RightItem>

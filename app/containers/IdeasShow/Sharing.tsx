@@ -68,7 +68,7 @@ const Container = styled.div`
     transition: all 100ms ease-out;
     margin: 0;
     padding: 0;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 
     &.twitter {
       ${Text} {
@@ -133,8 +133,8 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps, S
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       currentTenant: null
     };

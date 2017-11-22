@@ -26,6 +26,7 @@ const Container: any = styled.div`
     border: solid 1px #ccc;
     background: #fff;
     overflow: hidden;
+    -webkit-appearance: none;
   
     &::placeholder {
       color: #aaa;
@@ -71,8 +72,8 @@ type State = {};
 export default class TextArea extends React.PureComponent<Props, State> {
   textareaElement: HTMLTextAreaElement | null = null;
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props as any);
     this.textareaElement = null;
   }
 
