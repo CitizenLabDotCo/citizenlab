@@ -9,7 +9,7 @@ import { ImageFile } from 'react-dropzone';
 import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import Upload from 'components/UI/Upload';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Toggle from 'components/UI/Toggle';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
 import Select from 'components/UI/Select';
@@ -23,7 +23,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import styled from 'styled-components';
 
 // utils
-import { getBase64, imageUrlToFileObservable } from 'utils/imageTools';
+import { getBase64FromFile, convertUrlToFileObservable } from 'utils/imageTools';
 import getSubmitState from 'utils/getSubmitState';
 
 // i18n
@@ -111,8 +111,8 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
 
       currentTenant$.switchMap((currentTenant) => {
         return Rx.Observable.combineLatest(
-          imageUrlToFileObservable(_.get(currentTenant, 'data.attributes.logo.large')),
-          imageUrlToFileObservable(_.get(currentTenant, 'data.attributes.header_bg.large')),
+          convertUrlToFileObservable(_.get(currentTenant, 'data.attributes.logo.large')),
+          convertUrlToFileObservable(_.get(currentTenant, 'data.attributes.header_bg.large')),
         ).map(([currentTenantLogo, currentTenantHeaderBg]) => ({
           currentTenant,
           currentTenantLogo,
@@ -162,6 +162,16 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
         [name]: newImage
       },
       [name]: [newImage]
+    }));
+  }
+
+  handleUploadOnUpdate = (name: 'logo' | 'header_bg') => (updatedImages: ImageFile[]) => {
+    this.setState((state: State) => ({
+      attributesDiff: {
+        ...state.attributesDiff,
+        [name]: (updatedImages && updatedImages.length > 0 ? updatedImages[0] : null)
+      },
+      [name]: (updatedImages && updatedImages.length > 0 ? updatedImages : null)
     }));
   }
 
@@ -251,11 +261,11 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
         const updatedTenantProperties: IUpdatedTenantProperties = _.cloneDeep(attributesDiff as IUpdatedTenantProperties);
 
         if (_.has(attributesDiff, 'logo') && attributesDiff.logo !== null && attributesDiff.logo !== undefined) {
-          updatedTenantProperties.logo = await getBase64(attributesDiff.logo);
+          updatedTenantProperties.logo = await getBase64FromFile(attributesDiff.logo);
         }
 
         if (_.has(attributesDiff, 'header_bg') && attributesDiff.header_bg !== null && attributesDiff.header_bg !== undefined) {
-          updatedTenantProperties.header_bg = await getBase64(attributesDiff.header_bg);
+          updatedTenantProperties.header_bg = await getBase64FromFile(attributesDiff.header_bg);
         }
 
         await updateTenant(currentTenant.data.id, updatedTenantProperties);
@@ -316,14 +326,16 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
 
               <FieldWrapper key={'logo'}>
                 <Label><FormattedMessage {...messages['logo']} /></Label>
-                <Upload
-                  accept="image/jpg, image/jpeg, image/png, image/gif"
-                  maxItems={1}
-                  items={logo}
+                <ImagesDropzone
+                  acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                  maxNumberOfImages={1}
+                  images={logo}
+                  imagePreviewRatio={1}
+                  maxImagePreviewWidth="150px"
                   onAdd={this.handleUploadOnAdd('logo')}
+                  onUpdate={this.handleUploadOnUpdate('logo')}
                   onRemove={this.handleUploadOnRemove('logo')}
                   placeholder={formatMessage(messages.uploadPlaceholder)}
-                  disallowDeletion={false}
                   errorMessage={logoError}
                 />
               </FieldWrapper>
@@ -346,14 +358,16 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                 <Label>
                   <FormattedMessage {...messages['header_bg']} />
                 </Label>
-                <Upload
-                  accept="image/jpg, image/jpeg, image/png, image/gif"
-                  maxItems={1}
-                  items={header_bg}
+                <ImagesDropzone
+                  acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                  maxNumberOfImages={1}
+                  images={header_bg}
+                  imagePreviewRatio={1}
+                  maxImagePreviewWidth="150px"
                   onAdd={this.handleUploadOnAdd('header_bg')}
+                  onUpdate={this.handleUploadOnUpdate('header_bg')}
                   onRemove={this.handleUploadOnRemove('header_bg')}
                   placeholder={formatMessage(messages.uploadPlaceholder)}
-                  disallowDeletion={false}
                   errorMessage={headerError}
                 />
               </FieldWrapper>

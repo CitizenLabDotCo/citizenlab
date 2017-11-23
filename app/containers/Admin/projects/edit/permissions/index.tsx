@@ -45,16 +45,20 @@ const StyledLabel = styled.label`
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
-  margin-bottom: 15px;
+`;
+
+const RadioButtonsWrapper = styled.div`
+  margin-top: 15px;
+  margin-bottom: 30px;
 `;
 
 const StyledRadio = styled(Radio)`
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
 
   .text {
     color: #333;
-    color: red;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
     line-height: 22px;
   }
@@ -178,34 +182,25 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
     if (project) {
       const oldVisibleTo = _.cloneDeep(project.data.attributes.visible_to);
       const newVisibleTo = _.cloneDeep(visibleTo);
+      let promises: Promise<any>[] = [updateProject(project.data.id, { visible_to: visibleTo })];
 
-      if (newVisibleTo !== oldVisibleTo) {
-        try {
-          let promises: Promise<any>[] = [updateProject(project.data.id, { visible_to: visibleTo })];
+      try {
+        if (newVisibleTo !== 'groups') {
+          const groupsProjects = await groupsProjectsByProjectIdStream(project.data.id).observable.first().toPromise();
 
-          if (newVisibleTo !== 'groups' && oldVisibleTo === 'groups') {
-            const groupsProjects = await groupsProjectsByProjectIdStream(project.data.id).observable.first().toPromise();
-
-            if (groupsProjects && groupsProjects.data && groupsProjects.data.length > 0) {
-              promises = [
-                ...promises,
-                ...groupsProjects.data.map(groupsProject => deleteGroupProject(groupsProject.id))
-              ];
-            }
+          if (groupsProjects && groupsProjects.data && groupsProjects.data.length > 0) {
+            promises = [
+              ...promises,
+              ...groupsProjects.data.map(groupsProject => deleteGroupProject(groupsProject.id))
+            ];
           }
-
-          this.setState({ saving: true });
-          await Promise.all(promises);
-          this.setState({ saving: false, status: 'success' });
-        } catch (error) {
-          this.setState({ saving: false, status: 'error' });
         }
-      } else if (newVisibleTo === 'groups' && oldVisibleTo === 'groups') {
-        this.setState({ oldGroupsProjects: newGroupsProjects, saving: true });
 
-        setTimeout(() => {
-          this.setState({ saving: false, status: 'success' });
-        }, 600);
+        this.setState({ saving: true });
+        await Promise.all(promises);
+        this.setState({ saving: false, status: 'success' });
+      } catch (error) {
+        this.setState({ saving: false, status: 'error' });
       }
     }
   }
@@ -229,38 +224,43 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
             <FormattedMessage {...messages.permissionsTitle} />
           </Title>
 
+          {/*
           <Description>
             <FormattedMessage {...messages.permissionsSubtitle} />
           </Description>
+          */}
 
           <StyledFieldWrapper>
             <StyledLabel htmlFor="permissions-type">
               <FormattedMessage {...messages.permissionTypeLabel} />
             </StyledLabel>
-            <StyledRadio
-              onChange={this.handlePermissionTypeChange}
-              currentValue={visibleTo}
-              name="permissionsType"
-              label={formatMessage(messages.permissionsEveryoneLabel)}
-              value="public"
-              id="permissions-all"
-            />
-            <StyledRadio
-              onChange={this.handlePermissionTypeChange}
-              currentValue={visibleTo}
-              name="permissionsType"
-              label={formatMessage(messages.permissionsAdministrators)}
-              value="admins"
-              id="permissions-administrators"
-            />
-            <StyledRadio
-              onChange={this.handlePermissionTypeChange}
-              currentValue={visibleTo}
-              name="permissionsType"
-              label={formatMessage(messages.permissionsSelectionLabel)}
-              value="groups"
-              id="permissions-selection"
-            />
+
+            <RadioButtonsWrapper>
+              <StyledRadio
+                onChange={this.handlePermissionTypeChange}
+                currentValue={visibleTo}
+                name="permissionsType"
+                label={formatMessage(messages.permissionsEveryoneLabel)}
+                value="public"
+                id="permissions-all"
+              />
+              <StyledRadio
+                onChange={this.handlePermissionTypeChange}
+                currentValue={visibleTo}
+                name="permissionsType"
+                label={formatMessage(messages.permissionsAdministrators)}
+                value="admins"
+                id="permissions-administrators"
+              />
+              <StyledRadio
+                onChange={this.handlePermissionTypeChange}
+                currentValue={visibleTo}
+                name="permissionsType"
+                label={formatMessage(messages.permissionsSelectionLabel)}
+                value="groups"
+                id="permissions-selection"
+              />
+            </RadioButtonsWrapper>
           </StyledFieldWrapper>
 
           {groups}

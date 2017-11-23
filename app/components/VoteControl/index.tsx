@@ -54,8 +54,8 @@ const VoteIconContainer: any = styled.div`
   transition: all 100ms ease-out;
 
   ${(props: any) => props.size === 'small' ? css`
-    width: 46px;
-    height: 46px;
+    width: 47px;
+    height: 47px;
   ` : css``}
 `;
 

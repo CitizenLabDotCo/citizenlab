@@ -91,6 +91,7 @@ const IdeaTitle = styled.h1`
   ${media.smallerThanMaxTablet`
     font-size: 28px;
     line-height: 34px;
+    margin-right: 12px;
   `}
 `;
 
@@ -152,6 +153,10 @@ const AuthorAndAdressWrapper = styled.div`
 
 const LocationButton = styled(Button)`
   padding-right: 0;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const StyledPositionIcon = styled(Icon)`
@@ -166,6 +171,10 @@ const MapWrapper = styled.div`
   margin-bottom: 2rem;
   overflow: hidden;
   will-change: height, opacity;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 
   &.map-enter {
     height: 0;
@@ -262,12 +271,13 @@ const SeparatorRow = styled.div`
   height: 1px;
   margin: 0;
   margin-top: 45px;
-  margin-bottom: 35px;
+  margin-bottom: 25px;
   background: #e0e0e0;
+  background: #fff;
 
   ${media.smallerThanMaxTablet`
-    margin-top: 25px;
-    margin-bottom: 25px;
+    margin-top: 20px;
+    margin-bottom: 20px;
   `}
 `;
 
@@ -310,6 +320,15 @@ const StatusContainer = styled.div`
   margin-top: 35px;
 `;
 
+const StatusContainerMobile = styled(StatusContainer)`
+  margin-top: -25px;
+  margin-bottom: 35px;
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
 const StatusTitle = styled.h4`
   color: #84939d;
   font-size: 16px;
@@ -327,6 +346,20 @@ const SharingWrapper = styled.div`
 const StyledSharing: any = styled(Sharing)`
   margin-top: 45px;
   margin-bottom: 0px;
+`;
+
+const StyledSharingMobile = styled(StyledSharing)`
+  margin: 0;
+  margin-bottom: 30px;
+  padding: 0;
+  padding-top: 25px;
+  padding-bottom: 10px;
+  border-top: solid 1px #e0e0e0;
+  border-bottom: solid 1px #e0e0e0;
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const IconWrapper = styled.div`
@@ -347,7 +380,7 @@ const IconWrapper = styled.div`
 const GiveOpinionText = styled.div`
   color: #84939E;
   font-size: 15px;
-  font-weight: 400;
+  font-weight: 300;
   white-space: nowrap;
   transition: all 100ms ease-out;
 `;
@@ -545,6 +578,13 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <LeftColumn>
+                {statusId &&
+                  <StatusContainerMobile>
+                    {/* <StatusTitle><FormattedMessage {...messages.ideaStatus} /></StatusTitle> */}
+                    <StatusBadge statusId={statusId} />
+                  </StatusContainerMobile>
+                }
+
                 {ideaImageLarge ? <IdeaImage src={ideaImageLarge} /> : null}
 
                 <AuthorAndAdressWrapper>
@@ -601,6 +641,8 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                 </IdeaBody>
 
                 <SeparatorRow />
+
+                <StyledSharingMobile imageUrl={ideaImageMedium} />
 
                 {ideaComments && <Comments ideaId={idea.data.id} />}
               </LeftColumn>

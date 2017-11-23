@@ -48,7 +48,7 @@ const Text = styled.div`
   font-size: 15px;
   line-height: 19px;
   text-align: left;
-  font-weight: 400;
+  font-weight: 300;
   transition: all 100ms ease-out;
   white-space: nowrap;
 `;
@@ -68,7 +68,7 @@ const Container = styled.div`
     transition: all 100ms ease-out;
     margin: 0;
     padding: 0;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 
     &.twitter {
       ${Text} {

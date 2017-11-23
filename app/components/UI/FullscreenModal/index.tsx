@@ -92,7 +92,7 @@ const ModalContentInnerInner = styled.div`
 `;
 
 const TopBar: any = styled.div`
-  height: 90px;
+  height: 94px;
   position: absolute;
   top: 0;
   left: 0;
@@ -106,8 +106,8 @@ const TopBar: any = styled.div`
   transition: height 250ms ease-out;
 
   ${(props: any) => props.scrolled && css`
-    height: 66px;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+    height: 69px;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
   `}
 
   ${media.biggerThanMaxTablet`
@@ -135,8 +135,8 @@ const GoBackIcon = styled(Icon)`
 `;
 
 const GoBackButton = styled.div`
-  height: 46px;
-  width: 46px;
+  height: 47px;
+  width: 47px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -400,8 +400,6 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
     const { scrolled } = this.state;
     const { children, opened, headerChild } = this.props;
     const { formatMessage } = this.props.intl;
-
-    console.log(children);
 
     return (
       <TransitionGroup>
