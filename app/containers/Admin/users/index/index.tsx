@@ -11,6 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import Pagination from 'components/admin/Pagination';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
 import ExportLabel from 'components/admin/ExportLabel';
+import PageWrapper from 'components/admin/PageWrapper';
 
 // store
 import { preprocess } from 'utils';
@@ -27,14 +28,6 @@ import messages from './messages';
 import { ACTION_PREFIX } from './constants';
 import { searchTermChanged, pageSelectionChanged, sortColumnChanged, initialLoad, loadUsersXlsxRequest } from './actions';
 import localSagas from './sagas';
-
-const TableContainer = styled.div`
-  border: 1px solid ${props => props.theme.colors.separation};
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 30px;
-  bottom: 0px;
-`;
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -123,7 +116,7 @@ class AllUsers extends React.Component<Props, State> {
             <FormattedMessage {...messages.exportUsers} />
           </ExportLabel>
         </HeaderContainer>
-        <TableContainer>
+        <PageWrapper>
           <Input icon="search" onChange={this.handleSearchChange} />
           <Table>
             <Table.Header>
@@ -181,7 +174,7 @@ class AllUsers extends React.Component<Props, State> {
               </Table.Row>
             </Table.Footer>
           </Table>
-        </TableContainer>
+        </PageWrapper>
       </div>
     );
   }
