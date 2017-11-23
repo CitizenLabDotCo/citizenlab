@@ -67,7 +67,6 @@ import { translationMessages } from './i18n';
 // Import CSS reset and Global Styles
 // import '../vendor/foundation/main.scss';
 import './global-styles';
-import '../vendor/carousel-custom.scss';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'semantic-ui-css/semantic.css';
 
