@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { push } from 'react-router-redux';
@@ -53,7 +53,27 @@ const HeaderTitle = styled.h1`
   padding: 0;
 `;
 
-class AllUsers extends React.Component {
+// Typing
+interface Props {
+  currentPageNumber: number;
+  exportError?: string;
+  exportLoading: boolean;
+  initialLoad: Function;
+  lastPageNumber: number;
+  loadUsersXlsxRequest: Function;
+  pageSelectionChanged: Function;
+  resetUsers: Function;
+  searchTermChanged: Function;
+  sortAttribute?: string;
+  sortColumnChanged: Function;
+  sortDirection?: string;
+  userIds: any;
+}
+
+interface State {
+}
+
+class AllUsers extends React.Component<Props, State> {
 
   componentDidMount() {
     this.props.initialLoad();
@@ -75,6 +95,10 @@ class AllUsers extends React.Component {
     this.props.sortColumnChanged(attribute);
   }
 
+  createSortClickHandler = (attribute) => (event) => {
+    this.handleSortClick(attribute);
+  }
+
   render() {
     const { userIds, sortDirection, sortAttribute } = this.props;
     const sagas = {
@@ -90,6 +114,7 @@ class AllUsers extends React.Component {
             <FormattedMessage {...messages.headerIndex} />
           </HeaderTitle>
           <ExportLabel
+            className=""
             action={this.props.loadUsersXlsxRequest}
             loading={this.props.exportLoading}
             error={this.props.exportError}
@@ -102,12 +127,11 @@ class AllUsers extends React.Component {
           <Table>
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell>
-                </Table.HeaderCell>
+                <Table.HeaderCell />
                 <Table.HeaderCell>
                   <SortableTableHeader
                     direction={sortAttribute === 'last_name' ? sortDirection : null}
-                    onToggle={() => this.handleSortClick('last_name')}
+                    onToggle={this.createSortClickHandler('last_name')}
                   >
                     <FormattedMessage {...messages.name} />
                   </SortableTableHeader>
@@ -115,7 +139,7 @@ class AllUsers extends React.Component {
                 <Table.HeaderCell>
                   <SortableTableHeader
                     direction={sortAttribute === 'email' ? sortDirection : null}
-                    onToggle={() => this.handleSortClick('email')}
+                    onToggle={this.createSortClickHandler('email')}
                   >
                     <FormattedMessage {...messages.email} />
                   </SortableTableHeader>
@@ -123,7 +147,7 @@ class AllUsers extends React.Component {
                 <Table.HeaderCell>
                   <SortableTableHeader
                     direction={sortAttribute === 'created_at' ? sortDirection : null}
-                    onToggle={() => this.handleSortClick('created_at')}
+                    onToggle={this.createSortClickHandler('created_at')}
                   >
                     <FormattedMessage {...messages.member} />
                   </SortableTableHeader>
@@ -131,7 +155,7 @@ class AllUsers extends React.Component {
                 <Table.HeaderCell>
                   <SortableTableHeader
                     direction={sortAttribute === 'role' ? sortDirection : null}
-                    onToggle={() => this.handleSortClick('role')}
+                    onToggle={this.createSortClickHandler('role')}
                   >
                     <FormattedMessage {...messages.admin} />
                   </SortableTableHeader>
@@ -144,7 +168,7 @@ class AllUsers extends React.Component {
             <Table.Body>
               {userIds.map((id) => <Row key={id} userId={id} />)}
             </Table.Body>
-            <Table.Footer fullWidth>
+            <Table.Footer fullWidth={true}>
               <Table.Row>
                 <Table.HeaderCell colSpan="6">
                   <Pagination
@@ -162,22 +186,6 @@ class AllUsers extends React.Component {
   }
 }
 
-AllUsers.propTypes = {
-  userIds: ImmutablePropTypes.list.isRequired,
-  currentPageNumber: PropTypes.number.isRequired,
-  lastPageNumber: PropTypes.number.isRequired,
-  searchTermChanged: PropTypes.func.isRequired,
-  pageSelectionChanged: PropTypes.func.isRequired,
-  sortColumnChanged: PropTypes.func.isRequired,
-  initialLoad: PropTypes.func.isRequired,
-  sortDirection: PropTypes.string,
-  sortAttribute: PropTypes.string,
-  resetUsers: PropTypes.func.isRequired,
-  loadUsersXlsxRequest: PropTypes.func.isRequired,
-  exportLoading: PropTypes.bool.isRequired,
-  exportError: PropTypes.string,
-};
-
 const mapStateToProps = createStructuredSelector({
   currentPageNumber: (state) => state.getIn(['adminUsersIndex', 'ui', 'selectedPage']),
   sortDirection: (state) => state.getIn(['adminUsersIndex', 'ui', 'sortDirection']),
@@ -190,13 +198,13 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = {
-  goTo: push,
   searchTermChanged,
   pageSelectionChanged,
   sortColumnChanged,
   initialLoad,
-  resetUsers: wrapActionWithPrefix(resetUsers, ACTION_PREFIX),
   loadUsersXlsxRequest,
+  goTo: push,
+  resetUsers: wrapActionWithPrefix(resetUsers, ACTION_PREFIX),
 };
 
 export default preprocess(mapStateToProps, mapDispatchToProps)(AllUsers);
