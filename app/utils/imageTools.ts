@@ -18,7 +18,7 @@ export async function getBase64FromObjectUrl(objectUrl: string) {
     const reader = new FileReader();
     reader.onload = (event: any) => resolve(event.target.result);
     reader.onerror = (error) => reject(new Error(`error for getBase64FromObjectUrl()`));
-    reader.readAsDataURL(blob); 
+    reader.readAsDataURL(blob);
   });
 }
 
@@ -37,7 +37,13 @@ export function convertBlobToFile(blob: Blob, filename: string) {
 }
 
 export async function convertUrlToFile(imageUrl: string) {
-  const blob = await fetch(imageUrl).then((response) => response.blob());
+  // We don't cache this, to deal with CORS issues.
+  // https://bugs.chromium.org/p/chromium/issues/detail?id=260239
+  // https://stackoverflow.com/questions/26352083/chrome-cors-cache-requesting-same-file-from-two-different-origins
+  const headers = new Headers();
+  headers.append('cache-control', 'no-cache');
+  headers.append('pragma', 'no-cache');
+  const blob = await fetch(imageUrl, { headers }).then((response) => response.blob());
   const filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
   return convertBlobToFile(blob, filename);
 }

@@ -54,23 +54,23 @@ export default defineMessages({
     defaultMessage: 'Are you sure you want to remove this group from the project?',
   },
   save: {
-    id: 'app.containers.AdminPage.SettingsPage.save',
+    id: 'app.containers.AdminPage.groups.permissions.save',
     defaultMessage: 'Save',
   },
   saveError: {
-    id: 'app.containers.AdminPage.SettingsPage.saveError',
+    id: 'app.containers.AdminPage.groups.permissions.saveError',
     defaultMessage: 'Error',
   },
   saveSuccess: {
-    id: 'app.containers.AdminPage.SettingsPage.saveSuccess',
+    id: 'app.containers.AdminPage.groups.permissions.saveSuccess',
     defaultMessage: 'Success!',
   },
   saveErrorMessage: {
-    id: 'app.containers.AdminPage.SettingsPage.saveErrorMessage',
+    id: 'app.containers.AdminPage.groups.permissions.saveErrorMessage',
     defaultMessage: 'Something went wrong, please try again later.',
   },
   saveSuccessMessage: {
-    id: 'app.containers.AdminPage.SettingsPage.saveSuccessMessage',
+    id: 'app.containers.AdminPage.groups.permissions.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',
   },
 });
