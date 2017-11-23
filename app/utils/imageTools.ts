@@ -40,7 +40,9 @@ export async function imageUrlToFile(imageUrl: string) {
   // We don't cache this, to deal with CORS issues.
   // https://bugs.chromium.org/p/chromium/issues/detail?id=260239
   // https://stackoverflow.com/questions/26352083/chrome-cors-cache-requesting-same-file-from-two-different-origins
-  const headers = { 'cache-control': 'no-cache', pragma: 'no-cache' };
+  const headers = new Headers();
+  headers.append('cache-control', 'no-cache');
+  headers.append('pragma', 'no-cache');
   const blob = await fetch(imageUrl, { headers }).then((response) => response.blob());
   const filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
   return convertBlobToFile(blob, filename);
