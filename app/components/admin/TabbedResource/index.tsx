@@ -39,7 +39,8 @@ const TabbedNav = styled.nav`
   border-radius: 5px 5px 0 0;
   padding-left: 44px;
   display: flex;
-  border-bottom: 1px solid #eaeaea;
+  border: 1px solid ${props => props.theme.colors.separation};
+  border-bottom: 1px solid transparent;
 `;
 
 const Tab = styled.li`
@@ -53,25 +54,25 @@ const Tab = styled.li`
   }
 
   a {
-    color: #999;
-    font-size: 17px;
+    color: ${props => props.theme.colors.label};
+    font-size: 1.25rem;
     font-weight: 400;
-    line-height: 21px;
+    line-height: 1.5rem;
     text-transform: capitalize;
     padding: 0;
-    padding-top: 18px;
-    padding-bottom: 16px;
+    padding-top: 1em;
+    padding-bottom: 1em;
     border-bottom: 3px solid transparent;
     transition: all 100ms ease-out;
   }
 
   &:hover a {
-    color: #333;
+    color: ${props => props.theme.colors.text};
   }
 
   &.active a {
-    color: #333;
-    border-color: #d60065;
+    color: ${props => props.theme.colors.text};
+    border-color: ${props => props.theme.colors.clBlue};
   }
 
   &:not(.active):hover a {
@@ -80,6 +81,7 @@ const Tab = styled.li`
 `;
 
 const ChildWrapper = styled.div`
+  border: 1px solid ${props => props.theme.colors.separation};
   background: #fff;
   margin-bottom: 2rem;
   padding: 3rem;
