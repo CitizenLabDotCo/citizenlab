@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import { List } from 'immutable';
 import ImPropTypes from 'react-immutable-proptypes';
 
 // Comoponents
@@ -10,10 +10,15 @@ import Slider from 'components/forms/inputs/slider';
 // store
 import { updateUserFork } from 'resources/users/sagas';
 
-// intl
-// import messages from '../messages';
+interface Props {
+  roles: List<string>;
+  userId: string;
+}
 
-class SliderForm extends FormComponent {
+class SliderForm extends FormComponent<Props> {
+  isAdmin: boolean = false;
+  values: any;
+
   constructor(props) {
     super(props);
     this.saga = updateUserFork;
@@ -39,9 +44,6 @@ class SliderForm extends FormComponent {
     this.setState({ loading: false, disabled: false });
   }
 
-
-  handleSuccess = () => this.setState({ loading: false });
-
   handleChange = () => {
     this.values.id = this.props.userId;
     this.setState({ loading: true, disabled: false });
@@ -57,10 +59,5 @@ class SliderForm extends FormComponent {
     );
   }
 }
-
-SliderForm.propTypes = {
-  roles: ImPropTypes.list.isRequired,
-  userId: PropTypes.string.isRequired,
-};
 
 export default SliderForm;
