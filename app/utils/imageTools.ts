@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import 'whatwg-fetch';
 import { ImageFile } from 'react-dropzone';
 
-export async function getBase64(file: File | ImageFile) {
+export async function getBase64FromFile(file: File | ImageFile) {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event: any) => resolve(event.target.result);
@@ -22,7 +22,7 @@ export async function getBase64FromObjectUrl(objectUrl: string) {
   });
 }
 
-export function generateImagePreview(image: File | ImageFile) {
+export function generateImagePreviewFromFile(image: File | ImageFile) {
   const blob = new Blob([image], { type: image.type });
   const objectUrl = window.URL.createObjectURL(blob);
   return objectUrl;
@@ -36,16 +36,12 @@ export function convertBlobToFile(blob: Blob, filename: string) {
   return new File([blob], filename, { lastModified: Date.now() });
 }
 
-export async function imageUrlToFile(imageUrl: string) {
+export async function convertUrlToFile(imageUrl: string) {
   const blob = await fetch(imageUrl).then((response) => response.blob());
   const filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
   return convertBlobToFile(blob, filename);
 }
 
-export function imageUrlToFileObservable(imageUrl: string | null | undefined) {
-  if (imageUrl !== null && imageUrl !== undefined && _.isString(imageUrl)) {
-    return Rx.Observable.fromPromise(imageUrlToFile(imageUrl));
-  }
-
-  return Rx.Observable.of(null);
+export function convertUrlToFileObservable(imageUrl: string) {
+  return Rx.Observable.fromPromise(convertUrlToFile(imageUrl));
 }

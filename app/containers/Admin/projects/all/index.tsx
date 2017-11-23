@@ -104,18 +104,18 @@ const AddProjectLink = styled(Link)`
 `;
 
 const AddProjectIcon = styled(Icon)`
-  height: 30px;
+  height: 28px;
   fill: #999;
   transition: all 100ms ease-out;
 `;
 
 const AddProjectText = styled.div`
   color: #999;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 23px;
   font-weight: 400;
   text-align: center;
-  margin-top: 15px;
+  margin-top: 8px;
   transition: all 100ms ease-out;
 `;
 

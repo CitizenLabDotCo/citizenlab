@@ -17,7 +17,7 @@ import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
 import Editor from 'components/UI/Editor';
 import Button from 'components/UI/Button';
-import Upload from 'components/UI/Upload';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
 
 // services
@@ -262,6 +262,10 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
     this.globalState.set({ images, imageChanged: true });
   }
 
+  handleUploadOnUpdate = (updatedImages: ImageFile[]) => {
+    this.globalState.set({ images: updatedImages });
+  }
+
   handleUploadOnRemove = async (removedImage: ImageFile) => {
     const globalState = await this.globalState.get();
     const images = _(globalState.images).filter(image => image.name !== removedImage.name).value();
@@ -377,13 +381,15 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
 
           <FormElement>
             <Label value={formatMessage(messages.imageUploadLabel)} />
-            <Upload
-              items={images}
-              accept="image/jpg, image/jpeg, image/png, image/gif"
-              maxSize={5000000}
-              maxItems={1}
+            <ImagesDropzone
+              images={images}
+              imagePreviewRatio={135 / 298}
+              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              maxImageFileSize={5000000}
+              maxNumberOfImages={1}
               placeholder={formatMessage(messages.imageUploadPlaceholder)}
               onAdd={this.handleUploadOnAdd}
+              onUpdate={this.handleUploadOnUpdate}
               onRemove={this.handleUploadOnRemove}
             />
           </FormElement>

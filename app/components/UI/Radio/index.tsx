@@ -70,10 +70,11 @@ export default class Radio extends React.PureComponent<Props> {
   }
 
   render() {
+    const className = this.props['className'];
     const checked = (this.props.value === this.props.currentValue);
 
     return (
-      <Wrapper htmlFor={this.props.id}>
+      <Wrapper className={className} htmlFor={this.props.id}>
         <HiddenInput
           type="radio"
           name={this.props.name}

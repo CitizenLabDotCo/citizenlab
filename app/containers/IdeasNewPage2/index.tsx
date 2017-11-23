@@ -13,7 +13,6 @@ import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { ImageFile } from 'react-dropzone';
 
 // components
-import Upload from 'components/UI/Upload';
 import ButtonBar from './ButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import SignInUp from './SignInUp';
@@ -27,7 +26,7 @@ import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // utils
-import { getBase64 } from 'utils/imageTools';
+import { getBase64FromFile } from 'utils/imageTools';
 
 // i18n
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -249,7 +248,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
 
   async postIdeaImage(ideaId: string, image: ImageFile): Promise<IIdeaImage> {
     try {
-      const base64Image = await getBase64(image);
+      const base64Image = await getBase64FromFile(image);
       return await addIdeaImage(ideaId, base64Image, 0);
     } catch (error) {
       return error;
