@@ -18,7 +18,7 @@ class OmniauthCallbackController < ApplicationController
     if @user
       @identity.update(user: @user) unless @identity.user
       set_auth_cookie
-      redirect_to(add_uri_params(base_frontend_uri, omniauth_params))
+      redirect_to(add_uri_params(FrontendService.new.signon_success_url, omniauth_params))
     else
       @user = User.build_with_omniauth(auth)
       SideFxUserService.new.before_create(@user, nil)
