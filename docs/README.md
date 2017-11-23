@@ -1,5 +1,32 @@
 # Changelog
 
+## 2017-11-22
+
+### Fixed
+- When saving a phase in the admin, the spinner stops on success or errors
+- Deleting a user no longer breaks the idea listing, idea page and comments
+- Better error handling in the signup flow
+- Various bug fixes to the projects admin
+- The switches that control age, gender, ... now have an effect on the signup flow.
+- For new visitors, hard reloading will no longer be required
+
+### Added
+- Social Sign In with facebook and google. (Needs to be setup individually per customer)
+- Information pages are reachable through the navbar and editable through the admin
+- A partner API that allows our partners to list ideas and projects programmatically
+- Ideas with a location show a map on the idea show page
+- Activation of welcome and reset password e-mails
+
+### Changed
+- Changes to mobile menu layout
+- Changes to the style of switches
+- Better overall mobile experience for citizen-facing site
+
+### Known issues
+- If you visited the site before and the page did not load, you need to hard refresh.
+- If the "Customize" tab in the admin settings does not load, reload the browser on that page
+
+
 ## 2017-11-01
 
 ### Fixed

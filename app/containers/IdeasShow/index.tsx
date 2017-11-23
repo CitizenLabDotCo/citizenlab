@@ -34,7 +34,7 @@ import { commentsForIdeaStream, commentStream, IComments, IComment } from 'servi
 
 // i18n
 import T from 'components/T';
-import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative, FormattedHTMLMessage } from 'react-intl';
 import messages from './messages';
 
 // animations
@@ -117,6 +117,7 @@ const LeftColumn = styled.div`
   flex-grow: 1;
   margin: 0;
   padding: 0;
+  min-width: 0;
 `;
 
 const IdeaImage = styled.img`
@@ -141,8 +142,9 @@ const AuthorAndAdressWrapper = styled.div`
   flex-direction: column;
   margin-bottom: 2rem;
 
-  ${AuthorContainer} {
+  > * {
     flex: 1;
+    min-width: 0;
   }
 
   @media (min-width: 450px) {
@@ -153,10 +155,11 @@ const AuthorAndAdressWrapper = styled.div`
 
 const LocationButton = styled(Button)`
   padding-right: 0;
+  text-align: right;
 
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
+  button {
+    padding-right: 0 !important;
+  }
 `;
 
 const StyledPositionIcon = styled(Icon)`
@@ -169,6 +172,7 @@ const MapWrapper = styled.div`
   border: 1px solid ${props => props.theme.colors.separation};
   height: 265px;
   margin-bottom: 2rem;
+  position: relative;
   overflow: hidden;
   will-change: height, opacity;
 
@@ -199,6 +203,18 @@ const MapWrapper = styled.div`
   }
 `;
 
+const AddressWrapper = styled.p`
+  background: rgba(255, 255, 255, .7);
+  border-top: 1px solid #EAEAEA;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  padding: .5rem;
+  position: absolute;
+  right: 0;
+  z-index: 999;
+`;
+
 const AuthorAvatar = styled(Avatar)`
   width: 31px;
   height: 31px;
@@ -209,14 +225,19 @@ const AuthorAvatar = styled(Avatar)`
 const AuthorMeta = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 0 0 calc(100% - 39px);
+  min-width: 0;
 `;
 
 const AuthorName = styled(Link) `
   color: #333;
   font-size: 16px;
-  line-height: 20px;
   font-weight: 400;
+  line-height: 20px;
+  overflow: hidden;
   text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   &:hover {
     color: #333;
@@ -227,6 +248,10 @@ const AuthorName = styled(Link) `
     font-size: 14px;
     line-height: 18px;
   `}
+
+  .deleted-user {
+    font-style: italic;
+  }
 `;
 
 const TimeAgo = styled.div`
@@ -450,10 +475,10 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
     const idea$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {
       const ideaImages = idea.data.relationships.idea_images.data;
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
-      const ideaAuthorId = idea.data.relationships.author.data.id;
+      const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
       const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
       const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
-      const ideaAuthor$ = userByIdStream(ideaAuthorId).observable;
+      const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : Rx.Observable.of(null);
       const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
@@ -515,10 +540,10 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { locale, idea, ideaImage, ideaAuthor, ideaComments, loading, unauthenticatedError, showMap } = this.state;
     const { formatMessage, formatRelative } = this.props.intl;
 
-    if (!loading && idea !== null && ideaAuthor !== null) {
-      const authorId = ideaAuthor.data.id;
-      const firstName = ideaAuthor.data.attributes.first_name;
-      const lastName = ideaAuthor.data.attributes.last_name;
+    if (!loading && idea !== null) {
+      const authorId = ideaAuthor ? ideaAuthor.data.id : null;
+      const firstName = ideaAuthor ? ideaAuthor.data.attributes.first_name : null;
+      const lastName = ideaAuthor ? ideaAuthor.data.attributes.last_name : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
       const bodyMultiloc = idea.data.attributes.body_multiloc;
@@ -589,10 +614,13 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>
-                    <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />
+                    <AuthorAvatar userId={authorId} size="small" onClick={authorId ? this.goToUserProfile : () => {}} />
                     <AuthorMeta>
-                      <AuthorName to={`/profile/${ideaAuthor.data.attributes.slug}`}>
-                        <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} />
+                      <AuthorName to={ideaAuthor ?  `/profile/${ideaAuthor.data.attributes.slug}` :  ''}>
+                        {(ideaAuthor && firstName && lastName)
+                          ? <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} />
+                          : <span dangerouslySetInnerHTML={{ __html: formatMessage(messages.byDeletedAuthor, { deletedUser: `<span class="deleted-user">${formatMessage(messages.deletedUser)}</span>` }) }} />
+                        }
                       </AuthorName>
                       {createdAt &&
                         <TimeAgo>
@@ -611,7 +639,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                     }
                     {(!showMap) &&
                       <span>
-                        {ideaAdress}
+                        <FormattedMessage {...messages.openMap} />
                         <StyledPositionIcon name="position" />
                       </span>
                     }
@@ -629,6 +657,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                         exit={true}
                       >
                         <MapWrapper>
+                          {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
                           <IdeaMap location={ideaLocation} />
                         </MapWrapper>
                       </CSSTransition>

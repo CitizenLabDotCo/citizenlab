@@ -13,20 +13,20 @@ export default defineMessages({
     id: 'app.containers.footer.termsLink',
     defaultMessage: 'Terms of use',
   },
-  privacyLink: {
-    id: 'app.containers.footer.privacyLink',
+  information: {
+    id: 'app.containers.footer.information',
+    defaultMessage: 'Information',
+  },
+  'terms-and-conditions': {
+    id: 'app.containers.footer.terms-and-conditions',
+    defaultMessage: 'Terms and Conditions',
+  },
+  'privacy-policy': {
+    id: 'app.containers.footer.privacy-policy',
     defaultMessage: 'Privacy Policy',
   },
-  cookiesLink: {
-    id: 'app.containers.footer.cookiesLink',
-    defaultMessage: 'Cookies Policy',
-  },
-  informationsLink: {
-    id: 'app.containers.footer.informationsLink',
-    defaultMessage: 'About',
-  },
-  feedbackLink: {
-    id: 'app.containers.footer.feedbackLink',
-    defaultMessage: 'Give your opinion',
+  'cookie-policy': {
+    id: 'app.containers.footer.cookies-policy',
+    defaultMessage: 'Cookie Policy',
   },
 });

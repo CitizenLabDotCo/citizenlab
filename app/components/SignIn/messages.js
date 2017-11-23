@@ -46,7 +46,7 @@ export default defineMessages({
     defaultMessage: 'Or',
   },
   noAccount: {
-    id: 'app.containers.SignIn.createAnAccount',
+    id: 'app.containers.SignIn.noAccount',
     defaultMessage: `Don't have an account yet?`,
   },
   signUp: {

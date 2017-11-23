@@ -55,6 +55,10 @@ export default defineMessages({
     id: 'app.containers.app.navbar.pageProjects',
     defaultMessage: 'Projects',
   },
+  pageInformation: {
+    id: 'app.containers.app.navbar.pageInformation',
+    defaultMessage: 'Information',
+  },
   mobilePageHome: {
     id: 'app.containers.app.navbar.mobilePageHome',
     defaultMessage: 'Home',

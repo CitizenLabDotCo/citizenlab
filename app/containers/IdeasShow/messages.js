@@ -14,6 +14,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.closeMap',
     defaultMessage: 'Close Map',
   },
+  openMap: {
+    id: 'app.containers.IdeasShow.openMap',
+    defaultMessage: 'Show the idea on a map',
+  },
   ideaVoteSubmitError: {
     id: 'app.containers.IdeasShow.ideaVoteSubmitError',
     defaultMessage: 'Voting failed',
@@ -89,6 +93,14 @@ export default defineMessages({
   byAuthor: {
     id: 'app.containers.IdeasShow.byAuthor',
     defaultMessage: 'by {firstName} {lastName}',
+  },
+  byDeletedAuthor: {
+    id: 'app.containers.IdeasShow.byDeletedAuthor',
+    defaultMessage: 'by {deletedUser}',
+  },
+  deletedUser: {
+    id: 'app.containers.IdeasShow.deletedUser',
+    defaultMessage: 'deleted user',
   },
   author: {
     id: 'app.containers.IdeasShow.author',
