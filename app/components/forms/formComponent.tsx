@@ -3,7 +3,7 @@ import generateErrorsObject from './generateErrorsObject';
 
 
 interface Props {
-  saga: Function;
+  saga?: Function;
 }
 
 interface State {
@@ -16,7 +16,7 @@ interface State {
 // Comoponents
 class FormComponent<ExtraProps> extends React.Component<Props & ExtraProps, State> {
   values: any;
-  saga: Function | null;
+  saga?: Function;
   unmounted: boolean;
 
   constructor(props) {
@@ -30,10 +30,12 @@ class FormComponent<ExtraProps> extends React.Component<Props & ExtraProps, Stat
   }
 
   componentDidUpdate(prevProvs, prevState) {
-    const { run } = this.context.sagas;
-    const saga = this.saga || this.props.saga;
-    if (!prevState.loading && this.state.loading) {
-      run(saga, this.values, this.defaulOnSuccess, this.defaulOnError);
+    if (this.context.sagas && this.context.sagas) {
+      const { run } = this.context.sagas;
+      const saga = this.saga || this.props.saga;
+      if (!prevState.loading && this.state.loading) {
+        run(saga, this.values, this.defaulOnSuccess, this.defaulOnError);
+      }
     }
   }
 
