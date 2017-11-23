@@ -29,6 +29,7 @@ import { searchTermChanged, pageSelectionChanged, sortColumnChanged, initialLoad
 import localSagas from './sagas';
 
 const TableContainer = styled.div`
+  border: 1px solid ${props => props.theme.colors.separation};
   background-color: #fff;
   border-radius: 5px;
   padding: 30px;
