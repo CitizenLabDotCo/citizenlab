@@ -12,6 +12,7 @@ import Pagination from 'components/admin/Pagination';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
 import ExportLabel from 'components/admin/ExportLabel';
 import PageWrapper from 'components/admin/PageWrapper';
+import Button from 'components/UI/Button';
 
 // store
 import { preprocess } from 'utils';
@@ -36,6 +37,10 @@ const HeaderContainer = styled.div`
   padding: 0;
   margin: 0;
   margin-bottom: 30px;
+
+  .no-padding-right button {
+    padding-right: 0;
+  }
 `;
 
 const HeaderTitle = styled.h1`
@@ -54,7 +59,7 @@ interface Props {
   exportLoading: boolean;
   initialLoad: Function;
   lastPageNumber: number;
-  loadUsersXlsxRequest: Function;
+  loadUsersXlsxRequest: {(event): void};
   pageSelectionChanged: Function;
   resetUsers: Function;
   searchTermChanged: Function;
@@ -107,14 +112,14 @@ class AllUsers extends React.Component<Props, State> {
           <HeaderTitle>
             <FormattedMessage {...messages.headerIndex} />
           </HeaderTitle>
-          <ExportLabel
-            className=""
-            action={this.props.loadUsersXlsxRequest}
+          <Button
+            className="no-padding-right"
+            style={this.props.exportError ? 'error' : 'text'}
+            onClick={this.props.loadUsersXlsxRequest}
             loading={this.props.exportLoading}
-            error={this.props.exportError}
           >
             <FormattedMessage {...messages.exportUsers} />
-          </ExportLabel>
+          </Button>
         </HeaderContainer>
         <PageWrapper>
           <Input icon="search" onChange={this.handleSearchChange} />
