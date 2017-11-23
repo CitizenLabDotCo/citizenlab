@@ -26,7 +26,6 @@
   "app.components.ProjectCards.loadMore": "Toon meer projecten",
   "app.components.ProjectCards.noProjects": "Er werden geen projecten gevonden",
   "app.components.SearchInput.searchPlaceholder": "Zoeken",
-  "app.components.TopicSelect.header": "Dit is de TopicSelect component!",
   "app.components.UI.Select.noResults": "Geen opties beschikbaar",
   "app.components.Upload.dropYourFileHere": "Plaats je afbeelding hier",
   "app.components.Upload.errorMaxSizeExceeded": "Eén of meer bestanden overschrijden de upload limiet van {maxFileSize} Mb",
