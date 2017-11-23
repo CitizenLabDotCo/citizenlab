@@ -11,15 +11,15 @@ import {
 
 export function searchTermChanged(payload) {
   return {
-    type: SEARCH_TERM_CHANGED,
     payload,
+    type: SEARCH_TERM_CHANGED,
   };
 }
 
 export function searchTermStabilized(payload) {
   return {
-    type: SEARCH_TERM_STABILIZED,
     payload,
+    type: SEARCH_TERM_STABILIZED,
     meta: {
       track: {
         name: 'Admin users searched',
@@ -33,8 +33,8 @@ export function searchTermStabilized(payload) {
 
 export function pageSelectionChanged(payload) {
   return {
-    type: PAGE_SELECTION_CHANGED,
     payload,
+    type: PAGE_SELECTION_CHANGED,
     meta: {
       track: {
         name: 'Admin users pagination changed',
@@ -48,8 +48,8 @@ export function pageSelectionChanged(payload) {
 
 export function sortColumnChanged(payload) {
   return {
-    type: SORT_COLUMN_CHANGED,
     payload,
+    type: SORT_COLUMN_CHANGED,
     meta: {
       track: {
         name: 'Admin users sort column changed',
