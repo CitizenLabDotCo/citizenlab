@@ -282,6 +282,10 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  handleOnSSOClick = (provider) => () => {
+    window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
+  }
+
   render() {
     const { intl } = this.props;
     const { formatMessage } = this.props.intl;
@@ -364,7 +368,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                         style="primary"
                         size="1"
                         icon="google-colored"
-                        linkTo={`${AUTH_PATH}/google${socialLoginUrlParameter}`}
+                        onClick={this.handleOnSSOClick('google')}
                         circularCorners={true}
                       />
                     </FeatureFlag>
@@ -374,7 +378,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                         style="primary"
                         size="1"
                         icon="facebook-blue"
-                        linkTo={`${AUTH_PATH}/facebook${socialLoginUrlParameter}`}
+                        onClick={this.handleOnSSOClick('facebook')}
                         circularCorners={true}
                       />
                     </FeatureFlag>
