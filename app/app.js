@@ -163,3 +163,11 @@ if (!window.Intl) {
 } else {
   render(translationMessages);
 }
+
+// Remove the service worker. We can probably safely remove this in e.g. March 2018,
+// added to deal with legacy in an earlier version
+navigator.serviceWorker.getRegistrations().then((registrations) => {
+  registrations.forEach((registration) => {
+    registration.unregister();
+  });
+});
