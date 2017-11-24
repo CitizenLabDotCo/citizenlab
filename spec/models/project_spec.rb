@@ -29,9 +29,9 @@ RSpec.describe Project, type: :model do
 
     it "sanitizes script tags in the description" do
       project = create(:project, description_multiloc: {
-        "en" => "<p>Test</p><script>This should be removed!</script><h1>Title</h1>"
+        "en" => '<p>Test</p><script>This should be removed!</script><h1>Title</h1><ul><il>A bullet</il></ul><ol type="1"><il>And a listing</il></ol>'
       })
-      expect(project.description_multiloc).to eq({"en" => "<p>Test</p>This should be removed!<h1>Title</h1>"})
+      expect(project.description_multiloc).to eq({"en" => '<p>Test</p>This should be removed!<h1>Title</h1><ul><il>A bullet</il></ul><ol type="1"><il>And a listing</il></ol>'})
     end
     
   end

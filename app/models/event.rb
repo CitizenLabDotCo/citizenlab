@@ -12,7 +12,7 @@ class Event < ApplicationRecord
   
   def sanitize_description_multiloc
     self.description_multiloc = self.description_multiloc.map do |locale, description|
-      [locale, Rails::Html::WhiteListSanitizer.new.sanitize(description, tags: %w(p b u i strong a), attributes: %w(href))]
+      [locale, Rails::Html::WhiteListSanitizer.new.sanitize(description, tags: %w(p b u i strong a ul il ol), attributes: %w(href type style))]
     end.to_h
   end
 
