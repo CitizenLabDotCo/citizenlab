@@ -1,6 +1,7 @@
 require 'mongo'
 require 'redcarpet'
 require 'securerandom'
+require 'time'
 
 # require "rails"
 
@@ -13,7 +14,7 @@ namespace :migrate do
     migration_settings = JSON.load(open(url))
     platform = migration_settings['platform']
     password = migration_settings['password']
-    locales_mapping = migration_settings['locales_mapping'] || { 'en' => 'en', 'nl' => 'nl', 'fr' => 'fr' } 
+    locales_mapping = { 'en' => 'en', 'nl' => 'nl', 'nl-BE' => 'nl', 'fr' => 'fr' } 
     topics_mapping = migration_settings['topics_mapping'] || {}
     idea_statuses_mapping = migration_settings['idea_statuses_mapping'] || {}
 
@@ -211,10 +212,11 @@ namespace :migrate do
       d[:email] = u.dig('telescope', 'email') || (u['registered_emails'] || u['emails'])&.first['address']
     elsif u.dig('services', 'facebook', 'email')
       d[:email] = u.dig('services', 'facebook', 'email')
-    else
+    end
+    if !(d[:email] && d[:email].include?('@') && d[:email].include?('.'))
       @log.concat ["Couldn't find an email for user #{u.to_s}"]
       username = u.dig('profile', 'name') || u['username'] || u['_id']
-      d[:email] = "hello+#{username}@citizenlab.co".delete ' '
+      d[:email] = "hello+#{username.split('@').first}@citizenlab.co".delete ' '
     end
     # handle duplicate emails
     duplicate_user = User.find_by(email: d[:email])
@@ -227,39 +229,27 @@ namespace :migrate do
     if u.dig('services', 'facebook', 'first_name') && u.dig('services', 'facebook', 'last_name')
       d[:first_name] = u.dig('services', 'facebook', 'first_name')
       d[:last_name] = u.dig('services', 'facebook', 'last_name')
-    elsif u.dig('profile', 'name') || u['username'] ###
-      name_pts = (u.dig('profile', 'name') || u['username']).split
+    else
+      username = u.dig('profile', 'name') || u['username'] || d[:email].split('@').first
+      name_pts = username.split
       if name_pts.size < 2
-        name_pts = u['username'].split '_'
+        name_pts = username.split '_'
       end
       if name_pts.size < 2
-        name_pts = u['username'].split '.'
+        name_pts = username.split '.'
+      end
+      if name_pts.size < 2
+        name_pts = username.split '-'
       end
       if name_pts.size >= 2
         d[:first_name] = name_pts.first
         d[:last_name] = name_pts.drop(1).join ' '
       else
-        email_names = d[:email].split('@').first.split('.')
-        if email_names.size >= 2
-          d[:first_name] = email_names.first
-          d[:last_name] = email_names.drop(1).join ' '
-        elsif d[:email].split('@').first.split('_').size >= 2
-          email_names = d[:email].split('@').first.split('_')
-          d[:first_name] = email_names.first
-          d[:last_name] = email_names.drop(1).join ' '
-        elsif d[:email].split('@').first.split('-').size >= 2
-          email_names = d[:email].split('@').first.split('-')
-          d[:first_name] = email_names.first
-          d[:last_name] = email_names.drop(1).join ' '
-        else
-          d[:first_name] = u['username']
-          d[:last_name] = 'Unknown' ###
-          @log.concat ["Couldn't determine a last name for user #{u.to_s}"]
-        end
+        names = smart_name_split username
+        d[:first_name] = names.first
+        d[:last_name] = names.last
+        @log.concat ["Couldn't determine a last name for user #{u.to_s}, therefore chose #{d[:first_name]} #{d[:last_name]}"]
       end
-    else
-      @log.concat ["FATAL: Couldn't find a name for user #{u.to_s}"]
-      return
     end
     # password
     if u.dig('services', 'password', 'bcrypt')
@@ -333,14 +323,30 @@ namespace :migrate do
     end
   end
 
-  # def migrate_topic c, topics_hash, locales_mapping
-  #   begin
-  #     topics_hash[c['_id']] = Topic.create!(title_multiloc: map_multiloc(c['name_i18n'], locales_mapping), 
-  #                                           description_multiloc: map_multiloc(c['description_i18n'], locales_mapping)
-  #   rescue Exception => e
-  #     @log.concat [e.message+' '+c.to_s]
-  #   end
-  # end
+  def smart_name_split str
+    # when possible, the name is at the first occurence
+    # of two adjacent consonants after a vowel, or at
+    # the first occurance of a typical last name prefix
+    i = 1
+    while (i < str.size-1)
+      if str[i+1..-1].start_with?('van') || str[i+1..-1].start_with?('de')
+        return [str[0..i],str[i+1..-1]]
+      end
+      i += 1
+    end
+    vowels = ['a','e','i','o','u','y']
+    i = 0
+    while (i < str.size-2) && !vowels.include?(str[i])
+      i += 1
+    end
+    while (i < str.size-1) && (vowels.include?(str[i]) || vowels.include?(str[i+1]))
+      i +=1
+    end
+    if i < str.size-1
+      return [str[0..i],str[i+1..-1]]
+    end
+    [str,str]
+  end
 
   def migrate_project p, projects_hash, areas_hash, topics_hash, phases_hash, groups_hash, superadmin_id, locales_mapping
     d = {}
@@ -408,8 +414,8 @@ namespace :migrate do
       end
       # phases
       if p.dig('timeline', 'phases')
-        p.dig('timeline', 'phases').each do |p|
-          migrate_phase(p, record, phases_hash, locales_mapping)
+        p.dig('timeline', 'phases').each do |f|
+          migrate_phase(f, record, phases_hash, locales_mapping)
         end
       end
       projects_hash[p['_id']] = record
@@ -437,14 +443,19 @@ namespace :migrate do
     if e.dig('location')
       d[:location_multiloc] = Hash[d[:title_multiloc].map{|k,_| [k,e.dig('location')] } ]
     end
-    # start
-    if e['startAt']
-      d[:start_at] = e['startAt']
-    end
-    # end
-    if e['endAt']
-      d[:end_at] = e['endAt']
-    end
+    # start and end time
+    if e['startAt'] && e['endAt']
+      if DateTime.parse(e['startAt']) < DateTime.parse(e['endAt'])
+        d[:start_at] = e['startAt']
+        d[:end_at] = e['endAt']
+      elsif DateTime.parse(e['startAt']) > DateTime.parse(e['endAt'])
+        d[:end_at] = e['startAt']
+        d[:start_at] = e['endAt']
+      else
+        d[:start_at] = e['startAt']
+        d[:end_at] = "#{d[:start_at] + rand(12).hours}"
+      end
+    end 
     begin
       Event.create! d
     rescue Exception => e
@@ -472,14 +483,14 @@ namespace :migrate do
       d[:start_at] = p['startAt']
     else
       @log.concat ["Couldn't find the start date for phase #{p.to_s}"]
-      d[:start_at] = Faker::Date.between(1.year.ago, 1.year.from_now)
+      d[:start_at] = "#{Faker::Date.between(1.year.ago, 1.year.from_now)}"
     end
     # end
-    if p['endAt']
+    if p['endAt'] && DateTime.parse(d[:start_at]) < DateTime.parse(p['endAt'])
       d[:end_at] = p['endAt']
     else
       @log.concat ["Couldn't find the end date for phase #{p.to_s}"]
-      d[:end_at] = d[:start_at] + rand(12).hours
+      d[:end_at] = "#{d[:start_at] + rand(12).hours}"
     end
     begin
       phases_hash[p['_id']] = Phase.create! d
