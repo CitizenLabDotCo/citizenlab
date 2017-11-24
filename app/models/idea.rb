@@ -21,8 +21,9 @@ class Idea < ApplicationRecord
   has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
   belongs_to :idea_status
   has_many :activities, as: :item
-  has_many :idea_images, dependent: :destroy
-  has_many :idea_files, dependent: :destroy
+
+  has_many :idea_images, -> { order(:ordering) }, dependent: :destroy
+  has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport'
 
   PUBLICATION_STATUSES = %w(draft published closed spam)

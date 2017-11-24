@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  namespace :api, :defaults => {:format => :json} do
+  namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
 
       get 'comments/as_xlsx' => 'comments#index_xlsx'
@@ -98,6 +98,9 @@ Rails.application.routes.draw do
 
   get '/auth/:provider/callback', to: 'omniauth_callback#create'
   get '/auth/failure', to: 'omniauth_callback#failure'
+
+
+  mount PublicApi::Engine => "/api", as: 'public_api'
 
 
 end
