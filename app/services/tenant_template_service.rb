@@ -35,7 +35,14 @@ class TenantTemplateService
             model.send("#{field_name}=", field_value)
           end
         end
-        model.save!
+        begin 
+          model.save!
+        rescue Exception => e
+          if e.message == "Validation failed: Avatar could not download file: 404 Not Found"
+            # e.message = e.message + ": #{model.email} + #{template_name}" ### doesn't work
+          end
+          raise e
+        end
         obj_to_inst[attributes] = model
       end
     end

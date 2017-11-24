@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171115092024) do
+ActiveRecord::Schema.define(version: 20171117114456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -197,13 +197,14 @@ ActiveRecord::Schema.define(version: 20171115092024) do
     t.string "type"
     t.datetime "read_at"
     t.uuid "recipient_id"
-    t.string "user_id"
     t.string "idea_id"
     t.string "comment_id"
     t.string "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "initiating_user_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
+    t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
   end
@@ -276,6 +277,15 @@ ActiveRecord::Schema.define(version: 20171115092024) do
     t.index ["topic_id"], name: "index_projects_topics_on_topic_id"
   end
 
+  create_table "public_api_api_clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "secret"
+    t.uuid "tenant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_public_api_api_clients_on_tenant_id"
+  end
+
   create_table "tenants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "host"
@@ -345,6 +355,7 @@ ActiveRecord::Schema.define(version: 20171115092024) do
   add_foreign_key "identities", "users"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
+  add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "page_links", "pages", column: "linked_page_id"
   add_foreign_key "page_links", "pages", column: "linking_page_id"
@@ -354,5 +365,6 @@ ActiveRecord::Schema.define(version: 20171115092024) do
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
+  add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "votes", "users"
 end

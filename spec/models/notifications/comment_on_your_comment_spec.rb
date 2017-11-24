@@ -12,7 +12,7 @@ RSpec.describe Notifications::CommentOnYourComment, type: :model do
       notification = Notification.first
       expect(notification).to have_attributes(
         recipient_id: parent_comment.author_id,
-        user_id: child_comment.author_id,
+        initiating_user_id: child_comment.author_id,
         idea_id: parent_comment.idea_id,
         comment_id: child_comment.id,
         project_id: parent_comment.idea.project_id

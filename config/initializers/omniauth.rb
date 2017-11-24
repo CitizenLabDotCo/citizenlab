@@ -54,3 +54,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   # provider :mydigipass, :setup => MYDIGIPASS_SETUP_PROC
 end
 
+
+OmniAuth.config.full_host = -> (env) {
+  Tenant.current&.base_backend_uri
+}

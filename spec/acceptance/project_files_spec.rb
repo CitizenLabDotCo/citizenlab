@@ -12,7 +12,7 @@ resource "ProjectFile" do
     create_list(:project_file, 2, project: @project)
   end
 
-  get "api/v1/projects/:project_id/files" do
+  get "web_api/v1/projects/:project_id/files" do
     
     let(:project_id) { @project.id }
     example_request "List all file attachments of a project" do
@@ -22,7 +22,7 @@ resource "ProjectFile" do
     end
   end
 
-  get "api/v1/projects/:project_id/files/:file_id" do
+  get "web_api/v1/projects/:project_id/files/:file_id" do
     
     let(:project_id) { @project.id }
     let(:file_id) { ProjectFile.first.id }
@@ -33,7 +33,7 @@ resource "ProjectFile" do
     end
   end
 
-  post "api/v1/projects/:project_id/files" do
+  post "web_api/v1/projects/:project_id/files" do
     with_options scope: :file do
       parameter :file, "The base64 encoded file", required: true
       parameter :ordering, "An integer that is used to order the file attachments within a project", required: false
@@ -64,7 +64,7 @@ resource "ProjectFile" do
 
   end
 
-  patch "api/v1/projects/:project_id/files/:file_id" do
+  patch "web_api/v1/projects/:project_id/files/:file_id" do
     with_options scope: :file do
       parameter :file, "The base64 encoded file"
       parameter :ordering, "An integer that is used to order the file attachments within a project"
@@ -87,7 +87,7 @@ resource "ProjectFile" do
 
   end
 
-  delete "api/v1/projects/:project_id/files/:file_id" do
+  delete "web_api/v1/projects/:project_id/files/:file_id" do
 
     let(:project_id) { @project.id }
     let(:file_id) { ProjectFile.first.id }

@@ -12,8 +12,8 @@ class Project < ApplicationRecord
   has_many :phases, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :pages, dependent: :destroy
-  has_many :project_images, dependent: :destroy
-  has_many :project_files, dependent: :destroy
+  has_many :project_images, -> { order(:ordering) }, dependent: :destroy
+  has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :groups_projects, dependent: :destroy
   has_many :groups, through: :groups_projects
 
@@ -52,7 +52,7 @@ class Project < ApplicationRecord
 
   def sanitize_description_multiloc
     self.description_multiloc = self.description_multiloc.map do |locale, description|
-      [locale, @@sanitizer.sanitize(description, tags: %w(p b u i strong a h1 h2 h3 h4 h5 h6), attributes: %w(href))]
+      [locale, @@sanitizer.sanitize(description, tags: %w(p b u i strong a h1 h2 h3 h4 h5 h6 ul li ol), attributes: %w(href type style))]
     end.to_h
   end
 

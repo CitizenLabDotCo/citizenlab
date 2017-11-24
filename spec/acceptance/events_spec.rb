@@ -9,7 +9,7 @@ resource "Events" do
     @events = create_list(:event, 2, project: @project)
   end
 
-  get "api/v1/projects/:project_id/events" do
+  get "web_api/v1/projects/:project_id/events" do
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of events per page"
@@ -23,7 +23,7 @@ resource "Events" do
     end
   end
 
-  get "api/v1/events/:id" do
+  get "web_api/v1/events/:id" do
     let(:id) { @events.first.id }
 
     example_request "Get one event by id" do
@@ -40,7 +40,7 @@ resource "Events" do
       header 'Authorization', "Bearer #{token}"
     end
 
-    post "api/v1/projects/:project_id/events" do
+    post "web_api/v1/projects/:project_id/events" do
       with_options scope: :event do
         parameter :title_multiloc, "The title of the event in nultiple locales", required: true
         parameter :description_multiloc, "The description of the event in multiple languages. Supports basic HTML.", required: false
@@ -85,7 +85,7 @@ resource "Events" do
 
     end
 
-    patch "api/v1/events/:id" do
+    patch "web_api/v1/events/:id" do
       with_options scope: :event do
         parameter :project_id, "The id of the project this event belongs to"
         parameter :title_multiloc, "The title of the event in nultiple locales"
@@ -109,7 +109,7 @@ resource "Events" do
     end
 
 
-    delete "api/v1/events/:id" do
+    delete "web_api/v1/events/:id" do
       let(:event) { create(:event, project: @project) }
       let(:id) { event.id }
       example_request "Delete a event" do

@@ -13,7 +13,7 @@ resource "Comment Votes" do
 
 
 
-  get "api/v1/comments/:comment_id/votes" do
+  get "web_api/v1/comments/:comment_id/votes" do
     let(:comment_id) { @comment.id }
 
     example_request "List votes of a comment" do
@@ -23,7 +23,7 @@ resource "Comment Votes" do
     end
   end
 
-  get "api/v1/votes/:id" do
+  get "web_api/v1/votes/:id" do
     let(:id) { @votes.first.id }
 
     example_request "Get one vote by id" do
@@ -33,7 +33,7 @@ resource "Comment Votes" do
     end
   end
 
-  post "api/v1/comments/:comment_id/votes" do
+  post "web_api/v1/comments/:comment_id/votes" do
     with_options scope: :vote do
       parameter :user_id, "The user id of the user owning the vote. Signed in user by default", required: false
       parameter :mode, "one of [up, down]", required: true
@@ -53,7 +53,7 @@ resource "Comment Votes" do
     end
   end
 
-  post "api/v1/comments/:comment_id/votes/up" do
+  post "web_api/v1/comments/:comment_id/votes/up" do
     let(:comment_id) { @comment.id }
 
     example_request "Upvote a comment that doesn't have your vote yet" do
@@ -82,7 +82,7 @@ resource "Comment Votes" do
 
   end
 
-  post "api/v1/comments/:comment_id/votes/down" do
+  post "web_api/v1/comments/:comment_id/votes/down" do
     let(:comment_id) { @comment.id }
 
     example_request "downvote a comment that doesn't have your vote yet" do
@@ -111,7 +111,7 @@ resource "Comment Votes" do
 
   end
 
-  delete "api/v1/votes/:id" do
+  delete "web_api/v1/votes/:id" do
     let(:vote) { create(:vote, user: @user, votable: @comment) }
     let(:id) { vote.id }
     example_request "Delete a vote" do

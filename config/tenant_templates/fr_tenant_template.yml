@@ -65,7 +65,6 @@ models:
     domicile: 
     education: 8
     password: CitizenLab=123
-    remote_avatar_url: https://pbs.twimg.com/profile_images/747932549494628352/lwE6mkkk.jpg
   - &14
     email: lavieestbelle@gmail.com
     first_name: 'Philippe '
