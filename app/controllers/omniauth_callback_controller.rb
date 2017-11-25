@@ -68,7 +68,6 @@ class OmniauthCallbackController < ApplicationController
   def set_auth_cookie
     cookies[:cl2_jwt] = {
       value: auth_token(@user).token,
-      domain: Tenant.current.host,
       expires: 1.month.from_now
     }
   end
