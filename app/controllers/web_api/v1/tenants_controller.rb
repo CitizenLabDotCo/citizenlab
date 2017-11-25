@@ -3,7 +3,6 @@ class WebApi::V1::TenantsController < ApplicationController
   before_action :set_tenant, only: [:current, :update]
 
   def current
-    session[:test_value] = 'somevalue'
     render json: @tenant
   end
 
