@@ -1398,7 +1398,7 @@ models:
     idea_ref: *62
   - remote_image_url: https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/VilloStationAlmostFull.jpg/1200px-VilloStationAlmostFull.jpg
     idea_ref: *63
-  - remote_image_url: https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fpochoirs-signalisation.e-monsite.com%2Fmedias%2Fimages%2Fpicto-marquage-handicape.jpg
+  - remote_image_url: https://www.ot-montbard.fr/wp-content/uploads/2015/10/picto-marquage-handicape-e1445681185643.jpg
     idea_ref: *64
   - remote_image_url: https://static.ladepeche.fr/content/media/image/zoom/2013/10/22/201310221553-full.jpg
     idea_ref: *65
