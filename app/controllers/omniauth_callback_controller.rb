@@ -50,7 +50,7 @@ class OmniauthCallbackController < ApplicationController
   def add_uri_params uri, params={}
     uri =  URI.parse(uri)
     new_query_ar = URI.decode_www_form(String(uri.query))
-    params.each do |key, value|
+    params&.each do |key, value|
       new_query_ar << [key, value]
     end
     uri.query = URI.encode_www_form(new_query_ar)
@@ -68,7 +68,6 @@ class OmniauthCallbackController < ApplicationController
   def set_auth_cookie
     cookies[:cl2_jwt] = {
       value: auth_token(@user).token,
-      domain: Tenant.current.host,
       expires: 1.month.from_now
     }
   end
