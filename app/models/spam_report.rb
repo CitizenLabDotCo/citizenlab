@@ -1,5 +1,5 @@
 class SpamReport < ApplicationRecord
-  REASON_CODES = %w(wrong_content inapropriate other)
+  REASON_CODES = %w(wrong_content inappropriate other)
 
   belongs_to :spam_reportable, polymorphic: true
   belongs_to :user
