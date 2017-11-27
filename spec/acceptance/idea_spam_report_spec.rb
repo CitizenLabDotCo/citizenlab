@@ -35,9 +35,9 @@ resource "Idea Spam Reports" do
 
   post "web_api/v1/ideas/:idea_id/spam_reports" do
     with_options scope: :spam_report do
-      parameter :user_id, "The user id of the user owning the spam report. Signed in user by default", required: false
-      parameter :reason_code, "one of [wrong_content, inapropriate]", required: false
-      parameter :other_reason, "The reason for the spam report, if none of the reason codes is applicable", required: false
+      parameter :user_id, "the user id of the user owning the spam report. Signed in user by default", required: false
+      parameter :reason_code, "one of [wrong_content, inapropriate, other]", required: true
+      parameter :other_reason, "the reason for the spam report, if none of the reason codes is applicable, in which case 'other' must be chosen", required: false
     end
     ValidationErrorHelper.new.error_fields(self, SpamReport)
 
