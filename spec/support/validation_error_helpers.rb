@@ -27,14 +27,27 @@ class ValidationErrorHelper
 
 
   def model_error_codes model
-    model.validators.flat_map do |validator| 
+    attrs_errs = model.validators.flat_map do |validator| 
         validator.attributes.map{|a| [a, ERROR_DETAILS[validator.class]]}
-      end
-      .select(&:last)
-      .to_h
+      end.select(&:last)
+    to_h_appended(attrs_errs)
       .map{|attribute, error_codes| [attribute, error_codes&.flatten&.compact&.uniq]}
       .to_h
   end
+
+  def to_h_appended arr
+    # kind of similar as .to_h but taking care
+    # of multiple occurances of the same key
+    # all values with the same key are put in a list
+    h = {}
+    arr.each do |elt|
+      k = elt.first
+      v = elt.drop(1)
+      h[k] = (h[k] || []).append v
+    end
+    h
+  end
+
 
   def error_fields(rspec_context, model)
     model_error_codes(model).each do |attribute, error_codes|
