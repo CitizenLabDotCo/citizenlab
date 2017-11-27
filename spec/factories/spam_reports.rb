@@ -1,10 +1,9 @@
 FactoryGirl.define do
   factory :spam_report do
-    spam_reportable_id ""
-    spam_reportable_type "MyString"
+    association :spam_reportable, factory: :idea
     reported_at "2017-11-17 15:54:22"
-    reason_code "MyString"
-    other_reason "MyString"
-    user nil
+    reason_code nil
+    other_reason "I've seen this text like over a thousand times."
+    user
   end
 end
