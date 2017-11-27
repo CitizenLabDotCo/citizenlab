@@ -5,6 +5,7 @@ import { media } from 'utils/styleUtils';
 import { darken } from 'polished';
 import Icon from 'components/UI/Icon';
 import Error from 'components/UI/Error';
+import Spinner from 'components/UI/Spinner';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import styled from 'styled-components';
@@ -23,15 +24,16 @@ const DropzoneContainer = styled.div`
 
 const DropzonePlaceholderText = styled.div`
   color: #aaa;
-  font-size: 17px;
-  line-height: 24px;
+  font-size: 15px;
+  line-height: 20px;
   font-weight: 400;
   text-align: center;
 `;
 
 const DropzonePlaceholderIcon = styled(Icon)`
-  height: 40px;
+  height: 38px;
   fill: #aaa;
+  margin-bottom: 5px;
 `;
 
 const DropzoneContent = styled.div`
@@ -72,7 +74,7 @@ const StyledDropzone = styled(Dropzone)`
 const Image: any = styled.div`
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: cover;
+  background-size: ${(props: any) => props.objectFit};
   background-image: url(${(props: any) => props.src});
   position: relative;
   border-radius: 5px;
@@ -82,6 +84,11 @@ const Image: any = styled.div`
 const Box: any = styled.div`
   width: 100%;
   max-width: ${(props: any) => props.maxWidth ? props.maxWidth : '100%'};
+  margin-bottom: 15px;
+
+  &.hasSpacing {
+    margin-right: 15px;
+  }
 
   ${Image},
   ${StyledDropzone} {
@@ -93,28 +100,31 @@ const Box: any = styled.div`
 `;
 
 const RemoveIcon = styled(Icon)`
-  height: 11px;
-  fill: #fff;
+  height: 10px;
+  fill: #333;
 `;
 
 const RemoveButton = styled.div`
-  width: 29px;
-  height: 29px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: -13px;
-  right: -13px;
+  top: -15px;
+  right: -15px;
   z-index: 1;
   cursor: pointer;
   border-radius: 50%;
-  border: solid 1px #fff;
-  background: ${(props) => props.theme.colorMain};
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.20);
+  border: solid 2px #fff;
+  background: #e0e0e0;
 
   &:hover {
-    background: ${(props) => darken(0.15, props.theme.colorMain)};
+    background: #d0d0d0;
+
+    ${RemoveIcon} {
+      fill: #000;
+    }
   }
 `;
 
@@ -127,6 +137,7 @@ type Props = {
   maxNumberOfImages?: number;
   placeholder?: string | null | undefined;
   errorMessage?: string | null;
+  objectFit?: 'cover' | 'contain' | undefined;
   onAdd: (arg: Dropzone.ImageFile) => void;
   onUpdate: (arg: Dropzone.ImageFile[] | File[] | null) => void;
   onRemove: (arg: Dropzone.ImageFile) => void;
@@ -135,6 +146,7 @@ type Props = {
 type State = {
   images: Dropzone.ImageFile[] | null;
   errorMessage: string | null;
+  processing: boolean;
 };
 
 class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -142,13 +154,15 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     super(props as any);
     this.state = {
       images: [],
-      errorMessage: null
+      errorMessage: null,
+      processing: false
     };
   }
 
   async componentWillMount() {
     const images = await this.getImagesWithPreviews(this.props.images);
     this.props.onUpdate(images);
+    this.setState({ images, processing: false });
   }
 
   async componentWillReceiveProps(nextProps: Props) {
@@ -156,7 +170,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
 
     if (nextProps.images !== this.props.images && (!maxNumberOfImages || (maxNumberOfImages && (_.size(nextProps.images) <= maxNumberOfImages)))) {
       const images = await this.getImagesWithPreviews(nextProps.images);
-      this.setState({ images });
+      this.setState({ images, processing: false });
     }
 
     if (nextProps.errorMessage && nextProps.errorMessage !== this.props.errorMessage) {
@@ -191,7 +205,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     const newItemsCount = _.size(images);
     const remainingItemsCount = (maxItemsCount ? maxItemsCount - oldItemsCount : null);
 
-    this.setState({ errorMessage: null });
+    this.setState({ errorMessage: null, processing: true });
 
     if (maxItemsCount && remainingItemsCount && newItemsCount > remainingItemsCount) {
       const errorMessage = (maxItemsCount === 1 ? formatMessage(messages.onlyOneImage) : formatMessage(messages.onlyXImages, { maxItemsCount }));
@@ -221,23 +235,32 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
   }
 
   render() {
-    let { acceptedFileTypes, placeholder } = this.props;
+    let { acceptedFileTypes, placeholder, objectFit } = this.props;
     let { images } = this.state;
     const { maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio } = this.props;
     const { formatMessage } = this.props.intl;
-    const { errorMessage } = this.state;
+    const { errorMessage, processing } = this.state;
+
+    console.log('processing: ' + processing);
 
     images = (_.compact(images) || null);
     acceptedFileTypes = (acceptedFileTypes || '*');
-    placeholder = (placeholder || (maxNumberOfImages === 1 ? formatMessage(messages.dropYourImageHere) : formatMessage(messages.dropYourImagesHere)));
+    placeholder = (placeholder || formatMessage(messages.dropYourImageHere));
+    objectFit = (objectFit || 'cover');
 
     const imageList = ((images && images.length > 0) ? (
       images.map((image, index) => {
         const _onClick = (event) => this.removeImage(image, event);
+        const hasSpacing = ((images && index + 1 === images.length && index + 1 === maxNumberOfImages) ? '' : 'hasSpacing');
 
         return (
-          <Box key={index} maxWidth={maxImagePreviewWidth} ratio={imagePreviewRatio}>
-            <Image src={image.preview}>
+          <Box
+            key={index}
+            maxWidth={maxImagePreviewWidth}
+            ratio={imagePreviewRatio}
+            className={hasSpacing}
+          >
+            <Image src={image.preview} objectFit={objectFit}>
               <RemoveButton onClick={_onClick}>
                 <RemoveIcon name="close2" />
               </RemoveButton>
@@ -248,7 +271,10 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     ) : null);
 
     const imageDropzone = ((!maxNumberOfImages || images.length < maxNumberOfImages) ? (
-      <Box maxWidth={maxImagePreviewWidth} ratio={imagePreviewRatio}>
+      <Box
+        maxWidth={maxImagePreviewWidth}
+        ratio={imagePreviewRatio}
+      >
         <StyledDropzone
           accept={acceptedFileTypes}
           maxSize={maxImageFileSize}
@@ -256,11 +282,19 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
           onDrop={this.onDrop}
           onDropRejected={this.onDropRejected}
         >
-          <DropzoneContent>
-            <DropzonePlaceholderIcon name="upload" />
-            <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
-          </DropzoneContent>
+          {!processing ? (
+            <DropzoneContent>
+              <DropzonePlaceholderIcon name="upload" />
+              <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
+            </DropzoneContent>
+          ) : (
+            <DropzoneContent>
+              <Spinner />
+            </DropzoneContent>
+          )}
         </StyledDropzone>
+
+        <Error text={errorMessage} />
       </Box>
     ) : null);
 

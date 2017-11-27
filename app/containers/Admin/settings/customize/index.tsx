@@ -23,7 +23,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import styled from 'styled-components';
 
 // utils
-import { getBase64FromFile, convertUrlToFileObservable } from 'utils/imageTools';
+import { convertUrlToFileObservable } from 'utils/imageTools';
 import getSubmitState from 'utils/getSubmitState';
 
 // i18n
@@ -159,7 +159,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     this.setState((state: State) => ({
       attributesDiff: {
         ...state.attributesDiff,
-        [name]: newImage
+        [name]: newImage.preview
       },
       [name]: [newImage]
     }));
@@ -167,11 +167,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
 
   handleUploadOnUpdate = (name: 'logo' | 'header_bg') => (updatedImages: ImageFile[]) => {
     this.setState((state: State) => ({
-      attributesDiff: {
-        ...state.attributesDiff,
-        [name]: (updatedImages && updatedImages.length > 0 ? updatedImages[0] : null)
-      },
-      [name]: (updatedImages && updatedImages.length > 0 ? updatedImages : null)
+      [name]: updatedImages
     }));
   }
 
@@ -258,18 +254,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
       this.setState({ loading: true, saved: false });
 
       try {
-        const updatedTenantProperties: IUpdatedTenantProperties = _.cloneDeep(attributesDiff as IUpdatedTenantProperties);
-
-        if (_.has(attributesDiff, 'logo') && attributesDiff.logo !== null && attributesDiff.logo !== undefined) {
-          updatedTenantProperties.logo = await getBase64FromFile(attributesDiff.logo);
-        }
-
-        if (_.has(attributesDiff, 'header_bg') && attributesDiff.header_bg !== null && attributesDiff.header_bg !== undefined) {
-          updatedTenantProperties.header_bg = await getBase64FromFile(attributesDiff.header_bg);
-        }
-
-        await updateTenant(currentTenant.data.id, updatedTenantProperties);
-
+        await updateTenant(currentTenant.data.id, attributesDiff as IUpdatedTenantProperties);
         this.setState({ loading: false, saved: true, attributesDiff: {} });
       } catch (error) {
         this.setState({ loading: false, errors: error.json.errors });
@@ -329,9 +314,11 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                 <ImagesDropzone
                   acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                   maxNumberOfImages={1}
+                  maxImageFileSize={5000000}
                   images={logo}
                   imagePreviewRatio={1}
                   maxImagePreviewWidth="150px"
+                  objectFit="contain"
                   onAdd={this.handleUploadOnAdd('logo')}
                   onUpdate={this.handleUploadOnUpdate('logo')}
                   onRemove={this.handleUploadOnRemove('logo')}
@@ -361,9 +348,10 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                 <ImagesDropzone
                   acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                   maxNumberOfImages={1}
+                  maxImageFileSize={5000000}
                   images={header_bg}
-                  imagePreviewRatio={1}
-                  maxImagePreviewWidth="150px"
+                  imagePreviewRatio={480 / 1440}
+                  maxImagePreviewWidth="480px"
                   onAdd={this.handleUploadOnAdd('header_bg')}
                   onUpdate={this.handleUploadOnUpdate('header_bg')}
                   onRemove={this.handleUploadOnRemove('header_bg')}

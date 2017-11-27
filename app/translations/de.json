@@ -29,7 +29,7 @@
   "app.components.TopicSelect.header": "This is the TopicSelect component !",
   "app.components.UI.Select.noResults": "No options available",
   "app.components.Upload.dropYourFileHere": "Drop your file here",
-  "app.components.Upload.errorMaxSizeExceeded": "One or more files exceed the maximum allowed filesize of {maxFileSize} Mb",
+  "app.components.Upload.errorMaxSizeExceeded": "One or more images exceded the maximum allowed size of {maxFileSize} Mb",
   "app.components.Upload.limitReached": "Coud not add image(s). The maximum number of allowed images has been reached.",
   "app.components.Upload.onlyOneImage": "You can only upload 1 image",
   "app.components.Upload.onlyXImages": "You can only upload {maxItemsCount} images",
