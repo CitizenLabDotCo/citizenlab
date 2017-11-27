@@ -111,7 +111,7 @@ interface GlobalState {
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
   location: any;
-  images: ImageFile[] | null;
+  imageFile: ImageFile[] | null;
   titleError: string | null;
   descriptionError: string | null;
   submitError: boolean;
@@ -160,7 +160,7 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
         selectedTopics,
         selectedProject,
         location,
-        images,
+        imageFile,
         titleError,
         descriptionError,
         submitError,
@@ -174,7 +174,7 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
           selectedTopics,
           selectedProject,
           location,
-          images,
+          imageFile,
           titleError,
           descriptionError,
           submitError,
@@ -249,27 +249,26 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
     this.globalState.set({ location });
   }
 
-  handleUploadOnAdd = async (newImage: ImageFile) => {
-    let images: ImageFile[] | null = null;
-    const globalState = await this.globalState.get();
-
-    if (globalState.images && globalState.images.length > 0) {
-      images = globalState.images.concat(newImage);
-    } else {
-      images = [newImage];
-    }
-
-    this.globalState.set({ images, imageChanged: true });
+  handleUploadOnAdd = (newImage: ImageFile) => {
+    this.globalState.set({
+      imageFile: [newImage],
+      imageBase64: newImage.preview,
+      imageChanged: true
+    });
   }
 
   handleUploadOnUpdate = (updatedImages: ImageFile[]) => {
-    this.globalState.set({ images: updatedImages });
+    this.globalState.set({
+      imageBase64: updatedImages[0].preview
+    });
   }
 
-  handleUploadOnRemove = async (removedImage: ImageFile) => {
-    const globalState = await this.globalState.get();
-    const images = _(globalState.images).filter(image => image.name !== removedImage.name).value();
-    this.globalState.set({ images, imageChanged: true });
+  handleUploadOnRemove = (removedImage: ImageFile) => {
+    this.globalState.set({
+      imageFile: null,
+      imageBase64: null,
+      imageChanged: true
+    });
   }
 
   handleTitleInputSetRef = (element: HTMLInputElement) => {
@@ -311,7 +310,7 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
     if (!this.state) { return null; }
 
     const { formatMessage } = this.props.intl;
-    const { topics, projects, title, description, selectedTopics, selectedProject, location, images, titleError, descriptionError, submitError, processing } = this.state;
+    const { topics, projects, title, description, selectedTopics, selectedProject, location, imageFile, titleError, descriptionError, submitError, processing } = this.state;
     const submitErrorMessage = (submitError ? formatMessage(messages.submitError) : null);
 
     return (
@@ -382,7 +381,7 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
           <FormElement>
             <Label value={formatMessage(messages.imageUploadLabel)} />
             <ImagesDropzone
-              images={images}
+              images={imageFile}
               imagePreviewRatio={135 / 298}
               acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
               maxImageFileSize={5000000}

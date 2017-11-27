@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   errorMaxSizeExceeded: {
     id: 'app.components.Upload.errorMaxSizeExceeded',
-    defaultMessage: 'One or more files exceed the maximum allowed filesize of {maxFileSize} Mb',
+    defaultMessage: 'One or more images exceded the maximum allowed size of {maxFileSize} Mb',
   },
   onlyOneImage: {
     id: 'app.components.Upload.onlyOneImage',

@@ -243,10 +243,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
   handleHeaderOnUpdate = (updatedHeaders: ImageFile[]) => {
     this.setState((state: State) => ({
-      projectAttributesDiff: {
-        ...state.projectAttributesDiff,
-        header_bg: (updatedHeaders && updatedHeaders.length > 0 ? updatedHeaders[0].preview : null)
-      },
+      // projectAttributesDiff: {
+      //   ...state.projectAttributesDiff,
+      //   header_bg: (updatedHeaders && updatedHeaders.length > 0 ? updatedHeaders[0].preview : null)
+      // },
       headerBg: (updatedHeaders && updatedHeaders.length > 0 ? updatedHeaders : null)
     }));
   }
@@ -350,8 +350,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         const option = this.state.areasOptions.find(areaOption => areaOption.value === id);
         return (option ? option : null);
       }) : null;
-
-      console.log(newProjectImageFiles);
 
       return (
         <FormWrapper className="e2e-project-general-form" onSubmit={this.saveProject}>
