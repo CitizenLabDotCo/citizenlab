@@ -123,8 +123,12 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.props.goToSignIn();
   }
 
+  handleOnSSOClick = (provider) => () => {
+    window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
+  }
+
   render() {
-    const { currentTenant, socialLoginUrlParameter } = this.state;
+    const { currentTenant } = this.state;
     const { formatMessage } = this.props.intl;
     const googleLoginEnabled = !!_.get(currentTenant, `data.attributes.settings.google_login.enabled`);
     const facebookLoginEnabled = !!_.get(currentTenant, `data.attributes.settings.facebook_login.enabled`);
@@ -146,7 +150,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                   style="primary"
                   size="1"
                   icon="google-colored"
-                  linkTo={`${AUTH_PATH}/google${socialLoginUrlParameter}`}
+                  onClick={this.handleOnSSOClick('google')}
                   circularCorners={true}
                 />
               </FeatureFlag>
@@ -156,7 +160,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                   style="primary"
                   size="1"
                   icon="facebook-blue"
-                  linkTo={`${AUTH_PATH}/facebook${socialLoginUrlParameter}`}
+                  onClick={this.handleOnSSOClick('facebook')}
                   circularCorners={true}
                 />
               </FeatureFlag>
