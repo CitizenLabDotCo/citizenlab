@@ -27,13 +27,8 @@
   "app.components.ProjectCards.noProjects": "No projects were found",
   "app.components.SearchInput.searchPlaceholder": "Search",
   "app.components.UI.Select.noResults": "No options available",
-<<<<<<< HEAD
   "app.components.Upload.dropYourFileHere": "Drop your file here",
   "app.components.Upload.errorMaxSizeExceeded": "One or more images exceded the maximum allowed size of {maxFileSize} Mb",
-=======
-  "app.components.Upload.dropYourFileHere": "Drop your files here",
-  "app.components.Upload.errorMaxSizeExceeded": "One or more files exceeded the upload limit of {maxFileSize} Mb",
->>>>>>> 568351b761c4457250db8212ccd3d01cae297697
   "app.components.Upload.limitReached": "Coud not add image(s). The maximum number of allowed images has been reached.",
   "app.components.Upload.onlyOneImage": "You can only upload 1 image",
   "app.components.Upload.onlyXImages": "You can only upload {maxItemsCount} images",
