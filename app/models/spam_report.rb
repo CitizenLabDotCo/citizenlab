@@ -5,7 +5,7 @@ class SpamReport < ApplicationRecord
   belongs_to :user
 
   validates :spam_reportable, presence: true
-  validates :reason_code, inclusion: { in: REASON_CODES }
+  validates :reason_code, inclusion: { in: REASON_CODES }, presence: false
 
   after_validation :set_reported_at
 

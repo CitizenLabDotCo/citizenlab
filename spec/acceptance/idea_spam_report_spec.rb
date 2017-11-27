@@ -34,89 +34,33 @@ resource "Idea Spam Reports" do
   end
 
   post "web_api/v1/ideas/:idea_id/spam_reports" do
-    with_options scope: :vote do
+    with_options scope: :spam_report do
       parameter :user_id, "The user id of the user owning the spam report. Signed in user by default", required: false
-      parameter :mode, "one of [up, down]", required: true
+      parameter :reason_code, "one of [wrong_content, inapropriate]", required: false
+      parameter :other_reason, "The reason for the spam report, if none of the reason codes is applicable", required: false
     end
-    ValidationErrorHelper.new.error_fields(self, Vote)
+    ValidationErrorHelper.new.error_fields(self, SpamReport)
 
   
     let(:idea_id) { @idea.id }
-    let(:mode) { "up" }
+    let(:reason_code) { "inapropriate" }
   
-    example_request "Create a vote to an idea" do
+    example_request "Create a spam report on an idea" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
-      expect(json_response.dig(:data,:attributes,:mode)).to eq "up"
-      expect(@idea.reload.upvotes_count).to eq 3
+      expect(json_response.dig(:data,:attributes,:reason_code)).to eq "inapropriate"
     end
   end
 
-  post "web_api/v1/ideas/:idea_id/votes/up" do
-    let(:idea_id) { @idea.id }
+  ## TODO update
 
-    example_request "Upvote an idea that doesn't have your vote yet" do
-      expect(status).to eq 201
-      expect(@idea.reload.upvotes_count).to eq 3
-      expect(@idea.reload.downvotes_count).to eq 0
-    end
-
-    example "Upvote an idea that you downvoted before" do
-      @idea.votes.create(user: @user, mode: 'down')
-      do_request
-      expect(status).to eq 201
-      expect(@idea.reload.upvotes_count).to eq 3
-      expect(@idea.reload.downvotes_count).to eq 0
-    end
-
-    example "[error] Upvote an idea that you upvoted before" do
-      @idea.votes.create(user: @user, mode: 'up')
-      do_request
-      expect(status).to eq 422
-      json_response = json_parse(response_body)
-      expect(json_response[:errors][:base][0][:error]).to eq "already_upvoted"
-      expect(@idea.reload.upvotes_count).to eq 3
-      expect(@idea.reload.downvotes_count).to eq 0
-    end
-
-  end
-
-  post "web_api/v1/ideas/:idea_id/votes/down" do
-    let(:idea_id) { @idea.id }
-
-    example_request "downvote an idea that doesn't have your vote yet" do
-      expect(status).to eq 201
-      expect(@idea.reload.upvotes_count).to eq 2
-      expect(@idea.reload.downvotes_count).to eq 1
-    end
-
-    example "downvote an idea that you upvoted before" do
-      @idea.votes.create(user: @user, mode: 'up')
-      do_request
-      expect(status).to eq 201
-      expect(@idea.reload.upvotes_count).to eq 2
-      expect(@idea.reload.downvotes_count).to eq 1
-    end
-
-    example "[error] Downvote an idea that you downvoted before" do
-      @idea.votes.create(user: @user, mode: 'down')
-      do_request
-      expect(status).to eq 422
-      json_response = json_parse(response_body)
-      expect(json_response[:errors][:base][0][:error]).to eq "already_downvoted"
-      expect(@idea.reload.upvotes_count).to eq 2
-      expect(@idea.reload.downvotes_count).to eq 1
-    end
-
-  end
-
-  delete "web_api/v1/votes/:id" do
-    let(:vote) { create(:vote, user: @user, votable: @idea) }
-    let(:id) { vote.id }
-    example_request "Delete a vote" do
+  delete "web_api/v1/spam_reports/:id" do
+    let(:spam_report) { create(:spam_report, user: @user, spam_reportable: @idea) }
+    let(:id) { spam_report.id }
+    example_request "Delete a spam report" do
       expect(response_status).to eq 200
-      expect{Vote.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect{SpamReport.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

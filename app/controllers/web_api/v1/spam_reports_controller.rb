@@ -1,4 +1,4 @@
-class WebApi::V1::SpamReportController < ApplicationController
+class WebApi::V1::SpamReportsController < ApplicationController
 
   before_action :set_spam_report, only: [:show, :update, :destroy]
   before_action :set_spam_reportable_type_and_id, only: [:index, :create]
@@ -8,7 +8,7 @@ class WebApi::V1::SpamReportController < ApplicationController
     @spam_reports = policy_scope(SpamReport)
       .where(spam_reportable_type: @spam_reportable_type, spam_reportable_id: @spam_reportable_id)
       .includes(:user)
-    render json: @votes, include: ['user']
+    render json: @spam_reports, include: ['user']
   end
 
   def show
@@ -33,7 +33,7 @@ class WebApi::V1::SpamReportController < ApplicationController
   # patch
   def update
     ActiveRecord::Base.transaction do
-      if @spam_report.update(permitted_attributes(SpamReport))
+      if @spam_report.update(spam_report_params)
         SideFxSpamReportService.new.after_update(@spam_report, current_user)
         render json: @spam_report.reload, status: :ok, include: ['user']
       else
@@ -65,6 +65,14 @@ class WebApi::V1::SpamReportController < ApplicationController
   def set_spam_report
     @spam_report = SpamReport.find params[:id]
     authorize @spam_report
+  end
+
+  def spam_report_params
+    params.require(:spam_report).permit(
+      :reason_code,
+      :other_reason,
+      :user_id
+    )
   end
 
 end

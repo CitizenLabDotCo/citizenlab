@@ -33,4 +33,5 @@ class SpamReportPolicy < ApplicationPolicy
   def destroy?
     update?
   end
+
 end
