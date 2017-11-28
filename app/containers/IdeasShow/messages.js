@@ -60,7 +60,7 @@ export default defineMessages({
   },
   addCommentError: {
     id: 'app.containers.IdeasShow.addCommentError',
-    defaultMessage: 'Something went wrong. Please try again.',
+    defaultMessage: 'Something went wrong. Please try again later.',
   },
   submittingComment: {
     id: 'app.containers.IdeasShow.submittingComment',

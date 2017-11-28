@@ -205,15 +205,6 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     const { locale, currentTenantLocales, groupsOptions, projectGroups, selectedGroups, loading } = this.state;
     const groupsMultipleSelectPlaceholder = formatMessage(messages.groupsMultipleSelectPlaceholder);
 
-    /*
-    const noGroups = ((!loading && (!projectGroups || projectGroups.length === 0)) ? (
-      <EmptyStateMessage>
-        <StyledIcon name="warning" />
-        <FormattedHTMLMessage {...messages.noSelectedGroupsMessage} />
-      </EmptyStateMessage>
-    ) : null);
-    */
-
     const noGroups = ((!loading && (!projectGroups || projectGroups.length === 0)) ? (
       <Warning text={<FormattedHTMLMessage {...messages.noSelectedGroupsMessage} />} />
     ) : null);

@@ -1,9 +1,17 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  errorMaxSizeExceeded: {
-    id: 'app.components.Upload.errorMaxSizeExceeded',
-    defaultMessage: 'One or more images exceded the maximum allowed size of {maxFileSize} Mb',
+  errorImageMaxSizeExceeded: {
+    id: 'app.components.Upload.errorImageMaxSizeExceeded',
+    defaultMessage: 'The selected image exceeds the maximum allowed size of {maxFileSize} Mb',
+  },
+  errorImagesMaxSizeExceeded: {
+    id: 'app.components.Upload.errorImagesMaxSizeExceeded',
+    defaultMessage: 'One or more selected images exceeds the maximum allowed size of {maxFileSize} Mb per image',
+  },
+  remaining: {
+    id: 'app.components.Upload.remaining',
+    defaultMessage: `remaining`,
   },
   onlyOneImage: {
     id: 'app.components.Upload.onlyOneImage',
@@ -23,6 +31,6 @@ export default defineMessages({
   },
   dropYourImagesHere: {
     id: 'app.components.Upload.dropYourImagesHere',
-    defaultMessage: 'Drop your image(s) here',
+    defaultMessage: 'Drop your images here',
   },
 });

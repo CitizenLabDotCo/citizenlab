@@ -5,9 +5,8 @@ import * as _ from 'lodash';
 import shallowCompare from 'utils/shallowCompare';
 
 // typings
-import { IOption } from 'typings';
+import { IOption, ImageFile } from 'typings';
 import { EditorState } from 'draft-js';
-import { ImageFile } from 'react-dropzone';
 import { setTimeout } from 'timers';
 
 export interface IIdeasNewPageGlobalState {

@@ -2,9 +2,6 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 
-// libraries
-import { ImageFile } from 'react-dropzone';
-
 // components
 import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
@@ -14,8 +11,7 @@ import Toggle from 'components/UI/Toggle';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
 import Select from 'components/UI/Select';
 import Input from 'components/UI/Input';
-import FieldWrapper from 'components/admin/FieldWrapper';
-import { Section, SectionHeader, SectionTitle, SectionDescription, SectionContent } from 'components/admin/Section';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import FeatureFlag from 'components/FeatureFlag';
 
@@ -35,7 +31,7 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, ITenantSettings } from 'services/tenant';
 
 // typings
-import { API } from 'typings.d';
+import { API, ImageFile } from 'typings';
 
 const StyledLabel = styled(Label)`
   display: flex;
@@ -50,6 +46,13 @@ const CharCount = styled.div`
   &.error {
     color: red;
   }
+`;
+
+const ToggleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+  width: 200px;
 `;
 
 interface IAttributesDiff {
@@ -68,8 +71,8 @@ type State  = {
   locale: string | null;
   attributesDiff: IAttributesDiff;
   currentTenant: ITenant | null;
-  logo: File[] | ImageFile[] | null;
-  header_bg: File[] | ImageFile[] | null;
+  logo: ImageFile[] | null;
+  header_bg: ImageFile[] | null;
   loading: boolean;
   errors: { [fieldName: string]: API.Error[] };
   saved: boolean;
@@ -78,6 +81,10 @@ type State  = {
   titleError: { [key: string]: string | null };
   subtitleError: { [key: string]: string | null };
 };
+
+const TitleInput = styled(SectionField)`
+  max-width: 500px;
+`;
 
 class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
@@ -123,8 +130,8 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
           const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
           const titleCharCount = {};
           const subtitleCharCount = {};
-          let logo: File[] | ImageFile[] | null = null;
-          let header_bg: File[] | ImageFile[] | null = null;
+          let logo: ImageFile[] | null = null;
+          let header_bg: ImageFile[] | null = null;
 
           if (currentTenantLogo !== null && !_.has(state.attributesDiff, 'logo')) {
             logo = [currentTenantLogo];
@@ -159,7 +166,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     this.setState((state: State) => ({
       attributesDiff: {
         ...state.attributesDiff,
-        [name]: newImage.preview
+        [name]: newImage.base64
       },
       [name]: [newImage]
     }));
@@ -287,160 +294,138 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
         <form onSubmit={this.save}>
 
           <Section key={'branding'}>
-            <SectionHeader>
-              <SectionTitle>
-                <FormattedMessage {...messages.titleBranding} />
-              </SectionTitle>
+            <SectionTitle>
+              <FormattedMessage {...messages.titleBranding} />
+            </SectionTitle>
 
-              <SectionDescription>
-                <FormattedMessage {...messages.subTitleBranding} />
-              </SectionDescription>
-            </SectionHeader>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.mainColor} />
+              </Label>
+              <ColorPickerInput
+                type="text"
+                value={_.get(tenantAttrs, 'settings.core.color_main')}
+                onChange={this.handleColorPickerOnChange}
+              />
+            </SectionField>
 
-            <SectionContent>
-              <FieldWrapper>
-                <Label>
-                  <FormattedMessage {...messages.mainColor} />
-                </Label>
-                <ColorPickerInput
-                  type="text"
-                  value={_.get(tenantAttrs, 'settings.core.color_main')}
-                  onChange={this.handleColorPickerOnChange}
-                />
-              </FieldWrapper>
-
-              <FieldWrapper key={'logo'}>
-                <Label><FormattedMessage {...messages['logo']} /></Label>
-                <ImagesDropzone
-                  acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                  maxNumberOfImages={1}
-                  maxImageFileSize={5000000}
-                  images={logo}
-                  imagePreviewRatio={1}
-                  maxImagePreviewWidth="150px"
-                  objectFit="contain"
-                  onAdd={this.handleUploadOnAdd('logo')}
-                  onUpdate={this.handleUploadOnUpdate('logo')}
-                  onRemove={this.handleUploadOnRemove('logo')}
-                  placeholder={formatMessage(messages.uploadPlaceholder)}
-                  errorMessage={logoError}
-                />
-              </FieldWrapper>
-            </SectionContent>
+            <SectionField key={'logo'}>
+              <Label><FormattedMessage {...messages['logo']} /></Label>
+              <ImagesDropzone
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                maxNumberOfImages={1}
+                maxImageFileSize={5000000}
+                images={logo}
+                imagePreviewRatio={1}
+                maxImagePreviewWidth="150px"
+                objectFit="contain"
+                onAdd={this.handleUploadOnAdd('logo')}
+                onUpdate={this.handleUploadOnUpdate('logo')}
+                onRemove={this.handleUploadOnRemove('logo')}
+                placeholder={formatMessage(messages.uploadPlaceholder)}
+                errorMessage={logoError}
+              />
+            </SectionField>
           </Section>
 
           <Section key={'header'}>
-            <SectionHeader>
-              <SectionTitle>
-                <FormattedMessage {...messages.header} />
-              </SectionTitle>
+            <SectionTitle>
+              <FormattedMessage {...messages.header} />
+            </SectionTitle>
 
-              <SectionDescription>
-                <FormattedMessage {...messages.headerDescription} />
-              </SectionDescription>
-            </SectionHeader>
+            <SectionField key={'header_bg'}>
+              <Label>
+                <FormattedMessage {...messages['header_bg']} />
+              </Label>
+              <ImagesDropzone
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                maxNumberOfImages={1}
+                maxImageFileSize={5000000}
+                images={header_bg}
+                imagePreviewRatio={480 / 1440}
+                maxImagePreviewWidth="500px"
+                onAdd={this.handleUploadOnAdd('header_bg')}
+                onUpdate={this.handleUploadOnUpdate('header_bg')}
+                onRemove={this.handleUploadOnRemove('header_bg')}
+                placeholder={formatMessage(messages.uploadPlaceholder)}
+                errorMessage={headerError}
+              />
+            </SectionField>
 
-            <SectionContent>
-              <FieldWrapper key={'header_bg'}>
-                <Label>
-                  <FormattedMessage {...messages['header_bg']} />
-                </Label>
-                <ImagesDropzone
-                  acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                  maxNumberOfImages={1}
-                  maxImageFileSize={5000000}
-                  images={header_bg}
-                  imagePreviewRatio={480 / 1440}
-                  maxImagePreviewWidth="480px"
-                  onAdd={this.handleUploadOnAdd('header_bg')}
-                  onUpdate={this.handleUploadOnUpdate('header_bg')}
-                  onRemove={this.handleUploadOnRemove('header_bg')}
-                  placeholder={formatMessage(messages.uploadPlaceholder)}
-                  errorMessage={headerError}
-                />
-              </FieldWrapper>
+            {currentTenantLocales.map((currentTenantLocale, index) => {
+              const capitalizedTenantLocale = (hasMultipleTenantLocales ? currentTenantLocale.toUpperCase() : '');
+              const titleSize = _.size(_.get(tenantAttrs, `settings.core.header_title.${currentTenantLocale}`));
 
-              {currentTenantLocales.map((currentTenantLocale, index) => {
-                const capitalizedTenantLocale = (hasMultipleTenantLocales ? currentTenantLocale.toUpperCase() : '');
-                const titleSize = _.size(_.get(tenantAttrs, `settings.core.header_title.${currentTenantLocale}`));
-
-                return (
-                  <FieldWrapper key={index}>
-                    <StyledLabel>
-                      <FormattedMessage
-                        {...messages.titleLabel}
-                        values={{ locale: capitalizedTenantLocale }}
-                      />
-                      <CharCount className={titleError[currentTenantLocale] ? 'error' : ''}>
-                        {titleSize}/35
-                      </CharCount>
-                    </StyledLabel>
-                    <Input
-                      type="text"
-                      value={_.get(tenantAttrs, `settings.core.header_title.${currentTenantLocale}`)}
-                      onChange={this.handleTitleOnChange(currentTenantLocale)}
-                      error={titleError[currentTenantLocale]}
+              return (
+                <TitleInput key={index}>
+                  <StyledLabel>
+                    <FormattedMessage
+                      {...messages.titleLabel}
+                      values={{ locale: capitalizedTenantLocale }}
                     />
-                  </FieldWrapper>
-                );
-              })}
+                    <CharCount className={titleError[currentTenantLocale] ? 'error' : ''}>
+                      {titleSize}/35
+                    </CharCount>
+                  </StyledLabel>
+                  <Input
+                    type="text"
+                    value={_.get(tenantAttrs, `settings.core.header_title.${currentTenantLocale}`)}
+                    onChange={this.handleTitleOnChange(currentTenantLocale)}
+                    error={titleError[currentTenantLocale]}
+                  />
+                </TitleInput>
+              );
+            })}
 
-              {currentTenantLocales.map((currentTenantLocale, index) => {
-                const capitalizedTenantLocale = (hasMultipleTenantLocales ? currentTenantLocale.toUpperCase() : '');
-                const subtitleSize = _.size(_.get(tenantAttrs, `settings.core.header_slogan.${currentTenantLocale}`));
+            {currentTenantLocales.map((currentTenantLocale, index) => {
+              const capitalizedTenantLocale = (hasMultipleTenantLocales ? currentTenantLocale.toUpperCase() : '');
+              const subtitleSize = _.size(_.get(tenantAttrs, `settings.core.header_slogan.${currentTenantLocale}`));
 
-                return (
-                  <FieldWrapper key={index}>
-                    <StyledLabel>
-                      <FormattedMessage
-                        {...messages.subtitleLabel}
-                        values={{ locale: capitalizedTenantLocale }}
-                      />
-                      <CharCount className={subtitleError[currentTenantLocale] ? 'error' : ''}>
-                        {subtitleSize}/90
-                      </CharCount>
-                    </StyledLabel>
-                    <Input
-                      type="text"
-                      value={_.get(tenantAttrs, `settings.core.header_slogan.${currentTenantLocale}`)}
-                      onChange={this.handleSubtitleOnChange(currentTenantLocale)}
-                      error={subtitleError[currentTenantLocale]}
+              return (
+                <TitleInput key={index}>
+                  <StyledLabel>
+                    <FormattedMessage
+                      {...messages.subtitleLabel}
+                      values={{ locale: capitalizedTenantLocale }}
                     />
-                  </FieldWrapper>
-                );
-              })}
-            </SectionContent>
+                    <CharCount className={subtitleError[currentTenantLocale] ? 'error' : ''}>
+                      {subtitleSize}/90
+                    </CharCount>
+                  </StyledLabel>
+                  <Input
+                    type="text"
+                    value={_.get(tenantAttrs, `settings.core.header_slogan.${currentTenantLocale}`)}
+                    onChange={this.handleSubtitleOnChange(currentTenantLocale)}
+                    error={subtitleError[currentTenantLocale]}
+                  />
+                </TitleInput>
+              );
+            })}
           </Section>
 
           <Section key={'signup_fields'}>
-            <SectionHeader>
-              <SectionTitle>
-                <FormattedMessage {...messages.titleSignupFields} />
-              </SectionTitle>
-
-              <SectionDescription>
-                <FormattedMessage {...messages.subTitleSignupFields} />
-              </SectionDescription>
-            </SectionHeader>
+            <SectionTitle>
+              <FormattedMessage {...messages.titleSignupFields} />
+            </SectionTitle>
 
             <FeatureFlag name="demographic_fields">
-              <SectionContent>
+              <SectionField>
                 {['gender', 'domicile', 'birthyear'].map((fieldName, index) => {
                   const fieldPath = `settings.demographic_fields.${fieldName}`;
                   const checked = _.get(tenantAttrs, fieldPath) as boolean;
 
                   return (
-                    <FieldWrapper key={fieldName}>
+                    <ToggleWrapper key={fieldName}>
                       <Label><FormattedMessage {...messages[fieldName]} /></Label>
                       <Toggle
                         checked={checked}
                         disabled={false}
                         onToggle={this.handleOnToggle(fieldPath, checked)}
                       />
-                    </FieldWrapper>
+                    </ToggleWrapper>
                   );
                 })}
-              </SectionContent>
+              </SectionField>
             </FeatureFlag>
           </Section>
 
