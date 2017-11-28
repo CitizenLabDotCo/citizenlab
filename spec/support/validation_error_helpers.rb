@@ -19,6 +19,7 @@ class ValidationErrorHelper
     ActiveRecord::Validations::AssociatedValidator => [:invalid],
     ActiveRecord::Validations::AbsenceValidator => [:present],
     MultilocValidator => [:blank, :unsupported_locales],
+    JsonValidator => [:invalid_json], # not sure
     CarrierWave::Validations::ActiveModel::IntegrityValidator => [:integrity_error, :extension_whitelist_error, :extension_blacklist_error, :content_type_whitelist_error, :content_type_blacklist_error, :min_size_error, :max_size_error], 
     CarrierWave::Validations::ActiveModel::ProcessingValidator => [:processing_error], 
     CarrierWave::Validations::ActiveModel::DownloadValidator => [:download_error]
