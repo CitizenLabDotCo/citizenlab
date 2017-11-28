@@ -523,11 +523,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     if (element) {
       const textarea = element.querySelector('textarea');
-
-      if (textarea) {
-        textarea.focus();
-      }
-
+      textarea && textarea.focus();
       element.scrollIntoView({ behavior: 'smooth' });
     }
   }

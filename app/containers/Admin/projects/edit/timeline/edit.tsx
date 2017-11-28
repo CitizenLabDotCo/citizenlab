@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
 import { browserHistory } from 'react-router';
-import { API } from 'typings.d';
+import { API } from 'typings';
 
 // Services
 import { projectBySlugStream, IProject, IProjectData } from 'services/projects';

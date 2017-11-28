@@ -11,9 +11,10 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
+import Label from 'components/UI/Label';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import FieldWrapper from 'components/admin/FieldWrapper';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -48,14 +49,7 @@ import { v4 as uuid } from 'uuid';
 import styled from 'styled-components';
 
 // typings
-import { ImageFile } from 'react-dropzone';
-import { API, IOption, IRelationship } from 'typings.d';
-
-const FormWrapper = styled.form`
-  img {
-    max-width: 100%;
-  }
-`;
+import { API, IOption, IRelationship, ImageFile } from 'typings';
 
 const ProjectImages = styled.div`
   display: flex;
@@ -95,18 +89,11 @@ type Props = {
   }
 };
 
-/*
-interface IUploadedImage {
-  id: string;
-  file: ImageFile;
-}
-*/
-
 interface State {
   loading: boolean;
   projectData: IProjectData | null;
   projectAttributesDiff: IUpdatedProjectProperties;
-  headerBg: File[] | ImageFile[] | null;
+  headerBg: ImageFile[] | null;
   oldProjectImages: ImageFile[] | null;
   newProjectImages: ImageFile[] | null;
   errors: { [fieldName: string]: API.Error[] };
@@ -226,29 +213,36 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     // empty
   }
 
-  changeTitle = (value: string): void => {
-    const newVal = _.set({}, `projectAttributesDiff.title_multiloc.${this.state.locale}`, value);
-    this.setState(_.merge({}, this.state, newVal));
+  changeTitle = (newTitle: string) => {
+    // const newVal = _.set({}, `projectAttributesDiff.title_multiloc.${this.state.locale}`, value);
+    // this.setState((state: State) => {
+    //   _.merge({}, state, newVal);
+    // });
+
+    this.setState((state: State) => ({
+      projectAttributesDiff: {
+        ...state.projectAttributesDiff,
+        title_multiloc: {
+          ...state.projectAttributesDiff.title_multiloc,
+          [state.locale as string]: newTitle
+        }
+      }
+    }));
   }
 
   handleHeaderOnAdd = (newHeader: ImageFile) => {    
     this.setState((state: State) => ({
       projectAttributesDiff: {
         ...state.projectAttributesDiff,
-        header_bg: newHeader.preview
+        header_bg: newHeader.base64
       },
       headerBg: [newHeader]
     }));
   }
 
   handleHeaderOnUpdate = (updatedHeaders: ImageFile[]) => {
-    this.setState((state: State) => ({
-      // projectAttributesDiff: {
-      //   ...state.projectAttributesDiff,
-      //   header_bg: (updatedHeaders && updatedHeaders.length > 0 ? updatedHeaders[0].preview : null)
-      // },
-      headerBg: (updatedHeaders && updatedHeaders.length > 0 ? updatedHeaders : null)
-    }));
+    const headerBg = (updatedHeaders && updatedHeaders.length > 0 ? updatedHeaders : null);
+    this.setState({ headerBg });
   }
 
   handleHeaderOnRemove = async (removedHeader: ImageFile) => {
@@ -262,14 +256,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   handleProjectImageOnAdd = (newProjectImage: ImageFile) => {
-    this.setState((state: State) => {
-      return {
-        newProjectImages: [
-          ...(state.newProjectImages || []),
-          newProjectImage
-        ]
-      };
-    });
+    this.setState((state: State) => ({
+      newProjectImages: [
+        ...(state.newProjectImages || []),
+        newProjectImage
+      ]
+    }));
   }
 
   handleProjectImagesOnUpdate = (newProjectImages: ImageFile[]) => {
@@ -277,8 +269,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   handleProjectImageOnRemove = async (removedImageFile: ImageFile) => {
-    const newProjectImages = _(this.state.newProjectImages).filter(projectImage => projectImage.preview !== removedImageFile.preview).value();
-    this.setState({ newProjectImages });
+    this.setState((state: State) => ({
+      newProjectImages: _(state.newProjectImages).filter(projectImage => projectImage.base64 !== removedImageFile.base64).value()
+    }));
   }
 
   handleAreaTypeChange = (value) => {
@@ -310,8 +303,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         this.setState({ loading: true, saved: false });
 
         let projectId: string | null = null;
-        const imagesToAdd = _(newProjectImages).filter(newProjectImage => !_(oldProjectImages).some(oldProjectImage => oldProjectImage.preview === newProjectImage.preview)).value();
-        const imagesToRemove = _(oldProjectImages).filter(oldProjectImage => !_(newProjectImages).some(newProjectImage => newProjectImage.preview === oldProjectImage.preview)).value();
+        const imagesToAdd = _(newProjectImages).filter(newProjectImage => !_(oldProjectImages).some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64)).value();
+        const imagesToRemove = _(oldProjectImages).filter(oldProjectImage => !_(newProjectImages).some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64)).value();
 
         if (projectData) {
           await updateProject(projectData.id, projectAttributesDiff);
@@ -321,7 +314,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           projectId = project.data.id;
         }
 
-        const imagesToAddPromises: Promise<any>[] = _(imagesToAdd).map(imageToAdd => addProjectImage(projectId, imageToAdd.preview)).value();
+        const imagesToAddPromises: Promise<any>[] = _(imagesToAdd).map(imageToAdd => addProjectImage(projectId, imageToAdd.base64)).value();
         const imagesToRemovePromises: Promise<any>[] = _(imagesToRemove).map(imageToRemove => deleteProjectImage(projectId, imageToRemove['projectImageId'])).value();
         await Promise.all([...imagesToAddPromises, ...imagesToRemovePromises]);
 
@@ -336,103 +329,107 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   render() {
-    const { currentTenant, locale, errors, saved, projectData, headerBg, newProjectImages, loading, projectAttributesDiff } = this.state;
+    const { currentTenant, locale, errors, saved, projectData, headerBg, newProjectImages, loading, projectAttributesDiff, areasOptions } = this.state;
     const { formatMessage } = this.props.intl;
 
     if (!loading && currentTenant && locale) {
       const newProjectImageFiles = (newProjectImages && newProjectImages.length > 0 ? newProjectImages : null);
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
-      projectAttrs.area_ids = projectAttrs.area_ids || (projectData && projectData.relationships.areas.data.map((area) => (area.id))) || [];
+      const areaIds = projectAttrs.area_ids || (projectData && projectData.relationships.areas.data.map((area) => (area.id))) || [];
       const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale, currentTenantLocales);
       const submitState = getSubmitState({ errors, saved, diff: projectAttributesDiff });
-      const areasValues = projectAttrs.area_ids ? projectAttrs.area_ids.map((id) => {
-        const option = this.state.areasOptions.find(areaOption => areaOption.value === id);
-        return (option ? option : null);
-      }) : null;
+
+      const areasValues = areaIds.filter((id) => {
+        return areasOptions.some(areaOption => areaOption.value === id);
+      }).map((id) => {
+        return areasOptions.find(areaOption => areaOption.value === id) as IOption;
+      });
 
       return (
-        <FormWrapper className="e2e-project-general-form" onSubmit={this.saveProject}>
-          <FieldWrapper>
-            <label htmlFor="project-title">
-              <FormattedMessage {...messages.titleLabel} />
-            </label>
-            <Input
-              id="project-title"
-              type="text"
-              placeholder=""
-              value={projectTitle}
-              error=""
-              onChange={this.changeTitle}
-              setRef={this.setRef}
-            />
-            <Error fieldName="title_multiloc" apiErrors={this.state.errors.title_multiloc} />
-          </FieldWrapper>
-
-          <FieldWrapper>
-            <label htmlFor="project-area">
-              <FormattedMessage {...messages.areasLabel} />
-            </label>
-            <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="all" name="areas" id="areas-all" label={formatMessage(messages.areasAllLabel)} />
-            <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="selection" name="areas" id="areas-selection" label={formatMessage(messages.areasSelectionLabel)} />
-
-            {this.state.areaType === 'selection' &&
-              <MultipleSelect
-                options={this.state.areasOptions}
-                value={_.compact(areasValues)}
-                onChange={this.handleAreaSelectionChange}
+        <form className="e2e-project-general-form" onSubmit={this.saveProject}>
+          <Section>
+            <SectionField>
+              <Label htmlFor="project-title">
+                <FormattedMessage {...messages.titleLabel} />
+              </Label>
+              <Input
+                id="project-title"
+                type="text"
                 placeholder=""
-                disabled={this.state.areaType !== 'selection'}
+                value={projectTitle}
+                error=""
+                onChange={this.changeTitle}
+                setRef={this.setRef}
               />
-            }
-          </FieldWrapper>
+              <Error fieldName="title_multiloc" apiErrors={this.state.errors.title_multiloc} />
+            </SectionField>
 
-          <FieldWrapper>
-            <label>
-              <FormattedMessage {...messages.headerImageLabel} />
-            </label>
-            <ImagesDropzone
-              images={headerBg}
-              imagePreviewRatio={120 / 480}
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              maxImageFileSize={5000000}
-              maxNumberOfImages={1}
-              maxImagePreviewWidth="480px"
-              onAdd={this.handleHeaderOnAdd}
-              onUpdate={this.handleHeaderOnUpdate}
-              onRemove={this.handleHeaderOnRemove}
+            <SectionField>
+              <Label htmlFor="project-area">
+                <FormattedMessage {...messages.areasLabel} />
+              </Label>
+              <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="all" name="areas" id="areas-all" label={formatMessage(messages.areasAllLabel)} />
+              <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="selection" name="areas" id="areas-selection" label={formatMessage(messages.areasSelectionLabel)} />
+
+              {this.state.areaType === 'selection' &&
+                <MultipleSelect
+                  options={this.state.areasOptions}
+                  value={areasValues}
+                  onChange={this.handleAreaSelectionChange}
+                  placeholder=""
+                  disabled={this.state.areaType !== 'selection'}
+                />
+              }
+            </SectionField>
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.headerImageLabel} />
+              </Label>
+              <ImagesDropzone
+                images={headerBg}
+                imagePreviewRatio={120 / 480}
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                maxImageFileSize={5000000}
+                maxNumberOfImages={1}
+                maxImagePreviewWidth="500px"
+                onAdd={this.handleHeaderOnAdd}
+                onUpdate={this.handleHeaderOnUpdate}
+                onRemove={this.handleHeaderOnRemove}
+              />
+            </SectionField>
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.projectImageLabel} />
+              </Label>
+              <ImagesDropzone
+                images={newProjectImageFiles}
+                imagePreviewRatio={1}
+                maxImagePreviewWidth="150px"
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                maxImageFileSize={5000000}
+                maxNumberOfImages={5}
+                onAdd={this.handleProjectImageOnAdd}
+                onUpdate={this.handleProjectImagesOnUpdate}
+                onRemove={this.handleProjectImageOnRemove}
+              />
+            </SectionField>
+
+            <SubmitWrapper
+              loading={loading}
+              status={submitState}
+              messages={{
+                buttonSave: messages.saveProject,
+                buttonError: messages.saveError,
+                buttonSuccess: messages.saveSuccess,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
             />
-          </FieldWrapper>
-
-          <FieldWrapper>
-            <label>
-              <FormattedMessage {...messages.projectImageLabel} />
-            </label>
-            <ImagesDropzone
-              images={newProjectImageFiles}
-              imagePreviewRatio={1}
-              maxImagePreviewWidth="150px"
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              maxImageFileSize={5000000}
-              maxNumberOfImages={5}
-              onAdd={this.handleProjectImageOnAdd}
-              onUpdate={this.handleProjectImagesOnUpdate}
-              onRemove={this.handleProjectImageOnRemove}
-            />
-          </FieldWrapper>
-
-          <SubmitWrapper
-            loading={loading}
-            status={submitState}
-            messages={{
-              buttonSave: messages.saveProject,
-              buttonError: messages.saveError,
-              buttonSuccess: messages.saveSuccess,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
-            }}
-          />
-        </FormWrapper>
+          </Section>
+        </form>
       );
     }
 

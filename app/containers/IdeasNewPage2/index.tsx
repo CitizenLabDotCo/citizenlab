@@ -10,7 +10,6 @@ import { browserHistory } from 'react-router';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
-import { ImageFile } from 'react-dropzone';
 
 // components
 import ButtonBar from './ButtonBar';
@@ -30,7 +29,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // typings
-import { IOption } from 'typings';
+import { IOption, ImageFile } from 'typings';
 
 // style
 import { media } from 'utils/styleUtils';

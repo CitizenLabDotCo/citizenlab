@@ -37,8 +37,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // typings
-import { ImageFile } from 'react-dropzone';
-import { IOption } from 'typings';
+import { IOption, ImageFile } from 'typings';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -252,14 +251,14 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
   handleUploadOnAdd = (newImage: ImageFile) => {
     this.globalState.set({
       imageFile: [newImage],
-      imageBase64: newImage.preview,
+      imageBase64: newImage.base64,
       imageChanged: true
     });
   }
 
   handleUploadOnUpdate = (updatedImages: ImageFile[]) => {
     this.globalState.set({
-      imageBase64: updatedImages[0].preview
+      imageBase64: updatedImages[0].base64
     });
   }
 
@@ -387,6 +386,7 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
               maxImageFileSize={5000000}
               maxNumberOfImages={1}
               placeholder={formatMessage(messages.imageUploadPlaceholder)}
+              removeButtonBorderColor={'#f8f8f8'}
               onAdd={this.handleUploadOnAdd}
               onUpdate={this.handleUploadOnUpdate}
               onRemove={this.handleUploadOnRemove}

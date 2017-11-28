@@ -123,7 +123,7 @@ export default defineMessages({
   },
   unknownError: {
     id: 'app.containers.SignUp.unknownError',
-    defaultMessage: 'Something went wrong. Please try again.',
+    defaultMessage: 'Something went wrong. Please try again later.',
   },
   orSignUpWith: {
     id: 'app.containers.SignUp.orSignUpWith',

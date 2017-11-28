@@ -15,6 +15,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDashboard.helmetDescription',
     defaultMessage: 'List of projects on the platform',
   },
+  overviewPageTitle: {
+    id: 'app.containers.AdminPage.ProjectDashboard.overviewPageTitle',
+    defaultMessage: 'Projects',
+  },
   editProject: {
     id: 'app.containers.AdminPage.ProjectDashboard.editProjectButton',
     defaultMessage: 'See this project',

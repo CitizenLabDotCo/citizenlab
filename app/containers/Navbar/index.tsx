@@ -105,6 +105,8 @@ const NavigationItem = styled(Link) `
   justify-content: center;
   transition: all 100ms ease;
   outline: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: transparent;
 
   &:not(:last-child) {
     padding-right: 40px;

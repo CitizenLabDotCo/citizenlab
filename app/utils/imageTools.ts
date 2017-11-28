@@ -1,7 +1,7 @@
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import 'whatwg-fetch';
-import { ImageFile } from 'react-dropzone';
+import { ImageFile } from 'typings';
 
 export async function getBase64FromFile(file: File | ImageFile) {
   return new Promise<string>((resolve, reject) => {
@@ -22,10 +22,14 @@ export async function getBase64FromObjectUrl(objectUrl: string) {
   });
 }
 
-export function generateImagePreviewFromFile(image: File | ImageFile) {
+export function createObjectUrl(image: File | ImageFile) {
   const blob = new Blob([image], { type: image.type });
   const objectUrl = window.URL.createObjectURL(blob);
   return objectUrl;
+}
+
+export function revokeObjectURL(objectUrl: string) {
+  window.URL.revokeObjectURL(objectUrl);
 }
 
 export function convertUrlToBlob(url: string) {

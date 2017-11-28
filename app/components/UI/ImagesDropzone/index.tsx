@@ -5,16 +5,26 @@ import { media } from 'utils/styleUtils';
 import { darken } from 'polished';
 import Icon from 'components/UI/Icon';
 import Error from 'components/UI/Error';
-import Spinner from 'components/UI/Spinner';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import styled from 'styled-components';
-import { getBase64FromFile } from 'utils/imageTools';
+import { getBase64FromFile, createObjectUrl, revokeObjectURL } from 'utils/imageTools';
+import { ImageFile } from 'typings';
 
 const Container = styled.div`
   width: 100%;
+  display: column;
+`;
+
+const ContentWrapper = styled.div`
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap
+`;
+
+const ErrorWrapper = styled.div`
+  flex: 1;
+  margin-top: -12px;
 `;
 
 const DropzoneContainer = styled.div`
@@ -24,16 +34,25 @@ const DropzoneContainer = styled.div`
 
 const DropzonePlaceholderText = styled.div`
   color: #aaa;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 20px;
   font-weight: 400;
   text-align: center;
 `;
 
 const DropzonePlaceholderIcon = styled(Icon)`
-  height: 38px;
+  height: 32px;
   fill: #aaa;
   margin-bottom: 5px;
+`;
+
+const DropzoneImagesRemaining = styled.div`
+  color: #aaa;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 6px;
 `;
 
 const DropzoneContent = styled.div`
@@ -61,7 +80,8 @@ const StyledDropzone = styled(Dropzone)`
   &:hover {
     border-color: #000;
 
-    ${DropzonePlaceholderText} {
+    ${DropzonePlaceholderText},
+    ${DropzoneImagesRemaining} {
       color: #000;
     }
 
@@ -84,10 +104,11 @@ const Image: any = styled.div`
 const Box: any = styled.div`
   width: 100%;
   max-width: ${(props: any) => props.maxWidth ? props.maxWidth : '100%'};
-  margin-bottom: 15px;
+  margin-bottom: 16px;
+  position: relative;
 
   &.hasSpacing {
-    margin-right: 15px;
+    margin-right: 20px;
   }
 
   ${Image},
@@ -104,20 +125,21 @@ const RemoveIcon = styled(Icon)`
   fill: #333;
 `;
 
-const RemoveButton = styled.div`
-  width: 30px;
-  height: 30px;
+const RemoveButton: any = styled.div`
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: -15px;
-  right: -15px;
+  top: -16px;
+  right: -16px;
   z-index: 1;
   cursor: pointer;
   border-radius: 50%;
-  border: solid 2px #fff;
-  background: #e0e0e0;
+  border: solid 2.5px #fff;
+  border-color: ${(props: any) => props.removeButtonBorderColor};
+  background: #ddd;
 
   &:hover {
     background: #d0d0d0;
@@ -128,25 +150,26 @@ const RemoveButton = styled.div`
   }
 `;
 
+
 type Props = {
-  images: Dropzone.ImageFile[] | File[] | null;
+  images: ImageFile[] | null;
   acceptedFileTypes?: string | null | undefined;
   imagePreviewRatio?: number
   maxImagePreviewWidth?: string;
   maxImageFileSize?: number;
   maxNumberOfImages?: number;
   placeholder?: string | null | undefined;
-  errorMessage?: string | null;
+  errorMessage?: string | null | undefined;
   objectFit?: 'cover' | 'contain' | undefined;
-  onAdd: (arg: Dropzone.ImageFile) => void;
-  onUpdate: (arg: Dropzone.ImageFile[] | File[] | null) => void;
-  onRemove: (arg: Dropzone.ImageFile) => void;
+  removeButtonBorderColor?: string | undefined;
+  onAdd: (arg: ImageFile) => void;
+  onUpdate: (arg: ImageFile[] | null) => void;
+  onRemove: (arg: ImageFile) => void;
 };
 
 type State = {
-  images: Dropzone.ImageFile[] | null;
+  images: ImageFile[] | null;
   errorMessage: string | null;
-  processing: boolean;
 };
 
 class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -154,104 +177,118 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     super(props as any);
     this.state = {
       images: [],
-      errorMessage: null,
-      processing: false
+      errorMessage: null
     };
   }
 
   async componentWillMount() {
-    const images = await this.getImagesWithPreviews(this.props.images);
-    this.props.onUpdate(images);
-    this.setState({ images, processing: false });
+    if (_.size(this.props.images) > 0) {
+      const images = await this.getImageFiles(this.props.images);
+      this.props.onUpdate(images);
+      this.setState({ images });
+    }
+  }
+
+  componentWillUnmount() {
+    const { images } = this.props;
+
+    if (images && images.length > 0) {
+      for (let i = 0; i < images.length; i += 1) {
+        const image  = images[i];
+
+        if (image && image.objectUrl) {
+          revokeObjectURL(image.objectUrl);
+        }
+      }
+    }
   }
 
   async componentWillReceiveProps(nextProps: Props) {
     const { maxNumberOfImages } = this.props;
 
     if (nextProps.images !== this.props.images && (!maxNumberOfImages || (maxNumberOfImages && (_.size(nextProps.images) <= maxNumberOfImages)))) {
-      const images = await this.getImagesWithPreviews(nextProps.images);
-      this.setState({ images, processing: false });
+      const images = await this.getImageFiles(nextProps.images);
+      this.setState({ images });
     }
 
-    if (nextProps.errorMessage && nextProps.errorMessage !== this.props.errorMessage) {
-      this.setState({ errorMessage: nextProps.errorMessage });
-    }
-
-    if (!nextProps.errorMessage && this.props.errorMessage) {
-      this.setState({ errorMessage: null });
-    }
+    this.setState((state: State) => ({ errorMessage: (nextProps.errorMessage || state.errorMessage) }));
   }
 
-  getImagesWithPreviews = async (images: Dropzone.ImageFile[] | File[] | null) => {
+  getImageFiles = async (images: ImageFile[] | null) => {
     if (images && images.length > 0) {
       for (let i = 0; i < images.length; i += 1) {
-        const image = images[i];
-
-        if (!_.has(image, 'preview')) {
-          image['preview'] = await getBase64FromFile(image);
+        if (!_.has(images[i], 'base64')) {
+          images[i]['base64'] = await getBase64FromFile(images[i]);
         }
 
-        images[i] = image;
+        if (!_.has(images[i], 'objectUrl')) {
+          images[i]['objectUrl'] = createObjectUrl(images[i]);
+        }
       }
     }
 
     return images;
   }
 
-  onDrop = async (images: Dropzone.ImageFile[]) => {
+  onDrop = async (images: ImageFile[]) => {
     const { formatMessage } = this.props.intl;
     const maxItemsCount = this.props.maxNumberOfImages;
     const oldItemsCount = _.size(this.props.images);
     const newItemsCount = _.size(images);
     const remainingItemsCount = (maxItemsCount ? maxItemsCount - oldItemsCount : null);
 
-    this.setState({ errorMessage: null, processing: true });
+    this.setState({ errorMessage: null });
 
     if (maxItemsCount && remainingItemsCount && newItemsCount > remainingItemsCount) {
       const errorMessage = (maxItemsCount === 1 ? formatMessage(messages.onlyOneImage) : formatMessage(messages.onlyXImages, { maxItemsCount }));
       this.setState({ errorMessage });
       setTimeout(() => this.setState({ errorMessage: null }), 6000);
     } else {
-      const imagesWithPreviews = await this.getImagesWithPreviews(images);
-      _(imagesWithPreviews).forEach(image => this.props.onAdd(image));
+      const imagesWithPreviews = await this.getImageFiles(images);
+      _(imagesWithPreviews).forEach((image) => this.props.onAdd(image));
     }
   }
 
-  onDropRejected = (images: Dropzone.ImageFile[]) => {
+  onDropRejected = (images: ImageFile[]) => {
     const { formatMessage } = this.props.intl;
     const maxSize = this.props.maxImageFileSize || 5000000;
 
     if (images.some(image => image.size > maxSize)) {
-      const errorMessage = formatMessage(messages.errorMaxSizeExceeded, { maxFileSize: maxSize / 1000000 });
+      const maxSizeExceededErrorMessage = (images.length === 1 || this.props.maxNumberOfImages === 1 ? messages.errorImageMaxSizeExceeded : messages.errorImagesMaxSizeExceeded);
+      const errorMessage = formatMessage(maxSizeExceededErrorMessage, { maxFileSize: maxSize / 1000000 });
       this.setState({ errorMessage });
       setTimeout(() => this.setState({ errorMessage: null }), 6000);
     }
   }
 
-  removeImage = (removedImage: Dropzone.ImageFile, event: Event) => {
+  removeImage = (removedImage: ImageFile) => (event: React.FormEvent<any>) => {
     event.preventDefault();
     event.stopPropagation();
+
+    if (removedImage && removedImage.objectUrl) {
+      revokeObjectURL(removedImage.objectUrl);
+    }
+
     this.props.onRemove(removedImage);
   }
 
   render() {
-    let { acceptedFileTypes, placeholder, objectFit } = this.props;
+    let { acceptedFileTypes, placeholder, objectFit, removeButtonBorderColor } = this.props;
     let { images } = this.state;
     const { maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio } = this.props;
     const { formatMessage } = this.props.intl;
-    const { errorMessage, processing } = this.state;
-
-    console.log('processing: ' + processing);
+    const { errorMessage } = this.state;
+    const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - _.size(images)} ${formatMessage(messages.remaining)})` : null);
 
     images = (_.compact(images) || null);
     acceptedFileTypes = (acceptedFileTypes || '*');
-    placeholder = (placeholder || formatMessage(messages.dropYourImageHere));
+    placeholder = (placeholder || (maxNumberOfImages && maxNumberOfImages === 1 ? formatMessage(messages.dropYourImageHere) : formatMessage(messages.dropYourImagesHere)));
     objectFit = (objectFit || 'cover');
+    removeButtonBorderColor = (removeButtonBorderColor || '#fff');
 
     const imageList = ((images && images.length > 0) ? (
       images.map((image, index) => {
-        const _onClick = (event) => this.removeImage(image, event);
-        const hasSpacing = ((images && index + 1 === images.length && index + 1 === maxNumberOfImages) ? '' : 'hasSpacing');
+        const hasSpacing = (maxNumberOfImages !== 1 && index !== 0 ? 'hasSpacing' : '');
 
         return (
           <Box
@@ -260,20 +297,21 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
             ratio={imagePreviewRatio}
             className={hasSpacing}
           >
-            <Image src={image.preview} objectFit={objectFit}>
-              <RemoveButton onClick={_onClick}>
+            <Image src={image.objectUrl} objectFit={objectFit}>
+              <RemoveButton onClick={this.removeImage(image)} removeButtonBorderColor={removeButtonBorderColor}>
                 <RemoveIcon name="close2" />
               </RemoveButton>
             </Image>
           </Box>
         );
-      })
+      }).reverse()
     ) : null);
 
     const imageDropzone = ((!maxNumberOfImages || images.length < maxNumberOfImages) ? (
       <Box
         maxWidth={maxImagePreviewWidth}
         ratio={imagePreviewRatio}
+        className={(images && images.length > 0 ? 'hasSpacing' : '')}
       >
         <StyledDropzone
           accept={acceptedFileTypes}
@@ -282,26 +320,25 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
           onDrop={this.onDrop}
           onDropRejected={this.onDropRejected}
         >
-          {!processing ? (
-            <DropzoneContent>
-              <DropzonePlaceholderIcon name="upload" />
-              <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
-            </DropzoneContent>
-          ) : (
-            <DropzoneContent>
-              <Spinner />
-            </DropzoneContent>
-          )}
+          <DropzoneContent>
+            <DropzonePlaceholderIcon name="upload" />
+            <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
+            <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>
+          </DropzoneContent>
         </StyledDropzone>
-
-        <Error text={errorMessage} />
       </Box>
     ) : null);
 
     return (
       <Container>
-        {imageList}
-        {imageDropzone}
+        <ContentWrapper>
+          {imageDropzone}
+          {imageList}
+        </ContentWrapper>
+
+        <ErrorWrapper>
+          <Error text={errorMessage} />
+        </ErrorWrapper>
       </Container>
     );
   }
