@@ -12,13 +12,13 @@ export interface INotificationData {
     type: 'comment_on_your_comment' | 'comment_on_your_idea';
     read_at: string;
     created_at: string;
-    user_first_name: string;
-    user_last_name: string;
-    user_slug: string;
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
     idea_title: { [key: string]: any; }
   };
   relationships: {
-    user: {
+    initiating_user: {
       data?: {
         id: string;
         type: string;

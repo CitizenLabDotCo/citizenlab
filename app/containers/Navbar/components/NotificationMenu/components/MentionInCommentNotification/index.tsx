@@ -65,10 +65,10 @@ export default class MentionInCommentNotification extends React.PureComponent<Pr
           values={{
             name:
               <Link
-                to={`/profile/${notification.attributes.user_slug}`}
+                to={`/profile/${notification.attributes.initiating_user_slug}`}
                 onClick={this.onClickUserName}
               >
-                {notification.attributes.user_first_name}
+                {notification.attributes.initiating_user_first_name}
               </Link>,
           }}
         />
