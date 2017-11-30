@@ -54,7 +54,7 @@ const Header = styled.div`
   position: relative;
 
   ${media.smallerThanMinTablet`
-    height: 300px;
+    height: 250px;
   `}
 `;
 
@@ -194,12 +194,18 @@ const SectionIcon = styled(Icon)`
 const SectionTitle = styled.h2`
   color: #333;
   font-size: 28px;
-  line-height: 28px;
+  line-height: 32px;
   font-weight: 500;
+  white-space: normal;
   display: flex;
   align-items: flex-end;
   margin: 0;
   padding: 0;
+
+  ${media.smallerThanMaxTablet`
+    font-size: 26px;
+    line-height: 30px;
+  `}
 `;
 
 const SectionContainer = styled.section`
@@ -211,10 +217,16 @@ const ExploreText = styled.div`
   color: #84939E;
   font-size: 17px;
   font-weight: 300;
-  line-height: 17px;
+  line-height: 21px;
+  white-space: normal;
   margin-right: 8px;
   text-decoration: underline;
   transition: all 100ms ease-out;
+
+  ${media.smallerThanMaxTablet`
+    font-size: 15px;
+    line-height: 19px;
+  `}
 `;
 
 const ExploreIcon = styled(Icon) `
@@ -310,7 +322,9 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
         });
       }),
 
-      // if sent back to landingpage after socail login
+      // if 'idea_to_publish' parameter is present in landingpage url,
+      // find the draft idea previously created (before login/signup)
+      // and update it status and author name
       Rx.Observable.combineLatest(
         authUser$,
         ideaToPublish$
@@ -320,7 +334,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
           ideasStream({ queryParameters: landingPageIdeasQuery }).fetch();
         }
 
-        // remove idea parameter from url
+        // remove 'idea_to_publish' parameter from url
         window.history.replaceState(null, '', window.location.pathname);
       })
     ];

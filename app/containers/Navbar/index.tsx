@@ -18,7 +18,6 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { IUser } from 'services/users';
 
 // utils
-import eventEmitter from 'utils/eventEmitter';
 import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
@@ -54,14 +53,15 @@ const Container: any = styled.div`
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.13);
   `}
 
-  ${media.smallerThanMinTablet`
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.13);
-  `}
-
   * {
     user-select: none;
     outline: none;
   }
+
+  ${media.smallerThanMaxTablet`
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+    position: relative;
+  `}
 `;
 
 const Left = styled.div`
@@ -70,14 +70,15 @@ const Left = styled.div`
 `;
 
 const LogoLink = styled(Link) `
-  height: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
 
 const Logo = styled.img`
   height: 42px;
+  margin: 0;
   padding: 0px;
   padding-right: 15px;
   padding-left: 30px;
@@ -103,6 +104,9 @@ const NavigationItem = styled(Link) `
   align-items: center;
   justify-content: center;
   transition: all 100ms ease;
+  outline: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: transparent;
 
   &:not(:last-child) {
     padding-right: 40px;
@@ -140,6 +144,18 @@ const RightItem: any = styled.div`
 
   * {
     outline: none;
+  }
+
+  &.addIdea {
+    ${media.smallerThanMinTablet`
+        display: none;
+    `}
+
+    ${(props: any) => props.loggedIn && css`
+      ${media.smallerThanMinTablet`
+        display: flex;
+      `}
+    `}
   }
 
   ${media.phone`
@@ -217,7 +233,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
 
   componentDidMount() {
     this.subscriptions.push(
-      Rx.Observable.fromEvent(window, 'scroll').sampleTime(20).subscribe((bleh) => {
+      Rx.Observable.fromEvent(window, 'scroll', { passive: true }).sampleTime(20).subscribe((bleh) => {
         this.setState((state) => {
           const scrolled = (window.scrollY > 0);
           return (state.scrolled !== scrolled ? { scrolled } : state);
@@ -229,20 +245,6 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
-
-  /*
-  goToAddIdeaPage = (event) => {
-    event.preventDefault();
-
-    eventEmitter.emit<IModalInfo>(namespace, 'goToAddIdeaPage', {
-      type: 'add-idea',
-      id: null,
-      url: `/ideas/new`
-    });
-
-    // browserHistory.push('/ideas/new');
-  }
-  */
 
   toggleNotificationPanel = () => {
     if (this.state.notificationPanelOpened) {
@@ -310,7 +312,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
           </Left>
 
           <Right>
-            <RightItem className="addIdea">
+            <RightItem className="addIdea" loggedIn={authUser !== null}>
               <Button
                 className="e2e-add-idea-button"
                 text={formatMessage(messages.startIdea)}
@@ -335,7 +337,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
             }
 
             {!authUser &&
-              <RightItem hideOnPhone={true}>
+              <RightItem hideOnPhone={false}>
                 <Link to="/sign-in" id="e2e-login-link">
                   <LoginLink>
                     <FormattedMessage {...messages.login} />

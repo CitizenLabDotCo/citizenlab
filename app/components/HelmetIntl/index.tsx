@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { Message } from 'typings.d';
+import { Message } from 'typings';
 
 type Props = {
   title: Message;

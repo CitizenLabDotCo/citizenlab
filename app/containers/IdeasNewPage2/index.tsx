@@ -10,10 +10,8 @@ import { browserHistory } from 'react-router';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
-import { ImageFile } from 'react-dropzone';
 
 // components
-import Upload from 'components/UI/Upload';
 import ButtonBar from './ButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import SignInUp from './SignInUp';
@@ -26,15 +24,12 @@ import { getAuthUserAsync } from 'services/auth';
 import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
-// utils
-import { getBase64 } from 'utils/imageTools';
-
 // i18n
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // typings
-import { IOption } from 'typings';
+import { IOption, ImageFile } from 'typings';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -160,7 +155,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
 
   constructor(props: Props) {
     super(props as any);
-    this.initialLocalState = {
+    const initialLocalState = {
       showIdeaForm: true,
       locale: null
     };
@@ -170,16 +165,17 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
       selectedTopics: null,
       selectedProject: null,
       location: null,
-      images: null,
       titleError: null,
       descriptionError: null,
       submitError: false,
       processing: false,
       ideaId: null,
+      imageFile: null,
+      imageBase64: null,
       imageId: null,
       imageChanged: false
     };
-    this.localState = localState<LocalState>(this.initialLocalState);
+    this.localState = localState<LocalState>(initialLocalState);
     this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage', this.initialGlobalState);
     this.subscriptions = [];
   }
@@ -198,7 +194,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   componentWillUnmount() {
-    // clean up global state before unmounting
+    // reset global state before unmounting
     this.globalState.set(this.initialGlobalState);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
@@ -224,8 +220,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
 
     if (ideaId) {
       return await updateIdea(ideaId, {
-        // author_id: authorId,
-        // publication_status: publicationStatus,
         title_multiloc: ideaTitle,
         body_multiloc: ideaDescription,
         topic_ids: topicIds,
@@ -247,19 +241,10 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     );
   }
 
-  async postIdeaImage(ideaId: string, image: ImageFile): Promise<IIdeaImage> {
-    try {
-      const base64Image = await getBase64(image);
-      return await addIdeaImage(ideaId, base64Image, 0);
-    } catch (error) {
-      return error;
-    }
-  }
-
   async postIdeaAndIdeaImage(publicationStatus: 'draft' | 'published', authorId: string | null = null) {
     try {
       let ideaImage: IIdeaImage | null = null;
-      const { images, imageId, imageChanged } = await this.globalState.get();
+      const { imageBase64, imageId, imageChanged } = await this.globalState.get();
 
       const idea = await this.postIdea(publicationStatus, authorId);
 
@@ -270,8 +255,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
       }
 
       // upload the newly dropped image to the server
-      if (images && images.length > 0 && imageChanged) {
-        ideaImage = await this.postIdeaImage(idea.data.id, images[0]);
+      if (imageChanged && imageBase64) {
+        ideaImage = await addIdeaImage(idea.data.id, imageBase64, 0);
       }
 
       this.globalState.set({

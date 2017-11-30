@@ -211,7 +211,7 @@ export default class Editor extends React.PureComponent<Props, State> {
     });
 
     return (
-      <Container>
+      <Container className="editor">
         <DraftEditorContainer focussed={focussed} error={hasError}>
           <DraftEditor
             editorClassName={`draft-editor ${focussed ? 'focus' : ''}`}

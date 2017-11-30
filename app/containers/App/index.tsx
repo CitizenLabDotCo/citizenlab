@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import { RouterState } from 'react-router';
+import { RouterState, browserHistory } from 'react-router';
 
 // components
 import Meta from './Meta';
@@ -14,6 +14,7 @@ import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import IdeasShow from 'containers/IdeasShow';
 import IdeasNewPage2 from 'containers/IdeasNewPage2';
+import VoteControl from 'components/VoteControl';
 import { namespace as IdeaCardComponentNamespace } from 'components/IdeaCard';
 
 // auth
@@ -49,7 +50,8 @@ const Container = styled.div`
   padding: 0;
   padding-top: ${props => props.theme.menuHeight}px;
 
-  ${media.phone`
+  ${media.smallerThanMaxTablet`
+    padding-top: 0px;
     padding-bottom: ${props => props.theme.mobileMenuHeight}px;
   `}
 `;
@@ -90,10 +92,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const authUser$ = authUserStream().observable;
 
     this.subscriptions = [
-      Rx.Observable.merge(
-        eventEmitter.observe<IModalInfo>(IdeaCardComponentNamespace, 'cardClick'),
-        eventEmitter.observe<IModalInfo>(navbarComponentNamespace, 'goToAddIdeaPage')
-      ).subscribe(({ eventValue }) => {
+      eventEmitter.observe<IModalInfo>(IdeaCardComponentNamespace, 'cardClick').subscribe(({ eventValue }) => {
         const { type, id, url } = eventValue;
         this.openModal(type, id, url);
       }),
@@ -132,6 +131,10 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.setState({ modalOpened: false, modalType: null, modalId: null, modalUrl: null });
   }
 
+  unauthenticatedVoteClick = () => {
+    browserHistory.push('/sign-in');
+  }
+
   render() {
     const { location, children } = this.props;
     const { currentTenant, modalOpened, modalType, modalId, modalUrl } = this.state;
@@ -140,9 +143,17 @@ export default class App extends React.PureComponent<Props & RouterState, State>
       colorMain: (currentTenant ? currentTenant.data.attributes.settings.core.color_main : '#ef0071'),
       menuStyle: 'light',
       menuHeight: 74,
-      mobileMenuHeight: 80,
+      mobileMenuHeight: 72,
       maxPageWidth: 952,
     };
+
+    const fullscreenModalHeaderChild: JSX.Element | undefined = ((modalOpened && modalType === 'idea' && modalId) ? (
+      <VoteControl
+        ideaId={modalId}
+        unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+        size="small"
+      />
+    ) : undefined);
 
     return (
       <div>
@@ -155,9 +166,13 @@ export default class App extends React.PureComponent<Props & RouterState, State>
             <Container>
               <Meta />
 
-              <FullscreenModal opened={modalOpened} close={this.closeModal} url={modalUrl}>
+              <FullscreenModal
+                opened={modalOpened}
+                close={this.closeModal}
+                url={modalUrl}
+                headerChild={fullscreenModalHeaderChild}
+              >
                 {modalOpened && modalType === 'idea' && modalId && <IdeasShow location={location} ideaId={modalId} />}
-                {modalOpened && modalType === 'add-idea' && <IdeasNewPage2 />}
               </FullscreenModal>
 
               <Navbar />
