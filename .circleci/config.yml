@@ -163,6 +163,7 @@ workflows:
               ignore:
                 - crowdin_master
                 - master
+                - production
       - deploy_demo:
           requires:
             - lint
