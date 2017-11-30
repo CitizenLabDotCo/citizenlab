@@ -25,8 +25,8 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
-import FieldWrapper from 'components/admin/FieldWrapper';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // i18n
 import localize, { injectedLocalized } from 'utils/localize';
@@ -202,7 +202,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
         </h1>
 
         <form onSubmit={this.handleOnSubmit}>
-          <FieldWrapper>
+          <SectionField>
             <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
             <Input
               id="title"
@@ -211,9 +211,9 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
               onChange={this.createMultilocUpdater('title_multiloc')}
             />
             <Error apiErrors={this.state.errors && this.state.errors.title_multiloc} />
-          </FieldWrapper>
+          </SectionField>
 
-          <FieldWrapper>
+          <SectionField>
             <Label><FormattedMessage {...messages.datesLabel} /></Label>
             <DateRangePicker
               startDate={phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null} // momentPropTypes.momentObj or null,
@@ -229,9 +229,9 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
             />
             <Error apiErrors={this.state.errors && this.state.errors.start_at} />
             <Error apiErrors={this.state.errors && this.state.errors.end_at} />
-          </FieldWrapper>
+          </SectionField>
 
-          <FieldWrapper>
+          <SectionField>
             <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
             <Editor
               id="description"
@@ -241,7 +241,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
               onChange={this.handleDescChange}
             />
             <Error apiErrors={this.state.errors && this.state.errors.description_multiloc} />
-          </FieldWrapper>
+          </SectionField>
 
           <SubmitWrapper
             loading={this.state.saving}
