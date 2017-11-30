@@ -1,5 +1,10 @@
 # Changelog
 
+## 2017-11-23
+
+### Fixed
+- Loading the customize tab in the admin no longer requires a hard refresh
+
 ## 2017-11-22
 
 ### Fixed

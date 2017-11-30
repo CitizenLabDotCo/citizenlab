@@ -67,7 +67,6 @@ import { translationMessages } from './i18n';
 // Import CSS reset and Global Styles
 // import '../vendor/foundation/main.scss';
 import './global-styles';
-import '../vendor/carousel-custom.scss';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'semantic-ui-css/semantic.css';
 
@@ -164,3 +163,11 @@ if (!window.Intl) {
 } else {
   render(translationMessages);
 }
+
+// Remove the service worker. We can probably safely remove this in e.g. March 2018,
+// added to deal with legacy in an earlier version
+navigator.serviceWorker.getRegistrations().then((registrations) => {
+  registrations.forEach((registration) => {
+    registration.unregister();
+  });
+});
