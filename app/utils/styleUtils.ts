@@ -44,7 +44,7 @@ export const media = {
 };
 
 export function remCalc(desiredSize: number) {
-  return `${(desiredSize / 14).toString().substring(0, 6).trim()}rem`;
+  return `${(desiredSize / fontSizes.small).toString().substring(0, 6).trim()}rem`;
 }
 
 export const colors = {
