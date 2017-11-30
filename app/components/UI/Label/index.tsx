@@ -4,9 +4,10 @@ import { remCalc, fontSize, color } from 'utils/styleUtils';
 
 const StyledLabel = styled.label`
   color: ${color('label')};
+  display: flex;
   font-size: ${fontSize('small')};
   font-weight: 400;
-  display: flex;
+  margin: 0;
   padding-bottom: ${remCalc(10)};
 `;
 

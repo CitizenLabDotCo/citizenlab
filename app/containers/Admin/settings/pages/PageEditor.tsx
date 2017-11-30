@@ -14,8 +14,8 @@ import Button from 'components/UI/Button';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Error from 'components/UI/Error';
-import FieldWrapper from 'components/admin/FieldWrapper';
 import Icon from 'components/UI/Icon';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
@@ -211,7 +211,7 @@ export default class PageEditor extends React.Component<Props, State> {
 
           {/* Do not show the title input for the legal pages */}
           {!includes(this.legalPages, slug) &&
-            <FieldWrapper>
+            <SectionField>
               <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
               <Input
                 type="text"
@@ -219,15 +219,15 @@ export default class PageEditor extends React.Component<Props, State> {
                 onChange={this.createMultilocUpdater('title_multiloc')}
               />
               <Error apiErrors={errors && errors.title_multiloc} />
-            </FieldWrapper>
+            </SectionField>
           }
-          <FieldWrapper>
+          <SectionField>
             <Editor
               onChange={this.handleTextChange}
               value={editorState}
             />
             <Error apiErrors={errors && errors.body_multiloc} />
-          </FieldWrapper>
+          </SectionField>
           <SubmitWrapper
             status={getSubmitState({ errors, diff, saved })}
             loading={saving}

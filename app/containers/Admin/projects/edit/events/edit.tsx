@@ -16,7 +16,6 @@ import TextArea from 'components/UI/TextArea';
 import Editor from 'components/UI/Editor';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import FieldWrapper from 'components/admin/FieldWrapper';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
@@ -190,7 +189,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
           </h1>
 
           <form className="e2e-project-event-edit" onSubmit={this.handleOnSubmit}>
-            <FieldWrapper>
+            <SectionField>
               <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
               <Input
                 id="title"
@@ -199,9 +198,9 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
                 onChange={this.createMultilocUpdater('title_multiloc')}
               />
               <Error apiErrors={errors.title_multiloc} />
-            </FieldWrapper>
+            </SectionField>
 
-            <FieldWrapper>
+            <SectionField>
               <Label htmlFor="location"><FormattedMessage {...messages.locationLabel} /></Label>
               <Input
                 id="location"
@@ -210,21 +209,21 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
                 onChange={this.createMultilocUpdater('location_multiloc')}
               />
               <Error apiErrors={errors.location_multiloc} />
-            </FieldWrapper>
+            </SectionField>
 
-            <FieldWrapper>
+            <SectionField>
               <Label><FormattedMessage {...messages.dateStartLabel} /></Label>
               <DateTimePicker value={eventAttrs.start_at} onChange={this.createDateChangeHandler('start_at')} />
               <Error apiErrors={errors.start_at} />
-            </FieldWrapper>
+            </SectionField>
 
-            <FieldWrapper>
+            <SectionField>
               <Label><FormattedMessage {...messages.datesEndLabel} /></Label>
               <DateTimePicker value={eventAttrs.end_at} onChange={this.createDateChangeHandler('end_at')} />
               <Error apiErrors={errors.end_at} />
-            </FieldWrapper>
+            </SectionField>
 
-            <FieldWrapper>
+            <SectionField>
               <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
               <Editor
                 id="description"
@@ -234,7 +233,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
                 onChange={this.handleDescChange}
               />
               <Error apiErrors={errors.description_multiloc} />
-            </FieldWrapper>
+            </SectionField>
 
             <SubmitWrapper
               loading={this.state.saving}

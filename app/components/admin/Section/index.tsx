@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { remCalc, color, fontSize } from 'utils/styleUtils';
 
 export const Section = styled.div`
-  margin-bottom: ${remCalc(110)};
+  margin-bottom: ${remCalc(60)};
 `;
 
 export const SectionTitle = styled.h1`
@@ -10,8 +10,7 @@ export const SectionTitle = styled.h1`
   font-size: ${fontSize('xxl')};
   font-weight: 500;
   line-height: ${remCalc(32)};
-  margin: 0 0 ${remCalc(30)};
-  padding: 0;
+  margin-bottom: ${remCalc(30)};
 `;
 
 export const SectionField = styled.div`
