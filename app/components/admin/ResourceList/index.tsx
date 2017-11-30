@@ -5,7 +5,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { remCalc } from 'utils/styleUtils';
+import { remCalc, fontSize, color } from 'utils/styleUtils';
 
 const StyledList = styled.div`
   display: flex;
@@ -17,10 +17,10 @@ const timeout = 200;
 
 const StyledRow = styled.div`
   align-items: center !important;
-  border-bottom: 1px solid ${props => props.theme.colors.separation};
-  color: ${props => props.theme.colors.label};
+  border-bottom: 1px solid ${color('separation')};
+  color: ${color('label')};
   display: flex !important;
-  font-size: 1rem;
+  font-size: ${fontSize('small')};
   font-weight: 300;
   justify-content: space-between !important;
   line-height: 20px;
@@ -29,7 +29,7 @@ const StyledRow = styled.div`
   h1 {
     color: #444;
     font-weight: 500;
-    font-size: ${remCalc(18)};
+    font-size: ${fontSize('large')};
     margin-bottom: ${remCalc(10)};
   }
 
@@ -79,8 +79,8 @@ const StyledRow = styled.div`
 
   &.e2e-admin-list-head-row {
     border-top: 0;
-    color: ${props => props.theme.colors.label};
-    font-size: 1rem;
+    color: ${color('label')};
+    font-size: ${fontSize('small')};
     font-weight: 500;
   }
 `;
