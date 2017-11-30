@@ -183,57 +183,59 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
 
       return (
         <div>
-          <h1>
+          <SectionTitle>
             {this.state.event && <FormattedMessage {...messages.editEventTitle} />}
             {!this.state.event && <FormattedMessage {...messages.createEventTitle} />}
-          </h1>
+          </SectionTitle>
 
           <form className="e2e-project-event-edit" onSubmit={this.handleOnSubmit}>
-            <SectionField>
-              <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
-              <Input
-                id="title"
-                type="text"
-                value={getLocalized(eventAttrs.title_multiloc as Multiloc, locale, currentTenantLocales)}
-                onChange={this.createMultilocUpdater('title_multiloc')}
-              />
-              <Error apiErrors={errors.title_multiloc} />
-            </SectionField>
+            <Section>
+              <SectionField>
+                <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
+                <Input
+                  id="title"
+                  type="text"
+                  value={getLocalized(eventAttrs.title_multiloc as Multiloc, locale, currentTenantLocales)}
+                  onChange={this.createMultilocUpdater('title_multiloc')}
+                />
+                <Error apiErrors={errors.title_multiloc} />
+              </SectionField>
 
-            <SectionField>
-              <Label htmlFor="location"><FormattedMessage {...messages.locationLabel} /></Label>
-              <Input
-                id="location"
-                type="text"
-                value={getLocalized(eventAttrs.location_multiloc as Multiloc, locale, currentTenantLocales)}
-                onChange={this.createMultilocUpdater('location_multiloc')}
-              />
-              <Error apiErrors={errors.location_multiloc} />
-            </SectionField>
+              <SectionField>
+                <Label htmlFor="location"><FormattedMessage {...messages.locationLabel} /></Label>
+                <Input
+                  id="location"
+                  type="text"
+                  value={getLocalized(eventAttrs.location_multiloc as Multiloc, locale, currentTenantLocales)}
+                  onChange={this.createMultilocUpdater('location_multiloc')}
+                />
+                <Error apiErrors={errors.location_multiloc} />
+              </SectionField>
 
-            <SectionField>
-              <Label><FormattedMessage {...messages.dateStartLabel} /></Label>
-              <DateTimePicker value={eventAttrs.start_at} onChange={this.createDateChangeHandler('start_at')} />
-              <Error apiErrors={errors.start_at} />
-            </SectionField>
+              <SectionField>
+                <Label><FormattedMessage {...messages.dateStartLabel} /></Label>
+                <DateTimePicker value={eventAttrs.start_at} onChange={this.createDateChangeHandler('start_at')} />
+                <Error apiErrors={errors.start_at} />
+              </SectionField>
 
-            <SectionField>
-              <Label><FormattedMessage {...messages.datesEndLabel} /></Label>
-              <DateTimePicker value={eventAttrs.end_at} onChange={this.createDateChangeHandler('end_at')} />
-              <Error apiErrors={errors.end_at} />
-            </SectionField>
+              <SectionField>
+                <Label><FormattedMessage {...messages.datesEndLabel} /></Label>
+                <DateTimePicker value={eventAttrs.end_at} onChange={this.createDateChangeHandler('end_at')} />
+                <Error apiErrors={errors.end_at} />
+              </SectionField>
 
-            <SectionField>
-              <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
-              <Editor
-                id="description"
-                placeholder=""
-                value={this.state.descState}
-                error=""
-                onChange={this.handleDescChange}
-              />
-              <Error apiErrors={errors.description_multiloc} />
-            </SectionField>
+              <SectionField>
+                <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
+                <Editor
+                  id="description"
+                  placeholder=""
+                  value={this.state.descState}
+                  error=""
+                  onChange={this.handleDescChange}
+                />
+                <Error apiErrors={errors.description_multiloc} />
+              </SectionField>
+            </Section>
 
             <SubmitWrapper
               loading={this.state.saving}
