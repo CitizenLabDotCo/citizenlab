@@ -50,7 +50,7 @@ const Tab = styled.li`
   margin-bottom: -1px;
 
   &:not(:last-child) {
-    margin-right: 50px;
+    margin-right: 40px;
   }
 
   a {

@@ -264,7 +264,11 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
           </IdeaContent>
 
           {!showUnauthenticated &&
-            <StyledVoteControl ideaId={idea.data.id} unauthenticatedVoteClick={this.unauthenticatedVoteClick} />
+            <StyledVoteControl
+              ideaId={idea.data.id}
+              unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+              size="normal"
+            />
           }
 
           {showUnauthenticated && <Unauthenticated />}

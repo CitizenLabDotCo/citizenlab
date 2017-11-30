@@ -15,6 +15,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDashboard.helmetDescription',
     defaultMessage: 'List of projects on the platform',
   },
+  overviewPageTitle: {
+    id: 'app.containers.AdminPage.ProjectDashboard.overviewPageTitle',
+    defaultMessage: 'Projects',
+  },
   editProject: {
     id: 'app.containers.AdminPage.ProjectDashboard.editProjectButton',
     defaultMessage: 'See this project',
@@ -42,6 +46,14 @@ export default defineMessages({
   saveErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.saveErrorMessage',
     defaultMessage: 'An error occurred while saving your data. Please try again.',
+  },
+  noTitleErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.noTitleErrorMessage',
+    defaultMessage: 'Please enter a project title',
+  },
+  noHeaderErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.noHeaderErrorMessage',
+    defaultMessage: 'Please select a project header image',
   },
   saveSuccessMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.saveSuccessMessage',

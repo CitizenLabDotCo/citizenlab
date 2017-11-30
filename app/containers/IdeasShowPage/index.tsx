@@ -36,27 +36,33 @@ type State = {
 
 class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
   state: State;
-  subscriptions: Rx.Subscription[];
+  slug$: Rx.BehaviorSubject<string> | null;
+  subscription: Rx.Subscription | null;
 
   constructor(props: Props) {
     super(props as any);
-    this.state = {
-      ideaId: null
-    };
-    this.subscriptions = [];
+    this.state = { ideaId: null };
+    this.slug$ = null;
+    this.subscription = null;
   }
 
   componentWillMount() {
-    const { slug } = this.props.params;
-    const idea$ = ideaBySlugStream(slug).observable.map(idea => idea.data.id);
+    this.slug$ = new Rx.BehaviorSubject(this.props.params.slug);
+    const ideaId$ = this.slug$.switchMap(slug => ideaBySlugStream(slug).observable.map(idea => idea.data.id));
+    this.subscription = ideaId$.subscribe(ideaId => this.setState({ ideaId }));
+  }
 
-    this.subscriptions = [
-      idea$.subscribe(ideaId => this.setState({ ideaId }))
-    ];
+  componentWillReceiveProps(newProps) {
+    if (newProps.params.slug !== this.props.params.slug && this.slug$ !== null) {
+      this.slug$.next(newProps.params.slug);
+    }
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
   }
 
   render() {

@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import Button from 'components/UI/Button';
 import TextArea from 'components/UI/TextArea';
 import Error from 'components/UI/Error';
+import Warning from 'components/UI/Warning';
 import Author from './Author';
 
 // tracking
@@ -201,15 +202,17 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
     const placeholder = formatMessage(messages.commentBodyPlaceholder);
     const commentButtonDisabled = (!inputValue || inputValue === '');
 
+    const signInLinkText = (
+      <FormattedMessage
+        {...messages.signInToComment}
+        values={{
+          signInLink: <StyledLink to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></StyledLink>,
+        }}
+      />
+    );
+
     const signUp = (!authUser ? (
-      <SignInMessage className="ideaCommentForm">
-        <FormattedMessage
-          {...messages.signInToComment}
-          values={{
-            signInLink: <StyledLink to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></StyledLink>,
-          }}
-        />
-      </SignInMessage>
+      <Warning text={signInLinkText} />
     ) : null);
 
     const commentForm = (authUser ? (

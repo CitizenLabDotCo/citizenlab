@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
-import { Multiloc, API } from 'typings.d';
+import { Multiloc, API } from 'typings';
 
 // libraries
 import * as moment from 'moment';
@@ -19,6 +19,7 @@ import Error from 'components/UI/Error';
 import FieldWrapper from 'components/admin/FieldWrapper';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // utils
 import { IStream } from 'utils/streams';
