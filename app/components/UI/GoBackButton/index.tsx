@@ -1,0 +1,54 @@
+import * as React from 'react';
+import styled from 'styled-components';
+import Icon from 'components/UI/Icon';
+import { FormattedMessage } from 'react-intl';
+import messages from './messages';
+
+const GoBackIcon = styled(Icon)`
+  height: 22px;
+  fill: ${props => props.theme.colors.label};
+  margin-right: 5px;
+`;
+
+const GoBackText = styled.div`
+  color: ${props => props.theme.colors.label};
+  font-size: 18px;
+  font-weight: 400;
+`;
+
+const GoBack = styled.div`
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    ${GoBackIcon} {
+      fill: #000;
+    }
+
+    ${GoBackText} {
+      color: #000;
+    }
+  }
+`;
+
+type Props = {
+  onClick: (arg: React.FormEvent<any>) => void;
+};
+
+type State = {};
+
+export default class GoBackButton extends React.PureComponent<Props, State> {
+  render() {
+    const className = this.props['className'];
+
+    return (
+      <GoBack className={className} onClick={this.props.onClick}>
+        <GoBackIcon name="arrow-back" />
+        <GoBackText>
+          <FormattedMessage {...messages.goBack} />
+        </GoBackText>
+      </GoBack>
+    );
+  }
+}

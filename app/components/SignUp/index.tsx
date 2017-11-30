@@ -25,7 +25,7 @@ import { darken } from 'polished';
 import styled from 'styled-components';
 
 // typings
-import { API } from 'typings.d';
+import { API } from 'typings';
 
 const Container = styled.div`
   width: 100%;

@@ -1,4 +1,4 @@
-import { IRelationship, Multiloc } from 'typings.d';
+import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import request from 'utils/request';

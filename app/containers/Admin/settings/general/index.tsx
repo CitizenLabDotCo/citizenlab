@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // typings
-import { API } from 'typings.d';
+import { API } from 'typings';
 
 // i18n
 import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl';
@@ -16,8 +16,8 @@ import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import TextArea from 'components/UI/TextArea';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import FieldWrapper from 'components/admin/FieldWrapper';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // services
 import {
@@ -119,8 +119,8 @@ class SettingsGeneralTab extends React.PureComponent<Props, State> {
     const updatedLocales = _.get(this.state.attributesDiff, 'settings.core.locales');
 
     let tenantAttrs = this.state.tenant
-    ? _.merge({}, this.state.tenant.attributes, this.state.attributesDiff)
-    : _.merge({}, this.state.attributesDiff);
+      ? _.merge({}, this.state.tenant.attributes, this.state.attributesDiff)
+      : _.merge({}, this.state.attributesDiff);
 
     // Prevent merging the arrays of locales
     if (updatedLocales) {
@@ -130,69 +130,74 @@ class SettingsGeneralTab extends React.PureComponent<Props, State> {
     return (
       <form onSubmit={this.save}>
 
-        <h1><FormattedMessage {...messages.titleBasic} /></h1>
-        <p><FormattedMessage {...messages.subTitleBasic} /></p>
+        <Section>
 
-        <FieldWrapper>
-          <Label>
-            <FormattedMessage {...messages.organizationName} values={{ type: _.get(tenantAttrs, 'settings.core.organization_type') }} />
-          </Label>
-          <Input
-            type="text"
-            id="organization_name"
-            value={_.get(tenantAttrs, `settings.core.organization_name.${lang}`)}
-            onChange={this.createChangeHandler(`settings.core.organization_name.${lang}`)}
+          <SectionTitle>
+            <FormattedMessage {...messages.titleBasic} />
+          </SectionTitle>
+
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.organizationName} values={{ type: _.get(tenantAttrs, 'settings.core.organization_type') }} />
+            </Label>
+            <Input
+              type="text"
+              id="organization_name"
+              value={_.get(tenantAttrs, `settings.core.organization_name.${lang}`)}
+              onChange={this.createChangeHandler(`settings.core.organization_name.${lang}`)}
+            />
+          </SectionField>
+
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.languages} values={{ type: _.get(tenantAttrs, 'settings.core.locales') }} />
+            </Label>
+            <MultipleSelect
+              placeholder=""
+              value={_.get(tenantAttrs, 'settings.core.locales')}
+              onChange={this.createChangeHandler('settings.core.locales')}
+              options={this.localeOptions()}
+            />
+          </SectionField>
+
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.metaTitle} />
+            </Label>
+            <Input
+              type="text"
+              id="meta_title"
+              value={_.get(tenantAttrs, `settings.core.meta_title.${lang}`)}
+              onChange={this.createChangeHandler(`settings.core.meta_title.${lang}`)}
+            />
+          </SectionField>
+
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.metaDescription} />
+            </Label>
+            <TextArea
+              name="meta_description"
+              rows={5}
+              value={_.get(tenantAttrs, `settings.core.meta_description.${lang}`)}
+              onChange={this.createChangeHandler(`settings.core.meta_description.${lang}`)}
+              error=""
+            />
+          </SectionField>
+
+          <SubmitWrapper
+            loading={this.state.loading}
+            status={getSubmitState({ errors, saved, diff: attributesDiff })}
+            messages={{
+              buttonSave: messages.save,
+              buttonError: messages.saveError,
+              buttonSuccess: messages.saveSuccess,
+              messageError: messages.saveErrorMessage,
+              messageSuccess: messages.saveSuccessMessage,
+            }}
           />
-        </FieldWrapper>
 
-        <FieldWrapper>
-          <Label>
-            <FormattedMessage {...messages.languages} values={{ type: _.get(tenantAttrs, 'settings.core.locales') }} />
-          </Label>
-          <MultipleSelect
-            placeholder=""
-            value={_.get(tenantAttrs, 'settings.core.locales')}
-            onChange={this.createChangeHandler('settings.core.locales')}
-            options={this.localeOptions()}
-          />
-        </FieldWrapper>
-
-        <FieldWrapper>
-          <Label>
-            <FormattedMessage {...messages.metaTitle} />
-          </Label>
-          <Input
-            type="text"
-            id="meta_title"
-            value={_.get(tenantAttrs, `settings.core.meta_title.${lang}`)}
-            onChange={this.createChangeHandler(`settings.core.meta_title.${lang}`)}
-          />
-        </FieldWrapper>
-
-        <FieldWrapper>
-          <Label>
-            <FormattedMessage {...messages.metaDescription} />
-          </Label>
-          <TextArea
-            name="meta_description"
-            rows={5}
-            value={_.get(tenantAttrs, `settings.core.meta_description.${lang}`)}
-            onChange={this.createChangeHandler(`settings.core.meta_description.${lang}`)}
-            error=""
-          />
-        </FieldWrapper>
-
-        <SubmitWrapper
-          loading={this.state.loading}
-          status={getSubmitState({ errors, saved, diff: attributesDiff })}
-          messages={{
-            buttonSave: messages.save,
-            buttonError: messages.saveError,
-            buttonSuccess: messages.saveSuccess,
-            messageError: messages.saveErrorMessage,
-            messageSuccess: messages.saveSuccessMessage,
-          }}
-        />
+        </Section>
 
       </form>
     );

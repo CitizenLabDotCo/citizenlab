@@ -49,28 +49,28 @@ const Tab = styled.li`
   margin-bottom: -1px;
 
   &:not(:last-child) {
-    margin-right: 50px;
+    margin-right: 40px;
   }
 
   a {
     color: #999;
     font-size: 17px;
     font-weight: 400;
-    line-height: 21px;
+    line-height: 20px;
     text-transform: capitalize;
     padding: 0;
-    padding-top: 18px;
-    padding-bottom: 16px;
+    padding-top: 17px;
+    padding-bottom: 15px;
     border-bottom: 3px solid transparent;
     transition: all 100ms ease-out;
   }
 
   &:hover a {
-    color: #333;
+    color: #000;
   }
 
   &.active a {
-    color: #333;
+    color: #000;
     border-color: #d60065;
   }
 

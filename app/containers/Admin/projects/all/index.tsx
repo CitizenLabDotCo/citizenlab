@@ -20,10 +20,23 @@ import { Link } from 'react-router';
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 
+const Title = styled.h1`
+  color: #333;
+  font-size: 35px;
+  line-height: 40px;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 30px;
+`;
+
 const ProjectsList = styled.ul`
   display: flex;
   flex-wrap: wrap;
   list-style: none;
+  margin: 0;
+  margin: -5px;
+  padding: 0;
 `;
 
 const ProjectImage = styled.img`
@@ -81,12 +94,12 @@ const ProjectTitle = styled.h1`
 `;
 
 const ProjectCard = styled.li`
-  width: 270px;
-  height: 260px;
+  width: 260px;
+  height: 250px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin: 13px;
+  margin: 10px;
   padding: 15px;
   overflow: hidden;
   border-radius: 5px;
@@ -104,18 +117,18 @@ const AddProjectLink = styled(Link)`
 `;
 
 const AddProjectIcon = styled(Icon)`
-  height: 30px;
+  height: 28px;
   fill: #999;
   transition: all 100ms ease-out;
 `;
 
 const AddProjectText = styled.div`
   color: #999;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 23px;
   font-weight: 400;
   text-align: center;
-  margin-top: 15px;
+  margin-top: 8px;
   transition: all 100ms ease-out;
 `;
 
@@ -170,50 +183,56 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
     const { projects } = this.state;
 
     return (
-      <ProjectsList className="e2e-projects-list">
+      <div>
+        <Title>
+          <FormattedMessage {...messages.overviewPageTitle} />
+        </Title>
 
-        <AddProjectCard className="new-project e2e-new-project">
-          <AddProjectLink to="/admin/projects/new">
-            <AddProjectIcon name="plus-circle" />
-            <AddProjectText>
-              <FormattedMessage {...messages.addNewProject} />
-            </AddProjectText>
-          </AddProjectLink>
-        </AddProjectCard>
+        <ProjectsList className="e2e-projects-list">
 
-        {projects && projects.data && projects.data.map((project) => {
-          const projectImage = (_.has(project, 'attributes.header_bg.medium') ? project.attributes.header_bg.medium : null);
+          <AddProjectCard className="new-project e2e-new-project">
+            <AddProjectLink to="/admin/projects/new">
+              <AddProjectIcon name="plus-circle" />
+              <AddProjectText>
+                <FormattedMessage {...messages.addNewProject} />
+              </AddProjectText>
+            </AddProjectLink>
+          </AddProjectCard>
 
-          return (
-            <ProjectCard key={project.id} className="e2e-project-card">
+          {projects && projects.data && projects.data.map((project) => {
+            const projectImage = (_.has(project, 'attributes.header_bg.medium') ? project.attributes.header_bg.medium : null);
 
-              {projectImage && <ProjectImage src={projectImage} alt="" role="presentation" />}
+            return (
+              <ProjectCard key={project.id} className="e2e-project-card">
 
-              {!projectImage && 
-                <ProjectImagePlaceholder>
-                  <ProjectImagePlaceholderIcon name="project" />
-                </ProjectImagePlaceholder>
-              }
+                {projectImage && <ProjectImage src={projectImage} alt="" role="presentation" />}
 
-              <ProjectTitle>
-                <T value={project.attributes.title_multiloc} />
-              </ProjectTitle>
+                {!projectImage && 
+                  <ProjectImagePlaceholder>
+                    <ProjectImagePlaceholderIcon name="project" />
+                  </ProjectImagePlaceholder>
+                }
 
-              <ButtonWrapper>
-                <GoToProjectButton 
-                  style="primary-outlined" 
-                  linkTo={`/admin/projects/${project.attributes.slug}/edit`}
-                  circularCorners={false}
-                >
-                  <FormattedMessage {...messages.editProject} />
-                </GoToProjectButton>
-              </ButtonWrapper>
+                <ProjectTitle>
+                  <T value={project.attributes.title_multiloc} />
+                </ProjectTitle>
 
-            </ProjectCard>
-          );
-        })}
+                <ButtonWrapper>
+                  <GoToProjectButton 
+                    style="primary-outlined" 
+                    linkTo={`/admin/projects/${project.attributes.slug}/edit`}
+                    circularCorners={false}
+                  >
+                    <FormattedMessage {...messages.editProject} />
+                  </GoToProjectButton>
+                </ButtonWrapper>
 
-      </ProjectsList>
+              </ProjectCard>
+            );
+          })}
+
+        </ProjectsList>
+      </div>
     );
   }
 }
