@@ -142,9 +142,9 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
         {groups.map((group) => (
           <Row key={group.id}>
             <GroupAvatar groupId={group.id} />
-            <p className="expand">
+            <h2 className="expand">
               {getLocalized(group.attributes.title_multiloc, locale, tenantLocales)}
-            </p>
+            </h2>
             <p className="expand">
               <FormattedMessage {...messages.members} values={{ count: group.attributes.memberships_count }} />
             </p>
