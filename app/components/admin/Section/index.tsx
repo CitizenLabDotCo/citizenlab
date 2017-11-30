@@ -1,21 +1,21 @@
 import styled from 'styled-components';
+import { remCalc, color, fontSize } from 'utils/styleUtils';
 
 export const Section = styled.div`
-  margin-bottom: 110px;
+  margin-bottom: ${remCalc(110)};
 `;
 
 export const SectionTitle = styled.h1`
-  color: #333;
-  font-size: 28px;
-  line-height: 32px;
+  color: ${color('text')};
+  font-size: ${fontSize('xxl')};
   font-weight: 500;
-  margin: 0;
-  margin-bottom: 30px;
+  line-height: ${remCalc(32)};
+  margin: 0 0 ${remCalc(30)};
   padding: 0;
 `;
 
 export const SectionField = styled.div`
-  margin-bottom: 35px;
+  margin-bottom: ${remCalc(30)};
 
   input,
   textarea {
