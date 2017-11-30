@@ -41,9 +41,9 @@ interface Props {
 export default class SubmitWrapper extends React.Component<Props> {
   render () {
     let style = this.props.style || 'cl-blue';
+
     if (this.props.status === 'success') {style = 'success';}
     if (this.props.status === 'error') {style = 'error';}
-
 
     return (
       <Wrapper>
