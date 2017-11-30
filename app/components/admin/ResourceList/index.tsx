@@ -5,6 +5,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
+import { remCalc } from 'utils/styleUtils';
 
 const StyledList = styled.div`
   display: flex;
@@ -15,15 +16,26 @@ const StyledList = styled.div`
 const timeout = 200;
 
 const StyledRow = styled.div`
-  color: #444;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 400;
-  display: flex !important;
   align-items: center !important;
+  border-bottom: 1px solid ${props => props.theme.colors.separation};
+  color: ${props => props.theme.colors.label};
+  display: flex !important;
+  font-size: 1rem;
+  font-weight: 300;
   justify-content: space-between !important;
-  border-bottom: 1px solid #eaeaea;
+  line-height: 20px;
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  h1 {
+    color: #444;
+    font-weight: 500;
+    font-size: ${remCalc(18)};
+    margin-bottom: ${remCalc(10)};
+  }
+
+  p {
+    margin-bottom: 0;
+  }
 
   &:first-child {
     border-top: 1px solid #eaeaea;
@@ -67,6 +79,9 @@ const StyledRow = styled.div`
 
   &.e2e-admin-list-head-row {
     border-top: 0;
+    color: ${props => props.theme.colors.label};
+    font-size: 1rem;
+    font-weight: 500;
   }
 `;
 

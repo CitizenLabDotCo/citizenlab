@@ -38,6 +38,10 @@ export const media = {
   `,
 };
 
+export function remCalc(desiredSize) {
+  return `${(desiredSize / 14).toString().substring(0, 6).trim()}rem`;
+}
+
 export const colors = {
   clBlue: '#01A1B1',
   text: '#222',
