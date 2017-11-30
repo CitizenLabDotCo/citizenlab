@@ -228,7 +228,6 @@ const Container: any = styled.div`
 `;
 
 const SpinnerWrapper = styled.div`
-  display: inline-block;
   position: absolute;
   top: 0;
   left: 0;
@@ -289,7 +288,7 @@ export default class Button extends React.PureComponent<Props, State> {
       <ButtonContent>
         {icon && <StyledIcon name={icon} />}
         <ButtonText>{text || children}</ButtonText>
-        {loading && <SpinnerWrapper><Spinner /></SpinnerWrapper>}
+        {loading && <SpinnerWrapper><Spinner size="24px" /></SpinnerWrapper>}
       </ButtonContent>
     );
 

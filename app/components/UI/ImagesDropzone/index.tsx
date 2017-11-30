@@ -4,22 +4,26 @@ import * as _ from 'lodash';
 import { media } from 'utils/styleUtils';
 import { darken } from 'polished';
 import Icon from 'components/UI/Icon';
+import Spinner from 'components/UI/Spinner';
 import Error from 'components/UI/Error';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { getBase64FromFile, createObjectUrl, revokeObjectURL } from 'utils/imageTools';
 import { ImageFile } from 'typings';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import shallowCompare from 'utils/shallowCompare';
 
 const Container = styled.div`
   width: 100%;
   display: column;
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled(TransitionGroup)`
   width: 100%;
   display: flex;
-  flex-wrap: wrap
+  flex-wrap: wrap;
 `;
 
 const ErrorWrapper = styled.div`
@@ -38,12 +42,14 @@ const DropzonePlaceholderText = styled.div`
   line-height: 20px;
   font-weight: 400;
   text-align: center;
+  transition: all 100ms ease-out;
 `;
 
 const DropzonePlaceholderIcon = styled(Icon)`
   height: 32px;
   fill: #aaa;
   margin-bottom: 5px;
+  transition: all 100ms ease-out;
 `;
 
 const DropzoneImagesRemaining = styled.div`
@@ -53,6 +59,7 @@ const DropzoneImagesRemaining = styled.div`
   font-weight: 400;
   text-align: center;
   margin-top: 6px;
+  transition: all 100ms ease-out;
 `;
 
 const DropzoneContent = styled.div`
@@ -69,16 +76,18 @@ const DropzoneContent = styled.div`
 `;
 
 const StyledDropzone = styled(Dropzone)`
+  box-sizing: border-box;
   border-radius: 5px;
-  border-color: #999;
+  border-color: #666;
   border-width: 1.5px;
   border-style: dashed;
   position: relative;
   cursor: pointer;
   background: #fff;
+  transition: all 100ms ease-out;
 
-  &:hover {
-    border-color: #000;
+  &.canDrop {
+    border-color: #006400;
 
     ${DropzonePlaceholderText},
     ${DropzoneImagesRemaining} {
@@ -89,6 +98,47 @@ const StyledDropzone = styled(Dropzone)`
       fill: #000;
     }
   }
+
+  &.cannotDrop {
+    cursor: no-drop !important;
+    border-color: #8b0000;
+
+    ${DropzonePlaceholderText},
+    ${DropzoneImagesRemaining} {
+      color: #ccc;
+    }
+
+    ${DropzonePlaceholderIcon} {
+      fill: #ccc;
+    }
+  }
+
+  ${(props: any) => props.disabled ? css`
+    cursor: not-allowed;
+    border-color: #ccc;
+
+    ${DropzonePlaceholderText},
+    ${DropzoneImagesRemaining} {
+      color: #ccc;
+    }
+
+    ${DropzonePlaceholderIcon} {
+      fill: #ccc;
+    }
+  ` : css`
+    &:hover {
+      border-color: #000;
+
+      ${DropzonePlaceholderText},
+      ${DropzoneImagesRemaining} {
+        color: #000;
+      }
+
+      ${DropzonePlaceholderIcon} {
+        fill: #000;
+      }
+    }
+  `}
 `;
 
 const Image: any = styled.div`
@@ -97,6 +147,7 @@ const Image: any = styled.div`
   background-size: ${(props: any) => props.objectFit};
   background-image: url(${(props: any) => props.src});
   position: relative;
+  box-sizing: border-box;
   border-radius: 5px;
   border: solid 1px #ccc;
 `;
@@ -106,6 +157,7 @@ const Box: any = styled.div`
   max-width: ${(props: any) => props.maxWidth ? props.maxWidth : '100%'};
   margin-bottom: 16px;
   position: relative;
+  will-change: opacity;
 
   &.hasSpacing {
     margin-right: 20px;
@@ -118,38 +170,83 @@ const Box: any = styled.div`
     height: ${(props: any) => props.ratio !== 1 ? 'auto' : props.maxWidth};
     padding-bottom: ${(props: any) => props.ratio !== 1 ? `${Math.round(props.ratio * 100)}%` : '0'};
   }
-`;
 
-const RemoveIcon = styled(Icon)`
-  height: 10px;
-  fill: #333;
-`;
+  &.animate {
+    &.image-enter {
+      opacity: 0;
+      width: 0px;
+      transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1) 2000ms;
 
-const RemoveButton: any = styled.div`
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: -16px;
-  right: -16px;
-  z-index: 1;
-  cursor: pointer;
-  border-radius: 50%;
-  border: solid 2.5px #fff;
-  border-color: ${(props: any) => props.removeButtonBorderColor};
-  background: #ddd;
+      &.hasSpacing {
+        margin-right: 0px;
+      }
 
-  &:hover {
-    background: #d0d0d0;
+      &.image-enter-active {
+        opacity: 1;
+        width: 100%;
 
-    ${RemoveIcon} {
-      fill: #000;
+        &.hasSpacing {
+          margin-right: 20px;
+        }
+      }
+    }
+
+    &.image-exit {
+      opacity: 1;
+      width: 100%;
+      transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+      &.hasSpacing {
+        margin-right: 20px;
+      }
+
+      &.image-exit-active {
+        opacity: 0;
+        width: 0px;
+
+        &.hasSpacing {
+          margin-right: 0px;
+        }
+      }
     }
   }
 `;
 
+const RemoveIcon = styled(Icon)`
+  height: 10px;
+  fill: #fff;
+  transition: all 100ms ease-out;
+`;
+
+const RemoveButton: any = styled.div`
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  cursor: pointer;
+  border-radius: 50%;
+  border: solid 1px rgba(255, 255, 255, 0.6);
+  border: solid 1px transparent;
+  /* border-color: #fff; */
+  background: rgba(0, 0, 0, 0.6);
+  /* background: ${(props) => props.theme.colors.label}; */
+  transition: all 100ms ease-out;
+
+  &:hover {
+    background: #000;
+    /* background: ${(props) => darken(0.2, props.theme.colors.label)}; */
+    border-color: #fff;
+
+    ${RemoveIcon} {
+      fill: #fff;
+    }
+  }
+`;
 
 type Props = {
   images: ImageFile[] | null;
@@ -170,6 +267,8 @@ type Props = {
 type State = {
   images: ImageFile[] | null;
   errorMessage: string | null;
+  processing: boolean;
+  isMounted: boolean;
 };
 
 class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -177,7 +276,9 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     super(props as any);
     this.state = {
       images: [],
-      errorMessage: null
+      errorMessage: null,
+      processing: false,
+      isMounted: false
     };
   }
 
@@ -187,6 +288,10 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
       this.props.onUpdate(images);
       this.setState({ images });
     }
+  }
+
+  componentDidMount() {
+    setTimeout(() => this.setState({ isMounted: true }), 2000);
   }
 
   componentWillUnmount() {
@@ -204,14 +309,21 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
   }
 
   async componentWillReceiveProps(nextProps: Props) {
-    const { maxNumberOfImages } = this.props;
+    if (!shallowCompare(this.props, nextProps)) {
+      const images = (nextProps.images !== this.state.images ? await this.getImageFiles(nextProps.images) : this.state.images);
+      const errorMessage = (nextProps.errorMessage && nextProps.errorMessage !== this.state.errorMessage ? nextProps.errorMessage : this.state.errorMessage);
+      const processing = (this.state.isMounted && !errorMessage && _.size(images) > _.size(this.state.images));
 
-    if (nextProps.images !== this.props.images && (!maxNumberOfImages || (maxNumberOfImages && (_.size(nextProps.images) <= maxNumberOfImages)))) {
-      const images = await this.getImageFiles(nextProps.images);
-      this.setState({ images });
+      if (processing) {
+        setTimeout(() => this.setState({ processing: false }), 2000);
+      }
+
+      this.setState({
+        images,
+        errorMessage,
+        processing
+      });
     }
-
-    this.setState((state: State) => ({ errorMessage: (nextProps.errorMessage || state.errorMessage) }));
   }
 
   getImageFiles = async (images: ImageFile[] | null) => {
@@ -265,19 +377,20 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     event.preventDefault();
     event.stopPropagation();
 
+    this.props.onRemove(removedImage);
+
     if (removedImage && removedImage.objectUrl) {
       revokeObjectURL(removedImage.objectUrl);
     }
-
-    this.props.onRemove(removedImage);
   }
 
   render() {
     let { acceptedFileTypes, placeholder, objectFit, removeButtonBorderColor } = this.props;
     let { images } = this.state;
+    const className = this.props['className'];
     const { maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio } = this.props;
     const { formatMessage } = this.props.intl;
-    const { errorMessage } = this.state;
+    const { errorMessage, processing, isMounted } = this.state;
     const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - _.size(images)} ${formatMessage(messages.remaining)})` : null);
 
     images = (_.compact(images) || null);
@@ -286,51 +399,72 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     objectFit = (objectFit || 'cover');
     removeButtonBorderColor = (removeButtonBorderColor || '#fff');
 
-    const imageList = ((images && images.length > 0) ? (
+    const imageList = ((images && images.length > 0 && (maxNumberOfImages !== 1 || (maxNumberOfImages === 1 && !processing))) ? (
       images.map((image, index) => {
         const hasSpacing = (maxNumberOfImages !== 1 && index !== 0 ? 'hasSpacing' : '');
+        const animate = (isMounted && maxNumberOfImages !== 1 ? 'animate' : '');
+        const timeout = !_.isEmpty(animate) ? { enter: 2300, exit: 300 } : 0;
+        const enter = !_.isEmpty(animate);
+        const exit = !_.isEmpty(animate);
 
         return (
-          <Box
-            key={index}
-            maxWidth={maxImagePreviewWidth}
-            ratio={imagePreviewRatio}
-            className={hasSpacing}
-          >
-            <Image src={image.objectUrl} objectFit={objectFit}>
-              <RemoveButton onClick={this.removeImage(image)} removeButtonBorderColor={removeButtonBorderColor}>
-                <RemoveIcon name="close2" />
-              </RemoveButton>
-            </Image>
-          </Box>
+          <CSSTransition key={image.objectUrl} classNames="image" timeout={timeout} enter={enter} exit={exit}>
+            <Box
+              key={index}
+              maxWidth={maxImagePreviewWidth}
+              ratio={imagePreviewRatio}
+              className={`${hasSpacing} ${animate}`}
+            >
+              <Image src={image.objectUrl} objectFit={objectFit}>
+                <RemoveButton onClick={this.removeImage(image)} removeButtonBorderColor={removeButtonBorderColor}>
+                  <RemoveIcon name="close2" />
+                </RemoveButton>
+              </Image>
+            </Box>
+          </CSSTransition>
         );
       }).reverse()
     ) : null);
 
-    const imageDropzone = ((!maxNumberOfImages || images.length < maxNumberOfImages) ? (
-      <Box
-        maxWidth={maxImagePreviewWidth}
-        ratio={imagePreviewRatio}
-        className={(images && images.length > 0 ? 'hasSpacing' : '')}
-      >
-        <StyledDropzone
-          accept={acceptedFileTypes}
-          maxSize={maxImageFileSize}
-          disablePreview={true}
-          onDrop={this.onDrop}
-          onDropRejected={this.onDropRejected}
+    const imageDropzone = (
+      processing || 
+      (maxNumberOfImages && maxNumberOfImages > 1) || 
+      (maxNumberOfImages && maxNumberOfImages === 1 && (!images || images.length < 1))
+    ) ? (
+      <CSSTransition classNames="image" timeout={0} enter={false} exit={false}>
+        <Box
+          maxWidth={maxImagePreviewWidth}
+          ratio={imagePreviewRatio}
+          className={(maxNumberOfImages !== 1 && images && images.length > 0 ? 'hasSpacing' : '')}
         >
-          <DropzoneContent>
-            <DropzonePlaceholderIcon name="upload" />
-            <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
-            <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>
-          </DropzoneContent>
-        </StyledDropzone>
-      </Box>
-    ) : null);
+          <StyledDropzone
+            accept={acceptedFileTypes}
+            maxSize={maxImageFileSize}
+            activeClassName="canDrop"
+            rejectClassName="cannotDrop"
+            disabled={processing || maxNumberOfImages === images.length}
+            disablePreview={true}
+            onDrop={this.onDrop}
+            onDropRejected={this.onDropRejected}
+          >
+            {!processing ? (
+              <DropzoneContent>
+                <DropzonePlaceholderIcon name="upload" />
+                <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
+                <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>
+              </DropzoneContent>
+            ) : (
+              <DropzoneContent>
+                <Spinner color="#666" size="32px" />
+              </DropzoneContent>
+            )}
+          </StyledDropzone>
+        </Box>
+      </CSSTransition>
+    ) : null;
 
     return (
-      <Container>
+      <Container className={className}>
         <ContentWrapper>
           {imageDropzone}
           {imageList}
