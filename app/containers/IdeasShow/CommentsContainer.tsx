@@ -9,6 +9,7 @@ import Icon from 'components/UI/Icon';
 
 // services
 import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
+import { mentionsStream, IMention, IMentions } from 'services/mentions';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
@@ -75,15 +76,22 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
           return Rx.Observable.combineLatest(
             comments.data.map(comments => commentStream(comments.id).observable)
           ).map(() => parentComments);
-        } else {
-          return Rx.Observable.combineLatest(
-            comments.data.map(comments => commentStream(comments.id).observable)
-          ).map(() => null);
-        }
+        } 
+
+        return Rx.Observable.combineLatest(
+          comments.data.map(comments => commentStream(comments.id).observable)
+        ).map(() => null);
       }
 
       return Rx.Observable.of(null);
     });
+
+    const mentions$ = mentionsStream({
+      queryParameters: {
+        mention: 'k',
+        idea_id: ideaId
+      }
+    }).observable;
 
     this.subscriptions = [
       parentComments$.subscribe((parentComments) => {
@@ -107,7 +115,9 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
           parentComments: sortedParentComments,
           loading: false
         });
-      })
+      }),
+
+      mentions$.subscribe(mentions => console.log(mentions))
     ];
   }
 

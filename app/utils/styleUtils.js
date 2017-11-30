@@ -36,6 +36,11 @@ export const media = {
       ${css(...args)}
     }
   `,
+  smallerThanDesktop: (...args) => css`
+    @media (max-width: 1024px) {
+      ${css(...args)}
+  }
+`,
 };
 
 export function remCalc(desiredSize) {

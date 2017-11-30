@@ -1,11 +1,7 @@
 import styled from 'styled-components';
 
 export const Section = styled.div`
-  margin-bottom: 100px;
-`;
-
-export const SectionHeader = styled.div`
-  margin-bottom: 30px;
+  margin-bottom: 110px;
 `;
 
 export const SectionTitle = styled.h1`
@@ -14,15 +10,23 @@ export const SectionTitle = styled.h1`
   line-height: 32px;
   font-weight: 500;
   margin: 0;
-  margin-bottom: 8px;
+  margin-bottom: 30px;
   padding: 0;
 `;
 
-export const SectionDescription = styled.div`
-  color: #666;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 300;
-`;
+export const SectionField = styled.div`
+  margin-bottom: 35px;
 
-export const SectionContent = styled.div``;
+  input,
+  textarea {
+    max-width: 500px;
+  }
+
+  .editor {
+    max-width: 600px;
+  }
+
+  .Select {
+    max-width: 470px;
+  }
+`;

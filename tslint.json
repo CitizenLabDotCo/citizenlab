@@ -12,6 +12,7 @@
     "import-name": false,
     "jsx-no-multiline-js": false,
     "no-boolean-literal-compare": false,
+    "no-else-after-return": false,
     "max-line-length": [
       false
     ],

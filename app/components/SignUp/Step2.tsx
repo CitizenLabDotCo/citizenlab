@@ -28,7 +28,7 @@ import messages from './messages';
 import styled from 'styled-components';
 
 // typings
-import { API, IOption } from 'typings.d';
+import { API, IOption } from 'typings';
 
 const Form = styled.form`
   width: 100%;

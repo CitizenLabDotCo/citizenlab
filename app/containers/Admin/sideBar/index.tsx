@@ -66,7 +66,9 @@ const MenuItem: any = styled.div`
   flex-wrap: nowrap;
   align-items: center;
   padding: 0;
-  margin-bottom: 10px;
+  padding-bottom: 1px;
+  margin: 0;
+  margin-bottom: 4px;
   cursor: pointer;
 
   &:hover {

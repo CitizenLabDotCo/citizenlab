@@ -43,7 +43,6 @@ const StyledSelect = styled(ReactSelect)`
     }
 
     .Select-control {
-      width: 100%;
       min-height: 48px;
       margin: 0px;
       padding: 0px;

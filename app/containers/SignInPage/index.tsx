@@ -69,9 +69,13 @@ const RightInner = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding-top: 40px;
-  padding-bottom: 150px;
+  padding-bottom: 100px;
   padding-left: 30px;
   padding-right: 30px;
+
+  ${media.smallerThanMaxTablet`
+    padding-bottom: 70px;
+  `}
 `;
 
 const Title = styled.h2`
