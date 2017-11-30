@@ -26,11 +26,18 @@ const StyledRow = styled.div`
   line-height: 20px;
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
 
-  h1 {
-    color: #444;
+  h1, h2, h3, h4, h5 {
+    color: ${color('text')};
     font-weight: 500;
-    font-size: ${fontSize('large')};
     margin-bottom: ${remCalc(10)};
+  }
+
+  h1 {
+    font-size: ${fontSize('large')};
+  }
+
+  h2 {
+    font-size: ${fontSize('base')};
   }
 
   p {
@@ -38,7 +45,7 @@ const StyledRow = styled.div`
   }
 
   &:first-child {
-    border-top: 1px solid #eaeaea;
+    border-top: 1px solid ${color('separation')};
   }
 
   > * {
