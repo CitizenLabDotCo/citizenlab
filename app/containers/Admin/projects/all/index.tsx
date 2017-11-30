@@ -5,7 +5,7 @@ import * as Rx from 'rxjs/Rx';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { media } from 'utils/styleUtils';
+import { media, color } from 'utils/styleUtils';
 
 // services
 import { projectsStream, IProjects } from 'services/projects';
@@ -53,7 +53,7 @@ const ProjectImagePlaceholder = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  background: ${props => props.theme.colors.placeholderBg};
+  background: ${color('placeholderBg')};
 `;
 
 const ProjectImagePlaceholderIcon = styled(Icon) `
@@ -207,7 +207,7 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
 
                 {projectImage && <ProjectImage src={projectImage} alt="" role="presentation" />}
 
-                {!projectImage && 
+                {!projectImage &&
                   <ProjectImagePlaceholder>
                     <ProjectImagePlaceholderIcon name="project" />
                   </ProjectImagePlaceholder>
@@ -218,8 +218,8 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
                 </ProjectTitle>
 
                 <ButtonWrapper>
-                  <GoToProjectButton 
-                    style="primary-outlined" 
+                  <GoToProjectButton
+                    style="primary-outlined"
                     linkTo={`/admin/projects/${project.attributes.slug}/edit`}
                     circularCorners={false}
                   >

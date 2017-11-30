@@ -21,12 +21,13 @@ import { List, Row } from 'components/admin/ResourceList';
 // Style
 import styled from 'styled-components';
 import { rgba } from 'polished';
+import { color } from 'utils/styleUtils';
 
 const EmptyStateMessage = styled.p`
   align-items: center;
   background: ${props => rgba(props.theme.colors.clBlue, .07)};
   border-radius: 5px;
-  color: ${props => props.theme.colors.clBlue};
+  color: ${color('clBlue')};
   display: flex;
   font-size: 1.15rem;
   margin-top: 2rem;

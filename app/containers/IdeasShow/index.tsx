@@ -43,7 +43,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled, { css } from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Container = styled.div``;
@@ -122,7 +122,7 @@ const LeftColumn = styled.div`
 
 const IdeaImage = styled.img`
   border-radius: 8px;
-  border: 1px solid ${props => props.theme.colors.separation};
+  border: 1px solid ${color('separation')};
   margin: 0 0 2rem;
   padding: 0;
   width: 100%;
@@ -169,7 +169,7 @@ const StyledPositionIcon = styled(Icon)`
 
 const MapWrapper = styled.div`
   border-radius: 8px;
-  border: 1px solid ${props => props.theme.colors.separation};
+  border: 1px solid ${color('separation')};
   height: 265px;
   margin-bottom: 2rem;
   position: relative;
@@ -642,7 +642,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                   </LocationButton>}
                 </AuthorAndAdressWrapper>
 
-                {ideaLocation && 
+                {ideaLocation &&
                   <TransitionGroup>
                     {showMap &&
                       <CSSTransition

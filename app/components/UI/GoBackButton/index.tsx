@@ -3,15 +3,16 @@ import styled from 'styled-components';
 import Icon from 'components/UI/Icon';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
+import { color } from 'utils/styleUtils';
 
 const GoBackIcon = styled(Icon)`
   height: 22px;
-  fill: ${props => props.theme.colors.label};
+  fill: ${color('label')};
   margin-right: 5px;
 `;
 
 const GoBackText = styled.div`
-  color: ${props => props.theme.colors.label};
+  color: ${color('label')};
   font-size: 18px;
   font-weight: 400;
 `;
