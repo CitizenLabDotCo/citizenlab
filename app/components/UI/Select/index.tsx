@@ -151,6 +151,8 @@ const StyledSelect = styled(ReactSelect)`
           color: #333;
           font-size: 17px;
           font-weight: 400;
+          padding-top: 12px;
+          padding-bottom: 12px;
 
           &:hover,
           &:focus,

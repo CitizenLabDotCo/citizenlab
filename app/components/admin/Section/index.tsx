@@ -2,6 +2,10 @@ import styled from 'styled-components';
 
 export const Section = styled.div`
   margin-bottom: 110px;
+
+  &.last {
+    margin-bottom: 60px;
+  }
 `;
 
 export const SectionTitle = styled.h1`

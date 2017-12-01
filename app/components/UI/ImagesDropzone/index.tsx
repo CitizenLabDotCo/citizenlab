@@ -230,16 +230,12 @@ const RemoveButton: any = styled.div`
   z-index: 1;
   cursor: pointer;
   border-radius: 50%;
-  border: solid 1px rgba(255, 255, 255, 0.6);
   border: solid 1px transparent;
-  /* border-color: #fff; */
   background: rgba(0, 0, 0, 0.6);
-  /* background: ${(props) => props.theme.colors.label}; */
   transition: all 100ms ease-out;
 
   &:hover {
     background: #000;
-    /* background: ${(props) => darken(0.2, props.theme.colors.label)}; */
     border-color: #fff;
 
     ${RemoveIcon} {
@@ -258,7 +254,6 @@ type Props = {
   placeholder?: string | null | undefined;
   errorMessage?: string | null | undefined;
   objectFit?: 'cover' | 'contain' | undefined;
-  removeButtonBorderColor?: string | undefined;
   onAdd: (arg: ImageFile) => void;
   onUpdate: (arg: ImageFile[] | null) => void;
   onRemove: (arg: ImageFile) => void;
@@ -269,6 +264,8 @@ type State = {
   errorMessage: string | null;
   processing: boolean;
   isMounted: boolean;
+  canAnimate: boolean;
+  canAnimateTimeout: any;
 };
 
 class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -278,7 +275,9 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
       images: [],
       errorMessage: null,
       processing: false,
-      isMounted: false
+      isMounted: false,
+      canAnimate: false,
+      canAnimateTimeout: null
     };
   }
 
@@ -312,7 +311,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     if (!shallowCompare(this.props, nextProps)) {
       const images = (nextProps.images !== this.state.images ? await this.getImageFiles(nextProps.images) : this.state.images);
       const errorMessage = (nextProps.errorMessage && nextProps.errorMessage !== this.state.errorMessage ? nextProps.errorMessage : this.state.errorMessage);
-      const processing = (this.state.isMounted && !errorMessage && _.size(images) > _.size(this.state.images));
+      const processing = (this.state.canAnimate && this.state.isMounted && !errorMessage && _.size(images) > _.size(this.state.images));
 
       if (processing) {
         setTimeout(() => this.setState({ processing: false }), 2000);
@@ -349,7 +348,17 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     const newItemsCount = _.size(images);
     const remainingItemsCount = (maxItemsCount ? maxItemsCount - oldItemsCount : null);
 
-    this.setState({ errorMessage: null });
+    this.setState((state: State) => {
+      if (state.canAnimateTimeout !== null) {
+        clearTimeout(state.canAnimateTimeout);
+      }
+
+      return {
+        errorMessage: null,
+        canAnimate: true,
+        canAnimateTimeout: setTimeout(() => this.setState({ canAnimate: false, canAnimateTimeout: null }), 5000)
+      };
+    });
 
     if (maxItemsCount && remainingItemsCount && newItemsCount > remainingItemsCount) {
       const errorMessage = (maxItemsCount === 1 ? formatMessage(messages.onlyOneImage) : formatMessage(messages.onlyXImages, { maxItemsCount }));
@@ -377,7 +386,18 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     event.preventDefault();
     event.stopPropagation();
 
-    this.props.onRemove(removedImage);
+    this.setState((state: State) => {
+      if (state.canAnimateTimeout !== null) {
+        clearTimeout(state.canAnimateTimeout);
+      }
+
+      return {
+        canAnimate: true,
+        canAnimateTimeout: setTimeout(() => this.setState({ canAnimate: false, canAnimateTimeout: null }), 1000)
+      };
+    });
+
+    setTimeout(() => this.props.onRemove(removedImage), 50);
 
     if (removedImage && removedImage.objectUrl) {
       revokeObjectURL(removedImage.objectUrl);
@@ -385,24 +405,23 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
   }
 
   render() {
-    let { acceptedFileTypes, placeholder, objectFit, removeButtonBorderColor } = this.props;
+    let { acceptedFileTypes, placeholder, objectFit } = this.props;
     let { images } = this.state;
     const className = this.props['className'];
     const { maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio } = this.props;
     const { formatMessage } = this.props.intl;
-    const { errorMessage, processing, isMounted } = this.state;
+    const { errorMessage, processing, isMounted, canAnimate } = this.state;
     const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - _.size(images)} ${formatMessage(messages.remaining)})` : null);
 
     images = (_.compact(images) || null);
     acceptedFileTypes = (acceptedFileTypes || '*');
     placeholder = (placeholder || (maxNumberOfImages && maxNumberOfImages === 1 ? formatMessage(messages.dropYourImageHere) : formatMessage(messages.dropYourImagesHere)));
     objectFit = (objectFit || 'cover');
-    removeButtonBorderColor = (removeButtonBorderColor || '#fff');
 
     const imageList = ((images && images.length > 0 && (maxNumberOfImages !== 1 || (maxNumberOfImages === 1 && !processing))) ? (
       images.map((image, index) => {
         const hasSpacing = (maxNumberOfImages !== 1 && index !== 0 ? 'hasSpacing' : '');
-        const animate = (isMounted && maxNumberOfImages !== 1 ? 'animate' : '');
+        const animate = (canAnimate && isMounted && maxNumberOfImages !== 1 ? 'animate' : '');
         const timeout = !_.isEmpty(animate) ? { enter: 2300, exit: 300 } : 0;
         const enter = !_.isEmpty(animate);
         const exit = !_.isEmpty(animate);
@@ -416,7 +435,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
               className={`${hasSpacing} ${animate}`}
             >
               <Image src={image.objectUrl} objectFit={objectFit}>
-                <RemoveButton onClick={this.removeImage(image)} removeButtonBorderColor={removeButtonBorderColor}>
+                <RemoveButton onClick={this.removeImage(image)}>
                   <RemoveIcon name="close2" />
                 </RemoveButton>
               </Image>

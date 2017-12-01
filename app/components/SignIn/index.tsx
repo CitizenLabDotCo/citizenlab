@@ -343,7 +343,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                 <Button
                   onClick={this.handleOnSubmit}
                   size="2"
-                  loading={processing}
+                  processing={processing}
                   text={formatMessage(messages.submit)}
                   circularCorners={true}
                 />

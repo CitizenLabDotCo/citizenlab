@@ -222,7 +222,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
       <LoadMore>
         <LoadMoreButton
           text={formatMessage(messages.loadMore)}
-          loading={loadingMore}
+          processing={loadingMore}
           style="primary"
           size="3"
           onClick={this.loadMoreIdeas}
