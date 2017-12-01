@@ -156,7 +156,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps, State> {
         </FeatureFlag>
 
         <MenuItem active={pathname.startsWith('/admin/projects')}>
-          <MenuLink to="/admin/projects">
+          <MenuLink to="/admin/projects" className={'e2e-projects-list-link'}>
             <IconWrapper><StyledIcon name="project" /></IconWrapper>
             <Text>{formatMessage({ ...messages.projects })}</Text>
           </MenuLink>

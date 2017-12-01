@@ -191,7 +191,7 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
 
             <StyledButton
               size="2"
-              loading={processing}
+              processing={processing}
               text={updatePassword}
               onClick={this.handleOnSubmit}
               circularCorners={false}
