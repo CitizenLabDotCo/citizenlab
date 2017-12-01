@@ -27,7 +27,7 @@ import { API } from 'typings';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // Styling
 import styled from 'styled-components';

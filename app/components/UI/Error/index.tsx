@@ -4,7 +4,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import * as _ from 'lodash';
 import styled from 'styled-components';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import { API, Message } from 'typings';
 import messages from './messages';
