@@ -38,7 +38,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // legacy redux stuff
 import { store } from 'app';
@@ -140,6 +140,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const { currentTenant, modalOpened, modalType, modalId, modalUrl } = this.state;
     const theme = {
       colors,
+      fontSizes,
       colorMain: (currentTenant ? currentTenant.data.attributes.settings.core.color_main : '#ef0071'),
       menuStyle: 'light',
       menuHeight: 74,

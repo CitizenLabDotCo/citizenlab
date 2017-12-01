@@ -18,6 +18,7 @@ import { IUser } from 'services/users';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
+import { color } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'react-intl';
@@ -54,7 +55,7 @@ const IconWrapper = styled.div`
 
 const UserIcon = styled(Icon)`
   height: 100%;
-  fill: ${props => props.theme.colors.label};
+  fill: ${color('label')};
   transition: all 150ms ease;
 
   &:hover {
@@ -69,12 +70,12 @@ const StyledPopover = styled(Popover)`
 
 const PopoverIcon = styled(Icon)`
   height: 20px;
-  fill: ${props => props.theme.colors.label};
+  fill: ${color('label')};
   transition: all 80ms ease-out;
 `;
 
 const PopoverItem = styled.div`
-  color: ${props => props.theme.colors.label};
+  color: ${color('label')};
   font-size: 17px;
   font-weight: 400;
   padding: 10px 15px;

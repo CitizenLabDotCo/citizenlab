@@ -26,12 +26,13 @@ import { addGroupProject, deleteGroupProject, groupsProjectsByProjectIdStream, I
 // Style
 import styled from 'styled-components';
 import { transparentize } from 'polished';
+import { color } from 'utils/styleUtils';
 
 // Typings
 import { IOption } from 'typings';
 
 const EmptyStateMessage = styled.p`
-  color: ${props => props.theme.colors.clBlue};
+  color: ${color('clBlue')};
   font-size: 1.15rem;
   display: flex;
   align-items: center;
@@ -129,7 +130,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
         const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
         const projectGroups = _(groupsProjects.data).map((groupProject) => {
           const group = _(groups.data).find(group => group.id === groupProject.relationships.group.data.id) as IGroupData;
-  
+
           return {
             group_id: group.id,
             group_project_id: groupProject.id,
@@ -140,7 +141,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
         const groupsOptions = this.getOptions(groups, groupsProjects, locale, currentTenantLocales);
         const loading = false;
 
-        this.setState({ 
+        this.setState({
           locale,
           currentTenantLocales,
           projectGroups,

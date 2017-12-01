@@ -21,7 +21,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, color } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -74,7 +74,7 @@ const ProjectImagePlaceholder = styled.div`
   justify-content: center;
   border-radius: 6px;
   margin-right: 10px;
-  background: ${props => props.theme.colors.placeholderBg};
+  background: ${color('placeholderBg')};
   overflow: hidden;
 
   ${media.smallerThanMaxTablet`
@@ -150,7 +150,7 @@ const ProjectDescription = styled.div`
 
 const ReadMoreWrapper = styled.div`
   margin-top: 10px;
-  
+
   ${media.smallerThanMaxTablet`
     display: none;
   `}

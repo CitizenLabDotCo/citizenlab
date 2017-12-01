@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { transparentize, darken } from 'polished';
 import Icon from 'components/UI/Icon';
+import { color } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -13,17 +14,17 @@ const Container = styled.div`
 
 const StyledIcon = styled(Icon)`
   height: 20px;
-  fill: ${props => props.theme.colors.clBlue};
+  fill: ${color('clBlue')};
   margin-right: 10px;
 `;
 
 const Text = styled.div`
-  color: ${props => props.theme.colors.clBlue};
+  color: ${color('clBlue')};
   font-size: 16px;
   font-weight: 400;
 
   a {
-    color: ${props => props.theme.colors.clBlue};
+    color: ${color('clBlue')};
     font-weight: 400;
     text-decoration: underline;
 
