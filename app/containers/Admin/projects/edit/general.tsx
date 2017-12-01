@@ -103,7 +103,7 @@ interface State {
   oldProjectImages: ImageFile[] | null;
   newProjectImages: ImageFile[] | null;
   noTitleError: string | null;
-  noHeaderError: string | null;
+  // noHeaderError: string | null;
   apiErrors: { [fieldName: string]: API.Error[] };
   saved: boolean;
   areas: IAreaData[];
@@ -131,7 +131,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       oldProjectImages: null,
       newProjectImages: null,
       noTitleError: null,
-      noHeaderError: null,
+      // noHeaderError: null,
       apiErrors: {},
       saved: false,
       areas: [],
@@ -257,7 +257,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         header_bg: newHeader.base64
       },
       headerBg: [newHeader],
-      noHeaderError: null
+      // noHeaderError: null
     }));
   }
 
@@ -331,10 +331,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       this.setState({ noTitleError: formatMessage(messages.noTitleErrorMessage) });
     }
 
+    /*
     if (!headerBg) {
       hasErrors = true;
       this.setState({ noHeaderError: formatMessage(messages.noHeaderErrorMessage) });
     }
+    */
 
     return !hasErrors;
   }
@@ -392,7 +394,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   render() {
-    const { currentTenant, locale, noTitleError, noHeaderError, apiErrors, saved, projectData, headerBg, newProjectImages, loading, processing, projectAttributesDiff, areasOptions, areaType, submitState } = this.state;
+    const { currentTenant, locale, noTitleError, /* noHeaderError, */ apiErrors, saved, projectData, headerBg, newProjectImages, loading, processing, projectAttributesDiff, areasOptions, areaType, submitState } = this.state;
     const { formatMessage } = this.props.intl;
 
     if (!loading && currentTenant && locale) {
@@ -474,7 +476,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 onUpdate={this.handleHeaderOnUpdate}
                 onRemove={this.handleHeaderOnRemove}
               />
-              <Error text={noHeaderError} />
+              {/* <Error text={noHeaderError} /> */}
             </SectionField>
 
             <SectionField>
