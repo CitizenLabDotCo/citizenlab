@@ -235,10 +235,10 @@ const Container: any = styled.div`
 
 const SpinnerWrapper = styled.div`
   position: absolute;
-  top: -1px;
+  top: -3px;
   left: 0;
   right: 0;
-  bottom: 1px;
+  bottom: 0px;
   display: flex;
   align-items: center;
   justify-content: center;

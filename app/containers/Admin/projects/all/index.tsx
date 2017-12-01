@@ -36,7 +36,7 @@ const ProjectsList = styled.ul`
   list-style: none;
   margin: 0;
   margin: -5px;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   padding: 0;
 `;
 
@@ -173,7 +173,10 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
 
   componentDidMount() {
     const projects$ = projectsStream().observable;
-    this.subscription = projects$.subscribe((projects) => this.setState({ projects }));
+    this.subscription = projects$.subscribe((unsortedProjects) => {
+      const projects = _.sortBy(unsortedProjects.data, (project) => project.attributes.created_at).reverse();
+      this.setState({ projects: { data: projects } });
+    });
   }
 
   componentWillUnmount() {
