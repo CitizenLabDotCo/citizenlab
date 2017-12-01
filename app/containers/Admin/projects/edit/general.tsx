@@ -117,6 +117,7 @@ interface State {
 class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
   slug$: Rx.BehaviorSubject<string | null> | null;
+  processing$: Rx.BehaviorSubject<boolean>;
   subscriptions: Rx.Subscription[] = [];
 
   constructor(props: Props) {
@@ -150,6 +151,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const areas$ = areasStream().observable;
 
     this.slug$ = new Rx.BehaviorSubject(this.props.params.slug || null);
+    this.processing$ = new Rx.BehaviorSubject(false);
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -165,6 +167,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             const headerImageFileObservable = (headerUrl ? convertUrlToFileObservable(headerUrl) : Rx.Observable.of(null));
 
             return Rx.Observable.combineLatest(
+              this.processing$,
               headerImageFileObservable,
               projectImages$.switchMap((projectImages) => {
                 if (projectImages && projectImages.data && projectImages.data.length > 0) {
@@ -180,7 +183,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
                 return Rx.Observable.of(null);
               }),
-            ).map(([headerBg, projectImages]) => ({
+            ).filter(([processing, headerBg, projectImages]) => {
+              return !processing;
+            }).map(([processing, headerBg, projectImages]) => ({
               headerBg,
               oldProjectImages: projectImages,
               projectData: (project ? project.data : null)
@@ -194,7 +199,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           });
         })
       ).subscribe(([locale, currentTenant, areas, { headerBg, oldProjectImages, projectData }]) => {
-        this.setState({
+        this.setState((state: State) => ({
           locale,
           currentTenant,
           projectData,
@@ -209,8 +214,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           loading: false,
           projectAttributesDiff: {},
           areaType: (projectData && projectData.relationships.areas.data.length > 0) ? 'selection' : 'all',
-        });
-      })
+        }));
+      }),
+
+      this.processing$.subscribe(processing => this.setState({ processing }))
     ];
   }
 
@@ -345,7 +352,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         const imagesToAdd = _(newProjectImages).filter(newProjectImage => !_(oldProjectImages).some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64)).value();
         const imagesToRemove = _(oldProjectImages).filter(oldProjectImage => !_(newProjectImages).some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64)).value();
 
-        this.setState({ processing: true, saved: false });
+        this.setState({ saved: false });
+        this.processing$.next(true);
 
         if (projectData) {
           projectId = projectData.id;
@@ -368,17 +376,17 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           browserHistory.push(`/admin/projects`);
         } else {
           this.setState({
-            processing: false, 
             saved: true,
             submitState: 'success'
           });
+          this.processing$.next(false);
         }
       } catch (errors) {
         this.setState({
           apiErrors: _.has(errors, 'json.errors') ? errors.json.errors : formatMessage(messages.saveErrorMessage),
-          processing: false,
           submitState: 'error'
         });
+        this.processing$.next(false);
       }
     }
   }
@@ -423,8 +431,22 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <Label htmlFor="project-area">
                 <FormattedMessage {...messages.areasLabel} />
               </Label>
-              <Radio onChange={this.handleAreaTypeChange} currentValue={areaType} value="all" name="areas" id="areas-all" label={formatMessage(messages.areasAllLabel)} />
-              <Radio onChange={this.handleAreaTypeChange} currentValue={areaType} value="selection" name="areas" id="areas-selection" label={formatMessage(messages.areasSelectionLabel)} />
+              <Radio
+                onChange={this.handleAreaTypeChange}
+                currentValue={areaType}
+                value="all"
+                name="areas"
+                id="areas-all"
+                label={formatMessage(messages.areasAllLabel)}
+              />
+              <Radio
+                onChange={this.handleAreaTypeChange}
+                currentValue={areaType}
+                value="selection"
+                name="areas"
+                id="areas-selection"
+                label={formatMessage(messages.areasSelectionLabel)}
+              />
 
               {areaType === 'selection' &&
                 <MultipleSelect

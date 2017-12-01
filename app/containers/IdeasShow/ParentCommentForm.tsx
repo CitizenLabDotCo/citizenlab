@@ -229,7 +229,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
         >
           <SubmitButton
             className="e2e-submit-comment"
-            loading={processing}
+            processing={processing}
             circularCorners={false}
             onClick={this.handleSubmit}
             disabled={commentButtonDisabled}
