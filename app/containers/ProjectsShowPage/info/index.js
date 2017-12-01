@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import T from 'components/T';
 import styled from 'styled-components';
-// import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'utils/cl-intl';
 import ContentContainer from 'components/ContentContainer';
 // import messages from './messages';
 import { selectProjectImages } from './selectors';

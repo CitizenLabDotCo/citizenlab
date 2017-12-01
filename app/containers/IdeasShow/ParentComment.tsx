@@ -15,7 +15,7 @@ import { commentsForIdeaStream, commentStream, IComments, IComment } from 'servi
 import { IUser } from 'services/users';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from './messages';
 

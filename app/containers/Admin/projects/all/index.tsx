@@ -11,7 +11,7 @@ import { media, color } from 'utils/styleUtils';
 import { projectsStream, IProjects } from 'services/projects';
 
 // localisation
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from '../messages';
 

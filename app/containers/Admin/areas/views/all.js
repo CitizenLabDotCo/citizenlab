@@ -6,7 +6,7 @@ import { push } from 'react-router-redux';
 // components
 import { Table } from 'semantic-ui-react';
 import Row from './row';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import ActionButton from 'components/buttons/action.js';
 
 // store

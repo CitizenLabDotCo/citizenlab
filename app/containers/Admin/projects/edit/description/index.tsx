@@ -7,7 +7,7 @@ import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-
 import draftjsToHtml from 'draftjs-to-html';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Services
