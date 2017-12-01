@@ -1,12 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { remCalc, fontSize, color } from 'utils/styleUtils';
 
 const StyledLabel = styled.label`
-  color: #666;
-  font-size: 16px;
-  font-weight: 400;
+  color: ${color('label')};
   display: flex;
-  padding-bottom: 5px;
+  font-size: ${fontSize('small')};
+  font-weight: 400;
+  margin: 0;
+  padding-bottom: ${remCalc(10)};
 `;
 
 type Props = {

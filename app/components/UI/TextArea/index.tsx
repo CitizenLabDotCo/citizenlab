@@ -27,16 +27,12 @@ const Container: any = styled.div`
     background: #fff;
     overflow: hidden;
     -webkit-appearance: none;
-  
+
     &::placeholder {
       color: #aaa;
       opacity: 1;
     }
-  
-    &:hover {
-      border-color: #333;
-    }
-  
+
     &:focus {
       border-color: #333;
     }
