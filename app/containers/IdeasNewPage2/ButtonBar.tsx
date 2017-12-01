@@ -99,7 +99,7 @@ class ButtonBar extends React.PureComponent<Props & InjectedIntlProps, State> {
           <Button
             className="e2e-submit-idea-form"
             size="2"
-            loading={processing}
+            processing={processing}
             text={formatMessage(messages.submit)}
             onClick={this.handleOnSubmit}
           />
