@@ -1,22 +1,36 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Input, { Props } from 'components/UI/Input';
+import Input, { Props as InputProps } from 'components/UI/Input';
 import { ChromePicker } from 'react-color';
+
+const Container = styled.div`
+  position: relative;
+`;
 
 const InputWrapper = styled.div`
   display: flex;
   width: 100%;
+
+  input {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 `;
 
 const Color: any = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 4px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   background: ${(props: any) => props.color };
+  cursor: pointer;
 `;
 
 const Popover = styled.div`
   position: absolute;
+  top: 50px;
+  left: 0px;
   z-index: 2;
 `;
 
@@ -28,57 +42,61 @@ const Cover = styled.div`
   left: 0px;
 `;
 
-type State = {
-  displayColorPicker: boolean,
-};
+interface Props extends InputProps {}
+
+interface State {
+  opened: boolean;
+}
 
 class ColorPickerInput extends React.Component<Props, State> {
-
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      displayColorPicker: false,
+      opened: false,
     };
   }
 
-  openColorPicker = (e) => {
-    e.preventDefault();
-    this.setState({ displayColorPicker: true });
+  open = (event: React.FormEvent<any>) => {
+    event.preventDefault();
+    this.setState({ opened: true });
   }
 
-  closeColorPicker = (e) => {
-    e.preventDefault();
-    this.setState({ displayColorPicker: false });
+  close = (event: React.FormEvent<any>) => {
+    event.preventDefault();
+    this.setState({ opened: false });
   }
 
-  changeColor = (colorDescriptor) => {
+  change = (colorDescriptor) => {
     this.props.onChange(colorDescriptor.hex);
   }
 
   render() {
+    const { opened } = this.state;
+
     return (
-      <div>
-        {this.state.displayColorPicker &&
+      <Container>
+        {opened &&
           <Popover>
-            <Cover onClick={this.closeColorPicker} />
+            <Cover onClick={this.close} />
             <ChromePicker
               disableAlpha={true}
               color={this.props.value}
-              onChange={this.changeColor}
-              onChangeComplete={this.changeColor}
+              onChange={this.change}
+              onChangeComplete={this.change}
             />
           </Popover>
         }
         <InputWrapper>
           <Color
-            onClick={this.openColorPicker}
+            onClick={this.open}
             color={this.props.value}
           />
           <Input
             {...this.props}
+            onFocus={this.open}
           />
         </InputWrapper>
-      </div>
+      </Container>
     );
   }
 }

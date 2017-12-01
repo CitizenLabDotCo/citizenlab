@@ -116,7 +116,7 @@ class AllUsers extends React.Component<Props, State> {
             className="no-padding-right"
             style={this.props.exportError ? 'error' : 'text'}
             onClick={this.props.loadUsersXlsxRequest}
-            loading={this.props.exportLoading}
+            processing={this.props.exportLoading}
           >
             <FormattedMessage {...messages.exportUsers} />
           </Button>

@@ -72,6 +72,12 @@ function setFillColor(color) {
 }
 
 const Container: any = styled.div`
+  user-select: none;
+
+  * {
+    user-select: none;
+  }
+
   ${StyledButton},
   ${StyledLink},
   ${StyledA} {
@@ -101,14 +107,14 @@ const Container: any = styled.div`
     }
 
     ${ButtonText} {
-      opacity: ${(props: any) => props.loading ? 0 : 1};
+      opacity: ${(props: any) => props.processing ? 0 : 1};
       font-size: 16px;
       line-height: 20px;
     }
 
     ${StyledIcon} {
       height: ${(props: any) => getIconHeight(props.size)};
-      opacity: ${(props: any) => props.loading ? 0 : 1};
+      opacity: ${(props: any) => props.processing ? 0 : 1};
     }
 
     &.primary {
@@ -116,8 +122,8 @@ const Container: any = styled.div`
         ${setFillColor('#fff')}
         background: ${(props: any) => props.theme.colorMain || '#e0e0e0'};
 
-        &:hover,
-        &:focus {
+        &:not(.processing):hover,
+        &:not(.processing):focus {
           background: ${(props: any) => darken(0.12, (props.theme.colorMain || '#ccc'))};
         }
       }
@@ -134,8 +140,8 @@ const Container: any = styled.div`
         background: #F8F8F8;
         ${setFillColor('#84939E')}
 
-        &:hover,
-        &:focus {
+        &:not(.processing):hover,
+        &:not(.processing):focus {
           background: #eee;
           ${setFillColor('#222')}
         }
@@ -153,8 +159,8 @@ const Container: any = styled.div`
         border: solid 1px ${(props: any) => props.theme.colorMain};
         ${(props: any) => setFillColor(props.theme.colorMain)}
 
-        &:hover,
-        &:focus {
+        &:not(.processing):hover,
+        &:not(.processing):focus {
           border-color: ${(props: any) => darken(0.12, (props.theme.colorMain))};
           ${(props: any) => setFillColor(darken(0.12, (props.theme.colorMain)))}
         }
@@ -173,8 +179,8 @@ const Container: any = styled.div`
         border: solid 1px #999;
         ${setFillColor('#999')}
 
-        &:hover,
-        &:focus {
+        &:not(.processing):hover,
+        &:not(.processing):focus {
           border-color: #222;
           ${setFillColor('#444')}
         }
@@ -193,8 +199,8 @@ const Container: any = styled.div`
 
       ${setFillColor('#84939E')}
 
-      &:hover,
-      &:focus {
+      &:not(.processing):hover,
+      &:not(.processing):focus {
         ${setFillColor('#004949')}
       }
     }
@@ -214,8 +220,8 @@ const Container: any = styled.div`
       background-color: #01A1B1;
       ${setFillColor('white')}
 
-      &:hover,
-      &:focus {
+      &:not(.processing):hover,
+      &:not(.processing):focus {
         background-color: ${darken(0.12, '#01A1B1')};
       }
 
@@ -229,10 +235,10 @@ const Container: any = styled.div`
 
 const SpinnerWrapper = styled.div`
   position: absolute;
-  top: 0;
+  top: -3px;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -249,7 +255,7 @@ type Props = {
   height?: string | undefined;
   padding?: string | undefined;
   icon?: string;
-  loading?: boolean;
+  processing?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
   onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
@@ -263,7 +269,7 @@ type State = {};
 
 export default class Button extends React.PureComponent<Props, State> {
   handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
-    if (this.props.onClick && !this.props.disabled) {
+    if (this.props.onClick && !this.props.disabled && !this.props.processing) {
       event.preventDefault();
       this.props.onClick(event);
     }
@@ -271,24 +277,24 @@ export default class Button extends React.PureComponent<Props, State> {
 
   render() {
     const { text, width, height, padding, icon, children, linkTo } = this.props;
-    let { id, size, style, loading, disabled, fullWidth, circularCorners, className } = this.props;
+    let { id, size, style, processing, disabled, fullWidth, circularCorners, className } = this.props;
 
     id = (id || '');
     size = (size || '1');
     style = (style || 'primary');
-    loading = (_.isBoolean(loading) ? loading : false);
+    processing = (_.isBoolean(processing) ? processing : false);
     disabled = (_.isBoolean(disabled) ? disabled : false);
     fullWidth = (_.isBoolean(fullWidth) ? fullWidth : false);
     circularCorners = (_.isBoolean(circularCorners) ? circularCorners : true);
     className = `${className ? className : ''}`;
 
-    const buttonClassnames = `Button ${disabled ? 'disabled' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
+    const buttonClassnames = `Button ${disabled ? 'disabled' : ''} ${processing ? 'processing' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
 
     const childContent = (
       <ButtonContent>
         {icon && <StyledIcon name={icon} />}
         <ButtonText>{text || children}</ButtonText>
-        {loading && <SpinnerWrapper><Spinner size="24px" /></SpinnerWrapper>}
+        {processing && <SpinnerWrapper><Spinner size="23px" /></SpinnerWrapper>}
       </ButtonContent>
     );
 
@@ -309,7 +315,7 @@ export default class Button extends React.PureComponent<Props, State> {
         width={width}
         height={height}
         padding={padding}
-        loading={loading}
+        processing={processing}
         onClick={this.handleOnClick}
         disabled={disabled}
         circularCorners={circularCorners}
