@@ -36,6 +36,7 @@ const ProjectsList = styled.ul`
   list-style: none;
   margin: 0;
   margin: -5px;
+  margin-bottom: 30px;
   padding: 0;
 `;
 

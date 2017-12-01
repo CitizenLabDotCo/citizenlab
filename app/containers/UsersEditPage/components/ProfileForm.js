@@ -525,7 +525,7 @@ class ProfileForm extends React.Component {
                   id="e2e-profile-edit-form-button"
                   text={intl.formatMessage({ ...messages.submit })}
                   onClick={this.handleSubmit}
-                  loading={processing}
+                  processing={processing}
                 />
               </FormContentWrapper>
             </Grid.Column>
