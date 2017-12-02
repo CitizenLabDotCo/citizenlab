@@ -57,5 +57,5 @@
     ],
     "no-vanilla-formatted-messages": true
   },
-  "rulesDirectory": ["app/utils/cl-intl"]
+  "rulesDirectory": ["internals/lint/tslint-plugin-cl-custom"]
 }
