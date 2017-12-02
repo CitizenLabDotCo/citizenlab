@@ -12,7 +12,8 @@ import Avatar from 'components/Avatar';
 import { userBySlugStream, IUser } from 'services/users';
 
 // i18n
-import { FormattedMessage, FormattedDate } from 'react-intl';
+import { FormattedDate } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from './messages';
 
@@ -142,7 +143,7 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
               <FormattedMessage
                 {...messages.joined}
                 values={{
-                  date: <FormattedDate 
+                  date: <FormattedDate
                           value={user.data.attributes.created_at}
                           year="numeric"
                           month="long"

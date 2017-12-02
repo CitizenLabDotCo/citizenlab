@@ -23,7 +23,8 @@ import { convertUrlToFileObservable } from 'utils/imageTools';
 import getSubmitState from 'utils/getSubmitState';
 
 // i18n
-import { FormattedMessage, injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // services

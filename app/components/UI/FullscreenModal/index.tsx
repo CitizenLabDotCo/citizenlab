@@ -13,7 +13,9 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // i18n
-import { FormattedMessage, injectIntl, InjectedIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
 
 // analytics
@@ -416,7 +418,7 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
           </CSSTransition>
         }
 
-        {opened && 
+        {opened &&
           <CSSTransition
             classNames="content"
             key={2}
