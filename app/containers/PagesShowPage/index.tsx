@@ -14,7 +14,8 @@ import T from 'components/T';
 import { IPageData, pageBySlugStream, LEGAL_PAGES } from 'services/pages';
 import { PageLink, getPageLink } from 'services/pageLink';
 
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 import ContentContainer from 'components/ContentContainer';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
-import { injectIntl } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { withTheme } from 'styled-components';
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 import { usersByGenderStream } from 'services/stats';

@@ -26,7 +26,8 @@ import unsubscribe from 'utils/unsubscribe';
 import getSubmitState from 'utils/getSubmitState';
 
 // i18n
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import localize, { injectedLocalized } from 'utils/localize';
 import messages from './messages';
