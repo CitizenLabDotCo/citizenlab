@@ -23,6 +23,7 @@ import NotFound from 'containers/NotFoundPage';
 import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
 import { Link } from 'react-router';
+import { color } from 'utils/styleUtils';
 
 const TextContainer = styled.div`
   margin: 30px 0;
@@ -60,8 +61,8 @@ const StyledLink = styled(Link)`
   align-items: center;
   background: white;
   border-radius: 5px;
-  border: 1px solid ${props => props.theme.colors.separation};
-  color: ${props => props.theme.colors.darkClGreen};
+  border: 1px solid ${color('separation')};
+  color: ${color('darkClGreen')};
   display: flex;
   justify-content: space-between;
   margin-bottom: .5rem;

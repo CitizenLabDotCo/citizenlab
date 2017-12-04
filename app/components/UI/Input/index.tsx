@@ -7,15 +7,15 @@ import Error from 'components/UI/Error';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, color, fontSize } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   position: relative;
 
   input {
     width: 100%;
-    color: #333;
-    font-size: 17px;
+    color: ${color('text')};
+    font-size: ${fontSize('base')};
     line-height: 24px;
     font-weight: 400;
     padding: 12px;
@@ -33,7 +33,6 @@ const Container: any = styled.div`
       opacity: 1;
     }
 
-    &:hover,
     &:focus {
       border-color: ${(props: any) => props.error ? props.theme.colors.error : '#999'};
     }

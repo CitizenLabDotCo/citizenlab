@@ -1,7 +1,7 @@
 const time = new Date().getTime();
 
 module.exports = {
-  '@tags': ['city', 'projects'],
+  '@tags': ['city', 'projects', 'zolg'],
   projectsList: (browser) => {
     const signinPage = browser.page.signin();
     const adminProjectsPage = browser.page.adminProjects();
@@ -36,7 +36,11 @@ module.exports = {
     .assert.urlEquals('http://localhost:3000/admin/projects/new')
     .setValue('#project-title', `Test Project ${time}`)
     .click('@submitButton')
-    .waitForElementVisible('@generalForm')
+
+    // Test the back to projects overview redirect
+    .waitForElementVisible('.e2e-projects-list .e2e-project-card')
+    .assert.containsText('.e2e-projects-list .e2e-project-card h1 span', `Test Project ${time}`)
+    .click('.e2e-projects-list .e2e-project-card a')
 
     // Test for the description insertion
     .waitForElementVisible('@descriptionTab')
@@ -44,13 +48,7 @@ module.exports = {
     .waitForElementVisible('.e2e-project-description-form')
     .setValue('.public-DraftEditor-content', 'Test Description please ignore')
     .click('@submitButton')
-    .waitForElementVisible('@submitSuccess')
-
-    // Test for project presence in the list
-    .click('.e2e-projects-list-link')
-    .waitForElementVisible('@projectsList')
-    .assert.urlEquals('http://localhost:3000/admin/projects')
-    .assert.containsText('@projectsList', `Test Project ${time}`);
+    .waitForElementVisible('@submitSuccess');
 
     browser
     .end();

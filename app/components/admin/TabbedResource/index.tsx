@@ -4,6 +4,7 @@ import * as Rx from 'rxjs/Rx';
 
 // style
 import styled from 'styled-components';
+import { color, fontSize } from 'utils/styleUtils';
 
 // localisation
 import { FormattedMessage } from 'react-intl';
@@ -24,22 +25,25 @@ const ResourceHeader = styled.div`
 `;
 
 const Title = styled.h1`
-  color: #333;
-  font-size: 35px;
+  color: ${color('title')};
+  font-size: ${fontSize('xxxl')};
   line-height: 40px;
   font-weight: 600;
   margin: 0;
   padding: 0;
 `;
 
-const PublicResourceLink = styled(Link)``;
+const PublicResourceLink = styled(Link)`
+  color: ${color('label')};
+`;
 
 const TabbedNav = styled.nav`
   background: #fcfcfc;
   border-radius: 5px 5px 0 0;
   padding-left: 44px;
   display: flex;
-  border-bottom: 1px solid #eaeaea;
+  border: 1px solid ${color('separation')};
+  border-bottom: 1px solid transparent;
 `;
 
 const Tab = styled.li`
@@ -53,25 +57,25 @@ const Tab = styled.li`
   }
 
   a {
-    color: #999;
-    font-size: 17px;
+    color: ${color('label')};
+    font-size: ${fontSize('base')};
     font-weight: 400;
-    line-height: 20px;
+    line-height: 1.5rem;
     text-transform: capitalize;
     padding: 0;
-    padding-top: 17px;
-    padding-bottom: 15px;
+    padding-top: 1em;
+    padding-bottom: 1em;
     border-bottom: 3px solid transparent;
     transition: all 100ms ease-out;
   }
 
   &:hover a {
-    color: #000;
+    color: ${color('text')};
   }
 
   &.active a {
-    color: #000;
-    border-color: #d60065;
+    color: ${color('text')};
+    border-color: ${color('clBlue')};
   }
 
   &:not(.active):hover a {
@@ -80,6 +84,7 @@ const Tab = styled.li`
 `;
 
 const ChildWrapper = styled.div`
+  border: 1px solid ${color('separation')};
   background: #fff;
   margin-bottom: 2rem;
   padding: 3rem;

@@ -10,7 +10,6 @@ import messages from './messages';
 // components
 import Label from 'components/UI/Label';
 import Radio from 'components/UI/Radio';
-import FieldWrapper from 'components/admin/FieldWrapper';
 import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';

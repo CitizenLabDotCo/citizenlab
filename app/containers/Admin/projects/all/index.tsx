@@ -5,7 +5,7 @@ import * as Rx from 'rxjs/Rx';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { media } from 'utils/styleUtils';
+import { media, color } from 'utils/styleUtils';
 
 // services
 import { projectsStream, IProjects } from 'services/projects';
@@ -36,6 +36,7 @@ const ProjectsList = styled.ul`
   list-style: none;
   margin: 0;
   margin: -5px;
+  margin-bottom: 50px;
   padding: 0;
 `;
 
@@ -53,7 +54,7 @@ const ProjectImagePlaceholder = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  background: ${props => props.theme.colors.placeholderBg};
+  background: ${color('placeholderBg')};
 `;
 
 const ProjectImagePlaceholderIcon = styled(Icon) `
@@ -172,7 +173,10 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
 
   componentDidMount() {
     const projects$ = projectsStream().observable;
-    this.subscription = projects$.subscribe((projects) => this.setState({ projects }));
+    this.subscription = projects$.subscribe((unsortedProjects) => {
+      const projects = _.sortBy(unsortedProjects.data, (project) => project.attributes.created_at).reverse();
+      this.setState({ projects: { data: projects } });
+    });
   }
 
   componentWillUnmount() {
@@ -207,7 +211,7 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
 
                 {projectImage && <ProjectImage src={projectImage} alt="" role="presentation" />}
 
-                {!projectImage && 
+                {!projectImage &&
                   <ProjectImagePlaceholder>
                     <ProjectImagePlaceholderIcon name="project" />
                   </ProjectImagePlaceholder>
@@ -218,8 +222,8 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
                 </ProjectTitle>
 
                 <ButtonWrapper>
-                  <GoToProjectButton 
-                    style="primary-outlined" 
+                  <GoToProjectButton
+                    style="primary-outlined"
                     linkTo={`/admin/projects/${project.attributes.slug}/edit`}
                     circularCorners={false}
                   >

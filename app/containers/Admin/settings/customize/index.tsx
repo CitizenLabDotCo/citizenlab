@@ -49,10 +49,29 @@ const CharCount = styled.div`
 `;
 
 const ToggleWrapper = styled.div`
+  width: 100%;
+  max-width: 400px;
   display: flex;
   justify-content: space-between;
-  margin-top: 25px;
-  width: 200px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-bottom: solid 1px #e4e4e4;
+
+  &.first {
+    border-top: none;
+  }
+
+  &.last {
+    border-bottom: none;
+  }
+`;
+
+const ToggleLabel = styled(Label)`
+  /* margin-left: 15px; */
+`;
+
+const TitleInput = styled(SectionField)`
+  max-width: 500px;
 `;
 
 interface IAttributesDiff {
@@ -73,6 +92,7 @@ type State  = {
   currentTenant: ITenant | null;
   logo: ImageFile[] | null;
   header_bg: ImageFile[] | null;
+  colorPickerOpened: boolean;
   loading: boolean;
   errors: { [fieldName: string]: API.Error[] };
   saved: boolean;
@@ -81,10 +101,6 @@ type State  = {
   titleError: { [key: string]: string | null };
   subtitleError: { [key: string]: string | null };
 };
-
-const TitleInput = styled(SectionField)`
-  max-width: 500px;
-`;
 
 class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
@@ -98,6 +114,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
       currentTenant: null,
       logo: null,
       header_bg: null,
+      colorPickerOpened: false,
       loading: false,
       errors: {},
       saved: false,
@@ -280,8 +297,16 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     },
   ])
 
+  handleColorPickerOnClick = () => {
+    this.setState({ colorPickerOpened: true });
+  }
+
+  handleColorPickerOnClose = () => {
+    this.setState({ colorPickerOpened: false });
+  }
+
   render() {
-    const { locale, currentTenant, titleError, subtitleError, errors, saved, attributesDiff } = this.state;
+    const { locale, currentTenant, colorPickerOpened, titleError, subtitleError, errors, saved, attributesDiff } = this.state;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -403,7 +428,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
             })}
           </Section>
 
-          <Section key={'signup_fields'}>
+          <Section key={'signup_fields'} className={'last'}>
             <SectionTitle>
               <FormattedMessage {...messages.titleSignupFields} />
             </SectionTitle>
@@ -413,10 +438,14 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                 {['gender', 'domicile', 'birthyear'].map((fieldName, index) => {
                   const fieldPath = `settings.demographic_fields.${fieldName}`;
                   const checked = _.get(tenantAttrs, fieldPath) as boolean;
+                  const first = (index === 0 && 'first');
+                  const last = (index === 2 && 'last');
 
                   return (
-                    <ToggleWrapper key={fieldName}>
-                      <Label><FormattedMessage {...messages[fieldName]} /></Label>
+                    <ToggleWrapper key={fieldName} className={`${first} ${last}`} >
+                      <ToggleLabel>
+                        <FormattedMessage {...messages[fieldName]} />
+                      </ToggleLabel>
                       <Toggle
                         checked={checked}
                         disabled={false}

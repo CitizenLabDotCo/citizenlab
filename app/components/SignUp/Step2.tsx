@@ -271,7 +271,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
               <Button
                 id="e2e-signup-step2-button"
                 size="2"
-                loading={processing}
+                processing={processing}
                 text={formatMessage(messages.submit)}
                 onClick={this.handleOnSubmit}
                 circularCorners={true}
