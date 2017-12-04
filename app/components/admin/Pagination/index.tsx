@@ -1,12 +1,19 @@
 
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Menu } from 'semantic-ui-react';
 
-class Pagination extends PureComponent {
+// Typing
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  loadPage: Function;
+}
 
-  constructor() {
-    super();
+class Pagination extends React.PureComponent<Props> {
+
+  constructor(props) {
+    super(props);
     this.handleItemClick = this.handleItemClick.bind(this);
   }
 
@@ -16,8 +23,8 @@ class Pagination extends PureComponent {
     const delta = 2;
     const left = current - delta;
     const right = current + delta + 1;
-    const range = [];
-    const rangeWithDots = [];
+    const range: number[] = [];
+    const rangeWithDots: number[] = [];
     let l;
 
     for (let i = 1; i <= last; i += 1) {
@@ -49,7 +56,7 @@ class Pagination extends PureComponent {
     const { currentPage, totalPages } = this.props;
     const pageItems = this.calculateMenuItems(currentPage, totalPages);
     return (
-      <Menu pagination floated="right">
+      <Menu pagination={true} floated="right">
         {pageItems.map((item) => (
           <Menu.Item
             key={item}
@@ -63,11 +70,5 @@ class Pagination extends PureComponent {
     );
   }
 }
-
-Pagination.propTypes = {
-  currentPage: PropTypes.number.isRequired,
-  totalPages: PropTypes.number.isRequired,
-  loadPage: PropTypes.func.isRequired,
-};
 
 export default Pagination;

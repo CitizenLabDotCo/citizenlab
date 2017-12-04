@@ -54,16 +54,12 @@ const Container: any = styled.div`
     background: #fff;
     overflow: hidden;
     -webkit-appearance: none;
-  
+
     &::placeholder {
       color: #aaa;
       opacity: 1;
     }
-  
-    &:hover {
-      border-color: #333;
-    }
-  
+
     &:focus {
       border-color: #333;
     }
@@ -113,6 +109,10 @@ export default class TextArea extends React.PureComponent<Props, State> {
 
   setRef = (element) => {
     this.textareaElement = element;
+  }
+
+  mentionDisplayTransform = (id, display, type) => {
+    return '@' + display;
   }
 
   handleOnChange = (event) => {
@@ -194,6 +194,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
             rows={rows}
             value={value}
             placeholder={placeholder}
+            displayTransform={this.mentionDisplayTransform}
             onChange={this.handleOnChange}
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}

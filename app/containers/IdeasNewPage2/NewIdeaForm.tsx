@@ -386,7 +386,6 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
               maxImageFileSize={5000000}
               maxNumberOfImages={1}
               placeholder={formatMessage(messages.imageUploadPlaceholder)}
-              removeButtonBorderColor={'#f8f8f8'}
               onAdd={this.handleUploadOnAdd}
               onUpdate={this.handleUploadOnUpdate}
               onRemove={this.handleUploadOnRemove}
@@ -397,7 +396,7 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
             <Button
               className="e2e-submit-idea-form"
               size="2"
-              loading={processing}
+              processing={processing}
               text={formatMessage(messages.submit)}
               onClick={this.handleOnSubmit}
             />

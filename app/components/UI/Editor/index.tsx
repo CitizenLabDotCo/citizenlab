@@ -27,16 +27,6 @@ const DraftEditorContainer = styled.div`
   background: #fff;
   position: relative;
 
-  &:hover {
-    border-color: ${(props: IDraftEditorContainer) => {
-      if (props.error) {
-        return '#fc3c2d';
-      }
-
-      return '#999';
-    }};
-  }
-
   .rdw-editor-toolbar {
     width: auto;
     padding: 7px;
@@ -95,7 +85,7 @@ const DraftEditorContainer = styled.div`
   }
 
   .rdw-editor-main {
-    min-height: 230px;
+    min-height: 250px;
     font-size: 17px;
     line-height: 23px;
     font-weight: 400;
@@ -171,7 +161,7 @@ export default class Editor extends React.PureComponent<Props, State> {
 
   handleOnFocus = () => {
     this.setState({ focussed: true });
-    
+
     if (this.props.onFocus) {
       this.props.onFocus();
     }

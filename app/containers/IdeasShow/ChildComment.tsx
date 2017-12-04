@@ -125,6 +125,7 @@ export default class ChildComment extends React.PureComponent<Props, State> {
         if (!authorId) {
           return Rx.Observable.of({ comment, author: null });
         }
+
         const author$ = userByIdStream(authorId).observable;
         return author$.map(author => ({ comment, author }));
       }).subscribe(({ comment, author }) => this.setState({ comment, author }))
