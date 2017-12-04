@@ -69,7 +69,7 @@ class MentionService
     author = idea.author
     commenters = User
       .joins(:comments)
-      .where("users.slug LIKE ?", "#{slug}%")
+      .where("users.slug LIKE ?", "#{SlugService.new.slugify(slug)}%")
       .where(comments: {idea_id: idea.id})
       .limit(limit)
     [author, *commenters].uniq
