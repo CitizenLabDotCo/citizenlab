@@ -94,6 +94,7 @@ describe MentionService do
       @u1 = create(:user, first_name: 'jan', last_name: 'hoet')
       @u2 = create(:user, first_name: 'jantje', last_name: 'broek')
       @u3 = create(:user, first_name: 'rudolf', last_name: 'deer')
+      @u4 = create(:user, first_name: 'janus', last_name: 'lurker')
       @idea = create(:idea, author: @u1)
       create(:comment, idea: @idea, author: @u2)
       create(:comment, idea: @idea, author: @u3)
@@ -102,6 +103,13 @@ describe MentionService do
 
     it "return the users from the idea that match the slug" do
       result = service.users_from_idea('ja', @idea, 5)
+      expect(result.size).to eq 2
+      expect(result).to match([@u1, @u2])
+    end
+
+    it "handles case gracefully" do
+      result = service.users_from_idea('Ja', @idea, 5)
+      expect(result.size).to eq 2
       expect(result).to match([@u1, @u2])
     end
   end
