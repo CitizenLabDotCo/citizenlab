@@ -88,7 +88,7 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
 
     const mentions$ = mentionsStream({
       queryParameters: {
-        mention: 'k',
+        mention: 'koen',
         idea_id: ideaId
       }
     }).observable;

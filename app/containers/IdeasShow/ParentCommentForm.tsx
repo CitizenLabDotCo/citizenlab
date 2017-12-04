@@ -5,6 +5,7 @@ import * as Rx from 'rxjs/Rx';
 // libraries
 import { Link } from 'react-router';
 import classNames from 'classnames';
+import { MentionsInput, Mention } from 'react-mentions';
 
 // components
 import Button from 'components/UI/Button';
