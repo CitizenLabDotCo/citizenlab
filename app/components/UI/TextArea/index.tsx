@@ -4,7 +4,9 @@ import * as Rx from 'rxjs/Rx';
 
 // components
 import Error from 'components/UI/Error';
-import TextareaAutosize from 'react-autosize-textarea';
+// import TextareaAutosize from 'react-autosize-textarea';
+
+import { MentionsInput, Mention } from 'react-mentions';
 
 // style
 import styled, { css } from 'styled-components';
@@ -12,14 +14,39 @@ import styled, { css } from 'styled-components';
 const Container: any = styled.div`
   position: relative;
 
-  .textarea {
+  textarea {
+    color: #333;
+    font-size: 17px;
+    line-height: 24px;
+    font-weight: 400;
+    -webkit-appearance: none;
+    border-radius: 5px;
+    border: solid 1px #ccc;
+
+    padding: 0 !important;
+    margin: 0 !important;
+    outline: none !important;
+    display: block !important;
+    position: relative !important;
+    top: auto !important;
+    box-sizing: border-box !important;
+    background-color: transparent !important;
+    width: 100% !important;
+    height: 100% !important;
+    bottom: auto !important;
+    overflow: hidden !important;
+    resize: vertical !important;
+  }
+
+  /*
+  textarea {
     width: 100%;
     color: #333;
     font-size: 17px;
     line-height: 24px;
     font-weight: 400;
     padding: 12px;
-    resize: none;
+    resize: vertical;
     outline: none;
     position: relative;
     border-radius: 5px;
@@ -50,6 +77,7 @@ const Container: any = styled.div`
       }
     }
   }
+  */
 `;
 
 const TextAreaContainer = styled.div`
@@ -79,11 +107,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.error && nextProps.error !== this.props.error && this.textareaElement !== null) {
-      setTimeout(() => {
-        if (this.textareaElement) {
-          this.textareaElement.focus();
-        }
-      }, 50);
+      setTimeout(() => (this.textareaElement as HTMLElement).focus(), 50);
     }
   }
 
@@ -91,9 +115,9 @@ export default class TextArea extends React.PureComponent<Props, State> {
     this.textareaElement = element;
   }
 
-  handleOnChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
-    if (this.props.onChange && _.isFunction(this.props.onChange)) {
-      this.props.onChange(event.currentTarget.value);
+  handleOnChange = (event) => {
+    if (this.props.onChange) {
+      this.props.onChange(event.target.value);
     }
   }
 
@@ -117,9 +141,41 @@ export default class TextArea extends React.PureComponent<Props, State> {
 
     rows = (rows || 5);
 
+    const users = [
+      {
+        id: 'walter',
+        display: 'Walter White',
+      },
+      {
+        id: 'jesse',
+        display: 'Jesse Pinkman',
+      },
+      {
+        id: 'gus',
+        display: 'Gustavo "Gus" Fring',
+      },
+      {
+        id: 'saul',
+        display: 'Saul Goodman',
+      },
+      {
+        id: 'hank',
+        display: 'Hank Schrader',
+      },
+      {
+        id: 'skyler',
+        display: 'Skyler White',
+      },
+      {
+        id: 'mike',
+        display: 'Mike Ehrmantraut',
+      },
+    ];
+
     return (
       <Container className={className} hasError={hasError}>
         <TextAreaContainer>
+          {/*
           <TextareaAutosize
             className={`textarea ${hasError ? 'error' : ''}`}
             name={name || ''}
@@ -131,6 +187,20 @@ export default class TextArea extends React.PureComponent<Props, State> {
             onBlur={this.handleOnBlur}
             innerRef={this.setRef}
           />
+          */}
+          <MentionsInput
+            className={`textarea ${hasError ? 'error' : ''}`}
+            name={name || ''}
+            rows={rows}
+            value={value}
+            placeholder={placeholder}
+            onChange={this.handleOnChange}
+            onFocus={this.handleOnFocus}
+            onBlur={this.handleOnBlur}
+            ref={this.setRef}
+          >
+            <Mention trigger="@" data={users} />
+          </MentionsInput>
           {children}
         </TextAreaContainer>
         <Error text={error} />
