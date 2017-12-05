@@ -67,6 +67,9 @@ class Idea < ApplicationRecord
   scope :order_new, -> (direction=:desc) {order(published_at: direction)}
   scope :order_popular, -> (direction=:desc) {order("(upvotes_count - downvotes_count) #{direction}")}
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
+  TREND_NUM_UPVOTES = 5
+  TREND_NUM_COMMENTS = 5
+  TREND_SINCE_ACTIVITY = 10 * 24 * 60 * 60 # 10 days
   scope :order_trending, (Proc.new do |direction|
     direction ||= :desc
     order(<<~EOS
