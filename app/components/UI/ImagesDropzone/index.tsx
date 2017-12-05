@@ -6,7 +6,8 @@ import { darken } from 'polished';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Error from 'components/UI/Error';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import styled, { css } from 'styled-components';
 import { getBase64FromFile, createObjectUrl, revokeObjectURL } from 'utils/imageTools';
@@ -446,8 +447,8 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     ) : null);
 
     const imageDropzone = (
-      processing || 
-      (maxNumberOfImages && maxNumberOfImages > 1) || 
+      processing ||
+      (maxNumberOfImages && maxNumberOfImages > 1) ||
       (maxNumberOfImages && maxNumberOfImages === 1 && (!images || images.length < 1))
     ) ? (
       <CSSTransition classNames="image" timeout={0} enter={false} exit={false}>

@@ -2,7 +2,8 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import styled from 'styled-components';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { intlShape } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import * as _ from 'lodash';
 

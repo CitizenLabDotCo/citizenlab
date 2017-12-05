@@ -12,7 +12,8 @@ import Icon from 'components/UI/Icon';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
 // i18n
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // analytics
@@ -85,7 +86,7 @@ const Container = styled.div`
         ${Text} {
           color: ${twitterColor};
         }
-  
+
         ${IconWrapper} svg {
           fill: ${twitterColor};
         }
@@ -107,7 +108,7 @@ const Container = styled.div`
         ${Text} {
           color: ${facebookColor};
         }
-  
+
         ${IconWrapper} svg {
           fill: ${facebookColor};
         }

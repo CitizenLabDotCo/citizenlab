@@ -16,7 +16,7 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { ideaByIdStream, ideasStream, updateIdea, IIdeas } from 'services/ideas';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
