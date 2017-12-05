@@ -14,6 +14,15 @@ const Container = styled(clickOutside)`
   border-radius: 5px;
   border: 1px solid ${color('separation')};
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  transform: scale(1);
+  opacity: 1;
+  transition: all .2s;
+
+  &.exited {
+    transform: scale(.1);
+    opacity: 0;
+  }
 `;
 
 // Typing

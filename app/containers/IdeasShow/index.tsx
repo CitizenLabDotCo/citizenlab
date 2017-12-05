@@ -23,6 +23,7 @@ import IdeaMeta from './IdeaMeta';
 import Unauthenticated from './Unauthenticated';
 import IdeaMap from './IdeaMap';
 import Button from 'components/UI/Button';
+import MoreActions from 'components/UI/MoreActionsMenu';
 
 // services
 import { localeStream } from 'services/locale';
@@ -676,6 +677,14 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
               <RightColumnDesktop className={!isSafari ? 'notSafari' : ''}>
                 {ideaMetaContent}
+                <MoreActions
+                  actions={[
+                    {
+                      label: 'Report as spam',
+                      handler: () => {console.log('spam');},
+                    }
+                  ]}
+                />
               </RightColumnDesktop>
             </Content>
           </IdeaContainer>

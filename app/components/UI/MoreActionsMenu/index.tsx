@@ -26,20 +26,21 @@ export default class MoreActions extends React.Component<Props, State> {
   }
 
   hideTooltip = () => {
-    this.toggleTooltip(false);
+    this.setState({ visible: false });
   }
 
-  toggleTooltip = (value: boolean | null = null) => {
-    this.setState({ visible : value || !this.state.visible });
+  toggleTooltip = () => {
+    this.setState({ visible: !this.state.visible });
   }
 
   render () {
     return (
       <div>
-        <Button>+</Button>
+        <Button style="text" onClick={this.toggleTooltip}>More actions</Button>
         <Tooltip visible={this.state.visible} hideTooltip={this.hideTooltip}>
           {this.props.actions.map((action) => (
             <Button
+              style="text"
               key={action.label}
               onClick={action.handler}
               icon={action.icon}
