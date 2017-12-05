@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import Button from 'components/UI/Button';
 import TextArea from 'components/UI/TextArea';
 import Error from 'components/UI/Error';
+import Warning from 'components/UI/Warning';
 import Author from './Author';
 
 // tracking
@@ -17,7 +18,8 @@ import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage, injectIntl, InjectedIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntl, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
@@ -178,7 +180,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
         this.setState({ processing: true });
         await addCommentToIdea(ideaId, authUser.data.id, { [locale]: inputValue });
 
-        this.setState({ 
+        this.setState({
           inputValue: '',
           processing: false
         });
@@ -201,15 +203,17 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
     const placeholder = formatMessage(messages.commentBodyPlaceholder);
     const commentButtonDisabled = (!inputValue || inputValue === '');
 
+    const signInLinkText = (
+      <FormattedMessage
+        {...messages.signInToComment}
+        values={{
+          signInLink: <StyledLink to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></StyledLink>,
+        }}
+      />
+    );
+
     const signUp = (!authUser ? (
-      <SignInMessage className="ideaCommentForm">
-        <FormattedMessage
-          {...messages.signInToComment}
-          values={{
-            signInLink: <StyledLink to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></StyledLink>,
-          }}
-        />
-      </SignInMessage>
+      <Warning text={signInLinkText} />
     ) : null);
 
     const commentForm = (authUser ? (
@@ -226,7 +230,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
         >
           <SubmitButton
             className="e2e-submit-comment"
-            loading={processing}
+            processing={processing}
             circularCorners={false}
             onClick={this.handleSubmit}
             disabled={commentButtonDisabled}

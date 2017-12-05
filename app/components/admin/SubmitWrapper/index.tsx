@@ -3,7 +3,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 // Components
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import Button, { ButtonStyles } from 'components/UI/Button';
 
 const Wrapper = styled.div`
@@ -41,13 +41,13 @@ interface Props {
 export default class SubmitWrapper extends React.Component<Props> {
   render () {
     let style = this.props.style || 'cl-blue';
+
     if (this.props.status === 'success') {style = 'success';}
     if (this.props.status === 'error') {style = 'error';}
 
-
     return (
       <Wrapper>
-        <Button className="e2e-submit-wrapper-button" style={style} loading={this.props.loading} disabled={this.props.status === 'disabled'} onClick={this.props.onClick}>
+        <Button className="e2e-submit-wrapper-button" style={style} processing={this.props.loading} disabled={this.props.status === 'disabled'} onClick={this.props.onClick}>
           {(this.props.status === 'enabled' || this.props.status === 'disabled') &&
             <FormattedMessage {...this.props.messages.buttonSave} />
           }

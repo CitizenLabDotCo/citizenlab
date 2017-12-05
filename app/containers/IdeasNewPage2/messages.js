@@ -43,7 +43,7 @@ export default defineMessages({
   },
   topicsPlaceholder: {
     id: 'app.containers.IdeasNewPage2.topicsPlaceholder',
-    defaultMessage: 'Optionally select one or two topics for your idea',
+    defaultMessage: 'Select one or two topics for your idea',
   },
   projectsLabel: {
     id: 'app.containers.IdeasNewPage2.projectsLabel',
@@ -51,7 +51,7 @@ export default defineMessages({
   },
   projectsPlaceholder: {
     id: 'app.containers.IdeasNewPage2.projectsPlaceholder',
-    defaultMessage: 'Optionally select a project to which your idea belongs',
+    defaultMessage: 'Select a project to which your idea belongs',
   },
   locationLabel: {
     id: 'app.containers.IdeasNewPage2.locationLabel',
@@ -59,7 +59,7 @@ export default defineMessages({
   },
   locationPlaceholder: {
     id: 'app.containers.IdeasNewPage2.locationPlaceholder',
-    defaultMessage: 'Optionally enter a location for your idea',
+    defaultMessage: 'Enter a location for your idea',
   },
   imageUploadLabel: {
     id: 'app.containers.IdeasNewPage2.imageUploadLabel',
@@ -67,7 +67,7 @@ export default defineMessages({
   },
   imageUploadPlaceholder: {
     id: 'app.containers.IdeasNewPage2.imageUploadPlaceholder',
-    defaultMessage: 'Optionally upload an image that represents your idea',
+    defaultMessage: 'Select an image that represents your idea',
   },
   submit: {
     id: 'app.containers.IdeasNewPage2.submit',
@@ -75,7 +75,7 @@ export default defineMessages({
   },
   submitError: {
     id: 'app.containers.IdeasNewPage2.submitError',
-    defaultMessage: 'Something went wrong. Please try again.',
+    defaultMessage: 'Something went wrong. Please try again later.',
   },
   or: {
     id: 'app.containers.IdeasNewPage2.or',

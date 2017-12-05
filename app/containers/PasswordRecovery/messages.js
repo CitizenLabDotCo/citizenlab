@@ -35,6 +35,6 @@ export default defineMessages({
   },
   submitError: {
     id: 'app.containers.PasswordRecovery.submitError',
-    defaultMessage: 'Something went wrong. Please try again.',
+    defaultMessage: 'Something went wrong. Please try again later.',
   },
 });

@@ -14,7 +14,8 @@ import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
 
 // i18n
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -27,6 +28,10 @@ const Container = styled.div`
   align-items: center;
   background: #fff;
   position: relative;
+
+  ${media.smallerThanMaxTablet`
+    background: #f8f8f8;
+  `}
 `;
 
 const BackgroundColor = styled.div`
@@ -37,6 +42,10 @@ const BackgroundColor = styled.div`
   right: 0;
   z-index: 0;
   background-color: #f8f8f8;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
@@ -53,10 +62,26 @@ const FiltersArea = styled.div`
   margin-bottom: 35px;
 
   ${media.smallerThanMaxTablet`
-    flex-direction: column;
-    align-items: left;
-    justify-content: flex-start;
     margin: 0;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    justify-content: space-between;
+  `}
+`;
+
+const PageTitle = styled.h1`
+  height: 60px;
+  color: #333;
+  font-size: 28px;
+  line-height: 32px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  display: none;
+
+  ${media.smallerThanMaxTablet`
+    display: flex;
+    align-items: flex-end;
   `}
 `;
 
@@ -66,8 +91,7 @@ const FilterArea = styled.div`
   align-items: center;
 
   ${media.smallerThanMaxTablet`
-    width: 100%;
-    justify-content: flex-end;
+    align-items: flex-end;
   `}
 `;
 
@@ -163,6 +187,8 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
 
         <StyledContentContainer>
           <FiltersArea id="e2e-ideas-filters">
+            <PageTitle><FormattedMessage {...messages.pageTitle} /></PageTitle>
+
             <FilterArea>
               <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
             </FilterArea>

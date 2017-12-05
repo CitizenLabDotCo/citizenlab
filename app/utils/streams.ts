@@ -336,7 +336,7 @@ class Streams {
       .distinctUntilChanged()
       .do((data) => {
         // quick and dirty fix, needs proper solution
-        if (!apiEndpoint.endsWith('memberships/users_search')) {
+        if (!apiEndpoint.endsWith('memberships/users_search') && cacheStream) {
           store.dispatch(mergeJsonApiResources(data));
         }
       })

@@ -9,7 +9,7 @@ import NotificationCount from './components/NotificationCount';
 import Popover from 'components/Popover';
 import Notification from './components/Notification';
 import Spinner from 'components/UI/Spinner';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import { notificationsStream, INotificationData, markAllAsRead } from 'services/notifications';

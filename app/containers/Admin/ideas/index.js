@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import HelmetIntl from 'components/HelmetIntl';
 
 // components
-// import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'utils/cl-intl';
 
 // store
 import { preprocess } from 'utils';

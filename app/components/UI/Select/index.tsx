@@ -43,7 +43,6 @@ const StyledSelect = styled(ReactSelect)`
     }
 
     .Select-control {
-      width: 100%;
       min-height: 48px;
       margin: 0px;
       padding: 0px;
@@ -152,6 +151,8 @@ const StyledSelect = styled(ReactSelect)`
           color: #333;
           font-size: 17px;
           font-weight: 400;
+          padding-top: 12px;
+          padding-bottom: 12px;
 
           &:hover,
           &:focus,

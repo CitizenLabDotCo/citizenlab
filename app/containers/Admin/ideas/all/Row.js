@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 // components
 // import ActionButton from 'components/buttons/action.js';
 import { Table, Icon, Dropdown, Popup, Button } from 'semantic-ui-react';
-import { FormattedDate, FormattedMessage } from 'react-intl';
+import { FormattedDate } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import { injectTFunc } from 'components/T/utils';
 import messages from '../messages';

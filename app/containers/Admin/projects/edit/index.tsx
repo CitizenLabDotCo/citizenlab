@@ -6,15 +6,17 @@ import * as Rx from 'rxjs/Rx';
 import { projectBySlugStream, IProjectData } from 'services/projects';
 
 // Components
+import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
-import { Link } from 'react-router';
-
+import { browserHistory } from 'react-router';
 
 // Localisation
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
-import t from 'components/T';
-const T = t;
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
+
+// style
+import styled from 'styled-components';
 
 // Component typing
 type Props = {
@@ -29,6 +31,10 @@ type Props = {
 type State = {
   project: IProjectData | null,
 };
+
+const StyledGoBackButton = styled(GoBackButton)`
+  margin-bottom: 20px;
+`;
 
 class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Rx.Subscription;
@@ -98,6 +104,10 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
     return [];
   }
 
+  goBack = () => {
+    browserHistory.push('/admin/projects');
+  }
+
   render() {
     const { project } = this.state;
 
@@ -115,9 +125,8 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
 
     return(
       <div>
-        <Link className="e2e-projects-list-link" to="/admin/projects">
-          <FormattedMessage {...messages.goBack} />
-        </Link>
+        <StyledGoBackButton onClick={this.goBack} />
+
         <TabbedResource {...tabbedProps}>
           {React.cloneElement(this.props.children as React.ReactElement<any>, { project })}
         </TabbedResource>

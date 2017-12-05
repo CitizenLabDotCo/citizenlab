@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from './messages';
 
@@ -16,6 +16,7 @@ import GroupAdditionForm from './GroupAdditionForm';
 
 // Style
 import styled from 'styled-components';
+import { color } from 'utils/styleUtils';
 
 const PageTitle = styled.h1`
   font-size: 2.5rem;
@@ -23,7 +24,7 @@ const PageTitle = styled.h1`
 `;
 
 const ButtonWrapper = styled.div`
-  border-bottom: 1px solid #EAEAEA;
+  border-bottom: 1px solid ${color('separation')};
   margin-bottom: 0;
   padding-bottom: 2rem;
 `;
