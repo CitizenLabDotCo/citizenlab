@@ -34,6 +34,15 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { injectTFunc } from 'components/T/utils';
 import messages from './messages';
 
+// Styling
+import styled from 'styled-components';
+
+const PhaseForm = styled.form`
+  .DateRangePicker__picker {
+    z-index: 2;
+  }
+`;
+
 
 // Component typing
 type Props = {
@@ -201,7 +210,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
 
         </SectionTitle>
 
-        <form onSubmit={this.handleOnSubmit}>
+        <PhaseForm onSubmit={this.handleOnSubmit}>
           <Section>
             <SectionField>
               <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
@@ -256,7 +265,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
               messageSuccess: messages.saveSuccessMessage,
             }}
           />
-        </form>
+        </PhaseForm>
       </div>
     );
   }
