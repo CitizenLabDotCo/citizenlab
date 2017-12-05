@@ -507,7 +507,7 @@ models:
     remote_avatar_url: http://www.lavie.fr/images/2016/02/24/70971_portrait-benjamin-dhardemare.jpg
   - &42
     email: julien.joxe@citizenlab.co
-    first_name: Justine
+    first_name: Julien
     last_name: Joxe
     locale: fr
     bio_multiloc:
