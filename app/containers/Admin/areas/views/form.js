@@ -7,7 +7,7 @@ import { push } from 'react-router-redux';
 // import ImmutablePropTypes from 'react-immutable-proptypes';
 
 // components
-// import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'utils/cl-intl';
 import FormComponent from 'components/forms/formComponent';
 import { Form } from 'semantic-ui-react';
 import RtfEditor from 'components/forms/inputs/rtfEditor';

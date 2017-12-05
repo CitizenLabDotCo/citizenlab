@@ -6,7 +6,8 @@ import { ideaByIdStream } from 'services/ideas';
 
 import messages from '../../messages';
 
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+
 import NotificationWrapper from '../NotificationWrapper';
 import { Link } from 'react-router';
 

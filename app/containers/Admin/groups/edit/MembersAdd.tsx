@@ -6,7 +6,7 @@ import * as Rx from 'rxjs/Rx';
 import { findMembership, addMembership, FoundUser } from 'services/groups';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from './messages';
 import localize, { injectedLocalized } from 'utils/localize';
@@ -19,6 +19,7 @@ import Avatar from 'components/Avatar';
 
 // Style
 import styled from 'styled-components';
+import { color } from 'utils/styleUtils';
 
 const AddUserButton = styled(Button)`
   padding-left: 0;
@@ -26,8 +27,8 @@ const AddUserButton = styled(Button)`
 
 const AddUserRow = styled.div`
   padding: 1rem 0;
-  border-bottom: 1px solid ${props => props.theme.colors.separation};
-  border-top: 1px solid ${props => props.theme.colors.separation};
+  border-bottom: 1px solid ${color('separation')};
+  border-top: 1px solid ${color('separation')};
 `;
 
 const StyledSelect = styled(ReactSelect)`
@@ -42,7 +43,7 @@ const StyledOption = styled.div`
   max-width: 100%;
 
   &.disabled {
-    color: ${props => props.theme.colors.mediumGrey};
+    color: ${color('mediumGrey')};
 
     .email {
       color: inherit;
@@ -66,14 +67,14 @@ const OptionName = styled.div`
   }
 
   .email {
-    color: ${props => props.theme.colors.label};
+    color: ${color('label')};
   }
 `;
 
 const OptionIcon = styled(Icon)`
   flex: 0 0 1rem;
   height: 1rem;
-  fill: ${props => props.theme.colors.clBlue};
+  fill: ${color('clBlue')};
   margin-left: 1rem;
 `;
 

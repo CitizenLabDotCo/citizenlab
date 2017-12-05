@@ -4,7 +4,7 @@ Link that is used to export data, displayed at the top right in e.g. admin/ideas
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import styled from 'styled-components';
 

@@ -20,7 +20,8 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { signUp } from 'services/auth';
 
 // i18n
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -28,7 +29,7 @@ import { darken } from 'polished';
 import styled from 'styled-components';
 
 // typings
-import { API } from 'typings.d';
+import { API } from 'typings';
 
 const Form = styled.form`
   width: 100%;
@@ -136,8 +137,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   handleFirstNameOnChange = (firstName: string) => {
     this.setState((state) => ({
-      firstName, 
-      firstNameError: null, 
+      firstName,
+      firstNameError: null,
       unknownError: null,
       apiErrors: (state.apiErrors ? _.set(state.apiErrors, 'json.errors.first_name', null) : null)
     }));
@@ -145,8 +146,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   handleLastNameOnChange = (lastName: string) => {
     this.setState((state) => ({
-      lastName, 
-      lastNameError: null, 
+      lastName,
+      lastNameError: null,
       unknownError: null,
       apiErrors: (state.apiErrors ? _.set(state.apiErrors, 'json.errors.last_name', null) : null)
     }));
@@ -154,8 +155,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   handleEmailOnChange = (email: string) => {
     this.setState((state) => ({
-      email, 
-      emailError: null, 
+      email,
+      emailError: null,
       unknownError: null,
       apiErrors: (state.apiErrors ? _.set(state.apiErrors, 'json.errors.email', null) : null)
     }));
@@ -163,8 +164,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   handlePasswordOnChange = (password: string) => {
     this.setState((state) => ({
-      password, 
-      passwordError: null, 
+      password,
+      passwordError: null,
       unknownError: null,
       apiErrors: (state.apiErrors ? _.set(state.apiErrors, 'json.errors.password', null) : null)
     }));
@@ -304,7 +305,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
             <Button
               id="e2e-signup-step1-button"
               size="2"
-              loading={processing}
+              processing={processing}
               text={formatMessage(messages.signUp)}
               onClick={this.handleOnSubmit}
               circularCorners={true}

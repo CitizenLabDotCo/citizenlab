@@ -12,7 +12,8 @@ import { localeStream } from 'services/locale';
 // i18n
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 type Props = {};
 

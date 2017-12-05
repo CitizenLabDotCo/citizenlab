@@ -5,6 +5,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
+import { remCalc, fontSize, color } from 'utils/styleUtils';
 
 const StyledList = styled.div`
   display: flex;
@@ -15,18 +16,36 @@ const StyledList = styled.div`
 const timeout = 200;
 
 const StyledRow = styled.div`
-  color: #444;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 400;
-  display: flex !important;
   align-items: center !important;
+  border-bottom: 1px solid ${color('separation')};
+  color: ${color('label')};
+  display: flex !important;
+  font-size: ${fontSize('small')};
+  font-weight: 300;
   justify-content: space-between !important;
-  border-bottom: 1px solid #eaeaea;
+  line-height: 20px;
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
 
+  h1, h2, h3, h4, h5 {
+    color: ${color('text')};
+    font-weight: 500;
+    margin-bottom: ${remCalc(10)};
+  }
+
+  h1 {
+    font-size: ${fontSize('large')};
+  }
+
+  h2 {
+    font-size: ${fontSize('base')};
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+
   &:first-child {
-    border-top: 1px solid #eaeaea;
+    border-top: 1px solid ${color('separation')};
   }
 
   > * {
@@ -67,6 +86,9 @@ const StyledRow = styled.div`
 
   &.e2e-admin-list-head-row {
     border-top: 0;
+    color: ${color('label')};
+    font-size: ${fontSize('small')};
+    font-weight: 500;
   }
 `;
 

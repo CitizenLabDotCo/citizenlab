@@ -2,7 +2,8 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import styled from 'styled-components';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { intlShape } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import * as _ from 'lodash';
 
@@ -54,13 +55,6 @@ const OrderLabel = styled.div`
 
   &.future {
     background: #636363;
-  }
-`;
-
-const InfoCell = styled.div`
-  h1 {
-    font-weight: normal;
-    margin-bottom: 0;
   }
 `;
 
@@ -135,7 +129,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
     return (
       <ListWrapper>
-        <AddButton className="e2e-add-phase-button" style="cl-blue" circularCorners={false} linkTo={`/admin/projects/${slug}/timeline/new`}>
+        <AddButton className="e2e-add-phase-button" icon="plus-circle" style="cl-blue" circularCorners={false} linkTo={`/admin/projects/${slug}/timeline/new`}>
           <FormattedMessage {...messages.addPhaseButton} />
         </AddButton>
 
@@ -150,10 +144,10 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
                 <OrderLabel className={this.phaseTiming({ start_at: phase.attributes.start_at, end_at: phase.attributes.end_at })}>
                   {index + 1}
                 </OrderLabel>
-                <InfoCell className="expand">
+                <div className="expand">
                   <h1 className="e2e-phase-title"><T value={phase.attributes.title_multiloc} /></h1>
                   <p>{formatDate(phase.attributes.start_at)} - {formatDate(phase.attributes.end_at)}</p>
-                </InfoCell>
+                </div>
                 <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
                   <FormattedMessage {...messages.deletePhaseButton} />
                 </Button>

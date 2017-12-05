@@ -22,11 +22,14 @@ import T from 'components/T';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
 
 // styles
 import styled, { keyframes } from 'styled-components';
+import { color } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
@@ -48,7 +51,7 @@ const IdeaImagePlaceholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${props => props.theme.colors.placeholderBg};
+  background: ${color('placeholderBg')};
 `;
 
 const CommentCount = styled.span`
@@ -264,7 +267,11 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
           </IdeaContent>
 
           {!showUnauthenticated &&
-            <StyledVoteControl ideaId={idea.data.id} unauthenticatedVoteClick={this.unauthenticatedVoteClick} />
+            <StyledVoteControl
+              ideaId={idea.data.id}
+              unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+              size="normal"
+            />
           }
 
           {showUnauthenticated && <Unauthenticated />}

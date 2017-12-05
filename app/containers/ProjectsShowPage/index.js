@@ -18,7 +18,7 @@ import { makeSelectResourceBySlug } from 'utils/resources/selectors';
 
 // message
 import messages from './messages';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { loadProjectPagesRequest } from 'resources/projects/pages/actions';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectProjectPages } from './selectors';
