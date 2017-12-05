@@ -23,7 +23,7 @@ class User < ApplicationRecord
   validates :email, :slug, uniqueness: true
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
-  validates :first_name, :last_name, :slug, :email, presence: true
+  validates :first_name, :slug, :email, presence: true
   validates :locale, presence: true, inclusion: { in: proc {Tenant.settings('core','locales')} }
   validates :bio_multiloc, multiloc: {presence: false}
 
@@ -36,13 +36,14 @@ class User < ApplicationRecord
 
   validates :password, length: { in: 5..72 }, allow_nil: true
   validate do |record|
+    record.errors.add(:last_name, :blank) unless record.last_name.present? or record.cl1_migrated
     record.errors.add(:password, :blank) unless record.password_digest.present? or record.identities.any?
   end
 
   ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
   validates :roles, json: { schema: ROLES_JSON_SCHEMA, message: ->(errors) { errors } }
 
-  before_validation :generate_slug, on: :create
+  before_validation :generate_slug, :set_cl1_migrated, on: :create
   # For prepend: true, see https://github.com/carrierwaveuploader/carrierwave/wiki/Known-Issues#activerecord-callback-ordering
   before_save :generate_avatar, on: :create, prepend: true
 
@@ -105,6 +106,10 @@ class User < ApplicationRecord
     if !self.slug && self.first_name.present?
       self.slug = SlugService.new.generate_slug self, self.display_name
     end
+  end
+
+  def set_cl1_migrated
+    self.cl1_migrated ||= false
   end
 
   def generate_avatar
