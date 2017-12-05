@@ -48,9 +48,10 @@ describe MentionService do
       result = service.add_span_around(
         "<p>This is a html text with a mention to @koen-gremmelprez</p>", 
         "@koen-gremmelprez", 
-        "3e089a81-5000-4ce5-8cd4-75b5754213b0"
+        "3e089a81-5000-4ce5-8cd4-75b5754213b0",
+        "koen-gremmelprez"
       )
-      expect(result).to eq "<p>This is a html text with a mention to <span class=\"cl-mention-user\" data-user-id=\"3e089a81-5000-4ce5-8cd4-75b5754213b0\">@koen-gremmelprez</span></p>"
+      expect(result).to eq "<p>This is a html text with a mention to <span class=\"cl-mention-user\" data-user-id=\"3e089a81-5000-4ce5-8cd4-75b5754213b0\" data-user-slug=\"koen-gremmelprez\">@koen-gremmelprez</span></p>"
     end
   end
 
@@ -59,10 +60,10 @@ describe MentionService do
     before do
       @u1 = create(:user)
       @u1_mention = service.user_to_mention(@u1)
-      @u1_mention_expanded = service.add_span_around @u1_mention, @u1_mention, @u1.id
+      @u1_mention_expanded = service.add_span_around @u1_mention, @u1_mention, @u1.id, @u1.slug
       @u2 = create(:user)
       @u2_mention = service.user_to_mention(@u2)
-      @u2_mention_expanded = service.add_span_around @u2_mention, @u2_mention, @u2.id
+      @u2_mention_expanded = service.add_span_around @u2_mention, @u2_mention, @u2.id, @u2.slug
 
     end
 
@@ -74,12 +75,13 @@ describe MentionService do
 
     it "processes a single mention as it should" do
       result = service.process_mentions(@u1_mention)
-      expect(result).to eq ["<span class=\"cl-mention-user\" data-user-id=\"#{@u1.id}\">#{@u1_mention}</span>", [@u1.id]]
+      expect(result).to eq ["<span class=\"cl-mention-user\" data-user-id=\"#{@u1.id}\" data-user-slug=\"#{@u1.slug}\">#{@u1_mention}</span>", [@u1.id]]
     end
 
     it "processes multiple mentions as it should" do
       result = service.process_mentions("#{@u1_mention} and #{@u2_mention} are sitting in a tree")
-      expect(result).to eq ["#{@u1_mention_expanded} and #{@u2_mention_expanded} are sitting in a tree", [@u1.id,@u2.id]]
+      expect(result[0]).to eq "#{@u1_mention_expanded} and #{@u2_mention_expanded} are sitting in a tree"
+      expect(result[1]).to match_array([@u1.id,@u2.id])
     end
 
     it "only returns new unexpanded mentions as users" do
@@ -93,6 +95,7 @@ describe MentionService do
       @u1 = create(:user, first_name: 'jan', last_name: 'hoet')
       @u2 = create(:user, first_name: 'jantje', last_name: 'broek')
       @u3 = create(:user, first_name: 'rudolf', last_name: 'deer')
+      @u4 = create(:user, first_name: 'janus', last_name: 'lurker')
       @idea = create(:idea, author: @u1)
       create(:comment, idea: @idea, author: @u2)
       create(:comment, idea: @idea, author: @u3)
@@ -101,6 +104,13 @@ describe MentionService do
 
     it "return the users from the idea that match the slug" do
       result = service.users_from_idea('ja', @idea, 5)
+      expect(result.size).to eq 2
+      expect(result).to match([@u1, @u2])
+    end
+
+    it "handles case gracefully" do
+      result = service.users_from_idea('Ja', @idea, 5)
+      expect(result.size).to eq 2
       expect(result).to match([@u1, @u2])
     end
   end

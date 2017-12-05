@@ -1,12 +1,11 @@
 require 'faker'
 
 FactoryGirl.define do
-  factory :user, aliases: [:author, :recipient] do
+  factory :user, aliases: [:author, :recipient, :initiating_user] do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
     email { Faker::Internet.email }
     password_digest "testtest"
-    services {}
     demographics {}
     roles []
     locale "en"

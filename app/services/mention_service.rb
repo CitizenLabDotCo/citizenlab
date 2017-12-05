@@ -31,8 +31,8 @@ class MentionService
     doc.to_s
   end
 
-  def add_span_around text, mention, user_id
-    text.gsub(/#{mention}/i, "<span class=\"cl-mention-user\" data-user-id=\"#{user_id}\">#{mention}</span>")
+  def add_span_around text, mention, user_id, user_slug
+    text.gsub(/#{mention}/i, "<span class=\"cl-mention-user\" data-user-id=\"#{user_id}\" data-user-slug=\"#{user_slug}\">#{mention}</span>")
   end
 
   def process_mentions text
@@ -48,7 +48,7 @@ class MentionService
     new_users_mentioned = users_mentioned_now.map(&:id) - users_mentioned_before.map(&:id)
 
     new_text = users_mentioned_now.all.inject(cleaned_text) do |memo, user|
-      add_span_around(memo, user_to_mention(user), user.id)
+      add_span_around(memo, user_to_mention(user), user.id, user.slug)
     end
 
     [new_text, new_users_mentioned]
@@ -67,12 +67,13 @@ class MentionService
 
   def users_from_idea slug, idea, limit
     author = idea.author
+    cleaned_slug = SlugService.new.slugify(slug)
     commenters = User
       .joins(:comments)
-      .where("users.slug LIKE ?", "#{slug}%")
+      .where("users.slug LIKE ?", "#{cleaned_slug}%")
       .where(comments: {idea_id: idea.id})
       .limit(limit)
-    [author, *commenters].uniq
+    [author.slug =~ /^#{cleaned_slug}/ && author, *commenters].compact.uniq
   end
 
 end

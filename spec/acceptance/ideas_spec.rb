@@ -12,7 +12,7 @@ resource "Ideas" do
     header 'Authorization', "Bearer #{token}"
   end
 
-  get "api/v1/ideas" do
+  get "web_api/v1/ideas" do
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of ideas per page"
@@ -163,7 +163,7 @@ resource "Ideas" do
     end
   end
 
-  get "api/v1/ideas/as_xlsx" do
+  get "web_api/v1/ideas/as_xlsx" do
     parameter :project, 'Filter by project', required: false
 
     example_request "XLSX export" do
@@ -172,7 +172,7 @@ resource "Ideas" do
   end
 
 
-  get "api/v1/ideas/:id" do
+  get "web_api/v1/ideas/:id" do
     let(:id) {@ideas.first.id}
 
     example_request "Get one idea by id" do
@@ -182,7 +182,7 @@ resource "Ideas" do
     end
   end
 
-  get "api/v1/ideas/by_slug/:slug" do
+  get "web_api/v1/ideas/by_slug/:slug" do
     let(:slug) {@ideas.first.slug}
 
     example_request "Get an idea by slug" do
@@ -200,7 +200,7 @@ resource "Ideas" do
     end
   end
 
-  post "api/v1/ideas" do
+  post "web_api/v1/ideas" do
 
     before do
       IdeaStatus.create_defaults
@@ -272,7 +272,7 @@ resource "Ideas" do
   end
 
 
-  patch "api/v1/ideas/:id" do
+  patch "web_api/v1/ideas/:id" do
     before do
       @idea =  create(:idea, author: @user)
     end
@@ -368,7 +368,7 @@ resource "Ideas" do
   end
 
 
-  patch "api/v1/ideas/:id" do
+  patch "web_api/v1/ideas/:id" do
     before do
       @idea =  create(:idea, author: @user, publication_status: 'draft')
     end
@@ -385,7 +385,7 @@ resource "Ideas" do
     end
   end
 
-  delete "api/v1/ideas/:id" do
+  delete "web_api/v1/ideas/:id" do
     before do
       @idea = create(:idea_with_topics, author: @user, publication_status: 'published')
     end

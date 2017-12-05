@@ -16,7 +16,7 @@ resource "Memberships" do
       header 'Authorization', "Bearer #{token}"
     end
 
-    get "api/v1/groups/:group_id/memberships" do
+    get "web_api/v1/groups/:group_id/memberships" do
       with_options scope: :page do
         parameter :number, "Page number"
         parameter :size, "Number of members per page"
@@ -31,7 +31,7 @@ resource "Memberships" do
     
     end
 
-    get "api/v1/memberships/:id" do
+    get "web_api/v1/memberships/:id" do
       let(:id) { @memberships.first.id }
 
       example_request "Get one membership by id" do
@@ -41,7 +41,7 @@ resource "Memberships" do
       end
     end
 
-    post "api/v1/groups/:group_id/memberships" do
+    post "web_api/v1/groups/:group_id/memberships" do
       with_options scope: :membership do
         parameter :user_id, "The user id of the group member.", required: true
       end
@@ -59,7 +59,7 @@ resource "Memberships" do
       end
     end
 
-    delete "api/v1/memberships/:id" do
+    delete "web_api/v1/memberships/:id" do
       let(:membership) { create(:membership) }
       let(:id) { membership.id }
       example_request "Delete a membership" do
@@ -76,7 +76,7 @@ resource "Memberships" do
       header 'Authorization', "Bearer #{token}"
     end
 
-    get "api/v1/groups/:group_id/memberships/users_search" do
+    get "web_api/v1/groups/:group_id/memberships/users_search" do
 
       with_options scope: :page do
         parameter :number, "Page number"

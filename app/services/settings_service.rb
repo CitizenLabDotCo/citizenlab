@@ -67,5 +67,15 @@ class SettingsService
     res
   end
 
+  def remove_private_settings settings, schema
+    res = settings.deep_dup
+    schema["properties"].each do |feature, feature_schema|
+      feature_schema["properties"].each do |setting, setting_schema|
+        res[feature]&.delete(setting) if setting_schema["private"]
+      end
+    end
+    res
+  end
+
 
 end

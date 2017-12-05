@@ -24,12 +24,17 @@ class LogToSegmentJob < ApplicationJob
 
     if activity.item
       begin
-        serializer = "Api::V1::External::External#{activity.item_type}Serializer".constantize
+        serializer = "WebApi::V1::External::#{activity.item_type}Serializer".constantize
         serialization = ActiveModelSerializers::SerializableResource.new(activity.item, {
           serializer: serializer,
           adapter: :json
         })
-        trackingMessage[:properties][:item_content] = serialization.serializable_hash
+        item_content = serialization.serializable_hash
+        if activity.item.kind_of? Notification
+          trackingMessage[:event] = "Notification for #{activity.item.class::EVENT_NAME} created"
+          item_content = item_content.flatten.second
+        end
+        trackingMessage[:properties][:item_content] = item_content
       rescue NameError => e
         # There's no serializer, so we don't add anything
       end

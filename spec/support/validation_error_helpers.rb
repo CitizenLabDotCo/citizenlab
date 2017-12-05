@@ -18,20 +18,37 @@ class ValidationErrorHelper
     ActiveRecord::Validations::LengthValidator => [:wrong_length, :too_short, :too_long],
     ActiveRecord::Validations::AssociatedValidator => [:invalid],
     ActiveRecord::Validations::AbsenceValidator => [:present],
-    MultilocValidator => [:blank, :unsupported_locales]
+    MultilocValidator => [:blank, :unsupported_locales],
+    JsonValidator => [:invalid_json], # not sure
+    CarrierWave::Validations::ActiveModel::IntegrityValidator => [:integrity_error, :extension_whitelist_error, :extension_blacklist_error, :content_type_whitelist_error, :content_type_blacklist_error, :min_size_error, :max_size_error], 
+    CarrierWave::Validations::ActiveModel::ProcessingValidator => [:processing_error], 
+    CarrierWave::Validations::ActiveModel::DownloadValidator => [:download_error]
   }
 
 
 
   def model_error_codes model
-    model.validators.flat_map do |validator| 
+    attrs_errs = model.validators.flat_map do |validator| 
         validator.attributes.map{|a| [a, ERROR_DETAILS[validator.class]]}
-      end
-      .select(&:last)
-      .to_h
+      end.select(&:last)
+    to_h_appended(attrs_errs)
       .map{|attribute, error_codes| [attribute, error_codes&.flatten&.compact&.uniq]}
       .to_h
   end
+
+  def to_h_appended arr
+    # kind of similar as .to_h but taking care
+    # of multiple occurances of the same key
+    # all values with the same key are put in a list
+    h = {}
+    arr.each do |elt|
+      k = elt.first
+      v = elt.drop(1)
+      h[k] = (h[k] || []).append v
+    end
+    h
+  end
+
 
   def error_fields(rspec_context, model)
     model_error_codes(model).each do |attribute, error_codes|

@@ -3,9 +3,14 @@ class LogActivityJob < ApplicationJob
   queue_as :default
 
   def perform(item, action, user, acted_at=Time.now, options={})
-    activity = if item.kind_of? String
+    activity = if item.kind_of? String 
+      # when e.g. the item has been destroyed,
+      # the class and id must be retrieved by
+      # encoding and decoding to a string
       claz, id = decode_frozen_resource(item)
       Activity.new(item_type: claz.name, item_id: id)
+    elsif item.kind_of? Notification
+      Activity.new(item: item, item_type: item.type) # .split('::').last)
     else
       Activity.new(item: item)
     end
