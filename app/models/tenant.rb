@@ -43,6 +43,42 @@ class Tenant < ApplicationRecord
     self.settings = ss.add_missing_features(self.settings, SETTINGS_JSON_SCHEMA)
     self.settings = ss.add_missing_settings(self.settings, SETTINGS_JSON_SCHEMA)
   end
+
+  def has_feature f
+    settings.dig(f, 'allowed') && settings.dig(f, 'enabled')
+  end
+
+  def closest_locale_to locale
+    locales = settings.dig('core', 'locales')
+    if locales && locales.include?(locale.to_s)
+      locale
+    else
+      locales.first
+    end
+  end
+
+  def public_settings
+    ss = SettingsService.new
+    ss.remove_private_settings(self.settings, SETTINGS_JSON_SCHEMA)
+  end
+
+  def base_frontend_uri
+    if Rails.env.development? || Rails.env.test?
+      "http://localhost:3000"
+    else
+      transport = 'https' # request.ssl? ? 'https' : 'http'
+      "#{transport}://#{self.host}"
+    end
+  end
+
+  def base_backend_uri
+    if Rails.env.development? || Rails.env.test?
+      "http://localhost:4000"
+    else
+      transport = 'https' # request.ssl? ? 'https' : 'http'
+      "#{transport}://#{self.host}"
+    end
+  end
   
   private
 

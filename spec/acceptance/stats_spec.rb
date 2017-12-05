@@ -30,7 +30,7 @@ resource "Stats" do
     end
 
 
-    get "api/v1/stats/users_by_time" do
+    get "web_api/v1/stats/users_by_time" do
 
       time_series_parameters self
 
@@ -48,7 +48,7 @@ resource "Stats" do
 
     end
 
-    get "api/v1/stats/users_by_gender" do
+    get "web_api/v1/stats/users_by_gender" do
 
       time_boundary_parameters self
 
@@ -65,7 +65,7 @@ resource "Stats" do
     end
 
 
-    get "api/v1/stats/users_by_birthyear" do
+    get "web_api/v1/stats/users_by_birthyear" do
 
       time_boundary_parameters self
 
@@ -80,7 +80,7 @@ resource "Stats" do
 
     end
 
-    get "api/v1/stats/users_by_domicile" do
+    get "web_api/v1/stats/users_by_domicile" do
 
       time_boundary_parameters self
 
@@ -95,7 +95,7 @@ resource "Stats" do
 
     end
 
-    get "api/v1/stats/users_by_education" do
+    get "web_api/v1/stats/users_by_education" do
 
       time_boundary_parameters self
 
@@ -122,7 +122,7 @@ resource "Stats" do
       create(:idea)
     end
 
-    get "api/v1/stats/ideas_by_topic" do
+    get "web_api/v1/stats/ideas_by_topic" do
 
       time_boundary_parameters self
 
@@ -139,7 +139,7 @@ resource "Stats" do
 
     end
 
-    get "api/v1/stats/ideas_by_area" do
+    get "web_api/v1/stats/ideas_by_area" do
 
       time_boundary_parameters self
 
@@ -156,7 +156,7 @@ resource "Stats" do
 
     end
 
-    get "api/v1/stats/ideas_by_time" do
+    get "web_api/v1/stats/ideas_by_time" do
 
       time_series_parameters self
 
@@ -176,7 +176,7 @@ resource "Stats" do
 
   end
 
-  get "api/v1/stats/comments_by_time" do
+  get "web_api/v1/stats/comments_by_time" do
 
     time_series_parameters self
 
@@ -194,7 +194,7 @@ resource "Stats" do
 
   end
 
-  get "api/v1/stats/votes_by_time" do
+  get "web_api/v1/stats/votes_by_time" do
 
     time_series_parameters self
 

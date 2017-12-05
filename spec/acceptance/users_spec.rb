@@ -6,13 +6,13 @@ resource "Users" do
 
   context "when not authenticated" do
 
-    get "api/v1/users/me" do
+    get "web_api/v1/users/me" do
       example_request "Get the authenticated user" do
         expect(status).to eq(404)
       end
     end
 
-    get "api/v1/users/:id" do
+    get "web_api/v1/users/:id" do
       before do
         @user = create(:user)
       end
@@ -38,7 +38,7 @@ resource "Users" do
         @user.update(roles: [{type: 'admin'}])
       end
 
-      get "api/v1/users" do
+      get "web_api/v1/users" do
         with_options scope: :page do
           parameter :number, "Page number"
           parameter :size, "Number of users per page"
@@ -80,14 +80,14 @@ resource "Users" do
         end
       end
 
-      get "api/v1/users/as_xlsx" do
+      get "web_api/v1/users/as_xlsx" do
         example_request "XLSX export" do
           expect(status).to eq 200
         end
       end
     end
 
-    get "api/v1/users" do
+    get "web_api/v1/users" do
       with_options scope: :page do
         parameter :number, "Page number"
         parameter :size, "Number of users per page"
@@ -100,7 +100,7 @@ resource "Users" do
       end
     end
 
-    get "api/v1/users/:id" do
+    get "web_api/v1/users/:id" do
       let(:id) {@user.id}
 
       example_request "Get a user by id" do
@@ -109,7 +109,7 @@ resource "Users" do
       end
     end
 
-    get "api/v1/users/:id" do
+    get "web_api/v1/users/:id" do
       let(:id) {@user.id}
       example_request "Get the authenticated user exposes the email field" do
         json_response = json_parse(response_body)
@@ -117,7 +117,7 @@ resource "Users" do
       end
     end
 
-    get "api/v1/users/by_slug/:slug" do
+    get "web_api/v1/users/by_slug/:slug" do
       let(:slug) {@users.first.slug}
 
       example_request "Get a user by slug" do
@@ -135,14 +135,14 @@ resource "Users" do
       end
     end
 
-    get "api/v1/users/me" do
+    get "web_api/v1/users/me" do
       example_request "Get the authenticated user" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq(@user.id)
       end
     end
 
-    post "api/v1/users" do
+    post "web_api/v1/users" do
       with_options scope: 'user' do
         parameter :first_name, "User full name", required: true
         parameter :last_name, "User full name", required: true
@@ -175,6 +175,7 @@ resource "Users" do
       describe "Creating an admin user" do
         let(:roles) { [{type: 'admin'}] }
         example "creates a user, but not an admin", document: false do
+          create(:admin) # there must be at least on admin, otherwise the next user will automatically be made an admin
           do_request
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
@@ -194,7 +195,7 @@ resource "Users" do
 
     end
 
-    put "api/v1/users/:id" do
+    put "web_api/v1/users/:id" do
       with_options scope: 'user' do
         parameter :first_name, "User full name"
         parameter :last_name, "User full name"
@@ -222,7 +223,7 @@ resource "Users" do
       end
     end
 
-    delete "api/v1/users/:id" do
+    delete "web_api/v1/users/:id" do
       before do
         @user.update(roles: [{type: 'admin'}])
         @subject_user = create(:user)

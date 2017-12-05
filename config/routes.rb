@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  namespace :api, :defaults => {:format => :json} do
+  namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
 
       get 'comments/as_xlsx' => 'comments#index_xlsx'
@@ -11,12 +11,15 @@ Rails.application.routes.draw do
             post :up, on: :collection
             post :down, on: :collection
           end
+          resources :spam_reports, shallow: true, defaults: { spam_reportable: 'Comment' }
         end
         resources :votes, except: [:update], shallow: true, defaults: { votable: 'Idea' } do
           post :up, on: :collection
           post :down, on: :collection
         end
+        resources :spam_reports, shallow: true, defaults: { spam_reportable: 'Idea' }
         resources :images, defaults: {container_class: Idea, image_class: IdeaImage}
+        resources :files, defaults: {container_class: Idea, file_class: IdeaFile}
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
       end
@@ -25,8 +28,6 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
-      post 'social_login' => 'social_login#create'
-      post 'social_registration' => 'social_registration#create'
 
       resources :users do
         get :me, on: :collection
@@ -50,6 +51,7 @@ Rails.application.routes.draw do
         resources :phases, shallow: true
         resources :events, shallow: true
         resources :images, defaults: {container_class: Project, image_class: ProjectImage}
+        resources :files, defaults: {container_class: Project, file_class: ProjectFile}
         resources :groups_projects, shallow: true, except: [:update]
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
       end
@@ -92,9 +94,15 @@ Rails.application.routes.draw do
   namespace :admin_api, :defaults => {:format => :json} do
     resources :tenants do
       get :settings_schema, on: :collection
+      get :templates, on: :collection
     end
   end
 
+  get '/auth/:provider/callback', to: 'omniauth_callback#create'
+  get '/auth/failure', to: 'omniauth_callback#failure'
+
+
+  mount PublicApi::Engine => "/api", as: 'public_api'
 
 
 end

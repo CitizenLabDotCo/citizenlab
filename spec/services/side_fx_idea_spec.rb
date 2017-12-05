@@ -6,9 +6,10 @@ describe SideFxIdeaService do
 
   describe "after_create" do
     it "logs a 'published' action job when publication_state is published" do
-      idea = create(:idea, publication_status: 'published')
+      idea = create(:idea, publication_status: 'published', author: user)
       expect {service.after_create(idea, user)}.
-        to have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.updated_at.to_i)
+        to have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.created_at.to_i).at_least(1).times
+        .and have_enqueued_job(LogActivityJob).with(idea, 'first published by user', user, idea.created_at.to_i).at_least(1).times
     end
 
     it "doesn't log a 'published' action job when publication_state is draft" do
@@ -20,10 +21,11 @@ describe SideFxIdeaService do
 
   describe "after_update" do
     it "logs a 'published' action job when publication_state goes from draft to published" do
-      idea = create(:idea, publication_status: 'draft')
+      idea = create(:idea, publication_status: 'draft', author: user)
       idea.update(publication_status: 'published')
       expect {service.after_update(idea, user)}.
-        to have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.updated_at.to_i)
+        to have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.created_at.to_i).at_least(1).times
+        .and have_enqueued_job(LogActivityJob).with(idea, 'first published by user', user, idea.created_at.to_i).at_least(1).times
     end
 
     it "logs a 'changed_title' action job when the title has changed" do

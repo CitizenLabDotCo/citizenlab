@@ -10,7 +10,7 @@ resource "Projects" do
     header "Content-Type", "application/json"
   end
 
-  get "api/v1/projects" do
+  get "web_api/v1/projects" do
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of projects per page"
@@ -88,7 +88,7 @@ resource "Projects" do
 
   end
 
-  get "api/v1/projects/:id" do
+  get "web_api/v1/projects/:id" do
     let(:id) {@projects.first.id}
 
     example_request "Get a project by id" do
@@ -98,7 +98,7 @@ resource "Projects" do
     end
   end
 
-  get "api/v1/projects/by_slug/:slug" do
+  get "web_api/v1/projects/by_slug/:slug" do
     let(:slug) {@projects.first.slug}
 
     example_request "Get a project by slug" do
@@ -116,7 +116,7 @@ resource "Projects" do
     end
   end
 
-  post "api/v1/projects" do
+  post "web_api/v1/projects" do
     with_options scope: :project do
       parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
       parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
@@ -161,7 +161,7 @@ resource "Projects" do
 
   end
 
-  patch "api/v1/projects/:id" do
+  patch "web_api/v1/projects/:id" do
     before do 
       @project = create(:project)
     end
@@ -204,7 +204,7 @@ resource "Projects" do
   end
 
 
-  delete "api/v1/projects/:id" do
+  delete "web_api/v1/projects/:id" do
     let(:project) { create(:project) }
     let(:id) { project.id }
     example_request "Delete a project" do

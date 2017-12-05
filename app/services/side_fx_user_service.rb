@@ -3,7 +3,7 @@ class SideFxUserService
   include SideFxHelper
 
   def before_create user, current_user
-    if User.count == 0
+    if User.admin.empty?   # User.count == 0
       user.add_role 'admin'
     end
   end
@@ -15,10 +15,7 @@ class SideFxUserService
   end
 
   def after_update user, current_user
-    if user.avatar_previously_changed?
-      LogActivityJob.perform_later(user, 'changed', current_user, user.updated_at.to_i)
-    end
-
+    LogActivityJob.perform_later(user, 'changed', current_user, user.updated_at.to_i)
   end
 
   def after_destroy frozen_user, current_user

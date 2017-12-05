@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171026133657) do
+ActiveRecord::Schema.define(version: 20171127103900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,15 @@ ActiveRecord::Schema.define(version: 20171026133657) do
     t.index ["project_id"], name: "index_groups_projects_on_project_id"
   end
 
+  create_table "idea_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "idea_id"
+    t.string "file"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idea_id"], name: "index_idea_files_on_idea_id"
+  end
+
   create_table "idea_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "idea_id"
     t.string "image"
@@ -140,7 +149,6 @@ ActiveRecord::Schema.define(version: 20171026133657) do
     t.uuid "project_id"
     t.uuid "author_id"
     t.string "author_name"
-    t.jsonb "files"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "upvotes_count", default: 0, null: false
@@ -165,6 +173,16 @@ ActiveRecord::Schema.define(version: 20171026133657) do
     t.index ["topic_id"], name: "index_ideas_topics_on_topic_id"
   end
 
+  create_table "identities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "provider"
+    t.string "uid"
+    t.jsonb "auth_hash", default: {}
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_identities_on_user_id"
+  end
+
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "group_id"
     t.uuid "user_id"
@@ -179,15 +197,24 @@ ActiveRecord::Schema.define(version: 20171026133657) do
     t.string "type"
     t.datetime "read_at"
     t.uuid "recipient_id"
-    t.string "user_id"
     t.string "idea_id"
     t.string "comment_id"
     t.string "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "initiating_user_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
+    t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
+  end
+
+  create_table "page_links", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "linking_page_id", null: false
+    t.uuid "linked_page_id", null: false
+    t.integer "ordering"
+    t.index ["linked_page_id"], name: "index_page_links_on_linked_page_id"
+    t.index ["linking_page_id"], name: "index_page_links_on_linking_page_id"
   end
 
   create_table "pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -212,6 +239,15 @@ ActiveRecord::Schema.define(version: 20171026133657) do
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
+  create_table "project_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_id"
+    t.string "file"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_files_on_project_id"
+  end
+
   create_table "project_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.string "image"
@@ -222,8 +258,8 @@ ActiveRecord::Schema.define(version: 20171026133657) do
   end
 
   create_table "projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc"
-    t.jsonb "description_multiloc"
+    t.jsonb "title_multiloc", default: {}
+    t.jsonb "description_multiloc", default: {}
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -239,6 +275,29 @@ ActiveRecord::Schema.define(version: 20171026133657) do
     t.uuid "topic_id"
     t.index ["project_id"], name: "index_projects_topics_on_project_id"
     t.index ["topic_id"], name: "index_projects_topics_on_topic_id"
+  end
+
+  create_table "public_api_api_clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "secret"
+    t.uuid "tenant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_public_api_api_clients_on_tenant_id"
+  end
+
+  create_table "spam_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "spam_reportable_id", null: false
+    t.string "spam_reportable_type", null: false
+    t.datetime "reported_at", null: false
+    t.string "reason_code"
+    t.string "other_reason"
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reported_at"], name: "index_spam_reports_on_reported_at"
+    t.index ["spam_reportable_type", "spam_reportable_id"], name: "spam_reportable_index"
+    t.index ["user_id"], name: "index_spam_reports_on_user_id"
   end
 
   create_table "tenants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -264,7 +323,6 @@ ActiveRecord::Schema.define(version: 20171026133657) do
     t.string "email"
     t.string "password_digest"
     t.string "slug"
-    t.jsonb "services", default: {}
     t.jsonb "demographics", default: {}
     t.jsonb "roles", default: []
     t.string "reset_password_token"
@@ -275,14 +333,6 @@ ActiveRecord::Schema.define(version: 20171026133657) do
     t.string "last_name"
     t.string "locale"
     t.jsonb "bio_multiloc", default: {}
-    t.string "encrypted_password", default: "", null: false
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string "current_sign_in_ip"
-    t.string "last_sign_in_ip"
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
@@ -309,19 +359,27 @@ ActiveRecord::Schema.define(version: 20171026133657) do
   add_foreign_key "events", "projects"
   add_foreign_key "groups_projects", "groups"
   add_foreign_key "groups_projects", "projects"
+  add_foreign_key "idea_files", "ideas"
   add_foreign_key "idea_images", "ideas"
   add_foreign_key "ideas", "idea_statuses"
   add_foreign_key "ideas", "projects"
   add_foreign_key "ideas", "users", column: "author_id"
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
+  add_foreign_key "identities", "users"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
+  add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
+  add_foreign_key "page_links", "pages", column: "linked_page_id"
+  add_foreign_key "page_links", "pages", column: "linking_page_id"
   add_foreign_key "pages", "projects"
   add_foreign_key "phases", "projects"
+  add_foreign_key "project_files", "projects"
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
+  add_foreign_key "public_api_api_clients", "tenants"
+  add_foreign_key "spam_reports", "users"
   add_foreign_key "votes", "users"
 end
