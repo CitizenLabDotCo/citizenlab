@@ -9,7 +9,6 @@ import 'react-dates/lib/css/_datepicker.css';
 const Wrapper = styled.div`
   display: flex;
   position: relative;
-  z-index: 5;
 `;
 
 const TimeWrapper = styled.div`
