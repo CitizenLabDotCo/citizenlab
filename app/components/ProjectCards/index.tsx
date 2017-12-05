@@ -22,7 +22,6 @@ import messages from './messages';
 import styled from 'styled-components';
 import { lighten } from 'polished';
 import { media } from 'utils/styleUtils';
-import ButtonMixin from 'components/admin/StyleMixins/buttonMixin';
 
 const Container = styled.div`
   width: 100%;
@@ -201,7 +200,7 @@ class ProjectCards extends React.PureComponent<Props & InjectedIntlProps, State>
       <LoadMore>
         <LoadMoreButton
           text={formatMessage(messages.loadMore)}
-          loading={loadingMore}
+          processing={loadingMore}
           style="primary"
           size="3"
           onClick={this.loadMoreProjects}

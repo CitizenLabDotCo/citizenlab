@@ -11,6 +11,7 @@ import messages from './messages';
 // Components
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
+import Warning from 'components/UI/Warning';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import GroupAvatar from 'containers/Admin/groups/all/GroupAvatar';
 import { List, Row } from 'components/admin/ResourceList';
@@ -25,12 +26,13 @@ import { addGroupProject, deleteGroupProject, groupsProjectsByProjectIdStream, I
 // Style
 import styled from 'styled-components';
 import { transparentize } from 'polished';
+import { color } from 'utils/styleUtils';
 
 // Typings
 import { IOption } from 'typings';
 
 const EmptyStateMessage = styled.p`
-  color: ${props => props.theme.colors.clBlue};
+  color: ${color('clBlue')};
   font-size: 1.15rem;
   display: flex;
   align-items: center;
@@ -40,7 +42,7 @@ const EmptyStateMessage = styled.p`
 `;
 
 const StyledIcon = styled(Icon)`
-  height: 1em;
+  height: 20px;
   margin-right: 2rem;
 `;
 
@@ -128,7 +130,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
         const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
         const projectGroups = _(groupsProjects.data).map((groupProject) => {
           const group = _(groups.data).find(group => group.id === groupProject.relationships.group.data.id) as IGroupData;
-  
+
           return {
             group_id: group.id,
             group_project_id: groupProject.id,
@@ -139,7 +141,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
         const groupsOptions = this.getOptions(groups, groupsProjects, locale, currentTenantLocales);
         const loading = false;
 
-        this.setState({ 
+        this.setState({
           locale,
           currentTenantLocales,
           projectGroups,
@@ -205,10 +207,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     const groupsMultipleSelectPlaceholder = formatMessage(messages.groupsMultipleSelectPlaceholder);
 
     const noGroups = ((!loading && (!projectGroups || projectGroups.length === 0)) ? (
-      <EmptyStateMessage>
-        <StyledIcon name="warning" />
-        <FormattedHTMLMessage {...messages.noSelectedGroupsMessage} />
-      </EmptyStateMessage>
+      <Warning text={<FormattedHTMLMessage {...messages.noSelectedGroupsMessage} />} />
     ) : null);
 
     const selectGroups = (!loading ? (

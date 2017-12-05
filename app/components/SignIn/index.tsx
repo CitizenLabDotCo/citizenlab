@@ -30,6 +30,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 // style
 import { darken } from 'polished';
 import styled, { css } from 'styled-components';
+import { color } from 'utils/styleUtils';
 
 const Container = styled.div`
   flex: 1;
@@ -54,7 +55,7 @@ const PasswordInput = styled(Input)`
 `;
 
 const ForgotPassword = styled(Link)`
-  color: ${props => props.theme.colors.label};
+  color: ${color('label')};
   color: #999;
   font-size: 14px;
   line-height: 18px;
@@ -343,7 +344,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                 <Button
                   onClick={this.handleOnSubmit}
                   size="2"
-                  loading={processing}
+                  processing={processing}
                   text={formatMessage(messages.submit)}
                   circularCorners={true}
                 />

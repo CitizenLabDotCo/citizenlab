@@ -7,8 +7,7 @@ import scrollToComponent from 'react-scroll-to-component';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
-import { ImageFile } from 'react-dropzone';
-import { IOption } from 'typings';
+import * as bowser from 'bowser';
 
 // components
 import Select from 'components/UI/Select';
@@ -18,7 +17,7 @@ import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
 import Editor from 'components/UI/Editor';
 import Button from 'components/UI/Button';
-import Upload from 'components/UI/Upload';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
 
 // services
@@ -36,6 +35,9 @@ import eventEmitter from 'utils/eventEmitter';
 import { getLocalized } from 'utils/i18n';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+
+// typings
+import { IOption, ImageFile } from 'typings';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -56,7 +58,7 @@ const Form = styled.div`
   margin-right: auto;
 
   ${media.smallerThanMaxTablet`
-    padding-bottom: 130px;
+    padding-bottom: 80px;
   `}
 `;
 
@@ -108,7 +110,7 @@ interface GlobalState {
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
   location: any;
-  images: ImageFile[] | null;
+  imageFile: ImageFile[] | null;
   titleError: string | null;
   descriptionError: string | null;
   submitError: boolean;
@@ -136,13 +138,20 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
   componentWillMount() {
     const localState$ = this.localState.observable;
     const globalState$ = this.globalState.observable;
-    const state$: Rx.Observable<State> = Rx.Observable.combineLatest(localState$, globalState$).map(([localState, globalState]) => ({ ...localState, ...globalState }));
     const locale$ = localeStream().observable;
     const topics$ = topicsStream().observable;
     const projects$ = projectsStream().observable;
 
     this.subscriptions = [
-      state$.subscribe(({ 
+      Rx.Observable.combineLatest(
+        localState$, 
+        globalState$
+      ).map(([localState, globalState]) => {
+        return {
+          ...localState,
+          ...globalState
+        };
+      }).subscribe(({ 
         topics,
         projects,
         title,
@@ -150,7 +159,7 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
         selectedTopics,
         selectedProject,
         location,
-        images,
+        imageFile,
         titleError,
         descriptionError,
         submitError,
@@ -164,7 +173,7 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
           selectedTopics,
           selectedProject,
           location,
-          images,
+          imageFile,
           titleError,
           descriptionError,
           submitError,
@@ -197,7 +206,9 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   componentDidMount() {
-    this.titleInputElement && this.titleInputElement.focus();
+    if (!bowser.mobile && this.titleInputElement !== null) {
+      setTimeout(() => (this.titleInputElement as HTMLInputElement).focus(), 50);
+    }
   }
 
   componentWillUnmount() {
@@ -237,23 +248,26 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
     this.globalState.set({ location });
   }
 
-  handleUploadOnAdd = async (newImage: ImageFile) => {
-    let images: ImageFile[] | null = null;
-    const globalState = await this.globalState.get();
-
-    if (globalState.images && globalState.images.length > 0) {
-      images = globalState.images.concat(newImage);
-    } else {
-      images = [newImage];
-    }
-
-    this.globalState.set({ images, imageChanged: true });
+  handleUploadOnAdd = (newImage: ImageFile) => {
+    this.globalState.set({
+      imageFile: [newImage],
+      imageBase64: newImage.base64,
+      imageChanged: true
+    });
   }
 
-  handleUploadOnRemove = async (removedImage: ImageFile) => {
-    const globalState = await this.globalState.get();
-    const images = _(globalState.images).filter(image => image.name !== removedImage.name).value();
-    this.globalState.set({ images, imageChanged: true });
+  handleUploadOnUpdate = (updatedImages: ImageFile[]) => {
+    this.globalState.set({
+      imageBase64: updatedImages[0].base64
+    });
+  }
+
+  handleUploadOnRemove = (removedImage: ImageFile) => {
+    this.globalState.set({
+      imageFile: null,
+      imageBase64: null,
+      imageChanged: true
+    });
   }
 
   handleTitleInputSetRef = (element: HTMLInputElement) => {
@@ -295,7 +309,7 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
     if (!this.state) { return null; }
 
     const { formatMessage } = this.props.intl;
-    const { topics, projects, title, description, selectedTopics, selectedProject, location, images, titleError, descriptionError, submitError, processing } = this.state;
+    const { topics, projects, title, description, selectedTopics, selectedProject, location, imageFile, titleError, descriptionError, submitError, processing } = this.state;
     const submitErrorMessage = (submitError ? formatMessage(messages.submitError) : null);
 
     return (
@@ -365,13 +379,15 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
 
           <FormElement>
             <Label value={formatMessage(messages.imageUploadLabel)} />
-            <Upload
-              items={images}
-              accept="image/jpg, image/jpeg, image/png, image/gif"
-              maxSize={5000000}
-              maxItems={1}
+            <ImagesDropzone
+              images={imageFile}
+              imagePreviewRatio={135 / 298}
+              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              maxImageFileSize={5000000}
+              maxNumberOfImages={1}
               placeholder={formatMessage(messages.imageUploadPlaceholder)}
               onAdd={this.handleUploadOnAdd}
+              onUpdate={this.handleUploadOnUpdate}
               onRemove={this.handleUploadOnRemove}
             />
           </FormElement>
@@ -380,7 +396,7 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
             <Button
               className="e2e-submit-idea-form"
               size="2"
-              loading={processing}
+              processing={processing}
               text={formatMessage(messages.submit)}
               onClick={this.handleOnSubmit}
             />

@@ -61,6 +61,13 @@ const SecondLine = styled.div`
   background: #fff;
   border-top: 1px solid #eaeaea;
   padding: 18px 28px;
+
+  ${media.smallerThanMaxTablet`
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+  `}
 `;
 
 const PagesNav = styled.nav`
@@ -75,9 +82,12 @@ const PagesNav = styled.nav`
     display: inline-block;
   }
 
-  ${media.phone`
-    display: flex;
-    flex-direction: column;
+  ${media.smallerThanMaxTablet`
+    order: 2;
+    text-align: center;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 15px;
   `}
 `;
 
@@ -91,6 +101,11 @@ const StyledLink = styled(Link) `
   &:hover {
     color: #000;
   }
+
+  ${media.smallerThanMaxTablet`
+    font-size: 13px;
+    line-height: 16px;
+  `}
 `;
 
 const Separator = styled.span`
@@ -101,8 +116,9 @@ const Separator = styled.span`
   padding-left: 15px;
   padding-right: 15px;
 
-  ${media.phone`
-    display: none;
+  ${media.smallerThanMaxTablet`
+    padding-left: 8px;
+    padding-right: 8px;
   `}
 `;
 
@@ -125,13 +141,25 @@ const PoweredBy = styled.a`
   cursor: pointer;
   outline: none;
 
-  &:hover {
-    color: #999;
+  ${media.biggerThanMaxTablet`
+    &:hover {
+      color: #999;
+
+      ${CitizenLabLogo} {
+        fill: #555;
+      }
+    }
+  `}
+
+  ${media.smallerThanMaxTablet`
+    order: 1;
+    margin-top: 10px;
+    color: #333;
 
     ${CitizenLabLogo} {
-      fill: #555;
+      fill: #333;
     }
-  }
+  `}
 `;
 
 type Props = {};

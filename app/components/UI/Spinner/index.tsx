@@ -24,6 +24,10 @@ const StyledSpinner: any = styled.div`
   border-width: ${(props: IStyledSpinner) => props.thickness};
   border-color: ${(props: IStyledSpinner) => props.color};
   border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 `;
 
 type Props = {

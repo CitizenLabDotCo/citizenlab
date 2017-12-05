@@ -1,4 +1,5 @@
 import { injectGlobal } from 'styled-components';
+import { fontSize } from 'utils/styleUtils';
 
 import visueltLightEOT from '../assets/fonts/Visuelt-Light.eot';
 import visueltLightSVG from '../assets/fonts/Visuelt-Light.svg';
@@ -161,6 +162,7 @@ injectGlobal`
     height: 100%;
     width: 100%;
     background-color: #fff;
+    font-size: ${fontSize('small')};
   }
 
   body:not(.fontLoaded),

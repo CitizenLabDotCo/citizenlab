@@ -22,7 +22,6 @@ import messages from './messages';
 import styled from 'styled-components';
 import { lighten } from 'polished';
 import { media } from 'utils/styleUtils';
-import ButtonMixin from 'components/admin/StyleMixins/buttonMixin';
 
 const Container = styled.div`
   width: 100%;
@@ -52,7 +51,7 @@ const StyledIdeaCard = styled(IdeaCard)`
   margin-left: 13px;
   margin-right: 13px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanDesktop`
     width: calc(100% * (1/2) - 26px);
   `};
 
@@ -222,7 +221,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
       <LoadMore>
         <LoadMoreButton
           text={formatMessage(messages.loadMore)}
-          loading={loadingMore}
+          processing={loadingMore}
           style="primary"
           size="3"
           onClick={this.loadMoreIdeas}

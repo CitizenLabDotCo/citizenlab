@@ -18,8 +18,8 @@ import getSubmitState from 'utils/getSubmitState';
 // Components
 import Button from 'components/UI/Button';
 import Input from 'components/UI/Input';
-import FieldWrapper from 'components/admin/FieldWrapper';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // Style
 import styled from 'styled-components';
@@ -114,7 +114,7 @@ class GroupAdditionForm extends React.Component<Props, State> {
       <div>
         <h1><FormattedMessage {...messages.creationFormTitle} /></h1>
         <FormWrapper onSubmit={this.handleFormSubmit}>
-          <FieldWrapper>
+          <SectionField>
             <label htmlFor="">
               <FormattedMessage {...messages.groupTitleLabel} />
             </label>
@@ -124,7 +124,7 @@ class GroupAdditionForm extends React.Component<Props, State> {
               onChange={this.titleChangeHandler}
               value={groupAttrs.title_multiloc ? groupAttrs.title_multiloc[locale] : ''}
             />
-          </FieldWrapper>
+          </SectionField>
 
         </FormWrapper>
 

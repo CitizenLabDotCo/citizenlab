@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import { IUser } from 'services/users';
-import { IHttpMethod } from 'typings.d';
+import { IHttpMethod } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import { getJwt, setJwt, removeJwt } from 'utils/auth/jwt';
 import request from 'utils/request';

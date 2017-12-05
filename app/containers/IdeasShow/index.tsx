@@ -37,9 +37,13 @@ import T from 'components/T';
 import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative, FormattedHTMLMessage } from 'react-intl';
 import messages from './messages';
 
+// animations
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import CSSTransition from 'react-transition-group/CSSTransition';
+
 // style
 import styled, { css } from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Container = styled.div``;
@@ -57,18 +61,17 @@ const IdeaContainer = styled.div`
   padding-bottom: 60px;
   padding-left: 30px;
   padding-right: 30px;
+  position: relative;
 
   ${media.smallerThanMaxTablet`
-    padding-top: 20px;
+    padding-top: 30px;
   `}
 `;
 
 const Header = styled.div`
-  width: 100%;
-  max-width: 520px;
   margin-bottom: 45px;
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
 
   ${media.smallerThanMaxTablet`
     margin-bottom: 30px;
@@ -76,6 +79,8 @@ const Header = styled.div`
 `;
 
 const IdeaTitle = styled.h1`
+  width: 100%;
+  max-width: 520px;
   color: #444;
   font-size: 34px;
   font-weight: 500;
@@ -86,6 +91,16 @@ const IdeaTitle = styled.h1`
   ${media.smallerThanMaxTablet`
     font-size: 28px;
     line-height: 34px;
+    margin-right: 12px;
+  `}
+`;
+
+const VoteControlMobile = styled(VoteControl)`
+  display: none;
+  margin-top: 20px;
+
+  ${media.smallerThanMaxTablet`
+    display: flex;
   `}
 `;
 
@@ -107,7 +122,7 @@ const LeftColumn = styled.div`
 
 const IdeaImage = styled.img`
   border-radius: 8px;
-  border: 1px solid ${props => props.theme.colors.separation};
+  border: 1px solid ${color('separation')};
   margin: 0 0 2rem;
   padding: 0;
   width: 100%;
@@ -154,17 +169,37 @@ const StyledPositionIcon = styled(Icon)`
 
 const MapWrapper = styled.div`
   border-radius: 8px;
-  border: 1px solid ${props => props.theme.colors.separation};
+  border: 1px solid ${color('separation')};
   height: 265px;
   margin-bottom: 2rem;
   position: relative;
   overflow: hidden;
-  transition: all .3s ease-out;
+  will-change: height, opacity;
 
-  &.hidden {
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
+
+  &.map-enter {
     height: 0;
-    border-color: transparent;
-    margin-bottom: 0;
+    opacity: 0;
+  }
+
+  &.map-enter.map-enter-active {
+    height: 265px;
+    opacity: 1;
+    transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  &.map-exit {
+    height: 265px;
+    opacity: 1;
+  }
+
+  &.map-exit.map-exit-active {
+    height: 0;
+    opacity: 0;
+    transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
   }
 `;
 
@@ -247,8 +282,8 @@ const SeparatorColumn = styled.div`
   flex-grow: 0;
   flex-basis: 1px;
   margin: 0;
-  margin-left: 30px;
-  margin-right: 30px;
+  margin-left: 25px;
+  margin-right: 25px;
   background: transparent;
 
   ${media.smallerThanMaxTablet`
@@ -261,14 +296,13 @@ const SeparatorRow = styled.div`
   height: 1px;
   margin: 0;
   margin-top: 45px;
-  margin-bottom: 35px;
-  background: #e4e4e4;
+  margin-bottom: 25px;
+  background: #e0e0e0;
   background: #fff;
 
   ${media.smallerThanMaxTablet`
-    margin-top: 25px;
-    margin-bottom: 25px;
-    background: #e4e4e4;
+    margin-top: 20px;
+    margin-bottom: 20px;
   `}
 `;
 
@@ -287,20 +321,6 @@ const RightColumnDesktop: any = RightColumn.extend`
 
   ${media.smallerThanMaxTablet`
     display: none;
-  `}
-`;
-
-const RightColumnMobile = RightColumn.extend`
-  flex: 1;
-  margin: 0;
-  margin-bottom: 25px;
-  padding: 0;
-  padding-bottom: 15px;
-  border-bottom: solid 1px #e4e4e4;
-  display: none;
-
-  ${media.smallerThanMaxTablet`
-    display: block;
   `}
 `;
 
@@ -325,6 +345,15 @@ const StatusContainer = styled.div`
   margin-top: 35px;
 `;
 
+const StatusContainerMobile = styled(StatusContainer)`
+  margin-top: -25px;
+  margin-bottom: 35px;
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
 const StatusTitle = styled.h4`
   color: #84939d;
   font-size: 16px;
@@ -342,6 +371,20 @@ const SharingWrapper = styled.div`
 const StyledSharing: any = styled(Sharing)`
   margin-top: 45px;
   margin-bottom: 0px;
+`;
+
+const StyledSharingMobile = styled(StyledSharing)`
+  margin: 0;
+  margin-bottom: 30px;
+  padding: 0;
+  padding-top: 25px;
+  padding-bottom: 10px;
+  border-top: solid 1px #e0e0e0;
+  border-bottom: solid 1px #e0e0e0;
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const IconWrapper = styled.div`
@@ -362,7 +405,7 @@ const IconWrapper = styled.div`
 const GiveOpinionText = styled.div`
   color: #84939E;
   font-size: 15px;
-  font-weight: 400;
+  font-weight: 300;
   white-space: nowrap;
   transition: all 100ms ease-out;
 `;
@@ -480,11 +523,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     if (element) {
       const textarea = element.querySelector('textarea');
-
-      if (textarea) {
-        textarea.focus();
-      }
-
+      textarea && textarea.focus();
       element.scrollIntoView({ behavior: 'smooth' });
     }
   }
@@ -494,7 +533,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { locale, idea, ideaImage, ideaAuthor, ideaComments, loading, unauthenticatedError } = this.state;
+    const { locale, idea, ideaImage, ideaAuthor, ideaComments, loading, unauthenticatedError, showMap } = this.state;
     const { formatMessage, formatRelative } = this.props.intl;
 
     if (!loading && idea !== null) {
@@ -516,7 +555,11 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
           <VoteLabel>{formatMessage(messages.voteOnThisIdea)}</VoteLabel>
 
           {!unauthenticatedError &&
-            <VoteControl ideaId={idea.data.id} unauthenticatedVoteClick={this.unauthenticatedVoteClick} />
+            <VoteControl
+              ideaId={idea.data.id}
+              unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+              size="normal"
+            />
           }
 
           {unauthenticatedError && <Unauthenticated />}
@@ -556,6 +599,13 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <LeftColumn>
+                {statusId &&
+                  <StatusContainerMobile>
+                    {/* <StatusTitle><FormattedMessage {...messages.ideaStatus} /></StatusTitle> */}
+                    <StatusBadge statusId={statusId} />
+                  </StatusContainerMobile>
+                }
+
                 {ideaImageLarge ? <IdeaImage src={ideaImageLarge} /> : null}
 
                 <AuthorAndAdressWrapper>
@@ -577,13 +627,13 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                   </AuthorContainer>
 
                   {ideaLocation && <LocationButton style="text" onClick={this.handleMapToggle}>
-                    {(this.state.showMap) &&
+                    {(showMap) &&
                       <span>
                         <FormattedMessage {...messages.closeMap} />
                         <StyledPositionIcon name="close" />
                       </span>
                     }
-                    {(!this.state.showMap) &&
+                    {(!showMap) &&
                       <span>
                         <FormattedMessage {...messages.openMap} />
                         <StyledPositionIcon name="position" />
@@ -592,10 +642,24 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                   </LocationButton>}
                 </AuthorAndAdressWrapper>
 
-                {ideaLocation ? <MapWrapper className={`${this.state.showMap ? '' : 'hidden'}`}>
-                  {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
-                  <IdeaMap location={ideaLocation} />
-                </MapWrapper> : null}
+                {ideaLocation &&
+                  <TransitionGroup>
+                    {showMap &&
+                      <CSSTransition
+                        classNames="map"
+                        timeout={300}
+                        mountOnEnter={true}
+                        unmountOnExit={true}
+                        exit={true}
+                      >
+                        <MapWrapper>
+                          {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
+                          <IdeaMap location={ideaLocation} />
+                        </MapWrapper>
+                      </CSSTransition>
+                    }
+                  </TransitionGroup>
+                }
 
                 <IdeaBody>
                   <T value={bodyMultiloc} />
@@ -603,9 +667,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
                 <SeparatorRow />
 
-                <RightColumnMobile>
-                  {ideaMetaContent}
-                </RightColumnMobile>
+                <StyledSharingMobile imageUrl={ideaImageMedium} />
 
                 {ideaComments && <Comments ideaId={idea.data.id} />}
               </LeftColumn>

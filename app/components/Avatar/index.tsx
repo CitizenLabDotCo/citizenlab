@@ -11,6 +11,7 @@ import { userByIdStream } from 'services/users';
 // styles
 import { darken } from 'polished';
 import styled, { css } from 'styled-components';
+import { color } from 'utils/styleUtils';
 
 const AvatarImageContainer = styled.div`
   width: 100%;
@@ -41,7 +42,7 @@ const AvatarImageBackground = styled.div`
 
 const AvatarIcon = styled(Icon)`
   height: 100%;
-  fill: ${props => props.theme.colors.label};
+  fill: ${color('label')};
   transition: all 100ms ease-out;
 
   ${(props: any) => props.isClickable && css`

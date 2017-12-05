@@ -28,7 +28,7 @@ import { darken } from 'polished';
 import styled from 'styled-components';
 
 // typings
-import { API } from 'typings.d';
+import { API } from 'typings';
 
 const Form = styled.form`
   width: 100%;
@@ -304,7 +304,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
             <Button
               id="e2e-signup-step1-button"
               size="2"
-              loading={processing}
+              processing={processing}
               text={formatMessage(messages.signUp)}
               onClick={this.handleOnSubmit}
               circularCorners={true}
