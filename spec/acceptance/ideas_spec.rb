@@ -13,6 +13,10 @@ resource "Ideas" do
   end
 
   get "web_api/v1/ideas" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of ideas per page"
+    end
     parameter :topics, 'Filter by topics (OR)', required: false
     parameter :areas, 'Filter by areas (OR)', required: false
     parameter :project, 'Filter by project', required: false

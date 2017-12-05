@@ -7,6 +7,10 @@ resource "Topics" do
   end
 
   get "web_api/v1/topics" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of topics per page"
+    end
     example_request "List all topics" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
