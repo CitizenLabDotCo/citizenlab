@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { color, fontSize } from 'utils/styleUtils';
 
 // localisation
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 
 // typings

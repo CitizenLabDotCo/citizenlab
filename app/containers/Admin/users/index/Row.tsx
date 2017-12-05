@@ -5,7 +5,8 @@ import { List } from 'immutable';
 // import ActionButton from 'components/buttons/action.js';
 import { Table, Popup, Button } from 'semantic-ui-react';
 import SliderForm from './SliderForm';
-import { FormattedDate, FormattedMessage } from 'react-intl';
+import { FormattedDate } from 'react-intl';
+import {  FormattedMessage } from 'utils/cl-intl';
 import Avatar from 'components/Avatar';
 
 // store
