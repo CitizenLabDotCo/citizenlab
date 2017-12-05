@@ -11,7 +11,8 @@ import Icon from 'components/UI/Icon';
 import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -145,7 +146,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps, State> {
             <Text>{formatMessage({ ...messages.users })}</Text>
           </MenuLink>
         </MenuItem>
-        
+
         <FeatureFlag name="groups">
           <MenuItem active={pathname.startsWith('/admin/groups')}>
             <MenuLink to="/admin/groups">

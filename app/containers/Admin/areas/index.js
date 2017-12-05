@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import HelmetIntl from 'components/HelmetIntl';
 
 // components
-// import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'utils/cl-intl';
 import WatchSagas from 'utils/containers/watchSagas';
 import sagas from 'resources/areas/sagas';
 

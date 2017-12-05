@@ -4,7 +4,8 @@ import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 
 // i18n
-import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
@@ -207,7 +208,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     const groupsMultipleSelectPlaceholder = formatMessage(messages.groupsMultipleSelectPlaceholder);
 
     const noGroups = ((!loading && (!projectGroups || projectGroups.length === 0)) ? (
-      <Warning text={<FormattedHTMLMessage {...messages.noSelectedGroupsMessage} />} />
+      <Warning text={<FormattedMessage {...messages.noSelectedGroupsMessage} />} />
     ) : null);
 
     const selectGroups = (!loading ? (

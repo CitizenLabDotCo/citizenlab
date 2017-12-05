@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { FormattedMessage, defineMessages } from 'react-intl';
+import { defineMessages } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 

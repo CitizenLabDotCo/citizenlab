@@ -25,7 +25,8 @@ import { projectsStream, IProjects } from 'services/projects';
 
 // i18n
 import T from 'components/T';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 
@@ -316,7 +317,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
         this.setState({
           locale,
           currentTenant,
-          currentTenantHeader: (currentTenant.data.attributes.header_bg ? currentTenant.data.attributes.header_bg.large : null),        
+          currentTenantHeader: (currentTenant.data.attributes.header_bg ? currentTenant.data.attributes.header_bg.large : null),
           hasIdeas: (ideas !== null && ideas.data.length > 0),
           hasProjects: (projects !== null && projects.data.length > 0)
         });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { createComponentWithIntl } from 'utils/testing/intl';
 
 import messages from '../messages';
