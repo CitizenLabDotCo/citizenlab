@@ -11,11 +11,13 @@ Rails.application.routes.draw do
             post :up, on: :collection
             post :down, on: :collection
           end
+          resources :spam_reports, shallow: true, defaults: { spam_reportable: 'Comment' }
         end
         resources :votes, except: [:update], shallow: true, defaults: { votable: 'Idea' } do
           post :up, on: :collection
           post :down, on: :collection
         end
+        resources :spam_reports, shallow: true, defaults: { spam_reportable: 'Idea' }
         resources :images, defaults: {container_class: Idea, image_class: IdeaImage}
         resources :files, defaults: {container_class: Idea, file_class: IdeaFile}
         get :as_xlsx, on: :collection, action: 'index_xlsx'
