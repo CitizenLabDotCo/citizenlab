@@ -27,7 +27,7 @@ export default defineMessages({
   },
   noSelectedGroupsMessage: {
     id: 'app.containers.AdminPage.groups.permissions.noSelectedGroupsMessage',
-    defaultMessage: 'You don’t have <strong>any group</strong> of users yet.',
+    defaultMessage: `Select one or more groups that can access this project`,
   },
   addGroup: {
     id: 'app.containers.AdminPage.groups.permissions.addGroup',

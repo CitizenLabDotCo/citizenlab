@@ -5,9 +5,8 @@ import * as _ from 'lodash';
 import shallowCompare from 'utils/shallowCompare';
 
 // typings
-import { IOption } from 'typings';
+import { IOption, ImageFile } from 'typings';
 import { EditorState } from 'draft-js';
-import { ImageFile } from 'react-dropzone';
 import { setTimeout } from 'timers';
 
 export interface IIdeasNewPageGlobalState {
@@ -16,12 +15,13 @@ export interface IIdeasNewPageGlobalState {
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
   location: any;
-  images: ImageFile[] | null;
   titleError: string | null;
   descriptionError: string | null;
   submitError: boolean;
   processing: boolean;
   ideaId: string | null;
+  imageFile: ImageFile[] | null;
+  imageBase64: string | null;
   imageId: string | null;
   imageChanged: boolean;
 }

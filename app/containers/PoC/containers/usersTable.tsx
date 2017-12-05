@@ -102,12 +102,12 @@ export default class UsersTable extends React.PureComponent<Props, State> {
       ).switchMap(([sortBy, searchValue, pageNumber]) => {
         const searchChanged = (searchValue !== this.state.searchValue);
         const sortChanged = (sortBy !== this.state.sortBy);
-        pageNumber = (searchChanged || sortChanged ? 1 : pageNumber);
+        const processedPageNumber = (searchChanged || sortChanged ? 1 : pageNumber);
 
         const users$ = usersStream({
           queryParameters: {
             sort: sortBy,
-            'page[number]': pageNumber,
+            'page[number]': processedPageNumber,
             'page[size]': 4,
             search: searchValue
           }

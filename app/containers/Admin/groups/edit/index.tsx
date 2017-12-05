@@ -2,6 +2,8 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
+import { browserHistory } from 'react-router';
+
 // Services
 import { getGroup, IGroupData } from 'services/groups';
 
@@ -12,28 +14,18 @@ import messages from './messages';
 import localize, { injectedLocalized } from 'utils/localize';
 
 // Components
-import Icon from 'components/UI/Icon';
+import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
 import MembersList from './MembersList';
 import MembersAdd from './MembersAdd';
-import { Link } from 'react-router';
 
 // Style
 import styled from 'styled-components';
 
-const StyledLink = styled(Link)`
-  display: flex;
-  align-items: center;
-  color: ${props => props.theme.colors.label};
-
-  svg {
-    fill: ${props => props.theme.colors.label};
-    height: 1rem;
-    margin-right: .5rem;
-  }
-`;
+const Container = styled.div``;
 
 const PageTitle = styled.h1`
+  width: 100%;
   font-size: 2rem;
   margin: 1rem 0 3rem 0;
 `;
@@ -74,22 +66,25 @@ class GroupsEdit extends React.Component<Props & injectedLocalized, State> {
     this.subscriptions.forEach((sub) => { sub.unsubscribe; });
   }
 
+  goBack = () => {
+    browserHistory.push('/admin/groups');
+  }
+
   render() {
     if (this.state.group) {
       return (
-        <div>
-          <StyledLink to="/admin/groups">
-            <Icon name="arrow-back" />
-            <FormattedMessage {...messages.goBack} />
-          </StyledLink>
+        <Container>
+          <GoBackButton onClick={this.goBack} />
+
           <PageTitle>
             {this.props.localize(this.state.group.attributes.title_multiloc)}
           </PageTitle>
+
           <PageWrapper>
             <MembersAdd groupId={this.props.params.groupId} />
             <MembersList groupId={this.props.params.groupId} />
           </PageWrapper>
-        </div>
+        </Container>
       );
     }
 

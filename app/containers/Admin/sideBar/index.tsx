@@ -66,7 +66,9 @@ const MenuItem: any = styled.div`
   flex-wrap: nowrap;
   align-items: center;
   padding: 0;
-  margin-bottom: 10px;
+  padding-bottom: 1px;
+  margin: 0;
+  margin-bottom: 4px;
   cursor: pointer;
 
   &:hover {
@@ -154,7 +156,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps, State> {
         </FeatureFlag>
 
         <MenuItem active={pathname.startsWith('/admin/projects')}>
-          <MenuLink to="/admin/projects">
+          <MenuLink to="/admin/projects" className={'e2e-projects-list-link'}>
             <IconWrapper><StyledIcon name="project" /></IconWrapper>
             <Text>{formatMessage({ ...messages.projects })}</Text>
           </MenuLink>

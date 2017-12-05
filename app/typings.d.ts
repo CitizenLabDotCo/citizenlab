@@ -1,3 +1,4 @@
+import * as Dropzone from 'react-dropzone';
 declare module '*.png';
 
 export interface IRelationship {
@@ -16,6 +17,11 @@ export interface ITheme {
       menuBg: string;
     }
   };
+}
+
+export interface ImageFile extends Dropzone.ImageFile {
+  base64?: string;
+  objectUrl?: string;
 }
 
 interface IOption {

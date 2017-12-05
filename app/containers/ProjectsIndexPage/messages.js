@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  header: {
-    id: 'app.containers.ProjectsIndexPage.header',
+  pageTitle: {
+    id: 'app.containers.ProjectsIndexPage.pageTitle',
     defaultMessage: 'Projects',
   },
   loading: {

@@ -23,7 +23,7 @@ export default defineMessages({
   },
   submitError: {
     id: 'app.containers.PasswordReset.submitError',
-    defaultMessage: 'Something went wrong. Please try again.',
+    defaultMessage: 'Something went wrong. Please try again later.',
   },
   successMessage: {
     id: 'app.containers.PasswordReset.successMessage',

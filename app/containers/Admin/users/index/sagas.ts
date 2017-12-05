@@ -4,6 +4,7 @@ import { loadUsersRequest } from 'resources/users/actions';
 import { wrapActionWithPrefix } from 'utils/resources/actions';
 import { fetchUsersXlsx } from 'api';
 import FileSaver from 'file-saver';
+import { Map } from 'immutable';
 
 import {
   SEARCH_TERM_CHANGED,
@@ -19,7 +20,7 @@ import { loadUsersXlsxSuccess, loadUsersXlsxError, searchTermStabilized } from '
 const wrappedLoadUsersRequest = wrapActionWithPrefix(loadUsersRequest, ACTION_PREFIX);
 
 export function* handleFilterSettingsChanged() {
-  const domainUIState = yield select((state) => state.getIn(['adminUsersIndex', 'ui']));
+  const domainUIState = yield select((state) => (state as Map<any, any>).getIn(['adminUsersIndex', 'ui']));
   const sortSign = domainUIState.get('sortDirection') === 'desc' ? '-' : '';
   yield put(wrappedLoadUsersRequest({
     'page[number]': domainUIState.get('selectedPage'),
