@@ -86,7 +86,7 @@ class WebApi::V1::VotesController < ApplicationController
 
   def set_votable_type_and_id
     @votable_type = params[:votable]
-    @votable_id = params[:"#{@votable_type.downcase}_id"]
+    @votable_id = params[:"#{@votable_type.underscore}_id"]
     raise RuntimeError, "must not be blank" if @votable_type.blank? or @votable_id.blank?
   end
 

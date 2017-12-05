@@ -7,12 +7,6 @@ class MakeNotificationsJob < ApplicationJob
     notification_classes.each do |notification_class|
       notifications = notification_class.make_notifications_on(activity)
       notifications.each do |notification|
-        if !notification_class.find(notification.id)
-          byebug
-        end
-        if !notification.id
-          byebug
-        end
       	LogActivityJob.set(wait: 10.seconds).perform_later(notification, 'created', notification.recipient, notification.created_at.to_i)
       end
     end

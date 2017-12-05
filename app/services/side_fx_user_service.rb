@@ -15,10 +15,7 @@ class SideFxUserService
   end
 
   def after_update user, current_user
-    if user.avatar_previously_changed?
-      LogActivityJob.perform_later(user, 'changed', current_user, user.updated_at.to_i)
-    end
-
+    LogActivityJob.perform_later(user, 'changed', current_user, user.updated_at.to_i)
   end
 
   def after_destroy frozen_user, current_user

@@ -21,7 +21,7 @@ class WebApi::V1::GroupsController < ApplicationController
 
   # insert
   def create
-    @group = Group.new(permitted_attributes(Group))
+    @group = Group.new(group_params)
     authorize @group
     if @group.save
       render json: @group.reload, status: :created
@@ -32,7 +32,7 @@ class WebApi::V1::GroupsController < ApplicationController
 
   # patch
   def update
-    if @group.update(permitted_attributes(Group))
+    if @group.update(group_params)
       render json: @group.reload, status: :ok
     else
       render json: { errors: @group.errors.details }, status: :unprocessable_entity
@@ -52,6 +52,12 @@ class WebApi::V1::GroupsController < ApplicationController
   def set_group
     @group = Group.find params[:id]
     authorize @group
+  end
+
+  def group_params
+    params.require(:group).permit(
+      title_multiloc: I18n.available_locales
+    )
   end
 
 end
