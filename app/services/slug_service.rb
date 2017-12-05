@@ -1,7 +1,7 @@
 class SlugService
 
   def generate_slug record, title
-    slug = title.parameterize
+    slug = slugify(title)
     indexedSlug = nil
     i=0
     while record.class.find_by(slug: indexedSlug || slug)
@@ -13,6 +13,10 @@ class SlugService
 
   def regex
     /\A[A-Za-z0-9_]+(?:-[A-Za-z0-9_]+)*\z/
+  end
+
+  def slugify str
+    str.parameterize
   end
 
 end
