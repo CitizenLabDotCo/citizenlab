@@ -7,6 +7,10 @@ resource "Areas" do
   end
 
   get "web_api/v1/areas" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of areas per page"
+    end
     example_request "List all areas" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)

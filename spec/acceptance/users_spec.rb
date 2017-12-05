@@ -39,7 +39,10 @@ resource "Users" do
       end
 
       get "web_api/v1/users" do
-
+        with_options scope: :page do
+          parameter :number, "Page number"
+          parameter :size, "Number of users per page"
+        end
         parameter :search, 'Filter by searching in first_name, last_name and email', required: false
         parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
 
@@ -85,6 +88,10 @@ resource "Users" do
     end
 
     get "web_api/v1/users" do
+      with_options scope: :page do
+        parameter :number, "Page number"
+        parameter :size, "Number of users per page"
+      end
       example "Get all users as non-admin", document: false do
         do_request
         expect(status).to eq 200
