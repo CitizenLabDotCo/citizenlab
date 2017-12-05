@@ -73,7 +73,7 @@ class MentionService
       .where("users.slug LIKE ?", "#{cleaned_slug}%")
       .where(comments: {idea_id: idea.id})
       .limit(limit)
-    [author.slug =~ /$#{cleaned_slug}/ && author, *commenters].compact.uniq
+    [author.slug =~ /^#{cleaned_slug}/ && author, *commenters].compact.uniq
   end
 
 end
