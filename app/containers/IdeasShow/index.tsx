@@ -34,7 +34,8 @@ import { commentsForIdeaStream, commentStream, IComments, IComment } from 'servi
 
 // i18n
 import T from 'components/T';
-import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative, FormattedHTMLMessage } from 'react-intl';
+import { InjectedIntlProps, FormattedRelative, FormattedHTMLMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // animations

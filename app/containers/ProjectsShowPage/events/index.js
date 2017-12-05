@@ -11,7 +11,7 @@ import sagas from 'resources/projects/events/sagas';
 import ProjectEvent from './ProjectEvent';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { LOAD_PROJECT_EVENTS_REQUEST } from 'resources/projects/events/constants';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import scrollToComponent from 'react-scroll-to-component';
 import { getComingEventId, getDateObject, getEventType, parseTime } from '../lib';

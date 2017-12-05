@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 // Components
 import { Message, Icon } from 'semantic-ui-react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // Store
 import { connect } from 'react-redux';

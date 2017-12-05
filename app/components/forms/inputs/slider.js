@@ -6,7 +6,8 @@ import { Form, Checkbox } from 'semantic-ui-react';
 
 // messages
 import { appenDableName } from './utils';
-import { injectIntl, intlShape } from 'react-intl';
+import { intlShape } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 

@@ -33,7 +33,8 @@ import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
@@ -144,14 +145,14 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        localState$, 
+        localState$,
         globalState$
       ).map(([localState, globalState]) => {
         return {
           ...localState,
           ...globalState
         };
-      }).subscribe(({ 
+      }).subscribe(({
         topics,
         projects,
         title,

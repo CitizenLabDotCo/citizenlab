@@ -8,7 +8,8 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 
 // i18n
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 

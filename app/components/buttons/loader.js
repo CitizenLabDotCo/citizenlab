@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Loader, Button as LayOutButton } from 'semantic-ui-react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const Button = ({ message, loading, onClick, style, fluid, size }) => (
   <LayOutButton size={size} fluid={fluid} style={style} onClick={onClick}>

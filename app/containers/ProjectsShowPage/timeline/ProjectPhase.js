@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
 import T from 'components/T';
 import messages from './messages';
-import { injectIntl, intlShape } from 'react-intl';
+import { intlShape } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
 
 const ProjectPhaseOuterStyled = styled.div`

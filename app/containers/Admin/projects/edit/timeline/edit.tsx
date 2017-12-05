@@ -30,7 +30,7 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // i18n
 import localize, { injectedLocalized } from 'utils/localize';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { injectTFunc } from 'components/T/utils';
 import messages from './messages';
 

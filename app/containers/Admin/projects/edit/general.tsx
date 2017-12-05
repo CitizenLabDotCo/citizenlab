@@ -18,7 +18,8 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // services
@@ -249,7 +250,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }));
   }
 
-  handleHeaderOnAdd = (newHeader: ImageFile) => {    
+  handleHeaderOnAdd = (newHeader: ImageFile) => {
     this.setState((state: State) => ({
       submitState: 'enabled',
       projectAttributesDiff: {

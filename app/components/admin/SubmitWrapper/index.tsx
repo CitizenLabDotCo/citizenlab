@@ -3,7 +3,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 // Components
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import Button, { ButtonStyles } from 'components/UI/Button';
 
 const Wrapper = styled.div`
