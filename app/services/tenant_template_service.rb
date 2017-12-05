@@ -41,6 +41,7 @@ class TenantTemplateService
           if e.message == "Validation failed: Avatar could not download file: 404 Not Found"
             # e.message = e.message + ": #{model.email} + #{template_name}" ### doesn't work
           end
+          byebug
           raise e
         end
         obj_to_inst[attributes] = model
