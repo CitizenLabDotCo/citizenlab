@@ -2,8 +2,8 @@
 import * as React from 'react';
 
 // Components
-import Tooltip from 'components/UI/Tooltip';
-import Button from 'components/UI/Button';
+import Tooltip from '../Tooltip';
+import Button from '../Button';
 
 // Typing
 interface Props {
