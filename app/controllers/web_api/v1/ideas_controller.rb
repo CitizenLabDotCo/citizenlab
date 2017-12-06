@@ -28,7 +28,7 @@ class WebApi::V1::IdeasController < ApplicationController
       when "-new"
         @ideas.order_new(:asc)
       when "trending"
-        @ideas.order_trending
+        @ideas.order_trending_beta
       when "-trending"
         @ideas.order_trending(:asc)
       when "popular"

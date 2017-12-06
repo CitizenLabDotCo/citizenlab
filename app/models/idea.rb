@@ -74,7 +74,7 @@ class Idea < ApplicationRecord
     direction ||= :desc
     order(<<~EOS
       (
-        power(GREATEST(((upvotes_count - downvotes_count) + 10), 0.5), 0.3)
+       power(GREATEST(((upvotes_count - downvotes_count) + 10), 0.5), 0.3)
         /
         ABS(EXTRACT(epoch FROM (NOW() - published_at))/3600)
       ) #{direction}
@@ -88,6 +88,10 @@ class Idea < ApplicationRecord
   }
 
   scope :published, -> {where publication_status: 'published'}
+
+  def order_trending_beta
+    Idea.all.sort_by { |idea| idea.trending_score }
+  end
 
   def location_point_geojson= geojson_point
     self.location_point = RGeo::GeoJSON.decode(geojson_point)
@@ -105,9 +109,37 @@ class Idea < ApplicationRecord
     upvotes_count - downvotes_count
   end
 
-  def trending_score
+  def trending_score_old
     [score+10,0.5].max**0.3 /
     ((Time.now - published_at).abs / 3600)
+  end
+
+  def trending_score
+    if (upvotes_count - downvotes_count) < 0
+      return 0.0
+    end
+    if idea_status.code == 'rejected'
+      return 0.0
+    end
+    upvotes_ago = activity_ago upvotes
+    comments_ago = activity_ago comments
+    if [upvotes_ago.first, comments_ago.first].min > TREND_SINCE_ACTIVITY
+      return 0.0
+    end
+
+    1.0 / ([upvotes_ago.first, comments_ago.first].min)
+  end
+
+  def activity_ago iteratables
+    iteratables.map{ |obj| Time.now.to_i - obj.created_at.to_i }
+               .sort
+               .take_and_fill TREND_NUM_COMMENTS, (Time.now.to_i - published_at.to_i)
+  end
+
+  def take_and_fill arr, n, default
+    taken = arr.take n
+    fill = Array.new (n - taken.size), default
+    taken.concat fill
   end
 
   def generate_slug
