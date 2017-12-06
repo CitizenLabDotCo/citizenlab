@@ -92,11 +92,7 @@ export default defineMessages({
   },
   byAuthor: {
     id: 'app.containers.IdeasShow.byAuthor',
-    defaultMessage: 'by {firstName} {lastName}',
-  },
-  byDeletedAuthor: {
-    id: 'app.containers.IdeasShow.byDeletedAuthor',
-    defaultMessage: 'by {deletedUser}',
+    defaultMessage: 'by {authorName}',
   },
   deletedUser: {
     id: 'app.containers.IdeasShow.deletedUser',

@@ -9,6 +9,7 @@ import { Link, browserHistory } from 'react-router';
 import Icon from 'components/UI/Icon';
 import Unauthenticated from 'components/IdeaCard/Unauthenticated';
 import VoteControl from 'components/VoteControl';
+import UserName from 'components/UI/UserName';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -239,9 +240,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
     if (!loading && idea && locale) {
       const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
       const ideaImageLargeUrl = (ideaImage ? ideaImage.data.attributes.versions.large : null);
-      const authorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
       const createdAt = formatRelative(idea.data.attributes.created_at);
-      const byAuthor = authorName ? formatMessage(messages.byAuthorName, { authorName }) : formatMessage(messages.byDeletedUser, { deletedUser: `<span class="deleted-user">${formatMessage(messages.deletedUser)}</span>` });
       const className = `${this.props['className']} e2e-idea-card ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }`;
 
       return (
@@ -262,7 +261,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
               <T value={idea.data.attributes.title_multiloc} />
             </IdeaTitle>
             <IdeaAuthor>
-              {createdAt} <span dangerouslySetInnerHTML={{ __html: byAuthor }} />
+              {createdAt} <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />
             </IdeaAuthor>
           </IdeaContent>
 
