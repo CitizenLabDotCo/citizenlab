@@ -25,11 +25,12 @@ export default class MoreActions extends React.Component<Props, State> {
     };
   }
 
-  hideTooltip = () => {
+  hideTooltip = (event) => {
+    event.stopPropagation();
     this.setState({ visible: false });
   }
 
-  toggleTooltip = () => {
+  toggleTooltip = (event) => {
     this.setState({ visible: !this.state.visible });
   }
 

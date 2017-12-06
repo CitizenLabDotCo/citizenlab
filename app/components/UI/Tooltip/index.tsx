@@ -28,7 +28,7 @@ const Container = styled(clickOutside)`
 // Typing
 interface Props {
   visible: boolean;
-  hideTooltip: {(): void};
+  hideTooltip: {(event): void};
 }
 
 interface State {}
@@ -41,9 +41,9 @@ export default class Tooltip extends React.Component<Props, State> {
     this.state = {};
   }
 
-  handleClickOutside = () => {
+  handleClickOutside = (event) => {
     if (this.props.visible) {
-      this.props.hideTooltip();
+      this.props.hideTooltip(event);
     }
   }
 
