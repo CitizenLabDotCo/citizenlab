@@ -177,7 +177,7 @@ type State = {
 
 class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
-  subscriptions: Rx.Subscription[];
+  subscriptions: Rx.Subscription[];
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 

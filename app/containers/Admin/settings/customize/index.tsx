@@ -83,7 +83,7 @@ interface IAttributesDiff {
 }
 
 type Props  = {
-  intl: InjectedIntl;
+  intl: InjectedIntl;
   lang: string;
   tFunc: Function;
 };

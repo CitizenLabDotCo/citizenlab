@@ -105,7 +105,7 @@ interface State {
   newProjectImages: ImageFile[] | null;
   noTitleError: string | null;
   // noHeaderError: string | null;
-  apiErrors: { [fieldName: string]: API.Error[] };
+  apiErrors: { [fieldName: string]: API.Error[] };
   saved: boolean;
   areas: IAreaData[];
   areaType: 'all' | 'selection';
