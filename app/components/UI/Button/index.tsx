@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { darken, rgba } from 'polished';
 import { ITheme } from 'typings';
 import Spinner from 'components/UI/Spinner';
-import Icon from 'components/UI/Icon';
+import Icon, { IconNames } from 'components/UI/Icon';
 import { Link } from 'react-router';
 import styled, { css } from 'styled-components';
 
@@ -254,7 +254,7 @@ type Props = {
   width?: string | undefined;
   height?: string | undefined;
   padding?: string | undefined;
-  icon?: string;
+  icon?: IconNames;
   processing?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;

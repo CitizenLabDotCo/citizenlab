@@ -76,7 +76,7 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
           return Rx.Observable.combineLatest(
             comments.data.map(comments => commentStream(comments.id).observable)
           ).map(() => parentComments);
-        } 
+        }
 
         return Rx.Observable.combineLatest(
           comments.data.map(comments => commentStream(comments.id).observable)
@@ -105,7 +105,7 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
           };
         }
 
-        if (this.state.parentComments === null && sortedParentComments !== null && sortedParentComments.data.length === 1 
+        if (this.state.parentComments === null && sortedParentComments !== null && sortedParentComments.data.length === 1
           || this.state.parentComments !== null && sortedParentComments !== null && this.state.parentComments.data.length === sortedParentComments.data.length - 1) {
             newCommentId = sortedParentComments.data[0].id;
         }
@@ -147,7 +147,6 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
       return (
         <Container className={className}>
           <Title>
-            <Icon name="comment outline" />
             <FormattedMessage {...messages.commentsTitle} />
           </Title>
 

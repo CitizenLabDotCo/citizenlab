@@ -4,13 +4,14 @@ import * as React from 'react';
 // Components
 import Tooltip from '../Tooltip';
 import Button from '../Button';
+import { IconNames } from '../Icon';
 
 // Typing
 interface Props {
   actions: {
     label: string;
     handler: {(): void};
-    icon?: string;
+    icon?: IconNames;
   }[];
 }
 interface State {
@@ -37,7 +38,7 @@ export default class MoreActions extends React.Component<Props, State> {
   render () {
     return (
       <div>
-        <Button style="text" onClick={this.toggleTooltip}>More actions</Button>
+        <Button style="text" icon="more_actions_horizontal" onClick={this.toggleTooltip}>More actions</Button>
         <Tooltip visible={this.state.visible} hideTooltip={this.hideTooltip}>
           {this.props.actions.map((action) => (
             <Button
