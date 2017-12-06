@@ -41,6 +41,11 @@ const PhaseForm = styled.form`
   .DateRangePicker__picker {
     z-index: 2;
   }
+
+  .DateRangePickerInput {
+    border-radius: 5px;
+    overflow: hidden;
+  }
 `;
 
 
@@ -188,14 +193,14 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
 
         this.setState({ errors, saving: false, saved: false });
       } catch (e) {
-        this.setState({ saving: false, saved: false });
+        this.setState({ saving: false, saved: false });
       }
     });
   }
 
   render() {
     const phaseAttrs = this.state.phase
-    ?  { ...this.state.phase.attributes, ...this.state.attributeDiff }
+    ? { ...this.state.phase.attributes, ...this.state.attributeDiff }
     : { ...this.state.attributeDiff };
 
     const { errors, saved } = this.state;
