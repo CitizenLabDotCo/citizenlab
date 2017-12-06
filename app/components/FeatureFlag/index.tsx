@@ -14,7 +14,7 @@ interface State {
 }
 
 export default class FeatureFlag extends React.Component<Props, State> {
-  subscription: Rx.Subscription | null;
+  subscription: Rx.Subscription | null;
 
   constructor(props: Props) {
     super(props as any);

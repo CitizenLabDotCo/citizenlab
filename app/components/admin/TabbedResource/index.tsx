@@ -95,7 +95,7 @@ type Props = {
     pathname: string,
   },
   resource: {
-    title: string | Multiloc,
+    title: string | Multiloc,
     publicLink?: string,
   },
   messages: {

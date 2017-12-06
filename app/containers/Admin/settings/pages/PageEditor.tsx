@@ -88,7 +88,7 @@ export default class PageEditor extends React.Component<Props, State> {
       page: null,
       saving: false,
       loading: false,
-      saved: false,
+      saved: false,
       diff: {},
       errors: null,
       locale: '',

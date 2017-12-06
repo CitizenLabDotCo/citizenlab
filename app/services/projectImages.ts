@@ -14,7 +14,7 @@ export interface IProjectImageData {
       medium: string,
       large: string,
     },
-    ordering: string | null,
+    ordering: string | null,
     created_at: string,
     updated_at: string,
   };
@@ -37,7 +37,7 @@ export function projectImageStream(projectId: string, imageId: string, streamPar
 }
 
 export function addProjectImage(projectId, base64) {
-  return streams.add<IProjectImage>(`${apiEndpoint}/${projectId}/images`, { image: { image: base64 } });
+  return streams.add<IProjectImage>(`${apiEndpoint}/${projectId}/images`, { image: { image: base64 } });
 }
 
 export function deleteProjectImage(projectId, imageId) {

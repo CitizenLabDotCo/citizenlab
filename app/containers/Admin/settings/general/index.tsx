@@ -32,7 +32,7 @@ import {
 import getSubmitState from 'utils/getSubmitState';
 
 interface Props {
-  intl: InjectedIntl;
+  intl: InjectedIntl;
   tFunc: Function;
 }
 
