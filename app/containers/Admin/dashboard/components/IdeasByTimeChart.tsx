@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { injectIntl } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { withTheme } from 'styled-components';
 import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { ideasByTimeStream } from 'services/stats';

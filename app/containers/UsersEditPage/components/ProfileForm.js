@@ -17,7 +17,8 @@ import Input from 'components/UI/Input';
 import Select from 'components/UI/Select';
 import styled from 'styled-components';
 import scrollToComponent from 'react-scroll-to-component';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { intlShape } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import LabelWithTooltip from './LabelWithTooltip';
 import TextArea from 'components/UI/TextArea';
 import { injectTFunc } from 'components/T/utils';
@@ -525,7 +526,7 @@ class ProfileForm extends React.Component {
                   id="e2e-profile-edit-form-button"
                   text={intl.formatMessage({ ...messages.submit })}
                   onClick={this.handleSubmit}
-                  loading={processing}
+                  processing={processing}
                 />
               </FormContentWrapper>
             </Grid.Column>

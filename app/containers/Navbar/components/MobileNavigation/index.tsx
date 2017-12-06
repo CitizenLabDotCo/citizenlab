@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { Link } from 'react-router';
 import Icon from 'components/UI/Icon';
 import messages from '../../messages';
@@ -12,6 +12,8 @@ const Container = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+  padding-left: 10px;
+  padding-right: 10px;
   background: #fff;
   box-shadow: 0px -1px 3px rgba(0, 0, 0, 0.15);
   display: flex;
@@ -26,7 +28,7 @@ const Container = styled.div`
 
 const NavigationIconWrapper = styled.div`
   width: 100%;
-  flex: 0 0 38px;
+  flex: 0 0 34px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,12 +36,12 @@ const NavigationIconWrapper = styled.div`
 
 const NavigationIcon = styled(Icon)`
   fill: #999;
-  height: 26px;
+  height: 24px;
 `;
 
 const NavigationLabel = styled.div`
   width: 100%;
-  height: 18px;
+  height: 16px;
   color: #999;
   font-size: 14px;
   font-weight: 300;
@@ -56,16 +58,16 @@ const NavigationItem = styled(Link)`
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 8px;
   margin-bottom: 10px;
 
   &.active {
     ${NavigationIcon} {
-      fill: #000;
+      fill: ${(props) => props.theme.colorMain};
     }
 
     ${NavigationLabel} {
-      color: #000;
+      color: ${(props) => props.theme.colorMain};
       font-weight: 500;
     }
   }

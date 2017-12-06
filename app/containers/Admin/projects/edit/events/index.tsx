@@ -2,7 +2,8 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import styled from 'styled-components';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { intlShape } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import * as _ from 'lodash';
 
@@ -28,13 +29,6 @@ const ListWrapper = styled.div`
 
 const AddButton = styled(Button)`
   align-self: flex-end;
-`;
-
-const InfoCell = styled.div`
-  h1 {
-    font-weight: normal;
-    margin-bottom: 0;
-  }
 `;
 
 // Component typing
@@ -108,7 +102,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
     return (
       <ListWrapper className="e2e-projects-events">
-        <AddButton style="cl-blue" linkTo={`/admin/projects/${slug}/events/new`}>
+        <AddButton style="cl-blue" icon="plus-circle" circularCorners={false} linkTo={`/admin/projects/${slug}/events/new`}>
           <FormattedMessage {...messages.addEventButton} />
         </AddButton>
 
@@ -119,14 +113,14 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
             </HeadRow>
             {events.map((event, index) => (
               <Row key={event.id}>
-                <InfoCell className="expand">
+                <div className="expand">
                   <h1><T value={event.attributes.title_multiloc} /></h1>
                   <p><T value={event.attributes.location_multiloc} /></p>
                   <p>
                     {`${formatDate(event.attributes.start_at)} ${formatTime(event.attributes.start_at)}`}
                     &nbsp;-&nbsp;
                     {`${formatDate(event.attributes.end_at)} ${formatTime(event.attributes.end_at)}`}</p>
-                </InfoCell>
+                </div>
                 <Button style="text" icon="delete" onClick={this.createDeleteClickHandler(event.id)}>
                   <FormattedMessage {...messages.deleteButtonLabel} />
                 </Button>

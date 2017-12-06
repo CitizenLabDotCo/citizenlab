@@ -18,7 +18,9 @@ import ContentContainer from 'components/ContentContainer';
 import { resetPassword } from 'services/auth';
 
 // i18n
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+
 
 // style
 import styled from 'styled-components';
@@ -191,7 +193,7 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
 
             <StyledButton
               size="2"
-              loading={processing}
+              processing={processing}
               text={updatePassword}
               onClick={this.handleOnSubmit}
               circularCorners={false}

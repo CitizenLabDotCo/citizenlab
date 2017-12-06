@@ -245,11 +245,19 @@ const getIcon = (name: string, className: string | undefined) => {
     }
     case 'warning': {
       return (
-        <svg className={className} height="100%" viewBox="0 0 20 18">
-          <use xlinkHref="#a" fill="#01A1B1"/>
-          <defs>
-            <path id="a" d="M0 17.273h20L10 0 0 17.273zm10.91-2.727H9.09v-1.82h1.82v1.82zm0-3.637H9.09V7.272h1.82v3.636z"/>
-          </defs>
+        <svg className={className} height="100%" viewBox="1 2 22 19">
+          <path fill="none" d="M0,0h24v24H0V0z"/>
+          <path d="M12,2L1,21h22L12,2z M13,18h-2v-2h2V18z M11,14v-4h2v4H11z"/>
+        </svg>
+      );
+    }
+    case 'info': {
+      return (
+        <svg className={className} height="100%" viewBox="2 2 20 20">
+          <path fill="none" d="M0 0h24v24H0V0z"/>
+          <path d="M11 11h2v6h-2z"/>
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+          <path d="M11 7h2v2h-2z"/>
         </svg>
       );
     }

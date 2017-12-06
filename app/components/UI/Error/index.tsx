@@ -4,9 +4,9 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import * as _ from 'lodash';
 import styled from 'styled-components';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
-import { API, Message } from 'typings.d';
+import { API, Message } from 'typings';
 import messages from './messages';
 
 interface IStyledErrorMessageInner {
@@ -34,7 +34,6 @@ const IconWrapper = styled.div`
 `;
 
 const StyledErrorMessageInner = styled.div`
-  width: 100%;
   display: flex;
   align-items: center;
   border-radius: 5px;
@@ -139,7 +138,9 @@ type State = {};
 function findMessage(fieldName: string | undefined, error: string) {
   if (fieldName && messages[`${fieldName}_${error}`]) {
     return messages[`${fieldName}_${error}`] as Message;
-  } else if (messages[error]) {
+  }
+
+  if (messages[error]) {
     return messages[error] as Message;
   }
 

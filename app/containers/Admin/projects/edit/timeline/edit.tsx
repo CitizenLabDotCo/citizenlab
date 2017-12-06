@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftjsToHtml from 'draftjs-to-html';
 import { browserHistory } from 'react-router';
-import { API } from 'typings.d';
+import { API } from 'typings';
 
 // Services
 import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
@@ -25,14 +25,28 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
-import FieldWrapper from 'components/admin/FieldWrapper';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // i18n
 import localize, { injectedLocalized } from 'utils/localize';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { injectTFunc } from 'components/T/utils';
 import messages from './messages';
+
+// Styling
+import styled from 'styled-components';
+
+const PhaseForm = styled.form`
+  .DateRangePicker__picker {
+    z-index: 2;
+  }
+
+  .DateRangePickerInput {
+    border-radius: 5px;
+    overflow: hidden;
+  }
+`;
 
 
 // Component typing
@@ -179,14 +193,14 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
 
         this.setState({ errors, saving: false, saved: false });
       } catch (e) {
-        this.setState({ saving: false, saved: false });
+        this.setState({ saving: false, saved: false });
       }
     });
   }
 
   render() {
     const phaseAttrs = this.state.phase
-    ?  { ...this.state.phase.attributes, ...this.state.attributeDiff }
+    ? { ...this.state.phase.attributes, ...this.state.attributeDiff }
     : { ...this.state.attributeDiff };
 
     const { errors, saved } = this.state;
@@ -195,53 +209,55 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
 
     return (
       <div>
-        <h1>
+        <SectionTitle>
           {this.state.phase && <FormattedMessage {...messages.editPhaseTitle} />}
           {!this.state.phase && <FormattedMessage {...messages.newPhaseTitle} />}
 
-        </h1>
+        </SectionTitle>
 
-        <form onSubmit={this.handleOnSubmit}>
-          <FieldWrapper>
-            <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
-            <Input
-              id="title"
-              type="text"
-              value={this.props.tFunc(phaseAttrs.title_multiloc)}
-              onChange={this.createMultilocUpdater('title_multiloc')}
-            />
-            <Error apiErrors={this.state.errors && this.state.errors.title_multiloc} />
-          </FieldWrapper>
+        <PhaseForm onSubmit={this.handleOnSubmit}>
+          <Section>
+            <SectionField>
+              <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
+              <Input
+                id="title"
+                type="text"
+                value={this.props.tFunc(phaseAttrs.title_multiloc)}
+                onChange={this.createMultilocUpdater('title_multiloc')}
+              />
+              <Error apiErrors={this.state.errors && this.state.errors.title_multiloc} />
+            </SectionField>
 
-          <FieldWrapper>
-            <Label><FormattedMessage {...messages.datesLabel} /></Label>
-            <DateRangePicker
-              startDate={phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null} // momentPropTypes.momentObj or null,
-              endDate={phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null} // momentPropTypes.momentObj or null,
-              onDatesChange={this.handleDateUpdate} // PropTypes.func.isRequired,
-              focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-              onFocusChange={this.handleDateFocusChange} // PropTypes.func.isRequired,
-              isOutsideRange={this.isOutsideRange}
-              firstDayOfWeek={1}
-              displayFormat="DD/MM/YYYY"
-              startDatePlaceholderText={this.startDatePlaceholder}
-              endDatePlaceholderText={this.endDatePlaceholder}
-            />
-            <Error apiErrors={this.state.errors && this.state.errors.start_at} />
-            <Error apiErrors={this.state.errors && this.state.errors.end_at} />
-          </FieldWrapper>
+            <SectionField>
+              <Label><FormattedMessage {...messages.datesLabel} /></Label>
+              <DateRangePicker
+                startDate={phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null} // momentPropTypes.momentObj or null,
+                endDate={phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null} // momentPropTypes.momentObj or null,
+                onDatesChange={this.handleDateUpdate} // PropTypes.func.isRequired,
+                focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                onFocusChange={this.handleDateFocusChange} // PropTypes.func.isRequired,
+                isOutsideRange={this.isOutsideRange}
+                firstDayOfWeek={1}
+                displayFormat="DD/MM/YYYY"
+                startDatePlaceholderText={this.startDatePlaceholder}
+                endDatePlaceholderText={this.endDatePlaceholder}
+              />
+              <Error apiErrors={this.state.errors && this.state.errors.start_at} />
+              <Error apiErrors={this.state.errors && this.state.errors.end_at} />
+            </SectionField>
 
-          <FieldWrapper>
-            <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
-            <Editor
-              id="description"
-              placeholder=""
-              value={this.state.descState}
-              error=""
-              onChange={this.handleDescChange}
-            />
-            <Error apiErrors={this.state.errors && this.state.errors.description_multiloc} />
-          </FieldWrapper>
+            <SectionField>
+              <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
+              <Editor
+                id="description"
+                placeholder=""
+                value={this.state.descState}
+                error=""
+                onChange={this.handleDescChange}
+              />
+              <Error apiErrors={this.state.errors && this.state.errors.description_multiloc} />
+            </SectionField>
+          </Section>
 
           <SubmitWrapper
             loading={this.state.saving}
@@ -254,7 +270,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
               messageSuccess: messages.saveSuccessMessage,
             }}
           />
-        </form>
+        </PhaseForm>
       </div>
     );
   }

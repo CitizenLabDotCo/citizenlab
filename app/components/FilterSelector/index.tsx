@@ -8,6 +8,7 @@ import clickOutside from 'utils/containers/clickOutside';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Container = styled(clickOutside)`
   display: inline-block;
@@ -17,6 +18,14 @@ const Container = styled(clickOutside)`
 
   &:not(:last-child) {
     margin-right: 40px;
+
+    ${media.smallerThanMaxTablet`
+      margin-right: 30px;
+    `}
+
+    ${media.smallPhone`
+      margin-right: 20px;
+    `}
   }
 
   * {

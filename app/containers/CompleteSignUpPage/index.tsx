@@ -16,7 +16,7 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { ideaByIdStream, ideasStream, updateIdea, IIdeas } from 'services/ideas';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -74,9 +74,13 @@ const RightInner = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding-top: 40px;
-  padding-bottom: 150px;
+  padding-bottom: 100px;
   padding-left: 30px;
   padding-right: 30px;
+
+  ${media.smallerThanMaxTablet`
+    padding-bottom: 70px;
+  `}
 `;
 
 const Title = styled.h2`

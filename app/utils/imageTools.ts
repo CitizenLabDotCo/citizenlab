@@ -1,9 +1,9 @@
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import 'whatwg-fetch';
-import { ImageFile } from 'react-dropzone';
+import { ImageFile } from 'typings';
 
-export async function getBase64(file: File | ImageFile) {
+export async function getBase64FromFile(file: File | ImageFile) {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event: any) => resolve(event.target.result);
@@ -22,10 +22,14 @@ export async function getBase64FromObjectUrl(objectUrl: string) {
   });
 }
 
-export function generateImagePreview(image: File | ImageFile) {
+export function createObjectUrl(image: File | ImageFile) {
   const blob = new Blob([image], { type: image.type });
   const objectUrl = window.URL.createObjectURL(blob);
   return objectUrl;
+}
+
+export function revokeObjectURL(objectUrl: string) {
+  window.URL.revokeObjectURL(objectUrl);
 }
 
 export function convertUrlToBlob(url: string) {
@@ -36,7 +40,7 @@ export function convertBlobToFile(blob: Blob, filename: string) {
   return new File([blob], filename, { lastModified: Date.now() });
 }
 
-export async function imageUrlToFile(imageUrl: string) {
+export async function convertUrlToFile(imageUrl: string) {
   // We don't cache this, to deal with CORS issues.
   // https://bugs.chromium.org/p/chromium/issues/detail?id=260239
   // https://stackoverflow.com/questions/26352083/chrome-cors-cache-requesting-same-file-from-two-different-origins
@@ -48,10 +52,6 @@ export async function imageUrlToFile(imageUrl: string) {
   return convertBlobToFile(blob, filename);
 }
 
-export function imageUrlToFileObservable(imageUrl: string | null | undefined) {
-  if (imageUrl !== null && imageUrl !== undefined && _.isString(imageUrl)) {
-    return Rx.Observable.fromPromise(imageUrlToFile(imageUrl));
-  }
-
-  return Rx.Observable.of(null);
+export function convertUrlToFileObservable(imageUrl: string) {
+  return Rx.Observable.fromPromise(convertUrlToFile(imageUrl));
 }

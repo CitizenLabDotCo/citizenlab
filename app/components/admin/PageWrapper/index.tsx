@@ -5,7 +5,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  background: #FFFFFF;
+  background: #fff;
   border-radius: 5px;
   border: 1px solid ${(props) => props.theme.colors.separation};
   box-sizing: border-box;

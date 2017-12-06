@@ -13,7 +13,8 @@ import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 
 // messages
-import { injectIntl, intlShape } from 'react-intl';
+import { intlShape } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { appenDableName, toCammelCase } from './utils';
 import messages from './messages';
 
