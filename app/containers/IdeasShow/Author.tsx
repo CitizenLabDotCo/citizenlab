@@ -7,6 +7,7 @@ import { Link, browserHistory } from 'react-router';
 
 // components
 import Avatar from 'components/Avatar';
+import UserName from 'components/UI/UserName';
 
 // services
 import { userByIdStream, IUser } from 'services/users';
@@ -131,15 +132,17 @@ class Author extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     let authorNameComponent;
 
-    if (author && firstName && lastName) {
+    if (author) {
       authorNameComponent = (
         <AuthorName to={`/profile/${author.data.attributes.slug}`}>
-          {`${firstName} ${lastName}`}
+          <UserName user={author} />
         </AuthorName>
       );
     } else {
       authorNameComponent = (
-        <DeletedUser><FormattedMessage {...messages.deletedUser} /></DeletedUser>
+        <DeletedUser>
+          <UserName user={author} />
+        </DeletedUser>
       );
     }
 
