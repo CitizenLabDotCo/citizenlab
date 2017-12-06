@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router';
 import { darken } from 'polished';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const doubleBounce = keyframes`

@@ -1,5 +1,22 @@
 # Changelog
 
+## 2017-12-06
+
+### Fixed
+- Phases and events date-picker no longer overlaps with the description text
+- No longer needed to hard refresh if you visited al old version of the platform
+- Inconsistency when saving project permissions has been fixed
+- Bullet lists are now working in project description, phases and events
+- The notifications show the currect user as the one taking the action
+
+### Added
+- Translators can use `orgName` and `orgType` variables everywhere
+- Previews of the correct image dimension when uploading images
+
+### Changed
+- Lots of styling tweaks to the admin interface
+- Behaviour of image uploads has improved
+
 ## 2017-11-23
 
 ### Fixed

@@ -1,4 +1,4 @@
-import { IRelationship, Multiloc } from 'typings.d';
+import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import request from 'utils/request';
@@ -14,7 +14,7 @@ export interface IProjectImageData {
       medium: string,
       large: string,
     },
-    ordering: string | null,
+    ordering: string | null,
     created_at: string,
     updated_at: string,
   };
@@ -37,7 +37,7 @@ export function projectImageStream(projectId: string, imageId: string, streamPar
 }
 
 export function addProjectImage(projectId, base64) {
-  return streams.add<IProjectImage>(`${apiEndpoint}/${projectId}/images`, { image: { image: base64 } });
+  return streams.add<IProjectImage>(`${apiEndpoint}/${projectId}/images`, { image: { image: base64 } });
 }
 
 export function deleteProjectImage(projectId, imageId) {

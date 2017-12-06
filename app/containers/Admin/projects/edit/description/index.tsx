@@ -7,11 +7,11 @@ import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-
 import draftjsToHtml from 'draftjs-to-html';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Services
-import { projectBySlugStream, updateProject,  IProjectData, IUpdatedProjectProperties } from 'services/projects';
+import { projectBySlugStream, updateProject,  IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 
@@ -19,20 +19,14 @@ import { currentTenantStream } from 'services/tenant';
 import getSubmitState from 'utils/getSubmitState';
 
 // Components
-import FieldWrapper from 'components/admin/FieldWrapper';
+import Label from 'components/UI/Label';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Error from 'components/UI/Error';
 import Editor from 'components/UI/Editor';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // Styling
 import styled from 'styled-components';
-
-const FormWrapper = styled.form`
-  img {
-    max-width: 100%;
-  }
-`;
-
 
 // Typing
 import { API } from 'typings';
@@ -45,7 +39,7 @@ interface Props {
 
 interface State {
   loading: boolean;
-  data: IProjectData | { id: null, attributes: {}, relationships: { areas: {data} }};
+  data: IProjectData | { id: null, attributes: {}, relationships: { areas: {data} }};
   diff: IUpdatedProjectProperties;
   errors: {
     [fieldName: string]: API.Error[]
@@ -144,49 +138,52 @@ class ProjectDescription extends React.Component<Props, State> {
     const submitState = getSubmitState({ errors, saved, diff });
 
     return (
-      <FormWrapper className="e2e-project-description-form" onSubmit={this.saveProject}>
-        <FieldWrapper>
-          <label htmlFor="project-description">
-            <FormattedMessage {...messages.descriptionLabel} />
-          </label>
-          <Editor
-            id="project-description"
-            placeholder=""
-            value={editorState}
-            error=""
-            onChange={this.changeDesc}
-            toolbarConfig={{
-              options: ['inline', 'list', 'link', 'blockType'],
-              inline: {
-                options: ['bold', 'italic'],
-              },
-              list: {
-                options: ['unordered', 'ordered'],
-              },
-              blockType: {
-                inDropdown: false,
-                options: ['Normal', 'H1'],
-                className: undefined,
-                component: undefined,
-                dropdownClassName: undefined,
-              }
+      <form className="e2e-project-description-form" onSubmit={this.saveProject}>
+        <Section>
+          <SectionField>
+            <Label htmlFor="project-description">
+              <FormattedMessage {...messages.descriptionLabel} />
+            </Label>
+
+            <Editor
+              id="project-description"
+              placeholder=""
+              value={editorState}
+              error=""
+              onChange={this.changeDesc}
+              toolbarConfig={{
+                options: ['inline', 'list', 'link', 'blockType'],
+                inline: {
+                  options: ['bold', 'italic'],
+                },
+                list: {
+                  options: ['unordered', 'ordered'],
+                },
+                blockType: {
+                  inDropdown: false,
+                  options: ['Normal', 'H1'],
+                  className: undefined,
+                  component: undefined,
+                  dropdownClassName: undefined,
+                }
+              }}
+            />
+            <Error fieldName="description_multiloc" apiErrors={this.state.errors.description_multiloc} />
+          </SectionField>
+
+          <SubmitWrapper
+            loading={loading}
+            status={submitState}
+            messages={{
+              buttonSave: messages.saveButtonLabel,
+              buttonError: messages.saveErrorLabel,
+              buttonSuccess: messages.saveSuccessLabel,
+              messageError: messages.saveErrorMessage,
+              messageSuccess: messages.saveSuccessMessage,
             }}
           />
-          <Error fieldName="description_multiloc" apiErrors={this.state.errors.description_multiloc} />
-        </FieldWrapper>
-
-        <SubmitWrapper
-          loading={loading}
-          status={submitState}
-          messages={{
-            buttonSave: messages.saveButtonLabel,
-            buttonError: messages.saveErrorLabel,
-            buttonSuccess: messages.saveSuccessLabel,
-            messageError: messages.saveErrorMessage,
-            messageSuccess: messages.saveSuccessMessage,
-          }}
-        />
-      </FormWrapper>
+        </Section>
+      </form>
     );
   }
 }

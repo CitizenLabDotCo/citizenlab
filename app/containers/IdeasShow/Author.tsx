@@ -12,7 +12,8 @@ import Avatar from 'components/Avatar';
 import { userByIdStream, IUser } from 'services/users';
 
 // i18n
-import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative, FormattedDate } from 'react-intl';
+import { InjectedIntlProps, FormattedRelative, FormattedDate } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style

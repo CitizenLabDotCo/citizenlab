@@ -12,15 +12,17 @@
     "import-name": false,
     "jsx-no-multiline-js": false,
     "no-boolean-literal-compare": false,
+    "no-else-after-return": false,
+    "no-irregular-whitespace": true,
     "max-line-length": [
       false
     ],
     "object-literal-key-quotes": [
-      true, 
+      true,
       "as-needed"
     ],
     "trailing-comma": [
-      "error",
+      true,
       "always-multiline"
     ],
     "ter-arrow-parens": [
@@ -53,6 +55,8 @@
       "ban-keywords",
       "check-format",
       "allow-leading-underscore"
-    ]
-  }
+    ],
+    "no-vanilla-formatted-messages": true
+  },
+  "rulesDirectory": ["internals/lint/tslint-plugin-cl-custom"]
 }

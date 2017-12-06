@@ -15,14 +15,14 @@ import Button from 'components/UI/Button';
 import { projectsStream, IProjects } from 'services/projects';
 
 // i18n
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
 import { lighten } from 'polished';
 import { media } from 'utils/styleUtils';
-import ButtonMixin from 'components/admin/StyleMixins/buttonMixin';
 
 const Container = styled.div`
   width: 100%;
@@ -201,7 +201,7 @@ class ProjectCards extends React.PureComponent<Props & InjectedIntlProps, State>
       <LoadMore>
         <LoadMoreButton
           text={formatMessage(messages.loadMore)}
-          loading={loadingMore}
+          processing={loadingMore}
           style="primary"
           size="3"
           onClick={this.loadMoreProjects}

@@ -21,14 +21,16 @@ import { updateUser, IUser } from 'services/users';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
 
 // typings
-import { API, IOption } from 'typings.d';
+import { API, IOption } from 'typings';
 
 const Form = styled.form`
   width: 100%;
@@ -271,7 +273,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
               <Button
                 id="e2e-signup-step2-button"
                 size="2"
-                loading={processing}
+                processing={processing}
                 text={formatMessage(messages.submit)}
                 onClick={this.handleOnSubmit}
                 circularCorners={true}

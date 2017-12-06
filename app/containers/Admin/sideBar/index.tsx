@@ -11,7 +11,8 @@ import Icon from 'components/UI/Icon';
 import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -66,7 +67,9 @@ const MenuItem: any = styled.div`
   flex-wrap: nowrap;
   align-items: center;
   padding: 0;
-  margin-bottom: 10px;
+  padding-bottom: 1px;
+  margin: 0;
+  margin-bottom: 4px;
   cursor: pointer;
 
   &:hover {
@@ -143,7 +146,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps, State> {
             <Text>{formatMessage({ ...messages.users })}</Text>
           </MenuLink>
         </MenuItem>
-        
+
         <FeatureFlag name="groups">
           <MenuItem active={pathname.startsWith('/admin/groups')}>
             <MenuLink to="/admin/groups">
@@ -154,7 +157,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps, State> {
         </FeatureFlag>
 
         <MenuItem active={pathname.startsWith('/admin/projects')}>
-          <MenuLink to="/admin/projects">
+          <MenuLink to="/admin/projects" className={'e2e-projects-list-link'}>
             <IconWrapper><StyledIcon name="project" /></IconWrapper>
             <Text>{formatMessage({ ...messages.projects })}</Text>
           </MenuLink>

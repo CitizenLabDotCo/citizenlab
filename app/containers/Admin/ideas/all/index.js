@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import Pagination from 'components/admin/Pagination';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
 import { ideasStream, updateIdea, deleteIdea } from 'services/ideas';
@@ -15,20 +15,16 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { injectTFunc } from 'components/T/utils';
 import WatchSagas from 'utils/containers/watchSagas';
 
+// Components
+import Button from 'components/UI/Button';
+import PageWrapper from 'components/admin/PageWrapper';
+
 // import ExportLabel from 'components/admin/ExportLabel';
 import { Table, Input, Menu, Dropdown } from 'semantic-ui-react';
-import ExportLabel from 'components/admin/ExportLabel';
 import { loadIdeasXlsxRequest, loadCommentsXlsxRequest } from './actions';
 import messages from './messages';
 import sagas from './sagas';
 import Row from './Row';
-
-const TableContainer = styled.div`
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 30px;
-  bottom: 0px;
-`;
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -52,6 +48,12 @@ const ExportLabelsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
+  .no-padding-right button {
+    padding-right: 0;
+    padding-top: .25em;
+    padding-bottom: .25em;
+  }
 `;
 
 class AllIdeas extends PureComponent {
@@ -230,23 +232,26 @@ class AllIdeas extends PureComponent {
             <FormattedMessage {...messages.header} />
           </HeaderTitle>
           <ExportLabelsContainer>
-            <ExportLabel
-              action={this.props.loadIdeasXlsxRequest}
+            <Button
+              className="no-padding-right"
+              style={this.props.exportIdeasError ? 'error' : 'text'}
+              onClick={this.props.loadIdeasXlsxRequest}
               loading={this.props.exportIdeasLoading}
               error={this.props.exportIdeasError}
             >
               <FormattedMessage {...messages.exportIdeas} />
-            </ExportLabel>
-            <ExportLabel
-              action={this.props.loadCommentsXlsxRequest}
+            </Button>
+            <Button
+              className="no-padding-right"
+              style={this.props.exportCommentsError ? 'error' : 'text'}
+              onClick={this.props.loadCommentsXlsxRequest}
               loading={this.props.exportCommentsLoading}
-              error={this.props.exportCommentsError}
             >
               <FormattedMessage {...messages.exportComments} />
-            </ExportLabel>
+            </Button>
           </ExportLabelsContainer>
         </HeaderContainer>
-        <TableContainer>
+        <PageWrapper>
           <Menu>
             <Menu.Item>
               <Input icon="search" onChange={this.handleSearchChange} />
@@ -337,7 +342,7 @@ class AllIdeas extends PureComponent {
               </Table.Row>
             </Table.Footer>
           </Table>
-        </TableContainer>
+        </PageWrapper>
       </div>
     );
   }

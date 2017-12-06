@@ -1,24 +1,28 @@
-// Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
-import { injectTFunc } from 'components/T/utils';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
-import styled from 'styled-components';
+
+// router
 import { browserHistory } from 'react-router';
-import { API, IOption, IRelationship } from 'typings.d';
+
+// components
+import Input from 'components/UI/Input';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import Radio from 'components/UI/Radio';
+import Label from 'components/UI/Label';
+import MultipleSelect from 'components/UI/MultipleSelect';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// Store
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { makeSelectSetting } from 'utils/tenant/selectors';
-import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-
-// Services
+// services
 import {
   IUpdatedProjectProperties,
   IProject,
@@ -38,24 +42,19 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
 // utils
-import { getBase64 } from 'utils/imageTools';
+import { convertUrlToFileObservable } from 'utils/imageTools';
 import getSubmitState from 'utils/getSubmitState';
+import { v4 as uuid } from 'uuid';
 
-// Components
-import Input from 'components/UI/Input';
-import Upload from 'components/UI/Upload';
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-import Radio from 'components/UI/Radio';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import FieldWrapper from 'components/admin/FieldWrapper';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
+// style
+import styled from 'styled-components';
 
-// Style
-const FormWrapper = styled.form`
-  img {
-    max-width: 100%;
-  }
+// typings
+import { API, IOption, IRelationship, ImageFile } from 'typings';
+
+const StyledImagesDropzone = styled(ImagesDropzone)`
+  margin-top: 2px;
+  padding-right: 100px;
 `;
 
 const ProjectImages = styled.div`
@@ -89,168 +88,224 @@ const SaveButton = styled.button`
   padding: 1rem 2rem;
 `;
 
-// Component typing
 type Props = {
-  intl: ReactIntl.InjectedIntl,
   lang: string,
   params: {
-    slug: string | null,
-  },
-  userLocale: string,
-  tFunc: Function
+    slug: string,
+  }
 };
 
 interface State {
   loading: boolean;
-  projectData: IProjectData | { id: null, attributes: {}, relationships: { areas: {data} }};
-  uploadedImages: any;
-  uploadedHeader: string | null;
-  projectImages: IProjectImageData[];
+  processing: boolean;
+  projectData: IProjectData | null;
   projectAttributesDiff: IUpdatedProjectProperties;
-  errors: {
-    [fieldName: string]: API.Error[]
-  };
+  headerBg: ImageFile[] | null;
+  oldProjectImages: ImageFile[] | null;
+  newProjectImages: ImageFile[] | null;
+  noTitleError: string | null;
+  // noHeaderError: string | null;
+  apiErrors: { [fieldName: string]: API.Error[] };
   saved: boolean;
   areas: IAreaData[];
   areaType: 'all' | 'selection';
   locale: string | null;
   currentTenant: ITenant | null;
   areasOptions: IOption[];
+  submitState: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
-class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
+class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlProps, State> {
+  state: State;
+  slug$: Rx.BehaviorSubject<string | null> | null;
+  processing$: Rx.BehaviorSubject<boolean>;
   subscriptions: Rx.Subscription[] = [];
 
   constructor(props: Props) {
     super(props as any);
-
     this.state = {
-      loading: false,
-      projectData: { id: null, attributes: {}, relationships: { areas: { data: [] } } },
-      uploadedImages: [],
-      uploadedHeader: null,
-      projectImages: [],
+      loading: true,
+      processing: false,
+      projectData: null,
       projectAttributesDiff: {},
-      errors: {},
+      headerBg: null,
+      oldProjectImages: null,
+      newProjectImages: null,
+      noTitleError: null,
+      // noHeaderError: null,
+      apiErrors: {},
       saved: false,
       areas: [],
       areaType: 'all',
       locale: null,
       currentTenant: null,
       areasOptions: [],
+      submitState: 'disabled'
     };
+    this.slug$ = null;
+    this.subscriptions = [];
   }
 
-  updateProjectSubscription = (slug) => {
-    const { userLocale } = this.props;
+  componentWillMount() {
+    const locale$ = localeStream().observable;
+    const currentTenant$ = currentTenantStream().observable;
+    const areas$ = areasStream().observable;
 
-    this.subscriptions[0] = projectBySlugStream(slug).observable.switchMap((project) => {
-      return projectImagesStream(project.data.id).observable.map((images) => ({
-        projectData: project.data,
-        projectImages: images.data,
-      }));
-    }).subscribe(({ projectData, projectImages }) => {
-      this.setState({
-        projectData,
-        projectImages,
-        uploadedHeader: null,
-        uploadedImages: [],
-        loading: false,
-        projectAttributesDiff: {},
-        areaType: projectData.relationships.areas.data.length > 0 ? 'selection' : 'all',
-      });
-    });
-  }
+    this.slug$ = new Rx.BehaviorSubject(this.props.params.slug || null);
+    this.processing$ = new Rx.BehaviorSubject(false);
 
-  componentDidMount() {
-    if (this.props.params.slug) {
-      this.updateProjectSubscription(this.props.params.slug);
-    }
-
-    this.subscriptions.push(
+    this.subscriptions = [
       Rx.Observable.combineLatest(
-        localeStream().observable,
-        currentTenantStream().observable,
-        areasStream().observable,
-      )
-      .subscribe(([locale, currentTenant, areas]) => {
-        this.setState({
+        locale$,
+        currentTenant$,
+        areas$,
+        this.slug$.distinctUntilChanged().switchMap((slug) => {
+          return (slug ? projectBySlugStream(slug).observable : Rx.Observable.of(null));
+        }).switchMap((project) => {
+          if (project) {
+            const projectImages$ = (project ? projectImagesStream(project.data.id).observable : Rx.Observable.of(null));
+            const headerUrl = _.get(project, 'data.attributes.header_bg.large');
+            const headerImageFileObservable = (headerUrl ? convertUrlToFileObservable(headerUrl) : Rx.Observable.of(null));
+
+            return Rx.Observable.combineLatest(
+              this.processing$,
+              headerImageFileObservable,
+              projectImages$.switchMap((projectImages) => {
+                if (projectImages && projectImages.data && projectImages.data.length > 0) {
+                  return Rx.Observable.combineLatest(
+                    projectImages.data.map((projectImage) => {
+                      return convertUrlToFileObservable(projectImage.attributes.versions.large).map((projectImageFile) => {
+                        projectImageFile['projectImageId'] = projectImage.id;
+                        return projectImageFile;
+                      });
+                    })
+                  );
+                }
+
+                return Rx.Observable.of(null);
+              }),
+            ).filter(([processing, headerBg, projectImages]) => {
+              return !processing;
+            }).map(([processing, headerBg, projectImages]) => ({
+              headerBg,
+              oldProjectImages: projectImages,
+              projectData: (project ? project.data : null)
+            }));
+          }
+
+          return Rx.Observable.of({
+            headerBg: null,
+            oldProjectImages: null,
+            projectData: null
+          });
+        })
+      ).subscribe(([locale, currentTenant, areas, { headerBg, oldProjectImages, projectData }]) => {
+        this.setState((state: State) => ({
           locale,
           currentTenant,
+          projectData,
+          oldProjectImages,
+          newProjectImages: oldProjectImages,
+          headerBg: (headerBg ? [headerBg] : null),
           areas: areas.data,
           areasOptions: areas.data.map((area) => ({
             value: area.id,
             label: getLocalized(area.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)
-          }))
-        });
-      })
-    );
+          })),
+          loading: false,
+          projectAttributesDiff: {},
+          areaType: (projectData && projectData.relationships.areas.data.length > 0) ? 'selection' : 'all',
+        }));
+      }),
 
-  }
-
-  componentWillUnmount() {
-    _(this.subscriptions).forEach(subscription => subscription.unsubscribe());
+      this.processing$.subscribe(processing => this.setState({ processing }))
+    ];
   }
 
   componentWillReceiveProps(newProps) {
-    // Update subscription if the slug changes
-    // This happens when transitioning from New to Edit view after saving a new project
-    if (newProps.params.slug && newProps.params.slug !== this.props.params.slug) {
-      this.updateProjectSubscription(newProps.params.slug);
+    if (newProps.params.slug !== this.props.params.slug && this.slug$ !== null) {
+      this.slug$.next(newProps.params.slug);
     }
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   setRef = (element) => {
-
+    // empty
   }
 
-  changeTitle = (value: string): void => {
-    const newVal = _.set({}, `projectAttributesDiff.title_multiloc.${this.props.userLocale}`, value);
-    this.setState(_.merge({}, this.state, newVal));
+  changeTitle = (newTitle: string) => {
+    this.setState((state: State) => ({
+      submitState: 'enabled',
+      noTitleError: null,
+      projectAttributesDiff: {
+        ...state.projectAttributesDiff,
+        title_multiloc: {
+          ...state.projectAttributesDiff.title_multiloc,
+          [state.locale as string]: newTitle
+        }
+      }
+    }));
   }
 
-  handleHeaderUpload = async (image) => {
-    const attrsDiff = _.cloneDeep(this.state.projectAttributesDiff);
-    const base64 = await getBase64(image) as string;
-    this.setState({ uploadedHeader: base64, projectAttributesDiff: { ...attrsDiff, header_bg: base64 } });
+  handleHeaderOnAdd = (newHeader: ImageFile) => {
+    this.setState((state: State) => ({
+      submitState: 'enabled',
+      projectAttributesDiff: {
+        ...state.projectAttributesDiff,
+        header_bg: newHeader.base64
+      },
+      headerBg: [newHeader],
+      // noHeaderError: null
+    }));
   }
 
-  handleUploadOnRemove = () => {
-
+  handleHeaderOnUpdate = (updatedHeaders: ImageFile[]) => {
+    const headerBg = (updatedHeaders && updatedHeaders.length > 0 ? updatedHeaders : null);
+    this.setState({ headerBg });
   }
 
-  handleProjectImageUpload = async (image) => {
-    const { projectData, projectImages } = this.state;
-    const base64 = await getBase64(image) as string;
-    if (projectData) {
-      addProjectImage(projectData.id, base64).then((response: any) => {
-        projectImages.push(response.data);
-        this.setState({ projectImages });
-      });
-    }
+  handleHeaderOnRemove = async (removedHeader: ImageFile) => {
+    this.setState((state: State) => ({
+      submitState: 'enabled',
+      projectAttributesDiff: {
+        ...state.projectAttributesDiff,
+        header_bg: null
+      },
+      headerBg: null
+    }));
   }
 
-  deletePicture = (event) => {
-    const { projectData } = this.state;
+  handleProjectImageOnAdd = (newProjectImage: ImageFile) => {
+    this.setState((state: State) => ({
+      submitState: 'enabled',
+      newProjectImages: [
+        ...(state.newProjectImages || []),
+        newProjectImage
+      ]
+    }));
+  }
 
-    if (projectData) {
-      const imageId = event.target.dataset.imageId;
-      const projectId = projectData.id;
+  handleProjectImagesOnUpdate = (newProjectImages: ImageFile[]) => {
+    this.setState({ newProjectImages });
+  }
 
-      deleteProjectImage(projectId, imageId).then(() => {
-        this.setState({ projectImages: _.reject(this.state.projectImages, { id: imageId }) });
-      });
-    }
+  handleProjectImageOnRemove = async (removedImageFile: ImageFile) => {
+    this.setState((state: State) => ({
+      submitState: 'enabled',
+      newProjectImages: _(state.newProjectImages).filter(projectImage => projectImage.objectUrl !== removedImageFile.objectUrl).value()
+    }));
   }
 
   handleAreaTypeChange = (value) => {
-    const newState = { areaType: value } as State;
+    const newState = { areaType: value, submitState: 'enabled' } as State;
 
     // Clear the array of areas ids if you select "all areas"
     if (value === 'all') {
       const newDiff = _.cloneDeep(this.state.projectAttributesDiff);
       newDiff.area_ids = [];
-
       newState.projectAttributesDiff = newDiff;
     }
 
@@ -260,148 +315,206 @@ class AdminProjectEditGeneral extends React.PureComponent<Props, State> {
   handleAreaSelectionChange = (values: IOption[]) => {
     const newDiff = _.cloneDeep(this.state.projectAttributesDiff);
     newDiff.area_ids = values.map((value) => (value.value));
-
-    this.setState({ projectAttributesDiff: newDiff });
+    this.setState({ submitState: 'enabled', projectAttributesDiff: newDiff });
   }
 
-  handleSaveErrors = (errors) => {
-    this.setState({ errors: errors.json.errors });
+  validate = () => {
+    let hasErrors = false;
+    const { formatMessage } = this.props.intl;
+    const { projectAttributesDiff, projectData, headerBg, locale, currentTenant } = this.state;
+    const currentTenantLocales = (currentTenant as ITenant).data.attributes.settings.core.locales;
+    const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
+    const areaIds = projectAttrs.area_ids || (projectData && projectData.relationships.areas.data.map((area) => (area.id))) || [];
+    const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale as string, currentTenantLocales);
+
+    if (!projectTitle) {
+      hasErrors = true;
+      this.setState({ noTitleError: formatMessage(messages.noTitleErrorMessage) });
+    }
+
+    /*
+    if (!headerBg) {
+      hasErrors = true;
+      this.setState({ noHeaderError: formatMessage(messages.noHeaderErrorMessage) });
+    }
+    */
+
+    return !hasErrors;
   }
 
-  saveProject = (event) => {
+  saveProject = async (event) => {
     event.preventDefault();
-    const { projectAttributesDiff } = this.state;
 
-    if (!_.isEmpty(projectAttributesDiff) && this.state.projectData.id) {
-      this.setState({ loading: true, saved: true });
-      updateProject(this.state.projectData.id, projectAttributesDiff)
-      .catch(this.handleSaveErrors)
-      .then(() => {
-        this.setState({ loading: false, saved: true });
-      });
-    } else if (!_.isEmpty(projectAttributesDiff)) {
-      this.setState({ loading: true, saved: true });
+    if (this.validate()) {
+      const { formatMessage } = this.props.intl;
+      const { projectAttributesDiff, projectData, oldProjectImages, newProjectImages } = this.state;
 
-      addProject(projectAttributesDiff).then((project: IProject) => {
-        browserHistory.push(`/admin/projects/${project.data.attributes.slug}/edit`);
-        this.setState({ loading: false, saved: true });
-      }).catch(this.handleSaveErrors);
+      try {
+        let redirect = false;
+        let projectId: string | null = null;
+        const imagesToAdd = _(newProjectImages).filter(newProjectImage => !_(oldProjectImages).some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64)).value();
+        const imagesToRemove = _(oldProjectImages).filter(oldProjectImage => !_(newProjectImages).some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64)).value();
+
+        this.setState({ saved: false });
+        this.processing$.next(true);
+
+        if (projectData) {
+          projectId = projectData.id;
+
+          if (!_.isEmpty(projectAttributesDiff)) {
+            await updateProject(projectData.id, projectAttributesDiff);
+          }
+        } else {
+          const project = await addProject(projectAttributesDiff);
+          projectId = project.data.id;
+          redirect = true;
+        }
+
+        const imagesToAddPromises: Promise<any>[] = _(imagesToAdd).map(imageToAdd => addProjectImage(projectId, imageToAdd.base64)).value();
+        const imagesToRemovePromises: Promise<any>[] = _(imagesToRemove).map(imageToRemove => deleteProjectImage(projectId, imageToRemove['projectImageId'])).value();
+
+        await Promise.all([...imagesToAddPromises, ...imagesToRemovePromises]);
+
+        if (redirect) {
+          browserHistory.push(`/admin/projects`);
+        } else {
+          this.setState({
+            saved: true,
+            submitState: 'success'
+          });
+          this.processing$.next(false);
+        }
+      } catch (errors) {
+        this.setState({
+          apiErrors: _.has(errors, 'json.errors') ? errors.json.errors : formatMessage(messages.saveErrorMessage),
+          submitState: 'error'
+        });
+        this.processing$.next(false);
+      }
     }
   }
 
   render() {
-    const { errors, saved, projectData, uploadedImages, uploadedHeader, loading, projectImages, projectAttributesDiff } = this.state;
-    const { userLocale, tFunc, intl: { formatMessage } } = this.props;
-    const projectAttrs = { ...projectData.attributes, ...projectAttributesDiff } as IUpdatedProjectProperties;
-    projectAttrs.area_ids = projectAttrs.area_ids || projectData.relationships.areas.data.map((area) => (area.id));
+    const { currentTenant, locale, noTitleError, /* noHeaderError, */ apiErrors, saved, projectData, headerBg, newProjectImages, loading, processing, projectAttributesDiff, areasOptions, areaType, submitState } = this.state;
+    const { formatMessage } = this.props.intl;
 
-    const submitState = getSubmitState({ errors, saved, diff: projectAttributesDiff });
-    const areasValues = projectAttrs.area_ids ? projectAttrs.area_ids.map((id) => {
-      const option = this.state.areasOptions.find(areaOption => areaOption.value === id);
+    if (!loading && currentTenant && locale) {
+      const newProjectImageFiles = (newProjectImages && newProjectImages.length > 0 ? newProjectImages : null);
+      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
+      const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
+      const areaIds = projectAttrs.area_ids || (projectData && projectData.relationships.areas.data.map((area) => (area.id))) || [];
+      const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale, currentTenantLocales);
+      const areasValues = areaIds.filter((id) => {
+        return areasOptions.some(areaOption => areaOption.value === id);
+      }).map((id) => {
+        return areasOptions.find(areaOption => areaOption.value === id) as IOption;
+      });
 
-      if (option) {
-        return option;
-      }
+      return (
+        <form className="e2e-project-general-form" onSubmit={this.saveProject}>
+          <Section>
+            <SectionField>
+              <Label htmlFor="project-title">
+                <FormattedMessage {...messages.titleLabel} />
+              </Label>
+              <Input
+                id="project-title"
+                type="text"
+                placeholder=""
+                value={projectTitle}
+                error=""
+                onChange={this.changeTitle}
+                setRef={this.setRef}
+              />
+              <Error text={noTitleError} />
+              <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} />
+            </SectionField>
 
-      return null;
-    }) : null;
+            <SectionField>
+              <Label htmlFor="project-area">
+                <FormattedMessage {...messages.areasLabel} />
+              </Label>
+              <Radio
+                onChange={this.handleAreaTypeChange}
+                currentValue={areaType}
+                value="all"
+                name="areas"
+                id="areas-all"
+                label={formatMessage(messages.areasAllLabel)}
+              />
+              <Radio
+                onChange={this.handleAreaTypeChange}
+                currentValue={areaType}
+                value="selection"
+                name="areas"
+                id="areas-selection"
+                label={formatMessage(messages.areasSelectionLabel)}
+              />
 
-    return (
-      <FormWrapper className="e2e-project-general-form" onSubmit={this.saveProject}>
-        <FieldWrapper>
-          <label htmlFor="project-title">
-            <FormattedMessage {...messages.titleLabel} />
-          </label>
-          <Input
-            id="project-title"
-            type="text"
-            placeholder=""
-            value={tFunc(projectAttrs.title_multiloc)}
-            error=""
-            onChange={this.changeTitle}
-            setRef={this.setRef}
-          />
-          <Error fieldName="title_multiloc" apiErrors={this.state.errors.title_multiloc} />
-        </FieldWrapper>
+              {areaType === 'selection' &&
+                <MultipleSelect
+                  options={areasOptions}
+                  value={areasValues}
+                  onChange={this.handleAreaSelectionChange}
+                  placeholder=""
+                  disabled={areaType !== 'selection'}
+                />
+              }
+            </SectionField>
 
-        <FieldWrapper>
-          <label htmlFor="project-area">
-            <FormattedMessage {...messages.areasLabel} />
-          </label>
-          <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="all" name="areas" id="areas-all" label={formatMessage(messages.areasAllLabel)} />
-          <Radio onChange={this.handleAreaTypeChange} currentValue={this.state.areaType} value="selection" name="areas" id="areas-selection" label={formatMessage(messages.areasSelectionLabel)} />
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.headerImageLabel} />
+              </Label>
+              <StyledImagesDropzone
+                images={headerBg}
+                imagePreviewRatio={120 / 480}
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                maxImageFileSize={5000000}
+                maxNumberOfImages={1}
+                maxImagePreviewWidth="500px"
+                onAdd={this.handleHeaderOnAdd}
+                onUpdate={this.handleHeaderOnUpdate}
+                onRemove={this.handleHeaderOnRemove}
+              />
+              {/* <Error text={noHeaderError} /> */}
+            </SectionField>
 
-          {this.state.areaType === 'selection' &&
-            <MultipleSelect
-              options={this.state.areasOptions}
-              value={_.compact(areasValues)}
-              onChange={this.handleAreaSelectionChange}
-              placeholder=""
-              disabled={this.state.areaType !== 'selection'}
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.projectImageLabel} />
+              </Label>
+              <StyledImagesDropzone
+                images={newProjectImageFiles}
+                imagePreviewRatio={1}
+                maxImagePreviewWidth="160px"
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                maxImageFileSize={5000000}
+                maxNumberOfImages={5}
+                onAdd={this.handleProjectImageOnAdd}
+                onUpdate={this.handleProjectImagesOnUpdate}
+                onRemove={this.handleProjectImageOnRemove}
+              />
+            </SectionField>
+
+            <SubmitWrapper
+              loading={processing}
+              status={submitState}
+              messages={{
+                buttonSave: messages.saveProject,
+                buttonError: messages.saveError,
+                buttonSuccess: messages.saveSuccess,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
             />
-          }
-        </FieldWrapper>
+          </Section>
+        </form>
+      );
+    }
 
-        <FieldWrapper>
-          <label>
-            <FormattedMessage {...messages.headerImageLabel} />
-          </label>
-          {uploadedHeader &&
-            <img src={uploadedHeader} alt="" role="presentation" />
-          }
-          {!uploadedHeader && projectAttrs && projectAttrs.header_bg &&
-            <img
-              src={typeof projectAttrs.header_bg  === 'string' ? projectAttrs.header_bg : projectAttrs.header_bg.large}
-              alt=""
-              role="presentation"
-            />
-          }
-          <Upload
-            accept="image/jpg, image/jpeg, image/png, image/gif"
-            items={uploadedImages}
-            onAdd={this.handleHeaderUpload}
-            onRemove={this.handleUploadOnRemove}
-          />
-        </FieldWrapper>
-
-        <FieldWrapper>
-          <label>
-            <FormattedMessage {...messages.projectImageLabel} />
-          </label>
-          <ProjectImages>
-            {projectImages && projectImages.map((image) => (
-              <ImageWrapper key={image.id}>
-                <DeleteButton onClick={this.deletePicture} data-image-id={image.id}>🗑️</DeleteButton>
-                <img src={image.attributes.versions.small} alt="" role="presentation"/>
-              </ImageWrapper>
-            ))}
-          </ProjectImages>
-          <Upload
-            accept="image/jpg, image/jpeg, image/png, image/gif"
-            items={uploadedImages}
-            onAdd={this.handleProjectImageUpload}
-            onRemove={this.handleUploadOnRemove}
-          />
-        </FieldWrapper>
-
-        <SubmitWrapper
-          loading={loading}
-          status={submitState}
-          messages={{
-            buttonSave: messages.saveProject,
-            buttonError: messages.saveError,
-            buttonSuccess: messages.saveSuccess,
-            messageError: messages.saveErrorMessage,
-            messageSuccess: messages.saveSuccessMessage,
-          }}
-        />
-      </FormWrapper>
-    );
+    return null;
   }
 }
 
-const mapStateToProps = createStructuredSelector({
-  userLocale: makeSelectLocale(),
-});
-
-export default ((injectTFunc(injectIntl(connect(mapStateToProps)(AdminProjectEditGeneral))) as any) as typeof AdminProjectEditGeneral);
+export default injectIntl<Props>(AdminProjectEditGeneral);

@@ -6,7 +6,8 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import { injectIntl, intlShape } from 'react-intl';
+import { intlShape } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { connect } from 'react-redux';
 import { Saga } from 'react-redux-saga';
 import { push } from 'react-router-redux';

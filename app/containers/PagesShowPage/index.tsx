@@ -14,7 +14,8 @@ import T from 'components/T';
 import { IPageData, pageBySlugStream, LEGAL_PAGES } from 'services/pages';
 import { PageLink, getPageLink } from 'services/pageLink';
 
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 import ContentContainer from 'components/ContentContainer';
@@ -23,6 +24,7 @@ import NotFound from 'containers/NotFoundPage';
 import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
 import { Link } from 'react-router';
+import { color } from 'utils/styleUtils';
 
 const TextContainer = styled.div`
   margin: 30px 0;
@@ -60,8 +62,8 @@ const StyledLink = styled(Link)`
   align-items: center;
   background: white;
   border-radius: 5px;
-  border: 1px solid ${props => props.theme.colors.separation};
-  color: ${props => props.theme.colors.darkClGreen};
+  border: 1px solid ${color('separation')};
+  color: ${color('darkClGreen')};
   display: flex;
   justify-content: space-between;
   margin-bottom: .5rem;
@@ -174,7 +176,7 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
       return (
         <ContentContainer>
           <SpinnerContainer>
-            <Spinner color="#84939E" />
+            <Spinner color="#84939E" />
           </SpinnerContainer>
         </ContentContainer>
       );
