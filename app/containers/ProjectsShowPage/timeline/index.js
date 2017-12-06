@@ -11,7 +11,7 @@ import ProjectPhase from './ProjectPhase';
 import ContentContainer from 'components/ContentContainer';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { LOAD_PROJECT_PHASES_REQUEST } from 'resources/projects/phases/constants';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import scrollToComponent from 'react-scroll-to-component';
 import { getCurrentPhaseId, getPhaseType, parseDate } from '../lib';

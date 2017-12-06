@@ -23,7 +23,8 @@ import tracks from './tracks';
 
 // i18n
 import { media } from 'utils/styleUtils';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style

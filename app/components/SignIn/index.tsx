@@ -20,7 +20,8 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // i18n
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
@@ -176,7 +177,7 @@ type State = {
 
 class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   state: State;
-  subscriptions: Rx.Subscription[];
+  subscriptions: Rx.Subscription[];
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 

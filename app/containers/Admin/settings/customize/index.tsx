@@ -17,13 +17,15 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // style
 import styled from 'styled-components';
+import { color, fontSize } from 'utils/styleUtils';
 
 // utils
 import { convertUrlToFileObservable } from 'utils/imageTools';
 import getSubmitState from 'utils/getSubmitState';
 
 // i18n
-import { FormattedMessage, injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // services
@@ -39,8 +41,8 @@ const StyledLabel = styled(Label)`
 `;
 
 const CharCount = styled.div`
-  color: #333;
-  font-size: 15px;
+  color: ${color('label')};
+  font-size: ${fontSize('small')};
   font-weight: 400;
 
   &.error {
@@ -81,7 +83,7 @@ interface IAttributesDiff {
 }
 
 type Props  = {
-  intl: InjectedIntl;
+  intl: InjectedIntl;
   lang: string;
   tFunc: Function;
 };

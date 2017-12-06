@@ -60,6 +60,13 @@
   </div>
 
   <script src="https://maps.googleapis.com/maps/api/js?key=***REMOVED***&libraries=places" async defer></script>
+  <script>
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => {
+        registration.unregister();
+      });
+    });
+  </script>
 </body>
 
 </html>

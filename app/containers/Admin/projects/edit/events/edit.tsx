@@ -26,7 +26,8 @@ import unsubscribe from 'utils/unsubscribe';
 import getSubmitState from 'utils/getSubmitState';
 
 // i18n
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import localize, { injectedLocalized } from 'utils/localize';
 import messages from './messages';
@@ -132,7 +133,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
   createDateChangeHandler = (target: 'start_at' | 'end_at') => {
     return (moment) => {
       const newAttributesDiff = this.state.attributeDiff;
-      newAttributesDiff[target] = moment ? moment.toISOString() :  '';
+      newAttributesDiff[target] = moment ? moment.toISOString() :  '';
       this.setState({ attributeDiff: newAttributesDiff });
     };
   }
@@ -175,7 +176,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
 
   render() {
     const { locale, currentTenant, errors, saved } = this.state;
-    const eventAttrs = this.state.event ?  { ...this.state.event.data.attributes, ...this.state.attributeDiff } : { ...this.state.attributeDiff };
+    const eventAttrs = this.state.event ?  { ...this.state.event.data.attributes, ...this.state.attributeDiff } : { ...this.state.attributeDiff };
     const submitState = getSubmitState({ errors, saved, diff: this.state.attributeDiff });
 
     if (locale && currentTenant) {

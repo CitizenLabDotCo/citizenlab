@@ -6,7 +6,7 @@ import { ideaByIdStream } from 'services/ideas';
 
 import messages from '../../messages';
 
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import NotificationWrapper from '../NotificationWrapper';
 import { Link } from 'react-router';
 
@@ -65,10 +65,10 @@ export default class CommentOnYourCommentNotification extends React.PureComponen
           values={{
             name:
             <Link
-              to={`/profile/${notification.attributes.user_slug}`}
+              to={`/profile/${notification.attributes.initiating_user_slug}`}
               onClick={this.onClickUserName}
             >
-              {notification.attributes.user_first_name}
+              {notification.attributes.initiating_user_first_name}
             </Link>,
           }}
         />

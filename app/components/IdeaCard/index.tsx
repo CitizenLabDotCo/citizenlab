@@ -22,7 +22,9 @@ import T from 'components/T';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
 
 // styles
@@ -240,7 +242,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
       const authorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
       const createdAt = formatRelative(idea.data.attributes.created_at);
       const byAuthor = authorName ? formatMessage(messages.byAuthorName, { authorName }) : formatMessage(messages.byDeletedUser, { deletedUser: `<span class="deleted-user">${formatMessage(messages.deletedUser)}</span>` });
-      const className = `${this.props['className']} e2e-idea-card ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }`;
+      const className = `${this.props['className']} e2e-idea-card ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }`;
 
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`} className={className}>
