@@ -8,7 +8,7 @@ import SignIn from 'components/SignIn';
 import SignInUpBanner from 'components/SignInUpBanner';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -55,7 +55,7 @@ const Left = Section.extend`
 
 const Right = Section.extend`
   width: 100%;
-  
+
   ${media.biggerThanMaxTablet`
     padding-left: 50vw;
     overflow: hidden;

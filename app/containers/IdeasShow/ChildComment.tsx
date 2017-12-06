@@ -14,7 +14,8 @@ import { userByIdStream, IUser } from 'services/users';
 
 // i18n
 import T from 'components/T';
-import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative } from 'react-intl';
+import { InjectedIntlProps, FormattedRelative } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style

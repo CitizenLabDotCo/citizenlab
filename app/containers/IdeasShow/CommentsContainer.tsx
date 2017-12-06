@@ -12,7 +12,7 @@ import { commentsForIdeaStream, commentStream, IComments, IComment } from 'servi
 import { mentionsStream, IMention, IMentions } from 'services/mentions';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style

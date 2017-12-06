@@ -21,7 +21,9 @@ import { updateUser, IUser } from 'services/users';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
 // style

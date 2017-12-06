@@ -7,7 +7,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { injectTFunc } from 'components/T/utils';
 import moment from 'moment';
 import messages from './messages';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import TimeControl from './components/TimeControl';
 import IntervalControl from './components/IntervalControl';
 import GenderChart from './components/GenderChart';

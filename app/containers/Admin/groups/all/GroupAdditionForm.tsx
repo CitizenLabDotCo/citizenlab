@@ -4,7 +4,7 @@ import * as Rx from 'rxjs';
 import * as _ from 'lodash';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from './messages';
 

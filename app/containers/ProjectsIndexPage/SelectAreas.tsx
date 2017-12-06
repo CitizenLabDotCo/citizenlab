@@ -12,7 +12,9 @@ import { areasStream, IAreas } from 'services/areas';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
 type Props = {
@@ -65,7 +67,7 @@ class SelectAreas extends React.PureComponent<Props & InjectedIntlProps, State> 
 
   handleOnChange = (selectedAreas: string[]) => {
     let areas: string[] = [];
-    
+
     if (_.isString(selectedAreas)) {
       areas = [selectedAreas];
     } else if (_.isArray(selectedAreas) && !_.isEmpty(selectedAreas)) {

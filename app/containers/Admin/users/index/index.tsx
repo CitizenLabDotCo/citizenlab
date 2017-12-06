@@ -7,7 +7,7 @@ import styled from 'styled-components';
 // components
 import Row from './Row';
 import { Table, Input } from 'semantic-ui-react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import Pagination from 'components/admin/Pagination';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
 import ExportLabel from 'components/admin/ExportLabel';
