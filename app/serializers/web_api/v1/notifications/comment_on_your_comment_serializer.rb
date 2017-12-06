@@ -1,26 +1,23 @@
 class WebApi::V1::Notifications::CommentOnYourCommentSerializer < WebApi::V1::Notifications::NotificationSerializer
 
-  belongs_to :user, serializer: WebApi::V1::UserSerializer
+  belongs_to :initiating_user, serializer: WebApi::V1::UserSerializer
   belongs_to :idea, serializer: WebApi::V1::IdeaSerializer
   belongs_to :comment, serializer: WebApi::V1::CommentSerializer  
   belongs_to :project, serializer: WebApi::V1::ProjectSerializer
 
-  attributes :user_first_name, :user_last_name, :user_slug, :idea_title
+  attributes :initiating_user_first_name, :initiating_user_last_name, :initiating_user_slug, :idea_title
 
-  def user
-    object.recipient
+
+  def initiating_user_first_name
+    object.initiating_user&.first_name
   end
 
-  def user_first_name
-    object.recipient&.first_name
+  def initiating_user_last_name
+    object.initiating_user&.last_name
   end
 
-  def user_last_name
-    object.recipient&.last_name
-  end
-
-  def user_slug
-    object.recipient&.slug
+  def initiating_user_slug
+    object.initiating_user&.slug
   end
 
   def idea_title

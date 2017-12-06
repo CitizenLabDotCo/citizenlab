@@ -41,11 +41,11 @@
             "$ref": "#/definitions/multiloc_string"
           },
           "header_title": {
-            "description": "The main title shown on the homepage (max 35 characters)",
+            "description": "The main title shown on the homepage (max 45 characters)",
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 35}" }.join(",") %>
+              <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 45}" }.join(",") %>
             }
           },
           "header_slogan": {

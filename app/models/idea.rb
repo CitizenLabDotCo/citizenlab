@@ -21,14 +21,16 @@ class Idea < ApplicationRecord
   has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
   belongs_to :idea_status
   has_many :activities, as: :item
+
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
+  has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
-  validates :author, presence: true, unless: :draft?
+  validates :author, presence: true, unless: :draft?, on: :create
   validates :author_name, presence: true, unless: :draft?
   validates :idea_status, presence: true, unless: :draft?
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }

@@ -36,13 +36,4 @@ class GroupPolicy < ApplicationPolicy
     user && user.admin?
   end
 
-  def permitted_attributes
-    if user&.admin?
-      [ title_multiloc: I18n.available_locales
-      ]
-    else
-      []
-    end
-  end
-
 end
