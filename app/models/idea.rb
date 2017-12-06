@@ -69,7 +69,7 @@ class Idea < ApplicationRecord
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
   TREND_NUM_UPVOTES = 5
   TREND_NUM_COMMENTS = 5
-  TREND_SINCE_ACTIVITY = 10 * 24 * 60 * 60 # 10 days
+  TREND_SINCE_ACTIVITY = 100 * 24 * 60 * 60 # 100 days
   scope :order_trending, (Proc.new do |direction|
     direction ||= :desc
     order(<<~EOS
@@ -89,8 +89,8 @@ class Idea < ApplicationRecord
 
   scope :published, -> {where publication_status: 'published'}
 
-  def order_trending_beta
-    Idea.all.sort_by { |idea| idea.trending_score }
+  def self.order_trending_beta
+    Idea.unscoped.all.sort_by { |idea| idea.trending_score }.reverse
   end
 
   def location_point_geojson= geojson_point
@@ -115,31 +115,43 @@ class Idea < ApplicationRecord
   end
 
   def trending_score
+    upvotes_ago = activity_ago upvotes.select { |v| author && v.user && (v.user.id == author.id) }
+    comments_ago = activity_ago comments.select { |c| author && c.author && (c.author.id == author.id) }
+    score = trending_score_formula (upvotes_count - downvotes_count), upvotes_ago, comments_ago
     if (upvotes_count - downvotes_count) < 0
-      return 0.0
+      return -1 / score
     end
     if idea_status.code == 'rejected'
-      return 0.0
+      return -1 / score
     end
-    upvotes_ago = activity_ago upvotes
-    comments_ago = activity_ago comments
     if [upvotes_ago.first, comments_ago.first].min > TREND_SINCE_ACTIVITY
-      return 0.0
+      return -1 / score
     end
+    score
+  end
 
-    1.0 / ([upvotes_ago.first, comments_ago.first].min)
+  def trending_score_formula votes_diff, upvotes_ago, comments_ago
+    [(1 + votes_diff), 1].max / (mean(upvotes_ago) + mean(comments_ago))
   end
 
   def activity_ago iteratables
-    iteratables.map{ |obj| Time.now.to_i - obj.created_at.to_i }
-               .sort
-               .take_and_fill TREND_NUM_COMMENTS, (Time.now.to_i - published_at.to_i)
+    take_and_fill iteratables.map{ |obj| Time.now.to_i - obj.created_at.to_i }.sort,
+                  TREND_NUM_COMMENTS, 
+                  (Time.now.to_i - published_at.to_i)
   end
 
   def take_and_fill arr, n, default
     taken = arr.take n
     fill = Array.new (n - taken.size), default
     taken.concat fill
+  end
+
+  def mean arr
+    if arr.size == 0
+      0
+    else
+      arr.inject{ |sum, el| sum + el }.to_f / arr.size
+    end
   end
 
   def generate_slug
