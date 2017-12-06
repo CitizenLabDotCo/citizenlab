@@ -51,6 +51,8 @@ const ExportLabelsContainer = styled.div`
 
   .no-padding-right button {
     padding-right: 0;
+    padding-top: .25em;
+    padding-bottom: .25em;
   }
 `;
 

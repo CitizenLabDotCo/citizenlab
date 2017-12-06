@@ -17,6 +17,7 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // style
 import styled from 'styled-components';
+import { color, fontSize } from 'utils/styleUtils';
 
 // utils
 import { convertUrlToFileObservable } from 'utils/imageTools';
@@ -40,8 +41,8 @@ const StyledLabel = styled(Label)`
 `;
 
 const CharCount = styled.div`
-  color: #333;
-  font-size: 15px;
+  color: ${color('label')};
+  font-size: ${fontSize('small')};
   font-weight: 400;
 
   &.error {
@@ -82,7 +83,7 @@ interface IAttributesDiff {
 }
 
 type Props  = {
-  intl: InjectedIntl;
+  intl: InjectedIntl;
   lang: string;
   tFunc: Function;
 };
