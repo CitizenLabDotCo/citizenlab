@@ -8,7 +8,7 @@ interface Options {
   saved: boolean;
 }
 
-export default function getSubmitState<DiffType>({ errors, saved, diff }: Options & {diff: DiffType}): 'disabled' | 'enabled' | 'error' | 'success' {
+export default function getSubmitState<DiffType>({ errors, saved, diff }: Options & {diff: DiffType}): 'disabled' | 'enabled' | 'error' | 'success' {
   if (errors && !isEmpty(errors)) {
     return 'error';
   }

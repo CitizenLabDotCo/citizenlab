@@ -9,10 +9,16 @@ import 'react-dates/lib/css/_datepicker.css';
 const Wrapper = styled.div`
   display: flex;
   position: relative;
+
+  .SingleDatePickerInput {
+    border-radius: 5px 0 0 5px;
+    overflow: hidden;
+  }
 `;
 
 const TimeWrapper = styled.div`
   align-items: center;
+  border-radius: 0 5px 5px 0;
   border: 1px solid #dbdbdb;
   color: #484848;
   display: flex;

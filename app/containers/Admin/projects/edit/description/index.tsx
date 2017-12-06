@@ -11,7 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Services
-import { projectBySlugStream, updateProject,  IProjectData, IUpdatedProjectProperties } from 'services/projects';
+import { projectBySlugStream, updateProject,  IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 
@@ -39,7 +39,7 @@ interface Props {
 
 interface State {
   loading: boolean;
-  data: IProjectData | { id: null, attributes: {}, relationships: { areas: {data} }};
+  data: IProjectData | { id: null, attributes: {}, relationships: { areas: {data} }};
   diff: IUpdatedProjectProperties;
   errors: {
     [fieldName: string]: API.Error[]
