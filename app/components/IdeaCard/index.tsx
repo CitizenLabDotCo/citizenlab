@@ -95,10 +95,6 @@ const IdeaAuthor = styled.div`
   font-weight: 300;
   line-height: 20px;
   margin-top: 12px;
-
-  .deleted-user {
-    font-style: italic;
-  }
 `;
 
 const AuthorLink = styled.div`

@@ -250,10 +250,6 @@ const AuthorName = styled(Link) `
     font-size: 14px;
     line-height: 18px;
   `}
-
-  .deleted-user {
-    font-style: italic;
-  }
 `;
 
 const TimeAgo = styled.div`
