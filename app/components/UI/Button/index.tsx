@@ -14,7 +14,6 @@ const StyledLink = styled(Link)``;
 const StyledA = styled.a``;
 
 const ButtonText = styled.div`
-  font-weight: 400;
   margin: 0;
   margin-top: -1px;
   padding: 0;
@@ -73,6 +72,7 @@ function setFillColor(color) {
 
 const Container: any = styled.div`
   user-select: none;
+  font-weight: 400;
 
   * {
     user-select: none;
