@@ -137,8 +137,8 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
 
       currentTenant$.switchMap((currentTenant) => {
         return Rx.Observable.combineLatest(
-          convertUrlToFileObservable(_.get(currentTenant, 'data.attributes.logo.large')),
-          convertUrlToFileObservable(_.get(currentTenant, 'data.attributes.header_bg.large')),
+          convertUrlToFileObservable(currentTenant.data.attributes.logo.large),
+          convertUrlToFileObservable(currentTenant.data.attributes.header_bg.large),
         ).map(([currentTenantLogo, currentTenantHeaderBg]) => ({
           currentTenant,
           currentTenantLogo,
