@@ -9,6 +9,8 @@ class WebApi::V1::IdeasController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
+    trending_idea_service = TrendingIdeaService.new
+
     @ideas = @ideas.with_some_topics(params[:topics]) if params[:topics].present?
     @ideas = @ideas.with_some_areas(params[:areas]) if params[:areas].present?
     @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
@@ -19,6 +21,9 @@ class WebApi::V1::IdeasController < ApplicationController
       @ideas = @ideas.where(publication_status: params[:publication_status])
     else
       @ideas = @ideas.where(publication_status: 'published')
+    end
+    if params[:filter_trending] == 'true'
+      @ideas = 
     end
 
 

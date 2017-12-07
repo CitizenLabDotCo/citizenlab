@@ -130,6 +130,10 @@ class Idea < ApplicationRecord
     score
   end
 
+  def trending? score=trending_score
+    trending_score >= 0
+  end
+
   def trending_score_formula votes_diff, upvotes_ago, comments_ago
     [(1 + votes_diff), 1].max / (mean(upvotes_ago) + mean(comments_ago))
   end
