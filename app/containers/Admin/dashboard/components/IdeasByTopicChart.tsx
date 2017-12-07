@@ -72,7 +72,7 @@ class IdeasByTimeChart extends React.PureComponent<Props, State> {
 
   render() {
     return (
-      <ResponsiveContainer width="100%" height={this.state.serie && (this.state.serie.length * 26)}>
+      <ResponsiveContainer width="100%" height={this.state.serie && (this.state.serie.length * 30)}>
         <BarChart data={this.state.serie} layout="vertical">
           <Bar
             dataKey="value"
