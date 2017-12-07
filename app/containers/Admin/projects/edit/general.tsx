@@ -175,7 +175,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                   return Rx.Observable.combineLatest(
                     projectImages.data.map((projectImage) => {
                       return convertUrlToFileObservable(projectImage.attributes.versions.large).map((projectImageFile) => {
-                        projectImageFile['projectImageId'] = projectImage.id;
+                        projectImageFile && (projectImageFile['projectImageId'] = projectImage.id);
                         return projectImageFile;
                       });
                     })
