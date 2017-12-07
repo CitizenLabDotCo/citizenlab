@@ -19,9 +19,14 @@ namespace :migrate do
     idea_statuses_mapping = migration_settings['idea_statuses_mapping'] || {}
 
     host = migration_settings['host']
-    Tenant.where(host: host)&.first&.destroy
+    prev_tenant = Tenant.where(host: host)&.first
+    keep_settings = nil
+    if prev_tenant
+      keep_settings = prev_tenant.settings
+      prev_tenant.destroy
+    end
     client = connect(platform: platform, password: password)
-    create_tenant(platform, host, client['settings'].find.first, client['meteor_accounts_loginServiceConfiguration'], migration_settings, locales_mapping)
+    create_tenant(platform, host, client['settings'].find.first, client['meteor_accounts_loginServiceConfiguration'], migration_settings, locales_mapping, keep_settings=keep_settings)
     Apartment::Tenant.switch(host.gsub '.', '_') do
       TenantTemplateService.new.apply_template 'base'
     
@@ -124,7 +129,7 @@ namespace :migrate do
   end
 
 
-  def create_tenant platform, host, s, m, migration_settings, locales_mapping
+  def create_tenant platform, host, s, m, migration_settings, locales_mapping, keep_settings=nil
     fb_login = m.find({ service: 'facebook' }).first
     d = {
       core: {
@@ -170,7 +175,7 @@ namespace :migrate do
       host: host,
       remote_logo_url: s['logoUrl'],
       remote_header_bg_url: migration_settings['tenant_bg'] || s['bannerImage'],
-      settings: d
+      settings: keep_settings || d
     })
   end
 
