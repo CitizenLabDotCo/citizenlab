@@ -14,6 +14,11 @@ class SideFxTenantService
 
   def after_update tenant, current_user
     LogActivityJob.perform_later(tenant, 'changed', current_user, tenant.updated_at.to_i)
+    
+    if tenant.host_previously_changed?
+      LogActivityJob.perform_later(tenant, 'changed_host', current_user, tenant.updated_at.to_i)
+    end
+
   end
 
 end
