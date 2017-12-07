@@ -245,9 +245,6 @@ namespace :migrate do
         name_pts = username.split '_'
       end
       if name_pts.size < 2
-        name_pts = username.split '.'
-      end
-      if name_pts.size < 2
         name_pts = username.split '-'
       end
       if name_pts.size >= 2
