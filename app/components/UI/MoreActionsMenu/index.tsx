@@ -6,6 +6,21 @@ import Tooltip from '../Tooltip';
 import Button from '../Button';
 import { IconNames } from '../Icon';
 
+// Styling
+import styled from 'styled-components';
+
+const Toggle = styled(Button)`
+  .Button {
+    font-weight: 300;
+    padding-left: 0;
+    padding-right: 0;
+  }
+`;
+
+const Action = styled(Button)`
+
+`;
+
 // Typing
 interface Props {
   actions: {
@@ -38,10 +53,10 @@ export default class MoreActions extends React.Component<Props, State> {
   render () {
     return (
       <div>
-        <Button style="text" icon="more_actions_horizontal" onClick={this.toggleTooltip}>More actions</Button>
+        <Toggle style="text" icon="more_actions_horizontal" onClick={this.toggleTooltip}>More actions</Toggle>
         <Tooltip visible={this.state.visible} hideTooltip={this.hideTooltip}>
           {this.props.actions.map((action) => (
-            <Button
+            <Action
               style="text"
               key={action.label}
               onClick={action.handler}
