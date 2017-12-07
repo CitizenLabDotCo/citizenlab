@@ -40,7 +40,7 @@ export function convertBlobToFile(blob: Blob, filename: string) {
   return new File([blob], filename, { lastModified: Date.now() });
 }
 
-export async function convertUrlToFile(imageUrl: string) {
+export async function convertUrlToFile(imageUrl: string | null): Promise<File | null> {
   // We don't cache this, to deal with CORS issues.
   // https://bugs.chromium.org/p/chromium/issues/detail?id=260239
   // https://stackoverflow.com/questions/26352083/chrome-cors-cache-requesting-same-file-from-two-different-origins
@@ -54,6 +54,6 @@ export async function convertUrlToFile(imageUrl: string) {
   return convertBlobToFile(blob, filename);
 }
 
-export function convertUrlToFileObservable(imageUrl: string) {
+export function convertUrlToFileObservable(imageUrl: string | null) {
   return Rx.Observable.fromPromise(convertUrlToFile(imageUrl));
 }

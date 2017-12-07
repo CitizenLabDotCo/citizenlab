@@ -23,6 +23,7 @@ import IdeaMeta from './IdeaMeta';
 import Unauthenticated from './Unauthenticated';
 import IdeaMap from './IdeaMap';
 import Button from 'components/UI/Button';
+import UserName from 'components/UI/UserName';
 
 // services
 import { localeStream } from 'services/locale';
@@ -249,10 +250,6 @@ const AuthorName = styled(Link) `
     font-size: 14px;
     line-height: 18px;
   `}
-
-  .deleted-user {
-    font-style: italic;
-  }
 `;
 
 const TimeAgo = styled.div`
@@ -614,10 +611,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                     <AuthorAvatar userId={authorId} size="small" onClick={authorId ? this.goToUserProfile : () => {}} />
                     <AuthorMeta>
                       <AuthorName to={ideaAuthor ?  `/profile/${ideaAuthor.data.attributes.slug}` :  ''}>
-                        {(ideaAuthor && firstName && lastName)
-                          ? <FormattedMessage {...messages.byAuthor} values={{ firstName, lastName }} />
-                          : <span dangerouslySetInnerHTML={{ __html: formatMessage(messages.byDeletedAuthor, { deletedUser: `<span class="deleted-user">${formatMessage(messages.deletedUser)}</span>` }) }} />
-                        }
+                        <FormattedMessage {...messages.byAuthor} values={{ authorName: <UserName user={ideaAuthor} /> }} />
                       </AuthorName>
                       {createdAt &&
                         <TimeAgo>
