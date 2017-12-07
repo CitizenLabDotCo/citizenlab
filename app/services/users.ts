@@ -11,7 +11,7 @@ export interface IUserData {
   type: string;
   attributes: {
     first_name: string;
-    last_name: string;
+    last_name: string | null;
     slug: string;
     locale: string;
     avatar: {
