@@ -58,10 +58,6 @@ const AuthorName = styled(Link)`
   }
 `;
 
-const DeletedUser = styled.span`
-  font-style: italic;
-`;
-
 const TimeAgo = styled.div`
   color: #999;
   font-size: 13px;
@@ -130,21 +126,11 @@ class Author extends React.PureComponent<Props & InjectedIntlProps, State> {
     const firstName = author ?  author.data.attributes.first_name : null;
     const lastName = author ?  author.data.attributes.last_name : null;
 
-    let authorNameComponent;
-
-    if (author) {
-      authorNameComponent = (
-        <AuthorName to={`/profile/${author.data.attributes.slug}`}>
-          <UserName user={author} />
-        </AuthorName>
-      );
-    } else {
-      authorNameComponent = (
-        <DeletedUser>
-          <UserName user={author} />
-        </DeletedUser>
-      );
-    }
+    const authorNameComponent = (
+      <AuthorName to={author ? `/profile/${author.data.attributes.slug}` : ''}>
+        <UserName user={author} />
+      </AuthorName>
+    );
 
     return (
       <AuthorContainer className={className}>

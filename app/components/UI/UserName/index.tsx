@@ -1,19 +1,30 @@
+// Libraries
 import * as React from 'react';
 
+// I18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { IUser } from 'services/users';
-
 import messages from './messages';
 
+// Style
+import styled from 'styled-components';
+
+const User = styled.span`
+  &.deleted-user {
+    font-style: italic;
+  }
+`;
+
+// Typings
+import { IUser } from 'services/users';
 interface Props {
   user: IUser | null;
 }
 
 const UserName: React.SFC<Props> = ({ user }) => {
   if (!user) {
-    return (<span className="deleted-user"><FormattedMessage {...messages.deletedUser} /></span>);
+    return (<User className="deleted-user"><FormattedMessage {...messages.deletedUser} /></User>);
   } else {
-    return (<span>{`${user.data.attributes.first_name} ${user.data.attributes.last_name || ''}`}</span>);
+    return (<User>{`${user.data.attributes.first_name} ${user.data.attributes.last_name || ''}`}</User>);
   }
 };
 
