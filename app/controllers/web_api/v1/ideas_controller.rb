@@ -23,7 +23,7 @@ class WebApi::V1::IdeasController < ApplicationController
       @ideas = @ideas.where(publication_status: 'published')
     end
     if params[:filter_trending] == 'true'
-      @ideas = 
+      @ideas = trending_idea_service.filter_trending @ideas
     end
 
 
@@ -33,9 +33,11 @@ class WebApi::V1::IdeasController < ApplicationController
       when "-new"
         @ideas.order_new(:asc)
       when "trending"
-        @ideas.order_trending_beta # .map{|i| puts "#{i.title_multiloc['nl']}: #{i.trending_score}"; i}
+        trending_idea_service.sort_trending @ideas
+        # @ideas.order_trending_beta # .map{|i| puts "#{i.title_multiloc['nl']}: #{i.trending_score}"; i}
       when "-trending"
-        @ideas.order_trending(:asc)
+        trending_idea_service.sort_trending(@ideas).reverse
+        # @ideas.order_trending(:asc)
       when "popular"
         @ideas.order_popular
       when "-popular"
