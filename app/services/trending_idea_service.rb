@@ -35,15 +35,23 @@ class TrendingIdeaService
   end
 
   def sort_trending ideas=Idea.all
-    cache_state(ideas) if !(@upvotes_ago && @comments_ago && @are_trending)
-    ideas.sort_by do |i|
-      score = trending_score_formula (i.upvotes_count - i.downvotes_count), @upvotes_ago[i.id], @comments_ago[i.id]
-      if @are_trending[i.id]
-        score
-      else
-        -1 / score
-      end
-    end.reverse 
+    ideas.select('ideas.*, (ideas.downvotes_count < 2) AS is_trending, ideas.upvotes_count AS score')
+         .order('is_trending DESC, score DESC')
+    # ideas.left_outer_joins(ideas.select('ideas.id, (ideas.upvotes_count > 2) AS is_trending, ideas.upvotes_count AS score')).order('is_trending DESC, score DESC')
+
+    # trending_ids = filter_trending(ideas).map(&:id)
+    # trending = ideas.where(id: trending_ids)
+    # not_trending = ideas.where.not(id: trending_ids)
+
+    #cache_state(ideas) if !(@upvotes_ago && @comments_ago && @are_trending)
+    #ideas.sort_by do |i|
+    #  score = trending_score_formula (i.upvotes_count - i.downvotes_count), @upvotes_ago[i.id], @comments_ago[i.id]
+    #  if @are_trending[i.id]
+    #    score
+    #  else
+    #    -1 / score
+    #  end
+    #end.reverse 
   end
 
 
