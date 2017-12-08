@@ -696,12 +696,12 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                     }
                   ]}
                 />
-                <Modal opened={true} close={console.log}>
-                  <SpamReportForm />
-                </Modal>
               </RightColumnDesktop>
             </Content>
           </IdeaContainer>
+          <Modal opened={true} close={console.log}>
+            <SpamReportForm />
+          </Modal>
         </Container>
       );
     }
