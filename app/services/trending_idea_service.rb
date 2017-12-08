@@ -16,8 +16,14 @@ class TrendingIdeaService
 
   def filter_trending ideas=Idea.all
     # byebug
-    ideas = ideas.includes(:votes, :comments, :idea_status)
+    ideas = ideas.includes(:idea_status)
     ideas = ideas.where.not('idea_statuses.code' => 'rejected')
+                 .where.not('(ideas.upvotes_count - ideas.downvotes_count) < 0')
+                 .left_outer_joins(:comments).distinct.select('idea_id, MAX(created_at) AS comment_created_at_min').group('idea_id') # .left_outer_joins('SELECT MAX(created_at) as comment_created_at_min, idea_id FROM comments GROUP BY idea_id')
+                 .where("GREATEST(comment_created_at_min, ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}'")
+                 # .group('comments.idea_id').having("coalesce(MAX(comments.created_at),ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}'")
+                 # ([@upvotes_ago[idea.id].first, @comments_ago[idea.id].first].min > TREND_SINCE_ACTIVITY))
+
     ideas
     
     # cache_state(ideas) if !(@upvotes_ago && @comments_ago && @are_trending)
