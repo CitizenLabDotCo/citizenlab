@@ -24,6 +24,8 @@ import Unauthenticated from './Unauthenticated';
 import IdeaMap from './IdeaMap';
 import Button from 'components/UI/Button';
 import MoreActions from 'components/UI/MoreActionsMenu';
+import SpamReportForm from 'containers/SpamReport';
+import Modal from 'components/UI/Modal';
 
 // services
 import { localeStream } from 'services/locale';
@@ -436,6 +438,13 @@ const GiveOpinion = styled.div`
   `}
 `;
 
+const StyledModal = styled(Modal)`
+  .modal-content {
+    height: 50vh;
+    margin-top: calc(50vh - 25vh);
+  }
+`;
+
 type Props = {
   location: Location;
   ideaId: string;
@@ -687,6 +696,9 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                     }
                   ]}
                 />
+                <Modal opened={true} close={console.log}>
+                  <SpamReportForm />
+                </Modal>
               </RightColumnDesktop>
             </Content>
           </IdeaContainer>
