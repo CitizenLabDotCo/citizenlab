@@ -329,6 +329,7 @@ const RightColumnDesktop: any = RightColumn.extend`
 const MetaContent = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 1rem;
 `;
 
 const VoteLabel = styled.div`

@@ -9,6 +9,11 @@ import { IconNames } from '../Icon';
 // Styling
 import styled from 'styled-components';
 
+const Wrapper = styled.div`
+  margin-top: 50px;
+  position: relative;
+`;
+
 const Toggle = styled(Button)`
   .Button {
     font-weight: 300;
@@ -52,9 +57,9 @@ export default class MoreActions extends React.Component<Props, State> {
 
   render () {
     return (
-      <div>
+      <Wrapper>
         <Toggle style="text" icon="more_actions_horizontal" onClick={this.toggleTooltip}>More actions</Toggle>
-        <Tooltip visible={this.state.visible} hideTooltip={this.hideTooltip}>
+        <Tooltip visible={this.state.visible} hideTooltip={this.hideTooltip} theme="dark" position="right">
           {this.props.actions.map((action) => (
             <Action
               style="text"
@@ -62,10 +67,11 @@ export default class MoreActions extends React.Component<Props, State> {
               onClick={action.handler}
               icon={action.icon}
               text={action.label}
+              circularCorners={false}
             />
           ))}
         </Tooltip>
-      </div>
+      </Wrapper>
     );
   }
 
