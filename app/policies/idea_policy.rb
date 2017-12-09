@@ -70,7 +70,7 @@ class IdeaPolicy < ApplicationPolicy
       area_ids: []
     ]
     if user&.admin?
-      [:idea_status_id] + shared
+      [:idea_status_id] + shared + [phase_ids: []]
     else
       shared
     end

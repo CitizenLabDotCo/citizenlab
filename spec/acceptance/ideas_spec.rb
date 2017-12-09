@@ -20,6 +20,7 @@ resource "Ideas" do
     parameter :topics, 'Filter by topics (OR)', required: false
     parameter :areas, 'Filter by areas (OR)', required: false
     parameter :project, 'Filter by project', required: false
+    parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
@@ -109,6 +110,20 @@ resource "Ideas" do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id
+    end
+
+    example "List all ideas in a phase of a project" do
+      pr = create(:project_with_phases)
+      ph1 = pr.phases.first
+      ph2 = pr.phases.second
+      i1 = create(:idea, phases: [ph1], project: pr)
+      i2 = create(:idea, phases: [ph2], project: pr)
+      i3 = create(:idea, phases: [ph1, ph2], project: pr)
+
+      do_request(phase: ph2.id)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].map{|d| d[:id]}).to match [i2.id, i3.id]
     end
 
     example "List all ideas with a certain status" do
@@ -208,6 +223,7 @@ resource "Ideas" do
 
     with_options scope: :idea do
       parameter :project_id, "The idea of the project that hosts the idea", extra: ""
+      parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
       parameter :idea_status_id, "The status of the idea, only allowed for admins", extra: "Defaults to status with code 'proposed'"
       parameter :publication_status, "Password", required: true, extra: "One of #{Idea::PUBLICATION_STATUSES.join(",")}"
@@ -237,6 +253,7 @@ resource "Ideas" do
       example_request "Creating a published idea" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:project,:data, :id)).to eq project_id
         expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match topic_ids
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
@@ -269,6 +286,23 @@ resource "Ideas" do
       end
     end
 
+    context "when admin" do
+      before do
+        @user = create(:admin)
+        token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      let (:project) { create(:project_with_phases )}
+      let(:phase_ids) { project.phases.take(2).map(&:id) }
+      let(:phase_ids) { project.phases.take(2).map(&:id) }
+      example_request "Creating an idea in specific phases" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match phase_ids
+      end
+      
+    end
   end
 
 
@@ -279,6 +313,7 @@ resource "Ideas" do
 
     with_options scope: :idea do
       parameter :project_id, "The idea of the project that hosts the idea", extra: ""
+      parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
       parameter :idea_status_id, "The status of the idea, only allowed for admins"
       parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES.join(', ')}"
@@ -357,12 +392,31 @@ resource "Ideas" do
         header 'Authorization', "Bearer #{token}"
       end
 
-      let(:idea_status_id) { create(:idea_status).id }
+      describe do
+        let(:idea_status_id) { create(:idea_status).id }
 
-      example_request "Change the idea status (as an admin)" do
-        expect(status).to be 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
+        example_request "Change the idea status (as an admin)" do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
+        end
+      end
+
+      describe do
+        before do
+          @project = create(:project_with_phases)
+          @idea.project = @project
+          @idea.phases = [@project.phases.first]
+          @idea.save
+        end
+
+        let(:phase_ids) { @project.phases.last(2).map(&:id) }
+
+        example_request "Change the idea phases (as an admin)" do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match phase_ids
+        end
       end
     end
   end
