@@ -86,6 +86,10 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
           url: `${baseTabsUrl}/description`,
         },
         {
+          label: this.props.intl.formatMessage(messages.ideasTab),
+          url: `${baseTabsUrl}/ideas`,
+        },
+        {
           label: this.props.intl.formatMessage(messages.phasesTab),
           url: `${baseTabsUrl}/timeline`,
         },

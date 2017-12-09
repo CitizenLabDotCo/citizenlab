@@ -103,6 +103,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.descriptionTab',
     defaultMessage: 'Description',
   },
+  ideasTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideasTab',
+    defaultMessage: 'Ideas',
+  },
   phasesTab: {
     id: 'app.containers.AdminPage.ProjectEdit.phasesTab',
     defaultMessage: 'Timeline',
