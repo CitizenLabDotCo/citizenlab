@@ -91,6 +91,10 @@ export const injectIdeasLoader = <TOriginalProps extends {}>(WrappedComponent: R
         queryParams.project = this.state.ideaProjectFilter;
       }
 
+      if (this.state.ideaPhaseFilter) {
+        queryParams.phase = this.state.ideaPhaseFilter;
+      }
+
       if (this.state.ideaTopicsFilter) {
         queryParams['topics[]'] = this.state.ideaTopicsFilter;
       }

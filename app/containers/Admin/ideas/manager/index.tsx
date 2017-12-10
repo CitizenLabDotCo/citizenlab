@@ -13,17 +13,19 @@ import { projectsStream, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
 import { injectTFunc } from 'components/T/utils';
 import { injectIdeasLoader, InjectedIdeaLoaderProps } from './ideasLoader';
-import { InjectedResourceLoaderProps, injectResources } from './resourcesLoader';
+import { InjectedResourcesLoaderProps, injectResources } from './resourcesLoader';
+import { InjectedNestedResourceLoaderProps, injectNestedResources } from './nestedResourcesLoader';
 
 // Components
 import Button from 'components/UI/Button';
-import Sidebar from './components/Sidebar';
-import Row from './Row';
+import FilterSidebar from './components/FilterSidebar';
+import InfoSidebar from './components/InfoSidebar';
+import Row from './components/Row';
 import { Table, Input, Menu, Dropdown, Grid } from 'semantic-ui-react';
 
 import messages from './messages';
 
-type Props = InjectedIdeaLoaderProps & InjectedResourceLoaderProps<IProjectData> & InjectedResourceLoaderProps<ITopicData> & InjectedResourceLoaderProps<IIdeaStatusData> & {
+type Props = InjectedIdeaLoaderProps & InjectedResourcesLoaderProps<IProjectData> & InjectedResourcesLoaderProps<ITopicData> & InjectedResourcesLoaderProps<IIdeaStatusData> & InjectedNestedResourceLoaderProps<IPhaseData> & {
   tFunc: ({}) => string;
 };
 
@@ -32,9 +34,6 @@ type State = {
 };
 
 class IdeaManagerPresentation extends React.PureComponent<Props, State> {
-
-  topicsObservable: Rx.Subscription;
-  ideaStatusesObservable: Rx.Subscription;
 
   constructor(props) {
     super(props);
@@ -88,20 +87,37 @@ class IdeaManagerPresentation extends React.PureComponent<Props, State> {
     deleteIdea(idea.id);
   }
 
-  handleSelectIdea = (idea) => () => {
+  selectIdea = (idea) => () => {
     const selectedIdeas = _.clone(this.state.selectedIdeas);
     selectedIdeas[idea.id] = true;
     this.setState({ selectedIdeas });
   }
 
-  handleToggleSelectIdea = (idea) => () => {
-    const selectedIdeas = _.clone(this.state.selectedIdeas);
-    if (selectedIdeas[idea.id]) {
-      delete selectedIdeas[idea.id];
-    } else {
-      selectedIdeas[idea.id] = true;
-    }
+  unselectIdea = (idea) => () => {
+    const selectedIdeas = _.omit(this.state.selectedIdeas, [idea.id]);
     this.setState({ selectedIdeas });
+  }
+
+  toggleSelectIdea = (idea) => () => {
+    if (this.state.selectedIdeas[idea.id]) {
+      this.unselectIdea(idea)();
+    } else {
+      this.selectIdea(idea)();
+    }
+  }
+
+  singleSelectIdea = (idea) => () => {
+    this.setState({
+      selectedIdeas: { [idea.id]: true },
+    });
+  }
+
+  clearIdeaSelection = () => () => {
+    this.setState({ selectedIdeas: {} });
+  }
+
+  isAnythingSelected = () => {
+    return !_.isEmpty(this.state.selectedIdeas);
   }
 
   topicOptions = () => {
@@ -125,9 +141,16 @@ class IdeaManagerPresentation extends React.PureComponent<Props, State> {
     }));
   }
 
+  ideaSelectionToIdeas = () => {
+    return _.filter(this.props.ideas, (i) => this.state.selectedIdeas[i.id]);
+  }
+
+
   render() {
     const { ideaSortAttribute, ideaSortDirection, ideaCurrentPageNumber, ideaLastPageNumber, ideas } = this.props;
     const { selectedIdeas } = this.state;
+    const selectedIdeasData = this.ideaSelectionToIdeas();
+    const showInfoSidebar = this.isAnythingSelected();
 
     return (
       <div>
@@ -153,10 +176,17 @@ class IdeaManagerPresentation extends React.PureComponent<Props, State> {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <Grid.Column width={3}>
-              <Sidebar />
+            <Grid.Column width={4}>
+              <FilterSidebar
+                phases={this.props.phases.all}
+                topics={this.props.topics.all}
+                selectedTopics={this.props.ideaTopicsFilter}
+                selectedPhase={this.props.ideaPhaseFilter}
+                onChangePhaseFilter={this.props.onChangePhaseFilter}
+                onChangeTopicsFilter={this.props.onChangeTopicsFilter}
+              />
             </Grid.Column>
-            <Grid.Column width={13}>
+            <Grid.Column width={showInfoSidebar ? 8 : 12}>
               <Table>
                 <Table.Header>
                   <Table.Row>
@@ -196,9 +226,6 @@ class IdeaManagerPresentation extends React.PureComponent<Props, State> {
                         <FormattedMessage {...messages.down} />
                       </SortableTableHeader>
                     </Table.HeaderCell>
-                    <Table.HeaderCell width={1}>
-                      <FormattedMessage {...messages.delete} />
-                    </Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
@@ -207,8 +234,10 @@ class IdeaManagerPresentation extends React.PureComponent<Props, State> {
                       key={idea.id}
                       idea={idea}
                       onDeleteIdea={this.handleDeleteIdea(idea)}
-                      onSelectIdea={this.handleSelectIdea(idea)}
-                      onToggleSelectIdea={this.handleToggleSelectIdea(idea)}
+                      onSelectIdea={this.selectIdea(idea)}
+                      onUnselectIdea={this.unselectIdea(idea)}
+                      onToggleSelectIdea={this.toggleSelectIdea(idea)}
+                      onSingleSelectIdea={this.singleSelectIdea(idea)}
                       selected={selectedIdeas[idea.id]}
                     />
                   )}
@@ -226,6 +255,11 @@ class IdeaManagerPresentation extends React.PureComponent<Props, State> {
                 </Table.Footer>
               </Table>
             </Grid.Column>
+            {showInfoSidebar && <Grid.Column width={4}>
+                <InfoSidebar
+                  ideas={selectedIdeasData}
+                />
+              </Grid.Column>}
           </Grid.Row>
         </Grid>
       </div>
@@ -235,7 +269,8 @@ class IdeaManagerPresentation extends React.PureComponent<Props, State> {
 
 
 export default
-  injectResources(projectsStream, 'projects')(
-    injectResources(topicsStream, 'topics')(
-      injectResources(ideaStatusesStream, 'ideaStatuses')(
-        injectIdeasLoader(injectTFunc(IdeaManagerPresentation)))));
+  injectResources('projects', projectsStream)(
+    injectResources('topics', topicsStream)(
+      injectResources('ideaStatuses', ideaStatusesStream)(
+        injectNestedResources('phases', phasesStream, (props) => props.project && props.project.id)(
+          injectIdeasLoader(injectTFunc(IdeaManagerPresentation))))));
