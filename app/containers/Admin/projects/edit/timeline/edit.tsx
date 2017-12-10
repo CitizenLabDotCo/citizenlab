@@ -30,9 +30,23 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // i18n
 import localize, { injectedLocalized } from 'utils/localize';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { injectTFunc } from 'components/T/utils';
 import messages from './messages';
+
+// Styling
+import styled from 'styled-components';
+
+const PhaseForm = styled.form`
+  .DateRangePicker__picker {
+    z-index: 2;
+  }
+
+  .DateRangePickerInput {
+    border-radius: 5px;
+    overflow: hidden;
+  }
+`;
 
 
 // Component typing
@@ -179,14 +193,14 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
 
         this.setState({ errors, saving: false, saved: false });
       } catch (e) {
-        this.setState({ saving: false, saved: false });
+        this.setState({ saving: false, saved: false });
       }
     });
   }
 
   render() {
     const phaseAttrs = this.state.phase
-    ?  { ...this.state.phase.attributes, ...this.state.attributeDiff }
+    ? { ...this.state.phase.attributes, ...this.state.attributeDiff }
     : { ...this.state.attributeDiff };
 
     const { errors, saved } = this.state;
@@ -201,7 +215,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
 
         </SectionTitle>
 
-        <form onSubmit={this.handleOnSubmit}>
+        <PhaseForm onSubmit={this.handleOnSubmit}>
           <Section>
             <SectionField>
               <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
@@ -256,7 +270,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
               messageSuccess: messages.saveSuccessMessage,
             }}
           />
-        </form>
+        </PhaseForm>
       </div>
     );
   }

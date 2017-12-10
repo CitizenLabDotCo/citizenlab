@@ -14,7 +14,8 @@ import T from 'components/T';
 import { IPageData, pageBySlugStream, LEGAL_PAGES } from 'services/pages';
 import { PageLink, getPageLink } from 'services/pageLink';
 
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 import ContentContainer from 'components/ContentContainer';
@@ -175,7 +176,7 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
       return (
         <ContentContainer>
           <SpinnerContainer>
-            <Spinner color="#84939E" />
+            <Spinner color="#84939E" />
           </SpinnerContainer>
         </ContentContainer>
       );

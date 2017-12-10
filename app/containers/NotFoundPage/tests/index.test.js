@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { shallow } from 'enzyme';
 
 import NotFoundPage from '../index';

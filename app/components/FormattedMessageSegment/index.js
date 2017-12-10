@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { Segment } from 'semantic-ui-react';
 
 function FormattedMessageSegment({ message, values }) {

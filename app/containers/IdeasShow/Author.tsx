@@ -7,12 +7,14 @@ import { Link, browserHistory } from 'react-router';
 
 // components
 import Avatar from 'components/Avatar';
+import UserName from 'components/UI/UserName';
 
 // services
 import { userByIdStream, IUser } from 'services/users';
 
 // i18n
-import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative, FormattedDate } from 'react-intl';
+import { InjectedIntlProps, FormattedRelative, FormattedDate } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -54,10 +56,6 @@ const AuthorName = styled(Link)`
   &:hover {
     text-decoration: underline;
   }
-`;
-
-const DeletedUser = styled.span`
-  font-style: italic;
 `;
 
 const TimeAgo = styled.div`
@@ -128,19 +126,11 @@ class Author extends React.PureComponent<Props & InjectedIntlProps, State> {
     const firstName = author ?  author.data.attributes.first_name : null;
     const lastName = author ?  author.data.attributes.last_name : null;
 
-    let authorNameComponent;
-
-    if (author && firstName && lastName) {
-      authorNameComponent = (
-        <AuthorName to={`/profile/${author.data.attributes.slug}`}>
-          {`${firstName} ${lastName}`}
-        </AuthorName>
-      );
-    } else {
-      authorNameComponent = (
-        <DeletedUser><FormattedMessage {...messages.deletedUser} /></DeletedUser>
-      );
-    }
+    const authorNameComponent = (
+      <AuthorName to={author ? `/profile/${author.data.attributes.slug}` : ''}>
+        <UserName user={author} />
+      </AuthorName>
+    );
 
     return (
       <AuthorContainer className={className}>

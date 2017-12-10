@@ -25,7 +25,8 @@ import { loadCurrentUser } from '../App/actions';
 import sagas from './sagas';
 import { LOAD_CURRENT_USER_REQUEST } from 'utils/auth/constants';
 import { UPDATE_CURRENT_USER_REQUEST, STORE_AVATAR_REQUEST } from 'containers/UsersEditPage/constants';
-import { injectIntl, intlShape } from 'react-intl';
+import { intlShape } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { Message } from 'semantic-ui-react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 

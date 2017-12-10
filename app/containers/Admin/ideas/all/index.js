@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import Pagination from 'components/admin/Pagination';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
 import { ideasStream, updateIdea, deleteIdea } from 'services/ideas';
@@ -51,6 +51,8 @@ const ExportLabelsContainer = styled.div`
 
   .no-padding-right button {
     padding-right: 0;
+    padding-top: .25em;
+    padding-bottom: .25em;
   }
 `;
 

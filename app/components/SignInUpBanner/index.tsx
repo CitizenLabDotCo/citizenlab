@@ -5,7 +5,7 @@ import * as Rx from 'rxjs/Rx';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
 // i18n
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style

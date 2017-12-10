@@ -18,7 +18,8 @@ import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage, injectIntl, InjectedIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntl, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
@@ -219,7 +220,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
 
           await addCommentToComment(ideaId, authUser.data.id, parentId, { [locale]: inputValue });
 
-          this.setState({ 
+          this.setState({
             inputValue: '',
             processing: false
           });
