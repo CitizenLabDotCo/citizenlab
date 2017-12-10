@@ -28,7 +28,7 @@ class FilterSidebarTopics extends React.Component<Props> {
   render() {
     return (
       <Menu secondary={true} vertical={true}>
-        <Menu.Item onClick={this.clearFilter} active={!this.props.selectedTopics}>
+        <Menu.Item onClick={this.clearFilter} active={!this.props.selectedTopics || this.props.selectedTopics.length === 0}>
           All ideas
         </Menu.Item>
         <Divider />
