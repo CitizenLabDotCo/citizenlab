@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 // components
 // import ActionButton from 'components/buttons/action.js';
-import { Table, Icon, Dropdown, Popup, Button } from 'semantic-ui-react';
+import { Table, Icon, Dropdown, Popup, Button, Checkbox } from 'semantic-ui-react';
 import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
@@ -26,15 +26,30 @@ type Props = {
   idea: IIdeaData,
   tFunc: () => string,
   onDeleteIdea: () => void,
+  selected?: boolean,
+  onSelectIdea: () => void,
+  onToggleSelectIdea: () => void,
 };
 
 class Row extends React.PureComponent<Props> {
 
+  onClickRow = (event) => {
+    this.props.onSelectIdea();
+  }
+
+  onClickCheckbox = (event) => {
+    event.stopPropagation();
+    this.props.onToggleSelectIdea();
+  }
+
   render() {
-    const { idea, onDeleteIdea } = this.props;
+    const { idea, onDeleteIdea, selected } = this.props;
     const attrs = idea.attributes;
     return (
-      <Table.Row as={StyledRow}>
+      <Table.Row as={StyledRow} active={selected} onClick={this.onClickRow}>
+        <Table.Cell>
+          <Checkbox checked={selected} onChange={this.onClickCheckbox} />
+        </Table.Cell>
         <Table.Cell>
           <T value={attrs.title_multiloc} />
         </Table.Cell>
