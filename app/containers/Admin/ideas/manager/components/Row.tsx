@@ -28,13 +28,19 @@ type Props = {
   onDeleteIdea: () => void,
   selected?: boolean,
   onSelectIdea: () => void,
+  onUnselectIdea: () => void,
   onToggleSelectIdea: () => void,
+  onSingleSelectIdea: () => void;
 };
 
 class Row extends React.PureComponent<Props> {
 
   onClickRow = (event) => {
-    this.props.onSelectIdea();
+    if (event.ctrlKey) {
+      this.props.onToggleSelectIdea();
+    } else {
+      this.props.onSingleSelectIdea();
+    }
   }
 
   onClickCheckbox = (event) => {
@@ -64,13 +70,6 @@ class Row extends React.PureComponent<Props> {
         <Table.Cell>
           <Icon name="thumbs down" />
           {attrs.downvotes_count}
-        </Table.Cell>
-        <Table.Cell>
-          <Popup
-            trigger={<Button icon="trash" onClick={onDeleteIdea} />}
-            content={<FormattedMessage {...messages.delete} />}
-            position="right center"
-          />
         </Table.Cell>
       </Table.Row>
     );

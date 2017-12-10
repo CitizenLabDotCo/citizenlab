@@ -11,7 +11,7 @@ interface State<IResourceData> {
 }
 
 
-export interface InjectedResourcesLoaderProps<IResourceData> {
+export interface InjectedNestedResourceLoaderProps<IResourceData> {
   [key: string]: {
     all: IResourceData[],
     currentPage: number,
@@ -21,8 +21,12 @@ export interface InjectedResourcesLoaderProps<IResourceData> {
   };
 }
 
-interface TStreamFn<IResources> {
-  (streamParams: IStreamParams<IResources> | null): IStream<IResources>;
+interface IStreamFn<IResources> {
+  (parentId: string, streamParams: IStreamParams<IResources> | null): IStream<IResources>;
+}
+
+interface IParentIdFn {
+  (props: any): string;
 }
 
 interface IIResources<IResourceData> {
@@ -33,8 +37,8 @@ interface IIResources<IResourceData> {
   };
 }
 
-export const injectResources = <IResourceData, IResources extends IIResources<IResourceData>>(propName: string, streamFn: TStreamFn<IResources>) =>
-  <TOriginalProps extends {}>(WrappedComponent: React.ComponentClass<TOriginalProps & InjectedResourcesLoaderProps<IResourceData>>) => {
+export const injectNestedResources = <IResourceData, IResources extends IIResources<IResourceData>>(propName: string, streamFn: IStreamFn<IResources>, parentIdFn: IParentIdFn) =>
+  <TOriginalProps extends {}>(WrappedComponent: React.ComponentClass<TOriginalProps & InjectedNestedResourceLoaderProps<IResourceData>>) => {
     return class ResourceManager extends React.Component<TOriginalProps, State<IResourceData>> {
 
       subscriptions: Rx.Subscription[] = [];
@@ -48,6 +52,16 @@ export const injectResources = <IResourceData, IResources extends IIResources<IR
         };
       }
 
+      componentWillReceiveProps(nextProps) {
+        if (parentIdFn(nextProps) !== parentIdFn(this.props)) {
+          this.setState({
+            resources: [],
+            currentPage: 0,
+            lastPage: 0,
+          }, this.loadMore);
+        }
+      }
+
       componentDidMount() {
         this.loadMore();
       }
@@ -57,20 +71,25 @@ export const injectResources = <IResourceData, IResources extends IIResources<IR
       }
 
       loadMore() {
-        this.subscriptions.push(
-          streamFn({queryParameters: {
-            'page[number]': this.state.currentPage + 1,
-            'page[size]': 24,
-          }}).observable.subscribe((data) => {
-            const currentPage = getPageNumberFromUrl(data && data.links && data.links.self) || 1;
-            const lastPage = getPageNumberFromUrl(data && data.links && data.links.last) || currentPage;
-            this.setState({
-              currentPage,
-              lastPage,
-              resources: this.state.resources.concat(data.data),
-            });
-          })
-        );
+        const parentId = parentIdFn(this.props);
+        if (parentId) {
+          this.subscriptions.push(
+            streamFn(parentId, {
+              queryParameters: {
+                'page[number]': this.state.currentPage + 1,
+                'page[size]': 24,
+              }
+            }).observable.subscribe((data) => {
+              const currentPage = getPageNumberFromUrl(data && data.links && data.links.self) || 1;
+              const lastPage = getPageNumberFromUrl(data && data.links && data.links.last) || currentPage;
+              this.setState({
+                currentPage,
+                lastPage,
+                resources: this.state.resources.concat(data.data),
+              });
+            })
+          );
+        }
       }
 
       hasMore() {
@@ -96,5 +115,5 @@ export const injectResources = <IResourceData, IResources extends IIResources<IR
         );
       }
     };
-};
+  };
 
