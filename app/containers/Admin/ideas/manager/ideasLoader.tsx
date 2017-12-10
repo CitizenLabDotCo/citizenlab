@@ -1,8 +1,5 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import { topicsStream } from 'services/topics';
-import { ideaStatusesStream } from 'services/ideaStatuses';
-import { projectsStream } from 'services/projects';
 import { ideasStream, IIdeaData } from 'services/ideas';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
@@ -51,9 +48,6 @@ export const injectIdeasLoader = <TOriginalProps extends {}>(WrappedComponent: R
   return class IdeaManager extends React.Component<ResultProps, State> {
 
     ideasObservable: Rx.Subscription;
-    topicsObservable: Rx.Subscription;
-    projectsObservable: Rx.Subscription;
-    ideaStatusesObservable: Rx.Subscription;
 
     constructor(props: ResultProps) {
       super(props);
@@ -74,6 +68,10 @@ export const injectIdeasLoader = <TOriginalProps extends {}>(WrappedComponent: R
 
     componentDidMount() {
       this.resubscribeIdeas();
+    }
+
+    componentWillUnmount() {
+      this.ideasObservable.unsubscribe();
     }
 
     resubscribeIdeas() {
