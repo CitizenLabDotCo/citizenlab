@@ -6,7 +6,8 @@ import * as Rx from 'rxjs/Rx';
 import FilterSelector from 'components/FilterSelector';
 
 // i18n
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 type Props = {

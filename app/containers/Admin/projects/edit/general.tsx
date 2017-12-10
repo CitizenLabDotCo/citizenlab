@@ -18,7 +18,8 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // services
@@ -104,7 +105,7 @@ interface State {
   newProjectImages: ImageFile[] | null;
   noTitleError: string | null;
   // noHeaderError: string | null;
-  apiErrors: { [fieldName: string]: API.Error[] };
+  apiErrors: { [fieldName: string]: API.Error[] };
   saved: boolean;
   areas: IAreaData[];
   areaType: 'all' | 'selection';
@@ -174,7 +175,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                   return Rx.Observable.combineLatest(
                     projectImages.data.map((projectImage) => {
                       return convertUrlToFileObservable(projectImage.attributes.versions.large).map((projectImageFile) => {
-                        projectImageFile['projectImageId'] = projectImage.id;
+                        projectImageFile && (projectImageFile['projectImageId'] = projectImage.id);
                         return projectImageFile;
                       });
                     })
@@ -249,7 +250,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }));
   }
 
-  handleHeaderOnAdd = (newHeader: ImageFile) => {    
+  handleHeaderOnAdd = (newHeader: ImageFile) => {
     this.setState((state: State) => ({
       submitState: 'enabled',
       projectAttributesDiff: {

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Icon from 'components/UI/Icon';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
 import { color } from 'utils/styleUtils';
 

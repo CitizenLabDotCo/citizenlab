@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { injectTFunc } from 'components/T/utils';
-import { injectIntl } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import Helmet from 'react-helmet';
 import * as Immutable from 'immutable';
 import { selectProject, selectProjectImages } from './selectors';

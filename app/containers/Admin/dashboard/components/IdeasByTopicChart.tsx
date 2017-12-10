@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { injectIntl } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { injectTFunc } from 'components/T/utils';
@@ -72,7 +72,7 @@ class IdeasByTimeChart extends React.PureComponent<Props, State> {
 
   render() {
     return (
-      <ResponsiveContainer width="100%" height={this.state.serie && (this.state.serie.length * 26)}>
+      <ResponsiveContainer width="100%" height={this.state.serie && (this.state.serie.length * 30)}>
         <BarChart data={this.state.serie} layout="vertical">
           <Bar
             dataKey="value"

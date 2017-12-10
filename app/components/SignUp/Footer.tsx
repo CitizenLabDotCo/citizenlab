@@ -11,7 +11,8 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // i18n
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils

@@ -7,6 +7,7 @@ import { Link, browserHistory } from 'react-router';
 
 // components
 import Avatar from 'components/Avatar';
+import UserName from 'components/UI/UserName';
 
 // services
 import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
@@ -14,7 +15,8 @@ import { userByIdStream, IUser } from 'services/users';
 
 // i18n
 import T from 'components/T';
-import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedRelative } from 'react-intl';
+import { InjectedIntlProps, FormattedRelative } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -155,8 +157,6 @@ export default class ChildComment extends React.PureComponent<Props, State> {
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
       const avatar = author.data.attributes.avatar.medium;
       const slug = author.data.attributes.slug;
-      const firstName = author.data.attributes.first_name;
-      const lastName = author.data.attributes.last_name;
 
       return (
         <CommentContainer className={className}>
@@ -168,7 +168,7 @@ export default class ChildComment extends React.PureComponent<Props, State> {
                 <FormattedMessage
                   {...messages.childCommentAuthor}
                   values={{
-                    authorNameComponent: <AuthorName to={`/profile/${author.data.attributes.slug}`}>{firstName} {lastName}</AuthorName>
+                    authorNameComponent: <AuthorName to={author ? `/profile/${author.data.attributes.slug}` : ''}><UserName user={author} /></AuthorName>
                   }}
                 />
               </AuthorNameContainer>

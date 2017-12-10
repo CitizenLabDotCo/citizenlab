@@ -69,7 +69,7 @@ export default class LocationInput extends React.PureComponent<Props, State> {
     this.props.onChange(value);
   }
 
-  handleSelect = async (adress: string, placeId: string) => {
+  handleSelect = async (adress: string, placeId: string) => {
     this.props.onChange(adress);
     return geocodeByPlaceId(placeId).then(results => results);
   }

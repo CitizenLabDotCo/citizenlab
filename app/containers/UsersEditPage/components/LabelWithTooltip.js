@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Image } from 'semantic-ui-react';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { intlShape } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import styled from 'styled-components';
 import * as tooltipIcon from '../icons/tooltip_tmp.png';

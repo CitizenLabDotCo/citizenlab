@@ -11,7 +11,8 @@ import TabbedResource from 'components/admin/TabbedResource';
 import { browserHistory } from 'react-router';
 
 // Localisation
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // style

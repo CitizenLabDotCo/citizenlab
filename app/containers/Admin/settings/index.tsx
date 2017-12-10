@@ -15,7 +15,8 @@ import TabbedResource from 'components/admin/TabbedResource';
 
 // i18n
 import messages from './messages';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 type Props = {};
 

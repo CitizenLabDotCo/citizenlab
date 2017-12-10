@@ -97,7 +97,8 @@
     "plugins": [
       "redux-saga",
       "react",
-      "jsx-a11y"
+      "jsx-a11y",
+      "cl-custom"
     ],
     "parserOptions": {
       "ecmaVersion": 6,
@@ -161,7 +162,8 @@
       "redux-saga/no-yield-in-race": 2,
       "redux-saga/yield-effects": 2,
       "require-yield": 0,
-      "import/no-webpack-loader-syntax": 0
+      "import/no-webpack-loader-syntax": 0,
+      "cl-custom/no-vanilla-formatted-messages": 2
     },
     "settings": {
       "import/resolver": {
@@ -322,6 +324,7 @@
     "eslint": "3.11.1",
     "eslint-config-airbnb": "13.0.0",
     "eslint-config-airbnb-base": "10.0.1",
+    "eslint-plugin-cl-custom": "file:internals/lint/eslint-plugin-cl-custom",
     "eslint-import-resolver-webpack": "0.8.3",
     "eslint-plugin-import": "2.2.0",
     "eslint-plugin-jsx-a11y": "2.2.3",
