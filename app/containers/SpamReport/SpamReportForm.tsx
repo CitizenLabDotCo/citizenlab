@@ -44,6 +44,7 @@ interface Props extends Forms.crudParams {
   onReasonChange: {(value: Report['reason_code']): void};
   onTextChange: {(value: string): void};
   onSubmit: {(event): void};
+  itemType: 'ideas' | 'comments';
 }
 
 interface State {}
@@ -70,7 +71,7 @@ class SpamReportForm extends React.Component<Props & InjectedIntlProps, State> {
                 onChange={this.props.onReasonChange}
                 currentValue={this.props.diff.reason_code}
                 name="reasonCode"
-                label={formatMessage(messages[reasonCode])}
+                label={formatMessage(messages[reasonCode], { itemType: this.props.itemType })}
                 value={reasonCode}
                 id={`reason-${reasonCode}`}
                 key={reasonCode}
