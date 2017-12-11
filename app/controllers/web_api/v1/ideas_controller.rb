@@ -64,10 +64,6 @@ class WebApi::V1::IdeasController < ApplicationController
         raise "Unsupported sort method"
     end
 
-    if params[:sort] # This is extremely nasty!
-     # @ideas = @ideas.left_outer_joins(:project)
-    end
-
     @idea_ids = @ideas.map(&:id)
 
     if current_user

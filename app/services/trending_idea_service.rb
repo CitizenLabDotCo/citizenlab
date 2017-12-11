@@ -29,6 +29,9 @@ class TrendingIdeaService
                  # .where("GREATEST(comment_created_at_min, ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}'")
                  # .group('comments.idea_id').having("coalesce(MAX(comments.created_at),ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}'")
                  # ([@upvotes_ago[idea.id].first, @comments_ago[idea.id].first].min > TREND_SINCE_ACTIVITY))
+    puts '--------'
+    puts ideas.class.name
+    puts '--------'
 
     ideas
     
@@ -37,8 +40,28 @@ class TrendingIdeaService
   end
 
   def sort_trending ideas=Idea.all
-    ideas.select('ideas.*, (ideas.downvotes_count < 2) AS is_trending, ideas.upvotes_count AS score')
+    ideas.unscoped ### TERRIBLE
+         .joins("LEFT OUTER JOIN (SELECT ideas.id AS is_trending_b FROM localhost.ideas WHERE ideas.upvotes_count > 4) AS whateva ON is_trending_b = ideas.id")
+         .group('ideas.id')
+         .select('ideas.*, count(is_trending_b) AS is_trending, (ideas.upvotes_count - ideas.downvotes_count) AS score')
          .order('is_trending DESC, score DESC')
+         # .joins("LEFT OUTER JOIN (SELECT ideas.id AS sub_is_trending FROM (#{filter_trending(ideas).to_sql}) AS idontcare) AS whateva ON ideas.id = whateva.sub_is_trending")
+         # .group('ideas.id')
+         # .select('ideas.*, count(sub_is_trending) AS is_trending, (ideas.upvotes_count - ideas.downvotes_count) AS score')
+         # .order('is_trending DESC, score DESC')
+         # .joins('LEFT OUTER JOIN comments ON comments.idea_id = ideas.id')
+         # .where.not('comments.author_id = ideas.author_id') # 
+         # .group('ideas.id')
+         # .select('ideas.*, count(comments.id) AS num_coms')
+         
+
+
+
+    # subquery = "SELECT ideas.*, (ideas.downvotes_count < 2) AS is_trending, ideas.upvotes_count AS score FROM #{ideas.to_sql} ORDER is_trending DESC, score DESC"
+    # ideas.select("*").from(Arel.sql("(#{subquery}) as t"))
+
+
+
     # ideas.left_outer_joins(ideas.select('ideas.id, (ideas.upvotes_count > 2) AS is_trending, ideas.upvotes_count AS score')).order('is_trending DESC, score DESC')
 
     # trending_ids = filter_trending(ideas).map(&:id)
