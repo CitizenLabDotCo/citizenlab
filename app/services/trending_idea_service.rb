@@ -29,9 +29,6 @@ class TrendingIdeaService
                  # .where("GREATEST(comment_created_at_min, ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}'")
                  # .group('comments.idea_id').having("coalesce(MAX(comments.created_at),ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}'")
                  # ([@upvotes_ago[idea.id].first, @comments_ago[idea.id].first].min > TREND_SINCE_ACTIVITY))
-    puts '--------'
-    puts ideas.class.name
-    puts '--------'
 
     ideas
     
@@ -43,7 +40,7 @@ class TrendingIdeaService
     ideas.unscoped ### TERRIBLE
          .joins("LEFT OUTER JOIN (SELECT ideas.id AS is_trending_b FROM localhost.ideas WHERE ideas.upvotes_count > 4) AS whateva ON is_trending_b = ideas.id")
          .group('ideas.id')
-         .select('ideas.*, count(is_trending_b) AS is_trending, (ideas.upvotes_count - ideas.downvotes_count) AS score')
+         .select('ideas.*, count(is_trending_b) AS is_trending, ((ideas.upvotes_count - ideas.downvotes_count) / extract(epoch from ideas.published_at)) AS score')
          .order('is_trending DESC, score DESC')
          # .joins("LEFT OUTER JOIN (SELECT ideas.id AS sub_is_trending FROM (#{filter_trending(ideas).to_sql}) AS idontcare) AS whateva ON ideas.id = whateva.sub_is_trending")
          # .group('ideas.id')
