@@ -63,6 +63,7 @@ class SpamReportForm extends React.Component<Props, State & Forms.crudParams> {
         loading={this.state.loading}
         saved={this.state.saved}
         errors={this.state.errors}
+        itemType={this.props.resourceType}
       />
     );
   }
