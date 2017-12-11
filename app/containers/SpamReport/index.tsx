@@ -5,86 +5,67 @@ import * as React from 'react';
 import { sendSpamReport, Report } from 'services/spamReports';
 
 // Components
-import { Section, SectionField, SectionTitle } from 'components/admin/Section';
-import Radio from 'components/UI/Radio';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
-
-// Style
-import styled from 'styled-components';
-
-const RadioButtonsWrapper = styled.div`
-  margin-top: 15px;
-  margin-bottom: 30px;
-`;
-
-const StyledRadio = styled(Radio)`
-  margin-bottom: 10px;
-  cursor: pointer;
-
-  .text {
-    color: #333;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 22px;
-  }
-`;
+import ReportForm from './SpamReportForm';
 
 // Typings
-interface Props {}
-interface State {
-  reasonCode: Report['reason_code'] | null;
-  reasonText: Report['other_reason'] | null;
+import { API, Forms } from 'typings';
+interface Props {
+  resourceType: 'comments' | 'ideas';
+  resourceId: string;
 }
 
-class SpamReportForm extends React.Component<Props & InjectedIntlProps, State> {
+interface State {
+  diff: Report;
+}
+
+class SpamReportForm extends React.Component<Props, State & Forms.crudParams> {
+  reasonCodes: Report['reason_code'][] = ['wrong_content', 'inappropriate', 'other'];
 
   constructor (props) {
     super(props);
 
     this.state = {
-      reasonCode: null,
-      reasonText: null,
+      diff: {
+        reason_code: 'wrong_content',
+      },
+      loading: false,
+      errors: null,
+      saved: false,
     };
   }
 
-  handleSelectionChange = (reasonCode) => {
-    this.setState({ reasonCode });
+  handleSelectionChange = (reason_code) => {
+    this.setState({ diff: { ...this.state.diff, reason_code } });
+  }
+
+  handleReasonTextUpdate = (other_reason) => {
+    this.setState({ diff: { ...this.state.diff, other_reason } });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log('sending report');
+    this.setState({ loading: true });
+
+    sendSpamReport(this.props.resourceType, this.props.resourceId, this.state.diff)
+    .then((response) => {
+      this.setState({ loading: false, saved: true });
+    });
   }
 
   render () {
-    const { formatMessage } = this.props.intl;
-
     return (
-      <form onSubmit={this.handleSubmit}>
-        <Section>
-          <SectionTitle><FormattedMessage {...messages.title} /></SectionTitle>
-
-          <RadioButtonsWrapper>
-            {['wrong_content', 'inappropriate', 'other'].map((reasonCode) => (
-              <StyledRadio
-                onChange={this.handleSelectionChange}
-                currentValue={this.state.reasonCode}
-                name="reasonCode"
-                label={formatMessage(messages[reasonCode])}
-                value={reasonCode}
-                id={`reason-${reasonCode}`}
-                key={reasonCode}
-              />
-            ))}
-          </RadioButtonsWrapper>
-        </Section>
-      </form>
+      <ReportForm
+        reasonCodes={this.reasonCodes}
+        diff={this.state.diff}
+        onReasonChange={this.handleSelectionChange}
+        onTextChange={this.handleReasonTextUpdate}
+        onSubmit={this.handleSubmit}
+        loading={this.state.loading}
+        saved={this.state.saved}
+        errors={this.state.errors}
+      />
     );
   }
 }
 
-export default injectIntl<Props>(SpamReportForm);
+export default SpamReportForm;

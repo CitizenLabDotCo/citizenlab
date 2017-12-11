@@ -27,12 +27,13 @@ const ModalContent = styled(clickOutside)`
   background: #fff;
   border-radius: 5px;
   display: flex;
-  flex: 1 1 100vw;
   flex-direction: column;
-  height: 100%;
+  flex: 1 1 100vw;
+  height: auto;
+  max-height: 75vh;
   max-width: 850px;
-  max-height: 500px;
   outline: none;
+  overflow-y: auto;
   padding: 40px 60px;
   will-change: opacity, transform;
   z-index: 1000;
