@@ -446,6 +446,7 @@
   "app.containers.SpamReport.messageError": "",
   "app.containers.SpamReport.messageSuccess": "",
   "app.containers.SpamReport.other": "",
+  "app.containers.SpamReport.otherReasonPlaceholder": "",
   "app.containers.SpamReport.subtitle": "",
   "app.containers.SpamReport.title": "",
   "app.containers.SpamReport.wrong_content": "",
