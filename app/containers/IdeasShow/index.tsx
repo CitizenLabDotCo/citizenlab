@@ -700,7 +700,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
             </Content>
           </IdeaContainer>
           <Modal opened={true} close={console.log}>
-            <SpamReportForm />
+            <SpamReportForm resourceId={this.props.ideaId} resourceType="ideas" />
           </Modal>
         </Container>
       );

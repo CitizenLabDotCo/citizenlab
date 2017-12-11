@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.SpamReport.title',
     defaultMessage: 'Why do you want to report this as spam?',
   },
+  subtitle: {
+    id: 'app.containers.SpamReport.subtitle',
+    defaultMessage: 'Select the reason for your report',
+  },
   wrong_content: {
     id: 'app.containers.SpamReport.wrong_content',
     defaultMessage: 'This content is not an idea and does not belong here',
@@ -16,5 +20,25 @@ export default defineMessages({
   other: {
     id: 'app.containers.SpamReport.other',
     defaultMessage: 'Other reason',
+  },
+  buttonSave: {
+    id: 'app.containers.SpamReport.buttonSave',
+    defaultMessage: 'Report',
+  },
+  buttonError: {
+    id: 'app.containers.SpamReport.buttonError',
+    defaultMessage: 'Error',
+  },
+  buttonSuccess: {
+    id: 'app.containers.SpamReport.buttonSuccess',
+    defaultMessage: 'Success',
+  },
+  messageSuccess: {
+    id: 'app.containers.SpamReport.messageSuccess',
+    defaultMessage: 'Your report has been sent',
+  },
+  messageError: {
+    id: 'app.containers.SpamReport.messageError',
+    defaultMessage: 'There was an error sending your report, please try again.',
   },
 });
