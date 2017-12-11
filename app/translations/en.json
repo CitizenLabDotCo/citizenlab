@@ -446,6 +446,7 @@
   "app.containers.SpamReport.messageError": "There was an error sending your report, please try again.",
   "app.containers.SpamReport.messageSuccess": "Your report has been sent",
   "app.containers.SpamReport.other": "Other reason",
+  "app.containers.SpamReport.otherReasonPlaceholder": "Description",
   "app.containers.SpamReport.subtitle": "Select the reason for your report",
   "app.containers.SpamReport.title": "Why do you want to report this as spam?",
   "app.containers.SpamReport.wrong_content": "This content is not an idea and does not belong here",
