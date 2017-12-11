@@ -459,6 +459,7 @@ type State = {
   loading: boolean;
   unauthenticatedError: boolean;
   showMap: boolean;
+  spamModalVisible: boolean;
 };
 
 class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -476,6 +477,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       loading: true,
       unauthenticatedError: false,
       showMap: false,
+      spamModalVisible: false,
     };
     this.subscriptions = [];
   }
@@ -542,6 +544,13 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   handleMapToggle = () => {
     this.setState({ showMap: !this.state.showMap });
+  }
+
+  openSpamModal = () => {
+    this.setState({ spamModalVisible: true });
+  }
+  closeSpamModal = () => {
+    this.setState({ spamModalVisible: false });
   }
 
   render() {
@@ -692,14 +701,14 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                   actions={[
                     {
                       label: 'Report as spam',
-                      handler: () => {console.log('spam');},
+                      handler: this.openSpamModal,
                     }
                   ]}
                 />
               </RightColumnDesktop>
             </Content>
           </IdeaContainer>
-          <Modal opened={true} close={console.log}>
+          <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
             <SpamReportForm resourceId={this.props.ideaId} resourceType="ideas" />
           </Modal>
         </Container>

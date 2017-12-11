@@ -40,7 +40,7 @@ import { API, Forms } from 'typings';
 
 interface Props extends Forms.crudParams {
   reasonCodes: Report['reason_code'][];
-  diff: Report;
+  diff: Report | null;
   onReasonChange: {(value: Report['reason_code']): void};
   onTextChange: {(value: string): void};
   onSubmit: {(event): void};
@@ -58,6 +58,7 @@ class SpamReportForm extends React.Component<Props & InjectedIntlProps, State> {
 
   render () {
     const { formatMessage } = this.props.intl;
+    const submitStatus = getSubmitState({ errors: this.props.errors, saved: this.props.saved, diff: this.props.diff });
 
     return (
       <form onSubmit={this.props.onSubmit}>
@@ -69,7 +70,7 @@ class SpamReportForm extends React.Component<Props & InjectedIntlProps, State> {
             {this.props.reasonCodes.map((reasonCode) => (
               <StyledRadio
                 onChange={this.props.onReasonChange}
-                currentValue={this.props.diff.reason_code}
+                currentValue={this.props.diff ? this.props.diff.reason_code : ''}
                 name="reasonCode"
                 label={formatMessage(messages[reasonCode], { itemType: this.props.itemType })}
                 value={reasonCode}
@@ -78,13 +79,14 @@ class SpamReportForm extends React.Component<Props & InjectedIntlProps, State> {
               />
             ))}
           </SectionField>
-          <Transition in={this.props.diff.reason_code === 'other'} timeout={300}>
+          <Transition in={this.props.diff && this.props.diff.reason_code === 'other'} timeout={300}>
             {(status) => (
               <SectionField className={status}>
                 <TextArea
                   name="reasonText"
-                  value={this.props.diff.other_reason || ''}
+                  value={this.props.diff ? this.props.diff.other_reason || '' : ''}
                   onChange={this.props.onTextChange}
+                  placeholder={formatMessage(messages.otherReasonPlaceholder)}
                 />
               </SectionField>
             )}
@@ -92,8 +94,8 @@ class SpamReportForm extends React.Component<Props & InjectedIntlProps, State> {
         </Section>
         <SubmitWrapper
           style="primary"
-          status="disabled"
-          loading={false}
+          status={submitStatus}
+          loading={this.props.loading}
           messages={messages}
         />
       </form>
