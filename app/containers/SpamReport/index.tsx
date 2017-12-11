@@ -15,7 +15,7 @@ interface Props {
 }
 
 interface State {
-  diff: Report;
+  diff: Report | null;
 }
 
 class SpamReportForm extends React.Component<Props, State & Forms.crudParams> {
@@ -25,9 +25,7 @@ class SpamReportForm extends React.Component<Props, State & Forms.crudParams> {
     super(props);
 
     this.state = {
-      diff: {
-        reason_code: 'wrong_content',
-      },
+      diff: null,
       loading: false,
       errors: null,
       saved: false,
@@ -35,20 +33,43 @@ class SpamReportForm extends React.Component<Props, State & Forms.crudParams> {
   }
 
   handleSelectionChange = (reason_code) => {
-    this.setState({ diff: { ...this.state.diff, reason_code } });
+    const diff = {
+      ...this.state.diff,
+      reason_code,
+    } as Report;
+
+    // Clear the "other reason" text when it's not necessary
+    if (reason_code !== 'other') {
+      diff.other_reason = '';
+    }
+
+    this.setState({ diff });
   }
 
   handleReasonTextUpdate = (other_reason) => {
-    this.setState({ diff: { ...this.state.diff, other_reason } });
+    this.setState({ diff: { ...this.state.diff, other_reason } as Report });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
+
+    if (!this.state.diff) {
+      return;
+    }
+
     this.setState({ loading: true });
 
     sendSpamReport(this.props.resourceType, this.props.resourceId, this.state.diff)
     .then((response) => {
-      this.setState({ loading: false, saved: true });
+      this.setState({ loading: false, saved: true, errors: null, diff: null });
+    })
+    .catch((e) => {
+      let errors = this.state.errors;
+      if (e.json && e.json.errors) {
+        errors = e.json.errors;
+      }
+
+      this.setState({ errors, loading: false });
     });
   }
 

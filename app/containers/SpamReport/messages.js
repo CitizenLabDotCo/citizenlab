@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.SpamReport.other',
     defaultMessage: 'Other reason',
   },
+  otherReasonPlaceholder: {
+    id: 'app.containers.SpamReport.otherReasonPlaceholder',
+    defaultMessage: 'Description',
+  },
   buttonSave: {
     id: 'app.containers.SpamReport.buttonSave',
     defaultMessage: 'Report',
