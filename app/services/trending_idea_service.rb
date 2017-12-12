@@ -61,13 +61,25 @@ class TrendingIdeaService
                                                  ORDER BY created_at DESC LIMIT 5) AS whateva ON idea_id = id
                         GROUP BY id"
 
+    votes_ago_sql = "SELECT id,
+                            round((count(vote_id) / 5.0) * GREATEST(avg(extract(epoch from vote_ago)),extract(epoch from published_at))) 
+                            + round(((5 - count(vote_id)) / 5.0) * extract(epoch from published_at)) AS vote_ago
+                     FROM ideas i
+                     LEFT OUTER JOIN LATERAL (SELECT id AS vote_id, votable_id, created_at AS vote_ago 
+                                              FROM votes 
+                                              WHERE votes.votable_type = 'Idea' AND votes.votable_id = i.id AND votes.mode = 'up' AND NOT votes.user_id = i.author_id 
+                                              ORDER BY created_at DESC LIMIT 5) AS whateva ON votable_id = id
+                     GROUP BY id"
+
     ideas.unscoped ### TERRIBLE
          .joins("LEFT OUTER JOIN (SELECT whaatevaa.id AS is_trending_b FROM (#{filter_trending_sql}) AS whaatevaa) AS whateva ON is_trending_b = ideas.id") # .joins("LEFT OUTER JOIN (SELECT ideas.id AS is_trending_b FROM (#{filter_trending_sql}) AS whateva ON is_trending_b = ideas.id") # .joins("LEFT OUTER JOIN (SELECT ideas.id AS is_trending_b FROM ideas WHERE NOT (ideas.upvotes_count - ideas.downvotes_count) < 10) AS whateva ON is_trending_b = ideas.id")
          .group('ideas.id')
          .select('ideas.*, count(is_trending_b) AS is_trending')
          .joins("LEFT OUTER JOIN (#{comments_ago_sql}) AS whaaatevaaa ON whaaatevaaa.id = ideas.id")
          .group('ideas.id, whateva.is_trending_b, whaaatevaaa.id, whaaatevaaa.comment_ago')
-         .select('*, ((ideas.upvotes_count - ideas.downvotes_count) / AVG(comment_ago)) AS score')
+         .joins("LEFT OUTER JOIN (#{votes_ago_sql}) AS whaaaatevaaaa ON whaaaatevaaaa.id = ideas.id")
+         .group('ideas.id, whaaaatevaaaa.id, whaaaatevaaaa.vote_ago')
+         .select('*, ((ideas.upvotes_count - ideas.downvotes_count) / (comment_ago + vote_ago)) AS score')
          .order('is_trending DESC, score DESC')
 
 
