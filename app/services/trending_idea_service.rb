@@ -37,8 +37,22 @@ class TrendingIdeaService
   end
 
   def sort_trending ideas=Idea.all
+    filter_trending_sql = "SELECT ideas.* 
+                           FROM ideas 
+                           LEFT OUTER JOIN idea_statuses ON idea_statuses.id = ideas.idea_status_id 
+                           LEFT OUTER JOIN comments ON comments.idea_id = ideas.id 
+                           LEFT OUTER JOIN votes ON votes.votable_id = ideas.id AND votes.votable_type = 'Idea' 
+                           WHERE (NOT ((ideas.upvotes_count - ideas.downvotes_count) < 0)) 
+                             AND (idea_statuses.code != 'rejected')
+                             AND (NOT (comments.author_id = ideas.author_id)) 
+                             AND votes.mode = 'up' 
+                             AND (NOT (votes.user_id = ideas.author_id)) 
+                           GROUP BY ideas.id 
+                           HAVING (GREATEST(MAX(comments.created_at) , ideas.published_at) >= timestamp '2017-09-02 15:34:25 +0000') 
+                              AND (GREATEST(MAX(votes.created_at) , ideas.published_at) >= timestamp '2017-09-02 15:34:25 +0000')"
+
     ideas.unscoped ### TERRIBLE
-         .joins("LEFT OUTER JOIN (SELECT ideas.id AS is_trending_b FROM localhost.ideas WHERE ideas.upvotes_count > 4) AS whateva ON is_trending_b = ideas.id")
+         .joins("LEFT OUTER JOIN (SELECT whaatevaa.id AS is_trending_b FROM (#{filter_trending_sql}) AS whaatevaa) AS whateva ON is_trending_b = ideas.id") # .joins("LEFT OUTER JOIN (SELECT ideas.id AS is_trending_b FROM (#{filter_trending_sql}) AS whateva ON is_trending_b = ideas.id") # .joins("LEFT OUTER JOIN (SELECT ideas.id AS is_trending_b FROM ideas WHERE NOT (ideas.upvotes_count - ideas.downvotes_count) < 10) AS whateva ON is_trending_b = ideas.id")
          .group('ideas.id')
          .select('ideas.*, count(is_trending_b) AS is_trending, ((ideas.upvotes_count - ideas.downvotes_count) / extract(epoch from ideas.published_at)) AS score')
          .order('is_trending DESC, score DESC')
