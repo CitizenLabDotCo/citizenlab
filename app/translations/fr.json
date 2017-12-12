@@ -17,6 +17,7 @@
   "app.components.IdeasShow.login": "Se connecter",
   "app.components.IdeasShow.register": "Créer un compte",
   "app.components.Modal.closeButtonLabel": "Fermer",
+  "app.components.MoreActions.buttonLabel": "",
   "app.components.NotFoundPage.header": "Page introuvable !",
   "app.components.NotFoundPage.meta.description": "Désolée, la page demandée est introuvable",
   "app.components.NotFoundPage.meta.title": "Page introuvable",

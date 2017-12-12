@@ -17,6 +17,7 @@
   "app.components.IdeasShow.login": "Inloggen",
   "app.components.IdeasShow.register": "Maak een account aan",
   "app.components.Modal.closeButtonLabel": "Sluiten",
+  "app.components.MoreActions.buttonLabel": "",
   "app.components.NotFoundPage.header": "Pagina niet gevonden!",
   "app.components.NotFoundPage.meta.description": "Sorry, de opgevraagde pagina kon niet worden gevonden",
   "app.components.NotFoundPage.meta.title": "Pagina niet gevonden",

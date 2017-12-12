@@ -17,6 +17,7 @@
   "app.components.IdeasShow.login": "Login",
   "app.components.IdeasShow.register": "Create an account",
   "app.components.Modal.closeButtonLabel": "Close",
+  "app.components.MoreActions.buttonLabel": "More actions",
   "app.components.NotFoundPage.header": "Page not found!",
   "app.components.NotFoundPage.meta.description": "Sorry, the requested page could not be found",
   "app.components.NotFoundPage.meta.title": "Page not found",
