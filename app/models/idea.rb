@@ -69,18 +69,7 @@ class Idea < ApplicationRecord
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
   TREND_NUM_UPVOTES = 5
   TREND_NUM_COMMENTS = 5
-  TREND_SINCE_ACTIVITY = 100 * 24 * 60 * 60 # 100 days
-  scope :order_trending, (Proc.new do |direction|
-    direction ||= :desc
-    order(<<~EOS
-      (
-       power(GREATEST(((upvotes_count - downvotes_count) + 10), 0.5), 0.3)
-        /
-        ABS(EXTRACT(epoch FROM (NOW() - published_at))/3600)
-      ) #{direction}
-    EOS
-    )
-  end)
+  TREND_SINCE_ACTIVITY = 30 * 24 * 60 * 60 # 30 days
 
   scope :order_status, -> (direction=:desc) {
     joins(:idea_status)
@@ -88,10 +77,6 @@ class Idea < ApplicationRecord
   }
 
   scope :published, -> {where publication_status: 'published'}
-
-  def self.order_trending_beta
-    Idea.unscoped.all.sort_by { |idea| idea.trending_score }.reverse
-  end
 
   def location_point_geojson= geojson_point
     self.location_point = RGeo::GeoJSON.decode(geojson_point)
@@ -105,13 +90,8 @@ class Idea < ApplicationRecord
     self.publication_status == 'published'
   end
 
-  def score
+  def score 
     upvotes_count - downvotes_count
-  end
-
-  def trending_score_old
-    [score+10,0.5].max**0.3 /
-    ((Time.now - published_at).abs / 3600)
   end
 
   def trending_score
@@ -133,6 +113,9 @@ class Idea < ApplicationRecord
   def trending? score=trending_score
     trending_score >= 0
   end
+
+
+  private
 
   def trending_score_formula votes_diff, upvotes_ago, comments_ago
     [(1 + votes_diff), 1].max / (mean(upvotes_ago) + mean(comments_ago))
