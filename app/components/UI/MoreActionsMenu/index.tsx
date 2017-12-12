@@ -38,6 +38,8 @@ export interface Action {
 }
 interface Props {
   actions: Action[];
+  hideLabel?: boolean;
+  className?: string;
 }
 interface State {
   visible: boolean;
@@ -65,9 +67,9 @@ export default class MoreActions extends React.Component<Props, State> {
       return null;
     }
     return (
-      <Wrapper>
+      <Wrapper className={this.props.className} >
         <Toggle style="text" icon="more_actions_horizontal" onClick={this.toggleTooltip}>
-          <FormattedMessage {...messages.buttonLabel} />
+          {!this.props.hideLabel && <FormattedMessage {...messages.buttonLabel} />}
         </Toggle>
         <Tooltip visible={this.state.visible} hideTooltip={this.hideTooltip} theme="dark" position="right">
           {this.props.actions.map((action) => (
