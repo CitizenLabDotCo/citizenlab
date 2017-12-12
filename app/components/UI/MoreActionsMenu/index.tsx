@@ -6,6 +6,10 @@ import Tooltip from '../Tooltip';
 import Button from '../Button';
 import { IconNames } from '../Icon';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
 // Styling
 import styled from 'styled-components';
 
@@ -62,7 +66,9 @@ export default class MoreActions extends React.Component<Props, State> {
     }
     return (
       <Wrapper>
-        <Toggle style="text" icon="more_actions_horizontal" onClick={this.toggleTooltip}>More actions</Toggle>
+        <Toggle style="text" icon="more_actions_horizontal" onClick={this.toggleTooltip}>
+          <FormattedMessage {...messages.buttonLabel} />
+        </Toggle>
         <Tooltip visible={this.state.visible} hideTooltip={this.hideTooltip} theme="dark" position="right">
           {this.props.actions.map((action) => (
             <Action
