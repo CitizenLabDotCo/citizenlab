@@ -48,27 +48,27 @@ class TrendingIdeaService
                              AND votes.mode = 'up' 
                              AND (NOT (votes.user_id = ideas.author_id)) 
                            GROUP BY ideas.id 
-                           HAVING (GREATEST(MAX(comments.created_at) , ideas.published_at) >= timestamp '2017-09-02 15:34:25 +0000') 
-                              AND (GREATEST(MAX(votes.created_at) , ideas.published_at) >= timestamp '2017-09-02 15:34:25 +0000')"
+                           HAVING (GREATEST(MAX(comments.created_at) , ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}') 
+                              AND (GREATEST(MAX(votes.created_at) , ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}')"
 
     comments_ago_sql = "SELECT id,
-                               round((count(comment_id) / 5.0) * GREATEST(avg(extract(epoch from comment_ago)),extract(epoch from published_at))) 
-                               + round(((5 - count(comment_id)) / 5.0) * extract(epoch from published_at)) AS comment_ago
+                               round((count(comment_id) / #{TREND_NUM_COMMENTS.to_f}) * GREATEST(avg(extract(epoch from comment_ago)),extract(epoch from published_at))) 
+                               + round(((#{TREND_NUM_COMMENTS.to_i} - count(comment_id)) / #{TREND_NUM_COMMENTS.to_f}) * extract(epoch from published_at)) AS comment_ago
                         FROM ideas i
                         LEFT OUTER JOIN LATERAL (SELECT id AS comment_id, idea_id, created_at AS comment_ago 
                                                  FROM comments 
                                                  WHERE comments.idea_id = i.id AND NOT comments.author_id = i.author_id 
-                                                 ORDER BY created_at DESC LIMIT 5) AS whateva ON idea_id = id
+                                                 ORDER BY created_at DESC LIMIT #{TREND_NUM_COMMENTS.to_i}) AS whateva ON idea_id = id
                         GROUP BY id"
 
     votes_ago_sql = "SELECT id,
-                            round((count(vote_id) / 5.0) * GREATEST(avg(extract(epoch from vote_ago)),extract(epoch from published_at))) 
-                            + round(((5 - count(vote_id)) / 5.0) * extract(epoch from published_at)) AS vote_ago
+                            round((count(vote_id) / #{TREND_NUM_UPVOTES.to_f}) * GREATEST(avg(extract(epoch from vote_ago)),extract(epoch from published_at))) 
+                            + round(((#{TREND_NUM_UPVOTES.to_i} - count(vote_id)) / #{TREND_NUM_UPVOTES.to_f}) * extract(epoch from published_at)) AS vote_ago
                      FROM ideas i
                      LEFT OUTER JOIN LATERAL (SELECT id AS vote_id, votable_id, created_at AS vote_ago 
                                               FROM votes 
                                               WHERE votes.votable_type = 'Idea' AND votes.votable_id = i.id AND votes.mode = 'up' AND NOT votes.user_id = i.author_id 
-                                              ORDER BY created_at DESC LIMIT 5) AS whateva ON votable_id = id
+                                              ORDER BY created_at DESC LIMIT #{TREND_NUM_UPVOTES.to_i}) AS whateva ON votable_id = id
                      GROUP BY id"
 
     ideas.unscoped ### TERRIBLE
