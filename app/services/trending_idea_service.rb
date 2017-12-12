@@ -66,9 +66,12 @@ class TrendingIdeaService
          .group('ideas.id')
          .select('ideas.*, count(is_trending_b) AS is_trending')
          .joins("LEFT OUTER JOIN (#{comments_ago_sql}) AS whaaatevaaa ON whaaatevaaa.id = ideas.id")
-         .group('ideas.id')
-         .select('*, ((ideas.upvotes_count - ideas.downvotes_count) / comment_ago) AS score')
+         .group('ideas.id, whateva.is_trending_b, whaaatevaaa.id, whaaatevaaa.comment_ago')
+         .select('*, ((ideas.upvotes_count - ideas.downvotes_count) / AVG(comment_ago)) AS score')
          .order('is_trending DESC, score DESC')
+
+
+
          # .joins("LEFT OUTER JOIN (SELECT ideas.id AS sub_is_trending FROM (#{filter_trending(ideas).to_sql}) AS idontcare) AS whateva ON ideas.id = whateva.sub_is_trending")
          # .group('ideas.id')
          # .select('ideas.*, count(sub_is_trending) AS is_trending, (ideas.upvotes_count - ideas.downvotes_count) AS score')
