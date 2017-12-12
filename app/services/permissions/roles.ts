@@ -1,10 +1,10 @@
 import { find } from 'lodash';
+import { IUser } from 'services/users';
 
-
-const hasRole = (user, role) => {
-  return !!user.attributes.roles.find((r) => r.type === role);
+const hasRole = (user: IUser, role) => {
+  return !!(user.data.attributes.roles && user.data.attributes.roles.find((r) => r.type === role));
 };
 
-export const isAdmin = (user)  => {
-  hasRole(user, 'admin');
+export const isAdmin = (user?: IUser): boolean  => {
+  return !!user && hasRole(user, 'admin');
 };
