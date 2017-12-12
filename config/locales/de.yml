@@ -1,12 +1,12 @@
 de:
   statuses:
-    proposed: proposed
-    proposed_description: This idea has been proposed to the city
-    under_consideration: under consideration
-    under_consideration_description: This idea has been taken into consideration by the city
-    accepted: accepted
-    accepted_description: This idea has been accepted and will be implemented by the city
-    implemented: implemented
+    proposed: vorgeschlagen
+    proposed_description: Diese Idee wurde der Stadtverwaltung vorgestellt
+    under_consideration: unter Berücksichtigung
+    under_consideration_description: Diese Idee wird von der Stadtverwaltung berücksichtigt
+    accepted: akzeptiert
+    accepted_description: Diese Idee wurde von der Stadtverwaltung akzeptiert und wird umgesetzt werden
+    implemented: umgesetzt
     implemented_description: This idea has been implemented by the city
     rejected: rejected
     rejected_description: This idea has been rejected
