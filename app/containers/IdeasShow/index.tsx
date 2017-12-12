@@ -438,13 +438,6 @@ const GiveOpinion = styled.div`
   `}
 `;
 
-const StyledModal = styled(Modal)`
-  .modal-content {
-    height: 50vh;
-    margin-top: calc(50vh - 25vh);
-  }
-`;
-
 type Props = {
   location: Location;
   ideaId: string;
