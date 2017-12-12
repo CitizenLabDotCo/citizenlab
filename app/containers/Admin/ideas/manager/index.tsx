@@ -14,6 +14,9 @@ import { injectIdeasLoader, InjectedIdeaLoaderProps } from './ideasLoader';
 import { InjectedResourcesLoaderProps, injectResources } from './resourcesLoader';
 import { InjectedNestedResourceLoaderProps, injectNestedResources } from './nestedResourcesLoader';
 
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
+
 // Components
 import Button from 'components/UI/Button';
 import FilterSidebar from './components/FilterSidebar';
@@ -170,4 +173,6 @@ export default
     injectResources('topics', topicsStream)(
       injectResources('ideaStatuses', ideaStatusesStream)(
         injectNestedResources('phases', phasesStream, (props) => props.project && props.project.id)(
-          injectIdeasLoader(injectTFunc(IdeaManagerPresentation))))));
+          injectIdeasLoader(
+            DragDropContext(HTML5Backend)(
+            injectTFunc(IdeaManagerPresentation)))))));

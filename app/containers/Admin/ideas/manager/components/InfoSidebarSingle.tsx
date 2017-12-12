@@ -16,14 +16,12 @@ class InfoSidebarSingle extends React.Component<Props> {
 
     return (
       <div>
-        <Divider horizontal={true}>Idea</Divider>
         <Header as="h5">
           <T value={idea.attributes.title_multiloc} />
         </Header>
         <p>
           <T value={idea.attributes.body_multiloc} />
         </p>
-        <Divider horizontal={true}>Actions</Divider>
         <Button.Group>
           <Button>Mark as spam</Button>
           <Button>Delete</Button>

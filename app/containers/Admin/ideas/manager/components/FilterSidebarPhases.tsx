@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { IPhaseData } from 'services/phases';
-import styled from 'styled-components';
 import { Menu, Divider } from 'semantic-ui-react';
 import { injectTFunc } from 'components/T/utils';
+import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
+
 
 interface Props {
   phases: IPhaseData[];
-  tFunc: ({}) => string;
   selectedPhase?: string;
   onChangePhaseFilter?: (string) => void;
 }
@@ -33,10 +33,10 @@ class FilterSidebarPhases extends React.Component<Props> {
         </Menu.Item>
         <Divider />
         {this.props.phases.map((phase) => (
-          <Menu.Item
+          <FilterSidebarPhasesItem
             key={phase.id}
-            name={this.props.tFunc(phase.attributes.title_multiloc)}
-            active={this.isActive(phase.id)}
+            phase={phase}
+            active={!!this.isActive(phase.id)}
             onClick={this.handleItemClick(phase.id)}
           />
         ))}
