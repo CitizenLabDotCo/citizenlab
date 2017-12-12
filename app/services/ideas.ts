@@ -42,7 +42,7 @@ export interface IIdeaData {
       data: IRelationship | null;
     };
     phases: {
-      data: IRelationship;
+      data: IRelationship[];
     }
     project: {
       data: IRelationship;

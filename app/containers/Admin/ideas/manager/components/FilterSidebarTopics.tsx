@@ -1,20 +1,24 @@
 import * as React from 'react';
+import { xor } from 'lodash';
 import { ITopicData } from 'services/topics';
-import styled from 'styled-components';
 import { Menu, Divider } from 'semantic-ui-react';
-import { injectTFunc } from 'components/T/utils';
+import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';
 
 interface Props {
   topics: ITopicData[];
   selectedTopics?: string[];
   onChangeTopicsFilter?: (topics: string[]) => void;
-  tFunc: ({ }) => string;
 }
 
 class FilterSidebarTopics extends React.Component<Props> {
 
   handleItemClick = (id) => (event) => {
-    this.props.onChangeTopicsFilter && this.props.onChangeTopicsFilter([id]);
+    if (event.ctrlKey) {
+      const selectedTopics = xor(this.props.selectedTopics || [], [id]);
+      this.props.onChangeTopicsFilter && this.props.onChangeTopicsFilter(selectedTopics);
+    } else {
+      this.props.onChangeTopicsFilter && this.props.onChangeTopicsFilter([id]);
+    }
   }
 
   clearFilter = () => {
@@ -33,10 +37,10 @@ class FilterSidebarTopics extends React.Component<Props> {
         </Menu.Item>
         <Divider />
         {this.props.topics.map((topic) => (
-          <Menu.Item
+          <FilterSidebarTopicsItem
             key={topic.id}
-            name={this.props.tFunc(topic.attributes.title_multiloc)}
-            active={this.isActive(topic.id)}
+            topic={topic}
+            active={!!this.isActive(topic.id)}
             onClick={this.handleItemClick(topic.id)}
           />
         ))}
@@ -45,4 +49,4 @@ class FilterSidebarTopics extends React.Component<Props> {
   }
 }
 
-export default injectTFunc(FilterSidebarTopics);
+export default FilterSidebarTopics;
