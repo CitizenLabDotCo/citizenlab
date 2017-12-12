@@ -39,7 +39,7 @@ models:
     domicile: outside
     education: 1
     password: CitizenLab=123
-    remote_avatar_url: http://mobileyaari.com/wp-content/uploads/2014/10/Germany-Girl.jpg
+    remote_avatar_url: http://www.becomingtia.com/wp-content/uploads/2017/08/tiamorrison-profile-photo-2-copy.png
   - &8
     email: citizenlab+4@citizenlab.co
     first_name: Chad

@@ -19,9 +19,14 @@ namespace :migrate do
     idea_statuses_mapping = migration_settings['idea_statuses_mapping'] || {}
 
     host = migration_settings['host']
-    Tenant.where(host: host)&.first&.destroy
+    prev_tenant = Tenant.where(host: host)&.first
+    keep_settings = nil
+    if prev_tenant
+      keep_settings = prev_tenant.settings
+      prev_tenant.destroy
+    end
     client = connect(platform: platform, password: password)
-    create_tenant(platform, host, client['settings'].find.first, client['meteor_accounts_loginServiceConfiguration'], migration_settings, locales_mapping)
+    create_tenant(platform, host, client['settings'].find.first, client['meteor_accounts_loginServiceConfiguration'], migration_settings, locales_mapping, keep_settings=keep_settings)
     Apartment::Tenant.switch(host.gsub '.', '_') do
       TenantTemplateService.new.apply_template 'base'
     
@@ -124,7 +129,7 @@ namespace :migrate do
   end
 
 
-  def create_tenant platform, host, s, m, migration_settings, locales_mapping
+  def create_tenant platform, host, s, m, migration_settings, locales_mapping, keep_settings=nil
     fb_login = m.find({ service: 'facebook' }).first
     d = {
       core: {
@@ -170,7 +175,7 @@ namespace :migrate do
       host: host,
       remote_logo_url: s['logoUrl'],
       remote_header_bg_url: migration_settings['tenant_bg'] || s['bannerImage'],
-      settings: d
+      settings: keep_settings || d
     })
   end
 
@@ -185,8 +190,12 @@ namespace :migrate do
 
   def migrate_area n, areas_hash, locales_mapping
     begin
-      areas_hash[n['_id']] = Area.create!(title_multiloc: map_multiloc(n['name_i18n'], locales_mapping), 
-                                          description_multiloc: map_multiloc((n['description_i18n'] || {}), locales_mapping))
+      if n['name_i18n']
+        areas_hash[n['_id']] = Area.create!(title_multiloc: map_multiloc(n['name_i18n'], locales_mapping), 
+                                            description_multiloc: map_multiloc((n['description_i18n'] || {}), locales_mapping))
+      else
+        @log.concat ["Area has no name #{n}"]
+      end
     rescue Exception => e
       @log.concat [e.message]
     end
@@ -206,7 +215,7 @@ namespace :migrate do
 
   def migrate_user u, users_hash, groups_hash, superadmin_id, locales_mapping
     # one big transaction
-    d = {}
+    d = {cl1_migrated: true}
     # email
     if u.dig('telescope', 'email') || u['registered_emails'] || u['emails']
       d[:email] = u.dig('telescope', 'email') || (u['registered_emails'] || u['emails'])&.first['address']
@@ -221,7 +230,7 @@ namespace :migrate do
     # handle duplicate emails
     duplicate_user = User.find_by(email: d[:email])
     if duplicate_user
-      @log.concat ["Duplicate email for user #{u.to_s}"]
+      @log.concat ["Duplicate email for user #{d[:email]}"]
       users_hash[u['_id']] = duplicate_user
       return
     end
@@ -229,14 +238,11 @@ namespace :migrate do
     if u.dig('services', 'facebook', 'first_name') && u.dig('services', 'facebook', 'last_name')
       d[:first_name] = u.dig('services', 'facebook', 'first_name')
       d[:last_name] = u.dig('services', 'facebook', 'last_name')
-    else
-      username = u.dig('profile', 'name') || u['username'] || d[:email].split('@').first
+    elsif u.dig('profile', 'name') || u['username']
+      username = u.dig('profile', 'name') || u['username']
       name_pts = username.split
       if name_pts.size < 2
         name_pts = username.split '_'
-      end
-      if name_pts.size < 2
-        name_pts = username.split '.'
       end
       if name_pts.size < 2
         name_pts = username.split '-'
@@ -245,11 +251,13 @@ namespace :migrate do
         d[:first_name] = name_pts.first
         d[:last_name] = name_pts.drop(1).join ' '
       else
-        names = smart_name_split username
-        d[:first_name] = names.first
-        d[:last_name] = names.last
-        @log.concat ["Couldn't determine a last name for user #{u.to_s}, therefore chose #{d[:first_name]} #{d[:last_name]}"]
+        d[:first_name] = name_pts.first
       end
+    else
+      d[:first_name] = d[:email].split('@').first
+    end
+    if !d[:last_name]
+      @log.concat ["Couldn't determine a last name for user #{d}"]
     end
     # password
     if u.dig('services', 'password', 'bcrypt')
@@ -257,7 +265,7 @@ namespace :migrate do
     elsif u.dig('services', 'facebook', 'id')
       d[:identities] = [Identity.create!(uid: u.dig('services', 'facebook', 'id'), provider: 'facebook')]
     else 
-      @log.concat ["Couldn't find a password for user #{u.to_s}"]
+      @log.concat ["Couldn't find a password for user #{d}"]
       d[:password] = SecureRandom.urlsafe_base64 32
     end
     # locale
@@ -426,6 +434,7 @@ namespace :migrate do
       end
       projects_hash[p['_id']] = record
     rescue Exception => e
+      byebug
       @log.concat [e.message+' '+d.to_s]
     end
   end
@@ -451,15 +460,15 @@ namespace :migrate do
     end
     # start and end time
     if e['startAt'] && e['endAt']
-      if DateTime.parse(e['startAt']) < DateTime.parse(e['endAt'])
+      if e['startAt'] < e['endAt']
         d[:start_at] = e['startAt']
         d[:end_at] = e['endAt']
-      elsif DateTime.parse(e['startAt']) > DateTime.parse(e['endAt'])
+      elsif e['startAt'] > e['endAt']
         d[:end_at] = e['startAt']
         d[:start_at] = e['endAt']
       else
         d[:start_at] = e['startAt']
-        d[:end_at] = "#{d[:start_at] + rand(12).hours}"
+        d[:end_at] = d[:start_at] + rand(12).hours
       end
     end 
     begin
@@ -489,14 +498,14 @@ namespace :migrate do
       d[:start_at] = p['startAt']
     else
       @log.concat ["Couldn't find the start date for phase #{p.to_s}"]
-      d[:start_at] = "#{Faker::Date.between(1.year.ago, 1.year.from_now)}"
+      d[:start_at] = Faker::Date.between(1.year.ago, 1.year.from_now)
     end
     # end
-    if p['endAt'] && DateTime.parse(d[:start_at]) < DateTime.parse(p['endAt'])
+    if p['endAt'] && (d[:start_at] < p['endAt'])
       d[:end_at] = p['endAt']
     else
       @log.concat ["Couldn't find the end date for phase #{p.to_s}"]
-      d[:end_at] = "#{d[:start_at] + rand(12).hours}"
+      d[:end_at] = d[:start_at] + rand(12).hours
     end
     begin
       phases_hash[p['_id']] = Phase.create! d
@@ -606,7 +615,14 @@ namespace :migrate do
         end
       end
       # votes
-      votes_d.each { |v| v[:votable] = record; Vote.create!(v) }
+      votes_d.each do |v| 
+        v[:votable] = record
+        if Vote.find_by(votable_id: record.id, user: v[:user])
+          @log.concat ["User voted more than onces on votable: #{v}"]
+        else
+          Vote.create! v 
+        end
+      end
       ideas_hash[p['_id']] = record
     rescue Exception => e
       @log.concat [e.message+' '+d.to_s]

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171127103900) do
+ActiveRecord::Schema.define(version: 20171204155602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -286,6 +286,20 @@ ActiveRecord::Schema.define(version: 20171127103900) do
     t.index ["tenant_id"], name: "index_public_api_api_clients_on_tenant_id"
   end
 
+  create_table "spam_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "spam_reportable_id", null: false
+    t.string "spam_reportable_type", null: false
+    t.datetime "reported_at", null: false
+    t.string "reason_code"
+    t.string "other_reason"
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reported_at"], name: "index_spam_reports_on_reported_at"
+    t.index ["spam_reportable_type", "spam_reportable_id"], name: "spam_reportable_index"
+    t.index ["user_id"], name: "index_spam_reports_on_user_id"
+  end
+
   create_table "tenants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "host"
@@ -319,6 +333,7 @@ ActiveRecord::Schema.define(version: 20171127103900) do
     t.string "last_name"
     t.string "locale"
     t.jsonb "bio_multiloc", default: {}
+    t.boolean "cl1_migrated", default: false
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
@@ -366,5 +381,6 @@ ActiveRecord::Schema.define(version: 20171127103900) do
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
+  add_foreign_key "spam_reports", "users"
   add_foreign_key "votes", "users"
 end
