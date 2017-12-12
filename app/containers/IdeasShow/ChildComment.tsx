@@ -7,10 +7,14 @@ import { Link, browserHistory } from 'react-router';
 
 // components
 import Avatar from 'components/Avatar';
+import Modal from 'components/UI/Modal';
+import SpamReportForm from 'containers/SpamReport';
+import MoreActions, { Action } from 'components/UI/MoreActionsMenu';
 
 // services
 import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
 import { userByIdStream, IUser } from 'services/users';
+import { authUserStream } from 'services/auth';
 
 // i18n
 import T from 'components/T';
@@ -26,9 +30,17 @@ const CommentContainer = styled.div`
   margin-top: 0px;
   margin-bottom: 0px;
   padding: 30px;
+  position: relative;
   border: none;
   border-top: solid 1px #e4e4e4;
   background: #f6f6f6;
+`;
+
+const StyledActions: any = styled(MoreActions)`
+  margin-top: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
 `;
 
 const AuthorContainer = styled.div`
@@ -101,6 +113,8 @@ type Props = {
 type State = {
   comment: IComment | null;
   author: IUser | null;
+  spamModalVisible: boolean;
+  moreActions: Action[];
 };
 
 export default class ChildComment extends React.PureComponent<Props, State> {
@@ -111,7 +125,9 @@ export default class ChildComment extends React.PureComponent<Props, State> {
     super(props as any);
     this.state = {
       comment: null,
-      author: null
+      author: null,
+      spamModalVisible: false,
+      moreActions: [],
     };
     this.subscriptions = [];
   }
@@ -130,6 +146,21 @@ export default class ChildComment extends React.PureComponent<Props, State> {
         return author$.map(author => ({ comment, author }));
       }).subscribe(({ comment, author }) => this.setState({ comment, author }))
     ];
+
+    this.subscriptions.push(
+      authUserStream().observable
+      .subscribe((authUser) => {
+        if (authUser) {
+          this.setState({ moreActions: [
+            ...this.state.moreActions,
+            {
+              label: 'Report as spam',
+              handler: this.openSpamModal,
+            }
+          ]});
+        }
+      })
+    );
   }
 
   componentWillUnmount() {
@@ -142,6 +173,13 @@ export default class ChildComment extends React.PureComponent<Props, State> {
     if (author) {
       browserHistory.push(`/profile/${author.data.attributes.slug}`);
     }
+  }
+
+  openSpamModal = () => {
+    this.setState({ spamModalVisible: true });
+  }
+  closeSpamModal = () => {
+    this.setState({ spamModalVisible: false });
   }
 
   render() {
@@ -160,6 +198,7 @@ export default class ChildComment extends React.PureComponent<Props, State> {
 
       return (
         <CommentContainer className={className}>
+          <StyledActions actions={this.state.moreActions} hideLabel={true} />
 
           <AuthorContainer>
             <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />
@@ -182,6 +221,9 @@ export default class ChildComment extends React.PureComponent<Props, State> {
             <T value={commentBodyMultiloc} />
           </CommentBody>
 
+          <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
+            <SpamReportForm resourceId={this.props.commentId} resourceType="comments" />
+          </Modal>
         </CommentContainer>
       );
     }
