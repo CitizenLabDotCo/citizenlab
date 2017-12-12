@@ -66,6 +66,10 @@ class WebApi::V1::IdeasController < ApplicationController
 
     @idea_ids = @ideas.map(&:id)
 
+    puts '----------'
+    @ideas.each{|i|puts "Count ideas: #{i.id}"}
+    puts '----------'
+
     if current_user
       votes = Vote.where(user: current_user, votable_id: @idea_ids, votable_type: 'Idea')
       votes_by_idea_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
