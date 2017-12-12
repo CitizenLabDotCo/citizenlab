@@ -25,22 +25,27 @@ resource "Mentions" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to be >= 1
+      expect(json_response[:data].all?{|u| u[:attributes][:first_name][0..3] == mention}).to be true
     end
 
     example "Find user by (partial) mention and idea context" do
-      first_name = "jozefius"
-      author = create(:user, first_name: first_name)
-      idea = create(:idea, author: author)
-      comments = 4.times.map do
+      first_name = 'Jozefius'
+      idea = create(:idea)
+      comments = 3.times.map do
         user = create(:user, first_name: first_name)
         create(:comment, idea: idea, author: user)
       end
-      idea_related = [author, *comments.map(&:author)]
+      comment = create(:comment, idea: idea)
+      author_not_mentioned = comment.author
+
+      idea_related = comments.map(&:author)
       
       do_request(idea_id: idea.id, mention: first_name)
-      
+
       json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq idea_related.size
       expect(json_response[:data].map{|d| d[:id]}).to match_array idea_related.map(&:id)
+      expect(json_response[:data].all?{|u| u[:attributes][:first_name][0..(first_name.size)] == first_name}).to be true
     end
   end
 

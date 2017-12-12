@@ -26,7 +26,11 @@ resource "Stats" do
   describe "users" do
 
     before do
-      create_list(:user_with_demographics, 20)
+      create(:user, gender: nil)
+      create(:user, gender: 'male')
+      create(:user, gender: 'female')
+      create(:user, gender: 'unspecified')
+      create_list(:user_with_demographics, 10)
     end
 
 
