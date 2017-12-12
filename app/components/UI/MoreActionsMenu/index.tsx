@@ -27,12 +27,13 @@ const Action = styled(Button)`
 `;
 
 // Typing
+export interface Action {
+  label: string;
+  handler: {(): void};
+  icon?: IconNames;
+}
 interface Props {
-  actions: {
-    label: string;
-    handler: {(): void};
-    icon?: IconNames;
-  }[];
+  actions: Action[];
 }
 interface State {
   visible: boolean;
