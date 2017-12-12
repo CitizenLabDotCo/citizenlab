@@ -604,6 +604,7 @@ namespace :migrate do
       # votes
       votes_d.each do |v| 
         v[:votable] = record
+        v[:created_at] = record.published_at
         if Vote.find_by(votable_id: record.id, user: v[:user])
           @log.concat ["User voted more than onces on votable: #{v}"]
         else

@@ -5,7 +5,7 @@ class TrendingIdeaService
 
   TREND_NUM_UPVOTES = 5
   TREND_NUM_COMMENTS = 5
-  TREND_SINCE_ACTIVITY = 100 * 24 * 60 * 60 # 100 days
+  TREND_SINCE_ACTIVITY = 30 * 24 * 60 * 60 # 30 days
 
   def initialize
     @upvotes_ago = nil
@@ -79,7 +79,7 @@ class TrendingIdeaService
          .group('ideas.id, whateva.is_trending_b, whaaatevaaa.id, whaaatevaaa.comment_ago')
          .joins("LEFT OUTER JOIN (#{votes_ago_sql}) AS whaaaatevaaaa ON whaaaatevaaaa.id = ideas.id")
          .group('ideas.id, whaaaatevaaaa.id, whaaaatevaaaa.vote_ago')
-         .select('*, ((ideas.upvotes_count - ideas.downvotes_count) / (comment_ago + vote_ago)) AS score')
+         .select("*, (GREATEST(((ideas.upvotes_count - ideas.downvotes_count) + 1), 1) / ((#{Time.now.to_i} - comment_ago) + (#{Time.now.to_i} - vote_ago))) AS score")# .select('*, (GREATEST(((ideas.upvotes_count - ideas.downvotes_count) + 1), 1) / (comment_ago + vote_ago)) AS score')
          .order('is_trending DESC, score DESC')
 
 

@@ -34,6 +34,7 @@ class WebApi::V1::IdeasController < ApplicationController
         @ideas.order_new(:asc)
       when "trending"
         trending_idea_service.sort_trending @ideas
+        # Idea.all.sort_by(&:trending_score).reverse
         # @ideas.order_trending_beta # .map{|i| puts "#{i.title_multiloc['nl']}: #{i.trending_score}"; i}
       when "-trending"
         trending_idea_service.sort_trending(@ideas).reverse
