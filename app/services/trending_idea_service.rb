@@ -51,10 +51,23 @@ class TrendingIdeaService
                            HAVING (GREATEST(MAX(comments.created_at) , ideas.published_at) >= timestamp '2017-09-02 15:34:25 +0000') 
                               AND (GREATEST(MAX(votes.created_at) , ideas.published_at) >= timestamp '2017-09-02 15:34:25 +0000')"
 
+    comments_ago_sql = "SELECT id,
+                               round((count(comment_id) / 5.0) * GREATEST(avg(extract(epoch from comment_ago)),extract(epoch from published_at))) 
+                               + round(((5 - count(comment_id)) / 5.0) * extract(epoch from published_at)) AS comment_ago
+                        FROM ideas i
+                        LEFT OUTER JOIN LATERAL (SELECT id AS comment_id, idea_id, created_at AS comment_ago 
+                                                 FROM comments 
+                                                 WHERE comments.idea_id = i.id AND NOT comments.author_id = i.author_id 
+                                                 ORDER BY created_at DESC LIMIT 5) AS whateva ON idea_id = id
+                        GROUP BY id"
+
     ideas.unscoped ### TERRIBLE
          .joins("LEFT OUTER JOIN (SELECT whaatevaa.id AS is_trending_b FROM (#{filter_trending_sql}) AS whaatevaa) AS whateva ON is_trending_b = ideas.id") # .joins("LEFT OUTER JOIN (SELECT ideas.id AS is_trending_b FROM (#{filter_trending_sql}) AS whateva ON is_trending_b = ideas.id") # .joins("LEFT OUTER JOIN (SELECT ideas.id AS is_trending_b FROM ideas WHERE NOT (ideas.upvotes_count - ideas.downvotes_count) < 10) AS whateva ON is_trending_b = ideas.id")
          .group('ideas.id')
-         .select('ideas.*, count(is_trending_b) AS is_trending, ((ideas.upvotes_count - ideas.downvotes_count) / extract(epoch from ideas.published_at)) AS score')
+         .select('ideas.*, count(is_trending_b) AS is_trending')
+         .joins("LEFT OUTER JOIN (#{comments_ago_sql}) AS whaaatevaaa ON whaaatevaaa.id = ideas.id")
+         .group('ideas.id')
+         .select('*, ((ideas.upvotes_count - ideas.downvotes_count) / comment_ago) AS score')
          .order('is_trending DESC, score DESC')
          # .joins("LEFT OUTER JOIN (SELECT ideas.id AS sub_is_trending FROM (#{filter_trending(ideas).to_sql}) AS idontcare) AS whateva ON ideas.id = whateva.sub_is_trending")
          # .group('ideas.id')
