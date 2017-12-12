@@ -23,6 +23,7 @@ const Container = styled(clickOutside)`
   position: absolute;
   transform: scale(1);
   transition: all .1s ease-in-out;
+  z-index: 1000;
 
   ::after {
     content: "";
