@@ -25,22 +25,22 @@ de:
     nature_description: Natur und biologische Vielfalt
     sustainability: Nachhaltige Entwicklung
     sustainability_description: Nachhaltige Entwicklung
-    housing: Housing
-    housing_description: Housing
+    housing: Wohnungswesen
+    housing_description: Wohnungswesen
     culture: Kunst, Kultur und Veranstaltungen
-    culture_description: Arts, culture and events
-    citizenship: Citizenship
-    citizenship_description: Citizenship
-    social: Social inclusion
-    social_description: Social inclusion
-    health: Care and welfare
-    health_description: Care and welfare
+    culture_description: Kunst, Kultur und Veranstaltungen
+    citizenship: Bürgerschaft
+    citizenship_description: Bürgerschaft
+    social: Soziale Inklusion
+    social_description: Soziale Inklusion
+    health: Fürsorge und Wohlfahrt
+    health_description: Fürsorge und Wohlfahrt
     sport: Sport
     sport_description: Sport
-    education: Education and youth
-    education_description: Education and youth
+    education: Bildung und Jugend
+    education_description: Bildung und Jugend
   pages:
-    terms_and_conditions_title: Gebruiksvoorwaarden
+    terms_and_conditions_title: Verwendungsbedingungen
     terms_and_conditions_body: >
       <p>Dit online ideeënplatform heeft als doel zoveel mogelijk mensen de kans te bieden mee te denken over de toekomst van de stad of instelling die samen met CitizenLab dit platform opzet. Deze bijdragen zijn onderworpen aan een aantal regels om het debat open en constructief te kunnen houden. Hierbij kan u de algemene voorwaarden en privacy policy vinden van ons platform, daar wij van oordeel zijn dat duidelijke spelregels de grootste garantie geven op een constructieve online gemeenschap.</p>
       <p>Omdat CitizenLab de mening van de gebruikers van hun platform erg apprecieert, en alle ideeën welkom zijn om het platform verder te verbeteren, kan u uw suggesties steeds doorsturen naar support@citizenlab.co.</p>
@@ -72,7 +72,7 @@ de:
       <p>Inbreuken tegen het intellectueel eigendomsrecht kunnen gemeld worden via volgend e-mailadres: hello@citizenlab.co</p>
       <h3>Eigendomsrechten CitizenLab</h3>
       <p>Het platform van CitizenLab is beschermd door intellectuele eigendomsrechten die onder andere betrekking hebben op inhoud, broncode, database,… Het gebruik van dit platform betekent geenszins een overdracht van deze intellectuele rechten naar de gebruikers van het platform. Iedere gebruiker moet bewust zijn van deze rechten en dient ook in die zin te handelen.</p> <p>Het is aldus verboden om het platform en haar inhoud te reproduceren, verspreiden, wijzigen of door te geven zonder toestemming.</p>
-    cookie_policy_title: Cookie Policy
+    cookie_policy_title: Cookie-Richtlinie
     cookie_policy_body: >
       <h3>What Are Cookies</h3> <p>As is common practice with almost all professional websites this site uses cookies, which are tiny files that are downloaded to your computer, to improve your experience. This page describes what information they gather, how we use it and why we sometimes need to store these cookies. We will also share how you can prevent these cookies from being stored however this may downgrade or 'break' certain elements of the sites functionality.</p>
       <p>For more general information on cookies <a href="https://en.wikipedia.org/wiki/HTTP_cookie">see the Wikipedia article on HTTP Cookies</a>.</p>
@@ -95,7 +95,7 @@ de:
       <h3>More Information</h3>
       <p>Hopefully that has clarified things for you and as was previously mentioned if there is something that you aren't sure whether you need or not it's usually safer to leave cookies enabled in case it does interact with one of the features you use on our site. However if you are still looking for more information then you can contact us through one of our preferred contact methods.</p>
       <p>Email: <a href="mailto:support@citizenlab.co">support@citizenlab.co</a></p>
-    privacy_policy_title: Privacy Policy
+    privacy_policy_title: Datenschutzrichtlinie
     privacy_policy_body: >
       <h3>1. Privacy policy</h3>
       <p>This Privacy Policy applies to the personal data collected by CitizenLab via this website.</p> <h3>2. WHAT ARE PERSONAL DATA?</h3> <p> In this Privacy Policy personal data means information or pieces of information that allow to identify you. An identifiable person is one who can be identified, directly or indirectly, in particular by reference to an identification number or to one or more factors specific to his physical, physiological, mental, economic, cultural or social identity. Typical personal data includes your name and email address.</p>
@@ -115,5 +115,5 @@ de:
       <p> You have the right: <ul> <li>to request access to your personal data;</li> <li>to request that we correct, update or delete your personal data;</li> <li>to oppose to the processing of your personal data for direct communication purposes.</li> </ul> </p>
       <p>In addition, you can opt-out from direct communications at any time by following the relevant instructions at the bottom of the direct communications (‘Manage your email notifications’).</p>
       <p>If you would need help to exercise your rights, you may contact us by e-mail at support@citizenlab.co.</p>
-    infopage_title: Information Page
-    infopage_body: This will be a very informative page!
+    infopage_title: Impressum
+    infopage_body: Auf dieser Seite finden Sie nützliche Informationen zur Plattform!
