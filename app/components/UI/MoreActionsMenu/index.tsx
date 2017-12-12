@@ -56,6 +56,9 @@ export default class MoreActions extends React.Component<Props, State> {
   }
 
   render () {
+    if (this.props.actions.length === 0) {
+      return null;
+    }
     return (
       <Wrapper>
         <Toggle style="text" icon="more_actions_horizontal" onClick={this.toggleTooltip}>More actions</Toggle>
