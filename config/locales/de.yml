@@ -7,27 +7,27 @@ de:
     accepted: akzeptiert
     accepted_description: Diese Idee wurde von der Stadtverwaltung akzeptiert und wird umgesetzt werden
     implemented: umgesetzt
-    implemented_description: This idea has been implemented by the city
-    rejected: rejected
-    rejected_description: This idea has been rejected
+    implemented_description: Diese Idee wurde von der Stadtverwaltung umgesetzt
+    rejected: abgelehnt
+    rejected_description: Diese Idee wurde abgelehnt
   topics:
-    infrastructure: Squares and streets
-    infrastructure_description: Squares and streets
-    waste: Cleanliness and waste
-    waste_description: Cleanliness and waste
-    mobility: Mobility
-    mobility_description: Mobility
-    technology: Technology
-    technology_description: Technology
-    economy: Work, economy and commerce
-    economy_description: Work, economy and commerce
-    nature: Nature and biodiversity
-    nature_description: Nature and biodiversity
-    sustainability: Sustainable development
-    sustainability_description: Sustainable development
+    infrastructure: Straßen und Plätze
+    infrastructure_description: Straßen und Plätze
+    waste: Sauberkeit und Abfall
+    waste_description: Sauberkeit und Abfall
+    mobility: Mobilität
+    mobility_description: Mobilität
+    technology: Technologie
+    technology_description: Technologie
+    economy: Arbeit, Wirtschaft und Handel
+    economy_description: Arbeit, Wirtschaft und Handel
+    nature: Natur und biologische Vielfalt
+    nature_description: Natur und biologische Vielfalt
+    sustainability: Nachhaltige Entwicklung
+    sustainability_description: Nachhaltige Entwicklung
     housing: Housing
     housing_description: Housing
-    culture: Arts, culture and events
+    culture: Kunst, Kultur und Veranstaltungen
     culture_description: Arts, culture and events
     citizenship: Citizenship
     citizenship_description: Citizenship
