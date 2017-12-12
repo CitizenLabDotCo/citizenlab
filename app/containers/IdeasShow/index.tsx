@@ -23,7 +23,7 @@ import IdeaMeta from './IdeaMeta';
 import Unauthenticated from './Unauthenticated';
 import IdeaMap from './IdeaMap';
 import Button from 'components/UI/Button';
-import MoreActions from 'components/UI/MoreActionsMenu';
+import MoreActions, { Action } from 'components/UI/MoreActionsMenu';
 import SpamReportForm from 'containers/SpamReport';
 import Modal from 'components/UI/Modal';
 
@@ -34,6 +34,7 @@ import { userByIdStream, IUser } from 'services/users';
 import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
 import { ideaStatusStream } from 'services/ideaStatuses';
 import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
+import { authUserStream } from 'services/auth';
 
 // i18n
 import T from 'components/T';
@@ -453,6 +454,7 @@ type State = {
   unauthenticatedError: boolean;
   showMap: boolean;
   spamModalVisible: boolean;
+  moreActions: Action[];
 };
 
 class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -471,6 +473,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       unauthenticatedError: false,
       showMap: false,
       spamModalVisible: false,
+      moreActions: [],
     };
     this.subscriptions = [];
   }
@@ -505,6 +508,21 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
       comments$.subscribe(ideaComments => this.setState({ ideaComments }))
     ];
+
+    this.subscriptions.push(
+      authUserStream().observable
+      .subscribe((authUser) => {
+        if (authUser) {
+          this.setState({ moreActions: [
+            ...this.state.moreActions,
+            {
+              label: 'Report as spam',
+              handler: this.openSpamModal,
+            }
+          ]});
+        }
+      })
+    );
   }
 
   componentWillUnmount() {
@@ -691,12 +709,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
               <RightColumnDesktop className={!isSafari ? 'notSafari' : ''}>
                 {ideaMetaContent}
                 <MoreActions
-                  actions={[
-                    {
-                      label: 'Report as spam',
-                      handler: this.openSpamModal,
-                    }
-                  ]}
+                  actions={this.state.moreActions}
                 />
               </RightColumnDesktop>
             </Content>
