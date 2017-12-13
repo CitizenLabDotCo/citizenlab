@@ -25,8 +25,7 @@ import { projectsStream, IProjects } from 'services/projects';
 
 // i18n
 import T from 'components/T';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 
