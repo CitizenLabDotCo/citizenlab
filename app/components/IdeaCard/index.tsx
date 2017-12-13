@@ -17,6 +17,7 @@ import { localeStream } from 'services/locale';
 import { ideaByIdStream, IIdea } from 'services/ideas';
 import { userByIdStream, IUser } from 'services/users';
 import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
+import { projectByIdStream } from 'services/projects';
 
 // utils
 import T from 'components/T';
@@ -197,12 +198,14 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
       const idea$ = ideaByIdStream(ideaId).observable;
       const ideaAuthor$ = idea.data.relationships.author.data ? userByIdStream(idea.data.relationships.author.data.id).observable : Rx.Observable.of(null);
       const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
+      const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
         idea$,
         ideaImage$,
-        ideaAuthor$
-      ).map(([idea, ideaImage, ideaAuthor]) => {
+        ideaAuthor$,
+        project$
+      ).map(([idea, ideaImage, ideaAuthor, project]) => {
         return { idea, ideaImage, ideaAuthor };
       });
     });
