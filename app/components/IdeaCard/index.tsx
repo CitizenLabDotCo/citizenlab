@@ -24,8 +24,8 @@ import T from 'components/T';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedRelative } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
@@ -171,7 +171,7 @@ type State = {
 
 export const namespace = 'components/IdeaCard/index';
 
-class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
+class IdeaCard extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -253,13 +253,14 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { formatMessage, formatHTMLMessage, formatRelative } = this.props.intl;
     const { idea, ideaImage, ideaAuthor, locale, showUnauthenticated, loading } = this.state;
+
+    console.log('render ideaCard');
 
     if (!loading && idea && locale) {
       const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
       const ideaImageLargeUrl = (ideaImage ? ideaImage.data.attributes.versions.large : null);
-      const createdAt = formatRelative(idea.data.attributes.created_at);
+      const createdAt = <FormattedRelative value={idea.data.attributes.created_at} />;
       const className = `${this.props['className']} e2e-idea-card ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }`;
 
       return (
@@ -302,4 +303,4 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(IdeaCard);
+export default IdeaCard;

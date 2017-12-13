@@ -36,8 +36,8 @@ import { projectByIdStream, IProject } from 'services/projects';
 
 // i18n
 import T from 'components/T';
-import { InjectedIntlProps, FormattedRelative, FormattedHTMLMessage } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedRelative } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // animations

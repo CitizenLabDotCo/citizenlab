@@ -13,8 +13,7 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // i18n
-import { InjectedIntl, InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
@@ -250,7 +249,7 @@ type State = {
   scrolled: boolean;
 };
 
-class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, State> {
+class Modal extends React.PureComponent<Props & ITracks, State> {
   unlisten: Function | null;
   goBackUrl: string | null;
   keydownEventListener: any;
@@ -379,7 +378,6 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
   render() {
     const { scrolled } = this.state;
     const { children, opened, headerChild } = this.props;
-    const { formatMessage } = this.props.intl;
 
     return (
       <TransitionGroup>
@@ -417,7 +415,9 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
                     <GoBackButton onClick={this.clickCloseButton}>
                       <GoBackIcon name="arrow-back" />
                     </GoBackButton>
-                    <GoBackLabel>{formatMessage(messages.goBack)}</GoBackLabel>
+                    <GoBackLabel>
+                      <FormattedMessage {...messages.goBack} />
+                    </GoBackLabel>
                   </GoBackButtonWrapper>
                   {headerChild && <HeaderChildWrapper>{headerChild}</HeaderChildWrapper>}
                 </TopBarInner>
@@ -435,4 +435,4 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
   }
 }
 
-export default injectTracks<Props>(tracks)(injectIntl<Props>(Modal));
+export default injectTracks<Props>(tracks)(Modal);

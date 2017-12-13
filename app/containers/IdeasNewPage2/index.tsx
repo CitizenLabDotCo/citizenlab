@@ -25,8 +25,7 @@ import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
@@ -147,7 +146,7 @@ interface GlobalState {}
 
 interface State extends LocalState, GlobalState {}
 
-class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State> {
+class IdeasNewPage2 extends React.PureComponent<Props, State> {
   initialLocalState: LocalState;
   initialGlobalState: IIdeasNewPageGlobalState;
   localState: ILocalStateService<LocalState>;
@@ -312,7 +311,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     if (!this.state) { return null; }
 
     const { showIdeaForm, locale } = this.state;
-    const { intl } = this.props;
     const timeout = 600;
 
     const buttonBar = (showIdeaForm && locale) ? (
@@ -354,4 +352,4 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
   }
 }
 
-export default injectIntl<Props>(IdeasNewPage2);
+export default IdeasNewPage2;
