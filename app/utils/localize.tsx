@@ -68,6 +68,9 @@ function localize<PassedProps>(ComposedComponent) {
     }
 
     render() {
+      if (!this.state.locale || !this.state.tenantLocales) {
+        return null;
+      }
       return <ComposedComponent localize={this.localize} locale={this.state.locale} tenantLocales={this.state.tenantLocales} {...this.props} />;
     }
   };
