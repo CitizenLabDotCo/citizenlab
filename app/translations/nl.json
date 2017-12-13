@@ -296,6 +296,7 @@
   "app.containers.IdeasNewPage2.titlePlaceholder": "Geef een gevatte titel voor je idee",
   "app.containers.IdeasNewPage2.topicsLabel": "Thema's (aanbevolen, max. 2)",
   "app.containers.IdeasNewPage2.topicsPlaceholder": "Selecteer eventueel 1 of 2 thema's voor je idee",
+  "app.containers.IdeasShow.Map": "",
   "app.containers.IdeasShow.addCommentError": "Er ging iets mis. Probeer het opnieuw.",
   "app.containers.IdeasShow.author": "{authorNameComponent}",
   "app.containers.IdeasShow.byAuthor": "door {firstName} {lastName}",
