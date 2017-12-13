@@ -296,6 +296,7 @@
   "app.containers.IdeasNewPage2.titlePlaceholder": "crwdns15768:0crwdne15768:0",
   "app.containers.IdeasNewPage2.topicsLabel": "crwdns18040:0crwdne18040:0",
   "app.containers.IdeasNewPage2.topicsPlaceholder": "crwdns18176:0crwdne18176:0",
+  "app.containers.IdeasShow.Map": "",
   "app.containers.IdeasShow.addCommentError": "crwdns18177:0crwdne18177:0",
   "app.containers.IdeasShow.author": "crwdns17067:0{authorNameComponent}crwdne17067:0",
   "app.containers.IdeasShow.byAuthor": "crwdns17106:0{firstName}crwdnd17106:0{lastName}crwdne17106:0",

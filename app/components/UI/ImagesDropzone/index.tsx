@@ -158,7 +158,7 @@ const Box: any = styled.div`
   max-width: ${(props: any) => props.maxWidth ? props.maxWidth : '100%'};
   margin-bottom: 16px;
   position: relative;
-  will-change: opacity;
+  will-change: auto;
 
   &.hasSpacing {
     margin-right: 20px;
@@ -177,6 +177,7 @@ const Box: any = styled.div`
       opacity: 0;
       width: 0px;
       transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1) 2000ms;
+      will-change: opacity, width;
 
       &.hasSpacing {
         margin-right: 0px;
@@ -196,6 +197,7 @@ const Box: any = styled.div`
       opacity: 1;
       width: 100%;
       transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      will-change: opacity, width;
 
       &.hasSpacing {
         margin-right: 20px;

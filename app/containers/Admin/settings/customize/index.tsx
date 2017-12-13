@@ -218,7 +218,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
       attributesDiff: newAttributesDiff,
       titleError: {
         ...state.titleError,
-        [locale]: _.size(_.trim(title)) > 35 ? formatMessage(messages.titleMaxCharError) : null
+        [locale]: _.size(_.trim(title)) > 45 ? formatMessage(messages.titleMaxCharError) : null
       }
     }));
   }
@@ -391,7 +391,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                       values={{ locale: capitalizedTenantLocale }}
                     />
                     <CharCount className={titleError[currentTenantLocale] ? 'error' : ''}>
-                      {titleSize}/35
+                      {titleSize}/45
                     </CharCount>
                   </StyledLabel>
                   <Input

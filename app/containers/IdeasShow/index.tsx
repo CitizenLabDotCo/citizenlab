@@ -82,17 +82,18 @@ const Header = styled.div`
 
 const IdeaTitle = styled.h1`
   width: 100%;
-  max-width: 520px;
   color: #444;
   font-size: 34px;
   font-weight: 500;
   line-height: 42px;
   margin: 0;
   padding: 0;
+  padding-right: 250px;
 
   ${media.smallerThanMaxTablet`
     font-size: 28px;
     line-height: 34px;
+    padding: 0;
     margin-right: 12px;
   `}
 `;
@@ -123,11 +124,11 @@ const LeftColumn = styled.div`
 `;
 
 const IdeaImage = styled.img`
-  border-radius: 8px;
-  border: 1px solid ${color('separation')};
+  width: 100%;
   margin: 0 0 2rem;
   padding: 0;
-  width: 100%;
+  border-radius: 8px;
+  border: 1px solid ${color('separation')};
 `;
 
 const AuthorContainer = styled.div`
@@ -138,71 +139,92 @@ const AuthorContainer = styled.div`
 `;
 
 const AuthorAndAdressWrapper = styled.div`
-  align-items: center;
-  align-items: flex-start;
   display: flex;
-  flex-direction: column;
-  margin-bottom: 2rem;
-
-  > * {
-    flex: 1;
-    min-width: 0;
-  }
-
-  @media (min-width: 450px) {
-    flex-direction: row;
-    justify-content: space-between;
-  }
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 25px;
 `;
 
-const LocationButton = styled(Button)`
-  padding-right: 0;
-  text-align: right;
+const LocationLabel = styled.div`
+  color: ${(props) => props.theme.colors.label};
+  font-size: 15px;
+  font-weight: 300;
+  margin-right: 6px;
 
-  button {
-    padding-right: 0 !important;
-  }
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
-const StyledPositionIcon = styled(Icon)`
-  height: 1em;
-  margin-left: .5em;
+const LocationLabelMobile = styled.div`
+  color: ${(props) => props.theme.colors.label};
+  font-size: 14px;
+  font-weight: 300;
+  margin-right: 6px;
+
+  ${media.biggerThanMinTablet`
+    display: none;
+  `}
+`;
+
+const LocationIcon = styled(Icon)`
+  height: 20px;
+  fill: ${(props) => props.theme.colors.label};
+`;
+
+const LocationButton = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    ${LocationLabel} {
+      color: ${(props) => darken(0.2, props.theme.colors.label)};
+    }
+
+    ${LocationIcon} {
+      fill: ${(props) => darken(0.2, props.theme.colors.label)};
+    }
+  }
 `;
 
 const MapWrapper = styled.div`
   border-radius: 8px;
   border: 1px solid ${color('separation')};
   height: 265px;
-  margin-bottom: 2rem;
   position: relative;
   overflow: hidden;
-  will-change: height, opacity;
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
+  will-change: auto;
 
   &.map-enter {
     height: 0;
     opacity: 0;
-  }
+    will-change: height, opacity;
 
-  &.map-enter.map-enter-active {
-    height: 265px;
-    opacity: 1;
-    transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    &.map-enter-active {
+      height: 265px;
+      opacity: 1;
+      transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
   }
 
   &.map-exit {
     height: 265px;
     opacity: 1;
-  }
+    will-change: height, opacity;
 
-  &.map-exit.map-exit-active {
-    height: 0;
-    opacity: 0;
-    transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    &.map-exit-active {
+      height: 0;
+      opacity: 0;
+      transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
   }
+`;
+
+const MapPaddingBottom = styled.div`
+  width: 100%;
+  height: 30px;
 `;
 
 const AddressWrapper = styled.p`
@@ -323,6 +345,7 @@ const RightColumnDesktop: any = RightColumn.extend`
 `;
 
 const MetaContent = styled.div`
+  width: 200px;
   display: flex;
   flex-direction: column;
 `;
@@ -344,8 +367,10 @@ const StatusContainer = styled.div`
 `;
 
 const StatusContainerMobile = styled(StatusContainer)`
-  margin-top: -25px;
+  margin-top: -20px;
   margin-bottom: 35px;
+  transform-origin: top left;
+  transform: scale(0.9);
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -621,20 +646,21 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                     </AuthorMeta>
                   </AuthorContainer>
 
-                  {ideaLocation && <LocationButton style="text" onClick={this.handleMapToggle}>
-                    {(showMap) &&
-                      <span>
-                        <FormattedMessage {...messages.closeMap} />
-                        <StyledPositionIcon name="close" />
-                      </span>
-                    }
-                    {(!showMap) &&
-                      <span>
-                        <FormattedMessage {...messages.openMap} />
-                        <StyledPositionIcon name="position" />
-                      </span>
-                    }
-                  </LocationButton>}
+                  {ideaLocation && !showMap && 
+                    <LocationButton onClick={this.handleMapToggle}>
+                      <LocationLabel><FormattedMessage {...messages.openMap} /></LocationLabel>
+                      <LocationLabelMobile><FormattedMessage {...messages.Map} /></LocationLabelMobile>
+                      <LocationIcon name="position" />
+                    </LocationButton>
+                  }
+
+                  {ideaLocation && showMap && 
+                    <LocationButton onClick={this.handleMapToggle}>
+                      <LocationLabel><FormattedMessage {...messages.closeMap} /></LocationLabel>
+                      <LocationLabelMobile><FormattedMessage {...messages.Map} /></LocationLabelMobile>
+                      <LocationIcon name="close" />
+                    </LocationButton>
+                  }
                 </AuthorAndAdressWrapper>
 
                 {ideaLocation &&
@@ -654,6 +680,10 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                       </CSSTransition>
                     }
                   </TransitionGroup>
+                }
+
+                {ideaLocation && showMap && 
+                  <MapPaddingBottom />
                 }
 
                 <IdeaBody>

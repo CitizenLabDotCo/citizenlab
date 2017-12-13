@@ -222,7 +222,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
         return projectImageStream(project.data.id, projectImages[0].id).observable.map(projectImage => ({ project, projectImage }));
       }
 
-      return Rx.Observable.of(null).map(() => ({ project, projectImage: null }));
+      return Rx.Observable.of({ project, projectImage: null });
     });
 
     this.subscriptions = [
