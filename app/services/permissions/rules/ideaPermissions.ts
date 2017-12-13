@@ -1,4 +1,4 @@
-import { definePermissionRule } from '../.';
+import { definePermissionRule } from '../permissions';
 import { isAdmin } from '../roles';
 import { IIdeaData } from 'services/ideas';
 import { IUser } from 'services/users';

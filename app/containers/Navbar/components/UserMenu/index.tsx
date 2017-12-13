@@ -10,6 +10,7 @@ import Authorize from 'utils/containers/authorize';
 import Icon from 'components/UI/Icon';
 import Avatar from 'components/Avatar';
 import Popover from 'components/Popover';
+import HasPermission from 'components/HasPermission';
 
 // services
 import { authUserStream, signOut } from 'services/auth';
@@ -167,14 +168,14 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               open={PopoverOpened}
               onCloseRequest={this.closePopover}
             >
-              <Authorize action={['users', 'admin']} >
+              <HasPermission item="routes" action="admin">
                 <PopoverItem id="admin-link" onClick={this.navigateTo('/admin')}>
                   <FormattedMessage {...messages.admin} />
                   <IconWrapper>
                     <PopoverIcon name="admin" />
                   </IconWrapper>
                 </PopoverItem>
-              </Authorize>
+              </HasPermission>
               <PopoverItem id="e2e-profile-profile-link" onClick={this.navigateTo(`/profile/${userId}`)}>
                 <FormattedMessage {...messages.profilePage} />
                 <IconWrapper>
