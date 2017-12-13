@@ -92,13 +92,13 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
             overflow: 'hidden'
           },
           item: {
-            fontSize: '16px',
+            fontSize: '15px',
             lineHeight: '22px',
             padding: '5px 15px',
             borderBottom: '1px solid #ccc',
 
             '&focused': {
-              backgroundColor: color('clBlueLight'),
+              backgroundColor: '#f4f4f4',
             },
           },
         }

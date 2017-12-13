@@ -91,7 +91,7 @@ const CommentBody = styled.div`
     margin-bottom: 25px;
   }
 
-  a {
+  a.mention {
     color: ${(props) => props.theme.colors.clBlue};
     font-weight: 400;
     text-decoration: none;
@@ -201,7 +201,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
       const isLoggedIn = !_.isNull(authUser);
       const commentText = getLocalized(commentBodyMultiloc, locale, currentTenantLocales);
-      const processedCommentText = commentText.replace(/<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi, '<a href="/profile/$2">$3</a>');
+      const processedCommentText = commentText.replace(/<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi, '<a class="mention" href="/profile/$2">$3</a>');
 
       const parentComment = (
         <Container className="e2e-comment-thread">
