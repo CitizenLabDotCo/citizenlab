@@ -299,7 +299,7 @@
   "app.containers.IdeasShow.Map": "Map",
   "app.containers.IdeasShow.addCommentError": "Er ging iets mis. Probeer het opnieuw.",
   "app.containers.IdeasShow.author": "{authorNameComponent}",
-  "app.containers.IdeasShow.byAuthor": "door {firstName} {lastName}",
+  "app.containers.IdeasShow.byAuthorName": "",
   "app.containers.IdeasShow.childCommentAuthor": "{authorNameComponent} antwoordde:",
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Reageer ...",
   "app.containers.IdeasShow.closeMap": "Sluit kaart",

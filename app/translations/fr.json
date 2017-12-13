@@ -299,7 +299,7 @@
   "app.containers.IdeasShow.Map": "Map",
   "app.containers.IdeasShow.addCommentError": "Une erreur est survenue. Veuillez réessayer.",
   "app.containers.IdeasShow.author": "{authorNameComponent}",
-  "app.containers.IdeasShow.byAuthor": "par {firstName} {lastName}",
+  "app.containers.IdeasShow.byAuthorName": "",
   "app.containers.IdeasShow.childCommentAuthor": "{authorNameComponent} a répondu",
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Ecrire une réponse...",
   "app.containers.IdeasShow.closeMap": "Fermer la carte",
