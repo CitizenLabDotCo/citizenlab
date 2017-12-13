@@ -25,8 +25,7 @@ import { projectsStream, IProjects } from 'services/projects';
 
 // i18n
 import T from 'components/T';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 
@@ -288,7 +287,7 @@ type State = {
 export const landingPageIdeasQuery = { sort: 'trending', 'page[number]': 1, 'page[size]': 6 };
 export const landingPageProjectsQuery = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
 
-class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> {
+class LandingPage extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -365,7 +364,6 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
 
   render() {
     const { locale, currentTenant, currentTenantHeader, hasIdeas, hasProjects } = this.state;
-    const { formatMessage } = this.props.intl;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -376,8 +374,8 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
       const currentTenantLogo = currentTenant.data.attributes.logo.large;
       const currentTenantHeaderTitle = (headerTitleMultiLoc && headerTitleMultiLoc[locale]);
       const currentTenantHeaderSlogan = (headerSloganMultiLoc && headerSloganMultiLoc[locale]);
-      const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : formatMessage(messages.titleCity, { name: currentTenantName }));
-      const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : formatMessage(messages.subtitleCity));
+      const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }}/>);
+      const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (currentTenantHeader !== null);
 
       return (
@@ -419,7 +417,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                     </SectionContainer>
                     <SectionFooter>
                       <ViewMoreButton
-                        text={formatMessage(messages.exploreAllProjects)}
+                        text={<FormattedMessage {...messages.exploreAllProjects} />}
                         style="primary"
                         size="3"
                         icon="compass"
@@ -452,7 +450,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                   {hasIdeas &&
                     <SectionFooter>
                       <ViewMoreButton
-                        text={formatMessage(messages.exploreAllIdeas)}
+                        text={<FormattedMessage {...messages.exploreAllIdeas} />}
                         style="primary"
                         size="3"
                         icon="compass"
@@ -475,4 +473,4 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 }
 
-export default injectIntl<Props>(LandingPage);
+export default LandingPage;
