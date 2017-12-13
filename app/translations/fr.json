@@ -330,6 +330,7 @@
   "app.containers.IdeasShow.openMap": "Show idea on map",
   "app.containers.IdeasShow.parentCommentAuthor": "{authorNameComponent} a dit",
   "app.containers.IdeasShow.placeholderComment": "Faites-nous part de vos impressions !",
+  "app.containers.IdeasShow.postedIn": "",
   "app.containers.IdeasShow.publishComment": "Réagissez à cette idée",
   "app.containers.IdeasShow.shareCTA": "Partagez cette idée",
   "app.containers.IdeasShow.shareOnFacebook": "Partager sur Facebook",

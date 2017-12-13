@@ -330,6 +330,7 @@
   "app.containers.IdeasShow.openMap": "crwdns18192:0crwdne18192:0",
   "app.containers.IdeasShow.parentCommentAuthor": "crwdns17070:0{authorNameComponent}crwdne17070:0",
   "app.containers.IdeasShow.placeholderComment": "crwdns15793:0crwdne15793:0",
+  "app.containers.IdeasShow.postedIn": "",
   "app.containers.IdeasShow.publishComment": "crwdns17071:0crwdne17071:0",
   "app.containers.IdeasShow.shareCTA": "crwdns15795:0crwdne15795:0",
   "app.containers.IdeasShow.shareOnFacebook": "crwdns17053:0crwdne17053:0",

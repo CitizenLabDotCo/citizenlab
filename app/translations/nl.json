@@ -330,6 +330,7 @@
   "app.containers.IdeasShow.openMap": "Toon het idee op de kaart",
   "app.containers.IdeasShow.parentCommentAuthor": "{authorNameComponent} zei",
   "app.containers.IdeasShow.placeholderComment": "Zeg ons wat je denkt!",
+  "app.containers.IdeasShow.postedIn": "",
   "app.containers.IdeasShow.publishComment": "Reageer op dit idee",
   "app.containers.IdeasShow.shareCTA": "Deel dit idee",
   "app.containers.IdeasShow.shareOnFacebook": "Delen op Facebook",
