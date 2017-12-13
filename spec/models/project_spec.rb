@@ -25,6 +25,15 @@ RSpec.describe Project, type: :model do
     end
   end
 
+  describe "Factory XL" do
+    it "is valid" do
+      expect(create(:project_xl)).to be_valid
+    end
+    it "has ideas" do
+      expect(create(:project_xl).ideas).to_not be_empty
+    end
+  end
+
   describe "description sanitizer" do
 
     it "sanitizes script tags in the description" do
@@ -55,6 +64,13 @@ RSpec.describe Project, type: :model do
     it "gets set to 'public' when not specified on create" do
       project = create(:project, visible_to: nil)
       expect(project.visible_to).to eq 'public'
+    end
+  end
+
+  describe "destroy" do
+    it "can be realised" do
+      project = create(:project_xl)
+      expect{ project.destroy }.not_to raise_error
     end
   end
 end
