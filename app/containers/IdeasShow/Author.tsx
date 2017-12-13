@@ -19,7 +19,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
+import { lighten, darken } from 'polished';
 
 const AuthorContainer = styled.div`
   display: flex;
@@ -49,12 +49,12 @@ const AuthorNameContainer = styled.div `
 `;
 
 const AuthorName = styled(Link)`
-  color: #1391A1;
+  color: ${(props) => props.theme.colors.clBlue};
   text-decoration: none;
   cursor: pointer;
 
   &:hover {
-    text-decoration: underline;
+    color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
   }
 `;
 

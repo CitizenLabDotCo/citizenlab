@@ -72,15 +72,9 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
           data: comments.data.filter(comment => comment.relationships.parent.data === null)
         };
 
-        if (parentComments.data.length > 0) {
-          return Rx.Observable.combineLatest(
-            comments.data.map(comments => commentStream(comments.id).observable)
-          ).map(() => parentComments);
-        } 
-
-        return Rx.Observable.combineLatest(
-          comments.data.map(comments => commentStream(comments.id).observable)
-        ).map(() => null);
+        return Rx.Observable
+          .combineLatest(comments.data.map(comments => commentStream(comments.id).observable))
+          .map(() => _.size(parentComments) > 0 ? parentComments : null);
       }
 
       return Rx.Observable.of(null);
@@ -88,7 +82,7 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
 
     const mentions$ = mentionsStream({
       queryParameters: {
-        mention: 'koen',
+        mention: 'k',
         idea_id: ideaId
       }
     }).observable;
