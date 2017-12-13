@@ -13,8 +13,8 @@ import UserName from 'components/UI/UserName';
 import { userByIdStream, IUser } from 'services/users';
 
 // i18n
-import { InjectedIntlProps, FormattedRelative, FormattedDate } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedRelative, FormattedDate } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -76,7 +76,7 @@ type State = {
   author: IUser | null;
 };
 
-class Author extends React.PureComponent<Props & InjectedIntlProps, State> {
+class Author extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -116,7 +116,6 @@ class Author extends React.PureComponent<Props & InjectedIntlProps, State> {
     const children = this.props['children'];
     let { message } = this.props;
     const { authorId, createdAt } = this.props;
-    const { formatRelative } = this.props.intl;
     const { author } = this.state;
 
     message = (message ? message : 'author');
@@ -153,4 +152,4 @@ class Author extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(Author);
+export default Author;

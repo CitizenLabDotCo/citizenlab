@@ -23,8 +23,8 @@ import T from 'components/T';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
-import { InjectedIntlProps, FormattedRelative } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedRelative } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 

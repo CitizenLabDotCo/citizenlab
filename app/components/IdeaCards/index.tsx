@@ -15,8 +15,7 @@ import Button from 'components/UI/Button';
 import { ideasStream, IIdeas } from 'services/ideas';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
