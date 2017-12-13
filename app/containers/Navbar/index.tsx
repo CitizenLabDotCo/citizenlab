@@ -44,11 +44,7 @@ const Container: any = styled.div`
   top: 0;
   background: #fff;
   box-shadow: ${(props: any) => props.alwaysShowBorder ? '0px 1px 3px rgba(0, 0, 0, 0.13)' : '0px 1px 3px rgba(0, 0, 0, 0)'};
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transform: translate3d(0, 0, 0);
   transition: all 150ms ease-out;
-  will-change: box-shadow;
 
   ${(props: any) => props.scrolled && css`
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.13);
