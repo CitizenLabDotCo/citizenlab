@@ -585,7 +585,7 @@
   "app.containers.landing.cityProjects": "Les projets",
   "app.containers.landing.explore": "Explorer",
   "app.containers.landing.exploreAllIdeas": "Toutes les idées",
-  "app.containers.landing.exploreAllProjects": "Toutes les idées",
+  "app.containers.landing.exploreAllProjects": "Toutes les projets",
   "app.containers.landing.ideasFrom": "Les idées pour {name}",
   "app.containers.landing.projectsFrom": "Les projets pour {name}",
   "app.containers.landing.subtitleCity": "Lancez une idée !",
