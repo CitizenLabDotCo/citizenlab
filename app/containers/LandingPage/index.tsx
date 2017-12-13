@@ -165,7 +165,13 @@ const Content = styled.div`
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  padding-bottom: 80px;
+  padding-bottom: 10px;
+`;
+
+const IdeasStyledContentContainer = StyledContentContainer.extend``;
+
+const ProjectsStyledContentContainer = StyledContentContainer.extend`
+  background: #fff;
 `;
 
 const Section = styled.div`
@@ -394,11 +400,41 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
             </Header>
 
             <Content>
-              <StyledContentContainer>
+              <ProjectsStyledContentContainer>
+                {hasProjects &&
+                  <Section>
+                    <SectionHeader>
+                      <SectionTitle>
+                        <FormattedMessage {...messages.cityProjects} />
+                      </SectionTitle>
+                      <Explore to="/projects">
+                        <ExploreText>
+                          <FormattedMessage {...messages.exploreAllProjects} />
+                        </ExploreText>
+                        <ExploreIcon name="compass" />
+                      </Explore>
+                    </SectionHeader>
+                    <SectionContainer>
+                      <ProjectCards filter={landingPageProjectsQuery} loadMoreEnabled={false} />
+                    </SectionContainer>
+                    <SectionFooter>
+                      <ViewMoreButton
+                        text={formatMessage(messages.exploreAllProjects)}
+                        style="primary"
+                        size="3"
+                        icon="compass"
+                        onClick={this.goToProjectsPage}
+                        circularCorners={false}
+                      />
+                    </SectionFooter>
+                  </Section>
+                }
+              </ProjectsStyledContentContainer>
+
+              <IdeasStyledContentContainer>
                 <Section className="ideas">
                   <SectionHeader>
                     <SectionTitle>
-                      {/* <SectionIcon name="idea" className="idea" /> */}
                       <FormattedMessage {...messages.trendingIdeas} />
                     </SectionTitle>
                     {hasIdeas &&
@@ -426,38 +462,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                     </SectionFooter>
                   }
                 </Section>
-
-                {hasProjects &&
-                  <Section>
-                    <SectionHeader>
-                      <SectionTitle>
-                        {/* <SectionIcon name="project2" className="project" /> */}
-                        {/* <FormattedMessage {...messages.projectsFrom} values={{ name: currentTenantName }} /> */}
-                        <FormattedMessage {...messages.cityProjects} />
-                      </SectionTitle>
-                      <Explore to="/projects">
-                        <ExploreText>
-                          <FormattedMessage {...messages.exploreAllProjects} />
-                        </ExploreText>
-                        <ExploreIcon name="compass" />
-                      </Explore>
-                    </SectionHeader>
-                    <SectionContainer>
-                      <ProjectCards filter={landingPageProjectsQuery} loadMoreEnabled={false} />
-                    </SectionContainer>
-                    <SectionFooter>
-                      <ViewMoreButton
-                        text={formatMessage(messages.exploreAllProjects)}
-                        style="primary"
-                        size="3"
-                        icon="compass"
-                        onClick={this.goToProjectsPage}
-                        circularCorners={false}
-                      />
-                    </SectionFooter>
-                  </Section>
-                }
-              </StyledContentContainer>
+              </IdeasStyledContentContainer>
 
               <Footer />
             </Content>
