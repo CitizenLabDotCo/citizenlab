@@ -72,3 +72,7 @@ export function addProject(projectData: IUpdatedProjectProperties) {
 export function updateProject(projectId, projectData: IUpdatedProjectProperties) {
   return streams.update<IProject>(`${apiEndpoint}/${projectId}`, projectId, { project: projectData });
 }
+
+export function deleteProject(projectId: string) {
+  return streams.delete(`${apiEndpoint}/${projectId}`, projectId);
+}

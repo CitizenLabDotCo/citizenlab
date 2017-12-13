@@ -477,6 +477,9 @@ class Streams {
 
       return true;
     } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log(error);
+      }
       if (error.json && error.json.errors) {
         return Promise.reject(error);
       }
