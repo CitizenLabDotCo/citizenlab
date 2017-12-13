@@ -35,8 +35,8 @@ import { commentsForIdeaStream, commentStream, IComments, IComment } from 'servi
 
 // i18n
 import T from 'components/T';
-import { InjectedIntlProps, FormattedRelative, FormattedHTMLMessage } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedRelative } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // animations
@@ -472,7 +472,7 @@ type State = {
   showMap: boolean;
 };
 
-class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
+class IdeasShow extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -557,7 +557,6 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { locale, idea, ideaImage, ideaAuthor, ideaComments, loading, unauthenticatedError, showMap } = this.state;
-    const { formatMessage, formatRelative } = this.props.intl;
 
     if (!loading && idea !== null) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
@@ -575,7 +574,9 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
 
       const ideaMetaContent = (
         <MetaContent>
-          <VoteLabel>{formatMessage(messages.voteOnThisIdea)}</VoteLabel>
+          <VoteLabel>
+            <FormattedMessage {...messages.voteOnThisIdea} />
+          </VoteLabel>
 
           {!unauthenticatedError &&
             <VoteControl
@@ -712,4 +713,4 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(IdeasShow);
+export default IdeasShow;
