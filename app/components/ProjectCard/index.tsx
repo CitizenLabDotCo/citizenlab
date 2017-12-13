@@ -16,8 +16,7 @@ import { projectImageStream, IProjectImage } from 'services/projectImages';
 
 // i18n
 import T from 'components/T';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -198,7 +197,7 @@ type State = {
   projectImage: IProjectImage | null;
 };
 
-class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> {
+class ProjectCard extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -248,8 +247,9 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   render() {
-    const { formatMessage } = this.props.intl;
     const { currentTenant, project, projectImage } = this.state;
+
+    console.log('render projectCard');
 
     if (currentTenant && project) {
       const tenantLogo = currentTenant.data.attributes.logo.medium;
@@ -282,7 +282,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
           <ProjectButtonWrapper>
             <ProjectButton
               onClick={this.goToProject}
-              text={formatMessage(messages.openProjectButton)}
+              text={<FormattedMessage {...messages.openProjectButton} />}
               style="primary-outlined"
               size="2"
               circularCorners={false}
@@ -297,4 +297,4 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 }
 
-export default injectIntl<Props>(ProjectCard);
+export default ProjectCard;
