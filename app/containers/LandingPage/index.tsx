@@ -123,8 +123,8 @@ const HeaderTitle: any = styled.h1`
   padding: 0;
 
   ${media.smallerThanMinTablet`
-    font-size: 36px;
-    line-height: 40px;
+    font-size: 34px;
+    line-height: 39px;
     padding: 0;
   `}
 `;
@@ -152,6 +152,7 @@ const HeaderSubtitle: any = styled.h2`
 
   ${media.smallerThanMinTablet`
     font-size: 20px;
+    font-weight: 300;
     line-height: 26px;
     margin-top: 20px;
   `}

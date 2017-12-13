@@ -71,13 +71,12 @@ const IdeaContainer = styled.div`
   `}
 `;
 
-const BelongsToProject = styled.div`
+const BelongsToProject = styled.p`
+  width: 100%;
   color: ${props => props.theme.colors.label};
   font-weight: 300;
   font-size: 16px;
-  line-height: 20px;
-  display: flex;
-  align-items: center;
+  line-height: 21px;
   margin-bottom: 15px;
 `;
 
