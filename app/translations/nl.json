@@ -322,7 +322,7 @@
   "app.containers.IdeasShow.loadingComments": "Reacties laden...",
   "app.containers.IdeasShow.loadingIdea": "Idea wordt geladen...",
   "app.containers.IdeasShow.oneSecond": "Een secondje...",
-  "app.containers.IdeasShow.openMap": "Toon het idee op een kaart",
+  "app.containers.IdeasShow.openMap": "Toon het idee op de kaart",
   "app.containers.IdeasShow.parentCommentAuthor": "{authorNameComponent} zei",
   "app.containers.IdeasShow.placeholderComment": "Zeg ons wat je denkt!",
   "app.containers.IdeasShow.publishComment": "Reageer op dit idee",

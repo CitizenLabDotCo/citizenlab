@@ -156,7 +156,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
 
       try {
         this.setState({ processing: true });
-        await addCommentToIdea(ideaId, authUser.data.id, { [locale]: inputValue });
+        await addCommentToIdea(ideaId, authUser.data.id, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
 
         this.setState({
           inputValue: '',
@@ -176,6 +176,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
   }
 
   render() {
+    const { ideaId } = this.props;
     const { formatMessage } = this.props.intl;
     const { authUser, inputValue, processing, errorMessage } = this.state;
     const placeholder = formatMessage(messages.commentBodyPlaceholder);
@@ -201,7 +202,8 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
         <MentionsTextArea
           name="comment"
           placeholder={placeholder}
-          rows={10}
+          rows={8}
+          ideaId={ideaId}
           padding="25px 25px 70px 25px"
           value={inputValue}
           error={errorMessage}

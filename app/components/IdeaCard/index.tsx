@@ -116,23 +116,43 @@ const IdeaContainer: any = styled(Link)`
   width: 100%;
   height: 370px;
   margin-bottom: 24px;
+  cursor: pointer;
+  position: relative;
+  background: transparent;
+
+  &::after {
+    content: '';
+    border-radius: 6px;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    transition: opacity 300ms cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: opacity;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+`;
+
+const IdeaContainerInner = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   border-radius: 6px;
-  overflow: hidden;
   background: #fff;
-  cursor: pointer;
   position: relative;
   border: solid 1px #e4e4e4;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transition: box-shadow 300ms cubic-bezier(0.19, 1, 0.22, 1);
-  transform: translate3d(0, 0, 0);
-  will-change: box-shadow;
-
-  &:hover {
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-  }
+  overflow: hidden;
 `;
 
 type Props = {
@@ -241,36 +261,36 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`} className={className}>
+          <IdeaContainerInner>
+            {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
 
-          {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
+            {ideaImageLargeUrl && <IdeaImageLarge src={ideaImageLargeUrl} />}
 
-          {ideaImageLargeUrl && <IdeaImageLarge src={ideaImageLargeUrl} />}
+            {!ideaImageUrl &&
+              <IdeaImagePlaceholder>
+                <IdeaImagePlaceholderIcon name="idea" />
+              </IdeaImagePlaceholder>
+            }
 
-          {!ideaImageUrl &&
-            <IdeaImagePlaceholder>
-              <IdeaImagePlaceholderIcon name="idea" />
-            </IdeaImagePlaceholder>
-          }
+            <IdeaContent>
+              <IdeaTitle>
+                <T value={idea.data.attributes.title_multiloc} />
+              </IdeaTitle>
+              <IdeaAuthor>
+                {createdAt} <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />
+              </IdeaAuthor>
+            </IdeaContent>
 
-          <IdeaContent>
-            <IdeaTitle>
-              <T value={idea.data.attributes.title_multiloc} />
-            </IdeaTitle>
-            <IdeaAuthor>
-              {createdAt} <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />
-            </IdeaAuthor>
-          </IdeaContent>
+            {!showUnauthenticated &&
+              <StyledVoteControl
+                ideaId={idea.data.id}
+                unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                size="normal"
+              />
+            }
 
-          {!showUnauthenticated &&
-            <StyledVoteControl
-              ideaId={idea.data.id}
-              unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-              size="normal"
-            />
-          }
-
-          {showUnauthenticated && <Unauthenticated />}
-
+            {showUnauthenticated && <Unauthenticated />}
+          </IdeaContainerInner>
         </IdeaContainer>
       );
     }
