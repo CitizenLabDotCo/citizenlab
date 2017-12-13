@@ -1,14 +1,15 @@
+const crypto = require('crypto');
+const hash = crypto.randomBytes(20).toString('hex');
+
 module.exports = {
   '@tags': ['citizen', 'auth', 'register'],
   register: (browser) => {
-    const time = new Date().getTime();
-
     browser
     .url('localhost:3000/sign-up')
     .waitForElementVisible('#e2e-signup-step1')
-    .setValue('#firstName', `Test ${time}`)
-    .setValue('#lastName', `Account ${time}`)
-    .setValue('#email', `test+${time}@citizenlab.co`)
+    .setValue('#firstName', `Test ${hash}`)
+    .setValue('#lastName', `Account ${hash}`)
+    .setValue('#email', `test+${hash}@citizenlab.co`)
     .setValue('#password', '123456789')
     .click('#e2e-signup-step1-button')
     .waitForElementVisible('#e2e-signup-step2-button')
