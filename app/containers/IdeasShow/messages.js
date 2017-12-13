@@ -10,6 +10,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.loadVotesError',
     defaultMessage: 'Voting is not currently available',
   },
+  postedIn: {
+    id: 'app.containers.IdeasShow.postedIn',
+    defaultMessage: 'Posted in',
+  },
   closeMap: {
     id: 'app.containers.IdeasShow.closeMap',
     defaultMessage: 'Close Map',
@@ -94,8 +98,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.helmetTitle',
     defaultMessage: 'Show idea',
   },
-  byAuthor: {
-    id: 'app.containers.IdeasShow.byAuthor',
+  byAuthorName: {
+    id: 'app.containers.IdeasShow.byAuthorName',
     defaultMessage: 'by {authorName}',
   },
   deletedUser: {
