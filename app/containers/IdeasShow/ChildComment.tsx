@@ -99,11 +99,13 @@ const CommentBody = styled.div`
 
   a.mention {
     color: ${(props) => props.theme.colors.clBlue};
-    font-weight: 400;
+    font-weight: inherit;
     text-decoration: none;
-    background: ${props => transparentize(0.94, props.theme.colors.clBlue)};
+    background: ${props => transparentize(0.9, props.theme.colors.clBlue)};
+    background: '#e8f5f7';
 
     &:hover {
+      text-decoration: underline;
       color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
     }
   }
