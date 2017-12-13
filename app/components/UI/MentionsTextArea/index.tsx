@@ -89,7 +89,8 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
             backgroundColor: 'white',
             border: '1px solid #ccc',
             borderRadius: '5px',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.15)'
           },
           item: {
             fontSize: '15px',
@@ -106,7 +107,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
     };
 
     this.mentionStyle = {
-      backgroundColor: transparentize(0.94, color('clBlue')),
+      backgroundColor: transparentize(0.9, color('clBlue')),
     };
   }
 

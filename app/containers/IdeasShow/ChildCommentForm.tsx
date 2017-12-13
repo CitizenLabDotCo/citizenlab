@@ -249,6 +249,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
   }
 
   render() {
+    const { ideaId } = this.props;
     const { authUser } = this.state;
 
     if (authUser) {
@@ -268,6 +269,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
             padding="12px 30px"
             value={inputValue}
             error={errorMessage}
+            ideaId={ideaId}
             onChange={this.handleTextareaOnChange}
             onFocus={this.handleTextareaOnFocus}
             onBlur={this.handleTextareaOnBlur}
