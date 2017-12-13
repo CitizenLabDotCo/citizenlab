@@ -5,7 +5,7 @@ class Project < ApplicationRecord
   mount_base64_uploader :header_bg, HeaderBgUploader
 
 
-  has_many :ideas, dependent: :nullify
+  has_many :ideas, dependent: :destroy
   has_and_belongs_to_many :topics
   has_and_belongs_to_many :areas
   has_many :phases, dependent: :destroy
