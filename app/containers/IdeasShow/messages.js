@@ -94,8 +94,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.helmetTitle',
     defaultMessage: 'Show idea',
   },
-  byAuthor: {
-    id: 'app.containers.IdeasShow.byAuthor',
+  byAuthorName: {
+    id: 'app.containers.IdeasShow.byAuthorName',
     defaultMessage: 'by {authorName}',
   },
   deletedUser: {
