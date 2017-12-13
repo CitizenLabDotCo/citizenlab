@@ -504,8 +504,6 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
       const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : Rx.Observable.of(null);
       const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Rx.Observable.of(null));
 
-      console.log(idea);
-
       return Rx.Observable.combineLatest(
         ideaImage$,
         ideaAuthor$,
