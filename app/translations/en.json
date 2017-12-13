@@ -296,6 +296,7 @@
   "app.containers.IdeasNewPage2.titlePlaceholder": "Enter the title of your idea",
   "app.containers.IdeasNewPage2.topicsLabel": "Topics (recommended, max. 2)",
   "app.containers.IdeasNewPage2.topicsPlaceholder": "Select one or two topics for your idea",
+  "app.containers.IdeasShow.Map": "Map",
   "app.containers.IdeasShow.addCommentError": "Something went wrong. Please try again later.",
   "app.containers.IdeasShow.author": "{authorNameComponent}",
   "app.containers.IdeasShow.byAuthor": "by {firstName} {lastName}",
