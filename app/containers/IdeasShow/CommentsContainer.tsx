@@ -9,7 +9,6 @@ import Icon from 'components/UI/Icon';
 
 // services
 import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
-import { mentionsStream, IMention, IMentions } from 'services/mentions';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -80,13 +79,6 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
       return Rx.Observable.of(null);
     });
 
-    const mentions$ = mentionsStream({
-      queryParameters: {
-        mention: 'k',
-        idea_id: ideaId
-      }
-    }).observable;
-
     this.subscriptions = [
       parentComments$.subscribe((parentComments) => {
         let sortedParentComments: IComments | null = null;
@@ -109,9 +101,7 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
           parentComments: sortedParentComments,
           loading: false
         });
-      }),
-
-      mentions$.subscribe(mentions => console.log(mentions))
+      })
     ];
   }
 

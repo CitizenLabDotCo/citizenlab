@@ -72,7 +72,7 @@ class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
     if (ideaId !== null) {
       return (
         <Container>
-          <IdeasShow location={location} ideaId={ideaId} />
+          <IdeasShow ideaId={ideaId} />
         </Container>
       );
     }
