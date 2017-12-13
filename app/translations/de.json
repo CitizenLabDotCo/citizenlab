@@ -299,7 +299,7 @@
   "app.containers.IdeasShow.Map": "Map",
   "app.containers.IdeasShow.addCommentError": "Etwas ging schief. Bitte versuchen Sie es später nochmal.",
   "app.containers.IdeasShow.author": "{authorNameComponent}",
-  "app.containers.IdeasShow.byAuthor": "von {firstName} {lastName}",
+  "app.containers.IdeasShow.byAuthorName": "",
   "app.containers.IdeasShow.childCommentAuthor": "{authorNameComponent} antwortete",
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Reagieren...",
   "app.containers.IdeasShow.closeMap": "Karte schließen",

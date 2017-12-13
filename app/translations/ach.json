@@ -303,7 +303,7 @@
   "app.containers.IdeasShow.Map": "crwdns18191:0crwdne18191:0",
   "app.containers.IdeasShow.addCommentError": "crwdns18177:0crwdne18177:0",
   "app.containers.IdeasShow.author": "crwdns17067:0{authorNameComponent}crwdne17067:0",
-  "app.containers.IdeasShow.byAuthor": "crwdns17106:0{firstName}crwdnd17106:0{lastName}crwdne17106:0",
+  "app.containers.IdeasShow.byAuthorName": "",
   "app.containers.IdeasShow.childCommentAuthor": "crwdns17068:0{authorNameComponent}crwdne17068:0",
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "crwdns17069:0crwdne17069:0",
   "app.containers.IdeasShow.closeMap": "crwdns18105:0crwdne18105:0",
