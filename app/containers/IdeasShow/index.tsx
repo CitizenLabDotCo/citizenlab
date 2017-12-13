@@ -636,7 +636,7 @@ class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
                     <AuthorAvatar userId={authorId} size="small" onClick={authorId ? this.goToUserProfile : () => {}} />
                     <AuthorMeta>
                       <AuthorName to={ideaAuthor ?  `/profile/${ideaAuthor.data.attributes.slug}` :  ''}>
-                        <FormattedMessage {...messages.byAuthor} values={{ authorName: <UserName user={ideaAuthor} /> }} />
+                        <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />
                       </AuthorName>
                       {createdAt &&
                         <TimeAgo>

@@ -303,7 +303,7 @@
   "app.containers.IdeasShow.Map": "Map",
   "app.containers.IdeasShow.addCommentError": "Something went wrong. Please try again later.",
   "app.containers.IdeasShow.author": "{authorNameComponent}",
-  "app.containers.IdeasShow.byAuthor": "by {firstName} {lastName}",
+  "app.containers.IdeasShow.byAuthorName": "by {authorName}",
   "app.containers.IdeasShow.childCommentAuthor": "{authorNameComponent} replied",
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Write a reply...",
   "app.containers.IdeasShow.closeMap": "Close Map",
