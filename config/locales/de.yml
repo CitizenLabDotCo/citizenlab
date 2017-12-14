@@ -166,24 +166,121 @@ de:
       
       <p>E-Mail: <a href="mailto:support@citizenlab.co">support@citizenlab.co</a></p>
     privacy_policy_title: Datenschutzrichtlinie
-    privacy_policy_body: >
-      <h3>1. Privacy policy</h3>
-      <p>This Privacy Policy applies to the personal data collected by CitizenLab via this website.</p> <h3>2. WHAT ARE PERSONAL DATA?</h3> <p> In this Privacy Policy personal data means information or pieces of information that allow to identify you. An identifiable person is one who can be identified, directly or indirectly, in particular by reference to an identification number or to one or more factors specific to his physical, physiological, mental, economic, cultural or social identity. Typical personal data includes your name and email address.</p>
-      <h3>3. What personal data do we collect?</h3>
-      <p>We may collect your personal data from the two following sources: </p>
-      <h4>3.1 Personal data you provide to us directly from registration on the platform.</h4> <p> <ul> <li>The personal data we collect from you directly may include your:</li> <li>User name (mandatory);</li> <li>E-mail address (mandatory);</li> <li>Name (optional);</li> <li>Age (optional);</li> <li>Area of residence (optional);</li> <li>Education level (optional).</li> </ul> </p>
-      <h4>3.2 Personal data we collect when you use this website.</h4>
-      <p>We (and third party service providers acting on our behalf) use cookies to automatically collect personal data about you when you use this website. For more information, please consult our Cookie Policy.</p>
-      <h3>4. How do we use your personal data?</h3> <p> We may use your personal data for the following purposes: <ul> <li>To create and maintain your account on this website;</li> <li>To provide you with information regarding product or city that may be of interest to you;</li> <li>To verify your user account for the sake of security;</li> <li>To improve our products and your experience on this website by: <ul> <li>evaluating the use of this website;</li> <li>personalising the content you get to see based on your area of residence.</li> </ul> </li> <li>To manage the identification and authentication of users.</li> </ul> </p>
-      <h3>5. Mode and place of processing the data</h3>
-      <h4>Methods of processing</h4> <p>The Data Controller processes the Data of Users in a proper manner and shall take appropriate security measures to prevent unauthorized access, disclosure, modification, or unauthorized destruction of the Data.</p> <p>The Data processing is carried out using computers and/or IT enabled tools, following organizational procedures and modes strictly related to the purposes indicated. In addition to the Data Controller, in some cases, the Data may be accessible to certain types of persons in charge, involved with the operation of the site (administration, sales, marketing, legal, system administration) or external parties (such as third party technical service providers, mail carriers, hosting providers, IT companies, communications agencies) appointed, if necessary, as Data Processors by the Owner. The updated list of these parties may be requested from the Data Controller at any time.</p>
-      <h4>Place</h4> <p>The Data is processed at the Data Controller's operating offices and in any other places where the parties involved with the processing are located. For further information, please contact the Data Controller.</p>
-      <h4>Retention time</h4> <p>The Data is kept for the time necessary to provide the service requested by the User, or stated by the purposes outlined in this document, and the User can always request that the Data Controller suspend or remove the data.</p>
-      <h3>6. Where do we transfer your personal data?</h3>
-      <p>We do not transfer your personal data to service providers outside the European Union.</p>
-      <h3>7. What rights do you have?</h3>
-      <p> You have the right: <ul> <li>to request access to your personal data;</li> <li>to request that we correct, update or delete your personal data;</li> <li>to oppose to the processing of your personal data for direct communication purposes.</li> </ul> </p>
-      <p>In addition, you can opt-out from direct communications at any time by following the relevant instructions at the bottom of the direct communications (‘Manage your email notifications’).</p>
-      <p>If you would need help to exercise your rights, you may contact us by e-mail at support@citizenlab.co.</p>
+    privacy_policy_body: |2
+      <h1>Datenschutzbestimmungen - CitizenLab</h1>
+      
+      <p>Verantwortlich für die Verarbeitung der Daten und Inhaber
+      CitizenLab NV - Meusegemstraat 105 - 1861 Wolvertem - Belgien
+      Kontakt-E-Mail-Adresse: support@citizenlab.co</p>
+      
+      <h3>1.	DATENSCHUTZBESTIMMUNGEN</h3>
+      
+      <p>Diese Datenschutzerklärung bezieht sich auf die persönlichen Daten, die CitizenLab über diese Website sammelt.</p>
+      
+      <h3>2.	WAS SIND PERSÖNLICHE DATEN?</h3>
+      
+      <p>In dieser Datenschutzerklärung beziehen sich personenbezogene Daten auf Informationen oder Angaben, die es ermöglichen, Sie zu identifizieren. Eine identifizierbare Person ist jemand, der direkt oder indirekt identifiziert werden kann, insbesondere durch Bezugnahme auf eine Identifikationsnummer oder auf einen oder mehrere Faktoren, die mit der physischen, physiologischen, mentalen, wirtschaftlichen, kulturellen oder sozialen Identität in Verbindung stehen. Ein typisches Beispiel für persönliche Informationen sind Ihr Name und Ihre E-Mail-Adresse.</p>
+      
+      <h3>3.	WELCHE PERSÖNLICHEN DATEN SAMMELN WIR?</h3>
+      <p>Wir können Ihre persönlichen Daten aus den folgenden zwei Quellen beziehen:</p>
+      
+      <h4>1.	Persönliche Daten, die Sie uns bei Ihrer Registrierung auf der Plattform zur Verfügung stellen.</h4>
+      
+      <p><ul><li>Die persönlichen Daten, die wir von Ihnen sammeln können, sind:
+      
+      </li><li>E-Mail-Adresse (obligatorisch);
+      </li><li>Vorname (obligatorisch);
+      </li><li>Nachname (obligatorisch);
+      </li><li>Alter (optional);
+      </li><li>Wohnsitz (optional);
+      </li><li>Bildungsniveau (optional).</li></ul></p>
+      
+      <h4>Persönliche Daten, die wir sammeln, wenn Sie unsere Website besuchen.</h4>
+      
+      <p>Wir (und Drittanbieter, die in unserem Auftrag handeln) verwenden Cookies, um automatisch personenbezogene Daten über Sie zu sammeln, wenn Sie diese Website nutzen. Für weitere Informationen lesen Sie bitte unsere Cookie-Richtlinien.</p>
+      
+      <h3>4.	WIE VERWENDEN WIR PERSÖNLICHE DATEN?</h3>
+      
+      <p>Wir können Ihre persönlichen Daten für die folgenden Zwecke verwenden: <ul><li>Um Ihr Benutzerprofil auf dieser Website zu erstellen und zu pflegen;
+      </li><li>Um Informationen über Ihre Community und / oder Berichte von der Plattform, die Sie interessieren könnte, zur Verfügung zu stellen;</li></ul>
+      </li><li>Um die Überprüfung Ihres Benutzerprofils im Rahmen der erforderlichen Sicherheitsmaßnahmen zu gewährleisten;</li></ul>
+      </li><li>Zur Verwaltung der Identifizierung und Authentifizierung von Benutzern.</li></ul></p>
+      
+      <h3>5.	AN WEN GEBEN WIR IHRE PERSÖNLICHEN DATEN WEITER?</h3>
+      
+      <p>Wir können Ihre persönlichen Daten an Ihre lokalen Behörden weitergeben, die eine Administratorfunktion auf dieser Website haben. Wir werden Ihre personenbezogenen Daten niemals an andere Dienstleister verkaufen oder vermieten, oder an Dienstleister weitergeben, die nicht der EU-Datenrichtlinie entsprechen. </p>
+      <h3>6.	WOHIN ÜBERMITTELN WIR IHRE PERSÖNLICHEN DATEN?</h3>
+      
+      <p>Wir geben Ihre personenbezogenen Daten nicht an Dienstleister weiter, die außerhalb der Europäischen Union ansässig sind.</p>
+      
+      <h3>7.	WELCHE RECHTE HABEN SIE?</h3>
+      
+      <p>Der Nutzer hat das Recht, jederzeit Auskunft darüber zu erhalten, ob seine persönlichen Daten gespeichert sind. Sie können den Inhaber der Datenverarbeitung auffordern, den Inhalt und seine Herkunft offen zu legen, seine Richtigkeit zu überprüfen oder die Ergänzung, Löschung, Aktualisierung oder Korrektur, Anonymisierung oder Sperrung von Daten, welche widerrechtlich aufbewahrt werden, zu verlangen. Der Verarbeitung der Daten kann mit triftigen Gründen auch widersprochen werden. Sie müssen Ihre Anfragen an die Stelle richten, welche für die Verarbeitung der Daten über die oben genannten Kontaktinformationen zuständig ist.</p>
+      
+      <p>Zusammengefasst bedeutet dies, dass Sie als Nutzer das Recht dazu haben:<ul><li>Zugang zu Ihren persönlichen Daten zu beantragen;
+      </li><li>die Berichtigung, Aktualisierung oder Löschung Ihrer persönlichen Daten zu beantragen;
+      </li><li>der Verarbeitung Ihrer persönlichen Daten für direkte Kommunikationszwecke zu widersprechen.</li></ul>
+      
+      <p>Darüber hinaus können Sie sich jederzeit von der direkten Kommunikation abmelden, indem Sie die entsprechenden Anweisungen am Ende der direkten Kommunikation befolgen ("Verwalten Sie Ihre E-Mail-Benachrichtigungen").</p>
+      
+      <p>Sie können jederzeit weitere Informationen über die Erhebung oder Verarbeitung persönlicher Daten bei der für die Verarbeitung der Daten verantwortlichen Stelle anfordern. Siehe die Kontaktinformationen am Anfang dieses Dokuments.</p>
+      
+      <h3>8.	ZUSÄTZLICHE INFORMATIONEN ZUR DATENERHEBUNG UND -VERARBEITUNG</h3>
+      
+      <h4>Rechtliche Verfahren</h4>
+      
+      <p>Der Verantwortliche für die Verarbeitung der Daten kann die persönlichen Daten des Nutzers für legale Zwecke, für das Gericht oder für Gerichtsverfahren, die vorhergehenden Phasen im Falle einer unrechtmäßigen Nutzung dieser Anwendung oder der damit zusammenhängenden Dienstleistungen, verwenden.</p>
+      
+      <p>Dem Nutzer ist bekannt, dass der Inhaber der Datenverarbeitung verpflichtet sein kann, die persönlichen Daten auf Verlangen der zuständigen staatlichen Stellen für deren Verarbeitung offenzulegen.</p>
+      
+      <h4>Zusätzliche Informationen über die persönlichen Daten des Nutzers</h4>
+      
+      <p>Auf Wunsch des Nutzers kann diese Anwendung zusätzlich zu den in dieser Datenschutzerklärung enthaltenen Informationen dem Nutzer zusätzliche und kontextbezogene Informationen über bestimmte Dienste oder die Erhebung und Verarbeitung personenbezogener Daten zur Verfügung stellen.</p>
+      
+      <h4>Änderungen dieser Datenschutzerklärung</h4>
+      
+      <p>Der Verantwortliche für die Verarbeitung der Daten behält sich das Recht vor, diese Datenschutzerklärung jederzeit zu ändern, indem er die Benutzer auf dieser Seite benachrichtigt. Wir empfehlen Ihnen, diese Seite auf mögliche Änderungen zu überprüfen. Das Datum der letzten Änderung wird unten auf der Seite angezeigt. Wenn ein Benutzer einer Änderung der Richtlinie widerspricht, darf der Benutzer diese Anwendung nicht weiterverwenden. Er kann den für die Verarbeitung der Daten Verantwortlichen auffordern, die personenbezogenen Daten zu löschen. Sofern nicht anders angegeben, gilt die jeweils gültige Datenschutzrichtlinie für alle persönlichen Daten, die der Verantwortliche für die Verarbeitung der Daten über die Nutzer gespeichert hat.</p>
+      
+      <p>Letztes Update: 7. Dezember 2017</p>
+       
+      
+      <h1>DEFINITIONEN UND RECHTLICHER RAHMEN</h1>
+       
+      <h3>Persönliche Daten</h3>
+      
+      <p>Alle Informationen über eine natürliche Person, eine juristische Person, eine Institution oder eine Vereinigung, die direkt oder indirekt durch Bezugnahme auf andere Informationen, einschließlich einer persönlichen ID-Nummer, identifiziert wurden oder werden können.</p>
+      
+      <h3>Nutzungsdaten</h3>
+      
+      <p>Informationen, die automatisch von dieser Anwendung (oder von externen Diensten, die in dieser Anwendung verwendet werden) gesammelt werden, einschließlich: der IP-Adressen oder Domänennamen der Computer, die von den Benutzern dieser Anwendung verwendet werden, der URI (Uniform Resource Identifier)-Addressen, der Uhrzeit der Anfrage, der Methode, die verwendet wird, um die Anfrage an den Server zu senden, der Größe der Datei, die als Antwort darauf empfangen wird, der numerische Code, der den Status der Serverantwort angibt (erfolgreich, Fehler, usw.), das Herkunftsland, der Funktionen des Browsers und des Betriebssystems des Nutzers, der unterschiedlichen Zeitangaben pro Besuch (wie z.B. die Verweildauer auf jeder Seite der Anwendung) und der Daten
+      der nur innerhalb der Anwendung Überwachten, insbesondere wird sich dabei auf die Reihenfolge der besuchten Seiten und andere Parameter über das Betriebssystem des Gerätes und / oder die IT-Umgebung des Benutzers konzentriert.</p>
+      
+      <h3>Benutzer</h3>
+      
+      <p>Die Person, die diese Anwendung verwendet und die mit dem Betroffenen, auf den sich die persönlichen Daten beziehen, einverstanden oder von ihm autorisiert sein muss.</p>
+      
+      <h3>Die betroffene Person</h3>
+      
+      <p>Die juristische oder natürliche Person, auf die sich die personenbezogenen Daten beziehen.</p>
+      
+      <h3>Datenverarbeiter (oder Datenverantwortlicher)</h3>
+      
+      <p>Die natürliche Person, juristische Person, staatliche Verwaltung oder jede andere Institution, Vereinigung oder Organisation, die vom Inhaber der Datenverarbeitung autorisiert wurde, die personenbezogenen Daten in Übereinstimmung mit dieser Datenschutzrichtlinie zu verarbeiten.</p>
+      
+      <h3>Verantwortlich für die Verarbeitung der Daten (oder Eigentümer)</h3>
+      
+      <p>Die natürliche Person, juristische Person, staatliche Verwaltung oder jede andere Institution, Vereinigung oder Organisation mit dem Recht, auch gemeinsam mit dem Verantwortlichen für die Verarbeitung der Daten, Entscheidungen über die Zwecke und Methoden der Verarbeitung persönlicher Daten und die verwendeten Mittel zu treffen, einschließlich der Sicherheitsmaßnahmen in Bezug auf die Nutzung dieser Anwendung. Der Verantwortliche für die Verarbeitung der Daten ist der Inhaber dieser Anwendung, sofern nicht anders angegeben.</p>
+      
+      <h3>Diese Anwendung</h3>
+      
+      <p>Die Hardware- oder Software-Tools, mit denen die persönlichen Daten des Benutzers gesammelt werden.</p>
+      
+      <h3>Cookie</h3>
+      
+      <p>Kleiner Datensatz, welcher auf dem Gerät des Benutzers gespeichert ist.</p>
+       
+      <h1>RECHTLICHE INFORMATIONEN</h1>
+      
+      <p>Hinweis für europäische Nutzer: Diese Datenschutzerklärung wurde unter Beachtung der Verpflichtungen aus Art. 10 der europäischen Richtlinie 95/46 / EG und den Bestimmungen der europäischen Richtlinie 2002/58 / EG, sowie der Überarbeitung der Richtlinie 2009/136 / EG über Cookies erstellt.</p>
     infopage_title: Impressum
     infopage_body: "<h2>Impressum</h2>\n<p>CitizenLab<br />\nBeCentral, Cantersteen 12<br />\n1000 Brüssel, Belgien\n</p>\n<p>\nTelefon: +49 698 991 4888<br />\nE-Mail: <a href=\"mailto:thomas.balbach@citizenlab.de\">thomas.balbach@citizenlab.de</a>\n</p>\n<p>\nUSt.IdNr: BE0638901287<br />\n</p>\n<p>\nVertreten durch:<br />\nWietse Van Ransbeeck<br />\n</p>\n<p>\nEingetragen im Handelsregister:<br />\nRegister-Nr: HRB 638901287<br />\nGericht: Rechtbank van koophandel Brussel\n</p>\n<p>\nVerantwortlich für den Inhalt gem. § 55 Abs. 2 RStV:<br />\nWietse Van Ransbeeck<br />\nRue St.Bernard 153<br />\n1060 Saint-Gilles<br />\n</p>\n<p>\nBerufshaftpflichtversicherung:<br />\nAXA<br />\nZakenkantoor Bogaerts, <br />\nBoechtstraat 15, 1<br />\n860 Meise<br />\nGeltungsbereich: Europaweit\n</p>\n<p>\nBildrechte:<br />\n<a href=\"http://chrisbattaglia.info/;\" targe=\"_blank\">http://chrisbattaglia.info/;</a> Chris Battaglia<br />\n</p>\n<p>Wir nehmen nicht an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teil.</p>\n<p><a href=\"https://www.123recht.net/impressumsgenerator.asp\">Impressum erstellt mit dem Impressumsgenerator von 123recht.net - Rechtsberatung online.</a></p>\n"
