@@ -229,6 +229,9 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
+    paper_trail (8.1.1)
+      activerecord (>= 4.2, < 5.2)
+      request_store (~> 1.1)
     pg (0.20.0)
     pg_search (2.0.1)
       activerecord (>= 4.2)
@@ -282,6 +285,7 @@ GEM
     redis (3.3.3)
     redis-namespace (1.5.3)
       redis (~> 3.0, >= 3.0.4)
+    request_store (1.3.2)
     rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
@@ -398,6 +402,7 @@ DEPENDENCIES
   omniauth-facebook
   omniauth-google-oauth2
   omniauth-twitter
+  paper_trail
   pg (~> 0.18)
   pg_search (~> 2.0.1)
   premailer-rails (~> 1.9.6)
