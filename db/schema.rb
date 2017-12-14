@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171204155602) do
+ActiveRecord::Schema.define(version: 20171214112519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,6 +139,15 @@ ActiveRecord::Schema.define(version: 20171204155602) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "description_multiloc", default: {}
+  end
+
+  create_table "idea_trending_infos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "idea_id", null: false
+    t.datetime "last_activity_at", null: false
+    t.datetime "mean_last_activity_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idea_id"], name: "index_idea_trending_infos_on_idea_id"
   end
 
   create_table "ideas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -362,6 +371,7 @@ ActiveRecord::Schema.define(version: 20171204155602) do
   add_foreign_key "groups_projects", "projects"
   add_foreign_key "idea_files", "ideas"
   add_foreign_key "idea_images", "ideas"
+  add_foreign_key "idea_trending_infos", "ideas"
   add_foreign_key "ideas", "idea_statuses"
   add_foreign_key "ideas", "projects"
   add_foreign_key "ideas", "users", column: "author_id"

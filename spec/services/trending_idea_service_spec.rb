@@ -2,13 +2,22 @@ require "rails_helper"
 
 describe TrendingIdeaService do
   before do
-    generate_trending_ideas 20
+    generate_trending_ideas 3
+  end
+
+  describe "filter_trending" do
+    it "filters trending ideas in accordance with the trending criterea (those that have a positive trending score)" do
+      trending_score_filter = TrendingIdeaService.new.filter_trending(Idea).map(&:id)
+      expected_selection = Idea.all.select{ |i| TrendingIdeaService.new.trending? i }.map(&:id)
+      expect(trending_score_filter.size).to eq expected_selection.size
+      expect(trending_score_filter.sort).to eq expected_selection.sort
+    end
   end
 
   describe "order_trending" do
     it "sorts trending to untrending in accordance with the trending score" do
       trending_score_sorted = TrendingIdeaService.new.sort_trending(Idea).map(&:id)
-      expected_order = Idea.all.sort_by(&:trending_score).map(&:id).reverse
+      expected_order = Idea.all.sort_by{ |i| TrendingIdeaService.new.trending_score i }.map(&:id).reverse
       lines = []
       Idea.count.times do |i|
         lines.concat [i]
@@ -17,8 +26,8 @@ describe TrendingIdeaService do
 
         lines.concat ["ID:        #{trending_score_sorted[i]}       #{expected_order[i]}"]
         lines.concat ['--------------------------']
-        lines.concat ["Score:     #{i_got.trending_score}       #{i_exp.trending_score}"]
-        lines.concat ["Trending?: #{i_got.trending?}       #{i_exp.trending?}"]
+        lines.concat ["Score:     #{TrendingIdeaService.new.trending_score i_got}       #{TrendingIdeaService.new.trending_score i_exp}"]
+        lines.concat ["Trending?: #{TrendingIdeaService.new.trending? i_got}       #{TrendingIdeaService.new.trending? i_exp}"]
         lines.concat ['--------------------------']
         lines.concat ["Vote diff: #{i_got.score}       #{i_exp.score}"]
         lines.concat ["Pub_at:    #{i_got.published_at}       #{i_exp.published_at}"]

@@ -26,6 +26,8 @@ class Idea < ApplicationRecord
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
+  has_one :idea_trending_info, dependent: :destroy, autosave: true
+
   PUBLICATION_STATUSES = %w(draft published closed spam)
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
@@ -39,6 +41,10 @@ class Idea < ApplicationRecord
   before_validation :set_author_name
   before_validation :set_idea_status, on: :create
   after_validation :set_published_at, if: ->(idea){ idea.published? && idea.publication_status_changed? }
+
+  after_create :set_idea_trending_info
+  after_update :update_idea_trending_info
+  after_touch :update_idea_trending_info
 
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
@@ -67,9 +73,6 @@ class Idea < ApplicationRecord
   scope :order_new, -> (direction=:desc) {order(published_at: direction)}
   scope :order_popular, -> (direction=:desc) {order("(upvotes_count - downvotes_count) #{direction}")}
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
-  TREND_NUM_UPVOTES = 5
-  TREND_NUM_COMMENTS = 5
-  TREND_SINCE_ACTIVITY = 30 * 24 * 60 * 60 # 30 days
 
   scope :order_status, -> (direction=:desc) {
     joins(:idea_status)
@@ -94,52 +97,8 @@ class Idea < ApplicationRecord
     upvotes_count - downvotes_count
   end
 
-  def trending_score
-    upvotes_ago = activity_ago upvotes.select { |v| author && v.user && (v.user.id == author.id) }
-    comments_ago = activity_ago comments.select { |c| author && c.author && (c.author.id == author.id) }
-    score = trending_score_formula (upvotes_count - downvotes_count), upvotes_ago, comments_ago
-    if (upvotes_count - downvotes_count) < 0
-      return -1 / score
-    end
-    if idea_status.code == 'rejected'
-      return -1 / score
-    end
-    if [upvotes_ago.first, comments_ago.first].min > TREND_SINCE_ACTIVITY
-      return -1 / score
-    end
-    score
-  end
-
-  def trending? score=trending_score
-    trending_score >= 0
-  end
-
-
+  
   private
-
-  def trending_score_formula votes_diff, upvotes_ago, comments_ago
-    [(1 + votes_diff), 1].max / (mean(upvotes_ago) + mean(comments_ago))
-  end
-
-  def activity_ago iteratables
-    take_and_fill iteratables.map{ |obj| Time.now.to_i - obj.created_at.to_i }.sort,
-                  TREND_NUM_COMMENTS, 
-                  (Time.now.to_i - published_at.to_i)
-  end
-
-  def take_and_fill arr, n, default
-    taken = arr.take n
-    fill = Array.new (n - taken.size), default
-    taken.concat fill
-  end
-
-  def mean arr
-    if arr.size == 0
-      0
-    else
-      arr.inject{ |sum, el| sum + el }.to_f / arr.size
-    end
-  end
 
   def generate_slug
     if !self.slug
@@ -158,6 +117,14 @@ class Idea < ApplicationRecord
 
   def set_published_at
     self.published_at ||= Time.now
+  end
+
+  def set_idea_trending_info
+    self.idea_trending_info ||= IdeaTrendingInfo.create(idea: self)
+  end
+
+  def update_idea_trending_info
+    self.idea_trending_info.update_info
   end
 
 end
