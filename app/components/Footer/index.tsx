@@ -7,11 +7,13 @@ import { Link } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';
+import { Dropdown } from 'semantic-ui-react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages.js';
+import { appLocalePairs } from 'i18n';
 
 // services
 import { localeStream } from 'services/locale';
@@ -20,7 +22,7 @@ import { LEGAL_PAGES } from 'services/pages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, color } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -162,11 +164,28 @@ const PoweredBy = styled.a`
   `}
 `;
 
+const LanguageSelectionWrapper = styled.div`
+  padding-left: 1rem;
+  margin-left: 1rem;
+  border-left: 1px solid ${color('separation')};
+
+  text-align: right;
+
+  .ui.selection.dropdown {
+    color: ${color('label')};
+  }
+`;
+
 type Props = {};
 
 type State = {
   locale: string | null;
   currentTenant: ITenant | null;
+  languageOptions: {
+    key: string;
+    value: string;
+    text: string;
+  }[]
 };
 
 class Footer extends React.PureComponent<Props, State> {
@@ -177,7 +196,8 @@ class Footer extends React.PureComponent<Props, State> {
     super(props as any);
     this.state = {
       locale: null,
-      currentTenant: null
+      currentTenant: null,
+      languageOptions: [],
     };
     this.subscriptions = [];
   }
@@ -190,12 +210,25 @@ class Footer extends React.PureComponent<Props, State> {
       Rx.Observable.combineLatest(
         locale$,
         currentTenant$
-      ).subscribe(([locale, currentTenant]) => this.setState({ locale, currentTenant }))
+      )
+      .subscribe(([locale, currentTenant]) => {
+        const languageOptions = currentTenant.data.attributes.settings.core.locales.map((locale) => ({
+          key: locale,
+          value: locale,
+          text: appLocalePairs[locale],
+        }));
+
+        this.setState({ locale, currentTenant, languageOptions });
+      })
     ];
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  handleLanguageChange () {
+
   }
 
   render() {
@@ -233,10 +266,14 @@ class Footer extends React.PureComponent<Props, State> {
               ))}
             </PagesNav>
 
+
             <PoweredBy href="https://www.citizenlab.co/">
               <span>{poweredBy}</span>
               <CitizenLabLogo name="logo" />
             </PoweredBy>
+            <LanguageSelectionWrapper>
+              <Dropdown upward={true} search={true} selection={true} value={locale} options={this.state.languageOptions} />
+            </LanguageSelectionWrapper>
           </SecondLine>
         </Container>
       );
