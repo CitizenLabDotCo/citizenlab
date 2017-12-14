@@ -249,8 +249,6 @@ class ProjectCard extends React.PureComponent<Props, State> {
   render() {
     const { currentTenant, project, projectImage } = this.state;
 
-    console.log('render projectCard');
-
     if (currentTenant && project) {
       const tenantLogo = currentTenant.data.attributes.logo.medium;
       const slug = project.data.attributes.slug;

@@ -189,8 +189,6 @@ class ProjectCards extends React.PureComponent<Props, State> {
     const showLoadmore = (!!loadMoreEnabled && hasMore);
     const hasProjects = (projects !== null && projects.data.length > 0);
 
-    console.log('render projectCards');
-
     const loadingIndicator = (loading ? (
       <Loading id="projects-loading">
         <Spinner size="30px" color="#666" />

@@ -174,6 +174,15 @@ export default class ChildComment extends React.PureComponent<Props, State> {
     }
   }
 
+  captureClick = (event) => {
+    event.preventDefault();
+
+    if (event.target.classList.contains('mention')) {
+      const link = event.target.getAttribute('data-link');
+      browserHistory.push(link);
+    }
+  }
+
   render() {
     const { locale, currentTenantLocales, comment, author } = this.state;
 
@@ -185,9 +194,11 @@ export default class ChildComment extends React.PureComponent<Props, State> {
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
       const avatar = author.data.attributes.avatar.medium;
       const slug = author.data.attributes.slug;
-
       const commentText = getLocalized(commentBodyMultiloc, locale, currentTenantLocales);
-      const processedCommentText = commentText.replace(/<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi, '<a class="mention" href="/profile/$2">$3</a>');
+      const processedCommentText = commentText.replace(
+        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi, 
+        '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
+      );
 
       return (
         <CommentContainer className={className}>
@@ -209,7 +220,7 @@ export default class ChildComment extends React.PureComponent<Props, State> {
             </AuthorMeta>
           </AuthorContainer>
 
-          <CommentBody>
+          <CommentBody onClick={this.captureClick}>
             <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />
           </CommentBody>
 

@@ -8,6 +8,7 @@ import ChildComment from './ChildComment';
 import Author from './Author';
 import Button from 'components/UI/Button';
 import ChildCommentForm from './ChildCommentForm';
+import { Link, browserHistory } from 'react-router';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -190,6 +191,15 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
     this.setState({ showForm: true });
   }
 
+  captureClick = (event) => {
+    event.preventDefault();
+
+    if (event.target.classList.contains('mention')) {
+      const link = event.target.getAttribute('data-link');
+      browserHistory.push(link);
+    }
+  }
+
   render() {
     let returnValue: JSX.Element | null = null;
     const { commentId, animate } = this.props;
@@ -202,7 +212,10 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
       const isLoggedIn = !_.isNull(authUser);
       const commentText = getLocalized(commentBodyMultiloc, locale, currentTenantLocales);
-      const processedCommentText = commentText.replace(/<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi, '<a class="mention" href="/profile/$2">$3</a>');
+      const processedCommentText = commentText.replace(
+        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi, 
+        '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
+      );
 
       const parentComment = (
         <Container className="e2e-comment-thread">
@@ -211,7 +224,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
             <CommentContainerInner>
               <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
 
-              <CommentBody className="e2e-comment-body">
+              <CommentBody className="e2e-comment-body" onClick={this.captureClick}>
                 <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />
               </CommentBody>
             </CommentContainerInner>
