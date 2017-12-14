@@ -1,5 +1,6 @@
 class Idea < ApplicationRecord
   include PgSearch
+  has_paper_trail
 
   pg_search_scope :search_by_all, 
     :against => [:title_multiloc, :body_multiloc, :author_name],
