@@ -153,11 +153,12 @@ workflows:
             - lint
           filters:
             branches:
-              ignore: crowdin_master
+              only:
+                - master
+                - production
       - extract_intl:
           requires:
             - lint
-            - build
           filters:
             branches:
               ignore:
