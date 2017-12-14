@@ -21,19 +21,19 @@ class TrendingIdeaService
                  .where.not('(ideas.upvotes_count - ideas.downvotes_count) < 0')
                  .left_outer_joins(:comments).group('ideas.id, projects.id, users.id, topics.id, areas.id, idea_images.id, idea_statuses.id')
                  .where.not('comments.author_id = ideas.author_id')
-                 .having("GREATEST(MAX(comments.created_at) , ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}'")
+                 .having("coalesce(MAX(comments.created_at) , ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}'")
                  .left_outer_joins(:votes).group('ideas.id, projects.id, users.id, topics.id, areas.id, idea_images.id, idea_statuses.id')
                  .where('votes.mode' => 'up').where.not('votes.user_id = ideas.author_id')
-                 .having("GREATEST(MAX(votes.created_at) , ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}'")
+                 .having("coalesce(MAX(votes.created_at) , ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}'")
                  # .left_outer_joins(:comments).distinct.select('idea_id, MAX(created_at) AS comment_created_at_min').group('idea_id') # .left_outer_joins('SELECT MAX(created_at) as comment_created_at_min, idea_id FROM comments GROUP BY idea_id')
                  # .where("GREATEST(comment_created_at_min, ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}'")
                  # .group('comments.idea_id').having("coalesce(MAX(comments.created_at),ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}'")
                  # ([@upvotes_ago[idea.id].first, @comments_ago[idea.id].first].min > TREND_SINCE_ACTIVITY))
 
+    ######### TODO TODO de 2 havings combineren als een OR TODO TODO #########
+
+
     ideas
-    
-    # cache_state(ideas) if !(@upvotes_ago && @comments_ago && @are_trending)
-    # ideas.select { |i| @are_trending[i.id] }
   end
 
   def sort_trending ideas=Idea.all
@@ -48,8 +48,8 @@ class TrendingIdeaService
                              AND votes.mode = 'up' 
                              AND (NOT (votes.user_id = ideas.author_id)) 
                            GROUP BY ideas.id 
-                           HAVING (GREATEST(MAX(comments.created_at) , ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}') 
-                              AND (GREATEST(MAX(votes.created_at) , ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}')"
+                           HAVING (coalesce(MAX(comments.created_at) , ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}') 
+                               OR (coalesce(MAX(votes.created_at) , ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - TREND_SINCE_ACTIVITY)}')"
 
     comments_ago_sql = "SELECT id,
                                round((count(comment_id) / #{TREND_NUM_COMMENTS.to_f}) * GREATEST(avg(extract(epoch from comment_ago)),extract(epoch from published_at))) 
