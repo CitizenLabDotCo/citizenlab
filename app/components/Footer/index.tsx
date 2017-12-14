@@ -9,8 +9,7 @@ import { Link } from 'react-router';
 import Icon from 'components/UI/Icon';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages.js';
 
@@ -170,7 +169,7 @@ type State = {
   currentTenant: ITenant | null;
 };
 
-class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
+class Footer extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -201,7 +200,6 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { locale, currentTenant } = this.state;
-    const { formatMessage } = this.props.intl;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -209,8 +207,8 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
       const organizationNameMulitiLoc = currentTenant.data.attributes.settings.core.organization_name;
       const currentTenantName = getLocalized(organizationNameMulitiLoc, locale, currentTenantLocales);
       const organizationType = currentTenant.data.attributes.settings.core.organization_type;
-      const slogan = currentTenantName ? formatMessage(messages.slogan, { name: currentTenantName, type: organizationType }) : '';
-      const poweredBy = formatMessage(messages.poweredBy);
+      const slogan = currentTenantName ? <FormattedMessage {...messages.slogan} values={{ name: currentTenantName, type: organizationType }} /> : '';
+      const poweredBy = <FormattedMessage {...messages.poweredBy} />;
 
       return (
         <Container>
@@ -248,4 +246,4 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(Footer);
+export default Footer;

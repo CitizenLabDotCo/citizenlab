@@ -26,8 +26,6 @@ const StyledSpinner: any = styled.div`
   border-radius: 50%;
   padding: 0;
   margin: 0;
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
 `;
 
 type Props = {

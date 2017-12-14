@@ -25,8 +25,7 @@ import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
@@ -45,13 +44,13 @@ const PageContainer = styled.div`
   min-height: calc(100vh - 105px);
   position: relative;
   background: #f8f8f8;
-  -webkit-backface-visibility: hidden;
-  will-change: opacity, transform;
+  will-change: auto;
 
   &.page-enter {
     position: absolute;
     opacity: 0.01;
     transform: translateX(100vw);
+    will-change: opacity, transform;
 
     ${media.biggerThanMaxTablet`
       transform: translateX(800px);
@@ -76,6 +75,7 @@ const PageContainer = styled.div`
   &.page-exit {
     opacity: 1;
     transform: translateX(0);
+    will-change: opacity, transform;
 
     &.page-exit-active {
       opacity: 0.01;
@@ -108,7 +108,6 @@ const ButtonBarContainer = styled.div`
   right: 0;
   background: #fff;
   border-top: solid 1px #ddd;
-  -webkit-backface-visibility: hidden;
   will-change: auto;
 
   ${media.smallerThanMaxTablet`
@@ -147,7 +146,7 @@ interface GlobalState {}
 
 interface State extends LocalState, GlobalState {}
 
-class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State> {
+class IdeasNewPage2 extends React.PureComponent<Props, State> {
   initialLocalState: LocalState;
   initialGlobalState: IIdeasNewPageGlobalState;
   localState: ILocalStateService<LocalState>;
@@ -312,7 +311,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
     if (!this.state) { return null; }
 
     const { showIdeaForm, locale } = this.state;
-    const { intl } = this.props;
     const timeout = 600;
 
     const buttonBar = (showIdeaForm && locale) ? (
@@ -354,4 +352,4 @@ class IdeasNewPage2 extends React.PureComponent<Props & InjectedIntlProps, State
   }
 }
 
-export default injectIntl<Props>(IdeasNewPage2);
+export default IdeasNewPage2;

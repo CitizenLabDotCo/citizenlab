@@ -48,7 +48,7 @@ const Container: any = styled.div`
   }
 `;
 
-const TextAreaContainer = styled.div`
+const TextAreaContainer: any = styled.div`
   position: relative;
 `;
 

@@ -34,8 +34,6 @@ const ModalContent = styled(clickOutside)`
   background: #fff;
   margin-left: auto;
   margin-right: auto;
-  -webkit-backface-visibility: hidden;
-  will-change: opacity, transform;
   z-index: 1000;
   outline: none;
 
@@ -86,8 +84,7 @@ const ModalContainer = styled.div`
   left: 0;
   overflow-y: auto;
   background: rgba(0, 0, 0, 0.8);
-  -webkit-backface-visibility: hidden;
-  will-change: opacity;
+  will-change: auto;
 
   ${media.phone`
     padding: 0px;
@@ -95,6 +92,7 @@ const ModalContainer = styled.div`
 
     &.modal-enter {
       opacity: 0.01;
+      will-change: opacity;
 
       ${ModalContent} {
         opacity: 0.01;

@@ -15,8 +15,7 @@ import Button from 'components/UI/Button';
 import { projectsStream, IProjects } from 'services/projects';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -105,7 +104,7 @@ type State = {
   loadingMore: boolean;
 };
 
-class ProjectCards extends React.PureComponent<Props & InjectedIntlProps, State> {
+class ProjectCards extends React.PureComponent<Props, State> {
   state: State;
   filterChange$: Rx.BehaviorSubject<object>;
   loadMore$: Rx.BehaviorSubject<boolean>;
@@ -187,7 +186,6 @@ class ProjectCards extends React.PureComponent<Props & InjectedIntlProps, State>
   render() {
     const { projects, hasMore, loading, loadingMore } = this.state;
     const { loadMoreEnabled } = this.props;
-    const { formatMessage } = this.props.intl;
     const showLoadmore = (!!loadMoreEnabled && hasMore);
     const hasProjects = (projects !== null && projects.data.length > 0);
 
@@ -200,7 +198,7 @@ class ProjectCards extends React.PureComponent<Props & InjectedIntlProps, State>
     const loadMore = ((!loading && hasProjects && showLoadmore) ? (
       <LoadMore>
         <LoadMoreButton
-          text={formatMessage(messages.loadMore)}
+          text={<FormattedMessage {...messages.loadMore} />}
           processing={loadingMore}
           style="primary"
           size="3"
@@ -214,7 +212,9 @@ class ProjectCards extends React.PureComponent<Props & InjectedIntlProps, State>
       <EmptyContainer id="projects-empty">
         <ProjectIcon name="idea" />
         <EmptyMessage>
-          <EmptyMessageLine>{formatMessage(messages.noProjects)}</EmptyMessageLine>
+          <EmptyMessageLine>
+            <FormattedMessage {...messages.noProjects} />
+          </EmptyMessageLine>
         </EmptyMessage>
       </EmptyContainer>
     ) : null);
@@ -238,4 +238,4 @@ class ProjectCards extends React.PureComponent<Props & InjectedIntlProps, State>
   }
 }
 
-export default injectIntl<Props>(ProjectCards);
+export default ProjectCards;

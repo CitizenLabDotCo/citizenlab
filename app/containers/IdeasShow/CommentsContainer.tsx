@@ -9,7 +9,6 @@ import Icon from 'components/UI/Icon';
 
 // services
 import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
-import { mentionsStream, IMention, IMentions } from 'services/mentions';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -72,26 +71,13 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
           data: comments.data.filter(comment => comment.relationships.parent.data === null)
         };
 
-        if (parentComments.data.length > 0) {
-          return Rx.Observable.combineLatest(
-            comments.data.map(comments => commentStream(comments.id).observable)
-          ).map(() => parentComments);
-        }
-
-        return Rx.Observable.combineLatest(
-          comments.data.map(comments => commentStream(comments.id).observable)
-        ).map(() => null);
+        return Rx.Observable
+          .combineLatest(comments.data.map(comments => commentStream(comments.id).observable))
+          .map(() => _.size(parentComments) > 0 ? parentComments : null);
       }
 
       return Rx.Observable.of(null);
     });
-
-    const mentions$ = mentionsStream({
-      queryParameters: {
-        mention: 'k',
-        idea_id: ideaId
-      }
-    }).observable;
 
     this.subscriptions = [
       parentComments$.subscribe((parentComments) => {
@@ -105,7 +91,7 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
           };
         }
 
-        if (this.state.parentComments === null && sortedParentComments !== null && sortedParentComments.data.length === 1
+        if (this.state.parentComments === null && sortedParentComments !== null && sortedParentComments.data.length === 1 
           || this.state.parentComments !== null && sortedParentComments !== null && this.state.parentComments.data.length === sortedParentComments.data.length - 1) {
             newCommentId = sortedParentComments.data[0].id;
         }
@@ -115,9 +101,7 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
           parentComments: sortedParentComments,
           loading: false
         });
-      }),
-
-      mentions$.subscribe(mentions => console.log(mentions))
+      })
     ];
   }
 
