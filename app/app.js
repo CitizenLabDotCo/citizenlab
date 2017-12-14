@@ -40,7 +40,7 @@ import { fromJS } from 'immutable';
 // add reactMap to immutible
 import 'utils/immutablePatch';
 
-import { Sagas } from 'react-redux-saga';
+import { Sagas } from 'utils/react-redux-saga';
 
 // Import root app
 import App from 'containers/App';
