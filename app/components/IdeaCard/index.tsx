@@ -255,8 +255,6 @@ class IdeaCard extends React.PureComponent<Props, State> {
   render() {
     const { idea, ideaImage, ideaAuthor, locale, showUnauthenticated, loading } = this.state;
 
-    console.log('render ideaCard');
-
     if (!loading && idea && locale) {
       const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
       const ideaImageLargeUrl = (ideaImage ? ideaImage.data.attributes.versions.large : null);
