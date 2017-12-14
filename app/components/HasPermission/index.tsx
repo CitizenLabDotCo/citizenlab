@@ -18,7 +18,7 @@ type State = {
 
 export default class HasPermission extends React.PureComponent<Props, State> {
   subscription: Rx.Subscription;
-  static No: React.SFC<any> = (props) => <div>{props.children}</div>;
+  static No: React.SFC<any> = (props) => <React.Fragment>{props.children}</React.Fragment>;
 
   constructor(props) {
     super(props);
@@ -55,9 +55,9 @@ export default class HasPermission extends React.PureComponent<Props, State> {
     if (granted === null) {
       return null;
     } else if (granted) {
-      return <div>{React.Children.map(children, (c: any) => c.type === HasPermission.No ? null : c)}</div>;
+      return <React.Fragment>{React.Children.map(children, (c: any) => c.type === HasPermission.No ? null : c)}</React.Fragment>;
     } else {
-      return <div>{React.Children.map(children, (c: any) => c.type === HasPermission.No ? c : null)}</div>;
+      return <React.Fragment>{React.Children.map(children, (c: any) => c.type === HasPermission.No ? c : null)}</React.Fragment>;
     }
   }
 
