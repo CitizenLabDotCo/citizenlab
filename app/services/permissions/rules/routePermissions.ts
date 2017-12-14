@@ -1,7 +1,11 @@
-import { definePermissionRule } from '../permissions';
+import { definePermissionRule, IRouteItem } from '../permissions';
 import { isAdmin } from '../roles';
 import { IUser } from 'services/users';
 
-definePermissionRule('routes', 'admin', (item, user: IUser) => {
-  return isAdmin(user);
+definePermissionRule('route', 'access', (item: IRouteItem, user: IUser) => {
+  if (/^\/admin/.test(item.path)) {
+    return isAdmin(user);
+  } else {
+    return true;
+  }
 });
