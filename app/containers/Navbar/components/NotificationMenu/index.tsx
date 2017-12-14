@@ -195,5 +195,4 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
   }
 }
 
-
 export default injectTracks<Props>(tracks)(NotificationMenu);

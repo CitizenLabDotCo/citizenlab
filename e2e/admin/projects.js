@@ -1,4 +1,5 @@
-const time = new Date().getTime();
+const crypto = require('crypto');
+const hash = crypto.randomBytes(20).toString('hex');
 
 module.exports = {
   '@tags': ['city', 'projects', 'zolg'],
@@ -34,12 +35,12 @@ module.exports = {
     .click('@newProject')
     .waitForElementVisible('@generalForm')
     .assert.urlEquals('http://localhost:3000/admin/projects/new')
-    .setValue('#project-title', `Test Project ${time}`)
+    .setValue('#project-title', `Test Project ${hash}`)
     .click('@submitButton')
 
     // Test the back to projects overview redirect
     .waitForElementVisible('.e2e-projects-list .e2e-project-card')
-    .assert.containsText('.e2e-projects-list .e2e-project-card h1 span', `Test Project ${time}`)
+    .assert.containsText('.e2e-projects-list .e2e-project-card h1 span', `Test Project ${hash}`)
     .click('.e2e-projects-list .e2e-project-card a')
 
     // Test for the description insertion

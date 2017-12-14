@@ -13,6 +13,9 @@ import ChildCommentForm from './ChildCommentForm';
 import { authUserStream } from 'services/auth';
 import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
 import { IUser } from 'services/users';
+import { getLocalized } from 'utils/i18n';
+import { localeStream } from 'services/locale';
+import { currentTenantStream, ITenant } from 'services/tenant';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -29,12 +32,13 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled, { css } from 'styled-components';
+import { transparentize, darken } from 'polished';
+import { color } from 'utils/styleUtils';
 
 const timeout = 550;
 
 const Container = styled.div`
   margin-top: 20px;
-  -webkit-backface-visibility: hidden;
   will-change: auto;
 
   &.comment-enter {
@@ -86,6 +90,18 @@ const CommentBody = styled.div`
     hyphens: auto;
     margin-bottom: 25px;
   }
+
+  a.mention {
+    color: ${(props) => props.theme.colors.clBlue};
+    font-weight: inherit;
+    text-decoration: none;
+    background: ${props => transparentize(0.9, props.theme.colors.clBlue)};
+
+    &:hover {
+      text-decoration: underline;
+      color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+    }
+  }
 `;
 
 const ChildCommentsContainer = styled.div``;
@@ -97,6 +113,8 @@ type Props = {
 };
 
 type State = {
+  locale: string | null;
+  currentTenantLocales: string[] | null;
   authUser: IUser | null;
   comment: IComment | null;
   childCommentIds: string[] | null;
@@ -114,6 +132,8 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
+      locale: null,
+      currentTenantLocales: null,
       authUser: null,
       comment: null,
       childCommentIds: null,
@@ -124,6 +144,8 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
 
   componentWillMount() {
     const { ideaId, commentId, animate } = this.props;
+    const locale$ = localeStream().observable;
+    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
     const authUser$ = authUserStream().observable;
     const comment$ = commentStream(commentId).observable;
     const childCommentIds$ = commentsForIdeaStream(ideaId).observable.switchMap((comments) => {
@@ -140,13 +162,17 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
+        locale$,
+        currentTenantLocales$,
         authUser$,
         comment$,
         childCommentIds$
       ).delayWhen(() => {
         return (animate === true ? Rx.Observable.timer(100) : Rx.Observable.of(null));
-      }).subscribe(([authUser, comment, childCommentIds]) => {
+      }).subscribe(([locale, currentTenantLocales, authUser, comment, childCommentIds]) => {
         this.setState({
+          locale,
+          currentTenantLocales,
           authUser,
           comment,
           childCommentIds
@@ -167,14 +193,17 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   render() {
     let returnValue: JSX.Element | null = null;
     const { commentId, animate } = this.props;
-    const { authUser, comment, childCommentIds, showForm } = this.state;
+    const { locale, currentTenantLocales, authUser, comment, childCommentIds, showForm } = this.state;
 
-    if (comment) {
+    if (locale && currentTenantLocales && comment) {
       const ideaId = comment.data.relationships.idea.data.id;
       const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
       const createdAt = comment.data.attributes.created_at;
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
       const isLoggedIn = !_.isNull(authUser);
+      const commentText = getLocalized(commentBodyMultiloc, locale, currentTenantLocales);
+      const processedCommentText = commentText.replace(/<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi, '<a class="mention" href="/profile/$2">$3</a>');
+
       const parentComment = (
         <Container className="e2e-comment-thread">
 
@@ -183,7 +212,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
               <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
 
               <CommentBody className="e2e-comment-body">
-                <T value={commentBodyMultiloc} />
+                <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />
               </CommentBody>
             </CommentContainerInner>
 
