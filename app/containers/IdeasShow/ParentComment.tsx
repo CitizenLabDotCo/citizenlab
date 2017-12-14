@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
+import linkifyHtml from 'linkifyjs/html';
+
 // components
 import Authorize from 'utils/containers/authorize';
 import ChildComment from './ChildComment';
@@ -92,15 +94,16 @@ const CommentBody = styled.div`
     margin-bottom: 25px;
   }
 
-  a.mention {
+  a {
     color: ${(props) => props.theme.colors.clBlue};
-    font-weight: inherit;
-    text-decoration: none;
-    background: ${props => transparentize(0.9, props.theme.colors.clBlue)};
+
+    &.mention {
+      background: ${props => transparentize(0.92, props.theme.colors.clBlue)};
+    }
 
     &:hover {
-      text-decoration: underline;
       color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+      text-decoration: underline;
     }
   }
 `;
@@ -192,9 +195,8 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   }
 
   captureClick = (event) => {
-    event.preventDefault();
-
     if (event.target.classList.contains('mention')) {
+      event.preventDefault();
       const link = event.target.getAttribute('data-link');
       browserHistory.push(link);
     }
@@ -212,10 +214,10 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
       const isLoggedIn = !_.isNull(authUser);
       const commentText = getLocalized(commentBodyMultiloc, locale, currentTenantLocales);
-      const processedCommentText = commentText.replace(
+      const processedCommentText = linkifyHtml(commentText.replace(
         /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi, 
         '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-      );
+      ));
 
       const parentComment = (
         <Container className="e2e-comment-thread">

@@ -234,6 +234,7 @@
     "jquery": "^3.2.1",
     "json-api-normalizer": "^0.4.6",
     "leaflet": "^1.2.0",
+    "linkifyjs": "^2.1.5",
     "lodash": "4.17.4",
     "minimist": "1.2.0",
     "mixpanel-browser": "^2.11.1",
