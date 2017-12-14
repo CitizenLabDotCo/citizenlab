@@ -55,6 +55,7 @@ const AuthorName = styled(Link)`
 
   &:hover {
     color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+    text-decoration: underline;
   }
 `;
 
