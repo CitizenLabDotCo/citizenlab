@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
-import Authorize from 'utils/containers/authorize';
 import ChildComment from './ChildComment';
 import Author from './Author';
 import Button from 'components/UI/Button';

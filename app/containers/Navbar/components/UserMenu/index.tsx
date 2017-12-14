@@ -168,7 +168,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               open={PopoverOpened}
               onCloseRequest={this.closePopover}
             >
-              <HasPermission item="routes" action="admin">
+              <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
                 <PopoverItem id="admin-link" onClick={this.navigateTo('/admin')}>
                   <FormattedMessage {...messages.admin} />
                   <IconWrapper>

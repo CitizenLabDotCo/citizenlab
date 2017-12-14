@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as Rx from 'rxjs';
 import { groupBy } from 'lodash';
 import { IUser } from 'services/users';
-import { IResourceData, hasPermission } from 'services/permissions';
+import { TPermissionItem, hasPermission } from 'services/permissions';
 
 type Props = {
-  item: IResourceData | string;
+  item: TPermissionItem | null;
   action: string;
   user?: IUser;
   context?: any;
@@ -51,7 +51,10 @@ export default class HasPermission extends React.PureComponent<Props, State> {
 
   render() {
     const children = this.props.children;
-    if (this.state.granted) {
+    const granted = this.state.granted;
+    if (granted === null) {
+      return null;
+    } else if (granted) {
       return <div>{React.Children.map(children, (c: any) => c.type === HasPermission.No ? null : c)}</div>;
     } else {
       return <div>{React.Children.map(children, (c: any) => c.type === HasPermission.No ? c : null)}</div>;
