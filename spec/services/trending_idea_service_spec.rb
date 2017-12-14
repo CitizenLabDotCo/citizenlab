@@ -8,7 +8,28 @@ describe TrendingIdeaService do
   describe "order_trending" do
     it "sorts trending to untrending in accordance with the trending score" do
       trending_score_sorted = TrendingIdeaService.new.sort_trending(Idea).map(&:id)
-      expect(trending_score_sorted).to eq Idea.all.sort_by(&:trending_score).map(&:id).reverse 
+      expected_order = Idea.all.sort_by(&:trending_score).map(&:id).reverse
+      lines = []
+      Idea.count.times do |i|
+        lines.concat [i]
+        i_got = Idea.find_by(id: trending_score_sorted[i])
+        i_exp = Idea.find_by(id: expected_order[i])
+
+        lines.concat ["ID:        #{trending_score_sorted[i]}       #{expected_order[i]}"]
+        lines.concat ['--------------------------']
+        lines.concat ["Score:     #{i_got.trending_score}       #{i_exp.trending_score}"]
+        lines.concat ["Trending?: #{i_got.trending?}       #{i_exp.trending?}"]
+        lines.concat ['--------------------------']
+        lines.concat ["Vote diff: #{i_got.score}       #{i_exp.score}"]
+        lines.concat ["Pub_at:    #{i_got.published_at}       #{i_exp.published_at}"]
+        lines.concat ['--------------------------']
+        lines.concat ["Last C:    #{Time.at(i_got.comments.select{|c| i_got.author && c.author && (c.author.id == i_got.author.id)}.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}       #{Time.at(i_exp.comments.select{|c| i_exp.author && c.author && (c.author.id == i_exp.author.id)}.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}"]
+        lines.concat ["Last V:    #{Time.at(i_got.upvotes.select{|v| i_got.author && v.user && (v.user.id == i_got.author.id)}.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}       #{Time.at(i_exp.upvotes.select{|v| i_exp.author && v.user && (v.user.id == i_exp.author.id)}.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}"]
+        lines.concat ['--------------------------']
+        lines.concat ['--------------------------']
+      end
+      lines.each{|l| puts l}
+      expect(trending_score_sorted).to eq expected_order
     end
   end
 
@@ -30,6 +51,10 @@ describe TrendingIdeaService do
       end
       (if is_popular then rand(100) else rand(3) end).times do |i| 
         create(:vote, votable: idea, mode: 'down', 
+               created_at: Faker::Time.between(published_at, DateTime.now))
+      end
+      (if is_popular then rand(50) else rand(3) end).times do |i| 
+        create(:comment, idea: idea, 
                created_at: Faker::Time.between(published_at, DateTime.now))
       end
     end
