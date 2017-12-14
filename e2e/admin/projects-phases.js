@@ -1,5 +1,6 @@
-const time = new Date().getTime();
-const title = `Test Phase ${time}`;
+const crypto = require('crypto');
+const hash = crypto.randomBytes(20).toString('hex');
+const title = `Test Phase ${hash}`;
 const startDate = '2017-11-05';
 const endDate = '2017-11-12';
 

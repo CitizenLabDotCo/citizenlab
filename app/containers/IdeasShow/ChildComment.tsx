@@ -4,12 +4,15 @@ import * as Rx from 'rxjs/Rx';
 
 // libraries
 import { Link, browserHistory } from 'react-router';
+import linkifyHtml from 'linkifyjs/html';
 
 // components
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 
 // services
+import { localeStream } from 'services/locale';
+import { currentTenantStream, ITenant } from 'services/tenant';
 import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
 import { userByIdStream, IUser } from 'services/users';
 
@@ -17,11 +20,12 @@ import { userByIdStream, IUser } from 'services/users';
 import T from 'components/T';
 import { InjectedIntlProps, FormattedRelative } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
+import { transparentize, darken } from 'polished';
 
 const CommentContainer = styled.div`
   margin-top: 0px;
@@ -59,12 +63,13 @@ const AuthorNameContainer = styled.div `
 `;
 
 const AuthorName = styled(Link)`
-  color: #1391A1;
+  color: ${(props) => props.theme.colors.clBlue};
   font-size: 14px;
   text-decoration: none;
   cursor: pointer;
 
   &:hover {
+    color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
     text-decoration: underline;
   }
 `;
@@ -93,6 +98,19 @@ const CommentBody = styled.div`
     hyphens: auto;
     margin-bottom: 25px;
   }
+
+  a {
+    color: ${(props) => props.theme.colors.clBlue};
+
+    &.mention {
+      background: ${props => transparentize(0.92, props.theme.colors.clBlue)};
+    }
+
+    &:hover {
+      color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+      text-decoration: underline;
+    }
+  }
 `;
 
 type Props = {
@@ -100,6 +118,8 @@ type Props = {
 };
 
 type State = {
+  locale: string | null;
+  currentTenantLocales: string[] | null;
   comment: IComment | null;
   author: IUser | null;
 };
@@ -111,6 +131,8 @@ export default class ChildComment extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
+      locale: null,
+      currentTenantLocales: null,
       comment: null,
       author: null
     };
@@ -119,17 +141,26 @@ export default class ChildComment extends React.PureComponent<Props, State> {
 
   componentWillMount() {
     const { commentId } = this.props;
+    const locale$ = localeStream().observable;
+    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
     const comment$ = commentStream(commentId).observable;
 
     this.subscriptions = [
-      comment$.switchMap((comment) => {
+      Rx.Observable.combineLatest(
+        locale$,
+        currentTenantLocales$,
+        comment$
+      ).switchMap(([locale, currentTenantLocales, comment]) => {
         const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
         if (!authorId) {
-          return Rx.Observable.of({ comment, author: null });
+          return Rx.Observable.of({ locale, currentTenantLocales, comment, author: null });
         }
+
         const author$ = userByIdStream(authorId).observable;
-        return author$.map(author => ({ comment, author }));
-      }).subscribe(({ comment, author }) => this.setState({ comment, author }))
+        return author$.map(author => ({ locale, currentTenantLocales, comment, author }));
+      }).subscribe(({ locale, currentTenantLocales, comment, author }) => {
+        this.setState({ locale, currentTenantLocales, comment, author });
+      })
     ];
   }
 
@@ -145,10 +176,18 @@ export default class ChildComment extends React.PureComponent<Props, State> {
     }
   }
 
-  render() {
-    const { comment, author } = this.state;
+  captureClick = (event) => {
+    if (event.target.classList.contains('mention')) {
+      event.preventDefault();
+      const link = event.target.getAttribute('data-link');
+      browserHistory.push(link);
+    }
+  }
 
-    if (comment && author) {
+  render() {
+    const { locale, currentTenantLocales, comment, author } = this.state;
+
+    if (locale && currentTenantLocales && comment && author) {
       const className = this.props['className'];
       const ideaId = comment.data.relationships.idea.data.id;
       const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
@@ -156,6 +195,11 @@ export default class ChildComment extends React.PureComponent<Props, State> {
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
       const avatar = author.data.attributes.avatar.medium;
       const slug = author.data.attributes.slug;
+      const commentText = getLocalized(commentBodyMultiloc, locale, currentTenantLocales);
+      const processedCommentText = linkifyHtml(commentText.replace(
+        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi, 
+        '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
+      ));
 
       return (
         <CommentContainer className={className}>
@@ -177,8 +221,8 @@ export default class ChildComment extends React.PureComponent<Props, State> {
             </AuthorMeta>
           </AuthorContainer>
 
-          <CommentBody>
-            <T value={commentBodyMultiloc} />
+          <CommentBody onClick={this.captureClick}>
+            <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />
           </CommentBody>
 
         </CommentContainer>

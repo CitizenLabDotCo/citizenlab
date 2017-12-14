@@ -1,4 +1,5 @@
-const time = new Date().getTime();
+const crypto = require('crypto');
+const hash = crypto.randomBytes(20).toString('hex');
 
 module.exports = {
   '@tags': ['citizen', 'ideas', 'comments'],
@@ -31,11 +32,11 @@ module.exports = {
     .waitForElementVisible('#e2e-idea-show')
     .refresh()
     .waitForElementVisible('.e2e-comments')
-    .setValue('.e2e-comment-form .textarea', `Test Comment ${time}`)
+    .setValue('.e2e-comment-form textarea', `Test Comment ${hash}`)
     .click('.e2e-comment-form .e2e-submit-comment')
     .pause(1000)
     .waitForElementVisible('.e2e-comment-thread')
-    .assert.containsText(`.e2e-comment-body`, `Test Comment ${time}`)
+    .assert.containsText(`.e2e-comment-body`, `Test Comment ${hash}`)
     .end();
   },
 };

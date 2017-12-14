@@ -1,3 +1,7 @@
+const crypto = require('crypto');
+const hash = crypto.randomBytes(20).toString('hex');
+
+
 module.exports = {
   '@tags': ['citizen', 'ideas'],
   visibleIdeas: (browser) => {
@@ -41,8 +45,8 @@ module.exports = {
   */
 
   searchSpecificIdea: (browser) => {
-    const title = `test idea ${new Date().getTime()}`;
-    const content = `Test Content ${new Date().getTime()}`;
+    const title = `test idea ${hash}`;
+    const content = `Test Content ${hash}`;
 
     const signinPage = browser.page.signin();
     const newIdeaPage = browser.page.newIdea();
