@@ -49,7 +49,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
 
   updateSubscription (slug) {
     this.subscription = projectBySlugStream(slug).observable.subscribe((project) => {
-      this.setState({ project: project.data });
+      this.setState({ project: project ? project.data : null });
     });
   }
 

@@ -25,8 +25,7 @@ import { projectsStream, IProjects } from 'services/projects';
 
 // i18n
 import T from 'components/T';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 
@@ -124,8 +123,8 @@ const HeaderTitle: any = styled.h1`
   padding: 0;
 
   ${media.smallerThanMinTablet`
-    font-size: 36px;
-    line-height: 40px;
+    font-size: 34px;
+    line-height: 39px;
     padding: 0;
   `}
 `;
@@ -153,6 +152,7 @@ const HeaderSubtitle: any = styled.h2`
 
   ${media.smallerThanMinTablet`
     font-size: 20px;
+    font-weight: 300;
     line-height: 26px;
     margin-top: 20px;
   `}
@@ -165,7 +165,13 @@ const Content = styled.div`
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  padding-bottom: 80px;
+  padding-bottom: 10px;
+`;
+
+const IdeasStyledContentContainer = StyledContentContainer.extend``;
+
+const ProjectsStyledContentContainer = StyledContentContainer.extend`
+  background: #fff;
 `;
 
 const Section = styled.div`
@@ -282,7 +288,7 @@ type State = {
 export const landingPageIdeasQuery = { sort: 'trending', 'page[number]': 1, 'page[size]': 6 };
 export const landingPageProjectsQuery = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
 
-class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> {
+class LandingPage extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -359,7 +365,6 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
 
   render() {
     const { locale, currentTenant, currentTenantHeader, hasIdeas, hasProjects } = this.state;
-    const { formatMessage } = this.props.intl;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -370,8 +375,8 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
       const currentTenantLogo = currentTenant.data.attributes.logo.large;
       const currentTenantHeaderTitle = (headerTitleMultiLoc && headerTitleMultiLoc[locale]);
       const currentTenantHeaderSlogan = (headerSloganMultiLoc && headerSloganMultiLoc[locale]);
-      const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : formatMessage(messages.titleCity, { name: currentTenantName }));
-      const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : formatMessage(messages.subtitleCity));
+      const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }}/>);
+      const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (currentTenantHeader !== null);
 
       return (
@@ -394,11 +399,41 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
             </Header>
 
             <Content>
-              <StyledContentContainer>
+              <ProjectsStyledContentContainer>
+                {hasProjects &&
+                  <Section>
+                    <SectionHeader>
+                      <SectionTitle>
+                        <FormattedMessage {...messages.cityProjects} />
+                      </SectionTitle>
+                      <Explore to="/projects">
+                        <ExploreText>
+                          <FormattedMessage {...messages.exploreAllProjects} />
+                        </ExploreText>
+                        <ExploreIcon name="compass" />
+                      </Explore>
+                    </SectionHeader>
+                    <SectionContainer>
+                      <ProjectCards filter={landingPageProjectsQuery} loadMoreEnabled={false} />
+                    </SectionContainer>
+                    <SectionFooter>
+                      <ViewMoreButton
+                        text={<FormattedMessage {...messages.exploreAllProjects} />}
+                        style="primary"
+                        size="3"
+                        icon="compass"
+                        onClick={this.goToProjectsPage}
+                        circularCorners={false}
+                      />
+                    </SectionFooter>
+                  </Section>
+                }
+              </ProjectsStyledContentContainer>
+
+              <IdeasStyledContentContainer>
                 <Section className="ideas">
                   <SectionHeader>
                     <SectionTitle>
-                      {/* <SectionIcon name="idea" className="idea" /> */}
                       <FormattedMessage {...messages.trendingIdeas} />
                     </SectionTitle>
                     {hasIdeas &&
@@ -416,7 +451,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                   {hasIdeas &&
                     <SectionFooter>
                       <ViewMoreButton
-                        text={formatMessage(messages.exploreAllIdeas)}
+                        text={<FormattedMessage {...messages.exploreAllIdeas} />}
                         style="primary"
                         size="3"
                         icon="compass"
@@ -426,38 +461,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
                     </SectionFooter>
                   }
                 </Section>
-
-                {hasProjects &&
-                  <Section>
-                    <SectionHeader>
-                      <SectionTitle>
-                        {/* <SectionIcon name="project2" className="project" /> */}
-                        {/* <FormattedMessage {...messages.projectsFrom} values={{ name: currentTenantName }} /> */}
-                        <FormattedMessage {...messages.cityProjects} />
-                      </SectionTitle>
-                      <Explore to="/projects">
-                        <ExploreText>
-                          <FormattedMessage {...messages.exploreAllProjects} />
-                        </ExploreText>
-                        <ExploreIcon name="compass" />
-                      </Explore>
-                    </SectionHeader>
-                    <SectionContainer>
-                      <ProjectCards filter={landingPageProjectsQuery} loadMoreEnabled={false} />
-                    </SectionContainer>
-                    <SectionFooter>
-                      <ViewMoreButton
-                        text={formatMessage(messages.exploreAllProjects)}
-                        style="primary"
-                        size="3"
-                        icon="compass"
-                        onClick={this.goToProjectsPage}
-                        circularCorners={false}
-                      />
-                    </SectionFooter>
-                  </Section>
-                }
-              </StyledContentContainer>
+              </IdeasStyledContentContainer>
 
               <Footer />
             </Content>
@@ -470,4 +474,4 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 }
 
-export default injectIntl<Props>(LandingPage);
+export default LandingPage;

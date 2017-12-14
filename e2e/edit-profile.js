@@ -1,6 +1,7 @@
-const time = new Date().getTime();
-const firstName = `first name ${time}`;
-const lastName = `last name ${time}`;
+const crypto = require('crypto');
+const hash = crypto.randomBytes(20).toString('hex');
+const firstName = `first name ${hash}`;
+const lastName = `last name ${hash}`;
 
 module.exports = {
   '@tags': ['citizen', 'profile'],

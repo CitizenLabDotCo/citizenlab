@@ -108,9 +108,9 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
       if (slug) {
         this.setState({ loading: true });
         return pageBySlugStream(slug).observable;
-      } else {
-        return Rx.Observable.of(null);
       }
+
+      return Rx.Observable.of(null);
     })
     .switchMap((pageResponse) => {
       try {
@@ -125,14 +125,8 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
         }
 
         // Page with links
-        const linksRequests = pageResponse.data.relationships.page_links.data.map(link => {
-          return getPageLink(link.id).observable.first();
-        });
-
-        return Rx.Observable.combineLatest(linksRequests)
-        .map((pageLinks) => {
-          return { pageLinks, pageResponse };
-        });
+        const linksRequests = pageResponse.data.relationships.page_links.data.map(link => getPageLink(link.id).observable.first());
+        return Rx.Observable.combineLatest(linksRequests).map((pageLinks) => ({ pageLinks, pageResponse }));
       } catch (e) {
         return Rx.Observable.of({ pageResponse: null, pageLinks: null });
       }
