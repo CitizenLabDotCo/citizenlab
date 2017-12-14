@@ -6,7 +6,6 @@ import * as Rx from 'rxjs/Rx';
 import { browserHistory } from 'react-router';
 
 // components
-import Authorize from 'utils/containers/authorize';
 import Icon from 'components/UI/Icon';
 import Avatar from 'components/Avatar';
 import Popover from 'components/Popover';
