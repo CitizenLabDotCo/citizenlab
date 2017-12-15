@@ -43,7 +43,7 @@ class Idea < ApplicationRecord
   after_validation :set_published_at, if: ->(idea){ idea.published? && idea.publication_status_changed? }
 
   after_create :set_idea_trending_info
-  after_update :update_idea_trending_info
+  after_commit :update_idea_trending_info, on: :update
   after_touch :update_idea_trending_info
 
   scope :with_all_topics, (Proc.new do |topic_ids|
