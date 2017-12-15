@@ -119,54 +119,6 @@ RSpec.describe Idea, type: :model do
     end
   end
 
-  describe "order_trending" do
-
-    it "favours ideas with more upvotes and fewer downvotes" do
-      [{up: 10, down: 3}, {up: 10, down: 3}, {up: 7, down: 5}, {up: 1, down: 10}].each do |v_hash|
-        idea = create(:idea, published_at: Time.now-7.day)
-        v_hash[:up].times{create(:vote, votable: idea, mode: 'up')}
-        v_hash[:down].times{create(:vote, votable: idea, mode: 'down')}
-      end
-      expect(Idea.all.sort_by(&:trending_score).map(&:id)
-                 .reverse).to eq Idea.all.sort_by{|i| i.upvotes_count - i.downvotes_count}
-                                     .map(&:id).reverse 
-    end
-
-    it "favours more recent ideas" do
-      5.times do |i|
-        travel_to(Time.now-7.day + i.day) do 
-          idea = create(:idea)
-          4.times{create(:vote, votable: idea, mode: 'up')}
-          2.times{create(:comment, idea: idea)}
-        end
-      end
-      expect(Idea.all.sort_by(&:trending_score).map(&:id)
-                 .reverse).to eq Idea.all.sort_by(&:published_at)
-                                     .map(&:id).reverse 
-    end
-
-    #it "sorts from trending to untrending by default" do
-    #  trending_score_sorted = TrendingIdeaService.new.sort_trending(Idea).map(&:id)
-    #  expect(trending_score_sorted).to eq Idea.all.sort_by(&:trending_score).map(&:id).reverse
-    #end
-
-    #it "sorts from trending to untrending when asking desc" do
-    #  trending_score_sorted = TrendingIdeaService.new.sort_trending(Idea).map(&:id).reverse
-    #  expect(trending_score_sorted).to eq Idea.all.sort_by(&:trending_score).map(&:id).reverse
-    #end
-
-    it "sorts from untrending to trending when asking asc" do
-      5.times do |i|
-        travel_to(Time.now-7.day + i.day) do 
-          idea = create(:idea)
-          rand(20).times{create(:vote, votable: idea, mode: ['up','down'][rand(1)])}
-        end
-      end
-      trending_score_sorted = TrendingIdeaService.new.sort_trending(Idea).map(&:id)
-      expect(trending_score_sorted).to eq Idea.all.sort_by(&:trending_score).map(&:id).reverse 
-    end
-  end
-
   describe "order_status" do
     it "sorts from high status to low status when asked desc" do
       status_sorted = Idea.order_status(:desc).map(&:id)
