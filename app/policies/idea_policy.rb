@@ -23,7 +23,7 @@ class IdeaPolicy < ApplicationPolicy
       else
         scope
           .where("projects.id IS NULL OR projects.visible_to = 'public'")
-          # .includes(:project)# .left_outer_joins(:project)
+          .left_outer_joins(:project)
           
       end
     end

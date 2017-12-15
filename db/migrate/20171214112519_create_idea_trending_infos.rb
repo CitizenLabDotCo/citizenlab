@@ -6,6 +6,6 @@ class CreateIdeaTrendingInfos < ActiveRecord::Migration[5.1]
       t.datetime :mean_last_activity_at, null: false
     end
 
-    Idea.all.each{ |i| IdeaTrendingInfo.create(idea: i) }
+    Idea.all.each{ |i| IdeaTrendingInfo.create(idea: i).touch }
   end
 end

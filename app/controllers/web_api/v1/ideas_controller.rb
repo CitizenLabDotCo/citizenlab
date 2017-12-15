@@ -5,9 +5,10 @@ class WebApi::V1::IdeasController < ApplicationController
   
 
   def index
-    @ideas = policy_scope(Idea).includes(:author, :topics, :areas, :idea_images).left_outer_joins(:project)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @ideas = policy_scope(Idea).includes(:author, :topics, :areas, :idea_images)
+                               .left_outer_joins(:idea_status).left_outer_joins(:idea_trending_info) # .left_outer_joins(:project)
+                               .page(params.dig(:page, :number))
+                               .per(params.dig(:page, :size))
 
     trending_idea_service = TrendingIdeaService.new
 
