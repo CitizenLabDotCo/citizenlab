@@ -14,14 +14,11 @@ export interface IIdeasNewPageGlobalState {
   description: EditorState;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
-  location: any;
-  titleError: string | null;
-  descriptionError: string | null;
+  location: string;
   submitError: boolean;
   processing: boolean;
   ideaId: string | null;
   imageFile: ImageFile[] | null;
-  imageBase64: string | null;
   imageId: string | null;
   imageChanged: boolean;
 }
