@@ -4,6 +4,8 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const { TsConfigPathsPlugin, CheckerPlugin } = require('awesome-typescript-loader');
 
 module.exports = (options) => ({
   entry: options.entry,
@@ -20,7 +22,17 @@ module.exports = (options) => ({
     }, {
       test: /\.ts(x?)$/,
       exclude: /node_modules/,
-      loader: ['babel-loader', 'ts-loader'],
+      use: [
+        {
+          loader: 'awesome-typescript-loader',
+          options: {
+            configFileName: path.resolve(process.cwd(), 'app', 'tsconfig.json'),
+            useBabel: true,
+            babelOptions: options.babelQuery,
+            useCache: true,
+          },
+        },
+      ],
     }, {
 
       // Do not transform vendor's CSS with CSS-modules
@@ -39,30 +51,6 @@ module.exports = (options) => ({
       test: /\.(eot|svg|ttf|woff|woff2|jpg|png|gif)$/,
       loader: 'file-loader',
     },
-    // {
-    //   test: /\.(jpg|png|gif)$/,
-    //   loaders: [
-    //     'file-loader',
-    //     {
-    //       loader: 'image-webpack-loader',
-    //       query: {
-    //         mozjpeg: {
-    //           progressive: true,
-    //         },
-    //         gifsicle: {
-    //           interlaced: false,
-    //         },
-    //         optipng: {
-    //           optimizationLevel: 7,
-    //         },
-    //         pngquant: {
-    //           quality: '65-90',
-    //           speed: 4,
-    //         },
-    //       },
-    //     },
-    //   ],
-    // },
     {
       test: /\.html$/,
       loader: 'html-loader',
@@ -97,6 +85,9 @@ module.exports = (options) => ({
       },
     }),
     new webpack.NamedModulesPlugin(),
+    new HardSourceWebpackPlugin(),
+    new CheckerPlugin(),
+    new TsConfigPathsPlugin(),
   ]),
   resolve: {
     modules: ['app', 'node_modules'],
