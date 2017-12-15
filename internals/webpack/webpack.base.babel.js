@@ -6,6 +6,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const { TsConfigPathsPlugin, CheckerPlugin } = require('awesome-typescript-loader');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = (options) => ({
   entry: options.entry,
@@ -34,19 +35,12 @@ module.exports = (options) => ({
         },
       ],
     }, {
-
-      // Do not transform vendor's CSS with CSS-modules
-      // The point is that they remain in global scope.
-      // Since we require these CSS files in our JS or CSS files,
-      // they will be a part of our compilation either way.
-      // So, no need for ExtractTextPlugin here.
       test: /\.css$/,
       include: /node_modules/,
-      loaders: ['style-loader', 'css-loader'],
-    }, {
-      test: /\.scss$/,
-      exclude: /node_modules/,
-      loaders: ['style-loader', 'css-loader', 'sass-loader'],
+      use: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: 'css-loader',
+      }),
     }, {
       test: /\.(eot|svg|ttf|woff|woff2|jpg|png|gif)$/,
       loader: 'file-loader',
@@ -88,6 +82,10 @@ module.exports = (options) => ({
     new HardSourceWebpackPlugin(),
     new CheckerPlugin(),
     new TsConfigPathsPlugin(),
+    new ExtractTextPlugin({
+      filename: '[name].[contenthash].css',
+      allChunks: true,
+    }),
   ]),
   resolve: {
     modules: ['app', 'node_modules'],
