@@ -11,7 +11,7 @@ import { setTimeout } from 'timers';
 
 export interface IIdeasNewPageGlobalState {
   title: string | null;
-  description: EditorState;
+  description: string | null;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
   location: string;

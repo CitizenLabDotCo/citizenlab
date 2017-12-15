@@ -2,9 +2,6 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
-// libraries
-import { EditorState } from 'draft-js';
-
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -79,7 +76,7 @@ interface Props {
 
 interface GlobalState {
   title: string | null;
-  description: EditorState;
+  description: string | null;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
   location: string;

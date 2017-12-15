@@ -51,6 +51,7 @@ class RtfEditor extends React.Component {
     const { name, intl } = this.props;
     const editorContent = convertToRaw(editorState.getCurrentContent());
     const htmlContent = draftToHtml(editorContent);
+
     if (htmlContent && htmlContent.trim() !== '<p></p>') {
       const rtfText = {};
       rtfText[intl.locale] = htmlContent;
