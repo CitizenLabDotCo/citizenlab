@@ -5,7 +5,6 @@ class ApplicationController < ActionController::API
   before_action :authenticate_user, if: :secure_controller?
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
-  before_action :set_paper_trail_whodunnit
 
   rescue_from ActiveRecord::RecordNotFound, with: :send_not_found
 
