@@ -668,7 +668,7 @@ class IdeasShow extends React.PureComponent<Props, State> {
                   </StatusContainerMobile>
                 }
 
-                {ideaImageLarge ? <IdeaImage src={ideaImageLarge} /> : null}
+                {ideaImageMedium ? <IdeaImage src={ideaImageMedium} /> : null}
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>

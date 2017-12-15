@@ -19,11 +19,21 @@ class EventEmitter {
     this.subject.next({ eventSource, eventName, eventValue });
   }
 
-  observe<T>(eventSource: string, eventName: string): Rx.Observable<IEventEmitterEvent<T>> {
+  observeEventFromSource<T>(eventSource: string, eventName: string): Rx.Observable<IEventEmitterEvent<T>> {
     const streamName = `${eventSource}-${eventName}`;
 
     if (!this.stream[streamName]) {
       this.stream[streamName] = this.subject.filter(data => data.eventSource === eventSource && data.eventName === eventName).share();
+    }
+
+    return this.stream[streamName];
+  }
+
+  observeEvent<T>(eventName: string): Rx.Observable<IEventEmitterEvent<T>> {
+    const streamName = eventName;
+
+    if (!this.stream[streamName]) {
+      this.stream[streamName] = this.subject.filter(data => data.eventName === eventName).share();
     }
 
     return this.stream[streamName];

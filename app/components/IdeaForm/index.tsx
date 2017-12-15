@@ -4,9 +4,7 @@ import * as Rx from 'rxjs/Rx';
 
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
-import { EditorState, convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { EditorState } from 'draft-js';
 import * as bowser from 'bowser';
 
 // components
@@ -16,7 +14,6 @@ import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
 import Editor from 'components/UI/Editor';
-import Button from 'components/UI/Button';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
 
@@ -30,16 +27,14 @@ import { IStream } from 'utils/streams';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
-import { getLocalized } from 'utils/i18n';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/IdeasNewPage2/messages';
+import messages from './messages';
 
 // typings
 import { IOption, ImageFile } from 'typings';
 
 // style
-import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Form = styled.form`
@@ -54,35 +49,25 @@ const FormElement: any = styled.div`
   margin-bottom: 40px;
 `;
 
-type Props = {
+export interface IIdeaFormOutput {
   title: string | null;
   description: EditorState;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
-  location: any;
+  location: string;
   imageFile: ImageFile[] | null;
-  onSubmit: (arg: {
-    title: string | null,
-    description: EditorState,
-    selectedTopics: IOption[] | null,
-    selectedProject: IOption | null,
-    location: any,
-    imageFile: ImageFile[] | null
-  }) => void;
-};
+}
 
-type State = {
+interface Props extends IIdeaFormOutput {
+  onSubmit: (arg: IIdeaFormOutput) => void;
+}
+
+interface State extends IIdeaFormOutput {
   topics: IOption[] | null;
   projects: IOption[] | null;
-  title: string | null;
-  description: EditorState;
-  selectedTopics: IOption[] | null;
-  selectedProject: IOption | null;
-  location: any;
-  imageFile: ImageFile[] | null;
   titleError: string | JSX.Element | null;
   descriptionError: string | JSX.Element | null;
-};
+}
 
 class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
@@ -98,7 +83,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
       description: EditorState.createEmpty(),
       selectedTopics: null,
       selectedProject: null,
-      location: null,
+      location: '',
       imageFile: null,
       titleError: null,
       descriptionError: null
@@ -139,7 +124,9 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
         this.setState({
           projects: this.getOptions(projects, locale)
         });
-      })
+      }),
+
+      eventEmitter.observeEvent('IdeaFormSubmitEvent').subscribe(this.handleOnSubmit),
     ];
   }
 
@@ -169,7 +156,11 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleDescriptionOnChange = async (description: EditorState) => {
-    this.setState({ description, descriptionError: null });
+    const isDescriptionEmpty = (!description || !description.getCurrentContent().hasText());
+    this.setState((state) => ({
+      description,
+      descriptionError: (isDescriptionEmpty ?  state.descriptionError : null) })
+    );
   }
 
   handleTopicsOnChange = (selectedTopics: IOption[]) => {
@@ -226,25 +217,28 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { title, description, selectedTopics, selectedProject, location, imageFile } = this.state;
 
     if (this.validate(title, description)) {
-      this.props.onSubmit({
+      const output: IIdeaFormOutput = {
         title,
         description,
         selectedTopics,
         selectedProject,
         location,
         imageFile
-      });
+      };
+
+      this.props.onSubmit(output);
     }
   }
 
   render() {
     if (!this.state) { return null; }
 
+    const className = this.props['className'];
     const { formatMessage } = this.props.intl;
     const { topics, projects, title, description, selectedTopics, selectedProject, location, imageFile, titleError, descriptionError } = this.state;
 
     return (
-      <Form>
+      <Form className={className}>
         <FormElement name="titleInput">
           <Label value={<FormattedMessage {...messages.titleLabel} />} htmlFor="title" />
           <Input
@@ -300,7 +294,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
           <LocationInput
             id="location"
             value={location}
-            placeholder={<FormattedMessage {...messages.locationPlaceholder} />}
+            placeholder={formatMessage(messages.locationPlaceholder)}
             onChange={this.handleLocationOnChange}
           />
         </FormElement>

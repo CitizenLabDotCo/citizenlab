@@ -176,6 +176,23 @@ export default function createRoutes(store) {
       },
     },
     {
+      path: '/ideas/edit/:ideaId',
+      name: 'IdeasEditPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/IdeasEditPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
       path: '/ideas',
       name: 'ideasPage',
       getComponent(nextState, cb) {
