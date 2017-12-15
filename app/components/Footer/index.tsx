@@ -16,7 +16,7 @@ import messages from './messages.js';
 import { appLocalePairs } from 'i18n';
 
 // services
-import { localeStream } from 'services/locale';
+import { localeStream, updateLocale } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { LEGAL_PAGES } from 'services/pages';
 
@@ -227,8 +227,8 @@ class Footer extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleLanguageChange () {
-
+  handleLanguageChange (event, { value }) {
+    updateLocale(value);
   }
 
   render() {
@@ -272,7 +272,7 @@ class Footer extends React.PureComponent<Props, State> {
               <CitizenLabLogo name="logo" />
             </PoweredBy>
             <LanguageSelectionWrapper>
-              <Dropdown upward={true} search={true} selection={true} value={locale} options={this.state.languageOptions} />
+              <Dropdown onChange={this.handleLanguageChange} upward={true} search={true} selection={true} value={locale} options={this.state.languageOptions} />
             </LanguageSelectionWrapper>
           </SecondLine>
         </Container>
