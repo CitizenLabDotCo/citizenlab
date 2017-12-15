@@ -9,7 +9,6 @@ describe TrendingIdeaService do
     it "filters trending ideas in accordance with the trending criterea (those that have a positive trending score)" do
       trending_filter = TrendingIdeaService.new.filter_trending(Idea.all).map(&:id)
       expected_selection = Idea.all.select{ |i| TrendingIdeaService.new.trending? i }.map(&:id)
-      byebug
       expect(trending_filter.size).to eq expected_selection.size
       expect(trending_filter.sort).to eq expected_selection.sort
     end
