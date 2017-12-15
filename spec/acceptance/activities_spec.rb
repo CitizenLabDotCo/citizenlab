@@ -3,7 +3,7 @@ require 'rspec_api_documentation/dsl'
 
 resource "Idea Activities" do
 
-  explanation "Idea activities form the changelog of an idea"
+  explanation "Idea activities show what has happened to the idea"
 
   get "web_api/v1/ideas/:idea_id/activities" do
     with_options scope: :page do
