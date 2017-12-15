@@ -12,7 +12,7 @@ const newIdeaCommands = {
 module.exports = {
   url: 'localhost:3000/ideas/new',
   elements: {
-    form: { selector: '#new-idea-form' },
+    form: { selector: '#e2e-new-idea-form' },
     title: { selector: '#title' },
     content: { selector: '.public-DraftEditor-content' },
     submit: { selector: '.e2e-submit-idea-form' },

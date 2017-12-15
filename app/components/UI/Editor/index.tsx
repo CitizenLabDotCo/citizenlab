@@ -133,8 +133,8 @@ const DraftEditorContainer = styled.div`
 type Props = {
   id?: string | undefined;
   value?: EditorState | null | undefined;
-  placeholder?: string | null | undefined;
-  error?: string | null | undefined;
+  placeholder?: string | JSX.Element | null | undefined;
+  error?: string | JSX.Element | null | undefined;
   toolbarConfig?: {} | null | undefined;
   onChange: (arg: EditorState) => void;
   onFocus?: () => void;

@@ -54,7 +54,7 @@ const StyledAutocompleteItem = styled.div`
 type Props = {
   id?: string;
   value: string;
-  placeholder: string;
+  placeholder: string | JSX.Element;
   onChange: (arg: string) => void;
 };
 

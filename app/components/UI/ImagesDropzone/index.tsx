@@ -254,7 +254,7 @@ type Props = {
   maxImagePreviewWidth?: string;
   maxImageFileSize?: number;
   maxNumberOfImages?: number;
-  placeholder?: string | null | undefined;
+  placeholder?: string | JSX.Element | null | undefined;
   errorMessage?: string | null | undefined;
   objectFit?: 'cover' | 'contain' | undefined;
   onAdd: (arg: ImageFile) => void;

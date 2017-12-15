@@ -314,8 +314,8 @@ class NewIdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> 
     const submitErrorMessage = (submitError ? formatMessage(messages.submitError) : null);
 
     return (
-      <Container>
-        <Form id="new-idea-form">
+      <Container id="e2e-new-idea-form">
+        <Form>
           <Title>{formatMessage(messages.formTitle)}</Title>
 
           <FormElement name="titleInput">
