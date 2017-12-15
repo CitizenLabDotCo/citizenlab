@@ -175,7 +175,7 @@ const StyledSelect = styled(ReactSelect)`
 
 type Props = {
   value?: IOption | string | null | undefined;
-  placeholder?: string | null | undefined;
+  placeholder?: string | JSX.Element | null | undefined;
   options: IOption[] | null;
   autoBlur?: boolean | undefined;
   clearable?: boolean | undefined;

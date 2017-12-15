@@ -48,7 +48,7 @@ export type Props = {
   value?: string | null | undefined;
   type: 'text' | 'email' | 'password';
   placeholder?: string | null | undefined;
-  error?: string | null | undefined;
+  error?: string | JSX.Element | null | undefined;
   onChange: (arg: string) => void;
   onFocus?: (arg: React.FormEvent<HTMLInputElement>) => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;

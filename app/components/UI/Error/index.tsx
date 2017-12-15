@@ -121,7 +121,7 @@ const StyledErrorMessage: any = styled.div`
 `;
 
 type Props = {
-  text?: string | null;
+  text?: string | JSX.Element | null;
   fieldName?: string | undefined;
   errors?: string[];
   apiErrors?: API.Error[] | null;
