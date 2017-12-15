@@ -11,6 +11,14 @@ describe TrendingIdeaService do
       expected_selection = Idea.all.select{ |i| TrendingIdeaService.new.trending? i }.map(&:id)
       expect(trending_filter.size).to eq expected_selection.size
       expect(trending_filter.sort).to eq expected_selection.sort
+
+      trending_idea = trending_filter.first && Idea.find(trending_filter.first)
+      if trending_idea ## updating idea status to rejected should filter the idea out from trending
+        trending_idea.idea_status = IdeaStatus.find_by(code: 'rejected') || create(:idea_status, code: 'rejected')
+        trending_idea.save
+        trending_filter_after = TrendingIdeaService.new.filter_trending(Idea.all).map(&:id)
+        expect(trending_filter.size).to eq (trending_filter_after.size + 1)
+      end
     end
   end
 
