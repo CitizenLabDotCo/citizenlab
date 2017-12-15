@@ -8,6 +8,17 @@ GIT
       jwt (~> 1.5)
       rails (>= 4.2)
 
+GIT
+  remote: https://github.com/randym/axlsx.git
+  revision: c8ac844572b25fda358cc01d2104720c4c42f450
+  ref: c8ac844572b25fda358cc01d2104720c4c42f450
+  specs:
+    axlsx (2.1.0.pre)
+      htmlentities (~> 4.3.4)
+      mimemagic (~> 0.3)
+      nokogiri (>= 1.6.6)
+      rubyzip (>= 1.2.1)
+
 PATH
   remote: engines/public_api
   specs:
@@ -325,7 +336,7 @@ GEM
       mustache (~> 1.0, >= 0.99.4)
       rspec (~> 3.0)
     ruby_dep (1.5.0)
-    rubyzip (1.1.7)
+    rubyzip (1.2.1)
     rufus-scheduler (3.4.0)
       et-orbi (~> 1.0)
     sentry-raven (2.7.1)
@@ -382,7 +393,7 @@ DEPENDENCIES
   apartment (~> 1.2.0)
   apartment-sidekiq (~> 1.1.0)
   awesome_nested_set (~> 3.1.3)
-  axlsx (= 2.1.0.pre)
+  axlsx (= 2.1.0.pre)!
   bcrypt (~> 3.1.7)
   bunny (>= 2.7.2)
   byebug
@@ -419,7 +430,7 @@ DEPENDENCIES
   rgeo-geojson
   rspec-rails
   rspec_api_documentation
-  rubyzip (~> 1.1.0)
+  rubyzip (~> 1.2.1)
   sentry-raven
   shoulda-matchers (~> 3.1)
   sidekiq (~> 4.2.9)

@@ -16,15 +16,15 @@ class SideFxIdeaService
     end
 
     if idea.idea_status_id_previously_changed?
-      LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i, payload: {code: idea&.idea_status&.code})
+      LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i, payload: {change: idea.idea_status_id_previous_change})
     end
 
     if idea.title_multiloc_previously_changed?
-      LogActivityJob.perform_later(idea, 'changed_title', user, idea.updated_at.to_i)
+      LogActivityJob.perform_later(idea, 'changed_title', user, idea.updated_at.to_i, payload: {change: idea.title_multiloc_previous_change})
     end
 
     if idea.body_multiloc_previously_changed?
-      LogActivityJob.perform_later(idea, 'changed_body', user, idea.updated_at.to_i)
+      LogActivityJob.perform_later(idea, 'changed_body', user, idea.updated_at.to_i, payload: {change: idea.body_multiloc_previous_change})
     end
   end
 
@@ -46,8 +46,8 @@ class SideFxIdeaService
   end
 
   def log_activity_jobs_after_published idea, user
-    LogActivityJob.set(wait: 10.seconds).perform_later(idea, 'published', user, idea.created_at.to_i)
-    LogActivityJob.set(wait: 10.seconds).perform_later(idea, 'first published by user', user, idea.created_at.to_i)
+    LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'published', user, idea.created_at.to_i)
+    LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'first published by user', user, idea.created_at.to_i)
   end
 
 end
