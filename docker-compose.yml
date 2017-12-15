@@ -24,6 +24,7 @@ services:
       - 'postgres'
       - 'redis'
       - 'mailcatcher'
+      - 'rabbitmq'
     build: .
     image: citizenlabdotco/cl2-back:latest
     ports:
@@ -39,6 +40,7 @@ services:
     depends_on:
       - 'postgres'
       - 'redis'
+      - 'rabbitmq'
     build: .
     image: citizenlabdotco/cl2-back:latest
     command: sidekiq -C config/sidekiq.yml.erb
@@ -48,6 +50,10 @@ services:
       - '.env'
     tty: true
     stdin_open: true
+
+  rabbitmq:
+    image: 'rabbitmq:3.6.14-alpine'
+    hostname: cl2-rabbit
 
   # cable:
   #   depends_on:
