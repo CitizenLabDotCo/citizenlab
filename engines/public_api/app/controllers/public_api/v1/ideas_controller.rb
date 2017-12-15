@@ -11,7 +11,7 @@ module PublicApi
         .page(params.dig(:page_number))
         .per([params.dig(:page_size)&.to_i || 12, 24].min)
         .includes(:idea_images, :project, :idea_status)
-        .order_trending
+      @ideas = TrendingIdeaService.new.sort_trending @ideas
 
       
       render json: @ideas, 
