@@ -47,6 +47,16 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
     render json: TenantTemplateService.new.available_templates
   end
 
+  def destroy
+    tenant = @tenant.destroy
+    if tenant.destroyed?
+      SideFxTenantService.new.after_destroy(tenant, current_user)
+      head :ok
+    else
+      head 500
+    end
+  end
+
   private
 
   def secure_controller?

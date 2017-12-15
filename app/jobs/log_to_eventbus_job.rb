@@ -9,13 +9,9 @@ class LogToEventbusJob < ApplicationJob
       item_type: activity.item_type,
       item_id: activity.item_id,
       action: activity.action,
-      payload: activity.payload
+      payload: activity.payload,
+      user_id: activity.user_id
     }
-
-    # Segment requires us to send either a user_id or an anonymous_id
-    if activity.user_id
-      trackingMessage[:user_id] = activity.user_id
-    end
 
     if activity.item
       begin
@@ -45,12 +41,10 @@ class LogToEventbusJob < ApplicationJob
       # Tenant can't be found, so we don't add anything
     end
 
-    ch = BUNNY_CON.create_channel
-    # x = ch.fanout("#{activity.item_type}.#{activity.action}")
-    x = ch.topic("cl2back")
-    # x = ch.default_exchange
+    channel = BUNNY_CON.create_channel
+    exchange = channel.topic("cl2back")
 
-    resp = x.publish(
+    exchange.publish(
       trackingMessage.to_json,
       app_id: 'cl2-back',
       content_type: 'application/json',
