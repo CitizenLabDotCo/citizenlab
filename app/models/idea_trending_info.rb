@@ -6,7 +6,7 @@ class IdeaTrendingInfo < ApplicationRecord
   validates :mean_last_activity_at, presence: true
   validates :idea, presence: true
 
-  before_validation :update_info, on: :create
+  before_validation :set_actitity_ats, on: :create
   after_touch :update_info
 
 
@@ -16,6 +16,7 @@ class IdeaTrendingInfo < ApplicationRecord
 
 
   def update_info
+  	idea.reload
   	last_upvotes_at = idea.upvotes.where.not(user: idea.author)
                                   .order(created_at: :desc)
                                   .limit(TREND_NUM_UPVOTES)
@@ -24,11 +25,12 @@ class IdeaTrendingInfo < ApplicationRecord
                                     .order(created_at: :desc)
                                     .limit(TREND_NUM_COMMENTS)
                                     .map(&:created_at)                              
-
-  	self.last_activity_at = [(last_upvotes_at.first || idea.published_at || Time.at(0)), 
-  		                     (last_comments_at.first || idea.published_at || Time.at(0))].max
-    self.mean_last_activity_at = mean_fill_published [mean_fill_published(last_upvotes_at, n=TREND_NUM_UPVOTES), 
-    	                                              mean_fill_published(last_comments_at, n=TREND_NUM_COMMENTS)]
+  	last_activity_at = [(last_upvotes_at.first || idea.published_at || Time.at(0)), 
+  		                (last_comments_at.first || idea.published_at || Time.at(0))].max
+    mean_last_activity_at = mean_fill_published [mean_fill_published(last_upvotes_at, n=TREND_NUM_UPVOTES), 
+    	                                         mean_fill_published(last_comments_at, n=TREND_NUM_COMMENTS)]
+    update_attribute(:last_activity_at, last_activity_at)
+    update_attribute(:mean_last_activity_at, mean_last_activity_at)
   end
 
 
@@ -49,6 +51,11 @@ class IdeaTrendingInfo < ApplicationRecord
     else
       arr.inject{ |sum, el| sum + el }.to_f / arr.size
     end
+  end
+
+  def set_actitity_ats
+  	self.last_activity_at ||= (idea.published_at || Time.at(0))
+  	self.mean_last_activity_at ||= (idea.published_at || Time.at(0))
   end
 
 end
