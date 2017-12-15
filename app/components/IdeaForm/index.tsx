@@ -4,8 +4,12 @@ import * as Rx from 'rxjs/Rx';
 
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
-import { EditorState } from 'draft-js';
 import * as bowser from 'bowser';
+
+// draft-js
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 
 // components
 import Select from 'components/UI/Select';
@@ -50,21 +54,33 @@ const FormElement: any = styled.div`
 `;
 
 export interface IIdeaFormOutput {
-  title: string | null;
-  description: EditorState;
+  title: string;
+  description: string;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
   location: string;
   imageFile: ImageFile[] | null;
 }
 
-interface Props extends IIdeaFormOutput {
+interface Props {
+  title: string | null;
+  description: string | null;
+  selectedTopics: IOption[] | null;
+  selectedProject: IOption | null;
+  location: string;
+  imageFile: ImageFile[] | null;
   onSubmit: (arg: IIdeaFormOutput) => void;
 }
 
-interface State extends IIdeaFormOutput {
+interface State {
   topics: IOption[] | null;
   projects: IOption[] | null;
+  title: string;
+  description: EditorState;
+  selectedTopics: IOption[] | null;
+  selectedProject: IOption | null;
+  location: string;
+  imageFile: ImageFile[] | null;
   titleError: string | JSX.Element | null;
   descriptionError: string | JSX.Element | null;
 }
@@ -79,7 +95,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.state = {
       topics: null,
       projects: null,
-      title: null,
+      title: '',
       description: EditorState.createEmpty(),
       selectedTopics: null,
       selectedProject: null,
@@ -99,8 +115,8 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     const projects$ = projectsStream().observable;
 
     this.setState({
-      title: this.props.title,
-      description: this.props.description,
+      title: (this.props.title || ''),
+      description: this.getEditorStateFromHtmlString(this.props.description),
       selectedTopics: this.props.selectedTopics,
       selectedProject: this.props.selectedProject,
       location: this.props.location,
@@ -136,8 +152,38 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      title: nextProps.title,
+      description: this.getEditorStateFromHtmlString(nextProps.description),
+      selectedTopics: nextProps.selectedTopics,
+      selectedProject: nextProps.selectedProject,
+      location: nextProps.location,
+      imageFile: nextProps.imageFile,
+    });
+  }
+
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  getEditorStateFromHtmlString = (html: string | null) => {
+    let editorState: EditorState;
+
+    if (html !== null) {
+      const blocksFromHtml = htmlToDraft(html);
+      const { contentBlocks, entityMap } = blocksFromHtml;
+      const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+      editorState = EditorState.createWithContent(contentState);
+    } else {
+      editorState = EditorState.createEmpty();
+    }
+
+    return editorState;
+  }
+
+  getHtmlStringFromEditorState = (editorState: EditorState): string => {
+    return (!editorState || editorState.isEmpty ? '' : draftToHtml(convertToRaw(editorState.getCurrentContent())));
   }
 
   getOptions = (list: ITopics | IProjects | null, locale: string | null) => {
@@ -219,11 +265,11 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     if (this.validate(title, description)) {
       const output: IIdeaFormOutput = {
         title,
-        description,
         selectedTopics,
         selectedProject,
         location,
-        imageFile
+        imageFile,
+        description: this.getHtmlStringFromEditorState(description)
       };
 
       this.props.onSubmit(output);

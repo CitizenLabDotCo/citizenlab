@@ -5,11 +5,6 @@ import * as Rx from 'rxjs/Rx';
 // router
 import { browserHistory } from 'react-router';
 
-// draft-js
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
-
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -88,7 +83,7 @@ interface State {
   locale: string | null;
   ideaSlug: string | null;
   title: string | null;
-  description: EditorState;
+  description: string | null;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
   location: string;
@@ -106,7 +101,7 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
       locale: null,
       ideaSlug: null,
       title: null,
-      description: EditorState.createEmpty(),
+      description: null,
       selectedTopics: null,
       selectedProject: null,
       location: '',
@@ -130,7 +125,7 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
       const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.switchMap(ideaImage => convertUrlToFileObservable(ideaImage.data.attributes.versions.large)) : Rx.Observable.of(null));
       const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : Rx.Observable.of(null));
-      const topics$ = (idea.data.relationships.topics && idea.data.relationships.topics.data ? Rx.Observable.combineLatest(idea.data.relationships.topics.data.map(topic => topicByIdStream(topic.id).observable)) : Rx.Observable.of(null));
+      const topics$ = (idea.data.relationships.topics && idea.data.relationships.topics.data && idea.data.relationships.topics.data.length > 0 ? Rx.Observable.combineLatest(idea.data.relationships.topics.data.map(topic => topicByIdStream(topic.id).observable)) : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
         locale$,
@@ -169,7 +164,7 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
     const { locale, ideaSlug } = this.state;
     const { title, description, selectedTopics, selectedProject, location, imageFile } = ideaFormOutput;
     const ideaTitle = { [locale as string]: title as string };
-    const ideaDescription = { [locale as string]: draftToHtml(convertToRaw(description.getCurrentContent())) };
+    const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = (selectedProject ? selectedProject.value as string : null);
     const locationGeoJSON = (_.isString(location) && !_.isEmpty(location) ? await convertToGeoJson(location) : null);

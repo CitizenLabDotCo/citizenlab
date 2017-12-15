@@ -159,7 +159,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     };
     this.initialGlobalState = {
       title: null,
-      description: EditorState.createEmpty(),
+      description: null,
       selectedTopics: null,
       selectedProject: null,
       location: '',
@@ -198,7 +198,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     const { locale } = await this.localState.get();
     const { title, description, selectedTopics, selectedProject, location, ideaId } = await this.globalState.get();
     const ideaTitle = { [locale as string]: title as string };
-    const ideaDescription = { [locale as string]: draftToHtml(convertToRaw(description.getCurrentContent())) };
+    const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = (selectedProject ? selectedProject.value as string : null);
     const locationGeoJSON = (_.isString(location) && !_.isEmpty(location) ? await convertToGeoJson(location) : null);
