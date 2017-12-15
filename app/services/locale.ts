@@ -18,6 +18,18 @@ LocaleSubject.subscribe((locale) => {
 
 });
 
+// Update the current user preferred locale if there's one logged in
+LocaleSubject
+.switchMap((locale) => {
+  return authUserStream().observable.first().map((user) => ({ user, locale }));
+})
+.subscribe(({ user, locale }) => {
+  if (user && user.data.id && locale !== user.data.attributes.locale) {
+    updateUser(user.data.id, { locale });
+  }
+});
+
+
 // Push either the user-selected or the first tenant locale
 Observable.combineLatest(
   authUserStream().observable,
