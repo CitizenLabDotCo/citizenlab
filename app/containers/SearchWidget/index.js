@@ -9,7 +9,7 @@ import React from 'react';
 import { intlShape } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { connect } from 'react-redux';
-import { Saga } from 'react-redux-saga';
+import { Saga } from 'utils/react-redux-saga';
 import { push } from 'react-router-redux';
 import { createStructuredSelector } from 'reselect';
 import { Search } from 'semantic-ui-react';
