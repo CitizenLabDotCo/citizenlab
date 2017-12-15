@@ -5,10 +5,9 @@ class Project < ApplicationRecord
   mount_base64_uploader :header_bg, HeaderBgUploader
 
 
-  has_many :projects_topics, dependent: :destroy
-  has_many :topics, through: :projects_topics
-  has_many :areas_projects, dependent: :destroy
-  has_many :areas, through: :areas_projects
+  has_many :ideas, dependent: :destroy
+  has_and_belongs_to_many :topics
+  has_and_belongs_to_many :areas
   has_many :phases, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :pages, dependent: :destroy
@@ -31,15 +30,15 @@ class Project < ApplicationRecord
 
   scope :with_all_areas, (Proc.new do |area_ids|
     uniq_area_ids = area_ids.uniq
-    joins(:areas_projects)
-    .where(areas_projects: {area_id: uniq_area_ids})
+    joins(:areas)
+    .where(areas: {id: uniq_area_ids})
     .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
   end)
 
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
-    joins(:projects_topics)
-    .where(projects_topics: {topic_id: uniq_topic_ids})
+    joins(:topics)
+    .where(topics: {id: uniq_topic_ids})
     .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
   end)
 
@@ -52,7 +51,7 @@ class Project < ApplicationRecord
 
   def sanitize_description_multiloc
     self.description_multiloc = self.description_multiloc.map do |locale, description|
-      [locale, @@sanitizer.sanitize(description, tags: %w(p b u i strong a h1 h2 h3 h4 h5 h6 ul li ol), attributes: %w(href type style))]
+      [locale, @@sanitizer.sanitize(description, tags: %w(p b u i em strong a h1 h2 h3 h4 h5 h6 ul li ol), attributes: %w(href type style))]
     end.to_h
   end
 
