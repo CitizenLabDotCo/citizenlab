@@ -23,6 +23,14 @@ class TrendingIdeaService
     #                       HAVING (coalesce(MAX(comments.created_at) , ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}') 
     #                           OR (coalesce(MAX(votes.created_at) , ideas.published_at) >= timestamp '#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}')"
 
+    filter_trending_sql = "SELECT ideas.*
+                           FROM ideas 
+                           LEFT OUTER JOIN idea_statuses ON idea_statuses.id = ideas.idea_status_id 
+                           LEFT OUTER JOIN idea_trending_infos ON idea_trending_infos.idea_id = ideas.id 
+                           WHERE (idea_statuses.code != 'rejected') 
+                           AND (NOT ((ideas.upvotes_count - ideas.downvotes_count) < 0)) 
+                           AND (idea_trending_infos.last_activity_at >= timestamp '#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}')"
+
     #comments_ago_sql = "SELECT id,
     #                           round((count(comment_id) / #{IdeaTrendingInfo::TREND_NUM_COMMENTS.to_f}) * GREATEST(avg(extract(epoch from comment_ago)),extract(epoch from published_at))) 
     #                           + round(((#{IdeaTrendingInfo::TREND_NUM_COMMENTS.to_i} - count(comment_id)) / #{IdeaTrendingInfo::TREND_NUM_COMMENTS.to_f}) * extract(epoch from published_at)) AS comment_ago
@@ -43,10 +51,11 @@ class TrendingIdeaService
     #                                          ORDER BY created_at DESC LIMIT #{IdeaTrendingInfo::TREND_NUM_UPVOTES.to_i}) AS whateva ON votable_id = id
     #                 GROUP BY id"
 
-    filter_trending_sql = filter_trending(Ideas.all.unscoped).to_sql
+    # filter_trending_sql = filter_trending(Idea.all.unscoped).to_sql
+    # byebug
 
     ideas.joins("LEFT OUTER JOIN (SELECT whaatevaa.id AS is_trending_b FROM (#{filter_trending_sql}) AS whaatevaa) AS whateva ON is_trending_b = ideas.id") # .joins("LEFT OUTER JOIN (SELECT ideas.id AS is_trending_b FROM (#{filter_trending_sql}) AS whateva ON is_trending_b = ideas.id") # .joins("LEFT OUTER JOIN (SELECT ideas.id AS is_trending_b FROM ideas WHERE NOT (ideas.upvotes_count - ideas.downvotes_count) < 10) AS whateva ON is_trending_b = ideas.id")
-         .group('ideas.id')
+         .group('ideas.id, whateva.is_trending_b, idea_trending_infos.id')
          .select('ideas.*, count(is_trending_b) AS is_trending')
          .left_outer_joins(:idea_trending_info)
          .select("*, (GREATEST(((ideas.upvotes_count - ideas.downvotes_count) + 1), 1) / (#{Time.now.to_i} - extract(epoch from idea_trending_infos.mean_last_activity_at))) AS score")# .select('*, (GREATEST(((ideas.upvotes_count - ideas.downvotes_count) + 1), 1) / (comment_ago + vote_ago)) AS score')
