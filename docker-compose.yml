@@ -40,6 +40,7 @@ services:
     depends_on:
       - 'postgres'
       - 'redis'
+      - 'rabbitmq'
     build: .
     image: citizenlabdotco/cl2-back:latest
     command: sidekiq -C config/sidekiq.yml.erb
