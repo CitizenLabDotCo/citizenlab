@@ -19,6 +19,7 @@ describe TrendingIdeaService do
       trending_score_sorted = TrendingIdeaService.new.sort_trending(Idea.all).map(&:id)
       expected_order = Idea.all.sort_by{ |i| TrendingIdeaService.new.trending_score i }.map(&:id).reverse
       lines = []
+      # byebug
       Idea.count.times do |i|
         lines.concat [i]
         i_got = Idea.find_by(id: trending_score_sorted[i])

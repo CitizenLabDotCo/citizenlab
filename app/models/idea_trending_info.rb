@@ -25,8 +25,8 @@ class IdeaTrendingInfo < ApplicationRecord
                                     .limit(TREND_NUM_COMMENTS)
                                     .map(&:created_at)                              
 
-  	self.last_activity_at = [(last_upvotes_at.first || idea.published_at || Time.now), 
-  		                     (last_comments_at.first || idea.published_at || Time.now)].max
+  	self.last_activity_at = [(last_upvotes_at.first || idea.published_at || Time.at(0)), 
+  		                     (last_comments_at.first || idea.published_at || Time.at(0))].max
     self.mean_last_activity_at = mean_fill_published [mean_fill_published(last_upvotes_at, n=TREND_NUM_UPVOTES), 
     	                                              mean_fill_published(last_comments_at, n=TREND_NUM_COMMENTS)]
   end
@@ -40,7 +40,7 @@ class IdeaTrendingInfo < ApplicationRecord
   	end
   	ats = ats.take n
   	frac = (ats.size / n.to_f)
-  	Time.at(frac * mean(ats.map(&:to_i)) + (1 - frac) * (idea.published_at || Time.now).to_i)
+  	Time.at(frac * mean(ats.map(&:to_i)) + (1 - frac) * idea.published_at.to_i || 0)
   end
 
   def mean arr
