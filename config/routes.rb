@@ -20,6 +20,7 @@ Rails.application.routes.draw do
         resources :spam_reports, shallow: true, defaults: { spam_reportable: 'Idea' }
         resources :images, defaults: {container_class: Idea, image_class: IdeaImage}
         resources :files, defaults: {container_class: Idea, file_class: IdeaFile}
+        resources :activities, only: [:index]
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
       end

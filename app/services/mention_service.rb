@@ -27,12 +27,20 @@ class MentionService
   def remove_expanded_mentions text
     doc = Nokogiri::HTML.fragment(text)
     expanded_mentions = doc.css("span.cl-mention-user")
-    expanded_mentions.each{|el| el.replace(el.inner_html)}
+    expanded_mentions.each do |el|
+      user = User.find_by(id: el.attributes["data-user-id"].inner_html)
+      if user
+        el.replace(user_to_mention(user))
+      else
+        el.replace(el.inner_html)
+      end
+    end
     doc.to_s
   end
 
-  def add_span_around text, mention, user_id, user_slug
-    text.gsub(/#{mention}/i, "<span class=\"cl-mention-user\" data-user-id=\"#{user_id}\" data-user-slug=\"#{user_slug}\">#{mention}</span>")
+  def add_span_around text, user
+    mention = user_to_mention(user)
+    text.gsub(/#{mention}/i, "<span class=\"cl-mention-user\" data-user-id=\"#{user.id}\" data-user-slug=\"#{user.slug}\">@#{user.display_name}</span>")
   end
 
   def process_mentions text
@@ -48,7 +56,7 @@ class MentionService
     new_users_mentioned = users_mentioned_now.map(&:id) - users_mentioned_before.map(&:id)
 
     new_text = users_mentioned_now.all.inject(cleaned_text) do |memo, user|
-      add_span_around(memo, user_to_mention(user), user.id, user.slug)
+      add_span_around(memo, user)
     end
 
     [new_text, new_users_mentioned]

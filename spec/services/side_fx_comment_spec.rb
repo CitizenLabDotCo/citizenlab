@@ -15,11 +15,11 @@ describe SideFxCommentService do
       mention_service = MentionService.new
       u1 = create(:user)
       u1_mention = mention_service.user_to_mention(u1)
-      u1_mention_expanded = mention_service.add_span_around u1_mention, u1_mention, u1.id, u1.slug
+      u1_mention_expanded = mention_service.add_span_around u1_mention, u1
 
       u2 = create(:user)
       u2_mention = mention_service.user_to_mention(u2)
-      u2_mention_expanded = mention_service.add_span_around u2_mention, u2_mention, u2.id, u2.slug
+      u2_mention_expanded = mention_service.add_span_around u2_mention, u2
 
       comment.body_multiloc['en'] = "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}"
       expectation = expect {service.after_create(comment, user)}
@@ -41,11 +41,11 @@ describe SideFxCommentService do
       mention_service = MentionService.new
       u1 = create(:user)
       u1_mention = mention_service.user_to_mention(u1)
-      u1_mention_expanded = mention_service.add_span_around u1_mention, u1_mention, u1.id, u1.slug
+      u1_mention_expanded = mention_service.add_span_around u1_mention, u1
 
       u2 = create(:user)
       u2_mention = mention_service.user_to_mention(u2)
-      u2_mention_expanded = mention_service.add_span_around u2_mention, u2_mention, u2.id, u2.slug
+      u2_mention_expanded = mention_service.add_span_around u2_mention, u2
 
       comment = create(:comment, body_multiloc: {en: "#{u1_mention_expanded}"})
 

@@ -32,7 +32,7 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
     updated_settings = @tenant.settings.deep_merge(tenant_params[:settings].to_h)
     SideFxTenantService.new.before_update(@tenant, nil)
     if @tenant.update(tenant_params)
-      SideFxTenantService.new.after_create(@tenant, nil)
+      SideFxTenantService.new.after_update(@tenant, nil)
       render json: @tenant, status: :ok
     else
       render json: {errors: @tenant.errors.details}, status: :unprocessable_entity
@@ -45,6 +45,16 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
 
   def templates
     render json: TenantTemplateService.new.available_templates
+  end
+
+  def destroy
+    tenant = @tenant.destroy
+    if tenant.destroyed?
+      SideFxTenantService.new.after_destroy(tenant, current_user)
+      head :ok
+    else
+      head 500
+    end
   end
 
   private
