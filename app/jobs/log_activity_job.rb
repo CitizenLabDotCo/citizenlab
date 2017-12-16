@@ -23,6 +23,7 @@ class LogActivityJob < ApplicationJob
     activity.save!
 
     MakeNotificationsJob.perform_later(activity)
+    LogToEventbusJob.perform_later(activity) if BUNNY_CON
     LogToSegmentJob.perform_later(activity) if Analytics
   end
 

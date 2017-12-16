@@ -269,7 +269,13 @@ namespace :migrate do
       d[:password] = SecureRandom.urlsafe_base64 32
     end
     # locale
-    d[:locale] = locales_mapping[u.dig('telescope', 'locale')] || Tenant.current.settings.dig('core', 'locales').first
+    d[:locale] = locales_mapping[u.dig('telescope', 'locale')]
+    if !(d[:locale] && Tenant.current.settings.dig('core', 'locales').include?(d[:locale]))
+      d[:locale] = Tenant.current.settings.dig('core', 'locales').first
+      if locales_mapping[u.dig('telescope', 'locale')]
+        @log.concat ["Couldn't keep the locale for user #{d[:first_name]} #{d[:last_name]}: #{locales_mapping[u.dig('telescope', 'locale')]} was replaced by #{d[:locale]}"]
+      end
+    end
     # admin
     if u['isAdmin']
       d[:roles] = [{type: 'admin'}]
@@ -544,8 +550,7 @@ namespace :migrate do
     if p.dig('userId') && users_hash[p.dig('userId')]
       d[:author] = users_hash[p.dig('userId')]
     else
-      @log.concat ["FATAL: Couldn't find the author for idea #{p.to_s}"]
-      return
+      @log.concat ["Couldn't find the author for idea #{d[:title_multiloc]}"]
     end
     # idea status
     if p.dig('phases')&.last
@@ -588,7 +593,15 @@ namespace :migrate do
         record.slug = SlugService.new.generate_slug(record,p['slug'])
         d[:slug] = record.slug # for inclusion in logging
       end
-      record.save!
+      begin
+        record.save!
+      rescue Exception => e
+        if (record.errors.keys.sort == [:author, :author_name].sort) && (record.errors.values.sort == [["can't be blank"], ["can't be blank"]].sort)
+          record.save!(validate: false)
+        else
+          raise e
+        end
+      end
       # images
       if p.dig('images')
         p.dig('images').each do |i|

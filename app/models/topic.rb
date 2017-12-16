@@ -3,6 +3,5 @@ class Topic < ApplicationRecord
   validates :description_multiloc, multiloc: {presence: false}
   #TODO Settle on iconset and validate icon to be part of it
 
-  has_many :projects_topics, dependent: :destroy
-  has_many :projects, through: :projects_topics
+  has_and_belongs_to_many :projects
 end
