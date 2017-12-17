@@ -9,9 +9,7 @@ interface State<IResourceData> {
 
 
 export interface InjectedResourceLoaderProps<IResourceData> {
-  [key: string]: {
-    data?: IResourceData | null;
-  };
+  [key: string]: IResourceData | null;
 }
 
 interface IStreamFn<IResource> {
@@ -26,8 +24,12 @@ interface IIResource<IResourceData> {
   data: IResourceData;
 }
 
+type TOriginalProps = {
+  [key: string]: any;
+};
+
 export const injectResource = <IResourceData, IResource extends IIResource<IResourceData>>(propName: string, streamFn: IStreamFn<IResource>, resourceIdFn: IResourceIdFn) =>
-  <TOriginalProps extends {}>(WrappedComponent: React.ComponentClass<TOriginalProps & InjectedResourceLoaderProps<IResourceData>>) => {
+  (WrappedComponent: React.ComponentClass<TOriginalProps & InjectedResourceLoaderProps<IResourceData>>) => {
     return class ResourceManager extends React.Component<TOriginalProps, State<IResourceData>> {
 
       subscriptions: Rx.Subscription[] = [];
@@ -70,9 +72,7 @@ export const injectResource = <IResourceData, IResource extends IIResource<IReso
 
       render() {
         const injectedProps = {
-          [propName]: {
-            data: this.state.resource,
-          },
+          [propName]: this.state.resource,
         };
 
         return (

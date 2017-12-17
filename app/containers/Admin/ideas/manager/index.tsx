@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import * as _ from 'lodash';
+import { keys, isEmpty, filter, flow } from 'lodash';
 import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,13 +28,14 @@ import messages from './messages';
 
 type Props = InjectedIdeaLoaderProps & InjectedResourcesLoaderProps<IProjectData> & InjectedResourcesLoaderProps<ITopicData> & InjectedResourcesLoaderProps<IIdeaStatusData> & InjectedNestedResourceLoaderProps<IPhaseData> & {
   tFunc: ({}) => string;
+  project?: IProjectData | null;
 };
 
 type State = {
   selectedIdeas: {[key: string]: boolean},
 };
 
-class IdeaManagerPresentation extends React.PureComponent<Props, State> {
+class IdeaManager extends React.PureComponent<Props, State> {
 
   constructor(props) {
     super(props);
@@ -70,8 +71,8 @@ class IdeaManagerPresentation extends React.PureComponent<Props, State> {
     deleteIdea(idea.id);
   }
 
-  isAnythingSelected = () => {
-    return !_.isEmpty(this.state.selectedIdeas);
+  isAnyIdeaSelected = () => {
+    return !isEmpty(this.state.selectedIdeas);
   }
 
   topicOptions = () => {
@@ -96,7 +97,7 @@ class IdeaManagerPresentation extends React.PureComponent<Props, State> {
   }
 
   ideaSelectionToIdeas = () => {
-    return _.filter(this.props.ideas, (i) => this.state.selectedIdeas[i.id]);
+    return filter(this.props.ideas, (i) => this.state.selectedIdeas[i.id]);
   }
 
   handleChangeIdeaSelection = (selectedIdeas) => {
@@ -107,8 +108,8 @@ class IdeaManagerPresentation extends React.PureComponent<Props, State> {
   render() {
     const { ideaSortAttribute, ideaSortDirection, ideaCurrentPageNumber, ideaLastPageNumber, ideas } = this.props;
     const { selectedIdeas } = this.state;
-    const selectedIdeasData = this.ideaSelectionToIdeas();
-    const showInfoSidebar = this.isAnythingSelected();
+    const selectedIdeaIds = keys(this.state.selectedIdeas);
+    const showInfoSidebar = this.isAnyIdeaSelected();
 
     return (
       <div>
@@ -120,12 +121,12 @@ class IdeaManagerPresentation extends React.PureComponent<Props, State> {
                   <Input icon="search" onChange={this.handleSearchChange} />
                 </Menu.Item>
                 <Menu.Menu position="right">
-                  <Menu.Item>
+                  {/* <Menu.Item>
                     <Dropdown placeholder="Projects" fluid={true} selection={true} options={this.projectOptions()} onChange={this.handleProjectChange} />
                   </Menu.Item>
                   <Menu.Item>
                     <Dropdown placeholder="Status" fluid={true} selection={true} options={this.ideaStatusOptions()} onChange={this.handleIdeaStatusFilterChange} />
-                  </Menu.Item>
+                  </Menu.Item> */}
                 </Menu.Menu>
               </Menu>
             </Grid.Column>
@@ -133,6 +134,7 @@ class IdeaManagerPresentation extends React.PureComponent<Props, State> {
           <Grid.Row>
             <Grid.Column width={4}>
               <FilterSidebar
+                project={this.props.project || null}
                 phases={this.props.phases.all}
                 topics={this.props.topics.all}
                 selectedTopics={this.props.ideaTopicsFilter}
@@ -157,7 +159,7 @@ class IdeaManagerPresentation extends React.PureComponent<Props, State> {
             </Grid.Column>
             {showInfoSidebar && <Grid.Column width={4}>
                 <InfoSidebar
-                  ideas={selectedIdeasData}
+                  ideaIds={selectedIdeaIds}
                 />
               </Grid.Column>}
           </Grid.Row>
@@ -168,11 +170,13 @@ class IdeaManagerPresentation extends React.PureComponent<Props, State> {
 }
 
 
-export default
-  injectResources('projects', projectsStream)(
-    injectResources('topics', topicsStream)(
-      injectResources('ideaStatuses', ideaStatusesStream)(
-        injectNestedResources('phases', phasesStream, (props) => props.project && props.project.id)(
-          injectIdeasLoader(
-            DragDropContext(HTML5Backend)(
-            injectTFunc(IdeaManagerPresentation)))))));
+export default flow(
+  injectResources('projects', projectsStream),
+  injectResources('topics', topicsStream),
+  injectResources('ideaStatuses', ideaStatusesStream),
+  injectNestedResources('phases', phasesStream, (props) => props.project && props.project.id),
+  injectIdeasLoader,
+  DragDropContext(HTML5Backend),
+  injectTFunc
+)(IdeaManager);
+

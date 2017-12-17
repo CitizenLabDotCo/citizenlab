@@ -1,30 +1,31 @@
 import * as React from 'react';
-import T from 'components/T';
-import { IIdeaData } from 'services/ideas';
-import { injectResource, InjectedResourceLoaderProps } from '../resourceLoader';
 
-import { List, Button } from 'semantic-ui-react';
-
+import { Segment, List, Button, Divider } from 'semantic-ui-react';
+import InfoSidebarMultiItem from './InfoSidebarMultiItem';
 
 interface Props {
-  ideas: IIdeaData[];
+  ideaIds: string[];
 }
 
-class InfoSidebarMulti extends React.Component<Props> {
+export default class InfoSidebarMulti extends React.Component<Props> {
   render() {
-    const { ideas } = this.props;
+    const { ideaIds } = this.props;
 
     return (
       <div>
-        <List bulleted={true}>
-          {ideas.map((idea) => (
-            <List.Item key={idea.id}><T value={idea.attributes.title_multiloc} /></List.Item>
-          ))}
-        </List>
-        <Button>Comment on all</Button>
+        <Button.Group size="mini" attached="top">
+          <Button>Comment</Button>
+          <Button>Merge</Button>
+          <Button negative={true}>Delete</Button>
+        </Button.Group>
+        <Segment attached="bottom">
+          <List bulleted={true}>
+            {ideaIds.map((ideaId) => (
+              <InfoSidebarMultiItem key={ideaId} ideaId={ideaId} />
+            ))}
+          </List>
+        </Segment>
       </div>
     );
   }
 }
-
-export default InfoSidebarMulti;
