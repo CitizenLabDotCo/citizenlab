@@ -17,14 +17,15 @@ import { localeStream } from 'services/locale';
 import { ideaByIdStream, IIdea } from 'services/ideas';
 import { userByIdStream, IUser } from 'services/users';
 import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
+import { projectByIdStream } from 'services/projects';
 
 // utils
 import T from 'components/T';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedRelative } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
@@ -116,23 +117,43 @@ const IdeaContainer: any = styled(Link)`
   width: 100%;
   height: 370px;
   margin-bottom: 24px;
+  cursor: pointer;
+  position: relative;
+  background: transparent;
+
+  &::after {
+    content: '';
+    border-radius: 6px;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    transition: opacity 300ms cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: opacity;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+`;
+
+const IdeaContainerInner = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   border-radius: 6px;
-  overflow: hidden;
   background: #fff;
-  cursor: pointer;
   position: relative;
   border: solid 1px #e4e4e4;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transition: box-shadow 300ms cubic-bezier(0.19, 1, 0.22, 1);
-  transform: translate3d(0, 0, 0);
-  will-change: box-shadow;
-
-  &:hover {
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-  }
+  overflow: hidden;
 `;
 
 type Props = {
@@ -150,7 +171,7 @@ type State = {
 
 export const namespace = 'components/IdeaCard/index';
 
-class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
+class IdeaCard extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -177,12 +198,14 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
       const idea$ = ideaByIdStream(ideaId).observable;
       const ideaAuthor$ = idea.data.relationships.author.data ? userByIdStream(idea.data.relationships.author.data.id).observable : Rx.Observable.of(null);
       const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
+      const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
         idea$,
         ideaImage$,
-        ideaAuthor$
-      ).map(([idea, ideaImage, ideaAuthor]) => {
+        ideaAuthor$,
+        project$
+      ).map(([idea, ideaImage, ideaAuthor, project]) => {
         return { idea, ideaImage, ideaAuthor };
       });
     });
@@ -230,47 +253,46 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { formatMessage, formatHTMLMessage, formatRelative } = this.props.intl;
     const { idea, ideaImage, ideaAuthor, locale, showUnauthenticated, loading } = this.state;
 
     if (!loading && idea && locale) {
       const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
       const ideaImageLargeUrl = (ideaImage ? ideaImage.data.attributes.versions.large : null);
-      const createdAt = formatRelative(idea.data.attributes.created_at);
+      const createdAt = <FormattedRelative value={idea.data.attributes.created_at} />;
       const className = `${this.props['className']} e2e-idea-card ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }`;
 
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`} className={className}>
+          <IdeaContainerInner>
+            {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
 
-          {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
+            {ideaImageLargeUrl && <IdeaImageLarge src={ideaImageLargeUrl} />}
 
-          {ideaImageLargeUrl && <IdeaImageLarge src={ideaImageLargeUrl} />}
+            {!ideaImageUrl &&
+              <IdeaImagePlaceholder>
+                <IdeaImagePlaceholderIcon name="idea" />
+              </IdeaImagePlaceholder>
+            }
 
-          {!ideaImageUrl &&
-            <IdeaImagePlaceholder>
-              <IdeaImagePlaceholderIcon name="idea" />
-            </IdeaImagePlaceholder>
-          }
+            <IdeaContent>
+              <IdeaTitle>
+                <T value={idea.data.attributes.title_multiloc} />
+              </IdeaTitle>
+              <IdeaAuthor>
+                {createdAt} <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />
+              </IdeaAuthor>
+            </IdeaContent>
 
-          <IdeaContent>
-            <IdeaTitle>
-              <T value={idea.data.attributes.title_multiloc} />
-            </IdeaTitle>
-            <IdeaAuthor>
-              {createdAt} <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />
-            </IdeaAuthor>
-          </IdeaContent>
+            {!showUnauthenticated &&
+              <StyledVoteControl
+                ideaId={idea.data.id}
+                unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                size="normal"
+              />
+            }
 
-          {!showUnauthenticated &&
-            <StyledVoteControl
-              ideaId={idea.data.id}
-              unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-              size="normal"
-            />
-          }
-
-          {showUnauthenticated && <Unauthenticated />}
-
+            {showUnauthenticated && <Unauthenticated />}
+          </IdeaContainerInner>
         </IdeaContainer>
       );
     }
@@ -279,4 +301,4 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(IdeaCard);
+export default IdeaCard;

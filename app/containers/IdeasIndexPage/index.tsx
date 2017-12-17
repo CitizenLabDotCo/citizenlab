@@ -12,8 +12,7 @@ import IdeaCards from 'components/IdeaCards';
 import Footer from 'components/Footer';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -115,7 +114,7 @@ type State = {
   filter: object;
 };
 
-class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
+class IdeasIndex extends React.PureComponent<Props, State> {
   state: State;
   search$: Rx.BehaviorSubject<string>;
   sort$: Rx.BehaviorSubject<string>;
@@ -178,7 +177,6 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { formatMessage } = this.props.intl;
     const { search, filter } = this.state;
 
     return (
@@ -189,7 +187,9 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
         <StyledContentContainer>
 
           <FiltersArea id="e2e-ideas-filters">
-            <PageTitle><FormattedMessage {...messages.pageTitle} /></PageTitle>
+            <PageTitle>
+              <FormattedMessage {...messages.pageTitle} />
+            </PageTitle>
 
             <SearchFilterArea>
               <StyledSearchInput value={search} onChange={this.handleSearchOnChange} />
@@ -210,4 +210,4 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(IdeasIndex);
+export default IdeasIndex;

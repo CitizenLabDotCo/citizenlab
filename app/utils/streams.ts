@@ -335,8 +335,7 @@ class Streams {
       .filter(data => data !== 'initial')
       .distinctUntilChanged()
       .do((data) => {
-        // quick and dirty fix, needs proper solution
-        if (!apiEndpoint.endsWith('memberships/users_search') && cacheStream) {
+        if (cacheStream) {
           store.dispatch(mergeJsonApiResources(data));
         }
       })
@@ -477,6 +476,9 @@ class Streams {
 
       return true;
     } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log(error);
+      }
       if (error.json && error.json.errors) {
         return Promise.reject(error);
       }

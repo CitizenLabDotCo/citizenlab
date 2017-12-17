@@ -12,8 +12,7 @@ import Icon from 'components/UI/Icon';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // analytics
@@ -130,7 +129,7 @@ type State = {
   currentTenant: ITenant | null;
 };
 
-class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps, State> {
+class Sharing extends React.PureComponent<Props & ITracks, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -162,12 +161,11 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps, S
     if (currentTenant) {
       const className = this.props['className'];
       const { imageUrl, clickFbShare, clickTwitterShare } = this.props;
-      const { formatMessage } = this.props.intl;
       const facebookSettings = (currentTenant && currentTenant.data.attributes.settings.facebook_login ? currentTenant.data.attributes.settings.facebook_login : null);
       const facebookAppId = (facebookSettings ? facebookSettings.app_id : null);
       const href = window.location.href;
-      const facebookText = formatMessage(messages.shareOnFacebook);
-      const twitterText = formatMessage(messages.shareOnTwitter);
+      const facebookText = <FormattedMessage {...messages.shareOnFacebook} />;
+      const twitterText = <FormattedMessage {...messages.shareOnTwitter} />;
 
       const facebook = (facebookAppId ? (
         <FacebookButton
@@ -215,4 +213,4 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps, S
 export default injectTracks<Props>({
   clickFbShare: tracks.clickFbShare,
   clickTwitterShare: tracks.clickTwitterShare,
-})(injectIntl<Props>(Sharing));
+})(Sharing);

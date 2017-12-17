@@ -7,21 +7,22 @@ import { Link } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';
+import { Dropdown } from 'semantic-ui-react';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages.js';
+import { appLocalePairs } from 'i18n';
 
 // services
-import { localeStream } from 'services/locale';
+import { localeStream, updateLocale } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { LEGAL_PAGES } from 'services/pages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, color } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -163,14 +164,31 @@ const PoweredBy = styled.a`
   `}
 `;
 
+const LanguageSelectionWrapper = styled.div`
+  padding-left: 1rem;
+  margin-left: 1rem;
+  border-left: 1px solid ${color('separation')};
+
+  text-align: right;
+
+  .ui.selection.dropdown {
+    color: ${color('label')};
+  }
+`;
+
 type Props = {};
 
 type State = {
   locale: string | null;
   currentTenant: ITenant | null;
+  languageOptions: {
+    key: string;
+    value: string;
+    text: string;
+  }[]
 };
 
-class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
+class Footer extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -178,7 +196,8 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     super(props as any);
     this.state = {
       locale: null,
-      currentTenant: null
+      currentTenant: null,
+      languageOptions: [],
     };
     this.subscriptions = [];
   }
@@ -191,7 +210,16 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
       Rx.Observable.combineLatest(
         locale$,
         currentTenant$
-      ).subscribe(([locale, currentTenant]) => this.setState({ locale, currentTenant }))
+      )
+      .subscribe(([locale, currentTenant]) => {
+        const languageOptions = currentTenant.data.attributes.settings.core.locales.map((locale) => ({
+          key: locale,
+          value: locale,
+          text: appLocalePairs[locale],
+        }));
+
+        this.setState({ locale, currentTenant, languageOptions });
+      })
     ];
   }
 
@@ -199,9 +227,12 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  handleLanguageChange (event, { value }) {
+    updateLocale(value);
+  }
+
   render() {
     const { locale, currentTenant } = this.state;
-    const { formatMessage } = this.props.intl;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -209,8 +240,8 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
       const organizationNameMulitiLoc = currentTenant.data.attributes.settings.core.organization_name;
       const currentTenantName = getLocalized(organizationNameMulitiLoc, locale, currentTenantLocales);
       const organizationType = currentTenant.data.attributes.settings.core.organization_type;
-      const slogan = currentTenantName ? formatMessage(messages.slogan, { name: currentTenantName, type: organizationType }) : '';
-      const poweredBy = formatMessage(messages.poweredBy);
+      const slogan = currentTenantName ? <FormattedMessage {...messages.slogan} values={{ name: currentTenantName, type: organizationType }} /> : '';
+      const poweredBy = <FormattedMessage {...messages.poweredBy} />;
 
       return (
         <Container>
@@ -235,10 +266,14 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
               ))}
             </PagesNav>
 
+
             <PoweredBy href="https://www.citizenlab.co/">
               <span>{poweredBy}</span>
               <CitizenLabLogo name="logo" />
             </PoweredBy>
+            <LanguageSelectionWrapper>
+              <Dropdown onChange={this.handleLanguageChange} upward={true} search={true} selection={true} value={locale} options={this.state.languageOptions} />
+            </LanguageSelectionWrapper>
           </SecondLine>
         </Container>
       );
@@ -248,4 +283,4 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(Footer);
+export default Footer;

@@ -12,6 +12,7 @@ import TextArea from 'components/UI/TextArea';
 import Error from 'components/UI/Error';
 import Icon from 'components/UI/Icon';
 import Author from './Author';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 // tracking
 import { injectTracks } from 'utils/analytics';
@@ -59,25 +60,26 @@ const StyledAuthor = styled(Author)`
   margin-bottom: 30px;
 `;
 
-const StyledTextArea = styled(TextArea)`
-  .textarea {
-    color: #666;
-    font-size: 16px;
-    line-height: 26px;
-    padding: 12px 30px;
-    padding-right: 100px;
-    border-color: #e4e4e4;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
+const StyledTextArea = styled(MentionsTextArea)`
+  .textareaWrapper__highlighter,
+  textarea {
+    color: #666 !important;
+    font-size: 16px !important;
+    line-height: 26px !important;
+    padding: 12px 30px !important;
+    padding-right: 100px !important;
+    border-color: #e4e4e4 !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1) !important;
 
     &:hover {
-      border-color: #333;
+      border-color: #333 !important;
     }
 
     &:focus {
-      border-color: #333;
-      box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
+      border-color: #333 !important;
+      box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1) !important;
     }
   }
 `;
@@ -97,7 +99,7 @@ const SendIconWrapper: any = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  bottom: 15px;
+  bottom: 12px;
   right: 15px;
   z-index: 2;
   cursor: ${(props: any) => props.disabled ? 'auto' : 'pointer'};
@@ -218,7 +220,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
         try {
           this.setState({ processing: true });
 
-          await addCommentToComment(ideaId, authUser.data.id, parentId, { [locale]: inputValue });
+          await addCommentToComment(ideaId, authUser.data.id, parentId, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
 
           this.setState({
             inputValue: '',
@@ -247,6 +249,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
   }
 
   render() {
+    const { ideaId } = this.props;
     const { authUser } = this.state;
 
     if (authUser) {
@@ -263,25 +266,14 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
             name="comment"
             placeholder={placeholder}
             rows={1}
+            padding="12px 30px"
             value={inputValue}
             error={errorMessage}
+            ideaId={ideaId}
             onChange={this.handleTextareaOnChange}
             onFocus={this.handleTextareaOnFocus}
             onBlur={this.handleTextareaOnBlur}
           >
-            {/*
-            <SubmitButton
-              className="e2e-submit-comment"
-              loading={processing}
-              circularCorners={false}
-              onClick={this.handleSubmit}
-              size="1"
-              padding="6px 12px"
-            >
-              <FormattedMessage {...messages.commentReplyButton} />
-            </SubmitButton>
-            */}
-
             <SendIconWrapper onClick={this.handleSubmit} disabled={!canSubmit}>
               <SendIcon name="send" />
             </SendIconWrapper>

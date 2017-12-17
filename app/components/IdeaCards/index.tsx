@@ -15,8 +15,7 @@ import Button from 'components/UI/Button';
 import { ideasStream, IIdeas } from 'services/ideas';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -123,7 +122,7 @@ type State = {
   loadingMore: boolean;
 };
 
-class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
+class IdeaCards extends React.PureComponent<Props, State> {
   state: State;
   filterChange$: Rx.BehaviorSubject<object>;
   loadMore$: Rx.BehaviorSubject<boolean>;
@@ -208,7 +207,6 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { ideas, hasMore, loading, loadingMore } = this.state;
     const { loadMoreEnabled } = this.props;
-    const { formatMessage } = this.props.intl;
     const showLoadmore = (!!loadMoreEnabled && hasMore);
     const hasIdeas = (ideas !== null && ideas.data.length > 0);
 
@@ -221,7 +219,7 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
     const loadMore = ((!loading && hasIdeas && showLoadmore) ? (
       <LoadMore>
         <LoadMoreButton
-          text={formatMessage(messages.loadMore)}
+          text={<FormattedMessage {...messages.loadMore} />}
           processing={loadingMore}
           style="primary"
           size="3"
@@ -235,10 +233,12 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
       <EmptyContainer id="ideas-empty">
         <IdeaIcon name="idea" />
         <EmptyMessage>
-          <EmptyMessageLine>{formatMessage(messages.noIdea)}</EmptyMessageLine>
+          <EmptyMessageLine>
+            <FormattedMessage {...messages.noIdea} />
+          </EmptyMessageLine>
         </EmptyMessage>
         <Button
-          text={formatMessage(messages.addIdea)}
+          text={<FormattedMessage {...messages.addIdea} />}
           style="primary"
           size="2"
           icon="plus-circle"
@@ -267,4 +267,4 @@ class IdeaCards extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(IdeaCards);
+export default IdeaCards;

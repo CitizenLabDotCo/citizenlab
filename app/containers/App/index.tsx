@@ -18,7 +18,7 @@ import VoteControl from 'components/VoteControl';
 import { namespace as IdeaCardComponentNamespace } from 'components/IdeaCard';
 
 // auth
-import Authorize, { Else } from 'utils/containers/authorize';
+import HasPermission from 'components/HasPermission';
 
 // sagas
 import WatchSagas from 'containers/WatchSagas';
@@ -173,19 +173,19 @@ export default class App extends React.PureComponent<Props & RouterState, State>
                 url={modalUrl}
                 headerChild={fullscreenModalHeaderChild}
               >
-                {modalOpened && modalType === 'idea' && modalId && <IdeasShow location={location} ideaId={modalId} />}
+                {modalOpened && modalType === 'idea' && modalId && <IdeasShow ideaId={modalId} />}
               </FullscreenModal>
 
               <Navbar />
 
-              <Authorize action={['routes', 'admin']} resource={location.pathname}>
+              <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
                 <div>
                   {children}
                 </div>
-                <Else>
+                <HasPermission.No>
                   <ForbiddenRoute />
-                </Else>
-              </Authorize>
+                </HasPermission.No>
+              </HasPermission>
             </Container>
           </ThemeProvider>
         )}

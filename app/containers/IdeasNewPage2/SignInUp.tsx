@@ -19,8 +19,7 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { IStream } from 'utils/streams';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -156,7 +155,7 @@ type State = {
   currentTenant: ITenant | null;
 };
 
-class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
+class SignInUp extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -204,14 +203,15 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { show, currentTenant } = this.state;
     const logo = (currentTenant ? currentTenant.data.attributes.logo.large : null);
-    const { formatMessage } = this.props.intl;
     const { onGoBack } = this.props;
     const timeout = 10;
 
     const signIn = (show === 'signIn' ? (
       <FormContainer>
         <Form>
-          <Title>{formatMessage(messages.signInTitle)}</Title>
+          <Title>
+            <FormattedMessage {...messages.signInTitle} />
+          </Title>
           <SignIn
             onSignedIn={this.handleOnSignedIn}
             goToSignUpForm={this.goToSignUpForm}
@@ -223,7 +223,9 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     const signUp = (show === 'signUp' ? (
       <FormContainer>
         <Form>
-          <Title>{formatMessage(messages.signUpTitle)}</Title>
+          <Title>
+            <FormattedMessage {...messages.signUpTitle} />
+          </Title>
           <SignUp onSignUpCompleted={this.handleOnSignUpCompleted} />
         </Form>
       </FormContainer>
@@ -251,4 +253,4 @@ class SignInUp extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(SignInUp);
+export default SignInUp;

@@ -44,7 +44,7 @@ export default class LanguageProvider extends React.PureComponent<Props, State> 
     const { locale } = this.state;
 
     return (locale ? (
-      <IntlProvider locale={locale} messages={messages[locale]}>
+      <IntlProvider locale={locale} key={locale} messages={messages[locale]}>
         {React.Children.only(this.props.children)}
       </IntlProvider>
     ) : null);

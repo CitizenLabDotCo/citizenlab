@@ -23,8 +23,7 @@ import tracks from './tracks';
 
 // i18n
 import { media } from 'utils/styleUtils';
-import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -44,11 +43,7 @@ const Container: any = styled.div`
   top: 0;
   background: #fff;
   box-shadow: ${(props: any) => props.alwaysShowBorder ? '0px 1px 3px rgba(0, 0, 0, 0.13)' : '0px 1px 3px rgba(0, 0, 0, 0)'};
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transform: translate3d(0, 0, 0);
   transition: all 150ms ease-out;
-  will-change: box-shadow;
 
   ${(props: any) => props.scrolled && css`
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.13);
@@ -198,7 +193,7 @@ type State = {
 
 export const namespace = 'containers/Navbar/index';
 
-class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & RouterState, State> {
+class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -269,7 +264,6 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
 
   render() {
     const { pathname } = this.props.location;
-    const { formatMessage } = this.props.intl;
     const { authUser, currentTenant, currentTenantLogo, scrolled } = this.state;
     const alwaysShowBorder = [
       'ideas/',
@@ -316,7 +310,7 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
             <RightItem className="addIdea" loggedIn={authUser !== null}>
               <Button
                 className="e2e-add-idea-button"
-                text={formatMessage(messages.startIdea)}
+                text={<FormattedMessage {...messages.startIdea} />}
                 style="primary"
                 size="1"
                 icon="plus-circle"
@@ -356,4 +350,4 @@ class Navbar extends React.PureComponent<Props & Tracks & InjectedIntlProps & Ro
 export default withRouter(injectTracks<Props>({
   trackClickOpenNotifications: tracks.clickOpenNotifications,
   trackClickCloseNotifications: tracks.clickCloseNotifications,
-})(injectIntl<Props>(Navbar)));
+})(Navbar));
