@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { IPhaseData } from 'services/phases';
 import { ITopicData } from 'services/topics';
+import { IProjectData } from 'services/projects';
 
 import { Tab } from 'semantic-ui-react';
 import PhasesMenu from './FilterSidebarPhases';
 import TopicsMenu from './FilterSidebarTopics';
 
 interface Props {
+  project: IProjectData | null;
   phases: IPhaseData[];
   topics: ITopicData[];
   selectedTopics?: string[];

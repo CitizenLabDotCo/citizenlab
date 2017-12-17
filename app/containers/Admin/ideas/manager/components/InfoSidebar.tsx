@@ -1,21 +1,22 @@
 import * as React from 'react';
-import { Segment } from 'semantic-ui-react';
 
-import { IIdeaData } from 'services/ideas';
+import { IIdeaData, ideaByIdStream } from 'services/ideas';
 import InfoSidebarSingle from './InfoSidebarSingle';
 import InfoSidebarMulti from './InfoSidebarMulti';
+
+import { injectResourcesByIds, InjectedResourcesByIdsProps } from '../idsResourcesLoader';
 interface Props {
-  ideas: IIdeaData[];
+  ideaIds: string[];
 }
 
 export default class InfoSidebar extends React.Component<Props> {
   render() {
-    const multipleSelected = this.props.ideas.length > 1;
+    const multipleSelected = this.props.ideaIds.length > 1;
     return (
-      <Segment>
-        {!multipleSelected && <InfoSidebarSingle idea={this.props.ideas[0]} />}
-        {multipleSelected && <InfoSidebarMulti ideas={this.props.ideas} />}
-      </Segment>
+      <React.Fragment>
+        {!multipleSelected && <InfoSidebarSingle ideaId={this.props.ideaIds[0]} />}
+        {multipleSelected && <InfoSidebarMulti ideaIds={this.props.ideaIds} />}
+      </React.Fragment>
     );
   }
 }
