@@ -1,8 +1,10 @@
+const crypto = require('crypto');
+const hash = crypto.randomBytes(20).toString('hex');
+const title = `test idea ${hash}`;
+
 module.exports = {
   '@tags': ['citizen', 'ideas'],
   postIdea: (browser) => {
-    const title = `test idea ${new Date().getTime()}`;
-
     const signinPage = browser.page.signin();
     const newIdeaPage = browser.page.newIdea();
 

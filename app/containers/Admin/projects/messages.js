@@ -119,4 +119,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.permissionsTab',
     defaultMessage: 'Permissions',
   },
+  deleteProjectLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabel',
+    defaultMessage: 'Remove this project',
+  },
+  deleteProjectButton: {
+    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectButton',
+    defaultMessage: 'Remove',
+  },
+  deleteProjectConfirmation: {
+    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectConfirmation',
+    defaultMessage: 'Are you sure you want to delete this project? This cannot be undone.',
+  },
+  deleteProjectError: {
+    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectError',
+    defaultMessage: 'There was an error deleting this project, please try again later.',
+  },
 });

@@ -247,7 +247,7 @@ const SpinnerWrapper = styled.div`
 export type ButtonStyles = 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text' | 'cl-blue';
 
 type Props = {
-  text?: string;
+  text?: string | JSX.Element;
   children?: any;
   size?: '1' | '2' | '3' | '4';
   style?: ButtonStyles;

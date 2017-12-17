@@ -4,6 +4,8 @@ build
 node_modules
 stats.json
 yarn-error.log
+.awcache
+
 # Cruft
 .DS_Store
 npm-debug.log

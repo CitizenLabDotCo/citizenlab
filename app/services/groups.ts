@@ -74,7 +74,7 @@ export function listMembership(groupId: string, streamParams: IStreamParams<Memb
 }
 
 export function findMembership(groupId: string, streamParams: IStreamParams<{data: FoundUser[]}> | null = null) {
-  return streams.get<{data: FoundUser[]}>({ apiEndpoint: `${API_PATH}/groups/${groupId}/memberships/users_search`, ...streamParams });
+  return streams.get<{data: FoundUser[]}>({ apiEndpoint: `${API_PATH}/groups/${groupId}/memberships/users_search`, ...streamParams, cacheStream: false });
 }
 
 export async function deleteMembership(membershipId: string, groupId: string) {

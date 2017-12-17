@@ -14,8 +14,7 @@ import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -103,7 +102,7 @@ type State = {
   };
 };
 
-class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
+class IdeasIndex extends React.PureComponent<Props, State> {
   state: State;
   areas$: Rx.Subject<string[]>;
   subscriptions: Rx.Subscription[];
@@ -170,7 +169,6 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { formatMessage } = this.props.intl;
     const { filter } = this.state;
     let selectedAreas: string[] = [];
 
@@ -203,4 +201,4 @@ class IdeasIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(IdeasIndex);
+export default IdeasIndex;

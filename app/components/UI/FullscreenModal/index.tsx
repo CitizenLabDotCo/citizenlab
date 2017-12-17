@@ -13,8 +13,7 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // i18n
-import { InjectedIntl, InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
@@ -26,12 +25,12 @@ import tracks from './tracks';
 import styled, { css } from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const foregroundTimeout = 200;
+const foregroundTimeout = 350;
 const foregroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
 const contentTimeout = 700;
 const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
-const contentDelay = 350;
+const contentDelay = 450;
 const contentTranslate = '25px';
 
 const ModalForeground: any = styled.div`
@@ -52,18 +51,15 @@ const ModalForeground: any = styled.div`
   border-radius: 0px;
   background: #fff;
   z-index: 3000;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transform: translate3d(0, 0, 0);
   will-change: opacity;
 
   &.foreground-enter {
     opacity: 0;
-  }
 
-  &.foreground-enter.foreground-enter-active {
-    opacity: 1;
-    transition: all ${foregroundTimeout}ms ${foregroundEasing};
+    &.foreground-enter-active {
+      opacity: 1;
+      transition: all ${foregroundTimeout}ms ${foregroundEasing};
+    }
   }
 `;
 
@@ -78,18 +74,7 @@ const ModalContentInner = styled.div`
   ${media.smallerThanMaxTablet`
     height: calc(100vh - ${props => props.theme.mobileMenuHeight}px);
     margin-top: 0px;
-    padding-top: 60px;
-  `}
-`;
-
-const ModalContentInnerInner = styled.div`
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transform: translate3d(0, 0, 0);
-  will-change: transform, opacity;
-
-  ${media.smallerThanMaxTablet`
-    padding-top: 20px;
+    padding-top: 80px;
   `}
 `;
 
@@ -100,10 +85,6 @@ const TopBar: any = styled.div`
   left: 0;
   right: 0;
   z-index: 20000;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transform: translate3d(0, 0, 0);
-  will-change: height, transform, opacity;
   background: #fff;
   transition: height 250ms ease-out;
 
@@ -236,18 +217,14 @@ const ModalContent: any = styled.div`
   outline: none;
   background: transparent;
   z-index: 4000;
+  will-change: auto;
 
   &.content-enter {
-    ${ModalContentInnerInner},
-    ${TopBar} {
-      opacity: 0;
-      transform: translateY(${contentTranslate});
-    }
-  }
+    opacity: 0;
+    transform: translateY(${contentTranslate});
+    will-change: opacity, transform;
 
-  &.content-enter.content-enter-active {
-    ${ModalContentInnerInner},
-    ${TopBar} {
+    &.content-enter-active {
       opacity: 1;
       transform: translateY(0);
       transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
@@ -272,7 +249,7 @@ type State = {
   scrolled: boolean;
 };
 
-class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, State> {
+class Modal extends React.PureComponent<Props & ITracks, State> {
   unlisten: Function | null;
   goBackUrl: string | null;
   keydownEventListener: any;
@@ -401,7 +378,6 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
   render() {
     const { scrolled } = this.state;
     const { children, opened, headerChild } = this.props;
-    const { formatMessage } = this.props.intl;
 
     return (
       <TransitionGroup>
@@ -430,9 +406,7 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
             <ModalContent id="e2e-fullscreenmodal-content">
 
               <ModalContentInner innerRef={this.setRef}>
-                <ModalContentInnerInner>
-                  {children}
-                </ModalContentInnerInner>
+                {children}
               </ModalContentInner>
 
               <TopBar scrolled={scrolled}>
@@ -441,7 +415,9 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
                     <GoBackButton onClick={this.clickCloseButton}>
                       <GoBackIcon name="arrow-back" />
                     </GoBackButton>
-                    <GoBackLabel>{formatMessage(messages.goBack)}</GoBackLabel>
+                    <GoBackLabel>
+                      <FormattedMessage {...messages.goBack} />
+                    </GoBackLabel>
                   </GoBackButtonWrapper>
                   {headerChild && <HeaderChildWrapper>{headerChild}</HeaderChildWrapper>}
                 </TopBarInner>
@@ -459,4 +435,4 @@ class Modal extends React.PureComponent<Props & ITracks & InjectedIntlProps, Sta
   }
 }
 
-export default injectTracks<Props>(tracks)(injectIntl<Props>(Modal));
+export default injectTracks<Props>(tracks)(Modal);

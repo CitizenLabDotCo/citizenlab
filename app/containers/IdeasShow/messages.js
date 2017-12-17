@@ -10,13 +10,21 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.loadVotesError',
     defaultMessage: 'Voting is not currently available',
   },
+  postedIn: {
+    id: 'app.containers.IdeasShow.postedIn',
+    defaultMessage: 'Posted in',
+  },
   closeMap: {
     id: 'app.containers.IdeasShow.closeMap',
     defaultMessage: 'Close Map',
   },
   openMap: {
     id: 'app.containers.IdeasShow.openMap',
-    defaultMessage: 'Show the idea on a map',
+    defaultMessage: 'Show idea on map',
+  },
+  Map: {
+    id: 'app.containers.IdeasShow.Map',
+    defaultMessage: 'Map',
   },
   ideaVoteSubmitError: {
     id: 'app.containers.IdeasShow.ideaVoteSubmitError',
@@ -90,8 +98,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.helmetTitle',
     defaultMessage: 'Show idea',
   },
-  byAuthor: {
-    id: 'app.containers.IdeasShow.byAuthor',
+  byAuthorName: {
+    id: 'app.containers.IdeasShow.byAuthorName',
     defaultMessage: 'by {authorName}',
   },
   deletedUser: {

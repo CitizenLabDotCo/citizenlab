@@ -19,6 +19,7 @@
     "sourceMap": true,
     "target": "es6",
     "allowJs": true,
+    "allowSyntheticDefaultImports": true,
     "plugins": [{
       "name": "typescript-styled-plugin"
     }]

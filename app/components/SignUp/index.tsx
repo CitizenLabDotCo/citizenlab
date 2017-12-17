@@ -37,7 +37,6 @@ const Form = styled.div`
   height: auto;
   max-width: 360px;
   position: relative;
-  -webkit-backface-visibility: hidden;
   will-change: auto;
 
   &.form-enter {

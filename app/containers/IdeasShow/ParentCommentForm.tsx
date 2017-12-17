@@ -8,7 +8,7 @@ import classNames from 'classnames';
 
 // components
 import Button from 'components/UI/Button';
-import TextArea from 'components/UI/TextArea';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 import Author from './Author';
@@ -57,28 +57,6 @@ const StyledLink = styled(Link)`
 
 const StyledAuthor = styled(Author)`
   margin-bottom: 10px;
-`;
-
-const StyledTextArea = styled(TextArea)`
-  .textarea {
-    padding: 25px;
-    padding-bottom: 70px;
-    border-radius: 5px;
-    border-color: #ccc;
-    background: #fff;
-    transition: all 100ms ease-out;
-    box-shadow: inset 0 0 2px rgba(0, 0, 0, .1);
-
-    &:not(:focus):hover {
-      border-color: #ccc;
-    }
-
-    &:focus {
-      border-color: #444;
-      background: #fff;
-      box-shadow: inset 0 0 2px rgba(0, 0, 0, .3);
-    }
-  }
 `;
 
 const SubmitButton = styled(Button)`
@@ -178,7 +156,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
 
       try {
         this.setState({ processing: true });
-        await addCommentToIdea(ideaId, authUser.data.id, { [locale]: inputValue });
+        await addCommentToIdea(ideaId, authUser.data.id, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
 
         this.setState({
           inputValue: '',
@@ -198,6 +176,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
   }
 
   render() {
+    const { ideaId } = this.props;
     const { formatMessage } = this.props.intl;
     const { authUser, inputValue, processing, errorMessage } = this.state;
     const placeholder = formatMessage(messages.commentBodyPlaceholder);
@@ -220,10 +199,12 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
       <CommentContainer className="e2e-comment-form ideaCommentForm">
         <StyledAuthor authorId={authUser.data.id} />
 
-        <StyledTextArea
+        <MentionsTextArea
           name="comment"
           placeholder={placeholder}
-          rows={4}
+          rows={8}
+          ideaId={ideaId}
+          padding="25px 25px 70px 25px"
           value={inputValue}
           error={errorMessage}
           onChange={this.handleTextareaOnChange}
@@ -237,7 +218,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
           >
             <FormattedMessage {...messages.publishComment} />
           </SubmitButton>
-        </StyledTextArea>
+        </MentionsTextArea>
       </CommentContainer>
     ) : null);
 

@@ -16,6 +16,8 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
+import { Button as SemButton, Icon as SemIcon } from 'semantic-ui-react';
+
 // i18n
 import { getLocalized } from 'utils/i18n';
 import { InjectedIntlProps } from 'react-intl';
@@ -30,6 +32,7 @@ import {
   projectBySlugStream,
   addProject,
   updateProject,
+  deleteProject,
 } from 'services/projects';
 import {
   IProjectImageData,
@@ -113,6 +116,7 @@ interface State {
   currentTenant: ITenant | null;
   areasOptions: IOption[];
   submitState: 'disabled' | 'enabled' | 'error' | 'success';
+  deleteError: string | null;
 }
 
 class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -140,7 +144,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       locale: null,
       currentTenant: null,
       areasOptions: [],
-      submitState: 'disabled'
+      submitState: 'disabled',
+      deleteError: null,
     };
     this.slug$ = null;
     this.subscriptions = [];
@@ -394,6 +399,24 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }
   }
 
+  deleteProject = async (event) => {
+    event.preventDefault();
+
+    if (!this.state.projectData) {
+      return;
+    }
+
+    if (window.confirm(this.props.intl.formatMessage(messages.deleteProjectConfirmation))) {
+      deleteProject(this.state.projectData.id)
+      .then((response) => {
+        browserHistory.push('/admin/projects');
+      })
+      .catch((error) => {
+        this.setState({ deleteError: this.props.intl.formatMessage(messages.deleteProjectError) });
+      });
+    }
+  }
+
   render() {
     const { currentTenant, locale, noTitleError, /* noHeaderError, */ apiErrors, saved, projectData, headerBg, newProjectImages, loading, processing, projectAttributesDiff, areasOptions, areaType, submitState } = this.state;
     const { formatMessage } = this.props.intl;
@@ -496,6 +519,19 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 onRemove={this.handleProjectImageOnRemove}
               />
             </SectionField>
+
+            {this.state.projectData &&
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.deleteProjectLabel} />
+                </Label>
+                <SemButton color="red" onClick={this.deleteProject}>
+                  <SemIcon name="trash" />
+                  <FormattedMessage {...messages.deleteProjectButton} />
+                </SemButton>
+                <Error text={this.state.deleteError} />
+              </SectionField>
+            }
 
             <SubmitWrapper
               loading={processing}
