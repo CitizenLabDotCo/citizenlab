@@ -1,11 +1,14 @@
 class Phase < ApplicationRecord
   belongs_to :project
 
+  CONSULTATION_METHODS = %w(information ideation)
+
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
   validates :start_at, :end_at, presence: true
   validate :validate_start_at_before_end_at
+  validates :consultation_method, presence: true, inclusion: {in: CONSULTATION_METHODS}
 
   before_validation :sanitize_description_multiloc
 
