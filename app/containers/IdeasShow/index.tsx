@@ -23,6 +23,9 @@ import IdeaMeta from './IdeaMeta';
 import Unauthenticated from './Unauthenticated';
 import IdeaMap from './IdeaMap';
 import Button from 'components/UI/Button';
+import MoreActions, { Action } from 'components/UI/MoreActionsMenu';
+import SpamReportForm from 'containers/SpamReport';
+import Modal from 'components/UI/Modal';
 import UserName from 'components/UI/UserName';
 import HasPermission from 'components/HasPermission';
 
@@ -34,6 +37,7 @@ import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
 import { ideaStatusStream } from 'services/ideaStatuses';
 import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
 import { projectByIdStream, IProject } from 'services/projects';
+import { authUserStream } from 'services/auth';
 
 // i18n
 import T from 'components/T';
@@ -386,6 +390,7 @@ const MetaContent = styled.div`
   width: 200px;
   display: flex;
   flex-direction: column;
+  margin-bottom: 1rem;
 `;
 
 const VoteLabel = styled.div`
@@ -508,6 +513,8 @@ type State = {
   loading: boolean;
   unauthenticatedError: boolean;
   showMap: boolean;
+  spamModalVisible: boolean;
+  moreActions: Action[];
 };
 
 class IdeasShow extends React.PureComponent<Props, State> {
@@ -526,6 +533,8 @@ class IdeasShow extends React.PureComponent<Props, State> {
       loading: true,
       unauthenticatedError: false,
       showMap: false,
+      spamModalVisible: false,
+      moreActions: [],
     };
     this.subscriptions = [];
   }
@@ -564,6 +573,21 @@ class IdeasShow extends React.PureComponent<Props, State> {
         this.setState({ ideaComments });
       })
     ];
+
+    this.subscriptions.push(
+      authUserStream().observable
+      .subscribe((authUser) => {
+        if (authUser) {
+          this.setState({ moreActions: [
+            ...this.state.moreActions,
+            {
+              label: 'Report as spam',
+              handler: this.openSpamModal,
+            }
+          ]});
+        }
+      })
+    );
   }
 
   componentWillUnmount() {
@@ -596,6 +620,13 @@ class IdeasShow extends React.PureComponent<Props, State> {
 
   handleMapToggle = () => {
     this.setState({ showMap: !this.state.showMap });
+  }
+
+  openSpamModal = () => {
+    this.setState({ spamModalVisible: true });
+  }
+  closeSpamModal = () => {
+    this.setState({ spamModalVisible: false });
   }
 
   render() {
@@ -761,9 +792,15 @@ class IdeasShow extends React.PureComponent<Props, State> {
 
               <RightColumnDesktop className={!isSafari ? 'notSafari' : ''}>
                 {ideaMetaContent}
+                <MoreActions
+                  actions={this.state.moreActions}
+                />
               </RightColumnDesktop>
             </Content>
           </IdeaContainer>
+          <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
+            <SpamReportForm resourceId={this.props.ideaId} resourceType="ideas" />
+          </Modal>
         </Container>
       );
     }
