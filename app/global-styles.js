@@ -171,6 +171,11 @@ injectGlobal`
 
   body.fontLoaded {
     font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+    h1, h2, h3, h4, h5, h6,
+    button, input, optgroup, select, textarea {
+      font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
   }
 
   body.modal-active {
