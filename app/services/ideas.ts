@@ -70,6 +70,19 @@ export interface IIdeas {
   links: IIdeaLinks;
 }
 
+export interface IdeaActivity {
+  id: string;
+  type: 'activities';
+  attributes: {
+    action: string;
+    acted_at: string;
+    change: string[] | {[key: string]: string}[] | null;
+  };
+  relationships: {
+    user: { data: IRelationship };
+  };
+}
+
 export interface IIdeaUpdate {
   project_id?: string | undefined | null;
   author_id?: string | undefined | null;
@@ -131,4 +144,8 @@ export function updateIdea(ideaId: string, object: IIdeaUpdate) {
 
 export function deleteIdea(ideaId: string) {
   return streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId);
+}
+
+export function ideaActivities(ideaId: string) {
+  return streams.get<{ data: IdeaActivity[] }>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/activities` });
 }
