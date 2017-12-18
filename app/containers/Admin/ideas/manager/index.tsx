@@ -33,6 +33,7 @@ type Props = InjectedIdeaLoaderProps & InjectedResourcesLoaderProps<IProjectData
 
 type State = {
   selectedIdeas: {[key: string]: boolean},
+  filterMode: 'topics' | 'phases',
 };
 
 class IdeaManager extends React.PureComponent<Props, State> {
@@ -42,7 +43,20 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
     this.state = {
       selectedIdeas: {},
+      filterMode: props.project ? 'phases' : 'topics',
     };
+  }
+
+  componentDidMount() {
+    if (this.props.project) {
+      this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(this.props.project.id);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if ((this.props.project && this.props.project.id) !== (nextProps.project && nextProps.project.id)) {
+      this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(nextProps.project && nextProps.project.id);
+    }
   }
 
   handleSearchChange = (event) => {
@@ -104,10 +118,13 @@ class IdeaManager extends React.PureComponent<Props, State> {
     this.setState({ selectedIdeas });
   }
 
+  handleChangeFilterMode = (filterMode) => {
+    this.setState({ filterMode });
+  }
 
   render() {
-    const { ideaSortAttribute, ideaSortDirection, ideaCurrentPageNumber, ideaLastPageNumber, ideas } = this.props;
-    const { selectedIdeas } = this.state;
+    const { ideaSortAttribute, ideaSortDirection, ideaCurrentPageNumber, ideaLastPageNumber, ideas, phases } = this.props;
+    const { selectedIdeas, filterMode } = this.state;
     const selectedIdeaIds = keys(this.state.selectedIdeas);
     const showInfoSidebar = this.isAnyIdeaSelected();
 
@@ -121,12 +138,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
                   <Input icon="search" onChange={this.handleSearchChange} />
                 </Menu.Item>
                 <Menu.Menu position="right">
-                  {/* <Menu.Item>
-                    <Dropdown placeholder="Projects" fluid={true} selection={true} options={this.projectOptions()} onChange={this.handleProjectChange} />
-                  </Menu.Item>
-                  <Menu.Item>
-                    <Dropdown placeholder="Status" fluid={true} selection={true} options={this.ideaStatusOptions()} onChange={this.handleIdeaStatusFilterChange} />
-                  </Menu.Item> */}
+                  Export
                 </Menu.Menu>
               </Menu>
             </Grid.Column>
@@ -134,6 +146,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
           <Grid.Row>
             <Grid.Column width={4}>
               <FilterSidebar
+                filterMode={filterMode}
+                onChangeFilterMode={this.handleChangeFilterMode}
                 project={this.props.project || null}
                 phases={this.props.phases.all}
                 topics={this.props.topics.all}
@@ -145,11 +159,13 @@ class IdeaManager extends React.PureComponent<Props, State> {
             </Grid.Column>
             <Grid.Column width={showInfoSidebar ? 8 : 12}>
               <IdeaTable
+                filterMode={filterMode}
                 ideaSortAttribute={ideaSortAttribute}
                 ideaSortDirection={ideaSortDirection}
                 onChangeIdeaSortDirection={this.props.onChangeIdeaSortDirection}
                 onChangeIdeaSortAttribute={this.props.onChangeIdeaSortAttribute}
                 ideas={ideas}
+                phases={phases.all}
                 selectedIdeas={selectedIdeas}
                 onChangeIdeaSelection={this.handleChangeIdeaSelection}
                 ideaCurrentPageNumber={ideaCurrentPageNumber}

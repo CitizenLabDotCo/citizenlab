@@ -63,8 +63,7 @@ export const injectResourcesByIds = <IResourceData, IResource extends IIResource
           const resourceObservables = ids.map((id) => {
             return streamFn(id).observable;
           });
-          Rx.Observable.forkJoin(resourceObservables).subscribe((resources) => {
-            debugger;
+          Rx.Observable.combineLatest(resourceObservables).subscribe((resources) => {
             this.setState({
               resources: resources.map((r) => r.data),
             });

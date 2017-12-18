@@ -2,9 +2,11 @@ import * as React from 'react';
 import { injectTFunc } from 'components/T/utils';
 import { IPhaseData } from 'services/phases';
 import { flow } from 'lodash';
+import styled from 'styled-components';
 
-import { Menu } from 'semantic-ui-react';
+import { Menu, Label } from 'semantic-ui-react';
 import { DropTarget } from 'react-dnd';
+import T from 'components/T';
 
 
 interface Props {
@@ -13,20 +15,22 @@ interface Props {
   onClick: any;
   isOver: boolean;
   canDrop: boolean;
+  phaseNumber: number;
   connectDropTarget: any;
-  tFunc: ({ }) => string;
 }
 
 class FilterSidebarPhasesItem extends React.Component<Props> {
   render() {
-    const { phase, active, onClick, connectDropTarget, isOver, canDrop } = this.props;
+    const { phase, active, onClick, connectDropTarget, isOver, canDrop, phaseNumber } = this.props;
     return connectDropTarget(
       <div>
         <Menu.Item
-          name={this.props.tFunc(phase.attributes.title_multiloc)}
           active={active || (isOver && canDrop)}
           onClick={onClick}
-        />
+        >
+          <Label circular={true}>{phaseNumber}</Label>
+          <T value={phase.attributes.title_multiloc} />
+        </Menu.Item>
       </div>
     );
   }
@@ -50,5 +54,4 @@ const collect = (connect, monitor) => ({
 
 export default flow([
   DropTarget('IDEA', phaseTarget, collect),
-  injectTFunc,
 ])(FilterSidebarPhasesItem);

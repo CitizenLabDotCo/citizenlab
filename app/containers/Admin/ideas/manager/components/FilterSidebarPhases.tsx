@@ -32,10 +32,11 @@ class FilterSidebarPhases extends React.Component<Props> {
           All ideas
         </Menu.Item>
         <Divider />
-        {this.props.phases.map((phase) => (
+        {this.props.phases.map((phase, index) => (
           <FilterSidebarPhasesItem
             key={phase.id}
             phase={phase}
+            phaseNumber={index + 1}
             active={!!this.isActive(phase.id)}
             onClick={this.handleItemClick(phase.id)}
           />
