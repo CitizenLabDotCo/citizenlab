@@ -397,7 +397,7 @@ namespace :migrate do
         d[:visible_to] = 'admins'
       else
         d[:visible_to] = 'groups'
-        d[:groups] = p['permissions'].values.flatten.map{|g| groups_hash[g]}.select{|g| g}
+        d[:groups] = p['permissions'].values.uniq.flatten.map{|g| groups_hash[g]}.select{|g| g}
       end
     else
       d[:visible_to] = 'public'
@@ -434,7 +434,6 @@ namespace :migrate do
       end
       projects_hash[p['_id']] = record
     rescue Exception => e
-      byebug
       @log.concat [e.message+' '+d.to_s]
     end
   end
@@ -617,6 +616,7 @@ namespace :migrate do
       # votes
       votes_d.each do |v| 
         v[:votable] = record
+        v[:created_at] = record.published_at
         if Vote.find_by(votable_id: record.id, user: v[:user])
           @log.concat ["User voted more than onces on votable: #{v}"]
         else
