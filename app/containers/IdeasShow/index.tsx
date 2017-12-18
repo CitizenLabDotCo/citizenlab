@@ -53,7 +53,7 @@ const Container = styled.div``;
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 800px;
+  max-width: 820px;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -322,13 +322,18 @@ const IdeaBody = styled.div`
 `;
 
 const SeparatorColumn = styled.div`
-  flex-shrink: 0;
-  flex-grow: 0;
-  flex-basis: 1px;
+  flex: 0 0 1px;
+  padding: 0;
   margin: 0;
-  margin-left: 25px;
-  margin-right: 25px;
-  background: transparent;
+  margin-left: 40px;
+  margin-right: 40px;
+  background: #e4e4e4;
+
+  height: 100%;
+  min-height: calc(100vh - 120px);
+  position: sticky;
+  top: 100px;
+  /* align-self: flex-start; */
 
   ${media.smallerThanMaxTablet`
     display: none;

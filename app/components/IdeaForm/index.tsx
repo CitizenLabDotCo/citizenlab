@@ -23,12 +23,15 @@ import Error from 'components/UI/Error';
 
 // services
 import { localeStream } from 'services/locale';
+import { currentTenantStream, ITenant } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectsStream, IProjects, IProjectData } from 'services/projects';
 
 // utils
 import { IStream } from 'utils/streams';
 import eventEmitter from 'utils/eventEmitter';
+import { getLocalized } from 'utils/i18n';
+import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -111,12 +114,13 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   componentWillMount() {
     const locale$ = localeStream().observable;
+    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
     const topics$ = topicsStream().observable;
     const projects$ = projectsStream().observable;
 
     this.setState({
       title: (this.props.title || ''),
-      description: this.getEditorStateFromHtmlString(this.props.description),
+      description: getEditorStateFromHtmlString(this.props.description),
       selectedTopics: this.props.selectedTopics,
       selectedProject: this.props.selectedProject,
       location: this.props.location,
@@ -126,19 +130,21 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$,
+        currentTenantLocales$,
         topics$,
-      ).subscribe(([locale, topics]) => {
+      ).subscribe(([locale, currentTenantLocales, topics]) => {
         this.setState({
-          topics: this.getOptions(topics, locale)
+          topics: this.getOptions(topics, locale, currentTenantLocales)
         });
       }),
 
       Rx.Observable.combineLatest(
         locale$,
+        currentTenantLocales$,
         projects$,
-      ).subscribe(([locale, projects]) => {
+      ).subscribe(([locale, currentTenantLocales, projects]) => {
         this.setState({
-          projects: this.getOptions(projects, locale)
+          projects: this.getOptions(projects, locale, currentTenantLocales)
         });
       }),
 
@@ -155,7 +161,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   componentWillReceiveProps(nextProps) {
     this.setState({
       title: nextProps.title,
-      description: this.getEditorStateFromHtmlString(nextProps.description),
+      description: getEditorStateFromHtmlString(nextProps.description),
       selectedTopics: nextProps.selectedTopics,
       selectedProject: nextProps.selectedProject,
       location: nextProps.location,
@@ -167,30 +173,11 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getEditorStateFromHtmlString = (html: string | null) => {
-    let editorState: EditorState;
-
-    if (html !== null) {
-      const blocksFromHtml = htmlToDraft(html);
-      const { contentBlocks, entityMap } = blocksFromHtml;
-      const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-      editorState = EditorState.createWithContent(contentState);
-    } else {
-      editorState = EditorState.createEmpty();
-    }
-
-    return editorState;
-  }
-
-  getHtmlStringFromEditorState = (editorState: EditorState): string => {
-    return (!editorState || editorState.isEmpty ? '' : draftToHtml(convertToRaw(editorState.getCurrentContent())));
-  }
-
-  getOptions = (list: ITopics | IProjects | null, locale: string | null) => {
+  getOptions = (list: ITopics | IProjects | null, locale: string | null, currentTenantLocales: string[]) => {
     if (list && locale) {
       return (list.data as (ITopicData | IProjectData)[]).map(item => ({
         value: item.id,
-        label: item.attributes.title_multiloc[locale]
+        label: getLocalized(item.attributes.title_multiloc, locale, currentTenantLocales)
       } as IOption));
     }
 
@@ -269,7 +256,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
         selectedProject,
         location,
         imageFile,
-        description: this.getHtmlStringFromEditorState(description)
+        description: getHtmlStringFromEditorState(description)
       };
 
       this.props.onSubmit(output);

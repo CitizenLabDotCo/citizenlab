@@ -234,7 +234,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
         type: 'idea',
         id: idea.data.id,
         url: `/ideas/${idea.data.attributes.slug}`
-       });
+      });
     }
   }
 
