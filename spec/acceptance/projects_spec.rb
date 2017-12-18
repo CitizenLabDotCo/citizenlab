@@ -120,6 +120,7 @@ resource "Projects" do
     with_options scope: :project do
       parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
       parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
+      parameter :description_preview_multiloc, "The description preview of the project, as a multiloc string"
       parameter :slug, "The unique slug of the project. If not given, it will be auto generated"
       parameter :header_bg, "Base64 encoded header image"
       parameter :area_ids, "Array of ids of the associated areas"
@@ -132,6 +133,7 @@ resource "Projects" do
     let(:project) { build(:project) }
     let(:title_multiloc) { project.title_multiloc }
     let(:description_multiloc) { project.description_multiloc }
+    let(:description_preview_multiloc) { project.description_preview_multiloc }
     let(:header_bg) { encode_image_as_base64("header.jpg")}
     let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:visible_to) { 'admins' }
@@ -142,6 +144,7 @@ resource "Projects" do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
       expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+      expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
       expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
       expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
     end
