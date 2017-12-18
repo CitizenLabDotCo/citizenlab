@@ -131,6 +131,7 @@ export default class IdeaTable extends React.Component<Props, State> {
               onToggleSelectIdea={this.toggleSelectIdea(idea)}
               onSingleSelectIdea={this.singleSelectIdea(idea)}
               selected={selectedIdeas[idea.id]}
+              selectedIdeas={selectedIdeas}
               activeFilterMenu={activeFilterMenu}
             />
           )}

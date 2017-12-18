@@ -1,15 +1,18 @@
 import * as React from 'react';
-import { uniq, flow } from 'lodash';
+import * as Rx from 'rxjs';
+import { uniq, flow, keys } from 'lodash';
+import { findDOMNode } from 'react-dom';
 
 // components
 import { Table, Icon, Dropdown, Popup, Button, Checkbox } from 'semantic-ui-react';
+import WrappedRow from './WrappedRow';
 import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import { injectTFunc } from 'components/T/utils';
 import messages from '../../messages';
 
-import { IIdeaData, updateIdea } from 'services/ideas';
+import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';
 import { IPhaseData } from 'services/phases';
 import { ITopicData } from 'services/topics';
 import { IIdeaStatusData } from 'services/ideaStatuses';
@@ -37,7 +40,7 @@ type Props = {
   tFunc: () => string,
   onDeleteIdea: () => void,
   selected?: boolean,
-  onSelectIdea: () => void,
+  selectedIdeas: { [key: string]: boolean },
   onUnselectIdea: () => void,
   onToggleSelectIdea: () => void,
   onSingleSelectIdea: () => void;
@@ -78,10 +81,9 @@ class Row extends React.PureComponent<Props> {
     const attrs = idea.attributes;
     return (
       <React.Fragment>
-        <Table.Row as={StyledRow} active={selected} onClick={this.onClickRow}>
+        <WrappedRow as={StyledRow} active={selected} onClick={this.onClickRow} ref={(instance) => {instance && connectDragSource(findDOMNode(instance));}}>
           <Table.Cell>
             <Checkbox checked={selected} onChange={this.onClickCheckbox} />
-            {connectDragSource(<div><Icon name="content" /></div>)}
           </Table.Cell>
           <Table.Cell>
             <T value={attrs.title_multiloc} />
@@ -98,7 +100,7 @@ class Row extends React.PureComponent<Props> {
             <Icon name="thumbs down" />
             {attrs.downvotes_count}
           </Table.Cell>
-        </Table.Row>
+        </WrappedRow>
         <Table.Row active={selected} onClick={this.onClickRow}>
           <Table.Cell colSpan={6} textAlign="right" as={FilterCell}>
             {activeFilterMenu === 'phases' &&
@@ -134,20 +136,33 @@ const ideaSource = {
     const dropResult = monitor.getDropResult();
 
     if (dropResult && dropResult.type === 'topic') {
-      const currentTopics = (item.idea as IIdeaData).relationships.topics.data.map((d) => d.id);
-      const newTopics = uniq(currentTopics.concat(dropResult.id));
-      updateIdea(item.id, {
-        topic_ids: newTopics,
+      const ids = keys(props.selectedIdeas);
+      const observables = ids.map((id) => ideaByIdStream(id).observable);
+      Rx.Observable.combineLatest(observables).take(1).subscribe((ideas) => {
+        ideas.map((idea) => {
+          const currentTopics = idea.data.relationships.topics.data.map((d) => d.id);
+          const newTopics = uniq(currentTopics.concat(dropResult.id));
+          updateIdea(idea.data.id, {
+            topic_ids: newTopics,
+          });
+        });
       });
     }
 
     if (dropResult && dropResult.type === 'phase') {
-      const currentPhases = (item.idea as IIdeaData).relationships.phases.data.map((d) => d.id);
-      const newPhases = uniq(currentPhases.concat(dropResult.id));
-      updateIdea(item.id, {
-        phase_ids: newPhases
+      const ids = keys(props.selectedIdeas);
+      const observables = ids.map((id) => ideaByIdStream(id).observable);
+      Rx.Observable.combineLatest(observables).take(1).subscribe((ideas) => {
+        ideas.map((idea) => {
+          const currentPhases = idea.data.relationships.phases.data.map((d) => d.id);
+          const newPhases = uniq(currentPhases.concat(dropResult.id));
+          updateIdea(idea.data.id, {
+            phase_ids: newPhases,
+          });
+        });
       });
     }
+
   }
 };
 
