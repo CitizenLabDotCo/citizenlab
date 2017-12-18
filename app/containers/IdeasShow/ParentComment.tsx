@@ -5,7 +5,6 @@ import * as Rx from 'rxjs/Rx';
 import linkifyHtml from 'linkifyjs/html';
 
 // components
-import Authorize from 'utils/containers/authorize';
 import ChildComment from './ChildComment';
 import Author from './Author';
 import Button from 'components/UI/Button';

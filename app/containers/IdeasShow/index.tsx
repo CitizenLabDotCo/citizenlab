@@ -24,6 +24,7 @@ import Unauthenticated from './Unauthenticated';
 import IdeaMap from './IdeaMap';
 import Button from 'components/UI/Button';
 import UserName from 'components/UI/UserName';
+import HasPermission from 'components/HasPermission';
 
 // services
 import { localeStream } from 'services/locale';
@@ -48,6 +49,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { css } from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
+import { hasPermission } from 'services/permissions';
 
 const Container = styled.div``;
 
