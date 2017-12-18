@@ -63,13 +63,24 @@ const IdeaContainer = styled.div`
   margin-right: auto;
   padding: 0;
   padding-top: 60px;
-  padding-bottom: 60px;
+  padding-bottom: 50px;
   padding-left: 30px;
   padding-right: 30px;
   position: relative;
 
   ${media.smallerThanMaxTablet`
     padding-top: 30px;
+  `}
+`;
+
+const HeaderWrapper = styled.div`
+  width: 100%;
+  padding-right: 280px;
+  display: flex;
+  flex-direction: column;
+
+  ${media.smallerThanMaxTablet`
+    padding-right: 0px;
   `}
 `;
 
@@ -111,15 +122,13 @@ const IdeaTitle = styled.h1`
   color: #444;
   font-size: 34px;
   font-weight: 500;
-  line-height: 42px;
+  line-height: 40px;
   margin: 0;
   padding: 0;
-  padding-right: 250px;
 
   ${media.smallerThanMaxTablet`
     font-size: 28px;
     line-height: 34px;
-    padding: 0;
     margin-right: 12px;
   `}
 `;
@@ -331,11 +340,9 @@ const SeparatorColumn = styled.div`
   margin-right: 40px;
   background: #e4e4e4;
 
-  height: 100%;
-  min-height: calc(100vh - 120px);
+  height: auto;
   position: sticky;
   top: 100px;
-  /* align-self: flex-start; */
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -358,7 +365,7 @@ const SeparatorRow = styled.div`
 `;
 
 const RightColumn = styled.div`
-  flex: 0 0 160px;
+  flex: 0 0 140px;
   margin: 0;
   padding: 0;
 `;
@@ -652,25 +659,32 @@ class IdeasShow extends React.PureComponent<Props, State> {
           <IdeaMeta ideaId={idea.data.id} />
 
           <IdeaContainer id="e2e-idea-show">
-            {project && projectTitleMultiloc &&
-              <BelongsToProject>
-                <FormattedMessage {...messages.postedIn} />
-                <ProjectLink to={`/projects/${project.data.attributes.slug}`}>
-                  <T value={projectTitleMultiloc} />
-                </ProjectLink>
-              </BelongsToProject>
-            }
-            <Header>
-              <IdeaTitle>
-                <T value={titleMultiloc} />
-              </IdeaTitle>
-            </Header>
+            <HeaderWrapper>
+              {project && projectTitleMultiloc &&
+                <BelongsToProject>
+                  <FormattedMessage {...messages.postedIn} />
+                  <ProjectLink to={`/projects/${project.data.attributes.slug}`}>
+                    <T value={projectTitleMultiloc} />
+                  </ProjectLink>
+                </BelongsToProject>
+              }
+
+              <Header>
+                <IdeaTitle>
+                  <T value={titleMultiloc} />
+                </IdeaTitle>
+              </Header>
+            </HeaderWrapper>
 
             <Content>
               <LeftColumn>
                 {statusId &&
                   <StatusContainerMobile>
-                    {/* <StatusTitle><FormattedMessage {...messages.ideaStatus} /></StatusTitle> */}
+                    {/*
+                    <StatusTitle>
+                      <FormattedMessage {...messages.ideaStatus} />
+                    </StatusTitle>
+                    */}
                     <StatusBadge statusId={statusId} />
                   </StatusContainerMobile>
                 }
