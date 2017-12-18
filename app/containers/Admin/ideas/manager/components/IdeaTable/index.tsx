@@ -26,7 +26,7 @@ interface Props {
   ideaCurrentPageNumber?: number;
   ideaLastPageNumber?: number;
   onIdeaChangePage?: (number) => void;
-  filterMode: string;
+  activeFilterMenu: string | null;
 }
 
 interface State {
@@ -76,7 +76,7 @@ export default class IdeaTable extends React.Component<Props, State> {
   }
 
   render() {
-    const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, filterMode } = this.props;
+    const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, activeFilterMenu } = this.props;
 
     return(
       <Table>
@@ -131,7 +131,7 @@ export default class IdeaTable extends React.Component<Props, State> {
               onToggleSelectIdea={this.toggleSelectIdea(idea)}
               onSingleSelectIdea={this.singleSelectIdea(idea)}
               selected={selectedIdeas[idea.id]}
-              filterMode={filterMode}
+              activeFilterMenu={activeFilterMenu}
             />
           )}
         </Table.Body>

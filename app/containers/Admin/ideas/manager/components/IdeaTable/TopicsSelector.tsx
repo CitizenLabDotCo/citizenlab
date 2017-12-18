@@ -30,6 +30,8 @@ class TopicsSelector extends React.PureComponent<Props & InjectedResourcesByIdsP
         {topics.map((topic, index) => (
           <Label
             key={topic.id}
+            color="teal"
+            basic={true}
           >
             <T value={topic.attributes.title_multiloc} />
             <Icon

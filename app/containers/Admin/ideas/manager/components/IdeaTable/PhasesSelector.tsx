@@ -29,10 +29,13 @@ class PhasesSelector extends React.PureComponent<Props> {
       <div>
         {phases.map((phase, index) => (
           <Label
+            as="a"
             key={phase.id}
+            color={this.isActive(phase.id) ? 'teal' : undefined}
             circular={true}
             active={this.isActive(phase.id)}
             onClick={this.handlePhaseClick(phase.id)}
+            basic={true}
           >
             {index + 1}
           </Label>

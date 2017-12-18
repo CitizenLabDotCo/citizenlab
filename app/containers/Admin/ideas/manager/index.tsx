@@ -22,7 +22,7 @@ import Button from 'components/UI/Button';
 import FilterSidebar from './components/FilterSidebar';
 import InfoSidebar from './components/InfoSidebar';
 import IdeaTable from './components/IdeaTable';
-import { Input, Menu, Dropdown, Grid } from 'semantic-ui-react';
+import { Input, Menu, Dropdown, Grid, Search } from 'semantic-ui-react';
 
 import messages from './messages';
 
@@ -31,9 +31,12 @@ type Props = InjectedIdeaLoaderProps & InjectedResourcesLoaderProps<IProjectData
   project?: IProjectData | null;
 };
 
+type TFilterMenu = 'topics' | 'phases';
+
 type State = {
   selectedIdeas: {[key: string]: boolean},
-  filterMode: 'topics' | 'phases',
+  activeFilterMenu: TFilterMenu | null,
+  visibleFilterMenus: string[];
 };
 
 class IdeaManager extends React.PureComponent<Props, State> {
@@ -43,7 +46,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
     this.state = {
       selectedIdeas: {},
-      filterMode: props.project ? 'phases' : 'topics',
+      visibleFilterMenus: [],
+      activeFilterMenu: null,
     };
   }
 
@@ -51,27 +55,27 @@ class IdeaManager extends React.PureComponent<Props, State> {
     if (this.props.project) {
       this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(this.props.project.id);
     }
+    this.setVisibleFilterMenus(!!this.props.project);
   }
 
   componentWillReceiveProps(nextProps) {
     if ((this.props.project && this.props.project.id) !== (nextProps.project && nextProps.project.id)) {
       this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(nextProps.project && nextProps.project.id);
+      this.setVisibleFilterMenus(!!nextProps.project);
     }
+  }
+
+  setVisibleFilterMenus = (inProject: boolean) => {
+    const visibleFilterMenus: TFilterMenu[] = inProject ? ['phases', 'topics'] : ['topics'];
+    this.setState({
+      visibleFilterMenus,
+      activeFilterMenu: visibleFilterMenus[0],
+    });
   }
 
   handleSearchChange = (event) => {
     const term = event.target.value;
     this.props.onChangeSearchTerm && this.props.onChangeSearchTerm(term);
-  }
-
-  handleProjectChange = (event, data) => {
-    const project = data.value;
-    this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(project);
-  }
-
-  handleIdeaStatusFilterChange = (event, data) => {
-    const ideaStatus = data.value;
-    this.props.onChangeStatusFilter && this.props.onChangeStatusFilter(ideaStatus);
   }
 
   handleIdeaStatusChange = (idea, statusId) => () => {
@@ -89,27 +93,6 @@ class IdeaManager extends React.PureComponent<Props, State> {
     return !isEmpty(this.state.selectedIdeas);
   }
 
-  topicOptions = () => {
-    return this.props.topics.all.map((topic) => ({
-      value: topic.id,
-      text: this.props.tFunc(topic.attributes.title_multiloc),
-    }));
-  }
-
-  projectOptions = () => {
-    return this.props.projects.all.map((project) => ({
-      value: project.id,
-      text: this.props.tFunc(project.attributes.title_multiloc),
-    }));
-  }
-
-  ideaStatusOptions = () => {
-    return this.props.ideaStatuses.all.map((status) => ({
-      value: status.id,
-      text: this.props.tFunc(status.attributes.title_multiloc),
-    }));
-  }
-
   ideaSelectionToIdeas = () => {
     return filter(this.props.ideas, (i) => this.state.selectedIdeas[i.id]);
   }
@@ -118,13 +101,13 @@ class IdeaManager extends React.PureComponent<Props, State> {
     this.setState({ selectedIdeas });
   }
 
-  handleChangeFilterMode = (filterMode) => {
-    this.setState({ filterMode });
+  handleChangeActiveFilterMenu = (activeFilterMenu) => {
+    this.setState({ activeFilterMenu });
   }
 
   render() {
     const { ideaSortAttribute, ideaSortDirection, ideaCurrentPageNumber, ideaLastPageNumber, ideas, phases } = this.props;
-    const { selectedIdeas, filterMode } = this.state;
+    const { selectedIdeas, activeFilterMenu, visibleFilterMenus } = this.state;
     const selectedIdeaIds = keys(this.state.selectedIdeas);
     const showInfoSidebar = this.isAnyIdeaSelected();
 
@@ -133,21 +116,15 @@ class IdeaManager extends React.PureComponent<Props, State> {
         <Grid columns={3}>
           <Grid.Row>
             <Grid.Column width={16}>
-              <Menu>
-                <Menu.Item>
-                  <Input icon="search" onChange={this.handleSearchChange} />
-                </Menu.Item>
-                <Menu.Menu position="right">
-                  Export
-                </Menu.Menu>
-              </Menu>
+              <Input icon="search" onChange={this.handleSearchChange} />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
             <Grid.Column width={4}>
               <FilterSidebar
-                filterMode={filterMode}
-                onChangeFilterMode={this.handleChangeFilterMode}
+                activeFilterMenu={activeFilterMenu}
+                visibleFilterMenus={visibleFilterMenus}
+                onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
                 project={this.props.project || null}
                 phases={this.props.phases.all}
                 topics={this.props.topics.all}
@@ -159,7 +136,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
             </Grid.Column>
             <Grid.Column width={showInfoSidebar ? 8 : 12}>
               <IdeaTable
-                filterMode={filterMode}
+                activeFilterMenu={activeFilterMenu}
                 ideaSortAttribute={ideaSortAttribute}
                 ideaSortDirection={ideaSortDirection}
                 onChangeIdeaSortDirection={this.props.onChangeIdeaSortDirection}

@@ -28,7 +28,7 @@ class FilterSidebarPhasesItem extends React.Component<Props> {
           active={active || (isOver && canDrop)}
           onClick={onClick}
         >
-          <Label circular={true}>{phaseNumber}</Label>
+          <Label circular={true} basic={true} color="teal">{phaseNumber}</Label>
           <T value={phase.attributes.title_multiloc} />
         </Menu.Item>
       </div>

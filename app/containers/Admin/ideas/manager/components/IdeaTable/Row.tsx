@@ -43,7 +43,7 @@ type Props = {
   onSingleSelectIdea: () => void;
   isDragging: boolean;
   connectDragSource: any;
-  filterMode: string;
+  activeFilterMenu: string;
 };
 
 class Row extends React.PureComponent<Props> {
@@ -74,7 +74,7 @@ class Row extends React.PureComponent<Props> {
   }
 
   render() {
-    const { idea, onDeleteIdea, selected, isDragging, connectDragSource, filterMode, phases, topics } = this.props;
+    const { idea, onDeleteIdea, selected, isDragging, connectDragSource, activeFilterMenu, phases, topics } = this.props;
     const attrs = idea.attributes;
     return (
       <React.Fragment>
@@ -101,14 +101,14 @@ class Row extends React.PureComponent<Props> {
         </Table.Row>
         <Table.Row active={selected} onClick={this.onClickRow}>
           <Table.Cell colSpan={6} textAlign="right" as={FilterCell}>
-            {filterMode === 'phases' &&
+            {activeFilterMenu === 'phases' &&
               <PhasesSelector
                 selectedPhases={idea.relationships.phases.data.map((p) => p.id)}
                 phases={phases}
                 onUpdateIdeaPhases={this.onUpdateIdeaPhases}
               />
             }
-            {filterMode === 'topics' &&
+            {activeFilterMenu === 'topics' &&
               <TopicsSelector
                 selectedTopics={idea.relationships.topics.data.map((p) => p.id)}
                 onUpdateIdeaTopics={this.onUpdateIdeaTopics}
