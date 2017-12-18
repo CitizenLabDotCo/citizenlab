@@ -185,7 +185,7 @@ resource "Projects" do
     let(:id) { @project.id }
     let(:title_multiloc) { {"en" => "Changed title" } }
     let(:description_multiloc) { {"en" => "Changed body" } }
-    let(:description_preview_multiloc) { project.description_preview_multiloc }
+    let(:description_preview_multiloc) { @project.description_preview_multiloc }
     let(:slug) { "changed-title" }
     let(:header_bg) { encode_image_as_base64("header.jpg")}
     let(:area_ids) { create_list(:area, 2).map(&:id) }
