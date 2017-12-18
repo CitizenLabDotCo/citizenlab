@@ -7,7 +7,6 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 
 // services
-import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // i18n

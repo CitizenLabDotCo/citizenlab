@@ -12,6 +12,7 @@ import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 
 // services
 import { localeStream } from 'services/locale';
+import { currentTenantStream, ITenant } from 'services/tenant';
 import { ideaByIdStream, updateIdea } from 'services/ideas';
 import { ideaImageStream } from 'services/ideaImages';
 import { projectByIdStream } from 'services/projects';
@@ -20,6 +21,7 @@ import { topicByIdStream } from 'services/topics';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { getLocalized } from 'utils/i18n';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -115,11 +117,13 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
   componentWillMount() {
     const { ideaId } = this.props.params;
     const locale$ = localeStream().observable;
+    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
     const idea$ = ideaByIdStream(ideaId).observable;
     const ideaWithRelationships$ = Rx.Observable.combineLatest(
       locale$,
+      currentTenantLocales$,
       idea$
-    ).switchMap(([locale, idea]) => {
+    ).switchMap(([locale, currentTenantLocales, idea]) => {
       const ideaId = idea.data.id;
       const ideaImages = idea.data.relationships.idea_images.data;
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
@@ -131,8 +135,8 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
         locale$,
         idea$,
         ideaImage$,
-        project$.map(project => project ? { value: project.data.id, label: project.data.attributes.title_multiloc[locale] } : null),
-        topics$.map(topics => topics ? topics.map((topic) => ({ value: topic.data.id, label: topic.data.attributes.title_multiloc[locale] })) : null)
+        project$.map(project => project ? { value: project.data.id, label: getLocalized(project.data.attributes.title_multiloc, locale, currentTenantLocales) } : null),
+        topics$.map(topics => topics ? topics.map((topic) => ({ value: topic.data.id, label: getLocalized(topic.data.attributes.title_multiloc, locale, currentTenantLocales) })) : null)
       );
     });
 
