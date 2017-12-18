@@ -45,11 +45,13 @@ declare namespace API {
     value?: string;
   }
 
+  interface Errors {
+    [fieldName: string]: Error[];
+  }
+
   interface ErrorResponse {
     json: {
-      errors: {
-        [fieldName: string]: Error[]
-      }
+      errors: Errors
     }
   }
 
@@ -57,5 +59,13 @@ declare namespace API {
     small: string | null;
     medium: string | null;
     large: string | null;
+  }
+}
+
+declare namespace Forms {
+  interface crudParams {
+    loading: boolean;
+    errors: API.Errors | null;
+    saved: boolean;
   }
 }
