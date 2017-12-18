@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 
 import { IIdeaData } from 'services/ideas';
+import { IPhaseData } from 'services/phases';
 
 // Components
 import { Table } from 'semantic-ui-react';
@@ -11,12 +12,13 @@ import Row from './Row';
 import Pagination from 'components/admin/Pagination';
 
 
-import messages from '../messages';
+import messages from '../../messages';
 
 interface Props {
   ideaSortAttribute?: string;
   ideaSortDirection?: 'asc' | 'desc';
   ideas?: IIdeaData[];
+  phases?: IPhaseData[];
   onChangeIdeaSortDirection?: (direction: 'asc' | 'desc') => void;
   onChangeIdeaSortAttribute?: (string) => void;
   selectedIdeas: { [key: string]: boolean };
@@ -24,6 +26,7 @@ interface Props {
   ideaCurrentPageNumber?: number;
   ideaLastPageNumber?: number;
   onIdeaChangePage?: (number) => void;
+  filterMode: string;
 }
 
 interface State {
@@ -73,7 +76,7 @@ export default class IdeaTable extends React.Component<Props, State> {
   }
 
   render() {
-    const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas } = this.props;
+    const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, filterMode } = this.props;
 
     return(
       <Table>
@@ -122,11 +125,13 @@ export default class IdeaTable extends React.Component<Props, State> {
             <Row
               key={idea.id}
               idea={idea}
+              phases={phases}
               onSelectIdea={this.selectIdea(idea)}
               onUnselectIdea={this.unselectIdea(idea)}
               onToggleSelectIdea={this.toggleSelectIdea(idea)}
               onSingleSelectIdea={this.singleSelectIdea(idea)}
               selected={selectedIdeas[idea.id]}
+              filterMode={filterMode}
             />
           )}
         </Table.Body>
