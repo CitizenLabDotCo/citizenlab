@@ -165,13 +165,11 @@ injectGlobal`
     font-size: ${fontSize('small')};
   }
 
-  body:not(.fontLoaded),
-  body:not(.fontLoaded) * {
+  body:not(.fontLoaded) {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 
-  body.fontLoaded,
-  body.fontLoaded * {
+  body.fontLoaded {
     font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 
