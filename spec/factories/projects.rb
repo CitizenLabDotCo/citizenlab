@@ -31,7 +31,22 @@ FactoryGirl.define do
       end
     end
 
-    factory :project_xl do
+    factory :project_with_phases do
+      transient do
+        phases_count 5
+      end
+      after(:create) do |project, evaluator|
+        start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
+        evaluator.phases_count.times do |i|
+          project.phases << create(:phase, 
+            start_at: start_at,
+            end_at: start_at += rand(120).days
+          )
+        end
+      end
+    end
+
+ factory :project_xl do
       transient do
         ideas_count 10
         topics_count 3
@@ -73,6 +88,7 @@ FactoryGirl.define do
         end
       end
     end
+
 
     factory :private_admins_project do
       visible_to :admins
