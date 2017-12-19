@@ -26,8 +26,13 @@ export interface IIdeasNewPageGlobalState {
   imageChanged: boolean;
 }
 
+export type IAdminFullWidth = {
+  enabled: boolean;
+};
+
 type State = {
   IdeasNewPage?: IIdeasNewPageGlobalState;
+  AdminFullWidth?: IAdminFullWidth;
 };
 
 interface IStateInput {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { clone, omit } from 'lodash';
 
 import { IIdeaData } from 'services/ideas';
 import { IPhaseData } from 'services/phases';
@@ -45,13 +45,13 @@ export default class IdeaTable extends React.Component<Props, State> {
     this.props.onChangeIdeaSortDirection && this.props.onChangeIdeaSortDirection(newDirection);
   }
   selectIdea = (idea) => () => {
-    const selectedIdeas = _.clone(this.props.selectedIdeas);
+    const selectedIdeas = clone(this.props.selectedIdeas);
     selectedIdeas[idea.id] = true;
     this.props.onChangeIdeaSelection(selectedIdeas);
   }
 
   unselectIdea = (idea) => () => {
-    const selectedIdeas = _.omit(this.props.selectedIdeas, [idea.id]);
+    const selectedIdeas = omit(this.props.selectedIdeas, [idea.id]);
     this.props.onChangeIdeaSelection(selectedIdeas);
   }
 

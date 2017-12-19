@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as Rx from 'rxjs';
 import { keys, isEmpty, filter, flow } from 'lodash';
 import styled from 'styled-components';
+import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
+
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateIdea, deleteIdea } from 'services/ideas';
@@ -16,6 +18,7 @@ import { InjectedNestedResourceLoaderProps, injectNestedResources } from './nest
 
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
+import CSSTransition from 'react-transition-group/Transition';
 
 // Components
 import Button from 'components/UI/Button';
@@ -39,7 +42,41 @@ type State = {
   visibleFilterMenus: string[];
 };
 
+const ThreeColumns = styled.div`
+  display: flex;
+  margin: -10px;
+  & > * {
+    margin: 10px;
+  }
+`;
+
+const LeftColumn = styled.div`
+  width: 230px;
+`;
+
+const MiddleColumn = styled.div`
+  flex: 1;
+  transition: 200ms;
+`;
+
+const RightColumn = styled<any, 'div'>('div')`
+  width: 250px;
+
+  &.slide-enter {
+    transition: 200ms;
+    transform: translateX(100%);
+    opacity: 0.01;
+
+    &.slide-enter-active {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+  }
+`;
+
 class IdeaManager extends React.PureComponent<Props, State> {
+
+  globalState: IGlobalStateService<IAdminFullWidth>;
 
   constructor(props) {
     super(props);
@@ -49,13 +86,20 @@ class IdeaManager extends React.PureComponent<Props, State> {
       visibleFilterMenus: [],
       activeFilterMenu: null,
     };
+
+    this.globalState = globalState.init<IAdminFullWidth>('AdminFullWidth');
   }
 
   componentDidMount() {
+    this.globalState.set({ enabled: true });
     if (this.props.project) {
       this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(this.props.project.id);
     }
     this.setVisibleFilterMenus(!!this.props.project);
+  }
+
+  componentWillUnmount() {
+    this.globalState.set({ enabled: false });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -119,44 +163,46 @@ class IdeaManager extends React.PureComponent<Props, State> {
               <Input icon="search" onChange={this.handleSearchChange} />
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row>
-            <Grid.Column width={4}>
-              <FilterSidebar
-                activeFilterMenu={activeFilterMenu}
-                visibleFilterMenus={visibleFilterMenus}
-                onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
-                project={this.props.project || null}
-                phases={this.props.phases.all}
-                topics={this.props.topics.all}
-                selectedTopics={this.props.ideaTopicsFilter}
-                selectedPhase={this.props.ideaPhaseFilter}
-                onChangePhaseFilter={this.props.onChangePhaseFilter}
-                onChangeTopicsFilter={this.props.onChangeTopicsFilter}
-              />
-            </Grid.Column>
-            <Grid.Column width={showInfoSidebar ? 8 : 12}>
-              <IdeaTable
-                activeFilterMenu={activeFilterMenu}
-                ideaSortAttribute={ideaSortAttribute}
-                ideaSortDirection={ideaSortDirection}
-                onChangeIdeaSortDirection={this.props.onChangeIdeaSortDirection}
-                onChangeIdeaSortAttribute={this.props.onChangeIdeaSortAttribute}
-                ideas={ideas}
-                phases={phases.all}
-                selectedIdeas={selectedIdeas}
-                onChangeIdeaSelection={this.handleChangeIdeaSelection}
-                ideaCurrentPageNumber={ideaCurrentPageNumber}
-                ideaLastPageNumber={ideaLastPageNumber}
-                onIdeaChangePage={this.props.onIdeaChangePage}
-              />
-            </Grid.Column>
-            {showInfoSidebar && <Grid.Column width={4}>
-                <InfoSidebar
-                  ideaIds={selectedIdeaIds}
-                />
-              </Grid.Column>}
-          </Grid.Row>
         </Grid>
+        <ThreeColumns>
+          <LeftColumn>
+            <FilterSidebar
+              activeFilterMenu={activeFilterMenu}
+              visibleFilterMenus={visibleFilterMenus}
+              onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
+              project={this.props.project || null}
+              phases={this.props.phases.all}
+              topics={this.props.topics.all}
+              selectedTopics={this.props.ideaTopicsFilter}
+              selectedPhase={this.props.ideaPhaseFilter}
+              onChangePhaseFilter={this.props.onChangePhaseFilter}
+              onChangeTopicsFilter={this.props.onChangeTopicsFilter}
+            />
+          </LeftColumn>
+          <MiddleColumn>
+            <IdeaTable
+              activeFilterMenu={activeFilterMenu}
+              ideaSortAttribute={ideaSortAttribute}
+              ideaSortDirection={ideaSortDirection}
+              onChangeIdeaSortDirection={this.props.onChangeIdeaSortDirection}
+              onChangeIdeaSortAttribute={this.props.onChangeIdeaSortAttribute}
+              ideas={ideas}
+              phases={phases.all}
+              selectedIdeas={selectedIdeas}
+              onChangeIdeaSelection={this.handleChangeIdeaSelection}
+              ideaCurrentPageNumber={ideaCurrentPageNumber}
+              ideaLastPageNumber={ideaLastPageNumber}
+              onIdeaChangePage={this.props.onIdeaChangePage}
+            />
+          </MiddleColumn>
+          <CSSTransition in={showInfoSidebar} timeout={200} mountOnEnter={true} unmountOnExit={true} classNames="slide">
+            <RightColumn>
+              <InfoSidebar
+                ideaIds={selectedIdeaIds}
+              />
+            </RightColumn>
+          </CSSTransition>
+        </ThreeColumns>
       </div>
     );
   }
