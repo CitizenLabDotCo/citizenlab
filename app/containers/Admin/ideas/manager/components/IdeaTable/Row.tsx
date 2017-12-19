@@ -138,7 +138,10 @@ const ideaSource = {
     const dropResult = monitor.getDropResult();
 
     if (dropResult && dropResult.type === 'topic') {
-      const ids = keys(props.selectedIdeas);
+      let ids = keys(props.selectedIdeas);
+      if (ids.indexOf(item.id) < 0) {
+        ids = [item.id];
+      }
       const observables = ids.map((id) => ideaByIdStream(id).observable);
       Rx.Observable.combineLatest(observables).take(1).subscribe((ideas) => {
         ideas.map((idea) => {
@@ -152,7 +155,10 @@ const ideaSource = {
     }
 
     if (dropResult && dropResult.type === 'phase') {
-      const ids = keys(props.selectedIdeas);
+      let ids = keys(props.selectedIdeas);
+      if (ids.indexOf(item.id) < 0) {
+        ids = [item.id];
+      }
       const observables = ids.map((id) => ideaByIdStream(id).observable);
       Rx.Observable.combineLatest(observables).take(1).subscribe((ideas) => {
         ideas.map((idea) => {
