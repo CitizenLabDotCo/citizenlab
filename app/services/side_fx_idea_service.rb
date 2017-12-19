@@ -2,6 +2,12 @@ class SideFxIdeaService
 
   include SideFxHelper
 
+  def before_create idea, user
+    if idea.project
+      set_phases idea
+    end
+  end
+
   def after_create idea, user
     if idea.published?
       add_autovote idea
@@ -48,6 +54,20 @@ class SideFxIdeaService
   def log_activity_jobs_after_published idea, user
     LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'published', user, idea.created_at.to_i)
     LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'first published by user', user, idea.created_at.to_i)
+  end
+
+  def set_phases idea
+    if idea.project
+      timeline_service = TimelineService.new
+      if timeline_service.has_timeline idea.project
+        current_phase = timeline_service.current_phase(idea.project)
+        if current_phase && (current_phase.consultation_method == 'ideation')
+          idea.phase_ids = timeline_service.active_phases(idea.project).map(&:id)
+        else
+          idea.errors.add(:project, :no_ideation_phase, message: 'is currently not in an ideation phase')
+        end
+      end
+    end
   end
 
 end
