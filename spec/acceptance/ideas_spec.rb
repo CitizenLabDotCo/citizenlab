@@ -235,6 +235,7 @@ resource "Ideas" do
       parameter :location_description, "A human readable description of the location the idea applies to"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
+    response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
 
 
     let(:idea) { build(:idea) }
@@ -254,8 +255,8 @@ resource "Ideas" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:project,:data, :id)).to eq project_id
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
         expect(project.reload.ideas_count).to eq 1
@@ -293,13 +294,25 @@ resource "Ideas" do
         header 'Authorization', "Bearer #{token}"
       end
 
-      let (:project) { create(:project_with_phases )}
-      let(:phase_ids) { project.phases.take(2).map(&:id) }
-      let(:phase_ids) { project.phases.take(2).map(&:id) }
-      example_request "Creating an idea in specific phases" do
-        expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match phase_ids
+      describe do
+        let (:project) { create(:project_with_phases )}
+        let(:phase_ids) { project.phases.take(2).map(&:id) }
+        example_request "Creating an idea in specific phases" do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
+        end
+      end
+
+      describe do
+        let (:project) { create(:project_with_phases) }
+        let (:other_project) { create(:project_with_phases) }
+        let (:phase_ids) { [other_project.phases.first.id] }
+        example_request "[error] Creating an idea linked to a phase from a different project" do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :ideas_phases)).to eq [{error: 'invalid'}]
+        end
       end
       
     end
@@ -325,6 +338,7 @@ resource "Ideas" do
       parameter :location_description, "A human readable description of the location the idea applies to"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
+    response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
 
 
     let(:id) { @idea.id }
@@ -339,8 +353,8 @@ resource "Ideas" do
         expect(status).to be 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
       end
@@ -369,8 +383,8 @@ resource "Ideas" do
         do_request
         expect(status).to be 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
       end
     end
 
@@ -415,7 +429,7 @@ resource "Ideas" do
         example_request "Change the idea phases (as an admin)" do
           expect(status).to be 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match phase_ids
+          expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
         end
       end
     end
