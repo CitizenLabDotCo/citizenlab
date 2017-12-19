@@ -54,6 +54,8 @@ class Row extends React.PureComponent<Props> {
   onClickRow = (event) => {
     if (event.ctrlKey) {
       this.props.onToggleSelectIdea();
+    } else if (event.shiftKey) {
+
     } else {
       this.props.onSingleSelectIdea();
     }

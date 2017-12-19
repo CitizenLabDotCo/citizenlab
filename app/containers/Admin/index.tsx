@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
 
 // components
 import Sidebar from './sideBar/';
@@ -24,21 +25,38 @@ const RightColumn = styled.div`
   background-color: #f2f2f2;
 `;
 
-const AdminContainerStyled = styled.div`
+const AdminContainerStyled = styled<any, 'div'>('div')`
   display: flex;
   flex-direction: column;
-  max-width: 1200px;
+  ${(props) => props.adminFullWidth ? '' : 'max-width: 1200px;'}
   padding: 45px 51px 0px 51px;
 `;
 
 type Props = {};
 
-type State = {};
+type State = {
+  adminFullWidth: boolean;
+};
 
 export default class AdminPage extends React.PureComponent<Props, State> {
+  globalState: IGlobalStateService<IAdminFullWidth>;
+
+  constructor(props: Props) {
+    super(props as any);
+    this.state = {
+      adminFullWidth: false,
+    };
+    this.globalState = globalState.init<IAdminFullWidth>('AdminFullWidth', { enabled: false });
+  }
+
+  componentDidMount() {
+    this.globalState.observable.subscribe(({ enabled }) => this.setState({ adminFullWidth: enabled }));
+  }
+
   render() {
     const className = this.props['className'];
     const { children } = this.props;
+    const { adminFullWidth } = this.state;
 
     return (
       <Container className={className}>
@@ -46,7 +64,7 @@ export default class AdminPage extends React.PureComponent<Props, State> {
           {<Sidebar {...this.props} />}
         </LeftColumn>
         <RightColumn>
-          <AdminContainerStyled>
+          <AdminContainerStyled adminFullWidth={adminFullWidth}>
             {children}
           </AdminContainerStyled>
         </RightColumn>
