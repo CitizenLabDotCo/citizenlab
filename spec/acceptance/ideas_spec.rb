@@ -295,10 +295,22 @@ resource "Ideas" do
       end
 
       describe do
-        let (:project) { create(:project_with_phases )}
-        let(:phase_ids) { project.phases.take(2).map(&:id) }
+        let (:active_phases) { create_list(:active_phase, 2, consultation_method: 'ideation') }
+        let (:project) { create(:project, phases: active_phases) }
+        let (:phase_ids) { active_phases.map(&:id) }
         example_request "Creating an idea in specific phases" do
           expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
+        end
+      end
+
+      describe do
+        let (:phases) { create_list(:phase, 5, consultation_method: 'information') }
+        let (:project) { create(:project, phases: phases) }
+        example_request "[error] Creating an idea in a project with a timeline but no active ideation phases" do
+          # byebug
+          expect(response_status).to eq 422
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
         end

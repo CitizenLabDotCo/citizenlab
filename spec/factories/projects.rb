@@ -46,7 +46,13 @@ FactoryGirl.define do
       end
     end
 
- factory :project_xl do
+    factory :project_with_active_ideation_phase do
+      after(:create) do |project, evaluator|
+        project.phases << create(:active_phase, consultation_method: 'ideation')
+      end
+    end
+
+    factory :project_xl do
       transient do
         ideas_count 10
         topics_count 3

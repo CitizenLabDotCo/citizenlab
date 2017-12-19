@@ -94,6 +94,8 @@ class WebApi::V1::IdeasController < ApplicationController
   def create
     @idea = Idea.new(permitted_attributes(Idea))
     @idea.author ||= current_user
+    
+    SideFxIdeaService.new.before_create(@idea, current_user)
 
     authorize @idea
     ActiveRecord::Base.transaction do
