@@ -11,6 +11,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     @ideas = @ideas.with_some_topics(params[:topics]) if params[:topics].present?
     @ideas = @ideas.with_some_areas(params[:areas]) if params[:areas].present?
+    @ideas = @ideas.in_phase(params[:phase]) if params[:phase].present?
     @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
     @ideas = @ideas.where(author_id: params[:author]) if params[:author].present?
     @ideas = @ideas.where(idea_status_id: params[:idea_status]) if params[:idea_status].present?
@@ -98,7 +99,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do
       if @idea.save
         SideFxIdeaService.new.after_create(@idea, current_user)
-        render json: @idea.reload, status: :created, include: ['author','topics','areas','user_vote','idea_images']
+        render json: @idea.reload, status: :created, include: ['author','topics','areas','phases','user_vote','idea_images']
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
       end
@@ -110,6 +111,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     params[:idea][:area_ids] ||= [] if params[:idea].has_key?(:area_ids)
     params[:idea][:topic_ids] ||= [] if params[:idea].has_key?(:topic_ids)
+    params[:idea][:phase_ids] ||= [] if params[:idea].has_key?(:phase_ids)
     ActiveRecord::Base.transaction do
       if @idea.update(permitted_attributes(Idea))
         SideFxIdeaService.new.after_update(@idea, current_user)
