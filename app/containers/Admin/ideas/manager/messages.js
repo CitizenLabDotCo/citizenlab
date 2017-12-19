@@ -9,6 +9,14 @@ export default defineMessages({
     id: 'app.containers.admin.ideas.manager.delete',
     defaultMessage: 'Delete',
   },
+  deleteIdeaConfirmation: {
+    id: 'app.containers.admin.ideas.manager.deleteIdeaConfirmation',
+    defaultMessage: 'Are you sure you want to delete this idea?',
+  },
+  edit: {
+    id: 'app.containers.admin.ideas.manager.edit',
+    defaultMessage: 'Edit',
+  },
   title: {
     id: 'app.containers.admin.ideas.manager.title',
     defaultMessage: 'Title',

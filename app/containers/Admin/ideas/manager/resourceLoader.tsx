@@ -63,7 +63,7 @@ export const injectResource = <IResourceData, IResource extends IIResource<IReso
           this.subscriptions.push(
             streamFn(resourceId).observable.subscribe((data) => {
               this.setState({
-                resource: data.data,
+                resource: data ? data.data :null,
               });
             })
           );

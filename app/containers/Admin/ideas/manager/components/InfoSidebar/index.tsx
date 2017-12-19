@@ -4,7 +4,6 @@ import { IIdeaData, ideaByIdStream } from 'services/ideas';
 import InfoSidebarSingle from './InfoSidebarSingle';
 import InfoSidebarMulti from './InfoSidebarMulti';
 
-import { injectResourcesByIds, InjectedResourcesByIdsProps } from '../idsResourcesLoader';
 interface Props {
   ideaIds: string[];
 }
