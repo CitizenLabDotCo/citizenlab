@@ -40,6 +40,7 @@ type State = {
 
 export default class AdminPage extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IAdminFullWidth>;
+  subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -50,7 +51,14 @@ export default class AdminPage extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.globalState.observable.subscribe(({ enabled }) => this.setState({ adminFullWidth: enabled }));
+    const globalState$ = this.globalState.observable;
+    this.subscriptions = [
+      globalState$.subscribe(({ enabled }) => this.setState({ adminFullWidth: enabled }))
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
