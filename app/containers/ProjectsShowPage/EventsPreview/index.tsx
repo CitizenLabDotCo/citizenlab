@@ -1,6 +1,7 @@
 // Libraries
 import * as React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import * as moment from 'moment';
 import { times } from 'lodash';
 
 // Services
@@ -45,7 +46,12 @@ class EventsPreview extends React.Component<Props, State> {
       return eventsResponse.data;
     })
     .subscribe((events) => {
-      this.setState({ events });
+      const now = moment();
+      this.setState({
+        events: events.filter((event) => {
+          return moment(event.attributes.start_at).isAfter(now, 'minutes');
+        })
+      });
     });
   }
 
@@ -64,7 +70,7 @@ class EventsPreview extends React.Component<Props, State> {
   }
 
   render() {
-    const placeholderCount = Math.max(0, (3 - this.state.events.length));
+    const emptySpaceCount = Math.max(0, 3 - this.state.events.length);
 
     return (
       <Transition in={this.state.events.length > 0} timeout={200}>
@@ -74,11 +80,8 @@ class EventsPreview extends React.Component<Props, State> {
               {this.state.events.slice(0, 3).map((event) => (
                 <EventBlock event={event} key={event.id} />
               ))}
-
-              {times(placeholderCount, (index) => (
-                <div key={index}>
-                  placeholder
-                </div>
+              {times(emptySpaceCount, (index) => (
+                <div className="event-placeholder" key={index}/>
               ))}
             </PreviewWrapper.Container>
           </PreviewWrapper.Background>
