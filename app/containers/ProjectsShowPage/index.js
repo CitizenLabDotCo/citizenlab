@@ -129,7 +129,9 @@ class ProjectsShowPage extends React.Component {
           {project && React.cloneElement(this.props.children, { project })}
 
 
-          <EventsPreview projectId={project && project.get('id')} />
+          {(this.props.location.pathname !== `${basePath}/events`) &&
+            <EventsPreview eventsPageUrl={`${basePath}/events`} projectId={project && project.get('id')} />
+          }
         </Container>
 
       </div>
@@ -144,6 +146,7 @@ ProjectsShowPage.propTypes = {
   params: PropTypes.object,
   pages: ImmutablePropTypes.list,
   project: PropTypes.object,
+  location: PropTypes.string,
 };
 
 const mapStateToProps = () => createStructuredSelector({
