@@ -100,7 +100,7 @@ export default (injectReducer) => ({
           name: 'admin projects ideas manager',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
-              import('containers/Admin/ideas/manager'),
+              import('components/admin/IdeaManager'),
             ]);
 
             const renderRoute = loadModule(cb);

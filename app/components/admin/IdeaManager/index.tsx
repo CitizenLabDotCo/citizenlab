@@ -12,9 +12,9 @@ import { ideaStatusesStream, IIdeaStatusData } from 'services/ideaStatuses';
 import { projectsStream, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
 import { injectTFunc } from 'components/T/utils';
-import { injectIdeasLoader, InjectedIdeaLoaderProps } from './ideasLoader';
-import { InjectedResourcesLoaderProps, injectResources } from './resourcesLoader';
-import { InjectedNestedResourceLoaderProps, injectNestedResources } from './nestedResourcesLoader';
+import { injectIdeasLoader, InjectedIdeaLoaderProps } from 'utils/resourceLoaders/ideasLoader';
+import { InjectedResourcesLoaderProps, injectResources } from 'utils/resourceLoaders/resourcesLoader';
+import { InjectedNestedResourceLoaderProps, injectNestedResources } from 'utils/resourceLoaders/nestedResourcesLoader';
 
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';

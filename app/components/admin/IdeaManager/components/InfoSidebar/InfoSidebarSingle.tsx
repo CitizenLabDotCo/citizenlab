@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { flow } from 'lodash';
 import { IIdeaData, ideaByIdStream, deleteIdea } from 'services/ideas';
-import { injectResource, InjectedResourceLoaderProps } from '../../resourceLoader';
+import { injectResource, InjectedResourceLoaderProps } from 'utils/resourceLoaders/resourceLoader';
 import { browserHistory } from 'react-router';
 import eventEmitter from 'utils/eventEmitter';
 import { IModalInfo } from 'containers/App';

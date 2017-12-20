@@ -2,63 +2,63 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   header: {
-    id: 'app.containers.admin.ideas.manager.header',
+    id: 'app.components.admin.IdeaManager.header',
     defaultMessage: 'Ideas',
   },
   delete: {
-    id: 'app.containers.admin.ideas.manager.delete',
+    id: 'app.components.admin.IdeaManager.delete',
     defaultMessage: 'Delete',
   },
   deleteAll: {
-    id: 'app.containers.admin.ideas.manager.deleteAll',
+    id: 'app.components.admin.IdeaManager.deleteAll',
     defaultMessage: 'Delete all',
   },
   deleteIdeaConfirmation: {
-    id: 'app.containers.admin.ideas.manager.deleteIdeaConfirmation',
+    id: 'app.components.admin.IdeaManager.deleteIdeaConfirmation',
     defaultMessage: 'Are you sure you want to delete this idea?',
   },
   deleteIdeasConfirmation: {
-    id: 'app.containers.admin.ideas.manager.deleteIdeasConfirmation',
+    id: 'app.components.admin.IdeaManager.deleteIdeasConfirmation',
     defaultMessage: 'Are you sure you want to delete {count} ideas?',
   },
   edit: {
-    id: 'app.containers.admin.ideas.manager.edit',
+    id: 'app.components.admin.IdeaManager.edit',
     defaultMessage: 'Edit',
   },
   title: {
-    id: 'app.containers.admin.ideas.manager.title',
+    id: 'app.components.admin.IdeaManager.title',
     defaultMessage: 'Title',
   },
   author: {
-    id: 'app.containers.admin.ideas.manager.author',
+    id: 'app.components.admin.IdeaManager.author',
     defaultMessage: 'Author',
   },
   publication_date: {
-    id: 'app.containers.admin.ideas.manager.publication_date',
+    id: 'app.components.admin.IdeaManager.publication_date',
     defaultMessage: 'Published on',
   },
   up: {
-    id: 'app.containers.admin.ideas.manager.up',
+    id: 'app.components.admin.IdeaManager.up',
     defaultMessage: 'Up',
   },
   down: {
-    id: 'app.containers.admin.ideas.manager.down',
+    id: 'app.components.admin.IdeaManager.down',
     defaultMessage: 'Down',
   },
   multiDragAndDropHelp: {
-    id: 'app.containers.admin.ideas.manager.multiDragAndDropHelp',
+    id: 'app.components.admin.IdeaManager.multiDragAndDropHelp',
     defaultMessage: 'Drag and drop the ideas on an item in the left sidemenu to assign them all at once.',
   },
   phasesTab: {
-    id: 'app.containers.admin.ideas.manager.phasesTab',
+    id: 'app.components.admin.IdeaManager.phasesTab',
     defaultMessage: 'Phases',
   },
   topicsTab: {
-    id: 'app.containers.admin.ideas.manager.topicsTab',
+    id: 'app.components.admin.IdeaManager.topicsTab',
     defaultMessage: 'Topics',
   },
   allIdeas: {
-    id: 'app.containers.admin.ideas.manager.allIdeas',
+    id: 'app.components.admin.IdeaManager.allIdeas',
     defaultMessage: 'All ideas',
   },
 });
