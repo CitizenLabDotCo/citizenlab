@@ -46,4 +46,12 @@ export default defineMessages({
     id: 'app.containers.Projects.LoadingError',
     defaultMessage: 'Upps... something went wrong',
   },
+  upcomingEvents: {
+    id: 'app.containers.Projects.upcomingEvents',
+    defaultMessage: 'Upcoming events',
+  },
+  allEvents: {
+    id: 'app.containers.Projects.allEvents',
+    defaultMessage: 'All events',
+  },
 });
