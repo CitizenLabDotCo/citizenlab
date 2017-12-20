@@ -323,7 +323,6 @@ resource "Ideas" do
         example_request "[error] Creating an idea linked to a phase from a different project" do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
-          byebug
           expect(json_response.dig(:errors, :ideas_phases)).to eq [{error: 'invalid'}]
         end
       end
