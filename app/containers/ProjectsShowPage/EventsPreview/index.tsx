@@ -63,7 +63,7 @@ class EventsPreview extends React.Component<Props, State> {
       const now = moment();
       this.setState({
         events: events.filter((event) => {
-          return moment(event.attributes.start_at).isAfter(now, 'minutes');
+          return moment(event.attributes.start_at).isSameOrAfter(now, 'day');
         })
       });
     });
