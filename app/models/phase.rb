@@ -11,6 +11,7 @@ class Phase < ApplicationRecord
   validates :consultation_method, presence: true, inclusion: {in: CONSULTATION_METHODS}
 
   before_validation :sanitize_description_multiloc
+  before_validation :set_consultation_method, on: :create
 
 
   def sanitize_description_multiloc
@@ -23,5 +24,9 @@ class Phase < ApplicationRecord
     if start_at.present? && end_at.present? && start_at > end_at
       errors.add(:start_at, :after_end_at, message: 'is after end_at')
     end
+  end
+
+  def set_consultation_method
+    self.consultation_method ||= 'ideation'
   end
 end
