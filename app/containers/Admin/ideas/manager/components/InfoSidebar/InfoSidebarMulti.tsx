@@ -1,22 +1,40 @@
 import * as React from 'react';
 
-import { Segment, List, Button, Divider } from 'semantic-ui-react';
 import InfoSidebarMultiItem from './InfoSidebarMultiItem';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { deleteIdea } from 'services/ideas';
+
+
+import { Segment, List, Button, Icon } from 'semantic-ui-react';
+
+import messages from '../../messages';
 
 interface Props {
   ideaIds: string[];
 }
 
-export default class InfoSidebarMulti extends React.Component<Props> {
+class InfoSidebarMulti extends React.Component<Props & InjectedIntlProps> {
+
+  handleClickDelete = () => {
+    const message = this.props.intl.formatMessage(messages.deleteIdeasConfirmation, { count: this.props.ideaIds.length });
+    if (window.confirm(message)) {
+      this.props.ideaIds.forEach((id) => {
+        deleteIdea(id);
+      });
+    }
+  }
+
   render() {
     const { ideaIds } = this.props;
 
     return (
       <div>
-        <Button.Group size="mini" attached="top">
-          <Button>Comment</Button>
-          <Button>Merge</Button>
-          <Button negative={true}>Delete</Button>
+        <Button.Group size="small" attached="top">
+          <Button negative={true} basic={true} onClick={this.handleClickDelete}>
+            <Icon name="trash" />
+            <FormattedMessage {...messages.deleteAll} />
+          </Button>
         </Button.Group>
         <Segment attached="bottom">
           <List bulleted={true}>
@@ -24,8 +42,13 @@ export default class InfoSidebarMulti extends React.Component<Props> {
               <InfoSidebarMultiItem key={ideaId} ideaId={ideaId} />
             ))}
           </List>
+          <p>
+            <FormattedMessage {...messages.multiDragAndDropHelp} />
+          </p>
         </Segment>
       </div>
     );
   }
 }
+
+export default injectIntl(InfoSidebarMulti);

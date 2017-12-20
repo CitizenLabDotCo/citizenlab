@@ -7,6 +7,10 @@ import { IProjectData } from 'services/projects';
 import { Tab } from 'semantic-ui-react';
 import PhasesMenu from './FilterSidebarPhases';
 import TopicsMenu from './FilterSidebarTopics';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+
+import messages from '../../messages';
 
 interface Props {
   project: IProjectData | null;
@@ -21,7 +25,7 @@ interface Props {
   visibleFilterMenus: string[];
 }
 
-export default class FilterSidebar extends React.Component<Props> {
+class FilterSidebar extends React.Component<Props & InjectedIntlProps> {
 
   handleTabChange = (event, data) => {
     const newActiveFilterMenu = data.panes[data.activeIndex].id;
@@ -31,7 +35,7 @@ export default class FilterSidebar extends React.Component<Props> {
   menuItems = {
     phases: () => (
       {
-        menuItem: 'Phases',
+        menuItem: this.props.intl.formatMessage(messages.phasesTab),
         id: 'phases',
         render: () => (
           <Tab.Pane>
@@ -42,7 +46,7 @@ export default class FilterSidebar extends React.Component<Props> {
     ),
     topics: () => (
       {
-        menuItem: 'Topics',
+        menuItem: this.props.intl.formatMessage(messages.topicsTab),
         id: 'topics',
         render: () => (
           <Tab.Pane>
@@ -72,3 +76,5 @@ export default class FilterSidebar extends React.Component<Props> {
     );
   }
 }
+
+export default injectIntl(FilterSidebar);

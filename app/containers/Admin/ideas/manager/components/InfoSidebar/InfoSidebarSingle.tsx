@@ -3,6 +3,9 @@ import { flow } from 'lodash';
 import { IIdeaData, ideaByIdStream, deleteIdea } from 'services/ideas';
 import { injectResource, InjectedResourceLoaderProps } from '../../resourceLoader';
 import { browserHistory } from 'react-router';
+import eventEmitter from 'utils/eventEmitter';
+import { IModalInfo } from 'containers/App';
+
 
 import T from 'components/T';
 import { Segment, Header, Divider, Icon, Button, Menu } from 'semantic-ui-react';
@@ -33,6 +36,17 @@ class InfoSidebarSingle extends React.Component<Props & InjectedResourceLoaderPr
     }
   }
 
+  handleClickShow = () => {
+    const { idea } = this.props;
+    if (idea) {
+      eventEmitter.emit<IModalInfo>('adminIdeas', 'cardClick', {
+        type: 'idea',
+        id: idea.id,
+        url: `/ideas/${idea.attributes.slug}`
+      });
+    }
+  }
+
   render() {
     const { idea } = this.props;
     if (!idea) return null;
@@ -40,11 +54,14 @@ class InfoSidebarSingle extends React.Component<Props & InjectedResourceLoaderPr
     return (
       <div>
         <Button.Group attached="top" size="small">
+          <Button onClick={this.handleClickShow}>
+            <Icon name="external" />
+          </Button>
           <Button onClick={this.handleClickEdit}>
             <Icon name="edit" />
             <FormattedMessage {...messages.edit} />
           </Button>
-          <Button negative={true} onClick={this.handleClickDelete}>
+          <Button negative={true} basic={true} onClick={this.handleClickDelete}>
             <Icon name="trash" />
             <FormattedMessage {...messages.delete} />
           </Button>

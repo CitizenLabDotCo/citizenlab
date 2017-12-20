@@ -1,8 +1,12 @@
 import * as React from 'react';
 import { xor } from 'lodash';
+
 import { ITopicData } from 'services/topics';
 import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../messages';
 
 interface Props {
   topics: ITopicData[];
@@ -33,7 +37,7 @@ class FilterSidebarTopics extends React.Component<Props> {
     return (
       <Menu secondary={true} vertical={true}>
         <Menu.Item onClick={this.clearFilter} active={!this.props.selectedTopics || this.props.selectedTopics.length === 0}>
-          All ideas
+          <FormattedMessage {...messages.allIdeas} />
         </Menu.Item>
         <Divider />
         {this.props.topics.map((topic) => (
