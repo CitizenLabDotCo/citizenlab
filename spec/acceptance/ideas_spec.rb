@@ -236,6 +236,7 @@ resource "Ideas" do
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
+    response_field :base, "Array containing objects with signature { error: 'project_without_active_ideation_phase' }", scope: :errors
 
 
     let(:idea) { build(:idea) }
@@ -309,20 +310,20 @@ resource "Ideas" do
         let (:phases) { create_list(:phase, 5, consultation_method: 'information') }
         let (:project) { create(:project, phases: phases) }
         example_request "[error] Creating an idea in a project with a timeline but no active ideation phases" do
-          # byebug
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
+          expect(json_response.dig(:errors, :base).first[:error]).to eq 'project_without_active_ideation_phase'
         end
       end
 
       describe do
-        let (:project) { create(:project_with_phases) }
-        let (:other_project) { create(:project_with_phases) }
+        let (:project) { create(:project_with_active_ideation_phase) }
+        let (:other_project) { create(:project_with_active_ideation_phase) }
         let (:phase_ids) { [other_project.phases.first.id] }
         example_request "[error] Creating an idea linked to a phase from a different project" do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
+          byebug
           expect(json_response.dig(:errors, :ideas_phases)).to eq [{error: 'invalid'}]
         end
       end
@@ -351,6 +352,7 @@ resource "Ideas" do
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
+    response_field :base, "Array containing objects with signature { error: 'project_without_active_ideation_phase' }", scope: :errors
 
 
     let(:id) { @idea.id }

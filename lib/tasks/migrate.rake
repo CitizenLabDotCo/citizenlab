@@ -478,7 +478,7 @@ namespace :migrate do
   end
 
   def migrate_phase p, project, phases_hash, locales_mapping
-    d = {}
+    d = {consultation_method: 'ideation'}
     # project
     d[:project] = project
     # title
