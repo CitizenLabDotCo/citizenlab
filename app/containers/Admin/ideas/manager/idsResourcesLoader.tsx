@@ -58,16 +58,19 @@ export const injectResourcesByIds = <IResourceData, IResource extends IIResource
       }
 
       loadResources() {
+        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
         const ids = resourceIdsFn(this.props);
         if (ids) {
           const resourceObservables = ids.map((id) => {
             return streamFn(id).observable;
           });
-          Rx.Observable.combineLatest(resourceObservables).subscribe((resources) => {
-            this.setState({
-              resources: resources.map((r) => r.data),
-            });
-          });
+          this.subscriptions = [
+            Rx.Observable.combineLatest(resourceObservables).subscribe((resources) => {
+              this.setState({
+                resources: resources.map((r) => r.data),
+              });
+            })
+          ];
         }
       }
 

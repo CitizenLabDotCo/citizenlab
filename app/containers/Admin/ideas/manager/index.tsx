@@ -18,7 +18,7 @@ import { InjectedNestedResourceLoaderProps, injectNestedResources } from './nest
 
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
-import CSSTransition from 'react-transition-group/Transition';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 // Components
 import Button from 'components/UI/Button';
@@ -59,15 +59,15 @@ const MiddleColumn = styled.div`
   transition: 200ms;
 `;
 
-const RightColumn = styled<any, 'div'>('div')`
+const RightColumn = styled.div`
   width: 250px;
 
   &.slide-enter {
-    transition: 200ms;
     transform: translateX(100%);
     opacity: 0.01;
 
     &.slide-enter-active {
+      transition: 200ms;
       transform: translateX(0%);
       opacity: 1;
     }

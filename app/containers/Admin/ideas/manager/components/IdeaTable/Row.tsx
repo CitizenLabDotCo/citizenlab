@@ -25,11 +25,23 @@ import TopicsSelector from './TopicsSelector';
 import styled from 'styled-components';
 
 const StyledRow = styled.tr`
-  height: 5rem;
+  height: 5.5rem;
 `;
 
 const FilterCell = styled.td`
   border-top: none !important;
+`;
+
+const TitleWrapper = styled.div`
+  display: block;
+  display: -webkit-box;
+  margin: 0 auto;
+  font-size: $font-size;
+  line-height: $line-height;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 
@@ -84,11 +96,13 @@ class Row extends React.PureComponent<Props> {
     return (
       <React.Fragment>
         <WrappedRow as={StyledRow} active={selected} onClick={this.onClickRow} ref={(instance) => {instance && connectDragSource(findDOMNode(instance));}}>
-          <Table.Cell>
+          <Table.Cell collapsing={true}>
             <Checkbox checked={selected} onChange={this.onClickCheckbox} />
           </Table.Cell>
           <Table.Cell>
-            <T value={attrs.title_multiloc} />
+            <TitleWrapper>
+              <T value={attrs.title_multiloc} />
+            </TitleWrapper>
           </Table.Cell>
           <Table.Cell>{attrs.author_name}</Table.Cell>
           <Table.Cell>
@@ -104,7 +118,8 @@ class Row extends React.PureComponent<Props> {
           </Table.Cell>
         </WrappedRow>
         <Table.Row active={selected} onClick={this.onClickRow}>
-          <Table.Cell colSpan={6} textAlign="right" as={FilterCell}>
+          <Table.Cell as={FilterCell} collapsing={true} />
+          <Table.Cell colSpan={5} as={FilterCell}>
             {activeFilterMenu === 'phases' &&
               <PhasesSelector
                 selectedPhases={idea.relationships.phases.data.map((p) => p.id)}
