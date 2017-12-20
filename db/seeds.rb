@@ -251,9 +251,23 @@ if Apartment::Tenant.current == 'localhost'
           "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
         },
         start_at: start_at,
-        end_at: (start_at += rand(120).days)
+        end_at: (start_at += rand(120).days),
+        consultation_method: (rand(2) == 0) ? 'ideation' : 'information'
       })
     end
+    project.phases.create({
+      title_multiloc: {
+        "en": Faker::Lorem.sentence,
+        "nl": Faker::Lorem.sentence
+      },
+      description_multiloc: {
+        "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+        "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+      },
+      start_at: Time.now-5.days,
+      end_at: Time.now+5.days,
+      consultation_method: 'ideation'
+    })
     rand(5).times do
       start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
       project.events.create({

@@ -64,7 +64,9 @@ class SideFxIdeaService
         if current_phase && (current_phase.consultation_method == 'ideation')
           idea.phase_ids = timeline_service.active_phases(idea.project).map(&:id)
         else
-          idea.errors.add(:project, :no_ideation_phase, message: 'is currently not in an ideation phase')
+          # byebug
+          # idea.errors.add(:project, :no_ideation_phase, message: 'is currently not in an ideation phase')
+          raise ClErrors::TransactionError.new(error_key: :project_without_active_ideation_phase, code: 422, message: 'cannot add an idea to a project that is not currently active in an ideation phase')
         end
       end
     end
