@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as Rx from 'rxjs';
 import { uniq, flow, keys } from 'lodash';
 import { findDOMNode } from 'react-dom';
+import eventEmitter from 'utils/eventEmitter';
+import { IModalInfo } from 'containers/App';
 
 // components
 import { Table, Icon, Dropdown, Popup, Button, Checkbox } from 'semantic-ui-react';
@@ -32,7 +34,7 @@ const FilterCell = styled.td`
   border-top: none !important;
 `;
 
-const TitleWrapper = styled.div`
+const TitleLink = styled.a`
   display: block;
   display: -webkit-box;
   margin: 0 auto;
@@ -42,6 +44,8 @@ const TitleWrapper = styled.div`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
+  color: black;
 `;
 
 
@@ -90,6 +94,17 @@ class Row extends React.PureComponent<Props> {
     });
   }
 
+  handleClickTitle = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const { idea } = this.props;
+    eventEmitter.emit<IModalInfo>('adminIdeas', 'cardClick', {
+      type: 'idea',
+      id: idea.id,
+      url: `/ideas/${idea.attributes.slug}`
+    });
+  }
+
   render() {
     const { idea, onDeleteIdea, selected, isDragging, connectDragSource, activeFilterMenu, phases, topics } = this.props;
     const attrs = idea.attributes;
@@ -100,9 +115,9 @@ class Row extends React.PureComponent<Props> {
             <Checkbox checked={selected} onChange={this.onClickCheckbox} />
           </Table.Cell>
           <Table.Cell>
-            <TitleWrapper>
+            <TitleLink onClick={this.handleClickTitle}>
               <T value={attrs.title_multiloc} />
-            </TitleWrapper>
+            </TitleLink>
           </Table.Cell>
           <Table.Cell>{attrs.author_name}</Table.Cell>
           <Table.Cell>
