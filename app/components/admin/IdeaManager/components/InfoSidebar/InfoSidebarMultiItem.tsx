@@ -1,7 +1,7 @@
 import * as React from 'react';
 import T from 'components/T';
 import { IIdeaData, ideaByIdStream } from 'services/ideas';
-import { injectResource, InjectedResourceLoaderProps } from '../../resourceLoader';
+import { injectResource, InjectedResourceLoaderProps } from 'utils/resourceLoaders/resourceLoader';
 
 import { List } from 'semantic-ui-react';
 
