@@ -23,7 +23,7 @@ import IdeaMeta from './IdeaMeta';
 import Unauthenticated from './Unauthenticated';
 import IdeaMap from './IdeaMap';
 import Button from 'components/UI/Button';
-import MoreActions, { Action } from 'components/UI/MoreActionsMenu';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import SpamReportForm from 'containers/SpamReport';
 import Modal from 'components/UI/Modal';
 import UserName from 'components/UI/UserName';
@@ -38,6 +38,7 @@ import { ideaStatusStream } from 'services/ideaStatuses';
 import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
 import { projectByIdStream, IProject } from 'services/projects';
 import { authUserStream } from 'services/auth';
+import { hasPermission } from 'services/permissions';
 
 // i18n
 import T from 'components/T';
@@ -53,7 +54,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { css } from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
-import { hasPermission } from 'services/permissions';
 
 const Container = styled.div``;
 
@@ -268,7 +268,7 @@ const MapPaddingBottom = styled.div`
 
 const AddressWrapper = styled.p`
   background: rgba(255, 255, 255, .7);
-  border-top: 1px solid #EAEAEA;
+  border-top: 1px solid #eaeaea;
   bottom: 0;
   left: 0;
   margin: 0;
@@ -394,7 +394,7 @@ const MetaContent = styled.div`
 `;
 
 const VoteLabel = styled.div`
-  color: #84939E;
+  color: ${(props) => props.theme.colors.label};
   font-size: 15px;
   font-weight: 400;
   margin-bottom: 12px;
@@ -421,7 +421,7 @@ const StatusContainerMobile = styled(StatusContainer)`
 `;
 
 const StatusTitle = styled.h4`
-  color: #84939d;
+  color: ${(props) => props.theme.colors.label};
   font-size: 16px;
   font-weight: 400;
   margin: 0;
@@ -463,13 +463,13 @@ const IconWrapper = styled.div`
 
   svg {
     width: 20px;
-    fill: #84939E;
+    fill: ${(props) => props.theme.colors.label};
     transition: all 100ms ease-out;
   }
 `;
 
 const GiveOpinionText = styled.div`
-  color: #84939E;
+  color: ${(props) => props.theme.colors.label};
   font-size: 15px;
   font-weight: 300;
   white-space: nowrap;
@@ -499,6 +499,15 @@ const GiveOpinion = styled.div`
   `}
 `;
 
+const MoreActionsMenuWrapper = styled.div`
+  margin-top: 40px;
+  user-select: none;
+
+  * {
+    user-select: none;
+  }
+`;
+
 type Props = {
   ideaId: string;
 };
@@ -514,7 +523,7 @@ type State = {
   unauthenticatedError: boolean;
   showMap: boolean;
   spamModalVisible: boolean;
-  moreActions: Action[];
+  moreActions: IAction[];
 };
 
 class IdeasShow extends React.PureComponent<Props, State> {
@@ -541,9 +550,11 @@ class IdeasShow extends React.PureComponent<Props, State> {
 
   componentWillMount() {
     const { ideaId } = this.props;
+    const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
     const comments$ = commentsForIdeaStream(ideaId).observable;
-    const idea$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {
+    const idea$ = ideaByIdStream(ideaId).observable;
+    const ideaWithRelationships$ = idea$.switchMap((idea) => {
       const ideaImages = idea.data.relationships.idea_images.data;
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
       const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
@@ -564,30 +575,46 @@ class IdeasShow extends React.PureComponent<Props, State> {
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$,
-        idea$
+        ideaWithRelationships$
       ).subscribe(([locale, { idea, ideaImage, ideaAuthor, project }]) => {
         this.setState({ locale, idea, ideaImage, ideaAuthor, project, loading: false });
       }),
 
       comments$.subscribe(ideaComments => {
         this.setState({ ideaComments });
+      }),
+
+      Rx.Observable.combineLatest(
+        idea$,
+        authUser$.filter(authUser => authUser !== null)
+      ).switchMap(([idea, authUser]) => {
+        return hasPermission({
+          item: idea.data,
+          action: 'edit',
+          user: (authUser as IUser),
+          context: idea.data
+        }).map((granted) => ({ authUser, granted }));
+      }).subscribe(({ authUser, granted }) => {
+        this.setState((state: State) => {
+          let moreActions = [{
+            label: <FormattedMessage {...messages.reportAsSpam} />,
+            handler: this.openSpamModal
+          }];
+
+          if (granted) {
+            moreActions = [
+              ...moreActions,
+              {
+                label: <FormattedMessage {...messages.editIdea} />,
+                handler: this.editIdea,
+              }
+            ];
+          }
+
+          return { moreActions };
+        });
       })
     ];
-
-    this.subscriptions.push(
-      authUserStream().observable
-      .subscribe((authUser) => {
-        if (authUser) {
-          this.setState({ moreActions: [
-            ...this.state.moreActions,
-            {
-              label: 'Report as spam',
-              handler: this.openSpamModal,
-            }
-          ]});
-        }
-      })
-    );
   }
 
   componentWillUnmount() {
@@ -619,18 +646,23 @@ class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   handleMapToggle = () => {
-    this.setState({ showMap: !this.state.showMap });
+    this.setState((state: State) => ({ showMap: !state.showMap }));
   }
 
   openSpamModal = () => {
     this.setState({ spamModalVisible: true });
   }
+
   closeSpamModal = () => {
     this.setState({ spamModalVisible: false });
   }
 
+  editIdea = () => {
+    browserHistory.push(`ideas/edit/${this.props.ideaId}`);
+  }
+
   render() {
-    const { locale, idea, ideaImage, ideaAuthor, ideaComments, project, loading, unauthenticatedError, showMap } = this.state;
+    const { locale, idea, ideaImage, ideaAuthor, ideaComments, project, loading, unauthenticatedError, showMap, moreActions } = this.state;
 
     if (!loading && idea !== null) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
@@ -682,6 +714,14 @@ class IdeasShow extends React.PureComponent<Props, State> {
               </GiveOpinionText>
             </GiveOpinion>
           </SharingWrapper>
+
+          <MoreActionsMenuWrapper>
+            <MoreActionsMenu
+              height="5px"
+              actions={moreActions}
+              label={<FormattedMessage {...messages.moreOptions} />}
+            />
+          </MoreActionsMenuWrapper>
         </MetaContent>
       );
 
@@ -792,9 +832,6 @@ class IdeasShow extends React.PureComponent<Props, State> {
 
               <RightColumnDesktop className={!isSafari ? 'notSafari' : ''}>
                 {ideaMetaContent}
-                <MoreActions
-                  actions={this.state.moreActions}
-                />
               </RightColumnDesktop>
             </Content>
           </IdeaContainer>

@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 import { IStream } from 'utils/streams';
 import * as moment from 'moment';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
-import draftjsToHtml from 'draftjs-to-html';
 import { browserHistory } from 'react-router';
 import { API } from 'typings';
 
@@ -15,6 +14,7 @@ import { phaseStream, updatePhase, addPhase, IPhase, IPhaseData, IUpdatedPhasePr
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
+import { getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // Components
 import Label from 'components/UI/Label';
@@ -134,14 +134,15 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
     }
   }
 
-  handleDescChange = (newState: EditorState) => {
-    const htmlValue = draftjsToHtml(convertToRaw(newState.getCurrentContent()));
+  handleDescChange = (editorState: EditorState) => {
+    const htmlValue = getHtmlStringFromEditorState(editorState);
+
     if (this.state.attributeDiff) {
       const newValue = this.state.attributeDiff && this.state.attributeDiff.description_multiloc || {};
       newValue[this.props.locale] = htmlValue;
       this.setState({
         attributeDiff: { ...this.state.attributeDiff, description_multiloc: newValue },
-        descState: newState,
+        descState: editorState,
       });
     }
   }

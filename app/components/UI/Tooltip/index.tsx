@@ -5,40 +5,69 @@ import * as React from 'react';
 import clickOutside from 'utils/containers/clickOutside';
 import Transition from 'react-transition-group/Transition';
 
+// Animation
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import CSSTransition from 'react-transition-group/CSSTransition';
+
 // Styling
 import styled from 'styled-components';
 import { color, fontSize } from 'utils/styleUtils';
 
+const enterTimeout = 200;
+const exitTimeout = 200;
+
 const Container = styled(clickOutside)`
+  /* display: flex;
   align-items: stretch;
+  flex-direction: column; */
   background: white;
   border-radius: 5px;
   border-color: white;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  font-size: ${fontSize('base')};
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 18px;
   opacity: 1;
-  padding: 10px;
-  position: absolute;
-  transform: scale(1);
-  transition: all .1s ease-in-out;
+  padding: 6px;
+  position: relative;
   z-index: 1000;
+  transform-origin: left top;
+  will-change: opacity, transform;
 
   ::after {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
-    border: 1rem solid;
-    border-color: transparent;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    top: -20px;
+    left: 15px;
+    border-color: transparent transparent ${color('clBlueDarkest')} transparent;
+    border-width: 10px;
   }
 
-  &.exited {
-    transform: scale(.1);
+  &.tooltip-enter {
+    transform: scale(0.8);
     opacity: 0;
+    transition: all ${enterTimeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+    &.tooltip-enter-active {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 
-  /* Positions */
+  &.tooltip-exit {
+    opacity: 1;
+    transition: all ${exitTimeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+    &.tooltip-exit-active {
+      opacity: 0;
+    }
+  }
+
+  /*
   &.position-bottom {
     right: 0;
     top: 100%;
@@ -71,8 +100,8 @@ const Container = styled(clickOutside)`
       border-top-color: inherit;
     }
   }
+  */
 
-  /* Themes */
   &.dark {
     background: ${color('clBlueDarkest')};
     border-color: ${color('clBlueDarkest')};
@@ -92,7 +121,6 @@ const Container = styled(clickOutside)`
   }
 `;
 
-// Typing
 interface Props {
   visible: boolean;
   hideTooltip: {(event): void};
@@ -102,14 +130,7 @@ interface Props {
 
 interface State {}
 
-export default class Tooltip extends React.Component<Props, State> {
-
-  constructor (props) {
-    super(props);
-
-    this.state = {};
-  }
-
+export default class Tooltip extends React.PureComponent<Props, State> {
   handleClickOutside = (event) => {
     if (this.props.visible) {
       this.props.hideTooltip(event);
@@ -119,15 +140,31 @@ export default class Tooltip extends React.Component<Props, State> {
   render () {
     const { visible, theme, children } = this.props;
     const position = this.props.position || 'bottom';
+    const className = this.props['className'];
+    const timeout = {
+      enter: enterTimeout,
+      exit: exitTimeout
+    };
+
+    console.log(children);
 
     return (
-      <Transition in={visible} timeout={300}>
-        {(status) => (
-          <Container onClickOutside={this.handleClickOutside} className={`e2e-tooltip ${status} ${theme} position-${position}`}>
-            {children}
-          </Container>
-        )}
-      </Transition>
+      <TransitionGroup>
+        {visible &&
+          <CSSTransition
+            classNames="tooltip"
+            timeout={timeout}
+            exit={true}
+          >
+            <Container 
+              onClickOutside={this.handleClickOutside} 
+              className={`e2e-tooltip tooltip ${className} ${status} ${theme} position-${position}`}
+            >
+              {children}
+            </Container>
+          </CSSTransition>
+        }
+      </TransitionGroup>
     );
   }
 }

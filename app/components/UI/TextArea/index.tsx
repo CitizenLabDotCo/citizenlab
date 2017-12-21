@@ -114,7 +114,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
     rows = (rows || 5);
 
     return (
-      <Container className={className} hasError={hasError}>
+      <Container className={className}>
         <TextAreaContainer>
           <TextareaAutosize
             className={`textarea ${hasError ? 'error' : ''}`}

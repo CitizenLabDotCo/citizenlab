@@ -7,7 +7,6 @@ import { Multiloc, API } from 'typings';
 import * as moment from 'moment';
 import { browserHistory } from 'react-router';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
-import draftjsToHtml from 'draftjs-to-html';
 
 // components
 import Label from 'components/UI/Label';
@@ -24,6 +23,7 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import { IStream } from 'utils/streams';
 import unsubscribe from 'utils/unsubscribe';
 import getSubmitState from 'utils/getSubmitState';
+import { getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -118,14 +118,19 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
     }
   }
 
-  handleDescChange = (newState: EditorState) => {
-    const htmlValue = draftjsToHtml(convertToRaw(newState.getCurrentContent()));
+  handleDescChange = (editorState: EditorState) => {
+    const htmlValue = getHtmlStringFromEditorState(editorState);
+
     if (this.state.attributeDiff) {
       const newValue = this.state.attributeDiff && this.state.attributeDiff.description_multiloc || {};
       newValue[this.props.locale] = htmlValue;
+
       this.setState({
-        attributeDiff: { ...this.state.attributeDiff, description_multiloc: newValue },
-        descState: newState,
+        attributeDiff: {
+          ...this.state.attributeDiff,
+          description_multiloc: newValue
+        },
+        descState: editorState,
       });
     }
   }

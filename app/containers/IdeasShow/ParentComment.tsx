@@ -12,7 +12,7 @@ import ChildCommentForm from './ChildCommentForm';
 import { Link, browserHistory } from 'react-router';
 import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
-import MoreActions, { Action } from 'components/UI/MoreActionsMenu';
+import MoreActionsMenu, { IAction, Props as MoreActionsMenuProps } from 'components/UI/MoreActionsMenu';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -73,13 +73,6 @@ const CommentContainer: any = styled.div`
   `}
 `;
 
-const StyledActions: any = styled(MoreActions)`
-  margin-top: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-`;
-
 const CommentContainerInner = styled.div`
   padding: 30px;
 `;
@@ -118,6 +111,12 @@ const CommentBody = styled.div`
   }
 `;
 
+const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
+  position: absolute;
+  top: 5px;
+  right: 15px;
+`;
+
 const ChildCommentsContainer = styled.div``;
 
 type Props = {
@@ -134,7 +133,7 @@ type State = {
   childCommentIds: string[] | null;
   showForm: boolean;
   spamModalVisible: boolean;
-  moreActions: Action[];
+  moreActions: IAction[];
 };
 
 type Tracks = {
@@ -258,7 +257,11 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
         <Container className="e2e-comment-thread">
 
           <CommentContainer withReplyBox={isLoggedIn}>
-            <StyledActions actions={this.state.moreActions} hideLabel={true} />
+            <StyledMoreActionsMenu
+              height="5px"
+              actions={this.state.moreActions}
+            />
+
             <CommentContainerInner>
               <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
 
