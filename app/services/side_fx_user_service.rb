@@ -3,7 +3,7 @@ class SideFxUserService
   include SideFxHelper
 
   def before_create user, current_user
-    if User.admin.empty?   # User.count == 0
+    if User.admin.empty?
       user.add_role 'admin'
     end
   end
