@@ -9,7 +9,6 @@ import * as bowser from 'bowser';
 // draft-js
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
 
 // components
 import Select from 'components/UI/Select';

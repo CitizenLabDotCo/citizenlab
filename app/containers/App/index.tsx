@@ -92,7 +92,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const authUser$ = authUserStream().observable;
 
     this.subscriptions = [
-      eventEmitter.observeEventFromSource<IModalInfo>(IdeaCardComponentNamespace, 'cardClick').subscribe(({ eventValue }) => {
+      eventEmitter.observeEvent<IModalInfo>('cardClick').subscribe(({ eventValue }) => {
         const { type, id, url } = eventValue;
         this.openModal(type, id, url);
       }),

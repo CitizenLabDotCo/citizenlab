@@ -13,7 +13,7 @@ type State = {
 
 type Props = OriginalFormattedMessage.Props;
 
-export default class FormattedMessage extends React.Component<Props, State> {
+export default class FormattedMessage extends React.PureComponent<Props, State> {
 
   subscriptions: Rx.Subscription[];
 

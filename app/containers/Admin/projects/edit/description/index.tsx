@@ -4,7 +4,6 @@ import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
-import draftjsToHtml from 'draftjs-to-html';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,7 +15,7 @@ import { localeStream } from 'services/locale';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
-import { getEditorStateFromHtmlString } from 'utils/editorTools';
+import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // Components
 import Label from 'components/UI/Label';
@@ -100,8 +99,10 @@ class ProjectDescription extends React.Component<Props, State> {
   }
 
   changeDesc = (editorState: EditorState): void => {
-    const { diff } = this.state;
-    _.set(diff, `description_multiloc.${this.state.locale}`, draftjsToHtml(convertToRaw(editorState.getCurrentContent())));
+    const { diff, locale } = this.state;
+    const htmlDescription = getHtmlStringFromEditorState(editorState);
+
+    _.set(diff, `description_multiloc.${locale}`, htmlDescription);
 
     this.setState({
       editorState,

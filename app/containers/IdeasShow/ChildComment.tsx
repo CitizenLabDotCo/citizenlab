@@ -10,7 +10,7 @@ import linkifyHtml from 'linkifyjs/html';
 import Avatar from 'components/Avatar';
 import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
-import MoreActions, { Action } from 'components/UI/MoreActionsMenu';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import UserName from 'components/UI/UserName';
 
 // services
@@ -39,13 +39,6 @@ const CommentContainer = styled.div`
   border: none;
   border-top: solid 1px #e4e4e4;
   background: #f6f6f6;
-`;
-
-const StyledActions: any = styled(MoreActions)`
-  margin-top: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
 `;
 
 const AuthorContainer = styled.div`
@@ -125,6 +118,12 @@ const CommentBody = styled.div`
   }
 `;
 
+const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
+  position: absolute;
+  top: 5px;
+  right: 15px;
+`;
+
 type Props = {
   commentId: string;
 };
@@ -135,7 +134,7 @@ type State = {
   comment: IComment | null;
   author: IUser | null;
   spamModalVisible: boolean;
-  moreActions: Action[];
+  moreActions: IAction[];
 };
 
 export default class ChildComment extends React.PureComponent<Props, State> {
@@ -242,7 +241,10 @@ export default class ChildComment extends React.PureComponent<Props, State> {
 
       return (
         <CommentContainer className={className}>
-          <StyledActions actions={this.state.moreActions} hideLabel={true} />
+          <StyledMoreActionsMenu
+            height="5px"
+            actions={this.state.moreActions}
+          />
 
           <AuthorContainer>
             <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />

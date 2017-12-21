@@ -4,48 +4,85 @@ import * as React from 'react';
 // Components
 import Tooltip from '../Tooltip';
 import Button from '../Button';
-import { IconNames } from '../Icon';
+import Icon, { IconNames } from '../Icon';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Styling
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { darken } from 'polished';
 
-const Wrapper = styled.div`
-  margin-top: 50px;
+const MoreOptionsIcon = styled(Icon)`
+  fill: ${(props) => props.theme.colors.label};
+  transition: all 100ms ease-out;
+`;
+
+const StyledTooltip = styled(Tooltip)`
+  position: absolute;
+  top: 150%;
+  left: -12px;
+`;
+
+const MoreOptionsIconWrapper = styled.div`
   position: relative;
 `;
 
-const Toggle = styled(Button)`
-  .Button {
-    font-weight: 300;
-    padding-left: 0;
-    padding-right: 0;
+const MoreOptionsLabel = styled.div`
+  color: ${(props) => props.theme.colors.label};
+  font-size: 15px;
+  font-weight: 300;
+  white-space: nowrap;
+  margin-left: 10px;
+  transition: all 100ms ease-out;
+`;
+
+const Container: any = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+
+  * {
+    user-select: none;
+  }
+
+  ${MoreOptionsIcon} {
+    height: ${(props: any) => props.height};
+  }
+
+  &:hover {
+    ${MoreOptionsIcon} {
+      fill: #000;
+    }
+
+    ${MoreOptionsLabel} {
+      color: #000;
+    }
   }
 `;
 
-const Action = styled(Button)`
+const Action = styled(Button)``;
 
-`;
-
-// Typing
-export interface Action {
+export interface IAction {
   label: string;
   handler: {(): void};
   icon?: IconNames;
 }
-interface Props {
-  actions: Action[];
-  hideLabel?: boolean;
-  className?: string;
+
+export interface Props {
+  height: string;
+  actions: IAction[];
+  label?: string | JSX.Element | undefined;
 }
+
 interface State {
   visible: boolean;
 }
 
-export default class MoreActions extends React.Component<Props, State> {
+export default class MoreActionsMenu extends React.PureComponent<Props, State> {
   constructor (props) {
     super(props);
     this.state = {
@@ -53,37 +90,56 @@ export default class MoreActions extends React.Component<Props, State> {
     };
   }
 
-  hideTooltip = (event) => {
+  hideMenu = (event) => {
     event.stopPropagation();
     this.setState({ visible: false });
   }
 
-  toggleTooltip = (event) => {
-    this.setState({ visible: !this.state.visible });
+  toggleMenu = (event) => {
+    this.setState(state => ({ visible: !state.visible }));
   }
 
   render () {
-    if (this.props.actions.length === 0) {
+    const { height, label, actions } = this.props;
+    const className = this.props['className'];
+
+    if (!actions || actions.length === 0) {
       return null;
     }
+
     return (
-      <Wrapper className={this.props.className} >
-        <Toggle style="text" icon="more_actions_horizontal" onClick={this.toggleTooltip}>
-          {!this.props.hideLabel && <FormattedMessage {...messages.buttonLabel} />}
-        </Toggle>
-        <Tooltip visible={this.state.visible} hideTooltip={this.hideTooltip} theme="dark" position="right">
-          {this.props.actions.map((action) => (
-            <Action
-              style="text"
-              key={action.label}
-              onClick={action.handler}
-              icon={action.icon}
-              text={action.label}
-              circularCorners={false}
-            />
-          ))}
-        </Tooltip>
-      </Wrapper>
+      <Container
+        className={className}
+        onClick={this.toggleMenu}
+        height={height}
+      >
+        <MoreOptionsIconWrapper>
+          <MoreOptionsIcon name="more-options" />
+          <StyledTooltip
+            visible={this.state.visible}
+            hideTooltip={this.hideMenu}
+            theme="dark"
+            position="bottom"
+          >
+            {actions.map((action) => (
+              <Action
+                style="text"
+                key={action.label}
+                onClick={action.handler}
+                icon={action.icon}
+                text={action.label}
+                circularCorners={false}
+              />
+            ))}
+          </StyledTooltip>
+        </MoreOptionsIconWrapper>
+
+        {label ? (
+          <MoreOptionsLabel>
+            {label}
+          </MoreOptionsLabel>
+        ) : null }
+      </Container>
     );
   }
 

@@ -277,22 +277,10 @@ const icons = {
       <path fill="#4285F4" d="M1182.73 548.357V653.77h146.34c-7.32 35.937-27.145 63.654-55.63 81.63l87.11 67.44c50.07-46.554 82.614-115.95 82.614-204.877 0-16.122-2.48-33.485-6.2-49.606h-254.235z"/>
     </svg>
   ),
-  more_actions_horizontal: (className) => (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
-      <g transform="translate(8 7)">
-        <g clipPath="url(#a)">
-          <g fill="#84939E" transform="translate(-8 -1)">
-            <use xlinkHref="#path0_fill"/>
-            <use xlinkHref="#path1_fill"/>
-            <use xlinkHref="#path2_fill"/>
-          </g>
-        </g>
-      </g>
-      <defs>
-        <path id="path0_fill" d="M3.862 1.778c0 .982-.865 1.777-1.931 1.777S0 2.76 0 1.778C0 .796.865 0 1.931 0s1.931.796 1.931 1.778z"/>
-        <path id="path1_fill" d="M9.862 1.778c0 .982-.865 1.777-1.931 1.777S6 2.76 6 1.778C6 .796 6.865 0 7.931 0s1.931.796 1.931 1.778z"/>
-        <path id="path2_fill" d="M15.963 1.778c0 .982-.865 1.777-1.931 1.777-1.067 0-1.931-.795-1.931-1.777C12.1.796 12.965 0 14.03 0c1.067 0 1.932.796 1.932 1.778z"/>
-      </defs>
+  'more-options': (className) => (
+    <svg className={className} height="100%" viewBox="4 10 16 4">
+      <path fill="none" d="M0 0h24v24H0V0z"/>
+      <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
     </svg>
   ),
 };
@@ -303,6 +291,7 @@ const Icon: React.SFC<IIcon> = ({ name, className }) => icons[name](className);
 
 interface IIcon {
   name: IconNames;
+  onClick?: () => void;
   className?: string;
 }
 
