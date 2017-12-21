@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.deleteIdeasConfirmation',
     defaultMessage: 'Are you sure you want to delete {count} ideas?',
   },
+  losePhaseInfoConfirmation: {
+    id: 'app.components.admin.IdeaManager.losePhaseInfoConfirmation',
+    defaultMessage: 'Moving \'{ideaTitle}\' away from its current project will lose the information about its assigned phases. Do you want to proceed?',
+  },
   edit: {
     id: 'app.components.admin.IdeaManager.edit',
     defaultMessage: 'Edit',
@@ -56,6 +60,14 @@ export default defineMessages({
   topicsTab: {
     id: 'app.components.admin.IdeaManager.topicsTab',
     defaultMessage: 'Topics',
+  },
+  projectsTab: {
+    id: 'app.components.admin.IdeaManager.projectsTab',
+    defaultMessage: 'Projects',
+  },
+  statusesTab: {
+    id: 'app.components.admin.IdeaManager.statusesTab',
+    defaultMessage: 'Status',
   },
   allIdeas: {
     id: 'app.components.admin.IdeaManager.allIdeas',

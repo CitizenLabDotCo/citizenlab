@@ -34,7 +34,7 @@ type Props = InjectedIdeaLoaderProps & InjectedResourcesLoaderProps<IProjectData
   project?: IProjectData | null;
 };
 
-type TFilterMenu = 'topics' | 'phases';
+type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
 
 type State = {
   selectedIdeas: {[key: string]: boolean},
@@ -51,7 +51,7 @@ const ThreeColumns = styled.div`
 `;
 
 const LeftColumn = styled.div`
-  width: 230px;
+  width: 250px;
 `;
 
 const MiddleColumn = styled.div`
@@ -110,7 +110,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   setVisibleFilterMenus = (inProject: boolean) => {
-    const visibleFilterMenus: TFilterMenu[] = inProject ? ['phases', 'topics'] : ['topics'];
+    const visibleFilterMenus: TFilterMenu[] = inProject ? ['phases', 'topics'] : ['projects', 'topics', 'statuses'];
     this.setState({
       visibleFilterMenus,
       activeFilterMenu: visibleFilterMenus[0],
@@ -150,7 +150,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { ideaSortAttribute, ideaSortDirection, ideaCurrentPageNumber, ideaLastPageNumber, ideas, phases } = this.props;
+    const { ideaSortAttribute, ideaSortDirection, ideaCurrentPageNumber, ideaLastPageNumber, ideas, phases, ideaStatuses } = this.props;
     const { selectedIdeas, activeFilterMenu, visibleFilterMenus } = this.state;
     const selectedIdeaIds = keys(this.state.selectedIdeas);
     const showInfoSidebar = this.isAnyIdeaSelected();
@@ -173,10 +173,16 @@ class IdeaManager extends React.PureComponent<Props, State> {
               project={this.props.project || null}
               phases={this.props.phases.all}
               topics={this.props.topics.all}
+              projects={this.props.projects.all}
+              statuses={this.props.ideaStatuses.all}
               selectedTopics={this.props.ideaTopicsFilter}
               selectedPhase={this.props.ideaPhaseFilter}
+              selectedProject={this.props.ideaProjectFilter}
+              selectedStatus={this.props.ideaStatusFilter}
               onChangePhaseFilter={this.props.onChangePhaseFilter}
               onChangeTopicsFilter={this.props.onChangeTopicsFilter}
+              onChangeProjectFilter={this.props.onChangeProjectFilter}
+              onChangeStatusFilter={this.props.onChangeStatusFilter}
             />
           </LeftColumn>
           <MiddleColumn>
@@ -188,6 +194,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
               onChangeIdeaSortAttribute={this.props.onChangeIdeaSortAttribute}
               ideas={ideas}
               phases={phases.all}
+              statuses={ideaStatuses.all}
               selectedIdeas={selectedIdeas}
               onChangeIdeaSelection={this.handleChangeIdeaSelection}
               ideaCurrentPageNumber={ideaCurrentPageNumber}

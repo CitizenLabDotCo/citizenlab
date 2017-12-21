@@ -1,27 +1,28 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import { uniq, flow, keys } from 'lodash';
+import { uniq, flow, keys, isEmpty } from 'lodash';
 import { findDOMNode } from 'react-dom';
 import eventEmitter from 'utils/eventEmitter';
 import { IModalInfo } from 'containers/App';
+import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';
+import { IPhaseData } from 'services/phases';
+import { ITopicData } from 'services/topics';
+import { IIdeaStatusData } from 'services/ideaStatuses';
+import { injectTFunc } from 'components/T/utils';
+import { DragSource } from 'react-dnd';
 
 // components
 import { Table, Icon, Dropdown, Popup, Button, Checkbox } from 'semantic-ui-react';
 import WrappedRow from './WrappedRow';
 import { FormattedDate } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import T from 'components/T';
-import { injectTFunc } from 'components/T/utils';
-import messages from '../../messages';
-
-import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';
-import { IPhaseData } from 'services/phases';
-import { ITopicData } from 'services/topics';
-import { IIdeaStatusData } from 'services/ideaStatuses';
-import { DragSource } from 'react-dnd';
 import PhasesSelector from './PhasesSelector';
 import TopicsSelector from './TopicsSelector';
+import ProjectSelector from './ProjectSelector';
+import StatusSelector from './StatusSelector';
 
+import messages from '../../messages';
 
 // style
 import styled from 'styled-components';
@@ -52,7 +53,7 @@ const TitleLink = styled.a`
 type Props = {
   idea: IIdeaData,
   phases: IPhaseData[],
-  topics: ITopicData[],
+  statuses: IIdeaStatusData[],
   tFunc: () => string,
   onDeleteIdea: () => void,
   selected?: boolean,
@@ -94,6 +95,12 @@ class Row extends React.PureComponent<Props> {
     });
   }
 
+  onUpdateIdeaStatus = (statusId) => {
+    updateIdea(this.props.idea.id, {
+      idea_status_id: statusId,
+    });
+  }
+
   handleClickTitle = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -106,7 +113,8 @@ class Row extends React.PureComponent<Props> {
   }
 
   render() {
-    const { idea, onDeleteIdea, selected, isDragging, connectDragSource, activeFilterMenu, phases, topics } = this.props;
+    const { idea, onDeleteIdea, selected, isDragging, connectDragSource, activeFilterMenu, phases, statuses } = this.props;
+    const selectedStatus = idea.relationships.idea_status && idea.relationships.idea_status.data.id;
     const attrs = idea.attributes;
     return (
       <React.Fragment>
@@ -146,6 +154,18 @@ class Row extends React.PureComponent<Props> {
               <TopicsSelector
                 selectedTopics={idea.relationships.topics.data.map((p) => p.id)}
                 onUpdateIdeaTopics={this.onUpdateIdeaTopics}
+              />
+            }
+            {activeFilterMenu === 'projects' &&
+              <ProjectSelector
+                selectedProject={idea.relationships.project.data.id}
+              />
+            }
+            {activeFilterMenu === 'statuses' &&
+              <StatusSelector
+                statuses={statuses}
+                selectedStatus={selectedStatus}
+                onUpdateIdeaStatus={this.onUpdateIdeaStatus}
               />
             }
           </Table.Cell>
@@ -201,6 +221,49 @@ const ideaSource = {
       });
     }
 
+    if (dropResult && dropResult.type === 'project') {
+      let ids = keys(props.selectedIdeas);
+      if (ids.indexOf(item.id) < 0) {
+        ids = [item.id];
+      }
+      const observables = ids.map((id) => ideaByIdStream(id).observable);
+      Rx.Observable.combineLatest(observables).take(1).subscribe((ideas) => {
+        ideas.map((idea) => {
+          const currentProject = idea.data.relationships.project.data.id;
+          const newProject = dropResult.id;
+          const hasPhases = !isEmpty(idea.data.relationships.phases.data);
+          if (hasPhases) {
+            const ideaTitle = props.tFunc(idea.data.attributes.title_multiloc);
+            const message = props.intl.formatMessage(messages.losePhaseInfoConfirmation, { ideaTitle });
+            if (window.confirm(message)) {
+              updateIdea(idea.data.id, {
+                project_id: newProject,
+                phase_ids: [],
+              });
+            }
+          } else {
+            updateIdea(idea.data.id, {
+              project_id: newProject,
+              phase_ids: [],
+            });
+          }
+        });
+      });
+    }
+
+    if (dropResult && dropResult.type === 'ideaStatus') {
+      let ids = keys(props.selectedIdeas);
+      if (ids.indexOf(item.id) < 0) {
+        ids = [item.id];
+      }
+
+      ids.forEach((ideaId) => {
+        updateIdea(ideaId, {
+          idea_status_id: dropResult.id,
+        });
+      });
+    }
+
   }
 };
 
@@ -211,6 +274,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default flow(
-  DragSource('IDEA', ideaSource, collect)
-)(injectTFunc(Row));
+export default injectTFunc(injectIntl(DragSource('IDEA', ideaSource, collect)(Row)));
