@@ -1,30 +1,36 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+// Libraries
+import * as React from 'react';
+import _ from 'lodash';
+import * as moment from 'moment';
 
+// Services & Utils
+import { IAreaData } from 'services/areas';
+import { IUserData } from 'services/users';
+import { ITenantData } from 'services/tenant';
+import scrollToComponent from 'react-scroll-to-component';
+
+// Components
 import Button from 'components/UI/Button';
 import { Grid } from 'semantic-ui-react';
-import { appLocalePairs } from 'i18n';
-import messages from '../messages';
 import Avatar from './Avatar';
 import generateErrorsObject from 'components/forms/generateErrorsObject';
-import _ from 'lodash';
-import { connect } from 'react-redux';
-import { makeSelectSetting } from 'utils/tenant/selectors';
-import { createStructuredSelector } from 'reselect';
 import ContentContainer from 'components/ContentContainer';
 import Input from 'components/UI/Input';
 import Select from 'components/UI/Select';
-import styled from 'styled-components';
-import scrollToComponent from 'react-scroll-to-component';
+import TextArea from 'components/UI/TextArea';
+import LabelWithTooltip from './LabelWithTooltip';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+
+
+// i18n
+import { appLocalePairs } from 'i18n';
+import messages from '../messages';
+import { injectTFunc } from 'components/T/utils';
 import { intlShape } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import LabelWithTooltip from './LabelWithTooltip';
-import TextArea from 'components/UI/TextArea';
-import { injectTFunc } from 'components/T/utils';
-import { areasStream } from 'services/areas';
 
-import moment from 'moment';
+// Style
+import styled from 'styled-components';
 
 const StyledContentContainer = styled(ContentContainer)`
   background: #fff;
@@ -39,22 +45,16 @@ const NavItemStyled = styled.button`
   color: #222222;
 `;
 
-const Nav = ({ goTo }) => (<div>
-  <NavItemStyled onClick={() => goTo('h1')}>
-    <FormattedMessage {...messages.h1} />
-  </NavItemStyled>
-  <NavItemStyled onClick={() => goTo('h2')}>
-    <FormattedMessage {...messages.h2} />
-  </NavItemStyled>
-  {/* <NavItemStyled onClick={() => goTo('h3')}>
-    <FormattedMessage {...messages.h3} />
-  </NavItemStyled> */}
-</div>);
-
-Nav.propTypes = {
-  goTo: PropTypes.func.isRequired,
-};
-
+const Nav = ({ goTo }) => (
+  <div>
+    <NavItemStyled onClick={() => goTo('h1')}>
+      <FormattedMessage {...messages.h1} />
+    </NavItemStyled>
+    <NavItemStyled onClick={() => goTo('h2')}>
+      <FormattedMessage {...messages.h2} />
+    </NavItemStyled>
+  </div>
+);
 
 const InputGroupStyled = styled.div`
   margin-top: 40px;
@@ -88,59 +88,28 @@ const SectionSeparatorStyled = styled.hr`
   background-color: #eaeaea; /* Modern Browsers */
 `;
 
-// const StyledRadio = styled(Radio)`
-//   label:before {
-//     /* ! cannot override as important is already set on the styled radio */
-//     /* TODO: try to fix this */
-//     background-color: ${(props) => props.checked ? '#3fb57c !important' : 'inherit'};
-//     border-radius: 500rem;
-//   }
-// `;
-
 const FormContentWrapper = styled(Grid.Column)`
   border-left: 1px solid #eaeaea;
   padding: 36px;
 `;
 
-class ProfileForm extends React.Component {
+// Types
+interface Props {
+  user: IUserData;
+  areas: IAreaData[];
+  tenant: ITenantData;
+}
 
+interface State {}
 
+class ProfileForm extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
-    this.areasObservable = null;
-
     this.state = {
-      user: this.props.userData,
       avatar: '',
       areas: [],
     };
-  }
-
-  componentDidMount() {
-    this.areasObservable = areasStream({
-      queryParameters: {
-        'page[size]': 1000,
-      },
-    }).observable.subscribe((data) => {
-      this.setState({
-        areas: data.data,
-      });
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const user = nextProps.userData;
-
-    if (!this.state.user || _.isEmpty(this.state.user)) {
-      this.setState({
-        user,
-      });
-    }
-
-    this.setState({
-      avatar: user && user.avatar,
-    });
   }
 
   getToggleValue = (property) => {
@@ -149,7 +118,7 @@ class ProfileForm extends React.Component {
       return false;
     }
     return user[property];
-  };
+  }
 
   goToSection = (which) => {
     if (which === 'h1') {
@@ -159,11 +128,11 @@ class ProfileForm extends React.Component {
     } else if (which === 'h3') {
       scrollToComponent(this['section-notifications']);
     }
-  };
+  }
 
   handleAvatarUpload = (avatarBase64, userId) => {
     this.props.avatarUpload(avatarBase64, userId);
-  };
+  }
 
   handleInputChange = (value, name) => {
     const { user } = _.clone(this.state);
@@ -172,7 +141,7 @@ class ProfileForm extends React.Component {
     this.setState({
       user,
     });
-  };
+  }
 
   handleMultilocInputChange = (value, name) => {
     const { user } = _.clone(this.state);
@@ -181,7 +150,7 @@ class ProfileForm extends React.Component {
     this.setState({
       user,
     });
-  };
+  }
 
   createMultiLocChangeHandler = (name) => (value) => {
     this.handleMultilocInputChange(value, name);
@@ -195,7 +164,7 @@ class ProfileForm extends React.Component {
     this.setState({
       user,
     });
-  };
+  }
 
   // Toggle
   handleToggleChange = (name) => {
@@ -205,7 +174,7 @@ class ProfileForm extends React.Component {
     this.setState({
       user,
     });
-  };
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -277,10 +246,7 @@ class ProfileForm extends React.Component {
   }
 
   render() {
-    const {
-      avatarUploadError,
-      processing, storeErrors, intl, tFunc,
-    } = this.props;
+    const {} = this.props;
 
     const user = this.state.user;
 
@@ -455,77 +421,6 @@ class ProfileForm extends React.Component {
                   }}
                 />
 
-                {/* NOTIFICATIONS */}
-                {/* <section ref={(section3) => { this['section-notifications'] = section3; }}>
-                  <SectionHeaderStyled>
-                    <FormattedMessage {...messages.h3} />
-                  </SectionHeaderStyled>
-                  <SectionSubHeaderStyled>
-                    <FormattedMessage {...messages.h3sub} />
-                  </SectionSubHeaderStyled>
-
-                  <InputGroupStyled>
-                    <LabelWithTooltip id="notifications_all_email" isBold />
-                    <StyledRadio
-                      toggle
-                      checked={this.getToggleValue('notifications_all_email')}
-                      onClick={() => this.handleToggleChange('notifications_all_email')}
-                    />
-
-                    <LabelWithTooltip id="notifications_idea_post" />
-                    <StyledRadio
-                      toggle
-                      checked={this.getToggleValue('notifications_idea_post')}
-                      onClick={() => this.handleToggleChange('notifications_idea_post')}
-                    />
-
-                    <LabelWithTooltip id="notifications_new_user" />
-                    <StyledRadio
-                      toggle
-                      checked={this.getToggleValue('notifications_new_user')}
-                      onClick={() => this.handleToggleChange('notifications_new_user')}
-                    />
-
-                    <LabelWithTooltip id="notifications_new_comments" />
-                    <StyledRadio
-                      toggle
-                      checked={this.getToggleValue('notifications_new_comments')}
-                      onClick={() => this.handleToggleChange('notifications_new_comments')}
-                    />
-
-                    <LabelWithTooltip id="notifications_all_app" isBold />
-                    <StyledRadio
-                      toggle
-                      checked={this.getToggleValue('notifications_all_app')}
-                      onClick={() => this.handleToggleChange('notifications_all_app')}
-                    />
-
-                    <LabelWithTooltip id="notifications_comment_on_comment" />
-                    <StyledRadio
-                      toggle
-                      checked={this.getToggleValue('notifications_comment_on_comment')}
-                      onClick={() => this.handleToggleChange('notifications_comment_on_comment')}
-                    />
-
-                    <LabelWithTooltip id="notifications_mention" />
-                    <StyledRadio
-                      toggle
-                      checked={this.getToggleValue('notifications_mention')}
-                      onClick={() => this.handleToggleChange('notifications_mention')}
-                    />
-
-                    <LabelWithTooltip id="notifications_idea_comment" />
-                    <StyledRadio
-                      toggle
-                      checked={this.getToggleValue('notifications_idea_comment')}
-                      onClick={() => this.handleToggleChange('notifications_idea_comment')}
-                    />
-
-
-                  </InputGroupStyled>
-
-                </section> */}
-
                 <Button
                   id="e2e-profile-edit-form-button"
                   text={intl.formatMessage({ ...messages.submit })}
@@ -540,32 +435,4 @@ class ProfileForm extends React.Component {
   }
 }
 
-ProfileForm.propTypes = {
-  onFormSubmit: PropTypes.func.isRequired,
-  avatarUpload: PropTypes.func.isRequired,
-  userData: PropTypes.object,
-  avatarUploadError: PropTypes.bool,
-  processing: PropTypes.bool,
-  storeErrors: PropTypes.object,
-  locales: ImmutablePropTypes.list,
-  intl: intlShape.isRequired,
-  tFunc: PropTypes.func.isRequired,
-  organizationName: ImmutablePropTypes.map,
-  organizationType: PropTypes.string,
-  genderEnabled: PropTypes.bool,
-  domicileEnabled: PropTypes.bool,
-  birthyearEnabled: PropTypes.bool,
-  educationEnabled: PropTypes.bool,
-};
-
-const mapStateToProps = createStructuredSelector({
-  locales: makeSelectSetting(['core', 'locales']),
-  organizationName: makeSelectSetting(['core', 'organization_name']),
-  organizationType: makeSelectSetting(['core', 'organization_type']),
-  genderEnabled: makeSelectSetting(['demographic_fields', 'gender']),
-  domicileEnabled: makeSelectSetting(['demographic_fields', 'domicile']),
-  birthyearEnabled: makeSelectSetting(['demographic_fields', 'birthyear']),
-  educationEnabled: makeSelectSetting(['demographic_fields', 'education']),
-});
-
-export default injectTFunc(injectIntl(connect(mapStateToProps)(ProfileForm)));
+export default ProfileForm;
