@@ -2,7 +2,6 @@ import * as React from 'react';
 import { flow, find, pull } from 'lodash';
 
 import { InjectedResourcesByIdsProps, injectResourcesByIds } from 'utils/resourceLoaders/idsResourcesLoader';
-import { updateIdea } from 'services/ideas';
 import { topicByIdStream, ITopicData } from 'services/topics';
 
 import { Label, Icon } from 'semantic-ui-react';

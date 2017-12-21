@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { flow, find, xor } from 'lodash';
 
-import { updateIdea } from 'services/ideas';
-import { IPhaseData, phasesStream } from 'services/phases';
-import { Label } from 'semantic-ui-react';
+import { IPhaseData } from 'services/phases';
+import { Label, Popup } from 'semantic-ui-react';
+import T from 'components/T';
 
 type Props = {
   selectedPhases: string[],
@@ -28,17 +28,23 @@ class PhasesSelector extends React.PureComponent<Props> {
     return(
       <div>
         {phases.map((phase, index) => (
-          <Label
-            as="a"
+          <Popup
             key={phase.id}
-            color={this.isActive(phase.id) ? 'teal' : undefined}
-            circular={true}
-            active={this.isActive(phase.id)}
-            onClick={this.handlePhaseClick(phase.id)}
-            basic={true}
-          >
-            {index + 1}
-          </Label>
+            trigger={
+              <Label
+                as="a"
+                color={this.isActive(phase.id) ? 'teal' : undefined}
+                circular={true}
+                active={this.isActive(phase.id)}
+                onClick={this.handlePhaseClick(phase.id)}
+                basic={true}
+              >
+                {index + 1}
+              </Label>
+            }
+            content={<T value={phase.attributes.title_multiloc} />}
+            position="top center"
+          />
         ))}
       </div>
     );

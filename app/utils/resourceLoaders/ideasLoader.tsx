@@ -103,6 +103,10 @@ export const injectIdeasLoader = <TOriginalProps extends {}>(WrappedComponent: R
         queryParams['areas[]'] = this.state.ideaAreasFilter;
       }
 
+      if (this.state.ideaStatusFilter) {
+        queryParams['idea_status'] = this.state.ideaStatusFilter;
+      }
+
       this.ideasObservable = ideasStream({
         queryParameters: queryParams,
       }).observable.subscribe((data) => {

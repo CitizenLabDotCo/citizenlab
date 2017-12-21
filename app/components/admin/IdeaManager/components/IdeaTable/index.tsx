@@ -3,6 +3,7 @@ import { clone, omit } from 'lodash';
 
 import { IIdeaData } from 'services/ideas';
 import { IPhaseData } from 'services/phases';
+import { IIdeaStatusData } from 'services/ideaStatuses';
 
 // Components
 import { Table } from 'semantic-ui-react';
@@ -19,6 +20,7 @@ interface Props {
   ideaSortDirection?: 'asc' | 'desc';
   ideas?: IIdeaData[];
   phases?: IPhaseData[];
+  statuses?: IIdeaStatusData[];
   onChangeIdeaSortDirection?: (direction: 'asc' | 'desc') => void;
   onChangeIdeaSortAttribute?: (string) => void;
   selectedIdeas: { [key: string]: boolean };
@@ -76,7 +78,7 @@ export default class IdeaTable extends React.Component<Props, State> {
   }
 
   render() {
-    const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, activeFilterMenu } = this.props;
+    const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, activeFilterMenu, statuses } = this.props;
 
     return(
       <Table>
@@ -126,6 +128,7 @@ export default class IdeaTable extends React.Component<Props, State> {
               key={idea.id}
               idea={idea}
               phases={phases}
+              statuses={statuses}
               onSelectIdea={this.selectIdea(idea)}
               onUnselectIdea={this.unselectIdea(idea)}
               onToggleSelectIdea={this.toggleSelectIdea(idea)}
