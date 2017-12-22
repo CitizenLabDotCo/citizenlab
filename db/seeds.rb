@@ -8,6 +8,8 @@
 
 Rails.application.eager_load!
 
+SEED_SIZE = ENV.fetch("SEED_SIZE")
+
 def create_comment_tree(idea, parent, depth=0)
   amount = rand(5/(depth+1))
   amount.times do |i|
@@ -44,11 +46,20 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         allowed: true,
         enabled: true,
         locales: ['en','nl'],
-        organization_type: 'medium_city',
+        organization_type: case SEED_SIZE
+        when 'large'
+          'large_city'
+        when 'medium' 
+          'medium_city'
+        when 'small' 
+          'small_city'
+        else
+          'generic'
+        end,
         organization_name: {
-          "en" => Faker::Address.city,
-          "nl" => Faker::Address.city,
-          "fr" => Faker::Address.city
+          "en" => (SEED_SIZE == 'large') ? Faker::GameOfThrones.city : Faker::Address.city,
+          "nl" => (SEED_SIZE == 'large') ? Faker::GameOfThrones.city : Faker::Address.city,
+          "fr" => (SEED_SIZE == 'large') ? Faker::GameOfThrones.city : Faker::Address.city
         },
         timezone: "Europe/Brussels",
         color_main: Faker::Color.hex_color,
@@ -191,7 +202,8 @@ if Apartment::Tenant.current == 'localhost'
       roles: rand(10) == 0 ? [{type: 'admin'}] : [],
       gender: %w(male female unspecified)[rand(4)],
       birthyear: rand(2) === 0 ? nil : 1927 + rand(90),
-      education: rand(1) === 0 ? nil : rand(9)
+      education: rand(1) === 0 ? nil : rand(9),
+      remote_avatar_url: Faker::Avatar.image
     })
   end
 
