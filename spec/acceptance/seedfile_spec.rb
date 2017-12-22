@@ -12,7 +12,7 @@ describe "seedfile" do
     expect(Tenant.count).to be(3)
     Apartment::Tenant.switch('localhost') do
       load Rails.root.join("db","seeds.rb")
-      expect(User.count).to be 8
+      expect(User.count).to be > 0
       expect(Topic.count).to be > 0
       expect(Area.count).to be > 0
       expect(Project.count).to be > 0
