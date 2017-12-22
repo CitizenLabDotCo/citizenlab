@@ -214,9 +214,18 @@ if Apartment::Tenant.current == 'localhost'
     else
       3
     end.times do 
+    first_name = Faker::Name.first_name
+    last_name = Faker::Name.last_name
+    if SEED_SIZE == 'got'
+      names = Faker::GameOfThrones.character.split
+      if names.size >= 2
+        first_name = names.first
+        last_name = names.last
+      end
+    end
     User.create({
-      first_name: Faker::Name.first_name,
-      last_name: Faker::Name.last_name,
+      first_name: first_name,
+      last_name: last_name,
       email: Faker::Internet.email,
       password: 'testtest',
       locale: ['en','nl'][rand(1)],
@@ -393,7 +402,7 @@ if Apartment::Tenant.current == 'localhost'
       idea.idea_images.create(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
     end
 
-    if rand(2) == 0
+    if rand(5) == 0
       idea.idea_files.create(file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open)
     end
 
