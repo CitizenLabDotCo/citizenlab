@@ -170,4 +170,21 @@ export default defineMessages({
     id: 'app.components.IdeasShow.register',
     defaultMessage: 'Create an account',
   },
+  lastUpdated: {
+    id: 'app.components.IdeasShow.lastUpdated',
+    defaultMessage: 'Last modified {modificationTime}',
+  },
+  lastChangesTitle: {
+    id: 'app.components.IdeasShow.lastChangesTitle',
+    defaultMessage: 'Last changes to this idea',
+  },
+  changeLogEntry: {
+    id: 'app.components.IdeasShow.changeLogEntry',
+    defaultMessage: `{changeType, select,
+      changed_status {{userName} has updated the status of this idea}
+      published {{userName} created this idea}
+      changed_title {{userName} updated the title of this idea}
+      changed_body {{userName} updated the description of this idea}
+    }`,
+  },
 });
