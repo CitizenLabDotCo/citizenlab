@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { clone, omit, every, fromPairs } from 'lodash';
+import { clone, omit, every, fromPairs, isEmpty } from 'lodash';
 
 import { IIdeaData } from 'services/ideas';
 import { IPhaseData } from 'services/phases';
@@ -87,7 +87,7 @@ export default class IdeaTable extends React.Component<Props, State> {
   }
 
   allSelected = () => {
-    return every(this.props.ideas, (idea) => this.props.selectedIdeas[idea.id]);
+    return !isEmpty(this.props.ideas) && every(this.props.ideas, (idea) => this.props.selectedIdeas[idea.id]);
   }
 
   render() {
