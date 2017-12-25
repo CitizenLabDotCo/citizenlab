@@ -8,6 +8,7 @@ import T from 'components/T';
 import { Link } from 'react-router';
 import ImageHeader, { HeaderTitle, HeaderSubtitle } from 'components/ImageHeader';
 import Meta from './meta';
+import EventsPreview from './EventsPreview';
 
 // store
 import { preprocess } from 'utils';
@@ -28,20 +29,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const Footer = styled.div`
-  color: #333;
-  font-weight: 400;
-  font-size: 17px;
-  text-align: center;
-  display: inline-block;
-  padding-left: 30px;
-  padding-right: 30px;
-  margin-top: 60px;
-  margin-bottom: 50px;
-  margin-left: auto;
-  margin-right: auto;
 `;
 
 const ProjectMenu = styled.div`
@@ -140,8 +127,11 @@ class ProjectsShowPage extends React.Component {
             </ProjectMenuItems>
           </ProjectMenu>
           {project && React.cloneElement(this.props.children, { project })}
-          <Footer>
-          </Footer>
+
+
+          {(this.props.location.pathname !== `${basePath}/events`) &&
+            <EventsPreview eventsPageUrl={`${basePath}/events`} projectId={project && project.get('id')} />
+          }
         </Container>
 
       </div>
@@ -156,6 +146,7 @@ ProjectsShowPage.propTypes = {
   params: PropTypes.object,
   pages: ImmutablePropTypes.list,
   project: PropTypes.object,
+  location: PropTypes.string,
 };
 
 const mapStateToProps = () => createStructuredSelector({

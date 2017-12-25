@@ -183,6 +183,10 @@ class ProfileForm extends React.Component {
     });
   };
 
+  createMultiLocChangeHandler = (name) => (value) => {
+    this.handleMultilocInputChange(value, name);
+  }
+
   // Select
   handleSelectChange = (option, name) => {
     const { user } = _.clone(this.state);
@@ -342,7 +346,7 @@ class ProfileForm extends React.Component {
                     <LabelWithTooltip id="bio" />
                     <TextArea
                       name="bio_multiloc"
-                      onInput={this.handleMultilocInputChange}
+                      onChange={this.createMultiLocChangeHandler('bio_multiloc')}
                       rows={6}
                       placeholder={intl.formatMessage({ ...messages.bio_placeholder })}
                       value={tFunc(user.bio_multiloc)}

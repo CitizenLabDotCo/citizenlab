@@ -20,7 +20,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, color } from 'utils/styleUtils';
 
 const ModalContent = styled(clickOutside)`
   width: 100%;
@@ -73,6 +73,7 @@ const CloseButton = styled.div`
 `;
 
 const ModalContainer = styled.div`
+  color: ${color('text')};
   max-height: 100%;
   padding-left: 30px;
   padding-right: 30px;
