@@ -6,7 +6,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { deleteIdea } from 'services/ideas';
 
 
-import { Segment, List, Button, Icon } from 'semantic-ui-react';
+import { Segment, List, Button, Icon, Message } from 'semantic-ui-react';
 
 import messages from '../../messages';
 
@@ -42,9 +42,6 @@ class InfoSidebarMulti extends React.Component<Props & InjectedIntlProps> {
               <InfoSidebarMultiItem key={ideaId} ideaId={ideaId} />
             ))}
           </List>
-          <p>
-            <FormattedMessage {...messages.multiDragAndDropHelp} />
-          </p>
         </Segment>
       </div>
     );

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import { keys, isEmpty, filter, flow } from 'lodash';
+import { keys, isEmpty, filter, flow, size } from 'lodash';
 import styled from 'styled-components';
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
 
@@ -25,7 +25,7 @@ import Button from 'components/UI/Button';
 import FilterSidebar from './components/FilterSidebar';
 import InfoSidebar from './components/InfoSidebar';
 import IdeaTable from './components/IdeaTable';
-import { Input, Menu, Dropdown, Grid, Search, Sticky, Checkbox } from 'semantic-ui-react';
+import { Input, Menu, Dropdown, Grid, Search, Sticky, Checkbox, Message } from 'semantic-ui-react';
 
 import messages from './messages';
 
@@ -150,6 +150,10 @@ class IdeaManager extends React.PureComponent<Props, State> {
     return !isEmpty(this.state.selectedIdeas);
   }
 
+  areMultipleIdeasSelected = () => {
+    return size(this.state.selectedIdeas) > 1;
+  }
+
   ideaSelectionToIdeas = () => {
     return filter(this.props.ideas, (i) => this.state.selectedIdeas[i.id]);
   }
@@ -169,6 +173,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
     const { selectedIdeas, activeFilterMenu, visibleFilterMenus } = this.state;
     const selectedIdeaIds = keys(this.state.selectedIdeas);
     const showInfoSidebar = this.isAnyIdeaSelected();
+    const multipleIdeasSelected = this.areMultipleIdeasSelected();
 
     return (
       <div ref={this.handleContextRef}>
@@ -198,6 +203,14 @@ class IdeaManager extends React.PureComponent<Props, State> {
                 onChangeProjectFilter={this.props.onChangeProjectFilter}
                 onChangeStatusFilter={this.props.onChangeStatusFilter}
               />
+              {multipleIdeasSelected &&
+                <Message
+                  info={true}
+                  attached="bottom"
+                  icon="info"
+                  content={<FormattedMessage {...messages.multiDragAndDropHelp} />}
+                />
+              }
             </Sticky>
           </LeftColumn>
           <MiddleColumn>
