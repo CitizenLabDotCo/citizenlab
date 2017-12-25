@@ -2,7 +2,6 @@ import * as React from 'react';
 import { injectTFunc } from 'components/T/utils';
 import { IPhaseData } from 'services/phases';
 import { flow } from 'lodash';
-import styled from 'styled-components';
 
 import { Menu, Label } from 'semantic-ui-react';
 import { DropTarget } from 'react-dnd';

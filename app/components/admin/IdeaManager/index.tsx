@@ -25,7 +25,7 @@ import Button from 'components/UI/Button';
 import FilterSidebar from './components/FilterSidebar';
 import InfoSidebar from './components/InfoSidebar';
 import IdeaTable from './components/IdeaTable';
-import { Input, Menu, Dropdown, Grid, Search } from 'semantic-ui-react';
+import { Input, Menu, Dropdown, Grid, Search, Sticky, Checkbox } from 'semantic-ui-react';
 
 import messages from './messages';
 
@@ -40,6 +40,7 @@ type State = {
   selectedIdeas: {[key: string]: boolean},
   activeFilterMenu: TFilterMenu | null,
   visibleFilterMenus: string[];
+  contextRef: any;
 };
 
 const ThreeColumns = styled.div`
@@ -51,7 +52,7 @@ const ThreeColumns = styled.div`
 `;
 
 const LeftColumn = styled.div`
-  width: 250px;
+  width: 260px;
 `;
 
 const MiddleColumn = styled.div`
@@ -60,7 +61,7 @@ const MiddleColumn = styled.div`
 `;
 
 const RightColumn = styled.div`
-  width: 250px;
+  width: 260px;
 
   &.slide-enter {
     transform: translateX(100%);
@@ -70,6 +71,17 @@ const RightColumn = styled.div`
       transition: 200ms;
       transform: translateX(0%);
       opacity: 1;
+    }
+  }
+
+  &.slide-exit {
+    transition: 200ms;
+    transform: translateX(0%);
+    opacity: 1;
+
+    &.slide-exit-active {
+      transform: translateX(100%);
+      opacity: 0.01;
     }
   }
 `;
@@ -85,6 +97,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
       selectedIdeas: {},
       visibleFilterMenus: [],
       activeFilterMenu: null,
+      contextRef: null,
     };
 
     this.globalState = globalState.init<IAdminFullWidth>('AdminFullWidth');
@@ -149,6 +162,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
     this.setState({ activeFilterMenu });
   }
 
+  handleContextRef = contextRef => this.setState({ contextRef });
+
   render() {
     const { ideaSortAttribute, ideaSortDirection, ideaCurrentPageNumber, ideaLastPageNumber, ideas, phases, ideaStatuses } = this.props;
     const { selectedIdeas, activeFilterMenu, visibleFilterMenus } = this.state;
@@ -156,34 +171,34 @@ class IdeaManager extends React.PureComponent<Props, State> {
     const showInfoSidebar = this.isAnyIdeaSelected();
 
     return (
-      <div>
-        <Grid columns={3}>
-          <Grid.Row>
-            <Grid.Column width={16}>
-              <Input icon="search" onChange={this.handleSearchChange} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+      <div ref={this.handleContextRef}>
         <ThreeColumns>
           <LeftColumn>
-            <FilterSidebar
-              activeFilterMenu={activeFilterMenu}
-              visibleFilterMenus={visibleFilterMenus}
-              onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
-              project={this.props.project || null}
-              phases={this.props.phases.all}
-              topics={this.props.topics.all}
-              projects={this.props.projects.all}
-              statuses={this.props.ideaStatuses.all}
-              selectedTopics={this.props.ideaTopicsFilter}
-              selectedPhase={this.props.ideaPhaseFilter}
-              selectedProject={this.props.ideaProjectFilter}
-              selectedStatus={this.props.ideaStatusFilter}
-              onChangePhaseFilter={this.props.onChangePhaseFilter}
-              onChangeTopicsFilter={this.props.onChangeTopicsFilter}
-              onChangeProjectFilter={this.props.onChangeProjectFilter}
-              onChangeStatusFilter={this.props.onChangeStatusFilter}
-            />
+            <Input icon="search" onChange={this.handleSearchChange} />
+          </LeftColumn>
+        </ThreeColumns>
+        <ThreeColumns>
+          <LeftColumn>
+            <Sticky context={this.state.contextRef} offset={100}>
+              <FilterSidebar
+                activeFilterMenu={activeFilterMenu}
+                visibleFilterMenus={visibleFilterMenus}
+                onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
+                project={this.props.project || null}
+                phases={this.props.phases.all}
+                topics={this.props.topics.all}
+                projects={this.props.projects.all}
+                statuses={this.props.ideaStatuses.all}
+                selectedTopics={this.props.ideaTopicsFilter}
+                selectedPhase={this.props.ideaPhaseFilter}
+                selectedProject={this.props.ideaProjectFilter}
+                selectedStatus={this.props.ideaStatusFilter}
+                onChangePhaseFilter={this.props.onChangePhaseFilter}
+                onChangeTopicsFilter={this.props.onChangeTopicsFilter}
+                onChangeProjectFilter={this.props.onChangeProjectFilter}
+                onChangeStatusFilter={this.props.onChangeStatusFilter}
+              />
+            </Sticky>
           </LeftColumn>
           <MiddleColumn>
             <IdeaTable
@@ -204,9 +219,11 @@ class IdeaManager extends React.PureComponent<Props, State> {
           </MiddleColumn>
           <CSSTransition in={showInfoSidebar} timeout={200} mountOnEnter={true} unmountOnExit={true} classNames="slide">
             <RightColumn>
-              <InfoSidebar
-                ideaIds={selectedIdeaIds}
-              />
+              <Sticky context={this.state.contextRef} offset={100}>
+                <InfoSidebar
+                  ideaIds={selectedIdeaIds}
+                />
+              </Sticky>
             </RightColumn>
           </CSSTransition>
         </ThreeColumns>

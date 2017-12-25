@@ -53,9 +53,9 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.multiDragAndDropHelp',
     defaultMessage: 'Drag and drop the ideas on an item in the left sidemenu to assign them all at once.',
   },
-  phasesTab: {
-    id: 'app.components.admin.IdeaManager.phasesTab',
-    defaultMessage: 'Phases',
+  timelineTab: {
+    id: 'app.components.admin.IdeaManager.timelineTab',
+    defaultMessage: 'Timeline',
   },
   topicsTab: {
     id: 'app.components.admin.IdeaManager.topicsTab',

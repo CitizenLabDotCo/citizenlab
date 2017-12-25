@@ -30,7 +30,7 @@ class FilterSidebarProjects extends React.Component<Props> {
 
   render() {
     return (
-      <Menu secondary={true} vertical={true}>
+      <Menu secondary={true} vertical={true} fluid={true}>
         <Menu.Item onClick={this.clearFilter} active={!this.props.selectedProject || this.props.selectedProject.length === 0}>
           <FormattedMessage {...messages.allIdeas} />
         </Menu.Item>

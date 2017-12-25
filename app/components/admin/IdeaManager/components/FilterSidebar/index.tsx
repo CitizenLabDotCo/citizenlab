@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { findIndex } from 'lodash';
+import { findIndex, isEmpty } from 'lodash';
 import { IPhaseData } from 'services/phases';
 import { ITopicData } from 'services/topics';
 import { IProjectData } from 'services/projects';
@@ -41,10 +41,16 @@ class FilterSidebar extends React.Component<Props & InjectedIntlProps> {
     this.props.onChangeActiveFilterMenu(newActiveFilterMenu);
   }
 
+  tabName = (message: ReactIntl.FormattedMessage.MessageDescriptor, selection) => {
+    const title = this.props.intl.formatMessage(message);
+    const selectionSign = isEmpty(selection) ? '' : '*';
+    return `${title}${selectionSign}`;
+  }
+
   menuItems = {
     phases: () => (
       {
-        menuItem: this.props.intl.formatMessage(messages.phasesTab),
+        menuItem: this.tabName(messages.timelineTab, this.props.selectedPhase),
         id: 'phases',
         render: () => (
           <Tab.Pane>
@@ -55,7 +61,7 @@ class FilterSidebar extends React.Component<Props & InjectedIntlProps> {
     ),
     topics: () => (
       {
-        menuItem: this.props.intl.formatMessage(messages.topicsTab),
+        menuItem: this.tabName(messages.topicsTab, this.props.selectedTopics),
         id: 'topics',
         render: () => (
           <Tab.Pane>
@@ -66,7 +72,7 @@ class FilterSidebar extends React.Component<Props & InjectedIntlProps> {
     ),
     projects: () => (
       {
-        menuItem: this.props.intl.formatMessage(messages.projectsTab),
+        menuItem: this.tabName(messages.projectsTab, this.props.selectedProject),
         id: 'projects',
         render: () => (
           <Tab.Pane>
@@ -77,7 +83,7 @@ class FilterSidebar extends React.Component<Props & InjectedIntlProps> {
     ),
     statuses: () => (
       {
-        menuItem: this.props.intl.formatMessage(messages.statusesTab),
+        menuItem: this.tabName(messages.statusesTab, this.props.selectedStatus),
         id: 'statuses',
         render: () => (
           <Tab.Pane>

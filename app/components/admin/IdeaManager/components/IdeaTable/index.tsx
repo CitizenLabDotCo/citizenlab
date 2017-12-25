@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { clone, omit } from 'lodash';
+import { clone, omit, every, fromPairs } from 'lodash';
 
 import { IIdeaData } from 'services/ideas';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 
 // Components
-import { Table } from 'semantic-ui-react';
+import { Table, Checkbox } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
 import Row from './Row';
@@ -65,6 +65,15 @@ export default class IdeaTable extends React.Component<Props, State> {
     }
   }
 
+  toggleSelectAll = () => {
+    if (this.allSelected()) {
+      this.props.onChangeIdeaSelection({});
+    } else {
+      const newSelection = fromPairs(this.props.ideas && this.props.ideas.map((idea) => [idea.id, true]));
+      this.props.onChangeIdeaSelection(newSelection);
+    }
+  }
+
   singleSelectIdea = (idea) => () => {
     this.props.onChangeIdeaSelection({ [idea.id]: true });
   }
@@ -77,6 +86,10 @@ export default class IdeaTable extends React.Component<Props, State> {
     this.props.onIdeaChangePage && this.props.onIdeaChangePage(page);
   }
 
+  allSelected = () => {
+    return every(this.props.ideas, (idea) => this.props.selectedIdeas[idea.id]);
+  }
+
   render() {
     const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, activeFilterMenu, statuses } = this.props;
 
@@ -84,7 +97,9 @@ export default class IdeaTable extends React.Component<Props, State> {
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell width={1} />
+            <Table.HeaderCell width={1}>
+              <Checkbox checked={this.allSelected()} onChange={this.toggleSelectAll}/>
+            </Table.HeaderCell>
             <Table.HeaderCell width={4}>
               <FormattedMessage {...messages.title} />
             </Table.HeaderCell>

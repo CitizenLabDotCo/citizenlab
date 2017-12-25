@@ -30,7 +30,7 @@ class FilterSidebarStatuses extends React.Component<Props> {
 
   render() {
     return (
-      <Menu secondary={true} vertical={true}>
+      <Menu secondary={true} vertical={true} fluid={true}>
         <Menu.Item onClick={this.clearFilter} active={!this.props.selectedStatus}>
           <FormattedMessage {...messages.allIdeas} />
         </Menu.Item>
