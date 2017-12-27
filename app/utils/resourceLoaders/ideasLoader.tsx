@@ -109,6 +109,7 @@ export const injectIdeasLoader = <TOriginalProps extends {}>(WrappedComponent: R
 
       this.ideasObservable = ideasStream({
         queryParameters: queryParams,
+        cacheStream: false,
       }).observable.subscribe((data) => {
         const currentPageNumber = getPageNumberFromUrl(data.links.self) || 1;
         const lastPageNumber = getPageNumberFromUrl(data.links.last) || currentPageNumber;
