@@ -2,7 +2,7 @@ class Project < ApplicationRecord
 
   @@sanitizer = Rails::Html::WhiteListSanitizer.new
 
-  mount_base64_uploader :header_bg, HeaderBgUploader
+  mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
 
   has_many :ideas, dependent: :destroy
