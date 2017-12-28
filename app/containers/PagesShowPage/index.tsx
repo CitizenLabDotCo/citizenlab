@@ -170,7 +170,7 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
       return (
         <ContentContainer>
           <SpinnerContainer>
-            <Spinner color="#84939E" />
+            <Spinner size="28px" color="#84939E" />
           </SpinnerContainer>
         </ContentContainer>
       );

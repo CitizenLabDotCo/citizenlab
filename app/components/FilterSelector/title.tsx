@@ -46,7 +46,7 @@ const Container = styled.div`
 `;
 
 type Props = {
-  title: string,
+  title: string | JSX.Element,
   deployed: boolean,
   onClick: Function,
   baseID: string,

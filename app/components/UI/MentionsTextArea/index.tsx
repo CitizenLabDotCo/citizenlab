@@ -169,12 +169,11 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
 
   render() {
     const { name, placeholder, value, error, children, rows } = this.props;
-    const hasError = (_.isString(error) && !_.isEmpty(error));
     const className = this.props['className'];
 
     if (this.style) {
       return (
-        <Container className={className} hasError={hasError}>
+        <Container className={className}>
           <MentionsInput
             style={this.style}
             className="textareaWrapper"

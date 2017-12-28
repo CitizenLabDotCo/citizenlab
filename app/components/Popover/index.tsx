@@ -98,7 +98,6 @@ export default class Popover extends React.PureComponent<Props> {
         {this.props.open &&
           <CSSTransition
             classNames="dropdown"
-            key={1}
             timeout={timeout}
             mountOnEnter={true}
             unmountOnExit={true}

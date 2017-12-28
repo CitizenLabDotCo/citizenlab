@@ -4,7 +4,6 @@ import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
-import draftjsToHtml from 'draftjs-to-html';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -13,10 +12,10 @@ import messages from './messages';
 // Services
 import { projectBySlugStream, updateProject,  IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
+import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // Components
 import Label from 'components/UI/Label';
@@ -30,6 +29,7 @@ import styled from 'styled-components';
 
 // Typing
 import { API } from 'typings';
+import { getLocalized } from 'utils/i18n';
 
 interface Props {
   params: {
@@ -71,30 +71,24 @@ class ProjectDescription extends React.Component<Props, State> {
 
   componentWillMount () {
     if (this.props.params.slug) {
+      const locale$ = localeStream().observable;
+      const project$ = projectBySlugStream(this.props.params.slug).observable;
+
       this.setState({ loading: true });
 
       this.subscriptions.push(
         Rx.Observable.combineLatest(
-          projectBySlugStream(this.props.params.slug).observable,
-          localeStream().observable,
-          currentTenantStream().observable,
+          locale$,
+          project$
         )
-        .subscribe(([response, locale, currentTenant]) => {
-          let editorState = this.state.editorState;
-
-          if (response.data.attributes.description_multiloc) {
-            const blocksFromHtml = convertFromHTML(response.data.attributes.description_multiloc[locale] || '');
-            const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
-            editorState = EditorState.createWithContent(editorContent);
-          }
-
-          this.setState({
+        .subscribe(([locale, project]) => {
+          this.setState((state) => ({
             locale,
-            editorState,
-            data: response.data,
+            editorState: (project.data.attributes.description_multiloc ? getEditorStateFromHtmlString(project.data.attributes.description_multiloc[locale]) : state.editorState),
+            data: project.data,
             loading: false,
             diff: {},
-          });
+          }));
         })
       );
     }
@@ -105,8 +99,10 @@ class ProjectDescription extends React.Component<Props, State> {
   }
 
   changeDesc = (editorState: EditorState): void => {
-    const { diff } = this.state;
-    _.set(diff, `description_multiloc.${this.state.locale}`, draftjsToHtml(convertToRaw(editorState.getCurrentContent())));
+    const { diff, locale } = this.state;
+    const htmlDescription = getHtmlStringFromEditorState(editorState);
+
+    _.set(diff, `description_multiloc.${locale}`, htmlDescription);
 
     this.setState({
       editorState,
