@@ -1,4 +1,4 @@
-class AvatarUploader < CarrierWave::Uploader::Base
+class ProjectHeaderBgUploader < CarrierWave::Uploader::Base
   include BaseUploader
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -35,18 +35,18 @@ class AvatarUploader < CarrierWave::Uploader::Base
   #   process resize_to_fit: [50, 50]
   # end
 
-  version :small do
-    process resize_to_fill: [32,32]
+  version :large do
+    process resize_to_fill: [1440,360]
     process optimize: [{ quality: 90, quiet: true }]
   end
 
   version :medium do
-    process resize_to_fill: [200,200]
+    process resize_to_fill: [720,180]
     process optimize: [{ quality: 90, quiet: true }]
   end
 
-  version :large do
-    process resize_to_fill: [640,640]
+  version :small do
+    process resize_to_fill: [520,250]
     process optimize: [{ quality: 90, quiet: true }]
   end
 
