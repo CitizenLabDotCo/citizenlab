@@ -247,8 +247,8 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
             <SectionField>
               <Label><FormattedMessage {...messages.datesLabel} /></Label>
               <DateRangePicker
-                startDateId={'start-date'}
-                endDateId={'end-date'}
+                startDateId={'startDate'}
+                endDateId={'endDate'}
                 startDate={startDate} // momentPropTypes.momentObj or null,
                 endDate={endDate} // momentPropTypes.momentObj or null,
                 onDatesChange={this.handleDateUpdate} // PropTypes.func.isRequired,

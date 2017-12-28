@@ -181,6 +181,7 @@ export default defineMessages({
   editIdea: {
     id: 'app.components.IdeasShow.editIdea',
     defaultMessage: 'Edit idea',
+  },
   lastUpdated: {
     id: 'app.components.IdeasShow.lastUpdated',
     defaultMessage: 'Last modified {modificationTime}',
