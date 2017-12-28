@@ -596,10 +596,14 @@ class IdeasShow extends React.PureComponent<Props, State> {
         }).map((granted) => ({ authUser, granted }));
       }).subscribe(({ authUser, granted }) => {
         this.setState((state: State) => {
-          let moreActions = [{
-            label: <FormattedMessage {...messages.reportAsSpam} />,
-            handler: this.openSpamModal
-          }];
+          // let moreActions: IAction[] = [
+          //   {
+          //     label: <FormattedMessage {...messages.reportAsSpam} />,
+          //     handler: this.openSpamModal
+          //   }
+          // ];
+
+          let moreActions: any[] = [];
 
           if (granted) {
             moreActions = [
@@ -658,7 +662,7 @@ class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   editIdea = () => {
-    browserHistory.push(`ideas/edit/${this.props.ideaId}`);
+    browserHistory.push(`/ideas/edit/${this.props.ideaId}`);
   }
 
   render() {

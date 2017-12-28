@@ -38,6 +38,15 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
 import { eventStream, updateEvent, addEvent, IEvent, IEventData, IEvents, IUpdatedEventProperties } from 'services/events';
 
+// styling
+import styled from 'styled-components';
+
+const Container = styled.div`
+  .SingleDatePickerInput {
+    border-radius: 5px 0px 0px 5px;
+  }
+`;
+
 type Props = {
   params: {
     id: string | null,
@@ -55,7 +64,7 @@ interface State {
     [fieldName: string]: API.Error[]
   };
   saving: boolean;
-  focusedInput: 'START_DATE' | 'END_DATE' | null;
+  focusedInput: 'startDate' | 'endDate' | null;
   descState: EditorState;
   saved: boolean;
 }
@@ -143,7 +152,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
     };
   }
 
-  handleDateFocusChange = (focusedInput) => {
+  handleDateFocusChange = (focusedInput: 'startDate' | 'endDate') => {
     this.setState({ focusedInput });
   }
 
@@ -188,7 +197,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 
       return (
-        <div>
+        <Container>
           <SectionTitle>
             {this.state.event && <FormattedMessage {...messages.editEventTitle} />}
             {!this.state.event && <FormattedMessage {...messages.createEventTitle} />}
@@ -254,8 +263,8 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
                 messageSuccess: messages.saveSuccessMessage,
               }}
             />
-        </form>
-        </div>
+          </form>
+        </Container>
       );
     }
 

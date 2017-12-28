@@ -185,7 +185,7 @@ export default class Editor extends React.PureComponent<Props, State> {
     let { value, placeholder, error, toolbarConfig } = this.props;
     const { id } = this.props;
     const { focussed } = this.state;
-    const hasError = (_.isString(error) && !_.isEmpty(error));
+    const hasError = (!_.isNull(error) && !_.isUndefined(error) && !_.isEmpty(error));
 
     value = (value || this.emptyEditorState);
     placeholder = (placeholder || '');

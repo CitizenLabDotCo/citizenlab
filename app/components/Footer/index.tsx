@@ -176,11 +176,14 @@ const LanguageSelectionWrapper = styled.div`
   }
 `;
 
-type Props = {};
+type Props = {
+  showCityLogoSection?: boolean | undefined;
+};
 
 type State = {
   locale: string | null;
   currentTenant: ITenant | null;
+  showCityLogoSection: boolean;
   languageOptions: {
     key: string;
     value: string;
@@ -192,11 +195,16 @@ class Footer extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
+  public static defaultProps: Partial<Props> = {
+    showCityLogoSection: true
+  };
+
   constructor(props: Props) {
     super(props as any);
     this.state = {
       locale: null,
       currentTenant: null,
+      showCityLogoSection: false,
       languageOptions: [],
     };
     this.subscriptions = [];
@@ -205,6 +213,8 @@ class Footer extends React.PureComponent<Props, State> {
   componentWillMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
+
+    this.setState({ showCityLogoSection: !!this.props.showCityLogoSection });
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -232,7 +242,7 @@ class Footer extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, currentTenant } = this.state;
+    const { locale, currentTenant, showCityLogoSection } = this.state;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -245,10 +255,12 @@ class Footer extends React.PureComponent<Props, State> {
 
       return (
         <Container>
-          <FirstLine>
-            {currentTenantLogo && <TenantLogo src={currentTenantLogo} />}
-            <TenantSlogan>{slogan}</TenantSlogan>
-          </FirstLine>
+          {showCityLogoSection &&
+            <FirstLine>
+              {currentTenantLogo && <TenantLogo src={currentTenantLogo} />}
+              <TenantSlogan>{slogan}</TenantSlogan>
+            </FirstLine>
+          }
 
           <SecondLine>
             <PagesNav>
