@@ -90,5 +90,6 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 # gem 'omniauth-mydigipass', github: 'vasco-data-security/omniauth-mydigipass', branch: 'oauth-eid-specification'
 gem "bunny", ">= 2.7.2"
+gem 'carrierwave-imageoptimizer'
 
 gem 'public_api', path: 'engines/public_api'

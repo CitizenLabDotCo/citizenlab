@@ -109,6 +109,9 @@ GEM
     carrierwave-base64 (2.5.0)
       carrierwave (>= 0.8.0)
       mime-types (~> 3.0)
+    carrierwave-imageoptimizer (1.4.0)
+      carrierwave (>= 0.8, < 2.0)
+      image_optimizer (~> 1.6)
     case_transform (0.2)
       activesupport
     ci_reporter (2.0.0)
@@ -170,6 +173,7 @@ GEM
       domain_name (~> 0.5)
     i18n (0.9.1)
       concurrent-ruby (~> 1.0)
+    image_optimizer (1.7.1)
     ipaddress (0.8.3)
     json (2.1.0)
     json-schema (2.8.0)
@@ -396,6 +400,7 @@ DEPENDENCIES
   byebug
   carrierwave (~> 1.1.0)
   carrierwave-base64 (~> 2.5)
+  carrierwave-imageoptimizer
   ci_reporter_rspec
   counter_culture (~> 1.0)
   database_cleaner
