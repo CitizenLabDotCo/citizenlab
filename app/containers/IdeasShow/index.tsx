@@ -22,6 +22,7 @@ import Author from './Author';
 import IdeaMeta from './IdeaMeta';
 import Unauthenticated from './Unauthenticated';
 import IdeaMap from './IdeaMap';
+import Activities from './Activities';
 import Button from 'components/UI/Button';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import SpamReportForm from 'containers/SpamReport';
@@ -776,12 +777,13 @@ class IdeasShow extends React.PureComponent<Props, State> {
                       {createdAt &&
                         <TimeAgo>
                           <FormattedRelative value={createdAt} />
+                          <Activities ideaId={this.props.ideaId} />
                         </TimeAgo>
                       }
                     </AuthorMeta>
                   </AuthorContainer>
 
-                  {ideaLocation && !showMap && 
+                  {ideaLocation && !showMap &&
                     <LocationButton onClick={this.handleMapToggle}>
                       <LocationLabel><FormattedMessage {...messages.openMap} /></LocationLabel>
                       <LocationLabelMobile><FormattedMessage {...messages.Map} /></LocationLabelMobile>
@@ -789,7 +791,7 @@ class IdeasShow extends React.PureComponent<Props, State> {
                     </LocationButton>
                   }
 
-                  {ideaLocation && showMap && 
+                  {ideaLocation && showMap &&
                     <LocationButton onClick={this.handleMapToggle}>
                       <LocationLabel><FormattedMessage {...messages.closeMap} /></LocationLabel>
                       <LocationLabelMobile><FormattedMessage {...messages.Map} /></LocationLabelMobile>
@@ -817,7 +819,7 @@ class IdeasShow extends React.PureComponent<Props, State> {
                   </TransitionGroup>
                 }
 
-                {ideaLocation && showMap && 
+                {ideaLocation && showMap &&
                   <MapPaddingBottom />
                 }
 
