@@ -14,6 +14,10 @@ class Idea < ApplicationRecord
   has_many :areas_ideas#, dependent: :destroy
   # has_many :areas, through: :areas_ideas
   has_and_belongs_to_many :areas
+
+  has_many :ideas_phases, dependent: :destroy
+  has_many :phases, through: :ideas_phases
+
   has_many :comments, dependent: :destroy
   has_many :votes, as: :votable, dependent: :destroy
   has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
@@ -62,6 +66,11 @@ class Idea < ApplicationRecord
   scope :with_some_areas, (Proc.new do |area_ids|
     joins(:areas_ideas)
       .where(areas_ideas: {area_id: area_ids})
+  end)
+
+  scope :in_phase, (Proc.new do |phase_id|
+    joins(:ideas_phases)
+      .where(ideas_phases: {phase_id: phase_id})
   end)
 
   scope :order_new, -> (direction=:desc) {order(published_at: direction)}

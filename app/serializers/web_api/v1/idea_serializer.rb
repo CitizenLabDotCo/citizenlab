@@ -4,6 +4,7 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
   has_many :topics
   has_many :areas
   has_many :idea_images, serializer: WebApi::V1::ImageSerializer
+  has_many :phases
 
   belongs_to :author
   belongs_to :project

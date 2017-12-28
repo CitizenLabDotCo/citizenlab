@@ -9,7 +9,7 @@ class WebApi::V1::ActivitiesController < ApplicationController
       action: ['published', 'changed_status', 'changed_title', 'changed_body']
     )
       .includes(:user)
-      .order(:acted_at)
+      .order(acted_at: :desc)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
