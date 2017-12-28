@@ -8,8 +8,16 @@
 
 Rails.application.eager_load!
 
+# Since image optimization can be quite slow, we disable any carrierwave image
+# processing while seeding. This massively speeds up the seeding process, at
+# the expense of not having the proper image dimensions while developing.
+CarrierWave.configure do |config|
+  config.enable_processing = false
+end
+
 # Possible values: large, medium, small, generic, offline, got
 SEED_SIZE = ENV.fetch("SEED_SIZE")
+
 
 def create_comment_tree(idea, parent, depth=0)
   amount = rand(5/(depth+1))
