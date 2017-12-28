@@ -48,7 +48,7 @@ export type Props = {
   value?: string | null | undefined;
   type: 'text' | 'email' | 'password';
   placeholder?: string | null | undefined;
-  error?: string | null | undefined;
+  error?: string | JSX.Element | null | undefined;
   onChange: (arg: string) => void;
   onFocus?: (arg: React.FormEvent<HTMLInputElement>) => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;
@@ -72,7 +72,9 @@ export default class Input extends React.PureComponent<Props, State> {
     let { value, placeholder, error } = this.props;
     const className = this.props['className'];
     const { id, type } = this.props;
-    const hasError = (_.isString(error) && !_.isEmpty(error));
+    const hasError = (!_.isNull(error) && !_.isUndefined(error) && !_.isEmpty(error));
+
+    console.log(error);
 
     value = (value || '');
     placeholder = (placeholder || '');

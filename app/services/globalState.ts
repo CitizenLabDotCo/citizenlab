@@ -11,17 +11,14 @@ import { setTimeout } from 'timers';
 
 export interface IIdeasNewPageGlobalState {
   title: string | null;
-  description: EditorState;
+  description: string | null;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
-  location: any;
-  titleError: string | null;
-  descriptionError: string | null;
+  location: string;
   submitError: boolean;
   processing: boolean;
   ideaId: string | null;
   imageFile: ImageFile[] | null;
-  imageBase64: string | null;
   imageId: string | null;
   imageChanged: boolean;
 }
@@ -81,7 +78,7 @@ class GlobalState {
     this.stream.observable.subscribe();
   }
 
-  init<T>(propertyName: keyof State, initialState?: T): IGlobalStateService<T> {
+  init<T>(propertyName: keyof State, initialState?: T) {
     const observable: Rx.Observable<T> = this.stream.observable
       .map(state => state[propertyName])
       .filter(filteredState => _.isObject(filteredState) && !_.isEmpty(filteredState))
@@ -103,7 +100,7 @@ class GlobalState {
       observable,
       set,
       get
-    };
+    } as IGlobalStateService<T>;
   }
 
   set<T>(propertyName: keyof State, updatedStateProperties: Partial<T>) {
@@ -115,10 +112,10 @@ class GlobalState {
     this.stream.observer.next(stateInput);
   }
 
-  get<T>(propertyName: keyof State): Promise<T> {
+  get<T>(propertyName: keyof State) {
     return this.stream.observable.map((state) => {
       return _.has(state, propertyName) ? state[propertyName] : null;
-    }).first().toPromise() as any;
+    }).first().toPromise() as Promise<T>;
   }
 }
 
