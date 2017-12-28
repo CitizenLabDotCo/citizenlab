@@ -266,7 +266,6 @@ type State = {
   images: ImageFile[] | null;
   errorMessage: string | null;
   processing: boolean;
-  isMounted: boolean;
   canAnimate: boolean;
   canAnimateTimeout: any;
 };
@@ -278,7 +277,6 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
       images: [],
       errorMessage: null,
       processing: false,
-      isMounted: false,
       canAnimate: false,
       canAnimateTimeout: null
     };
@@ -290,10 +288,6 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
       this.props.onUpdate(images);
       this.setState({ images });
     }
-  }
-
-  componentDidMount() {
-    setTimeout(() => this.setState({ isMounted: true }), 2000);
   }
 
   componentWillUnmount() {
@@ -314,10 +308,10 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     if (!shallowCompare(this.props, nextProps)) {
       const images = (nextProps.images !== this.state.images ? await this.getImageFiles(nextProps.images) : this.state.images);
       const errorMessage = (nextProps.errorMessage && nextProps.errorMessage !== this.state.errorMessage ? nextProps.errorMessage : this.state.errorMessage);
-      const processing = (this.state.canAnimate && this.state.isMounted && !errorMessage && _.size(images) > _.size(this.state.images));
+      const processing = (this.state.canAnimate && !errorMessage && _.size(images) > _.size(this.state.images));
 
       if (processing) {
-        setTimeout(() => this.setState({ processing: false }), 2000);
+        setTimeout(() => this.setState({ processing: false }), 1800);
       }
 
       this.setState({
@@ -413,7 +407,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     const className = this.props['className'];
     const { maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio } = this.props;
     const { formatMessage } = this.props.intl;
-    const { errorMessage, processing, isMounted, canAnimate } = this.state;
+    const { errorMessage, processing, canAnimate } = this.state;
     const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - _.size(images)} ${formatMessage(messages.remaining)})` : null);
 
     images = (_.compact(images) || null);
@@ -424,7 +418,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     const imageList = ((images && images.length > 0 && (maxNumberOfImages !== 1 || (maxNumberOfImages === 1 && !processing))) ? (
       images.map((image, index) => {
         const hasSpacing = (maxNumberOfImages !== 1 && index !== 0 ? 'hasSpacing' : '');
-        const animate = (canAnimate && isMounted && maxNumberOfImages !== 1 ? 'animate' : '');
+        const animate = (canAnimate && maxNumberOfImages !== 1 ? 'animate' : '');
         const timeout = !_.isEmpty(animate) ? { enter: 2300, exit: 300 } : 0;
         const enter = !_.isEmpty(animate);
         const exit = !_.isEmpty(animate);

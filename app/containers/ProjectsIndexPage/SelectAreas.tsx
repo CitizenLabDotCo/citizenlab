@@ -12,8 +12,7 @@ import { areasStream, IAreas } from 'services/areas';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
@@ -28,7 +27,7 @@ type State = {
   areas: IAreas | null;
 };
 
-class SelectAreas extends React.PureComponent<Props & InjectedIntlProps, State> {
+class SelectAreas extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -80,7 +79,6 @@ class SelectAreas extends React.PureComponent<Props & InjectedIntlProps, State> 
   render() {
     const { currentTenant, locale, areas } = this.state;
     const { selectedAreas } =  this.props;
-    const { formatMessage } = this.props.intl;
     let options: any = [];
 
     if (currentTenant && locale && areas && areas.data && areas.data.length > 0) {
@@ -92,19 +90,23 @@ class SelectAreas extends React.PureComponent<Props & InjectedIntlProps, State> 
           value: area.id
         };
       });
+
+      if (options && options.length > 0) {
+        return (
+          <FilterSelector
+            title={<FormattedMessage {...messages.areasTitle} />}
+            name="areas"
+            selected={selectedAreas}
+            values={options}
+            onChange={this.handleOnChange}
+            multiple={true}
+          />
+        );
+      }
     }
 
-    return (
-      <FilterSelector
-        title={formatMessage(messages.areasTitle)}
-        name="areas"
-        selected={selectedAreas}
-        values={options}
-        onChange={this.handleOnChange}
-        multiple={true}
-      />
-    );
+    return null;
   }
 }
 
-export default injectIntl<Props>(SelectAreas);
+export default SelectAreas;

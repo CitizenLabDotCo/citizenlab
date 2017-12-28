@@ -121,10 +121,12 @@ export default class MoreActionsMenu extends React.PureComponent<Props, State> {
             theme="dark"
             position="bottom"
           >
-            {actions.map((action) => (
+            {actions.map((action, index) => (
               <Action
                 style="text"
-                key={action.label}
+                width="100%"
+                justify="left"
+                key={index}
                 onClick={action.handler}
                 icon={action.icon}
                 text={action.label}

@@ -146,8 +146,6 @@ export default class Tooltip extends React.PureComponent<Props, State> {
       exit: exitTimeout
     };
 
-    console.log(children);
-
     return (
       <TransitionGroup>
         {visible &&

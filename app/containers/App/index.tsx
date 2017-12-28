@@ -119,6 +119,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     ];
   }
 
+
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
