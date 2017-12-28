@@ -81,7 +81,7 @@ class ProjectsShowPage extends React.Component {
     };
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     this.props.loadProjectBySlug(this.props.params.slug);
   }
 
