@@ -20,7 +20,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, color } from 'utils/styleUtils';
 
 const ModalContent = styled(clickOutside)`
   backface-visibility: hidden;
@@ -71,15 +71,11 @@ const CloseButton = styled.div`
 `;
 
 const ModalContainer = styled.div`
-  align-items: center;
-  backface-visibility: hidden;
-  background: rgba(0, 0, 0, 0.8);
-  bottom: 0;
-  display: flex;
-  height: 100vh;
-  justify-content: center;
-  left: 0;
-  padding: 30px;
+  color: ${color('text')};
+  max-height: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+  z-index: 1001;
   position: fixed;
   right: 0;
   top: 0;
