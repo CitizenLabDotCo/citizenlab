@@ -340,7 +340,7 @@
   "app.containers.IdeasShow.openMap": "Show idea on map",
   "app.containers.IdeasShow.parentCommentAuthor": "{authorNameComponent} said",
   "app.containers.IdeasShow.placeholderComment": "Tell us your thoughts!",
-  "app.containers.IdeasShow.postedIn": "Posted in",
+  "app.containers.IdeasShow.postedIn": "Posted in {projectLink}",
   "app.containers.IdeasShow.publishComment": "Post comment",
   "app.containers.IdeasShow.shareCTA": "Share this idea",
   "app.containers.IdeasShow.shareOnFacebook": "Share on Facebook",
