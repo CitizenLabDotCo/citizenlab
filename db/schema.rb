@@ -277,6 +277,7 @@ ActiveRecord::Schema.define(version: 20171221145649) do
     t.string "header_bg"
     t.integer "ideas_count", default: 0, null: false
     t.string "visible_to", default: "public", null: false
+    t.jsonb "description_preview_multiloc", default: {}
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
