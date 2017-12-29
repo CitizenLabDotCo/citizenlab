@@ -12,7 +12,7 @@ export default defineMessages({
   },
   postedIn: {
     id: 'app.containers.IdeasShow.postedIn',
-    defaultMessage: 'Posted in',
+    defaultMessage: 'Posted in {projectLink}',
   },
   closeMap: {
     id: 'app.containers.IdeasShow.closeMap',
