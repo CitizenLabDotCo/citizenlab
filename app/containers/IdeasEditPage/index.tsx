@@ -171,27 +171,51 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
         );
       }
 
+      const selectedProject$ = project$.map((project) => {
+        if (project) {
+          return {
+            value: project.data.id,
+            label: getLocalized(project.data.attributes.title_multiloc, locale, currentTenantLocales)
+          };
+        }
+
+        return null;
+      });
+
+      const selectedTopics$ = topics$.map((topics) => {
+        if (topics && topics.length > 0) {
+          return topics.map((topic) => {
+            return {
+              value: topic.data.id,
+              label: getLocalized(topic.data.attributes.title_multiloc, locale, currentTenantLocales)
+            };
+          });
+        }
+
+        return null;
+      });
+
       return Rx.Observable.combineLatest(
         locale$,
         idea$,
         ideaImage$,
-        project$.map(project => project ? { value: project.data.id, label: getLocalized(project.data.attributes.title_multiloc, locale, currentTenantLocales) } : null),
-        topics$.map(topics => topics ? topics.map((topic) => ({ value: topic.data.id, label: getLocalized(topic.data.attributes.title_multiloc, locale, currentTenantLocales) })) : null),
+        selectedProject$,
+        selectedTopics$,
         granted$
       );
     });
 
     this.subscriptions = [
-      ideaWithRelationships$.subscribe(([locale, idea, ideaImage, project, topics, granted]) => {
+      ideaWithRelationships$.subscribe(([locale, idea, ideaImage, selectedProject, selectedTopics, granted]) => {
         if (granted) {
           this.setState({
             locale,
+            selectedTopics,
+            selectedProject,
             loaded: true,
             ideaSlug: idea.data.attributes.slug,
             titleMultiloc: idea.data.attributes.title_multiloc,
             descriptionMultiloc: idea.data.attributes.body_multiloc,
-            selectedTopics: topics,
-            selectedProject: project,
             location: idea.data.attributes.location_description,
             imageFile: (ideaImage && ideaImage.file ? [ideaImage.file] : null),
             imageId: (ideaImage && ideaImage.id ? ideaImage.id : null)
