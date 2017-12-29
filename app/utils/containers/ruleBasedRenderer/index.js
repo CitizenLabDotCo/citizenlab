@@ -15,7 +15,7 @@ const getRuledComponent = (isAutorized, { children }) => {
 };
 
 // here we mostly select the specific authorization check we want to use
-class RuleBasedRenderer extends React.Component {
+class RuleBasedRenderer extends React.PureComponent {
   constructor(props) {
     super();
     const { action } = props;

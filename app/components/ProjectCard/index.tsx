@@ -137,12 +137,12 @@ const ProjectDescription = styled.div`
   margin-top: 10px;
 
   /* see https://stackoverflow.com/questions/3922739/limit-text-length-to-n-lines-using-css */
-  overflow: hidden;
+  /* overflow: hidden;
   display: block;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  max-height: 60px;
+  max-height: 60px; */
 
   ${media.phone`
     display: none;

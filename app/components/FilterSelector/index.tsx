@@ -36,10 +36,10 @@ const Container = styled(clickOutside)`
 
 interface Props {
   id?: string | undefined;
-  title: string;
+  title: string | JSX.Element;
   name: string;
   values: {
-    text: string,
+    text: string | JSX.Element,
     value: any
   }[];
   onChange?: (value: any) => void;
@@ -49,7 +49,7 @@ interface Props {
 
 interface State {
   deployed: boolean;
-  currentTitle: string;
+  currentTitle: string | JSX.Element;
 }
 
 export default class FilterSelector extends React.PureComponent<Props, State> {
@@ -70,13 +70,21 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
   }
 
   getTitle = (selection, values = this.props.values, multiple = this.props.multiple, title = this.props.title) => {
-    let newTitle = '';
+    let newTitle: any = '';
 
     if (!multiple && _.isArray(selection) && !_.isEmpty(selection)) {
       const selected = _.find(values, { value: selection[0] });
       newTitle = selected ? selected.text : '';
     } else if (_.isArray(selection) && !_.isEmpty(selection)) {
-      newTitle = `${title} (${selection.length})`;
+      if (_.isString(title)) {
+        newTitle = `${title} (${selection.length})`;
+      } else {
+        newTitle = [
+          title,
+          ' ',
+          <span key={1}>({selection.length})</span>
+        ];
+      }
     } else {
       newTitle = title;
     }

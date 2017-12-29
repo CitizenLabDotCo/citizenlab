@@ -12,8 +12,7 @@ import { topicsStream, ITopics } from 'services/topics';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 type Props = {
@@ -28,7 +27,7 @@ type State = {
   selectedValues: string[];
 };
 
-class SelectTopic extends React.PureComponent<Props & InjectedIntlProps, State> {
+class SelectTopic extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -69,7 +68,6 @@ class SelectTopic extends React.PureComponent<Props & InjectedIntlProps, State> 
 
   render() {
     const { currentTenant, locale, topics, selectedValues } = this.state;
-    const { formatMessage } = this.props.intl;
     let options: any = [];
 
     if (currentTenant && locale && topics && topics.data && topics.data.length > 0) {
@@ -81,19 +79,23 @@ class SelectTopic extends React.PureComponent<Props & InjectedIntlProps, State> 
           value: topic.id
         };
       });
+
+      if (options && options.length > 0) {
+        return (
+          <FilterSelector
+            title={<FormattedMessage {...messages.topicsTitle} />}
+            name="topics"
+            selected={selectedValues}
+            values={options}
+            onChange={this.handleOnChange}
+            multiple={true}
+          />
+        );
+      }
     }
 
-    return (
-      <FilterSelector
-        title={formatMessage(messages.topicsTitle)}
-        name="topics"
-        selected={selectedValues}
-        values={options}
-        onChange={this.handleOnChange}
-        multiple={true}
-      />
-    );
+    return null;
   }
 }
 
-export default injectIntl<Props>(SelectTopic);
+export default SelectTopic;

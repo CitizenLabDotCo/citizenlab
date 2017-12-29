@@ -13,7 +13,7 @@ type State = {
 };
 
 function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps>) {
-  return class NewFormatMessageComponent extends React.Component<P & InjectedIntlProps, State> {
+  return class NewFormatMessageComponent extends React.PureComponent<P & InjectedIntlProps, State> {
 
     subscriptions: Rx.Subscription[];
 

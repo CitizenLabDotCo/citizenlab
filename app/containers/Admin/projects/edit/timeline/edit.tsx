@@ -1,3 +1,7 @@
+// must be at the top, before other imports!
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
@@ -5,7 +9,6 @@ import * as _ from 'lodash';
 import { IStream } from 'utils/streams';
 import * as moment from 'moment';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
-import draftjsToHtml from 'draftjs-to-html';
 import { browserHistory } from 'react-router';
 import { API } from 'typings';
 
@@ -15,6 +18,7 @@ import { phaseStream, updatePhase, addPhase, IPhase, IPhaseData, IUpdatedPhasePr
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
+import { getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // Components
 import Label from 'components/UI/Label';
@@ -24,7 +28,6 @@ import Editor from 'components/UI/Editor';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
-import 'react-dates/lib/css/_datepicker.css';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
@@ -38,13 +41,21 @@ import messages from './messages';
 import styled from 'styled-components';
 
 const PhaseForm = styled.form`
-  .DateRangePicker__picker {
-    z-index: 2;
-  }
-
   .DateRangePickerInput {
     border-radius: 5px;
-    overflow: hidden;
+
+    svg {
+      z-index: 3;
+    }
+
+    .DateInput,
+    .DateInput_input {
+      background: transparent;
+    }
+  }
+
+  .DateRangePicker_picker {
+    z-index: 2;
   }
 `;
 
@@ -60,6 +71,7 @@ type Props = {
   intl: ReactIntl.InjectedIntl;
 };
 
+
 interface State {
   phase: IPhaseData | null;
   attributeDiff: IUpdatedPhaseProperties;
@@ -67,7 +79,7 @@ interface State {
     [fieldName: string]: API.Error[]
   } | null;
   saving: boolean;
-  focusedInput: 'START_DATE' | 'END_DATE' | null;
+  focusedInput: 'startDate' | 'endDate' | null;
   descState: EditorState;
   saved: boolean;
 }
@@ -134,14 +146,15 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
     }
   }
 
-  handleDescChange = (newState: EditorState) => {
-    const htmlValue = draftjsToHtml(convertToRaw(newState.getCurrentContent()));
+  handleDescChange = (editorState: EditorState) => {
+    const htmlValue = getHtmlStringFromEditorState(editorState);
+
     if (this.state.attributeDiff) {
       const newValue = this.state.attributeDiff && this.state.attributeDiff.description_multiloc || {};
       newValue[this.props.locale] = htmlValue;
       this.setState({
         attributeDiff: { ...this.state.attributeDiff, description_multiloc: newValue },
-        descState: newState,
+        descState: editorState,
       });
     }
   }
@@ -153,7 +166,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
     this.setState({ attributeDiff: newAttributesDiff });
   }
 
-  handleDateFocusChange = (focusedInput) => {
+  handleDateFocusChange = (focusedInput: 'startDate' | 'endDate') => {
     this.setState({ focusedInput });
   }
 
@@ -207,6 +220,9 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
     const submitState = getSubmitState({ errors, saved, diff: this.state.attributeDiff });
     moment.locale(this.props.locale);
 
+    const startDate = phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null;
+    const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
+
     return (
       <div>
         <SectionTitle>
@@ -231,8 +247,10 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
             <SectionField>
               <Label><FormattedMessage {...messages.datesLabel} /></Label>
               <DateRangePicker
-                startDate={phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null} // momentPropTypes.momentObj or null,
-                endDate={phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null} // momentPropTypes.momentObj or null,
+                startDateId={'startDate'}
+                endDateId={'endDate'}
+                startDate={startDate} // momentPropTypes.momentObj or null,
+                endDate={endDate} // momentPropTypes.momentObj or null,
                 onDatesChange={this.handleDateUpdate} // PropTypes.func.isRequired,
                 focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                 onFocusChange={this.handleDateFocusChange} // PropTypes.func.isRequired,
