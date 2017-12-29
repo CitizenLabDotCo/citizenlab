@@ -7,8 +7,9 @@ import WatchSagas from 'containers/WatchSagas';
 import T from 'components/T';
 import { Link } from 'react-router';
 import ImageHeader, { HeaderTitle, HeaderSubtitle } from 'components/ImageHeader';
-import Meta from './meta';
+// import Meta from './meta';
 import EventsPreview from './EventsPreview';
+import Timeline from './timeline';
 
 // store
 import { preprocess } from 'utils';
@@ -69,7 +70,7 @@ const ProjectMenuItem = styled(Link).attrs({ activeClassName: 'active' })`
   }
 `;
 
-class ProjectsShowPage extends React.Component {
+class ProjectsShowPage extends React.PureComponent {
   constructor() {
     super();
 
@@ -93,7 +94,9 @@ class ProjectsShowPage extends React.Component {
         <WatchSagas sagas={sagasWatchers} />
         <WatchSagas sagas={sagasWatchersPages} />
 
+        {/*
         {project && <Meta projectId={project.get('id')} location={location} />}
+        */}
 
         <Container>
           <ImageHeader image={project && project.getIn(['attributes', 'header_bg', 'large'])}>
@@ -113,9 +116,11 @@ class ProjectsShowPage extends React.Component {
               <ProjectMenuItem to={`${basePath}/ideas`}>
                 <FormattedMessage {...messages.navIdeas} />
               </ProjectMenuItem>
+              {/*
               <ProjectMenuItem to={`${basePath}/timeline`}>
                 <FormattedMessage {...messages.navTimeline} />
               </ProjectMenuItem>
+              */}
               <ProjectMenuItem to={`${basePath}/events`}>
                 <FormattedMessage {...messages.navEvents} />
               </ProjectMenuItem>
@@ -126,8 +131,12 @@ class ProjectsShowPage extends React.Component {
               )}
             </ProjectMenuItems>
           </ProjectMenu>
-          {project && React.cloneElement(this.props.children, { project })}
 
+          <Timeline projectSlug={params.slug} />
+
+          {/*
+          {project && React.cloneElement(this.props.children, { project })}
+          */}
 
           {(this.props.location.pathname !== `${basePath}/events`) &&
             <EventsPreview eventsPageUrl={`${basePath}/events`} projectId={project && project.get('id')} />

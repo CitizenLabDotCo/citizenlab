@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import * as moment from 'moment';
+import 'moment-timezone';
 
 // libraries
 import { RouterState, browserHistory } from 'react-router';
@@ -100,6 +102,8 @@ export default class App extends React.PureComponent<Props & RouterState, State>
       authUser$.switchMap((authUser) => {
         const locale$ = localeStream().observable;
         const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
+          const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
+          moment.tz.setDefault(currentTenantTimezone);
           this.setState({ currentTenant });
           store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: currentTenant });
         });
