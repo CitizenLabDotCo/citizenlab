@@ -356,6 +356,8 @@
   "app.containers.NotificationMenu.mentionInComment": "{name} mentioned you in a comment",
   "app.containers.NotificationMenu.noNotifications": "You don't have any notifications yet",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} commented on your idea",
+  "app.containers.NotificationMenu.userMarkedCommentAsSpam": "{name} reported a comment on '{ideaTitle}' as spam",
+  "app.containers.NotificationMenu.userMarkedIdeaAsSpam": "{name} reported '{ideaTitle}' as spam",
   "app.containers.NotificationMenu.userReactedToYourComment": "{name} reacted to your comment",
   "app.containers.PagesShowPage.header": "This is PagesShowPage container !",
   "app.containers.PagesShowPage.helmetDescription": "Displays page created by admin",

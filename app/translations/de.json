@@ -356,6 +356,8 @@
   "app.containers.NotificationMenu.mentionInComment": "{name} erwähnte Sie in einem Kommentar",
   "app.containers.NotificationMenu.noNotifications": "Sie haben noch keine Benachrichtigungen",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} kommentierte Ihre Idee",
+  "app.containers.NotificationMenu.userMarkedCommentAsSpam": "",
+  "app.containers.NotificationMenu.userMarkedIdeaAsSpam": "",
   "app.containers.NotificationMenu.userReactedToYourComment": "{name} reagierte auf Ihren Kommentar",
   "app.containers.PagesShowPage.header": "Dies ist der PagesShowPage Behälter!",
   "app.containers.PagesShowPage.helmetDescription": "Gibt die Seite, die der Administrator erstellt hat, wieder",

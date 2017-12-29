@@ -67,7 +67,7 @@ const Container: any = styled.div`
 const Action = styled(Button)``;
 
 export interface IAction {
-  label: string;
+  label: string | JSX.Element;
   handler: {(): void};
   icon?: IconNames;
 }
