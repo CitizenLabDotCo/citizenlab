@@ -170,6 +170,18 @@ export default defineMessages({
     id: 'app.components.IdeasShow.register',
     defaultMessage: 'Create an account',
   },
+  moreOptions: {
+    id: 'app.components.IdeasShow.moreOptions',
+    defaultMessage: 'More options',
+  },
+  reportAsSpam: {
+    id: 'app.components.IdeasShow.reportAsSpam',
+    defaultMessage: 'Report as spam',
+  },
+  editIdea: {
+    id: 'app.components.IdeasShow.editIdea',
+    defaultMessage: 'Edit idea',
+  },
   lastUpdated: {
     id: 'app.components.IdeasShow.lastUpdated',
     defaultMessage: 'Last modified {modificationTime}',

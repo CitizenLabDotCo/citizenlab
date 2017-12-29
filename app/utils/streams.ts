@@ -80,7 +80,7 @@ class Streams {
   deepFreeze<T>(object: T): T {
     let frozenObject = object;
 
-    if (frozenObject) {
+    if (frozenObject && !Object.isFrozen(frozenObject)) {
       let property;
       let propertyKey;
 
@@ -320,17 +320,14 @@ class Streams {
           }
 
           if (!isSingleItemStream) {
+            data = this.deepFreeze(data);
             this.resourcesByStreamId[streamId] = data;
           }
         }
 
         this.streams[streamId].dataIds = dataIds;
 
-        if (!Object.isFrozen(data)) {
-          data = this.deepFreeze(data);
-        }
-
-        return data;
+        return this.deepFreeze(data);
       })
       .filter(data => data !== 'initial')
       .distinctUntilChanged()

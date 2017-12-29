@@ -22,10 +22,9 @@ interface Props {
 interface State {
 }
 
-export default class IdeaMap extends React.Component<Props, State> {
+export default class IdeaMap extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
-
     this.state = {};
   }
 
