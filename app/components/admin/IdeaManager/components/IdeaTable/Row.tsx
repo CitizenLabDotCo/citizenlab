@@ -29,6 +29,7 @@ import styled from 'styled-components';
 
 const StyledRow = styled.tr`
   height: 5.5rem;
+  cursor: grab;
 `;
 
 const FilterCell = styled.td`

@@ -32,7 +32,3 @@ export function topicByIdStream(topicId: string) {
 export function topicsStream(streamParams: IStreamParams<ITopics> | null = null) {
   return streams.get<ITopics>({ apiEndpoint, ...streamParams });
 }
-
-export function topicByIdStream(topicId: string) {
-  return streams.get<ITopic>({ apiEndpoint: `${API_PATH}/topics/${topicId}` });
-}
