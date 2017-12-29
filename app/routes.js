@@ -277,24 +277,24 @@ export default function createRoutes(store) {
         },
       },
       childRoutes: [
-        {
-          path: '/projects/:slug/timeline',
-          name: 'Project timeline page',
-          getComponent(nextState, cb) {
-            const importModules = Promise.all([
-              import('containers/ProjectsShowPage/timeline/reducer'),
-              import('containers/ProjectsShowPage/timeline'),
-            ]);
+        // {
+        //   path: '/projects/:slug/timeline',
+        //   name: 'Project timeline page',
+        //   getComponent(nextState, cb) {
+        //     const importModules = Promise.all([
+        //       import('containers/ProjectsShowPage/timeline/reducer'),
+        //       import('containers/ProjectsShowPage/timeline'),
+        //     ]);
 
-            const renderRoute = loadModule(cb);
-            importModules.then(([reducer, component]) => {
-              injectReducer('projectTimeline', reducer.default);
-              renderRoute(component);
-            });
+        //     const renderRoute = loadModule(cb);
+        //     importModules.then(([reducer, component]) => {
+        //       injectReducer('projectTimeline', reducer.default);
+        //       renderRoute(component);
+        //     });
 
-            importModules.catch(errorLoading);
-          },
-        },
+        //     importModules.catch(errorLoading);
+        //   },
+        // },
         {
           path: '/projects/:slug/events',
           name: 'Project\'s events page',
