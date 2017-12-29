@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
-import { INotificationData } from 'services/notifications';
+import { ICommentOnYourCommentNotificationData } from 'services/notifications';
 import { ideaByIdStream } from 'services/ideas';
 
 import messages from '../../messages';
@@ -12,7 +12,7 @@ import { Link } from 'react-router';
 
 
 type Props = {
-  notification: INotificationData;
+  notification: ICommentOnYourCommentNotificationData;
 };
 
 type State = {

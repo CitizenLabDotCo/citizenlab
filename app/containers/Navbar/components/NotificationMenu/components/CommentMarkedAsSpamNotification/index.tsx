@@ -1,31 +1,34 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
-import { ICommentOnYourIdeaNotificationData } from 'services/notifications';
+import { ICommentMarkedAsSpamNotificationData } from 'services/notifications';
 import { ideaByIdStream } from 'services/ideas';
 
 import messages from '../../messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
+import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
 import { Link } from 'react-router';
 
+
 type Props = {
-  notification: ICommentOnYourIdeaNotificationData;
+  notification: ICommentMarkedAsSpamNotificationData;
 };
 
 type State = {
   ideaSlug?: string,
+  ideaTitle?: { [key: string]: string },
 };
 
-export default class CommentOnYourIdeaNotification extends React.PureComponent<Props, State> {
+export default class CommentMarkedAsSpamNotification extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
       ideaSlug: undefined,
+      ideaTitle: undefined,
     };
   }
 
@@ -36,6 +39,7 @@ export default class CommentOnYourIdeaNotification extends React.PureComponent<P
         idea$.subscribe((response) => {
           this.setState({
             ideaSlug: response.data.attributes.slug,
+            ideaTitle: response.data.attributes.title_multiloc,
           });
         })
       ];
@@ -52,7 +56,9 @@ export default class CommentOnYourIdeaNotification extends React.PureComponent<P
 
   render() {
     const { notification } = this.props;
-    const { ideaSlug } = this.state;
+    const { ideaSlug, ideaTitle } = this.state;
+
+    if (!ideaSlug || !ideaTitle) return null;
 
     return (
       <NotificationWrapper
@@ -62,15 +68,16 @@ export default class CommentOnYourIdeaNotification extends React.PureComponent<P
         isRead={!!notification.attributes.read_at}
       >
         <FormattedMessage
-          {...messages.userCommentedOnYourIdea}
+          {...messages.userMarkedCommentAsSpam}
           values={{
             name:
-            <Link
-              to={`/profile/${notification.attributes.initiating_user_slug}`}
-              onClick={this.onClickUserName}
-            >
-              {notification.attributes.initiating_user_first_name}
-            </Link>,
+              <Link
+                to={`/profile/${notification.attributes.initiating_user_slug}`}
+                onClick={this.onClickUserName}
+              >
+                {notification.attributes.initiating_user_first_name}
+              </Link>,
+            ideaTitle: <T value={ideaTitle} />
           }}
         />
       </NotificationWrapper>
