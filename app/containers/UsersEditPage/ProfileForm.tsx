@@ -340,10 +340,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
 
 export default withFormik<Props, IUserUpdate, IUserUpdate>({
   handleSubmit: (values, { props, setSubmitting, resetForm }) => {
-    const initialValues = mapUserToDiff(props.user);
-    const diff = omitBy(values, (value, key) => { return initialValues[key] === value; });
-
-    updateUser(props.user.id, diff)
+    updateUser(props.user.id, values)
     .then(() => {
       resetForm();
     })
