@@ -15,7 +15,7 @@ CarrierWave.configure do |config|
   config.enable_processing = false
 end
 
-# Possible values: large, medium, small, generic, offline
+# Possible values: large, medium, small, generic
 SEED_SIZE = ENV.fetch("SEED_SIZE")
 
 
@@ -45,6 +45,11 @@ def create_for_some_locales
   translations
 end
 
+def generate_avatar
+  i = rand(10)
+  Rails.root.join("spec/fixtures/avatar#{i}.#{(i > 1) ? 'jpg' : 'png'}").open
+end
+
 if Apartment::Tenant.current == 'public' || 'example_org'
   t = Tenant.create({
     name: 'local',
@@ -56,16 +61,7 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         allowed: true,
         enabled: true,
         locales: ['en','nl'],
-        organization_type: case SEED_SIZE
-        when 'large'
-          'large_city'
-        when 'medium' 
-          'medium_city'
-        when 'small' 
-          'small_city'
-        else
-          'generic'
-        end,
+        organization_type: %w(small medium large).include?(SEED_SIZE) ? "#{SEED_SIZE}_city" : "generic",
         organization_name: {
           "en" => Faker::Address.city,
           "nl" => Faker::Address.city,
@@ -206,19 +202,19 @@ if Apartment::Tenant.current == 'localhost'
     when 'large'
       50
     when 'medium' 
-      10
+      20
     when 'small' 
-      1
-    when 'offline'
-      0
+      5
     else
-      3
+      10
     end.times do 
     first_name = Faker::Name.first_name
     last_name = Faker::Name.last_name
+    has_last_name = (rand(5) > 0)
     User.create({
       first_name: first_name,
-      last_name: last_name,
+      last_name: has_last_name ? last_name : nil,
+      cl1_migrated: !has_last_name,
       email: Faker::Internet.email,
       password: 'testtest',
       locale: ['en','nl'][rand(1)],
@@ -226,48 +222,9 @@ if Apartment::Tenant.current == 'localhost'
       gender: %w(male female unspecified)[rand(4)],
       birthyear: rand(2) === 0 ? nil : 1927 + rand(90),
       education: rand(1) === 0 ? nil : rand(9),
-      remote_avatar_url: (rand(2) == 0) ? "http://lorempixel.com/100/100/people/#{rand(10)+1}/" : Faker::Avatar.image
+      avatar: (rand(3) > 0) ? generate_avatar : nil
     })
   end
-
-  # without an avatar
-  case SEED_SIZE
-    when 'large'
-      50
-    when 'medium' 
-      10
-    when 'small' 
-      1
-    when 'offline'
-      10
-    else
-      4
-    end.times do 
-    User.create({
-      first_name: Faker::Name.first_name,
-      last_name: Faker::Name.last_name,
-      email: Faker::Internet.email,
-      password: 'testtest',
-      locale: ['en','nl'][rand(1)],
-      roles: rand(10) == 0 ? [{type: 'admin'}] : [],
-      gender: %w(male female unspecified)[rand(4)],
-      birthyear: rand(2) === 0 ? nil : 1927 + rand(90),
-      education: rand(1) === 0 ? nil : rand(9)
-    })
-  end
-
-  # without a last name
-  User.create({
-    first_name: Faker::Name.first_name,
-    cl1_migrated: true,
-    email: Faker::Internet.email,
-    password: 'testtest',
-    locale: ['en','nl'][rand(1)],
-    roles: rand(10) == 0 ? [{type: 'admin'}] : [],
-    gender: %w(male female unspecified)[rand(4)],
-    birthyear: rand(2) === 0 ? nil : 1927 + rand(90),
-    education: rand(1) === 0 ? nil : rand(9)
-  })
 
   TenantTemplateService.new.apply_template('base') #####
 
