@@ -10,7 +10,7 @@ class WebApi::V1::NotificationsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
       .order(created_at: :desc)
-      .includes(:recipient,:idea,:comment,:project)
+      .includes(:recipient,:idea,:project)
 
     if params[:only_unread]
       @notifications = @notifications.where(read_at: nil)

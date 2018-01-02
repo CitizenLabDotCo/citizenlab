@@ -63,6 +63,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       :visible_to,
       title_multiloc: I18n.available_locales, 
       description_multiloc: I18n.available_locales,
+      description_preview_multiloc: I18n.available_locales,
       area_ids: [],
       topic_ids: []
     )
