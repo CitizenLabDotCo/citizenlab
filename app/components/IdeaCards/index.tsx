@@ -162,6 +162,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
         return ideasStream({
           queryParameters: {
+            sort: 'trending',
             'page[size]': 15,
             ...filter,
             'page[number]': pageNumber
@@ -178,6 +179,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
         pageNumber: 1,
         hasMore: false
       }).subscribe(({ ideas, hasMore }) => {
+        console.log(ideas);
         this.setState({ ideas, hasMore, loading: false, loadingMore: false });
       })
     ];
