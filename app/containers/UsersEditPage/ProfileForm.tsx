@@ -146,7 +146,9 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
   }
 
   createChangeHandler = (fieldName) => value => {
-    if (value.value) {
+    if (/_multiloc$/.test(fieldName)) {
+      this.props.setFieldValue(fieldName, { [this.props.locale]: value });
+    } else if (value.value) {
       this.props.setFieldValue(fieldName, value.value);
     } else {
       this.props.setFieldValue(fieldName, value);
