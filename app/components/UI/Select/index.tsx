@@ -182,6 +182,7 @@ type Props = {
   searchable?: boolean | undefined;
   multi?: boolean | undefined;
   onChange: (arg: IOption) => void;
+  onBlur?: () => void;
 };
 
 type State = {};
@@ -220,6 +221,7 @@ export default class Select extends React.PureComponent<Props, State> {
         placeholder={placeholder}
         options={options}
         onChange={this.handleOnChange}
+        onBlur={this.props.onBlur}
         multi={multi}
       />
     );

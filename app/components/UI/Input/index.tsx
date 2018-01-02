@@ -51,6 +51,7 @@ export type Props = {
   error?: string | null | undefined;
   onChange: (arg: string) => void;
   onFocus?: (arg: React.FormEvent<HTMLInputElement>) => void;
+  onBlur?: (arg: React.FormEvent<HTMLInputElement>) => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;
   autoFocus?: boolean;
 };
@@ -87,6 +88,7 @@ export default class Input extends React.PureComponent<Props, State> {
           value={value}
           onChange={this.handleOnChange}
           onFocus={this.props.onFocus}
+          onBlur={this.props.onBlur}
           ref={this.handleRef}
           autoFocus={this.props.autoFocus}
         />

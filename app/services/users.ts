@@ -4,6 +4,8 @@ import request from 'utils/request';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 
+import { Multiloc } from 'typings';
+
 const apiEndpoint = `${API_PATH}/users`;
 
 export interface IUserData {
@@ -60,8 +62,8 @@ export interface IUserUpdate {
   birthyear?: number;
   gender?: string;
   domicile?: string;
-  education?: number;
-  bio_multiloc?: {};
+  education?: string;
+  bio_multiloc?: Multiloc;
 }
 
 export function usersStream(streamParams: IStreamParams<IUsers> | null = null) {
