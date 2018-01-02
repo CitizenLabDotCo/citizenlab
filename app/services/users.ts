@@ -85,3 +85,17 @@ export async function updateUser(userId: string, object: IUserUpdate) {
 export async function deleteUser(userId: string) {
   return streams.delete(`${apiEndpoint}/${userId}`, userId);
 }
+
+export function mapUserToDiff(user: IUserData): IUserUpdate {
+  return {
+    first_name: user.attributes.first_name || undefined,
+    last_name: user.attributes.last_name || undefined,
+    email: user.attributes.email || undefined,
+    locale: user.attributes.locale || undefined,
+    birthyear: user.attributes.birthyear || undefined,
+    gender: user.attributes.gender || undefined,
+    domicile: user.attributes.domicile || undefined,
+    education: user.attributes.education || undefined,
+    bio_multiloc: user.attributes.bio_multiloc || undefined,
+  };
+}
