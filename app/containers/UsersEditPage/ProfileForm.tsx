@@ -1,12 +1,12 @@
 // Libraries
 import * as React from 'react';
-import _ from 'lodash';
+import { omitBy } from 'lodash';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 
 // Services & Utils
 import { IAreaData } from 'services/areas';
-import { IUserData, IUserUpdate } from 'services/users';
+import { updateUser, IUserData, IUserUpdate, mapUserToDiff } from 'services/users';
 import { ITenantData } from 'services/tenant';
 import scrollToComponent from 'react-scroll-to-component';
 import { withFormik, FormikProps, Form } from 'formik';
@@ -389,6 +389,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                   <Button
                     id="e2e-profile-edit-form-button"
                     text={formatMessage({ ...messages.submit })}
+                    processing={isSubmitting}
                   />
                 </Form>
               </Segment>
@@ -400,21 +401,20 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
 }
 
 export default withFormik({
-  handleSubmit: (values, { setSubmitting }) => {
-    console.log(values);
-    setSubmitting(false);
+  handleSubmit: (values, { props, setSubmitting, resetForm }) => {
+    const initialValues = mapUserToDiff(props.user);
+    const diff = omitBy(values, (value, key) => { return initialValues[key] === value; });
+
+    updateUser(props.user.id, diff)
+    .then(() => {
+      resetForm();
+    })
+    .catch(() => {
+
+    });
+
   },
   mapPropsToValues: (props: any) => {
-    return {
-      first_name: props.user.attributes.first_name || undefined,
-      last_name: props.user.attributes.last_name || undefined,
-      email: props.user.attributes.email || undefined,
-      locale: props.user.attributes.locale || undefined,
-      birthyear: props.user.attributes.birthyear || undefined,
-      gender: props.user.attributes.gender || undefined,
-      domicile: props.user.attributes.domicile || undefined,
-      education: props.user.attributes.education || undefined,
-      bio_multiloc: props.user.attributes.bio_multiloc || undefined,
-    };
+    return mapUserToDiff(props.user);
   }
 })(injectIntl<Props>(localize(ProfileForm)));
