@@ -18,6 +18,24 @@ end
 # Possible values: large, medium, small, generic
 SEED_SIZE = ENV.fetch("SEED_SIZE")
 
+num_users = 10
+num_projects = 4
+num_ideas = 5
+case SEED_SIZE
+  when 'small'
+    num_users = 5
+    num_projects = 1
+    num_ideas = 4
+  when 'medium'
+    num_users = 20
+    num_projects = 5
+    num_ideas = 35
+  when 'large'
+    num_users = 50
+    num_projects = 20
+    num_ideas = 100
+end
+
 
 def create_comment_tree(idea, parent, depth=0)
   amount = rand(5/(depth+1))
@@ -118,7 +136,7 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         allowed: true,
         enabled: true,
         locales: ['en','nl'],
-        organization_type: 'medium_city',
+        organization_type: 'small_city',
         organization_name: {
           "en" => Faker::Address.city,
           "nl" => Faker::Address.city,
@@ -197,17 +215,7 @@ if Apartment::Tenant.current == 'localhost'
     education: 7
   })
 
-  # normal users
-  case SEED_SIZE
-    when 'large'
-      50
-    when 'medium' 
-      20
-    when 'small' 
-      5
-    else
-      10
-    end.times do 
+  num_users.times do 
     first_name = Faker::Name.first_name
     last_name = Faker::Name.last_name
     has_last_name = (rand(5) > 0)
@@ -252,16 +260,7 @@ if Apartment::Tenant.current == 'localhost'
     }
   })
 
-  case SEED_SIZE
-    when 'large'
-      20
-    when 'medium' 
-      5
-    when 'small' 
-      1
-    else
-      4
-  end.times do
+  num_projects.times do
     project = Project.create({
       title_multiloc: {
         "en": "Renewing Westbrook parc",
@@ -276,20 +275,12 @@ if Apartment::Tenant.current == 'localhost'
         "nl" => "Laten we het park op de grend van de stad vernieuwen."
       },
       header_bg: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
-      visible_to: case rand(5)
-      when 0
-        'admins'
-      when 1
-        'groups'
-      else
-        'public'
-      end
+      visible_to: %w(admins groups public public public)[rand(5)]
     })
 
     [0,1,2,3,4][rand(5)].times do |i|
       project.project_images.create(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
     end
-
     if rand(5) == 0
       project.project_files.create(file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open)
     end
@@ -326,16 +317,7 @@ if Apartment::Tenant.current == 'localhost'
   MAP_CENTER = [50.8503, 4.3517]
   MAP_OFFSET = 0.5
 
-  case SEED_SIZE
-    when 'large'
-      100
-    when 'medium' 
-      35
-    when 'small' 
-      4
-    else
-      30
-  end.times do 
+  num_ideas.times do 
     idea = Idea.create({
       title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
       body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
@@ -354,7 +336,6 @@ if Apartment::Tenant.current == 'localhost'
     [0,0,1,1,2][rand(5)].times do |i|
       idea.idea_images.create(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
     end
-
     if rand(5) == 0
       idea.idea_files.create(file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open)
     end
