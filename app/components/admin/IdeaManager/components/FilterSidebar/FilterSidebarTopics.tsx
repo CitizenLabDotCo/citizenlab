@@ -9,7 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 interface Props {
-  topics: ITopicData[];
+  topics?: ITopicData[];
   selectedTopics?: string[];
   onChangeTopicsFilter?: (topics: string[]) => void;
 }
@@ -40,7 +40,7 @@ class FilterSidebarTopics extends React.Component<Props> {
           <FormattedMessage {...messages.allIdeas} />
         </Menu.Item>
         <Divider />
-        {this.props.topics.map((topic) => (
+        {this.props.topics && this.props.topics.map((topic) => (
           <FilterSidebarTopicsItem
             key={topic.id}
             topic={topic}

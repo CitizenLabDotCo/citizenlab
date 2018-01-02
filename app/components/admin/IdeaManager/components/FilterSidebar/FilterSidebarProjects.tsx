@@ -9,7 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 interface Props {
-  projects: IProjectData[];
+  projects?: IProjectData[];
   selectedProject?: string;
   onChangeProjectFilter?: (project: string | null) => void;
 }
@@ -35,7 +35,7 @@ class FilterSidebarProjects extends React.Component<Props> {
           <FormattedMessage {...messages.allIdeas} />
         </Menu.Item>
         <Divider />
-        {this.props.projects.map((project) => (
+        {this.props.projects && this.props.projects.map((project) => (
           <FilterSidebarProjectsItem
             key={project.id}
             project={project}

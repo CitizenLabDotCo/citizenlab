@@ -135,27 +135,12 @@ class IdeaManager extends React.PureComponent<Props, State> {
     this.props.onChangeSearchTerm && this.props.onChangeSearchTerm(term);
   }
 
-  handleIdeaStatusChange = (idea, statusId) => () => {
-    updateIdea(
-      idea.id,
-      { idea_status_id: statusId },
-    );
-  }
-
-  handleDeleteIdea = (idea) => () => {
-    deleteIdea(idea.id);
-  }
-
   isAnyIdeaSelected = () => {
     return !isEmpty(this.state.selectedIdeas);
   }
 
   areMultipleIdeasSelected = () => {
     return size(this.state.selectedIdeas) > 1;
-  }
-
-  ideaSelectionToIdeas = () => {
-    return filter(this.props.ideas, (i) => this.state.selectedIdeas[i.id]);
   }
 
   handleChangeIdeaSelection = (selectedIdeas) => {
@@ -166,7 +151,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
     this.setState({ activeFilterMenu });
   }
 
-  handleContextRef = contextRef => this.setState({ contextRef });
+  handleContextRef = (contextRef) => this.setState({ contextRef });
 
   render() {
     const { ideaSortAttribute, ideaSortDirection, ideaCurrentPageNumber, ideaLastPageNumber, ideas, phases, ideaStatuses } = this.props;

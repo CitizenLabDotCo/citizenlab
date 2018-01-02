@@ -9,6 +9,7 @@ import T from 'components/T';
 
 const ItemWrapper = styled.div`
   display: flex;
+  text-transform: capitalize;
 `;
 
 const ColorIndicator = styled<any,'div'>('div')`
