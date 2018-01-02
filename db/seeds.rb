@@ -15,7 +15,7 @@ CarrierWave.configure do |config|
   config.enable_processing = false
 end
 
-# Possible values: large, medium, small, generic, offline, got
+# Possible values: large, medium, small, generic, offline
 SEED_SIZE = ENV.fetch("SEED_SIZE")
 
 
@@ -32,13 +32,6 @@ def create_comment_tree(idea, parent, depth=0)
       parent: parent,
       created_at: Faker::Date.between((parent ? parent.created_at : idea.published_at), Time.now)
     })
-    if c.author.first_name == 'Chewbacca'
-      c.body_multiloc = {
-        "en" => Faker::StarWars.wookie_sentence,
-        "nl" => Faker::StarWars.wookie_sentence
-      }
-      c.save!
-    end
     MakeNotificationsJob.perform_now(Activity.new(item: c, action: 'created', user: c.author, acted_at: Time.now))
     create_comment_tree(idea, c, depth+1)
   end
@@ -57,8 +50,7 @@ if Apartment::Tenant.current == 'public' || 'example_org'
     name: 'local',
     host: 'localhost',
     logo: Rails.root.join("spec/fixtures/logo.png").open,
-    remote_header_bg_url: SEED_SIZE == 'offline' ? nil : "http://lorempixel.com/1900/600/city/#{rand(10)+1}/",
-    # header_bg: SEED_SIZE == 'offline' ? Rails.root.join("spec/fixtures/header.jpg").open : nil,
+    header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
     settings: {
       core: {
         allowed: true,
@@ -75,9 +67,9 @@ if Apartment::Tenant.current == 'public' || 'example_org'
           'generic'
         end,
         organization_name: {
-          "en" => (SEED_SIZE == 'got') ? Faker::GameOfThrones.city : Faker::Address.city,
-          "nl" => (SEED_SIZE == 'got') ? Faker::GameOfThrones.city : Faker::Address.city,
-          "fr" => (SEED_SIZE == 'got') ? Faker::GameOfThrones.city : Faker::Address.city
+          "en" => Faker::Address.city,
+          "nl" => Faker::Address.city,
+          "fr" => Faker::Address.city
         },
         timezone: "Europe/Brussels",
         color_main: Faker::Color.hex_color,
@@ -224,13 +216,6 @@ if Apartment::Tenant.current == 'localhost'
     end.times do 
     first_name = Faker::Name.first_name
     last_name = Faker::Name.last_name
-    if SEED_SIZE == 'got'
-      names = Faker::GameOfThrones.character.split
-      if names.size >= 2
-        first_name = names.first
-        last_name = names.last
-      end
-    end
     User.create({
       first_name: first_name,
       last_name: last_name,
@@ -273,7 +258,7 @@ if Apartment::Tenant.current == 'localhost'
 
   # without a last name
   User.create({
-    first_name: "Chewbacca",
+    first_name: Faker::Name.first_name,
     cl1_migrated: true,
     email: Faker::Internet.email,
     password: 'testtest',
@@ -281,8 +266,7 @@ if Apartment::Tenant.current == 'localhost'
     roles: rand(10) == 0 ? [{type: 'admin'}] : [],
     gender: %w(male female unspecified)[rand(4)],
     birthyear: rand(2) === 0 ? nil : 1927 + rand(90),
-    education: rand(1) === 0 ? nil : rand(9),
-    remote_avatar_url: (SEED_SIZE != 'offline') ? "https://sequelsprequels.files.wordpress.com/2014/04/abominablechewbacca-swt.jpg" : nil
+    education: rand(1) === 0 ? nil : rand(9)
   })
 
   TenantTemplateService.new.apply_template('base') #####
