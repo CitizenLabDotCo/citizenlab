@@ -224,7 +224,10 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
 
                     <SectionField>
                       <LabelWithTooltip id="firstName" />
-                      <Field name="first_name" />
+                      <Input
+                        type="text"
+                        name="first_name"
+                      />
                     </SectionField>
 
                     <SectionField>
@@ -242,6 +245,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                       <TextArea
                         name="bio_multiloc"
                         onChange={this.createChangeHandler('bio_multiloc')}
+                        onBlur={this.createBlurHandler('bio_multiloc')}
                         rows={6}
                         placeholder={formatMessage({ ...messages.bio_placeholder })}
                         value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
@@ -344,7 +348,7 @@ export default withFormik<Props, IUserUpdate, IUserUpdate>({
       resetForm();
     })
     .catch(() => {
-
+      // TODO: catch errors and translate them in Formik-style
     });
   },
   mapPropsToValues: (props) => {
