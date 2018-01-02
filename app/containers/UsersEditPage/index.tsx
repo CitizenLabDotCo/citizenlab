@@ -9,7 +9,7 @@ import { currentTenantStream, ITenantData } from 'services/tenant';
 import { IUserData } from 'services/users';
 
 // Components
-import ProfileForm from './components/ProfileForm';
+import ProfileForm from './ProfileForm';
 
 // Typings
 interface Props {}
@@ -25,6 +25,7 @@ class ProfileEditor extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
+
     this.state = {
       user: null,
       areas: [],
@@ -60,7 +61,11 @@ class ProfileEditor extends React.Component<Props, State> {
   render() {
     if (this.state.user && this.state.areas && this.state.tenant) {
       return (
-        <ProfileForm user={this.state.user} areas={this.state.areas} tenant={this.state.tenant} />
+        <ProfileForm
+          user={this.state.user}
+          areas={this.state.areas}
+          tenant={this.state.tenant}
+        />
       );
     }
     return null;

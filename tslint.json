@@ -11,6 +11,7 @@
     ],
     "import-name": false,
     "jsx-no-multiline-js": false,
+    "jsx-boolean-value": false,
     "no-boolean-literal-compare": false,
     "no-else-after-return": false,
     "no-irregular-whitespace": true,

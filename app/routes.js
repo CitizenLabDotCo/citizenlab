@@ -127,14 +127,12 @@ export default function createRoutes(store) {
       name: 'usersEditPage',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/UsersEditPage/reducer'),
           import('containers/UsersEditPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, component]) => {
-          injectReducer('usersEditPage', reducer.default);
+        importModules.then(([component]) => {
           renderRoute(component);
         });
 
