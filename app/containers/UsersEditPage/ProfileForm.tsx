@@ -9,7 +9,8 @@ import { IAreaData } from 'services/areas';
 import { updateUser, IUserData, IUserUpdate, mapUserToDiff } from 'services/users';
 import { ITenantData } from 'services/tenant';
 import scrollToComponent from 'react-scroll-to-component';
-import { withFormik, FormikProps, Form } from 'formik';
+import { withFormik, FormikProps, Form, Field } from 'formik';
+import { IOption, ImageFile } from 'typings';
 
 // Components
 import { Grid, Menu, Segment } from 'semantic-ui-react';
@@ -21,6 +22,7 @@ import Input from 'components/UI/Input';
 import Select from 'components/UI/Select';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToFileObservable } from 'utils/imageTools';
+import { Section, SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
 
 // i18n
 import { appLocalePairs } from 'i18n';
@@ -31,42 +33,10 @@ import localize, { injectedLocalized } from 'utils/localize';
 
 // Style
 import styled from 'styled-components';
-import { IOption, ImageFile } from 'typings';
+import { color, fontSize, media } from 'utils/styleUtils';
 
 const StyledContentContainer = styled(ContentContainer)`
   background: #fff;
-`;
-
-const SectionHeaderStyled = styled.div`
-  font-size: 25px;
-  font-weight: bold;
-  text-align: left;
-  color: #222222;
-  padding: 0.5rem 0;
-`;
-
-const SectionSubHeaderStyled = styled.div`
-  font-size: 16px;
-  text-align: left;
-  color: #6b6b6b;
-  padding: 0.5rem 0;
-`;
-
-const LabelInputPairStyled = styled.div`
-  margin-top: 10px;
-`;
-
-const SectionSeparatorStyled = styled.hr`
-  border: none;
-  height: 3px;
-  width: 100%;
-  /* Set the hr color */
-  color: #eaeaea; /* old IE */
-  background-color: #eaeaea; /* Modern Browsers */
-`;
-
-const InputGroupStyled = styled.div`
-  margin-top: 40px;
 `;
 
 // Types
@@ -232,57 +202,40 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
               <Segment padded="very">
                 <Form className="e2e-profile-edit-form">
                   {/* BASICS */}
-                  <section ref={(section1) => { this['section-basics'] = section1; }}>
-                    <SectionHeaderStyled>
-                      <FormattedMessage {...messages.h1} />
-                    </SectionHeaderStyled>
-                    <SectionSubHeaderStyled>
-                      <FormattedMessage {...messages.h1sub} />
-                    </SectionSubHeaderStyled>
+                  <Section ref={(section1) => { this['section-basics'] = section1; }}>
+                    <SectionTitle><FormattedMessage {...messages.h1} /></SectionTitle>
+                    <SectionSubtitle><FormattedMessage {...messages.h1sub} /></SectionSubtitle>
 
-                    <ImagesDropzone
-                      images={this.state.avatar}
-                      imagePreviewRatio={1}
-                      maxImagePreviewWidth="160px"
-                      acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                      maxImageFileSize={5000000}
-                      maxNumberOfImages={1}
-                      onAdd={this.handleAvatarOnAdd}
-                      onUpdate={this.handleAvatarOnUpdate}
-                      onRemove={this.handleAvatarOnRemove}
-                    />
+                    <SectionField>
+                      <ImagesDropzone
+                        images={this.state.avatar}
+                        imagePreviewRatio={1}
+                        maxImagePreviewWidth="160px"
+                        acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                        maxImageFileSize={5000000}
+                        maxNumberOfImages={1}
+                        onAdd={this.handleAvatarOnAdd}
+                        onUpdate={this.handleAvatarOnUpdate}
+                        onRemove={this.handleAvatarOnRemove}
+                      />
+                    </SectionField>
 
-                    <InputGroupStyled>
-                      <LabelInputPairStyled>
-                        <LabelWithTooltip id="firstName" />
-                        <Input
-                          type="text"
-                          value={values.first_name}
-                          onChange={this.createChangeHandler('first_name')}
-                          onBlur={this.createBlurHandler('first_name')}
-                        />
-                      </LabelInputPairStyled>
+                    <SectionField>
+                      <LabelWithTooltip id="firstName" />
+                      <Field name="first_name" />
+                    </SectionField>
 
-                      <LabelInputPairStyled>
-                        <LabelWithTooltip id="lastName" />
-                        <Input
-                          type="text"
-                          value={values.last_name}
-                          onChange={this.createChangeHandler('last_name')}
-                          onBlur={this.createBlurHandler('last_name')}
-                        />
-                      </LabelInputPairStyled>
+                    <SectionField>
+                      <LabelWithTooltip id="lastName" />
+                      <Field name="last_name" />
+                    </SectionField>
 
-                      <LabelInputPairStyled>
-                        <LabelWithTooltip id="email" />
-                        <Input
-                          type="email"
-                          value={values.email}
-                          onChange={this.createChangeHandler('email')}
-                          onBlur={this.createBlurHandler('email')}
-                        />
-                      </LabelInputPairStyled>
+                    <SectionField>
+                      <LabelWithTooltip id="email" />
+                      <Field type="email" name="email" />
+                    </SectionField>
 
+                    <SectionField>
                       <LabelWithTooltip id="bio" />
                       <TextArea
                         name="bio_multiloc"
@@ -291,100 +244,79 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                         placeholder={formatMessage({ ...messages.bio_placeholder })}
                         value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
                       />
+                    </SectionField>
 
-                      <LabelInputPairStyled>
-                        <LabelWithTooltip id="password" />
-                        <Input
-                          type="password"
-                          value={values.password}
-                          onChange={this.createChangeHandler('password')}
-                          onBlur={this.createBlurHandler('password')}
-                        />
-                      </LabelInputPairStyled>
+                    <SectionField>
+                      <LabelWithTooltip id="password" />
+                      <Field type="password" name="password" />
+                    </SectionField>
 
-                      <LabelInputPairStyled>
-                        <LabelWithTooltip id="language" />
-                        {<Select
-                          onChange={this.createChangeHandler('locale')}
-                          onBlur={this.createBlurHandler('locale')}
-                          value={values.locale}
-                          options={this.localeOptions}
-                        />}
-                      </LabelInputPairStyled>
-                    </InputGroupStyled>
-                  </section>
-
-                  <SectionSeparatorStyled
-                    style={{
-                      margin: '60px 0',
-                    }}
-                  />
+                    <SectionField>
+                      <LabelWithTooltip id="language" />
+                      {<Select
+                        onChange={this.createChangeHandler('locale')}
+                        onBlur={this.createBlurHandler('locale')}
+                        value={values.locale}
+                        options={this.localeOptions}
+                      />}
+                    </SectionField>
+                  </Section>
 
                   {/* DETAILS */}
-                  <section ref={(section2) => { this['section-details'] = section2; }}>
-                    <SectionHeaderStyled>
+                  <Section ref={(section2) => { this['section-details'] = section2; }}>
+                    <SectionTitle>
                       <FormattedMessage {...messages.h2} />
-                    </SectionHeaderStyled>
-                    <SectionSubHeaderStyled>
+                    </SectionTitle>
+                    <SectionSubtitle>
                       <FormattedMessage {...messages.h2sub} />
-                    </SectionSubHeaderStyled>
+                    </SectionSubtitle>
 
-                    <InputGroupStyled>
-                      {this.isOptionEnabled('gender') &&
-                        <div>
-                          <LabelWithTooltip id="gender" />
-                          <Select
-                            placeholder={formatMessage({ ...messages.male })}
-                            options={this.genderOptions}
-                            onChange={this.createChangeHandler('gender')}
-                            value={values.gender}
-                          />
-                        </div>
-                      }
+                    {this.isOptionEnabled('gender') &&
+                      <SectionField>
+                        <LabelWithTooltip id="gender" />
+                        <Select
+                          placeholder={formatMessage({ ...messages.male })}
+                          options={this.genderOptions}
+                          onChange={this.createChangeHandler('gender')}
+                          value={values.gender}
+                        />
+                      </SectionField>
+                    }
 
-                      {this.isOptionEnabled('domicile') &&
-                        <div>
-                          <LabelWithTooltip id="domicile" />
-                          <Select
-                            placeholder={formatMessage({ ...messages.domicile_placeholder })}
-                            options={this.domicileOptions}
-                            onChange={this.createChangeHandler('domicile')}
-                            value={values.domicile}
-                          />
-                        </div>
-                      }
-                      {this.isOptionEnabled('birthyear') &&
-                        <div>
-                          <LabelWithTooltip id="birthdate" />
-                          <Select
-                            options={this.birthYearOptions}
-                            onChange={this.createChangeHandler('birthyear')}
-                            value={`${values.birthyear}`}
-                          />
-                        </div>
-                      }
+                    {this.isOptionEnabled('domicile') &&
+                      <SectionField>
+                        <LabelWithTooltip id="domicile" />
+                        <Select
+                          placeholder={formatMessage({ ...messages.domicile_placeholder })}
+                          options={this.domicileOptions}
+                          onChange={this.createChangeHandler('domicile')}
+                          value={values.domicile}
+                        />
+                      </SectionField>
+                    }
+                    {this.isOptionEnabled('birthyear') &&
+                      <SectionField>
+                        <LabelWithTooltip id="birthdate" />
+                        <Select
+                          options={this.birthYearOptions}
+                          onChange={this.createChangeHandler('birthyear')}
+                          value={`${values.birthyear}`}
+                        />
+                      </SectionField>
+                    }
 
-                      {this.isOptionEnabled('education') &&
-                        <div>
-                          <LabelWithTooltip id="education" />
-                          <Select
-                            placeholder={formatMessage({ ...messages.education_placeholder })}
-                            options={this.educationOptions}
-                            onChange={this.createChangeHandler('education')}
-                            value={values.education}
-                          />
-                        </div>
-                      }
-
-
-                    </InputGroupStyled>
-                  </section>
-
-                  <SectionSeparatorStyled
-                    style={{
-                      margin: '48px 0 25px 0',
-                    }}
-                  />
+                    {this.isOptionEnabled('education') &&
+                      <SectionField>
+                        <LabelWithTooltip id="education" />
+                        <Select
+                          placeholder={formatMessage({ ...messages.education_placeholder })}
+                          options={this.educationOptions}
+                          onChange={this.createChangeHandler('education')}
+                          value={values.education}
+                        />
+                      </SectionField>
+                    }
+                  </Section>
 
                   <Button
                     id="e2e-profile-edit-form-button"
@@ -400,7 +332,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
   }
 }
 
-export default withFormik({
+export default withFormik<Props, IUserUpdate, IUserUpdate>({
   handleSubmit: (values, { props, setSubmitting, resetForm }) => {
     const initialValues = mapUserToDiff(props.user);
     const diff = omitBy(values, (value, key) => { return initialValues[key] === value; });
@@ -412,9 +344,8 @@ export default withFormik({
     .catch(() => {
 
     });
-
   },
-  mapPropsToValues: (props: any) => {
+  mapPropsToValues: (props) => {
     return mapUserToDiff(props.user);
   }
-})(injectIntl<Props>(localize(ProfileForm)));
+})(injectIntl(localize(ProfileForm)));
