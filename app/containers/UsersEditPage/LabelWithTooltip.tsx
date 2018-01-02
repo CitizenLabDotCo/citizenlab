@@ -5,10 +5,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import styled from 'styled-components';
 const tooltipIcon = require('./icons/tooltip-icon.svg') as string;
+import { color, fontSize } from 'utils/styleUtils';
 
 const LabelStyled = styled.label`
+  color: ${color('label')};
   display: inline-block;
-  font-size: 18px;
+  font-size: ${fontSize('base')};
   font-weight: ${(props: {isBold: boolean}) => props.isBold ? 'bold' : 'normal'};
 `;
 
