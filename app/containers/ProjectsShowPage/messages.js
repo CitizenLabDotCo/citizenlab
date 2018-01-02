@@ -1,8 +1,3 @@
-/*
- * ProjectsIndexPage Messages
- *
- * This contains all the text for the ProjectsIndexPage component.
- */
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
@@ -38,14 +33,6 @@ export default defineMessages({
     id: 'app.containers.Projects.navEvents',
     defaultMessage: 'Events',
   },
-  LoadingMessage: {
-    id: 'app.containers.Projects.LoadingMessage',
-    defaultMessage: 'Loading',
-  },
-  LoadingError: {
-    id: 'app.containers.Projects.LoadingError',
-    defaultMessage: 'Upps... something went wrong',
-  },
   upcomingEvents: {
     id: 'app.containers.Projects.upcomingEvents',
     defaultMessage: 'Upcoming events',
@@ -53,5 +40,9 @@ export default defineMessages({
   allEvents: {
     id: 'app.containers.Projects.allEvents',
     defaultMessage: 'All events',
+  },
+  noPhaseSelected: {
+    id: 'app.containers.Projects.noPhaseSelected',
+    defaultMessage: 'No phase selected',
   },
 });
