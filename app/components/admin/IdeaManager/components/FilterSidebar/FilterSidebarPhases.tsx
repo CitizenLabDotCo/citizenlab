@@ -8,7 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 interface Props {
-  phases: IPhaseData[];
+  phases?: IPhaseData[];
   selectedPhase?: string;
   onChangePhaseFilter?: (string) => void;
 }
@@ -34,7 +34,7 @@ class FilterSidebarPhases extends React.Component<Props> {
           <FormattedMessage {...messages.allIdeas} />
         </Menu.Item>
         <Divider />
-        {this.props.phases.map((phase, index) => (
+        {this.props.phases && this.props.phases.map((phase, index) => (
           <FilterSidebarPhasesItem
             key={phase.id}
             phase={phase}

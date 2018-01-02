@@ -9,7 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 interface Props {
-  statuses: IIdeaStatusData[];
+  statuses?: IIdeaStatusData[];
   selectedStatus?: string;
   onChangeStatusFilter?: (status: string | null) => void;
 }
@@ -35,7 +35,7 @@ class FilterSidebarStatuses extends React.Component<Props> {
           <FormattedMessage {...messages.allIdeas} />
         </Menu.Item>
         <Divider />
-        {this.props.statuses.map((status) => (
+        {this.props.statuses && this.props.statuses.map((status) => (
           <FilterSidebarStatusesItem
             key={status.id}
             status={status}

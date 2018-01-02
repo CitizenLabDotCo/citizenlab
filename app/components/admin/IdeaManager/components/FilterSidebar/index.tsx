@@ -19,7 +19,7 @@ interface Props {
   project: IProjectData | null;
   phases: IPhaseData[];
   topics: ITopicData[];
-  projects: IProjectData[];
+  projects?: IProjectData[];
   statuses: IIdeaStatusData[];
   selectedTopics?: string[];
   selectedPhase?: string;
@@ -100,14 +100,22 @@ class FilterSidebar extends React.Component<Props & InjectedIntlProps> {
     });
   }
 
+  activeIndex = (panes) => {
+    const paneIndex = this.props.activeFilterMenu && findIndex(panes as any, { id: this.props.activeFilterMenu });
+    if (paneIndex && paneIndex >= 0) {
+      return paneIndex;
+    } else {
+      return 0;
+    }
+  }
+
   render() {
     const panes = this.panes();
-    const activeIndex = this.props.activeFilterMenu ? findIndex(panes as any, { id: this.props.activeFilterMenu }) : 0;
     return (
       <Tab
-        panes={this.panes()}
+        panes={panes}
         onTabChange={this.handleTabChange}
-        activeIndex={activeIndex}
+        activeIndex={this.activeIndex(panes)}
       />
 
     );
