@@ -1,31 +1,26 @@
 import { IProject } from './projects';
-import { IRelationship, Multiloc } from 'typings';
+import { IRelationship, Multiloc, API } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import request from 'utils/request';
 
 const apiEndpoint = `${API_PATH}/projects`;
 
+type Visibility = 'public' | 'groups' | 'admins';
+
 export interface IProjectData {
   id: string;
   type: string;
   attributes: {
-    title_multiloc: {
-      [key: string]: string;
-    };
-    description_multiloc: {
-      [key: string]: string;
-    };
+    title_multiloc: Multiloc;
+    description_multiloc: Multiloc;
+    description_preview_multiloc: Multiloc;
     slug: string;
-    header_bg: {
-      large: string | null;
-      medium: string | null;
-      small: string | null;
-    };
-    ideas_count: 0;
+    header_bg: API.ImageSizes;
+    ideas_count: number;
     created_at: string;
     updated_at: string;
-    visible_to: 'public' | 'groups' | 'admins';
+    visible_to: Visibility;
   };
   relationships: {
     project_images: {
@@ -41,8 +36,9 @@ export interface IUpdatedProjectProperties {
   header_bg?: string | { small: string, medium: string, large: string};
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
+  description_preview_multiloc?: Multiloc;
   area_ids?: string[];
-  visible_to?: 'public' | 'groups' | 'admins';
+  visible_to?: Visibility;
 }
 
 export interface IProject {

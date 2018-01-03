@@ -142,6 +142,7 @@
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Projekte-Dashboard",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projekte",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Beschreibung",
+  "app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel": "",
   "app.containers.AdminPage.ProjectDescription.saveButtonLabel": "Speichern",
   "app.containers.AdminPage.ProjectDescription.saveErrorLabel": "Fehler",
   "app.containers.AdminPage.ProjectDescription.saveErrorMessage": "Wir konnten Ihre Änderungen nicht speichern, bitte versuchen Sie es erneut.",

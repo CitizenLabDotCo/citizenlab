@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.descriptionLabel',
     defaultMessage: 'Description',
   },
+  descriptionPreviewLabel: {
+    id: 'app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel',
+    defaultMessage: 'Description Preview',
+  },
   saveSuccessMessage: {
     id: 'app.containers.AdminPage.ProjectDescription.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',

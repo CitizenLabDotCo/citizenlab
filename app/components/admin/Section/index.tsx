@@ -38,7 +38,8 @@ export const SectionField = styled.div`
   }
 
   input,
-  textarea {
+  textarea,
+  .TextArea {
     max-width: 500px;
   }
 

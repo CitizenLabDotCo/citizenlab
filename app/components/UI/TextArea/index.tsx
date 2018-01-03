@@ -8,6 +8,7 @@ import TextareaAutosize from 'react-autosize-textarea';
 
 // style
 import styled, { css } from 'styled-components';
+import { color } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   position: relative;
@@ -48,6 +49,19 @@ const Container: any = styled.div`
   }
 `;
 
+const CharacterCount = styled.p`
+  bottom: 0;
+  color: ${color('label')};
+  margin: 0;
+  padding: .5rem;
+  position: absolute;
+  right: 0;
+
+  &.error {
+    color: ${color('error')};
+  }
+`;
+
 const TextAreaContainer: any = styled.div`
   position: relative;
 `;
@@ -61,6 +75,7 @@ type Props = {
   onChange?: (arg: string) => void | undefined;
   onFocus?: () => void | undefined;
   onBlur?: () => void | undefined;
+  maxLength?: number;
 };
 
 type State = {};
@@ -88,8 +103,10 @@ export default class TextArea extends React.PureComponent<Props, State> {
   }
 
   handleOnChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
+    const value = this.props.maxLength ? event.currentTarget.value.substr(0, this.props.maxLength) : event.currentTarget.value;
+
     if (this.props.onChange && _.isFunction(this.props.onChange)) {
-      this.props.onChange(event.currentTarget.value);
+      this.props.onChange(value);
     }
   }
 
@@ -107,7 +124,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
 
   render() {
     let { rows } = this.props;
-    const { name, placeholder, value, error, children } = this.props;
+    const { name, placeholder, value, error, children, maxLength } = this.props;
     const hasError = (!_.isNull(error) && !_.isUndefined(error) && !_.isEmpty(error));
     const className = this.props['className'];
 
@@ -115,7 +132,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
 
     return (
       <Container className={className}>
-        <TextAreaContainer>
+        <TextAreaContainer className="TextArea">
           <TextareaAutosize
             className={`textarea ${hasError ? 'error' : ''}`}
             name={name || ''}
@@ -127,6 +144,11 @@ export default class TextArea extends React.PureComponent<Props, State> {
             onBlur={this.handleOnBlur}
             innerRef={this.setRef}
           />
+          {maxLength &&
+            <CharacterCount className={value.length === maxLength ? 'error' : ''}>
+              {value.length} / {maxLength}
+            </CharacterCount>
+          }
           {children}
         </TextAreaContainer>
         <Error text={error} />
