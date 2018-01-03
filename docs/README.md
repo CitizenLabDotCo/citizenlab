@@ -7,21 +7,22 @@
 - 2018 can be selected as the year of events/phases
 - The project dropdown in the idea posting form no longer shows blank values
 - Reset password email
-- 
+
 ### Added
-- Ideas can be edited by admins and by its author
+- Ideas can be edited by admins and by their author
 - An idea shows a changelog with its latest updates
-- New admin idea manager
+- Improved admin idea manager
   - Bulk update project, topics and statuses of ideas
   - Bulk delete ideas
   - Preview the idea content
   - Links through to viewing and editing the idea
-- A project shows previews of its events in the footer
 - When on a multi-lingual platform, the language can be changed in the footer
-- Images are automatically optimized after uploading to reduce the file size
+- The project pages now show previews of the project events in the footer
+- The project card now shows a description preview text, which is changeable through the admin
+- Images are automatically optimized after uploading, to reduce the file size
 
 ### Changed
-- Image dimensions have changed to the newest formats
+- Image dimensions have changed to more optimal dimensions
 
 ## 2017-12-13
 
