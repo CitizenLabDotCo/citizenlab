@@ -144,7 +144,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
             onBlur={this.handleOnBlur}
             innerRef={this.setRef}
           />
-          {maxLength &&
+          {value && maxLength &&
             <CharacterCount className={value.length === maxLength ? 'error' : ''}>
               {value.length} / {maxLength}
             </CharacterCount>
