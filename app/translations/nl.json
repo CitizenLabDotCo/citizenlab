@@ -142,6 +142,7 @@
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Projecten dashboard",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projecten",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Beschrijving",
+  "app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel": "",
   "app.containers.AdminPage.ProjectDescription.saveButtonLabel": "Opslaan",
   "app.containers.AdminPage.ProjectDescription.saveErrorLabel": "Fout",
   "app.containers.AdminPage.ProjectDescription.saveErrorMessage": "We konden uw gegevens niet opslaan. Probeer opnieuw alstublieft.",

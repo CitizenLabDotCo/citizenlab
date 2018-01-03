@@ -23,6 +23,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Error from 'components/UI/Error';
 import Editor from 'components/UI/Editor';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import TextArea from 'components/UI/TextArea';
 
 // Styling
 import styled from 'styled-components';
@@ -98,6 +99,10 @@ class ProjectDescription extends React.Component<Props, State> {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
+  updatePreview = (value) => {
+    this.setState({ diff: { ...this.state.diff, description_preview_multiloc: { [this.state.locale]: value } } });
+  }
+
   changeDesc = (editorState: EditorState): void => {
     const { diff, locale } = this.state;
     const htmlDescription = getHtmlStringFromEditorState(editorState);
@@ -129,7 +134,7 @@ class ProjectDescription extends React.Component<Props, State> {
   }
 
   render () {
-    const { data, diff, editorState, loading, saved, errors } = this.state;
+    const { data, diff, editorState, loading, saved, errors, locale } = this.state;
     const projectAttrs = { ...data.attributes, ...diff } as IUpdatedProjectProperties;
     const submitState = getSubmitState({ errors, saved, diff });
 
@@ -137,10 +142,22 @@ class ProjectDescription extends React.Component<Props, State> {
       <form className="e2e-project-description-form" onSubmit={this.saveProject}>
         <Section>
           <SectionField>
+            <Label>
+              <FormattedMessage {...messages.descriptionPreviewLabel} />
+            </Label>
+            <TextArea
+              name="meta_description"
+              rows={5}
+              value={projectAttrs && projectAttrs.description_preview_multiloc ? projectAttrs.description_preview_multiloc[locale] : ''}
+              onChange={this.updatePreview}
+              maxLength={280}
+            />
+            <Error fieldName="description_preview_multiloc" apiErrors={this.state.errors.description_preview_multiloc} />
+          </SectionField>
+          <SectionField>
             <Label htmlFor="project-description">
               <FormattedMessage {...messages.descriptionLabel} />
             </Label>
-
             <Editor
               id="project-description"
               placeholder=""
