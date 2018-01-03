@@ -576,7 +576,7 @@
   "app.containers.UsersEditPage.notifications_mention": "Iemand heeft u vermeld",
   "app.containers.UsersEditPage.notifications_new_comments": "Nieuwe reacties",
   "app.containers.UsersEditPage.notifications_new_user": "Nieuwe gebruikersregistratie",
-  "app.containers.UsersEditPage.outside": "{organizationType, select, stad {buiten {name}} generieke {None of these}}",
+  "app.containers.UsersEditPage.outside": "Geen van de vorige",
   "app.containers.UsersEditPage.password": "Wachtwoord",
   "app.containers.UsersEditPage.processing": "Verzenden...",
   "app.containers.UsersEditPage.storeError": "Bijgewerkt profiel kon niet opgeslagen worden",
