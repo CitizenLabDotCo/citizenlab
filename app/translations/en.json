@@ -142,6 +142,7 @@
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Projects dashboard",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projects",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Description",
+  "app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel": "Description Preview",
   "app.containers.AdminPage.ProjectDescription.saveButtonLabel": "Save",
   "app.containers.AdminPage.ProjectDescription.saveErrorLabel": "Error",
   "app.containers.AdminPage.ProjectDescription.saveErrorMessage": "We could not save your changes, please try again.",
