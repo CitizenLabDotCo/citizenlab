@@ -1,8 +1,10 @@
 class Project < ApplicationRecord
 
+  DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
+
   @@sanitizer = Rails::Html::WhiteListSanitizer.new
 
-  mount_base64_uploader :header_bg, HeaderBgUploader
+  mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
 
   has_many :ideas, dependent: :destroy
@@ -20,11 +22,20 @@ class Project < ApplicationRecord
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
+  validates :description_preview_multiloc, multiloc: {presence: false}
   validates :slug, presence: true, uniqueness: true, format: {with: SlugService.new.regex }
   validates :visible_to, presence: true, inclusion: {in: VISIBLE_TOS}
+  validates :description_preview_multiloc, json: { 
+    schema: DESCRIPTION_PREVIEW_JSON_SCHEMA, 
+    message: ->(errors) { errors.map{|e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
+    options: {
+      errors_as_objects: true
+    }
+  }
 
   before_validation :generate_slug, on: :create
   before_validation :set_visible_to, on: :create
+  before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :sanitize_description_multiloc, if: :description_multiloc
 
 
@@ -52,6 +63,12 @@ class Project < ApplicationRecord
   def sanitize_description_multiloc
     self.description_multiloc = self.description_multiloc.map do |locale, description|
       [locale, @@sanitizer.sanitize(description, tags: %w(p b u i em strong a h1 h2 h3 h4 h5 h6 ul li ol), attributes: %w(href type style))]
+    end.to_h
+  end
+
+  def sanitize_description_preview_multiloc
+    self.description_preview_multiloc = self.description_preview_multiloc.map do |locale, description_preview|
+      [locale, @@sanitizer.sanitize(description_preview, tags: %w(), attributes: %w())]
     end.to_h
   end
 
