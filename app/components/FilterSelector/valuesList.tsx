@@ -114,12 +114,12 @@ const OptionText = styled.span`
 `;
 
 type Value = {
-  text: string;
+  text: string | JSX.Element;
   value: any;
 };
 
 type Props = {
-  title: string;
+  title: string | JSX.Element;
   values: Value[];
   onChange: Function;
   selected: any[];
@@ -234,11 +234,8 @@ export default class ValuesList extends React.PureComponent<Props, State> {
   }
 
   render() {
-    let { title } = this.props;
     const { values, multiple, deployed, baseID } = this.props;
     const { currentFocus } = this.state;
-
-    title = title.toLocaleLowerCase();
 
     const dropdown = ((deployed) ? (
       <CSSTransition
@@ -273,7 +270,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
                   selected={checked}
                   key={entry.value}
                   onClick={this.handleOnClick(entry, index)}
-                  className={`e2e-filter-selector-dropdown-listitem-${title} ${focussed}`}
+                  className={`${focussed}`}
                 >
                   <OptionText>{entry.text}</OptionText>
 

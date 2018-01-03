@@ -6,8 +6,7 @@ import * as Rx from 'rxjs/Rx';
 import FilterSelector from 'components/FilterSelector';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 type Props = {
@@ -19,7 +18,7 @@ type State = {
   selectedValue: string[];
 };
 
-class SelectSort extends React.PureComponent<Props & InjectedIntlProps, State> {
+class SelectSort extends React.PureComponent<Props, State> {
   state: State;
 
   constructor(props: Props) {
@@ -36,18 +35,17 @@ class SelectSort extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { selectedValue } = this.state;
-    const { formatMessage } = this.props.intl;
     const options = [
-      { text: formatMessage(messages.trending), value: 'trending' },
-      { text: formatMessage(messages.popular), value: 'popular' },
-      { text: formatMessage(messages.newest), value: 'new' },
-      { text: formatMessage(messages.oldest), value: '-new' },
+      { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
+      { text: <FormattedMessage {...messages.popular} />, value: 'popular' },
+      { text: <FormattedMessage {...messages.newest} />, value: 'new' },
+      { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
     ];
 
     return (
       <FilterSelector
         id="e2e-ideas-sort-filter"
-        title={formatMessage(messages.sortTitle)}
+        title={<FormattedMessage {...messages.sortTitle} />}
         name="sort"
         selected={selectedValue}
         values={options}
@@ -58,4 +56,4 @@ class SelectSort extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(SelectSort);
+export default SelectSort;
