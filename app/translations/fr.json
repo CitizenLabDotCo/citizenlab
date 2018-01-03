@@ -142,7 +142,7 @@
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Gestion des projets",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projets",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Description",
-  "app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel": "Description Preview",
+  "app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel": "Sous-titre du projet",
   "app.containers.AdminPage.ProjectDescription.saveButtonLabel": "Enregistrer",
   "app.containers.AdminPage.ProjectDescription.saveErrorLabel": "Erreur",
   "app.containers.AdminPage.ProjectDescription.saveErrorMessage": "Vos modifications n'ont pas pu être enregistrées, veuillez réessayer.",
