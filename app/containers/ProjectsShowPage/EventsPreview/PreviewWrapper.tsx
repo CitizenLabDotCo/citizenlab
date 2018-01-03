@@ -7,11 +7,12 @@ const Background = styled.div`
   margin: 40px 0;
   overflow: hidden;
   padding: 60px 0 120px 0;
-  transition: max-height .2s ease-in-out;
+  transition: all .2s ease-in-out;
   width: 100%;
 
   &.exited {
     max-height: 0;
+    padding: 0;
   }
 
   &.entering,

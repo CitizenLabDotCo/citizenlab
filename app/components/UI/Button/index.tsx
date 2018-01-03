@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { darken, rgba } from 'polished';
 import { ITheme } from 'typings';
 import Spinner from 'components/UI/Spinner';
-import Icon from 'components/UI/Icon';
+import Icon, { IconNames } from 'components/UI/Icon';
 import { Link } from 'react-router';
 import styled, { css } from 'styled-components';
 
@@ -14,7 +14,6 @@ const StyledLink = styled(Link)``;
 const StyledA = styled.a``;
 
 const ButtonText = styled.div`
-  font-weight: 400;
   margin: 0;
   margin-top: -1px;
   padding: 0;
@@ -73,6 +72,7 @@ function setFillColor(color) {
 
 const Container: any = styled.div`
   user-select: none;
+  font-weight: 400;
 
   * {
     user-select: none;
@@ -85,7 +85,7 @@ const Container: any = styled.div`
     height: ${(props: any) => props.height || 'auto'};
     display: ${(props: any) => !props.width ? 'inline-flex' : 'flex'};
     align-items: center;
-    justify-content: center;
+    justify-content: ${(props: any) => props.justify || 'center'};
     margin: 0;
     padding: ${(props: any) => getPadding(props.size)};
     border-radius: ${(props: any) => props.circularCorners ? '999em' : '5px'};
@@ -235,7 +235,7 @@ const Container: any = styled.div`
 
 const SpinnerWrapper = styled.div`
   position: absolute;
-  top: -3px;
+  top: 0;
   left: 0;
   right: 0;
   bottom: 0px;
@@ -254,7 +254,8 @@ type Props = {
   width?: string | undefined;
   height?: string | undefined;
   padding?: string | undefined;
-  icon?: string;
+  justify?: 'left' | 'center' | 'right' | undefined;
+  icon?: IconNames;
   processing?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
@@ -276,7 +277,7 @@ export default class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { text, width, height, padding, icon, children, linkTo } = this.props;
+    const { text, width, height, padding, justify, icon, children, linkTo } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, className } = this.props;
 
     id = (id || '');
@@ -294,7 +295,7 @@ export default class Button extends React.PureComponent<Props, State> {
       <ButtonContent>
         {icon && <StyledIcon name={icon} />}
         <ButtonText>{text || children}</ButtonText>
-        {processing && <SpinnerWrapper><Spinner size="23px" /></SpinnerWrapper>}
+        {processing && <SpinnerWrapper><Spinner size="24px" /></SpinnerWrapper>}
       </ButtonContent>
     );
 
@@ -315,6 +316,7 @@ export default class Button extends React.PureComponent<Props, State> {
         width={width}
         height={height}
         padding={padding}
+        justify={justify}
         processing={processing}
         onClick={this.handleOnClick}
         disabled={disabled}

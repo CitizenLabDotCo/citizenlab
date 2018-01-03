@@ -7,12 +7,10 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 
 // services
-import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
@@ -58,7 +56,7 @@ interface GlobalState {
 
 interface State extends GlobalState {}
 
-class ButtonBar extends React.PureComponent<Props & InjectedIntlProps, State> {
+class ButtonBar extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
@@ -83,16 +81,15 @@ class ButtonBar extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleOnSubmit = () => {
-    eventEmitter.emit('IdeasNewPage', 'submit', null);
+  handleOnSubmitButtonClick = () => {
+    eventEmitter.emit('IdeasNewPage', 'IdeaFormSubmitEvent', null);
   }
 
   render() {
     if (!this.state) { return null; }
 
-    const { formatMessage } = this.props.intl;
     const { processing, submitError } = this.state;
-    const submitErrorMessage = (submitError ? formatMessage(messages.submitError) : null);
+    const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
     return (
       <Container>
@@ -101,8 +98,8 @@ class ButtonBar extends React.PureComponent<Props & InjectedIntlProps, State> {
             className="e2e-submit-idea-form"
             size="2"
             processing={processing}
-            text={formatMessage(messages.submit)}
-            onClick={this.handleOnSubmit}
+            text={<FormattedMessage {...messages.submit} />}
+            onClick={this.handleOnSubmitButtonClick}
           />
           <Error text={submitErrorMessage} marginTop="0px" showBackground={false} showIcon={true} />
         </ButtonBarInner>
@@ -111,4 +108,4 @@ class ButtonBar extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(ButtonBar);
+export default ButtonBar;

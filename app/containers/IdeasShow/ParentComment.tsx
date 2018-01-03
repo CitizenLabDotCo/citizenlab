@@ -10,6 +10,9 @@ import Author from './Author';
 import Button from 'components/UI/Button';
 import ChildCommentForm from './ChildCommentForm';
 import { Link, browserHistory } from 'react-router';
+import Modal from 'components/UI/Modal';
+import SpamReportForm from 'containers/SpamReport';
+import MoreActionsMenu, { IAction, Props as MoreActionsMenuProps } from 'components/UI/MoreActionsMenu';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -61,6 +64,7 @@ const CommentContainer: any = styled.div`
   border: solid 1px #e4e4e4;
   border-radius: 6px;
   background: #fff;
+  position: relative;
 
   ${(props: any) => props.withReplyBox && css`
     border-bottom: none;
@@ -107,6 +111,12 @@ const CommentBody = styled.div`
   }
 `;
 
+const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
+  position: absolute;
+  top: 5px;
+  right: 15px;
+`;
+
 const ChildCommentsContainer = styled.div``;
 
 type Props = {
@@ -122,6 +132,8 @@ type State = {
   comment: IComment | null;
   childCommentIds: string[] | null;
   showForm: boolean;
+  spamModalVisible: boolean;
+  moreActions: IAction[];
 };
 
 type Tracks = {
@@ -141,6 +153,8 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       comment: null,
       childCommentIds: null,
       showForm: false,
+      spamModalVisible: false,
+      moreActions: [],
     };
     this.subscriptions = [];
   }
@@ -173,12 +187,22 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       ).delayWhen(() => {
         return (animate === true ? Rx.Observable.timer(100) : Rx.Observable.of(null));
       }).subscribe(([locale, currentTenantLocales, authUser, comment, childCommentIds]) => {
+        let moreActions = this.state.moreActions;
+
+        if (authUser) {
+          moreActions = [
+            ...this.state.moreActions,
+            // { label: 'Report as spam', handler: this.openSpamModal }
+          ];
+        }
+
         this.setState({
           locale,
           currentTenantLocales,
           authUser,
           comment,
-          childCommentIds
+          childCommentIds,
+          moreActions,
         });
       })
     ];
@@ -199,6 +223,14 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       const link = event.target.getAttribute('data-link');
       browserHistory.push(link);
     }
+  }
+
+  openSpamModal = () => {
+    this.setState({ spamModalVisible: true });
+  }
+
+  closeSpamModal = () => {
+    this.setState({ spamModalVisible: false });
   }
 
   render() {
@@ -222,6 +254,11 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
         <Container className="e2e-comment-thread">
 
           <CommentContainer withReplyBox={isLoggedIn}>
+            <StyledMoreActionsMenu
+              height="5px"
+              actions={this.state.moreActions}
+            />
+
             <CommentContainerInner>
               <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
 
@@ -241,6 +278,9 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
             <ChildCommentForm ideaId={ideaId} parentId={commentId} />
           }
 
+          <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
+            <SpamReportForm resourceId={this.props.commentId} resourceType="comments" />
+          </Modal>
         </Container>
       );
 

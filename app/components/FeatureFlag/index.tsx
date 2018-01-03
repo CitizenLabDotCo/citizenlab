@@ -13,7 +13,7 @@ interface State {
   currentTenant: ITenant | null;
 }
 
-export default class FeatureFlag extends React.Component<Props, State> {
+export default class FeatureFlag extends React.PureComponent<Props, State> {
   subscription: Rx.Subscription | null;
 
   constructor(props: Props) {

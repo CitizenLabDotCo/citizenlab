@@ -72,26 +72,20 @@ const ModalContentInner = styled.div`
   z-index: 5000;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px);
-    margin-top: 0px;
-    padding-top: 80px;
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    margin-top: 72px;
   `}
 `;
 
 const TopBar: any = styled.div`
-  height: 94px;
+  height: 72px;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   z-index: 20000;
   background: #fff;
-  transition: height 250ms ease-out;
-
-  ${(props: any) => props.scrolled && css`
-    height: 69px;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
-  `}
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -168,8 +162,7 @@ const HeaderChildWrapper = styled.div`
 `;
 
 const CloseIcon = styled(Icon)`
-  height: 12px;
-  fill: #999;
+  height: 13px;
   fill: #666;
   display: flex;
   align-items: center;
@@ -185,10 +178,10 @@ const CloseButton = styled.div`
   justify-content: center;
   position: absolute;
   cursor: pointer;
-  top: 15px;
-  right: 30px;
+  top: 20px;
+  right: 33px;
   border-radius: 50%;
-  border: solid 1px #e0e0e0;
+  border: solid 1px #ccc;
   z-index: 15000;
   transition: border-color 100ms ease-out;
 
@@ -301,6 +294,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     }
   }
 
+  /*
   setRef = (modalContentInnerElement: HTMLDivElement) => {
     if (modalContentInnerElement && !this.subscription) {
       this.subscription = Rx.Observable.fromEvent(modalContentInnerElement, 'scroll', { passive: true }).sampleTime(10).subscribe((bleh) => {
@@ -311,6 +305,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       });
     }
   }
+  */
 
   onEscKeyPressed = (event) => {
     if (event.defaultPrevented) {
@@ -405,7 +400,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
           >
             <ModalContent id="e2e-fullscreenmodal-content">
 
-              <ModalContentInner innerRef={this.setRef}>
+              <ModalContentInner>
                 {children}
               </ModalContentInner>
 

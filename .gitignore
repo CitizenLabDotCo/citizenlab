@@ -19,3 +19,4 @@ esw
 # Tests logs and reports
 selenium-debug.log
 e2e/reports/*
+.awcache

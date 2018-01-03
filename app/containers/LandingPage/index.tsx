@@ -373,8 +373,8 @@ class LandingPage extends React.PureComponent<Props, State> {
       const headerSloganMultiLoc = currentTenant.data.attributes.settings.core.header_slogan;
       const currentTenantName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
       const currentTenantLogo = currentTenant.data.attributes.logo.large;
-      const currentTenantHeaderTitle = (headerTitleMultiLoc && headerTitleMultiLoc[locale]);
-      const currentTenantHeaderSlogan = (headerSloganMultiLoc && headerSloganMultiLoc[locale]);
+      const currentTenantHeaderTitle = (headerTitleMultiLoc ? getLocalized(headerTitleMultiLoc, locale, currentTenantLocales) : null);
+      const currentTenantHeaderSlogan = (headerSloganMultiLoc ? getLocalized(headerSloganMultiLoc, locale, currentTenantLocales) : null);
       const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }}/>);
       const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (currentTenantHeader !== null);

@@ -1,18 +1,25 @@
+// must be at the top, before other imports!
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+
 // Libraries
 import * as React from 'react';
 import * as moment from 'moment';
 import styled from 'styled-components';
 
 import { SingleDatePicker } from 'react-dates';
-import 'react-dates/lib/css/_datepicker.css';
 
 const Wrapper = styled.div`
   display: flex;
   position: relative;
 
   .SingleDatePickerInput {
-    border-radius: 5px 0 0 5px;
-    overflow: hidden;
+    border-radius: 5px;
+
+    .DateInput,
+    .DateInput_input {
+      background: transparent;
+    }
   }
 `;
 
@@ -73,11 +80,12 @@ export default class DateTimePicker extends React.PureComponent<Props, State> {
     this.setState({ selectedMoment: newMoment });
   }
 
-  handleDateChange = (dateMoment) => {
-    const newMoment = this.state.selectedMoment.clone();
-    newMoment.dayOfYear(dateMoment.dayOfYear());
+  handleDateChange = (dateMoment: moment.Moment) => {
+    // const newMoment = this.state.selectedMoment.clone();
+    // newMoment.dayOfYear(dateMoment.dayOfYear());
+    // this.updateDateTime(newMoment);
 
-    this.updateDateTime(newMoment);
+    this.updateDateTime(dateMoment);
   }
 
   createTimeChangeHandler = (unit: 'hour' |  'minute') => {
@@ -98,14 +106,15 @@ export default class DateTimePicker extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { selectedMoment } = this.state;
+    const { selectedMoment, focused } = this.state;
 
     return (
       <Wrapper>
         <SingleDatePicker
+          id="singledatepicker"
           date={selectedMoment}
           onDateChange={this.handleDateChange}
-          focused={this.state.focused}
+          focused={focused}
           onFocusChange={this.handleFocusChange}
           numberOfMonths={1}
           firstDayOfWeek={1}

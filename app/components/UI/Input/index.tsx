@@ -49,7 +49,7 @@ export type Props = {
   value?: string | null | undefined;
   type: 'text' | 'email' | 'password';
   placeholder?: string | null | undefined;
-  error?: string | null | undefined;
+  error?: string | JSX.Element | null | undefined;
   onChange?: (arg: string) => void;
   onFocus?: (arg: React.FormEvent<HTMLInputElement>) => void;
   onBlur?: (arg: React.FormEvent<HTMLInputElement>) => void;
@@ -90,8 +90,8 @@ export default class Input extends React.Component<Props, State> {
   render() {
     let { value, placeholder, error } = this.props;
     const className = this.props['className'];
-    const { id, type, name } = this.props;
-    const hasError = (_.isString(error) && !_.isEmpty(error));
+    const { id, type } = this.props;
+    const hasError = (!_.isNull(error) && !_.isUndefined(error) && !_.isEmpty(error));
 
     if (this.props.name && this.context.formik && this.context.formik.values[this.props.name]) {
       value = value || this.context.formik.values[this.props.name];

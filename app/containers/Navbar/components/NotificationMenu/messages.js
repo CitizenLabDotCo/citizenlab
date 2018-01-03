@@ -38,4 +38,12 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.mentionInComment',
     defaultMessage: '{name} mentioned you in a comment',
   },
+  userMarkedCommentAsSpam: {
+    id: 'app.containers.NotificationMenu.userMarkedCommentAsSpam',
+    defaultMessage: '{name} reported a comment on \'{ideaTitle}\' as spam',
+  },
+  userMarkedIdeaAsSpam: {
+    id: 'app.containers.NotificationMenu.userMarkedIdeaAsSpam',
+    defaultMessage: '{name} reported \'{ideaTitle}\' as spam',
+  },
 });

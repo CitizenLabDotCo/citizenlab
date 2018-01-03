@@ -16,15 +16,27 @@ export const SectionTitle = styled.h1`
 export const SectionSubtitle = styled.p`
   color: ${color('label')};
   font-size: ${fontSize('base')};
-  margin-bottom: 45px;
+  margin-bottom: ${remCalc(45)};
 
-  h1 + & {
-    margin-top: -25px;
+  ${SectionTitle} + &{
+    margin-top: -2rem;
   }
 `;
 
 export const SectionField = styled.div`
   margin-bottom: ${remCalc(30)};
+  overflow: visible;
+  transition: all .2s ease-in-out;
+  max-height: auto;
+
+  &.exited {
+    max-height: 0;
+  }
+
+  &.entering,
+  &.exiting {
+    max-height: 200px;
+  }
 
   input,
   textarea {

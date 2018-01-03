@@ -2,14 +2,18 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
 import { authUserStream } from './auth';
+import CommentOnYourCommentNotification from 'containers/Navbar/components/NotificationMenu/components/CommentOnYourCommentNotification';
 
 const apiEndpoint = `${API_PATH}/notifications`;
 
-export interface INotificationData {
+interface IBaseNotificationData {
   id: string;
   type: string;
+}
+
+export interface ICommentOnYourCommentNotificationData extends IBaseNotificationData {
   attributes: {
-    type: 'comment_on_your_comment' | 'comment_on_your_idea';
+    type: 'comment_on_your_comment';
     read_at: string;
     created_at: string;
     initiating_user_first_name: string;
@@ -45,6 +49,160 @@ export interface INotificationData {
   };
 }
 
+export interface ICommentOnYourIdeaNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'comment_on_your_idea';
+    read_at: string;
+    created_at: string;
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
+    idea_title: { [key: string]: any; }
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    comment: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    spam_report: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
+export interface IMentionInCommentNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'mention_in_comment';
+    read_at: string;
+    created_at: string;
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
+    idea_title: { [key: string]: any; }
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    comment: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
+export interface IIdeaMarkedAsSpamNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'idea_marked_as_spam';
+    read_at: string;
+    created_at: string;
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
+    idea_title: { [key: string]: any; }
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    comment: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
+export interface ICommentMarkedAsSpamNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'comment_marked_as_spam';
+    read_at: string;
+    created_at: string;
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
+    idea_title: { [key: string]: any; }
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
+export type TNotificationData =
+  ICommentOnYourCommentNotificationData |
+  ICommentOnYourIdeaNotificationData |
+  ICommentMarkedAsSpamNotificationData |
+  IIdeaMarkedAsSpamNotificationData |
+  IMentionInCommentNotificationData;
+
+
 export interface INotificationLinks {
   self: string;
   first: string;
@@ -54,12 +212,12 @@ export interface INotificationLinks {
 }
 
 export interface INotifications {
-  data: INotificationData[];
+  data: TNotificationData[];
   links: INotificationLinks;
 }
 
 export interface INotification {
-  data: INotificationData;
+  data: TNotificationData;
 }
 
 export function notificationsStream(streamParams: IStreamParams<INotifications> | null = null) {
