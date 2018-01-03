@@ -26,6 +26,7 @@ const ChangeLogEntry = styled.div`
 
 const AvatarWrapper = styled.div`
   flex: 0 0 2rem;
+  height: 2rem;
   margin-right: 1rem;
 
   svg {
