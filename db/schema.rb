@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171204155602) do
+ActiveRecord::Schema.define(version: 20171221145649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -165,6 +165,15 @@ ActiveRecord::Schema.define(version: 20171204155602) do
     t.index ["slug"], name: "index_ideas_on_slug", unique: true
   end
 
+  create_table "ideas_phases", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "idea_id"
+    t.uuid "phase_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idea_id"], name: "index_ideas_phases_on_idea_id"
+    t.index ["phase_id"], name: "index_ideas_phases_on_phase_id"
+  end
+
   create_table "ideas_topics", id: false, force: :cascade do |t|
     t.uuid "idea_id"
     t.uuid "topic_id"
@@ -203,10 +212,12 @@ ActiveRecord::Schema.define(version: 20171204155602) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "initiating_user_id"
+    t.uuid "spam_report_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
+    t.index ["spam_report_id"], name: "index_notifications_on_spam_report_id"
   end
 
   create_table "page_links", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -266,6 +277,7 @@ ActiveRecord::Schema.define(version: 20171204155602) do
     t.string "header_bg"
     t.integer "ideas_count", default: 0, null: false
     t.string "visible_to", default: "public", null: false
+    t.jsonb "description_preview_multiloc", default: {}
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -365,11 +377,14 @@ ActiveRecord::Schema.define(version: 20171204155602) do
   add_foreign_key "ideas", "idea_statuses"
   add_foreign_key "ideas", "projects"
   add_foreign_key "ideas", "users", column: "author_id"
+  add_foreign_key "ideas_phases", "ideas"
+  add_foreign_key "ideas_phases", "phases"
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
   add_foreign_key "identities", "users"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
+  add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "page_links", "pages", column: "linked_page_id"

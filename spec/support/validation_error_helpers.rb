@@ -52,7 +52,7 @@ class ValidationErrorHelper
 
   def error_fields(rspec_context, model)
     model_error_codes(model).each do |attribute, error_codes|
-      rspec_context.response_field attribute, "Array containing objects with signature {error: #{error_codes.map{|e| "'#{e}'"}.join(' | ')} }", scope: :errors
+      rspec_context.response_field attribute, "Array containing objects with signature { error: #{error_codes.map{|e| "'#{e}'"}.join(' | ')} }", scope: :errors
     end
   end
 end
