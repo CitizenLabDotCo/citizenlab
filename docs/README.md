@@ -1,5 +1,42 @@
 # Changelog
 
+## 2018-01-03
+
+### Fixed
+- Updating the bio on the profile page works again
+- 2018 can be selected as the year of events/phases
+- The project dropdown in the idea posting form no longer shows blank values
+- Reset password email
+- 
+### Added
+- Ideas can be edited by admins and by its author
+- An idea shows a changelog with its latest updates
+- New admin idea manager
+  - Bulk update project, topics and statuses of ideas
+  - Bulk delete ideas
+  - Preview the idea content
+  - Links through to viewing and editing the idea
+- A project shows previews of its events in the footer
+- When on a multi-lingual platform, the language can be changed in the footer
+- Images are automatically optimized after uploading to reduce the file size
+
+### Changed
+- Image dimensions have changed to the newest formats
+
+## 2017-12-13
+
+### Fixed
+- The ideas of deleted users are properly shown
+- Slider to make users admins is again functional
+
+### Added
+- The idea show page shows a project link
+- Mentions are operational in comments
+- Projects can be deleted in the admin
+
+### Changed
+- Ideas and projects sections switched positions on the landing page
+
 ## 2017-12-06
 
 ### Fixed
