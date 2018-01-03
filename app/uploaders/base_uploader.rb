@@ -2,6 +2,7 @@ module BaseUploader
   extend ActiveSupport::Concern
 
   included do
+    include CarrierWave::ImageOptimizer
     if !Rails.env.test? && !Rails.env.development?
       storage :fog
     end

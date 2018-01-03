@@ -58,6 +58,10 @@ class IdeaPolicy < ApplicationPolicy
     update?
   end
 
+  def get_activities?
+    true
+  end
+
   def permitted_attributes
     shared = [:publication_status,
       :project_id,
@@ -70,7 +74,7 @@ class IdeaPolicy < ApplicationPolicy
       area_ids: []
     ]
     if user&.admin?
-      [:idea_status_id] + shared
+      [:idea_status_id] + shared + [phase_ids: []]
     else
       shared
     end

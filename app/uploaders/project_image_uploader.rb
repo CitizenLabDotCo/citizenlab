@@ -37,14 +37,17 @@ class ProjectImageUploader < CarrierWave::Uploader::Base
 
   version :small do
     process resize_to_fill: [96, 96]
+    process optimize: [{ quality: 90, quiet: true }]
   end
 
   version :medium do
     process resize_to_fill: [425,425]
+    process optimize: [{ quality: 90, quiet: true }]
   end
 
   version :large do
     process resize_to_fit: [1200,1200]
+    process optimize: [{ quality: 90, quiet: true }]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

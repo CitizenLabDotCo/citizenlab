@@ -14,6 +14,7 @@ namespace :migrate do
     migration_settings = JSON.load(open(url))
     platform = migration_settings['platform']
     password = migration_settings['password']
+    db_user = migration_settings['db_user'] || 'citizenlab'
     locales_mapping = { 'en' => 'en', 'nl' => 'nl', 'nl-BE' => 'nl', 'fr' => 'fr' } 
     topics_mapping = migration_settings['topics_mapping'] || {}
     idea_statuses_mapping = migration_settings['idea_statuses_mapping'] || {}
@@ -25,7 +26,7 @@ namespace :migrate do
       keep_settings = prev_tenant.settings
       prev_tenant.destroy
     end
-    client = connect(platform: platform, password: password)
+    client = connect(platform: platform, db_user: db_user, password: password)
     create_tenant(platform, host, client['settings'].find.first, client['meteor_accounts_loginServiceConfiguration'], migration_settings, locales_mapping, keep_settings=keep_settings)
     Apartment::Tenant.switch(host.gsub '.', '_') do
       TenantTemplateService.new.apply_template 'base'
@@ -86,9 +87,9 @@ namespace :migrate do
   end
 
 
-  def connect(platform: nil, password: nil)
-    if platform && password
-      Mongo::Client.new("mongodb://lamppost.14.mongolayer.com:10323/#{platform}", auth_mech: :mongodb_cr, user: 'citizenlab', password: password)
+  def connect(platform: nil, db_user: nil, password: nil)
+    if platform && db_user && password
+      Mongo::Client.new("mongodb://lamppost.14.mongolayer.com:10323/#{platform}", auth_mech: :mongodb_cr, user: db_user, password: password)
     else
       Mongo::Client.new 'mongodb://docker.for.mac.localhost:27017/schiedam'
     end
@@ -397,7 +398,7 @@ namespace :migrate do
         d[:visible_to] = 'admins'
       else
         d[:visible_to] = 'groups'
-        d[:groups] = p['permissions'].values.flatten.map{|g| groups_hash[g]}.select{|g| g}
+        d[:groups] = p['permissions'].values.uniq.flatten.map{|g| groups_hash[g]}.select{|g| g}
       end
     else
       d[:visible_to] = 'public'
@@ -434,7 +435,6 @@ namespace :migrate do
       end
       projects_hash[p['_id']] = record
     rescue Exception => e
-      byebug
       @log.concat [e.message+' '+d.to_s]
     end
   end
@@ -617,6 +617,7 @@ namespace :migrate do
       # votes
       votes_d.each do |v| 
         v[:votable] = record
+        v[:created_at] = record.published_at
         if Vote.find_by(votable_id: record.id, user: v[:user])
           @log.concat ["User voted more than onces on votable: #{v}"]
         else
