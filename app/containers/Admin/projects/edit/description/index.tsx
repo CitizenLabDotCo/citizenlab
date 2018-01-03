@@ -150,7 +150,7 @@ class ProjectDescription extends React.Component<Props, State> {
               rows={5}
               value={projectAttrs && projectAttrs.description_preview_multiloc ? projectAttrs.description_preview_multiloc[locale] : ''}
               onChange={this.updatePreview}
-              error=""
+              maxLength={280}
             />
             <Error fieldName="description_preview_multiloc" apiErrors={this.state.errors.description_preview_multiloc} />
           </SectionField>
