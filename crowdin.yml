@@ -1,3 +1,4 @@
 files:
   - source: /app/translations/en.json
     translation: /app/translations/%two_letters_code%.json
+    update_option: update_without_changes

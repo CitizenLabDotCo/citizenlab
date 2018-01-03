@@ -39,7 +39,7 @@ export default class Spinner extends React.PureComponent<Props, {}> {
     const className = this.props['className'];
     let { size, thickness, color } = this.props;
 
-    size = (size || '26px');
+    size = (size || '28px');
     thickness = (thickness || '3px');
     color = (color || '#fff');
 

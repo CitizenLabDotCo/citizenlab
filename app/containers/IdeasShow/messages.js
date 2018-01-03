@@ -12,7 +12,7 @@ export default defineMessages({
   },
   postedIn: {
     id: 'app.containers.IdeasShow.postedIn',
-    defaultMessage: 'Posted in',
+    defaultMessage: 'Posted in {projectLink}',
   },
   closeMap: {
     id: 'app.containers.IdeasShow.closeMap',
@@ -169,5 +169,34 @@ export default defineMessages({
   register: {
     id: 'app.components.IdeasShow.register',
     defaultMessage: 'Create an account',
+  },
+  moreOptions: {
+    id: 'app.components.IdeasShow.moreOptions',
+    defaultMessage: 'More options',
+  },
+  reportAsSpam: {
+    id: 'app.components.IdeasShow.reportAsSpam',
+    defaultMessage: 'Report as spam',
+  },
+  editIdea: {
+    id: 'app.components.IdeasShow.editIdea',
+    defaultMessage: 'Edit idea',
+  },
+  lastUpdated: {
+    id: 'app.components.IdeasShow.lastUpdated',
+    defaultMessage: 'Last modified {modificationTime}',
+  },
+  lastChangesTitle: {
+    id: 'app.components.IdeasShow.lastChangesTitle',
+    defaultMessage: 'Last changes to this idea',
+  },
+  changeLogEntry: {
+    id: 'app.components.IdeasShow.changeLogEntry',
+    defaultMessage: `{changeType, select,
+      changed_status {{userName} has updated the status of this idea}
+      published {{userName} created this idea}
+      changed_title {{userName} updated the title of this idea}
+      changed_body {{userName} updated the description of this idea}
+    }`,
   },
 });

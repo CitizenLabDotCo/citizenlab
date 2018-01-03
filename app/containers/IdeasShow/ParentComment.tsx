@@ -2,12 +2,17 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
+import linkifyHtml from 'linkifyjs/html';
+
 // components
-import Authorize from 'utils/containers/authorize';
 import ChildComment from './ChildComment';
 import Author from './Author';
 import Button from 'components/UI/Button';
 import ChildCommentForm from './ChildCommentForm';
+import { Link, browserHistory } from 'react-router';
+import Modal from 'components/UI/Modal';
+import SpamReportForm from 'containers/SpamReport';
+import MoreActionsMenu, { IAction, Props as MoreActionsMenuProps } from 'components/UI/MoreActionsMenu';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -59,6 +64,7 @@ const CommentContainer: any = styled.div`
   border: solid 1px #e4e4e4;
   border-radius: 6px;
   background: #fff;
+  position: relative;
 
   ${(props: any) => props.withReplyBox && css`
     border-bottom: none;
@@ -91,17 +97,24 @@ const CommentBody = styled.div`
     margin-bottom: 25px;
   }
 
-  a.mention {
+  a {
     color: ${(props) => props.theme.colors.clBlue};
-    font-weight: inherit;
-    text-decoration: none;
-    background: ${props => transparentize(0.9, props.theme.colors.clBlue)};
+
+    &.mention {
+      background: ${props => transparentize(0.92, props.theme.colors.clBlue)};
+    }
 
     &:hover {
-      text-decoration: underline;
       color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+      text-decoration: underline;
     }
   }
+`;
+
+const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
+  position: absolute;
+  top: 5px;
+  right: 15px;
 `;
 
 const ChildCommentsContainer = styled.div``;
@@ -119,6 +132,8 @@ type State = {
   comment: IComment | null;
   childCommentIds: string[] | null;
   showForm: boolean;
+  spamModalVisible: boolean;
+  moreActions: IAction[];
 };
 
 type Tracks = {
@@ -138,6 +153,8 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       comment: null,
       childCommentIds: null,
       showForm: false,
+      spamModalVisible: false,
+      moreActions: [],
     };
     this.subscriptions = [];
   }
@@ -170,12 +187,22 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       ).delayWhen(() => {
         return (animate === true ? Rx.Observable.timer(100) : Rx.Observable.of(null));
       }).subscribe(([locale, currentTenantLocales, authUser, comment, childCommentIds]) => {
+        let moreActions = this.state.moreActions;
+
+        if (authUser) {
+          moreActions = [
+            ...this.state.moreActions,
+            // { label: 'Report as spam', handler: this.openSpamModal }
+          ];
+        }
+
         this.setState({
           locale,
           currentTenantLocales,
           authUser,
           comment,
-          childCommentIds
+          childCommentIds,
+          moreActions,
         });
       })
     ];
@@ -190,6 +217,22 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
     this.setState({ showForm: true });
   }
 
+  captureClick = (event) => {
+    if (event.target.classList.contains('mention')) {
+      event.preventDefault();
+      const link = event.target.getAttribute('data-link');
+      browserHistory.push(link);
+    }
+  }
+
+  openSpamModal = () => {
+    this.setState({ spamModalVisible: true });
+  }
+
+  closeSpamModal = () => {
+    this.setState({ spamModalVisible: false });
+  }
+
   render() {
     let returnValue: JSX.Element | null = null;
     const { commentId, animate } = this.props;
@@ -202,16 +245,24 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
       const isLoggedIn = !_.isNull(authUser);
       const commentText = getLocalized(commentBodyMultiloc, locale, currentTenantLocales);
-      const processedCommentText = commentText.replace(/<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi, '<a class="mention" href="/profile/$2">$3</a>');
+      const processedCommentText = linkifyHtml(commentText.replace(
+        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi, 
+        '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
+      ));
 
       const parentComment = (
         <Container className="e2e-comment-thread">
 
           <CommentContainer withReplyBox={isLoggedIn}>
+            <StyledMoreActionsMenu
+              height="5px"
+              actions={this.state.moreActions}
+            />
+
             <CommentContainerInner>
               <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
 
-              <CommentBody className="e2e-comment-body">
+              <CommentBody className="e2e-comment-body" onClick={this.captureClick}>
                 <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />
               </CommentBody>
             </CommentContainerInner>
@@ -227,6 +278,9 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
             <ChildCommentForm ideaId={ideaId} parentId={commentId} />
           }
 
+          <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
+            <SpamReportForm resourceId={this.props.commentId} resourceType="comments" />
+          </Modal>
         </Container>
       );
 

@@ -28,7 +28,7 @@ interface State {
 }
 
 function localize<PassedProps>(ComposedComponent) {
-  return class Localized extends React.Component<Props & PassedProps, State>{
+  return class Localized extends React.PureComponent<Props & PassedProps, State>{
     subscriptions: Rx.Subscription[];
 
     constructor(props: Props) {

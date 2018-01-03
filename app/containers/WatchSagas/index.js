@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Saga } from 'react-redux-saga';
+import { Saga } from 'utils/react-redux-saga';
 
 
 const WatchSagas = ({ sagas }) => (

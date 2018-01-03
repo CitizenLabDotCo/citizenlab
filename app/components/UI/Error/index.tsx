@@ -44,7 +44,7 @@ const StyledErrorMessageInner = styled.div`
 const StyledErrorMessage: any = styled.div`
   position: relative;
   overflow: hidden;
-  will-change: auto;
+  will-change: height, max-height, opacity;
 
   ${StyledErrorMessageInner} {
     margin-top: ${(props: IStyledErrorMessage) => props.marginTop};
@@ -96,7 +96,6 @@ const StyledErrorMessage: any = styled.div`
   &.error-enter {
     max-height: 0px;
     opacity: 0.01;
-    will-change: opacity;
 
     &.error-enter-active {
       max-height: 60px;
@@ -109,7 +108,6 @@ const StyledErrorMessage: any = styled.div`
   &.error-exit {
     max-height: 100px;
     opacity: 1;
-    will-change: opacity;
 
     &.error-exit-active {
       max-height: 0px;
@@ -121,7 +119,7 @@ const StyledErrorMessage: any = styled.div`
 `;
 
 type Props = {
-  text?: string | null;
+  text?: string | JSX.Element | null;
   fieldName?: string | undefined;
   errors?: string[];
   apiErrors?: API.Error[] | null;

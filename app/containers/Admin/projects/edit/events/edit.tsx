@@ -7,7 +7,6 @@ import { Multiloc, API } from 'typings';
 import * as moment from 'moment';
 import { browserHistory } from 'react-router';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
-import draftjsToHtml from 'draftjs-to-html';
 
 // components
 import Label from 'components/UI/Label';
@@ -24,6 +23,7 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import { IStream } from 'utils/streams';
 import unsubscribe from 'utils/unsubscribe';
 import getSubmitState from 'utils/getSubmitState';
+import { getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -37,6 +37,15 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
 import { eventStream, updateEvent, addEvent, IEvent, IEventData, IEvents, IUpdatedEventProperties } from 'services/events';
+
+// styling
+import styled from 'styled-components';
+
+const Container = styled.div`
+  .SingleDatePickerInput {
+    border-radius: 5px 0px 0px 5px;
+  }
+`;
 
 type Props = {
   params: {
@@ -55,7 +64,7 @@ interface State {
     [fieldName: string]: API.Error[]
   };
   saving: boolean;
-  focusedInput: 'START_DATE' | 'END_DATE' | null;
+  focusedInput: 'startDate' | 'endDate' | null;
   descState: EditorState;
   saved: boolean;
 }
@@ -118,14 +127,19 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
     }
   }
 
-  handleDescChange = (newState: EditorState) => {
-    const htmlValue = draftjsToHtml(convertToRaw(newState.getCurrentContent()));
+  handleDescChange = (editorState: EditorState) => {
+    const htmlValue = getHtmlStringFromEditorState(editorState);
+
     if (this.state.attributeDiff) {
       const newValue = this.state.attributeDiff && this.state.attributeDiff.description_multiloc || {};
       newValue[this.props.locale] = htmlValue;
+
       this.setState({
-        attributeDiff: { ...this.state.attributeDiff, description_multiloc: newValue },
-        descState: newState,
+        attributeDiff: {
+          ...this.state.attributeDiff,
+          description_multiloc: newValue
+        },
+        descState: editorState,
       });
     }
   }
@@ -138,7 +152,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
     };
   }
 
-  handleDateFocusChange = (focusedInput) => {
+  handleDateFocusChange = (focusedInput: 'startDate' | 'endDate') => {
     this.setState({ focusedInput });
   }
 
@@ -183,7 +197,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 
       return (
-        <div>
+        <Container>
           <SectionTitle>
             {this.state.event && <FormattedMessage {...messages.editEventTitle} />}
             {!this.state.event && <FormattedMessage {...messages.createEventTitle} />}
@@ -249,8 +263,8 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
                 messageSuccess: messages.saveSuccessMessage,
               }}
             />
-        </form>
-        </div>
+          </form>
+        </Container>
       );
     }
 

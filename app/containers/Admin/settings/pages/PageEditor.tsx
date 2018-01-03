@@ -20,7 +20,7 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 // Utils
 import getSubmitState from 'utils/getSubmitState';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
-import draftjsToHtml from 'draftjs-to-html';
+import { getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // Typings
 import { API } from 'typings';
@@ -133,14 +133,15 @@ export default class PageEditor extends React.Component<Props, State> {
     });
   }
 
-  handleTextChange = (newState: EditorState) => {
-    const htmlValue = draftjsToHtml(convertToRaw(newState.getCurrentContent()));
+  handleTextChange = (editorState: EditorState) => {
+    const htmlValue = getHtmlStringFromEditorState(editorState);
+
     if (this.state.diff) {
       const newValue = this.state.diff && this.state.diff.body_multiloc || {};
       newValue[this.state.locale] = htmlValue;
       this.setState({
+        editorState,
         diff: { ...this.state.diff, body_multiloc: newValue },
-        editorState: newState,
       });
     }
   }

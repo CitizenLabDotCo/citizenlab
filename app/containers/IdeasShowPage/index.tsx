@@ -7,6 +7,7 @@ import { withRouter, RouterState } from 'react-router';
 
 // components
 import IdeasShow from 'containers/IdeasShow';
+import Footer from 'components/Footer';
 
 // services
 import { ideaBySlugStream, IIdea } from 'services/ideas';
@@ -73,6 +74,7 @@ class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
       return (
         <Container>
           <IdeasShow ideaId={ideaId} />
+          {/* <Footer showCityLogoSection={false} /> */}
         </Container>
       );
     }
