@@ -18,7 +18,7 @@ import VoteControl from 'components/VoteControl';
 import { namespace as IdeaCardComponentNamespace } from 'components/IdeaCard';
 
 // auth
-import Authorize, { Else } from 'utils/containers/authorize';
+import HasPermission from 'components/HasPermission';
 
 // sagas
 import WatchSagas from 'containers/WatchSagas';
@@ -92,7 +92,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const authUser$ = authUserStream().observable;
 
     this.subscriptions = [
-      eventEmitter.observe<IModalInfo>(IdeaCardComponentNamespace, 'cardClick').subscribe(({ eventValue }) => {
+      eventEmitter.observeEvent<IModalInfo>('cardClick').subscribe(({ eventValue }) => {
         const { type, id, url } = eventValue;
         this.openModal(type, id, url);
       }),
@@ -118,6 +118,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
       }).subscribe()
     ];
   }
+
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
@@ -178,14 +179,14 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
               <Navbar />
 
-              <Authorize action={['routes', 'admin']} resource={location.pathname}>
+              <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
                 <div>
                   {children}
                 </div>
-                <Else>
+                <HasPermission.No>
                   <ForbiddenRoute />
-                </Else>
-              </Authorize>
+                </HasPermission.No>
+              </HasPermission>
             </Container>
           </ThemeProvider>
         )}

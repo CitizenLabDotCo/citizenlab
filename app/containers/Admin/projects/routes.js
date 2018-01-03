@@ -96,6 +96,23 @@ export default (injectReducer) => ({
           },
         },
         {
+          path: '/admin/projects/:slug/ideas',
+          name: 'admin projects ideas manager',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('components/admin/IdeaManager'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
           path: '/admin/projects/:slug/timeline',
           name: 'admin projects timeline',
           getComponent(nextState, cb) {

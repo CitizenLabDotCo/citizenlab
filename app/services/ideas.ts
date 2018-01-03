@@ -41,8 +41,11 @@ export interface IIdeaData {
     author: {
       data: IRelationship | null;
     };
+    phases: {
+      data: IRelationship[];
+    }
     project: {
-      data: IRelationship;
+      data: IRelationship | null;
     };
     idea_status?: {
       data: IRelationship;
@@ -70,6 +73,19 @@ export interface IIdeas {
   links: IIdeaLinks;
 }
 
+export interface IdeaActivity {
+  id: string;
+  type: 'activities';
+  attributes: {
+    action: string;
+    acted_at: string;
+    change: string[] | {[key: string]: string}[] | null;
+  };
+  relationships: {
+    user: { data: IRelationship };
+  };
+}
+
 export interface IIdeaUpdate {
   project_id?: string | undefined | null;
   author_id?: string | undefined | null;
@@ -79,6 +95,7 @@ export interface IIdeaUpdate {
   body_multiloc?: { [key: string]: string; } | undefined | null;
   topic_ids?: string[] | undefined | null;
   area_ids?: string[] | undefined | null;
+  phase_ids?: string[] | undefined | null;
   location_point_geojson?: {
     type: string;
     coordinates: number[];
@@ -131,4 +148,8 @@ export function updateIdea(ideaId: string, object: IIdeaUpdate) {
 
 export function deleteIdea(ideaId: string) {
   return streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId);
+}
+
+export function ideaActivities(ideaId: string) {
+  return streams.get<{ data: IdeaActivity[] }>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/activities` });
 }

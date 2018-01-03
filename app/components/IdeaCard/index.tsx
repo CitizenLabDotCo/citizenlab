@@ -191,7 +191,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
   componentWillMount() {
     const { ideaId } = this.props;
     const locale$ = localeStream().observable;
-    const ideaWithMeta$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {
+    const ideaWithRelationships$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {
       const ideaId = idea.data.id;
       const ideaImages = idea.data.relationships.idea_images.data;
       const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
@@ -213,7 +213,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$,
-        ideaWithMeta$
+        ideaWithRelationships$
       ).subscribe(([locale, { idea, ideaImage, ideaAuthor }]) => {
         this.setState({ idea, ideaImage, ideaAuthor, locale, loading: false });
       })
@@ -234,7 +234,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
         type: 'idea',
         id: idea.data.id,
         url: `/ideas/${idea.data.attributes.slug}`
-       });
+      });
     }
   }
 
@@ -255,8 +255,6 @@ class IdeaCard extends React.PureComponent<Props, State> {
   render() {
     const { idea, ideaImage, ideaAuthor, locale, showUnauthenticated, loading } = this.state;
 
-    console.log('render ideaCard');
-
     if (!loading && idea && locale) {
       const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
       const ideaImageLargeUrl = (ideaImage ? ideaImage.data.attributes.versions.large : null);
@@ -268,7 +266,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
           <IdeaContainerInner>
             {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
 
-            {ideaImageLargeUrl && <IdeaImageLarge src={ideaImageLargeUrl} />}
+            {/* ideaImageLargeUrl && <IdeaImageLarge src={ideaImageLargeUrl} /> */}
 
             {!ideaImageUrl &&
               <IdeaImagePlaceholder>

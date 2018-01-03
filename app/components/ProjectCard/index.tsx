@@ -10,12 +10,14 @@ import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 
 // services
+import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { projectByIdStream, IProject } from 'services/projects';
 import { projectImageStream, IProjectImage } from 'services/projectImages';
 
 // i18n
 import T from 'components/T';
+import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -48,7 +50,7 @@ const ProjectImage: any = styled.div`
   flex-shrink: 0;
   flex-grow: 0;
   width: 176px;
-  height: 176px;
+  min-height: 176px;
   border-radius: 6px;
   margin-right: 10px;
   background-image: url(${(props: any) => props.imageSrc});
@@ -130,18 +132,17 @@ const ProjectTitle = styled.h3`
 const ProjectDescription = styled.div`
   color: #84939E;
   font-size: 15px;
-  font-weight: 300;
   line-height: 20px;
+  font-weight: 300;
   margin-top: 10px;
 
   /* see https://stackoverflow.com/questions/3922739/limit-text-length-to-n-lines-using-css */
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* overflow: hidden;
+  display: block;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  line-height: 20px;
-  max-height: 60px;
+  max-height: 60px; */
 
   ${media.phone`
     display: none;
@@ -192,6 +193,7 @@ type Props = {
 };
 
 type State = {
+  locale: string | null,
   currentTenant: ITenant | null;
   project: IProject | null;
   projectImage: IProjectImage | null;
@@ -204,6 +206,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
+      locale: null,
       currentTenant: null,
       project: null,
       projectImage: null
@@ -213,6 +216,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
 
   componentWillMount() {
     const { id } = this.props;
+    const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const project$ = projectByIdStream(id).observable.switchMap((project) => {
       const projectImages = project.data.relationships.project_images.data;
@@ -226,10 +230,11 @@ class ProjectCard extends React.PureComponent<Props, State> {
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
+        locale$,
         currentTenant$,
         project$
-      ).subscribe(([currentTenant, { project, projectImage }]) => {
-        this.setState({ currentTenant, project, projectImage });
+      ).subscribe(([locale, currentTenant, { project, projectImage }]) => {
+        this.setState({ locale, currentTenant, project, projectImage });
       })
     ];
   }
@@ -247,15 +252,15 @@ class ProjectCard extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { currentTenant, project, projectImage } = this.state;
+    const { locale, currentTenant, project, projectImage } = this.state;
 
-    console.log('render projectCard');
-
-    if (currentTenant && project) {
+    if (locale && currentTenant && project) {
+      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const tenantLogo = currentTenant.data.attributes.logo.medium;
       const slug = project.data.attributes.slug;
       const titleMultiloc = project.data.attributes.title_multiloc;
-      const descriptionMultiloc = project.data.attributes.description_multiloc;
+      const description = getLocalized(project.data.attributes.description_multiloc, locale, currentTenantLocales).replace(/<[^\/>][^>]*><\/[^>]+>/gim,'');
+      const preview = getLocalized(project.data.attributes.description_preview_multiloc, locale, currentTenantLocales);
       const ideasCount = project.data.attributes.ideas_count;
       const imageUrl = (projectImage ? projectImage.data.attributes.versions.medium : null);
 
@@ -270,8 +275,12 @@ class ProjectCard extends React.PureComponent<Props, State> {
           }
 
           <ProjectContent>
-            <ProjectTitle><T value={titleMultiloc} /></ProjectTitle>
-            <ProjectDescription><T value={descriptionMultiloc} /></ProjectDescription>
+            <ProjectTitle>
+              <T value={titleMultiloc} />
+            </ProjectTitle>
+            <ProjectDescription>
+              {preview}
+            </ProjectDescription>
             <ReadMoreWrapper>
               <ReadMore onClick={this.goToProject}>
                 <FormattedMessage {...messages.readMore} />

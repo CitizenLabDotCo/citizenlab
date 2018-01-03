@@ -9,7 +9,6 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { browserHistory } from 'react-router';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 
 // components
 import ButtonBar from './ButtonBar';
@@ -28,6 +27,9 @@ import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'serv
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// utils
+import { convertToGeoJson } from 'utils/locationTools';
+
 // typings
 import { IOption, ImageFile } from 'typings';
 
@@ -44,13 +46,12 @@ const PageContainer = styled.div`
   min-height: calc(100vh - 105px);
   position: relative;
   background: #f8f8f8;
-  will-change: auto;
+  will-change: opacity, transform;
 
   &.page-enter {
     position: absolute;
     opacity: 0.01;
     transform: translateX(100vw);
-    will-change: opacity, transform;
 
     ${media.biggerThanMaxTablet`
       transform: translateX(800px);
@@ -75,7 +76,6 @@ const PageContainer = styled.div`
   &.page-exit {
     opacity: 1;
     transform: translateX(0);
-    will-change: opacity, transform;
 
     &.page-exit-active {
       opacity: 0.01;
@@ -108,7 +108,7 @@ const ButtonBarContainer = styled.div`
   right: 0;
   background: #fff;
   border-top: solid 1px #ddd;
-  will-change: auto;
+  will-change: transform;
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -116,7 +116,6 @@ const ButtonBarContainer = styled.div`
 
   &.buttonbar-enter {
     transform: translateY(64px);
-    will-change: transform;
 
     &.buttonbar-enter-active {
       transform: translateY(0);
@@ -126,7 +125,6 @@ const ButtonBarContainer = styled.div`
 
   &.buttonbar-exit {
     transform: translateY(0);
-    will-change: transform;
 
     &.buttonbar-exit-active {
       transform: translateY(64px);
@@ -161,17 +159,14 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     };
     this.initialGlobalState = {
       title: null,
-      description: EditorState.createEmpty(),
+      description: null,
       selectedTopics: null,
       selectedProject: null,
-      location: null,
-      titleError: null,
-      descriptionError: null,
+      location: '',
       submitError: false,
       processing: false,
       ideaId: null,
       imageFile: null,
-      imageBase64: null,
       imageId: null,
       imageChanged: false
     };
@@ -199,23 +194,14 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  async convertToGeoJson(location: string) {
-    const results = await geocodeByAddress(location);
-    const { lat, lng } = await getLatLng(results[0]);
-    return {
-      type: 'Point',
-      coordinates: [lat as number, lng as number]
-    };
-  }
-
   async postIdea(publicationStatus: 'draft' | 'published', authorId: string | null = null) {
     const { locale } = await this.localState.get();
     const { title, description, selectedTopics, selectedProject, location, ideaId } = await this.globalState.get();
     const ideaTitle = { [locale as string]: title as string };
-    const ideaDescription = { [locale as string]: draftToHtml(convertToRaw(description.getCurrentContent())) };
+    const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = (selectedProject ? selectedProject.value as string : null);
-    const locationGeoJSON = (_.isString(location) && !_.isEmpty(location) ? await this.convertToGeoJson(location) : null);
+    const locationGeoJSON = (_.isString(location) && !_.isEmpty(location) ? await convertToGeoJson(location) : null);
     const locationDescription = (_.isString(location) && !_.isEmpty(location) ? location : null);
 
     if (ideaId) {
@@ -244,19 +230,19 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   async postIdeaAndIdeaImage(publicationStatus: 'draft' | 'published', authorId: string | null = null) {
     try {
       let ideaImage: IIdeaImage | null = null;
-      const { imageBase64, imageId, imageChanged } = await this.globalState.get();
+      const { imageId, imageChanged, imageFile } = await this.globalState.get();
 
       const idea = await this.postIdea(publicationStatus, authorId);
 
       // check if an image was previously saved and changed afterwards
-      // if so, delete the old image from the server first before uplaoding the new one
+      // if so, delete the old image from the server first before uploading the new one
       if (imageId && imageChanged) {
         await deleteIdeaImage(idea.data.id, imageId);
       }
 
       // upload the newly dropped image to the server
-      if (imageChanged && imageBase64) {
-        ideaImage = await addIdeaImage(idea.data.id, imageBase64, 0);
+      if (imageChanged && imageFile && imageFile[0] && imageFile[0].base64 && _.isString(imageFile[0].base64)) {
+        ideaImage = await addIdeaImage(idea.data.id, imageFile[0].base64 as string, 0);
       }
 
       this.globalState.set({

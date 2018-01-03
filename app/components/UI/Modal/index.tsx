@@ -20,28 +20,26 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, color } from 'utils/styleUtils';
 
 const ModalContent = styled(clickOutside)`
-  width: 100%;
-  max-width: 850px;
+  backface-visibility: hidden;
+  background: #fff;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
-  padding: 25px;
-  margin-top: 50px;
-  margin-bottom: 80px;
-  border-radius: 10px;
-  background: #fff;
-  margin-left: auto;
-  margin-right: auto;
-  z-index: 1000;
+  flex: 1 1 100vw;
+  height: auto;
+  max-height: 75vh;
+  max-width: 850px;
   outline: none;
+  overflow-y: auto;
+  padding: 40px 60px;
+  will-change: opacity, transform;
+  z-index: 1000;
 
-  ${media.phone`
-    border-radius: 0;
-    margin-left: 0;
-    margin-right: 0;
-    padding: 0;
+  ${media.biggerThanPhone`
+    flex-basis: 80%;
   `}
 `;
 
@@ -73,18 +71,22 @@ const CloseButton = styled.div`
 `;
 
 const ModalContainer = styled.div`
-  max-height: 100%;
-  padding-left: 30px;
-  padding-right: 30px;
-  z-index: 1001;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: -200px;
+  align-items: center;
+  background: rgba(0, 0, 0, .7);
+  bottom: 0;
+  color: ${color('text')};
+  display: flex;
+  height: 100vh;
+  justify-content: center;
   left: 0;
-  overflow-y: auto;
-  background: rgba(0, 0, 0, 0.8);
-  will-change: auto;
+  max-height: 100%;
+  padding: 30px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100vw;
+  will-change: opacity;
+  z-index: 1001;
 
   ${media.phone`
     padding: 0px;
