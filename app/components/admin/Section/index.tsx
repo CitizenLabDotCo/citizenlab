@@ -38,6 +38,10 @@ export const SectionField = styled.div`
     max-height: 200px;
   }
 
+  .TextArea {
+    max-width: 500px;
+  }
+
   input,
   textarea {
     -webkit-appearance: none;

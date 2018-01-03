@@ -45,7 +45,7 @@ export interface IIdeaData {
       data: IRelationship[];
     }
     project: {
-      data: IRelationship;
+      data: IRelationship | null;
     };
     idea_status?: {
       data: IRelationship;
