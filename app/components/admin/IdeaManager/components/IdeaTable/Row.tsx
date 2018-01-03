@@ -159,7 +159,7 @@ class Row extends React.PureComponent<Props> {
             }
             {activeFilterMenu === 'projects' &&
               <ProjectSelector
-                selectedProject={idea.relationships.project.data.id}
+                selectedProject={idea.relationships.project.data && idea.relationships.project.data.id}
               />
             }
             {activeFilterMenu === 'statuses' &&
@@ -230,7 +230,6 @@ const ideaSource = {
       const observables = ids.map((id) => ideaByIdStream(id).observable);
       Rx.Observable.combineLatest(observables).take(1).subscribe((ideas) => {
         ideas.map((idea) => {
-          const currentProject = idea.data.relationships.project.data.id;
           const newProject = dropResult.id;
           const hasPhases = !isEmpty(idea.data.relationships.phases.data);
           if (hasPhases) {
