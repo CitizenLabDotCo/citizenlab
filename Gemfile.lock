@@ -340,6 +340,9 @@ GEM
     rubyzip (1.2.1)
     rufus-scheduler (3.4.0)
       et-orbi (~> 1.0)
+    scenic (1.4.1)
+      activerecord (>= 4.0.0)
+      railties (>= 4.0.0)
     sentry-raven (2.7.1)
       faraday (>= 0.7.6, < 1.0)
     shoulda-matchers (3.1.1)
@@ -433,6 +436,7 @@ DEPENDENCIES
   rspec-rails
   rspec_api_documentation
   rubyzip (~> 1.2.1)
+  scenic
   sentry-raven
   shoulda-matchers (~> 3.1)
   sidekiq (~> 4.2.9)

@@ -1,7 +1,7 @@
 class Comment < ApplicationRecord
   acts_as_nested_set
   belongs_to :author, class_name: 'User'
-  belongs_to :idea, touch: true
+  belongs_to :idea
   has_many :votes, as: :votable, dependent: :destroy
   has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
   has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'

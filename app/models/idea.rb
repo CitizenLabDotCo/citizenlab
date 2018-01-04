@@ -30,8 +30,6 @@ class Idea < ApplicationRecord
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
-  has_one :idea_trending_info, dependent: :destroy, autosave: true
-
   PUBLICATION_STATUSES = %w(draft published closed spam)
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
@@ -45,10 +43,6 @@ class Idea < ApplicationRecord
   before_validation :set_author_name
   before_validation :set_idea_status, on: :create
   after_validation :set_published_at, if: ->(idea){ idea.published? && idea.publication_status_changed? }
-
-  after_create :set_idea_trending_info
-  # after_commit :update_idea_trending_info, on: :update
-  after_touch :update_idea_trending_info
 
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
@@ -126,14 +120,6 @@ class Idea < ApplicationRecord
 
   def set_published_at
     self.published_at ||= Time.now
-  end
-
-  def set_idea_trending_info
-    self.idea_trending_info ||= IdeaTrendingInfo.create(idea: self)
-  end
-
-  def update_idea_trending_info
-    self.idea_trending_info.update_info
   end
 
 end
