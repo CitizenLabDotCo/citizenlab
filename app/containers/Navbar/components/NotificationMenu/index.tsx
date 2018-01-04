@@ -12,7 +12,7 @@ import Spinner from 'components/UI/Spinner';
 import { FormattedMessage } from 'utils/cl-intl';
 import InfiniteScroll from 'react-infinite-scroller';
 
-import { notificationsStream, INotificationData, markAllAsRead } from 'services/notifications';
+import { notificationsStream, TNotificationData, markAllAsRead } from 'services/notifications';
 import { authUserStream } from 'services/auth';
 
 import messages from './messages';
@@ -59,7 +59,7 @@ interface ITracks {
 type State = {
   PopoverOpen: boolean,
   unreadCount?: number,
-  notifications: INotificationData[] | null;
+  notifications: TNotificationData[] | null;
   hasMore: boolean;
 };
 

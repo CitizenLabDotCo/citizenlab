@@ -260,6 +260,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
       const slug = project.data.attributes.slug;
       const titleMultiloc = project.data.attributes.title_multiloc;
       const description = getLocalized(project.data.attributes.description_multiloc, locale, currentTenantLocales).replace(/<[^\/>][^>]*><\/[^>]+>/gim,'');
+      const preview = getLocalized(project.data.attributes.description_preview_multiloc, locale, currentTenantLocales);
       const ideasCount = project.data.attributes.ideas_count;
       const imageUrl = (projectImage ? projectImage.data.attributes.versions.medium : null);
 
@@ -278,7 +279,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
               <T value={titleMultiloc} />
             </ProjectTitle>
             <ProjectDescription>
-              <span dangerouslySetInnerHTML={{ __html: description }} />
+              {preview}
             </ProjectDescription>
             <ReadMoreWrapper>
               <ReadMore onClick={this.goToProject}>

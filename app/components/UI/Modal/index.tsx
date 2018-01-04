@@ -71,11 +71,16 @@ const CloseButton = styled.div`
 `;
 
 const ModalContainer = styled.div`
+  align-items: center;
+  background: rgba(0, 0, 0, .7);
+  bottom: 0;
   color: ${color('text')};
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  left: 0;
   max-height: 100%;
-  padding-left: 30px;
-  padding-right: 30px;
-  z-index: 1001;
+  padding: 30px;
   position: fixed;
   right: 0;
   top: 0;
