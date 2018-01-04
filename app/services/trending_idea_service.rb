@@ -28,20 +28,18 @@ class TrendingIdeaService
 
   def trending_score idea
     # used for testing purposes
-    upvotes_ago = activity_ago idea, 
-                               idea.upvotes.select { |v| v.user&.id != idea.author&.id }, 
-                               IdeaTrendingInfo::TREND_NUM_UPVOTES
-    comments_ago = activity_ago idea, 
-                                idea.comments.select { |c| c.author&.id != idea.author&.id }, 
-                                IdeaTrendingInfo::TREND_NUM_COMMENTS
-    score = trending_score_formula (idea.upvotes_count - idea.downvotes_count), upvotes_ago, comments_ago
+    upvotes_ago = activity_ago idea.upvotes # .select { |v| v.user&.id != idea.author&.id }
+    comments_ago = activity_ago idea.comments # .select { |c| c.author&.id != idea.author&.id }
+    last_activity_at = (upvotes_ago+comments_ago+[(Time.now.to_i - idea.published_at.to_i)]).min
+    mean_activity_at = mean(upvotes_ago+comments_ago+[(Time.now.to_i - idea.published_at.to_i)])
+    score = trending_score_formula (idea.upvotes_count - idea.downvotes_count), mean_activity_at
     if (idea.upvotes_count - idea.downvotes_count) < 0
       return -1 / score
     end
     if idea.idea_status.code == 'rejected'
       return -1 / score
     end
-    if [upvotes_ago.first, comments_ago.first].min > IdeaTrendingInfo::TREND_SINCE_ACTIVITY
+    if last_activity_at > IdeaTrendingInfo::TREND_SINCE_ACTIVITY
       return -1 / score
     end
     score
@@ -55,20 +53,12 @@ class TrendingIdeaService
 
   private
 
-  def trending_score_formula votes_diff, upvotes_ago, comments_ago
-    [(1 + votes_diff), 1].max / mean([mean(upvotes_ago), mean(comments_ago)])
+  def trending_score_formula votes_diff, mean_activity_at
+    [(1 + votes_diff), 1].max / mean_activity_at
   end
 
-  def activity_ago idea, iteratables, n
-    take_and_fill iteratables.map{ |obj| Time.now.to_i - obj.created_at.to_i }.sort,
-                  n, 
-                  (Time.now.to_i - idea.published_at.to_i)
-  end
-
-  def take_and_fill arr, n, default
-    taken = arr.take n
-    fill = Array.new (n - taken.size), default
-    taken.concat fill
+  def activity_ago iteratables
+    iteratables.map{ |obj| Time.now.to_i - obj.created_at.to_i }
   end
 
   def mean arr
