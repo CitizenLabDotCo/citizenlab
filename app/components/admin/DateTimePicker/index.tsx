@@ -21,6 +21,10 @@ const Wrapper = styled.div`
       background: transparent;
     }
   }
+
+  .SingleDatePicker_picker {
+    z-index: 5;
+  }
 `;
 
 const TimeWrapper = styled.div`
