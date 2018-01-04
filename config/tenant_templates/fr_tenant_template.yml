@@ -1366,7 +1366,7 @@ models:
   - idea_ref: *71
     topic_ref: *72
   idea_image:
-  - remote_image_url: http://test.hanvecforum.fr/wp-content/uploads/2015/11/covoiturage2.jpg
+  - remote_image_url: http://www.briec.bzh/medias/2015/07/covoiturage2.jpg
     idea_ref: *35
   - remote_image_url: http://www.20minutes.fr/magazine/wp-content/uploads/sites/3/2013/06/Dr-Bouti-645x400.jpg
     idea_ref: *38

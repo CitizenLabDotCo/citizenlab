@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171218160850) do
+ActiveRecord::Schema.define(version: 20171221145649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -212,10 +212,12 @@ ActiveRecord::Schema.define(version: 20171218160850) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "initiating_user_id"
+    t.uuid "spam_report_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
+    t.index ["spam_report_id"], name: "index_notifications_on_spam_report_id"
   end
 
   create_table "page_links", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -276,6 +278,7 @@ ActiveRecord::Schema.define(version: 20171218160850) do
     t.string "header_bg"
     t.integer "ideas_count", default: 0, null: false
     t.string "visible_to", default: "public", null: false
+    t.jsonb "description_preview_multiloc", default: {}
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -348,16 +351,6 @@ ActiveRecord::Schema.define(version: 20171218160850) do
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
-  create_table "versions", force: :cascade do |t|
-    t.string "item_type", null: false
-    t.integer "item_id", null: false
-    t.string "event", null: false
-    t.string "whodunnit"
-    t.text "object"
-    t.datetime "created_at"
-    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
-  end
-
   create_table "votes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "votable_id"
     t.string "votable_type"
@@ -392,6 +385,7 @@ ActiveRecord::Schema.define(version: 20171218160850) do
   add_foreign_key "identities", "users"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
+  add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "page_links", "pages", column: "linked_page_id"

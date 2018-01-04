@@ -8,6 +8,10 @@ FactoryGirl.define do
       "en" => "<p>Let's renew the parc at the city border and make it an enjoyable place for young and old.</p>",
       "nl" => "<p>Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>"
     }}
+    description_preview_multiloc {{
+      "en" => "Let's renew the parc at the city border and make it an enjoyable place for young and old.",
+      "nl" => "Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud."
+    }}
 
     factory :project_with_topics do
       transient do
