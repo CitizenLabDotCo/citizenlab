@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
@@ -13,13 +12,13 @@ import UserName from 'components/UI/UserName';
 import { userByIdStream, IUser } from 'services/users';
 
 // i18n
-import { FormattedRelative, FormattedDate } from 'react-intl';
+import { FormattedRelative } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { lighten, darken } from 'polished';
+import { darken } from 'polished';
 
 const AuthorContainer = styled.div`
   display: flex;
@@ -114,17 +113,11 @@ class Author extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const children = this.props['children'];
     let { message } = this.props;
     const { authorId, createdAt } = this.props;
     const { author } = this.state;
 
     message = (message ? message : 'author');
-
-    const avatar = author ?  author.data.attributes.avatar.medium : null;
-    const slug = author ?  author.data.attributes.slug : null;
-    const firstName = author ?  author.data.attributes.first_name : null;
-    const lastName = author ?  author.data.attributes.last_name : null;
 
     const authorNameComponent = (
       <AuthorName to={author ? `/profile/${author.data.attributes.slug}` : ''}>

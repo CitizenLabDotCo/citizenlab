@@ -10,10 +10,6 @@ import clickOutside from 'utils/containers/clickOutside';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // analytics
 import { injectTracks, trackPage } from 'utils/analytics';
 import tracks from './tracks';
@@ -143,7 +139,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     this.cleanup();
   }
 
-  componentWillUpdate(nextProps: Props, nextState: State) {
+  componentWillUpdate(nextProps: Props) {
     const { opened } = this.props;
 
     if (!opened && nextProps.opened) {

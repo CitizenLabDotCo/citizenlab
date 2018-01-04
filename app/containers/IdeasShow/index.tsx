@@ -3,40 +3,33 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import scrollToComponent from 'react-scroll-to-component';
 import * as bowser from 'bowser';
 
 // router
 import { Link, browserHistory } from 'react-router';
-import { Location } from 'history';
 
 // components
 import VoteControl from 'components/VoteControl';
 import Avatar from 'components/Avatar';
 import StatusBadge from 'components/StatusBadge';
-import Error from 'components/UI/Error';
 import Icon from 'components/UI/Icon';
 import Comments from './CommentsContainer';
 import Sharing from './Sharing';
-import Author from './Author';
 import IdeaMeta from './IdeaMeta';
 import Unauthenticated from './Unauthenticated';
 import IdeaMap from './IdeaMap';
 import Activities from './Activities';
-import Button from 'components/UI/Button';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import SpamReportForm from 'containers/SpamReport';
 import Modal from 'components/UI/Modal';
 import UserName from 'components/UI/UserName';
-import HasPermission from 'components/HasPermission';
 
 // services
-import { localeStream } from 'services/locale';
 import { ideaByIdStream, IIdea } from 'services/ideas';
 import { userByIdStream, IUser } from 'services/users';
 import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
 import { ideaStatusStream } from 'services/ideaStatuses';
-import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
+import { commentsForIdeaStream, IComments } from 'services/comments';
 import { projectByIdStream, IProject } from 'services/projects';
 import { authUserStream } from 'services/auth';
 import { hasPermission } from 'services/permissions';
@@ -52,10 +45,9 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
-import { Locale } from 'typings';
 
 const Container = styled.div``;
 
@@ -136,15 +128,6 @@ const IdeaTitle = styled.h1`
     font-size: 28px;
     line-height: 34px;
     margin-right: 12px;
-  `}
-`;
-
-const VoteControlMobile = styled(VoteControl)`
-  display: none;
-  margin-top: 20px;
-
-  ${media.smallerThanMaxTablet`
-    display: flex;
   `}
 `;
 
@@ -515,7 +498,6 @@ type Props = {
 };
 
 type State = {
-  locale: Locale | null;
   idea: IIdea | null;
   ideaAuthor: IUser | null;
   ideaImage: IIdeaImage | null;
@@ -535,7 +517,6 @@ class IdeasShow extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      locale: null,
       idea: null,
       ideaAuthor: null,
       ideaImage: null,
@@ -553,7 +534,6 @@ class IdeasShow extends React.PureComponent<Props, State> {
   componentWillMount() {
     const { ideaId } = this.props;
     const authUser$ = authUserStream().observable;
-    const locale$ = localeStream().observable;
     const comments$ = commentsForIdeaStream(ideaId).observable;
     const idea$ = ideaByIdStream(ideaId).observable;
     const ideaWithRelationships$ = idea$.switchMap((idea) => {
@@ -571,15 +551,14 @@ class IdeasShow extends React.PureComponent<Props, State> {
         ideaAuthor$,
         ideaStatus$,
         project$,
-      ).map(([ideaImage, ideaAuthor, ideaStatus, project]) => ({ idea, ideaImage, ideaAuthor, project }));
+      ).map(([ideaImage, ideaAuthor, _ideaStatus, project]) => ({ idea, ideaImage, ideaAuthor, project }));
     });
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        locale$,
         ideaWithRelationships$
-      ).subscribe(([locale, { idea, ideaImage, ideaAuthor, project }]) => {
-        this.setState({ locale, idea, ideaImage, ideaAuthor, project, loading: false });
+      ).subscribe(([{ idea, ideaImage, ideaAuthor, project }]) => {
+        this.setState({ idea, ideaImage, ideaAuthor, project, loading: false });
       }),
 
       comments$.subscribe(ideaComments => {
@@ -596,8 +575,8 @@ class IdeasShow extends React.PureComponent<Props, State> {
           user: (authUser as IUser),
           context: idea.data
         }).map((granted) => ({ authUser, granted }));
-      }).subscribe(({ authUser, granted }) => {
-        this.setState((state: State) => {
+      }).subscribe(({ granted }) => {
+        this.setState(() => {
           let moreActions: IAction[] = [
             {
               label: <FormattedMessage {...messages.reportAsSpam} />,
@@ -666,17 +645,14 @@ class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, idea, ideaImage, ideaAuthor, ideaComments, project, loading, unauthenticatedError, showMap, moreActions } = this.state;
+    const { idea, ideaImage, ideaAuthor, ideaComments, project, loading, unauthenticatedError, showMap, moreActions } = this.state;
 
     if (!loading && idea !== null) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
-      const firstName = ideaAuthor ? ideaAuthor.data.attributes.first_name : null;
-      const lastName = ideaAuthor ? ideaAuthor.data.attributes.last_name : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
       const bodyMultiloc = idea.data.attributes.body_multiloc;
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
-      const ideaImageLarge = (ideaImage && _.has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
       const ideaImageMedium = (ideaImage && _.has(ideaImage, 'data.attributes.versions.medium') ? ideaImage.data.attributes.versions.medium : null);
       const isSafari = bowser.safari;
       const ideaLocation = idea.data.attributes.location_point_geojson || null;

@@ -12,8 +12,8 @@ import { landingPageIdeasQuery } from 'containers/LandingPage';
 
 // services
 import { authUserStream } from 'services/auth';
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { ideaByIdStream, ideasStream, updateIdea, IIdeas } from 'services/ideas';
+import { currentTenantStream } from 'services/tenant';
+import { ideaByIdStream, ideasStream, updateIdea } from 'services/ideas';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -119,9 +119,8 @@ export default class CompleteSignUpPage extends React.PureComponent<Props, State
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        authUser$,
         currentTenant$,
-      ).subscribe(([authUser, currentTenant]) => {
+      ).subscribe(([currentTenant]) => {
         const { birthyear, domicile, gender } = currentTenant.data.attributes.settings.demographic_fields;
         const demographicFieldsEnabled = _.get(currentTenant, `data.attributes.settings.demographic_fields.enabled`);
         const hasOneOrMoreActiveDemographicFields = [birthyear, domicile, gender].some(value => value === true);

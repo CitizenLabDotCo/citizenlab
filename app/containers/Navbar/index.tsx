@@ -1,19 +1,17 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import { withRouter, RouterState, browserHistory, Link } from 'react-router';
+import { withRouter, RouterState, Link } from 'react-router';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
 import UserMenu from './components/UserMenu';
 import MobileNavigation from './components/MobileNavigation';
-import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 
 // services
-import { authUserStream, signOut } from 'services/auth';
+import { authUserStream } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { IUser } from 'services/users';
 
@@ -28,10 +26,7 @@ import messages from './messages';
 
 // style
 import { darken } from 'polished';
-import styled, { ThemeProvider, css, keyframes } from 'styled-components';
-
-// typings
-import { IModalInfo } from 'containers/App';
+import styled, { css, } from 'styled-components';
 
 const Container: any = styled.div`
   width: 100%;
@@ -229,7 +224,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
 
   componentDidMount() {
     this.subscriptions.push(
-      Rx.Observable.fromEvent(window, 'scroll', { passive: true }).sampleTime(20).subscribe((bleh) => {
+      Rx.Observable.fromEvent(window, 'scroll', { passive: true }).sampleTime(20).subscribe(() => {
         this.setState((state) => {
           const scrolled = (window.scrollY > 0);
           return (state.scrolled !== scrolled ? { scrolled } : state);
@@ -264,7 +259,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
 
   render() {
     const { pathname } = this.props.location;
-    const { authUser, currentTenant, currentTenantLogo, scrolled } = this.state;
+    const { authUser, currentTenantLogo, scrolled } = this.state;
     const alwaysShowBorder = [
       'ideas/',
       'admin',

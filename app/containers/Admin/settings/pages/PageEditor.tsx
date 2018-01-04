@@ -15,11 +15,11 @@ import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Error from 'components/UI/Error';
 import Icon from 'components/UI/Icon';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { SectionField } from 'components/admin/Section';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
+import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 import { getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // Typings
@@ -176,7 +176,7 @@ export default class PageEditor extends React.Component<Props, State> {
     }
 
     savePromise
-    .then((response) => {
+    .then(() => {
       this.setState({ saving: false, saved: true, errors: null, diff: {} });
     })
     .catch((e) => {

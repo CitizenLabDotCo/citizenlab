@@ -8,7 +8,7 @@ import { sendSpamReport, Report } from 'services/spamReports';
 import ReportForm from './SpamReportForm';
 
 // Typings
-import { API, Forms } from 'typings';
+import { Forms } from 'typings';
 interface Props {
   resourceType: 'comments' | 'ideas';
   resourceId: string;
@@ -60,7 +60,7 @@ class SpamReportForm extends React.Component<Props, State & Forms.crudParams> {
     this.setState({ loading: true });
 
     sendSpamReport(this.props.resourceType, this.props.resourceId, this.state.diff)
-    .then((response) => {
+    .then(() => {
       this.setState({ loading: false, saved: true, errors: null, diff: null });
     })
     .catch((e) => {

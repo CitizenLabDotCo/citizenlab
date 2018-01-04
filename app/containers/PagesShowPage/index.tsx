@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { includes, without } from 'lodash';
+import { without } from 'lodash';
 
 import { injectTFunc } from 'components/T/utils';
 import Helmet from 'react-helmet';
@@ -15,8 +15,7 @@ import { IPageData, pageBySlugStream, LEGAL_PAGES } from 'services/pages';
 import { PageLink, getPageLink } from 'services/pageLink';
 
 import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import { injectIntl } from 'utils/cl-intl';
 
 import ContentContainer from 'components/ContentContainer';
 import styled from 'styled-components';

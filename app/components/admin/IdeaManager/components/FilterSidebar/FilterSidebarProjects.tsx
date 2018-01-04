@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { xor } from 'lodash';
 
 import { IProjectData } from 'services/projects';
 import { Menu, Divider } from 'semantic-ui-react';
@@ -16,7 +15,7 @@ interface Props {
 
 class FilterSidebarProjects extends React.Component<Props> {
 
-  handleItemClick = (id) => (event) => {
+  handleItemClick = (id) => () => {
     this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(id);
   }
 

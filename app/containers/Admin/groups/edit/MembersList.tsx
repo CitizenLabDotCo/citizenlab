@@ -1,18 +1,14 @@
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import * as _ from 'lodash';
 
 // Services
-import { listMembership, deleteMembership, Membership } from 'services/groups';
+import { listMembership, deleteMembership } from 'services/groups';
 import { userByIdStream, IUserData } from 'services/users';
-import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
 // Components
@@ -23,7 +19,6 @@ import { List, Row } from 'components/admin/ResourceList';
 
 // Style
 import styled from 'styled-components';
-import { Locale } from 'typings';
 
 const EmptyStateMessage = styled.p`
   background: rgba(1, 161, 177, 0.07);
@@ -57,8 +52,6 @@ interface Props {
 
 interface State {
   users: {user: IUserData, membershipId: string}[];
-  locale: Locale;
-  tenantLocales: Locale[];
   loading: boolean;
 }
 
@@ -70,8 +63,6 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
 
     this.state = {
       users: [],
-      locale: 'en',
-      tenantLocales: [],
       loading: false,
     };
 
@@ -79,25 +70,12 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
   }
 
   componentDidMount() {
-    this.subscriptions.push(this.updateLocales(), this.updateMembers());
+    this.subscriptions.push(this.updateMembers());
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
-    });
-  }
-
-  updateLocales = () => {
-    return Rx.Observable.combineLatest(
-      localeStream().observable,
-      currentTenantStream().observable
-    )
-    .subscribe(([locale, currentTenant]) => {
-      this.setState({
-        locale,
-        tenantLocales: currentTenant.data.attributes.settings.core.locales,
-      });
     });
   }
 
@@ -137,7 +115,7 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
 
   createDeleteHandler = (membershipId: string, groupId: string) => {
     const message = this.props.intl.formatMessage(messages.deleteConfirmMessage);
-    return (e): void => {
+    return (): void => {
       if (window.confirm(message)) {
         deleteMembership(membershipId, groupId);
       }
@@ -146,7 +124,7 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
 
   render() {
     const { groupId } = this.props;
-    const { users, locale, tenantLocales, loading } = this.state;
+    const { users, loading } = this.state;
 
     if (loading) {
       return (

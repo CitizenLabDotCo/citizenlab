@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 // components
 import IdeaCard from 'components/IdeaCard';
@@ -20,7 +20,6 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { lighten } from 'polished';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`

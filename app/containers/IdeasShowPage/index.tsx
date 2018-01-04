@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
@@ -7,13 +6,12 @@ import { withRouter, RouterState } from 'react-router';
 
 // components
 import IdeasShow from 'containers/IdeasShow';
-import Footer from 'components/Footer';
 
 // services
-import { ideaBySlugStream, IIdea } from 'services/ideas';
+import { ideaBySlugStream } from 'services/ideas';
 
 // style
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -67,7 +65,6 @@ class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
   }
 
   render() {
-    const { location } = this.props;
     const { ideaId } = this.state;
 
     if (ideaId !== null) {

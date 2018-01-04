@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
 import messages from './messages';
 
 // Services
@@ -16,10 +15,9 @@ import { localeStream } from 'services/locale';
 import getSubmitState from 'utils/getSubmitState';
 
 // Components
-import Button from 'components/UI/Button';
 import Input from 'components/UI/Input';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { SectionField } from 'components/admin/Section';
 
 // Style
 import styled from 'styled-components';
@@ -100,7 +98,7 @@ class GroupAdditionForm extends React.Component<Props, State> {
         this.props.onSaveSuccess();
       }
     })
-    .catch((e) => {
+    .catch(() => {
       this.setState({ saving: false, saved: false });
     });
   }

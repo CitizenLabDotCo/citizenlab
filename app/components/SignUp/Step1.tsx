@@ -215,7 +215,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const timeout = 600;
     const { formatMessage } = this.props.intl;
     const {
       firstName,
@@ -227,7 +226,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       lastNameError,
       emailError,
       passwordError,
-      unknownError,
       apiErrors
     } = this.state;
 

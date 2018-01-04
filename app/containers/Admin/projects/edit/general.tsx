@@ -8,13 +8,12 @@ import { browserHistory } from 'react-router';
 // components
 import Input from 'components/UI/Input';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
 import Label from 'components/UI/Label';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { Section, SectionField } from 'components/admin/Section';
 
 import { Button as SemButton, Icon as SemIcon } from 'semantic-ui-react';
 
@@ -27,7 +26,6 @@ import messages from '../messages';
 // services
 import {
   IUpdatedProjectProperties,
-  IProject,
   IProjectData,
   projectBySlugStream,
   addProject,
@@ -35,7 +33,6 @@ import {
   deleteProject,
 } from 'services/projects';
 import {
-  IProjectImageData,
   projectImagesStream,
   addProjectImage,
   deleteProjectImage
@@ -46,49 +43,16 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 
 // utils
 import { convertUrlToFileObservable } from 'utils/imageTools';
-import getSubmitState from 'utils/getSubmitState';
-import { v4 as uuid } from 'uuid';
 
 // style
 import styled from 'styled-components';
 
 // typings
-import { API, IOption, IRelationship, ImageFile, Locale } from 'typings';
+import { API, IOption, ImageFile, Locale } from 'typings';
 
 const StyledImagesDropzone = styled(ImagesDropzone)`
   margin-top: 2px;
   padding-right: 100px;
-`;
-
-const ProjectImages = styled.div`
-  display: flex;
-`;
-
-const ImageWrapper = styled.div`
-  margin: .5rem;
-  position: relative;
-
-  &:first-child{
-    margin-left: 0;
-  }
-`;
-
-const DeleteButton = styled.button`
-  background: rgba(0, 0, 0, .5);
-  border-radius: 50%;
-  color: black;
-  right: -.5rem;
-  position: absolute;
-  top: -.5rem;
-  z-index: 1;
-`;
-
-const SaveButton = styled.button`
-  background: #d60065;
-  border-radius: 5px;
-  color: white;
-  font-size: 1.25rem;
-  padding: 1rem 2rem;
 `;
 
 type Props = {
@@ -189,9 +153,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
                 return Rx.Observable.of(null);
               }),
-            ).filter(([processing, headerBg, projectImages]) => {
+            ).filter(([processing]) => {
               return !processing;
-            }).map(([processing, headerBg, projectImages]) => ({
+            }).map(([_processing, headerBg, projectImages]) => ({
               headerBg,
               oldProjectImages: projectImages,
               projectData: (project ? project.data : null)
@@ -205,7 +169,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           });
         })
       ).subscribe(([locale, currentTenant, areas, { headerBg, oldProjectImages, projectData }]) => {
-        this.setState((state: State) => ({
+        this.setState(() => ({
           locale,
           currentTenant,
           projectData,
@@ -237,7 +201,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  setRef = (element) => {
+  setRef = () => {
     // empty
   }
 
@@ -272,7 +236,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.setState({ headerBg });
   }
 
-  handleHeaderOnRemove = async (removedHeader: ImageFile) => {
+  handleHeaderOnRemove = async () => {
     this.setState((state: State) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
@@ -326,23 +290,15 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   validate = () => {
     let hasErrors = false;
     const { formatMessage } = this.props.intl;
-    const { projectAttributesDiff, projectData, headerBg, locale, currentTenant } = this.state;
+    const { projectAttributesDiff, projectData, locale, currentTenant } = this.state;
     const currentTenantLocales = (currentTenant as ITenant).data.attributes.settings.core.locales;
     const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
-    const areaIds = projectAttrs.area_ids || (projectData && projectData.relationships.areas.data.map((area) => (area.id))) || [];
     const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale, currentTenantLocales);
 
     if (!projectTitle) {
       hasErrors = true;
       this.setState({ noTitleError: formatMessage(messages.noTitleErrorMessage) });
     }
-
-    /*
-    if (!headerBg) {
-      hasErrors = true;
-      this.setState({ noHeaderError: formatMessage(messages.noHeaderErrorMessage) });
-    }
-    */
 
     return !hasErrors;
   }
@@ -408,17 +364,17 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
     if (window.confirm(this.props.intl.formatMessage(messages.deleteProjectConfirmation))) {
       deleteProject(this.state.projectData.id)
-      .then((response) => {
+      .then(() => {
         browserHistory.push('/admin/projects');
       })
-      .catch((error) => {
+      .catch(() => {
         this.setState({ deleteError: this.props.intl.formatMessage(messages.deleteProjectError) });
       });
     }
   }
 
   render() {
-    const { currentTenant, locale, noTitleError, /* noHeaderError, */ apiErrors, saved, projectData, headerBg, newProjectImages, loading, processing, projectAttributesDiff, areasOptions, areaType, submitState } = this.state;
+    const { currentTenant, locale, noTitleError, /* noHeaderError, */ projectData, headerBg, newProjectImages, loading, processing, projectAttributesDiff, areasOptions, areaType, submitState } = this.state;
     const { formatMessage } = this.props.intl;
 
     if (!loading && currentTenant && locale) {

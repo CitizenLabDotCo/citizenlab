@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -23,9 +22,6 @@ import { color } from 'utils/styleUtils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-
-const timeout = 200;
-const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
 const Container = styled.div`
   display: flex;

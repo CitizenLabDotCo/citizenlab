@@ -7,17 +7,15 @@ import { browserHistory, Link } from 'react-router';
 import { Location } from 'history';
 
 // components
-import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import Icon from 'components/UI/Icon';
 import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { signIn } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
+import { globalState, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -289,13 +287,11 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { intl } = this.props;
     const { formatMessage } = this.props.intl;
-    const { location, currentTenant, email, password, processing, emailError, passwordError, signInError, socialLoginUrlParameter, loading } = this.state;
+    const { location, currentTenant, email, password, processing, emailError, passwordError, signInError, loading } = this.state;
     const googleLoginEnabled = !!_.get(currentTenant, `data.attributes.settings.google_login.enabled`);
     const facebookLoginEnabled = !!_.get(currentTenant, `data.attributes.settings.facebook_login.enabled`);
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
-    const timeout = 500;
 
     const createAccount = ((location && location.pathname === '/ideas/new') ? (
       <CreateAnAccountDiv onClick={this.goToSignUpForm}>

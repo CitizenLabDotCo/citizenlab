@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
-import * as moment from 'moment';
 import { injectIntl } from 'utils/cl-intl';
 import { withTheme } from 'styled-components';
 import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
@@ -46,7 +45,6 @@ class IdeasByTimeChart extends React.PureComponent<Props, State> {
   }
 
   convertToGraphFormat = (serie: {[key: string]: number}) => {
-    const currentYear = moment().year();
     return _.map(serie, (value, key) => ({
       value,
       name: key,
