@@ -16,13 +16,14 @@ import { getLocalized } from 'utils/i18n';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
+import { Locale } from 'typings';
 
 type Props = {
   ideaId: string;
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   currentTenant: ITenant | null;
   idea: IIdea | null;
   ideaImages: IIdeaImages | null;

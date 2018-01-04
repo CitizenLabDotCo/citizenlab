@@ -7,12 +7,14 @@ import { IntlProvider } from 'react-intl';
 // services
 import { localeStream } from 'services/locale';
 
+import { Locale, Message } from 'typings';
+
 type Props = {
   messages: { [key: string]: any };
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
 };
 
 export default class LanguageProvider extends React.PureComponent<Props, State> {

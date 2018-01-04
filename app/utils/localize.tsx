@@ -10,21 +10,21 @@ import { currentTenantStream } from 'services/tenant';
 import { getLocalized } from 'utils/i18n';
 
 // Typing
-import { Multiloc } from 'typings';
+import { Multiloc, Locale } from 'typings';
 
 export interface injectedLocalized {
   localize: {
     (multiloc: Multiloc): string;
   };
-  locale: string;
-  tenantLocales: string[];
+  locale: Locale;
+  tenantLocales: Locale[];
 }
 
 interface Props {}
 
 interface State {
-  locale: string;
-  tenantLocales: string[];
+  locale: Locale;
+  tenantLocales: Locale[];
 }
 
 function localize<PassedProps>(ComposedComponent) {
@@ -35,7 +35,7 @@ function localize<PassedProps>(ComposedComponent) {
       super(props as any);
 
       this.state = {
-        locale: '',
+        locale: 'en',
         tenantLocales: [],
       };
 

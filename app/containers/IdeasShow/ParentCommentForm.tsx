@@ -31,6 +31,7 @@ import { addCommentToIdea, addCommentToComment } from 'services/comments';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
+import { Locale } from 'typings';
 
 const Container = styled.div`
   padding: 0;
@@ -76,7 +77,7 @@ type Tracks = {
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   authUser: IUser | null;
   inputValue: string;
   processing: boolean;

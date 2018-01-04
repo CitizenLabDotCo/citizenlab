@@ -49,7 +49,7 @@ interface Props {
 interface State {
   groups: IGroupData[];
   locale: Locale;
-  tenantLocales: string[];
+  tenantLocales: Locale[];
   loading: boolean;
 }
 
@@ -60,7 +60,7 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
     super(props as any);
 
     this.state = {
-      locale: '',
+      locale: 'en',
       tenantLocales: [],
       groups: [],
       loading: false,

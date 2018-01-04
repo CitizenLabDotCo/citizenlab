@@ -2,11 +2,11 @@ import { makeSelectSetting } from 'utils/tenant/selectors';
 import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
 import { Iterable, List } from 'immutable';
 import { connect } from 'react-redux';
-import { Multiloc } from 'typings';
+import { Multiloc, Locale } from 'typings';
 
 const isImmutable = Iterable.isIterable;
 
-const findTranslatedTextMutable = (value: Multiloc | undefined, userLocale: string, tenantLocales: List<string>): string => {
+const findTranslatedTextMutable = (value: Multiloc | undefined, userLocale: Locale, tenantLocales: List<Locale>): string => {
   let text = '';
 
   if (!value) {
@@ -28,7 +28,7 @@ const findTranslatedTextMutable = (value: Multiloc | undefined, userLocale: stri
 };
 
 
-function findTranslatedTextImmutable(value: Map<string, string>, userLocale: string, tenantLocales: List<string>): string {
+function findTranslatedTextImmutable(value: Map<Locale, string>, userLocale: Locale, tenantLocales: List<Locale>): string {
   let text = '';
 
   if (!value) {
@@ -49,11 +49,11 @@ function findTranslatedTextImmutable(value: Map<string, string>, userLocale: str
   return text;
 }
 
-export const findTranslatedText = (value: Multiloc | Map<string, string> | undefined, userLocale: string, tenantLocales: List<string>) => {
+export const findTranslatedText = (value: Multiloc | Map<Locale, string> | undefined, userLocale: Locale, tenantLocales: List<Locale>) => {
   if (!isImmutable(value)) {
     return findTranslatedTextMutable(value as Multiloc, userLocale, tenantLocales);
   }
-  return findTranslatedTextImmutable(value as Map<string, string>, userLocale, tenantLocales);
+  return findTranslatedTextImmutable(value as Map<Locale, string>, userLocale, tenantLocales);
 };
 
 
