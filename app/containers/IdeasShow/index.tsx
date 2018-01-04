@@ -597,14 +597,12 @@ class IdeasShow extends React.PureComponent<Props, State> {
         }).map((granted) => ({ authUser, granted }));
       }).subscribe(({ authUser, granted }) => {
         this.setState((state: State) => {
-          // let moreActions: IAction[] = [
-          //   {
-          //     label: <FormattedMessage {...messages.reportAsSpam} />,
-          //     handler: this.openSpamModal
-          //   }
-          // ];
-
-          let moreActions: any[] = [];
+          let moreActions: IAction[] = [
+            {
+              label: <FormattedMessage {...messages.reportAsSpam} />,
+              handler: this.openSpamModal
+            }
+          ];
 
           if (granted) {
             moreActions = [
