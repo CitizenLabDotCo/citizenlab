@@ -7,6 +7,8 @@
     "experimentalDecorators": true,
     "jsx": "react",
     "lib": ["es6", "dom"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noImplicitThis": false,
     "strictNullChecks": true,
