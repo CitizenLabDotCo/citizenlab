@@ -52,7 +52,7 @@ services:
     stdin_open: true
 
   rabbitmq:
-    image: 'rabbitmq:3.6.14-alpine'
+    image: 'rabbitmq:3.7-alpine'
     hostname: cl2-rabbit
 
   # cable:
