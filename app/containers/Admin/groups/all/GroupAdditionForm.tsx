@@ -36,13 +36,13 @@ const StyledSubmitWrapper = styled.div`
 `;
 
 // Typing
-import { API } from 'typings';
+import { API, Locale } from 'typings';
 interface Props {
   onSaveSuccess?: Function;
 }
 
 interface State {
-  locale: string;
+  locale: Locale;
   diff: GroupDiff;
   errors: {
     [fieldName: string]: API.Error[]

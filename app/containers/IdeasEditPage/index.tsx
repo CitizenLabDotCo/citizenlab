@@ -33,7 +33,7 @@ import { convertUrlToFileObservable } from 'utils/imageTools';
 import { convertToGeoJson } from 'utils/locationTools';
 
 // typings
-import { IOption, ImageFile } from 'typings';
+import { IOption, ImageFile, Multiloc, Locale } from 'typings';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -86,10 +86,10 @@ interface Props {
 }
 
 interface State {
-  locale: string | null;
+  locale: Locale | null;
   ideaSlug: string | null;
-  titleMultiloc: { [key: string]: string } | null;
-  descriptionMultiloc: { [key: string]: string } | null;
+  titleMultiloc: Multiloc | null;
+  descriptionMultiloc: Multiloc | null;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
   location: string;
@@ -239,11 +239,11 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
       await updateIdea(ideaId, {
         title_multiloc: {
           ...titleMultiloc,
-          [locale as string]: title
+          [locale]: title
         },
         body_multiloc: {
           ...descriptionMultiloc,
-          [locale as string]: description
+          [locale]: description
         },
         topic_ids: topicIds,
         project_id: projectId,
@@ -260,7 +260,7 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
   render() {
     if (this.state && this.state.loaded) {
       const { locale, titleMultiloc, descriptionMultiloc, selectedTopics, selectedProject, location, imageFile, submitError, processing } = this.state;
-      const title = (locale && titleMultiloc ? titleMultiloc[locale] : null);
+      const title = locale && titleMultiloc ? titleMultiloc[locale] : '';
       const description = (locale && descriptionMultiloc ? descriptionMultiloc[locale] : null);
       const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
@@ -271,7 +271,7 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
               <FormattedMessage {...messages.formTitle} />
             </Title>
 
-            <IdeaForm 
+            <IdeaForm
               title={title}
               description={description}
               selectedTopics={selectedTopics}
