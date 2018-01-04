@@ -40,7 +40,7 @@ class SpamReportForm extends React.Component<Props, State & Forms.crudParams> {
 
     // Clear the "other reason" text when it's not necessary
     if (reason_code !== 'other') {
-      diff.other_reason = '';
+      delete diff.other_reason;
     }
 
     this.setState({ diff });
