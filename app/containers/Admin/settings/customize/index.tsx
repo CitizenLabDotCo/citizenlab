@@ -33,7 +33,7 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, ITenantSettings } from 'services/tenant';
 
 // typings
-import { API, ImageFile } from 'typings';
+import { API, ImageFile, Locale } from 'typings';
 
 const StyledLabel = styled(Label)`
   display: flex;
@@ -89,7 +89,7 @@ type Props  = {
 };
 
 type State  = {
-  locale: string | null;
+  locale: Locale | null;
   attributesDiff: IAttributesDiff;
   currentTenant: ITenant | null;
   logo: ImageFile[] | null;
@@ -207,7 +207,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     }));
   }
 
-  handleTitleOnChange = (locale: string) => (title: string) => {
+  handleTitleOnChange = (locale: Locale) => (title: string) => {
     const { formatMessage } = this.props.intl;
     const { attributesDiff } = this.state;
     const titleError = { ...this.state.titleError, [locale]: null };
@@ -223,7 +223,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     }));
   }
 
-  handleSubtitleOnChange = (locale: string) => (subtitle: string) => {
+  handleSubtitleOnChange = (locale: Locale) => (subtitle: string) => {
     const { formatMessage } = this.props.intl;
     const { attributesDiff } = this.state;
     let newAttributesDiff = _.cloneDeep(attributesDiff);

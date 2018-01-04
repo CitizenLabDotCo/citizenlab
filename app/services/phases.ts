@@ -1,6 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import request from 'utils/request';
+import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/phases`;
 
@@ -8,12 +9,8 @@ export interface IPhaseData {
   id: string;
   type: string;
   attributes: {
-    title_multiloc: {
-      [key: string]: string;
-    };
-    description_multiloc: {
-      [key: string]: string;
-    };
+    title_multiloc: Multiloc;
+    description_multiloc: Multiloc;
     start_at: string;
     end_at: string;
     created_at: string;
@@ -61,6 +58,6 @@ export function addPhase(projectId: string, object: IUpdatedPhaseProperties) {
   return streams.add<IPhase>(`${API_PATH}/projects/${projectId}/phases`, { phase: object });
 }
 
-export function deletePhase(phaseId: string) {  
+export function deletePhase(phaseId: string) {
   return streams.delete(`${apiEndpoint}/${phaseId}`, phaseId);
 }

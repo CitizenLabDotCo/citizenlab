@@ -23,7 +23,7 @@ import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-
 import { getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // Typings
-import { API } from 'typings';
+import { API, Locale } from 'typings';
 
 // i18n
 import messages from './messages';
@@ -72,7 +72,7 @@ interface State {
     [key: string]: API.Error[];
   } | null;
   diff: PageUpdate;
-  locale: string;
+  locale: Locale;
   editorState: EditorState;
   deployed: boolean;
 }
@@ -91,7 +91,7 @@ export default class PageEditor extends React.Component<Props, State> {
       saved: false,
       diff: {},
       errors: null,
-      locale: '',
+      locale: 'en',
       editorState: EditorState.createEmpty(),
       deployed: false,
     };

@@ -3,6 +3,7 @@ import streams, { IStreamParams } from 'utils/streams';
 
 import { authUserStream } from './auth';
 import CommentOnYourCommentNotification from 'containers/Navbar/components/NotificationMenu/components/CommentOnYourCommentNotification';
+import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/notifications`;
 
@@ -19,7 +20,7 @@ export interface ICommentOnYourCommentNotificationData extends IBaseNotification
     initiating_user_first_name: string;
     initiating_user_last_name: string;
     initiating_user_slug: string;
-    idea_title: { [key: string]: any; }
+    idea_title: Multiloc
   };
   relationships: {
     initiating_user: {

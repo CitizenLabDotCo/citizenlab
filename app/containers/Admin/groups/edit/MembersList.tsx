@@ -23,6 +23,7 @@ import { List, Row } from 'components/admin/ResourceList';
 
 // Style
 import styled from 'styled-components';
+import { Locale } from 'typings';
 
 const EmptyStateMessage = styled.p`
   background: rgba(1, 161, 177, 0.07);
@@ -56,8 +57,8 @@ interface Props {
 
 interface State {
   users: {user: IUserData, membershipId: string}[];
-  locale: string;
-  tenantLocales: string[];
+  locale: Locale;
+  tenantLocales: Locale[];
   loading: boolean;
 }
 
@@ -69,7 +70,7 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
 
     this.state = {
       users: [],
-      locale: '',
+      locale: 'en',
       tenantLocales: [],
       loading: false,
     };

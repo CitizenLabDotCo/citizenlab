@@ -55,6 +55,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { css } from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
+import { Locale } from 'typings';
 
 const Container = styled.div``;
 
@@ -514,7 +515,7 @@ type Props = {
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   idea: IIdea | null;
   ideaAuthor: IUser | null;
   ideaImage: IIdeaImage | null;

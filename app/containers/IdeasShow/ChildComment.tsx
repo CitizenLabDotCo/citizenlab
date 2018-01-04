@@ -30,6 +30,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { transparentize, darken } from 'polished';
+import { Locale } from 'typings';
 
 const CommentContainer = styled.div`
   margin-top: 0px;
@@ -129,8 +130,8 @@ type Props = {
 };
 
 type State = {
-  locale: string | null;
-  currentTenantLocales: string[] | null;
+  locale: Locale | null;
+  currentTenantLocales: Locale[] | null;
   comment: IComment | null;
   author: IUser | null;
   spamModalVisible: boolean;

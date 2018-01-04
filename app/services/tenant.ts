@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
-import { API, Multiloc } from 'typings';
+import { API, Multiloc, Locale } from 'typings';
 
 interface TenantFeature {
   allowed: boolean;
@@ -11,7 +11,7 @@ export interface ITenantSettings {
   core: {
     allowed: boolean;
     enabled: boolean;
-    locales: string[];
+    locales: Locale[];
     timezone: string;
     organization_name: Multiloc;
     organization_type: 'small_city' | 'medium_city' | 'large_city' | 'generic';
@@ -59,16 +59,8 @@ export interface ITenantData {
     name: string;
     host: string;
     settings: ITenantSettings;
-    logo: {
-      small: string | null;
-      medium: string | null;
-      large: string | null;
-    };
-    header_bg: {
-      large: string | null;
-      medium: string | null;
-      small: string | null;
-    };
+    logo: API.ImageSizes;
+    header_bg: API.ImageSizes;
   };
 }
 

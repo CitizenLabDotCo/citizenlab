@@ -39,6 +39,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { css } from 'styled-components';
 import { transparentize, darken } from 'polished';
 import { color } from 'utils/styleUtils';
+import { Locale } from 'typings';
 
 const timeout = 550;
 
@@ -126,8 +127,8 @@ type Props = {
 };
 
 type State = {
-  locale: string | null;
-  currentTenantLocales: string[] | null;
+  locale: Locale | null;
+  currentTenantLocales: Locale[] | null;
   authUser: IUser | null;
   comment: IComment | null;
   childCommentIds: string[] | null;
@@ -246,7 +247,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       const isLoggedIn = !_.isNull(authUser);
       const commentText = getLocalized(commentBodyMultiloc, locale, currentTenantLocales);
       const processedCommentText = linkifyHtml(commentText.replace(
-        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi, 
+        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
         '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
       ));
 

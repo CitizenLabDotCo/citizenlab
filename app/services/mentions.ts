@@ -1,5 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import { API } from 'typings';
 
 const apiEndpoint = `${API_PATH}/mentions`;
 
@@ -10,11 +11,7 @@ export interface IMentionData {
     first_name: string;
     last_name: string;
     slug: string;
-    avatar: {
-      small: string;
-      medium: string;
-      large: string;
-    };
+    avatar: API.ImageSizes;
   };
 }
 

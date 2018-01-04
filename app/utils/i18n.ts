@@ -1,12 +1,12 @@
-import { Multiloc } from 'typings';
+import { Multiloc, Locale } from 'typings';
 import { Map } from 'immutable';
 import * as _ from 'lodash';
 
 function isImmutable(multiloc: Multiloc | Map<String, String> | null): multiloc is Map<String, String> {
-  return typeof (<Multiloc>multiloc).toJS !== 'undefined';
+  return typeof (<Map<string, string>>multiloc).toJS !== 'undefined';
 }
 
-export function getLocalized(multiloc: Multiloc | Map<String, String> | null, locale: string, currentTenantLocales: string[]) : string {
+export function getLocalized(multiloc: Multiloc | Map<String, String> | null, locale: Locale, currentTenantLocales: Locale[]) : string {
   let multilocObject : Multiloc = {};
   if (!multiloc) {
     return '';
