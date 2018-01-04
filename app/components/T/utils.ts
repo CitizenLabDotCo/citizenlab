@@ -14,11 +14,11 @@ const findTranslatedTextMutable = (value: Multiloc | undefined, userLocale: Loca
   }
 
   if (value[userLocale]) {
-    text = value[userLocale];
+    text = value[userLocale] || '';
   } else {
     tenantLocales.some((tenantLocale) => {
       if (tenantLocale && value[tenantLocale]) {
-        text = value[tenantLocale];
+        text = value[tenantLocale] || '';
         return true;
       }
       return false;

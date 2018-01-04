@@ -87,8 +87,8 @@ export interface IIdeaUpdate {
   author_id?: string | undefined | null;
   idea_status_id?: string | undefined | null;
   publication_status?: 'draft' | 'published' | 'closed' | 'spam' | undefined | null;
-  title_multiloc?: { [key: string]: string; } | undefined | null;
-  body_multiloc?: { [key: string]: string; } | undefined | null;
+  title_multiloc?: Multiloc;
+  body_multiloc?: Multiloc;
   topic_ids?: string[] | undefined | null;
   area_ids?: string[] | undefined | null;
   phase_ids?: string[] | undefined | null;

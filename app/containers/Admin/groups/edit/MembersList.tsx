@@ -70,7 +70,7 @@ class MembersListTable extends React.Component<Props & InjectedIntlProps, State>
 
     this.state = {
       users: [],
-      locale: '',
+      locale: 'en',
       tenantLocales: [],
       loading: false,
     };

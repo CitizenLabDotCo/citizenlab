@@ -86,7 +86,7 @@ interface Props {
 }
 
 interface State {
-  locale: Locale | null;
+  locale: Locale;
   ideaSlug: string | null;
   titleMultiloc: Multiloc | null;
   descriptionMultiloc: Multiloc | null;
@@ -106,7 +106,7 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      locale: null,
+      locale: 'en',
       ideaSlug: null,
       titleMultiloc: null,
       descriptionMultiloc: null,
@@ -260,8 +260,8 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
   render() {
     if (this.state && this.state.loaded) {
       const { locale, titleMultiloc, descriptionMultiloc, selectedTopics, selectedProject, location, imageFile, submitError, processing } = this.state;
-      const title = locale && titleMultiloc ? titleMultiloc[locale] : '';
-      const description = (locale && descriptionMultiloc ? descriptionMultiloc[locale] : null);
+      const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
+      const description = (locale && descriptionMultiloc ? descriptionMultiloc[locale] || '' : null);
       const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
       return (

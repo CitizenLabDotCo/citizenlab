@@ -112,7 +112,7 @@ interface State {
   saved: boolean;
   areas: IAreaData[];
   areaType: 'all' | 'selection';
-  locale: Locale | null;
+  locale: Locale;
   currentTenant: ITenant | null;
   areasOptions: IOption[];
   submitState: 'disabled' | 'enabled' | 'error' | 'success';
@@ -141,7 +141,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       saved: false,
       areas: [],
       areaType: 'all',
-      locale: null,
+      locale: 'en',
       currentTenant: null,
       areasOptions: [],
       submitState: 'disabled',
@@ -330,7 +330,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const currentTenantLocales = (currentTenant as ITenant).data.attributes.settings.core.locales;
     const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
     const areaIds = projectAttrs.area_ids || (projectData && projectData.relationships.areas.data.map((area) => (area.id))) || [];
-    const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale as string, currentTenantLocales);
+    const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale, currentTenantLocales);
 
     if (!projectTitle) {
       hasErrors = true;
