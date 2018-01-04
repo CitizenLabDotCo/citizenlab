@@ -1,4 +1,4 @@
-class IdeaTrendingInfo
+class IdeaTrendingInfo < ApplicationRecord
 
   TREND_NUM_UPVOTES = 5
   TREND_NUM_COMMENTS = 5
