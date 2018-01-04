@@ -1,7 +1,7 @@
 class Vote < ApplicationRecord
   MODES = %w(up down)
 
-  belongs_to :votable, polymorphic: true, touch: true
+  belongs_to :votable, polymorphic: true
   counter_culture :votable, column_name: proc {|model| "#{model.mode}votes_count" }
   belongs_to :user
 
