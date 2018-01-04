@@ -15,4 +15,4 @@ FULL OUTER JOIN
  FROM votes
  WHERE mode = 'up' AND votable_type = 'Idea'
  GROUP BY votable_id) AS upvotes_at
- ON id = upvotes_at.votable_id
+ON id = upvotes_at.votable_id;
