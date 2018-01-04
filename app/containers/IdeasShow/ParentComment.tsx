@@ -193,7 +193,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
         if (authUser) {
           moreActions = [
             ...this.state.moreActions,
-            // { label: 'Report as spam', handler: this.openSpamModal }
+            { label: <FormattedMessage {...messages.reportAsSpam} />, handler: this.openSpamModal }
           ];
         }
 

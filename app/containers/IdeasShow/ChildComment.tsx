@@ -185,7 +185,7 @@ export default class ChildComment extends React.PureComponent<Props, State> {
         if (authUser) {
           this.setState({ moreActions: [
             ...this.state.moreActions,
-            { label: 'Report as spam', handler: this.openSpamModal }
+            { label: <FormattedMessage {...messages.reportAsSpam} />, handler: this.openSpamModal }
           ]});
         }
       })
