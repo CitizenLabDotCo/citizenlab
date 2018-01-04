@@ -62,7 +62,7 @@ class GroupAdditionForm extends React.Component<Props, State> {
       errors: {},
       saved: false,
       saving: false,
-      locale: '',
+      locale: 'en',
     };
 
     this.subscriptions = [];
