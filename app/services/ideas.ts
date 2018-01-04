@@ -41,8 +41,11 @@ export interface IIdeaData {
     author: {
       data: IRelationship | null;
     };
+    phases: {
+      data: IRelationship[];
+    }
     project: {
-      data: IRelationship;
+      data: IRelationship | null;
     };
     idea_status?: {
       data: IRelationship;
@@ -92,6 +95,7 @@ export interface IIdeaUpdate {
   body_multiloc?: { [key: string]: string; } | undefined | null;
   topic_ids?: string[] | undefined | null;
   area_ids?: string[] | undefined | null;
+  phase_ids?: string[] | undefined | null;
   location_point_geojson?: {
     type: string;
     coordinates: number[];

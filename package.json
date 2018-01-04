@@ -249,6 +249,8 @@
     "react-autosize-textarea": "0.4.9",
     "react-color": "^2.13.8",
     "react-dates": "16.0.1",
+    "react-dnd": "^2.5.4",
+    "react-dnd-html5-backend": "^2.5.4",
     "react-dom": "^16.2.0",
     "react-draft-wysiwyg": "^1.12.2",
     "react-dropzone": "^4.2.3",

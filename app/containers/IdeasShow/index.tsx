@@ -738,10 +738,14 @@ class IdeasShow extends React.PureComponent<Props, State> {
             <HeaderWrapper>
               {project && projectTitleMultiloc &&
                 <BelongsToProject>
-                  <FormattedMessage {...messages.postedIn} />
-                  <ProjectLink to={`/projects/${project.data.attributes.slug}`}>
-                    <T value={projectTitleMultiloc} />
-                  </ProjectLink>
+                  <FormattedMessage
+                    {...messages.postedIn}
+                    values={{ projectLink:
+                      <ProjectLink to={`/projects/${project.data.attributes.slug}`}>
+                        <T value={projectTitleMultiloc} />
+                      </ProjectLink>
+                    }}
+                  />
                 </BelongsToProject>
               }
 
