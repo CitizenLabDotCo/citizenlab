@@ -15,7 +15,7 @@ type Props = {
 
 type State = {
   locale: Locale | null;
-  currentTenantLocales: string[] | null;
+  currentTenantLocales: Locale[] | null;
 };
 
 export default class T extends React.PureComponent<Props, State> {

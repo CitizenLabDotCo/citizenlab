@@ -53,7 +53,7 @@ import { v4 as uuid } from 'uuid';
 import styled from 'styled-components';
 
 // typings
-import { API, IOption, IRelationship, ImageFile } from 'typings';
+import { API, IOption, IRelationship, ImageFile, Locale } from 'typings';
 
 const StyledImagesDropzone = styled(ImagesDropzone)`
   margin-top: 2px;
@@ -112,7 +112,7 @@ interface State {
   saved: boolean;
   areas: IAreaData[];
   areaType: 'all' | 'selection';
-  locale: string | null;
+  locale: Locale | null;
   currentTenant: ITenant | null;
   areasOptions: IOption[];
   submitState: 'disabled' | 'enabled' | 'error' | 'success';

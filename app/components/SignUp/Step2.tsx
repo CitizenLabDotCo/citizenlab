@@ -144,7 +144,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getOptions(list: IAreas, locale: string, currentTenant: ITenant) {
+  getOptions(list: IAreas, locale: Locale, currentTenant: ITenant) {
     if (list && locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 

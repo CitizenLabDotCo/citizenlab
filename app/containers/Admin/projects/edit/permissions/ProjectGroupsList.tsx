@@ -30,7 +30,7 @@ import { transparentize } from 'polished';
 import { color } from 'utils/styleUtils';
 
 // Typings
-import { IOption } from 'typings';
+import { IOption, Locale } from 'typings';
 
 const EmptyStateMessage = styled.p`
   color: ${color('clBlue')};
@@ -88,8 +88,8 @@ interface Props {
 }
 
 interface State {
-  locale: string | null;
-  currentTenantLocales: string[] | null;
+  locale: Locale | null;
+  currentTenantLocales: Locale[] | null;
   groupsOptions: IOption[] | null;
   projectGroups: IProjectGroup[] | null;
   selectedGroups: IOption[] | null;
@@ -177,7 +177,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     }
   }
 
-  getOptions = (groups: IGroups | null, groupsProjects: IGroupsProjects, locale: string, currentTenantLocales: string[]) => {
+  getOptions = (groups: IGroups | null, groupsProjects: IGroupsProjects, locale: Locale, currentTenantLocales: Locale[]) => {
     if (groupsProjects && groups) {
       return groups.data.filter((group) => {
         return !groupsProjects.data.some(groupProject => groupProject.relationships.group.data.id === group.id);

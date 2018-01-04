@@ -30,6 +30,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { transparentize, darken } from 'polished';
+import { Locale } from 'typings';
 
 const CommentContainer = styled.div`
   margin-top: 0px;
@@ -129,8 +130,8 @@ type Props = {
 };
 
 type State = {
-  locale: string | null;
-  currentTenantLocales: string[] | null;
+  locale: Locale | null;
+  currentTenantLocales: Locale[] | null;
   comment: IComment | null;
   author: IUser | null;
   spamModalVisible: boolean;
@@ -232,7 +233,7 @@ export default class ChildComment extends React.PureComponent<Props, State> {
       const slug = author.data.attributes.slug;
       const commentText = getLocalized(commentBodyMultiloc, locale, currentTenantLocales);
       const processedCommentText = linkifyHtml(commentText.replace(
-        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi, 
+        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
         '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
       ));
 

@@ -29,7 +29,7 @@ import TextArea from 'components/UI/TextArea';
 import styled from 'styled-components';
 
 // Typing
-import { API } from 'typings';
+import { API, Locale } from 'typings';
 import { getLocalized } from 'utils/i18n';
 
 interface Props {
@@ -46,7 +46,7 @@ interface State {
     [fieldName: string]: API.Error[]
   };
   saved: boolean;
-  locale: string;
+  locale: Locale;
   editorState: EditorState;
 }
 
@@ -63,7 +63,7 @@ class ProjectDescription extends React.Component<Props, State> {
       data: { id: null, attributes: {}, relationships: { areas: { data: [] } } },
       diff: {},
       errors: {},
-      locale: '',
+      locale: 'en',
       editorState: EditorState.createEmpty(),
     };
 
@@ -83,9 +83,16 @@ class ProjectDescription extends React.Component<Props, State> {
           project$
         )
         .subscribe(([locale, project]) => {
+          const { description_multiloc } = project.data.attributes;
+          let editorState;
+
+          if (description_multiloc && description_multiloc[locale] !== undefined) {
+            editorState = getEditorStateFromHtmlString(description_multiloc[locale] || null);
+          }
+
           this.setState((state) => ({
             locale,
-            editorState: (project.data.attributes.description_multiloc ? getEditorStateFromHtmlString(project.data.attributes.description_multiloc[locale]) : state.editorState),
+            editorState: (editorState ? editorState : state.editorState),
             data: project.data,
             loading: false,
             diff: {},
@@ -137,6 +144,7 @@ class ProjectDescription extends React.Component<Props, State> {
     const { data, diff, editorState, loading, saved, errors, locale } = this.state;
     const projectAttrs = { ...data.attributes, ...diff } as IUpdatedProjectProperties;
     const submitState = getSubmitState({ errors, saved, diff });
+    const previewValue = _.get(projectAttrs, `description_preview_multiloc.${locale}`, '');
 
     return (
       <form className="e2e-project-description-form" onSubmit={this.saveProject}>
@@ -148,7 +156,7 @@ class ProjectDescription extends React.Component<Props, State> {
             <TextArea
               name="meta_description"
               rows={5}
-              value={projectAttrs && projectAttrs.description_preview_multiloc ? projectAttrs.description_preview_multiloc[locale] : ''}
+              value={previewValue}
               onChange={this.updatePreview}
               maxLength={280}
             />

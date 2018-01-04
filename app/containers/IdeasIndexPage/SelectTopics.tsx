@@ -14,6 +14,7 @@ import { topicsStream, ITopics } from 'services/topics';
 import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { Locale } from 'typings';
 
 type Props = {
   id?: string | undefined;
@@ -22,7 +23,7 @@ type Props = {
 
 type State = {
   currentTenant: ITenant | null;
-  locale: string | null;
+  locale: Locale | null;
   topics: ITopics | null;
   selectedValues: string[];
 };

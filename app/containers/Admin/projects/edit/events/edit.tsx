@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
-import { Multiloc, API } from 'typings';
+import { Multiloc, API, Locale } from 'typings';
 
 // libraries
 import * as moment from 'moment';
@@ -56,7 +56,7 @@ type Props = {
 };
 
 interface State {
-  locale: string | null;
+  locale: Locale | null;
   currentTenant: ITenant | null;
   event: IEvent | null;
   attributeDiff: IUpdatedEventProperties;
