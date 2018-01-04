@@ -1,16 +1,14 @@
-import * as _ from 'lodash';
-import * as Rx from 'rxjs/Rx';
 import { IUser } from 'services/users';
 import { IHttpMethod, Locale } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import { getJwt, setJwt, removeJwt } from 'utils/auth/jwt';
 import request from 'utils/request';
-import streams, { IStream } from 'utils/streams';
+import streams from 'utils/streams';
 import { browserHistory } from 'react-router';
 
 // legacy redux stuff
 import { store } from 'app';
-import {  STORE_JWT, LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL, } from 'utils/auth/constants';
+import {  STORE_JWT } from 'utils/auth/constants';
 
 export const authApiEndpoint = `${API_PATH}/users/me`;
 

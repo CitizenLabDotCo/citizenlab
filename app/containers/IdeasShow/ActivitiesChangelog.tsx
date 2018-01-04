@@ -11,7 +11,7 @@ import UserName from 'components/UI/UserName';
 import Avatar from 'components/Avatar';
 
 // i18n
-import { FormattedRelative, FormattedTime } from 'react-intl';
+import { FormattedTime } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

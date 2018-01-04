@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -7,8 +6,7 @@ import scrollToComponent from 'react-scroll-to-component';
 import * as bowser from 'bowser';
 
 // draft-js
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
+import { EditorState } from 'draft-js';
 
 // components
 import Select from 'components/UI/Select';
@@ -18,16 +16,14 @@ import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
 import Editor from 'components/UI/Editor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import Error from 'components/UI/Error';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectsStream, IProjects, IProjectData } from 'services/projects';
 
 // utils
-import { IStream } from 'utils/streams';
 import eventEmitter from 'utils/eventEmitter';
 import { getLocalized } from 'utils/i18n';
 import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'utils/editorTools';
@@ -215,7 +211,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ imageFile });
   }
 
-  handleUploadOnRemove = (removedImage: ImageFile) => {
+  handleUploadOnRemove = () => {
     this.setState({ imageFile: null });
   }
 

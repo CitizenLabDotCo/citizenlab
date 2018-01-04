@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { xor } from 'lodash';
 
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { Menu, Divider } from 'semantic-ui-react';
@@ -16,7 +15,7 @@ interface Props {
 
 class FilterSidebarStatuses extends React.Component<Props> {
 
-  handleItemClick = (id) => (event) => {
+  handleItemClick = (id) => () => {
     this.props.onChangeStatusFilter && this.props.onChangeStatusFilter(id);
   }
 

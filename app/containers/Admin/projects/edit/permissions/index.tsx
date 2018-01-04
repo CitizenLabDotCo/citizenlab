@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
 // components
@@ -13,22 +12,14 @@ import Label from 'components/UI/Label';
 import Radio from 'components/UI/Radio';
 import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { Section, SectionField } from 'components/admin/Section';
 
 // services
-import { projectBySlugStream, updateProject, IProject, IProjectData } from 'services/projects';
+import { projectBySlugStream, updateProject, IProject } from 'services/projects';
 import { groupsProjectsByProjectIdStream, addGroupProject, deleteGroupProject, IGroupsProjects } from 'services/groupsProjects';
 
 // style
 import styled from 'styled-components';
-
-const Description = styled.div`
-  color: #333;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 20px;
-  margin-bottom: 30px;
-`;
 
 const RadioButtonsWrapper = styled.div`
   margin-top: 15px;
@@ -138,7 +129,7 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
   }
 
   saveChanges = async () => {
-    const { project, oldGroupsProjects, newGroupsProjects, savedVisibleTo, unsavedVisibleTo } = this.state;
+    const { project, newGroupsProjects, savedVisibleTo, unsavedVisibleTo } = this.state;
 
     if (project && savedVisibleTo && unsavedVisibleTo) {
       let promises: Promise<any>[] = [];

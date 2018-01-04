@@ -4,8 +4,7 @@ import * as Rx from 'rxjs/Rx';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
-import { media, color } from 'utils/styleUtils';
+import { color } from 'utils/styleUtils';
 
 // services
 import { projectsStream, IProjects } from 'services/projects';

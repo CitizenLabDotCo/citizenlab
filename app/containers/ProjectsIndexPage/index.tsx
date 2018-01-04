@@ -3,12 +3,10 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import queryString from 'query-string';
-import { withRouter, RouterState, browserHistory, Link } from 'react-router';
+import { browserHistory } from 'react-router';
 
 // components
 import SelectAreas from './SelectAreas';
-import HelmetIntl from 'components/HelmetIntl';
 import ContentContainer from 'components/ContentContainer';
 import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
@@ -138,7 +136,7 @@ class IdeasIndex extends React.PureComponent<Props, State> {
     ];
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(_nextProps, nextState) {
     if (!_.isEqual(this.state.filter, nextState.filter)) {
       browserHistory.push({
         pathname: '/projects',

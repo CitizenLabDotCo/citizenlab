@@ -1,21 +1,20 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import { uniq, flow, keys, isEmpty } from 'lodash';
+import { uniq, keys, isEmpty } from 'lodash';
 import { findDOMNode } from 'react-dom';
 import eventEmitter from 'utils/eventEmitter';
 import { IModalInfo } from 'containers/App';
 import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';
 import { IPhaseData } from 'services/phases';
-import { ITopicData } from 'services/topics';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { injectTFunc } from 'components/T/utils';
 import { DragSource } from 'react-dnd';
 
 // components
-import { Table, Icon, Dropdown, Popup, Button, Checkbox } from 'semantic-ui-react';
+import { Table, Icon, Checkbox } from 'semantic-ui-react';
 import WrappedRow from './WrappedRow';
 import { FormattedDate } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import T from 'components/T';
 import PhasesSelector from './PhasesSelector';
 import TopicsSelector from './TopicsSelector';
@@ -114,7 +113,7 @@ class Row extends React.PureComponent<Props> {
   }
 
   render() {
-    const { idea, onDeleteIdea, selected, isDragging, connectDragSource, activeFilterMenu, phases, statuses } = this.props;
+    const { idea, selected, connectDragSource, activeFilterMenu, phases, statuses } = this.props;
     const selectedStatus = idea.relationships.idea_status && idea.relationships.idea_status.data.id;
     const attrs = idea.attributes;
     return (
