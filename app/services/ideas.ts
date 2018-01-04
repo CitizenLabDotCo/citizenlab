@@ -1,18 +1,14 @@
 import * as _ from 'lodash';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship } from 'typings';
+import { IRelationship, Multiloc } from 'typings';
 
 export interface IIdeaData {
   id: string;
   type: string;
   attributes: {
-    title_multiloc: {
-      [key: string]: any;
-    };
-    body_multiloc: {
-      [key: string]: any;
-    };
+    title_multiloc: Multiloc;
+    body_multiloc: Multiloc;
     author_name: string;
     slug: string;
     publication_status: 'draft' | 'published';

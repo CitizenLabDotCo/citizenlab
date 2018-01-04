@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import { Multiloc, Locale } from 'typings';
 
 // services
 import { getLocalized } from 'utils/i18n';
@@ -9,11 +10,11 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { Map } from 'immutable';
 
 type Props = {
-  value: { [key: string]: string } | Map<string,string>
+  value: Multiloc | Map<string,string>
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   currentTenantLocales: string[] | null;
 };
 
