@@ -16,6 +16,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
+import { Locale } from 'typings';
+
 type Props = {
   selectedAreas: string[];
   onChange: (value: any) => void;
@@ -23,7 +25,7 @@ type Props = {
 
 type State = {
   currentTenant: ITenant | null;
-  locale: string | null;
+  locale: Locale | null;
   areas: IAreas | null;
 };
 

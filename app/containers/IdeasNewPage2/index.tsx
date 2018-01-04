@@ -31,7 +31,7 @@ import messages from './messages';
 import { convertToGeoJson } from 'utils/locationTools';
 
 // typings
-import { IOption, ImageFile } from 'typings';
+import { IOption, ImageFile, Locale } from 'typings';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -137,7 +137,7 @@ interface Props {}
 
 interface LocalState {
   showIdeaForm: boolean;
-  locale: string | null;
+  locale: Locale | null;
 }
 
 interface GlobalState {}

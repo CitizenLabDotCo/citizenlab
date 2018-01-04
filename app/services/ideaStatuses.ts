@@ -1,19 +1,16 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import { Multiloc } from 'typings';
 
 export interface IIdeaStatusData {
   id: string;
   type: string;
   attributes: {
-    title_multiloc: {
-      [key: string]: string;
-    };
+    title_multiloc: Multiloc;
     color: string;
     code: string;
     ordering: number;
-    description_multiloc: {
-      [key: string]: string;
-    }
+    description_multiloc: Multiloc
   };
 }
 

@@ -1,4 +1,4 @@
-import { IRelationship, Multiloc } from 'typings';
+import { IRelationship, Multiloc, API } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import request from 'utils/request';
@@ -9,11 +9,7 @@ export interface IProjectImageData {
   id: string;
   type: string;
   attributes: {
-    versions: {
-      small: string,
-      medium: string,
-      large: string,
-    },
+    versions: API.ImageSizes,
     ordering: string | null,
     created_at: string,
     updated_at: string,

@@ -38,7 +38,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { IOption, ImageFile } from 'typings';
+import { IOption, ImageFile, Locale } from 'typings';
 
 // style
 import styled from 'styled-components';
@@ -172,7 +172,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getOptions = (list: ITopics | IProjects | null, locale: string | null, currentTenantLocales: string[]) => {
+  getOptions = (list: ITopics | IProjects | null, locale: Locale | null, currentTenantLocales: Locale[]) => {
     if (list && locale) {
       return (list.data as (ITopicData | IProjectData)[]).map(item => ({
         value: item.id,

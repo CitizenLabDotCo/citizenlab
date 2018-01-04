@@ -23,6 +23,7 @@ import { List, Row } from 'components/admin/ResourceList';
 import styled from 'styled-components';
 import { rgba } from 'polished';
 import { color } from 'utils/styleUtils';
+import { Locale } from 'typings';
 
 const EmptyStateMessage = styled.p`
   align-items: center;
@@ -47,8 +48,8 @@ interface Props {
 
 interface State {
   groups: IGroupData[];
-  locale: string;
-  tenantLocales: string[];
+  locale: Locale;
+  tenantLocales: Locale[];
   loading: boolean;
 }
 
@@ -59,7 +60,7 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
     super(props as any);
 
     this.state = {
-      locale: '',
+      locale: 'en',
       tenantLocales: [],
       groups: [],
       loading: false,

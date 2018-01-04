@@ -24,6 +24,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
+import { Locale } from 'typings';
 
 const Container = styled.div`
   width: 100%;
@@ -193,7 +194,7 @@ type Props = {
 };
 
 type State = {
-  locale: string | null,
+  locale: Locale | null,
   currentTenant: ITenant | null;
   project: IProject | null;
   projectImage: IProjectImage | null;

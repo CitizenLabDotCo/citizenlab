@@ -1,5 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/stats`;
 
@@ -25,9 +26,7 @@ export interface IIdeasByTopic{
   };
   topics: {
     [key: string]: {
-      title_multiloc: {
-        [key: string]: string,
-      }
+      title_multiloc: Multiloc
     }
   };
 }

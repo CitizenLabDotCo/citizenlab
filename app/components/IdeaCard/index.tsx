@@ -35,6 +35,7 @@ import { color } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
+import { Locale } from 'typings';
 
 const IdeaImage: any = styled.img`
   width: 100%;
@@ -164,7 +165,7 @@ type State = {
   idea: IIdea | null;
   ideaImage: IIdeaImage | null;
   ideaAuthor: IUser | null;
-  locale: string | null;
+  locale: Locale | null;
   showUnauthenticated: boolean;
   loading: boolean;
 };

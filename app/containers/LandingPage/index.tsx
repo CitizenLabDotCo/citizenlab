@@ -37,6 +37,7 @@ import { media } from 'utils/styleUtils';
 // typings
 import { IUser } from 'services/users';
 import { setTimeout } from 'timers';
+import { Locale } from 'typings';
 
 const Container: any = styled.div`
   display: flex;
@@ -278,7 +279,7 @@ const ViewMoreButton = styled(Button) `
 type Props = {};
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   currentTenant: ITenant | null;
   currentTenantHeader: string | null;
   hasIdeas: boolean;

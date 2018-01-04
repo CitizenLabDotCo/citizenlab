@@ -3,6 +3,7 @@ import streams, { IStream, IStreamParams } from 'utils/streams';
 import request from 'utils/request';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
+import { API, Multiloc, Locale } from 'typings';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -13,14 +14,10 @@ export interface IUserData {
     first_name: string;
     last_name: string | null;
     slug: string;
-    locale: string;
-    avatar: {
-      small: string;
-      medium: string;
-      large: string;
-    },
+    locale: Locale;
+    avatar: API.ImageSizes,
     roles?: any[],
-    bio_multiloc: {},
+    bio_multiloc: Multiloc,
     created_at: string;
     updated_at: string;
     email?: string;
