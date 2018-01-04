@@ -1,4 +1,4 @@
-SELECT id, 
+SELECT id as idea_id, 
        GREATEST(last_comment_at, last_upvoted_at, published_at) AS last_activity_at,
        to_timestamp(round((GREATEST((comments_at.comments_count * mean_comment_at),0) 
                            + GREATEST((upvotes_at.upvotes_count * mean_upvoted_at),0) 
