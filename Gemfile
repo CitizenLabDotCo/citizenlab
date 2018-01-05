@@ -63,7 +63,7 @@ gem "sidekiq-cron", "~> 0.4.5"
 gem "apartment", "~> 1.2.0"
 gem "apartment-sidekiq", "~> 1.1.0"
 gem "carrierwave", "~> 1.1.0"
-gem "kaminari", "~> 1.0.1"
+gem "kaminari", "~> 1.1"
 gem "activerecord_json_validator", "~> 1.2.0"
 
 gem "rest-client"
