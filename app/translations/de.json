@@ -547,6 +547,7 @@
   "app.containers.UsersEditPage.bio": "Biografie",
   "app.containers.UsersEditPage.bio_placeholder": "Verfassen Sie eine kurze Selbstbeschreibung",
   "app.containers.UsersEditPage.birthdate": "Geburtsdatum",
+  "app.containers.UsersEditPage.buttonErrorLabel": "",
   "app.containers.UsersEditPage.domicile": "Wohnort",
   "app.containers.UsersEditPage.domicile_placeholder": "Wohnort",
   "app.containers.UsersEditPage.education": "Zuletzt erreichter Abschluss",
