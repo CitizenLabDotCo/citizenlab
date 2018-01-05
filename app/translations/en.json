@@ -547,6 +547,7 @@
   "app.containers.UsersEditPage.bio": "Bio",
   "app.containers.UsersEditPage.bio_placeholder": "Write a short description of yourself",
   "app.containers.UsersEditPage.birthdate": "Date of birth",
+  "app.containers.UsersEditPage.buttonErrorLabel": "Error",
   "app.containers.UsersEditPage.domicile": "Domicile",
   "app.containers.UsersEditPage.domicile_placeholder": "Domicile",
   "app.containers.UsersEditPage.education": "Highest diploma",
