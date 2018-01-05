@@ -17,11 +17,11 @@ class TrendingIdeaService
                            AND (NOT ((ideas.upvotes_count - ideas.downvotes_count) < 0)) 
                            AND (idea_trending_infos.last_activity_at >= timestamp '#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}')"
 
-    ideas.joins("LEFT OUTER JOIN (SELECT whaatevaa.id AS is_trending_b FROM (#{filter_trending_sql}) AS whaatevaa) AS whateva ON is_trending_b = ideas.id") # .joins("LEFT OUTER JOIN (SELECT ideas.id AS is_trending_b FROM (#{filter_trending_sql}) AS whateva ON is_trending_b = ideas.id") # .joins("LEFT OUTER JOIN (SELECT ideas.id AS is_trending_b FROM ideas WHERE NOT (ideas.upvotes_count - ideas.downvotes_count) < 10) AS whateva ON is_trending_b = ideas.id")
+    ideas.joins("LEFT OUTER JOIN (SELECT whaatevaa.id AS is_trending_b FROM (#{filter_trending_sql}) AS whaatevaa) AS whateva ON is_trending_b = ideas.id")
          .group('ideas.id, idea_trending_infos.mean_activity_at')
          .select('ideas.*, count(is_trending_b) AS is_trending')
          .left_outer_joins(:idea_trending_info)
-         .select("ideas.*, (GREATEST(((ideas.upvotes_count - ideas.downvotes_count) + 1), 1) / (#{Time.now.to_i} - extract(epoch from idea_trending_infos.mean_activity_at))) AS score")# .select('*, (GREATEST(((ideas.upvotes_count - ideas.downvotes_count) + 1), 1) / (comment_ago + vote_ago)) AS score')
+         .select("ideas.*, (GREATEST(((ideas.upvotes_count - ideas.downvotes_count) + 1), 1) / GREATEST((#{Time.now.to_i} - extract(epoch from idea_trending_infos.mean_activity_at)), 1)) AS score")
          .order('is_trending DESC, score DESC')
   end
 
@@ -54,7 +54,7 @@ class TrendingIdeaService
   private
 
   def trending_score_formula votes_diff, mean_activity_at
-    [(1 + votes_diff), 1].max / mean_activity_at
+    [(1 + votes_diff), 1].max / [mean_activity_at,1].max
   end
 
   def activity_ago iteratables

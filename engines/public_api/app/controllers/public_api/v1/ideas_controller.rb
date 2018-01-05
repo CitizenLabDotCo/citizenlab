@@ -9,10 +9,15 @@ module PublicApi
       @ideas = @ideas
         .published
         .page(params.dig(:page_number))
-        .per([params.dig(:page_size)&.to_i || 12, 24].min)
+        .per([params.dig(:page_size)&.to_i || 12, 24].min) # default is 12, maximum is 24
         .includes(:idea_images, :project, :idea_status)
+      # kaminari fails to get the correct total pages when
+      # executing complex queries (other values than ideas.*
+      # are calculated, and kaminari wraps a count around it,
+      # resulting in a syntax error). We therefore acquire
+      # the count before the complex query.
+      @total_pages = @ideas.total_pages
       @ideas = TrendingIdeaService.new.sort_trending @ideas
-
       
       render json: @ideas, 
         each_serializer: V1::IdeaSerializer, 
@@ -34,7 +39,7 @@ module PublicApi
     def meta_properties relation
       {
         current_page: relation.current_page,
-        total_pages: relation.total_pages
+        total_pages: @total_pages
       }
     end
 
