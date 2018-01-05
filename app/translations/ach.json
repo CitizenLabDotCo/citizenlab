@@ -547,6 +547,7 @@
   "app.containers.UsersEditPage.bio": "crwdns15953:0crwdne15953:0",
   "app.containers.UsersEditPage.bio_placeholder": "crwdns15954:0crwdne15954:0",
   "app.containers.UsersEditPage.birthdate": "crwdns18245:0crwdne18245:0",
+  "app.containers.UsersEditPage.buttonErrorLabel": "",
   "app.containers.UsersEditPage.domicile": "crwdns15956:0crwdne15956:0",
   "app.containers.UsersEditPage.domicile_placeholder": "crwdns15957:0crwdne15957:0",
   "app.containers.UsersEditPage.education": "crwdns15958:0crwdne15958:0",

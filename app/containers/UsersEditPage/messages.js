@@ -26,6 +26,10 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.processing',
     defaultMessage: 'Sending...',
   },
+  buttonErrorLabel: {
+    id: 'app.containers.UsersEditPage.buttonErrorLabel',
+    defaultMessage: 'Error',
+  },
   storeError: {
     id: 'app.containers.UsersEditPage.storeError',
     defaultMessage: 'Can\'t store updated profile',
@@ -114,7 +118,7 @@ export default defineMessages({
   },
   outside: {
     id: 'app.containers.UsersEditPage.outside',
-    defaultMessage: `{organizationType, select,
+    defaultMessage: `{orgType, select,
       city {Outside of {name}}
       generic {None of these}
     }`,
