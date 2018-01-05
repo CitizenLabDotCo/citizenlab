@@ -1,6 +1,6 @@
 // Libraries
 import * as React from 'react';
-import { omitBy } from 'lodash';
+import { omitBy, transform } from 'lodash';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 
@@ -10,7 +10,7 @@ import { updateUser, IUserData, IUserUpdate, mapUserToDiff } from 'services/user
 import { ITenantData } from 'services/tenant';
 import scrollToComponent from 'react-scroll-to-component';
 import { withFormik, FormikProps, Form, Field } from 'formik';
-import { IOption, ImageFile } from 'typings';
+import { IOption, ImageFile, API } from 'typings';
 
 // Components
 import { Grid, Menu, Segment } from 'semantic-ui-react';
@@ -19,6 +19,7 @@ import Button from 'components/UI/Button';
 import LabelWithTooltip from './LabelWithTooltip';
 import TextArea from 'components/UI/TextArea';
 import Input from 'components/UI/Input';
+import Error from 'components/UI/Error';
 import Select from 'components/UI/Select';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToFileObservable } from 'utils/imageTools';
@@ -188,7 +189,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
 
 
   render() {
-    const { user, intl: { formatMessage }, values, touched, errors, isSubmitting, handleChange, handleBlur } = this.props;
+    const { user, intl: { formatMessage }, values, touched, errors, isSubmitting, handleChange, handleBlur, isValid, dirty } = this.props;
 
     return (
       <StyledContentContainer>
@@ -202,7 +203,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
             </Grid.Column>
             <Grid.Column computer={12} mobile={16}>
               <Segment padded="very">
-                <Form className="e2e-profile-edit-form">
+                <Form className="e2e-profile-edit-form" noValidate>
                   {/* BASICS */}
                   <Section ref={(section1) => { this['section-basics'] = section1; }}>
                     <SectionTitle><FormattedMessage {...messages.h1} /></SectionTitle>
@@ -220,6 +221,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                         onUpdate={this.handleAvatarOnUpdate}
                         onRemove={this.handleAvatarOnRemove}
                       />
+                      <Error apiErrors={errors.avatar} />
                     </SectionField>
 
                     <SectionField>
@@ -228,16 +230,19 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                         type="text"
                         name="first_name"
                       />
+                      <Error apiErrors={errors.first_name} />
                     </SectionField>
 
                     <SectionField>
                       <LabelWithTooltip id="lastName" />
                       <Field name="last_name" />
+                      <Error apiErrors={errors.last_name} />
                     </SectionField>
 
                     <SectionField>
                       <LabelWithTooltip id="email" />
                       <Field type="email" name="email" />
+                      <Error apiErrors={errors.email} />
                     </SectionField>
 
                     <SectionField>
@@ -250,21 +255,24 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                         placeholder={formatMessage({ ...messages.bio_placeholder })}
                         value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
                       />
+                      <Error apiErrors={errors.bio_multiloc} />
                     </SectionField>
 
                     <SectionField>
                       <LabelWithTooltip id="password" />
                       <Field type="password" name="password" />
+                      <Error apiErrors={errors.password} />
                     </SectionField>
 
                     <SectionField>
                       <LabelWithTooltip id="language" />
-                      {<Select
+                      <Select
                         onChange={this.createChangeHandler('locale')}
                         onBlur={this.createBlurHandler('locale')}
                         value={values.locale}
                         options={this.localeOptions}
-                      />}
+                      />
+                      <Error apiErrors={errors.locale} />
                     </SectionField>
                   </Section>
 
@@ -286,6 +294,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                           onChange={this.createChangeHandler('gender')}
                           value={values.gender}
                         />
+                        <Error apiErrors={errors.gender} />
                       </SectionField>
                     }
 
@@ -298,6 +307,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                           onChange={this.createChangeHandler('domicile')}
                           value={values.domicile}
                         />
+                        <Error apiErrors={errors.domicile} />
                       </SectionField>
                     }
                     {this.isOptionEnabled('birthyear') &&
@@ -308,6 +318,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                           onChange={this.createChangeHandler('birthyear')}
                           value={`${values.birthyear}`}
                         />
+                        <Error apiErrors={errors.birthyear} />
                       </SectionField>
                     }
 
@@ -320,14 +331,20 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                           onChange={this.createChangeHandler('education')}
                           value={values.education}
                         />
+                        <Error apiErrors={errors.education} />
                       </SectionField>
                     }
                   </Section>
 
                   <Button
                     id="e2e-profile-edit-form-button"
-                    text={formatMessage({ ...messages.submit })}
+                    text={
+                      dirty && !isValid
+                      ? <FormattedMessage {...messages.buttonErrorLabel} />
+                      : <FormattedMessage {...messages.submit} />
+                    }
                     processing={isSubmitting}
+                    style={dirty && !isValid ? 'error' : 'primary'}
                   />
                 </Form>
               </Segment>
@@ -339,13 +356,17 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
 }
 
 export default withFormik<Props, IUserUpdate, IUserUpdate>({
-  handleSubmit: (values, { props, setSubmitting, resetForm }) => {
+  handleSubmit: (values, { props, setSubmitting, resetForm, setErrors }) => {
     updateUser(props.user.id, values)
     .then(() => {
       resetForm();
     })
-    .catch(() => {
-      // TODO: catch errors and translate them in Formik-style
+    .catch((errorResponse) => {
+      if (errorResponse.json) {
+        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        setErrors(apiErrors);
+        setSubmitting(false);
+      }
     });
   },
   mapPropsToValues: (props) => {
