@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe TrendingIdeaService do
   before do
-    generate_trending_ideas 500
+    generate_trending_ideas 10000
   end
 
   describe "filter_trending" do
@@ -57,8 +57,8 @@ describe TrendingIdeaService do
         lines.concat ['--------------------------']
         lines.concat ['--------------------------']
       end
-      #lines.each{|l| puts l}
-      #byebug
+      # lines.each{|l| puts l}
+      # byebug
       expect(trending_score_sorted).to eq expected_order
     end
   end
