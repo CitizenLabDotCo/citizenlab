@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe TrendingIdeaService do
   before do
-    generate_trending_ideas 1000
+    generate_trending_ideas 5
   end
 
   describe "filter_trending" do
