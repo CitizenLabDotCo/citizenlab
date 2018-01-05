@@ -13,7 +13,7 @@ import { withFormik, FormikProps, Form, Field } from 'formik';
 import { IOption, ImageFile, API } from 'typings';
 
 // Components
-import { Grid, Menu, Segment } from 'semantic-ui-react';
+import { Grid, Menu, Segment, Sticky } from 'semantic-ui-react';
 import ContentContainer from 'components/ContentContainer';
 import Button from 'components/UI/Button';
 import LabelWithTooltip from './LabelWithTooltip';
@@ -37,7 +37,8 @@ import styled from 'styled-components';
 import { color, fontSize, media } from 'utils/styleUtils';
 
 const StyledContentContainer = styled(ContentContainer)`
-  background: #fff;
+  background: ${color('background')};
+  padding-top: 25px;
 `;
 
 // Types
@@ -49,6 +50,7 @@ interface Props {
 
 interface State {
   avatar: ImageFile[] | null;
+  contextRef: any | null;
 }
 
 class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLocalized & FormikProps<IUserUpdate>, State> {
@@ -63,6 +65,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
 
     this.state = {
       avatar: null,
+      contextRef: null,
     };
   }
 
@@ -187,167 +190,176 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
     this.props.setFieldTouched('avatar');
   }
 
+  handleContextRef = contextRef => this.setState({ contextRef });
 
   render() {
     const { user, intl: { formatMessage }, values, touched, errors, isSubmitting, handleChange, handleBlur, isValid, dirty } = this.props;
+    const { contextRef } = this.state;
 
     return (
       <StyledContentContainer>
         <Grid>
           <Grid.Row>
             <Grid.Column width={4} only="computer">
-              <Menu fluid vertical tabular>
-                <Menu.Item name="h1" onClick={this.createMenuClickHandler('h1')}><FormattedMessage {...messages.h1} /></Menu.Item>
-                <Menu.Item name="h2" onClick={this.createMenuClickHandler('h2')}><FormattedMessage {...messages.h2} /></Menu.Item>
-              </Menu>
+              <Sticky context={contextRef} offset={100}>
+                <Menu fluid vertical text>
+                  {['h1', 'h2'].map((key) => (
+                    <Menu.Item key={key} name={key} onClick={this.createMenuClickHandler(key)}>
+                      <FormattedMessage {...messages[key]} />
+                    </Menu.Item>
+                  ))}
+                </Menu>
+              </Sticky>
             </Grid.Column>
             <Grid.Column computer={12} mobile={16}>
-              <Segment padded="very">
-                <Form className="e2e-profile-edit-form" noValidate>
-                  {/* BASICS */}
-                  <Section ref={(section1) => { this['section-basics'] = section1; }}>
-                    <SectionTitle><FormattedMessage {...messages.h1} /></SectionTitle>
-                    <SectionSubtitle><FormattedMessage {...messages.h1sub} /></SectionSubtitle>
+              <div ref={this.handleContextRef}>
+                <Segment padded="very">
+                  <Form className="e2e-profile-edit-form" noValidate>
+                    {/* BASICS */}
+                    <Section ref={(section1) => { this['section-basics'] = section1; }}>
+                      <SectionTitle><FormattedMessage {...messages.h1} /></SectionTitle>
+                      <SectionSubtitle><FormattedMessage {...messages.h1sub} /></SectionSubtitle>
 
-                    <SectionField>
-                      <ImagesDropzone
-                        images={this.state.avatar}
-                        imagePreviewRatio={1}
-                        maxImagePreviewWidth="160px"
-                        acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                        maxImageFileSize={5000000}
-                        maxNumberOfImages={1}
-                        onAdd={this.handleAvatarOnAdd}
-                        onUpdate={this.handleAvatarOnUpdate}
-                        onRemove={this.handleAvatarOnRemove}
-                      />
-                      <Error apiErrors={errors.avatar} />
-                    </SectionField>
-
-                    <SectionField>
-                      <LabelWithTooltip id="firstName" />
-                      <Input
-                        type="text"
-                        name="first_name"
-                      />
-                      <Error apiErrors={errors.first_name} />
-                    </SectionField>
-
-                    <SectionField>
-                      <LabelWithTooltip id="lastName" />
-                      <Field name="last_name" />
-                      <Error apiErrors={errors.last_name} />
-                    </SectionField>
-
-                    <SectionField>
-                      <LabelWithTooltip id="email" />
-                      <Field type="email" name="email" />
-                      <Error apiErrors={errors.email} />
-                    </SectionField>
-
-                    <SectionField>
-                      <LabelWithTooltip id="bio" />
-                      <TextArea
-                        name="bio_multiloc"
-                        onChange={this.createChangeHandler('bio_multiloc')}
-                        onBlur={this.createBlurHandler('bio_multiloc')}
-                        rows={6}
-                        placeholder={formatMessage({ ...messages.bio_placeholder })}
-                        value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
-                      />
-                      <Error apiErrors={errors.bio_multiloc} />
-                    </SectionField>
-
-                    <SectionField>
-                      <LabelWithTooltip id="password" />
-                      <Field type="password" name="password" />
-                      <Error apiErrors={errors.password} />
-                    </SectionField>
-
-                    <SectionField>
-                      <LabelWithTooltip id="language" />
-                      <Select
-                        onChange={this.createChangeHandler('locale')}
-                        onBlur={this.createBlurHandler('locale')}
-                        value={values.locale}
-                        options={this.localeOptions}
-                      />
-                      <Error apiErrors={errors.locale} />
-                    </SectionField>
-                  </Section>
-
-                  {/* DETAILS */}
-                  <Section ref={(section2) => { this['section-details'] = section2; }}>
-                    <SectionTitle>
-                      <FormattedMessage {...messages.h2} />
-                    </SectionTitle>
-                    <SectionSubtitle>
-                      <FormattedMessage {...messages.h2sub} />
-                    </SectionSubtitle>
-
-                    {this.isOptionEnabled('gender') &&
                       <SectionField>
-                        <LabelWithTooltip id="gender" />
-                        <Select
-                          placeholder={formatMessage({ ...messages.male })}
-                          options={this.genderOptions}
-                          onChange={this.createChangeHandler('gender')}
-                          value={values.gender}
+                        <ImagesDropzone
+                          images={this.state.avatar}
+                          imagePreviewRatio={1}
+                          maxImagePreviewWidth="160px"
+                          acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                          maxImageFileSize={5000000}
+                          maxNumberOfImages={1}
+                          onAdd={this.handleAvatarOnAdd}
+                          onUpdate={this.handleAvatarOnUpdate}
+                          onRemove={this.handleAvatarOnRemove}
                         />
-                        <Error apiErrors={errors.gender} />
+                        <Error apiErrors={errors.avatar} />
                       </SectionField>
-                    }
 
-                    {this.isOptionEnabled('domicile') &&
                       <SectionField>
-                        <LabelWithTooltip id="domicile" />
-                        <Select
-                          placeholder={formatMessage({ ...messages.domicile_placeholder })}
-                          options={this.domicileOptions}
-                          onChange={this.createChangeHandler('domicile')}
-                          value={values.domicile}
+                        <LabelWithTooltip id="firstName" />
+                        <Input
+                          type="text"
+                          name="first_name"
                         />
-                        <Error apiErrors={errors.domicile} />
+                        <Error apiErrors={errors.first_name} />
                       </SectionField>
-                    }
-                    {this.isOptionEnabled('birthyear') &&
-                      <SectionField>
-                        <LabelWithTooltip id="birthdate" />
-                        <Select
-                          options={this.birthYearOptions}
-                          onChange={this.createChangeHandler('birthyear')}
-                          value={`${values.birthyear}`}
-                        />
-                        <Error apiErrors={errors.birthyear} />
-                      </SectionField>
-                    }
 
-                    {this.isOptionEnabled('education') &&
                       <SectionField>
-                        <LabelWithTooltip id="education" />
-                        <Select
-                          placeholder={formatMessage({ ...messages.education_placeholder })}
-                          options={this.educationOptions}
-                          onChange={this.createChangeHandler('education')}
-                          value={values.education}
-                        />
-                        <Error apiErrors={errors.education} />
+                        <LabelWithTooltip id="lastName" />
+                        <Field name="last_name" />
+                        <Error apiErrors={errors.last_name} />
                       </SectionField>
-                    }
-                  </Section>
 
-                  <Button
-                    id="e2e-profile-edit-form-button"
-                    text={
-                      dirty && !isValid
-                      ? <FormattedMessage {...messages.buttonErrorLabel} />
-                      : <FormattedMessage {...messages.submit} />
-                    }
-                    processing={isSubmitting}
-                    style={dirty && !isValid ? 'error' : 'primary'}
-                  />
-                </Form>
-              </Segment>
+                      <SectionField>
+                        <LabelWithTooltip id="email" />
+                        <Field type="email" name="email" />
+                        <Error apiErrors={errors.email} />
+                      </SectionField>
+
+                      <SectionField>
+                        <LabelWithTooltip id="bio" />
+                        <TextArea
+                          name="bio_multiloc"
+                          onChange={this.createChangeHandler('bio_multiloc')}
+                          onBlur={this.createBlurHandler('bio_multiloc')}
+                          rows={6}
+                          placeholder={formatMessage({ ...messages.bio_placeholder })}
+                          value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
+                        />
+                        <Error apiErrors={errors.bio_multiloc} />
+                      </SectionField>
+
+                      <SectionField>
+                        <LabelWithTooltip id="password" />
+                        <Field type="password" name="password" />
+                        <Error apiErrors={errors.password} />
+                      </SectionField>
+
+                      <SectionField>
+                        <LabelWithTooltip id="language" />
+                        <Select
+                          onChange={this.createChangeHandler('locale')}
+                          onBlur={this.createBlurHandler('locale')}
+                          value={values.locale}
+                          options={this.localeOptions}
+                        />
+                        <Error apiErrors={errors.locale} />
+                      </SectionField>
+                    </Section>
+
+                    {/* DETAILS */}
+                    <Section ref={(section2) => { this['section-details'] = section2; }}>
+                      <SectionTitle>
+                        <FormattedMessage {...messages.h2} />
+                      </SectionTitle>
+                      <SectionSubtitle>
+                        <FormattedMessage {...messages.h2sub} />
+                      </SectionSubtitle>
+
+                      {this.isOptionEnabled('gender') &&
+                        <SectionField>
+                          <LabelWithTooltip id="gender" />
+                          <Select
+                            placeholder={formatMessage({ ...messages.male })}
+                            options={this.genderOptions}
+                            onChange={this.createChangeHandler('gender')}
+                            value={values.gender}
+                          />
+                          <Error apiErrors={errors.gender} />
+                        </SectionField>
+                      }
+
+                      {this.isOptionEnabled('domicile') &&
+                        <SectionField>
+                          <LabelWithTooltip id="domicile" />
+                          <Select
+                            placeholder={formatMessage({ ...messages.domicile_placeholder })}
+                            options={this.domicileOptions}
+                            onChange={this.createChangeHandler('domicile')}
+                            value={values.domicile}
+                          />
+                          <Error apiErrors={errors.domicile} />
+                        </SectionField>
+                      }
+                      {this.isOptionEnabled('birthyear') &&
+                        <SectionField>
+                          <LabelWithTooltip id="birthdate" />
+                          <Select
+                            options={this.birthYearOptions}
+                            onChange={this.createChangeHandler('birthyear')}
+                            value={`${values.birthyear}`}
+                          />
+                          <Error apiErrors={errors.birthyear} />
+                        </SectionField>
+                      }
+
+                      {this.isOptionEnabled('education') &&
+                        <SectionField>
+                          <LabelWithTooltip id="education" />
+                          <Select
+                            placeholder={formatMessage({ ...messages.education_placeholder })}
+                            options={this.educationOptions}
+                            onChange={this.createChangeHandler('education')}
+                            value={values.education}
+                          />
+                          <Error apiErrors={errors.education} />
+                        </SectionField>
+                      }
+                    </Section>
+
+                    <Button
+                      id="e2e-profile-edit-form-button"
+                      text={
+                        dirty && !isValid
+                        ? <FormattedMessage {...messages.buttonErrorLabel} />
+                        : <FormattedMessage {...messages.submit} />
+                      }
+                      processing={isSubmitting}
+                      style={dirty && !isValid ? 'error' : 'primary'}
+                    />
+                  </Form>
+                </Segment>
+              </div>
             </Grid.Column>
           </Grid.Row>
         </Grid>
