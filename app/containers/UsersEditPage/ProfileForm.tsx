@@ -231,6 +231,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                           onAdd={this.handleAvatarOnAdd}
                           onUpdate={this.handleAvatarOnUpdate}
                           onRemove={this.handleAvatarOnRemove}
+                          imageRadius="50%"
                         />
                         <Error apiErrors={errors.avatar} />
                       </SectionField>
