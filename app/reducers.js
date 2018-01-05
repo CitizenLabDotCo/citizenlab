@@ -7,7 +7,6 @@ import { combineReducers } from 'redux-immutable';
 import { fromJS } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
-import usersEditPageReducer from 'containers/UsersEditPage/reducer';
 import searchWidgetReducer from 'containers/SearchWidget/reducer';
 import resourcesReducer from 'utils/resources/reducer';
 import { utilsReducer, tempStateReducer } from 'utils/store/reducer';
@@ -57,7 +56,6 @@ export default function createReducer(asyncReducers) {
     language: languageProviderReducer,
     persistedData: persistedDataReducer,
     resources: resourcesReducer,
-    profile: usersEditPageReducer,
     searchWidget: searchWidgetReducer,
     ...asyncReducers,
   });

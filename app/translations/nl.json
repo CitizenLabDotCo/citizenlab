@@ -547,6 +547,7 @@
   "app.containers.UsersEditPage.bio": "Bio",
   "app.containers.UsersEditPage.bio_placeholder": "Laat de andere bezoekers van het platform iets meer weten over uzelf. Beschrijf uzelf in enkele zinnen of je kunt ook sleutelwoorden gebruiken. ",
   "app.containers.UsersEditPage.birthdate": "Geboortejaar",
+  "app.containers.UsersEditPage.buttonErrorLabel": "",
   "app.containers.UsersEditPage.domicile": "Woonplaats",
   "app.containers.UsersEditPage.domicile_placeholder": "Woonplaats",
   "app.containers.UsersEditPage.education": "Hoogste diploma",
