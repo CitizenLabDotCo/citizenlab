@@ -7,12 +7,11 @@ import Icon from 'components/UI/Icon';
 
 // services
 import { authUserStream } from 'services/auth';
-import { ideaByIdStream, IIdea } from 'services/ideas';
-import { userByIdStream, IUser } from 'services/users';
-import { voteStream, votesStream, addVote, deleteVote, IIdeaVote, IIdeaVoteData } from 'services/ideaVotes';
+import { ideaByIdStream } from 'services/ideas';
+import { IUser } from 'services/users';
+import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
 
 // style
-import { darken } from 'polished';
 import styled, { css, keyframes } from 'styled-components';
 import { media } from 'utils/styleUtils';
 
@@ -202,9 +201,9 @@ export default class VoteControl extends React.PureComponent<Props, State> {
     const idea$ = Rx.Observable.combineLatest(
       ideaByIdStream(ideaId).observable,
       this.voting$
-    ).filter(([idea, voting]) => {
+    ).filter(([_idea, voting]) => {
       return voting === null;
-    }).map(([idea, voting]) => {
+    }).map(([idea, _voting]) => {
       return idea;
     });
 
@@ -218,9 +217,9 @@ export default class VoteControl extends React.PureComponent<Props, State> {
         return Rx.Observable.combineLatest(
           voteStream(voteId).observable,
           this.voting$
-        ).filter(([vote, voting]) => {
+        ).filter(([_vote, voting]) => {
           return voting === null;
-        }).map(([vote, voting]) => {
+        }).map(([vote, _voting]) => {
           return vote;
         });
       }
@@ -354,7 +353,7 @@ export default class VoteControl extends React.PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
     const { size } = this.props;
-    const { upvotesCount, downvotesCount, myVoteMode, voting, votingAnimation } = this.state;
+    const { upvotesCount, downvotesCount, myVoteMode, votingAnimation } = this.state;
 
     return (
       <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode}`}>

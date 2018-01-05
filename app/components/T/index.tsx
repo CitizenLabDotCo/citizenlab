@@ -1,12 +1,11 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import { Multiloc, Locale } from 'typings';
 
 // services
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream } from 'services/tenant';
 import { Map } from 'immutable';
 
 type Props = {

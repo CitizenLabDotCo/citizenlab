@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { injectTFunc } from 'components/T/utils';
 import { IPhaseData } from 'services/phases';
 import { flow } from 'lodash';
 

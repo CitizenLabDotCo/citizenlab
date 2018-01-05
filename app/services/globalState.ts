@@ -6,7 +6,6 @@ import shallowCompare from 'utils/shallowCompare';
 
 // typings
 import { IOption, ImageFile } from 'typings';
-import { EditorState } from 'draft-js';
 import { setTimeout } from 'timers';
 
 export interface IIdeasNewPageGlobalState {

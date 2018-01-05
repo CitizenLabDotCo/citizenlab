@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
@@ -107,7 +106,7 @@ export function ideaBySlugStream(ideaSlug: string) {
   return streams.get<IIdea>({ apiEndpoint: `${API_PATH}/ideas/by_slug/${ideaSlug}` });
 }
 
-export function ideasStream(streamParams: IStreamParams<IIdeas> | null = null) {
+export function ideasStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeas>({ apiEndpoint: `${API_PATH}/ideas`, ...streamParams });
 }
 

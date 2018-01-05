@@ -30,6 +30,6 @@ export interface IArea {
   data: IAreaData;
 }
 
-export function areasStream(streamParams: IStreamParams<IAreas> | null = null) {
+export function areasStream(streamParams: IStreamParams | null = null) {
   return streams.get<IAreas>({ apiEndpoint, ...streamParams });
 }

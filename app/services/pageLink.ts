@@ -1,7 +1,6 @@
-import { IRelationship, Multiloc } from 'typings';
+import { Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
-import request from 'utils/request';
+import streams from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/page_links`;
 
