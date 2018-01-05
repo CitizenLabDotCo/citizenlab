@@ -119,7 +119,6 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
 
   render() {
     const { groups, locale, tenantLocales, loading } = this.state;
-    const animationTimeout = 400;
 
     if (loading) {
       return (

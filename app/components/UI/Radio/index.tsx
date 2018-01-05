@@ -65,7 +65,7 @@ interface Props {
 
 export default class Radio extends React.PureComponent<Props> {
 
-  handleChange = (event): void => {
+  handleChange = (): void => {
     this.props.onChange(this.props.value);
   }
 

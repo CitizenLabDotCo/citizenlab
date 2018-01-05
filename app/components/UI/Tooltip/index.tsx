@@ -3,7 +3,6 @@ import * as React from 'react';
 
 // Components
 import clickOutside from 'utils/containers/clickOutside';
-import Transition from 'react-transition-group/Transition';
 
 // Animation
 import TransitionGroup from 'react-transition-group/TransitionGroup';
@@ -11,7 +10,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // Styling
 import styled from 'styled-components';
-import { color, fontSize } from 'utils/styleUtils';
+import { color } from 'utils/styleUtils';
 
 const enterTimeout = 200;
 const exitTimeout = 200;
@@ -154,8 +153,8 @@ export default class Tooltip extends React.PureComponent<Props, State> {
             timeout={timeout}
             exit={true}
           >
-            <Container 
-              onClickOutside={this.handleClickOutside} 
+            <Container
+              onClickOutside={this.handleClickOutside}
               className={`e2e-tooltip tooltip ${className} ${status} ${theme} position-${position}`}
             >
               {children}
