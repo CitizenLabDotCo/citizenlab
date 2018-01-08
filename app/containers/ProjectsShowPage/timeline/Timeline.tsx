@@ -52,9 +52,10 @@ const HeaderSection = styled.div`
   justify-content: flex-start;
 `;
 
-const PhaseNumberWrapper = styled.div`  
-  width: 30px;
-  height: 30px;
+const PhaseNumberWrapper = styled.div`
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -286,7 +287,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
   }
 
   handleOnAddIdeaClick = () => {
-    console.log('zolg');
+    // empty
   }
 
   render() {

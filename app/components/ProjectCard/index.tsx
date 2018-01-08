@@ -157,7 +157,7 @@ const ReadMoreWrapper = styled.div`
   `}
 `;
 
-const ReadMore = styled(Link)`
+const ReadMore = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: 15px;
   font-weight: 400;
@@ -282,7 +282,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
               {preview}
             </ProjectDescription>
             <ReadMoreWrapper>
-              <ReadMore to={`/projects/${project.data.attributes.slug}`}>
+              <ReadMore onClick={this.goToProject}>
                 <FormattedMessage {...messages.readMore} />
               </ReadMore>
             </ReadMoreWrapper>
@@ -290,7 +290,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
 
           <ProjectButtonWrapper>
             <ProjectButton
-              linkTo={`/projects/${project.data.attributes.slug}`}
+              onClick={this.goToProject}
               text={<FormattedMessage {...messages.openProjectButton} />}
               style="primary-outlined"
               size="2"
