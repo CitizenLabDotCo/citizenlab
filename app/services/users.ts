@@ -5,8 +5,6 @@ import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { API, Multiloc, Locale } from 'typings';
 
-import { Multiloc } from 'typings';
-
 const apiEndpoint = `${API_PATH}/users`;
 
 export interface IUserData {
