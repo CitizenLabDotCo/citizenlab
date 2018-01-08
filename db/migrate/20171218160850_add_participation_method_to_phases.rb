@@ -1,4 +1,4 @@
-class AddConsultationMethodToPhases < ActiveRecord::Migration[5.1]
+class AddParticipationMethodToPhases < ActiveRecord::Migration[5.1]
   def change
   	add_column :phases, :participation_method, :string, null: false
 
