@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
 

@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { flow, find, pull } from 'lodash';
 
 import { InjectedResourceLoaderProps, injectResource } from 'utils/resourceLoaders/resourceLoader';
 import { projectByIdStream, IProjectData } from 'services/projects';
 
-import { Label, Icon } from 'semantic-ui-react';
+import { Label } from 'semantic-ui-react';
 import T from 'components/T';
 
 type Props = {

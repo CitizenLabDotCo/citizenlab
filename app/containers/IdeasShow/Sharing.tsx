@@ -1,9 +1,8 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import { FacebookButton, FacebookCount, TwitterButton, TwitterCount } from 'react-social';
+import { FacebookButton, TwitterButton } from 'react-social';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -16,18 +15,16 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // analytics
-import { injectTracks, trackPage } from 'utils/analytics';
+import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { lighten, darken } from 'polished';
+import { lighten } from 'polished';
 
 const facebookColor = '#3b5998';
-const facebookBgColor = '#ebeef4';
 
 const twitterColor = '#1ea4f2';
-const twitterBgColor = '#e8f6fe';
 
 const IconWrapper = styled.div`
   width: 30px;

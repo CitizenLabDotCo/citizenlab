@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 import { IntlProvider } from 'react-intl';
@@ -7,7 +6,7 @@ import { IntlProvider } from 'react-intl';
 // services
 import { localeStream } from 'services/locale';
 
-import { Locale, Message } from 'typings';
+import { Locale } from 'typings';
 
 type Props = {
   messages: { [key: string]: any };

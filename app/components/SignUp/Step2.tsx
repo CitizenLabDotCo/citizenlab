@@ -7,7 +7,6 @@ import { browserHistory } from 'react-router';
 
 // components
 import Label from 'components/UI/Label';
-import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Select from 'components/UI/Select';

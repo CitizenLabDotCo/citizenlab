@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import request from 'utils/request';
-import { ideasStream, ideaByIdStream } from 'services/ideas';
+import { ideaByIdStream } from 'services/ideas';
 import { API } from 'typings';
 
 export interface IIdeaImageData {
@@ -28,7 +27,7 @@ export function ideaImageStream(ideaId: string, imageId: string) {
   return streams.get<IIdeaImage>({ apiEndpoint });
 }
 
-export function ideaImagesStream(ideaId: string, streamParams: IStreamParams<IIdeaImages> | null = null) {
+export function ideaImagesStream(ideaId: string, streamParams: IStreamParams | null = null) {
   const apiEndpoint = `${API_PATH}/ideas/${ideaId}/images`;
   return streams.get<IIdeaImages>({ apiEndpoint, ...streamParams });
 }

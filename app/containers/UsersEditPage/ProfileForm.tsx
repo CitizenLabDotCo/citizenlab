@@ -1,6 +1,5 @@
 // Libraries
 import * as React from 'react';
-import { omitBy, transform } from 'lodash';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 
@@ -34,7 +33,7 @@ import localize, { injectedLocalized } from 'utils/localize';
 
 // Style
 import styled from 'styled-components';
-import { color, fontSize, media } from 'utils/styleUtils';
+import { color } from 'utils/styleUtils';
 
 const StyledContentContainer = styled(ContentContainer)`
   background: ${color('background')};
@@ -169,7 +168,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
   }
 
   handleAvatarOnAdd = (newAvatar: ImageFile) => {
-    this.setState((state: State) => ({
+    this.setState(() => ({
       avatar: [newAvatar],
     }));
 
@@ -184,8 +183,8 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
     this.props.setFieldTouched('avatar');
   }
 
-  handleAvatarOnRemove = async (removedAvatar: ImageFile) => {
-    this.setState((state: State) => ({ avatar: null }));
+  handleAvatarOnRemove = async () => {
+    this.setState(() => ({ avatar: null }));
     this.props.setFieldValue('avatar', null);
     this.props.setFieldTouched('avatar');
   }
@@ -193,7 +192,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
   handleContextRef = contextRef => this.setState({ contextRef });
 
   render() {
-    const { user, intl: { formatMessage }, values, touched, errors, isSubmitting, handleChange, handleBlur, isValid, dirty } = this.props;
+    const { intl: { formatMessage }, values, errors, isSubmitting, isValid, dirty } = this.props;
     const { contextRef } = this.state;
 
     return (

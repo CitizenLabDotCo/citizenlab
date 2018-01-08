@@ -1,12 +1,10 @@
 import * as React from 'react';
-import * as Rx from 'rxjs';
-import { keys, isEmpty, filter, flow, size } from 'lodash';
+import { keys, isEmpty, flow, size } from 'lodash';
 import styled from 'styled-components';
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
 
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { updateIdea, deleteIdea } from 'services/ideas';
 import { topicsStream, ITopicData } from 'services/topics';
 import { ideaStatusesStream, IIdeaStatusData } from 'services/ideaStatuses';
 import { projectsStream, IProjectData } from 'services/projects';
@@ -21,11 +19,10 @@ import { DragDropContext } from 'react-dnd';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // Components
-import Button from 'components/UI/Button';
 import FilterSidebar from './components/FilterSidebar';
 import InfoSidebar from './components/InfoSidebar';
 import IdeaTable from './components/IdeaTable';
-import { Input, Menu, Dropdown, Grid, Search, Sticky, Checkbox, Message } from 'semantic-ui-react';
+import { Input, Sticky, Message } from 'semantic-ui-react';
 
 import messages from './messages';
 

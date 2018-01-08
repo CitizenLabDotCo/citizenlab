@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import * as Rx from 'rxjs/Rx';
 import PropTypes from 'prop-types';
 
 // components

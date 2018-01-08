@@ -26,6 +26,6 @@ export function topicByIdStream(topicId: string) {
   return streams.get<ITopic>({ apiEndpoint: `${apiEndpoint}/${topicId}` });
 }
 
-export function topicsStream(streamParams: IStreamParams<ITopics> | null = null) {
+export function topicsStream(streamParams: IStreamParams | null = null) {
   return streams.get<ITopics>({ apiEndpoint, ...streamParams });
 }

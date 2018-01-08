@@ -1,6 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import request from 'utils/request';
 import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/events`;
@@ -44,11 +43,11 @@ export interface IUpdatedEventProperties {
   end_at?: string;
 }
 
-export function eventsStream(projectId: string, streamParams: IStreamParams<IEvents> | null = null) {
+export function eventsStream(projectId: string, streamParams: IStreamParams | null = null) {
   return streams.get<IEvents>({ apiEndpoint: `${API_PATH}/projects/${projectId}/events`, ...streamParams });
 }
 
-export function eventStream(eventId: string, streamParams: IStreamParams<IEvent> | null = null) {
+export function eventStream(eventId: string, streamParams: IStreamParams | null = null) {
   return streams.get<IEvent>({ apiEndpoint: `${apiEndpoint}/${eventId}`, ...streamParams });
 }
 

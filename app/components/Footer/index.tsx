@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -238,7 +237,7 @@ class Footer extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleLanguageChange (event, { value }) {
+  handleLanguageChange (_event, { value }) {
     updateLocale(value);
   }
 

@@ -13,12 +13,12 @@ import Footer from 'components/Footer';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream } from 'services/tenant';
 import { ideaByIdStream, updateIdea } from 'services/ideas';
-import { ideaImageStream, addIdeaImage, deleteIdeaImage, IIdeaImage } from 'services/ideaImages';
+import { ideaImageStream, addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
 import { projectByIdStream, IProject } from 'services/projects';
-import { topicByIdStream, ITopic, ITopics } from 'services/topics';
-import { userByIdStream, IUser } from 'services/users';
+import { topicByIdStream, ITopic } from 'services/topics';
+import { IUser } from 'services/users';
 import { authUserStream } from 'services/auth';
 import { hasPermission } from 'services/permissions';
 
@@ -214,7 +214,7 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId } = this.props.params;
     const { locale, titleMultiloc, descriptionMultiloc, ideaSlug, imageId } = this.state;
-    const { title, description, selectedTopics, selectedProject, location, imageFile } = ideaFormOutput;
+    const { title, description, selectedTopics, selectedProject, location } = ideaFormOutput;
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = (selectedProject ? selectedProject.value as string : null);
     const locationGeoJSON = (_.isString(location) && !_.isEmpty(location) ? await convertToGeoJson(location) : null);

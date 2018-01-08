@@ -1,8 +1,4 @@
 import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-
-// services
-import { currentTenantStream, ITenant } from 'services/tenant';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -21,11 +17,6 @@ const Container = styled.div`
 
 const LogoContainer = styled.div`
   height: 55px;
-`;
-
-const Logo = styled.img`
-  width: auto;
-  height: 100%;
 `;
 
 const Slogan = styled.div`

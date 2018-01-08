@@ -60,7 +60,7 @@ export default class Title extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { title, onClick, deployed, baseID } = this.props;
+    const { title, deployed, baseID } = this.props;
 
     return (
       <Container

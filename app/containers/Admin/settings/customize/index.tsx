@@ -4,12 +4,9 @@ import * as _ from 'lodash';
 
 // components
 import Label from 'components/UI/Label';
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Toggle from 'components/UI/Toggle';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
-import Select from 'components/UI/Select';
 import Input from 'components/UI/Input';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -192,12 +189,12 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   }
 
   handleUploadOnUpdate = (name: 'logo' | 'header_bg') => (updatedImages: ImageFile[]) => {
-    this.setState((state: State) => ({
+    this.setState(() => ({
       [name]: updatedImages
     }));
   }
 
-  handleUploadOnRemove = (name: 'logo' | 'header_bg') => (image: ImageFile) => {
+  handleUploadOnRemove = (name: 'logo' | 'header_bg') => () => {
     this.setState((state: State) => ({
       attributesDiff: {
         ...state.attributesDiff,
@@ -210,7 +207,6 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   handleTitleOnChange = (locale: Locale) => (title: string) => {
     const { formatMessage } = this.props.intl;
     const { attributesDiff } = this.state;
-    const titleError = { ...this.state.titleError, [locale]: null };
     let newAttributesDiff = _.cloneDeep(attributesDiff);
     newAttributesDiff = _.set(newAttributesDiff, `settings.core.header_title.${locale}`, title);
 
@@ -308,7 +304,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   }
 
   render() {
-    const { locale, currentTenant, colorPickerOpened, titleError, subtitleError, errors, saved, attributesDiff } = this.state;
+    const { locale, currentTenant, titleError, subtitleError, errors, saved } = this.state;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;

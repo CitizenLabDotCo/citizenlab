@@ -1,7 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
-import * as Rx from 'rxjs/Rx';
-
 // components
 import HelmetIntl from 'components/HelmetIntl';
 

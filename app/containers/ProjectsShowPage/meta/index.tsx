@@ -4,7 +4,6 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { injectTFunc } from 'components/T/utils';
-import { injectIntl } from 'utils/cl-intl';
 import { selectProject, selectProjectImages } from './selectors';
 import { stripHtml } from 'utils/textUtils';
 

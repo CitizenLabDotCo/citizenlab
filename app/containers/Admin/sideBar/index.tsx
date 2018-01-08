@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
-import * as Rx from 'rxjs/Rx';
 
 // router
 import { browserHistory, Link } from 'react-router';

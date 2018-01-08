@@ -8,12 +8,12 @@ import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { IStream } from 'utils/streams';
 import * as moment from 'moment';
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
+import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 import { browserHistory } from 'react-router';
 import { API } from 'typings';
 
 // Services
-import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
+import { IProjectData } from 'services/projects';
 import { phaseStream, updatePhase, addPhase, IPhase, IPhaseData, IUpdatedPhaseProperties } from 'services/phases';
 
 // Utils
@@ -23,9 +23,7 @@ import { getHtmlStringFromEditorState } from 'utils/editorTools';
 // Components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
-import TextArea from 'components/UI/TextArea';
 import Editor from 'components/UI/Editor';
-import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -170,7 +168,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
     this.setState({ focusedInput });
   }
 
-  isOutsideRange = (day) => {
+  isOutsideRange = () => {
     return false;
   }
 
