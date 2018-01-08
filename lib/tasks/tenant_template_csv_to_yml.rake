@@ -36,8 +36,6 @@ namespace :tenant_template do
   	yml_events         = convert_events(read_csv('Events', args), locale, projects_hash)
   	yml_phases         = convert_phases(read_csv('Phases', args), locale, projects_hash)
   	yml_models         = { 'models' => { 'user'          => yml_users, 
-                                         'topic'         => yml_topics,
-                                         'idea_status'   => yml_idea_statuses,
   								                       'project'       => yml_projects, 
                                          'project_image' => yml_project_images, 
   								                       'idea'          => yml_ideas, 
@@ -47,6 +45,9 @@ namespace :tenant_template do
   		                                   'comment'       => yml_comments, 
   		                                   'event'         => yml_events, 
   		                                   'phase'         => yml_phases } }
+    yml_base['models'].each do |key,val|
+      yml_models['models'][key] = val
+    end
 
   	File.open("#{args[:path]}/tenant_template.yml", 'w') {|f| f.write yml_models.to_yaml }
   end
