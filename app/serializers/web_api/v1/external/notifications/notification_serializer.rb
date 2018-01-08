@@ -19,7 +19,7 @@ class WebApi::V1::External::Notifications::NotificationSerializer < ActiveModel:
   end
 
   class CustomCommentSerializer < ActiveModel::Serializer
-    attributes :id, :body_multiloc, :upvotes_count, :downvotes_count, :url, :created_at
+    attributes :id, :body_multiloc, :upvotes_count, :downvotes_count, :url, :created_at, :author_name
 
     def url
       FrontendService.new.model_to_url object
@@ -27,7 +27,7 @@ class WebApi::V1::External::Notifications::NotificationSerializer < ActiveModel:
   end
 
   class CustomIdeaSerializer < ActiveModel::Serializer
-    attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count, :url, :created_at
+    attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count, :url, :created_at, :author_name
     has_many :topics
 
     def url
