@@ -116,6 +116,7 @@ export default class timeline extends React.PureComponent<Props, State> {
       return (
         <Container className={className}>
           <Timeline projectId={project.data.id} phaseClick={this.handleOnPhaseClick} />
+
           <ContentContainer>
             <Content>
               <SelectedPhase>
