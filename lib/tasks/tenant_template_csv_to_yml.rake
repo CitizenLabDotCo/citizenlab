@@ -35,19 +35,17 @@ namespace :tenant_template do
   	yml_comments       = convert_comments(read_csv('Comments', args), locale, comments_hash, ideas_hash, users_hash)
   	yml_events         = convert_events(read_csv('Events', args), locale, projects_hash)
   	yml_phases         = convert_phases(read_csv('Phases', args), locale, projects_hash)
-  	yml_models         = { 'models' => { 'user'          => yml_users, 
-  								                       'project'       => yml_projects, 
-                                         'project_image' => yml_project_images, 
-  								                       'idea'          => yml_ideas, 
-  								                       'vote'          => yml_votes,
-                                         'ideas_topic'   => yml_ideas_topics,
-                                         'idea_image'    => yml_idea_images,
-  		                                   'comment'       => yml_comments, 
-  		                                   'event'         => yml_events, 
-  		                                   'phase'         => yml_phases } }
-    yml_base['models'].each do |key,val|
-      yml_models['models'][key] = val
-    end
+    yml_models         = { 'models' => yml_base['models'] }
+    yml_models['models']['user']          = yml_users
+    yml_models['models']['project']       = yml_projects
+    yml_models['models']['project_image'] = yml_project_images
+    yml_models['models']['idea']          = yml_ideas
+    yml_models['models']['vote']          = yml_votes
+    yml_models['models']['ideas_topic']   = yml_ideas_topics
+    yml_models['models']['idea_image']    = yml_idea_images
+    yml_models['models']['comment']       = yml_comments
+    yml_models['models']['event']         = yml_events
+    yml_models['models']['phase']         = yml_phases
 
   	File.open("#{args[:path]}/tenant_template.yml", 'w') {|f| f.write yml_models.to_yaml }
   end
