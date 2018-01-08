@@ -74,8 +74,6 @@ export default class Input extends React.PureComponent<Props, State> {
     const { id, type } = this.props;
     const hasError = (!_.isNull(error) && !_.isUndefined(error) && !_.isEmpty(error));
 
-    console.log(error);
-
     value = (value || '');
     placeholder = (placeholder || '');
     error = (error || null);
