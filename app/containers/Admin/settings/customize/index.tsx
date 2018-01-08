@@ -52,12 +52,11 @@ const CharCount = styled.div`
 
 const ToggleWrapper = styled.div`
   width: 100%;
-  max-width: 400px;
+  max-width: 250px;
   display: flex;
   justify-content: space-between;
   padding-top: 15px;
   padding-bottom: 15px;
-  border-bottom: solid 1px #e4e4e4;
 
   &.first {
     border-top: none;
@@ -68,8 +67,10 @@ const ToggleWrapper = styled.div`
   }
 `;
 
-const ToggleLabel = styled(Label)`
-  /* margin-left: 15px; */
+const ToggleLabel = styled.div`
+  color: #333;
+  font-size: 18px;
+  font-weight: 400;
 `;
 
 const TitleInput = styled(SectionField)`

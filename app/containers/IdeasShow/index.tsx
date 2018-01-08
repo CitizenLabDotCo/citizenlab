@@ -60,7 +60,7 @@ const Container = styled.div``;
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 820px;
+  max-width: 840px;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -330,11 +330,15 @@ const IdeaBody = styled.div`
   color: #474747;
   font-size: 18px;
   line-height: 30px;
-  font-weight: 400;
+  font-weight: 300;
 
   p {
     margin-bottom: 25px;
   }
+
+   strong {
+     font-weight: 500;
+   }
 `;
 
 const SeparatorColumn = styled.div`

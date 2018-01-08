@@ -85,7 +85,7 @@ const CommentBody = styled.div`
   color: #333;
   font-size: 18px;
   line-height: 26px;
-  font-weight: 400;
+  font-weight: 300;
   margin-bottom: 5px;
 
   span, p {
