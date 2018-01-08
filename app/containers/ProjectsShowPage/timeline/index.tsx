@@ -12,7 +12,7 @@ import IdeaCards from 'components/IdeaCards';
 // services
 import { localeStream, updateLocale } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { projectBySlugStream, IProject } from 'services/projects'
+import { projectBySlugStream, IProject } from 'services/projects';
 import { phasesStream, IPhases, IPhaseData } from 'services/phases';
 
 // i18n

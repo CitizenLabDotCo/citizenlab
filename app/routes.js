@@ -283,13 +283,13 @@ export default function createRoutes(store) {
             const importModules = Promise.all([
               import('containers/ProjectsShowPage/info'),
             ]);
-    
+
             const renderRoute = loadModule(cb);
-    
+
             importModules.then(([component]) => {
               renderRoute(component);
             });
-    
+
             importModules.catch(errorLoading);
           },
         },
@@ -300,13 +300,13 @@ export default function createRoutes(store) {
             const importModules = Promise.all([
               import('containers/ProjectsShowPage/events'),
             ]);
-    
+
             const renderRoute = loadModule(cb);
-    
+
             importModules.then(([component]) => {
               renderRoute(component);
             });
-    
+
             importModules.catch(errorLoading);
           },
         },

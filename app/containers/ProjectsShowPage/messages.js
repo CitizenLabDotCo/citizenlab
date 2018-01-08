@@ -57,4 +57,8 @@ export default defineMessages({
     id: 'app.containers.Projects.noPhaseSelected',
     defaultMessage: 'No phase selected',
   },
+  phaseNumber: {
+    id: 'app.containers.Projects.phaseNumber',
+    defaultMessage: 'Phase {phaseNumber}',
+  },
 });
