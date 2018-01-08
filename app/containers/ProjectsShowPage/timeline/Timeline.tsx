@@ -8,6 +8,8 @@ import 'moment-timezone';
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import ContentContainer from 'components/ContentContainer';
+import MobileTimeline from './MobileTimeline';
+import { Responsive } from 'semantic-ui-react';
 
 // services
 import { localeStream, updateLocale } from 'services/locale';
@@ -24,6 +26,14 @@ import { getLocalized } from 'utils/i18n';
 import styled, { css } from 'styled-components';
 import { transparentize, lighten, darken } from 'polished';
 import { media } from 'utils/styleUtils';
+
+const MobileTLContainer = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 30px;
+  align-items: center;
+  justify-content: center;
+`;
 
 const Container = styled.div`
   width: 100%;
@@ -64,7 +74,7 @@ const PhaseNumberWrapper = styled.div`
   border: solid 2px #32B67A;
 `;
 
-const PhaseNumber = styled.div`  
+const PhaseNumber = styled.div`
   color: #32B67A;
   font-size: 16px;
   line-height: 16px;
@@ -279,7 +289,10 @@ export default class Timeline extends React.PureComponent<Props, State> {
 
   handlePhaseOnClick = (phaseId: string) => (event: React.FormEvent<MouseEvent>) => {
     event.preventDefault();
+    this.handlePhaseChange(phaseId);
+  }
 
+  handlePhaseChange = (phaseId) => {
     if (phaseId !== this.state.selectedPhaseId) {
       this.props.phaseClick(phaseId);
       this.setState({ selectedPhaseId: phaseId });
@@ -323,41 +336,53 @@ export default class Timeline extends React.PureComponent<Props, State> {
             </HeaderSection>
           </Header>
           <ContentContainer>
-            <Phases>
-              {phases.data.map((phase, index) => {
-                const phaseTitle = getLocalized(phase.attributes.title_multiloc, locale, currentTenantLocales);
-                const isFirst = (index === 0);
-                const isLast = (index === phases.data.length - 1);
-                const startIsoDate = phase.attributes.start_at;
-                const endIsoDate = phase.attributes.end_at;
-                const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
-                const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
-                const isCurrentPhase = (phase.id === currentPhaseId);
-                const isSelectedPhase = (phase.id === selectedPhaseId);
-                const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
 
-                return (
-                  <PhaseContainer key={index} numberOfDays={numberOfDays}>
-                    <PhaseBar
-                      first={isFirst}
-                      last={isLast}
-                      current={isCurrentPhase}
-                      selected={isSelectedPhase}
-                      onClick={this.handlePhaseOnClick(phase.id)}
-                    >
-                      {index + 1}
-                      {!isLast && <PhaseArrow name="phase_arrow" />}
-                    </PhaseBar>
-                    <PhaseText
-                      current={isCurrentPhase}
-                      selected={isSelectedPhase}
-                    >
-                      {phaseTitle}
-                    </PhaseText>
-                  </PhaseContainer>
-                );
-              })}
-            </Phases>
+            <Responsive maxWidth={481} as={MobileTLContainer} >
+              <MobileTimeline
+                phases={phases.data}
+                currentPhase={currentPhaseId}
+                selectedPhase={selectedPhaseId}
+                onPhaseSelection={this.handlePhaseChange}
+              />
+            </Responsive>
+
+            <Responsive minWidth={481}>
+              <Phases>
+                {phases.data.map((phase, index) => {
+                  const phaseTitle = getLocalized(phase.attributes.title_multiloc, locale, currentTenantLocales);
+                  const isFirst = (index === 0);
+                  const isLast = (index === phases.data.length - 1);
+                  const startIsoDate = phase.attributes.start_at;
+                  const endIsoDate = phase.attributes.end_at;
+                  const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
+                  const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
+                  const isCurrentPhase = (phase.id === currentPhaseId);
+                  const isSelectedPhase = (phase.id === selectedPhaseId);
+                  const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
+
+                  return (
+                    <PhaseContainer key={index} numberOfDays={numberOfDays}>
+                      <PhaseBar
+                        first={isFirst}
+                        last={isLast}
+                        current={isCurrentPhase}
+                        selected={isSelectedPhase}
+                        onClick={this.handlePhaseOnClick(phase.id)}
+                      >
+                        {index + 1}
+                        {!isLast && <PhaseArrow name="phase_arrow" />}
+                      </PhaseBar>
+                      <PhaseText
+                        current={isCurrentPhase}
+                        selected={isSelectedPhase}
+                      >
+                        {phaseTitle}
+                      </PhaseText>
+                    </PhaseContainer>
+                  );
+                })}
+              </Phases>
+            </Responsive>
           </ContentContainer>
         </Container>
       );
