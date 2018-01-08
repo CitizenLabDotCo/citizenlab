@@ -25,7 +25,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled(Link)`
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -157,8 +157,8 @@ const ReadMoreWrapper = styled.div`
   `}
 `;
 
-const ReadMore = styled.div`
-  color: #84939E;
+const ReadMore = styled(Link)`
+  color: ${(props) => props.theme.colors.label};
   font-size: 15px;
   font-weight: 400;
   text-decoration: underline;
@@ -265,7 +265,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
       const imageUrl = (projectImage ? projectImage.data.attributes.versions.medium : null);
 
       return (
-        <Container onClick={this.goToProject}>
+        <Container to={`/projects/${project.data.attributes.slug}`}>
           {imageUrl && <ProjectImage imageSrc={imageUrl} />}
 
           {!imageUrl &&
@@ -282,7 +282,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
               {preview}
             </ProjectDescription>
             <ReadMoreWrapper>
-              <ReadMore onClick={this.goToProject}>
+              <ReadMore to={`/projects/${project.data.attributes.slug}`}>
                 <FormattedMessage {...messages.readMore} />
               </ReadMore>
             </ReadMoreWrapper>
@@ -290,7 +290,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
 
           <ProjectButtonWrapper>
             <ProjectButton
-              onClick={this.goToProject}
+              linkTo={`/projects/${project.data.attributes.slug}`}
               text={<FormattedMessage {...messages.openProjectButton} />}
               style="primary-outlined"
               size="2"

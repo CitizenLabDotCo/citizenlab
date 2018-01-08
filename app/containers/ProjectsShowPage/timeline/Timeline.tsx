@@ -6,6 +6,7 @@ import 'moment-timezone';
 
 // components
 import Icon from 'components/UI/Icon';
+import Button from 'components/UI/Button';
 import ContentContainer from 'components/ContentContainer';
 import MobileTimeline from './MobileTimeline';
 import { Responsive } from 'semantic-ui-react';
@@ -26,20 +27,66 @@ import styled, { css } from 'styled-components';
 import { transparentize, lighten, darken } from 'polished';
 import { media } from 'utils/styleUtils';
 
-const Container = styled.div`
-  background: #f8f8f8;
-  height: 150px;
-  position: relative;
-  width: 100%;
-  z-index: 5;
-`;
-
 const MobileTLContainer = styled.div`
   width: 100%;
   display: flex;
   padding: 30px;
   align-items: center;
   justify-content: center;
+`;
+
+const Container = styled.div`
+  width: 100%;
+  max-width: 1080px;
+  height: 250px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+  border-radius: 5px;
+  border: solid #eaeaea 1px;
+  overflow: hidden;
+`;
+
+const Header = styled.div`
+  width: 100%;
+  background: #fafafa;
+  border-bottom: solid 1px #eaeaea;
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const HeaderSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const PhaseNumberWrapper = styled.div`
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  border-radius: 50%;
+  border: solid 2px #32B67A;
+`;
+
+const PhaseNumber = styled.div`
+  color: #32B67A;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+`;
+
+const HeaderTitle = styled.div`
+  color: #222;
+  font-size: 21px;
+  line-height: 25px;
+  font-weight: 400;
 `;
 
 const Phases = styled.div`
@@ -90,10 +137,10 @@ const PhaseBar: any = styled.div`
   `}
 
   ${(props: any) => props.current && css`
-    background: ${(props) => props.theme.colors.success};
+    background: #98dabc;
 
     &:hover {
-      background: ${(props) => darken(0.15, props.theme.colors.success)};
+      background: #32B67A;
     }
   `}
 
@@ -102,7 +149,7 @@ const PhaseBar: any = styled.div`
   `}
 
   ${(props: any) => props.selected && props.current && css`
-    background: ${(props) => darken(0.15, props.theme.colors.success)};
+    background: #32B67A;
   `}
 `;
 
@@ -147,7 +194,7 @@ const PhaseText: any = styled.div`
   height: 54px;
 
   ${(props: any) => props.current && css`
-    color: ${(props) => props.theme.colors.success};
+    color: #98dabc;
   `}
 
   ${(props: any) => props.selected && css`
@@ -156,7 +203,7 @@ const PhaseText: any = styled.div`
   `}
 
   ${(props: any) => props.selected && props.current && css`
-    color: ${(props) => darken(0.15, props.theme.colors.success)};
+    color: #32B67A;
   `}
 `;
 
@@ -251,6 +298,10 @@ export default class Timeline extends React.PureComponent<Props, State> {
     }
   }
 
+  handleOnAddIdeaClick = () => {
+    console.log('zolg');
+  }
+
   render() {
     const className = this.props['className'];
     const { locale, currentTenant, phases, currentPhaseId, selectedPhaseId } = this.state;
@@ -262,6 +313,27 @@ export default class Timeline extends React.PureComponent<Props, State> {
 
       return (
         <Container className={className}>
+          <Header>
+            <HeaderSection>
+              <PhaseNumberWrapper>
+                <PhaseNumber>3</PhaseNumber>
+              </PhaseNumberWrapper>
+
+              <HeaderTitle>
+                Kies uit 20 acties
+              </HeaderTitle>
+            </HeaderSection>
+
+            <HeaderSection>
+              <Button
+                onClick={this.handleOnAddIdeaClick}
+                style="primary"
+                size="2"
+                text={<FormattedMessage {...messages.startAnIdea} />}
+                circularCorners={false}
+              />
+            </HeaderSection>
+          </Header>
           <ContentContainer>
 
             <Responsive maxWidth={481} as={MobileTLContainer} >
