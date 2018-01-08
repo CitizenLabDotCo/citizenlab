@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -11,7 +10,6 @@ import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // utils
-import { IStream } from 'utils/streams';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
@@ -157,7 +155,7 @@ class NewIdeaForm extends React.PureComponent<Props, State> {
           <FormattedMessage {...messages.formTitle} />
         </Title>
 
-        <IdeaForm 
+        <IdeaForm
           title={title}
           description={description}
           selectedTopics={selectedTopics}

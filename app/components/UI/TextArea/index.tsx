@@ -1,13 +1,12 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import * as Rx from 'rxjs/Rx';
 
 // components
 import Error from 'components/UI/Error';
 import TextareaAutosize from 'react-autosize-textarea';
 
 // style
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { color } from 'utils/styleUtils';
 
 const Container: any = styled.div`

@@ -7,24 +7,22 @@ import linkifyHtml from 'linkifyjs/html';
 // components
 import ChildComment from './ChildComment';
 import Author from './Author';
-import Button from 'components/UI/Button';
 import ChildCommentForm from './ChildCommentForm';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
-import MoreActionsMenu, { IAction, Props as MoreActionsMenuProps } from 'components/UI/MoreActionsMenu';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
 // services
 import { authUserStream } from 'services/auth';
-import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
+import { commentsForIdeaStream, commentStream, IComment } from 'services/comments';
 import { IUser } from 'services/users';
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream } from 'services/tenant';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
 import messages from './messages';
 
 // analytics
@@ -38,7 +36,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled, { css } from 'styled-components';
 import { transparentize, darken } from 'polished';
-import { color } from 'utils/styleUtils';
 import { Locale } from 'typings';
 
 const timeout = 550;
@@ -237,7 +234,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   render() {
     let returnValue: JSX.Element | null = null;
     const { commentId, animate } = this.props;
-    const { locale, currentTenantLocales, authUser, comment, childCommentIds, showForm } = this.state;
+    const { locale, currentTenantLocales, authUser, comment, childCommentIds } = this.state;
 
     if (locale && currentTenantLocales && comment) {
       const ideaId = comment.data.relationships.idea.data.id;

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
 
 const previousIcon = require('../previousIcon.svg');
 const nextIcon = require('../nextIcon.svg');

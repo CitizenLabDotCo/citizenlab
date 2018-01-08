@@ -2,13 +2,11 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { usersByBirthyearStream } from 'services/stats';
 import messages from '../messages';
-
-
 
 type State = {
   serie: {name: string | number, value: number, code: string}[] | null;

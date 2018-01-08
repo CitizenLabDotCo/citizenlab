@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -13,7 +12,7 @@ import { localeStream } from 'services/locale';
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { Locale } from 'typings';
 
 type Props = {};

@@ -1,10 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Icon, Popup } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import styled from 'styled-components';
-const tooltipIcon = require('./icons/tooltip-icon.svg') as string;
 import { color, fontSize } from 'utils/styleUtils';
 
 const LabelStyled = styled.label`

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import { IStreamParams, IStream } from 'utils/streams';
+import { IStreamParams } from 'utils/streams';
 
 
 interface State<IResourceData> {
@@ -23,20 +23,12 @@ export interface InjectedResourcesLoaderProps<IResourceData> {
   };
 }
 
-interface TStreamFn<IResources> {
-  (streamParams: IStreamParams<IResources> | null): IStream<IResources>;
+interface TStreamFn {
+  (streamParams: IStreamParams);
 }
 
-interface IIResources<IResourceData> {
-  data: IResourceData[];
-  links?: {
-    self?: number;
-    last?: number;
-  };
-}
-
-export const injectResources = <IResourceData, IResources extends IIResources<IResourceData>>(propName: string, streamFn: TStreamFn<IResources>) =>
-  <TOriginalProps extends {}>(WrappedComponent: React.ComponentClass<TOriginalProps & InjectedResourcesLoaderProps<IResourceData>>) => {
+export const injectResources = function <IResourceData>(propName: string, streamFn: TStreamFn) {
+  return <TOriginalProps extends {}>(WrappedComponent: React.ComponentClass<TOriginalProps & InjectedResourcesLoaderProps<IResourceData>>) => {
     return class ResourceManager extends React.Component<TOriginalProps, State<IResourceData>> {
 
       subscriptions: Rx.Subscription[] = [];
@@ -102,5 +94,6 @@ export const injectResources = <IResourceData, IResources extends IIResources<IR
         );
       }
     };
+  };
 };
 

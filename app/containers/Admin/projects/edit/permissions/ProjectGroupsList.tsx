@@ -11,7 +11,6 @@ import messages from './messages';
 
 // Components
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
 import Warning from 'components/UI/Warning';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import GroupAvatar from 'containers/Admin/groups/all/GroupAvatar';
@@ -19,33 +18,15 @@ import { List, Row } from 'components/admin/ResourceList';
 
 // Services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { projectByIdStream, IProject } from 'services/projects';
+import { currentTenantStream } from 'services/tenant';
 import { listGroups, IGroups, IGroupData } from 'services/groups';
 import { addGroupProject, deleteGroupProject, groupsProjectsByProjectIdStream, IGroupsProjects } from 'services/groupsProjects';
 
 // Style
 import styled from 'styled-components';
-import { transparentize } from 'polished';
-import { color } from 'utils/styleUtils';
 
 // Typings
 import { IOption, Locale } from 'typings';
-
-const EmptyStateMessage = styled.p`
-  color: ${color('clBlue')};
-  font-size: 1.15rem;
-  display: flex;
-  align-items: center;
-  padding: 1.5rem;
-  border-radius: 5px;
-  background: ${props => transparentize(0.93, props.theme.colors.clBlue)};
-`;
-
-const StyledIcon = styled(Icon)`
-  height: 20px;
-  margin-right: 2rem;
-`;
 
 const Container = styled.div`
   width: 100%;
@@ -117,7 +98,6 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     const { projectId } = this.props;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
-    const project$ = projectByIdStream(projectId).observable;
     const groups$ = listGroups().observable;
     const groupsProjects$ = groupsProjectsByProjectIdStream(projectId).observable;
 
@@ -204,7 +184,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { locale, currentTenantLocales, groupsOptions, projectGroups, selectedGroups, loading } = this.state;
+    const { groupsOptions, projectGroups, selectedGroups, loading } = this.state;
     const groupsMultipleSelectPlaceholder = formatMessage(messages.groupsMultipleSelectPlaceholder);
 
     const noGroups = ((!loading && (!projectGroups || projectGroups.length === 0)) ? (

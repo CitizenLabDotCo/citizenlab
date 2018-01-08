@@ -6,7 +6,6 @@ import * as Rx from 'rxjs/Rx';
 import SelectTopics from './SelectTopics';
 import SelectSort from './SelectSort';
 import SearchInput from 'components/UI/SearchInput';
-import HelmetIntl from 'components/HelmetIntl';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import Footer from 'components/Footer';

@@ -16,17 +16,11 @@ import Footer from './Footer';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
 // i18n
-import { getLocalized } from 'utils/i18n';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { injectIntl } from 'utils/cl-intl';
 
 // style
-import { darken } from 'polished';
 import styled from 'styled-components';
-
-// typings
-import { API } from 'typings';
 
 const Container = styled.div`
   width: 100%;

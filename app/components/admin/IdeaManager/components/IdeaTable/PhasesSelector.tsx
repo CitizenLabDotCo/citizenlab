@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { flow, find, xor } from 'lodash';
+import { xor } from 'lodash';
 
 import { IPhaseData } from 'services/phases';
 import { Label, Popup } from 'semantic-ui-react';
@@ -24,7 +24,7 @@ class PhasesSelector extends React.PureComponent<Props> {
   }
 
   render() {
-    const { phases, selectedPhases } = this.props;
+    const { phases } = this.props;
     return(
       <div>
         {phases.map((phase, index) => (

@@ -1,8 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStream, IStreamParams } from 'utils/streams';
-import request from 'utils/request';
-import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
+import streams, { IStreamParams } from 'utils/streams';
 import { API, Multiloc, Locale } from 'typings';
 
 const apiEndpoint = `${API_PATH}/users`;
@@ -61,7 +58,7 @@ export interface IUserUpdate {
   bio_multiloc?: Multiloc;
 }
 
-export function usersStream(streamParams: IStreamParams<IUsers> | null = null) {
+export function usersStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsers>({ apiEndpoint, ...streamParams });
 }
 

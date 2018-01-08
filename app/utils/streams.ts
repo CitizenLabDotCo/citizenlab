@@ -2,41 +2,39 @@ import { Observable } from 'rxjs/Observable';
 import 'whatwg-fetch';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
-import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
-import { v4 as uuid } from 'uuid';
 import { store } from 'app';
 import { authApiEndpoint } from 'services/auth';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 
 export type pureFn<T> = (arg: T) => T;
-type fetchFn<T> = () => Promise<{}>;
+type fetchFn = () => Promise<{}>;
 interface IObject{ [key: string]: any; }
 export type IObserver<T> = Rx.Observer<T | pureFn<T> | null>;
 export type IObservable<T> = Rx.Observable<T>;
-export interface IStreamParams<T> {
+export interface IStreamParams {
   bodyData?: IObject | null;
   queryParameters?: IObject | null;
   cacheStream?: boolean;
 }
-interface IInputStreamParams<T> extends IStreamParams<T> {
+interface IInputStreamParams extends IStreamParams {
   apiEndpoint: string;
 }
-interface IExtendedStreamParams<T> {
+interface IExtendedStreamParams {
   apiEndpoint: string;
   cacheStream?: boolean;
   bodyData: IObject | null;
   queryParameters: IObject | null;
 }
 export interface IStream<T> {
-  params: IExtendedStreamParams<T>;
+  params: IExtendedStreamParams;
   streamId: string;
   isQueryStream: boolean;
   isSearchQuery: boolean;
   isSingleItemStream: boolean;
   cacheStream?: boolean;
   type: 'singleObject' | 'arrayOfObjects' | 'unknown';
-  fetch: fetchFn<T>;
+  fetch: fetchFn;
   observer: IObserver<T>;
   observable: IObservable<T>;
   dataIds: { [key: string]: true };
@@ -221,8 +219,8 @@ class Streams {
     }
   }
 
-  get<T>(inputParams: IInputStreamParams<T>) {
-    const params: IExtendedStreamParams<T> = { bodyData: null, queryParameters: null, ...inputParams };
+  get<T>(inputParams: IInputStreamParams) {
+    const params: IExtendedStreamParams = { bodyData: null, queryParameters: null, ...inputParams };
     const apiEndpoint = this.removeTrailingSlash(params.apiEndpoint);
     const queryParameters = params.queryParameters;
     const isQueryStream = this.isQuery(queryParameters);
@@ -252,7 +250,7 @@ class Streams {
 
               resolve(response);
             },
-            (error) => {
+            () => {
               console.log(`promise for stream ${streamId} did not resolve`);
 
               if (this.streams[streamId]) {

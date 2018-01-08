@@ -1,9 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-
-// libraries
-import * as bowser from 'bowser';
 
 // router
 import { Link, browserHistory } from 'react-router';
@@ -20,23 +16,19 @@ import Footer from 'components/Footer';
 import { authUserStream } from 'services/auth';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { ideaByIdStream, ideasStream, updateIdea, IIdeas } from 'services/ideas';
-import { projectsStream, IProjects } from 'services/projects';
+import { ideaByIdStream, ideasStream, updateIdea } from 'services/ideas';
+import { projectsStream } from 'services/projects';
 
 // i18n
-import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 
 // style
-import styled, { css } from 'styled-components';
-import { lighten, darken } from 'polished';
+import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // typings
-import { IUser } from 'services/users';
-import { setTimeout } from 'timers';
 import { Locale } from 'typings';
 
 const Container: any = styled.div`
@@ -191,12 +183,6 @@ const SectionHeader = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 35px;
-`;
-
-const SectionIcon = styled(Icon)`
-  fill: #333;
-  height: 30px;
-  margin-right: 10px;
 `;
 
 const SectionTitle = styled.h2`
@@ -373,7 +359,6 @@ class LandingPage extends React.PureComponent<Props, State> {
       const headerTitleMultiLoc = currentTenant.data.attributes.settings.core.header_title;
       const headerSloganMultiLoc = currentTenant.data.attributes.settings.core.header_slogan;
       const currentTenantName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
-      const currentTenantLogo = currentTenant.data.attributes.logo.large;
       const currentTenantHeaderTitle = (headerTitleMultiLoc ? getLocalized(headerTitleMultiLoc, locale, currentTenantLocales) : null);
       const currentTenantHeaderSlogan = (headerSloganMultiLoc ? getLocalized(headerSloganMultiLoc, locale, currentTenantLocales) : null);
       const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }}/>);

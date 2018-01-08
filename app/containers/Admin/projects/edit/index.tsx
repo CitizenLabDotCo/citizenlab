@@ -12,7 +12,7 @@ import { browserHistory } from 'react-router';
 
 // Localisation
 import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // style
