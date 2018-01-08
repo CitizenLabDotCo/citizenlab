@@ -44,7 +44,7 @@ resource "Phases" do
       with_options scope: :phase do
         parameter :title_multiloc, "The title of the phase in nultiple locales", required: true
         parameter :description_multiloc, "The description of the phase in multiple languages. Supports basic HTML.", required: false
-        parameter :consultation_method, "The consultation method of the project, either #{Phase::CONSULTATION_METHODS.join(",")}."
+        parameter :participation_method, "The consultation method of the project, either #{Phase::PARTICIPATION_METHODS.join(",")}."
         parameter :start_at, "The start date of the phase", required: true
         parameter :end_at, "The end date of the phase", required: true
       end
@@ -55,7 +55,7 @@ resource "Phases" do
       let(:phase) { build(:phase) }
       let(:title_multiloc) { phase.title_multiloc }
       let(:description_multiloc) { phase.description_multiloc }
-      let(:consultation_method) { phase.consultation_method }
+      let(:participation_method) { phase.participation_method }
       let(:start_at) { phase.start_at }
       let(:end_at) { phase.end_at }
 
@@ -64,7 +64,7 @@ resource "Phases" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data,:attributes,:consultation_method)).to match consultation_method
+        expect(json_response.dig(:data,:attributes,:participation_method)).to match participation_method
         expect(json_response.dig(:data,:attributes,:start_at)).to eq start_at.to_s
         expect(json_response.dig(:data,:attributes,:end_at)).to eq end_at.to_s
         expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
@@ -86,7 +86,7 @@ resource "Phases" do
         parameter :project_id, "The id of the project this phase belongs to"
         parameter :title_multiloc, "The title of the phase in nultiple locales"
         parameter :description_multiloc, "The description of the phase in multiple languages. Supports basic HTML."
-        parameter :consultation_method, "The consultation method of the project, either #{Phase::CONSULTATION_METHODS.join(",")}."
+        parameter :participation_method, "The consultation method of the project, either #{Phase::PARTICIPATION_METHODS.join(",")}."
         parameter :start_at, "The start date of the phase"
         parameter :end_at, "The end date of the phase"
       end
@@ -96,13 +96,13 @@ resource "Phases" do
       let(:phase) { create(:phase, project: @project) }
       let(:id) { phase.id }
       let(:description_multiloc) { build(:phase).description_multiloc }
-      let(:consultation_method) { Phase::CONSULTATION_METHODS.last }
+      let(:participation_method) { Phase::PARTICIPATION_METHODS.last }
 
       example_request "Update a phase" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data,:attributes,:consultation_method)).to match consultation_method
+        expect(json_response.dig(:data,:attributes,:participation_method)).to match participation_method
       end
     end
 

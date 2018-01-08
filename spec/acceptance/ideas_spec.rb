@@ -296,7 +296,7 @@ resource "Ideas" do
       end
 
       describe do
-        let (:active_phases) { create_list(:active_phase, 2, consultation_method: 'ideation') }
+        let (:active_phases) { create_list(:active_phase, 2, participation_method: 'ideation') }
         let (:project) { create(:project, phases: active_phases) }
         let (:phase_ids) { active_phases.map(&:id) }
         example_request "Creating an idea in specific phases" do
@@ -307,7 +307,7 @@ resource "Ideas" do
       end
 
       describe do
-        let (:phases) { create_list(:phase, 5, consultation_method: 'information') }
+        let (:phases) { create_list(:phase, 5, participation_method: 'information') }
         let (:project) { create(:project, phases: phases) }
         example_request "[error] Creating an idea in a project with a timeline but no active ideation phases" do
           expect(response_status).to eq 422

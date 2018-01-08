@@ -263,7 +263,7 @@ if Apartment::Tenant.current == 'localhost'
         },
         start_at: start_at,
         end_at: (start_at += rand(120).days),
-        consultation_method: (rand(2) == 0) ? 'ideation' : 'information'
+        participation_method: (rand(2) == 0) ? 'ideation' : 'information'
       })
     end
     project.phases.create({
@@ -277,7 +277,7 @@ if Apartment::Tenant.current == 'localhost'
       },
       start_at: Time.now-5.days,
       end_at: Time.now+5.days,
-      consultation_method: 'ideation'
+      participation_method: 'ideation'
     })
     rand(5).times do
       start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
