@@ -192,6 +192,17 @@ const icons = {
         <path d="M11 7h2v2h-2z"/>
       </svg>
   ),
+  info2: (className) => (
+    <svg className={className} height="100%" viewBox="0 0 7 12">
+      <path d="M3.5 3C4.301 3 5 2.3 5 1.5S4.301 0 3.5 0C2.701 0 2 .7 2 1.5S2.701 3 3.5 3zM5 9V5c0-.5-.5-1-1-1H0v1s2 0 2 2v2c0 2-2 2-2 2v1h7v-1s-2 0-2-2z"/>
+    </svg>
+  ),
+  calendar: (className) => (
+    <svg className={className} height="100%" viewBox="6.5 -4 11.701 13">
+      <path d="M14.3 1.85h1.3v1.3h-1.3zM11.699 1.85h1.3v1.3h-1.3zM9.1 1.85h1.3v1.3H9.1z"/>
+      <path d="M16.899-2.7h-.65V-4H14.95v1.3h-5.2V-4H8.449v1.3h-.65c-.721 0-1.293.585-1.293 1.3L6.5 7.7A1.3 1.3 0 0 0 7.799 9H16.9c.714 0 1.3-.585 1.3-1.3v-9.1c0-.715-.586-1.3-1.301-1.3zm0 10.4h-9.1V.55H16.9V7.7z"/>
+    </svg>
+  ),
   power: (className) => (
       <svg className={className} height="100%" viewBox="0 0 36 36">
         <path d="M16 0h4v20h-4z"/>

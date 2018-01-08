@@ -7,6 +7,7 @@ import { Link, browserHistory } from 'react-router';
 
 // components
 import Meta from './Meta';
+import Icon from 'components/UI/Icon';
 import EventsPreview from './EventsPreview';
 import ContentContainer from 'components/ContentContainer';
 
@@ -42,15 +43,53 @@ const Header = styled.div`
   padding-left: 30px;
   padding-right: 30px;
   position: relative;
+
+  ${media.smallerThanMinTablet`
+    height: auto;
+    padding-bottom: 120px;
+  `}
+`;
+
+const HeaderContent = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin-top: 75px;
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+  `}
+`;
+
+const HeaderContentLeft = styled.div`
+  flex: 1;
+  margin-right: 15px;
+
+  ${media.biggerThanMinTablet`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  `}
+`;
+
+const HeaderContentRight = styled.div`
+  ${media.biggerThanMinTablet`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `}
+
+  ${media.smallerThanMinTablet`
+    margin-top: 20px;
+  `}
 `;
 
 const HeaderLabel = styled.div`
   color: #fff;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 300;
   text-align: left;
   margin: 0;
-  margin-top: 100px;
   padding: 0;
   z-index: 2;
 `;
@@ -66,29 +105,63 @@ const HeaderTitle = styled.div`
   padding: 0;
   z-index: 2;
 
-  /*
-  ${media.tablet`
-    font-size: 40px;
-    line-height: 48px;
+  ${media.smallerThanMaxTablet`
+    font-size: 36px;
+    line-height: 42px;
   `}
 
-  ${media.phone`
-    font-weight: 600;
-    font-size: 34px;
-    line-height: 38px;
-  `}
-
-  ${media.smallPhone`
+  ${media.smallerThanMinTablet`
     font-weight: 600;
     font-size: 30px;
     line-height: 34px;
   `}
-  */
+`;
+
+const HeaderButtons = styled.div``;
+
+const HeaderButton = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 5px;
+  padding: 14px 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.65);
+  transition: all 80ms ease-out;
+
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.9);
+  }
+`;
+
+const HeaderButtonIconWrapper = styled.div`
+  width: 20px;
+  height: 15px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const HeaderButtonIcon = styled(Icon)`
+  fill: #fff;
+`;
+
+const HeaderButtonText = styled.div`
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+  text-decoration: none;
+  white-space: nowrap;
 `;
 
 const HeaderOverlay = styled.div`
   background: #000;
-  opacity: 0.55;
+  opacity: 0.5;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -108,44 +181,11 @@ const HeaderImage: any = styled.div`
   right: 0;
 `;
 
-const ProjectMenu = styled.div`
-  background-color: #FFFFFF;
-  border-bottom: 1px solid #EAEAEA;
+const Content = styled.div`
   width: 100%;
+  z-index: 2;
+  overflow: visible;
 `;
-
-const ProjectMenuItems = styled.div`
-  width: 100%;
-  height: 55px;
-  display: flex;
-  overflow-x: auto;
-  margin: 0 auto;
-`;
-
-const ProjectMenuItem = styled(Link)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #232F45;
-  opacity: 0.5;
-  font-size: 17px;
-  font-weight: 500;
-  border-bottom: 3px solid rgba(0,0,0,0); //Takes the space so the hover doesn't make the text "jump"
-  margin: 0 1rem;
-  padding: 0 1rem;
-
-  &:first-child {
-    margin-left: 0;
-  }
-
-  &.active,
-  &:hover {
-    color: #232F45;
-    opacity: 1;
-    /* border-bottom: 3px solid ${(props) => props.theme.colorMain}; */
-  }
-`;
-
 
 type Props = {
   params: {
@@ -233,34 +273,45 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
               <HeaderImage src={projectHeaderImageLarge} />
               <HeaderOverlay />
               <ContentContainer>
-                <HeaderLabel>
-                  <FormattedMessage {...messages.project} />
-                </HeaderLabel>
-                <HeaderTitle>
-                  {projectTitle}
-                </HeaderTitle>
+                <HeaderContent>
+                  <HeaderContentLeft>
+                    <HeaderLabel>
+                      <FormattedMessage {...messages.project} />
+                    </HeaderLabel>
+
+                    <HeaderTitle>
+                      {projectTitle}
+                    </HeaderTitle>
+                  </HeaderContentLeft>
+
+                  <HeaderContentRight>
+                    <HeaderButtons>
+                      <HeaderButton to={`/projects/${params.slug}/info`}>
+                        <HeaderButtonIconWrapper>
+                          <HeaderButtonIcon name="info2" />
+                        </HeaderButtonIconWrapper>
+                        <HeaderButtonText>
+                          <FormattedMessage {...messages.projectInformation} />
+                        </HeaderButtonText>
+                      </HeaderButton>
+
+                      <HeaderButton to={`/projects/${params.slug}/events`}>
+                        <HeaderButtonIconWrapper>
+                          <HeaderButtonIcon name="calendar" />
+                        </HeaderButtonIconWrapper>
+                        <HeaderButtonText>
+                          <FormattedMessage {...messages.events} />
+                        </HeaderButtonText>
+                      </HeaderButton>
+                    </HeaderButtons>
+                  </HeaderContentRight>
+                </HeaderContent>
               </ContentContainer>
             </Header>
 
-            <ProjectMenu>
-              <ContentContainer>
-                <ProjectMenuItems>
-                  <ProjectMenuItem to={`${basePath}`}>
-                    <FormattedMessage {...messages.navTimeline} />
-                  </ProjectMenuItem>
-
-                  <ProjectMenuItem to={`${basePath}/info`}>
-                    <FormattedMessage {...messages.navInfo} />
-                  </ProjectMenuItem>
-
-                  <ProjectMenuItem to={`${basePath}/events`}>
-                    <FormattedMessage {...messages.navEvents} />
-                  </ProjectMenuItem>
-                </ProjectMenuItems>
-              </ContentContainer>
-            </ProjectMenu>
-
-            {children}
+            <Content>
+              {children}
+            </Content>
 
             {/*
             {(this.props.location.pathname !== `${basePath}/events`) &&

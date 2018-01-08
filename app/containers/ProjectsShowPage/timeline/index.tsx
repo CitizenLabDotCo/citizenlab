@@ -28,6 +28,9 @@ import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
+  margin-top: -68px;
+  padding-left: 30px;
+  padding-right: 30px;
 `;
 
 const Content = styled.div`
@@ -40,6 +43,7 @@ const Content = styled.div`
 const SelectedPhase = styled.div`
   color: #333;
   font-size: 34px;
+  line-height: 40px;
   font-weight: 400;
   margin-bottom: 40px;
 `;
