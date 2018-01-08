@@ -179,7 +179,6 @@ class IdeaCards extends React.PureComponent<Props, State> {
         pageNumber: 1,
         hasMore: false
       }).subscribe(({ ideas, hasMore }) => {
-        console.log(ideas);
         this.setState({ ideas, hasMore, loading: false, loadingMore: false });
       })
     ];

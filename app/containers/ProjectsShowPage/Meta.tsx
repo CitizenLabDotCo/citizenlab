@@ -98,8 +98,6 @@ export default class Meta extends React.PureComponent<Props, State> {
       const image = (projectImages && projectImages.data && projectImages.data.length > 0 ? projectImages.data[0].attributes.versions.large : null);
       const url = window.location.href;
 
-      console.log(url);
-
       return (
         <Helmet>
           <title>{title}</title>

@@ -44,6 +44,11 @@ const Header = styled.div`
   padding-right: 30px;
   position: relative;
 
+  ${media.smallerThanMaxTablet`
+    padding-left: 0px;
+    padding-right: 0px;
+  `}
+
   ${media.smallerThanMinTablet`
     height: auto;
     padding-bottom: 120px;
@@ -112,8 +117,8 @@ const HeaderTitle = styled.div`
 
   ${media.smallerThanMinTablet`
     font-weight: 600;
-    font-size: 30px;
-    line-height: 34px;
+    font-size: 34px;
+    line-height: 40px;
   `}
 `;
 
@@ -233,6 +238,10 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
           projectImages$,
           phases$
         ).map(([projectImages, phases]) => {
+
+          console.log('phases:');
+          console.log(phases);
+
           return {
             locale,
             currentTenantLocales,
