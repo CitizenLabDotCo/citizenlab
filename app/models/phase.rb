@@ -1,17 +1,17 @@
 class Phase < ApplicationRecord
   belongs_to :project
 
-  CONSULTATION_METHODS = %w(information ideation)
+  PARTICIPATION_METHODS = %w(information ideation)
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
   validates :start_at, :end_at, presence: true
   validate :validate_start_at_before_end_at
-  validates :consultation_method, presence: true, inclusion: {in: CONSULTATION_METHODS}
+  validates :participation_method, presence: true, inclusion: {in: PARTICIPATION_METHODS}
 
   before_validation :sanitize_description_multiloc
-  before_validation :set_consultation_method, on: :create
+  before_validation :set_participation_method, on: :create
 
 
   def sanitize_description_multiloc
@@ -26,7 +26,7 @@ class Phase < ApplicationRecord
     end
   end
 
-  def set_consultation_method
-    self.consultation_method ||= 'ideation'
+  def set_participation_method
+    self.participation_method ||= 'ideation'
   end
 end

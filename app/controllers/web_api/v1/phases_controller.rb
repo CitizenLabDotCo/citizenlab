@@ -51,7 +51,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :project_id,
       :start_at,
       :end_at,
-      :consultation_method,
+      :participation_method,
       title_multiloc: I18n.available_locales,
       description_multiloc: I18n.available_locales
     )

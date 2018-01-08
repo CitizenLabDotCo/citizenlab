@@ -247,7 +247,7 @@ ActiveRecord::Schema.define(version: 20171221145649) do
     t.date "end_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "consultation_method", null: false
+    t.string "participation_method", null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 

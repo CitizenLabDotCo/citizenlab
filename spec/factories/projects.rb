@@ -52,7 +52,7 @@ FactoryGirl.define do
 
     factory :project_with_active_ideation_phase do
       after(:create) do |project, evaluator|
-        project.phases << create(:active_phase, consultation_method: 'ideation')
+        project.phases << create(:active_phase, participation_method: 'ideation')
       end
     end
 
