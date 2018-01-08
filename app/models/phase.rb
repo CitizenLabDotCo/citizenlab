@@ -1,18 +1,16 @@
 class Phase < ApplicationRecord
-  belongs_to :project
+  include ParticipationContext
 
-  PARTICIPATION_METHODS = %w(information ideation)
+  belongs_to :project
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
   validates :start_at, :end_at, presence: true
   validate :validate_start_at_before_end_at
-  validates :participation_method, presence: true, inclusion: {in: PARTICIPATION_METHODS}
+  validate :validate_belongs_to_timeline_project
 
   before_validation :sanitize_description_multiloc
-  before_validation :set_participation_method, on: :create
-
 
   def sanitize_description_multiloc
     self.description_multiloc = self.description_multiloc.map do |locale, description|
@@ -26,7 +24,9 @@ class Phase < ApplicationRecord
     end
   end
 
-  def set_participation_method
-    self.participation_method ||= 'ideation'
+  def validate_belongs_to_timeline_project
+    if project.present? && project.process_type != 'timeline'
+      errors.add(:project, :is_not_timeline_project, message: 'is not a timeline project')
+    end
   end
 end

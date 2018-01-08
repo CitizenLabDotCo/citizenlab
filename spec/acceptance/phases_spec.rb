@@ -44,11 +44,17 @@ resource "Phases" do
       with_options scope: :phase do
         parameter :title_multiloc, "The title of the phase in nultiple locales", required: true
         parameter :description_multiloc, "The description of the phase in multiple languages. Supports basic HTML.", required: false
-        parameter :participation_method, "The consultation method of the project, either #{Phase::PARTICIPATION_METHODS.join(",")}."
+        parameter :participation_method, "The participation method of the project, either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
+        parameter :posting_enabled, "Can citizens post ideas in this phase? Defaults to true", required: false
+        parameter :commenting_enabled, "Can citizens post comment in this phase? Defaults to true", required: false
+        parameter :voting_enabled, "Can citizens vote in this phase? Defaults to true", required: false
+        parameter :voting_method, "How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
+        parameter :voting_limited_max, "Number of votes a citizen can perform in this phase, only if the voting_method is limited. Defaults to 10", required: false
         parameter :start_at, "The start date of the phase", required: true
         parameter :end_at, "The end date of the phase", required: true
       end
     ValidationErrorHelper.new.error_fields(self, Phase)
+    response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
 
 
       let(:project_id) { @project.id }
@@ -64,7 +70,12 @@ resource "Phases" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data,:attributes,:participation_method)).to match participation_method
+        expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method
+        expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq true
+        expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq true
+        expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq true
+        expect(json_response.dig(:data,:attributes,:voting_method)).to eq "unlimited"
+        expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq 10
         expect(json_response.dig(:data,:attributes,:start_at)).to eq start_at.to_s
         expect(json_response.dig(:data,:attributes,:end_at)).to eq end_at.to_s
         expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
@@ -86,23 +97,39 @@ resource "Phases" do
         parameter :project_id, "The id of the project this phase belongs to"
         parameter :title_multiloc, "The title of the phase in nultiple locales"
         parameter :description_multiloc, "The description of the phase in multiple languages. Supports basic HTML."
-        parameter :participation_method, "The consultation method of the project, either #{Phase::PARTICIPATION_METHODS.join(",")}."
+        parameter :participation_method, "The participation method of the project, either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
+        parameter :posting_enabled, "Can citizens post ideas in this phase? Defaults to true", required: false
+        parameter :commenting_enabled, "Can citizens post comment in this phase? Defaults to true", required: false
+        parameter :voting_enabled, "Can citizens vote in this phase? Defaults to true", required: false
+        parameter :voting_method, "How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
+        parameter :voting_limited_max, "Number of votes a citizen can perform in this phase, only if the voting_method is limited. Defaults to 10", required: false
         parameter :start_at, "The start date of the phase"
         parameter :end_at, "The end date of the phase"
       end
     ValidationErrorHelper.new.error_fields(self, Phase)
-
+    response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
+    
 
       let(:phase) { create(:phase, project: @project) }
       let(:id) { phase.id }
-      let(:description_multiloc) { build(:phase).description_multiloc }
-      let(:participation_method) { Phase::PARTICIPATION_METHODS.last }
+      let(:description_multiloc) { phase.description_multiloc }
+      let(:participation_method) { phase.participation_method }
+      let(:posting_enabled) { false }
+      let(:commenting_enabled) { false }
+      let(:voting_enabled) { true }
+      let(:voting_method) { 'limited' }
+      let(:voting_limited_max) { 6 }
 
       example_request "Update a phase" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data,:attributes,:participation_method)).to match participation_method
+        expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method
+        expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled
+        expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled
+        expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
+        expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method
+        expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max
       end
     end
 
