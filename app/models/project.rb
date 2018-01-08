@@ -1,4 +1,5 @@
 class Project < ApplicationRecord
+  include ParticipationContext
 
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
 
@@ -19,6 +20,7 @@ class Project < ApplicationRecord
   has_many :groups, through: :groups_projects
 
   VISIBLE_TOS = %w(public groups admins)
+  PROCESS_TYPES = %w(timeline continuous)
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
@@ -32,7 +34,9 @@ class Project < ApplicationRecord
       errors_as_objects: true
     }
   }
+  validates :process_type, presence: true, inclusion: {in: PROCESS_TYPES}
 
+  before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
   before_validation :set_visible_to, on: :create
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
@@ -53,6 +57,14 @@ class Project < ApplicationRecord
     .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
   end)
 
+  def continuous?
+    self.process_type == 'continuous'
+  end
+
+  def timeline?
+    self.process_type == 'timeline'
+  end
+  
   private
 
   def generate_slug
@@ -75,4 +87,9 @@ class Project < ApplicationRecord
   def set_visible_to
     self.visible_to ||= 'public'
   end
+
+  def set_process_type
+    self.process_type ||= 'timeline'
+  end
+
 end

@@ -51,4 +51,34 @@ class ProjectPolicy < ApplicationPolicy
   def destroy?
     update?
   end
+
+  def shared_permitted_attributes
+    [
+      :slug, 
+      :header_bg,
+      :visible_to,
+      :participation_method,
+      :posting_enabled,
+      :commenting_enabled,
+      :voting_enabled,
+      :voting_method,
+      :voting_limited_max,
+      title_multiloc: I18n.available_locales, 
+      description_multiloc: I18n.available_locales,
+      description_preview_multiloc: I18n.available_locales,
+      area_ids: [],
+      topic_ids: []
+    ]
+  end
+
+  def permitted_attributes_for_create
+    attrs = shared_permitted_attributes
+    attrs.unshift(:process_type)
+    attrs
+  end
+
+  def permitted_attributes_for_update
+    attrs = shared_permitted_attributes
+    attrs
+  end
 end

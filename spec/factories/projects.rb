@@ -117,5 +117,15 @@ FactoryGirl.define do
         end
       end
     end
+
+    factory :continuous_project do
+      process_type 'continuous'
+      participation_method 'ideation'
+      posting_enabled true
+      commenting_enabled false
+      voting_enabled true
+      voting_method 'limited'
+      voting_limited_max 7
+    end
   end
 end
