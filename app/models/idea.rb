@@ -75,10 +75,7 @@ class Idea < ApplicationRecord
 
   scope :with_bounding_box, (Proc.new do |coordinates|
     x1,y1,x2,y2 = coordinates
-    where("x < ?", x1)
-      .where("x > ?", x2)
-      .where("y > ?", y1)
-      .where("y < ?", y2)
+    where("location_point && ST_MakeEnvelope(?, ?, ?, ?)", x1, y1, x2, y2)
   end)
 
   scope :order_new, -> (direction=:desc) {order(published_at: direction)}
