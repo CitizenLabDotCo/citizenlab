@@ -56,6 +56,56 @@ FactoryGirl.define do
       end
     end
 
+
+    factory :project_with_past_phases do
+      transient do
+        phases_count 5
+      end
+      after(:create) do |project, evaluator|
+        start_at = Faker::Date.between(2.year.ago, 1.year.ago)
+        evaluator.phases_count.times do |i|
+          project.phases << create(:phase, 
+            start_at: start_at,
+            end_at: start_at += rand(72).days
+          )
+        end
+      end
+    end
+
+    factory :project_with_active_phase do
+      transient do
+        active_phase_attrs {{}}
+        phases_count 5
+      end
+      after(:create) do |project, evaluator|
+        start_at = Faker::Date.between(2.year.ago, 1.year.ago)
+        min_phase_duration = ((365*2)/evaluator.phases_count).to_i
+        evaluator.phases_count.times do |i|
+          project.phases << create(:phase, 
+            start_at: start_at,
+            end_at: start_at += (min_phase_duration+rand(100)).days,
+            **evaluator.active_phase_attrs
+          )
+        end
+      end
+    end
+
+    factory :project_with_future_phases do
+      transient do
+        phases_count 5
+      end
+      after(:create) do |project, evaluator|
+        start_at = Faker::Date.between(Time.now, 1.year.from_now)
+        evaluator.phases_count.times do |i|
+          project.phases << create(:phase, 
+            start_at: start_at,
+            end_at: start_at += rand(120).days
+          )
+        end
+      end
+    end
+
+
     factory :project_xl do
       transient do
         ideas_count 10
@@ -127,5 +177,6 @@ FactoryGirl.define do
       voting_method 'limited'
       voting_limited_max 7
     end
+
   end
 end

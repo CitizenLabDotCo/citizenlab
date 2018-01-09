@@ -9,9 +9,6 @@ class TimelineService
   end
 
   def current_phase project
-    # Returns the current phase of a given project
-    # or idea, by comparing the start and end time 
-    # with the current time.
     if has_timeline project
       return active_phases(project)&.first || nil
     else
