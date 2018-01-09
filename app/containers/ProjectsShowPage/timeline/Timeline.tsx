@@ -134,10 +134,14 @@ const HeaderTitle = styled.div`
 
 const HeaderSubtitle = styled.div`
   color: #999;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 20px;
   font-weight: 300;
-  margin-top: 2px;
+  margin-top: 3px;
+`;
+
+const CurrentPhase = styled.span`
+  color: ${greenOpaque};
 `;
 
 const HeaderNavigationIcon = styled(Icon)`
@@ -434,6 +438,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
     const { locale, currentTenant, phases, currentPhaseId, selectedPhaseId } = this.state;
 
     if (locale && currentTenant && phases && phases.data.length > 0) {
+      let phaseStatus: 'past' | 'present' | 'future' | null = null;
       const phaseIds = (phases ? phases.data.map(phase => phase.id) : null);
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
@@ -444,26 +449,47 @@ export default class Timeline extends React.PureComponent<Props, State> {
       const selectedPhaseTitle = (selectedPhase ? getLocalized(selectedPhase.attributes.title_multiloc, locale, currentTenantLocales) : null);
       const selectedPhaseNumber = (selectedPhase ? _.indexOf(phaseIds, selectedPhaseId) + 1 : null);
       const isSelected = (selectedPhaseId !== null);
-      const isCurrent = (selectedPhaseId && currentPhaseId && selectedPhaseId === currentPhaseId ? true : false);
+
+      if (selectedPhase) {
+        if (currentPhaseId && selectedPhaseId === currentPhaseId) {
+          phaseStatus = 'present';
+        } else if (moment().diff(moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') < 0) {
+          phaseStatus = 'future';
+        } else if (moment().diff(moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0) {
+          phaseStatus = 'past';
+        }
+      }
 
       return (
         <Container className={className}>
           <Header>
             <HeaderSection>
               {isSelected &&
-                <PhaseNumberWrapper className={`${isSelected && 'selected'} ${isCurrent && 'current'}`}>
-                  <PhaseNumber className={`${isSelected && 'selected'} ${isCurrent && 'current'}`}>{selectedPhaseNumber}</PhaseNumber>
+                <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
+                  <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
+                    {selectedPhaseNumber}
+                  </PhaseNumber>
                 </PhaseNumberWrapper>
               }
 
               <HeaderTitleWrapper>
-                <HeaderTitle className={`${isSelected && 'selected'} ${isCurrent && 'current'}`}>
+                <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
                   {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
                 </HeaderTitle>
 
                 {isSelected &&
                   <HeaderSubtitle>
-                    {selectedPhaseStart} - {selectedPhaseEnd}
+                    {phaseStatus === 'past' && (
+                      <FormattedMessage {...messages.pastPhase} values={{ date: selectedPhaseEnd }} />
+                    )}
+
+                    {phaseStatus === 'present' && (
+                      <FormattedMessage {...messages.activePhase} values={{ date: selectedPhaseEnd }} />
+                    )}
+
+                    {phaseStatus === 'future' && (
+                      <FormattedMessage {...messages.futurePhase} values={{ date: selectedPhaseStart }} />
+                    )}
                   </HeaderSubtitle>
                 }
               </HeaderTitleWrapper>
