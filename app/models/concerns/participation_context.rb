@@ -26,9 +26,6 @@ module ParticipationContext
   class_methods do
   end
 
-  def set_participation_method
-    self.participation_method ||= 'ideation'
-  end
 
   def ideation?
     self.participation_method == 'ideation'
@@ -46,12 +43,23 @@ module ParticipationContext
     self.voting_method == 'unlimited'
   end
 
-  def is_timeline_project?
-    self.class == Project && self.timeline? 
+  def votes
+    Vote.where(votable: ideas)
   end
 
   def is_participation_context?
     not is_timeline_project?
+  end
+  
+  private
+  
+  def is_timeline_project?
+    self.class == Project && self.timeline? 
+  end
+
+
+  def set_participation_method
+    self.participation_method ||= 'ideation'
   end
 
 end

@@ -3,6 +3,9 @@ class Phase < ApplicationRecord
 
   belongs_to :project
 
+  has_many :ideas_phases, dependent: :destroy
+  has_many :ideas, through: :ideas_phases
+
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}

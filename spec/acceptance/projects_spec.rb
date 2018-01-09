@@ -224,8 +224,8 @@ resource "Projects" do
       parameter :header_bg, "Base64 encoded header image"
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :topic_ids, "Array of ids of the associated topics"
-      parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public."
-      parameter :participation_method, "Only for continuous project. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
+      parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}."
+      parameter :participation_method, "Only for continuous project. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}.", required: false
       parameter :posting_enabled, "Only for continuous project. Can citizens post ideas in this project?", required: false
       parameter :commenting_enabled, "Only for continuous project. Can citizens post comment in this project?", required: false
       parameter :voting_enabled, "Only for continuous project. Can citizens vote in this project?", required: false
