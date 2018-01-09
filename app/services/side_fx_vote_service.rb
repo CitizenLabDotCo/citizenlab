@@ -1,8 +1,8 @@
 class SideFxVoteService
   include SideFxHelper
 
-  def votable_type vote
-    vote.votable_type.underscore
+  def before_create vote, current_user
+    check_participation_context(vote, vote.user)
   end
 
   def after_create vote, current_user
@@ -20,5 +20,26 @@ class SideFxVoteService
       Time.now.to_i, 
       payload: {vote: serialized_vote}
     )
+  end
+
+
+
+  private
+
+
+  def check_participation_context vote, user
+    pcs = ParticipationContextService.new
+
+    project = vote.votable&.project
+    if project
+      disallowed_reason = pcs.voting_disabled_reason(project, user)
+      if disallowed_reason
+        raise ClErrors::TransactionError.new(error_key: disallowed_reason)
+      end
+    end
+  end
+
+  def votable_type vote
+    vote.votable_type.underscore
   end
 end

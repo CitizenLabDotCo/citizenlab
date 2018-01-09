@@ -1,5 +1,22 @@
 class ParticipationContextService
 
+  POSTING_DISABLED_REASONS = {
+    no_active_context: 'no_active_context',
+    not_ideation: 'not_ideation',
+    posting_disabled: 'posting_disabled'
+  }
+
+  COMMENTING_DISABLED_REASONS = {
+    no_active_context: 'no_active_context',
+    commenting_disabled: 'commenting_disabled'
+  }
+
+  VOTING_DISABLED_REASONS = {
+    no_active_context: 'no_active_context',
+    voting_disabled: 'voting_disabled',
+    voting_limited_max_reached: 'voting_limited_max_reached'
+  }
+
   def initialize
     @memoized_votes_in_context = Hash.new{|hash,key| hash[key] = Hash.new}
   end
@@ -12,38 +29,38 @@ class ParticipationContextService
     end
   end
 
-  def posting_disabled_reason project, user=nil
+  def posting_disabled_reason project
     context = get_participation_context(project)
     if !context
-      'no_active_context'
+      POSTING_DISABLED_REASONS[:no_active_context]
     elsif !context.ideation?
-      'not_ideation'
+      POSTING_DISABLED_REASONS[:not_ideation]
     elsif !context.posting_enabled
-      'posting_disabled'
+      POSTING_DISABLED_REASONS[:posting_disabled]
     else
       nil
     end
   end
 
-  def commenting_disabled_reason project, user=nil
+  def commenting_disabled_reason project
     context = get_participation_context(project)
     if !context
-      'no_active_context'
+      COMMENTING_DISABLED_REASONS[:no_active_context]
     elsif !context.commenting_enabled
-      'commenting_disabled'
+      COMMENTING_DISABLED_REASONS[:commenting_disabled]
     else
       nil
     end
   end
 
-  def voting_disabled_reason project, user
+  def voting_disabled_reason project, user=nil
     context = get_participation_context(project)
     if !context
-      'no_active_context'
+      VOTING_DISABLED_REASONS[:no_active_context]
     elsif !context.voting_enabled
-      'voting_disabled'
-    elsif context.voting_limited? && votes_in_context(context, user) >= context.voting_limited_max
-      'voting_limited_max_reached'
+      VOTING_DISABLED_REASONS[:voting_disabled]
+    elsif user && context.voting_limited? && votes_in_context(context, user) >= context.voting_limited_max
+      VOTING_DISABLED_REASONS[:voting_limited_max_reached]
     else
       nil
     end

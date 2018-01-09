@@ -1,18 +1,16 @@
 class TimelineService
 
   def active_phases project
-    project.phases.where("(start_at < ?) AND (end_at > ?)", Time.now, Time.now)
+    project.phases.where("(start_at < NOW()) AND (end_at > NOW())")
   end
 
   def has_timeline project
-    project.phases && (project.phases.count > 0)
+    project.timeline?
   end
 
   def current_phase project
-    if has_timeline project
-      return active_phases(project)&.first || nil
-    else
-      return nil
+    if project.timeline?
+      return active_phases(project)&.first
     end
   end
 
