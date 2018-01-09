@@ -61,6 +61,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       :slug, 
       :header_bg,
       :visible_to,
+      :presentation_mode,
       title_multiloc: I18n.available_locales, 
       description_multiloc: I18n.available_locales,
       description_preview_multiloc: I18n.available_locales,
