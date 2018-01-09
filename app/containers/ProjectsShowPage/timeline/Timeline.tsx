@@ -27,6 +27,11 @@ import styled, { css } from 'styled-components';
 import { transparentize, lighten, darken } from 'polished';
 import { media } from 'utils/styleUtils';
 
+const greyTransparent = css`rgba(121, 137, 147, 1)`;
+const greyOpaque = css`rgba(121, 137, 147, 1)`;
+const greenTransparent = css`rgba(29, 170, 99, 0.5)`;
+const greenOpaque = css`rgba(29, 170, 99, 1)`;
+
 const MobileTLContainer = styled.div`
   width: 100%;
   display: flex;
@@ -37,21 +42,23 @@ const MobileTLContainer = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  max-width: 1080px;
-  height: 250px;
+  max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
   background: #fff;
   border-radius: 5px;
   border: solid #eaeaea 1px;
-  overflow: hidden;
+
+  * {
+    user-select: none;
+  }
 `;
 
 const Header = styled.div`
   width: 100%;
   background: #fafafa;
   border-bottom: solid 1px #eaeaea;
-  padding: 12px 18px;
+  padding: 14px 30px;
   display: flex;
   justify-content: space-between;
 `;
@@ -63,99 +70,145 @@ const HeaderSection = styled.div`
 `;
 
 const PhaseNumberWrapper = styled.div`
-  flex: 0 0 32px;
-  width: 32px;
-  height: 32px;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 12px;
+  margin-right: 18px;
   border-radius: 50%;
-  border: solid 2px #32B67A;
+  border: solid 2px ${greyTransparent};
+
+  &.selected {
+    border-color: ${greyOpaque};
+  }
+
+  &.selected.current {
+    border-color: ${greenOpaque};
+  }
 `;
 
 const PhaseNumber = styled.div`
-  color: #32B67A;
-  font-size: 16px;
+  color: ${greyTransparent};
+  font-size: 20px;
   line-height: 16px;
   font-weight: 400;
   margin: 0;
   padding: 0;
+
+  &.selected {
+    color: ${greyOpaque};
+  }
+
+  &.selected.current {
+    color: ${greenOpaque};
+  }
+`;
+
+const HeaderTitleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-right: 15px;
 `;
 
 const HeaderTitle = styled.div`
-  color: #222;
-  font-size: 21px;
-  line-height: 25px;
+  color: ${greyTransparent};
+  font-size: 23px;
+  line-height: 27px;
   font-weight: 400;
+
+  &.selected {
+    color: ${greyOpaque};
+  }
+
+  &.selected.current {
+    color: ${greenOpaque};
+  }
+
+  ${media.smallerThanMaxTablet`
+    font-size: 20px;
+    line-height: 24px;
+  `}
+`;
+
+const HeaderSubtitle = styled.div`
+  color: #999;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 300;
+  margin-top: 2px;
+`;
+
+const HeaderNavigationIcon = styled(Icon)`
+  fill: ${(props) => props.theme.colors.label};
+  height: 13px;
+  transition: background 60ms ease-out;
+`;
+
+const HeaderNavigationPrevIcon = HeaderNavigationIcon.extend`
+  transform: rotate(180deg);
+`;
+
+const HeaderNavigationNextIcon = HeaderNavigationIcon.extend``;
+
+const HeaderNavigation = styled.div`
+  flex: 0 0 26px;
+  width: 26px;
+  height: 30px;
+  background: #ededed;
+  border-radius: 4px;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 60ms ease-out;
+
+  &.last {
+    margin-right: 0px;
+  }
+
+  &:hover {
+    background: #e0e0e0;
+
+    ${HeaderNavigationPrevIcon},
+    ${HeaderNavigationNextIcon} {
+      fill: #000;
+    }
+  }
 `;
 
 const Phases = styled.div`
   width: 100%;
+  padding: 0px 30px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 50px;
+  margin-bottom: 40px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
 `;
 
-const PhaseContainer: any = styled.div`
-  min-width: 80px;
-  flex-shrink: 0;
-  flex-grow: ${(props: any) => props.numberOfDays};
-  flex-basis: auto;
-  position: relative;
-`;
+const phaseBarHeight = '24px';
 
 const PhaseBar: any = styled.div`
-  height: 24px;
+  width: 100%;
+  height: ${phaseBarHeight};
   color: #fff;
   font-size: 14px;
   font-weight: 400;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #d0d5d9;
-  transition: all 80ms ease-out;
+  transition: background 60ms ease-out;
   user-select: none;
-
-  &:hover {
-    background: ${(props) => props.theme.colors.label};
-  }
-
-  ${(props: any) => props.first && css`
-    border-radius: 5px 0px 0px 5px;
-  `}
-
-  ${(props: any) => props.last && css`
-    border-radius: 0px 5px 5px 0px;
-  `}
-
-  ${(props: any) => props.current && css`
-    background: #98dabc;
-
-    &:hover {
-      background: #32B67A;
-    }
-  `}
-
-  ${(props: any) => props.selected && css`
-    background: ${(props) => props.theme.colors.label};
-  `}
-
-  ${(props: any) => props.selected && props.current && css`
-    background: #32B67A;
-  `}
 `;
 
 const PhaseArrow = styled(Icon)`
-  height: 100%;
+  height: ${phaseBarHeight};
   fill: #fff;
   position: absolute;
   top: 0;
@@ -164,17 +217,10 @@ const PhaseArrow = styled(Icon)`
 `;
 
 const PhaseText: any = styled.div`
-  width: 100%;
-  color: ${(props) => props.theme.colors.label};
+  color: #d0d5d9;
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 400;
   text-align: center;
-
-  position: absolute;
-  top: 40px;
-  left: 0;
-  right: 0;
-
   overflow-wrap: break-word;
   word-wrap: break-word;
   -ms-word-break: break-all;
@@ -184,33 +230,74 @@ const PhaseText: any = styled.div`
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-  /* white-space: nowrap; */
-
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   line-height: 18px;
-  height: 54px;
+  max-height: 54px;
+  margin-top: 12px;
+  user-select: none;
+  transition: color 60ms ease-out;
+`;
 
-  ${(props: any) => props.current && css`
-    color: #98dabc;
-  `}
+const selectedPhaseBar = css`
+  ${PhaseBar} { background: ${greyOpaque}; }
+  ${PhaseText} { color: ${greyOpaque}; }
+`;
+const currentPhaseBar = css`
+  ${PhaseBar} { background: ${greenTransparent}; }
+  ${PhaseText} { color: ${greenTransparent}; }
+`;
+const currentSelectedPhaseBar = css`
+  ${PhaseBar} { background: ${greenOpaque}; }
+  ${PhaseText} { color: ${greenOpaque}; }
+`;
 
-  ${(props: any) => props.selected && css`
-    color: ${(props) => props.theme.colors.label};
-    color: #333;
-  `}
+const PhaseContainer: any = styled.div`
+  min-width: 80px;
+  flex-shrink: 1;
+  flex-grow: ${(props: any) => props.numberOfDays};
+  flex-basis: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  cursor: pointer;
+  margin-right:  ${(props: any) => !props.last ? '1px' : '0px' };
 
-  ${(props: any) => props.selected && props.current && css`
-    color: #32B67A;
-  `}
+  &.first ${PhaseBar} {
+    border-radius: 5px 0px 0px 5px;
+  }
+
+  &.last ${PhaseBar} {
+    border-radius: 0px 5px 5px 0px;
+  }
+
+  &:hover {
+    ${selectedPhaseBar}
+  }
+
+  &.current:not(.selected) {
+    ${currentPhaseBar}
+
+    &:hover {
+      ${currentSelectedPhaseBar}
+    }
+  }
+
+  &.selected:not(.current) {
+    ${selectedPhaseBar}
+  }
+
+  &.selected.current {
+    ${currentSelectedPhaseBar}
+  }
 `;
 
 type Props = {
   projectId: string
-  phaseClick: (phaseId: string) => void;
+  phaseClick: (phaseId: string | null) => void;
 };
 
 type State = {
@@ -222,7 +309,7 @@ type State = {
 };
 
 export default class Timeline extends React.PureComponent<Props, State> {
-  state: State;
+  selectedPhaseId$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -235,6 +322,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
       selectedPhaseId: null
     };
     this.subscriptions = [];
+    this.selectedPhaseId$ = new Rx.BehaviorSubject(null);
   }
 
   componentWillMount() {
@@ -247,40 +335,59 @@ export default class Timeline extends React.PureComponent<Props, State> {
       Rx.Observable.combineLatest(
         locale$,
         currentTenant$,
-        phases$
-      ).subscribe(([locale, currentTenant, phases]) => {
+        phases$,
+        this.selectedPhaseId$.distinctUntilChanged()
+      ).subscribe(([locale, currentTenant, phases, selectedPhaseId]) => {
         this.setState((state: State) => {
-          let currentPhaseId = state.currentPhaseId;
-          let selectedPhaseId = state.selectedPhaseId;
+          let currentPhaseId = _.cloneDeep(state.currentPhaseId);
 
           if (phases && phases.data.length > 0) {
-            phases.data.forEach((phase) => {
-              const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
-              const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
-              const startIsoDate = phase.attributes.start_at;
-              const endIsoDate = phase.attributes.end_at;
-              const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
-              const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
-              const isCurrentPhase = currentTenantTodayMoment.isBetween(startMoment, endMoment, 'days', '[]');
-              currentPhaseId = (isCurrentPhase && state.currentPhaseId !== phase.id ? phase.id : currentPhaseId);
+            const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
+            const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
 
-              if (isCurrentPhase && !state.selectedPhaseId) {
-                selectedPhaseId = phase.id;
-                this.props.phaseClick(selectedPhaseId);
+            _(phases.data).forEach((phase) => {
+              const startMoment = moment(phase.attributes.start_at, 'YYYY-MM-DD');
+              const endMoment = moment(phase.attributes.end_at, 'YYYY-MM-DD');
+              const isCurrentPhase = currentTenantTodayMoment.isBetween(startMoment, endMoment, 'days', '[]');
+
+              if (isCurrentPhase) {
+                if (!currentPhaseId || (currentPhaseId && phase.id !== currentPhaseId)) {
+                  currentPhaseId = phase.id;
+                }
+
+                return false;
               }
+
+              return true;
             });
+          }
+
+          if (selectedPhaseId !== state.selectedPhaseId) {
+            this.props.phaseClick(selectedPhaseId);
           }
 
           return {
             locale,
             currentTenant,
             phases,
-            currentPhaseId,
-            selectedPhaseId
+            selectedPhaseId,
+            currentPhaseId
           };
         });
       })
     ];
+  }
+
+  componentDidMount() {
+    if (this.state.currentPhaseId && !this.state.selectedPhaseId) {
+      this.selectedPhaseId$.next(this.state.currentPhaseId);
+    }
+  }
+
+  componentWillUpdate(nextProps: Props, nextState: State) {
+    if (nextState.currentPhaseId && !nextState.selectedPhaseId) {
+      this.selectedPhaseId$.next(nextState.currentPhaseId);
+    }
   }
 
   componentWillUnmount() {
@@ -289,18 +396,37 @@ export default class Timeline extends React.PureComponent<Props, State> {
 
   handlePhaseOnClick = (phaseId: string) => (event: React.FormEvent<MouseEvent>) => {
     event.preventDefault();
-    this.handlePhaseChange(phaseId);
-  }
-
-  handlePhaseChange = (phaseId) => {
-    if (phaseId !== this.state.selectedPhaseId) {
-      this.props.phaseClick(phaseId);
-      this.setState({ selectedPhaseId: phaseId });
-    }
+    this.selectedPhaseId$.next(phaseId);
   }
 
   handleOnAddIdeaClick = () => {
     // empty
+  }
+
+  goToPrevPhase = (event: React.FormEvent<any>) => {
+    event.preventDefault();
+
+    const { phases, selectedPhaseId } = this.state;
+    const phaseIds = phases ? phases.data.map(phase => phase.id) : null;
+
+    if (phaseIds && phaseIds.length > 1) {
+      const index = _.indexOf(phaseIds, selectedPhaseId);
+      const newIndex = (index > 0 ? index - 1 : phaseIds.length - 1);
+      this.selectedPhaseId$.next(phaseIds[newIndex]);
+    }
+  }
+
+  goToNextPhase = (event: React.FormEvent<any>) => {
+    event.preventDefault();
+
+    const { phases, selectedPhaseId } = this.state;
+    const phaseIds = phases ? phases.data.map(phase => phase.id) : null;
+
+    if (phaseIds && phaseIds.length > 1) {
+      const index = _.indexOf(phaseIds, selectedPhaseId);
+      const newIndex = (index < (phaseIds.length - 1) ? index + 1 : 0);
+      this.selectedPhaseId$.next(phaseIds[newIndex]);
+    }
   }
 
   render() {
@@ -308,24 +434,43 @@ export default class Timeline extends React.PureComponent<Props, State> {
     const { locale, currentTenant, phases, currentPhaseId, selectedPhaseId } = this.state;
 
     if (locale && currentTenant && phases && phases.data.length > 0) {
+      const phaseIds = (phases ? phases.data.map(phase => phase.id) : null);
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
       const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
+      const selectedPhase = (selectedPhaseId ? phases.data.find(phase => phase.id === selectedPhaseId) : null);
+      const selectedPhaseStart = (selectedPhase ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').locale(locale).format('LL') : null);
+      const selectedPhaseEnd = (selectedPhase ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').locale(locale).format('LL') : null);
+      const selectedPhaseTitle = (selectedPhase ? getLocalized(selectedPhase.attributes.title_multiloc, locale, currentTenantLocales) : null);
+      const selectedPhaseNumber = (selectedPhase ? _.indexOf(phaseIds, selectedPhaseId) + 1 : null);
+      const isSelected = (selectedPhaseId !== null);
+      const isCurrent = (selectedPhaseId && currentPhaseId && selectedPhaseId === currentPhaseId ? true : false);
 
       return (
         <Container className={className}>
           <Header>
             <HeaderSection>
-              <PhaseNumberWrapper>
-                <PhaseNumber>3</PhaseNumber>
-              </PhaseNumberWrapper>
+              {isSelected &&
+                <PhaseNumberWrapper className={`${isSelected && 'selected'} ${isCurrent && 'current'}`}>
+                  <PhaseNumber className={`${isSelected && 'selected'} ${isCurrent && 'current'}`}>{selectedPhaseNumber}</PhaseNumber>
+                </PhaseNumberWrapper>
+              }
 
-              <HeaderTitle>
-                Kies uit 20 acties
-              </HeaderTitle>
+              <HeaderTitleWrapper>
+                <HeaderTitle className={`${isSelected && 'selected'} ${isCurrent && 'current'}`}>
+                  {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
+                </HeaderTitle>
+
+                {isSelected &&
+                  <HeaderSubtitle>
+                    {selectedPhaseStart} - {selectedPhaseEnd}
+                  </HeaderSubtitle>
+                }
+              </HeaderTitleWrapper>
             </HeaderSection>
 
             <HeaderSection>
+              {/*
               <Button
                 onClick={this.handleOnAddIdeaClick}
                 style="primary"
@@ -333,16 +478,26 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 text={<FormattedMessage {...messages.startAnIdea} />}
                 circularCorners={false}
               />
+              */}
+
+              <HeaderNavigation onClick={this.goToPrevPhase}>
+                <HeaderNavigationPrevIcon name="chevron-right" />
+              </HeaderNavigation>
+
+              <HeaderNavigation className="last" onClick={this.goToNextPhase}>
+                <HeaderNavigationNextIcon name="chevron-right" />
+              </HeaderNavigation>
             </HeaderSection>
           </Header>
-          <ContentContainer>
 
+
+          {/* <ContentContainer> */}
             <Responsive maxWidth={481} as={MobileTLContainer} >
               <MobileTimeline
                 phases={phases.data}
                 currentPhase={currentPhaseId}
                 selectedPhase={selectedPhaseId}
-                onPhaseSelection={this.handlePhaseChange}
+                onPhaseSelection={this.handlePhaseOnClick}
               />
             </Responsive>
 
@@ -361,14 +516,13 @@ export default class Timeline extends React.PureComponent<Props, State> {
                   const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
 
                   return (
-                    <PhaseContainer key={index} numberOfDays={numberOfDays}>
-                      <PhaseBar
-                        first={isFirst}
-                        last={isLast}
-                        current={isCurrentPhase}
-                        selected={isSelectedPhase}
-                        onClick={this.handlePhaseOnClick(phase.id)}
-                      >
+                    <PhaseContainer
+                      className={`${isFirst && 'first'} ${isLast && 'last'} ${isCurrentPhase && 'current'} ${isSelectedPhase && 'selected'}`}
+                      key={index}
+                      numberOfDays={numberOfDays}
+                      onClick={this.handlePhaseOnClick(phase.id)}
+                    >
+                      <PhaseBar>
                         {index + 1}
                         {!isLast && <PhaseArrow name="phase_arrow" />}
                       </PhaseBar>
@@ -383,7 +537,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 })}
               </Phases>
             </Responsive>
-          </ContentContainer>
+          {/* </ContentContainer> */}
         </Container>
       );
     }
