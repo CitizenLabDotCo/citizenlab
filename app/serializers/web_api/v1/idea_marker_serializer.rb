@@ -1,4 +1,4 @@
-class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
+class WebApi::V1::IdeaMarkerSerializer < ActiveModel::Serializer
   attributes :id, :title_multiloc, :location_point_geojson, :location_description
 
   def location_point_geojson
