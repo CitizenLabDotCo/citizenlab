@@ -154,25 +154,6 @@
         }
       },
 
-      "google_login": {
-        "type": "object",
-        "description":  "Allow signing in and registering through a google account",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["client_id", "client_secret"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "client_id": {
-            "type": "string"
-          },
-          "client_secret": {
-            "type": "string",
-            "private": true
-          }
-        }
-      },
-
       /* "twitter_login": {
         "type": "object",
         "description":  "Allow signing in and registering through a twitter account",
@@ -300,6 +281,22 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
+        }
+      },
+      "maps": {
+        "type": "object",
+        "description":  "Show maps throughout the platform",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "tile_provider": {
+            "description": "The OSM compatible tile provider URL pattern. Https is required.",
+            "type": "string",
+            "pattern": "^https:\/\/.+\$\{z\}/\$\{x\}/\$\{y\}.+$",
+            "default": "https://a.tile.openstreetmap.org/${z}/${x}/${y}.png"
+          }
         }
       }
     },
