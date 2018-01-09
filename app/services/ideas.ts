@@ -91,10 +91,7 @@ export interface IIdeaUpdate {
   topic_ids?: string[] | undefined | null;
   area_ids?: string[] | undefined | null;
   phase_ids?: string[] | undefined | null;
-  location_point_geojson?: {
-    type: string;
-    coordinates: number[];
-  } | undefined | null;
+  location_point_geojson?: GeoJSON.Point | null;
   location_description?: string | undefined | null;
 }
 
