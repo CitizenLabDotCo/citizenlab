@@ -15,7 +15,7 @@ describe TenantTemplateService do
   end
 
   describe "apply_template" do
-    it "Successfully applies all templates (residing in config/tenant_templates)" do  
+    it "Successfully applies all templates (residing in config/tenant_templates)" do 
       service.available_templates.map do |template|
         name = template.split('_').join('')
         Tenant.create!({
