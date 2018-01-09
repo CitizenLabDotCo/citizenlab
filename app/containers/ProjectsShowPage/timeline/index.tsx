@@ -35,9 +35,10 @@ const Container = styled.div`
 
 const Content = styled.div`
   width: 100%;
+  max-width: 1100px;
   min-height: 200px;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 60px;
+  margin-bottom: 60px;
 `;
 
 const SelectedPhase = styled.div`
@@ -56,14 +57,13 @@ type Props = {
 
 type State = {
   locale: string | null;
-  currentTenant: ITenant | null;
+  currentTenantLocales: string[] | null;
   project: IProject | null;
-  phases: IPhases | null;
   selectedPhase: IPhaseData | undefined;
+  loaded: boolean;
 };
 
 export default class timeline extends React.PureComponent<Props, State> {
-  state: State;
   selectedPhaseId$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
@@ -71,10 +71,10 @@ export default class timeline extends React.PureComponent<Props, State> {
     super(props as any);
     this.state = {
       locale: null,
-      currentTenant: null,
+      currentTenantLocales: null,
       project: null,
-      phases: null,
-      selectedPhase: undefined
+      selectedPhase: undefined,
+      loaded: false
     };
     this.subscriptions = [];
     this.selectedPhaseId$ = new Rx.BehaviorSubject(null);
@@ -82,20 +82,25 @@ export default class timeline extends React.PureComponent<Props, State> {
 
   componentWillMount() {
     const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
+    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
     const project$ = projectBySlugStream(this.props.params.slug).observable;
     const phases$ = project$.switchMap(project => phasesStream(project.data.id).observable);
+    const selectedPhase$ = Rx.Observable.combineLatest(
+      phases$,
+      this.selectedPhaseId$
+    ).map(([phases, selectedPhaseId]) => {
+      const selectedPhase = (phases ? phases.data.find(phase => phase.id === selectedPhaseId) : undefined);
+      return selectedPhase;
+    });
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$,
-        currentTenant$,
+        currentTenantLocales$,
         project$,
-        phases$,
-        this.selectedPhaseId$
-      ).subscribe(([locale, currentTenant, project, phases, selectedPhaseId]) => {
-        const selectedPhase = (phases ? phases.data.find(phase => phase.id === selectedPhaseId) : undefined);
-        this.setState({ locale, currentTenant, project, phases, selectedPhase });
+        selectedPhase$
+      ).subscribe(([locale, currentTenantLocales, project, selectedPhase]) => {
+        this.setState({ locale, currentTenantLocales, project, selectedPhase, loaded: true });
       })
     ];
   }
@@ -111,26 +116,18 @@ export default class timeline extends React.PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
     const { slug } = this.props.params;
-    const { locale, currentTenant, project, selectedPhase } = this.state;
+    const { locale, currentTenantLocales, project, selectedPhase, loaded } = this.state;
 
-    if (locale && currentTenant && project) {
+    if (loaded && locale && currentTenantLocales && project) {
       return (
         <Container className={className}>
           <Timeline projectId={project.data.id} phaseClick={this.handleOnPhaseClick} />
 
           <ContentContainer>
             <Content>
-              {selectedPhase && 
-                <>
-                  <SelectedPhase>
-                    {selectedPhase.attributes.title_multiloc[locale]}
-                  </SelectedPhase>
-
-                  <IdeaCards filter={{ phase: selectedPhase.id }} />
-                </>
+              {selectedPhase &&
+                <IdeaCards filter={{ phase: selectedPhase.id }} />
               }
-
-              {!selectedPhase && <FormattedMessage {...messages.noPhaseSelected} />}
             </Content>
           </ContentContainer>
         </Container>

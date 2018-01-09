@@ -238,10 +238,6 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
           projectImages$,
           phases$
         ).map(([projectImages, phases]) => {
-
-          console.log('phases:');
-          console.log(phases);
-
           return {
             locale,
             currentTenantLocales,
