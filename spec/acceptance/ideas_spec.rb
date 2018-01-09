@@ -236,11 +236,11 @@ resource "Ideas" do
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
-    response_field :base, "Array containing objects with signature { error: 'project_without_active_ideation_phase' }", scope: :errors
+    response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
 
     let(:idea) { build(:idea) }
-    let(:project) { create(:project) }
+    let(:project) { create(:continuous_project) }
     let(:project_id) { project.id }
     let(:publication_status) { 'published' }
     let(:title_multiloc) { idea.title_multiloc }
@@ -312,7 +312,7 @@ resource "Ideas" do
         example_request "[error] Creating an idea in a project with a timeline but no active ideation phases" do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base).first[:error]).to eq 'project_without_active_ideation_phase'
+          expect(json_response.dig(:errors, :base).first[:error]).to eq 'no_active_context'
         end
       end
 
@@ -351,7 +351,7 @@ resource "Ideas" do
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
-    response_field :base, "Array containing objects with signature { error: 'project_without_active_ideation_phase' }", scope: :errors
+    response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
 
     let(:id) { @idea.id }

@@ -51,6 +51,11 @@ describe ParticipationContextService do
       expect(service.commenting_disabled_reason(project)).to be_nil
     end
 
+    it "returns 'no_active_context' when we're not in an active context" do
+      project = create(:project_with_past_phases)
+      expect(service.commenting_disabled_reason(project)).to eq 'no_active_context'
+    end
+
     it "return `commenting_disabled` when commenting is disabled" do
       project = create(:project_with_active_phase, active_phase_attrs: {commenting_enabled: false})
       expect(service.commenting_disabled_reason(project)).to eq 'commenting_disabled'

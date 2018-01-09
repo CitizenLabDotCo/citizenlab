@@ -3,9 +3,8 @@ class SideFxIdeaService
   include SideFxHelper
 
   def before_create idea, user
-    if idea.project && idea.phases.empty?
-      set_phases idea
-    end
+    check_participation_context(idea, user)
+    set_phase(idea)
   end
 
   def after_create idea, user
@@ -42,6 +41,25 @@ class SideFxIdeaService
   end
 
 
+  private
+
+  def check_participation_context idea, user
+    pcs = ParticipationContextService.new
+    project = idea.project
+    if project
+      disallowed_reason = pcs.posting_disabled_reason(project)
+      if disallowed_reason
+        raise ClErrors::TransactionError.new(error_key: disallowed_reason)
+      end
+    end
+  end
+
+  def set_phase idea
+    if idea.project && idea.phases.empty?
+      idea.phase_ids = [TimelineService.new.current_phase(idea.project)]
+    end
+  end
+
   def add_autovote idea
     idea.votes.create!(mode: 'up', user: idea.author)
     idea.reload
@@ -54,20 +72,6 @@ class SideFxIdeaService
   def log_activity_jobs_after_published idea, user
     LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'published', user, idea.created_at.to_i)
     LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'first published by user', user, idea.created_at.to_i)
-  end
-
-  def set_phases idea
-    if idea.project
-      timeline_service = TimelineService.new
-      if timeline_service.has_timeline idea.project
-        current_phase = timeline_service.current_phase(idea.project)
-        if current_phase && (current_phase.participation_method == 'ideation')
-          idea.phase_ids = timeline_service.active_phases(idea.project).map(&:id)
-        else
-          raise ClErrors::TransactionError.new(error_key: :project_without_active_ideation_phase, code: 422, message: 'cannot add an idea to a project that has no active ideation phase')
-        end
-      end
-    end
   end
 
 end

@@ -172,9 +172,9 @@ FactoryGirl.define do
       process_type 'continuous'
       participation_method 'ideation'
       posting_enabled true
-      commenting_enabled false
+      commenting_enabled true
       voting_enabled true
-      voting_method 'limited'
+      voting_method 'unlimited'
       voting_limited_max 7
     end
 

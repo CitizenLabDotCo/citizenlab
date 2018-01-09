@@ -20,6 +20,8 @@ class WebApi::V1::VotesController < ApplicationController
     @vote.user ||= current_user
     authorize @vote
 
+    SideFxVoteService.new.before_create(@vote, current_user)
+
     if @vote.save
       SideFxVoteService.new.after_create(@vote, current_user)
       render json: @vote, status: :created
@@ -73,6 +75,9 @@ class WebApi::V1::VotesController < ApplicationController
           mode: mode
         )
         authorize @new_vote
+
+        SideFxVoteService.new.before_create(@new_vote, current_user)
+
         if @new_vote.save
           SideFxVoteService.new.after_create(@new_vote, current_user)
           render json: @vote, status: :created
