@@ -21,6 +21,7 @@ class Project < ApplicationRecord
 
   VISIBLE_TOS = %w(public groups admins)
   PROCESS_TYPES = %w(timeline continuous)
+  PRESENTATION_MODES = %w(card map)
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
@@ -35,12 +36,14 @@ class Project < ApplicationRecord
     }
   }
   validates :process_type, presence: true, inclusion: {in: PROCESS_TYPES}
+  validates :presentation_mode, presence: true, inclusion: {in: PRESENTATION_MODES}
 
   before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
   before_validation :set_visible_to, on: :create
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :sanitize_description_multiloc, if: :description_multiloc
+  before_validation :set_presentation_mode, on: :create
 
 
   scope :with_all_areas, (Proc.new do |area_ids|
@@ -90,6 +93,10 @@ class Project < ApplicationRecord
 
   def set_process_type
     self.process_type ||= 'timeline'
+  end
+
+  def set_presentation_mode
+    self.presentation_mode ||= 'card'
   end
 
 end

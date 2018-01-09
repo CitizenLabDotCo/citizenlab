@@ -42,17 +42,17 @@ class LogoUploader < CarrierWave::Uploader::Base
 
   version :small do
     process resize_to_limit: [nil,40]
-    process optimize: [{ quality: 90, quiet: true }]
+    # process optimize: [{ quality: 90, quiet: true }]
   end
 
   version :medium do
     process resize_to_limit: [nil,80]
-    process optimize: [{ quality: 90, quiet: true }]
+    # process optimize: [{ quality: 90, quiet: true }]
   end
 
   version :large do
     process resize_to_limit: [nil,160]
-    process optimize: [{ quality: 90, quiet: true }]
+    # process optimize: [{ quality: 90, quiet: true }]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

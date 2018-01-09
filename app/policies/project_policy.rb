@@ -63,6 +63,7 @@ class ProjectPolicy < ApplicationPolicy
       :voting_enabled,
       :voting_method,
       :voting_limited_max,
+      :presentation_mode,
       title_multiloc: I18n.available_locales, 
       description_multiloc: I18n.available_locales,
       description_preview_multiloc: I18n.available_locales,
