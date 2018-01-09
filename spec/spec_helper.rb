@@ -136,6 +136,9 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  # By default, skip the slow tests. Can be overriden on the command line.
+  config.filter_run_excluding slow_test: true
+
 end
 
 RspecApiDocumentation.configure do |config|

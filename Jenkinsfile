@@ -39,6 +39,13 @@ pipeline {
       }
     }
 
+    stage('Test slow tests (tenant templates)') {
+      when { branch 'master' }
+      steps {
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e SPEC_OPTS="-t slow_test" web bundle exec rake spec'
+      }
+    }
+
     stage('Push docker image tagged latest') {
       when { branch 'master' }
       steps {
