@@ -61,4 +61,16 @@ export default defineMessages({
     id: 'app.containers.Projects.phaseNumber',
     defaultMessage: 'Phase {phaseNumber}',
   },
+  activePhase: {
+    id: 'app.containers.Projects.activePhase',
+    defaultMessage: 'Active phase. Ends on {date}.',
+  },
+  futurePhase: {
+    id: 'app.containers.Projects.futurePhase',
+    defaultMessage: 'Phase starts on {date}.',
+  },
+  pastPhase: {
+    id: 'app.containers.Projects.pastPhase',
+    defaultMessage: 'Phase ended on {date}.',
+  },
 });
