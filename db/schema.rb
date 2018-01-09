@@ -284,6 +284,7 @@ ActiveRecord::Schema.define(version: 20180108153406) do
     t.integer "ideas_count", default: 0, null: false
     t.string "visible_to", default: "public", null: false
     t.jsonb "description_preview_multiloc", default: {}
+    t.string "presentation_mode", default: "card", null: false
     t.string "participation_method", default: "ideation"
     t.boolean "posting_enabled", default: true
     t.boolean "commenting_enabled", default: true
