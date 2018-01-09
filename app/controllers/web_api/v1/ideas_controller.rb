@@ -1,7 +1,7 @@
 class WebApi::V1::IdeasController < ApplicationController
 
   before_action :set_idea, only: [:show, :update, :destroy]
-  skip_after_action :verify_authorized, only: [:index_xlsx]
+  skip_after_action :verify_authorized, only: [:index_xlsx, :index_idea_markers]
   
 
   def index
@@ -68,7 +68,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     @idea_ids = @ideas.map(&:id)
 
-    render json: @ideas, serializer: WebApi::V1::IdeaMarkerSerializer
+    render json: @ideas, each_serializer: WebApi::V1::IdeaMarkerSerializer
   end
 
   def index_xlsx

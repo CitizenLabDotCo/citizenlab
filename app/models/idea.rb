@@ -74,7 +74,7 @@ class Idea < ApplicationRecord
   end)
 
   scope :with_bounding_box, (Proc.new do |coordinates|
-    x1,y1,x2,y2 = coordinates
+    x1,y1,x2,y2 = eval(coordinates)
     where("location_point && ST_MakeEnvelope(?, ?, ?, ?)", x1, y1, x2, y2)
   end)
 
