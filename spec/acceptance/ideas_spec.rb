@@ -178,6 +178,56 @@ resource "Ideas" do
     end
   end
 
+  get "web_api/v1/ideas/as_markers" do
+    before do
+      locations = [[51.044039,3.716964],[50.845552,4.357355],[50.640255,5.571848],[50.950772,4.308304],[51.215929,4.422602],[50.453848,3.952217],[-27.148983,-109.424659]] 
+      placenames = ['Ghent', 'Brussels', 'Liège', 'Meise', 'Antwerp', 'Mons', 'Hanga Roa']
+      @ideas.each do |i|
+        i.location_point_geojson = { "type" => "Point", "coordinates" => locations.pop }
+        i.title_multiloc['en'] = placenames.pop
+        i.publication_status = 'published'
+        i.save!
+      end
+    end
+
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of ideas per page"
+    end
+    parameter :topics, 'Filter by topics (OR)', required: false
+    parameter :areas, 'Filter by areas (OR)', required: false
+    parameter :project, 'Filter by project', required: false
+    parameter :phase, 'Filter by project phase', required: false
+    parameter :author, 'Filter by author (user id)', required: false
+    parameter :idea_status, 'Filter by status (idea status id)', required: false
+    parameter :search, 'Filter by searching in title, body and author name', required: false
+    parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
+    parameter :bounding_box, "Given an [x1,y1,x2,y2] array of doubles (x being latitude and y being longitude), the idea markers are filtered to only retain those within the (x1,y1)-(x2,y2) box.", required: false
+
+    example "List all idea markers within a bounding box" do
+      do_request(bounding_box: "[51.208758,3.224363,50.000667,5.715281]") # Bruges-Bastogne
+
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 5
+      expect(json_response[:data].map{|d| d.dig(:attributes, :title_multiloc, :en)}.sort).to match ['Ghent', 'Brussels', 'Liège', 'Meise', 'Mons'].sort
+    end
+
+    example "List all idea markers in a phase of a project", document: false do
+      pr = create(:project_with_phases)
+      ph1 = pr.phases.first
+      ph2 = pr.phases.second
+      i1 = create(:idea, phases: [ph1], project: pr)
+      i2 = create(:idea, phases: [ph2], project: pr)
+      i3 = create(:idea, phases: [ph1, ph2], project: pr)
+
+      do_request(phase: ph2.id)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].map{|d| d[:id]}).to match [i2.id, i3.id]
+    end
+  end
+
   get "web_api/v1/ideas/as_xlsx" do
     parameter :project, 'Filter by project', required: false
 

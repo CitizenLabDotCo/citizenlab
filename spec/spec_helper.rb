@@ -112,7 +112,7 @@ RSpec.configure do |config|
   # from https://github.com/influitive/apartment/wiki/Testing-Your-Application
   config.before(:suite) do
     # Clean all tables to start
-    DatabaseCleaner.clean_with :truncation
+    DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
     # Use transactions for tests
     DatabaseCleaner.strategy = :transaction
     # Truncating doesn't drop schemas, ensure we're clean here, app *may not* exist
@@ -135,6 +135,9 @@ RSpec.configure do |config|
     # Rollback transaction
     DatabaseCleaner.clean
   end
+
+  # By default, skip the slow tests. Can be overriden on the command line.
+  config.filter_run_excluding slow_test: true
 
 end
 

@@ -14,8 +14,8 @@ describe TenantTemplateService do
 
   end
 
-  describe "apply_template" do
-    it "Successfully applies all templates (residing in config/tenant_templates)" do  
+  describe "apply_template", slow_test: true do
+    it "Successfully applies all templates (residing in config/tenant_templates)" do 
       service.available_templates.map do |template|
         name = template.split('_').join('')
         Tenant.create!({
@@ -27,12 +27,13 @@ describe TenantTemplateService do
             core: {
               allowed: true,
               enabled: true,
-              locales: ['en','nl', 'fr'],
+              locales: ['en','nl','fr','de'],
               organization_type: 'medium_city',
               organization_name: {
                 "en" => Faker::Address.city,
                 "nl" => Faker::Address.city,
-                "fr" => Faker::Address.city
+                "fr" => Faker::Address.city,
+                "de" => Faker::Address.city
               },
               timezone: "Europe/Brussels",
               color_main: Faker::Color.hex_color,
