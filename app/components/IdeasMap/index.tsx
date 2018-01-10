@@ -57,12 +57,12 @@ export default class IdeasMap extends React.Component<Props, State> {
 
   selectIdea = (id) => {
     this.setState({ selectedIdea: find(this.props.ideas, { id }) as IIdeaData });
-    this.leafletElement.invalidateSize();
+    if (this.leafletElement) this.leafletElement.invalidateSize();
   }
 
   deselectIdea = () => {
     this.setState({ selectedIdea: null });
-    this.leafletElement.invalidateSize();
+    if (this.leafletElement) this.leafletElement.invalidateSize();
   }
 
   bindMap = (mapComponent) => {
