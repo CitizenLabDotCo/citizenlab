@@ -9,11 +9,11 @@ models:
     bio_multiloc:
       en: 
     gender: male
-    birthyear: 1950
+    birthyear: 1957
     domicile: 
-    education: 6
+    education: 5
     password: CitizenLab=123
-    remote_avatar_url: https://cdn.pixabay.com/photo/2014/07/09/10/04/man-388104_960_720.jpg
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573977/man-388104_960_720_dfehjy.jpg
   - &6
     email: citizenlab+2@citizenlab.co
     first_name: Annie
@@ -22,12 +22,12 @@ models:
     bio_multiloc:
       en: 
     gender: female
-    birthyear: 1961
+    birthyear: 
     domicile: outside
-    education: 8
+    education: 1
     password: CitizenLab=123
-    remote_avatar_url: http://www.kouhl.com/kouhl2014/wp-content/uploads/2014/11/smiling-woman.jpg
-  - &12
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573998/smiling-woman_kdsaal.jpg
+  - &11
     email: citizenlab+3@citizenlab.co
     first_name: Emma
     last_name: Murphy
@@ -35,11 +35,11 @@ models:
     bio_multiloc:
       en: 
     gender: female
-    birthyear: 1999
+    birthyear: 1962
     domicile: outside
-    education: 1
+    education: 4
     password: CitizenLab=123
-    remote_avatar_url: http://www.becomingtia.com/wp-content/uploads/2017/08/tiamorrison-profile-photo-2-copy.png
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515574018/tiamorrison-profile-photo-2-copy_pcnsxm.png
   - &8
     email: citizenlab+4@citizenlab.co
     first_name: Chad
@@ -48,11 +48,11 @@ models:
     bio_multiloc:
       en: 
     gender: male
-    birthyear: 2005
+    birthyear: 1985
     domicile: outside
     education: 5
     password: CitizenLab=123
-    remote_avatar_url: https://cdn.pixabay.com/photo/2015/07/09/22/04/man-838636_960_720.jpg
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515574041/man-838636_960_720_f3i6ki.jpg
   topic:
   - &29
     title_multiloc: topics.infrastructure
@@ -87,7 +87,7 @@ models:
   - title_multiloc: topics.education
     description_multiloc: topics.education_description
   idea_status:
-  - &13
+  - &12
     title_multiloc: statuses.proposed
     ordering: 100
     code: proposed
@@ -99,13 +99,13 @@ models:
     code: under_consideration
     color: "#29ABD0"
     description_multiloc: statuses.under_consideration_description
-  - &11
+  - &14
     title_multiloc: statuses.accepted
     ordering: 300
     code: accepted
     color: "#17C37B"
     description_multiloc: statuses.accepted_description
-  - &14
+  - &13
     title_multiloc: statuses.rejected
     ordering: 400
     code: rejected
@@ -165,15 +165,15 @@ models:
         city.</p>\n"
     remote_header_bg_url: 
   project_image:
-  - remote_image_url: http://static.tvtropes.org/pmwiki/pub/images/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a.png
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573730/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a_i7y6hj.png
     project_ref: *1
-  - remote_image_url: http://blogs.baylor.edu/laurentaylor4/files/2012/11/Rugby_town_centre-2ay0y80.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573758/Rugby_town_centre-2ay0y80_yza0pu.jpg
     project_ref: *2
-  - remote_image_url: https://www.grandlyon.com/fileadmin/user_upload/media/images/nature/nature_parcdegerland_ldaniere_860.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573788/nature_parcdegerland_ldaniere_860_sdkqs1.jpg
     project_ref: *3
-  - remote_image_url: http://4.bp.blogspot.com/-m6HlbbRy6rE/T5nDAo0pzWI/AAAAAAAAAIs/3HIJwTtef_E/s1600/IMG_1921_2.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573806/IMG_1921_2_wrdghk.jpg
     project_ref: *4
-  - remote_image_url: http://www.cityofsydney.nsw.gov.au/__data/assets/image/0017/102491/varieties/featured.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573833/featured_lxse5u.jpg
     project_ref: *5
   idea:
   - &15
@@ -214,7 +214,7 @@ models:
     author_ref: *10
     project_ref: *2
     areas: []
-    idea_status_ref: *11
+    idea_status_ref: *9
     publication_status: published
   - &18
     title_multiloc:
@@ -225,7 +225,7 @@ models:
         parking, limited public transportation, etc.). I suggest that the city launches
         a free shuttle to go from the biggest residential areas to the city centre.
         They can be electrical as well in order to remain an eco-friendly solution.</p>\n"
-    author_ref: *12
+    author_ref: *11
     project_ref: *2
     areas: []
     idea_status_ref: *9
@@ -243,7 +243,7 @@ models:
     author_ref: *10
     project_ref: *2
     areas: []
-    idea_status_ref: *11
+    idea_status_ref: *9
     publication_status: published
   - &20
     title_multiloc:
@@ -258,7 +258,7 @@ models:
     author_ref: *6
     project_ref: *3
     areas: []
-    idea_status_ref: *9
+    idea_status_ref: *12
     publication_status: published
   - &21
     title_multiloc:
@@ -269,10 +269,10 @@ models:
         when they could be set aside and serve another purpose like organic fertilizer
         for instance. To do so, we should provide the citizens with special boxes
         or bags, then it could be collected with the usual garbage and sorted afterwards.</p>\n"
-    author_ref: *12
+    author_ref: *11
     project_ref: *3
     areas: []
-    idea_status_ref: *11
+    idea_status_ref: *9
     publication_status: published
   - &22
     title_multiloc:
@@ -300,10 +300,10 @@ models:
         few chairs and tables. It would really attract more people to the park and
         it would be a nice place to take a break during long park walks at the weekend.
         Maybe one of the local coffee shops in town could run this place?</p>\n"
-    author_ref: *12
+    author_ref: *11
     project_ref: *4
     areas: []
-    idea_status_ref: *7
+    idea_status_ref: *14
     publication_status: published
   - &24
     title_multiloc:
@@ -317,7 +317,7 @@ models:
     author_ref: *10
     project_ref: *5
     areas: []
-    idea_status_ref: *11
+    idea_status_ref: *9
     publication_status: published
   - &25
     title_multiloc:
@@ -331,7 +331,7 @@ models:
     author_ref: *6
     project_ref: *5
     areas: []
-    idea_status_ref: *7
+    idea_status_ref: *12
     publication_status: published
   - &26
     title_multiloc:
@@ -346,125 +346,125 @@ models:
     author_ref: *10
     project_ref: *5
     areas: []
-    idea_status_ref: *14
+    idea_status_ref: *12
     publication_status: published
   vote:
   - mode: up
-    user_ref: *12
+    user_ref: *8
     votable_ref: *15
   - mode: up
     user_ref: *10
     votable_ref: *15
   - mode: up
-    user_ref: *8
+    user_ref: *11
     votable_ref: *15
   - mode: up
     user_ref: *6
     votable_ref: *15
   - mode: up
-    user_ref: *12
+    user_ref: *6
     votable_ref: *16
   - mode: up
-    user_ref: *6
+    user_ref: *8
+    votable_ref: *16
+  - mode: up
+    user_ref: *11
     votable_ref: *16
   - mode: up
     user_ref: *10
     votable_ref: *16
   - mode: up
-    user_ref: *8
-    votable_ref: *16
-  - mode: up
-    user_ref: *8
+    user_ref: *11
     votable_ref: *17
   - mode: up
-    user_ref: *6
+    user_ref: *8
     votable_ref: *17
   - mode: up
     user_ref: *10
     votable_ref: *17
   - mode: down
-    user_ref: *12
+    user_ref: *6
     votable_ref: *17
   - mode: up
-    user_ref: *6
-    votable_ref: *18
-  - mode: up
     user_ref: *10
-    votable_ref: *18
-  - mode: up
-    user_ref: *12
     votable_ref: *18
   - mode: up
     user_ref: *8
     votable_ref: *18
   - mode: up
+    user_ref: *11
+    votable_ref: *18
+  - mode: up
+    user_ref: *6
+    votable_ref: *18
+  - mode: up
     user_ref: *8
+    votable_ref: *19
+  - mode: up
+    user_ref: *11
+    votable_ref: *19
+  - mode: up
+    user_ref: *6
     votable_ref: *19
   - mode: up
     user_ref: *10
     votable_ref: *19
   - mode: up
-    user_ref: *12
-    votable_ref: *19
-  - mode: up
-    user_ref: *6
-    votable_ref: *19
-  - mode: up
-    user_ref: *6
+    user_ref: *11
     votable_ref: *20
   - mode: up
     user_ref: *8
     votable_ref: *20
   - mode: up
-    user_ref: *10
+    user_ref: *6
     votable_ref: *20
   - mode: down
-    user_ref: *12
+    user_ref: *10
     votable_ref: *20
   - mode: up
-    user_ref: *12
-    votable_ref: *21
-  - mode: up
-    user_ref: *6
-    votable_ref: *21
-  - mode: down
-    user_ref: *8
+    user_ref: *10
     votable_ref: *21
   - mode: up
     user_ref: *8
+    votable_ref: *21
+  - mode: down
+    user_ref: *11
+    votable_ref: *21
+  - mode: up
+    user_ref: *11
     votable_ref: *22
   - mode: up
-    user_ref: *12
-    votable_ref: *22
-  - mode: down
     user_ref: *6
     votable_ref: *22
+  - mode: down
+    user_ref: *8
+    votable_ref: *22
+  - mode: up
+    user_ref: *8
+    votable_ref: *23
   - mode: up
     user_ref: *6
     votable_ref: *23
   - mode: up
-    user_ref: *12
+    user_ref: *11
     votable_ref: *23
   - mode: up
     user_ref: *10
     votable_ref: *23
   - mode: up
     user_ref: *8
-    votable_ref: *23
-  - mode: up
-    user_ref: *12
     votable_ref: *24
   - mode: up
-    user_ref: *6
-    votable_ref: *24
-  - mode: down
     user_ref: *10
     votable_ref: *24
   - mode: down
-    user_ref: *8
+    user_ref: *11
+    votable_ref: *24
+  - mode: down
+    user_ref: *6
     votable_ref: *24
   - mode: up
-    user_ref: *12
+    user_ref: *10
     votable_ref: *25
   - mode: up
     user_ref: *8
@@ -473,13 +473,13 @@ models:
     user_ref: *6
     votable_ref: *25
   - mode: up
-    user_ref: *10
+    user_ref: *11
     votable_ref: *25
   - mode: up
-    user_ref: *8
+    user_ref: *10
     votable_ref: *26
   - mode: down
-    user_ref: *10
+    user_ref: *11
     votable_ref: *26
   ideas_topic:
   - idea_ref: *15
@@ -499,29 +499,29 @@ models:
   - idea_ref: *23
     topic_ref: *30
   idea_image:
-  - remote_image_url: http://www.forms-surfaces.com/sites/default/files/imagecache/gal-reg-2x/galleries/images/5.5.2_bike_garden_setting_4057_05152012.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515398/5.5.2_bike_garden_setting_4057_05152012_geoe3e.jpg
     idea_ref: *15
-  - remote_image_url: http://orig05.deviantart.net/4c75/f/2011/268/d/6/empty_city_road_by_spooky_dream-d4avkt3.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515416/empty_city_road_by_spooky_dream-d4avkt3_nhl6yf.jpg
     idea_ref: *16
-  - remote_image_url: https://markjorgy.files.wordpress.com/2013/01/night-bus.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515437/night-bus_l5xc4n.jpg
     idea_ref: *17
-  - remote_image_url: http://image.made-in-china.com/2f0j00jeotrzSWLCbJ/Electric-Shuttle-Bus-SHT-T14-.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515453/Electric-Shuttle-Bus-SHT-T14-_ehqq6n.jpg
     idea_ref: *18
-  - remote_image_url: http://c8.alamy.com/comp/D0KXFH/norwich-market-city-centre-street-scene-in-the-evening-norfolk-england-D0KXFH.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515469/norwich-market-city-centre-street-scene-in-the-evening-norfolk-england-D0KXFH_bixl7v.jpg
     idea_ref: *19
-  - remote_image_url: https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/NEA_recycling_bins%2C_Orchard_Road.JPG/1200px-NEA_recycling_bins%2C_Orchard_Road.JPG
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515489/1200px-NEA_recycling_bins_2C_Orchard_Road_pwpncj.jpg
     idea_ref: *20
-  - remote_image_url: http://www.zerowasteeurope.eu/wp-content/uploads/2014/10/organic-waste.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515509/organic-waste_g0nyf1.jpg
     idea_ref: *21
-  - remote_image_url: http://images.midilibre.fr/images/2017/01/10/dans-un-premier-temps-il-s-agira-de-rappels-a-l-ordre_2245789_667x333.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515527/dans-un-premier-temps-il-s-agira-de-rappels-a-l-ordre_2245789_667x333_i86nvl.jpg
     idea_ref: *22
-  - remote_image_url: http://farm4.staticflickr.com/3477/4015932979_f495f4e5cf_z.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515547/4015932979_f495f4e5cf_z_o1cjo7.jpg
     idea_ref: *23
-  - remote_image_url: https://www.atlanticlibrary.org/sites/default/files/styles/public_computer_slideshow/public/public_computer_images/zzzfirstfloor.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515565/zzzfirstfloor_zffpzz.jpg
     idea_ref: *24
-  - remote_image_url: https://i.ytimg.com/vi/YVfIbKHvFkA/hqdefault.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515588/hqdefault_rltrx8.jpg
     idea_ref: *25
-  - remote_image_url: http://www.blog-concept.com/wp-content/uploads/2015/03/emailing1.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515609/emailing1_lv8sxz.jpg
     idea_ref: *26
   comment:
   - body_multiloc:
@@ -555,13 +555,13 @@ models:
   - body_multiloc:
       en: "<p>It would be a great way to promote local creators and make the city
         centre experience more fun I agree!</p>\n"
-    author_ref: *12
+    author_ref: *11
     idea_ref: *19
     parent_ref: 
   - body_multiloc:
       en: "<p>Cool idea but it would have to be a a kind of event that is really engaging,
         like a family day? Something people are excited to go to</p>\n"
-    author_ref: *12
+    author_ref: *11
     idea_ref: *20
     parent_ref: 
   - body_multiloc:
@@ -591,8 +591,8 @@ models:
     location_multiloc:
       en: Many different pubs, we start from the central place.
     project_ref: *1
-    start_at: 2017-10-22
-    end_at: 2017-10-23
+    start_at: 2019-01-05
+    end_at: 2019-01-06
   - title_multiloc:
       en: Sunday Brunch in the city centre
     description_multiloc:
@@ -601,8 +601,8 @@ models:
     location_multiloc:
       en: The coffee shop on the main square
     project_ref: *2
-    start_at: 2017-07-23
-    end_at: 2017-07-24
+    start_at: 2018-02-17
+    end_at: 2018-02-18
   - title_multiloc:
       en: Walk in Abbey Park
     description_multiloc:
@@ -612,8 +612,8 @@ models:
     location_multiloc:
       en: Entrance of Abbey Park
     project_ref: *4
-    start_at: 2017-04-23
-    end_at: 2017-04-24
+    start_at: 2018-05-07
+    end_at: 2018-05-08
   phase:
   - title_multiloc:
       en: Collecting ideas
@@ -621,153 +621,153 @@ models:
       en: "<p>Share your ideas to fight global warming within the city, this is your
         time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *1
-    start_at: 2016-12-31
-    end_at: 2017-03-03
+    start_at: 2018-08-26
+    end_at: 2018-10-24
   - title_multiloc:
       en: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
         like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
     project_ref: *1
-    start_at: 2017-03-03
-    end_at: 2017-03-29
+    start_at: 2018-10-24
+    end_at: 2018-11-16
   - title_multiloc:
       en: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *1
-    start_at: 2017-03-29
-    end_at: 2017-07-22
+    start_at: 2018-11-16
+    end_at: 2018-11-22
   - title_multiloc:
       en: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *1
-    start_at: 2017-07-22
-    end_at: 2017-08-02
+    start_at: 2018-11-22
+    end_at: 2019-03-17
   - title_multiloc:
       en: Collecting ideas
     description_multiloc:
       en: "<p>Share your ideas to make the city centre more lively, this is your time
         to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *2
-    start_at: 2017-08-02
-    end_at: 2017-08-26
+    start_at: 2019-03-17
+    end_at: 2019-05-20
   - title_multiloc:
       en: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
         like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
     project_ref: *2
-    start_at: 2017-08-26
-    end_at: 2017-11-26
+    start_at: 2019-05-20
+    end_at: 2019-07-04
   - title_multiloc:
       en: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *2
-    start_at: 2017-11-26
-    end_at: 2018-01-11
+    start_at: 2019-07-04
+    end_at: 2019-10-29
   - title_multiloc:
       en: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *2
-    start_at: 2018-01-11
-    end_at: 2018-03-17
+    start_at: 2019-10-29
+    end_at: 2019-12-21
   - title_multiloc:
       en: Collecting ideas
     description_multiloc:
       en: "<p>Share your ideas to improve the way we manage garbage, this is your
         time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *3
-    start_at: 2018-03-17
-    end_at: 2018-03-26
+    start_at: 2019-12-21
+    end_at: 2020-02-17
   - title_multiloc:
       en: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
         like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
     project_ref: *3
-    start_at: 2018-03-26
-    end_at: 2018-05-13
+    start_at: 2020-02-17
+    end_at: 2020-03-31
   - title_multiloc:
       en: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *3
-    start_at: 2018-05-13
-    end_at: 2018-05-16
+    start_at: 2020-03-31
+    end_at: 2020-04-21
   - title_multiloc:
       en: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *3
-    start_at: 2018-05-16
-    end_at: 2018-08-22
+    start_at: 2020-04-21
+    end_at: 2020-06-11
   - title_multiloc:
       en: Collecting ideas
     description_multiloc:
       en: "<p>Share your ideas on how the Abbey Park should be reorganised, this is
         your time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *4
-    start_at: 2018-08-22
-    end_at: 2018-12-19
+    start_at: 2020-06-11
+    end_at: 2020-07-16
   - title_multiloc:
       en: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
         like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
     project_ref: *4
-    start_at: 2018-12-19
-    end_at: 2019-02-05
+    start_at: 2020-07-16
+    end_at: 2020-10-02
   - title_multiloc:
       en: Analysis period
     description_multiloc:
       en: "<p>The most voted ideas will be examined and included (or not) into the
         mapping of the new park</p>\n"
     project_ref: *4
-    start_at: 2019-02-05
-    end_at: 2019-02-07
+    start_at: 2020-10-02
+    end_at: 2021-01-09
   - title_multiloc:
       en: Start of the reshaping of the park
     description_multiloc:
       en: "<p>The selected ideas will be put into place and implemented in the new
         park</p>\n"
     project_ref: *4
-    start_at: 2019-02-07
-    end_at: 2019-03-14
+    start_at: 2021-01-09
+    end_at: 2021-02-04
   - title_multiloc:
       en: Collecting ideas
     description_multiloc:
       en: "<p>Share your ideas to make the city more modern and digital, this is your
         time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *5
-    start_at: 2019-03-14
-    end_at: 2019-03-27
+    start_at: 2021-02-04
+    end_at: 2021-05-06
   - title_multiloc:
       en: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
         like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
     project_ref: *5
-    start_at: 2019-03-27
-    end_at: 2019-07-16
+    start_at: 2021-05-06
+    end_at: 2021-07-06
   - title_multiloc:
       en: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *5
-    start_at: 2019-07-16
-    end_at: 2019-08-12
+    start_at: 2021-07-06
+    end_at: 2021-09-07
   - title_multiloc:
       en: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *5
-    start_at: 2019-08-12
-    end_at: 2019-10-10
+    start_at: 2021-09-07
+    end_at: 2021-12-08
