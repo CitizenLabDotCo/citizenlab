@@ -318,6 +318,7 @@ if Apartment::Tenant.current == 'localhost'
   MAP_OFFSET = 0.5
 
   num_ideas.times do 
+    created_at = Faker::Date.between(1.year.ago, Time.now)
     idea = Idea.create({
       title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
       body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
@@ -327,8 +328,8 @@ if Apartment::Tenant.current == 'localhost'
       author: User.offset(rand(User.count)).first,
       project: (rand(5) != 0) ? Project.offset(rand(Project.count)).first : nil,
       publication_status: 'published',
-      published_at: Faker::Date.between(1.year.ago, Time.now),
-      created_at: Faker::Date.between(1.year.ago, Time.now),
+      published_at: Faker::Date.between(created_at, Time.now),
+      created_at: created_at,
       location_point: rand(2) == 0 ? nil : "POINT(#{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)})",
       location_description: rand(2) == 0 ? nil : Faker::Address.street_address
     })
