@@ -19,8 +19,8 @@ import { SectionField } from 'components/admin/Section';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
-import { EditorState, ContentState, convertFromHTML } from 'draft-js';
-import { getHtmlStringFromEditorState } from 'utils/editorTools';
+import { EditorState } from 'draft-js';
+import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // Typings
 import { API, Locale } from 'typings';
@@ -78,7 +78,7 @@ interface State {
 }
 
 export default class PageEditor extends React.Component<Props, State> {
-  subs: Rx.Subscription[] = [];
+  subscriptions: Rx.Subscription[];
   legalPages = without(LEGAL_PAGES, 'information');
 
   constructor(props: Props) {
@@ -95,42 +95,31 @@ export default class PageEditor extends React.Component<Props, State> {
       editorState: EditorState.createEmpty(),
       deployed: false,
     };
+    this.subscriptions = [];
   }
 
   componentWillMount() {
-    this.subs.push(
-      this.getPageSub(),
-      this.getLocale(),
-    );
+    const { slug } = this.props;
+    const locale$ = localeStream().observable;
+    const page$ = pageBySlugStream(slug).observable;
+
+    this.subscriptions = [
+      Rx.Observable.combineLatest(
+        locale$,
+        page$
+      ).subscribe(([locale, page]) => {        
+        this.setState({
+          locale,
+          editorState: getEditorStateFromHtmlString(get(page, `data.attributes.body_multiloc.${locale}`)),
+          page: (page ? page.data : null),
+          loading: false
+        });
+      })
+    ];
   }
 
   componentWillUnmount() {
-    this.subs.forEach(sub => sub.unsubscribe());
-  }
-
-  getPageSub = () => {
-    this.setState({ loading: true });
-    return Rx.Observable.combineLatest(
-      pageBySlugStream(this.props.slug).observable,
-      localeStream().observable
-    )
-    .subscribe(([response, locale]) => {
-      if (response) {
-        const blocksFromHtml = convertFromHTML(get(response, `data.attributes.body_multiloc.${locale}`, ''));
-        const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
-        const editorState = EditorState.createWithContent(editorContent);
-
-        this.setState({ editorState, page: response.data, loading: false });
-      }
-      this.setState({ loading: false });
-    });
-  }
-
-  getLocale = () => {
-    return localeStream().observable
-    .subscribe((locale) => {
-      this.setState({ locale });
-    });
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleTextChange = (editorState: EditorState) => {
@@ -194,6 +183,8 @@ export default class PageEditor extends React.Component<Props, State> {
 
     const pageAttrs = page ? { ...page.attributes, ...diff } : { ...diff };
 
+
+
     if (loading) {
       return null;
     }
@@ -226,6 +217,20 @@ export default class PageEditor extends React.Component<Props, State> {
             <Editor
               onChange={this.handleTextChange}
               value={editorState}
+              toolbarConfig={{
+                options: ['inline', 'list', 'link', 'image'],
+                inline: {
+                  options: ['bold', 'italic'],
+                },
+                list: {
+                  options: ['unordered', 'ordered'],
+                },
+                image: {
+                  urlEnabled: true,
+                  uploadEnabled: false,
+                  alignmentEnabled: false,
+                },
+              }}
             />
             <Error apiErrors={errors && errors.body_multiloc} />
           </SectionField>
