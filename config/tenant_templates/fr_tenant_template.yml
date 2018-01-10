@@ -1,7 +1,7 @@
 ---
 models:
   idea_status:
-  - &14
+  - &13
     title_multiloc: statuses.proposed
     ordering: 100
     code: proposed
@@ -13,13 +13,13 @@ models:
     code: under_consideration
     color: "#29ABD0"
     description_multiloc: statuses.under_consideration_description
-  - &30
+  - &16
     title_multiloc: statuses.accepted
     ordering: 300
     code: accepted
     color: "#17C37B"
     description_multiloc: statuses.accepted_description
-  - &12
+  - &27
     title_multiloc: statuses.rejected
     ordering: 400
     code: rejected
@@ -34,24 +34,24 @@ models:
   topic:
   - title_multiloc: topics.infrastructure
     description_multiloc: topics.infrastructure_description
-  - &78
+  - &79
     title_multiloc: topics.waste
     description_multiloc: topics.waste_description
-  - &77
+  - &78
     title_multiloc: topics.mobility
     description_multiloc: topics.mobility_description
   - title_multiloc: topics.technology
     description_multiloc: topics.technology_description
   - title_multiloc: topics.economy
     description_multiloc: topics.economy_description
-  - &79
+  - &80
     title_multiloc: topics.nature
     description_multiloc: topics.nature_description
   - title_multiloc: topics.sustainability
     description_multiloc: topics.sustainability_description
   - title_multiloc: topics.housing
     description_multiloc: topics.housing_description
-  - &80
+  - &81
     title_multiloc: topics.culture
     description_multiloc: topics.culture_description
   - title_multiloc: topics.citizenship
@@ -127,12 +127,12 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: 1943
+    birthyear: 1964
     domicile: outside
-    education: 
+    education: 5
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512914/TrollFace_zxtg0y.jpg
-  - &7
+  - &11
     email: princesslea@gmail.com
     first_name: Lea
     last_name: Skywalker
@@ -140,12 +140,12 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: 2011
+    birthyear: 1981
     domicile: outside
-    education: 5
+    education: 
     password: helpmeOB1
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512946/leia-princess-leia-organa-solo-skywalker-9301321-576-1010_wkiyc5.jpg
-  - &9
+  - &12
     email: bonjoursalut@gmail.com
     first_name: Loïc
     last_name: Didier
@@ -153,12 +153,12 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: 1955
+    birthyear: 1944
     domicile: outside
-    education: 2
+    education: 1
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512973/profile-1474295964-7c5694e2fc409f9ba430e094fee7f906_lgsoly.jpg
-  - &11
+  - &14
     email: hello@citoyen.fr
     first_name: Simone
     last_name: Weil
@@ -166,12 +166,12 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: 1954
+    birthyear: 1968
     domicile: outside
-    education: 
+    education: 4
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513004/simoneveil1_banhcd.jpg
-  - &12
+  - &15
     email: changerlemonde@now.org
     first_name: Jamie
     last_name: Oliver
@@ -179,12 +179,12 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: 1995
+    birthyear: 2008
     domicile: outside
-    education: 1
+    education: 4
     password: CitizenLab=123
     remote_avatar_url: 
-  - &13
+  - &17
     email: lavieestbelle@gmail.com
     first_name: 'Philippe '
     last_name: De Belgique
@@ -193,11 +193,11 @@ models:
       fr: 
     gender: male
     birthyear: 
-    domicile: 
+    domicile: outside
     education: 0
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513042/Philippe-de-Belgique_bajppp.jpg
-  - &14
+  - &18
     email: jamilia-test@citizenlab.co
     first_name: Jamila
     last_name: Kaidi
@@ -205,12 +205,12 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: 1982
+    birthyear: 2001
     domicile: outside
-    education: 3
+    education: 5
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513072/Portrait-8_irl86h.jpg
-  - &15
+  - &19
     email: feline-test@citizenlab.co
     first_name: Feline
     last_name: Esmé
@@ -218,12 +218,12 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: 2000
+    birthyear: 1972
     domicile: outside
-    education: 
+    education: 5
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513113/popin_2016_n2ubuf.jpg
-  - &17
+  - &20
     email: jan-test@citizenlab.co
     first_name: Jan
     last_name: Modestine
@@ -231,15 +231,275 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: 1947
+    birthyear: 1954
     domicile: outside
-    education: 
+    education: 2
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513141/platon-photographer-putin-man-of-the-year-portrait_i89wfw.jpg
-  - &18
+  - &21
     email: heino-test@citizenlab.co
     first_name: Heino
     last_name: Georgina
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: male
+    birthyear: 1980
+    domicile: outside
+    education: 3
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513176/66c297f1dcd085d2304f63c5ed612c0a--beauty-portrait-male-portraits_boonm6.jpg
+  - &22
+    email: eve-test@citizenlab.co
+    first_name: Eve
+    last_name: Gerd
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: female
+    birthyear: 1993
+    domicile: outside
+    education: 1
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513204/89c81ca5da657d45d323eff5b8ad7c69_iyaj7q.jpg
+  - &23
+    email: leonard-test@citizenlab.co
+    first_name: Léonard
+    last_name: Octave
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: male
+    birthyear: 1975
+    domicile: 
+    education: 6
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513238/49cd4c44d562e92d90a3a4c81ced02dc_smev5w.jpg
+  - &66
+    email: bill@citizenlab.co
+    first_name: Julien
+    last_name: Gabay
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: male
+    birthyear: 1929
+    domicile: outside
+    education: 3
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513264/16992834140_99815ee4ac_m_i4sl14.jpg
+  - &25
+    email: koen@citizenlab.co
+    first_name: Koen
+    last_name: Martin
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: male
+    birthyear: 1967
+    domicile: 
+    education: 2
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513301/bryan_cranston_0095_j8anml.jpg
+  - &26
+    email: rosanne-test@citizenlab.co
+    first_name: Rosanne
+    last_name: Yvette
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: female
+    birthyear: 1992
+    domicile: outside
+    education: 8
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513348/5dcf2c739263eb1e32ca1ef35d2664a8_j7m6et.jpg
+  - &28
+    email: christine-test@citizenlab.co
+    first_name: Christine
+    last_name: Rémy
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: female
+    birthyear: 1943
+    domicile: 
+    education: 6
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513461/juror-ford_ucbun5.jpg
+  - &29
+    email: katelijne-test@citizenlab.co
+    first_name: Katelijne
+    last_name: Bénédicte
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: female
+    birthyear: 1990
+    domicile: outside
+    education: 2
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513515/BethanyR_phbshm.jpg
+  - &30
+    email: nabil-test@citizenlab.co
+    first_name: Nabil
+    last_name: Zacharie
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: male
+    birthyear: 2007
+    domicile: outside
+    education: 5
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513541/dof2_apuqv8.jpg
+  - &74
+    email: khalida-test@citizenlab.co
+    first_name: Khalida
+    last_name: Adrienne
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: female
+    birthyear: 
+    domicile: outside
+    education: 4
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513566/83857__portrait-tips2_a6mq61.jpg
+  - &38
+    email: jules-test@citizenlab.co
+    first_name: Jules
+    last_name: Christiaens
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: male
+    birthyear: 1980
+    domicile: outside
+    education: 7
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513597/sherlock-season-4-featured-image_lho7jm.jpg
+  - &43
+    email: alphonsine-test@citizenlab.co
+    first_name: Alphonsine
+    last_name: Maël
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: female
+    birthyear: 1991
+    domicile: outside
+    education: 6
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513624/c644c101aad7a5b28f74526a50a2d7c1--rankin-photography-light-photography_fhwumb.jpg
+  - &31
+    email: timothee-test@citizenlab.co
+    first_name: Timothée
+    last_name: Fabrice
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: male
+    birthyear: 
+    domicile: outside
+    education: 7
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513649/51DLRByNOXL._UX250__g4ehve.jpg
+  - &32
+    email: bente-test@citizenlab.co
+    first_name: Bente
+    last_name: Ludo
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: male
+    birthyear: 1938
+    domicile: outside
+    education: 8
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513675/images_k3trq4.jpg
+  - &40
+    email: geraldine-test@citizenlab.co
+    first_name: Géraldine
+    last_name: Hieronymus
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: female
+    birthyear: 1934
+    domicile: outside
+    education: 4
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513706/6c44f9503011a7dd186449bd25f49f4b--painting-portraits-portrait-art_jd39dv.jpg
+  - &33
+    email: ghassan-test@citizenlab.co
+    first_name: Ghassan
+    last_name: Muhsina
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: male
+    birthyear: 1980
+    domicile: outside
+    education: 0
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513733/461482218-594x367_cuok3t.jpg
+  - &34
+    email: bartholomeus-test@citizenlab.co
+    first_name: Bartholomeus
+    last_name: Mailys
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: male
+    birthyear: 1953
+    domicile: outside
+    education: 2
+    password: CitizenLab=123
+    remote_avatar_url: 
+  - &47
+    email: claude-test@citizenlab.co
+    first_name: Claude
+    last_name: Loane
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: male
+    birthyear: 1987
+    domicile: outside
+    education: 8
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513841/4164298-miranda-kerr-4_dtozwg.jpg
+  - &35
+    email: kevin-test@citizenlab.co
+    first_name: Joséphine
+    last_name: Heintje
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: male
+    birthyear: 1958
+    domicile: 
+    education: 6
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513899/1_JvrUroQL_0QkqBqlY7Wb0A_c0m2wv.jpg
+  - &36
+    email: wietse@citizenlab.co
+    first_name: Alidéa
+    last_name: Lafolle
+    locale: fr
+    bio_multiloc:
+      fr: 
+    gender: male
+    birthyear: 1967
+    domicile: outside
+    education: 4
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513938/portrait-camera-mode-e_vgrjur.jpg
+  - &37
+    email: tim-test@citizenlab.co
+    first_name: Tim
+    last_name: Lucas
     locale: fr
     bio_multiloc:
       fr: 
@@ -248,268 +508,8 @@ models:
     domicile: outside
     education: 6
     password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513176/66c297f1dcd085d2304f63c5ed612c0a--beauty-portrait-male-portraits_boonm6.jpg
-  - &19
-    email: eve-test@citizenlab.co
-    first_name: Eve
-    last_name: Gerd
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 1995
-    domicile: outside
-    education: 3
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513204/89c81ca5da657d45d323eff5b8ad7c69_iyaj7q.jpg
-  - &20
-    email: leonard-test@citizenlab.co
-    first_name: Léonard
-    last_name: Octave
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 
-    domicile: outside
-    education: 0
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513238/49cd4c44d562e92d90a3a4c81ced02dc_smev5w.jpg
-  - &48
-    email: bill@citizenlab.co
-    first_name: Julien
-    last_name: Gabay
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 2009
-    domicile: outside
-    education: 7
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513264/16992834140_99815ee4ac_m_i4sl14.jpg
-  - &21
-    email: koen@citizenlab.co
-    first_name: Koen
-    last_name: Martin
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1970
-    domicile: outside
-    education: 
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513301/bryan_cranston_0095_j8anml.jpg
-  - &23
-    email: rosanne-test@citizenlab.co
-    first_name: Rosanne
-    last_name: Yvette
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 1959
-    domicile: outside
-    education: 6
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513348/5dcf2c739263eb1e32ca1ef35d2664a8_j7m6et.jpg
-  - &24
-    email: christine-test@citizenlab.co
-    first_name: Christine
-    last_name: Rémy
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 1932
-    domicile: outside
-    education: 4
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513461/juror-ford_ucbun5.jpg
-  - &25
-    email: katelijne-test@citizenlab.co
-    first_name: Katelijne
-    last_name: Bénédicte
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 1972
-    domicile: outside
-    education: 3
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513515/BethanyR_phbshm.jpg
-  - &26
-    email: nabil-test@citizenlab.co
-    first_name: Nabil
-    last_name: Zacharie
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1969
-    domicile: outside
-    education: 8
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513541/dof2_apuqv8.jpg
-  - &37
-    email: khalida-test@citizenlab.co
-    first_name: Khalida
-    last_name: Adrienne
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 1998
-    domicile: 
-    education: 6
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513566/83857__portrait-tips2_a6mq61.jpg
-  - &51
-    email: jules-test@citizenlab.co
-    first_name: Jules
-    last_name: Christiaens
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1941
-    domicile: 
-    education: 5
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513597/sherlock-season-4-featured-image_lho7jm.jpg
-  - &49
-    email: alphonsine-test@citizenlab.co
-    first_name: Alphonsine
-    last_name: Maël
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 2002
-    domicile: outside
-    education: 1
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513624/c644c101aad7a5b28f74526a50a2d7c1--rankin-photography-light-photography_fhwumb.jpg
-  - &27
-    email: timothee-test@citizenlab.co
-    first_name: Timothée
-    last_name: Fabrice
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1973
-    domicile: outside
-    education: 5
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513649/51DLRByNOXL._UX250__g4ehve.jpg
-  - &28
-    email: bente-test@citizenlab.co
-    first_name: Bente
-    last_name: Ludo
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 
-    domicile: outside
-    education: 
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513675/images_k3trq4.jpg
-  - &45
-    email: geraldine-test@citizenlab.co
-    first_name: Géraldine
-    last_name: Hieronymus
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 1938
-    domicile: outside
-    education: 8
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513706/6c44f9503011a7dd186449bd25f49f4b--painting-portraits-portrait-art_jd39dv.jpg
-  - &29
-    email: ghassan-test@citizenlab.co
-    first_name: Ghassan
-    last_name: Muhsina
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 2005
-    domicile: outside
-    education: 8
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513733/461482218-594x367_cuok3t.jpg
-  - &30
-    email: bartholomeus-test@citizenlab.co
-    first_name: Bartholomeus
-    last_name: Mailys
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 
-    domicile: outside
-    education: 7
-    password: CitizenLab=123
-    remote_avatar_url: 
-  - &40
-    email: claude-test@citizenlab.co
-    first_name: Claude
-    last_name: Loane
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 2009
-    domicile: outside
-    education: 7
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513841/4164298-miranda-kerr-4_dtozwg.jpg
-  - &31
-    email: kevin-test@citizenlab.co
-    first_name: Joséphine
-    last_name: Heintje
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1969
-    domicile: outside
-    education: 7
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513899/1_JvrUroQL_0QkqBqlY7Wb0A_c0m2wv.jpg
-  - &32
-    email: wietse@citizenlab.co
-    first_name: Alidéa
-    last_name: Lafolle
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1950
-    domicile: outside
-    education: 8
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513938/portrait-camera-mode-e_vgrjur.jpg
-  - &33
-    email: tim-test@citizenlab.co
-    first_name: Tim
-    last_name: Lucas
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1929
-    domicile: outside
-    education: 5
-    password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513972/Prof_Ertl-Portrait_pjih1y.jpg
-  - &59
+  - &57
     email: julien-test@citizenlab.co
     first_name: Julien
     last_name: Gabay
@@ -517,12 +517,12 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: 2003
+    birthyear: 1946
     domicile: outside
-    education: 
+    education: 8
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514015/500_flddap.jpg
-  - &47
+  - &50
     email: olivier.chaput@ecores.eu
     first_name: Olivier
     last_name: Chaput
@@ -530,9 +530,9 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: 
+    birthyear: 1963
     domicile: outside
-    education: 3
+    education: 6
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514041/pexels-photo-247917_eacbhh.jpg
   - &44
@@ -543,12 +543,12 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: 1963
+    birthyear: 1967
     domicile: outside
-    education: 7
+    education: 5
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514066/00d6436d2d9283f7ce61f87b07ae378e--portrait-men-male-portrait-photography_zmmcof.jpg
-  - &36
+  - &41
     email: odeleuze.bgm@wb.irisnet.be
     first_name: Olivier
     last_name: Deleuze
@@ -556,12 +556,12 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: 1932
+    birthyear: 1969
     domicile: outside
-    education: 7
+    education: 5
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514086/017840b7be8c4a19c57fd213eb8377a0--portrait-photography-men-face-photography_naxo9g.jpg
-  - &35
+  - &67
     email: steve.grinnaert@lahuulpe.be
     first_name: Steve
     last_name: Grinnaert
@@ -569,12 +569,12 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: 1986
+    birthyear: 1991
     domicile: outside
     education: 2
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514120/3df459479af007fed226ae39b9464af8--portrait-photography-men-photography-photos_pchsgx.jpg
-  - &55
+  - &53
     email: mathieu.levoir@citizenlab.co
     first_name: Mathieu
     last_name: Levoir
@@ -582,12 +582,12 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: 1980
+    birthyear: 1940
     domicile: outside
-    education: 4
+    education: 
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514148/black-white-portrait2_uutdfg.jpg
-  - &53
+  - &56
     email: deodat-test@citizenlab.co
     first_name: Déodat
     last_name: Diana
@@ -595,12 +595,12 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: 1964
+    birthyear: 1988
     domicile: outside
-    education: 5
+    education: 0
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514176/csm_Karakasoglu_Yasemin1_360cb6e01f_wgwl4a.jpg
-  - &58
+  - &52
     email: godfriend-test@citizenlab.co
     first_name: Godfried
     last_name: Katelijne
@@ -608,12 +608,12 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: 
+    birthyear: 1992
     domicile: outside
-    education: 8
+    education: 0
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514203/5607404f-fb91-4e9f-9522-9e3363f404a6-mahmoud-benazzouk-dentiste-_k5cjti.jpg
-  - &39
+  - &54
     email: olleh@citizenlab.co
     first_name: Wietse
     last_name: Champion
@@ -621,12 +621,12 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: 1980
+    birthyear: 2013
     domicile: outside
-    education: 2
+    education: 8
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514242/70971_portrait-benjamin-dhardemare_pcmftc.jpg
-  - &42
+  - &48
     email: julien.joxe@citizenlab.co
     first_name: Julien
     last_name: Joxe
@@ -634,75 +634,11 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: 1965
-    domicile: outside
-    education: 4
+    birthyear: 2000
+    domicile: 
+    education: 8
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514260/20170601183357-5506a2c2-cu_e355_sxpaba.jpg
-  topic:
-  - title_multiloc: topics.infrastructure
-    description_multiloc: topics.infrastructure_description
-  - &75
-    title_multiloc: topics.waste
-    description_multiloc: topics.waste_description
-  - &74
-    title_multiloc: topics.mobility
-    description_multiloc: topics.mobility_description
-  - title_multiloc: topics.technology
-    description_multiloc: topics.technology_description
-  - title_multiloc: topics.economy
-    description_multiloc: topics.economy_description
-  - &76
-    title_multiloc: topics.nature
-    description_multiloc: topics.nature_description
-  - title_multiloc: topics.sustainability
-    description_multiloc: topics.sustainability_description
-  - title_multiloc: topics.housing
-    description_multiloc: topics.housing_description
-  - &77
-    title_multiloc: topics.culture
-    description_multiloc: topics.culture_description
-  - title_multiloc: topics.citizenship
-    description_multiloc: topics.citizenship_description
-  - title_multiloc: topics.social
-    description_multiloc: topics.social_description
-  - title_multiloc: topics.health
-    description_multiloc: topics.health_description
-  - title_multiloc: topics.sport
-    description_multiloc: topics.sport_description
-  - title_multiloc: topics.education
-    description_multiloc: topics.education_description
-  idea_status:
-  - &8
-    title_multiloc: statuses.proposed
-    ordering: 100
-    code: proposed
-    color: "#84939E"
-    description_multiloc: statuses.proposed_description
-  - &22
-    title_multiloc: statuses.under_consideration
-    ordering: 200
-    code: under_consideration
-    color: "#29ABD0"
-    description_multiloc: statuses.under_consideration_description
-  - &10
-    title_multiloc: statuses.accepted
-    ordering: 300
-    code: accepted
-    color: "#17C37B"
-    description_multiloc: statuses.accepted_description
-  - &16
-    title_multiloc: statuses.rejected
-    ordering: 400
-    code: rejected
-    color: "#EF3E4A"
-    description_multiloc: statuses.rejected_description
-  - &6
-    title_multiloc: statuses.implemented
-    ordering: 500
-    code: implemented
-    color: "#B5DA23"
-    description_multiloc: statuses.implemented_description
   project:
   - &5
     title_multiloc:
@@ -741,15 +677,15 @@ models:
     remote_header_bg_url: 
   project_image:
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512629/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a_l9du3f.png
-    project_ref: *1
+    project_ref: *5
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512703/20161206_idea19_pdxell.jpg
-    project_ref: *2
+    project_ref: *6
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512756/nature_parcdegerland_ldaniere_860_tknqqd.jpg
-    project_ref: *3
+    project_ref: *7
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512843/2014-01-15-8b89955f5156c785ba1b9859bbc0e247_uak0gk.jpg
-    project_ref: *4
+    project_ref: *8
   idea:
-  - &34
+  - &39
     title_multiloc:
       fr: Créer une aire de covoiturage au centre de la ville
     body_multiloc:
@@ -782,9 +718,9 @@ models:
     author_ref: *11
     project_ref: *6
     areas: []
-    idea_status_ref: *12
+    idea_status_ref: *10
     publication_status: published
-  - &41
+  - &45
     title_multiloc:
       fr: Verbaliser les conducteurs seuls d'une infraction de première classe
     body_multiloc:
@@ -800,10 +736,10 @@ models:
         générations à venir se souviendront de nous comme des criminels égoistes ayant
         refusé la créativité politique pour répondre à l&#39;urgence environnementale.
         </p>\n"
-    author_ref: *13
+    author_ref: *12
     project_ref: *5
     areas: []
-    idea_status_ref: *14
+    idea_status_ref: *13
     publication_status: published
   - &46
     title_multiloc:
@@ -812,23 +748,23 @@ models:
       fr: "<p>Le parc de l&#39;église mériterait une plaine de jeu pour les enfants
         de la ville ; faisons appel à un paysagiste et redonnons à ce parc son utilité
         premère au coeur de la ville.</p>\n"
-    author_ref: *15
+    author_ref: *14
     project_ref: *7
     areas: []
-    idea_status_ref: *6
+    idea_status_ref: *10
     publication_status: published
-  - &50
+  - &49
     title_multiloc:
       fr: Offrir des places de théatre aux nouveaux bacheliers
     body_multiloc:
       fr: "<p>La culture est essentielle pour notre jeunesse, nous proposons d&#39;offrir
         des places de théatre à tous les jeunes ayant obtenus ou non leur baccalauréat.</p>\n"
-    author_ref: *12
-    project_ref: *4
+    author_ref: *15
+    project_ref: *8
     areas: []
-    idea_status_ref: *10
+    idea_status_ref: *16
     publication_status: published
-  - &50
+  - &51
     title_multiloc:
       fr: Ne plus avoir des poubelles en plastiques pour le rammassage des ordures
     body_multiloc:
@@ -837,12 +773,12 @@ models:
         faire le tri. En effet, les poubelles de compost ne peuvent être gardées plusieurs
         jours dans un logement sans générer un écosystème de moucherons et une odeur
         nauséabonde! </p>\n"
-    author_ref: *13
-    project_ref: *2
+    author_ref: *17
+    project_ref: *6
     areas: []
-    idea_status_ref: *10
+    idea_status_ref: *16
     publication_status: published
-  - &57
+  - &55
     title_multiloc:
       fr: Développer des garages à vélos collectifs en zone urbaine
     body_multiloc:
@@ -852,10 +788,10 @@ models:
         le bus. Ainsi, vous n&#39;hésiterez plus à rejoindre votre lieu de travail
         à vélo (avec une parie du chemin effectué en bus). Vous pourrez également
         effectuer le trajet aller à vélo et le trajet retour en bus. Pratique!</p>\n"
-    author_ref: *14
-    project_ref: *1
+    author_ref: *18
+    project_ref: *5
     areas: []
-    idea_status_ref: *6
+    idea_status_ref: *10
     publication_status: published
   - &58
     title_multiloc:
@@ -864,12 +800,12 @@ models:
       fr: "<p>construction d&#39;une piste cyclable le long du boulevard de la sauvenière
         \ pou facilité le déplacement de cycliste et ce avec un éventuelle raccordement
         au ravel long la Meuse.</p>\n"
-    author_ref: *15
-    project_ref: *1
+    author_ref: *19
+    project_ref: *5
     areas: []
-    idea_status_ref: *16
+    idea_status_ref: *13
     publication_status: published
-  - &56
+  - &59
     title_multiloc:
       fr: Navettes fluviales permanentes
     body_multiloc:
@@ -879,24 +815,24 @@ models:
         <p>Il est étonnant de constater la volonté de mettre en place un système de tram alors que les voies navigables à Liège sont libres, que les quais sont déjà aménagés et que différents endroits actuels seraient déjà propices à des embarcadères.  </p>
 
         <p>Il s&#39;agirait de multiplier les navettes déjà en place et d&#39;allonger les trajets, ajouter des destinations le long des quais de Meuse. Cela désengorgerait les rues de la cité ardente aux heures de pointes et permettrait sans aucun doute un accroissement de l&#39;intérêt touristique pour notre ville (cfr succès du service de navettes déjà en place).</p>
-    author_ref: *17
-    project_ref: *1
+    author_ref: *20
+    project_ref: *5
     areas: []
-    idea_status_ref: *10
+    idea_status_ref: *13
     publication_status: published
-  - &57
+  - &60
     title_multiloc:
       fr: Mettre en place des véhicules autonomes partagés
     body_multiloc:
       fr: |
         <p>L&#39;aménagement routier entrepris par La Ville de Liège avant l&#39;inauguration de la nouvelle gare paralyse le trafic de transit vers les Guillemins, les carrefours à feux mis en place en 2010 n&#39;ont pas solutionné le problème, dès lors, nous réclamons une étude globale pour équilibrer le flux de circulation  notamment que cette zone est desservie par les transports en commun ce qui oblige les navetteurs à descendre du véhicule du TEC et continuer le chemin à pied.
         Ne serait-il pas pertinent de prendre les mesures nécessaires pour réguler la circulation autour de la Gare des Guillemins et l&#39;avenue de l&#39;observatoire?</p>
-    author_ref: *18
-    project_ref: *1
+    author_ref: *21
+    project_ref: *5
     areas: []
     idea_status_ref: *16
     publication_status: published
-  - &60
+  - &61
     title_multiloc:
       fr: Créer un réseau cyclable cohérent et continu
     body_multiloc:
@@ -905,35 +841,35 @@ models:
         panneaux) pour les places pour personnes handicapées, les accès de garages,...
         Augmenter la sécurité au niveau des carrefours, des passages pour piétons,
         des quais    Vidéosurveillance étendue à titre de prévention</p>\n"
-    author_ref: *19
-    project_ref: *1
+    author_ref: *22
+    project_ref: *5
     areas: []
-    idea_status_ref: *6
+    idea_status_ref: *13
     publication_status: published
-  - &61
+  - &62
     title_multiloc:
       fr: Prolonger au delà de Liège l'utilisation des navettes fluviales
     body_multiloc:
       fr: "<p>Nous sommes piétons/PMR, cyclistes, usagers du TEC, de la SNCB, nous
         devons avoir le droit de voter pour nos besoins en démocratie directe participative</p>\n"
-    author_ref: *20
-    project_ref: *1
+    author_ref: *23
+    project_ref: *5
     areas: []
     idea_status_ref: *24
     publication_status: published
-  - &62
+  - &63
     title_multiloc:
       fr: Tram, Réseau Express Liégeois et deuxième phase
     body_multiloc:
       fr: |
         <p>Dans les rues à stationnement alternatif par quinzaine, les usagers ne changent pas de côté tous en même temps. De plus, il est fréquent que des usagers oublient de changer leur véhicule. Cela engendre à chaque quinzaine des difficultés de circulation ainsi que des risques d&#39;accident d&#39;autant plus importants lorsque la voirie concernée est fréquentée par des transports en commun.
         Pourquoi ne pas modifier la signalisation afin que l&#39;on se gare toujours du même côté.</p>
-    author_ref: *21
-    project_ref: *1
+    author_ref: *25
+    project_ref: *5
     areas: []
-    idea_status_ref: *22
+    idea_status_ref: *13
     publication_status: published
-  - &63
+  - &64
     title_multiloc:
       fr: Mettre en place des bus de nuit
     body_multiloc:
@@ -949,9 +885,9 @@ models:
     author_ref: *26
     project_ref: *5
     areas: []
-    idea_status_ref: *10
+    idea_status_ref: *27
     publication_status: published
-  - &64
+  - &65
     title_multiloc:
       fr: Sécuriser et achever le réseau piéton
     body_multiloc:
@@ -961,24 +897,24 @@ models:
         <p>Encourager la mobilité à vélo est une très bonne chose.  Mais il faut pouvoir déposer son vélo en sécurité pour pouvoir le récupérer --&gt; il faudrait développer des parkings vélos qui soient sécurisés (dispositifs anti-vol) et surveillés (par des personnes engagées par la Ville ou bénévoles).  On pourrait utiliser un système de jetons ou de tickets (comme dans les parkings voiture) permettant de récupérer son vélo en toute confiance.</p>
 
         <p>Autre idée : instaurer un système de &quot;scooter-sécurité &quot; permettant de contrôler (= limiter) le bruit et la vitesse des scooters qui perturbent la vie des habitants.</p>
-    author_ref: *27
+    author_ref: *28
     project_ref: *5
     areas: []
-    idea_status_ref: *10
+    idea_status_ref: *24
     publication_status: published
-  - &65
+  - &68
     title_multiloc:
       fr: Mettre des vélos à disposition en libreservice
     body_multiloc:
       fr: |
         <p>Elaborer un vrai plan global de la mobilité concernant à la fois Chênée, rue de Gaillarmont et rue de Bois-de-Breux.
         Plan de mobilité tenant compte notamment du développement prochain du CHU site des Bruyères et du nouveau quartier &quot;le Vergers de Fayenbois&quot; situé rue de Bois-de-Breux</p>
-    author_ref: *28
+    author_ref: *29
     project_ref: *5
     areas: []
-    idea_status_ref: *16
+    idea_status_ref: *24
     publication_status: published
-  - &66
+  - &69
     title_multiloc:
       fr: Des piétonniers accessibles aux PMR
     body_multiloc:
@@ -991,12 +927,12 @@ models:
         <p>Le quai Saint Léonard sera équipé via les travaux liés au tram. </p>
 
         <p>La partie entre le Val Benoit et le quai de Rome et la partie entre le pont Kennedy et la Place des Déportés seront aménagées via un budget spécifique.</p>
-    author_ref: *29
+    author_ref: *30
     project_ref: *5
     areas: []
-    idea_status_ref: *6
+    idea_status_ref: *16
     publication_status: published
-  - &67
+  - &70
     title_multiloc:
       fr: Interdire tout transit de véhicules dans l'hyper-centre
     body_multiloc:
@@ -1009,9 +945,9 @@ models:
     author_ref: *31
     project_ref: *5
     areas: []
-    idea_status_ref: *6
+    idea_status_ref: *10
     publication_status: published
-  - &68
+  - &71
     title_multiloc:
       fr: Funiculaire
     body_multiloc:
@@ -1021,9 +957,9 @@ models:
     author_ref: *32
     project_ref: *5
     areas: []
-    idea_status_ref: *6
+    idea_status_ref: *16
     publication_status: published
-  - &69
+  - &72
     title_multiloc:
       fr: Des ascenseurs à vélos dans les Coteaux
     body_multiloc:
@@ -1049,9 +985,9 @@ models:
     author_ref: *33
     project_ref: *7
     areas: []
-    idea_status_ref: *8
+    idea_status_ref: *24
     publication_status: published
-  - &70
+  - &73
     title_multiloc:
       fr: Des porte-vélos sur les bus
     body_multiloc:
@@ -1059,9 +995,9 @@ models:
     author_ref: *34
     project_ref: *7
     areas: []
-    idea_status_ref: *22
+    idea_status_ref: *13
     publication_status: published
-  - &71
+  - &75
     title_multiloc:
       fr: 'Interdire les 4x4 en ville! '
     body_multiloc:
@@ -1070,9 +1006,9 @@ models:
     author_ref: *35
     project_ref: *7
     areas: []
-    idea_status_ref: *8
+    idea_status_ref: *10
     publication_status: published
-  - &72
+  - &76
     title_multiloc:
       fr: Des Badges de localisation pour vélos
     body_multiloc:
@@ -1094,9 +1030,9 @@ models:
     author_ref: *36
     project_ref: *7
     areas: []
-    idea_status_ref: *6
+    idea_status_ref: *27
     publication_status: published
-  - &73
+  - &77
     title_multiloc:
       fr: Ticket de transport unique
     body_multiloc:
@@ -1107,451 +1043,451 @@ models:
     author_ref: *37
     project_ref: *5
     areas: []
-    idea_status_ref: *6
+    idea_status_ref: *13
     publication_status: published
   vote:
   - mode: up
-    user_ref: *17
-    votable_ref: *34
+    user_ref: *38
+    votable_ref: *39
+  - mode: up
+    user_ref: *40
+    votable_ref: *39
+  - mode: up
+    user_ref: *41
+    votable_ref: *39
+  - mode: up
+    user_ref: *26
+    votable_ref: *39
   - mode: up
     user_ref: *14
-    votable_ref: *34
+    votable_ref: *39
+  - mode: down
+    user_ref: *30
+    votable_ref: *39
+  - mode: up
+    user_ref: *30
+    votable_ref: *42
+  - mode: up
+    user_ref: *43
+    votable_ref: *42
+  - mode: up
+    user_ref: *38
+    votable_ref: *42
+  - mode: down
+    user_ref: *22
+    votable_ref: *42
+  - mode: down
+    user_ref: *44
+    votable_ref: *42
   - mode: up
     user_ref: *35
-    votable_ref: *34
+    votable_ref: *45
   - mode: up
-    user_ref: *36
-    votable_ref: *34
-  - mode: up
-    user_ref: *25
-    votable_ref: *34
-  - mode: down
-    user_ref: *37
-    votable_ref: *34
-  - mode: up
-    user_ref: *21
-    votable_ref: *38
-  - mode: up
-    user_ref: *32
-    votable_ref: *38
-  - mode: up
-    user_ref: *25
-    votable_ref: *38
-  - mode: down
-    user_ref: *39
-    votable_ref: *38
+    user_ref: *41
+    votable_ref: *45
   - mode: down
     user_ref: *40
-    votable_ref: *38
+    votable_ref: *45
+  - mode: down
+    user_ref: *26
+    votable_ref: *45
+  - mode: down
+    user_ref: *21
+    votable_ref: *45
   - mode: up
-    user_ref: *5
-    votable_ref: *41
+    user_ref: *44
+    votable_ref: *46
+  - mode: up
+    user_ref: *33
+    votable_ref: *46
+  - mode: up
+    user_ref: *36
+    votable_ref: *46
+  - mode: up
+    user_ref: *41
+    votable_ref: *46
+  - mode: up
+    user_ref: *40
+    votable_ref: *46
+  - mode: up
+    user_ref: *47
+    votable_ref: *46
+  - mode: down
+    user_ref: *26
+    votable_ref: *46
+  - mode: up
+    user_ref: *48
+    votable_ref: *49
   - mode: up
     user_ref: *23
-    votable_ref: *41
-  - mode: down
-    user_ref: *28
-    votable_ref: *41
-  - mode: down
-    user_ref: *42
-    votable_ref: *41
-  - mode: down
-    user_ref: *17
-    votable_ref: *41
-  - mode: up
-    user_ref: *19
-    votable_ref: *43
-  - mode: up
-    user_ref: *25
-    votable_ref: *43
-  - mode: up
-    user_ref: *17
-    votable_ref: *43
-  - mode: up
-    user_ref: *44
-    votable_ref: *43
-  - mode: up
-    user_ref: *42
-    votable_ref: *43
-  - mode: up
-    user_ref: *36
-    votable_ref: *43
-  - mode: down
-    user_ref: *45
-    votable_ref: *43
-  - mode: up
-    user_ref: *37
-    votable_ref: *46
-  - mode: up
-    user_ref: *47
-    votable_ref: *46
-  - mode: up
-    user_ref: *19
-    votable_ref: *46
-  - mode: down
-    user_ref: *48
-    votable_ref: *46
-  - mode: down
-    user_ref: *5
-    votable_ref: *46
-  - mode: up
-    user_ref: *49
-    votable_ref: *50
-  - mode: down
-    user_ref: *37
-    votable_ref: *50
-  - mode: down
-    user_ref: *40
-    votable_ref: *50
-  - mode: down
-    user_ref: *12
-    votable_ref: *50
-  - mode: down
-    user_ref: *51
-    votable_ref: *50
-  - mode: down
-    user_ref: *18
-    votable_ref: *50
-  - mode: down
-    user_ref: *27
-    votable_ref: *50
-  - mode: down
-    user_ref: *9
-    votable_ref: *50
-  - mode: up
-    user_ref: *14
-    votable_ref: *52
-  - mode: up
-    user_ref: *40
-    votable_ref: *52
-  - mode: up
-    user_ref: *49
-    votable_ref: *52
+    votable_ref: *49
   - mode: up
     user_ref: *15
-    votable_ref: *52
-  - mode: up
-    user_ref: *29
-    votable_ref: *52
+    votable_ref: *49
   - mode: down
-    user_ref: *53
-    votable_ref: *52
-  - mode: up
-    user_ref: *51
-    votable_ref: *54
-  - mode: up
-    user_ref: *39
-    votable_ref: *54
-  - mode: up
-    user_ref: *5
-    votable_ref: *54
-  - mode: down
-    user_ref: *31
-    votable_ref: *54
-  - mode: up
-    user_ref: *55
-    votable_ref: *56
-  - mode: up
-    user_ref: *30
-    votable_ref: *56
-  - mode: down
-    user_ref: *9
-    votable_ref: *56
-  - mode: up
-    user_ref: *30
-    votable_ref: *57
-  - mode: up
-    user_ref: *58
-    votable_ref: *57
-  - mode: up
-    user_ref: *51
-    votable_ref: *57
-  - mode: up
-    user_ref: *14
-    votable_ref: *57
-  - mode: up
-    user_ref: *59
-    votable_ref: *57
-  - mode: up
-    user_ref: *15
-    votable_ref: *57
-  - mode: up
-    user_ref: *17
-    votable_ref: *60
-  - mode: up
-    user_ref: *51
-    votable_ref: *60
-  - mode: up
-    user_ref: *42
-    votable_ref: *60
-  - mode: up
     user_ref: *20
-    votable_ref: *61
-  - mode: up
-    user_ref: *17
-    votable_ref: *62
-  - mode: up
-    user_ref: *18
-    votable_ref: *62
-  - mode: up
-    user_ref: *45
-    votable_ref: *62
-  - mode: up
-    user_ref: *9
-    votable_ref: *63
+    votable_ref: *49
+  - mode: down
+    user_ref: *50
+    votable_ref: *49
   - mode: up
     user_ref: *36
-    votable_ref: *63
-  - mode: up
-    user_ref: *53
-    votable_ref: *64
-  - mode: up
-    user_ref: *44
-    votable_ref: *64
-  - mode: up
+    votable_ref: *51
+  - mode: down
     user_ref: *15
-    votable_ref: *64
-  - mode: up
-    user_ref: *39
-    votable_ref: *64
-  - mode: up
-    user_ref: *35
-    votable_ref: *64
-  - mode: up
-    user_ref: *27
-    votable_ref: *64
+    votable_ref: *51
   - mode: down
-    user_ref: *28
-    votable_ref: *64
-  - mode: up
-    user_ref: *21
-    votable_ref: *65
-  - mode: up
-    user_ref: *39
-    votable_ref: *65
-  - mode: up
-    user_ref: *29
-    votable_ref: *65
-  - mode: down
-    user_ref: *14
-    votable_ref: *65
-  - mode: down
-    user_ref: *42
-    votable_ref: *65
-  - mode: up
-    user_ref: *13
-    votable_ref: *66
-  - mode: down
-    user_ref: *28
-    votable_ref: *66
-  - mode: down
-    user_ref: *31
-    votable_ref: *66
-  - mode: down
-    user_ref: *18
-    votable_ref: *66
-  - mode: up
-    user_ref: *15
-    votable_ref: *67
-  - mode: up
-    user_ref: *25
-    votable_ref: *67
-  - mode: up
-    user_ref: *33
-    votable_ref: *67
-  - mode: up
-    user_ref: *27
-    votable_ref: *67
-  - mode: up
-    user_ref: *47
-    votable_ref: *67
-  - mode: up
-    user_ref: *32
-    votable_ref: *67
-  - mode: down
-    user_ref: *18
-    votable_ref: *67
-  - mode: up
-    user_ref: *35
-    votable_ref: *68
-  - mode: up
-    user_ref: *29
-    votable_ref: *68
-  - mode: up
     user_ref: *19
-    votable_ref: *68
+    votable_ref: *51
   - mode: down
     user_ref: *12
-    votable_ref: *68
-  - mode: up
-    user_ref: *51
-    votable_ref: *69
-  - mode: up
-    user_ref: *42
-    votable_ref: *69
-  - mode: up
-    user_ref: *58
-    votable_ref: *69
-  - mode: up
-    user_ref: *35
-    votable_ref: *69
-  - mode: up
-    user_ref: *31
-    votable_ref: *69
-  - mode: up
-    user_ref: *35
-    votable_ref: *70
-  - mode: up
-    user_ref: *17
-    votable_ref: *70
-  - mode: up
-    user_ref: *7
-    votable_ref: *70
-  - mode: up
-    user_ref: *7
-    votable_ref: *71
-  - mode: up
-    user_ref: *28
-    votable_ref: *71
+    votable_ref: *51
+  - mode: down
+    user_ref: *52
+    votable_ref: *51
+  - mode: down
+    user_ref: *38
+    votable_ref: *51
+  - mode: down
+    user_ref: *53
+    votable_ref: *51
+  - mode: down
+    user_ref: *54
+    votable_ref: *51
   - mode: up
     user_ref: *11
-    votable_ref: *71
+    votable_ref: *55
   - mode: up
+    user_ref: *56
+    votable_ref: *55
+  - mode: up
+    user_ref: *57
+    votable_ref: *55
+  - mode: up
+    user_ref: *40
+    votable_ref: *55
+  - mode: up
+    user_ref: *43
+    votable_ref: *55
+  - mode: down
     user_ref: *33
-    votable_ref: *71
+    votable_ref: *55
+  - mode: up
+    user_ref: *28
+    votable_ref: *58
+  - mode: up
+    user_ref: *54
+    votable_ref: *58
+  - mode: up
+    user_ref: *52
+    votable_ref: *58
+  - mode: down
+    user_ref: *35
+    votable_ref: *58
+  - mode: up
+    user_ref: *11
+    votable_ref: *59
+  - mode: up
+    user_ref: *17
+    votable_ref: *59
+  - mode: down
+    user_ref: *22
+    votable_ref: *59
+  - mode: up
+    user_ref: *47
+    votable_ref: *60
+  - mode: up
+    user_ref: *11
+    votable_ref: *60
+  - mode: up
+    user_ref: *20
+    votable_ref: *60
+  - mode: up
+    user_ref: *9
+    votable_ref: *60
+  - mode: up
+    user_ref: *52
+    votable_ref: *60
+  - mode: up
+    user_ref: *30
+    votable_ref: *60
+  - mode: up
+    user_ref: *29
+    votable_ref: *61
+  - mode: up
+    user_ref: *35
+    votable_ref: *61
+  - mode: up
+    user_ref: *41
+    votable_ref: *61
+  - mode: up
+    user_ref: *26
+    votable_ref: *62
+  - mode: up
+    user_ref: *29
+    votable_ref: *63
+  - mode: up
+    user_ref: *56
+    votable_ref: *63
+  - mode: up
+    user_ref: *53
+    votable_ref: *63
+  - mode: up
+    user_ref: *47
+    votable_ref: *64
+  - mode: up
+    user_ref: *22
+    votable_ref: *64
+  - mode: up
+    user_ref: *41
+    votable_ref: *65
   - mode: up
     user_ref: *19
+    votable_ref: *65
+  - mode: up
+    user_ref: *66
+    votable_ref: *65
+  - mode: up
+    user_ref: *26
+    votable_ref: *65
+  - mode: up
+    user_ref: *67
+    votable_ref: *65
+  - mode: up
+    user_ref: *18
+    votable_ref: *65
+  - mode: down
+    user_ref: *31
+    votable_ref: *65
+  - mode: up
+    user_ref: *53
+    votable_ref: *68
+  - mode: up
+    user_ref: *36
+    votable_ref: *68
+  - mode: up
+    user_ref: *9
+    votable_ref: *68
+  - mode: down
+    user_ref: *17
+    votable_ref: *68
+  - mode: down
+    user_ref: *30
+    votable_ref: *68
+  - mode: up
+    user_ref: *40
+    votable_ref: *69
+  - mode: down
+    user_ref: *30
+    votable_ref: *69
+  - mode: down
+    user_ref: *47
+    votable_ref: *69
+  - mode: down
+    user_ref: *66
+    votable_ref: *69
+  - mode: up
+    user_ref: *25
+    votable_ref: *70
+  - mode: up
+    user_ref: *66
+    votable_ref: *70
+  - mode: up
+    user_ref: *37
+    votable_ref: *70
+  - mode: up
+    user_ref: *23
+    votable_ref: *70
+  - mode: up
+    user_ref: *50
+    votable_ref: *70
+  - mode: up
+    user_ref: *36
+    votable_ref: *70
+  - mode: down
+    user_ref: *52
+    votable_ref: *70
+  - mode: up
+    user_ref: *48
     votable_ref: *71
   - mode: up
-    user_ref: *59
+    user_ref: *43
     votable_ref: *71
   - mode: up
-    user_ref: *49
+    user_ref: *12
+    votable_ref: *71
+  - mode: down
+    user_ref: *47
+    votable_ref: *71
+  - mode: up
+    user_ref: *26
     votable_ref: *72
   - mode: up
     user_ref: *18
     votable_ref: *72
   - mode: up
-    user_ref: *55
+    user_ref: *15
+    votable_ref: *72
+  - mode: up
+    user_ref: *19
     votable_ref: *72
   - mode: up
     user_ref: *20
+    votable_ref: *72
+  - mode: up
+    user_ref: *22
     votable_ref: *73
+  - mode: up
+    user_ref: *31
+    votable_ref: *73
+  - mode: up
+    user_ref: *74
+    votable_ref: *73
+  - mode: up
+    user_ref: *25
+    votable_ref: *75
+  - mode: up
+    user_ref: *22
+    votable_ref: *75
+  - mode: up
+    user_ref: *56
+    votable_ref: *75
+  - mode: up
+    user_ref: *37
+    votable_ref: *75
+  - mode: up
+    user_ref: *26
+    votable_ref: *75
+  - mode: up
+    user_ref: *44
+    votable_ref: *75
+  - mode: up
+    user_ref: *56
+    votable_ref: *76
+  - mode: up
+    user_ref: *40
+    votable_ref: *76
+  - mode: up
+    user_ref: *28
+    votable_ref: *76
+  - mode: up
+    user_ref: *23
+    votable_ref: *77
   ideas_topic:
-  - idea_ref: *34
-    topic_ref: *74
-  - idea_ref: *38
-    topic_ref: *75
-  - idea_ref: *41
-    topic_ref: *74
-  - idea_ref: *43
-    topic_ref: *76
+  - idea_ref: *39
+    topic_ref: *78
+  - idea_ref: *42
+    topic_ref: *79
+  - idea_ref: *45
+    topic_ref: *78
   - idea_ref: *46
-    topic_ref: *77
-  - idea_ref: *50
-    topic_ref: *75
-  - idea_ref: *52
-    topic_ref: *74
-  - idea_ref: *54
-    topic_ref: *74
-  - idea_ref: *56
-    topic_ref: *74
-  - idea_ref: *57
-    topic_ref: *74
+    topic_ref: *80
+  - idea_ref: *49
+    topic_ref: *81
+  - idea_ref: *51
+    topic_ref: *79
+  - idea_ref: *55
+    topic_ref: *78
+  - idea_ref: *58
+    topic_ref: *78
+  - idea_ref: *59
+    topic_ref: *78
   - idea_ref: *60
-    topic_ref: *74
+    topic_ref: *78
   - idea_ref: *61
-    topic_ref: *74
+    topic_ref: *78
   - idea_ref: *62
-    topic_ref: *74
+    topic_ref: *78
   - idea_ref: *63
-    topic_ref: *74
+    topic_ref: *78
   - idea_ref: *64
-    topic_ref: *74
+    topic_ref: *78
   - idea_ref: *65
-    topic_ref: *74
-  - idea_ref: *66
-    topic_ref: *74
-  - idea_ref: *67
-    topic_ref: *74
+    topic_ref: *78
   - idea_ref: *68
-    topic_ref: *77
+    topic_ref: *78
   - idea_ref: *69
-    topic_ref: *76
+    topic_ref: *78
   - idea_ref: *70
-    topic_ref: *76
+    topic_ref: *78
   - idea_ref: *71
-    topic_ref: *76
+    topic_ref: *78
   - idea_ref: *72
-    topic_ref: *76
+    topic_ref: *80
   - idea_ref: *73
-    topic_ref: *74
+    topic_ref: *80
+  - idea_ref: *75
+    topic_ref: *80
+  - idea_ref: *76
+    topic_ref: *80
+  - idea_ref: *77
+    topic_ref: *78
   idea_image:
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514343/covoiturage2_rb82fm.jpg
-    idea_ref: *34
+    idea_ref: *39
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514360/Dr-Bouti-645x400_yifqca.jpg
-    idea_ref: *38
+    idea_ref: *42
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514384/Bikes-vs-cars-1-900x506_xmbg3u.jpg
-    idea_ref: *41
+    idea_ref: *45
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514410/e397e41f31bd66d503a5e17ff7b0bca5_v2xli2.jpg
-    idea_ref: *43
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514433/xxl_don-giovanni-2015-roh-a2_zh1jkn.jpg
     idea_ref: *46
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514433/xxl_don-giovanni-2015-roh-a2_zh1jkn.jpg
+    idea_ref: *49
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514448/870x489_fotolia-37009058-subscription-xxl_v04ei2.jpg
-    idea_ref: *50
+    idea_ref: *51
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514467/d10057_vigymh.jpg
-    idea_ref: *52
+    idea_ref: *55
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514485/logo_gc8o6b.png
-    idea_ref: *54
+    idea_ref: *58
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514510/Quai-Navette-fluviale-Millenaire_fwfire.jpg
-    idea_ref: *56
+    idea_ref: *59
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514546/000018574_imageArticlePrincipaleLarge_pggfpd.png
-    idea_ref: *57
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514564/2014_piste-cyclable_x2-sens_04_kpnna5.jpg
     idea_ref: *60
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514580/Quai-Navette-fluviale-Millenaire_poaf2c.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514564/2014_piste-cyclable_x2-sens_04_kpnna5.jpg
     idea_ref: *61
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514602/Autoroutes_A41__26_A43_xcnuwa.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514580/Quai-Navette-fluviale-Millenaire_poaf2c.jpg
     idea_ref: *62
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514619/200911060736_vsbmju.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514602/Autoroutes_A41__26_A43_xcnuwa.jpg
     idea_ref: *63
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514634/420px-Ville_souterraine_de_Montreal_04_gw3g6t.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514619/200911060736_vsbmju.jpg
     idea_ref: *64
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514651/1200px-VilloStationAlmostFull_wwtvzt.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514634/420px-Ville_souterraine_de_Montreal_04_gw3g6t.jpg
     idea_ref: *65
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514670/picto-marquage-handicape-e1445681185643_gpebfs.jpg
-    idea_ref: *66
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514690/201310221553-full_bpuo8t.jpg
-    idea_ref: *67
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514705/1200px-Montmartre_Funicular_2C_Paris_22_June_2014_002_xigwjz.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514651/1200px-VilloStationAlmostFull_wwtvzt.jpg
     idea_ref: *68
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514725/cyclocable-brubakken-hil-ascenseur-velo_mqiju5.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514670/picto-marquage-handicape-e1445681185643_gpebfs.jpg
     idea_ref: *69
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514746/Edgard-porte-velo_wu2wbr.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514690/201310221553-full_bpuo8t.jpg
     idea_ref: *70
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514762/xxx__204x4_C_t1vncy.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514705/1200px-Montmartre_Funicular_2C_Paris_22_June_2014_002_xigwjz.jpg
     idea_ref: *71
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514793/mini-gps-gprs-localisation-sms-reseau-velo-voiture_kh9fny.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514725/cyclocable-brubakken-hil-ascenseur-velo_mqiju5.jpg
     idea_ref: *72
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514807/1200px-MP_Train_gwgvtt.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514746/Edgard-porte-velo_wu2wbr.jpg
     idea_ref: *73
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514762/xxx__204x4_C_t1vncy.jpg
+    idea_ref: *75
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514793/mini-gps-gprs-localisation-sms-reseau-velo-voiture_kh9fny.jpg
+    idea_ref: *76
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514807/1200px-MP_Train_gwgvtt.jpg
+    idea_ref: *77
   comment:
   - body_multiloc:
       fr: "<p>Super idée ; je vous soutiens ! </p>\n"
-    author_ref: *7
-    idea_ref: *34
+    author_ref: *11
+    idea_ref: *39
     parent_ref: 
   - body_multiloc:
       fr: "<p>Pourquoi pas, c&#39;est une bonne idée ! </p>\n"
-    author_ref: *5
-    idea_ref: *34
+    author_ref: *9
+    idea_ref: *39
     parent_ref: 
   - body_multiloc:
       fr: "<p>Pourquoi s&#39;arrêter en si bon chemin, nous pourrions également penser
         à intégrer tout ceci dans une démarche de smartcity ... Qu&#39;en pensez-vous
         ?</p>\n"
-    author_ref: *5
-    idea_ref: *34
+    author_ref: *9
+    idea_ref: *39
     parent_ref: 
   - body_multiloc:
       fr: "<p>Exellente idée.  Pour tous les étudiants empruntant la ligne 48, c&#39;est
@@ -1570,7 +1506,7 @@ models:
       fr: |
         <p>Au niveau du coût d&#39;un tel projet, cela ne passera jamais actuellement. On arrive déjà pas à faire un réseau de tram complet et cohérent...
         Par contre, multiplier les liaisons en bus, via de nouvelles connexions (rive droite-ST,48, 58, Seraing-ST, 28, rail-ST via gare de Kinkempois ou gare de Tilff), enfin oser imaginer de nouveaux tracés de bus.</p>
-    author_ref: *40
+    author_ref: *47
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1610,13 +1546,13 @@ models:
   - body_multiloc:
       fr: "<p>La liaison rail-ST existe via ligne 28 qui est une des dernières lignes
         créées par les Tec avec la 58 ;-)</p>\n"
-    author_ref: *59
+    author_ref: *57
     idea_ref: 
     parent_ref: 
   - body_multiloc:
       fr: "<p>La liaison rail-ST existe via ligne 28 qui est une des dernières lignes
         créées par les Tec avec la 58 ;-)</p>\n"
-    author_ref: *47
+    author_ref: *50
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1628,19 +1564,19 @@ models:
     parent_ref: 
   - body_multiloc:
       fr: "<p>Je soutiens cette idée à 100%!</p>\n"
-    author_ref: *36
+    author_ref: *41
     idea_ref: 
     parent_ref: 
   - body_multiloc:
       fr: |
         <p>Les bus4  et 1 sont en fin de vie.Non seulement vétustes,mais bruyants et polluants; et IL  EXISTE  des bus électriques:des projets&quot;pilotes&quot;  ont été mis sur pied pour certaine villes wallonnes,dont..Charleroi,Mons.
         La ville attend tjs ceux promis.Il serait temps qu&#39;on se réveille..</p>
-    author_ref: *35
+    author_ref: *67
     idea_ref: 
     parent_ref: 
   - body_multiloc:
       fr: "<p>1er PROJET à garder !!</p>\n"
-    author_ref: *55
+    author_ref: *53
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1654,24 +1590,24 @@ models:
         On demande sans cesse aux citoyens de penser &quot;écologie&quot; et &quot;respect
         de son prochain&quot;, pourquoi n&#39;en va-t-il pas de même lorsqu&#39;il
         s&#39;agit des entreprises?</p>\n"
-    author_ref: *53
+    author_ref: *56
     idea_ref: 
     parent_ref: 
   - body_multiloc:
       fr: "<p>J&#39;oubliais : pourrait-on également adapter la taille des bus aux
         rues dans lesquelles ils sont amenés à circuler?</p>\n"
-    author_ref: *58
+    author_ref: *52
     idea_ref: 
     parent_ref: 
   - body_multiloc:
       fr: "<p>Même avec l&#39;arrivée du tram, il restera des bus. Autant qu&#39;ils
         soient électriques!</p>\n"
-    author_ref: *39
+    author_ref: *54
     idea_ref: 
     parent_ref: 
   - body_multiloc:
       fr: "<p>Bus hybrides ça me  paraît encore mieux car mieux adapté à notre relief</p>\n"
-    author_ref: *49
+    author_ref: *48
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1692,7 +1628,7 @@ models:
     parent_ref: 
   - body_multiloc:
       fr: "<p>Excellente idée!</p>\n"
-    author_ref: *13
+    author_ref: *12
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1704,7 +1640,7 @@ models:
         <p>A La ville, nous avons soit des RAVeL, espaces partagés avec les piétons, soit des &gt; pistes suggérées &gt; partagées avec les bus ou les autres véhicules.</p>
 
         <p>Vivement les pistes cyclables! :)</p>
-    author_ref: *15
+    author_ref: *14
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1718,26 +1654,26 @@ models:
         <p>2) Les trottoirs nouvellement aménagés Bvd Frère-Orban et suivants comprennent des pistes cyclables. Quelques vélos peints au sol les mettraient en valeur et aideraient à la signalisation. </p>
 
         <p>Bref, le réseau est loin d&#39;être parfait, mais on peut, à frais limités, en tirer beaucoup plus !</p>
-    author_ref: *12
+    author_ref: *15
     idea_ref: 
     parent_ref: 
   - body_multiloc:
       fr: "<p>Même si sur le fond votre idée part d&#39;un constat qui a une part
         de vérité, le ton est toujours aussi méprisant</p>\n"
-    author_ref: *13
+    author_ref: *17
     idea_ref: 
     parent_ref: 
   - body_multiloc:
       fr: "<p>Je vous rejoins sur ce propos... du moins, dans votre deuxième observation
         ;)</p>\n"
-    author_ref: *14
+    author_ref: *18
     idea_ref: 
     parent_ref: 
   - body_multiloc:
       fr: "<p>Renard, en grand défenseur des cyclistes, je m&#39;attendais bien à
         recevoir une critique de votre part. \nMerci,malgré  tout,  pour l&#39;intérêt
         que vous portez à ma proposition.</p>\n"
-    author_ref: *15
+    author_ref: *19
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1746,7 +1682,7 @@ models:
         mais franchement, abstenez vous plutôt que de déverser votre ressenti dénué
         de pertinence. \nVous qui êtes si déterminés à améliorer La ville, commencez
         peut être par vous même.</p>\n"
-    author_ref: *17
+    author_ref: *20
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1756,7 +1692,7 @@ models:
         je ne peux que constater que vous êtes tous d&#39;accord sur le fond. La forme...
         chacun a sa manière pour vendre son projet.  \U0001F609  La mienne est percutante
         ; est faite pour marquer les esprits.  Et ca marche manifestement  ... lollllllll</p>\n"
-    author_ref: *18
+    author_ref: *21
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1771,7 +1707,7 @@ models:
         nécessaire. Par ex, à Louvain, je sais que toutes les écoles primaires organisent
         régulièrement des promenades en vélos avec leur classes (groupe d&#39;une
         vingtaines d&#39;enfants, 3-4 responsables)...</p>\n"
-    author_ref: *19
+    author_ref: *22
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1780,12 +1716,12 @@ models:
         Pour les rues à sens uniques, c&#39;est la même chose : les pistes cyclables ne sont pas assez nombreuses. Si un détour de plusieurs centaines de mètre correspond à une ou deux minutes pour une voiture, cela peut se transformer en dix minutes pour un vélo ! Sans compter que certains détours induisent de monter dans une rue ce qui est parfois fastidieux pour un vélo.
         Enfin, en vélo, on est constamment soumis à la pollution. En tant que cycliste urbaine, je roule plus de 50 % du temps dans la circulation, à mes risques et périls. Lorsque vous êtes arrêté à un feu rouge derrière une voiture voire un bus, l&#39;air devient irrespirable et ce sont les cyclistes qui paient de leur santé, pour la pollution des autres.
         Je ne dis pas que certains comportements ne sont pas dangereux. Je dis simplement que si les itinéraires cyclables étaient mieux faits, les cyclistes ne perdraient surement pas leur temps à slalomer entre les piétons ou à risquer leur vie dans la circulation.</p>
-    author_ref: *20
+    author_ref: *23
     idea_ref: 
     parent_ref: 
   - body_multiloc:
       fr: "<p>\U0001F44D</p>\n"
-    author_ref: *48
+    author_ref: *66
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1793,7 +1729,7 @@ models:
         le trottoir ne va pas améliorer la sécurité des piétons, que du contraire!
         Cela rétrécirait encore le passage qui leur est laissé... Je ne comprends
         pas votre idée.</p>\n"
-    author_ref: *21
+    author_ref: *25
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1811,13 +1747,13 @@ models:
         pour les extérieurs. \nSi on autorise le parking à moitié sur trottoir pourquoi
         ne pas aménager directement le trottoir en le rétrécissant? La place est quand
         même perdue pour les piétons, non?</p>\n"
-    author_ref: *27
+    author_ref: *28
     idea_ref: 
     parent_ref: 
   - body_multiloc:
       fr: "<p>Pourquoi nous faut il une place de parking devant chez soi en ville
         je pense qu&#39;il n&#39;est pas nécessaire d&#39;avoir une voiture ...</p>\n"
-    author_ref: *28
+    author_ref: *29
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1827,7 +1763,7 @@ models:
         Il y a des personnes qui sans un accès proche de leur domicile ne peuvent
         se déplacer, s&#39;approvisionner, se rendre à des soins. \nUne bonne infrastructure
         bien organisée pallie au stationnement sauvage.</p>\n"
-    author_ref: *29
+    author_ref: *30
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1860,12 +1796,12 @@ models:
         laveu, par exemple). Il faudrait recenser, réfléchir et aménager... Et il
         n&#39;est pas impossible de penser emplacement de stationnement et végétation
         :-)</p>\n"
-    author_ref: *37
+    author_ref: *74
     idea_ref: 
     parent_ref: 
   - body_multiloc:
       fr: "<p>Que de bonnes idées</p>\n"
-    author_ref: *51
+    author_ref: *38
     idea_ref: 
     parent_ref: 
   - body_multiloc:
@@ -1873,7 +1809,7 @@ models:
         trottoir ou presque contre les façades. En installant des plots à 1,20 mètre
         des façades il y aurait assez de place pour les piétons et les PMR. L&#39;espace
         pris sur le trottoir libérerait aussi la chaussée.</p>\n"
-    author_ref: *49
+    author_ref: *43
     idea_ref: 
     parent_ref: 
   event:
@@ -1885,9 +1821,9 @@ models:
         </p>\n"
     location_multiloc:
       fr: Grand Place
-    project_ref: *1
-    start_at: 2018-09-01
-    end_at: 2018-09-02
+    project_ref: *5
+    start_at: 2019-01-10
+    end_at: 2019-01-11
   - title_multiloc:
       fr: Théâtre de rue
     description_multiloc:
@@ -1897,94 +1833,94 @@ models:
         vous donner la chaire de poule et des crises de rires. </p>\n"
     location_multiloc:
       fr: 
-    project_ref: *4
-    start_at: 2017-02-23
-    end_at: 2017-02-24
+    project_ref: *8
+    start_at: 2018-06-19
+    end_at: 2018-06-20
   phase:
   - title_multiloc:
       fr: Récolte d'idéees
     description_multiloc:
       fr: "<p>La première phase consiste à récolter tous les projets auprès des citoyens</p>\n"
-    project_ref: *1
-    start_at: 2018-12-28
-    end_at: 2019-03-01
+    project_ref: *5
+    start_at: 2018-05-29
+    end_at: 2018-08-21
   - title_multiloc:
       fr: Votes
     description_multiloc:
       fr: "<p>Cette phase laisse le temps aux citoyens de plébiciter les idées qui
         leur semblent les plus pertinentes et réalistes</p>\n"
-    project_ref: *1
-    start_at: 2019-03-01
-    end_at: 2019-05-02
+    project_ref: *5
+    start_at: 2018-08-21
+    end_at: 2018-10-29
   - title_multiloc:
       fr: Résultats de votes
     description_multiloc:
       fr: "<p>Les résultats du vote citoyen sont annocés</p>\n"
-    project_ref: *1
-    start_at: 2019-05-02
-    end_at: 2019-06-11
+    project_ref: *5
+    start_at: 2018-10-29
+    end_at: 2018-11-29
   - title_multiloc:
       fr: Implémentation des projets retenus
     description_multiloc:
       fr: "<p>Mise en place des projets retenus </p>\n"
-    project_ref: *1
-    start_at: 2019-06-11
-    end_at: 2019-07-24
+    project_ref: *5
+    start_at: 2018-11-29
+    end_at: 2019-03-08
   - title_multiloc:
       fr: Récolte d'idéees
     description_multiloc:
       fr: "<p>La première phase consiste à récolter tous les projets auprès des citoyens</p>\n"
-    project_ref: *2
-    start_at: 2019-07-24
-    end_at: 2019-11-05
+    project_ref: *6
+    start_at: 2019-03-08
+    end_at: 2019-05-23
   - title_multiloc:
       fr: Votes
     description_multiloc:
       fr: "<p>Cette phase laisse le temps aux citoyens de plébiciter les idées qui
         leur semblent les plus pertinentes et réalistes</p>\n"
-    project_ref: *2
-    start_at: 2019-11-05
-    end_at: 2020-02-06
+    project_ref: *6
+    start_at: 2019-05-23
+    end_at: 2019-08-10
   - title_multiloc:
       fr: Résultats de votes
     description_multiloc:
       fr: "<p>Les résultats du vote citoyen sont annocés</p>\n"
-    project_ref: *2
-    start_at: 2020-02-06
-    end_at: 2020-02-10
+    project_ref: *6
+    start_at: 2019-08-10
+    end_at: 2019-08-25
   - title_multiloc:
       fr: Implémentation des projets retenus
     description_multiloc:
       fr: "<p>Mise en place des projets retenus </p>\n"
-    project_ref: *2
-    start_at: 2020-02-10
-    end_at: 2020-04-07
+    project_ref: *6
+    start_at: 2019-08-25
+    end_at: 2019-12-10
   - title_multiloc:
       fr: Récolte d'idéees
     description_multiloc:
       fr: "<p>La première phase consiste à récolter tous les projets auprès des citoyens</p>\n"
-    project_ref: *3
-    start_at: 2020-04-07
-    end_at: 2020-04-11
+    project_ref: *7
+    start_at: 2019-12-10
+    end_at: 2020-01-15
   - title_multiloc:
       fr: Votes
     description_multiloc:
       fr: "<p>Cette phase laisse le temps aux citoyens de plébiciter les idées qui
         leur semblent les plus pertinentes et réalistes</p>\n"
-    project_ref: *3
-    start_at: 2020-04-11
-    end_at: 2020-05-05
+    project_ref: *7
+    start_at: 2020-01-15
+    end_at: 2020-01-25
   - title_multiloc:
       fr: Résultats de votes
     description_multiloc:
       fr: "<p>Les résultats du vote citoyen sont annocés</p>\n"
-    project_ref: *3
-    start_at: 2020-05-05
-    end_at: 2020-06-02
+    project_ref: *7
+    start_at: 2020-01-25
+    end_at: 2020-03-31
   - title_multiloc:
       fr: Implémentation des projets retenus
     description_multiloc:
       fr: "<p>Mise en place des projets retenus </p>\n"
-    project_ref: *3
-    start_at: 2020-06-02
-    end_at: 2020-08-19
+    project_ref: *7
+    start_at: 2020-03-31
+    end_at: 2020-05-10
