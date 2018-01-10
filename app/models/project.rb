@@ -11,8 +11,8 @@ class Project < ApplicationRecord
   has_many :ideas, dependent: :destroy
   has_and_belongs_to_many :topics
   has_and_belongs_to_many :areas
-  has_many :phases, dependent: :destroy
-  has_many :events, dependent: :destroy
+  has_many :phases, -> { order(:start_at) }, dependent: :destroy
+  has_many :events, -> { order(:start_at) }, dependent: :destroy
   has_many :pages, dependent: :destroy
   has_many :project_images, -> { order(:ordering) }, dependent: :destroy
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy

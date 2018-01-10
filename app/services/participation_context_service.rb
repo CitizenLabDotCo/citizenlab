@@ -66,6 +66,27 @@ class ParticipationContextService
     end
   end
 
+  def future_posting_enabled_phase project, time=Time.now
+    return nil if !project.timeline?
+    project.phases.find do |phase|
+      phase.start_at > time && phase.posting_enabled
+    end
+  end
+
+  def future_commenting_enabled_phase project, time=Time.now
+    return nil if !project.timeline?
+    project.phases.find do |phase|
+      phase.start_at > time && phase.commenting_enabled
+    end
+  end
+
+  def future_voting_enabled_phase project, time=Time.now
+    return nil if !project.timeline?
+    project.phases.find do |phase|
+      phase.start_at > time && phase.voting_enabled
+    end
+  end
+
   private
 
     def votes_in_context context, user
